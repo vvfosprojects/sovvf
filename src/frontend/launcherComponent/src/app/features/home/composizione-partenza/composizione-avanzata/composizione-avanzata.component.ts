@@ -46,7 +46,7 @@ import { SganciamentoInterface } from 'src/app/shared/interface/sganciamento.int
 import { MezzoDirection } from '../../../../shared/interface/mezzo-direction';
 import { squadraComposizioneBusy } from '../shared/functions/composizione-functions';
 import {
-    ClearMarkerMezzoHover, ClearMarkerMezzoSelezionato,
+    ClearMarkerMezzoHover,
     SetMarkerMezzoHover,
     SetMarkerMezzoSelezionato
 } from '../../store/actions/maps/marker.actions';
@@ -101,10 +101,9 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
     Composizione = Composizione;
     subscription = new Subscription();
 
-    @Input() dismissEvents: Observable<boolean>;
     @Output() centraMappa = new EventEmitter();
-    @Output() sendDirection: EventEmitter<DirectionInterface> = new EventEmitter();
-    @Output() clearDirection: EventEmitter<any> = new EventEmitter();
+    @Output() sendDirection = new EventEmitter<DirectionInterface>();
+    @Output() clearDirection = new EventEmitter();
     @Output() prenota = new EventEmitter<boolean>();
     @Output() sganciamento = new EventEmitter<SganciamentoInterface>();
 
@@ -210,12 +209,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
     }
 
     ngOnInit() {
-        // Aggiungo il primo box partenza vuoto
-        // this.store.dispatch(new AddBoxPartenza());
         this.store.dispatch(new GetFiltriComposizione());
-        this.subscription.add(this.dismissEvents.subscribe(
-            events => this.annullaPartenza(events)
-        ));
     }
 
     ngOnChanges() {
@@ -229,7 +223,6 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
     mezzoSelezionato(mezzoComposizione: MezzoComposizione) {
         this.store.dispatch([
             new ReducerSelectMezzoComposizione(mezzoComposizione),
-            new ClearMarkerMezzoSelezionato(),
             new SetMarkerMezzoSelezionato(mezzoComposizione.id, true)
         ]);
         // console.log('Mezzo selezionato', mezzoComposizione);
@@ -244,10 +237,9 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
         }
         this.store.dispatch([
             new RemoveMezzoBoxPartenzaSelezionato(),
-            new ClearMarkerMezzoSelezionato()
         ]);
-        this.clearDirection.emit();
-        // console.log('Mezzo deselezionato', mezzoComposizione);
+        this.onClearDirection();
+        console.log('Mezzo deselezionato');
     }
 
     mezzoHoverIn(mezzoComposizione: MezzoComposizione) {
@@ -288,7 +280,6 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
             this.store.dispatch(new GetListeComposizioneAvanzata(null, true, null));
         }
         this.store.dispatch(new RemoveSquadraBoxPartenza(squadraComposizione.id));
-        this.clearDirection.emit();
         // console.log('Squadra deselezionata', squadraComposizione);
     }
 
@@ -314,17 +305,6 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
         this.store.dispatch(new RequestSelectBoxPartenza(boxPartenza.id));
     }
 
-    getBoxPartenzaAttuale(idBoxPartenza: string): BoxPartenza {
-        let returnBox: BoxPartenza;
-        returnBox = null;
-        this.boxPartenzaList.forEach((box: BoxPartenza) => {
-            if (idBoxPartenza === box.id) {
-                returnBox = box;
-            }
-        });
-        return returnBox;
-    }
-
     nuovaPartenza() {
         this.store.dispatch(new RequestAddBoxPartenza());
     }
@@ -336,6 +316,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
         } else {
             this.store.dispatch(new RemoveBoxPartenza(boxPartenza));
         }
+        this.onClearDirection();
     }
 
     // Interazione con Mappa
@@ -357,7 +338,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
                 this.sendDirection.emit(direction);
             }
         } else {
-            this.clearDirection.emit();
+            this.onClearDirection();
             console.error('coordinate mezzo / coordinate richiesta non presenti');
         }
     }
@@ -390,9 +371,8 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
         this.store.dispatch(new ConfirmPartenze(partenzeObj));
     }
 
-    annullaPartenza(event: boolean): void {
-        if (event) {
-            this.clearDirection.emit();
-        }
+    onClearDirection(): void {
+        this.clearDirection.emit();
+        this.centraMappa.emit();
     }
 }

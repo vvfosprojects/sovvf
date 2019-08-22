@@ -9,9 +9,21 @@ import { Observable, Subscription } from 'rxjs';
 import { DirectionInterface } from '../../maps/maps-interface/direction-interface';
 import { Composizione } from '../../../../shared/enum/composizione.enum';
 import { Select, Store } from '@ngxs/store';
-import { GetFiltriComposizione } from '../../store/actions/composizione-partenza/composizione-partenza.actions';
+import {
+    ConfirmPartenze,
+    GetFiltriComposizione
+} from '../../store/actions/composizione-partenza/composizione-partenza.actions';
 import { ComposizioneVeloceState } from '../../store/states/composizione-partenza/composizione-veloce.state';
-import { SelectPreAccoppiatoComposizione, UnselectPreAccoppiatoComposizione } from '../../store/actions/composizione-partenza/composizione-veloce.actions';
+import {
+    SelectPreAccoppiatoComposizione,
+    UnselectPreAccoppiatoComposizione
+} from '../../store/actions/composizione-partenza/composizione-veloce.actions';
+import { makeCopy } from '../../../../shared/helper/function';
+import { SquadraComposizione } from '../interface/squadra-composizione-interface';
+import { ConfermaPartenze } from '../interface/conferma-partenze-interface';
+import { ComposizionePartenzaState } from '../../store/states/composizione-partenza/composizione-partenza.state';
+import { TurnoState } from '../../../navbar/store/states/turno/turno.state';
+import { Coordinate } from '../../../../shared/model/coordinate.model';
 
 @Component({
     selector: 'app-composizione-veloce',
@@ -21,7 +33,6 @@ import { SelectPreAccoppiatoComposizione, UnselectPreAccoppiatoComposizione } fr
 export class FasterComponent implements OnInit, OnDestroy {
 
     @Input() richiesta: SintesiRichiesta;
-    @Input() dismissEvents: Observable<boolean>;
     @Input() disablePrenota: boolean;
     @Input() prenotato: boolean;
 
@@ -68,9 +79,6 @@ export class FasterComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.subscription.add(this.dismissEvents.subscribe(
-            events => this.annullaPartenza(events)
-        ));
         this.store.dispatch(new GetFiltriComposizione());
     }
 
@@ -78,90 +86,75 @@ export class FasterComponent implements OnInit, OnDestroy {
         this.subscription.unsubscribe();
     }
 
-    // preAccoppiatoSelezionato(preAcc: BoxPartenza) {
-    //     if (this.preAccoppiati) {
-    //         this.selezionaPreaccoppiato(preAcc);
-    //         if (preAcc.mezzoComposizione && preAcc.mezzoComposizione.coordinate) {
-    //             this.mezzoCoordinate(preAcc.mezzoComposizione.coordinate);
-    //         }
-    //     }
-    // }
-
-    // preAccoppiatoDeselezionato(preAcc: BoxPartenza) {
-    //     if (this.preAccoppiati) {
-    //         this.deselezionaPreaccoppiato(preAcc);
-    //         this.annullaPartenza(true);
-    //         this.centraMappa.emit();
-    //     }
-    // }
-
     selezionaPreaccoppiato(preAcc: BoxPartenza) {
+        this.mezzoCoordinate(preAcc.mezzoComposizione.coordinate);
         this.store.dispatch(new SelectPreAccoppiatoComposizione(preAcc));
     }
 
     deselezionaPreaccoppiato(preAcc: BoxPartenza) {
+        this.onClearDirection();
         this.store.dispatch(new UnselectPreAccoppiatoComposizione(preAcc));
     }
 
-    // mezzoCoordinate(event: Coordinate): void {
-    //     if (this.richiesta) {
-    //         if (event && this.richiesta.localita.coordinate) {
-    //             const direction: DirectionInterface = {
-    //                 origin: {
-    //                     lat: event.latitudine,
-    //                     lng: event.longitudine
-    //                 },
-    //                 destination: {
-    //                     lat: this.richiesta.localita.coordinate.latitudine,
-    //                     lng: this.richiesta.localita.coordinate.longitudine
-    //                 },
-    //                 isVisible: true
-    //             };
-    //
-    //             this.sendDirection.emit(direction);
-    //         } else {
-    //             console.error('coordinate mezzo / coordinate richiesta non presenti');
-    //             this.clearDirection.emit();
-    //         }
-    //     }
-    // }
+    mezzoCoordinate(event: Coordinate): void {
+        if (this.richiesta) {
+            if (event && this.richiesta.localita.coordinate) {
+                const direction: DirectionInterface = {
+                    origin: {
+                        lat: event.latitudine,
+                        lng: event.longitudine
+                    },
+                    destination: {
+                        lat: this.richiesta.localita.coordinate.latitudine,
+                        lng: this.richiesta.localita.coordinate.longitudine
+                    },
+                    isVisible: true
+                };
 
-    annullaPartenza(event: boolean): void {
-        if (event) {
-            this.clearDirection.emit();
+                this.sendDirection.emit(direction);
+            } else {
+                console.error('coordinate mezzo / coordinate richiesta non presenti');
+                this.onClearDirection();
+            }
         }
     }
 
     confermaPartenze(): void {
-        // const boxPartenzaList: BoxPartenza[] = [];
-        // this.preAccoppiati.forEach( result => {
-        //     if (this.idPreAccoppiatiSelezionati.includes(result.id)) {
-        //         boxPartenzaList.push(makeCopy(result));
-        //     }
-        // });
-        // const partenzeMappedArray = boxPartenzaList.map(obj => {
-        //     const rObj = {};
-        //     if (obj.mezzoComposizione) {
-        //         obj.mezzoComposizione.mezzo.stato = 'In Viaggio';
-        //         rObj['mezzo'] = obj.mezzoComposizione.mezzo;
-        //     } else {
-        //         rObj['mezzo'] = null;
-        //     }
-        //     if (obj.squadraComposizione.length > 0) {
-        //         rObj['squadre'] = obj.squadraComposizione.map((squadraComp: SquadraComposizione) => {
-        //             return squadraComp.squadra;
-        //         });
-        //     } else {
-        //         rObj['squadre'] = [];
-        //     }
-        //     return rObj;
-        // });
-        // const partenzeObj: ConfermaPartenze = {
-        //     partenze: partenzeMappedArray,
-        //     idRichiesta: this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione).codice,
-        //     turno: this.store.selectSnapshot(TurnoState.turno).corrente
-        // };
+        const boxPartenzaList: BoxPartenza[] = [];
+        this.preAccoppiati.forEach( result => {
+            if (this.idPreAccoppiatiSelezionati.includes(result.id)) {
+                boxPartenzaList.push(result);
+            }
+        });
+        const partenze = makeCopy(boxPartenzaList);
+        const partenzeMappedArray = partenze.map(obj => {
+            const rObj = {};
+            if (obj.mezzoComposizione) {
+                obj.mezzoComposizione.mezzo.stato = 'In Viaggio';
+                rObj['mezzo'] = obj.mezzoComposizione.mezzo;
+            } else {
+                rObj['mezzo'] = null;
+            }
+            if (obj.squadraComposizione.length > 0) {
+                rObj['squadre'] = obj.squadraComposizione.map((squadraComp: SquadraComposizione) => {
+                    return squadraComp.squadra;
+                });
+            } else {
+                rObj['squadre'] = [];
+            }
+            return rObj;
+        });
+        const partenzeObj: ConfermaPartenze = {
+            partenze: partenzeMappedArray,
+            idRichiesta: this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione).codice,
+            turno: this.store.selectSnapshot(TurnoState.turno).corrente
+        };
         // console.log('mappedArray', partenzeMappedArray);
-        // this.store.dispatch(new ConfirmPartenze(partenzeObj));
+        this.store.dispatch(new ConfirmPartenze(partenzeObj));
+    }
+
+    onClearDirection(): void {
+        this.clearDirection.emit();
+        this.centraMappa.emit();
     }
 }

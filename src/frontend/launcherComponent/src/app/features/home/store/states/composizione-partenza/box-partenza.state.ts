@@ -18,11 +18,16 @@ import {
     RequestBookMezzoComposizione, RequestRemoveBookMezzoComposizione, SelectMezzoComposizione, UnselectMezzoComposizione
 } from '../../actions/composizione-partenza/mezzi-composizione.actions';
 import { SquadraComposizione } from '../../../composizione-partenza/interface/squadra-composizione-interface';
-import { ClearSelectedSquadreComposizione, SelectSquadraComposizione, UnselectSquadraComposizione } from '../../actions/composizione-partenza/squadre-composizione.actions';
+import {
+    ClearSelectedSquadreComposizione,
+    SelectSquadraComposizione,
+    UnselectSquadraComposizione
+} from '../../actions/composizione-partenza/squadre-composizione.actions';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from '../../../../../shared/enum/toastr';
 import { GetListeComposizioneAvanzata } from '../../actions/composizione-partenza/composizione-avanzata.actions';
 import { ClearDirection } from '../../actions/maps/maps-direction.actions';
+import { ClearMarkerMezzoSelezionato } from '../../actions/maps/marker.actions';
 
 
 export interface BoxPartenzaStateModel {
@@ -150,7 +155,7 @@ export class BoxPartenzaState {
                 }
             });
         }
-        dispatch(new ClearDirection());
+        dispatch([new ClearDirection(), new ClearMarkerMezzoSelezionato()]);
         // rimuovo il box dalla lista
         setState(
             patch({

@@ -21,7 +21,7 @@
         placeholder="Stato: Tutti">
         <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
           <div><span class="fa fa-eercast mr-2"
-              [ngClass]="methods.iconaStatiClass(item.descrizione)"></span>{{item.descrizione}}</div>
+              [ngClass]="_iconaStatiClass(item.descrizione)"></span>{{item.descrizione}}</div>
         </ng-template>
       </ng-select>
     </div>

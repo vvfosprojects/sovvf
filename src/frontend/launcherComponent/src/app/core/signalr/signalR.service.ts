@@ -126,13 +126,7 @@ export class SignalRService {
             console.log('ChangeStateSuccess:', data);
             const composizioneMode = this.store.selectSnapshot(ViewComponentState.composizioneStatus);
             if (composizioneMode) {
-                const compMode = this.store.selectSnapshot(ViewComponentState.composizioneMode);
-                if (compMode === Composizione.Avanzata) {
-                    this.store.dispatch(new GetListeComposizioneAvanzata());
-                } else if (compMode === Composizione.Veloce) {
-                    // Todo: scatta lo stesso metodo... non serve questo controllo
-                    // this.store.dispatch(new GetListaComposizioneVeloce());
-                }
+                this.store.dispatch(new GetListeComposizioneAvanzata());
             }
             this.store.dispatch(new ShowToastr(ToastrType.Info, 'Modifica Stato Squadra/Mezzi Richiesta', null, 3));
         });
@@ -234,6 +228,7 @@ export class SignalRService {
                 this.store.dispatch(new UpdateMezzoPreAccoppiatoComposizione(data.mezzoPrenotato.mezzoComposizione));
             }
             const mezzoComp = data.mezzoPrenotato.mezzoComposizione;
+            // Todo: manca la data del server
             let dataScadenzaSelezione = new Date(mezzoComp.istanteScadenzaSelezione).getHours() + ':';
             dataScadenzaSelezione += new Date(mezzoComp.istanteScadenzaSelezione).getMinutes() + ':';
             dataScadenzaSelezione += new Date(mezzoComp.istanteScadenzaSelezione).getSeconds();

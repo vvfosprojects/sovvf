@@ -4,9 +4,13 @@ import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
 import { Composizione } from '../../../../../shared/enum/composizione.enum';
 import { RequestResetBookMezzoComposizione } from '../../../store/actions/composizione-partenza/mezzi-composizione.actions';
 import { Store } from '@ngxs/store';
-import { HelperComposizione } from '../helper/_helper-composizione';
 import { ShowToastr } from 'src/app/shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from 'src/app/shared/enum/toastr';
+import {
+    checkSquadraOccupata, iconaStatiClass,
+    mezzoComposizioneBusy
+} from '../functions/composizione-functions';
+import { SquadraComposizione } from '../../interface/squadra-composizione-interface';
 
 @Component({
     selector: 'app-box-nuova-partenza',
@@ -27,21 +31,23 @@ export class BoxNuovaPartenzaComponent {
     @Output() deselezionato = new EventEmitter<BoxPartenza>();
     @Output() eliminato = new EventEmitter<BoxPartenza>();
 
-    methods = new HelperComposizione();
     itemBloccato: boolean;
 
     constructor(private store: Store) {
     }
 
     onClick() {
-        if (this.partenza.mezzoComposizione.mezzo.stato !== 'In Viaggio' && this.partenza.mezzoComposizione.mezzo.stato !== 'Sul Posto') {
+        if (!mezzoComposizioneBusy(this.partenza.mezzoComposizione.mezzo.stato) && !this._checkSquadraOccupata(this.partenza.squadraComposizione)) {
             if (!this.itemSelezionato) {
                 this.selezionato.emit(this.partenza);
             } else {
                 this.deselezionato.emit(this.partenza);
             }
-        } else {
+        } else if (mezzoComposizioneBusy(this.partenza.mezzoComposizione.mezzo.stato)) {
+            // tslint:disable-next-line:max-line-length
             this.store.dispatch(new ShowToastr(ToastrType.Warning, 'Impossibile assegnare il mezzo', 'Il mezzo è ' + this.partenza.mezzoComposizione.mezzo.stato + ' ed è impegnato in un\'altra richiesta'));
+        } else if (this._checkSquadraOccupata(this.partenza.squadraComposizione)) {
+            this.store.dispatch(new ShowToastr(ToastrType.Warning, 'Impossibile assegnare la squadra', 'La squadra è impegnata in un\'altra richiesta'));
         }
     }
 
@@ -60,7 +66,7 @@ export class BoxNuovaPartenzaComponent {
                 'bg-light border-success card-shadow-success': this.itemSelezionato
             };
 
-            if (this.partenza.mezzoComposizione.mezzo.stato !== 'In Sede' && this.partenza.mezzoComposizione.mezzo.stato !== 'In Rientro') {
+            if (mezzoComposizioneBusy(this.partenza.mezzoComposizione.mezzo.stato) || this._checkSquadraOccupata(this.partenza.squadraComposizione)) {
                 returnClass += ' diagonal-stripes bg-lightdanger';
                 this.itemBloccato = true;
             }
@@ -149,6 +155,14 @@ export class BoxNuovaPartenzaComponent {
     onResetTimeout(e: MouseEvent) {
         e.stopPropagation();
         this.store.dispatch(new RequestResetBookMezzoComposizione(this.partenza.mezzoComposizione));
+    }
+
+    _iconaStatiClass(statoMezzo: string): string {
+        return iconaStatiClass(statoMezzo);
+    }
+
+    _checkSquadraOccupata(squadreComposizione: SquadraComposizione[]): boolean {
+        return checkSquadraOccupata(squadreComposizione);
     }
 
 }

@@ -1,7 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ColoriStatoMezzo } from '../../helper/_colori';
 import { Mezzo } from '../../model/mezzo.model';
-import { HelperComposizione } from '../../../features/home/composizione-partenza/shared/helper/_helper-composizione';
 import { NgbPopoverConfig, NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
 import { MezzoActionInterface } from '../../interface/mezzo-action.interface';
 import { StatoMezzoActions } from '../../enum/stato-mezzo-actions.enum';
@@ -23,7 +22,6 @@ export class MezzoComponent implements OnInit {
 
     @Output() actionMezzo: EventEmitter<MezzoActionInterface> = new EventEmitter();
     stato = new ColoriStatoMezzo();
-    methods = new HelperComposizione();
 
     constructor(popoverConfig: NgbPopoverConfig,
         tooltipConfig: NgbTooltipConfig) {

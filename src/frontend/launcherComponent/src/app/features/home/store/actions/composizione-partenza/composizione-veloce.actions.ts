@@ -4,9 +4,6 @@ import { IdPreaccoppiati } from '../../../composizione-partenza/interface/id-pre
 
 export class GetPreAccoppiati {
     static readonly type = '[ComposizioneVeloce] Get PreAccoppiati';
-
-    constructor(public filtri?: any) {
-    }
 }
 
 export class SetPreaccoppiati {
@@ -32,6 +29,10 @@ export class UnselectPreAccoppiatoComposizione {
 
     constructor(public preAcc: BoxPartenza) {
     }
+}
+
+export class ClearPreAccoppiatiSelezionatiComposizione {
+    static readonly type = '[PreAccoppiati] Clear PreAccoppiati Selezionati Composizione';
 }
 
 export class UpdateMezzoPreAccoppiatoComposizione {

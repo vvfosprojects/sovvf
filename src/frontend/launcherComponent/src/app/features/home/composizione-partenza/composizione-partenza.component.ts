@@ -1,6 +1,6 @@
 import { Component, Input, isDevMode, OnDestroy, OnInit } from '@angular/core';
 import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
-import { Observable, Subject, Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { Select, Store } from '@ngxs/store';
 import { BoxClickState, BoxClickStateModel } from '../store/states/boxes/box-click.state';
 import { AllFalseBoxRichieste, AllTrueBoxMezzi, ReducerBoxClick, UndoAllBoxes } from '../store/actions/boxes/box-click.actions';
@@ -11,18 +11,12 @@ import { ComposizioneVeloceState } from '../store/states/composizione-partenza/c
 import { DirectionInterface } from '../maps/maps-interface/direction-interface';
 import { ClearDirection, SetDirection } from '../store/actions/maps/maps-direction.actions';
 import { wipeStatoRichiesta } from '../../../shared/helper/function';
-import { TurnOffComposizione } from '../store/actions/view/view.actions';
-import { GetInitCentroMappa, SetCoordCentroMappa } from '../store/actions/maps/centro-mappa.actions';
-import { ClearMarkerState } from '../store/actions/maps/marker.actions';
+import { SetCoordCentroMappa } from '../store/actions/maps/centro-mappa.actions';
 import { ComposizionePartenzaState } from '../store/states/composizione-partenza/composizione-partenza.state';
-import { ClearBoxPartenze } from '../store/actions/composizione-partenza/box-partenza.actions';
-import { ClearListaMezziComposizione, ClearSelectedMezziComposizione } from '../store/actions/composizione-partenza/mezzi-composizione.actions';
 import { ClearEventiRichiesta, SetIdRichiestaEventi } from '../store/actions/eventi/eventi-richiesta.actions';
 import { EventiRichiestaComponent } from '../eventi/eventi-richiesta.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ClearPreaccoppiati } from '../store/actions/composizione-partenza/composizione-veloce.actions';
-import { ClearListaSquadreComposizione, ClearSelectedSquadreComposizione } from '../store/actions/composizione-partenza/squadre-composizione.actions';
-import { SetComposizioneMode, ConfirmPartenze } from '../store/actions/composizione-partenza/composizione-partenza.actions';
+import { ConfirmPartenze } from '../store/actions/composizione-partenza/composizione-partenza.actions';
 import { HelperSintesiRichiesta } from '../richieste/helper/_helper-sintesi-richiesta';
 import { UtenteState } from '../../navbar/store/states/operatore/utente.state';
 import { AttivitaUtente } from '../../../shared/model/attivita-utente.model';
@@ -36,6 +30,7 @@ import { map } from 'rxjs/operators';
 import { Partenza } from 'src/app/shared/model/partenza.model';
 import { TurnoState } from '../../navbar/store/states/turno/turno.state';
 import { ConfermaPartenze } from './interface/conferma-partenze-interface';
+import { ClearMarkerMezzoSelezionato } from '../store/actions/maps/marker.actions';
 
 @Component({
     selector: 'app-composizione-partenza',
@@ -45,7 +40,6 @@ import { ConfermaPartenze } from './interface/conferma-partenze-interface';
 export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
     @Input() compPartenzaMode: Composizione;
 
-    dismissPartenzaSubject: Subject<boolean> = new Subject<boolean>();
     Composizione = Composizione;
 
     subscription = new Subscription();
@@ -92,32 +86,6 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
         isDevMode() && console.log('Componente Composizione distrutto');
     }
 
-    dismissPartenza(): void {
-        this.dismissPartenzaSubject.next(true);
-        this.store.dispatch([
-            new ClearMarkerState(),
-            new GetInitCentroMappa()
-        ]);
-        // Pulisco le liste
-        const compMode = this.store.selectSnapshot(ComposizionePartenzaState).composizioneMode;
-        if (compMode === Composizione.Avanzata) {
-            this.store.dispatch([
-                new ClearSelectedMezziComposizione(),
-                new ClearSelectedSquadreComposizione(),
-                new ClearListaSquadreComposizione(),
-                new ClearListaMezziComposizione(),
-                new ClearBoxPartenze()
-            ]);
-        } else if (compMode === Composizione.Veloce) {
-            this.store.dispatch(new ClearPreaccoppiati());
-        }
-        // Reimposto la composizioneMode su Avanzata
-        this.store.dispatch(new SetComposizioneMode(Composizione.Avanzata));
-        // console.log('Composizione Mode', compMode);
-        this.centraMappa();
-        this.turnOffComposizione();
-    }
-
     cardClasses(r: SintesiRichiesta) {
         return this.methods.cardBorder(r);
     }
@@ -127,11 +95,7 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
     }
 
     onClearDirection() {
-        this.store.dispatch(new ClearDirection());
-    }
-
-    turnOffComposizione() {
-        this.store.dispatch(new TurnOffComposizione());
+        this.store.dispatch([new ClearDirection(), new ClearMarkerMezzoSelezionato()]);
     }
 
     centraMappa() {

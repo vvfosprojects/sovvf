@@ -4,9 +4,9 @@ import { MezzoComposizione } from '../../interface/mezzo-composizione-interface'
 import { BoxPartenza } from '../../interface/box-partenza-interface';
 // Model
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
-import { HelperComposizione } from '../../shared/helper/_helper-composizione';
 import { MezzoDirection } from '../../../../../shared/interface/mezzo-direction';
 import { SganciamentoInterface } from 'src/app/shared/interface/sganciamento.interface';
+import { iconaStatiClass } from '../../shared/functions/composizione-functions';
 
 @Component({
     selector: 'app-mezzo-composizione',
@@ -38,8 +38,6 @@ export class MezzoComposizioneComponent implements OnInit {
 
     // Sganciamento
     @Output() sganciamento = new EventEmitter<SganciamentoInterface>();
-
-    methods = new HelperComposizione();
 
     constructor() {
     }
@@ -154,4 +152,9 @@ export class MezzoComposizioneComponent implements OnInit {
         } as MezzoDirection;
         this.mezzoCoordinate.emit(mezzoDirection);
     }
+
+    _iconaStatiClass(statoMezzo: string): string {
+        return iconaStatiClass(statoMezzo);
+    }
+
 }

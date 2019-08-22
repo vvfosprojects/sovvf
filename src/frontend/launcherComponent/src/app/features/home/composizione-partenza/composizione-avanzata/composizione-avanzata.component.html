@@ -83,7 +83,7 @@
           <app-box-nuova-partenza [partenza]="p" [richiesta]="richiesta" [elimina]="true"
             [itemSelezionato]="p.id === idBoxPartenzaSelezionato" [compPartenzaMode]="Composizione.Avanzata"
             [alert]="true" (selezionato)="boxPartenzaSelezionato($event)" (eliminato)="eliminaBoxPartenza($event)"
-            (deselezionato)="annullaPartenza(true); centraMappa.emit();"></app-box-nuova-partenza>
+            (deselezionato)="onClearDirection()"></app-box-nuova-partenza>
         </div>
       </div>
     </div>

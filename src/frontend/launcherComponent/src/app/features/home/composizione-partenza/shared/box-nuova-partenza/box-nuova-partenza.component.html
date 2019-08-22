@@ -10,7 +10,7 @@
         <div *ngIf="partenza.mezzoComposizione" class="col">
             <div class="nowrap">
                 <i class="guida fa fa-truck mr-1"
-                   [ngClass]="methods.iconaStatiClass(partenza.mezzoComposizione.mezzo.stato)"
+                   [ngClass]="_iconaStatiClass(partenza.mezzoComposizione.mezzo.stato)"
                    ngbTooltip="Mezzo {{partenza.mezzoComposizione.mezzo.stato}}" placement="top"></i>
                 <span class="font-weight-bold mr-1">{{partenza.mezzoComposizione.mezzo.descrizione}}</span>
                 <span class="font-weight-normal">{{partenza.mezzoComposizione.mezzo.genere}}</span>
@@ -22,7 +22,7 @@
         </div>
         <div *ngIf="partenza.squadraComposizione?.length === 1" class="col">
             <div class="nowrap">
-                <i class="guida fa fa-group mr-1"></i><span>{{partenza.squadraComposizione[0].squadra.nome}}</span>
+                <i class="guida fa fa-group mr-1" [ngClass]="{'text-danger': _checkSquadraOccupata(partenza.squadraComposizione)}"></i><span>{{partenza.squadraComposizione[0].squadra.nome}}</span>
             </div>
         </div>
         <div *ngIf="partenza.squadraComposizione?.length > 1" class="col">

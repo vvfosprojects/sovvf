@@ -1,19 +1,19 @@
 import { Component, Input } from '@angular/core';
 import { Store, Select } from '@ngxs/store';
 import {
-    AddFiltroSelezionatoComposizione, GetFiltriComposizione,
+    AddFiltroSelezionatoComposizione,
     RemoveFiltriSelezionatiComposizione,
     RemoveFiltroSelezionatoComposizione, UpdateListe
 } from '../../../store/actions/composizione-partenza/composizione-partenza.actions';
 import { ComposizionePartenzaState } from '../../../store/states/composizione-partenza/composizione-partenza.state';
 import { MezziComposizioneState } from '../../../store/states/composizione-partenza/mezzi-composizione.state';
 import { SquadreComposizioneState } from '../../../store/states/composizione-partenza/squadre-composizione.state';
-import { HelperComposizione } from '../helper/_helper-composizione';
 import { TurnOffComposizione, SwitchComposizione } from '../../../store/actions/view/view.actions';
 import { Composizione } from 'src/app/shared/enum/composizione.enum';
 import { ViewComponentState } from '../../../store/states/view/view.state';
 import { Observable } from 'rxjs';
 import { FiltriComposizione } from '../../interface/filtri/filtri-composizione-interface';
+import { iconaStatiClass } from '../functions/composizione-functions';
 
 @Component({
     selector: 'app-composizione-filterbar',
@@ -26,13 +26,7 @@ export class ComposizioneFilterbarComponent {
 
     @Select(ViewComponentState.composizioneMode) composizioneMode$: Observable<FiltriComposizione>;
 
-    methods = new HelperComposizione();
-
     constructor(private store: Store) {
-    }
-
-    getFiltri() {
-        this.store.dispatch(new GetFiltriComposizione());
     }
 
     addFiltro(event: any, tipo: string) {
@@ -75,4 +69,9 @@ export class ComposizioneFilterbarComponent {
     compPartenzaSwitch(event: Composizione) {
         this.store.dispatch(new SwitchComposizione(event));
     }
+
+    _iconaStatiClass(statoMezzo: string): string {
+        return iconaStatiClass(statoMezzo);
+    }
+
 }

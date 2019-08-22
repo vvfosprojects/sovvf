@@ -13,18 +13,18 @@ import {
     SetPreaccoppiati,
     SetListaIdPreAccoppiati,
     UnselectPreAccoppiatoComposizione,
-    UpdateMezzoPreAccoppiatoComposizione
+    UpdateMezzoPreAccoppiatoComposizione, ClearPreAccoppiatiSelezionatiComposizione
 } from '../../actions/composizione-partenza/composizione-veloce.actions';
 
 // Service
 import { CompPartenzaService } from 'src/app/core/service/comp-partenza-service/comp-partenza.service';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from '../../../../../shared/enum/toastr';
-import { ComposizionePartenzaState } from './composizione-partenza.state';
-import { ComposizioneAvanzataStateModel } from './composizione-avanzata.state';
+import { ComposizioneAvanzataState } from './composizione-avanzata.state';
 import { insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
 import { makeCopy } from '../../../../../shared/helper/function';
 import { IdPreaccoppiati } from '../../../composizione-partenza/interface/id-preaccoppiati-interface';
+import { ListaComposizioneAvanzata } from '../../../composizione-partenza/interface/lista-composizione-avanzata-interface';
 
 export interface PreAccoppiatiStateModel {
     preAccoppiati: BoxPartenza[];
@@ -66,31 +66,31 @@ export class ComposizioneVeloceState {
     }
 
     @Action(GetPreAccoppiati)
-    getPreAccoppiati({ getState, dispatch }: StateContext<ComposizioneAvanzataStateModel>, action: GetPreAccoppiati) {
-        const filtri = {};
-        if (action.filtri) {
-            filtri['CodiceDistaccamento'] = action.filtri.CodiceDistaccamento.length > 0 ? action.filtri.CodiceDistaccamento : [''];
-            filtri['CodiceStatoMezzo'] = action.filtri.CodiceStatoMezzo.length > 0 ? action.filtri.CodiceStatoMezzo : [''];
-            filtri['CodiceTipoMezzo'] = action.filtri.CodiceTipoMezzo.length > 0 ? action.filtri.CodiceTipoMezzo : [''];
-        } else {
-            // tslint:disable:max-line-length
-            filtri['CodiceDistaccamento'] = this.store.selectSnapshot(ComposizionePartenzaState.filtriSelezionati).CodiceDistaccamento.length > 0 ? this.store.selectSnapshot(ComposizionePartenzaState.filtriSelezionati).CodiceTipoMezzo : [''];
-            filtri['CodiceStatoMezzo'] = this.store.selectSnapshot(ComposizionePartenzaState.filtriSelezionati).CodiceStatoMezzo.length > 0 ? this.store.selectSnapshot(ComposizionePartenzaState.filtriSelezionati).CodiceTipoMezzo : [''];
-            filtri['CodiceTipoMezzo'] = this.store.selectSnapshot(ComposizionePartenzaState.filtriSelezionati).CodiceTipoMezzo.length > 0 ? this.store.selectSnapshot(ComposizionePartenzaState.filtriSelezionati).CodiceTipoMezzo : [''];
-            // tslint:enable:max-line-length
+    getPreAccoppiati({ getState, dispatch }: StateContext<PreAccoppiatiStateModel>) {
+        const listaMezziSquadre: ListaComposizioneAvanzata = this.store.selectSnapshot(ComposizioneAvanzataState.listaMezziSquadre);
+        const state = getState();
+        console.log('Lista Mezzi Squadre', listaMezziSquadre);
+        const preaccoppiati: BoxPartenza[] = [];
+        if (listaMezziSquadre.composizioneSquadre.length > 0 && listaMezziSquadre.composizioneMezzi.length > 0) {
+            state.idPreAccoppiati.forEach((idPreaccopiati: IdPreaccoppiati) => {
+                const preaccoppiato = {} as BoxPartenza;
+                preaccoppiato.id = idPreaccopiati.id;
+                const mezzoComposizione = listaMezziSquadre.composizioneMezzi.filter(value => value.mezzo.codice === idPreaccopiati.mezzo);
+                if (mezzoComposizione && mezzoComposizione.length > 0) {
+                    preaccoppiato.mezzoComposizione = mezzoComposizione[0];
+                }
+                const squadreComposizione = listaMezziSquadre.composizioneSquadre.filter(value => idPreaccopiati.squadre.includes(value.squadra.id));
+                if (squadreComposizione && squadreComposizione.length > 0) {
+                    preaccoppiato.squadraComposizione = squadreComposizione;
+                }
+                if (preaccoppiato.id && preaccoppiato.mezzoComposizione && preaccoppiato.squadraComposizione) {
+                    preaccoppiati.push(preaccoppiato);
+                }
+            });
         }
-        filtri['CodiceMezzo'] = [''];
-        filtri['CodiceSquadra'] = [''];
-        // filtri['idRichiesta'] = this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione) ? this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione).id : '';
-        filtri['idRichiesta'] = '1';
-
-        console.log(filtri);
-        // this.preAccoppiatiService.getPreAccoppiati(filtri).subscribe((preAccoppiati: BoxPartenza[]) => {
-        //     console.log(preAccoppiati);
-        //     this.store.dispatch(new SetListaComposizioneVeloce(preAccoppiati));
-        // }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5)));
+        console.log('Preaccoppiati disponibili', preaccoppiati);
+        dispatch(new SetPreaccoppiati(preaccoppiati));
     }
-
 
     @Action(SetPreaccoppiati)
     setPreaccoppiati({ patchState }: StateContext<PreAccoppiatiStateModel>, action: SetPreaccoppiati) {
@@ -136,6 +136,15 @@ export class ComposizioneVeloceState {
         // console.log(action.preAcc);
     }
 
+    @Action(ClearPreAccoppiatiSelezionatiComposizione)
+    clearPreAccoppiatiSelezionatiComposizione({ patchState }: StateContext<PreAccoppiatiStateModel>) {
+        patchState({
+                idPreAccoppiatiSelezionati: PreAccoppiatiStateModelStateDefaults.idPreAccoppiatiSelezionati,
+                idPreAccoppiatoSelezionato: PreAccoppiatiStateModelStateDefaults.idPreAccoppiatoSelezionato
+            }
+        );
+    }
+
     @Action(UpdateMezzoPreAccoppiatoComposizione)
     updateMezzoBoxPartenzaComposizione({ getState, setState, patchState, dispatch }: StateContext<PreAccoppiatiStateModel>, action: UpdateMezzoPreAccoppiatoComposizione) {
         const state = getState();
@@ -163,6 +172,7 @@ export class ComposizioneVeloceState {
     getListaIdPreAccoppiati({ dispatch }: StateContext<PreAccoppiatiStateModel>) {
         this.preAccoppiatiService.getPreAccoppiati().subscribe(() => {
             console.log('Richiesta id Preaccoppiati effettuata');
+            // Todo: errore il back end risponde su signalR
         }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5)));
     }
 
@@ -172,7 +182,7 @@ export class ComposizioneVeloceState {
             patchState({
                 idPreAccoppiati: action.idPreaccoppiati
             });
-            // Todo da fare dispatch()
+            dispatch(new GetPreAccoppiati());
         }
     }
 

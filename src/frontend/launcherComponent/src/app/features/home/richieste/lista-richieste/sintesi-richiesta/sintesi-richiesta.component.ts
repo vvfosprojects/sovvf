@@ -41,7 +41,6 @@ export class SintesiRichiestaComponent {
     @Output() fissaInAlto = new EventEmitter<any>();
     @Output() eventiRichiesta = new EventEmitter<string>();
     @Output() nuovaPartenza = new EventEmitter<any>();
-    @Output() dismissNuovaPartenza = new EventEmitter<any>();
     @Output() modificaRichiesta = new EventEmitter<SintesiRichiesta>();
     @Output() gestioneRichiesta = new EventEmitter<SintesiRichiesta>();
     // tslint:disable-next-line:no-output-on-prefix
@@ -116,9 +115,7 @@ export class SintesiRichiestaComponent {
     }
 
     invioPartenza(richiesta: SintesiRichiesta) {
-        if (this.partenza) {
-            this.dismissNuovaPartenza.emit();
-        } else {
+        if (richiesta) {
             this.nuovaPartenza.emit(richiesta);
         }
     }

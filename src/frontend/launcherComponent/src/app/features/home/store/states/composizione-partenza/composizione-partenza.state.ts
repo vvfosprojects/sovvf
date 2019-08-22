@@ -17,7 +17,7 @@ import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.
 import { ComposizioneMarker } from '../../../maps/maps-model/composizione-marker.model';
 import {
     ClearComposizioneVeloce,
-    ClearPreaccoppiati,
+    ClearPreaccoppiati, ClearPreAccoppiatiSelezionatiComposizione,
     GetListaIdPreAccoppiati
 } from '../../actions/composizione-partenza/composizione-veloce.actions';
 import { Composizione } from '../../../../../shared/enum/composizione.enum';
@@ -38,7 +38,7 @@ import { CompPartenzaService } from '../../../../../core/service/comp-partenza-s
 import { AddInLavorazione, DeleteInLavorazione } from '../../actions/richieste/richiesta-attivita-utente.actions';
 import { ClearDirection } from '../../actions/maps/maps-direction.actions';
 import { GetInitCentroMappa } from '../../actions/maps/centro-mappa.actions';
-import { ClearMarkerState } from '../../actions/maps/marker.actions';
+import { ClearMarkerMezzoSelezionato, ClearMarkerState } from '../../actions/maps/marker.actions';
 import { ListaFiltriComposizione } from '../../../composizione-partenza/interface/filtri/lista-filtri-composizione-interface';
 import { ComposizioneFilterbar } from '../../../composizione-partenza/interface/composizione/composizione-filterbar-interface';
 
@@ -102,7 +102,7 @@ export class ComposizionePartenzaState {
     }
 
     constructor(private filterbar: FilterbarService,
-                private compPartenzaSevice: CompPartenzaService) {
+                private compPartenzaService: CompPartenzaService) {
     }
 
     @Action(GetFiltriComposizione)
@@ -117,7 +117,7 @@ export class ComposizionePartenzaState {
         patchState({
             filtri: action.filtri
         });
-        console.log('setFiltriComposizione', action);
+        // console.log('setFiltriComposizione', action);
         const state = getState();
         const composizioneMode = state.composizioneMode;
         const objFiltriSelezionati: ComposizioneFilterbar = {
@@ -125,31 +125,19 @@ export class ComposizionePartenzaState {
             CodiceTipoMezzo: state.codiceTipoMezzo,
             CodiceStatoMezzo: state.codiceStatoMezzo
         };
-        // Todo: come fanno a essere già selezionati?
-        console.log('objFiltriSelezionati', objFiltriSelezionati);
-        if (composizioneMode === Composizione.Avanzata) {
-            dispatch(new GetListeComposizioneAvanzata(objFiltriSelezionati));
-        } else if (composizioneMode === Composizione.Veloce) {
-            // Todo: da vedere
+        // console.log('objFiltriSelezionati', objFiltriSelezionati);
+        dispatch(new GetListeComposizioneAvanzata(objFiltriSelezionati));
+        if (composizioneMode === Composizione.Veloce) {
             dispatch([
-                new GetListeComposizioneAvanzata(objFiltriSelezionati),
                 new GetListaIdPreAccoppiati()
             ]);
-            // dispatch(new GetListaComposizioneVeloce(objFiltriSelezionati));
         }
     }
 
 
     @Action(UpdateListe)
-    updateListe({ getState, dispatch }: StateContext<ComposizionePartenzaStateModel>, action: UpdateListe) {
-        const state = getState();
-        const composizioneMode = state.composizioneMode;
-        if (composizioneMode === Composizione.Avanzata) {
-            dispatch(new GetListeComposizioneAvanzata(action.filtri));
-        } else {
-            // Todo: scatta lo stesso metodo... non serve questo controllo
-            // dispatch(new GetListaComposizioneVeloce(action.filtri));
-        }
+    updateListe({ dispatch }: StateContext<ComposizionePartenzaStateModel>, action: UpdateListe) {
+        dispatch(new GetListeComposizioneAvanzata(action.filtri));
     }
 
     @Action(AddFiltroSelezionatoComposizione)
@@ -278,17 +266,21 @@ export class ComposizionePartenzaState {
     }
 
     @Action(ConfirmPartenze)
-    confirmPartenze({ patchState, dispatch }: StateContext<ComposizionePartenzaStateModel>, action: ConfirmPartenze) {
-        this.compPartenzaSevice.confermaPartenze(action.partenze).subscribe(() => {
+    confirmPartenze({ getState, patchState, dispatch }: StateContext<ComposizionePartenzaStateModel>, action: ConfirmPartenze) {
+        this.compPartenzaService.confermaPartenze(action.partenze).subscribe(() => {
             console.log('Richiesta aggiornata con le partenze', action.partenze);
-            dispatch(new ClearMarkerState());
+            dispatch([new ClearMarkerMezzoSelezionato(), new ClearDirection()]);
+            const state = getState();
+            if (state.composizioneMode === Composizione.Veloce) {
+                dispatch(new ClearPreAccoppiatiSelezionatiComposizione());
+            }
         }, () => {
             console.error('Conferma Partenza: qualcosa è andato storto');
         });
     }
 
     @Action(TerminaComposizione)
-    terminaComposizione({ getState, patchState, dispatch }: StateContext<ComposizionePartenzaStateModel>) {
+    terminaComposizione({ getState, dispatch }: StateContext<ComposizionePartenzaStateModel>) {
         const state = getState();
         dispatch([
             new DeleteInLavorazione(state.richiesta),
@@ -299,11 +291,8 @@ export class ComposizionePartenzaState {
             new ClearMezzoComposizione(),
             new ClearSquadraComposizione(),
             new ClearPartenza(),
-            new ClearMarkerState()
+            new ClearMarkerState(),
         ]);
-        patchState({
-            richiesta: ComposizioneStateDefaults.richiesta
-        });
     }
 
     @Action(ClearPartenza)
