@@ -15,6 +15,7 @@ import {
 } from '../../store/actions/composizione-partenza/composizione-partenza.actions';
 import { ComposizioneVeloceState } from '../../store/states/composizione-partenza/composizione-veloce.state';
 import {
+    HoverInPreAccoppiatoComposizione, HoverOutPreAccoppiatoComposizione,
     SelectPreAccoppiatoComposizione,
     UnselectPreAccoppiatoComposizione
 } from '../../store/actions/composizione-partenza/composizione-veloce.actions';
@@ -24,6 +25,7 @@ import { ConfermaPartenze } from '../interface/conferma-partenze-interface';
 import { ComposizionePartenzaState } from '../../store/states/composizione-partenza/composizione-partenza.state';
 import { TurnoState } from '../../../navbar/store/states/turno/turno.state';
 import { Coordinate } from '../../../../shared/model/coordinate.model';
+import { BoxPartenzaHover } from '../interface/composizione/box-partenza-hover-interface';
 
 @Component({
     selector: 'app-composizione-veloce',
@@ -44,6 +46,12 @@ export class FasterComponent implements OnInit, OnDestroy {
 
     @Select(ComposizioneVeloceState.idPreAccoppiatiSelezionati) idPreAccoppiatiSelezionati$: Observable<string[]>;
     idPreAccoppiatiSelezionati: string[];
+
+    @Select(ComposizioneVeloceState.idPreAccoppiatiOccupati) idPreAccoppiatiOccupati$: Observable<string[]>;
+    idPreAccoppiatiOccupati: string[];
+
+    @Select(ComposizioneVeloceState.idPreAccoppiatoHover) idPreaccoppiatoHover$: Observable<string>;
+    idPreaccoppiatoHover: string;
 
     Composizione = Composizione;
 
@@ -74,6 +82,16 @@ export class FasterComponent implements OnInit, OnDestroy {
             this.idPreAccoppiatoSelezionato$.subscribe((idPreAccoppiatoSelezionato: string) => {
                 this.idPreAccoppiatoSelezionato = idPreAccoppiatoSelezionato;
                 // console.log(this.idPreAccoppiatoSelezionato);
+            })
+        );
+        this.subscription.add(
+            this.idPreaccoppiatoHover$.subscribe((idPreAccoppiatoHover: string) => {
+                this.idPreaccoppiatoHover = idPreAccoppiatoHover;
+            })
+        );
+        this.subscription.add(
+            this.idPreAccoppiatiOccupati$.subscribe((idPreAccoppiatiOccupati: string[]) => {
+                this.idPreAccoppiatiOccupati = idPreAccoppiatiOccupati;
             })
         );
     }
@@ -121,7 +139,7 @@ export class FasterComponent implements OnInit, OnDestroy {
 
     confermaPartenze(): void {
         const boxPartenzaList: BoxPartenza[] = [];
-        this.preAccoppiati.forEach( result => {
+        this.preAccoppiati.forEach(result => {
             if (this.idPreAccoppiatiSelezionati.includes(result.id)) {
                 boxPartenzaList.push(result);
             }
@@ -157,4 +175,13 @@ export class FasterComponent implements OnInit, OnDestroy {
         this.clearDirection.emit();
         this.centraMappa.emit();
     }
+
+    onHoverIn(id: BoxPartenzaHover): void {
+        this.store.dispatch(new HoverInPreAccoppiatoComposizione(id));
+    }
+
+    onHoverOut(): void {
+        this.store.dispatch(new HoverOutPreAccoppiatoComposizione());
+    }
+
 }

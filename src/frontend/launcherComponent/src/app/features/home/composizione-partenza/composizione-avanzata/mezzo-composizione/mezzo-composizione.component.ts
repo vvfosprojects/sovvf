@@ -6,7 +6,7 @@ import { BoxPartenza } from '../../interface/box-partenza-interface';
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
 import { MezzoDirection } from '../../../../../shared/interface/mezzo-direction';
 import { SganciamentoInterface } from 'src/app/shared/interface/sganciamento.interface';
-import { iconaStatiClass } from '../../shared/functions/composizione-functions';
+import { iconaStatiClass, mezzoComposizioneBusy } from '../../shared/functions/composizione-functions';
 
 @Component({
     selector: 'app-mezzo-composizione',
@@ -51,7 +51,7 @@ export class MezzoComposizioneComponent implements OnInit {
             this.selezionato.emit(this.mezzoComp);
 
             // mappa
-            if (this.mezzoComp.mezzo.stato !== 'In Viaggio' && this.mezzoComp.mezzo.stato !== 'Sul Posto') {
+            if (!mezzoComposizioneBusy(this.mezzoComp.mezzo.stato)) {
                 this.mezzoDirection(this.mezzoComp);
             }
         } else if (this.selezionato) {

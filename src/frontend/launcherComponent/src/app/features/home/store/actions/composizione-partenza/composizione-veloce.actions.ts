@@ -1,6 +1,7 @@
 import { BoxPartenza } from '../../../composizione-partenza/interface/box-partenza-interface';
 import { MezzoComposizione } from '../../../composizione-partenza/interface/mezzo-composizione-interface';
 import { IdPreaccoppiati } from '../../../composizione-partenza/interface/id-preaccoppiati-interface';
+import { BoxPartenzaHover } from '../../../composizione-partenza/interface/composizione/box-partenza-hover-interface';
 
 export class GetPreAccoppiati {
     static readonly type = '[ComposizioneVeloce] Get PreAccoppiati';
@@ -55,4 +56,22 @@ export class SetListaIdPreAccoppiati {
 
     constructor(public idPreaccoppiati: IdPreaccoppiati[]) {
     }
+}
+
+export class SetIdPreAccoppiatiOccupati {
+    static readonly type = '[ComposizioneVeloce] Set Id PreAccoppiati Occupati';
+
+    constructor(public idPreaccoppiatiOccupati: string[]) {
+    }
+}
+
+export class HoverInPreAccoppiatoComposizione {
+    static readonly type = '[PreAccoppiati] Hover In PreAccoppiato Composizione';
+
+    constructor(public idBoxPartenzaHover: BoxPartenzaHover) {
+    }
+}
+
+export class HoverOutPreAccoppiatoComposizione {
+    static readonly type = '[PreAccoppiati] Hover Out PreAccoppiato Composizione';
 }

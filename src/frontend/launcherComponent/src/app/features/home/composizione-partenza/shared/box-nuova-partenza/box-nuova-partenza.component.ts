@@ -11,6 +11,7 @@ import {
     mezzoComposizioneBusy
 } from '../functions/composizione-functions';
 import { SquadraComposizione } from '../../interface/squadra-composizione-interface';
+import { BoxPartenzaHover } from '../../interface/composizione/box-partenza-hover-interface';
 
 @Component({
     selector: 'app-box-nuova-partenza',
@@ -22,6 +23,8 @@ export class BoxNuovaPartenzaComponent {
     @Input() richiesta: SintesiRichiesta;
     @Input() compPartenzaMode: Composizione;
     @Input() itemSelezionato: boolean;
+    @Input() itemHover: boolean;
+    @Input() itemOccupato: boolean;
 
     // Options
     @Input() elimina: boolean;
@@ -31,13 +34,16 @@ export class BoxNuovaPartenzaComponent {
     @Output() deselezionato = new EventEmitter<BoxPartenza>();
     @Output() eliminato = new EventEmitter<BoxPartenza>();
 
+    @Output() hoverIn = new EventEmitter<BoxPartenzaHover>();
+    @Output() hoverOut = new EventEmitter();
+
     itemBloccato: boolean;
 
     constructor(private store: Store) {
     }
 
     onClick() {
-        if (!mezzoComposizioneBusy(this.partenza.mezzoComposizione.mezzo.stato) && !this._checkSquadraOccupata(this.partenza.squadraComposizione)) {
+        if (!this.itemOccupato) {
             if (!this.itemSelezionato) {
                 this.selezionato.emit(this.partenza);
             } else {
@@ -57,18 +63,18 @@ export class BoxNuovaPartenzaComponent {
     }
 
     ngClass() {
-        let returnClass: any;
+        let returnClass: string;
 
         if (this.compPartenzaMode === Composizione.Veloce) {
             /* Se è attiva la modalità rapida */
-            returnClass = {
-                'card-shadow': !this.itemSelezionato,
-                'bg-light border-success card-shadow-success': this.itemSelezionato
-            };
 
-            if (mezzoComposizioneBusy(this.partenza.mezzoComposizione.mezzo.stato) || this._checkSquadraOccupata(this.partenza.squadraComposizione)) {
+            returnClass = this.itemSelezionato ? 'bg-light card-shadow-success' : 'card-shadow';
+
+            if (this.itemOccupato) {
                 returnClass += ' diagonal-stripes bg-lightdanger';
                 this.itemBloccato = true;
+            } else if (!this.itemSelezionato) {
+                returnClass += this.itemHover ? ' border-warning' : ' border-success';
             }
 
             if (this.partenza.mezzoComposizione.istanteScadenzaSelezione) {
@@ -163,6 +169,21 @@ export class BoxNuovaPartenzaComponent {
 
     _checkSquadraOccupata(squadreComposizione: SquadraComposizione[]): boolean {
         return checkSquadraOccupata(squadreComposizione);
+    }
+
+    onHoverIn(): void {
+        if (this.compPartenzaMode === Composizione.Veloce) {
+            this.hoverIn.emit({
+                idBoxPartenza: this.partenza.id,
+                idMezzo: this.partenza.mezzoComposizione.mezzo.codice
+            });
+        }
+    }
+
+    onHoverOut(): void {
+        if (this.compPartenzaMode === Composizione.Veloce) {
+            this.hoverOut.emit();
+        }
     }
 
 }

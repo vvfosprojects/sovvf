@@ -13,7 +13,10 @@ import {
     SetPreaccoppiati,
     SetListaIdPreAccoppiati,
     UnselectPreAccoppiatoComposizione,
-    UpdateMezzoPreAccoppiatoComposizione, ClearPreAccoppiatiSelezionatiComposizione
+    UpdateMezzoPreAccoppiatoComposizione,
+    ClearPreAccoppiatiSelezionatiComposizione,
+    HoverInPreAccoppiatoComposizione,
+    HoverOutPreAccoppiatoComposizione, SetIdPreAccoppiatiOccupati
 } from '../../actions/composizione-partenza/composizione-veloce.actions';
 
 // Service
@@ -25,19 +28,28 @@ import { insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators
 import { makeCopy } from '../../../../../shared/helper/function';
 import { IdPreaccoppiati } from '../../../composizione-partenza/interface/id-preaccoppiati-interface';
 import { ListaComposizioneAvanzata } from '../../../composizione-partenza/interface/lista-composizione-avanzata-interface';
+import { ClearMarkerMezzoHover, SetMarkerMezzoHover } from '../../actions/maps/marker.actions';
+import {
+    checkSquadraOccupata,
+    mezzoComposizioneBusy
+} from '../../../composizione-partenza/shared/functions/composizione-functions';
 
 export interface PreAccoppiatiStateModel {
     preAccoppiati: BoxPartenza[];
     idPreAccoppiati: IdPreaccoppiati[];
     idPreAccoppiatoSelezionato: string;
     idPreAccoppiatiSelezionati: string[];
+    idPreAccoppiatiOccupati: string[];
+    idPreaccoppiatoHover: string;
 }
 
 export const PreAccoppiatiStateModelStateDefaults: PreAccoppiatiStateModel = {
     preAccoppiati: [],
     idPreAccoppiati: [],
     idPreAccoppiatoSelezionato: null,
-    idPreAccoppiatiSelezionati: []
+    idPreAccoppiatiSelezionati: [],
+    idPreAccoppiatiOccupati: [],
+    idPreaccoppiatoHover: null
 };
 
 @State<PreAccoppiatiStateModel>({
@@ -52,13 +64,23 @@ export class ComposizioneVeloceState {
     }
 
     @Selector()
+    static idPreAccoppiatiSelezionati(state: PreAccoppiatiStateModel) {
+        return state.idPreAccoppiatiSelezionati;
+    }
+
+    @Selector()
+    static idPreAccoppiatiOccupati(state: PreAccoppiatiStateModel) {
+        return state.idPreAccoppiatiOccupati;
+    }
+
+    @Selector()
     static idPreAccoppiatoSelezionato(state: PreAccoppiatiStateModel) {
         return state.idPreAccoppiatoSelezionato;
     }
 
     @Selector()
-    static idPreAccoppiatiSelezionati(state: PreAccoppiatiStateModel) {
-        return state.idPreAccoppiatiSelezionati;
+    static idPreAccoppiatoHover(state: PreAccoppiatiStateModel) {
+        return state.idPreaccoppiatoHover;
     }
 
     constructor(private preAccoppiatiService: CompPartenzaService,
@@ -89,7 +111,16 @@ export class ComposizioneVeloceState {
             });
         }
         console.log('Preaccoppiati disponibili', preaccoppiati);
-        dispatch(new SetPreaccoppiati(preaccoppiati));
+        const preaccoppiatiOccupati = [];
+        preaccoppiati.forEach( preaccoppiato => {
+            if (mezzoComposizioneBusy(preaccoppiato.mezzoComposizione.mezzo.stato) || checkSquadraOccupata(preaccoppiato.squadraComposizione)) {
+                preaccoppiatiOccupati.push(preaccoppiato.id);
+            }
+        });
+        dispatch([
+            new SetPreaccoppiati(preaccoppiati),
+            new SetIdPreAccoppiatiOccupati(preaccoppiatiOccupati)
+        ]);
     }
 
     @Action(SetPreaccoppiati)
@@ -184,6 +215,34 @@ export class ComposizioneVeloceState {
             });
             dispatch(new GetPreAccoppiati());
         }
+    }
+
+    @Action(SetIdPreAccoppiatiOccupati)
+    setIdPreAccoppiatiOccupati({ patchState }: StateContext<PreAccoppiatiStateModel>, action: SetIdPreAccoppiatiOccupati) {
+        if (action && action.idPreaccoppiatiOccupati) {
+            patchState({
+                idPreAccoppiatiOccupati: action.idPreaccoppiatiOccupati
+            });
+        }
+    }
+
+    @Action(HoverInPreAccoppiatoComposizione)
+    hoverInPreAccoppiatoComposizione({ getState, patchState, dispatch }: StateContext<PreAccoppiatiStateModel>, action: HoverInPreAccoppiatoComposizione) {
+        const state = getState();
+        patchState({
+            idPreaccoppiatoHover: action.idBoxPartenzaHover.idBoxPartenza
+        });
+        if (!state.idPreAccoppiatiOccupati.includes(action.idBoxPartenzaHover.idBoxPartenza)) {
+            dispatch(new SetMarkerMezzoHover(action.idBoxPartenzaHover.idMezzo));
+        }
+    }
+
+    @Action(HoverOutPreAccoppiatoComposizione)
+    hoverOutPreAccoppiatoComposizione({ patchState, dispatch }: StateContext<PreAccoppiatiStateModel>) {
+        patchState({
+            idPreaccoppiatoHover: null
+        });
+        dispatch(new ClearMarkerMezzoHover());
     }
 
 }

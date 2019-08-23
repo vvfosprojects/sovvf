@@ -7,9 +7,11 @@
             <app-box-nuova-partenza [partenza]="preAcc"
                                     [richiesta]="richiesta"
                                     [itemSelezionato]="idPreAccoppiatiSelezionati.indexOf(preAcc.id) > -1"
+                                    [itemHover]="preAcc.id === idPreaccoppiatoHover"
+                                    [itemOccupato]="idPreAccoppiatiOccupati.includes(preAcc.id)"
                                     [compPartenzaMode]="Composizione.Veloce"
                                     (selezionato)="selezionaPreaccoppiato($event)"
-                                    (deselezionato)="deselezionaPreaccoppiato($event)"></app-box-nuova-partenza>
+                                    (deselezionato)="deselezionaPreaccoppiato($event)" (hoverIn)="onHoverIn($event)" (hoverOut)="onHoverOut()"></app-box-nuova-partenza>
         </div>
         <div class="col-12 text-right">
             <app-composizione-buttons (confirmPartenza)="confermaPartenze()" (confirmPrenota)="prenota.emit($event)"

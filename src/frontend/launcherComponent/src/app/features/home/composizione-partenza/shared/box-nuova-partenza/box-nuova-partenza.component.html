@@ -1,4 +1,4 @@
-<div class="card cursor-pointer p-2 mb-2" (click)="onClick()"
+<div class="card cursor-pointer p-2 mb-2" (click)="onClick()" (mouseleave)="onHoverOut()" (mouseenter)="onHoverIn()"
      [ngClass]="ngClass()">
     <i *ngIf="elimina" id="elimina" ngbTooltip="Elimina" class="fa fa-fw fa-window-close"
        (click)="onElimina($event)"></i>
