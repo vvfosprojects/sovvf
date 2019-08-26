@@ -1,17 +1,13 @@
-#elimina{
-    position: absolute;
-    color: rgba(224, 14, 14, 0.74);
-    width:20px;
-    height:20px;
-    top: 4px;
-    right: 4px;
-    z-index: 999;
-}
-#elimina:hover{
-    color: rgb(224, 14, 14);
+#elimina {
+  position: absolute;
+  color: rgba(224, 14, 14, 0.74);
+  width: 20px;
+  height: 20px;
+  top: 4px;
+  right: 4px;
+  z-index: 999;
 }
 
-*{ 
-    transition: all 200ms linear;
+#elimina:hover {
+  color: rgb(224, 14, 14);
 }
-
