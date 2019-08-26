@@ -16,7 +16,6 @@ import { ComposizionePartenzaState } from '../store/states/composizione-partenza
 import { ClearEventiRichiesta, SetIdRichiestaEventi } from '../store/actions/eventi/eventi-richiesta.actions';
 import { EventiRichiestaComponent } from '../eventi/eventi-richiesta.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ConfirmPartenze } from '../store/actions/composizione-partenza/composizione-partenza.actions';
 import { HelperSintesiRichiesta } from '../richieste/helper/_helper-sintesi-richiesta';
 import { UtenteState } from '../../navbar/store/states/operatore/utente.state';
 import { AttivitaUtente } from '../../../shared/model/attivita-utente.model';
@@ -24,13 +23,8 @@ import { AddPresaInCarico, DeletePresaInCarico } from '../store/actions/richiest
 import { MezzoActionInterface } from '../../../shared/interface/mezzo-action.interface';
 import { ActionMezzo } from '../store/actions/richieste/richieste.actions';
 import { SganciamentoInterface } from 'src/app/shared/interface/sganciamento.interface';
-import { SganciamentoMezzoModalComponent } from './shared/sganciamento-mezzo-modal/sganciamento-mezzo-modal.component';
-import { RichiesteState } from '../store/states/richieste/richieste.state';
-import { map } from 'rxjs/operators';
-import { Partenza } from 'src/app/shared/model/partenza.model';
-import { TurnoState } from '../../navbar/store/states/turno/turno.state';
-import { ConfermaPartenze } from './interface/conferma-partenze-interface';
 import { ClearMarkerMezzoSelezionato } from '../store/actions/maps/marker.actions';
+import { SganciamentoMezzoComposizione } from '../store/actions/composizione-partenza/mezzi-composizione.actions';
 
 @Component({
     selector: 'app-composizione-partenza',
@@ -130,56 +124,7 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
     }
 
     onSganciamento(sganciamentoObj: SganciamentoInterface) {
-        let richiestaDa = {} as SintesiRichiesta;
-        let partenzaDaSganciare = {} as Partenza;
-        const richiestaById$ = this.store.select(RichiesteState.richiestaById).pipe(map(fn => fn(sganciamentoObj.idRichiestaDaSganciare)));
-        this.subscription.add(
-            richiestaById$.subscribe(r => {
-                richiestaDa = r;
-                // tslint:disable-next-line:max-line-length
-                partenzaDaSganciare = richiestaDa.partenzeRichiesta && richiestaDa.partenzeRichiesta.length > 0 ? richiestaDa.partenzeRichiesta.filter(x => x.mezzo.codice === sganciamentoObj.idMezzoDaSganciare)[0] : null;
-                // console.log('richiestaDa', richiestaDa);
-            })
-        );
-
-        if (richiestaDa && partenzaDaSganciare) {
-            const modalSganciamento = this.modalService.open(SganciamentoMezzoModalComponent, { windowClass: 'xlModal', backdropClass: 'light-blue-backdrop', centered: true });
-            modalSganciamento.componentInstance.icona = { descrizione: 'truck', colore: 'secondary' };
-            modalSganciamento.componentInstance.titolo = 'Sganciamento Mezzo';
-            modalSganciamento.componentInstance.richiestaDa = richiestaDa;
-            modalSganciamento.componentInstance.bottoni = [
-                { type: 'ko', descrizione: 'Annulla', colore: 'danger' },
-                { type: 'ok', descrizione: 'Sgancia', colore: 'success' },
-            ];
-
-            modalSganciamento.result.then(
-                (val) => {
-                    switch (val) {
-                        case 'ok':
-                            // TODO: ricavare la partenza tramite id del mezzo e idRichiesta del mezzo
-                            const partenzaObj: ConfermaPartenze = {
-                                partenze: [partenzaDaSganciare],
-                                idRichiesta: this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione).codice,
-                                turno: this.store.selectSnapshot(TurnoState.turno).corrente,
-                                idRichiestaDaSganciare: sganciamentoObj.idRichiestaDaSganciare,
-                                idMezzoDaSganciare: sganciamentoObj.idMezzoDaSganciare
-                            };
-                            this.store.dispatch(new ConfirmPartenze(partenzaObj));
-                            // console.log('Partenza sganciata', partenzaObj);
-                            break;
-                        case 'ko':
-                            console.log('Azione annullata');
-                            break;
-                    }
-                    console.log('Modal chiusa con val ->', val);
-                },
-                (err) => console.error('Modal chiusa senza bottoni. Err ->', err)
-            );
-            console.log('sganciamentoObj', sganciamentoObj);
-        } else {
-            console.error('[SganciamentoMezzo] Errore! richiestaDa / partenzaDaSganciare non presente');
-        }
-
+        this.store.dispatch(new SganciamentoMezzoComposizione(sganciamentoObj));
     }
 }
 

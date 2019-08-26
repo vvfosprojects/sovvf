@@ -15,6 +15,8 @@ import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.
 import { Store } from '@ngxs/store';
 import { RichiesteState } from '../../../store/states/richieste/richieste.state';
 import { mezzoComposizioneBusy } from '../../../composizione-partenza/shared/functions/composizione-functions';
+import { SganciamentoMezzoComposizione } from '../../../store/actions/composizione-partenza/mezzi-composizione.actions';
+import { SganciamentoInterface } from 'src/app/shared/interface/sganciamento.interface';
 
 @Component({
     selector: 'app-info-window',
@@ -39,9 +41,9 @@ export class InfoWindowComponent implements OnInit {
     subscriptionRichiestaById: Subscription = new Subscription();
 
     constructor(private store: Store,
-                private _modalService: NgbModal,
-                popoverConfig: NgbPopoverConfig,
-                tooltipConfig: NgbTooltipConfig) {
+        private _modalService: NgbModal,
+        popoverConfig: NgbPopoverConfig,
+        tooltipConfig: NgbTooltipConfig) {
         popoverConfig.container = 'body';
         popoverConfig.placement = 'bottom';
         tooltipConfig.container = 'body';
@@ -92,8 +94,11 @@ export class InfoWindowComponent implements OnInit {
         if (!mezzoComposizioneBusy(mezzoMarker.mezzo.stato)) {
             this.addMezzoComposizione.emit(mezzoMarker.mezzo.codice);
         } else {
-            console.log('Apri modal component per lo sganciamento');
+            const sganciamentoObj = {} as SganciamentoInterface;
+            sganciamentoObj.idMezzoDaSganciare = mezzoMarker.mezzo.codice;
+            sganciamentoObj.idRichiestaDaSganciare = mezzoMarker.mezzo.idRichiesta;
+            this.store.dispatch(new SganciamentoMezzoComposizione(sganciamentoObj));
+            // console.log('sganciamentoObj', sganciamentoObj);
         }
     }
-
 }

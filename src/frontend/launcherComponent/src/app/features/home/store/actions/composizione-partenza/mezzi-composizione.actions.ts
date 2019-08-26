@@ -1,5 +1,6 @@
 import { MezzoComposizione } from '../../../composizione-partenza/interface/mezzo-composizione-interface';
 import { BoxPartenza } from '../../../composizione-partenza/interface/box-partenza-interface';
+import { SganciamentoInterface } from 'src/app/shared/interface/sganciamento.interface';
 
 export class SetListaMezziComposizione {
     static readonly type = '[MezziComposizione] Set Lista Mezzi Composizione';
@@ -153,4 +154,11 @@ export class RequestUnlockMezzoComposizione {
 
 export class ClearMezzoComposizione {
     static readonly type = '[MezziComposizione] Clear Mezzo Composizione';
+}
+
+export class SganciamentoMezzoComposizione {
+    static readonly type = '[MezziComposizione] Sganciamento Mezzo Composizione';
+
+    constructor(public sganciamentoObj: SganciamentoInterface) {
+    }
 }
