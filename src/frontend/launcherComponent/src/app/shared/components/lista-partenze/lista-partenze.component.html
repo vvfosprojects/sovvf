@@ -1,10 +1,11 @@
-<div *ngIf="!partenze" class="text-center">
-  <hr class="mt-0 mb-2">
-  <h6>Non ci sono partenze su questa richiesta di intervento</h6>
+<div *ngIf="checkNumeroPartenze(partenze) <= 0">
+  <h6 class="mt-1">Non ci sono partenze su questa richiesta di intervento</h6>
 </div>
 <ul *ngIf="partenze" class="list-unstyled">
-  <li *ngFor="let p of partenze" class="border-bottom">
-    <app-partenza *ngIf="p.sganciata !== true" [partenza]="p" [inGestione]="inGestione"
-      (listaSquadre)="onListaSquadrePartenza($event)" (actionMezzo)="onActionMezzo($event)"></app-partenza>
-  </li>
+  <span *ngFor="let p of partenze">
+    <li *ngIf="!p.sganciata" class="border-bottom">
+      <app-partenza [partenza]="p" [inGestione]="inGestione" (listaSquadre)="onListaSquadrePartenza($event)"
+        (actionMezzo)="onActionMezzo($event)"></app-partenza>
+    </li>
+  </span>
 </ul>
