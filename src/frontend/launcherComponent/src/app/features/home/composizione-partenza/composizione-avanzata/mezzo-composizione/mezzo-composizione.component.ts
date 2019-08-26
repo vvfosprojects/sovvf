@@ -70,10 +70,9 @@ export class MezzoComposizioneComponent implements OnInit {
     // Lucchetto
     onSganciamento() {
         if (this.mezzoComp.idRichiesta) {
-            const sganciamentoObj = {
-                'idMezzo': this.mezzoComp.mezzo.codice,
-                'idRichiestaDa': this.mezzoComp.mezzo.idRichiesta
-            };
+            const sganciamentoObj = {} as SganciamentoInterface;
+            sganciamentoObj.idMezzoDaSganciare = this.mezzoComp.mezzo.codice;
+            sganciamentoObj.idRichiestaDaSganciare = this.mezzoComp.mezzo.idRichiesta;
             this.sganciamento.emit(sganciamentoObj);
             // console.log('mezzoComp', this.mezzoComp);
         } else {

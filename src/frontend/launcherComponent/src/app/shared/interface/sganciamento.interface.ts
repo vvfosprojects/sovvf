@@ -1,4 +1,4 @@
 export interface SganciamentoInterface {
-    idRichiestaDa: string;
-    idMezzo: string;
+    idRichiestaDaSganciare: string;
+    idMezzoDaSganciare: string;
 }

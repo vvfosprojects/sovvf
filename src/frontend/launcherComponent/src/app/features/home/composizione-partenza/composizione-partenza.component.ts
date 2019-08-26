@@ -132,12 +132,12 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
     onSganciamento(sganciamentoObj: SganciamentoInterface) {
         let richiestaDa = {} as SintesiRichiesta;
         let partenzaDaSganciare = {} as Partenza;
-        const richiestaById$ = this.store.select(RichiesteState.richiestaById).pipe(map(fn => fn(sganciamentoObj.idRichiestaDa)));
+        const richiestaById$ = this.store.select(RichiesteState.richiestaById).pipe(map(fn => fn(sganciamentoObj.idRichiestaDaSganciare)));
         this.subscription.add(
             richiestaById$.subscribe(r => {
                 richiestaDa = r;
                 // tslint:disable-next-line:max-line-length
-                partenzaDaSganciare = richiestaDa.partenzeRichiesta && richiestaDa.partenzeRichiesta.length > 0 ? richiestaDa.partenzeRichiesta.filter(x => x.mezzo.codice === sganciamentoObj.idMezzo)[0] : null;
+                partenzaDaSganciare = richiestaDa.partenzeRichiesta && richiestaDa.partenzeRichiesta.length > 0 ? richiestaDa.partenzeRichiesta.filter(x => x.mezzo.codice === sganciamentoObj.idMezzoDaSganciare)[0] : null;
                 // console.log('richiestaDa', richiestaDa);
             })
         );
@@ -161,8 +161,8 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
                                 partenze: [partenzaDaSganciare],
                                 idRichiesta: this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione).codice,
                                 turno: this.store.selectSnapshot(TurnoState.turno).corrente,
-                                idRichiestaDaSganciare: sganciamentoObj.idRichiestaDa,
-                                idMezzoDaSganciare: sganciamentoObj.idMezzo
+                                idRichiestaDaSganciare: sganciamentoObj.idRichiestaDaSganciare,
+                                idMezzoDaSganciare: sganciamentoObj.idMezzoDaSganciare
                             };
                             this.store.dispatch(new ConfirmPartenze(partenzaObj));
                             // console.log('Partenza sganciata', partenzaObj);
