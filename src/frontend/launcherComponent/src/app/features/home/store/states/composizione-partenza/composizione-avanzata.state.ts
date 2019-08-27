@@ -21,14 +21,14 @@ import {
 import { ListaComposizioneAvanzata } from '../../../composizione-partenza/interface/lista-composizione-avanzata-interface';
 import { BoxPartenzaState } from './box-partenza.state';
 import {
-    mezzoComposizioneBusy,
-    squadraComposizioneBusy
+    mezzoComposizioneBusy
 } from '../../../composizione-partenza/shared/functions/composizione-functions';
 import { RemoveBoxPartenza } from '../../actions/composizione-partenza/box-partenza.actions';
 import { FiltriComposizione } from '../../../composizione-partenza/interface/filtri/filtri-composizione-interface';
 import { ViewComponentState } from '../view/view.state';
 import { Composizione } from '../../../../../shared/enum/composizione.enum';
 import { GetPreAccoppiati } from '../../actions/composizione-partenza/composizione-veloce.actions';
+import { SetListaFiltriAffini } from '../../actions/composizione-partenza/composizione-partenza.actions';
 
 export interface ComposizioneAvanzataStateModel {
     listaMezziSquadre: ListaComposizioneAvanzata;
@@ -51,7 +51,7 @@ export class ComposizioneAvanzataState {
     }
 
     constructor(private squadreService: CompPartenzaService,
-                private store: Store) {
+        private store: Store) {
     }
 
     @Action(GetListeComposizioneAvanzata)
@@ -76,9 +76,9 @@ export class ComposizioneAvanzataState {
         const codiceMezzo = this.store.selectSnapshot(MezziComposizioneState.idMezzoComposizioneSelezionato);
 
         if (action.onlyMezziComposizione && codiceMezzo && codiceMezzo.length > 0) {
-            filtri.CodiceMezzo = [codiceMezzo];
+            filtri.CodiceMezzo = codiceMezzo;
         } else {
-            filtri.CodiceMezzo = [''];
+            filtri.CodiceMezzo = '';
         }
         // imposto il codice delle squadre selezionate se presenti
         const codiceSquadre = this.store.selectSnapshot(SquadreComposizioneState.idSquadreSelezionate);
@@ -133,6 +133,7 @@ export class ComposizioneAvanzataState {
         if (compMode === Composizione.Veloce) {
             dispatch(new GetPreAccoppiati());
         }
+        dispatch(new SetListaFiltriAffini());
     }
 
     @Action(UnselectMezziAndSquadreComposizioneAvanzata)
