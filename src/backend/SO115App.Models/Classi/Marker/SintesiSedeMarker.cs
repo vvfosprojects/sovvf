@@ -25,12 +25,12 @@ namespace SO115App.API.Models.Classi.Marker
     ///   Contiene le informazioni di sintesi di una Richiesta di Assistenza, utile ad alimentare il
     ///   primo ed il secondo livello di dettaglio del componente richiesta di assistenza sul frontend.
     /// </summary>
-    public class SintesiSedeMarker
+    public class SedeMarker
     {
         /// <summary>
         ///   Costruttore della classe
         /// </summary>
-        public SintesiSedeMarker()
+        public SedeMarker()
         {
         }
 

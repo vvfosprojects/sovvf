@@ -24,25 +24,24 @@ using CQRS.Queries.Authorizers;
 using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.Models.Classi.Utility;
 
-namespace SO115App.API.Models.Servizi.CQRS.Queries.Marker.SintesiMezziMarker
+namespace SO115App.API.Models.Servizi.CQRS.Queries.Marker.MezziMarker
 {
-    public class SintesiMezziMarkerAuthorizationQueryHandlerDecorator : IQueryAuthorizer<SintesiMezziMarkerQuery, SintesiMezziMarkerResult>
+    public class MezziMarkerAuthorizationQueryHandlerDecorator : IQueryAuthorizer<MezziMarkerQuery, MezziMarkerResult>
     {
         private readonly IPrincipal _currentUser;
 
-        public SintesiMezziMarkerAuthorizationQueryHandlerDecorator(IPrincipal currentUser)
+        public MezziMarkerAuthorizationQueryHandlerDecorator(IPrincipal currentUser)
         {
             this._currentUser = currentUser;
         }
 
-        public IEnumerable<AuthorizationResult> Authorize(SintesiMezziMarkerQuery query)
+        public IEnumerable<AuthorizationResult> Authorize(MezziMarkerQuery query)
         {
             var username = this._currentUser.Identity.Name;
             var user = Utente.FindUserByUsername(username);
 
             if (this._currentUser.Identity.IsAuthenticated)
             {
-
                 if (user == null)
                     yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
             }

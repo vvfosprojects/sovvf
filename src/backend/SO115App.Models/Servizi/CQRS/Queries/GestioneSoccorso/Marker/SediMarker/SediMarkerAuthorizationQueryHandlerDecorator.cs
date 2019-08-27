@@ -1,5 +1,5 @@
 //-----------------------------------------------------------------------
-// <copyright file="SintesiSediMarkerAuthorizationQueryHandlerDecorator.cs" company="CNVVF">
+// <copyright file="SediMarkerAuthorizationQueryHandlerDecorator.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -22,21 +22,20 @@ using System.Security.Principal;
 using CQRS.Authorization;
 using CQRS.Queries.Authorizers;
 using SO115App.API.Models.Classi.Autenticazione;
-using SO115App.API.Models.Servizi.CQRS.Queries.Marker.SintesiSediMarker;
 using SO115App.Models.Classi.Utility;
 
-namespace SO115App.API.Models.AOP.Authorization
+namespace SO115App.API.Models.Servizi.CQRS.Queries.Marker.SediMarker
 {
-    public class SintesiSediMarkerAuthorizationQueryHandlerDecorator : IQueryAuthorizer<SintesiSediMarkerQuery, SintesiSediMarkerResult>
+    public class SediMarkerAuthorizationQueryHandlerDecorator : IQueryAuthorizer<SediMarkerQuery, SediMarkerResult>
     {
         private readonly IPrincipal _currentUser;
 
-        public SintesiSediMarkerAuthorizationQueryHandlerDecorator(IPrincipal currentUser)
+        public SediMarkerAuthorizationQueryHandlerDecorator(IPrincipal currentUser)
         {
             this._currentUser = currentUser;
         }
 
-        public IEnumerable<AuthorizationResult> Authorize(SintesiSediMarkerQuery query)
+        public IEnumerable<AuthorizationResult> Authorize(SediMarkerQuery query)
         {
             var username = this._currentUser.Identity.Name;
             var user = Utente.FindUserByUsername(username);

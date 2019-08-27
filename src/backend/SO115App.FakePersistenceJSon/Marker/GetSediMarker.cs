@@ -20,6 +20,7 @@
 using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
+using SO115App.API.Models.Classi.Geo;
 using SO115App.API.Models.Classi.Marker;
 using SO115App.FakePersistence.JSon.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Marker;
@@ -28,7 +29,7 @@ namespace SO115App.FakePersistenceJSon.Marker
 {
     public class GetSediMarker : IGetSediMarker
     {
-        public List<SintesiSedeMarker> GetListaSediMarker()
+        public List<SedeMarker> GetListaSediMarker(CentroMappa FiltroCentroMappa)
         {
             string filepath = CostantiJson.MarkerSedi;
             string json;
@@ -37,7 +38,7 @@ namespace SO115App.FakePersistenceJSon.Marker
                 json = r.ReadToEnd();
             }
 
-            List<SintesiSedeMarker> ListaSedi = JsonConvert.DeserializeObject<List<SintesiSedeMarker>>(json);
+            List<SedeMarker> ListaSedi = JsonConvert.DeserializeObject<List<SedeMarker>>(json);
 
             return ListaSedi;
         }

@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="SintesiMezziMarkerQuery.cs" company="CNVVF">
+// <copyright file="SintesiSediMarkerQuery.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -18,18 +18,19 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Queries;
+using SO115App.API.Models.Classi.Geo;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
 
-namespace SO115App.API.Models.Servizi.CQRS.Queries.Marker.SintesiMezziMarker
+namespace SO115App.API.Models.Servizi.CQRS.Queries.Marker.SediMarker
 {
     /// <summary>
     ///   DTO di input
     /// </summary>
-    public class SintesiMezziMarkerQuery : IQuery<SintesiMezziMarkerResult>
+    public class SediMarkerQuery : IQuery<SediMarkerResult>
     {
         /// <summary>
         ///   Il filtro utilizzato per la ricerca delle richieste di assistenza
         /// </summary>
-        public FiltroRicercaRichiesteAssistenza Filtro { get; set; }
+        public CentroMappa Filtro { get; set; }
     }
 }

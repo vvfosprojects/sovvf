@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="SintesiSediMarkerResult.cs" company="CNVVF">
+// <copyright file="SintesiMezziMarkerResult.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -20,17 +20,17 @@
 using System.Collections.Generic;
 using SO115App.API.Models.Classi.Marker;
 
-namespace SO115App.API.Models.Servizi.CQRS.Queries.Marker.SintesiSediMarker
+namespace SO115App.API.Models.Servizi.CQRS.Queries.Marker.MezziMarker
 {
     /// <summary>
     ///   DTO di output
     /// </summary>
-    public class SintesiSediMarkerResult
+    public class MezziMarkerResult
     {
         /// <summary>
         ///   La sintesi delle richieste di assistenza
         /// </summary>
-        public IEnumerable<SintesiSedeMarker> SintesiSediMarker
+        public IEnumerable<MezzoMarker> ListaMezziMarker
         { get; set; }
     }
 }

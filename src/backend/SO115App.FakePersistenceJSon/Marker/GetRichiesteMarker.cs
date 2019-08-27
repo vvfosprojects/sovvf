@@ -21,6 +21,7 @@ using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Condivise;
+using SO115App.API.Models.Classi.Geo;
 using SO115App.API.Models.Classi.Marker;
 using SO115App.Models.Servizi.Infrastruttura.Marker;
 
@@ -28,7 +29,7 @@ namespace SO115App.FakePersistenceJSon.Marker
 {
     public class GetRichiesteMarker : IGetRichiesteMarker
     {
-        public List<SintesiRichiestaMarker> GetListaRichiesteMarker()
+        public List<SintesiRichiestaMarker> GetListaRichiesteMarker(CentroMappa FiltroCentroMappa)
         {
             List<SintesiRichiestaMarker> ListaSintesiRichieste = new List<SintesiRichiestaMarker>();
 

@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="SintesiMezziMarkerResult.cs" company="CNVVF">
+// <copyright file="SintesiMezziMarkerQuery.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,20 +17,20 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System.Collections.Generic;
-using SO115App.API.Models.Classi.Marker;
+using CQRS.Queries;
+using SO115App.API.Models.Classi.Geo;
+using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
 
-namespace SO115App.API.Models.Servizi.CQRS.Queries.Marker.SintesiMezziMarker
+namespace SO115App.API.Models.Servizi.CQRS.Queries.Marker.MezziMarker
 {
     /// <summary>
-    ///   DTO di output
+    ///   DTO di input
     /// </summary>
-    public class SintesiMezziMarkerResult
+    public class MezziMarkerQuery : IQuery<MezziMarkerResult>
     {
         /// <summary>
-        ///   La sintesi delle richieste di assistenza
+        ///   Il filtro utilizzato per la ricerca delle richieste di assistenza
         /// </summary>
-        public IEnumerable<SintesiMezzoMarker> SintesiMezziMarker
-        { get; set; }
+        public CentroMappa Filtro { get; set; }
     }
 }

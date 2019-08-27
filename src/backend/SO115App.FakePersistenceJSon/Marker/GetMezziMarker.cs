@@ -20,6 +20,7 @@
 using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
+using SO115App.API.Models.Classi.Geo;
 using SO115App.API.Models.Classi.Marker;
 using SO115App.FakePersistence.JSon.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Marker;
@@ -28,7 +29,7 @@ namespace SO115App.FakePersistenceJSon.Marker
 {
     public class GetMezziMarker : IGetMezziMarker
     {
-        public List<SintesiMezzoMarker> GetListaMezziMarker()
+        public List<MezzoMarker> GetListaMezziMarker(CentroMappa filtroCentroMappa)
         {
             string filepath = CostantiJson.MezziComposizione;
             string json;
@@ -37,7 +38,7 @@ namespace SO115App.FakePersistenceJSon.Marker
                 json = r.ReadToEnd();
             }
 
-            List<SintesiMezzoMarker> ListaRichieste = JsonConvert.DeserializeObject<List<SintesiMezzoMarker>>(json);
+            List<MezzoMarker> ListaRichieste = JsonConvert.DeserializeObject<List<MezzoMarker>>(json);
 
             return ListaRichieste;
         }

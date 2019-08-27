@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="SintesiSediMarkerQuery.cs" company="CNVVF">
+// <copyright file="SintesiSediMarkerResult.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,19 +17,20 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using CQRS.Queries;
-using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
+using System.Collections.Generic;
+using SO115App.API.Models.Classi.Marker;
 
-namespace SO115App.API.Models.Servizi.CQRS.Queries.Marker.SintesiSediMarker
+namespace SO115App.API.Models.Servizi.CQRS.Queries.Marker.SediMarker
 {
     /// <summary>
-    ///   DTO di input
+    ///   DTO di output
     /// </summary>
-    public class SintesiSediMarkerQuery : IQuery<SintesiSediMarkerResult>
+    public class SediMarkerResult
     {
         /// <summary>
-        ///   Il filtro utilizzato per la ricerca delle richieste di assistenza
+        ///   La sintesi delle richieste di assistenza
         /// </summary>
-        public FiltroRicercaRichiesteAssistenza Filtro { get; set; }
+        public IEnumerable<SedeMarker> ListaSediMarker
+        { get; set; }
     }
 }

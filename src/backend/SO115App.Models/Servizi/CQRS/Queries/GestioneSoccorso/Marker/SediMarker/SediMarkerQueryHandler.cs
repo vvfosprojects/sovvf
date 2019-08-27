@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="GetMezziMarker.cs" company="CNVVF">
+// <copyright file="SintesiSediMarkerQueryHandler.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -18,38 +18,37 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using Newtonsoft.Json;
-using SO115App.API.Models.Classi.Geo;
+using CQRS.Queries;
 using SO115App.API.Models.Classi.Marker;
-using SO115App.FakePersistence.JSon.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Marker;
 
-namespace SO115App.FakePersistenceJSon.Marker
+namespace SO115App.API.Models.Servizi.CQRS.Queries.Marker.SediMarker
 {
-    public class GetCentroMappa : IGetCentroMappaMarker
+    public class SediMarkerQueryHandler : IQueryHandler<SediMarkerQuery, SediMarkerResult>
     {
-        public CentroMappa GetCentroMappaMarker(string CodiceSede)
+        private readonly IGetSediMarker _iGetSediMarker;
+
+        /// <summary>
+        ///   Costruttore della classe
+        /// </summary>
+        public SediMarkerQueryHandler(IGetSediMarker iGetSediMarker)
         {
-            string CodiceSedeCentroMappa = CodiceSede.Substring(0, 2) + ".1000";
-            string filepath = CostantiJson.MarkerSedi;
-            string json;
-            using (StreamReader r = new StreamReader(filepath))
-            {
-                json = r.ReadToEnd();
-            }
+            this._iGetSediMarker = iGetSediMarker;
+        }
 
-            List<SedeMarker> ListaSedi = JsonConvert.DeserializeObject<List<SedeMarker>>(json);
-            SedeMarker SedeCentroMappa = ListaSedi.FirstOrDefault(x => x.Codice == CodiceSedeCentroMappa);
+        /// <summary>
+        ///   Metodo di esecuzione della query
+        /// </summary>
+        /// <param name="query">Il DTO di ingresso della query</param>
+        /// <returns>Il DTO di uscita della query</returns>
+        public SediMarkerResult Handle(SediMarkerQuery query)
+        {
+            var sintesiSediMarker = _iGetSediMarker.GetListaSediMarker(query.Filtro);
 
-            CentroMappa centroMappa = new CentroMappa()
+            return new SediMarkerResult()
             {
-                CoordinateCentro = SedeCentroMappa.Coordinate,
-                Zoom = 10
+                ListaSediMarker = sintesiSediMarker
             };
-
-            return centroMappa;
         }
     }
 }
