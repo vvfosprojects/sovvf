@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="ListaChiamateInCorsoMarkerQuery.cs" company="CNVVF">
+// <copyright file="IGetCentroMappaMarker.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,15 +17,12 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using CQRS.Queries;
+using SO115App.API.Models.Classi.Geo;
 
-namespace SO115App.API.Models.Servizi.CQRS.Queries.Marker.ListaChiamateInCorsoMarker
+namespace SO115App.Models.Servizi.Infrastruttura.Marker
 {
-    /// <summary>
-    ///   DTO di input
-    /// </summary>
-    public class ListaChiamateInCorsoMarkerQuery : IQuery<ListaChiamateInCorsoMarkerResult>
+    public interface IGetCentroMappaMarker
     {
-        public string CodiceSede { get; set; }
+        CentroMappa GetCentroMappaMarker(string query);
     }
 }

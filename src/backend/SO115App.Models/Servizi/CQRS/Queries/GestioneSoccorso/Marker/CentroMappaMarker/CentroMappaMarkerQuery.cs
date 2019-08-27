@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="ListaChiamateInCorsoMarkerQuery.cs" company="CNVVF">
+// <copyright file="CentroMappaMarker.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -18,14 +18,18 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Queries;
+using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
 
-namespace SO115App.API.Models.Servizi.CQRS.Queries.Marker.ListaChiamateInCorsoMarker
+namespace SO115App.API.Models.Servizi.CQRS.Queries.Marker.CentroMappaMarker
 {
     /// <summary>
     ///   DTO di input
     /// </summary>
-    public class ListaChiamateInCorsoMarkerQuery : IQuery<ListaChiamateInCorsoMarkerResult>
+    public class CentroMappaMarkerQuery : IQuery<CentroMappaMarkerResult>
     {
+        /// <summary>
+        ///   Il filtro utilizzato per la ricerca delle richieste di assistenza
+        /// </summary>
         public string CodiceSede { get; set; }
     }
 }

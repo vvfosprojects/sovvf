@@ -45,6 +45,8 @@ namespace SO115App.API.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
+            var codiceSede = Request.Headers["codicesede"];
+
             FiltroRicercaRichiesteAssistenza filtro = new FiltroRicercaRichiesteAssistenza
             {
                 SearchKey = "0"
@@ -54,7 +56,8 @@ namespace SO115App.API.Controllers
             {
                 var query = new WelcomeQuery()
                 {
-                    FiltroBox = filtro.SearchKey
+                    FiltroBox = filtro.SearchKey,
+                    CodiceSede = codiceSede
                 };
 
                 return Ok(this._handler.Handle(query).WelcomeRes);

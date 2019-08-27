@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="ListaChiamateInCorsoMarkerQuery.cs" company="CNVVF">
+// <copyright file="GeoLocalizzazione.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,15 +17,28 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using CQRS.Queries;
+using SO115App.API.Models.Classi.Condivise;
 
-namespace SO115App.API.Models.Servizi.CQRS.Queries.Marker.ListaChiamateInCorsoMarker
+namespace SO115App.API.Models.Classi.Geo
 {
     /// <summary>
-    ///   DTO di input
+    ///   Identifica il centro mappa
     /// </summary>
-    public class ListaChiamateInCorsoMarkerQuery : IQuery<ListaChiamateInCorsoMarkerResult>
+    public class CentroMappa
     {
-        public string CodiceSede { get; set; }
+        /// <summary>
+        ///   Restituisce le coordinate del centro mappa
+        /// </summary>
+        public Coordinate CoordinateCentro { get; set; }
+
+        /// <summary>
+        ///   Restituisce le coordinate del punto utilizzato per calcolare il raggio dell'area selezionata
+        /// </summary>
+        public Coordinate CoordinateRaggio { get; set; }
+
+        /// <summary>
+        ///   Restituisce il livello di Zoom utilizzato sulla mappa
+        /// </summary>
+        public int Zoom { get; set; }
     }
 }

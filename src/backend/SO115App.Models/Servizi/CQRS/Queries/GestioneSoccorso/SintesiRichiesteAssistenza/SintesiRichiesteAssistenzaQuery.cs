@@ -35,5 +35,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichi
         public FiltroRicercaRichiesteAssistenza Filtro { get; set; }
 
         public List<RichiestaAssistenza> ListaRichieste { get; set; }
+
+        public string CodiceSede { get; set; }
     }
 }
