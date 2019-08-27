@@ -13,13 +13,13 @@ export class DescrizioneTurno {
          */
         public diurnoNotturno: string,
         /**
-         * data e ora inizio turno
+         * data e ora inizio turno,
          */
-        public dataOraInizio: string,
+        public dataOraInizio: string, // Todo: mettere Date
         /**
          * data e ora fine turno
          */
-        public dataOraFine: string,
+        public dataOraFine: string, // Todo: mettere Date
     ) {
     }
 }
