@@ -46,7 +46,6 @@ import { MezzoComposizione } from '../../../composizione-partenza/interface/mezz
 import { DescrizioneFiltroComposizione } from '../../../composizione-partenza/interface/filtri/descrizione-filtro-composizione-interface';
 
 export interface ComposizionePartenzaStateModel {
-    filtri: ListaFiltriComposizione;
     filtriAffini: ListaFiltriComposizione;
     codiceDistaccamento: any[];
     codiceTipoMezzo: any[];
@@ -56,7 +55,6 @@ export interface ComposizionePartenzaStateModel {
 }
 
 export const ComposizioneStateDefaults: ComposizionePartenzaStateModel = {
-    filtri: null,
     filtriAffini: {
         distaccamenti: [],
         generiMezzi: [],
@@ -76,11 +74,6 @@ export const ComposizioneStateDefaults: ComposizionePartenzaStateModel = {
 })
 
 export class ComposizionePartenzaState {
-
-    @Selector()
-    static filtri(state: ComposizionePartenzaStateModel) {
-        return state.filtri;
-    }
 
     @Selector()
     static filtriAffini(state: ComposizionePartenzaStateModel) {
@@ -116,23 +109,18 @@ export class ComposizionePartenzaState {
     }
 
     constructor(private store: Store,
-        private filterbar: FilterbarService,
         private compPartenzaService: CompPartenzaService) {
     }
 
     @Action(GetFiltriComposizione)
     getFiltriComposizione({ dispatch }: StateContext<ComposizionePartenzaStateModel>) {
-        this.filterbar.getFiltri().subscribe((filtri: ListaFiltriComposizione) => {
-            dispatch(new SetFiltriComposizione(filtri));
-        }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore GetFiltriComposizione', 'Il server web non risponde', 5)));
+        const filtri = this.store.selectSnapshot(state => state.filtriComposizione.filtri);
+        dispatch(new SetFiltriComposizione(filtri));
     }
 
     @Action(SetFiltriComposizione)
     setFiltriComposizione({ getState, patchState, dispatch }: StateContext<ComposizionePartenzaStateModel>, action: SetFiltriComposizione) {
-        patchState({
-            filtri: action.filtri
-        });
-        // console.log('setFiltriComposizione', action);
+        console.log('setFiltriComposizione', action);
         const state = getState();
         const composizioneMode = state.composizioneMode;
         const objFiltriSelezionati: ComposizioneFilterbar = {
@@ -150,8 +138,8 @@ export class ComposizionePartenzaState {
     }
 
     @Action(SetListaFiltriAffini)
-    setListaFiltriAffini({ getState, patchState }: StateContext<ComposizionePartenzaStateModel>) {
-        const filtri = getState().filtri;
+    setListaFiltriAffini({ patchState }: StateContext<ComposizionePartenzaStateModel>) {
+        const filtri = this.store.selectSnapshot(state => state.filtriComposizione.filtri);
         let listaMezziSquadre = {} as ListaComposizioneAvanzata;
         listaMezziSquadre = this.store.selectSnapshot(state => state.composizioneAvanzata.listaMezziSquadre);
         const filtriDistaccamento = [] as DescrizioneFiltroComposizione[];

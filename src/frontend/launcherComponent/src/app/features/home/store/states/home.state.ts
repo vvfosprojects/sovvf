@@ -17,6 +17,7 @@ import { HomeService } from '../../../../core/service/home-service/home.service'
 import { ShowToastr } from '../../../../shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from '../../../../shared/enum/toastr';
 import { Welcome } from '../../../../shared/interface/welcome.interface';
+import { SetFiltriComposizione } from '../actions/composizione-partenza/filtri-composizione.actions';
 
 export interface HomeStateModel {
     loaded: boolean;
@@ -73,6 +74,7 @@ export class HomeState {
                 new SetChiamateMarkers(data.listaChiamateInCorso),
                 new SetCentroMappa(data.centroMappaMarker),
                 new SetInitCentroMappa(data.centroMappaMarker),
+                new SetFiltriComposizione(data.listaFiltri)
             ]);
         }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5)));
         patchState({
