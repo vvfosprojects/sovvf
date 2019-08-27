@@ -55,6 +55,10 @@ namespace SO115App.CompositionRoot
                 SO115App.Models.Servizi.Infrastruttura.Marker.IGetSediMarker,
                 FakePersistenceJSon.Marker.GetSediMarker>();
             container.Register<
+                SO115App.Models.Servizi.Infrastruttura.Marker.IGetCentroMappaMarker,
+                FakePersistenceJSon.Marker.GetCentroMappa>();
+
+            container.Register<
                 SO115App.Models.Servizi.Infrastruttura.NavBar.IGetNavbar,
                 SO115App.FakePersistenceJSon.Navbar.GetNavbar>();
             container.Register<
