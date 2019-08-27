@@ -47,10 +47,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             // preparazione del DTO
             var composizioneMezzi = _iGetComposizioneMezzi.Get(query);
 
-            foreach (var mezzo in composizioneMezzi)
-            {
-            }
-
             return new ComposizioneMezziResult()
             {
                 ComposizioneMezzi = composizioneMezzi
