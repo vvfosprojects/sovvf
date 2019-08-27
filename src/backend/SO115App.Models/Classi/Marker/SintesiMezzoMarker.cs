@@ -43,8 +43,6 @@ namespace SO115App.API.Models.Classi.Marker
         public Coordinate Coordinate { get; set; }
 
         public Mezzo Mezzo { get; set; }
-        public string Id_richiesta { get; set; }
-        public List<TipologieRichiesta> Tipologie_richiesta { get; set; }
-        public string Label { get; set; }
+        public string IdRichiesta { get; set; }
     }
 }

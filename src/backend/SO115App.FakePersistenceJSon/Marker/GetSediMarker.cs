@@ -21,6 +21,7 @@ using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Marker;
+using SO115App.FakePersistence.JSon.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Marker;
 
 namespace SO115App.FakePersistenceJSon.Marker
@@ -29,7 +30,7 @@ namespace SO115App.FakePersistenceJSon.Marker
     {
         public List<SintesiSedeMarker> GetListaSediMarker()
         {
-            string filepath = "Fake/fakeMarkerSede.json";
+            string filepath = CostantiJson.MarkerSedi;
             string json;
             using (StreamReader r = new StreamReader(filepath))
             {
