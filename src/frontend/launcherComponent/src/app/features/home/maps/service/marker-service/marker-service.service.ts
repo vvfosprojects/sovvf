@@ -58,9 +58,13 @@ import {
 } from '../../../store/actions/maps/maps-buttons.actions';
 import { MAPSOPTIONS } from '../../../../../core/settings/maps-options';
 import {
-    HoverInMezzoComposizione, HoverOutMezzoComposizione,
+    HoverInMezzoComposizione,
+    HoverOutMezzoComposizione,
     SelectMezzoComposizioneFromMappa
 } from '../../../store/actions/composizione-partenza/mezzi-composizione.actions';
+import { ViewInterfaceMaps } from '../../../../../shared/interface/view.interface';
+import { ViewComponentState } from '../../../store/states/view/view.state';
+import { AppFeatures } from '../../../../../shared/enum/app-features.enum';
 
 
 @Injectable()
@@ -103,6 +107,9 @@ export class MarkerService implements OnDestroy {
     @Select(MarkerOpachiState.markerOpachi) markerOpachi$: Observable<MarkerOpachiStateModel>;
     private markerOpachi: MarkerOpachiStateModel;
 
+    @Select(ViewComponentState.viewStateMaps) viewStateMaps$: Observable<ViewInterfaceMaps>;
+    private viewStateMaps: ViewInterfaceMaps;
+
     @Select(MarkerMeteoState.active) stateSwitch$: Observable<boolean>;
     private switchMeteo: boolean;
 
@@ -123,7 +130,8 @@ export class MarkerService implements OnDestroy {
         this.subscription.add(this.markerSedeSelezionato$.subscribe((id: string) => this.markerSedeSelezionato = id));
         this.subscription.add(this.markerSedeHover$.subscribe((id: string) => this.markerSedeHover = id));
         this.subscription.add(this.datiMeteo$.subscribe((meteo: MarkerDatiMeteo[]) => this.datiMeteo = meteo));
-        this.subscription.add(this.markerStateNull$.subscribe( (isNull: boolean) => {
+        this.subscription.add(this.viewStateMaps$.subscribe((viewStateMaps: ViewInterfaceMaps) => this.viewStateMaps = viewStateMaps));
+        this.subscription.add(this.markerStateNull$.subscribe((isNull: boolean) => {
             if (isNull && this.selfClickedMarker) {
                 this.selfClickedMarker = null;
             }
@@ -475,11 +483,13 @@ export class MarkerService implements OnDestroy {
     }
 
     noAction() {
-        this.store.dispatch(new ClearRichiestaFissata());
-        this.store.dispatch(new ClearRichiestaSelezionata());
-        this.store.dispatch(new ClearMarkerRichiestaSelezionato());
-        this.store.dispatch(new ClearMarkerSedeSelezionato());
-        this.store.dispatch(new ClearMarkerMezzoSelezionato());
+        if (this.viewStateMaps.active !== AppFeatures.ComposizionePartenza) {
+            this.store.dispatch(new ClearRichiestaFissata());
+            this.store.dispatch(new ClearRichiestaSelezionata());
+            this.store.dispatch(new ClearMarkerRichiestaSelezionato());
+            this.store.dispatch(new ClearMarkerSedeSelezionato());
+            this.store.dispatch(new ClearMarkerMezzoSelezionato());
+        }
         this.store.dispatch(new GetInitCentroMappa());
     }
 
