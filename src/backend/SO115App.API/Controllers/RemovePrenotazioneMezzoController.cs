@@ -52,7 +52,7 @@ namespace SO115App.API.Controllers
         /// <summary>
         ///   Costruttore della classe
         /// </summary>
-        public RemovePrenotazioneMezzoController( IPrincipal currentUser,
+        public RemovePrenotazioneMezzoController(IPrincipal currentUser,
             ICommandHandler<SbloccaMezzoPrenotatoCommand> handler)
         {
             this.handler = handler;
@@ -73,22 +73,21 @@ namespace SO115App.API.Controllers
             {
                 MezzoPrenotato = mezzoPrenotato,
                 CodiceSede = codiceSede
-
             };
 
-       
-                try
-                {
-                    handler.Handle(command);
+            try
+            {
+                handler.Handle(command);
 
-                    // await _NotificationHub.Clients.Client(ConId).SendAsync("NotifySbloccaMezzoPrenotato", command);
+                // await
+                // _NotificationHub.Clients.Client(ConId).SendAsync("NotifySbloccaMezzoPrenotato", command);
 
-                    return Ok();
-                }
-                catch
-                {
-                    return BadRequest();
-                }          
+                return Ok();
+            }
+            catch
+            {
+                return BadRequest();
+            }
         }
     }
 }

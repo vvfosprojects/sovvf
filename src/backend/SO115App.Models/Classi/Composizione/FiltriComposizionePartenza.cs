@@ -35,7 +35,7 @@ namespace SO115App.Models.Classi.Composizione
         public string[] CodiceStatoMezzo { get; set; }
 
         [JsonRequired]
-        public string[] CodiceMezzo { get; set; }
+        public string CodiceMezzo { get; set; }
 
         [JsonRequired]
         public string[] CodiceSquadra { get; set; }
