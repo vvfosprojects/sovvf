@@ -65,7 +65,7 @@ export interface MezziComposizioneStateStateModel {
 }
 
 export const MezziComposizioneStateDefaults: MezziComposizioneStateStateModel = {
-    mezziComposizione: [],
+    mezziComposizione: null,
     idMezzoComposizioneSelezionato: null,
     idMezzoComposizioneHover: null,
     idMezzoSelezionato: null,
@@ -218,7 +218,7 @@ export class MezziComposizioneState {
                 if (boxPartenzaList.length === 0) {
                     dispatch(new ReducerSelectMezzoComposizione(mezzoComposizione[0]));
                 } else {
-                    const mezzoInList = boxPartenzaList.filter(boxPartenza => boxPartenza.mezzoComposizione.mezzo.codice === action.mezzoId);
+                    const mezzoInList = boxPartenzaList.filter(boxPartenza => boxPartenza.mezzoComposizione && boxPartenza.mezzoComposizione.mezzo.codice === action.mezzoId);
                     mezzoInList && mezzoInList[0] ? console.log('Mezzo già selezionato') : dispatch(new ReducerSelectMezzoComposizione(mezzoComposizione[0]));
                 }
             } else {

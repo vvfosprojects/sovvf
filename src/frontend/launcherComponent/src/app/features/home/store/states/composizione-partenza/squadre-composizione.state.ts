@@ -25,7 +25,7 @@ export interface SquadreComposizioneStateStateModel {
 }
 
 export const SquadreComposizioneStateDefaults: SquadreComposizioneStateStateModel = {
-    squadreComposizione: [],
+    squadreComposizione: null,
     idSquadreComposizioneSelezionate: [],
     idSquadreSelezionate: [],
     idSquadraHover: null
