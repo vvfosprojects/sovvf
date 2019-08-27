@@ -19,6 +19,7 @@
 //-----------------------------------------------------------------------
 using System.IO;
 using Newtonsoft.Json;
+using SO115App.FakePersistence.JSon.Utility;
 using SO115App.Models.Servizi.Infrastruttura.GetFiltri;
 
 namespace SO115App.FakePersistenceJSon.Filtri
@@ -27,7 +28,7 @@ namespace SO115App.FakePersistenceJSon.Filtri
     {
         public API.Models.Classi.Filtri.Filtri Get()
         {
-            string filepath = "Fake/Filtri.json";
+            string filepath = CostantiJson.Filtri;
             string json;
             using (StreamReader r = new StreamReader(filepath))
             {

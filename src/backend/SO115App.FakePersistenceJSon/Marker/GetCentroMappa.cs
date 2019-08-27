@@ -23,6 +23,7 @@ using System.Linq;
 using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Geo;
 using SO115App.API.Models.Classi.Marker;
+using SO115App.FakePersistence.JSon.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Marker;
 
 namespace SO115App.FakePersistenceJSon.Marker
@@ -32,7 +33,7 @@ namespace SO115App.FakePersistenceJSon.Marker
         public CentroMappa GetCentroMappaMarker(string CodiceSede)
         {
             string CodiceSedeCentroMappa = CodiceSede.Substring(0, 2) + ".1000";
-            string filepath = "Fake/fakeMarkerSede.json";
+            string filepath = CostantiJson.MarkerSedi;
             string json;
             using (StreamReader r = new StreamReader(filepath))
             {
@@ -44,7 +45,8 @@ namespace SO115App.FakePersistenceJSon.Marker
 
             CentroMappa centroMappa = new CentroMappa()
             {
-                CoordinateCentro = SedeCentroMappa.Coordinate
+                CoordinateCentro = SedeCentroMappa.Coordinate,
+                Zoom = 10
             };
 
             return centroMappa;

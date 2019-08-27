@@ -1,6 +1,6 @@
 [
   {
-    "codice": "1",
+    "codice": "RM.1000",
     "descrizione": "Comando di Roma",
     "coordinate": {
       "latitudine": 41.89994,
@@ -12,7 +12,7 @@
     "provincia": "Roma"
   },
   {
-    "codice": "2",
+    "codice": "RM.1001",
     "descrizione": "Comando di Latina",
     "coordinate": {
       "latitudine": 41.474258,
@@ -24,7 +24,7 @@
     "provincia": "Latina"
   },
   {
-    "codice": "3",
+    "codice": "RM.1002",
     "descrizione": "Comando di Frosinone",
     "coordinate": {
       "latitudine": 41.61632,
@@ -36,7 +36,7 @@
     "provincia": "Frosinone"
   },
   {
-    "codice": "4",
+    "codice": "RM.1003",
     "descrizione": "Comando di Rieti",
     "coordinate": {
       "latitudine": 42.397678,
@@ -48,7 +48,7 @@
     "provincia": "Rieti"
   },
   {
-    "codice": "5",
+    "codice": "RM.1004",
     "descrizione": "Comando di Viterbo",
     "coordinate": {
       "latitudine": 42.3736121,
@@ -60,7 +60,7 @@
     "provincia": "Viterbo"
   },
   {
-    "codice": "8",
+    "codice": "RM.1005",
     "descrizione": "Distaccamento Cittadino La Rustica",
     "coordinate": {
       "latitudine": 41.9095454,

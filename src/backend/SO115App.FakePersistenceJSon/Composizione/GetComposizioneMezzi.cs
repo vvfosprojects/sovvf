@@ -39,7 +39,7 @@ namespace SO115App.FakePersistenceJSon.Composizione
 
             //TODO DA MODIFICARE CON LA CONNESSIONE AL DB PER IL REPERIMENTO DEI DATI DEFINITIVI
             //DATI FAKE - ORA LI LEGGO DA FILE
-            string filepath = "Fake/MezziComposizione.json";
+            string filepath = CostantiJson.MezziComposizione;
             string json;
             using (StreamReader r = new StreamReader(filepath))
             {
@@ -61,7 +61,7 @@ namespace SO115App.FakePersistenceJSon.Composizione
             {
                 if (query.Filtro.CodiceSquadra?.Length > 0 && !string.IsNullOrEmpty(query.Filtro.CodiceSquadra[0]))
                 {
-                    string path = "Fake/SquadreComposizione.json";
+                    string path = CostantiJson.SquadreComposizione;
                     string jsonSquadre;
                     using (StreamReader r = new StreamReader(path))
                     {
@@ -78,7 +78,7 @@ namespace SO115App.FakePersistenceJSon.Composizione
                 }
 
                 API.Models.Classi.Filtri.Filtri filtri = new API.Models.Classi.Filtri.Filtri();
-                string pathFiltri = "Fake/Filtri.json";
+                string pathFiltri = CostantiJson.Filtri;
                 string jsonFiltri;
                 using (StreamReader r = new StreamReader(pathFiltri))
                 {
