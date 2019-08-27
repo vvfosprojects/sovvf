@@ -42,7 +42,6 @@ import {
     SetMarkerMezzoHover,
     SetMarkerMezzoSelezionato
 } from '../../actions/maps/marker.actions';
-import { SganciamentoInterface } from 'src/app/shared/interface/sganciamento.interface';
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
 import { Partenza } from 'src/app/shared/model/partenza.model';
 import { RichiesteState } from '../richieste/richieste.state';

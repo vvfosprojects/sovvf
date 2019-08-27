@@ -3,16 +3,45 @@ import { makeCopy } from '../../../../../shared/helper/function';
 import { AppFeatures } from '../../../../../shared/enum/app-features.enum';
 import { Grid } from '../../../../../shared/enum/layout.enum';
 import { Composizione } from '../../../../../shared/enum/composizione.enum';
-import { ChangeView, SaveView, SwitchComposizione, ToggleChiamata, ToggleComposizione, ToggleModifica, TurnOffComposizione, ToggleMezziInServizio } from '../../actions/view/view.actions';
+import {
+    ChangeView,
+    SaveView,
+    SwitchComposizione,
+    ToggleChiamata,
+    ToggleComposizione,
+    ToggleModifica,
+    TurnOffComposizione,
+    ToggleMezziInServizio
+} from '../../actions/view/view.actions';
 import { BackupViewComponentState } from './save-view.state';
-import { Grids, ViewComponentStateModel, ViewInterfaceButton, ViewInterfaceMaps, ViewLayouts } from '../../../../../shared/interface/view.interface';
-import { activeChiamata, activeComposizione, activeModifica, colorButton, switchComposizione, turnOffComposizione, turnOffModifica, updateView, viewStateMaps, activeMezziInServizio } from '../../helper/view-state-function';
+import {
+    Grids,
+    ViewComponentStateModel,
+    ViewInterfaceButton,
+    ViewInterfaceMaps,
+    ViewLayouts
+} from '../../../../../shared/interface/view.interface';
+import {
+    activeChiamata,
+    activeComposizione,
+    activeModifica,
+    colorButton,
+    switchComposizione,
+    turnOffComposizione,
+    turnOffModifica,
+    updateView,
+    viewStateMaps,
+    activeMezziInServizio
+} from '../../helper/view-state-function';
 import { GetInitCentroMappa, SetCoordCentroMappa } from '../../actions/maps/centro-mappa.actions';
 import { ClearDirection } from '../../actions/maps/maps-direction.actions';
 import { ClearMarkerRichiestaSelezionato } from '../../actions/maps/marker.actions';
 import { ResetChiamata } from '../../actions/chiamata/scheda-telefonata.actions';
 import { ComposizionePartenzaState } from '../composizione-partenza/composizione-partenza.state';
-import { TerminaComposizione, ToggleComposizioneMode } from '../../actions/composizione-partenza/composizione-partenza.actions';
+import {
+    TerminaComposizione,
+    ToggleComposizioneMode
+} from '../../actions/composizione-partenza/composizione-partenza.actions';
 
 export const ViewComponentStateDefault: ViewComponentStateModel = {
     view: {

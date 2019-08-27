@@ -31,6 +31,7 @@ import { environment } from '../../../environments/environment';
 import { HomeService } from '../../core/service/home-service/home.service';
 import { HomeServiceFake } from '../../core/service/home-service/home.service.fake';
 import { MezziInServizioModule } from './mezzi-in-servizio/mezzi-in-servizio.module';
+import { FiltriComposizioneState } from './store/states/composizione-partenza/filtri-composizione.state';
 
 @NgModule({
     declarations: [
@@ -69,7 +70,8 @@ import { MezziInServizioModule } from './mezzi-in-servizio/mezzi-in-servizio.mod
                 FiltriRichiesteState,
                 RicercaRichiesteState,
                 MarkerMeteoState,
-                RichiestaModificaState
+                RichiestaModificaState,
+                FiltriComposizioneState
             ]
         ),
     ],

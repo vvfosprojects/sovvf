@@ -17,6 +17,10 @@ export class SetFiltriComposizione {
     }
 }
 
+export class SetListaFiltriAffini {
+    static readonly type = '[FiltriComposizione] Set Lista Filtri Affini';
+}
+
 export class UpdateListe {
     static readonly type = '[FiltriComposizione] Update Filtri Selezionati';
 

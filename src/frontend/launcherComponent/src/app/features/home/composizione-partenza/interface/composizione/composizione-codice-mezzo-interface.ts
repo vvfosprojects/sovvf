@@ -1,3 +1,3 @@
 export interface ComposizioneCodiceMezzo {
-    CodiceMezzo: string[];
+    CodiceMezzo: string;
 }

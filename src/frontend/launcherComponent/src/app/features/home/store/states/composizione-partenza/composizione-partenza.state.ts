@@ -1,4 +1,4 @@
-import { Action, Selector, State, StateContext } from '@ngxs/store';
+import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { insertItem, patch, removeItem } from '@ngxs/store/operators';
 import {
     AddFiltroSelezionatoComposizione, ClearPartenza, ConfirmPartenze,
@@ -7,7 +7,7 @@ import {
     RemoveFiltroSelezionatoComposizione, RichiestaComposizione, SetComposizioneMode,
     SetFiltriComposizione, TerminaComposizione,
     ToggleComposizioneMode,
-    UpdateListe, UpdateRichiestaComposizione
+    UpdateListe, UpdateRichiestaComposizione, SetListaFiltriAffini
 } from '../../actions/composizione-partenza/composizione-partenza.actions';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from '../../../../../shared/enum/toastr';
@@ -41,9 +41,12 @@ import { GetInitCentroMappa } from '../../actions/maps/centro-mappa.actions';
 import { ClearMarkerMezzoSelezionato, ClearMarkerState } from '../../actions/maps/marker.actions';
 import { ListaFiltriComposizione } from '../../../composizione-partenza/interface/filtri/lista-filtri-composizione-interface';
 import { ComposizioneFilterbar } from '../../../composizione-partenza/interface/composizione/composizione-filterbar-interface';
+import { ListaComposizioneAvanzata } from '../../../composizione-partenza/interface/lista-composizione-avanzata-interface';
+import { MezzoComposizione } from '../../../composizione-partenza/interface/mezzo-composizione-interface';
+import { DescrizioneFiltroComposizione } from '../../../composizione-partenza/interface/filtri/descrizione-filtro-composizione-interface';
 
 export interface ComposizionePartenzaStateModel {
-    filtri: ListaFiltriComposizione;
+    filtriAffini: ListaFiltriComposizione;
     codiceDistaccamento: any[];
     codiceTipoMezzo: any[];
     codiceStatoMezzo: any[];
@@ -52,7 +55,11 @@ export interface ComposizionePartenzaStateModel {
 }
 
 export const ComposizioneStateDefaults: ComposizionePartenzaStateModel = {
-    filtri: null,
+    filtriAffini: {
+        distaccamenti: [],
+        generiMezzi: [],
+        stati: []
+    },
     codiceDistaccamento: [],
     codiceTipoMezzo: [],
     codiceStatoMezzo: [],
@@ -69,8 +76,8 @@ export const ComposizioneStateDefaults: ComposizionePartenzaStateModel = {
 export class ComposizionePartenzaState {
 
     @Selector()
-    static filtri(state: ComposizionePartenzaStateModel) {
-        return state.filtri;
+    static filtriAffini(state: ComposizionePartenzaStateModel) {
+        return state.filtriAffini;
     }
 
     @Selector()
@@ -101,23 +108,19 @@ export class ComposizionePartenzaState {
         return composizioneMarkers;
     }
 
-    constructor(private filterbar: FilterbarService,
-                private compPartenzaService: CompPartenzaService) {
+    constructor(private store: Store,
+        private compPartenzaService: CompPartenzaService) {
     }
 
     @Action(GetFiltriComposizione)
     getFiltriComposizione({ dispatch }: StateContext<ComposizionePartenzaStateModel>) {
-        this.filterbar.getFiltri().subscribe((filtri: ListaFiltriComposizione) => {
-            dispatch(new SetFiltriComposizione(filtri));
-        }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore GetFiltriComposizione', 'Il server web non risponde', 5)));
+        const filtri = this.store.selectSnapshot(state => state.filtriComposizione.filtri);
+        dispatch(new SetFiltriComposizione(filtri));
     }
 
     @Action(SetFiltriComposizione)
     setFiltriComposizione({ getState, patchState, dispatch }: StateContext<ComposizionePartenzaStateModel>, action: SetFiltriComposizione) {
-        patchState({
-            filtri: action.filtri
-        });
-        // console.log('setFiltriComposizione', action);
+        console.log('setFiltriComposizione', action);
         const state = getState();
         const composizioneMode = state.composizioneMode;
         const objFiltriSelezionati: ComposizioneFilterbar = {
@@ -134,6 +137,72 @@ export class ComposizionePartenzaState {
         }
     }
 
+    @Action(SetListaFiltriAffini)
+    setListaFiltriAffini({ patchState }: StateContext<ComposizionePartenzaStateModel>) {
+        const filtri = this.store.selectSnapshot(state => state.filtriComposizione.filtri);
+        let listaMezziSquadre = {} as ListaComposizioneAvanzata;
+        listaMezziSquadre = this.store.selectSnapshot(state => state.composizioneAvanzata.listaMezziSquadre);
+        const filtriDistaccamento = [] as DescrizioneFiltroComposizione[];
+        const filtriStato = [] as DescrizioneFiltroComposizione[];
+        const generiMezzi = [] as DescrizioneFiltroComposizione[];
+        if (listaMezziSquadre.composizioneMezzi && listaMezziSquadre.composizioneSquadre) {
+            filtri.distaccamenti.forEach((distaccamento: DescrizioneFiltroComposizione) => {
+                if (checkDistaccamento(distaccamento)) {
+                    filtriDistaccamento.push(distaccamento);
+                }
+            });
+            filtri.stati.forEach((stato: DescrizioneFiltroComposizione) => {
+                if (checkStato(stato)) {
+                    filtriStato.push(stato);
+                }
+            });
+            filtri.generiMezzi.forEach((genereMezzi: DescrizioneFiltroComposizione) => {
+                if (checkGenereMezzo(genereMezzi)) {
+                    generiMezzi.push(genereMezzi);
+                }
+            });
+        }
+
+        function checkDistaccamento(distaccamento: DescrizioneFiltroComposizione) {
+            let _return = false;
+            listaMezziSquadre.composizioneMezzi.forEach((mezzoComp: MezzoComposizione) => {
+                if (mezzoComp.mezzo.distaccamento.codice === distaccamento.id) {
+                    _return = true;
+                }
+            });
+            return _return;
+        }
+        function checkStato(stato: DescrizioneFiltroComposizione) {
+            let _return = false;
+            listaMezziSquadre.composizioneMezzi.forEach((mezzoComp: MezzoComposizione) => {
+                if (mezzoComp.mezzo.stato === stato.descrizione) {
+                    _return = true;
+                }
+            });
+            return _return;
+        }
+        function checkGenereMezzo(genereMezzo: DescrizioneFiltroComposizione) {
+            let _return = false;
+            listaMezziSquadre.composizioneMezzi.forEach((mezzoComp: MezzoComposizione) => {
+                if (mezzoComp.mezzo.genere === genereMezzo.descrizione) {
+                    _return = true;
+                }
+            });
+            return _return;
+        }
+
+        patchState({
+            filtriAffini: {
+                distaccamenti: filtriDistaccamento,
+                generiMezzi: generiMezzi,
+                stati: filtriStato
+            }
+        });
+
+        // console.log('filtriDistaccamento', filtriDistaccamento);
+        // console.log('filtriStato', filtriStato);
+        // console.log('generiMezzi', generiMezzi);
+    }
 
     @Action(UpdateListe)
     updateListe({ dispatch }: StateContext<ComposizionePartenzaStateModel>, action: UpdateListe) {

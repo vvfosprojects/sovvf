@@ -27,8 +27,8 @@ import { CambioSedeModalComponent } from './maps-ui/info-window/cambio-sede-moda
  * Provider
  */
 import {
-    CentroMappaService, MezziMarkerService, SediMarkerService, RichiesteMarkerService,
-    CentroMappaServiceFake, MezziMarkerServiceFake, SediMarkerServiceFake, RichiesteMarkerServiceFake, ChiamateMarkerService, ChiamateMarkerServiceFake
+    MezziMarkerService, SediMarkerService, RichiesteMarkerService,
+    MezziMarkerServiceFake, SediMarkerServiceFake, RichiesteMarkerServiceFake, ChiamateMarkerService, ChiamateMarkerServiceFake
 } from '../../../core/service/maps-service';
 import { RichiesteMarkerAdapterService } from '../../../core/service/maps-service/richieste-marker/adapters/richieste-marker-adapter.service';
 
@@ -104,7 +104,6 @@ import { environment } from '../../../../environments/environment';
         { provide: SediMarkerService, useClass: environment.fakeProvider ? SediMarkerServiceFake : SediMarkerService},
         { provide: MezziMarkerService, useClass: MezziMarkerServiceFake },
         { provide: SediMarkerService, useClass: SediMarkerServiceFake },
-        { provide: CentroMappaService, useClass: CentroMappaServiceFake },
         { provide: ChiamateMarkerService, useClass: environment.fakeProvider ? ChiamateMarkerServiceFake : ChiamateMarkerService}
     ]
 })

@@ -23,7 +23,6 @@ export const environment = {
                 richieste: '/api/SintesiRichiesteAssistenzaMarker',
                 sedi: '/api/SintesiSediMarker',
                 mezzi: '/api/SintesiMezziMarker',
-                centro: '',  // TodoBackEnd: controller mancante
                 chiamate: '/api/ChiamataInCorso'
             }
         },
