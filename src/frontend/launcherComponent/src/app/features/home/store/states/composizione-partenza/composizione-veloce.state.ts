@@ -44,8 +44,8 @@ export interface PreAccoppiatiStateModel {
 }
 
 export const PreAccoppiatiStateModelStateDefaults: PreAccoppiatiStateModel = {
-    preAccoppiati: [],
-    idPreAccoppiati: [],
+    preAccoppiati: null,
+    idPreAccoppiati: null,
     idPreAccoppiatoSelezionato: null,
     idPreAccoppiatiSelezionati: [],
     idPreAccoppiatiOccupati: [],
@@ -84,7 +84,7 @@ export class ComposizioneVeloceState {
     }
 
     constructor(private preAccoppiatiService: CompPartenzaService,
-                private store: Store) {
+        private store: Store) {
     }
 
     @Action(GetPreAccoppiati)
@@ -112,7 +112,7 @@ export class ComposizioneVeloceState {
         }
         console.log('Preaccoppiati disponibili', preaccoppiati);
         const preaccoppiatiOccupati = [];
-        preaccoppiati.forEach( preaccoppiato => {
+        preaccoppiati.forEach(preaccoppiato => {
             if (mezzoComposizioneBusy(preaccoppiato.mezzoComposizione.mezzo.stato) || checkSquadraOccupata(preaccoppiato.squadraComposizione)) {
                 preaccoppiatiOccupati.push(preaccoppiato.id);
             }
@@ -170,9 +170,9 @@ export class ComposizioneVeloceState {
     @Action(ClearPreAccoppiatiSelezionatiComposizione)
     clearPreAccoppiatiSelezionatiComposizione({ patchState }: StateContext<PreAccoppiatiStateModel>) {
         patchState({
-                idPreAccoppiatiSelezionati: PreAccoppiatiStateModelStateDefaults.idPreAccoppiatiSelezionati,
-                idPreAccoppiatoSelezionato: PreAccoppiatiStateModelStateDefaults.idPreAccoppiatoSelezionato
-            }
+            idPreAccoppiatiSelezionati: PreAccoppiatiStateModelStateDefaults.idPreAccoppiatiSelezionati,
+            idPreAccoppiatoSelezionato: PreAccoppiatiStateModelStateDefaults.idPreAccoppiatoSelezionato
+        }
         );
     }
 
