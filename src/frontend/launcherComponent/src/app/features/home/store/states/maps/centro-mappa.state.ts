@@ -1,9 +1,7 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { CentroMappa } from '../../../maps/maps-model/centro-mappa.model';
-import { CentroMappaService } from '../../../../../core/service/maps-service';
 import {
     ClearCentroMappa,
-    GetCentroMappa,
     GetInitCentroMappa, GetInitCoordCentroMappa, GetInitZoomCentroMappa,
     SetCentroMappa,
     SetCoordCentroMappa,
@@ -41,23 +39,11 @@ export class CentroMappaState {
 
     @Selector()
     static coordCentroMappa(state: CentroMappaStateModel): Coordinate {
-        return state.centroMappa.coordinate;
+        return state.centroMappa.coordinateCentro;
     }
 
-    constructor(private _centro: CentroMappaService) {
+    constructor() {
 
-    }
-
-    /**
-     * Action che esegue il dispatch dello stato del centro Mappa ricevuto dall'API
-     * @param dispatch
-     */
-    @Action(GetCentroMappa)
-    getCentroMappa({ dispatch }: StateContext<CentroMappaStateModel>) {
-        this._centro.getCentroMappa().subscribe((resultFromApi: CentroMappa) => {
-            dispatch(new SetCentroMappa(resultFromApi));
-            dispatch(new SetInitCentroMappa(resultFromApi));
-        });
     }
 
     /**
@@ -70,8 +56,8 @@ export class CentroMappaState {
     setCentroMappa({ getState, patchState }: StateContext<CentroMappaStateModel>, action: SetCentroMappa) {
         const state = getState();
         if (state.centroMappa) {
-            if (action.centroMappa.coordinate.latitudine.toPrecision(5) !== state.centroMappa.coordinate.latitudine.toPrecision(5) &&
-                action.centroMappa.coordinate.longitudine.toPrecision(5) !== state.centroMappa.coordinate.longitudine.toPrecision(5)) {
+            if (action.centroMappa.coordinateCentro.latitudine.toPrecision(5) !== state.centroMappa.coordinateCentro.latitudine.toPrecision(5) &&
+                action.centroMappa.coordinateCentro.longitudine.toPrecision(5) !== state.centroMappa.coordinateCentro.longitudine.toPrecision(5)) {
                 patchState({
                     ...state,
                     centroMappa: action.centroMappa
@@ -97,7 +83,7 @@ export class CentroMappaState {
         patchState({
             ...state,
             centroMappa: {
-                coordinate: state.centroMappa.coordinate,
+                coordinateCentro: state.centroMappa.coordinateCentro,
                 zoom: action.zoom
             }
         });
@@ -115,7 +101,7 @@ export class CentroMappaState {
         patchState({
             ...state,
             centroMappa: {
-                coordinate: action.coordinate,
+                coordinateCentro: action.coordinate,
                 zoom: state.centroMappa.zoom
             }
         });
@@ -151,7 +137,7 @@ export class CentroMappaState {
     @Action(GetInitCoordCentroMappa)
     getInitCoordCentroMappa({ getState, dispatch }: StateContext<CentroMappaStateModel>) {
         const state = getState();
-        dispatch(new SetCoordCentroMappa(state.initCentroMappa.coordinate));
+        dispatch(new SetCoordCentroMappa(state.initCentroMappa.coordinateCentro));
     }
 
     /**

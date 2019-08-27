@@ -1,10 +1,14 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { ClearDataHome, GetDataHome, SetMapLoaded } from '../actions/home.actions';
 import { ClearRichieste, SetRichieste } from '../actions/richieste/richieste.actions';
-import { ClearSediMarkers, SetSediMarkers } from '../actions/maps/sedi-markers.actions';
-import { ClearCentroMappa, GetCentroMappa } from '../actions/maps/centro-mappa.actions';
-import { ClearMezziMarkers, SetMezziMarkers } from '../actions/maps/mezzi-markers.actions';
-import { ClearRichiesteMarkers, SetRichiesteMarkers } from '../actions/maps/richieste-markers.actions';
+import { ClearSediMarkers } from '../actions/maps/sedi-markers.actions';
+import {
+    ClearCentroMappa,
+    SetCentroMappa,
+    SetInitCentroMappa
+} from '../actions/maps/centro-mappa.actions';
+import { ClearMezziMarkers } from '../actions/maps/mezzi-markers.actions';
+import { ClearRichiesteMarkers } from '../actions/maps/richieste-markers.actions';
 import { ClearBoxRichieste, SetBoxRichieste } from '../actions/boxes/box-richieste.actions';
 import { ClearBoxMezzi, SetBoxMezzi } from '../actions/boxes/box-mezzi.actions';
 import { ClearBoxPersonale, SetBoxPersonale } from '../actions/boxes/box-personale.actions';
@@ -57,21 +61,20 @@ export class HomeState {
     @Action(GetDataHome)
     getDataHome({ patchState, dispatch }: StateContext<HomeStateModel>) {
         this.homeService.getHome().subscribe((data: Welcome) => {
-            console.log(data);
+            console.log('Welcome', data);
             dispatch([
                 new SetRichieste(data.listaSintesi),
-                new SetSediMarkers(data.listaSediMarker),
-                new SetMezziMarkers(data.listaMezziMarker),
-                new SetRichiesteMarkers(data.listaRichiesteMarker),
+                // new SetSediMarkers(data.listaSediMarker),
+                // new SetMezziMarkers(data.listaMezziMarker),
+                // new SetRichiesteMarkers(data.listaRichiesteMarker),
                 new SetBoxRichieste(data.boxListaInterventi),
                 new SetBoxMezzi(data.boxListaMezzi),
                 new SetBoxPersonale(data.boxListaPersonale),
-                new SetChiamateMarkers(data.listaChiamateInCorso)
+                new SetChiamateMarkers(data.listaChiamateInCorso),
+                new SetCentroMappa(data.centroMappaMarker),
+                new SetInitCentroMappa(data.centroMappaMarker),
             ]);
         }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5)));
-        dispatch([
-            new GetCentroMappa(), // TodoBackEnd: controller da fare
-        ]);
         patchState({
             loaded: true
         });

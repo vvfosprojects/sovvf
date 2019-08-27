@@ -26,7 +26,7 @@ export function wipeStatoRichiesta(stato: StatoRichiesta): string {
 }
 
 export function makeCentroMappa(coordinate: Coordinate, zoom: number): CentroMappa {
-    return new CentroMappa(coordinate, zoom);
+    return new CentroMappa(coordinate, null, zoom);
 }
 
 export function makeCoordinate(lat: number, long: number): Coordinate {

@@ -30,6 +30,7 @@ import { MarkerInfoWindowState } from './marker-info-window.state';
 import { MeteoMarkersState } from './meteo-markers.state';
 import { ChiamateMarkersState } from './chiamate-markers.state';
 import { MapsButtonsState } from './maps-buttons.state';
+import { MAPSOPTIONS } from '../../../../../core/settings/maps-options';
 
 
 export interface MarkerStateModel {
@@ -117,7 +118,7 @@ export class MarkerState {
             if (s && s.id === action.markerRichiestaSelezionato) {
                 const uniqueId = 'richiesta-' + action.markerRichiestaSelezionato;
                 dispatch(new GetMarkerDatiMeteo(uniqueId, s.localita.coordinate));
-                dispatch(new SetCentroMappa(new CentroMappa(s.localita.coordinate, 18)));
+                dispatch(new SetCentroMappa(new CentroMappa(s.localita.coordinate, null, MAPSOPTIONS.zoomSelezionato.richiesta)));
             }
         });
         patchState({
@@ -158,7 +159,7 @@ export class MarkerState {
                 const uniqueId = 'mezzo-' + action.markerMezzoSelezionato;
                 dispatch(new GetMarkerDatiMeteo(uniqueId, s.coordinate));
                 if (!action.composizione) {
-                    dispatch(new SetCentroMappa(new CentroMappa(s.coordinate, 18)));
+                    dispatch(new SetCentroMappa(new CentroMappa(s.coordinate, null, MAPSOPTIONS.zoomSelezionato.mezzo)));
                 }
             }
         });
@@ -198,7 +199,7 @@ export class MarkerState {
             if (s && s.codice === action.markerSedeSelezionato) {
                 const uniqueId = 'sede-' + action.markerSedeSelezionato;
                 dispatch(new GetMarkerDatiMeteo(uniqueId, s.coordinate));
-                dispatch(new SetCentroMappa(new CentroMappa(s.coordinate, 18)));
+                dispatch(new SetCentroMappa(new CentroMappa(s.coordinate, null, MAPSOPTIONS.zoomSelezionato.sede)));
             }
         });
         patchState({
