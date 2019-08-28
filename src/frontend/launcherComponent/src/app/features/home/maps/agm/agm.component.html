@@ -19,6 +19,7 @@
                      [zoom]="centroMappa.zoom"
                      (mapReady)="mappaCaricata($event)"
                      (centerChange)="centroCambiato($event)"
+                     (boundsChange)="areaCambiata($event)"
                      [clickableIcons]="false"
                      [disableDoubleClickZoom]="true"
                      [usePanning]="false"

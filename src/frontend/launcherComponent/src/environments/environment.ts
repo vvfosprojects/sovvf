@@ -20,7 +20,7 @@ export const environment = {
         },
         maps: {
             markers: {
-                richieste: '/api/SintesiRichiesteAssistenzaMarker',
+                richieste: '/api/Marker/GetRichieste',
                 sedi: '/api/SintesiSediMarker',
                 mezzi: '/api/SintesiMezziMarker',
                 chiamate: '/api/ChiamataInCorso'
