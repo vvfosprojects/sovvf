@@ -74,7 +74,7 @@ export class BoxNuovaPartenzaComponent {
                 returnClass += ' diagonal-stripes bg-lightdanger';
                 this.itemBloccato = true;
             } else if (!this.itemSelezionato) {
-                returnClass += this.itemHover ? ' border-warning' : ' border-success';
+                returnClass += this.itemHover ? ' border-warning' : '';
             }
 
             if (this.partenza.mezzoComposizione.istanteScadenzaSelezione) {

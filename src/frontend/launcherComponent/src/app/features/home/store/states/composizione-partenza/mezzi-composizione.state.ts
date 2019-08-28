@@ -159,19 +159,16 @@ export class MezziComposizioneState {
             })
         );
         dispatch(new UpdateMezzoBoxPartenza(action.mezzoComp));
-        // dispatch(new AddBookMezzoComposizione(action.mezzoComp));
         // console.log('Update mezzo composizione', action.mezzoComp);
     }
 
     @Action(ReducerSelectMezzoComposizione)
     reducerSelectMezzoComposizione({ getState, dispatch }: StateContext<MezziComposizioneStateStateModel>, action: SelectMezzoComposizione) {
         const state = getState();
-        const idBoxPartenzaSelezionato = this.store.selectSnapshot(BoxPartenzaState.idBoxPartenzaSelezionato);
         const boxPartenzaList = this.store.selectSnapshot(BoxPartenzaState.boxPartenzaList);
 
         // controllo se lo stato del mezzo è diverso da "In Viaggio" o "Sul Posto"
         if (!mezzoComposizioneBusy(action.mezzoComp.mezzo.stato)) {
-            dispatch(new SetMarkerMezzoSelezionato(action.mezzoComp.mezzo.codice, true));
             // controllo se è un mezzo prenotato oppure se è in prenotazione
             if (state.idMezziPrenotati.indexOf(action.mezzoComp.id) === -1 && state.idMezziInPrenotazione.indexOf(action.mezzoComp.id) === -1) {
                 let addBoxPartenza = false;
@@ -180,11 +177,8 @@ export class MezziComposizioneState {
                     dispatch(new AddBoxPartenza());
                 }
                 setTimeout(() => {
+                    dispatch(new SetMarkerMezzoSelezionato(action.mezzoComp.mezzo.codice, true));
                     dispatch(new SelectMezzoComposizione(action.mezzoComp));
-                    const boxPartenzaSelezionato = boxPartenzaList.filter(x => x.id === idBoxPartenzaSelezionato)[0];
-                    if (boxPartenzaSelezionato && (!boxPartenzaSelezionato.squadraComposizione || boxPartenzaSelezionato.squadraComposizione.length <= 0)) {
-                        dispatch(new GetListeComposizioneAvanzata(null, null, true));
-                    }
                     dispatch(new AddMezzoBoxPartenzaSelezionato(action.mezzoComp));
                 }, calcolaTimeout(addBoxPartenza));
             } else if (state.idMezziPrenotati.indexOf(action.mezzoComp.id) !== -1) {
@@ -210,7 +204,6 @@ export class MezziComposizioneState {
     @Action(SelectMezzoComposizioneFromMappa)
     selectMezzoComposizioneFromMappa({ getState, dispatch }: StateContext<MezziComposizioneStateStateModel>, action: SelectMezzoComposizioneFromMappa) {
         if (action && action.mezzoId) {
-            // console.log('selectMezzoComposizioneFromMappa', action.mezzoId);
             const mezzoComposizione = getState().mezziComposizione.filter(mezzo => mezzo.mezzo.codice === action.mezzoId);
             if (mezzoComposizione && mezzoComposizione[0]) {
                 const boxPartenzaList = this.store.selectSnapshot(BoxPartenzaState.boxPartenzaList);
@@ -223,17 +216,25 @@ export class MezziComposizioneState {
             } else {
                 console.error('id mezzo non trovato');
             }
+            // console.log('Mezzo selezionato dalla mappa', action.mezzoId);
         }
     }
 
     @Action(SelectMezzoComposizione)
-    selectMezzoComposizione({ getState, patchState, dispatch }: StateContext<MezziComposizioneStateStateModel>, action: SelectMezzoComposizione) {
+    selectMezzoComposizione({ patchState, dispatch }: StateContext<MezziComposizioneStateStateModel>, action: SelectMezzoComposizione) {
         patchState({
             idMezzoComposizioneSelezionato: action.mezzoComp.id,
             idMezzoSelezionato: action.mezzoComp.mezzo.codice
         });
-        // dispatch(new SelectMezzo(action.mezzoComp.mezzo.codice));
-        console.log('[SelectMezzoComposizione]', action.mezzoComp);
+        // console.log('[SelectMezzoComposizione]', action.mezzoComp);
+
+        // verifico se devo ricaricare la lista
+        const idBoxPartenzaSelezionato = this.store.selectSnapshot(BoxPartenzaState.idBoxPartenzaSelezionato);
+        const boxPartenzaList = this.store.selectSnapshot(BoxPartenzaState.boxPartenzaList);
+        const boxPartenzaSelezionato = boxPartenzaList.filter(x => x.id === idBoxPartenzaSelezionato)[0];
+        if (boxPartenzaSelezionato && (!boxPartenzaSelezionato.squadraComposizione || boxPartenzaSelezionato.squadraComposizione.length <= 0)) {
+            dispatch(new GetListeComposizioneAvanzata(null, null, true));
+        }
     }
 
     @Action(UnselectMezzoComposizione)
@@ -284,7 +285,7 @@ export class MezziComposizioneState {
     }
 
     @Action(AddBookMezzoComposizione)
-    addBookMezzoComposizione({ getState, setState, dispatch }: StateContext<MezziComposizioneStateStateModel>, action: AddBookMezzoComposizione) {
+    addBookMezzoComposizione({ getState, setState }: StateContext<MezziComposizioneStateStateModel>, action: AddBookMezzoComposizione) {
         const state = getState();
         const mezzoComp = state.mezziComposizione.length > 0 ? state.mezziComposizione.filter(x => x.mezzo.codice === action.mezzoComp.mezzo.codice)[0] : null;
         const idMezzoComp = mezzoComp ? mezzoComp.id : null;
@@ -300,7 +301,7 @@ export class MezziComposizioneState {
     }
 
     @Action(AddBookingMezzoComposizione)
-    addBookingMezzoComposizione({ getState, setState, dispatch }: StateContext<MezziComposizioneStateStateModel>, action: AddBookingMezzoComposizione) {
+    addBookingMezzoComposizione({ setState }: StateContext<MezziComposizioneStateStateModel>, action: AddBookingMezzoComposizione) {
         setState(
             patch({
                 idMezziInPrenotazione: insertItem(action.mezzoComp.id)
@@ -346,7 +347,6 @@ export class MezziComposizioneState {
             'mezzoComposizione': action.mezzoComp
         };
         this._compPartenzaService.resetMezzoPrenotato(mezzoPrenotatoObj).subscribe(() => {
-            // dispatch(new AddBoxPartenza());
         }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore Reset Prenotazione Mezzo', 'Il server web non risponde', 5)));
     }
 
@@ -377,7 +377,6 @@ export class MezziComposizioneState {
 
     @Action(RequestUnlockMezzoComposizione)
     requestUnlockMezzoComposizione({ patchState }: StateContext<MezziComposizioneStateStateModel>, action: RequestUnlockMezzoComposizione) {
-        // TODO: inserire chiamata a controller che richiederà lo sblocco del mezzo rispondendo nel service di SignalR.
         console.log(action.idMezzoComp);
     }
 
@@ -394,7 +393,6 @@ export class MezziComposizioneState {
 
         richiestaById$.subscribe(r => {
             richiestaDa = r;
-            // tslint:disable-next-line:max-line-length
             partenzaDaSganciare = richiestaDa.partenzeRichiesta && richiestaDa.partenzeRichiesta.length > 0 ? richiestaDa.partenzeRichiesta.filter(x => x.mezzo.codice === action.sganciamentoObj.idMezzoDaSganciare)[0] : null;
             // console.log('richiestaDa', richiestaDa);
         });
@@ -413,7 +411,6 @@ export class MezziComposizioneState {
                 (val) => {
                     switch (val) {
                         case 'ok':
-                            // TODO: ricavare la partenza tramite id del mezzo e idRichiesta del mezzo
                             const partenzaObj: ConfermaPartenze = {
                                 partenze: [partenzaDaSganciare],
                                 idRichiesta: this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione).codice,
@@ -425,14 +422,14 @@ export class MezziComposizioneState {
                             // console.log('Partenza sganciata', partenzaObj);
                             break;
                         case 'ko':
-                            console.log('Azione annullata');
+                            console.warn('Sganciamento Annullato');
                             break;
                     }
-                    console.log('Modal chiusa con val ->', val);
+                    // console.log('Modal Sganciamento chiusa con val ->', val);
                 },
-                (err) => console.error('Modal chiusa senza bottoni. Err ->', err)
+                (err) => console.error('Modal Sganciamento chiusa senza bottoni. Err ->', err)
             );
-            console.log('sganciamentoObj', action.sganciamentoObj);
+            console.log('Sganciamento Object', action.sganciamentoObj);
         } else {
             console.error('[SganciamentoMezzo] Errore! richiestaDa / partenzaDaSganciare non presente');
         }

@@ -93,7 +93,7 @@ export class SquadreComposizioneState {
             })
         );
         // dispatch(new SelectSquadra(action.squadraComp.squadra.id));
-        // console.log(action.idSquadra);
+        // console.log('Squadra Composizione selezionata', action.idSquadra);
     }
 
     @Action(UnselectSquadraComposizione)
@@ -105,7 +105,7 @@ export class SquadreComposizioneState {
             })
         );
         // dispatch(new UnselectSquadra(action.squadraComp.squadra.id));
-        // console.log(action.idSquadra);
+        // console.log('Squadra Composizione deselezionata', action.idSquadra);
     }
 
     @Action(SelectSquadra)
@@ -115,7 +115,7 @@ export class SquadreComposizioneState {
                 idSquadreSelezionate: append([action.idSquadra])
             })
         );
-        // console.log(action.idSquadra);
+        // console.log('Squadra selezionata', action.idSquadra);
     }
 
     @Action(UnselectSquadra)
@@ -125,7 +125,7 @@ export class SquadreComposizioneState {
                 idSquadreSelezionate: removeItem(id => id === action.idSquadra)
             })
         );
-        // console.log(action.idSquadra);
+        // console.log('Squadra deselezionata', action.idSquadra);
     }
 
     @Action(ClearSelectedSquadreComposizione)
@@ -138,23 +138,23 @@ export class SquadreComposizioneState {
     }
 
     @Action(HoverInSquadraComposizione)
-    hoverInMezzoComposizione({ getState, patchState }: StateContext<SquadreComposizioneStateStateModel>, action: HoverInSquadraComposizione) {
+    hoverInSquadraComposizione({ getState, patchState }: StateContext<SquadreComposizioneStateStateModel>, action: HoverInSquadraComposizione) {
         const state = getState();
         patchState({
             ...state,
             idSquadraHover: action.idSquadraComp
         });
-        // console.log(action.idMezzo);
+        // console.log('Hover in Squadra Composizione', action.idMezzo);
     }
 
     @Action(HoverOutSquadraComposizione)
-    hoverOutMezzoComposizione({ getState, patchState }: StateContext<SquadreComposizioneStateStateModel>, action: HoverOutSquadraComposizione) {
+    hoverOutSquadraComposizione({ getState, patchState }: StateContext<SquadreComposizioneStateStateModel>, action: HoverOutSquadraComposizione) {
         const state = getState();
         patchState({
             ...state,
             idSquadraHover: null
         });
-        // console.log(action.mezzoComp);
+        // console.log('Hover out Squadra Composizione', action.mezzoComp);
     }
 
     @Action(ClearSquadraComposizione)
