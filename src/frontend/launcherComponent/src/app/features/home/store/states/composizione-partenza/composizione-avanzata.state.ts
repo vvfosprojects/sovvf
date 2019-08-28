@@ -70,7 +70,6 @@ export class ComposizioneAvanzataState {
                 this.store.selectSnapshot(ComposizionePartenzaState.filtriSelezionati).CodiceTipoMezzo : [''];
         }
         filtri.idRichiesta = this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione) ? this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione).id : '';
-        // filtri['idRichiesta'] = '1';
 
         // imposto il codice del mezzo selezionato se presente
         const codiceMezzo = this.store.selectSnapshot(MezziComposizioneState.idMezzoComposizioneSelezionato);
@@ -80,6 +79,7 @@ export class ComposizioneAvanzataState {
         } else {
             filtri.CodiceMezzo = '';
         }
+
         // imposto il codice delle squadre selezionate se presenti
         const codiceSquadre = this.store.selectSnapshot(SquadreComposizioneState.idSquadreSelezionate);
 
@@ -89,7 +89,6 @@ export class ComposizioneAvanzataState {
             filtri.CodiceSquadra = [''];
         }
 
-        console.log(filtri);
         this.squadreService.getListeComposizioneAvanzata(filtri).subscribe((listeCompAvanzata: ListaComposizioneAvanzata) => {
             if (listeCompAvanzata) {
                 const listaBoxPartenza = this.store.selectSnapshot(BoxPartenzaState.boxPartenzaList);
@@ -100,7 +99,6 @@ export class ComposizioneAvanzataState {
                     this.store.dispatch(new SetListaSquadreComposizione(listeCompAvanzata.composizioneSquadre));
                 }
                 this.store.dispatch(new SetListeComposizioneAvanzata(listeCompAvanzata));
-                console.log('listeCompAvanzata', listeCompAvanzata);
                 if (listaBoxPartenza.length > 0) {
                     const listaBoxMezzi = listaBoxPartenza.filter(box => box.mezzoComposizione !== null);
                     if (listaBoxMezzi.length > 0) {
@@ -120,7 +118,8 @@ export class ComposizioneAvanzataState {
                     }
                 }
             }
-            // console.log('Composizione Partenza Avanzata Service');
+            // console.log('Filtri Composizione Avanzata', filtri);
+            // console.log('listeCompAvanzata', listeCompAvanzata);
         }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5)));
     }
 
