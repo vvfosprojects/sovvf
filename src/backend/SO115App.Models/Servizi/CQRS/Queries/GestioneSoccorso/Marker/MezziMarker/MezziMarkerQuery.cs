@@ -31,6 +31,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.Marker.MezziMarker
         /// <summary>
         ///   Il filtro utilizzato per la ricerca delle richieste di assistenza
         /// </summary>
-        public CentroMappa Filtro { get; set; }
+        public AreaMappa Filtro { get; set; }
     }
 }

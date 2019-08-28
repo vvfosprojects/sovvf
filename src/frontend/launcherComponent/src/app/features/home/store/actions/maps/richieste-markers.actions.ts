@@ -1,13 +1,24 @@
 import { RichiestaMarker } from '../../../maps/maps-model/richiesta-marker.model';
+import { AreaMappa } from '../../../maps/maps-model/area-mappa-model';
 
 export class GetRichiesteMarkers {
     static readonly type = '[Richieste Marker] Get Richieste Markers';
+
+    constructor(public areaMappa: AreaMappa) {
+    }
 }
 
 export class SetRichiesteMarkers {
     static readonly type = '[Richieste Marker] Set Richieste Markers';
 
     constructor(public richiesteMarkers: RichiestaMarker[]) {
+    }
+}
+
+export class PatchRichiesteMarkers {
+    static readonly type = '[Richieste Marker] Patch Richieste Markers';
+
+    constructor(public payload: RichiestaMarker[]) {
     }
 }
 

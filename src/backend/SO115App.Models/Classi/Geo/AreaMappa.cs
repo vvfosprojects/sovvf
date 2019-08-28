@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="SintesiSediMarkerQuery.cs" company="CNVVF">
+// <copyright file="AreaMappa.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,20 +17,23 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using CQRS.Queries;
-using SO115App.API.Models.Classi.Geo;
-using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
+using SO115App.API.Models.Classi.Condivise;
 
-namespace SO115App.API.Models.Servizi.CQRS.Queries.Marker.SediMarker
+namespace SO115App.API.Models.Classi.Geo
 {
     /// <summary>
-    ///   DTO di input
+    ///   Identifica un'area della mappa
     /// </summary>
-    public class SediMarkerQuery : IQuery<SediMarkerResult>
+    public class AreaMappa
     {
         /// <summary>
-        ///   Il filtro utilizzato per la ricerca delle richieste di assistenza
+        ///   Rappresenta il punto della mappa in alto a dx
         /// </summary>
-        public AreaMappa Filtro { get; set; }
+        public Coordinate TopRight { get; set; }
+
+        /// <summary>
+        ///   Rappresenta il punto della mappa in basso a sx
+        /// </summary>
+        public Coordinate BottomLeft { get; set; }
     }
 }

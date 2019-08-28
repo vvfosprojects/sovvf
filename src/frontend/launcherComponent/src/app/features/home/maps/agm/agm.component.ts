@@ -8,7 +8,12 @@ import { CentroMappa } from '../maps-model/centro-mappa.model';
 import { MarkerService } from '../service/marker-service/marker-service.service';
 import { Observable, Subscription } from 'rxjs';
 import { AgmService } from './agm-service.service';
-import { ControlPosition, FullscreenControlOptions, ZoomControlOptions } from '@agm/core/services/google-maps-types';
+import {
+    ControlPosition,
+    FullscreenControlOptions,
+    LatLngBounds,
+    ZoomControlOptions
+} from '@agm/core/services/google-maps-types';
 import { MeteoMarker } from '../maps-model/meteo-marker.model';
 import { DirectionInterface } from '../maps-interface/direction-interface';
 import { CachedMarker } from '../maps-model/cached-marker.model';
@@ -21,9 +26,11 @@ import { MouseE } from '../../../../shared/enum/mouse-e.enum';
 import { MapsDirectionState } from '../../store/states/maps/maps-direction.state';
 import { markerColor, markerColorRichiesta } from '../../../../shared/helper/function-colori';
 import { StatoRichiesta } from '../../../../shared/enum/stato-richiesta.enum';
-import { wipeStatoRichiesta } from '../../../../shared/helper/function';
+import { makeAreaMappa, wipeStatoRichiesta } from '../../../../shared/helper/function';
 import { MapsButtonsState } from '../../store/states/maps/maps-buttons.state';
 import { ButtonControlAnimation, CustomButtonsMaps } from '../maps-interface/maps-custom-buttons';
+import { AreaMappa } from '../maps-model/area-mappa-model';
+import { Coordinate } from '../../../../shared/model/coordinate.model';
 
 declare var google: any;
 
@@ -207,6 +214,10 @@ export class AgmComponent implements OnDestroy {
 
     centroCambiato(centro: any): void {
         this.agmService.centro$.next(centro);
+    }
+
+    areaCambiata(bounds: LatLngBounds): void {
+        this.agmService.area$.next(makeAreaMappa(bounds));
     }
 
     mapClick(event: any) {

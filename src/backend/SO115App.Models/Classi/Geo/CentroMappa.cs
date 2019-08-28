@@ -32,11 +32,6 @@ namespace SO115App.API.Models.Classi.Geo
         public Coordinate CoordinateCentro { get; set; }
 
         /// <summary>
-        ///   Restituisce le coordinate del punto utilizzato per calcolare il raggio dell'area selezionata
-        /// </summary>
-        public Coordinate CoordinateRaggio { get; set; }
-
-        /// <summary>
         ///   Restituisce il livello di Zoom utilizzato sulla mappa
         /// </summary>
         public int Zoom { get; set; }

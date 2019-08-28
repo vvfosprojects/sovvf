@@ -29,10 +29,10 @@ namespace SO115App.FakePersistenceJSon.Marker
 {
     public class GetRichiesteMarker : IGetRichiesteMarker
     {
-        public List<SintesiRichiestaMarker> GetListaRichiesteMarker(CentroMappa FiltroCentroMappa)
+        public List<SintesiRichiestaMarker> GetListaRichiesteMarker(AreaMappa filtroAreaMappa)
         {
+            List<SintesiRichiestaMarker> ListaSintesiRichiesteMarker = new List<SintesiRichiestaMarker>();
             List<SintesiRichiestaMarker> ListaSintesiRichieste = new List<SintesiRichiestaMarker>();
-
             string filepath = "Fake/ListaRichiesteAssistenza.json";
             string json;
 
@@ -41,7 +41,17 @@ namespace SO115App.FakePersistenceJSon.Marker
                 json = r.ReadToEnd();
             }
 
-            ListaSintesiRichieste = JsonConvert.DeserializeObject<List<SintesiRichiestaMarker>>(json);
+            ListaSintesiRichiesteMarker = JsonConvert.DeserializeObject<List<SintesiRichiestaMarker>>(json);
+
+            foreach (SintesiRichiestaMarker richiesta in ListaSintesiRichiesteMarker)
+            {
+                if (((richiesta.Localita.Coordinate.Latitudine >= filtroAreaMappa.BottomLeft.Latitudine) && (richiesta.Localita.Coordinate.Latitudine <= filtroAreaMappa.TopRight.Latitudine)) &&
+                    ((richiesta.Localita.Coordinate.Longitudine >= filtroAreaMappa.BottomLeft.Longitudine) && (richiesta.Localita.Coordinate.Longitudine <= filtroAreaMappa.TopRight.Longitudine))
+                  )
+                {
+                    ListaSintesiRichieste.Add(richiesta);
+                }
+            }
 
             if (ListaSintesiRichieste != null)
             {

@@ -50,8 +50,8 @@ namespace SO115App.API.Controllers
         /// <summary>
         ///   Metodo che restituisce i marker di tutte le sedi in un quadrante
         /// </summary>
-        [HttpGet]
-        public async Task<IActionResult> GetSedeMarker(CentroMappa filtoCentroMappa)
+        [HttpPost("GetSedi")]
+        public async Task<IActionResult> GetSedi([FromBody]AreaMappa filtoCentroMappa)
         {
             try
             {
@@ -71,7 +71,8 @@ namespace SO115App.API.Controllers
         /// <summary>
         ///   Metodo che restituisce i marker di tutte le richieste in un quadrante
         /// </summary>
-        public async Task<IActionResult> GetRichiesteMarker(CentroMappa filtoCentroMappa)
+        [HttpPost("GetRichieste")]
+        public async Task<IActionResult> GetRichieste([FromBody]AreaMappa filtoCentroMappa)
         {
             try
             {
@@ -91,7 +92,8 @@ namespace SO115App.API.Controllers
         /// <summary>
         ///   Metodo che restituisce i marker di tutti i mezzi in un quadrante
         /// </summary>
-        public async Task<IActionResult> GetMezziMarker(CentroMappa filtoCentroMappa)
+        [HttpPost("GetMezzi")]
+        public async Task<IActionResult> GetMezzi([FromBody]AreaMappa filtoCentroMappa)
         {
             try
             {
