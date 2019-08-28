@@ -118,7 +118,7 @@ export class MarkerState {
             if (s && s.id === action.markerRichiestaSelezionato) {
                 const uniqueId = 'richiesta-' + action.markerRichiestaSelezionato;
                 dispatch(new GetMarkerDatiMeteo(uniqueId, s.localita.coordinate));
-                dispatch(new SetCentroMappa(new CentroMappa(s.localita.coordinate, null, MAPSOPTIONS.zoomSelezionato.richiesta)));
+                dispatch(new SetCentroMappa(new CentroMappa(s.localita.coordinate, MAPSOPTIONS.zoomSelezionato.richiesta)));
             }
         });
         patchState({
@@ -159,7 +159,7 @@ export class MarkerState {
                 const uniqueId = 'mezzo-' + action.markerMezzoSelezionato;
                 dispatch(new GetMarkerDatiMeteo(uniqueId, s.coordinate));
                 if (!action.composizione) {
-                    dispatch(new SetCentroMappa(new CentroMappa(s.coordinate, null, MAPSOPTIONS.zoomSelezionato.mezzo)));
+                    dispatch(new SetCentroMappa(new CentroMappa(s.coordinate, MAPSOPTIONS.zoomSelezionato.mezzo)));
                 }
             }
         });
@@ -199,7 +199,7 @@ export class MarkerState {
             if (s && s.codice === action.markerSedeSelezionato) {
                 const uniqueId = 'sede-' + action.markerSedeSelezionato;
                 dispatch(new GetMarkerDatiMeteo(uniqueId, s.coordinate));
-                dispatch(new SetCentroMappa(new CentroMappa(s.coordinate, null, MAPSOPTIONS.zoomSelezionato.sede)));
+                dispatch(new SetCentroMappa(new CentroMappa(s.coordinate, MAPSOPTIONS.zoomSelezionato.sede)));
             }
         });
         patchState({

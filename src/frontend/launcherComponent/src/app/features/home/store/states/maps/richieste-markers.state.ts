@@ -6,7 +6,7 @@ import {
     ClearRichiesteMarkers,
     GetRichiesteMarkers,
     InsertRichiestaMarker,
-    OpacizzaRichiesteMarkers,
+    OpacizzaRichiesteMarkers, PatchRichiesteMarkers,
     RemoveRichiestaMarker,
     SetRichiestaMarkerById,
     SetRichiesteMarkers,
@@ -60,8 +60,8 @@ export class RichiesteMarkersState {
     }
 
     @Action(GetRichiesteMarkers)
-    getRichiesteMarkers({ dispatch }: StateContext<RichiesteMarkersStateModel>) {
-        this._richieste.getRichiesteMarkers().subscribe((data: RichiestaMarker[]) => {
+    getRichiesteMarkers({ dispatch }: StateContext<RichiesteMarkersStateModel>, action: GetRichiesteMarkers) {
+        this._richieste.getRichiesteMarkers(action.areaMappa).subscribe((data: RichiestaMarker[]) => {
             dispatch(new SetRichiesteMarkers(data));
         }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5)));
     }
@@ -69,13 +69,20 @@ export class RichiesteMarkersState {
     @Action(SetRichiesteMarkers)
     setRichiesteMarkers({ dispatch }: StateContext<RichiesteMarkersStateModel>, action: SetRichiesteMarkers) {
         if (action.richiesteMarkers) {
-            dispatch(new AddRichiesteMarkers(action.richiesteMarkers));
+            dispatch(new PatchRichiesteMarkers(action.richiesteMarkers));
             this.mapIsLoaded$.subscribe(isLoaded => {
                 if (isLoaded) {
                     dispatch(new ToggleAnimation());
                 }
             });
         }
+    }
+
+    @Action(PatchRichiesteMarkers)
+    patchRichiesteMarkers({ patchState }: StateContext<RichiesteMarkersStateModel>, { payload }: PatchRichiesteMarkers) {
+        patchState({
+            richiesteMarkers: payload.map(item => RichiesteMarkerAdapterService.adapt(item))
+        });
     }
 
     @Action(AddRichiesteMarkers)

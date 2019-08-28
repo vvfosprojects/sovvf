@@ -7,6 +7,8 @@ import { StatoMezzoActions } from '../enum/stato-mezzo-actions.enum';
 import { SintesiRichiesta } from '../model/sintesi-richiesta.model';
 import { StatoRichiestaActions } from '../enum/stato-richiesta-actions.enum';
 import { Tipologia } from '../model/tipologia.model';
+import { LatLngBounds } from '@agm/core';
+import { AreaMappa } from '../../features/home/maps/maps-model/area-mappa-model';
 
 export function makeCopy(value): any {
     return (JSON.parse(JSON.stringify(value)));
@@ -26,11 +28,18 @@ export function wipeStatoRichiesta(stato: StatoRichiesta): string {
 }
 
 export function makeCentroMappa(coordinate: Coordinate, zoom: number): CentroMappa {
-    return new CentroMappa(coordinate, null, zoom);
+    return new CentroMappa(coordinate, zoom);
 }
 
 export function makeCoordinate(lat: number, long: number): Coordinate {
     return new Coordinate(lat, long);
+}
+
+export function makeAreaMappa(bounds: LatLngBounds): AreaMappa {
+    return new AreaMappa(
+        new Coordinate(bounds.getNorthEast().lat(), bounds.getNorthEast().lng()),
+        new Coordinate(bounds.getSouthWest().lat(), bounds.getSouthWest().lng())
+    );
 }
 
 export function degToCompass(num: number) {

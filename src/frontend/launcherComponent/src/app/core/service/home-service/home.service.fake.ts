@@ -21,7 +21,6 @@ export class HomeServiceFake {
             new GetRichieste(),
             new GetSediMarkers(),
             new GetMezziMarkers(),
-            new GetRichiesteMarkers(),
             new GetBoxRichieste(),
             new GetBoxMezzi(),
             new GetBoxPersonale(),
