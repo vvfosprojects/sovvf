@@ -25,6 +25,6 @@ namespace SO115App.Models.Servizi.Infrastruttura.Marker
 {
     public interface IGetSediMarker
     {
-        List<SedeMarker> GetListaSediMarker(CentroMappa Filtro);
+        List<SedeMarker> GetListaSediMarker(AreaMappa Filtro);
     }
 }

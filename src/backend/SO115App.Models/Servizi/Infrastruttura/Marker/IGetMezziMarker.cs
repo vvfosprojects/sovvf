@@ -25,6 +25,6 @@ namespace SO115App.Models.Servizi.Infrastruttura.Marker
 {
     public interface IGetMezziMarker
     {
-        List<MezzoMarker> GetListaMezziMarker(CentroMappa Filtro);
+        List<MezzoMarker> GetListaMezziMarker(AreaMappa Filtro);
     }
 }

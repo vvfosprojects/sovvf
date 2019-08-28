@@ -29,8 +29,9 @@ namespace SO115App.FakePersistenceJSon.Marker
 {
     public class GetSediMarker : IGetSediMarker
     {
-        public List<SedeMarker> GetListaSediMarker(CentroMappa FiltroCentroMappa)
+        public List<SedeMarker> GetListaSediMarker(AreaMappa filtroAreaMappa)
         {
+            List<SedeMarker> ListaSedi = new List<SedeMarker>();
             string filepath = CostantiJson.MarkerSedi;
             string json;
             using (StreamReader r = new StreamReader(filepath))
@@ -38,7 +39,17 @@ namespace SO115App.FakePersistenceJSon.Marker
                 json = r.ReadToEnd();
             }
 
-            List<SedeMarker> ListaSedi = JsonConvert.DeserializeObject<List<SedeMarker>>(json);
+            List<SedeMarker> ListaSediMarker = JsonConvert.DeserializeObject<List<SedeMarker>>(json);
+
+            foreach (SedeMarker sede in ListaSediMarker)
+            {
+                if (((sede.Coordinate.Latitudine >= filtroAreaMappa.BottomLeft.Latitudine) && (sede.Coordinate.Latitudine <= filtroAreaMappa.TopRight.Latitudine)) &&
+                    ((sede.Coordinate.Longitudine >= filtroAreaMappa.BottomLeft.Longitudine) && (sede.Coordinate.Latitudine <= filtroAreaMappa.TopRight.Longitudine))
+                  )
+                {
+                    ListaSedi.Add(sede);
+                }
+            }
 
             return ListaSedi;
         }

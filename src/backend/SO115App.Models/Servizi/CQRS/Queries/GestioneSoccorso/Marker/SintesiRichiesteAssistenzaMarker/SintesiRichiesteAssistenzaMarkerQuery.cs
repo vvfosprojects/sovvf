@@ -33,6 +33,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.Marker.SintesiRichiesteAssist
         /// </summary>
         public FiltroRicercaRichiesteAssistenza Filtro { get; set; }
 
-        public CentroMappa FiltroCentroMappa { get; set; }
+        public AreaMappa FiltroCentroMappa { get; set; }
     }
 }

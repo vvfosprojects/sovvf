@@ -25,6 +25,6 @@ namespace SO115App.Models.Servizi.Infrastruttura.Marker
 {
     public interface IGetRichiesteMarker
     {
-        List<SintesiRichiestaMarker> GetListaRichiesteMarker(CentroMappa Filtro);
+        List<SintesiRichiestaMarker> GetListaRichiesteMarker(AreaMappa Filtro);
     }
 }

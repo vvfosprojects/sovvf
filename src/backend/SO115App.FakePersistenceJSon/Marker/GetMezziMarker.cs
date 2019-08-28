@@ -29,8 +29,9 @@ namespace SO115App.FakePersistenceJSon.Marker
 {
     public class GetMezziMarker : IGetMezziMarker
     {
-        public List<MezzoMarker> GetListaMezziMarker(CentroMappa filtroCentroMappa)
+        public List<MezzoMarker> GetListaMezziMarker(AreaMappa filtroAreaMappa)
         {
+            List<MezzoMarker> ListaMezzi = new List<MezzoMarker>();
             string filepath = CostantiJson.MezziComposizione;
             string json;
             using (StreamReader r = new StreamReader(filepath))
@@ -38,9 +39,19 @@ namespace SO115App.FakePersistenceJSon.Marker
                 json = r.ReadToEnd();
             }
 
-            List<MezzoMarker> ListaRichieste = JsonConvert.DeserializeObject<List<MezzoMarker>>(json);
+            List<MezzoMarker> ListaMezziMarker = JsonConvert.DeserializeObject<List<MezzoMarker>>(json);
 
-            return ListaRichieste;
+            foreach (MezzoMarker mezzo in ListaMezziMarker)
+            {
+                if (((mezzo.Coordinate.Latitudine >= filtroAreaMappa.BottomLeft.Latitudine) && (mezzo.Coordinate.Latitudine <= filtroAreaMappa.TopRight.Latitudine)) &&
+                    ((mezzo.Coordinate.Longitudine >= filtroAreaMappa.BottomLeft.Longitudine) && (mezzo.Coordinate.Latitudine <= filtroAreaMappa.TopRight.Longitudine))
+                  )
+                {
+                    ListaMezzi.Add(mezzo);
+                }
+            }
+
+            return ListaMezzi;
         }
     }
 }
