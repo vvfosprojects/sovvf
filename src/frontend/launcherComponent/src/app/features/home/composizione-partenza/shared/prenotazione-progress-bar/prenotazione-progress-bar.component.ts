@@ -82,7 +82,7 @@ export class PrenotazioneProgressBarComponent implements OnInit, OnChanges, OnDe
 
                 if (this.currentTimeout <= 0) {
                     const compMode = this.store.selectSnapshot(ComposizionePartenzaState).composizioneMode;
-                    if (!this.graphic || compMode === Composizione.Veloce) {
+                    if (this.graphic || compMode === Composizione.Veloce) {
                         this.store.dispatch(new RequestRemoveBookMezzoComposizione(this.mezzoComp));
                     }
                     this.scadenza = null;

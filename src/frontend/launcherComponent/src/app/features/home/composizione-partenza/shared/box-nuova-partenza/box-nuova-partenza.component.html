@@ -1,86 +1,84 @@
 <div class="card cursor-pointer p-2 mb-2" (click)="onClick()" (mouseleave)="onHoverOut()" (mouseenter)="onHoverIn()"
-     [ngClass]="ngClass()">
-    <i *ngIf="elimina" id="elimina" ngbTooltip="Elimina" class="fa fa-fw fa-window-close"
-       (click)="onElimina($event)"></i>
-    <div class="row">
-        <div *ngIf="!partenza.mezzoComposizione" class="col text-danger">
-            <i class="fa fa-truck mr-1"></i>
-            <span ngbTooltip="Nessun mezzo selezionato"><b>-</b></span>
-        </div>
-        <div *ngIf="partenza.mezzoComposizione" class="col">
-            <div class="nowrap">
-                <i class="guida fa fa-truck mr-1"
-                   [ngClass]="_iconaStatiClass(partenza.mezzoComposizione.mezzo.stato)"
-                   ngbTooltip="Mezzo {{partenza.mezzoComposizione.mezzo.stato}}" placement="top"></i>
-                <span class="font-weight-bold mr-1">{{partenza.mezzoComposizione.mezzo.descrizione}}</span>
-                <span class="font-weight-normal">{{partenza.mezzoComposizione.mezzo.genere}}</span>
-            </div>
-        </div>
-        <div *ngIf="partenza.squadraComposizione?.length === 0" class="col text-danger">
-            <i class="fa fa-group mr-1"></i>
-            <span ngbTooltip="Nessuna squadra selezionata"><b>-</b></span>
-        </div>
-        <div *ngIf="partenza.squadraComposizione?.length === 1" class="col">
-            <div class="nowrap">
-                <i class="guida fa fa-group mr-1"
-                   [ngClass]="{'text-danger': _checkSquadraOccupata(partenza.squadraComposizione)}"></i><span>{{partenza.squadraComposizione[0].squadra.nome}}</span>
-            </div>
-        </div>
-        <div *ngIf="partenza.squadraComposizione?.length > 1" class="col">
+  [ngClass]="ngClass()">
+  <i *ngIf="elimina" id="elimina" ngbTooltip="Elimina" class="fa fa-fw fa-window-close" (click)="onElimina($event)"></i>
+  <div class="row">
+    <div *ngIf="!partenza.mezzoComposizione" class="col text-danger">
+      <i class="fa fa-truck mr-1"></i>
+      <span ngbTooltip="Nessun mezzo selezionato"><b>-</b></span>
+    </div>
+    <div *ngIf="partenza.mezzoComposizione" class="col">
+      <div class="nowrap">
+        <i class="guida fa fa-truck mr-1" [ngClass]="_iconaStatiClass(partenza.mezzoComposizione.mezzo.stato)"
+          ngbTooltip="Mezzo {{partenza.mezzoComposizione.mezzo.stato}}" placement="top"></i>
+        <span class="font-weight-bold mr-1">{{partenza.mezzoComposizione.mezzo.descrizione}}</span>
+        <span class="font-weight-normal">{{partenza.mezzoComposizione.mezzo.genere}}</span>
+      </div>
+    </div>
+    <div *ngIf="partenza.squadraComposizione?.length === 0" class="col text-danger">
+      <i class="fa fa-group mr-1"></i>
+      <span ngbTooltip="Nessuna squadra selezionata"><b>-</b></span>
+    </div>
+    <div *ngIf="partenza.squadraComposizione?.length === 1" class="col">
+      <div class="nowrap">
+        <i class="guida fa fa-group mr-1"
+          [ngClass]="{'text-danger': _checkSquadraOccupata(partenza.squadraComposizione)}"></i><span>{{partenza.squadraComposizione[0].squadra.nome}}</span>
+      </div>
+    </div>
+    <div *ngIf="partenza.squadraComposizione?.length > 1" class="col">
       <span [ngbPopover]="piusquadre" popoverTitle="Squadre" triggers="mouseenter:mouseleave">
-          <i class="guida fa fa-group mr-1"
-             [ngClass]="{'text-danger': _checkSquadraOccupata(partenza.squadraComposizione)}"></i><small>{{partenza.squadraComposizione.length}}
+        <i class="guida fa fa-group mr-1"
+          [ngClass]="{'text-danger': _checkSquadraOccupata(partenza.squadraComposizione)}"></i><small>{{partenza.squadraComposizione.length}}
           squadre</small></span>
-            <ng-template #piusquadre>
-                <div *ngFor="let sC of partenza.squadraComposizione" class="text-center nowrap">
-                    <span class="d-inline-block mb-1">{{sC.squadra.nome}}</span>
-                </div>
-            </ng-template>
+      <ng-template #piusquadre>
+        <div *ngFor="let sC of partenza.squadraComposizione" class="text-center nowrap">
+          <span class="d-inline-block mb-1">{{sC.squadra.nome}}</span>
         </div>
+      </ng-template>
     </div>
-    <div class="row">
-        <!-- Km da percorrere -->
-        <div *ngIf="partenza.mezzoComposizione?.km" class="col nowrap">
-            <i class="guida fa fa-road mr-1"></i>
-            <span>{{partenza.mezzoComposizione.km}} km</span>
-        </div>
-        <div *ngIf="!partenza.mezzoComposizione?.km" class="col nowrap text-danger">
-            <i class="fa fa-road mr-1 text-danger"></i>
-            <span ngbTooltip="Nessun mezzo selezionato"><b>-</b></span>
-        </div>
-        <!-- Tempo di percorrenza -->
-        <div *ngIf="partenza.mezzoComposizione?.tempoPercorrenza" class="col">
-            <i class="guida fa fa-clock-o mr-1"></i>
-            <span>{{partenza.mezzoComposizione.tempoPercorrenza}} min</span>
-        </div>
-        <div *ngIf="!partenza.mezzoComposizione?.tempoPercorrenza" class="col text-danger">
-            <i class="fa fa-clock-o mr-1 text-danger"></i>
-            <span ngbTooltip="Nessun mezzo selezionato"><b>-</b></span>
-        </div>
+  </div>
+  <div class="row">
+    <!-- Km da percorrere -->
+    <div *ngIf="partenza.mezzoComposizione?.km" class="col nowrap">
+      <i class="guida fa fa-road mr-1"></i>
+      <span>{{partenza.mezzoComposizione.km}} km</span>
     </div>
-    <!-- Distaccamento di appartenenza -->
-    <div class="row">
-        <div *ngIf="partenza.mezzoComposizione?.mezzo.distaccamento" class="col">
-            <i class="guida fa fa-map-marker mr-2 ml-1"></i>
-            <span class="badge"
-                  [ngClass]="badgeDistaccamentoClass()">{{partenza.mezzoComposizione.mezzo.distaccamento.descrizione}}</span>
-        </div>
-        <div *ngIf="!partenza.mezzoComposizione?.mezzo.distaccamento" class="col text-danger">
-            <i class="fa fa-map-marker mr-2 ml-1"></i>
-            <span ngbTooltip="Nessun mezzo selezionato"><b>-</b></span>
-        </div>
-        <div *ngIf="alert && boxValidationClass().tooltip && boxValidationClass().result" class="col">
-            <i class="mt-1" [ngbTooltip]="boxValidationClass().tooltip" [ngClass]="boxValidationClass().result"></i>
-        </div>
+    <div *ngIf="!partenza.mezzoComposizione?.km" class="col nowrap text-danger">
+      <i class="fa fa-road mr-1 text-danger"></i>
+      <span ngbTooltip="Nessun mezzo selezionato"><b>-</b></span>
     </div>
-    <div class="row">
-        <div *ngIf="partenza.mezzoComposizione?.istanteScadenzaSelezione" class="pt-2 col-10">
-            <app-prenotazione-progress-bar [mezzoComp]="partenza.mezzoComposizione"
-                                           [itemPrenotato]="!!partenza.mezzoComposizione?.istanteScadenzaSelezione"
-                                           [graphic]="true"></app-prenotazione-progress-bar>
-        </div>
-        <div *ngIf="partenza.mezzoComposizione?.istanteScadenzaSelezione" class="text-center col-2 pl-0">
-            <i class="fa fa-lg fa-clock-o" ngbTooltip="Richiedi reset timer" (click)="onResetTimeout($event)"></i>
-        </div>
+    <!-- Tempo di percorrenza -->
+    <div *ngIf="partenza.mezzoComposizione?.tempoPercorrenza" class="col">
+      <i class="guida fa fa-clock-o mr-1"></i>
+      <span>{{partenza.mezzoComposizione.tempoPercorrenza}} min</span>
     </div>
+    <div *ngIf="!partenza.mezzoComposizione?.tempoPercorrenza" class="col text-danger">
+      <i class="fa fa-clock-o mr-1 text-danger"></i>
+      <span ngbTooltip="Nessun mezzo selezionato"><b>-</b></span>
+    </div>
+  </div>
+  <!-- Distaccamento di appartenenza -->
+  <div class="row">
+    <div *ngIf="partenza.mezzoComposizione?.mezzo.distaccamento" class="col">
+      <i class="guida fa fa-map-marker mr-2 ml-1"></i>
+      <span class="badge"
+        [ngClass]="badgeDistaccamentoClass()">{{partenza.mezzoComposizione.mezzo.distaccamento.descrizione}}</span>
+    </div>
+    <div *ngIf="!partenza.mezzoComposizione?.mezzo.distaccamento" class="col text-danger">
+      <i class="fa fa-map-marker mr-2 ml-1"></i>
+      <span ngbTooltip="Nessun mezzo selezionato"><b>-</b></span>
+    </div>
+    <div *ngIf="alert && boxValidationClass().tooltip && boxValidationClass().result" class="col">
+      <i class="mt-1" [ngbTooltip]="boxValidationClass().tooltip" [ngClass]="boxValidationClass().result"></i>
+    </div>
+  </div>
+  <div class="row">
+    <div *ngIf="partenza.mezzoComposizione?.istanteScadenzaSelezione" class="pt-2 col-10">
+      <app-prenotazione-progress-bar [mezzoComp]="partenza.mezzoComposizione"
+        [itemPrenotato]="!!partenza.mezzoComposizione?.istanteScadenzaSelezione" [graphic]="true">
+      </app-prenotazione-progress-bar>
+    </div>
+    <div *ngIf="partenza.mezzoComposizione?.istanteScadenzaSelezione" class="text-center col-2 pl-0">
+      <i class="fa fa-lg fa-clock-o" ngbTooltip="Richiedi reset timer" (click)="onResetTimeout($event)"></i>
+    </div>
+  </div>
 </div>

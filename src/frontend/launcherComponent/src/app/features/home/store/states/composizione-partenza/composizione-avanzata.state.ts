@@ -110,7 +110,7 @@ export class ComposizioneAvanzataState {
                         });
                         if (mezziOccupati.length > 0) {
                             listaBoxPartenza.forEach(box => {
-                                if (mezziOccupati.includes(box.mezzoComposizione.id)) {
+                                if (box.mezzoComposizione && mezziOccupati.includes(box.mezzoComposizione.id)) {
                                     this.store.dispatch(new RemoveBoxPartenza(box));
                                 }
                             });
@@ -118,8 +118,8 @@ export class ComposizioneAvanzataState {
                     }
                 }
             }
-            // console.log('Filtri Composizione Avanzata', filtri);
-            // console.log('listeCompAvanzata', listeCompAvanzata);
+            console.log('Filtri Composizione Avanzata', filtri);
+            console.log('listeCompAvanzata', listeCompAvanzata);
         }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5)));
     }
 
