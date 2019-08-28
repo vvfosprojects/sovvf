@@ -21,6 +21,7 @@ import { ToggleAnimation } from '../../actions/maps/maps-buttons.actions';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
 import { RichiesteMarkerAdapterService } from '../../../../../core/service/maps-service/richieste-marker/adapters/richieste-marker-adapter.service';
 import { ToastrType } from '../../../../../shared/enum/toastr';
+import { SetMarkerLoading } from '../../actions/home.actions';
 
 export interface RichiesteMarkersStateModel {
     richiesteMarkers: RichiestaMarker[];
@@ -63,9 +64,17 @@ export class RichiesteMarkersState {
 
     @Action(GetRichiesteMarkers)
     getRichiesteMarkers({ dispatch }: StateContext<RichiesteMarkersStateModel>, action: GetRichiesteMarkers) {
+        dispatch(new SetMarkerLoading(true));
         this._richieste.getRichiesteMarkers(action.areaMappa).subscribe((data: RichiestaMarker[]) => {
-            dispatch(new SetRichiesteMarkers(data));
-        }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5)));
+                dispatch([
+                    new SetRichiesteMarkers(data),
+                    new SetMarkerLoading(false)
+                ]);
+            }, () => dispatch([
+                new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5),
+                new SetMarkerLoading(false)
+            ])
+        );
     }
 
     @Action(SetRichiesteMarkers)
@@ -81,7 +90,7 @@ export class RichiesteMarkersState {
                 /**
                  * marker da aggiungere
                  */
-                action.richiesteMarkers.forEach( richiesta => {
+                action.richiesteMarkers.forEach(richiesta => {
                     actionRichiesteId.push(richiesta.id);
                     if (!state.richiesteMarkersId.includes(richiesta.id)) {
                         richiesteMarkerAdd.push(richiesta);
@@ -90,7 +99,7 @@ export class RichiesteMarkersState {
                 /**
                  * marker da rimuovere
                  */
-                state.richiesteMarkers.forEach( richiesta => {
+                state.richiesteMarkers.forEach(richiesta => {
                     if (!actionRichiesteId.includes(richiesta.id)) {
                         richiesteMarkerRemoveId.push(richiesta.id);
                     }
@@ -99,7 +108,7 @@ export class RichiesteMarkersState {
                  * tolgo i marker dallo stato
                  */
                 if (richiesteMarkerRemoveId.length > 0) {
-                    richiesteMarkerRemoveId.forEach( id => {
+                    richiesteMarkerRemoveId.forEach(id => {
                         dispatch(new RemoveRichiestaMarker(id));
                     });
                 }

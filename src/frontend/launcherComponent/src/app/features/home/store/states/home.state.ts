@@ -1,5 +1,5 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
-import { ClearDataHome, GetDataHome, SetMapLoaded } from '../actions/home.actions';
+import { ClearDataHome, GetDataHome, SetMapLoaded, SetMarkerLoading } from '../actions/home.actions';
 import { ClearRichieste, SetRichieste } from '../actions/richieste/richieste.actions';
 import { ClearSediMarkers } from '../actions/maps/sedi-markers.actions';
 import {
@@ -22,11 +22,13 @@ import { SetFiltriComposizione } from '../actions/composizione-partenza/filtri-c
 export interface HomeStateModel {
     loaded: boolean;
     mapIsLoaded: boolean;
+    markerLoading: boolean;
 }
 
 export const HomeStateDefaults: HomeStateModel = {
     loaded: false,
-    mapIsLoaded: false
+    mapIsLoaded: false,
+    markerLoading: false
 };
 
 @State<HomeStateModel>({
@@ -38,6 +40,11 @@ export class HomeState {
     @Selector()
     static mapIsLoaded(state: HomeStateModel) {
         return state.mapIsLoaded;
+    }
+
+    @Selector()
+    static markerOnLoading(state: HomeStateModel) {
+        return state.markerLoading;
     }
 
     constructor(private homeService: HomeService) {
@@ -89,4 +96,12 @@ export class HomeState {
             mapIsLoaded: true
         });
     }
+
+    @Action(SetMarkerLoading)
+    setMarkerLoading({ patchState }: StateContext<HomeStateModel>, action: SetMarkerLoading) {
+        patchState({
+            markerLoading: action.loading
+        });
+    }
+
 }

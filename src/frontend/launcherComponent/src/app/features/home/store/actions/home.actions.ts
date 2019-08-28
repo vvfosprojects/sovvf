@@ -1,12 +1,19 @@
 export class ClearDataHome {
-    static readonly type = '[Home Component] Clear Data';
+    static readonly type = '[Home] Clear Data';
 }
 
 export class GetDataHome {
-    static readonly type = '[Home Component] Get Data from API';
+    static readonly type = '[Home] Get Data from API';
 }
 
 export class SetMapLoaded {
-    static readonly type = '[Home Component] Map is fully loaded';
+    static readonly type = '[Home] Map is fully loaded';
+}
+
+export class SetMarkerLoading {
+    static readonly type = '[Home] Marker on loading';
+
+    constructor(public loading: boolean) {
+    }
 }
 
