@@ -29,8 +29,7 @@ import { StatoRichiesta } from '../../../../shared/enum/stato-richiesta.enum';
 import { makeAreaMappa, wipeStatoRichiesta } from '../../../../shared/helper/function';
 import { MapsButtonsState } from '../../store/states/maps/maps-buttons.state';
 import { ButtonControlAnimation, CustomButtonsMaps } from '../maps-interface/maps-custom-buttons';
-import { AreaMappa } from '../maps-model/area-mappa-model';
-import { Coordinate } from '../../../../shared/model/coordinate.model';
+import { MapsOptionsInterface } from '../../../../core/settings/maps-options';
 
 declare var google: any;
 
@@ -57,7 +56,7 @@ export class AgmComponent implements OnDestroy {
     @Select(MeteoMarkersState.meteoMarkers) meteoMarkers$: Observable<MeteoMarker[]>;
     meteoMarkers: MeteoMarker[] = [];
 
-    minMarkerCluster: number;
+    mapsOptions: MapsOptionsInterface;
     map_loaded = false;
     subscription = new Subscription();
     map: any;
@@ -118,10 +117,9 @@ export class AgmComponent implements OnDestroy {
             })
         );
         /**
-         * marker minimi per creare un cluster
-         * @type {number}
+         * opzioni della mappa
          */
-        this.minMarkerCluster = this.markerService.minMarkerCluster;
+        this.mapsOptions = this.markerService.mapsOptions;
         /**
          * imposto il path per le icone di MeteoMarker e ChiamataMarker
          */
