@@ -17,7 +17,7 @@ export interface CentroMappaStateModel {
 
 export const CentroMappaStateDefaults: CentroMappaStateModel = {
     centroMappa: null,
-    initCentroMappa: null
+    initCentroMappa: null,
 };
 
 @State<CentroMappaStateModel>({

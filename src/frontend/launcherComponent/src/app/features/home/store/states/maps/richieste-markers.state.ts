@@ -6,7 +6,7 @@ import {
     ClearRichiesteMarkers,
     GetRichiesteMarkers,
     InsertRichiestaMarker,
-    OpacizzaRichiesteMarkers,
+    OpacizzaRichiesteMarkers, PatchRichiesteMarkers,
     RemoveRichiestaMarker,
     SetRichiestaMarkerById,
     SetRichiesteMarkers,
@@ -21,14 +21,17 @@ import { ToggleAnimation } from '../../actions/maps/maps-buttons.actions';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
 import { RichiesteMarkerAdapterService } from '../../../../../core/service/maps-service/richieste-marker/adapters/richieste-marker-adapter.service';
 import { ToastrType } from '../../../../../shared/enum/toastr';
+import { SetMarkerLoading } from '../../actions/home.actions';
 
 export interface RichiesteMarkersStateModel {
     richiesteMarkers: RichiestaMarker[];
+    richiesteMarkersId: string[];
     richiestaMarkerById: RichiestaMarker;
 }
 
 export const RichiesteMarkersStateDefaults: RichiesteMarkersStateModel = {
-    richiesteMarkers: null,
+    richiesteMarkers: [],
+    richiesteMarkersId: [],
     richiestaMarkerById: null
 };
 
@@ -60,16 +63,62 @@ export class RichiesteMarkersState {
     }
 
     @Action(GetRichiesteMarkers)
-    getRichiesteMarkers({ dispatch }: StateContext<RichiesteMarkersStateModel>) {
-        this._richieste.getRichiesteMarkers().subscribe((data: RichiestaMarker[]) => {
-            dispatch(new SetRichiesteMarkers(data));
-        }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5)));
+    getRichiesteMarkers({ dispatch }: StateContext<RichiesteMarkersStateModel>, action: GetRichiesteMarkers) {
+        dispatch(new SetMarkerLoading(true));
+        this._richieste.getRichiesteMarkers(action.areaMappa).subscribe((data: RichiestaMarker[]) => {
+                dispatch([
+                    new SetRichiesteMarkers(data),
+                    new SetMarkerLoading(false)
+                ]);
+            }, () => dispatch([
+                new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5),
+                new SetMarkerLoading(false)
+            ])
+        );
     }
 
     @Action(SetRichiesteMarkers)
-    setRichiesteMarkers({ dispatch }: StateContext<RichiesteMarkersStateModel>, action: SetRichiesteMarkers) {
+    setRichiesteMarkers({ getState, dispatch }: StateContext<RichiesteMarkersStateModel>, action: SetRichiesteMarkers) {
+        const state = getState();
         if (action.richiesteMarkers) {
-            dispatch(new AddRichiesteMarkers(action.richiesteMarkers));
+            if (state.richiesteMarkers.length === 0) {
+                dispatch(new PatchRichiesteMarkers(action.richiesteMarkers));
+            } else {
+                const actionRichiesteId: string[] = [];
+                const richiesteMarkerRemoveId: string[] = [];
+                const richiesteMarkerAdd: RichiestaMarker[] = [];
+                /**
+                 * marker da aggiungere
+                 */
+                action.richiesteMarkers.forEach(richiesta => {
+                    actionRichiesteId.push(richiesta.id);
+                    if (!state.richiesteMarkersId.includes(richiesta.id)) {
+                        richiesteMarkerAdd.push(richiesta);
+                    }
+                });
+                /**
+                 * marker da rimuovere
+                 */
+                state.richiesteMarkers.forEach(richiesta => {
+                    if (!actionRichiesteId.includes(richiesta.id)) {
+                        richiesteMarkerRemoveId.push(richiesta.id);
+                    }
+                });
+                /**
+                 * tolgo i marker dallo stato
+                 */
+                if (richiesteMarkerRemoveId.length > 0) {
+                    richiesteMarkerRemoveId.forEach(id => {
+                        dispatch(new RemoveRichiestaMarker(id));
+                    });
+                }
+                /**
+                 * aggiungo i marker allo stato
+                 */
+                if (richiesteMarkerAdd.length > 0) {
+                    dispatch(new AddRichiesteMarkers(richiesteMarkerAdd));
+                }
+            }
             this.mapIsLoaded$.subscribe(isLoaded => {
                 if (isLoaded) {
                     dispatch(new ToggleAnimation());
@@ -78,11 +127,20 @@ export class RichiesteMarkersState {
         }
     }
 
+    @Action(PatchRichiesteMarkers)
+    patchRichiesteMarkers({ patchState }: StateContext<RichiesteMarkersStateModel>, { payload }: PatchRichiesteMarkers) {
+        patchState({
+            richiesteMarkers: payload.map(item => RichiesteMarkerAdapterService.adapt(item)),
+            richiesteMarkersId: payload.map(item => item.id)
+        });
+    }
+
     @Action(AddRichiesteMarkers)
     addRichiesteMarkers({ setState }: StateContext<RichiesteMarkersStateModel>, { payload }: AddRichiesteMarkers) {
         setState(
             patch({
-                richiesteMarkers: append(payload.map(item => RichiesteMarkerAdapterService.adapt(item)))
+                richiesteMarkers: append(payload.map(item => RichiesteMarkerAdapterService.adapt(item))),
+                richiesteMarkersId: append(payload.map(item => item.id))
             })
         );
     }
@@ -91,7 +149,8 @@ export class RichiesteMarkersState {
     insertRichiestaMarker({ setState }: StateContext<RichiesteMarkersStateModel>, { payload, before }: InsertRichiestaMarker) {
         setState(
             patch({
-                richiesteMarkers: insertItem(RichiesteMarkerAdapterService.adapt(payload), before)
+                richiesteMarkers: insertItem(RichiesteMarkerAdapterService.adapt(payload), before),
+                richiesteMarkersId: insertItem(payload.id, before)
             })
         );
     }
@@ -109,7 +168,8 @@ export class RichiesteMarkersState {
     removeRichiestaMarker({ setState }: StateContext<RichiesteMarkersStateModel>, { payload }: RemoveRichiestaMarker) {
         setState(
             patch({
-                richiesteMarkers: removeItem<RichiestaMarker>(richiesta => richiesta.id === payload)
+                richiesteMarkers: removeItem<RichiestaMarker>(richiesta => richiesta.id === payload),
+                richiesteMarkersId: removeItem<string>(id => id === payload)
             })
         );
     }

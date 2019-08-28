@@ -1,4 +1,4 @@
-import { Action, Selector, State, StateContext } from '@ngxs/store';
+import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 // Interface
 import { BoxPartenza } from '../../../composizione-partenza/interface/box-partenza-interface';
 
@@ -66,7 +66,7 @@ export class BoxPartenzaState {
         return _disableConfirmPartenza(state.boxPartenzaList, true);
     }
 
-    constructor() {
+    constructor(private store: Store) {
     }
 
     @Action(RequestAddBoxPartenza)
@@ -128,16 +128,21 @@ export class BoxPartenzaState {
     @Action(RemoveBoxPartenza)
     removeBoxPartenza({ getState, setState, dispatch }: StateContext<BoxPartenzaStateModel>, action: RemoveBoxPartenza) {
         const state = getState();
-        // Deseleziono il mezzo selezionato
-        if (action.boxPartenza.mezzoComposizione) {
-            dispatch(new UnselectMezzoComposizione());
+
+        // controllo se il boxPartenza che sto eliminando è quello selezionato
+        if (action.boxPartenza.id === state.idBoxPartenzaSelezionato) {
+            // Deseleziono il mezzo selezionato se presenti nel box-partenza da eliminare
+            if (action.boxPartenza.mezzoComposizione) {
+                dispatch(new UnselectMezzoComposizione());
+            }
+            // Deseleziono le squadre selezionate se presenti nel box-partenza da eliminare
+            if (action.boxPartenza.squadraComposizione && action.boxPartenza.squadraComposizione.length > 0) {
+                action.boxPartenza.squadraComposizione.forEach((squadra: SquadraComposizione) => {
+                    dispatch(new UnselectSquadraComposizione(squadra));
+                });
+            }
         }
-        // Deseleziono le squadre selezionate
-        if (action.boxPartenza.squadraComposizione) {
-            action.boxPartenza.squadraComposizione.forEach((squadra: SquadraComposizione) => {
-                dispatch(new UnselectSquadraComposizione(squadra));
-            });
-        }
+
         // Seleziono il box precedente
         if (state.boxPartenzaList.length > 1 && state.idBoxPartenzaSelezionato === action.boxPartenza.id) {
             let prevIndex = null;
@@ -156,12 +161,16 @@ export class BoxPartenzaState {
             });
         }
         dispatch([new ClearDirection(), new ClearMarkerMezzoSelezionato()]);
+
         // rimuovo il box dalla lista
         setState(
             patch({
                 boxPartenzaList: removeItem((item: BoxPartenza) => item.id === action.boxPartenza.id)
             })
         );
+
+        // ricarico la lista
+        // dispatch(new GetListeComposizioneAvanzata());
     }
 
     @Action(RemoveBoxPartenzaByMezzoId)
@@ -172,10 +181,20 @@ export class BoxPartenzaState {
             if (box.mezzoComposizione && box.mezzoComposizione.mezzo.codice === action.idMezzo) {
                 boxPartenza = box;
                 dispatch(new RemoveBoxPartenza(boxPartenza));
-                dispatch(new UnselectMezzoComposizione());
-                boxPartenza.squadraComposizione.forEach((squadraComp: SquadraComposizione) => {
-                    dispatch(new UnselectSquadraComposizione(squadraComp));
-                });
+
+                // controllo se il boxPartenza che sto eliminando è quello selezionato
+                if (boxPartenza.id === state.idBoxPartenzaSelezionato) {
+                    // Deseleziono il mezzo selezionato se presenti nel box-partenza da eliminare
+                    if (boxPartenza.mezzoComposizione) {
+                        dispatch(new UnselectMezzoComposizione());
+                    }
+                    // Deseleziono le squadre selezionate se presenti nel box-partenza da eliminare
+                    if (boxPartenza.squadraComposizione && boxPartenza.squadraComposizione.length > 0) {
+                        boxPartenza.squadraComposizione.forEach((squadra: SquadraComposizione) => {
+                            dispatch(new UnselectSquadraComposizione(squadra));
+                        });
+                    }
+                }
             }
         });
     }
@@ -196,8 +215,6 @@ export class BoxPartenzaState {
         } else {
             // se il box partenza attualmente selezionato non è valido lo elimino prima di selezionare il box voluto
             dispatch(new RemoveBoxPartenza(state.boxPartenzaList[state.boxPartenzaList.length - 1]));
-            // se il box partenza attualmente selezionato non è valido mostro un messaggio di errore
-            // dispatch(new ShowToastr(ToastrType.Error, 'Errore Selezione Partenza', 'La partenza attuale non è valida, impossibile selezionare una nuova partenza.', 5));
         }
     }
 

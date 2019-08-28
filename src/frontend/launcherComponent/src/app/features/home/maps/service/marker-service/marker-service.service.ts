@@ -56,7 +56,7 @@ import {
     ToggleAnimation,
     ToggleAnimationButton
 } from '../../../store/actions/maps/maps-buttons.actions';
-import { MAPSOPTIONS } from '../../../../../core/settings/maps-options';
+import { MAPSOPTIONS, MapsOptionsInterface } from '../../../../../core/settings/maps-options';
 import {
     HoverInMezzoComposizione,
     HoverOutMezzoComposizione,
@@ -72,12 +72,11 @@ export class MarkerService implements OnDestroy {
 
     private subscription = new Subscription();
     private icone = new IconMappe();
-    readonly livelloOpacita: number;
 
     private selfHoveredMarker: string;
     private selfClickedMarker: string;
 
-    minMarkerCluster: number;
+    mapsOptions: MapsOptionsInterface;
     iconeCached: string[];
 
     @Select(MarkerState.markerRichiestaSelezionato) markerRichiestaSelezionato$: Observable<string>;
@@ -137,15 +136,9 @@ export class MarkerService implements OnDestroy {
             }
         }));
         /**
-         * marker minimi per creare un cluster
-         * @type {number}
+         * opzioni della mappa
          */
-        this.minMarkerCluster = MAPSOPTIONS.minMarkerCluster;
-        /**
-         * imposto il livello di opacità generico,
-         * si potrebbe implementare anche un metodo che imposta un opacità singolarmente
-         */
-        this.livelloOpacita = MAPSOPTIONS.livelloOpacita;
+        this.mapsOptions = MAPSOPTIONS;
         /**
          * creo un array con i path di tutte le icone da mettere in cache
          */
@@ -335,21 +328,21 @@ export class MarkerService implements OnDestroy {
             case 'richiesta':
                 if (this.markerOpachi.stato.richieste) {
                     if (!this.markerOpachi.markerOpachiId.richiesteId.includes(id)) {
-                        isOpaque = this.livelloOpacita;
+                        isOpaque = this.mapsOptions.livelloOpacita;
                     }
                 }
                 break;
             case 'mezzo':
                 if (this.markerOpachi.stato.mezzi) {
                     if (!this.markerOpachi.markerOpachiId.mezziId.includes(id)) {
-                        isOpaque = this.livelloOpacita;
+                        isOpaque = this.mapsOptions.livelloOpacita;
                     }
                 }
                 break;
             case 'sede':
                 if (this.markerOpachi.stato.sedi) {
                     if (!this.markerOpachi.markerOpachiId.sediId.includes(id)) {
-                        isOpaque = this.livelloOpacita;
+                        isOpaque = this.mapsOptions.livelloOpacita;
                     }
                 }
                 break;

@@ -53,6 +53,7 @@ import { ChiamateMarkersState } from '../store/states/maps/chiamate-markers.stat
 import { MapsButtonComponent } from './maps-ui/buttons/maps-button.component';
 import { MapsButtonsState } from '../store/states/maps/maps-buttons.state';
 import { environment } from '../../../../environments/environment';
+import { AreaMappaState } from '../store/states/maps/area-mappa.state';
 
 @NgModule({
     imports: [
@@ -70,6 +71,7 @@ import { environment } from '../../../../environments/environment';
                 MapsFiltroState,
                 MapsDirectionState,
                 CentroMappaState,
+                AreaMappaState,
                 MarkerMeteoState,
                 MarkerState,
                 RichiesteMarkersState,

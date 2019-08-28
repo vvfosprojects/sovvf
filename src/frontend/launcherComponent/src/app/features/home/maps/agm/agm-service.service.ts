@@ -5,6 +5,8 @@ import { Coordinate } from '../../../../shared/model/coordinate.model';
 import { Subject } from 'rxjs';
 import { Store } from '@ngxs/store';
 import { SetCentroMappa } from '../../store/actions/maps/centro-mappa.actions';
+import { AreaMappa } from '../maps-model/area-mappa-model';
+import { SetAreaMappa } from '../../store/actions/maps/area-mappa.actions';
 
 
 @Injectable()
@@ -12,6 +14,7 @@ export class AgmService {
 
     map: any;
     centro$ = new Subject();
+    area$ = new Subject<AreaMappa>();
 
     constructor(private store: Store) {
         /**
@@ -26,5 +29,9 @@ export class AgmService {
                 this.store.dispatch(new SetCentroMappa(centroMappa));
             }
         );
+        /**
+         * observable area Mappa
+         */
+        this.area$.pipe(debounceTime(500)).subscribe( area => this.store.dispatch(new SetAreaMappa(area)));
     }
 }
