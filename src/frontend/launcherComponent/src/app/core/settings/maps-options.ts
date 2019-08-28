@@ -1,9 +1,10 @@
 export let MAPSOPTIONS: MapsOptionsInterface = {
     clusterOptions: {
-        minMarkerCluster: 3,
+        minMarkerCluster: 2,
         maxZoom: 14,
-        gridSize: 100,
+        gridSize: 120,
         zoomOnClick: true,
+        averageCenter: true,
         path: {
             richieste: 'assets/img/cluster-markers/m',
             mezzi: 'assets/img/cluster-markers/m',
@@ -37,6 +38,7 @@ export interface MarkerClusterInterface {
     maxZoom: number;
     gridSize: number;
     zoomOnClick: boolean;
+    averageCenter: boolean;
     path: PathClusterInterface;
 }
 
