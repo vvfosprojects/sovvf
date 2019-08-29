@@ -45,6 +45,7 @@
                         [minimumClusterSize]="mapsOptions.clusterOptions.minMarkerCluster"
                         [gridSize]="mapsOptions.clusterOptions.gridSize"
                         [maxZoom]="mapsOptions.clusterOptions.maxZoom"
+                        [averageCenter]="mapsOptions.clusterOptions.averageCenter"
                         [zoomOnClick]="mapsOptions.clusterOptions.zoomOnClick">
                     <ng-container *ngIf="isVisible('richiesta')">
                         <agm-marker *ngFor="let richiestaMarker of richiesteMarkers;"

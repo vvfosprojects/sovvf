@@ -40,6 +40,7 @@ using SO115App.CompositionRoot;
 using SO115App.Logging;
 using SO115App.Models.Servizi.CustomMapper;
 using SO115App.SignalR;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace SO115App.API
 {
@@ -58,6 +59,11 @@ namespace SO115App.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("SO115", new Info { Title = "SO115", Version = "v1.0" });
+            });
 
             ///<summary>
             ///Registrazione dei servizi AutoMapper
@@ -94,7 +100,6 @@ namespace SO115App.API
                     };
                 });
             services.AddSignalR();
-            services.AddProgressiveWebApp();
             IntegrateSimpleInjector(services);
         }
 
@@ -140,6 +145,13 @@ namespace SO115App.API
 
             app.UseHttpsRedirection();
             app.UseMvc();
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/SO115/swagger.json", "SO115");
+            });
 
             //SIMPLE INJECTION INIZIALIZE COMPONENT
             InitializeContainer(app);
