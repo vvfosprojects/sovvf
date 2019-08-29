@@ -13,9 +13,9 @@
       <td>{{s.nome}}</td>
       <td>
         <div *ngFor="let c of s.componenti">
-          <span class="badge badge-secondary" ngbTooltip="{{c.codiceFiscale}}"
-            [disableTooltip]="!c.codiceFiscale || c.codiceFiscale.length <= 0">{{c.descrizioneQualifica}}</span>
-          {{c.nominativo}}
+          <span class="badge badge-secondary mr-2">{{c.descrizioneQualifica}}</span>
+          <span ngbTooltip="{{c.codiceFiscale}}"
+            [disableTooltip]="!c.codiceFiscale || c.codiceFiscale.length <= 0">{{c.nominativo}}</span>
         </div>
       </td>
     </tr>
