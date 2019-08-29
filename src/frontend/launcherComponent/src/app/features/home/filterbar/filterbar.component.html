@@ -41,8 +41,8 @@
         <app-marker-meteo-switch [stateSwitch]="(stateSwitch$ | async)" (change)="onChange($event)">
         </app-marker-meteo-switch>
       </div>
-      <div class="col-2 text-right pr-0">
-        <i *ngIf="markerOnLoading" class="fa fa-spinner fa-spin fa-2x fa-fw mt-1"></i>
+      <div *ngIf="(mapsStatus$ | async)" class="col-2 text-right pr-0">
+        <app-loader-marker [markerOnLoading]="(markerOnLoading$ | async)"></app-loader-marker>
       </div>
       <div *ngIf="(mapsStatus$ | async)" class="col-5 pl-0">
         <app-filtri-mappa></app-filtri-mappa>
