@@ -103,8 +103,8 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
     @Output() sganciamento = new EventEmitter<SganciamentoInterface>();
 
     constructor(private popoverConfig: NgbPopoverConfig,
-                private tooltipConfig: NgbTooltipConfig,
-                private store: Store) {
+        private tooltipConfig: NgbTooltipConfig,
+        private store: Store) {
 
         // Popover options
         this.popoverConfig.container = 'body';
@@ -306,7 +306,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
             const mezzoComp = boxPartenza.mezzoComposizione;
             this.store.dispatch(new RequestRemoveBookMezzoComposizione(mezzoComp, boxPartenza));
         } else {
-            this.store.dispatch(new RemoveBoxPartenza(boxPartenza));
+            this.store.dispatch(new RemoveBoxPartenza(boxPartenza, true));
         }
         this.onClearDirection();
     }

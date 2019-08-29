@@ -13,7 +13,7 @@ export class RequestAddBoxPartenza {
 export class RemoveBoxPartenza {
     static readonly type = '[BoxPartenza] Remove Box Partenza';
 
-    constructor(public boxPartenza: BoxPartenza) {
+    constructor(public boxPartenza: BoxPartenza, public refreshLista?: boolean) {
     }
 }
 

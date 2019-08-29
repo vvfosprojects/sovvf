@@ -169,8 +169,10 @@ export class BoxPartenzaState {
             })
         );
 
-        // ricarico la lista
-        // dispatch(new GetListeComposizioneAvanzata());
+        // ricarico la lista se necessario
+        if (action.refreshLista) {
+            dispatch(new GetListeComposizioneAvanzata());
+        }
     }
 
     @Action(RemoveBoxPartenzaByMezzoId)
