@@ -62,6 +62,7 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
         public async Task SendNotification(ConfermaPartenzeCommand conferma)
         {
             var mapper = new MapperRichiestaAssistenzaSuSintesi(_mapper);
+            const bool notificaChangeState = true;
 
             var richiesta = conferma.ConfermaPartenze.richiesta;
             var sintesi = mapper.Map(richiesta);
@@ -89,8 +90,7 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
                 await _notificationHubContext.Clients.Group(conferma.ConfermaPartenze.CodiceSede).SendAsync("ModifyAndNotifySuccess", conferma.ConfermaPartenze);
             }
 
-            bool NotificaChangeState = true;
-            await _notificationHubContext.Clients.Group(conferma.ConfermaPartenze.CodiceSede).SendAsync("ChangeStateSuccess", NotificaChangeState);
+            await _notificationHubContext.Clients.Group(conferma.ConfermaPartenze.CodiceSede).SendAsync("ChangeStateSuccess", notificaChangeState);
 
             await _notificationHubContext.Clients.Group(conferma.ConfermaPartenze.CodiceSede).SendAsync("NotifyGetBoxInterventi", boxInterventi);
             await _notificationHubContext.Clients.Group(conferma.ConfermaPartenze.CodiceSede).SendAsync("NotifyGetBoxMezzi", boxMezzi);

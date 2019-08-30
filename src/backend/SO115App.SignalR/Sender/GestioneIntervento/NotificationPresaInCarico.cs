@@ -37,39 +37,39 @@ namespace SO115App.SignalR.Sender.GestioneIntervento
     public class NotificationPresaInCarico : INotifyPresaInCaricoRichiesta
     {
         private readonly IHubContext<NotificationHub> _notificationHubContext;
-        private readonly IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> _BoxRichiestehandler;
-        private readonly IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> _SintesiRichiesteAssistenzaMarkerhandler;
-        private readonly IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> sintesiRichiesteAssistenzahandler;
+        private readonly IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> _boxRichiesteHandler;
+        private readonly IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> _sintesiRichiesteAssistenzaMarkerHandler;
+        private readonly IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> _sintesiRichiesteAssistenzaHandler;
 
-        public NotificationPresaInCarico(IHubContext<NotificationHub> NotificationHubContext,
-                                          IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> BoxRichiestehandler,
-                                          IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> SintesiRichiesteAssistenzaMarkerhandler,
-                                          IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> SintesiRichiesteAssistenzahandler
+        public NotificationPresaInCarico(IHubContext<NotificationHub> notificationHubContext,
+                                          IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> boxRichiesteHandler,
+                                          IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> sintesiRichiesteAssistenzaMarkerHandler,
+                                          IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> sintesiRichiesteAssistenzaHandler
             )
         {
-            _notificationHubContext = NotificationHubContext;
-            _BoxRichiestehandler = BoxRichiestehandler;
-            _SintesiRichiesteAssistenzaMarkerhandler = SintesiRichiesteAssistenzaMarkerhandler;
-            sintesiRichiesteAssistenzahandler = SintesiRichiesteAssistenzahandler;
+            _notificationHubContext = notificationHubContext;
+            _boxRichiesteHandler = boxRichiesteHandler;
+            _sintesiRichiesteAssistenzaMarkerHandler = sintesiRichiesteAssistenzaMarkerHandler;
+            _sintesiRichiesteAssistenzaHandler = sintesiRichiesteAssistenzaHandler;
         }
 
         public async Task SendNotification(PresaInCaricoCommand intervento)
         {
-            var SintesiRichiesteAssistenzaquery = new SintesiRichiesteAssistenzaQuery();
-            var ListaSintesi = (List<SintesiRichiesta>)this.sintesiRichiesteAssistenzahandler.Handle(SintesiRichiesteAssistenzaquery).SintesiRichiesta;
+            var sintesiRichiesteAssistenzaQuery = new SintesiRichiesteAssistenzaQuery();
+            var listaSintesi = (List<SintesiRichiesta>)this._sintesiRichiesteAssistenzaHandler.Handle(sintesiRichiesteAssistenzaQuery).SintesiRichiesta;
 
-            var BoxRichiestequery = new BoxRichiesteQuery();
-            BoxInterventi boxInterventi = new BoxInterventi();
-            boxInterventi = (BoxInterventi)this._BoxRichiestehandler.Handle(BoxRichiestequery).BoxRichieste;
+            var boxRichiesteQuery = new BoxRichiesteQuery();
+            var boxInterventi = (BoxInterventi)this._boxRichiesteHandler.Handle(boxRichiesteQuery).BoxRichieste;
 
             var query = new SintesiRichiesteAssistenzaMarkerQuery();
-            List<SintesiRichiestaMarker> listaSintesiMarker = new List<SintesiRichiestaMarker>();
-            listaSintesiMarker = (List<SintesiRichiestaMarker>)this._SintesiRichiesteAssistenzaMarkerhandler.Handle(query).SintesiRichiestaMarker;
 
-            intervento.Chiamata = ListaSintesi.LastOrDefault(richiesta => richiesta.Id == intervento.Chiamata.Id);
+            intervento.Chiamata = listaSintesi.LastOrDefault(richiesta => richiesta.Id == intervento.Chiamata.Id);
 
             await _notificationHubContext.Clients.Group(intervento.Chiamata.Operatore.Sede.Codice).SendAsync("ModifyAndNotifySuccess", intervento);
             await _notificationHubContext.Clients.Group(intervento.Chiamata.Operatore.Sede.Codice).SendAsync("NotifyGetBoxInterventi", boxInterventi);
+
+            var listaSintesiMarker = (List<SintesiRichiestaMarker>)this._sintesiRichiesteAssistenzaMarkerHandler.Handle(query).SintesiRichiestaMarker;
+
             await _notificationHubContext.Clients.Group(intervento.Chiamata.Operatore.Sede.Codice).SendAsync("NotifyGetRichiestaUpDateMarker", listaSintesiMarker.LastOrDefault(marker => marker.Codice == intervento.Chiamata.Codice));
         }
     }
