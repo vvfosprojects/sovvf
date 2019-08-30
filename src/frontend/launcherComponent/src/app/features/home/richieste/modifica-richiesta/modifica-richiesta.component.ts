@@ -10,12 +10,13 @@ import { Address } from 'ngx-google-places-autocomplete/objects/address';
 import { Coordinate } from '../../../../shared/model/coordinate.model';
 import { CopyToClipboard } from '../../store/actions/chiamata/clipboard.actions';
 import { NavbarState } from '../../../navbar/store/states/navbar.state';
-import { ChiudiRichiestaModifica, ModificaIndirizzo } from '../../store/actions/richieste/richiesta-modifica.actions';
+import { ChiudiRichiestaModifica, ModificaIndirizzo, ClearRichiestaModifica } from '../../store/actions/richieste/richiesta-modifica.actions';
 import { Tipologia } from '../../../../shared/model/tipologia.model';
 import { GOOGLEPLACESOPTIONS } from '../../../../core/settings/google-places-options';
 import { Localita } from '../../../../shared/model/localita.model';
 import { HelperSintesiRichiesta } from '../helper/_helper-sintesi-richiesta';
 import { TipoTerreno } from '../../../../shared/model/tipo-terreno';
+import { ToggleModifica } from '../../store/actions/view/view.actions';
 
 @Component({
     selector: 'app-modifica-richiesta',
@@ -32,6 +33,7 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
     tipologie: Tipologia[];
 
     @Select(RichiestaModificaState.richiestaModifica) richiestaModifica$: Observable<SintesiRichiesta>;
+    richiestaModificaIniziale: SintesiRichiesta;
     richiestaModifica: SintesiRichiesta;
 
     subscription = new Subscription();
@@ -40,6 +42,7 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
 
     modificaRichiestaForm: FormGroup;
     submitted = false;
+    campiModificati = [];
 
     coordinate: Coordinate;
 
@@ -49,6 +52,7 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
         this.subscription.add(this.richiestaModifica$.subscribe((richiesta: SintesiRichiesta) => {
             if (richiesta) {
                 this.richiestaModifica = makeCopy(richiesta);
+                this.richiestaModificaIniziale = makeCopy(richiesta);
                 this.coordinate = makeCopy(richiesta.localita.coordinate);
             }
         }));
@@ -170,7 +174,7 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
         nuovaRichiesta.richiedente.telefono = f.telefono.value;
         nuovaRichiesta.richiedente.nominativo = f.nominativo.value;
         nuovaRichiesta.localita.indirizzo = f.indirizzo.value;
-        nuovaRichiesta.tags = f.etichette.value ? f.etichette.value.split(' ') : null;
+        nuovaRichiesta.tags = f.etichette.value ? f.etichette.value.split(' ') : [];
         nuovaRichiesta.localita.note = f.noteIndirizzo.value;
         nuovaRichiesta.rilevanteGrave = f.rilevanzaGrave.value;
         nuovaRichiesta.rilevanteStArCu = f.rilevanzaStArCu.value;
@@ -178,7 +182,7 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
         nuovaRichiesta.localita.coordinate.longitudine = f.longitudine.value;
         nuovaRichiesta.localita.piano = f.piano.value;
         nuovaRichiesta.descrizione = f.motivazione.value;
-        nuovaRichiesta.zoneEmergenza = f.zoneEmergenza.value ? f.zoneEmergenza.value.split(' ') : null;
+        nuovaRichiesta.zoneEmergenza = f.zoneEmergenza.value ? f.zoneEmergenza.value.split(' ') : [];
         nuovaRichiesta.notePrivate = f.notePrivate.value;
         nuovaRichiesta.notePubbliche = f.notePubbliche.value;
         nuovaRichiesta.prioritaRichiesta = f.prioritaRichiesta.value;
@@ -198,7 +202,7 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
         }
 
         const nuovaRichiesta = this.getNuovaRichiesta();
-        this.store.dispatch(new PatchRichiesta(nuovaRichiesta));
+        this.checkCampiModificati(nuovaRichiesta);
     }
 
 
@@ -233,4 +237,103 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
         return visualizzaBoschiSterpaglie(tipologieRichiesta);
     }
 
+    checkCampiModificati(richiesta: SintesiRichiesta) {
+        const stringRichiesta = JSON.stringify(richiesta);
+        const stringRichiestaModifica = JSON.stringify(this.richiestaModificaIniziale);
+
+        // se i dati non sono cambiati non chiamo il backend
+        if (stringRichiesta === stringRichiestaModifica) {
+            this.store.dispatch(new ToggleModifica(true));
+            this.store.dispatch(new ClearRichiestaModifica);
+        } else {
+            this.setCampiModificati(richiesta);
+            this.store.dispatch(new PatchRichiesta(richiesta));
+        }
+        // console.log('stringRichiesta', stringRichiesta);
+        // console.log('stringRichiestaModifica', stringRichiestaModifica);
+    }
+
+    setCampiModificati(richiesta: SintesiRichiesta) {
+        if (richiesta.richiedente.telefono !== this.richiestaModificaIniziale.richiedente.telefono) {
+            this.campiModificati.push('Telefono');
+        }
+        if (richiesta.richiedente.nominativo !== this.richiestaModificaIniziale.richiedente.nominativo) {
+            this.campiModificati.push('Nominativo');
+        }
+        if (richiesta.localita.indirizzo !== this.richiestaModificaIniziale.localita.indirizzo) {
+            this.campiModificati.push('Indirizzo');
+        }
+        if (richiesta.rilevanteGrave !== this.richiestaModificaIniziale.rilevanteGrave) {
+            this.campiModificati.push('Rilevanza');
+        }
+        if (richiesta.rilevanteStArCu !== this.richiestaModificaIniziale.rilevanteStArCu) {
+            this.campiModificati.push('RilevanzaStArCu');
+        }
+        if (richiesta.localita.piano !== this.richiestaModificaIniziale.localita.piano) {
+            this.campiModificati.push('Piano');
+        }
+        if (richiesta.descrizione !== this.richiestaModificaIniziale.descrizione) {
+            this.campiModificati.push('Descrizione');
+        }
+        if (richiesta.prioritaRichiesta !== this.richiestaModificaIniziale.prioritaRichiesta) {
+            this.campiModificati.push('Priorita');
+        }
+        if (checkArrayModificato(richiesta.zoneEmergenza, this.richiestaModificaIniziale.zoneEmergenza)) {
+            this.campiModificati.push('ZoneEmergenza');
+        }
+        if (checkArrayModificato(richiesta.tags, this.richiestaModificaIniziale.tags)) {
+            this.campiModificati.push('Tags');
+        }
+        if (checkTipologieModificate(richiesta.tipologie, this.richiestaModificaIniziale.tipologie)) {
+            this.campiModificati.push('Tipologie');
+        }
+        console.log('campiModificati', this.campiModificati);
+
+        function checkArrayModificato(arr1: string[], arr2: string[]) {
+            let _return = false;
+            let count = 0;
+            const length = arr1.length;
+            const lengthIniziale = arr2.length;
+
+            if (length === lengthIniziale) {
+                arr1.forEach((zona: string) => {
+                    arr2.forEach((z: string) => {
+                        if (zona === z) {
+                            count++;
+                        }
+                    });
+                });
+
+                if (count !== length) {
+                    _return = true;
+                }
+            } else {
+                _return = true;
+            }
+            return _return;
+        }
+        function checkTipologieModificate(arr1: Tipologia[], arr2: Tipologia[]) {
+            let _return = false;
+            let count = 0;
+            const length = arr1.length;
+            const lengthIniziale = arr2.length;
+
+            if (length === lengthIniziale) {
+                arr1.forEach((tipologia: Tipologia) => {
+                    arr2.forEach((t: Tipologia) => {
+                        if (tipologia.codice === t.codice) {
+                            count++;
+                        }
+                    });
+                });
+
+                if (count !== length) {
+                    _return = true;
+                }
+            } else {
+                _return = true;
+            }
+            return _return;
+        }
+    }
 }
