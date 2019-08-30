@@ -19,10 +19,12 @@
 //-----------------------------------------------------------------------
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Geo;
 using SO115App.API.Models.Classi.Marker;
+using SO115App.FakePersistence.JSon.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Marker;
 
 namespace SO115App.FakePersistenceJSon.Marker
@@ -31,9 +33,7 @@ namespace SO115App.FakePersistenceJSon.Marker
     {
         public List<SintesiRichiestaMarker> GetListaRichiesteMarker(AreaMappa filtroAreaMappa)
         {
-            List<SintesiRichiestaMarker> ListaSintesiRichiesteMarker = new List<SintesiRichiestaMarker>();
-            List<SintesiRichiestaMarker> ListaSintesiRichieste = new List<SintesiRichiestaMarker>();
-            string filepath = "Fake/ListaRichiesteAssistenza.json";
+            var filepath = CostantiJson.ListaRichiesteAssistenza;
             string json;
 
             using (StreamReader r = new StreamReader(filepath))
@@ -41,48 +41,12 @@ namespace SO115App.FakePersistenceJSon.Marker
                 json = r.ReadToEnd();
             }
 
-            ListaSintesiRichiesteMarker = JsonConvert.DeserializeObject<List<SintesiRichiestaMarker>>(json);
+            var listaSintesiRichiesteMarker = JsonConvert.DeserializeObject<List<SintesiRichiestaMarker>>(json);
 
-            foreach (SintesiRichiestaMarker richiesta in ListaSintesiRichiesteMarker)
-            {
-                if (((richiesta.Localita.Coordinate.Latitudine >= filtroAreaMappa.BottomLeft.Latitudine) && (richiesta.Localita.Coordinate.Latitudine <= filtroAreaMappa.TopRight.Latitudine)) &&
-                    ((richiesta.Localita.Coordinate.Longitudine >= filtroAreaMappa.BottomLeft.Longitudine) && (richiesta.Localita.Coordinate.Longitudine <= filtroAreaMappa.TopRight.Longitudine))
-                  )
-                {
-                    ListaSintesiRichieste.Add(richiesta);
-                }
-            }
-
-            if (ListaSintesiRichieste != null)
-            {
-                return ListaSintesiRichieste;
-            }
-            else
-            {
-                List<SintesiRichiestaMarker> ListaRichiesteVuota = new List<SintesiRichiestaMarker>();
-                return ListaRichiesteVuota;
-            }
-        }
-
-        private string MapStatoRichiesta(SintesiRichieste sintesi)
-        {
-            string stato = "Chiamata";
-
-            if (sintesi.Chiusa)
-                stato = "Chiusa";
-
-            if (sintesi.Sospesa)
-                stato = "Sospesa";
-
-            if (sintesi.Aperta)
-            {
-                if (sintesi.Presidiato)
-                    stato = "Presidiata";
-                else if (sintesi.IstantePrimaAssegnazione != null)
-                    stato = "Assegnata";
-            }
-
-            return stato;
+            return listaSintesiRichiesteMarker.Where(richiesta => (richiesta.Localita.Coordinate.Latitudine >= filtroAreaMappa.BottomLeft.Latitudine)
+                                                                    && (richiesta.Localita.Coordinate.Latitudine <= filtroAreaMappa.TopRight.Latitudine)
+                                                                    && (richiesta.Localita.Coordinate.Longitudine >= filtroAreaMappa.BottomLeft.Longitudine)
+                                                                    && (richiesta.Localita.Coordinate.Longitudine <= filtroAreaMappa.TopRight.Longitudine)).ToList();
         }
     }
 }
