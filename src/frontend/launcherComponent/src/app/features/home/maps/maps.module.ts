@@ -104,8 +104,6 @@ import { AreaMappaState } from '../store/states/maps/area-mappa.state';
         { provide: RichiesteMarkerService, useClass: environment.fakeProvider ? RichiesteMarkerServiceFake : RichiesteMarkerService },
         { provide: MezziMarkerService, useClass: environment.fakeProvider ? MezziMarkerServiceFake : MezziMarkerService},
         { provide: SediMarkerService, useClass: environment.fakeProvider ? SediMarkerServiceFake : SediMarkerService},
-        { provide: MezziMarkerService, useClass: MezziMarkerServiceFake },
-        { provide: SediMarkerService, useClass: SediMarkerServiceFake },
         { provide: ChiamateMarkerService, useClass: environment.fakeProvider ? ChiamateMarkerServiceFake : ChiamateMarkerService}
     ]
 })
