@@ -14,12 +14,12 @@ export class EventoRichiestaComponent implements OnInit {
     private myMap: any;
 
     @Input() eventoRichiesta: EventoRichiesta;
-    @Output() mostraDettaglio: EventEmitter<EventoRichiesta> = new EventEmitter();
-
     @Input() istanteEventoPrecedente: Date;
     @Input() istantePrimoEvento: Date;
     @Input() nomeClasseEvento: any;
 
+    @Output() mostraDettaglio: EventEmitter<EventoRichiesta> = new EventEmitter();
+    @Output() filtroTarga: EventEmitter<string> = new EventEmitter();
 
     constructor() {
     }
