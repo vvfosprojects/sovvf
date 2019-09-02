@@ -21,8 +21,8 @@ export const environment = {
         maps: {
             markers: {
                 richieste: '/api/Marker/GetRichieste',
-                sedi: '/api/SintesiSediMarker',
-                mezzi: '/api/SintesiMezziMarker',
+                sedi: '/api/Marker/GetSedi',
+                mezzi: '/api/Marker/GetMezzi',
                 chiamate: '/api/ChiamataInCorso'
             }
         },

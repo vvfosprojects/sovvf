@@ -4,13 +4,15 @@
 <td>
   <div>
     <!--<i class="fa {{iconeClasseEventoCorrente}} fa-fw" aria-hidden="true" title="{{eventoRichiesta.tipo}}"></i>-->
-    <i *ngFor="let ii of iconeClasseEventoCorrente" class="fa {{ii}} fa-fw" aria-hidden="true" title="{{eventoRichiesta.nomeClasseEvento}}">
+    <i *ngFor="let ii of iconeClasseEventoCorrente" class="fa {{ii}} fa-fw" aria-hidden="true"
+      title="{{eventoRichiesta.nomeClasseEvento}}">
     </i>
   </div>
 </td>
 <td>
   <!--<div class="h5">{{eventoRichiesta.istanteEvento.toLocaleDateString()}} {{eventoRichiesta.istanteEvento.toLocaleTimeString()}}</div>-->
-  <span class="h6 text-muted">{{eventoRichiesta.istanteEvento | friendlyDate}} {{eventoRichiesta.istanteEvento | friendlyHour : true}}</span>
+  <span class="h6 text-muted">{{eventoRichiesta.istanteEvento | friendlyDate}}
+    {{eventoRichiesta.istanteEvento | friendlyHour : true}}</span>
   <!--<div class="h5">{{eventoRichiesta.istanteEvento.toLocaleDateString()}} {{eventoRichiesta.istanteEvento.toLocaleTimeString()}}</div>-->
   <!--<div class="h5">{{eventoRichiesta.istanteEvento | distanzaTemporale : istanteEventoPrecedente }}</div>-->
   <!--<span>(+26s) {{istanteEventoPrecedente}} </span>-->
@@ -18,8 +20,9 @@
   <span>{{eventoRichiesta.istanteEvento | distanzaTemporale : istantePrimoEvento : 'S' }}</span>
 </td>
 <td>
-  <small *ngIf="eventoRichiesta.targa">
-    <i class="fa fa-hashtag" aria-hidden="true"></i>
+  <small *ngIf="eventoRichiesta.targa" class="cursor-pointer" (click)="filtroTarga.emit(eventoRichiesta.targa)"
+    ngbTooltip="Clicca qui per ricercare gli eventi">
+    <i class="fa fa-hashtag"></i>
     {{eventoRichiesta.targa}}
   </small>
 </td>
@@ -31,8 +34,7 @@
       {{eventoRichiesta.note}}
     </a>
     -->
-    {{eventoRichiesta.note}} 
+    {{eventoRichiesta.note}}
   </span>
   <!--<i class="fa fa-arrow-circle-o-right" aria-hidden="true" title="Vedi dettaglio" (click)="clickDettaglio($event)"></i>-->
 </td>
-

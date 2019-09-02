@@ -1,7 +1,11 @@
 import { MezzoMarker } from '../../../maps/maps-model/mezzo-marker.model';
+import { AreaMappa } from '../../../maps/maps-model/area-mappa-model';
 
 export class GetMezziMarkers {
     static readonly type = '[Mezzi Marker] Get Mezzi Marker';
+
+    constructor(public areaMappa: AreaMappa) {
+    }
 }
 
 export class SetMezziMarkers {
@@ -10,6 +14,14 @@ export class SetMezziMarkers {
     constructor(public mezziMarkers: MezzoMarker[]) {
     }
 }
+
+export class UpdateMezzoMarker {
+    static readonly type = '[Mezzi Marker] Update Mezzi Marker';
+
+    constructor(public mezzo: MezzoMarker) {
+    }
+}
+
 
 export class SetMezzoMarkerById {
     static readonly type = '[Mezzi Marker] Set Mezzi Marker by ID';
