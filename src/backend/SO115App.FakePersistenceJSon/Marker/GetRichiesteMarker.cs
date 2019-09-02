@@ -43,10 +43,13 @@ namespace SO115App.FakePersistenceJSon.Marker
 
             var listaSintesiRichiesteMarker = JsonConvert.DeserializeObject<List<SintesiRichiestaMarker>>(json);
 
-            return listaSintesiRichiesteMarker.Where(richiesta => (richiesta.Localita.Coordinate.Latitudine >= filtroAreaMappa.BottomLeft.Latitudine)
-                                                                    && (richiesta.Localita.Coordinate.Latitudine <= filtroAreaMappa.TopRight.Latitudine)
-                                                                    && (richiesta.Localita.Coordinate.Longitudine >= filtroAreaMappa.BottomLeft.Longitudine)
-                                                                    && (richiesta.Localita.Coordinate.Longitudine <= filtroAreaMappa.TopRight.Longitudine)).ToList();
+            if (filtroAreaMappa == null)
+                return listaSintesiRichiesteMarker;
+            else
+                return listaSintesiRichiesteMarker.Where(richiesta => (richiesta.Localita.Coordinate.Latitudine >= filtroAreaMappa.BottomLeft.Latitudine)
+                                                                        && (richiesta.Localita.Coordinate.Latitudine <= filtroAreaMappa.TopRight.Latitudine)
+                                                                        && (richiesta.Localita.Coordinate.Longitudine >= filtroAreaMappa.BottomLeft.Longitudine)
+                                                                        && (richiesta.Localita.Coordinate.Longitudine <= filtroAreaMappa.TopRight.Longitudine)).ToList();
         }
     }
 }
