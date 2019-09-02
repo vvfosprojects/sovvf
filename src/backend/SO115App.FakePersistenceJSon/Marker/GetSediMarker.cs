@@ -41,17 +41,22 @@ namespace SO115App.FakePersistenceJSon.Marker
 
             List<SedeMarker> ListaSediMarker = JsonConvert.DeserializeObject<List<SedeMarker>>(json);
 
-            foreach (SedeMarker sede in ListaSediMarker)
+            if (filtroAreaMappa == null)
+                return ListaSedi = ListaSediMarker;
+            else
             {
-                if (((sede.Coordinate.Latitudine >= filtroAreaMappa.BottomLeft.Latitudine) && (sede.Coordinate.Latitudine <= filtroAreaMappa.TopRight.Latitudine)) &&
-                    ((sede.Coordinate.Longitudine >= filtroAreaMappa.BottomLeft.Longitudine) && (sede.Coordinate.Latitudine <= filtroAreaMappa.TopRight.Longitudine))
-                  )
+                foreach (SedeMarker sede in ListaSediMarker)
                 {
-                    ListaSedi.Add(sede);
+                    if (((sede.Coordinate.Latitudine >= filtroAreaMappa.BottomLeft.Latitudine) && (sede.Coordinate.Latitudine <= filtroAreaMappa.TopRight.Latitudine)) &&
+                        ((sede.Coordinate.Longitudine >= filtroAreaMappa.BottomLeft.Longitudine) && (sede.Coordinate.Latitudine <= filtroAreaMappa.TopRight.Longitudine))
+                      )
+                    {
+                        ListaSedi.Add(sede);
+                    }
                 }
-            }
 
-            return ListaSedi;
+                return ListaSedi;
+            }
         }
     }
 }

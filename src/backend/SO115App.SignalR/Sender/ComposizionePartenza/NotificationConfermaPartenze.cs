@@ -73,10 +73,12 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
             var boxMezziQuery = new BoxMezziQuery();
             var boxPersonaleQuery = new BoxPersonaleQuery();
             var sintesiRichiesteQuery = new SintesiRichiesteAssistenzaQuery();
+            var sintesiRichiesteAssistenzaMarkerQuery = new SintesiRichiesteAssistenzaMarkerQuery();
             var boxInterventi = _boxRichiestehandler.Handle(boxRichiesteQuery).BoxRichieste;
             var boxMezzi = _boxMezzihandler.Handle(boxMezziQuery).BoxMezzi;
             var boxPersonale = _boxPersonalehandler.Handle(boxPersonaleQuery).BoxPersonale;
             var sintesiRichieste = _sintesiRichiesteHandler.Handle(sintesiRichiesteQuery).SintesiRichiesta;
+            var listaSintesiMarker = _sintesiRichiesteAssistenzaMarkerhandler.Handle(sintesiRichiesteAssistenzaMarkerQuery).SintesiRichiestaMarker;
 
             conferma.ConfermaPartenze.Chiamata = sintesi;
 
@@ -91,13 +93,9 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
             }
 
             await _notificationHubContext.Clients.Group(conferma.ConfermaPartenze.CodiceSede).SendAsync("ChangeStateSuccess", notificaChangeState);
-
             await _notificationHubContext.Clients.Group(conferma.ConfermaPartenze.CodiceSede).SendAsync("NotifyGetBoxInterventi", boxInterventi);
             await _notificationHubContext.Clients.Group(conferma.ConfermaPartenze.CodiceSede).SendAsync("NotifyGetBoxMezzi", boxMezzi);
             await _notificationHubContext.Clients.Group(conferma.ConfermaPartenze.CodiceSede).SendAsync("NotifyGetBoxPersonale", boxPersonale);
-
-            var query = new SintesiRichiesteAssistenzaMarkerQuery();
-            var listaSintesiMarker = _sintesiRichiesteAssistenzaMarkerhandler.Handle(query).SintesiRichiestaMarker;
             await _notificationHubContext.Clients.Group(conferma.ConfermaPartenze.CodiceSede).SendAsync("NotifyGetRichiestaMarker", listaSintesiMarker.LastOrDefault(marker => marker.CodiceRichiesta == sintesi.CodiceRichiesta));
         }
     }

@@ -41,17 +41,22 @@ namespace SO115App.FakePersistenceJSon.Marker
 
             List<MezzoMarker> ListaMezziMarker = JsonConvert.DeserializeObject<List<MezzoMarker>>(json);
 
-            foreach (MezzoMarker mezzo in ListaMezziMarker)
+            if (filtroAreaMappa == null)
+                return ListaMezziMarker;
+            else
             {
-                if (((mezzo.Coordinate.Latitudine >= filtroAreaMappa.BottomLeft.Latitudine) && (mezzo.Coordinate.Latitudine <= filtroAreaMappa.TopRight.Latitudine)) &&
-                    ((mezzo.Coordinate.Longitudine >= filtroAreaMappa.BottomLeft.Longitudine) && (mezzo.Coordinate.Latitudine <= filtroAreaMappa.TopRight.Longitudine))
-                  )
+                foreach (MezzoMarker mezzo in ListaMezziMarker)
                 {
-                    ListaMezzi.Add(mezzo);
+                    if (((mezzo.Coordinate.Latitudine >= filtroAreaMappa.BottomLeft.Latitudine) && (mezzo.Coordinate.Latitudine <= filtroAreaMappa.TopRight.Latitudine)) &&
+                        ((mezzo.Coordinate.Longitudine >= filtroAreaMappa.BottomLeft.Longitudine) && (mezzo.Coordinate.Latitudine <= filtroAreaMappa.TopRight.Longitudine))
+                      )
+                    {
+                        ListaMezzi.Add(mezzo);
+                    }
                 }
-            }
 
-            return ListaMezzi;
+                return ListaMezzi;
+            }
         }
     }
 }
