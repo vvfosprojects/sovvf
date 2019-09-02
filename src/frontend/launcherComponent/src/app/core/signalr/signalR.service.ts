@@ -43,6 +43,7 @@ import { SetMezziInServizio } from 'src/app/features/home/store/actions/mezzi-in
 import { ViewComponentState } from '../../features/home/store/states/view/view.state';
 import { GetListeComposizioneAvanzata } from '../../features/home/store/actions/composizione-partenza/composizione-avanzata.actions';
 import { IdPreaccoppiati } from '../../features/home/composizione-partenza/interface/id-preaccoppiati-interface';
+import { UpdateMezzoMarker } from '../../features/home/store/actions/maps/mezzi-markers.actions';
 
 const HUB_URL = environment.signalRHub;
 const SIGNALR_BYPASS = !environment.signalR;
@@ -151,6 +152,11 @@ export class SignalRService {
         this.hubNotification.on('NotifyGetRichiestaUpdateMarker', (data: any) => {
             console.log('NotifyGetRichiestaUpdateMarker', data);
             this.store.dispatch(new UpdateRichiestaMarker(data));
+            this.store.dispatch(new ShowToastr(ToastrType.Info, 'Richiesta Marker ricevute da signalR', null, 5));
+        });
+        this.hubNotification.on('NotifyGetMezzoUpdateMarker', (data: any) => {
+            console.log('NotifyGetMezzoUpdateMarker', data);
+            this.store.dispatch(new UpdateMezzoMarker(data));
             this.store.dispatch(new ShowToastr(ToastrType.Info, 'Richiesta Marker ricevute da signalR', null, 5));
         });
 

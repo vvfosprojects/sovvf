@@ -72,9 +72,6 @@ export class HomeState {
             console.log('Welcome', data);
             dispatch([
                 new SetRichieste(data.listaSintesi),
-                // new SetSediMarkers(data.listaSediMarker),
-                // new SetMezziMarkers(data.listaMezziMarker),
-                // new SetRichiesteMarkers(data.listaRichiesteMarker),
                 new SetBoxRichieste(data.boxListaInterventi),
                 new SetBoxMezzi(data.boxListaMezzi),
                 new SetBoxPersonale(data.boxListaPersonale),

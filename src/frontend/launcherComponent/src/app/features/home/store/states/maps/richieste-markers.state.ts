@@ -50,11 +50,6 @@ export class RichiesteMarkersState {
     }
 
     @Selector()
-    static richiesteLenghtMarkers(state: RichiesteMarkersStateModel) {
-        return state.richiesteMarkers.length;
-    }
-
-    @Selector()
     static getRichiestaById(state: RichiesteMarkersStateModel) {
         return state.richiestaMarkerById;
     }
