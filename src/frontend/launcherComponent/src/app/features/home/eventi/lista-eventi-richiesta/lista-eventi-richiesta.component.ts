@@ -2,9 +2,10 @@ import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/cor
 import { EventoRichiesta } from '../../../../shared/model/evento-richiesta.model';
 import * as moment from 'moment';
 import { EventiRichiestaState } from '../../store/states/eventi/eventi-richiesta.state';
-import { Select } from '@ngxs/store';
+import { Select, Store } from '@ngxs/store';
 import { Observable, Subscription } from 'rxjs';
 import { makeCopy } from 'src/app/shared/helper/function';
+import { SetRicercaTargaMezzo } from '../../store/actions/eventi/eventi-richiesta.actions';
 
 @Component({
     selector: 'app-lista-eventi-richiesta',
@@ -22,7 +23,7 @@ export class ListaEventiRichiestaComponent implements OnInit, OnChanges {
     istanteEventoPrecedente: Date; // erano private implementare setter and getter
     istantePrimoEvento: Date; // erano private implementare setter and getter
 
-    constructor() {
+    constructor(private store: Store) {
     }
 
     ngOnInit() {
@@ -79,4 +80,11 @@ export class ListaEventiRichiestaComponent implements OnInit, OnChanges {
         this.istantePrimoEvento = p;
     }
 
+    setRicercaTargaMezzo(targa: string) {
+        if (targa) {
+            this.store.dispatch(new SetRicercaTargaMezzo({ targa: targa }));
+        } else {
+            console.warn('Targa mezzo non presente, impossibile ricercare!');
+        }
+    }
 }

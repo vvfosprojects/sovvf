@@ -75,6 +75,8 @@ namespace SO115App.SignalR.Sender.GestioneIntervento
 
             var query = new SintesiRichiesteAssistenzaMarkerQuery();
 
+            richiesta.Chiamata = listaSintesi.LastOrDefault(sintesi => sintesi.Id == richiesta.IdRichiesta);
+
             await _notificationHubContext.Clients.Group(richiesta.Chiamata.Operatore.Sede.Codice).SendAsync("ModifyAndNotifySuccess", richiesta);
             await _notificationHubContext.Clients.Group(richiesta.Chiamata.Operatore.Sede.Codice).SendAsync("ChangeStateSuccess", notificaChangeState);
             await _notificationHubContext.Clients.Group(richiesta.Chiamata.Operatore.Sede.Codice).SendAsync("NotifyGetBoxInterventi", boxInterventi);
@@ -82,7 +84,6 @@ namespace SO115App.SignalR.Sender.GestioneIntervento
             await _notificationHubContext.Clients.Group(richiesta.Chiamata.Operatore.Sede.Codice).SendAsync("NotifyGetBoxPersonale", boxPersonale);
 
             var listaSintesiMarker = (List<SintesiRichiestaMarker>)_sintesiRichiesteAssistenzaMarkerHandler.Handle(query).SintesiRichiestaMarker;
-            richiesta.Chiamata = listaSintesi.LastOrDefault(sintesi => sintesi.Id == richiesta.IdRichiesta);
 
             await _notificationHubContext.Clients.Group(richiesta.Chiamata.Operatore.Sede.Codice).SendAsync("NotifyGetRichiestaUpDateMarker", listaSintesiMarker.LastOrDefault(marker => marker.Codice == richiesta.Chiamata.Codice));
         }
