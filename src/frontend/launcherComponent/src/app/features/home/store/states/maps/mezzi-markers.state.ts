@@ -1,11 +1,21 @@
 import { MezzoMarker } from '../../../maps/maps-model/mezzo-marker.model';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { MezziMarkerService } from '../../../../../core/service/maps-service';
-import { ClearMezziMarkers, GetMezziMarkers, OpacizzaMezziMarkers, SetMezziMarkers, SetMezzoMarkerById } from '../../actions/maps/mezzi-markers.actions';
+import {
+    AddMezziMarkers,
+    ClearMezziMarkers,
+    GetMezziMarkers, InsertMezzoMarker,
+    OpacizzaMezziMarkers,
+    PatchMezziMarkers, RemoveMezzoMarker,
+    SetMezziMarkers,
+    SetMezzoMarkerById, UpdateMezzoMarker
+} from '../../actions/maps/mezzi-markers.actions';
 import { SetMarkerOpachiMezzi } from '../../actions/maps/marker-opachi.actions';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from '../../../../../shared/enum/toastr';
 import { SetMarkerLoading } from '../../actions/home.actions';
+import { append, insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
+
 
 export interface MezziMarkersStateModel {
     mezziMarkers: MezzoMarker[];
@@ -60,6 +70,53 @@ export class MezziMarkersState {
         patchState({
             mezziMarkers: action.mezziMarkers
         });
+    }
+
+    @Action(PatchMezziMarkers)
+    patchMezziMarkers({ patchState }: StateContext<MezziMarkersStateModel>, { payload }: PatchMezziMarkers) {
+        patchState({
+            mezziMarkers: payload.map(item => item),
+            mezziMarkersId: payload.map(item => item.mezzo.codice)
+        });
+    }
+
+    @Action(AddMezziMarkers)
+    addMezziMarkers({ setState }: StateContext<MezziMarkersStateModel>, { payload }: AddMezziMarkers) {
+        setState(
+            patch({
+                mezziMarkers: append(payload.map(item => item)),
+                mezziMarkersId: append(payload.map(item => item.mezzo.codice))
+            })
+        );
+    }
+
+    @Action(InsertMezzoMarker)
+    insertRichiestaMarker({ setState }: StateContext<MezziMarkersStateModel>, { payload, before }: InsertMezzoMarker) {
+        setState(
+            patch({
+                mezziMarkers: insertItem(payload, before),
+                mezziMarkersId: insertItem(payload.mezzo.codice, before)
+            })
+        );
+    }
+
+    @Action(UpdateMezzoMarker)
+    updateRichiestaMarker({ setState }: StateContext<MezziMarkersStateModel>, { payload }: UpdateMezzoMarker) {
+        setState(
+            patch({
+                mezziMarkers: updateItem<MezzoMarker>(mezzo => mezzo.mezzo.codice === payload.mezzo.codice, payload)
+            })
+        );
+    }
+
+    @Action(RemoveMezzoMarker)
+    removeRichiestaMarker({ setState }: StateContext<MezziMarkersStateModel>, { payload }: RemoveMezzoMarker) {
+        setState(
+            patch({
+                mezziMarkers: removeItem<MezzoMarker>(mezzo => mezzo.mezzo.codice === payload),
+                mezziMarkersId: removeItem<string>(id => id === payload)
+            })
+        );
     }
 
     @Action(SetMezzoMarkerById)
