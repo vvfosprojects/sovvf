@@ -15,8 +15,8 @@ export class RichiesteMarkerAdapterService {
             item.descrizione ? item.descrizione : item.label,
             item.prioritaRichiesta ? item.prioritaRichiesta : item.priorita,
             item.stato,
-            item.rilevanza ? item.rilevanza : false,
-            item.rilevanzaStArCu ? item.rilevanzaStArCu : false,
+            item.rilevanteGrave ? item.rilevanteGrave : false,
+            item.rilevanteStArCu ? item.rilevanteStArCu : false,
             RichiesteMarkerAdapterService.iconaRichiesta(item.stato, item.prioritaRichiesta ? item.prioritaRichiesta : item.priorita)
         );
     }
