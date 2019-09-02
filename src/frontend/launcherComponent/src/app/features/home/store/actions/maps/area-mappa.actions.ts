@@ -6,3 +6,7 @@ export class SetAreaMappa {
     constructor(public areaMappa: AreaMappa) {
     }
 }
+
+export class GetMarkersMappa {
+    static readonly type = '[Area Mappa] Get Markers Mappa';
+}

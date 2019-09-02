@@ -30,21 +30,21 @@ export class AddMezziMarkers {
 }
 
 export class InsertMezzoMarker {
-    static readonly type = '[Mezzi Marker] Insert Richiesta Marker';
+    static readonly type = '[Mezzi Marker] Insert Mezzo Marker';
 
     constructor(public payload: MezzoMarker, public before?: number) {
     }
 }
 
 export class UpdateMezzoMarker {
-    static readonly type = '[Mezzi Marker] Update Richiesta Marker';
+    static readonly type = '[Mezzi Marker] Update Mezzo Marker';
 
     constructor(public payload: MezzoMarker) {
     }
 }
 
 export class RemoveMezzoMarker {
-    static readonly type = '[Mezzi Marker] Remove Richiesta Marker';
+    static readonly type = '[Mezzi Marker] Remove Mezzo Marker';
 
     constructor(public payload: string) {
     }

@@ -1,6 +1,11 @@
 import { Selector, State, Action, StateContext, Store, Select } from '@ngxs/store';
 import { makeCopy } from '../../../../../shared/helper/function';
-import { ClearCopiaFiltroAttivo, CopiaFiltroAttivo, SetFiltriMarker, SetFiltroMarker } from '../../actions/maps/maps-filtro.actions';
+import {
+    ClearCopiaFiltroAttivo,
+    CopiaFiltroAttivo,
+    SetFiltriMarker,
+    SetFiltroMarker
+} from '../../actions/maps/maps-filtro.actions';
 import { MarkerFiltro } from '../../../../../shared/interface/marker-filtro.interface';
 import { BoxClickInterface } from '../../../boxes/box-interface/box-click-interface';
 import { Observable, Subscription } from 'rxjs';
@@ -8,6 +13,7 @@ import { BoxClickState } from '../boxes/box-click.state';
 import { OpacizzaMezziMarkers } from '../../actions/maps/mezzi-markers.actions';
 import { OpacizzaRichiesteMarkers } from '../../actions/maps/richieste-markers.actions';
 import { ClearMarkerOpachiMezzi, ClearMarkerOpachiRichieste } from '../../actions/maps/marker-opachi.actions';
+import { GetMarkersMappa } from '../../actions/maps/area-mappa.actions';
 
 export interface MapsFiltroStateModel {
     filtroMarker: MarkerFiltro[];
@@ -77,7 +83,7 @@ export class MapsFiltroState {
     }
 
     @Action(SetFiltroMarker)
-    setFiltroMarker({ getState, patchState }: StateContext<MapsFiltroStateModel>, action: SetFiltroMarker) {
+    setFiltroMarker({ getState, patchState, dispatch }: StateContext<MapsFiltroStateModel>, action: SetFiltroMarker) {
         const state = getState();
         const filtroMarkerCopy: MarkerFiltro[] = makeCopy(state.filtroMarker);
         const filtroAttivo: string[] = [];
@@ -98,6 +104,9 @@ export class MapsFiltroState {
             filtroMarker: filtroMarkerCopy,
             filtroMarkerAttivo: filtroAttivo
         });
+
+        // Todo: da sistemare
+        dispatch(new GetMarkersMappa());
     }
 
     @Action(SetFiltriMarker)
