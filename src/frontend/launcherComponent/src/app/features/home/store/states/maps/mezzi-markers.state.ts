@@ -5,15 +5,18 @@ import { ClearMezziMarkers, GetMezziMarkers, OpacizzaMezziMarkers, SetMezziMarke
 import { SetMarkerOpachiMezzi } from '../../actions/maps/marker-opachi.actions';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from '../../../../../shared/enum/toastr';
+import { SetMarkerLoading } from '../../actions/home.actions';
 
 export interface MezziMarkersStateModel {
     mezziMarkers: MezzoMarker[];
+    mezziMarkersId: string[];
     mezzoMarker: MezzoMarker;
 }
 
 export const MezziMarkersStateDefaults: MezziMarkersStateModel = {
-    mezziMarkers: null,
-    mezzoMarker: null
+    mezziMarkers: [],
+    mezziMarkersId: [],
+    mezzoMarker: null,
 };
 
 @State<MezziMarkersStateModel>({
@@ -38,10 +41,18 @@ export class MezziMarkersState {
     }
 
     @Action(GetMezziMarkers)
-    getMezziMarkers({ dispatch }: StateContext<MezziMarkersStateModel>) {
-        this._mezzi.getMezziMarkers().subscribe((data: MezzoMarker[]) => {
-            dispatch(new SetMezziMarkers(data));
-        }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5)));
+    getMezziMarkers({ dispatch }: StateContext<MezziMarkersStateModel>, action: GetMezziMarkers) {
+        dispatch(new SetMarkerLoading(true));
+        this._mezzi.getMezziMarkers(action.areaMappa).subscribe((data: MezzoMarker[]) => {
+                dispatch([
+                    new SetMezziMarkers(data),
+                    new SetMarkerLoading(false)
+                ]);
+            }, () => dispatch([
+                new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5),
+                new SetMarkerLoading(false)
+            ])
+        );
     }
 
     @Action(SetMezziMarkers)
