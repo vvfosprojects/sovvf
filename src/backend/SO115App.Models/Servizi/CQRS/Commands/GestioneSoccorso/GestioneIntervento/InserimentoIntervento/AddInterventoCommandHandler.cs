@@ -26,6 +26,7 @@ using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GenerazioneCodiciR
 using System;
 using System.Data;
 using SO115App.Models.Classi.Utility;
+using SO115App.Models.Servizi.Infrastruttura.Turni;
 
 namespace DomainModel.CQRS.Commands.AddIntervento
 {
@@ -33,11 +34,13 @@ namespace DomainModel.CQRS.Commands.AddIntervento
     {
         private readonly ISaveRichiestaAssistenza _saveRichiestaAssistenza;
         private readonly IGeneraCodiceRichiesta _generaCodiceRichiesta;
+        private readonly IGetTurno _getTurno;
 
-        public AddInterventoCommandHandler(ISaveRichiestaAssistenza saveRichiestaAssistenza, IGeneraCodiceRichiesta generaCodiceRichiesta)
+        public AddInterventoCommandHandler(ISaveRichiestaAssistenza saveRichiestaAssistenza, IGeneraCodiceRichiesta generaCodiceRichiesta, IGetTurno getTurno)
         {
             this._saveRichiestaAssistenza = saveRichiestaAssistenza;
             _generaCodiceRichiesta = generaCodiceRichiesta;
+            _getTurno = getTurno;
         }
 
         public void Handle(AddInterventoCommand command)
@@ -57,7 +60,7 @@ namespace DomainModel.CQRS.Commands.AddIntervento
                 Localita = command.Chiamata.Localita,
                 Descrizione = command.Chiamata.Descrizione,
                 Codice = codiceChiamata,
-                TurnoInserimentoChiamata = command.Chiamata.TurnoInserimentoChiamata,
+                TurnoInserimentoChiamata = _getTurno.Get(),
                 TipoTerreno = command.Chiamata.TipoTerreno,
                 ListaEntiIntervenuti = command.Chiamata.ListaEntiIntervenuti,
                 ObiettivoSensibile = command.Chiamata.ObiettivoSensibile,

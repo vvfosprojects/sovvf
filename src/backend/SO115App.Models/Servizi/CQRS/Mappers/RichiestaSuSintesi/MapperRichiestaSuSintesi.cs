@@ -77,6 +77,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Mappers.RichiestaSuSintesi
                 ZoneEmergenza = richiesta.ZoneEmergenza,
                 IstantePresaInCarico = richiesta.IstantePresaInCarico,
                 CodiceSchedaNue = richiesta.CodiceSchedaNue,
+                TurnoInserimentoChiamata = richiesta.TurnoInserimentoChiamata,
             };
         }
     }

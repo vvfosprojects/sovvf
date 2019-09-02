@@ -124,6 +124,12 @@ namespace SO115App.CompositionRoot
             container.Register<
                 SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi.IGetListaMezzi,
                 SO115App.FakePersistenceJSon.GestioneMezzi.GetListaMezzi>();
+            container.Register<
+            SO115App.Models.Servizi.Infrastruttura.Turni.IUpdateTurni,
+            SO115App.FakePersistence.JSon.Turni.UpdateTurni>();
+            container.Register<
+            SO115App.Models.Servizi.Infrastruttura.Turni.IGetTurno,
+            SO115App.FakePersistence.JSon.Turni.GetTurno>();
 
             container.Register<
             SO115App.Models.Servizi.Infrastruttura.Notification.GestioneChiamata.INotifyInserimentoChiamata,
