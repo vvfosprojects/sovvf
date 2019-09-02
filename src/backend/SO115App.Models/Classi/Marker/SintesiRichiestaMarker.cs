@@ -117,14 +117,19 @@ namespace SO115App.API.Models.Classi.Marker
         }
 
         /// <summary>
-        ///   Indica la data in cui è stato marcato RILEVANTE l'ultima volta
+        ///   Indica se la richiesta è stata marcata RILEVANTE
         /// </summary>
         /// <remarks>
         ///   Una richiesta può essere rilevante se è l'operatore a marcarla come tale, oppure in
         ///   base ad un insieme di regole automatiche deterministiche o basate su algoritmi di
         ///   machine learning.
         /// </remarks>
-        public bool Rilevanza { get; set; }
+        public bool RilevanteGrave { get; set; }
+
+        /// <summary>
+        ///   Indica se la rilevanza è di tipo Storico/Artistico/Culturale
+        /// </summary>
+        public bool RilevanteStArCu { get; set; }
 
         /// <summary>
         ///   Opacità della richiesta, serve per opacizzare i Marker che non sono rilevanti ai fini

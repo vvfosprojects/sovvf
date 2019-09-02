@@ -28,6 +28,7 @@ using SO115App.Models.Servizi.Infrastruttura.Notification.GestionePartenza;
 using System.Linq;
 using System.Threading.Tasks;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneMezziInServizio.ListaMezziInSerivizio;
+using SO115App.API.Models.Servizi.CQRS.Queries.Marker.MezziMarker;
 
 namespace SO115App.SignalR.Sender.GestionePartenza
 {
@@ -39,9 +40,8 @@ namespace SO115App.SignalR.Sender.GestionePartenza
         private readonly IQueryHandler<BoxPersonaleQuery, BoxPersonaleResult> _boxPersonaleHandler;
         private readonly IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> _sintesiRichiesteAssistenzaMarkerhandler;
         private readonly IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> _sintesiRichiesteAssistenzahandler;
-
-        private readonly IQueryHandler<ListaMezziInServizioQuery, ListaMezziInServizioResult>
-            _listaMezziInServizioHandler;
+        private readonly IQueryHandler<ListaMezziInServizioQuery, ListaMezziInServizioResult> _listaMezziInServizioHandler;
+        private readonly IQueryHandler<MezziMarkerQuery, MezziMarkerResult> _listaMezziMarkerHandler;
 
         public NotificationAggiornaStatoMezzo(IHubContext<NotificationHub> notificationHubContext,
                                           IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> boxRichiesteHandler,
@@ -49,7 +49,8 @@ namespace SO115App.SignalR.Sender.GestionePartenza
                                           IQueryHandler<BoxPersonaleQuery, BoxPersonaleResult> boxPersonaleHandler,
                                           IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> sintesiRichiesteAssistenzaMarkerhandler,
                                           IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> sintesiRichiesteAssistenzahandler,
-                                          IQueryHandler<ListaMezziInServizioQuery, ListaMezziInServizioResult> listaMezziInServizioHandler)
+                                          IQueryHandler<ListaMezziInServizioQuery, ListaMezziInServizioResult> listaMezziInServizioHandler,
+                                          IQueryHandler<MezziMarkerQuery, MezziMarkerResult> listaMezziMarkerHandler)
         {
             _notificationHubContext = notificationHubContext;
             _boxRichiesteHandler = boxRichiesteHandler;
@@ -58,6 +59,7 @@ namespace SO115App.SignalR.Sender.GestionePartenza
             _sintesiRichiesteAssistenzaMarkerhandler = sintesiRichiesteAssistenzaMarkerhandler;
             _sintesiRichiesteAssistenzahandler = sintesiRichiesteAssistenzahandler;
             _listaMezziInServizioHandler = listaMezziInServizioHandler;
+            _listaMezziMarkerHandler = listaMezziMarkerHandler;
         }
 
         public async Task SendNotification(AggiornaStatoMezzoCommand intervento)
@@ -93,6 +95,10 @@ namespace SO115App.SignalR.Sender.GestionePartenza
             var query = new SintesiRichiesteAssistenzaMarkerQuery();
             var listaSintesiMarker = _sintesiRichiesteAssistenzaMarkerhandler.Handle(query).SintesiRichiestaMarker;
             await _notificationHubContext.Clients.Group(intervento.Chiamata.Operatore.Sede.Codice).SendAsync("NotifyGetRichiestaUpDateMarker", listaSintesiMarker.LastOrDefault(marker => marker.Codice == intervento.Chiamata.Codice));
+
+            var queryListaMezzi = new MezziMarkerQuery();
+            var listaMezziMarker = _listaMezziMarkerHandler.Handle(queryListaMezzi).ListaMezziMarker;
+            await _notificationHubContext.Clients.Group(intervento.Chiamata.Operatore.Sede.Codice).SendAsync("NotifyGetMezzoUpDateMarker", listaMezziMarker.LastOrDefault(marker => marker.IdRichiesta == intervento.Chiamata.Codice));
         }
     }
 }
