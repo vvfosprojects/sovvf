@@ -66,10 +66,48 @@ export class MezziMarkersState {
     }
 
     @Action(SetMezziMarkers)
-    setMezziMarkers({ patchState }: StateContext<MezziMarkersStateModel>, action: SetMezziMarkers) {
-        patchState({
-            mezziMarkers: action.mezziMarkers
-        });
+    setMezziMarkers({ getState, dispatch }: StateContext<MezziMarkersStateModel>, action: SetMezziMarkers) {
+        const state = getState();
+        if (action.mezziMarkers) {
+            if (state.mezziMarkers.length === 0) {
+                dispatch(new PatchMezziMarkers(action.mezziMarkers));
+            } else {
+                const actionMezziId: string[] = [];
+                const mezzoMarkerRemoveId: string[] = [];
+                const mezzoMarkerAdd: MezzoMarker[] = [];
+                /**
+                 * marker da aggiungere
+                 */
+                action.mezziMarkers.forEach(mezzo => {
+                    actionMezziId.push(mezzo.mezzo.codice);
+                    if (!state.mezziMarkersId.includes(mezzo.mezzo.codice)) {
+                        mezzoMarkerAdd.push(mezzo);
+                    }
+                });
+                /**
+                 * marker da rimuovere
+                 */
+                state.mezziMarkers.forEach(mezzo => {
+                    if (!actionMezziId.includes(mezzo.mezzo.codice)) {
+                        mezzoMarkerRemoveId.push(mezzo.mezzo.codice);
+                    }
+                });
+                /**
+                 * tolgo i marker dallo stato
+                 */
+                if (mezzoMarkerRemoveId.length > 0) {
+                    mezzoMarkerRemoveId.forEach(id => {
+                        dispatch(new RemoveMezzoMarker(id));
+                    });
+                }
+                /**
+                 * aggiungo i marker allo stato
+                 */
+                if (mezzoMarkerAdd.length > 0) {
+                    dispatch(new AddMezziMarkers(mezzoMarkerAdd));
+                }
+            }
+        }
     }
 
     @Action(PatchMezziMarkers)
