@@ -16,5 +16,6 @@ namespace SO115App.FakePersistence.JSon.Utility
         public static string PreaccoppiatiComposizione = "Fake/PreAccoppiatiComposizione.json";
         public static string SquadreComposizione = "Fake/SquadreComposizione.json";
         public static string User = "Fake/user.json";
+        public static string Turni = "Fake/Turni.json";
     }
 }
