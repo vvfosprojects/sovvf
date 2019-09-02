@@ -1,4 +1,4 @@
-<div class="row_text p-1 scroll-y" style="max-height: calc(100vh - 60px)">
+<div class="row_text scroll-y" style="max-height: calc(100vh - 60px)">
   <table *ngIf="elencoEventi" class="table table-striped">
     <thead class="thead-dark h5">
       <th scope="col">Evento</th>
@@ -7,9 +7,9 @@
       <th scope="col">Note</th>
     </thead>
     <tbody class="h6">
-      <tr app-evento-richiesta *ngFor="let r of elencoEventi | filterBy: filtroTargaMezzo; let i = index" [eventoRichiesta]="r"
-        [nomeClasseEvento]="r.nomeClasseEvento" [istantePrimoEvento]="istantePrimoEvento"
-        [istanteEventoPrecedente]="setIstanteEventoPrecedente(i)"></tr>
+      <tr app-evento-richiesta *ngFor="let r of elencoEventi | filterBy: filtroTargaMezzo; let i = index"
+        [eventoRichiesta]="r" [nomeClasseEvento]="r.nomeClasseEvento" [istantePrimoEvento]="istantePrimoEvento"
+        [istanteEventoPrecedente]="setIstanteEventoPrecedente(i)" (filtroTarga)="setRicercaTargaMezzo($event)"></tr>
     </tbody>
   </table>
   <div *ngIf="!elencoEventi">
