@@ -15,10 +15,38 @@ export class SetMezziMarkers {
     }
 }
 
-export class UpdateMezzoMarker {
-    static readonly type = '[Mezzi Marker] Update Mezzi Marker';
+export class PatchMezziMarkers {
+    static readonly type = '[Mezzi Marker] Patch Mezzi Markers';
 
-    constructor(public mezzo: MezzoMarker) {
+    constructor(public payload: MezzoMarker[]) {
+    }
+}
+
+export class AddMezziMarkers {
+    static readonly type = '[Mezzi Marker] Add Mezzi Markers';
+
+    constructor(public payload: MezzoMarker[]) {
+    }
+}
+
+export class InsertMezzoMarker {
+    static readonly type = '[Mezzi Marker] Insert Richiesta Marker';
+
+    constructor(public payload: MezzoMarker, public before?: number) {
+    }
+}
+
+export class UpdateMezzoMarker {
+    static readonly type = '[Mezzi Marker] Update Richiesta Marker';
+
+    constructor(public payload: MezzoMarker) {
+    }
+}
+
+export class RemoveMezzoMarker {
+    static readonly type = '[Mezzi Marker] Remove Richiesta Marker';
+
+    constructor(public payload: string) {
     }
 }
 
