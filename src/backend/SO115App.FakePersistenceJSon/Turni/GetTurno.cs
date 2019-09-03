@@ -63,7 +63,7 @@ namespace SO115App.FakePersistence.JSon.Turni
 
                         case "D":
                             _letteraTurnoD = 'A';
-                            if (numeroTurnoD <= 8)
+                            if (numeroTurnoD < 8)
                             {
                                 numeroTurnoD++;
                             }
@@ -117,7 +117,7 @@ namespace SO115App.FakePersistence.JSon.Turni
 
                     case "D":
                         _letteraTurnoN = 'A';
-                        if (numeroTurnoN <= 8)
+                        if (numeroTurnoN < 8)
                         {
                             numeroTurnoN++;
                         }
