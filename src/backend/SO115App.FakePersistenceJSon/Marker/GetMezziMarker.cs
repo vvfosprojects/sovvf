@@ -48,7 +48,7 @@ namespace SO115App.FakePersistenceJSon.Marker
                 foreach (MezzoMarker mezzo in ListaMezziMarker)
                 {
                     if (((mezzo.Coordinate.Latitudine >= filtroAreaMappa.BottomLeft.Latitudine) && (mezzo.Coordinate.Latitudine <= filtroAreaMappa.TopRight.Latitudine)) &&
-                        ((mezzo.Coordinate.Longitudine >= filtroAreaMappa.BottomLeft.Longitudine) && (mezzo.Coordinate.Latitudine <= filtroAreaMappa.TopRight.Longitudine))
+                        ((mezzo.Coordinate.Longitudine >= filtroAreaMappa.BottomLeft.Longitudine) && (mezzo.Coordinate.Longitudine <= filtroAreaMappa.TopRight.Longitudine))
                       )
                     {
                         ListaMezzi.Add(mezzo);
