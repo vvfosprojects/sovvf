@@ -44,6 +44,7 @@ import {
     TerminaComposizione,
     ToggleComposizioneMode
 } from '../../actions/composizione-partenza/composizione-partenza.actions';
+import { ClearSchedaContattoTelefonata } from '../../actions/schede-contatto/schede-contatto.actions';
 
 export const ViewComponentStateDefault: ViewComponentStateModel = {
     view: {
@@ -176,6 +177,7 @@ export class ViewComponentState {
                 column: lastState.column
             });
             dispatch(new ResetChiamata());
+            dispatch(new ClearSchedaContattoTelefonata());
         }
     }
 
@@ -275,12 +277,7 @@ export class ViewComponentState {
                 column: newState.column
             });
         } else {
-            const lastState: ViewComponentStateModel = this.store.selectSnapshot(BackupViewComponentState);
-            patchState({
-                ...state,
-                view: lastState.view,
-                column: lastState.column
-            });
+            patchState(ViewComponentStateDefault);
         }
     }
 
@@ -300,12 +297,8 @@ export class ViewComponentState {
                 column: newState.column
             });
         } else {
-            const lastState: ViewComponentStateModel = this.store.selectSnapshot(BackupViewComponentState);
-            patchState({
-                ...state,
-                view: lastState.view,
-                column: lastState.column
-            });
+            dispatch(new ClearSchedaContattoTelefonata());
+            patchState(ViewComponentStateDefault);
         }
     }
 }

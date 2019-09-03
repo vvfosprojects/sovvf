@@ -2,8 +2,15 @@
   <div [ngClass]="(filterBarCol$ | async)">
     <div class="row">
       <div class="col-3 text-left">
-        <app-tasto-chiamata [colorButtonChiamata]="colorButton.chiamata" (startChiamata)="toggleChiamata()">
-        </app-tasto-chiamata>
+        <div class="btn-group">
+          <app-tasto-chiamata [colorButtonChiamata]="colorButton.chiamata" (startChiamata)="toggleChiamata()">
+          </app-tasto-chiamata>
+          <!-- TODO: creare app separata (tasto-schede-contatto) -->
+          <button class="btn btn-outline-success" (click)="toggleSchedeContatto()" ngbTooltip="Schede Contatto"
+            placement="bottom">
+            <i class="fa fa-list"></i>
+          </button>
+        </div>
       </div>
       <div *ngIf="(richiesteStatus$ | async)" class="col-2 px-0 text-left">
         <app-filtri-richieste [filtri]="(filtri$ | async)" [filtriSelezionati]="(filtriSelezionati$ | async)"
@@ -15,11 +22,6 @@
         <app-ricerca-richieste [ricerca]="(ricerca$ | async)" (search)="onSearch($event)">
         </app-ricerca-richieste>
       </div>
-      <!-- <div *ngIf="(composizioneStatus$ | async)" class="col-4 ml-auto">
-        <app-tasto-comp-partenza (cambioModalita)="compPartenzaSwitch($event)"
-          [compPartenzaMode]="(composizioneMode$ | async)">
-        </app-tasto-comp-partenza>
-      </div> -->
     </div>
   </div>
   <div *ngIf="!(composizioneStatus$ | async)" class="col-2">
@@ -35,9 +37,6 @@
   <div [ngClass]="(filterBarCol$ | async)">
     <div class="row">
       <div class="col-2">
-        <button class="btn btn-outline-secondary" (click)="toggleSchedeContatto()">
-          <i class="fa fa-list"></i>
-        </button>
       </div>
       <div *ngIf="(mapsStatus$ | async)" class="col-3 pr-0">
         <app-marker-meteo-switch [stateSwitch]="(stateSwitch$ | async)" (change)="onChange($event)">

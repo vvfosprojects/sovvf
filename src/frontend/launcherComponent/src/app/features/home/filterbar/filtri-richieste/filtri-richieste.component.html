@@ -1,8 +1,10 @@
 <div class="btn-group app-shadow">
   <div ngbDropdown autoClose="outside" class="btn-group">
-    <button ngbDropdownToggle class="btn" [ngClass]="{'btn-outline-primary': filtriSelezionati.length <= 0, 'btn-primary': filtriSelezionati.length > 0}"
+    <button ngbDropdownToggle class="btn"
+      [ngClass]="{'btn-outline-primary': filtriSelezionati.length <= 0, 'btn-primary': filtriSelezionati.length > 0}"
       type="button" id="dropdownMenuButton" data-toggle="dropdown">
-      <i class="fa fa-filter"></i> Filtri <span *ngIf="filtriSelezionati.length > 0" class="badge badge-success text-light">{{
+      <i class="fa fa-filter"></i> Filtri <span *ngIf="filtriSelezionati.length > 0"
+        class="badge badge-success text-light">{{
         filtriSelezionati.length
         }}</span>
     </button>
@@ -10,16 +12,19 @@
       <div class="card-block pt-1 pb-0">
         <h6 class="font-weight-bold">Principali</h6>
         <div *ngFor="let f of filtri" class="mb-2">
-          <app-filtro *ngIf="f.star === true" [filtro]="f" (filtroSelezionato)="onSelezioneFiltro($event)" (filtroDeselezionato)="onDeselezioneFiltro($event)"></app-filtro>
+          <app-filtro *ngIf="f.star === true" [filtro]="f" (filtroSelezionato)="onSelezioneFiltro($event)"
+            (filtroDeselezionato)="onDeselezioneFiltro($event)"></app-filtro>
         </div>
       </div>
       <div class="text-center">
-        <button class="btn btn-block btn-secondary mt-1" (click)="openFiltersModal(content)">Visualizza categorie</button>
+        <button class="btn btn-block btn-secondary mt-1" (click)="openFiltersModal(content)">Visualizza
+          categorie</button>
         <!-- FILTRI MODAL -->
         <ng-template #content let-modal>
           <div class="modal-header">
             <div class="input-group">
-              <input type="text" class="form-control" placeholder="Cerca filtri nella categoria '{{ categoriaSelezionata }}'"
+              <input type="text" class="form-control"
+                placeholder="Cerca filtri nella categoria '{{ categoriaSelezionata }}'"
                 [(ngModel)]="filtersSearch.descrizione">
               <div class="input-group-append">
                 <span class="input-group-text"><i class="fa fa-search"></i></span>
@@ -41,7 +46,9 @@
               </div>
               <div class="col-6 text-center" style="height:290px; overflow-y:auto;">
                 <span *ngFor="let f of filtri | filterBy: filtersSearch">
-                  <app-filtro *ngIf="f.categoria === categoriaSelezionata" [filtro]="f" (filtroSelezionato)="onSelezioneFiltro($event)" (filtroDeselezionato)="onDeselezioneFiltro($event)"></app-filtro>
+                  <app-filtro *ngIf="f.categoria === categoriaSelezionata" [filtro]="f"
+                    (filtroSelezionato)="onSelezioneFiltro($event)" (filtroDeselezionato)="onDeselezioneFiltro($event)">
+                  </app-filtro>
                 </span>
               </div>
             </div>
@@ -51,18 +58,22 @@
               <div class="col-12">
                 <div class="mb-2">
                   <span class="h5 mb-0 mr-2">Filtri attivi</span>
-                  <span *ngIf="filtriSelezionati.length > 0" class="text-danger cursor-pointer" (click)="eliminaFiltriAttivi()">Elimina tutti</span>
+                  <span *ngIf="filtriSelezionati.length > 0" class="text-danger cursor-pointer"
+                    (click)="eliminaFiltriAttivi()">Elimina tutti</span>
                 </div>
-                <span class="w-25 mx-1 text-center" *ngFor="let f of filtriSelezionati | paginate: { id: 'filtri', itemsPerPage: 4, currentPage: p}">
+                <span class="w-25 mx-1 text-center"
+                  *ngFor="let f of filtriSelezionati | paginate: { id: 'filtri', itemsPerPage: 4, currentPage: p}">
                   <button class="btn btn-success" ngbTooltip="{{ f.descrizione }}" placement="bottom"
                     [disableTooltip]="f.descrizione.length <= 20">{{ f.descrizione | truncate: 30 }}</button>
                 </span>
-                <button *ngIf="filtriSelezionati.length <= 0" class="btn btn-outline-secondary disabled">Seleziona un filtro per migliorare la ricerca!</button>
+                <button *ngIf="filtriSelezionati.length <= 0" class="btn btn-outline-secondary disabled">Seleziona un
+                  filtro per migliorare la ricerca!</button>
               </div>
               <div class="col-12 text-center mt-2">
-                <pagination-controls id="filtri" (pageChange)="p = $event" maxSize="9" directionLinks="true" autoHide="true"
-                  responsive="true" previousLabel="" nextLabel="" screenReaderPaginationLabel="Pagination"
-                  screenReaderPageLabel="page" screenReaderCurrentLabel="You're on page">
+                <pagination-controls id="filtri" (pageChange)="p = $event" maxSize="9" directionLinks="true"
+                  autoHide="true" responsive="true" previousLabel="" nextLabel=""
+                  screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
+                  screenReaderCurrentLabel="You're on page">
                 </pagination-controls>
               </div>
             </div>
