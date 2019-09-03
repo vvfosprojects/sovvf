@@ -41,7 +41,7 @@ namespace SO115App.FakePersistence.JSon.Turni
             var giorniTrascorsiDiurni = (int)(dataOdierna - dataFineDiurno).TotalDays;
             var giorniTrascorsiNotturno = (int)(dataOdierna - dataFineNotturno).TotalDays;
 
-            if (DateTime.UtcNow > turnoDiurno.DataOraFine)
+            if (dataOdierna > dataFineDiurno)
             {
                 for (var i = 0; i <= giorniTrascorsiDiurni; i++)
                 {
@@ -79,7 +79,7 @@ namespace SO115App.FakePersistence.JSon.Turni
                 }
             }
 
-            if (DateTime.UtcNow <= turnoNotturno.DataOraFine)
+            if (dataOdierna <= dataFineNotturno)
             {
                 _listaTurniNew = new List<Turno>
                 {
@@ -89,7 +89,7 @@ namespace SO115App.FakePersistence.JSon.Turni
 
                 _updateTurni.Update(_listaTurniNew);
 
-                if (DateTime.UtcNow < turnoDiurno.DataOraFine && DateTime.UtcNow > turnoDiurno.DataOraInizio)
+                if (dataOdierna < turnoDiurno.DataOraFine && dataOdierna > turnoDiurno.DataOraInizio)
                 {
                     return turnoDiurno;
                 }
@@ -139,7 +139,7 @@ namespace SO115App.FakePersistence.JSon.Turni
                 _updateTurni.Update(_listaTurniNew);
             }
 
-            if (DateTime.UtcNow < turnoDiurno.DataOraFine && DateTime.UtcNow > turnoDiurno.DataOraInizio)
+            if (dataOdierna < turnoDiurno.DataOraFine && dataOdierna > turnoDiurno.DataOraInizio)
             {
                 return turnoDiurno;
             }
