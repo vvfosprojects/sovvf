@@ -374,19 +374,34 @@
                             <div class="h6 text-right">
                                 <span *ngIf="richiesta?.turnoInserimentoChiamata || richiesta?.turnoIntervento; else nessunTurno">
                                     <span *ngIf="richiesta?.turnoInserimentoChiamata && !richiesta?.turnoIntervento">
-                                        <a ngbTooltip="Turno Inserimento {{richiesta.turnoInserimentoChiamata.descrizione}} ({{richiesta.turnoInserimentoChiamata.diurnoNotturno}})">Turno {{richiesta.turnoInserimentoChiamata.descrizione}} {{richiesta.turnoInserimentoChiamata.diurnoNotturno}}</a>
-                                        <i class="guida fa fa-clock-o fa-fw ml-1" [ngbTooltip]="orarioTurnoInserimento"
-                                           placement="right"></i>
+                                        <a [ngbTooltip]="turnoInserimentoTooltip">Turno
+                                          {{richiesta.turnoInserimentoChiamata.codice}}</a>
+                                        <i class="guida fa fa-fw ml-1" [ngbTooltip]="orarioTurnoInserimento"
+                                           placement="right" [ngClass]="{'fa-moon-o':
+                                           richiesta.turnoInserimentoChiamata.diurnoNotturno === 'N', 'fa-sun-o':
+                                           richiesta.turnoInserimentoChiamata.diurnoNotturno === 'D'}"></i>
                                     </span>
                                     <span *ngIf="richiesta?.turnoInserimentoChiamata && richiesta?.turnoIntervento">
-                                        <a [ngbTooltip]="turnoInterventoTooltip">Turno {{richiesta.turnoIntervento.descrizione}} {{richiesta.turnoIntervento.diurnoNotturno}}</a>
-                                        <i class="guida fa fa-clock-o fa-fw ml-1" [ngbTooltip]="orarioTurnoIntervento"
-                                           placement="right"></i>
+                                        <a [ngbTooltip]="turnoInterventoTooltip">Turno {{richiesta.turnoIntervento.codice}}</a>
+                                        <i class="guida fa fa-fw ml-1" [ngbTooltip]="orarioTurnoIntervento"
+                                           placement="right" [ngClass]="{'fa-moon-o':
+                                           richiesta.turnoInserimentoChiamata.diurnoNotturno === 'N', 'fa-sun-o':
+                                           richiesta.turnoInserimentoChiamata.diurnoNotturno === 'D'}"></i>
                                     </span>
+
+                                    <ng-template #turnoInserimentoTooltip>
+                                      <div>
+                                          Turno Inserimento {{richiesta.turnoInserimentoChiamata.codice}}
+                                          <span
+                                            *ngIf="richiesta.turnoInserimentoChiamata.diurnoNotturno === 'D'">(Diurno)</span>
+                                          <span
+                                            *ngIf="richiesta.turnoInserimentoChiamata.diurnoNotturno === 'N'">(Notturno)</span>
+                                    </div>
+                                    </ng-template>
                                     <ng-template #turnoInterventoTooltip>
-                                        <div>Turno Inserimento {{richiesta.turnoInserimentoChiamata.descrizione}}
+                                        <div>Turno Inserimento {{richiesta.turnoInserimentoChiamata.codice}}
                                             ({{richiesta.turnoInserimentoChiamata.diurnoNotturno}})</div>
-                                        <div>Turno Intervento {{richiesta.turnoIntervento.descrizione}}
+                                        <div>Turno Intervento {{richiesta.turnoIntervento.codice}}
                                             ({{richiesta.turnoIntervento.diurnoNotturno}})</div>
                                     </ng-template>
                                     <ng-template #orarioTurnoInserimento>
