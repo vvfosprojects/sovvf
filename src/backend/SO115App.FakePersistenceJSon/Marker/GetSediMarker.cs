@@ -48,7 +48,7 @@ namespace SO115App.FakePersistenceJSon.Marker
                 foreach (SedeMarker sede in ListaSediMarker)
                 {
                     if (((sede.Coordinate.Latitudine >= filtroAreaMappa.BottomLeft.Latitudine) && (sede.Coordinate.Latitudine <= filtroAreaMappa.TopRight.Latitudine)) &&
-                        ((sede.Coordinate.Longitudine >= filtroAreaMappa.BottomLeft.Longitudine) && (sede.Coordinate.Latitudine <= filtroAreaMappa.TopRight.Longitudine))
+                        ((sede.Coordinate.Longitudine >= filtroAreaMappa.BottomLeft.Longitudine) && (sede.Coordinate.Longitudine <= filtroAreaMappa.TopRight.Longitudine))
                       )
                     {
                         ListaSedi.Add(sede);
