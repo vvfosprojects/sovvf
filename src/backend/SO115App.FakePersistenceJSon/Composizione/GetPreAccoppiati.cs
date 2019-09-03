@@ -20,7 +20,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using DomainModel.CQRS.Commands.PreAccoppiati;
 using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Composizione;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.PreAccoppiati;
@@ -30,7 +29,7 @@ namespace SO115App.FakePersistenceJSon.Composizione
 {
     public class GetPreAccoppiati : IGetPreAccoppiati
     {
-        public List<PreAccoppiati> Get(PreAccoppiatiCommand command)
+        public List<PreAccoppiati> Get(PreAccoppiatiQuery query)
         {
             List<PreAccoppiati> preAccoppiati = new List<PreAccoppiati>();
             string filepath = "Fake/PreAccoppiatiComposizione.json";
@@ -42,7 +41,7 @@ namespace SO115App.FakePersistenceJSon.Composizione
 
             preAccoppiati = JsonConvert.DeserializeObject<List<PreAccoppiati>>(json);
 
-            return preAccoppiati.Where(x => x.CodiceSede == command.CodiceSede).ToList();
+            return preAccoppiati.Where(x => x.CodiceSede == query.CodiceSede).ToList();
         }
     }
 }

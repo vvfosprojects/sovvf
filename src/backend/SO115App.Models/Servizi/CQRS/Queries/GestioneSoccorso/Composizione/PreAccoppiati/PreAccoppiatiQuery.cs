@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="PreAccoppiatiQuery.cs" company="CNVVF">
+// <copyright file="ComposizioneSquadreQuery.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -19,15 +19,13 @@
 //-----------------------------------------------------------------------
 using CQRS.Queries;
 using SO115App.Models.Classi.Composizione;
-using System.Collections.Generic;
-using SO115App.API.Models.Classi.Composizione;
 
-namespace DomainModel.CQRS.Commands.PreAccoppiati
+namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.PreAccoppiati
 {
     /// <summary>
     ///   DTO che alimenta il Navbar presente in Home Page
     /// </summary>
-    public class PreAccoppiatiCommand
+    public class PreAccoppiatiQuery : IQuery<PreAccoppiatiResult>
     {
         /// <summary>
         ///   Filtra solo i mezzi appartenenti all'unità operativa indicata.
@@ -36,7 +34,5 @@ namespace DomainModel.CQRS.Commands.PreAccoppiati
         public FiltriComposizionePartenza Filtro { get; set; }
 
         public string CodiceSede { get; set; }
-
-        public List<SO115App.API.Models.Classi.Composizione.PreAccoppiati> preAccoppiati { get; set; }
     }
 }

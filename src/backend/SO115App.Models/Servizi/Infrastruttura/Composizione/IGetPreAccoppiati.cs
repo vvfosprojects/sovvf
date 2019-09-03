@@ -18,7 +18,6 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using System.Collections.Generic;
-using DomainModel.CQRS.Commands.PreAccoppiati;
 using SO115App.API.Models.Classi.Composizione;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.PreAccoppiati;
 
@@ -26,6 +25,6 @@ namespace SO115App.Models.Servizi.Infrastruttura.GetPreAccoppiati
 {
     public interface IGetPreAccoppiati
     {
-        List<PreAccoppiati> Get(PreAccoppiatiCommand command);
+        List<PreAccoppiati> Get(PreAccoppiatiQuery query);
     }
 }

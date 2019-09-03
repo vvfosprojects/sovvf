@@ -20,37 +20,33 @@
 using System.Collections.Generic;
 using System.Security.Principal;
 using CQRS.Authorization;
-using CQRS.Commands.Authorizers;
 using CQRS.Queries.Authorizers;
-using DomainModel.CQRS.Commands.PreAccoppiati;
 using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.Models.Classi.Utility;
 
-namespace DomainModel.CQRS.Commands.PreAccoppiati
+namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.PreAccoppiati
 {
-    public class PreAccoppiatiAuthorization : ICommandAuthorizer<PreAccoppiatiCommand>
+    public class PreAccoppiatiAuthorizationQueryHandlerDecorator : IQueryAuthorizer<PreAccoppiatiQuery, PreAccoppiatiResult>
     {
         private readonly IPrincipal _currentUser;
 
-        public PreAccoppiatiAuthorization(IPrincipal currentUser)
+        public PreAccoppiatiAuthorizationQueryHandlerDecorator(IPrincipal currentUser)
         {
             this._currentUser = currentUser;
         }
 
-        public IEnumerable<AuthorizationResult> Authorize(PreAccoppiatiCommand command)
+        public IEnumerable<AuthorizationResult> Authorize(PreAccoppiatiQuery query)
         {
-            var username = this._currentUser.Identity.Name;
-            var user = Utente.FindUserByUsername(username);
+            string username = this._currentUser.Identity.Name;
 
-            if (_currentUser.Identity.IsAuthenticated)
+            if (this._currentUser.Identity.IsAuthenticated)
             {
-
+                Utente user = Utente.FindUserByUsername(username);
                 if (user == null)
                     yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
             }
             else
                 yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
-
         }
     }
 }

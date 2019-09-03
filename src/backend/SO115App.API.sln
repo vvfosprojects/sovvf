@@ -38,6 +38,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SO115App.SignalR", "SO115Ap
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SO115App.FakePersistence.InMemory.Test", "SO115App.FakePersistence.InMemory.Test\SO115App.FakePersistence.InMemory.Test.csproj", "{584FC0AA-A32B-491B-BDCF-1DD6191BBCA1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SO115App.GeneratoreFakeMezzi", "SO115App.GeneratoreFakeMezzi\SO115App.GeneratoreFakeMezzi.csproj", "{C9632A42-A637-4B52-9531-F21FC7C1B46E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -104,6 +106,10 @@ Global
 		{584FC0AA-A32B-491B-BDCF-1DD6191BBCA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{584FC0AA-A32B-491B-BDCF-1DD6191BBCA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{584FC0AA-A32B-491B-BDCF-1DD6191BBCA1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C9632A42-A637-4B52-9531-F21FC7C1B46E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C9632A42-A637-4B52-9531-F21FC7C1B46E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C9632A42-A637-4B52-9531-F21FC7C1B46E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C9632A42-A637-4B52-9531-F21FC7C1B46E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

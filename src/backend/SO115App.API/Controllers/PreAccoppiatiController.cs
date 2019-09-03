@@ -17,22 +17,12 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Principal;
 using System.Threading.Tasks;
-using CQRS.Commands;
 using CQRS.Queries;
-using DomainModel.CQRS.Commands.PreAccoppiati;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
-using SO115App.API.Models.Classi.Composizione;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.PreAccoppiati;
-using SO115App.Models.Classi.Composizione;
-using SO115App.SignalR;
-
-/* using SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichieste; */
 
 namespace SO115App.API.Controllers
 {
@@ -45,22 +35,16 @@ namespace SO115App.API.Controllers
     [ApiController]
     public class PreAccoppiatiController : ControllerBase
     {
-        /// <summary>
-        ///   Handler del servizio
-        /// </summary>
-        private readonly ICommandHandler<PreAccoppiatiCommand> handler;
-
-        private readonly IPrincipal _currentUser;
+        private readonly IQueryHandler<PreAccoppiatiQuery, PreAccoppiatiResult> _handler;
 
         /// <summary>
         ///   Costruttore della classe
         /// </summary>
         /// <param name="handler">L'handler iniettato del servizio</param>
         public PreAccoppiatiController(IPrincipal currentUser,
-            ICommandHandler<PreAccoppiatiCommand> handler)
+            IQueryHandler<PreAccoppiatiQuery, PreAccoppiatiResult> handler)
         {
-            this.handler = handler;
-            _currentUser = currentUser;
+            this._handler = handler;
         }
 
         /// <summary>
@@ -72,15 +56,15 @@ namespace SO115App.API.Controllers
         public async Task<IActionResult> Get()
         {
             var codiceSede = Request.Headers["codicesede"];
-            var command = new PreAccoppiatiCommand()
+
+            var query = new PreAccoppiatiQuery()
             {
                 CodiceSede = codiceSede
             };
 
             try
             {
-                handler.Handle(command);
-                return Ok();
+                return Ok(_handler.Handle(query).preAccoppiati);
             }
             catch
             {

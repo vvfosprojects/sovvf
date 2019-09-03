@@ -17,29 +17,40 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using CQRS.Commands;
-using DomainModel.CQRS.Commands.PreAccoppiati;
+using System.Collections.Generic;
+using CQRS.Queries;
+using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneMezzi;
+using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneSquadre;
+using SO115App.Models.Servizi.Infrastruttura.GetComposizioneSquadre;
 using SO115App.Models.Servizi.Infrastruttura.GetPreAccoppiati;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.PreAccoppiati
 {
     /// <summary>
-    ///   Servizio che restituisce le relazioni dei preaccoppiamenti
+    ///   Servizio che restituisce tutti i valori dei Box presenti in HomePage.
     /// </summary>
-    public class PreAccoppiatiCommandHandler : ICommandHandler<PreAccoppiatiCommand>
+    public class PreAccoppiatiQueryHandler : IQueryHandler<PreAccoppiatiQuery, PreAccoppiatiResult>
     {
         private readonly IGetPreAccoppiati _iGetPreAccoppiati;
 
-        public PreAccoppiatiCommandHandler(IGetPreAccoppiati iGetPreAccoppiati)
+        public PreAccoppiatiQueryHandler(IGetPreAccoppiati iGetPreAccoppiati)
         {
             this._iGetPreAccoppiati = iGetPreAccoppiati;
         }
 
-        public void Handle(PreAccoppiatiCommand command)
+        /// <summary>
+        ///   Query che estrae i valori dei Box presenti in Home Page
+        /// </summary>
+        /// <param name="query">Filtri utilizzati per l'estrazione</param>
+        /// <returns>Elenco dei mezzi disponibili</returns>
+        public PreAccoppiatiResult Handle(PreAccoppiatiQuery query)
         {
-            var preAccoppiati = _iGetPreAccoppiati.Get(command);
+            var ListapreAccoppiati = _iGetPreAccoppiati.Get(query);
 
-            command.preAccoppiati = preAccoppiati;
+            return new PreAccoppiatiResult()
+            {
+                preAccoppiati = ListapreAccoppiati
+            };
         }
     }
 }

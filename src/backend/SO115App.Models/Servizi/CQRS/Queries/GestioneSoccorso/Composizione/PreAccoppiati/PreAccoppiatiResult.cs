@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="NotificationAddPrenotazioneMezzo.cs" company="CNVVF">
+// <copyright file="PreAccoppiatiResult.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,26 +17,18 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using System.Collections.Generic;
 
-using DomainModel.CQRS.Commands.PreAccoppiati;
-using Microsoft.AspNetCore.SignalR;
-using SO115App.Models.Servizi.Infrastruttura.Notification.ComposizionePartenza;
-using System.Threading.Tasks;
-
-namespace SO115App.SignalR.Sender.ComposizionePartenza
+namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.PreAccoppiati
 {
-    public class NotificationGetPreaccoppiati : INotificationGetPreAccoppiati
+    /// <summary>
+    ///   DTO di output
+    /// </summary>
+    public class PreAccoppiatiResult
     {
-        private readonly IHubContext<NotificationHub> _notificationHubContext;
-
-        public NotificationGetPreaccoppiati(IHubContext<NotificationHub> NotificationHubContext)
-        {
-            _notificationHubContext = NotificationHubContext;
-        }
-
-        public async Task SendNotification(PreAccoppiatiCommand command)
-        {
-            await _notificationHubContext.Clients.Group(command.CodiceSede).SendAsync("NotifyGetPreAccoppiati", command.preAccoppiati);
-        }
+        /// <summary>
+        ///   Elenco PreAccopiati per la composizione partenza semplificata
+        /// </summary>
+        public List<SO115App.API.Models.Classi.Composizione.PreAccoppiati> preAccoppiati { get; set; }
     }
 }
