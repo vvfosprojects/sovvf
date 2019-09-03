@@ -7,6 +7,7 @@ import { handleError } from '../../../shared/helper/handleError';
 import { FiltriComposizione } from '../../../features/home/composizione-partenza/interface/filtri/filtri-composizione-interface';
 import { ListaComposizioneAvanzata } from '../../../features/home/composizione-partenza/interface/lista-composizione-avanzata-interface';
 import { ConfermaPartenze } from '../../../features/home/composizione-partenza/interface/conferma-partenze-interface';
+import { IdPreaccoppiati } from '../../../features/home/composizione-partenza/interface/id-preaccoppiati-interface';
 
 const API_URL_COMPOSIZIONE = environment.apiUrl.composizione;
 
@@ -16,9 +17,8 @@ export class CompPartenzaService {
     constructor(private http: HttpClient) {
     }
 
-    getPreAccoppiati(): Observable<null> {
-        // Todo: modificare perchè i filtri non vengono passati, tutti i dati arrivano con il controller getListeComposizioneAvanzata
-        return this.http.get<null>(API_URL_COMPOSIZIONE.preaccoppiati).pipe(
+    getPreAccoppiati(): Observable<IdPreaccoppiati[]> {
+        return this.http.get<IdPreaccoppiati[]>(API_URL_COMPOSIZIONE.preaccoppiati).pipe(
             retry(3),
             catchError(handleError)
         );
