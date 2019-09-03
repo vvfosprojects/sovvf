@@ -7,6 +7,7 @@ import { Store } from '@ngxs/store';
 import { SetCentroMappa } from '../../store/actions/maps/centro-mappa.actions';
 import { AreaMappa } from '../maps-model/area-mappa-model';
 import { SetAreaMappa } from '../../store/actions/maps/area-mappa.actions';
+import { MAPSOPTIONS } from '../../../../core/settings/maps-options';
 
 
 @Injectable()
@@ -21,7 +22,7 @@ export class AgmService {
          * subscribe che tiene aggiornato il centro mappa, quando questo viene cambiato dall'utente
          */
         this.centro$.pipe(
-            debounceTime(500)).subscribe(
+            debounceTime(MAPSOPTIONS.panDelay)).subscribe(
             coordinate => {
                 const centroMappa = new CentroMappa(
                     new Coordinate(coordinate['lat'], coordinate['lng']),
@@ -32,6 +33,6 @@ export class AgmService {
         /**
          * observable area Mappa
          */
-        this.area$.pipe(debounceTime(500)).subscribe( area => this.store.dispatch(new SetAreaMappa(area)));
+        this.area$.pipe(debounceTime(MAPSOPTIONS.panMarkerRefresh)).subscribe( area => this.store.dispatch(new SetAreaMappa(area)));
     }
 }
