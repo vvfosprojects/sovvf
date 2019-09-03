@@ -31,8 +31,8 @@ export function makeCentroMappa(coordinate: Coordinate, zoom: number): CentroMap
     return new CentroMappa(coordinate, zoom);
 }
 
-export function makeCoordinate(lat: number, long: number): Coordinate {
-    return new Coordinate(lat, long);
+export function makeCoordinate(lat: number, long: number, expRound?: number): Coordinate {
+    return new Coordinate(roundTodecimal(lat, expRound), roundTodecimal(long, expRound));
 }
 
 export function makeAreaMappa(bounds: LatLngBounds): AreaMappa {
@@ -52,7 +52,7 @@ export function wipeCoordinate(coordinate: Coordinate) {
     if (coordinate) {
         return 'lat=' + Math.floor(coordinate.latitudine * 100) / 100 + '&lon=' + Math.floor(coordinate.longitudine * 100) / 100;
     } else {
-        return console.error('Errore ricezione coordinate meteo: ', coordinate);
+        return console.error('Errore ricezione coordinate: ', coordinate);
     }
 }
 
@@ -121,7 +121,7 @@ export function round1decimal(value: number) {
     return Math.round(value * decimal) / decimal;
 }
 
-export function roundTodecimal(value: number, exp) {
+export function roundTodecimal(value: number, exp?: number) {
     const number = exp ? Math.pow(10, exp) : 10;
     return Math.round(value * number) / number;
 }

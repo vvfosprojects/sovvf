@@ -11,7 +11,7 @@ import { AgmService } from './agm-service.service';
 import {
     ControlPosition,
     FullscreenControlOptions,
-    LatLngBounds,
+    LatLngBounds, LatLngLiteral,
     ZoomControlOptions
 } from '@agm/core/services/google-maps-types';
 import { MeteoMarker } from '../maps-model/meteo-marker.model';
@@ -26,7 +26,7 @@ import { MouseE } from '../../../../shared/enum/mouse-e.enum';
 import { MapsDirectionState } from '../../store/states/maps/maps-direction.state';
 import { markerColor, markerColorRichiesta } from '../../../../shared/helper/function-colori';
 import { StatoRichiesta } from '../../../../shared/enum/stato-richiesta.enum';
-import { makeAreaMappa, wipeStatoRichiesta } from '../../../../shared/helper/function';
+import { wipeStatoRichiesta } from '../../../../shared/helper/function';
 import { MapsButtonsState } from '../../store/states/maps/maps-buttons.state';
 import { ButtonControlAnimation, CustomButtonsMaps } from '../maps-interface/maps-custom-buttons';
 import { MapsOptionsInterface } from '../../../../core/settings/maps-options';
@@ -210,12 +210,12 @@ export class AgmComponent implements OnDestroy {
         return this.markerService.isOpaque(id, tipoMarker);
     }
 
-    centroCambiato(centro: any): void {
-        this.agmService.centro$.next(centro);
+    centroCambiato(centro: LatLngLiteral): void {
+        this.agmService.setCentro(centro);
     }
 
     areaCambiata(bounds: LatLngBounds): void {
-        this.agmService.area$.next(makeAreaMappa(bounds));
+        this.agmService.setArea(bounds);
     }
 
     mapClick(event: any) {
