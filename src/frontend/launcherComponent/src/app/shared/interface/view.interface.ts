@@ -15,6 +15,7 @@ export interface ViewLayouts {
     filterbar: ViewLayout;
     modifica: ViewLayout;
     mezziInServizio: ViewLayout;
+    schedeContatto: ViewLayout;
 }
 
 export interface Grids {

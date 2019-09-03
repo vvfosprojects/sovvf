@@ -35,7 +35,9 @@
   <div [ngClass]="(filterBarCol$ | async)">
     <div class="row">
       <div class="col-2">
-        <!--spazio disponibile-->
+        <button class="btn btn-outline-secondary" (click)="toggleSchedeContatto()">
+          <i class="fa fa-list"></i>
+        </button>
       </div>
       <div *ngIf="(mapsStatus$ | async)" class="col-3 pr-0">
         <app-marker-meteo-switch [stateSwitch]="(stateSwitch$ | async)" (change)="onChange($event)">

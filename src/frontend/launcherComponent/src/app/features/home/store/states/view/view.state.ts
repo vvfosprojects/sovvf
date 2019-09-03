@@ -11,7 +11,8 @@ import {
     ToggleComposizione,
     ToggleModifica,
     TurnOffComposizione,
-    ToggleMezziInServizio
+    ToggleMezziInServizio,
+    ToggleSchedeContatto
 } from '../../actions/view/view.actions';
 import { BackupViewComponentState } from './save-view.state';
 import {
@@ -31,7 +32,8 @@ import {
     turnOffModifica,
     updateView,
     viewStateMaps,
-    activeMezziInServizio
+    activeMezziInServizio,
+    activeSchedeContatto
 } from '../../helper/view-state-function';
 import { GetInitCentroMappa, SetCoordCentroMappa } from '../../actions/maps/centro-mappa.actions';
 import { ClearDirection } from '../../actions/maps/maps-direction.actions';
@@ -68,6 +70,9 @@ export const ViewComponentStateDefault: ViewComponentStateModel = {
             active: false
         },
         mezziInServizio: {
+            active: false
+        },
+        schedeContatto: {
             active: false
         }
     },
@@ -264,6 +269,31 @@ export class ViewComponentState {
             dispatch(new GetInitCentroMappa());
             dispatch(new SaveView(makeCopy(state)));
             const newState = activeMezziInServizio(stateDefault);
+            patchState({
+                ...state,
+                view: newState.view,
+                column: newState.column
+            });
+        } else {
+            const lastState: ViewComponentStateModel = this.store.selectSnapshot(BackupViewComponentState);
+            patchState({
+                ...state,
+                view: lastState.view,
+                column: lastState.column
+            });
+        }
+    }
+
+    @Action(ToggleSchedeContatto)
+    toggleSchedeContatto({ getState, patchState, dispatch }: StateContext<ViewComponentStateModel>) {
+        const state = getState();
+        const stateDefault = makeCopy(ViewComponentStateDefault);
+        /**
+         * se lo stato dei mezzi in servizio non è attivo creo uno snapshot, altrimenti ritorno allo stato precedente
+         */
+        if (!state.view.schedeContatto.active) {
+            dispatch(new SaveView(makeCopy(state)));
+            const newState = activeSchedeContatto(stateDefault);
             patchState({
                 ...state,
                 view: newState.view,
