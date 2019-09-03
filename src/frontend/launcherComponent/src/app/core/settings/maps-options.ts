@@ -29,6 +29,7 @@ export let MAPSOPTIONS: MapsOptionsInterface = {
         sede: 15,
         mezzo: 15
     },
+    minZoom: 6,
     panDelay: 500,
     panMarkerRefresh: 250
 };
@@ -38,6 +39,7 @@ export interface MapsOptionsInterface {
     livelloOpacita: number;
     animationTimeoutMs: number;
     zoomSelezionato: ZoomSelezionatoInterface;
+    minZoom: number;
     panDelay: number;
     panMarkerRefresh: number;
 }
