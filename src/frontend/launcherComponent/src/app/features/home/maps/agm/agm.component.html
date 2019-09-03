@@ -171,64 +171,72 @@
                         </agm-marker>
                     </ng-container>
                 </agm-marker-cluster>
-                <ng-container *ngIf="isVisible('mezzo')">
-                    <agm-marker *ngFor="let mezzoMarker of mezziMarkers;"
-                                [latitude]="mezzoMarker.coordinate.latitudine"
-                                [longitude]="mezzoMarker.coordinate.longitudine"
-                                (markerClick)="actionMezzoMarker(mezzoMarker.mezzo.codice, MouseE.Click)"
-                                (mouseOver)="actionMezzoMarker(mezzoMarker.mezzo.codice, MouseE.HoverIn)"
-                                (mouseOut)="actionMezzoMarker(mezzoMarker.mezzo.codice, MouseE.HoverOut)"
-                                [iconUrl]="iconaMezzoMarker(mezzoMarker)"
-                                [opacity]="isOpaque(mezzoMarker.mezzo.codice, 'mezzo')"
-                                [zIndex]="zIndex(mezzoMarker.mezzo.codice, 'mezzo')">
-                        <ng-container>
-                            <agm-snazzy-info-window
-                                    [shadow]="{h: '2px',v: '0px',blur: '2px',spread: '2px',opacity: 0.3,color: colorWindow(mezzoMarker.mezzo.stato)}"
-                                    [pointer]="'5px'"
-                                    [backgroundColor]="'#f5f5f0'"
-                                    [border]="{width: '2px', color: colorWindow(mezzoMarker.mezzo.stato)}"
-                                    [borderRadius]="'10px 10px'"
-                                    [maxHeight]="1000"
-                                    [maxWidth]="1000"
-                                    [padding]="'5px'"
-                                    [isOpen]="isSelfHovered(mezzoMarker.mezzo.codice, 'mezzo')"
-                                    [openOnMarkerClick]="false"
-                                    [closeOnMapClick]="true"
-                                    [closeWhenOthersOpen]="true"
-                                    [showCloseButton]="false"
-                                    wrapperClass="snazzy-margin-priorita-4">
-                                <ng-template>
-                                    <app-info-window [mezzoMarker]="mezzoMarker" [compact]="true"></app-info-window>
-                                </ng-template>
-                            </agm-snazzy-info-window>
-                        </ng-container>
-                        <ng-container *ngIf="isSelfClicked(mezzoMarker.mezzo.codice, 'mezzo')">
-                            <agm-snazzy-info-window
-                                    [shadow]="{h: '2px',v: '0px',blur: '2px',spread: '2px',opacity: 0.3,color: colorWindow(mezzoMarker.mezzo.stato)}"
-                                    [pointer]="'5px'"
-                                    [backgroundColor]="'#f5f5f0'"
-                                    [border]="{width: '2px', color: colorWindow(mezzoMarker.mezzo.stato)}"
-                                    [borderRadius]="'10px 10px'"
-                                    [maxHeight]="1000"
-                                    [maxWidth]="1000"
-                                    [padding]="'5px'"
-                                    [isOpen]="true"
-                                    [openOnMarkerClick]="false"
-                                    [closeOnMapClick]="false"
-                                    [closeWhenOthersOpen]="false"
-                                    [showCloseButton]="false"
-                                    wrapperClass="snazzy-margin-priorita-4">
-                                <ng-template>
-                                    <app-info-window [mezzoMarker]="mezzoMarker"
-                                                     [datiMeteo]="findDatiMeteo('mezzo-'+mezzoMarker.mezzo.codice)"
-                                                     [inComposizione]="viewStateMappa.active === AppFeatures.ComposizionePartenza"
-                                                     (addMezzoComposizione)="onAddMezzoComposizione($event)">
-                                    </app-info-window>
-                                </ng-template>
-                            </agm-snazzy-info-window>
-                        </ng-container>
-                    </agm-marker>
-                </ng-container>
+                <agm-marker-cluster
+                        [imagePath]="mapsOptions.clusterOptions.path.mezzi"
+                        [minimumClusterSize]="mapsOptions.clusterOptions.minMarkerCluster"
+                        [gridSize]="mapsOptions.clusterOptions.gridSize"
+                        [maxZoom]="mapsOptions.clusterOptions.maxZoom"
+                        [averageCenter]="mapsOptions.clusterOptions.averageCenter"
+                        [zoomOnClick]="mapsOptions.clusterOptions.zoomOnClick">
+                    <ng-container *ngIf="isVisible('mezzo')">
+                        <agm-marker *ngFor="let mezzoMarker of mezziMarkers;"
+                                    [latitude]="mezzoMarker.coordinate.latitudine"
+                                    [longitude]="mezzoMarker.coordinate.longitudine"
+                                    (markerClick)="actionMezzoMarker(mezzoMarker.mezzo.codice, MouseE.Click)"
+                                    (mouseOver)="actionMezzoMarker(mezzoMarker.mezzo.codice, MouseE.HoverIn)"
+                                    (mouseOut)="actionMezzoMarker(mezzoMarker.mezzo.codice, MouseE.HoverOut)"
+                                    [iconUrl]="iconaMezzoMarker(mezzoMarker)"
+                                    [opacity]="isOpaque(mezzoMarker.mezzo.codice, 'mezzo')"
+                                    [zIndex]="zIndex(mezzoMarker.mezzo.codice, 'mezzo')">
+                            <ng-container>
+                                <agm-snazzy-info-window
+                                        [shadow]="{h: '2px',v: '0px',blur: '2px',spread: '2px',opacity: 0.3,color: colorWindow(mezzoMarker.mezzo.stato)}"
+                                        [pointer]="'5px'"
+                                        [backgroundColor]="'#f5f5f0'"
+                                        [border]="{width: '2px', color: colorWindow(mezzoMarker.mezzo.stato)}"
+                                        [borderRadius]="'10px 10px'"
+                                        [maxHeight]="1000"
+                                        [maxWidth]="1000"
+                                        [padding]="'5px'"
+                                        [isOpen]="isSelfHovered(mezzoMarker.mezzo.codice, 'mezzo')"
+                                        [openOnMarkerClick]="false"
+                                        [closeOnMapClick]="true"
+                                        [closeWhenOthersOpen]="true"
+                                        [showCloseButton]="false"
+                                        wrapperClass="snazzy-margin-priorita-4">
+                                    <ng-template>
+                                        <app-info-window [mezzoMarker]="mezzoMarker" [compact]="true"></app-info-window>
+                                    </ng-template>
+                                </agm-snazzy-info-window>
+                            </ng-container>
+                            <ng-container *ngIf="isSelfClicked(mezzoMarker.mezzo.codice, 'mezzo')">
+                                <agm-snazzy-info-window
+                                        [shadow]="{h: '2px',v: '0px',blur: '2px',spread: '2px',opacity: 0.3,color: colorWindow(mezzoMarker.mezzo.stato)}"
+                                        [pointer]="'5px'"
+                                        [backgroundColor]="'#f5f5f0'"
+                                        [border]="{width: '2px', color: colorWindow(mezzoMarker.mezzo.stato)}"
+                                        [borderRadius]="'10px 10px'"
+                                        [maxHeight]="1000"
+                                        [maxWidth]="1000"
+                                        [padding]="'5px'"
+                                        [isOpen]="true"
+                                        [openOnMarkerClick]="false"
+                                        [closeOnMapClick]="false"
+                                        [closeWhenOthersOpen]="false"
+                                        [showCloseButton]="false"
+                                        wrapperClass="snazzy-margin-priorita-4">
+                                    <ng-template>
+                                        <app-info-window [mezzoMarker]="mezzoMarker"
+                                                         [datiMeteo]="findDatiMeteo('mezzo-'+mezzoMarker.mezzo.codice)"
+                                                         [inComposizione]="viewStateMappa.active === AppFeatures.ComposizionePartenza"
+                                                         (addMezzoComposizione)="onAddMezzoComposizione($event)">
+                                        </app-info-window>
+                                    </ng-template>
+                                </agm-snazzy-info-window>
+                            </ng-container>
+                        </agm-marker>
+                    </ng-container>
+                </agm-marker-cluster>
                 <ng-container *ngFor="let chiamataMarker of chiamateMarkers;">
                     <agm-marker [latitude]="chiamataMarker.localita.coordinate.latitudine"
                                 [longitude]="chiamataMarker.localita.coordinate.longitudine"
