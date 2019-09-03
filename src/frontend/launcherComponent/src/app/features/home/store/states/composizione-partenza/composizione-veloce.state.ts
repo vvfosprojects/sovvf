@@ -201,9 +201,9 @@ export class ComposizioneVeloceState {
 
     @Action(GetListaIdPreAccoppiati)
     getListaIdPreAccoppiati({ dispatch }: StateContext<PreAccoppiatiStateModel>) {
-        this.preAccoppiatiService.getPreAccoppiati().subscribe(() => {
+        this.preAccoppiatiService.getPreAccoppiati().subscribe((data) => {
             console.log('Richiesta id Preaccoppiati effettuata');
-            // Todo: errore il back end risponde su signalR
+            this.store.dispatch(new SetListaIdPreAccoppiati(data));
         }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5)));
     }
 

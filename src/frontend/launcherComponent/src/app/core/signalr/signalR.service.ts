@@ -229,8 +229,8 @@ export class SignalRService {
             this.store.dispatch(new SetListaSquadreComposizione(data));
             this.store.dispatch(new ShowToastr(ToastrType.Info, 'Squadre Composizione ricevute da signalR', null, 5));
         });
+        // TodoBackEnd: da finire con la gestione/inserimento Preaccoppiati
         this.hubNotification.on('NotifyGetPreaccoppiati', (data: IdPreaccoppiati[]) => {
-            console.log('NotifyGetPreaccoppiatiComposizione', data);
             this.store.dispatch(new SetListaIdPreAccoppiati(data));
             this.store.dispatch(new ShowToastr(ToastrType.Info, 'Preaccoppiati Composizione ricevute da signalR', null, 5));
         });
