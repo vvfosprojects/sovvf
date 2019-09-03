@@ -1,16 +1,16 @@
 [
   {
-    "Codice": "A4",
+    "Codice": "B4",
     "Descrizione": null,
     "DiurnoNotturno": "D",
-    "DataOraInizio": "2019-09-02T08:00:00",
-    "DataOraFine": "2019-09-02T20:00:00"
+    "DataOraInizio": "2019-09-03T08:00:00",
+    "DataOraFine": "2019-09-03T20:00:00"
   },
   {
-    "Codice": "D3",
+    "Codice": "A4",
     "Descrizione": null,
     "DiurnoNotturno": "N",
-    "DataOraInizio": "2019-09-02T20:00:00",
-    "DataOraFine": "2019-09-03T08:00:00"
+    "DataOraInizio": "2019-09-03T20:00:00",
+    "DataOraFine": "2019-09-04T08:00:00"
   }
 ]
