@@ -2,38 +2,39 @@ import { SchedaTelefonataInterface } from '../../../../../shared/interface/sched
 import { ChiamataMarker } from '../../../maps/maps-model/chiamata-marker.model';
 import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.model';
 import { AzioneChiamataEnum } from '../../../../../shared/enum/azione-chiamata.enum';
+import { SchedaContatto } from 'src/app/shared/interface/scheda-contatto.interface';
 
 export class ReducerSchedaTelefonata {
-    static readonly type = '[Scheda Telefonata] Reduce completato';
+    static readonly type = '[SchedaTelefonata] Reduce completato';
 
     constructor(public schedaTelefonata: SchedaTelefonataInterface) {
     }
 }
 
 export class MarkerChiamata {
-    static readonly type = '[Scheda Telefonata] Set chiamata Marker';
+    static readonly type = '[SchedaTelefonata] Set chiamata Marker';
 
     constructor(public marker: ChiamataMarker) {
     }
 }
 
 export class ClearMarkerChiamata {
-    static readonly type = '[Scheda Telefonata] Clear chiamata Marker';
+    static readonly type = '[SchedaTelefonata] Clear chiamata Marker';
 }
 
 export class ClearChiamata {
-    static readonly type = '[Scheda Telefonata] Clear chiamata';
+    static readonly type = '[SchedaTelefonata] Clear chiamata';
 }
 
 export class InsertChiamata {
-    static readonly type = '[Scheda Telefonata] Insert chiamata';
+    static readonly type = '[SchedaTelefonata] Insert chiamata';
 
     constructor(public nuovaRichiesta: SintesiRichiesta, public azioneChiamata: AzioneChiamataEnum) {
     }
 }
 
 export class InsertChiamataSuccess {
-    static readonly type = '[Scheda Telefonata] Insert chiamata success';
+    static readonly type = '[SchedaTelefonata] Insert chiamata success';
 
     constructor(public nuovaRichiesta: SintesiRichiesta) {
     }
@@ -41,16 +42,16 @@ export class InsertChiamataSuccess {
 
 
 export class CestinaChiamata {
-    static readonly type = '[Scheda Telefonata] Cestina chiamata';
+    static readonly type = '[SchedaTelefonata] Cestina chiamata';
 
 }
 
 export class ResetChiamata {
-    static readonly type = '[Scheda Telefonata] Reset chiamata';
+    static readonly type = '[SchedaTelefonata] Reset chiamata';
 
 }
 
 export class StartChiamata {
-    static readonly type = '[Scheda Telefonata] Start Chiamata';
+    static readonly type = '[SchedaTelefonata] Start Chiamata';
 
 }

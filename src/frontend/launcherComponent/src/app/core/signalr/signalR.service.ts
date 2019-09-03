@@ -12,7 +12,7 @@ import { SetBoxMezzi } from '../../features/home/store/actions/boxes/box-mezzi.a
 import { SetBoxRichieste } from '../../features/home/store/actions/boxes/box-richieste.actions';
 import { environment } from '../../../environments/environment';
 import { ToastrType } from '../../shared/enum/toastr';
-import { InsertChiamataSuccess } from '../../features/home/store/actions/chiamata/scheda-telefonata.actions';
+import { InsertChiamataSuccess, ReducerSchedaTelefonata } from '../../features/home/store/actions/chiamata/scheda-telefonata.actions';
 import {
     InsertChiamataMarker,
     RemoveChiamataMarker,
@@ -44,6 +44,7 @@ import { ViewComponentState } from '../../features/home/store/states/view/view.s
 import { GetListeComposizioneAvanzata } from '../../features/home/store/actions/composizione-partenza/composizione-avanzata.actions';
 import { IdPreaccoppiati } from '../../features/home/composizione-partenza/interface/id-preaccoppiati-interface';
 import { UpdateMezzoMarker } from '../../features/home/store/actions/maps/mezzi-markers.actions';
+import { SetListaSchedeContatto } from 'src/app/features/home/store/actions/schede-contatto/schede-contatto.actions';
 
 const HUB_URL = environment.signalRHub;
 const SIGNALR_BYPASS = !environment.signalR;
@@ -175,6 +176,7 @@ export class SignalRService {
         });
         this.hubNotification.on('NotifyGetBoxInterventi', (data: any) => {
             console.log('NotifyGetBoxInterventi', data);
+
             this.store.dispatch(new SetBoxRichieste(data));
             this.store.dispatch(new ShowToastr(ToastrType.Info, 'Box Richieste ricevute da signalR', null, 5));
         });
@@ -207,6 +209,14 @@ export class SignalRService {
         });
 
         /**
+         * Schede Contatto
+         */
+        this.hubNotification.on('NotifyGetListaSchedeContatto', (data: any) => {
+            console.log('NotifyGetListaSchedeContatto', data);
+            this.store.dispatch(new SetListaSchedeContatto(data));
+        });
+
+        /**
          * Composizione Partenza
          */
         this.hubNotification.on('NotifyGetComposizioneMezzi', (data: any) => {
@@ -219,8 +229,8 @@ export class SignalRService {
             this.store.dispatch(new SetListaSquadreComposizione(data));
             this.store.dispatch(new ShowToastr(ToastrType.Info, 'Squadre Composizione ricevute da signalR', null, 5));
         });
+        // TodoBackEnd: da finire con la gestione/inserimento Preaccoppiati
         this.hubNotification.on('NotifyGetPreaccoppiati', (data: IdPreaccoppiati[]) => {
-            console.log('NotifyGetPreaccoppiatiComposizione', data);
             this.store.dispatch(new SetListaIdPreAccoppiati(data));
             this.store.dispatch(new ShowToastr(ToastrType.Info, 'Preaccoppiati Composizione ricevute da signalR', null, 5));
         });

@@ -19,6 +19,7 @@
       </app-composizione-partenza>
       <app-modifica-richiesta *ngIf="viewState.modifica.active"></app-modifica-richiesta>
       <app-mezzi-in-servizio *ngIf="viewState.mezziInServizio.active"></app-mezzi-in-servizio>
+      <app-schede-contatto *ngIf="viewState.schedeContatto.active"></app-schede-contatto>
     </div>
     <div class="mt-2" [ngClass]="columnState.destra || {'d-none' : !viewState.mappa.active}">
       <app-maps [viewStateMappa]="(viewStateMappa$ | async)" (mapFullLoaded)="onMapFullLoaded()"></app-maps>
