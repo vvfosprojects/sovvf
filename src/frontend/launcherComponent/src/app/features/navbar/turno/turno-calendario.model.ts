@@ -1,4 +1,4 @@
-export class Turno {
+export class TurnoCalendario {
     precedente: string;
     corrente: string;
     successivo: string;

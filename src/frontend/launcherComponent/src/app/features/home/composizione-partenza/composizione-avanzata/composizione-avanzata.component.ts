@@ -357,7 +357,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
         const partenzeObj: ConfermaPartenze = {
             partenze: partenzeMappedArray,
             idRichiesta: this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione).codice,
-            turno: this.store.selectSnapshot(TurnoState.turno).corrente
+            turno: this.store.selectSnapshot(TurnoState.turnoCalendario).corrente
         };
         // console.log('mappedArray', partenzeMappedArray);
         this.store.dispatch(new ConfirmPartenze(partenzeObj));

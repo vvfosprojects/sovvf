@@ -17,7 +17,7 @@ import { ReducerBoxClick } from '../../store/actions/boxes/box-click.actions';
 import { UtenteState } from '../../../navbar/store/states/operatore/utente.state';
 import { BoxPersonalePresenze, BoxPersonaleQty } from '../../../../shared/interface/box-personale.interface';
 import { TurnoState } from '../../../navbar/store/states/turno/turno.state';
-import { Turno } from '../../../navbar/turno/turno.model';
+import { TurnoCalendario } from '../../../navbar/turno/turno-calendario.model';
 
 @Component({
     selector: 'app-info-aggregate',
@@ -29,7 +29,7 @@ export class InfoAggregateComponent implements OnInit, OnDestroy {
     @Select(BoxMezziState.mezzi) mezzi$: Observable<BoxMezzi>;
     @Select(BoxPersonaleState.personaleQty) personaleQty$: Observable<BoxPersonaleQty>;
     @Select(BoxPersonaleState.presenze) presenze$: Observable<BoxPersonalePresenze>;
-    @Select(TurnoState.turno) turno$: Observable<Turno>;
+    @Select(TurnoState.turnoCalendario) turnoCalendario$: Observable<TurnoCalendario>;
 
     datimeteo: Meteo;
 
@@ -38,8 +38,8 @@ export class InfoAggregateComponent implements OnInit, OnDestroy {
     subscription = new Subscription();
 
     constructor(private store: Store,
-                private modalService: NgbModal,
-                private meteoService: MeteoService) {
+        private modalService: NgbModal,
+        private meteoService: MeteoService) {
         this.startMeteo();
     }
 
