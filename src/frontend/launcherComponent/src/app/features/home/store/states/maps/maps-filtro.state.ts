@@ -24,29 +24,29 @@ export interface MapsFiltroStateModel {
 export const MapsFiltroStateDefaults: MapsFiltroStateModel = {
     filtroMarker: [
         {
-            'id': 'richiesta',
-            'index': 1,
-            'isActive': true,
-            'picture': 'icon-fa-richieste',
-            'name': 'Richieste'
+            id: 'richiesta',
+            index: 1,
+            isActive: true,
+            picture: 'icon-fa-richieste',
+            name: 'Richieste'
         },
         {
-            'id': 'sede',
-            'index': 2,
-            'isActive': false,
-            'picture': 'icon-fa-sedi',
-            'name': 'Sedi'
+            id: 'sede',
+            index: 2,
+            isActive: false,
+            picture: 'icon-fa-sedi',
+            name: 'Sedi'
         },
         {
-            'id': 'mezzo',
-            'index': 3,
-            'isActive': false,
-            'picture': 'icon-truck-fire-q',
-            'name': 'Mezzi'
+            id: 'mezzo',
+            index: 3,
+            isActive: false,
+            picture: 'icon-truck-fire-q',
+            name: 'Mezzi'
         }
     ],
     filtroMarkerAttivo: ['richiesta'],
-    filtroMarkerAttivoCopy: undefined
+    filtroMarkerAttivoCopy: null
 };
 
 @State<MapsFiltroStateModel>({
@@ -104,9 +104,6 @@ export class MapsFiltroState {
             filtroMarker: filtroMarkerCopy,
             filtroMarkerAttivo: filtroAttivo
         });
-
-        // Todo: da sistemare
-        dispatch(new GetMarkersMappa());
     }
 
     @Action(SetFiltriMarker)
@@ -123,6 +120,7 @@ export class MapsFiltroState {
             filtroMarker: filtroMarkerCopy,
             filtroMarkerAttivo: action.selected
         });
+        console.log('SetFiltriMarker');
     }
 
     @Action(CopiaFiltroAttivo)

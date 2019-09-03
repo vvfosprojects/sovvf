@@ -29,7 +29,6 @@ import { BoxPersonaleFakeService } from '../../../core/service/boxes-service/box
  * Ngxs
  */
 import { NgxsModule } from '@ngxs/store';
-import { BoxClickState } from '../store/states/boxes/box-click.state';
 import { BoxMezziState } from '../store/states/boxes/box-mezzi.state';
 import { BoxPersonaleState } from '../store/states/boxes/box-personale.state';
 import { BoxRichiesteState } from '../store/states/boxes/box-richieste.state';
@@ -45,7 +44,6 @@ import { BoxRichiesteState } from '../store/states/boxes/box-richieste.state';
             BoxRichiesteState,
             BoxMezziState,
             BoxPersonaleState,
-            BoxClickState,
         ])
     ],
     declarations: [

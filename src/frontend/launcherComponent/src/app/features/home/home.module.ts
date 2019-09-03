@@ -33,6 +33,8 @@ import { HomeServiceFake } from '../../core/service/home-service/home.service.fa
 import { MezziInServizioModule } from './mezzi-in-servizio/mezzi-in-servizio.module';
 import { FiltriComposizioneState } from './store/states/composizione-partenza/filtri-composizione.state';
 import { SchedeContattoModule } from './schede-contatto/schede-contatto.module';
+import { BoxClickState } from './store/states/boxes/box-click.state';
+import { MapsFiltroState } from './store/states/maps/maps-filtro.state';
 
 @NgModule({
     declarations: [
@@ -73,7 +75,9 @@ import { SchedeContattoModule } from './schede-contatto/schede-contatto.module';
                 RicercaRichiesteState,
                 MarkerMeteoState,
                 RichiestaModificaState,
-                FiltriComposizioneState
+                FiltriComposizioneState,
+                BoxClickState,
+                MapsFiltroState
             ]
         ),
     ],
