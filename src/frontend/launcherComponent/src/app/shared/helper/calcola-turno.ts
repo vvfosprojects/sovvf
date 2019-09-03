@@ -1,8 +1,8 @@
-import { Turno } from '../../features/navbar/turno/turno.model';
+import { TurnoCalendario } from '../../features/navbar/turno/turno-calendario.model';
 import { OFFSET_SYNC_TIME, REF_SHIFT_MAP, REF_TIME } from '../../core/settings/referral-time';
 import * as moment from 'moment';
 
-export function calcolaTurno(): Turno {
+export function calcolaTurnoCalendario(): TurnoCalendario {
     const initTime = moment(REF_TIME);
     const nowUnix = moment.now() + OFFSET_SYNC_TIME[0];
     // console.log(nowUnix);
@@ -50,5 +50,5 @@ export function calcolaTurno(): Turno {
         return turno;
     }
 
-    return new Turno(REF_SHIFT_MAP.get(precedente), REF_SHIFT_MAP.get(attuale), REF_SHIFT_MAP.get(successivo));
+    return new TurnoCalendario(REF_SHIFT_MAP.get(precedente), REF_SHIFT_MAP.get(attuale), REF_SHIFT_MAP.get(successivo));
 }

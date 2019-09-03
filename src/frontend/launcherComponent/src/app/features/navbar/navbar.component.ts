@@ -2,17 +2,17 @@ import { Component, OnInit, EventEmitter, Output, isDevMode, OnDestroy, Input } 
 import { Observable, Subscription } from 'rxjs';
 import { ClockService } from './clock/clock-service/clock.service';
 import { AuthenticationService } from '../../core/auth/_services';
-import { Turno } from './turno/turno.model';
 import { Store, Select } from '@ngxs/store';
 import { TurnoState } from './store/states/turno/turno.state';
-import { SetTurno } from './store/actions/turno/turno.actions';
 import { Utente } from '../../shared/model/utente.model';
 import { ClearUtente, SetUtente } from './store/actions/operatore/utente.actions';
-import { calcolaTurno } from '../../shared/helper/calcola-turno';
 import { TurnoExtra } from './turno/turno-extra.model';
 import { ClearDataNavbar, GetDataNavbar } from './store/actions/navbar.actions';
 import { SediTreeviewState } from '../../shared/store/states/sedi-treeview/sedi-treeview.state';
 import { SetCodiceSede, SetIdUtente } from '../../core/signalr/store/signalR.actions';
+import { TurnoCalendario } from './turno/turno-calendario.model';
+import { calcolaTurnoCalendario } from 'src/app/shared/helper/calcola-turno';
+import { SetTurnoCalendario } from './store/actions/turno/turno.actions';
 
 @Component({
     selector: 'app-navbar',
@@ -30,16 +30,16 @@ export class NavbarComponent implements OnInit, OnDestroy {
     @Input() user: Utente;
     @Output() openedSidebar = new EventEmitter<any>();
 
-    @Select(TurnoState.turno) turno$: Observable<Turno>;
-    turno: Turno;
+    @Select(TurnoState.turnoCalendario) turnoCalendario$: Observable<TurnoCalendario>;
+    turnoCalendario: TurnoCalendario;
     @Select(TurnoState.turnoExtra) turnoExtra$: Observable<TurnoExtra>;
     turnoExtra: TurnoExtra;
 
     @Select(SediTreeviewState.listeSediNavbarLoaded) listeSediNavbarLoaded$: Observable<boolean>;
 
     constructor(private store: Store,
-                private _clock: ClockService,
-                private authService: AuthenticationService) {
+        private _clock: ClockService,
+        private authService: AuthenticationService) {
         this.time = new Date();
         this.clock$ = this._clock.getClock();
         this.setUtente();
@@ -47,7 +47,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
             this.time = tick;
             this.checkTurno();
         }));
-        this.subscription.add(this.turno$.subscribe((turno: Turno) => this.turno = turno));
+        this.subscription.add(this.turnoCalendario$.subscribe((turnoC: TurnoCalendario) => this.turnoCalendario = turnoC));
         this.subscription.add(this.turnoExtra$.subscribe((turnoExtra: TurnoExtra) => {
             this.turnoExtra = turnoExtra;
             if (turnoExtra) {
@@ -78,18 +78,18 @@ export class NavbarComponent implements OnInit, OnDestroy {
     }
 
     checkTurno(): void {
-        if (!this.turno) {
+        if (!this.turnoCalendario) {
             this.setTurno();
         } else {
-            const turno = calcolaTurno();
-            if (this.turno.corrente !== turno.corrente) {
+            const turno = calcolaTurnoCalendario();
+            if (this.turnoCalendario.corrente !== turno.corrente) {
                 this.setTurno();
             }
         }
     }
 
     setTurno() {
-        this.store.dispatch(new SetTurno());
+        this.store.dispatch(new SetTurnoCalendario());
     }
 
     logout() {

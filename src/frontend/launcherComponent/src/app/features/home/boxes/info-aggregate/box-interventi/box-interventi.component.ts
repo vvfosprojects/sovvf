@@ -4,7 +4,7 @@ import { BoxClickInterface } from '../../box-interface/box-click-interface';
 import { objectDiff } from '../../../../../shared/helper/function';
 import { setArrow, setBlinking } from '../../../../../shared/helper/function-css';
 import { NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
-import { Turno } from '../../../../navbar/turno/turno.model';
+import { TurnoCalendario } from '../../../../navbar/turno/turno-calendario.model';
 
 @Component({
     selector: 'app-box-interventi',
@@ -15,7 +15,7 @@ export class BoxInterventiComponent implements OnChanges {
 
     interventiDiff: any;
     @Input() interventi: BoxInterventi;
-    @Input() turno: Turno;
+    @Input() turno: TurnoCalendario;
     @Input() boxClick: BoxClickInterface;
     @Output() clickRichieste = new EventEmitter<string>();
 
@@ -28,11 +28,11 @@ export class BoxInterventiComponent implements OnChanges {
                 presidiati: interventi.currentValue.presidiati,
                 sospesi: interventi.currentValue.sospesi
             }, {
-                chiamate: interventi.previousValue.chiamate,
-                assegnati: interventi.previousValue.assegnati,
-                presidiati: interventi.previousValue.presidiati,
-                sospesi: interventi.previousValue.sospesi
-            });
+                    chiamate: interventi.previousValue.chiamate,
+                    assegnati: interventi.previousValue.assegnati,
+                    presidiati: interventi.previousValue.presidiati,
+                    sospesi: interventi.previousValue.sospesi
+                });
             setTimeout(() => {
                 this.interventiDiff = null;
             }, 5000);

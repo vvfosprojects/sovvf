@@ -1,17 +1,17 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
-import { Turno } from '../../../turno/turno.model';
-import { ClearTurnoExtra, GetTurnoExtra, SetTurno, SetTurnoExtra } from '../../actions/turno/turno.actions';
+import { TurnoCalendario } from '../../../turno/turno-calendario.model';
+import { ClearTurnoExtra, GetTurnoExtra, SetTurnoExtra, SetTurnoCalendario } from '../../actions/turno/turno.actions';
 import { TurnoExtraService } from '../../../../../core/service/turno-service/turno-extra.service';
 import { TurnoExtra } from '../../../turno/turno-extra.model';
-import { calcolaTurno } from '../../../../../shared/helper/calcola-turno';
+import { calcolaTurnoCalendario } from '../../../../../shared/helper/calcola-turno';
 
 export interface TurniStateModel {
-    turno: Turno;
+    turnoCalendario: TurnoCalendario;
     turnoExtra: TurnoExtra;
 }
 
 export const TurniStateDefaults: TurniStateModel = {
-    turno: null,
+    turnoCalendario: null,
     turnoExtra: null
 };
 
@@ -25,8 +25,8 @@ export class TurnoState {
     }
 
     @Selector()
-    static turno(state: TurniStateModel) {
-        return state.turno;
+    static turnoCalendario(state: TurniStateModel) {
+        return state.turnoCalendario;
     }
 
     @Selector()
@@ -56,12 +56,12 @@ export class TurnoState {
         });
     }
 
-    @Action(SetTurno)
-    setTurno({ patchState, dispatch }: StateContext<TurniStateModel>) {
+    @Action(SetTurnoCalendario)
+    setTurnoCalendario({ patchState, dispatch }: StateContext<TurniStateModel>) {
         dispatch(new GetTurnoExtra());
-        const turno = calcolaTurno();
+        const turnoCalendario = calcolaTurnoCalendario();
         patchState({
-            turno: turno
+            turnoCalendario: turnoCalendario
         });
     }
 }

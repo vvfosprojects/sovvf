@@ -414,7 +414,7 @@ export class MezziComposizioneState {
                             const partenzaObj: ConfermaPartenze = {
                                 partenze: [partenzaDaSganciare],
                                 idRichiesta: this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione).codice,
-                                turno: this.store.selectSnapshot(TurnoState.turno).corrente,
+                                turno: this.store.selectSnapshot(TurnoState.turnoCalendario).corrente,
                                 idRichiestaDaSganciare: action.sganciamentoObj.idRichiestaDaSganciare,
                                 idMezzoDaSganciare: action.sganciamentoObj.idMezzoDaSganciare
                             };
