@@ -39,6 +39,9 @@ export const environment = {
         mezziInServizio: {
             listaMezzi: '/api/GestioneMezziInServizio/GetListaMezzi'
         },
+        schedeContatto: {
+            listaSchede: '/api/SchedeContatto/GetLista'
+        },
         turno: '',  // TodoBackEnd: controller mancante
         composizione: {
             preaccoppiati: '/api/PreAccoppiati',

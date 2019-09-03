@@ -32,6 +32,7 @@ import { HomeService } from '../../core/service/home-service/home.service';
 import { HomeServiceFake } from '../../core/service/home-service/home.service.fake';
 import { MezziInServizioModule } from './mezzi-in-servizio/mezzi-in-servizio.module';
 import { FiltriComposizioneState } from './store/states/composizione-partenza/filtri-composizione.state';
+import { SchedeContattoModule } from './schede-contatto/schede-contatto.module';
 
 @NgModule({
     declarations: [
@@ -48,6 +49,7 @@ import { FiltriComposizioneState } from './store/states/composizione-partenza/fi
         RichiesteModule,
         ComposizionePartenzaModule,
         MezziInServizioModule,
+        SchedeContattoModule,
         NgxPaginationModule,
         NgSelectModule,
         ScrollingModule,

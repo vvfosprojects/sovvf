@@ -160,12 +160,23 @@ export function activeModifica(stateDefault: ViewComponentStateModel): ViewCompo
 }
 
 /**
- * partendo dallo stato di default, cambia lo stato di visualizzazione di composizionePartenza
+ * partendo dallo stato di default, cambia lo stato di visualizzazione di mezziInServizio
  * @param stateDefault
  */
 export function activeMezziInServizio(stateDefault: ViewComponentStateModel): ViewComponentStateModel {
     stateDefault.view.richieste.active = false;
     stateDefault.view.mezziInServizio.active = true;
     stateDefault.view.mappa.options = [AppFeatures.MezziInServizio];
+    return stateDefault;
+}
+
+/**
+ * partendo dallo stato di default, cambia lo stato di visualizzazione di schedeContatto
+ * @param stateDefault
+ */
+export function activeSchedeContatto(stateDefault: ViewComponentStateModel): ViewComponentStateModel {
+    stateDefault.view.richieste.active = false;
+    stateDefault.view.schedeContatto.active = true;
+    stateDefault.view.mappa.options = [AppFeatures.SchedeContatto];
     return stateDefault;
 }

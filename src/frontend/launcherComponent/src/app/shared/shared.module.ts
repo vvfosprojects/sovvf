@@ -7,6 +7,7 @@ import { DefaultTreeviewI18n } from './store/states/sedi-treeview/default-treevi
 import { ListaPartenzeComponent } from './components/lista-partenze/lista-partenze.component';
 import * as Shared from './index';
 import { ReactiveFormsModule } from '@angular/forms';
+import { SchedeContattoComponent } from '../features/home/schede-contatto/schede-contatto.component';
 
 const COMPONENTS = [
     Shared.DebounceClickDirective,

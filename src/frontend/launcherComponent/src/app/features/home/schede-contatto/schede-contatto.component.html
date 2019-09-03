@@ -1,0 +1,15 @@
+<div class="row mt-2 px-0">
+  <div class="col-12 scroll-y" style="height:705px">
+    <div *ngIf="mezziInServizio" class="row">
+      <div *ngFor="let scheda of schedeContatto" class="col-8 mx-auto pl-4 mb-1">
+        {{scheda|json}}
+      </div>
+    </div>
+  </div>
+  <div class="col-12">
+    <button class="btn btn-primary float-right mt-2" (click)="tornaIndietro()">
+      <i class="fa fa-arrow-left mr-2"></i>
+      Torna Indietro
+    </button>
+  </div>
+</div>

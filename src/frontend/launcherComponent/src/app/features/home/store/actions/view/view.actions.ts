@@ -51,3 +51,7 @@ export class ToggleModifica {
 export class ToggleMezziInServizio {
     static readonly type = '[MezziInServizio] Toggle mezzi in servizio';
 }
+
+export class ToggleSchedeContatto {
+    static readonly type = '[SchedeContatto] Toggle schede contatto';
+}
