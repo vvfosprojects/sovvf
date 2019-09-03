@@ -35,40 +35,48 @@ namespace SO115App.FakePersistence.JSon.Turni
             var turnoNotturno = listaTurni[1];
             var numeroTurnoD = int.Parse(turnoDiurno.Codice.Substring(1));
             var numeroTurnoN = int.Parse(turnoNotturno.Codice.Substring(1));
+            var dataOdierna = DateTime.Now;
+            var dataFineDiurno = turnoDiurno.DataOraFine;
+            var dataFineNotturno = turnoNotturno.DataOraFine;
+            var giorniTrascorsiDiurni = (int)(dataOdierna - dataFineDiurno).TotalDays;
+            var giorniTrascorsiNotturno = (int)(dataOdierna - dataFineNotturno).TotalDays;
 
             if (DateTime.UtcNow > turnoDiurno.DataOraFine)
             {
-                turnoDiurno.DataOraInizio = turnoDiurno.DataOraInizio.AddDays(1);
-                turnoDiurno.DataOraFine = turnoDiurno.DataOraFine.AddDays(1);
-                switch (turnoDiurno.Codice.Substring(0, 1))
+                for (var i = 0; i <= giorniTrascorsiDiurni; i++)
                 {
-                    case "A":
-                        _letteraTurnoD = 'B';
-                        break;
+                    turnoDiurno.DataOraInizio = turnoDiurno.DataOraInizio.AddDays(1);
+                    turnoDiurno.DataOraFine = turnoDiurno.DataOraFine.AddDays(1);
+                    switch (turnoDiurno.Codice.Substring(0, 1))
+                    {
+                        case "A":
+                            _letteraTurnoD = 'B';
+                            break;
 
-                    case "B":
-                        _letteraTurnoD = 'C';
-                        break;
+                        case "B":
+                            _letteraTurnoD = 'C';
+                            break;
 
-                    case "C":
-                        _letteraTurnoD = 'D';
-                        break;
+                        case "C":
+                            _letteraTurnoD = 'D';
+                            break;
 
-                    case "D":
-                        _letteraTurnoD = 'A';
-                        if (numeroTurnoD <= 8)
-                        {
-                            numeroTurnoD++;
-                        }
-                        else
-                        {
-                            numeroTurnoD = 1;
-                        }
-                        break;
+                        case "D":
+                            _letteraTurnoD = 'A';
+                            if (numeroTurnoD <= 8)
+                            {
+                                numeroTurnoD++;
+                            }
+                            else
+                            {
+                                numeroTurnoD = 1;
+                            }
+                            break;
+                    }
+
+                    turnoDiurno.Codice = _letteraTurnoD + numeroTurnoD.ToString();
+                    turnoDiurno.DiurnoNotturno = "D";
                 }
-
-                turnoDiurno.Codice = _letteraTurnoD + numeroTurnoD.ToString();
-                turnoDiurno.DiurnoNotturno = "D";
             }
 
             if (DateTime.UtcNow <= turnoNotturno.DataOraFine)
@@ -89,44 +97,47 @@ namespace SO115App.FakePersistence.JSon.Turni
                 return turnoNotturno;
             }
 
-            turnoNotturno.DataOraInizio = turnoNotturno.DataOraInizio.AddDays(1);
-            turnoNotturno.DataOraFine = turnoNotturno.DataOraFine.AddDays(1);
-            switch (turnoNotturno.Codice.Substring(0, 1))
+            for (var i = 0; i <= giorniTrascorsiNotturno; i++)
             {
-                case "A":
-                    _letteraTurnoN = 'B';
-                    break;
+                turnoNotturno.DataOraInizio = turnoNotturno.DataOraInizio.AddDays(1);
+                turnoNotturno.DataOraFine = turnoNotturno.DataOraFine.AddDays(1);
+                switch (turnoNotturno.Codice.Substring(0, 1))
+                {
+                    case "A":
+                        _letteraTurnoN = 'B';
+                        break;
 
-                case "B":
-                    _letteraTurnoN = 'C';
-                    break;
+                    case "B":
+                        _letteraTurnoN = 'C';
+                        break;
 
-                case "C":
-                    _letteraTurnoN = 'D';
-                    break;
+                    case "C":
+                        _letteraTurnoN = 'D';
+                        break;
 
-                case "D":
-                    _letteraTurnoN = 'A';
-                    if (numeroTurnoN <= 8)
-                    {
-                        numeroTurnoN++;
-                    }
-                    else
-                    {
-                        numeroTurnoN = 1;
-                    }
-                    break;
+                    case "D":
+                        _letteraTurnoN = 'A';
+                        if (numeroTurnoN <= 8)
+                        {
+                            numeroTurnoN++;
+                        }
+                        else
+                        {
+                            numeroTurnoN = 1;
+                        }
+                        break;
+                }
+
+                turnoNotturno.Codice = _letteraTurnoN + numeroTurnoN.ToString();
+                turnoNotturno.DiurnoNotturno = "N";
+
+                _listaTurniNew = new List<Turno>
+                {
+                    turnoDiurno,
+                    turnoNotturno
+                };
+                _updateTurni.Update(_listaTurniNew);
             }
-
-            turnoNotturno.Codice = _letteraTurnoN + numeroTurnoN.ToString();
-            turnoNotturno.DiurnoNotturno = "N";
-
-            _listaTurniNew = new List<Turno>
-            {
-                turnoDiurno,
-                turnoNotturno
-            };
-            _updateTurni.Update(_listaTurniNew);
 
             if (DateTime.UtcNow < turnoDiurno.DataOraFine && DateTime.UtcNow > turnoDiurno.DataOraInizio)
             {
