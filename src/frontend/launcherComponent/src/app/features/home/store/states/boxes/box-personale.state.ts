@@ -1,9 +1,6 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
-import { BoxPersonaleService } from 'src/app/core/service/boxes-service/box-personale.service';
 import { BoxPersonale } from '../../../boxes/boxes-model/box-personale.model';
-import { ClearBoxPersonale, GetBoxPersonale, SetBoxPersonale, SetBoxPersonalePresenze, SetBoxPersonaleQty } from '../../actions/boxes/box-personale.actions';
-import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
-import { ToastrType } from '../../../../../shared/enum/toastr';
+import { ClearBoxPersonale, SetBoxPersonale, SetBoxPersonalePresenze, SetBoxPersonaleQty } from '../../actions/boxes/box-personale.actions';
 import { BoxPersonalePersona, BoxPersonalePresenze, BoxPersonaleQty } from '../../../../../shared/interface/box-personale.interface';
 import { BoxFunzionariSo } from '../../../boxes/boxes-model/box-funzionari-so.model';
 
@@ -25,7 +22,7 @@ export const boxPersonaleStateDefaults: BoxPersonaleStateModel = {
 })
 export class BoxPersonaleState {
 
-    constructor(private _personale: BoxPersonaleService) {
+    constructor() {
     }
 
     @Selector()
@@ -41,12 +38,6 @@ export class BoxPersonaleState {
     @Selector()
     static presenze(state: BoxPersonaleStateModel) {
         return state.presenze;
-    }
-
-    @Action(GetBoxPersonale)
-    getBoxPersonale({ dispatch }: StateContext<BoxPersonaleStateModel>) {
-        this._personale.getPersonale().subscribe(() => {
-        }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5)));
     }
 
     @Action(SetBoxPersonale)

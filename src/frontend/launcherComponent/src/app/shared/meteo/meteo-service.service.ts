@@ -9,8 +9,8 @@ import { Coordinate } from '../model/coordinate.model';
 import { degToCompass, wipeCoordinate } from '../helper/function';
 import { handleError } from '../helper/handleError';
 
-const API_URL = environment.apiUrl.boxes.meteo.url;
-const CFG = environment.apiUrl.boxes.meteo.option;
+const API_URL = environment.apiUrl.meteo.url;
+const CFG = environment.apiUrl.meteo.option;
 
 
 @Injectable({
