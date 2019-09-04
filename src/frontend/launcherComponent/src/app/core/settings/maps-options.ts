@@ -2,7 +2,7 @@ import { ClusterStyle } from '@agm/js-marker-clusterer/services/google-clusterer
 
 export let MAPSOPTIONS: MapsOptionsInterface = {
     clusterOptions: {
-        minMarkerCluster: 2,
+        minMarkerCluster: 6,
         maxZoom: 14,
         gridSize: 120,
         zoomOnClick: true,
@@ -31,7 +31,7 @@ export let MAPSOPTIONS: MapsOptionsInterface = {
     },
     minZoom: 6,
     panDelay: 500,
-    panMarkerRefresh: 250
+    panMarkerRefresh: 500
 };
 
 export interface MapsOptionsInterface {
