@@ -4,4 +4,5 @@ export interface MarkerFiltro {
     isActive: boolean;
     picture: string;
     name: string;
+    disable?: boolean;
 }
