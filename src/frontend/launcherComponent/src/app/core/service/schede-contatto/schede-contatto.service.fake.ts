@@ -27,10 +27,10 @@ export class SchedeContattoServiceFake {
                 'dettaglio': 'Ulteriori informazioni',
                 'localita': {
                     'coordinate': {
-                        'latitudine': 1,
-                        'longitudine': 2
+                        'latitudine': 41.9005719,
+                        'longitudine': 12.4971768
                     },
-                    'indirizzo': 'Via Per Davvero, 1',
+                    'indirizzo': 'Via Cavour 5, Roma',
                     'note': 'Note indirizzo',
                     'piano': '2'
                 },
