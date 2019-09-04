@@ -31,6 +31,13 @@ export function makeCentroMappa(coordinate: Coordinate, zoom: number): CentroMap
     return new CentroMappa(coordinate, zoom);
 }
 
+export function diffCoordinate(coordinate1: Coordinate, coordinate2: Coordinate): boolean {
+    if (coordinate1 && coordinate2) {
+        return (coordinate1.latitudine !== coordinate2.latitudine || coordinate1.longitudine !== coordinate2.longitudine);
+    }
+    return false;
+}
+
 export function makeCoordinate(lat: number, long: number, expRound?: number): Coordinate {
     return new Coordinate(roundTodecimal(lat, expRound), roundTodecimal(long, expRound));
 }
