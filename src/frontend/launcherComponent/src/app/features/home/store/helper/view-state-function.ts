@@ -37,6 +37,7 @@ export function activeChiamata(stateDefault: ViewComponentStateModel): ViewCompo
     stateDefault.view.richieste.active = false;
     stateDefault.view.chiamata.active = true;
     stateDefault.view.mappa.options = [AppFeatures.Chiamata];
+    stateDefault.view.filterbar.options = [Grid.Col6];
     return stateDefault;
 }
 
@@ -178,5 +179,6 @@ export function activeSchedeContatto(stateDefault: ViewComponentStateModel): Vie
     stateDefault.view.richieste.active = false;
     stateDefault.view.schedeContatto.active = true;
     stateDefault.view.mappa.options = [AppFeatures.SchedeContatto];
+    stateDefault.view.filterbar.options = [Grid.Col6];
     return stateDefault;
 }
