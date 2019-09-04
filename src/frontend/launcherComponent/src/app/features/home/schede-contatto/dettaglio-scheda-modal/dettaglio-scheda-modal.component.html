@@ -1,0 +1,111 @@
+<div class="modal-header bg-light">
+  <h4 class="mb-0">Scheda Contatto</h4>
+</div>
+<div class="modal-body">
+  <!-- Prima riga -->
+  <div class="row">
+    <div class="col-2 mb-3">
+      <i class="fa fa-hashtag mr-2 guida"></i>
+      <span>N.Scheda</span>
+      <hr class="my-1">
+      {{schedaContatto.id}}
+    </div>
+    <div class="col-3 mb-3">
+      <i class="fa fa-calendar mr-2 guida"></i>
+      <span>Data Inserimento</span>
+      <hr class="my-1">
+      {{schedaContatto.dataInserimento}}
+    </div>
+    <div class="col-7"></div>
+  </div>
+  <!-- Seconda riga -->
+  <div class="row">
+    <div class="col-5 mb-3">
+      <i class="fa fa-user mr-2 guida"></i>
+      <span>Richiedente</span>
+      <hr class="my-1">
+      {{schedaContatto.richiedente.nominativo}}
+    </div>
+    <div class="col-2 mb-3">
+      <i class="fa fa-phone mr-2 guida"></i>
+      <span>Telefono</span>
+      <hr class="my-1">
+      {{schedaContatto.richiedente.telefono}}
+    </div>
+    <div class="col-5 mb-3">
+      <i class="fa fa-info mr-2 guida"></i>
+      <span>Info Addizionali</span>
+      <hr class="my-1">
+      {{schedaContatto.localita.note}}
+    </div>
+  </div>
+  <!-- Terza riga -->
+  <div class="row">
+    <div class="col-8 mb-3">
+      <i class="fa fa-map-marker mr-2 guida"></i>
+      <span>Indirizzo</span>
+      <hr class="my-1">
+      {{schedaContatto.localita.indirizzo}}
+    </div>
+    <div class="col-2 mb-3">
+      <i class="fa fa-map-pin mr-2 guida"></i>
+      <span>Latitudine</span>
+      <hr class="my-1 mb-2">
+      {{schedaContatto.localita.coordinate.latitudine}}
+    </div>
+    <div class="col-2 mb-3">
+      <i class="fa fa-map-pin mr-2 guida"></i>
+      <span>Longitudine</span>
+      <hr class="my-1 mb-2">
+      {{schedaContatto.localita.coordinate.longitudine}}
+    </div>
+  </div>
+  <!-- Quarta riga -->
+  <div class="row">
+    <div class="col-4 mb-3">
+      <i class="fa fa-list mr-2 guida"></i>
+      <span>Classificazione del NUE</span>
+      <hr class="my-1">
+      {{schedaContatto.classificazioneEvento}}
+    </div>
+    <div class="col-4 mb-3">
+      <i class="fa fa-indent mr-2 guida"></i>
+      <span>Attributi di classificazione</span>
+      <hr class="my-1 mb-2">
+      {{schedaContatto.categoria}}
+    </div>
+    <div class="col-4 mb-3">
+      <i class="fa fa-university mr-2 guida"></i>
+      <span>Competenza</span>
+      <hr class="my-1 mb-2">
+      {{schedaContatto.competenzaCC_PS}}
+    </div>
+  </div>
+  <!-- Quinta riga -->
+  <div class="row">
+    <div class="col-8 mb-3">
+      <i class="fa fa-file-text-o mr-2 guida"></i>
+      <span>Note</span>
+      <hr class="my-1">
+      {{schedaContatto.dettaglio}}
+    </div>
+    <div class="col-2 mb-3">
+      <i class="fa fa-thermometer-half mr-2 guida"></i>
+      <span>Priorità</span>
+      <hr class="my-1 mb-2">
+      <ngb-rating [(rate)]="schedaContatto.priorita" [max]="5" [readonly]="true">
+                                    <ng-template let-fill="fill" let-index="index">
+                                    <span class="circle" [class.filled]="fill === 100" [class.bad]="index > 2 && fill === 100">
+                                        <i class="fa fa-circle mr-1"></i>
+                                    </span>
+                                    </ng-template>
+                                </ngb-rating>
+    </div>
+    <div class="col-2 mb-3">
+      <i class="fa fa-users mr-2 guida"></i>
+      <span>Pers. coinvolte</span>
+      <hr class="my-1 mb-2">
+      {{schedaContatto.numeroPersoneCoinvolte}}
+    </div>
+  </div>
+</div>

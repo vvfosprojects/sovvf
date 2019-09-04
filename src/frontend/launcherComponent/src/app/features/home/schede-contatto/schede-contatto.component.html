@@ -1,7 +1,8 @@
 <div class="row mt-2 px-0">
   <div class="col-12 scroll-y" style="height:705px">
     <div *ngIf="schedeContatto">
-      <div *ngFor="let scheda of schedeContatto" class="card cursor-pointer pl-4 py-2 mb-1">
+      <div *ngFor="let scheda of schedeContatto" class="card cursor-pointer pl-4 py-2 mb-2 shadow-sm"
+      (mouseenter)="hoverIn()" (mouseleave)="hoverOut()" [ngClass]="{'bg-light': hover}">
         <div class="row">
           <div class="col py-1">
             {{scheda.dataInserimento}}
@@ -18,14 +19,14 @@
           </div>
           <div class="col py-1">
             <i class="fa fa-list mr-1"></i>
-            {{scheda.classificazioneEvento}}
+            {{scheda.classificazioneEvento | slice: 0:11}}
           </div>
           <div class="col py-1">
-            <i class="fa fa-list mr-1"></i>
-            {{scheda.richiedente.nominativo}}
+            <i class="fa fa-user mr-1"></i>
+            {{scheda.richiedente.nominativo | slice: 0:11}}
           </div>
           <div class="col py-1">
-            <i class="fa fa-list mr-1"></i>
+            <i class="fa fa-phone mr-1"></i>
             {{scheda.richiedente.telefono}}
           </div>
           <div class="col-2 pr-4">

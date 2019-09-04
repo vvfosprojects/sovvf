@@ -24,6 +24,8 @@ import { SchedaTelefonataState } from '../../store/states/chiamata/scheda-telefo
 import { DelChiamataMarker } from '../../store/actions/maps/chiamate-markers.actions';
 import { Tipologia } from '../../../../shared/model/tipologia.model';
 import { GOOGLEPLACESOPTIONS } from '../../../../core/settings/google-places-options';
+import { SchedeContattoState } from '../../store/states/schede-contatto/schede-contatto.state';
+import { SchedaContatto } from 'src/app/shared/interface/scheda-contatto.interface';
 
 @Component({
     selector: 'app-scheda-telefonata',
@@ -51,6 +53,7 @@ export class SchedaTelefonataComponent implements OnInit {
     isCollapsed = true;
 
     @Select(SchedaTelefonataState.resetChiamata) resetChiamata$: Observable<boolean>;
+    @Select(SchedeContattoState.schedaContattoTelefonata) schedaContattoTelefonata$: Observable<SchedaContatto>;
 
     constructor(private formBuilder: FormBuilder,
         private store: Store,
@@ -61,6 +64,7 @@ export class SchedaTelefonataComponent implements OnInit {
     ngOnInit() {
         this.chiamataForm = this.createForm();
         this.initNuovaRichiesta();
+        this.idChiamata = this.makeIdChiamata();
         this.nuovaRichiesta.istanteRicezioneRichiesta = new Date(new Date().getTime() + OFFSET_SYNC_TIME[0]);
 
         this.resetChiamata$.subscribe((reset: boolean) => {
@@ -68,7 +72,11 @@ export class SchedaTelefonataComponent implements OnInit {
                 this.chiamataForm.reset();
             }
         });
-        this.idChiamata = this.makeIdChiamata();
+        this.schedaContattoTelefonata$.subscribe((schedaContattoTelefonata: SchedaContatto) => {
+            if (schedaContattoTelefonata) {
+                this.setSchedaContatto(schedaContattoTelefonata);
+            }
+        });
     }
 
     createForm(): FormGroup {
@@ -354,6 +362,25 @@ export class SchedaTelefonataComponent implements OnInit {
                 this.nuovaRichiesta.descrizione = nuovaDescrizione[0].descrizione;
             }
         }
+    }
+
+    setSchedaContatto(scheda: SchedaContatto) {
+        const f = this.f;
+
+        f.nominativo.patchValue(scheda.richiedente.nominativo);
+        f.telefono.patchValue(scheda.richiedente.telefono);
+        f.indirizzo.patchValue(scheda.localita.indirizzo);
+
+        const lat = scheda.localita.coordinate.latitudine;
+        const lng = scheda.localita.coordinate.longitudine;
+        this.coordinate = new Coordinate(lat, lng);
+        this.chiamataMarker = new ChiamataMarker(this.idChiamata, `${this.operatore.nome} ${this.operatore.cognome}`, `${this.operatore.sede.codice}`,
+            new Localita(this.coordinate ? this.coordinate : null, scheda.localita.indirizzo), null
+        );
+        this.nuovaRichiesta.localita = new Localita(this.coordinate ? this.coordinate : null, scheda.localita.indirizzo, null);
+        this.f.latitudine.patchValue(lat);
+        this.f.longitudine.patchValue(lng);
+        this._statoChiamata('cerca');
     }
 
     onSubmit(azione?: AzioneChiamataEnum) {
