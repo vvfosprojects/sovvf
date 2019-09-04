@@ -53,22 +53,10 @@ export class CentroMappaState {
      * @param action
      */
     @Action(SetCentroMappa)
-    setCentroMappa({ getState, patchState }: StateContext<CentroMappaStateModel>, action: SetCentroMappa) {
-        const state = getState();
-        if (state.centroMappa) {
-            if (action.centroMappa.coordinateCentro.latitudine.toPrecision(5) !== state.centroMappa.coordinateCentro.latitudine.toPrecision(5) &&
-                action.centroMappa.coordinateCentro.longitudine.toPrecision(5) !== state.centroMappa.coordinateCentro.longitudine.toPrecision(5)) {
-                patchState({
-                    ...state,
-                    centroMappa: action.centroMappa
-                });
-            }
-        } else {
-            patchState({
-                ...state,
-                centroMappa: action.centroMappa
-            });
-        }
+    setCentroMappa({ patchState }: StateContext<CentroMappaStateModel>, action: SetCentroMappa) {
+        patchState({
+            centroMappa: action.centroMappa
+        });
     }
 
     /**
@@ -147,10 +135,11 @@ export class CentroMappaState {
      * @param action
      */
     @Action(SetInitCentroMappa)
-    setInitCentroMappa({ patchState }: StateContext<CentroMappaStateModel>, action: SetInitCentroMappa) {
+    setInitCentroMappa({ patchState, dispatch }: StateContext<CentroMappaStateModel>, action: SetInitCentroMappa) {
         patchState({
             initCentroMappa: action.centroMappa
         });
+        dispatch(new SetCentroMappa(action.centroMappa));
     }
 
     @Action(ClearCentroMappa)
