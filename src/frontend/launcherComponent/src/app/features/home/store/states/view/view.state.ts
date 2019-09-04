@@ -120,6 +120,16 @@ export class ViewComponentState {
     }
 
     @Selector()
+    static chiamataStatus(state: ViewComponentStateModel): boolean {
+        return state.view.chiamata.active;
+    }
+
+    @Selector()
+    static schedeContattoStatus(state: ViewComponentStateModel): boolean {
+        return state.view.schedeContatto.active;
+    }
+
+    @Selector()
     static colorButton(state: ViewComponentStateModel): ViewInterfaceButton {
         return colorButton(state);
     }

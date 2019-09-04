@@ -46,6 +46,8 @@ export class FilterbarComponent implements OnInit {
     // View State
     @Select(ViewComponentState.composizioneMode) composizioneMode$: Observable<Composizione>;
     @Select(ViewComponentState.composizioneStatus) composizioneStatus$: Observable<boolean>;
+    @Select(ViewComponentState.schedeContattoStatus) schedeContattoStatus$: Observable<boolean>;
+    @Select(ViewComponentState.chiamataStatus) chiamataStatus$: Observable<boolean>;
     @Select(ViewComponentState.filterBarCol) filterBarCol$: Observable<Grid>;
 
     /**
