@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Input, OnDestroy, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
 import { RichiestaMarker } from '../maps-model/richiesta-marker.model';
 import { SedeMarker } from '../maps-model/sede-marker.model';
 import { MezzoMarker } from '../maps-model/mezzo-marker.model';
@@ -7,11 +7,11 @@ import { Meteo } from '../../../../shared/model/meteo.model';
 import { CentroMappa } from '../maps-model/centro-mappa.model';
 import { MarkerService } from '../service/marker-service/marker-service.service';
 import { Observable, Subscription } from 'rxjs';
-import { AgmService } from './agm-service.service';
+import { MapService } from '../service/map-service/map-service.service';
 import {
     ControlPosition,
-    FullscreenControlOptions,
-    LatLngBounds,
+    FullscreenControlOptions, GoogleMap,
+    LatLngBounds, LatLngLiteral,
     ZoomControlOptions
 } from '@agm/core/services/google-maps-types';
 import { MeteoMarker } from '../maps-model/meteo-marker.model';
@@ -26,7 +26,7 @@ import { MouseE } from '../../../../shared/enum/mouse-e.enum';
 import { MapsDirectionState } from '../../store/states/maps/maps-direction.state';
 import { markerColor, markerColorRichiesta } from '../../../../shared/helper/function-colori';
 import { StatoRichiesta } from '../../../../shared/enum/stato-richiesta.enum';
-import { makeAreaMappa, wipeStatoRichiesta } from '../../../../shared/helper/function';
+import { makeAreaMappa, makeCentroMappa, makeCoordinate, wipeStatoRichiesta } from '../../../../shared/helper/function';
 import { MapsButtonsState } from '../../store/states/maps/maps-buttons.state';
 import { ButtonControlAnimation, CustomButtonsMaps } from '../maps-interface/maps-custom-buttons';
 import { MapsOptionsInterface } from '../../../../core/settings/maps-options';
@@ -60,6 +60,7 @@ export class AgmComponent implements OnDestroy {
     map_loaded = false;
     subscription = new Subscription();
     map: any;
+    mapWrapper: GoogleMap;
     richiestaMarkerIconUrl: string;
     meteoMarkerIconUrl: string;
 
@@ -88,11 +89,8 @@ export class AgmComponent implements OnDestroy {
         suppressInfoWindows: true
     };
 
-
-    @ViewChild('agmContainer') agmContainer: ElementRef;
-
     constructor(private markerService: MarkerService,
-                private agmService: AgmService) {
+                private mapService: MapService) {
         /**
          * creo un array di marker fittizi con tutte le icone che utilizzerà agm per metterle in cache
          * ed evitare che si presenti il bug delle icone "selezionate"
@@ -162,7 +160,7 @@ export class AgmComponent implements OnDestroy {
         /**
          * importo il wrapper nell'oggetto map
          */
-        this.agmService.map = mapWrapper;
+        this.mapWrapper = mapWrapper;
     }
 
     zIndex(id: string, tipoMarker: string, rilevante?: boolean, rilevanzaStArCu?: boolean): number {
@@ -210,12 +208,12 @@ export class AgmComponent implements OnDestroy {
         return this.markerService.isOpaque(id, tipoMarker);
     }
 
-    centroCambiato(centro: any): void {
-        this.agmService.centro$.next(centro);
+    centroCambiato(centro: LatLngLiteral): void {
+        this.mapService.setCentro(makeCentroMappa(makeCoordinate(centro.lat, centro.lng, 8), this.mapWrapper.getZoom()));
     }
 
     areaCambiata(bounds: LatLngBounds): void {
-        this.agmService.area$.next(makeAreaMappa(bounds));
+        this.mapService.setArea(makeAreaMappa(bounds));
     }
 
     mapClick(event: any) {
