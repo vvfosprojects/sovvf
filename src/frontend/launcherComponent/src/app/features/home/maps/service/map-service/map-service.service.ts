@@ -24,13 +24,11 @@ export class MapService {
          */
         this.getCentro().subscribe(
             centroMappa => {
-                console.log('Centro mappa aggiornato', centroMappa);
+                // console.log('Centro mappa aggiornato', centroMappa);
                 if (centroMappa.zoom - 1 > MAPSOPTIONS.minZoom) {
-                    // Todo: sblocco richieste mezzi e sedi
-                    console.log('filtro marker mezzi e sedi Sbloccato');
+                    // console.log('filtro marker mezzi e sedi Sbloccato');
                 } else {
-                    // Todo: blocco richieste mezzi e sedi
-                    console.log('filtro marker mezzi e sedi Bloccato');
+                    // console.log('filtro marker mezzi e sedi Bloccato');
                 }
                 this.store.dispatch(new SetCentroMappa(centroMappa));
             }

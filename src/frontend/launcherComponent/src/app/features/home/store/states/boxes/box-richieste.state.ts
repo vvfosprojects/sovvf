@@ -1,15 +1,10 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 
-// Service
-import { BoxRichiesteService } from '../../../../../core/service/boxes-service/box-richieste.service';
-
 // Model
 import { BoxInterventi } from '../../../boxes/boxes-model/box-interventi.model';
 
 // Action
-import { ClearBoxRichieste, GetBoxRichieste, SetBoxRichieste } from '../../actions/boxes/box-richieste.actions';
-import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
-import { ToastrType } from '../../../../../shared/enum/toastr';
+import { ClearBoxRichieste, SetBoxRichieste } from '../../actions/boxes/box-richieste.actions';
 
 export interface BoxRichiesteStateModel {
     richieste: BoxInterventi;
@@ -25,18 +20,12 @@ export const boxRichiesteStateDefaults: BoxRichiesteStateModel = {
 })
 export class BoxRichiesteState {
 
-    constructor(private _richieste: BoxRichiesteService) {
+    constructor() {
     }
 
     @Selector()
     static richieste(state: BoxRichiesteStateModel) {
         return state.richieste;
-    }
-
-    @Action(GetBoxRichieste)
-    getBoxRichieste({ dispatch }: StateContext<BoxRichiesteStateModel>) {
-        this._richieste.getInterventi().subscribe(() => {
-        }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5)));
     }
 
     @Action(SetBoxRichieste)

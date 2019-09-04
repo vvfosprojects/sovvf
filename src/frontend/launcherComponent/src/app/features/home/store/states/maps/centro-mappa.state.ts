@@ -43,7 +43,20 @@ export class CentroMappaState {
     }
 
     constructor() {
+    }
 
+    /**
+     * Imposta lo stato iniziale del centro Mappa
+     * @param getState
+     * @param patchState
+     * @param action
+     */
+    @Action(SetInitCentroMappa)
+    setInitCentroMappa({ patchState, dispatch }: StateContext<CentroMappaStateModel>, action: SetInitCentroMappa) {
+        patchState({
+            initCentroMappa: action.centroMappa
+        });
+        dispatch(new SetCentroMappa(action.centroMappa));
     }
 
     /**
@@ -126,20 +139,6 @@ export class CentroMappaState {
     getInitCoordCentroMappa({ getState, dispatch }: StateContext<CentroMappaStateModel>) {
         const state = getState();
         dispatch(new SetCoordCentroMappa(state.initCentroMappa.coordinateCentro));
-    }
-
-    /**
-     * Imposta lo stato iniziale del centro Mappa
-     * @param getState
-     * @param patchState
-     * @param action
-     */
-    @Action(SetInitCentroMappa)
-    setInitCentroMappa({ patchState, dispatch }: StateContext<CentroMappaStateModel>, action: SetInitCentroMappa) {
-        patchState({
-            initCentroMappa: action.centroMappa
-        });
-        dispatch(new SetCentroMappa(action.centroMappa));
     }
 
     @Action(ClearCentroMappa)

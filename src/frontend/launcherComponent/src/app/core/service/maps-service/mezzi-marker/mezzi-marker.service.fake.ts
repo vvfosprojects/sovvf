@@ -22,15 +22,14 @@ export class MezziMarkerServiceFake {
                 new Mezzo('1', 'Autobotte', 'ABP', 'In Viaggio', 1,
                     new Sede('1', '', null, null, null, null, null), 'appartenenza', 'stato', 2, 'efficienza',
                     3, 'carburante', 2, 'estinguente'),
-                'RM-12842', [new Tipologia('360', 'Persona che minaccia di buttarsi da un tetto', '')], 'Mezzo in soccorso'
+                'RM-12842'
             ),
             new MezzoMarker(
                 new Coordinate(41.82699, 12.4879854),
                 new Mezzo('2', 'Autobotte2', 'ABP', 'In Rientro', 1,
                     new Sede('1', '', null, null, null, null, null), 'appartenenza', 'stato', 2, 'efficienza',
                     3, 'carburante', 2, 'estinguente'),
-                'RM-12840', [new Tipologia('2', 'Incendio ed esplosione', 'fa fa-fire')],
-                'Mezzo in soccorso'
+                'RM-12840'
             ),
             new MezzoMarker(
                 new Coordinate(41.8531486, 12.5418702),
@@ -38,16 +37,14 @@ export class MezziMarkerServiceFake {
                     , 5,
                     new Sede('1', '', null, null, null, null, null), 'appartenenza', 'stato', 2, 'efficienza',
                     3, 'carburante', 2, 'estinguente'),
-                'RM-12841', [new Tipologia('360', 'Allagamento garage con personale da soccorrere', '')],
-                'Mezzo in soccorso'
+                'RM-12841'
             ),
             new MezzoMarker(
                 new Coordinate(41.8935662, 12.5417044),
                 new Mezzo('4', 'Autobotte3', 'ABP', 'Sul Posto', 5,
                     new Sede('1', '', null, null, null, null, null), 'appartenenza', 'stato', 2, 'efficienza',
                     3, 'carburante', 2, 'estinguente'),
-                'RM-12839', [new Tipologia('360', 'Cedimento sede stradale con rimozione veicolo', '')],
-                'Mezzo in soccorso'
+                'RM-12839'
             )
         ];
 
