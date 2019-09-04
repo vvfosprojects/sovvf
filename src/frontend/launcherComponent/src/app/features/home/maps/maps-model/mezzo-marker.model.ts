@@ -15,15 +15,7 @@ export class MezzoMarker {
         /**
          * id della richiesta a cui è associato il mezzo
          */
-        public id_richiesta?: string,
-        /**
-         * tipologia della richiesta a cui è associato il mezzo
-         */
-        public tipologie_richiesta?: Tipologia[],
-        /**
-         * Contiene la descrizione della label da mostrare
-         */
-        public label?: string
+        public id_richiesta?: string
     ) {
     }
 

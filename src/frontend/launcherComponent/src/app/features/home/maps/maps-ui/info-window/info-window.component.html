@@ -128,13 +128,10 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngIf="!compact && mezzoMarker.id_richiesta && mezzoMarker.tipologie_richiesta">
+        <tr *ngIf="!compact && mezzoMarker.id_richiesta">
           <th scope="row" class="py-1 s-info-window">
-            <span *ngIf="!!mezzoMarker.tipologie_richiesta[0]"
-              ngbTooltip="Tipologia Richiesta {{mezzoMarker.id_richiesta}}">
-              <i class="{{ methods.coloraIcona(mezzoMarker.tipologie_richiesta[0].icona) }} mr-1"
-                ngbTooltip="{{ mezzoMarker.tipologie_richiesta[0].descrizione }}"></i>
-              {{mezzoMarker.tipologie_richiesta[0].descrizione}}
+            <span>
+              {{mezzoMarker.id_richiesta}}
             </span>
             <i class="fa fa-eye text-primary ml-2"
               (click)="openModal('visualizzaRichiesta', mezzoMarker.id_richiesta)"></i>
