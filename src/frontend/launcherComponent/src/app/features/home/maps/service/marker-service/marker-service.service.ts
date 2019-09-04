@@ -12,10 +12,6 @@ import { Meteo } from '../../../../../shared/model/meteo.model';
  */
 import { MouseE } from '../../../../../shared/enum/mouse-e.enum';
 /**
- * Service
- */
-import { AgmService } from '../../agm/agm-service.service';
-/**
  * Ngxs
  */
 import { Select, Store } from '@ngxs/store';
@@ -114,8 +110,7 @@ export class MarkerService implements OnDestroy {
 
     @Select(MarkerState.markerStateNull) markerStateNull$: Observable<boolean>;
 
-    constructor(private agmService: AgmService,
-                private store: Store) {
+    constructor(private store: Store) {
         this.subscription.add(this.filtroMarkerAttivo$.subscribe((filtroAttivo: string[]) => {
             this.filtroMarkerAttivo = filtroAttivo;
             this.store.dispatch(new ToggleAnimationButton(true));

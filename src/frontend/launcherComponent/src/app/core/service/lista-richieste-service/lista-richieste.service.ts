@@ -5,7 +5,6 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { handleError } from '../../../shared/helper/handleError';
 import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
-import { RichiestaActionInterface } from '../../../shared/interface/richiesta-action.interface';
 
 const API_URL_RICHIESTE = environment.apiUrl.rigaElencoRichieste;
 const API_URL_MODIFICA = environment.apiUrl.updateRichiesta;

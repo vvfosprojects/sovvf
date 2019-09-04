@@ -4,7 +4,6 @@ import { ClearRichieste, SetRichieste } from '../actions/richieste/richieste.act
 import { ClearSediMarkers } from '../actions/maps/sedi-markers.actions';
 import {
     ClearCentroMappa,
-    SetCentroMappa,
     SetInitCentroMappa
 } from '../actions/maps/centro-mappa.actions';
 import { ClearMezziMarkers } from '../actions/maps/mezzi-markers.actions';
@@ -76,7 +75,6 @@ export class HomeState {
                 new SetBoxMezzi(data.boxListaMezzi),
                 new SetBoxPersonale(data.boxListaPersonale),
                 new SetChiamateMarkers(data.listaChiamateInCorso),
-                new SetCentroMappa(data.centroMappaMarker),
                 new SetInitCentroMappa(data.centroMappaMarker),
                 new SetFiltriComposizione(data.listaFiltri)
             ]);

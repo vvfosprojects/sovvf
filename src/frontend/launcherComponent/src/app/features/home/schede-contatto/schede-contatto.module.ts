@@ -8,6 +8,7 @@ import { NgxsModule } from '@ngxs/store';
 import { SchedeContattoState } from '../store/states/schede-contatto/schede-contatto.state';
 import { SchedeContattoComponent } from './schede-contatto.component';
 import { SchedeContattoServiceFake } from 'src/app/core/service/schede-contatto/schede-contatto.service.fake';
+import { DettaglioSchedaModalComponent } from './dettaglio-scheda-modal/dettaglio-scheda-modal.component';
 
 @NgModule({
     imports: [
@@ -23,7 +24,8 @@ import { SchedeContattoServiceFake } from 'src/app/core/service/schede-contatto/
         ),
     ],
     declarations: [
-        SchedeContattoComponent
+        SchedeContattoComponent,
+        DettaglioSchedaModalComponent
     ],
     exports: [
         SchedeContattoComponent
@@ -31,6 +33,9 @@ import { SchedeContattoServiceFake } from 'src/app/core/service/schede-contatto/
     providers: [
         // { provide: SchedeContattoService, useClass: environment.fakeProvider ? SchedeContattoFakeService : SchedeContattoService }
         SchedeContattoServiceFake
+    ],
+    entryComponents: [
+        DettaglioSchedaModalComponent
     ]
 })
 export class SchedeContattoModule {

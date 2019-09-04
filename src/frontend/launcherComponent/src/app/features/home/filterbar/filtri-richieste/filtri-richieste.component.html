@@ -1,6 +1,6 @@
-<div class="btn-group app-shadow">
-  <div ngbDropdown autoClose="outside" class="btn-group">
-    <button ngbDropdownToggle class="btn"
+<div class="btn-group w-100">
+  <div ngbDropdown autoClose="outside" class="btn-group w-100">
+    <button ngbDropdownToggle class="btn btn-block app-shadow"
       [ngClass]="{'btn-outline-primary': filtriSelezionati.length <= 0, 'btn-primary': filtriSelezionati.length > 0}"
       type="button" id="dropdownMenuButton" data-toggle="dropdown">
       <i class="fa fa-filter"></i> Filtri <span *ngIf="filtriSelezionati.length > 0"

@@ -5,6 +5,8 @@ import { SchedeContattoState } from '../store/states/schede-contatto/schede-cont
 import { Observable, Subscription } from 'rxjs';
 import { SchedaContatto } from 'src/app/shared/interface/scheda-contatto.interface';
 import { ToggleSchedeContatto, ToggleChiamata } from '../store/actions/view/view.actions';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { DettaglioSchedaModalComponent } from './dettaglio-scheda-modal/dettaglio-scheda-modal.component';
 
 @Component({
   selector: 'app-schede-contatto',
@@ -13,12 +15,14 @@ import { ToggleSchedeContatto, ToggleChiamata } from '../store/actions/view/view
 })
 export class SchedeContattoComponent implements OnInit {
 
+
   @Select(SchedeContattoState.schedeContatto) schedeContatto$: Observable<SchedaContatto[]>;
   schedeContatto: SchedaContatto[];
 
   subscription: Subscription = new Subscription();
 
-  constructor(private store: Store) { }
+  constructor(private store: Store,
+    private modal: NgbModal) { }
 
   ngOnInit() {
     this.store.dispatch(new GetListaSchedeContatto());
@@ -36,7 +40,17 @@ export class SchedeContattoComponent implements OnInit {
 
   dettaglioScheda(scheda: SchedaContatto) {
     // TODO: aprire modale con tutte le info
+    const modal = this.modal.open(DettaglioSchedaModalComponent, { windowClass: 'xlModal', backdropClass: 'light-blue-backdrop', centered: true });
+    modal.componentInstance.schedaContatto = scheda;
   }
+
+hoverIn() {
+  // TODO: creare logica
+}
+
+hoverOut() {
+  // TODO: creare logica
+}
 
   tornaIndietro() {
     this.store.dispatch(new ToggleSchedeContatto());

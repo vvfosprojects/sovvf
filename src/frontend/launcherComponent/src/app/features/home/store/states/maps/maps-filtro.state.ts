@@ -13,7 +13,6 @@ import { BoxClickState } from '../boxes/box-click.state';
 import { OpacizzaMezziMarkers } from '../../actions/maps/mezzi-markers.actions';
 import { OpacizzaRichiesteMarkers } from '../../actions/maps/richieste-markers.actions';
 import { ClearMarkerOpachiMezzi, ClearMarkerOpachiRichieste } from '../../actions/maps/marker-opachi.actions';
-import { GetMarkersMappa } from '../../actions/maps/area-mappa.actions';
 
 export interface MapsFiltroStateModel {
     filtroMarker: MarkerFiltro[];
@@ -83,7 +82,7 @@ export class MapsFiltroState {
     }
 
     @Action(SetFiltroMarker)
-    setFiltroMarker({ getState, patchState, dispatch }: StateContext<MapsFiltroStateModel>, action: SetFiltroMarker) {
+    setFiltroMarker({ getState, patchState }: StateContext<MapsFiltroStateModel>, action: SetFiltroMarker) {
         const state = getState();
         const filtroMarkerCopy: MarkerFiltro[] = makeCopy(state.filtroMarker);
         const filtroAttivo: string[] = [];

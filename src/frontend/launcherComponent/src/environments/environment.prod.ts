@@ -5,25 +5,19 @@ export const environment = {
     signalR: true,
     apiUrl: {
         home: '/api/Welcome',
-        boxes: {
-            personale: '/api/BoxPersonale',
-            mezzi: '/api/BoxMezzi',
-            richieste: '/api/BoxRichieste',
-            meteo: {
-                url: 'http://api.openweathermap.org/data/2.5/weather?',
-                option: {
-                    lang: 'it',
-                    key: 'a23cc450dabf63fdb6729696aa29b3a6',
-                    unit: 'metric'
-                }
+        meteo: {
+            url: 'http://api.openweathermap.org/data/2.5/weather?',
+            option: {
+                lang: 'it',
+                key: 'a23cc450dabf63fdb6729696aa29b3a6',
+                unit: 'metric'
             }
         },
         maps: {
             markers: {
                 richieste: '/api/Marker/GetRichieste',
                 sedi: '/api/Marker/GetSedi',
-                mezzi: '/api/Marker/GetMezzi',
-                chiamate: '/api/ChiamataInCorso'
+                mezzi: '/api/Marker/GetMezzi'
             }
         },
         rigaElencoRichieste: '/api/SintesiRichiesteAssistenza',
@@ -46,7 +40,6 @@ export const environment = {
         composizione: {
             preaccoppiati: '/api/PreAccoppiati',
             avanzata: '/api/ComposizionePartenzaAvanzata',
-            filtri: '/api/Filtri',
             addPrenotazioneMezzo: '/api/AddPrenotazioneMezzo',
             removePrenotazioneMezzo: '/api/RemovePrenotazioneMezzo',
             resetPrenotazioneMezzo: '/api/ResetPrenotazioneMezzo',
