@@ -38,26 +38,26 @@ namespace SO115App.API.Controllers
         private readonly IQueryHandler<SediMarkerQuery, SediMarkerResult> _sediMarkerHandler;
         private readonly IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> _sintesiRichiesteAssistenzaMarkerHandler;
 
-        public MarkerController(IQueryHandler<MezziMarkerQuery, MezziMarkerResult> MezziMarkerHandler,
-                                IQueryHandler<SediMarkerQuery, SediMarkerResult> SediMarkerHandler,
-                                IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> SintesiRichiesteAssistenzaMarkerHandler)
+        public MarkerController(IQueryHandler<MezziMarkerQuery, MezziMarkerResult> mezziMarkerHandler,
+                                IQueryHandler<SediMarkerQuery, SediMarkerResult> sediMarkerHandler,
+                                IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> sintesiRichiesteAssistenzaMarkerHandler)
         {
-            _mezziMarkerHandler = MezziMarkerHandler;
-            _sediMarkerHandler = SediMarkerHandler;
-            _sintesiRichiesteAssistenzaMarkerHandler = SintesiRichiesteAssistenzaMarkerHandler;
+            _mezziMarkerHandler = mezziMarkerHandler;
+            _sediMarkerHandler = sediMarkerHandler;
+            _sintesiRichiesteAssistenzaMarkerHandler = sintesiRichiesteAssistenzaMarkerHandler;
         }
 
         /// <summary>
         ///   Metodo che restituisce i marker di tutte le sedi in un quadrante
         /// </summary>
         [HttpPost("GetSedi")]
-        public async Task<IActionResult> GetSedi([FromBody]AreaMappa filtoCentroMappa)
+        public async Task<IActionResult> GetSedi([FromBody]AreaMappa filtroCentroMappa)
         {
             try
             {
                 var query = new SediMarkerQuery()
                 {
-                    Filtro = filtoCentroMappa
+                    Filtro = filtroCentroMappa
                 };
 
                 return Ok(this._sediMarkerHandler.Handle(query).ListaSediMarker);
