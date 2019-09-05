@@ -96,7 +96,7 @@ export class SchedaTelefonataComponent implements OnInit {
             notePubbliche: [null],
             descrizione: [null],
             zoneEmergenza: [null],
-            prioritaRichiesta: ['3', Validators.required]
+            prioritaRichiesta: [3, Validators.required]
         });
     }
 
@@ -224,7 +224,7 @@ export class SchedaTelefonataComponent implements OnInit {
             && !this.f.rilevanzaGrave.value && !this.f.rilevanzaStArCu.value
             && !this.f.notePrivate.value && !this.f.notePubbliche.value
             && !this.f.descrizione.value && !this.f.zoneEmergenza.value
-            && this.f.prioritaRichiesta.value === '3') {
+            && this.f.prioritaRichiesta.value === 3) {
             _return = true;
         }
         return _return;
