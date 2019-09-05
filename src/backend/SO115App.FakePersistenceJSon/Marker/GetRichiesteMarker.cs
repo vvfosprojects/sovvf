@@ -18,6 +18,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
@@ -25,6 +26,7 @@ using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Geo;
 using SO115App.API.Models.Classi.Marker;
 using SO115App.FakePersistence.JSon.Utility;
+using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Marker;
 
 namespace SO115App.FakePersistenceJSon.Marker
@@ -42,14 +44,53 @@ namespace SO115App.FakePersistenceJSon.Marker
             }
 
             var listaSintesiRichiesteMarker = JsonConvert.DeserializeObject<List<SintesiRichiestaMarker>>(json);
+            List<SintesiRichiestaMarker> listaSintesiRichiestaMarkers;
 
-            if (filtroAreaMappa == null)
-                return listaSintesiRichiesteMarker;
-            else
-                return listaSintesiRichiesteMarker.Where(richiesta => (richiesta.Localita.Coordinate.Latitudine >= filtroAreaMappa.BottomLeft.Latitudine)
-                                                                        && (richiesta.Localita.Coordinate.Latitudine <= filtroAreaMappa.TopRight.Latitudine)
-                                                                        && (richiesta.Localita.Coordinate.Longitudine >= filtroAreaMappa.BottomLeft.Longitudine)
-                                                                        && (richiesta.Localita.Coordinate.Longitudine <= filtroAreaMappa.TopRight.Longitudine)).ToList();
+            if (listaSintesiRichiesteMarker == null) return null;
+            switch (filtroAreaMappa)
+            {
+                case null:
+                    return listaSintesiRichiesteMarker;
+
+                default:
+                    listaSintesiRichiestaMarkers = listaSintesiRichiesteMarker.Where(richiesta =>
+                            (richiesta.Localita.Coordinate.Latitudine >= filtroAreaMappa.BottomLeft.Latitudine)
+                            && (richiesta.Localita.Coordinate.Latitudine <= filtroAreaMappa.TopRight.Latitudine)
+                            && (richiesta.Localita.Coordinate.Longitudine >= filtroAreaMappa.BottomLeft.Longitudine)
+                            && (richiesta.Localita.Coordinate.Longitudine <= filtroAreaMappa.TopRight.Longitudine))
+                        .ToList();
+                    break;
+            }
+
+            if (filtroAreaMappa.FiltroRichieste == null) return listaSintesiRichiestaMarkers;
+            var listaRichiesteFiltrate = new List<SintesiRichiestaMarker>();
+
+            if (filtroAreaMappa.FiltroRichieste.Stato == null) return listaSintesiRichiestaMarkers;
+
+            foreach (var statoRichiesta in filtroAreaMappa.FiltroRichieste.Stato)
+            {
+                if (statoRichiesta == Costanti.RichiestaAssegnata)
+                {
+                    listaRichiesteFiltrate.AddRange(
+                        listaSintesiRichiesteMarker.FindAll(x => x.Stato == Costanti.RichiestaAssegnata));
+                }
+                if (statoRichiesta == Costanti.RichiestaPresidiata)
+                {
+                    listaRichiesteFiltrate.AddRange(
+                        listaSintesiRichiesteMarker.FindAll(x => x.Stato == Costanti.RichiestaPresidiata));
+                }
+                if (statoRichiesta == Costanti.Chiamata)
+                {
+                    listaRichiesteFiltrate.AddRange(
+                        listaSintesiRichiesteMarker.FindAll(x => x.Stato == Costanti.Chiamata));
+                }
+                if (statoRichiesta == Costanti.RichiestaSospesa)
+                {
+                    listaRichiesteFiltrate.AddRange(
+                        listaSintesiRichiesteMarker.FindAll(x => x.Stato == Costanti.RichiestaSospesa));
+                }
+            }
+            return filtroAreaMappa.FiltroRichieste.Priorita == null ? listaRichiesteFiltrate : listaRichiesteFiltrate.FindAll(x => x.PrioritaRichiesta == filtroAreaMappa.FiltroRichieste.Priorita);
         }
     }
 }

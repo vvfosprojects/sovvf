@@ -18,8 +18,6 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using SO115App.API.Models.Classi.Boxes;
-using SO115App.API.Models.Classi.Condivise;
-using SO115App.API.Models.Classi.Filtri;
 using SO115App.API.Models.Classi.Geo;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
 using SO115App.Models.Classi.Marker;
@@ -35,6 +33,6 @@ namespace SO115App.Models.Classi.Condivise
         public List<SintesiRichiesta> ListaSintesi { get; set; }
         public List<ChiamateInCorso> ListaChiamateInCorso { get; set; }
         public CentroMappa CentroMappaMarker { get; set; }
-        public Filtri ListaFiltri { get; set; }
+        public API.Models.Classi.Filtri.Filtri ListaFiltri { get; set; }
     }
 }
