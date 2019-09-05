@@ -1,4 +1,5 @@
-<button class="btn" (click)="toggleSchedeContatto()" ngbTooltip="Schede Contatto"
+<button type="button" class="btn px-1" (click)="toggleSchedeContatto()" ngbTooltip="Schede Contatto"
         placement="bottom" [ngClass]="coloreTasto()" [disabled]="disabled">
-    <i class="fa fa-list"></i>
+    <i class="fa fa-list mr-1"></i>
+    <div class="badge" [ngClass]="coloreBadgeContatore()">{{numeroSchedeContatto}}</div>
 </button>

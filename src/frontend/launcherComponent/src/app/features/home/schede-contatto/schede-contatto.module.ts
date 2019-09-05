@@ -9,6 +9,7 @@ import { SchedeContattoState } from '../store/states/schede-contatto/schede-cont
 import { SchedeContattoComponent } from './schede-contatto.component';
 import { SchedeContattoServiceFake } from 'src/app/core/service/schede-contatto/schede-contatto.service.fake';
 import { DettaglioSchedaModalComponent } from './dettaglio-scheda-modal/dettaglio-scheda-modal.component';
+import { SchedeContattoService } from '../../../core/service/schede-contatto/schede-contatto.service';
 
 @NgModule({
     imports: [
@@ -31,8 +32,8 @@ import { DettaglioSchedaModalComponent } from './dettaglio-scheda-modal/dettagli
         SchedeContattoComponent
     ],
     providers: [
-        // { provide: SchedeContattoService, useClass: environment.fakeProvider ? SchedeContattoFakeService : SchedeContattoService }
         SchedeContattoServiceFake
+        // SchedeContattoService
     ],
     entryComponents: [
         DettaglioSchedaModalComponent

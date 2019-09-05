@@ -19,3 +19,13 @@ export class SetSchedaContattoTelefonata {
 export class ClearSchedaContattoTelefonata {
     static readonly type = '[SchedeContatto] Clear Scheda Contatto Telefonata';
 }
+
+export class SetSchedaContattoHover {
+    static readonly type = '[SchedeContatto] Set Scheda Contatto Hover';
+
+    constructor(public idSchedaContatto: string) { }
+}
+
+export class ClearSchedaContattoHover {
+    static readonly type = '[SchedeContatto] Clear Scheda Contatto Hover';
+}

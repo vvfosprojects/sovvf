@@ -23,7 +23,7 @@ export class SchedeContattoServiceFake {
                 'categoria': 'Incendio',
                 'classificazioneEvento': 'Incendio Boschivo',
                 'competenzaCC_PS': 'Distaccamento di Tuscolana',
-                'dataInserimento': new Date().toDateString(),
+                'dataInserimento': new Date(),
                 'dettaglio': 'Ulteriori informazioni',
                 'localita': {
                     'coordinate': {
@@ -46,7 +46,7 @@ export class SchedeContattoServiceFake {
                 'categoria': 'Allagamento',
                 'classificazioneEvento': 'Allagamento Cantina',
                 'competenzaCC_PS': 'Distaccamento di Ostiense',
-                'dataInserimento': new Date().toDateString(),
+                'dataInserimento': new Date(),
                 'dettaglio': 'Ulteriori informazioni',
                 'localita': {
                     'coordinate': {

@@ -4,7 +4,7 @@ import { Priorita } from '../model/sintesi-richiesta.model';
 
 export interface SchedaContatto {
     id: string;
-    dataInserimento: string;
+    dataInserimento: Date;
     richiedente: Richiedente;
     localita: Localita;
     classificazioneEvento: string;
