@@ -38,26 +38,26 @@ namespace SO115App.API.Controllers
         private readonly IQueryHandler<SediMarkerQuery, SediMarkerResult> _sediMarkerHandler;
         private readonly IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> _sintesiRichiesteAssistenzaMarkerHandler;
 
-        public MarkerController(IQueryHandler<MezziMarkerQuery, MezziMarkerResult> MezziMarkerHandler,
-                                IQueryHandler<SediMarkerQuery, SediMarkerResult> SediMarkerHandler,
-                                IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> SintesiRichiesteAssistenzaMarkerHandler)
+        public MarkerController(IQueryHandler<MezziMarkerQuery, MezziMarkerResult> mezziMarkerHandler,
+                                IQueryHandler<SediMarkerQuery, SediMarkerResult> sediMarkerHandler,
+                                IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> sintesiRichiesteAssistenzaMarkerHandler)
         {
-            _mezziMarkerHandler = MezziMarkerHandler;
-            _sediMarkerHandler = SediMarkerHandler;
-            _sintesiRichiesteAssistenzaMarkerHandler = SintesiRichiesteAssistenzaMarkerHandler;
+            _mezziMarkerHandler = mezziMarkerHandler;
+            _sediMarkerHandler = sediMarkerHandler;
+            _sintesiRichiesteAssistenzaMarkerHandler = sintesiRichiesteAssistenzaMarkerHandler;
         }
 
         /// <summary>
         ///   Metodo che restituisce i marker di tutte le sedi in un quadrante
         /// </summary>
         [HttpPost("GetSedi")]
-        public async Task<IActionResult> GetSedi([FromBody]AreaMappa filtoCentroMappa)
+        public async Task<IActionResult> GetSedi([FromBody]AreaMappa filtroCentroMappa)
         {
             try
             {
                 var query = new SediMarkerQuery()
                 {
-                    Filtro = filtoCentroMappa
+                    Filtro = filtroCentroMappa
                 };
 
                 return Ok(this._sediMarkerHandler.Handle(query).ListaSediMarker);
@@ -72,13 +72,13 @@ namespace SO115App.API.Controllers
         ///   Metodo che restituisce i marker di tutte le richieste in un quadrante
         /// </summary>
         [HttpPost("GetRichieste")]
-        public async Task<IActionResult> GetRichieste([FromBody]AreaMappa filtoCentroMappa)
+        public async Task<IActionResult> GetRichieste([FromBody]AreaMappa filtroCentroMappa)
         {
             try
             {
                 var query = new SintesiRichiesteAssistenzaMarkerQuery()
                 {
-                    FiltroCentroMappa = filtoCentroMappa
+                    FiltroCentroMappa = filtroCentroMappa
                 };
 
                 return Ok(this._sintesiRichiesteAssistenzaMarkerHandler.Handle(query).SintesiRichiestaMarker);
@@ -93,13 +93,13 @@ namespace SO115App.API.Controllers
         ///   Metodo che restituisce i marker di tutti i mezzi in un quadrante
         /// </summary>
         [HttpPost("GetMezzi")]
-        public async Task<IActionResult> GetMezzi([FromBody]AreaMappa filtoCentroMappa)
+        public async Task<IActionResult> GetMezzi([FromBody]AreaMappa filtroCentroMappa)
         {
             try
             {
                 var query = new MezziMarkerQuery()
                 {
-                    Filtro = filtoCentroMappa
+                    Filtro = filtroCentroMappa
                 };
 
                 return Ok(this._mezziMarkerHandler.Handle(query).ListaMezziMarker);
