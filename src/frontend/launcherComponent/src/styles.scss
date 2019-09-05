@@ -87,6 +87,10 @@ a:hover {
   cursor: pointer;
 }
 
+.cursor-not-allowed {
+  cursor: not-allowed;
+}
+
 .status_preaccoppiato_nonselezionato {
   border-top: 5px solid #dc3545;
 }

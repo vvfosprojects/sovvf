@@ -1,54 +1,53 @@
 <div class="row">
-  <div [ngClass]="(filterBarCol$ | async)">
-    <div class="row">
-      <div class="col-3 text-left">
-        <div class="btn-group app-shadow">
-          <app-tasto-chiamata [colorButtonChiamata]="colorButton.chiamata" (startChiamata)="toggleChiamata()">
-          </app-tasto-chiamata>
-          <!-- TODO: creare app separata (tasto-schede-contatto) -->
-          <button class="btn btn-outline-success" (click)="toggleSchedeContatto()" ngbTooltip="Schede Contatto"
-            placement="bottom">
-            <i class="fa fa-list"></i>
-          </button>
+    <div [ngClass]="(filterBarCol$ | async)">
+        <div class="row">
+            <div class="col-3 text-left">
+                <div class="btn-group app-shadow">
+                    <app-tasto-chiamata [colorButtonChiamata]="colorButton.chiamata" (startChiamata)="toggleChiamata()">
+                    </app-tasto-chiamata>
+                    <app-tasto-schede-contatto [active]="(schedeContattoStatus$ | async)"  [disabled]="(chiamataStatus$ | async)"></app-tasto-schede-contatto>
+                </div>
+            </div>
+            <div *ngIf="(richiesteStatus$ | async)" class="col-2 px-0 text-left">
+                <app-filtri-richieste [filtri]="(filtri$ | async)" [filtriSelezionati]="(filtriSelezionati$ | async)"
+                                      [categorie]="(categoriaFiltri$| async)"
+                                      (filtroSelezionato)="onSelezioneFiltro($event)"
+                                      (filtroDeselezionato)="onDeselezioneFiltro($event)"
+                                      (filtriReset)="eliminaFiltriAttivi()">
+                </app-filtri-richieste>
+            </div>
+            <div *ngIf="(richiesteStatus$ | async)" class="col-7 pl-0">
+                <app-ricerca-richieste [ricerca]="(ricerca$ | async)" (search)="onSearch($event)">
+                </app-ricerca-richieste>
+            </div>
         </div>
-      </div>
-      <div *ngIf="(richiesteStatus$ | async)" class="col-2 px-0 text-left">
-        <app-filtri-richieste [filtri]="(filtri$ | async)" [filtriSelezionati]="(filtriSelezionati$ | async)"
-          [categorie]="(categoriaFiltri$| async)" (filtroSelezionato)="onSelezioneFiltro($event)"
-          (filtroDeselezionato)="onDeselezioneFiltro($event)" (filtriReset)="eliminaFiltriAttivi()">
-        </app-filtri-richieste>
-      </div>
-      <div *ngIf="(richiesteStatus$ | async)" class="col-7 pl-0">
-        <app-ricerca-richieste [ricerca]="(ricerca$ | async)" (search)="onSearch($event)">
-        </app-ricerca-richieste>
-      </div>
     </div>
-  </div>
-  <div *ngIf="!(composizioneStatus$ | async) && !(schedeContattoStatus$ | async) && !(chiamataStatus$ | async)"
-    class="col-2">
-    <div class="row">
-      <div class="col-12">
-        <app-view-mode [colorButtonView]="colorButton.buttonView"
-          [mezziInServizioActive]="viewState?.mezziInServizio.active" (buttonView)="switchView($event)"
-          (optionRichieste)="onOptionsRichieste($event)">
-        </app-view-mode>
-      </div>
+    <div *ngIf="!(composizioneStatus$ | async) && !(schedeContattoStatus$ | async) && !(chiamataStatus$ | async)"
+         class="col-2">
+        <div class="row">
+            <div class="col-12">
+                <app-view-mode [colorButtonView]="colorButton.buttonView"
+                               [mezziInServizioActive]="viewState?.mezziInServizio.active"
+                               (buttonView)="switchView($event)"
+                               (optionRichieste)="onOptionsRichieste($event)">
+                </app-view-mode>
+            </div>
+        </div>
     </div>
-  </div>
-  <div [ngClass]="(filterBarCol$ | async)">
-    <div class="row">
-      <div class="col-2">
-      </div>
-      <div *ngIf="(mapsStatus$ | async)" class="col-3 pr-0">
-        <app-marker-meteo-switch [stateSwitch]="(stateSwitch$ | async)" (change)="onChange($event)">
-        </app-marker-meteo-switch>
-      </div>
-      <div *ngIf="(mapsStatus$ | async)" class="col-2 text-right pr-0">
-        <app-loader-marker [markerOnLoading]="(markerOnLoading$ | async)"></app-loader-marker>
-      </div>
-      <div *ngIf="(mapsStatus$ | async)" class="col-5 pl-0">
-        <app-filtri-mappa></app-filtri-mappa>
-      </div>
+    <div [ngClass]="(filterBarCol$ | async)">
+        <div class="row">
+            <div class="col-2">
+            </div>
+            <div *ngIf="(mapsStatus$ | async)" class="col-3 pr-0">
+                <app-marker-meteo-switch [stateSwitch]="(stateSwitch$ | async)" (change)="onChange($event)">
+                </app-marker-meteo-switch>
+            </div>
+            <div *ngIf="(mapsStatus$ | async)" class="col-2 text-right pr-0">
+                <app-loader-marker [markerOnLoading]="(markerOnLoading$ | async)"></app-loader-marker>
+            </div>
+            <div *ngIf="(mapsStatus$ | async)" class="col-5 pl-0">
+                <app-filtri-mappa></app-filtri-mappa>
+            </div>
+        </div>
     </div>
-  </div>
 </div>

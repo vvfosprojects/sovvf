@@ -16,6 +16,7 @@ import { FiltriRichiesteComponent } from './filtri-richieste/filtri-richieste.co
 import { FiltroComponent } from './filtri-richieste/filtro/filtro.component';
 import { UiSwitchModule } from 'ngx-ui-switch';
 import { LoaderMarkerComponent } from './loader-marker/loader-marker.component';
+import { TastoSchedeContattoComponent } from './tasto-schede-contatto/tasto-schede-contatto.component';
 
 @NgModule({
     imports: [
@@ -38,6 +39,7 @@ import { LoaderMarkerComponent } from './loader-marker/loader-marker.component';
         TastoChiamataComponent,
         MarkerMeteoSwitchComponent,
         LoaderMarkerComponent,
+        TastoSchedeContattoComponent
     ],
     exports: [
         FilterbarComponent
