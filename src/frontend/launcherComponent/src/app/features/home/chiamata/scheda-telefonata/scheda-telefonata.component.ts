@@ -56,8 +56,8 @@ export class SchedaTelefonataComponent implements OnInit {
     @Select(SchedeContattoState.schedaContattoTelefonata) schedaContattoTelefonata$: Observable<SchedaContatto>;
 
     constructor(private formBuilder: FormBuilder,
-        private store: Store,
-        private modalService: NgbModal) {
+                private store: Store,
+                private modalService: NgbModal) {
         this.store.dispatch(new StartChiamata());
     }
 
@@ -183,33 +183,51 @@ export class SchedaTelefonataComponent implements OnInit {
     }
 
     onAnnullaChiamata(): void {
-        const modalConfermaAnnulla = this.modalService.open(ConfirmModalComponent, { backdropClass: 'light-blue-backdrop', centered: true });
-        modalConfermaAnnulla.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
-        modalConfermaAnnulla.componentInstance.titolo = 'Annulla Chiamata';
-        modalConfermaAnnulla.componentInstance.messaggio = 'Sei sicuro di voler annullare la chiamata?';
-        modalConfermaAnnulla.componentInstance.messaggioAttenzione = 'Tutti i dati inseriti saranno eliminati.';
-        modalConfermaAnnulla.componentInstance.bottoni = [
-            { type: 'ko', descrizione: 'Annulla', colore: 'danger' },
-            { type: 'ok', descrizione: 'Conferma', colore: 'dark' },
-        ];
+        if (!this.checkNessunCampoModificato()) {
+            const modalConfermaAnnulla = this.modalService.open(ConfirmModalComponent, { backdropClass: 'light-blue-backdrop', centered: true });
+            modalConfermaAnnulla.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
+            modalConfermaAnnulla.componentInstance.titolo = 'Annulla Chiamata';
+            modalConfermaAnnulla.componentInstance.messaggio = 'Sei sicuro di voler annullare la chiamata?';
+            modalConfermaAnnulla.componentInstance.messaggioAttenzione = 'Tutti i dati inseriti saranno eliminati.';
+            modalConfermaAnnulla.componentInstance.bottoni = [
+                { type: 'ko', descrizione: 'Annulla', colore: 'danger' },
+                { type: 'ok', descrizione: 'Conferma', colore: 'dark' },
+            ];
 
-        modalConfermaAnnulla.result.then(
-            (val) => {
-                switch (val) {
-                    case 'ok':
-                        this.chiamataForm.reset();
-                        this.nuovaRichiesta.tipologie = [];
-                        this._statoChiamata('annullata');
-                        this.store.dispatch(new DelChiamataMarker(this.idChiamata));
-                        break;
-                    case 'ko':
-                        console.log('Azione annullata');
-                        break;
-                }
-                console.log('Modal chiusa con val ->', val);
-            },
-            (err) => console.error('Modal chiusa senza bottoni. Err ->', err)
-        );
+            modalConfermaAnnulla.result.then(
+                (val) => {
+                    switch (val) {
+                        case 'ok':
+                            this.chiamataForm.reset();
+                            this.nuovaRichiesta.tipologie = [];
+                            this._statoChiamata('annullata');
+                            this.store.dispatch(new DelChiamataMarker(this.idChiamata));
+                            break;
+                        case 'ko':
+                            console.log('Azione annullata');
+                            break;
+                    }
+                    console.log('Modal chiusa con val ->', val);
+                },
+                (err) => console.error('Modal chiusa senza bottoni. Err ->', err)
+            );
+        } else {
+            this._statoChiamata('annullata');
+        }
+    }
+
+    checkNessunCampoModificato() {
+        let _return = false;
+        if (!this.f.selectedTipologie.value && !this.f.nominativo.value && !this.f.telefono.value
+            && !this.f.indirizzo.value && !this.f.latitudine.value && !this.f.longitudine.value
+            && !this.f.piano.value && !this.f.etichette.value && !this.f.noteIndirizzo.value
+            && !this.f.rilevanzaGrave.value && !this.f.rilevanzaStArCu.value
+            && !this.f.notePrivate.value && !this.f.notePubbliche.value
+            && !this.f.descrizione.value && !this.f.zoneEmergenza.value
+            && this.f.prioritaRichiesta.value === '3') {
+            _return = true;
+        }
+        return _return;
     }
 
     onResetChiamata(): void {
