@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="TipologiaTerreno.cs" company="CNVVF">
+// <copyright file="ListaSchedeContattoQuery.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,24 +17,15 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using SO115App.API.Models.Classi.Boxes;
-using SO115App.API.Models.Classi.Geo;
-using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
-using SO115App.Models.Classi.Marker;
+using System;
 using System.Collections.Generic;
-using SO115App.API.Models.Classi.Soccorso;
+using System.Text;
+using CQRS.Queries;
 
-namespace SO115App.Models.Classi.Condivise
+namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.ListaSchedeContatto
 {
-    public class Welcome
+    public class ListaSchedeContattoQuery : IQuery<ListaSchedeContattoResult>
     {
-        public BoxMezzi BoxListaMezzi { get; set; }
-        public BoxPersonale BoxListaPersonale { get; set; }
-        public BoxInterventi BoxListaInterventi { get; set; }
-        public List<SintesiRichiesta> ListaSintesi { get; set; }
-        public List<ChiamateInCorso> ListaChiamateInCorso { get; set; }
-        public CentroMappa CentroMappaMarker { get; set; }
-        public API.Models.Classi.Filtri.Filtri ListaFiltri { get; set; }
-        public List<SchedaContatto> ListaSchedeContatto { get; set; }
+        public string CodiceSede { get; set; }
     }
 }
