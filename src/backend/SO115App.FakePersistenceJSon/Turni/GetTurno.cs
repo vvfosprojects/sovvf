@@ -43,40 +43,7 @@ namespace SO115App.FakePersistence.JSon.Turni
 
             if (dataOdierna > dataFineDiurno)
             {
-                for (var i = 0; i <= giorniTrascorsiDiurni; i++)
-                {
-                    turnoDiurno.DataOraInizio = turnoDiurno.DataOraInizio.AddDays(1);
-                    turnoDiurno.DataOraFine = turnoDiurno.DataOraFine.AddDays(1);
-                    switch (turnoDiurno.Codice.Substring(0, 1))
-                    {
-                        case "A":
-                            _letteraTurnoD = 'B';
-                            break;
-
-                        case "B":
-                            _letteraTurnoD = 'C';
-                            break;
-
-                        case "C":
-                            _letteraTurnoD = 'D';
-                            break;
-
-                        case "D":
-                            _letteraTurnoD = 'A';
-                            if (numeroTurnoD < 8)
-                            {
-                                numeroTurnoD++;
-                            }
-                            else
-                            {
-                                numeroTurnoD = 1;
-                            }
-                            break;
-                    }
-
-                    turnoDiurno.Codice = _letteraTurnoD + numeroTurnoD.ToString();
-                    turnoDiurno.DiurnoNotturno = "D";
-                }
+                CalcolaTurnoCorrente(turnoDiurno, numeroTurnoD, giorniTrascorsiDiurni);
             }
 
             if (dataOdierna <= dataFineNotturno)
@@ -97,47 +64,14 @@ namespace SO115App.FakePersistence.JSon.Turni
                 return turnoNotturno;
             }
 
-            for (var i = 0; i <= giorniTrascorsiNotturno; i++)
-            {
-                turnoNotturno.DataOraInizio = turnoNotturno.DataOraInizio.AddDays(1);
-                turnoNotturno.DataOraFine = turnoNotturno.DataOraFine.AddDays(1);
-                switch (turnoNotturno.Codice.Substring(0, 1))
-                {
-                    case "A":
-                        _letteraTurnoN = 'B';
-                        break;
+            turnoNotturno = CalcolaTurnoCorrente(turnoNotturno, numeroTurnoN, giorniTrascorsiNotturno);
 
-                    case "B":
-                        _letteraTurnoN = 'C';
-                        break;
-
-                    case "C":
-                        _letteraTurnoN = 'D';
-                        break;
-
-                    case "D":
-                        _letteraTurnoN = 'A';
-                        if (numeroTurnoN < 8)
-                        {
-                            numeroTurnoN++;
-                        }
-                        else
-                        {
-                            numeroTurnoN = 1;
-                        }
-                        break;
-                }
-
-                turnoNotturno.Codice = _letteraTurnoN + numeroTurnoN.ToString();
-                turnoNotturno.DiurnoNotturno = "N";
-
-                _listaTurniNew = new List<Turno>
+            _listaTurniNew = new List<Turno>
                 {
                     turnoDiurno,
                     turnoNotturno
                 };
-                _updateTurni.Update(_listaTurniNew);
-            }
+            _updateTurni.Update(_listaTurniNew);
 
             if (dataOdierna < turnoDiurno.DataOraFine && dataOdierna > turnoDiurno.DataOraInizio)
             {
@@ -145,6 +79,45 @@ namespace SO115App.FakePersistence.JSon.Turni
             }
 
             return turnoNotturno;
+        }
+
+        public Turno CalcolaTurnoCorrente(Turno turnoPassato, int numeroTurno, int giorniTrascorsi)
+        {
+            for (var i = 0; i <= giorniTrascorsi; i++)
+            {
+                turnoPassato.DataOraInizio = turnoPassato.DataOraInizio.AddDays(1);
+                turnoPassato.DataOraFine = turnoPassato.DataOraFine.AddDays(1);
+                switch (turnoPassato.Codice.Substring(0, 1))
+                {
+                    case "A":
+                        _letteraTurnoD = 'B';
+                        break;
+
+                    case "B":
+                        _letteraTurnoD = 'C';
+                        break;
+
+                    case "C":
+                        _letteraTurnoD = 'D';
+                        break;
+
+                    case "D":
+                        _letteraTurnoD = 'A';
+                        if (numeroTurno < 8)
+                        {
+                            numeroTurno++;
+                        }
+                        else
+                        {
+                            numeroTurno = 1;
+                        }
+                        break;
+                }
+
+                turnoPassato.Codice = _letteraTurnoD + numeroTurno.ToString();
+            }
+
+            return turnoPassato;
         }
     }
 }
