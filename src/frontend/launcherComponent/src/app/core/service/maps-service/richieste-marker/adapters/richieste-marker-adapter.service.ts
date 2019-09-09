@@ -22,6 +22,7 @@ export class RichiesteMarkerAdapterService {
     }
 
     static iconaRichiesta(stato: StatoRichiesta, priorita: number = 3): IconUrl {
+        const aspectRateo = 1.391304347826087;
         const mapIconeSizeNumber = new Map([
             [1, 32],
             [2, 40],
@@ -44,11 +45,12 @@ export class RichiesteMarkerAdapterService {
         if (!statoRichiesta) {
             return undefined;
         }
-        const size = mapIconeSizeNumber.get(priorita);
+        const height = mapIconeSizeNumber.get(priorita);
+        const width = Math.round(height / aspectRateo);
         return {
             url: statoRichiesta,
-            width: size,
-            height: size
+            width: width,
+            height: height
         };
     }
 
