@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { Localita } from 'src/app/shared/model/localita.model';
 import { Coordinate } from 'src/app/shared/model/coordinate.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -19,7 +19,7 @@ import { StatoRichiesta } from '../../../../shared/enum/stato-richiesta.enum';
 import { OFFSET_SYNC_TIME } from '../../../../core/settings/referral-time';
 import { ToastrType } from '../../../../shared/enum/toastr';
 import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.model';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { SchedaTelefonataState } from '../../store/states/chiamata/scheda-telefonata.state';
 import { DelChiamataMarker } from '../../store/actions/maps/chiamate-markers.actions';
 import { Tipologia } from '../../../../shared/model/tipologia.model';
@@ -33,7 +33,7 @@ import { SchedaContatto } from 'src/app/shared/interface/scheda-contatto.interfa
     styleUrls: ['./scheda-telefonata.component.scss'],
     encapsulation: ViewEncapsulation.None
 })
-export class SchedaTelefonataComponent implements OnInit {
+export class SchedaTelefonataComponent implements OnInit, OnDestroy {
 
     options = GOOGLEPLACESOPTIONS;
 
@@ -52,6 +52,10 @@ export class SchedaTelefonataComponent implements OnInit {
     nuovaRichiesta: SintesiRichiesta;
     isCollapsed = true;
 
+    idSchedaContatto: string;
+
+    subscription = new Subscription();
+
     @Select(SchedaTelefonataState.resetChiamata) resetChiamata$: Observable<boolean>;
     @Select(SchedeContattoState.schedaContattoTelefonata) schedaContattoTelefonata$: Observable<SchedaContatto>;
 
@@ -67,16 +71,23 @@ export class SchedaTelefonataComponent implements OnInit {
         this.idChiamata = this.makeIdChiamata();
         this.nuovaRichiesta.istanteRicezioneRichiesta = new Date(new Date().getTime() + OFFSET_SYNC_TIME[0]);
 
-        this.resetChiamata$.subscribe((reset: boolean) => {
+        this.subscription.add(this.resetChiamata$.subscribe((reset: boolean) => {
             if (reset) {
                 this.chiamataForm.reset();
             }
-        });
-        this.schedaContattoTelefonata$.subscribe((schedaContattoTelefonata: SchedaContatto) => {
-            if (schedaContattoTelefonata) {
-                this.setSchedaContatto(schedaContattoTelefonata);
+        }));
+        this.subscription.add(this.schedaContattoTelefonata$.subscribe((schedaContattoTelefonata: SchedaContatto) => {
+            if (schedaContattoTelefonata && schedaContattoTelefonata.id) {
+                if (!this.idSchedaContatto) {
+                    this.setSchedaContatto(schedaContattoTelefonata);
+                    this.idSchedaContatto = schedaContattoTelefonata.id;
+                }
             }
-        });
+        }));
+    }
+
+    ngOnDestroy(): void {
+        this.subscription.unsubscribe();
     }
 
     createForm(): FormGroup {
@@ -184,7 +195,10 @@ export class SchedaTelefonataComponent implements OnInit {
 
     onAnnullaChiamata(): void {
         if (!this.checkNessunCampoModificato()) {
-            const modalConfermaAnnulla = this.modalService.open(ConfirmModalComponent, { backdropClass: 'light-blue-backdrop', centered: true });
+            const modalConfermaAnnulla = this.modalService.open(ConfirmModalComponent, {
+                backdropClass: 'light-blue-backdrop',
+                centered: true
+            });
             modalConfermaAnnulla.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
             modalConfermaAnnulla.componentInstance.titolo = 'Annulla Chiamata';
             modalConfermaAnnulla.componentInstance.messaggio = 'Sei sicuro di voler annullare la chiamata?';
@@ -201,7 +215,6 @@ export class SchedaTelefonataComponent implements OnInit {
                             this.chiamataForm.reset();
                             this.nuovaRichiesta.tipologie = [];
                             this._statoChiamata('annullata');
-                            this.store.dispatch(new DelChiamataMarker(this.idChiamata));
                             break;
                         case 'ko':
                             console.log('Azione annullata');
@@ -231,7 +244,10 @@ export class SchedaTelefonataComponent implements OnInit {
     }
 
     onResetChiamata(): void {
-        const modalConfermaReset = this.modalService.open(ConfirmModalComponent, { backdropClass: 'light-blue-backdrop', centered: true });
+        const modalConfermaReset = this.modalService.open(ConfirmModalComponent, {
+            backdropClass: 'light-blue-backdrop',
+            centered: true
+        });
         modalConfermaReset.componentInstance.icona = { descrizione: 'exclamation-triangle', colore: 'danger' };
         modalConfermaReset.componentInstance.titolo = 'Reset Chiamata';
         modalConfermaReset.componentInstance.messaggio = 'Sei sicuro di voler effettuare il reset della chiamata?';

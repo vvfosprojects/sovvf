@@ -295,9 +295,6 @@ export class ViewComponentState {
     toggleSchedeContatto({ getState, patchState, dispatch }: StateContext<ViewComponentStateModel>) {
         const state = getState();
         const stateDefault = makeCopy(ViewComponentStateDefault);
-        /**
-         * se lo stato dei mezzi in servizio non è attivo creo uno snapshot, altrimenti ritorno allo stato precedente
-         */
         if (!state.view.schedeContatto.active) {
             dispatch(new SaveView(makeCopy(state)));
             const newState = activeSchedeContatto(stateDefault);

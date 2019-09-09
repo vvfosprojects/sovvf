@@ -50,6 +50,7 @@ export class SchedeContattoState {
     constructor(private schedeContattoService: SchedeContattoServiceFake) {
     }
 
+    // Todo: da togliere
     @Action(GetListaSchedeContatto)
     getListaSchedeContatto({ patchState }: StateContext<SchedeContattoStateModel>) {
         this.schedeContattoService.getSchedeContatto().subscribe(() => {
