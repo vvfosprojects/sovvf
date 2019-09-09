@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Store, Select } from '@ngxs/store';
 import {
-    GetListaSchedeContatto,
     SetSchedaContattoTelefonata,
     ClearSchedaContattoTelefonata,
     SetSchedaContattoHover,
@@ -34,7 +33,6 @@ export class SchedeContattoComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.store.dispatch(new GetListaSchedeContatto());
         this.subscription.add(
             this.schedeContatto$.subscribe((schedeContatto: SchedaContatto[]) => {
                 this.schedeContatto = schedeContatto;

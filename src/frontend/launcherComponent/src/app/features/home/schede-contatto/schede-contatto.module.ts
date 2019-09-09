@@ -7,9 +7,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { NgxsModule } from '@ngxs/store';
 import { SchedeContattoState } from '../store/states/schede-contatto/schede-contatto.state';
 import { SchedeContattoComponent } from './schede-contatto.component';
-import { SchedeContattoServiceFake } from 'src/app/core/service/schede-contatto/schede-contatto.service.fake';
 import { DettaglioSchedaModalComponent } from './dettaglio-scheda-modal/dettaglio-scheda-modal.component';
-import { SchedeContattoService } from '../../../core/service/schede-contatto/schede-contatto.service';
 
 @NgModule({
     imports: [
@@ -30,10 +28,6 @@ import { SchedeContattoService } from '../../../core/service/schede-contatto/sch
     ],
     exports: [
         SchedeContattoComponent
-    ],
-    providers: [
-        SchedeContattoServiceFake
-        // SchedeContattoService
     ],
     entryComponents: [
         DettaglioSchedaModalComponent

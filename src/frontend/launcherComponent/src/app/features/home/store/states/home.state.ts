@@ -78,7 +78,7 @@ export class HomeState {
                 new SetChiamateMarkers(data.listaChiamateInCorso),
                 new SetInitCentroMappa(data.centroMappaMarker),
                 new SetFiltriComposizione(data.listaFiltri),
-                // new SetListaSchedeContatto(data.schedeContatto)
+                new SetListaSchedeContatto(data.listaSchedeContatto)
             ]);
         }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5)));
         patchState({

@@ -15,5 +15,5 @@ export interface Welcome {
     listaChiamateInCorso: ChiamataMarker[];
     centroMappaMarker: CentroMappa;
     listaFiltri: ListaFiltriComposizione;
-    // schedeContatto: SchedaContatto[];
+    listaSchedeContatto: SchedaContatto[];
 }
