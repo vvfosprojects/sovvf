@@ -63,19 +63,15 @@
     <div class="w-100 py-2 px-1 scroll-y" style="max-height:350px; min-height:350px">
       <!-- nessuna partenza -->
       <div *ngIf="boxPartenzaList.length <= 0" class="text-center mt-3">
-        <h6 class="font-weight-normal">Seleziona un mezzo o una squadra per crearne una.</h6>
+        <h6 class="font-weight-normal">Seleziona un mezzo o una squadra.</h6>
         <button class="btn btn-primary mt-2" (click)="nuovaPartenza()" [disabled]="(disableNuovaPartenza$ | async)"><i
-            class="fa fa-plus mr-2"></i>Aggiungi
-          partenza
-        </button>
+            class="fa fa-plus mr-2"></i>Aggiungi</button>
       </div>
       <!-- bottone nuova partenza -->
       <div *ngIf="boxPartenzaList.length > 0" class="text-center mb-2">
         <button class="btn btn-primary" (click)="nuovaPartenza()"
           [disabled]="(disableNuovaPartenza$ | async) || boxPartenzaList.length > 2"><i
-            class="fa fa-plus mr-2"></i>Aggiungi
-          partenza
-        </button>
+            class="fa fa-plus mr-2"></i>Aggiungi</button>
       </div>
       <!-- lista box partenze -->
       <div *ngIf="boxPartenzaList.length > 0">
