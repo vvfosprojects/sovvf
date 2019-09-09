@@ -10,8 +10,7 @@ namespace SO115App.FakePersistence.JSon.Turni
 {
     public class GetTurno : IGetTurno
     {
-        private char _letteraTurnoD;
-        private char _letteraTurnoN;
+        private char _letteraTurno;
         private List<Turno> _listaTurniNew;
         private readonly IUpdateTurni _updateTurni;
 
@@ -36,49 +35,20 @@ namespace SO115App.FakePersistence.JSon.Turni
             var numeroTurnoD = int.Parse(turnoDiurno.Codice.Substring(1));
             var numeroTurnoN = int.Parse(turnoNotturno.Codice.Substring(1));
             var dataOdierna = DateTime.Now;
-            var dataFineDiurno = turnoDiurno.DataOraFine;
-            var dataFineNotturno = turnoNotturno.DataOraFine;
-            var giorniTrascorsiDiurni = (int)(dataOdierna - dataFineDiurno).TotalDays;
-            var giorniTrascorsiNotturno = (int)(dataOdierna - dataFineNotturno).TotalDays;
+            var giorniTrascorsiDiurni = (int)(dataOdierna - turnoDiurno.DataOraFine).TotalDays;
+            var giorniTrascorsiNotturno = (int)(dataOdierna - turnoNotturno.DataOraFine).TotalDays;
 
-            if (dataOdierna > dataFineDiurno)
+            if (dataOdierna > turnoDiurno.DataOraFine)
             {
-                CalcolaTurnoCorrente(turnoDiurno, numeroTurnoD, giorniTrascorsiDiurni);
+                turnoDiurno = CalcolaTurnoCorrente(turnoDiurno, numeroTurnoD, giorniTrascorsiDiurni);
             }
 
-            if (dataOdierna <= dataFineNotturno)
+            if (dataOdierna > turnoNotturno.DataOraFine)
             {
-                _listaTurniNew = new List<Turno>
-                {
-                    turnoDiurno,
-                    turnoNotturno
-                };
-
-                _updateTurni.Update(_listaTurniNew);
-
-                if (dataOdierna < turnoDiurno.DataOraFine && dataOdierna > turnoDiurno.DataOraInizio)
-                {
-                    return turnoDiurno;
-                }
-
-                return turnoNotturno;
+                turnoNotturno = CalcolaTurnoCorrente(turnoNotturno, numeroTurnoN, giorniTrascorsiNotturno);
             }
 
-            turnoNotturno = CalcolaTurnoCorrente(turnoNotturno, numeroTurnoN, giorniTrascorsiNotturno);
-
-            _listaTurniNew = new List<Turno>
-                {
-                    turnoDiurno,
-                    turnoNotturno
-                };
-            _updateTurni.Update(_listaTurniNew);
-
-            if (dataOdierna < turnoDiurno.DataOraFine && dataOdierna > turnoDiurno.DataOraInizio)
-            {
-                return turnoDiurno;
-            }
-
-            return turnoNotturno;
+            return RestituisciDiurnooNotturno(dataOdierna, turnoDiurno, turnoNotturno);
         }
 
         public Turno CalcolaTurnoCorrente(Turno turnoPassato, int numeroTurno, int giorniTrascorsi)
@@ -90,19 +60,19 @@ namespace SO115App.FakePersistence.JSon.Turni
                 switch (turnoPassato.Codice.Substring(0, 1))
                 {
                     case "A":
-                        _letteraTurnoD = 'B';
+                        _letteraTurno = 'B';
                         break;
 
                     case "B":
-                        _letteraTurnoD = 'C';
+                        _letteraTurno = 'C';
                         break;
 
                     case "C":
-                        _letteraTurnoD = 'D';
+                        _letteraTurno = 'D';
                         break;
 
                     case "D":
-                        _letteraTurnoD = 'A';
+                        _letteraTurno = 'A';
                         if (numeroTurno < 8)
                         {
                             numeroTurno++;
@@ -114,10 +84,28 @@ namespace SO115App.FakePersistence.JSon.Turni
                         break;
                 }
 
-                turnoPassato.Codice = _letteraTurnoD + numeroTurno.ToString();
+                turnoPassato.Codice = _letteraTurno + numeroTurno.ToString();
             }
 
             return turnoPassato;
+        }
+
+        internal Turno RestituisciDiurnooNotturno(DateTime dataOdierna, Turno turnoDiurno, Turno turnoNotturno)
+        {
+            _listaTurniNew = new List<Turno>
+                {
+                    turnoDiurno,
+                    turnoNotturno
+                };
+
+            _updateTurni.Update(_listaTurniNew);
+
+            if (dataOdierna < turnoDiurno.DataOraFine && dataOdierna > turnoDiurno.DataOraInizio)
+            {
+                return turnoDiurno;
+            }
+
+            return turnoNotturno;
         }
     }
 }
