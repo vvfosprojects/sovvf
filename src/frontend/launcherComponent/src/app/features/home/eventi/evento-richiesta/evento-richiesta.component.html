@@ -5,7 +5,7 @@
   <div>
     <!--<i class="fa {{iconeClasseEventoCorrente}} fa-fw" aria-hidden="true" title="{{eventoRichiesta.tipo}}"></i>-->
     <i *ngFor="let ii of iconeClasseEventoCorrente" class="fa {{ii}} fa-fw" aria-hidden="true"
-      title="{{eventoRichiesta.nomeClasseEvento}}">
+      title="{{eventoRichiesta.nomeClasseEvento | eventi}}">
     </i>
   </div>
 </td>
