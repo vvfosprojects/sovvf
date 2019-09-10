@@ -294,8 +294,8 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy {
                 this.f.nominativo.patchValue('Ambulanza');
                 this.f.telefono.patchValue('118');
                 break;
-            case 'VV.UU.':
-                this.f.nominativo.patchValue('VV.UU.');
+            case 'Polizia Municipale':
+                this.f.nominativo.patchValue('Polizia Municipale');
                 this.f.telefono.patchValue('');
                 break;
             default:
