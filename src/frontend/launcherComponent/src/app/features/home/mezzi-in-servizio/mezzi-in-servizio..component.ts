@@ -4,7 +4,7 @@ import { ToggleMezziInServizio } from '../store/actions/view/view.actions';
 import { Mezzo } from 'src/app/shared/model/mezzo.model';
 import { GetMezziInServizio } from '../store/actions/mezzi-in-servizio/mezzi-in-servizio.actions';
 import { MezziInServizioState } from '../store/states/mezzi-in-servizio/mezzi-in-servizio.state';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { MezzoActionInterface } from 'src/app/shared/interface/mezzo-action.interface';
 import { ActionMezzo } from '../store/actions/richieste/richieste.actions';
 import { RichiesteState } from '../store/states/richieste/richieste.state';
@@ -18,6 +18,8 @@ import {
 } from '../store/actions/eventi/eventi-richiesta.actions';
 import { EventiRichiestaComponent } from '../eventi/eventi-richiesta.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { map } from 'rxjs/operators';
+import { SintesiRichiestaModalComponent } from '../maps/maps-ui/info-window/sintesi-richiesta-modal/sintesi-richiesta-modal.component';
 
 @Component({
     selector: 'app-mezzi-in-servizio',
@@ -32,6 +34,8 @@ export class MezziInServizioComponent implements OnInit {
     @Select(RichiesteState.richieste) richieste$: Observable<SintesiRichiesta[]>;
     richieste: SintesiRichiesta[];
 
+    subscriptionRichiestaById: Subscription = new Subscription();
+
     constructor(private store: Store,
                 private modalService: NgbModal) {
         this.store.dispatch(new GetMezziInServizio());
@@ -45,8 +49,6 @@ export class MezziInServizioComponent implements OnInit {
     }
 
     ngOnInit() {
-        // TODO: implementare
-        // this.store.dispatch(new SetFiltroMarker('mezzo'));
     }
 
     onActionMezzo(mezzo: Mezzo, mezzoAction: MezzoActionInterface) {
@@ -61,8 +63,24 @@ export class MezziInServizioComponent implements OnInit {
     }
 
     onDettaglioRichiesta(mezzo: Mezzo) {
-        this.store.dispatch(new ToggleMezziInServizio());
-        // this.store.dispatch(new SetRicerca({ 'descrizione': mezzo.idRichiesta }));
+        let richiesta: SintesiRichiesta = null;
+        let richiestaById$: Observable<SintesiRichiesta>;
+        richiestaById$ = this.store.select(RichiesteState.getRichiestaById).pipe(map(fn => fn(mezzo.idRichiesta)));
+        this.subscriptionRichiestaById.add(
+            richiestaById$.subscribe(r => {
+                richiesta = r;
+
+                if (richiesta) {
+                    const modal = this.modalService.open(SintesiRichiestaModalComponent, {
+                        windowClass: 'xlModal',
+                        backdropClass: 'light-blue-backdrop',
+                        centered: true
+                    });
+                    modal.componentInstance.richiesta = richiesta;
+                    this.subscriptionRichiestaById.unsubscribe();
+                }
+            })
+        );
     }
 
     /* Apre il modal per visualizzare gli eventi relativi alla richiesta cliccata */

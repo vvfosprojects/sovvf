@@ -9,7 +9,7 @@
               <!-- Prima Colonna (Prima riga) -->
               <div class="col-8">
                 <app-mezzo [mezzo]="mezzo" [mostraIndicatori]="true" [mostraNotifiche]="true"
-                  [inGestione]="mezzo.stato !== 'In Sede' ? true : false" (actionMezzo)="onActionMezzo(mezzo, $event)">
+                  [inGestione]="mezzo.stato !== 'In Sede'" (actionMezzo)="onActionMezzo(mezzo, $event)">
                 </app-mezzo>
               </div>
               <!-- Seconda Colonna (Prima riga) -->
@@ -23,10 +23,11 @@
             <div class="row">
               <!-- Prima Colonna (Seconda riga) -->
               <div class="col-6 py-1">
-                <div *ngIf="mezzo?.idRichiesta">
+                <button *ngIf="mezzo?.idRichiesta" class="btn btn-light btn-sm"
+                        (click)="onDettaglioRichiesta(mezzo)">
                   <i class="fa fa-hashtag guida mr-1"></i>
-                  <small class="cursor-pointer" (click)="onDettaglioRichiesta(mezzo)">{{mezzo.idRichiesta}}</small>
-                </div>
+                  {{mezzo.idRichiesta}}
+                </button>
                 <div *ngIf="!mezzo?.idRichiesta">
                   <i class="fa fa-check-circle guida mr-1"></i>
                   <small>Non assegnato</small>
@@ -47,7 +48,7 @@
     </div>
   </div>
   <div class="col-12">
-    <button class="btn btn-primary float-right mt-2" (click)="tornaIndietro()">
+    <button class="btn btn-primary mt-2" (click)="tornaIndietro()">
       <i class="fa fa-arrow-left mr-2"></i>
       Torna Indietro
     </button>
