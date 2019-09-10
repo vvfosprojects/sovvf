@@ -12,15 +12,18 @@ import { NgxsModule } from '@ngxs/store';
 import { EventiRichiestaState } from '../store/states/eventi/eventi-richiesta.state';
 import { environment } from '../../../../environments/environment';
 import { FiltriEventiRichiestaComponent } from './filtri-eventi-richiesta/filtri-eventi-richiesta.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FilterPipeModule } from 'ngx-filter-pipe';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 @NgModule({
     imports: [
         CommonModule,
         FormsModule,
+        ReactiveFormsModule,
         FilterPipeModule,
         NgbModule,
+        NgSelectModule,
         PipeModule.forRoot(),
         SharedModule.forRoot(),
         NgxsModule.forFeature([

@@ -11,68 +11,76 @@ import { RichiesteState } from '../store/states/richieste/richieste.state';
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
 import { statoMezzoBorderClass } from 'src/app/shared/helper/function';
 import { StatoMezzo } from 'src/app/shared/enum/stato-mezzo.enum';
-import { SetIdRichiestaEventi, ClearEventiRichiesta, SetRicercaTargaMezzo } from '../store/actions/eventi/eventi-richiesta.actions';
+import {
+    SetIdRichiestaEventi,
+    ClearEventiRichiesta,
+    SetFiltroTargaMezzo
+} from '../store/actions/eventi/eventi-richiesta.actions';
 import { EventiRichiestaComponent } from '../eventi/eventi-richiesta.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-  selector: 'app-mezzi-in-servizio',
-  templateUrl: './mezzi-in-servizio.component.html',
-  styleUrls: ['./mezzi-in-servizio.component.css']
+    selector: 'app-mezzi-in-servizio',
+    templateUrl: './mezzi-in-servizio.component.html',
+    styleUrls: ['./mezzi-in-servizio.component.css']
 })
 export class MezziInServizioComponent implements OnInit {
 
-  @Select(MezziInServizioState.mezziInServizio) mezziInServizio$: Observable<Mezzo[]>;
-  mezziInServizio: Mezzo[];
+    @Select(MezziInServizioState.mezziInServizio) mezziInServizio$: Observable<Mezzo[]>;
+    mezziInServizio: Mezzo[];
 
-  @Select(RichiesteState.richieste) richieste$: Observable<SintesiRichiesta[]>;
-  richieste: SintesiRichiesta[];
+    @Select(RichiesteState.richieste) richieste$: Observable<SintesiRichiesta[]>;
+    richieste: SintesiRichiesta[];
 
-  constructor(private store: Store,
-    private modalService: NgbModal) {
-    this.store.dispatch(new GetMezziInServizio());
-    this.mezziInServizio$.subscribe((mezzi: Mezzo[]) => {
-      this.mezziInServizio = mezzi;
-    });
+    constructor(private store: Store,
+                private modalService: NgbModal) {
+        this.store.dispatch(new GetMezziInServizio());
+        this.mezziInServizio$.subscribe((mezzi: Mezzo[]) => {
+            this.mezziInServizio = mezzi;
+        });
 
-    this.richieste$.subscribe((richieste: any) => {
-      this.richieste = richieste;
-    });
-  }
+        this.richieste$.subscribe((richieste: any) => {
+            this.richieste = richieste;
+        });
+    }
 
-  ngOnInit() {
-    // TODO: implementare
-    // this.store.dispatch(new SetFiltroMarker('mezzo'));
-  }
+    ngOnInit() {
+        // TODO: implementare
+        // this.store.dispatch(new SetFiltroMarker('mezzo'));
+    }
 
-  onActionMezzo(mezzo: Mezzo, mezzoAction: MezzoActionInterface) {
-    const richiesta = this.richieste.filter(x => x.codice === mezzo.idRichiesta)[0];
-    mezzoAction.richiesta = richiesta ? richiesta : null;
-    mezzoAction.listaMezzi = true;
-    this.store.dispatch(new ActionMezzo(mezzoAction));
-  }
+    onActionMezzo(mezzo: Mezzo, mezzoAction: MezzoActionInterface) {
+        const richiesta = this.richieste.filter(x => x.codice === mezzo.idRichiesta)[0];
+        mezzoAction.richiesta = richiesta ? richiesta : null;
+        mezzoAction.listaMezzi = true;
+        this.store.dispatch(new ActionMezzo(mezzoAction));
+    }
 
-  statoMezzoBorderClass(stato: StatoMezzo) {
-    return statoMezzoBorderClass(stato);
-  }
+    statoMezzoBorderClass(stato: StatoMezzo) {
+        return statoMezzoBorderClass(stato);
+    }
 
-  onDettaglioRichiesta(mezzo: Mezzo) {
-    this.store.dispatch(new ToggleMezziInServizio());
-    // this.store.dispatch(new SetRicerca({ 'descrizione': mezzo.idRichiesta }));
-  }
+    onDettaglioRichiesta(mezzo: Mezzo) {
+        this.store.dispatch(new ToggleMezziInServizio());
+        // this.store.dispatch(new SetRicerca({ 'descrizione': mezzo.idRichiesta }));
+    }
 
-  /* Apre il modal per visualizzare gli eventi relativi alla richiesta cliccata */
-  onVisualizzaEventiRichiesta(mezzo: Mezzo, idRichiesta: string) {
-    this.store.dispatch(new SetIdRichiestaEventi(idRichiesta));
-    this.store.dispatch(new SetRicercaTargaMezzo({ targa: mezzo.descrizione }));
-    const modal = this.modalService.open(EventiRichiestaComponent, { windowClass: 'xlModal', backdropClass: 'light-blue-backdrop', centered: true });
-    modal.result.then(() => {
-    },
-      () => this.store.dispatch(new ClearEventiRichiesta()));
-  }
+    /* Apre il modal per visualizzare gli eventi relativi alla richiesta cliccata */
+    onVisualizzaEventiRichiesta(mezzo: Mezzo, idRichiesta: string) {
+        this.store.dispatch(new SetFiltroTargaMezzo([mezzo.descrizione]));
+        this.store.dispatch(new SetIdRichiestaEventi(idRichiesta));
+        const modal = this.modalService.open(EventiRichiestaComponent, {
+            windowClass: 'xlModal',
+            backdropClass: 'light-blue-backdrop',
+            centered: true
+        });
+        modal.result.then(() => {
+            },
+            () => this.store.dispatch(new ClearEventiRichiesta()));
+    }
 
-  tornaIndietro() {
-    this.store.dispatch(new ToggleMezziInServizio());
-  }
+    tornaIndietro() {
+        this.store.dispatch(new ToggleMezziInServizio());
+    }
 
 }

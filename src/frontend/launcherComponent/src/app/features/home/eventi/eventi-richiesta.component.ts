@@ -1,8 +1,10 @@
 import { Component, OnDestroy, OnInit, isDevMode } from '@angular/core';
-import { Select } from '@ngxs/store';
+import { Select, Store } from '@ngxs/store';
 import { EventiRichiestaState } from '../store/states/eventi/eventi-richiesta.state';
-import { Observable, Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 import { EventoRichiesta } from '../../../shared/model/evento-richiesta.model';
+import { FiltroTargaMezzo } from './filtro-targa-mezzo.interface';
+import { SetFiltroTargaMezzo } from '../store/actions/eventi/eventi-richiesta.actions';
 
 @Component({
     selector: 'app-eventi-richiesta',
@@ -11,27 +13,23 @@ import { EventoRichiesta } from '../../../shared/model/evento-richiesta.model';
 })
 export class EventiRichiestaComponent implements OnInit, OnDestroy {
 
-    @Select(EventiRichiestaState.eventi) eventiRichiesta$: Observable<EventoRichiesta[]>;
-
+    @Select(EventiRichiestaState.listaEventiFiltrata) eventiRichiesta$: Observable<EventoRichiesta[]>;
+    @Select(EventiRichiestaState.listaTargaMezzo) listaTargaMezzo$: Observable<FiltroTargaMezzo[]>;
     @Select(EventiRichiestaState.idRichiesta) idRichiesta$: Observable<string>;
-    idRichiesta: string;
+    @Select(EventiRichiestaState.targheSelezionate) targheSelezionate$: Observable<string[]>;
 
-    subscription: Subscription = new Subscription();
-
-    constructor() {
+    constructor(private store: Store) {
     }
 
     ngOnInit(): void {
-        this.subscription.add(
-            this.idRichiesta$.subscribe((idRichiesta: string) => {
-                this.idRichiesta = idRichiesta;
-            })
-        );
         isDevMode() && console.log('Componente Eventi Richiesta Creato');
     }
 
     ngOnDestroy(): void {
-        this.subscription.unsubscribe();
         isDevMode() && console.log('Componente Eventi Richiesta Distrutto');
+    }
+
+    onSelezioneTarga($event) {
+        this.store.dispatch(new SetFiltroTargaMezzo($event));
     }
 }

@@ -1,2 +1,4 @@
-<app-filtri-eventi-richiesta [idRichiesta]="idRichiesta"></app-filtri-eventi-richiesta>
-<app-lista-eventi-richiesta [elencoEventi]="(eventiRichiesta$ | async)"></app-lista-eventi-richiesta>
+<app-filtri-eventi-richiesta [idRichiesta]="(idRichiesta$ | async)" [listaTargaMezzo]="(listaTargaMezzo$ | async)"
+                             (targheSelezionate)="onSelezioneTarga($event)" [initValue]="(targheSelezionate$ | async)"></app-filtri-eventi-richiesta>
+<app-lista-eventi-richiesta [elencoEventi]="(eventiRichiesta$ | async)"
+                            (targheSelezionate)="onSelezioneTarga($event)"></app-lista-eventi-richiesta>

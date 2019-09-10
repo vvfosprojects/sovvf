@@ -1,18 +1,24 @@
 <div class="row pt-2 pb-1 px-3">
-  <div class="col-8">
-    <h4 class="mt-2 font-weight-bold">
-      <i class="fa fa-hashtag guida mr-2"></i>{{idRichiesta}}
-    </h4>
-  </div>
-  <div class="col-4">
-    <div class="input-group">
-      <input [(ngModel)]="filtroTargaMezzo.targa" type="text" class="form-control" placeholder="Targa Mezzo"
-        (input)="onSearch()">
-      <div class="input-group-append">
-        <button class="btn btn-dark" type="button">
-          <i class="fa fa-search"></i>
-        </button>
-      </div>
+    <div class="col-8">
+        <h4 class="mt-2 font-weight-bold">
+            <i class="fa fa-hashtag guida mr-2"></i>{{idRichiesta}}
+        </h4>
     </div>
-  </div>
+    <div class="col-4">
+        <form [formGroup]="form">
+            <ng-select [items]="listaTargaMezzo"
+                       bindLabel="targa"
+                       bindValue="targa"
+                       placeholder="{{mostraTesto()}}"
+                       formControlName="targheSelezionate"
+                       clearAllText="Pulisci"
+                       notFoundText="Mezzo non trovato"
+                       [virtualScroll]="true"
+                       [multiple]="true"
+                       [loading]="!listaTargaMezzo"
+                       loadingText="Caricamento..."
+                       (change)="onChange()">
+            </ng-select>
+        </form>
+    </div>
 </div>
