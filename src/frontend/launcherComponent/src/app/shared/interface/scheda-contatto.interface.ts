@@ -13,4 +13,5 @@ export interface SchedaContatto {
     dettaglio: string;
     priorita: Priorita;
     numeroPersoneCoinvolte: number;
+    perCompetenza?: boolean;
 }
