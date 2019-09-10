@@ -128,13 +128,13 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngIf="!compact && mezzoMarker.id_richiesta">
+        <tr *ngIf="!compact && mezzoMarker.mezzo.idRichiesta">
           <th scope="row" class="py-1 s-info-window">
             <span>
-              {{mezzoMarker.id_richiesta}}
+              {{mezzoMarker.mezzo.idRichiesta}}
             </span>
             <i class="fa fa-eye text-primary ml-2"
-              (click)="openModal('visualizzaRichiesta', mezzoMarker.id_richiesta)"></i>
+              (click)="openModal('visualizzaRichiesta', mezzoMarker.mezzo.idRichiesta)"></i>
           </th>
         </tr>
         <tr *ngIf="!compact">

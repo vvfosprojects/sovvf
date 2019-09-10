@@ -71,7 +71,7 @@ export class RichiesteState {
 
     @Selector()
     static getRichiestaById(state: RichiesteStateModel) {
-        return (id: string) => state.richieste.find(x => x.codiceRichiesta === id);
+        return (id: string) => state.richieste.find(x => x.codice === id);
     }
 
     @Selector()

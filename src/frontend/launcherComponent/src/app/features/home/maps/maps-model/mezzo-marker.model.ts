@@ -1,6 +1,5 @@
 import { Coordinate } from '../../../../shared/model/coordinate.model';
 import { Mezzo } from '../../../../shared/model/mezzo.model';
-import {Tipologia} from '../../../../shared/model/tipologia.model';
 
 export class MezzoMarker {
     constructor(
@@ -12,10 +11,6 @@ export class MezzoMarker {
          * Contiene le proprietà del mezzo
          */
         public mezzo: Mezzo,
-        /**
-         * id della richiesta a cui è associato il mezzo
-         */
-        public id_richiesta?: string
     ) {
     }
 
