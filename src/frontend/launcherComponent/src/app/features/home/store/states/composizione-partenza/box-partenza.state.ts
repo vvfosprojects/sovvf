@@ -89,7 +89,7 @@ export class BoxPartenzaState {
             }
         } else {
             // se il box partenza attualmente selezionato non è valido mostro un messaggio di errore
-            dispatch(new ShowToastr(ToastrType.Error, 'Errore Aggiungi Partenza', 'La partenza attuale non è valida, impossibile creare una nuova partenza.', 5));
+            dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Impossibile continuare con la selezione richiesta.', 5));
         }
     }
 
@@ -117,11 +117,11 @@ export class BoxPartenzaState {
                 // seleziono il nuovo box partenza
                 dispatch(new SelectBoxPartenza(_id));
             } else {
-                dispatch(new ShowToastr(ToastrType.Error, 'Errore Aggiungi Partenza', 'Raggiunto il numero massimo di partenze.', 5));
+                dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Limite massimo raggiunto.', 5));
             }
         } else {
             // se il box partenza attualmente selezionato non è valido mostro un messaggio di errore
-            dispatch(new ShowToastr(ToastrType.Error, 'Errore Aggiungi Partenza', 'La partenza attuale non è valida, impossibile creare una nuova partenza.', 5));
+            dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Impossibile continuare con la selezione richiesta.', 5));
         }
     }
 
