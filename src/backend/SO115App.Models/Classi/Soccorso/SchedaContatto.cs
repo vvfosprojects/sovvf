@@ -77,5 +77,10 @@ namespace SO115App.API.Models.Classi.Soccorso
         ///   E' il numero delle persone coinvolte provenienti dalla scheda contatto, proveniente dal NUE.
         /// </summary>
         public int NumeroPersoneCoinvolte { get; set; }
+
+        /// <summary>
+        ///   Indica se la scheda contatto è per competenza o no.
+        /// </summary>
+        public bool PerCompetenza { get; set; }
     }
 }
