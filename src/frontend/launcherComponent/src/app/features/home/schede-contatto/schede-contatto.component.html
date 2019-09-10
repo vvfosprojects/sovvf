@@ -1,47 +1,44 @@
 <div class="row mt-2 px-0">
-  <div class="col-12 scroll-y" style="height:705px">
-    <div *ngIf="schedeContatto">
-      <div *ngFor="let scheda of schedeContatto" class="card cursor-pointer pl-4 py-2 mb-2 shadow-sm"
-      (mouseenter)="hoverIn(scheda.id)" (mouseleave)="hoverOut()"  (click)="dettaglioScheda(scheda)" [ngClass]="cardClasses(scheda.id)">
-        <div class="row">
-          <div class="col-2 px-0 py-1">
-            {{scheda.dataInserimento | date: 'dd/MM/yyyy HH:MM:SS'}}
-          </div>
-          <div class="col py-1">
-            <i class="guida fa fa-thermometer-half fa-fw" ngbTooltip="Priorità della richiesta"></i>
-            <ngb-rating [(rate)]="scheda.priorita" [max]="5" [readonly]="true">
-              <ng-template let-fill="fill" let-index="index">
-                <span class="circle" [class.filled]="fill === 100" [class.bad]="index > 2 && fill === 100">
-                  <i class="fa fa-circle mr-1"></i>
-                </span>
-              </ng-template>
-            </ngb-rating>
-          </div>
-          <div class="col py-1">
-            <i class="fa fa-list mr-1"></i>
-            {{scheda.classificazioneEvento | slice: 0:11}}
-          </div>
-          <div class="col py-1">
-            <i class="fa fa-user mr-1"></i>
-            {{scheda.richiedente.nominativo | slice: 0:11}}
-          </div>
-          <div class="col py-1">
-            <i class="fa fa-phone mr-1"></i>
-            {{scheda.richiedente.telefono}}
-          </div>
-          <div class="col-1 pr-4">
-            <button class="btn btn-success float-right" (click)="setSchedaContattoTelefonata(scheda)">
-              <i class="fa fa-arrow-right"></i>
-            </button>
-          </div>
-        </div>
-      </div>
+    <div *ngIf="schedeContattoCompetenza || schedeContattoConoscenza" class="col-12 scroll-y" style="height:700px">
+        <ngb-tabset>
+            <ngb-tab>
+                <ng-template ngbTabTitle><b>Competenza</b></ng-template>
+                <ng-template ngbTabContent>
+                    <div class="row">
+                        <div class="col-12 my-2">
+                            <app-scheda-contatto *ngFor="let scheda of schedeContattoCompetenza"
+                                                 [scheda]="scheda"
+                                                 [idSchedaContattoHover]="idSchedaContattoHover"
+                                                 (hoverOut)="hoverOut()" (hoverIn)="hoverIn($event)"
+                                                 (dettaglioScheda)="dettaglioScheda($event)"
+                                                 (setSchedaContattoTelefonata)="setSchedaContattoTelefonata($event)">
+                            </app-scheda-contatto>
+                        </div>
+                    </div>
+                </ng-template>
+            </ngb-tab>
+            <ngb-tab>
+                <ng-template ngbTabTitle>Conoscenza</ng-template>
+                <ng-template ngbTabContent>
+                    <div class="row">
+                        <div class="col-12 my-2">
+                            <app-scheda-contatto *ngFor="let scheda of schedeContattoConoscenza"
+                                                 [scheda]="scheda"
+                                                 [idSchedaContattoHover]="idSchedaContattoHover"
+                                                 (hoverOut)="hoverOut()" (hoverIn)="hoverIn($event)"
+                                                 (dettaglioScheda)="dettaglioScheda($event)"
+                                                 (setSchedaContattoTelefonata)="setSchedaContattoTelefonata($event)">
+                            </app-scheda-contatto>
+                        </div>
+                    </div>
+                </ng-template>
+            </ngb-tab>
+        </ngb-tabset>
     </div>
-  </div>
-  <div class="col-12">
-    <button class="btn btn-primary mt-2" (click)="tornaIndietro()">
-      <i class="fa fa-arrow-left mr-2"></i>
-      Torna Indietro
-    </button>
-  </div>
+    <div class="col-12">
+        <button class="btn btn-primary mt-2" (click)="tornaIndietro()">
+            <i class="fa fa-arrow-left mr-2"></i>
+            Torna Indietro
+        </button>
+    </div>
 </div>

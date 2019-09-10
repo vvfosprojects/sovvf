@@ -1,8 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, isDevMode, OnDestroy, OnInit } from '@angular/core';
 import { Store, Select } from '@ngxs/store';
 import {
     SetSchedaContattoTelefonata,
-    ClearSchedaContattoTelefonata,
     SetSchedaContattoHover,
     ClearSchedaContattoHover
 } from '../store/actions/schede-contatto/schede-contatto.actions';
@@ -18,11 +17,13 @@ import { DettaglioSchedaModalComponent } from './dettaglio-scheda-modal/dettagli
     templateUrl: './schede-contatto.component.html',
     styleUrls: ['./schede-contatto.component.css']
 })
-export class SchedeContattoComponent implements OnInit {
+export class SchedeContattoComponent implements OnInit, OnDestroy {
 
 
-    @Select(SchedeContattoState.schedeContatto) schedeContatto$: Observable<SchedaContatto[]>;
-    schedeContatto: SchedaContatto[];
+    @Select(SchedeContattoState.schedeContattoCompetenza) schedeContattoCompetenza$: Observable<SchedaContatto[]>;
+    schedeContattoCompetenza: SchedaContatto[];
+    @Select(SchedeContattoState.schedeContattoConoscenza) schedeContattoConoscenza$: Observable<SchedaContatto[]>;
+    schedeContattoConoscenza: SchedaContatto[];
     @Select(SchedeContattoState.idSchedaContattoHover) idSchedaContattoHover$: Observable<string>;
     idSchedaContattoHover: string;
 
@@ -30,12 +31,14 @@ export class SchedeContattoComponent implements OnInit {
 
     constructor(private store: Store,
                 private modal: NgbModal) {
-    }
-
-    ngOnInit() {
         this.subscription.add(
-            this.schedeContatto$.subscribe((schedeContatto: SchedaContatto[]) => {
-                this.schedeContatto = schedeContatto;
+            this.schedeContattoCompetenza$.subscribe((schedeContatto: SchedaContatto[]) => {
+                this.schedeContattoCompetenza = schedeContatto;
+            })
+        );
+        this.subscription.add(
+            this.schedeContattoConoscenza$.subscribe((schedeContatto: SchedaContatto[]) => {
+                this.schedeContattoConoscenza = schedeContatto;
             })
         );
         this.subscription.add(
@@ -45,13 +48,20 @@ export class SchedeContattoComponent implements OnInit {
         );
     }
 
+    ngOnInit(): void {
+        isDevMode() && console.log('Componente Schede Contatto creato');
+    }
+
+    ngOnDestroy(): void {
+        isDevMode() && console.log('Componente Schede Contatto distrutto');
+    }
+
     setSchedaContattoTelefonata(schedaContatto: SchedaContatto) {
         this.store.dispatch(new SetSchedaContattoTelefonata(schedaContatto));
         this.store.dispatch(new ToggleChiamata());
     }
 
     dettaglioScheda(scheda: SchedaContatto) {
-        // TODO: aprire modale con tutte le info
         const modal = this.modal.open(DettaglioSchedaModalComponent, { windowClass: 'xlModal', backdropClass: 'light-blue-backdrop', centered: true });
         modal.componentInstance.schedaContatto = scheda;
     }
@@ -68,11 +78,5 @@ export class SchedeContattoComponent implements OnInit {
         this.store.dispatch(new ToggleSchedeContatto());
     }
 
-    cardClasses(idSchedaContatto: string) {
-        let _returnClass = '';
-        if (this.idSchedaContattoHover === idSchedaContatto) {
-            _returnClass = 'bg-light';
-        }
-        return _returnClass;
-    }
+
 }

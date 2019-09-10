@@ -15,7 +15,7 @@ export class TastoSchedeContattoComponent {
     @Input() active: boolean;
     @Input() disabled: boolean;
 
-    @Select(SchedeContattoState.numeroSchedeContatto) numeroSchedeContatto$: Observable<number>;
+    @Select(SchedeContattoState.numeroSchedeContattoCompetenza) numeroSchedeContatto$: Observable<number>;
     numeroSchedeContatto: number;
 
     subscription: Subscription = new Subscription();

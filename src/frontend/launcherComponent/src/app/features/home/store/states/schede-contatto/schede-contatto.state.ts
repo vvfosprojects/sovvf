@@ -4,19 +4,19 @@ import {
     SetListaSchedeContatto,
     SetSchedaContattoTelefonata,
     ClearSchedaContattoTelefonata,
-    GetListaSchedeContatto,
     SetSchedaContattoHover, ClearSchedaContattoHover
 } from '../../actions/schede-contatto/schede-contatto.actions';
-import { SchedeContattoServiceFake } from 'src/app/core/service/schede-contatto/schede-contatto.service.fake';
 
 export interface SchedeContattoStateModel {
-    schedeContatto: SchedaContatto[];
+    schedeContattoCompetenza: SchedaContatto[];
+    schedeContattoConoscenza: SchedaContatto[];
     schedaContattoTelefonata: SchedaContatto;
     idSchedaContattoHover: string;
 }
 
 export const SchedeContattoStateDefaults: SchedeContattoStateModel = {
-    schedeContatto: [],
+    schedeContattoCompetenza: [],
+    schedeContattoConoscenza: [],
     schedaContattoTelefonata: null,
     idSchedaContattoHover: null
 };
@@ -28,8 +28,13 @@ export const SchedeContattoStateDefaults: SchedeContattoStateModel = {
 export class SchedeContattoState {
 
     @Selector()
-    static schedeContatto(state: SchedeContattoStateModel) {
-        return state.schedeContatto;
+    static schedeContattoCompetenza(state: SchedeContattoStateModel) {
+        return state.schedeContattoCompetenza;
+    }
+
+    @Selector()
+    static schedeContattoConoscenza(state: SchedeContattoStateModel) {
+        return state.schedeContattoConoscenza;
     }
 
     @Selector()
@@ -38,8 +43,8 @@ export class SchedeContattoState {
     }
 
     @Selector()
-    static numeroSchedeContatto(state: SchedeContattoStateModel) {
-        return state.schedeContatto.length;
+    static numeroSchedeContattoCompetenza(state: SchedeContattoStateModel) {
+        return state.schedeContattoCompetenza.length;
     }
 
     @Selector()
@@ -47,20 +52,14 @@ export class SchedeContattoState {
         return state.idSchedaContattoHover;
     }
 
-    constructor(private schedeContattoService: SchedeContattoServiceFake) {
-    }
-
-    // Todo: da togliere
-    @Action(GetListaSchedeContatto)
-    getListaSchedeContatto({ patchState }: StateContext<SchedeContattoStateModel>) {
-        this.schedeContattoService.getSchedeContatto().subscribe(() => {
-        });
+    constructor() {
     }
 
     @Action(SetListaSchedeContatto)
     setListaSchedeContatto({ patchState }: StateContext<SchedeContattoStateModel>, action: SetListaSchedeContatto) {
         patchState({
-            schedeContatto: action.schedeContatto
+            schedeContattoCompetenza: action.schedeContatto.filter( schedaContatto => schedaContatto.perCompetenza === true),
+            schedeContattoConoscenza: action.schedeContatto.filter( schedaContatto => schedaContatto.perCompetenza !== true)
         });
     }
 

@@ -1,9 +1,5 @@
 import { SchedaContatto } from 'src/app/shared/interface/scheda-contatto.interface';
 
-export class GetListaSchedeContatto {
-    static readonly type = '[SchedeContatto] Get Lista Schede Contatto';
-}
-
 export class SetListaSchedeContatto {
     static readonly type = '[SchedeContatto] Set Lista Schede Contatto';
 
