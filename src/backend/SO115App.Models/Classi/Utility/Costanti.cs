@@ -53,7 +53,7 @@ namespace SO115App.Models.Classi.Utility
 
         #region Eventi
 
-        public static string EventoGenerico = "Evento Generico";
+        public static string EventoGenerico = "EventoGenerico";
         public static string Telefonata = "Telefonata";
         public static string InizioPresaInCarico = "InizioPresaInCarico";
         public static string RiaperturaRichiesta = "RiaperturaRichiesta";
