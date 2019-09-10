@@ -10,7 +10,6 @@ import { FilterbarComponent } from './filterbar.component';
 import { ViewModeComponent } from './view-mode/view-mode.component';
 import { FiltriMappaComponent } from './filtri-mappa/filtri-mappa.component';
 import { TastoChiamataComponent } from './tasto-chiamata/tasto-chiamata.component';
-import { MarkerMeteoSwitchComponent } from './marker-meteo-switch/marker-meteo-switch.component';
 import { RicercaRichiesteComponent } from './ricerca-richieste/ricerca-richieste.component';
 import { FiltriRichiesteComponent } from './filtri-richieste/filtri-richieste.component';
 import { FiltroComponent } from './filtri-richieste/filtro/filtro.component';
@@ -37,7 +36,6 @@ import { TastoSchedeContattoComponent } from './tasto-schede-contatto/tasto-sche
         ViewModeComponent,
         FiltriMappaComponent,
         TastoChiamataComponent,
-        MarkerMeteoSwitchComponent,
         LoaderMarkerComponent,
         TastoSchedeContattoComponent
     ],

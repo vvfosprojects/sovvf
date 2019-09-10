@@ -31,18 +31,17 @@
                 <app-view-mode [colorButtonView]="colorButton.buttonView"
                                [mezziInServizioActive]="viewState?.mezziInServizio.active"
                                (buttonView)="switchView($event)"
-                               (optionRichieste)="onOptionsRichieste($event)">
+                               (optionRichieste)="onOptionsRichieste($event)"
+                               [stateSwitch]="(stateSwitch$ | async)"
+                               [mapStatus]="(mapsStatus$ | async)"
+                               (toggleMeteo)="onMeteoSwitch($event)">
                 </app-view-mode>
             </div>
         </div>
     </div>
     <div [ngClass]="(filterBarCol$ | async)">
         <div class="row">
-            <div class="col-2">
-            </div>
-            <div *ngIf="(mapsStatus$ | async)" class="col-3 pr-0">
-                <app-marker-meteo-switch [stateSwitch]="(stateSwitch$ | async)" (change)="onChange($event)">
-                </app-marker-meteo-switch>
+            <div class="col-5">
             </div>
             <div *ngIf="(mapsStatus$ | async)" class="col-2 text-right pr-0">
                 <app-loader-marker [markerOnLoading]="(markerOnLoading$ | async)"></app-loader-marker>

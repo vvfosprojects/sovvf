@@ -12,9 +12,12 @@ export class ViewModeComponent {
 
     @Input() colorButtonView = ['btn-outline-secondary', 'btn-secondary', 'btn-outline-secondary'];
     @Input() mezziInServizioActive: boolean;
+    @Input() stateSwitch: boolean;
+    @Input() mapStatus: boolean;
 
     @Output() buttonView = new EventEmitter<AppFeatures>();
     @Output() optionRichieste = new EventEmitter<OptionsRichieste>();
+    @Output() toggleMeteo: EventEmitter<boolean> = new EventEmitter();
 
     AppFeature = AppFeatures;
     OptionsRichieste = OptionsRichieste;
@@ -29,6 +32,10 @@ export class ViewModeComponent {
 
     buttonOptionRichieste($event) {
         this.optionRichieste.emit($event);
+    }
+
+    onChange() {
+        this.toggleMeteo.emit(!this.stateSwitch);
     }
 
 }

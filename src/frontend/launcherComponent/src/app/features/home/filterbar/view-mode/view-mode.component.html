@@ -29,8 +29,8 @@
       ngbTooltip="Visualizzazione solo Mappa" [disableTooltip]="colorButtonView[2] === 'btn-secondary'"><i
         class="fa fa-globe"></i>
     </button>
-    <button type="button" class="btn btn-outline-secondary" ngbTooltip="Attiva meteo sulla mappa"
-      [disabled]="colorButtonView[0] === 'btn-secondary'">
+    <button type="button" class="btn" [ngClass]="{'btn-secondary': stateSwitch, 'btn-outline-secondary': !stateSwitch}" ngbTooltip="Attiva meteo sulla mappa"
+      [disabled]="!mapStatus" (click)="onChange()">
       <i class="fa fa-sun-o"></i>
     </button>
     <div class="btn-group" ngbDropdown autoClose="outside" placement="bottom" role="group">
