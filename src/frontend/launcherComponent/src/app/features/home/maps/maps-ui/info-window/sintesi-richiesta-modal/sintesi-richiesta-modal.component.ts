@@ -14,7 +14,7 @@ import { RichiesteState } from '../../../../store/states/richieste/richieste.sta
 })
 export class SintesiRichiestaModalComponent implements OnInit, OnDestroy {
 
-    @Select(RichiesteState.newGetRichiestaById) sintesiRichiesta$: Observable<SintesiRichiesta>;
+    @Select(RichiesteState.getRichiestaById) sintesiRichiesta$: Observable<SintesiRichiesta>;
     sintesiRichiesta: SintesiRichiesta = null;
 
     private subscription = new Subscription();
