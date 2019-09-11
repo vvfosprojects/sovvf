@@ -39,7 +39,10 @@
       "Longitudine": 12.4686518
     },
     "IstanteScadenzaSelezione": "2019-07-23T17:06:17.2539172+02:00",
-    "IdRichiesta": null,
+    "InfoRichiesta": {
+      "CodiceRichiesta": "",
+      "Indirizzo": ""
+    },
     "IndiceOrdinamento": 0.0
   },
   {
@@ -82,7 +85,10 @@
       "Longitudine": 12.5418702
     },
     "IstanteScadenzaSelezione": null,
-    "IdRichiesta": null,
+    "InfoRichiesta": {
+      "CodiceRichiesta": "",
+      "Indirizzo": ""
+    },
     "IndiceOrdinamento": 0.0
   },
   {
@@ -125,7 +131,10 @@
       "Longitudine": 12.5417044
     },
     "IstanteScadenzaSelezione": null,
-    "IdRichiesta": "RM1900000",
+    "InfoRichiesta": {
+      "CodiceRichiesta": "",
+      "Indirizzo": ""
+    },
     "IndiceOrdinamento": 0.0
   },
   {
@@ -168,7 +177,10 @@
       "Longitudine": 12.4686518
     },
     "IstanteScadenzaSelezione": null,
-    "IdRichiesta": null,
+    "InfoRichiesta": {
+      "CodiceRichiesta": "",
+      "Indirizzo": ""
+    },
     "IndiceOrdinamento": 0.0
   },
   {
@@ -211,7 +223,10 @@
       "Longitudine": 12.4686518
     },
     "IstanteScadenzaSelezione": null,
-    "IdRichiesta": null,
+    "InfoRichiesta": {
+      "CodiceRichiesta": "",
+      "Indirizzo": ""
+    },
     "IndiceOrdinamento": 0.0
   },
   {
@@ -254,7 +269,10 @@
       "Longitudine": 12.4686518
     },
     "IstanteScadenzaSelezione": null,
-    "IdRichiesta": null,
+    "InfoRichiesta": {
+      "CodiceRichiesta": "",
+      "Indirizzo": ""
+    },
     "IndiceOrdinamento": 0.0
   },
   {
@@ -297,7 +315,10 @@
       "Longitudine": 12.4879854
     },
     "IstanteScadenzaSelezione": null,
-    "IdRichiesta": null,
+    "InfoRichiesta": {
+      "CodiceRichiesta": "",
+      "Indirizzo": ""
+    },
     "IndiceOrdinamento": 0.0
   }
 ]

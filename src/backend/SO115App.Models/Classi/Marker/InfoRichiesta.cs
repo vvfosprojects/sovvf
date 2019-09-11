@@ -17,36 +17,12 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System.Collections.Generic;
-using SO115App.API.Models.Classi.Condivise;
-using SO115App.Models.Classi.Marker;
-
 namespace SO115App.API.Models.Classi.Marker
 {
-    /// <summary>
-    ///   Contiene le informazioni di sintesi di una Richiesta di Assistenza, utile ad alimentare il
-    ///   primo ed il secondo livello di dettaglio del componente richiesta di assistenza sul frontend.
-    /// </summary>
-    public class MezzoMarker
+    public class InfoRichiesta
     {
-        /// <summary>
-        ///   Costruttore della classe
-        /// </summary>
-        public MezzoMarker()
-        {
-        }
+        public string CodiceRichiesta { get; set; }
 
-        /// <summary>
-        ///   L'id della richiesta
-        /// </summary>
-        //public string id { get; set; }
-        public Coordinate Coordinate { get; set; }
-
-        public Mezzo Mezzo { get; set; }
-
-        /// <summary>
-        ///   Contiene informazioni della richiesta a cui è associato il mezzo
-        /// </summary>
-        public InfoRichiesta InfoRichiesta { get; set; }
+        public string Indirizzo { get; set; }
     }
 }

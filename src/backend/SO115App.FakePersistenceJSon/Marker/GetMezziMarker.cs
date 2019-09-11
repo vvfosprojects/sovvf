@@ -23,39 +23,54 @@ using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Geo;
 using SO115App.API.Models.Classi.Marker;
 using SO115App.FakePersistence.JSon.Utility;
+using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.Marker;
 
 namespace SO115App.FakePersistenceJSon.Marker
 {
     public class GetMezziMarker : IGetMezziMarker
     {
+        private readonly IGetRichiestaById _getRichiestaById;
+
+        public GetMezziMarker(IGetRichiestaById getRichiestaById)
+        {
+            _getRichiestaById = getRichiestaById;
+        }
+
         public List<MezzoMarker> GetListaMezziMarker(AreaMappa filtroAreaMappa)
         {
-            List<MezzoMarker> ListaMezzi = new List<MezzoMarker>();
-            string filepath = CostantiJson.MezziComposizione;
+            var listaMezzi = new List<MezzoMarker>();
+            var filepath = CostantiJson.MezziComposizione;
             string json;
             using (StreamReader r = new StreamReader(filepath))
             {
                 json = r.ReadToEnd();
             }
 
-            List<MezzoMarker> ListaMezziMarker = JsonConvert.DeserializeObject<List<MezzoMarker>>(json);
+            var listaMezziMarker = JsonConvert.DeserializeObject<List<MezzoMarker>>(json);
 
             if (filtroAreaMappa == null)
-                return ListaMezziMarker;
+                return listaMezziMarker;
             else
             {
-                foreach (MezzoMarker mezzo in ListaMezziMarker)
+                foreach (MezzoMarker mezzo in listaMezziMarker)
                 {
-                    if (((mezzo.Coordinate.Latitudine >= filtroAreaMappa.BottomLeft.Latitudine) && (mezzo.Coordinate.Latitudine <= filtroAreaMappa.TopRight.Latitudine)) &&
-                        ((mezzo.Coordinate.Longitudine >= filtroAreaMappa.BottomLeft.Longitudine) && (mezzo.Coordinate.Longitudine <= filtroAreaMappa.TopRight.Longitudine))
-                      )
+                    if (((!(mezzo.Coordinate.Latitudine >= filtroAreaMappa.BottomLeft.Latitudine)) ||
+                         (!(mezzo.Coordinate.Latitudine <= filtroAreaMappa.TopRight.Latitudine))) ||
+                        ((!(mezzo.Coordinate.Longitudine >= filtroAreaMappa.BottomLeft.Longitudine)) ||
+                         (!(mezzo.Coordinate.Longitudine <= filtroAreaMappa.TopRight.Longitudine)))) continue;
+
+                    if (mezzo.Mezzo.IdRichiesta != null)
                     {
-                        ListaMezzi.Add(mezzo);
+                        var richiestaAssociata = _getRichiestaById.Get(mezzo.Mezzo.IdRichiesta);
+                        mezzo.InfoRichiesta.CodiceRichiesta = richiestaAssociata.CodiceRichiesta;
+                        mezzo.InfoRichiesta.Indirizzo = richiestaAssociata.Localita.Indirizzo;
                     }
+
+                    listaMezzi.Add(mezzo);
                 }
 
-                return ListaMezzi;
+                return listaMezzi;
             }
         }
     }
