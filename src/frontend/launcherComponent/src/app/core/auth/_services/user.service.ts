@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { Utente } from '../../../shared/model/utente.model';
 
-const API_URL_USERS = environment.apiUrl.users;
+const API_URL_USERS = environment.apiUrl; // mancante
 
 
 @Injectable({ providedIn: 'root' })

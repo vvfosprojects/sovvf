@@ -1,7 +1,7 @@
 const PROXY_CONFIG = [{
     context: [
         '/NotificationHub',
-        '/api/auth/Login',
+        '/api/Auth',
         '/api/Welcome',
         '/api/Navbar',
         '/api/Filtri',

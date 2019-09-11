@@ -6,7 +6,7 @@ import { environment } from '../../../../../environments/environment';
 import { handleError } from '../../../../shared/helper/handleError';
 import { ChiamataMarker } from '../../../../features/home/maps/maps-model/chiamata-marker.model';
 
-const API_CHIAMATE_MARKER = environment.apiUrl.chiamata.marker;
+const API_MARKER_CHIAMATE = environment.apiUrl.markerChiamataInCorso;
 
 @Injectable()
 export class ChiamateMarkerService {
@@ -15,28 +15,28 @@ export class ChiamateMarkerService {
     }
 
     getChiamateMarkers(): Observable<any> {
-        return this.http.get(API_CHIAMATE_MARKER).pipe(
+        return this.http.get(API_MARKER_CHIAMATE).pipe(
             retry(3),
             catchError(handleError)
         );
     }
 
     setChiamataInCorso(marker: ChiamataMarker): Observable<any> {
-        return this.http.post<any>(API_CHIAMATE_MARKER + '/Add', marker).pipe(
+        return this.http.post<any>(API_MARKER_CHIAMATE + '/Add', marker).pipe(
             // retry(3),
             catchError(handleError)
         );
     }
 
     deleteChiamataInCorso(marker: ChiamataMarker): Observable<any> {
-        return this.http.post<any>(API_CHIAMATE_MARKER + '/Delete', marker).pipe(
+        return this.http.post<any>(API_MARKER_CHIAMATE + '/Delete', marker).pipe(
             // retry(3),
             catchError(handleError)
         );
     }
 
     updateChiamataInCorso(marker: ChiamataMarker): Observable<any> {
-        return this.http.post<any>(API_CHIAMATE_MARKER + '/Update', marker).pipe(
+        return this.http.post<any>(API_MARKER_CHIAMATE + '/Update', marker).pipe(
             // retry(3),
             catchError(handleError)
         );

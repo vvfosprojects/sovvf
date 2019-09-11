@@ -1,7 +1,7 @@
 const PROXY_CONFIG = [{
     context: [
         '/NotificationHub',
-        '/api/auth/Login',
+        '/api/Auth',
         '/api/Welcome',
         '/api/Navbar',
         '/api/Filtri',
@@ -20,7 +20,7 @@ const PROXY_CONFIG = [{
         '/api/GestioneMezziInServizio',
         '/api/Marker',
     ],
-    target: "http://172.16.16.13:5000/",
+    target: "http://172.16.16.156:5000/",
     secure: false,
     "changeOrigin": true,
     ws: true

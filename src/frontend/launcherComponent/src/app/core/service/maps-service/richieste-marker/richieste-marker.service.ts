@@ -9,7 +9,7 @@ import { FiltroRichieste } from '../../../../features/home/maps/maps-model/filtr
 import { AreaMappaFiltrata } from '../../../../shared/helper/query-helper';
 import { Markers } from '../../../../shared/enum/markers.enum';
 
-const API_URL_RICHIESTE = environment.apiUrl.maps.markers.richieste;
+const API_MARKER = environment.apiUrl.markers;
 
 @Injectable()
 export class RichiesteMarkerService {
@@ -19,7 +19,7 @@ export class RichiesteMarkerService {
     }
 
     public getRichiesteMarkers(areaMappa: AreaMappa, filtroRichieste?: FiltroRichieste): Observable<any> {
-        return this.http.post(API_URL_RICHIESTE, AreaMappaFiltrata(areaMappa, filtroRichieste, Markers.Richieste)).pipe(
+        return this.http.post(`${API_MARKER}/GetRichieste`, AreaMappaFiltrata(areaMappa, filtroRichieste, Markers.Richieste)).pipe(
             retry(3),
             catchError(handleError));
     }

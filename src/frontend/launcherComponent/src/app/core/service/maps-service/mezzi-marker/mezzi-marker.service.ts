@@ -9,7 +9,7 @@ import { FiltroMezzi } from '../../../../features/home/maps/maps-model/filtro-me
 import { AreaMappaFiltrata } from '../../../../shared/helper/query-helper';
 import { Markers } from '../../../../shared/enum/markers.enum';
 
-const API_URL_MEZZI = environment.apiUrl.maps.markers.mezzi;
+const API_MARKER = environment.apiUrl.markers;
 
 @Injectable()
 export class MezziMarkerService {
@@ -18,7 +18,7 @@ export class MezziMarkerService {
     }
 
     public getMezziMarkers(areaMappa: AreaMappa, filtroMezzi?: FiltroMezzi): Observable<any> {
-        return this.http.post(API_URL_MEZZI, AreaMappaFiltrata(areaMappa, filtroMezzi, Markers.Mezzi)).pipe(
+        return this.http.post(`${API_MARKER}/GetMezzi`, AreaMappaFiltrata(areaMappa, filtroMezzi, Markers.Mezzi)).pipe(
             retry(3),
             catchError(handleError));
     }
