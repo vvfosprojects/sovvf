@@ -6,11 +6,11 @@ import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
 // Action
 import {
     ActionMezzo, ActionRichiesta,
-    AddRichiesta, CambiaStatoRichiesta, ClearIdChiamataInviaPartenza,
+    AddRichiesta, CambiaStatoRichiesta, ClearIdChiamataInviaPartenza, ClearRichiestaById,
     ClearRichieste,
     GetRichieste,
     PatchRichiesta,
-    SetIdChiamataInviaPartenza,
+    SetIdChiamataInviaPartenza, SetRichiestaById,
     SetRichieste,
     StartInviaPartenzaFromChiamata,
     UpdateRichiesta
@@ -42,11 +42,13 @@ import { RichiestaAttivitaUtenteState } from './richiesta-attivita-utente.state'
 
 export interface RichiesteStateModel {
     richieste: SintesiRichiesta[];
+    richiestaById: SintesiRichiesta;
     chiamataInviaPartenza: string;
 }
 
 export const RichiesteStateDefaults: RichiesteStateModel = {
     richieste: [],
+    richiestaById: null,
     chiamataInviaPartenza: null
 };
 
@@ -72,6 +74,11 @@ export class RichiesteState {
     @Selector()
     static getRichiestaById(state: RichiesteStateModel) {
         return (id: string) => state.richieste.find(x => x.codice === id);
+    }
+
+    @Selector()
+    static newGetRichiestaById(state: RichiesteStateModel) {
+        return state.richiestaById;
     }
 
     @Selector()
@@ -201,4 +208,21 @@ export class RichiesteState {
         this.richiesteService.aggiornaStatoRichiesta(obj).subscribe(() => {
         }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5)));
     }
+
+    @Action(SetRichiestaById)
+    setRichiestaById({ patchState, dispatch }: StateContext<RichiesteStateModel>, action: SetRichiestaById) {
+        this.richiesteService.getRichiestaById(action.idRichiesta).subscribe((data: SintesiRichiesta) => {
+            patchState({
+                richiestaById: data
+            });
+        }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5)));
+    }
+
+    @Action(ClearRichiestaById)
+    clearRichiestaById({ patchState }: StateContext<RichiesteStateModel>) {
+        patchState({
+            richiestaById: RichiesteStateDefaults.richiestaById
+        });
+    }
+
 }

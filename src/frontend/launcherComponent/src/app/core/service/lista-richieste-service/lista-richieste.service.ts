@@ -17,15 +17,18 @@ export class SintesiRichiesteService {
     constructor(private http: HttpClient) {
     }
 
+    // TodoBackEnd: check esistenza controller
     public getRichieste(idUltimaRichiesta?: string): Observable<any> {
         return this.http.get(API_URL_RICHIESTE).pipe(
             retry(3),
             catchError(handleError));
     }
 
-    // public getRichiestaById(): Observable<any> {
-    //     return;
-    // }
+    public getRichiestaById(id: string): Observable<SintesiRichiesta> {
+        return this.http.get<SintesiRichiesta>(`${API_GESTIONE_RICHIESTA}/GetRichiesta?idRichiesta=${id}`).pipe(
+            retry(3),
+            catchError(handleError));
+    }
 
     public patchRichiesta(richiesta: SintesiRichiesta): Observable<any> {
         return this.http.post<any>(`${API_CHIAMATA}/UpdateIntervento`, richiesta).pipe(

@@ -81,3 +81,14 @@ export class ActionRichiesta {
     constructor(public richiestaAction: RichiestaActionInterface) {
     }
 }
+
+export class SetRichiestaById {
+    static readonly type = '[Richieste] Set Richiesta by Id';
+
+    constructor(public idRichiesta: string) {
+    }
+}
+
+export class ClearRichiestaById {
+    static readonly type = '[Richieste] Clear Richiesta by Id';
+}

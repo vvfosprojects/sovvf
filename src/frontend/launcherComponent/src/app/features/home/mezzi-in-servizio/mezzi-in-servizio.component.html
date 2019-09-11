@@ -24,7 +24,7 @@
               <!-- Prima Colonna (Seconda riga) -->
               <div class="col-6 py-1">
                 <button *ngIf="mezzo?.idRichiesta" class="btn btn-light btn-sm"
-                        (click)="onDettaglioRichiesta(mezzo)">
+                        (click)="onDettaglioRichiesta(mezzo.idRichiesta)">
                   <i class="fa fa-hashtag guida mr-1"></i>
                   {{mezzo.idRichiesta}}
                 </button>
