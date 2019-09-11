@@ -6,7 +6,7 @@ import { retry, catchError } from 'rxjs/operators';
 import { handleError } from 'src/app/shared/helper/handleError';
 import { environment } from 'src/environments/environment.prod';
 
-const API_URL = environment.apiUrl.schedeContatto.listaSchede;
+const API_SCHEDE_CONTATTO = environment.apiUrl.schedeContatto;
 
 @Injectable({
     providedIn: 'root'
@@ -17,7 +17,7 @@ export class SchedeContattoService {
     }
 
     getSchedeContatto(): Observable<SchedaContatto[]> {
-        return this.http.get<SchedaContatto[]>(API_URL).pipe(
+        return this.http.get<SchedaContatto[]>(`${API_SCHEDE_CONTATTO}/GetLista`).pipe(
             retry(3),
             catchError(handleError)
         );

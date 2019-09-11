@@ -6,7 +6,7 @@ import { environment } from '../../../../environments/environment';
 import { handleError } from '../../../shared/helper/handleError';
 import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
 
-const API_URL_INSERIMENTO = environment.apiUrl.chiamata.inserimento;
+const API_CHIAMATA = environment.apiUrl.chiamata;
 
 
 @Injectable()
@@ -16,7 +16,7 @@ export class ChiamataService {
     }
 
     public insertChiamata(chiamata: SintesiRichiesta): Observable<any> {
-        return this.http.post<SintesiRichiesta>(API_URL_INSERIMENTO, chiamata).pipe(
+        return this.http.post<SintesiRichiesta>(`${API_CHIAMATA}/Add`, chiamata).pipe(
             // retry(3),
             catchError(handleError)
         );

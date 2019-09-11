@@ -9,8 +9,12 @@ import { Coordinate } from '../model/coordinate.model';
 import { degToCompass, wipeCoordinate } from '../helper/function';
 import { handleError } from '../helper/handleError';
 
-const API_URL = environment.apiUrl.meteo.url;
-const CFG = environment.apiUrl.meteo.option;
+const API_METEO = environment.apiUrl.meteo;
+const CFG = {
+    lang: 'it',
+    key: 'a23cc450dabf63fdb6729696aa29b3a6',
+    unit: 'metric'
+};
 
 
 @Injectable({
@@ -25,7 +29,7 @@ export class MeteoService {
     }
 
     getMeteoData(_coordinate: Coordinate): Observable<Meteo> {
-        const API_METEO_URL = API_URL + wipeCoordinate(_coordinate) + '&lang=' + CFG.lang + '&appid=' + CFG.key + '&units=' + CFG.unit;
+        const API_METEO_URL = API_METEO + wipeCoordinate(_coordinate) + '&lang=' + CFG.lang + '&appid=' + CFG.key + '&units=' + CFG.unit;
         return this.http.get(API_METEO_URL).pipe(
             map((data: any) => {
                 return new Meteo(

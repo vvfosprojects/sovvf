@@ -3,6 +3,10 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs';
 import { Utente } from '../../../shared/model/utente.model';
 import { map } from 'rxjs/operators';
+import { environment } from '../../../../environments/environment';
+
+const API_AUTH = environment.apiUrl.auth;
+
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
@@ -19,7 +23,7 @@ export class AuthenticationService {
     }
 
     login(username: string, password: string) {
-        return this.http.post<any>(`/api/auth/Login`, { 'username': username, 'password': password }).pipe(map(response => {
+        return this.http.post<any>(`${API_AUTH}/Login`, { 'username': username, 'password': password }).pipe(map(response => {
             if (response && response.token) {
                 localStorage.setItem(this.localName, JSON.stringify(response));
                 this.currentUserSubject.next(response);
