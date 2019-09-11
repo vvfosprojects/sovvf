@@ -10,9 +10,8 @@ import { MarkerFiltro } from '../../../../../shared/interface/marker-filtro.inte
 import { BoxClickInterface } from '../../../boxes/box-interface/box-click-interface';
 import { Observable, Subscription } from 'rxjs';
 import { BoxClickState } from '../boxes/box-click.state';
-import { OpacizzaMezziMarkers } from '../../actions/maps/mezzi-markers.actions';
-import { OpacizzaRichiesteMarkers } from '../../actions/maps/richieste-markers.actions';
-import { ClearMarkerOpachiMezzi, ClearMarkerOpachiRichieste } from '../../actions/maps/marker-opachi.actions';
+import { ToggleOpacitaMezziMarkers } from '../../actions/maps/mezzi-markers.actions';
+import { ToggleOpacitaRichiesteMarkers } from '../../actions/maps/richieste-markers.actions';
 
 export interface MapsFiltroStateModel {
     filtroMarker: MarkerFiltro[];
@@ -147,10 +146,9 @@ export class MapsFiltroState {
                 const mezziState = Object.keys(boxClick.mezzi).filter(key => {
                     return boxClick.mezzi[key];
                 });
-                this.store.dispatch(new OpacizzaMezziMarkers(mezziState));
+                this.store.dispatch(new ToggleOpacitaMezziMarkers(true, mezziState));
             } else {
-                this.store.dispatch(new OpacizzaMezziMarkers());
-                this.store.dispatch(new ClearMarkerOpachiMezzi());
+                this.store.dispatch(new ToggleOpacitaMezziMarkers(false));
             }
 
             if (Object.values(boxClick.richieste).indexOf(true) >= 0) {
@@ -158,10 +156,9 @@ export class MapsFiltroState {
                 const richiesteState = Object.keys(boxClick.richieste).filter(key => {
                     return boxClick.richieste[key];
                 });
-                this.store.dispatch(new OpacizzaRichiesteMarkers(richiesteState));
+                this.store.dispatch(new ToggleOpacitaRichiesteMarkers(true, richiesteState));
             } else {
-                this.store.dispatch(new ClearMarkerOpachiRichieste());
-                this.store.dispatch(new OpacizzaRichiesteMarkers());
+                this.store.dispatch(new ToggleOpacitaRichiesteMarkers(false));
             }
 
             if (filtroCheckBox.length !== 0) {

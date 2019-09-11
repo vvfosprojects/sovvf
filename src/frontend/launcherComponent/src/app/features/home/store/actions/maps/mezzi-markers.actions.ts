@@ -58,11 +58,22 @@ export class SetMezzoMarkerById {
     }
 }
 
+export class ToggleOpacitaMezziMarkers {
+    static readonly type = '[Mezzi Marker] Toggle Opacità Mezzi Marker';
+
+    constructor(public toggle: boolean, public stato?: string[]) {
+    }
+}
+
+export class SetTipoOpacitaMezziMarkers {
+    static readonly type = '[Mezzi Marker] Set Tipo Opacità Mezzi Marker';
+
+    constructor(public stato: string[]) {
+    }
+}
+
 export class OpacizzaMezziMarkers {
     static readonly type = '[Mezzi Marker] Opacizza Mezzi Marker';
-
-    constructor(public stato?: string[]) {
-    }
 }
 
 export class ClearMezziMarkers {

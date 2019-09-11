@@ -9,11 +9,14 @@ import {
     OpacizzaRichiesteMarkers, PatchRichiesteMarkers,
     RemoveRichiestaMarker,
     SetRichiestaMarkerById,
-    SetRichiesteMarkers,
+    SetRichiesteMarkers, SetTipoOpacitaRichiesteMarkers, ToggleOpacitaRichiesteMarkers,
     UpdateRichiestaMarker
 } from '../../actions/maps/richieste-markers.actions';
 import { wipeStatoRichiesta } from '../../../../../shared/helper/function';
-import { SetMarkerOpachiRichieste } from '../../actions/maps/marker-opachi.actions';
+import {
+    ClearMarkerOpachiRichieste,
+    SetMarkerOpachiRichieste
+} from '../../actions/maps/marker-opachi.actions';
 import { append, insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
 import { Observable } from 'rxjs';
 import { HomeState } from '../home.state';
@@ -27,12 +30,16 @@ export interface RichiesteMarkersStateModel {
     richiesteMarkers: RichiestaMarker[];
     richiesteMarkersId: string[];
     richiestaMarkerById: RichiestaMarker;
+    statoOpacita: boolean;
+    tipoOpacita: string[];
 }
 
 export const RichiesteMarkersStateDefaults: RichiesteMarkersStateModel = {
     richiesteMarkers: [],
     richiesteMarkersId: [],
-    richiestaMarkerById: null
+    richiestaMarkerById: null,
+    statoOpacita: false,
+    tipoOpacita: null
 };
 
 @State<RichiesteMarkersStateModel>({
@@ -119,6 +126,7 @@ export class RichiesteMarkersState {
                     dispatch(new ToggleAnimation());
                 }
             });
+            dispatch(new OpacizzaRichiesteMarkers());
         }
     }
 
@@ -183,22 +191,35 @@ export class RichiesteMarkersState {
         }
     }
 
+    @Action(ToggleOpacitaRichiesteMarkers)
+    toggleOpacitaRichiesteMarkers({ patchState, dispatch }: StateContext<RichiesteMarkersStateModel>, action: ToggleOpacitaRichiesteMarkers) {
+        patchState({
+            statoOpacita: action.toggle
+        });
+        if (!action.toggle) {
+            patchState({
+                tipoOpacita: RichiesteMarkersStateDefaults.tipoOpacita,
+            });
+            dispatch(new ClearMarkerOpachiRichieste());
+        } else {
+            dispatch(new SetTipoOpacitaRichiesteMarkers(action.stato));
+        }
+    }
+
+    @Action(SetTipoOpacitaRichiesteMarkers)
+    setTipoOpacitaRichiesteMarkers({ patchState, dispatch }: StateContext<RichiesteMarkersStateModel>, action: SetTipoOpacitaRichiesteMarkers) {
+        patchState({
+            tipoOpacita: action.stato
+        });
+        dispatch(new OpacizzaRichiesteMarkers());
+    }
+
     @Action(OpacizzaRichiesteMarkers)
-    opacizzaRichiesteMarkers({ getState, dispatch }: StateContext<RichiesteMarkersStateModel>, action: OpacizzaRichiesteMarkers) {
+    opacizzaRichiesteMarkers({ getState, dispatch }: StateContext<RichiesteMarkersStateModel>) {
         const state = getState();
-        const filteredId: string[] = [];
-        if (action.stato) {
+        if (state.statoOpacita && state.tipoOpacita) {
             if (state.richiesteMarkers) {
-                state.richiesteMarkers.forEach(r => {
-                    action.stato.forEach(c => {
-                        if (wipeStatoRichiesta(r.stato).substring(0, 5).toLowerCase() === c.substring(0, 5).toLowerCase()) {
-                            filteredId.push(r.id);
-                        }
-                    });
-                });
-            }
-            if (filteredId.length > 0) {
-                dispatch(new SetMarkerOpachiRichieste(filteredId));
+                dispatch(new SetMarkerOpachiRichieste(idRichiesteFiltrate(state.tipoOpacita, state.richiesteMarkers)));
             }
         }
     }
@@ -208,4 +229,16 @@ export class RichiesteMarkersState {
         patchState(RichiesteMarkersStateDefaults);
     }
 
+}
+
+export function idRichiesteFiltrate(stati: string[], richiesteMarkers: RichiestaMarker[]): string[] {
+    const filteredId: string[] = [];
+    richiesteMarkers.forEach(r => {
+        stati.forEach(c => {
+            if (wipeStatoRichiesta(r.stato).substring(0, 5).toLowerCase() === c.substring(0, 5).toLowerCase()) {
+                filteredId.push(r.id);
+            }
+        });
+    });
+    return filteredId;
 }
