@@ -18,5 +18,6 @@ namespace SO115App.FakePersistence.JSon.Utility
         public static string User = "Fake/user.json";
         public static string Turni = "Fake/Turni.json";
         public static string FlottaMezzi = "Fake/FlottaMezzi.json";
+        public static string SchedeContatti = "Fake/SchedeContatti.json";
     }
 }

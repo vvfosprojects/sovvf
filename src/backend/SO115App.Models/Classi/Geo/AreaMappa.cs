@@ -18,6 +18,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using SO115App.API.Models.Classi.Condivise;
+using SO115App.Models.Classi.Filtri;
 
 namespace SO115App.API.Models.Classi.Geo
 {
@@ -36,6 +37,8 @@ namespace SO115App.API.Models.Classi.Geo
         /// </summary>
         public Coordinate BottomLeft { get; set; }
 
-        private string[] FiltriMappa { get; set; }
+        public FiltroRichieste FiltroRichieste { get; set; }
+
+        public FiltroMezzi FiltroMezzi { get; set; }
     }
 }

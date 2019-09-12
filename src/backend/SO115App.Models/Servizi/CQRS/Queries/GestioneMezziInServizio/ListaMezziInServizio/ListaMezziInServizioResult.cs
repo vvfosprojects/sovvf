@@ -19,6 +19,7 @@
 //-----------------------------------------------------------------------
 using System.Collections.Generic;
 using SO115App.API.Models.Classi.Condivise;
+using SO115App.Models.Classi.ListaMezziInServizio;
 using SO115App.Models.Servizi.CustomMapper;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneMezziInServizio.ListaMezziInSerivizio

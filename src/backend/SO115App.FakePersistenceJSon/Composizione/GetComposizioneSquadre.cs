@@ -106,10 +106,10 @@ namespace SO115App.FakePersistenceJSon.Composizione
                         }
                         codiceDistaccamento = mezzo.Mezzo.Distaccamento.Codice;
 
-                        if (mezzo.IdRichiesta != null)
+                        if (mezzo.Mezzo.IdRichiesta != null)
                         {
                             GetRichiestaById getRichiesta = new GetRichiestaById();
-                            RichiestaAssistenza richiesta = getRichiesta.Get(mezzo.IdRichiesta);
+                            RichiestaAssistenza richiesta = getRichiesta.Get(mezzo.Mezzo.IdRichiesta);
                             var ListaSquadre = richiesta.Partenze.Where(x => x.Partenza.Mezzo.Codice.Equals(mezzo.Id)).Select(x => x.Partenza.Squadre);
                             composizioneSquadre = composizioneSquadre.Where(x => ListaSquadre.Any(x.Squadra.Equals)).ToList();
                         }

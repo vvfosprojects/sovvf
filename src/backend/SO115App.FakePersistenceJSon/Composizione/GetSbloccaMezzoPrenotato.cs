@@ -62,7 +62,6 @@ namespace SO115App.FakePersistenceJSon.Composizione
             System.IO.File.WriteAllText(@"Fake/MezziComposizione.json", jsonNew);
             mezzoPrenotato.mezzoComposizione = mezzo;
             mezzoPrenotato.mezzoComposizione.Id = command.MezzoPrenotato.mezzoComposizione.Id;
-            mezzoPrenotato.mezzoComposizione.IdRichiesta = command.MezzoPrenotato.mezzoComposizione.IdRichiesta;
             mezzoPrenotato.codiceSede = command.CodiceSede;
             return mezzoPrenotato;
         }
