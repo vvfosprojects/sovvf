@@ -14,7 +14,7 @@
       <i class="fa fa-calendar mr-2 guida"></i>
       <span>Data Inserimento</span>
       <hr class="my-1">
-      {{schedaContatto.dataInserimento}}
+      {{schedaContatto.dataInserimento | date: 'dd/MM/yyyy HH:MM:SS'}}
     </div>
     <div class="col-7"></div>
   </div>
