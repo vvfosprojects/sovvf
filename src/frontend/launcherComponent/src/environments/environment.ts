@@ -4,60 +4,28 @@ export const environment = {
     signalRHub: '/NotificationHub',
     signalR: false,
     apiUrl: {
-        home: '/api/Welcome',
-        boxes: {
-            personale: '/api/BoxPersonale',
-            mezzi: '/api/BoxMezzi',
-            richieste: '/api/BoxRichieste',
-            meteo: {
-                url: 'http://api.openweathermap.org/data/2.5/weather?',
-                option: {
-                    lang: 'it',
-                    key: 'a23cc450dabf63fdb6729696aa29b3a6',
-                    unit: 'metric'
-                }
-            }
-        },
-        maps: {
-            markers: {
-                richieste: '/api/Marker/GetRichieste',
-                sedi: '/api/Marker/GetSedi',
-                mezzi: '/api/Marker/GetMezzi',
-                chiamate: '/api/ChiamataInCorso'
-            }
-        },
+        welcome: '/api/Welcome',
+        markers: '/api/Marker',
+        markerChiamataInCorso: '/api/ChiamataInCorso',
         rigaElencoRichieste: '/api/SintesiRichiesteAssistenza',
-        updateRichiesta: '/api/Chiamata/UpdateIntervento',
         eventiRichieste: '/api/ListaEventi',
         attivitaUtente: '/api/AttivitaUtente',
-        gestioneRichiesta: {
-            aggiornaStato: '/api/GestioneRichiesta/AggiornaStato'
-        },
-        gestionePartenza: {
-            aggiornaStatoMezzo: '/api/GestionePartenza/AggiornaPartenza'
-        },
-        mezziInServizio: {
-            listaMezzi: '/api/GestioneMezziInServizio/GetListaMezzi'
-        },
-        schedeContatto: {
-            listaSchede: '/api/SchedeContatto/GetLista'
-        },
+        gestioneRichiesta: '/api/GestioneRichiesta',
+        gestionePartenza: '/api/GestionePartenza',
+        mezziInServizio: '/api/GestioneMezziInServizio',
+        schedeContatto: '/api/SchedeContatto',
         turno: '',  // TodoBackEnd: controller mancante
-        composizione: {
+        composizione: { // TodoBackEnd: da sistemare prenotazione unico controller
             preaccoppiati: '/api/PreAccoppiati',
             avanzata: '/api/ComposizionePartenzaAvanzata',
-            filtri: '/api/Filtri',
             addPrenotazioneMezzo: '/api/AddPrenotazioneMezzo',
             removePrenotazioneMezzo: '/api/RemovePrenotazioneMezzo',
             resetPrenotazioneMezzo: '/api/ResetPrenotazioneMezzo',
             confermaPartenze: '/api/ConfermaPartenze'
         },
-        chiamata: {
-            marker: '/api/ChiamataInCorso',
-            inserimento: '/api/Chiamata/Add'
-        },
-        login: '/api/auth/Login',
-        users: '/api/users',
-        navbar: '/api/Navbar'
+        chiamata: '/api/Chiamata/',
+        auth: '/api/Auth',
+        navbar: '/api/Navbar',
+        meteo: 'http://api.openweathermap.org/data/2.5/weather?'
     }
 };

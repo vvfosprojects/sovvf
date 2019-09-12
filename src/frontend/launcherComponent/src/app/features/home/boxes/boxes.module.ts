@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CommonModule } from '@angular/common';
-import { environment } from '../../../../environments/environment';
 /**
  * Components
  */
@@ -17,19 +16,9 @@ import { ModalServiziComponent } from './info-aggregate/modal-servizi/modal-serv
 import { PipeModule } from '../../../shared/pipes/pipe.module';
 import { SharedModule } from '../../../shared/shared.module';
 /**
- Service Provider
- */
-import { BoxRichiesteService } from '../../../core/service/boxes-service/box-richieste.service';
-import { BoxMezziService } from '../../../core/service/boxes-service/box-mezzi.service';
-import { BoxPersonaleService } from '../../../core/service/boxes-service/box-personale.service';
-import { BoxRichiesteFakeService } from '../../../core/service/boxes-service/box-richieste-fake.service';
-import { BoxMezziFakeService } from '../../../core/service/boxes-service/box-mezzi-fake.service';
-import { BoxPersonaleFakeService } from '../../../core/service/boxes-service/box-personale-fake.service';
-/**
  * Ngxs
  */
 import { NgxsModule } from '@ngxs/store';
-import { BoxClickState } from '../store/states/boxes/box-click.state';
 import { BoxMezziState } from '../store/states/boxes/box-mezzi.state';
 import { BoxPersonaleState } from '../store/states/boxes/box-personale.state';
 import { BoxRichiesteState } from '../store/states/boxes/box-richieste.state';
@@ -45,7 +34,6 @@ import { BoxRichiesteState } from '../store/states/boxes/box-richieste.state';
             BoxRichiesteState,
             BoxMezziState,
             BoxPersonaleState,
-            BoxClickState,
         ])
     ],
     declarations: [
@@ -59,12 +47,7 @@ import { BoxRichiesteState } from '../store/states/boxes/box-richieste.state';
     exports: [
         InfoAggregateComponent
     ],
-    entryComponents: [ModalServiziComponent],
-    providers: [
-        { provide: BoxRichiesteService, useClass: environment.fakeProvider ? BoxRichiesteFakeService : BoxRichiesteService},
-        { provide: BoxMezziService, useClass: environment.fakeProvider ? BoxMezziFakeService : BoxMezziService},
-        { provide: BoxPersonaleService, useClass: environment.fakeProvider ? BoxPersonaleFakeService : BoxPersonaleService}
-    ]
+    entryComponents: [ModalServiziComponent]
 })
 export class BoxesModule {
 

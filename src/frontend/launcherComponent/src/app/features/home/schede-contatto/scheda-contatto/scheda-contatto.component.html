@@ -1,0 +1,35 @@
+<div class="card cursor-pointer pl-4 py-2 mb-2 shadow-sm"
+     (mouseenter)="hoverIn.emit(scheda.id)" (mouseleave)="hoverOut.emit()" (click)="dettaglioScheda.emit(scheda)" [ngClass]="cardClasses(scheda.id)">
+  <div class="row">
+    <div class="col-2 px-0 py-1">
+      {{scheda.dataInserimento | date: 'dd/MM/yyyy HH:MM:SS'}}
+    </div>
+    <div class="col py-1">
+      <i class="guida fa fa-thermometer-half fa-fw" ngbTooltip="Priorità della richiesta"></i>
+      <ngb-rating [(rate)]="scheda.priorita" [max]="5" [readonly]="true">
+        <ng-template let-fill="fill" let-index="index">
+                <span class="circle" [class.filled]="fill === 100" [class.bad]="index > 2 && fill === 100">
+                  <i class="fa fa-circle mr-1"></i>
+                </span>
+        </ng-template>
+      </ngb-rating>
+    </div>
+    <div class="col py-1">
+      <i class="fa fa-list mr-1"></i>
+      {{scheda.classificazioneEvento | slice: 0:11}}
+    </div>
+    <div class="col py-1">
+      <i class="fa fa-user mr-1"></i>
+      {{scheda.richiedente.nominativo | slice: 0:11}}
+    </div>
+    <div class="col py-1">
+      <i class="fa fa-phone mr-1"></i>
+      {{scheda.richiedente.telefono}}
+    </div>
+    <div class="col-1 pr-4">
+      <button *ngIf="scheda.perCompetenza" class="btn btn-success float-right" (click)="setSchedaContattoTelefonata.emit(scheda)">
+        <i class="fa fa-arrow-right"></i>
+      </button>
+    </div>
+  </div>
+</div>

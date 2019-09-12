@@ -1,9 +1,16 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using CQRS.Commands;
+using CQRS.Queries;
 using DomainModel.CQRS.Commands.UpDateStatoRichiesta;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiestaAssistenza.QueryDTO;
+using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiestaAssistenza.ResultDTO;
+using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza;
+using SO115App.FakePersistenceJSon.GestioneIntervento;
+using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 
 namespace SO115App.API.Controllers
 {
@@ -14,10 +21,14 @@ namespace SO115App.API.Controllers
     {
         private readonly ICommandHandler<UpDateStatoRichiestaCommand> _addhandler;
 
+        private readonly IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult>
+            _sintesiRichiesteQuery;
+
         public GestioneRichiestaController(
-            ICommandHandler<UpDateStatoRichiestaCommand> Addhandler)
+            ICommandHandler<UpDateStatoRichiestaCommand> addhandler, IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> sintesiRichiesteQuery)
         {
-            _addhandler = Addhandler;
+            _addhandler = addhandler;
+            _sintesiRichiesteQuery = sintesiRichiesteQuery;
         }
 
         [HttpPost("AggiornaStato")]
@@ -30,7 +41,7 @@ namespace SO115App.API.Controllers
             {
                 IdOperatore = idOperatore,
                 IdRichiesta = richiesta.IdRichiesta,
-                Note = richiesta.Note == null ? "" : richiesta.Note,
+                Note = richiesta.Note ?? "",
                 Stato = richiesta.Stato
             };
 
@@ -38,6 +49,21 @@ namespace SO115App.API.Controllers
             {
                 this._addhandler.Handle(command);
                 return Ok();
+            }
+            catch
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpGet("GetRichiesta")]
+        public async Task<IActionResult> GetRichiesta(string idRichiesta)
+        {
+            var sintesiQuery = new SintesiRichiesteAssistenzaQuery();
+            try
+            {
+                var listaSintesi = _sintesiRichiesteQuery.Handle(sintesiQuery).SintesiRichiesta;
+                return Ok(listaSintesi.LastOrDefault(x => x.Codice == idRichiesta));
             }
             catch
             {

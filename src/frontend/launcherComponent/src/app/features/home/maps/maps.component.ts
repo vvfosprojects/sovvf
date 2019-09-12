@@ -12,7 +12,7 @@ import { MezziMarkersState } from '../store/states/maps/mezzi-markers.state';
 import { SediMarkersState } from '../store/states/maps/sedi-markers.state';
 import { RichiesteMarkersState } from '../store/states/maps/richieste-markers.state';
 import { CentroMappaState } from '../store/states/maps/centro-mappa.state';
-import { AgmService } from './agm/agm-service.service';
+import { MapService } from './service/map-service/map-service.service';
 import { MarkerService } from './service/marker-service/marker-service.service';
 import { ChiamateMarkersState } from '../store/states/maps/chiamate-markers.state';
 import { ComposizionePartenzaState } from '../store/states/composizione-partenza/composizione-partenza.state';
@@ -21,7 +21,7 @@ import { ComposizionePartenzaState } from '../store/states/composizione-partenza
     selector: 'app-maps',
     templateUrl: './maps.component.html',
     styleUrls: ['./maps.component.css'],
-    providers: [AgmService, MarkerService]
+    providers: [MapService, MarkerService]
 })
 export class MapsComponent implements OnInit, OnDestroy {
 

@@ -12,10 +12,6 @@ import { Meteo } from '../../../../../shared/model/meteo.model';
  */
 import { MouseE } from '../../../../../shared/enum/mouse-e.enum';
 /**
- * Service
- */
-import { AgmService } from '../../agm/agm-service.service';
-/**
  * Ngxs
  */
 import { Select, Store } from '@ngxs/store';
@@ -65,6 +61,7 @@ import {
 import { ViewInterfaceMaps } from '../../../../../shared/interface/view.interface';
 import { ViewComponentState } from '../../../store/states/view/view.state';
 import { AppFeatures } from '../../../../../shared/enum/app-features.enum';
+import { ClearMezzoInServizioHover, SetMezzoInServizioHover, SetMezzoInServizioSelezionato } from '../../../store/actions/mezzi-in-servizio/mezzi-in-servizio.actions';
 
 
 @Injectable()
@@ -114,8 +111,7 @@ export class MarkerService implements OnDestroy {
 
     @Select(MarkerState.markerStateNull) markerStateNull$: Observable<boolean>;
 
-    constructor(private agmService: AgmService,
-                private store: Store) {
+    constructor(private store: Store) {
         this.subscription.add(this.filtroMarkerAttivo$.subscribe((filtroAttivo: string[]) => {
             this.filtroMarkerAttivo = filtroAttivo;
             this.store.dispatch(new ToggleAnimationButton(true));
@@ -421,13 +417,15 @@ export class MarkerService implements OnDestroy {
         }
     }
 
-    actionMezzoMarker(id: string, mouse: MouseE, composizione: boolean) {
+    actionMezzoMarker(id: string, mouse: MouseE, composizione: boolean, mezziInServizio: boolean) {
         switch (mouse) {
             case MouseE.HoverIn: {
                 this.store.dispatch(new SetMarkerMezzoHover(id));
                 this.selfHoveredMarker = `mezzo-${id}`;
                 if (composizione) {
                     this.store.dispatch(new HoverInMezzoComposizione(id));
+                } else if (mezziInServizio) {
+                    this.store.dispatch(new SetMezzoInServizioHover(id));
                 }
             }
                 break;
@@ -436,12 +434,17 @@ export class MarkerService implements OnDestroy {
                 this.selfHoveredMarker = ``;
                 if (composizione) {
                     this.store.dispatch(new HoverOutMezzoComposizione());
+                } else if (mezziInServizio) {
+                    this.store.dispatch(new ClearMezzoInServizioHover());
                 }
             }
                 break;
             case MouseE.Click: {
                 if (this.markerMezzoSelezionato !== id) {
                     this.store.dispatch(new SetMarkerMezzoSelezionato(id));
+                }
+                if (mezziInServizio) {
+                    this.store.dispatch(new SetMezzoInServizioSelezionato(id));
                 }
                 this.selfClickedMarker = `mezzo-${id}`;
             }

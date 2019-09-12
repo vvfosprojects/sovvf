@@ -87,6 +87,10 @@ a:hover {
   cursor: pointer;
 }
 
+.cursor-not-allowed {
+  cursor: not-allowed;
+}
+
 .status_preaccoppiato_nonselezionato {
   border-top: 5px solid #dc3545;
 }
@@ -127,6 +131,11 @@ a:hover {
 .m-h-400 {
   height: 449px;
   max-height: 449px;
+}
+
+.m-h-300 {
+  height: 284px;
+  max-height: 284px;
 }
 
 /* Shadow richieste */

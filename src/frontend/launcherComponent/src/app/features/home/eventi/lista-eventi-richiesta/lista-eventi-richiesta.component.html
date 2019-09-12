@@ -7,7 +7,7 @@
       <th scope="col">Note</th>
     </thead>
     <tbody class="h6">
-      <tr app-evento-richiesta *ngFor="let r of elencoEventi | filterBy: filtroTargaMezzo; let i = index"
+      <tr app-evento-richiesta *ngFor="let r of elencoEventi; let i = index"
         [eventoRichiesta]="r" [nomeClasseEvento]="r.nomeClasseEvento" [istantePrimoEvento]="istantePrimoEvento"
         [istanteEventoPrecedente]="setIstanteEventoPrecedente(i)" (filtroTarga)="setRicercaTargaMezzo($event)"></tr>
     </tbody>

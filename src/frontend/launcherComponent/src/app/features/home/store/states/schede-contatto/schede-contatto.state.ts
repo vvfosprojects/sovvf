@@ -1,16 +1,24 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { SchedaContatto } from 'src/app/shared/interface/scheda-contatto.interface';
-import { SetListaSchedeContatto, SetSchedaContattoTelefonata, ClearSchedaContattoTelefonata, GetListaSchedeContatto } from '../../actions/schede-contatto/schede-contatto.actions';
-import { SchedeContattoServiceFake } from 'src/app/core/service/schede-contatto/schede-contatto.service.fake';
+import {
+    SetListaSchedeContatto,
+    SetSchedaContattoTelefonata,
+    ClearSchedaContattoTelefonata,
+    SetSchedaContattoHover, ClearSchedaContattoHover
+} from '../../actions/schede-contatto/schede-contatto.actions';
 
 export interface SchedeContattoStateModel {
-    schedeContatto: SchedaContatto[];
+    schedeContattoCompetenza: SchedaContatto[];
+    schedeContattoConoscenza: SchedaContatto[];
     schedaContattoTelefonata: SchedaContatto;
+    idSchedaContattoHover: string;
 }
 
 export const SchedeContattoStateDefaults: SchedeContattoStateModel = {
-    schedeContatto: [],
-    schedaContattoTelefonata: null
+    schedeContattoCompetenza: [],
+    schedeContattoConoscenza: [],
+    schedaContattoTelefonata: null,
+    idSchedaContattoHover: null
 };
 
 @State<SchedeContattoStateModel>({
@@ -20,8 +28,13 @@ export const SchedeContattoStateDefaults: SchedeContattoStateModel = {
 export class SchedeContattoState {
 
     @Selector()
-    static schedeContatto(state: SchedeContattoStateModel) {
-        return state.schedeContatto;
+    static schedeContattoCompetenza(state: SchedeContattoStateModel) {
+        return state.schedeContattoCompetenza;
+    }
+
+    @Selector()
+    static schedeContattoConoscenza(state: SchedeContattoStateModel) {
+        return state.schedeContattoConoscenza;
     }
 
     @Selector()
@@ -29,18 +42,24 @@ export class SchedeContattoState {
         return state.schedaContattoTelefonata;
     }
 
-    constructor(private schedeContattoService: SchedeContattoServiceFake) { }
+    @Selector()
+    static numeroSchedeContattoCompetenza(state: SchedeContattoStateModel) {
+        return state.schedeContattoCompetenza.length;
+    }
 
-    @Action(GetListaSchedeContatto)
-    getListaSchedeContatto({ patchState }: StateContext<SchedeContattoStateModel>) {
-        this.schedeContattoService.getSchedeContatto().subscribe(() => {
-        });
+    @Selector()
+    static idSchedaContattoHover(state: SchedeContattoStateModel) {
+        return state.idSchedaContattoHover;
+    }
+
+    constructor() {
     }
 
     @Action(SetListaSchedeContatto)
     setListaSchedeContatto({ patchState }: StateContext<SchedeContattoStateModel>, action: SetListaSchedeContatto) {
         patchState({
-            schedeContatto: action.schedeContatto
+            schedeContattoCompetenza: action.schedeContatto.filter( schedaContatto => schedaContatto.perCompetenza === true),
+            schedeContattoConoscenza: action.schedeContatto.filter( schedaContatto => schedaContatto.perCompetenza !== true)
         });
     }
 
@@ -55,6 +74,20 @@ export class SchedeContattoState {
     clearSchedaContattoTelefonata({ patchState }: StateContext<SchedeContattoStateModel>) {
         patchState({
             schedaContattoTelefonata: null
+        });
+    }
+
+    @Action(SetSchedaContattoHover)
+    setSchedaContattoHover({ patchState }: StateContext<SchedeContattoStateModel>, action: SetSchedaContattoHover) {
+        patchState({
+            idSchedaContattoHover: action.idSchedaContatto
+        });
+    }
+
+    @Action(ClearSchedaContattoHover)
+    clearSchedaContattoHover({ patchState }: StateContext<SchedeContattoStateModel>) {
+        patchState({
+            idSchedaContattoHover: null
         });
     }
 }

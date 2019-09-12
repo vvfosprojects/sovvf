@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MarkerMeteoSwitchComponent } from './marker-meteo-switch.component';
+import { SchedaContattoComponent } from './scheda-contatto.component';
 
-describe('MarkerMeteoSwitchComponent', () => {
-  let component: MarkerMeteoSwitchComponent;
-  let fixture: ComponentFixture<MarkerMeteoSwitchComponent>;
+describe('SchedaContattoComponent', () => {
+  let component: SchedaContattoComponent;
+  let fixture: ComponentFixture<SchedaContattoComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ MarkerMeteoSwitchComponent ]
+      declarations: [ SchedaContattoComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MarkerMeteoSwitchComponent);
+    fixture = TestBed.createComponent(SchedaContattoComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

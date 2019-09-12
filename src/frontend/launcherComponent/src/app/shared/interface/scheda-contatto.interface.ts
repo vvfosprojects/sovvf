@@ -1,12 +1,17 @@
 import { Richiedente } from '../model/richiedente.model';
 import { Localita } from '../model/localita.model';
-import { Tipologia } from '../model/tipologia.model';
+import { Priorita } from '../model/sintesi-richiesta.model';
 
 export interface SchedaContatto {
     id: string;
+    dataInserimento: Date;
     richiedente: Richiedente;
     localita: Localita;
-    dataInserimento: string;
-    note: string;
-    tipologie?: Tipologia[];
+    classificazioneEvento: string;
+    categoria: string;
+    competenzaCC_PS: string;
+    dettaglio: string;
+    priorita: Priorita;
+    numeroPersoneCoinvolte: number;
+    perCompetenza?: boolean;
 }

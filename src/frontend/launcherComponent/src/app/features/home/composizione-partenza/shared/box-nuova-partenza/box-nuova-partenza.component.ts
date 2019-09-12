@@ -151,7 +151,7 @@ export class BoxNuovaPartenzaComponent {
                 break;
             case 'mezzo-no|squadra-si':
                 result = 'text-warning';
-                tooltip = 'Stai inserendo una partenza senza mezzo';
+                tooltip = 'È necessario selezionare un mezzo';
                 break;
         }
 

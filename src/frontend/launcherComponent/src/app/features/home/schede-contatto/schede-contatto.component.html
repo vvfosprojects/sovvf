@@ -1,15 +1,44 @@
 <div class="row mt-2 px-0">
-  <div class="col-12 scroll-y" style="height:705px">
-    <div *ngIf="mezziInServizio" class="row">
-      <div *ngFor="let scheda of schedeContatto" class="col-8 mx-auto pl-4 mb-1">
-        {{scheda|json}}
-      </div>
+    <div *ngIf="schedeContattoCompetenza || schedeContattoConoscenza" class="col-12 scroll-y" style="height:700px">
+        <ngb-tabset>
+            <ngb-tab>
+                <ng-template ngbTabTitle><b>Competenza</b></ng-template>
+                <ng-template ngbTabContent>
+                    <div class="row">
+                        <div class="col-12 my-2">
+                            <app-scheda-contatto *ngFor="let scheda of schedeContattoCompetenza"
+                                                 [scheda]="scheda"
+                                                 [idSchedaContattoHover]="idSchedaContattoHover"
+                                                 (hoverOut)="hoverOut()" (hoverIn)="hoverIn($event)"
+                                                 (dettaglioScheda)="dettaglioScheda($event)"
+                                                 (setSchedaContattoTelefonata)="setSchedaContattoTelefonata($event)">
+                            </app-scheda-contatto>
+                        </div>
+                    </div>
+                </ng-template>
+            </ngb-tab>
+            <ngb-tab>
+                <ng-template ngbTabTitle>Conoscenza</ng-template>
+                <ng-template ngbTabContent>
+                    <div class="row">
+                        <div class="col-12 my-2">
+                            <app-scheda-contatto *ngFor="let scheda of schedeContattoConoscenza"
+                                                 [scheda]="scheda"
+                                                 [idSchedaContattoHover]="idSchedaContattoHover"
+                                                 (hoverOut)="hoverOut()" (hoverIn)="hoverIn($event)"
+                                                 (dettaglioScheda)="dettaglioScheda($event)"
+                                                 (setSchedaContattoTelefonata)="setSchedaContattoTelefonata($event)">
+                            </app-scheda-contatto>
+                        </div>
+                    </div>
+                </ng-template>
+            </ngb-tab>
+        </ngb-tabset>
     </div>
-  </div>
-  <div class="col-12">
-    <button class="btn btn-primary float-right mt-2" (click)="tornaIndietro()">
-      <i class="fa fa-arrow-left mr-2"></i>
-      Torna Indietro
-    </button>
-  </div>
+    <div class="col-12">
+        <button class="btn btn-primary mt-2" (click)="tornaIndietro()">
+            <i class="fa fa-arrow-left mr-2"></i>
+            Torna Indietro
+        </button>
+    </div>
 </div>

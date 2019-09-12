@@ -9,14 +9,11 @@ import { ChiamataMarker } from '../../maps-model/chiamata-marker.model';
 import { MeteoMarker } from '../../maps-model/meteo-marker.model';
 import { HelperSintesiRichiesta } from '../../../richieste/helper/_helper-sintesi-richiesta';
 import { SintesiRichiestaModalComponent } from './sintesi-richiesta-modal/sintesi-richiesta-modal.component';
-import { map } from 'rxjs/operators';
-import { Observable, Subscription } from 'rxjs';
-import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.model';
 import { Store } from '@ngxs/store';
-import { RichiesteState } from '../../../store/states/richieste/richieste.state';
 import { mezzoComposizioneBusy } from '../../../composizione-partenza/shared/functions/composizione-functions';
 import { SganciamentoMezzoComposizione } from '../../../store/actions/composizione-partenza/mezzi-composizione.actions';
 import { SganciamentoInterface } from 'src/app/shared/interface/sganciamento.interface';
+import { SetRichiestaById } from '../../../store/actions/richieste/richieste.actions';
 
 @Component({
     selector: 'app-info-window',
@@ -38,7 +35,6 @@ export class InfoWindowComponent implements OnInit {
 
     clickedPopover: NgbPopover;
     methods = new HelperSintesiRichiesta;
-    subscriptionRichiestaById: Subscription = new Subscription();
 
     constructor(private store: Store,
         private _modalService: NgbModal,
@@ -56,24 +52,12 @@ export class InfoWindowComponent implements OnInit {
                 this._modalService.open(CambioSedeModalComponent);
                 break;
             case 'visualizzaRichiesta':
-                let richiesta: SintesiRichiesta = null;
-                let richiestaById$: Observable<SintesiRichiesta>;
-                richiestaById$ = this.store.select(RichiesteState.getRichiestaById).pipe(map(fn => fn(id_richiesta)));
-                this.subscriptionRichiestaById.add(
-                    richiestaById$.subscribe(r => {
-                        richiesta = r;
-
-                        if (richiesta) {
-                            const modal = this._modalService.open(SintesiRichiestaModalComponent, {
-                                windowClass: 'xlModal',
-                                backdropClass: 'light-blue-backdrop',
-                                centered: true
-                            });
-                            modal.componentInstance.richiesta = richiesta;
-                            this.subscriptionRichiestaById.unsubscribe();
-                        }
-                    })
-                );
+                this.store.dispatch(new SetRichiestaById(id_richiesta));
+                this._modalService.open(SintesiRichiestaModalComponent, {
+                    windowClass: 'xlModal',
+                    backdropClass: 'light-blue-backdrop',
+                    centered: true
+                });
                 break;
         }
     }

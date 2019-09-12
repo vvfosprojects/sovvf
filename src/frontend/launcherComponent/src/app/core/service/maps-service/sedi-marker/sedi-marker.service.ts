@@ -6,7 +6,7 @@ import { environment } from '../../../../../environments/environment';
 import { handleError } from '../../../../shared/helper/handleError';
 import { AreaMappa } from '../../../../features/home/maps/maps-model/area-mappa-model';
 
-const API_URL_SEDI = environment.apiUrl.maps.markers.sedi;
+const API_MARKER = environment.apiUrl.markers;
 
 @Injectable()
 export class SediMarkerService {
@@ -15,7 +15,7 @@ export class SediMarkerService {
     }
 
     getSediMarkers(areaMappa: AreaMappa): Observable<any> {
-        return this.http.post(API_URL_SEDI, areaMappa).pipe(
+        return this.http.post(`${API_MARKER}/GetSedi`, areaMappa).pipe(
             retry(3),
             catchError(handleError));
     }

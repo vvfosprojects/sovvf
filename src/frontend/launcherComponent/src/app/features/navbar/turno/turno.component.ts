@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Turno } from './turno.model';
+import { TurnoCalendario } from './turno-calendario.model';
 import { TurnoExtra } from './turno-extra.model';
 
 @Component({
@@ -9,7 +9,7 @@ import { TurnoExtra } from './turno-extra.model';
 })
 export class TurnoComponent {
 
-    @Input() turno: Turno;
+    @Input() turno: TurnoCalendario;
     @Input() turnoExtra: TurnoExtra;
 
 }

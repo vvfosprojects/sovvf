@@ -11,3 +11,24 @@ export class SetMezziInServizio {
     }
 }
 
+export class SetMezzoInServizioHover {
+    static readonly type = '[MezziInServizio] Set Mezzo In Servizio Hover';
+
+    constructor(public idMezzo: string) {
+    }
+}
+
+export class ClearMezzoInServizioHover {
+    static readonly type = '[MezziInServizio] Clear Mezzo In Servizio Hover';
+}
+
+export class SetMezzoInServizioSelezionato {
+    static readonly type = '[MezziInServizio] Set Mezzo In Servizio Selezionato';
+
+    constructor(public idMezzo: string) {
+    }
+}
+
+export class ClearMezzoInServizioSelezionato {
+    static readonly type = '[MezziInServizio] Clear Mezzo In Servizio Selezionato';
+}

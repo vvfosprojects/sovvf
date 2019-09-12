@@ -8,9 +8,9 @@ import {
     OpacizzaMezziMarkers,
     PatchMezziMarkers, RemoveMezzoMarker,
     SetMezziMarkers,
-    SetMezzoMarkerById, UpdateMezzoMarker
+    SetMezzoMarkerById, SetTipoOpacitaMezziMarkers, ToggleOpacitaMezziMarkers, UpdateMezzoMarker
 } from '../../actions/maps/mezzi-markers.actions';
-import { SetMarkerOpachiMezzi } from '../../actions/maps/marker-opachi.actions';
+import { ClearMarkerOpachiMezzi, SetMarkerOpachiMezzi } from '../../actions/maps/marker-opachi.actions';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from '../../../../../shared/enum/toastr';
 import { SetMarkerLoading } from '../../actions/home.actions';
@@ -21,12 +21,16 @@ export interface MezziMarkersStateModel {
     mezziMarkers: MezzoMarker[];
     mezziMarkersId: string[];
     mezzoMarker: MezzoMarker;
+    statoOpacita: boolean;
+    tipoOpacita: string[];
 }
 
 export const MezziMarkersStateDefaults: MezziMarkersStateModel = {
     mezziMarkers: [],
     mezziMarkersId: [],
     mezzoMarker: null,
+    statoOpacita: false,
+    tipoOpacita: null
 };
 
 @State<MezziMarkersStateModel>({
@@ -107,6 +111,7 @@ export class MezziMarkersState {
                     dispatch(new AddMezziMarkers(mezzoMarkerAdd));
                 }
             }
+            dispatch(new OpacizzaMezziMarkers());
         }
     }
 
@@ -171,22 +176,35 @@ export class MezziMarkersState {
         }
     }
 
+    @Action(ToggleOpacitaMezziMarkers)
+    toggleOpacitaMezziMarkers({ patchState, dispatch }: StateContext<MezziMarkersStateModel>, action: ToggleOpacitaMezziMarkers) {
+        patchState({
+            statoOpacita: action.toggle
+        });
+        if (!action.toggle) {
+            patchState({
+                tipoOpacita: MezziMarkersStateDefaults.tipoOpacita,
+            });
+            dispatch(new ClearMarkerOpachiMezzi());
+        } else {
+            dispatch(new SetTipoOpacitaMezziMarkers(action.stato));
+        }
+    }
+
+    @Action(SetTipoOpacitaMezziMarkers)
+    setTipoOpacitaMezziMarkers({ patchState, dispatch }: StateContext<MezziMarkersStateModel>, action: SetTipoOpacitaMezziMarkers) {
+        patchState({
+            tipoOpacita: action.stato
+        });
+        dispatch(new OpacizzaMezziMarkers());
+    }
+
     @Action(OpacizzaMezziMarkers)
-    opacizzaMezziMarkers({ getState, dispatch }: StateContext<MezziMarkersStateModel>, action: OpacizzaMezziMarkers) {
+    opacizzaMezziMarkers({ getState, dispatch }: StateContext<MezziMarkersStateModel>) {
         const state = getState();
-        const filteredId: string[] = [];
-        if (action.stato) {
+        if (state.statoOpacita && state.tipoOpacita) {
             if (state.mezziMarkers) {
-                state.mezziMarkers.forEach(mezzoMarker => {
-                    action.stato.forEach(statoMezzo => {
-                        const _statoMezzo = statoMezzo.split(' ').join('');
-                        const _mezzoMarker = mezzoMarker.mezzo.stato.split(' ').join('');
-                        if (_mezzoMarker.substring(0, 5).toLowerCase() === _statoMezzo.substring(0, 5).toLowerCase()) {
-                            filteredId.push(mezzoMarker.mezzo.codice);
-                        }
-                    });
-                });
-                dispatch(new SetMarkerOpachiMezzi(filteredId));
+                dispatch(new SetMarkerOpachiMezzi(idMezziFiltrati(state.tipoOpacita, state.mezziMarkers)));
             }
         }
     }
@@ -195,4 +213,19 @@ export class MezziMarkersState {
     clearMezziMarkers({ patchState }: StateContext<MezziMarkersStateModel>) {
         patchState(MezziMarkersStateDefaults);
     }
+
+}
+
+export function idMezziFiltrati(stati: string[], mezziMarkers: MezzoMarker[]): string[] {
+    const filteredId: string[] = [];
+    mezziMarkers.forEach(mezzoMarker => {
+        stati.forEach(statoMezzo => {
+            const _statoMezzo = statoMezzo.split(' ').join('');
+            const _mezzoMarker = mezzoMarker.mezzo.stato.split(' ').join('');
+            if (_mezzoMarker.substring(0, 5).toLowerCase() === _statoMezzo.substring(0, 5).toLowerCase()) {
+                filteredId.push(mezzoMarker.mezzo.codice);
+            }
+        });
+    });
+    return filteredId;
 }

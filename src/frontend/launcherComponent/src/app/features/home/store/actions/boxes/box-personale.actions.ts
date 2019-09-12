@@ -1,10 +1,6 @@
 import { BoxPersonale } from '../../../boxes/boxes-model/box-personale.model';
 import { BoxPersonalePresenze, BoxPersonaleQty } from '../../../../../shared/interface/box-personale.interface';
 
-export class GetBoxPersonale {
-    static readonly type = '[BoxPersonale] Get data';
-}
-
 export class SetBoxPersonale {
     static readonly type = '[BoxPersonale] Set data';
 

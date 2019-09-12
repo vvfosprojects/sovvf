@@ -26,8 +26,6 @@ import { CompPartenzaService } from '../../../core/service/comp-partenza-service
 import { CompPartenzaServiceFake } from '../../../core/service/comp-partenza-service/comp-partenza.service.fake';
 import { AttivitaUtenteService } from '../../../core/service/attivita-utente-service/attivita-utente.service';
 import { AttivitaUtenteServiceFake } from '../../../core/service/attivita-utente-service/attivita-utente-fake.service';
-import { FilterbarService } from '../../../core/service/comp-partenza-service/filterbar-composizione-service/filterbar.service';
-import { FilterbarServiceFake } from '../../../core/service/comp-partenza-service/filterbar-composizione-service/filterbar.service.fake';
 /**
  * Ngxs
  */
@@ -90,7 +88,6 @@ import { TastoCompPartenzaComponent } from './shared/tasto-comp-partenza/tasto-c
     ],
     providers: [
         { provide: AttivitaUtenteService, useClass: environment.fakeProvider ? AttivitaUtenteServiceFake : AttivitaUtenteService },
-        { provide: FilterbarService, useClass: environment.fakeProvider ? FilterbarServiceFake : FilterbarService },
         { provide: CompPartenzaService, useClass: environment.fakeProvider ? CompPartenzaServiceFake : CompPartenzaService }
     ]
 })

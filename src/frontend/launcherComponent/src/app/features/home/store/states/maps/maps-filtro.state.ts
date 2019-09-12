@@ -10,10 +10,8 @@ import { MarkerFiltro } from '../../../../../shared/interface/marker-filtro.inte
 import { BoxClickInterface } from '../../../boxes/box-interface/box-click-interface';
 import { Observable, Subscription } from 'rxjs';
 import { BoxClickState } from '../boxes/box-click.state';
-import { OpacizzaMezziMarkers } from '../../actions/maps/mezzi-markers.actions';
-import { OpacizzaRichiesteMarkers } from '../../actions/maps/richieste-markers.actions';
-import { ClearMarkerOpachiMezzi, ClearMarkerOpachiRichieste } from '../../actions/maps/marker-opachi.actions';
-import { GetMarkersMappa } from '../../actions/maps/area-mappa.actions';
+import { ToggleOpacitaMezziMarkers } from '../../actions/maps/mezzi-markers.actions';
+import { ToggleOpacitaRichiesteMarkers } from '../../actions/maps/richieste-markers.actions';
 
 export interface MapsFiltroStateModel {
     filtroMarker: MarkerFiltro[];
@@ -24,29 +22,29 @@ export interface MapsFiltroStateModel {
 export const MapsFiltroStateDefaults: MapsFiltroStateModel = {
     filtroMarker: [
         {
-            'id': 'richiesta',
-            'index': 1,
-            'isActive': true,
-            'picture': 'icon-fa-richieste',
-            'name': 'Richieste'
+            id: 'richiesta',
+            index: 1,
+            isActive: true,
+            picture: 'icon-fa-richieste',
+            name: 'Richieste'
         },
         {
-            'id': 'sede',
-            'index': 2,
-            'isActive': false,
-            'picture': 'icon-fa-sedi',
-            'name': 'Sedi'
+            id: 'sede',
+            index: 2,
+            isActive: false,
+            picture: 'icon-fa-sedi',
+            name: 'Sedi'
         },
         {
-            'id': 'mezzo',
-            'index': 3,
-            'isActive': false,
-            'picture': 'icon-truck-fire-q',
-            'name': 'Mezzi'
+            id: 'mezzo',
+            index: 3,
+            isActive: false,
+            picture: 'icon-truck-fire-q',
+            name: 'Mezzi'
         }
     ],
     filtroMarkerAttivo: ['richiesta'],
-    filtroMarkerAttivoCopy: undefined
+    filtroMarkerAttivoCopy: null
 };
 
 @State<MapsFiltroStateModel>({
@@ -83,7 +81,7 @@ export class MapsFiltroState {
     }
 
     @Action(SetFiltroMarker)
-    setFiltroMarker({ getState, patchState, dispatch }: StateContext<MapsFiltroStateModel>, action: SetFiltroMarker) {
+    setFiltroMarker({ getState, patchState }: StateContext<MapsFiltroStateModel>, action: SetFiltroMarker) {
         const state = getState();
         const filtroMarkerCopy: MarkerFiltro[] = makeCopy(state.filtroMarker);
         const filtroAttivo: string[] = [];
@@ -104,9 +102,6 @@ export class MapsFiltroState {
             filtroMarker: filtroMarkerCopy,
             filtroMarkerAttivo: filtroAttivo
         });
-
-        // Todo: da sistemare
-        dispatch(new GetMarkersMappa());
     }
 
     @Action(SetFiltriMarker)
@@ -123,6 +118,7 @@ export class MapsFiltroState {
             filtroMarker: filtroMarkerCopy,
             filtroMarkerAttivo: action.selected
         });
+        console.log('SetFiltriMarker');
     }
 
     @Action(CopiaFiltroAttivo)
@@ -150,10 +146,9 @@ export class MapsFiltroState {
                 const mezziState = Object.keys(boxClick.mezzi).filter(key => {
                     return boxClick.mezzi[key];
                 });
-                this.store.dispatch(new OpacizzaMezziMarkers(mezziState));
+                this.store.dispatch(new ToggleOpacitaMezziMarkers(true, mezziState));
             } else {
-                this.store.dispatch(new OpacizzaMezziMarkers());
-                this.store.dispatch(new ClearMarkerOpachiMezzi());
+                this.store.dispatch(new ToggleOpacitaMezziMarkers(false));
             }
 
             if (Object.values(boxClick.richieste).indexOf(true) >= 0) {
@@ -161,10 +156,9 @@ export class MapsFiltroState {
                 const richiesteState = Object.keys(boxClick.richieste).filter(key => {
                     return boxClick.richieste[key];
                 });
-                this.store.dispatch(new OpacizzaRichiesteMarkers(richiesteState));
+                this.store.dispatch(new ToggleOpacitaRichiesteMarkers(true, richiesteState));
             } else {
-                this.store.dispatch(new ClearMarkerOpachiRichieste());
-                this.store.dispatch(new OpacizzaRichiesteMarkers());
+                this.store.dispatch(new ToggleOpacitaRichiesteMarkers(false));
             }
 
             if (filtroCheckBox.length !== 0) {

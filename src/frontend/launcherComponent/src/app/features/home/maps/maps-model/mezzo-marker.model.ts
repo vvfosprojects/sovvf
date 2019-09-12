@@ -1,8 +1,9 @@
 import { Coordinate } from '../../../../shared/model/coordinate.model';
 import { Mezzo } from '../../../../shared/model/mezzo.model';
-import {Tipologia} from '../../../../shared/model/tipologia.model';
+import { InfoRichiesta } from '../../../../shared/interface/info-richiesta.interface';
 
 export class MezzoMarker {
+
     constructor(
         /**
          * La stringa dell'indirizzo e le relative coordinate
@@ -13,17 +14,9 @@ export class MezzoMarker {
          */
         public mezzo: Mezzo,
         /**
-         * id della richiesta a cui è associato il mezzo
+         * contiene le info della richiesta sulla quale è assegnato il mezzo
          */
-        public id_richiesta?: string,
-        /**
-         * tipologia della richiesta a cui è associato il mezzo
-         */
-        public tipologie_richiesta?: Tipologia[],
-        /**
-         * Contiene la descrizione della label da mostrare
-         */
-        public label?: string
+        public infoRichiesta?: InfoRichiesta
     ) {
     }
 

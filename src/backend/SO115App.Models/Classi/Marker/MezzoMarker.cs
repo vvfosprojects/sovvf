@@ -43,6 +43,10 @@ namespace SO115App.API.Models.Classi.Marker
         public Coordinate Coordinate { get; set; }
 
         public Mezzo Mezzo { get; set; }
-        public string IdRichiesta { get; set; }
+
+        /// <summary>
+        ///   Contiene informazioni della richiesta a cui è associato il mezzo
+        /// </summary>
+        public InfoRichiesta InfoRichiesta { get; set; }
     }
 }

@@ -106,64 +106,50 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
 
         private string MapEvento(Evento evento)
         {
-            var risEvento = Costanti.EventoGenerico;
-
             switch (evento)
             {
                 case Telefonata _:
-                    risEvento = Costanti.Telefonata;
-                    break;
+                    return Costanti.Telefonata;
 
                 case InizioPresaInCarico _:
-                    risEvento = Costanti.InizioPresaInCarico;
-                    break;
+                    return Costanti.InizioPresaInCarico;
 
                 case RiaperturaRichiesta _:
-                    risEvento = Costanti.RiaperturaRichiesta;
-                    break;
+                    return Costanti.RiaperturaRichiesta;
 
                 case ComposizionePartenze _:
-                    risEvento = Costanti.ComposizionePartenze;
-                    break;
+                    return Costanti.ComposizionePartenze;
 
                 case ChiusuraRichiesta _:
-                    risEvento = Costanti.ChiusuraRichiesta;
-                    break;
+                    return Costanti.ChiusuraRichiesta;
 
                 case ArrivoSulPosto _:
-                    risEvento = Costanti.ArrivoSulPosto;
-                    break;
+                    return Costanti.ArrivoSulPosto;
 
                 case RichiestaPresidiata _:
-                    risEvento = Costanti.RichiestaPresidiata;
-                    break;
+                    return Costanti.RichiestaPresidiata;
 
                 case RichiestaSospesa _:
-                    risEvento = Costanti.RichiestaSospesa;
-                    break;
+                    return Costanti.RichiestaSospesa;
 
                 case PartenzaRientrata _:
-                    risEvento = Costanti.PartenzaRientrata;
-                    break;
+                    return Costanti.PartenzaRientrata;
 
                 case PartenzaInRientro _:
-                    risEvento = Costanti.PartenzaInRientro;
-                    break;
+                    return Costanti.PartenzaInRientro;
 
                 case AssegnataRichiesta _:
-                    risEvento = Costanti.AssegnataRichiesta;
-                    break;
+                    return Costanti.AssegnataRichiesta;
 
                 case AssegnazionePriorita _:
-                    risEvento = Costanti.AssegnataPriorita;
-                    break;
+                    return Costanti.AssegnataPriorita;
 
                 case MarcaRilevante _:
-                    risEvento = Costanti.MarcaRilevante;
-                    break;
-            }
+                    return Costanti.MarcaRilevante;
 
-            return risEvento;
+                default:
+                    return Costanti.EventoGenerico;
+            }
         }
     }
 }

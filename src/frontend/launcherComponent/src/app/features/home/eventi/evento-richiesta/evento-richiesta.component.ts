@@ -30,6 +30,7 @@ export class EventoRichiestaComponent implements OnInit {
             ['AssegnazionePriorita', ['fa-sort-numeric-asc']],
             ['MarcaRilevante', ['fa-warning', 'fa-check']],
             ['MarcaNonRilevante', ['fa-warning', 'fa-close']],
+            ['AssegnataRichiesta', ['fa-tty']],
             ['RiaperturaRichiesta', ['fa-refresh']],
             ['InizioPresaInCarico', ['fa-eye']],
             ['ChiusuraRichiesta', ['fa-flag-checkered']],
@@ -46,7 +47,7 @@ export class EventoRichiestaComponent implements OnInit {
             ['VaInFuoriServizio', ['fa-truck', 'fa-wrench']],
             ['InizioPresaInCarico', ['fa-user', 'fa-wrench']],
             ['Presidiata', ['fa-bullseye']],
-            ['Evento Generico', ['fa-question-circle']],
+            ['EventoGenerico', ['fa-question-circle']],
             ['Sospesa', ['fa-question-circle']],
             ['AssegnataPriorita', ['fa-thermometer-half']]
         ];

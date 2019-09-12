@@ -1,40 +1,57 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
-import { makeCopy } from 'src/app/shared/helper/function';
-import { Store, Select } from '@ngxs/store';
-import { SetRicercaTargaMezzo } from '../../store/actions/eventi/eventi-richiesta.actions';
-import { EventiRichiestaState } from '../../store/states/eventi/eventi-richiesta.state';
-import { Observable, Subscription } from 'rxjs';
+import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
+import { FiltroTargaMezzo } from '../filtro-targa-mezzo.interface';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
-  selector: 'app-filtri-eventi-richiesta',
-  templateUrl: './filtri-eventi-richiesta.component.html',
-  styleUrls: ['./filtri-eventi-richiesta.component.css']
+    selector: 'app-filtri-eventi-richiesta',
+    templateUrl: './filtri-eventi-richiesta.component.html',
+    styleUrls: ['./filtri-eventi-richiesta.component.css']
 })
-export class FiltriEventiRichiestaComponent implements OnInit, OnDestroy {
+export class FiltriEventiRichiestaComponent implements OnChanges {
 
-  @Input() idRichiesta: string;
+    @Input() idRichiesta: string;
+    @Input() listaTargaMezzo: FiltroTargaMezzo[];
+    @Input() initValue: string[];
+    @Output() targheSelezionate = new EventEmitter<string[]>();
 
-  @Select(EventiRichiestaState.filtroTargaMezzo) filtroTargaMezzo$: Observable<any>;
-  filtroTargaMezzo = { targa: '' };
+    form: FormGroup;
 
-  subscription: Subscription = new Subscription();
+    constructor(private formBuilder: FormBuilder) {
+        this.form = this.formBuilder.group({
+            targheSelezionate: [{ value: '', disabled: true }]
+        });
+    }
 
-  constructor(private store: Store) { }
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes && changes.listaTargaMezzo && changes.listaTargaMezzo.currentValue) {
+            const listaTargaMezzo: FiltroTargaMezzo[] = changes.listaTargaMezzo.currentValue;
+            if (listaTargaMezzo.length > 0) {
+                this.targaControl.enable();
+            }
+        }
+        if (changes && changes.initValue && changes.initValue.currentValue) {
+            const initValue: string = changes.initValue.currentValue;
+            if (initValue) {
+                this.targaControl.setValue(initValue);
+            }
+        }
+    }
 
-  ngOnInit() {
-    this.subscription.add(
-      this.filtroTargaMezzo$.subscribe((filtroTargaMezzo: any) => {
-        this.filtroTargaMezzo = makeCopy(filtroTargaMezzo);
-      })
-    );
-  }
 
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
-  }
+    get targaControl() {
+        return this.form.controls.targheSelezionate;
+    }
 
-  onSearch() {
-    this.store.dispatch(new SetRicercaTargaMezzo(makeCopy(this.filtroTargaMezzo)));
-    // this.ricercaTargaMezzo.emit(makeCopy(this.filtroTargaMezzo));
-  }
+    onChange() {
+        this.targheSelezionate.emit(this.targaControl.value);
+    }
+
+    mostraTesto(): string {
+        if (this.listaTargaMezzo && this.listaTargaMezzo.length > 0) {
+            return 'Filtra per mezzo';
+        } else {
+            return 'Non ci sono mezzi da filtrare';
+        }
+    }
+
 }

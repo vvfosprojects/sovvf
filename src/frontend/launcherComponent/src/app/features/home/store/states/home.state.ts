@@ -4,7 +4,6 @@ import { ClearRichieste, SetRichieste } from '../actions/richieste/richieste.act
 import { ClearSediMarkers } from '../actions/maps/sedi-markers.actions';
 import {
     ClearCentroMappa,
-    SetCentroMappa,
     SetInitCentroMappa
 } from '../actions/maps/centro-mappa.actions';
 import { ClearMezziMarkers } from '../actions/maps/mezzi-markers.actions';
@@ -18,6 +17,7 @@ import { ShowToastr } from '../../../../shared/store/actions/toastr/toastr.actio
 import { ToastrType } from '../../../../shared/enum/toastr';
 import { Welcome } from '../../../../shared/interface/welcome.interface';
 import { SetFiltriComposizione } from '../actions/composizione-partenza/filtri-composizione.actions';
+import { SetListaSchedeContatto } from '../actions/schede-contatto/schede-contatto.actions';
 
 export interface HomeStateModel {
     loaded: boolean;
@@ -76,9 +76,9 @@ export class HomeState {
                 new SetBoxMezzi(data.boxListaMezzi),
                 new SetBoxPersonale(data.boxListaPersonale),
                 new SetChiamateMarkers(data.listaChiamateInCorso),
-                new SetCentroMappa(data.centroMappaMarker),
                 new SetInitCentroMappa(data.centroMappaMarker),
-                new SetFiltriComposizione(data.listaFiltri)
+                new SetFiltriComposizione(data.listaFiltri),
+                new SetListaSchedeContatto(data.listaSchedeContatto)
             ]);
         }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5)));
         patchState({

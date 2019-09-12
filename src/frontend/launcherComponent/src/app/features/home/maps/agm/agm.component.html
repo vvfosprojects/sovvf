@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-12" [ngSwitch]="true">
-        <div #agmContainer class="position-relative">
+        <div class="position-relative">
             <div *ngIf="!map_loaded" class="tutto-schermo-mappa">
                 <div class="loader-centrato-mappa">
                     <i class="fa fa-spinner fa-spin fa-3x"></i>
@@ -9,7 +9,7 @@
             <agm-map [disableDefaultUI]="true"
                      [zoomControl]="true"
                      [zoomControlOptions]="zoomControlOptions"
-                     [minZoom]="6"
+                     [minZoom]="mapsOptions.minZoom"
                      [fullscreenControl]="true"
                      [fullscreenControlOptions]="fullscreenControlOptions"
                      [mapTypeControl]="true"

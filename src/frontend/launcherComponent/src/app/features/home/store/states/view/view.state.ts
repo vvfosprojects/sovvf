@@ -44,6 +44,7 @@ import {
     TerminaComposizione,
     ToggleComposizioneMode
 } from '../../actions/composizione-partenza/composizione-partenza.actions';
+import { ClearSchedaContattoTelefonata } from '../../actions/schede-contatto/schede-contatto.actions';
 
 export const ViewComponentStateDefault: ViewComponentStateModel = {
     view: {
@@ -119,6 +120,16 @@ export class ViewComponentState {
     }
 
     @Selector()
+    static chiamataStatus(state: ViewComponentStateModel): boolean {
+        return state.view.chiamata.active;
+    }
+
+    @Selector()
+    static schedeContattoStatus(state: ViewComponentStateModel): boolean {
+        return state.view.schedeContatto.active;
+    }
+
+    @Selector()
     static colorButton(state: ViewComponentStateModel): ViewInterfaceButton {
         return colorButton(state);
     }
@@ -176,6 +187,7 @@ export class ViewComponentState {
                 column: lastState.column
             });
             dispatch(new ResetChiamata());
+            dispatch(new ClearSchedaContattoTelefonata());
         }
     }
 
@@ -275,12 +287,7 @@ export class ViewComponentState {
                 column: newState.column
             });
         } else {
-            const lastState: ViewComponentStateModel = this.store.selectSnapshot(BackupViewComponentState);
-            patchState({
-                ...state,
-                view: lastState.view,
-                column: lastState.column
-            });
+            patchState(ViewComponentStateDefault);
         }
     }
 
@@ -288,9 +295,6 @@ export class ViewComponentState {
     toggleSchedeContatto({ getState, patchState, dispatch }: StateContext<ViewComponentStateModel>) {
         const state = getState();
         const stateDefault = makeCopy(ViewComponentStateDefault);
-        /**
-         * se lo stato dei mezzi in servizio non è attivo creo uno snapshot, altrimenti ritorno allo stato precedente
-         */
         if (!state.view.schedeContatto.active) {
             dispatch(new SaveView(makeCopy(state)));
             const newState = activeSchedeContatto(stateDefault);
@@ -300,12 +304,8 @@ export class ViewComponentState {
                 column: newState.column
             });
         } else {
-            const lastState: ViewComponentStateModel = this.store.selectSnapshot(BackupViewComponentState);
-            patchState({
-                ...state,
-                view: lastState.view,
-                column: lastState.column
-            });
+            dispatch(new ClearSchedaContattoTelefonata());
+            patchState(ViewComponentStateDefault);
         }
     }
 }

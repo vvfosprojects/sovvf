@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { Localita } from 'src/app/shared/model/localita.model';
 import { Coordinate } from 'src/app/shared/model/coordinate.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -19,11 +19,13 @@ import { StatoRichiesta } from '../../../../shared/enum/stato-richiesta.enum';
 import { OFFSET_SYNC_TIME } from '../../../../core/settings/referral-time';
 import { ToastrType } from '../../../../shared/enum/toastr';
 import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.model';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { SchedaTelefonataState } from '../../store/states/chiamata/scheda-telefonata.state';
 import { DelChiamataMarker } from '../../store/actions/maps/chiamate-markers.actions';
 import { Tipologia } from '../../../../shared/model/tipologia.model';
 import { GOOGLEPLACESOPTIONS } from '../../../../core/settings/google-places-options';
+import { SchedeContattoState } from '../../store/states/schede-contatto/schede-contatto.state';
+import { SchedaContatto } from 'src/app/shared/interface/scheda-contatto.interface';
 
 @Component({
     selector: 'app-scheda-telefonata',
@@ -31,7 +33,7 @@ import { GOOGLEPLACESOPTIONS } from '../../../../core/settings/google-places-opt
     styleUrls: ['./scheda-telefonata.component.scss'],
     encapsulation: ViewEncapsulation.None
 })
-export class SchedaTelefonataComponent implements OnInit {
+export class SchedaTelefonataComponent implements OnInit, OnDestroy {
 
     options = GOOGLEPLACESOPTIONS;
 
@@ -50,25 +52,42 @@ export class SchedaTelefonataComponent implements OnInit {
     nuovaRichiesta: SintesiRichiesta;
     isCollapsed = true;
 
+    idSchedaContatto: string;
+
+    subscription = new Subscription();
+
     @Select(SchedaTelefonataState.resetChiamata) resetChiamata$: Observable<boolean>;
+    @Select(SchedeContattoState.schedaContattoTelefonata) schedaContattoTelefonata$: Observable<SchedaContatto>;
 
     constructor(private formBuilder: FormBuilder,
-        private store: Store,
-        private modalService: NgbModal) {
+                private store: Store,
+                private modalService: NgbModal) {
         this.store.dispatch(new StartChiamata());
     }
 
     ngOnInit() {
         this.chiamataForm = this.createForm();
         this.initNuovaRichiesta();
+        this.idChiamata = this.makeIdChiamata();
         this.nuovaRichiesta.istanteRicezioneRichiesta = new Date(new Date().getTime() + OFFSET_SYNC_TIME[0]);
 
-        this.resetChiamata$.subscribe((reset: boolean) => {
+        this.subscription.add(this.resetChiamata$.subscribe((reset: boolean) => {
             if (reset) {
                 this.chiamataForm.reset();
             }
-        });
-        this.idChiamata = this.makeIdChiamata();
+        }));
+        this.subscription.add(this.schedaContattoTelefonata$.subscribe((schedaContattoTelefonata: SchedaContatto) => {
+            if (schedaContattoTelefonata && schedaContattoTelefonata.id) {
+                if (!this.idSchedaContatto) {
+                    this.setSchedaContatto(schedaContattoTelefonata);
+                    this.idSchedaContatto = schedaContattoTelefonata.id;
+                }
+            }
+        }));
+    }
+
+    ngOnDestroy(): void {
+        this.subscription.unsubscribe();
     }
 
     createForm(): FormGroup {
@@ -88,7 +107,7 @@ export class SchedaTelefonataComponent implements OnInit {
             notePubbliche: [null],
             descrizione: [null],
             zoneEmergenza: [null],
-            prioritaRichiesta: ['3', Validators.required]
+            prioritaRichiesta: [3, Validators.required]
         });
     }
 
@@ -175,37 +194,60 @@ export class SchedaTelefonataComponent implements OnInit {
     }
 
     onAnnullaChiamata(): void {
-        const modalConfermaAnnulla = this.modalService.open(ConfirmModalComponent, { backdropClass: 'light-blue-backdrop', centered: true });
-        modalConfermaAnnulla.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
-        modalConfermaAnnulla.componentInstance.titolo = 'Annulla Chiamata';
-        modalConfermaAnnulla.componentInstance.messaggio = 'Sei sicuro di voler annullare la chiamata?';
-        modalConfermaAnnulla.componentInstance.messaggioAttenzione = 'Tutti i dati inseriti saranno eliminati.';
-        modalConfermaAnnulla.componentInstance.bottoni = [
-            { type: 'ko', descrizione: 'Annulla', colore: 'danger' },
-            { type: 'ok', descrizione: 'Conferma', colore: 'dark' },
-        ];
+        if (!this.checkNessunCampoModificato()) {
+            const modalConfermaAnnulla = this.modalService.open(ConfirmModalComponent, {
+                backdropClass: 'light-blue-backdrop',
+                centered: true
+            });
+            modalConfermaAnnulla.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
+            modalConfermaAnnulla.componentInstance.titolo = 'Annulla Chiamata';
+            modalConfermaAnnulla.componentInstance.messaggio = 'Sei sicuro di voler annullare la chiamata?';
+            modalConfermaAnnulla.componentInstance.messaggioAttenzione = 'Tutti i dati inseriti saranno eliminati.';
+            modalConfermaAnnulla.componentInstance.bottoni = [
+                { type: 'ko', descrizione: 'Annulla', colore: 'danger' },
+                { type: 'ok', descrizione: 'Conferma', colore: 'dark' },
+            ];
 
-        modalConfermaAnnulla.result.then(
-            (val) => {
-                switch (val) {
-                    case 'ok':
-                        this.chiamataForm.reset();
-                        this.nuovaRichiesta.tipologie = [];
-                        this._statoChiamata('annullata');
-                        this.store.dispatch(new DelChiamataMarker(this.idChiamata));
-                        break;
-                    case 'ko':
-                        console.log('Azione annullata');
-                        break;
-                }
-                console.log('Modal chiusa con val ->', val);
-            },
-            (err) => console.error('Modal chiusa senza bottoni. Err ->', err)
-        );
+            modalConfermaAnnulla.result.then(
+                (val) => {
+                    switch (val) {
+                        case 'ok':
+                            this.chiamataForm.reset();
+                            this.nuovaRichiesta.tipologie = [];
+                            this._statoChiamata('annullata');
+                            break;
+                        case 'ko':
+                            console.log('Azione annullata');
+                            break;
+                    }
+                    console.log('Modal chiusa con val ->', val);
+                },
+                (err) => console.error('Modal chiusa senza bottoni. Err ->', err)
+            );
+        } else {
+            this._statoChiamata('annullata');
+        }
+    }
+
+    checkNessunCampoModificato() {
+        let _return = false;
+        if (!this.f.selectedTipologie.value && !this.f.nominativo.value && !this.f.telefono.value
+            && !this.f.indirizzo.value && !this.f.latitudine.value && !this.f.longitudine.value
+            && !this.f.piano.value && !this.f.etichette.value && !this.f.noteIndirizzo.value
+            && !this.f.rilevanzaGrave.value && !this.f.rilevanzaStArCu.value
+            && !this.f.notePrivate.value && !this.f.notePubbliche.value
+            && !this.f.descrizione.value && !this.f.zoneEmergenza.value
+            && this.f.prioritaRichiesta.value === 3) {
+            _return = true;
+        }
+        return _return;
     }
 
     onResetChiamata(): void {
-        const modalConfermaReset = this.modalService.open(ConfirmModalComponent, { backdropClass: 'light-blue-backdrop', centered: true });
+        const modalConfermaReset = this.modalService.open(ConfirmModalComponent, {
+            backdropClass: 'light-blue-backdrop',
+            centered: true
+        });
         modalConfermaReset.componentInstance.icona = { descrizione: 'exclamation-triangle', colore: 'danger' };
         modalConfermaReset.componentInstance.titolo = 'Reset Chiamata';
         modalConfermaReset.componentInstance.messaggio = 'Sei sicuro di voler effettuare il reset della chiamata?';
@@ -252,8 +294,8 @@ export class SchedaTelefonataComponent implements OnInit {
                 this.f.nominativo.patchValue('Ambulanza');
                 this.f.telefono.patchValue('118');
                 break;
-            case 'VV.UU.':
-                this.f.nominativo.patchValue('VV.UU.');
+            case 'Polizia Municipale':
+                this.f.nominativo.patchValue('Polizia Municipale');
                 this.f.telefono.patchValue('');
                 break;
             default:
@@ -354,6 +396,25 @@ export class SchedaTelefonataComponent implements OnInit {
                 this.nuovaRichiesta.descrizione = nuovaDescrizione[0].descrizione;
             }
         }
+    }
+
+    setSchedaContatto(scheda: SchedaContatto) {
+        const f = this.f;
+
+        f.nominativo.patchValue(scheda.richiedente.nominativo);
+        f.telefono.patchValue(scheda.richiedente.telefono);
+        f.indirizzo.patchValue(scheda.localita.indirizzo);
+
+        const lat = scheda.localita.coordinate.latitudine;
+        const lng = scheda.localita.coordinate.longitudine;
+        this.coordinate = new Coordinate(lat, lng);
+        this.chiamataMarker = new ChiamataMarker(this.idChiamata, `${this.operatore.nome} ${this.operatore.cognome}`, `${this.operatore.sede.codice}`,
+            new Localita(this.coordinate ? this.coordinate : null, scheda.localita.indirizzo), null
+        );
+        this.nuovaRichiesta.localita = new Localita(this.coordinate ? this.coordinate : null, scheda.localita.indirizzo, null);
+        this.f.latitudine.patchValue(lat);
+        this.f.longitudine.patchValue(lng);
+        this._statoChiamata('cerca');
     }
 
     onSubmit(azione?: AzioneChiamataEnum) {

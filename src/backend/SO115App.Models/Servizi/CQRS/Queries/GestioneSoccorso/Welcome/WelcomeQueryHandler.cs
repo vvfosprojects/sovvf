@@ -26,6 +26,7 @@ using SO115App.API.Models.Servizi.CQRS.Queries.Marker.CentroMappaMarker;
 using SO115App.API.Models.Servizi.CQRS.Queries.Marker.ListaChiamateInCorsoMarker;
 using SO115App.Models.Classi.Marker;
 using System.Collections.Generic;
+using SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.ListaSchedeContatto;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
 {
@@ -41,6 +42,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
         private readonly IQueryHandler<ListaChiamateInCorsoMarkerQuery, ListaChiamateInCorsoMarkerResult> _listaChiamateInCorsoMarkerHandler;
         private readonly IQueryHandler<CentroMappaMarkerQuery, CentroMappaMarkerResult> _centroMappaMarkerHandler;
         private readonly IQueryHandler<FiltriQuery, FiltriResult> _filtriHandler;
+        private readonly IQueryHandler<ListaSchedeContattoQuery, ListaSchedeContattoResult> _listaSchedeContatto;
 
         public WelcomeQueryHandler(IQueryHandler<BoxMezziQuery, BoxMezziResult> boxMezziHandler,
             IQueryHandler<BoxPersonaleQuery, BoxPersonaleResult> boxPersonaleHandler,
@@ -48,8 +50,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
             IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> sintesiRichiesteAssistenzaHandler,
             IQueryHandler<ListaChiamateInCorsoMarkerQuery, ListaChiamateInCorsoMarkerResult> listaChiamateInCorsoMarkerHandler,
             IQueryHandler<CentroMappaMarkerQuery, CentroMappaMarkerResult> centroMappaMarkerHandler,
-            IQueryHandler<FiltriQuery, FiltriResult> filtriHandler
-            )
+            IQueryHandler<FiltriQuery, FiltriResult> filtriHandler, IQueryHandler<ListaSchedeContattoQuery, ListaSchedeContattoResult> listaSchedeContatto)
         {
             this._boxMezziHandler = boxMezziHandler;
             this._boxPersonaleHandler = boxPersonaleHandler;
@@ -58,6 +59,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
             this._listaChiamateInCorsoMarkerHandler = listaChiamateInCorsoMarkerHandler;
             this._centroMappaMarkerHandler = centroMappaMarkerHandler;
             this._filtriHandler = filtriHandler;
+            _listaSchedeContatto = listaSchedeContatto;
         }
 
         /// <summary>
@@ -91,7 +93,11 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
             {
                 CodiceSede = query.CodiceSede
             };
-            var ListaFiltriQuery = new FiltriQuery();
+            var listaFiltriQuery = new FiltriQuery();
+            var listaSchedeContattoQuery = new ListaSchedeContattoQuery()
+            {
+                CodiceSede = query.CodiceSede
+            };
 
             var welcome = new SO115App.Models.Classi.Condivise.Welcome()
             {
@@ -101,7 +107,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
                 ListaChiamateInCorso = (List<ChiamateInCorso>)_listaChiamateInCorsoMarkerHandler.Handle(listaQuery).ListaChiamateInCorsoMarker,
                 ListaSintesi = (List<SintesiRichiesta>)_sintesiRichiesteAssistenzaHandler.Handle(sintesiRichiesteAssistenzaQuery).SintesiRichiesta,
                 CentroMappaMarker = _centroMappaMarkerHandler.Handle(centroMappaQuery).CentroMappaMarker,
-                ListaFiltri = _filtriHandler.Handle(ListaFiltriQuery).Filtri
+                ListaFiltri = _filtriHandler.Handle(listaFiltriQuery).Filtri,
+                ListaSchedeContatto = _listaSchedeContatto.Handle(listaSchedeContattoQuery).SchedeContatto
             };
 
             return new WelcomeResult()

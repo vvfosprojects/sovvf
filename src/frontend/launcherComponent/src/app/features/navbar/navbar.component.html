@@ -1,32 +1,34 @@
-<nav class="navbar navbar-expand-lg text-light" [ngClass]="{'navbar-dark bg-dark': !turnoExtra, 'navbar-danger bg-danger': turnoExtra}">
-    <div class="row py-0 w-100">
-        <div class="col-5 mr-auto">
-            <div class="row">
-                <div class="col-2 text-left pr-0">
-                    <button class="btn btn-light ml-2 mr-2" (click)="openSidebar()"><i class="fa fa-bars"></i> Menu
-                    </button>
-                </div>
-                <div class="col-6 text-left">
-                    <app-unita-operativa *ngIf="(listeSediNavbarLoaded$ | async)" [colorButton]="colorButton"></app-unita-operativa>
-                </div>
-                <div class="col-4 px-0 text-center">
-                    <app-clock [time]="time"></app-clock>
-                </div>
-            </div>
+<nav class="navbar navbar-expand-lg text-light"
+  [ngClass]="{'navbar-dark bg-dark': !turnoExtra, 'navbar-danger bg-danger': turnoExtra}">
+  <div class="row py-0 w-100">
+    <div class="col-5 mr-auto">
+      <div class="row">
+        <div class="col-2 text-left pr-0">
+          <button class="btn btn-light ml-2 mr-2" (click)="openSidebar()"><i class="fa fa-bars"></i> Menu
+          </button>
         </div>
-        <div class="col-3 mr-auto">
-            <div class="row">
-                <div class="col-12">
-                    <app-turno [turno]="turno" [turnoExtra]="turnoExtra"></app-turno>
-                </div>
-            </div>
+        <div class="col-6 text-left">
+          <app-unita-operativa *ngIf="(listeSediNavbarLoaded$ | async)" [colorButton]="colorButton">
+          </app-unita-operativa>
         </div>
-        <div class="col-4 ml-auto text-right pr-0">
-            <div class="row">
-                <div class="col-12">
-                    <app-operatore [user]="user" (_logout)="logout()"></app-operatore>
-                </div>
-            </div>
+        <div class="col-4 px-0 text-center">
+          <app-clock [time]="time"></app-clock>
         </div>
+      </div>
     </div>
+    <div class="col-3 mr-auto">
+      <div class="row">
+        <div class="col-12">
+          <app-turno [turno]="turnoCalendario" [turnoExtra]="turnoExtra"></app-turno>
+        </div>
+      </div>
+    </div>
+    <div class="col-4 ml-auto text-right pr-0">
+      <div class="row">
+        <div class="col-12">
+          <app-operatore [user]="user" (_logout)="logout()"></app-operatore>
+        </div>
+      </div>
+    </div>
+  </div>
 </nav>

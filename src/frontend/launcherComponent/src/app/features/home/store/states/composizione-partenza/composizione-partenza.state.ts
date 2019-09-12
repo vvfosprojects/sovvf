@@ -9,10 +9,7 @@ import {
     ToggleComposizioneMode,
     UpdateListe, UpdateRichiestaComposizione, SetListaFiltriAffini
 } from '../../actions/composizione-partenza/composizione-partenza.actions';
-import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
-import { ToastrType } from '../../../../../shared/enum/toastr';
 import { ComposizionePartenzaStateModel } from './composizione-partenza.state';
-import { FilterbarService } from '../../../../../core/service/comp-partenza-service/filterbar-composizione-service/filterbar.service';
 import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.model';
 import { ComposizioneMarker } from '../../../maps/maps-model/composizione-marker.model';
 import {

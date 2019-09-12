@@ -1,11 +1,6 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { EventoRichiesta } from '../../../../shared/model/evento-richiesta.model';
 import * as moment from 'moment';
-import { EventiRichiestaState } from '../../store/states/eventi/eventi-richiesta.state';
-import { Select, Store } from '@ngxs/store';
-import { Observable, Subscription } from 'rxjs';
-import { makeCopy } from 'src/app/shared/helper/function';
-import { SetRicercaTargaMezzo } from '../../store/actions/eventi/eventi-richiesta.actions';
 
 @Component({
     selector: 'app-lista-eventi-richiesta',
@@ -14,16 +9,12 @@ import { SetRicercaTargaMezzo } from '../../store/actions/eventi/eventi-richiest
 })
 export class ListaEventiRichiestaComponent implements OnInit, OnChanges {
     @Input() elencoEventi: EventoRichiesta[];
-
-    @Select(EventiRichiestaState.filtroTargaMezzo) filtroTargaMezzo$: Observable<any>;
-    filtroTargaMezzo: any;
-
-    subscription: Subscription = new Subscription();
+    @Output() targheSelezionate = new EventEmitter<string[]>();
 
     istanteEventoPrecedente: Date; // erano private implementare setter and getter
     istantePrimoEvento: Date; // erano private implementare setter and getter
 
-    constructor(private store: Store) {
+    constructor() {
     }
 
     ngOnInit() {
@@ -31,11 +22,6 @@ export class ListaEventiRichiestaComponent implements OnInit, OnChanges {
             // this.setIstantePrimoEvento(this.elencoEventi[0].istanteEvento);
             this.setIstantePrimoEvento(moment().toDate());
         }
-        this.subscription.add(
-            this.filtroTargaMezzo$.subscribe((filtroTargaMezzo: any) => {
-                this.filtroTargaMezzo = makeCopy(filtroTargaMezzo);
-            })
-        );
     }
 
 
@@ -82,9 +68,7 @@ export class ListaEventiRichiestaComponent implements OnInit, OnChanges {
 
     setRicercaTargaMezzo(targa: string) {
         if (targa) {
-            this.store.dispatch(new SetRicercaTargaMezzo({ targa: targa }));
-        } else {
-            console.warn('Targa mezzo non presente, impossibile ricercare!');
+            this.targheSelezionate.emit([targa]);
         }
     }
 }

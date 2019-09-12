@@ -14,7 +14,7 @@ import { MarkerMeteoState } from '../store/states/filterbar/marker-meteo-switch.
 import { SetMarkerMeteoSwitch } from '../store/actions/filterbar/marker-meteo-switch.actions';
 import { SetRicerca } from '../store/actions/filterbar/ricerca-richieste.actions';
 import { AppFeatures } from '../../../shared/enum/app-features.enum';
-import { ChangeView, SwitchComposizione, ToggleChiamata, ToggleMezziInServizio, ToggleSchedeContatto } from '../store/actions/view/view.actions';
+import { ChangeView, ToggleChiamata, ToggleMezziInServizio } from '../store/actions/view/view.actions';
 import { ViewComponentState } from '../store/states/view/view.state';
 import { Composizione } from '../../../shared/enum/composizione.enum';
 import { Grid } from '../../../shared/enum/layout.enum';
@@ -46,6 +46,8 @@ export class FilterbarComponent implements OnInit {
     // View State
     @Select(ViewComponentState.composizioneMode) composizioneMode$: Observable<Composizione>;
     @Select(ViewComponentState.composizioneStatus) composizioneStatus$: Observable<boolean>;
+    @Select(ViewComponentState.schedeContattoStatus) schedeContattoStatus$: Observable<boolean>;
+    @Select(ViewComponentState.chiamataStatus) chiamataStatus$: Observable<boolean>;
     @Select(ViewComponentState.filterBarCol) filterBarCol$: Observable<Grid>;
 
     /**
@@ -93,12 +95,8 @@ export class FilterbarComponent implements OnInit {
     /**
      * Marker Meteo Switch Events
      */
-    onChange(active: boolean) {
+    onMeteoSwitch(active: boolean) {
         this.store.dispatch(new SetMarkerMeteoSwitch(active));
-    }
-
-    compPartenzaSwitch(event: Composizione) {
-        this.store.dispatch(new SwitchComposizione(event));
     }
 
     toggleChiamata() {
@@ -120,7 +118,4 @@ export class FilterbarComponent implements OnInit {
         }
     }
 
-    toggleSchedeContatto() {
-        this.store.dispatch(new ToggleSchedeContatto());
-    }
 }

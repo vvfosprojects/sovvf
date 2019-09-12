@@ -38,7 +38,6 @@ import { RichiesteMarkerAdapterService } from '../../../core/service/maps-servic
 import { NgxsModule } from '@ngxs/store';
 import { MarkerMeteoState } from '../store/states/filterbar/marker-meteo-switch.state';
 import { MeteoMarkersState } from '../store/states/maps/meteo-markers.state';
-import { MapsFiltroState } from '../store/states/maps/maps-filtro.state';
 import { MapsDirectionState } from '../store/states/maps/maps-direction.state';
 import { MarkerState } from '../store/states/maps/marker.state';
 import { MezziMarkersState } from '../store/states/maps/mezzi-markers.state';
@@ -68,7 +67,6 @@ import { AreaMappaState } from '../store/states/maps/area-mappa.state';
         SharedModule.forRoot(),
         NgxsModule.forFeature(
             [
-                MapsFiltroState,
                 MapsDirectionState,
                 CentroMappaState,
                 AreaMappaState,

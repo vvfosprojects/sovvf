@@ -9,9 +9,6 @@ export class SetIdRichiestaEventi {
 
 export class GetEventiRichiesta {
     static readonly type = '[EventiRichiesta] Get Eventi Richieste';
-
-    constructor(public idRichiesta: string) {
-    }
 }
 
 export class SetEventiRichiesta {
@@ -21,12 +18,21 @@ export class SetEventiRichiesta {
     }
 }
 
-export class ClearEventiRichiesta {
-    static readonly type = '[EventiRichiesta] Clear Eventi Richieste';
+export class SetListaTarghe {
+    static readonly type = '[EventiRichiesta] Set Eventi Lista Targhe';
 }
 
-export class SetRicercaTargaMezzo {
-    static readonly type = '[EventiRichiesta] Set Ricerca Targa Mezzo';
+export class SetFiltroTargaMezzo {
+    static readonly type = '[EventiRichiesta] Set Filtro Targa Mezzo';
 
-    constructor(public ricercaTargaMezzo: Object) { }
+    constructor(public filtroTargaMezzo: string[]) {
+    }
+}
+
+export class FiltraEventiRichiesta {
+    static readonly type = '[EventiRichiesta] Lista Eventi Richieste Filtrata';
+}
+
+export class ClearEventiRichiesta {
+    static readonly type = '[EventiRichiesta] Clear Eventi Richieste';
 }

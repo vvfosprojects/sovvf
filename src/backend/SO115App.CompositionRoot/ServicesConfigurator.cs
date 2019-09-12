@@ -130,6 +130,9 @@ namespace SO115App.CompositionRoot
             container.Register<
             SO115App.Models.Servizi.Infrastruttura.Turni.IGetTurno,
             SO115App.FakePersistence.JSon.Turni.GetTurno>();
+            container.Register<
+                SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.IGetSchedeContatto,
+                SO115App.FakePersistence.JSon.GestioneIntervento.GetSchedeContatto>();
 
             container.Register<
             SO115App.Models.Servizi.Infrastruttura.Notification.GestioneChiamata.INotifyInserimentoChiamata,

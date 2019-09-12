@@ -24,7 +24,6 @@ import { ToastrType } from '../../../../../shared/enum/toastr';
 import { ChiamataService } from '../../../../../core/service/chiamata-service/chiamata.service';
 import { AddRichiesta, SetIdChiamataInviaPartenza, StartInviaPartenzaFromChiamata } from '../../actions/richieste/richieste.actions';
 import { environment } from '../../../../../../environments/environment';
-import { SchedaContatto } from 'src/app/shared/interface/scheda-contatto.interface';
 
 export interface SchedaTelefonataStateModel {
     coordinate: Coordinate;
@@ -32,7 +31,6 @@ export interface SchedaTelefonataStateModel {
     azioneChiamata: AzioneChiamataEnum;
     idChiamataMarker: string;
     resetChiamata: boolean;
-    schedaContatto: SchedaContatto;
 }
 
 export const SchedaTelefonataStateDefaults: SchedaTelefonataStateModel = {
@@ -40,8 +38,7 @@ export const SchedaTelefonataStateDefaults: SchedaTelefonataStateModel = {
     nuovaRichiesta: null,
     azioneChiamata: null,
     idChiamataMarker: null,
-    resetChiamata: true,
-    schedaContatto: null
+    resetChiamata: true
 };
 
 @State<SchedaTelefonataStateModel>({
@@ -63,11 +60,6 @@ export class SchedaTelefonataState {
     @Selector()
     static myChiamataMarker(state: SchedaTelefonataStateModel) {
         return state.idChiamataMarker;
-    }
-
-    @Selector()
-    static schedaContatto(state: SchedaTelefonataStateModel) {
-        return state.schedaContatto;
     }
 
     @Action(ReducerSchedaTelefonata)

@@ -1,0 +1,74 @@
+[
+  {
+    "Id": "1",
+    "DataInserimento": "2019-09-05T08:00:00",
+    "Richiedente": {
+      "Telefono": "113",
+      "Nominativo": "Polizia"
+    },
+    "Localita": {
+      "Coordinate": {
+        "Latitudine": 41.908101,
+        "Longitudine": 12.549783
+      },
+      "Indirizzo": "Via Yambo, 00159 Roma RM, Italia",
+      "Note": null,
+      "Piano": null
+    },
+    "ClassificazioneEvento": "Incendio alberello",
+    "Categoria": "",
+    "CompetenzaCC_PS": "PS",
+    "Dettaglio": "",
+    "Priorita": 3,
+    "NumeroPersoneCoinvolte": "2",
+    "PerCompetenza": true
+  },
+  {
+    "Id": "2",
+    "DataInserimento": "2019-09-04T07:00:00",
+    "Richiedente": {
+      "Telefono": "112",
+      "Nominativo": "Carabinieri"
+    },
+    "Localita": {
+      "Coordinate": {
+        "Latitudine": 41.920135,
+        "Longitudine": 12.499179
+      },
+      "Indirizzo": "Via Yser, 00198 Roma RM, Italia",
+      "Note": null,
+      "Piano": null
+    },
+    "ClassificazioneEvento": "Esplosione",
+    "Categoria": "",
+    "CompetenzaCC_PS": "CC",
+    "Dettaglio": "",
+    "Priorita": 3,
+    "NumeroPersoneCoinvolte": "4",
+    "PerCompetenza": true
+  },
+  {
+    "Id": "3",
+    "DataInserimento": "2019-09-04T07:00:00",
+    "Richiedente": {
+      "Telefono": "112",
+      "Nominativo": "Carabinieri"
+    },
+    "Localita": {
+      "Coordinate": {
+        "Latitudine": 41.920135,
+        "Longitudine": 12.499179
+      },
+      "Indirizzo": "Via Yser, 00198 Roma RM, Italia",
+      "Note": null,
+      "Piano": null
+    },
+    "ClassificazioneEvento": "Allagamento",
+    "Categoria": "",
+    "CompetenzaCC_PS": "CC",
+    "Dettaglio": "",
+    "Priorita": 3,
+    "NumeroPersoneCoinvolte": "4",
+    "PerCompetenza": false
+  }
+]
