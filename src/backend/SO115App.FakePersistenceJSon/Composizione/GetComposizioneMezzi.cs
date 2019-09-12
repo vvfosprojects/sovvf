@@ -166,7 +166,7 @@ namespace SO115App.FakePersistenceJSon.Composizione
                     Mezzo = mezzoMarker.Mezzo,
                     Km = kmGen,
                     TempoPercorrenza = Math.Round(TempoPer, 2).ToString(),
-                    IdRichiesta = mezzoMarker.IdRichiesta
+                    //IdRichiesta = mezzoMarker.IdRichiesta
                 };
 
                 ListaComposizione.Add(composizione);

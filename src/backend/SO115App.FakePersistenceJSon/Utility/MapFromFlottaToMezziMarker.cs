@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using SO115App.FakePersistenceJSon.GestioneIntervento;
+using SO115App.API.Models.Classi.Soccorso;
 
 namespace SO115App.FakePersistence.JSon.Utility
 {
@@ -48,7 +50,7 @@ namespace SO115App.FakePersistence.JSon.Utility
                     {
                         Mezzo = new API.Models.Classi.Condivise.Mezzo(mezzoFlotta.codiceMezzo, mezzoFlotta.codiceMezzo, CodiceTipo, GetStatoMezzoByCodiceMezzo(StatoMezzo), 0, GetSedeDiAppartenenza(CodiceSede)),
                         Coordinate = CodificaLocalizzazione(mezzoFlotta.Localizzazione),
-                        IdRichiesta = GetIdRichiestaByCodiceMezzo(mezzoFlotta.codiceMezzo)
+                        InfoRichiesta = GetInfoRichiestaByCodiceMezzo(mezzoFlotta.codiceMezzo)
                     };
                     ListaMezziFlotta.Add(mezzo);
                 }
@@ -57,9 +59,12 @@ namespace SO115App.FakePersistence.JSon.Utility
             return ListaMezziFlotta.Where(x => x.Mezzo.Distaccamento != null).ToList();
         }
 
-        public string GetIdRichiestaByCodiceMezzo(string codiceMezzo)
+        private InfoRichiesta GetInfoRichiestaByCodiceMezzo(string codiceMezzo)
         {
             MezzoMarker mezzoComp = new MezzoMarker();
+            GetRichiestaById getRichiesta = new GetRichiestaById();
+            RichiestaAssistenza richiesta = new RichiestaAssistenza();
+
             string idRichiesta;
             string filepath = CostantiJson.MezziComposizione;
             string json;
@@ -73,7 +78,16 @@ namespace SO115App.FakePersistence.JSon.Utility
             mezzoComp = MezziComposizione.FirstOrDefault(x => x.Mezzo.Codice.Equals(codiceMezzo));
 
             if (mezzoComp != null)
-                return mezzoComp.Mezzo.IdRichiesta;
+            {
+                richiesta = getRichiesta.Get(mezzoComp.Mezzo.IdRichiesta);
+                InfoRichiesta info = new InfoRichiesta()
+                {
+                    CodiceRichiesta = richiesta.CodiceRichiesta,
+                    Indirizzo = richiesta.Localita.Indirizzo
+                };
+
+                return info;
+            }
             else
                 return null;
         }
