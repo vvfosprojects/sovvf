@@ -8,12 +8,7 @@ import { CentroMappa } from '../maps-model/centro-mappa.model';
 import { MarkerService } from '../service/marker-service/marker-service.service';
 import { Observable, Subscription } from 'rxjs';
 import { MapService } from '../service/map-service/map-service.service';
-import {
-    ControlPosition,
-    FullscreenControlOptions, GoogleMap,
-    LatLngBounds, LatLngLiteral,
-    ZoomControlOptions
-} from '@agm/core/services/google-maps-types';
+import { ControlPosition, FullscreenControlOptions, GoogleMap, LatLngBounds, LatLngLiteral, ZoomControlOptions } from '@agm/core/services/google-maps-types';
 import { MeteoMarker } from '../maps-model/meteo-marker.model';
 import { DirectionInterface } from '../maps-interface/direction-interface';
 import { CachedMarker } from '../maps-model/cached-marker.model';
@@ -264,7 +259,7 @@ export class AgmComponent implements OnDestroy {
         /**
          * scateno l'azione relativa all'evento del mouse ricevuto
          */
-        this.markerService.actionMezzoMarker(id, event, this.viewStateMappa.active === AppFeatures.ComposizionePartenza);
+        this.markerService.actionMezzoMarker(id, event, this.viewStateMappa.active === AppFeatures.ComposizionePartenza, this.viewStateMappa.active === AppFeatures.MezziInServizio);
     }
 
     actionSedeMarker(id: string, event: MouseE): void {
