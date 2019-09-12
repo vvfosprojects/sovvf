@@ -19,6 +19,7 @@
 //-----------------------------------------------------------------------
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Geo;
 using SO115App.API.Models.Classi.Marker;
@@ -40,6 +41,7 @@ namespace SO115App.FakePersistenceJSon.Marker
         public List<MezzoMarker> GetListaMezziMarker(AreaMappa filtroAreaMappa)
         {
             var listaMezzi = new List<MezzoMarker>();
+            var infoRichiesta = new InfoRichiesta();
             var filepath = CostantiJson.MezziComposizione;
             string json;
             using (StreamReader r = new StreamReader(filepath))
@@ -51,27 +53,24 @@ namespace SO115App.FakePersistenceJSon.Marker
 
             if (filtroAreaMappa == null)
                 return listaMezziMarker;
-            else
+
+            foreach (var mezzo in listaMezziMarker.Where(mezzo => (mezzo.Coordinate.Latitudine >= filtroAreaMappa.BottomLeft.Latitudine) 
+                                                                        && (mezzo.Coordinate.Latitudine <= filtroAreaMappa.TopRight.Latitudine) 
+                                                                        && ((mezzo.Coordinate.Longitudine >= filtroAreaMappa.BottomLeft.Longitudine)
+                                                                        && (mezzo.Coordinate.Longitudine <= filtroAreaMappa.TopRight.Longitudine))))
             {
-                foreach (MezzoMarker mezzo in listaMezziMarker)
+                if (mezzo.Mezzo.IdRichiesta != null)
                 {
-                    if (((!(mezzo.Coordinate.Latitudine >= filtroAreaMappa.BottomLeft.Latitudine)) ||
-                         (!(mezzo.Coordinate.Latitudine <= filtroAreaMappa.TopRight.Latitudine))) ||
-                        ((!(mezzo.Coordinate.Longitudine >= filtroAreaMappa.BottomLeft.Longitudine)) ||
-                         (!(mezzo.Coordinate.Longitudine <= filtroAreaMappa.TopRight.Longitudine)))) continue;
-
-                    if (mezzo.Mezzo.IdRichiesta != null)
-                    {
-                        var richiestaAssociata = _getRichiestaById.Get(mezzo.Mezzo.IdRichiesta);
-                        mezzo.InfoRichiesta.CodiceRichiesta = richiestaAssociata.CodiceRichiesta;
-                        mezzo.InfoRichiesta.Indirizzo = richiestaAssociata.Localita.Indirizzo;
-                    }
-
-                    listaMezzi.Add(mezzo);
+                    var richiestaAssociata = _getRichiestaById.Get(mezzo.Mezzo.IdRichiesta);
+                    infoRichiesta.CodiceRichiesta = richiestaAssociata.CodiceRichiesta;
+                    infoRichiesta.Indirizzo = richiestaAssociata.Localita.Indirizzo;
+                    mezzo.InfoRichiesta = infoRichiesta;
                 }
 
-                return listaMezzi;
+                listaMezzi.Add(mezzo);
             }
+
+            return listaMezzi;
         }
     }
 }
