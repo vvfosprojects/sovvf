@@ -42,7 +42,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes
         public BoxMezziResult Handle(BoxMezziQuery query)
         {
             // preparazione del DTO
-            var boxes = _iGetbox.Get();
+            var boxes = _iGetbox.Get(query.CodiceSede);
 
             return new BoxMezziResult()
             {

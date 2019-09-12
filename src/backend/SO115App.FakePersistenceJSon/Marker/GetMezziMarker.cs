@@ -17,60 +17,62 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
+using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Geo;
 using SO115App.API.Models.Classi.Marker;
+using SO115App.FakePersistence.JSon.Classi;
 using SO115App.FakePersistence.JSon.Utility;
-using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
+using SO115App.FakePersistenceJSon.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Marker;
 
 namespace SO115App.FakePersistenceJSon.Marker
 {
     public class GetMezziMarker : IGetMezziMarker
     {
-        private readonly IGetRichiestaById _getRichiestaById;
-
-        public GetMezziMarker(IGetRichiestaById getRichiestaById)
-        {
-            _getRichiestaById = getRichiestaById;
-        }
-
         public List<MezzoMarker> GetListaMezziMarker(AreaMappa filtroAreaMappa)
         {
-            var listaMezzi = new List<MezzoMarker>();
-            var infoRichiesta = new InfoRichiesta();
-            var filepath = CostantiJson.MezziComposizione;
+            MapFromFlottaToMezziMarker mapper = new MapFromFlottaToMezziMarker();
+            List<MezzoMarker> ListaMezzi = new List<MezzoMarker>();
+            List<MezzoMarker> ListaMezziFilter = new List<MezzoMarker>();
+
+            string filepath = CostantiJson.FlottaMezzi;
             string json;
             using (StreamReader r = new StreamReader(filepath))
             {
                 json = r.ReadToEnd();
             }
 
-            var listaMezziMarker = JsonConvert.DeserializeObject<List<MezzoMarker>>(json);
-
-            if (filtroAreaMappa == null)
-                return listaMezziMarker;
-
-            foreach (var mezzo in listaMezziMarker.Where(mezzo => (mezzo.Coordinate.Latitudine >= filtroAreaMappa.BottomLeft.Latitudine) 
-                                                                        && (mezzo.Coordinate.Latitudine <= filtroAreaMappa.TopRight.Latitudine) 
-                                                                        && ((mezzo.Coordinate.Longitudine >= filtroAreaMappa.BottomLeft.Longitudine)
-                                                                        && (mezzo.Coordinate.Longitudine <= filtroAreaMappa.TopRight.Longitudine))))
+            try
             {
-                if (mezzo.Mezzo.IdRichiesta != null)
+                List<MapperMezziFromGeoFleet> FlottaMezzi = JsonConvert.DeserializeObject<List<MapperMezziFromGeoFleet>>(json);
+                ListaMezzi = mapper.MappaFlottaMezziSuMezziMarker(FlottaMezzi);
+
+                if (filtroAreaMappa == null)
+                    return ListaMezziFilter = ListaMezzi;
+                else
                 {
-                    var richiestaAssociata = _getRichiestaById.Get(mezzo.Mezzo.IdRichiesta);
-                    infoRichiesta.CodiceRichiesta = richiestaAssociata.CodiceRichiesta;
-                    infoRichiesta.Indirizzo = richiestaAssociata.Localita.Indirizzo;
-                    mezzo.InfoRichiesta = infoRichiesta;
+                    foreach (MezzoMarker mezzo in ListaMezzi)
+                    {
+                        if (((mezzo.Coordinate.Latitudine >= filtroAreaMappa.BottomLeft.Latitudine) && (mezzo.Coordinate.Latitudine <= filtroAreaMappa.TopRight.Latitudine)) &&
+                            ((mezzo.Coordinate.Longitudine >= filtroAreaMappa.BottomLeft.Longitudine) && (mezzo.Coordinate.Longitudine <= filtroAreaMappa.TopRight.Longitudine))
+                          )
+                        {
+                            ListaMezziFilter.Add(mezzo);
+                        }
+                    }
+
+                    return ListaMezziFilter;
                 }
-
-                listaMezzi.Add(mezzo);
             }
-
-            return listaMezzi;
+            catch (Exception ex)
+            {
+                return null;
+            }
         }
     }
 }
