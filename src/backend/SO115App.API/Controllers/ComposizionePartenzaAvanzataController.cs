@@ -64,9 +64,12 @@ namespace SO115App.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Post(FiltriComposizionePartenza filtri)
         {
+            var codiceSede = Request.Headers["codicesede"];
+
             var partenzaAvanzataQuery = new ComposizionePartenzaAvanzataQuery()
             {
-                Filtro = filtri
+                Filtro = filtri,
+                CodiceSede = codiceSede
             };
 
             if (ModelState.IsValid)
@@ -89,9 +92,12 @@ namespace SO115App.API.Controllers
         [HttpGet("{filtro}")]
         public ComposizionePartenzaAvanzataResult GetMarkerComposizionePartenzaAvanzataFromId(FiltriComposizionePartenza filtro)
         {
+            var codiceSede = Request.Headers["codicesede"];
+
             var partenzaAvanzataQuery = new ComposizionePartenzaAvanzataQuery()
             {
-                Filtro = filtro
+                Filtro = filtro,
+                CodiceSede = codiceSede
             };
 
             return _handler.Handle(partenzaAvanzataQuery);

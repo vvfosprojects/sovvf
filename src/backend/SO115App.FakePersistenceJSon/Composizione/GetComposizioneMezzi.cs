@@ -26,6 +26,8 @@ using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.Com
 using SO115App.Models.Servizi.Infrastruttura.GetComposizioneMezzi;
 using SO115App.FakePersistence.JSon.Utility;
 using System;
+using SO115App.FakePersistence.JSon.Classi;
+using SO115App.API.Models.Classi.Marker;
 
 namespace SO115App.FakePersistenceJSon.Composizione
 {
@@ -33,18 +35,20 @@ namespace SO115App.FakePersistenceJSon.Composizione
     {
         public List<ComposizioneMezzi> Get(ComposizioneMezziQuery query)
         {
-            //TODO PARTE CHIAMATA DB
+            MapFromFlottaToMezziMarker mapper = new MapFromFlottaToMezziMarker();
+            List<MezzoMarker> ListaMezzi = new List<MezzoMarker>();
 
-            //TODO DA MODIFICARE CON LA CONNESSIONE AL DB PER IL REPERIMENTO DEI DATI DEFINITIVI
-            //DATI FAKE - ORA LI LEGGO DA FILE
-            var filepath = CostantiJson.MezziComposizione;
+            var filepath = CostantiJson.FlottaMezzi;
             string json;
             using (var r = new StreamReader(filepath))
             {
                 json = r.ReadToEnd();
             }
 
-            var composizioneMezzi = JsonConvert.DeserializeObject<List<ComposizioneMezzi>>(json);
+            List<MapperMezziFromGeoFleet> FlottaMezzi = JsonConvert.DeserializeObject<List<MapperMezziFromGeoFleet>>(json);
+            ListaMezzi = mapper.MappaFlottaMezziSuMezziMarker(FlottaMezzi).Where(x => x.Mezzo.Distaccamento.Codice == query.CodiceSede).ToList();
+
+            List<ComposizioneMezzi> composizioneMezzi = GeneraListaComposizioneMezzi(ListaMezzi);
 
             string[] generiMezzi;
             string[] statiMezzi;
@@ -144,6 +148,31 @@ namespace SO115App.FakePersistenceJSon.Composizione
 
                 return composizioneMezzi.OrderByDescending(x => x.IndiceOrdinamento).ToList();
             }
+        }
+
+        private List<ComposizioneMezzi> GeneraListaComposizioneMezzi(List<MezzoMarker> listaMezzi)
+        {
+            List<ComposizioneMezzi> ListaComposizione = new List<ComposizioneMezzi>();
+
+            Random random = new Random();
+
+            foreach (MezzoMarker mezzoMarker in listaMezzi)
+            {
+                string kmGen = random.Next(1, 60).ToString();
+                double TempoPer = Convert.ToDouble(kmGen.Replace(".", ",")) / 1.75;
+
+                ComposizioneMezzi composizione = new ComposizioneMezzi()
+                {
+                    Mezzo = mezzoMarker.Mezzo,
+                    Km = kmGen,
+                    TempoPercorrenza = Math.Round(TempoPer, 2).ToString(),
+                    IdRichiesta = mezzoMarker.IdRichiesta
+                };
+
+                ListaComposizione.Add(composizione);
+            }
+
+            return ListaComposizione;
         }
     }
 }

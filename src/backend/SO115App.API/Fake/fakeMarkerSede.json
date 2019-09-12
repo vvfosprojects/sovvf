@@ -70,5 +70,41 @@
     "tipo": "Distaccamento",
     "regione": "Lazio",
     "provincia": "Roma"
+  },
+  {
+    "codice": "MI.1000",
+    "descrizione": "Comando di Milano",
+    "coordinate": {
+      "latitudine": 45.535297,
+      "longitudine": 9.224535
+    },
+    "indirizzo": "Via Milano, 98 000000 Milano",
+    "tipo": "Comando",
+    "regione": "Milano",
+    "provincia": "Milano"
+  },
+  {
+    "codice": "TO.1000",
+    "descrizione": "Comando di Torino",
+    "coordinate": {
+      "latitudine": 45.136555,
+      "longitudine": 7.043792
+    },
+    "indirizzo": "Via Torino, 98 000000 Torino",
+    "tipo": "Comando",
+    "regione": "Torino",
+    "provincia": "Torino"
+  },
+  {
+    "codice": "NA.1000",
+    "descrizione": "Comando di Napoli",
+    "coordinate": {
+      "latitudine": 40.933318,
+      "longitudine": 14.524047
+    },
+    "indirizzo": "Via Napoli, 98 000000 Napoli",
+    "tipo": "Comando",
+    "regione": "Napoli",
+    "provincia": "Napoli"
   }
 ]

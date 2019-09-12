@@ -65,12 +65,14 @@ namespace SO115App.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Post(FiltriComposizionePartenza filtri)
         {
+            var codiceSede = Request.Headers["codicesede"];
             var headerValues = Request.Headers["HubConnectionId"];
             string ConId = headerValues.FirstOrDefault();
 
             var query = new ComposizioneMezziQuery()
             {
-                Filtro = filtri
+                Filtro = filtri,
+                CodiceSede = codiceSede
             };
 
             if (ModelState.IsValid)

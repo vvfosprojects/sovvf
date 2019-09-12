@@ -50,7 +50,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
         {
             var composizioneMezziquery = new ComposizioneMezziQuery
             {
-                Filtro = query.Filtro
+                Filtro = query.Filtro,
+                CodiceSede = query.CodiceSede
             };
             var composizioneSquadreQuery = new ComposizioneSquadreQuery
             {
@@ -61,7 +62,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             {
                 ComposizioneMezzi = this._composizioneMezzihandler.Handle(composizioneMezziquery).ComposizioneMezzi,
                 ComposizioneSquadre = this._composizioneSquadrehandler.Handle(composizioneSquadreQuery).ComposizioneSquadre,
-
             };
 
             return new ComposizionePartenzaAvanzataResult()
@@ -69,7 +69,5 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                 ComposizionePartenzaAvanzata = composizioneAvanzata
             };
         }
-
-       
     }
 }

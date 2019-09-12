@@ -9,6 +9,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\SO115App.API.SOVVF.FakeImplementations\SO115App.API.SOVVF.FakeImplementations.csproj" />
+    <ProjectReference Include="..\SO115App.GeneratoreFakeRichieste\SO115App.GeneratoreFakeRichieste.csproj" />
     <ProjectReference Include="..\SO115App.Models\SO115App.Models.csproj" />
   </ItemGroup>
 </Project>

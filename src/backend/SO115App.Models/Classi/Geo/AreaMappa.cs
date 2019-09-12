@@ -35,5 +35,7 @@ namespace SO115App.API.Models.Classi.Geo
         ///   Rappresenta il punto della mappa in basso a sx
         /// </summary>
         public Coordinate BottomLeft { get; set; }
+
+        private string[] FiltriMappa { get; set; }
     }
 }
