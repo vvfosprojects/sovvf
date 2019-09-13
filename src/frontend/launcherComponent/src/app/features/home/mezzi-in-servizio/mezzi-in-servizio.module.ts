@@ -11,6 +11,7 @@ import { MezziInServizioFakeService } from 'src/app/core/service/mezzi-in-serviz
 import { NgxsModule } from '@ngxs/store';
 import { MezziInServizioState } from '../store/states/mezzi-in-servizio/mezzi-in-servizio.state';
 import { EventiRichiestaState } from '../store/states/eventi/eventi-richiesta.state';
+import { MezzoInServizioComponent } from './mezzo-in-servizio/mezzo-in-servizio.component';
 
 @NgModule({
     imports: [
@@ -27,7 +28,8 @@ import { EventiRichiestaState } from '../store/states/eventi/eventi-richiesta.st
         ),
     ],
     declarations: [
-        MezziInServizioComponent
+        MezziInServizioComponent,
+        MezzoInServizioComponent
     ],
     exports: [
         MezziInServizioComponent

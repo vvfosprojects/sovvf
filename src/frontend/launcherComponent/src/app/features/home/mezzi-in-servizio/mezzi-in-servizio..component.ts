@@ -107,9 +107,9 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
     }
 
     /* Apre il modal per visualizzare gli eventi relativi alla richiesta cliccata */
-    onVisualizzaEventiRichiesta(mezzo: Mezzo, idRichiesta: string) {
+    onVisualizzaEventiRichiesta(mezzo: Mezzo) {
         this.store.dispatch(new SetFiltroTargaMezzo([mezzo.descrizione]));
-        this.store.dispatch(new SetIdRichiestaEventi(idRichiesta));
+        this.store.dispatch(new SetIdRichiestaEventi(mezzo.idRichiesta));
         const modal = this.modalService.open(EventiRichiestaComponent, {
             windowClass: 'xlModal',
             backdropClass: 'light-blue-backdrop',
@@ -130,17 +130,6 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
 
     selezionato(idMezzoInServizio: string) {
         this.store.dispatch(new SetMezzoInServizioSelezionato(idMezzoInServizio));
-    }
-
-    cardClasses(stato: StatoMezzo, idMezzo: string) {
-        let _returnClass = statoMezzoBorderClass(stato);
-        if (this.idMezzoInServizioHover === idMezzo) {
-            _returnClass += ' bg-light';
-        }
-        if (this.idMezzoInServizioSelezionato === idMezzo) {
-            _returnClass += ' bg-light';
-        }
-        return _returnClass;
     }
 
     tornaIndietro() {

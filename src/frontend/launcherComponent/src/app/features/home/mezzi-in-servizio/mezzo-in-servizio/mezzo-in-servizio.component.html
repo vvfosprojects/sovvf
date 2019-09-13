@@ -1,0 +1,44 @@
+<div class="row border rounded shadow-sm p-2 h-100" [ngClass]="cardClasses(mezzo.stato, mezzo.codice)"
+     (mouseenter)="hoverIn.emit(mezzo.codice)" (mouseleave)="hoverOut.emit()" (click)="selezionato.emit(mezzo.codice)">
+    <!-- Prima riga -->
+    <div class="col-12" style="height: 30px">
+        <div class="row">
+            <!-- Prima Colonna (Prima riga) -->
+            <div class="col-8">
+                <app-mezzo [mezzo]="mezzo" [mostraIndicatori]="true" [mostraNotifiche]="true"
+                           [inGestione]="mezzo.stato !== 'In Sede'"
+                           (actionMezzo)="actionMezzo.emit({'a': mezzo, 'b': $event})">
+                </app-mezzo>
+            </div>
+            <!-- Seconda Colonna (Prima riga) -->
+            <div class="col-4 text-right">
+                <div class="badge badge-secondary">{{mezzo.distaccamento.descrizione}}</div>
+            </div>
+        </div>
+    </div>
+    <!-- Seconda riga -->
+    <div class="col-12">
+        <div class="row">
+            <!-- Prima Colonna (Seconda riga) -->
+            <div class="col-6 py-1">
+                <button *ngIf="mezzo?.idRichiesta" class="btn btn-light btn-sm"
+                        (click)="dettaglioRichiesta.emit(mezzo.idRichiesta)">
+                    <i class="fa fa-hashtag guida mr-1"></i>
+                    {{mezzo.idRichiesta}}
+                </button>
+                <div *ngIf="!mezzo?.idRichiesta">
+                    <i class="fa fa-check-circle guida mr-1"></i>
+                    <small>Non assegnato</small>
+                </div>
+            </div>
+            <!-- Seconda Colonna (Seconda riga) -->
+            <div class="col-6 text-right">
+                <button *ngIf="mezzo.idRichiesta" class="btn btn-light btn-sm"
+                        (click)="visualizzaEventiRichiesta.emit(mezzo)">
+                    <i class="fa fa-list mr-1"></i>
+                    Visualizza eventi
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
