@@ -67,7 +67,8 @@ export class RichiesteMarkersState {
     @Action(GetRichiesteMarkers)
     getRichiesteMarkers({ dispatch }: StateContext<RichiesteMarkersStateModel>, action: GetRichiesteMarkers) {
         dispatch(new SetMarkerLoading(true));
-        this._richieste.getRichiesteMarkers(action.areaMappa).subscribe((data: RichiestaMarker[]) => {
+        console.log('FiltroRichieste', action.filtri);
+        this._richieste.getRichiesteMarkers(action.areaMappa, action.filtri).subscribe((data: RichiestaMarker[]) => {
                 dispatch([
                     new SetRichiesteMarkers(data),
                     new SetMarkerLoading(false)

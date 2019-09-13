@@ -33,7 +33,6 @@
     color: white !important;
 }
 
-#menu-mappa .dropdown-menu {
-    min-width: 150px;
-    max-width: 300px;
+.dropdown-menu {
+    min-width: 15.5rem !important;
 }

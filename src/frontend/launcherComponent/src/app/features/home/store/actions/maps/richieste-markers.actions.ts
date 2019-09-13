@@ -1,10 +1,11 @@
 import { RichiestaMarker } from '../../../maps/maps-model/richiesta-marker.model';
 import { AreaMappa } from '../../../maps/maps-model/area-mappa-model';
+import { FiltroRichieste } from '../../../maps/maps-model/filtro-richieste.interface';
 
 export class GetRichiesteMarkers {
     static readonly type = '[Richieste Marker] Get Richieste Markers';
 
-    constructor(public areaMappa: AreaMappa) {
+    constructor(public areaMappa: AreaMappa, public filtri?: FiltroRichieste) {
     }
 }
 

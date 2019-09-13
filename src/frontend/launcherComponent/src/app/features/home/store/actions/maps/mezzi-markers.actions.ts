@@ -1,10 +1,11 @@
 import { MezzoMarker } from '../../../maps/maps-model/mezzo-marker.model';
 import { AreaMappa } from '../../../maps/maps-model/area-mappa-model';
+import { FiltroMezzi } from '../../../maps/maps-model/filtro-mezzi.interface';
 
 export class GetMezziMarkers {
     static readonly type = '[Mezzi Marker] Get Mezzi Marker';
 
-    constructor(public areaMappa: AreaMappa) {
+    constructor(public areaMappa: AreaMappa, public filtri?: FiltroMezzi) {
     }
 }
 

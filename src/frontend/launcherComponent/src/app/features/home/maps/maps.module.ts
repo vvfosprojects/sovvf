@@ -20,9 +20,11 @@ import { AgmContentComponent } from './agm/agm-content.component';
 /**
  * MAPS-UI
  */
-import { MapsFiltroComponent } from './maps-ui/filtro/filtro.component';
 import { InfoWindowComponent } from './maps-ui/info-window/info-window.component';
 import { CambioSedeModalComponent } from './maps-ui/info-window/cambio-sede-modal/cambio-sede-modal.component';
+import { FiltriMarkersComponent } from './maps-ui/filtri-markers/filtri-markers.component';
+import { FiltriMarkersRichiesteComponent } from './maps-ui/filtri-markers/filtri-markers-richieste/filtri-markers-richieste.component';
+import { FiltriMarkersMezziComponent } from './maps-ui/filtri-markers/filtri-markers-mezzi/filtri-markers-mezzi.component';
 /**
  * Provider
  */
@@ -53,6 +55,8 @@ import { MapsButtonComponent } from './maps-ui/buttons/maps-button.component';
 import { MapsButtonsState } from '../store/states/maps/maps-buttons.state';
 import { environment } from '../../../../environments/environment';
 import { AreaMappaState } from '../store/states/maps/area-mappa.state';
+import { FiltriMarkersState } from '../store/states/maps/filtri-markers.state';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 @NgModule({
     imports: [
@@ -65,6 +69,7 @@ import { AreaMappaState } from '../store/states/maps/area-mappa.state';
         AgmSnazzyInfoWindowModule,
         SintesiRichiestaModule,
         SharedModule.forRoot(),
+        NgSelectModule,
         NgxsModule.forFeature(
             [
                 MapsDirectionState,
@@ -79,19 +84,22 @@ import { AreaMappaState } from '../store/states/maps/area-mappa.state';
                 MarkerOpachiState,
                 ChiamateMarkersState,
                 MeteoMarkersState,
-                MapsButtonsState
+                MapsButtonsState,
+                FiltriMarkersState
             ]
-        ),
+        )
     ],
     declarations: [
         MapsComponent,
         AgmComponent,
         AgmContentComponent,
-        MapsFiltroComponent,
         InfoWindowComponent,
         CambioSedeModalComponent,
         SintesiRichiestaModalComponent,
-        MapsButtonComponent
+        MapsButtonComponent,
+        FiltriMarkersComponent,
+        FiltriMarkersRichiesteComponent,
+        FiltriMarkersMezziComponent
     ],
     entryComponents: [CambioSedeModalComponent, SintesiRichiestaModalComponent],
     exports: [

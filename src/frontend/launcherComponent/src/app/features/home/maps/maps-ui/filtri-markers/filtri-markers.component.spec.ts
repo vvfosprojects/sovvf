@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MapsFiltroComponent } from './filtro.component';
+import { FiltriMarkersComponent } from './filtri-markers.component';
 
-describe('MapsFiltroComponent', () => {
-  let component: MapsFiltroComponent;
-  let fixture: ComponentFixture<MapsFiltroComponent>;
+describe('FiltriMarkersComponent', () => {
+  let component: FiltriMarkersComponent;
+  let fixture: ComponentFixture<FiltriMarkersComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ MapsFiltroComponent ]
+      declarations: [ FiltriMarkersComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MapsFiltroComponent);
+    fixture = TestBed.createComponent(FiltriMarkersComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
