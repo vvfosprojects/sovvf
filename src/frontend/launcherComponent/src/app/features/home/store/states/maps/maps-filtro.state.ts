@@ -2,7 +2,7 @@ import { Selector, State, Action, StateContext, Store, Select } from '@ngxs/stor
 import { makeCopy } from '../../../../../shared/helper/function';
 import {
     ClearCopiaFiltroAttivo,
-    CopiaFiltroAttivo,
+    CopiaFiltroAttivo, ReducerFiltroMarker,
     SetFiltriMarker,
     SetFiltroMarker
 } from '../../actions/maps/maps-filtro.actions';
@@ -78,6 +78,14 @@ export class MapsFiltroState {
     @Selector()
     static filtroMarkerAttivoCopy(state: MapsFiltroStateModel): string[] {
         return state.filtroMarkerAttivoCopy;
+    }
+
+    @Action(ReducerFiltroMarker)
+    reducerFiltroMarker({ getState, dispatch }: StateContext<MapsFiltroStateModel>, action: ReducerFiltroMarker) {
+        const state = getState();
+        if (!state.filtroMarkerAttivo.includes(action.selected)) {
+            dispatch(new SetFiltroMarker(action.selected));
+        }
     }
 
     @Action(SetFiltroMarker)
