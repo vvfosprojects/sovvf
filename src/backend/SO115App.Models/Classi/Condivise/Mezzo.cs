@@ -21,15 +21,16 @@ namespace SO115App.API.Models.Classi.Condivise
 {
     public class Mezzo
     {
-        public Mezzo(string Codice, string Descrizione, string Genere, string Stato,
-                     int Appartenenza, Sede Distaccamento)
+        public Mezzo(string codice, string descrizione, string genere, string stato,
+                     int appartenenza, Sede distaccamento, Coordinate coordinate)
         {
-            this.Codice = Codice;
-            this.Descrizione = Descrizione;
-            this.Genere = Genere;
-            this.Stato = Stato;
-            this.Appartenenza = Appartenenza;
-            this.Distaccamento = Distaccamento;
+            this.Codice = codice;
+            this.Descrizione = descrizione;
+            this.Genere = genere;
+            this.Stato = stato;
+            this.Appartenenza = appartenenza;
+            this.Distaccamento = distaccamento;
+            this.Coordinate = coordinate;
         }
 
         /// <summary>
@@ -111,5 +112,10 @@ namespace SO115App.API.Models.Classi.Condivise
         ///   Note eventuali
         /// </summary>
         public string[] Notifiche { get; set; }
+
+        /// <summary>
+        ///   Coordinate del mezzo
+        /// </summary>
+        public Coordinate Coordinate { get; set; }
     }
 }

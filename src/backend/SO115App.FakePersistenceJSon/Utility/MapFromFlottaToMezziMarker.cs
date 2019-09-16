@@ -11,6 +11,7 @@ using System.Text;
 using SO115App.FakePersistenceJSon.GestioneIntervento;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.Models.Classi.Utility;
+using System.Globalization;
 
 namespace SO115App.FakePersistence.JSon.Utility
 {
@@ -48,7 +49,7 @@ namespace SO115App.FakePersistence.JSon.Utility
 
                 var mezzo = new MezzoMarker()
                 {
-                    Mezzo = new Mezzo(mezzoFlotta.codiceMezzo, mezzoFlotta.codiceMezzo, codiceTipo, GetStatoMezzoByCodiceMezzo(statoMezzo), 0, GetSedeDiAppartenenza(codiceSede)),
+                    Mezzo = new Mezzo(mezzoFlotta.codiceMezzo, mezzoFlotta.codiceMezzo, codiceTipo, GetStatoMezzoByCodiceMezzo(statoMezzo), 0, GetSedeDiAppartenenza(codiceSede), CodificaLocalizzazione(mezzoFlotta.Localizzazione)),
                     Coordinate = CodificaLocalizzazione(mezzoFlotta.Localizzazione),
                     InfoRichiesta = GetInfoRichiestaByCodiceMezzo(mezzoFlotta.codiceMezzo)
                 };
@@ -87,8 +88,8 @@ namespace SO115App.FakePersistence.JSon.Utility
 
         public Coordinate CodificaLocalizzazione(coordinate localizzazione)
         {
-            var coordinate = new Coordinate(Convert.ToDouble(localizzazione.lat),
-                Convert.ToDouble(localizzazione.lon));
+            var coordinate = new Coordinate(double.Parse(localizzazione.lat, CultureInfo.CreateSpecificCulture("en-US")), Double.Parse(localizzazione.lon, CultureInfo.CreateSpecificCulture("en-US")));
+
             //return new Coordinate(Convert.ToDouble(localizzazione.lat.Replace(".", ",")), Convert.ToDouble(localizzazione.lon.Replace(".", ",")));
             return coordinate;
         }
@@ -132,7 +133,7 @@ namespace SO115App.FakePersistence.JSon.Utility
                 if (statoMezzo == "6" || statoMezzo == "7" || statoMezzo == "0") continue;
 
                 var mezzo = new Mezzo(mezzoFlotta.codiceMezzo, mezzoFlotta.codiceMezzo, codiceTipo,
-                    GetStatoMezzoByCodiceMezzo(statoMezzo), 0, GetSedeDiAppartenenza(codiceSede));
+                    GetStatoMezzoByCodiceMezzo(statoMezzo), 0, GetSedeDiAppartenenza(codiceSede), CodificaLocalizzazione(mezzoFlotta.Localizzazione));
                 listaMezzi.Add(mezzo);
             }
 

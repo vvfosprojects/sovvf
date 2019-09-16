@@ -54,7 +54,8 @@ export class CompPartenzaServiceFake {
                             tipo: 'Distaccamento',
                             regione: 'Lazio',
                             provincia: 'Roma'
-                        }
+                        },
+                        coordinate: { latitudine: 1, longitudine: 1 }
                     },
                     km: '20.2',
                     tempoPercorrenza: '20',
@@ -108,7 +109,8 @@ export class CompPartenzaServiceFake {
                             tipo: 'Distaccamento',
                             regione: 'Lazio',
                             provincia: 'Roma'
-                        }
+                        },
+                        coordinate: { latitudine: 1, longitudine: 1 }
                     },
                     km: '25.6',
                     tempoPercorrenza: '26',
@@ -184,7 +186,8 @@ export class CompPartenzaServiceFake {
                             tipo: 'Distaccamento',
                             regione: 'Lazio',
                             provincia: 'Roma'
-                        }
+                        },
+                        coordinate: { latitudine: 1, longitudine: 1 }
                     },
                     km: '20.2',
                     tempoPercorrenza: '20',
@@ -260,7 +263,8 @@ export class CompPartenzaServiceFake {
                             tipo: 'Distaccamento',
                             regione: 'Lazio',
                             provincia: 'Roma'
-                        }
+                        },
+                        coordinate: { latitudine: 1, longitudine: 1 }
                     },
                     km: '20.2',
                     tempoPercorrenza: '20',
@@ -314,7 +318,8 @@ export class CompPartenzaServiceFake {
                             tipo: 'Distaccamento',
                             regione: 'Lazio',
                             provincia: 'Roma'
-                        }
+                        },
+                        coordinate: { latitudine: 1, longitudine: 1 }
                     },
                     km: '25.6',
                     tempoPercorrenza: '26',
@@ -395,7 +400,8 @@ export class CompPartenzaServiceFake {
                         tipo: 'Distaccamento',
                         regione: 'Lazio',
                         provincia: 'Roma'
-                    }
+                    },
+                    coordinate: { latitudine: 1, longitudine: 1 }
                 },
                 km: '20.2',
                 tempoPercorrenza: '20',
@@ -422,7 +428,8 @@ export class CompPartenzaServiceFake {
                         tipo: 'Distaccamento',
                         regione: 'Lazio',
                         provincia: 'Roma'
-                    }
+                    },
+                    coordinate: { latitudine: 1, longitudine: 1 }
                 },
                 km: '25.6',
                 tempoPercorrenza: '26',
@@ -449,7 +456,8 @@ export class CompPartenzaServiceFake {
                         tipo: 'Distaccamento',
                         regione: 'Lazio',
                         provincia: 'Roma'
-                    }
+                    },
+                    coordinate: { latitudine: 1, longitudine: 1 }
                 },
                 km: '27.4',
                 tempoPercorrenza: '28',
@@ -476,7 +484,8 @@ export class CompPartenzaServiceFake {
                         tipo: 'Distaccamento',
                         regione: 'Lazio',
                         provincia: 'Roma'
-                    }
+                    },
+                    coordinate: { latitudine: 1, longitudine: 1 }
                 },
                 km: '30.1',
                 tempoPercorrenza: '31.5',
@@ -503,7 +512,8 @@ export class CompPartenzaServiceFake {
                         tipo: 'Distaccamento',
                         regione: 'Lazio',
                         provincia: 'Roma'
-                    }
+                    },
+                    coordinate: { latitudine: 1, longitudine: 1 }
                 },
                 km: '32.1',
                 tempoPercorrenza: '33',
@@ -530,7 +540,8 @@ export class CompPartenzaServiceFake {
                         tipo: 'Distaccamento',
                         regione: 'Lazio',
                         provincia: 'Roma'
-                    }
+                    },
+                    coordinate: { latitudine: 1, longitudine: 1 }
                 },
                 km: '34.7',
                 tempoPercorrenza: '35',
@@ -557,7 +568,8 @@ export class CompPartenzaServiceFake {
                         tipo: 'Distaccamento',
                         regione: 'Lazio',
                         provincia: 'Roma'
-                    }
+                    },
+                    coordinate: { latitudine: 1, longitudine: 1 }
                 },
                 km: '34.9',
                 tempoPercorrenza: '35.5',

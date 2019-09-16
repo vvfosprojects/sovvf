@@ -147,7 +147,7 @@ export class MezzoComposizioneComponent implements OnInit {
     mezzoDirection(mezzoComp: MezzoComposizione): void {
         const mezzoDirection = {
             idMezzo: mezzoComp.id,
-            coordinateMezzo: mezzoComp.coordinate
+            coordinateMezzo: mezzoComp.mezzo.coordinate
         } as MezzoDirection;
         this.mezzoCoordinate.emit(mezzoDirection);
     }

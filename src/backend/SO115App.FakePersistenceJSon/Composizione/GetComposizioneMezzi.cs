@@ -28,6 +28,7 @@ using SO115App.FakePersistence.JSon.Utility;
 using System;
 using SO115App.FakePersistence.JSon.Classi;
 using SO115App.API.Models.Classi.Marker;
+using System.Globalization;
 
 namespace SO115App.FakePersistenceJSon.Composizione
 {
@@ -117,11 +118,6 @@ namespace SO115App.FakePersistenceJSon.Composizione
                     {
                         composizione.IstanteScadenzaSelezione = null;
                     }
-
-                    if (composizione.Coordinate == null)
-                    {
-                        composizione.Coordinate = composizione.Mezzo.Distaccamento.Coordinate;
-                    }
                 }
 
                 return composizioneMezzi.OrderByDescending(x => x.IndiceOrdinamento).ToList();
@@ -138,11 +134,6 @@ namespace SO115App.FakePersistenceJSon.Composizione
                     if (composizione.IstanteScadenzaSelezione < DateTime.Now)
                     {
                         composizione.IstanteScadenzaSelezione = null;
-                    }
-
-                    if (composizione.Coordinate == null)
-                    {
-                        composizione.Coordinate = composizione.Mezzo.Distaccamento.Coordinate;
                     }
                 }
 
@@ -165,7 +156,7 @@ namespace SO115App.FakePersistenceJSon.Composizione
                 {
                     Mezzo = mezzoMarker.Mezzo,
                     Km = kmGen,
-                    TempoPercorrenza = Math.Round(TempoPer, 2).ToString(),
+                    TempoPercorrenza = Math.Round(TempoPer, 2).ToString(CultureInfo.InvariantCulture),
                     //IdRichiesta = mezzoMarker.IdRichiesta
                 };
 
