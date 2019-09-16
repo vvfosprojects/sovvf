@@ -46,11 +46,12 @@ namespace SO115App.FakePersistenceJSon.GestioneMezzi
 
             var flottaMezzi = JsonConvert.DeserializeObject<List<MapperMezziFromGeoFleet>>(json);
             var listaMezziMarker = mapper.MappaFlottaMezziSuMezziMarker(flottaMezzi).FindAll(x => x.Mezzo.Distaccamento.Codice.Equals(codiceSede));
-            var mezzoInServizio = new MezzoInServizio();
+            
             var listaMezzoInServizio = new List<MezzoInServizio>();
 
             foreach (var mezzoMarkerIn in listaMezziMarker)
             {
+                var mezzoInServizio = new MezzoInServizio();
                 mezzoInServizio.Mezzo = mezzoMarkerIn;
                 if (mezzoInServizio.Mezzo.Mezzo.IdRichiesta != null)
                 {
