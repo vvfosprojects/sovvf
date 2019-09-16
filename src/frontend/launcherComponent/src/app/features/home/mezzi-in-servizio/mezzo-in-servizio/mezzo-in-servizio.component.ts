@@ -31,7 +31,7 @@ export class MezzoInServizioComponent implements OnInit {
 
     onListaSquadrePartenza() {
         const listaSquadre = {
-            idPartenza: this.mezzoInServizio.idPartenza,
+            idPartenza: '1',
             squadre: this.mezzoInServizio.squadre
         };
         this.store.dispatch(new VisualizzaListaSquadrePartenza(listaSquadre));

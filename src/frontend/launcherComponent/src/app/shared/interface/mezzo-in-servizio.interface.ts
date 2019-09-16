@@ -4,5 +4,4 @@ import { MezzoMarker } from '../../features/home/maps/maps-model/mezzo-marker.mo
 export interface MezzoInServizio {
     mezzo: MezzoMarker;
     squadre: Squadra[];
-    idPartenza: string;
 }

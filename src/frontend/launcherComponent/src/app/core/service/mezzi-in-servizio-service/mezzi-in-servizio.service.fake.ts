@@ -64,14 +64,13 @@ export class MezziInServizioFakeService {
                             provincia: 'Roma'
                         }
                     }
-                ],
-                idPartenza: '12345'
+                ]
             },
             {
                 mezzo: {
                     coordinate: { latitudine: 1, longitudine: 1 },
                     mezzo: {
-                        codice: '1',
+                        codice: '2',
                         idRichiesta: 'RM-022',
                         descrizione: 'A1',
                         genere: 'APS',
@@ -90,8 +89,7 @@ export class MezziInServizioFakeService {
                     },
                     infoRichiesta: null
                 },
-                squadre: null,
-                idPartenza: null
+                squadre: null
             }
         ];
         res = {
