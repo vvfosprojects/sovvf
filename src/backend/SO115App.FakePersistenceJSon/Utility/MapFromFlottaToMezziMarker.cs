@@ -87,7 +87,10 @@ namespace SO115App.FakePersistence.JSon.Utility
 
         public Coordinate CodificaLocalizzazione(coordinate localizzazione)
         {
-            return new Coordinate(Convert.ToDouble(localizzazione.lat.Replace(".", ",")), Convert.ToDouble(localizzazione.lon.Replace(".", ",")));
+            var coordinate = new Coordinate(Convert.ToDouble(localizzazione.lat),
+                Convert.ToDouble(localizzazione.lon));
+            //return new Coordinate(Convert.ToDouble(localizzazione.lat.Replace(".", ",")), Convert.ToDouble(localizzazione.lon.Replace(".", ",")));
+            return coordinate;
         }
 
         public Sede GetSedeDiAppartenenza(string codiceSede)
