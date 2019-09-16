@@ -1,1 +1,347 @@
-[{"Id":"1","Squadra":{"Id":"1","Nome":"Rossa","Stato":2,"Componenti":[{"CodiceFiscale":"RSSMRA80A01C707K","DescrizioneQualifica":"CP","Nominativo":"Mario Verdi","Tooltip":"","CapoPartenza":true,"Autista":false,"Rimpiazzo":false,"FunGuardia":false,"TecnicoGuardia1":false,"TecnicoGuardia2":false,"CapoTurno":true,"Telefono":"3404444455"},{"CodiceFiscale":null,"DescrizioneQualifica":"CRE","Nominativo":"Francesco Rossi","Tooltip":"","CapoPartenza":false,"Autista":true,"Rimpiazzo":false,"FunGuardia":false,"TecnicoGuardia1":false,"TecnicoGuardia2":false,"CapoTurno":true,"Telefono":"3404444455"},{"CodiceFiscale":null,"DescrizioneQualifica":"VCSC","Nominativo":"Mario Verna","Tooltip":"","CapoPartenza":false,"Autista":false,"Rimpiazzo":true,"FunGuardia":false,"TecnicoGuardia1":false,"TecnicoGuardia2":false,"CapoTurno":true,"Telefono":"3404444455"}],"Distaccamento":{"Codice":"RM.1000","Descrizione":"Tuscolana","Coordinate":{"Latitudine":1.0,"Longitudine":1.0},"Indirizzo":"Via Prova, 1","Tipo":"Distaccamento","Regione":"Lazio","Provincia":"Roma","Label":null,"Icona":null},"IstanteTermineImpegno":null},"IstanteScadenzaSelezione":"0001-01-01T00:00:00","IdOperatore":null},{"Id":"2","Squadra":{"Id":"2","Nome":"Verde","Stato":0,"Componenti":[{"CodiceFiscale":"RSSMRA80A01C707K","DescrizioneQualifica":"CP","Nominativo":"Mario Verdi","Tooltip":"","CapoPartenza":true,"Autista":false,"Rimpiazzo":false,"FunGuardia":false,"TecnicoGuardia1":false,"TecnicoGuardia2":false,"CapoTurno":true,"Telefono":"3404444455"},{"CodiceFiscale":null,"DescrizioneQualifica":"CRE","Nominativo":"Francesco Rossi","Tooltip":"","CapoPartenza":false,"Autista":true,"Rimpiazzo":false,"FunGuardia":false,"TecnicoGuardia1":false,"TecnicoGuardia2":false,"CapoTurno":true,"Telefono":"3404444455"},{"CodiceFiscale":null,"DescrizioneQualifica":"VCSC","Nominativo":"Mario Verna","Tooltip":"","CapoPartenza":false,"Autista":false,"Rimpiazzo":true,"FunGuardia":false,"TecnicoGuardia1":false,"TecnicoGuardia2":false,"CapoTurno":true,"Telefono":"3404444455"}],"Distaccamento":{"Codice":"RM.1000","Descrizione":"Tuscolana","Coordinate":{"Latitudine":1.0,"Longitudine":1.0},"Indirizzo":"Via Prova, 1","Tipo":"Distaccamento","Regione":"Lazio","Provincia":"Roma","Label":null,"Icona":null},"IstanteTermineImpegno":null},"IstanteScadenzaSelezione":"0001-01-01T00:00:00","IdOperatore":null},{"Id":"3","Squadra":{"Id":"3","Nome":"Arancione","Stato":0,"Componenti":[{"CodiceFiscale":"RSSMRA80A01C707K","DescrizioneQualifica":"CP","Nominativo":"Mario Verdi","Tooltip":"","CapoPartenza":true,"Autista":false,"Rimpiazzo":false,"FunGuardia":false,"TecnicoGuardia1":false,"TecnicoGuardia2":false,"CapoTurno":true,"Telefono":"3404444455"},{"CodiceFiscale":null,"DescrizioneQualifica":"CRE","Nominativo":"Francesco Rossi","Tooltip":"","CapoPartenza":false,"Autista":true,"Rimpiazzo":false,"FunGuardia":false,"TecnicoGuardia1":false,"TecnicoGuardia2":false,"CapoTurno":true,"Telefono":"3404444455"},{"CodiceFiscale":null,"DescrizioneQualifica":"VCSC","Nominativo":"Mario Verna","Tooltip":"","CapoPartenza":false,"Autista":false,"Rimpiazzo":true,"FunGuardia":false,"TecnicoGuardia1":false,"TecnicoGuardia2":false,"CapoTurno":true,"Telefono":"3404444455"}],"Distaccamento":{"Codice":"RM.1001","Descrizione":"Ostiense","Coordinate":{"Latitudine":1.0,"Longitudine":1.0},"Indirizzo":"Via Prova, 1","Tipo":"Distaccamento","Regione":"Lazio","Provincia":"Roma","Label":null,"Icona":null},"IstanteTermineImpegno":null},"IstanteScadenzaSelezione":"0001-01-01T00:00:00","IdOperatore":null},{"Id":"4","Squadra":{"Id":"4","Nome":"Blu","Stato":0,"Componenti":[{"CodiceFiscale":"RSSMRA80A01C707K","DescrizioneQualifica":"CP","Nominativo":"Mario Verdi","Tooltip":"","CapoPartenza":true,"Autista":false,"Rimpiazzo":false,"FunGuardia":false,"TecnicoGuardia1":false,"TecnicoGuardia2":false,"CapoTurno":true,"Telefono":"3404444455"},{"CodiceFiscale":null,"DescrizioneQualifica":"CRE","Nominativo":"Francesco Rossi","Tooltip":"","CapoPartenza":false,"Autista":true,"Rimpiazzo":false,"FunGuardia":false,"TecnicoGuardia1":false,"TecnicoGuardia2":false,"CapoTurno":true,"Telefono":"3404444455"},{"CodiceFiscale":null,"DescrizioneQualifica":"VCSC","Nominativo":"Mario Verna","Tooltip":"","CapoPartenza":false,"Autista":false,"Rimpiazzo":true,"FunGuardia":false,"TecnicoGuardia1":false,"TecnicoGuardia2":false,"CapoTurno":true,"Telefono":"3404444455"}],"Distaccamento":{"Codice":"RM.1001","Descrizione":"Tuscolana","Coordinate":{"Latitudine":1.0,"Longitudine":1.0},"Indirizzo":"Via Prova, 1","Tipo":"Distaccamento","Regione":"Lazio","Provincia":"Roma","Label":null,"Icona":null},"IstanteTermineImpegno":null},"IstanteScadenzaSelezione":"0001-01-01T00:00:00","IdOperatore":null},{"Id":"5","Squadra":{"Id":"5","Nome":"Nera","Stato":0,"Componenti":[{"CodiceFiscale":"RSSMRA80A01C707K","DescrizioneQualifica":"CP","Nominativo":"Mario Verdi","Tooltip":"","CapoPartenza":true,"Autista":false,"Rimpiazzo":false,"FunGuardia":false,"TecnicoGuardia1":false,"TecnicoGuardia2":false,"CapoTurno":true,"Telefono":"3404444455"},{"CodiceFiscale":null,"DescrizioneQualifica":"CRE","Nominativo":"Francesco Rossi","Tooltip":"","CapoPartenza":false,"Autista":true,"Rimpiazzo":false,"FunGuardia":false,"TecnicoGuardia1":false,"TecnicoGuardia2":false,"CapoTurno":true,"Telefono":"3404444455"},{"CodiceFiscale":null,"DescrizioneQualifica":"VCSC","Nominativo":"Mario Verna","Tooltip":"","CapoPartenza":false,"Autista":false,"Rimpiazzo":true,"FunGuardia":false,"TecnicoGuardia1":false,"TecnicoGuardia2":false,"CapoTurno":true,"Telefono":"3404444455"}],"Distaccamento":{"Codice":"RM.1002","Descrizione":"Tuscolana","Coordinate":{"Latitudine":1.0,"Longitudine":1.0},"Indirizzo":"Via Prova, 1","Tipo":"Distaccamento","Regione":"Lazio","Provincia":"Roma","Label":null,"Icona":null},"IstanteTermineImpegno":null},"IstanteScadenzaSelezione":"0001-01-01T00:00:00","IdOperatore":null}]
+[
+  {
+    "Id": "1",
+    "Squadra": {
+      "Id": "1",
+      "Nome": "Rossa",
+      "Stato": 0,
+      "Componenti": [
+        {
+          "CodiceFiscale": "RSSMRA80A01C707K",
+          "DescrizioneQualifica": "CP",
+          "Nominativo": "Mario Verdi",
+          "Tooltip": "",
+          "CapoPartenza": true,
+          "Autista": false,
+          "Rimpiazzo": false,
+          "FunGuardia": false,
+          "TecnicoGuardia1": false,
+          "TecnicoGuardia2": false,
+          "CapoTurno": true,
+          "Telefono": "3404444455"
+        },
+        {
+          "CodiceFiscale": null,
+          "DescrizioneQualifica": "CRE",
+          "Nominativo": "Francesco Rossi",
+          "Tooltip": "",
+          "CapoPartenza": false,
+          "Autista": true,
+          "Rimpiazzo": false,
+          "FunGuardia": false,
+          "TecnicoGuardia1": false,
+          "TecnicoGuardia2": false,
+          "CapoTurno": true,
+          "Telefono": "3404444455"
+        },
+        {
+          "CodiceFiscale": null,
+          "DescrizioneQualifica": "VCSC",
+          "Nominativo": "Mario Verna",
+          "Tooltip": "",
+          "CapoPartenza": false,
+          "Autista": false,
+          "Rimpiazzo": true,
+          "FunGuardia": false,
+          "TecnicoGuardia1": false,
+          "TecnicoGuardia2": false,
+          "CapoTurno": true,
+          "Telefono": "3404444455"
+        }
+      ],
+      "Distaccamento": {
+        "Codice": "RM.1000",
+        "Descrizione": "Tuscolana",
+        "Coordinate": {
+          "Latitudine": 1.0,
+          "Longitudine": 1.0
+        },
+        "Indirizzo": "Via Prova, 1",
+        "Tipo": "Distaccamento",
+        "Regione": "Lazio",
+        "Provincia": "Roma",
+        "Label": null,
+        "Icona": null
+      },
+      "IstanteTermineImpegno": null
+    },
+    "IstanteScadenzaSelezione": "0001-01-01T00:00:00",
+    "IdOperatore": null
+  },
+  {
+    "Id": "2",
+    "Squadra": {
+      "Id": "2",
+      "Nome": "Verde",
+      "Stato": 0,
+      "Componenti": [
+        {
+          "CodiceFiscale": "RSSMRA80A01C707K",
+          "DescrizioneQualifica": "CP",
+          "Nominativo": "Mario Verdi",
+          "Tooltip": "",
+          "CapoPartenza": true,
+          "Autista": false,
+          "Rimpiazzo": false,
+          "FunGuardia": false,
+          "TecnicoGuardia1": false,
+          "TecnicoGuardia2": false,
+          "CapoTurno": true,
+          "Telefono": "3404444455"
+        },
+        {
+          "CodiceFiscale": null,
+          "DescrizioneQualifica": "CRE",
+          "Nominativo": "Francesco Rossi",
+          "Tooltip": "",
+          "CapoPartenza": false,
+          "Autista": true,
+          "Rimpiazzo": false,
+          "FunGuardia": false,
+          "TecnicoGuardia1": false,
+          "TecnicoGuardia2": false,
+          "CapoTurno": true,
+          "Telefono": "3404444455"
+        },
+        {
+          "CodiceFiscale": null,
+          "DescrizioneQualifica": "VCSC",
+          "Nominativo": "Mario Verna",
+          "Tooltip": "",
+          "CapoPartenza": false,
+          "Autista": false,
+          "Rimpiazzo": true,
+          "FunGuardia": false,
+          "TecnicoGuardia1": false,
+          "TecnicoGuardia2": false,
+          "CapoTurno": true,
+          "Telefono": "3404444455"
+        }
+      ],
+      "Distaccamento": {
+        "Codice": "RM.1000",
+        "Descrizione": "Tuscolana",
+        "Coordinate": {
+          "Latitudine": 1.0,
+          "Longitudine": 1.0
+        },
+        "Indirizzo": "Via Prova, 1",
+        "Tipo": "Distaccamento",
+        "Regione": "Lazio",
+        "Provincia": "Roma",
+        "Label": null,
+        "Icona": null
+      },
+      "IstanteTermineImpegno": null
+    },
+    "IstanteScadenzaSelezione": "0001-01-01T00:00:00",
+    "IdOperatore": null
+  },
+  {
+    "Id": "3",
+    "Squadra": {
+      "Id": "3",
+      "Nome": "Arancione",
+      "Stato": 0,
+      "Componenti": [
+        {
+          "CodiceFiscale": "RSSMRA80A01C707K",
+          "DescrizioneQualifica": "CP",
+          "Nominativo": "Mario Verdi",
+          "Tooltip": "",
+          "CapoPartenza": true,
+          "Autista": false,
+          "Rimpiazzo": false,
+          "FunGuardia": false,
+          "TecnicoGuardia1": false,
+          "TecnicoGuardia2": false,
+          "CapoTurno": true,
+          "Telefono": "3404444455"
+        },
+        {
+          "CodiceFiscale": null,
+          "DescrizioneQualifica": "CRE",
+          "Nominativo": "Francesco Rossi",
+          "Tooltip": "",
+          "CapoPartenza": false,
+          "Autista": true,
+          "Rimpiazzo": false,
+          "FunGuardia": false,
+          "TecnicoGuardia1": false,
+          "TecnicoGuardia2": false,
+          "CapoTurno": true,
+          "Telefono": "3404444455"
+        },
+        {
+          "CodiceFiscale": null,
+          "DescrizioneQualifica": "VCSC",
+          "Nominativo": "Mario Verna",
+          "Tooltip": "",
+          "CapoPartenza": false,
+          "Autista": false,
+          "Rimpiazzo": true,
+          "FunGuardia": false,
+          "TecnicoGuardia1": false,
+          "TecnicoGuardia2": false,
+          "CapoTurno": true,
+          "Telefono": "3404444455"
+        }
+      ],
+      "Distaccamento": {
+        "Codice": "RM.1001",
+        "Descrizione": "Ostiense",
+        "Coordinate": {
+          "Latitudine": 1.0,
+          "Longitudine": 1.0
+        },
+        "Indirizzo": "Via Prova, 1",
+        "Tipo": "Distaccamento",
+        "Regione": "Lazio",
+        "Provincia": "Roma",
+        "Label": null,
+        "Icona": null
+      },
+      "IstanteTermineImpegno": null
+    },
+    "IstanteScadenzaSelezione": "0001-01-01T00:00:00",
+    "IdOperatore": null
+  },
+  {
+    "Id": "4",
+    "Squadra": {
+      "Id": "4",
+      "Nome": "Blu",
+      "Stato": 0,
+      "Componenti": [
+        {
+          "CodiceFiscale": "RSSMRA80A01C707K",
+          "DescrizioneQualifica": "CP",
+          "Nominativo": "Mario Verdi",
+          "Tooltip": "",
+          "CapoPartenza": true,
+          "Autista": false,
+          "Rimpiazzo": false,
+          "FunGuardia": false,
+          "TecnicoGuardia1": false,
+          "TecnicoGuardia2": false,
+          "CapoTurno": true,
+          "Telefono": "3404444455"
+        },
+        {
+          "CodiceFiscale": null,
+          "DescrizioneQualifica": "CRE",
+          "Nominativo": "Francesco Rossi",
+          "Tooltip": "",
+          "CapoPartenza": false,
+          "Autista": true,
+          "Rimpiazzo": false,
+          "FunGuardia": false,
+          "TecnicoGuardia1": false,
+          "TecnicoGuardia2": false,
+          "CapoTurno": true,
+          "Telefono": "3404444455"
+        },
+        {
+          "CodiceFiscale": null,
+          "DescrizioneQualifica": "VCSC",
+          "Nominativo": "Mario Verna",
+          "Tooltip": "",
+          "CapoPartenza": false,
+          "Autista": false,
+          "Rimpiazzo": true,
+          "FunGuardia": false,
+          "TecnicoGuardia1": false,
+          "TecnicoGuardia2": false,
+          "CapoTurno": true,
+          "Telefono": "3404444455"
+        }
+      ],
+      "Distaccamento": {
+        "Codice": "RM.1001",
+        "Descrizione": "Tuscolana",
+        "Coordinate": {
+          "Latitudine": 1.0,
+          "Longitudine": 1.0
+        },
+        "Indirizzo": "Via Prova, 1",
+        "Tipo": "Distaccamento",
+        "Regione": "Lazio",
+        "Provincia": "Roma",
+        "Label": null,
+        "Icona": null
+      },
+      "IstanteTermineImpegno": null
+    },
+    "IstanteScadenzaSelezione": "0001-01-01T00:00:00",
+    "IdOperatore": null
+  },
+  {
+    "Id": "5",
+    "Squadra": {
+      "Id": "5",
+      "Nome": "Nera",
+      "Stato": 0,
+      "Componenti": [
+        {
+          "CodiceFiscale": "RSSMRA80A01C707K",
+          "DescrizioneQualifica": "CP",
+          "Nominativo": "Mario Verdi",
+          "Tooltip": "",
+          "CapoPartenza": true,
+          "Autista": false,
+          "Rimpiazzo": false,
+          "FunGuardia": false,
+          "TecnicoGuardia1": false,
+          "TecnicoGuardia2": false,
+          "CapoTurno": true,
+          "Telefono": "3404444455"
+        },
+        {
+          "CodiceFiscale": null,
+          "DescrizioneQualifica": "CRE",
+          "Nominativo": "Francesco Rossi",
+          "Tooltip": "",
+          "CapoPartenza": false,
+          "Autista": true,
+          "Rimpiazzo": false,
+          "FunGuardia": false,
+          "TecnicoGuardia1": false,
+          "TecnicoGuardia2": false,
+          "CapoTurno": true,
+          "Telefono": "3404444455"
+        },
+        {
+          "CodiceFiscale": null,
+          "DescrizioneQualifica": "VCSC",
+          "Nominativo": "Mario Verna",
+          "Tooltip": "",
+          "CapoPartenza": false,
+          "Autista": false,
+          "Rimpiazzo": true,
+          "FunGuardia": false,
+          "TecnicoGuardia1": false,
+          "TecnicoGuardia2": false,
+          "CapoTurno": true,
+          "Telefono": "3404444455"
+        }
+      ],
+      "Distaccamento": {
+        "Codice": "RM.1002",
+        "Descrizione": "Tuscolana",
+        "Coordinate": {
+          "Latitudine": 1.0,
+          "Longitudine": 1.0
+        },
+        "Indirizzo": "Via Prova, 1",
+        "Tipo": "Distaccamento",
+        "Regione": "Lazio",
+        "Provincia": "Roma",
+        "Label": null,
+        "Icona": null
+      },
+      "IstanteTermineImpegno": null
+    },
+    "IstanteScadenzaSelezione": "0001-01-01T00:00:00",
+    "IdOperatore": null
+  }
+]
