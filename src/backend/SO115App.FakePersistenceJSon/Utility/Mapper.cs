@@ -84,7 +84,7 @@ namespace SO115App.FakePersistenceJSon.Utility
 
                     ///Gestione Partenza
 
-                    if (((Newtonsoft.Json.Linq.JObject)evento).ToString().Contains(Costanti.ComposizionePartenze))
+                    if (((Newtonsoft.Json.Linq.JObject)evento).ToString().Contains(Costanti.Composizione))
                     {
                         var composizione = (((Newtonsoft.Json.Linq.JObject)evento).ToObject<ComposizionePartenze>());
                         new ComposizionePartenze(richiestaMap, composizione.Istante, richiesta.Operatore.Sede.Codice, false)
@@ -99,13 +99,13 @@ namespace SO115App.FakePersistenceJSon.Utility
                         new ArrivoSulPosto(richiestaMap, arrivoSulPosto.CodiceMezzo, arrivoSulPosto.Istante, richiesta.Operatore.Sede.Codice);
                     }
 
-                    if (((Newtonsoft.Json.Linq.JObject)evento).ToString().Contains(Costanti.PartenzaInRientro))
+                    if (((Newtonsoft.Json.Linq.JObject)evento).ToString().Contains(Costanti.MezzoInRientro))
                     {
                         var partenzaInRientro = (((Newtonsoft.Json.Linq.JObject)evento).ToObject<PartenzaInRientro>());
                         new PartenzaInRientro(richiestaMap, partenzaInRientro.CodiceMezzo, partenzaInRientro.Istante, richiesta.Operatore.Sede.Codice);
                     }
 
-                    if (((Newtonsoft.Json.Linq.JObject)evento).ToString().Contains(Costanti.PartenzaRientrata))
+                    if (((Newtonsoft.Json.Linq.JObject)evento).ToString().Contains(Costanti.MezzoRientrato))
                     {
                         var partenzaRientrata = (((Newtonsoft.Json.Linq.JObject)evento).ToObject<PartenzaRientrata>());
                         new PartenzaRientrata(richiestaMap, partenzaRientrata.CodiceMezzo, partenzaRientrata.Istante, richiesta.Operatore.Sede.Codice);

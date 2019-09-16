@@ -118,7 +118,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
                     return Costanti.RiaperturaRichiesta;
 
                 case ComposizionePartenze _:
-                    return Costanti.ComposizionePartenze;
+                    return Costanti.Composizione;
 
                 case ChiusuraRichiesta _:
                     return Costanti.ChiusuraRichiesta;
@@ -133,10 +133,10 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
                     return Costanti.RichiestaSospesa;
 
                 case PartenzaRientrata _:
-                    return Costanti.PartenzaRientrata;
+                    return Costanti.MezzoRientrato;
 
                 case PartenzaInRientro _:
-                    return Costanti.PartenzaInRientro;
+                    return Costanti.MezzoInRientro;
 
                 case AssegnataRichiesta _:
                     return Costanti.AssegnataRichiesta;

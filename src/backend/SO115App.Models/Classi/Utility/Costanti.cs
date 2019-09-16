@@ -63,11 +63,9 @@ namespace SO115App.Models.Classi.Utility
         public static string RiaperturaRichiesta = "RiaperturaRichiesta";
         public static string ChiusuraRichiesta = "ChiusuraRichiesta";
         public static string ComposizionePartenza = "ComposizionePartenza";
-        public static string ComposizionePartenze = "ComposizionePartenze";
+        public static string Composizione = "Composizione";
         public static string ChiusuraPartenza = "ChiusuraPartenza";
         public static string ArrivoSulPosto = "ArrivoSulPosto";
-        public static string PartenzaRientrata = "PartenzaRientrata";
-        public static string PartenzaInRientro = "PartenzaInRientro";
         public static string AssegnataRichiesta = "AssegnataRichiesta";
         public static string EventoRichiestaPresidiata = "RichiestaPresidiata";
         public static string EventoRichiestaSospesa = "RichiestaSospesa";
