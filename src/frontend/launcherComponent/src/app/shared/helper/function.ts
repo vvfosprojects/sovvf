@@ -190,7 +190,7 @@ export function statoMezzoColor(stato: string) {
     return _returnColor;
 }
 
-export function statoMezzoBorderClass(stato: StatoMezzo) {
+export function statoMezzoBorderClass(stato: string) {
     let _returnClass = '';
     switch (stato) {
         case StatoMezzo.InSede:

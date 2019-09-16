@@ -1,70 +1,102 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
+import { MezzoInServizio } from '../../../shared/interface/mezzo-in-servizio.interface';
+import { StatoSquadra } from '../../../shared/enum/stato-squadra.enum';
+
+interface MezziInServizioFakeResponse {
+    listaMezzi: MezzoInServizio[];
+}
 
 @Injectable({
     providedIn: 'root'
 })
 export class MezziInServizioFakeService {
 
-    constructor() { }
+    constructor() {
+    }
 
-    getMezziInServizio(): Observable<any> {
+    getMezziInServizio(): Observable<MezziInServizioFakeResponse> {
+        let res = {} as MezziInServizioFakeResponse;
         const mezzi = [
             {
-                codice: '1',
-                idRichiesta: 'RM-022',
-                descrizione: 'A1',
-                genere: 'APS',
-                stato: 'In Viaggio',
-                appartenenza: 0,
-                distaccamento: {
-                    codice: '1',
-                    descrizione: 'Tuscolano II',
+                mezzo: {
                     coordinate: { latitudine: 1, longitudine: 1 },
-                    indirizzo: 'Via Prova, 2',
-                    tipo: 'Distaccamento',
-                    regione: 'Lazio',
-                    provincia: 'Roma'
-                }
+                    mezzo: {
+                        codice: '1',
+                        idRichiesta: 'RM-022',
+                        descrizione: 'A1',
+                        genere: 'APS',
+                        stato: 'In Viaggio',
+                        appartenenza: 0,
+                        distaccamento: {
+                            codice: '1',
+                            descrizione: 'Tuscolano II',
+                            coordinate: { latitudine: 1, longitudine: 1 },
+                            indirizzo: 'Via Prova, 2',
+                            tipo: 'Distaccamento',
+                            regione: 'Lazio',
+                            provincia: 'Roma'
+                        },
+                        coordinate: { latitudine: 1, longitudine: 1 }
+                    },
+                    infoRichiesta: {
+                        codiceRichiesta: 'RM1900000',
+                        indirizzo: 'Via Ignorasi, 47a'
+                    }
+                },
+                squadre: [
+                    {
+                        id: '1',
+                        nome: 'Rossa',
+                        stato: StatoSquadra.InSede,
+                        componenti: [
+                            { descrizioneQualifica: 'CP', nominativo: 'Mario Verdi', tooltip: '', capoPartenza: true, autista: false, rimpiazzo: false },
+                            { descrizioneQualifica: 'CP', nominativo: 'Francesco Rossi', tooltip: '', capoPartenza: false, autista: true, rimpiazzo: false },
+                            { descrizioneQualifica: 'CP', nominativo: 'Mario Verna', tooltip: '', capoPartenza: false, autista: false, rimpiazzo: true }
+                        ],
+                        distaccamento: {
+                            codice: '1',
+                            descrizione: 'Tuscolana II',
+                            coordinate: { latitudine: 1, longitudine: 1 },
+                            indirizzo: 'Via Prova, 1',
+                            tipo: 'Distaccamento',
+                            regione: 'Lazio',
+                            provincia: 'Roma'
+                        }
+                    }
+                ],
+                idPartenza: '12345'
             },
             {
-                codice: '2',
-                idRichiesta: 'RM-022',
-                descrizione: 'A2',
-                genere: 'APS',
-                stato: 'In Sede',
-                appartenenza: 0,
-                distaccamento: {
-                    codice: '1',
-                    descrizione: 'Tuscolano II',
+                mezzo: {
                     coordinate: { latitudine: 1, longitudine: 1 },
-                    indirizzo: 'Via Prova, 2',
-                    tipo: 'Distaccamento',
-                    regione: 'Lazio',
-                    provincia: 'Roma'
-                }
-            },
-            {
-                codice: '3',
-                idRichiesta: 'RM-021',
-                descrizione: 'A3',
-                genere: 'APS',
-                stato: 'In Sede',
-                appartenenza: 0,
-                distaccamento: {
-                    codice: '1',
-                    descrizione: 'Tuscolano II',
-                    coordinate: { latitudine: 1, longitudine: 1 },
-                    indirizzo: 'Via Prova, 2',
-                    tipo: 'Distaccamento',
-                    regione: 'Lazio',
-                    provincia: 'Roma'
-                }
+                    mezzo: {
+                        codice: '1',
+                        idRichiesta: 'RM-022',
+                        descrizione: 'A1',
+                        genere: 'APS',
+                        stato: 'In Viaggio',
+                        appartenenza: 0,
+                        distaccamento: {
+                            codice: '1',
+                            descrizione: 'Tuscolano II',
+                            coordinate: { latitudine: 1, longitudine: 1 },
+                            indirizzo: 'Via Prova, 2',
+                            tipo: 'Distaccamento',
+                            regione: 'Lazio',
+                            provincia: 'Roma'
+                        },
+                        coordinate: { latitudine: 1, longitudine: 1 }
+                    },
+                    infoRichiesta: null
+                },
+                squadre: null,
+                idPartenza: null
             }
         ];
-        const obj = {
+        res = {
             'listaMezzi': mezzi
         };
-        return of(obj);
+        return of(res);
     }
 }

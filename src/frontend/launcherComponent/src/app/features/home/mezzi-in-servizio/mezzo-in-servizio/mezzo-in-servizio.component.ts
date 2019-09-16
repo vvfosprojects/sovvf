@@ -1,7 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Mezzo } from '../../../../shared/model/mezzo.model';
 import { StatoMezzo } from '../../../../shared/enum/stato-mezzo.enum';
 import { statoMezzoBorderClass } from '../../../../shared/helper/function';
+import { MezzoInServizio } from '../../../../shared/interface/mezzo-in-servizio.interface';
+import { VisualizzaListaSquadrePartenza } from '../../store/actions/richieste/richieste.actions';
+import { Store } from '@ngxs/store';
 
 @Component({
     selector: 'app-mezzo-in-servizio',
@@ -10,7 +12,7 @@ import { statoMezzoBorderClass } from '../../../../shared/helper/function';
 })
 export class MezzoInServizioComponent implements OnInit {
 
-    @Input() mezzo: Mezzo;
+    @Input() mezzoInServizio: MezzoInServizio;
     @Input() idMezzoInServizioHover: string;
     @Input() idMezzoInServizioSelezionato: string;
 
@@ -21,13 +23,21 @@ export class MezzoInServizioComponent implements OnInit {
     @Output() visualizzaEventiRichiesta: EventEmitter<any> = new EventEmitter<any>();
     @Output() actionMezzo: EventEmitter<any> = new EventEmitter<any>();
 
-    constructor() {
+    constructor(private store: Store) {
     }
 
     ngOnInit() {
     }
 
-    cardClasses(stato: StatoMezzo, idMezzo: string) {
+    onListaSquadrePartenza() {
+        const listaSquadre = {
+            idPartenza: this.mezzoInServizio.idPartenza,
+            squadre: this.mezzoInServizio.squadre
+        };
+        this.store.dispatch(new VisualizzaListaSquadrePartenza(listaSquadre));
+    }
+
+    cardClasses(stato: string, idMezzo: string) {
         let _returnClass = statoMezzoBorderClass(stato);
         if (this.idMezzoInServizioHover === idMezzo) {
             _returnClass += ' bg-light';

@@ -2,7 +2,7 @@
     <div class="col-12 scroll-y" style="height:705px">
         <div *ngIf="mezziInServizio" class="row">
             <div *ngFor="let mezzo of mezziInServizio" class="col-6 pl-4 mb-1">
-                <app-mezzo-in-servizio [mezzo]="mezzo" [idMezzoInServizioHover]="idMezzoInServizioHover"
+                <app-mezzo-in-servizio [mezzoInServizio]="mezzo" [idMezzoInServizioHover]="idMezzoInServizioHover"
                                        [idMezzoInServizioSelezionato]="idMezzoInServizioSelezionato"
                                        (hoverIn)="hoverIn($event)" (hoverOut)="hoverOut()"
                                        (selezionato)="selezionato($event)"

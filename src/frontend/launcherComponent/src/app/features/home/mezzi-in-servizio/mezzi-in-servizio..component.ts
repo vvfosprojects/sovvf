@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store, Select } from '@ngxs/store';
 import { ToggleMezziInServizio } from '../store/actions/view/view.actions';
-import { Mezzo } from 'src/app/shared/model/mezzo.model';
 import { ClearMezzoInServizioHover, GetMezziInServizio, SetMezzoInServizioHover, SetMezzoInServizioSelezionato } from '../store/actions/mezzi-in-servizio/mezzi-in-servizio.actions';
 import { MezziInServizioState } from '../store/states/mezzi-in-servizio/mezzi-in-servizio.state';
 import { Observable, Subscription } from 'rxjs';
@@ -9,8 +8,6 @@ import { MezzoActionInterface } from 'src/app/shared/interface/mezzo-action.inte
 import { ActionMezzo, SetRichiestaById } from '../store/actions/richieste/richieste.actions';
 import { RichiesteState } from '../store/states/richieste/richieste.state';
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
-import { statoMezzoBorderClass } from 'src/app/shared/helper/function';
-import { StatoMezzo } from 'src/app/shared/enum/stato-mezzo.enum';
 import {
     SetIdRichiestaEventi,
     ClearEventiRichiesta,
@@ -19,7 +16,8 @@ import {
 import { EventiRichiestaComponent } from '../eventi/eventi-richiesta.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SintesiRichiestaModalComponent } from '../maps/maps-ui/info-window/sintesi-richiesta-modal/sintesi-richiesta-modal.component';
-import { ClearSchedaContattoHover, SetSchedaContattoHover } from '../store/actions/schede-contatto/schede-contatto.actions';
+import { MezzoInServizio } from '../../../shared/interface/mezzo-in-servizio.interface';
+import { Mezzo } from '../../../shared/model/mezzo.model';
 
 @Component({
     selector: 'app-mezzi-in-servizio',
@@ -28,8 +26,8 @@ import { ClearSchedaContattoHover, SetSchedaContattoHover } from '../store/actio
 })
 export class MezziInServizioComponent implements OnInit, OnDestroy {
 
-    @Select(MezziInServizioState.mezziInServizio) mezziInServizio$: Observable<Mezzo[]>;
-    mezziInServizio: Mezzo[];
+    @Select(MezziInServizioState.mezziInServizio) mezziInServizio$: Observable<MezzoInServizio[]>;
+    mezziInServizio: MezzoInServizio[];
     @Select(MezziInServizioState.idMezzoInServizioHover) idMezzoInServizioHover$: Observable<string>;
     idMezzoInServizioHover: string;
     @Select(MezziInServizioState.idMezzoInServizioSelezionato) idMezzoInServizioSelezionato$: Observable<string>;
@@ -44,7 +42,8 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
                 private modalService: NgbModal) {
         this.store.dispatch(new GetMezziInServizio());
         this.subscription.add(
-            this.mezziInServizio$.subscribe((mezzi: Mezzo[]) => {
+            this.mezziInServizio$.subscribe((mezzi: MezzoInServizio[]) => {
+                console.table('Mezzi In Servizio', mezzi);
                 this.mezziInServizio = mezzi;
             })
         );
@@ -72,8 +71,8 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
         this.subscription.unsubscribe();
     }
 
-    onActionMezzo(mezzo: Mezzo, mezzoAction: MezzoActionInterface) {
-        const richiesta = this.richieste.filter(x => x.codice === mezzo.idRichiesta)[0];
+    onActionMezzo(mezzoInServizio: MezzoInServizio, mezzoAction: MezzoActionInterface) {
+        const richiesta = this.richieste.filter(x => x.codice === mezzoInServizio.mezzo.mezzo.idRichiesta)[0];
         mezzoAction.richiesta = richiesta ? richiesta : null;
         mezzoAction.listaMezzi = true;
         this.store.dispatch(new ActionMezzo(mezzoAction));
@@ -86,24 +85,6 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
             backdropClass: 'light-blue-backdrop',
             centered: true
         });
-        // let richiesta: SintesiRichiesta = null;
-        // let richiestaById$: Observable<SintesiRichiesta>;
-        // richiestaById$ = this.store.select(RichiesteState.getRichiestaById).pipe(map(fn => fn(mezzo.idRichiesta)));
-        // this.subscriptionRichiestaById.add(
-        //     richiestaById$.subscribe(r => {
-        //         richiesta = r;
-        //
-        //         if (richiesta) {
-        //             const modal = this.modalService.open(SintesiRichiestaModalComponent, {
-        //                 windowClass: 'xlModal',
-        //                 backdropClass: 'light-blue-backdrop',
-        //                 centered: true
-        //             });
-        //             modal.componentInstance.sintesiRichiesta = richiesta;
-        //             this.subscriptionRichiestaById.unsubscribe();
-        //         }
-        //     })
-        // );
     }
 
     /* Apre il modal per visualizzare gli eventi relativi alla richiesta cliccata */

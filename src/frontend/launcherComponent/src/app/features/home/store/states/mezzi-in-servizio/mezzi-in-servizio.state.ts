@@ -7,12 +7,12 @@ import {
     SetMezzoInServizioHover,
     SetMezzoInServizioSelezionato
 } from '../../actions/mezzi-in-servizio/mezzi-in-servizio.actions';
-import { MezziInServizioService } from 'src/app/core/service/mezzi-in-servizio-service/mezzi-in-servizio.service';
-import { Mezzo } from 'src/app/shared/model/mezzo.model';
 import { ClearMarkerMezzoHover, ClearMarkerMezzoSelezionato, SetMarkerMezzoHover, SetMarkerMezzoSelezionato } from '../../actions/maps/marker.actions';
+import { MezzoInServizio } from '../../../../../shared/interface/mezzo-in-servizio.interface';
+import { MezziInServizioService } from '../../../../../core/service/mezzi-in-servizio-service/mezzi-in-servizio.service';
 
 export interface MezziInServizioStateModel {
-    mezziInServizio: Mezzo[];
+    mezziInServizio: MezzoInServizio[];
     idMezzoInServizioHover: string;
     idMezzoInServizioSelezionato: string;
 }

@@ -13,7 +13,7 @@ import {
     SetIdChiamataInviaPartenza, SetRichiestaById,
     SetRichieste,
     StartInviaPartenzaFromChiamata,
-    UpdateRichiesta
+    UpdateRichiesta, VisualizzaListaSquadrePartenza
 } from '../../actions/richieste/richieste.actions';
 
 // Service
@@ -39,6 +39,8 @@ import { RichiesteEspanseState } from './richieste-espanse.state';
 import { calcolaActionSuggeritaMezzo } from '../../../../../shared/helper/function';
 import { RichiestaGestioneState } from './richiesta-gestione.state';
 import { RichiestaAttivitaUtenteState } from './richiesta-attivita-utente.state';
+import { ListaSquadrePartenzaComponent } from '../../../../../shared';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 export interface RichiesteStateModel {
     richieste: SintesiRichiesta[];
@@ -82,6 +84,7 @@ export class RichiesteState {
     }
 
     constructor(private richiesteService: SintesiRichiesteService,
+                private modalService: NgbModal,
                 private store: Store) {
     }
 
@@ -218,6 +221,14 @@ export class RichiesteState {
         patchState({
             richiestaById: RichiesteStateDefaults.richiestaById
         });
+    }
+
+    @Action(VisualizzaListaSquadrePartenza)
+    visualizzaListaSquadrePartenza({ patchState }: StateContext<RichiesteStateModel>, action: VisualizzaListaSquadrePartenza) {
+        const modal = this.modalService.open(ListaSquadrePartenzaComponent, { windowClass: 'squadrePartenza', backdropClass: 'light-blue-backdrop', centered: true });
+        modal.componentInstance.listaSquadre = action.listaSquadre;
+        modal.result.then(() => console.log('Lista Squadre Partenza ' + action.listaSquadre.idPartenza + ' Aperta'),
+            () => console.log('Lista Squadre Partenza Chiusa'));
     }
 
 }

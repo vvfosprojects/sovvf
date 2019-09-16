@@ -1,4 +1,5 @@
 import { Mezzo } from 'src/app/shared/model/mezzo.model';
+import { MezzoInServizio } from '../../../../../shared/interface/mezzo-in-servizio.interface';
 
 export class GetMezziInServizio {
     static readonly type = '[MezziInServizio] Get Mezzi In Servizio';
@@ -7,7 +8,7 @@ export class GetMezziInServizio {
 export class SetMezziInServizio {
     static readonly type = '[MezziInServizio] Set Mezzi In Servizio';
 
-    constructor(public mezzi: Mezzo[]) {
+    constructor(public mezzi: MezzoInServizio[]) {
     }
 }
 

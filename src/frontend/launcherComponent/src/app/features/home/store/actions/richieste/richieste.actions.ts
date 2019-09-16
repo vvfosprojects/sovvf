@@ -2,6 +2,7 @@ import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.
 import { MezzoActionInterface } from '../../../../../shared/interface/mezzo-action.interface';
 import { StatoRichiesta } from '../../../../../shared/enum/stato-richiesta.enum';
 import { RichiestaActionInterface } from '../../../../../shared/interface/richiesta-action.interface';
+import { ListaSquadre } from '../../../../../shared/interface/lista-squadre';
 
 export class GetRichieste {
     static readonly type = '[Richieste] Get Lista Richieste API';
@@ -91,4 +92,11 @@ export class SetRichiestaById {
 
 export class ClearRichiestaById {
     static readonly type = '[Richieste] Clear Richiesta by Id';
+}
+
+export class VisualizzaListaSquadrePartenza {
+    static readonly type = '[Richieste] Visualizza Lista Squadre Partenza';
+
+    constructor(public listaSquadre: ListaSquadre) {
+    }
 }

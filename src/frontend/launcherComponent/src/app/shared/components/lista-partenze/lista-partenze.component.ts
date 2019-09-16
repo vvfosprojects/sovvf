@@ -1,10 +1,10 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ListaSquadre } from '../../interface/lista-squadre';
-import { ListaSquadrePartenzaComponent } from '../..';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Partenza } from '../../model/partenza.model';
 import { MezzoActionInterface } from '../../interface/mezzo-action.interface';
 import { StatoRichiesta } from '../../enum/stato-richiesta.enum';
+import { Store } from '@ngxs/store';
+import { VisualizzaListaSquadrePartenza } from '../../../features/home/store/actions/richieste/richieste.actions';
 
 @Component({
     selector: 'app-lista-partenze',
@@ -17,17 +17,13 @@ export class ListaPartenzeComponent {
     @Input() statoRichiesta: StatoRichiesta;
     @Input() inGestione: boolean;
 
-    @Output() actionMezzo: EventEmitter<MezzoActionInterface> = new EventEmitter();
+    @Output() actionMezzo: EventEmitter<MezzoActionInterface> = new EventEmitter<MezzoActionInterface>();
 
-    constructor(private modalService: NgbModal) {
+    constructor(private store: Store) {
     }
 
     onListaSquadrePartenza(listaSquadre: ListaSquadre) {
-        console.log(listaSquadre);
-        const modal = this.modalService.open(ListaSquadrePartenzaComponent, { windowClass: 'squadrePartenza', backdropClass: 'light-blue-backdrop', centered: true });
-        modal.componentInstance.listaSquadre = listaSquadre;
-        modal.result.then(() => console.log('Lista Squadre Partenza ' + listaSquadre.idPartenza + ' Aperta'),
-            () => console.log('Lista Squadre Partenza Chiusa'));
+        this.store.dispatch(new VisualizzaListaSquadrePartenza(listaSquadre));
     }
 
     checkNumeroPartenze(partenze: Partenza[]) {
