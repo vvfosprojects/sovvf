@@ -32,7 +32,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneMezziInServizio.Lista
         /// <summary>
         ///   La sintesi delle richieste di assistenza
         /// </summary>
-        public List<Mezzo> ListaMezzi
+        public List<MezzoInServizio> ListaMezzi
         { get; set; }
     }
 }

@@ -48,6 +48,10 @@ namespace SO115App.Models.Classi.Utility
         public static string MezzoInSede = "In Sede";
         public static string MezzoRientrato = "Rientrato";
         public static string MezzoInViaggio = "In Viaggio";
+        public static string MezzoIstituto = "Istituto";
+        public static string PosizioneRadioSenzaMezzo = "PosizioneRadioSenzaMezzo";
+        public static string MezzoFuoriServizio = "Fuori Servizio";
+        public static string MezzoStatoSconosciuto = "Stato Sconosciuto";
 
         #endregion StatiMezzi
 

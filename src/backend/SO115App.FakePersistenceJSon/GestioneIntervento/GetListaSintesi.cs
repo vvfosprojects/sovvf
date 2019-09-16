@@ -80,31 +80,8 @@ namespace SO115App.FakePersistenceJSon.GestioneIntervento
 
                 return listaSintesiRichieste;
             }
-            else
-            {
-                return listaSintesiRichiesteVuota;
-            }
-        }
 
-        private string MapStatoRichiesta(SintesiRichieste sintesi)
-        {
-            var stato = Costanti.Chiamata;
-
-            if (sintesi.Chiusa)
-                stato = Costanti.RichiestaChiusa;
-
-            if (sintesi.Sospesa)
-                stato = Costanti.RichiestaSospesa;
-
-            if (sintesi.Aperta)
-            {
-                if (sintesi.Presidiato)
-                    stato = Costanti.RichiestaPresidiata;
-                else if (sintesi.IstantePrimaAssegnazione != null)
-                    stato = Costanti.RichiestaAssegnata;
-            }
-
-            return stato;
+            return listaSintesiRichiesteVuota;
         }
     }
 }

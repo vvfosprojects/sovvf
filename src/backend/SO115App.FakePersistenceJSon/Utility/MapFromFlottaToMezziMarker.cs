@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using SO115App.FakePersistenceJSon.GestioneIntervento;
 using SO115App.API.Models.Classi.Soccorso;
+using SO115App.Models.Classi.Utility;
 
 namespace SO115App.FakePersistence.JSon.Utility
 {
@@ -17,139 +18,167 @@ namespace SO115App.FakePersistence.JSon.Utility
     {
         public List<MezzoMarker> MappaFlottaMezziSuMezziMarker(List<MapperMezziFromGeoFleet> flottaMezzi)
         {
-            List<MezzoMarker> ListaMezziFlotta = new List<MezzoMarker>();
-            String StatoMezzo = "";
-            String CodiceSede = "";
-            String CodiceTipo = "";
-            String IdRic = "";
+            var listaMezziFlotta = new List<MezzoMarker>();
+            var codiceSede = "";
+            var codiceTipo = "";
 
-            foreach (MapperMezziFromGeoFleet mezzoFlotta in flottaMezzi)
+            foreach (var mezzoFlotta in flottaMezzi)
             {
+                var statoMezzo = "";
                 if (mezzoFlotta.infoSO115 != null)
-                    StatoMezzo = mezzoFlotta.infoSO115.stato;
+                    statoMezzo = mezzoFlotta.infoSO115.stato;
                 else
-                    StatoMezzo = "0";
+                    statoMezzo = "0";
 
                 if (mezzoFlotta.classiMezzo[2].Length == 2)
-                    CodiceTipo = mezzoFlotta.classiMezzo[2];
+                    codiceTipo = mezzoFlotta.classiMezzo[2];
                 else if (mezzoFlotta.classiMezzo[0].Length == 2)
-                    CodiceTipo = mezzoFlotta.classiMezzo[0];
+                    codiceTipo = mezzoFlotta.classiMezzo[0];
                 else if (mezzoFlotta.classiMezzo[1].Length == 2)
-                    CodiceTipo = mezzoFlotta.classiMezzo[1];
+                    codiceTipo = mezzoFlotta.classiMezzo[1];
 
                 if (mezzoFlotta.classiMezzo[2].Contains(":"))
-                    CodiceSede = mezzoFlotta.classiMezzo[2];
+                    codiceSede = mezzoFlotta.classiMezzo[2];
                 else if (mezzoFlotta.classiMezzo[0].Contains(":"))
-                    CodiceSede = mezzoFlotta.classiMezzo[0];
+                    codiceSede = mezzoFlotta.classiMezzo[0];
                 else if (mezzoFlotta.classiMezzo[1].Contains(":"))
-                    CodiceSede = mezzoFlotta.classiMezzo[1];
+                    codiceSede = mezzoFlotta.classiMezzo[1];
 
-                if (StatoMezzo != "6" && StatoMezzo != "7" && StatoMezzo != "0")
+                if (statoMezzo == "6" || statoMezzo == "7" || statoMezzo == "0") continue;
+
+                var mezzo = new MezzoMarker()
                 {
-                    MezzoMarker mezzo = new MezzoMarker()
-                    {
-                        Mezzo = new API.Models.Classi.Condivise.Mezzo(mezzoFlotta.codiceMezzo, mezzoFlotta.codiceMezzo, CodiceTipo, GetStatoMezzoByCodiceMezzo(StatoMezzo), 0, GetSedeDiAppartenenza(CodiceSede)),
-                        Coordinate = CodificaLocalizzazione(mezzoFlotta.Localizzazione),
-                        InfoRichiesta = GetInfoRichiestaByCodiceMezzo(mezzoFlotta.codiceMezzo)
-                    };
-                    ListaMezziFlotta.Add(mezzo);
-                }
+                    Mezzo = new Mezzo(mezzoFlotta.codiceMezzo, mezzoFlotta.codiceMezzo, codiceTipo, GetStatoMezzoByCodiceMezzo(statoMezzo), 0, GetSedeDiAppartenenza(codiceSede)),
+                    Coordinate = CodificaLocalizzazione(mezzoFlotta.Localizzazione),
+                    InfoRichiesta = GetInfoRichiestaByCodiceMezzo(mezzoFlotta.codiceMezzo)
+                };
+                listaMezziFlotta.Add(mezzo);
             }
 
-            return ListaMezziFlotta.Where(x => x.Mezzo.Distaccamento != null).ToList();
+            return listaMezziFlotta.Where(x => x.Mezzo.Distaccamento != null).ToList();
         }
 
-        private InfoRichiesta GetInfoRichiestaByCodiceMezzo(string codiceMezzo)
+        private static InfoRichiesta GetInfoRichiestaByCodiceMezzo(string codiceMezzo)
         {
-            MezzoMarker mezzoComp = new MezzoMarker();
-            GetRichiestaById getRichiesta = new GetRichiestaById();
-            RichiestaAssistenza richiesta = new RichiestaAssistenza();
+            var getRichiesta = new GetRichiestaById();
 
-            string idRichiesta;
-            string filepath = CostantiJson.MezziComposizione;
+            var filepath = CostantiJson.MezziComposizione;
             string json;
             using (StreamReader r = new StreamReader(filepath))
             {
                 json = r.ReadToEnd();
             }
 
-            List<MezzoMarker> MezziComposizione = JsonConvert.DeserializeObject<List<MezzoMarker>>(json);
+            var mezziComposizione = JsonConvert.DeserializeObject<List<MezzoMarker>>(json);
 
-            mezzoComp = MezziComposizione.FirstOrDefault(x => x.Mezzo.Codice.Equals(codiceMezzo));
+            var mezzoComp = mezziComposizione.Find(x => x.Mezzo.Codice.Equals(codiceMezzo));
 
-            if (mezzoComp != null)
+            if (mezzoComp == null) return null;
+
+            var richiesta = getRichiesta.Get(mezzoComp.Mezzo.IdRichiesta);
+            if (richiesta == null) return null;
+
+            return new InfoRichiesta()
             {
-                richiesta = getRichiesta.Get(mezzoComp.Mezzo.IdRichiesta);
-                InfoRichiesta info = new InfoRichiesta()
-                {
-                    CodiceRichiesta = richiesta.CodiceRichiesta,
-                    Indirizzo = richiesta.Localita.Indirizzo
-                };
-
-                return info;
-            }
-            else
-                return null;
+                CodiceRichiesta = richiesta.CodiceRichiesta,
+                Indirizzo = richiesta.Localita.Indirizzo
+            };
         }
 
         public Coordinate CodificaLocalizzazione(coordinate localizzazione)
         {
-            Coordinate coordinateMezzo = new Coordinate(Convert.ToDouble(localizzazione.lat.Replace(".", ",")), Convert.ToDouble(localizzazione.lon.Replace(".", ",")));
-
-            return coordinateMezzo;
+            return new Coordinate(Convert.ToDouble(localizzazione.lat.Replace(".", ",")), Convert.ToDouble(localizzazione.lon.Replace(".", ",")));
         }
 
         public Sede GetSedeDiAppartenenza(string codiceSede)
         {
-            GetSedi getSedi = new GetSedi();
-            string CodiceSedePulito = codiceSede.Split(':')[1] + ".1000";
+            var getSedi = new GetSedi();
+            var codiceSedePulito = codiceSede.Split(':')[1] + ".1000";
 
-            return getSedi.GetSedeByCodiceSede(CodiceSedePulito);
+            return getSedi.GetSedeByCodiceSede(codiceSedePulito);
         }
 
-        public string GetStatoMezzoByCodiceMezzo(string StatoMezzo)
+        public List<Mezzo> MappaFlottaMezziSuMezzo(List<MapperMezziFromGeoFleet> flottaMezzi)
         {
-            string StatoMezzoDecodificato;
-            switch (StatoMezzo)
+            var listaMezzi = new List<Mezzo>();
+            var codiceSede = "";
+            var codiceTipo = "";
+
+            foreach (var mezzoFlotta in flottaMezzi)
+            {
+                var statoMezzo = "";
+                if (mezzoFlotta.infoSO115 != null)
+                    statoMezzo = mezzoFlotta.infoSO115.stato;
+                else
+                    statoMezzo = "0";
+
+                if (mezzoFlotta.classiMezzo[2].Length == 2)
+                    codiceTipo = mezzoFlotta.classiMezzo[2];
+                else if (mezzoFlotta.classiMezzo[0].Length == 2)
+                    codiceTipo = mezzoFlotta.classiMezzo[0];
+                else if (mezzoFlotta.classiMezzo[1].Length == 2)
+                    codiceTipo = mezzoFlotta.classiMezzo[1];
+
+                if (mezzoFlotta.classiMezzo[2].Contains(":"))
+                    codiceSede = mezzoFlotta.classiMezzo[2];
+                else if (mezzoFlotta.classiMezzo[0].Contains(":"))
+                    codiceSede = mezzoFlotta.classiMezzo[0];
+                else if (mezzoFlotta.classiMezzo[1].Contains(":"))
+                    codiceSede = mezzoFlotta.classiMezzo[1];
+
+                if (statoMezzo == "6" || statoMezzo == "7" || statoMezzo == "0") continue;
+
+                var mezzo = new Mezzo(mezzoFlotta.codiceMezzo, mezzoFlotta.codiceMezzo, codiceTipo,
+                    GetStatoMezzoByCodiceMezzo(statoMezzo), 0, GetSedeDiAppartenenza(codiceSede));
+                listaMezzi.Add(mezzo);
+            }
+
+            return listaMezzi;
+        }
+
+        public string GetStatoMezzoByCodiceMezzo(string statoMezzo)
+        {
+            string statoMezzoDecodificato;
+            switch (statoMezzo)
             {
                 case "0":
-                    StatoMezzoDecodificato = "StatoSconosciuto";
+                    statoMezzoDecodificato = Costanti.MezzoStatoSconosciuto;
                     break;
 
                 case "1":
-                    StatoMezzoDecodificato = "InViaggio";
+                    statoMezzoDecodificato = Costanti.MezzoInViaggio;
                     break;
 
                 case "2":
-                    StatoMezzoDecodificato = "SulPosto";
+                    statoMezzoDecodificato = Costanti.MezzoSulPosto;
                     break;
 
                 case "3":
-                    StatoMezzoDecodificato = "InRientro";
+                    statoMezzoDecodificato = Costanti.MezzoInRientro;
                     break;
 
                 case "4":
-                    StatoMezzoDecodificato = "InSede";
+                    statoMezzoDecodificato = Costanti.MezzoInSede;
                     break;
 
                 case "5":
-                    StatoMezzoDecodificato = "Istituto";
+                    statoMezzoDecodificato = Costanti.MezzoIstituto;
                     break;
 
                 case "6":
-                    StatoMezzoDecodificato = "PosizioneRadioSenzaMezzo";
+                    statoMezzoDecodificato = Costanti.PosizioneRadioSenzaMezzo;
                     break;
 
                 case "7":
-                    StatoMezzoDecodificato = "FuoriServizio";
+                    statoMezzoDecodificato = Costanti.MezzoFuoriServizio;
                     break;
 
                 default:
-                    StatoMezzoDecodificato = "InSede";
+                    statoMezzoDecodificato = Costanti.MezzoInSede;
                     break;
             }
 
-            return StatoMezzoDecodificato;
+            return statoMezzoDecodificato;
         }
     }
 }

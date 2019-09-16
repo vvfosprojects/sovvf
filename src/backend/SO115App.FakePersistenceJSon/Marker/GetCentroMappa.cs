@@ -30,26 +30,27 @@ namespace SO115App.FakePersistenceJSon.Marker
 {
     public class GetCentroMappa : IGetCentroMappaMarker
     {
-        public CentroMappa GetCentroMappaMarker(string CodiceSede)
+        public CentroMappa GetCentroMappaMarker(string codiceSede)
         {
-            string CodiceSedeCentroMappa = CodiceSede.Substring(0, 2) + ".1000";
-            string filepath = CostantiJson.MarkerSedi;
+            var codiceSedeCentroMappa = codiceSede.Substring(0, 2) + ".1000";
+            var filepath = CostantiJson.MarkerSedi;
             string json;
             using (StreamReader r = new StreamReader(filepath))
             {
                 json = r.ReadToEnd();
             }
 
-            List<SedeMarker> ListaSedi = JsonConvert.DeserializeObject<List<SedeMarker>>(json);
-            SedeMarker SedeCentroMappa = ListaSedi.FirstOrDefault(x => x.Codice == CodiceSedeCentroMappa);
+            var listaSedi = JsonConvert.DeserializeObject<List<SedeMarker>>(json);
+            var sedeCentroMappa = listaSedi.FirstOrDefault(x => x.Codice == codiceSedeCentroMappa);
 
-            CentroMappa centroMappa = new CentroMappa()
-            {
-                CoordinateCentro = SedeCentroMappa.Coordinate,
-                Zoom = 10
-            };
+            if (sedeCentroMappa != null)
+                return new CentroMappa()
+                {
+                    CoordinateCentro = sedeCentroMappa.Coordinate,
+                    Zoom = 10
+                };
 
-            return centroMappa;
+            return null;
         }
     }
 }

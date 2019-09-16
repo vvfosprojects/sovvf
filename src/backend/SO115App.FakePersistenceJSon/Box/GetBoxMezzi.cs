@@ -23,45 +23,46 @@ using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Boxes;
+using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Marker;
 using SO115App.FakePersistence.JSon.Classi;
 using SO115App.FakePersistence.JSon.Utility;
+using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Box;
 
 namespace SO115App.FakePersistenceJSon.Box
 {
     public class GetBoxMezzi : IGetBoxMezzi
     {
-        public BoxMezzi Get(string CodiceSede)
+        public BoxMezzi Get(string codiceSede)
         {
-            MapFromFlottaToMezziMarker mapper = new MapFromFlottaToMezziMarker();
+            var mapper = new MapFromFlottaToMezziMarker();
             var mezzi = new BoxMezzi();
-            List<MezzoMarker> ListaMezzi = new List<MezzoMarker>();
 
-            string filepath = CostantiJson.FlottaMezzi;
+            var filepath = CostantiJson.FlottaMezzi;
             string json;
-            using (StreamReader r = new StreamReader(filepath))
+            using (var r = new StreamReader(filepath))
             {
                 json = r.ReadToEnd();
             }
 
-            List<MapperMezziFromGeoFleet> FlottaMezzi = JsonConvert.DeserializeObject<List<MapperMezziFromGeoFleet>>(json);
-            ListaMezzi = mapper.MappaFlottaMezziSuMezziMarker(FlottaMezzi).Where(x => x.Mezzo.Distaccamento.Codice == CodiceSede).ToList();
+            var flottaMezzi = JsonConvert.DeserializeObject<List<MapperMezziFromGeoFleet>>(json);
+            var listaMezzi = mapper.MappaFlottaMezziSuMezzo(flottaMezzi).FindAll(x => x.Distaccamento.Codice.Equals(codiceSede));
 
-            mezzi.InSede = ListaMezzi.Where(x => x.Mezzo.Stato == "InSede")
-                .Select(x => x.Mezzo.Stato)
+            mezzi.InSede = listaMezzi.Where(x => x.Stato == Costanti.MezzoInSede)
+                .Select(x => x.Stato)
                 .Count();
-            mezzi.InViaggio = ListaMezzi.Where(x => x.Mezzo.Stato == "InViaggio")
-                .Select(x => x.Mezzo.Stato)
+            mezzi.InViaggio = listaMezzi.Where(x => x.Stato == Costanti.MezzoInViaggio)
+                .Select(x => x.Stato)
                 .Count();
-            mezzi.InRientro = ListaMezzi.Where(x => x.Mezzo.Stato == "InRientro")
-                .Select(x => x.Mezzo.Stato)
+            mezzi.InRientro = listaMezzi.Where(x => x.Stato == Costanti.MezzoInRientro)
+                .Select(x => x.Stato)
                 .Count();
-            mezzi.SulPosto = ListaMezzi.Where(x => x.Mezzo.Stato == "SulPosto")
-                .Select(x => x.Mezzo.Stato)
+            mezzi.SulPosto = listaMezzi.Where(x => x.Stato == Costanti.MezzoSulPosto)
+                .Select(x => x.Stato)
                 .Count();
-            mezzi.Istituto = ListaMezzi.Where(x => x.Mezzo.Stato == "Istituto")
-                .Select(x => x.Mezzo.Stato)
+            mezzi.Istituto = listaMezzi.Where(x => x.Stato == Costanti.MezzoIstituto)
+                .Select(x => x.Stato)
                 .Count();
             mezzi.InServizio = mezzi.InSede + mezzi.InRientro + mezzi.SulPosto + mezzi.Istituto + mezzi.InViaggio;
 

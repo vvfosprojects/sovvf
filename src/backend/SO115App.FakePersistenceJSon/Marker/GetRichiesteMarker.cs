@@ -65,7 +65,7 @@ namespace SO115App.FakePersistenceJSon.Marker
             if (filtroAreaMappa.FiltroRichieste == null) return listaSintesiRichiestaMarkers;
             var listaRichiesteFiltrate = new List<SintesiRichiestaMarker>();
 
-            if (filtroAreaMappa.FiltroRichieste.Stato == null) return listaSintesiRichiestaMarkers;
+            if (!filtroAreaMappa.FiltroRichieste.Stato.Any()) return filtroAreaMappa.FiltroRichieste.Priorita == null ? listaSintesiRichiestaMarkers : listaSintesiRichiestaMarkers.FindAll(x => x.PrioritaRichiesta >= filtroAreaMappa.FiltroRichieste.Priorita); ;
 
             foreach (var statoRichiesta in filtroAreaMappa.FiltroRichieste.Stato)
             {
@@ -90,7 +90,7 @@ namespace SO115App.FakePersistenceJSon.Marker
                         listaSintesiRichiesteMarker.FindAll(x => x.Stato == Costanti.RichiestaSospesa));
                 }
             }
-            return filtroAreaMappa.FiltroRichieste.Priorita == null ? listaRichiesteFiltrate : listaRichiesteFiltrate.FindAll(x => x.PrioritaRichiesta == filtroAreaMappa.FiltroRichieste.Priorita);
+            return filtroAreaMappa.FiltroRichieste.Priorita == null ? listaRichiesteFiltrate : listaRichiesteFiltrate.FindAll(x => x.PrioritaRichiesta >= filtroAreaMappa.FiltroRichieste.Priorita);
         }
     }
 }

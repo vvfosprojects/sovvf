@@ -22,32 +22,56 @@ using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Composizione;
+using SO115App.API.Models.Classi.Marker;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi;
+using SO115App.FakePersistence.JSon.Classi;
 using SO115App.FakePersistence.JSon.Utility;
+using SO115App.FakePersistenceJSon.GestioneIntervento;
+using SO115App.Models.Classi.ListaMezziInServizio;
 
 namespace SO115App.FakePersistenceJSon.GestioneMezzi
 {
     public class GetListaMezzi : IGetListaMezzi
     {
-        public List<API.Models.Classi.Condivise.Mezzo> Get(string codiceSede)
+        public List<MezzoInServizio> Get(string codiceSede)
         {
-            var filepath = CostantiJson.MezziComposizione;
+            var mapper = new MapFromFlottaToMezziMarker();
+            var filepath = CostantiJson.FlottaMezzi;
+            var getRichiestaById = new GetRichiestaById();
             string json;
             using (var r = new StreamReader(filepath))
             {
                 json = r.ReadToEnd();
             }
 
-            var composizioneMezzi = JsonConvert.DeserializeObject<List<ComposizioneMezzi>>(json);
+            var flottaMezzi = JsonConvert.DeserializeObject<List<MapperMezziFromGeoFleet>>(json);
+            var listaMezziMarker = mapper.MappaFlottaMezziSuMezziMarker(flottaMezzi).FindAll(x => x.Mezzo.Distaccamento.Codice.Equals(codiceSede));
+            var mezzoInServizio = new MezzoInServizio();
+            var listaMezzoInServizio = new List<MezzoInServizio>();
 
-            var listaMezzi = new List<API.Models.Classi.Condivise.Mezzo>();
-
-            foreach (var composizione in composizioneMezzi.Where(x => x.Mezzo.Distaccamento.Codice == codiceSede).ToList())
+            foreach (var mezzoMarkerIn in listaMezziMarker)
             {
-                listaMezzi.Add(composizione.Mezzo);
+                mezzoInServizio.Mezzo = mezzoMarkerIn;
+                if (mezzoInServizio.Mezzo.Mezzo.IdRichiesta != null)
+                {
+                    var richiesta = getRichiestaById.Get(mezzoInServizio.Mezzo.Mezzo.IdRichiesta);
+                    foreach (var partenza in richiesta.Partenze)
+                    {
+                        if (partenza.Partenza.Mezzo.Codice == mezzoInServizio.Mezzo.Mezzo.Codice)
+                        {
+                            mezzoInServizio.Squadre = partenza.Partenza.Squadre;
+                        }
+                    }
+                }
+                else
+                {
+                    mezzoInServizio.Squadre = null;
+                }
+
+                listaMezzoInServizio.Add(mezzoInServizio);
             }
 
-            return listaMezzi;
+            return listaMezzoInServizio;
         }
     }
 }

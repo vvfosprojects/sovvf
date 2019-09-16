@@ -34,6 +34,6 @@ namespace SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi
         /// </summary>
         /// <param name="codiceSede">Codice della sede di appartenenza</param>
         /// <returns>L'anagrafica del mezzo</returns>
-        List<Mezzo> Get(string codiceSede);
+        List<MezzoInServizio> Get(string codiceSede);
     }
 }
