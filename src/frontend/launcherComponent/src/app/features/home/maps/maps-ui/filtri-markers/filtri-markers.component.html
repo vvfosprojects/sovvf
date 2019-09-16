@@ -4,7 +4,10 @@
     <div id="menu-mappa" ngbDropdownMenu class="px-2">
         <app-filtri-markers-richieste [filtroRichieste]="filtroRichieste$ | async"
                                       (changePriorita)="changePriorita($event)"
-                                      (changeStati)="changeStati($event)"></app-filtri-markers-richieste>
-        <!-- <app-filtri-markers-mezzi></app-filtri-markers-mezzi> -->
+                                      (changeStati)="changeStatiRichiesta($event)"></app-filtri-markers-richieste>
+        <hr class="my-2">
+        <app-filtri-markers-mezzi [filtroMezzi]="filtroMezzi$ | async"
+                                  (changeStati)="changeStatiMezzi($event)"
+                                  (changeTipologie)="changeTipologie($event)"></app-filtri-markers-mezzi>
     </div>
 </div>

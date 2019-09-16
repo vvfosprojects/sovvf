@@ -1,7 +1,7 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { FiltroRichieste } from '../../../maps/maps-model/filtro-richieste.interface';
 import { FiltroMezzi } from '../../../maps/maps-model/filtro-mezzi.interface';
-import { SetPropritaRichiesta, UpdateStatiRichiesta } from '../../actions/maps/filtri-markers.actions';
+import { SetPropritaRichiesta, UpdateStatiMezzi, UpdateStatiRichiesta, UpdateTipologieMezzi } from '../../actions/maps/filtri-markers.actions';
 import { Priorita } from '../../../../../shared/model/sintesi-richiesta.model';
 
 export interface FiltriMarkersStateModel {
@@ -31,6 +31,11 @@ export class FiltriMarkersState {
         return state.filtroRichieste;
     }
 
+    @Selector()
+    static filtroMezzi(state: FiltriMarkersStateModel) {
+        return state.filtroMezzi;
+    }
+
     @Action(SetPropritaRichiesta)
     setPropritaRichiesta({ getState, patchState }: StateContext<FiltriMarkersStateModel>, action: SetPropritaRichiesta) {
         const state = getState();
@@ -49,6 +54,28 @@ export class FiltriMarkersState {
             filtroRichieste: {
                 stato: action.statiFiltro,
                 priorita: state.filtroRichieste.priorita
+            }
+        });
+    }
+
+    @Action(UpdateStatiMezzi)
+    updateStatiMezzi({ getState, patchState }: StateContext<FiltriMarkersStateModel>, action: UpdateStatiMezzi) {
+        const state = getState();
+        patchState({
+            filtroMezzi: {
+                tipologia: state.filtroMezzi.tipologia,
+                stato: action.statiFiltro
+            }
+        });
+    }
+
+    @Action(UpdateTipologieMezzi)
+    updateTipologieMezzi({ getState, patchState }: StateContext<FiltriMarkersStateModel>, action: UpdateTipologieMezzi) {
+        const state = getState();
+        patchState({
+            filtroMezzi: {
+                tipologia: action.tipologie,
+                stato: state.filtroMezzi.stato
             }
         });
     }

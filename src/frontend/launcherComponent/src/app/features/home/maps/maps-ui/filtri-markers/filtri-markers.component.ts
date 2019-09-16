@@ -5,8 +5,10 @@ import { Observable } from 'rxjs';
 import { FiltriMarkersState } from '../../../store/states/maps/filtri-markers.state';
 import { FiltroRichieste } from '../../maps-model/filtro-richieste.interface';
 import { Priorita } from '../../../../../shared/model/sintesi-richiesta.model';
-import { SetPropritaRichiesta, UpdateStatiRichiesta } from '../../../store/actions/maps/filtri-markers.actions';
+import { SetPropritaRichiesta, UpdateStatiMezzi, UpdateStatiRichiesta, UpdateTipologieMezzi } from '../../../store/actions/maps/filtri-markers.actions';
 import { StatoRichiesta } from '../../../../../shared/enum/stato-richiesta.enum';
+import { FiltroMezzi } from '../../maps-model/filtro-mezzi.interface';
+import { StatoMezzo } from '../../../../../shared/enum/stato-mezzo.enum';
 
 @Component({
     selector: 'app-filtri-markers',
@@ -17,6 +19,7 @@ import { StatoRichiesta } from '../../../../../shared/enum/stato-richiesta.enum'
 export class FiltriMarkersComponent implements OnInit {
 
     @Select(FiltriMarkersState.filtroRichieste) filtroRichieste$: Observable<FiltroRichieste>;
+    @Select(FiltriMarkersState.filtroMezzi) filtroMezzi$: Observable<FiltroMezzi>;
 
     constructor(private store: Store,
                 config: NgbDropdownConfig) {
@@ -31,7 +34,15 @@ export class FiltriMarkersComponent implements OnInit {
         this.store.dispatch(new SetPropritaRichiesta(priorita));
     }
 
-    changeStati(statiRichiesta: StatoRichiesta[]) {
+    changeStatiRichiesta(statiRichiesta: StatoRichiesta[]) {
         this.store.dispatch(new UpdateStatiRichiesta(statiRichiesta));
+    }
+
+    changeStatiMezzi(statiMezzi: StatoMezzo[]) {
+        this.store.dispatch(new UpdateStatiMezzi(statiMezzi));
+    }
+
+    changeTipologie(tipologie: string[]) {
+        this.store.dispatch(new UpdateTipologieMezzi(tipologie));
     }
 }
