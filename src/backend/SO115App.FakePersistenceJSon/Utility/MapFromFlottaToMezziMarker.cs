@@ -11,6 +11,7 @@ using System.Text;
 using SO115App.FakePersistenceJSon.GestioneIntervento;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.Models.Classi.Utility;
+using System.Globalization;
 
 namespace SO115App.FakePersistence.JSon.Utility
 {
@@ -87,8 +88,8 @@ namespace SO115App.FakePersistence.JSon.Utility
 
         public Coordinate CodificaLocalizzazione(coordinate localizzazione)
         {
-            var coordinate = new Coordinate(Convert.ToDouble(localizzazione.lat),
-                Convert.ToDouble(localizzazione.lon));
+            var coordinate = new Coordinate(double.Parse(localizzazione.lat, CultureInfo.CreateSpecificCulture("en-US")), Double.Parse(localizzazione.lon, CultureInfo.CreateSpecificCulture("en-US")));
+
             //return new Coordinate(Convert.ToDouble(localizzazione.lat.Replace(".", ",")), Convert.ToDouble(localizzazione.lon.Replace(".", ",")));
             return coordinate;
         }
