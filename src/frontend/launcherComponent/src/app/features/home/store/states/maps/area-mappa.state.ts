@@ -9,6 +9,7 @@ import { MapsFiltroState } from './maps-filtro.state';
 import { FiltriMarkersState } from './filtri-markers.state';
 import { FiltroRichieste } from '../../../maps/maps-model/filtro-richieste.interface';
 import { FiltroMezzi } from '../../../maps/maps-model/filtro-mezzi.interface';
+import { ReducerFiltroMarker } from '../../actions/maps/maps-filtro.actions';
 
 export interface AreaMappaStateModel {
     areaMappa: AreaMappa;
@@ -38,11 +39,17 @@ export class AreaMappaState {
             }));
         this.filtroRichieste$.subscribe((filtroRichieste: FiltroRichieste) => {
             if (filtroRichieste) {
+                if (filtroRichieste.priorita || filtroRichieste.stato.length > 0) {
+                    this.store.dispatch(new ReducerFiltroMarker('richiesta'));
+                }
                 this.store.dispatch(new GetMarkersMappa());
             }
         });
         this.filtroMezzi$.subscribe((filtroMezzi: FiltroMezzi) => {
             if (filtroMezzi) {
+                if (filtroMezzi.stato.length > 0 || filtroMezzi.tipologia.length > 0) {
+                    this.store.dispatch(new ReducerFiltroMarker('mezzo'));
+                }
                 this.store.dispatch(new GetMarkersMappa());
             }
         });

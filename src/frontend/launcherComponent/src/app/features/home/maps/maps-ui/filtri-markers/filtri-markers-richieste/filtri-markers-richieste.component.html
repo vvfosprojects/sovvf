@@ -1,6 +1,6 @@
 <h6>Richieste</h6>
 <label for="priorita" class="mr-2">Priorità</label>
-<ngb-rating id="priorita" [rate]="filtroRichieste.priorita" [starTemplate]="t" [max]="5"
+<ngb-rating id="priorita" [starTemplate]="t" [max]="5"
             (rateChange)="changePriorita.emit($event)"></ngb-rating>
 <ng-template #t let-fill="fill" let-index="index">
             <span class="circle" [class.filled]="fill === 100" [class.bad]="index > 2 && fill === 100">

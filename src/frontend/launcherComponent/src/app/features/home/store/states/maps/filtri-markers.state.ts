@@ -2,7 +2,6 @@ import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { FiltroRichieste } from '../../../maps/maps-model/filtro-richieste.interface';
 import { FiltroMezzi } from '../../../maps/maps-model/filtro-mezzi.interface';
 import { SetPropritaRichiesta, UpdateStatiMezzi, UpdateStatiRichiesta, UpdateTipologieMezzi } from '../../actions/maps/filtri-markers.actions';
-import { Priorita } from '../../../../../shared/model/sintesi-richiesta.model';
 
 export interface FiltriMarkersStateModel {
     filtroRichieste: FiltroRichieste;
@@ -12,7 +11,7 @@ export interface FiltriMarkersStateModel {
 export const FiltriMarkersStateDefaults: FiltriMarkersStateModel = {
     filtroRichieste: {
         stato: [],
-        priorita: Priorita.Bassissima
+        priorita: null
     },
     filtroMezzi: {
         tipologia: [],
