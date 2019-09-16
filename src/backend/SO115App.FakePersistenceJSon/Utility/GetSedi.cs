@@ -63,16 +63,16 @@ namespace SO115App.FakePersistenceJSon.Utility
 
         public Sede GetSedeByCodiceSede(string codiceSede)
         {
-            string filepath = CostantiJson.MarkerSedi;
+            var filepath = CostantiJson.MarkerSedi;
             string json;
             using (StreamReader r = new StreamReader(filepath))
             {
                 json = r.ReadToEnd();
             }
 
-            List<Sede> ListaSediMarker = JsonConvert.DeserializeObject<List<Sede>>(json);
+            var listaSediMarker = JsonConvert.DeserializeObject<List<Sede>>(json);
 
-            return ListaSediMarker.FirstOrDefault(x => x.Codice.Equals(codiceSede));
+            return listaSediMarker.Find(x => x.Codice.Equals(codiceSede));
         }
     }
 }

@@ -36,9 +36,8 @@ namespace SO115App.FakePersistenceJSon.Marker
     {
         public List<MezzoMarker> GetListaMezziMarker(AreaMappa filtroAreaMappa)
         {
-            MapFromFlottaToMezziMarker mapper = new MapFromFlottaToMezziMarker();
-            List<MezzoMarker> ListaMezzi = new List<MezzoMarker>();
-            List<MezzoMarker> ListaMezziFilter = new List<MezzoMarker>();
+            var mapper = new MapFromFlottaToMezziMarker();
+            var listaMezziFilter = new List<MezzoMarker>();
 
             string filepath = CostantiJson.FlottaMezzi;
             string json;
@@ -49,25 +48,14 @@ namespace SO115App.FakePersistenceJSon.Marker
 
             try
             {
-                List<MapperMezziFromGeoFleet> FlottaMezzi = JsonConvert.DeserializeObject<List<MapperMezziFromGeoFleet>>(json);
-                ListaMezzi = mapper.MappaFlottaMezziSuMezziMarker(FlottaMezzi);
+                var flottaMezzi = JsonConvert.DeserializeObject<List<MapperMezziFromGeoFleet>>(json);
+                var listaMezzi = mapper.MappaFlottaMezziSuMezziMarker(flottaMezzi);
 
-                if (filtroAreaMappa == null)
-                    return ListaMezziFilter = ListaMezzi;
-                else
-                {
-                    foreach (MezzoMarker mezzo in ListaMezzi)
-                    {
-                        if (((mezzo.Coordinate.Latitudine >= filtroAreaMappa.BottomLeft.Latitudine) && (mezzo.Coordinate.Latitudine <= filtroAreaMappa.TopRight.Latitudine)) &&
-                            ((mezzo.Coordinate.Longitudine >= filtroAreaMappa.BottomLeft.Longitudine) && (mezzo.Coordinate.Longitudine <= filtroAreaMappa.TopRight.Longitudine))
-                          )
-                        {
-                            ListaMezziFilter.Add(mezzo);
-                        }
-                    }
+                if (filtroAreaMappa == null) return listaMezzi;
 
-                    return ListaMezziFilter;
-                }
+                listaMezziFilter.AddRange(listaMezzi.Where(mezzo => (mezzo.Coordinate.Latitudine >= filtroAreaMappa.BottomLeft.Latitudine) && (mezzo.Coordinate.Latitudine <= filtroAreaMappa.TopRight.Latitudine) && ((mezzo.Coordinate.Longitudine >= filtroAreaMappa.BottomLeft.Longitudine) && (mezzo.Coordinate.Longitudine <= filtroAreaMappa.TopRight.Longitudine))));
+
+                return listaMezziFilter;
             }
             catch (Exception ex)
             {
