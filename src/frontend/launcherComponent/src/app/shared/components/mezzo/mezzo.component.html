@@ -1,16 +1,16 @@
 <span>
   <span class="d-inline-block">
     <i class="guida fa fa-truck fa-fw mr-1 text-{{statoMezzoColor(mezzo.stato)}}"
-      ngbTooltip="Mezzo {{mezzo.stato}}"></i>
+       ngbTooltip="Mezzo {{mezzo.stato}}"></i>
     <span *ngIf="mezzo.descrizione" ngbTooltip="{{mezzo.descrizione}}"
-      [disableTooltip]="mezzo.descrizione.length <= 2"><b>{{ mezzo.descrizione | truncate: 2 }}</b></span>
+          [disableTooltip]="mezzo.descrizione.length <= 2"><b>{{ mezzo.descrizione | slice: 0: 4 }}</b></span>
     <span *ngIf="mezzo.genere" class="badge badge-default m-0">{{ mezzo.genere }}</span>
   </span>
 
-  <!-- indicatori -->
+    <!-- indicatori -->
   <span *ngIf="mostraIndicatori" class="d-inline-block pl-2 mr-1">
     <button class="btn btn-light border py-0 px-0" [ngbPopover]="indMez" placement="top" triggers="click" tabindex="0"
-      (click)="$event.stopPropagation()">
+            (click)="$event.stopPropagation()">
       <i class="fa fa-briefcase fa-fw text-secondary" ngbTooltip="Indicatori"></i>
     </button>
 
@@ -22,7 +22,7 @@
             {{ mezzo.descrizioneStatoEfficienza }}</span>
         </div>
         <div *ngIf="mezzo.descrizioneLivelloCarburante"><i class='fa fa-tachometer fa-fw'
-            title='Livello Carburante'></i>
+                                                           title='Livello Carburante'></i>
           <span class='badge' [ngClass]="dettagliMezzo(mezzo.livelloCarburante, 'carburante', 'badge')">
             {{ mezzo.descrizioneLivelloCarburante }}</span>
         </div>
@@ -43,10 +43,10 @@
     </ng-template>
   </span>
 
-  <!-- notifiche mezzo -->
+    <!-- notifiche mezzo -->
   <span *ngIf="mostraNotifiche" class="d-inline-block mr-1">
     <button class="btn btn-light border py-0 px-0" [ngbPopover]="notMez" placement="top" triggers="click"
-      popoverTitle="Notifiche mezzo" tabindex="0" (click)="$event.stopPropagation()">
+            popoverTitle="Notifiche mezzo" tabindex="0" (click)="$event.stopPropagation()">
       <i class="fa fa-bell fa-fw text-secondary" ngbTooltip="Elenco notifiche"></i>
     </button>
 
@@ -63,5 +63,5 @@
   <app-mezzo-actions *ngIf="inGestione" [mezzo]="mezzo" (actionMezzo)="onActionMezzo($event)"></app-mezzo-actions>
 
   <span *ngIf="mostraRichiestaAssociata" class="d-inline-block text-right">Richiesta
-    {{mezzo.idRichiesta}}</span>
+      {{mezzo.idRichiesta}}</span>
 </span>
