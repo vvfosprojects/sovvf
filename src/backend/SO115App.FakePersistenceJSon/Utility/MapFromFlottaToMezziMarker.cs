@@ -49,7 +49,7 @@ namespace SO115App.FakePersistence.JSon.Utility
 
                 var mezzo = new MezzoMarker()
                 {
-                    Mezzo = new Mezzo(mezzoFlotta.codiceMezzo, mezzoFlotta.codiceMezzo, codiceTipo, GetStatoMezzoByCodiceMezzo(statoMezzo), 0, GetSedeDiAppartenenza(codiceSede)),
+                    Mezzo = new Mezzo(mezzoFlotta.codiceMezzo, mezzoFlotta.codiceMezzo, codiceTipo, GetStatoMezzoByCodiceMezzo(statoMezzo), 0, GetSedeDiAppartenenza(codiceSede), CodificaLocalizzazione(mezzoFlotta.Localizzazione)),
                     Coordinate = CodificaLocalizzazione(mezzoFlotta.Localizzazione),
                     InfoRichiesta = GetInfoRichiestaByCodiceMezzo(mezzoFlotta.codiceMezzo)
                 };
@@ -133,7 +133,7 @@ namespace SO115App.FakePersistence.JSon.Utility
                 if (statoMezzo == "6" || statoMezzo == "7" || statoMezzo == "0") continue;
 
                 var mezzo = new Mezzo(mezzoFlotta.codiceMezzo, mezzoFlotta.codiceMezzo, codiceTipo,
-                    GetStatoMezzoByCodiceMezzo(statoMezzo), 0, GetSedeDiAppartenenza(codiceSede));
+                    GetStatoMezzoByCodiceMezzo(statoMezzo), 0, GetSedeDiAppartenenza(codiceSede), CodificaLocalizzazione(mezzoFlotta.Localizzazione));
                 listaMezzi.Add(mezzo);
             }
 

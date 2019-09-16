@@ -400,7 +400,7 @@ namespace SO115App.GeneratoreRichiesteFake
                 new Squadra("SO115",Squadra.StatoSquadra.InViaggio,ListaComponentiSquadra,distaccamento)
             };
 
-            Mezzo mezzo = new Mezzo("0", "APS", "Auto pompa serbatoio", "In sede", 0, distaccamento);
+            Mezzo mezzo = new Mezzo("0", "APS", "Auto pompa serbatoio", "In sede", 0, distaccamento, coordinate: null);
 
             Partenza partenza = new Partenza();
             partenza.Mezzo = mezzo;

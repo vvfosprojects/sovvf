@@ -51,8 +51,7 @@ namespace SO115App.FakePersistenceJSon.GestioneMezzi
 
             foreach (var mezzoMarkerIn in listaMezziMarker)
             {
-                var mezzoInServizio = new MezzoInServizio();
-                mezzoInServizio.Mezzo = mezzoMarkerIn;
+                var mezzoInServizio = new MezzoInServizio {Mezzo = mezzoMarkerIn};
                 if (mezzoInServizio.Mezzo.Mezzo.IdRichiesta != null)
                 {
                     var richiesta = getRichiestaById.Get(mezzoInServizio.Mezzo.Mezzo.IdRichiesta);
