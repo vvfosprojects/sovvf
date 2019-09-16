@@ -1,3 +1,15 @@
-<p>
-  filtri-markers-mezzi works!
-</p>
+<h6>Mezzi</h6>
+<div class="mt-1">
+  <label>Stato</label>
+  <div>
+    <ng-select [items]="statiMezzo" [multiple]="true" placeholder="Nessuno stato selezionato"
+               (change)="changeStati.emit($event)"></ng-select>
+  </div>
+</div>
+<div class="mt-2">
+  <label>Tipologia</label>
+  <div>
+    <ng-select [items]="tipologieMezzo" [multiple]="true" placeholder="Nessuna tipologia selezionata"
+               (change)="changeTipologie.emit($event)"></ng-select>
+  </div>
+</div>

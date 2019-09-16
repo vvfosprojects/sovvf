@@ -8,6 +8,7 @@ import { Observable, Subscription } from 'rxjs';
 import { MapsFiltroState } from './maps-filtro.state';
 import { FiltriMarkersState } from './filtri-markers.state';
 import { FiltroRichieste } from '../../../maps/maps-model/filtro-richieste.interface';
+import { FiltroMezzi } from '../../../maps/maps-model/filtro-mezzi.interface';
 
 export interface AreaMappaStateModel {
     areaMappa: AreaMappa;
@@ -26,6 +27,7 @@ export class AreaMappaState {
     private subscription = new Subscription();
     @Select(MapsFiltroState.filtroMarkerAttivo) filtroMarkerAttivo$: Observable<string[]>;
     @Select(FiltriMarkersState.filtroRichieste) filtroRichieste$: Observable<FiltroRichieste>;
+    @Select(FiltriMarkersState.filtroMezzi) filtroMezzi$: Observable<FiltroMezzi>;
 
     constructor(private store: Store) {
         this.subscription.add(
@@ -39,7 +41,11 @@ export class AreaMappaState {
                 this.store.dispatch(new GetMarkersMappa());
             }
         });
-        // TODO: quando c'è un cambiamento nei filtri selezionati faccio il dispatch di getMarkerMappa
+        this.filtroMezzi$.subscribe((filtroMezzi: FiltroMezzi) => {
+            if (filtroMezzi) {
+                this.store.dispatch(new GetMarkersMappa());
+            }
+        });
     }
 
     @Action(SetAreaMappa)
@@ -56,7 +62,7 @@ export class AreaMappaState {
         if (state.areaMappa) {
             const filtriAttivi = this.store.selectSnapshot(MapsFiltroState.filtroMarkerAttivo);
             const filtroRichieste = this.store.selectSnapshot(FiltriMarkersState.filtroRichieste);
-            // TODO: mi prendo i filtri selezionati (filtro-mezzo / filtro-richiesta)
+            const filtroMezzi = this.store.selectSnapshot(FiltriMarkersState.filtroMezzi);
 
             if (filtriAttivi.includes('richiesta')) {
                 dispatch(new GetRichiesteMarkers(state.areaMappa, filtroRichieste));
@@ -65,7 +71,7 @@ export class AreaMappaState {
                 dispatch(new GetSediMarkers(state.areaMappa));
             }
             if (filtriAttivi.includes('mezzo')) {
-                dispatch(new GetMezziMarkers(state.areaMappa));
+                dispatch(new GetMezziMarkers(state.areaMappa, filtroMezzi));
             }
         }
     }

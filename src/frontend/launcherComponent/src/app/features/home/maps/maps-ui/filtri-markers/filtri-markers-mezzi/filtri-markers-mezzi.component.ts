@@ -1,15 +1,26 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { FiltroMezzi } from '../../../maps-model/filtro-mezzi.interface';
+import { StatoMezzo } from '../../../../../../shared/enum/stato-mezzo.enum';
 
 @Component({
-  selector: 'app-filtri-markers-mezzi',
-  templateUrl: './filtri-markers-mezzi.component.html',
-  styleUrls: ['./filtri-markers-mezzi.component.css']
+    selector: 'app-filtri-markers-mezzi',
+    templateUrl: './filtri-markers-mezzi.component.html',
+    styleUrls: ['./filtri-markers-mezzi.component.css']
 })
 export class FiltriMarkersMezziComponent implements OnInit {
 
-  constructor() { }
+    @Input() filtroMezzi: FiltroMezzi;
 
-  ngOnInit() {
-  }
+    @Output() changeStati: EventEmitter<any> = new EventEmitter<any>();
+    @Output() changeTipologie: EventEmitter<any> = new EventEmitter<any>();
+
+    statiMezzo = Object.keys(StatoMezzo);
+    tipologieMezzo = ['APS', 'ABP', 'AS'];
+
+    constructor() {
+    }
+
+    ngOnInit() {
+    }
 
 }
