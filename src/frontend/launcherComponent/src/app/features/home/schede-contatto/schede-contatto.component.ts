@@ -20,6 +20,8 @@ import { DettaglioSchedaModalComponent } from './dettaglio-scheda-modal/dettagli
 export class SchedeContattoComponent implements OnInit, OnDestroy {
 
 
+    @Select(SchedeContattoState.schedeContatto) schedeContatto$: Observable<SchedaContatto[]>;
+    schedeContatto: SchedaContatto[];
     @Select(SchedeContattoState.schedeContattoCompetenza) schedeContattoCompetenza$: Observable<SchedaContatto[]>;
     schedeContattoCompetenza: SchedaContatto[];
     @Select(SchedeContattoState.schedeContattoConoscenza) schedeContattoConoscenza$: Observable<SchedaContatto[]>;
@@ -31,6 +33,11 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
 
     constructor(private store: Store,
                 private modal: NgbModal) {
+        this.subscription.add(
+            this.schedeContatto$.subscribe((schedeContatto: SchedaContatto[]) => {
+                this.schedeContatto = schedeContatto;
+            })
+        );
         this.subscription.add(
             this.schedeContattoCompetenza$.subscribe((schedeContatto: SchedaContatto[]) => {
                 this.schedeContattoCompetenza = schedeContatto;

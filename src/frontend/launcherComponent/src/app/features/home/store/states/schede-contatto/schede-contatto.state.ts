@@ -8,6 +8,7 @@ import {
 } from '../../actions/schede-contatto/schede-contatto.actions';
 
 export interface SchedeContattoStateModel {
+    schedeContatto: SchedaContatto[];
     schedeContattoCompetenza: SchedaContatto[];
     schedeContattoConoscenza: SchedaContatto[];
     schedaContattoTelefonata: SchedaContatto;
@@ -15,6 +16,7 @@ export interface SchedeContattoStateModel {
 }
 
 export const SchedeContattoStateDefaults: SchedeContattoStateModel = {
+    schedeContatto: [],
     schedeContattoCompetenza: [],
     schedeContattoConoscenza: [],
     schedaContattoTelefonata: null,
@@ -26,6 +28,11 @@ export const SchedeContattoStateDefaults: SchedeContattoStateModel = {
     defaults: SchedeContattoStateDefaults
 })
 export class SchedeContattoState {
+
+    @Selector()
+    static schedeContatto(state: SchedeContattoStateModel) {
+        return state.schedeContatto;
+    }
 
     @Selector()
     static schedeContattoCompetenza(state: SchedeContattoStateModel) {
@@ -58,6 +65,7 @@ export class SchedeContattoState {
     @Action(SetListaSchedeContatto)
     setListaSchedeContatto({ patchState }: StateContext<SchedeContattoStateModel>, action: SetListaSchedeContatto) {
         patchState({
+            schedeContatto: action.schedeContatto,
             schedeContattoCompetenza: action.schedeContatto.filter( schedaContatto => schedaContatto.perCompetenza === true),
             schedeContattoConoscenza: action.schedeContatto.filter( schedaContatto => schedaContatto.perCompetenza !== true)
         });
