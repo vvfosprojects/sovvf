@@ -44,14 +44,16 @@ namespace SO115App.FakePersistenceJSon.GestioneMezzi
                 json = r.ReadToEnd();
             }
 
+            var codiceSedePulito = codiceSede.Substring(0, 2);
+
             var flottaMezzi = JsonConvert.DeserializeObject<List<MapperMezziFromGeoFleet>>(json);
-            var listaMezziMarker = mapper.MappaFlottaMezziSuMezziMarker(flottaMezzi).FindAll(x => x.Mezzo.Distaccamento.Codice.Equals(codiceSede));
-            
+            var listaMezziMarker = mapper.MappaFlottaMezziSuMezziMarker(flottaMezzi).FindAll(x => x.Mezzo.Distaccamento.Codice.StartsWith(codiceSedePulito));
+
             var listaMezzoInServizio = new List<MezzoInServizio>();
 
             foreach (var mezzoMarkerIn in listaMezziMarker)
             {
-                var mezzoInServizio = new MezzoInServizio {Mezzo = mezzoMarkerIn};
+                var mezzoInServizio = new MezzoInServizio { Mezzo = mezzoMarkerIn };
                 if (mezzoInServizio.Mezzo.Mezzo.IdRichiesta != null)
                 {
                     var richiesta = getRichiestaById.Get(mezzoInServizio.Mezzo.Mezzo.IdRichiesta);
