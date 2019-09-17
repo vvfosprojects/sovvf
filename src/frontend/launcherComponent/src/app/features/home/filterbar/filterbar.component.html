@@ -10,17 +10,18 @@
                                                [disabled]="(chiamataStatus$ | async)"></app-tasto-schede-contatto>
                 </app-tasto-chiamata-group>
             </div>
-            <div *ngIf="(richiesteStatus$ | async)" class="col-2 px-0 text-left">
-                <app-filtri-richieste [filtri]="(filtri$ | async)" [filtriSelezionati]="(filtriSelezionati$ | async)"
-                                      [categorie]="(categoriaFiltri$| async)"
-                                      (filtroSelezionato)="onSelezioneFiltro($event)"
-                                      (filtroDeselezionato)="onDeselezioneFiltro($event)"
-                                      (filtriReset)="eliminaFiltriAttivi()">
-                </app-filtri-richieste>
-            </div>
-            <div *ngIf="(richiesteStatus$ | async)" class="col-7 pl-0">
-                <app-ricerca-richieste [ricerca]="(ricerca$ | async)" (search)="onSearch($event)">
-                </app-ricerca-richieste>
+            <div *ngIf="(richiesteStatus$ | async)" class="col-9 pl-0">
+                <app-ricerca-group>
+                    <app-ricerca-richieste [ricerca]="(ricerca$ | async)" (search)="onSearch($event)">
+                        <app-filtri-richieste [filtri]="(filtri$ | async)"
+                                              [filtriSelezionati]="(filtriSelezionati$ | async)"
+                                              [categorie]="(categoriaFiltri$| async)"
+                                              (filtroSelezionato)="onSelezioneFiltro($event)"
+                                              (filtroDeselezionato)="onDeselezioneFiltro($event)"
+                                              (filtriReset)="eliminaFiltriAttivi()">
+                        </app-filtri-richieste>
+                    </app-ricerca-richieste>
+                </app-ricerca-group>
             </div>
         </div>
     </div>

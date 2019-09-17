@@ -6,7 +6,7 @@ import { ViewInterfaceButton, ViewLayouts } from '../../../shared/interface/view
 // Filtri Richieste
 import { GetFiltriRichieste, ResetFiltriSelezionati, SetFiltroSelezionato } from '../store/actions/filterbar/filtri-richieste.actions';
 import { FiltriRichiesteState } from '../store/states/filterbar/filtri-richieste.state';
-import { VoceFiltro } from './filtri-richieste/voce-filtro.model';
+import { VoceFiltro } from './ricerca-group/filtri-richieste/voce-filtro.model';
 // Ricerca Richieste
 import { RicercaRichiesteState } from '../store/states/filterbar/ricerca-richieste.state';
 // Marker Meteo Switch

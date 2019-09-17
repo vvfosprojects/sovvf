@@ -1,0 +1,8 @@
+<input [(ngModel)]="ricerca.descrizione" class="form-control" type="text" appDebounceKeyUp (debounceKeyUp)="onSearch()"
+       [debounceTime]="600" placeholder="Cosa stai cercando?" name="ricercaRichieste" id="ricercaRichieste">
+<div class="input-group-append">
+    <button class="btn btn-primary" (click)="onSearch()"><i class="fa fa-search text-light"></i></button>
+</div>
+<div class="input-group-append">
+    <ng-content></ng-content>
+</div>

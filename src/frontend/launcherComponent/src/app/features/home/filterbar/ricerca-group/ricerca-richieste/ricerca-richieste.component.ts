@@ -1,5 +1,5 @@
-import { Component, Output, EventEmitter, Input } from '@angular/core';
-import { makeCopy } from '../../../../shared/helper/function';
+import { Component, Output, EventEmitter, Input, HostBinding } from '@angular/core';
+import { makeCopy } from '../../../../../shared/helper/function';
 
 @Component({
     selector: 'app-ricerca-richieste',
@@ -7,6 +7,8 @@ import { makeCopy } from '../../../../shared/helper/function';
     styleUrls: ['./ricerca-richieste.component.scss']
 })
 export class RicercaRichiesteComponent {
+
+    @HostBinding('class') classes = 'input-group';
 
     @Input() ricerca = { descrizione: '' };
 

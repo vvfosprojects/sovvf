@@ -1,7 +1,7 @@
 import { Component, HostBinding, Input } from '@angular/core';
-import { ToggleSchedeContatto } from '../../store/actions/view/view.actions';
+import { ToggleSchedeContatto } from '../../../store/actions/view/view.actions';
 import { Select, Store } from '@ngxs/store';
-import { SchedeContattoState } from '../../store/states/schede-contatto/schede-contatto.state';
+import { SchedeContattoState } from '../../../store/states/schede-contatto/schede-contatto.state';
 import { Observable, Subscription } from 'rxjs';
 
 @Component({
