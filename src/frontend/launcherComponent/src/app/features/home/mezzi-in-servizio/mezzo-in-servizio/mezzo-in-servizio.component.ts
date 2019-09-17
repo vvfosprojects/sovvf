@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { StatoMezzo } from '../../../../shared/enum/stato-mezzo.enum';
 import { statoMezzoBorderClass } from '../../../../shared/helper/function';
 import { MezzoInServizio } from '../../../../shared/interface/mezzo-in-servizio.interface';
 import { VisualizzaListaSquadrePartenza } from '../../store/actions/richieste/richieste.actions';
@@ -31,7 +30,6 @@ export class MezzoInServizioComponent implements OnInit {
 
     onListaSquadrePartenza() {
         const listaSquadre = {
-            idPartenza: '1',
             squadre: this.mezzoInServizio.squadre
         };
         this.store.dispatch(new VisualizzaListaSquadrePartenza(listaSquadre));

@@ -227,7 +227,7 @@ export class RichiesteState {
     visualizzaListaSquadrePartenza({ patchState }: StateContext<RichiesteStateModel>, action: VisualizzaListaSquadrePartenza) {
         const modal = this.modalService.open(ListaSquadrePartenzaComponent, { windowClass: 'squadrePartenza', backdropClass: 'light-blue-backdrop', centered: true });
         modal.componentInstance.listaSquadre = action.listaSquadre;
-        modal.result.then(() => console.log('Lista Squadre Partenza ' + action.listaSquadre.idPartenza + ' Aperta'),
+        modal.result.then(() => console.log('Lista Squadre Partenza Aperta'),
             () => console.log('Lista Squadre Partenza Chiusa'));
     }
 
