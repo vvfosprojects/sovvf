@@ -23,6 +23,7 @@ export const environment = {
             resetPrenotazioneMezzo: '/api/ResetPrenotazioneMezzo',
             confermaPartenze: '/api/ConfermaPartenze'
         },
+        prenotazione: 'api/PrenotazioneMezzo',
         chiamata: '/api/Chiamata/',
         auth: '/api/Auth',
         navbar: '/api/Navbar',

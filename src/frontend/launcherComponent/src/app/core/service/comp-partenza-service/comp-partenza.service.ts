@@ -11,6 +11,9 @@ import { IdPreaccoppiati } from '../../../features/home/composizione-partenza/in
 
 const API_URL_COMPOSIZIONE = environment.apiUrl.composizione;
 
+const API_URL_PRENOTAZIONE = environment.apiUrl.prenotazione;
+
+
 @Injectable()
 export class CompPartenzaService {
 
@@ -33,21 +36,14 @@ export class CompPartenzaService {
     }
 
     setMezzoPrenotato(mezzoPrenotatoObj: any) {
-        return this.http.post(API_URL_COMPOSIZIONE.addPrenotazioneMezzo, mezzoPrenotatoObj).pipe(
+        return this.http.post(`${API_URL_PRENOTAZIONE}/PrenotaMezzo`, mezzoPrenotatoObj).pipe(
             retry(3),
             catchError(handleError)
         );
     }
 
-    resetMezzoPrenotato(mezzoPrenotatoObj: any) {
-        return this.http.post(API_URL_COMPOSIZIONE.resetPrenotazioneMezzo, mezzoPrenotatoObj).pipe(
-            // retry(3),
-            catchError(handleError)
-        );
-    }
-
     removeMezzoPrenotato(mezzoPrenotatoObj: any) {
-        return this.http.post(API_URL_COMPOSIZIONE.removePrenotazioneMezzo, mezzoPrenotatoObj).pipe(
+        return this.http.post(`${API_URL_PRENOTAZIONE}/SbloccaMezzo`, mezzoPrenotatoObj).pipe(
             // retry(3),
             catchError(handleError)
         );

@@ -115,8 +115,8 @@ export class MezziComposizioneState {
     }
 
     constructor(private store: Store,
-        private _compPartenzaService: CompPartenzaService,
-        private modalService: NgbModal) {
+                private _compPartenzaService: CompPartenzaService,
+                private modalService: NgbModal) {
     }
 
     @Action(SetListaMezziComposizione)
@@ -312,7 +312,8 @@ export class MezziComposizioneState {
     @Action(RequestRemoveBookMezzoComposizione)
     requestRemoveBookMezzoComposizione({ dispatch }: StateContext<MezziComposizioneStateStateModel>, action: RequestRemoveBookMezzoComposizione) {
         const mezzoPrenotatoObj = {
-            'mezzoComposizione': action.mezzoComp
+            'mezzoComposizione': action.mezzoComp,
+            'remove': true
         };
         this._compPartenzaService.removeMezzoPrenotato(mezzoPrenotatoObj).subscribe(() => {
         }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore Rimozione Prenotazione Mezzo', 'Il server web non risponde', 5)));
@@ -346,7 +347,7 @@ export class MezziComposizioneState {
         const mezzoPrenotatoObj = {
             'mezzoComposizione': action.mezzoComp
         };
-        this._compPartenzaService.resetMezzoPrenotato(mezzoPrenotatoObj).subscribe(() => {
+        this._compPartenzaService.setMezzoPrenotato(mezzoPrenotatoObj).subscribe(() => {
         }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore Reset Prenotazione Mezzo', 'Il server web non risponde', 5)));
     }
 
@@ -393,6 +394,8 @@ export class MezziComposizioneState {
 
         richiestaById$.subscribe(r => {
             richiestaDa = r;
+
+            // tslint:disable-next-line:max-line-length
             partenzaDaSganciare = richiestaDa.partenzeRichiesta && richiestaDa.partenzeRichiesta.length > 0 ? richiestaDa.partenzeRichiesta.filter(x => x.mezzo.codice === action.sganciamentoObj.idMezzoDaSganciare)[0] : null;
             // console.log('richiestaDa', richiestaDa);
         });

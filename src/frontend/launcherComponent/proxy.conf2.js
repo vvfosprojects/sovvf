@@ -19,6 +19,7 @@ const PROXY_CONFIG = [{
         '/api/GestioneRichiesta',
         '/api/GestioneMezziInServizio',
         '/api/Marker',
+        '/api/PrenotazioneMezzo'
     ],
     target: "http://so115.api2.test/",
     secure: false,
