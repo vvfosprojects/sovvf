@@ -2,13 +2,13 @@
     <div [ngClass]="(filterBarCol$ | async)">
         <div class="row">
             <div class="col-3 text-left">
-                <div class="btn-group app-shadow">
+                <app-tasto-chiamata-group>
                     <app-tasto-chiamata [colorButtonChiamata]="colorButton.chiamata"
                                         (startChiamata)="toggleChiamata()">
                     </app-tasto-chiamata>
                     <app-tasto-schede-contatto [active]="(schedeContattoStatus$ | async)"
                                                [disabled]="(chiamataStatus$ | async)"></app-tasto-schede-contatto>
-                </div>
+                </app-tasto-chiamata-group>
             </div>
             <div *ngIf="(richiesteStatus$ | async)" class="col-2 px-0 text-left">
                 <app-filtri-richieste [filtri]="(filtri$ | async)" [filtriSelezionati]="(filtriSelezionati$ | async)"
