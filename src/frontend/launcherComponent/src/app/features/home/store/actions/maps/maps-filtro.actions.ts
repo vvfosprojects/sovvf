@@ -1,7 +1,7 @@
 export class ReducerFiltroMarker {
   static readonly type = '[MapsFiltro] Reducer Filtro Marker';
 
-  constructor(public selected: string) {
+  constructor(public selected: string, public saveBackup?: boolean) {
   }
 }
 
@@ -25,4 +25,8 @@ export class CopiaFiltroAttivo {
 
 export class ClearCopiaFiltroAttivo {
     static readonly type = '[MapsFiltro] Clear Filtro Attivo';
+}
+
+export class SaveBackupFiltri {
+    static readonly type = '[MapsFiltro] Save Backup Filtri';
 }
