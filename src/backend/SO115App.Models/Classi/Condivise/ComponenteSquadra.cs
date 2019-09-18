@@ -17,6 +17,9 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using SO115App.API.Models.Classi.Utenti;
+using System;
+
 namespace SO115App.API.Models.Classi.Condivise
 {
     public class Componente
@@ -37,14 +40,25 @@ namespace SO115App.API.Models.Classi.Condivise
         public string CodiceFiscale { get; set; }
 
         /// <summary>
-        ///   Descrizione qualifica Componente
+        ///   Descrizione breve qualifica Componente
         /// </summary>
         public string DescrizioneQualifica { get; set; }
+
+        /// <summary>
+        ///   Descrizione lunga qualifica Componente
+        /// </summary>
+        public string DescrizioneQualificaLunga { get; set; }
+
+        public Turno CodiceTurno { get; set; }
 
         /// <summary>
         ///   Nominativo Componente
         /// </summary>
         public string Nominativo { get; set; }
+
+        public DateTime OrarioInizio { get; set; }
+
+        public DateTime OrarioFine { get; set; }
 
         /// <summary>
         ///   ToolTip Componente
