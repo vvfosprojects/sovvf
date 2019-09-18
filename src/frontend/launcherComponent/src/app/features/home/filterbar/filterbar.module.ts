@@ -9,13 +9,15 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { FilterbarComponent } from './filterbar.component';
 import { ViewModeComponent } from './view-mode/view-mode.component';
 import { FiltriMappaComponent } from './filtri-mappa/filtri-mappa.component';
-import { TastoChiamataComponent } from './tasto-chiamata/tasto-chiamata.component';
-import { RicercaRichiesteComponent } from './ricerca-richieste/ricerca-richieste.component';
-import { FiltriRichiesteComponent } from './filtri-richieste/filtri-richieste.component';
-import { FiltroComponent } from './filtri-richieste/filtro/filtro.component';
 import { UiSwitchModule } from 'ngx-ui-switch';
 import { LoaderMarkerComponent } from './loader-marker/loader-marker.component';
-import { TastoSchedeContattoComponent } from './tasto-schede-contatto/tasto-schede-contatto.component';
+import { TastiTelefonataGroupComponent } from './tasti-telefonata-group/tasti-telefonata-group.component';
+import { TastoChiamataComponent } from './tasti-telefonata-group/tasto-chiamata/tasto-chiamata.component';
+import { TastoSchedeContattoComponent } from './tasti-telefonata-group/tasto-schede-contatto/tasto-schede-contatto.component';
+import { RicercaGroupComponent } from './ricerca-group/ricerca-group.component';
+import { RicercaRichiesteComponent } from './ricerca-group/ricerca-richieste/ricerca-richieste.component';
+import { FiltriRichiesteComponent } from './ricerca-group/filtri-richieste/filtri-richieste.component';
+import { FiltroComponent } from './ricerca-group/filtri-richieste/filtro/filtro.component';
 
 @NgModule({
     imports: [
@@ -37,7 +39,9 @@ import { TastoSchedeContattoComponent } from './tasto-schede-contatto/tasto-sche
         FiltriMappaComponent,
         TastoChiamataComponent,
         LoaderMarkerComponent,
-        TastoSchedeContattoComponent
+        TastoSchedeContattoComponent,
+        TastiTelefonataGroupComponent,
+        RicercaGroupComponent
     ],
     exports: [
         FilterbarComponent

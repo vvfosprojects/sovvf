@@ -2,7 +2,26 @@
     <div *ngIf="schedeContattoCompetenza || schedeContattoConoscenza" class="col-12 scroll-y" style="height:700px">
         <ngb-tabset>
             <ngb-tab>
-                <ng-template ngbTabTitle><b>Competenza</b></ng-template>
+                <ng-template ngbTabTitle><b>Tutte</b></ng-template>
+                <ng-template ngbTabContent>
+                    <div class="row">
+                        <div class="col-12 my-2">
+                            <app-scheda-contatto *ngFor="let scheda of schedeContatto"
+                                                 [scheda]="scheda"
+                                                 [idSchedaContattoHover]="idSchedaContattoHover"
+                                                 (hoverOut)="hoverOut()" (hoverIn)="hoverIn($event)"
+                                                 (dettaglioScheda)="dettaglioScheda($event)"
+                                                 (setSchedaContattoTelefonata)="setSchedaContattoTelefonata($event)">
+                            </app-scheda-contatto>
+                        </div>
+                    </div>
+                </ng-template>
+            </ngb-tab>
+            <ngb-tab>
+                <ng-template ngbTabTitle>
+                    <i class="fa fa-square text-danger mr-2"></i>
+                    <b>Competenza</b>
+                </ng-template>
                 <ng-template ngbTabContent>
                     <div class="row">
                         <div class="col-12 my-2">
@@ -18,7 +37,10 @@
                 </ng-template>
             </ngb-tab>
             <ngb-tab>
-                <ng-template ngbTabTitle>Conoscenza</ng-template>
+                <ng-template ngbTabTitle>
+                    <i class="fa fa-square text-warning mr-2"></i>
+                    <b>Conoscenza</b>
+                </ng-template>
                 <ng-template ngbTabContent>
                     <div class="row">
                         <div class="col-12 my-2">

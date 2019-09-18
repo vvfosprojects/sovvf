@@ -2,7 +2,7 @@ import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { makeCopy } from '../../../../../shared/helper/function';
 
 // Model
-import { VoceFiltro } from '../../../filterbar/filtri-richieste/voce-filtro.model';
+import { VoceFiltro } from '../../../filterbar/ricerca-group/filtri-richieste/voce-filtro.model';
 
 // Action
 import { GetFiltriRichieste, SetFiltroSelezionato, ResetFiltriSelezionati } from '../../actions/filterbar/filtri-richieste.actions';

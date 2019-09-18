@@ -1,5 +1,5 @@
 // Model
-import { VoceFiltro } from '../../../filterbar/filtri-richieste/voce-filtro.model';
+import { VoceFiltro } from '../../../filterbar/ricerca-group/filtri-richieste/voce-filtro.model';
 
 // GET
 export class GetFiltriRichieste {

@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, HostBinding } from '@angular/core';
 import { VoceFiltro } from './voce-filtro.model';
 import { NgbDropdownConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
@@ -8,6 +8,9 @@ import { NgbDropdownConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
     styleUrls: ['./filtri-richieste.component.css']
 })
 export class FiltriRichiesteComponent {
+
+    @HostBinding('class') classes = 'input-group-append';
+
     @Input() filtri: VoceFiltro[];
     @Input() filtriSelezionati: VoceFiltro[];
     @Input() categorie: string[];

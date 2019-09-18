@@ -1,9 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { ToggleSchedeContatto } from '../../store/actions/view/view.actions';
+import { Component, HostBinding, Input } from '@angular/core';
+import { ToggleSchedeContatto } from '../../../store/actions/view/view.actions';
 import { Select, Store } from '@ngxs/store';
-import { SchedeContattoState } from '../../store/states/schede-contatto/schede-contatto.state';
+import { SchedeContattoState } from '../../../store/states/schede-contatto/schede-contatto.state';
 import { Observable, Subscription } from 'rxjs';
-import { SchedaContatto } from '../../../../shared/interface/scheda-contatto.interface';
 
 @Component({
     selector: 'app-tasto-schede-contatto',
@@ -14,6 +13,8 @@ export class TastoSchedeContattoComponent {
 
     @Input() active: boolean;
     @Input() disabled: boolean;
+
+    @HostBinding('class') classes = 'btn-group';
 
     @Select(SchedeContattoState.numeroSchedeContattoCompetenza) numeroSchedeContatto$: Observable<number>;
     numeroSchedeContatto: number;
@@ -46,7 +47,7 @@ export class TastoSchedeContattoComponent {
     coloreBadgeContatore() {
         let _returnClass = 'badge-danger';
         if (this.active) {
-            _returnClass = 'btn-light';
+            _returnClass = 'badge-light';
         }
         return _returnClass;
     }

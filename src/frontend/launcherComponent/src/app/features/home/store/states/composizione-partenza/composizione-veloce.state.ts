@@ -84,7 +84,7 @@ export class ComposizioneVeloceState {
     }
 
     constructor(private preAccoppiatiService: CompPartenzaService,
-        private store: Store) {
+                private store: Store) {
     }
 
     @Action(GetPreAccoppiati)
@@ -97,7 +97,9 @@ export class ComposizioneVeloceState {
             state.idPreAccoppiati.forEach((idPreaccopiati: IdPreaccoppiati) => {
                 const preaccoppiato = {} as BoxPartenza;
                 preaccoppiato.id = idPreaccopiati.id;
+                console.log('idPreaccopiati.mezzo', idPreaccopiati.mezzo);
                 const mezzoComposizione = listaMezziSquadre.composizioneMezzi.filter(value => value.mezzo.codice === idPreaccopiati.mezzo);
+                console.log('test mezzo comp', mezzoComposizione);
                 if (mezzoComposizione && mezzoComposizione.length > 0) {
                     preaccoppiato.mezzoComposizione = mezzoComposizione[0];
                 }
@@ -170,9 +172,9 @@ export class ComposizioneVeloceState {
     @Action(ClearPreAccoppiatiSelezionatiComposizione)
     clearPreAccoppiatiSelezionatiComposizione({ patchState }: StateContext<PreAccoppiatiStateModel>) {
         patchState({
-            idPreAccoppiatiSelezionati: PreAccoppiatiStateModelStateDefaults.idPreAccoppiatiSelezionati,
-            idPreAccoppiatoSelezionato: PreAccoppiatiStateModelStateDefaults.idPreAccoppiatoSelezionato
-        }
+                idPreAccoppiatiSelezionati: PreAccoppiatiStateModelStateDefaults.idPreAccoppiatiSelezionati,
+                idPreAccoppiatoSelezionato: PreAccoppiatiStateModelStateDefaults.idPreAccoppiatoSelezionato
+            }
         );
     }
 

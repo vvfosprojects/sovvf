@@ -20,6 +20,12 @@ export class SchedaContattoComponent {
         if (this.idSchedaContattoHover === idSchedaContatto) {
             _returnClass = 'bg-light';
         }
+        if (this.scheda.perCompetenza) {
+            _returnClass += ' status_chiamata';
+        } else {
+            _returnClass += ' status_assegnato';
+        }
+
         return _returnClass;
     }
 
