@@ -36,6 +36,13 @@ export class AllTrueBoxMezzi {
     static readonly type = '[BoxClick] Attivati tutti i filtri mezzi';
 }
 
+export class AllTrueBoxMezziPresenti {
+    static readonly type = '[BoxClick] Attivati tutti i filtri mezzi presenti';
+
+    constructor(public statiMezzi: string[]) {
+    }
+}
+
 export class AllFalseBoxMezzi {
     static readonly type = '[BoxClick] Reset filtri mezzi';
 }

@@ -2,7 +2,7 @@ import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { BoxClickInterface } from '../../../boxes/box-interface/box-click-interface';
 import {
     UpdateBoxRichieste, AllFalseBoxRichieste, UpdateBoxMezzi,
-    AllFalseBoxMezzi, ReducerBoxClick, ResetAllBoxes, AllTrueBoxRichieste, AllTrueBoxMezzi, UndoAllBoxes
+    AllFalseBoxMezzi, ReducerBoxClick, ResetAllBoxes, AllTrueBoxRichieste, AllTrueBoxMezzi, UndoAllBoxes, AllTrueBoxMezziPresenti
 } from '../../actions/boxes/box-click.actions';
 
 export interface BoxClickStateModel {
@@ -150,6 +150,25 @@ export class BoxClickState {
                     inViaggio: true,
                     sulPosto: true,
                     istituto: true
+                }
+            }
+        });
+    }
+
+    @Action(AllTrueBoxMezziPresenti)
+    allTrueBoxMezziPresenti({ getState, patchState }: StateContext<BoxClickStateModel>, action: AllTrueBoxMezziPresenti) {
+        const state = getState();
+
+        patchState({
+            ...state,
+            boxClick: {
+                richieste: state.boxClick.richieste,
+                mezzi: {
+                    inSede: action.statiMezzi.includes('In Sede') ? true : false,
+                    inRientro: action.statiMezzi.includes('In Rientro') ? true : false,
+                    inViaggio: action.statiMezzi.includes('In Viaggio') ? true : false,
+                    sulPosto: action.statiMezzi.includes('Sul Posto') ? true : false,
+                    istituto: action.statiMezzi.includes('Istituto') ? true : false
                 }
             }
         });

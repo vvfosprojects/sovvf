@@ -19,9 +19,8 @@ import { SintesiRichiestaModalComponent } from '../maps/maps-ui/info-window/sint
 import { MezzoInServizio } from '../../../shared/interface/mezzo-in-servizio.interface';
 import { Mezzo } from '../../../shared/model/mezzo.model';
 import { BoxClickState, BoxClickStateModel } from '../store/states/boxes/box-click.state';
-import { AllFalseBoxRichieste, AllTrueBoxMezzi, ReducerBoxClick, UndoAllBoxes } from '../store/actions/boxes/box-click.actions';
+import { AllTrueBoxMezzi, AllTrueBoxMezziPresenti, UndoAllBoxes } from '../store/actions/boxes/box-click.actions';
 import { ReducerFiltroMarker } from '../store/actions/maps/maps-filtro.actions';
-import { wipeStatoRichiesta } from '../../../shared/helper/function';
 
 @Component({
     selector: 'app-mezzi-in-servizio',
@@ -40,16 +39,24 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
     @Select(RichiesteState.richieste) richieste$: Observable<SintesiRichiesta[]>;
     richieste: SintesiRichiesta[];
 
+    statiMezziInServizio: string[];
     prevStateBoxClick: BoxClickStateModel;
     subscription: Subscription = new Subscription();
 
     constructor(private store: Store,
                 private modalService: NgbModal) {
+        this.prevStateBoxClick = this.store.selectSnapshot(BoxClickState);
         this.store.dispatch(new GetMezziInServizio());
         this.subscription.add(
             this.mezziInServizio$.subscribe((mezzi: MezzoInServizio[]) => {
                 this.mezziInServizio = mezzi;
                 // console.log('Mezzi In Servizio', mezzi);
+
+                // Stati mezzi in servizio DISTINCT
+                if (this.mezziInServizio && this.mezziInServizio.length > 0) {
+                    this.statiMezziInServizio = this.mezziInServizio.map(data => data.mezzo.mezzo.stato).filter(onlyUnique);
+                    this.store.dispatch(new AllTrueBoxMezziPresenti(this.statiMezziInServizio));
+                }
             })
         );
         this.subscription.add(
@@ -70,8 +77,6 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.prevStateBoxClick = this.store.selectSnapshot(BoxClickState);
-        this.store.dispatch(new AllTrueBoxMezzi());
         this.store.dispatch(new ReducerFiltroMarker('mezzo', true));
     }
 
@@ -126,4 +131,9 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
         this.store.dispatch(new ToggleMezziInServizio());
     }
 
+}
+
+
+export function onlyUnique(value, index, self) {
+    return self.indexOf(value) === index;
 }
