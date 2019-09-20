@@ -222,7 +222,7 @@ export function idMezziFiltrati(stati: string[], mezziMarkers: MezzoMarker[]): s
     mezziMarkers.forEach(mezzoMarker => {
         stati.forEach(statoMezzo => {
             const _statoMezzo = statoMezzo.split(' ').join('');
-            const _mezzoMarker = mezzoMarker.mezzo.stato.split(' ').join('');
+            const _mezzoMarker = mezzoMarker.mezzo.stato.toString().split(' ').join('');
             if (_mezzoMarker.substring(0, 5).toLowerCase() === _statoMezzo.substring(0, 5).toLowerCase()) {
                 filteredId.push(mezzoMarker.mezzo.codice);
             }

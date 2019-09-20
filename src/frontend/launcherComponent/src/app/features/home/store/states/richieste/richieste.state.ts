@@ -191,7 +191,7 @@ export class RichiesteState {
         const obj = {
             'chiamata': action.mezzoAction.richiesta,
             'idMezzo': action.mezzoAction.mezzo.codice,
-            'statoMezzo': action.mezzoAction.action ? action.mezzoAction.action : calcolaActionSuggeritaMezzo(action.mezzoAction.mezzo),
+            'statoMezzo': action.mezzoAction.action ? action.mezzoAction.action : calcolaActionSuggeritaMezzo(action.mezzoAction.mezzo.stato),
             // 'listaMezzi': action.mezzoAction.listaMezzi ? true : false
         };
         console.log('Obj', obj);

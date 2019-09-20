@@ -4,6 +4,7 @@ import {
     UpdateBoxRichieste, AllFalseBoxRichieste, UpdateBoxMezzi,
     AllFalseBoxMezzi, ReducerBoxClick, ResetAllBoxes, AllTrueBoxRichieste, AllTrueBoxMezzi, UndoAllBoxes, AllTrueBoxMezziPresenti
 } from '../../actions/boxes/box-click.actions';
+import { StatoMezzo } from '../../../../../shared/enum/stato-mezzo.enum';
 
 export interface BoxClickStateModel {
     boxClick: BoxClickInterface;
@@ -164,11 +165,11 @@ export class BoxClickState {
             boxClick: {
                 richieste: state.boxClick.richieste,
                 mezzi: {
-                    inSede: action.statiMezzi.includes('In Sede'),
-                    inRientro: action.statiMezzi.includes('In Rientro'),
-                    inViaggio: action.statiMezzi.includes('In Viaggio'),
-                    sulPosto: action.statiMezzi.includes('Sul Posto'),
-                    istituto: action.statiMezzi.includes('Istituto')
+                    inSede: action.statiMezzi.includes(StatoMezzo.InSede),
+                    inRientro: action.statiMezzi.includes(StatoMezzo.InRientro),
+                    inViaggio: action.statiMezzi.includes(StatoMezzo.InViaggio),
+                    sulPosto: action.statiMezzi.includes(StatoMezzo.SulPosto),
+                    istituto: action.statiMezzi.includes(StatoMezzo.Istituto)
                 }
             }
         });

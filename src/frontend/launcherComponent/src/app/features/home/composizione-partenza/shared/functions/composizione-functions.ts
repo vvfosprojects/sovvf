@@ -1,5 +1,6 @@
 import { StatoSquadra } from '../../../../../shared/enum/stato-squadra.enum';
 import { SquadraComposizione } from '../../interface/squadra-composizione-interface';
+import { StatoMezzo } from '../../../../../shared/enum/stato-mezzo.enum';
 
 export function squadraComposizioneBusy(stato: StatoSquadra) {
     switch (stato) {
@@ -12,13 +13,13 @@ export function squadraComposizioneBusy(stato: StatoSquadra) {
     }
 }
 
-export function mezzoComposizioneBusy(stato: string) {
+export function mezzoComposizioneBusy(stato: StatoMezzo) {
     switch (stato) {
-        case 'Sul Posto':
+        case StatoMezzo.SulPosto:
             return true;
-        case 'In Viaggio':
+        case StatoMezzo.InViaggio:
             return true;
-        case 'Istituto':
+        case StatoMezzo.Istituto:
             return true;
         default:
             return false;
@@ -41,7 +42,7 @@ export function iconaStatiClass(stato: string): string {
         case 'In Sede':
             returnClass = 'text-success';
             break;
-        case 'In Viaggio':
+        case StatoMezzo.InViaggio:
             returnClass = 'text-warning';
             break;
         case 'In Rientro':

@@ -46,6 +46,7 @@ import { SganciamentoInterface } from 'src/app/shared/interface/sganciamento.int
 import { MezzoDirection } from '../../../../shared/interface/mezzo-direction';
 import { squadraComposizioneBusy } from '../shared/functions/composizione-functions';
 import { ConfermaPartenze } from '../interface/conferma-partenze-interface';
+import { StatoMezzo } from '../../../../shared/enum/stato-mezzo.enum';
 
 @Component({
     selector: 'app-composizione-avanzata',
@@ -340,7 +341,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
         const partenzeMappedArray = partenze.map(obj => {
             const rObj = {};
             if (obj.mezzoComposizione) {
-                obj.mezzoComposizione.mezzo.stato = 'In Viaggio';
+                obj.mezzoComposizione.mezzo.stato = StatoMezzo.InViaggio;
                 rObj['mezzo'] = obj.mezzoComposizione.mezzo;
             } else {
                 rObj['mezzo'] = null;

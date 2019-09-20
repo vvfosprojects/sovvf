@@ -3,6 +3,7 @@ import { statoMezzoBorderClass } from '../../../../shared/helper/function';
 import { MezzoInServizio } from '../../../../shared/interface/mezzo-in-servizio.interface';
 import { VisualizzaListaSquadrePartenza } from '../../store/actions/richieste/richieste.actions';
 import { Store } from '@ngxs/store';
+import { StatoMezzo } from '../../../../shared/enum/stato-mezzo.enum';
 
 @Component({
     selector: 'app-mezzo-in-servizio',
@@ -22,6 +23,8 @@ export class MezzoInServizioComponent implements OnInit {
     @Output() visualizzaEventiRichiesta: EventEmitter<any> = new EventEmitter<any>();
     @Output() actionMezzo: EventEmitter<any> = new EventEmitter<any>();
 
+    StatoMezzo = StatoMezzo;
+
     constructor(private store: Store) {
     }
 
@@ -35,7 +38,7 @@ export class MezzoInServizioComponent implements OnInit {
         this.store.dispatch(new VisualizzaListaSquadrePartenza(listaSquadre));
     }
 
-    cardClasses(stato: string, idMezzo: string) {
+    cardClasses(stato: StatoMezzo, idMezzo: string) {
         let _returnClass = statoMezzoBorderClass(stato);
         if (this.idMezzoInServizioHover === idMezzo) {
             _returnClass += ' bg-light';

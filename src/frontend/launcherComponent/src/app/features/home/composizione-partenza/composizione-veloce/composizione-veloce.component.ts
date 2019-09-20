@@ -26,6 +26,7 @@ import { ComposizionePartenzaState } from '../../store/states/composizione-parte
 import { TurnoState } from '../../../navbar/store/states/turno/turno.state';
 import { Coordinate } from '../../../../shared/model/coordinate.model';
 import { BoxPartenzaHover } from '../interface/composizione/box-partenza-hover-interface';
+import { StatoMezzo } from '../../../../shared/enum/stato-mezzo.enum';
 
 @Component({
     selector: 'app-composizione-veloce',
@@ -148,7 +149,7 @@ export class FasterComponent implements OnInit, OnDestroy {
         const partenzeMappedArray = partenze.map(obj => {
             const rObj = {};
             if (obj.mezzoComposizione) {
-                obj.mezzoComposizione.mezzo.stato = 'In Viaggio';
+                obj.mezzoComposizione.mezzo.stato = StatoMezzo.InViaggio;
                 rObj['mezzo'] = obj.mezzoComposizione.mezzo;
             } else {
                 rObj['mezzo'] = null;

@@ -5,6 +5,7 @@ import { NgbPopoverConfig, NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
 import { MezzoActionInterface } from '../../interface/mezzo-action.interface';
 import { StatoMezzoActions } from '../../enum/stato-mezzo-actions.enum';
 import { statoMezzoColor } from '../../helper/function';
+import { StatoMezzo } from '../../enum/stato-mezzo.enum';
 
 @Component({
     selector: 'app-mezzo',
@@ -60,7 +61,7 @@ export class MezzoComponent implements OnInit {
         // console.log('Mezzo ' + this.mezzo.descrizione + ' arrivato sul posto.');
     }
 
-    statoMezzoColor(stato: string) {
+    statoMezzoColor(stato: StatoMezzo) {
         return statoMezzoColor(stato);
     }
 }

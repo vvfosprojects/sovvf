@@ -27,10 +27,10 @@ export class MezzoActionsComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.statoMezzoString = statoMezzoActionsEnumToStringArray([this.mezzo.stato, calcolaActionSuggeritaMezzo(this.mezzo)]);
+        this.statoMezzoString = statoMezzoActionsEnumToStringArray([this.mezzo.stato, calcolaActionSuggeritaMezzo(this.mezzo.stato)]);
     }
 
-    onClick(action?: StatoMezzoActions) {
+    onClick(action?: string) {
         if (action) {
             this.statoMezzoActions = StatoMezzoActions[action.replace(' ', '')];
             this.actionMezzo.emit(this.statoMezzoActions);
@@ -39,11 +39,11 @@ export class MezzoActionsComponent implements OnInit {
         }
     }
 
-    calcolaActionSuggeritaMezzo(mezzo: Mezzo) {
-        return calcolaActionSuggeritaMezzo(mezzo);
+    calcolaActionSuggeritaMezzo(stato: StatoMezzo) {
+        return calcolaActionSuggeritaMezzo(stato);
     }
 
-    statoMezzoColor(stato: string) {
+    statoMezzoColor(stato: StatoMezzo) {
         return statoMezzoColor(stato);
     }
 }

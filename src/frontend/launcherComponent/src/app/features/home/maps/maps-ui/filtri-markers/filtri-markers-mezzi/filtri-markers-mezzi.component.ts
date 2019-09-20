@@ -14,8 +14,9 @@ export class FiltriMarkersMezziComponent implements OnInit {
     @Output() changeStati: EventEmitter<any> = new EventEmitter<any>();
     @Output() changeTipologie: EventEmitter<any> = new EventEmitter<any>();
 
-    statiMezzo = Object.keys(StatoMezzo);
+    statiMezzo = Object.values(StatoMezzo);
     tipologieMezzo = ['APS', 'ABP', 'AS'];
+    // TODO: terminare
 
     constructor() {
     }

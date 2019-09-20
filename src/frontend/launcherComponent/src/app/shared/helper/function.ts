@@ -133,9 +133,9 @@ export function roundTodecimal(value: number, exp?: number) {
     return Math.round(value * number) / number;
 }
 
-export function calcolaActionSuggeritaMezzo(mezzo: Mezzo) {
-    let actionSuggerita = '';
-    switch (mezzo.stato) {
+export function calcolaActionSuggeritaMezzo(stato: StatoMezzo) {
+    let actionSuggerita: StatoMezzoActions;
+    switch (stato) {
         case StatoMezzo.InViaggio:
             actionSuggerita = StatoMezzoActions.SulPosto;
             break;
@@ -168,29 +168,29 @@ export function statoMezzoActionsEnumToStringArray(exceptStato?: string[]) {
     return stringArray;
 }
 
-export function statoMezzoColor(stato: string) {
+export function statoMezzoColor(stato: StatoMezzo) {
     let _returnColor = '';
     switch (stato) {
-        case 'In Sede':
+        case StatoMezzo.InSede:
             _returnColor = 'success';
             break;
-        case 'In Viaggio':
+        case StatoMezzo.InViaggio:
             _returnColor = 'warning';
             break;
-        case 'Sul Posto':
+        case StatoMezzo.SulPosto:
             _returnColor = 'danger';
             break;
-        case 'In Rientro':
+        case StatoMezzo.InRientro:
             _returnColor = 'verdemela';
             break;
-        case 'Istituto':
+        case StatoMezzo.Istituto:
             _returnColor = 'secondary';
             break;
     }
     return _returnColor;
 }
 
-export function statoMezzoBorderClass(stato: string) {
+export function statoMezzoBorderClass(stato: StatoMezzo) {
     let _returnClass = '';
     switch (stato) {
         case StatoMezzo.InSede:
@@ -272,4 +272,8 @@ export function visualizzaBoschiSterpaglie(tipologieRichiesta: Tipologia[]) {
     }
     count <= 0 ? _return = false : _return = true;
     return _return;
+}
+
+export function onlyUnique(value, index, self) {
+    return self.indexOf(value) === index;
 }

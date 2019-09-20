@@ -22,6 +22,7 @@ import { Partenza } from '../../../shared/model/partenza.model';
 import { ShowToastr } from '../../../shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from '../../../shared/enum/toastr';
 import { TurnOffComposizione } from '../../../features/home/store/actions/view/view.actions';
+import { StatoMezzo } from '../../../shared/enum/stato-mezzo.enum';
 
 @Injectable()
 export class CompPartenzaServiceFake {
@@ -44,7 +45,7 @@ export class CompPartenzaServiceFake {
                         codice: '1',
                         descrizione: 'A1',
                         genere: 'APS',
-                        stato: 'In Sede',
+                        stato: StatoMezzo.InSede,
                         appartenenza: 0,
                         distaccamento: {
                             codice: '1',
@@ -99,7 +100,7 @@ export class CompPartenzaServiceFake {
                         codice: '2',
                         descrizione: 'A2',
                         genere: 'APS',
-                        stato: 'In Sede',
+                        stato: StatoMezzo.InSede,
                         appartenenza: 0,
                         distaccamento: {
                             codice: '1',
@@ -176,7 +177,7 @@ export class CompPartenzaServiceFake {
                         codice: '3',
                         descrizione: 'A3',
                         genere: 'APS',
-                        stato: 'In Sede',
+                        stato: StatoMezzo.InSede,
                         appartenenza: 0,
                         distaccamento: {
                             codice: '1',
@@ -253,7 +254,7 @@ export class CompPartenzaServiceFake {
                         codice: '1',
                         descrizione: 'A1',
                         genere: 'APS',
-                        stato: 'In Rientro',
+                        stato: StatoMezzo.InRientro,
                         appartenenza: 0,
                         distaccamento: {
                             codice: '1',
@@ -308,7 +309,7 @@ export class CompPartenzaServiceFake {
                         codice: '2',
                         descrizione: 'A2',
                         genere: 'APS',
-                        stato: 'In Viaggio',
+                        stato: StatoMezzo.InViaggio,
                         appartenenza: 0,
                         distaccamento: {
                             codice: '1',
@@ -390,7 +391,7 @@ export class CompPartenzaServiceFake {
                     codice: '1',
                     descrizione: 'A1',
                     genere: 'APS',
-                    stato: 'In Sede',
+                    stato: StatoMezzo.InSede,
                     appartenenza: 0,
                     distaccamento: {
                         codice: '1',
@@ -418,7 +419,7 @@ export class CompPartenzaServiceFake {
                     codice: '2',
                     descrizione: 'A2',
                     genere: 'APS',
-                    stato: 'In Sede',
+                    stato: StatoMezzo.InSede,
                     appartenenza: 0,
                     distaccamento: {
                         codice: '1',
@@ -446,7 +447,7 @@ export class CompPartenzaServiceFake {
                     codice: '3',
                     descrizione: 'A3',
                     genere: 'APS',
-                    stato: 'In Sede',
+                    stato: StatoMezzo.InSede,
                     appartenenza: 0,
                     distaccamento: {
                         codice: '1',
@@ -474,7 +475,7 @@ export class CompPartenzaServiceFake {
                     codice: '4',
                     descrizione: 'A4',
                     genere: 'APS',
-                    stato: 'In Rientro',
+                    stato: StatoMezzo.InRientro,
                     appartenenza: 0,
                     distaccamento: {
                         codice: '1',
@@ -502,7 +503,7 @@ export class CompPartenzaServiceFake {
                     codice: '5',
                     descrizione: 'A5',
                     genere: 'APS',
-                    stato: 'In Rientro',
+                    stato: StatoMezzo.InRientro,
                     appartenenza: 0,
                     distaccamento: {
                         codice: '1',
@@ -530,7 +531,7 @@ export class CompPartenzaServiceFake {
                     codice: '6',
                     descrizione: 'A6',
                     genere: 'APS',
-                    stato: 'In Viaggio',
+                    stato: StatoMezzo.InViaggio,
                     appartenenza: 0,
                     distaccamento: {
                         codice: '1',
@@ -558,7 +559,7 @@ export class CompPartenzaServiceFake {
                     codice: '7',
                     descrizione: 'A7',
                     genere: 'APS',
-                    stato: 'Sul Posto',
+                    stato: StatoMezzo.SulPosto,
                     appartenenza: 0,
                     distaccamento: {
                         codice: '1',

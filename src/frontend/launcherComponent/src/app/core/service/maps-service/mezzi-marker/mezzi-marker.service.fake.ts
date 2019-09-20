@@ -5,6 +5,7 @@ import { Coordinate } from '../../../../shared/model/coordinate.model';
 import { Mezzo } from '../../../../shared/model/mezzo.model';
 import { Sede } from '../../../../shared/model/sede.model';
 import { Tipologia } from '../../../../shared/model/tipologia.model';
+import { StatoMezzo } from '../../../../shared/enum/stato-mezzo.enum';
 
 
 @Injectable()

@@ -1,5 +1,6 @@
 // REDUCER
 import { BoxClickStateModel } from '../../../store/states/boxes/box-click.state';
+import { StatoMezzo } from '../../../../../shared/enum/stato-mezzo.enum';
 
 export class ReducerBoxClick {
     static readonly type = '[BoxClick] Reduce completato';
@@ -39,7 +40,7 @@ export class AllTrueBoxMezzi {
 export class AllTrueBoxMezziPresenti {
     static readonly type = '[BoxClick] Attivati tutti i filtri mezzi presenti';
 
-    constructor(public statiMezzi: string[]) {
+    constructor(public statiMezzi: StatoMezzo[]) {
     }
 }
 

@@ -19,8 +19,10 @@ import { SintesiRichiestaModalComponent } from '../maps/maps-ui/info-window/sint
 import { MezzoInServizio } from '../../../shared/interface/mezzo-in-servizio.interface';
 import { Mezzo } from '../../../shared/model/mezzo.model';
 import { BoxClickState, BoxClickStateModel } from '../store/states/boxes/box-click.state';
-import { AllTrueBoxMezzi, AllTrueBoxMezziPresenti, UndoAllBoxes } from '../store/actions/boxes/box-click.actions';
+import { AllTrueBoxMezziPresenti, UndoAllBoxes } from '../store/actions/boxes/box-click.actions';
 import { ReducerFiltroMarker } from '../store/actions/maps/maps-filtro.actions';
+import { onlyUnique } from '../../../shared/helper/function';
+import { StatoMezzo } from '../../../shared/enum/stato-mezzo.enum';
 
 @Component({
     selector: 'app-mezzi-in-servizio',
@@ -39,7 +41,7 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
     @Select(RichiesteState.richieste) richieste$: Observable<SintesiRichiesta[]>;
     richieste: SintesiRichiesta[];
 
-    statiMezziInServizio: string[];
+    statiMezziInServizio: StatoMezzo[];
     prevStateBoxClick: BoxClickStateModel;
     subscription: Subscription = new Subscription();
 
@@ -133,7 +135,3 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
 
 }
 
-
-export function onlyUnique(value, index, self) {
-    return self.indexOf(value) === index;
-}

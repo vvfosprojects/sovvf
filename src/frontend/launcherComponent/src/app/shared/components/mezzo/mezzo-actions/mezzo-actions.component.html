@@ -1,7 +1,7 @@
 <div class="btn-group btn-group-sm mr-3" (click)="$event.stopPropagation()">
   <button type="button" class="btn btn-sm btn-{{statoMezzoColor(mezzo.stato)}} px-2 py-0" (click)="onClick()"
-    ngbTooltip="{{calcolaActionSuggeritaMezzo(mezzo)}}">
-    <small>{{calcolaActionSuggeritaMezzo(mezzo)}}</small>
+    ngbTooltip="{{calcolaActionSuggeritaMezzo(mezzo.stato)}}">
+    <small>{{calcolaActionSuggeritaMezzo(mezzo.stato)}}</small>
   </button>
   <div class="btn-group" ngbDropdown role="group" aria-label="Button group with nested dropdown">
     <button class="btn btn-sm btn-{{statoMezzoColor(mezzo.stato)}} text-light p-1 dropdown-toggle-split"

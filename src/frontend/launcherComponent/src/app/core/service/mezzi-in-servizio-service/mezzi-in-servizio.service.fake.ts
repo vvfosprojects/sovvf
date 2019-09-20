@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { MezzoInServizio } from '../../../shared/interface/mezzo-in-servizio.interface';
 import { StatoSquadra } from '../../../shared/enum/stato-squadra.enum';
+import { StatoMezzo } from '../../../shared/enum/stato-mezzo.enum';
 
 interface MezziInServizioFakeResponse {
     listaMezzi: MezzoInServizio[];
@@ -26,7 +27,7 @@ export class MezziInServizioFakeService {
                         idRichiesta: 'RM-022',
                         descrizione: 'A1',
                         genere: 'APS',
-                        stato: 'In Viaggio',
+                        stato: StatoMezzo.InViaggio,
                         appartenenza: 0,
                         distaccamento: {
                             codice: '1',
@@ -74,7 +75,7 @@ export class MezziInServizioFakeService {
                         idRichiesta: 'RM-022',
                         descrizione: 'A1',
                         genere: 'APS',
-                        stato: 'In Viaggio',
+                        stato: StatoMezzo.InViaggio,
                         appartenenza: 0,
                         distaccamento: {
                             codice: '1',

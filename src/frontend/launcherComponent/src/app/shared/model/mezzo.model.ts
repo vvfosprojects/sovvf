@@ -22,7 +22,7 @@ export class Mezzo {
          * Codice dello stato del mezzo (InSede, InViaggio, SulPosto,
          * InRientro, Istituto). Utile a definire il colore del segnale di stato.
          */
-        public stato: string, // diventerà StatoMezzo
+        public stato: StatoMezzo, // diventerà StatoMezzo
         /**
          * Codice dello stato di appartenenza del mezzo (0 = Proprio, 1 = Altra sede).
          * Utile a definire il colore della segnalazione sullo stato di appartenenza.
