@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { VoceFiltro } from './filtri-richieste/voce-filtro.model';
 
 @Component({
     selector: 'app-ricerca-group',
@@ -6,4 +7,5 @@ import { Component } from '@angular/core';
     styleUrls: ['./ricerca-group.component.css']
 })
 export class RicercaGroupComponent {
+    @Input() filtriSelezionati: VoceFiltro[];
 }

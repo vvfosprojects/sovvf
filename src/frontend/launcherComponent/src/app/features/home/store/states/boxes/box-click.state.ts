@@ -164,11 +164,11 @@ export class BoxClickState {
             boxClick: {
                 richieste: state.boxClick.richieste,
                 mezzi: {
-                    inSede: action.statiMezzi.includes('In Sede') ? true : false,
-                    inRientro: action.statiMezzi.includes('In Rientro') ? true : false,
-                    inViaggio: action.statiMezzi.includes('In Viaggio') ? true : false,
-                    sulPosto: action.statiMezzi.includes('Sul Posto') ? true : false,
-                    istituto: action.statiMezzi.includes('Istituto') ? true : false
+                    inSede: action.statiMezzi.includes('In Sede'),
+                    inRientro: action.statiMezzi.includes('In Rientro'),
+                    inViaggio: action.statiMezzi.includes('In Viaggio'),
+                    sulPosto: action.statiMezzi.includes('Sul Posto'),
+                    istituto: action.statiMezzi.includes('Istituto')
                 }
             }
         });

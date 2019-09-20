@@ -11,7 +11,7 @@
                 </app-tasto-chiamata-group>
             </div>
             <div *ngIf="(richiesteStatus$ | async)" class="col-9 pl-0">
-                <app-ricerca-group>
+                <app-ricerca-group [filtriSelezionati]="(filtriSelezionati$ | async)">
                     <app-ricerca-richieste [ricerca]="(ricerca$ | async)" (search)="onSearch($event)">
                         <app-filtri-richieste [filtri]="(filtri$ | async)"
                                               [filtriSelezionati]="(filtriSelezionati$ | async)"
