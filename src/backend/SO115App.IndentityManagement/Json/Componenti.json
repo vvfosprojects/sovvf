@@ -2,62 +2,62 @@
   {
     "Codicefiscale": "RM123443424",
     "DescrizioneQualifica": "Capo Partenza",
-    "OrarioInizio": "2019-09-23T08:00:00Z",
-    "OrarioFine": "2019-09-23T20:00:00Z"
+    "CodiceTurno": "D",
+    "Nominativo": "Mario Rossi"
   },
   {
     "Codicefiscale": "RM54564657676",
     "DescrizioneQualifica": "Autista",
-    "OrarioInizio": "2019-09-23T08:00:00Z",
-    "OrarioFine": "2019-09-23T20:00:00Z"
+    "CodiceTurno": "D",
+    "Nominativo": "Pippo Bianchi"
   },
   {
     "Codicefiscale": "RM09433439948",
     "DescrizioneQualifica": "Tecnico Guardia",
-    "OrarioInizio": "2019-09-23T08:00:00Z",
-    "OrarioFine": "2019-09-23T20:00:00Z"
+    "CodiceTurno": "D",
+    "Nominativo": "Pluto Verdi"
   },
   {
     "Codicefiscale": "RM3443565766",
     "DescrizioneQualifica": "Tecnico Guardia 2",
-    "OrarioInizio": "2019-09-23T08:00:00Z",
-    "OrarioFine": "2019-09-23T20:00:00Z"
+    "CodiceTurno": "D",
+    "Nominativo": "Andrea Pippus"
   },
   {
     "Codicefiscale": "RM8775645242",
     "DescrizioneQualifica": "Funzionario di Guardia",
-    "OrarioInizio": "2019-09-23T08:00:00Z",
-    "OrarioFine": "2019-09-23T20:00:00Z"
+    "CodiceTurno": "D",
+    "Nominativo": "Davide Lupus"
   },
   {
     "Codicefiscale": "RM43243445435",
     "DescrizioneQualifica": "Capo Partenza",
-    "OrarioInizio": "2019-09-23T08:00:00Z",
-    "OrarioFine": "2019-09-23T20:00:00Z"
+    "CodiceTurno": "D",
+    "Nominativo": "Mike Dudu"
   },
   {
     "Codicefiscale": "RM6576574545",
     "DescrizioneQualifica": "Autista",
-    "OrarioInizio": "2019-09-23T08:00:00Z",
-    "OrarioFine": "2019-09-23T20:00:00Z"
+    "CodiceTurno": "D",
+    "Nominativo": "Rombo Immancabile"
   },
   {
     "Codicefiscale": "RM45949433242",
     "DescrizioneQualifica": "Tecnico Guardia",
-    "OrarioInizio": "2019-09-23T08:00:00Z",
-    "OrarioFine": "2019-09-23T20:00:00Z"
+    "CodiceTurno": "D",
+    "Nominativo": "Vingarium Leviosa"
   },
   {
     "Codicefiscale": "RM656454354232",
     "DescrizioneQualifica": "Tecnico Guardia 2",
-    "OrarioInizio": "2019-09-23T08:00:00Z",
-    "OrarioFine": "2019-09-23T20:00:00Z"
+    "CodiceTurno": "D",
+    "Nominativo": "Accio Lupus"
   },
   {
     "Codicefiscale": "RM6324324556",
     "DescrizioneQualifica": "Funzionario di Guardia",
-    "OrarioInizio": "2019-09-23T08:00:00Z",
-    "OrarioFine": "2019-09-23T20:00:00Z"
+    "CodiceTurno": "D",
+    "Nominativo": "Immobilus Harry"
   }
 
 ]

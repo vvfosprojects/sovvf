@@ -38,7 +38,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SO115App.SignalR", "SO115Ap
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SO115App.FakePersistence.InMemory.Test", "SO115App.FakePersistence.InMemory.Test\SO115App.FakePersistence.InMemory.Test.csproj", "{584FC0AA-A32B-491B-BDCF-1DD6191BBCA1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SO115App.ApiServizi", "SO115App.ApiServizi\SO115App.ApiServizi.csproj", "{C4427CC0-5DA3-42E4-BA09-4C3F63C03EF5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SO115App.ApiServizi", "SO115App.ApiServizi\SO115App.ApiServizi.csproj", "{C4427CC0-5DA3-42E4-BA09-4C3F63C03EF5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SO115App.ApiIndentityManagement", "SO115App.IndentityManagement\SO115App.ApiIndentityManagement.csproj", "{73C524F1-19B9-4C54-92E5-9C1C1F6EA1F8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -110,6 +112,10 @@ Global
 		{C4427CC0-5DA3-42E4-BA09-4C3F63C03EF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C4427CC0-5DA3-42E4-BA09-4C3F63C03EF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C4427CC0-5DA3-42E4-BA09-4C3F63C03EF5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{73C524F1-19B9-4C54-92E5-9C1C1F6EA1F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{73C524F1-19B9-4C54-92E5-9C1C1F6EA1F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{73C524F1-19B9-4C54-92E5-9C1C1F6EA1F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{73C524F1-19B9-4C54-92E5-9C1C1F6EA1F8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
