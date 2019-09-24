@@ -44,8 +44,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
         public void Handle(MezzoPrenotatoCommand command)
         {
             // preparazione del DTO
-            Classi.Composizione.MezzoPrenotato mezzoPrenotato = _iGetMezzoPrenotato.Get(command);
-            command.MezzoPrenotato = mezzoPrenotato;
+            command.MezzoPrenotato = _iGetMezzoPrenotato.Get(command);
         }
     }
 }

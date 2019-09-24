@@ -1,16 +1,1 @@
-[
-  {
-    "Codice": "B4",
-    "Descrizione": null,
-    "DiurnoNotturno": "D",
-    "DataOraInizio": "2019-09-03T08:00:00",
-    "DataOraFine": "2019-09-03T20:00:00"
-  },
-  {
-    "Codice": "A4",
-    "Descrizione": null,
-    "DiurnoNotturno": "N",
-    "DataOraInizio": "2019-09-03T20:00:00",
-    "DataOraFine": "2019-09-04T08:00:00"
-  }
-]
+[{"Codice":"B1","Descrizione":null,"DiurnoNotturno":"D","DataOraInizio":"2019-09-23T08:00:00","DataOraFine":"2019-09-23T20:00:00"},{"Codice":"A1","Descrizione":null,"DiurnoNotturno":"N","DataOraInizio":"2019-09-23T20:00:00","DataOraFine":"2019-09-24T08:00:00"}]

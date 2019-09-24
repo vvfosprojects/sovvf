@@ -26,6 +26,8 @@ using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.Mez
 using SO115App.Models.Servizi.Infrastruttura.GetMezzoPrenotato;
 using DomainModel.CQRS.Commands.MezzoPrenotato;
 using System;
+using SO115App.API.Models.Classi.Condivise;
+using SO115App.FakePersistence.JSon.Utility;
 
 namespace SO115App.FakePersistenceJSon.Composizione
 {
@@ -37,31 +39,35 @@ namespace SO115App.FakePersistenceJSon.Composizione
 
             //TODO DA MODIFICARE CON LA CONNESSIONE AL DB PER IL REPERIMENTO DEI DATI DEFINITIVI
             //DATI FAKE - ORA LI LEGGO DA FILE
-            List<ComposizioneMezzi> mezzi = new List<ComposizioneMezzi>();
-            ComposizioneMezzi mezzo = new ComposizioneMezzi();
-            MezzoPrenotato mezzoPrenotato = new MezzoPrenotato();
-            string filepath = "Fake/MezziComposizione.json";
+            var mezzoPrenotato = new MezzoPrenotato();
+            var filepath = CostantiJson.Mezzo;
             string json;
-            using (StreamReader r = new StreamReader(filepath))
+            using (var r = new StreamReader(filepath))
             {
                 json = r.ReadToEnd();
             }
 
-            mezzi = JsonConvert.DeserializeObject<List<ComposizioneMezzi>>(json);
-            mezzo = mezzi.Where(x => x.Mezzo.Codice.Equals(command.MezzoPrenotato.mezzoComposizione.Mezzo.Codice)).FirstOrDefault();
-            mezzi.Remove(mezzo);
-            mezzo.IstanteScadenzaSelezione = DateTime.Now.AddSeconds(15);
-            mezzi.Add(mezzo);
-            mezzi.Sort(delegate (ComposizioneMezzi x, ComposizioneMezzi y)
+            var mezzi = JsonConvert.DeserializeObject<List<Mezzo>>(json);
+            var mezzo = mezzi.Find(x => x.Codice.Equals(command.MezzoPrenotato.MezzoComposizione.Mezzo.Codice));
+            if (command.MezzoPrenotato.SbloccaMezzo)
             {
-                return Convert.ToInt32(x.TempoPercorrenza).CompareTo(Convert.ToInt32(y.TempoPercorrenza));
-            });
-            string fileText = System.IO.File.ReadAllText(@"Fake/MezziComposizione.json");
-            string jsonNew = JsonConvert.SerializeObject(mezzi);
-            System.IO.File.WriteAllText(@"Fake/MezziComposizione.json", jsonNew);
-            mezzoPrenotato.mezzoComposizione = mezzo;
-            mezzoPrenotato.mezzoComposizione.Id = command.MezzoPrenotato.mezzoComposizione.Id;
-            mezzoPrenotato.codiceSede = command.CodiceSede;
+                mezzo.IstantePrenotazione = null;
+            }
+            else
+            {
+                mezzo.IstantePrenotazione = DateTime.Now.AddSeconds(15);
+            }
+            var composizioneMezzi = new ComposizioneMezzi
+            {
+                Id = Guid.NewGuid().ToString(),
+                Mezzo = mezzo,
+                IstanteScadenzaSelezione = mezzo.IstantePrenotazione
+            };
+            var jsonNew = JsonConvert.SerializeObject(mezzi);
+            System.IO.File.WriteAllText(filepath, jsonNew);
+            mezzoPrenotato.MezzoComposizione = composizioneMezzi;
+            mezzoPrenotato.MezzoComposizione.Id = command.MezzoPrenotato.MezzoComposizione.Id;
+            mezzoPrenotato.CodiceSede = command.CodiceSede;
             return mezzoPrenotato;
         }
     }
