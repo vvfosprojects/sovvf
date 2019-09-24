@@ -4,4 +4,5 @@ export enum StatoMezzo {
     SulPosto = 'Sul Posto',
     InRientro = 'In Rientro',
     Istituto = 'Istituto',
+    FuoriServizio = 'Fuori Servizio'
 }

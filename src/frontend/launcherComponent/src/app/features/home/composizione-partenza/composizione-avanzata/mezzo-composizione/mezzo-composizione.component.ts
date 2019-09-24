@@ -112,9 +112,8 @@ export class MezzoComposizioneComponent implements OnInit {
                 returnClass += 'border-danger diagonal-stripes bg-lightgrey';
                 break;
         }
-        //
-        // if (this.itemBloccato) {
-        if (this.mezzoComp.mezzo.stato !== 'In Sede' && this.mezzoComp.mezzo.stato !== 'In Rientro') {
+
+        if (this.mezzoComp.mezzo.stato !== StatoMezzo.InSede && this.mezzoComp.mezzo.stato !== StatoMezzo.InRientro && this.mezzoComp.mezzo.stato !== StatoMezzo.FuoriServizio) {
             returnClass += ' diagonal-stripes bg-lightdanger';
             this.itemBloccato = true;
         }
