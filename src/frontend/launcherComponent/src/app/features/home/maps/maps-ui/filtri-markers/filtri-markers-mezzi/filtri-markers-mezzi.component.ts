@@ -11,10 +11,10 @@ export class FiltriMarkersMezziComponent implements OnInit {
 
     @Input() filtroMezziAttivi: FiltroMezzi;
     @Input() statiMezzo = Object.values(StatoMezzo);
-    @Input() tipologieMezzo: any;
+    @Input() genereMezzo: any;
 
     @Output() changeStati: EventEmitter<any> = new EventEmitter<any>();
-    @Output() changeTipologie: EventEmitter<any> = new EventEmitter<any>();
+    @Output() changeGenere: EventEmitter<any> = new EventEmitter<any>();
 
     constructor() {
     }

@@ -7,8 +7,8 @@
                                       (changeStati)="changeStatiRichiesta($event)"></app-filtri-markers-richieste>
         <hr class="my-2">
         <app-filtri-markers-mezzi [filtroMezziAttivi]="filtroMezzi$ | async"
-                                  [tipologieMezzo]="generiMezzi$ | async"
+                                  [genereMezzo]="generiMezzi$ | async"
                                   (changeStati)="changeStatiMezzi($event)"
-                                  (changeTipologie)="changeTipologie($event)"></app-filtri-markers-mezzi>
+                                  (changeGenere)="changeGenere($event)"></app-filtri-markers-mezzi>
     </div>
 </div>

@@ -7,11 +7,11 @@
     </div>
 </div>
 <div class="mt-2">
-    <label>Tipologia</label>
+    <label>Genere</label>
     <div>
-        <ng-select [items]="tipologieMezzo" [multiple]="true" bindLabel="descrizione"
+        <ng-select [items]="genereMezzo" [multiple]="true" bindLabel="descrizione"
                    bindValue="descrizione"
-                   placeholder="Nessuna tipologia selezionata"
-                   (change)="changeTipologie.emit($event)"></ng-select>
+                   placeholder="Nessun genere selezionato"
+                   (change)="changeGenere.emit($event)"></ng-select>
     </div>
 </div>
