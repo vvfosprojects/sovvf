@@ -9,7 +9,7 @@ namespace SO115App.ApiIndentityManagement.Servizi
 {
     public class ComponentiSquadreService
     {
-        public static List<Componente> GetListaComponentiSquadra(string codiceSede, string[] ListaCodiciFiscali)
+        public static List<Componente> GetListaComponentiSquadra(string[] ListaCodiciFiscali)
         {
             List<Componente> ListaComponenti = new List<Componente>();
             List<Componente> ListaDef = new List<Componente>();

@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using SO115App.ApiIndentityManagement.Servizi;
 
 namespace SO115App.ApiIndentityManagement.Controllers
 {
@@ -11,13 +9,13 @@ namespace SO115App.ApiIndentityManagement.Controllers
     [ApiController]
     public class PersonaleController : ControllerBase
     {
-        [HttpGet("{codiciFiscali}")]
-        public ActionResult<List<Componente>> Get(string codiceSede, string[] ListaCodiciFiscali)
+        [HttpGet]
+        public ActionResult<List<Componente>> Get([FromQuery(Name = "codiciFiscali")]string[] codiciFiscali)
         {
             List<Componente> ListaComponenti = new List<Componente>();
             try
             {
-                ListaComponenti = ComponentiSquadreService.GetListaComponentiSquadra(codiceSede, ListaCodiciFiscali);
+                ListaComponenti = ComponentiSquadreService.GetListaComponentiSquadra(codiciFiscali);
                 return ListaComponenti;
             }
             catch (Exception ex)
