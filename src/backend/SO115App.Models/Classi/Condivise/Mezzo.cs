@@ -17,6 +17,10 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+
+using System;
+using SO115App.Models.Classi.Condivise;
+
 namespace SO115App.API.Models.Classi.Condivise
 {
     public class Mezzo
@@ -114,8 +118,18 @@ namespace SO115App.API.Models.Classi.Condivise
         public string[] Notifiche { get; set; }
 
         /// <summary>
-        ///   Coordinate del mezzo
+        ///   Localizzazione del mezzo da Geofleet
         /// </summary>
         public Coordinate Coordinate { get; set; }
+
+        /// <summary>
+        ///   identifica l'istante dell'acquisizione coordinate del mezzo
+        /// </summary>
+        public DateTime IstanteAcquisizione { get; set; }
+
+        /// <summary>
+        ///   identifica l'istante della prenotazione del mezzo
+        /// </summary>
+        public DateTime? IstantePrenotazione { get; set; }
     }
 }

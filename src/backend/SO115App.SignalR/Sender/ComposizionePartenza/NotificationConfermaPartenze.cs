@@ -70,7 +70,10 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
             sintesi.Motivazione = sintesi.Descrizione;
 
             var boxRichiesteQuery = new BoxRichiesteQuery();
-            var boxMezziQuery = new BoxMezziQuery();
+            var boxMezziQuery = new BoxMezziQuery()
+            {
+                CodiceSede = conferma.ConfermaPartenze.CodiceSede
+            };
             var boxPersonaleQuery = new BoxPersonaleQuery();
             var sintesiRichiesteQuery = new SintesiRichiesteAssistenzaQuery();
             var sintesiRichiesteAssistenzaMarkerQuery = new SintesiRichiesteAssistenzaMarkerQuery();

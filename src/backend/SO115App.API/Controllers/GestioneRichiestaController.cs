@@ -34,15 +34,17 @@ namespace SO115App.API.Controllers
         [HttpPost("AggiornaStato")]
         public async Task<IActionResult> AggiornaStato([FromBody]UpDateStatoRichiestaCommand richiesta)
         {
+            var codiceSede = Request.Headers["codicesede"];
             var headerValues = Request.Headers["IdUtente"];
-            string idOperatore = headerValues.FirstOrDefault();
+            var idOperatore = headerValues.FirstOrDefault();
 
             var command = new UpDateStatoRichiestaCommand()
             {
                 IdOperatore = idOperatore,
                 IdRichiesta = richiesta.IdRichiesta,
                 Note = richiesta.Note ?? "",
-                Stato = richiesta.Stato
+                Stato = richiesta.Stato,
+                CodiceSede = codiceSede
             };
 
             try

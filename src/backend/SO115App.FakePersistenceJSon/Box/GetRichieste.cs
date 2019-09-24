@@ -52,7 +52,7 @@ namespace SO115App.FakePersistenceJSon.Box
             {
                 List<RichiestaAssistenzaDTO> listaRichieste = JsonConvert.DeserializeObject<List<RichiestaAssistenzaDTO>>(json);
 
-                interventi.AnnoCorrente = DateTime.Now.Year;
+                interventi.AnnoCorrente = DateTime.UtcNow.Year;
 
                 if (listaRichieste != null)
                 {

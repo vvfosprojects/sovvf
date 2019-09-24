@@ -305,10 +305,10 @@ namespace SO115App.API.Models.Classi.Soccorso
                     var codice = gruppoEventiPartenza.Key;
                     var eventi = gruppoEventiPartenza.AsEnumerable();
                     var processoreStato = new ProcessoreStato();
-                    processoreStato.ProcessaEventi(eventi);
-                    var stato = processoreStato.Stato;
+                    //processoreStato.ProcessaEventi(eventi);
+                    //var stato = processoreStato.Stato;
 
-                    d[codice.ToString()] = stato;
+                    //d[codice.ToString()] = stato;
                 }
 
                 // Se la richiesta è chiusa, i mezzi devono essere stati tutti liberati.

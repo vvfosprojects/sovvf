@@ -23,17 +23,17 @@ namespace SO115App.API.Models.Classi.Condivise
 {
     public class Sede
     {
-        public Sede(string Codice, string Descrizione, string Indirizzo, Coordinate Coordinate, string TipoSede, string Label, string Icona, string Regione, string Provincia)
+        public Sede(string codice, string descrizione, string indirizzo, Coordinate coordinate, string tipoSede, string label, string icona, string regione, string provincia)
         {
-            this.Codice = Codice;
-            this.Descrizione = Descrizione;
-            this.Indirizzo = Indirizzo;
-            this.Coordinate = Coordinate;
-            this.Tipo = TipoSede;
-            this.Label = Label;
-            this.Icona = Icona;
-            this.Regione = Regione;
-            this.Provincia = Provincia;
+            this.Codice = codice;
+            this.Descrizione = descrizione;
+            this.Indirizzo = indirizzo;
+            this.Coordinate = coordinate;
+            this.Tipo = tipoSede;
+            this.Label = label;
+            this.Icona = icona;
+            this.Regione = regione;
+            this.Provincia = provincia;
         }
 
         /// <summary>

@@ -133,10 +133,10 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
                     return Costanti.RichiestaSospesa;
 
                 case PartenzaRientrata _:
-                    return Costanti.MezzoRientrato;
+                    return Costanti.EventoMezzoRientrato;
 
                 case PartenzaInRientro _:
-                    return Costanti.MezzoInRientro;
+                    return Costanti.EventoMezzoInRientro;
 
                 case AssegnataRichiesta _:
                     return Costanti.AssegnataRichiesta;

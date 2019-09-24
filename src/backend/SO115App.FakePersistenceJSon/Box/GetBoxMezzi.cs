@@ -18,17 +18,16 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Boxes;
-using SO115App.API.Models.Classi.Condivise;
-using SO115App.API.Models.Classi.Marker;
 using SO115App.FakePersistence.JSon.Classi;
 using SO115App.FakePersistence.JSon.Utility;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Box;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using SO115App.API.Models.Classi.Condivise;
 
 namespace SO115App.FakePersistenceJSon.Box
 {
@@ -36,18 +35,16 @@ namespace SO115App.FakePersistenceJSon.Box
     {
         public BoxMezzi Get(string codiceSede)
         {
-            var mapper = new MapFromFlottaToMezziMarker();
             var mezzi = new BoxMezzi();
+            var filepath = CostantiJson.Mezzo;
 
-            var filepath = CostantiJson.FlottaMezzi;
-            string json;
+            string jsonMezzo;
             using (var r = new StreamReader(filepath))
             {
-                json = r.ReadToEnd();
+                jsonMezzo = r.ReadToEnd();
             }
 
-            var flottaMezzi = JsonConvert.DeserializeObject<List<MapperMezziFromGeoFleet>>(json);
-            var listaMezzi = mapper.MappaFlottaMezziSuMezzo(flottaMezzi).FindAll(x => x.Distaccamento.Codice.Equals(codiceSede));
+            var listaMezzi = JsonConvert.DeserializeObject<List<Mezzo>>(jsonMezzo).FindAll(x => x.Distaccamento.Codice.Equals(codiceSede));
 
             mezzi.InSede = listaMezzi.Where(x => x.Stato == Costanti.MezzoInSede)
                 .Select(x => x.Stato)

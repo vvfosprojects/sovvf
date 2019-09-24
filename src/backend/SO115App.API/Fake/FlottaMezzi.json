@@ -209,5 +209,154 @@
     "interpolationData": null,
     "velocity": 0,
     "direction": 0
+  },
+  {
+    "id": "5d6da61eecc1290cf0b110e4",
+    "codiceMezzo": "RM.1007.11/A",
+    "classiMezzo": [
+      "PROV:RM",
+      "USO:CORP",
+      "APS"
+    ],
+    "localizzazione": {
+      "lat": 41.716162,
+      "lon": 12.695212
+    },
+    "istanteAcquisizione": "2019-09-02T23:29:44Z",
+    "fonte": {
+      "codiceFonte": "73562",
+      "classeFonte": "SERCOM/SO115/MEZZIFITTIZI"
+    },
+    "infoFonte": null,
+    "infoSO115": {
+      "stato": "4",
+      "codiceIntervento": "31110",
+      "dataIntervento": "2019-09-02T22:00:00Z"
+    },
+    "istanteArchiviazione": "2019-09-02T23:30:38.693Z",
+    "ultimo": true,
+    "interpolationData": null,
+    "velocity": 0,
+    "direction": 0
+  },
+  {
+    "id": "5d6d65e2ecc1290cf0b0d61f",
+    "codiceMezzo": "RM.1005.9/A",
+    "classiMezzo": [
+      "PROV:RM",
+      "USO:CORP",
+      "APS"
+    ],
+    "localizzazione": {
+      "lat": 42.090615,
+      "lon": 12.274125
+    },
+    "istanteAcquisizione": "2019-09-02T18:56:25Z",
+    "fonte": {
+      "codiceFonte": "73545",
+      "classeFonte": "SERCOM/SO115/MEZZIFITTIZI"
+    },
+    "infoFonte": null,
+    "infoSO115": {
+      "stato": "4",
+      "codiceIntervento": "30989",
+      "dataIntervento": "2019-09-01T22:00:00Z"
+    },
+    "istanteArchiviazione": "2019-09-02T18:56:34.507Z",
+    "ultimo": true,
+    "interpolationData": null,
+    "velocity": 0,
+    "direction": 0
+  },
+  {
+    "id": "5d6e09dbecc1290cf0b155eb",
+    "codiceMezzo": "RM.2008.18/A",
+    "classiMezzo": [
+      "PROV:RM",
+      "USO:CORP",
+      "AV"
+    ],
+    "localizzazione": {
+      "lat": 41.957248,
+      "lon": 12.769385
+    },
+    "istanteAcquisizione": "2019-09-03T06:35:42Z",
+    "fonte": {
+      "codiceFonte": "73610",
+      "classeFonte": "SERCOM/SO115/MEZZIFITTIZI"
+    },
+    "infoFonte": null,
+    "infoSO115": {
+      "stato": "4",
+      "codiceIntervento": "31125",
+      "dataIntervento": "2019-09-02T22:00:00Z"
+    },
+    "istanteArchiviazione": "2019-09-03T06:36:11.175Z",
+    "ultimo": true,
+    "interpolationData": {
+      "length_sec": 7205,
+      "messages": 1,
+      "lastMsgTime": "2019-09-03T06:35:37Z"
+    },
+    "velocity": 0,
+    "direction": 0
+  },
+  {
+    "id": "5d548550ecc1291ee4e2fc20",
+    "codiceMezzo": "RM.2009.17/A",
+    "classiMezzo": [
+      "PROV:RM",
+      "USO:CORP",
+      "APS"
+    ],
+    "localizzazione": {
+      "lat": 42.004182,
+      "lon": 12.035972
+    },
+    "istanteAcquisizione": "2019-08-14T22:03:48Z",
+    "fonte": {
+      "codiceFonte": "73600",
+      "classeFonte": "SERCOM/SO115/MEZZIFITTIZI"
+    },
+    "infoFonte": null,
+    "infoSO115": {
+      "stato": "4",
+      "codiceIntervento": "28268",
+      "dataIntervento": "2019-08-13T22:00:00Z"
+    },
+    "istanteArchiviazione": "2019-08-14T22:04:00.487Z",
+    "ultimo": true,
+    "interpolationData": null,
+    "velocity": 0,
+    "direction": 0
+  },
+  {
+    "id": "5d50f532ecc12930c0666011",
+    "codiceMezzo": "RM.2005.24/A",
+    "classiMezzo": [
+      "PROV:RM",
+      "USO:CORP",
+      "APS"
+    ],
+    "localizzazione": {
+      "lat": 41.902101,
+      "lon": 12.490544
+    },
+    "istanteAcquisizione": "2019-08-12T05:11:25Z",
+    "fonte": {
+      "codiceFonte": "73638",
+      "classeFonte": "SERCOM/SO115/MEZZIFITTIZI"
+    },
+    "infoFonte": null,
+    "infoSO115": {
+      "stato": "4",
+      "codiceIntervento": "27833",
+      "dataIntervento": "2019-08-10T22:00:00Z"
+    },
+    "istanteArchiviazione": "2019-08-12T05:12:18.201Z",
+    "ultimo": true,
+    "interpolationData": null,
+    "velocity": 0,
+    "direction": 0
   }
 ]

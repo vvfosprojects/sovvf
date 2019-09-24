@@ -22,6 +22,7 @@ using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Composizione;
+using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.FakePersistence.JSon.Utility;
@@ -35,7 +36,7 @@ namespace SO115App.FakePersistenceJSon.GestioneIntervento
         public void UpDate(RichiestaAssistenza richiestaAssistenza)
         {
             var filepath = CostantiJson.ListaRichiesteAssistenza;
-            var filePathMezzi = CostantiJson.MezziComposizione;
+            var filePathMezzi = CostantiJson.Mezzo;
             var filePathSquadre = CostantiJson.SquadreComposizione;
 
             var listaRichiesteNew = new List<RichiestaAssistenza>();
@@ -44,22 +45,22 @@ namespace SO115App.FakePersistenceJSon.GestioneIntervento
             string jsonMezzi;
             string jsonSquadre;
 
-            using (StreamReader r = new StreamReader(filepath))
+            using (var r = new StreamReader(filepath))
             {
                 json = r.ReadToEnd();
             }
-            using (StreamReader r = new StreamReader(filePathMezzi))
+            using (var r = new StreamReader(filePathMezzi))
             {
                 jsonMezzi = r.ReadToEnd();
             }
 
-            using (StreamReader r = new StreamReader(filePathSquadre))
+            using (var r = new StreamReader(filePathSquadre))
             {
                 jsonSquadre = r.ReadToEnd();
             }
 
             var listaRichieste = JsonConvert.DeserializeObject<List<RichiestaAssistenzaDTO>>(json);
-            var listaMezzi = JsonConvert.DeserializeObject<List<ComposizioneMezzi>>(jsonMezzi);
+            var listaMezzi = JsonConvert.DeserializeObject<List<Mezzo>>(jsonMezzi);
             var listaSquadre = JsonConvert.DeserializeObject<List<ComposizioneSquadre>>(jsonSquadre);
 
             if (listaRichieste != null)
@@ -73,7 +74,7 @@ namespace SO115App.FakePersistenceJSon.GestioneIntervento
                 listaRichiesteNew.Add(richiestaAssistenza);
 
                 var jsonListaPresente = JsonConvert.SerializeObject(listaRichiesteNew);
-                System.IO.File.WriteAllText(CostantiJson.ListaRichiesteAssistenza, jsonListaPresente);
+                File.WriteAllText(CostantiJson.ListaRichiesteAssistenza, jsonListaPresente);
             }
             else
             {
@@ -85,11 +86,11 @@ namespace SO115App.FakePersistenceJSon.GestioneIntervento
 
             foreach (var composizione in richiestaAssistenza.Partenze)
             {
-                foreach (var composizioneMezzo in listaMezzi)
+                foreach (var mezzo in listaMezzi)
                 {
-                    if (composizioneMezzo.Mezzo.Codice == composizione.Partenza.Mezzo.Codice)
+                    if (mezzo.Codice == composizione.Partenza.Mezzo.Codice)
                     {
-                        composizioneMezzo.Mezzo.Stato = composizione.Partenza.Mezzo.Stato;
+                        mezzo.Stato = composizione.Partenza.Mezzo.Stato;
                     }
                 }
 
@@ -106,7 +107,7 @@ namespace SO115App.FakePersistenceJSon.GestioneIntervento
             }
 
             var jsonListaMezzi = JsonConvert.SerializeObject(listaMezzi);
-            System.IO.File.WriteAllText(CostantiJson.MezziComposizione, jsonListaMezzi);
+            System.IO.File.WriteAllText(CostantiJson.Mezzo, jsonListaMezzi);
 
             var jsonListaSquadre = JsonConvert.SerializeObject(listaSquadre);
             System.IO.File.WriteAllText(CostantiJson.SquadreComposizione, jsonListaSquadre);

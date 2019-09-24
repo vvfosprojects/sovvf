@@ -99,13 +99,13 @@ namespace SO115App.FakePersistenceJSon.Utility
                         new ArrivoSulPosto(richiestaMap, arrivoSulPosto.CodiceMezzo, arrivoSulPosto.Istante, richiesta.Operatore.Sede.Codice);
                     }
 
-                    if (((Newtonsoft.Json.Linq.JObject)evento).ToString().Contains(Costanti.MezzoInRientro))
+                    if (((Newtonsoft.Json.Linq.JObject)evento).ToString().Contains(Costanti.EventoMezzoInRientro))
                     {
                         var partenzaInRientro = (((Newtonsoft.Json.Linq.JObject)evento).ToObject<PartenzaInRientro>());
                         new PartenzaInRientro(richiestaMap, partenzaInRientro.CodiceMezzo, partenzaInRientro.Istante, richiesta.Operatore.Sede.Codice);
                     }
 
-                    if (((Newtonsoft.Json.Linq.JObject)evento).ToString().Contains(Costanti.MezzoRientrato))
+                    if (((Newtonsoft.Json.Linq.JObject)evento).ToString().Contains(Costanti.EventoMezzoRientrato))
                     {
                         var partenzaRientrata = (((Newtonsoft.Json.Linq.JObject)evento).ToObject<PartenzaRientrata>());
                         new PartenzaRientrata(richiestaMap, partenzaRientrata.CodiceMezzo, partenzaRientrata.Istante, richiesta.Operatore.Sede.Codice);

@@ -41,31 +41,30 @@ namespace SO115App.FakePersistenceJSon.Composizione
         public ConfermaPartenze Update(ConfermaPartenzeCommand command)
         {
             var filepath = CostantiJson.ListaRichiesteAssistenza;
-            var filePathMezzi = CostantiJson.MezziComposizione;
+            var filePathMezzi = CostantiJson.Mezzo;
             var filePathSquadre = CostantiJson.SquadreComposizione;
             string json;
             string jsonMezzi;
             string jsonSquadre;
-            using (StreamReader r = new StreamReader(filepath))
+            using (var r = new StreamReader(filepath))
             {
                 json = r.ReadToEnd();
             }
 
-            using (StreamReader r = new StreamReader(filePathMezzi))
+            using (var r = new StreamReader(filePathMezzi))
             {
                 jsonMezzi = r.ReadToEnd();
             }
 
-            using (StreamReader r = new StreamReader(filePathSquadre))
+            using (var r = new StreamReader(filePathSquadre))
             {
                 jsonSquadre = r.ReadToEnd();
             }
 
             var richiestaDTO = new RichiestaAssistenzaDTO();
             var conferma = new ConfermaPartenze();
-            var richiestaNew = new RichiestaAssistenzaDTO();
             var listaRichieste = JsonConvert.DeserializeObject<List<RichiestaAssistenzaDTO>>(json);
-            var listaMezzi = JsonConvert.DeserializeObject<List<ComposizioneMezzi>>(jsonMezzi);
+            var listaMezzi = JsonConvert.DeserializeObject<List<Mezzo>>(jsonMezzi);
             var listaSquadre = JsonConvert.DeserializeObject<List<ComposizioneSquadre>>(jsonSquadre);
             var listaRichiesteNew = new List<RichiestaAssistenza>();
 
@@ -97,11 +96,11 @@ namespace SO115App.FakePersistenceJSon.Composizione
 
             foreach (var composizione in command.ConfermaPartenze.richiesta.Partenze)
             {
-                foreach (var composizioneMezzo in listaMezzi)
+                foreach (var mezzo in listaMezzi)
                 {
-                    if (composizioneMezzo.Mezzo.Codice != composizione.Partenza.Mezzo.Codice) continue;
-                    composizioneMezzo.Mezzo.Stato = Costanti.MezzoInViaggio;
-                    composizioneMezzo.Mezzo.IdRichiesta = command.ConfermaPartenze.IdRichiesta;
+                    if (mezzo.Codice != composizione.Partenza.Mezzo.Codice) continue;
+                    mezzo.Stato = Costanti.MezzoInViaggio;
+                    mezzo.IdRichiesta = command.ConfermaPartenze.IdRichiesta;
                 }
 
                 foreach (var composizioneSquadra in listaSquadre)
@@ -117,10 +116,10 @@ namespace SO115App.FakePersistenceJSon.Composizione
             }
 
             var jsonListaMezzi = JsonConvert.SerializeObject(listaMezzi);
-            System.IO.File.WriteAllText(CostantiJson.MezziComposizione, jsonListaMezzi);
+            File.WriteAllText(CostantiJson.Mezzo, jsonListaMezzi);
 
             var jsonListaSquadre = JsonConvert.SerializeObject(listaSquadre);
-            System.IO.File.WriteAllText(CostantiJson.SquadreComposizione, jsonListaSquadre);
+            File.WriteAllText(CostantiJson.SquadreComposizione, jsonListaSquadre);
 
             conferma.CodiceSede = command.ConfermaPartenze.CodiceSede;
             conferma.IdRichiesta = command.ConfermaPartenze.IdRichiesta;

@@ -98,12 +98,6 @@ namespace SO115App.CompositionRoot
                 SO115App.Models.Servizi.Infrastruttura.GetMezzoPrenotato.IGetMezzoPrenotato,
                 FakePersistenceJSon.Composizione.GetMezzoPrenotato>();
             container.Register<
-                SO115App.Models.Servizi.Infrastruttura.GetSbloccaMezzoPrenotato.IGetSbloccaMezzoPrenotato,
-                FakePersistenceJSon.Composizione.GetSbloccaMezzoPrenotato>();
-            container.Register<
-                SO115App.Models.Servizi.Infrastruttura.GetResetPrenotazioneMezzo.IGetResetPrenotazioneMezzo,
-                FakePersistenceJSon.Composizione.GetResetPrenotazioneMezzo>();
-            container.Register<
          SO115App.Models.Servizi.Infrastruttura.Composizione.IUpdateConfermaPartenze,
          FakePersistenceJSon.Composizione.UpdateConfermaPartenze>();
             container.Register<
@@ -133,6 +127,12 @@ namespace SO115App.CompositionRoot
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.IGetSchedeContatto,
                 SO115App.FakePersistence.JSon.GestioneIntervento.GetSchedeContatto>();
+            container.Register<
+                SO115App.Models.Servizi.Infrastruttura.GeoFleet.IGetCoordinateFromGeoFleet,
+                FakePersistence.JSon.Utility.GetCoordinateFromGeoFleet>();
+            container.Register<
+                SO115App.Models.Servizi.Infrastruttura.InfoRichiesta.IGetInfoRichiesta,
+                FakePersistence.JSon.Utility.GetInfoRichiesta>();
 
             container.Register<
             SO115App.Models.Servizi.Infrastruttura.Notification.GestioneChiamata.INotifyInserimentoChiamata,
@@ -152,12 +152,6 @@ namespace SO115App.CompositionRoot
             container.Register<
             SO115App.Models.Servizi.Infrastruttura.Notification.ComposizionePartenza.MezzoPrenotato.INotificationAddPrenotazioneMezzo,
             SO115App.SignalR.Sender.ComposizionePartenza.MezzoPrenotato.NotificationAddPrenotazioneMezzo>();
-            container.Register<
-            SO115App.Models.Servizi.Infrastruttura.Notification.ComposizionePartenza.MezzoPrenotato.INotificationRemovePrenotazioneMezzo,
-            SO115App.SignalR.Sender.ComposizionePartenza.MezzoPrenotato.NotificationRemovePrenotazioneMezzo>();
-            container.Register<
-            SO115App.Models.Servizi.Infrastruttura.Notification.ComposizionePartenza.MezzoPrenotato.INotificationResetPrenotazioneMezzo,
-            SO115App.SignalR.Sender.ComposizionePartenza.MezzoPrenotato.NotificationResetPrenotazioneMezzo>();
             container.Register<
             SO115App.Models.Servizi.Infrastruttura.Notification.ComposizionePartenza.INotificationConfermaPartenze,
             SO115App.SignalR.Sender.ComposizionePartenza.NotificationConfermaPartenze>();

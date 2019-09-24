@@ -11,7 +11,6 @@ namespace SO115App.FakePersistence.JSon.Utility
         public static string Filtri = "Fake/Filtri.json";
         public static string ListaChiamateInCorso = "Fake/ListaChiamateInCorso.json";
         public static string ListaRichiesteAssistenza = "Fake/ListaRichiesteAssistenza.json";
-        public static string MezziComposizione = "Fake/MezziComposizione.json";
         public static string Navbar = "Fake/Navbar.json";
         public static string PreaccoppiatiComposizione = "Fake/PreAccoppiatiComposizione.json";
         public static string SquadreComposizione = "Fake/SquadreComposizione.json";
@@ -19,5 +18,6 @@ namespace SO115App.FakePersistence.JSon.Utility
         public static string Turni = "Fake/Turni.json";
         public static string FlottaMezzi = "Fake/FlottaMezzi.json";
         public static string SchedeContatti = "Fake/SchedeContatti.json";
+        public static string Mezzo = "Fake/Mezzo.json";
     }
 }

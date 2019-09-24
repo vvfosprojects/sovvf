@@ -67,7 +67,10 @@ namespace SO115App.SignalR.Sender.GestioneIntervento
             var boxRichiesteQuery = new BoxRichiesteQuery();
             var boxInterventi = _boxRichiesteHandler.Handle(boxRichiesteQuery).BoxRichieste;
 
-            var boxMezziQuery = new BoxMezziQuery();
+            var boxMezziQuery = new BoxMezziQuery()
+            {
+                CodiceSede = richiesta.CodiceSede
+            };
             var boxMezzi = _boxMezziHandler.Handle(boxMezziQuery).BoxMezzi;
 
             var boxPersonaleQuery = new BoxPersonaleQuery();

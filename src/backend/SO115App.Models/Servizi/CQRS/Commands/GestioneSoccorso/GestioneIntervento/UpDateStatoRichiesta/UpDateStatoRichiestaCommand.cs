@@ -28,5 +28,6 @@ namespace DomainModel.CQRS.Commands.UpDateStatoRichiesta
         public string Note { get; set; }
         public string IdOperatore { get; set; }
         public SintesiRichiesta Chiamata { get; set; }
+        public string CodiceSede { get; set; }
     }
 }

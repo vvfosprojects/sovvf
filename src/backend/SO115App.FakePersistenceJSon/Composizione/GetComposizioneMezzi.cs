@@ -29,27 +29,47 @@ using System;
 using SO115App.FakePersistence.JSon.Classi;
 using SO115App.API.Models.Classi.Marker;
 using System.Globalization;
+using SO115App.API.Models.Classi.Condivise;
+using SO115App.Models.Servizi.Infrastruttura.GeoFleet;
 
 namespace SO115App.FakePersistenceJSon.Composizione
 {
     public class GetComposizioneMezzi : IGetComposizioneMezzi
     {
+        private readonly IGetCoordinateFromGeoFleet _getCoordinateFromGeoFleet;
+
+        public GetComposizioneMezzi(IGetCoordinateFromGeoFleet getCoordinateFromGeoFleet)
+        {
+            _getCoordinateFromGeoFleet = getCoordinateFromGeoFleet;
+        }
+
         public List<ComposizioneMezzi> Get(ComposizioneMezziQuery query)
         {
-            MapFromFlottaToMezziMarker mapper = new MapFromFlottaToMezziMarker();
-            List<MezzoMarker> ListaMezzi = new List<MezzoMarker>();
-
-            var filepath = CostantiJson.FlottaMezzi;
-            string json;
-            using (var r = new StreamReader(filepath))
+            var filepathMezzo = CostantiJson.Mezzo;
+            string jsonMezzo;
+            using (var r = new StreamReader(filepathMezzo))
             {
-                json = r.ReadToEnd();
+                jsonMezzo = r.ReadToEnd();
+            }
+            var filepathFlotta = CostantiJson.FlottaMezzi;
+            string jsonFlotta;
+            using (var r = new StreamReader(filepathFlotta))
+            {
+                jsonFlotta = r.ReadToEnd();
             }
 
-            List<MapperMezziFromGeoFleet> FlottaMezzi = JsonConvert.DeserializeObject<List<MapperMezziFromGeoFleet>>(json);
-            ListaMezzi = mapper.MappaFlottaMezziSuMezziMarker(FlottaMezzi).Where(x => x.Mezzo.Distaccamento.Codice == query.CodiceSede).ToList();
+            var flottaMezzi = JsonConvert.DeserializeObject<List<MezziFromGeoFleet>>(jsonFlotta);
+            var listaMezzi = JsonConvert.DeserializeObject<List<Mezzo>>(jsonMezzo);
 
-            List<ComposizioneMezzi> composizioneMezzi = GeneraListaComposizioneMezzi(ListaMezzi);
+            foreach (var mezzo in listaMezzi.FindAll(x => x.Distaccamento.Codice.Equals(query.CodiceSede)))
+            {
+                foreach (var mezziFromGeoFleet in flottaMezzi.Where(mezziFromGeoFleet => mezzo.Codice.Equals(mezziFromGeoFleet.CodiceMezzo)))
+                {
+                    mezzo.Coordinate = _getCoordinateFromGeoFleet.CodificaLocalizzazione(mezziFromGeoFleet.Localizzazione);
+                    mezzo.IstanteAcquisizione = mezziFromGeoFleet.IstanteAcquisizione;
+                }
+            }
+            var composizioneMezzi = GeneraListaComposizioneMezzi(listaMezzi);
 
             string[] generiMezzi;
             string[] statiMezzi;
@@ -111,7 +131,6 @@ namespace SO115App.FakePersistenceJSon.Composizione
                 foreach (var composizione in composizioneMezzi)
                 {
                     composizione.IndiceOrdinamento = ordinamento.GetIndiceOrdinamento(query.Filtro.IdRichiesta, composizione, composizione.Mezzo.IdRichiesta);
-                    composizione.IdRichiesta = composizione.Mezzo.IdRichiesta;
                     composizione.Id = composizione.Mezzo.Codice;
 
                     if (composizione.IstanteScadenzaSelezione < DateTime.Now)
@@ -128,7 +147,6 @@ namespace SO115App.FakePersistenceJSon.Composizione
                 foreach (var composizione in composizioneMezzi)
                 {
                     composizione.IndiceOrdinamento = ordinamento.GetIndiceOrdinamento(query.Filtro.IdRichiesta, composizione, composizione.Mezzo.IdRichiesta);
-                    composizione.IdRichiesta = composizione.Mezzo.IdRichiesta;
                     composizione.Id = composizione.Mezzo.Codice;
 
                     if (composizione.IstanteScadenzaSelezione < DateTime.Now)
@@ -141,29 +159,19 @@ namespace SO115App.FakePersistenceJSon.Composizione
             }
         }
 
-        private List<ComposizioneMezzi> GeneraListaComposizioneMezzi(List<MezzoMarker> listaMezzi)
+        private static List<ComposizioneMezzi> GeneraListaComposizioneMezzi(IEnumerable<Mezzo> listaMezzi)
         {
-            List<ComposizioneMezzi> ListaComposizione = new List<ComposizioneMezzi>();
+            var random = new Random();
 
-            Random random = new Random();
-
-            foreach (MezzoMarker mezzoMarker in listaMezzi)
-            {
-                string kmGen = random.Next(1, 60).ToString();
-                double TempoPer = Convert.ToDouble(kmGen.Replace(".", ",")) / 1.75;
-
-                ComposizioneMezzi composizione = new ComposizioneMezzi()
-                {
-                    Mezzo = mezzoMarker.Mezzo,
-                    Km = kmGen,
-                    TempoPercorrenza = Math.Round(TempoPer, 2).ToString(CultureInfo.InvariantCulture),
-                    //IdRichiesta = mezzoMarker.IdRichiesta
-                };
-
-                ListaComposizione.Add(composizione);
-            }
-
-            return ListaComposizione;
+            return (from mezzo in listaMezzi
+                    let kmGen = random.Next(1, 60).ToString()
+                    let tempoPer = Convert.ToDouble(kmGen.Replace(".", ",")) / 1.75
+                    select new ComposizioneMezzi()
+                    {
+                        Mezzo = mezzo,
+                        Km = kmGen,
+                        TempoPercorrenza = Math.Round(tempoPer, 2).ToString(CultureInfo.InvariantCulture),
+                    }).ToList();
         }
     }
 }

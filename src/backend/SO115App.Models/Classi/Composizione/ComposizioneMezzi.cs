@@ -28,10 +28,7 @@ namespace SO115App.API.Models.Classi.Composizione
         public Mezzo Mezzo { get; set; }
         public string Km { get; set; }
         public string TempoPercorrenza { get; set; }
-        public Coordinate Coordinate { get; set; }
         public DateTime? IstanteScadenzaSelezione { get; set; }
-
-        public string IdRichiesta { get; set; }
 
         /// <summary>
         ///   Incide generato dinamicamente, cambia da richiesta a richiesta. Serve ad ordinare i

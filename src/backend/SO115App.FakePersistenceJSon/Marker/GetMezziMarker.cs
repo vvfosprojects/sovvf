@@ -17,43 +17,74 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Geo;
 using SO115App.API.Models.Classi.Marker;
 using SO115App.FakePersistence.JSon.Classi;
 using SO115App.FakePersistence.JSon.Utility;
-using SO115App.FakePersistenceJSon.Utility;
+using SO115App.Models.Servizi.Infrastruttura.GeoFleet;
+using SO115App.Models.Servizi.Infrastruttura.InfoRichiesta;
 using SO115App.Models.Servizi.Infrastruttura.Marker;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 namespace SO115App.FakePersistenceJSon.Marker
 {
     public class GetMezziMarker : IGetMezziMarker
     {
+        private readonly IGetCoordinateFromGeoFleet _getCoordinateFromGeoFleet;
+        private readonly IGetInfoRichiesta _getInfoRichiesta;
+
+        public GetMezziMarker(IGetCoordinateFromGeoFleet getCoordinateFromGeoFleet, IGetInfoRichiesta getInfoRichiesta)
+        {
+            _getCoordinateFromGeoFleet = getCoordinateFromGeoFleet;
+            _getInfoRichiesta = getInfoRichiesta;
+        }
+
         public List<MezzoMarker> GetListaMezziMarker(AreaMappa filtroAreaMappa)
         {
-            var mapper = new MapFromFlottaToMezziMarker();
             var listaMezziFilter = new List<MezzoMarker>();
 
-            string filepath = CostantiJson.FlottaMezzi;
+            var filepath = CostantiJson.Mezzo;
             string json;
             using (StreamReader r = new StreamReader(filepath))
             {
                 json = r.ReadToEnd();
             }
+            var filepathFlotta = CostantiJson.FlottaMezzi;
+            string jsonFlotta;
+            using (StreamReader r = new StreamReader(filepathFlotta))
+            {
+                jsonFlotta = r.ReadToEnd();
+            }
 
             try
             {
-                var flottaMezzi = JsonConvert.DeserializeObject<List<MapperMezziFromGeoFleet>>(json);
-                var listaMezzi = mapper.MappaFlottaMezziSuMezziMarker(flottaMezzi);
+                var flottaMezzi = JsonConvert.DeserializeObject<List<MezziFromGeoFleet>>(jsonFlotta);
+                var listaMezzi = JsonConvert.DeserializeObject<List<Mezzo>>(json);
+                var listaMezziMarker = new List<MezzoMarker>();
 
-                if (filtroAreaMappa == null) return listaMezzi;
+                foreach (var mezzo in listaMezzi)
+                {
+                    foreach (var mezziFromGeoFleet in flottaMezzi.Where(mezziFromGeoFleet => mezzo.Codice.Equals(mezziFromGeoFleet.CodiceMezzo)))
+                    {
+                        mezzo.Coordinate = _getCoordinateFromGeoFleet.CodificaLocalizzazione(mezziFromGeoFleet.Localizzazione);
+                    }
+                    var mezzoMarker = new MezzoMarker()
+                    {
+                        Mezzo = mezzo,
+                        InfoRichiesta = _getInfoRichiesta.GetInfoRichiestaFromIdRichiestaMezzo(mezzo.IdRichiesta)
+                    };
 
-                listaMezziFilter.AddRange(listaMezzi.Where(mezzo => (mezzo.Coordinate.Latitudine >= filtroAreaMappa.BottomLeft.Latitudine) && (mezzo.Coordinate.Latitudine <= filtroAreaMappa.TopRight.Latitudine) && ((mezzo.Coordinate.Longitudine >= filtroAreaMappa.BottomLeft.Longitudine) && (mezzo.Coordinate.Longitudine <= filtroAreaMappa.TopRight.Longitudine))));
+                    listaMezziMarker.Add(mezzoMarker);
+                }
+
+                if (filtroAreaMappa == null) return listaMezziMarker;
+
+                listaMezziFilter.AddRange(listaMezziMarker.Where(mezzo => (mezzo.Mezzo.Coordinate.Latitudine >= filtroAreaMappa.BottomLeft.Latitudine) && (mezzo.Mezzo.Coordinate.Latitudine <= filtroAreaMappa.TopRight.Latitudine) && ((mezzo.Mezzo.Coordinate.Longitudine >= filtroAreaMappa.BottomLeft.Longitudine) && (mezzo.Mezzo.Coordinate.Longitudine <= filtroAreaMappa.TopRight.Longitudine))));
 
                 return listaMezziFilter;
             }
