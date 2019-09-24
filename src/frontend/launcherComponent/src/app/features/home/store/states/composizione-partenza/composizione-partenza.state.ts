@@ -7,7 +7,7 @@ import {
     RemoveFiltroSelezionatoComposizione, RichiestaComposizione, SetComposizioneMode,
     SetFiltriComposizione, TerminaComposizione,
     ToggleComposizioneMode,
-    UpdateListe, UpdateRichiestaComposizione, SetListaFiltriAffini
+    UpdateListe, UpdateRichiestaComposizione, SetListaFiltriAffini, StartListaComposizioneLoading, StopListaComposizioneLoading
 } from '../../actions/composizione-partenza/composizione-partenza.actions';
 import { ComposizionePartenzaStateModel } from './composizione-partenza.state';
 import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.model';
@@ -49,6 +49,7 @@ export interface ComposizionePartenzaStateModel {
     codiceStatoMezzo: any[];
     richiesta: SintesiRichiesta;
     composizioneMode: Composizione;
+    loading: boolean;
 }
 
 export const ComposizioneStateDefaults: ComposizionePartenzaStateModel = {
@@ -61,7 +62,8 @@ export const ComposizioneStateDefaults: ComposizionePartenzaStateModel = {
     codiceTipoMezzo: [],
     codiceStatoMezzo: [],
     richiesta: null,
-    composizioneMode: Composizione.Avanzata
+    composizioneMode: Composizione.Avanzata,
+    loading: false
 };
 
 
@@ -105,8 +107,14 @@ export class ComposizionePartenzaState {
         return composizioneMarkers;
     }
 
+    @Selector()
+    static loading(state: ComposizionePartenzaStateModel) {
+        return state.loading;
+    }
+
+
     constructor(private store: Store,
-        private compPartenzaService: CompPartenzaService) {
+                private compPartenzaService: CompPartenzaService) {
     }
 
     @Action(GetFiltriComposizione)
@@ -169,6 +177,7 @@ export class ComposizionePartenzaState {
             });
             return _return;
         }
+
         function checkStato(stato: DescrizioneTipologicaMezzo) {
             let _return = false;
             listaMezziSquadre.composizioneMezzi.forEach((mezzoComp: MezzoComposizione) => {
@@ -178,6 +187,7 @@ export class ComposizionePartenzaState {
             });
             return _return;
         }
+
         function checkGenereMezzo(genereMezzo: DescrizioneTipologicaMezzo) {
             let _return = false;
             listaMezziSquadre.composizioneMezzi.forEach((mezzoComp: MezzoComposizione) => {
@@ -364,5 +374,19 @@ export class ComposizionePartenzaState {
     @Action(ClearPartenza)
     clearPartenza({ patchState }: StateContext<ComposizionePartenzaStateModel>) {
         patchState(ComposizioneStateDefaults);
+    }
+
+    @Action(StartListaComposizioneLoading)
+    startListaComposizioneLoading({ patchState }: StateContext<ComposizionePartenzaStateModel>) {
+        patchState({
+            loading: true
+        });
+    }
+
+    @Action(StopListaComposizioneLoading)
+    stopListaComposizioneLoading({ patchState }: StateContext<ComposizionePartenzaStateModel>) {
+        patchState({
+            loading: false
+        });
     }
 }

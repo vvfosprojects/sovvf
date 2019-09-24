@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 // Interface
 import { MezzoComposizione } from '../../interface/mezzo-composizione-interface';
 import { BoxPartenza } from '../../interface/box-partenza-interface';
@@ -7,6 +7,7 @@ import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
 import { MezzoDirection } from '../../../../../shared/interface/mezzo-direction';
 import { SganciamentoInterface } from 'src/app/shared/interface/sganciamento.interface';
 import { iconaStatiClass, mezzoComposizioneBusy } from '../../shared/functions/composizione-functions';
+import { StatoMezzo } from '../../../../../shared/enum/stato-mezzo.enum';
 
 @Component({
     selector: 'app-mezzo-composizione',
@@ -117,7 +118,6 @@ export class MezzoComposizioneComponent implements OnInit {
             returnClass += ' diagonal-stripes bg-lightdanger';
             this.itemBloccato = true;
         }
-        // }
 
         if (this.itemInPrenotazione) {
             returnClass += ' diagonal-stripes bg-lightgrey';

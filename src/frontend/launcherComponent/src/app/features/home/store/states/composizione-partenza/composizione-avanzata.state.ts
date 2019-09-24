@@ -28,7 +28,7 @@ import { FiltriComposizione } from '../../../composizione-partenza/interface/fil
 import { ViewComponentState } from '../view/view.state';
 import { Composizione } from '../../../../../shared/enum/composizione.enum';
 import { GetPreAccoppiati } from '../../actions/composizione-partenza/composizione-veloce.actions';
-import { SetListaFiltriAffini } from '../../actions/composizione-partenza/composizione-partenza.actions';
+import { SetListaFiltriAffini, StartListaComposizioneLoading, StopListaComposizioneLoading } from '../../actions/composizione-partenza/composizione-partenza.actions';
 
 export interface ComposizioneAvanzataStateModel {
     listaMezziSquadre: ListaComposizioneAvanzata;
@@ -56,6 +56,7 @@ export class ComposizioneAvanzataState {
 
     @Action(GetListeComposizioneAvanzata)
     getListeComposizioneAvanzata({ getState, dispatch }: StateContext<ComposizioneAvanzataStateModel>, action: GetListeComposizioneAvanzata) {
+        this.store.dispatch(new StartListaComposizioneLoading());
         const filtri = {} as FiltriComposizione;
         if (action.filtri) {
             filtri.CodiceDistaccamento = action.filtri.CodiceDistaccamento.length > 0 ? action.filtri.CodiceDistaccamento : [''];
@@ -117,6 +118,7 @@ export class ComposizioneAvanzataState {
                         }
                     }
                 }
+                this.store.dispatch(new StopListaComposizioneLoading());
             }
             console.log('Filtri Composizione Avanzata', filtri);
             console.log('listeCompAvanzata', listeCompAvanzata);

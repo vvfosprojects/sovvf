@@ -88,3 +88,11 @@ export class TerminaComposizione {
 export class ClearPartenza {
     static readonly type = '[ComposizionePartenza] Clear Composizione Partenza';
 }
+
+export class StartListaComposizioneLoading {
+    static readonly type = '[ComposizionePartenza] Start Lista Composizione Loading';
+}
+
+export class StopListaComposizioneLoading {
+    static readonly type = '[ComposizionePartenza] Stop Lista Composizione Loading';
+}

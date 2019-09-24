@@ -2,7 +2,9 @@
   <div class="col-3 pr-0">
     <div class="card card-shadow mx-auto" style="min-height:392px">
       <div class="card-header">
-        <i class="fa fa-group mr-2"></i><span class="h6">Squadre</span>
+        <i class="fa fa-group mr-2"></i>
+        <span class="h6">Squadre</span>
+        <i *ngIf="loading" class="fa fa-spinner fa-spin ml-2"></i>
       </div>
       <ul *ngIf="squadreComposizione?.length > 0" class="list-group list-group-flush border-bottom scroll-y"
         style="max-height:345px; min-height:345px">
@@ -30,7 +32,9 @@
   <div class="col-5 pr-0">
     <div class="card card-shadow mx-auto" style="min-height:392px">
       <div class="card-header">
-        <i class="fa fa-truck mr-2"></i><span class="h6">Mezzi</span>
+        <i class="fa fa-truck mr-2"></i>
+        <span class="h6">Mezzi</span>
+        <i *ngIf="loading" class="fa fa-spinner fa-spin ml-2"></i>
       </div>
       <ul *ngIf="mezziComposizione?.length > 0" class="list-group list-group-flush border-bottom scroll-y"
           style="max-height:345px; min-height:345px">

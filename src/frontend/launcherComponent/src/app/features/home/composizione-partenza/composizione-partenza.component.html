@@ -1,27 +1,33 @@
 <div class="row mt-1">
-  <div class="col-12 pt-1 px-0">
-    <div *ngIf="richiesta" class="px-3 mb-2">
-      <div class="w-100 rounded card-shadow" [ngClass]="cardClasses(richiesta)">
-        <app-sintesi-richiesta [richiesta]="richiesta" [fissata]="false" [espanso]="true" [partenza]="true"
-          [listaEventi]="true" [modificabile]="false" [gestibile]="false" [inGestione]="false"
-          (eventiRichiesta)="onVisualizzaEventiRichiesta($event)" (actionMezzo)="onActionMezzo($event)">
-        </app-sintesi-richiesta>
-      </div>
+    <div class="col-12 pt-1 px-0">
+        <div *ngIf="richiesta" class="px-3 mb-2">
+            <div class="w-100 rounded card-shadow" [ngClass]="cardClasses(richiesta)">
+                <app-sintesi-richiesta [richiesta]="richiesta" [fissata]="false" [espanso]="true" [partenza]="true"
+                                       [listaEventi]="true" [modificabile]="false" [gestibile]="false"
+                                       [inGestione]="false"
+                                       (eventiRichiesta)="onVisualizzaEventiRichiesta($event)"
+                                       (actionMezzo)="onActionMezzo($event)">
+                </app-sintesi-richiesta>
+            </div>
+        </div>
+        <div class="px-3">
+            <app-composizione-filterbar [filtri]="filtriAffini$ | async"></app-composizione-filterbar>
+        </div>
+        <div *ngIf="richiesta && compPartenzaMode === Composizione.Veloce" class="px-3">
+            <app-composizione-veloce [richiesta]="richiesta" (sendDirection)="onSendDirection($event)"
+                                     (clearDirection)="onClearDirection()" (prenota)="onPrenota($event)"
+                                     [prenotato]="prenotato"
+                                     (centraMappa)="centraMappa()" [disablePrenota]="disablePrenota">
+            </app-composizione-veloce>
+        </div>
+        <div *ngIf="richiesta && compPartenzaMode === Composizione.Avanzata" class="px-3">
+            <app-composizione-avanzata [richiesta]="richiesta" [loading]="loading$ | async"
+                                       (sendDirection)="onSendDirection($event)"
+                                       (clearDirection)="onClearDirection()" (centraMappa)="centraMappa()"
+                                       (prenota)="onPrenota($event)"
+                                       [prenotato]="prenotato" [disablePrenota]="disablePrenota"
+                                       (sganciamento)="onSganciamento($event)">
+            </app-composizione-avanzata>
+        </div>
     </div>
-    <div class="px-3">
-      <app-composizione-filterbar [filtri]="filtriAffini$ | async"></app-composizione-filterbar>
-    </div>
-    <div *ngIf="richiesta && compPartenzaMode === Composizione.Veloce" class="px-3">
-      <app-composizione-veloce [richiesta]="richiesta" (sendDirection)="onSendDirection($event)"
-        (clearDirection)="onClearDirection()" (prenota)="onPrenota($event)" [prenotato]="prenotato"
-        (centraMappa)="centraMappa()" [disablePrenota]="disablePrenota">
-      </app-composizione-veloce>
-    </div>
-    <div *ngIf="richiesta && compPartenzaMode === Composizione.Avanzata" class="px-3">
-      <app-composizione-avanzata [richiesta]="richiesta" (sendDirection)="onSendDirection($event)"
-        (clearDirection)="onClearDirection()" (centraMappa)="centraMappa()" (prenota)="onPrenota($event)"
-        [prenotato]="prenotato" [disablePrenota]="disablePrenota" (sganciamento)="onSganciamento($event)">
-      </app-composizione-avanzata>
-    </div>
-  </div>
 </div>
