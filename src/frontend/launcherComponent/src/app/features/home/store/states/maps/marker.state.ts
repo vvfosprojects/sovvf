@@ -157,9 +157,9 @@ export class MarkerState {
         this.mezzoMarkerById$.subscribe(s => {
             if (s && s.mezzo.codice === action.markerMezzoSelezionato) {
                 const uniqueId = 'mezzo-' + action.markerMezzoSelezionato;
-                dispatch(new GetMarkerDatiMeteo(uniqueId, s.coordinate));
+                dispatch(new GetMarkerDatiMeteo(uniqueId, s.mezzo.coordinate));
                 if (!action.composizione) {
-                    dispatch(new SetCentroMappa(new CentroMappa(s.coordinate, MAPSOPTIONS.zoomSelezionato.mezzo)));
+                    dispatch(new SetCentroMappa(new CentroMappa(s.mezzo.coordinate, MAPSOPTIONS.zoomSelezionato.mezzo)));
                 }
             }
         });

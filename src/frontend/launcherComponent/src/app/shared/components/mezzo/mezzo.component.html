@@ -2,8 +2,8 @@
   <span class="d-inline-block">
     <i class="guida fa fa-truck fa-fw mr-1 text-{{statoMezzoColor(mezzo.stato)}}"
        ngbTooltip="Mezzo {{mezzo.stato}}"></i>
-    <span *ngIf="mezzo.descrizione" ngbTooltip="{{mezzo.descrizione}}"
-          [disableTooltip]="mezzo.descrizione.length <= 2"><b>{{ mezzo.descrizione | slice: 0: 4 }}</b></span>
+    <span *ngIf="mezzo.codice" ngbTooltip="{{mezzo.codice}}"
+          [disableTooltip]="mezzo.codice.length <= 2"><b>{{ mezzo.codice | slice: 0: 4 }}</b></span>
     <span *ngIf="mezzo.genere" class="badge badge-default m-0">{{ mezzo.genere }}</span>
   </span>
 

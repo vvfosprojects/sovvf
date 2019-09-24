@@ -14,7 +14,8 @@
             </div>
             <!-- Seconda Colonna (Prima riga) -->
             <div class="col-4 text-right">
-                <div class="badge badge-secondary">{{mezzoInServizio.mezzo.mezzo.distaccamento.descrizione}}</div>
+                <div class="badge badge-secondary" [ngbTooltip]="mezzoInServizio.mezzo.mezzo.distaccamento.descrizione"
+                     [disableTooltip]="mezzoInServizio.mezzo.mezzo.distaccamento.descrizione.length <= 13">{{mezzoInServizio.mezzo.mezzo.distaccamento.descrizione | slice: 0:15}}</div>
             </div>
         </div>
     </div>

@@ -180,8 +180,8 @@
                         [zoomOnClick]="mapsOptions.clusterOptions.zoomOnClick">
                     <ng-container *ngIf="isVisible('mezzo')">
                         <agm-marker *ngFor="let mezzoMarker of mezziMarkers;"
-                                    [latitude]="mezzoMarker.coordinate.latitudine"
-                                    [longitude]="mezzoMarker.coordinate.longitudine"
+                                    [latitude]="mezzoMarker.mezzo.coordinate.latitudine"
+                                    [longitude]="mezzoMarker.mezzo.coordinate.longitudine"
                                     (markerClick)="actionMezzoMarker(mezzoMarker.mezzo.codice, MouseE.Click)"
                                     (mouseOver)="actionMezzoMarker(mezzoMarker.mezzo.codice, MouseE.HoverIn)"
                                     (mouseOut)="actionMezzoMarker(mezzoMarker.mezzo.codice, MouseE.HoverOut)"
