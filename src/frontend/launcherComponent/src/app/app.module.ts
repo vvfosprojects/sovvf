@@ -57,6 +57,7 @@ import { SignalRInterceptor } from './core/signalr/signalR.interceptor';
 import { NavbarModule } from './features/navbar/navbar.module';
 import { SharedModule } from './shared/shared.module';
 import { AppLoadModule } from './core/app-load/app-load.module';
+import { RpcInterceptor } from './core/rpc/rpc-interceptor.service';
 
 
 @NgModule({
@@ -107,6 +108,7 @@ import { AppLoadModule } from './core/app-load/app-load.module';
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
         { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
         { provide: HTTP_INTERCEPTORS, useClass: SignalRInterceptor, multi: true },
+        { provide: HTTP_INTERCEPTORS, useClass: RpcInterceptor, multi: true },
         environment.fakeProvider ? { provide: HTTP_INTERCEPTORS, useClass: FakeBackendInterceptor, multi: true } : [],
         I18n,
         { provide: NavbarService, useClass: environment.fakeProvider ? NavbarServiceFake : NavbarService},
