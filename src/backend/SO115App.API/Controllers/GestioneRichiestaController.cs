@@ -1,16 +1,11 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-using CQRS.Commands;
+﻿using CQRS.Commands;
 using CQRS.Queries;
 using DomainModel.CQRS.Commands.UpDateStatoRichiesta;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiestaAssistenza.QueryDTO;
-using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiestaAssistenza.ResultDTO;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza;
-using SO115App.FakePersistenceJSon.GestioneIntervento;
-using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace SO115App.API.Controllers
 {

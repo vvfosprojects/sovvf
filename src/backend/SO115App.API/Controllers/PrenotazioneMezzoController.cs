@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using CQRS.Commands;
+﻿using CQRS.Commands;
 using DomainModel.CQRS.Commands.MezzoPrenotato;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SO115App.API.Models.Classi.Composizione;
+using System.Threading.Tasks;
 
 namespace SO115App.API.Controllers
 {
