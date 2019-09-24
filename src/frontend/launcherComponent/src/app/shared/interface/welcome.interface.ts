@@ -4,7 +4,7 @@ import { BoxInterventi } from '../../features/home/boxes/boxes-model/box-interve
 import { SintesiRichiesta } from '../model/sintesi-richiesta.model';
 import { ChiamataMarker } from '../../features/home/maps/maps-model/chiamata-marker.model';
 import { CentroMappa } from '../../features/home/maps/maps-model/centro-mappa.model';
-import { ListaFiltriComposizione } from '../../features/home/composizione-partenza/interface/filtri/lista-filtri-composizione-interface';
+import { ListaTipologicheMezzi } from '../../features/home/composizione-partenza/interface/filtri/lista-filtri-composizione-interface';
 import { SchedaContatto } from './scheda-contatto.interface';
 
 export interface Welcome {
@@ -14,6 +14,6 @@ export interface Welcome {
     listaSintesi: SintesiRichiesta[];
     listaChiamateInCorso: ChiamataMarker[];
     centroMappaMarker: CentroMappa;
-    listaFiltri: ListaFiltriComposizione;
+    listaFiltri: ListaTipologicheMezzi;
     listaSchedeContatto: SchedaContatto[];
 }

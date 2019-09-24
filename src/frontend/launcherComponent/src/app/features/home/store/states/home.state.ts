@@ -16,7 +16,7 @@ import { HomeService } from '../../../../core/service/home-service/home.service'
 import { ShowToastr } from '../../../../shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from '../../../../shared/enum/toastr';
 import { Welcome } from '../../../../shared/interface/welcome.interface';
-import { SetFiltriComposizione } from '../actions/composizione-partenza/filtri-composizione.actions';
+import { SetTipologicheMezzi } from '../actions/composizione-partenza/tipologiche-mezzi.actions';
 import { SetListaSchedeContatto } from '../actions/schede-contatto/schede-contatto.actions';
 
 export interface HomeStateModel {
@@ -77,7 +77,7 @@ export class HomeState {
                 new SetBoxPersonale(data.boxListaPersonale),
                 new SetChiamateMarkers(data.listaChiamateInCorso),
                 new SetInitCentroMappa(data.centroMappaMarker),
-                new SetFiltriComposizione(data.listaFiltri),
+                new SetTipologicheMezzi(data.listaFiltri),
                 new SetListaSchedeContatto(data.listaSchedeContatto)
             ]);
         }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5)));

@@ -1,6 +1,6 @@
 import { Composizione } from '../../../../../shared/enum/composizione.enum';
 import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.model';
-import { ListaFiltriComposizione } from '../../../composizione-partenza/interface/filtri/lista-filtri-composizione-interface';
+import { ListaTipologicheMezzi } from '../../../composizione-partenza/interface/filtri/lista-filtri-composizione-interface';
 import {
     FiltriComposizione
 } from '../../../composizione-partenza/interface/filtri/filtri-composizione-interface';
@@ -13,7 +13,7 @@ export class GetFiltriComposizione {
 export class SetFiltriComposizione {
     static readonly type = '[FiltriComposizione] Set Lista Filtri';
 
-    constructor(public filtri: ListaFiltriComposizione) {
+    constructor(public filtri: ListaTipologicheMezzi) {
     }
 }
 

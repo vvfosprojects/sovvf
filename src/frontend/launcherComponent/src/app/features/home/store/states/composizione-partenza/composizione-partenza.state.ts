@@ -36,14 +36,14 @@ import { AddInLavorazione, DeleteInLavorazione } from '../../actions/richieste/r
 import { ClearDirection } from '../../actions/maps/maps-direction.actions';
 import { GetInitCentroMappa } from '../../actions/maps/centro-mappa.actions';
 import { ClearMarkerMezzoSelezionato, ClearMarkerState } from '../../actions/maps/marker.actions';
-import { ListaFiltriComposizione } from '../../../composizione-partenza/interface/filtri/lista-filtri-composizione-interface';
+import { ListaTipologicheMezzi } from '../../../composizione-partenza/interface/filtri/lista-filtri-composizione-interface';
 import { ComposizioneFilterbar } from '../../../composizione-partenza/interface/composizione/composizione-filterbar-interface';
 import { ListaComposizioneAvanzata } from '../../../composizione-partenza/interface/lista-composizione-avanzata-interface';
 import { MezzoComposizione } from '../../../composizione-partenza/interface/mezzo-composizione-interface';
-import { DescrizioneFiltroComposizione } from '../../../composizione-partenza/interface/filtri/descrizione-filtro-composizione-interface';
+import { DescrizioneTipologicaMezzo } from '../../../composizione-partenza/interface/filtri/descrizione-filtro-composizione-interface';
 
 export interface ComposizionePartenzaStateModel {
-    filtriAffini: ListaFiltriComposizione;
+    filtriAffini: ListaTipologicheMezzi;
     codiceDistaccamento: any[];
     codiceTipoMezzo: any[];
     codiceStatoMezzo: any[];
@@ -111,7 +111,7 @@ export class ComposizionePartenzaState {
 
     @Action(GetFiltriComposizione)
     getFiltriComposizione({ dispatch }: StateContext<ComposizionePartenzaStateModel>) {
-        const filtri = this.store.selectSnapshot(state => state.filtriComposizione.filtri);
+        const filtri = this.store.selectSnapshot(state => state.tipologicheMezzi.tipologiche);
         dispatch(new SetFiltriComposizione(filtri));
     }
 
@@ -136,31 +136,31 @@ export class ComposizionePartenzaState {
 
     @Action(SetListaFiltriAffini)
     setListaFiltriAffini({ patchState }: StateContext<ComposizionePartenzaStateModel>) {
-        const filtri = this.store.selectSnapshot(state => state.filtriComposizione.filtri);
+        const filtri = this.store.selectSnapshot(state => state.tipologicheMezzi.tipologiche);
         let listaMezziSquadre = {} as ListaComposizioneAvanzata;
         listaMezziSquadre = this.store.selectSnapshot(state => state.composizioneAvanzata.listaMezziSquadre);
-        const filtriDistaccamento = [] as DescrizioneFiltroComposizione[];
-        const filtriStato = [] as DescrizioneFiltroComposizione[];
-        const generiMezzi = [] as DescrizioneFiltroComposizione[];
+        const filtriDistaccamento = [] as DescrizioneTipologicaMezzo[];
+        const filtriStato = [] as DescrizioneTipologicaMezzo[];
+        const generiMezzi = [] as DescrizioneTipologicaMezzo[];
         if (listaMezziSquadre.composizioneMezzi && listaMezziSquadre.composizioneSquadre) {
-            filtri.distaccamenti.forEach((distaccamento: DescrizioneFiltroComposizione) => {
+            filtri.distaccamenti.forEach((distaccamento: DescrizioneTipologicaMezzo) => {
                 if (checkDistaccamento(distaccamento)) {
                     filtriDistaccamento.push(distaccamento);
                 }
             });
-            filtri.stati.forEach((stato: DescrizioneFiltroComposizione) => {
+            filtri.stati.forEach((stato: DescrizioneTipologicaMezzo) => {
                 if (checkStato(stato)) {
                     filtriStato.push(stato);
                 }
             });
-            filtri.generiMezzi.forEach((genereMezzi: DescrizioneFiltroComposizione) => {
+            filtri.generiMezzi.forEach((genereMezzi: DescrizioneTipologicaMezzo) => {
                 if (checkGenereMezzo(genereMezzi)) {
                     generiMezzi.push(genereMezzi);
                 }
             });
         }
 
-        function checkDistaccamento(distaccamento: DescrizioneFiltroComposizione) {
+        function checkDistaccamento(distaccamento: DescrizioneTipologicaMezzo) {
             let _return = false;
             listaMezziSquadre.composizioneMezzi.forEach((mezzoComp: MezzoComposizione) => {
                 if (mezzoComp.mezzo.distaccamento.codice === distaccamento.id) {
@@ -169,7 +169,7 @@ export class ComposizionePartenzaState {
             });
             return _return;
         }
-        function checkStato(stato: DescrizioneFiltroComposizione) {
+        function checkStato(stato: DescrizioneTipologicaMezzo) {
             let _return = false;
             listaMezziSquadre.composizioneMezzi.forEach((mezzoComp: MezzoComposizione) => {
                 if (mezzoComp.mezzo.stato === stato.descrizione) {
@@ -178,7 +178,7 @@ export class ComposizionePartenzaState {
             });
             return _return;
         }
-        function checkGenereMezzo(genereMezzo: DescrizioneFiltroComposizione) {
+        function checkGenereMezzo(genereMezzo: DescrizioneTipologicaMezzo) {
             let _return = false;
             listaMezziSquadre.composizioneMezzi.forEach((mezzoComp: MezzoComposizione) => {
                 if (mezzoComp.mezzo.genere === genereMezzo.descrizione) {

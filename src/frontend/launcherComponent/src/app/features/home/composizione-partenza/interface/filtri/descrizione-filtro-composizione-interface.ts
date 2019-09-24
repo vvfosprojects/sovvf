@@ -1,4 +1,4 @@
-export interface DescrizioneFiltroComposizione {
+export interface DescrizioneTipologicaMezzo {
     id: string;
     descrizione?: string;
 }
