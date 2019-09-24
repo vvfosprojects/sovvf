@@ -9,6 +9,8 @@ import { SetPropritaRichiesta, UpdateStatiMezzi, UpdateStatiRichiesta, UpdateTip
 import { StatoRichiesta } from '../../../../../shared/enum/stato-richiesta.enum';
 import { FiltroMezzi } from '../../maps-model/filtro-mezzi.interface';
 import { StatoMezzo } from '../../../../../shared/enum/stato-mezzo.enum';
+import { TipologicheMezziState } from '../../../store/states/composizione-partenza/tipologiche-mezzi.state';
+import { DescrizioneTipologicaMezzo } from '../../../composizione-partenza/interface/filtri/descrizione-filtro-composizione-interface';
 
 @Component({
     selector: 'app-filtri-markers',
@@ -20,6 +22,7 @@ export class FiltriMarkersComponent implements OnInit {
 
     @Select(FiltriMarkersState.filtroRichieste) filtroRichieste$: Observable<FiltroRichieste>;
     @Select(FiltriMarkersState.filtroMezzi) filtroMezzi$: Observable<FiltroMezzi>;
+    @Select(TipologicheMezziState.generiMezzi) generiMezzi$: Observable<DescrizioneTipologicaMezzo>;
 
     constructor(private store: Store,
                 config: NgbDropdownConfig) {

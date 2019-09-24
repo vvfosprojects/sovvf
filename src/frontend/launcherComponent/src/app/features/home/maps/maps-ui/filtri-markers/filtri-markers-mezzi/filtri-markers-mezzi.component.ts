@@ -9,14 +9,12 @@ import { StatoMezzo } from '../../../../../../shared/enum/stato-mezzo.enum';
 })
 export class FiltriMarkersMezziComponent implements OnInit {
 
-    @Input() filtroMezzi: FiltroMezzi;
+    @Input() filtroMezziAttivi: FiltroMezzi;
+    @Input() statiMezzo = Object.values(StatoMezzo);
+    @Input() tipologieMezzo: any;
 
     @Output() changeStati: EventEmitter<any> = new EventEmitter<any>();
     @Output() changeTipologie: EventEmitter<any> = new EventEmitter<any>();
-
-    statiMezzo = Object.values(StatoMezzo);
-    tipologieMezzo = ['APS', 'ABP', 'AS'];
-    // TODO: terminare
 
     constructor() {
     }

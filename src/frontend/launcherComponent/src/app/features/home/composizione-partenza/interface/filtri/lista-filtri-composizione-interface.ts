@@ -1,7 +1,7 @@
-import { DescrizioneFiltroComposizione } from './descrizione-filtro-composizione-interface';
+import { DescrizioneTipologicaMezzo } from './descrizione-filtro-composizione-interface';
 
-export interface ListaFiltriComposizione {
-    distaccamenti: DescrizioneFiltroComposizione[];
-    generiMezzi: DescrizioneFiltroComposizione[];
-    stati: DescrizioneFiltroComposizione[];
+export interface ListaTipologicheMezzi {
+    distaccamenti: DescrizioneTipologicaMezzo[];
+    generiMezzi: DescrizioneTipologicaMezzo[];
+    stati: DescrizioneTipologicaMezzo[];
 }
