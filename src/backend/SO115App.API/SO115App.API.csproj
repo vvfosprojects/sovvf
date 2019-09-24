@@ -30,5 +30,5 @@
     <ProjectReference Include="..\SO115App.Models\SO115App.Models.csproj" />
     <ProjectReference Include="..\SO115App.SignalR\SO115App.SignalR.csproj" />
   </ItemGroup>
-  <ProjectExtensions><VisualStudio><UserProperties fake_4mezzicomposizione_1json__JsonSchema="http://json-schema.org/draft-04/schema" /></VisualStudio></ProjectExtensions>
+  <ProjectExtensions><VisualStudio><UserProperties /></VisualStudio></ProjectExtensions>
 </Project>
