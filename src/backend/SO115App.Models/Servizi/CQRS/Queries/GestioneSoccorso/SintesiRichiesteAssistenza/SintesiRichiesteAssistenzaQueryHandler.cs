@@ -17,12 +17,8 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System.Collections.Generic;
 using AutoMapper;
 using CQRS.Queries;
-using SO115App.API.Models.Classi.Condivise;
-using SO115App.API.Models.Servizi.CQRS.Command.GestioneSoccorso.Shared;
-using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
 using SO115App.Models.Servizi.CustomMapper;
@@ -60,6 +56,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichi
         ///   Istanza del servizio
         /// </summary>
         private readonly ICercaRichiesteAssistenza _cercaRichiesteAssistenza;
+
         private readonly IGetListaSintesi _iGetListaSintesi;
         private readonly IMapper _mapper;
 

@@ -87,8 +87,8 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
         this.subscription.unsubscribe();
     }
 
-    onActionMezzo(mezzoInServizio: MezzoInServizio, mezzoAction: MezzoActionInterface) {
-        const richiesta = this.richieste.filter(x => x.codice === mezzoInServizio.mezzo.mezzo.idRichiesta)[0];
+    onActionMezzo(mezzoInServizio: Mezzo, mezzoAction: MezzoActionInterface) {
+        const richiesta = this.richieste.filter(x => x.codice === mezzoInServizio.idRichiesta)[0];
         mezzoAction.richiesta = richiesta ? richiesta : null;
         mezzoAction.listaMezzi = true;
         this.store.dispatch(new ActionMezzo(mezzoAction));

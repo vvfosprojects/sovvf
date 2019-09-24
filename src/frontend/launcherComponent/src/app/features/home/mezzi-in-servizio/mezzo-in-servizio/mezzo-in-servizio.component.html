@@ -32,7 +32,7 @@
             <div class="col-4 py-1">
                 <button *ngIf="mezzoInServizio.mezzo.infoRichiesta?.codiceRichiesta"
                         class="btn btn-block btn-light btn-sm"
-                        (click)="dettaglioRichiesta.emit(mezzoInServizio.mezzo.infoRichiesta.codiceRichiesta)">
+                        (click)="dettaglioRichiesta.emit(mezzoInServizio.mezzo.mezzo.idRichiesta)">
                     <i class="fa fa-hashtag guida mr-1"></i>
                     {{mezzoInServizio.mezzo.infoRichiesta.codiceRichiesta}}
                 </button>

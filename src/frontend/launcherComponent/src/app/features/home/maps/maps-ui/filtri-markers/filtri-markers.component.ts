@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { FiltriMarkersState } from '../../../store/states/maps/filtri-markers.state';
 import { FiltroRichieste } from '../../maps-model/filtro-richieste.interface';
 import { Priorita } from '../../../../../shared/model/sintesi-richiesta.model';
-import { SetPropritaRichiesta, UpdateStatiMezzi, UpdateStatiRichiesta, UpdateTipologieMezzi } from '../../../store/actions/maps/filtri-markers.actions';
+import { SetPropritaRichiesta, UpdateStatiMezzi, UpdateStatiRichiesta, UpdateGenereMezzi } from '../../../store/actions/maps/filtri-markers.actions';
 import { StatoRichiesta } from '../../../../../shared/enum/stato-richiesta.enum';
 import { FiltroMezzi } from '../../maps-model/filtro-mezzi.interface';
 import { StatoMezzo } from '../../../../../shared/enum/stato-mezzo.enum';
@@ -45,7 +45,7 @@ export class FiltriMarkersComponent implements OnInit {
         this.store.dispatch(new UpdateStatiMezzi(statiMezzi));
     }
 
-    changeTipologie(tipologie: string[]) {
-        this.store.dispatch(new UpdateTipologieMezzi(tipologie));
+    changeGenere(genere: DescrizioneTipologicaMezzo[]) {
+        this.store.dispatch(new UpdateGenereMezzi(genere.map(x => x.descrizione)));
     }
 }

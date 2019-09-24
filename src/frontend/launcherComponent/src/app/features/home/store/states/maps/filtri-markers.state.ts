@@ -1,7 +1,7 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { FiltroRichieste } from '../../../maps/maps-model/filtro-richieste.interface';
 import { FiltroMezzi } from '../../../maps/maps-model/filtro-mezzi.interface';
-import { SetPropritaRichiesta, UpdateStatiMezzi, UpdateStatiRichiesta, UpdateTipologieMezzi } from '../../actions/maps/filtri-markers.actions';
+import { SetPropritaRichiesta, UpdateStatiMezzi, UpdateStatiRichiesta, UpdateGenereMezzi } from '../../actions/maps/filtri-markers.actions';
 
 export interface FiltriMarkersStateModel {
     filtroRichieste: FiltroRichieste;
@@ -68,8 +68,8 @@ export class FiltriMarkersState {
         });
     }
 
-    @Action(UpdateTipologieMezzi)
-    updateTipologieMezzi({ getState, patchState }: StateContext<FiltriMarkersStateModel>, action: UpdateTipologieMezzi) {
+    @Action(UpdateGenereMezzi)
+    updateGenereMezzi({ getState, patchState }: StateContext<FiltriMarkersStateModel>, action: UpdateGenereMezzi) {
         const state = getState();
         patchState({
             filtroMezzi: {
