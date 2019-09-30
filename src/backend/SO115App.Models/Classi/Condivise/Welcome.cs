@@ -23,6 +23,7 @@ using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRi
 using SO115App.Models.Classi.Marker;
 using System.Collections.Generic;
 using SO115App.API.Models.Classi.Soccorso;
+using SO115App.Models.Classi.NUE;
 
 namespace SO115App.Models.Classi.Condivise
 {

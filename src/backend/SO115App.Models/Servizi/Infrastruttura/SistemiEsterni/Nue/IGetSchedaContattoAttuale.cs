@@ -1,4 +1,5 @@
 ﻿using SO115App.API.Models.Classi.Soccorso;
+using SO115App.Models.Classi.NUE;
 
 namespace SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue
 {
@@ -11,6 +12,6 @@ namespace SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue
         ///   Restituisce la scheda contatto secondo i parametri indicati
         /// </summary>
         /// <returns>La scheda contatto</returns>
-        SchedaContatto GetSchedaContattoAttuale(string CodiceSede, string CodicePostazioneOperatore);
+        SchedaContatto GetSchedaContattoAttuale(string codiceSede, string codicePostazioneOperatore);
     }
 }

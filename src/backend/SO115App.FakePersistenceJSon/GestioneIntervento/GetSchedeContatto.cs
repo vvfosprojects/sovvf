@@ -23,6 +23,7 @@ using SO115App.FakePersistence.JSon.Utility;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using System.Collections.Generic;
 using System.IO;
+using SO115App.Models.Classi.NUE;
 
 namespace SO115App.FakePersistence.JSon.GestioneIntervento
 {

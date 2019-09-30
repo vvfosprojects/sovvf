@@ -20,8 +20,9 @@
 
 using System;
 using SO115App.API.Models.Classi.Condivise;
+using SO115App.API.Models.Classi.Soccorso;
 
-namespace SO115App.API.Models.Classi.Soccorso
+namespace SO115App.Models.Classi.NUE
 {
     /// <summary>
     ///   E' l'estratto della scheda contatto che giunge dal NUE.
@@ -31,7 +32,7 @@ namespace SO115App.API.Models.Classi.Soccorso
         /// <summary>
         ///   E' il codice della scheda contatto, proveniente dal NUE.
         /// </summary>
-        public string Id { get; set; }
+        public string CodiceScheda { get; set; }
 
         /// <summary>
         ///   E' la data inserimento della scheda contatto, proveniente dal NUE.
@@ -54,14 +55,14 @@ namespace SO115App.API.Models.Classi.Soccorso
         public string ClassificazioneEvento { get; set; }
 
         /// <summary>
-        ///   E' la categoria della scheda contatto, proveniente dal NUE.
+        ///   E' la categoria della scheda contatto, proveniente e valorizzata dal NUE.
         /// </summary>
         public string Categoria { get; set; }
 
         /// <summary>
-        ///   Indica la competenza della scheda contatto, proveniente dal NUE.
+        ///   Indica l'ente di competenza della scheda contatto.
         /// </summary>
-        public string CompetenzaCC_PS { get; set; }
+        public string EnteCompetenza { get; set; }
 
         /// <summary>
         ///   E' il dettaglio della scheda contatto, proveniente dal NUE.
@@ -71,7 +72,7 @@ namespace SO115App.API.Models.Classi.Soccorso
         /// <summary>
         ///   E' la priorità della scheda contatto, proveniente dal NUE.
         /// </summary>
-        public RichiestaAssistenza.Priorita Priorita { get; set; }
+        public int Priorita { get; set; }
 
         /// <summary>
         ///   E' il numero delle persone coinvolte provenienti dalla scheda contatto, proveniente dal NUE.
@@ -79,8 +80,23 @@ namespace SO115App.API.Models.Classi.Soccorso
         public int NumeroPersoneCoinvolte { get; set; }
 
         /// <summary>
-        ///   Indica se la scheda contatto è per competenza o no.
+        ///   Contiente informazioni sull'operatore che gestisce la scheda contatto
         /// </summary>
-        public bool PerCompetenza { get; set; }
+        public Operatore OperatoreChiamata { get; set; }
+
+        /// <summary>
+        ///   Indica il tipo di scheda contatto: Competenza, Conoscenza, Differibile
+        /// </summary>
+        public string Classificazione { get; set; }
+
+        /// <summary>
+        ///   Indica se la scheda contatto è stata letta o meno
+        /// </summary>
+        public bool Letta { get; set; }
+
+        /// <summary>
+        ///   Indica se la scheda contatto è stata gestita o meno
+        /// </summary>
+        public bool Gestita { get; set; }
     }
 }
