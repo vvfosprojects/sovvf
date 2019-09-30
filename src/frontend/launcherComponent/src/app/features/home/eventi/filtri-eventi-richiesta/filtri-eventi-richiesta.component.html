@@ -1,24 +1,32 @@
 <div class="row pt-2 pb-1 px-3">
-    <div class="col-8">
-        <h4 class="mt-2 font-weight-bold">
-            <i class="fa fa-hashtag guida mr-2"></i>{{idRichiesta}}
-        </h4>
-    </div>
-    <div class="col-4">
-        <form [formGroup]="form">
-            <ng-select [items]="listaTargaMezzo"
-                       bindLabel="targa"
-                       bindValue="targa"
-                       placeholder="{{mostraTesto()}}"
-                       formControlName="targheSelezionate"
-                       clearAllText="Pulisci"
-                       notFoundText="Mezzo non trovato"
-                       [virtualScroll]="true"
-                       [multiple]="true"
-                       [loading]="!listaTargaMezzo"
-                       loadingText="Caricamento..."
-                       (change)="onChange()">
-            </ng-select>
-        </form>
-    </div>
+  <div class="col-2">
+        <span class="h5 font-weight-bold d-inline-block mt-1">
+            <i class="fa fa-hashtag guida mr-1"></i>
+          {{idRichiesta}}
+        </span>
+  </div>
+  <div class="col-6">
+    <button class="btn btn-secondary" (click)="toggleIconeNomeClasseEvento.emit()">
+      <i class="fa mr-2" [ngClass]="getIconaBottone()"></i>
+      <span *ngIf="iconeNomeClasseEvento">Visualizza testo</span>
+      <span *ngIf="!iconeNomeClasseEvento">Visualizza icone</span>
+    </button>
+  </div>
+  <div class="col-4">
+    <form [formGroup]="form">
+      <ng-select [items]="listaTargaMezzo"
+                 bindLabel="targa"
+                 bindValue="targa"
+                 placeholder="{{mostraTesto()}}"
+                 formControlName="targheSelezionate"
+                 clearAllText="Pulisci"
+                 notFoundText="Mezzo non trovato"
+                 [virtualScroll]="true"
+                 [multiple]="true"
+                 [loading]="!listaTargaMezzo"
+                 loadingText="Caricamento..."
+                 (change)="onChange()">
+      </ng-select>
+    </form>
+  </div>
 </div>
