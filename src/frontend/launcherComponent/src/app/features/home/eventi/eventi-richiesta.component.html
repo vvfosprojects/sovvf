@@ -1,4 +1,8 @@
 <app-filtri-eventi-richiesta [idRichiesta]="(idRichiesta$ | async)" [listaTargaMezzo]="(listaTargaMezzo$ | async)"
-                             (targheSelezionate)="onSelezioneTarga($event)" [initValue]="(targheSelezionate$ | async)"></app-filtri-eventi-richiesta>
+                             [iconeNomeClasseEvento]="visualizzazioneIconeNomeClasseEvento$ | async"
+                             (toggleIconeNomeClasseEvento)="toggleIconeNomeClasseEvento()"
+                             (targheSelezionate)="onSelezioneTarga($event)"
+                             [initValue]="(targheSelezionate$ | async)"></app-filtri-eventi-richiesta>
 <app-lista-eventi-richiesta [elencoEventi]="(eventiRichiesta$ | async)"
+                            [iconeNomeClasseEvento]="visualizzazioneIconeNomeClasseEvento$ | async"
                             (targheSelezionate)="onSelezioneTarga($event)"></app-lista-eventi-richiesta>

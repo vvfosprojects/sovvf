@@ -2,11 +2,14 @@
   <div class="row align-items-center">
     <div class="col-md-12">-->
 <td>
-  <div>
+  <div *ngIf="visualizzaIconeNomeClasseEvento">
     <!--<i class="fa {{iconeClasseEventoCorrente}} fa-fw" aria-hidden="true" title="{{eventoRichiesta.tipo}}"></i>-->
     <i *ngFor="let ii of iconeClasseEventoCorrente" class="fa {{ii}} fa-fw" aria-hidden="true"
-      title="{{eventoRichiesta.nomeClasseEvento | eventi}}">
+       [ngbTooltip]="formatNomeClasseEvento(eventoRichiesta.nomeClasseEvento) | eventi">
     </i>
+  </div>
+  <div *ngIf="!visualizzaIconeNomeClasseEvento">
+    <span>{{formatNomeClasseEvento(eventoRichiesta.nomeClasseEvento) | eventi}}</span>
   </div>
 </td>
 <td>
@@ -21,7 +24,7 @@
 </td>
 <td>
   <small *ngIf="eventoRichiesta.targa" class="cursor-pointer" (click)="filtroTarga.emit(eventoRichiesta.targa)"
-    ngbTooltip="Clicca qui per ricercare gli eventi">
+         ngbTooltip="Clicca qui per ricercare gli eventi">
     <i class="fa fa-hashtag"></i>
     {{eventoRichiesta.targa}}
   </small>

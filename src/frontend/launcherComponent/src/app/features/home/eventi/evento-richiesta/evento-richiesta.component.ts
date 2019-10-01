@@ -2,89 +2,87 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { EventoRichiesta } from '../../../../shared/model/evento-richiesta.model';
 
 @Component({
-    selector: '[app-evento-richiesta]',
-    templateUrl: './evento-richiesta.component.html',
-    styleUrls: ['./evento-richiesta.component.css']
+  selector: '[app-evento-richiesta]',
+  templateUrl: './evento-richiesta.component.html',
+  styleUrls: ['./evento-richiesta.component.css']
 })
 export class EventoRichiestaComponent implements OnInit {
 
-    private espanso = false;
-    iconeClasseEventoCorrente: any;
-    private iconeClassiEvento: any;
-    private myMap: any;
+  espanso = false;
+  iconeClasseEventoCorrente: any;
+  iconeClassiEvento: any;
+  myMap: any;
 
-    @Input() eventoRichiesta: EventoRichiesta;
-    @Input() istanteEventoPrecedente: Date;
-    @Input() istantePrimoEvento: Date;
-    @Input() nomeClasseEvento: any;
+  @Input() eventoRichiesta: EventoRichiesta;
+  @Input() istanteEventoPrecedente: Date;
+  @Input() istantePrimoEvento: Date;
+  @Input() nomeClasseEvento: string;
+  @Input() visualizzaIconeNomeClasseEvento: boolean;
 
-    @Output() mostraDettaglio: EventEmitter<EventoRichiesta> = new EventEmitter();
-    @Output() filtroTarga: EventEmitter<string> = new EventEmitter();
+  @Output() mostraDettaglio: EventEmitter<EventoRichiesta> = new EventEmitter();
+  @Output() filtroTarga: EventEmitter<string> = new EventEmitter();
 
-    constructor() {
-    }
+  constructor() {
+  }
 
-    ngOnInit() {
-        this.iconeClassiEvento = [
-            ['Telefonata', ['fa-phone-square']],
-            ['AssegnazionePriorita', ['fa-sort-numeric-asc']],
-            ['MarcaRilevante', ['fa-warning', 'fa-check']],
-            ['MarcaNonRilevante', ['fa-warning', 'fa-close']],
-            ['AssegnataRichiesta', ['fa-tty']],
-            ['RiaperturaRichiesta', ['fa-refresh']],
-            ['InizioPresaInCarico', ['fa-eye']],
-            ['ChiusuraRichiesta', ['fa-flag-checkered']],
-            ['InviareFonogramma', ['fa-fax']],
-            ['ComposizionePartenze', ['fa-truck', 'fa-pencil-square-o']],
-            ['UscitaPartenza', ['fa-truck', 'fa-hand-o-right']],
-            ['ArrivoSulPosto', ['fa-truck', 'fa-check-square-o']],
-            ['PartenzaInRientro', ['fa-truck', 'fa-handshake-o']],
-            ['PartenzaRientrata', ['fa-truck', 'fa-hand-o-left']],
-            ['RevocaPerRiassegnazione', ['fa-truck', 'fa-close', 'fa-share-square-o']],
-            ['RevocaPerInterventoNonPiuNecessario', ['fa-truck', 'fa-close', 'fa-flag-checkered']],
-            ['RevocaPerFuoriServizio', ['fa-truck', 'fa-close', 'fa-wrench']],
-            ['RevocaPerAltraMotivazione', ['fa-truck', 'fa-close', 'fa-question-circle-o']],
-            ['VaInFuoriServizio', ['fa-truck', 'fa-wrench']],
-            ['InizioPresaInCarico', ['fa-user', 'fa-wrench']],
-            ['Presidiata', ['fa-bullseye']],
-            ['EventoGenerico', ['fa-question-circle']],
-            ['Sospesa', ['fa-question-circle']],
-            ['AssegnataPriorita', ['fa-thermometer-half']]
-        ];
+  ngOnInit() {
+    this.initIconeClassiEvento();
+    this.myMap = new Map(this.iconeClassiEvento);
+    this.iconeClasseEventoCorrente = this.myMap.get(this.nomeClasseEvento);
+  }
 
-        this.myMap = new Map(this.iconeClassiEvento);
+  initIconeClassiEvento() {
+    this.iconeClassiEvento = [
+      ['Telefonata', ['fa-phone-square']],
+      ['InizioPresaInCarico', ['fa-user', 'fa-wrench']],
+      ['RiaperturaRichiesta', ['fa-refresh']],
+      ['Composizione', ['fa-truck', 'fa-pencil-square-o']],
+      ['ChiusuraRichiesta', ['fa-flag-checkered']],
+      ['ArrivoSulPosto', ['fa-truck', 'fa-check-square-o']],
+      ['Presidiata', ['fa-truck', 'fa-map-marker']],
+      ['RichiestaSospesa', ['fa-stop']],
+      ['MezzoRientrato', ['fa-truck', 'fa-hand-o-left']],
+      ['MezzoInRientro', ['fa-truck', 'fa-handshake-o']],
+      ['AssegnataRichiesta', ['fa-tty']],
+      ['AssegnataPriorita', ['fa-thermometer-half']],
+      ['MarcaRilevante', ['fa-warning', 'fa-check']],
 
-        this.iconeClasseEventoCorrente = this.myMap.get(this.nomeClasseEvento);
+      // Default per gli eventi non gestiti
+      ['EventoGenerico', ['fa-question-circle']],
 
-        // console.log(this.iconeClasseEventoCorrente);
-        // this.iconaClasseEventoCorrente = myMap.get("telefonata");
-        // this.iconaClasseEventoCorrente = "fa-phone-square";
-        /*
-        console.log("Felix start");
-        console.log(this.nomeClasseEvento);
-        console.log(Array.from(this.myMap));
-        console.log(this.myMap.get(this.nomeClasseEvento));
-        console.log(this.myMap.get("telefonata"));
-        console.log(this.iconaClasseEventoCorrente);
-        */
+      // Per adesso non utilizzqti
+      // ['AssegnazionePriorita', ['fa-sort-numeric-asc']],
+      // ['MarcaNonRilevante', ['fa-warning', 'fa-close']],
+      // ['InviareFonogramma', ['fa-fax']],
+      // ['UscitaPartenza', ['fa-truck', 'fa-hand-o-right']],
+      // ['RevocaPerRiassegnazione', ['fa-truck', 'fa-close', 'fa-share-square-o']],
+      // ['RevocaPerInterventoNonPiuNecessario', ['fa-truck', 'fa-close', 'fa-flag-checkered']],
+      // ['RevocaPerFuoriServizio', ['fa-truck', 'fa-close', 'fa-wrench']],
+      // ['RevocaPerAltraMotivazione', ['fa-truck', 'fa-close', 'fa-question-circle-o']],
+      // ['VaInFuoriServizio', ['fa-truck', 'fa-wrench']],
+      // ['Sospesa', ['fa-question-circle']],
+    ];
+  }
 
+  toggleEspanso(): void {
+    this.espanso = !this.espanso;
+  }
 
-    }
+  clickDettaglio(event: any): void {
+    console.log('EventoRichiestaComponent.clickDettaglio(): ', event, this.eventoRichiesta.id);
+    this.mostraDettaglio.emit(this.eventoRichiesta);
+    // alert("cliccato");
+    event.preventDefault();
+  }
 
-    /**
-     * Espande/comprime il livello di dettaglio visualizzato per l'evento
-     */
-
-    private toggleEspanso(): void {
-        this.espanso = !this.espanso;
-    }
-
-    private clickDettaglio(event: any): void {
-        console.log('EventoRichiestaComponent.clickDettaglio(): ', event, this.eventoRichiesta.id);
-        this.mostraDettaglio.emit(this.eventoRichiesta);
-        // alert("cliccato");
-        event.preventDefault();
-    }
-
-
+  formatNomeClasseEvento(nomeClasseEvento: string): string {
+    let formattedStringArray: string[];
+    let formattedString = '' as string;
+    formattedStringArray = nomeClasseEvento.split(/(?=[A-Z])/);
+    formattedStringArray.forEach((x: string) => {
+      formattedString = formattedString + ' ';
+      formattedString = formattedString + x;
+    });
+    return formattedString;
+  }
 }

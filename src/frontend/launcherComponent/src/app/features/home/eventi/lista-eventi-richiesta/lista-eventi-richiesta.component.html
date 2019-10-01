@@ -1,14 +1,23 @@
 <div class="row_text scroll-y" style="max-height: calc(100vh - 60px)">
   <table *ngIf="elencoEventi" class="table table-striped">
-    <thead class="thead-dark h5">
-      <th scope="col">Evento</th>
-      <th scope="col">Quando</th>
-      <th scope="col">Targa</th>
-      <th scope="col">Note</th>
+    <thead class="bg-primary text-light h5">
+    <th scope="col" style="width:22%">
+      Evento
+    </th>
+    <th scope="col" style="width:40%">
+      Quando
+    </th>
+    <th scope="col" style="width:12%">
+      Targa
+    </th>
+    <th scope="col" style="width:26%">
+      Note
+    </th>
     </thead>
     <tbody class="h6">
-      <tr app-evento-richiesta *ngFor="let r of elencoEventi; let i = index"
-        [eventoRichiesta]="r" [nomeClasseEvento]="r.nomeClasseEvento" [istantePrimoEvento]="istantePrimoEvento"
+    <tr app-evento-richiesta *ngFor="let r of elencoEventi; let i = index"
+        [eventoRichiesta]="r" [nomeClasseEvento]="r.nomeClasseEvento"
+        [visualizzaIconeNomeClasseEvento]="iconeNomeClasseEvento" [istantePrimoEvento]="istantePrimoEvento"
         [istanteEventoPrecedente]="setIstanteEventoPrecedente(i)" (filtroTarga)="setRicercaTargaMezzo($event)"></tr>
     </tbody>
   </table>
