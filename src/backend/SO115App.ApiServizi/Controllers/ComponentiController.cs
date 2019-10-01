@@ -11,28 +11,13 @@ namespace SO115App.ApiServizi.Controllers
     [ApiController]
     public class ComponentiController : ControllerBase
     {
-        [HttpGet("{codiceSede}/{codiceSquadra}/{orarioInizio}")]
-        public ActionResult<List<Componente>> Get(string codiceSede, string codiceSquadra, string OrarioInizio)
+        [HttpGet("{codiceSede}/{codiceSquadra}/{codiceTurno}")]
+        public ActionResult<List<Componente>> Get(string codiceSede, string codiceSquadra, string codiceTurno)
         {
             List<Componente> ListaComponenti = new List<Componente>();
             try
             {
-                ListaComponenti = ComponentiSquadreService.GetListaComponentiSquadra(codiceSede, codiceSquadra, OrarioInizio);
-                return ListaComponenti;
-            }
-            catch (Exception ex)
-            {
-                return null;
-            }
-        }
-
-        [HttpGet("{codiceSede}/{codiceSquadra}")]
-        public ActionResult<List<Componente>> Get(string codiceSede, string codiceSquadra)
-        {
-            List<Componente> ListaComponenti = new List<Componente>();
-            try
-            {
-                ListaComponenti = ComponentiSquadreService.GetListaComponentiSquadra(codiceSede, codiceSquadra, "");
+                ListaComponenti = ComponentiSquadreService.GetListaComponentiSquadra(codiceSede, codiceSquadra, codiceTurno);
                 return ListaComponenti;
             }
             catch (Exception ex)

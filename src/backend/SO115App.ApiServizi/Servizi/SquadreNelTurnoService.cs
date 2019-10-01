@@ -28,7 +28,7 @@ namespace SO115App.ApiServizi.Servizi
                 return ListaSquadreNelTurno.Where(x => x.CodiceSede == codiceSede).ToList();
         }
 
-        public static Squadra GetSquadraByCodice(string codiceSquadra, string codiceSede)
+        public static Squadra GetSquadraByCodice(string codiceSquadra, string codiceSede, string codiceTurno)
         {
             List<SquadreNelTurno> ListaSquadreNelTurno = new List<SquadreNelTurno>();
 
@@ -43,7 +43,7 @@ namespace SO115App.ApiServizi.Servizi
 
             Squadra squadraSel = new Squadra();
 
-            foreach (SquadreNelTurno squadraNelTurno in ListaSquadreNelTurno.Where(x => x.CodiceSede == codiceSede).ToList())
+            foreach (SquadreNelTurno squadraNelTurno in ListaSquadreNelTurno.Where(x => x.CodiceSede == codiceSede && x.Codice == codiceTurno).ToList())
             {
                 foreach (Squadra squadra in squadraNelTurno.ListaSquadre)
                 {
