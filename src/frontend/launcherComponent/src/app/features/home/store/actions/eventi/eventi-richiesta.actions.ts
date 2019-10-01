@@ -36,3 +36,8 @@ export class FiltraEventiRichiesta {
 export class ClearEventiRichiesta {
     static readonly type = '[EventiRichiesta] Clear Eventi Richieste';
 }
+
+
+export class ToggleIconeNomeClasseEvento {
+  static readonly type = '[EventiRichiesta] Toggle Icone Nome Classe Evento';
+}
