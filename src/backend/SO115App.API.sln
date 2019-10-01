@@ -44,7 +44,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SO115App.ApiIndentityManage
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SO115App.ApiNUE", "ApiNUE\SO115App.ApiNUE.csproj", "{F1F37FED-E53E-4E73-B050-717EB43D0AE1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SO115.ApiGateway", "SO115.ApiGateway\SO115.ApiGateway.csproj", "{633C243F-3B27-4FA6-A018-74B85E516510}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SO115App.ApiGateway", "SO115.ApiGateway\SO115App.ApiGateway.csproj", "{633C243F-3B27-4FA6-A018-74B85E516510}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
