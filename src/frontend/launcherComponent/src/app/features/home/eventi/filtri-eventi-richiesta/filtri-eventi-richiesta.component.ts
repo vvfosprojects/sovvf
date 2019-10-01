@@ -40,7 +40,6 @@ export class FiltriEventiRichiestaComponent implements OnChanges {
     }
   }
 
-
   get targaControl() {
     return this.form.controls.targheSelezionate;
   }
