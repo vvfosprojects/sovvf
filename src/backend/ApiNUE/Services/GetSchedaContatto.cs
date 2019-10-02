@@ -28,6 +28,9 @@ namespace SO115App.ApiNUE.Services
         {
             var listaSchedeContatto = GetList();
 
+            if (codiceOperatore == null) return listaSchedeContatto.Find(x =>
+                 x.OperatoreChiamata.CodiceSede.Equals(codiceSede));
+
             return listaSchedeContatto.Find(x =>
                 x.OperatoreChiamata.CodiceSede.Equals(codiceSede)
                 && x.OperatoreChiamata.CodicePostazioneOperatore.Equals(codiceOperatore));
