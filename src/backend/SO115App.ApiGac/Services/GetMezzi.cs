@@ -24,10 +24,21 @@ namespace SO115App.ApiGac.Services
             return JsonConvert.DeserializeObject<List<Mezzo>>(json);
         }
 
-        public List<Mezzo> GetMezziUtilizzabili(List<Sede> sedi, string genereMezzo, string siglaMezzo)
+        public List<Mezzo> GetMezziUtilizzabili(List<string> codiceSedi, string genereMezzo, string siglaMezzo)
         {
             var listaMezzi = Get();
-            var listaMezziFromSede = sedi.Select(sede => listaMezzi.Find(x => x.Distaccamento.Equals(sedi) && x.Movimentazione.StatoOperativo != FuoriServizio)).ToList();
+            var listaMezziFromSede = new List<Mezzo>();
+
+            foreach (var sede in codiceSedi)
+            {
+                foreach (var mezzo in listaMezzi)
+                {
+                    if (sede.Equals(mezzo.Distaccamento.Codice))
+                    {
+                        listaMezziFromSede.Add(mezzo);
+                    }
+                }
+            }
 
             if (genereMezzo != null && siglaMezzo != null) return listaMezziFromSede.FindAll(x => x.Genere.Equals(genereMezzo) && x.Descrizione.Equals(siglaMezzo));
             if (genereMezzo != null) return listaMezziFromSede.FindAll(x => x.Genere.Equals(genereMezzo));
@@ -36,11 +47,21 @@ namespace SO115App.ApiGac.Services
             return listaMezziFromSede;
         }
 
-        public List<Mezzo> GetMezziFuoriServizio(List<Sede> sedi, string genereMezzo, string siglaMezzo)
+        public List<Mezzo> GetMezziFuoriServizio(List<string> codiceSedi, string genereMezzo, string siglaMezzo)
         {
             var listaMezzi = Get();
-            var listaMezziFromSede = sedi.Select(sede => listaMezzi.Find(x => x.Distaccamento.Equals(sede) && x.Movimentazione.StatoOperativo == FuoriServizio)).ToList();
+            var listaMezziFromSede = new List<Mezzo>();
 
+            foreach (var sede in codiceSedi)
+            {
+                foreach (var mezzo in listaMezzi)
+                {
+                    if (sede.Equals(mezzo.Distaccamento.Codice))
+                    {
+                        listaMezziFromSede.Add(mezzo);
+                    }
+                }
+            }
             if (genereMezzo != null && siglaMezzo != null) return listaMezziFromSede.FindAll(x => x.Genere.Equals(genereMezzo) && x.Descrizione.Equals(siglaMezzo));
             if (genereMezzo != null) return listaMezziFromSede.FindAll(x => x.Genere.Equals(genereMezzo));
             if (siglaMezzo != null) return listaMezziFromSede.FindAll(x => x.Descrizione.Equals(siglaMezzo));
@@ -60,10 +81,22 @@ namespace SO115App.ApiGac.Services
             return radioId.Select(x => listaMezzi.Find(y => y.IdRadio.Equals(x))).ToList();
         }
 
-        public List<Mezzo> GetMezziFromCodiceMezzo(List<string> codiceMezzo)
+        public List<Mezzo> GetMezziFromCodiceMezzo(List<string> codiciMezzo)
         {
             var listaMezzi = Get();
-            return codiceMezzo.Select(codice => listaMezzi.Find(x => x.Codice.Equals(codice))).ToList();
+            var listaMezziFromCodici = new List<Mezzo>();
+
+            foreach (var codice in codiciMezzo)
+            {
+                foreach (var mezzo in listaMezzi)
+                {
+                    if (codice.Equals(mezzo.Codice))
+                    {
+                        listaMezziFromCodici.Add(mezzo);
+                    }
+                }
+            }
+            return listaMezziFromCodici;
         }
     }
 }
