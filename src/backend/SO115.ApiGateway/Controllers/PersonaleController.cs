@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using SO115App.ApiGateway.Classi;
+using SO115App.ApiGateway.Servizi;
 
 namespace SO115.ApiGateway.Controllers
 {
@@ -11,10 +13,32 @@ namespace SO115.ApiGateway.Controllers
     [ApiController]
     public class PersonaleController : ControllerBase
     {
+        private readonly PersonaleService prsonaleService;
+
         /// <summary>
         ///   Controller che si occuperà di gestire tutte le informazioni riguardanti il Personale
         ///   mettendo insieme le informaizoni reperite dalle API Servizi e IdentityManagement e
         ///   restituendole al FrontEnd
         /// </summary>
+        public PersonaleController(PersonaleService prsonaleService)
+        {
+            this.prsonaleService = prsonaleService;
+        }
+
+        [HttpGet]
+        public async Task<List<SquadreNelTurno>> GetSquadreNelTurno(string codiceSede, string codiceTurno)
+        {
+            List<SquadreNelTurno> Turno = await prsonaleService.GetSquadreNelTurno(codiceSede, codiceTurno);
+
+            return Turno;
+        }
+
+        [HttpGet]
+        public async Task<List<SquadreNelTurno>> GetSquadreBySede(string codiceSede)
+        {
+            List<SquadreNelTurno> Turno = await prsonaleService.GetSquadreBySede(codiceSede);
+
+            return Turno;
+        }
     }
 }
