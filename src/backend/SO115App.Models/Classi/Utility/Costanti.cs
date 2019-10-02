@@ -76,12 +76,30 @@ namespace SO115App.Models.Classi.Utility
 
         #endregion Eventi
 
-        #region Turni
+        #region URLs External Services
 
-        public static string A = "A";
-        public static string B = "C";
-        public static string D = "D";
+        #region Controllers
 
-        #endregion Turni
+        public static string URLNueController = "http://localhost:5001/api/SchedaContatto/";
+
+        #endregion Controllers
+
+        #region Methods
+
+        public static string NueGetSchedaContattoAttuale = URLNueController + "SchedaContattoAttuale";
+        public static string NueGetByCFe = URLNueController + "GetByCF";
+        public static string NueGetByArea = URLNueController + "GetByArea";
+        public static string NueGetByText = URLNueController + "GetByText";
+        public static string NueGetByTipo = URLNueController + "GetByTipo";
+        public static string NueGetByCodiceSede = URLNueController + "GetByCodiceSede";
+        public static string NueGetLette = URLNueController + "GetLette";
+        public static string NueGetGestite = URLNueController + "GetGestite";
+        public static string NueGetByTimeSpan = URLNueController + "GetByTimeSpan";
+        public static string NueSetLetta = URLNueController + "SetLetta";
+        public static string NueSetGestita = URLNueController + "SetGestita";
+
+        #endregion Methods
+
+        #endregion URLs External Services
     }
 }

@@ -17,21 +17,17 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System;
-using System.Collections.Generic;
-using System.IO;
 using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Boxes;
-using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.StatiRichiesta;
-using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
-using SO115App.FakePersistence.JSon.Classi;
 using SO115App.FakePersistence.JSon.Utility;
 using SO115App.FakePersistenceJSon.Classi;
 using SO115App.FakePersistenceJSon.Utility;
-using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Box;
+using System;
+using System.Collections.Generic;
+using System.IO;
 
 namespace SO115App.FakePersistenceJSon.Box
 {
@@ -64,8 +60,6 @@ namespace SO115App.FakePersistenceJSon.Box
 
                     interventi.Assegnati = listaRichiesteAssistenza.FindAll(x => x.StatoRichiesta is Assegnata).Count;
                     interventi.Chiamate = listaRichiesteAssistenza.FindAll(x => x.StatoRichiesta is InAttesa).Count;
-                    interventi.NomeTurnoCorrente = Costanti.B;
-                    interventi.NomeTurnoPrecedente = Costanti.A;
                     interventi.Presidiati = listaRichiesteAssistenza.FindAll(x => x.StatoRichiesta is Presidiata).Count;
                     interventi.Sospesi = listaRichiesteAssistenza.FindAll(x => x.StatoRichiesta is Sospesa).Count;
                     interventi.TotAnnoCorrente = listaRichiesteAssistenza.FindAll(x => x.IstanteRicezioneRichiesta.Value.Year == DateTime.Now.Year).Count;
