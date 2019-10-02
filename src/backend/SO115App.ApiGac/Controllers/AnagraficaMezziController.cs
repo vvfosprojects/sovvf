@@ -19,36 +19,36 @@ namespace SO115App.ApiGac.Controllers
         }
 
         [HttpGet("MezziUtilizzabili")]
-        public ActionResult<List<Mezzo>> GetUtilizzabili([FromForm]List<Sede> sedi, string genereMezzo, string siglaMezzo)
+        public ActionResult<List<Mezzo>> GetUtilizzabili([FromQuery]List<string> codiciSedi, string genereMezzo, string siglaMezzo)
         {
-            return _getMezzi.GetMezziUtilizzabili(sedi, genereMezzo, siglaMezzo);
+            return _getMezzi.GetMezziUtilizzabili(codiciSedi, genereMezzo, siglaMezzo);
         }
 
         [HttpGet("MezziFuoriServizio")]
-        public ActionResult<List<Mezzo>> GetFuoriServizio([FromForm]List<Sede> sedi, string genereMezzo, string siglaMezzo)
+        public ActionResult<List<Mezzo>> GetFuoriServizio([FromQuery]List<string> codiciSedi, string genereMezzo, string siglaMezzo)
         {
-            return _getMezzi.GetMezziFuoriServizio(sedi, genereMezzo, siglaMezzo);
+            return _getMezzi.GetMezziFuoriServizio(codiciSedi, genereMezzo, siglaMezzo);
         }
 
         [HttpGet("ID")]
-        public ActionResult<List<Mezzo>> GetFromID([FromQuery]List<string> codiceMezzo)
+        public ActionResult<List<Mezzo>> GetFromID([FromQuery]List<string> codiciMezzo)
         {
-            return _getMezzi.GetMezziFromCodiceMezzo(codiceMezzo);
+            return _getMezzi.GetMezziFromCodiceMezzo(codiciMezzo);
         }
 
         [HttpGet("ICCID")]
-        public ActionResult<List<Mezzo>> GetFromICCID([FromForm]List<string> iccid)
+        public ActionResult<List<Mezzo>> GetFromICCID([FromQuery]List<string> iccid)
         {
             return _getMezzi.GetMezziFromICCID(iccid);
         }
 
         [HttpGet("SELETTIVA")]
-        public ActionResult<List<Mezzo>> GetSELETTIVA([FromForm]List<string> idRadio)
+        public ActionResult<List<Mezzo>> GetSELETTIVA([FromQuery]List<string> idRadio)
         {
             return _getMezzi.GetMezziFromRadioId(idRadio);
         }
 
-        [HttpPut("Movimentazione")]
+        [HttpPost("Movimentazione")]
         public void Put([FromForm]string codiceMezzo, Movimentazione movimentazione)
         {
             _setMezzo.SetMovimentazione(codiceMezzo, movimentazione);
