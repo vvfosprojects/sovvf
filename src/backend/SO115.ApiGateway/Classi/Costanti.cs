@@ -13,7 +13,9 @@ namespace SO115App.ApiGateway.Classi
 
         public static string NueUrl = "http://localhost:5001/api/SchedaContatto";
 
-        public static string ServiziSquadreUrl = "http://localhost:5001/api/Squadre";
-        public static string ServiziComponentiUrl = "http://localhost:5001/api/Componenti";
+        public static string ServiziSquadreUrl = "http://172.16.15.34:5000/api/Squadre";
+        public static string ServiziComponentiUrl = "http://172.16.15.34:5000/api/Componenti";
+
+        public static string IdentityManagementUrl = "http://172.16.15.34:5001/api/Personale";
     }
 }

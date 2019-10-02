@@ -11,8 +11,8 @@ namespace SO115App.ApiServizi.Controllers
     [ApiController]
     public class ComponentiController : ControllerBase
     {
-        [HttpGet("{codiceSede}/{codiceSquadra}/{codiceTurno}")]
-        public ActionResult<List<Componente>> Get(string codiceSede, string codiceSquadra, string codiceTurno)
+        [HttpGet]
+        public ActionResult<List<Componente>> Get([FromQuery]string codiceSede, string codiceSquadra, string codiceTurno)
         {
             List<Componente> ListaComponenti = new List<Componente>();
             try

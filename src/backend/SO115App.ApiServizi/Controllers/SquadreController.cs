@@ -12,7 +12,7 @@ namespace SO115App.ApiServizi.Controllers
     public class SquadreController : ControllerBase
     {
         [HttpGet("{codiceSede}/{codiceTurno}")]
-        public ActionResult<List<SquadreNelTurno>> GetSquadreNelTurno(string codiceSede, string codiceTurno)
+        public ActionResult<List<SquadreNelTurno>> GetSquadreNelTurno([FromQuery]string codiceSede, string codiceTurno)
         {
             List<SquadreNelTurno> ListaSquadre = new List<SquadreNelTurno>();
             try
@@ -27,7 +27,7 @@ namespace SO115App.ApiServizi.Controllers
         }
 
         [HttpGet("{codiceSede}")]
-        public ActionResult<List<SquadreNelTurno>> GetSquadreBySede(string codiceSede)
+        public ActionResult<List<SquadreNelTurno>> GetSquadreBySede([FromQuery]string codiceSede)
         {
             List<SquadreNelTurno> ListaSquadre = new List<SquadreNelTurno>();
             try

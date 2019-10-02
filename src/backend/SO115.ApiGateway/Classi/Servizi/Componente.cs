@@ -14,6 +14,8 @@ namespace SO115App.ApiGateway.Classi
 
         public string DescrizioneQualifica { get; set; }
 
+        public string Nominativo { get; set; }
+
         public DateTime OrarioInizio { get; set; }
 
         public DateTime OrarioFine { get; set; }

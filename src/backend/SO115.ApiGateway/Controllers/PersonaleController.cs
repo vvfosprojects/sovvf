@@ -25,16 +25,16 @@ namespace SO115.ApiGateway.Controllers
             this.prsonaleService = prsonaleService;
         }
 
-        [HttpGet]
-        public async Task<List<SquadreNelTurno>> GetSquadreNelTurno(string codiceSede, string codiceTurno)
+        [HttpGet("{codiceSede}/{codiceTurno}")]
+        public async Task<List<SquadreNelTurno>> GetSquadreNelTurno([FromQuery]string codiceSede, string codiceTurno)
         {
             List<SquadreNelTurno> Turno = await prsonaleService.GetSquadreNelTurno(codiceSede, codiceTurno);
 
             return Turno;
         }
 
-        [HttpGet]
-        public async Task<List<SquadreNelTurno>> GetSquadreBySede(string codiceSede)
+        [HttpGet("{codiceSede}")]
+        public async Task<List<SquadreNelTurno>> GetSquadreBySede([FromQuery]string codiceSede)
         {
             List<SquadreNelTurno> Turno = await prsonaleService.GetSquadreBySede(codiceSede);
 
