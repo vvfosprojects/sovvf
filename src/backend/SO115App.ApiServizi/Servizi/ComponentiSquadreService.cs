@@ -10,9 +10,9 @@ namespace SO115App.ApiServizi.Servizi
 {
     public class ComponentiSquadreService
     {
-        public static List<Componente> GetListaComponentiSquadra(string codiceSede, string codiceSquadra, string OrarioInizio)
+        public static List<Componente> GetListaComponentiSquadra(string codiceSede, string codiceSquadra, string codiceTurno)
         {
-            Squadra squadra = SquadreNelTurnoService.GetSquadraByCodice(codiceSquadra, codiceSede);
+            Squadra squadra = SquadreNelTurnoService.GetSquadraByCodice(codiceSquadra, codiceSede, codiceTurno);
 
             List<Componente> ListaComponenti = new List<Componente>();
             List<Componente> ListaDef = new List<Componente>();
@@ -25,9 +25,6 @@ namespace SO115App.ApiServizi.Servizi
             }
 
             ListaComponenti = JsonConvert.DeserializeObject<List<Componente>>(json);
-
-            if (OrarioInizio.Length > 0)
-                ListaComponenti = ListaComponenti.Where(x => x.OrarioInizio == Convert.ToDateTime(OrarioInizio)).ToList();
 
             foreach (var cf in squadra.ListaCodiciFiscaliComponentiSquadra)
             {
