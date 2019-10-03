@@ -39,8 +39,17 @@ namespace SO115App.ApiNUE.Services
         public List<SchedaContatto> GetSchedeContattoFromCodiciFiscali(List<string> codiciFiscali)
         {
             var listaSchedeContatto = GetList();
+            var listaSchedeContattoFiltered = new List<SchedaContatto>();
 
-            return codiciFiscali.Select(codice => listaSchedeContatto.Find(x => x.OperatoreChiamata.CodiceFiscale.Equals(codice))).ToList();
+            foreach (var codice in codiciFiscali)
+            {
+                foreach (var scheda in listaSchedeContatto)
+                {
+                    if (scheda.OperatoreChiamata.CodiceFiscale.Equals(codice)) listaSchedeContattoFiltered.Add(scheda);
+                }
+            }
+
+            return listaSchedeContattoFiltered;
         }
 
         public List<SchedaContatto> GetSchedeContattoFromCodiceSede(string codice)
@@ -66,8 +75,17 @@ namespace SO115App.ApiNUE.Services
         public List<SchedaContatto> GetSchedeContattoFromListTipo(List<string> classificazione)
         {
             var listaSchedeContatto = GetList();
+            var listaSchedeContattoFiltered = new List<SchedaContatto>();
 
-            return classificazione.Select(classe => listaSchedeContatto.Find(x => x.Classificazione.Equals(classe))).ToList();
+            foreach (var classe in classificazione)
+            {
+                foreach (var scheda in listaSchedeContatto)
+                {
+                    if (scheda.Classificazione.Equals(classe)) listaSchedeContattoFiltered.Add(scheda);
+                }
+            }
+
+            return listaSchedeContattoFiltered;
         }
 
         public List<SchedaContatto> GetSchedeContattoFromText(string testolibero)
