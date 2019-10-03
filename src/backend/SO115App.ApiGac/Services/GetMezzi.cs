@@ -26,7 +26,7 @@ namespace SO115App.ApiGac.Services
 
         public List<Mezzo> GetMezziUtilizzabili(List<string> codiceSedi, string genereMezzo, string siglaMezzo)
         {
-            var listaMezzi = Get();
+            var listaMezzi = Get().FindAll(x => x.Movimentazione.StatoOperativo != FuoriServizio);
             var listaMezziFromSede = new List<Mezzo>();
 
             foreach (var sede in codiceSedi)
@@ -49,7 +49,7 @@ namespace SO115App.ApiGac.Services
 
         public List<Mezzo> GetMezziFuoriServizio(List<string> codiceSedi, string genereMezzo, string siglaMezzo)
         {
-            var listaMezzi = Get();
+            var listaMezzi = Get().FindAll(x => x.Movimentazione.StatoOperativo == FuoriServizio);
             var listaMezziFromSede = new List<Mezzo>();
 
             foreach (var sede in codiceSedi)
@@ -72,13 +72,38 @@ namespace SO115App.ApiGac.Services
         public List<Mezzo> GetMezziFromICCID(List<string> iccid)
         {
             var listaMezzi = Get();
-            return iccid.Select(x => listaMezzi.Find(y => y.ICCID.Equals(x))).ToList();
+            var listaMezziFromSede = new List<Mezzo>();
+
+            foreach (var codice in iccid)
+            {
+                foreach (var mezzo in listaMezzi)
+                {
+                    if (codice.Equals(mezzo.ICCID))
+                    {
+                        listaMezziFromSede.Add(mezzo);
+                    }
+                }
+            }
+
+            return listaMezziFromSede;
         }
 
         public List<Mezzo> GetMezziFromRadioId(List<string> radioId)
         {
             var listaMezzi = Get();
-            return radioId.Select(x => listaMezzi.Find(y => y.IdRadio.Equals(x))).ToList();
+            var listaMezziFromSede = new List<Mezzo>();
+
+            foreach (var codice in radioId)
+            {
+                foreach (var mezzo in listaMezzi)
+                {
+                    if (codice.Equals(mezzo.IdRadio))
+                    {
+                        listaMezziFromSede.Add(mezzo);
+                    }
+                }
+            }
+            return listaMezziFromSede;
         }
 
         public List<Mezzo> GetMezziFromCodiceMezzo(List<string> codiciMezzo)
