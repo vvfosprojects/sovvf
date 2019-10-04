@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SO115App.ApiGac.Models;
 using SO115App.ApiGac.Services;
+using System;
 using System.Collections.Generic;
 
 namespace SO115App.ApiGac.Controllers
@@ -49,8 +50,14 @@ namespace SO115App.ApiGac.Controllers
         }
 
         [HttpPost("Movimentazione")]
-        public void Put([FromForm]string codiceMezzo, Movimentazione movimentazione)
+        public void Put([FromForm]string codiceMezzo, string idRichiesta, string statoOperativo, DateTime timeStamp)
         {
+            var movimentazione = new Movimentazione
+            {
+                IdRichiesta = idRichiesta,
+                StatoOperativo = statoOperativo,
+                DataMovimentazione = timeStamp
+            };
             _setMezzo.SetMovimentazione(codiceMezzo, movimentazione);
         }
     }
