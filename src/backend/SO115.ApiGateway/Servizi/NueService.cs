@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using GeoCoordinatePortable;
+using Newtonsoft.Json;
 using SO115App.ApiGateway.Classi;
 using System;
 using System.Collections.Generic;
@@ -85,12 +86,10 @@ namespace SO115.ApiGateway.Servizi
             return listaSchede;
         }
 
-        public async Task<List<SchedaContatto>> GetSchedeContattoBySpatialArea(Coordinate topRight, Coordinate bottomLeft)
+        public async Task<List<SchedaContatto>> GetSchedeContattoBySpatialArea(double lat1, double lon1, double lat2, double lon2)
         {
-            List<SchedaContatto> listaSchede = new List<SchedaContatto>();
-            var response = await client.GetStringAsync(string.Format(Costanti.NueUrl + "/GetByArea/topRight={0},bottomLeft={1}", topRight, bottomLeft));
-            listaSchede = JsonConvert.DeserializeObject<List<SchedaContatto>>(response);
-            return listaSchede;
+            var response = await client.GetStringAsync(string.Format(Costanti.NueUrl + "/GetByArea/lat1={0},lon1={1},lat2={2},lon2={3},", lat1, lon1, lat2, lon2));
+            return JsonConvert.DeserializeObject<List<SchedaContatto>>(response);
         }
 
         public async void SetLetta(string codiceScheda, string codiceSede, string codiceFiscale, bool letta)

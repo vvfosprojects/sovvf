@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GeoCoordinatePortable;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SO115.ApiGateway.Servizi;
@@ -33,9 +34,9 @@ namespace SO115.ApiGateway.Controllers
         }
 
         [HttpGet("GetByArea")]
-        public Task<List<SchedaContatto>> Get([FromQuery] Coordinate topRight, Coordinate bottomLeft)
+        public Task<List<SchedaContatto>> Get([FromQuery] double lat1, double lon1, double lat2, double lon2)
         {
-            return _SchedaContattoService.GetSchedeContattoBySpatialArea(topRight, bottomLeft);
+            return _SchedaContattoService.GetSchedeContattoBySpatialArea(lat1, lon1, lat2, lon2);
         }
 
         [HttpGet("GetByText")]
