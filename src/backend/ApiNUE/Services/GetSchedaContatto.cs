@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using GeoCoordinatePortable;
+using Newtonsoft.Json;
 using SO115App.ApiNUE.Model;
 using System;
 using System.Collections.Generic;
@@ -95,12 +96,12 @@ namespace SO115App.ApiNUE.Services
             return (from schedaContatto in listaSchede let schedacontattoJson = JsonConvert.SerializeObject(schedaContatto) where schedacontattoJson.Contains(testolibero) select schedaContatto).ToList();
         }
 
-        public List<SchedaContatto> GetSchedeContattoBySpatialArea(Coordinate topRight, Coordinate bottomLeft)
+        public List<SchedaContatto> GetSchedeContattoBySpatialArea(GeoCoordinate topRight, GeoCoordinate bottomLeft)
         {
             var listaSchede = GetList();
             var listaSchedeFiltered = new List<SchedaContatto>();
 
-            listaSchedeFiltered.AddRange(listaSchede.Where(x => (x.Localita.Coordinate.Latitudine >= bottomLeft.Latitudine) && (x.Localita.Coordinate.Latitudine <= topRight.Latitudine) && ((x.Localita.Coordinate.Longitudine >= bottomLeft.Longitudine) && (x.Localita.Coordinate.Longitudine <= topRight.Longitudine))));
+            listaSchedeFiltered.AddRange(listaSchede.Where(x => (x.Localita.Coordinate.Latitudine >= bottomLeft.Latitude) && (x.Localita.Coordinate.Latitudine <= topRight.Latitude) && ((x.Localita.Coordinate.Longitudine >= bottomLeft.Longitude) && (x.Localita.Coordinate.Longitudine <= topRight.Longitude))));
 
             return listaSchedeFiltered;
         }

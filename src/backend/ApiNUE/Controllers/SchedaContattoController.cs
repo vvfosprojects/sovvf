@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using GeoCoordinatePortable;
 using Microsoft.AspNetCore.Mvc;
 using SO115App.ApiNUE.Model;
 using SO115App.ApiNUE.Services;
@@ -33,8 +34,18 @@ namespace SO115App.ApiNUE.Controllers
         }
 
         [HttpGet("GetByArea")]
-        public ActionResult<List<SchedaContatto>> Get([FromQuery] Coordinate topRight, Coordinate bottomLeft)
+        public ActionResult<List<SchedaContatto>> Get([FromQuery] double lat1, double lon1, double lat2, double lon2)
         {
+            var topRight = new GeoCoordinate
+            {
+                Latitude = lat1,
+                Longitude = lon1
+            };
+            var bottomLeft = new GeoCoordinate
+            {
+                Latitude = lat2,
+                Longitude = lon2
+            };
             return _getSchedaContatto.GetSchedeContattoBySpatialArea(topRight, bottomLeft);
         }
 
