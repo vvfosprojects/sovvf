@@ -50,13 +50,14 @@ namespace SO115App.ApiGac.Controllers
         }
 
         [HttpPost("Movimentazione")]
-        public void Put([FromForm]string codiceMezzo, string idRichiesta, string statoOperativo, DateTime timeStamp)
+        public void Put([FromForm]string codiceMezzo, string idRichiesta, string statoOperativo, string timeStamp)
         {
+            var timeStampDT = DateTime.Parse(timeStamp);
             var movimentazione = new Movimentazione
             {
                 IdRichiesta = idRichiesta,
                 StatoOperativo = statoOperativo,
-                DataMovimentazione = timeStamp
+                DataMovimentazione = timeStampDT
             };
             _setMezzo.SetMovimentazione(codiceMezzo, movimentazione);
         }
