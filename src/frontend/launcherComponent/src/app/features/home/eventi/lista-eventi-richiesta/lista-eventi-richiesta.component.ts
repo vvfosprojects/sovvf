@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { EventoRichiesta } from '../../../../shared/model/evento-richiesta.model';
 import * as moment from 'moment';
 
@@ -7,7 +7,7 @@ import * as moment from 'moment';
   templateUrl: './lista-eventi-richiesta.component.html',
   styleUrls: ['./lista-eventi-richiesta.component.css']
 })
-export class ListaEventiRichiestaComponent implements OnInit, OnChanges {
+export class ListaEventiRichiestaComponent implements OnInit {
   @Input() elencoEventi: EventoRichiesta[];
   @Output() targheSelezionate = new EventEmitter<string[]>();
 
@@ -20,43 +20,13 @@ export class ListaEventiRichiestaComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     if (this.istantePrimoEvento == null) {
-      // this.setIstantePrimoEvento(this.elencoEventi[0].istanteEvento);
       this.setIstantePrimoEvento(moment().toDate());
     }
   }
 
-
-  ngOnChanges(changes: SimpleChanges) {
-    for (const propName in changes) {
-      if (changes) {
-        const change = changes[propName];
-        const curVal = JSON.stringify(change.currentValue);
-        const prevVal = JSON.stringify(change.previousValue);
-
-        // console.log('ngOnChanges Felix');
-        // console.log(propName);
-        // console.log(curVal);
-        // console.log(prevVal);
-
-        if (propName === 'istanteEvento') {
-          // console.log('ngOnChanges Felix istanteEvento');
-          // this.setIstanteEventoPrecedente(new Date(curVal));
-        }
-      }
-    }
-  }
-
-  /*
-   private setIstanteEventoPrecedente(p: Date) : void {
-    this.istanteEventoPrecedente = p;
-  }
-  */
   private setIstanteEventoPrecedente(i: number): Date {
-    // console.log('setIstanteEventoPrecedente');
     if (i > 0) {
       this.istanteEventoPrecedente = this.elencoEventi[i - 1].istanteEvento;
-      // console.log('ok');
-      // console.log(this.istanteEventoPrecedente);
     } else {
       this.istanteEventoPrecedente = this.elencoEventi[0].istanteEvento;
     }
@@ -71,9 +41,5 @@ export class ListaEventiRichiestaComponent implements OnInit, OnChanges {
     if (targa) {
       this.targheSelezionate.emit([targa]);
     }
-  }
-
-  toggleIconeNomeClasseEvento() {
-    this.iconeNomeClasseEvento = !this.iconeNomeClasseEvento;
   }
 }
