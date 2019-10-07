@@ -15,15 +15,12 @@ export const environment = {
         mezziInServizio: '/api/GestioneMezziInServizio',
         schedeContatto: '/api/SchedeContatto',
         turno: '',  // TodoBackEnd: controller mancante
-        composizione: { // TodoBackEnd: da sistemare prenotazione unico controller
+        composizione: {
             preaccoppiati: '/api/PreAccoppiati',
             avanzata: '/api/ComposizionePartenzaAvanzata',
-            addPrenotazioneMezzo: '/api/AddPrenotazioneMezzo',
-            removePrenotazioneMezzo: '/api/RemovePrenotazioneMezzo',
-            resetPrenotazioneMezzo: '/api/ResetPrenotazioneMezzo',
-            confermaPartenze: '/api/ConfermaPartenze'
+            confermaPartenze: '/api/ConfermaPartenze',
+            prenotazione: 'api/PrenotazioneMezzo'
         },
-        prenotazione: 'api/PrenotazioneMezzo',
         chiamata: '/api/Chiamata/',
         auth: '/api/Auth',
         navbar: '/api/Navbar',
