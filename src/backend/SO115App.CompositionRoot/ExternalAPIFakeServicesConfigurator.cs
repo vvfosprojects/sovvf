@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="Configurator.cs" company="CNVVF">
+// <copyright file="ServicesConfigurator.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -18,21 +18,16 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using SimpleInjector;
+using System.Net.Http;
 
 namespace SO115App.CompositionRoot
 {
-    public static class Configurator
+    internal static class ExternalAPIFakeServicesConfigurator
     {
-        public static void Bind(Container container)
+        internal static void Configure(Container container)
         {
-            bool EnableFake = true;
-            CQRSConfigurator.Configure(container);
-
-            if (EnableFake)
-            {
-                ServicesConfigurator.Configure(container);
-                ExternalAPIFakeServicesConfigurator.Configure(container);
-            }
+            PersistenceServicesConfigurator.Configure(container);
+            container.Register<HttpClient>(Lifestyle.Singleton);
         }
     }
 }

@@ -65,6 +65,8 @@ namespace SO115App.API.Models.Classi.Condivise
 
         public string Id { get; set; }
 
+        public string Codice { get; set; }
+
         /// <summary>
         ///   Nominativo Squadra
         /// </summary>
@@ -89,5 +91,7 @@ namespace SO115App.API.Models.Classi.Condivise
         ///   Indica l'istante in cui la squadra termina il suo impegno
         /// </summary>
         public DateTime? IstanteTermineImpegno { get; set; }
+
+        public List<Componente> ListaComponenti { get; set; }
     }
 }
