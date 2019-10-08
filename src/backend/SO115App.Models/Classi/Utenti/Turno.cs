@@ -17,19 +17,22 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using SO115App.API.Models.Classi.Condivise;
 using System;
+using System.Collections.Generic;
 
 namespace SO115App.API.Models.Classi.Utenti
 {
     public class Turno
     {
-        public Turno()
-        { }
-
         public string Codice { get; set; }
         public string Descrizione { get; set; }
+
+        public string CodiceSede { get; set; }
         public string DiurnoNotturno { get; set; }
         public DateTime DataOraInizio { get; set; }
         public DateTime DataOraFine { get; set; }
+
+        public List<Squadra> ListaSquadre { get; set; }
     }
 }

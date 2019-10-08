@@ -1,7 +1,7 @@
 [
   {
     "Codice": "D",
-    "Nome": "D",
+    "Descrizione": "D",
     "CodiceSede": "RM.1000",
     "ListaSquadre": [
       {
@@ -22,7 +22,7 @@
   },
   {
     "Codice": "B",
-    "Nome": "B",
+    "Descrizione": "B",
     "CodiceSede": "RM.1000",
     "ListaSquadre": [
       {
@@ -36,7 +36,7 @@
   },
   {
     "Codice": "B",
-    "Nome": "B",
+    "Descrizione": "B",
     "CodiceSede": "MI.2000",
     "ListaSquadre": [
       {

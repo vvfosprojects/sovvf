@@ -5,6 +5,6 @@ namespace SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Territorio
 {
     public interface IGetAlberaturaISTAT
     {
-        List<Regione> GetListaIstatAlberata();
+        List<Regione> ListaAlberaturaRegioni();
     }
 }

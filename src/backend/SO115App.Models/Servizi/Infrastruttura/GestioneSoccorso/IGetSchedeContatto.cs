@@ -24,6 +24,6 @@ namespace SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso
 {
     public interface IGetSchedeContatto
     {
-        List<SchedaContatto> Get();
+        List<SchedaContatto> ListaSchedeContatto(string codiceSede)
     }
 }

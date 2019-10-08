@@ -12,6 +12,6 @@ namespace SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue
         ///   Restituisce la scheda contatto secondo i parametri indicati
         /// </summary>
         /// <returns>La scheda contatto</returns>
-        SchedaContatto GetSchedaContattoAttuale(string codiceSede, string codicePostazioneOperatore);
+        SchedaContatto SchedaContattoAttuale(string codiceSede, string codicePostazioneOperatore);
     }
 }
