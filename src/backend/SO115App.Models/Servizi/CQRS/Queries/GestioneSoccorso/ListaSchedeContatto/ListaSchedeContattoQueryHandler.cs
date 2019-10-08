@@ -36,7 +36,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.ListaSchedeConta
 
         public ListaSchedeContattoResult Handle(ListaSchedeContattoQuery query)
         {
-            var listaSchedeContatto = _getSchedeContatto.Get();
+            var listaSchedeContatto = _getSchedeContatto.ListaSchedeContatto(query.CodiceSede);
             return new ListaSchedeContattoResult()
             {
                 SchedeContatto = listaSchedeContatto

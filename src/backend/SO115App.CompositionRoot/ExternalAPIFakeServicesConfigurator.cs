@@ -18,6 +18,12 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using SimpleInjector;
+using SO115App.ExternalAPI.Fake.Nue;
+using SO115App.ExternalAPI.Fake.Personale;
+using SO115App.ExternalAPI.Fake.Territorio;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Personale;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Territorio;
 using System.Net.Http;
 
 namespace SO115App.CompositionRoot
@@ -28,6 +34,37 @@ namespace SO115App.CompositionRoot
         {
             PersistenceServicesConfigurator.Configure(container);
             container.Register<HttpClient>(Lifestyle.Singleton);
+
+            #region NUE
+
+            container.Register<IGetSchedeContatto, GetListaSchedeContatto>();
+            container.Register<IGetSchedaContattoAttuale, GetSchedaContattoAttuale>();
+            container.Register<IGetSchedeContattoBySpatialArea, GetSchedeContattoBySpatialArea>();
+            container.Register<IGetSchedeContattoFromCodiceSede, GetSchedeContattoFromCodiceSede>();
+            container.Register<IGetSchedeContattoFromCodiciFiscali, GetSchedeContattoFromCodiciFiscali>();
+            container.Register<IGetSchedeContattoFromListTipo, GetSchedeContattoFromListTipo>();
+            container.Register<IGetSchedeContattoFromText, GetSchedeContattoFromText>();
+            container.Register<IGetSchedeContattoGestita, GetSchedeContattoGestita>();
+            container.Register<IGetSchedeContattoLetta, GetSchedeContattoLetta>();
+            container.Register<IGetSchedeContattoTimeSpan, GetSchedeContattoTimeSpan>();
+            container.Register<ISetStatoGestioneSchedaContatto, SetGestita>();
+            container.Register<ISetLetturaSchedaContatto, SetLetta>();
+
+            #endregion NUE
+
+            #region Territorio
+
+            container.Register<IGetAlberaturaISTAT, GetListaAlberaturaRegioni>();
+
+            #endregion Territorio
+
+            #region Personale
+
+            container.Register<IGetSquadreBySede, GetSquadreBySede>();
+
+            container.Register<IGetSquadreNelTurno, GetSquadreNelTurno>();
+
+            #endregion Personale
         }
     }
 }

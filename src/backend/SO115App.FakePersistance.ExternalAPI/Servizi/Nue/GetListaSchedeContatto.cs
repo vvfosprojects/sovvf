@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 using SO115App.Models.Classi.NUE;
-using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
 using System.Collections.Generic;
 using System.Net.Http;
 

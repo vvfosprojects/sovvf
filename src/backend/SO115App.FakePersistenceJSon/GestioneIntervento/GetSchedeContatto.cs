@@ -27,19 +27,16 @@ using SO115App.Models.Classi.NUE;
 
 namespace SO115App.FakePersistence.JSon.GestioneIntervento
 {
-    public class GetSchedeContatto : IGetSchedeContatto
-    {
-        public List<SchedaContatto> Get()
-        {
-            var filepath = CostantiJson.SchedeContatti;
-            string json;
+    //public class GetSchedeContatto : IGetSchedeContatto
+    //{
+    //    public List<SchedaContatto> Get()
+    //    {
+    //        var filepath = CostantiJson.SchedeContatti;
+    //        string json;
 
-            using (var r = new StreamReader(filepath))
-            {
-                json = r.ReadToEnd();
-            }
+    // using (var r = new StreamReader(filepath)) { json = r.ReadToEnd(); }
 
-            return JsonConvert.DeserializeObject<List<SchedaContatto>>(json);
-        }
-    }
+    //        return JsonConvert.DeserializeObject<List<SchedaContatto>>(json);
+    //    }
+    //}
 }
