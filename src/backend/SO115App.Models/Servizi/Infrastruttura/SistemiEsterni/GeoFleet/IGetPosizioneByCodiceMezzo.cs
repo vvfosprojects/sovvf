@@ -5,7 +5,7 @@ using System.Text;
 
 namespace SO115App.Models.Servizi.Infrastruttura.GeoFleet
 {
-    internal interface IGetPosizioneFromCodiceMezzo
+    internal interface IGetPosizioneByCodiceMezzo
     {
         List<CoordinateGeoFleet> GetPosizione(string codiceMezzo); //L'API GeoFleet ancora non si aspetta una lista di codici mezzo
     }

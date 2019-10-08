@@ -13,4 +13,8 @@
     <ProjectReference Include="..\SO115App.GeneratoreFakeRichieste\SO115App.GeneratoreFakeRichieste.csproj" />
     <ProjectReference Include="..\SO115App.Models\SO115App.Models.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ServiziEsterni\GAC\" />
+  </ItemGroup>
 </Project>
