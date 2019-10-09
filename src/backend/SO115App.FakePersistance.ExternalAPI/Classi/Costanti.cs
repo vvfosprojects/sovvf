@@ -14,6 +14,8 @@
         public static string GeoFleetUrl = "http://geofleet-ws/api/";
         public static string GacUrl = "http://localhost:5002/api/AnagraficaMezzi/";
 
+        public static string UosUrl = "http://172.16.25.10:5001/api/";
+
         #endregion Url
 
         #region NueMethods
@@ -65,5 +67,13 @@
         public static string ServiziGetComponentiUrl = ServiziUrl + "Componenti";
 
         #endregion ServiziMethods
+
+        #region Uos
+
+        public static string UosUOUrl = "UO";
+        public static string UosSediUrl = "Sedi";
+        public static string UosAssUrl = "AssociazioneUOSedi";
+
+        #endregion Uos
     }
 }

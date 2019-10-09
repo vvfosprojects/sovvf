@@ -32,9 +32,9 @@ namespace SO115App.ExternalAPI.Fake.Personale
                         squadra.ListaComponenti = ListaComponenti;
                         foreach (var componente in squadra.ListaComponenti)
                         {
-                            List<ComponenteIdentity> compo = new List<ComponenteIdentity>();
+                            List<Componente> compo = new List<Componente>();
                             var responseNominativiComponenti = client.GetStringAsync(string.Format(Costanti.IdentityManagementUrl + "?codiciFiscali={0}", componente.CodiceFiscale));
-                            compo = JsonConvert.DeserializeObject<List<ComponenteIdentity>>(responseNominativiComponenti.ToString());
+                            compo = JsonConvert.DeserializeObject<List<Componente>>(responseNominativiComponenti.ToString());
                             componente.Nominativo = compo[0].Nominativo;
                         }
                     }

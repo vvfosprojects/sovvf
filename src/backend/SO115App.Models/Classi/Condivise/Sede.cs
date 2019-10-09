@@ -17,6 +17,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace SO115App.API.Models.Classi.Condivise
@@ -87,5 +88,7 @@ namespace SO115App.API.Models.Classi.Condivise
         ///   Icona
         /// </summary>
         public string Icona { get; set; }
+
+        public List<Sede> ListaSediFiglie { get; set; }
     }
 }
