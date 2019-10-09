@@ -1,12 +1,10 @@
-﻿using SO115App.Models.Classi.Condivise;
-using System;
+﻿using SO115App.Models.Classi.ServiziEsterni;
 using System.Collections.Generic;
-using System.Text;
 
 namespace SO115App.Models.Servizi.Infrastruttura.GeoFleet
 {
-    internal interface IGetPosizioneByCodiceMezzo
+    public interface IGetPosizioneByCodiceMezzo
     {
-        List<CoordinateGeoFleet> GetPosizione(string codiceMezzo); //L'API GeoFleet ancora non si aspetta una lista di codici mezzo
+        MessaggioPosizione Get(string codiceMezzo); //L'API GeoFleet ancora non si aspetta una lista di codici mezzo
     }
 }

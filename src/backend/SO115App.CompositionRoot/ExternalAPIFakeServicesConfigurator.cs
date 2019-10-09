@@ -20,7 +20,11 @@
 using SimpleInjector;
 using SO115App.ExternalAPI.Fake.Nue;
 using SO115App.ExternalAPI.Fake.Personale;
+using SO115App.ExternalAPI.Fake.Servizi.Gac;
+using SO115App.ExternalAPI.Fake.Servizi.GeoFleet;
 using SO115App.ExternalAPI.Fake.Territorio;
+using SO115App.Models.Servizi.Infrastruttura.GeoFleet;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Personale;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Territorio;
@@ -65,6 +69,25 @@ namespace SO115App.CompositionRoot
             container.Register<IGetSquadreNelTurno, GetSquadreNelTurno>();
 
             #endregion Personale
+
+            #region GeoFleet
+
+            container.Register<IGetInRettangolo, GetInRettangolo>();
+            container.Register<IGetProssimita, GetProssimita>();
+            container.Register<IGetPosizioneByCodiceMezzo, GetPosizioneByCodiceMezzo>();
+
+            #endregion GeoFleet
+
+            #region Gac
+
+            container.Register<IGetMezziByICCID, GetMezziByICCID>();
+            container.Register<IGetMezziById, GetMezziByID>();
+            container.Register<IGetMezziBySelettiva, GetMezziBySelettiva>();
+            container.Register<IGetMezziFuoriServizio, GetMezziFuoriServizio>();
+            container.Register<IGetMezziUtilizzabili, GetMezziUtilizzabili>();
+            container.Register<ISetMovimentazione, SetMovimentazione>();
+
+            #endregion Gac
         }
     }
 }

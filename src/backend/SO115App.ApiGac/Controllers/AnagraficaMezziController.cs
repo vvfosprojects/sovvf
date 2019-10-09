@@ -49,7 +49,7 @@ namespace SO115App.ApiGac.Controllers
             return _getMezzi.GetMezziFromRadioId(idRadio);
         }
 
-        [HttpPost("Movimentazione")]
+        [HttpPut("Movimentazione")]
         public void Put([FromForm]string codiceMezzo, string idRichiesta, string statoOperativo, string timeStamp)
         {
             var timeStampDT = DateTime.Parse(timeStamp);

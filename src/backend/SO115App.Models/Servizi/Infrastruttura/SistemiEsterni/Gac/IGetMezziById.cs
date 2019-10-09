@@ -3,8 +3,8 @@ using System.Collections.Generic;
 
 namespace SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac
 {
-    internal interface IGetMezziFromId
+    public interface IGetMezziById
     {
-        List<Mezzo> GetMezziFromID(List<string> codiceMezzo);
+        List<Mezzo> Get(List<string> codiceMezzo);
     }
 }

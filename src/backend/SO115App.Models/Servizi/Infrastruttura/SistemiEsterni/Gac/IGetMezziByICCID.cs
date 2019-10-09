@@ -3,8 +3,8 @@ using System.Collections.Generic;
 
 namespace SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac
 {
-    public interface IGetMezziFromIDRadio
+    public interface IGetMezziByICCID
     {
-        List<Mezzo> GetMezziFromIDRadio(List<string> idRadio);
+        List<Mezzo> Get(List<string> iccid);
     }
 }

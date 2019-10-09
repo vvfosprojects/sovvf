@@ -4,8 +4,8 @@ using System.Text;
 
 namespace SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac
 {
-    internal interface ISetMovimentazione
+    public interface ISetMovimentazione
     {
-        void SetMovimentazione(string codiceMezzo, Movimentazione movimentazione);
+        void Set(string codiceMezzo, string idRichiesta, string statoOperativo, string timeStamp);
     }
 }
