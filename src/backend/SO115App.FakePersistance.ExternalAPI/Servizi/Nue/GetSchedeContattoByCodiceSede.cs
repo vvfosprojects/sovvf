@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SO115App.ExternalAPI.Fake.Nue
 {
-    public class GetSchedeContattoFromCodiceSede : IGetSchedeContattoFromCodiceSede
+    public class GetSchedeContattoByCodiceSede : IGetSchedeContattoByCodiceSede
     {
         private HttpClient client = new HttpClient();
 

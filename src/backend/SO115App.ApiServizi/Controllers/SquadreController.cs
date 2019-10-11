@@ -14,11 +14,9 @@ namespace SO115App.ApiServizi.Controllers
         [HttpGet("{codiceSede}/{codiceTurno}")]
         public ActionResult<List<SquadreNelTurno>> GetSquadreNelTurno([FromQuery]string codiceSede, string codiceTurno)
         {
-            List<SquadreNelTurno> ListaSquadre = new List<SquadreNelTurno>();
             try
             {
-                ListaSquadre = SquadreNelTurnoService.GetListaSquadreNelTurno(codiceSede, codiceTurno);
-                return ListaSquadre;
+                return SquadreNelTurnoService.GetListaSquadreNelTurno(codiceSede, codiceTurno);
             }
             catch (Exception ex)
             {
@@ -29,11 +27,9 @@ namespace SO115App.ApiServizi.Controllers
         [HttpGet("{codiceSede}")]
         public ActionResult<List<SquadreNelTurno>> GetSquadreBySede([FromQuery]string codiceSede)
         {
-            List<SquadreNelTurno> ListaSquadre = new List<SquadreNelTurno>();
             try
             {
-                ListaSquadre = SquadreNelTurnoService.GetListaSquadreNelTurno(codiceSede, "");
-                return ListaSquadre;
+                return SquadreNelTurnoService.GetListaSquadreNelTurno(codiceSede, "");
             }
             catch (Exception ex)
             {

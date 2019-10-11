@@ -14,11 +14,9 @@ namespace SO115App.ApiServizi.Controllers
         [HttpGet]
         public ActionResult<List<Componente>> Get([FromQuery]string codiceSede, string codiceSquadra, string codiceTurno)
         {
-            List<Componente> ListaComponenti = new List<Componente>();
             try
             {
-                ListaComponenti = ComponentiSquadreService.GetListaComponentiSquadra(codiceSede, codiceSquadra, codiceTurno);
-                return ListaComponenti;
+                return ComponentiSquadreService.GetListaComponentiSquadra(codiceSede, codiceSquadra, codiceTurno);
             }
             catch (Exception ex)
             {

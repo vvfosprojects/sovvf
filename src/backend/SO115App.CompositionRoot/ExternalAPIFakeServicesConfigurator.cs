@@ -44,10 +44,10 @@ namespace SO115App.CompositionRoot
             container.Register<IGetSchedeContatto, GetListaSchedeContatto>();
             container.Register<IGetSchedaContattoAttuale, GetSchedaContattoAttuale>();
             container.Register<IGetSchedeContattoBySpatialArea, GetSchedeContattoBySpatialArea>();
-            container.Register<IGetSchedeContattoFromCodiceSede, GetSchedeContattoFromCodiceSede>();
-            container.Register<IGetSchedeContattoFromCodiciFiscali, GetSchedeContattoFromCodiciFiscali>();
-            container.Register<IGetSchedeContattoFromListTipo, GetSchedeContattoFromListTipo>();
-            container.Register<IGetSchedeContattoFromText, GetSchedeContattoFromText>();
+            container.Register<IGetSchedeContattoByCodiceSede, GetSchedeContattoByCodiceSede>();
+            container.Register<IGetSchedeContattoByCodiciFiscali, GetSchedeContattoByCodiciFiscali>();
+            container.Register<IGetSchedeContattoByTipo, GetSchedeContattoByListTipo>();
+            container.Register<IGetSchedeContattoByText, GetSchedeContattoByText>();
             container.Register<IGetSchedeContattoGestita, GetSchedeContattoGestita>();
             container.Register<IGetSchedeContattoLetta, GetSchedeContattoLetta>();
             container.Register<IGetSchedeContattoTimeSpan, GetSchedeContattoTimeSpan>();

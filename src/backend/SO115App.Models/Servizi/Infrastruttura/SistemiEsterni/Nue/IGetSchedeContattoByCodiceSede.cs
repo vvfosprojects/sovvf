@@ -10,12 +10,12 @@ namespace SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue
     ///   Interfaccia del servizio che restituisce l'elenco delle schede contatto corrispondenti ai
     ///   criteri di ricerca indicati
     /// </summary>
-    public interface IGetSchedeContattoFromText
+    public interface IGetSchedeContattoByCodiceSede
     {
         /// <summary>
         ///   Restituisce l'elenco delle schede contatto corrispondenti ai criteri di ricerca indicati
         /// </summary>
         /// <returns>Lista schede contatto</returns>
-        List<SchedaContatto> SchedeContattoFromText(string testolibero);
+        List<SchedaContatto> SchedeContattoFromCodiceSede(string codice);
     }
 }

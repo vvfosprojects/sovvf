@@ -74,9 +74,9 @@ namespace SO115App.ApiNUE.Controllers
         }
 
         [HttpGet("GetGestite")]
-        public ActionResult<List<SchedaContatto>> GetGestite([FromQuery] bool gestista)
+        public ActionResult<List<SchedaContatto>> GetGestite([FromQuery] bool gestita)
         {
-            return _getSchedaContatto.GetSchedeContattoGestita(gestista);
+            return _getSchedaContatto.GetSchedeContattoGestita(gestita);
         }
 
         [HttpGet("GetByTimeSpan")]

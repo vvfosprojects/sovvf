@@ -6,14 +6,14 @@ using System.Net.Http;
 
 namespace SO115App.ExternalAPI.Fake.Nue
 {
-    public class GetSchedeContattoFromCodiciFiscali : IGetSchedeContattoFromCodiciFiscali
+    public class GetSchedeContattoByText : IGetSchedeContattoByText
     {
         private HttpClient client = new HttpClient();
 
-        public List<SchedaContatto> SchedeContattoFromCodiciFiscali(List<string> codiciFiscali)
+        public List<SchedaContatto> SchedeContattoFromText(string testolibero)
         {
             List<SchedaContatto> listaSchede = new List<SchedaContatto>();
-            var response = client.GetStringAsync(string.Format(Costanti.NueUrl + "/GetByCF/codiciFiscali={0}", codiciFiscali));
+            var response = client.GetStringAsync(string.Format(Costanti.NueUrl + "/GetByText/testolibero={0}", testolibero));
             listaSchede = JsonConvert.DeserializeObject<List<SchedaContatto>>(response.ToString());
             return listaSchede;
         }
