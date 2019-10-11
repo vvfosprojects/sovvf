@@ -12,10 +12,10 @@ namespace SO115App.ApiNUE.Controllers
     [ApiController]
     public class SchedaContattoController : ControllerBase
     {
-        private readonly GetSchedaContatto _getSchedaContatto;
+        private readonly GetSchedeContatto _getSchedaContatto;
         private readonly SetSchedaContatto _setSchedaContatto;
 
-        public SchedaContattoController(GetSchedaContatto getSchedaContatto, SetSchedaContatto setSchedaContatto)
+        public SchedaContattoController(GetSchedeContatto getSchedaContatto, SetSchedaContatto setSchedaContatto)
         {
             _getSchedaContatto = getSchedaContatto;
             _setSchedaContatto = setSchedaContatto;
@@ -25,6 +25,12 @@ namespace SO115App.ApiNUE.Controllers
         public ActionResult<SchedaContatto> Get([FromQuery] string codiceSede, string codicePostazioneOperatore)
         {
             return _getSchedaContatto.GetSchedaContattoAttuale(codiceSede, codicePostazioneOperatore);
+        }
+
+        [HttpGet("SchedaContatto")]
+        public ActionResult<List<SchedaContatto>> GetSchedeContatto([FromQuery] string codiceSede)
+        {
+            return _getSchedaContatto.GetSchede(codiceSede);
         }
 
         [HttpGet("GetByCF")]

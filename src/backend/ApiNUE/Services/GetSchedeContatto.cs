@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace SO115App.ApiNUE.Services
 {
-    public class GetSchedaContatto
+    public class GetSchedeContatto
     {
         private const string SchedeContattoJson = "Fake/SchedeContatto.json";
 
@@ -35,6 +35,11 @@ namespace SO115App.ApiNUE.Services
             return listaSchedeContatto.Find(x =>
                 x.OperatoreChiamata.CodiceSede.Equals(codiceSede)
                 && x.OperatoreChiamata.CodicePostazioneOperatore.Equals(codiceOperatore));
+        }
+
+        public List<SchedaContatto> GetSchede(string codiceSede)
+        {
+            return GetList().FindAll(x => x.OperatoreChiamata.CodiceSede.Equals(codiceSede));
         }
 
         public List<SchedaContatto> GetSchedeContattoFromCodiciFiscali(List<string> codiciFiscali)

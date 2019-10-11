@@ -27,7 +27,7 @@ namespace ApiNUE
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-            services.AddSingleton<GetSchedaContatto, GetSchedaContatto>();
+            services.AddSingleton<GetSchedeContatto, GetSchedeContatto>();
             services.AddSingleton<SetSchedaContatto, SetSchedaContatto>();
         }
 
