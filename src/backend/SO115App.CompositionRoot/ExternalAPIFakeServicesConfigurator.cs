@@ -41,7 +41,7 @@ namespace SO115App.CompositionRoot
 
             #region NUE
 
-            container.Register<IGetSchedeContatto, GetListaSchedeContatto>();
+            container.Register<IGetSchedeContatto, GetSchedeContatto>();
             container.Register<IGetSchedaContattoAttuale, GetSchedaContattoAttuale>();
             container.Register<IGetSchedeContattoBySpatialArea, GetSchedeContattoBySpatialArea>();
             container.Register<IGetSchedeContattoByCodiceSede, GetSchedeContattoByCodiceSede>();

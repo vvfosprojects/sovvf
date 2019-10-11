@@ -21,6 +21,7 @@
         #region NueMethods
 
         public static string NueGetSchedaContattoAttuale = NueUrl + "SchedaContattoAttuale";
+        public static string NueGetSchedaContatto = NueUrl + "SchedaContatto";
         public static string NueGetByCFe = NueUrl + "GetByCF";
         public static string NueGetByArea = NueUrl + "GetByArea";
         public static string NueGetByText = NueUrl + "GetByText";
