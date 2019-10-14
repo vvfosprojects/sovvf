@@ -58,11 +58,6 @@ namespace SO115App.ApiNUE.Services
             return listaSchedeContattoFiltered;
         }
 
-        public List<SchedaContatto> GetSchedeContattoFromCodiceSede(string codice)
-        {
-            return GetList().FindAll(x => x.OperatoreChiamata.CodiceSede.Equals(codice));
-        }
-
         public List<SchedaContatto> GetSchedeContattoTimeSpan(DateTime dataDa, DateTime dataA)
         {
             return GetList().FindAll(x => x.DataInserimento >= dataDa && x.DataInserimento <= dataA);

@@ -67,12 +67,6 @@ namespace SO115App.ApiNUE.Controllers
             return _getSchedaContatto.GetSchedeContattoFromListTipo(tipoScheda);
         }
 
-        [HttpGet("GetByCodiceSede")]
-        public ActionResult<List<SchedaContatto>> GetByCodiceSede([FromQuery] string codiceSede)
-        {
-            return _getSchedaContatto.GetSchedeContattoFromCodiceSede(codiceSede);
-        }
-
         [HttpGet("GetLette")]
         public ActionResult<List<SchedaContatto>> GetLette([FromQuery] bool letta)
         {
@@ -86,9 +80,12 @@ namespace SO115App.ApiNUE.Controllers
         }
 
         [HttpGet("GetByTimeSpan")]
-        public ActionResult<List<SchedaContatto>> GetByTipeSpan([FromQuery] DateTime dataDa, DateTime dataA)
+        public ActionResult<List<SchedaContatto>> GetByTipeSpan([FromQuery] string dataDa, string dataA)
         {
-            return _getSchedaContatto.GetSchedeContattoTimeSpan(dataDa, dataA);
+            var dataDadt = DateTime.Parse(dataDa);
+            var dataAdt = DateTime.Parse(dataA);
+
+            return _getSchedaContatto.GetSchedeContattoTimeSpan(dataDadt, dataAdt);
         }
 
         [HttpPut("SetLetta")]
