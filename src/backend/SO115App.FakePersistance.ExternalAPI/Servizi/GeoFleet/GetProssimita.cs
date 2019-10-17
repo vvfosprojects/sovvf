@@ -14,7 +14,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GeoFleet
 
         public GetProssimita(HttpClient client)
         {
-            client = _client;
+            _client = client;
         }
 
         public List<ProssimitaMezzo> Get(float lat, float lon, float maxRadius, List<string> classiMezzo, int attSec)

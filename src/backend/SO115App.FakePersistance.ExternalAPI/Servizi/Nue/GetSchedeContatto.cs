@@ -8,7 +8,12 @@ namespace SO115App.ExternalAPI.Fake.Nue
 {
     public class GetSchedeContatto : IGetSchedeContatto
     {
-        private readonly HttpClient _client = new HttpClient();
+        private readonly HttpClient _client;
+
+        public GetSchedeContatto(HttpClient client)
+        {
+            _client = client;
+        }
 
         public List<SchedaContatto> ListaSchedeContatto(string codiceSede)
         {

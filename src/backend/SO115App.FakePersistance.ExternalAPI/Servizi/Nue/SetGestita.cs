@@ -1,15 +1,17 @@
-﻿using Newtonsoft.Json;
-using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
-using System;
+﻿using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
 using System.Collections.Generic;
 using System.Net.Http;
-using System.Threading.Tasks;
 
 namespace SO115App.ExternalAPI.Fake.Nue
 {
     public class SetGestita : ISetStatoGestioneSchedaContatto
     {
-        private HttpClient client = new HttpClient();
+        private readonly HttpClient _client;
+
+        public SetGestita(HttpClient client)
+        {
+            _client = client;
+        }
 
         public void Gestita(string codiceScheda, string codiceSede, string codiceFiscale, bool gestita)
         {
@@ -21,7 +23,7 @@ namespace SO115App.ExternalAPI.Fake.Nue
                                     new KeyValuePair<string, string>("gestita", gestita.ToString()),
                                 });
 
-            var response = client.PostAsync(Costanti.NueUrl + "/SetGestita", stringContent);
+            _client.PostAsync(Costanti.NueUrl + "/SetGestita", stringContent);
         }
     }
 }

@@ -8,14 +8,17 @@ namespace SO115App.ExternalAPI.Fake.Nue
 {
     public class GetSchedeContattoByListTipo : IGetSchedeContattoByTipo
     {
-        private HttpClient client = new HttpClient();
+        private readonly HttpClient _client;
+
+        public GetSchedeContattoByListTipo(HttpClient client)
+        {
+            _client = client;
+        }
 
         public List<SchedaContatto> SchedeContattoFromListTipo(List<string> classificazione)
         {
-            List<SchedaContatto> listaSchede = new List<SchedaContatto>();
-            var response = client.GetStringAsync(string.Format(Costanti.NueUrl + "/GetByTipo/classificazione={0}", classificazione));
-            listaSchede = JsonConvert.DeserializeObject<List<SchedaContatto>>(response.ToString());
-            return listaSchede;
+            var response = _client.GetStringAsync(string.Format(Costanti.NueUrl + "/GetByTipo/classificazione={0}", classificazione));
+            return JsonConvert.DeserializeObject<List<SchedaContatto>>(response.ToString());
         }
     }
 }

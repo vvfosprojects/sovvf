@@ -1,15 +1,17 @@
-﻿using Newtonsoft.Json;
-using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
-using System;
+﻿using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
 using System.Collections.Generic;
 using System.Net.Http;
-using System.Threading.Tasks;
 
 namespace SO115App.ExternalAPI.Fake.Nue
 {
     public class SetLetta : ISetLetturaSchedaContatto
     {
-        private HttpClient client = new HttpClient();
+        private readonly HttpClient _client;
+
+        public SetLetta(HttpClient client)
+        {
+            _client = client;
+        }
 
         public void Letta(string codiceSede, string codiceScheda, string codiceFiscale, bool letta)
         {
@@ -21,7 +23,7 @@ namespace SO115App.ExternalAPI.Fake.Nue
                                     new KeyValuePair<string, string>("gestita", letta.ToString()),
                                 });
 
-            var response = client.PostAsJsonAsync(Costanti.NueUrl + "/SetLetta", stringContent);
+            _client.PostAsJsonAsync(Costanti.NueUrl + "/SetLetta", stringContent);
         }
     }
 }

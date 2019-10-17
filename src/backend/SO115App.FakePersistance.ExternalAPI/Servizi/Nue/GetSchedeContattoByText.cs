@@ -8,14 +8,17 @@ namespace SO115App.ExternalAPI.Fake.Nue
 {
     public class GetSchedeContattoByText : IGetSchedeContattoByText
     {
-        private HttpClient client = new HttpClient();
+        private readonly HttpClient _client;
+
+        public GetSchedeContattoByText(HttpClient client)
+        {
+            _client = client;
+        }
 
         public List<SchedaContatto> SchedeContattoFromText(string testolibero)
         {
-            List<SchedaContatto> listaSchede = new List<SchedaContatto>();
-            var response = client.GetStringAsync(string.Format(Costanti.NueUrl + "/GetByText/testolibero={0}", testolibero));
-            listaSchede = JsonConvert.DeserializeObject<List<SchedaContatto>>(response.ToString());
-            return listaSchede;
+            var response = _client.GetStringAsync(string.Format(Costanti.NueUrl + "/GetByText/testolibero={0}", testolibero));
+            return JsonConvert.DeserializeObject<List<SchedaContatto>>(response.ToString());
         }
     }
 }

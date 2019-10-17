@@ -12,7 +12,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GeoFleet
 
         public GetInRettangolo(HttpClient client)
         {
-            client = _client;
+            _client = client;
         }
 
         public List<MessaggioPosizione> Get(double lat1, double lon1, double lat2, double lon2, int attSec)

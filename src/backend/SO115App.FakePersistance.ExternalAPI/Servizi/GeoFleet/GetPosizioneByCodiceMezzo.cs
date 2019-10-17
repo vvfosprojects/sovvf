@@ -1,10 +1,7 @@
 ﻿using Newtonsoft.Json;
 using SO115App.Models.Classi.ServiziEsterni;
 using SO115App.Models.Servizi.Infrastruttura.GeoFleet;
-using System;
-using System.Collections.Generic;
 using System.Net.Http;
-using System.Text;
 
 namespace SO115App.ExternalAPI.Fake.Servizi.GeoFleet
 {
@@ -14,7 +11,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GeoFleet
 
         public GetPosizioneByCodiceMezzo(HttpClient client)
         {
-            client = _client;
+            _client = client;
         }
 
         public MessaggioPosizione Get(string codiceMezzo)
