@@ -34,7 +34,7 @@ namespace SO115App.API.Controllers
 
         public AuthController(IQueryHandler<LogInQuery, LogInResult> handler)
         {
-            this._handler = handler;
+            _handler = handler;
         }
 
         [HttpPost("Login")]

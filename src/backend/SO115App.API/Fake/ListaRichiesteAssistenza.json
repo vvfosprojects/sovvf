@@ -1,1 +1,537 @@
-[{"Codice":"RM2391900000","CodiceRichiesta":"RM1900000","CodiceUnitaOperativaCompetente":null,"CodiciUnitaOperativeAllertate":null,"Eventi":[{"TipoEvento":"Telefonata","CodiceOrigine":"112","NominativoChiamante":"Carabinieri","NumeroTelefono":"112","CodiceSchedaContatto":null,"Codice":"RM2391900000","Motivazione":null,"NotePubbliche":null,"NotePrivate":null,"Esito":"MettiInCoda","Istante":"2019-09-23T15:04:33.2720682Z","CodiceFonte":"3","CodiceRichiesta":"RM2391900000"},{"TipoEvento":"AssegnataPriorita","Priorita":3,"Istante":"2019-09-23T15:04:33.2772729Z","CodiceFonte":"RM.1000","CodiceRichiesta":"RM2391900000"},{"TipoEvento":"InizioPresaInCarico","Istante":"2019-09-23T15:04:41.3451215Z","CodiceFonte":"RM.1000","CodiceRichiesta":"RM2391900000"},{"TipoEvento":"ComposizionePartenze","CodiceFiscaleCapopartenza":null,"CodiciFiscaliComponenti":[],"Partenza":{"Squadre":[{"Id":"1","Nome":"Rossa","Stato":2,"Componenti":[{"CodiceFiscale":"RSSMRA80A01C707K","DescrizioneQualifica":"CP","DescrizioneQualificaLunga":null,"CodiceTurno":null,"Nominativo":"Mario Verdi","OrarioInizio":"0001-01-01T00:00:00","OrarioFine":"0001-01-01T00:00:00","Tooltip":"","CapoPartenza":true,"Autista":false,"Rimpiazzo":false,"FunGuardia":false,"TecnicoGuardia1":false,"TecnicoGuardia2":false,"CapoTurno":true,"Telefono":"3404444455"},{"CodiceFiscale":null,"DescrizioneQualifica":"CRE","DescrizioneQualificaLunga":null,"CodiceTurno":null,"Nominativo":"Francesco Rossi","OrarioInizio":"0001-01-01T00:00:00","OrarioFine":"0001-01-01T00:00:00","Tooltip":"","CapoPartenza":false,"Autista":true,"Rimpiazzo":false,"FunGuardia":false,"TecnicoGuardia1":false,"TecnicoGuardia2":false,"CapoTurno":true,"Telefono":"3404444455"},{"CodiceFiscale":null,"DescrizioneQualifica":"VCSC","DescrizioneQualificaLunga":null,"CodiceTurno":null,"Nominativo":"Mario Verna","OrarioInizio":"0001-01-01T00:00:00","OrarioFine":"0001-01-01T00:00:00","Tooltip":"","CapoPartenza":false,"Autista":false,"Rimpiazzo":true,"FunGuardia":false,"TecnicoGuardia1":false,"TecnicoGuardia2":false,"CapoTurno":true,"Telefono":"3404444455"}],"Distaccamento":{"Codice":"RM.1000","Descrizione":"Tuscolana","Coordinate":{"Latitudine":1.0,"Longitudine":1.0},"Indirizzo":"Via Prova, 1","Tipo":"Distaccamento","Regione":"Lazio","Provincia":"Roma","Label":null,"Icona":null},"IstanteTermineImpegno":null}],"Mezzo":{"Codice":"RM.1000.1A.1","IdRichiesta":null,"Descrizione":"1000.1A.1","Genere":"APS","Stato":"In Rientro","Appartenenza":0,"Distaccamento":{"Codice":"RM.1000","Descrizione":"Comando di Roma","Coordinate":{"Latitudine":41.89994,"Longitudine":12.49127},"Indirizzo":"Via Genova, 1, 00184 Roma RM","Tipo":"Comando","Regione":"Lazio","Provincia":"Roma","Label":null,"Icona":null},"DescrizioneAppartenenza":null,"DescrizioneStato":null,"StatoEfficenza":0,"DescrizioneStatoEfficenza":null,"LivelloCarburante":0,"DescrizioneLivelloCarburante":null,"LivelloEstinguente":0,"DescrizioneLivelloEstinguente":null,"Notifiche":null,"Coordinate":{"Latitudine":41.941486358642578,"Longitudine":12.546378135681152},"IstanteAcquisizione":"2019-08-07T17:10:32Z","IstantePrenotazione":null},"Sganciata":false},"Componenti":[],"FuoriSede":false,"NumeroComponenti":0,"Istante":"2019-09-23T15:04:41.34786Z","CodiceFonte":"RM.1000","CodiceRichiesta":"RM2391900000"},{"TipoEvento":"AssegnataRichiesta","Istante":"2019-09-23T15:04:41.3496226Z","CodiceFonte":"RM.1000","CodiceRichiesta":"RM2391900000"},{"TipoEvento":"ArrivoSulPosto","CodiceMezzo":"RM.1000.1A.1","Istante":"2019-09-23T15:04:53.7219132Z","CodiceFonte":"RM.1000","CodiceRichiesta":"RM2391900000"},{"TipoEvento":"RichiestaPresidiata","Istante":"2019-09-23T15:04:53.722583Z","CodiceFonte":"RM.1000","CodiceRichiesta":"RM2391900000"},{"TipoEvento":"MezzoRientrato","CodiceMezzo":"RM.1000.1A.1","Istante":"2019-09-23T15:28:37.0849623Z","CodiceFonte":"RM.1000","CodiceRichiesta":"RM2391900000"},{"TipoEvento":"ArrivoSulPosto","CodiceMezzo":"RM.1000.1A.1","Istante":"2019-09-23T15:28:49.142387Z","CodiceFonte":"RM.1000","CodiceRichiesta":"RM2391900000"},{"TipoEvento":"RichiestaPresidiata","Istante":"2019-09-23T15:28:49.1442433Z","CodiceFonte":"RM.1000","CodiceRichiesta":"RM2391900000"},{"TipoEvento":"MezzoInRientro","CodiceMezzo":"RM.1000.1A.1","Istante":"2019-09-24T10:09:42.7344089Z","CodiceFonte":"RM.1000","CodiceRichiesta":"RM2391900000"},{"TipoEvento":"MezzoRientrato","CodiceMezzo":"RM.1000.1A.1","Istante":"2019-09-24T10:09:54.9912247Z","CodiceFonte":"RM.1000","CodiceRichiesta":"RM2391900000"},{"TipoEvento":"ChiusuraRichiesta","Motivazione":null,"Istante":"2019-09-24T10:11:22.1603164Z","CodiceFonte":"RM.1000","CodiceRichiesta":"RM2391900000"},{"TipoEvento":"RiaperturaRichiesta","Istante":"2019-09-24T10:11:27.6223715Z","CodiceFonte":"3","CodiceRichiesta":"RM2391900000"}],"Operatore":{"Id":"3","Nome":"Mario","Cognome":"Rossi","CodiceFiscale":"YZSPMD89M07M185L","Sede":{"Codice":"RM.1000","Descrizione":"Comando VV.F. ROMA","Coordinate":{"Latitudine":41.89996,"Longitudine":12.49104},"Indirizzo":"Via Genova, 3/a","Tipo":"Comando","Regione":"Lazio","Provincia":"ROMA","Label":null,"Icona":null},"Username":"test","Password":null,"Ruoli":null,"Token":null,"ValidoDa":null,"ValidoFinoA":null,"Attivo":true,"Qualifica":null},"Sospesa":true,"InAttesa":false,"MezziCoinvolti":{},"SquadreCoinvolte":null,"IstanteChiusura":null,"Tipologie":[{"Codice":"6","Descrizione":"Incendio ed esplosione","TipoLuogoEvento":null,"Icona":null,"Categoria":"Incendi ed Esplosioni","Star":false,"Boschivo":false,"AdeguatezzaMezzo":{"APS":"100","AS":"80","AB":"50","AV":"10","AG":"0","DEFAULT":"10"},"OpportunitaSganciamento":-100}],"Localita":{"Coordinate":{"Latitudine":41.920135,"Longitudine":12.499179},"Indirizzo":"Via Yser, 00198 Roma RM, Italia","Note":null,"Piano":null},"TurnoInserimentoChiamata":{"Codice":"B1","Descrizione":null,"DiurnoNotturno":"D","DataOraInizio":"2019-09-23T08:00:00","DataOraFine":"2019-09-23T20:00:00"},"TurnoIntervento":null,"TipoTerreno":null,"ListaEntiIntervenuti":null,"ListaEntiPresaInCarico":null,"ObiettivoSensibile":null,"Descrizione":"Incendio ed esplosione","ZoneEmergenza":null,"Tags":[],"Chiusa":false,"Aperta":true,"Presidiata":false,"PrioritaRichiesta":3,"IstanteRicezioneRichiesta":"2019-09-23T15:04:33.2720682Z","IstantePresaInCarico":"2019-09-23T15:04:41.3451215Z","ListaUtentiInLavorazione":[],"ListaUtentiPresaInCarico":[{"IdUtente":"3","Nominativo":"Mario Rossi","DataInizioAttivita":"2019-09-23T15:04:41.3603237Z"}],"IstantePrimaAssegnazione":"2019-09-23T15:04:41.34786Z","Rilevante":false,"RilevanteGrave":false,"RilevanteStArCu":false,"StatoRichiesta":{"Evasa":false},"Telefonate":[{"TipoEvento":"Telefonata","CodiceOrigine":"112","NominativoChiamante":"Carabinieri","NumeroTelefono":"112","CodiceSchedaContatto":null,"Codice":"RM2391900000","Motivazione":null,"NotePubbliche":null,"NotePrivate":null,"Esito":"MettiInCoda","Istante":"2019-09-23T15:04:33.2720682Z","CodiceFonte":"3","CodiceRichiesta":"RM2391900000"}],"Partenze":[{"TipoEvento":"ComposizionePartenze","CodiceFiscaleCapopartenza":null,"CodiciFiscaliComponenti":[],"Partenza":{"Squadre":[{"Id":"1","Nome":"Rossa","Stato":2,"Componenti":[{"CodiceFiscale":"RSSMRA80A01C707K","DescrizioneQualifica":"CP","DescrizioneQualificaLunga":null,"CodiceTurno":null,"Nominativo":"Mario Verdi","OrarioInizio":"0001-01-01T00:00:00","OrarioFine":"0001-01-01T00:00:00","Tooltip":"","CapoPartenza":true,"Autista":false,"Rimpiazzo":false,"FunGuardia":false,"TecnicoGuardia1":false,"TecnicoGuardia2":false,"CapoTurno":true,"Telefono":"3404444455"},{"CodiceFiscale":null,"DescrizioneQualifica":"CRE","DescrizioneQualificaLunga":null,"CodiceTurno":null,"Nominativo":"Francesco Rossi","OrarioInizio":"0001-01-01T00:00:00","OrarioFine":"0001-01-01T00:00:00","Tooltip":"","CapoPartenza":false,"Autista":true,"Rimpiazzo":false,"FunGuardia":false,"TecnicoGuardia1":false,"TecnicoGuardia2":false,"CapoTurno":true,"Telefono":"3404444455"},{"CodiceFiscale":null,"DescrizioneQualifica":"VCSC","DescrizioneQualificaLunga":null,"CodiceTurno":null,"Nominativo":"Mario Verna","OrarioInizio":"0001-01-01T00:00:00","OrarioFine":"0001-01-01T00:00:00","Tooltip":"","CapoPartenza":false,"Autista":false,"Rimpiazzo":true,"FunGuardia":false,"TecnicoGuardia1":false,"TecnicoGuardia2":false,"CapoTurno":true,"Telefono":"3404444455"}],"Distaccamento":{"Codice":"RM.1000","Descrizione":"Tuscolana","Coordinate":{"Latitudine":1.0,"Longitudine":1.0},"Indirizzo":"Via Prova, 1","Tipo":"Distaccamento","Regione":"Lazio","Provincia":"Roma","Label":null,"Icona":null},"IstanteTermineImpegno":null}],"Mezzo":{"Codice":"RM.1000.1A.1","IdRichiesta":null,"Descrizione":"1000.1A.1","Genere":"APS","Stato":"In Rientro","Appartenenza":0,"Distaccamento":{"Codice":"RM.1000","Descrizione":"Comando di Roma","Coordinate":{"Latitudine":41.89994,"Longitudine":12.49127},"Indirizzo":"Via Genova, 1, 00184 Roma RM","Tipo":"Comando","Regione":"Lazio","Provincia":"Roma","Label":null,"Icona":null},"DescrizioneAppartenenza":null,"DescrizioneStato":null,"StatoEfficenza":0,"DescrizioneStatoEfficenza":null,"LivelloCarburante":0,"DescrizioneLivelloCarburante":null,"LivelloEstinguente":0,"DescrizioneLivelloEstinguente":null,"Notifiche":null,"Coordinate":{"Latitudine":41.941486358642578,"Longitudine":12.546378135681152},"IstanteAcquisizione":"2019-08-07T17:10:32Z","IstantePrenotazione":null},"Sganciata":false},"Componenti":[],"FuoriSede":false,"NumeroComponenti":0,"Istante":"2019-09-23T15:04:41.34786Z","CodiceFonte":"RM.1000","CodiceRichiesta":"RM2391900000"}],"Richiedente":{"Telefono":"112","Nominativo":"Carabinieri"},"CodiciUOCompetenza":null,"Competenze":null,"CodiceSchedaNue":null,"StatoInvioFonogramma":{"Codice":"0","Descrizione":"Non necessario"},"Complessita":{"Codice":"2","Descrizione":"Bassa"},"NotePubbliche":null,"NotePrivate":null,"Id":"RM2391900000"}]
+[
+  {
+    "Codice": "RM2391900000",
+    "CodiceRichiesta": "RM1900000",
+    "CodiceUnitaOperativaCompetente": null,
+    "CodiciUnitaOperativeAllertate": null,
+    "Eventi": [
+      {
+        "TipoEvento": "Telefonata",
+        "CodiceOrigine": "112",
+        "NominativoChiamante": "Carabinieri",
+        "NumeroTelefono": "112",
+        "CodiceSchedaContatto": null,
+        "Codice": "RM2391900000",
+        "Motivazione": null,
+        "NotePubbliche": null,
+        "NotePrivate": null,
+        "Esito": "MettiInCoda",
+        "Istante": "2019-09-23T15:04:33.2720682Z",
+        "CodiceFonte": "3",
+        "CodiceRichiesta": "RM2391900000"
+      },
+      {
+        "TipoEvento": "AssegnataPriorita",
+        "Priorita": 3,
+        "Istante": "2019-09-23T15:04:33.2772729Z",
+        "CodiceFonte": "RM.1000",
+        "CodiceRichiesta": "RM2391900000"
+      },
+      {
+        "TipoEvento": "InizioPresaInCarico",
+        "Istante": "2019-09-23T15:04:41.3451215Z",
+        "CodiceFonte": "RM.1000",
+        "CodiceRichiesta": "RM2391900000"
+      },
+      {
+        "TipoEvento": "ComposizionePartenze",
+        "CodiceFiscaleCapopartenza": null,
+        "CodiciFiscaliComponenti": [
+        ],
+        "Partenza": {
+          "Squadre": [
+            {
+              "Id": "1",
+              "Nome": "Rossa",
+              "Stato": 3,
+              "Componenti": [
+                {
+                  "CodiceFiscale": "RSSMRA80A01C707K",
+                  "DescrizioneQualifica": "CP",
+                  "DescrizioneQualificaLunga": null,
+                  "CodiceTurno": null,
+                  "Nominativo": "Mario Verdi",
+                  "OrarioInizio": "0001-01-01T00:00:00",
+                  "OrarioFine": "0001-01-01T00:00:00",
+                  "Tooltip": "",
+                  "CapoPartenza": true,
+                  "Autista": false,
+                  "Rimpiazzo": false,
+                  "FunGuardia": false,
+                  "TecnicoGuardia1": false,
+                  "TecnicoGuardia2": false,
+                  "CapoTurno": true,
+                  "Telefono": "3404444455"
+                },
+                {
+                  "CodiceFiscale": null,
+                  "DescrizioneQualifica": "CRE",
+                  "DescrizioneQualificaLunga": null,
+                  "CodiceTurno": null,
+                  "Nominativo": "Francesco Rossi",
+                  "OrarioInizio": "0001-01-01T00:00:00",
+                  "OrarioFine": "0001-01-01T00:00:00",
+                  "Tooltip": "",
+                  "CapoPartenza": false,
+                  "Autista": true,
+                  "Rimpiazzo": false,
+                  "FunGuardia": false,
+                  "TecnicoGuardia1": false,
+                  "TecnicoGuardia2": false,
+                  "CapoTurno": true,
+                  "Telefono": "3404444455"
+                },
+                {
+                  "CodiceFiscale": null,
+                  "DescrizioneQualifica": "VCSC",
+                  "DescrizioneQualificaLunga": null,
+                  "CodiceTurno": null,
+                  "Nominativo": "Mario Verna",
+                  "OrarioInizio": "0001-01-01T00:00:00",
+                  "OrarioFine": "0001-01-01T00:00:00",
+                  "Tooltip": "",
+                  "CapoPartenza": false,
+                  "Autista": false,
+                  "Rimpiazzo": true,
+                  "FunGuardia": false,
+                  "TecnicoGuardia1": false,
+                  "TecnicoGuardia2": false,
+                  "CapoTurno": true,
+                  "Telefono": "3404444455"
+                }
+              ],
+              "Distaccamento": {
+                "Codice": "RM.1000",
+                "Descrizione": "Tuscolana",
+                "Coordinate": {
+                  "Latitudine": 1.0,
+                  "Longitudine": 1.0
+                },
+                "Indirizzo": "Via Prova, 1",
+                "Tipo": "Distaccamento",
+                "Regione": "Lazio",
+                "Provincia": "Roma",
+                "Label": null,
+                "Icona": null
+              },
+              "IstanteTermineImpegno": null
+            }
+          ],
+          "Mezzo": {
+            "Codice": "RM.1000.1A.1",
+            "IdRichiesta": "RM1900000",
+            "Descrizione": "1000.1A.1",
+            "Genere": "APS",
+            "Stato": "Sul Posto",
+            "Appartenenza": 0,
+            "Distaccamento": {
+              "Codice": "RM.1000",
+              "Descrizione": "Comando di Roma",
+              "Coordinate": {
+                "Latitudine": 41.89994,
+                "Longitudine": 12.49127
+              },
+              "Indirizzo": "Via Genova, 1, 00184 Roma RM",
+              "Tipo": "Comando",
+              "Regione": "Lazio",
+              "Provincia": "Roma",
+              "Label": null,
+              "Icona": null
+            },
+            "DescrizioneAppartenenza": null,
+            "DescrizioneStato": null,
+            "StatoEfficenza": 0,
+            "DescrizioneStatoEfficenza": null,
+            "LivelloCarburante": 0,
+            "DescrizioneLivelloCarburante": null,
+            "LivelloEstinguente": 0,
+            "DescrizioneLivelloEstinguente": null,
+            "Notifiche": null,
+            "Coordinate": {
+              "Latitudine": 41.941486358642578,
+              "Longitudine": 12.546378135681152
+            },
+            "IstanteAcquisizione": "2019-08-07T17:10:32Z",
+            "IstantePrenotazione": null
+          },
+          "Sganciata": false
+        },
+        "Componenti": [
+        ],
+        "FuoriSede": false,
+        "NumeroComponenti": 0,
+        "Istante": "2019-09-23T15:04:41.34786Z",
+        "CodiceFonte": "RM.1000",
+        "CodiceRichiesta": "RM2391900000"
+      },
+      {
+        "TipoEvento": "AssegnataRichiesta",
+        "Istante": "2019-09-23T15:04:41.3496226Z",
+        "CodiceFonte": "RM.1000",
+        "CodiceRichiesta": "RM2391900000"
+      },
+      {
+        "TipoEvento": "ArrivoSulPosto",
+        "CodiceMezzo": "RM.1000.1A.1",
+        "Istante": "2019-09-23T15:04:53.7219132Z",
+        "CodiceFonte": "RM.1000",
+        "CodiceRichiesta": "RM2391900000"
+      },
+      {
+        "TipoEvento": "RichiestaPresidiata",
+        "Istante": "2019-09-23T15:04:53.722583Z",
+        "CodiceFonte": "RM.1000",
+        "CodiceRichiesta": "RM2391900000"
+      },
+      {
+        "TipoEvento": "MezzoRientrato",
+        "CodiceMezzo": "RM.1000.1A.1",
+        "Istante": "2019-09-23T15:28:37.0849623Z",
+        "CodiceFonte": "RM.1000",
+        "CodiceRichiesta": "RM2391900000"
+      },
+      {
+        "TipoEvento": "ArrivoSulPosto",
+        "CodiceMezzo": "RM.1000.1A.1",
+        "Istante": "2019-09-23T15:28:49.142387Z",
+        "CodiceFonte": "RM.1000",
+        "CodiceRichiesta": "RM2391900000"
+      },
+      {
+        "TipoEvento": "RichiestaPresidiata",
+        "Istante": "2019-09-23T15:28:49.1442433Z",
+        "CodiceFonte": "RM.1000",
+        "CodiceRichiesta": "RM2391900000"
+      },
+      {
+        "TipoEvento": "MezzoInRientro",
+        "CodiceMezzo": "RM.1000.1A.1",
+        "Istante": "2019-09-24T10:09:42.7344089Z",
+        "CodiceFonte": "RM.1000",
+        "CodiceRichiesta": "RM2391900000"
+      },
+      {
+        "TipoEvento": "MezzoRientrato",
+        "CodiceMezzo": "RM.1000.1A.1",
+        "Istante": "2019-09-24T10:09:54.9912247Z",
+        "CodiceFonte": "RM.1000",
+        "CodiceRichiesta": "RM2391900000"
+      },
+      {
+        "TipoEvento": "ChiusuraRichiesta",
+        "Motivazione": null,
+        "Istante": "2019-09-24T10:11:22.1603164Z",
+        "CodiceFonte": "RM.1000",
+        "CodiceRichiesta": "RM2391900000"
+      },
+      {
+        "TipoEvento": "RiaperturaRichiesta",
+        "Istante": "2019-09-24T10:11:27.6223715Z",
+        "CodiceFonte": "RM.1000",
+        "CodiceRichiesta": "RM2391900000"
+      },
+      {
+        "TipoEvento": "MezzoRientrato",
+        "CodiceMezzo": "RM.1000.1A.1",
+        "Istante": "2019-09-24T10:51:02.1701575Z",
+        "CodiceFonte": "RM.1000",
+        "CodiceRichiesta": "RM2391900000"
+      },
+      {
+        "TipoEvento": "ArrivoSulPosto",
+        "CodiceMezzo": "RM.1000.1A.1",
+        "Istante": "2019-09-24T12:45:53.1936425Z",
+        "CodiceFonte": "RM.1000",
+        "CodiceRichiesta": "RM2391900000"
+      },
+      {
+        "TipoEvento": "RichiestaPresidiata",
+        "Istante": "2019-09-24T12:45:53.1946891Z",
+        "CodiceFonte": "RM.1000",
+        "CodiceRichiesta": "RM2391900000"
+      },
+      {
+        "TipoEvento": "ArrivoSulPosto",
+        "CodiceMezzo": "RM.1000.1A.1",
+        "Istante": "2019-09-26T11:10:33.187221Z",
+        "CodiceFonte": "3",
+        "CodiceRichiesta": "RM2391900000"
+      },
+      {
+        "TipoEvento": "RichiestaPresidiata",
+        "Istante": "2019-09-26T11:10:33.1887899Z",
+        "CodiceFonte": "3",
+        "CodiceRichiesta": "RM2391900000"
+      }
+    ],
+    "Operatore": {
+      "Id": "3",
+      "Nome": "Mario",
+      "Cognome": "Rossi",
+      "CodiceFiscale": "YZSPMD89M07M185L",
+      "Sede": {
+        "Codice": "RM.1000",
+        "Descrizione": "Comando VV.F. ROMA",
+        "Coordinate": {
+          "Latitudine": 41.89996,
+          "Longitudine": 12.49104
+        },
+        "Indirizzo": "Via Genova, 3/a",
+        "Tipo": "Comando",
+        "Regione": "Lazio",
+        "Provincia": "ROMA",
+        "Label": null,
+        "Icona": null
+      },
+      "Username": "test",
+      "Password": null,
+      "Ruoli": null,
+      "Token": null,
+      "ValidoDa": null,
+      "ValidoFinoA": null,
+      "Attivo": true,
+      "Qualifica": null
+    },
+    "Sospesa": false,
+    "InAttesa": false,
+    "MezziCoinvolti": {
+    },
+    "SquadreCoinvolte": null,
+    "IstanteChiusura": null,
+    "Tipologie": [
+      {
+        "Codice": "6",
+        "Descrizione": "Incendio ed esplosione",
+        "TipoLuogoEvento": null,
+        "Icona": null,
+        "Categoria": "Incendi ed Esplosioni",
+        "Star": false,
+        "Boschivo": false,
+        "AdeguatezzaMezzo": {
+          "APS": "100",
+          "AS": "80",
+          "AB": "50",
+          "AV": "10",
+          "AG": "0",
+          "DEFAULT": "10"
+        },
+        "OpportunitaSganciamento": -100
+      }
+    ],
+    "Localita": {
+      "Coordinate": {
+        "Latitudine": 41.920135,
+        "Longitudine": 12.499179
+      },
+      "Indirizzo": "Via Yser, 00198 Roma RM, Italia",
+      "Note": null,
+      "Piano": null
+    },
+    "TurnoInserimentoChiamata": {
+      "Codice": "B1",
+      "Descrizione": null,
+      "DiurnoNotturno": "D",
+      "DataOraInizio": "2019-09-23T08:00:00",
+      "DataOraFine": "2019-09-23T20:00:00"
+    },
+    "TurnoIntervento": null,
+    "TipoTerreno": null,
+    "ListaEntiIntervenuti": null,
+    "ListaEntiPresaInCarico": null,
+    "ObiettivoSensibile": null,
+    "Descrizione": "Incendio ed esplosione",
+    "ZoneEmergenza": null,
+    "Tags": [
+    ],
+    "Chiusa": false,
+    "Aperta": true,
+    "Presidiata": true,
+    "PrioritaRichiesta": 3,
+    "IstanteRicezioneRichiesta": "2019-09-23T15:04:33.2720682Z",
+    "IstantePresaInCarico": "2019-09-23T15:04:41.3451215Z",
+    "ListaUtentiInLavorazione": [
+    ],
+    "ListaUtentiPresaInCarico": [
+      {
+        "IdUtente": "3",
+        "Nominativo": "Mario Rossi",
+        "DataInizioAttivita": "2019-09-23T15:04:41.3603237Z"
+      }
+    ],
+    "IstantePrimaAssegnazione": "2019-09-23T15:04:41.34786Z",
+    "Rilevante": false,
+    "RilevanteGrave": false,
+    "RilevanteStArCu": false,
+    "StatoRichiesta": {
+      "Evasa": true
+    },
+    "Telefonate": [
+      {
+        "TipoEvento": "Telefonata",
+        "CodiceOrigine": "112",
+        "NominativoChiamante": "Carabinieri",
+        "NumeroTelefono": "112",
+        "CodiceSchedaContatto": null,
+        "Codice": "RM2391900000",
+        "Motivazione": null,
+        "NotePubbliche": null,
+        "NotePrivate": null,
+        "Esito": "MettiInCoda",
+        "Istante": "2019-09-23T15:04:33.2720682Z",
+        "CodiceFonte": "3",
+        "CodiceRichiesta": "RM2391900000"
+      }
+    ],
+    "Partenze": [
+      {
+        "TipoEvento": "ComposizionePartenze",
+        "CodiceFiscaleCapopartenza": null,
+        "CodiciFiscaliComponenti": [
+        ],
+        "Partenza": {
+          "Squadre": [
+            {
+              "Id": "1",
+              "Nome": "Rossa",
+              "Stato": 3,
+              "Componenti": [
+                {
+                  "CodiceFiscale": "RSSMRA80A01C707K",
+                  "DescrizioneQualifica": "CP",
+                  "DescrizioneQualificaLunga": null,
+                  "CodiceTurno": null,
+                  "Nominativo": "Mario Verdi",
+                  "OrarioInizio": "0001-01-01T00:00:00",
+                  "OrarioFine": "0001-01-01T00:00:00",
+                  "Tooltip": "",
+                  "CapoPartenza": true,
+                  "Autista": false,
+                  "Rimpiazzo": false,
+                  "FunGuardia": false,
+                  "TecnicoGuardia1": false,
+                  "TecnicoGuardia2": false,
+                  "CapoTurno": true,
+                  "Telefono": "3404444455"
+                },
+                {
+                  "CodiceFiscale": null,
+                  "DescrizioneQualifica": "CRE",
+                  "DescrizioneQualificaLunga": null,
+                  "CodiceTurno": null,
+                  "Nominativo": "Francesco Rossi",
+                  "OrarioInizio": "0001-01-01T00:00:00",
+                  "OrarioFine": "0001-01-01T00:00:00",
+                  "Tooltip": "",
+                  "CapoPartenza": false,
+                  "Autista": true,
+                  "Rimpiazzo": false,
+                  "FunGuardia": false,
+                  "TecnicoGuardia1": false,
+                  "TecnicoGuardia2": false,
+                  "CapoTurno": true,
+                  "Telefono": "3404444455"
+                },
+                {
+                  "CodiceFiscale": null,
+                  "DescrizioneQualifica": "VCSC",
+                  "DescrizioneQualificaLunga": null,
+                  "CodiceTurno": null,
+                  "Nominativo": "Mario Verna",
+                  "OrarioInizio": "0001-01-01T00:00:00",
+                  "OrarioFine": "0001-01-01T00:00:00",
+                  "Tooltip": "",
+                  "CapoPartenza": false,
+                  "Autista": false,
+                  "Rimpiazzo": true,
+                  "FunGuardia": false,
+                  "TecnicoGuardia1": false,
+                  "TecnicoGuardia2": false,
+                  "CapoTurno": true,
+                  "Telefono": "3404444455"
+                }
+              ],
+              "Distaccamento": {
+                "Codice": "RM.1000",
+                "Descrizione": "Tuscolana",
+                "Coordinate": {
+                  "Latitudine": 1.0,
+                  "Longitudine": 1.0
+                },
+                "Indirizzo": "Via Prova, 1",
+                "Tipo": "Distaccamento",
+                "Regione": "Lazio",
+                "Provincia": "Roma",
+                "Label": null,
+                "Icona": null
+              },
+              "IstanteTermineImpegno": null
+            }
+          ],
+          "Mezzo": {
+            "Codice": "RM.1000.1A.1",
+            "IdRichiesta": "RM1900000",
+            "Descrizione": "1000.1A.1",
+            "Genere": "APS",
+            "Stato": "Sul Posto",
+            "Appartenenza": 0,
+            "Distaccamento": {
+              "Codice": "RM.1000",
+              "Descrizione": "Comando di Roma",
+              "Coordinate": {
+                "Latitudine": 41.89994,
+                "Longitudine": 12.49127
+              },
+              "Indirizzo": "Via Genova, 1, 00184 Roma RM",
+              "Tipo": "Comando",
+              "Regione": "Lazio",
+              "Provincia": "Roma",
+              "Label": null,
+              "Icona": null
+            },
+            "DescrizioneAppartenenza": null,
+            "DescrizioneStato": null,
+            "StatoEfficenza": 0,
+            "DescrizioneStatoEfficenza": null,
+            "LivelloCarburante": 0,
+            "DescrizioneLivelloCarburante": null,
+            "LivelloEstinguente": 0,
+            "DescrizioneLivelloEstinguente": null,
+            "Notifiche": null,
+            "Coordinate": {
+              "Latitudine": 41.941486358642578,
+              "Longitudine": 12.546378135681152
+            },
+            "IstanteAcquisizione": "2019-08-07T17:10:32Z",
+            "IstantePrenotazione": null
+          },
+          "Sganciata": false
+        },
+        "Componenti": [
+        ],
+        "FuoriSede": false,
+        "NumeroComponenti": 0,
+        "Istante": "2019-09-23T15:04:41.34786Z",
+        "CodiceFonte": "RM.1000",
+        "CodiceRichiesta": "RM2391900000"
+      }
+    ],
+    "Richiedente": {
+      "Telefono": "112",
+      "Nominativo": "Carabinieri"
+    },
+    "CodiciUOCompetenza": null,
+    "Competenze": null,
+    "CodiceSchedaNue": null,
+    "StatoInvioFonogramma": {
+      "Codice": "0",
+      "Descrizione": "Non necessario"
+    },
+    "Complessita": {
+      "Codice": "2",
+      "Descrizione": "Bassa"
+    },
+    "NotePubbliche": null,
+    "NotePrivate": null,
+    "Id": "RM2391900000"
+  }
+]

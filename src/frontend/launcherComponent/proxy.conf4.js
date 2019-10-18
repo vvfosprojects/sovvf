@@ -21,7 +21,7 @@ const PROXY_CONFIG = [{
         '/api/Marker',
         '/api/PrenotazioneMezzo'
     ],
-    target: "http://localhost:5000/",
+    target: "http://localhost:31497/",
     secure: false,
     "changeOrigin": true,
     ws: true

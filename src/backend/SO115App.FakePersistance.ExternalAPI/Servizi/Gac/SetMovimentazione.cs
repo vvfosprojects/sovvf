@@ -1,8 +1,6 @@
 ﻿using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
-using System;
 using System.Collections.Generic;
 using System.Net.Http;
-using System.Text;
 
 namespace SO115App.ExternalAPI.Fake.Servizi.Gac
 {

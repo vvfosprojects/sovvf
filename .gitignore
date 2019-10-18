@@ -1,0 +1,7 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs/sovvf/v16
+/src/frontend/prototipi/cruscottoIntegratoSB/AngularAspNetCoreSignalR/obj
+/.vs
