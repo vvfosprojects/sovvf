@@ -4,11 +4,11 @@
     {
         #region Url
 
-        public static string TerritorioUrl = "http://172.16.25.10:5002/api/";
+        public static string TerritorioUrl = "http://172.16.25.10:5002/swagger/";
 
         public static string ServiziUrl = "http://172.16.15.34:5000/api/";
 
-        public static string IdentityManagementUrl = "http://172.16.15.34:5001/api/Personale";
+        public static string IdentityManagementUrl = "http://172.16.25.10:5000/api/RicercaPerElencoCodiciFiscali";
 
         public static string NueUrl = "http://localhost:5001/api/SchedaContatto/";
         public static string GeoFleetUrl = "http://geofleet-ws/api/";
@@ -68,6 +68,12 @@
         public static string ServiziGetComponentiUrl = ServiziUrl + "Componenti";
 
         #endregion ServiziMethods
+
+        #region IdentityManagement
+
+        public static string PostRicercaPerElencoCodiciFiscali = "/RicercaPerElencoCodiciFiscali";
+
+        #endregion IdentityManagement
 
         #region Uos
 
