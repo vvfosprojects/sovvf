@@ -11,7 +11,7 @@ namespace SO115App.ApiGac.Services
         private const string MezzoJson = "Fake/Mezzo.json";
         private const string FuoriServizio = "Fuori Servizio";
 
-        public static List<Mezzo> Get()
+        public static List<MezzoDTO> Get()
         {
             const string filepath = MezzoJson;
             string json;
@@ -21,13 +21,13 @@ namespace SO115App.ApiGac.Services
                 json = r.ReadToEnd();
             }
 
-            return JsonConvert.DeserializeObject<List<Mezzo>>(json);
+            return JsonConvert.DeserializeObject<List<MezzoDTO>>(json);
         }
 
-        public List<Mezzo> GetMezziUtilizzabili(List<string> codiceSedi, string genereMezzo, string siglaMezzo)
+        public List<MezzoDTO> GetMezziUtilizzabili(List<string> codiceSedi, string genereMezzo, string siglaMezzo)
         {
             var listaMezzi = Get().FindAll(x => x.Movimentazione.StatoOperativo != FuoriServizio);
-            var listaMezziFromSede = new List<Mezzo>();
+            var listaMezziFromSede = new List<MezzoDTO>();
 
             foreach (var sede in codiceSedi)
             {
@@ -47,10 +47,10 @@ namespace SO115App.ApiGac.Services
             return listaMezziFromSede;
         }
 
-        public List<Mezzo> GetMezziFuoriServizio(List<string> codiceSedi, string genereMezzo, string siglaMezzo)
+        public List<MezzoDTO> GetMezziFuoriServizio(List<string> codiceSedi, string genereMezzo, string siglaMezzo)
         {
             var listaMezzi = Get().FindAll(x => x.Movimentazione.StatoOperativo == FuoriServizio);
-            var listaMezziFromSede = new List<Mezzo>();
+            var listaMezziFromSede = new List<MezzoDTO>();
 
             foreach (var sede in codiceSedi)
             {
@@ -69,10 +69,10 @@ namespace SO115App.ApiGac.Services
             return listaMezziFromSede;
         }
 
-        public List<Mezzo> GetMezziFromICCID(List<string> iccid)
+        public List<MezzoDTO> GetMezziFromICCID(List<string> iccid)
         {
             var listaMezzi = Get();
-            var listaMezziFromSede = new List<Mezzo>();
+            var listaMezziFromSede = new List<MezzoDTO>();
 
             foreach (var codice in iccid)
             {
@@ -88,10 +88,10 @@ namespace SO115App.ApiGac.Services
             return listaMezziFromSede;
         }
 
-        public List<Mezzo> GetMezziFromRadioId(List<string> radioId)
+        public List<MezzoDTO> GetMezziFromRadioId(List<string> radioId)
         {
             var listaMezzi = Get();
-            var listaMezziFromSede = new List<Mezzo>();
+            var listaMezziFromSede = new List<MezzoDTO>();
 
             foreach (var codice in radioId)
             {
@@ -106,10 +106,10 @@ namespace SO115App.ApiGac.Services
             return listaMezziFromSede;
         }
 
-        public List<Mezzo> GetMezziFromCodiceMezzo(List<string> codiciMezzo)
+        public List<MezzoDTO> GetMezziFromCodiceMezzo(List<string> codiciMezzo)
         {
             var listaMezzi = Get();
-            var listaMezziFromCodici = new List<Mezzo>();
+            var listaMezziFromCodici = new List<MezzoDTO>();
 
             foreach (var codice in codiciMezzo)
             {

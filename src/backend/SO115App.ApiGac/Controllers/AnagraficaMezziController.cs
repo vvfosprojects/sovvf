@@ -20,31 +20,31 @@ namespace SO115App.ApiGac.Controllers
         }
 
         [HttpGet("MezziUtilizzabili")]
-        public ActionResult<List<Mezzo>> GetUtilizzabili([FromQuery]List<string> codiciSedi, string genereMezzo, string siglaMezzo)
+        public ActionResult<List<MezzoDTO>> GetUtilizzabili([FromQuery]List<string> codiciSedi, string genereMezzo, string siglaMezzo)
         {
             return _getMezzi.GetMezziUtilizzabili(codiciSedi, genereMezzo, siglaMezzo);
         }
 
         [HttpGet("MezziFuoriServizio")]
-        public ActionResult<List<Mezzo>> GetFuoriServizio([FromQuery]List<string> codiciSedi, string genereMezzo, string siglaMezzo)
+        public ActionResult<List<MezzoDTO>> GetFuoriServizio([FromQuery]List<string> codiciSedi, string genereMezzo, string siglaMezzo)
         {
             return _getMezzi.GetMezziFuoriServizio(codiciSedi, genereMezzo, siglaMezzo);
         }
 
         [HttpGet("ID")]
-        public ActionResult<List<Mezzo>> GetFromID([FromQuery]List<string> codiciMezzo)
+        public ActionResult<List<MezzoDTO>> GetFromID([FromQuery]List<string> codiciMezzo)
         {
             return _getMezzi.GetMezziFromCodiceMezzo(codiciMezzo);
         }
 
         [HttpGet("ICCID")]
-        public ActionResult<List<Mezzo>> GetFromICCID([FromQuery]List<string> iccid)
+        public ActionResult<List<MezzoDTO>> GetFromICCID([FromQuery]List<string> iccid)
         {
             return _getMezzi.GetMezziFromICCID(iccid);
         }
 
         [HttpGet("SELETTIVA")]
-        public ActionResult<List<Mezzo>> GetSELETTIVA([FromQuery]List<string> idRadio)
+        public ActionResult<List<MezzoDTO>> GetSELETTIVA([FromQuery]List<string> idRadio)
         {
             return _getMezzi.GetMezziFromRadioId(idRadio);
         }

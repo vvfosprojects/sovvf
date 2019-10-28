@@ -22,7 +22,7 @@ namespace SO115App.ApiGac.Services
                 json = r.ReadToEnd();
             }
 
-            var listaMezzi = JsonConvert.DeserializeObject<List<Mezzo>>(json);
+            var listaMezzi = JsonConvert.DeserializeObject<List<MezzoDTO>>(json);
 
             foreach (var mezzo in listaMezzi)
             {

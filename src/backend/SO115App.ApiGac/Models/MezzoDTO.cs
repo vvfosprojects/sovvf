@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace SO115App.ApiGac.Models
 {
-    public class Mezzo
+    public class MezzoDTO
     {
         /// <summary>
         ///   Codice del mezzo
