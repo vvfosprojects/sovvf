@@ -27,9 +27,9 @@ namespace SO115App.ExternalAPI.Fake.Personale
                 {
                     foreach (var squadra in turno.ListaSquadre)
                     {
-                        squadra.ListaComponenti = new List<Componente>();
+                        squadra.Componenti = new List<Componente>();
                         var responseComponenti = _client.GetStringAsync(string.Format(Costanti.ServiziGetSquadreUrl + "/codiceSede={0}&codiceSquadra={1}&codiceTurno={2}", codiceSede, squadra.Codice, turno.Codice));
-                        squadra.ListaComponenti = JsonConvert.DeserializeObject<List<Componente>>(responseComponenti.ToString());
+                        squadra.Componenti = JsonConvert.DeserializeObject<List<Componente>>(responseComponenti.ToString());
                     }
                     listaSquadreTurno.Add(turno);
                 }

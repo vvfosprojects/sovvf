@@ -49,6 +49,11 @@ namespace SO115App.API.Models.Classi.Condivise
         /// </summary>
         public string DescrizioneQualificaLunga { get; set; }
 
+        /// <summary>
+        ///   Ruolo ricoperto dall'operatore nel turno indicato
+        /// </summary>
+        public string Ruolo { get; set; }
+
         public Turno CodiceTurno { get; set; }
 
         /// <summary>

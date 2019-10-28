@@ -19,6 +19,7 @@
 //-----------------------------------------------------------------------
 using System;
 using System.Diagnostics;
+using System.Net.Http;
 using System.Security.Principal;
 using System.Text;
 using AutoMapper;
@@ -58,6 +59,8 @@ namespace SO115App.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            HttpClient httpClient = new HttpClient();
+            services.AddSingleton<HttpClient>(httpClient);
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             services.AddSwaggerGen(c =>

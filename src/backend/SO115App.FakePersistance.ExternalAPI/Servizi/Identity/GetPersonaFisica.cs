@@ -20,7 +20,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Identity
         public List<PersonaFisica> Get(List<string> codiceFiscale)
         {
             var content = new KeyValuePair<string, List<string>>("codiciFiscali", codiceFiscale);
-            var response = _client.PostAsJsonAsync(Costanti.PostRicercaPerElencoCodiciFiscali, content).ToString();
+            var response = _client.PostAsJsonAsync(Costanti.IdentityManagementUrl, content).ToString();
             return JsonConvert.DeserializeObject<List<PersonaFisica>>(response);
         }
     }

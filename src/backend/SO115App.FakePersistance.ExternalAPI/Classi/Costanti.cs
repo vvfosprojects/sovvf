@@ -69,12 +69,6 @@
 
         #endregion ServiziMethods
 
-        #region IdentityManagement
-
-        public static string PostRicercaPerElencoCodiciFiscali = "/RicercaPerElencoCodiciFiscali";
-
-        #endregion IdentityManagement
-
         #region Uos
 
         public static string UosUOUrl = "UO";

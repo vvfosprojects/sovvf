@@ -18,6 +18,8 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using SimpleInjector;
+using SO115App.ExternalAPI.Fake.Nue;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
 
 namespace SO115App.CompositionRoot
 {

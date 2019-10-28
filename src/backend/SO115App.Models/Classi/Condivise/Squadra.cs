@@ -92,6 +92,6 @@ namespace SO115App.API.Models.Classi.Condivise
         /// </summary>
         public DateTime? IstanteTermineImpegno { get; set; }
 
-        public List<Componente> ListaComponenti { get; set; }
+        public List<string> ListaCodiciFiscaliComponentiSquadra { get; set; }
     }
 }

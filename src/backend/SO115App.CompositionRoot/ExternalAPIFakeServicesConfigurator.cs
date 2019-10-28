@@ -36,15 +36,11 @@ namespace SO115App.CompositionRoot
     {
         internal static void Configure(Container container)
         {
-            PersistenceServicesConfigurator.Configure(container);
-            container.Register<HttpClient>(Lifestyle.Singleton);
-
             #region NUE
 
             container.Register<IGetSchedeContatto, GetSchedeContatto>();
             container.Register<IGetSchedaContattoAttuale, GetSchedaContattoAttuale>();
             container.Register<IGetSchedeContattoBySpatialArea, GetSchedeContattoBySpatialArea>();
-            container.Register<IGetSchedeContattoByCodiceSede, GetSchedeContattoByCodiceSede>();
             container.Register<IGetSchedeContattoByCodiciFiscali, GetSchedeContattoByCodiciFiscali>();
             container.Register<IGetSchedeContattoByTipo, GetSchedeContattoByListTipo>();
             container.Register<IGetSchedeContattoByText, GetSchedeContattoByText>();
