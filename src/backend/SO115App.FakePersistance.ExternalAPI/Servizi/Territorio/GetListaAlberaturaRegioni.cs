@@ -17,6 +17,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Territorio;
@@ -28,6 +29,15 @@ namespace SO115App.ExternalAPI.Fake.Territorio
 {
     public class GetListaAlberaturaRegioni : IGetAlberaturaISTAT
     {
+        private readonly HttpClient client;
+        private readonly IConfiguration configuration;
+
+        public GetListaAlberaturaRegioni(HttpClient client, IConfiguration configuration)
+        {
+            this.client = client;
+            this.configuration = configuration;
+        }
+
         public List<Models.Classi.Condivise.Regione> ListaAlberaturaRegioni()
         {
             try
@@ -35,11 +45,12 @@ namespace SO115App.ExternalAPI.Fake.Territorio
                 List<Regione> ListaRegioni = new List<Regione>();
                 List<Provincia> ListaProvince = new List<Provincia>();
                 List<Comune> ListaComuni = new List<Comune>();
-                HttpClient client = new HttpClient();
 
-                var responseRegioni = client.GetStringAsync(Costanti.TerritorioGetRegioniUrl);
-                var responseProvince = client.GetStringAsync(Costanti.TerritorioGetProvinceUrl);
-                var responseComuni = client.GetStringAsync(Costanti.TerritorioGetComuniUrl);
+                var ExternalUrlString = configuration.GetSection("UrlExternalApi").GetSection("TerritorioApi").Value;
+
+                var responseRegioni = client.GetStringAsync(ExternalUrlString + Costanti.TerritorioGetRegioniUrl);
+                var responseProvince = client.GetStringAsync(ExternalUrlString + Costanti.TerritorioGetProvinceUrl);
+                var responseComuni = client.GetStringAsync(ExternalUrlString + Costanti.TerritorioGetComuniUrl);
 
                 var ListRegioni = JsonConvert.DeserializeObject<RegioneDTO>(responseRegioni.ToString());
                 var ListProvince = JsonConvert.DeserializeObject<ProvinciaDTO>(responseProvince.ToString());

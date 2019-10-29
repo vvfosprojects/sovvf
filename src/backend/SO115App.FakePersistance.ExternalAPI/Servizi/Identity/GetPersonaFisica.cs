@@ -17,6 +17,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using SO115App.Models.Classi.ServiziEsterni.IdentityManagement;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.IdentityManagement;
@@ -30,16 +31,21 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Identity
     public class GetPersonaFisica : IGetPersonaFisica
     {
         private readonly HttpClient _client;
+        private readonly IConfiguration configuration;
 
-        public GetPersonaFisica(HttpClient client)
+        public GetPersonaFisica(HttpClient client, IConfiguration configuration)
+
         {
             _client = client;
+            this.configuration = configuration;
         }
 
         public List<PersonaFisica> Get(List<string> codiceFiscale)
         {
             var content = new KeyValuePair<string, List<string>>("codiciFiscali", codiceFiscale);
-            var response = _client.PostAsJsonAsync(Costanti.IdentityManagementUrl, content).ToString();
+
+            var ExternalUrlString = configuration.GetSection("UrlExternalApi").GetSection("IdentityManagementApi").Value;
+            var response = _client.PostAsJsonAsync(ExternalUrlString, content).ToString();
             return JsonConvert.DeserializeObject<List<PersonaFisica>>(response);
         }
     }

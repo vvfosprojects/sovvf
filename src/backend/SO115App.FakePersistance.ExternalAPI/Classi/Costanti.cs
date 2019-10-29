@@ -75,9 +75,9 @@ namespace SO115App.ExternalAPI.Fake
 
         #region TerritorioMethods
 
-        public static string TerritorioGetRegioniUrl = TerritorioUrl + "Regioni?startIndex=0&pageSize=900";
-        public static string TerritorioGetProvinceUrl = TerritorioUrl + "Province?startIndex=0&pageSize=900";
-        public static string TerritorioGetComuniUrl = TerritorioUrl + "Comuni?startIndex=0&pageSize=12000";
+        public static string TerritorioGetRegioniUrl = "Regioni?startIndex=0&pageSize=900";
+        public static string TerritorioGetProvinceUrl = "Province?startIndex=0&pageSize=900";
+        public static string TerritorioGetComuniUrl = "Comuni?startIndex=0&pageSize=12000";
 
         #endregion TerritorioMethods
 

@@ -27,7 +27,7 @@ namespace SO115App.ExternalAPI.Fake.Personale
             try
             {
                 List<Turno> listaSquadreTurno = new List<Turno>();
-                GetPersonaFisica Identity = new GetPersonaFisica(_client);
+                GetPersonaFisica Identity = new GetPersonaFisica(_client, configuration);
                 List<string> ListaCodiciFiscali = new List<string>();
 
                 var ExternalUrlString = configuration.GetSection("UrlExternalApi").GetSection("ServiziApi").Value;
