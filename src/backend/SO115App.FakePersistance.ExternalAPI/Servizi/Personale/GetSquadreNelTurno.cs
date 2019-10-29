@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Utenti;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Personale;
@@ -11,10 +12,12 @@ namespace SO115App.ExternalAPI.Fake.Personale
     public class GetSquadreNelTurno : IGetSquadreNelTurno
     {
         private readonly HttpClient _client;
+        private readonly IConfiguration configuration;
 
-        public GetSquadreNelTurno(HttpClient client)
+        public GetSquadreNelTurno(HttpClient client, IConfiguration configuration)
         {
             _client = client;
+            this.configuration = configuration;
         }
 
         public List<Turno> SquadreNelTurno(string codiceSede, string codiceTurno)
@@ -22,6 +25,9 @@ namespace SO115App.ExternalAPI.Fake.Personale
             try
             {
                 List<Turno> listaSquadreTurno = new List<Turno>();
+
+                var ExternalUrlString = configuration.GetSection("UrlExternalApi").GetSection("ServiziApi").Value;
+
                 var response = _client.GetStringAsync(string.Format(Costanti.ServiziGetSquadreUrl + "/GetSquadreNelTurno/codiceSede={0}&codiceTurno={1}", codiceSede, codiceTurno));
                 foreach (var turno in JsonConvert.DeserializeObject<List<Turno>>(response.ToString()))
                 {

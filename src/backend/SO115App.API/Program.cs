@@ -19,6 +19,8 @@
 //-----------------------------------------------------------------------
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
+using System.IO;
 
 namespace SO115App.API
 {
@@ -31,6 +33,12 @@ namespace SO115App.API
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
+                .ConfigureAppConfiguration((hostingContext, config) =>
+                {
+                    config.SetBasePath(Directory.GetCurrentDirectory());
+                    config.AddJsonFile(
+                        "appsettings.json", optional: true, reloadOnChange: true);
+                })
                 .UseStartup<Startup>();
     }
 }
