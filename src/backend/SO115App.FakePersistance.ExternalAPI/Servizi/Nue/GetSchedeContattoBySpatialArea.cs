@@ -17,6 +17,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using SO115App.Models.Classi.NUE;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
@@ -28,15 +29,17 @@ namespace SO115App.ExternalAPI.Fake.Nue
     public class GetSchedeContattoBySpatialArea : IGetSchedeContattoBySpatialArea
     {
         private readonly HttpClient _client;
+        private readonly IConfiguration _configuration;
 
-        public GetSchedeContattoBySpatialArea(HttpClient client)
+        public GetSchedeContattoBySpatialArea(HttpClient client, IConfiguration configuration)
         {
             _client = client;
+            _configuration = configuration;
         }
 
         public List<SchedaContatto> SchedeContattoBySpatialArea(double lat1, double lon1, double lat2, double lon2)
         {
-            var response = _client.GetStringAsync(string.Format(Costanti.NueUrl + "/GetByArea/lat1={0},lon1={1},lat2={2},lon2={3},", lat1, lon1, lat2, lon2));
+            var response = _client.GetStringAsync(string.Format(_configuration.GetSection("UrlExternalApi").GetSection("NueApi").Value + Costanti.NueGetByArea + "/lat1={0},lon1={1},lat2={2},lon2={3},", lat1, lon1, lat2, lon2));
             return JsonConvert.DeserializeObject<List<SchedaContatto>>(response.ToString());
         }
     }

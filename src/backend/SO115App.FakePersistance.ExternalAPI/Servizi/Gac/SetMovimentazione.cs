@@ -17,6 +17,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using Microsoft.Extensions.Configuration;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -26,10 +27,12 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
     public class SetMovimentazione : ISetMovimentazione
     {
         private readonly HttpClient _client;
+        private readonly IConfiguration _configuration;
 
-        public SetMovimentazione(HttpClient client)
+        public SetMovimentazione(HttpClient client, IConfiguration configuration)
         {
             _client = client;
+            _configuration = configuration;
         }
 
         public void Set(string codiceMezzo, string idRichiesta, string statoOperativo, string timeStamp)
@@ -41,7 +44,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
                                     new KeyValuePair<string, string>("statoOperativo", statoOperativo),
                                     new KeyValuePair<string, string>("timeStamp", timeStamp),
                                 });
-            _client.PutAsync($"{Costanti.GacPutMovimentazione}", stringContent);
+            _client.PutAsync(_configuration.GetSection("UrlExternalApi").GetSection("GacApi").Value + Costanti.GacPutMovimentazione, stringContent);
         }
     }
 }

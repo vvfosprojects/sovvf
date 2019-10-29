@@ -17,6 +17,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.ExternalAPI.Fake.Classi.Gac;
@@ -31,15 +32,18 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
     {
         private readonly HttpClient _client;
         private readonly MapMezzoDTOsuMezzo _mapper;
+        private readonly IConfiguration _configuration;
 
-        public GetMezziByID(HttpClient client)
+        public GetMezziByID(HttpClient client, MapMezzoDTOsuMezzo mapper, IConfiguration configuration)
         {
             _client = client;
+            _mapper = mapper;
+            _configuration = configuration;
         }
 
         public List<Mezzo> Get(List<string> codiceMezzo)
         {
-            var response = _client.GetAsync($"{Costanti.GacGetID}?codiciMezzo={codiceMezzo}").ToString();
+            var response = _client.GetAsync($"{_configuration.GetSection("UrlExternalApi").GetSection("GacApi").Value}{Costanti.GacGetID}?codiciMezzo={codiceMezzo}").ToString();
             var listaMezzoDTO = JsonConvert.DeserializeObject<List<MezzoDTO>>(response);
             return _mapper.MappaMezzoDTOsuMezzo(listaMezzoDTO);
         }

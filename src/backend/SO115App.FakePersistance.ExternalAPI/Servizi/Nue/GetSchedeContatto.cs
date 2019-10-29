@@ -17,6 +17,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using SO115App.Models.Classi.NUE;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
@@ -28,6 +29,7 @@ namespace SO115App.ExternalAPI.Fake.Nue
     public class GetSchedeContatto : IGetSchedeContatto
     {
         private readonly HttpClient _client;
+        private readonly IConfiguration _configuration;
 
         public GetSchedeContatto(HttpClient client)
         {
@@ -36,7 +38,7 @@ namespace SO115App.ExternalAPI.Fake.Nue
 
         public List<SchedaContatto> ListaSchedeContatto(string codiceSede)
         {
-            var response = _client.GetAsync($"{Costanti.NueGetSchedaContatto}?codiceSede={codiceSede}").ToString();
+            var response = _client.GetAsync($"{_configuration.GetSection("UrlExternalApi").GetSection("NueApi").Value}{Costanti.NueGetSchedaContatto}?codiceSede={codiceSede}").ToString();
             return JsonConvert.DeserializeObject<List<SchedaContatto>>(response);
         }
     }

@@ -17,6 +17,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using Microsoft.Extensions.Configuration;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -26,10 +27,12 @@ namespace SO115App.ExternalAPI.Fake.Nue
     public class SetGestita : ISetStatoGestioneSchedaContatto
     {
         private readonly HttpClient _client;
+        private readonly IConfiguration _configuration;
 
-        public SetGestita(HttpClient client)
+        public SetGestita(HttpClient client, IConfiguration configuration)
         {
             _client = client;
+            _configuration = configuration;
         }
 
         public void Gestita(string codiceScheda, string codiceSede, string codiceFiscale, bool gestita)
@@ -42,7 +45,7 @@ namespace SO115App.ExternalAPI.Fake.Nue
                                     new KeyValuePair<string, string>("gestita", gestita.ToString()),
                                 });
 
-            _client.PostAsync(Costanti.NueUrl + "/SetGestita", stringContent);
+            _client.PostAsync(_configuration.GetSection("UrlExternalApi").GetSection("NueApi").Value + Costanti.NueSetGestita, stringContent);
         }
     }
 }

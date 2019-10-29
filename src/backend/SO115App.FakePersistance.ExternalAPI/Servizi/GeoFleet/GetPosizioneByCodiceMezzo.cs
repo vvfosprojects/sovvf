@@ -17,6 +17,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using SO115App.Models.Classi.ServiziEsterni;
 using SO115App.Models.Servizi.Infrastruttura.GeoFleet;
@@ -27,15 +28,17 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GeoFleet
     public class GetPosizioneByCodiceMezzo : IGetPosizioneByCodiceMezzo
     {
         private HttpClient _client;
+        private readonly IConfiguration _configuration;
 
-        public GetPosizioneByCodiceMezzo(HttpClient client)
+        public GetPosizioneByCodiceMezzo(HttpClient client, IConfiguration configuration)
         {
             _client = client;
+            _configuration = configuration;
         }
 
         public MessaggioPosizione Get(string codiceMezzo)
         {
-            var response = _client.GetAsync($"{Costanti.GeoFleetGetPosizioneByCodiceMezzo}{codiceMezzo}").ToString(); //L'API GeoFleet ancora non si aspetta una lista di codici mezzo
+            var response = _client.GetAsync($"{_configuration.GetSection("UrlExternalApi").GetSection("GeofleetApi").Value}{Costanti.GeoFleetGetPosizioneByCodiceMezzo}?codiceMezzo={codiceMezzo}").ToString(); //L'API GeoFleet ancora non si aspetta una lista di codici mezzo
             return JsonConvert.DeserializeObject<MessaggioPosizione>(response);
         }
     }
