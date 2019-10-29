@@ -39,37 +39,37 @@ namespace SO115App.ExternalAPI.Fake
 
         #region NueMethods
 
-        public static string NueGetSchedaContattoAttuale = NueUrl + "SchedaContattoAttuale";
-        public static string NueGetSchedaContatto = NueUrl + "SchedaContatto";
-        public static string NueGetByCFe = NueUrl + "GetByCF";
-        public static string NueGetByArea = NueUrl + "GetByArea";
-        public static string NueGetByText = NueUrl + "GetByText";
-        public static string NueGetByTipo = NueUrl + "GetByTipo";
-        public static string NueGetByCodiceSede = NueUrl + "GetByCodiceSede";
-        public static string NueGetLette = NueUrl + "GetLette";
-        public static string NueGetGestite = NueUrl + "GetGestite";
-        public static string NueGetByTimeSpan = NueUrl + "GetByTimeSpan";
-        public static string NueSetLetta = NueUrl + "SetLetta";
-        public static string NueSetGestita = NueUrl + "SetGestita";
+        public static string NueGetSchedaContattoAttuale = "SchedaContattoAttuale";
+        public static string NueGetSchedaContatto = "SchedaContatto";
+        public static string NueGetByCFe = "GetByCF";
+        public static string NueGetByArea = "GetByArea";
+        public static string NueGetByText = "GetByText";
+        public static string NueGetByTipo = "GetByTipo";
+        public static string NueGetByCodiceSede = "GetByCodiceSede";
+        public static string NueGetLette = "GetLette";
+        public static string NueGetGestite = "GetGestite";
+        public static string NueGetByTimeSpan = "GetByTimeSpan";
+        public static string NueSetLetta = "SetLetta";
+        public static string NueSetGestita = "SetGestita";
 
         #endregion NueMethods
 
         #region GeoFleetMethods
 
-        public static string GeoFleetGetPosizioneByCodiceMezzo = GeoFleetUrl + "posizioneByCodiceMezzo";
-        public static string GeoFleetGetProssimita = GeoFleetUrl + "prossimita";
-        public static string GeoFleetGetInRettangolo = GeoFleetUrl + "inRettangolo";
+        public static string GeoFleetGetPosizioneByCodiceMezzo = "posizioneByCodiceMezzo";
+        public static string GeoFleetGetProssimita = "prossimita";
+        public static string GeoFleetGetInRettangolo = "inRettangolo";
 
         #endregion GeoFleetMethods
 
         #region GacMethods
 
-        public static string GacGetMezziUtilizzabili = GacUrl + "MezziUtilizzabili";
-        public static string GacGetMezziFuoriServizio = GacUrl + "MezziFuoriServizio";
-        public static string GacGetID = GacUrl + "ID";
-        public static string GacGetICCID = GacUrl + "ICCID";
-        public static string GacGetSELETTIVA = GacUrl + "SELETTIVA";
-        public static string GacPutMovimentazione = GacUrl + "Movimentazione";
+        public static string GacGetMezziUtilizzabili = "MezziUtilizzabili";
+        public static string GacGetMezziFuoriServizio = "MezziFuoriServizio";
+        public static string GacGetID = "ID";
+        public static string GacGetICCID = "ICCID";
+        public static string GacGetSELETTIVA = "SELETTIVA";
+        public static string GacPutMovimentazione = "Movimentazione";
 
         #endregion GacMethods
 
@@ -83,8 +83,8 @@ namespace SO115App.ExternalAPI.Fake
 
         #region ServiziMethods
 
-        public static string ServiziGetSquadreUrl = ServiziUrl + "Squadre";
-        public static string ServiziGetComponentiUrl = ServiziUrl + "Componenti";
+        public static string ServiziGetSquadreUrl = "Squadre";
+        public static string ServiziGetComponentiUrl = "Componenti";
 
         #endregion ServiziMethods
 
