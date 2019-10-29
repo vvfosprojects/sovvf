@@ -20,6 +20,7 @@
 
 using System;
 using SO115App.Models.Classi.Condivise;
+using SO115App.Models.Classi.ServiziEsterni.Gac;
 
 namespace SO115App.API.Models.Classi.Condivise
 {
@@ -43,7 +44,7 @@ namespace SO115App.API.Models.Classi.Condivise
         public string Codice { get; set; }
 
         /// <summary>
-        ///   Codice del mezzo
+        ///   l'eventuale id della richiesta a cui è associato il mezzo
         /// </summary>
         public string IdRichiesta { get; set; }
 
@@ -131,5 +132,15 @@ namespace SO115App.API.Models.Classi.Condivise
         ///   identifica l'istante della prenotazione del mezzo
         /// </summary>
         public DateTime? IstantePrenotazione { get; set; }
+
+        /// <summary>
+        ///   identifica la destinazione d'uso del mezzo
+        /// </summary>
+        public string DestinazioneUso { get; set; }
+
+        /// <summary>
+        ///   identifica l'istante della movimentazione del mezzo
+        /// </summary>
+        public DateTime? IstanteMovimentazione { get; set; }
     }
 }
