@@ -12,12 +12,12 @@ namespace SO115App.ExternalAPI.Fake.Personale
     public class GetSquadreNelTurno : IGetSquadreNelTurno
     {
         private readonly HttpClient _client;
-        private readonly IConfiguration configuration;
+        private readonly IConfiguration _configuration;
 
         public GetSquadreNelTurno(HttpClient client, IConfiguration configuration)
         {
             _client = client;
-            this.configuration = configuration;
+            this._configuration = configuration;
         }
 
         public List<Turno> SquadreNelTurno(string codiceSede, string codiceTurno)
@@ -26,7 +26,7 @@ namespace SO115App.ExternalAPI.Fake.Personale
             {
                 List<Turno> listaSquadreTurno = new List<Turno>();
 
-                var ExternalUrlString = configuration.GetSection("UrlExternalApi").GetSection("ServiziApi").Value;
+                var ExternalUrlString = _configuration.GetSection("UrlExternalApi").GetSection("ServiziApi").Value;
 
                 var response = _client.GetStringAsync(string.Format(Costanti.ServiziGetSquadreUrl + "/GetSquadreNelTurno/codiceSede={0}&codiceTurno={1}", codiceSede, codiceTurno));
                 foreach (var turno in JsonConvert.DeserializeObject<List<Turno>>(response.ToString()))

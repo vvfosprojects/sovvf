@@ -29,13 +29,13 @@ namespace SO115App.ExternalAPI.Fake.Territorio
 {
     public class GetListaAlberaturaRegioni : IGetAlberaturaISTAT
     {
-        private readonly HttpClient client;
-        private readonly IConfiguration configuration;
+        private readonly HttpClient _client;
+        private readonly IConfiguration _configuration;
 
         public GetListaAlberaturaRegioni(HttpClient client, IConfiguration configuration)
         {
-            this.client = client;
-            this.configuration = configuration;
+            this._client = client;
+            this._configuration = configuration;
         }
 
         public List<Models.Classi.Condivise.Regione> ListaAlberaturaRegioni()
@@ -46,11 +46,11 @@ namespace SO115App.ExternalAPI.Fake.Territorio
                 List<Provincia> ListaProvince = new List<Provincia>();
                 List<Comune> ListaComuni = new List<Comune>();
 
-                var ExternalUrlString = configuration.GetSection("UrlExternalApi").GetSection("TerritorioApi").Value;
+                var ExternalUrlString = _configuration.GetSection("UrlExternalApi").GetSection("TerritorioApi").Value;
 
-                var responseRegioni = client.GetStringAsync(ExternalUrlString + Costanti.TerritorioGetRegioniUrl);
-                var responseProvince = client.GetStringAsync(ExternalUrlString + Costanti.TerritorioGetProvinceUrl);
-                var responseComuni = client.GetStringAsync(ExternalUrlString + Costanti.TerritorioGetComuniUrl);
+                var responseRegioni = _client.GetStringAsync(ExternalUrlString + Costanti.TerritorioGetRegioniUrl);
+                var responseProvince = _client.GetStringAsync(ExternalUrlString + Costanti.TerritorioGetProvinceUrl);
+                var responseComuni = _client.GetStringAsync(ExternalUrlString + Costanti.TerritorioGetComuniUrl);
 
                 var ListRegioni = JsonConvert.DeserializeObject<RegioneDTO>(responseRegioni.ToString());
                 var ListProvince = JsonConvert.DeserializeObject<ProvinciaDTO>(responseProvince.ToString());

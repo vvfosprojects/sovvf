@@ -29,13 +29,13 @@ namespace SO115App.ExternalAPI.Fake.Uos
 {
     public class GetListaSediAlberata
     {
-        private readonly HttpClient client;
-        private readonly IConfiguration configuration;
+        private readonly HttpClient _client;
+        private readonly IConfiguration _configuration;
 
         public GetListaSediAlberata(HttpClient client, IConfiguration configuration)
         {
-            this.client = client;
-            this.configuration = configuration;
+            this._client = client;
+            this._configuration = configuration;
         }
 
         public List<Sede> ListaSediAlberata()
@@ -48,12 +48,12 @@ namespace SO115App.ExternalAPI.Fake.Uos
                 List<AssociativaDTO> ListaAssociazioni = new List<AssociativaDTO>();
                 List<SedeDTO> ListaSedi = new List<SedeDTO>();
 
-                var ExternalUrlString = configuration.GetSection("UrlExternalApi").GetSection("UOSApi").Value;
-                var responseISP = client.GetStringAsync(ExternalUrlString + Costanti.UosUOUrl + String.Format("?codTipologia={0}&pageSize={1}", "ISP", "100"));
-                var responseCMD = client.GetStringAsync(ExternalUrlString + Costanti.UosUOUrl + String.Format("?codTipologia={0}&pageSize={1}", "CMD", "100"));
-                var responseDST = client.GetStringAsync(ExternalUrlString + Costanti.UosUOUrl + String.Format("?codTipologia={0}&pageSize={1}", "DST", "100"));
-                var responseAss = client.GetStringAsync(ExternalUrlString + Costanti.UosAssUrl);
-                var responseSedi = client.GetStringAsync(ExternalUrlString + Costanti.UosSediUrl);
+                var ExternalUrlString = _configuration.GetSection("UrlExternalApi").GetSection("UOSApi").Value;
+                var responseISP = _client.GetStringAsync(ExternalUrlString + Costanti.UosUOUrl + String.Format("?codTipologia={0}&pageSize={1}", "ISP", "100"));
+                var responseCMD = _client.GetStringAsync(ExternalUrlString + Costanti.UosUOUrl + String.Format("?codTipologia={0}&pageSize={1}", "CMD", "100"));
+                var responseDST = _client.GetStringAsync(ExternalUrlString + Costanti.UosUOUrl + String.Format("?codTipologia={0}&pageSize={1}", "DST", "100"));
+                var responseAss = _client.GetStringAsync(ExternalUrlString + Costanti.UosAssUrl);
+                var responseSedi = _client.GetStringAsync(ExternalUrlString + Costanti.UosSediUrl);
 
                 var ListIPS = JsonConvert.DeserializeObject<UosDTO>(responseISP.ToString());
                 var ListCMD = JsonConvert.DeserializeObject<UosDTO>(responseCMD.ToString());
