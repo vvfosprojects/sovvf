@@ -37,6 +37,7 @@ namespace SO115App.CompositionRoot
         {
             //Configure_JsonDatabase(container);
             Configure_InMemoryDatabase(container, false);
+            //PersistenceServicesConfigurator_MongoDB.Configure(container);
         }
 
         private static void Configure_JsonDatabase(Container container)

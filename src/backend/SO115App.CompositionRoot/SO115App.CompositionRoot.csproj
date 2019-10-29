@@ -20,6 +20,7 @@
     <ProjectReference Include="..\SO115App.FakePersistenceJSon\SO115App.FakePersistence.JSon.csproj" />
     <ProjectReference Include="..\SO115App.GeneratoreFakeRichieste\SO115App.GeneratoreFakeRichieste.csproj" />
     <ProjectReference Include="..\SO115App.Logging\SO115App.Logging.csproj" />
+    <ProjectReference Include="..\SO115App.Persistence.MongoDB\SO115App.Persistence.MongoDB.csproj" />
     <ProjectReference Include="..\SO115App.SignalR\SO115App.SignalR.csproj" />
   </ItemGroup>
 
