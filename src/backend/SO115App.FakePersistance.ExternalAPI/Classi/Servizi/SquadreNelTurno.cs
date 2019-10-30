@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Text;
 
-namespace SO115App.ApiServizi.Classi
+namespace SO115App.ExternalAPI.Fake.Classi.Servizi
 {
     public class SquadreNelTurno
     {

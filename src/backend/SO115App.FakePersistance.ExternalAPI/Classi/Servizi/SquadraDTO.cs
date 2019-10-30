@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 
-namespace SO115App.ApiServizi.Classi
+namespace SO115App.ExternalAPI.Fake.Classi.Servizi
 {
-    public class Squadra
+    public class SquadraDTO
     {
         /// <summary>
         ///   Enumera gli stati in cui un capopartenza partecipante ad una richiesta può trovarsi

@@ -1,19 +1,16 @@
 ﻿using Newtonsoft.Json;
-using SO115App.ApiServizi.Classi;
+using SO115App.API.Models.Classi.Condivise;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Text;
 
-namespace SO115App.ApiServizi.Servizi
+namespace SO115App.ExternalAPI.Fake.Servizi.Identity.Mock
 {
-    public class ComponentiSquadreService
+    public class AnagraficaPersonaleService
     {
-        public static List<Componente> GetListaComponentiSquadra(string codiceSede, string codiceSquadra, string codiceTurno)
+        public static List<Componente> GetListaComponentiSquadra(string[] ListaCodiciFiscali)
         {
-            SquadraDTO squadra = SquadreNelTurnoService.GetSquadraByCodice(codiceSquadra, codiceSede, codiceTurno);
-
             List<Componente> ListaComponenti = new List<Componente>();
             List<Componente> ListaDef = new List<Componente>();
 
@@ -26,7 +23,7 @@ namespace SO115App.ApiServizi.Servizi
 
             ListaComponenti = JsonConvert.DeserializeObject<List<Componente>>(json);
 
-            foreach (var cf in squadra.ListaCodiciFiscaliComponentiSquadra)
+            foreach (var cf in ListaCodiciFiscali)
             {
                 foreach (var compo in ListaComponenti)
                 {

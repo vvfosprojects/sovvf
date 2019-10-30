@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Utenti;
 using SO115App.ExternalAPI.Fake.Servizi.Identity;
+using SO115App.ExternalAPI.Fake.Servizi.Identity.Mock;
 using SO115App.Models.Classi.ServiziEsterni.IdentityManagement;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Personale;
 using System;
@@ -15,11 +16,13 @@ namespace SO115App.ExternalAPI.Fake.Personale
     {
         private readonly HttpClient _client;
         private readonly IConfiguration _configuration;
+        private readonly AnagraficaPersonaleService _componentiSquadre;
 
-        public GetSquadreBySede(HttpClient client, IConfiguration configuration)
+        public GetSquadreBySede(HttpClient client, IConfiguration configuration, AnagraficaPersonaleService componentiSquadre)
         {
             _client = client;
             this._configuration = configuration;
+            this._componentiSquadre = componentiSquadre;
         }
 
         public List<Turno> SquadreBySede(string codiceSede)
@@ -38,8 +41,11 @@ namespace SO115App.ExternalAPI.Fake.Personale
                     foreach (var squadra in turno.ListaSquadre)
                     {
                         squadra.Componenti = new List<Componente>();
+
                         var responsecomponenti = _client.GetStringAsync(string.Format(Costanti.ServiziGetComponentiUrl + "?codicesede={0}&codicesquadra={1}&codiceturno={2}", codiceSede, squadra.Codice, turno.Codice));
                         squadra.Componenti = JsonConvert.DeserializeObject<List<Componente>>(responsecomponenti.ToString());
+
+                        //squadra.Componenti = ComponentiSquadreService.GetListaComponentiSquadra()
 
                         List<PersonaFisica> ListaComponentiSquadra = new List<PersonaFisica>();
 

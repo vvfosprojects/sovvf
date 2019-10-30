@@ -1,12 +1,12 @@
 ﻿using Newtonsoft.Json;
-using SO115App.ApiServizi.Classi;
+using SO115App.API.Models.Classi.Condivise;
+using SO115App.ExternalAPI.Fake.Classi.Servizi;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Text;
 
-namespace SO115App.ApiServizi.Servizi
+namespace SO115App.ExternalAPI.Fake.Servizi.Personale.Mock
 {
     public class ComponentiSquadreService
     {

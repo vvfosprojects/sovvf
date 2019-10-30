@@ -1,11 +1,11 @@
 ﻿using Newtonsoft.Json;
-using SO115App.ApiServizi.Classi;
+using SO115App.ExternalAPI.Fake.Classi.Servizi;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace SO115App.ApiServizi.Servizi
+namespace SO115App.ExternalAPI.Fake.Servizi.Personale.Mock
 {
     public class SquadreNelTurnoService
     {
