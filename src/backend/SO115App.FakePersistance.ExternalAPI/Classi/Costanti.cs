@@ -41,6 +41,9 @@ namespace SO115App.ExternalAPI.Fake
 
         public static string GacJson = "Servizi/Gac/Mock/Mezzo.json";
         public static string NueJson = "Servizi/Nue/Mock/SchedeContatto.json";
+        public static string ServiziComponentiJson = "Json/Componenti.json";
+        public static string IdentityManagementJson = "Json/Anagrafica.json";
+        public static string ServiziSquadreJson = "Json/SquadreNelTurno.json";
 
         #endregion Json
 

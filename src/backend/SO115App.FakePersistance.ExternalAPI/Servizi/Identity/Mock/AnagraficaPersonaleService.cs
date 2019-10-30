@@ -14,7 +14,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Identity.Mock
             List<Componente> ListaComponenti = new List<Componente>();
             List<Componente> ListaDef = new List<Componente>();
 
-            string filepath = "Json/Componenti.json";
+            string filepath = Costanti.IdentityManagementJson;
             string json;
             using (StreamReader r = new StreamReader(filepath))
             {

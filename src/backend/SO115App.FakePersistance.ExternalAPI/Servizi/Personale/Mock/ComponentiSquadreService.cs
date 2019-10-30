@@ -17,7 +17,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale.Mock
             List<Componente> ListaComponenti = new List<Componente>();
             List<Componente> ListaDef = new List<Componente>();
 
-            string filepath = "Json/Componenti.json";
+            string filepath = Costanti.ServiziComponentiJson;
             string json;
             using (StreamReader r = new StreamReader(filepath))
             {

@@ -13,7 +13,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale.Mock
         {
             List<SquadreNelTurno> ListaSquadreNelTurno = new List<SquadreNelTurno>();
 
-            string filepath = "Json/SquadreNelTurno.json";
+            string filepath = Costanti.ServiziSquadreJson;
             string json;
             using (StreamReader r = new StreamReader(filepath))
             {
@@ -32,7 +32,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale.Mock
         {
             List<SquadreNelTurno> ListaSquadreNelTurno = new List<SquadreNelTurno>();
 
-            string filepath = "Json/SquadreNelTurno.json";
+            string filepath = Costanti.ServiziSquadreJson;
             string json;
             using (StreamReader r = new StreamReader(filepath))
             {

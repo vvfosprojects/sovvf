@@ -5,13 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Servizi\Identity\Mock\Json\Componenti.json" />
+    <None Remove="Servizi\Identity\Mock\Json\Anagrafica.json" />
     <None Remove="Servizi\Personale\Mock\Json\Componenti.json" />
     <None Remove="Servizi\Personale\Mock\Json\SquadreNelTurno.json" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Servizi\Identity\Mock\Json\Componenti.json">
+    <Content Include="Servizi\Identity\Mock\Json\Anagrafica.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
