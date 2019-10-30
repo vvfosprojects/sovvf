@@ -19,13 +19,13 @@
 //-----------------------------------------------------------------------
 using System.Collections.Generic;
 using SO115App.API.Models.Classi.Condivise;
-using SO115App.Models.Classi.Navbar;
+using SO115App.API.Models.Classi.Organigramma;
 
 namespace SO115App.API.Models.Classi.Navbar
 {
     public class Navbar
     {
-        public ListaSedi ListaSedi { get; set; }
+        public UnitaOperativa ListaSedi { get; set; }
 
         public List<Tipologia> Tipologie { get; set; }
     }

@@ -19,6 +19,7 @@
 //-----------------------------------------------------------------------
 using System.IO;
 using Newtonsoft.Json;
+using SO115App.ExternalAPI.Fake.Uos;
 using SO115App.Models.Servizi.Infrastruttura.NavBar;
 
 namespace SO115App.FakePersistenceJSon.Navbar

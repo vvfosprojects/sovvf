@@ -18,50 +18,34 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json;
-using SO115App.API.Models.Classi.Condivise;
-using SO115App.ExternalAPI.Fake.Classi.Uos;
+using SO115App.API.Models.Classi.Organigramma;
+using SO115App.API.SOVVF.FakeImplementations.Modello.Organigramma;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
 using System;
-using System.Collections.Generic;
 using System.Net.Http;
 
 namespace SO115App.ExternalAPI.Fake.Uos
 {
-    public class GetListaSediAlberata
+    public class GetListaSediAlberata : IGetAlberaturaUnitaOperative
     {
         private readonly HttpClient _client;
         private readonly IConfiguration _configuration;
+        private readonly GetUnitaOperativaRadice_Con_Dir_Com_Dist _treeViewUnitaOperative;
 
-        public GetListaSediAlberata(HttpClient client, IConfiguration configuration)
+        public GetListaSediAlberata(HttpClient client, IConfiguration configuration, GetUnitaOperativaRadice_Con_Dir_Com_Dist treeViewUnitaOperative)
         {
             this._client = client;
             this._configuration = configuration;
+            this._treeViewUnitaOperative = treeViewUnitaOperative;
         }
 
-        public List<Sede> ListaSediAlberata()
+        public UnitaOperativa ListaSediAlberata()
         {
             try
             {
-                List<UosDTO> ListaISP = new List<UosDTO>();
-                List<UosDTO> ListaCMD = new List<UosDTO>();
-                List<UosDTO> ListaDST = new List<UosDTO>();
-                List<AssociativaDTO> ListaAssociazioni = new List<AssociativaDTO>();
-                List<SedeDTO> ListaSedi = new List<SedeDTO>();
+                UnitaOperativa UO = _treeViewUnitaOperative.Get();
 
-                var ExternalUrlString = _configuration.GetSection("UrlExternalApi").GetSection("UOSApi").Value;
-                var responseISP = _client.GetStringAsync(ExternalUrlString + Costanti.UosUOUrl + String.Format("?codTipologia={0}&pageSize={1}", "ISP", "100"));
-                var responseCMD = _client.GetStringAsync(ExternalUrlString + Costanti.UosUOUrl + String.Format("?codTipologia={0}&pageSize={1}", "CMD", "100"));
-                var responseDST = _client.GetStringAsync(ExternalUrlString + Costanti.UosUOUrl + String.Format("?codTipologia={0}&pageSize={1}", "DST", "100"));
-                var responseAss = _client.GetStringAsync(ExternalUrlString + Costanti.UosAssUrl);
-                var responseSedi = _client.GetStringAsync(ExternalUrlString + Costanti.UosSediUrl);
-
-                var ListIPS = JsonConvert.DeserializeObject<UosDTO>(responseISP.ToString());
-                var ListCMD = JsonConvert.DeserializeObject<UosDTO>(responseCMD.ToString());
-                var ListDST = JsonConvert.DeserializeObject<UosDTO>(responseDST.ToString());
-                var ListAss = JsonConvert.DeserializeObject<AssociativaDTO>(responseAss.ToString());
-                var ListSedi = JsonConvert.DeserializeObject<SedeDTO>(responseSedi.ToString());
-
-                return null;
+                return UO;
             }
             catch (Exception ex)
             {

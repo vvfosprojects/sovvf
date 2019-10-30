@@ -23,10 +23,12 @@ using SO115App.ExternalAPI.Fake.Personale;
 using SO115App.ExternalAPI.Fake.Servizi.Gac;
 using SO115App.ExternalAPI.Fake.Servizi.GeoFleet;
 using SO115App.ExternalAPI.Fake.Territorio;
+using SO115App.ExternalAPI.Fake.Uos;
 using SO115App.Models.Servizi.Infrastruttura.GeoFleet;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Personale;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Territorio;
 using System.Net.Http;
 
@@ -84,6 +86,12 @@ namespace SO115App.CompositionRoot
             container.Register<ISetMovimentazione, SetMovimentazione>();
 
             #endregion Gac
+
+            #region Sedi
+
+            container.Register<IGetAlberaturaUnitaOperative, GetListaSediAlberata>();
+
+            #endregion Sedi
         }
     }
 }

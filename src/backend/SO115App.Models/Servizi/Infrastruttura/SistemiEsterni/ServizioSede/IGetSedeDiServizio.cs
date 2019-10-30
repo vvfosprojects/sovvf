@@ -17,15 +17,12 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using SO115App.Models.Classi.Navbar;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using SO115App.API.Models.Classi.Organigramma;
 
 namespace SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede
 {
-    internal interface IGetSedeDiServizio
+    public interface IGetSedeDiServizio
     {
-        ListaSedi GetSedeDiServizio();
+        UnitaOperativa GetSedeDiServizio();
     }
 }
