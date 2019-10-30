@@ -19,7 +19,7 @@
 //-----------------------------------------------------------------------
 namespace SO115App.ExternalAPI.Fake
 {
-    public class Costanti
+    public static class Costanti
     {
         #region Url
 
@@ -36,6 +36,13 @@ namespace SO115App.ExternalAPI.Fake
         public static string UosUrl = "http://172.16.25.10:5001/api/";
 
         #endregion Url
+
+        #region Json
+
+        public static string GacJson = "Servizi/Gac/Mock/Mezzo.json";
+        public static string NueJson = "Servizi/Nue/Mock/SchedeContatto.json";
+
+        #endregion Json
 
         #region NueMethods
 
