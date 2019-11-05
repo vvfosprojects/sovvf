@@ -25,13 +25,18 @@ using SO115App.API.Models.Classi.Soccorso.Mezzi.StatiMezzo;
 namespace SO115App.API.Models.Classi.Soccorso.Eventi.Partenze
 {
     /// <summary>
-    ///   Classe astratta che modella il comportamento di default di un evento partenza che coinvolge
-    ///   un solo mezzo.
+    ///   Classe astratta che modella il comportamento di default di un evento partenza che
+    ///   coinvolge un solo mezzo.
     /// </summary>
     public abstract class AbstractPartenza : Evento, IPartenza
     {
         [JsonConstructor]
-        public AbstractPartenza(DateTime istante, string codiceFonte, string codice, string codiceMezzo) : base(istante, codiceFonte, codice)
+        public AbstractPartenza(
+            DateTime istante,
+            string codiceFonte,
+            string codice,
+            string codiceMezzo,
+            string TipoEvento) : base(istante, codiceFonte, codice, TipoEvento)
         {
             this.CodiceMezzo = codiceMezzo;
         }
@@ -47,7 +52,8 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi.Partenze
             RichiestaAssistenza richiesta,
             string codiceMezzo,
             DateTime istante,
-            string codiceFonte) : base(richiesta, istante, codiceFonte)
+            string codiceFonte,
+            string TipoEvento) : base(richiesta, istante, codiceFonte, TipoEvento)
         {
             if (string.IsNullOrWhiteSpace(codiceMezzo))
             {

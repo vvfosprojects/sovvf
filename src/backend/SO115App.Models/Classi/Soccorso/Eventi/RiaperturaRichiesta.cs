@@ -36,27 +36,17 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi
         public RiaperturaRichiesta(
             RichiestaAssistenza richiesta,
             DateTime istante,
-            string codiceFonte) : base(richiesta, istante, codiceFonte)
+            string codiceFonte) : base(richiesta, istante, codiceFonte, "RiaperturaRichiesta")
         {
             richiesta.IstanteChiusura = null;
-            TipoEvento = "RiaperturaRichiesta";
         }
 
         [JsonConstructor]
         public RiaperturaRichiesta(
             string codice,
             DateTime istante,
-            string codiceFonte) : base(istante, codiceFonte, codice)
+            string codiceFonte) : base(istante, codiceFonte, codice, "RiaperturaRichiesta")
         {
-            TipoEvento = "RiaperturaRichiesta";
-        }
-
-        /// <summary>
-        ///   Identifica il tipo di Evento
-        /// </summary>
-        public string TipoEvento
-        {
-            get; set;
         }
 
         /// <summary>

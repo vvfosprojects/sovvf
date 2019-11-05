@@ -40,7 +40,7 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi.Partenze
     public class ComposizionePartenze : Evento, IPartenza
     {
         [JsonConstructor]
-        public ComposizionePartenze(DateTime istante, string codiceFonte, string codice, bool fuoriSede) : base(istante, codiceFonte, codice)
+        public ComposizionePartenze(DateTime istante, string codiceFonte, string codice, bool fuoriSede) : base(istante, codiceFonte, codice, "ComposizionePartenza")
         {
             this.Partenza = new Partenza();
             this.Componenti = new HashSet<ComponentePartenza>();
@@ -60,20 +60,11 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi.Partenze
             RichiestaAssistenza richiesta,
             DateTime istante,
             string codiceFonte,
-            bool fuoriSede) : base(richiesta, istante, codiceFonte)
+            bool fuoriSede) : base(richiesta, istante, codiceFonte, "ComposizionePartenza")
         {
             this.Partenza = new Partenza();
             this.Componenti = new HashSet<ComponentePartenza>();
             this.FuoriSede = fuoriSede;
-            TipoEvento = "ComposizionePartenze";
-        }
-
-        /// <summary>
-        ///   Identifica il tipo di Evento
-        /// </summary>
-        public string TipoEvento
-        {
-            get; set;
         }
 
         /// <summary>
@@ -124,8 +115,8 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi.Partenze
         /// <summary>
         ///   Indica se l'evento si verifica mentre il mezzo è fuori sede o in sede. Questa
         ///   informazione serve al <see cref="ProcessoreStato" /> a calcolare lo stato iniziale in
-        ///   cui il mezzo si trova, a partire dall'analisi degli eventi di un mezzo contenuti in una
-        ///   singola richiesta.
+        ///   cui il mezzo si trova, a partire dall'analisi degli eventi di un mezzo contenuti in
+        ///   una singola richiesta.
         /// </summary>
         public bool FuoriSede { get; private set; }
 

@@ -37,17 +37,8 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi
         /// <param name="richiesta">E' la richiesta di assistenza a cui si aggiunge l'evento</param>
         /// <param name="istante">E' l'istante in cui si verifica l'evento</param>
         /// <param name="codiceFonte">E' la fonte informativa dell'evento</param>
-        public InizioPresaInCarico(RichiestaAssistenza richiesta, DateTime istante, string codiceFonte) : base(richiesta, istante, codiceFonte)
+        public InizioPresaInCarico(RichiestaAssistenza richiesta, DateTime istante, string codiceFonte) : base(richiesta, istante, codiceFonte, "InizioPresaInCarico")
         {
-            TipoEvento = "InizioPresaInCarico";
-        }
-
-        /// <summary>
-        ///   Identifica il tipo di Evento
-        /// </summary>
-        public string TipoEvento
-        {
-            get; set;
         }
     }
 }

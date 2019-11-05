@@ -4,6 +4,7 @@ using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Bson.Serialization.IdGenerators;
 using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Driver;
+using SO115App.API.Models.Classi.Persistenza;
 using SO115App.API.Models.Classi.Soccorso;
 using System.Runtime.CompilerServices;
 
@@ -37,7 +38,7 @@ namespace Persistence.MongoDB
 
         private void MapClasses()
         {
-            BsonClassMap.RegisterClassMap<RichiestaAssistenza>(cm =>
+            BsonClassMap.RegisterClassMap<Entity>(cm =>
             {
                 cm.AutoMap();
                 cm.MapIdMember(c => c.Id)

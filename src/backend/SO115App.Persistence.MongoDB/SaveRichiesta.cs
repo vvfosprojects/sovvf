@@ -8,7 +8,7 @@ using System.Text;
 
 namespace SO115App.Persistence.MongoDB
 {
-    internal class SaveRichiesta : ISaveRichiestaAssistenza
+    public class SaveRichiesta : ISaveRichiestaAssistenza
     {
         private readonly DbContext _dbContext;
 

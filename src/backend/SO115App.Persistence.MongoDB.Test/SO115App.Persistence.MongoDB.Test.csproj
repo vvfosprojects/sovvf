@@ -13,4 +13,9 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\SO115App.FakePersistenceJSon\SO115App.FakePersistence.JSon.csproj" />
+    <ProjectReference Include="..\SO115App.Persistence.MongoDB\SO115App.Persistence.MongoDB.csproj" />
+  </ItemGroup>
+
 </Project>

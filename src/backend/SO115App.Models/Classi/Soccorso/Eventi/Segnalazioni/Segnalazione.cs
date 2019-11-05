@@ -42,7 +42,8 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni
             RichiestaAssistenza richiesta,
             string codice,
             DateTime istante,
-            string codiceFonte) : base(richiesta, istante, codiceFonte)
+            string codiceFonte,
+            string TipoEvento) : base(richiesta, istante, codiceFonte, TipoEvento)
         {
             if (string.IsNullOrWhiteSpace(codice))
             {
@@ -50,21 +51,12 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni
             }
 
             this.Codice = codice;
-            TipoEvento = "Segnalazione";
         }
 
         [JsonConstructor]
-        protected Segnalazione(string codice, DateTime istante, string codiceFonte) : base(istante, codiceFonte, codice)
+        protected Segnalazione(string codice, DateTime istante, string codiceFonte, string tipoEvento) : base(istante, codiceFonte, codice, tipoEvento)
         {
             this.Codice = codice;
-        }
-
-        /// <summary>
-        ///   Identifica il tipo di Evento
-        /// </summary>
-        public string TipoEvento
-        {
-            get; set;
         }
 
         /// <summary>

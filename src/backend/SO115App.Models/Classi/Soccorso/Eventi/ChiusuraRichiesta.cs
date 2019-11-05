@@ -23,10 +23,10 @@ using System;
 namespace SO115App.API.Models.Classi.Soccorso.Eventi
 {
     /// <summary>
-    ///   Questo evento indica che sono terminate le operazioni di assistenza alla richiesta da parte
-    ///   dei VVF. Viene generato per esempio in caso di trasferimento della Richiesta ad altro Ente,
-    ///   oppure di chiusura dell'intervento effettuato, di intervento non più necessario, di falso
-    ///   allarme, di fine della vigilanza, etc.
+    ///   Questo evento indica che sono terminate le operazioni di assistenza alla richiesta da
+    ///   parte dei VVF. Viene generato per esempio in caso di trasferimento della Richiesta ad
+    ///   altro Ente, oppure di chiusura dell'intervento effettuato, di intervento non più
+    ///   necessario, di falso allarme, di fine della vigilanza, etc.
     /// </summary>
     public class ChiusuraRichiesta : Evento, IGestioneChiusura
     {
@@ -37,28 +37,18 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi
         /// <param name="richiesta">E' la richiesta alla quale l'evento deve essere aggiunto</param>
         /// <param name="istante">E' l'istante in cui si verifica l'evento</param>
         /// <param name="codiceFonte">E' la fonte informativa dell'evento</param>
-        public ChiusuraRichiesta(string motivazione, RichiestaAssistenza richiesta, DateTime istante, string codiceFonte) : base(richiesta, istante, codiceFonte)
+        public ChiusuraRichiesta(string motivazione, RichiestaAssistenza richiesta, DateTime istante, string codiceFonte) : base(richiesta, istante, codiceFonte, "ChiusuraRichiesta")
         {
             richiesta.IstanteChiusura = this.Istante;
             this.Motivazione = motivazione;
-            TipoEvento = "ChiusuraRichiesta";
         }
 
         [JsonConstructor]
         public ChiusuraRichiesta(
             string codice,
             DateTime istante,
-            string codiceFonte) : base(istante, codiceFonte, codice)
+            string codiceFonte) : base(istante, codiceFonte, codice, "ChiusuraRichiesta")
         {
-            TipoEvento = "ChiusuraRichiesta";
-        }
-
-        /// <summary>
-        ///   Identifica il tipo di Evento
-        /// </summary>
-        public string TipoEvento
-        {
-            get; set;
         }
 
         /// <summary>

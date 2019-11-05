@@ -42,9 +42,8 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi.Partenze
             RichiestaAssistenza richiesta,
             string codiceMezzo,
             DateTime istante,
-            string codiceFonte) : base(richiesta, codiceMezzo, istante, codiceFonte)
+            string codiceFonte) : base(richiesta, codiceMezzo, istante, codiceFonte, "MezzoInRientro")
         {
-            TipoEvento = "MezzoInRientro";
         }
 
         [JsonConstructor]
@@ -52,17 +51,8 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi.Partenze
             string codiceMezzo,
             string codice,
             DateTime istante,
-            string codiceFonte) : base(istante, codiceFonte, codice, codiceMezzo)
+            string codiceFonte) : base(istante, codiceFonte, codice, codiceMezzo, "MezzoInRientro")
         {
-            TipoEvento = "MezzoInRientro";
-        }
-
-        /// <summary>
-        ///   Identifica il tipo di Evento
-        /// </summary>
-        public string TipoEvento
-        {
-            get; set;
         }
 
         /// <summary>

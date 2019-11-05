@@ -39,7 +39,7 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi.Fonogramma
             string codiceFonte,
             string destinatari,
             string numeroFonogramma,
-            string protocolloFonogramma) : base(richiesta, istante, codiceFonte)
+            string protocolloFonogramma) : base(richiesta, istante, codiceFonte, "InviareFonogramma")
         {
             this.Destinatari = destinatari;
             this.NumeroFonogramma = numeroFonogramma;

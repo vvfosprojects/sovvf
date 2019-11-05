@@ -36,27 +36,17 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi
         public RichiestaPresidiata(
             RichiestaAssistenza richiesta,
             DateTime istante,
-            string codiceFonte) : base(richiesta, istante, codiceFonte)
+            string codiceFonte) : base(richiesta, istante, codiceFonte, "RichiestaPresidiata")
         {
             richiesta.IstanteChiusura = null;
-            TipoEvento = "RichiestaPresidiata";
         }
 
         [JsonConstructor]
         public RichiestaPresidiata(
             string codice,
             DateTime istante,
-            string codiceFonte) : base(istante, codiceFonte, codice)
+            string codiceFonte) : base(istante, codiceFonte, codice, "RichiestaPresidiata")
         {
-            TipoEvento = "RichiestaPresidiata";
-        }
-
-        /// <summary>
-        ///   Identifica il tipo di Evento
-        /// </summary>
-        public string TipoEvento
-        {
-            get; set;
         }
     }
 }

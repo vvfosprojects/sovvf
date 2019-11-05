@@ -42,29 +42,19 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi
             string codiceFonte,
             string motivazione,
             bool perGravita,
-            bool perEdificioStArCu) : base(richiesta, istante, codiceFonte)
+            bool perEdificioStArCu) : base(richiesta, istante, codiceFonte, "MarcaRilevante")
         {
             this.Motivazione = motivazione ?? throw new ArgumentNullException(nameof(motivazione));
             this.PerGravita = perGravita;
             this.PerEdificioStArCu = perEdificioStArCu;
-            TipoEvento = "MarcaRilevante";
         }
 
         [JsonConstructor]
         public MarcaRilevante(
             string codice,
             DateTime istante,
-            string codiceFonte) : base(istante, codiceFonte, codice)
+            string codiceFonte) : base(istante, codiceFonte, codice, "MarcaRilevante")
         {
-            TipoEvento = "MarcaRilevante";
-        }
-
-        /// <summary>
-        ///   Identifica il tipo di Evento
-        /// </summary>
-        public string TipoEvento
-        {
-            get; set;
         }
 
         /// <summary>

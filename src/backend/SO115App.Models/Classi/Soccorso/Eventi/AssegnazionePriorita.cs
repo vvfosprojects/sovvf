@@ -43,10 +43,9 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi
             RichiestaAssistenza richiesta,
             RichiestaAssistenza.Priorita priorita,
             DateTime istante,
-            string codiceFonte) : base(richiesta, istante, codiceFonte)
+            string codiceFonte) : base(richiesta, istante, codiceFonte, "AssegnataPriorita")
         {
             this.Priorita = priorita;
-            TipoEvento = "AssegnataPriorita";
         }
 
         [JsonConstructor]
@@ -54,18 +53,9 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi
             string codice,
             int priorita,
             DateTime istante,
-            string codiceFonte) : base(istante, codiceFonte, codice)
+            string codiceFonte) : base(istante, codiceFonte, codice, "AssegnataPriorita")
         {
             this.Priorita = (RichiestaAssistenza.Priorita)priorita;
-            TipoEvento = "AssegnataPriorita";
-        }
-
-        /// <summary>
-        ///   Identifica il tipo di Evento
-        /// </summary>
-        public string TipoEvento
-        {
-            get; set;
         }
 
         /// <summary>
