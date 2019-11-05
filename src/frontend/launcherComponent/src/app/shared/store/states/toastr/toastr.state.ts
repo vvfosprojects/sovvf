@@ -5,6 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 
 // Action
 import { SetToastr, ShowToastr } from '../../actions/toastr/toastr.actions';
+import { NgZone } from '@angular/core';
 
 export interface ToastrStateModel {
     type: string;
@@ -26,7 +27,8 @@ export const toastrStateDefaults: ToastrStateModel = {
 })
 export class ToastrState {
 
-    constructor(private _toastr: ToastrService) {
+    constructor(private _toastr: ToastrService,
+                private ngZone: NgZone) {
     }
 
     @Action(ShowToastr)
@@ -39,7 +41,7 @@ export class ToastrState {
     setToastr({ patchState }: StateContext<ToastrStateModel>, action: SetToastr) {
 
         if (action.type === 'clear') {
-            this._toastr[action.type]();
+            this.ngZone.run(() => this._toastr[action.type.toString()]());
 
             patchState({
                 type: action.type
@@ -52,12 +54,14 @@ export class ToastrState {
                 tapToDismiss = false;
                 extendedTimeOut = 0;
             }
-            this._toastr[action.type.toString()](action.message, action.title, {
-                    timeOut: timeout * 1000,
-                    extendedTimeOut: extendedTimeOut,
-                    tapToDismiss: tapToDismiss
-                }
-            );
+            this.ngZone.run(() => {
+                this._toastr[action.type.toString()](action.message, action.title, {
+                        timeOut: timeout * 1000,
+                        extendedTimeOut: extendedTimeOut,
+                        tapToDismiss: tapToDismiss
+                    }
+                );
+            });
             patchState({
                 type: action.type,
                 title: action.title,
