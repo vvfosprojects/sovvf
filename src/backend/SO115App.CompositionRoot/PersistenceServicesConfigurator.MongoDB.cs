@@ -1,17 +1,22 @@
-﻿using Persistence.MongoDB;
+﻿using Microsoft.Extensions.Configuration;
+using Persistence.MongoDB;
 using SimpleInjector;
-using System;
+using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
+using SO115App.Persistence.MongoDB;
 
 namespace SO115App.CompositionRoot
 {
     internal static class PersistenceServicesConfigurator_MongoDB
     {
-        internal static void Configure(Container container)
+        internal static void Configure(Container container, IConfiguration configuration)
         {
-#warning questo binding deve essere modificato per pescare i valori dalla configurazione IConfiguration
+            var connectionString = configuration.GetSection("ConnectionString").Value;
+            var databaseName = configuration.GetSection("DatabaseName").Value;
+
             container.Register<DbContext>(() =>
-                new DbContext("mongo://localhost:27017/sovvf", "sovvf"),
-                Lifestyle.Singleton);
+                new DbContext(connectionString, databaseName), Lifestyle.Singleton);
+
+            container.Register<ISaveRichiestaAssistenza, SaveRichiesta>();
         }
     }
 }

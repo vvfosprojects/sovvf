@@ -7,7 +7,7 @@ using MongoDB.Driver;
 using SO115App.API.Models.Classi.Soccorso;
 using System.Runtime.CompilerServices;
 
-[assembly: InternalsVisibleTo("CompositionRoot")]
+[assembly: InternalsVisibleTo("SO115App.CompositionRoot")]
 
 namespace Persistence.MongoDB
 {

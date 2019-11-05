@@ -69,7 +69,7 @@ namespace SO115App.API.Models.Classi.Organigramma
         ///   L'unità operativa padre
         /// </summary>
         /// <remarks>Il valore è null per le unità operative radice</remarks>
-        public UnitaOperativa Padre { get; set; }
+        //public UnitaOperativa Padre { get; set; }
 
         /// <summary>
         ///   Restituisce tutte le unità operative presenti nel sottoalbero, radice compresa
@@ -96,7 +96,8 @@ namespace SO115App.API.Models.Classi.Organigramma
         /// </summary>
         /// <param name="pins">I pins da espandere</param>
         /// <returns>
-        ///   I pins che individuano le unità operative da restituire, ciascuno indicante l'eventuale ricorsività
+        ///   I pins che individuano le unità operative da restituire, ciascuno indicante
+        ///   l'eventuale ricorsività
         /// </returns>
         public virtual IEnumerable<UnitaOperativa> GetSottoAlbero(IEnumerable<PinNodo> pins)
         {
@@ -142,11 +143,12 @@ namespace SO115App.API.Models.Classi.Organigramma
         public void AddFiglio(UnitaOperativa unitaOperativa)
         {
             this.Figli.Add(unitaOperativa);
-            unitaOperativa.Padre = this;
+            //unitaOperativa.Padre = this;
         }
 
         /// <summary>
-        ///   Per la classe, un'UnitaOperativa è uguale ad un'altra UnitaOperativa se hanno lo stesso codice
+        ///   Per la classe, un'UnitaOperativa è uguale ad un'altra UnitaOperativa se hanno lo
+        ///   stesso codice
         /// </summary>
         /// <param name="obj">Oggetto da confrontare</param>
         /// <returns>true se l'UnitaOpertaiva passata è uguale</returns>

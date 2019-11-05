@@ -25,7 +25,7 @@ using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Navbar;
 
 namespace SO115App.API.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class NavbarController : ControllerBase
