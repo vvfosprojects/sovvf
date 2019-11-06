@@ -6,3 +6,9 @@ export interface ListaSedi {
     collapsed?: boolean;
     children?: ListaSedi[];
 }
+
+export interface ListaSediAPI {
+    nome: string;
+    codice: any;
+    figli?: ListaSediAPI[];
+}
