@@ -52,7 +52,9 @@ namespace SO115App.API.Models.Classi.Soccorso
         /// <summary>
         ///   Contiene la lista degli eventi considerati di interesse per la richiesta.
         /// </summary>
-        private readonly List<Evento> _eventi;
+        private List<Evento> _eventi;
+
+        public IEnumerable<Evento> ListaEventi { get { return _eventi.ToArray(); } }
 
         /// <summary>
         ///   Costruisce una nuova istanza di <see cref="RichiestaAssistenza" />
@@ -69,7 +71,8 @@ namespace SO115App.API.Models.Classi.Soccorso
         }
 
         /// <summary>
-        ///   E' la priorità della richiesta. Questa informazione è di ausilio nell'accodamento delle richieste.
+        ///   E' la priorità della richiesta. Questa informazione è di ausilio nell'accodamento
+        ///   delle richieste.
         /// </summary>
         /// <remarks>
         ///   Al momento non è sensato assegnare una priorità a richieste del tipo vigilanza. Questo
@@ -161,8 +164,8 @@ namespace SO115App.API.Models.Classi.Soccorso
         /// <summary>
         ///   <para>
         ///     Il codice intervento è un codice parlante che si utilizza per identificare
-        ///     univocamente una richiesta. Si può per esempio utilizzare nelle comunicazioni verbali
-        ///     o annotare su un foglietto.
+        ///     univocamente una richiesta. Si può per esempio utilizzare nelle comunicazioni
+        ///     verbali o annotare su un foglietto.
         ///   </para>
         ///   <para>
         ///     Il codice deve essere progettato con l'obiettivo di garantire i seguenti requisiti:
@@ -647,7 +650,8 @@ namespace SO115App.API.Models.Classi.Soccorso
         public virtual Richiedente Richiedente { get; set; }
 
         /// <summary>
-        ///   E' il codice delle unità operative di prima, seconda, terza... competenza, in ordine di preferenza.
+        ///   E' il codice delle unità operative di prima, seconda, terza... competenza, in ordine
+        ///   di preferenza.
         /// </summary>
         public virtual string[] CodiciUOCompetenza { get; set; }
 
@@ -699,8 +703,8 @@ namespace SO115App.API.Models.Classi.Soccorso
         }
 
         /// <summary>
-        ///   Modella la complessità legata ad una <see cref="RichiestaAssistenza" />. Le soglie sono
-        ///   le seguenti: 0 - 20: bassa; 21 - 60: media; maggiore di 61: alta;
+        ///   Modella la complessità legata ad una <see cref="RichiestaAssistenza" />. Le soglie
+        ///   sono le seguenti: 0 - 20: bassa; 21 - 60: media; maggiore di 61: alta;
         /// </summary>
         public virtual Complessita.IComplessita Complessita
         {

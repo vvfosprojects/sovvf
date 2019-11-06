@@ -47,7 +47,7 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi
         /// <param name="richiesta">E' la richiesta di assistenza a cui si aggiunge l'evento</param>
         /// <param name="istante">L'istante in cui avviene l'evento.</param>
         /// <param name="codiceFonte">Il codice della fonte informativa dell'evento.</param>
-        public Evento(RichiestaAssistenza richiesta, DateTime istante, string codiceFonte, string TipoEvento)
+        public Evento(RichiestaAssistenza richiesta, DateTime istante, string codiceFonte, string tipoEvento)
         {
             if (richiesta == null)
             {
@@ -69,7 +69,7 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi
             richiesta.AddEvento(this);
             this.IstanteCreazione = DateTime.UtcNow;
             this.CodiceRichiesta = richiesta.Codice;
-            this.TipoEvento = TipoEvento;
+            this.TipoEvento = tipoEvento;
         }
 
         /// <summary>
@@ -89,12 +89,12 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi
         /// </summary>
         public string CodiceRichiesta { get; private set; }
 
+        public string TipoEvento { get; set; }
+
         /// <summary>
         ///   E' la data in cui l'evento è stato creato. Può differire da <see cref="Istante" /> nel
         ///   caso in cui la registrazione di un evento avvenga posticipata.
         /// </summary>
         private DateTime IstanteCreazione { get; set; }
-
-        public string TipoEvento { get; set; }
     }
 }
