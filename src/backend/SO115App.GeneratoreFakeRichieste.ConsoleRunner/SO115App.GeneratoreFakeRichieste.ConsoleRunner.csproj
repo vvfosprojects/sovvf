@@ -1,8 +1,8 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
@@ -18,5 +18,4 @@
     <ProjectReference Include="..\SO115App.GeneratoreFakeRichieste\SO115App.GeneratoreFakeRichieste.csproj" />
     <ProjectReference Include="..\SO115App.Models\SO115App.Models.csproj" />
   </ItemGroup>
-
 </Project>

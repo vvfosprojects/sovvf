@@ -17,37 +17,33 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System;
-using System.Diagnostics;
-using System.Net.Http;
-using System.Security.Principal;
-using System.Text;
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.ViewComponents;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using SimpleInjector;
 using SimpleInjector.Integration.AspNetCore.Mvc;
 using SimpleInjector.Lifestyles;
-using SO115App.API.Models.Servizi.Infrastruttura;
 using SO115App.CompositionRoot;
 using SO115App.Logging;
 using SO115App.Models.Servizi.CustomMapper;
 using SO115App.SignalR;
-using Swashbuckle.AspNetCore.Swagger;
+using System.Net.Http;
+using System.Security.Principal;
+using System.Text;
 
 namespace SO115App.API
 {
     public class Startup
     {
-        private Container container = new Container();
+        private readonly Container container = new Container();
 
         public Startup(IConfiguration configuration)
         {
@@ -60,12 +56,13 @@ namespace SO115App.API
         public void ConfigureServices(IServiceCollection services)
         {
             HttpClient httpClient = new HttpClient();
-            services.AddSingleton<HttpClient>(httpClient);
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-
+            services.AddSingleton(httpClient);
+            services.AddControllers();
+            services.AddHttpContextAccessor();
+            services.AddMvcCore().AddApiExplorer().AddNewtonsoftJson();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("SO115", new Info { Title = "SO115", Version = "v1.0" });
+                c.SwaggerDoc("SO115", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "SO115", Version = "v1.0" });
             });
 
             ///<summary>
@@ -86,8 +83,7 @@ namespace SO115App.API
                     builder
                         .AllowAnyOrigin()
                         .AllowAnyMethod()
-                        .AllowAnyHeader()
-                        .AllowCredentials();
+                        .AllowAnyHeader();
                 });
             });
 
@@ -117,12 +113,13 @@ namespace SO115App.API
             services.AddSingleton<IViewComponentActivator>(
                 new SimpleInjectorViewComponentActivator(container));
 
+            services.AddSimpleInjector(container, option => option.AddAspNetCore().AddControllerActivation());
             services.EnableSimpleInjectorCrossWiring(container);
             services.UseSimpleInjectorAspNetRequestScoping(container);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             LogConfigurator.Configure();
 
@@ -138,16 +135,17 @@ namespace SO115App.API
             }
 
             app.UseCors("CorsSo115");
+            app.UseAuthorization();
             app.UseAuthentication();
+            app.UseRouting();
 
-            app.UseSignalR(route =>
-               {
-                   route.MapHub<NotificationHub>("/NotificationHub");
-               }
-            );
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapHub<NotificationHub>("/NotificationHub");
+                endpoints.MapControllers();
+            });
 
             app.UseHttpsRedirection();
-            app.UseMvc();
 
             app.UseSwagger();
 
@@ -165,8 +163,7 @@ namespace SO115App.API
         private void InitializeContainer(IApplicationBuilder app)
         {
             // Add application presentation components:
-            container.RegisterMvcControllers(app);
-            container.RegisterMvcViewComponents(app);
+            //container.RegisterMvcControllers(app);
 
             Configurator.Bind(container);
 
@@ -183,8 +180,8 @@ namespace SO115App.API
                 this.httpContextAccessor = httpContextAccessor;
             }
 
-            public IIdentity Identity => this.Principal.Identity;
             private IPrincipal Principal => this.httpContextAccessor.HttpContext.User;
+            public IIdentity Identity => this.Principal.Identity;
 
             public bool IsInRole(string role) => this.Principal.IsInRole(role);
         }
