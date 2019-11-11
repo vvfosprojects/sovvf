@@ -22,8 +22,18 @@ using System.Collections.Generic;
 
 namespace SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac
 {
+    /// <summary>
+    ///   Servizio che recupera da GAC una lista di mezzi fuori servizio.
+    /// </summary>
     public interface IGetMezziFuoriServizio
     {
+        /// <summary>
+        ///   Restituisce la lista dei mezzi
+        /// </summary>
+        /// <param name="sedi">una lista di codici sede</param>
+        /// <param name="genereMezzo">il genere del mezzo (opzionale)</param>
+        /// <param name="siglaMezzo">la sigla del mezzo (opzionale)</param>
+        /// <returns>una lista mezzi</returns>
         List<Mezzo> Get(List<string> sedi, string genereMezzo, string siglaMezzo);
     }
 }

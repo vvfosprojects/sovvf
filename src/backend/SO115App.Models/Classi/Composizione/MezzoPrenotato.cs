@@ -18,15 +18,33 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using Newtonsoft.Json;
+using System;
 
 namespace SO115App.API.Models.Classi.Composizione
 {
+    /// <summary>
+    ///   Il mezzo prenotato
+    /// </summary>
     public class MezzoPrenotato
     {
-        public ComposizioneMezzi MezzoComposizione { get; set; }
+        /// <summary>
+        ///   Codice del mezzo
+        /// </summary>
+        public string CodiceMezzo { get; set; }
 
-        public string CodiceSede { get; set; }
+        /// <summary>
+        ///   l'istante della prenotazione
+        /// </summary>
+        public DateTime? IstantePrenotazione { get; set; }
 
+        /// <summary>
+        ///   il codice della richiesta
+        /// </summary>
+        public string CodiceRichiesta { get; set; }
+
+        /// <summary>
+        ///   booleana per lo sblocco del mezzo
+        /// </summary>
         public bool SbloccaMezzo { get; set; }
     }
 }

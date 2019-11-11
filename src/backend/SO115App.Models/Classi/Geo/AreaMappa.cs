@@ -19,6 +19,7 @@
 //-----------------------------------------------------------------------
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.Models.Classi.Filtri;
+using System.Collections.Generic;
 
 namespace SO115App.API.Models.Classi.Geo
 {
@@ -27,6 +28,11 @@ namespace SO115App.API.Models.Classi.Geo
     /// </summary>
     public class AreaMappa
     {
+        /// <summary>
+        ///   Contiene la lista di codici sede
+        /// </summary>
+        public List<string> CodiceSede { get; set; }
+
         /// <summary>
         ///   Rappresenta il punto della mappa in alto a dx
         /// </summary>
@@ -37,8 +43,14 @@ namespace SO115App.API.Models.Classi.Geo
         /// </summary>
         public Coordinate BottomLeft { get; set; }
 
+        /// <summary>
+        ///   Contiene i filtri per la ricerca mirata delle richieste
+        /// </summary>
         public FiltroRichieste FiltroRichieste { get; set; }
 
+        /// <summary>
+        ///   Contiene i filtri per la ricerca mirata dei mezzi
+        /// </summary>
         public FiltroMezzi FiltroMezzi { get; set; }
     }
 }

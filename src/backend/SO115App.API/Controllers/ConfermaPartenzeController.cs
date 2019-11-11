@@ -68,8 +68,7 @@ namespace SO115App.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Post(ConfermaPartenze conferma)
         {
-            var codiceSede = Request.Headers["codicesede"];
-            conferma.CodiceSede = codiceSede;
+            conferma.CodiceSede = Request.Headers["codicesede"];
 
             var command = new ConfermaPartenzeCommand()
             {

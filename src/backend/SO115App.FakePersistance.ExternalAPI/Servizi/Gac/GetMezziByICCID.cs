@@ -20,16 +20,18 @@
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Condivise;
+using SO115App.ExternalAPI.Fake.Classi;
 using SO115App.ExternalAPI.Fake.Classi.Gac;
 using SO115App.ExternalAPI.Fake.Classi.Utility;
-using SO115App.ExternalAPI.Fake.Servizi.GeoFleet;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
-using System;
 using System.Collections.Generic;
 using System.Net.Http;
 
 namespace SO115App.ExternalAPI.Fake.Servizi.Gac
 {
+    /// <summary>
+    ///   Servizio fake che recupera una lista di mezzi dal GAC a partire dal loro codice iccid (SIMCARD)
+    /// </summary>
     public class GetMezziByICCID : IGetMezziByICCID
     {
         private readonly HttpClient _client;
@@ -43,6 +45,11 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
             _configuration = configuration;
         }
 
+        /// <summary>
+        ///   Restituisce la lista fake dei mezzi
+        /// </summary>
+        /// <param name="iccid">una lista di codici iccid</param>
+        /// <returns>una lista mezzi</returns>
         public List<Mezzo> Get(List<string> iccid)
         {
             var response = _client.GetAsync($"{_configuration.GetSection("UrlExternalApi").GetSection("GacApi").Value}{Costanti.GacGetICCID}?iccid={iccid}").ToString();

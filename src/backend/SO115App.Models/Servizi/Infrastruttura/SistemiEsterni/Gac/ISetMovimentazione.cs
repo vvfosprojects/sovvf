@@ -18,13 +18,22 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac
 {
+    /// <summary>
+    ///   Servizio scrive la movimentazione del mezzo sul servizio esterno GAC.
+    /// </summary>
     public interface ISetMovimentazione
     {
-        void Set(string codiceMezzo, string idRichiesta, string statoOperativo, string timeStamp);
+        /// <summary>
+        ///   scrive la movimentazione
+        /// </summary>
+        /// <param name="codiceMezzo">il codice del mezzo in movimentaizone</param>
+        /// <param name="idRichiesta">il codice della richiesta</param>
+        /// <param name="statoOperativo">lo stato operativo del mezzo</param>
+        /// <param name="timeStamp">la data di inizio movimentazione</param>
+
+        void Set(string codiceMezzo, string idRichiesta, string statoOperativo, DateTime timeStamp);
     }
 }

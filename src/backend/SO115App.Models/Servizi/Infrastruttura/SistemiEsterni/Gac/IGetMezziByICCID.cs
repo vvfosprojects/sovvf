@@ -22,8 +22,16 @@ using System.Collections.Generic;
 
 namespace SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac
 {
+    /// <summary>
+    ///   Servizio che recupera una lista di mezzi dal GAC a partire dal loro codice iccid (SIMCARD)
+    /// </summary>
     public interface IGetMezziByICCID
     {
+        /// <summary>
+        ///   Restituisce la lista dei mezzi
+        /// </summary>
+        /// <param name="iccid">una lista di codici iccid</param>
+        /// <returns>una lista mezzi</returns>
         List<Mezzo> Get(List<string> iccid);
     }
 }

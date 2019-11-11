@@ -18,12 +18,20 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using SO115App.Models.Classi.ServiziEsterni;
-using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace SO115App.Models.Servizi.Infrastruttura.GeoFleet
 {
+    /// <summary>
+    ///   Servizio che recupera la posizione di un mezzo da Geofleet.
+    /// </summary>
     public interface IGetPosizioneByCodiceMezzo
     {
-        MessaggioPosizione Get(string codiceMezzo); //L'API GeoFleet ancora non si aspetta una lista di codici mezzo
+        /// <summary>
+        ///   Restituisce la posizione del mezzo
+        /// </summary>
+        /// <param name="codiceMezzo">Il codice del mezzo</param>
+        /// <returns>Il messaggio posizione da Geofleet</returns>
+        Task<MessaggioPosizione> Get(string codiceMezzo); //L'API GeoFleet ancora non si aspetta una lista di codici mezzo
     }
 }

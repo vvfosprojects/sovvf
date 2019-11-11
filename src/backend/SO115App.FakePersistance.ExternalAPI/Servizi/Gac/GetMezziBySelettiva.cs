@@ -20,6 +20,7 @@
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Condivise;
+using SO115App.ExternalAPI.Fake.Classi;
 using SO115App.ExternalAPI.Fake.Classi.Gac;
 using SO115App.ExternalAPI.Fake.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
@@ -28,6 +29,9 @@ using System.Net.Http;
 
 namespace SO115App.ExternalAPI.Fake.Servizi.Gac
 {
+    /// <summary>
+    ///   Servizio che recupera una lista di mezzi dal GAC fake a partire dal loro codice radio (Trasmittente).
+    /// </summary>
     public class GetMezziBySelettiva : IGetMezziBySelettiva
     {
         private readonly HttpClient _client;
@@ -41,6 +45,11 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
             _configuration = configuration;
         }
 
+        /// <summary>
+        ///   Restituisce la lista fake dei mezzi
+        /// </summary>
+        /// <param name="idRadio">una lista di codici radio</param>
+        /// <returns>una lista mezzi</returns>
         public List<Mezzo> Get(List<string> idRadio)
         {
             var response = _client.GetAsync($"{_configuration.GetSection("UrlExternalApi").GetSection("GacApi").Value}{Costanti.GacGetSELETTIVA}?idRadio={idRadio}").ToString();

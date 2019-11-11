@@ -17,7 +17,8 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-namespace SO115App.ExternalAPI.Fake
+
+namespace SO115App.ExternalAPI.Fake.Classi
 {
     public static class Costanti
     {
@@ -30,7 +31,7 @@ namespace SO115App.ExternalAPI.Fake
         public static string IdentityManagementUrl = "http://172.16.25.10:5000/api/RicercaPerElencoCodiciFiscali";
 
         public static string NueUrl = "http://localhost:5001/api/SchedaContatto/";
-        public static string GeoFleetUrl = "http://geofleet-ws/api/";
+        public static string GeoFleetUrl = "http://geofleet-ws.dipvvf.it/api/";
         public static string GacUrl = "http://localhost:5002/api/AnagraficaMezzi/";
 
         public static string UosUrl = "http://172.16.25.10:5001/api/";
@@ -39,8 +40,8 @@ namespace SO115App.ExternalAPI.Fake
 
         #region Json
 
-        public static string GacJson = "Servizi/Gac/Mock/Mezzo.json";
-        public static string NueJson = "Servizi/Nue/Mock/SchedeContatto.json";
+        public static string GacJson = "Servizi/Gac/Mock/Json/Mezzo.json";
+        public static string NueJson = "bin/Debug/netcoreapp2.2/Servizi/Nue/Mock/Json/SchedeContatto.json";
         public static string ServiziComponentiJson = "bin/Debug/netcoreapp2.2/Servizi/Personale/Mock/Json/Componenti.json";
         public static string IdentityManagementJson = "bin/Debug/netcoreapp2.2/Servizi/Identity/Mock/Json/Anagrafica.json";
         public static string ServiziSquadreJson = "bin/Debug/netcoreapp2.2/Servizi/Personale/Mock/Json/SquadreNelTurno.json";
@@ -66,9 +67,9 @@ namespace SO115App.ExternalAPI.Fake
 
         #region GeoFleetMethods
 
-        public static string GeoFleetGetPosizioneByCodiceMezzo = "posizioneByCodiceMezzo";
-        public static string GeoFleetGetProssimita = "prossimita";
-        public static string GeoFleetGetInRettangolo = "inRettangolo";
+        public static string GeoFleetGetPosizioneByCodiceMezzo = "posizioneByCodiceMezzo/";
+        public static string GeoFleetGetProssimita = "prossimita/";
+        public static string GeoFleetGetInRettangolo = "inRettangolo/";
 
         #endregion GeoFleetMethods
 

@@ -17,34 +17,38 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using Microsoft.Extensions.Configuration;
+using SO115App.ExternalAPI.Fake.Servizi.Gac.Mock;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
-using System.Collections.Generic;
-using System.Net.Http;
+using System;
 
 namespace SO115App.ExternalAPI.Fake.Servizi.Gac
 {
+    /// <summary>
+    ///   Servizio scrive la movimentazione del mezzo sul servizio esterno GAC fake.
+    /// </summary>
     public class SetMovimentazione : ISetMovimentazione
     {
-        private readonly HttpClient _client;
-        private readonly IConfiguration _configuration;
+        private readonly SetMezzo _setMezzo;
 
-        public SetMovimentazione(HttpClient client, IConfiguration configuration)
+        public SetMovimentazione(SetMezzo setMezzo)
         {
-            _client = client;
-            _configuration = configuration;
+            _setMezzo = setMezzo;
         }
 
-        public void Set(string codiceMezzo, string idRichiesta, string statoOperativo, string timeStamp)
+        /// <summary>
+        ///   scrive la movimentazione
+        /// </summary>
+        /// <param name="codiceMezzo">il codice del mezzo in movimentaizone</param>
+        /// <param name="idRichiesta">il codice della richiesta</param>
+        /// <param name="statoOperativo">lo stato operativo del mezzo</param>
+        /// <param name="timeStamp">la data di inizio movimentazione</param>
+        public void Set(string codiceMezzo, string idRichiesta, string statoOperativo, DateTime timeStamp)
         {
-            var stringContent = new FormUrlEncodedContent(new[]
-                                {
-                                    new KeyValuePair<string, string>("codiceMezzo", codiceMezzo),
-                                    new KeyValuePair<string, string>("idRichiesta", idRichiesta),
-                                    new KeyValuePair<string, string>("statoOperativo", statoOperativo),
-                                    new KeyValuePair<string, string>("timeStamp", timeStamp),
-                                });
-            _client.PutAsync(_configuration.GetSection("UrlExternalApi").GetSection("GacApi").Value + Costanti.GacPutMovimentazione, stringContent);
+            //---------------TODO Implementazione con il servizio esterno reale che sostituirà i json
+
+            _setMezzo.SetMovimentazione(codiceMezzo, idRichiesta, statoOperativo, timeStamp);
+
+            //---------------------------------------------------------------------------------------
         }
     }
 }

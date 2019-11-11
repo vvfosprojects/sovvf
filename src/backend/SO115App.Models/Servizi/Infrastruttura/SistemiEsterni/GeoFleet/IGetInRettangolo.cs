@@ -25,8 +25,22 @@ using System.Text;
 
 namespace SO115App.Models.Servizi.Infrastruttura.GeoFleet
 {
+    /// <summary>
+    ///   Servizio che recupera la posizione di tutti i mezzi in un dato rettangolo di coordinate.
+    /// </summary>
     public interface IGetInRettangolo
     {
+        /// <summary>
+        ///   Restituisce le posizioni di tutti i mezzi in dato rettangolo
+        /// </summary>
+        /// <param name="lat1">latitudine del vertice topright</param>
+        /// <param name="lon1">longitudine del vertice topright</param>
+        /// <param name="lat2">latitudine del vertice bottomleft</param>
+        /// <param name="lon2">longitudine del vertice bottomleft</param>
+        /// <param name="attSec">
+        ///   valore di default secondo il quale viene restituita la posizione dell'intera flotta
+        /// </param>
+        /// <returns>Le posizioni dei mezzi da Geofleet</returns>
         List<MessaggioPosizione> Get(double lat1, double lon1, double lat2, double lon2, int attSec);
     }
 }

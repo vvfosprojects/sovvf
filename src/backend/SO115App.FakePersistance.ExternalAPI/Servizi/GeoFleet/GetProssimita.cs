@@ -19,6 +19,7 @@
 //-----------------------------------------------------------------------
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using SO115App.ExternalAPI.Fake.Classi;
 using SO115App.Models.Classi.ServiziEsterni;
 using SO115App.Models.Servizi.Infrastruttura.GeoFleet;
 using System.Collections.Generic;
@@ -26,9 +27,12 @@ using System.Net.Http;
 
 namespace SO115App.ExternalAPI.Fake.Servizi.GeoFleet
 {
+    /// <summary>
+    ///   Servizio che recupera la posizione di tutti i mezzi in prossimità di un punto.
+    /// </summary>
     public class GetProssimita : IGetProssimita
     {
-        private HttpClient _client;
+        private readonly HttpClient _client;
         private readonly IConfiguration _configuration;
 
         public GetProssimita(HttpClient client, IConfiguration configuration)
@@ -37,6 +41,17 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GeoFleet
             _configuration = configuration;
         }
 
+        /// <summary>
+        ///   Restituisce le posizioni di tutti i mezzi prossimi al dato set di coordinate
+        /// </summary>
+        /// <param name="lat">latitudine del punto</param>
+        /// <param name="lon">longitudine del punto</param>
+        /// <param name="maxRadius">la distanza massima dal set di coordinate</param>
+        /// <param name="classiMezzo">una lista di classi mezzo</param>
+        /// <param name="attSec">
+        ///   valore secondo il quale viene restituita la posizione dell'intera flotta
+        /// </param>
+        /// <returns>Le posizioni dei mezzi da Geofleet</returns>
         public List<ProssimitaMezzo> Get(float lat, float lon, float maxRadius, List<string> classiMezzo, int attSec)
         {
             var response = _client.GetAsync($"{_configuration.GetSection("UrlExternalApi").GetSection("GeofleetApi").Value}{Costanti.GeoFleetGetProssimita}?lat={lat}&lon={lon}&distanzaMaxMt={maxRadius}&classiMezzo={classiMezzo}&attsec{attSec}").ToString();

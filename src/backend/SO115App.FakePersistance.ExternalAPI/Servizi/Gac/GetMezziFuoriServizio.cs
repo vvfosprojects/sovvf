@@ -20,6 +20,7 @@
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Condivise;
+using SO115App.ExternalAPI.Fake.Classi;
 using SO115App.ExternalAPI.Fake.Classi.Gac;
 using SO115App.ExternalAPI.Fake.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
@@ -28,6 +29,9 @@ using System.Net.Http;
 
 namespace SO115App.ExternalAPI.Fake.Servizi.Gac
 {
+    /// <summary>
+    ///   Servizio che recupera da GAC fake una lista di mezzi fuori servizio.
+    /// </summary>
     public class GetMezziFuoriServizio : IGetMezziFuoriServizio
     {
         private readonly HttpClient _client;
@@ -41,6 +45,13 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
             _configuration = configuration;
         }
 
+        /// <summary>
+        ///   Restituisce la lista fake dei mezzi fuori servizio
+        /// </summary>
+        /// <param name="sedi">una lista di codici sede</param>
+        /// <param name="genereMezzo">il genere del mezzo (opzionale)</param>
+        /// <param name="siglaMezzo">la sigla del mezzo (opzionale)</param>
+        /// <returns>una lista mezzi</returns>
         public List<Mezzo> Get(List<string> sedi, string genereMezzo, string siglaMezzo)
         {
             var response = _client.GetAsync($"{_configuration.GetSection("UrlExternalApi").GetSection("GacApi").Value}{Costanti.GacGetMezziFuoriServizio}?sedi{sedi}&genereMezzo={genereMezzo}&siglaMezzo={siglaMezzo}").ToString();

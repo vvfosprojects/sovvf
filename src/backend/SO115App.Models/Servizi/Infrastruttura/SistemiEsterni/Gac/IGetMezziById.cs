@@ -22,8 +22,16 @@ using System.Collections.Generic;
 
 namespace SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac
 {
+    /// <summary>
+    ///   Servizio che recupera una lista di mezzi dal GAC a partire dal loro codice mezzo.
+    /// </summary>
     public interface IGetMezziById
     {
+        /// <summary>
+        ///   Restituisce la lista dei mezzi
+        /// </summary>
+        /// <param name="codiceMezzo">una lista di codici mezzo</param>
+        /// <returns>una lista mezzi</returns>
         List<Mezzo> Get(List<string> codiceMezzo);
     }
 }

@@ -17,58 +17,49 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Composizione;
-using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneMezzi;
-using SO115App.Models.Servizi.Infrastruttura.GetComposizioneMezzi;
-using SO115App.FakePersistence.JSon.Utility;
-using System;
-using SO115App.FakePersistence.JSon.Classi;
-using SO115App.API.Models.Classi.Marker;
-using System.Globalization;
 using SO115App.API.Models.Classi.Condivise;
-using SO115App.Models.Servizi.Infrastruttura.GeoFleet;
+using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneMezzi;
+using SO115App.FakePersistence.JSon.Utility;
+using SO115App.Models.Servizi.Infrastruttura.GetComposizioneMezzi;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Linq;
 
 namespace SO115App.FakePersistenceJSon.Composizione
 {
+    /// <summary>
+    ///   La classe recupera i mezzi utilizzabili dal Gac e genera la composizione mezzi ordinandoli
+    ///   secondo una funzione di adeguatezza del mezzo tenendo conto della tipologia dell'intervento
+    /// </summary>
     public class GetComposizioneMezzi : IGetComposizioneMezzi
     {
-        private readonly IGetCoordinateFromGeoFleet _getCoordinateFromGeoFleet;
+        private readonly IGetMezziUtilizzabili _getMezziUtilizzabili;
 
-        public GetComposizioneMezzi(IGetCoordinateFromGeoFleet getCoordinateFromGeoFleet)
+        public GetComposizioneMezzi(IGetMezziUtilizzabili getMezziUtilizzabili)
         {
-            _getCoordinateFromGeoFleet = getCoordinateFromGeoFleet;
+            _getMezziUtilizzabili = getMezziUtilizzabili;
         }
 
+        /// <summary>
+        ///   Il metodo accetta in firma la query, recupera i mezzi utilizzabili dal Gac e genera la
+        ///   composizione mezzi ordinandoli secondo una funzione di adeguatezza del mezzo tenendo
+        ///   conto della tipologia dell'intervento
+        /// </summary>
+        /// <param name="query">la query in ingresso</param>
+        /// <returns>Una Lista di ComposizioneMezzi</returns>
         public List<ComposizioneMezzi> Get(ComposizioneMezziQuery query)
         {
-            var filepathMezzo = CostantiJson.Mezzo;
-            string jsonMezzo;
-            using (var r = new StreamReader(filepathMezzo))
+            var listaCodici = new List<string>
             {
-                jsonMezzo = r.ReadToEnd();
-            }
-            var filepathFlotta = CostantiJson.FlottaMezzi;
-            string jsonFlotta;
-            using (var r = new StreamReader(filepathFlotta))
-            {
-                jsonFlotta = r.ReadToEnd();
-            }
+                query.CodiceSede
+            };
+            var listaMezzi = _getMezziUtilizzabili.Get(listaCodici, "", "");
 
-            var flottaMezzi = JsonConvert.DeserializeObject<List<MezziFromGeoFleet>>(jsonFlotta);
-            var listaMezzi = JsonConvert.DeserializeObject<List<Mezzo>>(jsonMezzo);
-
-            foreach (var mezzo in listaMezzi.FindAll(x => x.Distaccamento.Codice.Equals(query.CodiceSede)))
-            {
-                foreach (var mezziFromGeoFleet in flottaMezzi.Where(mezziFromGeoFleet => mezzo.Codice.Equals(mezziFromGeoFleet.CodiceMezzo)))
-                {
-                    mezzo.Coordinate = _getCoordinateFromGeoFleet.CodificaLocalizzazione(mezziFromGeoFleet.Localizzazione);
-                    mezzo.IstanteAcquisizione = mezziFromGeoFleet.IstanteAcquisizione;
-                }
-            }
             var composizioneMezzi = GeneraListaComposizioneMezzi(listaMezzi);
 
             string[] generiMezzi;

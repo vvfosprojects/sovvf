@@ -31,8 +31,18 @@ using SO115App.FakePersistence.JSon.Utility;
 
 namespace SO115App.FakePersistenceJSon.Composizione
 {
+    /// <summary>
+    ///   La classe scrive sul DB il codice mezzo e la data della prenotazione del mezzo se il mezzo
+    ///   è stato prenotato per un intervento
+    /// </summary>
     public class GetMezzoPrenotato : IGetMezzoPrenotato
     {
+        /// <summary>
+        ///   Il metodo accetta in firma il command, è in fuzione della prenotazione, se attiva o
+        ///   no, scrive sul DB il codice mezzo e l'istante della prenotazione del mezzo su un intervento
+        /// </summary>
+        /// <param name="command">il command in ingresso</param>
+        /// <returns>MezzoPrenotato</returns>
         public MezzoPrenotato Get(MezzoPrenotatoCommand command)
         {
             //TODO PARTE CHIAMATA DB
@@ -40,34 +50,31 @@ namespace SO115App.FakePersistenceJSon.Composizione
             //TODO DA MODIFICARE CON LA CONNESSIONE AL DB PER IL REPERIMENTO DEI DATI DEFINITIVI
             //DATI FAKE - ORA LI LEGGO DA FILE
             var mezzoPrenotato = new MezzoPrenotato();
-            var filepath = CostantiJson.Mezzo;
+            var filepath = CostantiJson.PrenotazioneMezzo;
             string json;
             using (var r = new StreamReader(filepath))
             {
                 json = r.ReadToEnd();
             }
 
-            var mezzi = JsonConvert.DeserializeObject<List<Mezzo>>(json);
-            var mezzo = mezzi.Find(x => x.Codice.Equals(command.MezzoPrenotato.MezzoComposizione.Mezzo.Codice));
+            var mezzi = JsonConvert.DeserializeObject<List<MezzoPrenotato>>(json);
+            var mezzo = mezzi.Find(x => x.CodiceMezzo.Equals(command.MezzoPrenotato.CodiceMezzo));
             if (command.MezzoPrenotato.SbloccaMezzo)
             {
                 mezzo.IstantePrenotazione = null;
+                mezzo.CodiceMezzo = null;
+                mezzo.CodiceRichiesta = null;
             }
             else
             {
                 mezzo.IstantePrenotazione = DateTime.Now.AddSeconds(15);
+                mezzo.CodiceRichiesta = command.MezzoPrenotato.CodiceRichiesta;
+                mezzo.CodiceMezzo = command.MezzoPrenotato.CodiceMezzo;
             }
-            var composizioneMezzi = new ComposizioneMezzi
-            {
-                Id = Guid.NewGuid().ToString(),
-                Mezzo = mezzo,
-                IstanteScadenzaSelezione = mezzo.IstantePrenotazione
-            };
+
             var jsonNew = JsonConvert.SerializeObject(mezzi);
             System.IO.File.WriteAllText(filepath, jsonNew);
-            mezzoPrenotato.MezzoComposizione = composizioneMezzi;
-            mezzoPrenotato.MezzoComposizione.Id = command.MezzoPrenotato.MezzoComposizione.Id;
-            mezzoPrenotato.CodiceSede = command.CodiceSede;
+
             return mezzoPrenotato;
         }
     }

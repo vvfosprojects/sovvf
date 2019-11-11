@@ -18,6 +18,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using CQRS.Queries;
 using Microsoft.AspNetCore.Authorization;
@@ -93,8 +94,12 @@ namespace SO115App.API.Controllers
         ///   Metodo che restituisce i marker di tutti i mezzi in un quadrante
         /// </summary>
         [HttpPost("GetMezzi")]
-        public async Task<IActionResult> GetMezzi([FromBody]AreaMappa filtroCentroMappa)
+        public async Task<IActionResult> GetMezzi(AreaMappa filtroCentroMappa)
         {
+            filtroCentroMappa.CodiceSede = new List<string>
+            {
+                Request.Headers["codiceSede"].ToString()
+            };
             try
             {
                 var query = new MezziMarkerQuery()

@@ -22,8 +22,16 @@ using System.Collections.Generic;
 
 namespace SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac
 {
+    /// <summary>
+    ///   Servizio che recupera una lista di mezzi dal GAC a partire dal loro codice radio (Trasmittente).
+    /// </summary>
     public interface IGetMezziBySelettiva
     {
+        /// <summary>
+        ///   Restituisce la lista dei mezzi
+        /// </summary>
+        /// <param name="idRadio">una lista di codici radio</param>
+        /// <returns>una lista mezzi</returns>
         List<Mezzo> Get(List<string> idRadio);
     }
 }

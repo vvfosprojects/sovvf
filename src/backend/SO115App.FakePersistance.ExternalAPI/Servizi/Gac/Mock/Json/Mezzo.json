@@ -1,0 +1,667 @@
+[
+  {
+    "Codice": "O.13362",
+    "IdRadio": null,
+    "ICCID": null,
+    "Descrizione": "13362",
+    "Genere": "ACT/OP",
+    "Movimentazione": {
+      "DataMovimentazione": null,
+      "IdRichiesta": null,
+      "StatoOperativo": "Fuori Servizio"
+    },
+    "Appartenenza": 0,
+    "Distaccamento": {
+      "Codice": "RM.1000",
+      "Descrizione": "Comando di Roma",
+      "Coordinate": {
+        "Latitudine": 41.89994,
+        "Longitudine": 12.49127
+      },
+      "Indirizzo": "Via Genova, 1, 00184 Roma RM",
+      "Tipo": "Comando",
+      "Regione": "Lazio",
+      "Provincia": "Roma",
+      "Label": null,
+      "Icona": null
+    },
+    "DescrizioneAppartenenza": null,
+    "DescrizioneStato": null,
+    "StatoEfficenza": 0,
+    "DescrizioneStatoEfficenza": null,
+    "LivelloCarburante": 0,
+    "DescrizioneLivelloCarburante": null,
+    "LivelloEstinguente": 0,
+    "DescrizioneLivelloEstinguente": null
+  },
+  {
+    "Codice": "O.14512",
+    "IdRadio": null,
+    "ICCID": null,
+    "Descrizione": "14512",
+    "Genere": "AA",
+    "Movimentazione": {
+      "DataMovimentazione": null,
+      "IdRichiesta": null,
+      "StatoOperativo": "Fuori Servizio"
+    },
+    "Appartenenza": 0,
+    "Distaccamento": {
+      "Codice": "RM.1000",
+      "Descrizione": "Comando di Roma",
+      "Coordinate": {
+        "Latitudine": 41.89994,
+        "Longitudine": 12.49127
+      },
+      "Indirizzo": "Via Genova, 1, 00184 Roma RM",
+      "Tipo": "Comando",
+      "Regione": "Lazio",
+      "Provincia": "Roma",
+      "Label": null,
+      "Icona": null
+    },
+    "DescrizioneAppartenenza": null,
+    "DescrizioneStato": null,
+    "StatoEfficenza": 0,
+    "DescrizioneStatoEfficenza": null,
+    "LivelloCarburante": 0,
+    "DescrizioneLivelloCarburante": null,
+    "LivelloEstinguente": 0,
+    "DescrizioneLivelloEstinguente": null
+  },
+  {
+    "Codice": "O.18195",
+    "IdRadio": "84666",
+    "ICCID": null,
+    "Descrizione": "18195",
+    "Genere": "APS",
+    "Movimentazione": {
+      "DataMovimentazione": null,
+      "IdRichiesta": null,
+      "StatoOperativo": "In Sede"
+    },
+    "Appartenenza": 0,
+    "Distaccamento": {
+      "Codice": "TO.1000",
+      "Descrizione": "Comando di Torino",
+      "Coordinate": {
+        "Latitudine": 40.933318,
+        "Longitudine": 14.524047
+      },
+      "Indirizzo": "Via Torino, 98 000000 Torino",
+      "Tipo": null,
+      "Regione": null,
+      "Provincia": null,
+      "Label": null,
+      "Icona": null
+    },
+    "DescrizioneAppartenenza": null,
+    "DescrizioneStato": null,
+    "StatoEfficenza": 0,
+    "DescrizioneStatoEfficenza": null,
+    "LivelloCarburante": 0,
+    "DescrizioneLivelloCarburante": null,
+    "LivelloEstinguente": 0,
+    "DescrizioneLivelloEstinguente": null
+  },
+  {
+    "Codice": "O.16022",
+    "IdRadio": "23386DH",
+    "ICCID": "3204",
+    "Descrizione": "16022",
+    "Genere": "AF/OP",
+    "Movimentazione": {
+      "DataMovimentazione": null,
+      "IdRichiesta": null,
+      "StatoOperativo": "In Sede"
+    },
+    "Appartenenza": 0,
+    "Distaccamento": {
+      "Codice": "RM.1000",
+      "Descrizione": "Comando di Roma",
+      "Coordinate": {
+        "Latitudine": 41.89994,
+        "Longitudine": 12.49127
+      },
+      "Indirizzo": "Via Genova, 1, 00184 Roma RM",
+      "Tipo": "Comando",
+      "Regione": "Lazio",
+      "Provincia": "Roma",
+      "Label": null,
+      "Icona": null
+    },
+    "DescrizioneAppartenenza": null,
+    "DescrizioneStato": null,
+    "StatoEfficenza": 0,
+    "DescrizioneStatoEfficenza": null,
+    "LivelloCarburante": 0,
+    "DescrizioneLivelloCarburante": null,
+    "LivelloEstinguente": 0,
+    "DescrizioneLivelloEstinguente": null
+  },
+  {
+    "Codice": "O.16023",
+    "IdRadio": "26446DH",
+    "ICCID": "3205",
+    "Descrizione": "16023",
+    "Genere": "AF/OP",
+    "Movimentazione": {
+      "DataMovimentazione": null,
+      "IdRichiesta": null,
+      "StatoOperativo": "In Sede"
+    },
+    "Appartenenza": 0,
+    "Distaccamento": {
+      "Codice": "RM.1000",
+      "Descrizione": "Comando di Roma",
+      "Coordinate": {
+        "Latitudine": 41.89994,
+        "Longitudine": 12.49127
+      },
+      "Indirizzo": "Via Genova, 1, 00184 Roma RM",
+      "Tipo": "Comando",
+      "Regione": "Lazio",
+      "Provincia": "Roma",
+      "Label": null,
+      "Icona": null
+    },
+    "DescrizioneAppartenenza": null,
+    "DescrizioneStato": null,
+    "StatoEfficenza": 0,
+    "DescrizioneStatoEfficenza": null,
+    "LivelloCarburante": 0,
+    "DescrizioneLivelloCarburante": null,
+    "LivelloEstinguente": 0,
+    "DescrizioneLivelloEstinguente": null
+  },
+  {
+    "Codice": "O.16204",
+    "IdRadio": "254342DH",
+    "ICCID": "3206",
+    "Descrizione": "16204",
+    "Genere": "AF/COMBI",
+    "Movimentazione": {
+      "DataMovimentazione": null,
+      "IdRichiesta": null,
+      "StatoOperativo": "In Sede"
+    },
+    "Appartenenza": 0,
+    "Distaccamento": {
+      "Codice": "RM.1000",
+      "Descrizione": "Comando di Roma",
+      "Coordinate": {
+        "Latitudine": 41.89994,
+        "Longitudine": 12.49127
+      },
+      "Indirizzo": "Via Genova, 1, 00184 Roma RM",
+      "Tipo": "Comando",
+      "Regione": "Lazio",
+      "Provincia": "Roma",
+      "Label": null,
+      "Icona": null
+    },
+    "DescrizioneAppartenenza": null,
+    "DescrizioneStato": null,
+    "StatoEfficenza": 0,
+    "DescrizioneStatoEfficenza": null,
+    "LivelloCarburante": 0,
+    "DescrizioneLivelloCarburante": null,
+    "LivelloEstinguente": 0,
+    "DescrizioneLivelloEstinguente": null
+  },
+  {
+    "Codice": "O.16216",
+    "IdRadio": "354342DH",
+    "ICCID": "3207",
+    "Descrizione": "16216",
+    "Genere": "AF/COMBI",
+    "Movimentazione": {
+      "DataMovimentazione": null,
+      "IdRichiesta": null,
+      "StatoOperativo": "In Sede"
+    },
+    "Appartenenza": 0,
+    "Distaccamento": {
+      "Codice": "RM.1000",
+      "Descrizione": "Comando di Roma",
+      "Coordinate": {
+        "Latitudine": 41.89994,
+        "Longitudine": 12.49127
+      },
+      "Indirizzo": "Via Genova, 1, 00184 Roma RM",
+      "Tipo": "Comando",
+      "Regione": "Lazio",
+      "Provincia": "Roma",
+      "Label": null,
+      "Icona": null
+    },
+    "DescrizioneAppartenenza": null,
+    "DescrizioneStato": null,
+    "StatoEfficenza": 0,
+    "DescrizioneStatoEfficenza": null,
+    "LivelloCarburante": 0,
+    "DescrizioneLivelloCarburante": null,
+    "LivelloEstinguente": 0,
+    "DescrizioneLivelloEstinguente": null
+  },
+  {
+    "Codice": "O.16225",
+    "IdRadio": "ABCD8",
+    "ICCID": "3208",
+    "Descrizione": "16225",
+    "Genere": "AF/OP",
+    "Movimentazione": {
+      "DataMovimentazione": null,
+      "IdRichiesta": null,
+      "StatoOperativo": "In Sede"
+    },
+    "Appartenenza": 0,
+    "Distaccamento": {
+      "Codice": "RM.1000",
+      "Descrizione": "Comando di Roma",
+      "Coordinate": {
+        "Latitudine": 41.89994,
+        "Longitudine": 12.49127
+      },
+      "Indirizzo": "Via Genova, 1, 00184 Roma RM",
+      "Tipo": "Comando",
+      "Regione": "Lazio",
+      "Provincia": "Roma",
+      "Label": null,
+      "Icona": null
+    },
+    "DescrizioneAppartenenza": null,
+    "DescrizioneStato": null,
+    "StatoEfficenza": 0,
+    "DescrizioneStatoEfficenza": null,
+    "LivelloCarburante": 0,
+    "DescrizioneLivelloCarburante": null,
+    "LivelloEstinguente": 0,
+    "DescrizioneLivelloEstinguente": null
+  },
+  {
+    "Codice": "O.19610",
+    "IdRadio": "ABCD9",
+    "ICCID": "3209",
+    "Descrizione": "19610",
+    "Genere": "CA",
+    "Movimentazione": {
+      "DataMovimentazione": null,
+      "IdRichiesta": null,
+      "StatoOperativo": "In Sede"
+    },
+    "Appartenenza": 0,
+    "Distaccamento": {
+      "Codice": "RM.1000",
+      "Descrizione": "Comando di Roma",
+      "Coordinate": {
+        "Latitudine": 41.89994,
+        "Longitudine": 12.49127
+      },
+      "Indirizzo": "Via Genova, 1, 00184 Roma RM",
+      "Tipo": "Comando",
+      "Regione": "Lazio",
+      "Provincia": "Roma",
+      "Label": null,
+      "Icona": null
+    },
+    "DescrizioneAppartenenza": null,
+    "DescrizioneStato": null,
+    "StatoEfficenza": 0,
+    "DescrizioneStatoEfficenza": null,
+    "LivelloCarburante": 0,
+    "DescrizioneLivelloCarburante": null,
+    "LivelloEstinguente": 0,
+    "DescrizioneLivelloEstinguente": null
+  },
+  {
+    "Codice": "O.19611",
+    "IdRadio": "ABCD11",
+    "ICCID": "3211",
+    "Descrizione": "19611",
+    "Genere": "CA",
+    "Movimentazione": {
+      "DataMovimentazione": null,
+      "IdRichiesta": null,
+      "StatoOperativo": "In Sede"
+    },
+    "Appartenenza": 0,
+    "Distaccamento": {
+      "Codice": "RM.1000",
+      "Descrizione": "Distaccamento Cittadino Roma Tuscolano I",
+      "Coordinate": {
+        "Latitudine": 41.8815193,
+        "Longitudine": 12.5164942
+      },
+      "Indirizzo": "Via Tuscolana, 126 00182 Roma RM",
+      "Tipo": "Comando",
+      "Regione": "Lazio",
+      "Provincia": "Roma",
+      "Label": null,
+      "Icona": null
+    },
+    "DescrizioneAppartenenza": null,
+    "DescrizioneStato": null,
+    "StatoEfficenza": 0,
+    "DescrizioneStatoEfficenza": null,
+    "LivelloCarburante": 0,
+    "DescrizioneLivelloCarburante": null,
+    "LivelloEstinguente": 0,
+    "DescrizioneLivelloEstinguente": null
+  },
+  {
+    "Codice": "O.21977",
+    "IdRadio": "73540",
+    "ICCID": null,
+    "Descrizione": "21977",
+    "Genere": "APS",
+    "Movimentazione": {
+      "DataMovimentazione": null,
+      "IdRichiesta": null,
+      "StatoOperativo": "In Sede"
+    },
+    "Appartenenza": 0,
+    "Distaccamento": {
+      "Codice": "RM.1000",
+      "Descrizione": "Distaccamento Cittadino Roma Tuscolano I",
+      "Coordinate": {
+        "Latitudine": 41.8815193,
+        "Longitudine": 12.5164942
+      },
+      "Indirizzo": "Via Tuscolana, 126 00182 Roma RM",
+      "Tipo": "Comando",
+      "Regione": "Lazio",
+      "Provincia": "Roma",
+      "Label": null,
+      "Icona": null
+    },
+    "DescrizioneAppartenenza": null,
+    "DescrizioneStato": null,
+    "StatoEfficenza": 0,
+    "DescrizioneStatoEfficenza": null,
+    "LivelloCarburante": 0,
+    "DescrizioneLivelloCarburante": null,
+    "LivelloEstinguente": 0,
+    "DescrizioneLivelloEstinguente": null
+  },
+  {
+    "Codice": "O.22653",
+    "IdRadio": null,
+    "ICCID": null,
+    "Descrizione": "22653",
+    "Genere": "AF/UCL",
+    "Movimentazione": {
+      "DataMovimentazione": null,
+      "IdRichiesta": null,
+      "StatoOperativo": "In Sede"
+    },
+    "Appartenenza": 0,
+    "Distaccamento": {
+      "Codice": "RM.1000",
+      "Descrizione": "Distaccamento Cittadino Roma Tuscolano I",
+      "Coordinate": {
+        "Latitudine": 41.8815193,
+        "Longitudine": 12.5164942
+      },
+      "Indirizzo": "Via Tuscolana, 126 00182 Roma RM",
+      "Tipo": "Comando",
+      "Regione": "Lazio",
+      "Provincia": "Roma",
+      "Label": null,
+      "Icona": null
+    },
+    "DescrizioneAppartenenza": null,
+    "DescrizioneStato": null,
+    "StatoEfficenza": 0,
+    "DescrizioneStatoEfficenza": null,
+    "LivelloCarburante": 0,
+    "DescrizioneLivelloCarburante": null,
+    "LivelloEstinguente": 0,
+    "DescrizioneLivelloEstinguente": null
+  },
+  {
+    "Codice": "O.22657",
+    "IdRadio": null,
+    "ICCID": null,
+    "Descrizione": "22657",
+    "Genere": "AF/UCL",
+    "Movimentazione": {
+      "DataMovimentazione": null,
+      "IdRichiesta": null,
+      "StatoOperativo": "In Sede"
+    },
+    "Appartenenza": 0,
+    "Distaccamento": {
+      "Codice": "RM.1000",
+      "Descrizione": "Distaccamento Cittadino Roma Tuscolano I",
+      "Coordinate": {
+        "Latitudine": 41.8815193,
+        "Longitudine": 12.5164942
+      },
+      "Indirizzo": "Via Tuscolana, 126 00182 Roma RM",
+      "Tipo": "Comando",
+      "Regione": "Lazio",
+      "Provincia": "Roma",
+      "Label": null,
+      "Icona": null
+    },
+    "DescrizioneAppartenenza": null,
+    "DescrizioneStato": null,
+    "StatoEfficenza": 0,
+    "DescrizioneStatoEfficenza": null,
+    "LivelloCarburante": 0,
+    "DescrizioneLivelloCarburante": null,
+    "LivelloEstinguente": 0,
+    "DescrizioneLivelloEstinguente": null
+  },
+  {
+    "Codice": "O.26549",
+    "IdRadio": null,
+    "ICCID": null,
+    "Descrizione": "26549",
+    "Genere": "AF/UCL",
+    "Movimentazione": {
+      "DataMovimentazione": null,
+      "IdRichiesta": null,
+      "StatoOperativo": "In Sede"
+    },
+    "Appartenenza": 0,
+    "Distaccamento": {
+      "Codice": "RM.1000",
+      "Descrizione": "Distaccamento Cittadino Roma Tuscolano I",
+      "Coordinate": {
+        "Latitudine": 41.8815193,
+        "Longitudine": 12.5164942
+      },
+      "Indirizzo": "Via Tuscolana, 126 00182 Roma RM",
+      "Tipo": "Comando",
+      "Regione": "Lazio",
+      "Provincia": "Roma",
+      "Label": null,
+      "Icona": null
+    },
+    "DescrizioneAppartenenza": null,
+    "DescrizioneStato": null,
+    "StatoEfficenza": 0,
+    "DescrizioneStatoEfficenza": null,
+    "LivelloCarburante": 0,
+    "DescrizioneLivelloCarburante": null,
+    "LivelloEstinguente": 0,
+    "DescrizioneLivelloEstinguente": null
+  },
+  {
+    "Codice": "O.26603",
+    "IdRadio": null,
+    "ICCID": null,
+    "Descrizione": "26603",
+    "Genere": "AF/COMBI",
+    "Movimentazione": {
+      "DataMovimentazione": null,
+      "IdRichiesta": null,
+      "StatoOperativo": "In Sede"
+    },
+    "Appartenenza": 0,
+    "Distaccamento": {
+      "Codice": "RM.1000",
+      "Descrizione": "Distaccamento Cittadino Roma Tuscolano I",
+      "Coordinate": {
+        "Latitudine": 41.8815193,
+        "Longitudine": 12.5164942
+      },
+      "Indirizzo": "Via Tuscolana, 126 00182 Roma RM",
+      "Tipo": "Comando",
+      "Regione": "Lazio",
+      "Provincia": "Roma",
+      "Label": null,
+      "Icona": null
+    },
+    "DescrizioneAppartenenza": null,
+    "DescrizioneStato": null,
+    "StatoEfficenza": 0,
+    "DescrizioneStatoEfficenza": null,
+    "LivelloCarburante": 0,
+    "DescrizioneLivelloCarburante": null,
+    "LivelloEstinguente": 0,
+    "DescrizioneLivelloEstinguente": null
+  },
+  {
+    "Codice": "O.26679",
+    "IdRadio": null,
+    "ICCID": null,
+    "Descrizione": "26679",
+    "Genere": "ACT/TRI",
+    "Movimentazione": {
+      "DataMovimentazione": null,
+      "IdRichiesta": null,
+      "StatoOperativo": "In Sede"
+    },
+    "Appartenenza": 0,
+    "Distaccamento": {
+      "Codice": "RM.1000",
+      "Descrizione": "Distaccamento Cittadino Roma Tuscolano I",
+      "Coordinate": {
+        "Latitudine": 41.8815193,
+        "Longitudine": 12.5164942
+      },
+      "Indirizzo": "Via Tuscolana, 126 00182 Roma RM",
+      "Tipo": "Comando",
+      "Regione": "Lazio",
+      "Provincia": "Roma",
+      "Label": null,
+      "Icona": null
+    },
+    "DescrizioneAppartenenza": null,
+    "DescrizioneStato": null,
+    "StatoEfficenza": 0,
+    "DescrizioneStatoEfficenza": null,
+    "LivelloCarburante": 0,
+    "DescrizioneLivelloCarburante": null,
+    "LivelloEstinguente": 0,
+    "DescrizioneLivelloEstinguente": null
+  },
+  {
+    "Codice": "O.26679",
+    "IdRadio": null,
+    "ICCID": null,
+    "Descrizione": "26679",
+    "Genere": "ACT/TRI",
+    "Movimentazione": {
+      "DataMovimentazione": null,
+      "IdRichiesta": null,
+      "StatoOperativo": "In Sede"
+    },
+    "Appartenenza": 0,
+    "Distaccamento": {
+      "Codice": "RM.1000",
+      "Descrizione": "Distaccamento Cittadino Roma Tuscolano I",
+      "Coordinate": {
+        "Latitudine": 41.8815193,
+        "Longitudine": 12.5164942
+      },
+      "Indirizzo": "Via Tuscolana, 126 00182 Roma RM",
+      "Tipo": "Comando",
+      "Regione": "Lazio",
+      "Provincia": "Roma",
+      "Label": null,
+      "Icona": null
+    },
+    "DescrizioneAppartenenza": null,
+    "DescrizioneStato": null,
+    "StatoEfficenza": 0,
+    "DescrizioneStatoEfficenza": null,
+    "LivelloCarburante": 0,
+    "DescrizioneLivelloCarburante": null,
+    "LivelloEstinguente": 0,
+    "DescrizioneLivelloEstinguente": null
+  },
+  {
+    "Codice": "O.27790",
+    "IdRadio": "84782",
+    "ICCID": null,
+    "Descrizione": "27790",
+    "Genere": "AV",
+    "Movimentazione": {
+      "DataMovimentazione": null,
+      "IdRichiesta": null,
+      "StatoOperativo": "In Sede"
+    },
+    "Appartenenza": 0,
+    "Distaccamento": {
+      "Codice": "TO.1000",
+      "Descrizione": "Distaccamento Cittadino Torino I",
+      "Coordinate": {
+        "Latitudine": 41.8815193,
+        "Longitudine": 12.5164942
+      },
+      "Indirizzo": "Via Torino, 123 00000 Torino TO",
+      "Tipo": "Comando",
+      "Regione": "Lazio",
+      "Provincia": "Roma",
+      "Label": null,
+      "Icona": null
+    },
+    "DescrizioneAppartenenza": null,
+    "DescrizioneStato": null,
+    "StatoEfficenza": 0,
+    "DescrizioneStatoEfficenza": null,
+    "LivelloCarburante": 0,
+    "DescrizioneLivelloCarburante": null,
+    "LivelloEstinguente": 0,
+    "DescrizioneLivelloEstinguente": null
+  },
+  {
+    "Codice": "O.27791",
+    "IdRadio": "84741",
+    "ICCID": null,
+    "Descrizione": "27791",
+    "Genere": "AV",
+    "Movimentazione": {
+      "DataMovimentazione": null,
+      "IdRichiesta": null,
+      "StatoOperativo": "In Sede"
+    },
+    "Appartenenza": 0,
+    "Distaccamento": {
+      "Codice": "TO.1000",
+      "Descrizione": "Distaccamento Cittadino Torino I",
+      "Coordinate": {
+        "Latitudine": 41.8815193,
+        "Longitudine": 12.5164942
+      },
+      "Indirizzo": "Via Torino, 123 00000 Torino TO",
+      "Tipo": "Comando",
+      "Regione": "Lazio",
+      "Provincia": "Roma",
+      "Label": null,
+      "Icona": null
+    },
+    "DescrizioneAppartenenza": null,
+    "DescrizioneStato": null,
+    "StatoEfficenza": 0,
+    "DescrizioneStatoEfficenza": null,
+    "LivelloCarburante": 0,
+    "DescrizioneLivelloCarburante": null,
+    "LivelloEstinguente": 0,
+    "DescrizioneLivelloEstinguente": null
+  }
+]

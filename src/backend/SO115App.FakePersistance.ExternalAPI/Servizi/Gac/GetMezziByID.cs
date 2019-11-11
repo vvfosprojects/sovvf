@@ -17,34 +17,40 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Condivise;
-using SO115App.ExternalAPI.Fake.Classi.Gac;
 using SO115App.ExternalAPI.Fake.Classi.Utility;
+using SO115App.ExternalAPI.Fake.Servizi.Gac.Mock;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
 using System.Collections.Generic;
-using System.Net.Http;
 
 namespace SO115App.ExternalAPI.Fake.Servizi.Gac
 {
+    /// <summary>
+    ///   Servizio fake che recupera una lista di mezzi dal GAC a partire dal loro codice mezzo.
+    /// </summary>
     public class GetMezziByID : IGetMezziById
     {
-        private readonly HttpClient _client;
         private readonly MapMezzoDTOsuMezzo _mapper;
-        private readonly IConfiguration _configuration;
+        private readonly GetMezzi _getMezzi;
 
-        public GetMezziByID(HttpClient client, MapMezzoDTOsuMezzo mapper, IConfiguration configuration)
+        public GetMezziByID(MapMezzoDTOsuMezzo mapper, GetMezzi getMezzi)
         {
-            _client = client;
             _mapper = mapper;
-            _configuration = configuration;
+            _getMezzi = getMezzi;
         }
 
+        /// <summary>
+        ///   Restituisce la lista fake dei mezzi dal json
+        /// </summary>
+        /// <param name="codiceMezzo">una lista di codici mezzo</param>
+        /// <returns>una lista mezzi</returns>
         public List<Mezzo> Get(List<string> codiceMezzo)
         {
-            var response = _client.GetAsync($"{_configuration.GetSection("UrlExternalApi").GetSection("GacApi").Value}{Costanti.GacGetID}?codiciMezzo={codiceMezzo}").ToString();
-            var listaMezzoDTO = JsonConvert.DeserializeObject<List<MezzoDTO>>(response);
+            //---------------TODO Implementazione con il servizio esterno reale che sostituirà i json
+
+            var listaMezzoDTO = _getMezzi.GetMezziFromCodiceMezzo(codiceMezzo); //json
+
+            //---------------------------------------------------------------------------------------
             return _mapper.MappaMezzoDTOsuMezzo(listaMezzoDTO);
         }
     }

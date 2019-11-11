@@ -26,6 +26,7 @@ using SO115App.FakePersistence.JSon.Utility;
 using SO115App.Models.Servizi.Infrastruttura.GeoFleet;
 using SO115App.Models.Servizi.Infrastruttura.InfoRichiesta;
 using SO115App.Models.Servizi.Infrastruttura.Marker;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -33,65 +34,48 @@ using System.Linq;
 
 namespace SO115App.FakePersistenceJSon.Marker
 {
+    /// <summary>
+    ///   la classe recupera le informazioni dei mezzi che sono circoscritti in una determinata area mappa
+    /// </summary>
     public class GetMezziMarker : IGetMezziMarker
     {
-        private readonly IGetCoordinateFromGeoFleet _getCoordinateFromGeoFleet;
         private readonly IGetInfoRichiesta _getInfoRichiesta;
+        private readonly IGetMezziUtilizzabili _getMezziUtilizzabili;
 
-        public GetMezziMarker(IGetCoordinateFromGeoFleet getCoordinateFromGeoFleet, IGetInfoRichiesta getInfoRichiesta)
+        public GetMezziMarker(IGetInfoRichiesta getInfoRichiesta, IGetMezziUtilizzabili getMezziUtilizzabili)
         {
-            _getCoordinateFromGeoFleet = getCoordinateFromGeoFleet;
             _getInfoRichiesta = getInfoRichiesta;
+            _getMezziUtilizzabili = getMezziUtilizzabili;
         }
 
+        /// <summary>
+        ///   il metodo la classe recupera le informazioni dei mezzi e la loro posizione georeferenziata.
+        /// </summary>
+        /// <param name="filtroAreaMappa">un area mappa</param>
+        /// <returns>Lista di MezziMarker</returns>
         public List<MezzoMarker> GetListaMezziMarker(AreaMappa filtroAreaMappa)
         {
             var listaMezziFilter = new List<MezzoMarker>();
 
-            var filepath = CostantiJson.Mezzo;
-            string json;
-            using (StreamReader r = new StreamReader(filepath))
-            {
-                json = r.ReadToEnd();
-            }
-            var filepathFlotta = CostantiJson.FlottaMezzi;
-            string jsonFlotta;
-            using (StreamReader r = new StreamReader(filepathFlotta))
-            {
-                jsonFlotta = r.ReadToEnd();
-            }
+            var listaMezzi = _getMezziUtilizzabili.Get(filtroAreaMappa.CodiceSede, "", "");
+            var listaMezziMarker = new List<MezzoMarker>();
 
-            try
+            foreach (var mezzo in listaMezzi)
             {
-                var flottaMezzi = JsonConvert.DeserializeObject<List<MezziFromGeoFleet>>(jsonFlotta);
-                var listaMezzi = JsonConvert.DeserializeObject<List<Mezzo>>(json);
-                var listaMezziMarker = new List<MezzoMarker>();
-
-                foreach (var mezzo in listaMezzi)
+                var mezzoMarker = new MezzoMarker()
                 {
-                    foreach (var mezziFromGeoFleet in flottaMezzi.Where(mezziFromGeoFleet => mezzo.Codice.Equals(mezziFromGeoFleet.CodiceMezzo)))
-                    {
-                        mezzo.Coordinate = _getCoordinateFromGeoFleet.CodificaLocalizzazione(mezziFromGeoFleet.Localizzazione);
-                    }
-                    var mezzoMarker = new MezzoMarker()
-                    {
-                        Mezzo = mezzo,
-                        InfoRichiesta = _getInfoRichiesta.GetInfoRichiestaFromIdRichiestaMezzo(mezzo.IdRichiesta)
-                    };
+                    Mezzo = mezzo,
+                    InfoRichiesta = _getInfoRichiesta.GetInfoRichiestaFromIdRichiestaMezzo(mezzo.IdRichiesta)
+                };
 
-                    listaMezziMarker.Add(mezzoMarker);
-                }
-
-                if (filtroAreaMappa == null) return listaMezziMarker;
-
-                listaMezziFilter.AddRange(listaMezziMarker.Where(mezzo => (mezzo.Mezzo.Coordinate.Latitudine >= filtroAreaMappa.BottomLeft.Latitudine) && (mezzo.Mezzo.Coordinate.Latitudine <= filtroAreaMappa.TopRight.Latitudine) && ((mezzo.Mezzo.Coordinate.Longitudine >= filtroAreaMappa.BottomLeft.Longitudine) && (mezzo.Mezzo.Coordinate.Longitudine <= filtroAreaMappa.TopRight.Longitudine))));
-
-                return listaMezziFilter;
+                listaMezziMarker.Add(mezzoMarker);
             }
-            catch (Exception ex)
-            {
-                return null;
-            }
+
+            if (filtroAreaMappa == null) return listaMezziMarker;
+
+            listaMezziFilter.AddRange(listaMezziMarker.Where(mezzo => (mezzo.Mezzo.Coordinate.Latitudine >= filtroAreaMappa.BottomLeft.Latitudine) && (mezzo.Mezzo.Coordinate.Latitudine <= filtroAreaMappa.TopRight.Latitudine) && ((mezzo.Mezzo.Coordinate.Longitudine >= filtroAreaMappa.BottomLeft.Longitudine) && (mezzo.Mezzo.Coordinate.Longitudine <= filtroAreaMappa.TopRight.Longitudine))));
+
+            return listaMezziFilter;
         }
     }
 }

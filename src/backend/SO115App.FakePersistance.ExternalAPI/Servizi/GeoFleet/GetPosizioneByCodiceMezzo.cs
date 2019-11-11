@@ -19,15 +19,20 @@
 //-----------------------------------------------------------------------
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using SO115App.ExternalAPI.Fake.Classi;
 using SO115App.Models.Classi.ServiziEsterni;
 using SO115App.Models.Servizi.Infrastruttura.GeoFleet;
 using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace SO115App.ExternalAPI.Fake.Servizi.GeoFleet
 {
+    /// <summary>
+    ///   Servizio che recupera la posizione di un mezzo da Geofleet.
+    /// </summary>
     public class GetPosizioneByCodiceMezzo : IGetPosizioneByCodiceMezzo
     {
-        private HttpClient _client;
+        private readonly HttpClient _client;
         private readonly IConfiguration _configuration;
 
         public GetPosizioneByCodiceMezzo(HttpClient client, IConfiguration configuration)
@@ -36,10 +41,21 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GeoFleet
             _configuration = configuration;
         }
 
-        public MessaggioPosizione Get(string codiceMezzo)
+        /// <summary>
+        ///   Restituisce la posizione del mezzo
+        /// </summary>
+        /// <param name="codiceMezzo">Il codice del mezzo</param>
+        /// <returns>Il messaggio posizione da Geofleet</returns>
+        public async Task<MessaggioPosizione> Get(string codiceMezzo)
         {
-            var response = _client.GetAsync($"{_configuration.GetSection("UrlExternalApi").GetSection("GeofleetApi").Value}{Costanti.GeoFleetGetPosizioneByCodiceMezzo}?codiceMezzo={codiceMezzo}").ToString(); //L'API GeoFleet ancora non si aspetta una lista di codici mezzo
-            return JsonConvert.DeserializeObject<MessaggioPosizione>(response);
+            if (codiceMezzo.Contains(".")) codiceMezzo += "/";
+            var response = await _client.GetAsync(_configuration.GetSection("UrlExternalApi").GetSection("GeofleetApi").Value + Costanti.GeoFleetGetPosizioneByCodiceMezzo + codiceMezzo).ConfigureAwait(false);//L'API GeoFleet ancora non si aspetta una lista di codici mezzo
+            response.EnsureSuccessStatusCode();
+            using (var content = response.Content)
+            {
+                string data = await content.ReadAsStringAsync().ConfigureAwait(false);
+                return JsonConvert.DeserializeObject<MessaggioPosizione>(data);
+            }
         }
     }
 }
