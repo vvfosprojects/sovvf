@@ -1,0 +1,219 @@
+[
+  {
+    "CodiceScheda": "1",
+    "DataInserimento": "2019-09-05T08:00:00",
+    "Richiedente": {
+      "Telefono": "113",
+      "Nominativo": "Polizia"
+    },
+    "Localita": {
+      "Coordinate": {
+        "Latitudine": 41.908101,
+        "Longitudine": 12.549783
+      },
+      "Indirizzo": "Via Yambo, 00159 Roma RM, Italia",
+      "Note": null,
+      "Piano": null
+    },
+    "ClassificazioneEvento": "Incendio Albero",
+    "Categoria": "",
+    "EnteCompetenza": "VVF",
+    "Dettaglio": "",
+    "Priorita": 3,
+    "NumeroPersoneCoinvolte": "2",
+    "OperatoreChiamata": {
+      "CodiceSede": "RM.1000",
+      "CodicePostazioneOperatore": "10",
+      "CodiceFiscale": "ABCD10"
+    },
+    "Classificazione": "Conoscenza",
+    "Letta": false,
+    "Gestita": false
+  },
+  {
+    "CodiceScheda": "2",
+    "DataInserimento": "2019-09-25T08:00:00",
+    "Richiedente": {
+      "Telefono": "113",
+      "Nominativo": "Polizia"
+    },
+    "Localita": {
+      "Coordinate": {
+        "Latitudine": 41.908101,
+        "Longitudine": 12.549783
+      },
+      "Indirizzo": "Via Yambo, 00159 Roma RM, Italia",
+      "Note": null,
+      "Piano": null
+    },
+    "ClassificazioneEvento": "Incendio palazzina",
+    "Categoria": "",
+    "EnteCompetenza": "VVF",
+    "Dettaglio": "",
+    "Priorita": 3,
+    "NumeroPersoneCoinvolte": "3",
+    "OperatoreChiamata": {
+      "CodiceSede": "RM.1000",
+      "CodicePostazioneOperatore": "20",
+      "CodiceFiscale": "ABCD20"
+    },
+    "Classificazione": "Competenza",
+    "Letta": false,
+    "Gestita": false
+  },
+  {
+    "CodiceScheda": "3",
+    "DataInserimento": "2019-09-26T08:00:00",
+    "Richiedente": {
+      "Telefono": "113",
+      "Nominativo": "Polizia"
+    },
+    "Localita": {
+      "Coordinate": {
+        "Latitudine": 41.908101,
+        "Longitudine": 12.549783
+      },
+      "Indirizzo": "Via Yambo, 00159 Roma RM, Italia",
+      "Note": null,
+      "Piano": null
+    },
+    "ClassificazioneEvento": "Esplosione",
+    "Categoria": "",
+    "EnteCompetenza": "PS",
+    "Dettaglio": "",
+    "Priorita": 3,
+    "NumeroPersoneCoinvolte": "2",
+    "OperatoreChiamata": {
+      "CodiceSede": "RM.1000",
+      "CodicePostazioneOperatore": "30",
+      "CodiceFiscale": "ABCD30"
+    },
+    "Classificazione": "Conoscenza",
+    "Letta": false,
+    "Gestita": false
+  },
+  {
+    "CodiceScheda": "4",
+    "DataInserimento": "2019-09-26T08:00:00",
+    "Richiedente": {
+      "Telefono": "31434234234",
+      "Nominativo": "Tommaso Torricelli"
+    },
+    "Localita": {
+      "Coordinate": {
+        "Latitudine": 41.908101,
+        "Longitudine": 12.549783
+      },
+      "Indirizzo": "Via Yambo, 00159 Roma RM, Italia",
+      "Note": null,
+      "Piano": null
+    },
+    "ClassificazioneEvento": "Incendio Sterpaglie",
+    "Categoria": "",
+    "EnteCompetenza": "VVF",
+    "Dettaglio": "",
+    "Priorita": 3,
+    "NumeroPersoneCoinvolte": "2",
+    "OperatoreChiamata": {
+      "CodiceSede": "RM.1000",
+      "CodicePostazioneOperatore": "40",
+      "CodiceFiscale": "ABCD40"
+    },
+    "Classificazione": "Competenza",
+    "Letta": false,
+    "Gestita": false
+  },
+  {
+    "CodiceScheda": "5",
+    "DataInserimento": "2019-09-22T08:00:00",
+    "Richiedente": {
+      "Telefono": "35252352",
+      "Nominativo": "Elettro Sandonato"
+    },
+    "Localita": {
+      "Coordinate": {
+        "Latitudine": 41.908101,
+        "Longitudine": 12.549783
+      },
+      "Indirizzo": "Via Yambo, 00159 Roma RM, Italia",
+      "Note": null,
+      "Piano": null
+    },
+    "ClassificazioneEvento": "Incendio automobile",
+    "Categoria": "",
+    "EnteCompetenza": "VVF",
+    "Dettaglio": "",
+    "Priorita": 3,
+    "NumeroPersoneCoinvolte": "2",
+    "OperatoreChiamata": {
+      "CodiceSede": "TO.1000",
+      "CodicePostazioneOperatore": "11",
+      "CodiceFiscale": "ABCD11"
+    },
+    "Classificazione": "Competenza",
+    "Letta": false,
+    "Gestita": false
+  },
+  {
+    "CodiceScheda": "6",
+    "DataInserimento": "2019-09-21T08:00:00",
+    "Richiedente": {
+      "Telefono": "112",
+      "Nominativo": "Carabinieri"
+    },
+    "Localita": {
+      "Coordinate": {
+        "Latitudine": 41.908101,
+        "Longitudine": 12.549783
+      },
+      "Indirizzo": "Via Yambo, 00159 Roma RM, Italia",
+      "Note": null,
+      "Piano": null
+    },
+    "ClassificazioneEvento": "Tentativo di suicidio",
+    "Categoria": "",
+    "EnteCompetenza": "CC",
+    "Dettaglio": "",
+    "Priorita": 3,
+    "NumeroPersoneCoinvolte": "1",
+    "OperatoreChiamata": {
+      "CodiceSede": "RM.1000",
+      "CodicePostazioneOperatore": "60",
+      "CodiceFiscale": "ABCD60"
+    },
+    "Classificazione": "Differibile",
+    "Letta": false,
+    "Gestita": false
+  },
+  {
+    "CodiceScheda": "7",
+    "DataInserimento": "2019-09-27T08:00:00",
+    "Richiedente": {
+      "Telefono": "45345354",
+      "Nominativo": "Ermenegildo Zegna"
+    },
+    "Localita": {
+      "Coordinate": {
+        "Latitudine": 41.908101,
+        "Longitudine": 12.549783
+      },
+      "Indirizzo": "Via Yambo, 00159 Roma RM, Italia",
+      "Note": null,
+      "Piano": null
+    },
+    "ClassificazioneEvento": "Soccorso Imenotteri",
+    "Categoria": "",
+    "EnteCompetenza": "VVF",
+    "Dettaglio": "",
+    "Priorita": 3,
+    "NumeroPersoneCoinvolte": "2",
+    "OperatoreChiamata": {
+      "CodiceSede": "RM.1000",
+      "CodicePostazioneOperatore": "70",
+      "CodiceFiscale": "ABCD70"
+    },
+    "Classificazione": "Differibile",
+    "Letta": false,
+    "Gestita": false
+  }
+]

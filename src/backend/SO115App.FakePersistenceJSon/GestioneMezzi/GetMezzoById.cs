@@ -11,7 +11,6 @@ namespace SO115App.FakePersistence.JSon.GestioneMezzi
     {
         public Mezzo Get(string codiceMezzo)
         {
-            var mapper = new GetCoordinateFromGeoFleet();
             var filepath = CostantiJson.Mezzo;
             string json;
             using (var r = new StreamReader(filepath))

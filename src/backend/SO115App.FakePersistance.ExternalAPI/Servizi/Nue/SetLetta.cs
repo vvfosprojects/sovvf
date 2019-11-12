@@ -18,6 +18,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using Microsoft.Extensions.Configuration;
+using SO115App.ExternalAPI.Fake.Classi;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
 using System.Collections.Generic;
 using System.Net.Http;

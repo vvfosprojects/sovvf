@@ -17,6 +17,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using System;
 using System.Threading.Tasks;
 using CQRS.Queries;
 using Microsoft.AspNetCore.Authorization;
@@ -25,7 +26,7 @@ using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Navbar;
 
 namespace SO115App.API.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class NavbarController : ControllerBase
@@ -44,7 +45,6 @@ namespace SO115App.API.Controllers
         /// <summary>
         ///   Metodo di accesso alle richieste di assistenza
         /// </summary>
-        /// <param name="filtro">Il filtro per le richieste</param>
         /// <returns>Le sintesi delle richieste di assistenza</returns>
         [HttpGet]
         public async Task<IActionResult> Get()
@@ -58,7 +58,7 @@ namespace SO115App.API.Controllers
             {
                 return Ok(handler.Handle(query).Navbar);
             }
-            catch
+            catch (Exception ex)
             {
                 return BadRequest();
             }

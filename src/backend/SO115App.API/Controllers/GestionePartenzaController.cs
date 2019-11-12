@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using CQRS.Commands;
 using DomainModel.CQRS.Commands.GestrionePartenza.AggiornaStatoMezzo;
@@ -39,10 +40,10 @@ namespace SO115App.API.Controllers
 
             try
             {
-                this._addhandler.Handle(command);
+                _addhandler.Handle(command);
                 return Ok();
             }
-            catch
+            catch (Exception ex)
             {
                 return BadRequest();
             }

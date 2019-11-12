@@ -36,5 +36,6 @@ namespace SO115App.Models.Classi.Condivise
         public List<ChiamateInCorso> ListaChiamateInCorso { get; set; }
         public CentroMappa CentroMappaMarker { get; set; }
         public API.Models.Classi.Filtri.Filtri ListaFiltri { get; set; }
+        public List<SchedaContatto> ListaSchedeContatto { get; set; }
     }
 }

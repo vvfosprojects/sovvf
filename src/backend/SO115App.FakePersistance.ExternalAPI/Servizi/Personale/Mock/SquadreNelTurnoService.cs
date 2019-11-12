@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using SO115App.ExternalAPI.Fake.Classi;
 using SO115App.ExternalAPI.Fake.Classi.Servizi;
 using System;
 using System.Collections.Generic;

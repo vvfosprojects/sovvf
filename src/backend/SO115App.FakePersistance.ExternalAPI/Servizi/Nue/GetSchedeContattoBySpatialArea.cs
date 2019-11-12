@@ -19,6 +19,7 @@
 //-----------------------------------------------------------------------
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using SO115App.ExternalAPI.Fake.Classi;
 using SO115App.Models.Classi.NUE;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
 using System.Collections.Generic;

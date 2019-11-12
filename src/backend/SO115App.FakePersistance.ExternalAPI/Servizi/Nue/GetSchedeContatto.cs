@@ -19,8 +19,10 @@
 //-----------------------------------------------------------------------
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using SO115App.ExternalAPI.Fake.Servizi.Nue.Mock;
 using SO115App.Models.Classi.NUE;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 
@@ -28,18 +30,20 @@ namespace SO115App.ExternalAPI.Fake.Nue
 {
     public class GetSchedeContatto : IGetSchedeContatto
     {
-        private readonly HttpClient _client;
-        private readonly IConfiguration _configuration;
+        private readonly GetSchedeMethods _getSchede;
 
-        public GetSchedeContatto(HttpClient client)
+        public GetSchedeContatto(GetSchedeMethods getSchede)
         {
-            _client = client;
+            _getSchede = getSchede;
         }
 
         public List<SchedaContatto> ListaSchedeContatto(string codiceSede)
         {
-            var response = _client.GetAsync($"{_configuration.GetSection("UrlExternalApi").GetSection("NueApi").Value}{Costanti.NueGetSchedaContatto}?codiceSede={codiceSede}").ToString();
-            return JsonConvert.DeserializeObject<List<SchedaContatto>>(response);
+            //---------------TODO Implementazione con il servizio esterno reale che sostituirà i json
+
+            return _getSchede.GetSchede(codiceSede);//json
+
+            //---------------------------------------------------------------------------------------
         }
     }
 }
