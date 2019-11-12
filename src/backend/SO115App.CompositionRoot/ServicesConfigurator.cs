@@ -127,11 +127,8 @@ namespace SO115App.CompositionRoot
             SO115App.Models.Servizi.Infrastruttura.Turni.IGetTurno,
             SO115App.FakePersistence.JSon.Turni.GetTurno>();
             container.Register<
-                SO115App.Models.Servizi.Infrastruttura.GeoFleet.IGetCoordinateFromGeoFleet,
-                FakePersistence.JSon.Utility.GetCoordinateFromGeoFleet>();
-            container.Register<
-                SO115App.Models.Servizi.Infrastruttura.InfoRichiesta.IGetInfoRichiesta,
-                FakePersistence.JSon.Utility.GetInfoRichiesta>();
+    SO115App.Models.Servizi.Infrastruttura.InfoRichiesta.IGetInfoRichiesta,
+    FakePersistence.JSon.Utility.GetInfoRichiesta>();
 
             container.Register<
             SO115App.Models.Servizi.Infrastruttura.Notification.GestioneChiamata.INotifyInserimentoChiamata,
