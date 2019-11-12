@@ -17,7 +17,7 @@ namespace DomainModel.CQRS.Commands.MezzoPrenotato
 
         public IEnumerable<ValidationResult> Validate(MezzoPrenotatoCommand command)
         {
-            if (_iGetMezzoPrenotato.Get(command.MezzoPrenotato.MezzoComposizione.Mezzo.Codice) == null)
+            if (_iGetMezzoPrenotato.Get(command.MezzoPrenotato.CodiceMezzo) == null)
                 yield return new ValidationResult(Costanti.MezzoNonPresente);
         }
     }

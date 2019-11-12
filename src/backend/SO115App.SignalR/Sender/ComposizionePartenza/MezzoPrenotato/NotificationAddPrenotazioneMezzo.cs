@@ -37,8 +37,7 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza.MezzoPrenotato
 
         public async Task SendNotification(MezzoPrenotatoCommand command)
         {
-            
-            await _notificationHubContext.Clients.Group(command.MezzoPrenotato.CodiceSede).SendAsync("NotifyAddPrenotazioneMezzo", command);
+            await _notificationHubContext.Clients.Group(command.CodiceSede).SendAsync("NotifyAddPrenotazioneMezzo", command);
         }
     }
 }

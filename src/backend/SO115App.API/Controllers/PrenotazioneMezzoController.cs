@@ -24,7 +24,6 @@ namespace SO115App.API.Controllers
         {
             var codiceSede = Request.Headers["codicesede"];
             mezzoPrenotato.SbloccaMezzo = false;
-            mezzoPrenotato.CodiceSede = codiceSede;
 
             var command = new MezzoPrenotatoCommand()
             {

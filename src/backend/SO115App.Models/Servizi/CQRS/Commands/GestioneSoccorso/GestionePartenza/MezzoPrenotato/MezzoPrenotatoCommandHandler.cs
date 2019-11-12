@@ -39,7 +39,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
         /// <summary>
         ///   Query che estrae i valori dei Box presenti in Home Page
         /// </summary>
-        /// <param name="query">Filtri utilizzati per l'estrazione</param>
+        /// <param name="command">Filtri utilizzati per l'estrazione</param>
         /// <returns>Elenco dei mezzi disponibili</returns>
         public void Handle(MezzoPrenotatoCommand command)
         {
