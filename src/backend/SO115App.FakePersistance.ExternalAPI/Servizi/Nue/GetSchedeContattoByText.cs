@@ -27,6 +27,9 @@ using System.Net.Http;
 
 namespace SO115App.ExternalAPI.Fake.Nue
 {
+    /// <summary>
+    ///   Classe che implementa l'interfaccia al servizio NUE per la ricerca a testo libero
+    /// </summary>
     public class GetSchedeContattoByText : IGetSchedeContattoByText
     {
         private readonly HttpClient _client;
@@ -38,6 +41,12 @@ namespace SO115App.ExternalAPI.Fake.Nue
             _configuration = configuration;
         }
 
+        /// <summary>
+        ///   Metodo che, tramite una richiesta, recupera le schede contatto dal' NUE che contengono
+        ///   il testo in firma (ricerca a testo libero)
+        /// </summary>
+        /// <param name="testolibero">una stringa</param>
+        /// <returns>Una lista di SchedaContatto</returns>
         public List<SchedaContatto> SchedeContattoFromText(string testolibero)
         {
             var response = _client.GetStringAsync(string.Format(_configuration.GetSection("UrlExternalApi").GetSection("NueApi").Value + Costanti.NueGetByText + "/testolibero={0}", testolibero));

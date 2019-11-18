@@ -27,6 +27,9 @@ using System.Net.Http;
 
 namespace SO115App.ExternalAPI.Fake.Nue
 {
+    /// <summary>
+    ///   Classe che restituisce le schede contatto di quella classificazione
+    /// </summary>
     public class GetSchedeContattoByListTipo : IGetSchedeContattoByTipo
     {
         private readonly HttpClient _client;
@@ -38,6 +41,12 @@ namespace SO115App.ExternalAPI.Fake.Nue
             _configuration = configuration;
         }
 
+        /// <summary>
+        ///   Metodo che invia una request al servizio NUE e restituisce le schede contatto di
+        ///   quella classificazione
+        /// </summary>
+        /// <param name="classificazione">una lista di stringhe</param>
+        /// <returns>Una lista di SchedaContatto</returns>
         public List<SchedaContatto> SchedeContattoFromListTipo(List<string> classificazione)
         {
             var response = _client.GetStringAsync(string.Format(_configuration.GetSection("UrlExternalApi").GetSection("NueApi").Value + Costanti.NueGetByTipo + "/classificazione={0}", classificazione));

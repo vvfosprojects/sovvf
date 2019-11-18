@@ -27,6 +27,10 @@ using System.Net.Http;
 
 namespace SO115App.ExternalAPI.Fake.Nue
 {
+    /// <summary>
+    ///   Classe che restituisce tutte le schede contatto lavorate dagli operatori identificati dal
+    ///   loro codici fiscali
+    /// </summary>
     public class GetSchedeContattoByCodiciFiscali : IGetSchedeContattoByCodiciFiscali
     {
         private readonly HttpClient _client;
@@ -38,6 +42,12 @@ namespace SO115App.ExternalAPI.Fake.Nue
             _configuration = configuration;
         }
 
+        /// <summary>
+        ///   Metodo che invia una richiesta al mock NUE e restituisce tutte le schede contatto
+        ///   lavorate dagli operatori identificati dal loro codici fiscali
+        /// </summary>
+        /// <param name="codiciFiscali">il codice sede</param>
+        /// <returns>Una lista di SchedaContatto</returns>
         public List<SchedaContatto> SchedeContattoFromCodiciFiscali(List<string> codiciFiscali)
         {
             var response = _client.GetStringAsync(string.Format(_configuration.GetSection("UrlExternalApi").GetSection("NueApi").Value + Costanti.NueGetByCFe + "/codiciFiscali={0}", codiciFiscali));

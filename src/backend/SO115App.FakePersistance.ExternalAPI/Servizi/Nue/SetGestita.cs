@@ -25,6 +25,10 @@ using System.Net.Http;
 
 namespace SO115App.ExternalAPI.Fake.Nue
 {
+    /// <summary>
+    ///   Classe che aggiorna la stato della scheda contatto in gestita e di conseguenza in letta
+    /// </summary>
+
     public class SetGestita : ISetStatoGestioneSchedaContatto
     {
         private readonly HttpClient _client;
@@ -36,6 +40,14 @@ namespace SO115App.ExternalAPI.Fake.Nue
             _configuration = configuration;
         }
 
+        /// <summary>
+        ///   Metodo che invia una richiesta POST sul servizio Nue per aggiornare la stato della
+        ///   scheda contatto in gestita e di conseguenza in letta
+        /// </summary>
+        /// <param name="codiceScheda">il codice della scheda contatto</param>
+        /// <param name="codiceSede">il codice sede dell'operatore</param>
+        /// <param name="codiceFiscale">il codice fiscale dell'operatore</param>
+        /// <param name="gestita">la booleana gestita</param>
         public void Gestita(string codiceScheda, string codiceSede, string codiceFiscale, bool gestita)
         {
             var stringContent = new FormUrlEncodedContent(new[]

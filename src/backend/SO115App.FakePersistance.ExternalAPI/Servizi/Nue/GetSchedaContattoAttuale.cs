@@ -26,6 +26,9 @@ using System.Net.Http;
 
 namespace SO115App.ExternalAPI.Fake.Nue
 {
+    /// <summary>
+    ///   Classe che implementa l'interfaccia per il recupero della scheda contatto attuale
+    /// </summary>
     public class GetSchedaContattoAttuale : IGetSchedaContattoAttuale
     {
         private readonly HttpClient _client;
@@ -37,6 +40,12 @@ namespace SO115App.ExternalAPI.Fake.Nue
             _configuration = configuration;
         }
 
+        /// <summary>
+        ///   Metodo che invia una richiesta al mock di NUE per il recupero della scheda contatto attuale.
+        /// </summary>
+        /// <param name="codiceSede">il codice sede</param>
+        /// <param name="codiceOperatore">il codice dell'operatore</param>
+        /// <returns>SchedaContatto</returns>
         public SchedaContatto SchedaContattoAttuale(string codiceSede, string codiceOperatore)
         {
             var response = _client.GetStringAsync(string.Format(_configuration.GetSection("UrlExternalApi").GetSection("NueApi").Value + Costanti.NueGetSchedaContattoAttuale + "/codiceSede={0}&codiceOperatore={1}", codiceSede, codiceOperatore));
