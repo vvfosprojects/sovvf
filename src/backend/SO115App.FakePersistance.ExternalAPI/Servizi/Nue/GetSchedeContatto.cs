@@ -28,6 +28,9 @@ using System.Net.Http;
 
 namespace SO115App.ExternalAPI.Fake.Nue
 {
+    /// <summary>
+    ///   Classe implementa l'interfaccia per il recupero di tutte le schede contatto di quella sede
+    /// </summary>
     public class GetSchedeContatto : IGetSchedeContatto
     {
         private readonly GetSchedeMethods _getSchede;
@@ -37,6 +40,12 @@ namespace SO115App.ExternalAPI.Fake.Nue
             _getSchede = getSchede;
         }
 
+        /// <summary>
+        ///   Metodo che invia una richiesta al servizio mock NUE e che restituisce tutte le schede
+        ///   contatto di quella sede
+        /// </summary>
+        /// <param name="codiceSede">il codice sede</param>
+        /// <returns>Una lista di SchedaContatto</returns>
         public List<SchedaContatto> ListaSchedeContatto(string codiceSede)
         {
             //---------------TODO Implementazione con il servizio esterno reale che sostituirà i json

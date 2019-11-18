@@ -27,6 +27,9 @@ using System.Net.Http;
 
 namespace SO115App.ExternalAPI.Fake.Nue
 {
+    /// <summary>
+    ///   Classe che restituisce tutte le schede contatto che hanno lo stato a letta
+    /// </summary>
     public class GetSchedeContattoLetta : IGetSchedeContattoLetta
     {
         private readonly HttpClient _client;
@@ -38,6 +41,12 @@ namespace SO115App.ExternalAPI.Fake.Nue
             _configuration = configuration;
         }
 
+        /// <summary>
+        ///   Metodo che invia la richiesta per il reperimento di tutte le schede contatto che hanno
+        ///   lo stato a letta
+        /// </summary>
+        /// <param name="letta">booleana letta</param>
+        /// <returns>Una lista di SchedaContatto</returns>
         public List<SchedaContatto> SchedeContattoLetta(bool letta)
         {
             var response = _client.GetStringAsync(string.Format(_configuration.GetSection("UrlExternalApi").GetSection("NueApi").Value + Costanti.NueGetLette + "/letta={0}", letta));

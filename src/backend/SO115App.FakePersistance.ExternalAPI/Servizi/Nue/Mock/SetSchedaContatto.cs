@@ -25,10 +25,16 @@ using System.IO;
 
 namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
 {
+    /// <summary>
+    ///   Servizio che mocka tutti i servizi di scrittura sul NUE (Scheda Contatto).
+    /// </summary>
     public static class SetSchedaContatto
     {
         private static readonly string filepath = Costanti.NueJson;
 
+        /// <summary>
+        ///   Metodo che restituisce la lista di tutte le schede contatto sul json
+        /// </summary>
         public static List<SchedaContatto> Get()
         {
             string json;
@@ -40,12 +46,24 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
             return JsonConvert.DeserializeObject<List<SchedaContatto>>(json);
         }
 
+        /// <summary>
+        ///   Metodo che aggiorna la lista delle schede contatto sul Json accettanto in firma la
+        ///   lista delle schede contatto.
+        /// </summary>
+        /// <param name="lista">La lista di schede contatto</param>
         public static void Set(List<SchedaContatto> lista)
         {
             var updatedList = JsonConvert.SerializeObject(lista);
             File.WriteAllText(filepath, updatedList);
         }
 
+        /// <summary>
+        ///   Metodo che aggiorna la stato della scheda contatto in letta
+        /// </summary>
+        /// <param name="codiceScheda">il codice della scheda contatto</param>
+        /// <param name="codiceSede">il codice sede dell'operatore</param>
+        /// <param name="codiceFiscale">il codice fiscale dell'operatore</param>
+        /// <param name="letta">la booleana letta</param>
         public static void SetLetta(string codiceScheda, string codiceSede, string codiceFiscale, bool letta)
         {
             var schedeContatto = Get();
@@ -60,6 +78,13 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
             Set(schedeContatto);
         }
 
+        /// <summary>
+        ///   Metodo che aggiorna la stato della scheda contatto in gestita e di conseguenza in letta
+        /// </summary>
+        /// <param name="codiceScheda">il codice della scheda contatto</param>
+        /// <param name="codiceSede">il codice sede dell'operatore</param>
+        /// <param name="codiceFiscale">il codice fiscale dell'operatore</param>
+        /// <param name="gestita">la booleana gestita</param>
         public static void SetGestita(string codiceScheda, string codiceSede, string codiceFiscale, bool gestita)
         {
             var schedeContatto = Get();

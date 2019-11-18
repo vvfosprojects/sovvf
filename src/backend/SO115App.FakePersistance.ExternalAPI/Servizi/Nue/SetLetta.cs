@@ -25,6 +25,10 @@ using System.Net.Http;
 
 namespace SO115App.ExternalAPI.Fake.Nue
 {
+    /// <summary>
+    ///   Classe che aggiorna la stato della scheda contatto in letta
+    /// </summary>
+
     public class SetLetta : ISetLetturaSchedaContatto
     {
         private readonly HttpClient _client;
@@ -36,7 +40,15 @@ namespace SO115App.ExternalAPI.Fake.Nue
             _configuration = configuration;
         }
 
-        public void Letta(string codiceSede, string codiceScheda, string codiceFiscale, bool letta)
+        /// <summary>
+        ///   Metodo che invia la richiesta al servizio NUE per aggiornare la stato della scheda
+        ///   contatto in letta
+        /// </summary>
+        /// <param name="codiceScheda">il codice della scheda contatto</param>
+        /// <param name="codiceSede">il codice sede dell'operatore</param>
+        /// <param name="codiceFiscale">il codice fiscale dell'operatore</param>
+        /// <param name="letta">la booleana letta</param>
+        public void Letta(string codiceScheda, string codiceSede, string codiceFiscale, bool letta)
         {
             var stringContent = new FormUrlEncodedContent(new[]
                     {

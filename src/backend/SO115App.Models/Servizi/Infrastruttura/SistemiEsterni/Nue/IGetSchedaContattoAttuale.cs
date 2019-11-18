@@ -17,7 +17,6 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using SO115App.API.Models.Classi.Soccorso;
 using SO115App.Models.Classi.NUE;
 
 namespace SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue

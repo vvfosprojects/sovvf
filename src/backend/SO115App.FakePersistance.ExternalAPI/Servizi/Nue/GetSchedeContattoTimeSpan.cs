@@ -28,6 +28,10 @@ using System.Net.Http;
 
 namespace SO115App.ExternalAPI.Fake.Nue
 {
+    /// <summary>
+    ///   Classe che restituisce da un servizio mock tutte le schede contatto comprese in un dato
+    ///   lasso di tempo
+    /// </summary>
     public class GetSchedeContattoTimeSpan : IGetSchedeContattoTimeSpan
     {
         private readonly HttpClient _client;
@@ -39,6 +43,13 @@ namespace SO115App.ExternalAPI.Fake.Nue
             _configuration = configuration;
         }
 
+        /// <summary>
+        ///   Metodo che invia la richiesta al servizio mock per la restituzione di tutte le schede
+        ///   contatto comprese in un dato lasso di tempo
+        /// </summary>
+        /// <param name="dataDa">la data di partenza</param>
+        /// <param name="dataA">la data di fine</param>
+        /// <returns>Una lista di SchedaContatto</returns>
         public List<SchedaContatto> SchedeContattoTimeSpan(DateTime dataDa, DateTime dataA)
         {
             var response = _client.GetStringAsync(string.Format(_configuration.GetSection("UrlExternalApi").GetSection("NueApi").Value + Costanti.NueGetByTimeSpan + "/dataDa={0}&dataDa={1}", dataDa, dataA));

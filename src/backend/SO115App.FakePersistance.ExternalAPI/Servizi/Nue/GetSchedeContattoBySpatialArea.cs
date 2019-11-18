@@ -27,6 +27,10 @@ using System.Net.Http;
 
 namespace SO115App.ExternalAPI.Fake.Nue
 {
+    /// <summary>
+    ///   Classe che restituisce le schede contatto lavorate in un area definita da un set di
+    ///   coordinate in firma
+    /// </summary>
     public class GetSchedeContattoBySpatialArea : IGetSchedeContattoBySpatialArea
     {
         private readonly HttpClient _client;
@@ -38,6 +42,15 @@ namespace SO115App.ExternalAPI.Fake.Nue
             _configuration = configuration;
         }
 
+        /// <summary>
+        ///   Metodo che invia una richiesta al servizio NUE per il recupero delle schede contatto
+        ///   circoscritte in un area georeferenziata
+        /// </summary>
+        /// <param name="lat1">double latitudine topright</param>
+        /// <param name="lon1">double longitudine topright</param>
+        /// <param name="lat2">double latitudine bottomleft</param>
+        /// <param name="lon2">double longitudine bottomleft</param>
+        /// <returns>Una lista di SchedaContatto</returns>
         public List<SchedaContatto> SchedeContattoBySpatialArea(double lat1, double lon1, double lat2, double lon2)
         {
             var response = _client.GetStringAsync(string.Format(_configuration.GetSection("UrlExternalApi").GetSection("NueApi").Value + Costanti.NueGetByArea + "/lat1={0},lon1={1},lat2={2},lon2={3},", lat1, lon1, lat2, lon2));

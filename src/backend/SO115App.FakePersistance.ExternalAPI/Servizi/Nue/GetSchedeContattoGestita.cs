@@ -27,6 +27,9 @@ using System.Net.Http;
 
 namespace SO115App.ExternalAPI.Fake.Nue
 {
+    /// <summary>
+    ///   Classe che restituisce tutte le schede contatto che hanno lo stato a gestita
+    /// </summary>
     public class GetSchedeContattoGestita : IGetSchedeContattoGestita
     {
         private readonly HttpClient _client;
@@ -38,6 +41,12 @@ namespace SO115App.ExternalAPI.Fake.Nue
             _configuration = configuration;
         }
 
+        /// <summary>
+        ///   Metodo che invia la richiesta per il reperimento di tutte le schede contatto che hanno
+        ///   lo stato a gestita
+        /// </summary>
+        /// <param name="gestita">booleana gestita</param>
+        /// <returns>Una lista di SchedaContatto</returns>
         public List<SchedaContatto> SchedeContattoGestita(bool gestita)
         {
             var response = _client.GetStringAsync(string.Format(_configuration.GetSection("UrlExternalApi").GetSection("NueApi").Value + Costanti.NueGetGestite + "/gestita={0}", gestita));
