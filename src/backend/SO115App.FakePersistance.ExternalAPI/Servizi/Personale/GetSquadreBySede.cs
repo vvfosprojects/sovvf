@@ -5,6 +5,7 @@ using SO115App.API.Models.Classi.Utenti;
 using SO115App.ExternalAPI.Fake.Classi;
 using SO115App.ExternalAPI.Fake.Servizi.Identity;
 using SO115App.ExternalAPI.Fake.Servizi.Identity.Mock;
+using SO115App.ExternalAPI.Fake.Servizi.Personale.Mock;
 using SO115App.Models.Classi.ServiziEsterni.IdentityManagement;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Personale;
 using System;
@@ -34,19 +35,16 @@ namespace SO115App.ExternalAPI.Fake.Personale
                 GetPersonaFisica Identity = new GetPersonaFisica(_client, _configuration);
                 List<string> ListaCodiciFiscali = new List<string>();
 
-                var ExternalUrlString = _configuration.GetSection("UrlExternalApi").GetSection("ServiziApi").Value;
+                SquadreNelTurnoService service = new SquadreNelTurnoService();
+                ComponentiSquadreService componentiService = new ComponentiSquadreService();
 
-                var response = _client.GetStringAsync(string.Format(Costanti.ServiziGetSquadreUrl + "/GetSquadreBySede?codiceSede={0}", codiceSede));
-                foreach (var turno in JsonConvert.DeserializeObject<List<Turno>>(response.ToString()))
+                foreach (var turno in service.GetListaSquadreBySede(codiceSede))
                 {
                     foreach (var squadra in turno.ListaSquadre)
                     {
                         squadra.Componenti = new List<Componente>();
 
-                        var responsecomponenti = _client.GetStringAsync(string.Format(Costanti.ServiziGetComponentiUrl + "?codicesede={0}&codicesquadra={1}&codiceturno={2}", codiceSede, squadra.Codice, turno.Codice));
-                        squadra.Componenti = JsonConvert.DeserializeObject<List<Componente>>(responsecomponenti.ToString());
-
-                        //squadra.Componenti = ComponentiSquadreService.GetListaComponentiSquadra()
+                        squadra.Componenti = componentiService.GetListaComponentiSquadra(codiceSede, squadra.Codice, turno.Codice);
 
                         List<PersonaFisica> ListaComponentiSquadra = new List<PersonaFisica>();
 

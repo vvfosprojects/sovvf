@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Utenti;
 using SO115App.ExternalAPI.Fake.Classi;
+using SO115App.ExternalAPI.Fake.Servizi.Personale.Mock;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Personale;
 using System;
 using System.Collections.Generic;
@@ -26,17 +27,17 @@ namespace SO115App.ExternalAPI.Fake.Personale
             try
             {
                 List<Turno> listaSquadreTurno = new List<Turno>();
+                SquadreNelTurnoService service = new SquadreNelTurnoService();
+                ComponentiSquadreService componentiService = new ComponentiSquadreService();
 
-                var ExternalUrlString = _configuration.GetSection("UrlExternalApi").GetSection("ServiziApi").Value;
+                var SquadreNelTurno = service.GetListaSquadreNelTurno(codiceSede, codiceTurno);
 
-                var response = _client.GetStringAsync(string.Format(Costanti.ServiziGetSquadreUrl + "/GetSquadreNelTurno/codiceSede={0}&codiceTurno={1}", codiceSede, codiceTurno));
-                foreach (var turno in JsonConvert.DeserializeObject<List<Turno>>(response.ToString()))
+                foreach (var turno in SquadreNelTurno)
                 {
                     foreach (var squadra in turno.ListaSquadre)
                     {
                         squadra.Componenti = new List<Componente>();
-                        var responseComponenti = _client.GetStringAsync(string.Format(Costanti.ServiziGetSquadreUrl + "/codiceSede={0}&codiceSquadra={1}&codiceTurno={2}", codiceSede, squadra.Codice, turno.Codice));
-                        squadra.Componenti = JsonConvert.DeserializeObject<List<Componente>>(responseComponenti.ToString());
+                        squadra.Componenti = componentiService.GetListaComponentiSquadra(codiceSede, squadra.Codice, turno.Codice);
                     }
                     listaSquadreTurno.Add(turno);
                 }

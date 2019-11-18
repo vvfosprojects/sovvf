@@ -11,9 +11,11 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale.Mock
 {
     public class ComponentiSquadreService
     {
-        public static List<Componente> GetListaComponentiSquadra(string codiceSede, string codiceSquadra, string codiceTurno)
+        public List<Componente> GetListaComponentiSquadra(string codiceSede, string codiceSquadra, string codiceTurno)
         {
-            SquadraDTO squadra = SquadreNelTurnoService.GetSquadraByCodice(codiceSquadra, codiceSede, codiceTurno);
+            SquadreNelTurnoService SquadreService = new SquadreNelTurnoService();
+
+            Squadra squadra = SquadreService.GetSquadraByCodice(codiceSquadra, codiceSede, codiceTurno);
 
             List<Componente> ListaComponenti = new List<Componente>();
             List<Componente> ListaDef = new List<Componente>();

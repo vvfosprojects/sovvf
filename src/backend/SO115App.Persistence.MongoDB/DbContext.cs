@@ -49,11 +49,12 @@ namespace Persistence.MongoDB
                     .SetSerializer(new StringSerializer(BsonType.ObjectId));
             });
 
-            BsonClassMap.RegisterClassMap<Evento>(cm =>
-            {
-                cm.AutoMap();
-                cm.MapProperty("TipoEvento").SetElementName("tipoEvento");
-            });
+            ///Non più necessario grazie a MongoDB
+            //BsonClassMap.RegisterClassMap<Evento>(cm =>
+            //{
+            //    cm.AutoMap();
+            //    cm.MapProperty("TipoEvento").SetElementName("tipoEvento");
+            //});
 
             BsonClassMap.RegisterClassMap<Segnalazione>(cm =>
             {

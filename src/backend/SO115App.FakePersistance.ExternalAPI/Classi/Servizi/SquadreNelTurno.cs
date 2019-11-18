@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SO115App.API.Models.Classi.Condivise;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -11,6 +12,6 @@ namespace SO115App.ExternalAPI.Fake.Classi.Servizi
 
         public string CodiceSede { get; set; }
 
-        public List<SquadraDTO> ListaSquadre { get; set; }
+        public List<Squadra> ListaSquadre { get; set; }
     }
 }
