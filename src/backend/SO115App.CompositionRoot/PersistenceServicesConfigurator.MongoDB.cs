@@ -2,6 +2,7 @@
 using Persistence.MongoDB;
 using SimpleInjector;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
+using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Persistence.MongoDB;
 
 namespace SO115App.CompositionRoot
@@ -16,8 +17,15 @@ namespace SO115App.CompositionRoot
             container.Register<DbContext>(() =>
                 new DbContext(connectionString, databaseName), Lifestyle.Singleton);
 
+            #region Gestione richiesta di assistenza
+
             container.Register<ISaveRichiestaAssistenza, SaveRichiesta>();
             container.Register<IUpDateRichiestaAssistenza, UpDateRichiesta>();
+
+            container.Register<IGetRichiestaById, GetRichiesta>();
+            container.Register<IGetListaSintesi, GetRichiesta>();
+
+            #endregion Gestione richiesta di assistenza
         }
     }
 }
