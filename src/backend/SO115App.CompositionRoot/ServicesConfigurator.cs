@@ -29,6 +29,7 @@ namespace SO115App.CompositionRoot
         {
             PersistenceServicesConfigurator.Configure(container);
 
+            //Trasportate in MongoDB
             container.Register<
                 API.Models.Servizi.Infrastruttura.GestioneSoccorso.ISaveRichiestaAssistenza,
                 FakePersistenceJSon.GestioneIntervento.InserimentoRichiesta>();

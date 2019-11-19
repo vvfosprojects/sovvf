@@ -17,6 +17,7 @@ namespace SO115App.CompositionRoot
                 new DbContext(connectionString, databaseName), Lifestyle.Singleton);
 
             container.Register<ISaveRichiestaAssistenza, SaveRichiesta>();
+            container.Register<IUpDateRichiestaAssistenza, UpDateRichiesta>();
         }
     }
 }
