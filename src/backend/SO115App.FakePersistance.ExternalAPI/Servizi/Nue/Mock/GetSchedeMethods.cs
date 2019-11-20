@@ -25,6 +25,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 
 namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
 {
@@ -33,7 +34,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
     /// </summary>
     public class GetSchedeMethods
     {
-        private readonly string SchedeContattoJson = Costanti.NueJson;
+        private readonly string SchedeContattoJson = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), Costanti.NueJson);
 
         /// <summary>
         ///   Metodo che recupera tutti le schede contatto dal json SchedeContatto.
