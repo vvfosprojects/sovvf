@@ -9,6 +9,7 @@ using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.Eventi;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
+using SO115App.Persistence.MongoDB.Mappings;
 using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("SO115App.CompositionRoot")]
@@ -41,13 +42,7 @@ namespace Persistence.MongoDB
 
         private void MapClasses()
         {
-            BsonClassMap.RegisterClassMap<Entity>(cm =>
-            {
-                cm.AutoMap();
-                cm.MapIdMember(c => c.Id)
-                    .SetIdGenerator(StringObjectIdGenerator.Instance)
-                    .SetSerializer(new StringSerializer(BsonType.ObjectId));
-            });
+            EntityMap.Map();
 
             ///Non più necessario grazie a MongoDB
             //BsonClassMap.RegisterClassMap<Evento>(cm =>
