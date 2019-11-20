@@ -67,7 +67,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac.Mock
         /// <param name="genereMezzo">il genere del mezzo (opzionale)</param>
         /// <param name="siglaMezzo">la sigla del mezzo (opzionale)</param>
         /// <returns>una lista mezzi</returns>
-        public List<MezzoDTO> GetMezziFuoriServizio(List<string> codiceSedi, string? genereMezzo, string siglaMezzo)
+        public List<MezzoDTO> GetMezziFuoriServizio(List<string> codiceSedi, string genereMezzo, string siglaMezzo)
         {
             var listaMezzi = Get().FindAll(x => x.Movimentazione.StatoOperativo == FuoriServizio);
             var listaMezziFromSede = new List<MezzoDTO>();
