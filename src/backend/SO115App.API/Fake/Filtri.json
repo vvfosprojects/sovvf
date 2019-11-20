@@ -2,14 +2,14 @@
   "distaccamenti": [
     {
       "id": "RM.1000",
-      "descrizione": "Tuscolana"
-    },
-    {
-      "id": "RM.1002",
-      "descrizione": "Eur"
+      "descrizione": "Comando di Roma"
     },
     {
       "id": "RM.1001",
+      "descrizione": "Distaccamento Cittadino Roma Tuscolano I"
+    },
+    {
+      "id": "RM.1002",
       "descrizione": "Ostiense"
     },
     {
@@ -24,15 +24,23 @@
     },
     {
       "id": "2",
-      "descrizione": "ABP"
+      "descrizione": "AF/UCL"
     },
     {
       "id": "3",
-      "descrizione": "AG"
+      "descrizione": "AF/OP"
     },
     {
       "id": "4",
-      "descrizione": "AS"
+      "descrizione": "ACT/TRI"
+    },
+    {
+      "id": "5",
+      "descrizione": "AF/COMBI"
+    },
+    {
+      "id": "6",
+      "descrizione": "AF/COMBI"
     }
   ],
   "stati": [
