@@ -2,51 +2,46 @@
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Utenti;
 using SO115App.ExternalAPI.Fake.Classi;
-using SO115App.ExternalAPI.Fake.Classi.Servizi;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 
 namespace SO115App.ExternalAPI.Fake.Servizi.Personale.Mock
 {
     public class SquadreNelTurnoService
     {
+        private readonly string SquadreNelTurnoJson = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), Costanti.ServiziSquadreJson);
+
         public List<Turno> GetListaSquadreNelTurno(string codiceSede, string codiceTurno)
         {
-            List<Turno> ListaSquadreNelTurno = new List<Turno>();
-
-            string filepath = Costanti.ServiziSquadreJson;
             string json;
-            using (StreamReader r = new StreamReader(filepath))
+            using (StreamReader r = new StreamReader(SquadreNelTurnoJson))
             {
                 json = r.ReadToEnd();
             }
 
-            ListaSquadreNelTurno = JsonConvert.DeserializeObject<List<Turno>>(json);
+            var listaSquadreNelTurno = JsonConvert.DeserializeObject<List<Turno>>(json);
 
             if (codiceTurno.Length > 0)
-                return ListaSquadreNelTurno.Where(x => x.Codice == codiceTurno && x.CodiceSede == codiceSede).ToList();
+                return listaSquadreNelTurno.Where(x => x.Codice == codiceTurno && x.CodiceSede == codiceSede).ToList();
             else
-                return ListaSquadreNelTurno.Where(x => x.CodiceSede == codiceSede).ToList();
+                return listaSquadreNelTurno.Where(x => x.CodiceSede == codiceSede).ToList();
         }
 
         public Squadra GetSquadraByCodice(string codiceSquadra, string codiceSede, string codiceTurno)
         {
-            List<Turno> ListaSquadreNelTurno = new List<Turno>();
-
-            string filepath = Costanti.ServiziSquadreJson;
             string json;
-            using (StreamReader r = new StreamReader(filepath))
+            using (StreamReader r = new StreamReader(SquadreNelTurnoJson))
             {
                 json = r.ReadToEnd();
             }
 
-            ListaSquadreNelTurno = JsonConvert.DeserializeObject<List<Turno>>(json);
+            var listaSquadreNelTurno = JsonConvert.DeserializeObject<List<Turno>>(json);
 
             Squadra squadraSel = null;
 
-            foreach (Turno squadraNelTurno in ListaSquadreNelTurno.Where(x => x.CodiceSede == codiceSede && x.Codice == codiceTurno).ToList())
+            foreach (Turno squadraNelTurno in listaSquadreNelTurno.Where(x => x.CodiceSede == codiceSede && x.Codice == codiceTurno).ToList())
             {
                 foreach (Squadra squadra in squadraNelTurno.ListaSquadre)
                 {
@@ -60,18 +55,15 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale.Mock
 
         public List<Turno> GetListaSquadreBySede(string codiceSede)
         {
-            List<Turno> ListaSquadreNelTurno = new List<Turno>();
-
-            string filepath = Costanti.ServiziSquadreJson;
             string json;
-            using (StreamReader r = new StreamReader(filepath))
+            using (StreamReader r = new StreamReader(SquadreNelTurnoJson))
             {
                 json = r.ReadToEnd();
             }
 
-            ListaSquadreNelTurno = JsonConvert.DeserializeObject<List<Turno>>(json);
+            var listaSquadreNelTurno = JsonConvert.DeserializeObject<List<Turno>>(json);
 
-            return ListaSquadreNelTurno.Where(x => x.CodiceSede == codiceSede).ToList();
+            return listaSquadreNelTurno.Where(x => x.CodiceSede == codiceSede).ToList();
         }
     }
 }

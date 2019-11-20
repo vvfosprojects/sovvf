@@ -41,10 +41,10 @@ namespace SO115App.ExternalAPI.Fake.Classi
         #region Json
 
         public static string GacJson = "Servizi/Gac/Mock/Json/Mezzo.json";
-        public static string NueJson = "bin/Debug/netcoreapp2.2/Servizi/Nue/Mock/Json/SchedeContatto.json";
-        public static string ServiziComponentiJson = "bin/Debug/netcoreapp2.2/Servizi/Personale/Mock/Json/Componenti.json";
-        public static string IdentityManagementJson = "bin/Debug/netcoreapp2.2/Servizi/Identity/Mock/Json/Anagrafica.json";
-        public static string ServiziSquadreJson = "bin/Debug/netcoreapp2.2/Servizi/Personale/Mock/Json/SquadreNelTurno.json";
+        public static string NueJson = "Servizi/Nue/Mock/Json/SchedeContatto.json";
+        public static string ServiziComponentiJson = "Servizi/Personale/Mock/Json/Componenti.json";
+        public static string IdentityManagementJson = "Servizi/Identity/Mock/Json/Anagrafica.json";
+        public static string ServiziSquadreJson = "Servizi/Personale/Mock/Json/SquadreNelTurno.json";
 
         #endregion Json
 

@@ -1,10 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace SO115App.Models.Classi.ServiziEsterni.IdentityManagement
 {
     public class PersonaFisica
+    {
+        public List<Dati> Dati { get; set; }
+    }
+
+    public class Dati
     {
         public string Cognome { get; set; }
         public string Nome { get; set; }

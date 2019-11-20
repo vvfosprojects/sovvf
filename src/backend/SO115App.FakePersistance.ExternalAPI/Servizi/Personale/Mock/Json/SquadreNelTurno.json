@@ -7,15 +7,15 @@
       {
         "Codice": "A1",
         "Nome": "A1.Rossa",
-        "Stato": "InSede",
-        "ListaCodiciFiscaliComponentiSquadra": [ "RM123443424", "RM54564657676", "RM09433439948", "RM3443565766", "RM8775645242" ],
+        "Stato": 0,
+        "ListaCodiciFiscaliComponentiSquadra": [ "NTLMRN67L03F520A", "NTNMNL86M12A662V", "NTNGCR70L19F051L", "NTNLGU58S02I315Q", "NTNNTN84R24F839H" ],
         "CodiceSede": "RM.1000"
       },
       {
         "Codice": "A2",
         "Nome": "A2.Bianca",
-        "Stato": "InSede",
-        "ListaCodiciFiscaliComponentiSquadra": [ "RM43243445435", "RM6576574545", "RM45949433242", "RM656454354232", "RM6324324556" ],
+        "Stato": 0,
+        "ListaCodiciFiscaliComponentiSquadra": [ "NTNNTN84R24F839H", "NTNDNL88H28A462W", "NTNMTT63H03A892X", "NTLMRC86M04D542M", "NTLSDR61T23F257A" ],
         "CodiceSede": "RM.1000"
       }
     ]
@@ -28,8 +28,8 @@
       {
         "Codice": "A3",
         "Nome": "A1.Verde",
-        "Stato": "InSede",
-        "ListaCodiciFiscaliComponentiSquadra": [ "RM56565643", "RM455434534", "RM7878654", "RM6876453", "RM23434567" ],
+        "Stato": 0,
+        "ListaCodiciFiscaliComponentiSquadra": [ "NTNMTT63H03A892X", "NTNNTN84R24F839H", "NTNGCR70L19F051L", "NTNDNL88H28A462W", "NSTGPP81R07L245Y" ],
         "CodiceSede": "RM.1000"
       }
     ]
@@ -42,8 +42,8 @@
       {
         "Codice": "A1",
         "Nome": "A1.Rossa",
-        "Stato": "InSede",
-        "ListaCodiciFiscaliComponentiSquadra": [ "RM56565643", "RM455434534", "RM7878654", "RM6876453", "RM23434567" ],
+        "Stato": 0,
+        "ListaCodiciFiscaliComponentiSquadra": [ "NTNDNL88H28A462W", "NTNNTN84R24F839H", "NTNLGU58S02I315Q", "NSTGPP81R07L245Y", "NTNMTT63H03A892X" ],
         "CodiceSede": "MI.2000"
       }
     ]

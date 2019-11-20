@@ -7,6 +7,7 @@ using SO115App.ExternalAPI.Fake.Servizi.Identity;
 using SO115App.ExternalAPI.Fake.Servizi.Identity.Mock;
 using SO115App.ExternalAPI.Fake.Servizi.Personale.Mock;
 using SO115App.Models.Classi.ServiziEsterni.IdentityManagement;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.IdentityManagement;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Personale;
 using System;
 using System.Collections.Generic;
@@ -16,27 +17,22 @@ namespace SO115App.ExternalAPI.Fake.Personale
 {
     public class GetSquadreBySede : IGetSquadreBySede
     {
-        private readonly HttpClient _client;
-        private readonly IConfiguration _configuration;
-        private readonly AnagraficaPersonaleService _componentiSquadre;
+        private readonly IGetPersonaFisica _getPersonaFisica;
 
-        public GetSquadreBySede(HttpClient client, IConfiguration configuration, AnagraficaPersonaleService componentiSquadre)
+        public GetSquadreBySede(IGetPersonaFisica getPersonaFisica)
         {
-            _client = client;
-            this._configuration = configuration;
-            this._componentiSquadre = componentiSquadre;
+            _getPersonaFisica = getPersonaFisica;
         }
 
         public List<Turno> SquadreBySede(string codiceSede)
         {
             try
             {
-                List<Turno> listaSquadreTurno = new List<Turno>();
-                GetPersonaFisica Identity = new GetPersonaFisica(_client, _configuration);
-                List<string> ListaCodiciFiscali = new List<string>();
+                var listaSquadreTurno = new List<Turno>();
+                var listaCodiciFiscali = new List<string>();
 
-                SquadreNelTurnoService service = new SquadreNelTurnoService();
-                ComponentiSquadreService componentiService = new ComponentiSquadreService();
+                var service = new SquadreNelTurnoService();
+                var componentiService = new ComponentiSquadreService();
 
                 foreach (var turno in service.GetListaSquadreBySede(codiceSede))
                 {
@@ -46,13 +42,11 @@ namespace SO115App.ExternalAPI.Fake.Personale
 
                         squadra.Componenti = componentiService.GetListaComponentiSquadra(codiceSede, squadra.Codice, turno.Codice);
 
-                        List<PersonaFisica> ListaComponentiSquadra = new List<PersonaFisica>();
-
-                        ListaComponentiSquadra = Identity.Get(squadra.ListaCodiciFiscaliComponentiSquadra);
+                        var listaComponentiSquadra = _getPersonaFisica.Get(squadra.ListaCodiciFiscaliComponentiSquadra).Result;
 
                         foreach (var componente in squadra.Componenti)
                         {
-                            foreach (var persona in ListaComponentiSquadra)
+                            foreach (var persona in listaComponentiSquadra)
                             {
                                 if (persona.CodFiscale.Equals(componente.CodiceFiscale))
                                 {

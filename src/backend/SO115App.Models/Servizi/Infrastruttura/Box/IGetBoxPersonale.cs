@@ -27,6 +27,6 @@ namespace SO115App.Models.Servizi.Infrastruttura.Box
         ///   Restituisce i dati riguardanti il Personale, da posizionare nel Box in Home Page
         /// </summary>
         /// <returns>Il numero totale dei Squadre</returns>
-        BoxPersonale Get();
+        BoxPersonale Get(string codiceSede);
     }
 }

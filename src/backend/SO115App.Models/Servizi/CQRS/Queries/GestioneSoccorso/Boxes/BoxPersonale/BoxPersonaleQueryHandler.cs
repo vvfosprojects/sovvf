@@ -43,7 +43,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Disponibilit
         public BoxPersonaleResult Handle(BoxPersonaleQuery query)
         {
             // preparazione del DTO
-            var boxes = _iGetBox.Get();
+            var boxes = _iGetBox.Get(query.CodiceSede);
 
             return new BoxPersonaleResult()
             {

@@ -25,28 +25,31 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace SO115App.ExternalAPI.Fake.Servizi.Identity
 {
     public class GetPersonaFisica : IGetPersonaFisica
     {
         private readonly HttpClient _client;
-        private readonly IConfiguration configuration;
+        private readonly IConfiguration _configuration;
 
         public GetPersonaFisica(HttpClient client, IConfiguration configuration)
 
         {
             _client = client;
-            this.configuration = configuration;
+            this._configuration = configuration;
         }
 
-        public List<PersonaFisica> Get(List<string> codiceFiscale)
+        public async Task<List<Dati>> Get(List<string> codiceFiscale)
         {
-            var content = new KeyValuePair<string, List<string>>("codiciFiscali", codiceFiscale);
+            var stringContent = new StringContent(JsonConvert.SerializeObject(new { codiciFiscali = codiceFiscale }), Encoding.UTF8, "application/json");
 
-            var ExternalUrlString = configuration.GetSection("UrlExternalApi").GetSection("IdentityManagementApi").Value;
-            var response = _client.PostAsJsonAsync(ExternalUrlString, content).ToString();
-            return JsonConvert.DeserializeObject<List<PersonaFisica>>(response);
+            var response = await _client.PostAsync(_configuration.GetSection("UrlExternalApi").GetSection("IdentityManagementApi").Value, stringContent).ConfigureAwait(false);
+            response.EnsureSuccessStatusCode();
+            using HttpContent content = response.Content;
+            string data = await content.ReadAsStringAsync().ConfigureAwait(false);
+            return JsonConvert.DeserializeObject<PersonaFisica>(data).Dati;
         }
     }
 }
