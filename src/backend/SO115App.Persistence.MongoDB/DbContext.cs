@@ -44,6 +44,10 @@ namespace Persistence.MongoDB
         {
             EntityMap.Map();
 
+            CodiceMap.Map();
+
+            EventiMap.Map();
+
             ///Non più necessario grazie a MongoDB
             //BsonClassMap.RegisterClassMap<Evento>(cm =>
             //{
@@ -51,72 +55,60 @@ namespace Persistence.MongoDB
             //    cm.MapProperty("TipoEvento").SetElementName("tipoEvento");
             //});
 
-            BsonClassMap.RegisterClassMap<Segnalazione>(cm =>
-            {
-                cm.AutoMap();
-                cm.MapProperty("Codice");
-            });
+            //BsonClassMap.RegisterClassMap<Telefonata>(cm =>
+            //{
+            //    cm.AutoMap();
+            //});
 
-            BsonClassMap.RegisterClassMap<Telefonata>(cm =>
-            {
-                cm.AutoMap();
-            });
+            //BsonClassMap.RegisterClassMap<AssegnazionePriorita>(cm =>
+            //{
+            //    cm.AutoMap();
+            //});
 
-            BsonClassMap.RegisterClassMap<AssegnazionePriorita>(cm =>
-            {
-                cm.AutoMap();
-            });
+            //BsonClassMap.RegisterClassMap<InizioPresaInCarico>(cm =>
+            //{
+            //    cm.AutoMap();
+            //});
 
-            BsonClassMap.RegisterClassMap<InizioPresaInCarico>(cm =>
-            {
-                cm.AutoMap();
-            });
+            //BsonClassMap.RegisterClassMap<ComposizionePartenze>(cm =>
+            //{
+            //    cm.AutoMap();
+            //});
 
-            BsonClassMap.RegisterClassMap<ComposizionePartenze>(cm =>
-            {
-                cm.AutoMap();
-            });
+            //BsonClassMap.RegisterClassMap<AssegnataRichiesta>(cm =>
+            //{
+            //    cm.AutoMap();
+            //});
 
-            BsonClassMap.RegisterClassMap<AssegnataRichiesta>(cm =>
-            {
-                cm.AutoMap();
-            });
+            //BsonClassMap.RegisterClassMap<ArrivoSulPosto>(cm =>
+            //{
+            //    cm.AutoMap();
+            //});
 
-            BsonClassMap.RegisterClassMap<ArrivoSulPosto>(cm =>
-            {
-                cm.AutoMap();
-            });
+            //BsonClassMap.RegisterClassMap<RichiestaPresidiata>(cm =>
+            //{
+            //    cm.AutoMap();
+            //});
 
-            BsonClassMap.RegisterClassMap<RichiestaPresidiata>(cm =>
-            {
-                cm.AutoMap();
-            });
+            //BsonClassMap.RegisterClassMap<PartenzaRientrata>(cm =>
+            //{
+            //    cm.AutoMap();
+            //});
 
-            BsonClassMap.RegisterClassMap<PartenzaRientrata>(cm =>
-            {
-                cm.AutoMap();
-            });
+            //BsonClassMap.RegisterClassMap<PartenzaInRientro>(cm =>
+            //{
+            //    cm.AutoMap();
+            //});
 
-            BsonClassMap.RegisterClassMap<PartenzaInRientro>(cm =>
-            {
-                cm.AutoMap();
-            });
+            //BsonClassMap.RegisterClassMap<ChiusuraRichiesta>(cm =>
+            //{
+            //    cm.AutoMap();
+            //});
 
-            BsonClassMap.RegisterClassMap<ChiusuraRichiesta>(cm =>
-            {
-                cm.AutoMap();
-            });
-
-            BsonClassMap.RegisterClassMap<RiaperturaRichiesta>(cm =>
-            {
-                cm.AutoMap();
-            });
-
-            BsonClassMap.RegisterClassMap<RichiestaAssistenza>(cm =>
-            {
-                cm.AutoMap();
-                cm.MapField("_eventi").SetElementName("listaEventi");
-            });
+            //BsonClassMap.RegisterClassMap<RiaperturaRichiesta>(cm =>
+            //{
+            //    cm.AutoMap();
+            //});
         }
 
         public IMongoCollection<RichiestaAssistenza> RichiestaAssistenzaCollection
