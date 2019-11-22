@@ -30,6 +30,10 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
     {
         private readonly SetMezzo _setMezzo;
 
+        /// <summary>
+        ///   costruttore della classe
+        /// </summary>
+        /// <param name="setMezzo">mock del servizio Gac</param>
         public SetMovimentazione(SetMezzo setMezzo)
         {
             _setMezzo = setMezzo;

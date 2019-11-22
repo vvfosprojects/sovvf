@@ -33,6 +33,11 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
         private readonly MapMezzoDTOsuMezzo _mapper;
         private readonly GetMezzi _getMezzi;
 
+        /// <summary>
+        ///   costruttore della classe
+        /// </summary>
+        /// <param name="mapper">injection del mapper Mezzo-MezzoDTO</param>
+        /// <param name="getMezzi">mock del servizio Gac</param>
         public GetMezziUtilizzabili(MapMezzoDTOsuMezzo mapper, GetMezzi getMezzi)
         {
             _mapper = mapper;

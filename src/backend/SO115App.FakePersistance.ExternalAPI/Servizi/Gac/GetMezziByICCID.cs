@@ -17,15 +17,11 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Condivise;
-using SO115App.ExternalAPI.Fake.Classi;
-using SO115App.ExternalAPI.Fake.Classi.Gac;
 using SO115App.ExternalAPI.Fake.Classi.Utility;
+using SO115App.ExternalAPI.Fake.Servizi.Gac.Mock;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
 using System.Collections.Generic;
-using System.Net.Http;
 
 namespace SO115App.ExternalAPI.Fake.Servizi.Gac
 {
@@ -34,15 +30,18 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
     /// </summary>
     public class GetMezziByICCID : IGetMezziByICCID
     {
-        private readonly HttpClient _client;
+        private readonly GetMezzi _getMezzi;
         private readonly MapMezzoDTOsuMezzo _mapper;
-        private readonly IConfiguration _configuration;
 
-        public GetMezziByICCID(HttpClient client, MapMezzoDTOsuMezzo mapper, IConfiguration configuration)
+        /// <summary>
+        ///   costruttore della classe
+        /// </summary>
+        /// <param name="mapper">injection del mapper Mezzo-MezzoDTO</param>
+        /// <param name="getMezzi">mock del servizio Gac</param>
+        public GetMezziByICCID(MapMezzoDTOsuMezzo mapper, GetMezzi getMezzi)
         {
-            _client = client;
             _mapper = mapper;
-            _configuration = configuration;
+            _getMezzi = getMezzi;
         }
 
         /// <summary>
@@ -52,8 +51,11 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
         /// <returns>una lista mezzi</returns>
         public List<Mezzo> Get(List<string> iccid)
         {
-            var response = _client.GetAsync($"{_configuration.GetSection("UrlExternalApi").GetSection("GacApi").Value}{Costanti.GacGetICCID}?iccid={iccid}").ToString();
-            var listaMezzoDTO = JsonConvert.DeserializeObject<List<MezzoDTO>>(response);
+            //---------------TODO Implementazione con il servizio esterno reale che sostituirà i json
+
+            var listaMezzoDTO = _getMezzi.GetMezziFromICCID(iccid); //json
+
+            //---------------------------------------------------------------------------------------
             return _mapper.MappaMezzoDTOsuMezzo(listaMezzoDTO);
         }
     }

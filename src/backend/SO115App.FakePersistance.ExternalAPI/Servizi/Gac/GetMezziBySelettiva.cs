@@ -17,15 +17,11 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Condivise;
-using SO115App.ExternalAPI.Fake.Classi;
-using SO115App.ExternalAPI.Fake.Classi.Gac;
 using SO115App.ExternalAPI.Fake.Classi.Utility;
+using SO115App.ExternalAPI.Fake.Servizi.Gac.Mock;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
 using System.Collections.Generic;
-using System.Net.Http;
 
 namespace SO115App.ExternalAPI.Fake.Servizi.Gac
 {
@@ -34,15 +30,18 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
     /// </summary>
     public class GetMezziBySelettiva : IGetMezziBySelettiva
     {
-        private readonly HttpClient _client;
+        private readonly GetMezzi _getMezzi;
         private readonly MapMezzoDTOsuMezzo _mapper;
-        private readonly IConfiguration _configuration;
 
-        public GetMezziBySelettiva(HttpClient client, MapMezzoDTOsuMezzo mapper, IConfiguration configuration)
+        /// <summary>
+        ///   costruttore della classe
+        /// </summary>
+        /// <param name="mapper">injection del mapper Mezzo-MezzoDTO</param>
+        /// <param name="getMezzi">mock del servizio Gac</param>
+        public GetMezziBySelettiva(MapMezzoDTOsuMezzo mapper, GetMezzi getMezzi)
         {
-            _client = client;
             _mapper = mapper;
-            _configuration = configuration;
+            this._getMezzi = getMezzi;
         }
 
         /// <summary>
@@ -52,8 +51,11 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
         /// <returns>una lista mezzi</returns>
         public List<Mezzo> Get(List<string> idRadio)
         {
-            var response = _client.GetAsync($"{_configuration.GetSection("UrlExternalApi").GetSection("GacApi").Value}{Costanti.GacGetSELETTIVA}?idRadio={idRadio}").ToString();
-            var listaMezzoDTO = JsonConvert.DeserializeObject<List<MezzoDTO>>(response);
+            //---------------TODO Implementazione con il servizio esterno reale che sostituirà i json
+
+            var listaMezzoDTO = _getMezzi.GetMezziFromRadioId(idRadio); //json
+
+            //---------------------------------------------------------------------------------------
             return _mapper.MappaMezzoDTOsuMezzo(listaMezzoDTO);
         }
     }
