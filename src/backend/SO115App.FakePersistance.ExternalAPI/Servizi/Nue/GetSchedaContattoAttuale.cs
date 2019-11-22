@@ -20,6 +20,7 @@
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using SO115App.ExternalAPI.Fake.Classi;
+using SO115App.ExternalAPI.Fake.Servizi.Nue.Mock;
 using SO115App.Models.Classi.NUE;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
 using System.Net.Http;
@@ -31,13 +32,11 @@ namespace SO115App.ExternalAPI.Fake.Nue
     /// </summary>
     public class GetSchedaContattoAttuale : IGetSchedaContattoAttuale
     {
-        private readonly HttpClient _client;
-        private readonly IConfiguration _configuration;
+        private readonly GetSchedeMethods _getSchedeMethods;
 
-        public GetSchedaContattoAttuale(HttpClient client, IConfiguration configuration)
+        public GetSchedaContattoAttuale(GetSchedeMethods getSchedeMethods)
         {
-            _client = client;
-            _configuration = configuration;
+            _getSchedeMethods = getSchedeMethods;
         }
 
         /// <summary>
@@ -48,8 +47,11 @@ namespace SO115App.ExternalAPI.Fake.Nue
         /// <returns>SchedaContatto</returns>
         public SchedaContatto SchedaContattoAttuale(string codiceSede, string codiceOperatore)
         {
-            var response = _client.GetStringAsync(string.Format(_configuration.GetSection("UrlExternalApi").GetSection("NueApi").Value + Costanti.NueGetSchedaContattoAttuale + "/codiceSede={0}&codiceOperatore={1}", codiceSede, codiceOperatore));
-            return JsonConvert.DeserializeObject<SchedaContatto>(response.ToString());
+            //---------------TODO Implementazione con il servizio esterno reale che sostituirà i json
+
+            return _getSchedeMethods.GetSchedaContattoAttuale(codiceSede, codiceOperatore);
+
+            //---------------------------------------------------------------------------------------
         }
     }
 }

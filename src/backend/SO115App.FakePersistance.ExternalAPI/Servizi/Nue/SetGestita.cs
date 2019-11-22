@@ -19,6 +19,7 @@
 //-----------------------------------------------------------------------
 using Microsoft.Extensions.Configuration;
 using SO115App.ExternalAPI.Fake.Classi;
+using SO115App.ExternalAPI.Fake.Servizi.Nue.Mock;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -31,13 +32,11 @@ namespace SO115App.ExternalAPI.Fake.Nue
 
     public class SetGestita : ISetStatoGestioneSchedaContatto
     {
-        private readonly HttpClient _client;
-        private readonly IConfiguration _configuration;
+        private readonly SetSchedaContatto _setSchedaContatto;
 
-        public SetGestita(HttpClient client, IConfiguration configuration)
+        public SetGestita(SetSchedaContatto setSchedaContatto)
         {
-            _client = client;
-            _configuration = configuration;
+            _setSchedaContatto = setSchedaContatto;
         }
 
         /// <summary>
@@ -50,15 +49,11 @@ namespace SO115App.ExternalAPI.Fake.Nue
         /// <param name="gestita">la booleana gestita</param>
         public void Gestita(string codiceScheda, string codiceSede, string codiceFiscale, bool gestita)
         {
-            var stringContent = new FormUrlEncodedContent(new[]
-                                {
-                                    new KeyValuePair<string, string>("codiceScheda", codiceScheda),
-                                    new KeyValuePair<string, string>("codiceSede", codiceSede),
-                                    new KeyValuePair<string, string>("codiceFiscale", codiceFiscale),
-                                    new KeyValuePair<string, string>("gestita", gestita.ToString()),
-                                });
+            //---------------TODO Implementazione con il servizio esterno reale che sostituirà i json
 
-            _client.PostAsync(_configuration.GetSection("UrlExternalApi").GetSection("NueApi").Value + Costanti.NueSetGestita, stringContent);
+            _setSchedaContatto.SetGestita(codiceScheda, codiceSede, codiceFiscale, gestita);//json
+
+            //---------------------------------------------------------------------------------------
         }
     }
 }

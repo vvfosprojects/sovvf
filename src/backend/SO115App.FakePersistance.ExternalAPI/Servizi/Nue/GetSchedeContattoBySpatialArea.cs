@@ -17,13 +17,10 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json;
-using SO115App.ExternalAPI.Fake.Classi;
+using SO115App.ExternalAPI.Fake.Servizi.Nue.Mock;
 using SO115App.Models.Classi.NUE;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
 using System.Collections.Generic;
-using System.Net.Http;
 
 namespace SO115App.ExternalAPI.Fake.Nue
 {
@@ -33,13 +30,11 @@ namespace SO115App.ExternalAPI.Fake.Nue
     /// </summary>
     public class GetSchedeContattoBySpatialArea : IGetSchedeContattoBySpatialArea
     {
-        private readonly HttpClient _client;
-        private readonly IConfiguration _configuration;
+        private readonly GetSchedeMethods _getSchedeMethods;
 
-        public GetSchedeContattoBySpatialArea(HttpClient client, IConfiguration configuration)
+        public GetSchedeContattoBySpatialArea(GetSchedeMethods getSchedeMethods)
         {
-            _client = client;
-            _configuration = configuration;
+            _getSchedeMethods = getSchedeMethods;
         }
 
         /// <summary>
@@ -53,8 +48,11 @@ namespace SO115App.ExternalAPI.Fake.Nue
         /// <returns>Una lista di SchedaContatto</returns>
         public List<SchedaContatto> SchedeContattoBySpatialArea(double lat1, double lon1, double lat2, double lon2)
         {
-            var response = _client.GetStringAsync(string.Format(_configuration.GetSection("UrlExternalApi").GetSection("NueApi").Value + Costanti.NueGetByArea + "/lat1={0},lon1={1},lat2={2},lon2={3},", lat1, lon1, lat2, lon2));
-            return JsonConvert.DeserializeObject<List<SchedaContatto>>(response.ToString());
+            //---------------TODO Implementazione con il servizio esterno reale che sostituirà i json
+
+            return _getSchedeMethods.GetSchedeContattoBySpatialArea(lat1, lon1, lat2, lon2);
+
+            //---------------------------------------------------------------------------------------
         }
     }
 }

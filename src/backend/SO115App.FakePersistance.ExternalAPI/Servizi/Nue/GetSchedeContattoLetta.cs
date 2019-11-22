@@ -17,13 +17,10 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json;
-using SO115App.ExternalAPI.Fake.Classi;
+using SO115App.ExternalAPI.Fake.Servizi.Nue.Mock;
 using SO115App.Models.Classi.NUE;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
 using System.Collections.Generic;
-using System.Net.Http;
 
 namespace SO115App.ExternalAPI.Fake.Nue
 {
@@ -32,13 +29,11 @@ namespace SO115App.ExternalAPI.Fake.Nue
     /// </summary>
     public class GetSchedeContattoLetta : IGetSchedeContattoLetta
     {
-        private readonly HttpClient _client;
-        private readonly IConfiguration _configuration;
+        private readonly GetSchedeMethods _getSchedeMethods;
 
-        public GetSchedeContattoLetta(HttpClient client, IConfiguration configuration)
+        public GetSchedeContattoLetta(GetSchedeMethods getSchedeMethods)
         {
-            _client = client;
-            _configuration = configuration;
+            _getSchedeMethods = getSchedeMethods;
         }
 
         /// <summary>
@@ -49,8 +44,11 @@ namespace SO115App.ExternalAPI.Fake.Nue
         /// <returns>Una lista di SchedaContatto</returns>
         public List<SchedaContatto> SchedeContattoLetta(bool letta)
         {
-            var response = _client.GetStringAsync(string.Format(_configuration.GetSection("UrlExternalApi").GetSection("NueApi").Value + Costanti.NueGetLette + "/letta={0}", letta));
-            return JsonConvert.DeserializeObject<List<SchedaContatto>>(response.ToString());
+            //---------------TODO Implementazione con il servizio esterno reale che sostituirà i json
+
+            return _getSchedeMethods.GetSchedeContattoLetta(letta);
+
+            //---------------------------------------------------------------------------------------
         }
     }
 }

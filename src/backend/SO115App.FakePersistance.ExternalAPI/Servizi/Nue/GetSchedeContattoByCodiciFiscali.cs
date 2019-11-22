@@ -17,13 +17,10 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json;
-using SO115App.ExternalAPI.Fake.Classi;
+using SO115App.ExternalAPI.Fake.Servizi.Nue.Mock;
 using SO115App.Models.Classi.NUE;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
 using System.Collections.Generic;
-using System.Net.Http;
 
 namespace SO115App.ExternalAPI.Fake.Nue
 {
@@ -33,13 +30,11 @@ namespace SO115App.ExternalAPI.Fake.Nue
     /// </summary>
     public class GetSchedeContattoByCodiciFiscali : IGetSchedeContattoByCodiciFiscali
     {
-        private readonly HttpClient _client;
-        private readonly IConfiguration _configuration;
+        private readonly GetSchedeMethods _getSchedeMethods;
 
-        public GetSchedeContattoByCodiciFiscali(HttpClient client, IConfiguration configuration)
+        public GetSchedeContattoByCodiciFiscali(GetSchedeMethods getSchedeMethods)
         {
-            _client = client;
-            _configuration = configuration;
+            _getSchedeMethods = getSchedeMethods;
         }
 
         /// <summary>
@@ -50,8 +45,11 @@ namespace SO115App.ExternalAPI.Fake.Nue
         /// <returns>Una lista di SchedaContatto</returns>
         public List<SchedaContatto> SchedeContattoFromCodiciFiscali(List<string> codiciFiscali)
         {
-            var response = _client.GetStringAsync(string.Format(_configuration.GetSection("UrlExternalApi").GetSection("NueApi").Value + Costanti.NueGetByCFe + "/codiciFiscali={0}", codiciFiscali));
-            return JsonConvert.DeserializeObject<List<SchedaContatto>>(response.ToString());
+            //---------------TODO Implementazione con il servizio esterno reale che sostituirà i json
+
+            return _getSchedeMethods.GetSchedeContattoFromCodiciFiscali(codiciFiscali);
+
+            //---------------------------------------------------------------------------------------
         }
     }
 }
