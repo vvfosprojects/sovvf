@@ -170,11 +170,15 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
         ///   Metodo che restituisce le schede contatto lavorate in un area definita da un set di
         ///   coordinate in firma
         /// </summary>
-        /// <param name="topRight">le coordinate del margine topright</param>
-        /// <param name="bottomLeft">le coordinate del margine bottomleft</param>
+        /// <param name="lat1">double latitudine topright</param>
+        /// <param name="lon1">double longitudine topright</param>
+        /// <param name="lat2">double latitudine bottomleft</param>
+        /// <param name="lon2">double longitudine bottomleft</param>
         /// <returns>Una lista di SchedaContatto</returns>
-        public List<SchedaContatto> GetSchedeContattoBySpatialArea(GeoCoordinate topRight, GeoCoordinate bottomLeft)
+        public List<SchedaContatto> GetSchedeContattoBySpatialArea(double lat1, double lon1, double lat2, double lon2)
         {
+            var topRight = new GeoCoordinate(lat1, lon1);
+            var bottomLeft = new GeoCoordinate(lat2, lon2);
             var listaSchede = GetList();
             var listaSchedeFiltered = new List<SchedaContatto>();
 
