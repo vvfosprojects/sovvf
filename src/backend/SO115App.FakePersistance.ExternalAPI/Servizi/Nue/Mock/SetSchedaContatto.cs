@@ -28,14 +28,14 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
     /// <summary>
     ///   Servizio che mocka tutti i servizi di scrittura sul NUE (Scheda Contatto).
     /// </summary>
-    public static class SetSchedaContatto
+    public class SetSchedaContatto
     {
-        private static readonly string filepath = Costanti.NueJson;
+        private readonly string filepath = Costanti.NueJson;
 
         /// <summary>
         ///   Metodo che restituisce la lista di tutte le schede contatto sul json
         /// </summary>
-        public static List<SchedaContatto> Get()
+        public List<SchedaContatto> Get()
         {
             string json;
             using (var r = new StreamReader(filepath))
@@ -51,7 +51,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
         ///   lista delle schede contatto.
         /// </summary>
         /// <param name="lista">La lista di schede contatto</param>
-        public static void Set(List<SchedaContatto> lista)
+        public void Set(List<SchedaContatto> lista)
         {
             var updatedList = JsonConvert.SerializeObject(lista);
             File.WriteAllText(filepath, updatedList);
@@ -64,7 +64,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
         /// <param name="codiceSede">il codice sede dell'operatore</param>
         /// <param name="codiceFiscale">il codice fiscale dell'operatore</param>
         /// <param name="letta">la booleana letta</param>
-        public static void SetLetta(string codiceScheda, string codiceSede, string codiceFiscale, bool letta)
+        public void SetLetta(string codiceScheda, string codiceSede, string codiceFiscale, bool letta)
         {
             var schedeContatto = Get();
 
@@ -85,7 +85,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
         /// <param name="codiceSede">il codice sede dell'operatore</param>
         /// <param name="codiceFiscale">il codice fiscale dell'operatore</param>
         /// <param name="gestita">la booleana gestita</param>
-        public static void SetGestita(string codiceScheda, string codiceSede, string codiceFiscale, bool gestita)
+        public void SetGestita(string codiceScheda, string codiceSede, string codiceFiscale, bool gestita)
         {
             var schedeContatto = Get();
 
