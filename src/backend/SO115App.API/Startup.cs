@@ -135,10 +135,9 @@ namespace SO115App.API
             }
 
             app.UseCors("CorsSo115");
-            app.UseAuthorization();
             app.UseAuthentication();
             app.UseRouting();
-
+            app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapHub<NotificationHub>("/NotificationHub");
