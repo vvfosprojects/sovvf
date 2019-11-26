@@ -3,70 +3,117 @@ import { Observable, of } from 'rxjs';
 import { SchedaContatto } from 'src/app/shared/interface/scheda-contatto.interface';
 import { Store } from '@ngxs/store';
 import { SetListaSchedeContatto } from 'src/app/features/home/store/actions/schede-contatto/schede-contatto.actions';
-import { Priorita } from 'src/app/shared/model/sintesi-richiesta.model';
+import { ClassificazioneSchedaContatto } from '../../../shared/enum/classificazione-scheda-contatto.enum';
 
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root'
 })
 export class SchedeContattoServiceFake {
 
-    listaSchede: SchedaContatto[];
+  listaSchede: SchedaContatto[];
 
-    constructor(private store: Store) {
-    }
+  constructor(private store: Store) {
+  }
 
-    getSchedeContatto(): Observable<SchedaContatto[]> {
-        this.listaSchede = [
-            {
-                'id': '1',
-                'categoria': 'Incendio',
-                'classificazioneEvento': 'Incendio Boschivo',
-                'competenzaCC_PS': 'Distaccamento di Tuscolana',
-                'dataInserimento': new Date(),
-                'dettaglio': 'Ulteriori informazioni',
-                'localita': {
-                    'coordinate': {
-                        'latitudine': 41.9005719,
-                        'longitudine': 12.4971768
-                    },
-                    'indirizzo': 'Via Cavour 5, Roma',
-                    'note': 'Note indirizzo',
-                    'piano': '2'
-                },
-                'priorita': Priorita.Alta,
-                'numeroPersoneCoinvolte': 2,
-                'richiedente': {
-                    'nominativo': 'Mario Rossi',
-                    'telefono': '3208796523'
-                }
-            },
-            {
-                'id': '2',
-                'categoria': 'Allagamento',
-                'classificazioneEvento': 'Allagamento Cantina',
-                'competenzaCC_PS': 'Distaccamento di Ostiense',
-                'dataInserimento': new Date(),
-                'dettaglio': 'Ulteriori informazioni',
-                'localita': {
-                    'coordinate': {
-                        'latitudine': 1,
-                        'longitudine': 2
-                    },
-                    'indirizzo': 'Via Roma, 65b',
-                    'note': 'Note indirizzo',
-                    'piano': '2'
-                },
-                'priorita': Priorita.Media,
-                'numeroPersoneCoinvolte': 1,
-                'richiedente': {
-                    'nominativo': 'Francesco Verdi',
-                    'telefono': '3348761547'
-                }
-            }
-        ];
+  getSchedeContatto(): Observable<SchedaContatto[]> {
+    this.listaSchede = [
+      {
+        'codiceScheda': '1',
+        'dataInserimento': new Date('2019-09-05T08:00:00'),
+        'richiedente': {
+          'telefono': '113',
+          'nominativo': 'Polizia'
+        },
+        'localita': {
+          'coordinate': {
+            'latitudine': 41.908101,
+            'longitudine': 12.549783
+          },
+          'indirizzo': 'Via Yambo, 00159 Roma RM, Italia',
+          'note': null,
+          'piano': null
+        },
+        'classificazioneEvento': 'Incendio Albero',
+        'categoria': '',
+        'enteCompetenza': 'VVF',
+        'dettaglio': '',
+        'priorita': 3,
+        'numeroPersoneCoinvolte': '2',
+        'operatoreChiamata': {
+          'CodiceSede': 'RM.1000',
+          'CodicePostazioneOperatore': '10',
+          'CodiceFiscale': 'ABCD10'
+        },
+        'classificazione': ClassificazioneSchedaContatto.Competenza,
+        'letta': false,
+        'gestita': false
+      },
+      {
+        'codiceScheda': '2',
+        'dataInserimento': new Date('2019-09-05T08:00:00'),
+        'richiedente': {
+          'telefono': '113',
+          'nominativo': 'Polizia'
+        },
+        'localita': {
+          'coordinate': {
+            'latitudine': 41.908101,
+            'longitudine': 12.549783
+          },
+          'indirizzo': 'Via Yambo, 00159 Roma RM, Italia',
+          'note': null,
+          'piano': null
+        },
+        'classificazioneEvento': 'Incendio Albero',
+        'categoria': '',
+        'enteCompetenza': 'VVF',
+        'dettaglio': '',
+        'priorita': 3,
+        'numeroPersoneCoinvolte': '2',
+        'operatoreChiamata': {
+          'CodiceSede': 'RM.1000',
+          'CodicePostazioneOperatore': '10',
+          'CodiceFiscale': 'ABCD10'
+        },
+        'classificazione': ClassificazioneSchedaContatto.Conoscenza,
+        'letta': false,
+        'gestita': false
+      },
+      {
+        'codiceScheda': '3',
+        'dataInserimento': new Date('2019-09-05T08:00:00'),
+        'richiedente': {
+          'telefono': '113',
+          'nominativo': 'Polizia'
+        },
+        'localita': {
+          'coordinate': {
+            'latitudine': 41.908101,
+            'longitudine': 12.549783
+          },
+          'indirizzo': 'Via Yambo, 00159 Roma RM, Italia',
+          'note': null,
+          'piano': null
+        },
+        'classificazioneEvento': 'Incendio Albero',
+        'categoria': '',
+        'enteCompetenza': 'VVF',
+        'dettaglio': '',
+        'priorita': 3,
+        'numeroPersoneCoinvolte': '2',
+        'operatoreChiamata': {
+          'CodiceSede': 'RM.1000',
+          'CodicePostazioneOperatore': '10',
+          'CodiceFiscale': 'ABCD10'
+        },
+        'classificazione': ClassificazioneSchedaContatto.Differibile,
+        'letta': false,
+        'gestita': false
+      }
+    ];
 
-        this.store.dispatch(new SetListaSchedeContatto(this.listaSchede));
-        return of(this.listaSchede);
-    }
+    this.store.dispatch(new SetListaSchedeContatto(this.listaSchede));
+    return of(this.listaSchede);
+  }
 }

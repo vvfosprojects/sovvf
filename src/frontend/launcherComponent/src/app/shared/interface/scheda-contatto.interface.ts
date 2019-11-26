@@ -1,17 +1,21 @@
 import { Richiedente } from '../model/richiedente.model';
 import { Localita } from '../model/localita.model';
 import { Priorita } from '../model/sintesi-richiesta.model';
+import { ClassificazioneSchedaContatto } from '../enum/classificazione-scheda-contatto.enum';
 
 export interface SchedaContatto {
-    id: string;
-    dataInserimento: Date;
-    richiedente: Richiedente;
-    localita: Localita;
-    classificazioneEvento: string;
-    categoria: string;
-    competenzaCC_PS: string;
-    dettaglio: string;
-    priorita: Priorita;
-    numeroPersoneCoinvolte: number;
-    perCompetenza?: boolean;
+  codiceScheda: string;
+  dataInserimento: Date;
+  richiedente: Richiedente;
+  localita: Localita;
+  classificazioneEvento: string;
+  categoria: string;
+  enteCompetenza: string;
+  dettaglio: string;
+  priorita: Priorita;
+  numeroPersoneCoinvolte: string;
+  operatoreChiamata: any;
+  classificazione: ClassificazioneSchedaContatto;
+  letta: boolean;
+  gestita: boolean;
 }
