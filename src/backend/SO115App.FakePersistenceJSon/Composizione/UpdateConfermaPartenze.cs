@@ -18,7 +18,6 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-using System;
 using System.Collections.Generic;
 using System.IO;
 using DomainModel.CQRS.Commands.ConfermaPartenze;
@@ -31,7 +30,6 @@ using SO115App.FakePersistenceJSon.Classi;
 using SO115App.FakePersistenceJSon.Utility;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
-using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
 
 namespace SO115App.FakePersistenceJSon.Composizione
 {
@@ -41,15 +39,6 @@ namespace SO115App.FakePersistenceJSon.Composizione
     /// </summary>
     public class UpdateConfermaPartenze : IUpdateConfermaPartenze
     {
-        private readonly IGetMezziById _getMezziById;
-        private readonly ISetMovimentazione _setMovimentazione;
-
-        public UpdateConfermaPartenze(IGetMezziById getMezziById, ISetMovimentazione setMovimentazione)
-        {
-            _getMezziById = getMezziById;
-            _setMovimentazione = setMovimentazione;
-        }
-
         /// <summary>
         ///   Il metodo accetta in firma il command, e aggiorna i dati relativi alla conferma della partenza
         /// </summary>
@@ -58,12 +47,19 @@ namespace SO115App.FakePersistenceJSon.Composizione
         public ConfermaPartenze Update(ConfermaPartenzeCommand command)
         {
             var filepath = CostantiJson.ListaRichiesteAssistenza;
+            var filePathMezzi = CostantiJson.Mezzo;
             var filePathSquadre = CostantiJson.SquadreComposizione;
             string json;
+            string jsonMezzi;
             string jsonSquadre;
             using (var r = new StreamReader(filepath))
             {
                 json = r.ReadToEnd();
+            }
+
+            using (var r = new StreamReader(filePathMezzi))
+            {
+                jsonMezzi = r.ReadToEnd();
             }
 
             using (var r = new StreamReader(filePathSquadre))
@@ -74,6 +70,7 @@ namespace SO115App.FakePersistenceJSon.Composizione
             var richiestaDTO = new RichiestaAssistenzaDTO();
             var conferma = new ConfermaPartenze();
             var listaRichieste = JsonConvert.DeserializeObject<List<RichiestaAssistenzaDTO>>(json);
+            var listaMezzi = JsonConvert.DeserializeObject<List<Mezzo>>(jsonMezzi);
             var listaSquadre = JsonConvert.DeserializeObject<List<ComposizioneSquadre>>(jsonSquadre);
             var listaRichiesteNew = new List<RichiestaAssistenza>();
 
@@ -103,22 +100,18 @@ namespace SO115App.FakePersistenceJSon.Composizione
                 System.IO.File.WriteAllText(CostantiJson.ListaRichiesteAssistenza, jsonNew);
             }
 
-            foreach (var partenza in command.ConfermaPartenze.Partenze)
+            foreach (var composizione in command.ConfermaPartenze.richiesta.Partenze)
             {
-                var listaCodiciMezzo = new List<string>
+                foreach (var mezzo in listaMezzi)
                 {
-                    partenza.Mezzo.Codice
-                };
-
-                var dataMovintazione = DateTime.UtcNow;
-                foreach (var mezzo in _getMezziById.Get(listaCodiciMezzo))
-                {
-                    _setMovimentazione.Set(mezzo.Codice, command.ConfermaPartenze.IdRichiesta, Costanti.MezzoInViaggio, dataMovintazione);
+                    if (mezzo.Codice != composizione.Partenza.Mezzo.Codice) continue;
+                    mezzo.Stato = Costanti.MezzoInViaggio;
+                    mezzo.IdRichiesta = command.ConfermaPartenze.IdRichiesta;
                 }
 
                 foreach (var composizioneSquadra in listaSquadre)
                 {
-                    foreach (var squadra in partenza.Squadre)
+                    foreach (var squadra in composizione.Partenza.Squadre)
                     {
                         if (composizioneSquadra.Squadra.Id == squadra.Id)
                         {
@@ -127,6 +120,9 @@ namespace SO115App.FakePersistenceJSon.Composizione
                     }
                 }
             }
+
+            var jsonListaMezzi = JsonConvert.SerializeObject(listaMezzi);
+            File.WriteAllText(CostantiJson.Mezzo, jsonListaMezzi);
 
             var jsonListaSquadre = JsonConvert.SerializeObject(listaSquadre);
             File.WriteAllText(CostantiJson.SquadreComposizione, jsonListaSquadre);
