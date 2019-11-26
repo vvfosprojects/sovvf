@@ -19,10 +19,12 @@
 //-----------------------------------------------------------------------
 
 using SO115App.API.Models.Classi.Boxes;
+using SO115App.API.Models.Classi.Condivise;
+using SO115App.FakePersistence.JSon.Utility;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Box;
-using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace SO115App.FakePersistenceJSon.Box
@@ -33,28 +35,19 @@ namespace SO115App.FakePersistenceJSon.Box
     /// </summary>
     public class GetBoxMezzi : IGetBoxMezzi
     {
-        private readonly IGetMezziUtilizzabili _getMezziUtilizzabili;
-
-        public GetBoxMezzi(IGetMezziUtilizzabili getMezziUtilizzabili)
-        {
-            _getMezziUtilizzabili = getMezziUtilizzabili;
-        }
-
-        /// <summary>
-        ///   Il metodo accetta in firma il codice sede e recupera i mezzi utilizzabili dal servizio
-        ///   esterno Gac e aggiorna i contatori dei mezzi
-        /// </summary>
-        /// <param name="codiceSede">il codice sede</param>
-        /// <returns>BoxMezzi</returns>
         public BoxMezzi Get(string codiceSede)
         {
             var mezzi = new BoxMezzi();
-            var listaCodici = new List<string>
-            {
-                codiceSede
-            };
 
-            var listaMezzi = _getMezziUtilizzabili.Get(listaCodici, "", "");
+            var filepath = CostantiJson.Mezzo;
+            string json;
+            using (var r = new StreamReader(filepath))
+            {
+                json = r.ReadToEnd();
+            }
+
+            //var listaMezzi = mapper.MappaFlottaMezziSuMezzo(flottaMezzi).FindAll(x => x.Distaccamento.Codice.Equals(codiceSede));
+            var listaMezzi = new List<Mezzo>();
 
             mezzi.InSede = listaMezzi.Where(x => x.Stato == Costanti.MezzoInSede)
                 .Select(x => x.Stato)

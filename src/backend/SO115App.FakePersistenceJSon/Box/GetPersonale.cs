@@ -18,23 +18,21 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
+using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Boxes;
+using SO115App.API.Models.Classi.Composizione;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.Models.Servizi.Infrastruttura.Box;
-using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Personale;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using SO115App.FakePersistence.JSon.Utility;
 
 namespace SO115App.FakePersistenceJSon.Box
 {
     public class GetPersonale : IGetBoxPersonale
     {
-        private readonly IGetSquadreBySede _getSquadreBySede;
-
-        public GetPersonale(IGetSquadreBySede getSquadreBySede)
-        {
-            _getSquadreBySede = getSquadreBySede;
-        }
+        private readonly string _filepath = CostantiJson.SquadreComposizione;
 
         public BoxPersonale Get(string codiceSede)
         {
@@ -42,24 +40,29 @@ namespace SO115App.FakePersistenceJSon.Box
             var numeroComponenti = 0;
             var listaFunzionari = new List<Componente>();
 
-            foreach (var turno in _getSquadreBySede.SquadreBySede(codiceSede))
+            string json;
+            using (var r = new StreamReader(_filepath))
             {
-                personale.SquadreAssegnate +=
-                turno.ListaSquadre.Count(x => x.Stato == Squadra.StatoSquadra.InViaggio) +
-                turno.ListaSquadre.Count(x => x.Stato == Squadra.StatoSquadra.SulPosto) +
-                turno.ListaSquadre.Count(x => x.Stato == Squadra.StatoSquadra.InRientro);
-                personale.SquadreServizio += turno.ListaSquadre.Count;
+                json = r.ReadToEnd();
+            }
 
-                foreach (var squadra in turno.ListaSquadre)
+            var listaSquadreComposizione = JsonConvert.DeserializeObject<List<ComposizioneSquadre>>(json);
+            personale.SquadreAssegnate =
+                listaSquadreComposizione.Count(x => x.Squadra.Stato == Squadra.StatoSquadra.InViaggio) +
+                listaSquadreComposizione.Count(x => x.Squadra.Stato == Squadra.StatoSquadra.SulPosto) +
+                listaSquadreComposizione.Count(x => x.Squadra.Stato == Squadra.StatoSquadra.InRientro);
+            personale.SquadreServizio =
+                listaSquadreComposizione.Count;
+
+            foreach (var partenza in listaSquadreComposizione)
+            {
+                numeroComponenti += partenza.Squadra.Componenti.Count;
+                foreach (var componente in partenza.Squadra.Componenti)
                 {
-                    numeroComponenti += squadra.Componenti.Count;
-                    foreach (var componente in squadra.Componenti)
+                    if (componente.TecnicoGuardia1 || componente.TecnicoGuardia2 || componente.CapoTurno ||
+                        componente.FunGuardia)
                     {
-                        if (componente.TecnicoGuardia1 || componente.TecnicoGuardia2 || componente.CapoTurno ||
-                            componente.FunGuardia)
-                        {
-                            listaFunzionari.Add(componente);
-                        }
+                        listaFunzionari.Add(componente);
                     }
                 }
             }
