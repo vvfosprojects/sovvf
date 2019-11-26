@@ -30,13 +30,13 @@ namespace SO115App.CompositionRoot
         internal static void Configure(Container container)
         {
             //Trasportate in MongoDB
-            //container.Register<
-            //    API.Models.Servizi.Infrastruttura.GestioneSoccorso.ISaveRichiestaAssistenza,
-            //    FakePersistenceJSon.GestioneIntervento.InserimentoRichiesta>();
+            container.Register<
+                API.Models.Servizi.Infrastruttura.GestioneSoccorso.ISaveRichiestaAssistenza,
+                FakePersistenceJSon.GestioneIntervento.InserimentoRichiesta>();
 
-            //container.Register<
-            //    SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.IGetListaSintesi,
-            //    SO115App.FakePersistenceJSon.GestioneIntervento.GetListaSintesi>();
+            container.Register<
+                SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.IGetListaSintesi,
+                SO115App.FakePersistenceJSon.GestioneIntervento.GetListaSintesi>();
 
             container.Register<
                 API.Models.Servizi.Infrastruttura.GestioneSoccorso.IUpDateRichiestaAssistenza,
