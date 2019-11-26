@@ -19,7 +19,7 @@ export class ClearSchedaContattoTelefonata {
 export class SetSchedaContattoHover {
     static readonly type = '[SchedeContatto] Set Scheda Contatto Hover';
 
-    constructor(public idSchedaContatto: string) { }
+    constructor(public codiceSchedaContatto: string) { }
 }
 
 export class ClearSchedaContattoHover {

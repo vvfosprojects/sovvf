@@ -77,10 +77,10 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy {
             }
         }));
         this.subscription.add(this.schedaContattoTelefonata$.subscribe((schedaContattoTelefonata: SchedaContatto) => {
-            if (schedaContattoTelefonata && schedaContattoTelefonata.id) {
+            if (schedaContattoTelefonata && schedaContattoTelefonata.codiceScheda) {
                 if (!this.idSchedaContatto) {
                     this.setSchedaContatto(schedaContattoTelefonata);
-                    this.idSchedaContatto = schedaContattoTelefonata.id;
+                    this.idSchedaContatto = schedaContattoTelefonata.codiceScheda;
                 }
             }
         }));

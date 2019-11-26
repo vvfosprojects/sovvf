@@ -6,21 +6,24 @@ import {
   ClearSchedaContattoTelefonata,
   SetSchedaContattoHover, ClearSchedaContattoHover
 } from '../../actions/schede-contatto/schede-contatto.actions';
+import { ClassificazioneSchedaContatto } from '../../../../../shared/enum/classificazione-scheda-contatto.enum';
 
 export interface SchedeContattoStateModel {
   schedeContatto: SchedaContatto[];
   schedeContattoCompetenza: SchedaContatto[];
   schedeContattoConoscenza: SchedaContatto[];
+  schedeContattoDifferibili: SchedaContatto[];
   schedaContattoTelefonata: SchedaContatto;
-  idSchedaContattoHover: string;
+  codiceSchedaContattoHover: string;
 }
 
 export const SchedeContattoStateDefaults: SchedeContattoStateModel = {
   schedeContatto: [],
   schedeContattoCompetenza: [],
   schedeContattoConoscenza: [],
+  schedeContattoDifferibili: [],
   schedaContattoTelefonata: null,
-  idSchedaContattoHover: null
+  codiceSchedaContattoHover: null
 };
 
 @State<SchedeContattoStateModel>({
@@ -45,6 +48,11 @@ export class SchedeContattoState {
   }
 
   @Selector()
+  static schedeContattoDifferibili(state: SchedeContattoStateModel) {
+    return state.schedeContattoDifferibili;
+  }
+
+  @Selector()
   static schedaContattoTelefonata(state: SchedeContattoStateModel) {
     return state.schedaContattoTelefonata;
   }
@@ -55,8 +63,8 @@ export class SchedeContattoState {
   }
 
   @Selector()
-  static idSchedaContattoHover(state: SchedeContattoStateModel) {
-    return state.idSchedaContattoHover;
+  static codiceSchedaContattoHover(state: SchedeContattoStateModel) {
+    return state.codiceSchedaContattoHover;
   }
 
   constructor() {
@@ -66,8 +74,9 @@ export class SchedeContattoState {
   setListaSchedeContatto({ patchState }: StateContext<SchedeContattoStateModel>, action: SetListaSchedeContatto) {
     patchState({
       schedeContatto: action.schedeContatto,
-      schedeContattoCompetenza: action.schedeContatto ? action.schedeContatto.filter(schedaContatto => schedaContatto.perCompetenza === true) : [],
-      schedeContattoConoscenza: action.schedeContatto ? action.schedeContatto.filter(schedaContatto => schedaContatto.perCompetenza !== true) : []
+      schedeContattoCompetenza: action.schedeContatto ? action.schedeContatto.filter(schedaContatto => schedaContatto.classificazione === ClassificazioneSchedaContatto.Competenza) : [],
+      schedeContattoConoscenza: action.schedeContatto ? action.schedeContatto.filter(schedaContatto => schedaContatto.classificazione === ClassificazioneSchedaContatto.Conoscenza) : [],
+      schedeContattoDifferibili: action.schedeContatto ? action.schedeContatto.filter(schedaContatto => schedaContatto.classificazione === ClassificazioneSchedaContatto.Differibile) : []
     });
   }
 
@@ -88,14 +97,14 @@ export class SchedeContattoState {
   @Action(SetSchedaContattoHover)
   setSchedaContattoHover({ patchState }: StateContext<SchedeContattoStateModel>, action: SetSchedaContattoHover) {
     patchState({
-      idSchedaContattoHover: action.idSchedaContatto
+      codiceSchedaContattoHover: action.codiceSchedaContatto
     });
   }
 
   @Action(ClearSchedaContattoHover)
   clearSchedaContattoHover({ patchState }: StateContext<SchedeContattoStateModel>) {
     patchState({
-      idSchedaContattoHover: null
+      codiceSchedaContattoHover: null
     });
   }
 }

@@ -1,5 +1,5 @@
 <div class="card cursor-pointer pl-4 py-2 mb-2 shadow-sm"
-     (mouseenter)="hoverIn.emit(scheda.id)" (mouseleave)="hoverOut.emit()" (click)="dettaglioScheda.emit(scheda)" [ngClass]="cardClasses(scheda.id)">
+     (mouseenter)="hoverIn.emit(scheda.codiceScheda)" (mouseleave)="hoverOut.emit()" (click)="dettaglioScheda.emit(scheda)" [ngClass]="cardClasses(scheda.codiceScheda)">
   <div class="row">
     <div class="col-2 px-0 py-1">
       {{scheda.dataInserimento | date: 'dd/MM/yyyy HH:MM:SS'}}
