@@ -4,9 +4,10 @@ import {
   SetListaSchedeContatto,
   SetSchedaContattoTelefonata,
   ClearSchedaContattoTelefonata,
-  SetSchedaContattoHover, ClearSchedaContattoHover
+  SetSchedaContattoHover, ClearSchedaContattoHover, SetSchedaContattoLetta, SetSchedaContattoGestita
 } from '../../actions/schede-contatto/schede-contatto.actions';
 import { ClassificazioneSchedaContatto } from '../../../../../shared/enum/classificazione-scheda-contatto.enum';
+import { SchedeContattoService } from '../../../../../core/service/schede-contatto/schede-contatto.service';
 
 export interface SchedeContattoStateModel {
   schedeContatto: SchedaContatto[];
@@ -67,7 +68,7 @@ export class SchedeContattoState {
     return state.codiceSchedaContattoHover;
   }
 
-  constructor() {
+  constructor(private schedeContattoService: SchedeContattoService) {
   }
 
   @Action(SetListaSchedeContatto)
@@ -77,6 +78,20 @@ export class SchedeContattoState {
       schedeContattoCompetenza: action.schedeContatto ? action.schedeContatto.filter(schedaContatto => schedaContatto.classificazione === ClassificazioneSchedaContatto.Competenza) : [],
       schedeContattoConoscenza: action.schedeContatto ? action.schedeContatto.filter(schedaContatto => schedaContatto.classificazione === ClassificazioneSchedaContatto.Conoscenza) : [],
       schedeContattoDifferibili: action.schedeContatto ? action.schedeContatto.filter(schedaContatto => schedaContatto.classificazione === ClassificazioneSchedaContatto.Differibile) : []
+    });
+  }
+
+  @Action(SetSchedaContattoLetta)
+  setSchedaContattoLetta({ patchState }: StateContext<SchedeContattoStateModel>, action: SetSchedaContattoLetta) {
+    this.schedeContattoService.setSchedaContattoLetta(action.codiceScheda, action.letta).subscribe(() => {
+      console.log('setSchedaContattoLetta api response');
+    });
+  }
+
+  @Action(SetSchedaContattoGestita)
+  setSchedaContattoGestita({ patchState }: StateContext<SchedeContattoStateModel>, action: SetSchedaContattoGestita) {
+    this.schedeContattoService.setSchedaContattoGestita(action.codiceScheda, action.gestita).subscribe(() => {
+      console.log('setSchedaContattoGestita api response');
     });
   }
 

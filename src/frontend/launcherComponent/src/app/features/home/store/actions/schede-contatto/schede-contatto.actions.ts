@@ -6,6 +6,18 @@ export class SetListaSchedeContatto {
     constructor(public schedeContatto: SchedaContatto[]) { }
 }
 
+export class SetSchedaContattoLetta {
+  static readonly type = '[SchedeContatto] Set Scheda Contatto Letta';
+
+  constructor(public codiceScheda: string, public letta: boolean) { }
+}
+
+export class SetSchedaContattoGestita {
+  static readonly type = '[SchedeContatto] Set Scheda Contatto Gestita';
+
+  constructor(public codiceScheda: string, public gestita: boolean) { }
+}
+
 export class SetSchedaContattoTelefonata {
     static readonly type = '[SchedeContatto] Set Scheda Contatto Telefonata';
 

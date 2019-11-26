@@ -215,6 +215,8 @@ export class SignalRService {
             console.log('NotifyGetListaSchedeContatto', data);
             this.store.dispatch(new SetListaSchedeContatto(data));
         });
+        // TODO: creare metodo per aggiungere una o più schede contatto
+        // TODO: creare metodo per modificare una o più schede contatto
 
         /**
          * Composizione Partenza
