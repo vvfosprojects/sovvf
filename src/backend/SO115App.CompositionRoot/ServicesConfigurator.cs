@@ -43,10 +43,10 @@ namespace SO115App.CompositionRoot
                 FakePersistenceJSon.GestioneIntervento.UpDateRichiesta>();
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.Box.IGetBoxMezzi,
-                FakePersistenceJSon.Box.GetBoxMezzi>();
+                ExternalAPI.Fake.Box.GetBoxMezziExt>();//TODO gestione composition Root per l'externalAPI
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.Box.IGetBoxPersonale,
-                FakePersistenceJSon.Box.GetPersonale>();
+                ExternalAPI.Fake.Box.GetBoxPersonaleExt>();//TODO gestione composition Root per l'externalAPI
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.Box.IGetBoxRichieste,
                 FakePersistenceJSon.Box.GetRichieste>();
@@ -87,7 +87,7 @@ namespace SO115App.CompositionRoot
                 FakePersistenceJSon.Composizione.GetComposizioneSquadre>();
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.GetComposizioneMezzi.IGetComposizioneMezzi,
-                FakePersistenceJSon.Composizione.GetComposizioneMezzi>();
+                ExternalAPI.Fake.Composizione.GetComposizioneMezziExt>();//TODO gestione composition Root per l'externalAPI
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.GetPreAccoppiati.IGetPreAccoppiati,
                 FakePersistenceJSon.Composizione.GetPreAccoppiati>();
@@ -105,10 +105,10 @@ namespace SO115App.CompositionRoot
                 FakePersistenceJSon.Composizione.GetMezzoPrenotato>();
             container.Register<
          SO115App.Models.Servizi.Infrastruttura.Composizione.IUpdateConfermaPartenze,
-         FakePersistenceJSon.Composizione.UpdateConfermaPartenze>();
+         ExternalAPI.Fake.Composizione.UpdateConfermaPartenzeExt>(); //TODO gestione composition Root per l'externalAPI
             container.Register<
          SO115App.Models.Servizi.Infrastruttura.Composizione.IUpdateStatoPartenze,
-         FakePersistenceJSon.Composizione.UpdateStatoPartenza>();
+         ExternalAPI.Fake.Composizione.UpdateStatoPartenzaExt>(); //TODO gestione composition Root per l'externalAPI
             container.Register<
             SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi.IGetMezzoByCodice,
          SO115App.FakePersistence.JSon.GestioneMezzi.GetMezzoById>();
