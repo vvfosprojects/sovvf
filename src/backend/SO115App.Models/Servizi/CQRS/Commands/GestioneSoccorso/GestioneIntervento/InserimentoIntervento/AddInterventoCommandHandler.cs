@@ -68,7 +68,7 @@ namespace DomainModel.CQRS.Commands.AddIntervento
                 ListaUtentiPresaInCarico = command.Chiamata.ListaUtentiPresaInCarico,
                 NotePubbliche = command.Chiamata.NotePubbliche,
                 NotePrivate = command.Chiamata.NotePrivate,
-                Id = codiceChiamata // TODO DA TOGLIERE QUANDO AVREMO UN DB
+                //Id = codiceChiamata // TODO DA TOGLIERE QUANDO AVREMO UN DB
             };
 
             if (command.Chiamata.Stato == Costanti.RichiestaChiusa)

@@ -62,72 +62,19 @@ namespace Persistence.MongoDB
         private void MapClasses()
         {
             EntityMap.Map();
-
             CodiceMap.Map();
-
             EventiMap.Map();
-
-            ///Non più necessario grazie a MongoDB
-            //BsonClassMap.RegisterClassMap<Evento>(cm =>
-            //{
-            //    cm.AutoMap();
-            //    cm.MapProperty("TipoEvento").SetElementName("tipoEvento");
-            //});
-
-            //BsonClassMap.RegisterClassMap<Telefonata>(cm =>
-            //{
-            //    cm.AutoMap();
-            //});
-
-            //BsonClassMap.RegisterClassMap<AssegnazionePriorita>(cm =>
-            //{
-            //    cm.AutoMap();
-            //});
-
-            //BsonClassMap.RegisterClassMap<InizioPresaInCarico>(cm =>
-            //{
-            //    cm.AutoMap();
-            //});
-
-            //BsonClassMap.RegisterClassMap<ComposizionePartenze>(cm =>
-            //{
-            //    cm.AutoMap();
-            //});
-
-            //BsonClassMap.RegisterClassMap<AssegnataRichiesta>(cm =>
-            //{
-            //    cm.AutoMap();
-            //});
-
-            //BsonClassMap.RegisterClassMap<ArrivoSulPosto>(cm =>
-            //{
-            //    cm.AutoMap();
-            //});
-
-            //BsonClassMap.RegisterClassMap<RichiestaPresidiata>(cm =>
-            //{
-            //    cm.AutoMap();
-            //});
-
-            //BsonClassMap.RegisterClassMap<PartenzaRientrata>(cm =>
-            //{
-            //    cm.AutoMap();
-            //});
-
-            //BsonClassMap.RegisterClassMap<PartenzaInRientro>(cm =>
-            //{
-            //    cm.AutoMap();
-            //});
-
-            //BsonClassMap.RegisterClassMap<ChiusuraRichiesta>(cm =>
-            //{
-            //    cm.AutoMap();
-            //});
-
-            //BsonClassMap.RegisterClassMap<RiaperturaRichiesta>(cm =>
-            //{
-            //    cm.AutoMap();
-            //});
+            BsonClassMap.RegisterClassMap<Telefonata>();
+            BsonClassMap.RegisterClassMap<AssegnazionePriorita>();
+            BsonClassMap.RegisterClassMap<InizioPresaInCarico>();
+            BsonClassMap.RegisterClassMap<ComposizionePartenze>();
+            BsonClassMap.RegisterClassMap<AssegnataRichiesta>();
+            BsonClassMap.RegisterClassMap<ArrivoSulPosto>();
+            BsonClassMap.RegisterClassMap<RichiestaPresidiata>();
+            BsonClassMap.RegisterClassMap<PartenzaRientrata>();
+            BsonClassMap.RegisterClassMap<PartenzaInRientro>();
+            BsonClassMap.RegisterClassMap<ChiusuraRichiesta>();
+            BsonClassMap.RegisterClassMap<RiaperturaRichiesta>();
         }
 
         public IMongoCollection<RichiestaAssistenza> RichiestaAssistenzaCollection

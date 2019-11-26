@@ -17,49 +17,55 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-
-using System.Collections.Generic;
-using System.IO;
-using DomainModel.CQRS.Commands.ConfermaPartenze;
+using DomainModel.CQRS.Commands.GestrionePartenza.AggiornaStatoMezzo;
 using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Composizione;
-using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.FakePersistence.JSon.Utility;
 using SO115App.FakePersistenceJSon.Classi;
 using SO115App.FakePersistenceJSon.Utility;
-using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
-namespace SO115App.FakePersistenceJSon.Composizione
+namespace SO115App.ExternalAPI.Fake.Composizione
 {
     /// <summary>
-    ///   La classe aggiorna i dati relativi alle squadre, ai mezzi e alla partenza di una richiesta
-    ///   in seguito ad un command
+    ///   La classe aggiorna i dati dell'intervento (squadre, mezzo e richiesta) in seguito al
+    ///   cambio stato di un mezzo sull'intervento
     /// </summary>
-    public class UpdateConfermaPartenze : IUpdateConfermaPartenze
+    public class UpdateStatoPartenzaExt : IUpdateStatoPartenze
     {
+        private readonly IGetMezziById _getMezzo;
+        private readonly ISetMovimentazione _setMovimentazione;
+
         /// <summary>
-        ///   Il metodo accetta in firma il command, e aggiorna i dati relativi alla conferma della partenza
+        ///   Costruttore della classe
+        /// </summary>
+        public UpdateStatoPartenzaExt(IGetMezziById getMezzo, ISetMovimentazione setMovimentazione)
+        {
+            _getMezzo = getMezzo;
+            _setMovimentazione = setMovimentazione;
+        }
+
+        /// <summary>
+        ///   Il metodo accetta in firma il command, e in seguito al cambio di stato di uno o più
+        ///   mezzi aggiorna le informazioni relative alla richiesta a cui quel mezzo è associato
         /// </summary>
         /// <param name="command">il command in ingresso</param>
-        /// <returns>ConfermaPartenze</returns>
-        public ConfermaPartenze Update(ConfermaPartenzeCommand command)
+
+        public void Update(AggiornaStatoMezzoCommand command)
         {
             var filepath = CostantiJson.ListaRichiesteAssistenza;
-            var filePathMezzi = CostantiJson.Mezzo;
             var filePathSquadre = CostantiJson.SquadreComposizione;
             string json;
-            string jsonMezzi;
             string jsonSquadre;
             using (var r = new StreamReader(filepath))
             {
                 json = r.ReadToEnd();
-            }
-
-            using (var r = new StreamReader(filePathMezzi))
-            {
-                jsonMezzi = r.ReadToEnd();
             }
 
             using (var r = new StreamReader(filePathSquadre))
@@ -67,16 +73,19 @@ namespace SO115App.FakePersistenceJSon.Composizione
                 jsonSquadre = r.ReadToEnd();
             }
 
-            var richiestaDTO = new RichiestaAssistenzaDTO();
             var conferma = new ConfermaPartenze();
+            var richiestaNew = new RichiestaAssistenzaDTO();
             var listaRichieste = JsonConvert.DeserializeObject<List<RichiestaAssistenzaDTO>>(json);
-            var listaMezzi = JsonConvert.DeserializeObject<List<Mezzo>>(jsonMezzi);
+            var listaCodiceSede = new List<string>
+            {
+                command.CodiceSede
+            };
             var listaSquadre = JsonConvert.DeserializeObject<List<ComposizioneSquadre>>(jsonSquadre);
-            var listaRichiesteNew = new List<RichiestaAssistenza>();
 
             if (listaRichieste != null)
             {
-                richiestaDTO = listaRichieste.Find(x => x.Codice == command.ConfermaPartenze.richiesta.Codice);
+                var listaRichiesteNew = new List<RichiestaAssistenza>();
+                var richiestaDTO = listaRichieste.Find(x => x.Codice == command.Richiesta.Codice);
                 listaRichieste.Remove(richiestaDTO);
 
                 foreach (var richiesta in listaRichieste)
@@ -84,53 +93,42 @@ namespace SO115App.FakePersistenceJSon.Composizione
                     listaRichiesteNew.Add(MapperDTO.MapRichiestaDTOtoRichiesta(richiesta));
                 }
 
-                listaRichiesteNew.Add(command.ConfermaPartenze.richiesta);
+                listaRichiesteNew.Add(command.Richiesta);
 
                 var jsonListaPresente = JsonConvert.SerializeObject(listaRichiesteNew);
-                System.IO.File.WriteAllText(CostantiJson.ListaRichiesteAssistenza, jsonListaPresente);
+                File.WriteAllText(CostantiJson.ListaRichiesteAssistenza, jsonListaPresente);
             }
             else
             {
-                listaRichiesteNew = new List<RichiestaAssistenza>
-                {
-                    command.ConfermaPartenze.richiesta
-                };
+                var listaRichiesteNew = new List<RichiestaAssistenza> { command.Richiesta };
 
-                var jsonNew = JsonConvert.SerializeObject(listaRichiesteNew);
-                System.IO.File.WriteAllText(CostantiJson.ListaRichiesteAssistenza, jsonNew);
+                string jsonNew = JsonConvert.SerializeObject(listaRichiesteNew);
+                File.WriteAllText(CostantiJson.ListaRichiesteAssistenza, jsonNew);
+            }
+            var listaCodiciMezzo = new List<string>
+            {
+                command.IdMezzo
+            };
+
+            var dataMovimentazione = DateTime.UtcNow;
+            foreach (var mezzo in _getMezzo.Get(listaCodiciMezzo))
+            {
+                _setMovimentazione.Set(mezzo.Codice, command.Richiesta.Codice, command.StatoMezzo, dataMovimentazione);
             }
 
-            foreach (var composizione in command.ConfermaPartenze.richiesta.Partenze)
+            foreach (var partenza in command.Richiesta.Partenze)
             {
-                foreach (var mezzo in listaMezzi)
-                {
-                    if (mezzo.Codice != composizione.Partenza.Mezzo.Codice) continue;
-                    mezzo.Stato = Costanti.MezzoInViaggio;
-                    mezzo.IdRichiesta = command.ConfermaPartenze.IdRichiesta;
-                }
-
                 foreach (var composizioneSquadra in listaSquadre)
                 {
-                    foreach (var squadra in composizione.Partenza.Squadre)
+                    foreach (var squadra in partenza.Partenza.Squadre.Where(squadra => composizioneSquadra.Squadra.Id == squadra.Id))
                     {
-                        if (composizioneSquadra.Squadra.Id == squadra.Id)
-                        {
-                            composizioneSquadra.Squadra.Stato = Squadra.StatoSquadra.InViaggio;
-                        }
+                        composizioneSquadra.Squadra.Stato = squadra.Stato;
                     }
                 }
             }
 
-            var jsonListaMezzi = JsonConvert.SerializeObject(listaMezzi);
-            File.WriteAllText(CostantiJson.Mezzo, jsonListaMezzi);
-
             var jsonListaSquadre = JsonConvert.SerializeObject(listaSquadre);
             File.WriteAllText(CostantiJson.SquadreComposizione, jsonListaSquadre);
-
-            conferma.CodiceSede = command.ConfermaPartenze.CodiceSede;
-            conferma.IdRichiesta = command.ConfermaPartenze.IdRichiesta;
-            conferma.richiesta = command.ConfermaPartenze.richiesta;
-            return conferma;
         }
     }
 }

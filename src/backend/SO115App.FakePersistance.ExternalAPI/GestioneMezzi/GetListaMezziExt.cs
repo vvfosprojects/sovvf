@@ -17,45 +17,53 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using Newtonsoft.Json;
-using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Marker;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi;
-using SO115App.FakePersistence.JSon.Utility;
-using SO115App.FakePersistenceJSon.GestioneIntervento;
 using SO115App.Models.Classi.ListaMezziInServizio;
+using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.InfoRichiesta;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
 using System.Collections.Generic;
-using System.IO;
 
-namespace SO115App.FakePersistenceJSon.GestioneMezzi
+namespace SO115App.ExternalAPI.Fake.GestioneMezzi
 {
-    public class GetListaMezzi : IGetListaMezzi
+    /// <summary>
+    ///   La classe recupera i dati di tutti i mezzi utilizzabili dal gac e i dati delle richieste
+    ///   associate ai mezzi e restistuisce una lista di mezzi in servizio completa di tutte le
+    ///   informazioni (squadre sul mezzo, richiesta a cui il mezzo e associato e il mezzo stesso)
+    /// </summary>
+    public class GetListaMezziExt : IGetListaMezzi
     {
         private readonly IGetInfoRichiesta _getInfoRichiesta;
+        private readonly IGetMezziUtilizzabili _getMezziUtilizzabili;
+        private readonly IGetRichiestaById _getRichiestaById;
 
-        public GetListaMezzi(IGetInfoRichiesta getInfoRichiesta)
+        public GetListaMezziExt(IGetInfoRichiesta getInfoRichiesta, IGetMezziUtilizzabili getMezziUtilizzabili, IGetRichiestaById getRichiestaById)
         {
             _getInfoRichiesta = getInfoRichiesta;
+            _getMezziUtilizzabili = getMezziUtilizzabili;
+            _getRichiestaById = getRichiestaById;
         }
 
+        /// <summary>
+        ///   il metodo restituisce una lista di mezzi in servizio associati ad una determinata sede
+        /// </summary>
+        /// <param name="codiceSede">il codice sede</param>
+        /// <returns>Lista di MezziInServizio</returns>
         public List<MezzoInServizio> Get(string codiceSede)
         {
-            var filepath = CostantiJson.Mezzo;
-            var getRichiestaById = new GetRichiestaById();
-            string json;
-            using (var r = new StreamReader(filepath))
-            {
-                json = r.ReadToEnd();
-            }
-
-            var codiceSedeIniziali = codiceSede.Substring(0, 2);
-
-            var mezzi = JsonConvert.DeserializeObject<List<Mezzo>>(json);
-
             var listaMezzoInServizio = new List<MezzoInServizio>();
 
-            foreach (var mezzo in mezzi.FindAll(x => x.Distaccamento.Codice
+            var listaCodiciSede = new List<string>
+            {
+                codiceSede
+            };
+            var codiceSedeIniziali = codiceSede.Substring(0, 2);
+
+            var mezzi = _getMezziUtilizzabili.Get(listaCodiciSede, "", "");
+
+            foreach (var mezzo in mezzi
+                .FindAll(x => x.Distaccamento.Codice
                 .StartsWith(codiceSedeIniziali)))
             {
                 var mezzoMarker = new MezzoMarker()
@@ -63,15 +71,22 @@ namespace SO115App.FakePersistenceJSon.GestioneMezzi
                     Mezzo = mezzo,
                     InfoRichiesta = _getInfoRichiesta.GetInfoRichiestaFromIdRichiestaMezzo(mezzo.IdRichiesta)
                 };
-                var mezzoInServizio = new MezzoInServizio { Mezzo = mezzoMarker };
-                if (mezzoInServizio.Mezzo.Mezzo.IdRichiesta != null)
+                var mezzoInServizio = new MezzoInServizio()
                 {
-                    var richiesta = getRichiestaById.Get(mezzoInServizio.Mezzo.Mezzo.IdRichiesta);
-                    foreach (var partenza in richiesta.Partenze)
+                    Mezzo = mezzoMarker
+                };
+
+                if (mezzo.IdRichiesta != null)
+                {
+                    var richiesta = _getRichiestaById.Get(mezzo.IdRichiesta);
+                    if (richiesta != null)
                     {
-                        if (partenza.Partenza.Mezzo.Codice == mezzoInServizio.Mezzo.Mezzo.Codice)
+                        foreach (var partenza in richiesta.Partenze)
                         {
-                            mezzoInServizio.Squadre = partenza.Partenza.Squadre;
+                            if (partenza.Partenza.Mezzo.Codice == mezzo.Codice)
+                            {
+                                mezzoInServizio.Squadre = partenza.Partenza.Squadre;
+                            }
                         }
                     }
                 }

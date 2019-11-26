@@ -164,7 +164,7 @@ namespace SO115App.API
             // Add application presentation components:
             //container.RegisterMvcControllers(app);
 
-            Configurator.Bind(container);
+            Configurator.Bind(container, Configuration);
 
             // Allow Simple Injector to resolve services from ASP.NET Core.
             container.AutoCrossWireAspNetComponents(app);

@@ -17,50 +17,59 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Composizione;
+using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneMezzi;
-using SO115App.Models.Servizi.Infrastruttura.GetComposizioneMezzi;
 using SO115App.FakePersistence.JSon.Utility;
+using SO115App.Models.Servizi.Infrastruttura.GetComposizioneMezzi;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
 using System;
-using SO115App.FakePersistence.JSon.Classi;
-using SO115App.API.Models.Classi.Marker;
+using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
+using System.Linq;
 
-namespace SO115App.FakePersistenceJSon.Composizione
+namespace SO115App.ExternalAPI.Fake.Composizione
 {
     /// <summary>
-    ///   La classe recupera i mezzi utilizzabili dal Json e genera la composizione mezzi
-    ///   ordinandoli secondo una funzione di adeguatezza del mezzo tenendo conto della tipologia dell'intervento
+    ///   La classe recupera i mezzi utilizzabili dal Gac e genera la composizione mezzi ordinandoli
+    ///   secondo una funzione di adeguatezza del mezzo tenendo conto della tipologia dell'intervento
     /// </summary>
-    public class GetComposizioneMezzi : IGetComposizioneMezzi
+    public class GetComposizioneMezziExt : IGetComposizioneMezzi
     {
+        private readonly IGetMezziUtilizzabili _getMezziUtilizzabili;
+
+        public GetComposizioneMezziExt(IGetMezziUtilizzabili getMezziUtilizzabili)
+        {
+            _getMezziUtilizzabili = getMezziUtilizzabili;
+        }
+
+        /// <summary>
+        ///   Il metodo accetta in firma la query, recupera i mezzi utilizzabili dal Gac e genera la
+        ///   composizione mezzi ordinandoli secondo una funzione di adeguatezza del mezzo tenendo
+        ///   conto della tipologia dell'intervento
+        /// </summary>
+        /// <param name="query">la query in ingresso</param>
+        /// <returns>Una Lista di ComposizioneMezzi</returns>
         public List<ComposizioneMezzi> Get(ComposizioneMezziQuery query)
         {
-            List<MezzoMarker> ListaMezzi = new List<MezzoMarker>();
-
-            var filepath = CostantiJson.Mezzo;
-            string json;
-            using (var r = new StreamReader(filepath))
+            var listaCodici = new List<string>
             {
-                json = r.ReadToEnd();
-            }
+                query.CodiceSede
+            };
+            var listaMezzi = _getMezziUtilizzabili.Get(listaCodici, "", "");
 
-            //ListaMezzi = mapper.MappaFlottaMezziSuMezziMarker(FlottaMezzi).Where(x => x.Mezzo.Distaccamento.Codice == query.CodiceSede).ToList();
-
-            List<ComposizioneMezzi> composizioneMezzi = GeneraListaComposizioneMezzi(ListaMezzi);
+            var composizioneMezzi = GeneraListaComposizioneMezzi(listaMezzi);
 
             string[] generiMezzi;
             string[] statiMezzi;
             string codiceDistaccamento;
-            if ((query.Filtro.CodiceDistaccamento?.Length > 0 && !string.IsNullOrEmpty(query.Filtro.CodiceDistaccamento[0]))
-                || (query.Filtro.CodiceMezzo?.Length > 0 && !string.IsNullOrEmpty(query.Filtro.CodiceMezzo))
-                || ((query.Filtro.CodiceSquadra?.Length > 0) && !string.IsNullOrEmpty(query.Filtro.CodiceSquadra[0]))
-                || (query.Filtro.CodiceStatoMezzo?.Length > 0 && !string.IsNullOrEmpty(query.Filtro.CodiceStatoMezzo[0]))
-                || (query.Filtro.CodiceTipoMezzo?.Length > 0 && !string.IsNullOrEmpty(query.Filtro.CodiceTipoMezzo[0])))
+            if (query.Filtro.CodiceDistaccamento?.Length > 0 && !string.IsNullOrEmpty(query.Filtro.CodiceDistaccamento[0])
+                || query.Filtro.CodiceMezzo?.Length > 0 && !string.IsNullOrEmpty(query.Filtro.CodiceMezzo)
+                || query.Filtro.CodiceSquadra?.Length > 0 && !string.IsNullOrEmpty(query.Filtro.CodiceSquadra[0])
+                || query.Filtro.CodiceStatoMezzo?.Length > 0 && !string.IsNullOrEmpty(query.Filtro.CodiceStatoMezzo[0])
+                || query.Filtro.CodiceTipoMezzo?.Length > 0 && !string.IsNullOrEmpty(query.Filtro.CodiceTipoMezzo[0]))
             {
                 if (query.Filtro.CodiceSquadra?.Length > 0 && !string.IsNullOrEmpty(query.Filtro.CodiceSquadra[0]))
                 {
@@ -76,7 +85,7 @@ namespace SO115App.FakePersistenceJSon.Composizione
                     if (squadra != null)
                     {
                         codiceDistaccamento = squadra.Squadra.Distaccamento.Codice;
-                        composizioneMezzi = composizioneMezzi.Where(x => (x.Mezzo.Distaccamento.Codice == codiceDistaccamento)).ToList();
+                        composizioneMezzi = composizioneMezzi.Where(x => x.Mezzo.Distaccamento.Codice == codiceDistaccamento).ToList();
                     }
                 }
 
@@ -141,28 +150,19 @@ namespace SO115App.FakePersistenceJSon.Composizione
             }
         }
 
-        private List<ComposizioneMezzi> GeneraListaComposizioneMezzi(List<MezzoMarker> listaMezzi)
+        private static List<ComposizioneMezzi> GeneraListaComposizioneMezzi(IEnumerable<Mezzo> listaMezzi)
         {
-            List<ComposizioneMezzi> ListaComposizione = new List<ComposizioneMezzi>();
+            var random = new Random();
 
-            Random random = new Random();
-
-            foreach (MezzoMarker mezzoMarker in listaMezzi)
-            {
-                string kmGen = random.Next(1, 60).ToString();
-                double TempoPer = Convert.ToDouble(kmGen.Replace(".", ",")) / 1.75;
-
-                ComposizioneMezzi composizione = new ComposizioneMezzi()
-                {
-                    Mezzo = mezzoMarker.Mezzo,
-                    Km = kmGen,
-                    TempoPercorrenza = Math.Round(TempoPer, 2).ToString(CultureInfo.InvariantCulture),
-                };
-
-                ListaComposizione.Add(composizione);
-            }
-
-            return ListaComposizione;
+            return (from mezzo in listaMezzi
+                    let kmGen = random.Next(1, 60).ToString()
+                    let tempoPer = Convert.ToDouble(kmGen.Replace(".", ",")) / 1.75
+                    select new ComposizioneMezzi()
+                    {
+                        Mezzo = mezzo,
+                        Km = kmGen,
+                        TempoPercorrenza = Math.Round(tempoPer, 2).ToString(CultureInfo.InvariantCulture),
+                    }).ToList();
         }
     }
 }

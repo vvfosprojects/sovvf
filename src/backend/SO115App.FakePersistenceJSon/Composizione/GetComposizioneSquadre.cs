@@ -34,10 +34,6 @@ namespace SO115App.FakePersistenceJSon.Composizione
     {
         public List<ComposizioneSquadre> Get(ComposizioneSquadreQuery query)
         {
-            //TODO PARTE CHIAMATA DB
-
-            //TODO DA MODIFICARE CON LA CONNESSIONE AL DB PER IL REPERIMENTO DEI DATI DEFINITIVI
-            //DATI FAKE - ORA LI LEGGO DA FILE
             var filepath = CostantiJson.SquadreComposizione;
             string json;
             using (var r = new StreamReader(filepath))
@@ -72,17 +68,17 @@ namespace SO115App.FakePersistenceJSon.Composizione
 
                     if (mezzo != null)
                     {
-                        if (query.Filtro.CodiceStatoMezzo?.Length > 0 && !string.IsNullOrEmpty(query.Filtro.CodiceStatoMezzo[0]))
-                        {
-                            var statiMezzi = filtri.Stati.Where(x => query.Filtro.CodiceStatoMezzo.Any(x.Id.Equals)).Select(x => x.Descrizione).ToArray();
+                        //if (query.Filtro.CodiceStatoMezzo?.Length > 0 && !string.IsNullOrEmpty(query.Filtro.CodiceStatoMezzo[0]))
+                        //{
+                        //    var statiMezzi = filtri.Stati.Where(x => query.Filtro.CodiceStatoMezzo.Any(x.Id.Equals)).Select(x => x.Descrizione).ToArray();
 
-                            if (!statiMezzi.Any(mezzo.Stato.Equals))
-                            {
-                                mezzo = null;
-                                composizioneSquadre = null;
-                            }
-                        }
-                        if (query.Filtro.CodiceDistaccamento?.Length > 0 && !string.IsNullOrEmpty(query.Filtro.CodiceDistaccamento[0]))
+                        //    if (!statiMezzi.Any(mezzo.Stato.Equals))
+                        //    {
+                        //        mezzo = null;
+                        //        composizioneSquadre = null;
+                        //    }
+                        //}
+                        if (query.Filtro.CodiceDistaccamento.Count() > 0 && !string.IsNullOrEmpty(query.Filtro.CodiceDistaccamento[0]))
                         {
                             if (mezzo != null && !query.Filtro.CodiceDistaccamento.Any(mezzo.Distaccamento.Codice.Equals))
                             {
@@ -90,15 +86,15 @@ namespace SO115App.FakePersistenceJSon.Composizione
                                 composizioneSquadre = null;
                             }
                         }
-                        if (query.Filtro.CodiceTipoMezzo?.Length > 0 && !string.IsNullOrEmpty(query.Filtro.CodiceTipoMezzo[0]))
-                        {
-                            var generiMezzi = filtri.GeneriMezzi.Where(x => query.Filtro.CodiceTipoMezzo.Any(x.Id.Equals)).Select(x => x.Descrizione).ToArray();
-                            if (mezzo != null && !generiMezzi.Any(mezzo.Genere.Equals))
-                            {
-                                mezzo = null;
-                                composizioneSquadre = null;
-                            }
-                        }
+                        //if (query.Filtro.CodiceTipoMezzo?.Length > 0 && !string.IsNullOrEmpty(query.Filtro.CodiceTipoMezzo[0]))
+                        //{
+                        //    var generiMezzi = filtri.GeneriMezzi.Where(x => query.Filtro.CodiceTipoMezzo.Any(x.Id.Equals)).Select(x => x.Descrizione).ToArray();
+                        //    if (mezzo != null && !generiMezzi.Any(mezzo.Genere.Equals))
+                        //    {
+                        //        mezzo = null;
+                        //        composizioneSquadre = null;
+                        //    }
+                        //}
 
                         if (mezzo != null)
                         {

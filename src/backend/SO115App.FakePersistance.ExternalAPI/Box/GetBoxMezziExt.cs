@@ -18,37 +18,43 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Boxes;
-using SO115App.API.Models.Classi.Condivise;
-using SO115App.FakePersistence.JSon.Utility;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Box;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 
-namespace SO115App.FakePersistenceJSon.Box
+namespace SO115App.ExternalAPI.Fake.Box
 {
     /// <summary>
     ///   La classe GetBoxMezzi recupera i mezzi utilizzabili dal servizio esterno Gac e aggiorna il
     ///   box dei mezzi
     /// </summary>
-    public class GetBoxMezzi : IGetBoxMezzi
+    public class GetBoxMezziExt : IGetBoxMezzi
     {
+        private readonly IGetMezziUtilizzabili _getMezziUtilizzabili;
+
+        public GetBoxMezziExt(IGetMezziUtilizzabili getMezziUtilizzabili)
+        {
+            _getMezziUtilizzabili = getMezziUtilizzabili;
+        }
+
+        /// <summary>
+        ///   Il metodo accetta in firma il codice sede e recupera i mezzi utilizzabili dal servizio
+        ///   esterno Gac e aggiorna i contatori dei mezzi
+        /// </summary>
+        /// <param name="codiceSede">il codice sede</param>
+        /// <returns>BoxMezzi</returns>
         public BoxMezzi Get(string codiceSede)
         {
             var mezzi = new BoxMezzi();
-
-            var filepath = CostantiJson.Mezzo;
-            string json;
-            using (var r = new StreamReader(filepath))
+            var listaCodici = new List<string>
             {
-                json = r.ReadToEnd();
-            }
+                codiceSede
+            };
 
-            //var listaMezzi = mapper.MappaFlottaMezziSuMezzo(flottaMezzi).FindAll(x => x.Distaccamento.Codice.Equals(codiceSede));
-            var listaMezzi = JsonConvert.DeserializeObject<List<Mezzo>>(json);
+            var listaMezzi = _getMezziUtilizzabili.Get(listaCodici, "", "");
 
             mezzi.InSede = listaMezzi.Where(x => x.Stato == Costanti.MezzoInSede)
                 .Select(x => x.Stato)
