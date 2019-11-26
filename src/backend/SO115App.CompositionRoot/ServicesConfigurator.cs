@@ -19,7 +19,9 @@
 //-----------------------------------------------------------------------
 using SimpleInjector;
 using SO115App.ExternalAPI.Fake.Nue;
+using SO115App.ExternalAPI.Fake.Uos;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
 
 namespace SO115App.CompositionRoot
 {
@@ -27,12 +29,15 @@ namespace SO115App.CompositionRoot
     {
         internal static void Configure(Container container)
         {
-            PersistenceServicesConfigurator.Configure(container);
-
             //Trasportate in MongoDB
-            container.Register<
-                API.Models.Servizi.Infrastruttura.GestioneSoccorso.ISaveRichiestaAssistenza,
-                FakePersistenceJSon.GestioneIntervento.InserimentoRichiesta>();
+            //container.Register<
+            //    API.Models.Servizi.Infrastruttura.GestioneSoccorso.ISaveRichiestaAssistenza,
+            //    FakePersistenceJSon.GestioneIntervento.InserimentoRichiesta>();
+
+            //container.Register<
+            //    SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.IGetListaSintesi,
+            //    SO115App.FakePersistenceJSon.GestioneIntervento.GetListaSintesi>();
+
             container.Register<
                 API.Models.Servizi.Infrastruttura.GestioneSoccorso.IUpDateRichiestaAssistenza,
                 FakePersistenceJSon.GestioneIntervento.UpDateRichiesta>();
@@ -64,9 +69,7 @@ namespace SO115App.CompositionRoot
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.NavBar.IGetNavbar,
                 SO115App.FakePersistenceJSon.Navbar.GetNavbar>();
-            container.Register<
-                SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.IGetListaSintesi,
-                SO115App.FakePersistenceJSon.GestioneIntervento.GetListaSintesi>();
+
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.Marker.IChiamateInCorso,
                 FakePersistenceJSon.Marker.AddChiamateInCorso>();

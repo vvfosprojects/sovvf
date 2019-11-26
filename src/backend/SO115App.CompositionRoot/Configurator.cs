@@ -17,13 +17,14 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using Microsoft.Extensions.Configuration;
 using SimpleInjector;
 
 namespace SO115App.CompositionRoot
 {
     public static class Configurator
     {
-        public static void Bind(Container container)
+        public static void Bind(Container container, IConfiguration configuration)
         {
             bool EnableFake = true;
             CQRSConfigurator.Configure(container);
@@ -32,6 +33,8 @@ namespace SO115App.CompositionRoot
             {
                 ServicesConfigurator.Configure(container);
                 ExternalAPIFakeServicesConfigurator.Configure(container);
+                PersistenceServicesConfigurator.Configure(container);
+                PersistenceServicesConfigurator_MongoDB.Configure(container, configuration);
             }
         }
     }

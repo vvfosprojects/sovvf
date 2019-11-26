@@ -11,8 +11,8 @@ namespace SO115App.CompositionRoot
     {
         internal static void Configure(Container container, IConfiguration configuration)
         {
-            var connectionString = configuration.GetSection("ConnectionString").Value;
-            var databaseName = configuration.GetSection("DatabaseName").Value;
+            var connectionString = configuration.GetSection("DatabaseSettings").GetSection("ConnectionString").Value;
+            var databaseName = configuration.GetSection("DatabaseSettings").GetSection("DatabaseName").Value;
 
             container.Register<DbContext>(() =>
                 new DbContext(connectionString, databaseName), Lifestyle.Singleton);
@@ -20,9 +20,9 @@ namespace SO115App.CompositionRoot
             #region Gestione richiesta di assistenza
 
             container.Register<ISaveRichiestaAssistenza, SaveRichiesta>();
-            container.Register<IUpDateRichiestaAssistenza, UpDateRichiesta>();
+            //container.Register<IUpDateRichiestaAssistenza, UpDateRichiesta>();
 
-            container.Register<IGetRichiestaById, GetRichiesta>();
+            //container.Register<IGetRichiestaById, GetRichiesta>();
             container.Register<IGetListaSintesi, GetRichiesta>();
 
             #endregion Gestione richiesta di assistenza
