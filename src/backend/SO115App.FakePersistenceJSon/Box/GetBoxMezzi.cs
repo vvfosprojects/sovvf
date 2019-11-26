@@ -18,6 +18,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
+using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Boxes;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.FakePersistence.JSon.Utility;
@@ -47,7 +48,7 @@ namespace SO115App.FakePersistenceJSon.Box
             }
 
             //var listaMezzi = mapper.MappaFlottaMezziSuMezzo(flottaMezzi).FindAll(x => x.Distaccamento.Codice.Equals(codiceSede));
-            var listaMezzi = new List<Mezzo>();
+            var listaMezzi = JsonConvert.DeserializeObject<List<Mezzo>>(json);
 
             mezzi.InSede = listaMezzi.Where(x => x.Stato == Costanti.MezzoInSede)
                 .Select(x => x.Stato)

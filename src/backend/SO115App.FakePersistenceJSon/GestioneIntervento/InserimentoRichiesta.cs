@@ -25,7 +25,7 @@ using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 
 namespace SO115App.FakePersistenceJSon.GestioneIntervento
 {
-    public class InserimentoRichiesta //: ISaveRichiestaAssistenza
+    public class InserimentoRichiesta : ISaveRichiestaAssistenza
     {
         public void Save(RichiestaAssistenza richiestaAssistenza)
         {
