@@ -211,9 +211,12 @@ export class SignalRService {
         /**
          * Schede Contatto
          */
+        this.hubNotification.on('NotifyGetContatoriSchedeContatto', (data: any) => {
+          // console.log('NotifyGetContatoriSchedeContatto', data);
+        });
         this.hubNotification.on('NotifyGetListaSchedeContatto', (data: any) => {
-            console.log('NotifyGetListaSchedeContatto', data);
-            this.store.dispatch(new SetListaSchedeContatto(data));
+          console.log('NotifyGetListaSchedeContatto', data);
+          this.store.dispatch(new SetListaSchedeContatto(data));
         });
         // TODO: creare metodo per aggiungere una o più schede contatto
         // TODO: creare metodo per modificare una o più schede contatto

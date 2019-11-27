@@ -4,10 +4,19 @@ import {
   SetListaSchedeContatto,
   SetSchedaContattoTelefonata,
   ClearSchedaContattoTelefonata,
-  SetSchedaContattoHover, ClearSchedaContattoHover, SetSchedaContattoLetta, SetSchedaContattoGestita
+  SetSchedaContattoHover,
+  ClearSchedaContattoHover,
+  SetSchedaContattoLetta,
+  SetSchedaContattoGestita,
+  GetListaSchedeContatto,
+  SetFiltroKeySchedeContatto,
+  SetFiltroLettaSchedeContatto,
+  SetFiltroGestitaSchedeContatto, ClearFiltriSchedeContatto
 } from '../../actions/schede-contatto/schede-contatto.actions';
 import { ClassificazioneSchedaContatto } from '../../../../../shared/enum/classificazione-scheda-contatto.enum';
 import { SchedeContattoService } from '../../../../../core/service/schede-contatto/schede-contatto.service';
+import { FiltriSchedeContatto } from '../../../../../shared/interface/filtri-schede-contatto.interface';
+import { VoceFiltro } from '../../../filterbar/ricerca-group/filtri-richieste/voce-filtro.model';
 
 export interface SchedeContattoStateModel {
   schedeContatto: SchedaContatto[];
@@ -16,6 +25,8 @@ export interface SchedeContattoStateModel {
   schedeContattoDifferibili: SchedaContatto[];
   schedaContattoTelefonata: SchedaContatto;
   codiceSchedaContattoHover: string;
+  filtriSchedeContatto: VoceFiltro[];
+  filtriSelezionati: FiltriSchedeContatto;
 }
 
 export const SchedeContattoStateDefaults: SchedeContattoStateModel = {
@@ -24,7 +35,20 @@ export const SchedeContattoStateDefaults: SchedeContattoStateModel = {
   schedeContattoConoscenza: [],
   schedeContattoDifferibili: [],
   schedaContattoTelefonata: null,
-  codiceSchedaContattoHover: null
+  codiceSchedaContattoHover: null,
+  filtriSchedeContatto: [
+    new VoceFiltro('1', 'Gestione', 'Gestita', false),
+    new VoceFiltro('2', 'Gestione', 'Non Gestita', false),
+    new VoceFiltro('3', 'Lettura', 'Letta', false),
+    new VoceFiltro('4', 'Lettura', 'Non Letta', false),
+    // new VoceFiltro('4', 'Appartenenza', 'Personali', false),
+    // new VoceFiltro('4', 'Appartenenza', 'Non Personali', false)
+  ],
+  filtriSelezionati: {
+    key: '',
+    letta: null,
+    gestita: null
+  }
 };
 
 @State<SchedeContattoStateModel>({
@@ -68,7 +92,20 @@ export class SchedeContattoState {
     return state.codiceSchedaContattoHover;
   }
 
+  @Selector()
+  static filtriSchedeContatto(state: SchedeContattoStateModel) {
+    return state.filtriSchedeContatto;
+  }
+
   constructor(private schedeContattoService: SchedeContattoService) {
+  }
+
+  @Action(GetListaSchedeContatto)
+  getListaSchedeContatto({ getState, dispatch }: StateContext<SchedeContattoStateModel>) {
+    const state = getState();
+    this.schedeContattoService.getSchedeContatto(state.filtriSelezionati).subscribe((schedeContatto: SchedaContatto[]) => {
+      dispatch(new SetListaSchedeContatto(schedeContatto));
+    });
   }
 
   @Action(SetListaSchedeContatto)
@@ -121,5 +158,52 @@ export class SchedeContattoState {
     patchState({
       codiceSchedaContattoHover: null
     });
+  }
+
+  @Action(SetFiltroKeySchedeContatto)
+  setFiltroKeySchedeContatto({ getState, patchState, dispatch }: StateContext<SchedeContattoStateModel>, action: SetFiltroKeySchedeContatto) {
+    const state = getState();
+    patchState({
+      filtriSelezionati: {
+        key: action.key,
+        letta: state.filtriSelezionati.letta,
+        gestita: state.filtriSelezionati.gestita
+      }
+    });
+    dispatch(new GetListaSchedeContatto());
+  }
+
+  @Action(SetFiltroLettaSchedeContatto)
+  setFiltroLettaSchedeContatto({ getState, patchState, dispatch }: StateContext<SchedeContattoStateModel>, action: SetFiltroLettaSchedeContatto) {
+    const state = getState();
+    patchState({
+      filtriSelezionati: {
+        key: state.filtriSelezionati.key,
+        letta: action.letta,
+        gestita: state.filtriSelezionati.gestita
+      }
+    });
+    dispatch(new GetListaSchedeContatto());
+  }
+
+  @Action(SetFiltroGestitaSchedeContatto)
+  setFiltroGestitaSchedeContatto({ getState, patchState, dispatch }: StateContext<SchedeContattoStateModel>, action: SetFiltroGestitaSchedeContatto) {
+    const state = getState();
+    patchState({
+      filtriSelezionati: {
+        key: state.filtriSelezionati.key,
+        letta: state.filtriSelezionati.letta,
+        gestita: action.gestita
+      }
+    });
+    dispatch(new GetListaSchedeContatto());
+  }
+
+  @Action(ClearFiltriSchedeContatto)
+  clearFiltriSchedeContatto({ patchState, dispatch }: StateContext<SchedeContattoStateModel>) {
+    patchState({
+      filtriSelezionati: SchedeContattoStateDefaults.filtriSelezionati
+    });
+    dispatch(new GetListaSchedeContatto());
   }
 }
