@@ -11,10 +11,8 @@ import {
   GetListaSchedeContatto,
   SetFiltroKeySchedeContatto,
   SetFiltroLettaSchedeContatto,
-  SetFiltroGestitaSchedeContatto,
-  ClearFiltriSchedeContatto,
-  ReducerSetFiltroSchedeContatto,
-  ResetFiltriSelezionatiSchedeContatto, SetFiltroSelezionatoSchedaContatto
+  ResetFiltriSelezionatiSchedeContatto, SetFiltroSelezionatoSchedaContatto,
+  SetFiltroGestitaSchedeContatto, ClearFiltriSchedeContatto, ReducerSetFiltroSchedeContatto, SetContatoriSchedeContatto
 } from '../../actions/schede-contatto/schede-contatto.actions';
 import { ClassificazioneSchedaContatto } from '../../../../../shared/enum/classificazione-scheda-contatto.enum';
 import { SchedeContattoService } from '../../../../../core/service/schede-contatto/schede-contatto.service';
@@ -26,8 +24,10 @@ import {
   setFiltroSelezionato as _setFiltroSelezionato
 } from '../../../../../shared/helper/function-filtro';
 import { CategoriaFiltriSchedeContatto as Categoria } from '../../../../../shared/enum/categoria-filtri-schede-contatto';
+import { ContatoriSchedeContatto } from '../../../../../shared/interface/contatori-schede-contatto.interface';
 
 export interface SchedeContattoStateModel {
+  contatoriSchedeContatto: ContatoriSchedeContatto;
   schedeContatto: SchedaContatto[];
   schedeContattoCompetenza: SchedaContatto[];
   schedeContattoConoscenza: SchedaContatto[];
@@ -39,6 +39,7 @@ export interface SchedeContattoStateModel {
 }
 
 export const SchedeContattoStateDefaults: SchedeContattoStateModel = {
+  contatoriSchedeContatto: null,
   schedeContatto: [],
   schedeContattoCompetenza: [],
   schedeContattoConoscenza: [],
@@ -65,6 +66,11 @@ export const SchedeContattoStateDefaults: SchedeContattoStateModel = {
   defaults: SchedeContattoStateDefaults
 })
 export class SchedeContattoState {
+
+  @Selector()
+  static contatoriSchedeContatto(state: SchedeContattoStateModel) {
+    return state.contatoriSchedeContatto;
+  }
 
   @Selector()
   static schedeContatto(state: SchedeContattoStateModel) {
@@ -117,6 +123,13 @@ export class SchedeContattoState {
   }
 
   constructor(private schedeContattoService: SchedeContattoService) {
+  }
+
+  @Action(SetContatoriSchedeContatto)
+  setContatoriSchedeContatto({ patchState }: StateContext<SchedeContattoStateModel>, action: SetContatoriSchedeContatto) {
+    patchState({
+      contatoriSchedeContatto: action.contatori
+    });
   }
 
   @Action(GetListaSchedeContatto)

@@ -1,5 +1,13 @@
 import { SchedaContatto } from 'src/app/shared/interface/scheda-contatto.interface';
 import { VoceFiltro } from '../../../filterbar/ricerca-group/filtri-richieste/voce-filtro.model';
+import { ContatoriSchedeContatto } from '../../../../../shared/interface/contatori-schede-contatto.interface';
+
+export class SetContatoriSchedeContatto {
+  static readonly type = '[SchedeContatto] Set Contatori Schede Contatto';
+
+  constructor(public contatori: ContatoriSchedeContatto) {
+  }
+}
 
 export class GetListaSchedeContatto {
   static readonly type = '[SchedeContatto] Get Lista Schede Contatto';
