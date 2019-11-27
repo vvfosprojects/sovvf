@@ -88,6 +88,10 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
     modal.componentInstance.schedaContatto = scheda;
   }
 
+  getNonLette(schede: SchedaContatto[]) {
+    return schede.filter(s => s.letta === false).length;
+  }
+
   hoverIn(idSchedaContatto: string) {
     this.store.dispatch(new SetSchedaContattoHover(idSchedaContatto));
   }

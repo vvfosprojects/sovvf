@@ -1,13 +1,13 @@
 <div class="row mt-2 px-0" style="height:750px">
-  <div *ngIf="schedeContattoCompetenza || schedeContattoConoscenza " class="col-12 scroll-y" style="height:700px">
+  <div *ngIf="schedeContatto" class="col-12 scroll-y" style="height:700px">
     <ngb-tabset>
       <ngb-tab>
         <ng-template ngbTabTitle>
-          <b>Tutte</b>
+          <b>Tutte ({{getNonLette(schedeContatto)}})</b>
         </ng-template>
         <ng-template ngbTabContent>
           <div class="row">
-            <div *ngIf="schedeContatto.length > 0 || schedeContatto.length > 0" class="col-12 my-2">
+            <div *ngIf="schedeContatto.length > 0" class="col-12 my-2">
               <app-scheda-contatto *ngFor="let scheda of schedeContatto"
                                    [scheda]="scheda"
                                    [idSchedaContattoHover]="codiceSchedaContattoHover"
@@ -18,7 +18,7 @@
                                    (setSchedaContattoGestita)="setSchedaContattoGestita(scheda.codiceScheda, $event)">
               </app-scheda-contatto>
             </div>
-            <div *ngIf="schedeContatto.length <= 0 && schedeContatto.length <= 0"
+            <div *ngIf="schedeContatto.length <= 0"
                  class="col-12 mt-4">
               <h6 class="text-center">Non ci sono Schede Contatto</h6>
             </div>
@@ -28,7 +28,7 @@
       <ngb-tab>
         <ng-template ngbTabTitle>
           <i class="fa fa-square text-danger mr-2"></i>
-          <b>Competenza</b>
+          <b>Competenza ({{getNonLette(schedeContattoCompetenza)}})</b>
         </ng-template>
         <ng-template ngbTabContent>
           <div class="row">
@@ -52,7 +52,7 @@
       <ngb-tab>
         <ng-template ngbTabTitle>
           <i class="fa fa-square text-warning mr-2"></i>
-          <b>Conoscenza</b>
+          <b>Conoscenza ({{getNonLette(schedeContattoConoscenza)}})</b>
         </ng-template>
         <ng-template ngbTabContent>
           <div class="row">
@@ -76,7 +76,7 @@
       <ngb-tab>
         <ng-template ngbTabTitle>
           <i class="fa fa-square text-secondary mr-2"></i>
-          <b>Differibile</b>
+          <b>Differibile ({{getNonLette(schedeContattoDifferibili)}})</b>
         </ng-template>
         <ng-template ngbTabContent>
           <div class="row">
