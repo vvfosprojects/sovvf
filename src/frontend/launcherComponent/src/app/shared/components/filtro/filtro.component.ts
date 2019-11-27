@@ -1,5 +1,5 @@
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
-import { VoceFiltro } from '../voce-filtro.model';
+import { VoceFiltro } from '../../../features/home/filterbar/ricerca-group/filtri-richieste/voce-filtro.model';
 
 @Component({
   selector: 'app-filtro',
@@ -8,8 +8,7 @@ import { VoceFiltro } from '../voce-filtro.model';
 })
 export class FiltroComponent implements OnInit {
   @Input() filtro: VoceFiltro;
-  @Output() filtroSelezionato: EventEmitter<any> = new EventEmitter();
-  @Output() filtroDeselezionato: EventEmitter<any> = new EventEmitter();
+  @Output() filtroSelezionato: EventEmitter<VoceFiltro> = new EventEmitter();
 
   constructor() { }
 
@@ -17,11 +16,7 @@ export class FiltroComponent implements OnInit {
   }
 
   onSelezione(filtro: VoceFiltro) {
-    if (!filtro.selezionato) {
       this.filtroSelezionato.emit(filtro);
-    } else {
-      this.filtroDeselezionato.emit(filtro);
-    }
   }
 
 }

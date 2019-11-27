@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 // View
 import { ViewInterfaceButton, ViewLayouts } from '../../../shared/interface/view.interface';
 // Filtri Richieste
-import { GetFiltriRichieste, ResetFiltriSelezionati, SetFiltroSelezionato } from '../store/actions/filterbar/filtri-richieste.actions';
+import { GetFiltriRichieste, ResetFiltriSelezionatiRichieste, SetFiltroSelezionatoRichieste } from '../store/actions/filterbar/filtri-richieste.actions';
 import { FiltriRichiesteState } from '../store/states/filterbar/filtri-richieste.state';
 import { VoceFiltro } from './ricerca-group/filtri-richieste/voce-filtro.model';
 // Ricerca Richieste
@@ -12,7 +12,7 @@ import { RicercaRichiesteState } from '../store/states/filterbar/ricerca-richies
 // Marker Meteo Switch
 import { MarkerMeteoState } from '../store/states/filterbar/marker-meteo-switch.state';
 import { SetMarkerMeteoSwitch } from '../store/actions/filterbar/marker-meteo-switch.actions';
-import { SetRicerca } from '../store/actions/filterbar/ricerca-richieste.actions';
+import { SetRicercaRichieste } from '../store/actions/filterbar/ricerca-richieste.actions';
 import { AppFeatures } from '../../../shared/enum/app-features.enum';
 import { ChangeView, ToggleChiamata, ToggleMezziInServizio } from '../store/actions/view/view.actions';
 import { ViewComponentState } from '../store/states/view/view.state';
@@ -21,6 +21,11 @@ import { Grid } from '../../../shared/enum/layout.enum';
 import { OptionsRichieste } from '../../../shared/enum/options-richieste';
 import { ClearRichiesteEspanse } from '../store/actions/richieste/richieste-espanse.actions';
 import { HomeState } from '../store/states/home.state';
+import { SchedeContattoState } from '../store/states/schede-contatto/schede-contatto.state';
+import {
+    ClearFiltriSchedeContatto,
+    ReducerSetFiltroSchedeContatto, SetFiltroKeySchedeContatto
+} from '../store/actions/schede-contatto/schede-contatto.actions';
 
 @Component({
     selector: 'app-filterbar',
@@ -33,12 +38,19 @@ export class FilterbarComponent implements OnInit {
     @Input() viewState: ViewLayouts;
 
     // Filtri Richieste
-    @Select(FiltriRichiesteState.filtriTipologie) filtri$: Observable<VoceFiltro[]>;
-    @Select(FiltriRichiesteState.filtriSelezionati) filtriSelezionati$: Observable<VoceFiltro[]>;
-    @Select(FiltriRichiesteState.categoriaFiltriTipologie) categoriaFiltri$: Observable<string[]>;
+    @Select(FiltriRichiesteState.filtriTipologie) filtriRichieste$: Observable<VoceFiltro[]>;
+    @Select(FiltriRichiesteState.filtriSelezionati) filtriSelezionatiRichieste$: Observable<VoceFiltro[]>;
+    @Select(FiltriRichiesteState.categoriaFiltriTipologie) categoriaFiltriRichieste$: Observable<string[]>;
 
     // Ricerca Richieste
-    @Select(RicercaRichiesteState.ricerca) ricerca$: Observable<any>;
+    @Select(RicercaRichiesteState.ricerca) ricercaRichieste$: Observable<string>;
+
+    // Filtri Richieste
+    @Select(SchedeContattoState.filtriSchedeContatto) filtriSchedeContatto$: Observable<VoceFiltro[]>;
+    @Select(SchedeContattoState.filtriSelezionati) filtriSelezionatiSchedeContatto$: Observable<VoceFiltro[]>;
+
+    // Ricerca Schede Contatto
+    @Select(SchedeContattoState.ricerca) ricercaSchedeContatto$: Observable<string>;
 
     // Marker Meteo Switch
     @Select(MarkerMeteoState.active) stateSwitch$: Observable<boolean>;
@@ -73,23 +85,37 @@ export class FilterbarComponent implements OnInit {
     /**
      * Filtri Richieste Events
      */
-    onSelezioneFiltro(filtro: VoceFiltro) {
-        this.store.dispatch(new SetFiltroSelezionato(filtro));
+    onSelezioneFiltroRichieste(filtro: VoceFiltro) {
+        this.store.dispatch(new SetFiltroSelezionatoRichieste(filtro));
     }
 
-    onDeselezioneFiltro(filtro: VoceFiltro) {
-        this.store.dispatch(new SetFiltroSelezionato(filtro));
-    }
-
-    eliminaFiltriAttivi() {
-        this.store.dispatch(new ResetFiltriSelezionati());
+    eliminaFiltriAttiviRichieste() {
+        this.store.dispatch(new ResetFiltriSelezionatiRichieste());
     }
 
     /**
      * Ricerca Richieste Events
      */
-    onSearch(ricerca: any) {
-        this.store.dispatch(new SetRicerca(ricerca));
+    onSearchRichieste(ricerca: any) {
+        this.store.dispatch(new SetRicercaRichieste(ricerca));
+    }
+
+    /**
+     * Filtri Schede Contatto Events
+     */
+    onSelezioneFiltroSchedeContatto(filtro: VoceFiltro) {
+        this.store.dispatch(new ReducerSetFiltroSchedeContatto(filtro));
+    }
+
+    eliminaFiltriAttiviSchedeContatto() {
+        this.store.dispatch(new ClearFiltriSchedeContatto());
+    }
+
+    /**
+     * Ricerca Schede Contatto Events
+     */
+    onSearchSchedeContatto(ricerca: any) {
+        this.store.dispatch(new SetFiltroKeySchedeContatto(ricerca));
     }
 
     /**

@@ -11,12 +11,21 @@ import {
   GetListaSchedeContatto,
   SetFiltroKeySchedeContatto,
   SetFiltroLettaSchedeContatto,
-  SetFiltroGestitaSchedeContatto, ClearFiltriSchedeContatto, ReducerSetFiltroSchedeContatto
+  SetFiltroGestitaSchedeContatto,
+  ClearFiltriSchedeContatto,
+  ReducerSetFiltroSchedeContatto,
+  ResetFiltriSelezionatiSchedeContatto, SetFiltroSelezionatoSchedaContatto
 } from '../../actions/schede-contatto/schede-contatto.actions';
 import { ClassificazioneSchedaContatto } from '../../../../../shared/enum/classificazione-scheda-contatto.enum';
 import { SchedeContattoService } from '../../../../../core/service/schede-contatto/schede-contatto.service';
 import { FiltriSchedeContatto } from '../../../../../shared/interface/filtri-schede-contatto.interface';
 import { VoceFiltro } from '../../../filterbar/ricerca-group/filtri-richieste/voce-filtro.model';
+import { makeCopy } from '../../../../../shared/helper/function';
+import {
+  resetFiltriSelezionati as _resetFiltriSelezionati,
+  setFiltroSelezionato as _setFiltroSelezionato
+} from '../../../../../shared/helper/function-filtro';
+import { CategoriaFiltriSchedeContatto as Categoria } from '../../../../../shared/enum/categoria-filtri-schede-contatto';
 
 export interface SchedeContattoStateModel {
   schedeContatto: SchedaContatto[];
@@ -37,12 +46,12 @@ export const SchedeContattoStateDefaults: SchedeContattoStateModel = {
   schedaContattoTelefonata: null,
   codiceSchedaContattoHover: null,
   filtriSchedeContatto: [
-    new VoceFiltro('1', 'Lettura', 'Letta', false),
-    new VoceFiltro('2', 'Lettura', 'Non Letta', false),
-    new VoceFiltro('3', 'Gestione', 'Gestita', false),
-    new VoceFiltro('4', 'Gestione', 'Non Gestita', false)
-    // new VoceFiltro('4', 'Appartenenza', 'Personali', false),
-    // new VoceFiltro('4', 'Appartenenza', 'Non Personali', false)
+    new VoceFiltro('1', Categoria.Lettura, 'Letta', false),
+    new VoceFiltro('2', Categoria.Lettura, 'Non Letta', false),
+    new VoceFiltro('3', Categoria.Gestione, 'Gestita', false),
+    new VoceFiltro('4', Categoria.Gestione, 'Non Gestita', false)
+    // new VoceFiltro('4', Categoria.Appartenenza, 'Personali', false),
+    // new VoceFiltro('4', Categoria.Appartenenza, 'Non Personali', false)
   ],
   filtriSelezionati: {
     key: '',
@@ -95,6 +104,16 @@ export class SchedeContattoState {
   @Selector()
   static filtriSchedeContatto(state: SchedeContattoStateModel) {
     return state.filtriSchedeContatto;
+  }
+
+  @Selector()
+  static filtriSelezionati(state: SchedeContattoStateModel) {
+    return state.filtriSchedeContatto.filter(f => f.selezionato === true);
+  }
+
+  @Selector()
+  static ricerca(state: SchedeContattoStateModel) {
+    return state.filtriSelezionati.key;
   }
 
   constructor(private schedeContattoService: SchedeContattoService) {
@@ -180,6 +199,7 @@ export class SchedeContattoState {
         console.error('[Errore Switch] ReducerSetFiltroSchedeContatto');
         break;
     }
+    dispatch(new SetFiltroSelezionatoSchedaContatto(action.filtro));
   }
 
   @Action(SetFiltroKeySchedeContatto)
@@ -231,6 +251,33 @@ export class SchedeContattoState {
         gestita: null
       }
     });
-    dispatch(new GetListaSchedeContatto());
+    dispatch([new GetListaSchedeContatto(), new ResetFiltriSelezionatiSchedeContatto()]);
+  }
+
+  // SET FILTRO SELEZIONATO (SELEZIONATO, NON-SELEZIONATO)
+  @Action(SetFiltroSelezionatoSchedaContatto)
+  setFiltroSelezionato({ getState, patchState }: StateContext<SchedeContattoStateModel>, action: SetFiltroSelezionatoSchedaContatto) {
+    const state = getState();
+
+    const filtriSchedeContatto = makeCopy(state.filtriSchedeContatto);
+    const filtro = makeCopy(action.filtro);
+
+    patchState({
+      ...state,
+      filtriSchedeContatto: _setFiltroSelezionato(filtriSchedeContatto, filtro)
+    });
+  }
+
+  // RESET FILTRI SELEZIONATI
+  @Action(ResetFiltriSelezionatiSchedeContatto)
+  resetFiltriSelezionati({ getState, patchState }: StateContext<SchedeContattoStateModel>) {
+    const state = getState();
+
+    const filtriSchedeContatto = makeCopy(state.filtriSchedeContatto);
+
+    patchState({
+      ...state,
+      filtriSchedeContatto: _resetFiltriSelezionati(filtriSchedeContatto)
+    });
   }
 }

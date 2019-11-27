@@ -15,9 +15,10 @@ import { TastiTelefonataGroupComponent } from './tasti-telefonata-group/tasti-te
 import { TastoChiamataComponent } from './tasti-telefonata-group/tasto-chiamata/tasto-chiamata.component';
 import { TastoSchedeContattoComponent } from './tasti-telefonata-group/tasto-schede-contatto/tasto-schede-contatto.component';
 import { RicercaGroupComponent } from './ricerca-group/ricerca-group.component';
-import { RicercaRichiesteComponent } from './ricerca-group/ricerca-richieste/ricerca-richieste.component';
+import { RicercaComponent } from './ricerca-group/ricerca/ricerca.component';
 import { FiltriRichiesteComponent } from './ricerca-group/filtri-richieste/filtri-richieste.component';
-import { FiltroComponent } from './ricerca-group/filtri-richieste/filtro/filtro.component';
+import { FiltroComponent } from '../../../shared/components/filtro/filtro.component';
+import { FiltriSchedeContattoComponent } from './ricerca-group/filtri-schede-contatto/filtri-schede-contatto.component';
 
 @NgModule({
     imports: [
@@ -32,7 +33,7 @@ import { FiltroComponent } from './ricerca-group/filtri-richieste/filtro/filtro.
     ],
     declarations: [
         FilterbarComponent,
-        RicercaRichiesteComponent,
+        RicercaComponent,
         FiltriRichiesteComponent,
         FiltroComponent,
         ViewModeComponent,
@@ -41,7 +42,8 @@ import { FiltroComponent } from './ricerca-group/filtri-richieste/filtro/filtro.
         LoaderMarkerComponent,
         TastoSchedeContattoComponent,
         TastiTelefonataGroupComponent,
-        RicercaGroupComponent
+        RicercaGroupComponent,
+        FiltriSchedeContattoComponent
     ],
     exports: [
         FilterbarComponent

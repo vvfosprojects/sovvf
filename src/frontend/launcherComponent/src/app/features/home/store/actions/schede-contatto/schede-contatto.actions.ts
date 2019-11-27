@@ -79,3 +79,13 @@ export class SetFiltroGestitaSchedeContatto {
 export class ClearFiltriSchedeContatto {
   static readonly type = '[SchedeContatto] Clear Filtri Schede Contatto';
 }
+
+export class SetFiltroSelezionatoSchedaContatto {
+  static readonly type = '[SchedeContatto] Toggle filtro';
+
+  constructor(public filtro: VoceFiltro) {}
+}
+
+export class ResetFiltriSelezionatiSchedeContatto {
+  static readonly type = '[SchedeContatto] Reset dei filtri selezionati';
+}

@@ -16,11 +16,11 @@ export class FiltriRichiesteComponent {
     @Input() categorie: string[];
 
     @Output() filtroSelezionato: EventEmitter<VoceFiltro> = new EventEmitter();
-    @Output() filtroDeselezionato: EventEmitter<VoceFiltro> = new EventEmitter();
     @Output() filtriReset: EventEmitter<any> = new EventEmitter();
 
     categoriaSelezionata = 'Presidiato';
     filtersSearch = { descrizione: '' };
+    p: number;
 
     constructor(private modalService: NgbModal,
                 dropdownOpts: NgbDropdownConfig) {
@@ -39,10 +39,6 @@ export class FiltriRichiesteComponent {
 
     onSelezioneFiltro(filtro: VoceFiltro) {
         this.filtroSelezionato.emit(filtro);
-    }
-
-    onDeselezioneFiltro(filtro: VoceFiltro) {
-        this.filtroDeselezionato.emit(filtro);
     }
 
     eliminaFiltriAttivi() {
