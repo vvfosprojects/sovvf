@@ -1,4 +1,5 @@
 import { SchedaContatto } from 'src/app/shared/interface/scheda-contatto.interface';
+import { VoceFiltro } from '../../../filterbar/ricerca-group/filtri-richieste/voce-filtro.model';
 
 export class GetListaSchedeContatto {
   static readonly type = '[SchedeContatto] Get Lista Schede Contatto';
@@ -45,6 +46,13 @@ export class SetSchedaContattoHover {
 
 export class ClearSchedaContattoHover {
   static readonly type = '[SchedeContatto] Clear Scheda Contatto Hover';
+}
+
+export class ReducerSetFiltroSchedeContatto {
+  static readonly type = '[SchedeContatto] Reducer Set Filtro Schede Contatto';
+
+  constructor(public filtro: VoceFiltro) {
+  }
 }
 
 export class SetFiltroKeySchedeContatto {

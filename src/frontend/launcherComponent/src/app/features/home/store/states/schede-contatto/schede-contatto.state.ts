@@ -11,7 +11,7 @@ import {
   GetListaSchedeContatto,
   SetFiltroKeySchedeContatto,
   SetFiltroLettaSchedeContatto,
-  SetFiltroGestitaSchedeContatto, ClearFiltriSchedeContatto
+  SetFiltroGestitaSchedeContatto, ClearFiltriSchedeContatto, ReducerSetFiltroSchedeContatto
 } from '../../actions/schede-contatto/schede-contatto.actions';
 import { ClassificazioneSchedaContatto } from '../../../../../shared/enum/classificazione-scheda-contatto.enum';
 import { SchedeContattoService } from '../../../../../core/service/schede-contatto/schede-contatto.service';
@@ -37,10 +37,10 @@ export const SchedeContattoStateDefaults: SchedeContattoStateModel = {
   schedaContattoTelefonata: null,
   codiceSchedaContattoHover: null,
   filtriSchedeContatto: [
-    new VoceFiltro('1', 'Gestione', 'Gestita', false),
-    new VoceFiltro('2', 'Gestione', 'Non Gestita', false),
-    new VoceFiltro('3', 'Lettura', 'Letta', false),
-    new VoceFiltro('4', 'Lettura', 'Non Letta', false),
+    new VoceFiltro('1', 'Lettura', 'Letta', false),
+    new VoceFiltro('2', 'Lettura', 'Non Letta', false),
+    new VoceFiltro('3', 'Gestione', 'Gestita', false),
+    new VoceFiltro('4', 'Gestione', 'Non Gestita', false)
     // new VoceFiltro('4', 'Appartenenza', 'Personali', false),
     // new VoceFiltro('4', 'Appartenenza', 'Non Personali', false)
   ],
@@ -160,6 +160,27 @@ export class SchedeContattoState {
     });
   }
 
+  @Action(ReducerSetFiltroSchedeContatto)
+  reducerSetFiltroSchedeContatto({ getState, patchState, dispatch }: StateContext<SchedeContattoStateModel>, action: ReducerSetFiltroSchedeContatto) {
+    switch (action.filtro.codice) {
+      case '1':
+        dispatch(new SetFiltroLettaSchedeContatto(true));
+        break;
+      case '2':
+        dispatch(new SetFiltroLettaSchedeContatto(false));
+        break;
+      case '3':
+        dispatch(new SetFiltroGestitaSchedeContatto(true));
+        break;
+      case '4':
+        dispatch(new SetFiltroGestitaSchedeContatto(false));
+        break;
+      default:
+        console.error('[Errore Switch] ReducerSetFiltroSchedeContatto');
+        break;
+    }
+  }
+
   @Action(SetFiltroKeySchedeContatto)
   setFiltroKeySchedeContatto({ getState, patchState, dispatch }: StateContext<SchedeContattoStateModel>, action: SetFiltroKeySchedeContatto) {
     const state = getState();
@@ -200,9 +221,14 @@ export class SchedeContattoState {
   }
 
   @Action(ClearFiltriSchedeContatto)
-  clearFiltriSchedeContatto({ patchState, dispatch }: StateContext<SchedeContattoStateModel>) {
+  clearFiltriSchedeContatto({ getState, patchState, dispatch }: StateContext<SchedeContattoStateModel>) {
+    const state = getState();
     patchState({
-      filtriSelezionati: SchedeContattoStateDefaults.filtriSelezionati
+      filtriSelezionati: {
+        key: state.filtriSelezionati.key,
+        letta: null,
+        gestita: null
+      }
     });
     dispatch(new GetListaSchedeContatto());
   }
