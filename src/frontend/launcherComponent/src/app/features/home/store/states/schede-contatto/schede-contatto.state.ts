@@ -162,18 +162,19 @@ export class SchedeContattoState {
 
   @Action(ReducerSetFiltroSchedeContatto)
   reducerSetFiltroSchedeContatto({ getState, patchState, dispatch }: StateContext<SchedeContattoStateModel>, action: ReducerSetFiltroSchedeContatto) {
+    const state = getState();
     switch (action.filtro.codice) {
       case '1':
-        dispatch(new SetFiltroLettaSchedeContatto(true));
+        state.filtriSelezionati.letta === true ? dispatch(new SetFiltroLettaSchedeContatto(null)) : dispatch(new SetFiltroLettaSchedeContatto(true));
         break;
       case '2':
-        dispatch(new SetFiltroLettaSchedeContatto(false));
+        state.filtriSelezionati.letta === false ? dispatch(new SetFiltroLettaSchedeContatto(null)) : dispatch(new SetFiltroLettaSchedeContatto(false));
         break;
       case '3':
-        dispatch(new SetFiltroGestitaSchedeContatto(true));
+        state.filtriSelezionati.gestita === true ? dispatch(new SetFiltroGestitaSchedeContatto(null)) : dispatch(new SetFiltroGestitaSchedeContatto(true));
         break;
       case '4':
-        dispatch(new SetFiltroGestitaSchedeContatto(false));
+        state.filtriSelezionati.gestita === false ? dispatch(new SetFiltroGestitaSchedeContatto(null)) : dispatch(new SetFiltroGestitaSchedeContatto(false));
         break;
       default:
         console.error('[Errore Switch] ReducerSetFiltroSchedeContatto');
