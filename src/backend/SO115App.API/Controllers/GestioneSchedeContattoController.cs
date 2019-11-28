@@ -79,7 +79,7 @@ namespace SO115App.API.Controllers
                 _setGestita.Handle(command);
                 return Ok();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return BadRequest();
             }

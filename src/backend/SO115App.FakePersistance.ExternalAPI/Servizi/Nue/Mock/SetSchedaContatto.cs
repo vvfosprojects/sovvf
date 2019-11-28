@@ -22,6 +22,7 @@ using SO115App.ExternalAPI.Fake.Classi;
 using SO115App.Models.Classi.NUE;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 
 namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
 {
@@ -30,7 +31,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
     /// </summary>
     public class SetSchedaContatto
     {
-        private readonly string filepath = Costanti.NueJson;
+        private readonly string filepath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), Costanti.NueJson);
 
         /// <summary>
         ///   Metodo che restituisce la lista di tutte le schede contatto sul json
