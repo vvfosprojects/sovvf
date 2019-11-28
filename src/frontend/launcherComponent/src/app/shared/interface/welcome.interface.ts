@@ -6,6 +6,7 @@ import { ChiamataMarker } from '../../features/home/maps/maps-model/chiamata-mar
 import { CentroMappa } from '../../features/home/maps/maps-model/centro-mappa.model';
 import { ListaTipologicheMezzi } from '../../features/home/composizione-partenza/interface/filtri/lista-filtri-composizione-interface';
 import { SchedaContatto } from './scheda-contatto.interface';
+import { ContatoriSchedeContatto } from './contatori-schede-contatto.interface';
 
 export interface Welcome {
     boxListaMezzi: BoxMezzi;
@@ -15,5 +16,5 @@ export interface Welcome {
     listaChiamateInCorso: ChiamataMarker[];
     centroMappaMarker: CentroMappa;
     listaFiltri: ListaTipologicheMezzi;
-    listaSchedeContatto: SchedaContatto[];
+    infoNue: ContatoriSchedeContatto;
 }

@@ -18,7 +18,7 @@ export class SchedeContattoService {
   }
 
   getSchedeContatto(filtri: FiltriSchedeContatto): Observable<SchedaContatto[]> {
-    return this.http.post<SchedaContatto[]>(`${API_SCHEDE_CONTATTO}/GetLista`, filtri).pipe(
+    return this.http.post<SchedaContatto[]>(`${API_SCHEDE_CONTATTO}/GetSchede`, filtri).pipe(
       retry(3),
       catchError(handleError)
     );

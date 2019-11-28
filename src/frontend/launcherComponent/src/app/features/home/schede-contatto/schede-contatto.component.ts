@@ -3,7 +3,7 @@ import { Store, Select } from '@ngxs/store';
 import {
   SetSchedaContattoTelefonata,
   SetSchedaContattoHover,
-  ClearSchedaContattoHover, SetSchedaContattoLetta, SetSchedaContattoGestita
+  ClearSchedaContattoHover, SetSchedaContattoLetta, SetSchedaContattoGestita, GetListaSchedeContatto
 } from '../store/actions/schede-contatto/schede-contatto.actions';
 import { SchedeContattoState } from '../store/states/schede-contatto/schede-contatto.state';
 import { Observable, Subscription } from 'rxjs';
@@ -72,6 +72,7 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     isDevMode() && console.log('Componente Schede Contatto creato');
+    this.store.dispatch(new GetListaSchedeContatto());
   }
 
   ngOnDestroy(): void {

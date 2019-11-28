@@ -13,7 +13,7 @@ export const environment = {
         gestioneRichiesta: '/api/GestioneRichiesta',
         gestionePartenza: '/api/GestionePartenza/',
         mezziInServizio: '/api/GestioneMezziInServizio',
-        schedeContatto: '/api/SchedeContatto',
+        schedeContatto: '/api/GestioneSchedeContatto',
         turno: '',  // TodoBackEnd: controller mancante
         composizione: {
             preaccoppiati: '/api/PreAccoppiati',
