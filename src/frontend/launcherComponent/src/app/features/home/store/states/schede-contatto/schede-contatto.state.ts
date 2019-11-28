@@ -25,6 +25,7 @@ import {
 } from '../../../../../shared/helper/function-filtro';
 import { CategoriaFiltriSchedeContatto as Categoria } from '../../../../../shared/enum/categoria-filtri-schede-contatto';
 import { ContatoriSchedeContatto } from '../../../../../shared/interface/contatori-schede-contatto.interface';
+import { ContatoriSchedeContattoModel } from '../../../../../shared/model/contatori-schede-contatto.model';
 
 export interface SchedeContattoStateModel {
   contatoriSchedeContatto: ContatoriSchedeContatto;
@@ -39,7 +40,7 @@ export interface SchedeContattoStateModel {
 }
 
 export const SchedeContattoStateDefaults: SchedeContattoStateModel = {
-  contatoriSchedeContatto: null,
+  contatoriSchedeContatto: new ContatoriSchedeContattoModel(),
   schedeContatto: [],
   schedeContattoCompetenza: [],
   schedeContattoConoscenza: [],
@@ -66,6 +67,11 @@ export const SchedeContattoStateDefaults: SchedeContattoStateModel = {
   defaults: SchedeContattoStateDefaults
 })
 export class SchedeContattoState {
+
+  @Selector()
+  static contatoreSchedeContattoTotale(state: SchedeContattoStateModel) {
+    return state.contatoriSchedeContatto.totaleSchede;
+  }
 
   @Selector()
   static contatoriSchedeContatto(state: SchedeContattoStateModel) {

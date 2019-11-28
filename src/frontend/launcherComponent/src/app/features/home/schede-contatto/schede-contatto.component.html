@@ -3,7 +3,7 @@
     <ngb-tabset>
       <ngb-tab id="tab-tutte">
         <ng-template ngbTabTitle>
-          <b>Tutte ({{getNonLette(schedeContatto)}})</b>
+          <b>Tutte ({{contatoriSchedeContatto.totaleSchede.contatoreDaGestire}})</b>
         </ng-template>
         <ng-template ngbTabContent>
           <div class="row">
@@ -28,7 +28,7 @@
       <ngb-tab id="tab-competenza">
         <ng-template ngbTabTitle>
           <i class="fa fa-square text-danger mr-2"></i>
-          <b>Competenza ({{getNonLette(schedeContattoCompetenza)}})</b>
+          <b>Competenza ({{contatoriSchedeContatto.competenzaSchede.contatoreDaGestire}})</b>
         </ng-template>
         <ng-template ngbTabContent>
           <div class="row">
@@ -52,7 +52,7 @@
       <ngb-tab id="tab-conoscenza">
         <ng-template ngbTabTitle>
           <i class="fa fa-square text-warning mr-2"></i>
-          <b>Conoscenza ({{getNonLette(schedeContattoConoscenza)}})</b>
+          <b>Conoscenza ({{contatoriSchedeContatto.conoscenzaSchede.contatoreDaGestire}})</b>
         </ng-template>
         <ng-template ngbTabContent>
           <div class="row">
@@ -76,7 +76,7 @@
       <ngb-tab id="tab-differibile">
         <ng-template ngbTabTitle>
           <i class="fa fa-square text-secondary mr-2"></i>
-          <b>Differibile ({{getNonLette(schedeContattoDifferibili)}})</b>
+          <b>Differibile ({{contatoriSchedeContatto.differibileSchede.contatoreDaGestire}})</b>
         </ng-template>
         <ng-template ngbTabContent>
           <div class="row">
