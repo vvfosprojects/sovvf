@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="ListaSchedeContattoQuery.cs" company="CNVVF">
+// <copyright file="SetSchedaLettaNotifier.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,15 +17,23 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System;
-using System.Collections.Generic;
-using System.Text;
-using CQRS.Queries;
+using CQRS.Commands.Notifiers;
+using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneSchedeContatto;
 
-namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.ListaSchedeContatto
+namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSchedeNue.SetSchedaLetta
 {
-    public class ListaSchedeContattoQuery : IQuery<ListaSchedeContattoResult>
+    public class SetSchedaLettaNotifier : ICommandNotifier<SetSchedaLettaCommand>
     {
-        public string CodiceSede { get; set; }
+        private readonly INotificationSetSchedaLetta _sender;
+
+        public SetSchedaLettaNotifier(INotificationSetSchedaLetta sender)
+        {
+            _sender = sender;
+        }
+
+        public void Notify(SetSchedaLettaCommand command)
+        {
+            _sender.SendNotification(command);
+        }
     }
 }

@@ -54,6 +54,11 @@ namespace SO115App.CompositionRoot
             container.Register<ISetStatoGestioneSchedaContatto, SetGestita>();
             container.Register<ISetLetturaSchedaContatto, SetLetta>();
 
+            container.Register<SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue.IGetConteggioSchede,
+                ExternalAPI.Fake.Servizi.Nue.GetConteggioSchede>(); //TODO gestione composition Root per l'externalAPI
+            container.Register<SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue.IGetSchedeFiltrate,
+                ExternalAPI.Fake.Servizi.Nue.GetSchedeFiltrate>(); //TODO gestione composition Root per l'externalAPI
+
             #endregion NUE
 
             #region Territorio

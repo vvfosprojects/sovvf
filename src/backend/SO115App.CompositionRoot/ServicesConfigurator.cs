@@ -123,7 +123,7 @@ namespace SO115App.CompositionRoot
 
             container.Register<
                 SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi.IGetListaMezzi,
-                ExternalAPI.Fake.GestioneMezzi.GetListaMezziExt>();//TODO gestione composition Root per l'externalAPI
+                ExternalAPI.Fake.GestioneMezzi.GetListaMezziExt>(); //TODO gestione composition Root per l'externalAPI
             container.Register<
             SO115App.Models.Servizi.Infrastruttura.Turni.IUpdateTurni,
             SO115App.FakePersistence.JSon.Turni.UpdateTurni>();
@@ -173,6 +173,10 @@ namespace SO115App.CompositionRoot
             container.Register<
             SO115App.Models.Servizi.Infrastruttura.Notification.GestioneIntervento.INotifyUpDateStatoRichiesta,
             SO115App.SignalR.Sender.GestioneIntervento.NotificationUpDateStato>();
+            container.Register<SO115App.Models.Servizi.Infrastruttura.Notification.GestioneSchedeContatto.INotificationSetSchedaGestita,
+                SO115App.SignalR.Sender.GestioneSchedeContatto.NotificationSetSchedaGestita>();
+            container.Register<SO115App.Models.Servizi.Infrastruttura.Notification.GestioneSchedeContatto.INotificationSetSchedaLetta,
+               SO115App.SignalR.Sender.GestioneSchedeContatto.NotificationSetSchedaLetta>();
 
             container.Register<
                 API.Models.Servizi.Infrastruttura.Organigramma.IGetUnitaOperativaPerCodice,

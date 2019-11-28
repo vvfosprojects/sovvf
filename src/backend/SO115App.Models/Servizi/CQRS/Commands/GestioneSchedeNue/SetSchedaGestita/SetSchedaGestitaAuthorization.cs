@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="ListaSchedeContattoAuthorizationQueryHandlerDecorator.cs" company="CNVVF">
+// <copyright file="SetSchedaGestitaAuthorization.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,33 +17,30 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System;
-using System.Collections.Generic;
-using System.Security.Principal;
-using System.Text;
 using CQRS.Authorization;
-using CQRS.Queries.Authorizers;
 using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.Models.Classi.Utility;
+using System.Collections.Generic;
+using System.Security.Principal;
 
-namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.ListaSchedeContatto
+namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSchedeNue.SetSchedaGestita
 {
-    internal class ListaSchedeContattoAuthorizationQueryHandlerDecorator : IQueryAuthorizer<ListaSchedeContattoQuery, ListaSchedeContattoResult>
+    internal class SetSchedaGestitaAuthorization
     {
         private readonly IPrincipal _currentUser;
 
-        public ListaSchedeContattoAuthorizationQueryHandlerDecorator(IPrincipal currentUser)
+        public SetSchedaGestitaAuthorization(IPrincipal currentUser)
         {
-            _currentUser = currentUser;
+            this._currentUser = currentUser;
         }
 
-        public IEnumerable<AuthorizationResult> Authorize(ListaSchedeContattoQuery query)
+        public IEnumerable<AuthorizationResult> Authorize(SetSchedaGestitaCommand command)
         {
-            var username = this._currentUser.Identity.Name;
+            var username = _currentUser.Identity.Name;
+            var user = Utente.FindUserByUsername(username);
 
-            if (this._currentUser.Identity.IsAuthenticated)
+            if (_currentUser.Identity.IsAuthenticated)
             {
-                var user = Utente.FindUserByUsername(username);
                 if (user == null)
                     yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
             }

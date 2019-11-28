@@ -18,22 +18,33 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Queries;
+using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
 
-namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.ListaSchedeContatto
+namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSchedeNue.ListaSchedeContatto
 {
     internal class ListaSchedeContattoQueryHandler : IQueryHandler<ListaSchedeContattoQuery, ListaSchedeContattoResult>
     {
-        private readonly IGetSchedeContatto _getSchedeContatto;
+        private readonly IGetSchedeFiltrate _getSchedeFiltrate;
+        private readonly IGetUtenteById _getUtenteBy;
 
-        public ListaSchedeContattoQueryHandler(IGetSchedeContatto getSchedeContatto)
+        public ListaSchedeContattoQueryHandler(IGetSchedeFiltrate getSchedeFiltrate, IGetUtenteById getUtenteBy)
         {
-            _getSchedeContatto = getSchedeContatto;
+            _getSchedeFiltrate = getSchedeFiltrate;
+            _getUtenteBy = getUtenteBy;
         }
 
         public ListaSchedeContattoResult Handle(ListaSchedeContattoQuery query)
         {
-            var listaSchedeContatto = _getSchedeContatto.ListaSchedeContatto(query.CodiceSede);
+            string codiceFiscale = null;
+            if (query.Filtro.CercaPerOperatore == true)
+            {
+                var utente = _getUtenteBy.GetUtenteById(query.Filtro.IdUtente);
+                codiceFiscale = utente.CodiceFiscale;
+            }
+
+            var listaSchedeContatto = _getSchedeFiltrate.Get(query.Filtro.TestoLibero, query.Filtro.Gestita, query.Filtro.Letta, codiceFiscale);
+
             return new ListaSchedeContattoResult()
             {
                 SchedeContatto = listaSchedeContatto

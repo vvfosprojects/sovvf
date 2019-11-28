@@ -21,6 +21,7 @@ using GeoCoordinatePortable;
 using Newtonsoft.Json;
 using SO115App.ExternalAPI.Fake.Classi;
 using SO115App.Models.Classi.NUE;
+using SO115App.Models.Classi.ServiziEsterni.NUE;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -35,6 +36,9 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
     public class GetSchedeMethods
     {
         private readonly string SchedeContattoJson = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), Costanti.NueJson);
+        private readonly string Competenza = "Competenza";
+        private readonly string Conoscenza = "Conoscenza";
+        private readonly string Differibile = "Differibile";
 
         /// <summary>
         ///   Metodo che recupera tutti le schede contatto dal json SchedeContatto.
@@ -185,6 +189,67 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
             listaSchedeFiltered.AddRange(listaSchede.Where(x => x.Localita.Coordinate.Latitudine >= bottomLeft.Latitude && x.Localita.Coordinate.Latitudine <= topRight.Latitude && x.Localita.Coordinate.Longitudine >= bottomLeft.Longitude && x.Localita.Coordinate.Longitudine <= topRight.Longitude));
 
             return listaSchedeFiltered;
+        }
+
+        /// <summary>
+        ///   Metodo che restituisce le schede contatto lavorate in un area definita da un set di
+        ///   coordinate in firma
+        /// </summary>
+        /// <param name="testolibero">la stringa per la ricerca a testo libero</param>
+        /// <param name="gestita">booleana getsita</param>
+        /// <param name="letta">booleana letta</param>
+        /// <param name="codiceFiscale">codice fiscale operatore</param>
+        /// <returns>Una lista di SchedaContatto</returns>
+        public List<SchedaContatto> GetFiltered(string testolibero, bool? gestita, bool? letta, string codiceFiscale)
+        {
+            var listaSchedeFiltrate = GetList();
+            if (!string.IsNullOrWhiteSpace(testolibero)) listaSchedeFiltrate = GetSchedeContattoFromText(testolibero);
+            if (!string.IsNullOrWhiteSpace(codiceFiscale)) listaSchedeFiltrate = listaSchedeFiltrate.FindAll(x => x.OperatoreChiamata.CodiceFiscale.Equals(codiceFiscale));
+            if (gestita.HasValue) listaSchedeFiltrate = listaSchedeFiltrate = listaSchedeFiltrate.FindAll(x => x.Gestita.Equals(gestita));
+            if (letta.HasValue) listaSchedeFiltrate = listaSchedeFiltrate.FindAll(x => x.Letta.Equals(letta));
+
+            return listaSchedeFiltrate;
+        }
+
+        /// <summary>
+        ///   Metodo che restituisce il conteggio delle schede contatto in base alla loro classificazione.
+        /// </summary>
+        /// <param name="codiceSede">il codice sede</param>
+        /// ///
+        /// <returns>InfoNue</returns>
+        public InfoNue GetConteggio(string codiceSede)
+        {
+            var listaSchede = GetSchede(codiceSede);
+            var listaSchedeCompetenza = listaSchede.FindAll(x => x.Classificazione.Equals(Competenza));
+            var listaSchedeConoscenza = listaSchede.FindAll(x => x.Classificazione.Equals(Conoscenza));
+            var listaSchedeDifferibile = listaSchede.FindAll(x => x.Classificazione.Equals(Differibile));
+            return new InfoNue
+            {
+                TotaleSchede = new ContatoreNue
+                {
+                    ContatoreTutte = listaSchede.Count,
+                    ContatoreDaGestire = listaSchede.FindAll(x => !x.Gestita).Count,
+                    ContatoreDaLeggere = listaSchede.FindAll(x => !x.Letta).Count
+                },
+                CompetenzaSchede = new ContatoreNue
+                {
+                    ContatoreTutte = listaSchedeCompetenza.Count,
+                    ContatoreDaGestire = listaSchedeCompetenza.FindAll(x => !x.Gestita).Count,
+                    ContatoreDaLeggere = listaSchedeCompetenza.FindAll(x => !x.Letta).Count
+                },
+                ConoscenzaSchede = new ContatoreNue
+                {
+                    ContatoreTutte = listaSchedeConoscenza.Count,
+                    ContatoreDaGestire = listaSchedeConoscenza.FindAll(x => !x.Gestita).Count,
+                    ContatoreDaLeggere = listaSchedeConoscenza.FindAll(x => !x.Letta).Count
+                },
+                DifferibileSchede = new ContatoreNue
+                {
+                    ContatoreTutte = listaSchedeDifferibile.Count,
+                    ContatoreDaGestire = listaSchedeDifferibile.FindAll(x => !x.Gestita).Count,
+                    ContatoreDaLeggere = listaSchedeDifferibile.FindAll(x => !x.Letta).Count
+                }
+            };
         }
     }
 }

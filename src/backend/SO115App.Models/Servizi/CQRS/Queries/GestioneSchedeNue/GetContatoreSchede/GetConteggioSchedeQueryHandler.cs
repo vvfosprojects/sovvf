@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="ListaSchedeContattoResult.cs" company="CNVVF">
+// <copyright file="GetConteggioSchedeQueryHandler.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,13 +17,28 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using SO115App.Models.Classi.NUE;
-using System.Collections.Generic;
+using CQRS.Queries;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
 
-namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.ListaSchedeContatto
+namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSchedeNue.GetContatoreSchede
 {
-    public class ListaSchedeContattoResult
+    public class GetConteggioSchedeQueryHandler : IQueryHandler<GetConteggioSchedeQuery, GetConteggioSchedeResult>
     {
-        public List<SchedaContatto> SchedeContatto { get; set; }
+        private readonly IGetConteggioSchede _getConteggioSchede;
+
+        public GetConteggioSchedeQueryHandler(IGetConteggioSchede getConteggioSchede)
+        {
+            _getConteggioSchede = getConteggioSchede;
+        }
+
+        public GetConteggioSchedeResult Handle(GetConteggioSchedeQuery query)
+        {
+            var infoNue = _getConteggioSchede.GetConteggio(query.CodiceSede);
+
+            return new GetConteggioSchedeResult
+            {
+                InfoNue = infoNue
+            };
+        }
     }
 }
