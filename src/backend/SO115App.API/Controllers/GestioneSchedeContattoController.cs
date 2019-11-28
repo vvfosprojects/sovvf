@@ -47,8 +47,8 @@ namespace SO115App.API.Controllers
             _setLetta = setLetta ?? throw new ArgumentNullException(nameof(_setLetta));
         }
 
-        [HttpGet("GetSchede")]
-        public async Task<IActionResult> Get(FiltriSchede filtri)
+        [HttpPost("GetSchede")]
+        public async Task<IActionResult> Get([FromBody]FiltriSchede filtri)
         {
             filtri.IdUtente = Request.Headers["IdUtente"];
 
