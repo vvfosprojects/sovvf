@@ -123,7 +123,7 @@ namespace SO115App.CompositionRoot
 
             container.Register<
                 SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi.IGetListaMezzi,
-                SO115App.FakePersistenceJSon.GestioneMezzi.GetListaMezzi>();
+                ExternalAPI.Fake.GestioneMezzi.GetListaMezziExt>();//TODO gestione composition Root per l'externalAPI
             container.Register<
             SO115App.Models.Servizi.Infrastruttura.Turni.IUpdateTurni,
             SO115App.FakePersistence.JSon.Turni.UpdateTurni>();
