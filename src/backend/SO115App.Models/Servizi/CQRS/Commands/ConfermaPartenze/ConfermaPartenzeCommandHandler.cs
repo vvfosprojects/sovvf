@@ -31,7 +31,6 @@ using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GenerazioneCodiciR
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using SO115App.API.Models.Classi.Condivise;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ConfermaPartenze
 {
