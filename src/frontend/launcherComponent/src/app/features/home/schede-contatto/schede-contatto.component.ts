@@ -11,6 +11,7 @@ import { SchedaContatto } from 'src/app/shared/interface/scheda-contatto.interfa
 import { ToggleSchedeContatto, ToggleChiamata } from '../store/actions/view/view.actions';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DettaglioSchedaModalComponent } from './dettaglio-scheda-modal/dettaglio-scheda-modal.component';
+import { ContatoriSchedeContatto } from '../../../shared/interface/contatori-schede-contatto.interface';
 
 @Component({
   selector: 'app-schede-contatto',
@@ -30,6 +31,8 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
   schedeContattoDifferibili: SchedaContatto[];
   @Select(SchedeContattoState.codiceSchedaContattoHover) codiceSchedaContattoHover$: Observable<string>;
   codiceSchedaContattoHover: string;
+  @Select(SchedeContattoState.contatoriSchedeContatto) contatoriSchedeContatto$: Observable<ContatoriSchedeContatto>;
+  contatoriSchedeContatto: ContatoriSchedeContatto;
 
   subscription: Subscription = new Subscription();
 
@@ -56,9 +59,14 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
       })
     );
     this.subscription.add(
-      this.codiceSchedaContattoHover$.subscribe((codiceSchedaContatto: string) => {
-        this.codiceSchedaContattoHover = codiceSchedaContatto;
-      })
+        this.codiceSchedaContattoHover$.subscribe((codiceSchedaContatto: string) => {
+          this.codiceSchedaContattoHover = codiceSchedaContatto;
+        })
+    );
+    this.subscription.add(
+        this.contatoriSchedeContatto$.subscribe((contaotoriSchede: ContatoriSchedeContatto) => {
+          this.contatoriSchedeContatto = contaotoriSchede;
+        })
     );
   }
 
@@ -86,10 +94,6 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
   dettaglioScheda(scheda: SchedaContatto) {
     const modal = this.modal.open(DettaglioSchedaModalComponent, { windowClass: 'xlModal', backdropClass: 'light-blue-backdrop', centered: true });
     modal.componentInstance.schedaContatto = scheda;
-  }
-
-  getNonLette(schede: SchedaContatto[]) {
-    return schede.filter(s => s.letta === false).length;
   }
 
   hoverIn(idSchedaContatto: string) {

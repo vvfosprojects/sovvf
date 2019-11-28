@@ -2,18 +2,18 @@ import { Component, Output, EventEmitter, Input, HostBinding } from '@angular/co
 import { makeCopy } from '../../../../../shared/helper/function';
 
 @Component({
-    selector: 'app-ricerca-richieste',
-    templateUrl: './ricerca-richieste.component.html',
-    styleUrls: ['./ricerca-richieste.component.scss']
+    selector: 'app-ricerca',
+    templateUrl: './ricerca.component.html',
+    styleUrls: ['./ricerca.component.scss']
 })
-export class RicercaRichiesteComponent {
+export class RicercaComponent {
 
     @HostBinding('class') classes = 'input-group';
 
-    @Input() ricerca = { descrizione: '' };
+    @Input() ricerca = '';
 
     // Events
-    @Output() search: EventEmitter<any> = new EventEmitter();
+    @Output() search: EventEmitter<string> = new EventEmitter();
 
 
     constructor() {

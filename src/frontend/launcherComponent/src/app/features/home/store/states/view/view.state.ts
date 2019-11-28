@@ -46,7 +46,6 @@ import {
 } from '../../actions/composizione-partenza/composizione-partenza.actions';
 import { ClearSchedaContattoTelefonata } from '../../actions/schede-contatto/schede-contatto.actions';
 import { MapsFiltroState } from '../maps/maps-filtro.state';
-import { ReducerFiltroMarker, SetFiltroMarker } from '../../actions/maps/maps-filtro.actions';
 
 export const ViewComponentStateDefault: ViewComponentStateModel = {
     view: {
