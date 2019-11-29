@@ -89,7 +89,7 @@
       "CodiceFiscale": "ABCD30"
     },
     "Classificazione": "Conoscenza",
-    "Letta": false,
+    "Letta": true,
     "Gestita": true
   },
   {
