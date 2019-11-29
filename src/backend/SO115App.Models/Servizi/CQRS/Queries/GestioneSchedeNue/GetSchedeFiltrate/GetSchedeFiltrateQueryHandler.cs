@@ -18,8 +18,11 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Queries;
+using SO115App.Models.Classi.NUE;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSchedeNue.GetSchedeFiltrate
 {
@@ -43,7 +46,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSchedeNue.GetSchedeFiltra
                 codiceFiscale = utente.CodiceFiscale;
             }
 
-            var listaSchedeContatto = _getSchedeFiltrate.Get(query.Filtro.TestoLibero, query.Filtro.Gestita, query.Filtro.Letta, codiceFiscale);
+            var listaSchedeContatto = _getSchedeFiltrate.Get(query.Filtro.TestoLibero, query.Filtro.Gestita, query.Filtro.Letta, codiceFiscale).OrderByDescending(x => !x.Gestita).ThenByDescending(x => x.Priorita).ThenBy(x => x.DataInserimento).ToList();
 
             return new GetSchedeFiltrateResult()
             {
