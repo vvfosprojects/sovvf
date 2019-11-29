@@ -95,6 +95,7 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
   dettaglioScheda(scheda: SchedaContatto) {
     const modal = this.modal.open(DettaglioSchedaModalComponent, { windowClass: 'xlModal', backdropClass: 'light-blue-backdrop', centered: true });
     modal.componentInstance.schedaContatto = scheda;
+    this.setSchedaContattoLetta(scheda.codiceScheda, true);
   }
 
   hoverIn(idSchedaContatto: string) {
