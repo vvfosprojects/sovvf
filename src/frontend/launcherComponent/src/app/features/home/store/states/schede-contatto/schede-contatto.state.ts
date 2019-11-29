@@ -12,7 +12,7 @@ import {
     SetFiltroKeySchedeContatto,
     SetFiltroLettaSchedeContatto,
     ResetFiltriSelezionatiSchedeContatto, SetFiltroSelezionatoSchedaContatto,
-    SetFiltroGestitaSchedeContatto, ClearFiltriSchedeContatto, ReducerSetFiltroSchedeContatto, SetContatoriSchedeContatto, UpdateSchedaContatto
+    SetFiltroGestitaSchedeContatto, ClearFiltriSchedeContatto, ReducerSetFiltroSchedeContatto, SetContatoriSchedeContatto, UpdateSchedaContatto, ClearListaSchedeContatto
 } from '../../actions/schede-contatto/schede-contatto.actions';
 import { ClassificazioneSchedaContatto } from '../../../../../shared/enum/classificazione-scheda-contatto.enum';
 import { SchedeContattoService } from '../../../../../core/service/schede-contatto/schede-contatto.service';
@@ -40,6 +40,13 @@ export interface SchedeContattoStateModel {
     filtriSchedeContatto: VoceFiltro[];
     filtriSelezionati: FiltriSchedeContatto;
 }
+
+export const SchedeContattoEmpty = {
+    schedeContatto: [],
+    schedeContattoCompetenza: [],
+    schedeContattoConoscenza: [],
+    schedeContattoDifferibili: []
+};
 
 export const SchedeContattoStateDefaults: SchedeContattoStateModel = {
     contatoriSchedeContatto: new ContatoriSchedeContattoModel(),
@@ -156,6 +163,11 @@ export class SchedeContattoState {
             schedeContattoConoscenza: action.schedeContatto ? action.schedeContatto.filter(schedaContatto => schedaContatto.classificazione === ClassificazioneSchedaContatto.Conoscenza) : [],
             schedeContattoDifferibili: action.schedeContatto ? action.schedeContatto.filter(schedaContatto => schedaContatto.classificazione === ClassificazioneSchedaContatto.Differibile) : []
         });
+    }
+
+    @Action(ClearListaSchedeContatto)
+    clearListaSchedeContatto({ patchState }: StateContext<SchedeContattoStateModel>) {
+        patchState(SchedeContattoEmpty);
     }
 
     @Action(UpdateSchedaContatto)
