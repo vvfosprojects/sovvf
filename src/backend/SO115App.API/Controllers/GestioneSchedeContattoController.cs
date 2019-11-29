@@ -23,7 +23,7 @@ using Microsoft.AspNetCore.Mvc;
 using SO115App.Models.Classi.Filtri;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSchedeNue.SetSchedaGestita;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSchedeNue.SetSchedaLetta;
-using SO115App.Models.Servizi.CQRS.Queries.GestioneSchedeNue.ListaSchedeContatto;
+using SO115App.Models.Servizi.CQRS.Queries.GestioneSchedeNue.GetSchedeFiltrate;
 using System;
 using System.Threading.Tasks;
 
@@ -33,12 +33,12 @@ namespace SO115App.API.Controllers
     [ApiController]
     public class GestioneSchedeContattoController : ControllerBase
     {
-        private readonly IQueryHandler<ListaSchedeContattoQuery, ListaSchedeContattoResult> _queryHandler;
+        private readonly IQueryHandler<GetSchedeFiltrateQuery, GetSchedeFiltrateResult> _queryHandler;
         private readonly ICommandHandler<SetSchedaGestitaCommand> _setGestita;
         private readonly ICommandHandler<SetSchedaLettaCommand> _setLetta;
 
         public GestioneSchedeContattoController(
-            IQueryHandler<ListaSchedeContattoQuery, ListaSchedeContattoResult> queryHandler,
+            IQueryHandler<GetSchedeFiltrateQuery, GetSchedeFiltrateResult> queryHandler,
             ICommandHandler<SetSchedaGestitaCommand> setGestita,
             ICommandHandler<SetSchedaLettaCommand> setLetta)
         {
@@ -52,7 +52,7 @@ namespace SO115App.API.Controllers
         {
             filtri.IdUtente = Request.Headers["IdUtente"];
 
-            var query = new ListaSchedeContattoQuery()
+            var query = new GetSchedeFiltrateQuery()
             {
                 CodiceSede = Request.Headers["codiceSede"],
                 Filtro = filtri

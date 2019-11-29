@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="ListaSchedeContattoResult.cs" company="CNVVF">
+// <copyright file="ListaSchedeContattoQuery.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,13 +17,15 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using SO115App.Models.Classi.NUE;
-using System.Collections.Generic;
+using CQRS.Queries;
+using SO115App.Models.Classi.Filtri;
 
-namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSchedeNue.ListaSchedeContatto
+namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSchedeNue.GetSchedeFiltrate
 {
-    public class ListaSchedeContattoResult
+    public class GetSchedeFiltrateQuery : IQuery<GetSchedeFiltrateResult>
     {
-        public List<SchedaContatto> SchedeContatto { get; set; }
+        public string CodiceSede { get; set; }
+
+        public FiltriSchede Filtro { get; set; }
     }
 }

@@ -21,20 +21,20 @@ using CQRS.Queries;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
 
-namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSchedeNue.ListaSchedeContatto
+namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSchedeNue.GetSchedeFiltrate
 {
-    internal class ListaSchedeContattoQueryHandler : IQueryHandler<ListaSchedeContattoQuery, ListaSchedeContattoResult>
+    internal class GetSchedeFiltrateQueryHandler : IQueryHandler<GetSchedeFiltrateQuery, GetSchedeFiltrateResult>
     {
         private readonly IGetSchedeFiltrate _getSchedeFiltrate;
         private readonly IGetUtenteById _getUtenteBy;
 
-        public ListaSchedeContattoQueryHandler(IGetSchedeFiltrate getSchedeFiltrate, IGetUtenteById getUtenteBy)
+        public GetSchedeFiltrateQueryHandler(IGetSchedeFiltrate getSchedeFiltrate, IGetUtenteById getUtenteBy)
         {
             _getSchedeFiltrate = getSchedeFiltrate;
             _getUtenteBy = getUtenteBy;
         }
 
-        public ListaSchedeContattoResult Handle(ListaSchedeContattoQuery query)
+        public GetSchedeFiltrateResult Handle(GetSchedeFiltrateQuery query)
         {
             string codiceFiscale = null;
             if (query.Filtro.CercaPerOperatore == true)
@@ -45,7 +45,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSchedeNue.ListaSchedeCont
 
             var listaSchedeContatto = _getSchedeFiltrate.Get(query.Filtro.TestoLibero, query.Filtro.Gestita, query.Filtro.Letta, codiceFiscale);
 
-            return new ListaSchedeContattoResult()
+            return new GetSchedeFiltrateResult()
             {
                 SchedeContatto = listaSchedeContatto
             };

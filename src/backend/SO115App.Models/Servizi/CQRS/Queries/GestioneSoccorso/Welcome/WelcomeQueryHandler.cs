@@ -26,7 +26,6 @@ using SO115App.API.Models.Servizi.CQRS.Queries.Marker.CentroMappaMarker;
 using SO115App.API.Models.Servizi.CQRS.Queries.Marker.ListaChiamateInCorsoMarker;
 using SO115App.Models.Classi.Marker;
 using System.Collections.Generic;
-using SO115App.Models.Servizi.CQRS.Queries.GestioneSchedeNue.ListaSchedeContatto;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneSchedeNue.GetContatoreSchede;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome

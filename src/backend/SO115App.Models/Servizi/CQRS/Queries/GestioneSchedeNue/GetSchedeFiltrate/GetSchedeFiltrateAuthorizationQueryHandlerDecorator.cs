@@ -26,18 +26,18 @@ using CQRS.Queries.Authorizers;
 using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.Models.Classi.Utility;
 
-namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSchedeNue.ListaSchedeContatto
+namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSchedeNue.GetSchedeFiltrate
 {
-    internal class ListaSchedeContattoAuthorizationQueryHandlerDecorator : IQueryAuthorizer<ListaSchedeContattoQuery, ListaSchedeContattoResult>
+    internal class GetSchedeFiltrateAuthorizationQueryHandlerDecorator : IQueryAuthorizer<GetSchedeFiltrateQuery, GetSchedeFiltrateResult>
     {
         private readonly IPrincipal _currentUser;
 
-        public ListaSchedeContattoAuthorizationQueryHandlerDecorator(IPrincipal currentUser)
+        public GetSchedeFiltrateAuthorizationQueryHandlerDecorator(IPrincipal currentUser)
         {
             _currentUser = currentUser;
         }
 
-        public IEnumerable<AuthorizationResult> Authorize(ListaSchedeContattoQuery query)
+        public IEnumerable<AuthorizationResult> Authorize(GetSchedeFiltrateQuery query)
         {
             var username = _currentUser.Identity.Name;
 
