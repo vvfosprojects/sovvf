@@ -1,108 +1,136 @@
 <div class="row mt-2 px-0" style="height:750px">
-  <div *ngIf="schedeContatto" class="col-12 scroll-y" style="height:700px">
-    <ngb-tabset>
-      <ngb-tab id="tab-tutte">
-        <ng-template ngbTabTitle>
-          <b>Tutte ({{contatoriSchedeContatto.totaleSchede.contatoreDaGestire}})</b>
-        </ng-template>
-        <ng-template ngbTabContent>
-          <div class="row">
-            <div *ngIf="schedeContatto.length > 0" class="col-12 my-2">
-              <app-scheda-contatto *ngFor="let scheda of schedeContatto"
-                                   [scheda]="scheda"
-                                   [idSchedaContattoHover]="codiceSchedaContattoHover"
-                                   (hoverOut)="hoverOut()" (hoverIn)="hoverIn($event)"
-                                   (dettaglioScheda)="dettaglioScheda($event)"
-                                   (setSchedaContattoTelefonata)="setSchedaContattoTelefonata($event)"
-                                   (setSchedaContattoLetta)="setSchedaContattoLetta(scheda.codiceScheda, $event)"
-                                   (setSchedaContattoGestita)="setSchedaContattoGestita(scheda.codiceScheda, $event)">
-              </app-scheda-contatto>
-            </div>
-            <div *ngIf="schedeContatto.length <= 0"
-                 class="col-12 mt-4">
-              <h6 class="text-center">Non ci sono Schede Contatto</h6>
-            </div>
-          </div>
-        </ng-template>
-      </ngb-tab>
-      <ngb-tab id="tab-competenza">
-        <ng-template ngbTabTitle>
-          <i class="fa fa-square text-danger mr-2"></i>
-          <b>Competenza ({{contatoriSchedeContatto.competenzaSchede.contatoreDaGestire}})</b>
-        </ng-template>
-        <ng-template ngbTabContent>
-          <div class="row">
-            <div *ngIf="schedeContattoCompetenza.length > 0" class="col-12 my-2">
-              <app-scheda-contatto *ngFor="let scheda of schedeContattoCompetenza"
-                                   [scheda]="scheda"
-                                   [idSchedaContattoHover]="codiceSchedaContattoHover"
-                                   (hoverOut)="hoverOut()" (hoverIn)="hoverIn($event)"
-                                   (dettaglioScheda)="dettaglioScheda($event)"
-                                   (setSchedaContattoTelefonata)="setSchedaContattoTelefonata($event)"
-                                   (setSchedaContattoLetta)="setSchedaContattoLetta(scheda.codiceScheda, $event)"
-                                   (setSchedaContattoGestita)="setSchedaContattoGestita(scheda.codiceScheda, $event)">
-              </app-scheda-contatto>
-            </div>
-            <div *ngIf="schedeContattoCompetenza.length <= 0" class="col-12 mt-4">
-              <h6 class="text-center">Non ci sono Schede Contatto per Competenza</h6>
-            </div>
-          </div>
-        </ng-template>
-      </ngb-tab>
-      <ngb-tab id="tab-conoscenza">
-        <ng-template ngbTabTitle>
-          <i class="fa fa-square text-warning mr-2"></i>
-          <b>Conoscenza ({{contatoriSchedeContatto.conoscenzaSchede.contatoreDaGestire}})</b>
-        </ng-template>
-        <ng-template ngbTabContent>
-          <div class="row">
-            <div *ngIf="schedeContattoConoscenza.length > 0" class="col-12 my-2">
-              <app-scheda-contatto *ngFor="let scheda of schedeContattoConoscenza"
-                                   [scheda]="scheda"
-                                   [idSchedaContattoHover]="codiceSchedaContattoHover"
-                                   (hoverOut)="hoverOut()" (hoverIn)="hoverIn($event)"
-                                   (dettaglioScheda)="dettaglioScheda($event)"
-                                   (setSchedaContattoTelefonata)="setSchedaContattoTelefonata($event)"
-                                   (setSchedaContattoLetta)="setSchedaContattoLetta(scheda.codiceScheda, $event)"
-                                   (setSchedaContattoGestita)="setSchedaContattoGestita(scheda.codiceScheda, $event)">
-              </app-scheda-contatto>
-            </div>
-            <div *ngIf="schedeContattoConoscenza.length <= 0" class="col-12 mt-4">
-              <h6 class="text-center">Non ci sono Schede Contatto per Conoscenza</h6>
-            </div>
-          </div>
-        </ng-template>
-      </ngb-tab>
-      <ngb-tab id="tab-differibile">
-        <ng-template ngbTabTitle>
-          <i class="fa fa-square text-secondary mr-2"></i>
-          <b>Differibile ({{contatoriSchedeContatto.differibileSchede.contatoreDaGestire}})</b>
-        </ng-template>
-        <ng-template ngbTabContent>
-          <div class="row">
-            <div *ngIf="schedeContattoDifferibili.length > 0" class="col-12 my-2">
-              <app-scheda-contatto *ngFor="let scheda of schedeContattoDifferibili"
-                                   [scheda]="scheda"
-                                   [idSchedaContattoHover]="codiceSchedaContattoHover"
-                                   (hoverOut)="hoverOut()" (hoverIn)="hoverIn($event)"
-                                   (dettaglioScheda)="dettaglioScheda($event)"
-                                   (setSchedaContattoTelefonata)="setSchedaContattoTelefonata($event)"
-                                   (setSchedaContattoLetta)="setSchedaContattoLetta(scheda.codiceScheda, $event)"
-                                   (setSchedaContattoGestita)="setSchedaContattoGestita(scheda.codiceScheda, $event)">
-              </app-scheda-contatto>
-            </div>
-            <div *ngIf="schedeContattoDifferibili.length <= 0" class="col-12 mt-4">
-              <h6 class="text-center">Non ci sono Schede Contatto Differibili</h6>
-            </div>
-          </div>
-        </ng-template>
-      </ngb-tab>
-    </ngb-tabset>
-  </div>
-  <div class="col-12">
-    <button class="btn btn-primary mt-2" (click)="tornaIndietro()">
-      <i class="fa fa-arrow-left mr-2"></i>
-      Torna Indietro
-    </button>
-  </div>
+    <div *ngIf="schedeContatto" class="col-12 scroll-y" style="height:700px">
+        <ngb-tabset>
+            <ngb-tab id="tab-tutte">
+                <ng-template ngbTabTitle>
+                    <div [ngbTooltip]="tipTutte">
+                        <b>Tutte ({{contatoriSchedeContatto.totaleSchede.contatoreDaGestire}})</b>
+                    </div>
+                    <ng-template #tipTutte>
+                        <div>Tutte: {{contatoriSchedeContatto.totaleSchede.contatoreTutte}}</div>
+                        <div>Da leggere: {{contatoriSchedeContatto.totaleSchede.contatoreDaLeggere}}</div>
+                        <div><b>Da gestire: {{contatoriSchedeContatto.totaleSchede.contatoreDaGestire}}</b></div>
+                    </ng-template>
+                </ng-template>
+                <ng-template ngbTabContent>
+                    <div class="row">
+                        <div *ngIf="schedeContatto.length > 0" class="col-12 my-2">
+                            <app-scheda-contatto *ngFor="let scheda of schedeContatto"
+                                                 [scheda]="scheda"
+                                                 [idSchedaContattoHover]="codiceSchedaContattoHover"
+                                                 (hoverOut)="hoverOut()" (hoverIn)="hoverIn($event)"
+                                                 (dettaglioScheda)="dettaglioScheda($event)"
+                                                 (setSchedaContattoTelefonata)="setSchedaContattoTelefonata($event)"
+                                                 (setSchedaContattoLetta)="setSchedaContattoLetta(scheda.codiceScheda, $event)"
+                                                 (setSchedaContattoGestita)="setSchedaContattoGestita(scheda.codiceScheda, $event)">
+                            </app-scheda-contatto>
+                        </div>
+                        <div *ngIf="schedeContatto.length <= 0"
+                             class="col-12 mt-4">
+                            <h6 class="text-center">Non ci sono Schede Contatto</h6>
+                        </div>
+                    </div>
+                </ng-template>
+            </ngb-tab>
+            <ngb-tab id="tab-competenza">
+                <ng-template ngbTabTitle>
+                    <div [ngbTooltip]="tipCompetenza">
+                        <i class="fa fa-square text-danger mr-2"></i>
+                        <b>Competenza ({{contatoriSchedeContatto.competenzaSchede.contatoreDaGestire}})</b>
+                    </div>
+                    <ng-template #tipCompetenza>
+                        <div>Tutte: {{contatoriSchedeContatto.competenzaSchede.contatoreTutte}}</div>
+                        <div>Da leggere: {{contatoriSchedeContatto.competenzaSchede.contatoreDaLeggere}}</div>
+                        <div><b>Da gestire: {{contatoriSchedeContatto.competenzaSchede.contatoreDaGestire}}</b></div>
+                    </ng-template>
+                </ng-template>
+                <ng-template ngbTabContent>
+                    <div class="row">
+                        <div *ngIf="schedeContattoCompetenza.length > 0" class="col-12 my-2">
+                            <app-scheda-contatto *ngFor="let scheda of schedeContattoCompetenza"
+                                                 [scheda]="scheda"
+                                                 [idSchedaContattoHover]="codiceSchedaContattoHover"
+                                                 (hoverOut)="hoverOut()" (hoverIn)="hoverIn($event)"
+                                                 (dettaglioScheda)="dettaglioScheda($event)"
+                                                 (setSchedaContattoTelefonata)="setSchedaContattoTelefonata($event)"
+                                                 (setSchedaContattoLetta)="setSchedaContattoLetta(scheda.codiceScheda, $event)"
+                                                 (setSchedaContattoGestita)="setSchedaContattoGestita(scheda.codiceScheda, $event)">
+                            </app-scheda-contatto>
+                        </div>
+                        <div *ngIf="schedeContattoCompetenza.length <= 0" class="col-12 mt-4">
+                            <h6 class="text-center">Non ci sono Schede Contatto per Competenza</h6>
+                        </div>
+                    </div>
+                </ng-template>
+            </ngb-tab>
+            <ngb-tab id="tab-differibile">
+                <ng-template ngbTabTitle>
+                    <div [ngbTooltip]="tipDifferibile">
+                        <i class="fa fa-square text-secondary mr-2"></i>
+                        <b>Differibile ({{contatoriSchedeContatto.differibileSchede.contatoreDaGestire}})</b>
+                    </div>
+                    <ng-template #tipDifferibile>
+                        <div>Tutte: {{contatoriSchedeContatto.differibileSchede.contatoreTutte}}</div>
+                        <div>Da leggere: {{contatoriSchedeContatto.differibileSchede.contatoreDaLeggere}}</div>
+                        <div><b>Da gestire: {{contatoriSchedeContatto.differibileSchede.contatoreDaGestire}}</b></div>
+                    </ng-template>
+                </ng-template>
+                <ng-template ngbTabContent>
+                    <div class="row">
+                        <div *ngIf="schedeContattoDifferibili.length > 0" class="col-12 my-2">
+                            <app-scheda-contatto *ngFor="let scheda of schedeContattoDifferibili"
+                                                 [scheda]="scheda"
+                                                 [idSchedaContattoHover]="codiceSchedaContattoHover"
+                                                 (hoverOut)="hoverOut()" (hoverIn)="hoverIn($event)"
+                                                 (dettaglioScheda)="dettaglioScheda($event)"
+                                                 (setSchedaContattoTelefonata)="setSchedaContattoTelefonata($event)"
+                                                 (setSchedaContattoLetta)="setSchedaContattoLetta(scheda.codiceScheda, $event)"
+                                                 (setSchedaContattoGestita)="setSchedaContattoGestita(scheda.codiceScheda, $event)">
+                            </app-scheda-contatto>
+                        </div>
+                        <div *ngIf="schedeContattoDifferibili.length <= 0" class="col-12 mt-4">
+                            <h6 class="text-center">Non ci sono Schede Contatto Differibili</h6>
+                        </div>
+                    </div>
+                </ng-template>
+            </ngb-tab>
+            <ngb-tab id="tab-conoscenza">
+                <ng-template ngbTabTitle>
+                    <div [ngbTooltip]="tipConoscenza">
+                        <i class="fa fa-square text-warning mr-2"></i>
+                        <b>Conoscenza ({{contatoriSchedeContatto.conoscenzaSchede.contatoreDaGestire}})</b>
+                    </div>
+                    <ng-template #tipConoscenza>
+                        <div>Tutte: {{contatoriSchedeContatto.conoscenzaSchede.contatoreTutte}}</div>
+                        <div>Da leggere: {{contatoriSchedeContatto.conoscenzaSchede.contatoreDaLeggere}}</div>
+                        <div><b>Da gestire: {{contatoriSchedeContatto.conoscenzaSchede.contatoreDaGestire}}</b></div>
+                    </ng-template>
+                </ng-template>
+                <ng-template ngbTabContent>
+                    <div class="row">
+                        <div *ngIf="schedeContattoConoscenza.length > 0" class="col-12 my-2">
+                            <app-scheda-contatto *ngFor="let scheda of schedeContattoConoscenza"
+                                                 [scheda]="scheda"
+                                                 [idSchedaContattoHover]="codiceSchedaContattoHover"
+                                                 (hoverOut)="hoverOut()" (hoverIn)="hoverIn($event)"
+                                                 (dettaglioScheda)="dettaglioScheda($event)"
+                                                 (setSchedaContattoTelefonata)="setSchedaContattoTelefonata($event)"
+                                                 (setSchedaContattoLetta)="setSchedaContattoLetta(scheda.codiceScheda, $event)"
+                                                 (setSchedaContattoGestita)="setSchedaContattoGestita(scheda.codiceScheda, $event)">
+                            </app-scheda-contatto>
+                        </div>
+                        <div *ngIf="schedeContattoConoscenza.length <= 0" class="col-12 mt-4">
+                            <h6 class="text-center">Non ci sono Schede Contatto per Conoscenza</h6>
+                        </div>
+                    </div>
+                </ng-template>
+            </ngb-tab>
+        </ngb-tabset>
+    </div>
+    <div class="col-12">
+        <button class="btn btn-primary mt-2" (click)="tornaIndietro()">
+            <i class="fa fa-arrow-left mr-2"></i>
+            Torna Indietro
+        </button>
+    </div>
 </div>

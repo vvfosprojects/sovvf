@@ -44,7 +44,7 @@ import {
     TerminaComposizione,
     ToggleComposizioneMode
 } from '../../actions/composizione-partenza/composizione-partenza.actions';
-import { ClearSchedaContattoTelefonata } from '../../actions/schede-contatto/schede-contatto.actions';
+import { ClearListaSchedeContatto, ClearSchedaContattoTelefonata } from '../../actions/schede-contatto/schede-contatto.actions';
 import { MapsFiltroState } from '../maps/maps-filtro.state';
 
 export const ViewComponentStateDefault: ViewComponentStateModel = {
@@ -321,6 +321,7 @@ export class ViewComponentState {
             });
         } else {
             dispatch(new ClearSchedaContattoTelefonata());
+            dispatch(new ClearListaSchedeContatto());
             patchState(ViewComponentStateDefault);
         }
     }

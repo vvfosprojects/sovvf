@@ -20,6 +20,10 @@ export class SetListaSchedeContatto {
     }
 }
 
+export class ClearListaSchedeContatto {
+    static readonly type = '[SchedeContatto] Clear Lista Schede Contatto';
+}
+
 export class UpdateSchedaContatto {
     static readonly type = '[SchedeContatto] Update Scheda Contatto';
 
