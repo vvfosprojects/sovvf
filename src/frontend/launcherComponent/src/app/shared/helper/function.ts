@@ -190,6 +190,25 @@ export function statoMezzoColor(stato: StatoMezzo) {
     return _returnColor;
 }
 
+export function statoMezzoActionColor(stato: StatoMezzoActions) {
+    let _returnColor = '';
+    switch (stato) {
+        case StatoMezzoActions.Rientrato:
+            _returnColor = 'success';
+            break;
+        case StatoMezzoActions.InViaggio:
+            _returnColor = 'warning';
+            break;
+        case StatoMezzoActions.SulPosto:
+            _returnColor = 'danger';
+            break;
+        case StatoMezzoActions.InRientro:
+            _returnColor = 'verdemela';
+            break;
+    }
+    return _returnColor;
+}
+
 export function statoMezzoBorderClass(stato: StatoMezzo) {
     let _returnClass = '';
     switch (stato) {
