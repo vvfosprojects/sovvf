@@ -56,7 +56,7 @@ namespace SO115App.ExternalAPI.Fake.Box
 
             var listaMezzi = _getMezziUtilizzabili.Get(listaCodici, "", "");
 
-            mezzi.InSede = listaMezzi.Where(x => x.Stato == Costanti.MezzoInSede && x.Stato == Costanti.MezzoRientrato)
+            mezzi.InSede = listaMezzi.Where(x => x.Stato == Costanti.MezzoInSede || x.Stato == Costanti.MezzoRientrato)
                 .Select(x => x.Stato)
                 .Count();
             mezzi.InViaggio = listaMezzi.Where(x => x.Stato == Costanti.MezzoInViaggio)
