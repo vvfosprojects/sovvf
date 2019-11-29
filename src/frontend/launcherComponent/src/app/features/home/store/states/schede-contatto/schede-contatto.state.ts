@@ -171,14 +171,15 @@ export class SchedeContattoState {
     }
 
     @Action(UpdateSchedaContatto)
-    updateSchedaContatto({ getState, setState, dispatch }: StateContext<SchedeContattoStateModel>, action: UpdateSchedaContatto) {
-        const state = getState();
+    updateSchedaContatto({ setState }: StateContext<SchedeContattoStateModel>, action: UpdateSchedaContatto) {
         setState(
             patch({
-                schedeContatto: updateItem<SchedaContatto>(s => s.codiceScheda === action.schedaContatto.codiceScheda, action.schedaContatto)
+                schedeContatto: updateItem<SchedaContatto>(s => s.codiceScheda === action.schedaContatto.codiceScheda, action.schedaContatto),
+                schedeContattoCompetenza: updateItem<SchedaContatto>(s => s.codiceScheda === action.schedaContatto.codiceScheda, action.schedaContatto),
+                schedeContattoConoscenza: updateItem<SchedaContatto>(s => s.codiceScheda === action.schedaContatto.codiceScheda, action.schedaContatto),
+                schedeContattoDifferibili: updateItem<SchedaContatto>(s => s.codiceScheda === action.schedaContatto.codiceScheda, action.schedaContatto)
             })
         );
-        dispatch(new SetListaSchedeContatto(state.schedeContatto));
     }
 
     @Action(SetSchedaContattoLetta)
