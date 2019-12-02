@@ -272,7 +272,8 @@ export class MezziComposizioneState {
     @Action(RequestBookMezzoComposizione)
     requestBookMezzoComposizione({ dispatch }: StateContext<MezziComposizioneStateStateModel>, action: RequestBookMezzoComposizione) {
         const mezzoPrenotatoObj = {
-            'mezzoComposizione': action.mezzoComp
+            'codiceMezzo': action.mezzoComp.mezzo.codice,
+            'codiceRichiesta': this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione).id
         };
         dispatch(new AddBookingMezzoComposizione(action.mezzoComp));
         this._compPartenzaService.setMezzoPrenotato(mezzoPrenotatoObj).subscribe(() => {
