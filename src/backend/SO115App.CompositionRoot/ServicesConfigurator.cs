@@ -20,8 +20,11 @@
 using SimpleInjector;
 using SO115App.ExternalAPI.Fake.Nue;
 using SO115App.ExternalAPI.Fake.Uos;
+using SO115App.FakePersistence.JSon.Composizione;
+using SO115App.FakePersistence.JSon.GestioneMezzi;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
+using SO115App.SignalR.Sender.ComposizionePartenza.GestioneMezzoPrenotato;
 
 namespace SO115App.CompositionRoot
 {
@@ -101,8 +104,10 @@ namespace SO115App.CompositionRoot
                 SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.IGetIdByCodice,
                 FakePersistenceJSon.GestioneIntervento.GetIdByCodice>();
             container.Register<
-                SO115App.Models.Servizi.Infrastruttura.GetMezzoPrenotato.IGetMezzoPrenotato,
-                FakePersistenceJSon.Composizione.GetMezzoPrenotato>();
+                Models.Servizi.Infrastruttura.Composizione.ISetMezzoPrenotato,
+                SetMezzoPrenotato>();
+            container.Register<Models.Servizi.Infrastruttura.GetMezzoPrenotato.IGetMezziPrenotati,
+                GetMezziPrenotati>();
             container.Register<
          SO115App.Models.Servizi.Infrastruttura.Composizione.IUpdateConfermaPartenze,
          ExternalAPI.Fake.Composizione.UpdateConfermaPartenzeExt>(); //TODO gestione composition Root per l'externalAPI
@@ -151,7 +156,7 @@ namespace SO115App.CompositionRoot
             SO115App.SignalR.Sender.GestioneChiamateInCorso.NotificationUpDateChiamataInCorso>();
             container.Register<
             SO115App.Models.Servizi.Infrastruttura.Notification.ComposizionePartenza.MezzoPrenotato.INotificationAddPrenotazioneMezzo,
-            SO115App.SignalR.Sender.ComposizionePartenza.MezzoPrenotato.NotificationAddPrenotazioneMezzo>();
+            NotificationAddPrenotazioneMezzo>();
             container.Register<
             SO115App.Models.Servizi.Infrastruttura.Notification.ComposizionePartenza.INotificationConfermaPartenze,
             SO115App.SignalR.Sender.ComposizionePartenza.NotificationConfermaPartenze>();
