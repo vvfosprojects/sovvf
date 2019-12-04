@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="INotificationAddPrenotazioneMezzo.cs" company="CNVVF">
+// <copyright file="GetMezziPrenotatiQuery.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,14 +17,18 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using CQRS.Queries;
 
-using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.SetMezzoPrenotato;
-using System.Threading.Tasks;
-
-namespace SO115App.Models.Servizi.Infrastruttura.Notification.ComposizionePartenza.MezzoPrenotato
+namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GestioneMezzoPrenotato
 {
-    public interface INotificationAddPrenotazioneMezzo
+    /// <summary>
+    ///   Modello della query per il reperimento dei mezzi prenotati
+    /// </summary>
+    public class GetMezziPrenotatiQuery : IQuery<GetMezzoPrenotatoResult>
     {
-        Task SendNotification(SetMezzoPrenotatoCommand command);
+        /// <summary>
+        ///   Il codice della sede
+        /// </summary>
+        public string CodiceSede { get; set; }
     }
 }

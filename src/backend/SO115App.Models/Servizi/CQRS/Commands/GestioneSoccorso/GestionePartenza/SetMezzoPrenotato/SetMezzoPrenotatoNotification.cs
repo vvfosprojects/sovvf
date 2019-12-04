@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="NotificationAddPrenotazioneMezzo.cs" company="CNVVF">
+// <copyright file="SetMezzoPrenotatoNotification.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,27 +17,23 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-
-using DomainModel.CQRS.Commands.MezzoPrenotato;
-using Microsoft.AspNetCore.SignalR;
+using CQRS.Commands.Notifiers;
 using SO115App.Models.Servizi.Infrastruttura.Notification.ComposizionePartenza.MezzoPrenotato;
-using System;
-using System.Threading.Tasks;
 
-namespace SO115App.SignalR.Sender.ComposizionePartenza.MezzoPrenotato
+namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.SetMezzoPrenotato
 {
-    public class NotificationAddPrenotazioneMezzo : INotificationAddPrenotazioneMezzo
+    public class SetMezzoPrenotatoNotification : ICommandNotifier<SetMezzoPrenotatoCommand>
     {
-        private readonly IHubContext<NotificationHub> _notificationHubContext;
+        private readonly INotificationAddPrenotazioneMezzo _sender;
 
-        public NotificationAddPrenotazioneMezzo(IHubContext<NotificationHub> NotificationHubContext)
+        public SetMezzoPrenotatoNotification(INotificationAddPrenotazioneMezzo sender)
         {
-            _notificationHubContext = NotificationHubContext;
+            _sender = sender;
         }
 
-        public async Task SendNotification(MezzoPrenotatoCommand command)
+        public void Notify(SetMezzoPrenotatoCommand command)
         {
-            await _notificationHubContext.Clients.Group(command.CodiceSede).SendAsync("NotifyAddPrenotazioneMezzo", command);
+            _sender.SendNotification(command);
         }
     }
 }

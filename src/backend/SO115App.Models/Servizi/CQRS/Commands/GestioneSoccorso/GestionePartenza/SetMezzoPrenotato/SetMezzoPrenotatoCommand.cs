@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="INotificationAddPrenotazioneMezzo.cs" company="CNVVF">
+// <copyright file="SetMezzoPrenotatoCommand.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,14 +17,16 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-
-using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.SetMezzoPrenotato;
-using System.Threading.Tasks;
-
-namespace SO115App.Models.Servizi.Infrastruttura.Notification.ComposizionePartenza.MezzoPrenotato
+namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.SetMezzoPrenotato
 {
-    public interface INotificationAddPrenotazioneMezzo
+    /// <summary>
+    ///   Il command che contine l'oggetto mezzo prenotato per la gestione della prenotazione del mezzo
+    /// </summary>
+    public class SetMezzoPrenotatoCommand
     {
-        Task SendNotification(SetMezzoPrenotatoCommand command);
+        /// <summary>
+        ///   L'oggetto MezzoPrenotato.
+        /// </summary>
+        public API.Models.Classi.Composizione.MezzoPrenotato MezzoPrenotato { get; set; }
     }
 }

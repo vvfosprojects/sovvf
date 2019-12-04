@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="MezzoPrenotato.cs" company="CNVVF">
+// <copyright file="SetMezzoPrenotatoCommandHandler.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,43 +17,33 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System;
+using CQRS.Commands;
+using SO115App.Models.Servizi.Infrastruttura.Composizione;
 
-namespace SO115App.API.Models.Classi.Composizione
+namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.SetMezzoPrenotato
 {
     /// <summary>
-    ///   Il mezzo prenotato
+    ///   Servizio che si occupa della gestione della prenotazione del mezzo.
     /// </summary>
-    public class MezzoPrenotato
+    public class SetMezzoPrenotatoCommandHandler : ICommandHandler<SetMezzoPrenotatoCommand>
     {
-        /// <summary>
-        ///   Codice sede del mezzo
-        /// </summary>
-        public string CodiceSede { get; set; }
+        private readonly ISetMezzoPrenotato _setMezzoPrenotato;
 
         /// <summary>
-        ///   Codice del mezzo
+        ///   Costruttore della classe
         /// </summary>
-        public string CodiceMezzo { get; set; }
+        public SetMezzoPrenotatoCommandHandler(ISetMezzoPrenotato setMezzoPrenotato)
+        {
+            _setMezzoPrenotato = setMezzoPrenotato;
+        }
 
         /// <summary>
-        ///   l'istante della prenotazione
+        ///   Metodo della classe che si occupa di settare il mezzo come prenotato
         /// </summary>
-        public DateTime? IstantePrenotazione { get; set; }
-
-        /// <summary>
-        ///   l'istante scandenza selezione
-        /// </summary>
-        public DateTime? IstanteScadenzaSelezione { get; set; }
-
-        /// <summary>
-        ///   il codice della richiesta
-        /// </summary>
-        public string CodiceRichiesta { get; set; }
-
-        /// <summary>
-        ///   booleana per lo sblocco del mezzo
-        /// </summary>
-        public bool SbloccaMezzo { get; set; }
+        /// <param name="command">l'oggetto mezzo prenotato</param>
+        public void Handle(SetMezzoPrenotatoCommand command)
+        {
+            _setMezzoPrenotato.Set(command);
+        }
     }
 }

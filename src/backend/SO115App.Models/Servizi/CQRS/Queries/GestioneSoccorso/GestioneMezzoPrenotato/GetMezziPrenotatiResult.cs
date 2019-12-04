@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="AddPrenotazioneMezzoAuthorization.cs" company="CNVVF">
+// <copyright file="GetMezziPrenotatiResult.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,25 +17,19 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using CQRS.Commands.Notifiers;
-using Microsoft.AspNetCore.SignalR;
-using SO115App.Models.Servizi.Infrastruttura.Notification.ComposizionePartenza.MezzoPrenotato;
-using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneChiamateInCorso;
+using SO115App.API.Models.Classi.Composizione;
+using System.Collections.Generic;
 
-namespace DomainModel.CQRS.Commands.MezzoPrenotato
+namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GestioneMezzoPrenotato
 {
-    public class MezzoPrenotatoNotification : ICommandNotifier<MezzoPrenotatoCommand>
+    /// <summary>
+    ///   Modello di uscita della query dei mezzi prenotati
+    /// </summary>
+    public class GetMezzoPrenotatoResult
     {
-        private readonly INotificationAddPrenotazioneMezzo _sender;
-
-        public MezzoPrenotatoNotification(INotificationAddPrenotazioneMezzo sender)
-        {
-            _sender = sender;
-        }
-
-        public void Notify(MezzoPrenotatoCommand command)
-        {
-            _sender.SendNotification(command);
-        }
+        /// <summary>
+        ///   La lista dei mezzi prenotati in uscita dalla query.
+        /// </summary>
+        public List<MezzoPrenotato> MezziPrenotati { get; set; }
     }
 }

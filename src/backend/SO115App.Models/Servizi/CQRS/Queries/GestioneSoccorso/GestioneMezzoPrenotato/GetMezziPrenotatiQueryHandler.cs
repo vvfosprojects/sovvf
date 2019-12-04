@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="MezzoPrenotatoQueryHandler.cs" company="CNVVF">
+// <copyright file="GetMezziPrenotatiQueryHandler.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,34 +17,39 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using CQRS.Commands;
 using CQRS.Queries;
-using DomainModel.CQRS.Commands.MezzoPrenotato;
 using SO115App.Models.Servizi.Infrastruttura.GetMezzoPrenotato;
 
-namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.MezzoPrenotato
+namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GestioneMezzoPrenotato
 {
     /// <summary>
-    ///   Servizio che restituisce tutti i valori dei Box presenti in HomePage.
+    ///   Servizio che si occupa del reperimento dei mezzi prenotati
     /// </summary>
-    public class MezzoPrenotatoCommandHandler : ICommandHandler<MezzoPrenotatoCommand>
+    public class GetMezziPrenotatiQueryHandler : IQueryHandler<GetMezziPrenotatiQuery, GetMezzoPrenotatoResult>
     {
-        private readonly IGetMezzoPrenotato _iGetMezzoPrenotato;
+        private readonly IGetMezziPrenotati _getMezzoPrenotato;
 
-        public MezzoPrenotatoCommandHandler(IGetMezzoPrenotato iGetMezzoPrenotato)
+        /// <summary>
+        ///   Costruttore della classe.
+        /// </summary>
+        public GetMezziPrenotatiQueryHandler(IGetMezziPrenotati getMezzoPrenotato)
         {
-            this._iGetMezzoPrenotato = iGetMezzoPrenotato;
+            _getMezzoPrenotato = getMezzoPrenotato;
         }
 
         /// <summary>
-        ///   Query che estrae i valori dei Box presenti in Home Page
+        ///   metodo della classe che si occupa del handling della query.
         /// </summary>
-        /// <param name="command">Filtri utilizzati per l'estrazione</param>
-        /// <returns>Elenco dei mezzi disponibili</returns>
-        public void Handle(MezzoPrenotatoCommand command)
+        /// <param name="query">la query in ingresso</param>
+        /// <returns>il risultato della query</returns>
+        public GetMezzoPrenotatoResult Handle(GetMezziPrenotatiQuery query)
         {
-            // preparazione del DTO
-            command.MezzoPrenotato = _iGetMezzoPrenotato.Get(command);
+            var mezziPrenotati = _getMezzoPrenotato.Get(query.CodiceSede);
+
+            return new GetMezzoPrenotatoResult
+            {
+                MezziPrenotati = mezziPrenotati
+            };
         }
     }
 }

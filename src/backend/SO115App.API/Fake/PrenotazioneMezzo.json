@@ -1,8 +1,1 @@
-[
-  {
-    "CodiceMezzo": null,
-    "IstantePrenotazione": null,
-    "IstanteScadenzaSelezione": null,
-    "CodiceRichiesta": null
-  }
-]
+[{"CodiceSede":"RM.1000","CodiceMezzo":"O.19610","IstantePrenotazione":"2019-12-04T10:41:15.1444606Z","IstanteScadenzaSelezione":"2019-12-04T10:41:30.1445346Z","CodiceRichiesta":"RM3121900000","SbloccaMezzo":false}]
