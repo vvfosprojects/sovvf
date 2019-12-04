@@ -20,7 +20,6 @@
 using CQRS.Commands;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
-using System;
 
 namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSchedeNue.SetSchedaGestita
 {
