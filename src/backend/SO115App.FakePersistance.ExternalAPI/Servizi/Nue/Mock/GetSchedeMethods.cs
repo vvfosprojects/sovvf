@@ -167,7 +167,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
         {
             var listaSchede = GetList();
 
-            return (from schedaContatto in listaSchede let schedacontattoJson = JsonConvert.SerializeObject(schedaContatto) where schedacontattoJson.Contains(testolibero) select schedaContatto).ToList();
+            return (from schedaContatto in listaSchede let schedacontattoJson = JsonConvert.SerializeObject(schedaContatto) where schedacontattoJson.Contains(testolibero, StringComparison.CurrentCultureIgnoreCase) select schedaContatto).ToList();
         }
 
         /// <summary>
