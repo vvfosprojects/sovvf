@@ -310,8 +310,12 @@ export class BoxPartenzaState {
         setState(
             produce(state, draft => {
                 draft.boxPartenzaList.forEach((box: BoxPartenza) => {
-                    if (box.mezzoComposizione && box.mezzoComposizione.mezzo.codice === action.mezzoComp.mezzo.codice) {
-                        box.mezzoComposizione = action.mezzoComp;
+                    if (box && box.mezzoComposizione) {
+                        // console.log('mezzoComposizione', box.mezzoComposizione);
+                        if (box.mezzoComposizione.mezzo.codice === action.mezzoComp.mezzo.codice) {
+                            // console.log('codiceMezzo', box.mezzoComposizione.mezzo.codice);
+                            box.mezzoComposizione = action.mezzoComp;
+                        }
                     }
                 });
             })

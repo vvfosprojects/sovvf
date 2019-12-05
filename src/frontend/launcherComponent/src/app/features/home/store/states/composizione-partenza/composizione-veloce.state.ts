@@ -183,14 +183,14 @@ export class ComposizioneVeloceState {
         const state = getState();
         let preAccoppiato = null;
         state.preAccoppiati.forEach((preAcc: BoxPartenza) => {
-            if (preAcc.mezzoComposizione.mezzo.codice === action.mezzoComp.mezzo.codice) {
+            if (preAcc.mezzoComposizione.mezzo.codice === action.codiceMezzo) {
                 preAccoppiato = makeCopy(preAcc);
-                preAccoppiato.mezzoComposizione = action.mezzoComp;
+                preAccoppiato.mezzoComposizione = action.codiceMezzo;
             }
         });
         setState(
             patch({
-                preAccoppiati: updateItem((preAcc: BoxPartenza) => preAcc.mezzoComposizione.mezzo.codice === action.mezzoComp.mezzo.codice, preAccoppiato)
+                preAccoppiati: updateItem((preAcc: BoxPartenza) => preAcc.mezzoComposizione.mezzo.codice === action.codiceMezzo, preAccoppiato)
             })
         );
         // console.log(action.preAcc);

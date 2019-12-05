@@ -46,6 +46,11 @@ export class MezziMarkersState {
     }
 
     @Selector()
+    static mezziMarkersIds(state: MezziMarkersStateModel) {
+        return state.mezziMarkersId;
+    }
+
+    @Selector()
     static getMezzoById(state: MezziMarkersStateModel) {
         return state.mezzoMarker;
     }
