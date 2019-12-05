@@ -65,7 +65,7 @@ export const SchedeContattoStateDefaults: SchedeContattoStateModel = {
         // new VoceFiltro('4', Categoria.Appartenenza, 'Non Personali', false)
     ],
     filtriSelezionati: {
-        key: '',
+        testoLibero: '',
         letta: null,
         gestita: null
     }
@@ -134,7 +134,7 @@ export class SchedeContattoState {
 
     @Selector()
     static ricerca(state: SchedeContattoStateModel) {
-        return state.filtriSelezionati.key;
+        return state.filtriSelezionati.testoLibero;
     }
 
     constructor(private schedeContattoService: SchedeContattoService) {
@@ -252,7 +252,7 @@ export class SchedeContattoState {
         const state = getState();
         patchState({
             filtriSelezionati: {
-                key: action.key,
+                testoLibero: action.key,
                 letta: state.filtriSelezionati.letta,
                 gestita: state.filtriSelezionati.gestita
             }
@@ -265,7 +265,7 @@ export class SchedeContattoState {
         const state = getState();
         patchState({
             filtriSelezionati: {
-                key: state.filtriSelezionati.key,
+                testoLibero: state.filtriSelezionati.testoLibero,
                 letta: action.letta,
                 gestita: state.filtriSelezionati.gestita
             }
@@ -278,7 +278,7 @@ export class SchedeContattoState {
         const state = getState();
         patchState({
             filtriSelezionati: {
-                key: state.filtriSelezionati.key,
+                testoLibero: state.filtriSelezionati.testoLibero,
                 letta: state.filtriSelezionati.letta,
                 gestita: action.gestita
             }
@@ -291,7 +291,7 @@ export class SchedeContattoState {
         const state = getState();
         patchState({
             filtriSelezionati: {
-                key: state.filtriSelezionati.key,
+                testoLibero: state.filtriSelezionati.testoLibero,
                 letta: null,
                 gestita: null
             }

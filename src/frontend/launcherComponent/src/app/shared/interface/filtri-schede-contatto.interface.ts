@@ -1,5 +1,5 @@
 export interface FiltriSchedeContatto {
-  key: string;
+  testoLibero: string;
   letta: boolean;
   gestita: boolean;
 }
