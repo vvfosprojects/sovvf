@@ -19,9 +19,7 @@
 //-----------------------------------------------------------------------
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.Models.Classi.ServiziEsterni.Gac;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Text.Json.Serialization;
 
 namespace SO115App.ExternalAPI.Fake.Classi.Gac
 {
@@ -60,16 +58,18 @@ namespace SO115App.ExternalAPI.Fake.Classi.Gac
         /// <summary>
         ///   Appartenenza del mezzo
         /// </summary>
-        public int Appartenenza { get; set; }
+        [JsonPropertyName("codDestinazione")]
+        public string Appartenenza { get; set; }
 
         /// <summary>
-        ///   Indica il distaccamento del mezzo
+        ///   Indica codice distaccamento del mezzo
         /// </summary>
         public Sede Distaccamento { get; set; }
 
         /// <summary>
         ///   Descrizione dell'appartenenza del mezzo
         /// </summary>
+        [JsonPropertyName("descDestinazione")]
         public string DescrizioneAppartenenza { get; set; }
 
         /// <summary>
@@ -106,10 +106,5 @@ namespace SO115App.ExternalAPI.Fake.Classi.Gac
         ///   descrive il livello dell'estinguente del mezzo
         /// </summary>
         public string DescrizioneLivelloEstinguente { get; set; }
-
-        /// <summary>
-        ///   identifica la destinazione d'uso del mezzo
-        /// </summary>
-        public string DestinazioneUso { get; set; }
     }
 }

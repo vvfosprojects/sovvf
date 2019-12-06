@@ -53,7 +53,6 @@ namespace SO115App.ExternalAPI.Fake.Classi.Utility
                 var mezzo = new Mezzo(mezzoDTO.Codice, mezzoDTO.Descrizione, mezzoDTO.Genere, mezzoDTO.Movimentazione.StatoOperativo, mezzoDTO.Appartenenza, mezzoDTO.Distaccamento, coordinate)
                 {
                     StatoEfficenza = mezzoDTO.StatoEfficenza,
-                    DestinazioneUso = mezzoDTO.DestinazioneUso,
                     IstanteAcquisizione = coordinateMezzo.IstanteAcquisizione
                 };
                 if (!string.IsNullOrEmpty(mezzoDTO.Movimentazione.IdRichiesta)) mezzo.IdRichiesta = mezzoDTO.Movimentazione.IdRichiesta;
