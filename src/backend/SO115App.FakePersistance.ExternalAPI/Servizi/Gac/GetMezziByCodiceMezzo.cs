@@ -28,7 +28,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
     /// <summary>
     ///   Servizio fake che recupera una lista di mezzi dal GAC a partire dal loro codice mezzo.
     /// </summary>
-    public class GetMezziByID : IGetMezziById
+    public class GetMezziByCodiceMezzo : IGetMezziByCodiceMezzo
     {
         private readonly MapMezzoDTOsuMezzo _mapper;
         private readonly GetMezzi _getMezzi;
@@ -38,7 +38,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
         /// </summary>
         /// <param name="mapper">injection del mapper Mezzo-MezzoDTO</param>
         /// <param name="getMezzi">mock del servizio Gac</param>
-        public GetMezziByID(MapMezzoDTOsuMezzo mapper, GetMezzi getMezzi)
+        public GetMezziByCodiceMezzo(MapMezzoDTOsuMezzo mapper, GetMezzi getMezzi)
         {
             _mapper = mapper;
             _getMezzi = getMezzi;

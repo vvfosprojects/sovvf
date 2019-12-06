@@ -27,9 +27,9 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 {
     public class SetMezzoPrenotatoValidator : ICommandValidator<SetMezzoPrenotatoCommand>
     {
-        private readonly IGetMezziById _getMezziById;
+        private readonly IGetMezziByCodiceMezzo _getMezziById;
 
-        public SetMezzoPrenotatoValidator(IGetMezziById getMezziById)
+        public SetMezzoPrenotatoValidator(IGetMezziByCodiceMezzo getMezziById)
         {
             _getMezziById = getMezziById;
         }

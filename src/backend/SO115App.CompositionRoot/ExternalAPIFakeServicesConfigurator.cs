@@ -86,7 +86,7 @@ namespace SO115App.CompositionRoot
             #region Gac
 
             container.Register<IGetMezziByICCID, GetMezziByICCID>();
-            container.Register<IGetMezziById, GetMezziByID>();
+            container.Register<IGetMezziByCodiceMezzo, GetMezziByCodiceMezzo>();
             container.Register<IGetMezziBySelettiva, GetMezziBySelettiva>();
             container.Register<IGetMezziFuoriServizio, GetMezziFuoriServizio>();
             container.Register<IGetMezziUtilizzabili, GetMezziUtilizzabili>();

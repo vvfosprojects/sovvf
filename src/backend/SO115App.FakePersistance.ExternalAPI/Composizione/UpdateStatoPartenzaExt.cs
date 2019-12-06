@@ -39,13 +39,13 @@ namespace SO115App.ExternalAPI.Fake.Composizione
     /// </summary>
     public class UpdateStatoPartenzaExt : IUpdateStatoPartenze
     {
-        private readonly IGetMezziById _getMezzo;
+        private readonly IGetMezziByCodiceMezzo _getMezzo;
         private readonly ISetMovimentazione _setMovimentazione;
 
         /// <summary>
         ///   Costruttore della classe
         /// </summary>
-        public UpdateStatoPartenzaExt(IGetMezziById getMezzo, ISetMovimentazione setMovimentazione)
+        public UpdateStatoPartenzaExt(IGetMezziByCodiceMezzo getMezzo, ISetMovimentazione setMovimentazione)
         {
             _getMezzo = getMezzo;
             _setMovimentazione = setMovimentazione;

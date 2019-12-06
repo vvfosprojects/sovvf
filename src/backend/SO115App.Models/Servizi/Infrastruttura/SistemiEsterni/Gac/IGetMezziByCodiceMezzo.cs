@@ -25,7 +25,7 @@ namespace SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac
     /// <summary>
     ///   Servizio che recupera una lista di mezzi dal GAC a partire dal loro codice mezzo.
     /// </summary>
-    public interface IGetMezziById
+    public interface IGetMezziByCodiceMezzo
     {
         /// <summary>
         ///   Restituisce la lista dei mezzi
