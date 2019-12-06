@@ -24,6 +24,7 @@ using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi;
 using SO115App.FakePersistence.JSon.Utility;
 using SO115App.FakePersistenceJSon.GestioneIntervento;
 using SO115App.Models.Classi.ListaMezziInServizio;
+using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.InfoRichiesta;
 using System.Collections.Generic;
 using System.IO;
@@ -51,7 +52,7 @@ namespace SO115App.FakePersistenceJSon.GestioneMezzi
 
             var codiceSedeIniziali = codiceSede.Substring(0, 2);
 
-            var mezzi = JsonConvert.DeserializeObject<List<Mezzo>>(json);
+            var mezzi = JsonConvert.DeserializeObject<List<Mezzo>>(json).FindAll(x=>x.Stato != Costanti.MezzoFuoriServizio);
 
             var listaMezzoInServizio = new List<MezzoInServizio>();
 

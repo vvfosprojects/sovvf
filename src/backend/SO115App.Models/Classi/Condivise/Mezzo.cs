@@ -27,7 +27,7 @@ namespace SO115App.API.Models.Classi.Condivise
     public class Mezzo
     {
         public Mezzo(string codice, string descrizione, string genere, string stato,
-                     int appartenenza, Sede distaccamento, Coordinate coordinate)
+                     string appartenenza, Sede distaccamento, Coordinate coordinate)
         {
             this.Codice = codice;
             this.Descrizione = descrizione;
@@ -64,9 +64,9 @@ namespace SO115App.API.Models.Classi.Condivise
         public string Stato { get; set; }
 
         /// <summary>
-        ///   Appartenenza del mezzo
+        ///   Appartenenza del mezzo (su GAC sarebbe la destinazione d'uso).
         /// </summary>
-        public int Appartenenza { get; set; }
+        public string Appartenenza { get; set; }
 
         /// <summary>
         ///   Indica il distaccamento del mezzo
@@ -132,11 +132,6 @@ namespace SO115App.API.Models.Classi.Condivise
         ///   identifica l'istante della prenotazione del mezzo
         /// </summary>
         public DateTime? IstantePrenotazione { get; set; }
-
-        /// <summary>
-        ///   identifica la destinazione d'uso del mezzo
-        /// </summary>
-        public string DestinazioneUso { get; set; }
 
         /// <summary>
         ///   identifica l'istante della movimentazione del mezzo

@@ -54,7 +54,7 @@ namespace SO115App.ExternalAPI.Fake.Box
                 codiceSede
             };
 
-            var listaMezzi = _getMezziUtilizzabili.Get(listaCodici, "", "");
+            var listaMezzi = _getMezziUtilizzabili.Get(listaCodici);
 
             mezzi.InSede = listaMezzi.Where(x => x.Stato == Costanti.MezzoInSede || x.Stato == Costanti.MezzoRientrato)
                 .Select(x => x.Stato)

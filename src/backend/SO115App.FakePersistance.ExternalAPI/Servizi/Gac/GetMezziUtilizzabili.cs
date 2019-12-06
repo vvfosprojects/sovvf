@@ -51,7 +51,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
         /// <param name="genereMezzo">il genere del mezzo (opzionale)</param>
         /// <param name="siglaMezzo">la sigla del mezzo (opzionale)</param>
         /// <returns>una lista mezzi</returns>
-        public List<Mezzo> Get(List<string> sedi, string genereMezzo, string siglaMezzo)
+        public List<Mezzo> Get(List<string> sedi, string genereMezzo = null, string siglaMezzo = null)
         {
             //---------------TODO Implementazione con il servizio esterno reale che sostituirà i json
 

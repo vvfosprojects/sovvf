@@ -60,7 +60,7 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
             };
             var codiceSedeIniziali = codiceSede.Substring(0, 2);
 
-            var mezzi = _getMezziUtilizzabili.Get(listaCodiciSede, "", "");
+            var mezzi = _getMezziUtilizzabili.Get(listaCodiciSede);
 
             foreach (var mezzo in mezzi
                 .FindAll(x => x.Distaccamento.Codice

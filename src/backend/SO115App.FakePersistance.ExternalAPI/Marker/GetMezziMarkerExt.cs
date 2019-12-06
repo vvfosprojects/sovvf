@@ -17,29 +17,28 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using Newtonsoft.Json;
-using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Geo;
 using SO115App.API.Models.Classi.Marker;
-using SO115App.FakePersistence.JSon.Utility;
 using SO115App.Models.Servizi.Infrastruttura.InfoRichiesta;
 using SO115App.Models.Servizi.Infrastruttura.Marker;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 
-namespace SO115App.FakePersistenceJSon.Marker
+namespace SO115App.ExternalAPI.Fake.Marker
 {
     /// <summary>
     ///   la classe recupera le informazioni dei mezzi che sono circoscritti in una determinata area mappa
     /// </summary>
-    public class GetMezziMarker : IGetMezziMarker
+    public class GetMezziMarkerExt : IGetMezziMarker
     {
         private readonly IGetInfoRichiesta _getInfoRichiesta;
+        private readonly IGetMezziUtilizzabili _getMezziUtilizzabili;
 
-        public GetMezziMarker(IGetInfoRichiesta getInfoRichiesta)
+        public GetMezziMarkerExt(IGetInfoRichiesta getInfoRichiesta, IGetMezziUtilizzabili getMezziUtilizzabili)
         {
             _getInfoRichiesta = getInfoRichiesta;
+            _getMezziUtilizzabili = getMezziUtilizzabili;
         }
 
         /// <summary>
@@ -51,15 +50,7 @@ namespace SO115App.FakePersistenceJSon.Marker
         {
             var listaMezziFilter = new List<MezzoMarker>();
 
-            var filepath = CostantiJson.Mezzo;
-
-            string json;
-            using (var r = new StreamReader(filepath))
-            {
-                json = r.ReadToEnd();
-            }
-
-            var listaMezzi = JsonConvert.DeserializeObject<List<Mezzo>>(json);
+            var listaMezzi = _getMezziUtilizzabili.Get(filtroAreaMappa.CodiceSede);
             var listaMezziMarker = new List<MezzoMarker>();
 
             foreach (var mezzo in listaMezzi)
@@ -75,7 +66,7 @@ namespace SO115App.FakePersistenceJSon.Marker
 
             if (filtroAreaMappa == null) return listaMezziMarker;
 
-            listaMezziFilter.AddRange(listaMezziMarker.Where(mezzo => (mezzo.Mezzo.Coordinate.Latitudine >= filtroAreaMappa.BottomLeft.Latitudine) && (mezzo.Mezzo.Coordinate.Latitudine <= filtroAreaMappa.TopRight.Latitudine) && ((mezzo.Mezzo.Coordinate.Longitudine >= filtroAreaMappa.BottomLeft.Longitudine) && (mezzo.Mezzo.Coordinate.Longitudine <= filtroAreaMappa.TopRight.Longitudine))));
+            listaMezziFilter.AddRange(listaMezziMarker.Where(mezzo => mezzo.Mezzo.Coordinate.Latitudine >= filtroAreaMappa.BottomLeft.Latitudine && mezzo.Mezzo.Coordinate.Latitudine <= filtroAreaMappa.TopRight.Latitudine && mezzo.Mezzo.Coordinate.Longitudine >= filtroAreaMappa.BottomLeft.Longitudine && mezzo.Mezzo.Coordinate.Longitudine <= filtroAreaMappa.TopRight.Longitudine));
 
             return listaMezziFilter;
         }

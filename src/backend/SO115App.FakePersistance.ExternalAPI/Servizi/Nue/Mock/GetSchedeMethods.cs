@@ -196,7 +196,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
         ///   coordinate in firma
         /// </summary>
         /// <param name="testolibero">la stringa per la ricerca a testo libero</param>
-        /// <param name="gestita">booleana getsita</param>
+        /// <param name="gestita">booleana gestita</param>
         /// <param name="letta">booleana letta</param>
         /// <param name="codiceFiscale">codice fiscale operatore</param>
         /// <returns>Una lista di SchedaContatto</returns>
