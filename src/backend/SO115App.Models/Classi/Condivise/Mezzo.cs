@@ -126,7 +126,7 @@ namespace SO115App.API.Models.Classi.Condivise
         /// <summary>
         ///   identifica l'istante dell'acquisizione coordinate del mezzo
         /// </summary>
-        public DateTime IstanteAcquisizione { get; set; }
+        public DateTime? IstanteAcquisizione { get; set; }
 
         /// <summary>
         ///   identifica l'istante della prenotazione del mezzo

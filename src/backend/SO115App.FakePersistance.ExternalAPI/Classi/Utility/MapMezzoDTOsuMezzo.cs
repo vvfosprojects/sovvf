@@ -49,14 +49,28 @@ namespace SO115App.ExternalAPI.Fake.Classi.Utility
             foreach (var mezzoDTO in listaMezzoDTO)
             {
                 var coordinateMezzo = _getPosizioneByCodiceMezzo.Get(mezzoDTO.Codice).Result;
-                var coordinate = new Coordinate(coordinateMezzo.Localizzazione.Lat, coordinateMezzo.Localizzazione.Lon);
-                var mezzo = new Mezzo(mezzoDTO.Codice, mezzoDTO.Descrizione, mezzoDTO.Genere, mezzoDTO.Movimentazione.StatoOperativo, mezzoDTO.Appartenenza, mezzoDTO.Distaccamento, coordinate)
+                if (coordinateMezzo != null)
                 {
-                    StatoEfficenza = mezzoDTO.StatoEfficenza,
-                    IstanteAcquisizione = coordinateMezzo.IstanteAcquisizione
-                };
-                if (!string.IsNullOrEmpty(mezzoDTO.Movimentazione.IdRichiesta)) mezzo.IdRichiesta = mezzoDTO.Movimentazione.IdRichiesta;
-                listaMezzi.Add(mezzo);
+                    var coordinate = new Coordinate(coordinateMezzo.Localizzazione.Lat, coordinateMezzo.Localizzazione.Lon);
+                    var mezzo = new Mezzo(mezzoDTO.Codice, mezzoDTO.Descrizione, mezzoDTO.Genere, mezzoDTO.Movimentazione.StatoOperativo, mezzoDTO.Appartenenza, mezzoDTO.Distaccamento, coordinate)
+                    {
+                        StatoEfficenza = mezzoDTO.StatoEfficenza,
+                        IstanteAcquisizione = coordinateMezzo.IstanteAcquisizione
+                    };
+                    if (!string.IsNullOrEmpty(mezzoDTO.Movimentazione.IdRichiesta)) mezzo.IdRichiesta = mezzoDTO.Movimentazione.IdRichiesta;
+                    listaMezzi.Add(mezzo);
+                }
+                else
+                {
+                    var coordinate = new Coordinate(mezzoDTO.Distaccamento.Coordinate.Latitudine, mezzoDTO.Distaccamento.Coordinate.Longitudine);
+                    var mezzo = new Mezzo(mezzoDTO.Codice, mezzoDTO.Descrizione, mezzoDTO.Genere, mezzoDTO.Movimentazione.StatoOperativo, mezzoDTO.Appartenenza, mezzoDTO.Distaccamento, coordinate)
+                    {
+                        StatoEfficenza = mezzoDTO.StatoEfficenza,
+                        IstanteAcquisizione = null
+                    };
+                    if (!string.IsNullOrEmpty(mezzoDTO.Movimentazione.IdRichiesta)) mezzo.IdRichiesta = mezzoDTO.Movimentazione.IdRichiesta;
+                    listaMezzi.Add(mezzo);
+                }
             }
             return listaMezzi;
         }

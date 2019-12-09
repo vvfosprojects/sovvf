@@ -628,5 +628,40 @@
     "DescrizioneLivelloCarburante": null,
     "LivelloEstinguente": 0,
     "DescrizioneLivelloEstinguente": null
+  },
+  {
+    "Codice": "T.27763",
+    "IdRadio": "84741",
+    "ICCID": null,
+    "Descrizione": "27791",
+    "Genere": "AV",
+    "Movimentazione": {
+      "DataMovimentazione": null,
+      "IdRichiesta": null,
+      "StatoOperativo": "In Sede"
+    },
+    "Appartenenza": 0,
+    "Distaccamento": {
+      "Codice": "RM.1000",
+      "Descrizione": "Distaccamento Cittadino Tuscolano I",
+      "Coordinate": {
+        "Latitudine": 41.8815193,
+        "Longitudine": 12.5164942
+      },
+      "Indirizzo": "Via Torino, 123 00000 Torino TO",
+      "Tipo": "Comando",
+      "Regione": "Lazio",
+      "Provincia": "Roma",
+      "Label": null,
+      "Icona": null
+    },
+    "DescrizioneAppartenenza": null,
+    "DescrizioneStato": null,
+    "StatoEfficenza": 0,
+    "DescrizioneStatoEfficenza": null,
+    "LivelloCarburante": 0,
+    "DescrizioneLivelloCarburante": null,
+    "LivelloEstinguente": 0,
+    "DescrizioneLivelloEstinguente": null
   }
 ]
