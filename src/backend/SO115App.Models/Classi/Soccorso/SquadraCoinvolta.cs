@@ -27,7 +27,7 @@ namespace SO115App.API.Models.Classi.Soccorso
         /// <summary>
         ///   Enumera gli stati in cui un capopartenza partecipante ad una richiesta può trovarsi
         /// </summary>
-        public enum StatoSquadra
+        public enum StatoSquadraCoinvolta
         {
             /// <summary>
             ///   In viaggio verso il luogo del sinistro.
@@ -58,6 +58,6 @@ namespace SO115App.API.Models.Classi.Soccorso
         /// <summary>
         ///   Lo stato della squadra
         /// </summary>
-        public StatoSquadra StatoDellaSquadra { get; set; }
+        public StatoSquadraCoinvolta StatoDellaSquadra { get; set; }
     }
 }
