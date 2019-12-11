@@ -43,9 +43,9 @@ export class SchedeContattoServiceFake {
         'priorita': 3,
         'numeroPersoneCoinvolte': '2',
         'operatoreChiamata': {
-          'CodiceSede': 'RM.1000',
-          'CodicePostazioneOperatore': '10',
-          'CodiceFiscale': 'ABCD10'
+          'codiceSede': 'RM.1000',
+          'codicePostazioneOperatore': '10',
+          'codiceFiscale': 'ABCD10'
         },
         'classificazione': ClassificazioneSchedaContatto.Competenza,
         'letta': false,
@@ -74,9 +74,9 @@ export class SchedeContattoServiceFake {
         'priorita': 3,
         'numeroPersoneCoinvolte': '2',
         'operatoreChiamata': {
-          'CodiceSede': 'RM.1000',
-          'CodicePostazioneOperatore': '10',
-          'CodiceFiscale': 'ABCD10'
+          'codiceSede': 'RM.1000',
+          'codicePostazioneOperatore': '10',
+          'codiceFiscale': 'ABCD10'
         },
         'classificazione': ClassificazioneSchedaContatto.Conoscenza,
         'letta': false,
@@ -105,9 +105,9 @@ export class SchedeContattoServiceFake {
         'priorita': 3,
         'numeroPersoneCoinvolte': '2',
         'operatoreChiamata': {
-          'CodiceSede': 'RM.1000',
-          'CodicePostazioneOperatore': '10',
-          'CodiceFiscale': 'ABCD10'
+          'codiceSede': 'RM.1000',
+          'codicePostazioneOperatore': '10',
+          'codiceFiscale': 'ABCD10'
         },
         'classificazione': ClassificazioneSchedaContatto.Differibile,
         'letta': false,
