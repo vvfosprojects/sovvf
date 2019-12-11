@@ -22,7 +22,7 @@
     "Mezzo": "O.16023",
     "Squadre": [
       "3",
-      "4"
+      "2"
     ]
   },
   {
@@ -30,15 +30,8 @@
     "CodiceSede": "RM.1000",
     "Mezzo": "O.19610",
     "Squadre": [
-      "4"
-    ]
-  },
-  {
-    "Id": "1",
-    "CodiceSede": "RM.1000",
-    "Mezzo": "O.26679",
-    "Squadre": [
-      "5"
+      "2"
     ]
   }
+
 ]
