@@ -22,7 +22,7 @@ export class SchedaContattoComponent implements OnChanges {
     btnLetta = { type: '', tooltip: '' };
     btnGestita = { type: '', tooltip: '' };
 
-
+    classificazioneSchedaContatto = ClassificazioneSchedaContatto;
     priorita = Priorita;
 
     ngOnChanges(changes: SimpleChanges): void {
