@@ -3,9 +3,10 @@
      (click)="dettaglioScheda.emit(scheda)" [ngClass]="cardClasses(scheda.codiceScheda)">
     <div class="row">
         <div class="col-1 text-center py-1">
-          <i [ngClass]="getPrioritaIconClass()" [ngbTooltip]="scheda.priorita === priorita.Altissima ? altaPriorita : bassaPriorita"></i>
-          <ng-template #altaPriorita><b>Scheda ad alta priorità</b></ng-template>
-          <ng-template #bassaPriorita>Scheda a bassa priorità</ng-template>
+            <i [ngClass]="getPrioritaIconClass()"
+               [ngbTooltip]="scheda.priorita === priorita.Altissima ? altaPriorita : bassaPriorita"></i>
+            <ng-template #altaPriorita><b>Scheda ad alta priorità</b></ng-template>
+            <ng-template #bassaPriorita>Scheda a bassa priorità</ng-template>
         </div>
         <div class="col-3 px-0 py-1">
             {{scheda.dataInserimento | date: 'dd/MM/yyyy HH:MM:SS'}}
@@ -20,19 +21,16 @@
             <span [ngbTooltip]="scheda.richiedente.nominativo"
                   [disableTooltip]="scheda.richiedente.nominativo.length <= 11">{{scheda.richiedente.nominativo | slice: 0:11}}</span>
         </div>
-        <div class="col-2  pr-4">
+        <div class="col-2 pr-4">
             <button class="btn btn-success float-right px-2 py-1" ngbTooltip="Crea richiesta di assistenza"
                     (click)="setSchedaContattoTelefonata.emit(scheda); $event.stopPropagation()">
                 <i class="fa fa-arrow-right"></i>
             </button>
-            <button class="btn float-right px-2 py-1 mr-1" [ngClass]="btnGestita.type"
+            <button *ngIf="scheda.classificazione === classificazioneSchedaContatto.Differibile"
+                    class="btn float-right px-2 py-1 mr-1" [ngClass]="btnGestita.type"
                     ngbTooltip="{{btnGestita.tooltip}}"
                     (click)="setSchedaContattoGestita.emit(!scheda.gestita); $event.stopPropagation()">
                 <i class="fa fa-cog"></i>
-            </button>
-            <button class="btn float-right px-2 py-1 mr-1" [ngClass]="btnLetta.type" ngbTooltip="{{btnLetta.tooltip}}"
-                    (click)="setSchedaContattoLetta.emit(!scheda.letta); $event.stopPropagation()">
-                <i class="fa fa-check-square-o"></i>
             </button>
         </div>
     </div>
