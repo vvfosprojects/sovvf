@@ -2,7 +2,7 @@
   {
     "Id": "3",
     "CodiceSede": "RM.1000",
-    "Mezzo": "1",
+    "Mezzo": "O.18195",
     "Squadre": [
       "1",
       "2"
@@ -11,7 +11,7 @@
   {
     "Id": "9",
     "CodiceSede": "RM.1000",
-    "Mezzo": "1",
+    "Mezzo": "O.16022",
     "Squadre": [
       "1"
     ]
@@ -19,7 +19,7 @@
   {
     "Id": "2",
     "CodiceSede": "RM.1000",
-    "Mezzo": "18",
+    "Mezzo": "O.16023",
     "Squadre": [
       "3",
       "4"
@@ -28,7 +28,7 @@
   {
     "Id": "5",
     "CodiceSede": "RM.1000",
-    "Mezzo": "12",
+    "Mezzo": "O.19610",
     "Squadre": [
       "4"
     ]
@@ -36,7 +36,7 @@
   {
     "Id": "1",
     "CodiceSede": "RM.1000",
-    "Mezzo": "7",
+    "Mezzo": "O.26679",
     "Squadre": [
       "5"
     ]
