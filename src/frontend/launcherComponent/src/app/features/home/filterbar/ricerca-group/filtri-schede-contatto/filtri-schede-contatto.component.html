@@ -8,13 +8,6 @@
         </button>
         <div ngbDropdownMenu class="bg-light px-3">
             <div class="card-block pt-1 pb-0">
-                <h6 class="font-weight-bold">{{Categoria.Lettura}}</h6>
-                <div *ngFor="let f of filtri" class="mb-2">
-                    <app-filtro *ngIf="f.categoria === Categoria.Lettura" [filtro]="f"
-                                (filtroSelezionato)="onSelezioneFiltro($event)"></app-filtro>
-                </div>
-            </div>
-            <div class="card-block pt-1 pb-0">
                 <h6 class="font-weight-bold">{{Categoria.Gestione}}</h6>
                 <div *ngFor="let f of filtri" class="mb-2">
                     <app-filtro *ngIf="f.categoria === Categoria.Gestione" [filtro]="f"

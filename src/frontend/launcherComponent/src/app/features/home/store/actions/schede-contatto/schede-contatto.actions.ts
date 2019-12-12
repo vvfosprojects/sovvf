@@ -31,13 +31,6 @@ export class UpdateSchedaContatto {
     }
 }
 
-export class SetSchedaContattoLetta {
-    static readonly type = '[SchedeContatto] Set Scheda Contatto Letta';
-
-    constructor(public codiceScheda: string, public letta: boolean) {
-    }
-}
-
 export class SetSchedaContattoGestita {
     static readonly type = '[SchedeContatto] Set Scheda Contatto Gestita';
 

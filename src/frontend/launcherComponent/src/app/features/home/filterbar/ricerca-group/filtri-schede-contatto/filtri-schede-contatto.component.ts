@@ -3,35 +3,40 @@ import { VoceFiltro } from '../filtri-richieste/voce-filtro.model';
 import { CategoriaFiltriSchedeContatto as Categoria } from 'src/app/shared/enum/categoria-filtri-schede-contatto';
 
 @Component({
-  selector: 'app-filtri-schede-contatto',
-  templateUrl: './filtri-schede-contatto.component.html',
-  styleUrls: [ './filtri-schede-contatto.component.css' ]
+    selector: 'app-filtri-schede-contatto',
+    templateUrl: './filtri-schede-contatto.component.html',
+    styleUrls: ['./filtri-schede-contatto.component.css']
 })
 export class FiltriSchedeContattoComponent implements OnInit {
 
-  @HostBinding('class') classes = 'input-group-append';
+    @HostBinding('class') classes = 'input-group-append';
 
-  @Input() filtri: VoceFiltro[];
-  @Input() filtriSelezionati: VoceFiltro[];
+    @Input() filtri: VoceFiltro[];
+    @Input() filtriSelezionati: VoceFiltro[];
 
-  @Output() filtroSelezionato: EventEmitter<VoceFiltro> = new EventEmitter();
-  @Output() filtriReset: EventEmitter<any> = new EventEmitter();
+    @Output() filtroSelezionato: EventEmitter<VoceFiltro> = new EventEmitter();
+    @Output() filtriReset: EventEmitter<any> = new EventEmitter();
 
-  Categoria = Categoria;
+    Categoria = Categoria;
 
-  constructor() {
-  }
+    constructor() {
+    }
 
-  ngOnInit() {
-  }
+    ngOnInit() {
+    }
 
+    onSelezioneFiltro(filtro: VoceFiltro) {
+        console.log('filtriSelezionati', this.filtriSelezionati);
+        this.filtriSelezionati.forEach((f: VoceFiltro) => {
+            if (f !== filtro && f.categoria === filtro.categoria) {
+                this.filtroSelezionato.emit(f);
+            }
+        });
+        this.filtroSelezionato.emit(filtro);
+    }
 
-  onSelezioneFiltro(filtro: VoceFiltro) {
-    this.filtroSelezionato.emit(filtro);
-  }
-
-  eliminaFiltriAttivi() {
-    this.filtriReset.emit();
-  }
+    eliminaFiltriAttivi() {
+        this.filtriReset.emit();
+    }
 
 }

@@ -280,29 +280,6 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy {
         );
     }
 
-    toggleNominativo(nominativo: string) {
-        switch (nominativo) {
-            case 'Carabinieri':
-                this.f.nominativo.patchValue('Carabinieri');
-                this.f.telefono.patchValue('112');
-                break;
-            case 'Polizia':
-                this.f.nominativo.patchValue('Polizia');
-                this.f.telefono.patchValue('113');
-                break;
-            case 'Ambulanza':
-                this.f.nominativo.patchValue('Ambulanza');
-                this.f.telefono.patchValue('118');
-                break;
-            case 'Polizia Municipale':
-                this.f.nominativo.patchValue('Polizia Municipale');
-                this.f.telefono.patchValue('');
-                break;
-            default:
-                break;
-        }
-    }
-
     onCopiaIndirizzo(): void {
         this._statoChiamata('copiaIndirizzo');
     }

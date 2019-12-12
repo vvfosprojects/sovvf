@@ -2,7 +2,7 @@
      (mouseenter)="hoverIn.emit(scheda.codiceScheda)" (mouseleave)="hoverOut.emit()"
      (click)="dettaglioScheda.emit(scheda)" [ngClass]="cardClasses(scheda.codiceScheda)">
     <div class="row">
-        <div class="col-1 text-center py-1">
+        <div class="col-1 text-center cursor-pointer py-1">
             <i [ngClass]="getPrioritaIconClass()"
                [ngbTooltip]="scheda.priorita === priorita.Altissima ? altaPriorita : bassaPriorita"></i>
             <ng-template #altaPriorita><b>Scheda ad alta priorità</b></ng-template>
@@ -12,14 +12,12 @@
             {{scheda.dataInserimento | date: 'dd/MM/yyyy HH:MM:SS'}}
         </div>
         <div class="col py-1">
-            <i class="fa fa-list mr-1"></i>
-            <span [ngbTooltip]="scheda.classificazioneEvento"
-                  [disableTooltip]="scheda.classificazioneEvento.length <= getClassificazioneEventoMaxLength()">{{scheda.classificazioneEvento | slice: 0:getClassificazioneEventoMaxLength()}}</span>
+            <i class="fa fa-map-marker mr-1"></i>
+            {{scheda.localita.indirizzo}}
         </div>
-        <div class="col py-1">
+        <div class="col-1 text-right cursor-pointer" ngbTooltip="Postazione Operatore">
             <i class="fa fa-user mr-1"></i>
-            <span [ngbTooltip]="scheda.richiedente.nominativo"
-                  [disableTooltip]="scheda.richiedente.nominativo.length <= 11">{{scheda.richiedente.nominativo | slice: 0:11}}</span>
+            {{scheda.operatoreChiamata.codicePostazioneOperatore}}
         </div>
         <div class="col-2 pr-4">
             <button class="btn btn-success float-right px-2 py-1" ngbTooltip="Crea richiesta di assistenza"

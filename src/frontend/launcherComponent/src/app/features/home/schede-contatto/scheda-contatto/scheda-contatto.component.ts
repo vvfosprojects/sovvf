@@ -16,7 +16,6 @@ export class SchedaContattoComponent implements OnChanges {
     @Output() hoverOut = new EventEmitter();
     @Output() dettaglioScheda = new EventEmitter<SchedaContatto>();
     @Output() setSchedaContattoTelefonata = new EventEmitter<SchedaContatto>();
-    @Output() setSchedaContattoLetta = new EventEmitter<boolean>();
     @Output() setSchedaContattoGestita = new EventEmitter<boolean>();
 
     btnLetta = { type: '', tooltip: '' };
@@ -43,32 +42,18 @@ export class SchedaContattoComponent implements OnChanges {
     cardClasses(id: string) {
         let _returnClass = '';
         if (this.idSchedaContattoHover === id && !this.scheda.gestita) {
-            _returnClass = 'bg-light';
+            _returnClass = ' bg-light';
         }
-        if (!this.scheda.letta) {
-            switch (this.scheda.classificazione) {
-                case ClassificazioneSchedaContatto.Competenza:
-                    _returnClass += ' status_chiamata non_letta_danger font-weight-bold';
-                    break;
-                case ClassificazioneSchedaContatto.Conoscenza:
-                    _returnClass += ' status_assegnato non_letta_warning font-weight-bold';
-                    break;
-                case ClassificazioneSchedaContatto.Differibile:
-                    _returnClass += ' status_chiuso non_letta_secondary font-weight-bold';
-                    break;
-            }
-        } else {
-            switch (this.scheda.classificazione) {
-                case ClassificazioneSchedaContatto.Competenza:
-                    _returnClass += ' status_chiamata';
-                    break;
-                case ClassificazioneSchedaContatto.Conoscenza:
-                    _returnClass += ' status_assegnato';
-                    break;
-                case ClassificazioneSchedaContatto.Differibile:
-                    _returnClass += ' status_chiuso';
-                    break;
-            }
+        switch (this.scheda.classificazione) {
+            case ClassificazioneSchedaContatto.Competenza:
+                _returnClass += ' status_chiamata';
+                break;
+            case ClassificazioneSchedaContatto.Conoscenza:
+                _returnClass += ' status_assegnato';
+                break;
+            case ClassificazioneSchedaContatto.Differibile:
+                _returnClass += ' status_chiuso';
+                break;
         }
 
         if (this.scheda.gestita) {
@@ -80,9 +65,5 @@ export class SchedaContattoComponent implements OnChanges {
 
     getPrioritaIconClass() {
         return this.scheda.priorita === Priorita.Altissima ? 'fa fa-exclamation-triangle text-danger' : 'fa fa-exclamation-circle text-muted';
-    }
-
-    getClassificazioneEventoMaxLength(): number {
-        return 17;
     }
 }
