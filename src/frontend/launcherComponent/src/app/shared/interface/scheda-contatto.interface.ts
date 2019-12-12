@@ -16,6 +16,5 @@ export interface SchedaContatto {
     numeroPersoneCoinvolte: string;
     operatoreChiamata: { codiceFiscale: string; codicePostazioneOperatore: string; codiceSede: string };
     classificazione: ClassificazioneSchedaContatto;
-    letta: boolean;
     gestita: boolean;
 }

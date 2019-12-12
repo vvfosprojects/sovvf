@@ -4,9 +4,6 @@ import { SchedaContatto } from 'src/app/shared/interface/scheda-contatto.interfa
 import { Store } from '@ngxs/store';
 import { SetListaSchedeContatto } from 'src/app/features/home/store/actions/schede-contatto/schede-contatto.actions';
 import { ClassificazioneSchedaContatto } from '../../../shared/enum/classificazione-scheda-contatto.enum';
-import { catchError, retry } from 'rxjs/operators';
-import { handleError } from '../../../shared/helper/handleError';
-
 
 @Injectable({
   providedIn: 'root'
@@ -48,7 +45,6 @@ export class SchedeContattoServiceFake {
           'codiceFiscale': 'ABCD10'
         },
         'classificazione': ClassificazioneSchedaContatto.Competenza,
-        'letta': false,
         'gestita': false
       },
       {
@@ -79,7 +75,6 @@ export class SchedeContattoServiceFake {
           'codiceFiscale': 'ABCD10'
         },
         'classificazione': ClassificazioneSchedaContatto.Conoscenza,
-        'letta': false,
         'gestita': false
       },
       {
@@ -110,7 +105,6 @@ export class SchedeContattoServiceFake {
           'codiceFiscale': 'ABCD10'
         },
         'classificazione': ClassificazioneSchedaContatto.Differibile,
-        'letta': false,
         'gestita': false
       }
     ];
