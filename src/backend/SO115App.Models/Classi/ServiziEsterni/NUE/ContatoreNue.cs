@@ -22,7 +22,6 @@ namespace SO115App.Models.Classi.ServiziEsterni.NUE
     public class ContatoreNue
     {
         public int ContatoreTutte { get; set; }
-        public int ContatoreDaLeggere { get; set; }
-        public int ContatoreDaGestire { get; set; }
+        public int? ContatoreDaGestire { get; set; }
     }
 }
