@@ -1,6 +1,7 @@
 import { SchedaContatto } from 'src/app/shared/interface/scheda-contatto.interface';
 import { VoceFiltro } from '../../../filterbar/ricerca-group/filtri-richieste/voce-filtro.model';
 import { ContatoriSchedeContatto } from '../../../../../shared/interface/contatori-schede-contatto.interface';
+import { RangeSchedeContattoEnum } from '../../../../../shared/enum/range-schede-contatto';
 
 export class SetContatoriSchedeContatto {
     static readonly type = '[SchedeContatto] Set Contatori Schede Contatto';
@@ -101,4 +102,11 @@ export class SetFiltroSelezionatoSchedaContatto {
 
 export class ResetFiltriSelezionatiSchedeContatto {
     static readonly type = '[SchedeContatto] Reset dei filtri selezionati';
+}
+
+export class SetRangeVisualizzazioneSchedeContatto {
+    static readonly type = '[SchedeContatto]Set Range Visualizzazione Schede Contatto';
+
+    constructor(public range: RangeSchedeContattoEnum) {
+    }
 }

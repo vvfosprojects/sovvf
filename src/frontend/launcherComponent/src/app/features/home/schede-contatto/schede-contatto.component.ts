@@ -1,7 +1,7 @@
 import { Component, isDevMode, OnDestroy, OnInit } from '@angular/core';
 import { Store, Select } from '@ngxs/store';
 import {
-    SetSchedaContattoTelefonata, SetSchedaContattoHover, ClearSchedaContattoHover, SetSchedaContattoGestita, GetListaSchedeContatto
+    SetSchedaContattoTelefonata, SetSchedaContattoHover, ClearSchedaContattoHover, SetSchedaContattoGestita, GetListaSchedeContatto, SetRangeVisualizzazioneSchedeContatto
 } from '../store/actions/schede-contatto/schede-contatto.actions';
 import { SchedeContattoState } from '../store/states/schede-contatto/schede-contatto.state';
 import { Observable, Subscription } from 'rxjs';
@@ -10,6 +10,7 @@ import { ToggleSchedeContatto, ToggleChiamata } from '../store/actions/view/view
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DettaglioSchedaModalComponent } from './dettaglio-scheda-modal/dettaglio-scheda-modal.component';
 import { ContatoriSchedeContatto } from '../../../shared/interface/contatori-schede-contatto.interface';
+import { RangeSchedeContattoEnum } from '../../../shared/enum/range-schede-contatto';
 
 @Component({
     selector: 'app-schede-contatto',
@@ -31,7 +32,10 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
     codiceSchedaContattoHover: string;
     @Select(SchedeContattoState.contatoriSchedeContatto) contatoriSchedeContatto$: Observable<ContatoriSchedeContatto>;
     contatoriSchedeContatto: ContatoriSchedeContatto;
+    @Select(SchedeContattoState.rangeVisualizzazione) rangeVisualizzazione$: Observable<RangeSchedeContattoEnum>;
+    rangeVisualizzazione: RangeSchedeContattoEnum;
 
+    rangeSchedeContattoEnumValues = Object.values(RangeSchedeContattoEnum);
     subscription: Subscription = new Subscription();
 
     constructor(private store: Store,
@@ -66,6 +70,11 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
                 this.contatoriSchedeContatto = contaotoriSchede;
             })
         );
+        this.subscription.add(
+            this.rangeVisualizzazione$.subscribe((range: RangeSchedeContattoEnum) => {
+                this.rangeVisualizzazione = range;
+            })
+        );
     }
 
     ngOnInit(): void {
@@ -84,6 +93,10 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
     setSchedaContattoTelefonata(schedaContatto: SchedaContatto) {
         this.store.dispatch(new SetSchedaContattoTelefonata(schedaContatto));
         this.store.dispatch(new ToggleChiamata());
+    }
+
+    setFiltroRange(range: RangeSchedeContattoEnum) {
+        this.store.dispatch(new SetRangeVisualizzazioneSchedeContatto(range));
     }
 
     dettaglioScheda(scheda: SchedaContatto) {

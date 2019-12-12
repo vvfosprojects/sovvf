@@ -117,10 +117,19 @@
             </ngb-tab>
         </ngb-tabset>
     </div>
-    <div class="col-12">
-        <button class="btn btn-primary mt-2" (click)="tornaIndietro()">
+    <div class="col-12 clearfix">
+        <button class="btn btn-primary mt-2 float-left" (click)="tornaIndietro()">
             <i class="fa fa-arrow-left mr-2"></i>
             Torna Indietro
         </button>
+        <div class="d-inline-block float-right" ngbDropdown #myDrop="ngbDropdown" placement="top">
+            <button class="btn btn-outline-primary mr-2" id="dropdownManual" ngbDropdownAnchor (focus)="myDrop.open()">
+                <i class="fa fa-clock-o mr-1"></i>
+                {{rangeVisualizzazione}}
+            </button>
+            <div ngbDropdownMenu aria-labelledby="dropdownManual">
+                <button *ngFor="let r of rangeSchedeContattoEnumValues" (click)="setFiltroRange(r)" ngbDropdownItem>{{r}}</button>
+            </div>
+        </div>
     </div>
 </div>

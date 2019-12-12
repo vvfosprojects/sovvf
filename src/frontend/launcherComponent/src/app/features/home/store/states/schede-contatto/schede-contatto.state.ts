@@ -1,30 +1,35 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { SchedaContatto } from 'src/app/shared/interface/scheda-contatto.interface';
 import {
-    SetListaSchedeContatto,
-    SetSchedaContattoTelefonata,
-    ClearSchedaContattoTelefonata,
-    SetSchedaContattoHover,
+    ClearFiltriSchedeContatto,
+    ClearListaSchedeContatto,
     ClearSchedaContattoHover,
-    SetSchedaContattoGestita,
+    ClearSchedaContattoTelefonata,
     GetListaSchedeContatto,
+    ReducerSetFiltroSchedeContatto,
+    ResetFiltriSelezionatiSchedeContatto,
+    SetContatoriSchedeContatto,
+    SetFiltroGestitaSchedeContatto,
     SetFiltroKeySchedeContatto,
-    ResetFiltriSelezionatiSchedeContatto, SetFiltroSelezionatoSchedaContatto,
-    SetFiltroGestitaSchedeContatto, ClearFiltriSchedeContatto, ReducerSetFiltroSchedeContatto, SetContatoriSchedeContatto, UpdateSchedaContatto, ClearListaSchedeContatto
+    SetFiltroSelezionatoSchedaContatto,
+    SetListaSchedeContatto,
+    SetRangeVisualizzazioneSchedeContatto,
+    SetSchedaContattoGestita,
+    SetSchedaContattoHover,
+    SetSchedaContattoTelefonata,
+    UpdateSchedaContatto
 } from '../../actions/schede-contatto/schede-contatto.actions';
 import { ClassificazioneSchedaContatto } from '../../../../../shared/enum/classificazione-scheda-contatto.enum';
 import { SchedeContattoService } from '../../../../../core/service/schede-contatto/schede-contatto.service';
 import { FiltriSchedeContatto } from '../../../../../shared/interface/filtri-schede-contatto.interface';
 import { VoceFiltro } from '../../../filterbar/ricerca-group/filtri-richieste/voce-filtro.model';
 import { makeCopy } from '../../../../../shared/helper/function';
-import {
-    resetFiltriSelezionati as _resetFiltriSelezionati,
-    setFiltroSelezionato as _setFiltroSelezionato
-} from '../../../../../shared/helper/function-filtro';
+import { resetFiltriSelezionati as _resetFiltriSelezionati, setFiltroSelezionato as _setFiltroSelezionato } from '../../../../../shared/helper/function-filtro';
 import { CategoriaFiltriSchedeContatto as Categoria } from '../../../../../shared/enum/categoria-filtri-schede-contatto';
 import { ContatoriSchedeContatto } from '../../../../../shared/interface/contatori-schede-contatto.interface';
 import { ContatoriSchedeContattoModel } from '../../../../../shared/model/contatori-schede-contatto.model';
 import { patch, updateItem } from '@ngxs/store/operators';
+import { RangeSchedeContattoEnum } from '../../../../../shared/enum/range-schede-contatto';
 
 export interface SchedeContattoStateModel {
     contatoriSchedeContatto: ContatoriSchedeContatto;
@@ -61,7 +66,8 @@ export const SchedeContattoStateDefaults: SchedeContattoStateModel = {
     ],
     filtriSelezionati: {
         testoLibero: '',
-        gestita: null
+        gestita: null,
+        rangeVisualizzazione: RangeSchedeContattoEnum.DaSempre
     }
 };
 
@@ -131,6 +137,11 @@ export class SchedeContattoState {
         return state.filtriSelezionati.testoLibero;
     }
 
+    @Selector()
+    static rangeVisualizzazione(state: SchedeContattoStateModel) {
+        return state.filtriSelezionati.rangeVisualizzazione;
+    }
+
     constructor(private schedeContattoService: SchedeContattoService) {
     }
 
@@ -144,7 +155,24 @@ export class SchedeContattoState {
     @Action(GetListaSchedeContatto)
     getListaSchedeContatto({ getState, dispatch }: StateContext<SchedeContattoStateModel>) {
         const state = getState();
-        this.schedeContattoService.getSchedeContatto(state.filtriSelezionati).subscribe((schedeContatto: SchedaContatto[]) => {
+        const filtri = {
+            testoLibero: state.filtriSelezionati.testoLibero,
+            gestita: state.filtriSelezionati.gestita
+        } as FiltriSchedeContatto;
+        if (state.filtriSelezionati.rangeVisualizzazione !== RangeSchedeContattoEnum.DaSempre) {
+            switch (state.filtriSelezionati.rangeVisualizzazione) {
+                case RangeSchedeContattoEnum.UltimaOra:
+                    filtri.rangeVisualizzazione = 1;
+                    break;
+                case RangeSchedeContattoEnum.UltimeDueOre:
+                    filtri.rangeVisualizzazione = 2;
+                    break;
+                case RangeSchedeContattoEnum.UltimoGiorno:
+                    filtri.rangeVisualizzazione = 24;
+                    break;
+            }
+        }
+        this.schedeContattoService.getSchedeContatto(filtri).subscribe((schedeContatto: SchedaContatto[]) => {
             dispatch(new SetListaSchedeContatto(schedeContatto));
         });
     }
@@ -233,8 +261,8 @@ export class SchedeContattoState {
         const state = getState();
         patchState({
             filtriSelezionati: {
-                testoLibero: action.key,
-                gestita: state.filtriSelezionati.gestita
+                ...state.filtriSelezionati,
+                testoLibero: action.key
             }
         });
         dispatch(new GetListaSchedeContatto());
@@ -245,7 +273,7 @@ export class SchedeContattoState {
         const state = getState();
         patchState({
             filtriSelezionati: {
-                testoLibero: state.filtriSelezionati.testoLibero,
+                ...state.filtriSelezionati,
                 gestita: action.gestita
             }
         });
@@ -257,7 +285,7 @@ export class SchedeContattoState {
         const state = getState();
         patchState({
             filtriSelezionati: {
-                testoLibero: state.filtriSelezionati.testoLibero,
+                ...state.filtriSelezionati,
                 gestita: null
             }
         });
@@ -289,5 +317,17 @@ export class SchedeContattoState {
             ...state,
             filtriSchedeContatto: _resetFiltriSelezionati(filtriSchedeContatto)
         });
+    }
+
+    @Action(SetRangeVisualizzazioneSchedeContatto)
+    setRangeVisualizzazioneSchedeContatto({ getState, patchState, dispatch }: StateContext<SchedeContattoStateModel>, action: SetRangeVisualizzazioneSchedeContatto) {
+        const state = getState();
+        patchState({
+            filtriSelezionati: {
+                ...state.filtriSelezionati,
+                rangeVisualizzazione: action.range
+            }
+        });
+        dispatch(new GetListaSchedeContatto());
     }
 }
