@@ -228,26 +228,20 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
                 TotaleSchede = new ContatoreNue
                 {
                     ContatoreTutte = listaSchede.Count,
-                    ContatoreDaGestire = listaSchede.FindAll(x => !x.Gestita).Count,
-                    ContatoreDaLeggere = listaSchede.FindAll(x => !x.Letta).Count
+                    ContatoreDaGestire = listaSchedeDifferibile.FindAll(x => !x.Gestita).Count,
                 },
                 CompetenzaSchede = new ContatoreNue
                 {
                     ContatoreTutte = listaSchedeCompetenza.Count,
-                    ContatoreDaGestire = listaSchedeCompetenza.FindAll(x => !x.Gestita).Count,
-                    ContatoreDaLeggere = listaSchedeCompetenza.FindAll(x => !x.Letta).Count
                 },
                 ConoscenzaSchede = new ContatoreNue
                 {
                     ContatoreTutte = listaSchedeConoscenza.Count,
-                    ContatoreDaGestire = listaSchedeConoscenza.FindAll(x => !x.Gestita).Count,
-                    ContatoreDaLeggere = listaSchedeConoscenza.FindAll(x => !x.Letta).Count
                 },
                 DifferibileSchede = new ContatoreNue
                 {
                     ContatoreTutte = listaSchedeDifferibile.Count,
                     ContatoreDaGestire = listaSchedeDifferibile.FindAll(x => !x.Gestita).Count,
-                    ContatoreDaLeggere = listaSchedeDifferibile.FindAll(x => !x.Letta).Count
                 }
             };
         }
