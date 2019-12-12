@@ -8,7 +8,6 @@
                     </div>
                     <ng-template #tipTutte>
                         <div>Tutte: {{contatoriSchedeContatto.totaleSchede.contatoreTutte}}</div>
-                        <div>Da leggere: {{contatoriSchedeContatto.totaleSchede.contatoreDaLeggere}}</div>
                         <div><b>Da gestire: {{contatoriSchedeContatto.totaleSchede.contatoreDaGestire}}</b></div>
                     </ng-template>
                 </ng-template>
@@ -35,12 +34,10 @@
                 <ng-template ngbTabTitle>
                     <div [ngbTooltip]="tipCompetenza">
                         <i class="fa fa-square text-danger mr-2"></i>
-                        <b>Competenza ({{contatoriSchedeContatto.competenzaSchede.contatoreDaGestire}})</b>
+                        <b>Competenza</b>
                     </div>
                     <ng-template #tipCompetenza>
                         <div>Tutte: {{contatoriSchedeContatto.competenzaSchede.contatoreTutte}}</div>
-                        <div>Da leggere: {{contatoriSchedeContatto.competenzaSchede.contatoreDaLeggere}}</div>
-                        <div><b>Da gestire: {{contatoriSchedeContatto.competenzaSchede.contatoreDaGestire}}</b></div>
                     </ng-template>
                 </ng-template>
                 <ng-template ngbTabContent>
@@ -52,7 +49,6 @@
                                                  (hoverOut)="hoverOut()" (hoverIn)="hoverIn($event)"
                                                  (dettaglioScheda)="dettaglioScheda($event)"
                                                  (setSchedaContattoTelefonata)="setSchedaContattoTelefonata($event)"
-                                                 (setSchedaContattoLetta)="setSchedaContattoLetta(scheda.codiceScheda, $event)"
                                                  (setSchedaContattoGestita)="setSchedaContattoGestita(scheda.codiceScheda, $event)">
                             </app-scheda-contatto>
                         </div>
@@ -70,7 +66,6 @@
                     </div>
                     <ng-template #tipDifferibile>
                         <div>Tutte: {{contatoriSchedeContatto.differibileSchede.contatoreTutte}}</div>
-                        <div>Da leggere: {{contatoriSchedeContatto.differibileSchede.contatoreDaLeggere}}</div>
                         <div><b>Da gestire: {{contatoriSchedeContatto.differibileSchede.contatoreDaGestire}}</b></div>
                     </ng-template>
                 </ng-template>
@@ -83,7 +78,6 @@
                                                  (hoverOut)="hoverOut()" (hoverIn)="hoverIn($event)"
                                                  (dettaglioScheda)="dettaglioScheda($event)"
                                                  (setSchedaContattoTelefonata)="setSchedaContattoTelefonata($event)"
-                                                 (setSchedaContattoLetta)="setSchedaContattoLetta(scheda.codiceScheda, $event)"
                                                  (setSchedaContattoGestita)="setSchedaContattoGestita(scheda.codiceScheda, $event)">
                             </app-scheda-contatto>
                         </div>
@@ -97,12 +91,10 @@
                 <ng-template ngbTabTitle>
                     <div [ngbTooltip]="tipConoscenza">
                         <i class="fa fa-square text-warning mr-2"></i>
-                        <b>Conoscenza ({{contatoriSchedeContatto.conoscenzaSchede.contatoreDaGestire}})</b>
+                        <b>Conoscenza</b>
                     </div>
                     <ng-template #tipConoscenza>
                         <div>Tutte: {{contatoriSchedeContatto.conoscenzaSchede.contatoreTutte}}</div>
-                        <div>Da leggere: {{contatoriSchedeContatto.conoscenzaSchede.contatoreDaLeggere}}</div>
-                        <div><b>Da gestire: {{contatoriSchedeContatto.conoscenzaSchede.contatoreDaGestire}}</b></div>
                     </ng-template>
                 </ng-template>
                 <ng-template ngbTabContent>
@@ -114,7 +106,6 @@
                                                  (hoverOut)="hoverOut()" (hoverIn)="hoverIn($event)"
                                                  (dettaglioScheda)="dettaglioScheda($event)"
                                                  (setSchedaContattoTelefonata)="setSchedaContattoTelefonata($event)"
-                                                 (setSchedaContattoLetta)="setSchedaContattoLetta(scheda.codiceScheda, $event)"
                                                  (setSchedaContattoGestita)="setSchedaContattoGestita(scheda.codiceScheda, $event)">
                             </app-scheda-contatto>
                         </div>
