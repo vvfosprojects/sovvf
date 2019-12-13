@@ -140,7 +140,7 @@ export class MezziMarkersState {
     }
 
     @Action(InsertMezzoMarker)
-    insertRichiestaMarker({ setState }: StateContext<MezziMarkersStateModel>, { payload, before }: InsertMezzoMarker) {
+    insertMezzoMarker({ setState }: StateContext<MezziMarkersStateModel>, { payload, before }: InsertMezzoMarker) {
         setState(
             patch({
                 mezziMarkers: insertItem(payload, before),
@@ -150,7 +150,7 @@ export class MezziMarkersState {
     }
 
     @Action(UpdateMezzoMarker)
-    updateRichiestaMarker({ setState }: StateContext<MezziMarkersStateModel>, { payload }: UpdateMezzoMarker) {
+    updateMezzoMarker({ setState }: StateContext<MezziMarkersStateModel>, { payload }: UpdateMezzoMarker) {
         setState(
             patch({
                 mezziMarkers: updateItem<MezzoMarker>(mezzo => mezzo.mezzo.codice === payload.mezzo.codice, payload)
@@ -159,7 +159,7 @@ export class MezziMarkersState {
     }
 
     @Action(RemoveMezzoMarker)
-    removeRichiestaMarker({ setState }: StateContext<MezziMarkersStateModel>, { payload }: RemoveMezzoMarker) {
+    removeMezzoMarker({ setState }: StateContext<MezziMarkersStateModel>, { payload }: RemoveMezzoMarker) {
         setState(
             patch({
                 mezziMarkers: removeItem<MezzoMarker>(mezzo => mezzo.mezzo.codice === payload),
