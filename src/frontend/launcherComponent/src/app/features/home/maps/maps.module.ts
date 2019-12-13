@@ -57,6 +57,7 @@ import { environment } from '../../../../environments/environment';
 import { AreaMappaState } from '../store/states/maps/area-mappa.state';
 import { FiltriMarkersState } from '../store/states/maps/filtri-markers.state';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { SchedeContattoMarkers } from '../store/states/maps/schede-contatto-markers.state';
 
 @NgModule({
     imports: [
@@ -85,7 +86,8 @@ import { NgSelectModule } from '@ng-select/ng-select';
                 ChiamateMarkersState,
                 MeteoMarkersState,
                 MapsButtonsState,
-                FiltriMarkersState
+                FiltriMarkersState,
+                SchedeContattoMarkers
             ]
         )
     ],
