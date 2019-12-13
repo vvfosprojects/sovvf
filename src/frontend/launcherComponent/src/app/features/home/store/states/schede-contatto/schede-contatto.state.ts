@@ -30,6 +30,7 @@ import { ContatoriSchedeContatto } from '../../../../../shared/interface/contato
 import { ContatoriSchedeContattoModel } from '../../../../../shared/model/contatori-schede-contatto.model';
 import { patch, updateItem } from '@ngxs/store/operators';
 import { RangeSchedeContattoEnum } from '../../../../../shared/enum/range-schede-contatto';
+import { SetSchedeContattoMarkers } from '../../actions/maps/schede-contatto-markers.actions';
 
 export interface SchedeContattoStateModel {
     contatoriSchedeContatto: ContatoriSchedeContatto;
@@ -174,6 +175,7 @@ export class SchedeContattoState {
         }
         this.schedeContattoService.getSchedeContatto(filtri).subscribe((schedeContatto: SchedaContatto[]) => {
             dispatch(new SetListaSchedeContatto(schedeContatto));
+            dispatch(new SetSchedeContattoMarkers(schedeContatto));
         });
     }
 

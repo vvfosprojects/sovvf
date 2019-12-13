@@ -1,12 +1,8 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
-import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
-import { ToastrType } from '../../../../../shared/enum/toastr';
-import { SetMarkerLoading } from '../../actions/home.actions';
 import { append, insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
 import {
     AddSchedeContattoMarkers,
     ClearSchedeContattoMarkers,
-    GetSchedeContattoMarkers,
     InsertSchedaContattoMarker,
     OpacizzaSchedeContattoMarkers,
     PatchSchedeContattoMarkers,
@@ -16,6 +12,7 @@ import {
     UpdateSchedaContattoMarker
 } from '../../actions/maps/schede-contatto-markers.actions';
 import { SchedaContattoMarker } from '../../../maps/maps-model/scheda-contatto.model';
+import { SchedaContatto } from '../../../../../shared/interface/scheda-contatto.interface';
 
 export interface SchedeContattoMarkersStateModel {
     schedeContattoMarkers: SchedaContattoMarker[];
@@ -51,55 +48,13 @@ export class SchedeContattoMarkers {
         return state.schedaContattoMarker;
     }
 
-    @Action(GetSchedeContattoMarkers)
-    getSchedeContattoMarkers({ dispatch }: StateContext<SchedeContattoMarkersStateModel>) {
-        dispatch(new SetMarkerLoading(true));
-    }
-
     @Action(SetSchedeContattoMarkers)
     setSchedeContattoMarkers({ getState, dispatch }: StateContext<SchedeContattoMarkersStateModel>, action: SetSchedeContattoMarkers) {
-        const state = getState();
-        if (action.schedeContattoMarkers) {
-            if (state.schedeContattoMarkers.length === 0) {
-                dispatch(new PatchSchedeContattoMarkers(action.schedeContattoMarkers));
-            } else {
-                const actionSchedeContattoId: string[] = [];
-                const schedaContattoMarkerRemoveId: string[] = [];
-                const schedaContattoMarkerAdd: SchedaContattoMarker[] = [];
-                /**
-                 * scheda contatto da aggiungere
-                 */
-                action.schedeContattoMarkers.forEach((scheda: SchedaContattoMarker) => {
-                    actionSchedeContattoId.push(scheda.schedaContatto.codiceScheda);
-                    if (!state.schedeContattoMarkersId.includes(scheda.schedaContatto.codiceScheda)) {
-                        schedaContattoMarkerAdd.push(scheda);
-                    }
-                });
-                /**
-                 * scheda contatto da rimuovere
-                 */
-                state.schedeContattoMarkers.forEach((scheda: SchedaContattoMarker) => {
-                    if (!actionSchedeContattoId.includes(scheda.schedaContatto.codiceScheda)) {
-                        schedaContattoMarkerRemoveId.push(scheda.schedaContatto.codiceScheda);
-                    }
-                });
-                /**
-                 * tolgo i marker dallo stato
-                 */
-                if (schedaContattoMarkerRemoveId.length > 0) {
-                    schedaContattoMarkerRemoveId.forEach(id => {
-                        dispatch(new RemoveSchedaContattoMarker(id));
-                    });
-                }
-                /**
-                 * aggiungo i marker allo stato
-                 */
-                if (schedaContattoMarkerAdd.length > 0) {
-                    dispatch(new AddSchedeContattoMarkers(schedaContattoMarkerAdd));
-                }
-            }
-            dispatch(new OpacizzaSchedeContattoMarkers());
-        }
+        const schedeMarkers = [] as SchedaContattoMarker[];
+        action.schedeContatto.forEach((scheda: SchedaContatto) => {
+            schedeMarkers.push(new SchedaContattoMarker(scheda));
+        });
+        dispatch(new PatchSchedeContattoMarkers(schedeMarkers));
     }
 
     @Action(PatchSchedeContattoMarkers)

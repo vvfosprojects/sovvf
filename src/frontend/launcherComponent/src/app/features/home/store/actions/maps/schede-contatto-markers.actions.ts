@@ -1,15 +1,10 @@
-import { AreaMappa } from '../../../maps/maps-model/area-mappa-model';
-import { FiltroMezzi } from '../../../maps/maps-model/filtro-mezzi.interface';
 import { SchedaContattoMarker } from '../../../maps/maps-model/scheda-contatto.model';
-
-export class GetSchedeContattoMarkers {
-    static readonly type = '[Schede Contatto Marker] Get Mezzi Marker';
-}
+import { SchedaContatto } from '../../../../../shared/interface/scheda-contatto.interface';
 
 export class SetSchedeContattoMarkers {
     static readonly type = '[Schede Contatto Marker] Set Schede Contatto Marker';
 
-    constructor(public schedeContattoMarkers: SchedaContattoMarker[]) {
+    constructor(public schedeContatto: SchedaContatto[]) {
     }
 }
 
