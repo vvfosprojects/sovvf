@@ -12,6 +12,6 @@ namespace SO115App.Models.Classi.Filtri
         public bool? Letta { get; set; }
         public bool? CercaPerOperatore { get; set; }
         public string IdUtente { get; set; }
-        public int? RangeVisualizzazione { get; set; }
+        public double? RangeVisualizzazione { get; set; }
     }
 }

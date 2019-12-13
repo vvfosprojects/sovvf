@@ -5,6 +5,6 @@ namespace SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue
 {
     public interface IGetSchedeFiltrate
     {
-        public List<SchedaContatto> Get(string text, bool? gestita, bool? letta, string codiceFiscale, int? rangeOre);
+        public List<SchedaContatto> Get(string text, bool? gestita, bool? letta, string codiceFiscale, double? rangeOre);
     }
 }

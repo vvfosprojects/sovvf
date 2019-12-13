@@ -200,7 +200,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
         /// <param name="letta">booleana letta</param>
         /// <param name="codiceFiscale">codice fiscale operatore</param>
         /// <returns>Una lista di SchedaContatto</returns>
-        public List<SchedaContatto> GetFiltered(string testolibero, bool? gestita, bool? letta, string codiceFiscale, int? rangeOre)
+        public List<SchedaContatto> GetFiltered(string testolibero, bool? gestita, bool? letta, string codiceFiscale, double? rangeOre)
         {
             var listaSchedeFiltrate = GetList();
             if (!string.IsNullOrWhiteSpace(testolibero)) listaSchedeFiltrate = GetSchedeContattoFromText(testolibero);
