@@ -215,5 +215,36 @@
     "Classificazione": "Differibile",
     "Letta": true,
     "Gestita": false
+  },
+  {
+    "CodiceScheda": "8",
+    "DataInserimento": "2019-12-12T18:04:00",
+    "Richiedente": {
+      "Telefono": "562921",
+      "Nominativo": "Asdrubale Zompafossi"
+    },
+    "Localita": {
+      "Coordinate": {
+        "Latitudine": 41.8886824,
+        "Longitudine": 12.5383099
+      },
+      "Indirizzo": "Via Luchino dal Verme, 00184 Roma RM, Italia",
+      "Note": null,
+      "Piano": null
+    },
+    "ClassificazioneEvento": "Scoppio petardo",
+    "Categoria": "",
+    "EnteCompetenza": "VVF",
+    "Dettaglio": "",
+    "Priorita": 1,
+    "NumeroPersoneCoinvolte": "2",
+    "OperatoreChiamata": {
+      "CodiceSede": "RM.1000",
+      "CodicePostazioneOperatore": "3",
+      "CodiceFiscale": "ABCD70"
+    },
+    "Classificazione": "Differibile",
+    "Letta": true,
+    "Gestita": false
   }
 ]
