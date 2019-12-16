@@ -14,7 +14,13 @@ export interface SchedaContatto {
     dettaglio: string;
     priorita: Priorita;
     numeroPersoneCoinvolte: string;
-    operatoreChiamata: { codiceFiscale: string; codicePostazioneOperatore: string; codiceSede: string };
+    operatoreChiamata: OperatoreSchedaContatto;
     classificazione: ClassificazioneSchedaContatto;
     gestita: boolean;
+}
+
+interface OperatoreSchedaContatto {
+    codiceFiscale: string;
+    codicePostazioneOperatore: string;
+    codiceSede: string;
 }
