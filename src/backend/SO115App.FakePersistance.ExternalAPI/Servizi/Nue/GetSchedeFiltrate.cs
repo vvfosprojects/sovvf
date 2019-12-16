@@ -27,11 +27,11 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue
         /// <param name="letta">booleana letta</param>
         /// <param name="codiceFiscale">stringa codicefiscale</param>
         /// <returns>Una lista di SchedaContatto</returns>
-        public List<SchedaContatto> Get(string text, bool? gestita, bool? letta, string codiceFiscale, double? rangeOre)
+        public List<SchedaContatto> Get(string text, bool? gestita, string codiceFiscale, double? rangeOre)
         {
             //---------------TODO Implementazione con il servizio esterno reale che sostituirà i json
 
-            return _getSchedeMethods.GetFiltered(text, gestita, letta, codiceFiscale, rangeOre);
+            return _getSchedeMethods.GetFiltered(text, gestita, codiceFiscale, rangeOre);
 
             //---------------------------------------------------------------------------------------
         }

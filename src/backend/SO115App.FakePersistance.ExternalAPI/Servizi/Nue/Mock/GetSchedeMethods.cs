@@ -199,14 +199,14 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
         /// <param name="gestita">booleana gestita</param>
         /// <param name="letta">booleana letta</param>
         /// <param name="codiceFiscale">codice fiscale operatore</param>
+        /// <param name="rangeOre">range di ore</param>
         /// <returns>Una lista di SchedaContatto</returns>
-        public List<SchedaContatto> GetFiltered(string testolibero, bool? gestita, bool? letta, string codiceFiscale, double? rangeOre)
+        public List<SchedaContatto> GetFiltered(string testolibero, bool? gestita, string codiceFiscale, double? rangeOre)
         {
             var listaSchedeFiltrate = GetList();
             if (!string.IsNullOrWhiteSpace(testolibero)) listaSchedeFiltrate = GetSchedeContattoFromText(testolibero);
             if (!string.IsNullOrWhiteSpace(codiceFiscale)) listaSchedeFiltrate = listaSchedeFiltrate.FindAll(x => x.OperatoreChiamata.CodiceFiscale.Equals(codiceFiscale));
             if (gestita.HasValue) listaSchedeFiltrate = listaSchedeFiltrate = listaSchedeFiltrate.FindAll(x => x.Gestita.Equals(gestita));
-            if (letta.HasValue) listaSchedeFiltrate = listaSchedeFiltrate.FindAll(x => x.Letta.Equals(letta));
             if (rangeOre.HasValue)
             {
                 var dataCorrente = DateTime.UtcNow.AddHours(-(double)rangeOre);

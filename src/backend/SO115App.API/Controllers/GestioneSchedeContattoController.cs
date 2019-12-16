@@ -84,22 +84,5 @@ namespace SO115App.API.Controllers
                 return BadRequest();
             }
         }
-
-        [HttpPut("SetLetta")]
-        public async Task<IActionResult> SetLetta([FromBody] SetSchedaLettaCommand command)
-        {
-            command.CodiceSede = Request.Headers["codiceSede"];
-            command.IdUtente = Request.Headers["IdUtente"];
-
-            try
-            {
-                _setLetta.Handle(command);
-                return Ok();
-            }
-            catch (Exception)
-            {
-                return BadRequest();
-            }
-        }
     }
 }
