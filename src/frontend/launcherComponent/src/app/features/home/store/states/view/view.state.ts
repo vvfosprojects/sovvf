@@ -131,6 +131,11 @@ export class ViewComponentState {
     }
 
     @Selector()
+    static mezziInServizio(state: ViewComponentStateModel): boolean {
+        return state.view.mezziInServizio.active;
+    }
+
+    @Selector()
     static colorButton(state: ViewComponentStateModel): ViewInterfaceButton {
         return colorButton(state);
     }

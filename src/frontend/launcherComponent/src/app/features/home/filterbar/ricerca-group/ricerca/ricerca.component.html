@@ -1,7 +1,9 @@
 <input [(ngModel)]="ricerca" class="form-control" type="text" appDebounceKeyUp (debounceKeyUp)="onSearch()"
-       [debounceTime]="600" placeholder="Cosa stai cercando?" name="ricerca" id="ricerca">
-<div class="input-group-append">
-    <button class="btn btn-primary" (click)="onSearch()"><i class="fa fa-search text-light"></i></button>
+       [debounceTime]="600" placeholder="Cosa stai cercando?" name="ricerca" id="ricerca" [disabled]="disabled">
+<div class="input-group-append" ngbTooltip="La ricerca è disabilitata per questa funzione" [disableTooltip]="!disabled">
+    <button class="btn btn-primary" [disabled]="disabled" (click)="onSearch()"><i
+            class="fa fa-search text-light"></i>
+    </button>
 </div>
 <div class="input-group-append">
     <ng-content></ng-content>

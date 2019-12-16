@@ -75,13 +75,6 @@ export class SetFiltroKeySchedeContatto {
     }
 }
 
-export class SetFiltroLettaSchedeContatto {
-    static readonly type = '[SchedeContatto] Set Filtro Letta Schede Contatto';
-
-    constructor(public letta: boolean) {
-    }
-}
-
 export class SetFiltroGestitaSchedeContatto {
     static readonly type = '[SchedeContatto] Set Filtro Gestita Schede Contatto';
 

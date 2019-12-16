@@ -1,8 +1,9 @@
 import { State, Selector, Action, StateContext, Select } from '@ngxs/store';
 import {
+    ClearFiltriMezziInServizio,
     ClearMezzoInServizioHover,
-    ClearMezzoInServizioSelezionato,
-    GetMezziInServizio,
+    ClearMezzoInServizioSelezionato, FilterMezziInServizio,
+    GetMezziInServizio, SetFiltroMezziInServizio,
     SetMezziInServizio,
     SetMezzoInServizioHover,
     SetMezzoInServizioSelezionato
@@ -12,22 +13,34 @@ import { MezzoInServizio } from '../../../../../shared/interface/mezzo-in-serviz
 import { MezziInServizioService } from '../../../../../core/service/mezzi-in-servizio-service/mezzi-in-servizio.service';
 import { MezziMarkersState } from '../maps/mezzi-markers.state';
 import { Observable } from 'rxjs';
-import { MezzoMarker } from '../../../maps/maps-model/mezzo-marker.model';
 import { SetCentroMappa } from '../../actions/maps/centro-mappa.actions';
-import { SetMezzoMarkerById } from '../../actions/maps/mezzi-markers.actions';
 import { CentroMappa } from '../../../maps/maps-model/centro-mappa.model';
 import { MAPSOPTIONS } from '../../../../../core/settings/maps-options';
+import { VoceFiltro } from '../../../filterbar/ricerca-group/filtri-richieste/voce-filtro.model';
+import { StatoMezzo as Categoria } from '../../../../../shared/enum/stato-mezzo.enum';
+import { SchedeContattoStateModel } from '../schede-contatto/schede-contatto.state';
 
 export interface MezziInServizioStateModel {
     mezziInServizio: MezzoInServizio[];
     idMezzoInServizioHover: string;
     idMezzoInServizioSelezionato: string;
+    filtriMezziInServizio: VoceFiltro[];
+    filtriSelezionati: VoceFiltro[];
 }
 
 export const MezziInServizioStateDefaults: MezziInServizioStateModel = {
     mezziInServizio: null,
     idMezzoInServizioHover: null,
-    idMezzoInServizioSelezionato: null
+    idMezzoInServizioSelezionato: null,
+    filtriMezziInServizio: [
+        new VoceFiltro('2', Categoria.InRientro, 'In Rientro', false),
+        new VoceFiltro('3', Categoria.InSede, 'In Sede', false),
+        new VoceFiltro('4', Categoria.InViaggio, 'In Viaggio', false),
+        new VoceFiltro('6', Categoria.SulPosto, 'Sul Posto', false),
+        new VoceFiltro('1', Categoria.FuoriServizio, 'Fuori Servizio', false),
+        new VoceFiltro('5', Categoria.Istituto, 'Istituto', false),
+    ],
+    filtriSelezionati: []
 };
 
 @State<MezziInServizioStateModel>({
@@ -57,6 +70,16 @@ export class MezziInServizioState {
         return state.mezziInServizio;
     }
 
+    @Selector()
+    static filtriMezziInServizio(state: MezziInServizioStateModel) {
+        return state.filtriMezziInServizio;
+    }
+
+    @Selector()
+    static filtriSelezionati(state: MezziInServizioStateModel) {
+        return state.filtriMezziInServizio.filter(f => f.selezionato === true);
+    }
+
     @Action(GetMezziInServizio)
     getMezziInServizio({ dispatch }: StateContext<MezziInServizioStateModel>) {
         this.mezziInServizioService.getMezziInServizio().subscribe(data => {
@@ -70,6 +93,29 @@ export class MezziInServizioState {
         patchState({
             'mezziInServizio': action.mezzi
         });
+    }
+
+    @Action(FilterMezziInServizio)
+    filterMezziInServizio({ getState }: StateContext<MezziInServizioStateModel>) {
+        // TODO: implementare logica mancante
+        const state = getState();
+        console.log('FilterMezziInServizio');
+    }
+
+    @Action(SetFiltroMezziInServizio)
+    setFiltroMezziInServizio({ getState, dispatch }: StateContext<SchedeContattoStateModel>, action: SetFiltroMezziInServizio) {
+        // TODO: implementare logica mancante
+        const state = getState();
+        dispatch(new FilterMezziInServizio());
+        console.log('SetFiltroMezziInServizio', action);
+    }
+
+    @Action(ClearFiltriMezziInServizio)
+    clearFiltriMezziInServizio({ getState, dispatch }: StateContext<SchedeContattoStateModel>) {
+        // TODO: implementare logica mancante
+        const state = getState();
+        dispatch(new FilterMezziInServizio());
+        console.log('ClearFiltriMezziInServizio');
     }
 
     @Action(SetMezzoInServizioHover)
