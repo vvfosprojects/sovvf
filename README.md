@@ -64,6 +64,24 @@ Screenshot della dashboard in modalità __solo Mappa__.
 
 ![Dashboard solo mappa](doc/images/dashboard-solo-mappa.jpg)
 
+### Feature Lista Schede Contatto NUE
+
+Screenshot della visualizzazione delle schede contatto Nue
+
+![Schede Contatto](doc/images/schede-contatto.jpg)
+
+### Feature Scheda Contatto dettaglio
+
+Screeenshot della visualizzazione del dettaglio di una Scheda Contatto
+
+![Dettaglio Scheda Contatto](doc/images/schede-contatto-dettaglio.jpg)
+
+### Feature Lista Mezzi In Servizio
+
+Screenshot della visualizzazione dei mezzi in servizio sia in una lista che sulla mappa
+
+![Lista Mezzi In Servizio](doc/images/lista-mezzi-in-servizio.jpg)
+
 ## Il backend
 
 Il backend di SOVVF è un backend RESTful implementato in .NET Core, cluster enabled e conforme ai paradigmi SOLID e CQRS. Ogni azione svolta dal backend attraversa una catena di fasi successive, rappresentate nel seguente schema.
