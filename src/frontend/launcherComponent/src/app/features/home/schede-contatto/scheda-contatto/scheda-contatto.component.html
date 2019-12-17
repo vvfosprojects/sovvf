@@ -1,6 +1,6 @@
-<div class="card cursor-pointer pl-4 py-2 mb-2 shadow-sm"
-     (mouseenter)="hoverIn.emit(scheda.codiceScheda)" (mouseleave)="hoverOut.emit()"
-     (click)="dettaglioScheda.emit(scheda)" [ngClass]="cardClasses(scheda.codiceScheda)">
+<li class="cursor-pointer border-top border-bottom py-1"
+    (mouseenter)="hoverIn.emit(scheda.codiceScheda)" (mouseleave)="hoverOut.emit()"
+    (click)="dettaglioScheda.emit(scheda)" [ngClass]="cardClasses(scheda.codiceScheda)">
     <div class="row">
         <div class="col-1 text-center cursor-pointer py-1">
             <i [ngClass]="getPrioritaIconClass()"
@@ -32,4 +32,4 @@
             </button>
         </div>
     </div>
-</div>
+</li>

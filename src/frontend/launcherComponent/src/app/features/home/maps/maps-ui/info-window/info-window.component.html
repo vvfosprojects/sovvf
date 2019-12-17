@@ -31,6 +31,7 @@
             </tr>
         </table>
     </ng-template>
+
     <div *ngIf="richiestaMarker">
         <table class="table">
             <thead class="thead-light">
@@ -279,6 +280,7 @@
             </tbody>
         </table>
     </div>
+
     <div *ngIf="meteoMarker">
         <table class="table">
             <thead class="thead-light">
@@ -299,6 +301,32 @@
                 <th scope="row" class="py-1 s-info-window">
                     <div *ngIf="datiMeteo; then meteo; else meteospinner">
                     </div>
+                </th>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div *ngIf="schedaContattoMarker">
+        <table class="table">
+            <thead class="thead-light">
+            <tr>
+                <th scope="col" class="py-1 px-0 mx-0 row w-100">
+                    <div class="col">
+              <span>
+                <i class="fa fa-sun-o"></i>
+                Indirizzo
+              </span>
+                        {{schedaContattoMarker.schedaContatto.localita.indirizzo}}
+                    </div>
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <th scope="row" class="py-1 s-info-window">
+                    <!--                    <div *ngIf="datiMeteo; then meteo; else meteospinner">-->
+                    <!--                    </div>-->
                 </th>
             </tr>
             </tbody>

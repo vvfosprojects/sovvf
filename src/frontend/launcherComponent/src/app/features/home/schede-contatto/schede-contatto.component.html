@@ -13,7 +13,7 @@
                 </ng-template>
                 <ng-template ngbTabContent>
                     <div class="row">
-                        <div *ngIf="schedeContatto.length > 0" class="col-12 my-2">
+                        <ul *ngIf="schedeContatto.length > 0" class="col-12 my-2">
                             <app-scheda-contatto *ngFor="let scheda of schedeContatto"
                                                  [scheda]="scheda"
                                                  [idSchedaContattoHover]="codiceSchedaContattoHover"
@@ -22,7 +22,7 @@
                                                  (setSchedaContattoTelefonata)="setSchedaContattoTelefonata($event)"
                                                  (setSchedaContattoGestita)="setSchedaContattoGestita(scheda.codiceScheda, $event)">
                             </app-scheda-contatto>
-                        </div>
+                        </ul>
                         <div *ngIf="schedeContatto.length <= 0"
                              class="col-12 mt-4">
                             <h6 class="text-center">Non ci sono Schede Contatto</h6>
@@ -42,7 +42,7 @@
                 </ng-template>
                 <ng-template ngbTabContent>
                     <div class="row">
-                        <div *ngIf="schedeContattoCompetenza.length > 0" class="col-12 my-2">
+                        <ul *ngIf="schedeContattoCompetenza.length > 0" class="col-12 my-2">
                             <app-scheda-contatto *ngFor="let scheda of schedeContattoCompetenza"
                                                  [scheda]="scheda"
                                                  [idSchedaContattoHover]="codiceSchedaContattoHover"
@@ -51,7 +51,7 @@
                                                  (setSchedaContattoTelefonata)="setSchedaContattoTelefonata($event)"
                                                  (setSchedaContattoGestita)="setSchedaContattoGestita(scheda.codiceScheda, $event)">
                             </app-scheda-contatto>
-                        </div>
+                        </ul>
                         <div *ngIf="schedeContattoCompetenza.length <= 0" class="col-12 mt-4">
                             <h6 class="text-center">Non ci sono Schede Contatto per Competenza</h6>
                         </div>
@@ -71,7 +71,7 @@
                 </ng-template>
                 <ng-template ngbTabContent>
                     <div class="row">
-                        <div *ngIf="schedeContattoDifferibili.length > 0" class="col-12 my-2">
+                        <ul *ngIf="schedeContattoDifferibili.length > 0" class="col-12 my-2">
                             <app-scheda-contatto *ngFor="let scheda of schedeContattoDifferibili"
                                                  [scheda]="scheda"
                                                  [idSchedaContattoHover]="codiceSchedaContattoHover"
@@ -80,7 +80,7 @@
                                                  (setSchedaContattoTelefonata)="setSchedaContattoTelefonata($event)"
                                                  (setSchedaContattoGestita)="setSchedaContattoGestita(scheda.codiceScheda, $event)">
                             </app-scheda-contatto>
-                        </div>
+                        </ul>
                         <div *ngIf="schedeContattoDifferibili.length <= 0" class="col-12 mt-4">
                             <h6 class="text-center">Non ci sono Schede Contatto Differibili</h6>
                         </div>
@@ -99,7 +99,7 @@
                 </ng-template>
                 <ng-template ngbTabContent>
                     <div class="row">
-                        <div *ngIf="schedeContattoConoscenza.length > 0" class="col-12 my-2">
+                        <ul *ngIf="schedeContattoConoscenza.length > 0" class="col-12 my-2">
                             <app-scheda-contatto *ngFor="let scheda of schedeContattoConoscenza"
                                                  [scheda]="scheda"
                                                  [idSchedaContattoHover]="codiceSchedaContattoHover"
@@ -108,7 +108,7 @@
                                                  (setSchedaContattoTelefonata)="setSchedaContattoTelefonata($event)"
                                                  (setSchedaContattoGestita)="setSchedaContattoGestita(scheda.codiceScheda, $event)">
                             </app-scheda-contatto>
-                        </div>
+                        </ul>
                         <div *ngIf="schedeContattoConoscenza.length <= 0" class="col-12 mt-4">
                             <h6 class="text-center">Non ci sono Schede Contatto per Conoscenza</h6>
                         </div>
