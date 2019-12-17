@@ -26,6 +26,7 @@ import {
     ClearFiltriSchedeContatto,
     ReducerSetFiltroSchedeContatto, SetFiltroKeySchedeContatto
 } from '../store/actions/schede-contatto/schede-contatto.actions';
+import { MezziInServizioState } from '../store/states/mezzi-in-servizio/mezzi-in-servizio.state';
 
 @Component({
     selector: 'app-filterbar',
@@ -45,12 +46,15 @@ export class FilterbarComponent implements OnInit {
     // Ricerca Richieste
     @Select(RicercaRichiesteState.ricerca) ricercaRichieste$: Observable<string>;
 
-    // Filtri Richieste
+    // Filtri Schede Contatto
     @Select(SchedeContattoState.filtriSchedeContatto) filtriSchedeContatto$: Observable<VoceFiltro[]>;
     @Select(SchedeContattoState.filtriSelezionati) filtriSelezionatiSchedeContatto$: Observable<VoceFiltro[]>;
-
     // Ricerca Schede Contatto
     @Select(SchedeContattoState.ricerca) ricercaSchedeContatto$: Observable<string>;
+
+    // Filtri Mezzi in Servizio
+    @Select(MezziInServizioState.filtriMezziInServizio) filtriMezziInServizio$: Observable<VoceFiltro[]>;
+    @Select(MezziInServizioState.filtriSelezionati) filtriSelezionatiMezziInServizio$: Observable<VoceFiltro[]>;
 
     // Marker Meteo Switch
     @Select(MarkerMeteoState.active) stateSwitch$: Observable<boolean>;
@@ -60,6 +64,7 @@ export class FilterbarComponent implements OnInit {
     @Select(ViewComponentState.composizioneStatus) composizioneStatus$: Observable<boolean>;
     @Select(ViewComponentState.schedeContattoStatus) schedeContattoStatus$: Observable<boolean>;
     @Select(ViewComponentState.chiamataStatus) chiamataStatus$: Observable<boolean>;
+    @Select(ViewComponentState.mezziInServizio) mezziInServizioStatus$: Observable<boolean>;
     @Select(ViewComponentState.filterBarCol) filterBarCol$: Observable<Grid>;
 
     /**
@@ -116,6 +121,18 @@ export class FilterbarComponent implements OnInit {
      */
     onSearchSchedeContatto(ricerca: any) {
         this.store.dispatch(new SetFiltroKeySchedeContatto(ricerca));
+    }
+
+
+    /**
+     * Filtri Schede Contatto Events
+     */
+    onSelezioneFiltroMezziInServizio(filtro: VoceFiltro) {
+        this.store.dispatch(new ReducerSetFiltroSchedeContatto(filtro));
+    }
+
+    eliminaFiltriAttiviMezziInServizio() {
+        this.store.dispatch(new ClearFiltriSchedeContatto());
     }
 
     /**

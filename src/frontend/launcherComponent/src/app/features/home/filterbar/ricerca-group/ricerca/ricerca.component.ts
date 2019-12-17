@@ -11,6 +11,7 @@ export class RicercaComponent {
     @HostBinding('class') classes = 'input-group';
 
     @Input() ricerca = '';
+    @Input() disabled = false;
 
     // Events
     @Output() search: EventEmitter<string> = new EventEmitter();

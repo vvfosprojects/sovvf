@@ -26,10 +26,21 @@
                 <app-ricerca-group [filtriSelezionati]="(filtriSelezionatiSchedeContatto$ | async).length > 0">
                     <app-ricerca [ricerca]="(ricercaSchedeContatto$ | async)" (search)="onSearchSchedeContatto($event)">
                         <app-filtri-schede-contatto [filtri]="(filtriSchedeContatto$ | async)"
-                                              [filtriSelezionati]="(filtriSelezionatiSchedeContatto$ | async)"
-                                              (filtroSelezionato)="onSelezioneFiltroSchedeContatto($event)"
-                                              (filtriReset)="eliminaFiltriAttiviSchedeContatto()">
+                                                    [filtriSelezionati]="(filtriSelezionatiSchedeContatto$ | async)"
+                                                    (filtroSelezionato)="onSelezioneFiltroSchedeContatto($event)"
+                                                    (filtriReset)="eliminaFiltriAttiviSchedeContatto()">
                         </app-filtri-schede-contatto>
+                    </app-ricerca>
+                </app-ricerca-group>
+            </div>
+            <div *ngIf="(mezziInServizioStatus$ | async)" class="col-9 pl-0">
+                <app-ricerca-group [filtriSelezionati]="(filtriSelezionatiMezziInServizio$ | async).length > 0">
+                    <app-ricerca [disabled]="true">
+                        <app-filtri-mezzi-servizio [filtri]="(filtriMezziInServizio$ | async)"
+                                                    [filtriSelezionati]="(filtriSelezionatiMezziInServizio$ | async)"
+                                                    (filtroSelezionato)="onSelezioneFiltroMezziInServizio($event)"
+                                                    (filtriReset)="eliminaFiltriAttiviMezziInServizio()">
+                        </app-filtri-mezzi-servizio>
                     </app-ricerca>
                 </app-ricerca-group>
             </div>

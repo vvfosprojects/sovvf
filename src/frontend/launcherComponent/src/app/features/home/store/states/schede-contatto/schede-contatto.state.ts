@@ -242,7 +242,7 @@ export class SchedeContattoState {
     }
 
     @Action(ReducerSetFiltroSchedeContatto)
-    reducerSetFiltroSchedeContatto({ getState, patchState, dispatch }: StateContext<SchedeContattoStateModel>, action: ReducerSetFiltroSchedeContatto) {
+    reducerSetFiltroSchedeContatto({ getState, dispatch }: StateContext<SchedeContattoStateModel>, action: ReducerSetFiltroSchedeContatto) {
         const state = getState();
         switch (action.filtro.codice) {
             case '1':

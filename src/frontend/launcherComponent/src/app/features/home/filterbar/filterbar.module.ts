@@ -19,6 +19,7 @@ import { RicercaComponent } from './ricerca-group/ricerca/ricerca.component';
 import { FiltriRichiesteComponent } from './ricerca-group/filtri-richieste/filtri-richieste.component';
 import { FiltroComponent } from '../../../shared/components/filtro/filtro.component';
 import { FiltriSchedeContattoComponent } from './ricerca-group/filtri-schede-contatto/filtri-schede-contatto.component';
+import { FiltriMezziServizioComponent } from './ricerca-group/filtri-mezzi-servizio/filtri-mezzi-servizio.component';
 
 @NgModule({
     imports: [
@@ -43,7 +44,8 @@ import { FiltriSchedeContattoComponent } from './ricerca-group/filtri-schede-con
         TastoSchedeContattoComponent,
         TastiTelefonataGroupComponent,
         RicercaGroupComponent,
-        FiltriSchedeContattoComponent
+        FiltriSchedeContattoComponent,
+        FiltriMezziServizioComponent
     ],
     exports: [
         FilterbarComponent
