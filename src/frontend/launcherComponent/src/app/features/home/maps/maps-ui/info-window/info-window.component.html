@@ -308,28 +308,19 @@
     </div>
 
     <div *ngIf="schedaContattoMarker">
-        <table class="table">
-            <thead class="thead-light">
-            <tr>
-                <th scope="col" class="py-1 px-0 mx-0 row w-100">
-                    <div class="col">
-              <span>
-                <i class="fa fa-sun-o"></i>
-                Indirizzo
-              </span>
-                        {{schedaContattoMarker.schedaContatto.localita.indirizzo}}
-                    </div>
-                </th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <th scope="row" class="py-1 s-info-window">
-                    <!--                    <div *ngIf="datiMeteo; then meteo; else meteospinner">-->
-                    <!--                    </div>-->
-                </th>
-            </tr>
-            </tbody>
-        </table>
+        <div class="p-2">
+            <div class="clearfix">
+                <h6 class="mb-1 float-left">Scheda contatto</h6>
+                <h6 class="mb-1 float-right">
+                    <i class="fa fa-desktop mr-1"></i>
+                    {{schedaContattoMarker.schedaContatto.operatoreChiamata.codicePostazioneOperatore}}
+                </h6>
+            </div>
+            <hr class="my-1">
+            <i class="fa fa-map-marker mr-1"></i>
+            <span class="d-inline-block mt-1">
+                {{schedaContattoMarker.schedaContatto.localita.indirizzo}}
+            </span>
+        </div>
     </div>
 </div>
