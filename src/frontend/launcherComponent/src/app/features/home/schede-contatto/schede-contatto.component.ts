@@ -37,6 +37,7 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
     rangeVisualizzazione: RangeSchedeContattoEnum;
 
     rangeSchedeContattoEnumValues = Object.values(RangeSchedeContattoEnum);
+    RangeVisualizzazione = RangeSchedeContattoEnum;
     subscription: Subscription = new Subscription();
 
     constructor(private store: Store,
