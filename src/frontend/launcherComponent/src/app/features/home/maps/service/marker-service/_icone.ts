@@ -101,7 +101,7 @@ export class IconMappe {
         this.iconeSpeciali = [
             ['meteo', 'speciali/marker-meteo-32.png'],
             ['chiamata', 'speciali/chiamata-marker-rosso.png'],
-            ['schedaContatto', 'speciali/scheda-contatto-maker.png']
+            ['schedaContatto', 'speciali/scheda-contatto-marker.png']
         ];
         this.mapIconeSpeciali = new Map(this.iconeSpeciali);
     }

@@ -271,7 +271,8 @@
                                 [longitude]="schedaContattoMarker.schedaContatto.localita.coordinate.longitudine"
                                 (markerClick)="actionSchedaContattoMarker(schedaContattoMarker.schedaContatto.codiceScheda, MouseE.Click)"
                                 (mouseOver)="actionSchedaContattoMarker(schedaContattoMarker.schedaContatto.codiceScheda, MouseE.HoverIn)"
-                                (mouseOut)="actionSchedaContattoMarker(schedaContattoMarker.schedaContatto.codiceScheda, MouseE.HoverOut)">
+                                (mouseOut)="actionSchedaContattoMarker(schedaContattoMarker.schedaContatto.codiceScheda, MouseE.HoverOut)"
+                                [iconUrl]="schedaContattoMarkerIconUrl">
                         <ng-container>
                             <agm-snazzy-info-window
                                     [shadow]="{h: '2px',v: '0px',blur: '2px',spread: '2px',opacity: 0.3,color: '#dc3545'}"
