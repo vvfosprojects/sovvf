@@ -11,6 +11,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DettaglioSchedaModalComponent } from './dettaglio-scheda-modal/dettaglio-scheda-modal.component';
 import { ContatoriSchedeContatto } from '../../../shared/interface/contatori-schede-contatto.interface';
 import { RangeSchedeContattoEnum } from '../../../shared/enum/range-schede-contatto';
+import { ClearSchedeContattoMarkers } from '../store/actions/maps/schede-contatto-markers.actions';
 
 @Component({
     selector: 'app-schede-contatto',
@@ -36,6 +37,7 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
     rangeVisualizzazione: RangeSchedeContattoEnum;
 
     rangeSchedeContattoEnumValues = Object.values(RangeSchedeContattoEnum);
+    RangeVisualizzazione = RangeSchedeContattoEnum;
     subscription: Subscription = new Subscription();
 
     constructor(private store: Store,
@@ -83,6 +85,7 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
+        this.store.dispatch(new ClearSchedeContattoMarkers());
         isDevMode() && console.log('Componente Schede Contatto distrutto');
     }
 

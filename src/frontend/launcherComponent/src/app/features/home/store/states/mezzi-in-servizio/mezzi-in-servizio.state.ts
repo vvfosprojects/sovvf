@@ -18,18 +18,20 @@ import { CentroMappa } from '../../../maps/maps-model/centro-mappa.model';
 import { MAPSOPTIONS } from '../../../../../core/settings/maps-options';
 import { VoceFiltro } from '../../../filterbar/ricerca-group/filtri-richieste/voce-filtro.model';
 import { StatoMezzo as Categoria } from '../../../../../shared/enum/stato-mezzo.enum';
-import { SchedeContattoStateModel } from '../schede-contatto/schede-contatto.state';
+import { makeCopy } from '../../../../../shared/helper/function';
+import { resetFiltriSelezionati as _resetFiltriSelezionati, setFiltroSelezionato as _setFiltroSelezionato } from '../../../../../shared/helper/function-filtro';
 
 export interface MezziInServizioStateModel {
     mezziInServizio: MezzoInServizio[];
+    mezziInServizioFiltered: MezzoInServizio[];
     idMezzoInServizioHover: string;
     idMezzoInServizioSelezionato: string;
     filtriMezziInServizio: VoceFiltro[];
-    filtriSelezionati: VoceFiltro[];
 }
 
 export const MezziInServizioStateDefaults: MezziInServizioStateModel = {
     mezziInServizio: null,
+    mezziInServizioFiltered: null,
     idMezzoInServizioHover: null,
     idMezzoInServizioSelezionato: null,
     filtriMezziInServizio: [
@@ -39,8 +41,7 @@ export const MezziInServizioStateDefaults: MezziInServizioStateModel = {
         new VoceFiltro('6', Categoria.SulPosto, 'Sul Posto', false),
         new VoceFiltro('1', Categoria.FuoriServizio, 'Fuori Servizio', false),
         new VoceFiltro('5', Categoria.Istituto, 'Istituto', false),
-    ],
-    filtriSelezionati: []
+    ]
 };
 
 @State<MezziInServizioStateModel>({
@@ -71,6 +72,11 @@ export class MezziInServizioState {
     }
 
     @Selector()
+    static mezziInServizioFiltered(state: MezziInServizioStateModel) {
+        return state.mezziInServizioFiltered;
+    }
+
+    @Selector()
     static filtriMezziInServizio(state: MezziInServizioStateModel) {
         return state.filtriMezziInServizio;
     }
@@ -91,31 +97,49 @@ export class MezziInServizioState {
     @Action(SetMezziInServizio)
     setMezziInServizio({ patchState }: StateContext<MezziInServizioStateModel>, action: SetMezziInServizio) {
         patchState({
-            'mezziInServizio': action.mezzi
+            mezziInServizio: action.mezzi,
+            mezziInServizioFiltered: action.mezzi
         });
     }
 
     @Action(FilterMezziInServizio)
-    filterMezziInServizio({ getState }: StateContext<MezziInServizioStateModel>) {
-        // TODO: implementare logica mancante
+    filterMezziInServizio({ getState, patchState }: StateContext<MezziInServizioStateModel>) {
         const state = getState();
-        console.log('FilterMezziInServizio');
+        const mezziInServizio = makeCopy(state.mezziInServizio) as MezzoInServizio[];
+        const filtriMezziInServizio = makeCopy(state.filtriMezziInServizio) as VoceFiltro[];
+        const descFiltriMezziInServizio = filtriMezziInServizio.filter(f => f.selezionato).map(f => f.descrizione);
+        const newArrayMezzi = mezziInServizio.filter((m: MezzoInServizio) => descFiltriMezziInServizio.includes(m.mezzo.mezzo.stato));
+        if (filtriMezziInServizio.filter(f => f.selezionato).length > 0) {
+            patchState({
+                mezziInServizioFiltered: newArrayMezzi
+            });
+        } else {
+            patchState({
+                mezziInServizioFiltered: mezziInServizio
+            });
+        }
     }
 
     @Action(SetFiltroMezziInServizio)
-    setFiltroMezziInServizio({ getState, dispatch }: StateContext<SchedeContattoStateModel>, action: SetFiltroMezziInServizio) {
-        // TODO: implementare logica mancante
+    setFiltroMezziInServizio({ getState, patchState, dispatch }: StateContext<MezziInServizioStateModel>, action: SetFiltroMezziInServizio) {
         const state = getState();
+        const filtriMezziInServizio = makeCopy(state.filtriMezziInServizio);
+        const filtro = makeCopy(action.filtro);
+        patchState({
+            filtriMezziInServizio: _setFiltroSelezionato(filtriMezziInServizio, filtro)
+        });
         dispatch(new FilterMezziInServizio());
-        console.log('SetFiltroMezziInServizio', action);
     }
 
     @Action(ClearFiltriMezziInServizio)
-    clearFiltriMezziInServizio({ getState, dispatch }: StateContext<SchedeContattoStateModel>) {
-        // TODO: implementare logica mancante
+    clearFiltriMezziInServizio({ getState, patchState, dispatch }: StateContext<MezziInServizioStateModel>) {
         const state = getState();
+        const filtriMezziInServizio = makeCopy(state.filtriMezziInServizio);
+        patchState({
+            ...state,
+            filtriMezziInServizio: _resetFiltriSelezionati(filtriMezziInServizio)
+        });
         dispatch(new FilterMezziInServizio());
-        console.log('ClearFiltriMezziInServizio');
     }
 
     @Action(SetMezzoInServizioHover)

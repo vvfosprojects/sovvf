@@ -14,6 +14,7 @@ import { mezzoComposizioneBusy } from '../../../composizione-partenza/shared/fun
 import { SganciamentoMezzoComposizione } from '../../../store/actions/composizione-partenza/mezzi-composizione.actions';
 import { SganciamentoInterface } from 'src/app/shared/interface/sganciamento.interface';
 import { SetRichiestaById } from '../../../store/actions/richieste/richieste.actions';
+import { SchedaContattoMarker } from '../../maps-model/scheda-contatto.model';
 
 @Component({
     selector: 'app-info-window',
@@ -29,6 +30,7 @@ export class InfoWindowComponent implements OnInit {
     @Input() chiamataMarker: ChiamataMarker;
     @Input() mezzoMarker: MezzoMarker;
     @Input() meteoMarker: MeteoMarker;
+    @Input() schedaContattoMarker: SchedaContattoMarker;
     @Input() tipoSedeIcona: string;
     @Input() inComposizione: boolean;
     @Output() addMezzoComposizione = new EventEmitter<string>();

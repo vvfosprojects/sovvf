@@ -1,6 +1,5 @@
 import { Component, EventEmitter, HostBinding, Input, Output } from '@angular/core';
 import { VoceFiltro } from '../filtri-richieste/voce-filtro.model';
-import { NgbDropdownConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { StatoMezzo } from '../../../../../shared/enum/stato-mezzo.enum';
 
 @Component({
@@ -25,11 +24,6 @@ export class FiltriMezziServizioComponent {
 
   onSelezioneFiltro(filtro: VoceFiltro) {
     console.log('filtriSelezionati', this.filtriSelezionati);
-    this.filtriSelezionati.forEach((f: VoceFiltro) => {
-      if (f !== filtro && f.categoria === filtro.categoria) {
-        this.filtroSelezionato.emit(f);
-      }
-    });
     this.filtroSelezionato.emit(filtro);
   }
 

@@ -27,6 +27,7 @@ import {
     ReducerSetFiltroSchedeContatto, SetFiltroKeySchedeContatto
 } from '../store/actions/schede-contatto/schede-contatto.actions';
 import { MezziInServizioState } from '../store/states/mezzi-in-servizio/mezzi-in-servizio.state';
+import { ClearFiltriMezziInServizio, SetFiltroMezziInServizio } from '../store/actions/mezzi-in-servizio/mezzi-in-servizio.actions';
 
 @Component({
     selector: 'app-filterbar',
@@ -128,11 +129,11 @@ export class FilterbarComponent implements OnInit {
      * Filtri Schede Contatto Events
      */
     onSelezioneFiltroMezziInServizio(filtro: VoceFiltro) {
-        this.store.dispatch(new ReducerSetFiltroSchedeContatto(filtro));
+        this.store.dispatch(new SetFiltroMezziInServizio(filtro));
     }
 
     eliminaFiltriAttiviMezziInServizio() {
-        this.store.dispatch(new ClearFiltriSchedeContatto());
+        this.store.dispatch(new ClearFiltriMezziInServizio());
     }
 
     /**

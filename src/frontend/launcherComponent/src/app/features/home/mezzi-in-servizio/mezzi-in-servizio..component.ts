@@ -31,7 +31,7 @@ import { StatoMezzo } from '../../../shared/enum/stato-mezzo.enum';
 })
 export class MezziInServizioComponent implements OnInit, OnDestroy {
 
-    @Select(MezziInServizioState.mezziInServizio) mezziInServizio$: Observable<MezzoInServizio[]>;
+    @Select(MezziInServizioState.mezziInServizioFiltered) mezziInServizio$: Observable<MezzoInServizio[]>;
     mezziInServizio: MezzoInServizio[];
     @Select(MezziInServizioState.idMezzoInServizioHover) idMezzoInServizioHover$: Observable<string>;
     idMezzoInServizioHover: string;

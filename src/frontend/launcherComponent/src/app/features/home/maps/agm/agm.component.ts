@@ -25,6 +25,7 @@ import { makeAreaMappa, makeCentroMappa, makeCoordinate, wipeStatoRichiesta } fr
 import { MapsButtonsState } from '../../store/states/maps/maps-buttons.state';
 import { ButtonControlAnimation, CustomButtonsMaps } from '../maps-interface/maps-custom-buttons';
 import { MapsOptionsInterface } from '../../../../core/settings/maps-options';
+import { SchedaContattoMarker } from '../maps-model/scheda-contatto.model';
 
 declare var google: any;
 
@@ -43,6 +44,7 @@ export class AgmComponent implements OnDestroy {
     @Input() chiamateMarkers: ChiamataMarker[];
     @Input() viewStateMappa: ViewInterfaceMaps;
     @Input() composizioneMarkers: ComposizioneMarker[];
+    @Input() schedeContattoMarkers: SchedaContattoMarker[];
     @Output() mapFullyLoaded = new EventEmitter<boolean>();
     cachedMarkers: CachedMarker[] = [];
     AppFeatures = AppFeatures;
@@ -58,6 +60,7 @@ export class AgmComponent implements OnDestroy {
     mapWrapper: GoogleMap;
     richiestaMarkerIconUrl: string;
     meteoMarkerIconUrl: string;
+    schedaContattoMarkerIconUrl: string;
 
     zoomControlOptions: ZoomControlOptions = {
         position: ControlPosition.BOTTOM_RIGHT
@@ -118,6 +121,7 @@ export class AgmComponent implements OnDestroy {
          */
         this.richiestaMarkerIconUrl = this.markerService.iconaSpeciale('chiamata');
         this.meteoMarkerIconUrl = this.markerService.iconaSpeciale('meteo');
+        this.schedaContattoMarkerIconUrl = this.markerService.iconaSpeciale('schedaContatto');
         /**
          * stato dei custom button
          */
@@ -267,6 +271,13 @@ export class AgmComponent implements OnDestroy {
          * scateno l'azione relativa all'evento del mouse ricevuto
          */
         this.markerService.actionSedeMarker(id, event);
+    }
+
+    actionSchedaContattoMarker(id: string, event: MouseE): void {
+        /**
+         * scateno l'azione relativa all'evento del mouse ricevuto
+         */
+        this.markerService.actionSchedaContattoMarker(id, event);
     }
 
     findDatiMeteo(_id: string): Meteo {

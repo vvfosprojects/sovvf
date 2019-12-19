@@ -221,6 +221,11 @@ export class MarkerService implements OnDestroy {
                     trueMarkerValue = true;
                 }
                 break;
+            case 'schedaContatto':
+                if (this.selfHoveredMarker === `scheda-contatto-${id}` && !this.isClicked(id, tipoMarker)) {
+                    trueMarkerValue = true;
+                }
+                break;
         }
         return trueMarkerValue;
     }
@@ -469,6 +474,28 @@ export class MarkerService implements OnDestroy {
                     this.store.dispatch(new SetMarkerSedeSelezionato(id));
                 }
                 this.selfClickedMarker = `sede-${id}`;
+            }
+                break;
+        }
+    }
+
+    actionSchedaContattoMarker(id: string, mouse: MouseE) {
+        switch (mouse) {
+            case MouseE.HoverIn: {
+                // this.store.dispatch(new SetMarkerSedeHover(id));
+                this.selfHoveredMarker = `scheda-contatto-${id}`;
+            }
+                break;
+            case MouseE.HoverOut: {
+                // this.store.dispatch(new ClearMarkerSedeHover());
+                this.selfHoveredMarker = ``;
+            }
+                break;
+            case MouseE.Click: {
+                if (this.markerSedeSelezionato !== id) {
+                    // this.store.dispatch(new SetMarkerSedeSelezionato(id));
+                }
+                this.selfClickedMarker = `scheda-contatto-${id}`;
             }
                 break;
         }
