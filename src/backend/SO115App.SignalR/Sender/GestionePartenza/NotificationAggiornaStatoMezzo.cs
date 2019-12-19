@@ -19,7 +19,6 @@
 //-----------------------------------------------------------------------
 
 using CQRS.Queries;
-using DomainModel.CQRS.Commands.GestrionePartenza.AggiornaStatoMezzo;
 using Microsoft.AspNetCore.SignalR;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza;
@@ -29,6 +28,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneMezziInServizio.ListaMezziInSerivizio;
 using SO115App.API.Models.Servizi.CQRS.Queries.Marker.MezziMarker;
+using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AggiornaStatoMezzo;
 
 namespace SO115App.SignalR.Sender.GestionePartenza
 {

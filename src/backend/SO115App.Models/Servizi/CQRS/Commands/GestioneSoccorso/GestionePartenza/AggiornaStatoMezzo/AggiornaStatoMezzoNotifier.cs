@@ -20,7 +20,7 @@
 using CQRS.Commands.Notifiers;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestionePartenza;
 
-namespace DomainModel.CQRS.Commands.GestrionePartenza.AggiornaStatoMezzo
+namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AggiornaStatoMezzo
 {
     public class AggiornaStatoMezzoNotifier : ICommandNotifier<AggiornaStatoMezzoCommand>
     {

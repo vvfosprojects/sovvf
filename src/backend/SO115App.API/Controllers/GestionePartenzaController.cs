@@ -2,9 +2,9 @@
 using System.Linq;
 using System.Threading.Tasks;
 using CQRS.Commands;
-using DomainModel.CQRS.Commands.GestrionePartenza.AggiornaStatoMezzo;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AggiornaStatoMezzo;
 
 namespace SO115App.API.Controllers
 {

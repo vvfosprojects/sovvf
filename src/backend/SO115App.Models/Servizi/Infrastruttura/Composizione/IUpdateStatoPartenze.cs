@@ -17,7 +17,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using DomainModel.CQRS.Commands.GestrionePartenza.AggiornaStatoMezzo;
+using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AggiornaStatoMezzo;
 
 namespace SO115App.Models.Servizi.Infrastruttura.Composizione
 {
