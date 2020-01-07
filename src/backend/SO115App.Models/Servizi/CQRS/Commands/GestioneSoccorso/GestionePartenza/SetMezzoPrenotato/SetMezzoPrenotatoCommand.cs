@@ -17,6 +17,8 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using SO115App.Models.Classi.Condivise;
+
 namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.SetMezzoPrenotato
 {
     /// <summary>
@@ -27,6 +29,6 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
         /// <summary>
         ///   L'oggetto MezzoPrenotato.
         /// </summary>
-        public API.Models.Classi.Composizione.MezzoPrenotato MezzoPrenotato { get; set; }
+        public StatoOperativoMezzo MezzoPrenotato { get; set; }
     }
 }

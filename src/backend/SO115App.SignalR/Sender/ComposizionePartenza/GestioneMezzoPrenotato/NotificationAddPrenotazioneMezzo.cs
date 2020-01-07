@@ -20,7 +20,7 @@
 
 using CQRS.Queries;
 using Microsoft.AspNetCore.SignalR;
-using SO115App.API.Models.Classi.Composizione;
+using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.SetMezzoPrenotato;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GestioneMezzoPrenotato;
 using SO115App.Models.Servizi.Infrastruttura.Notification.ComposizionePartenza.MezzoPrenotato;
@@ -50,7 +50,7 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza.GestioneMezzoPrenotato
 
             if (mezzoPrenotato == null)
             {
-                var mezzoLibero = new MezzoPrenotato
+                var mezzoLibero = new StatoOperativoMezzo
                 {
                     CodiceMezzo = command.MezzoPrenotato.CodiceMezzo,
                     SbloccaMezzo = true

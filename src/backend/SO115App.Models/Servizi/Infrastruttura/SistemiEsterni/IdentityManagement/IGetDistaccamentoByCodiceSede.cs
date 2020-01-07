@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="GetMezziPrenotatiResult.cs" company="CNVVF">
+// <copyright file="IGetDistaccamentoByCodiceSede.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,19 +17,12 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using SO115App.Models.Classi.Condivise;
-using System.Collections.Generic;
+using SO115App.API.Models.Classi.Condivise;
 
-namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GestioneMezzoPrenotato
+namespace SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.IdentityManagement
 {
-    /// <summary>
-    ///   Modello di uscita della query dei mezzi prenotati
-    /// </summary>
-    public class GetMezzoPrenotatoResult
+    public interface IGetDistaccamentoByCodiceSede
     {
-        /// <summary>
-        ///   La lista dei mezzi prenotati in uscita dalla query.
-        /// </summary>
-        public List<StatoOperativoMezzo> MezziPrenotati { get; set; }
+        public Sede Get(string codiceSede);
     }
 }

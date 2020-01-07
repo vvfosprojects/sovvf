@@ -21,7 +21,6 @@ using Newtonsoft.Json;
 using SO115App.FakePersistence.JSon.Utility;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.SetMezzoPrenotato;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
-using SO115App.Models.Servizi.Infrastruttura.GetMezzoPrenotato;
 
 namespace SO115App.FakePersistence.JSon.Composizione
 {
@@ -31,13 +30,13 @@ namespace SO115App.FakePersistence.JSon.Composizione
     /// </summary>
     public class SetMezzoPrenotato : ISetMezzoPrenotato
     {
-        private readonly IGetMezziPrenotati _getMezziPrenotati;
-        private readonly string filepath = CostantiJson.PrenotazioneMezzo;
+        private readonly IGetStatoMezzi _getMezziPrenotati;
+        private readonly string filepath = CostantiJson.StatoMezzo;
 
         /// <summary>
         ///   Costruttore della classe
         /// </summary>
-        public SetMezzoPrenotato(IGetMezziPrenotati getMezziPrenotati)
+        public SetMezzoPrenotato(IGetStatoMezzi getMezziPrenotati)
         {
             _getMezziPrenotati = getMezziPrenotati;
         }
@@ -51,13 +50,13 @@ namespace SO115App.FakePersistence.JSon.Composizione
         public void Set(SetMezzoPrenotatoCommand command)
         {
             var mezzi = _getMezziPrenotati.Get(command.MezzoPrenotato.CodiceSede);
-            var mezzo = mezzi.Find(x => x.CodiceMezzo.Equals(command.MezzoPrenotato.CodiceMezzo));
 
-            if (mezzo != null && command.MezzoPrenotato.SbloccaMezzo)
+            if (mezzi.Find(x => x.CodiceMezzo.Equals(command.MezzoPrenotato.CodiceMezzo)) != null
+                && command.MezzoPrenotato.SbloccaMezzo)
             {
-                mezzi.Remove(mezzo);
+                mezzi.Remove(mezzi.Find(x => x.CodiceMezzo.Equals(command.MezzoPrenotato.CodiceMezzo)));
             }
-            if (!command.MezzoPrenotato.SbloccaMezzo)
+            else if (!command.MezzoPrenotato.SbloccaMezzo)
             {
                 mezzi.Add(command.MezzoPrenotato);
             }

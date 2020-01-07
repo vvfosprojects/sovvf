@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="GetMezziPrenotatiResult.cs" company="CNVVF">
+// <copyright file="GetStatoMezzi.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,19 +17,34 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using Newtonsoft.Json;
+using SO115App.FakePersistence.JSon.Utility;
 using SO115App.Models.Classi.Condivise;
+using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using System.Collections.Generic;
+using System.IO;
 
-namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GestioneMezzoPrenotato
+namespace SO115App.FakePersistence.JSon.GestioneMezzi
 {
     /// <summary>
-    ///   Modello di uscita della query dei mezzi prenotati
+    ///   La classe recupera sul json i mezzi prenotati qualora ci fossero
     /// </summary>
-    public class GetMezzoPrenotatoResult
+    public class GetStatoMezzi : IGetStatoMezzi
     {
         /// <summary>
-        ///   La lista dei mezzi prenotati in uscita dalla query.
+        ///   Metodo della classe che si occupa del reperimento dei mezzi prenotati sul Json.
         /// </summary>
-        public List<StatoOperativoMezzo> MezziPrenotati { get; set; }
+        /// <param name="codiceSede">il codice della sede</param>
+        /// <returns>Lista di MezzoPrenotato</returns>
+        public List<StatoOperativoMezzo> Get(string codiceSede)
+        {
+            var filepath = CostantiJson.StatoMezzo;
+            string json;
+            using (var r = new StreamReader(filepath))
+            {
+                json = r.ReadToEnd();
+            }
+            return JsonConvert.DeserializeObject<List<StatoOperativoMezzo>>(json).FindAll(x => x.CodiceSede.Equals(codiceSede));
+        }
     }
 }

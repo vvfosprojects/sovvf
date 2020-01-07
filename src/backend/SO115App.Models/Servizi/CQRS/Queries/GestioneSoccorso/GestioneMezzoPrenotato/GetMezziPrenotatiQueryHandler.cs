@@ -18,7 +18,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Queries;
-using SO115App.Models.Servizi.Infrastruttura.GetMezzoPrenotato;
+using SO115App.Models.Servizi.Infrastruttura.Composizione;
 
 namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GestioneMezzoPrenotato
 {
@@ -27,12 +27,12 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GestioneMezzoPre
     /// </summary>
     public class GetMezziPrenotatiQueryHandler : IQueryHandler<GetMezziPrenotatiQuery, GetMezzoPrenotatoResult>
     {
-        private readonly IGetMezziPrenotati _getMezzoPrenotato;
+        private readonly IGetStatoMezzi _getMezzoPrenotato;
 
         /// <summary>
         ///   Costruttore della classe.
         /// </summary>
-        public GetMezziPrenotatiQueryHandler(IGetMezziPrenotati getMezzoPrenotato)
+        public GetMezziPrenotatiQueryHandler(IGetStatoMezzi getMezzoPrenotato)
         {
             _getMezzoPrenotato = getMezzoPrenotato;
         }

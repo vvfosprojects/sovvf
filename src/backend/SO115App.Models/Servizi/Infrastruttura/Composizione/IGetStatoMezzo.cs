@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="MezzoPrenotato.cs" company="CNVVF">
+// <copyright file="IGetMezzoPrenotato.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,43 +17,21 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System;
+using SO115App.Models.Classi.Condivise;
+using System.Collections.Generic;
 
-namespace SO115App.API.Models.Classi.Composizione
+namespace SO115App.Models.Servizi.Infrastruttura.Composizione
 {
     /// <summary>
-    ///   Il mezzo prenotato
+    ///   interfaccia per la GET dei mezzi prenotati
     /// </summary>
-    public class MezzoPrenotato
+    public interface IGetStatoMezzi
     {
         /// <summary>
-        ///   Codice sede del mezzo
+        ///   metodo dell'interfaccia per la get dei mezzi prenotati
         /// </summary>
-        public string CodiceSede { get; set; }
-
-        /// <summary>
-        ///   Codice del mezzo
-        /// </summary>
-        public string CodiceMezzo { get; set; }
-
-        /// <summary>
-        ///   l'istante della prenotazione
-        /// </summary>
-        public DateTime? IstantePrenotazione { get; set; }
-
-        /// <summary>
-        ///   l'istante scandenza selezione
-        /// </summary>
-        public DateTime? IstanteScadenzaSelezione { get; set; }
-
-        /// <summary>
-        ///   il codice della richiesta
-        /// </summary>
-        public string CodiceRichiesta { get; set; }
-
-        /// <summary>
-        ///   booleana per lo sblocco del mezzo
-        /// </summary>
-        public bool SbloccaMezzo { get; set; }
+        /// <param name="codiceSede">il codice della sede</param>
+        /// <returns>La lista dei mezzi prenotati</returns>
+        List<StatoOperativoMezzo> Get(string codiceSede);
     }
 }

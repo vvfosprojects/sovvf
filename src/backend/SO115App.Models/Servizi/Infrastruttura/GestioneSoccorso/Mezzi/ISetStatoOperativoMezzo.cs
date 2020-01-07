@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="IGetMezzoPrenotato.cs" company="CNVVF">
+// <copyright file="ISetStatoOperativoMezzo.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,21 +17,10 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using SO115App.API.Models.Classi.Composizione;
-using System.Collections.Generic;
-
-namespace SO115App.Models.Servizi.Infrastruttura.GetMezzoPrenotato
+namespace SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi
 {
-    /// <summary>
-    ///   interfaccia per la GET dei mezzi prenotati
-    /// </summary>
-    public interface IGetMezziPrenotati
+    public interface ISetStatoOperativoMezzo
     {
-        /// <summary>
-        ///   metodo dell'interfaccia per la get dei mezzi prenotati
-        /// </summary>
-        /// <param name="codiceSede">il codice della sede</param>
-        /// <returns>La lista dei mezzi prenotati</returns>
-        List<MezzoPrenotato> Get(string codiceSede);
+        void Set(string codiceSede, string codiceMezzo, string statoOperativo, string idRichiesta);
     }
 }

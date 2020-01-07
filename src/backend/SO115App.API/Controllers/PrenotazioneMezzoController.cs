@@ -1,7 +1,7 @@
 ﻿using CQRS.Commands;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SO115App.API.Models.Classi.Composizione;
+using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.SetMezzoPrenotato;
 using System;
 using System.Threading.Tasks;
@@ -21,7 +21,7 @@ namespace SO115App.API.Controllers
         }
 
         [HttpPost("PrenotaMezzo")]
-        public async Task<IActionResult> PrenotaMezzo([FromBody]MezzoPrenotato mezzoPrenotato)
+        public async Task<IActionResult> PrenotaMezzo([FromBody]StatoOperativoMezzo mezzoPrenotato)
         {
             mezzoPrenotato.CodiceSede = Request.Headers["codicesede"];
             mezzoPrenotato.SbloccaMezzo = false;
@@ -47,7 +47,7 @@ namespace SO115App.API.Controllers
         }
 
         [HttpPost("SbloccaMezzo")]
-        public async Task<IActionResult> SbloccaMezzo([FromBody] MezzoPrenotato mezzoPrenotato)
+        public async Task<IActionResult> SbloccaMezzo([FromBody] StatoOperativoMezzo mezzoPrenotato)
         {
             mezzoPrenotato.CodiceSede = Request.Headers["codicesede"];
             mezzoPrenotato.SbloccaMezzo = true;

@@ -17,19 +17,18 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Composizione;
-using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneMezzi;
-using SO115App.Models.Servizi.Infrastruttura.GetComposizioneMezzi;
-using SO115App.FakePersistence.JSon.Utility;
-using System;
-using SO115App.FakePersistence.JSon.Classi;
 using SO115App.API.Models.Classi.Marker;
+using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneMezzi;
+using SO115App.FakePersistence.JSon.Utility;
+using SO115App.Models.Servizi.Infrastruttura.Composizione;
+using SO115App.Models.Servizi.Infrastruttura.GetComposizioneMezzi;
+using System;
+using System.Collections.Generic;
 using System.Globalization;
-using SO115App.Models.Servizi.Infrastruttura.GetMezzoPrenotato;
+using System.IO;
+using System.Linq;
 
 namespace SO115App.FakePersistenceJSon.Composizione
 {
@@ -39,9 +38,9 @@ namespace SO115App.FakePersistenceJSon.Composizione
     /// </summary>
     public class GetComposizioneMezzi : IGetComposizioneMezzi
     {
-        private readonly IGetMezziPrenotati _getMezziPrenotati;
+        private readonly IGetStatoMezzi _getMezziPrenotati;
 
-        public GetComposizioneMezzi(IGetMezziPrenotati getMezziPrenotati)
+        public GetComposizioneMezzi(IGetStatoMezzi getMezziPrenotati)
         {
             _getMezziPrenotati = getMezziPrenotati;
         }
