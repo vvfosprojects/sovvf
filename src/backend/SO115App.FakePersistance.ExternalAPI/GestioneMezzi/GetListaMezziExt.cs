@@ -20,6 +20,8 @@
 using SO115App.API.Models.Classi.Marker;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi;
 using SO115App.Models.Classi.ListaMezziInServizio;
+using SO115App.Models.Classi.Utility;
+using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.InfoRichiesta;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
@@ -37,12 +39,14 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
         private readonly IGetInfoRichiesta _getInfoRichiesta;
         private readonly IGetMezziUtilizzabili _getMezziUtilizzabili;
         private readonly IGetRichiestaById _getRichiestaById;
+        private readonly IGetStatoMezzi _getStatoMezzi;
 
-        public GetListaMezziExt(IGetInfoRichiesta getInfoRichiesta, IGetMezziUtilizzabili getMezziUtilizzabili, IGetRichiestaById getRichiestaById)
+        public GetListaMezziExt(IGetInfoRichiesta getInfoRichiesta, IGetMezziUtilizzabili getMezziUtilizzabili, IGetRichiestaById getRichiestaById, IGetStatoMezzi getStatoMezzi)
         {
             _getInfoRichiesta = getInfoRichiesta;
             _getMezziUtilizzabili = getMezziUtilizzabili;
             _getRichiestaById = getRichiestaById;
+            _getStatoMezzi = getStatoMezzi;
         }
 
         /// <summary>
@@ -60,12 +64,16 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
             };
             var codiceSedeIniziali = codiceSede.Substring(0, 2);
 
-            var mezzi = _getMezziUtilizzabili.Get(listaCodiciSede);
+            var mezzi = _getMezziUtilizzabili.Get(listaCodiciSede).Result;
+            var statoMezzi = _getStatoMezzi.Get(codiceSede);
 
             foreach (var mezzo in mezzi
                 .FindAll(x => x.Distaccamento.Codice
                 .StartsWith(codiceSedeIniziali)))
             {
+                var statoOperativoMezzi = statoMezzi.Find(x => x.CodiceMezzo.Equals(mezzo.Codice));
+                mezzo.Stato = statoOperativoMezzi != null ? statoOperativoMezzi.StatoOperatico : Costanti.MezzoInSede;
+                mezzo.IdRichiesta = statoOperativoMezzi?.CodiceRichiesta;
                 var mezzoMarker = new MezzoMarker()
                 {
                     Mezzo = mezzo,

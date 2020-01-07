@@ -20,6 +20,7 @@
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.ExternalAPI.Fake.Classi.Gac;
 using SO115App.Models.Servizi.Infrastruttura.GeoFleet;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.IdentityManagement;
 using System.Collections.Generic;
 
 namespace SO115App.ExternalAPI.Fake.Classi.Utility
@@ -31,10 +32,12 @@ namespace SO115App.ExternalAPI.Fake.Classi.Utility
     public class MapMezzoDTOsuMezzo
     {
         private readonly IGetPosizioneByCodiceMezzo _getPosizioneByCodiceMezzo;
+        private readonly IGetDistaccamentoByCodiceSede _getDistaccamentoByCodiceSede;
 
-        public MapMezzoDTOsuMezzo(IGetPosizioneByCodiceMezzo getPosizioneByCodiceMezzo)
+        public MapMezzoDTOsuMezzo(IGetPosizioneByCodiceMezzo getPosizioneByCodiceMezzo, IGetDistaccamentoByCodiceSede getDistaccamentoByCodiceSede)
         {
             _getPosizioneByCodiceMezzo = getPosizioneByCodiceMezzo;
+            _getDistaccamentoByCodiceSede = getDistaccamentoByCodiceSede;
         }
 
         /// <summary>
@@ -48,11 +51,13 @@ namespace SO115App.ExternalAPI.Fake.Classi.Utility
 
             foreach (var mezzoDTO in listaMezzoDTO)
             {
-                var coordinateMezzo = _getPosizioneByCodiceMezzo.Get(mezzoDTO.Codice).Result;
+                if (mezzoDTO.Movimentazione.StatoOperativo.Equals(Costanti.MezzoDisponibile)) mezzoDTO.Movimentazione.StatoOperativo = Costanti.MezzoInSede;
+                var coordinateMezzo = _getPosizioneByCodiceMezzo.Get(mezzoDTO.CodiceMezzo).Result;
+                var sede = _getDistaccamentoByCodiceSede.Get(mezzoDTO.CodiceDistaccamento);
                 if (coordinateMezzo != null)
                 {
                     var coordinate = new Coordinate(coordinateMezzo.Localizzazione.Lat, coordinateMezzo.Localizzazione.Lon);
-                    var mezzo = new Mezzo(mezzoDTO.Codice, mezzoDTO.Descrizione, mezzoDTO.Genere, mezzoDTO.Movimentazione.StatoOperativo, mezzoDTO.Appartenenza, mezzoDTO.Distaccamento, coordinate)
+                    var mezzo = new Mezzo(mezzoDTO.CodiceMezzo, mezzoDTO.Descrizione, mezzoDTO.Genere, mezzoDTO.Movimentazione.StatoOperativo, mezzoDTO.Appartenenza, sede, coordinate)
                     {
                         StatoEfficenza = mezzoDTO.StatoEfficenza,
                         IstanteAcquisizione = coordinateMezzo.IstanteAcquisizione
@@ -62,8 +67,8 @@ namespace SO115App.ExternalAPI.Fake.Classi.Utility
                 }
                 else
                 {
-                    var coordinate = new Coordinate(mezzoDTO.Distaccamento.Coordinate.Latitudine, mezzoDTO.Distaccamento.Coordinate.Longitudine);
-                    var mezzo = new Mezzo(mezzoDTO.Codice, mezzoDTO.Descrizione, mezzoDTO.Genere, mezzoDTO.Movimentazione.StatoOperativo, mezzoDTO.Appartenenza, mezzoDTO.Distaccamento, coordinate)
+                    var coordinate = new Coordinate(sede.Coordinate.Latitudine, sede.Coordinate.Longitudine);
+                    var mezzo = new Mezzo(mezzoDTO.CodiceMezzo, mezzoDTO.Descrizione, mezzoDTO.Genere, mezzoDTO.Movimentazione.StatoOperativo, mezzoDTO.Appartenenza, sede, coordinate)
                     {
                         StatoEfficenza = mezzoDTO.StatoEfficenza,
                         IstanteAcquisizione = null

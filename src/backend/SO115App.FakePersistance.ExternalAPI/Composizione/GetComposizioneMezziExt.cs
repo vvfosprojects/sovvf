@@ -22,8 +22,8 @@ using SO115App.API.Models.Classi.Composizione;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneMezzi;
 using SO115App.FakePersistence.JSon.Utility;
+using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GetComposizioneMezzi;
-using SO115App.Models.Servizi.Infrastruttura.GetMezzoPrenotato;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
 using System;
 using System.Collections.Generic;
@@ -40,9 +40,9 @@ namespace SO115App.ExternalAPI.Fake.Composizione
     public class GetComposizioneMezziExt : IGetComposizioneMezzi
     {
         private readonly IGetMezziUtilizzabili _getMezziUtilizzabili;
-        private readonly IGetMezziPrenotati _getMezziPrenotati;
+        private readonly IGetStatoMezzi _getMezziPrenotati;
 
-        public GetComposizioneMezziExt(IGetMezziUtilizzabili getMezziUtilizzabili, IGetMezziPrenotati getMezziPrenotati)
+        public GetComposizioneMezziExt(IGetMezziUtilizzabili getMezziUtilizzabili, IGetStatoMezzi getMezziPrenotati)
         {
             _getMezziUtilizzabili = getMezziUtilizzabili;
             _getMezziPrenotati = getMezziPrenotati;
@@ -61,7 +61,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             {
                 query.CodiceSede
             };
-            var listaMezzi = _getMezziUtilizzabili.Get(listaCodici, "", "");
+            var listaMezzi = _getMezziUtilizzabili.Get(listaCodici).Result;
 
             var composizioneMezzi = GeneraListaComposizioneMezzi(listaMezzi);
 

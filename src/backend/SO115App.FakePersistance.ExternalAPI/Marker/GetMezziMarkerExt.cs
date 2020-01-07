@@ -50,7 +50,7 @@ namespace SO115App.ExternalAPI.Fake.Marker
         {
             var listaMezziFilter = new List<MezzoMarker>();
 
-            var listaMezzi = _getMezziUtilizzabili.Get(filtroAreaMappa.CodiceSede);
+            var listaMezzi = _getMezziUtilizzabili.Get(filtroAreaMappa.CodiceSede).Result;
             var listaMezziMarker = new List<MezzoMarker>();
 
             foreach (var mezzo in listaMezzi)

@@ -17,9 +17,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using SO115App.API.Models.Classi.Condivise;
 using SO115App.Models.Classi.ServiziEsterni.Gac;
-using System.Text.Json.Serialization;
 
 namespace SO115App.ExternalAPI.Fake.Classi.Gac
 {
@@ -28,7 +26,8 @@ namespace SO115App.ExternalAPI.Fake.Classi.Gac
         /// <summary>
         ///   Codice del mezzo
         /// </summary>
-        public string Codice { get; set; }
+
+        public string CodiceMezzo { get; set; }
 
         /// <summary>
         ///   Codice del radio trasmittente
@@ -58,18 +57,18 @@ namespace SO115App.ExternalAPI.Fake.Classi.Gac
         /// <summary>
         ///   Appartenenza del mezzo
         /// </summary>
-        [JsonPropertyName("codDestinazione")]
+
         public string Appartenenza { get; set; }
 
         /// <summary>
         ///   Indica codice distaccamento del mezzo
         /// </summary>
-        public Sede Distaccamento { get; set; }
+        public string CodiceDistaccamento { get; set; }
 
         /// <summary>
         ///   Descrizione dell'appartenenza del mezzo
         /// </summary>
-        [JsonPropertyName("descDestinazione")]
+
         public string DescrizioneAppartenenza { get; set; }
 
         /// <summary>

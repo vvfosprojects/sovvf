@@ -25,6 +25,7 @@ using SO115App.FakePersistenceJSon.Classi;
 using SO115App.FakePersistenceJSon.Utility;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AggiornaStatoMezzo;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
+using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
 using System;
 using System.Collections.Generic;
@@ -39,16 +40,16 @@ namespace SO115App.ExternalAPI.Fake.Composizione
     /// </summary>
     public class UpdateStatoPartenzaExt : IUpdateStatoPartenze
     {
-        private readonly IGetMezziByCodiceMezzo _getMezzo;
+        private readonly ISetStatoOperativoMezzo _setStatoOperativoMezzo;
         private readonly ISetMovimentazione _setMovimentazione;
 
         /// <summary>
         ///   Costruttore della classe
         /// </summary>
-        public UpdateStatoPartenzaExt(IGetMezziByCodiceMezzo getMezzo, ISetMovimentazione setMovimentazione)
+        public UpdateStatoPartenzaExt(ISetMovimentazione setMovimentazione, ISetStatoOperativoMezzo setStatoOperativoMezzo)
         {
-            _getMezzo = getMezzo;
             _setMovimentazione = setMovimentazione;
+            _setStatoOperativoMezzo = setStatoOperativoMezzo;
         }
 
         /// <summary>
@@ -105,16 +106,11 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                 string jsonNew = JsonConvert.SerializeObject(listaRichiesteNew);
                 File.WriteAllText(CostantiJson.ListaRichiesteAssistenza, jsonNew);
             }
-            var listaCodiciMezzo = new List<string>
-            {
-                command.IdMezzo
-            };
 
             var dataMovimentazione = DateTime.UtcNow;
-            foreach (var mezzo in _getMezzo.Get(listaCodiciMezzo))
-            {
-                _setMovimentazione.Set(mezzo.Codice, command.Richiesta.Codice, command.StatoMezzo, dataMovimentazione);
-            }
+
+            _setMovimentazione.Set(command.IdMezzo, command.Richiesta.Codice, command.StatoMezzo, dataMovimentazione);
+            _setStatoOperativoMezzo.Set(command.CodiceSede, command.IdMezzo, command.StatoMezzo, command.Richiesta.Codice);
 
             foreach (var partenza in command.Richiesta.Partenze)
             {

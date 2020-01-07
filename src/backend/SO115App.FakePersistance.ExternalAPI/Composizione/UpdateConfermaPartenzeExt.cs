@@ -31,6 +31,7 @@ using SO115App.FakePersistenceJSon.Classi;
 using SO115App.FakePersistenceJSon.Utility;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
+using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
 
 namespace SO115App.ExternalAPI.Fake.Composizione
@@ -41,16 +42,16 @@ namespace SO115App.ExternalAPI.Fake.Composizione
     /// </summary>
     public class UpdateConfermaPartenzeExt : IUpdateConfermaPartenze
     {
-        private readonly IGetMezziByCodiceMezzo _getMezziById;
         private readonly ISetMovimentazione _setMovimentazione;
+        private readonly ISetStatoOperativoMezzo _setStatoOperativoMezzo;
 
         /// <summary>
         ///   Costruttore della classe
         /// </summary>
-        public UpdateConfermaPartenzeExt(IGetMezziByCodiceMezzo getMezziById, ISetMovimentazione setMovimentazione)
+        public UpdateConfermaPartenzeExt(ISetMovimentazione setMovimentazione, ISetStatoOperativoMezzo setStatoOperativoMezzo)
         {
-            _getMezziById = getMezziById;
             _setMovimentazione = setMovimentazione;
+            _setStatoOperativoMezzo = setStatoOperativoMezzo;
         }
 
         /// <summary>
@@ -108,16 +109,10 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
             foreach (var partenza in command.ConfermaPartenze.Partenze)
             {
-                var listaCodiciMezzo = new List<string>
-                {
-                    partenza.Mezzo.Codice
-                };
-
                 var dataMovintazione = DateTime.UtcNow;
-                foreach (var mezzo in _getMezziById.Get(listaCodiciMezzo))
-                {
-                    _setMovimentazione.Set(mezzo.Codice, command.ConfermaPartenze.IdRichiesta, Costanti.MezzoInViaggio, dataMovintazione);
-                }
+
+                _setMovimentazione.Set(partenza.Mezzo.Codice, command.ConfermaPartenze.IdRichiesta, Costanti.MezzoInViaggio, dataMovintazione);
+                _setStatoOperativoMezzo.Set(command.ConfermaPartenze.CodiceSede, partenza.Mezzo.Codice, Costanti.MezzoInViaggio, command.ConfermaPartenze.IdRichiesta);
 
                 foreach (var composizioneSquadra in listaSquadre)
                 {
