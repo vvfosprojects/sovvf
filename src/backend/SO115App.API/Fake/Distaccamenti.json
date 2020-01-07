@@ -1,18 +1,86 @@
 [
   {
-    "id": "1",
-    "descrizione": "Roma"
+    "Codice": "RM.1000",
+    "Descrizione": "Comando di Roma",
+    "Coordinate": {
+      "Latitudine": 41.89994,
+      "Longitudine": 12.49127
+    },
+    "Indirizzo": "Via Genova, 1, 00184 Roma RM",
+    "Tipo": "Comando",
+    "Regione": "Lazio",
+    "Provincia": "Roma",
+    "Label": null,
+    "Icona": null
   },
   {
-    "id": "2",
-    "descrizione": "Frosinone"
+    "Codice": "RM.1001",
+    "Descrizione": "Distaccamento Cittadino Eur",
+    "Coordinate": {
+      "Latitudine": 41.8334226,
+      "Longitudine": 12.4630402
+    },
+    "Indirizzo": "Piazza F. Vivona, 4 00144 Roma",
+    "Tipo": "Comando",
+    "Regione": "Lazio",
+    "Provincia": "Roma",
+    "Label": null,
+    "Icona": null
   },
   {
-    "id": "3",
-    "descrizione": "Latina"
+    "Codice": "RM.1002",
+    "Descrizione": "Distaccamento Cittadino Tuscolano I",
+    "Coordinate": {
+      "Latitudine": 41.8815193,
+      "Longitudine": 12.5164942
+    },
+    "Indirizzo": "Via Tuscolana, 126 00182 Roma",
+    "Tipo": "Comando",
+    "Regione": "Lazio",
+    "Provincia": "Roma",
+    "Label": null,
+    "Icona": null
   },
   {
-    "id": "4",
-    "descrizione": "Rieti"
+    "Codice": "RM.1003",
+    "Descrizione": "Distaccamento Cittadino Tuscolano II",
+    "Coordinate": {
+      "Latitudine": 41.8638803,
+      "Longitudine": 12.5522048
+    },
+    "Indirizzo": "Via Scribonio Curione, 70 00175 RM",
+    "Tipo": "Comando",
+    "Regione": "Lazio",
+    "Provincia": "Roma",
+    "Label": null,
+    "Icona": null
+  },
+  {
+    "Codice": "RM.1004",
+    "Descrizione": "Distaccamento Cittadino Monte Mario",
+    "Coordinate": {
+      "Latitudine": 41.9380363,
+      "Longitudine": 12.417807
+    },
+    "Indirizzo": "Via Andrea Verga, 2 00168 Roma",
+    "Tipo": "Comando",
+    "Regione": "Lazio",
+    "Provincia": "Roma",
+    "Label": null,
+    "Icona": null
+  },
+  {
+    "Codice": "RM.1005",
+    "Descrizione": "Distaccamento Cittadino La Rustica",
+    "Coordinate": {
+      "Latitudine": 41.9095414,
+      "Longitudine": 12.6119425
+    },
+    "Indirizzo": "Via Achille Vertunni, 98 00155 RM",
+    "Tipo": "Comando",
+    "Regione": "Lazio",
+    "Provincia": "Roma",
+    "Label": null,
+    "Icona": null
   }
 ]
