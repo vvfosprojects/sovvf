@@ -18,6 +18,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using SO115App.ExternalAPI.Fake.Servizi.Gac.Mock;
+using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
 using System;
 
@@ -49,6 +50,9 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
         public void Set(string codiceMezzo, string idRichiesta, string statoOperativo, DateTime timeStamp)
         {
             //---------------TODO Implementazione con il servizio esterno reale che sostituirà i json
+            statoOperativo = statoOperativo.Equals(Costanti.MezzoInViaggio) || statoOperativo.Equals(Costanti.MezzoSulPosto)
+                ? Costanti.MezzoNonDisponibile
+                : Costanti.MezzoDisponibile;
 
             _setMezzo.SetMovimentazione(codiceMezzo, idRichiesta, statoOperativo, timeStamp);
 

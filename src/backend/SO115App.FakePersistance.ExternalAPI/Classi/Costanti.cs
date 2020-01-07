@@ -75,7 +75,7 @@ namespace SO115App.ExternalAPI.Fake.Classi
 
         #region GacMethods
 
-        public static string GacGetMezziUtilizzabili = "MezziUtilizzabili";
+        public static string GacGetMezziUtilizzabili = "/SO115/AnagraficaMezzi/MezziUtilizzabili";
         public static string GacGetMezziFuoriServizio = "MezziFuoriServizio";
         public static string GacGetID = "ID";
         public static string GacGetICCID = "ICCID";
@@ -106,5 +106,12 @@ namespace SO115App.ExternalAPI.Fake.Classi
         public static string UosAssUrl = "AssociazioneUOSedi";
 
         #endregion Uos
+
+        #region Utility
+
+        public static string MezzoDisponibile = "DISPONIBILE";
+        public static string MezzoInSede = "In Sede";
+
+        #endregion Utility
     }
 }

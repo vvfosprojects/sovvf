@@ -1,4 +1,23 @@
-﻿using Newtonsoft.Json;
+﻿//-----------------------------------------------------------------------
+// <copyright file="GetMezzi.cs" company="CNVVF">
+// Copyright (C) 2017 - CNVVF
+//
+// This file is part of SOVVF.
+// SOVVF is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Affero General Public License as
+// published by the Free Software Foundation, either version 3 of the
+// License, or (at your option) any later version.
+//
+// SOVVF is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU Affero General Public License for more details.
+//
+// You should have received a copy of the GNU Affero General Public License
+// along with this program.  If not, see http://www.gnu.org/licenses/.
+// </copyright>
+//-----------------------------------------------------------------------
+using Newtonsoft.Json;
 using SO115App.ExternalAPI.Fake.Classi;
 using SO115App.ExternalAPI.Fake.Classi.Gac;
 using System.Collections.Generic;
@@ -46,7 +65,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac.Mock
             {
                 foreach (var mezzo in listaMezzi)
                 {
-                    if (sede.Equals(mezzo.Distaccamento.Codice))
+                    if (sede.Equals(mezzo.CodiceDistaccamento))
                     {
                         listaMezziFromSede.Add(mezzo);
                     }
@@ -76,7 +95,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac.Mock
             {
                 foreach (var mezzo in listaMezzi)
                 {
-                    if (sede.Equals(mezzo.Distaccamento.Codice))
+                    if (sede.Equals(mezzo.CodiceDistaccamento))
                     {
                         listaMezziFromSede.Add(mezzo);
                     }
@@ -150,7 +169,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac.Mock
             {
                 foreach (var mezzo in listaMezzi)
                 {
-                    if (codice.Equals(mezzo.Codice))
+                    if (codice.Equals(mezzo.CodiceMezzo))
                     {
                         listaMezziFromCodici.Add(mezzo);
                     }
