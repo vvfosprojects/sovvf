@@ -1,1 +1,20 @@
-[{"CodiceSede":"RM.1000","CodiceMezzo":"O.29729","IstantePrenotazione":null,"IstanteScadenzaSelezione":null,"CodiceRichiesta":"RM20121900000","SbloccaMezzo":false,"StatoOperatico":"In Viaggio"},{"CodiceSede":"RM.1000","CodiceMezzo":"O.29730","IstantePrenotazione":null,"IstanteScadenzaSelezione":null,"CodiceRichiesta":"RM212000001","SbloccaMezzo":false,"StatoOperatico":"In Rientro"}]
+[
+  {
+    "CodiceSede": "RM.1000",
+    "CodiceMezzo": "O.29729",
+    "IstantePrenotazione": null,
+    "IstanteScadenzaSelezione": null,
+    "CodiceRichiesta": "RM20121900000",
+    "SbloccaMezzo": false,
+    "StatoOperativo": "In Viaggio"
+  },
+  {
+    "CodiceSede": "RM.1000",
+    "CodiceMezzo": "O.29730",
+    "IstantePrenotazione": null,
+    "IstanteScadenzaSelezione": null,
+    "CodiceRichiesta": "RM212000001",
+    "SbloccaMezzo": false,
+    "StatoOperativo": "In Rientro"
+  }
+]

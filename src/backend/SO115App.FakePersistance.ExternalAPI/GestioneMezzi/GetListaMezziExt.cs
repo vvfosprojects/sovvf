@@ -72,7 +72,7 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
                 .StartsWith(codiceSedeIniziali)))
             {
                 var statoOperativoMezzi = statoMezzi.Find(x => x.CodiceMezzo.Equals(mezzo.Codice));
-                mezzo.Stato = statoOperativoMezzi != null ? statoOperativoMezzi.StatoOperatico : Costanti.MezzoInSede;
+                mezzo.Stato = statoOperativoMezzi != null ? statoOperativoMezzi.StatoOperativo : Costanti.MezzoInSede;
                 mezzo.IdRichiesta = statoOperativoMezzi?.CodiceRichiesta;
                 var mezzoMarker = new MezzoMarker()
                 {

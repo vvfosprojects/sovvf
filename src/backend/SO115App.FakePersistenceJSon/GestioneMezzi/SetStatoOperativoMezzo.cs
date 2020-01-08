@@ -42,7 +42,7 @@ namespace SO115App.FakePersistence.JSon.GestioneMezzi
             {
                 CodiceMezzo = codiceMezzo,
                 CodiceSede = codiceSede,
-                StatoOperatico = statoOperativo,
+                StatoOperativo = statoOperativo,
                 CodiceRichiesta = idRichiesta,
             };
             var statiOperativiMezzi = _getStatoMezzi.Get(codiceSede);
@@ -54,7 +54,7 @@ namespace SO115App.FakePersistence.JSon.GestioneMezzi
             {
                 foreach (var statoMezzo in statiOperativiMezzi.FindAll(x => x.CodiceMezzo.Equals(codiceMezzo)))
                 {
-                    statoMezzo.StatoOperatico = statoOperativo;
+                    statoMezzo.StatoOperativo = statoOperativo;
                 }
             }
 

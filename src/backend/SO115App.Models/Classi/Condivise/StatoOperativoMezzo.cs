@@ -59,6 +59,6 @@ namespace SO115App.Models.Classi.Condivise
         /// <summary>
         ///   indica lo stato operativo del mezzo (In Viaggio, In Rientro, In Sede, Sul Posto)
         /// </summary>
-        public string StatoOperatico { get; set; }
+        public string StatoOperativo { get; set; }
     }
 }

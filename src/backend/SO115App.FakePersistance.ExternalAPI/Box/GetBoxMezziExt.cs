@@ -63,14 +63,14 @@ namespace SO115App.ExternalAPI.Fake.Box
             mezzi.InSede = listaMezzi.Where(x => x.Stato == Costanti.MezzoInSede || x.Stato == Costanti.MezzoRientrato)
                 .Select(x => x.Stato)
                 .Count();
-            mezzi.InViaggio = listaStatiOperativi.Where(x => x.StatoOperatico == Costanti.MezzoInViaggio)
-                .Select(x => x.StatoOperatico)
+            mezzi.InViaggio = listaStatiOperativi.Where(x => x.StatoOperativo == Costanti.MezzoInViaggio)
+                .Select(x => x.StatoOperativo)
                 .Count();
-            mezzi.InRientro = listaStatiOperativi.Where(x => x.StatoOperatico == Costanti.MezzoInRientro)
-                .Select(x => x.StatoOperatico)
+            mezzi.InRientro = listaStatiOperativi.Where(x => x.StatoOperativo == Costanti.MezzoInRientro)
+                .Select(x => x.StatoOperativo)
                 .Count();
-            mezzi.SulPosto = listaStatiOperativi.Where(x => x.StatoOperatico == Costanti.MezzoSulPosto)
-                .Select(x => x.StatoOperatico)
+            mezzi.SulPosto = listaStatiOperativi.Where(x => x.StatoOperativo == Costanti.MezzoSulPosto)
+                .Select(x => x.StatoOperativo)
                 .Count();
             mezzi.Istituto = listaMezzi.Where(x => x.Stato == Costanti.MezzoIstituto)
                 .Select(x => x.Stato)
