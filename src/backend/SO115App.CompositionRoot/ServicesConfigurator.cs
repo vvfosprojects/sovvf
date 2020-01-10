@@ -36,7 +36,7 @@ namespace SO115App.CompositionRoot
 
             container.Register<
                 API.Models.Servizi.Infrastruttura.GestioneSoccorso.IUpDateRichiestaAssistenza,
-                FakePersistenceJSon.GestioneIntervento.UpDateRichiesta>();
+                ExternalAPI.Fake.GestioneIntervento.UpDateRichiestaExt>();//TODO gestione composition Root per l'externalAPI
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.Box.IGetBoxMezzi,
                 ExternalAPI.Fake.Box.GetBoxMezziExt>();//TODO gestione composition Root per l'externalAPI
