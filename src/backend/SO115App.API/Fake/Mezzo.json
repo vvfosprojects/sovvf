@@ -5,7 +5,7 @@
     "Descrizione": "13362",
     "Genere": "ACT/OP",
     "Stato": "Fuori Servizio",
-    "Appartenenza": 0,
+    "Appartenenza": "0",
     "Distaccamento": {
       "Codice": "RM.1000",
       "Descrizione": "Comando di Roma",
@@ -43,7 +43,7 @@
     "Descrizione": "14512",
     "Genere": "AA",
     "Stato": "Fuori Servizio",
-    "Appartenenza": 0,
+    "Appartenenza": "0",
     "Distaccamento": {
       "Codice": "RM.1000",
       "Descrizione": "Comando di Roma",
@@ -81,7 +81,7 @@
     "Descrizione": "18195",
     "Genere": "APS",
     "Stato": "In Sede",
-    "Appartenenza": 0,
+    "Appartenenza": "0",
     "Distaccamento": {
       "Codice": "RM.1000",
       "Descrizione": "Comando di Roma",
@@ -114,12 +114,12 @@
     "IstanteMovimentazione": null
   },
   {
-    "Codice": "O.16022",
+    "Codice": "O.29319",
     "IdRichiesta": null,
     "Descrizione": "16022",
     "Genere": "AF/OP",
     "Stato": "In Sede",
-    "Appartenenza": 0,
+    "Appartenenza": "0",
     "Distaccamento": {
       "Codice": "RM.1000",
       "Descrizione": "Comando di Roma",
@@ -152,12 +152,12 @@
     "IstanteMovimentazione": null
   },
   {
-    "Codice": "O.16023",
+    "Codice": "O.29729",
     "IdRichiesta": null,
     "Descrizione": "16023",
     "Genere": "AF/OP",
     "Stato": "In Sede",
-    "Appartenenza": 0,
+    "Appartenenza": "0",
     "Distaccamento": {
       "Codice": "RM.1000",
       "Descrizione": "Comando di Roma",
@@ -190,12 +190,12 @@
     "IstanteMovimentazione": null
   },
   {
-    "Codice": "O.16204",
+    "Codice": "O.29730",
     "IdRichiesta": null,
     "Descrizione": "16204",
     "Genere": "AF/COMBI",
     "Stato": "In Sede",
-    "Appartenenza": 0,
+    "Appartenenza": "0",
     "Distaccamento": {
       "Codice": "RM.1000",
       "Descrizione": "Comando di Roma",
@@ -228,12 +228,12 @@
     "IstanteMovimentazione": null
   },
   {
-    "Codice": "O.16216",
+    "Codice": "O.21826",
     "IdRichiesta": null,
     "Descrizione": "16216",
     "Genere": "AF/COMBI",
     "Stato": "In Sede",
-    "Appartenenza": 0,
+    "Appartenenza": "0",
     "Distaccamento": {
       "Codice": "RM.1000",
       "Descrizione": "Comando di Roma",
@@ -271,7 +271,7 @@
     "Descrizione": "16225",
     "Genere": "AF/OP",
     "Stato": "In Sede",
-    "Appartenenza": 0,
+    "Appartenenza": "0",
     "Distaccamento": {
       "Codice": "RM.1000",
       "Descrizione": "Comando di Roma",
@@ -309,7 +309,7 @@
     "Descrizione": "19610",
     "Genere": "CA",
     "Stato": "In Sede",
-    "Appartenenza": 0,
+    "Appartenenza": "0",
     "Distaccamento": {
       "Codice": "RM.1000",
       "Descrizione": "Comando di Roma",
@@ -347,7 +347,7 @@
     "Descrizione": "19611",
     "Genere": "CA",
     "Stato": "In Sede",
-    "Appartenenza": 0,
+    "Appartenenza": "0",
     "Distaccamento": {
       "Codice": "RM.1000",
       "Descrizione": "Distaccamento Cittadino Roma Tuscolano I",
@@ -385,7 +385,7 @@
     "Descrizione": "26679",
     "Genere": "ACT/TRI",
     "Stato": "In Sede",
-    "Appartenenza": 0,
+    "Appartenenza": "0",
     "Distaccamento": {
       "Codice": "RM.1000",
       "Descrizione": "Distaccamento Cittadino Roma Tuscolano I",
@@ -423,7 +423,7 @@
     "Descrizione": "27790",
     "Genere": "AV",
     "Stato": "In Sede",
-    "Appartenenza": 0,
+    "Appartenenza": "0",
     "Distaccamento": {
       "Codice": "TO.1000",
       "Descrizione": "Distaccamento Cittadino Torino I",
@@ -461,7 +461,7 @@
     "Descrizione": "27791",
     "Genere": "AV",
     "Stato": "In Sede",
-    "Appartenenza": 0,
+    "Appartenenza": "0",
     "Distaccamento": {
       "Codice": "TO.1000",
       "Descrizione": "Distaccamento Cittadino Torino I",
