@@ -19,7 +19,7 @@
 //-----------------------------------------------------------------------
 using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Composizione;
-using SO115App.API.Models.Classi.Marker;
+using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneMezzi;
 using SO115App.FakePersistence.JSon.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
@@ -47,7 +47,7 @@ namespace SO115App.FakePersistenceJSon.Composizione
 
         public List<ComposizioneMezzi> Get(ComposizioneMezziQuery query)
         {
-            List<MezzoMarker> ListaMezzi = new List<MezzoMarker>();
+            var listaMezzi = new List<Mezzo>();
 
             var filepath = CostantiJson.Mezzo;
             string json;
@@ -56,9 +56,9 @@ namespace SO115App.FakePersistenceJSon.Composizione
                 json = r.ReadToEnd();
             }
 
-            //ListaMezzi = mapper.MappaFlottaMezziSuMezziMarker(FlottaMezzi).Where(x => x.Mezzo.Distaccamento.Codice == query.CodiceSede).ToList();
+            listaMezzi = JsonConvert.DeserializeObject<List<Mezzo>>(json);
 
-            List<ComposizioneMezzi> composizioneMezzi = GeneraListaComposizioneMezzi(ListaMezzi);
+            var composizioneMezzi = GeneraListaComposizioneMezzi(listaMezzi);
 
             string[] generiMezzi;
             string[] statiMezzi;
@@ -163,28 +163,28 @@ namespace SO115App.FakePersistenceJSon.Composizione
             return composizioneMezzi;
         }
 
-        private List<ComposizioneMezzi> GeneraListaComposizioneMezzi(List<MezzoMarker> listaMezzi)
+        private List<ComposizioneMezzi> GeneraListaComposizioneMezzi(List<Mezzo> listaMezzi)
         {
-            List<ComposizioneMezzi> ListaComposizione = new List<ComposizioneMezzi>();
+            var listaComposizione = new List<ComposizioneMezzi>();
 
             Random random = new Random();
 
-            foreach (MezzoMarker mezzoMarker in listaMezzi)
+            foreach (var mezzo in listaMezzi)
             {
                 string kmGen = random.Next(1, 60).ToString();
                 double TempoPer = Convert.ToDouble(kmGen.Replace(".", ",")) / 1.75;
 
-                ComposizioneMezzi composizione = new ComposizioneMezzi()
+                var composizione = new ComposizioneMezzi()
                 {
-                    Mezzo = mezzoMarker.Mezzo,
+                    Mezzo = mezzo,
                     Km = kmGen,
                     TempoPercorrenza = Math.Round(TempoPer, 2).ToString(CultureInfo.InvariantCulture),
                 };
 
-                ListaComposizione.Add(composizione);
+                listaComposizione.Add(composizione);
             }
 
-            return ListaComposizione;
+            return listaComposizione;
         }
     }
 }
