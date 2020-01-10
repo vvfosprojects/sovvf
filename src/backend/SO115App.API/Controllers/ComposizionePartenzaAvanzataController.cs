@@ -22,6 +22,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizionePartenzaAvanzata;
 using SO115App.Models.Classi.Composizione;
+using System;
 using System.Security.Principal;
 using System.Threading.Tasks;
 
@@ -78,7 +79,7 @@ namespace SO115App.API.Controllers
                 {
                     return Ok(this._handler.Handle(partenzaAvanzataQuery).ComposizionePartenzaAvanzata);
                 }
-                catch
+                catch (Exception ex)
                 {
                     return BadRequest();
                 }
