@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace SO115App.ExternalAPI.Fake.Classi.Gac
 {
     /// <summary>
-    ///   L'oggetto MovimentazioneDTO è l'oggetto che viene passato al servizio GAC per aggiornare la
-    ///   movimentazione di un mezzo. Contiene informazioni quali lo stato del mezzo e l'id della
+    ///   L'oggetto MovimentazioneDTO è l'oggetto che viene passato al servizio GAC per aggiornare
+    ///   la movimentazione di un mezzo. Contiene informazioni quali lo stato del mezzo e l'id della
     ///   richiesta a cui il mezzo è associato.
     /// </summary>
     public class MovimentazioneDTO
