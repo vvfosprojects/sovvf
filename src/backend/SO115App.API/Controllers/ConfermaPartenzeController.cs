@@ -63,16 +63,16 @@ namespace SO115App.API.Controllers
         /// <summary>
         ///   Metodo di accesso alle richieste di assistenza
         /// </summary>
-        /// <param name="mezzoPrenotato">il modello del mezzoPrenotato</param>
         /// <returns>il modello del mezzo prenotato</returns>
         [HttpPost]
         public async Task<IActionResult> Post(ConfermaPartenze conferma)
         {
             conferma.CodiceSede = Request.Headers["codicesede"];
+            conferma.IdOperatore = Request.Headers["IdUtente"];
 
             var command = new ConfermaPartenzeCommand()
             {
-                ConfermaPartenze = conferma,
+                ConfermaPartenze = conferma
             };
 
             try

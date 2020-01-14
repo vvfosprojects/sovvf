@@ -47,20 +47,20 @@ namespace DomainModel.CQRS.Commands.RimozioneInLavorazione
             var richiesta = _getRichiestaById.Get(command.IdRichiesta);
             var attivita = new AttivitaUtente();
 
-            richiesta.ListaUtentiInLavorazione.RemoveAll(x => x.IdUtente == command.IdUtente);
+            richiesta.UtInLavorazione.RemoveAll(x => x == command.IdUtente);
 
             richiesta.Id = richiesta.Codice;
 
-            if (command.Chiamata.ListaUtentiInLavorazione != null)
-                command.Chiamata.ListaUtentiInLavorazione = richiesta.ListaUtentiInLavorazione;
-            else
-            {
-                if (richiesta.ListaUtentiInLavorazione.Count > 0)
-                {
-                    command.Chiamata.ListaUtentiInLavorazione = new List<AttivitaUtente>();
-                    command.Chiamata.ListaUtentiInLavorazione = richiesta.ListaUtentiInLavorazione;
-                }
-            }
+            //if (command.Chiamata.ListaUtentiInLavorazione != null)
+            //    command.Chiamata.ListaUtentiInLavorazione = richiesta.UtInLavorazione;
+            //else
+            //{
+            //    if (richiesta.UtInLavorazione.Count > 0)
+            //    {
+            //        command.Chiamata.ListaUtentiInLavorazione = new List<AttivitaUtente>();
+            //        command.Chiamata.ListaUtentiInLavorazione = richiesta.UtInLavorazione;
+            //    }
+            //}
 
             _updateRichiestaAssistenza.UpDate(richiesta);
         }

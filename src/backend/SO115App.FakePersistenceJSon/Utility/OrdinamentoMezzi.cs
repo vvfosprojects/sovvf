@@ -27,10 +27,12 @@ namespace SO115App.FakePersistence.JSon.Utility
             if (IdRichiestaOrigine != null)
             {
                 richiestaOrigine = getRichiesta.Get(IdRichiestaOrigine);
-                ValoreIntOriginePerSganciamento = GeneraValoreSganciamento(richiestaOrigine.Tipologie);
+                //ValoreIntOriginePerSganciamento = GeneraValoreSganciamento(richiestaOrigine.Tipologie);
+                ValoreIntOriginePerSganciamento = 50;
             }
 
-            ValoreAdeguatezzaMezzo = GeneraValoreAdeguatezzaMezzo(richiestaDestinazione.Tipologie, composizione.Mezzo.Genere);
+            //ValoreAdeguatezzaMezzo = GeneraValoreAdeguatezzaMezzo(richiestaDestinazione.Tipologie, composizione.Mezzo.Genere);
+            ValoreAdeguatezzaMezzo = 50;
 
             IndiceOrdinamento = 100 / (1 + (Convert.ToDecimal(composizione.TempoPercorrenza.Replace(".", ",")) / 5400)) + ValoreIntOriginePerSganciamento + ValoreAdeguatezzaMezzo;
 

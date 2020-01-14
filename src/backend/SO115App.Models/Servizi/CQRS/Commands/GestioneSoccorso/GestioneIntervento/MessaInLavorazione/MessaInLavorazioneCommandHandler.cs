@@ -54,27 +54,28 @@ namespace DomainModel.CQRS.Commands.MessaInLavorazione
         {
             RichiestaAssistenza richiesta = _getRichiestaById.Get(command.IdRichiesta);
             Utente utente = _getUtenteById.GetUtenteById(command.IdUtente);
-            AttivitaUtente attivita = new AttivitaUtente();
+            //AttivitaUtente attivita = new AttivitaUtente();
 
-            attivita.IdUtente = utente.Id;
-            attivita.Nominativo = utente.Nome + " " + utente.Cognome;
-            attivita.DataInizioAttivita = DateTime.UtcNow;
+            //attivita.IdUtente = utente.Id;
+            //attivita.Nominativo = utente.Nome + " " + utente.Cognome;
+            //attivita.DataInizioAttivita = DateTime.UtcNow;
+            var nominativoInLavorazione = utente.Nome + "." + utente.Cognome;
 
-            if (richiesta.ListaUtentiInLavorazione != null)
-                richiesta.ListaUtentiInLavorazione.Add(attivita);
+            if (richiesta.UtInLavorazione != null)
+                richiesta.UtInLavorazione.Add(nominativoInLavorazione);
             else
             {
-                richiesta.ListaUtentiInLavorazione = new List<AttivitaUtente>();
-                richiesta.ListaUtentiInLavorazione.Add(attivita);
+                richiesta.UtInLavorazione = new List<string>();
+                richiesta.UtInLavorazione.Add(nominativoInLavorazione);
             }
 
-            if (command.Chiamata.ListaUtentiInLavorazione != null)
-                command.Chiamata.ListaUtentiInLavorazione.Add(attivita);
-            else
-            {
-                command.Chiamata.ListaUtentiInLavorazione = new List<AttivitaUtente>();
-                command.Chiamata.ListaUtentiInLavorazione.Add(attivita);
-            }
+            //if (command.Chiamata.ListaUtentiInLavorazione != null)
+            //    command.Chiamata.ListaUtentiInLavorazione.Add(attivita);
+            //else
+            //{
+            //    command.Chiamata.ListaUtentiInLavorazione = new List<AttivitaUtente>();
+            //    command.Chiamata.ListaUtentiInLavorazione.Add(attivita);
+            //}
 
             richiesta.Id = richiesta.Codice;
 

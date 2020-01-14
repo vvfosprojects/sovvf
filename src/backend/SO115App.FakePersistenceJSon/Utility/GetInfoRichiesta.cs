@@ -21,7 +21,7 @@ namespace SO115App.FakePersistence.JSon.Utility
 
             return new InfoRichiesta()
             {
-                CodiceRichiesta = richiesta.CodiceRichiesta,
+                CodiceRichiesta = richiesta.CodRichiesta,
                 Indirizzo = richiesta.Localita.Indirizzo
             };
         }

@@ -57,20 +57,20 @@ namespace SO115App.FakePersistenceJSon.Classi
         public RichiestaAssistenzaDTO()
         {
             this.eventi = new List<Object>();
-            this.Tipologie = new List<Tipologia>();
+            this.Tipologie = new List<string>();
             this.Telefonate = new List<Telefonata>();
             this.Tags = new HashSet<string>();
             this.Competenze = new List<Sede>();
         }
 
         public string Id { get; set; }
-        public string Codice { get; set; }
+        public string Cod { get; set; }
 
-        public string CodiceRichiesta { get; set; }
+        public string CodRichiesta { get; set; }
 
-        public string CodiceUnitaOperativaCompetente { get; set; }
+        public string CodSOCompetente { get; set; }
 
-        public ISet<string> CodiciUnitaOperativeAllertate { get; set; }
+        public ISet<string> CodSOAllertate { get; set; }
 
         public List<Object> Eventi
         {
@@ -93,8 +93,6 @@ namespace SO115App.FakePersistenceJSon.Classi
             get; set;
         }
 
-        public Utente Operatore { get; set; }
-
         public bool Sospesa { get; set; }
         public bool InAttesa { get; set; }
 
@@ -115,15 +113,14 @@ namespace SO115App.FakePersistenceJSon.Classi
         }
 
         public DateTime? IstanteChiusura { get; internal set; }
-        public virtual List<Tipologia> Tipologie { get; set; }
+        public virtual List<string> Tipologie { get; set; }
         public virtual Localita Localita { get; set; }
-        public Turno TurnoInserimentoChiamata { get; set; }
-        public Turno TurnoIntervento { get; set; }
+        public string TrnInsChiamata { get; set; }
         public List<TipologiaTerreno> TipoTerreno { get; set; }
-        public List<EntiIntervenuti> ListaEntiIntervenuti { get; set; }
+        public List<string> CodEntiIntervenuti { get; set; }
         public ObiettivoSensibile ObiettivoSensibile { get; set; }
         public virtual string Descrizione { get; set; }
-        public virtual string[] ZoneEmergenza { get; set; }
+        public virtual string[] CodZoneEmergenza { get; set; }
         public ISet<string> Tags { get; set; }
 
         public bool Chiusa
@@ -172,9 +169,9 @@ namespace SO115App.FakePersistenceJSon.Classi
             set;
         }
 
-        public List<AttivitaUtente> ListaUtentiInLavorazione { get; set; }
+        public List<string> UtInLavorazione { get; set; }
 
-        public List<AttivitaUtente> ListaUtentiPresaInCarico { get; set; }
+        public List<string> UtPresaInCarico { get; set; }
 
         public virtual DateTime? IstantePrimaAssegnazione
         {
@@ -210,12 +207,11 @@ namespace SO115App.FakePersistenceJSon.Classi
         }
 
         public virtual Richiedente Richiedente { get; set; }
-        public virtual string NumeroRichiedente { get; set; }
 
-        public virtual string[] CodiciUOCompetenza { get; set; }
+        public virtual string[] CodUOCompetenza { get; set; }
         public virtual List<Sede> Competenze { get; set; }
 
-        public virtual string CodiceSchedaNue
+        public virtual string CodNue
         {
             get;
             set;
@@ -264,5 +260,7 @@ namespace SO115App.FakePersistenceJSon.Classi
         public string NotePubbliche { get; set; }
 
         public string NotePrivate { get; set; }
+
+        public string CodOperatore { get; set; }
     }
 }

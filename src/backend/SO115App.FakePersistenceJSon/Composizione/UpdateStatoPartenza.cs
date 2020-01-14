@@ -75,7 +75,7 @@ namespace SO115App.FakePersistenceJSon.Composizione
             if (listaRichieste != null)
             {
                 var listaRichiesteNew = new List<RichiestaAssistenza>();
-                var richiestaDTO = listaRichieste.FirstOrDefault(x => x.Codice == command.Richiesta.Codice);
+                var richiestaDTO = listaRichieste.FirstOrDefault(x => x.Cod == command.Richiesta.Codice);
                 listaRichieste.Remove(richiestaDTO);
 
                 foreach (var richiesta in listaRichieste)

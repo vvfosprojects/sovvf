@@ -36,25 +36,25 @@ namespace SO115App.FakePersistenceJSon.Utility
         {
             var richiestaMap = new RichiestaAssistenza()
             {
-                Codice = richiesta.Codice,
-                CodiceRichiesta = richiesta.CodiceRichiesta,
-                CodiceUnitaOperativaCompetente = richiesta.CodiceUnitaOperativaCompetente,
-                CodiciUnitaOperativeAllertate = richiesta.CodiciUnitaOperativeAllertate,
-                CodiciUOCompetenza = richiesta.CodiciUOCompetenza,
+                Codice = richiesta.Cod,
+                CodRichiesta = richiesta.CodRichiesta,
+                CodSOCompetente = richiesta.CodSOCompetente,
+                CodSOAllertate = richiesta.CodSOAllertate,
+                CodUOCompetenza = richiesta.CodUOCompetenza,
                 Competenze = richiesta.Competenze,
                 Descrizione = richiesta.Descrizione,
                 Localita = richiesta.Localita,
-                Operatore = richiesta.Operatore,
+                CodOperatore = richiesta.CodOperatore,
                 Richiedente = richiesta.Richiedente,
                 Tags = richiesta.Tags,
                 Tipologie = richiesta.Tipologie,
-                ZoneEmergenza = richiesta.ZoneEmergenza,
-                TurnoInserimentoChiamata = richiesta.TurnoInserimentoChiamata,
+                CodZoneEmergenza = richiesta.CodZoneEmergenza,
+                TrnInsChiamata = richiesta.TrnInsChiamata,
                 TipoTerreno = richiesta.TipoTerreno,
-                ListaEntiIntervenuti = richiesta.ListaEntiIntervenuti,
+                CodEntiIntervenuti = richiesta.CodEntiIntervenuti,
                 ObiettivoSensibile = richiesta.ObiettivoSensibile,
-                ListaUtentiInLavorazione = richiesta.ListaUtentiInLavorazione,
-                ListaUtentiPresaInCarico = richiesta.ListaUtentiPresaInCarico,
+                UtInLavorazione = richiesta.UtInLavorazione,
+                UtPresaInCarico = richiesta.UtPresaInCarico,
                 Id = richiesta.Id,
                 NotePubbliche = richiesta.NotePubbliche,
                 NotePrivate = richiesta.NotePrivate
@@ -68,7 +68,7 @@ namespace SO115App.FakePersistenceJSon.Utility
                     {
                         var tel = ((Newtonsoft.Json.Linq.JObject)evento).ToObject<Telefonata>();
 
-                        new Telefonata(richiestaMap, richiesta.Codice, tel.Istante, richiesta.Operatore.Id)
+                        new Telefonata(richiestaMap, richiesta.Cod, tel.Istante, richiesta.CodOperatore)
                         {
                             NominativoChiamante = tel.NominativoChiamante,
                             Motivazione = tel.Motivazione,
@@ -80,14 +80,14 @@ namespace SO115App.FakePersistenceJSon.Utility
                     }
 
                     if (((Newtonsoft.Json.Linq.JObject)evento).ToString().Contains(Costanti.InizioPresaInCarico))
-                        new InizioPresaInCarico(richiestaMap, richiesta.IstantePresaInCarico.Value, richiesta.Operatore.Sede.Codice);
+                        new InizioPresaInCarico(richiestaMap, richiesta.IstantePresaInCarico.Value, richiesta.CodSOCompetente);
 
                     ///Gestione Partenza
 
                     if (((Newtonsoft.Json.Linq.JObject)evento).ToString().Contains(Costanti.Composizione))
                     {
                         var composizione = (((Newtonsoft.Json.Linq.JObject)evento).ToObject<ComposizionePartenze>());
-                        new ComposizionePartenze(richiestaMap, composizione.Istante, richiesta.Operatore.Sede.Codice, false)
+                        new ComposizionePartenze(richiestaMap, composizione.Istante, richiesta.CodSOCompetente, false)
                         {
                             Partenza = composizione.Partenza
                         };
@@ -96,19 +96,19 @@ namespace SO115App.FakePersistenceJSon.Utility
                     if (((Newtonsoft.Json.Linq.JObject)evento).ToString().Contains(Costanti.ArrivoSulPosto))
                     {
                         var arrivoSulPosto = (((Newtonsoft.Json.Linq.JObject)evento).ToObject<ArrivoSulPosto>());
-                        new ArrivoSulPosto(richiestaMap, arrivoSulPosto.CodiceMezzo, arrivoSulPosto.Istante, richiesta.Operatore.Sede.Codice);
+                        new ArrivoSulPosto(richiestaMap, arrivoSulPosto.CodiceMezzo, arrivoSulPosto.Istante, richiesta.CodSOCompetente);
                     }
 
                     if (((Newtonsoft.Json.Linq.JObject)evento).ToString().Contains(Costanti.EventoMezzoInRientro))
                     {
                         var partenzaInRientro = (((Newtonsoft.Json.Linq.JObject)evento).ToObject<PartenzaInRientro>());
-                        new PartenzaInRientro(richiestaMap, partenzaInRientro.CodiceMezzo, partenzaInRientro.Istante, richiesta.Operatore.Sede.Codice);
+                        new PartenzaInRientro(richiestaMap, partenzaInRientro.CodiceMezzo, partenzaInRientro.Istante, richiesta.CodSOCompetente);
                     }
 
                     if (((Newtonsoft.Json.Linq.JObject)evento).ToString().Contains(Costanti.EventoMezzoRientrato))
                     {
                         var partenzaRientrata = (((Newtonsoft.Json.Linq.JObject)evento).ToObject<PartenzaRientrata>());
-                        new PartenzaRientrata(richiestaMap, partenzaRientrata.CodiceMezzo, partenzaRientrata.Istante, richiesta.Operatore.Sede.Codice);
+                        new PartenzaRientrata(richiestaMap, partenzaRientrata.CodiceMezzo, partenzaRientrata.Istante, richiesta.CodSOCompetente);
                     }
 
                     ///Gestione Stato Richiesta
@@ -116,40 +116,40 @@ namespace SO115App.FakePersistenceJSon.Utility
                     if (((Newtonsoft.Json.Linq.JObject)evento).ToString().Contains(Costanti.ChiusuraRichiesta))
                     {
                         var chiusura = (((Newtonsoft.Json.Linq.JObject)evento).ToObject<ChiusuraRichiesta>());
-                        new ChiusuraRichiesta(chiusura.Motivazione, richiestaMap, chiusura.Istante, richiesta.Operatore.Sede.Codice);
+                        new ChiusuraRichiesta(chiusura.Motivazione, richiestaMap, chiusura.Istante, richiesta.CodSOCompetente);
                     }
                     if (((Newtonsoft.Json.Linq.JObject)evento).ToString().Contains(Costanti.RiaperturaRichiesta))
                     {
                         var riapertura = (((Newtonsoft.Json.Linq.JObject)evento).ToObject<RiaperturaRichiesta>());
-                        new RiaperturaRichiesta(richiestaMap, riapertura.Istante, richiesta.Operatore.Sede.Codice);
+                        new RiaperturaRichiesta(richiestaMap, riapertura.Istante, richiesta.CodSOCompetente);
                     }
                     if (((Newtonsoft.Json.Linq.JObject)evento).ToString().Contains(Costanti.AssegnataRichiesta))
                     {
                         var assegnata = (((Newtonsoft.Json.Linq.JObject)evento).ToObject<AssegnataRichiesta>());
-                        new AssegnataRichiesta(richiestaMap, assegnata.Istante, richiesta.Operatore.Sede.Codice);
+                        new AssegnataRichiesta(richiestaMap, assegnata.Istante, richiesta.CodSOCompetente);
                     }
                     if (((Newtonsoft.Json.Linq.JObject)evento).ToString().Contains(Costanti.EventoRichiestaPresidiata))
                     {
                         var presidiata = (((Newtonsoft.Json.Linq.JObject)evento).ToObject<RichiestaPresidiata>());
-                        new RichiestaPresidiata(richiestaMap, presidiata.Istante, richiesta.Operatore.Sede.Codice);
+                        new RichiestaPresidiata(richiestaMap, presidiata.Istante, richiesta.CodSOCompetente);
                     }
                     if (((Newtonsoft.Json.Linq.JObject)evento).ToString().Contains(Costanti.EventoRichiestaSospesa))
                     {
                         var presidiata = (((Newtonsoft.Json.Linq.JObject)evento).ToObject<RichiestaSospesa>());
-                        new RichiestaSospesa(richiestaMap, presidiata.Istante, richiesta.Operatore.Sede.Codice);
+                        new RichiestaSospesa(richiestaMap, presidiata.Istante, richiesta.CodSOCompetente);
                     }
 
                     if (((Newtonsoft.Json.Linq.JObject)evento).ToString().Contains(Costanti.AssegnataPriorita))
                     {
                         var assegnataPriorita = (((Newtonsoft.Json.Linq.JObject)evento).ToObject<AssegnazionePriorita>());
                         new AssegnazionePriorita(richiestaMap, assegnataPriorita.Priorita, assegnataPriorita.Istante,
-                            richiesta.Operatore.Sede.Codice);
+                            richiesta.CodSOCompetente);
                     }
 
                     if (((Newtonsoft.Json.Linq.JObject)evento).ToString().Contains(Costanti.MarcaRilevante))
                     {
                         var marcaRilevante = (((Newtonsoft.Json.Linq.JObject)evento).ToObject<MarcaRilevante>());
-                        new MarcaRilevante(richiestaMap, marcaRilevante.Istante, richiesta.Operatore.Sede.Codice, "",
+                        new MarcaRilevante(richiestaMap, marcaRilevante.Istante, richiesta.CodSOCompetente, "",
                             richiesta.RilevanteGrave, richiesta.RilevanteStArCu);
                     }
                 }

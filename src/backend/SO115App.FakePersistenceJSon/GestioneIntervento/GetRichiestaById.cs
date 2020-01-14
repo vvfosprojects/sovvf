@@ -42,7 +42,7 @@ namespace SO115App.FakePersistenceJSon.GestioneIntervento
 
             List<RichiestaAssistenzaDTO> ListaRichieste = JsonConvert.DeserializeObject<List<RichiestaAssistenzaDTO>>(json);
 
-            RichiestaAssistenzaDTO richiesta = (RichiestaAssistenzaDTO)ListaRichieste.FirstOrDefault(x => x.Codice == idRichiestaAssistenza);
+            RichiestaAssistenzaDTO richiesta = (RichiestaAssistenzaDTO)ListaRichieste.FirstOrDefault(x => x.Cod == idRichiestaAssistenza);
 
             RichiestaAssistenza richiestaReturn = MapperDTO.MapRichiestaDTOtoRichiesta(richiesta);
 

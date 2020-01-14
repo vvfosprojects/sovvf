@@ -86,7 +86,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             if (listaRichieste != null)
             {
                 var listaRichiesteNew = new List<RichiestaAssistenza>();
-                var richiestaDTO = listaRichieste.Find(x => x.Codice == command.Richiesta.Codice);
+                var richiestaDTO = listaRichieste.Find(x => x.Cod == command.Richiesta.Codice);
                 listaRichieste.Remove(richiestaDTO);
 
                 foreach (var richiesta in listaRichieste)

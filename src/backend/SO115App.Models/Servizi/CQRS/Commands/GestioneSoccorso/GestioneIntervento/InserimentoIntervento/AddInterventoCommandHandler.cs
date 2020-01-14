@@ -18,6 +18,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Commands;
+using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.Eventi;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
@@ -26,6 +27,8 @@ using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GenerazioneCodiciRichiesta;
 using SO115App.Models.Servizi.Infrastruttura.Turni;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace DomainModel.CQRS.Commands.AddIntervento
 {
@@ -49,22 +52,36 @@ namespace DomainModel.CQRS.Commands.AddIntervento
             var codiceChiamata = _generaCodiceRichiesta.GeneraCodiceChiamata(sedeRichiesta, DateTime.UtcNow.Year);
             command.Chiamata.Codice = codiceChiamata;
             command.Chiamata.Id = codiceChiamata;
+            var listaCodiciTipologie = new List<string>();
+            var utentiInLavorazione = new List<string>();
+            var utentiPresaInCarico = new List<string>();
+            foreach (var tipologia in command.Chiamata.Tipologie)
+            {
+                listaCodiciTipologie.Add(tipologia.Codice);
+            }
+            foreach (var utente in command.Chiamata.ListaUtentiInLavorazione)
+            {
+                utentiInLavorazione.Add(utente.Nominativo);
+            }
+            foreach (var utente in command.Chiamata.ListaUtentiPresaInCarico)
+            {
+                utentiPresaInCarico.Add(utente.Nominativo);
+            }
 
             var richiesta = new RichiestaAssistenza()
             {
-                Tipologie = command.Chiamata.Tipologie,
-                ZoneEmergenza = command.Chiamata.ZoneEmergenza,
-                Operatore = command.Chiamata.Operatore,
+                Tipologie = listaCodiciTipologie,
+                CodZoneEmergenza = command.Chiamata.ZoneEmergenza,
                 Richiedente = command.Chiamata.Richiedente,
                 Localita = command.Chiamata.Localita,
                 Descrizione = command.Chiamata.Descrizione,
                 Codice = codiceChiamata,
-                TurnoInserimentoChiamata = _getTurno.Get(),
+                TrnInsChiamata = $"Turno {_getTurno.Get().Codice.Substring(0, 1)}",
                 TipoTerreno = command.Chiamata.TipoTerreno,
-                ListaEntiIntervenuti = command.Chiamata.ListaEntiIntervenuti,
+                //CodEntiIntervenuti = command.Chiamata.ListaEntiIntervenuti, TODO
                 ObiettivoSensibile = command.Chiamata.ObiettivoSensibile,
-                ListaUtentiInLavorazione = command.Chiamata.ListaUtentiInLavorazione,
-                ListaUtentiPresaInCarico = command.Chiamata.ListaUtentiPresaInCarico,
+                UtInLavorazione = utentiInLavorazione,
+                UtPresaInCarico = utentiPresaInCarico,
                 NotePubbliche = command.Chiamata.NotePubbliche,
                 NotePrivate = command.Chiamata.NotePrivate,
                 //Id = codiceChiamata // TODO DA TOGLIERE QUANDO AVREMO UN DB

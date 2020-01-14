@@ -47,17 +47,17 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 
             if (command.StatoMezzo == Costanti.MezzoSulPosto)
             {
-                new ArrivoSulPosto(richiesta, command.IdMezzo, DateTime.UtcNow, richiesta.Operatore.Id);
+                new ArrivoSulPosto(richiesta, command.IdMezzo, DateTime.UtcNow, richiesta.CodOperatore);
 
                 richiesta.SincronizzaStatoRichiesta(Costanti.RichiestaPresidiata, richiesta.StatoRichiesta,
-                    richiesta.Operatore.Id, "");
+                    richiesta.CodOperatore, "");
 
                 foreach (var composizione in richiesta.Partenze)
                 {
                     if (composizione.Partenza.Mezzo.Codice == command.IdMezzo)
                     {
                         composizione.Partenza.Mezzo.Stato = Costanti.MezzoSulPosto;
-                        composizione.Partenza.Mezzo.IdRichiesta = richiesta.CodiceRichiesta;
+                        composizione.Partenza.Mezzo.IdRichiesta = richiesta.CodRichiesta;
                     }
                 }
             }
@@ -82,7 +82,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 }
 
                 if (_mezziTuttiInSede)
-                    new PartenzaInRientro(richiesta, command.IdMezzo, DateTime.UtcNow, richiesta.Operatore.Id);
+                    new PartenzaInRientro(richiesta, command.IdMezzo, DateTime.UtcNow, richiesta.CodOperatore);
             }
             else if (command.StatoMezzo == Costanti.MezzoRientrato)
             {
@@ -106,7 +106,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 }
 
                 if (_mezziTuttiInSede)
-                    new PartenzaRientrata(richiesta, command.IdMezzo, DateTime.UtcNow, richiesta.Operatore.Id);
+                    new PartenzaRientrata(richiesta, command.IdMezzo, DateTime.UtcNow, richiesta.CodOperatore);
             }
             else if (command.StatoMezzo == Costanti.MezzoInViaggio)
             {
@@ -115,7 +115,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                     if (composizione.Partenza.Mezzo.Codice == command.IdMezzo)
                     {
                         composizione.Partenza.Mezzo.Stato = Costanti.MezzoInViaggio;
-                        composizione.Partenza.Mezzo.IdRichiesta = richiesta.CodiceRichiesta;
+                        composizione.Partenza.Mezzo.IdRichiesta = richiesta.CodRichiesta;
                     }
                 }
             }

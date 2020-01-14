@@ -49,18 +49,18 @@ namespace DomainModel.CQRS.Commands.RimozionePresaInCarico
 
             richiesta.Id = richiesta.Codice;
 
-            richiesta.ListaUtentiPresaInCarico.RemoveAll(x => x.IdUtente == command.IdUtente);
+            richiesta.UtPresaInCarico.RemoveAll(x => x == command.IdUtente);
 
-            if (command.Chiamata.ListaUtentiPresaInCarico != null)
-                command.Chiamata.ListaUtentiPresaInCarico = richiesta.ListaUtentiPresaInCarico;
-            else
-            {
-                if (richiesta.ListaUtentiPresaInCarico.Count > 0)
-                {
-                    command.Chiamata.ListaUtentiPresaInCarico = new List<AttivitaUtente>();
-                    command.Chiamata.ListaUtentiPresaInCarico = richiesta.ListaUtentiPresaInCarico;
-                }
-            }
+            //if (command.Chiamata.ListaUtentiPresaInCarico != null)
+            //    command.Chiamata.ListaUtentiPresaInCarico = richiesta.UtPresaInCarico;
+            //else
+            //{
+            //    if (richiesta.UtPresaInCarico.Count > 0)
+            //    {
+            //        command.Chiamata.ListaUtentiPresaInCarico = new List<AttivitaUtente>();
+            //        command.Chiamata.ListaUtentiPresaInCarico = richiesta.UtPresaInCarico;
+            //    }
+            //}
 
             _updateRichiestaAssistenza.UpDate(richiesta);
         }

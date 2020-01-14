@@ -19,6 +19,7 @@
 //-----------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using CQRS.Commands;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.Eventi;
@@ -44,19 +45,31 @@ namespace DomainModel.CQRS.Commands.UpDateIntervento
         {
             var richiesta = _getRichiestaById.Get(command.Chiamata.Codice);
             var priorita = command.Chiamata.PrioritaRichiesta;
+            var listaCodiciTipologie = new List<string>();
+            var utentiInLavorazione = new List<string>();
+            var utentiPresaInCarico = new List<string>();
+            foreach (var tipologia in command.Chiamata.Tipologie)
+            {
+                listaCodiciTipologie.Add(tipologia.Codice);
+            }
+            foreach (var utente in command.Chiamata.ListaUtentiInLavorazione)
+            {
+                utentiInLavorazione.Add(utente.Nominativo);
+            }
+            foreach (var utente in command.Chiamata.ListaUtentiPresaInCarico)
+            {
+                utentiPresaInCarico.Add(utente.Nominativo);
+            }
 
-            richiesta.Tipologie = command.Chiamata.Tipologie;
-            richiesta.ZoneEmergenza = command.Chiamata.ZoneEmergenza;
-            richiesta.Operatore = command.Chiamata.Operatore;
+            richiesta.Tipologie = listaCodiciTipologie;
+            richiesta.CodZoneEmergenza = command.Chiamata.ZoneEmergenza;
             richiesta.Richiedente = command.Chiamata.Richiedente;
             richiesta.Localita = command.Chiamata.Localita;
             richiesta.Descrizione = command.Chiamata.Descrizione;
-            richiesta.TurnoInserimentoChiamata = command.Chiamata.TurnoInserimentoChiamata;
             richiesta.TipoTerreno = command.Chiamata.TipoTerreno;
-            richiesta.ListaEntiIntervenuti = command.Chiamata.ListaEntiIntervenuti;
             richiesta.ObiettivoSensibile = command.Chiamata.ObiettivoSensibile;
-            richiesta.ListaUtentiInLavorazione = command.Chiamata.ListaUtentiInLavorazione;
-            richiesta.ListaUtentiPresaInCarico = command.Chiamata.ListaUtentiPresaInCarico;
+            richiesta.UtInLavorazione = utentiInLavorazione;
+            richiesta.UtPresaInCarico = utentiPresaInCarico;
             richiesta.NotePrivate = command.Chiamata.NotePrivate;
             richiesta.NotePubbliche = command.Chiamata.NotePubbliche;
             richiesta.Id = command.Chiamata.Codice;

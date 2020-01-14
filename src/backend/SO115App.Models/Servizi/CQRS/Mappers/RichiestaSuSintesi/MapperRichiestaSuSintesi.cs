@@ -69,15 +69,15 @@ namespace SO115App.API.Models.Servizi.CQRS.Mappers.RichiestaSuSintesi
                 Codice = richiesta.Codice,
                 IstanteRicezioneRichiesta = richiesta.IstanteRicezioneRichiesta.Value,
                 IstantePrimaAssegnazione = richiesta.IstantePrimaAssegnazione,
-                Tipologie = richiesta.Tipologie,
+                //Tipologie = richiesta.Tipologie,
                 Descrizione = richiesta.Descrizione,
                 Richiedente = richiesta.Richiedente,
                 Localita = richiesta.Localita,
                 Competenze = richiesta.Competenze,
-                ZoneEmergenza = richiesta.ZoneEmergenza,
+                ZoneEmergenza = richiesta.CodZoneEmergenza,
                 IstantePresaInCarico = richiesta.IstantePresaInCarico,
-                CodiceSchedaNue = richiesta.CodiceSchedaNue,
-                TurnoInserimentoChiamata = richiesta.TurnoInserimentoChiamata,
+                CodiceSchedaNue = richiesta.CodNue,
+                //TurnoInserimentoChiamata = richiesta.TrnInsChiamata,
             };
         }
     }
