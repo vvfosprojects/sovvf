@@ -27,6 +27,7 @@ using SO115App.API.Models.Servizi.CQRS.Queries.Marker.ListaChiamateInCorsoMarker
 using SO115App.Models.Classi.Marker;
 using System.Collections.Generic;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneSchedeNue.GetContatoreSchede;
+using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
 {
@@ -82,9 +83,17 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
             {
                 CodiceSede = query.CodiceSede
             };
+
+            FiltroRicercaRichiesteAssistenza filtro = new FiltroRicercaRichiesteAssistenza
+            {
+                SearchKey = "0",
+                idOperatore = query.idOperatore
+            };
+
             var sintesiRichiesteAssistenzaQuery = new SintesiRichiesteAssistenzaQuery()
             {
-                CodiceSede = query.CodiceSede
+                CodiceSede = query.CodiceSede,
+                Filtro = filtro
             };
             var listaQuery = new ListaChiamateInCorsoMarkerQuery()
             {

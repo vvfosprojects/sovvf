@@ -46,20 +46,16 @@ namespace SO115App.API.Controllers
         public async Task<IActionResult> Get()
         {
             var codiceSede = Request.Headers["codicesede"];
-            var idUtente = Request.Headers["idutente"];
+            var idUtente = Request.Headers["IdUtente"];
 
-            FiltroRicercaRichiesteAssistenza filtro = new FiltroRicercaRichiesteAssistenza
-            {
-                SearchKey = "0",
-                idOperatore = idUtente
-            };
 
             try
             {
                 var query = new WelcomeQuery()
                 {
-                    FiltroBox = filtro.SearchKey,
-                    CodiceSede = codiceSede
+                    FiltroBox = "0",
+                    CodiceSede = codiceSede,
+                    idOperatore = idUtente
                 };
 
                 return Ok(this._handler.Handle(query).WelcomeRes);

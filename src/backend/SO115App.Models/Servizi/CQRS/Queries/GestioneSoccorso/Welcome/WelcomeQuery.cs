@@ -34,5 +34,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
         public string FiltroBox { get; set; }
 
         public string CodiceSede { get; set; }
+
+        public string idOperatore { get; set; }
     }
 }

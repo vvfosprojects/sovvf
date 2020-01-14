@@ -61,7 +61,7 @@ namespace SO115App.Persistence.MongoDB
             {
                 SintesiRichiesta sintesi = new SintesiRichiesta();
 
-                if (richiesta.CodiciUOCompetenza.Where(x => filtro.CodUOCompetenza.Contains(x)).ToList().Count > 0)
+                if (richiesta.CodUOCompetenza.Where(x => filtro.CodUOCompetenza.Contains(x)).ToList().Count > 0)
                 {
                     sintesi = mapSintesi.Map(richiesta);
                     ListaSistesiRichieste.Add(sintesi);
