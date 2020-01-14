@@ -81,6 +81,6 @@ namespace SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRic
         /// </summary>
         public string idOperatore { get; set; }
 
-        public ISet<string> CodUOCompetenza { get; set; }
+        public List<string> CodUOCompetenza { get; set; }
     }
 }

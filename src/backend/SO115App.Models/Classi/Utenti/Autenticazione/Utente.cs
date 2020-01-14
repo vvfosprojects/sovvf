@@ -178,11 +178,11 @@ namespace SO115App.API.Models.Classi.Autenticazione
         /// </summary>
         public string Qualifica { get; set; }
 
-        public ISet<string> ListaUnitaOperativeAbilitate
+        public List<string> ListaUnitaOperativeAbilitate
         {
             get
             {
-                ISet<string> ListaUOAbilitate = null;
+                List<string> ListaUOAbilitate = new List<string>();
                 foreach (var ruolo in this.Ruoli)
                 {
                     ListaUOAbilitate.Add(ruolo.sede.Codice);
