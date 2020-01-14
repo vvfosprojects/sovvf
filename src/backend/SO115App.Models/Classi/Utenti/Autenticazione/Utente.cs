@@ -128,9 +128,6 @@ namespace SO115App.API.Models.Classi.Autenticazione
         /// <summary>
         ///   CodiceFiscale Operatore
         /// </summary>
-        [Required(ErrorMessage = "Il codice fiscale è obbligatorio")]
-        [StringLength(16, ErrorMessage = "Il codice fiscale deve essere lungo 16 caratteri")]
-        [RegularExpression(@"^[A-Z]{6}[A-Z0-9]{2}[A-Z][A-Z0-9]{2}[A-Z][A-Z0-9]{3}[A-Z]$", ErrorMessage = "Il codice fiscale non è nel formato corretto")]
         public string CodiceFiscale { get; set; }
 
         /// <summary>
@@ -180,6 +177,20 @@ namespace SO115App.API.Models.Classi.Autenticazione
         ///   Qualifica utente loggato
         /// </summary>
         public string Qualifica { get; set; }
+
+        public ISet<string> ListaUnitaOperativeAbilitate
+        {
+            get
+            {
+                ISet<string> ListaUOAbilitate = null;
+                foreach (var ruolo in this.Ruoli)
+                {
+                    ListaUOAbilitate.Add(ruolo.sede.Codice);
+                }
+
+                return ListaUOAbilitate;
+            }
+        }
 
         public static Utente FindUserByUsername(string username)
         {

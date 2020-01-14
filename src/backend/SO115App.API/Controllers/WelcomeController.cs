@@ -46,10 +46,12 @@ namespace SO115App.API.Controllers
         public async Task<IActionResult> Get()
         {
             var codiceSede = Request.Headers["codicesede"];
+            var idUtente = Request.Headers["idutente"];
 
             FiltroRicercaRichiesteAssistenza filtro = new FiltroRicercaRichiesteAssistenza
             {
-                SearchKey = "0"
+                SearchKey = "0",
+                idOperatore = idUtente
             };
 
             try

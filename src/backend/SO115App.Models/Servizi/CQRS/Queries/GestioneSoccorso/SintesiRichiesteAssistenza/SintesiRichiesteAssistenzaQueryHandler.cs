@@ -22,6 +22,7 @@ using CQRS.Queries;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
 using SO115App.Models.Servizi.CustomMapper;
+using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza
 {
@@ -59,6 +60,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichi
 
         private readonly IGetListaSintesi _iGetListaSintesi;
         private readonly IMapper _mapper;
+        private readonly IGetUtenteById _getUtenteById;
 
         /// <summary>
         ///   Costruttore della classe
@@ -68,11 +70,12 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichi
         ///   Interfaccia che restituisce l'elenco delle Sintesi delle Richieste
         /// </param>
 
-        public SintesiRichiesteAssistenzaQueryHandler(ICercaRichiesteAssistenza cercaRichiesteAssistenza, IGetListaSintesi iGetListaSintesi, IMapper mapper)
+        public SintesiRichiesteAssistenzaQueryHandler(ICercaRichiesteAssistenza cercaRichiesteAssistenza, IGetListaSintesi iGetListaSintesi, IMapper mapper, IGetUtenteById getUtenteById)
         {
             this._cercaRichiesteAssistenza = cercaRichiesteAssistenza;
             this._iGetListaSintesi = iGetListaSintesi;
             _mapper = mapper;
+            _getUtenteById = getUtenteById;
         }
 
         /// <summary>
@@ -82,6 +85,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichi
         /// <returns>Il DTO di uscita della query</returns>
         public SintesiRichiesteAssistenzaResult Handle(SintesiRichiesteAssistenzaQuery query)
         {
+            query.Filtro.CodUOCompetenza = _getUtenteById.GetUtenteById(query.Filtro.idOperatore).ListaUnitaOperativeAbilitate;
+
             var mapperSuIntervento = new MapperSintesiSuIntervento(_mapper);
 
             var listaSintesi = _iGetListaSintesi.GetListaSintesiRichieste(query.Filtro);

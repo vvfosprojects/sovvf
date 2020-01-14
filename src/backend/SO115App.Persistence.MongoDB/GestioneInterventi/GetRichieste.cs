@@ -27,6 +27,7 @@ using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichies
 using SO115App.Models.Servizi.CustomMapper;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SO115App.Persistence.MongoDB
 {
@@ -60,9 +61,11 @@ namespace SO115App.Persistence.MongoDB
             {
                 SintesiRichiesta sintesi = new SintesiRichiesta();
 
-                sintesi = mapSintesi.Map(richiesta);
-
-                ListaSistesiRichieste.Add(sintesi);
+                if (richiesta.CodiciUOCompetenza.Where(x => filtro.CodUOCompetenza.Contains(x)).ToList().Count > 0)
+                {
+                    sintesi = mapSintesi.Map(richiesta);
+                    ListaSistesiRichieste.Add(sintesi);
+                }
             }
 
             return ListaSistesiRichieste;
