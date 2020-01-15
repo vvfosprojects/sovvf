@@ -20,14 +20,9 @@
 using CQRS.Commands;
 using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.API.Models.Classi.Soccorso;
-using SO115App.API.Models.Classi.Soccorso.Eventi;
-using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
-using SO115App.Models.Classi.Soccorso;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
-using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GenerazioneCodiciRichiesta;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti;
-using System;
 using System.Collections.Generic;
 
 namespace DomainModel.CQRS.Commands.MessaInLavorazione
@@ -52,8 +47,8 @@ namespace DomainModel.CQRS.Commands.MessaInLavorazione
 
         public void Handle(MessaInLavorazioneCommand command)
         {
-            RichiestaAssistenza richiesta = _getRichiestaById.Get(command.IdRichiesta);
-            Utente utente = _getUtenteById.GetUtenteById(command.IdUtente);
+            var richiesta = _getRichiestaById.Get(command.IdRichiesta);
+            var utente = _getUtenteById.GetUtenteById(command.IdUtente);
             //AttivitaUtente attivita = new AttivitaUtente();
 
             //attivita.IdUtente = utente.Id;
@@ -77,7 +72,7 @@ namespace DomainModel.CQRS.Commands.MessaInLavorazione
             //    command.Chiamata.ListaUtentiInLavorazione.Add(attivita);
             //}
 
-            richiesta.Id = richiesta.Codice;
+            //richiesta.Id = richiesta.Codice;
 
             this._upDateRichiestaAssistenza.UpDate(richiesta);
         }
