@@ -47,7 +47,7 @@ namespace DomainModel.CQRS.Commands.AddIntervento
 
         public void Handle(AddInterventoCommand command)
         {
-            var sedeRichiesta = command.Chiamata.Operatore.Sede.Codice;
+            var sedeRichiesta = command.CodiceSede;
             var prioritaRichiesta = (RichiestaAssistenza.Priorita)command.Chiamata.PrioritaRichiesta;
             var codiceChiamata = _generaCodiceRichiesta.GeneraCodiceChiamata(sedeRichiesta, DateTime.UtcNow.Year);
             command.Chiamata.Codice = codiceChiamata;
@@ -59,14 +59,21 @@ namespace DomainModel.CQRS.Commands.AddIntervento
             {
                 listaCodiciTipologie.Add(tipologia.Codice);
             }
-            foreach (var utente in command.Chiamata.ListaUtentiInLavorazione)
+            if (command.Chiamata.ListaUtentiInLavorazione != null)
             {
-                utentiInLavorazione.Add(utente.Nominativo);
+                foreach (var utente in command.Chiamata.ListaUtentiInLavorazione)
+                {
+                    utentiInLavorazione.Add(utente.Nominativo);
+                }
             }
-            foreach (var utente in command.Chiamata.ListaUtentiPresaInCarico)
+            if (command.Chiamata.ListaUtentiPresaInCarico!=null)
             {
-                utentiPresaInCarico.Add(utente.Nominativo);
+                foreach (var utente in command.Chiamata.ListaUtentiPresaInCarico)
+                {
+                    utentiPresaInCarico.Add(utente.Nominativo);
+                }
             }
+
 
             var richiesta = new RichiestaAssistenza()
             {
@@ -89,7 +96,7 @@ namespace DomainModel.CQRS.Commands.AddIntervento
 
             if (command.Chiamata.Stato == Costanti.RichiestaChiusa)
             {
-                new ChiusuraRichiesta("", richiesta, DateTime.UtcNow, command.Chiamata.Operatore.Id);
+                new ChiusuraRichiesta("", richiesta, DateTime.UtcNow, command.CodUtente);
             }
 
             if (command.Chiamata.Tags != null)
@@ -100,7 +107,7 @@ namespace DomainModel.CQRS.Commands.AddIntervento
                 }
             }
 
-            new Telefonata(richiesta, command.Chiamata.Richiedente.Telefono, DateTime.UtcNow, command.Chiamata.Operatore.Id)
+            new Telefonata(richiesta, command.Chiamata.Richiedente.Telefono, DateTime.UtcNow, command.CodUtente)
             {
                 NominativoChiamante = command.Chiamata.Richiedente.Nominativo,
                 Motivazione = command.Chiamata.Motivazione,
@@ -110,10 +117,10 @@ namespace DomainModel.CQRS.Commands.AddIntervento
                 Esito = command.Chiamata.Azione.ToString(),
             };
 
-            new AssegnazionePriorita(richiesta, prioritaRichiesta, DateTime.UtcNow.AddMilliseconds(1.0), command.Chiamata.Operatore.Id);
+            new AssegnazionePriorita(richiesta, prioritaRichiesta, DateTime.UtcNow.AddMilliseconds(1.0), command.CodUtente);
 
             if (command.Chiamata.RilevanteGrave || command.Chiamata.RilevanteStArCu)
-                new MarcaRilevante(richiesta, DateTime.UtcNow.AddMilliseconds(1.5), command.Chiamata.Operatore.Id, "", command.Chiamata.RilevanteGrave,
+                new MarcaRilevante(richiesta, DateTime.UtcNow.AddMilliseconds(1.5), command.CodUtente, "", command.Chiamata.RilevanteGrave,
             command.Chiamata.RilevanteStArCu);
 
             this._saveRichiestaAssistenza.Save(richiesta);

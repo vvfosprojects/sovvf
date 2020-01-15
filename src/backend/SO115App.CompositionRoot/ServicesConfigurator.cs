@@ -26,17 +26,22 @@ namespace SO115App.CompositionRoot
         internal static void Configure(Container container)
         {
             //Trasportate in MongoDB
-            container.Register<
-                API.Models.Servizi.Infrastruttura.GestioneSoccorso.ISaveRichiestaAssistenza,
-                FakePersistenceJSon.GestioneIntervento.InserimentoRichiesta>();
+            //container.Register<
+            //    API.Models.Servizi.Infrastruttura.GestioneSoccorso.ISaveRichiestaAssistenza,
+            //    FakePersistenceJSon.GestioneIntervento.InserimentoRichiesta>();
+            ////Trasportate in MongoDB
+            //container.Register<
+            //    SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.IGetListaSintesi,
+            //    SO115App.FakePersistenceJSon.GestioneIntervento.GetListaSintesi>();
+            ////Trasportate in MongoDB
+            //container.Register<
+            //    API.Models.Servizi.Infrastruttura.GestioneSoccorso.IUpDateRichiestaAssistenza,
+            //    ExternalAPI.Fake.GestioneIntervento.UpDateRichiestaExt>();//TODO gestione composition Root per l'externalAPI
+            ////Trasportate in MongoDB
+            //container.Register<
+            //      SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.IGetRichiestaById,
+            //      FakePersistenceJSon.GestioneIntervento.GetRichiestaById>();
 
-            container.Register<
-                SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.IGetListaSintesi,
-                SO115App.FakePersistenceJSon.GestioneIntervento.GetListaSintesi>();
-
-            container.Register<
-                API.Models.Servizi.Infrastruttura.GestioneSoccorso.IUpDateRichiestaAssistenza,
-                ExternalAPI.Fake.GestioneIntervento.UpDateRichiestaExt>();//TODO gestione composition Root per l'externalAPI
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.Box.IGetBoxMezzi,
                 ExternalAPI.Fake.Box.GetBoxMezziExt>();//TODO gestione composition Root per l'externalAPI
@@ -90,9 +95,7 @@ namespace SO115App.CompositionRoot
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.GetListaEventi.IGetListaEventi,
                 FakePersistenceJSon.ListaEventi.GetListaEventi>();
-            container.Register<
-                SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.IGetRichiestaById,
-                FakePersistenceJSon.GestioneIntervento.GetRichiestaById>();
+
             container.Register<
                 SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.IGetIdByCodice,
                 FakePersistenceJSon.GestioneIntervento.GetIdByCodice>();

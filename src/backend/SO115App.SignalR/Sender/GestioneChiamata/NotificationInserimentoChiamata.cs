@@ -66,9 +66,9 @@ namespace SO115App.SignalR.Sender.GestioneChiamata
             var sintesi = listaSintesi.LastOrDefault(richiesta => richiesta.Codice == intervento.Chiamata.Codice);
             sintesi.Motivazione = sintesi.Descrizione;
 
-            await _notificationHubContext.Clients.Group(intervento.Chiamata.Operatore.Sede.Codice).SendAsync("SaveAndNotifySuccessChiamata", sintesi);
-            await _notificationHubContext.Clients.Group(intervento.Chiamata.Operatore.Sede.Codice).SendAsync("NotifyGetBoxInterventi", boxInterventi);
-            await _notificationHubContext.Clients.Group(intervento.Chiamata.Operatore.Sede.Codice).SendAsync("NotifyGetRichiestaMarker", listaSintesiMarker.LastOrDefault(marker => marker.Codice == intervento.Chiamata.Codice));
+            await _notificationHubContext.Clients.Group(intervento.CodiceSede).SendAsync("SaveAndNotifySuccessChiamata", sintesi);
+            await _notificationHubContext.Clients.Group(intervento.CodiceSede).SendAsync("NotifyGetBoxInterventi", boxInterventi);
+            await _notificationHubContext.Clients.Group(intervento.CodiceSede).SendAsync("NotifyGetRichiestaMarker", listaSintesiMarker.LastOrDefault(marker => marker.Codice == intervento.Chiamata.Codice));
         }
     }
 }

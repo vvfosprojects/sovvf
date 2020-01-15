@@ -19,11 +19,11 @@ namespace SO115App.CompositionRoot
 
             #region Gestione richiesta di assistenza
 
-            //container.Register<ISaveRichiestaAssistenza, SaveRichiesta>();
-            //container.Register<IUpDateRichiestaAssistenza, UpDateRichiesta>();
+            container.Register<ISaveRichiestaAssistenza, SaveRichiesta>();
+            container.Register<IUpDateRichiestaAssistenza, UpDateRichiesta>();
 
-            //container.Register<IGetRichiestaById, GetRichiesta>();
-            //container.Register<IGetListaSintesi, GetRichiesta>();
+            container.Register<IGetRichiestaById, GetRichiesta>();
+            container.Register<IGetListaSintesi, GetRichiesta>();
 
             #endregion Gestione richiesta di assistenza
         }

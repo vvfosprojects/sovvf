@@ -1,13 +1,15 @@
 ﻿using AutoMapper;
+using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
 using System;
+using System.Collections.Generic;
 
 namespace SO115App.Models.Servizi.CustomMapper
 {
     public class MapperRichiestaAssistenzaSuSintesi
     {
-        private readonly IMapper _mapper;
+        private IMapper _mapper;
 
         public MapperRichiestaAssistenzaSuSintesi(IMapper mapper)
         {
@@ -18,6 +20,17 @@ namespace SO115App.Models.Servizi.CustomMapper
         {
             try
             {
+                var mapConfing = new MapperConfiguration(
+                    cfg => cfg.CreateMap<RichiestaAssistenza, SintesiRichiesta>()
+                        .ForMember(x => x.CodiceSchedaNue, y => y.MapFrom(z => z.CodNue))
+                        .ForMember(x => x.ListaUtentiInLavorazione, y => y.MapFrom(z => z.UtInLavorazione))
+                        .ForMember(x => x.ListaUtentiPresaInCarico, y => y.MapFrom(z => z.UtPresaInCarico))
+                        .ForMember(x => x.ListaEntiIntervenuti, y => y.MapFrom(z => z.CodEntiIntervenuti))
+                        .ForMember(x => x.Tipologie, y => y.Ignore())
+                        .ForMember(x => x.Operatore, y => y.Ignore())
+                        .ForMember(x => x.TurnoInserimentoChiamata, y => y.Ignore())
+                        );
+                _mapper = mapConfing.CreateMapper();
                 return _mapper.Map<SintesiRichiesta>(richiesta);
             }
             catch (Exception ex)

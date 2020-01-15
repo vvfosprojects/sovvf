@@ -20,10 +20,12 @@
 using AutoMapper;
 using MongoDB.Driver;
 using Persistence.MongoDB;
+using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
+using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Servizi.CustomMapper;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using System.Collections.Generic;
@@ -57,14 +59,38 @@ namespace SO115App.Persistence.MongoDB
 
             var ListaSistesiRichieste = new List<SintesiRichiesta>();
 
+            var listaTipologiaFake = new List<Tipologia>() {
+                    new Tipologia("5","Incendio normale (generico)","")
+                    {
+                        Codice = "5",
+                        Descrizione= "Incendio normale (generico)",
+                        Categoria = "Incendi ed Esplosioni",
+                        Star = true,
+                        OpportunitaSganciamento = 50,
+                        AdeguatezzaMezzo = new MatriceAdeguatezzaMezzo()
+                        {
+                            APS = "100",
+                            AS = "80",
+                            AB = "50",
+                            AV = "10",
+                            AG = "0",
+                            DEFAULT = "10"
+                        }
+                    }
+                };
+
             foreach (RichiestaAssistenza richiesta in ListaRichiesteAssistenza)
             {
                 SintesiRichiesta sintesi = new SintesiRichiesta();
 
-                if (richiesta.CodUOCompetenza.Where(x => filtro.CodUOCompetenza.Contains(x)).ToList().Count > 0)
+                if (richiesta.CodUOCompetenza != null)
                 {
-                    sintesi = mapSintesi.Map(richiesta);
-                    ListaSistesiRichieste.Add(sintesi);
+                    if (richiesta.CodUOCompetenza.Where(x => filtro.CodUOCompetenza.Contains(x)).ToList().Count > 0)
+                    {
+                        sintesi = mapSintesi.Map(richiesta);
+                        sintesi.Tipologie = listaTipologiaFake;
+                        ListaSistesiRichieste.Add(sintesi);
+                    }
                 }
             }
 

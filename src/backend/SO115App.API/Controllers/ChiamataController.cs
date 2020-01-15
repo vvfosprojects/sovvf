@@ -56,9 +56,14 @@ namespace SO115App.API.Controllers
         [HttpPost("Add")]
         public async Task<IActionResult> Add([FromBody]Intervento chiamata)
         {
+            var codiceSede = Request.Headers["codicesede"];
+            var idUtente = Request.Headers["IdUtente"];
+
             var command = new AddInterventoCommand()
             {
-                Chiamata = chiamata
+                Chiamata = chiamata,
+                CodiceSede = codiceSede,
+                CodUtente = idUtente
             };
 
             try
@@ -75,9 +80,14 @@ namespace SO115App.API.Controllers
         [HttpPost("UpdateIntervento")]
         public async Task<IActionResult> UpdateIntervento([FromBody]SintesiRichiesta chiamata)
         {
+            var codiceSede = Request.Headers["codicesede"];
+            var idUtente = Request.Headers["IdUtente"];
+
             var command = new UpDateInterventoCommand()
             {
-                Chiamata = chiamata
+                Chiamata = chiamata,
+                CodiceSede = codiceSede,
+                CodUtente = idUtente
             };
 
             try
