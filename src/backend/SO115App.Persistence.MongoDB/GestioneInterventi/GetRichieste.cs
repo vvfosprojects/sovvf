@@ -26,8 +26,10 @@ using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRi
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
 using SO115App.Models.Classi.Condivise;
+using SO115App.Models.Classi.Soccorso;
 using SO115App.Models.Servizi.CustomMapper;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -78,6 +80,15 @@ namespace SO115App.Persistence.MongoDB
                         }
                     }
                 };
+            var utentiFake = new List<AttivitaUtente>
+            {
+                new AttivitaUtente
+                {
+                    IdUtente = "5",
+                    Nominativo = "Mario Rossi",
+                    DataInizioAttivita = DateTime.UtcNow
+                }
+            };
 
             foreach (RichiestaAssistenza richiesta in ListaRichiesteAssistenza)
             {
@@ -89,6 +100,8 @@ namespace SO115App.Persistence.MongoDB
                     {
                         sintesi = mapSintesi.Map(richiesta);
                         sintesi.Tipologie = listaTipologiaFake;
+                        sintesi.ListaUtentiInLavorazione = utentiFake;
+                        sintesi.ListaUtentiPresaInCarico = utentiFake;
                         ListaSistesiRichieste.Add(sintesi);
                     }
                 }

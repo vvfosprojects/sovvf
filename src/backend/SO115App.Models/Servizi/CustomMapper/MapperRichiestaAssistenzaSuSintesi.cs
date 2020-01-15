@@ -23,12 +23,13 @@ namespace SO115App.Models.Servizi.CustomMapper
                 var mapConfing = new MapperConfiguration(
                     cfg => cfg.CreateMap<RichiestaAssistenza, SintesiRichiesta>()
                         .ForMember(x => x.CodiceSchedaNue, y => y.MapFrom(z => z.CodNue))
-                        .ForMember(x => x.ListaUtentiInLavorazione, y => y.MapFrom(z => z.UtInLavorazione))
-                        .ForMember(x => x.ListaUtentiPresaInCarico, y => y.MapFrom(z => z.UtPresaInCarico))
+                        
                         .ForMember(x => x.ListaEntiIntervenuti, y => y.MapFrom(z => z.CodEntiIntervenuti))
                         .ForMember(x => x.Tipologie, y => y.Ignore())
                         .ForMember(x => x.Operatore, y => y.Ignore())
                         .ForMember(x => x.TurnoInserimentoChiamata, y => y.Ignore())
+                        .ForMember(x => x.ListaUtentiInLavorazione, y => y.Ignore())
+                        .ForMember(x => x.ListaUtentiPresaInCarico, y => y.Ignore())
                         );
                 _mapper = mapConfing.CreateMapper();
                 return _mapper.Map<SintesiRichiesta>(richiesta);
