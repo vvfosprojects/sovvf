@@ -87,8 +87,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichi
         {
             query.Filtro.CodUOCompetenza = _getUtenteById.GetUtenteById(query.Filtro.idOperatore).ListaUnitaOperativeAbilitate;
 
-            var mapperSuIntervento = new MapperSintesiSuIntervento(_mapper);
-
             var listaSintesi = _iGetListaSintesi.GetListaSintesiRichieste(query.Filtro);
 
             return new SintesiRichiesteAssistenzaResult()
