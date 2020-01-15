@@ -73,14 +73,11 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         /// <summary>
         ///   Utente che ha generato la segnalazione
         /// </summary>
-        [Required(ErrorMessage = "Operatore obbligatorio.")]
         public Utente Operatore { get; set; }
 
         /// <summary>
         ///   Ricezione della richiesta (via telefono, ecc.)
         /// </summary>
-        [Required(ErrorMessage = "Istante ricezione richiesta obbligatorio.")]
-        [DataType(DataType.DateTime)]
         public DateTime IstanteRicezioneRichiesta { get; set; }
 
         /// <summary>
@@ -127,25 +124,21 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         /// </summary>
         public Priorita PrioritaRichiesta { get; set; }
 
-        [Required(ErrorMessage = "Tipologia obbligatoria.")]
         public List<Tipologia> Tipologie { get; set; }
 
         /// <summary>
         ///   Descrizione della richiesta
         /// </summary>
-        [Required(ErrorMessage = "Descrizione obbligatoria.")]
         public string Descrizione { get; set; }
 
         /// <summary>
         ///   Descrizione del richiedente
         /// </summary>
-        [Required(ErrorMessage = "Richiedente obbligatorio.")]
         public Richiedente Richiedente { get; set; }
 
         /// <summary>
         ///   Localita della richiesta
         /// </summary>
-        [Required(ErrorMessage = "Località obbligatoria.")]
         public Localita Localita { get; set; }
 
         /// <summary>
@@ -323,7 +316,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         /// <summary>
         ///   Stato della richiesta
         /// </summary>
-        [Required(ErrorMessage = "Stato obbligatorio.")]
         /// <summary>
         ///   Restituisce lo stato della Richiesta
         /// </summary>
