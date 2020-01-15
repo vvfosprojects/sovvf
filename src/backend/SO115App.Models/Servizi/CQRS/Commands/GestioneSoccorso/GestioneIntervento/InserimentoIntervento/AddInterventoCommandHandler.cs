@@ -23,6 +23,7 @@ using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.Eventi;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
+using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GenerazioneCodiciRichiesta;
 using SO115App.Models.Servizi.Infrastruttura.Turni;
@@ -66,7 +67,7 @@ namespace DomainModel.CQRS.Commands.AddIntervento
                     utentiInLavorazione.Add(utente.Nominativo);
                 }
             }
-            if (command.Chiamata.ListaUtentiPresaInCarico!=null)
+            if (command.Chiamata.ListaUtentiPresaInCarico != null)
             {
                 foreach (var utente in command.Chiamata.ListaUtentiPresaInCarico)
                 {
@@ -74,6 +75,28 @@ namespace DomainModel.CQRS.Commands.AddIntervento
                 }
             }
 
+            //DA TOGLIERE COM MONGO
+            var listaTipologiaFake = new List<Tipologia>() {
+                    new Tipologia("5","Incendio normale (generico)","")
+                    {
+                        Codice = "5",
+                        Descrizione= "Incendio normale (generico)",
+                        Categoria = "Incendi ed Esplosioni",
+                        Star = true,
+                        OpportunitaSganciamento = 50,
+                        AdeguatezzaMezzo = new MatriceAdeguatezzaMezzo()
+                        {
+                            APS = "100",
+                            AS = "80",
+                            AB = "50",
+                            AV = "10",
+                            AG = "0",
+                            DEFAULT = "10"
+                        }
+                    }
+                };
+
+            string[] CodUOCompetenzaAppo = { "RM.1000" };
 
             var richiesta = new RichiestaAssistenza()
             {
@@ -92,6 +115,7 @@ namespace DomainModel.CQRS.Commands.AddIntervento
                 NotePubbliche = command.Chiamata.NotePubbliche,
                 NotePrivate = command.Chiamata.NotePrivate,
                 //Id = codiceChiamata // TODO DA TOGLIERE QUANDO AVREMO UN DB
+                CodUOCompetenza = CodUOCompetenzaAppo
             };
 
             if (command.Chiamata.Stato == Costanti.RichiestaChiusa)

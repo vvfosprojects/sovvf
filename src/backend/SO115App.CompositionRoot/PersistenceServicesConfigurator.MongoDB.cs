@@ -2,6 +2,7 @@
 using Persistence.MongoDB;
 using SimpleInjector;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
+using SO115App.Models.Servizi.Infrastruttura.Box;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Persistence.MongoDB;
 
@@ -26,6 +27,12 @@ namespace SO115App.CompositionRoot
             container.Register<IGetListaSintesi, GetRichiesta>();
 
             #endregion Gestione richiesta di assistenza
+
+            #region BOX
+
+            container.Register<IGetBoxRichieste, GetBoxRichieste>();
+
+            #endregion BOX
         }
     }
 }

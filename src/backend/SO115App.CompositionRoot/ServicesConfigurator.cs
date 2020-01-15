@@ -25,22 +25,29 @@ namespace SO115App.CompositionRoot
     {
         internal static void Configure(Container container)
         {
-            //Trasportate in MongoDB
+            #region Trasportate in MongoDB
+
             //container.Register<
             //    API.Models.Servizi.Infrastruttura.GestioneSoccorso.ISaveRichiestaAssistenza,
             //    FakePersistenceJSon.GestioneIntervento.InserimentoRichiesta>();
-            ////Trasportate in MongoDB
+
             //container.Register<
             //    SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.IGetListaSintesi,
             //    SO115App.FakePersistenceJSon.GestioneIntervento.GetListaSintesi>();
-            ////Trasportate in MongoDB
+
             //container.Register<
             //    API.Models.Servizi.Infrastruttura.GestioneSoccorso.IUpDateRichiestaAssistenza,
             //    ExternalAPI.Fake.GestioneIntervento.UpDateRichiestaExt>();//TODO gestione composition Root per l'externalAPI
-            ////Trasportate in MongoDB
+
             //container.Register<
             //      SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.IGetRichiestaById,
             //      FakePersistenceJSon.GestioneIntervento.GetRichiestaById>();
+
+            //container.Register<
+            //        SO115App.Models.Servizi.Infrastruttura.Box.IGetBoxRichieste,
+            //        FakePersistenceJSon.Box.GetRichieste>();
+
+            #endregion Trasportate in MongoDB
 
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.Box.IGetBoxMezzi,
@@ -48,9 +55,7 @@ namespace SO115App.CompositionRoot
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.Box.IGetBoxPersonale,
                 ExternalAPI.Fake.Box.GetBoxPersonaleExt>();//TODO gestione composition Root per l'externalAPI
-            container.Register<
-                SO115App.Models.Servizi.Infrastruttura.Box.IGetBoxRichieste,
-                FakePersistenceJSon.Box.GetRichieste>();
+
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.GetFiltri.IGetFiltri,
                 FakePersistenceJSon.Filtri.GetFiltri>();
