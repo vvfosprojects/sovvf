@@ -4,7 +4,7 @@ using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Navbar;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.FakePersistenceJSon.GestioneIntervento;
-using SO115App.Models.Classi.Condivise;
+using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -14,19 +14,23 @@ namespace SO115App.FakePersistence.JSon.Utility
 {
     public class OrdinamentoMezzi
     {
+        private readonly IGetRichiestaById _getRichiestaById;
+
+        public OrdinamentoMezzi(IGetRichiestaById getRichiestaById)
+        {
+            _getRichiestaById = getRichiestaById;
+        }
+
         public decimal GetIndiceOrdinamento(string IdRichiesta, ComposizioneMezzi composizione, string IdRichiestaOrigine = null)
         {
             int ValoreIntOriginePerSganciamento = 0;
             decimal ValoreAdeguatezzaMezzo;
-            decimal IndiceOrdinamento = 0;
 
-            GetRichiestaById getRichiesta = new GetRichiestaById();
-            RichiestaAssistenza richiestaDestinazione = getRichiesta.Get(IdRichiesta);
-            RichiestaAssistenza richiestaOrigine = new RichiestaAssistenza();
+            //var richiestaDestinazione = _getRichiestaById.Get(IdRichiesta);
 
             if (IdRichiestaOrigine != null)
             {
-                richiestaOrigine = getRichiesta.Get(IdRichiestaOrigine);
+                var richiestaOrigine = _getRichiestaById.Get(IdRichiestaOrigine);
                 //ValoreIntOriginePerSganciamento = GeneraValoreSganciamento(richiestaOrigine.Tipologie);
                 ValoreIntOriginePerSganciamento = 50;
             }
@@ -34,9 +38,7 @@ namespace SO115App.FakePersistence.JSon.Utility
             //ValoreAdeguatezzaMezzo = GeneraValoreAdeguatezzaMezzo(richiestaDestinazione.Tipologie, composizione.Mezzo.Genere);
             ValoreAdeguatezzaMezzo = 50;
 
-            IndiceOrdinamento = 100 / (1 + (Convert.ToDecimal(composizione.TempoPercorrenza.Replace(".", ",")) / 5400)) + ValoreIntOriginePerSganciamento + ValoreAdeguatezzaMezzo;
-
-            return IndiceOrdinamento;
+            return (100 / (1 + (Convert.ToDecimal(composizione.TempoPercorrenza.Replace(".", ",")) / 5400))) + ValoreIntOriginePerSganciamento + ValoreAdeguatezzaMezzo;
         }
 
         private decimal GeneraValoreAdeguatezzaMezzo(List<Tipologia> ListaTipologieDestinazione, string genere)
@@ -90,7 +92,7 @@ namespace SO115App.FakePersistence.JSon.Utility
 
         private int GeneraValoreSganciamento(List<Tipologia> ListaTipologieOrigine)
         {
-            string filepath = "Fake/Navbar.json";
+            string filepath = CostantiJson.Navbar;
             string json;
             using (StreamReader r = new StreamReader(filepath))
             {
@@ -102,9 +104,9 @@ namespace SO115App.FakePersistence.JSon.Utility
 
             foreach (Tipologia tipologia in ListaTipologieOrigine)
             {
-                Tipologia tipo = Navbar.Tipologie.Where(x => x.Codice.Equals(tipologia.Codice)).LastOrDefault();
+                Tipologia tipo = Navbar.Tipologie.LastOrDefault(x => x.Codice.Equals(tipologia.Codice));
 
-                IndiceSganciamento = IndiceSganciamento + tipo.OpportunitaSganciamento;
+                IndiceSganciamento += tipo.OpportunitaSganciamento;
             }
 
             return IndiceSganciamento;

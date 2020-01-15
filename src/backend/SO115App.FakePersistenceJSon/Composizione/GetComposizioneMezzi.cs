@@ -23,6 +23,7 @@ using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneMezzi;
 using SO115App.FakePersistence.JSon.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
+using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.GetComposizioneMezzi;
 using System;
 using System.Collections.Generic;
@@ -39,6 +40,7 @@ namespace SO115App.FakePersistenceJSon.Composizione
     public class GetComposizioneMezzi : IGetComposizioneMezzi
     {
         private readonly IGetStatoMezzi _getMezziPrenotati;
+        private readonly IGetRichiestaById _getRichiestaById;
 
         public GetComposizioneMezzi(IGetStatoMezzi getMezziPrenotati)
         {
@@ -116,7 +118,7 @@ namespace SO115App.FakePersistenceJSon.Composizione
                 if (!string.IsNullOrEmpty(query.Filtro.CodiceMezzo))
                     composizioneMezzi = composizioneMezzi.Where(x => x.Mezzo.Codice == query.Filtro.CodiceMezzo).ToList();
 
-                var ordinamento = new OrdinamentoMezzi();
+                var ordinamento = new OrdinamentoMezzi(_getRichiestaById);
                 foreach (var composizione in composizioneMezzi)
                 {
                     composizione.IndiceOrdinamento = ordinamento.GetIndiceOrdinamento(query.Filtro.IdRichiesta, composizione, composizione.Mezzo.IdRichiesta);
@@ -134,7 +136,7 @@ namespace SO115App.FakePersistenceJSon.Composizione
             }
             else
             {
-                var ordinamento = new OrdinamentoMezzi();
+                var ordinamento = new OrdinamentoMezzi(_getRichiestaById);
                 foreach (var composizione in composizioneMezzi)
                 {
                     composizione.IndiceOrdinamento = ordinamento.GetIndiceOrdinamento(query.Filtro.IdRichiesta, composizione, composizione.Mezzo.IdRichiesta);
