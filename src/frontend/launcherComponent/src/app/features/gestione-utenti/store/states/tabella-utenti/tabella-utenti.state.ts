@@ -1,6 +1,6 @@
 import {Action, Selector, State, StateContext} from '@ngxs/store';
 // Model
-import { GestioneUtente } from '../../../../../shared/model/gestione-utente.model';
+import { GestioneUtente } from '../../../../../shared/interface/gestione-utente.interface';
 // Action
 import {SetPage, SetPageSize, SetUtentiFiltrati} from '../../actions/tabella-utenti/tabella-utenti.actons';
 

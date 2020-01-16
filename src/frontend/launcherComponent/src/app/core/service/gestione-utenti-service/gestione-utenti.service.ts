@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { GestioneUtente } from '../../../shared/model/gestione-utente.model';
+import { GestioneUtente } from '../../../shared/interface/gestione-utente.interface';
 
 @Injectable({
     providedIn: 'root'

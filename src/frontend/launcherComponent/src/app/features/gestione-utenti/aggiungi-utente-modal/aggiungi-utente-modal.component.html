@@ -1,37 +1,39 @@
 <div class="modal-header">
     <h4 class="modal-title">Aggiungi un utente</h4>
-    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+    <button type="button" class="close" aria-label="Close" (click)="closeModal('Cross click')">
         <span aria-hidden="true">&times;</span>
     </button>
 </div>
-<div class="modal-body">
-    <div class="row">
-        <div class="col">
-            <ng-select *ngIf="utenti" [items]="utenti"
-                       bindLabel="cognome"
-                       bindValue="id"
-                       placeholder="Seleziona un utente"
-                       [(ngModel)]="idUtenteSelezionato">
+<div class="modal-body height">
+    <form [formGroup]="form">
+        <div class="mb-3">
+            <ng-select
+                    [items]="utenti$ | async"
+                    bindLabel="cognome"
+                    bindValue="id"
+                    [multiple]="true"
+                    formControlName="utenti"
+                    placeholder="Seleziona uno o più utenti"
+                    [notFoundText]="'Nessun utente disponibile'">
             </ng-select>
         </div>
-        <div class="col">
-            <ng-select *ngIf="ruoli" [items]="ruoli"
-                       placeholder="Seleziona ruolo"
-                       [(ngModel)]="ruoloSelezionato">
+        <div class="mb-3">
+            <ng-select
+                    [items]="ruoli"
+                    [multiple]="true"
+                    formControlName="ruoli"
+                    placeholder="Seleziona uno o più ruoli"
+                    [notFoundText]="'Nessun ruolo disponibile'">
             </ng-select>
         </div>
-        <div class="col">
-            <!--            <ng-select [items]="sedi"-->
-            <!--                       bindLabel="descrizione"-->
-            <!--                       bindValue="codice"-->
-            <!--                       placeholder="Seleziona sede"-->
-            <!--                       [(ngModel)]="codiceSedeSelezionata">-->
-            <!--            </ng-select>-->
-            <app-shared-treeview [items]="items" [testoSedeSelezionata]="'Seleziona una o più sedi'" [placement]="'bottom-left'"
-                                 [visualizzaTasti]="false" (confermaSelezione)="onPatchSedi($event)">
-            </app-shared-treeview>
-        </div>
-    </div>
+        <app-shared-treeview [items]="listeSediNavbar"
+                             [testoSedeSelezionata]="'Seleziona una o più sedi'"
+                             [placement]="'bottom-left'"
+                             [visualizzaTasti]="false"
+                             [maxHeight]="200"
+                             (confermaSelezione)="onPatchSedi($event)">
+        </app-shared-treeview>
+    </form>
 </div>
 <div class="modal-footer">
     <button type="button" class="btn btn-outline-danger" (click)="modal.close('ko')">Annulla</button>

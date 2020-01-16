@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { GestioneUtente } from '../../../shared/model/gestione-utente.model';
+import { GestioneUtente } from '../../../shared/interface/gestione-utente.interface';
 import { of } from 'rxjs';
 import { Role } from '../../../shared/model/utente.model';
 

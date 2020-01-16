@@ -9,7 +9,7 @@ import { TabellaUtentiState } from '../store/states/tabella-utenti/tabella-utent
 import { SetPage, SetPageSize, SetUtentiFiltrati } from '../store/actions/tabella-utenti/tabella-utenti.actons';
 import { Sede } from '../../../shared/model/sede.model';
 import { GestioneUtentiState } from '../store/states/gestione-utenti/gestione-utenti.state';
-import { GestioneUtente } from '../../../shared/model/gestione-utente.model';
+import { GestioneUtente } from '../../../shared/interface/gestione-utente.interface';
 
 
 @Component({

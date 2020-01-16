@@ -1,4 +1,4 @@
-import { GestioneUtente } from '../../../../../shared/model/gestione-utente.model';
+import { GestioneUtente } from '../../../../../shared/interface/gestione-utente.interface';
 import { Role } from 'src/app/shared/model/utente.model';
 
 export class GetGestioneUtenti {

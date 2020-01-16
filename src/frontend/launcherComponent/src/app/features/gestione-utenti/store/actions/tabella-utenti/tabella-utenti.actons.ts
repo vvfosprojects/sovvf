@@ -1,22 +1,17 @@
-// Model
-import {Utente} from '../../../../../shared/model/utente.model';
-import { GestioneUtente } from '../../../../../shared/model/gestione-utente.model';
+import { GestioneUtente } from '../../../../../shared/interface/gestione-utente.interface';
 
-// SET
 export class SetUtentiFiltrati {
     static readonly type = '[TebellaUtenti] Set Utenti Filtrati';
 
     constructor(public utentiFiltrati: GestioneUtente[]) {}
 }
 
-// SET
 export class SetPageSize {
     static readonly type = '[TebellaUtenti] Set Page Size';
 
     constructor(public pageSize: number) {}
 }
 
-// SET
 export class SetPage {
     static readonly type = '[TebellaUtenti] Set Page';
 

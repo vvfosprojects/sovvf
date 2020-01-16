@@ -1,17 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import { Role, Utente } from '../../../shared/model/utente.model';
+import { Component } from '@angular/core';
+import { Utente } from '../../../shared/model/utente.model';
 import { Sede } from '../../../shared/model/sede.model';
 import { Select, Store } from '@ngxs/store';
 import { GetUtenti } from '../../home/store/actions/utenti/utenti.actions';
 import { UtentiState } from '../../home/store/states/utenti/utenti.state';
 import { Observable, Subscription } from 'rxjs';
-import { makeCopy } from '../../../shared/helper/function';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { RuoliState } from '../store/states/ruoli/ruoli.state';
-import { AddUtente } from '../store/actions/gestione-utenti/gestione-utenti.actions';
 import { SediTreeviewState } from '../../../shared/store/states/sedi-treeview/sedi-treeview.state';
 import { TreeItem, TreeviewItem } from 'ngx-treeview';
 import { TreeviewSelezione } from '../../../shared/model/treeview-selezione.model';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
     selector: 'app-aggiungi-utente-modal',
@@ -21,96 +19,88 @@ import { TreeviewSelezione } from '../../../shared/model/treeview-selezione.mode
 export class AggiungiUtenteModalComponent {
 
     @Select(UtentiState.utenti) utenti$: Observable<Utente[]>;
-    utenti: Utente[];
+    @Select(SediTreeviewState.listeSediNavbar) listeSediNavbar$: Observable<TreeItem>;
+    listeSediNavbar: TreeviewItem[];
     ruoli: Array<any>;
     sedi: Sede[];
 
-    idUtenteSelezionato: string;
-    ruoloSelezionato: Role;
-    // codiceSedeSelezionata: string;
-    sediSelezionateTreeview: Array<TreeviewSelezione>;
+    form: FormGroup;
+    submitted: boolean;
 
     subscription: Subscription = new Subscription();
 
-    // Treeview
-    @Select(SediTreeviewState.listeSediNavbar) listeSedi$: Observable<TreeItem>;
-    items: TreeviewItem[];
-
     constructor(private store: Store,
-                public modal: NgbActiveModal) {
+                private modal: NgbActiveModal,
+                private formBuilder: FormBuilder) {
         this.store.dispatch(new GetUtenti());
-        this.subscription.add(
-            this.utenti$.subscribe((utenti: Utente[]) => {
-                this.utenti = makeCopy(utenti);
-                this.utenti.map((i) => {
-                    i.cognome = i.nome + ' ' + i.cognome;
-                });
-            })
-        );
-        this.inizializzaSedi();
+        this.inizializzaSediTreeview();
+        this.initForm();
     }
 
-    inizializzaSedi() {
-        // this.sedi = [
-        //     {
-        //         codice: '1',
-        //         descrizione: 'Comando di Roma',
-        //         coordinate: {
-        //             latitudine: 41.89994,
-        //             longitudine: 12.49127
-        //         },
-        //         indirizzo: 'Via Genova, 1, 00184 Roma RM',
-        //         tipo: 'Comando',
-        //         regione: 'Lazio',
-        //         provincia: 'RM'
-        //     },
-        // ];
-        // Treeview
+    initForm() {
+        this.form = this.formBuilder.group({
+            utenti: [null, [Validators.required]],
+            ruoli: [null, [Validators.required]],
+            sedi: [null, [Validators.required]],
+        });
+    }
+
+    get f() {
+        return this.form.controls;
+    }
+
+    inizializzaSediTreeview() {
         this.subscription.add(
-            this.listeSedi$.subscribe((listaSedi: TreeItem) => {
-                this.items = [];
-                this.items[0] = new TreeviewItem(listaSedi);
+            this.listeSediNavbar$.subscribe((listaSedi: TreeItem) => {
+                this.listeSediNavbar = [];
+                this.listeSediNavbar[0] = new TreeviewItem(listaSedi);
             })
         );
     }
 
     onPatchSedi(event: TreeviewSelezione[]) {
-        this.sediSelezionateTreeview = event;
-        // console.log('Patch sedi', event);
-        // console.log('Sedi selezionate', this.sediSelezionateTreeview);
+        this.f.sedi.patchValue(event);
+        console.log('Patch Sedi', event);
+        console.log('Sedi Selezionate', this.f.sedi.value);
     }
 
     onConferma() {
-        if (this.idUtenteSelezionato && this.ruoloSelezionato && this.sediSelezionateTreeview.length > 0) {
-            let utente: Utente;
-            // let sede: Sede;
+        this.submitted = true;
 
-            utente = this.utenti.find(value => value.id === this.idUtenteSelezionato);
-            const nomeCognome = utente.cognome.split(' ');
-            // sede = this.sedi.find(value => value.codice === this.codiceSedeSelezionata);
-
-            // console.log('Sedi selezionate', this.sediSelezionateTreeview);
-            const nuovoRuolo = {
-                id_utente: utente.id,
-                nome: nomeCognome[0],
-                cognome: nomeCognome[1],
-                ruolo: this.ruoloSelezionato,
-                sede: this.sediSelezionateTreeview
-            };
-            console.log('Ruolo da inserire', nuovoRuolo);
-
-            // this.modal.close([
-            //     'ok',
-            //     {
-            //         id_utente: utente.id,
-            //         nome: nomeCognome[0],
-            //         cognome: nomeCognome[1],
-            //         ruolo: this.ruoloSelezionato,
-            //         sede: sede
-            //     }
-            // ]);
-        } else {
-            console.error('Ci sono dei dati mancanti');
+        if (this.form.invalid) {
+            return;
         }
+
+        //     let utente: Utente;
+        //     // let sede: Sede;
+        //
+        //     utente = this.utenti.find(value => value.id === this.idUtenteSelezionato);
+        //     const nomeCognome = utente.cognome.split(' ');
+        //     // sede = this.sedi.find(value => value.codice === this.codiceSedeSelezionata);
+        //
+        //     // console.log('Sedi selezionate', this.sediSelezionateTreeview);
+        //     const nuovoRuolo = {
+        //         id_utente: utente.id,
+        //         nome: nomeCognome[0],
+        //         cognome: nomeCognome[1],
+        //         ruolo: this.ruoloSelezionato,
+        //         sede: this.sediSelezionateTreeview
+        //     };
+        //     console.log('Ruolo da inserire', nuovoRuolo);
+        //
+        // this.modal.close([
+        //     'ok',
+        //     {
+        //         id_utente: utente.id,
+        //         nome: nomeCognome[0],
+        //         cognome: nomeCognome[1],
+        //         ruolo: this.ruoloSelezionato,
+        //         sede: sede
+        //     }
+        // ]);
+    }
+
+    closeModal(type: string) {
+        this.modal.close(type);
     }
 }

@@ -29,7 +29,21 @@ import { Observable } from 'rxjs';
     ]
 })
 export class TreeviewComponent implements OnChanges, OnDestroy, OnInit {
+    @Input() colorButton = 'btn-default';
+    @Input() items: TreeviewItem[];
+    @Input() testoSedeSelezionata$: Observable<string>;
+    @Input() tastoConferma$: Observable<boolean>;
+    @Input() testoSedeSelezionata: string;
+    @Input() visualizzaTasti = false;
+    @Input() placement: string;
+    @Input() maxHeight: number;
+    @Output() annullaSelezione = new EventEmitter();
+    @Output() confermaSelezione = new EventEmitter<TreeviewSelezione[]>();
+    @Output() patchSelezione = new EventEmitter<TreeviewEmitterInterface>();
+
     treeViewOpened: boolean;
+    treeViewSelection: TreeviewSelezione[];
+    tastoConferma: boolean;
 
     config = TreeviewConfig.create({
         hasAllCheckBox: false,
@@ -38,20 +52,6 @@ export class TreeviewComponent implements OnChanges, OnDestroy, OnInit {
         decoupleChildFromParent: false,
         maxHeight: 400
     });
-
-    treeViewSelection: TreeviewSelezione[];
-    tastoConferma: boolean;
-
-    @Input() colorButton = 'btn-default';
-    @Input() items: TreeviewItem[];
-    @Input() testoSedeSelezionata$: Observable<string>;
-    @Input() tastoConferma$: Observable<boolean>;
-    @Input() testoSedeSelezionata: string;
-    @Input() visualizzaTasti = false;
-    @Input() placement: string;
-    @Output() annullaSelezione = new EventEmitter();
-    @Output() confermaSelezione = new EventEmitter<TreeviewSelezione[]>();
-    @Output() patchSelezione = new EventEmitter<TreeviewEmitterInterface>();
 
     constructor(config: NgbDropdownConfig) {
         config.autoClose = 'outside';
