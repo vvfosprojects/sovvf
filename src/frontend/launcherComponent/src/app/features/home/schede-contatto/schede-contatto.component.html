@@ -13,7 +13,7 @@
                 </ng-template>
                 <ng-template ngbTabContent>
                     <div class="row">
-                        <ul *ngIf="schedeContatto.length > 0" class="col-12 my-2">
+                        <ul *ngIf="schedeContatto.length > 0" class="col-12 my-2 list-unstyled">
                             <app-scheda-contatto *ngFor="let scheda of schedeContatto"
                                                  [scheda]="scheda"
                                                  [idSchedaContattoHover]="codiceSchedaContattoHover"
