@@ -22,7 +22,7 @@ const PROXY_CONFIG = [{
         '/api/PrenotazioneMezzo',
         '/api/GestioneSchedeContatto'
     ],
-    target: "http://localhost:31497/",
+    target: "http://localhost:5000/",
     secure: false,
     "changeOrigin": true,
     ws: true
