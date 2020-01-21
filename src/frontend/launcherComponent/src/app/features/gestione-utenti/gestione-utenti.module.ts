@@ -37,10 +37,12 @@ import { RuoliServiceFake } from '../../core/service/ruoli-service/ruoli.service
  */
 import { NgxsModule } from '@ngxs/store';
 import { RicercaUtentiState } from './store/states/ricerca-utenti/ricerca-utenti.state';
-import { TabellaUtentiState } from './store/states/tabella-utenti/tabella-utenti.state';
 import { GestioneUtentiState } from './store/states/gestione-utenti/gestione-utenti.state';
 import { UtentiState } from '../home/store/states/utenti/utenti.state';
 import { RuoliState } from './store/states/ruoli/ruoli.state';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { PermessiService } from '../../core/service/permessi-service/permessi-service.service';
+import { PermessiServiceFake } from '../../core/service/permessi-service/permessi.service.fake';
 
 
 @NgModule({
@@ -61,17 +63,18 @@ import { RuoliState } from './store/states/ruoli/ruoli.state';
         NgxsModule.forFeature(
             [
                 RicercaUtentiState,
-                TabellaUtentiState,
                 GestioneUtentiState,
                 UtentiState,
                 RuoliState
             ]
         ),
+        NgxPaginationModule,
     ],
     entryComponents: [AggiungiUtenteModalComponent, ConfirmModalComponent],
     providers: [
-        {provide: GestioneUtentiService, useClass: GestioneUtentiServiceFake},
-        {provide: RuoliService, useClass: RuoliServiceFake}
+        { provide: GestioneUtentiService, useClass: GestioneUtentiServiceFake },
+        { provide: RuoliService, useClass: RuoliServiceFake },
+        { provide: PermessiService, useClass: PermessiServiceFake },
     ]
 })
 export class GestioneUtentiModule {

@@ -3,7 +3,7 @@ import { HttpRequest, HttpResponse, HttpHandler, HttpEvent, HttpInterceptor } fr
 import { Observable, of, throwError } from 'rxjs';
 import { delay, mergeMap, materialize, dematerialize } from 'rxjs/operators';
 
-import { Role, Utente } from '../../../shared/model/utente.model';
+import { Role, Utente } from '../../shared/model/utente.model';
 
 @Injectable()
 export class FakeBackendInterceptor implements HttpInterceptor {

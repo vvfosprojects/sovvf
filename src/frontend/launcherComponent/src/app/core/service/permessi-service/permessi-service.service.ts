@@ -4,12 +4,12 @@ import { Observable } from 'rxjs';
 @Injectable({
     providedIn: 'root'
 })
-export class RuoliService {
+export class PermessiService {
 
     constructor() {
     }
 
-    getRuoli(): Observable<string[]> {
+    getPermessi(): Observable<string[]> {
         return;
     }
 }

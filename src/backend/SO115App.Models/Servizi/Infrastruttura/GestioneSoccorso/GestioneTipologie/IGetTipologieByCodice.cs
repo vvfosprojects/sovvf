@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="SaveRichiesta.cs" company="CNVVF">
+// <copyright file="IGetTipologieByCodice.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,24 +17,21 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using Persistence.MongoDB;
-using SO115App.API.Models.Classi.Soccorso;
-using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
+using SO115App.API.Models.Classi.Condivise;
+using System.Collections.Generic;
 
-namespace SO115App.Persistence.MongoDB
+namespace SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie
 {
-    public class SaveRichiesta : ISaveRichiestaAssistenza
+    /// <summary>
+    ///   L'interfaccia si occupa del reperimento della Tipologia a partire dal codice tipologia
+    /// </summary>
+    public interface IGetTipologieByCodice
     {
-        private readonly DbContext _dbContext;
-
-        public SaveRichiesta(DbContext dbContext)
-        {
-            _dbContext = dbContext;
-        }
-
-        public void Save(RichiestaAssistenza richiestaAssistenza)
-        {
-            _dbContext.RichiestaAssistenzaCollection.InsertOne(richiestaAssistenza);
-        }
+        /// <summary>
+        ///   il metodo si occupa del prelievo della tipologia
+        /// </summary>
+        /// <param name="codiceTipologia">il codice della tipologia dell'intervento</param>
+        /// <returns>Tipologia</returns>
+        List<Tipologia> Get(List<string> codiceTipologia = null);
     }
 }

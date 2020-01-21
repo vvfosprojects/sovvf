@@ -76,26 +76,6 @@ namespace DomainModel.CQRS.Commands.AddIntervento
             }
 
             //DA TOGLIERE COM MONGO
-            var listaTipologiaFake = new List<Tipologia>() {
-                    new Tipologia("5","Incendio normale (generico)","")
-                    {
-                        Codice = "5",
-                        Descrizione= "Incendio normale (generico)",
-                        Categoria = "Incendi ed Esplosioni",
-                        Star = true,
-                        OpportunitaSganciamento = 50,
-                        AdeguatezzaMezzo = new MatriceAdeguatezzaMezzo()
-                        {
-                            APS = "100",
-                            AS = "80",
-                            AB = "50",
-                            AV = "10",
-                            AG = "0",
-                            DEFAULT = "10"
-                        }
-                    }
-                };
-
             string[] CodUOCompetenzaAppo = { "RM.1000" };
 
             var richiesta = new RichiestaAssistenza()

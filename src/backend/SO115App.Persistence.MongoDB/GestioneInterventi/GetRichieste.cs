@@ -29,6 +29,7 @@ using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.Soccorso;
 using SO115App.Models.Servizi.CustomMapper;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
+using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,11 +40,13 @@ namespace SO115App.Persistence.MongoDB
     {
         private readonly DbContext _dbContext;
         private readonly IMapper _mapper;
+        private readonly IGetTipologieByCodice _getTipologiaByCodice;
 
-        public GetRichiesta(DbContext dbContext, IMapper mapper)
+        public GetRichiesta(DbContext dbContext, IMapper mapper, IGetTipologieByCodice getTipologiaByCodice)
         {
             _dbContext = dbContext;
             _mapper = mapper;
+            _getTipologiaByCodice = getTipologiaByCodice;
         }
 
         public RichiestaAssistenza Get(string idRichiestaAssistenza)
@@ -61,25 +64,6 @@ namespace SO115App.Persistence.MongoDB
 
             var ListaSistesiRichieste = new List<SintesiRichiesta>();
 
-            var listaTipologiaFake = new List<Tipologia>() {
-                    new Tipologia("5","Incendio normale (generico)","")
-                    {
-                        Codice = "5",
-                        Descrizione= "Incendio normale (generico)",
-                        Categoria = "Incendi ed Esplosioni",
-                        Star = true,
-                        OpportunitaSganciamento = 50,
-                        AdeguatezzaMezzo = new MatriceAdeguatezzaMezzo()
-                        {
-                            APS = "100",
-                            AS = "80",
-                            AB = "50",
-                            AV = "10",
-                            AG = "0",
-                            DEFAULT = "10"
-                        }
-                    }
-                };
             var utentiFake = new List<AttivitaUtente>
             {
                 new AttivitaUtente
@@ -99,7 +83,7 @@ namespace SO115App.Persistence.MongoDB
                     if (richiesta.CodUOCompetenza.Where(x => filtro.CodUOCompetenza.Contains(x)).ToList().Count > 0)
                     {
                         sintesi = mapSintesi.Map(richiesta);
-                        sintesi.Tipologie = listaTipologiaFake;
+                        sintesi.Tipologie = _getTipologiaByCodice.Get(richiesta.Tipologie);
                         sintesi.ListaUtentiInLavorazione = utentiFake;
                         sintesi.ListaUtentiPresaInCarico = utentiFake;
                         ListaSistesiRichieste.Add(sintesi);

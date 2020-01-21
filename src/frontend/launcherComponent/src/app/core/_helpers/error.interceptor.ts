@@ -3,9 +3,9 @@ import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor } from '@angular/c
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
-import { AuthenticationService } from '../_services';
+import { AuthenticationService } from '../auth/_services';
 import { NavigationEnd, Router } from '@angular/router';
-import { RoutesPath } from '../../../shared/enum/routes-path.enum';
+import { RoutesPath } from '../../shared/enum/routes-path.enum';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
