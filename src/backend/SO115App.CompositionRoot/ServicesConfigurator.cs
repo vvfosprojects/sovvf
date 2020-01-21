@@ -18,6 +18,11 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using SimpleInjector;
+using SO115App.FakePersistence.JSon.GestioneIntervento;
+using SO115App.FakePersistenceJSon.Box;
+using SO115App.FakePersistenceJSon.Composizione;
+using SO115App.FakePersistenceJSon.GestioneMezzi;
+using SO115App.FakePersistenceJSon.Marker;
 
 namespace SO115App.CompositionRoot
 {
@@ -27,41 +32,41 @@ namespace SO115App.CompositionRoot
         {
             #region Trasportate in MongoDB
 
-            //container.Register<
-            //    API.Models.Servizi.Infrastruttura.GestioneSoccorso.ISaveRichiestaAssistenza,
-            //    FakePersistenceJSon.GestioneIntervento.InserimentoRichiesta>();
+            container.Register<
+                API.Models.Servizi.Infrastruttura.GestioneSoccorso.ISaveRichiestaAssistenza,
+                FakePersistenceJSon.GestioneIntervento.InserimentoRichiesta>();
 
-            //container.Register<
-            //    SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.IGetListaSintesi,
-            //    SO115App.FakePersistenceJSon.GestioneIntervento.GetListaSintesi>();
+            container.Register<
+                SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.IGetListaSintesi,
+                SO115App.FakePersistenceJSon.GestioneIntervento.GetListaSintesi>();
 
-            //container.Register<
-            //    API.Models.Servizi.Infrastruttura.GestioneSoccorso.IUpDateRichiestaAssistenza,
-            //    ExternalAPI.Fake.GestioneIntervento.UpDateRichiestaExt>();//TODO gestione composition Root per l'externalAPI
+            container.Register<
+                API.Models.Servizi.Infrastruttura.GestioneSoccorso.IUpDateRichiestaAssistenza,
+                UpDateRichiesta>();
 
-            //container.Register<
-            //      SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.IGetRichiestaById,
-            //      FakePersistenceJSon.GestioneIntervento.GetRichiestaById>();
+            container.Register<
+                  SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.IGetRichiestaById,
+                  FakePersistenceJSon.GestioneIntervento.GetRichiestaById>();
 
-            //container.Register<
-            //        SO115App.Models.Servizi.Infrastruttura.Box.IGetBoxRichieste,
-            //        FakePersistenceJSon.Box.GetRichieste>();
+            container.Register<
+                    SO115App.Models.Servizi.Infrastruttura.Box.IGetBoxRichieste,
+                    FakePersistenceJSon.Box.GetRichieste>();
 
             #endregion Trasportate in MongoDB
 
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.Box.IGetBoxMezzi,
-                ExternalAPI.Fake.Box.GetBoxMezziExt>();//TODO gestione composition Root per l'externalAPI
+                GetBoxMezzi>();
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.Box.IGetBoxPersonale,
-                ExternalAPI.Fake.Box.GetBoxPersonaleExt>();//TODO gestione composition Root per l'externalAPI
+                GetPersonale>();
 
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.GetFiltri.IGetFiltri,
                 FakePersistenceJSon.Filtri.GetFiltri>();
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.Marker.IGetMezziMarker,
-                ExternalAPI.Fake.Marker.GetMezziMarkerExt>();
+                GetMezziMarker>();
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.Marker.IGetRichiesteMarker,
                 FakePersistenceJSon.Marker.GetRichiesteMarker>();
@@ -93,7 +98,7 @@ namespace SO115App.CompositionRoot
                 FakePersistenceJSon.Composizione.GetComposizioneSquadre>();
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.GetComposizioneMezzi.IGetComposizioneMezzi,
-                ExternalAPI.Fake.Composizione.GetComposizioneMezziExt>();//TODO gestione composition Root per l'externalAPI
+                GetComposizioneMezzi>();
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.GetPreAccoppiati.IGetPreAccoppiati,
                 FakePersistenceJSon.Composizione.GetPreAccoppiati>();
@@ -111,10 +116,10 @@ namespace SO115App.CompositionRoot
                 FakePersistence.JSon.GestioneMezzi.GetStatoMezzi>();
             container.Register<
          SO115App.Models.Servizi.Infrastruttura.Composizione.IUpdateConfermaPartenze,
-         ExternalAPI.Fake.Composizione.UpdateConfermaPartenzeExt>(); //TODO gestione composition Root per l'externalAPI
+            UpdateConfermaPartenze>();
             container.Register<
          SO115App.Models.Servizi.Infrastruttura.Composizione.IUpdateStatoPartenze,
-         ExternalAPI.Fake.Composizione.UpdateStatoPartenzaExt>(); //TODO gestione composition Root per l'externalAPI
+            UpdateStatoPartenza>();
             container.Register<
             SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi.IGetMezzoByCodice,
          SO115App.FakePersistence.JSon.GestioneMezzi.GetMezzoById>();
@@ -131,7 +136,7 @@ namespace SO115App.CompositionRoot
 
             container.Register<
                 SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi.IGetListaMezzi,
-                ExternalAPI.Fake.GestioneMezzi.GetListaMezziExt>(); //TODO gestione composition Root per l'externalAPI
+                GetListaMezzi>();
             container.Register<
             SO115App.Models.Servizi.Infrastruttura.Turni.IUpdateTurni,
             SO115App.FakePersistence.JSon.Turni.UpdateTurni>();
