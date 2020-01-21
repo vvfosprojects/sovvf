@@ -41,7 +41,7 @@ export class AggiungiUtenteModalComponent {
         this.form = this.formBuilder.group({
             utenti: [null, [Validators.required]],
             ruoli: [null, [Validators.required]],
-            sedi: [null, [Validators.required]],
+            sedi: [null, [Validators.required]]
         });
     }
 
@@ -70,6 +70,8 @@ export class AggiungiUtenteModalComponent {
         if (this.form.invalid) {
             return;
         }
+
+        console.log(this.form.value);
 
         //     let utente: Utente;
         //     // let sede: Sede;

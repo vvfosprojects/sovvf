@@ -18,18 +18,15 @@ import { GestioneUtente } from '../../../shared/interface/gestione-utente.interf
     providers: [DecimalPipe]
 })
 export class TabellaUtentiComponent {
+
     @Select(RicercaUtentiState.ricerca) ricerca$: Observable<any>;
     ricercaUtenti: any;
-
     @Select(GestioneUtentiState.lista_gestione_utenti) lista_gestione_utenti$: Observable<GestioneUtente[]>;
     lista_gestione_utenti: GestioneUtente[];
-
     @Select(TabellaUtentiState.utentiFiltrati) utentiFiltrati$: Observable<GestioneUtente[]>;
     utentiFiltrati: GestioneUtente[];
-
     @Select(TabellaUtentiState.pageSize) pageSize$: Observable<number>;
     pageSize: number;
-
     @Select(TabellaUtentiState.page) page$: Observable<number>;
     page: number;
 
@@ -47,7 +44,7 @@ export class TabellaUtentiComponent {
     }
 
     constructor(private store: Store,
-        private filter: FilterPipe) {
+                private filter: FilterPipe) {
         this.subscription.add(
             this.lista_gestione_utenti$.subscribe((utenti: GestioneUtente[]) => {
                 this.lista_gestione_utenti = makeCopy(utenti);
