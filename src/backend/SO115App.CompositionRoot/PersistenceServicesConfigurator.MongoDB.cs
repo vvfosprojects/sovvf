@@ -5,6 +5,7 @@ using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.Box;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Persistence.MongoDB;
+using SO115App.Persistence.MongoDB.Marker;
 
 namespace SO115App.CompositionRoot
 {
@@ -37,15 +38,20 @@ namespace SO115App.CompositionRoot
 
             #endregion BOX
 
+            #region MARKER
+
+            container.Register<
+                SO115App.Models.Servizi.Infrastruttura.Marker.IGetRichiesteMarker,
+                GetRichiesteMarker>();
+
+            #endregion MARKER
+
             #region DA TRASFORMARE SU MONGO
 
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.GetFiltri.IGetFiltri,
                 FakePersistenceJSon.Filtri.GetFiltri>();
 
-            container.Register<
-                SO115App.Models.Servizi.Infrastruttura.Marker.IGetRichiesteMarker,
-                FakePersistenceJSon.Marker.GetRichiesteMarker>();
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.Marker.IGetSediMarker,
                 FakePersistenceJSon.Marker.GetSediMarker>();
