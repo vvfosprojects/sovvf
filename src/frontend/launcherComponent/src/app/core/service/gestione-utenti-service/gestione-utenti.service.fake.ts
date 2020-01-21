@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { GestioneUtente } from '../../../shared/interface/gestione-utente.interface';
-import { of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { Role } from '../../../shared/model/utente.model';
+import { ResponseInterface } from '../../../shared/interface/response.interface';
 
 @Injectable({
     providedIn: 'root'
@@ -10,10 +11,10 @@ export class GestioneUtentiServiceFake {
 
     private gestioneUtenti: GestioneUtente[];
 
-    getGestioneUtenti() {
+    getUtenti(): Observable<ResponseInterface> {
         this.gestioneUtenti = [
             {
-                id_utente: '1',
+                id: '1',
                 nome: 'Mario',
                 cognome: 'Rossi',
                 ruolo: Role.CallTracker,
@@ -31,7 +32,7 @@ export class GestioneUtentiServiceFake {
                 }
             },
             {
-                id_utente: '2',
+                id: '2',
                 nome: 'Teresio',
                 cognome: 'Mancini',
                 ruolo: Role.GestoreRichieste,
@@ -47,13 +48,30 @@ export class GestioneUtentiServiceFake {
                     regione: 'Lazio',
                     provincia: 'Roma'
                 }
-            },
+            }
         ];
 
-        return of(this.gestioneUtenti);
+        const response: ResponseInterface = {
+            dataArray: this.gestioneUtenti,
+            pagination: {
+                page: 1,
+                limit: 10,
+                totalItems: this.gestioneUtenti.length,
+                totalFilteredItems: this.gestioneUtenti.length
+            }
+        };
+        return of(response);
     }
 
-    addUtente(nuovoUtente: GestioneUtente) {
-        this.gestioneUtenti.unshift(nuovoUtente);
+    updateUtente(utente: GestioneUtente): Observable<GestioneUtente> {
+        return of(utente);
+    }
+
+    addUtente(utente: GestioneUtente): Observable<GestioneUtente> {
+        return of(utente);
+    }
+
+    removeUtente(id: string): Observable<boolean> {
+        return of(true);
     }
 }

@@ -1,17 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { Utente } from 'src/app/shared/model/utente.model';
-import { Observable, Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Select, Store } from '@ngxs/store';
 import { SetRicercaUtenti } from './store/actions/ricerca-utenti/ricerca-utenti.actons';
 import { makeCopy } from '../../shared/helper/function';
-import { Sede } from '../../shared/model/sede.model';
 import { UtenteState } from '../navbar/store/states/operatore/utente.state';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { AddUtente, GetGestioneUtenti, RemoveUtente, ChangeRoleUtente } from './store/actions/gestione-utenti/gestione-utenti.actions';
-import { AggiungiUtenteModalComponent } from './aggiungi-utente-modal/aggiungi-utente-modal.component';
+import { GetUtentiGestione, OpenModalAddUtente, OpenModalRemoveUtente, UpdateUtenteGestione } from './store/actions/gestione-utenti/gestione-utenti.actions';
 import { GetRuoli } from './store/actions/ruoli/ruoli.actions';
 import { RuoliState } from './store/states/ruoli/ruoli.state';
-import { ConfirmModalComponent } from 'src/app/shared/modal/confirm-modal/confirm-modal.component';
+import { GestioneUtentiState } from './store/states/gestione-utenti/gestione-utenti.state';
+import { GestioneUtente } from '../../shared/interface/gestione-utente.interface';
+import { RicercaUtentiState } from './store/states/ricerca-utenti/ricerca-utenti.state';
+import { PaginationState } from '../../shared/store/states/pagination/pagination.state';
+import { LoadingState } from '../../shared/store/states/loading/loading.state';
 
 @Component({
     selector: 'app-gestione-utenti',
@@ -21,83 +23,63 @@ import { ConfirmModalComponent } from 'src/app/shared/modal/confirm-modal/confir
 export class GestioneUtentiComponent implements OnInit {
 
     @Select(UtenteState.utente) user$: Observable<Utente>;
-
+    @Select(GestioneUtentiState.listaUtenti) listaUtenti$: Observable<GestioneUtente[]>;
     @Select(RuoliState.ruoli) ruoli$: Observable<Array<any>>;
-    ruoli: Array<any>;
-
-    unitaOperativaAttuale: Sede;
-    subscription: Subscription = new Subscription();
+    @Select(RicercaUtentiState.ricerca) ricerca$: Observable<any>;
+    @Select(PaginationState.limit) pageSize$: Observable<number>;
+    @Select(PaginationState.totalItems) totalItems$: Observable<number>;
+    @Select(PaginationState.page) page$: Observable<number>;
+    @Select(LoadingState.loading) loading$: Observable<boolean>;
 
     constructor(public modalService: NgbModal,
                 private store: Store) {
-
-        this.store.dispatch(new GetGestioneUtenti());
-        this.store.dispatch(new GetRuoli());
-
-        this.subscription.add(
-            this.ruoli$.subscribe((ruoli: Array<any>) => {
-                this.ruoli = ruoli;
-            })
-        );
+        this.getRuoli();
+        this.getUtentiGestione();
+        this.getRicerca();
     }
 
     onRicercaUtenti(ricerca: any) {
-        this.store.dispatch(new SetRicercaUtenti(makeCopy(ricerca)));
+        this.store.dispatch(new SetRicercaUtenti(ricerca));
     }
 
     ngOnInit(): void {
-        this.user$.subscribe((utente: Utente) => {
-            this.unitaOperativaAttuale = utente.sede;
+    }
+
+    onAddUtente() {
+        this.store.dispatch(new OpenModalAddUtente());
+        // TODO: DEBUG
+        // console.warn('add utente modal');
+    }
+
+    onUpdateUtente(utenteGestione: any) {
+        this.store.dispatch(new UpdateUtenteGestione(utenteGestione.utente.id_utente));
+        // TODO: DEBUG
+        // const utente = event.utente.nome + ' ' + event.utente.cognome;
+        // const ruolo = event.ruoli;
+        // const sede = event.sede.descrizione;
+        // console.warn(utente + ' è diventato ' + ruolo + ' nel ' + sede);
+    }
+
+    onRemoveUtente(id: any) {
+        this.store.dispatch(new OpenModalRemoveUtente(id));
+        // TODO: DEBUG
+        // const utente = event.utente.nome + ' ' + event.utente.cognome;
+        // const ruolo = event.ruoli;
+        // const sede = event.sede.descrizione;
+        // console.warn('remove utente modal (' + id + ')');
+    }
+
+    getUtentiGestione() {
+        this.store.dispatch(new GetUtentiGestione());
+    }
+
+    getRuoli() {
+        this.store.dispatch(new GetRuoli());
+    }
+
+    getRicerca() {
+        this.ricerca$.subscribe(() => {
+            this.store.dispatch(new GetUtentiGestione());
         });
-    }
-
-    onAggiungiUtente() {
-        const aggiungiUtenteModal = this.modalService.open(AggiungiUtenteModalComponent, { backdropClass: 'light-blue-backdrop', centered: true, size: 'lg' });
-        aggiungiUtenteModal.componentInstance.ruoli = this.ruoli;
-        aggiungiUtenteModal.result.then(
-            (risultatoModal) => {
-                if (risultatoModal[0] === 'ok') {
-                    this.store.dispatch(new AddUtente(
-                        risultatoModal[1]
-                    ));
-                }
-                // console.log('Modal chiusa con val ->', val);
-            },
-            (err) => console.error('Modal chiusa senza bottoni. Err ->', err)
-        );
-    }
-
-    onSetRuolo(event: any) {
-        const utente = event.utente.nome + ' ' + event.utente.cognome;
-        const ruolo = event.ruoli;
-        const sede = event.sede.descrizione;
-        console.warn(utente + ' è diventato ' + ruolo + ' nel ' + sede);
-        this.store.dispatch(new ChangeRoleUtente(event.utente.id_utente, event.ruoli));
-    }
-
-    onEliminaGestioneUtente(event: any) {
-        const modalConfermaAnnulla = this.modalService.open(ConfirmModalComponent, { backdropClass: 'light-blue-backdrop', centered: true });
-        modalConfermaAnnulla.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
-        modalConfermaAnnulla.componentInstance.titolo = 'Elimina permesso utente';
-        modalConfermaAnnulla.componentInstance.messaggioAttenzione = 'Sei sicuro di voler eliminare questo utente dai permessi?';
-        modalConfermaAnnulla.componentInstance.bottoni = [
-            { type: 'ko', descrizione: 'Annulla', colore: 'danger' },
-            { type: 'ok', descrizione: 'Conferma', colore: 'dark' },
-        ];
-
-        modalConfermaAnnulla.result.then(
-            (val) => {
-                switch (val) {
-                    case 'ok':
-                        this.store.dispatch(new RemoveUtente(event.id_utente, event.codice_sede));
-                        break;
-                    case 'ko':
-                        // console.log('Azione annullata');
-                        break;
-                }
-                // console.log('Modal chiusa con val ->', val);
-            },
-            (err) => console.error('Modal chiusa senza bottoni. Err ->', err)
-        );
     }
 }
