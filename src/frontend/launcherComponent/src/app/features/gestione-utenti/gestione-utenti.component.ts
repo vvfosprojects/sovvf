@@ -39,7 +39,7 @@ export class GestioneUtentiComponent implements OnInit {
     }
 
     onRicercaUtenti(ricerca: any) {
-        this.store.dispatch(new SetRicercaUtenti(makeCopy(ricerca)));
+        this.store.dispatch(new SetRicercaUtenti(ricerca));
     }
 
     ngOnInit(): void {

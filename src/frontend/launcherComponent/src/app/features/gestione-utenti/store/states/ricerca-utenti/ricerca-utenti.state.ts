@@ -25,10 +25,7 @@ export class RicercaUtentiState {
 
     @Action(SetRicercaUtenti)
     setRicercaUtenti({ getState, patchState }: StateContext<RicercaUtentiStateModel>, action: SetRicercaUtenti) {
-        const state = getState();
-
         patchState({
-            ...state,
             ricerca: action.ricerca
         });
     }

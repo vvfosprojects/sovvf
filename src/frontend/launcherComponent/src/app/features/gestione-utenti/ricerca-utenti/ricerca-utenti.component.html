@@ -1,8 +1,10 @@
 <div class="input-group app-shadow">
-    <input [(ngModel)]="ricercaUtenti.cognome" class="form-control" type="text" placeholder="Chi stai cercando?"
+    <input [(ngModel)]="ricerca" class="form-control" type="text" placeholder="Chi stai cercando?"
            name="ricercaRichieste"
            id="ricercaRichieste"
-           appDebounceKeyUp (debounceKeyUp)="onRicercaUtenti()" [debounceTime]="600">
+           appDebounceKeyUp
+           (debounceKeyUp)="ricercaChange.emit(ricerca)"
+           [debounceTime]="600">
     <div class="input-group-append">
         <button class="btn btn-primary"><i class="fa fa-search text-light"></i></button>
     </div>
