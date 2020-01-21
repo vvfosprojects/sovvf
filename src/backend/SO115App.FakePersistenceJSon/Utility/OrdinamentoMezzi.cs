@@ -61,27 +61,27 @@ namespace SO115App.FakePersistence.JSon.Utility
                     switch (genere)
                     {
                         case "APS":
-                            ValoreAdeguatezzaMezzo = ValoreAdeguatezzaMezzo + Convert.ToDecimal(tipo.AdeguatezzaMezzo.APS);
+                            ValoreAdeguatezzaMezzo = ValoreAdeguatezzaMezzo + Convert.ToDecimal(tipo.AdeguatezzaMezzo.Aps);
                             break;
 
                         case "AS":
-                            ValoreAdeguatezzaMezzo = ValoreAdeguatezzaMezzo + Convert.ToDecimal(tipo.AdeguatezzaMezzo.AS);
+                            ValoreAdeguatezzaMezzo = ValoreAdeguatezzaMezzo + Convert.ToDecimal(tipo.AdeguatezzaMezzo.As);
                             break;
 
                         case "AB":
-                            ValoreAdeguatezzaMezzo = ValoreAdeguatezzaMezzo + Convert.ToDecimal(tipo.AdeguatezzaMezzo.AB);
+                            ValoreAdeguatezzaMezzo = ValoreAdeguatezzaMezzo + Convert.ToDecimal(tipo.AdeguatezzaMezzo.Ab);
                             break;
 
                         case "AV":
-                            ValoreAdeguatezzaMezzo = ValoreAdeguatezzaMezzo + Convert.ToDecimal(tipo.AdeguatezzaMezzo.AV);
+                            ValoreAdeguatezzaMezzo = ValoreAdeguatezzaMezzo + Convert.ToDecimal(tipo.AdeguatezzaMezzo.Av);
                             break;
 
                         case "AG":
-                            ValoreAdeguatezzaMezzo = ValoreAdeguatezzaMezzo + Convert.ToDecimal(tipo.AdeguatezzaMezzo.AG);
+                            ValoreAdeguatezzaMezzo = ValoreAdeguatezzaMezzo + Convert.ToDecimal(tipo.AdeguatezzaMezzo.Ag);
                             break;
 
                         default:
-                            ValoreAdeguatezzaMezzo = ValoreAdeguatezzaMezzo + Convert.ToDecimal(tipo.AdeguatezzaMezzo.DEFAULT);
+                            ValoreAdeguatezzaMezzo = ValoreAdeguatezzaMezzo + Convert.ToDecimal(tipo.AdeguatezzaMezzo.Default);
                             break;
                     }
                 }
@@ -106,7 +106,7 @@ namespace SO115App.FakePersistence.JSon.Utility
             {
                 Tipologia tipo = Navbar.Tipologie.LastOrDefault(x => x.Codice.Equals(tipologia.Codice));
 
-                IndiceSganciamento += tipo.OpportunitaSganciamento;
+                IndiceSganciamento += tipo.OppSganc;
             }
 
             return IndiceSganciamento;
