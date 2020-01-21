@@ -33,7 +33,7 @@ namespace DomainModel.CQRS.Commands.ChiamataInCorsoMarker
 
         public void Handle(CancellazioneChiamataInCorsoMarkerCommand command)
         {
-            _iDelChiamataInCorso.DeleteChiamataInCorso(command.ChiamataInCorso.id);
+            _iDelChiamataInCorso.DeleteChiamataInCorso(command.ChiamataInCorso.Id);
         }
     }
 }
