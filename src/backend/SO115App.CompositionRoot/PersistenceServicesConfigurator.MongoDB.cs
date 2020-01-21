@@ -26,6 +26,9 @@ namespace SO115App.CompositionRoot
             container.Register<IGetRichiestaById, GetRichiesta>();
             container.Register<IGetListaSintesi, GetRichiesta>();
 
+            container.Register<Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie.IGetTipologieByCodice,
+                Persistence.MongoDB.GestioneInterventi.GestioneTipologie.GetTipologieByCodice>();
+
             #endregion Gestione richiesta di assistenza
 
             #region BOX
