@@ -64,8 +64,9 @@ namespace SO115App.CompositionRoot
                 SO115App.FakePersistenceJSon.Navbar.GetNavbar>();
 
             container.Register<
-                SO115App.Models.Servizi.Infrastruttura.Marker.IChiamateInCorso,
-                FakePersistenceJSon.Marker.AddChiamateInCorso>();
+                SO115App.Models.Servizi.Infrastruttura.Marker.IAddChiamataInCorso,
+                SO115App.Persistence.MongoDB.Marker.AddChiamataInCorso>();
+
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.Marker.IGetChiamateInCorso,
                 FakePersistenceJSon.Marker.GetChiamateInCorso>();

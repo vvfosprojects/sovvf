@@ -82,7 +82,7 @@ namespace SO115App.CompositionRoot
                 SO115App.FakePersistenceJSon.Navbar.GetNavbar>();
 
             container.Register<
-                SO115App.Models.Servizi.Infrastruttura.Marker.IChiamateInCorso,
+                SO115App.Models.Servizi.Infrastruttura.Marker.IAddChiamataInCorso,
                 FakePersistenceJSon.Marker.AddChiamateInCorso>();
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.Marker.IGetChiamateInCorso,
