@@ -5,7 +5,7 @@ export interface GestioneUtente {
     /**
      * id utente
      */
-    id_utente: string;
+    id: string;
     /**
      * nome
      */

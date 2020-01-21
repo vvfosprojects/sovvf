@@ -1,14 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
-import { Observable, Subscription } from 'rxjs';
-import { Select, Store } from '@ngxs/store';
-import { RicercaUtentiState } from '../store/states/ricerca-utenti/ricerca-utenti.state';
-import { FilterPipe } from 'ngx-filter-pipe';
-import { makeCopy } from '../../../shared/helper/function';
-import { TabellaUtentiState } from '../store/states/tabella-utenti/tabella-utenti.state';
-import { SetPage, SetPageSize, SetUtentiFiltrati } from '../store/actions/tabella-utenti/tabella-utenti.actons';
-import { Sede } from '../../../shared/model/sede.model';
-import { GestioneUtentiState } from '../store/states/gestione-utenti/gestione-utenti.state';
 import { GestioneUtente } from '../../../shared/interface/gestione-utente.interface';
 
 
@@ -19,104 +10,25 @@ import { GestioneUtente } from '../../../shared/interface/gestione-utente.interf
 })
 export class TabellaUtentiComponent {
 
-    @Select(RicercaUtentiState.ricerca) ricerca$: Observable<any>;
-    ricercaUtenti: any;
-    @Select(GestioneUtentiState.lista_gestione_utenti) lista_gestione_utenti$: Observable<GestioneUtente[]>;
-    lista_gestione_utenti: GestioneUtente[];
-    @Select(TabellaUtentiState.utentiFiltrati) utentiFiltrati$: Observable<GestioneUtente[]>;
-    utentiFiltrati: GestioneUtente[];
-    @Select(TabellaUtentiState.pageSize) pageSize$: Observable<number>;
-    pageSize: number;
-    @Select(TabellaUtentiState.page) page$: Observable<number>;
-    page: number;
-
     @Input() ruoli: Array<any>;
+    @Input() listaUtenti: GestioneUtente[];
+    @Input() page: number;
+    @Input() pageSize: number;
+    @Input() totalItems: number;
+    @Input() loading: boolean;
 
-    @Output() setRuolo: EventEmitter<any> = new EventEmitter();
-    @Output() eliminaGestioneUtente: EventEmitter<any> = new EventEmitter();
+    @Output() update: EventEmitter<any> = new EventEmitter<any>();
+    @Output() remove: EventEmitter<any> = new EventEmitter<any>();
+    @Output() pageChange: EventEmitter<number> = new EventEmitter<number>();
 
-    subscription = new Subscription();
-
-    get utentiPaginati(): GestioneUtente[] {
-        return this.utentiFiltrati
-            .map((utente, i) => ({ id: i + 1, ...utente }))
-            .slice((this.page - 1) * this.pageSize, (this.page - 1) * this.pageSize + this.pageSize);
+    constructor() {
     }
 
-    constructor(private store: Store,
-                private filter: FilterPipe) {
-        this.subscription.add(
-            this.lista_gestione_utenti$.subscribe((utenti: GestioneUtente[]) => {
-                this.lista_gestione_utenti = makeCopy(utenti);
-                this.lista_gestione_utenti.map(r => {
-                    r.cognome = r.nome + ' ' + r.cognome;
-                    r.nome = '';
-                });
-                this.utentiFiltrati = this.filtraRichieste(this.ricercaUtenti);
-            })
-        );
-        this.subscription.add(
-            this.ricerca$.subscribe((ricerca: any) => {
-                this.ricercaUtenti = ricerca;
-                this.utentiFiltrati = this.filtraRichieste(ricerca);
-            })
-        );
-        this.subscription.add(
-            this.pageSize$.subscribe((pageSize: number) => {
-                this.pageSize = pageSize;
-            })
-        );
-        this.subscription.add(
-            this.page$.subscribe((page: number) => {
-                this.page = page;
-            })
-        );
-        this.subscription.add(
-            this.utentiFiltrati$.subscribe((utentiFiltrati: GestioneUtente[]) => {
-                this.utentiFiltrati = utentiFiltrati;
-            })
-        );
+    onUpdate(utente: GestioneUtente) {
+        this.update.emit(utente);
     }
 
-    filtraRichieste(ricerca: any): any {
-        const utentiFiltrati = this.filter.transform(this.lista_gestione_utenti, ricerca);
-        this.setUtentiFiltrati(utentiFiltrati);
-    }
-
-    setUtentiFiltrati(utentiFIltrati: GestioneUtente[]) {
-        this.store.dispatch(new SetUtentiFiltrati(utentiFIltrati));
-    }
-
-    setPageSize(pageSize: number) {
-        if (this.page > 1 || this.page !== 1) {
-            this.store.dispatch(new SetPage(1));
-        }
-        this.store.dispatch(new SetPageSize(pageSize));
-    }
-
-    setPage(newPage: number) {
-        this.store.dispatch(new SetPage(newPage));
-    }
-
-    onSetRuolo(utente: GestioneUtente, nuovoRuolo: any, sede: Sede) {
-        if (utente.ruolo === nuovoRuolo) {
-            const nuovoUtente = {
-                utente: utente,
-                ruolo: null,
-                sede: sede
-            };
-            this.setRuolo.emit(nuovoUtente);
-        } else {
-            const nuovoUtente = {
-                utente: utente,
-                ruolo: nuovoRuolo,
-                sede: sede
-            };
-            this.setRuolo.emit(nuovoUtente);
-        }
-    }
-
-    onEliminaGestioneUtente(id_utente: string, codice_sede: string) {
-        this.eliminaGestioneUtente.emit({ id_utente: id_utente, codice_sede: codice_sede });
+    onRemove(id: string) {
+        this.remove.emit(id);
     }
 }

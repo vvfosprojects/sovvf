@@ -1,14 +1,15 @@
 <div class="container pt-4 pb-2">
     <div class="row">
         <div class="col-12 mb-2">
-            <h2>Gestione Utenti
-                <small *ngIf="unitaOperativaAttuale">({{unitaOperativaAttuale.descrizione}})</small>
+            <h2>
+                Gestione Utenti
+                <small *ngIf="(user$ | async)">({{(user$ | async).sede.descrizione}})</small>
             </h2>
         </div>
         <div class="col-12">
             <div class="row">
                 <div class="col">
-                    <button class="btn btn-primary ml-2 mb-2" (click)="onAggiungiUtente()"><i
+                    <button class="btn btn-primary ml-2 mb-2" (click)="onAddUtente()"><i
                             class="fa fa-plus mr-1"></i>Aggiungi Utente
                     </button>
                 </div>
@@ -18,7 +19,12 @@
             </div>
         </div>
         <div class="col-12 mx-auto">
-            <app-tabella-utenti [ruoli]="ruoli" (setRuolo)="onSetRuolo($event)" (eliminaGestioneUtente)="onEliminaGestioneUtente($event)"></app-tabella-utenti>
+            <app-tabella-utenti [ruoli]="ruoli$ | async"
+                                [listaUtenti]="listaUtenti$ | async"
+                                [pageSize]="pageSize$ | async"
+                                [page]="page$ | async"
+                                (update)="onUpdateUtente($event)"
+                                (remove)="onRemoveUtente($event)"></app-tabella-utenti>
         </div>
     </div>
 </div>

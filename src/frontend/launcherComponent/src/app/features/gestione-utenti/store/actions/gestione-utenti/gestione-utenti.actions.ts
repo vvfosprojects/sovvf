@@ -1,50 +1,41 @@
 import { GestioneUtente } from '../../../../../shared/interface/gestione-utente.interface';
-import { Role } from 'src/app/shared/model/utente.model';
 
-export class GetGestioneUtenti {
-    static readonly type = '[GestioneUtenti] Get data';
+export class GetUtentiGestione {
+    static readonly type = '[GestioneUtenti] Get List Utenti';
 
     constructor() { }
 }
 
-export class SetGestioneUtenti {
-    static readonly type = '[GestioneUtenti] Set data';
+export class SetUtentiGestione {
+    static readonly type = '[GestioneUtenti] Set List Utenti';
 
-    constructor(public gestioneUtenti: GestioneUtente[]) { }
+    constructor(public utenti: GestioneUtente[]) { }
 }
 
-export class ChangeRoleUtente {
-    static readonly type = '[GestioneUtenti] Change Role utente';
+export class UpdateUtenteGestione {
+    static readonly type = '[GestioneUtenti] Update Utente';
 
-    constructor(public idUtente: string, public ruolo: Role) { }
+    constructor(public utente: GestioneUtente) { }
 }
 
-export class ChangeRoleUtenteSuccess {
-    static readonly type = '[GestioneUtenti] Change Role utente success';
-
-    constructor(public idUtente: string, public ruolo: Role) { }
+export class OpenModalAddUtente {
+    static readonly type = '[GestioneUtenti] Open Modal Add Utente';
 }
 
 export class AddUtente {
-    static readonly type = '[GestioneUtenti] Add utente';
+    static readonly type = '[GestioneUtenti] Add Utente';
 
-    constructor(public nuovoUtente: GestioneUtente) { }
+    constructor(public utente: GestioneUtente) { }
 }
 
-export class AddUtenteSuccess {
-    static readonly type = '[GestioneUtenti] Add utente success';
+export class OpenModalRemoveUtente {
+    static readonly type = '[GestioneUtenti] Open Modal Remove Utente';
 
-    constructor(public nuovoUtente: GestioneUtente) { }
+    constructor(public id: string) { }
 }
 
 export class RemoveUtente {
-    static readonly type = '[GestioneUtenti] Remove utente';
+    static readonly type = '[GestioneUtenti] Remove Utente';
 
-    constructor(public id_utente: string, public codice_sede: string) { }
-}
-
-export class RemoveUtenteSuccess {
-    static readonly type = '[GestioneUtenti] Remove utente success';
-
-    constructor(public id_utente: string, public codice_sede: string) { }
+    constructor(public id: string) { }
 }
