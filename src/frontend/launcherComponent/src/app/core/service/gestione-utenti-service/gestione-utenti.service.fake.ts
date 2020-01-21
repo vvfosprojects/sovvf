@@ -54,7 +54,10 @@ export class GestioneUtentiServiceFake {
         const response: ResponseInterface = {
             dataArray: this.gestioneUtenti,
             pagination: {
-                page: 1
+                page: 1,
+                limit: 10,
+                totalItems: this.gestioneUtenti.length,
+                totalFilteredItems: this.gestioneUtenti.length
             }
         };
         return of(response);

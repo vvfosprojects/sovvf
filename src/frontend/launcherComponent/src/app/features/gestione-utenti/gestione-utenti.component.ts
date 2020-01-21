@@ -13,6 +13,7 @@ import { GestioneUtentiState } from './store/states/gestione-utenti/gestione-ute
 import { GestioneUtente } from '../../shared/interface/gestione-utente.interface';
 import { RicercaUtentiState } from './store/states/ricerca-utenti/ricerca-utenti.state';
 import { PaginationState } from '../../shared/store/states/pagination/pagination.state';
+import { LoadingState } from '../../shared/store/states/loading/loading.state';
 
 @Component({
     selector: 'app-gestione-utenti',
@@ -26,7 +27,9 @@ export class GestioneUtentiComponent implements OnInit {
     @Select(RuoliState.ruoli) ruoli$: Observable<Array<any>>;
     @Select(RicercaUtentiState.ricerca) ricerca$: Observable<any>;
     @Select(PaginationState.limit) pageSize$: Observable<number>;
+    @Select(PaginationState.totalItems) totalItems$: Observable<number>;
     @Select(PaginationState.page) page$: Observable<number>;
+    @Select(LoadingState.loading) loading$: Observable<boolean>;
 
     constructor(public modalService: NgbModal,
                 private store: Store) {

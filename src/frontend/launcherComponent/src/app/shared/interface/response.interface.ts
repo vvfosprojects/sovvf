@@ -1,4 +1,4 @@
-import { PaginationInterface } from '../pagination.interface';
+import { PaginationInterface } from './pagination.interface';
 
 export interface ResponseInterface {
     dataArray?: any[];

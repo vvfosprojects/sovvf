@@ -64,8 +64,7 @@ import { PaginationState } from '../../shared/store/states/pagination/pagination
                 RicercaUtentiState,
                 GestioneUtentiState,
                 UtentiState,
-                RuoliState,
-                PaginationState
+                RuoliState
             ]
         ),
         NgxPaginationModule,
