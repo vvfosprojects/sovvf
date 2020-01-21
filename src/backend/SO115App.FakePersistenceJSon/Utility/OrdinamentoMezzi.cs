@@ -52,40 +52,31 @@ namespace SO115App.FakePersistence.JSon.Utility
             }
             Navbar Navbar = JsonConvert.DeserializeObject<Navbar>(json);
 
-            foreach (Tipologia tipologia in ListaTipologieDestinazione)
-            {
-                Tipologia tipo = Navbar.Tipologie.Where(x => x.Codice.Equals(tipologia.Codice)).LastOrDefault();
+            //foreach (Tipologia tipologia in ListaTipologieDestinazione)
+            //{
+            //    Tipologia tipo = Navbar.Tipologie.Where(x => x.Codice.Equals(tipologia.Codice)).LastOrDefault();
 
-                if (tipo != null)
-                {
-                    switch (genere)
-                    {
-                        case "APS":
-                            ValoreAdeguatezzaMezzo = ValoreAdeguatezzaMezzo + Convert.ToDecimal(tipo.AdeguatezzaMezzo.Aps);
-                            break;
+            // if (tipo != null) { switch (genere) { case "APS": ValoreAdeguatezzaMezzo =
+            // ValoreAdeguatezzaMezzo + Convert.ToDecimal(tipo.AdeguatezzaMezzo.Aps); break;
 
-                        case "AS":
-                            ValoreAdeguatezzaMezzo = ValoreAdeguatezzaMezzo + Convert.ToDecimal(tipo.AdeguatezzaMezzo.As);
-                            break;
+            // case "AS": ValoreAdeguatezzaMezzo = ValoreAdeguatezzaMezzo +
+            // Convert.ToDecimal(tipo.AdeguatezzaMezzo.As); break;
 
-                        case "AB":
-                            ValoreAdeguatezzaMezzo = ValoreAdeguatezzaMezzo + Convert.ToDecimal(tipo.AdeguatezzaMezzo.Ab);
-                            break;
+            // case "AB": ValoreAdeguatezzaMezzo = ValoreAdeguatezzaMezzo +
+            // Convert.ToDecimal(tipo.AdeguatezzaMezzo.Ab); break;
 
-                        case "AV":
-                            ValoreAdeguatezzaMezzo = ValoreAdeguatezzaMezzo + Convert.ToDecimal(tipo.AdeguatezzaMezzo.Av);
-                            break;
+            // case "AV": ValoreAdeguatezzaMezzo = ValoreAdeguatezzaMezzo +
+            // Convert.ToDecimal(tipo.AdeguatezzaMezzo.Av); break;
 
-                        case "AG":
-                            ValoreAdeguatezzaMezzo = ValoreAdeguatezzaMezzo + Convert.ToDecimal(tipo.AdeguatezzaMezzo.Ag);
-                            break;
+            // case "AG": ValoreAdeguatezzaMezzo = ValoreAdeguatezzaMezzo +
+            // Convert.ToDecimal(tipo.AdeguatezzaMezzo.Ag); break;
 
-                        default:
-                            ValoreAdeguatezzaMezzo = ValoreAdeguatezzaMezzo + Convert.ToDecimal(tipo.AdeguatezzaMezzo.Default);
-                            break;
-                    }
-                }
-            }
+            //            default:
+            //                ValoreAdeguatezzaMezzo = ValoreAdeguatezzaMezzo + Convert.ToDecimal(tipo.AdeguatezzaMezzo.Default);
+            //                break;
+            //        }
+            //    }
+            //}
 
             return ValoreAdeguatezzaMezzo;
         }
@@ -102,12 +93,12 @@ namespace SO115App.FakePersistence.JSon.Utility
 
             int IndiceSganciamento = 0;
 
-            foreach (Tipologia tipologia in ListaTipologieOrigine)
-            {
-                Tipologia tipo = Navbar.Tipologie.LastOrDefault(x => x.Codice.Equals(tipologia.Codice));
+            //foreach (Tipologia tipologia in ListaTipologieOrigine)
+            //{
+            //    Tipologia tipo = Navbar.Tipologie.LastOrDefault(x => x.Codice.Equals(tipologia.Codice));
 
-                IndiceSganciamento += tipo.OppSganc;
-            }
+            //    IndiceSganciamento += tipo.OppSganc;
+            //}
 
             return IndiceSganciamento;
         }

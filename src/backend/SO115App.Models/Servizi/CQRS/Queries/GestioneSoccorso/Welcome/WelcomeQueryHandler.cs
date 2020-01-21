@@ -28,6 +28,7 @@ using SO115App.Models.Classi.Marker;
 using System.Collections.Generic;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneSchedeNue.GetContatoreSchede;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
+using SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.Tipologie;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
 {
@@ -44,6 +45,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
         private readonly IQueryHandler<CentroMappaMarkerQuery, CentroMappaMarkerResult> _centroMappaMarkerHandler;
         private readonly IQueryHandler<FiltriQuery, FiltriResult> _filtriHandler;
         private readonly IQueryHandler<GetConteggioSchedeQuery, GetConteggioSchedeResult> _getConteggioSchedeHandler;
+        private readonly IQueryHandler<TipologieQuery, TipologieResult> _tipologieQueryHandler;
 
         public WelcomeQueryHandler(IQueryHandler<BoxMezziQuery, BoxMezziResult> boxMezziHandler,
             IQueryHandler<BoxPersonaleQuery, BoxPersonaleResult> boxPersonaleHandler,
@@ -52,7 +54,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
             IQueryHandler<ListaChiamateInCorsoMarkerQuery, ListaChiamateInCorsoMarkerResult> listaChiamateInCorsoMarkerHandler,
             IQueryHandler<CentroMappaMarkerQuery, CentroMappaMarkerResult> centroMappaMarkerHandler,
             IQueryHandler<FiltriQuery, FiltriResult> filtriHandler,
-            IQueryHandler<GetConteggioSchedeQuery, GetConteggioSchedeResult> getConteggioSchedeHandler)
+            IQueryHandler<GetConteggioSchedeQuery, GetConteggioSchedeResult> getConteggioSchedeHandler,
+            IQueryHandler<TipologieQuery, TipologieResult> tipologieQueryHandler)
         {
             this._boxMezziHandler = boxMezziHandler;
             this._boxPersonaleHandler = boxPersonaleHandler;
@@ -62,6 +65,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
             this._centroMappaMarkerHandler = centroMappaMarkerHandler;
             this._filtriHandler = filtriHandler;
             this._getConteggioSchedeHandler = getConteggioSchedeHandler;
+            this._tipologieQueryHandler = tipologieQueryHandler;
         }
 
         /// <summary>
@@ -75,10 +79,12 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
             {
                 CodiceSede = query.CodiceSede
             };
+
             var boxPersonaleQuery = new BoxPersonaleQuery()
             {
                 CodiceSede = query.CodiceSede
             };
+
             var boxRichiesteQuery = new BoxRichiesteQuery()
             {
                 CodiceSede = query.CodiceSede
@@ -95,20 +101,25 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
                 CodiceSede = query.CodiceSede,
                 Filtro = filtro
             };
+
             var listaQuery = new ListaChiamateInCorsoMarkerQuery()
             {
                 CodiceSede = query.CodiceSede
             };
+
             var centroMappaQuery = new CentroMappaMarkerQuery()
             {
                 CodiceSede = query.CodiceSede
             };
+
             var listaFiltriQuery = new FiltriQuery();
 
             var getConteggioSchede = new GetConteggioSchedeQuery()
             {
                 CodiceSede = query.CodiceSede
             };
+
+            var tipologie = new TipologieQuery();
 
             var welcome = new SO115App.Models.Classi.Condivise.Welcome()
             {
@@ -119,7 +130,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
                 ListaSintesi = (List<SintesiRichiesta>)_sintesiRichiesteAssistenzaHandler.Handle(sintesiRichiesteAssistenzaQuery).SintesiRichiesta,
                 CentroMappaMarker = _centroMappaMarkerHandler.Handle(centroMappaQuery).CentroMappaMarker,
                 ListaFiltri = _filtriHandler.Handle(listaFiltriQuery).Filtri,
-                InfoNue = _getConteggioSchedeHandler.Handle(getConteggioSchede).InfoNue
+                InfoNue = _getConteggioSchedeHandler.Handle(getConteggioSchede).InfoNue,
+                Tipologie = _tipologieQueryHandler.Handle(tipologie).Tipologie
             };
 
             return new WelcomeResult()

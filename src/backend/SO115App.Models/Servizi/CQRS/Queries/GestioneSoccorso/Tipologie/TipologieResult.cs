@@ -1,5 +1,5 @@
-//-----------------------------------------------------------------------
-// <copyright file="Navbar.cs" company="CNVVF">
+﻿//-----------------------------------------------------------------------
+// <copyright file="TipologieResult.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,13 +17,13 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using SO115App.API.Models.Classi.Organigramma;
+using SO115App.API.Models.Classi.Condivise;
+using System.Collections.Generic;
 
-namespace SO115App.API.Models.Classi.Navbar
+namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.Tipologie
 {
-    public class Navbar
+    public class TipologieResult
     {
-        public UnitaOperativa ListaSedi { get; set; }
-
+        public List<Tipologia> Tipologie { get; set; }
     }
 }
