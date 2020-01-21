@@ -3,7 +3,6 @@ import { Utente } from 'src/app/shared/model/utente.model';
 import { Observable } from 'rxjs';
 import { Select, Store } from '@ngxs/store';
 import { SetRicercaUtenti } from './store/actions/ricerca-utenti/ricerca-utenti.actons';
-import { makeCopy } from '../../shared/helper/function';
 import { UtenteState } from '../navbar/store/states/operatore/utente.state';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { GetUtentiGestione, OpenModalAddUtente, OpenModalRemoveUtente, UpdateUtenteGestione } from './store/actions/gestione-utenti/gestione-utenti.actions';
@@ -14,6 +13,7 @@ import { GestioneUtente } from '../../shared/interface/gestione-utente.interface
 import { RicercaUtentiState } from './store/states/ricerca-utenti/ricerca-utenti.state';
 import { PaginationState } from '../../shared/store/states/pagination/pagination.state';
 import { LoadingState } from '../../shared/store/states/loading/loading.state';
+import { GetPermessi } from './store/actions/permessi/permessi.actions';
 
 @Component({
     selector: 'app-gestione-utenti',
@@ -33,8 +33,9 @@ export class GestioneUtentiComponent implements OnInit {
 
     constructor(public modalService: NgbModal,
                 private store: Store) {
-        this.getRuoli();
         this.getUtentiGestione();
+        this.getRuoli();
+        this.getPermessi();
         this.getRicerca();
     }
 
@@ -75,6 +76,10 @@ export class GestioneUtentiComponent implements OnInit {
 
     getRuoli() {
         this.store.dispatch(new GetRuoli());
+    }
+
+    getPermessi() {
+        this.store.dispatch(new GetPermessi());
     }
 
     getRicerca() {

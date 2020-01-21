@@ -41,7 +41,8 @@ import { GestioneUtentiState } from './store/states/gestione-utenti/gestione-ute
 import { UtentiState } from '../home/store/states/utenti/utenti.state';
 import { RuoliState } from './store/states/ruoli/ruoli.state';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { PaginationState } from '../../shared/store/states/pagination/pagination.state';
+import { PermessiService } from '../../core/service/permessi-service/permessi-service.service';
+import { PermessiServiceFake } from '../../core/service/permessi-service/permessi.service.fake';
 
 
 @NgModule({
@@ -71,8 +72,9 @@ import { PaginationState } from '../../shared/store/states/pagination/pagination
     ],
     entryComponents: [AggiungiUtenteModalComponent, ConfirmModalComponent],
     providers: [
-        {provide: GestioneUtentiService, useClass: GestioneUtentiServiceFake},
-        {provide: RuoliService, useClass: RuoliServiceFake}
+        { provide: GestioneUtentiService, useClass: GestioneUtentiServiceFake },
+        { provide: RuoliService, useClass: RuoliServiceFake },
+        { provide: PermessiService, useClass: PermessiServiceFake },
     ]
 })
 export class GestioneUtentiModule {

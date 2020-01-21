@@ -1,11 +1,9 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
-// Action
 import { GetRuoli, SetRuoli } from '../../actions/ruoli/ruoli.actions';
-// Service
 import { RuoliService } from '../../../../../core/service/ruoli-service/ruoli-service.service';
 
 export interface RuoliStateModel {
-    ruoli: Array<string>;
+    ruoli: string[];
 }
 
 export const RuoliStateDefaults: RuoliStateModel = {
@@ -21,13 +19,11 @@ export class RuoliState {
     constructor(private _ruoli: RuoliService) {
     }
 
-    // SELECTORS
     @Selector()
     static ruoli(state: RuoliStateModel) {
         return state.ruoli;
     }
 
-    // GET
     @Action(GetRuoli)
     getRuoli({ dispatch }: StateContext<RuoliStateModel>) {
         this._ruoli.getRuoli().subscribe((ruoli: Array<string>) => {
@@ -35,13 +31,9 @@ export class RuoliState {
         });
     }
 
-    // SET
     @Action(SetRuoli)
-    setRuoli({ getState, patchState }: StateContext<RuoliStateModel>, action: SetRuoli) {
-        const state = getState();
-
+    setRuoli({ patchState }: StateContext<RuoliStateModel>, action: SetRuoli) {
         patchState({
-            ...state,
             ruoli: action.ruoli
         });
     }
