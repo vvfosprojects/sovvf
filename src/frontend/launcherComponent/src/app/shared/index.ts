@@ -14,3 +14,5 @@ export * from './modal/action-richiesta-modal/action-richiesta-modal.component';
 export * from './components/partenza/partenza.component';
 export * from './components/mezzo/mezzo-actions/mezzo-actions.component';
 export * from './components/sintesi-richiesta-actions/sintesi-richiesta-actions.component';
+export * from './components/checkbox/checkbox.component';
+export * from './components/lista-partenze/lista-partenze.component';
