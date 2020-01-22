@@ -1,5 +1,6 @@
 export * from './directive/debounce-click';
 export * from './directive/debounce-keyup';
+export * from './directive/click-stop-propagation';
 export * from './modal/confirm-modal/confirm-modal.component';
 export * from './components/componente/componente.component';
 export * from './components/mezzo/mezzo.component';
@@ -13,3 +14,5 @@ export * from './modal/action-richiesta-modal/action-richiesta-modal.component';
 export * from './components/partenza/partenza.component';
 export * from './components/mezzo/mezzo-actions/mezzo-actions.component';
 export * from './components/sintesi-richiesta-actions/sintesi-richiesta-actions.component';
+export * from './components/checkbox/checkbox.component';
+export * from './components/lista-partenze/lista-partenze.component';

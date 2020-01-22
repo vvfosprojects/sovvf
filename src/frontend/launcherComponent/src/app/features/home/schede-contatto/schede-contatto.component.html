@@ -42,7 +42,7 @@
                 </ng-template>
                 <ng-template ngbTabContent>
                     <div class="row">
-                        <ul *ngIf="schedeContattoCompetenza.length > 0" class="col-12 my-2">
+                        <ul *ngIf="schedeContattoCompetenza.length > 0" class="col-12 my-2 list-unstyled">
                             <app-scheda-contatto *ngFor="let scheda of schedeContattoCompetenza"
                                                  [scheda]="scheda"
                                                  [idSchedaContattoHover]="codiceSchedaContattoHover"
@@ -71,7 +71,7 @@
                 </ng-template>
                 <ng-template ngbTabContent>
                     <div class="row">
-                        <ul *ngIf="schedeContattoDifferibili.length > 0" class="col-12 my-2">
+                        <ul *ngIf="schedeContattoDifferibili.length > 0" class="col-12 my-2 list-unstyled">
                             <app-scheda-contatto *ngFor="let scheda of schedeContattoDifferibili"
                                                  [scheda]="scheda"
                                                  [idSchedaContattoHover]="codiceSchedaContattoHover"
@@ -99,7 +99,7 @@
                 </ng-template>
                 <ng-template ngbTabContent>
                     <div class="row">
-                        <ul *ngIf="schedeContattoConoscenza.length > 0" class="col-12 my-2">
+                        <ul *ngIf="schedeContattoConoscenza.length > 0" class="col-12 my-2 list-unstyled">
                             <app-scheda-contatto *ngFor="let scheda of schedeContattoConoscenza"
                                                  [scheda]="scheda"
                                                  [idSchedaContattoHover]="codiceSchedaContattoHover"

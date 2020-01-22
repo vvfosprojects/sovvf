@@ -5,7 +5,7 @@
     </button>
 </div>
 <div class="modal-body height">
-    <form [formGroup]="form">
+    <form [formGroup]="nuovoUtenteForm" ngxsForm="gestioneUtenti.nuovoUtenteForm">
         <div class="mb-3">
             <ng-select
                     [items]="utenti$ | async"
@@ -21,15 +21,17 @@
         <div *ngIf="submitted && f.utenti.errors" class="invalid-feedback">
             <div *ngIf="f.utenti.errors.required">Campo Obbligatorio</div>
         </div>
-        <app-shared-treeview [items]="listeSediNavbar"
-                             [testoSedeSelezionata]="'Seleziona una o più sedi'"
-                             [placement]="'bottom-left'"
-                             [visualizzaTasti]="false"
-                             [maxHeight]="200"
-                             (confermaSelezione)="onPatchSedi($event)">
-        </app-shared-treeview>
-        <div *ngIf="submitted && f.sedi.errors" class="invalid-feedback">
-            <div *ngIf="f.sedi.errors.required">Campo Obbligatorio</div>
+        <div class="mb-3">
+            <app-shared-treeview [items]="listeSediNavbar"
+                                 [testoSedeSelezionata]="'Seleziona una o più sedi'"
+                                 [placement]="'bottom-left'"
+                                 [visualizzaTasti]="false"
+                                 [maxHeight]="200"
+                                 (confermaSelezione)="onPatchSedi($event)">
+            </app-shared-treeview>
+            <div *ngIf="submitted && f.sedi.errors" class="invalid-feedback">
+                <div *ngIf="f.sedi.errors.required">Campo Obbligatorio</div>
+            </div>
         </div>
         <div class="mb-3">
             <ng-select

@@ -9,7 +9,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { SediTreeviewState } from '../../../shared/store/states/sedi-treeview/sedi-treeview.state';
 import { TreeItem, TreeviewItem } from 'ngx-treeview';
 import { TreeviewSelezione } from '../../../shared/model/treeview-selezione.model';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
     selector: 'app-aggiungi-utente-modal',
@@ -24,29 +24,28 @@ export class AggiungiUtenteModalComponent {
     ruoli: Array<any>;
     sedi: Sede[];
 
-    form: FormGroup;
+    nuovoUtenteForm: FormGroup;
     submitted: boolean;
 
     subscription: Subscription = new Subscription();
 
     constructor(private store: Store,
-                private modal: NgbActiveModal,
-                private formBuilder: FormBuilder) {
+                private modal: NgbActiveModal) {
         this.store.dispatch(new GetUtenti());
         this.inizializzaSediTreeview();
         this.initForm();
     }
 
     initForm() {
-        this.form = this.formBuilder.group({
-            utenti: [null, [Validators.required]],
-            ruoli: [null, [Validators.required]],
-            sedi: [null, [Validators.required]]
+        this.nuovoUtenteForm = new FormGroup({
+            utenti: new FormControl(),
+            ruoli: new FormControl(),
+            sedi: new FormControl()
         });
     }
 
     get f() {
-        return this.form.controls;
+        return this.nuovoUtenteForm.controls;
     }
 
     inizializzaSediTreeview() {
@@ -67,11 +66,11 @@ export class AggiungiUtenteModalComponent {
     onConferma() {
         this.submitted = true;
 
-        if (this.form.invalid) {
+        if (this.nuovoUtenteForm.invalid) {
             return;
         }
 
-        console.log(this.form.value);
+        console.log(this.nuovoUtenteForm.value);
 
         //     let utente: Utente;
         //     // let sede: Sede;
