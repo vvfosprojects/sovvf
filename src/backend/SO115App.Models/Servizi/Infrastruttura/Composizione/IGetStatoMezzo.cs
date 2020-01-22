@@ -32,6 +32,6 @@ namespace SO115App.Models.Servizi.Infrastruttura.Composizione
         /// </summary>
         /// <param name="codiceSede">il codice della sede</param>
         /// <returns>La lista dei mezzi prenotati</returns>
-        List<StatoOperativoMezzo> Get(string codiceSede);
+        List<StatoOperativoMezzo> Get(string codiceSede, string codiceMezzo = null);
     }
 }
