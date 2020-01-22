@@ -17,6 +17,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using MongoDB.Bson.Serialization.Attributes;
 using System;
 
 namespace SO115App.Models.Classi.Condivise
@@ -24,6 +25,7 @@ namespace SO115App.Models.Classi.Condivise
     /// <summary>
     ///   Il mezzo prenotato
     /// </summary>
+    [BsonIgnoreExtraElements]
     public class StatoOperativoMezzo
     {
         /// <summary>

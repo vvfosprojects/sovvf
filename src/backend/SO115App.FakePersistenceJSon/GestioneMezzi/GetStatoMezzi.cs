@@ -36,7 +36,8 @@ namespace SO115App.FakePersistence.JSon.GestioneMezzi
         /// </summary>
         /// <param name="codiceSede">il codice della sede</param>
         /// <returns>Lista di MezzoPrenotato</returns>
-        public List<StatoOperativoMezzo> Get(string codiceSede)
+
+        public List<StatoOperativoMezzo> Get(string codiceSede, string codiceMezzo = null)
         {
             var filepath = CostantiJson.StatoMezzo;
             string json;
