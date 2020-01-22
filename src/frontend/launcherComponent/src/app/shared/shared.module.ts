@@ -12,6 +12,7 @@ import { SchedeContattoComponent } from '../features/home/schede-contatto/schede
 const COMPONENTS = [
     Shared.DebounceClickDirective,
     Shared.DebounceKeyUpDirective,
+    Shared.ClickStopPropagationDirective,
     Shared.ComponenteComponent,
     Shared.CompetenzaComponent,
     Shared.MezzoComponent,
@@ -37,7 +38,7 @@ const COMPONENTS = [
         TreeviewModule.forRoot()
     ],
     declarations: [
-        ...COMPONENTS,
+        ...COMPONENTS
     ],
     exports: [
         ...COMPONENTS
