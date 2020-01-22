@@ -43,6 +43,15 @@ namespace SO115App.CompositionRoot
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.Marker.IGetRichiesteMarker,
                 GetRichiesteMarker>();
+            container.Register<Models.Servizi.Infrastruttura.Marker.IAddChiamataInCorso,
+                AddChiamataInCorso>();
+            container.Register<Models.Servizi.Infrastruttura.Marker.IDeleteChiamataInCorso,
+                DeleteChiamataInCorso>();
+            container.Register<Models.Servizi.Infrastruttura.Marker.IUpDateChiamataInCorso,
+                UpdateChiamataInCorso>();
+            container.Register<
+                SO115App.Models.Servizi.Infrastruttura.Marker.IGetChiamateInCorso,
+                GetChiamateInCorso>();
 
             #endregion MARKER
 
@@ -63,19 +72,6 @@ namespace SO115App.CompositionRoot
                 SO115App.Models.Servizi.Infrastruttura.NavBar.IGetNavbar,
                 SO115App.FakePersistenceJSon.Navbar.GetNavbar>();
 
-            container.Register<
-                SO115App.Models.Servizi.Infrastruttura.Marker.IAddChiamataInCorso,
-                SO115App.Persistence.MongoDB.Marker.AddChiamataInCorso>();
-
-            container.Register<
-                SO115App.Models.Servizi.Infrastruttura.Marker.IGetChiamateInCorso,
-                FakePersistenceJSon.Marker.GetChiamateInCorso>();
-            container.Register<
-                SO115App.Models.Servizi.Infrastruttura.Marker.IDeleteChiamataInCorso,
-                FakePersistenceJSon.Marker.DelChiamataInCorso>();
-            container.Register<
-                SO115App.Models.Servizi.Infrastruttura.Marker.IUpDateChiamataInCorso,
-                FakePersistenceJSon.Marker.UpDateChiamateInCorso>();
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.GetComposizioneSquadre.IGetComposizioneSquadre,
                 FakePersistenceJSon.Composizione.GetComposizioneSquadre>();
