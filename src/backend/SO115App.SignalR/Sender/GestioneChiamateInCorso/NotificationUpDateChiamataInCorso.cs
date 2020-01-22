@@ -37,7 +37,7 @@ namespace SO115App.SignalR.Sender.GestioneChiamateInCorso
 
         public async Task SendNotification(UpDateChiamataInCorsoMarkerCommand chiamata)
         {
-            await _notificationHubContext.Clients.Group(chiamata.ChiamataInCorso.codiceSedeOperatore).SendAsync("NotifyChiamataInCorsoMarkerUpdate", chiamata);
+            await _notificationHubContext.Clients.Group(chiamata.ChiamataInCorso.CodiceSedeOperatore).SendAsync("NotifyChiamataInCorsoMarkerUpdate", chiamata);
         }
     }
 }

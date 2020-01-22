@@ -21,8 +21,8 @@ using SO115App.Models.Classi.Marker;
 
 namespace SO115App.Models.Servizi.Infrastruttura.Marker
 {
-    public interface IChiamateInCorso
+    public interface IAddChiamataInCorso
     {
-        void AddChiamata(ChiamateInCorso chiamata);
+        void Add(ChiamateInCorso chiamata);
     }
 }

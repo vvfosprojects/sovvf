@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="ChiamataInCorsoMarkerCommandHandler.cs" company="CNVVF">
+// <copyright file="TipologieResult.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,23 +17,13 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using CQRS.Commands;
-using SO115App.Models.Servizi.Infrastruttura.Marker;
+using SO115App.API.Models.Classi.Condivise;
+using System.Collections.Generic;
 
-namespace DomainModel.CQRS.Commands.ChiamataInCorsoMarker
+namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.Tipologie
 {
-    public class AddChiamataInCorsoCommandHandler : ICommandHandler<ChiamataInCorsoMarkerCommand>
+    public class TipologieResult
     {
-        private readonly IAddChiamataInCorso _iAddChiamataInCorso;
-
-        public AddChiamataInCorsoCommandHandler(IAddChiamataInCorso iAddChiamataInCorso)
-        {
-            this._iAddChiamataInCorso = iAddChiamataInCorso;
-        }
-
-        public void Handle(ChiamataInCorsoMarkerCommand command)
-        {
-            _iAddChiamataInCorso.Add(command.AddChiamataInCorso);
-        }
+        public List<Tipologia> Tipologie { get; set; }
     }
 }

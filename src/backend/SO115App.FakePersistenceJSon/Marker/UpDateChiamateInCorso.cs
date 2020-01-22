@@ -43,7 +43,7 @@ namespace SO115App.FakePersistenceJSon.Marker
             {
                 if (ListaRichieste.Count != 0)
                 {
-                    ChiamateInCorso chiamataToUpDate = (ChiamateInCorso)ListaRichieste.FirstOrDefault(x => x.id == chiamata.id);
+                    ChiamateInCorso chiamataToUpDate = (ChiamateInCorso)ListaRichieste.FirstOrDefault(x => x.Id == chiamata.Id);
 
                     if (chiamataToUpDate != null)
                         ListaRichieste.Remove(chiamataToUpDate);
