@@ -1,5 +1,5 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
-import { ClearDataNavbar, GetDataNavbar, SetDataNavbar } from '../actions/navbar.actions';
+import { ClearDataNavbar, GetDataNavbar, SetDataNavbar, SetDataTipologie } from '../actions/navbar.actions';
 import { ShowToastr } from '../../../../shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from '../../../../shared/enum/toastr';
 import { NavbarService } from '../../../../core/service/navbar-service/navbar.service';
@@ -59,11 +59,17 @@ export class NavbarState {
     @Action(SetDataNavbar)
     setDataNavbar({ patchState, dispatch }: StateContext<NavbarStateModel>, action: SetDataNavbar) {
         patchState({
-            tipologie: action.settings.tipologie,
             listaSedi: action.settings.listaSedi,
             loaded: true
         });
         dispatch(new SetListaSediTreeview(action.settings.listaSedi));
+    }
+
+    @Action(SetDataTipologie)
+    setDataTipologie({ patchState, dispatch }: StateContext<NavbarStateModel>, action: SetDataTipologie) {
+        patchState({
+            tipologie: action.tipologie,
+        });
     }
 
 }

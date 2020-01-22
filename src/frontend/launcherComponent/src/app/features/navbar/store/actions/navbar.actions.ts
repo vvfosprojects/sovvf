@@ -1,4 +1,5 @@
 import { AppSettings } from '../../../../shared/interface/app-settings.interface';
+import { Tipologia } from '../../../../shared/model/tipologia.model';
 
 export class ClearDataNavbar {
     static readonly type = '[Navbar Component] Clear Data';
@@ -12,5 +13,12 @@ export class SetDataNavbar {
     static readonly type = '[Navbar Component] Set Data';
 
     constructor(public settings: AppSettings) {
+    }
+}
+
+export class SetDataTipologie {
+    static readonly type = '[Navbar Component] Set Data Tipologie';
+
+    constructor(public tipologie: Tipologia[]) {
     }
 }

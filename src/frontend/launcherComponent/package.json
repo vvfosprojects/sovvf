@@ -41,6 +41,7 @@
     "@ngx-progressbar/core": "^5.3.1",
     "@ngx-progressbar/http": "^5.3.1",
     "@ngxs/devtools-plugin": "^3.4.3",
+    "@ngxs/form-plugin": "^3.6.1",
     "@ngxs/logger-plugin": "^3.4.3",
     "@ngxs/router-plugin": "^3.4.3",
     "@ngxs/storage-plugin": "^3.4.3",

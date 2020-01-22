@@ -61,6 +61,7 @@ import { RpcInterceptor } from './core/rpc/rpc-interceptor.service';
 import { LoaderInterceptor } from './core/_helpers/loader.interceptor';
 import { LoadingState } from './shared/store/states/loading/loading.state';
 import { PaginationState } from './shared/store/states/pagination/pagination.state';
+import { NgxsFormPluginModule } from '@ngxs/form-plugin';
 
 
 @NgModule({
@@ -103,6 +104,7 @@ import { PaginationState } from './shared/store/states/pagination/pagination.sta
             name: 'SO115 - NGXS',
             disabled: environment.production,
         }),
+        NgxsFormPluginModule.forRoot(),
         // NgxsLoggerPluginModule.forRoot({
         //     disabled: environment.production,
         // }),

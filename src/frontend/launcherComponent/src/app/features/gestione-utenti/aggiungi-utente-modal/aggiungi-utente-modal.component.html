@@ -21,19 +21,6 @@
         <div *ngIf="submitted && f.utenti.errors" class="invalid-feedback">
             <div *ngIf="f.utenti.errors.required">Campo Obbligatorio</div>
         </div>
-        <div class="mb-3">
-            <ng-select
-                    [items]="ruoli"
-                    [multiple]="true"
-                    formControlName="ruoli"
-                    placeholder="Seleziona uno o più ruoli"
-                    [notFoundText]="'Nessun ruolo disponibile'"
-                    [ngClass]="{ 'is-invalid': submitted && f.ruoli.errors }">
-            </ng-select>
-        </div>
-        <div *ngIf="submitted && f.ruoli.errors" class="invalid-feedback">
-            <div *ngIf="f.ruoli.errors.required">Campo Obbligatorio</div>
-        </div>
         <app-shared-treeview [items]="listeSediNavbar"
                              [testoSedeSelezionata]="'Seleziona una o più sedi'"
                              [placement]="'bottom-left'"
@@ -43,6 +30,32 @@
         </app-shared-treeview>
         <div *ngIf="submitted && f.sedi.errors" class="invalid-feedback">
             <div *ngIf="f.sedi.errors.required">Campo Obbligatorio</div>
+        </div>
+        <div class="mb-3">
+            <ng-select
+                    [items]="ruoli"
+                    [multiple]="true"
+                    formControlName="ruoli"
+                    placeholder="Seleziona un ruolo"
+                    [notFoundText]="'Nessun ruolo disponibile'"
+                    [ngClass]="{ 'is-invalid': submitted && f.ruoli.errors }">
+            </ng-select>
+        </div>
+        <div *ngIf="submitted && f.ruoli.errors" class="invalid-feedback">
+            <div *ngIf="f.ruoli.errors.required">Campo Obbligatorio</div>
+        </div>
+        <div class="mb-3">
+            <ng-select
+                    [items]="ruoli"
+                    [multiple]="true"
+                    formControlName="ruoli"
+                    placeholder="Seleziona un ruolo"
+                    [notFoundText]="'Nessun ruolo disponibile'"
+                    [ngClass]="{ 'is-invalid': submitted && f.ruoli.errors }">
+            </ng-select>
+        </div>
+        <div *ngIf="submitted && f.ruoli.errors" class="invalid-feedback">
+            <div *ngIf="f.ruoli.errors.required">Campo Obbligatorio</div>
         </div>
     </form>
 </div>

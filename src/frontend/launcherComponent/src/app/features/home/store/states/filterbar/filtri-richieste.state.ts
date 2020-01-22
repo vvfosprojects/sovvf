@@ -1,13 +1,7 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { makeCopy } from '../../../../../shared/helper/function';
-
-// Model
 import { VoceFiltro } from '../../../filterbar/ricerca-group/filtri-richieste/voce-filtro.model';
-
-// Action
 import { GetFiltriRichieste, SetFiltroSelezionatoRichieste, ResetFiltriSelezionatiRichieste } from '../../actions/filterbar/filtri-richieste.actions';
-
-// Tipologie
 import { NavbarState } from '../../../../navbar/store/states/navbar.state';
 import { Tipologia } from '../../../../../shared/model/tipologia.model';
 import { resetFiltriSelezionati as _resetFiltriSelezionati, setFiltroSelezionato as _setFiltroSelezionato } from '../../../../../shared/helper/function-filtro';
@@ -67,9 +61,11 @@ export class FiltriRichiesteState {
         ];
         const tipologie: Tipologia[] = this.store.selectSnapshot(NavbarState.tipologie);
         filtriRichieste.push(...filtriStatici);
-        tipologie.forEach(tipologia => {
-            filtriRichieste.push(new VoceFiltro('' + tipologia.codice, tipologia.categoria, tipologia.descrizione, tipologia.star));
-        });
+        if (tipologie && tipologie.length > 0) {
+            tipologie.forEach(tipologia => {
+                filtriRichieste.push(new VoceFiltro('' + tipologia.codice, tipologia.categoria, tipologia.descrizione, tipologia.star));
+            });
+        }
         const categorie: string[] = [];
         filtriRichieste.forEach(filtro => {
             if (categorie.indexOf(filtro.categoria) < 0) {
