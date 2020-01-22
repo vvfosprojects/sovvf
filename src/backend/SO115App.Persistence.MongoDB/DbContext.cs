@@ -75,6 +75,8 @@ namespace Persistence.MongoDB
             BsonClassMap.RegisterClassMap<ChiusuraRichiesta>();
             BsonClassMap.RegisterClassMap<RiaperturaRichiesta>();
             BsonClassMap.RegisterClassMap<AdeguatezzaMezzo>();
+            BsonClassMap.RegisterClassMap<Localita>();
+            BsonClassMap.RegisterClassMap<Coordinate>();
         }
 
         public IMongoCollection<RichiestaAssistenza> RichiestaAssistenzaCollection
