@@ -14,6 +14,7 @@
     "avvia2": "ng serve --proxy-config proxy.conf2.js --host 0.0.0.0 --disable-host-check",
     "avvia3": "ng serve --proxy-config proxy.conf3.js --host 0.0.0.0 --disable-host-check",
     "avvia4": "ng serve --proxy-config proxy.conf4.js --host 0.0.0.0 --disable-host-check",
+    "avvia5": "ng serve --proxy-config proxy.conf5.js --host 0.0.0.0 --disable-host-check",
     "lite-server": "lite-server --baseDir=\"./dist/SO115\"",
     "watch-serve": "ng build --aot --watch --prod"
   },
