@@ -21,10 +21,26 @@ import { ResponseInterface } from '../../../../../shared/interface/response.inte
 
 export interface GestioneUtentiStateModel {
     listaUtenti: GestioneUtente[];
+    nuovoUtenteForm: {
+        model?: {
+            utenti: string;
+            ruoli: string[];
+            sedi: string[]
+        };
+        dirty: boolean;
+        status: string;
+        errors: any;
+    };
 }
 
 export const GestioneUtentiStateModelDefaults: GestioneUtentiStateModel = {
-    listaUtenti: []
+    listaUtenti: [],
+    nuovoUtenteForm: {
+        model: undefined,
+        dirty: false,
+        status: '',
+        errors: {}
+    }
 };
 
 @State<GestioneUtentiStateModel>({
