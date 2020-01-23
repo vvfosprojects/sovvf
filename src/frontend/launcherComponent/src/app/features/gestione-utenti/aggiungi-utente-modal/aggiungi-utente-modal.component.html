@@ -8,12 +8,12 @@
     <form [formGroup]="nuovoUtenteForm" ngxsForm="gestioneUtenti.nuovoUtenteForm">
         <div class="mb-3">
             <ng-select
-                    [items]="utenti$ | async"
+                    [items]="listaUtenti$ | async"
                     bindLabel="cognome"
                     bindValue="id"
                     [multiple]="true"
                     formControlName="utenti"
-                    placeholder="Seleziona uno o più utenti"
+                    placeholder="Seleziona un utente"
                     [notFoundText]="'Nessun utente disponibile'"
                     [ngClass]="{ 'is-invalid': submitted && f.utenti.errors }">
             </ng-select>
@@ -22,11 +22,11 @@
             <div *ngIf="f.utenti.errors.required">Campo Obbligatorio</div>
         </div>
         <div class="mb-3">
-            <app-shared-treeview [items]="listeSediNavbar"
+            <app-shared-treeview class="height-test"
+                                 [items]="listeSediNavbar"
                                  [testoSedeSelezionata]="'Seleziona una o più sedi'"
                                  [placement]="'bottom-left'"
                                  [visualizzaTasti]="false"
-                                 [maxHeight]="200"
                                  (confermaSelezione)="onPatchSedi($event)">
             </app-shared-treeview>
             <div *ngIf="submitted && f.sedi.errors" class="invalid-feedback">
@@ -35,7 +35,7 @@
         </div>
         <div class="mb-3">
             <ng-select
-                    [items]="ruoli"
+                    [items]="[]"
                     [multiple]="true"
                     formControlName="ruoli"
                     placeholder="Seleziona un ruolo"
@@ -48,10 +48,10 @@
         </div>
         <div class="mb-3">
             <ng-select
-                    [items]="ruoli"
+                    [items]="[]"
                     [multiple]="true"
-                    formControlName="ruoli"
-                    placeholder="Seleziona un ruolo"
+                    formControlName="permessi"
+                    placeholder="Seleziona uno o più permessi"
                     [notFoundText]="'Nessun ruolo disponibile'"
                     [ngClass]="{ 'is-invalid': submitted && f.ruoli.errors }">
             </ng-select>

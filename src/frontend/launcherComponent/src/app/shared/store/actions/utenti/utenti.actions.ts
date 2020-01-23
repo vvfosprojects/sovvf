@@ -1,4 +1,4 @@
-import { Utente } from '../../../../../shared/model/utente.model';
+import { Utente } from '../../../model/utente.model';
 
 export class GetUtenti {
     static readonly type = '[Utenti] Get lista utenti';
