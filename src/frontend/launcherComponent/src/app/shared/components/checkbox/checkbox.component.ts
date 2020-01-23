@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { CheckboxInterface } from '../../interface/checkboxInterface';
+import { CheckboxInterface } from '../../interface/checkbox.interface';
 
 @Component({
     selector: 'app-checkbox',
