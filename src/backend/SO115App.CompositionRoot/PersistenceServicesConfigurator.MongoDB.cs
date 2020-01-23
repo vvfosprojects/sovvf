@@ -5,6 +5,7 @@ using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.Box;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Persistence.MongoDB;
+using SO115App.Persistence.MongoDB.GestioneMezzi;
 using SO115App.Persistence.MongoDB.Marker;
 
 namespace SO115App.CompositionRoot
@@ -55,6 +56,16 @@ namespace SO115App.CompositionRoot
 
             #endregion MARKER
 
+            #region StatoMezzo
+
+            container.Register<
+                    Models.Servizi.Infrastruttura.Composizione.ISetMezzoPrenotato,
+                    SetMezzoPrenotato>();
+            container.Register<Models.Servizi.Infrastruttura.Composizione.IGetStatoMezzi,
+                    GetStatoMezzoByCodice>();
+
+            #endregion StatoMezzo
+
             #region DA TRASFORMARE SU MONGO
 
             container.Register<
@@ -85,11 +96,7 @@ namespace SO115App.CompositionRoot
             container.Register<
                 SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.IGetIdByCodice,
                 FakePersistenceJSon.GestioneIntervento.GetIdByCodice>();
-            container.Register<
-                Models.Servizi.Infrastruttura.Composizione.ISetMezzoPrenotato,
-                FakePersistence.JSon.Composizione.SetMezzoPrenotato>();
-            container.Register<Models.Servizi.Infrastruttura.Composizione.IGetStatoMezzi,
-                FakePersistence.JSon.GestioneMezzi.GetStatoMezzi>();
+
             container.Register<
             SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi.IGetMezzoByCodice,
          SO115App.FakePersistence.JSon.GestioneMezzi.GetMezzoById>();

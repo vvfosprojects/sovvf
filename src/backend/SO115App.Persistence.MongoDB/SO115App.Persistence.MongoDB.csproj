@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\SO115App.FakePersistance.ExternalAPI\SO115App.ExternalAPI.Fake.csproj" />
     <ProjectReference Include="..\SO115App.Models\SO115App.Models.csproj" />
   </ItemGroup>
 </Project>
