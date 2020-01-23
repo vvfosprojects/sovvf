@@ -1,10 +1,10 @@
 <button type="button" class="btn px-1" (click)="toggleSchedeContatto()" [ngClass]="coloreTasto()" [disabled]="disabled"
         [ngbTooltip]="tipToggleSchedeContatto" placement="top">
     <i class="fa fa-list mr-1"></i>
-    <span class="badge" [ngClass]="coloreBadgeContatore()">{{contatoreSchedeContattoTotale.contatoreDaGestire}}</span>
+    <span class="badge" [ngClass]="coloreBadgeContatore()">{{contatoreSchedeContattoTotale?.contatoreDaGestire}}</span>
 </button>
 <ng-template #tipToggleSchedeContatto>
     <div><b>Schede Contatto</b></div>
-    <div>Tutte: {{contatoreSchedeContattoTotale.contatoreTutte}}</div>
-    <div>Da gestire: {{contatoreSchedeContattoTotale.contatoreDaGestire}}</div>
+    <div>Tutte: {{contatoreSchedeContattoTotale?.contatoreTutte}}</div>
+    <div>Da gestire: {{contatoreSchedeContattoTotale?.contatoreDaGestire}}</div>
 </ng-template>
