@@ -1,15 +1,16 @@
 import { Component } from '@angular/core';
 import { Utente } from '../../../shared/model/utente.model';
-import { Sede } from '../../../shared/model/sede.model';
 import { Select, Store } from '@ngxs/store';
-import { GetUtenti } from '../../home/store/actions/utenti/utenti.actions';
-import { UtentiState } from '../../home/store/states/utenti/utenti.state';
 import { Observable, Subscription } from 'rxjs';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { SediTreeviewState } from '../../../shared/store/states/sedi-treeview/sedi-treeview.state';
 import { TreeItem, TreeviewItem } from 'ngx-treeview';
 import { TreeviewSelezione } from '../../../shared/model/treeview-selezione.model';
 import { FormControl, FormGroup } from '@angular/forms';
+import { GestioneUtentiState } from '../store/states/gestione-utenti/gestione-utenti.state';
+import { RuoliState } from '../store/states/ruoli/ruoli.state';
+import { GetUtenti } from '../../../shared/store/actions/utenti/utenti.actions';
+import { UtentiState } from '../../../shared/store/states/utenti/utenti.state';
 
 @Component({
     selector: 'app-aggiungi-utente-modal',
@@ -18,11 +19,10 @@ import { FormControl, FormGroup } from '@angular/forms';
 })
 export class AggiungiUtenteModalComponent {
 
-    @Select(UtentiState.utenti) utenti$: Observable<Utente[]>;
+    @Select(UtentiState.utenti) listaUtenti$: Observable<Utente[]>;
+    @Select(RuoliState.ruoli) ruoli$: Observable<any[]>;
     @Select(SediTreeviewState.listeSediNavbar) listeSediNavbar$: Observable<TreeItem>;
     listeSediNavbar: TreeviewItem[];
-    ruoli: Array<any>;
-    sedi: Sede[];
 
     nuovoUtenteForm: FormGroup;
     submitted: boolean;
@@ -38,9 +38,10 @@ export class AggiungiUtenteModalComponent {
 
     initForm() {
         this.nuovoUtenteForm = new FormGroup({
-            utenti: new FormControl(),
-            ruoli: new FormControl(),
-            sedi: new FormControl()
+            utente: new FormControl(),
+            sedi: new FormControl(),
+            ruolo: new FormControl(),
+            permessi: new FormControl()
         });
     }
 

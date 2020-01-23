@@ -14,7 +14,7 @@ export const PermessiStateDefaults: PermessiStateModel = {
     name: 'permessi',
     defaults: PermessiStateDefaults
 })
-export class RuoliState {
+export class PermessiState {
 
     constructor(private _permessi: PermessiService) {
     }
