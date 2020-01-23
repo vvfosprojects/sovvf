@@ -23,6 +23,7 @@ export const environment = {
         },
         chiamata: '/api/Chiamata/',
         utentiGestione: '/api/UtentiGestione',
+        utenti: '/api/Utenti',
         auth: '/api/Auth',
         navbar: '/api/Navbar',
         meteo: 'http://api.openweathermap.org/data/2.5/weather?'
