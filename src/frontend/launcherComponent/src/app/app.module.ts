@@ -62,6 +62,9 @@ import { LoaderInterceptor } from './core/_helpers/loader.interceptor';
 import { LoadingState } from './shared/store/states/loading/loading.state';
 import { PaginationState } from './shared/store/states/pagination/pagination.state';
 import { NgxsFormPluginModule } from '@ngxs/form-plugin';
+import { UtentiState } from './shared/store/states/utenti/utenti.state';
+import { UserService } from './core/auth/_services';
+import { UserServiceFake } from './core/auth/_services/user.service.fake';
 
 
 @NgModule({
@@ -93,7 +96,7 @@ import { NgxsFormPluginModule } from '@ngxs/form-plugin';
             preventDuplicates: true,
         }),
         NgxsModule.forRoot(
-            [AppState, UtenteState, SignalRState, ToastrState, SediTreeviewState, PaginationState, LoadingState],
+            [AppState, UtenteState, SignalRState, ToastrState, SediTreeviewState, PaginationState, LoadingState, UtentiState],
             { developmentMode: !environment.production }
         ),
         // NgxsStoragePluginModule.forRoot({
@@ -118,6 +121,7 @@ import { NgxsFormPluginModule } from '@ngxs/form-plugin';
         environment.fakeProvider ? { provide: HTTP_INTERCEPTORS, useClass: FakeBackendInterceptor, multi: true } : [],
         I18n,
         { provide: NavbarService, useClass: environment.fakeProvider ? NavbarServiceFake : NavbarService },
+        { provide: UserService, useClass: UserServiceFake }
     ],
     bootstrap: [AppComponent]
 })

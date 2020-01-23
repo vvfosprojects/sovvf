@@ -1,9 +1,5 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
-
-// Model
 import { Utente } from 'src/app/shared/model/utente.model';
-
-// Action
 import { GetUtenti, SetUtenti } from '../../actions/utenti/utenti.actions';
 import { UserService } from 'src/app/core/auth/_services';
 
@@ -21,7 +17,6 @@ export const UtentiStateDefaults: UtentiStateModel = {
 })
 export class UtentiState {
 
-    // SELECTORS
     @Selector()
     static utenti(state: UtentiStateModel) {
         return state.utenti;
@@ -30,10 +25,8 @@ export class UtentiState {
     constructor(private _users: UserService) {
     }
 
-    // GET
     @Action(GetUtenti)
     getUtenti({ dispatch }: StateContext<UtentiStateModel>) {
-
         this._users.getAll().subscribe((u: Utente[]) => {
             dispatch(new SetUtenti(u));
         });
