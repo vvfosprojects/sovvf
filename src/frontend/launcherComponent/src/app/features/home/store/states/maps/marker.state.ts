@@ -31,6 +31,7 @@ import { MeteoMarkersState } from './meteo-markers.state';
 import { ChiamateMarkersState } from './chiamate-markers.state';
 import { MapsButtonsState } from './maps-buttons.state';
 import { MAPSOPTIONS } from '../../../../../core/settings/maps-options';
+import { SchedeContattoMarkers } from './schede-contatto-markers.state';
 
 
 export interface MarkerStateModel {
@@ -62,7 +63,8 @@ export const markerStateDefaults: MarkerStateModel = {
         MarkerInfoWindowState,
         MeteoMarkersState,
         ChiamateMarkersState,
-        MapsButtonsState
+        MapsButtonsState,
+        SchedeContattoMarkers
     ]
 })
 export class MarkerState {
