@@ -1,10 +1,7 @@
-﻿using Newtonsoft.Json;
-using SO115App.API.Models.Classi.Utenti;
-using SO115App.FakePersistence.JSon.Utility;
+﻿using SO115App.API.Models.Classi.Utenti;
 using SO115App.Models.Servizi.Infrastruttura.Turni;
 using System;
 using System.Collections.Generic;
-using System.IO;
 
 namespace SO115App.FakePersistence.JSon.Turni
 {
@@ -19,36 +16,51 @@ namespace SO115App.FakePersistence.JSon.Turni
             _updateTurni = updateTurni;
         }
 
-        public Turno Get()
+        public Turno Get(DateTime? data = null)
         {
-            var filepath = CostantiJson.Turni;
-            string json;
-
-            using (var r = new StreamReader(filepath))
-            {
-                json = r.ReadToEnd();
-            }
-
-            var listaTurni = JsonConvert.DeserializeObject<List<Turno>>(json);
+            var listaTurni = TurniHardCoded.Get();
             var turnoDiurno = listaTurni[0];
             var turnoNotturno = listaTurni[1];
             var numeroTurnoD = int.Parse(turnoDiurno.Codice.Substring(1));
             var numeroTurnoN = int.Parse(turnoNotturno.Codice.Substring(1));
-            var dataOdierna = DateTime.Now;
-            var giorniTrascorsiDiurni = (int)(dataOdierna - turnoDiurno.DataOraFine).TotalDays;
-            var giorniTrascorsiNotturno = (int)(dataOdierna - turnoNotturno.DataOraFine).TotalDays;
-
-            if (dataOdierna > turnoDiurno.DataOraFine)
+            if (data == null)
             {
-                turnoDiurno = CalcolaTurnoCorrente(turnoDiurno, numeroTurnoD, giorniTrascorsiDiurni);
+                var dataOdierna = DateTime.Now;
+                return SceltaCalcolatore(dataOdierna, turnoDiurno, turnoNotturno, numeroTurnoD, numeroTurnoN);
             }
-
-            if (dataOdierna > turnoNotturno.DataOraFine)
+            else
             {
-                turnoNotturno = CalcolaTurnoCorrente(turnoNotturno, numeroTurnoN, giorniTrascorsiNotturno);
+                var dataInput = (DateTime)data;
+                return SceltaCalcolatore(dataInput, turnoDiurno, turnoNotturno, numeroTurnoD, numeroTurnoN);
             }
+        }
 
-            return RestituisciDiurnooNotturno(dataOdierna, turnoDiurno, turnoNotturno);
+        public Turno SceltaCalcolatore(DateTime data, Turno turnoD, Turno turnoN, int numeroTurnoD, int numeroTurnoN)
+        {
+            {
+                var giorniTrascorsiDiurni = (int)(data - turnoD.DataOraFine).TotalDays;
+                var giorniTrascorsiNotturno = (int)(data - turnoN.DataOraFine).TotalDays;
+
+                if (data > turnoD.DataOraFine)
+                {
+                    turnoD = CalcolaTurnoCorrente(turnoD, numeroTurnoD, giorniTrascorsiDiurni);
+                }
+                else
+                {
+                    turnoD = CalcolaTurnoPassato(turnoD, numeroTurnoD, giorniTrascorsiDiurni);
+                }
+
+                if (data > turnoN.DataOraFine)
+                {
+                    turnoN = CalcolaTurnoCorrente(turnoN, numeroTurnoN, giorniTrascorsiNotturno);
+                }
+                else
+                {
+                    turnoN = CalcolaTurnoPassato(turnoN, numeroTurnoN, giorniTrascorsiNotturno);
+                }
+
+                return RestituisciDiurnooNotturno(data, turnoD, turnoN);
+            }
         }
 
         public Turno CalcolaTurnoCorrente(Turno turnoPassato, int numeroTurno, int giorniTrascorsi)
@@ -88,6 +100,45 @@ namespace SO115App.FakePersistence.JSon.Turni
             }
 
             return turnoPassato;
+        }
+
+        public Turno CalcolaTurnoPassato(Turno turnoInput, int numeroTurno, int giorniTrascorsi)
+        {
+            for (var i = 0; i >= giorniTrascorsi; i--)
+            {
+                turnoInput.DataOraInizio = turnoInput.DataOraInizio.AddDays(-1);
+                turnoInput.DataOraFine = turnoInput.DataOraFine.AddDays(-1);
+                switch (turnoInput.Codice.Substring(0, 1))
+                {
+                    case "A":
+                        _letteraTurno = 'D';
+                        if (numeroTurno > 1)
+                        {
+                            numeroTurno--;
+                        }
+                        else
+                        {
+                            numeroTurno = 8;
+                        }
+                        break;
+
+                    case "B":
+                        _letteraTurno = 'A';
+                        break;
+
+                    case "C":
+                        _letteraTurno = 'B';
+                        break;
+
+                    case "D":
+                        _letteraTurno = 'C';
+
+                        break;
+                }
+
+                turnoInput.Codice = _letteraTurno + numeroTurno.ToString();
+            }
+            return turnoInput;
         }
 
         internal Turno RestituisciDiurnooNotturno(DateTime dataOdierna, Turno turnoDiurno, Turno turnoNotturno)
