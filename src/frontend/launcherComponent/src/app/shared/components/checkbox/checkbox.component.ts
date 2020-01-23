@@ -19,4 +19,11 @@ export class CheckboxComponent {
         });
     }
 
+    labelFormat() {
+        if (this.checkboxState) {
+            const label = this.checkboxState.label;
+            return label ? label : '&nbsp;';
+        }
+    }
+
 }
