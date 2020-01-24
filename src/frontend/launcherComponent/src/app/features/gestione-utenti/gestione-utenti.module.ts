@@ -44,6 +44,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { PermessiService } from '../../core/service/permessi-service/permessi-service.service';
 import { PermessiServiceFake } from '../../core/service/permessi-service/permessi.service.fake';
 import { PermessiState } from './store/states/permessi/permessi.state';
+import { NgxsFormPluginModule } from '@ngxs/form-plugin';
 
 
 @NgModule({
@@ -71,6 +72,7 @@ import { PermessiState } from './store/states/permessi/permessi.state';
             ]
         ),
         NgxPaginationModule,
+        NgxsFormPluginModule,
     ],
     entryComponents: [AggiungiUtenteModalComponent, ConfirmModalComponent],
     providers: [

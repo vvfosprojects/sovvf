@@ -110,6 +110,7 @@ export function getWord(value: string): string {
 
 export function sedeString(value: string): string {
 
+    console.log('value');
     const maxLength = 21;
     const stringLength = value.length;
 

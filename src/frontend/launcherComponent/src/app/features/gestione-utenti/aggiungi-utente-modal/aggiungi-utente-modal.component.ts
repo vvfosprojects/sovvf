@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Utente } from '../../../shared/model/utente.model';
 import { Select, Store } from '@ngxs/store';
 import { Observable, Subscription } from 'rxjs';
@@ -11,6 +11,7 @@ import { GestioneUtentiState } from '../store/states/gestione-utenti/gestione-ut
 import { RuoliState } from '../store/states/ruoli/ruoli.state';
 import { GetUtenti } from '../../../shared/store/actions/utenti/utenti.actions';
 import { UtentiState } from '../../../shared/store/states/utenti/utenti.state';
+import { findItem } from '../../../shared/store/states/sedi-treeview/sedi-treeview.helper';
 
 @Component({
     selector: 'app-aggiungi-utente-modal',
@@ -23,6 +24,8 @@ export class AggiungiUtenteModalComponent {
     @Select(RuoliState.ruoli) ruoli$: Observable<any[]>;
     @Select(SediTreeviewState.listeSediNavbar) listeSediNavbar$: Observable<TreeItem>;
     listeSediNavbar: TreeviewItem[];
+    @Select(GestioneUtentiState.sedeSelezionata) sediSelezionate$: Observable<TreeviewSelezione[]>;
+    sediSelezionate: string;
 
     nuovoUtenteForm: FormGroup;
     submitted: boolean;
@@ -34,6 +37,7 @@ export class AggiungiUtenteModalComponent {
         this.store.dispatch(new GetUtenti());
         this.inizializzaSediTreeview();
         this.initForm();
+        this.getSediSelezionate();
     }
 
     initForm() {
@@ -62,6 +66,29 @@ export class AggiungiUtenteModalComponent {
         this.f.sedi.patchValue(event);
         console.log('Patch Sedi', event);
         console.log('Sedi Selezionate', this.f.sedi.value);
+    }
+
+    getSediSelezionate() {
+        this.subscription.add(
+            this.sediSelezionate$.subscribe((sedi: TreeviewSelezione[]) => {
+                const listaSediNavbar = this.store.selectSnapshot(SediTreeviewState.listeSediNavbar);
+                if (listaSediNavbar && sedi && sedi.length >= 0) {
+                    switch (sedi.length) {
+                        case 0:
+                            this.sediSelezionate = 'nessuna sede selezionata';
+                            break;
+                        case 1:
+                            this.sediSelezionate = findItem(listaSediNavbar, sedi[0].idSede).text;
+                            break;
+                        default:
+                            this.sediSelezionate = 'più sedi selezionate';
+                            break;
+                    }
+                } else {
+                    this.sediSelezionate = 'Caricamento...';
+                }
+            })
+        );
     }
 
     onConferma() {

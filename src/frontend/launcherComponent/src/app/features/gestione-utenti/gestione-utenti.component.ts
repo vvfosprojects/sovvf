@@ -5,7 +5,7 @@ import { Select, Store } from '@ngxs/store';
 import { SetRicercaUtenti } from './store/actions/ricerca-utenti/ricerca-utenti.actons';
 import { UtenteState } from '../navbar/store/states/operatore/utente.state';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { GetUtentiGestione, OpenModalAddUtente, OpenModalRemoveUtente, UpdateUtenteGestione } from './store/actions/gestione-utenti/gestione-utenti.actions';
+import { AddUtente, GetUtentiGestione, OpenModalRemoveUtente, UpdateUtenteGestione } from './store/actions/gestione-utenti/gestione-utenti.actions';
 import { GetRuoli } from './store/actions/ruoli/ruoli.actions';
 import { RuoliState } from './store/states/ruoli/ruoli.state';
 import { GestioneUtentiState } from './store/states/gestione-utenti/gestione-utenti.state';
@@ -14,6 +14,7 @@ import { RicercaUtentiState } from './store/states/ricerca-utenti/ricerca-utenti
 import { PaginationState } from '../../shared/store/states/pagination/pagination.state';
 import { LoadingState } from '../../shared/store/states/loading/loading.state';
 import { GetPermessi } from './store/actions/permessi/permessi.actions';
+import { AggiungiUtenteModalComponent } from './aggiungi-utente-modal/aggiungi-utente-modal.component';
 
 @Component({
     selector: 'app-gestione-utenti',
@@ -47,7 +48,16 @@ export class GestioneUtentiComponent implements OnInit {
     }
 
     onAddUtente() {
-        this.store.dispatch(new OpenModalAddUtente());
+        const aggiungiUtenteModal = this.modalService.open(AggiungiUtenteModalComponent, { backdropClass: 'light-blue-backdrop', centered: true, size: 'lg' });
+        aggiungiUtenteModal.result.then(
+            (risultatoModal) => {
+                if (risultatoModal[0] === 'ok') {
+                    this.store.dispatch(new AddUtente(risultatoModal[1]));
+                }
+                // console.log('Modal chiusa con val ->', val);
+            },
+            (err) => console.error('Modal chiusa senza bottoni. Err ->', err)
+        );
         // TODO: DEBUG
         // console.warn('add utente modal');
     }

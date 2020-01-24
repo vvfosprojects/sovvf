@@ -12,7 +12,7 @@
                     bindLabel="cognome"
                     bindValue="id"
                     [multiple]="true"
-                    formControlName="utenti"
+                    formControlName="utente"
                     placeholder="Seleziona un utente"
                     [notFoundText]="'Nessun utente disponibile'"
                     [ngClass]="{ 'is-invalid': submitted && f.utenti.errors }">
@@ -22,13 +22,15 @@
             <div *ngIf="f.utenti.errors.required">Campo Obbligatorio</div>
         </div>
         <div class="mb-3">
-            <app-shared-treeview class="height-test"
-                                 [items]="listeSediNavbar"
-                                 [testoSedeSelezionata]="'Seleziona una o più sedi'"
-                                 [placement]="'bottom-left'"
-                                 [visualizzaTasti]="false"
-                                 (confermaSelezione)="onPatchSedi($event)">
-            </app-shared-treeview>
+            <div class="border rounded">
+                <app-shared-treeview class="height-test"
+                                     [items]="listeSediNavbar"
+                                     [testoSedeSelezionata]="sediSelezionate"
+                                     [placement]="'bottom-left'"
+                                     [visualizzaTasti]="false"
+                                     (confermaSelezione)="onPatchSedi($event)">
+                </app-shared-treeview>
+            </div>
             <div *ngIf="submitted && f.sedi.errors" class="invalid-feedback">
                 <div *ngIf="f.sedi.errors.required">Campo Obbligatorio</div>
             </div>
@@ -37,7 +39,7 @@
             <ng-select
                     [items]="[]"
                     [multiple]="true"
-                    formControlName="ruoli"
+                    formControlName="ruolo"
                     placeholder="Seleziona un ruolo"
                     [notFoundText]="'Nessun ruolo disponibile'"
                     [ngClass]="{ 'is-invalid': submitted && f.ruoli.errors }">

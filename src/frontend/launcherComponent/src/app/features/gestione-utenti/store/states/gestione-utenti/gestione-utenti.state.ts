@@ -5,19 +5,20 @@ import {
     UpdateUtenteGestione,
     GetUtentiGestione,
     RemoveUtente,
-    SetUtentiGestione, OpenModalAddUtente, OpenModalRemoveUtente
+    SetUtentiGestione,
+    OpenModalRemoveUtente
 } from '../../actions/gestione-utenti/gestione-utenti.actions';
 import { GestioneUtentiService } from '../../../../../core/service/gestione-utenti-service/gestione-utenti.service';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from '../../../../../shared/enum/toastr';
 import { insertItem, patch, updateItem } from '@ngxs/store/operators';
-import { AggiungiUtenteModalComponent } from '../../../aggiungi-utente-modal/aggiungi-utente-modal.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgZone } from '@angular/core';
 import { ConfirmModalComponent } from '../../../../../shared';
 import { RicercaUtentiState } from '../ricerca-utenti/ricerca-utenti.state';
 import { PatchPagination } from '../../../../../shared/store/actions/pagination/pagination.actions';
 import { ResponseInterface } from '../../../../../shared/interface/response.interface';
+import { TreeviewSelezione } from '../../../../../shared/model/treeview-selezione.model';
 
 export interface GestioneUtentiStateModel {
     listaUtenti: GestioneUtente[];
@@ -25,7 +26,7 @@ export interface GestioneUtentiStateModel {
         model?: {
             utenti: string;
             ruoli: string[];
-            sedi: string[]
+            sedi: TreeviewSelezione[]
         };
         dirty: boolean;
         status: string;
@@ -60,6 +61,11 @@ export class GestioneUtentiState {
         return state.listaUtenti;
     }
 
+    @Selector()
+    static sedeSelezionata(state: GestioneUtentiStateModel) {
+        return state.nuovoUtenteForm.model.sedi;
+    }
+
     @Action(GetUtentiGestione)
     getGestioneUtenti({ dispatch }: StateContext<GestioneUtentiStateModel>) {
         const filters = {
@@ -87,23 +93,6 @@ export class GestioneUtentiState {
                 );
                 dispatch(new ShowToastr(ToastrType.Info, 'Ruolo Utente Aggiornato', 'Ruolo utente aggiornato con successo.', 2));
             }
-        });
-    }
-
-    @Action(OpenModalAddUtente)
-    openModalAddUtente({ dispatch }: StateContext<GestioneUtentiStateModel>) {
-        this.ngZone.run(() => {
-            const aggiungiUtenteModal = this.modalService.open(AggiungiUtenteModalComponent, { backdropClass: 'light-blue-backdrop', centered: true, size: 'lg' });
-            aggiungiUtenteModal.componentInstance.ruoli = [];
-            aggiungiUtenteModal.result.then(
-                (risultatoModal) => {
-                    if (risultatoModal[0] === 'ok') {
-                        dispatch(new AddUtente(risultatoModal[1]));
-                    }
-                    // console.log('Modal chiusa con val ->', val);
-                },
-                (err) => console.error('Modal chiusa senza bottoni. Err ->', err)
-            );
         });
     }
 

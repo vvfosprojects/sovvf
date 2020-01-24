@@ -18,10 +18,6 @@ export class UpdateUtenteGestione {
     constructor(public utente: GestioneUtente) { }
 }
 
-export class OpenModalAddUtente {
-    static readonly type = '[GestioneUtenti] Open Modal Add Utente';
-}
-
 export class AddUtente {
     static readonly type = '[GestioneUtenti] Add Utente';
 
