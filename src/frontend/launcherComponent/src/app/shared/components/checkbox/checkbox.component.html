@@ -1,4 +1,4 @@
-<span (click)="container.emit()">
+<span (click)="container.emit()" [ngbTooltip]="tooltipMessage" [disableTooltip]="!tooltipMessage">
     <input type="checkbox" id="{{typeName}}{{checkboxState.id}}"
            [checked]="checkboxState.status"
            (click)="onCheck()" [disabled]="checkboxState?.disabled"/>

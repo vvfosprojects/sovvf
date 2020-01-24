@@ -10,6 +10,7 @@ export class CheckboxComponent {
 
     @Input() checkboxState: CheckboxInterface = { id: null, status: false };
     @Input() typeName = 'checkBox';
+    @Input() tooltipMessage;
     @Output() checkbox = new EventEmitter<CheckboxInterface>();
     @Output() container = new EventEmitter();
 
