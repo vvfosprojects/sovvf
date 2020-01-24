@@ -2,7 +2,7 @@ import { Selector, State, Action, StateContext, Store, Select } from '@ngxs/stor
 import { makeCopy } from '../../../../../shared/helper/function';
 import {
     ClearCopiaFiltroAttivo,
-    CopiaFiltroAttivo, ReducerFiltroMarker, SaveBackupFiltri,
+    CopiaFiltroAttivo, ReducerFiltroMarker,
     SetFiltriMarker,
     SetFiltroMarker
 } from '../../actions/maps/maps-filtro.actions';
@@ -17,7 +17,6 @@ export interface MapsFiltroStateModel {
     filtroMarker: MarkerFiltro[];
     filtroMarkerAttivo: string[];
     filtroMarkerAttivoCopy: string[];
-    backupFiltroMarkerAttivo: string[];
 }
 
 export const MapsFiltroStateDefaults: MapsFiltroStateModel = {
@@ -46,7 +45,6 @@ export const MapsFiltroStateDefaults: MapsFiltroStateModel = {
     ],
     filtroMarkerAttivo: ['richiesta'],
     filtroMarkerAttivoCopy: null,
-    backupFiltroMarkerAttivo: null
 };
 
 @State<MapsFiltroStateModel>({
@@ -82,17 +80,9 @@ export class MapsFiltroState {
         return state.filtroMarkerAttivoCopy;
     }
 
-    @Selector()
-    static backupFiltroMarkerAttivo(state: MapsFiltroStateModel): string[] {
-        return state.backupFiltroMarkerAttivo;
-    }
-
     @Action(ReducerFiltroMarker)
     reducerFiltroMarker({ getState, dispatch }: StateContext<MapsFiltroStateModel>, action: ReducerFiltroMarker) {
         const state = getState();
-        if (action.saveBackup) {
-            dispatch(new SaveBackupFiltri());
-        }
         if (!state.filtroMarkerAttivo.includes(action.selected)) {
             dispatch(new SetFiltroMarker(action.selected));
         }
@@ -110,11 +100,6 @@ export class MapsFiltroState {
                 filtroAttivo.push(r.id);
             }
         });
-        if (filtroAttivo.length === 3) {
-            filtroMarkerCopy.map(r => {
-                r.isActive = false;
-            });
-        }
         patchState({
             ...state,
             filtroMarker: filtroMarkerCopy,
@@ -199,11 +184,4 @@ export class MapsFiltroState {
         }
     }
 
-    @Action(SaveBackupFiltri)
-    saveBackupFiltri({ getState, patchState }: StateContext<MapsFiltroStateModel>) {
-        const state = getState();
-        patchState({
-            backupFiltroMarkerAttivo: state.filtroMarkerAttivo
-        });
-    }
 }

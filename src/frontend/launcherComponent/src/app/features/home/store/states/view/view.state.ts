@@ -45,7 +45,6 @@ import {
     ToggleComposizioneMode
 } from '../../actions/composizione-partenza/composizione-partenza.actions';
 import { ClearListaSchedeContatto, ClearSchedaContattoTelefonata } from '../../actions/schede-contatto/schede-contatto.actions';
-import { MapsFiltroState } from '../maps/maps-filtro.state';
 
 export const ViewComponentStateDefault: ViewComponentStateModel = {
     view: {
@@ -278,7 +277,6 @@ export class ViewComponentState {
     toggleGestioneRisorse({ getState, patchState, dispatch }: StateContext<ViewComponentStateModel>) {
         const state = getState();
         const stateDefault = makeCopy(ViewComponentStateDefault);
-        const filtroMarkerAttivo = this.store.selectSnapshot(MapsFiltroState.filtroMarkerAttivo);
 
         /**
          * se lo stato dei mezzi in servizio non è attivo creo uno snapshot, altrimenti ritorno allo stato precedente
@@ -294,21 +292,8 @@ export class ViewComponentState {
                 view: newState.view,
                 column: newState.column
             });
-
-            /**
-             * se il filtro dei mezzi sulla mappa è disabilitato lo attivo
-             */
-            // dispatch(new ReducerFiltroMarker('mezzo', true));
         } else {
             patchState(ViewComponentStateDefault);
-
-            /**
-             * se il filtro dei mezzi sulla mappa è attivo e prima di entrare in "GestioneRisorse" non era attivo lo disabilito
-             */
-            // const backup = this.store.selectSnapshot(MapsFiltroState.backupFiltroMarkerAttivo);
-            // if (filtroMarkerAttivo.includes('mezzo') && !backup.includes('mezzo')) {
-            //     dispatch(new SetFiltroMarker('mezzo'));
-            // }
         }
     }
 

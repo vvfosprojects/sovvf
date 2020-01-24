@@ -311,16 +311,6 @@ export class MarkerService implements OnDestroy {
             }
             return isVisible;
         }
-        return true;
-    }
-
-    isRichiesteVisibile() {
-        if (this.filtroMarkerAttivo && this.filtroMarkerAttivo.length > 0) {
-            if (!this.filtroMarkerAttivo.includes('richiesta')) {
-                return false;
-            }
-        }
-        return true;
     }
 
     isOpaque(id: string, tipoMarker: string): number {
