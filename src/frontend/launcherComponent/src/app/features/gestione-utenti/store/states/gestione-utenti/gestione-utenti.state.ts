@@ -24,7 +24,7 @@ export interface GestioneUtentiStateModel {
     listaUtenti: GestioneUtente[];
     nuovoUtenteForm: {
         model?: {
-            utenti: string;
+            utente: string;
             ruoli: string[];
             sedi: TreeviewSelezione[]
         };

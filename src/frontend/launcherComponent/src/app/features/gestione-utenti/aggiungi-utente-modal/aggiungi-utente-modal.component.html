@@ -7,23 +7,29 @@
 <div class="modal-body height">
     <form [formGroup]="nuovoUtenteForm" ngxsForm="gestioneUtenti.nuovoUtenteForm">
         <div class="mb-3">
+            <label for="utente">Nominativo</label>
             <ng-select
+                    id="utente"
                     [items]="listaUtenti$ | async"
                     bindLabel="cognome"
                     bindValue="id"
-                    [multiple]="true"
                     formControlName="utente"
                     placeholder="Seleziona un utente"
                     [notFoundText]="'Nessun utente disponibile'"
-                    [ngClass]="{ 'is-invalid': submitted && f.utenti.errors }">
+                    [ngClass]="{ 'is-invalid': submitted && f.utente.errors }">
+                <ng-template ng-option-tmp let-item="item">
+                    {{item.nome}} {{item.cognome}}
+                </ng-template>
             </ng-select>
         </div>
-        <div *ngIf="submitted && f.utenti.errors" class="invalid-feedback">
-            <div *ngIf="f.utenti.errors.required">Campo Obbligatorio</div>
+        <div *ngIf="submitted && f.utente.errors" class="invalid-feedback">
+            <div *ngIf="f.utente.errors.required">Campo Obbligatorio</div>
         </div>
         <div class="mb-3">
+            <label for="sede">Sede</label>
             <div class="border rounded">
-                <app-shared-treeview class="height-test"
+                <app-shared-treeview id="sede"
+                                     class="height-test"
                                      [items]="listeSediNavbar"
                                      [testoSedeSelezionata]="sediSelezionate"
                                      [placement]="'bottom-left'"
@@ -36,30 +42,34 @@
             </div>
         </div>
         <div class="mb-3">
+            <label for="ruoli">Ruoli</label>
             <ng-select
+                    id="ruoli"
                     [items]="[]"
                     [multiple]="true"
                     formControlName="ruolo"
                     placeholder="Seleziona un ruolo"
                     [notFoundText]="'Nessun ruolo disponibile'"
-                    [ngClass]="{ 'is-invalid': submitted && f.ruoli.errors }">
+                    [ngClass]="{ 'is-invalid': submitted && f.ruolo.errors }">
             </ng-select>
         </div>
-        <div *ngIf="submitted && f.ruoli.errors" class="invalid-feedback">
-            <div *ngIf="f.ruoli.errors.required">Campo Obbligatorio</div>
+        <div *ngIf="submitted && f.ruolo.errors" class="invalid-feedback">
+            <div *ngIf="f.ruolo.errors.required">Campo Obbligatorio</div>
         </div>
         <div class="mb-3">
+            <label for="permessi">Permessi</label>
             <ng-select
+                    id="permessi"
                     [items]="[]"
                     [multiple]="true"
                     formControlName="permessi"
                     placeholder="Seleziona uno o più permessi"
                     [notFoundText]="'Nessun ruolo disponibile'"
-                    [ngClass]="{ 'is-invalid': submitted && f.ruoli.errors }">
+                    [ngClass]="{ 'is-invalid': submitted && f.permessi.errors }">
             </ng-select>
         </div>
-        <div *ngIf="submitted && f.ruoli.errors" class="invalid-feedback">
-            <div *ngIf="f.ruoli.errors.required">Campo Obbligatorio</div>
+        <div *ngIf="submitted && f.permessi.errors" class="invalid-feedback">
+            <div *ngIf="f.permessi.errors.required">Campo Obbligatorio</div>
         </div>
     </form>
 </div>
