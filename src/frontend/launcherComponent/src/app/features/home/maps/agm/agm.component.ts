@@ -252,6 +252,13 @@ export class AgmComponent implements OnDestroy {
         return this.markerService.iconaSedeTipoWindow(tipo);
     }
 
+    iconaSchedaContattoMarker(schedaContatto: SchedaContattoMarker): string {
+        /**
+         * ritorno l'url dell'icona del marker scheda contatto
+         */
+        return this.markerService.iconaSchedaContattoMarker(schedaContatto.schedaContatto.classificazione);
+    }
+
     actionRichiestaMarker(id: string, event: MouseE): void {
         /**
          * scateno l'azione relativa all'evento del mouse ricevuto

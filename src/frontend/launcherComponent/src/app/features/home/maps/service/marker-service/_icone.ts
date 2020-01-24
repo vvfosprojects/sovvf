@@ -1,6 +1,7 @@
 /**
  *  classe che ritorna l'url del marker da visualizzare sulla mappa
  */
+import { ClassificazioneSchedaContatto } from '../../../../../shared/enum/classificazione-scheda-contatto.enum';
 
 export class IconMappe {
     /**
@@ -101,7 +102,9 @@ export class IconMappe {
         this.iconeSpeciali = [
             ['meteo', 'speciali/marker-meteo-32.png'],
             ['chiamata', 'speciali/chiamata-marker-rosso.png'],
-            ['schedaContatto', 'speciali/scheda-contatto-marker.png']
+            ['Competenza', 'speciali/scheda-contatto-marker.png'],
+            ['Conoscenza', 'speciali/scheda-contatto-marker-conoscenza.png'],
+            ['Differibile', 'speciali/scheda-contatto-marker-differibile.png'],
         ];
         this.mapIconeSpeciali = new Map(this.iconeSpeciali);
     }
@@ -188,6 +191,13 @@ export class IconMappe {
             return undefined;
         }
         return this.iconaStatoCorrenteUrl;
+    }
+
+    iconaSchedaContatto(tipo: ClassificazioneSchedaContatto): string {
+        /**
+         * metodo che mi ritorna l'url del' icona da utilizzare per ogni scheda contatto marker
+         */
+        return this.iconaSpeciale(tipo);
     }
 
     iconaSedeTipoWindow(tipo: any): string {
