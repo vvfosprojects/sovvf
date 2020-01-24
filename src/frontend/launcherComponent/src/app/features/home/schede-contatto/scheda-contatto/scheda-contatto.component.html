@@ -20,16 +20,23 @@
             <i class="fa fa-desktop ml-1"></i>
         </div>
         <div class="col-2 pr-4">
-            <button class="btn btn-success float-right px-2 py-1" ngbTooltip="Crea richiesta di assistenza"
-                    (click)="setSchedaContattoTelefonata.emit(scheda); $event.stopPropagation()">
-                <i class="fa fa-arrow-right"></i>
-            </button>
-            <button *ngIf="scheda.classificazione === classificazioneSchedaContatto.Differibile"
-                    class="btn float-right px-2 py-1 mr-1" [ngClass]="btnGestita.type"
-                    ngbTooltip="{{btnGestita.tooltip}}"
-                    (click)="setSchedaContattoGestita.emit(!scheda.gestita); $event.stopPropagation()">
-                <i class="fa fa-cog"></i>
-            </button>
+            <ng-container *ngIf="!editSchedaContatto">
+                <button class="btn btn-success float-right px-2 py-1" ngbTooltip="Crea richiesta di assistenza"
+                        (click)="setSchedaContattoTelefonata.emit(scheda); $event.stopPropagation()">
+                    <i class="fa fa-arrow-right"></i>
+                </button>
+                <button *ngIf="scheda.classificazione === classificazioneSchedaContatto.Differibile"
+                        class="btn float-right px-2 py-1 mr-1" [ngClass]="btnGestita.type"
+                        ngbTooltip="{{btnGestita.tooltip}}"
+                        (click)="setSchedaContattoGestita.emit(!scheda.gestita); $event.stopPropagation()">
+                    <i class="fa fa-cog"></i>
+                </button>
+            </ng-container>
+            <div *ngIf="editSchedaContatto" class="float-right py-1">
+                <app-checkbox appClickStopPropagation [typeName]="'nue' + scheda.classificazione"
+                              [checkboxState]="{id: scheda.codiceScheda, status: schedeContattoSelezionate.includes(scheda.codiceScheda), disabled: checkDisabled()}"
+                              (checkbox)="onEditSchedaSelezionata($event)" [tooltipMessage]="checkMessage()" (container)="onCheckBoxClick()"></app-checkbox>
+            </div>
         </div>
     </div>
 </li>

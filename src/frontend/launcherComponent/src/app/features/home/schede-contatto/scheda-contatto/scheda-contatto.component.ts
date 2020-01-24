@@ -2,21 +2,27 @@ import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from
 import { SchedaContatto } from '../../../../shared/interface/scheda-contatto.interface';
 import { ClassificazioneSchedaContatto } from '../../../../shared/enum/classificazione-scheda-contatto.enum';
 import { Priorita } from '../../../../shared/model/sintesi-richiesta.model';
+import { CheckboxInterface } from '../../../../shared/interface/checkbox.interface';
 
 @Component({
     selector: 'app-scheda-contatto',
     templateUrl: './scheda-contatto.component.html',
-    styleUrls: ['./scheda-contatto.component.css']
+    styleUrls: [ './scheda-contatto.component.css' ]
 })
 export class SchedaContattoComponent implements OnChanges {
 
     @Input() scheda: SchedaContatto;
     @Input() idSchedaContattoHover: string;
+    @Input() editSchedaContatto: boolean;
+    @Input() schedeContattoSelezionate: string[];
+    @Input() classificazione: ClassificazioneSchedaContatto;
     @Output() hoverIn = new EventEmitter<string>();
     @Output() hoverOut = new EventEmitter();
     @Output() dettaglioScheda = new EventEmitter<SchedaContatto>();
     @Output() setSchedaContattoTelefonata = new EventEmitter<SchedaContatto>();
     @Output() setSchedaContattoGestita = new EventEmitter<boolean>();
+    @Output() editSelezionata = new EventEmitter<CheckboxInterface>();
+    @Output() checkBoxError = new EventEmitter();
 
     btnLetta = { type: '', tooltip: '' };
     btnGestita = { type: '', tooltip: '' };
@@ -65,5 +71,33 @@ export class SchedaContattoComponent implements OnChanges {
 
     getPrioritaIconClass() {
         return this.scheda.priorita === Priorita.Altissima ? 'fa fa-exclamation-triangle text-danger' : 'fa fa-exclamation-circle text-muted';
+    }
+
+    checkDisabled() {
+        if (this.scheda) {
+            if (!this.classificazione) {
+                return false;
+            } else {
+                return this.classificazione !== this.scheda.classificazione;
+            }
+        }
+    }
+
+    checkMessage() {
+        if (this.schedeContattoSelezionate.length > 0) {
+            return this.checkDisabled() ? 'Non selezionabile' : 'Selezionabile';
+        }
+    }
+
+    onCheckBoxClick() {
+        if (this.checkDisabled()) {
+            this.checkBoxError.emit();
+        }
+    }
+
+    onEditSchedaSelezionata($event: CheckboxInterface) {
+        console.log('click checkbox', $event);
+        $event.object = this.scheda;
+        this.editSelezionata.emit($event);
     }
 }

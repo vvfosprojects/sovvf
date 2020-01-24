@@ -12,11 +12,21 @@ import { DettaglioSchedaModalComponent } from './dettaglio-scheda-modal/dettagli
 import { ContatoriSchedeContatto } from '../../../shared/interface/contatori-schede-contatto.interface';
 import { RangeSchedeContattoEnum } from '../../../shared/enum/range-schede-contatto';
 import { ClearSchedeContattoMarkers } from '../store/actions/maps/schede-contatto-markers.actions';
+import { MergeSchedeContattoState } from '../store/states/schede-contatto/merge-schede-contatto.state';
+import {
+    CheckboxError,
+    ClearMergeSchedeContatto, InitSaveMergeSchedeContatto,
+    SetMergeSchedaId,
+    ToggleModalitaMerge
+} from '../store/actions/schede-contatto/merge-schede-contatto.actions';
+import { CheckboxInterface } from '../../../shared/interface/checkbox.interface';
+import { ClassificazioneSchedaContatto } from '../../../shared/enum/classificazione-scheda-contatto.enum';
+import { LoadingState } from '../../../shared/store/states/loading/loading.state';
 
 @Component({
     selector: 'app-schede-contatto',
     templateUrl: './schede-contatto.component.html',
-    styleUrls: ['./schede-contatto.component.css']
+    styleUrls: [ './schede-contatto.component.css' ]
 })
 export class SchedeContattoComponent implements OnInit, OnDestroy {
 
@@ -36,9 +46,17 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
     @Select(SchedeContattoState.rangeVisualizzazione) rangeVisualizzazione$: Observable<RangeSchedeContattoEnum>;
     rangeVisualizzazione: RangeSchedeContattoEnum;
 
+    @Select(MergeSchedeContattoState.statoModalita) statoModalita$: Observable<boolean>;
+    statoModalita: boolean;
+    @Select(MergeSchedeContattoState.classificazione) classificazioneMerge$: Observable<ClassificazioneSchedaContatto>;
+    classificazioneMerge: ClassificazioneSchedaContatto;
+    @Select(MergeSchedeContattoState.schedeSelezionateId) idSelezionatiMerge$: Observable<string[]>;
+    idSelezionatiMerge: string[];
+    @Select(LoadingState.loading) loading$: Observable<boolean>;
+
     rangeSchedeContattoEnumValues = Object.values(RangeSchedeContattoEnum);
     RangeVisualizzazione = RangeSchedeContattoEnum;
-    subscription: Subscription = new Subscription();
+    private subscription: Subscription = new Subscription();
 
     constructor(private store: Store,
                 private modal: NgbModal) {
@@ -77,6 +95,10 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
                 this.rangeVisualizzazione = range;
             })
         );
+        this.subscription.add(this.statoModalita$.subscribe((stato: boolean) => this.statoModalita = stato));
+        this.subscription.add(this.classificazioneMerge$.subscribe((classificazione: ClassificazioneSchedaContatto) => this.classificazioneMerge = classificazione));
+        this.subscription.add(this.idSelezionatiMerge$.subscribe((idSelezionatiMerge: string[]) => this.idSelezionatiMerge = idSelezionatiMerge));
+
     }
 
     ngOnInit(): void {
@@ -86,6 +108,7 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(): void {
         this.store.dispatch(new ClearSchedeContattoMarkers());
+        this.store.dispatch(new ClearMergeSchedeContatto());
         isDevMode() && console.log('Componente Schede Contatto distrutto');
     }
 
@@ -117,6 +140,22 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
 
     tornaIndietro() {
         this.store.dispatch(new ToggleSchedeContatto());
+    }
+
+    onToggleModalitaMerge() {
+        this.store.dispatch(new ToggleModalitaMerge());
+    }
+
+    onEditSchedaSelezionata($event: CheckboxInterface) {
+        this.store.dispatch(new SetMergeSchedaId($event.object));
+    }
+
+    onCheckboxError() {
+        this.store.dispatch(new CheckboxError());
+    }
+
+    onSaveMerge() {
+        this.store.dispatch(new InitSaveMergeSchedeContatto());
     }
 
 
