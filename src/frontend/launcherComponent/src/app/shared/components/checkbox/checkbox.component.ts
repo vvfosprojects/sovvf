@@ -11,6 +11,7 @@ export class CheckboxComponent {
     @Input() checkboxState: CheckboxInterface = { id: null, status: false };
     @Input() typeName = 'checkBox';
     @Output() checkbox = new EventEmitter<CheckboxInterface>();
+    @Output() container = new EventEmitter();
 
     onCheck() {
         this.checkbox.emit({
