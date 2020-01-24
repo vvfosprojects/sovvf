@@ -10,13 +10,22 @@ export class CheckboxComponent {
 
     @Input() checkboxState: CheckboxInterface = { id: null, status: false };
     @Input() typeName = 'checkBox';
+    @Input() tooltipMessage;
     @Output() checkbox = new EventEmitter<CheckboxInterface>();
+    @Output() container = new EventEmitter();
 
     onCheck() {
         this.checkbox.emit({
             id: this.checkboxState.id,
             status: !this.checkboxState.status
         });
+    }
+
+    labelFormat() {
+        if (this.checkboxState) {
+            const label = this.checkboxState.label;
+            return label ? label : '&nbsp;';
+        }
     }
 
 }

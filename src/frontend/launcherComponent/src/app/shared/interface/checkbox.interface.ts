@@ -3,4 +3,5 @@ export interface CheckboxInterface {
     status: boolean;
     disabled?: boolean;
     object?: any;
+    label?: string;
 }

@@ -7,7 +7,7 @@ import {
     ClearSchedaContattoTelefonata,
     GetListaSchedeContatto,
     ReducerSetFiltroSchedeContatto,
-    ResetFiltriSelezionatiSchedeContatto,
+    ResetFiltriSelezionatiSchedeContatto, SaveMergeSchedeContatto,
     SetContatoriSchedeContatto,
     SetFiltroGestitaSchedeContatto,
     SetFiltroKeySchedeContatto,
@@ -31,6 +31,10 @@ import { ContatoriSchedeContattoModel } from '../../../../../shared/model/contat
 import { patch, updateItem } from '@ngxs/store/operators';
 import { RangeSchedeContattoEnum } from '../../../../../shared/enum/range-schede-contatto';
 import { SetSchedeContattoMarkers } from '../../actions/maps/schede-contatto-markers.actions';
+import { MergeSchedeContattoState } from './merge-schede-contatto.state';
+import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
+import { ToastrType } from '../../../../../shared/enum/toastr';
+import { ClearMergeSchedeContatto } from '../../actions/schede-contatto/merge-schede-contatto.actions';
 
 export interface SchedeContattoStateModel {
     contatoriSchedeContatto: ContatoriSchedeContatto;
@@ -74,7 +78,8 @@ export const SchedeContattoStateDefaults: SchedeContattoStateModel = {
 
 @State<SchedeContattoStateModel>({
     name: 'schedeContatto',
-    defaults: SchedeContattoStateDefaults
+    defaults: SchedeContattoStateDefaults,
+    children: [ MergeSchedeContattoState ]
 })
 export class SchedeContattoState {
 
@@ -175,6 +180,7 @@ export class SchedeContattoState {
         }
         this.schedeContattoService.getSchedeContatto(filtri).subscribe((schedeContatto: SchedaContatto[]) => {
             dispatch(new SetListaSchedeContatto(schedeContatto));
+            // Todo da modificare serve un controller separato per i marker delle schede contatto.
             dispatch(new SetSchedeContattoMarkers(schedeContatto));
         });
     }
@@ -331,5 +337,31 @@ export class SchedeContattoState {
             }
         });
         dispatch(new GetListaSchedeContatto());
+    }
+
+    @Action(SaveMergeSchedeContatto)
+    saveMergeSchedeContatto({ getState, dispatch }: StateContext<SchedeContattoStateModel>, action: SaveMergeSchedeContatto) {
+        console.log('Id Schede contatto selezionate', action.schedeSelezionateId);
+        const state = getState();
+        const schedeSelezionate = state.schedeContatto.filter((value) => {
+            if (action.schedeSelezionateId.includes(value.codiceScheda)) {
+                return value;
+            }
+        }).sort((a, b) => new Date(a.dataInserimento).getTime() - new Date(b.dataInserimento).getTime());
+        const mergeSchedeContatto: SchedaContatto = {
+            ...schedeSelezionate[0],
+            collegate: [ ...schedeSelezionate.slice(1) ]
+        };
+        console.log('Scheda contatto unita:', mergeSchedeContatto);
+        this.schedeContattoService.mergeSchedeContatto(mergeSchedeContatto).subscribe( () => {
+            console.log('Unione schede completata');
+            dispatch([
+                new ClearMergeSchedeContatto(),
+                new ShowToastr(ToastrType.Success, 'Unione schede contatto', 'Unione completata con successo')
+            ]);
+        }, () => {
+            console.log('Unione schede fallita');
+            dispatch(new ShowToastr(ToastrType.Error, 'Unione schede contatto', 'Impossibile unire le schede contatto'));
+        });
     }
 }

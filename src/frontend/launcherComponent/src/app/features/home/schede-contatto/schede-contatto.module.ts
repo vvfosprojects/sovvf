@@ -9,6 +9,7 @@ import { SchedeContattoState } from '../store/states/schede-contatto/schede-cont
 import { SchedeContattoComponent } from './schede-contatto.component';
 import { DettaglioSchedaModalComponent } from './dettaglio-scheda-modal/dettaglio-scheda-modal.component';
 import { SchedaContattoComponent } from './scheda-contatto/scheda-contatto.component';
+import { MergeSchedeContattoState } from '../store/states/schede-contatto/merge-schede-contatto.state';
 
 @NgModule({
     imports: [
@@ -19,7 +20,7 @@ import { SchedaContattoComponent } from './scheda-contatto/scheda-contatto.compo
         SharedModule,
         NgxsModule.forFeature(
             [
-                SchedeContattoState
+                SchedeContattoState, MergeSchedeContattoState
             ]
         ),
     ],
