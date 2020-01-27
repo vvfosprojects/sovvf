@@ -15,8 +15,7 @@ export class GestioneUtentiServiceFake {
         this.gestioneUtenti = [
             {
                 id: '1',
-                nome: 'Mario',
-                cognome: 'Rossi',
+                nominativo: 'Mario Rossi',
                 ruolo: Role.CallTracker,
                 sede: {
                     codice: '1',
@@ -33,8 +32,7 @@ export class GestioneUtentiServiceFake {
             },
             {
                 id: '2',
-                nome: 'Teresio',
-                cognome: 'Mancini',
+                nominativo: 'Teresio Mancini',
                 ruolo: Role.GestoreRichieste,
                 sede: {
                     codice: '1',

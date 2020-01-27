@@ -25,7 +25,8 @@
                                 [pageSize]="pageSize$ | async"
                                 [page]="page$ | async"
                                 [loading]="loading$ | async"
-                                (update)="onUpdateUtente($event)"
+                                (detail)="onDetailUtente($event)"
+                                (modify)="onModifyUtente($event)"
                                 (remove)="onRemoveUtente($event)"></app-tabella-utenti>
         </div>
     </div>

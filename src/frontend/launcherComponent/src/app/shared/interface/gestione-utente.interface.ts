@@ -7,13 +7,9 @@ export interface GestioneUtente {
      */
     id: string;
     /**
-     * nome
+     * nominativo
      */
-    nome: string;
-    /**
-     * cognome
-     */
-    cognome: string;
+    nominativo: string;
     /**
      * ruolo utente
      */

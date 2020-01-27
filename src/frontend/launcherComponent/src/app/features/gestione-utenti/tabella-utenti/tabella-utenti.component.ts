@@ -17,15 +17,20 @@ export class TabellaUtentiComponent {
     @Input() totalItems: number;
     @Input() loading: boolean;
 
-    @Output() update: EventEmitter<any> = new EventEmitter<any>();
-    @Output() remove: EventEmitter<any> = new EventEmitter<any>();
+    @Output() detail: EventEmitter<string> = new EventEmitter<string>();
+    @Output() modify: EventEmitter<string> = new EventEmitter<string>();
+    @Output() remove: EventEmitter<string> = new EventEmitter<string>();
     @Output() pageChange: EventEmitter<number> = new EventEmitter<number>();
 
     constructor() {
     }
 
-    onUpdate(utente: GestioneUtente) {
-        this.update.emit(utente);
+    onDetail(id: string) {
+        this.detail.emit(id);
+    }
+
+    onModify(id: string) {
+        this.modify.emit(id);
     }
 
     onRemove(id: string) {

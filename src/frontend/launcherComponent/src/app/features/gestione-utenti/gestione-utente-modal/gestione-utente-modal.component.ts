@@ -6,7 +6,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { SediTreeviewState } from '../../../shared/store/states/sedi-treeview/sedi-treeview.state';
 import { TreeItem, TreeviewItem } from 'ngx-treeview';
 import { TreeviewSelezione } from '../../../shared/model/treeview-selezione.model';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { GestioneUtentiState } from '../store/states/gestione-utenti/gestione-utenti.state';
 import { RuoliState } from '../store/states/ruoli/ruoli.state';
 import { GetUtenti } from '../../../shared/store/actions/utenti/utenti.actions';
@@ -14,11 +14,11 @@ import { UtentiState } from '../../../shared/store/states/utenti/utenti.state';
 import { findItem } from '../../../shared/store/states/sedi-treeview/sedi-treeview.helper';
 
 @Component({
-    selector: 'app-aggiungi-utente-modal',
-    templateUrl: './aggiungi-utente-modal.component.html',
-    styleUrls: ['./aggiungi-utente-modal.component.css']
+    selector: 'app-gestione-utente-modal',
+    templateUrl: './gestione-utente-modal.component.html',
+    styleUrls: ['./gestione-utente-modal.component.css']
 })
-export class AggiungiUtenteModalComponent {
+export class GestioneUtenteModalComponent {
 
     @Select(UtentiState.utenti) listaUtenti$: Observable<Utente[]>;
     @Select(RuoliState.ruoli) ruoli$: Observable<any[]>;
@@ -27,13 +27,15 @@ export class AggiungiUtenteModalComponent {
     @Select(GestioneUtentiState.sedeSelezionata) sediSelezionate$: Observable<TreeviewSelezione[]>;
     sediSelezionate: string;
 
-    nuovoUtenteForm: FormGroup;
+    gestioneUtenteForm: FormGroup;
+    editMode: boolean;
     submitted: boolean;
 
     subscription: Subscription = new Subscription();
 
     constructor(private store: Store,
-                private modal: NgbActiveModal) {
+                private modal: NgbActiveModal,
+                private fb: FormBuilder) {
         this.store.dispatch(new GetUtenti());
         this.inizializzaSediTreeview();
         this.initForm();
@@ -41,16 +43,15 @@ export class AggiungiUtenteModalComponent {
     }
 
     initForm() {
-        this.nuovoUtenteForm = new FormGroup({
-            utente: new FormControl(),
-            sedi: new FormControl(),
-            ruolo: new FormControl(),
-            permessi: new FormControl()
+        this.gestioneUtenteForm = this.fb.group({
+            utente: ['', Validators.required],
+            sedi: ['', Validators.required],
+            ruolo: ['', Validators.required]
         });
     }
 
     get f() {
-        return this.nuovoUtenteForm.controls;
+        return this.gestioneUtenteForm.controls;
     }
 
     inizializzaSediTreeview() {
@@ -94,11 +95,11 @@ export class AggiungiUtenteModalComponent {
     onConferma() {
         this.submitted = true;
 
-        if (this.nuovoUtenteForm.invalid) {
+        if (this.gestioneUtenteForm.invalid) {
             return;
         }
 
-        console.log(this.nuovoUtenteForm.value);
+        console.log(this.gestioneUtenteForm.value);
 
         //     let utente: Utente;
         //     // let sede: Sede;

@@ -13,7 +13,7 @@ import { RicercaUtentiComponent } from './ricerca-utenti/ricerca-utenti.componen
 import { TabellaUtentiComponent } from './tabella-utenti/tabella-utenti.component';
 import { UtentiPerPaginaComponent } from './tabella-utenti/utenti-per-pagina/utenti-per-pagina.component';
 import { RisultatiPaginazioneComponent } from './tabella-utenti/risultati-paginazione/risultati-paginazione.component';
-import { AggiungiUtenteModalComponent } from './aggiungi-utente-modal/aggiungi-utente-modal.component';
+import { GestioneUtenteModalComponent } from './gestione-utente-modal/gestione-utente-modal.component';
 import { ConfirmModalComponent } from 'src/app/shared/modal/confirm-modal/confirm-modal.component';
 /**
  * Routing
@@ -43,12 +43,11 @@ import { RuoliState } from './store/states/ruoli/ruoli.state';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { PermessiService } from '../../core/service/permessi-service/permessi-service.service';
 import { PermessiServiceFake } from '../../core/service/permessi-service/permessi.service.fake';
-import { PermessiState } from './store/states/permessi/permessi.state';
 import { NgxsFormPluginModule } from '@ngxs/form-plugin';
 
 
 @NgModule({
-    declarations: [GestioneUtentiComponent, RicercaUtentiComponent, TabellaUtentiComponent, UtentiPerPaginaComponent, RisultatiPaginazioneComponent, AggiungiUtenteModalComponent],
+    declarations: [GestioneUtentiComponent, RicercaUtentiComponent, TabellaUtentiComponent, UtentiPerPaginaComponent, RisultatiPaginazioneComponent, GestioneUtenteModalComponent],
     imports: [
         CommonModule,
         FormsModule,
@@ -67,14 +66,13 @@ import { NgxsFormPluginModule } from '@ngxs/form-plugin';
                 RicercaUtentiState,
                 GestioneUtentiState,
                 UtentiState,
-                RuoliState,
-                PermessiState
+                RuoliState
             ]
         ),
         NgxPaginationModule,
         NgxsFormPluginModule,
     ],
-    entryComponents: [AggiungiUtenteModalComponent, ConfirmModalComponent],
+    entryComponents: [GestioneUtenteModalComponent, ConfirmModalComponent],
     providers: [
         { provide: GestioneUtentiService, useClass: GestioneUtentiServiceFake },
         { provide: RuoliService, useClass: RuoliServiceFake },

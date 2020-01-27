@@ -1,29 +1,32 @@
 <table class="table table-striped app-shadow mt-2">
     <thead>
     <tr>
-        <th scope="col">Utente</th>
-        <th scope="col" width="200px" *ngFor="let ruolo of ruoli">{{ruolo}}</th>
-        <th scope="col">Sede</th>
-        <th scope="col" width="30px">Azioni</th>
+        <th scope="col" width="20%">Azioni</th>
+        <th scope="col" width="30%">Utente</th>
+        <th scope="col" width="30%">Sede</th>
     </tr>
     </thead>
     <tbody>
     <tr *ngFor="let utente of listaUtenti | paginate: { itemsPerPage: pageSize, currentPage: page, totalItems: totalItems }">
-        <td width="250px">
-            <ngb-highlight [result]="utente.nome + ' ' + utente.cognome"></ngb-highlight>
-        </td>
-        <td width="200px" *ngFor="let ruolo of ruoli">
-            <ui-switch size="small" (click)="onUpdate(utente)"
-                       [checked]="utente.ruolo === ruolo"></ui-switch>
-        </td>
-        <td width="200px">
-            <h6>{{utente.sede.descrizione}}</h6>
-        </td>
-        <td class="pt-2 pb-0">
-            <button class="btn btn-sm btn-block btn-danger"
+        <td width="20%" class="pt-2 pb-0">
+            <button class="btn btn-sm btn-primary mr-2"
+                    (click)="onDetail(utente.id)">
+                <i class="fa fa-eye"></i>
+            </button>
+            <button class="btn btn-sm btn-warning mr-2"
+                    (click)="onModify(utente.id)">
+                <i class="fa fa-pencil"></i>
+            </button>
+            <button class="btn btn-sm btn-danger"
                     (click)="onRemove(utente.id)">
                 <i class="fa fa-trash"></i>
             </button>
+        </td>
+        <td width="30%">
+            <ngb-highlight [result]="utente.nominativo"></ngb-highlight>
+        </td>
+        <td width="30%">
+            <h6>{{utente.sede.descrizione}}</h6>
         </td>
     </tr>
     <tr *ngIf="listaUtenti.length <= 0">

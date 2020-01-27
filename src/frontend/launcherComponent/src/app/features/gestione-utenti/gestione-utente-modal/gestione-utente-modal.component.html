@@ -5,7 +5,7 @@
     </button>
 </div>
 <div class="modal-body height">
-    <form [formGroup]="nuovoUtenteForm" ngxsForm="gestioneUtenti.nuovoUtenteForm">
+    <form [formGroup]="gestioneUtenteForm" ngxsForm="gestioneUtenti.nuovoUtenteForm">
         <div class="mb-3">
             <label for="utente">Nominativo</label>
             <ng-select
@@ -55,21 +55,6 @@
         </div>
         <div *ngIf="submitted && f.ruolo.errors" class="invalid-feedback">
             <div *ngIf="f.ruolo.errors.required">Campo Obbligatorio</div>
-        </div>
-        <div class="mb-3">
-            <label for="permessi">Permessi</label>
-            <ng-select
-                    id="permessi"
-                    [items]="[]"
-                    [multiple]="true"
-                    formControlName="permessi"
-                    placeholder="Seleziona uno o più permessi"
-                    [notFoundText]="'Nessun ruolo disponibile'"
-                    [ngClass]="{ 'is-invalid': submitted && f.permessi.errors }">
-            </ng-select>
-        </div>
-        <div *ngIf="submitted && f.permessi.errors" class="invalid-feedback">
-            <div *ngIf="f.permessi.errors.required">Campo Obbligatorio</div>
         </div>
     </form>
 </div>

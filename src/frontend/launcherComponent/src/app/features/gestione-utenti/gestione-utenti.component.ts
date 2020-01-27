@@ -13,8 +13,7 @@ import { GestioneUtente } from '../../shared/interface/gestione-utente.interface
 import { RicercaUtentiState } from './store/states/ricerca-utenti/ricerca-utenti.state';
 import { PaginationState } from '../../shared/store/states/pagination/pagination.state';
 import { LoadingState } from '../../shared/store/states/loading/loading.state';
-import { GetPermessi } from './store/actions/permessi/permessi.actions';
-import { AggiungiUtenteModalComponent } from './aggiungi-utente-modal/aggiungi-utente-modal.component';
+import { GestioneUtenteModalComponent } from './gestione-utente-modal/gestione-utente-modal.component';
 
 @Component({
     selector: 'app-gestione-utenti',
@@ -36,7 +35,6 @@ export class GestioneUtentiComponent implements OnInit {
                 private store: Store) {
         this.getUtentiGestione();
         this.getRuoli();
-        this.getPermessi();
         this.getRicerca();
     }
 
@@ -48,13 +46,14 @@ export class GestioneUtentiComponent implements OnInit {
     }
 
     onAddUtente() {
-        const aggiungiUtenteModal = this.modalService.open(AggiungiUtenteModalComponent, { backdropClass: 'light-blue-backdrop', centered: true, size: 'lg' });
+        const aggiungiUtenteModal = this.modalService.open(GestioneUtenteModalComponent, { backdropClass: 'light-blue-backdrop', centered: true, size: 'lg' });
+        aggiungiUtenteModal.componentInstance.editMode = false;
         aggiungiUtenteModal.result.then(
-            (risultatoModal) => {
-                if (risultatoModal[0] === 'ok') {
-                    this.store.dispatch(new AddUtente(risultatoModal[1]));
-                }
-                // console.log('Modal chiusa con val ->', val);
+            (risultatoModal: any) => {
+                // if (risultatoModal[0] === 'ok') {
+                //     this.store.dispatch(new AddUtente(risultatoModal[1]));
+                // }
+                console.log('Modal "addUtente" chiusa con val ->', risultatoModal);
             },
             (err) => console.error('Modal chiusa senza bottoni. Err ->', err)
         );
@@ -62,8 +61,8 @@ export class GestioneUtentiComponent implements OnInit {
         // console.warn('add utente modal');
     }
 
-    onUpdateUtente(utenteGestione: any) {
-        this.store.dispatch(new UpdateUtenteGestione(utenteGestione.utente.id_utente));
+    onDetailUtente(id: string) {
+        // TODO: creare logica
         // TODO: DEBUG
         // const utente = event.utente.nome + ' ' + event.utente.cognome;
         // const ruolo = event.ruoli;
@@ -71,7 +70,24 @@ export class GestioneUtentiComponent implements OnInit {
         // console.warn(utente + ' è diventato ' + ruolo + ' nel ' + sede);
     }
 
-    onRemoveUtente(id: any) {
+    onModifyUtente(id: string) {
+        // TODO: prendere l'utente gestione tramite ID e aprire la modale di modifica facendo il patch del form
+        const modificaUtenteModal = this.modalService.open(GestioneUtenteModalComponent, { backdropClass: 'light-blue-backdrop', centered: true, size: 'lg' });
+        modificaUtenteModal.componentInstance.editMode = true;
+        modificaUtenteModal.result.then((risultatoModal: any) => {
+                console.log('Modal "modifyUtente" chiusa con val ->', risultatoModal);
+            },
+            (err) => console.error('Modal chiusa senza bottoni. Err ->', err)
+        );
+        // this.store.dispatch(new UpdateUtenteGestione(utente));
+        // TODO: DEBUG
+        // const utente = event.utente.nome + ' ' + event.utente.cognome;
+        // const ruolo = event.ruoli;
+        // const sede = event.sede.descrizione;
+        // console.warn(utente + ' è diventato ' + ruolo + ' nel ' + sede);
+    }
+
+    onRemoveUtente(id: string) {
         this.store.dispatch(new OpenModalRemoveUtente(id));
         // TODO: DEBUG
         // const utente = event.utente.nome + ' ' + event.utente.cognome;
@@ -86,10 +102,6 @@ export class GestioneUtentiComponent implements OnInit {
 
     getRuoli() {
         this.store.dispatch(new GetRuoli());
-    }
-
-    getPermessi() {
-        this.store.dispatch(new GetPermessi());
     }
 
     getRicerca() {
