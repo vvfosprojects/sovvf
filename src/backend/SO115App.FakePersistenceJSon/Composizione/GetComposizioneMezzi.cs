@@ -25,6 +25,7 @@ using SO115App.FakePersistence.JSon.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.GetComposizioneMezzi;
+using SO115App.Persistence.MongoDB.GestioneMezzi;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -41,10 +42,12 @@ namespace SO115App.FakePersistenceJSon.Composizione
     {
         private readonly IGetStatoMezzi _getMezziPrenotati;
         private readonly IGetRichiestaById _getRichiestaById;
+        private readonly OrdinamentoMezzi _ordinamentoMezzi;
 
-        public GetComposizioneMezzi(IGetStatoMezzi getMezziPrenotati)
+        public GetComposizioneMezzi(IGetStatoMezzi getMezziPrenotati, OrdinamentoMezzi ordinamentoMezzi)
         {
             _getMezziPrenotati = getMezziPrenotati;
+            _ordinamentoMezzi = ordinamentoMezzi;
         }
 
         public List<ComposizioneMezzi> Get(ComposizioneMezziQuery query)
@@ -118,10 +121,9 @@ namespace SO115App.FakePersistenceJSon.Composizione
                 if (!string.IsNullOrEmpty(query.Filtro.CodiceMezzo))
                     composizioneMezzi = composizioneMezzi.Where(x => x.Mezzo.Codice == query.Filtro.CodiceMezzo).ToList();
 
-                var ordinamento = new OrdinamentoMezzi(_getRichiestaById);
                 foreach (var composizione in composizioneMezzi)
                 {
-                    composizione.IndiceOrdinamento = ordinamento.GetIndiceOrdinamento(query.Filtro.IdRichiesta, composizione, composizione.Mezzo.IdRichiesta);
+                    composizione.IndiceOrdinamento = _ordinamentoMezzi.GetIndiceOrdinamento(query.Filtro.IdRichiesta, composizione, composizione.Mezzo.IdRichiesta);
                     composizione.Id = composizione.Mezzo.Codice;
 
                     if (composizione.IstanteScadenzaSelezione < DateTime.Now)
@@ -136,10 +138,9 @@ namespace SO115App.FakePersistenceJSon.Composizione
             }
             else
             {
-                var ordinamento = new OrdinamentoMezzi(_getRichiestaById);
                 foreach (var composizione in composizioneMezzi)
                 {
-                    composizione.IndiceOrdinamento = ordinamento.GetIndiceOrdinamento(query.Filtro.IdRichiesta, composizione, composizione.Mezzo.IdRichiesta);
+                    composizione.IndiceOrdinamento = _ordinamentoMezzi.GetIndiceOrdinamento(query.Filtro.IdRichiesta, composizione, composizione.Mezzo.IdRichiesta);
                     composizione.Id = composizione.Mezzo.Codice;
 
                     if (composizione.IstanteScadenzaSelezione < DateTime.Now)

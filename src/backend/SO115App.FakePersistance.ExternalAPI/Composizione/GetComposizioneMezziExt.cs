@@ -26,6 +26,7 @@ using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.GetComposizioneMezzi;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
+using SO115App.Persistence.MongoDB.GestioneMezzi;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -42,12 +43,13 @@ namespace SO115App.ExternalAPI.Fake.Composizione
     {
         private readonly IGetMezziUtilizzabili _getMezziUtilizzabili;
         private readonly IGetStatoMezzi _getMezziPrenotati;
-        private readonly IGetRichiestaById _getRichiestaById;
+        private readonly OrdinamentoMezzi _ordinamentoMezzi;
 
-        public GetComposizioneMezziExt(IGetMezziUtilizzabili getMezziUtilizzabili, IGetStatoMezzi getMezziPrenotati)
+        public GetComposizioneMezziExt(IGetMezziUtilizzabili getMezziUtilizzabili, IGetStatoMezzi getMezziPrenotati, OrdinamentoMezzi ordinamentoMezzi)
         {
             _getMezziUtilizzabili = getMezziUtilizzabili;
             _getMezziPrenotati = getMezziPrenotati;
+            _ordinamentoMezzi = ordinamentoMezzi;
         }
 
         /// <summary>
@@ -123,10 +125,9 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                 if (!string.IsNullOrEmpty(query.Filtro.CodiceMezzo))
                     composizioneMezzi = composizioneMezzi.Where(x => x.Mezzo.Codice == query.Filtro.CodiceMezzo).ToList();
 
-                var ordinamento = new OrdinamentoMezzi(_getRichiestaById);
                 foreach (var composizione in composizioneMezzi)
                 {
-                    composizione.IndiceOrdinamento = ordinamento.GetIndiceOrdinamento(query.Filtro.IdRichiesta, composizione, composizione.Mezzo.IdRichiesta);
+                    composizione.IndiceOrdinamento = _ordinamentoMezzi.GetIndiceOrdinamento(query.Filtro.IdRichiesta, composizione, composizione.Mezzo.IdRichiesta);
                     composizione.Id = composizione.Mezzo.Codice;
 
                     if (composizione.IstanteScadenzaSelezione < DateTime.Now)
@@ -141,10 +142,9 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             }
             else
             {
-                var ordinamento = new OrdinamentoMezzi(_getRichiestaById);
                 foreach (var composizione in composizioneMezzi)
                 {
-                    composizione.IndiceOrdinamento = ordinamento.GetIndiceOrdinamento(query.Filtro.IdRichiesta, composizione, composizione.Mezzo.IdRichiesta);
+                    composizione.IndiceOrdinamento = _ordinamentoMezzi.GetIndiceOrdinamento(query.Filtro.IdRichiesta, composizione, composizione.Mezzo.IdRichiesta);
                     composizione.Id = composizione.Mezzo.Codice;
 
                     if (composizione.IstanteScadenzaSelezione < DateTime.Now)
