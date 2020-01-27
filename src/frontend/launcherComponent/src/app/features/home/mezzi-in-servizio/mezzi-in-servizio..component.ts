@@ -81,7 +81,7 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.store.dispatch(new ReducerFiltroMarker('mezzo', true));
+        this.store.dispatch(new ReducerFiltroMarker('mezzo'));
         isDevMode() && console.log('Componente Mezzo in Servizio creato');
     }
 
