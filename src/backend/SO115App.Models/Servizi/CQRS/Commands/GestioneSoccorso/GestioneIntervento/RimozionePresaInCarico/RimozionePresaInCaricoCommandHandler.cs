@@ -45,7 +45,7 @@ namespace DomainModel.CQRS.Commands.RimozionePresaInCarico
 
         public void Handle(RimozionePresaInCaricoCommand command)
         {
-            var richiesta = _getRichiestaById.Get(command.IdRichiesta);
+            var richiesta = _getRichiestaById.GetByCodice(command.IdRichiesta);
 
             richiesta.Id = richiesta.Codice;
 

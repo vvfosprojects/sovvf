@@ -86,7 +86,7 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
 
                 if (mezzo.IdRichiesta != null)
                 {
-                    var richiesta = _getRichiestaById.Get(mezzo.IdRichiesta);
+                    var richiesta = _getRichiestaById.GetByCodice(mezzo.IdRichiesta);
                     if (richiesta != null)
                     {
                         foreach (var partenza in richiesta.Partenze)

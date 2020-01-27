@@ -49,11 +49,16 @@ namespace SO115App.Persistence.MongoDB
             _getTipologiaByCodice = getTipologiaByCodice;
         }
 
-        public RichiestaAssistenza Get(string idRichiestaAssistenza)
+        public RichiestaAssistenza GetByCodice(string codiceRichiesta)
         {
             return _dbContext.RichiestaAssistenzaCollection
-                .Find(s => s.Codice == idRichiestaAssistenza)
+                .Find(s => s.Codice == codiceRichiesta)
                 .Single();
+        }
+
+        public RichiestaAssistenza GetById(string idRichiesta)
+        {
+            return _dbContext.RichiestaAssistenzaCollection.Find(s => s.Id == idRichiesta).Single();
         }
 
         public List<SintesiRichiesta> GetListaSintesiRichieste(FiltroRicercaRichiesteAssistenza filtro)

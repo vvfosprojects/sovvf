@@ -43,7 +43,7 @@ namespace DomainModel.CQRS.Commands.UpDateIntervento
 
         public void Handle(UpDateInterventoCommand command)
         {
-            var richiesta = _getRichiestaById.Get(command.Chiamata.Codice);
+            var richiesta = _getRichiestaById.GetByCodice(command.Chiamata.Codice);
             var priorita = command.Chiamata.PrioritaRichiesta;
             var listaCodiciTipologie = new List<string>();
             var utentiInLavorazione = new List<string>();

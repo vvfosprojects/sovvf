@@ -30,7 +30,7 @@ namespace SO115App.FakePersistenceJSon.GestioneIntervento
 {
     public class GetRichiestaById : IGetRichiestaById
     {
-        public RichiestaAssistenza Get(string idRichiestaAssistenza)
+        public RichiestaAssistenza GetByCodice(string codiceRichiesta)
         {
             string filepath = "Fake/ListaRichiesteAssistenza.json";
             string json;
@@ -42,7 +42,26 @@ namespace SO115App.FakePersistenceJSon.GestioneIntervento
 
             List<RichiestaAssistenzaDTO> ListaRichieste = JsonConvert.DeserializeObject<List<RichiestaAssistenzaDTO>>(json);
 
-            RichiestaAssistenzaDTO richiesta = (RichiestaAssistenzaDTO)ListaRichieste.FirstOrDefault(x => x.Cod == idRichiestaAssistenza);
+            RichiestaAssistenzaDTO richiesta = (RichiestaAssistenzaDTO)ListaRichieste.FirstOrDefault(x => x.Cod == codiceRichiesta);
+
+            RichiestaAssistenza richiestaReturn = MapperDTO.MapRichiestaDTOtoRichiesta(richiesta);
+
+            return richiestaReturn;
+        }
+
+        public RichiestaAssistenza GetById(string idRichiesta)
+        {
+            string filepath = "Fake/ListaRichiesteAssistenza.json";
+            string json;
+
+            using (StreamReader r = new StreamReader(filepath))
+            {
+                json = r.ReadToEnd();
+            }
+
+            List<RichiestaAssistenzaDTO> ListaRichieste = JsonConvert.DeserializeObject<List<RichiestaAssistenzaDTO>>(json);
+
+            RichiestaAssistenzaDTO richiesta = (RichiestaAssistenzaDTO)ListaRichieste.FirstOrDefault(x => x.Id == idRichiesta);
 
             RichiestaAssistenza richiestaReturn = MapperDTO.MapRichiestaDTOtoRichiesta(richiesta);
 

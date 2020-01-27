@@ -43,7 +43,8 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 
         public void Handle(AggiornaStatoMezzoCommand command)
         {
-            var richiesta = _getRichiestaById.Get(command.Chiamata.Id);
+            var richiesta = _getRichiestaById.GetById(command.Chiamata.Id);
+            richiesta.CodOperatore = "30"; //TODO GESTIRE IL CODICE OPERATORE
 
             if (command.StatoMezzo == Costanti.MezzoSulPosto)
             {
@@ -82,7 +83,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 }
 
                 if (_mezziTuttiInSede)
-                    new PartenzaInRientro(richiesta, command.IdMezzo, DateTime.UtcNow, richiesta.CodOperatore);
+                    new PartenzaInRientro(richiesta, command.IdMezzo, DateTime.UtcNow, richiesta.CodOperatore); //TODO GESTIRE IL CODICE OPERATORE
             }
             else if (command.StatoMezzo == Costanti.MezzoRientrato)
             {

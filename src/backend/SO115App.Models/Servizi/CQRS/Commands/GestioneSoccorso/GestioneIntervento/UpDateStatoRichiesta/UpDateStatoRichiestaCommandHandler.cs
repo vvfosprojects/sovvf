@@ -39,7 +39,7 @@ namespace DomainModel.CQRS.Commands.UpDateStatoRichiesta
 
         public void Handle(UpDateStatoRichiestaCommand command)
         {
-            var richiesta = _getRichiestaById.Get(command.IdRichiesta);
+            var richiesta = _getRichiestaById.GetById(command.IdRichiesta);
 
             if (command.Stato.Equals(Costanti.RichiestaChiusa) || command.Stato.Equals(Costanti.RichiestaSospesa))
             {

@@ -59,12 +59,12 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
         /// <summary>
         ///   Query che estrae i valori dei Box presenti in Home Page
         /// </summary>
-        /// <param name="query">Filtri utilizzati per l'estrazione</param>
+        /// <param name="command">Filtri utilizzati per l'estrazione</param>
         /// <returns>Elenco dei mezzi disponibili</returns>
         public void Handle(ConfermaPartenzeCommand command)
         {
             /// preparazione del DTO
-            var richiesta = _getRichiestaById.Get(command.ConfermaPartenze.IdRichiesta);
+            var richiesta = _getRichiestaById.GetByCodice(command.ConfermaPartenze.IdRichiesta);
             var richiestaDaSganciare = new RichiestaAssistenza();
             var utente = _getUtenteById.GetUtenteById(command.ConfermaPartenze.IdOperatore);
 
@@ -74,7 +74,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             ///Gestione Sganciamento
             if (command.ConfermaPartenze.IdRichiestaDaSganciare != null)
             {
-                richiestaDaSganciare = _getRichiestaById.Get(command.ConfermaPartenze.IdRichiestaDaSganciare);
+                richiestaDaSganciare = _getRichiestaById.GetByCodice(command.ConfermaPartenze.IdRichiestaDaSganciare);
 
                 foreach (var composizione in richiestaDaSganciare.Eventi.Where(x => x is ComposizionePartenze).ToList())
                 {
@@ -110,7 +110,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
 
             richiesta.SincronizzaStatoRichiesta(Costanti.RichiestaAssegnata, richiesta.StatoRichiesta, utente.Id, "");
 
-            richiesta.Id = command.ConfermaPartenze.IdRichiesta;
+            //richiesta.Id = command.ConfermaPartenze.IdRichiesta;
             command.ConfermaPartenze.richiesta = richiesta;
 
             var sedeRichiesta = command.ConfermaPartenze.CodiceSede;

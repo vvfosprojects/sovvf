@@ -47,7 +47,7 @@ namespace DomainModel.CQRS.Commands.MessaInLavorazione
 
         public void Handle(MessaInLavorazioneCommand command)
         {
-            var richiesta = _getRichiestaById.Get(command.IdRichiesta);
+            var richiesta = _getRichiestaById.GetByCodice(command.IdRichiesta);
             var utente = _getUtenteById.GetUtenteById(command.IdUtente);
             //AttivitaUtente attivita = new AttivitaUtente();
 

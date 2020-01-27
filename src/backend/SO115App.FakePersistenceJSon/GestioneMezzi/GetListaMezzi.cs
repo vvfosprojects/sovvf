@@ -67,7 +67,7 @@ namespace SO115App.FakePersistenceJSon.GestioneMezzi
                 var mezzoInServizio = new MezzoInServizio { Mezzo = mezzoMarker };
                 if (mezzoInServizio.Mezzo.Mezzo.IdRichiesta != null)
                 {
-                    var richiesta = getRichiestaById.Get(mezzoInServizio.Mezzo.Mezzo.IdRichiesta);
+                    var richiesta = getRichiestaById.GetByCodice(mezzoInServizio.Mezzo.Mezzo.IdRichiesta);
                     foreach (var partenza in richiesta.Partenze)
                     {
                         if (partenza.Partenza.Mezzo.Codice == mezzoInServizio.Mezzo.Mezzo.Codice)

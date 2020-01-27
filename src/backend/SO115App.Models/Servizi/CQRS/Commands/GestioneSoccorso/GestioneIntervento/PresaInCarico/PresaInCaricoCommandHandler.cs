@@ -47,7 +47,7 @@ namespace DomainModel.CQRS.Commands.PresaInCarico
 
         public void Handle(PresaInCaricoCommand command)
         {
-            var richiesta = _getRichiestaById.Get(command.IdRichiesta);
+            var richiesta = _getRichiestaById.GetByCodice(command.IdRichiesta);
             var utente = _getUtenteById.GetUtenteById(command.IdUtente);
             var attivita = new AttivitaUtente
             {

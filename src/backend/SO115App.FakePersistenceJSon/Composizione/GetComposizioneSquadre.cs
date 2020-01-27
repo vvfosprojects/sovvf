@@ -103,7 +103,7 @@ namespace SO115App.FakePersistenceJSon.Composizione
                             if (mezzo.IdRichiesta != null)
                             {
                                 var getRichiesta = new GetRichiestaById();
-                                var richiesta = getRichiesta.Get(mezzo.IdRichiesta);
+                                var richiesta = getRichiesta.GetByCodice(mezzo.IdRichiesta);
                                 var listaSquadre = richiesta.Partenze
                                     .Where(x => x.Partenza.Mezzo.Codice.Equals(mezzo.Codice))
                                     .Select(x => x.Partenza.Squadre);

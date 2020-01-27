@@ -15,7 +15,7 @@ namespace SO115App.Persistence.MongoDB.Test
             var GestioneRichieste = new GetRichiestaById();
             var Salvataggio = new SaveRichiesta(DBContext);
 
-            var richiesta = GestioneRichieste.Get("RM2391900000");
+            var richiesta = GestioneRichieste.GetByCodice("RM2391900000");
             Salvataggio.Save(richiesta);
             var richiestaDelDB = DBContext.RichiestaAssistenzaCollection.Find(x => x.Codice.Equals("RM2391900000")).First();
 

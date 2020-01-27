@@ -31,6 +31,8 @@ namespace SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso
         /// </summary>
         /// <param name="idRichiestaAssistenza">Identificativo della Richiesta di Assistenza</param>
         /// <returns>La Richiesta di Assistenza</returns>
-        RichiestaAssistenza Get(string idRichiestaAssistenza);
+        RichiestaAssistenza GetByCodice(string codiceRichiesta);
+
+        RichiestaAssistenza GetById(string idRichiesta);
     }
 }
