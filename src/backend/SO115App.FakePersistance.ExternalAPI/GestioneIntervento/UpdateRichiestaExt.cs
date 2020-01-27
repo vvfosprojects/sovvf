@@ -37,10 +37,12 @@ namespace SO115App.ExternalAPI.Fake.GestioneIntervento
     public class UpDateRichiestaExt : IUpDateRichiestaAssistenza
     {
         private readonly ISetMovimentazione _setMovimentazione;
+        private readonly IUpDateRichiestaAssistenza _upDateRichiestaAssistenza;
 
-        public UpDateRichiestaExt(ISetMovimentazione setMovimentazione)
+        public UpDateRichiestaExt(ISetMovimentazione setMovimentazione, IUpDateRichiestaAssistenza upDateRichiestaAssistenza)
         {
             _setMovimentazione = setMovimentazione;
+            _upDateRichiestaAssistenza = upDateRichiestaAssistenza;
         }
 
         /// <summary>
@@ -50,48 +52,18 @@ namespace SO115App.ExternalAPI.Fake.GestioneIntervento
         /// <param name="richiestaAssistenza">la richiesta assistenza</param>
         public void UpDate(RichiestaAssistenza richiestaAssistenza)
         {
-            var filepath = CostantiJson.ListaRichiesteAssistenza;
             var filePathSquadre = CostantiJson.SquadreComposizione;
             var dataMovimentazione = DateTime.UtcNow;
 
-            var listaRichiesteNew = new List<RichiestaAssistenza>();
-
-            string json;
             string jsonSquadre;
-
-            using (var r = new StreamReader(filepath))
-            {
-                json = r.ReadToEnd();
-            }
-
             using (var r = new StreamReader(filePathSquadre))
             {
                 jsonSquadre = r.ReadToEnd();
             }
 
-            var listaRichieste = JsonConvert.DeserializeObject<List<RichiestaAssistenzaDTO>>(json);
             var listaSquadre = JsonConvert.DeserializeObject<List<ComposizioneSquadre>>(jsonSquadre);
 
-            if (listaRichieste != null)
-            {
-                foreach (var richiesta in listaRichieste)
-                {
-                    if (richiesta.Cod != richiestaAssistenza.Codice)
-                        listaRichiesteNew.Add(MapperDTO.MapRichiestaDTOtoRichiesta(richiesta));
-                }
-
-                listaRichiesteNew.Add(richiestaAssistenza);
-
-                var jsonListaPresente = JsonConvert.SerializeObject(listaRichiesteNew);
-                File.WriteAllText(CostantiJson.ListaRichiesteAssistenza, jsonListaPresente);
-            }
-            else
-            {
-                listaRichiesteNew.Add(richiestaAssistenza);
-
-                var jsonNew = JsonConvert.SerializeObject(listaRichiesteNew);
-                File.WriteAllText(CostantiJson.ListaRichiesteAssistenza, jsonNew);
-            }
+            _upDateRichiestaAssistenza.UpDate(richiestaAssistenza);
 
             foreach (var partenza in richiestaAssistenza.Partenze)
             {

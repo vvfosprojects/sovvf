@@ -18,21 +18,19 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.IO;
 using DomainModel.CQRS.Commands.ConfermaPartenze;
 using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Composizione;
 using SO115App.API.Models.Classi.Condivise;
-using SO115App.API.Models.Classi.Soccorso;
+using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.FakePersistence.JSon.Utility;
-using SO115App.FakePersistenceJSon.Classi;
-using SO115App.FakePersistenceJSon.Utility;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
+using System;
+using System.Collections.Generic;
+using System.IO;
 
 namespace SO115App.ExternalAPI.Fake.Composizione
 {
@@ -43,15 +41,15 @@ namespace SO115App.ExternalAPI.Fake.Composizione
     public class UpdateConfermaPartenzeExt : IUpdateConfermaPartenze
     {
         private readonly ISetMovimentazione _setMovimentazione;
-        private readonly ISetStatoOperativoMezzo _setStatoOperativoMezzo;
+        private readonly IUpDateRichiestaAssistenza _updateRichiesta;
 
         /// <summary>
         ///   Costruttore della classe
         /// </summary>
-        public UpdateConfermaPartenzeExt(ISetMovimentazione setMovimentazione, ISetStatoOperativoMezzo setStatoOperativoMezzo)
+        public UpdateConfermaPartenzeExt(ISetMovimentazione setMovimentazione, IUpDateRichiestaAssistenza updateRichiesta)
         {
             _setMovimentazione = setMovimentazione;
-            _setStatoOperativoMezzo = setStatoOperativoMezzo;
+            _updateRichiesta = updateRichiesta;
         }
 
         /// <summary>
@@ -61,58 +59,24 @@ namespace SO115App.ExternalAPI.Fake.Composizione
         /// <returns>ConfermaPartenze</returns>
         public ConfermaPartenze Update(ConfermaPartenzeCommand command)
         {
-            var filepath = CostantiJson.ListaRichiesteAssistenza;
             var filePathSquadre = CostantiJson.SquadreComposizione;
-            string json;
             string jsonSquadre;
-            using (var r = new StreamReader(filepath))
-            {
-                json = r.ReadToEnd();
-            }
-
             using (var r = new StreamReader(filePathSquadre))
             {
                 jsonSquadre = r.ReadToEnd();
             }
 
-            var richiestaDTO = new RichiestaAssistenzaDTO();
             var conferma = new ConfermaPartenze();
-            var listaRichieste = JsonConvert.DeserializeObject<List<RichiestaAssistenzaDTO>>(json);
             var listaSquadre = JsonConvert.DeserializeObject<List<ComposizioneSquadre>>(jsonSquadre);
-            var listaRichiesteNew = new List<RichiestaAssistenza>();
 
-            if (listaRichieste != null)
-            {
-                richiestaDTO = listaRichieste.Find(x => x.Cod == command.ConfermaPartenze.richiesta.Codice);
-                listaRichieste.Remove(richiestaDTO);
-
-                foreach (var richiesta in listaRichieste)
-                {
-                    listaRichiesteNew.Add(MapperDTO.MapRichiestaDTOtoRichiesta(richiesta));
-                }
-
-                listaRichiesteNew.Add(command.ConfermaPartenze.richiesta);
-
-                var jsonListaPresente = JsonConvert.SerializeObject(listaRichiesteNew);
-                File.WriteAllText(CostantiJson.ListaRichiesteAssistenza, jsonListaPresente);
-            }
-            else
-            {
-                listaRichiesteNew = new List<RichiestaAssistenza>
-                {
-                    command.ConfermaPartenze.richiesta
-                };
-
-                var jsonNew = JsonConvert.SerializeObject(listaRichiesteNew);
-                File.WriteAllText(CostantiJson.ListaRichiesteAssistenza, jsonNew);
-            }
+            _updateRichiesta.UpDate(command.ConfermaPartenze.richiesta);
 
             foreach (var partenza in command.ConfermaPartenze.Partenze)
             {
                 var dataMovintazione = DateTime.UtcNow;
 
-                _setMovimentazione.Set(partenza.Mezzo.Codice, command.ConfermaPartenze.IdRichiesta, Costanti.MezzoInViaggio, dataMovintazione);
-                _setStatoOperativoMezzo.Set(command.ConfermaPartenze.CodiceSede, partenza.Mezzo.Codice, Costanti.MezzoInViaggio, command.ConfermaPartenze.IdRichiesta);
+                _setMovimentazione.Set(partenza.Mezzo.Codice, command.ConfermaPartenze.IdRichiesta, Costanti.MezzoInViaggio, dataMovintazione); //TODO IMPLEMENTARE CON GAC (PER SPER SCRIVERE DIRETTAMENTE SU DB)
+                //_setStatoOperativoMezzo.Set(command.ConfermaPartenze.CodiceSede, partenza.Mezzo.Codice, Costanti.MezzoInViaggio, command.ConfermaPartenze.IdRichiesta); //TODO CANCELLARE NON PIU' NECESSARIO
 
                 foreach (var composizioneSquadra in listaSquadre)
                 {
