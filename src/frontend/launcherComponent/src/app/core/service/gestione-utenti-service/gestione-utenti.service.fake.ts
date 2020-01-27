@@ -3,6 +3,8 @@ import { GestioneUtente } from '../../../shared/interface/gestione-utente.interf
 import { Observable, of } from 'rxjs';
 import { Role } from '../../../shared/model/utente.model';
 import { ResponseInterface } from '../../../shared/interface/response.interface';
+import { catchError, retry } from 'rxjs/operators';
+import { handleError } from '../../../shared/helper/handleError';
 
 @Injectable({
     providedIn: 'root'
@@ -59,6 +61,10 @@ export class GestioneUtentiServiceFake {
             }
         };
         return of(response);
+    }
+
+    getUtente(id: string): Observable<GestioneUtente> {
+        return of(this.gestioneUtenti.filter(x => x.id === id)[0]);
     }
 
     updateUtente(utente: GestioneUtente): Observable<GestioneUtente> {

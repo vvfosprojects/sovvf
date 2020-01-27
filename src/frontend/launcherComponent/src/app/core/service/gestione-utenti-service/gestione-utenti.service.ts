@@ -24,6 +24,13 @@ export class GestioneUtentiService {
         );
     }
 
+    getUtente(id: string): Observable<GestioneUtente> {
+        return this.http.get<GestioneUtente>(API_URL + '/' + id).pipe(
+            retry(3),
+            catchError(handleError)
+        );
+    }
+
     updateUtente(utente: GestioneUtente): Observable<GestioneUtente> {
         return this.http.post<GestioneUtente>(API_URL + '/Update', utente).pipe(
             retry(3),

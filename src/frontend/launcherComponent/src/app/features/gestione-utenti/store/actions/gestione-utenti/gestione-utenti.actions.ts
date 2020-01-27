@@ -12,6 +12,22 @@ export class SetUtentiGestione {
     constructor(public utenti: GestioneUtente[]) { }
 }
 
+export class GetUtenteDetail {
+    static readonly type = '[GestioneUtenti] Get Utente Detail';
+
+    constructor(public id: string) { }
+}
+
+export class SetUtenteDetail {
+    static readonly type = '[GestioneUtenti] Set Utente Detail';
+
+    constructor(public utente: GestioneUtente) { }
+}
+
+export class ClearUtenteDetail {
+    static readonly type = '[GestioneUtenti] Clear Utente Detail';
+}
+
 export class UpdateUtenteGestione {
     static readonly type = '[GestioneUtenti] Update Utente';
 

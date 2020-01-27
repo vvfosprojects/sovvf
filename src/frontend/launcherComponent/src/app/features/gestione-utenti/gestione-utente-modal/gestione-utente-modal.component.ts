@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, NgZone, OnInit } from '@angular/core';
 import { Utente } from '../../../shared/model/utente.model';
 import { Select, Store } from '@ngxs/store';
 import { Observable, Subscription } from 'rxjs';
@@ -12,13 +12,15 @@ import { RuoliState } from '../store/states/ruoli/ruoli.state';
 import { GetUtenti } from '../../../shared/store/actions/utenti/utenti.actions';
 import { UtentiState } from '../../../shared/store/states/utenti/utenti.state';
 import { findItem } from '../../../shared/store/states/sedi-treeview/sedi-treeview.helper';
+import { GestioneUtente } from '../../../shared/interface/gestione-utente.interface';
+import { UpdateFormValue } from '@ngxs/form-plugin';
 
 @Component({
     selector: 'app-gestione-utente-modal',
     templateUrl: './gestione-utente-modal.component.html',
     styleUrls: ['./gestione-utente-modal.component.css']
 })
-export class GestioneUtenteModalComponent {
+export class GestioneUtenteModalComponent implements OnInit {
 
     @Select(UtentiState.utenti) listaUtenti$: Observable<Utente[]>;
     @Select(RuoliState.ruoli) ruoli$: Observable<any[]>;
@@ -28,26 +30,58 @@ export class GestioneUtenteModalComponent {
     sediSelezionate: string;
 
     gestioneUtenteForm: FormGroup;
-    editMode: boolean;
     submitted: boolean;
+
+    utenteEdit: GestioneUtente;
+    editMode: boolean;
 
     subscription: Subscription = new Subscription();
 
     constructor(private store: Store,
                 private modal: NgbActiveModal,
                 private fb: FormBuilder) {
-        this.store.dispatch(new GetUtenti());
-        this.inizializzaSediTreeview();
-        this.initForm();
-        this.getSediSelezionate();
+        if (!this.editMode) {
+            this.store.dispatch(new GetUtenti());
+            this.initForm();
+            this.inizializzaSediTreeview();
+            this.getSediSelezionate();
+        }
     }
 
     initForm() {
         this.gestioneUtenteForm = this.fb.group({
-            utente: ['', Validators.required],
-            sedi: ['', Validators.required],
-            ruolo: ['', Validators.required]
+            utente: [null, Validators.required],
+            sedi: [null, Validators.required],
+            ruolo: [null, Validators.required]
         });
+    }
+
+    ngOnInit(): void {
+        if (this.editMode) {
+            this.store.dispatch(new GetUtenti());
+            this.patchEditForm();
+            this.initPatchedForm();
+            this.inizializzaSediTreeview();
+            this.getSediSelezionate();
+        }
+    }
+
+    initPatchedForm() {
+        this.gestioneUtenteForm = this.fb.group({
+            utente: [this.utenteEdit.id, Validators.required],
+            sedi: [null, Validators.required],
+            ruolo: [this.utenteEdit.ruolo, Validators.required]
+        });
+    }
+
+    patchEditForm() {
+        this.store.dispatch(new UpdateFormValue({
+            value: {
+                utente: this.utenteEdit.id,
+                ruolo: this.utenteEdit.ruolo
+            },
+            path: 'gestioneUtenti.nuovoUtenteForm'
+        }));
     }
 
     get f() {

@@ -6,7 +6,7 @@ import {
     GetUtentiGestione,
     RemoveUtente,
     SetUtentiGestione,
-    OpenModalRemoveUtente
+    OpenModalRemoveUtente, GetUtenteDetail, SetUtenteDetail, ClearUtenteDetail
 } from '../../actions/gestione-utenti/gestione-utenti.actions';
 import { GestioneUtentiService } from '../../../../../core/service/gestione-utenti-service/gestione-utenti.service';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
@@ -22,10 +22,11 @@ import { TreeviewSelezione } from '../../../../../shared/model/treeview-selezion
 
 export interface GestioneUtentiStateModel {
     listaUtenti: GestioneUtente[];
+    utenteDetail: GestioneUtente;
     nuovoUtenteForm: {
         model?: {
             utente: string;
-            ruoli: string[];
+            ruolo: string;
             sedi: TreeviewSelezione[]
         };
         dirty: boolean;
@@ -36,6 +37,7 @@ export interface GestioneUtentiStateModel {
 
 export const GestioneUtentiStateModelDefaults: GestioneUtentiStateModel = {
     listaUtenti: [],
+    utenteDetail: null,
     nuovoUtenteForm: {
         model: undefined,
         dirty: false,
@@ -62,6 +64,11 @@ export class GestioneUtentiState {
     }
 
     @Selector()
+    static utenteDetail(state: GestioneUtentiStateModel) {
+        return state.utenteDetail;
+    }
+
+    @Selector()
     static sedeSelezionata(state: GestioneUtentiStateModel) {
         return state.nuovoUtenteForm.model.sedi;
     }
@@ -81,6 +88,29 @@ export class GestioneUtentiState {
     setUtentiGestione({ patchState }: StateContext<GestioneUtentiStateModel>, action: SetUtentiGestione) {
         patchState({
             listaUtenti: action.utenti
+        });
+    }
+
+    @Action(GetUtenteDetail)
+    getUtenteDetail({ dispatch }: StateContext<GestioneUtentiStateModel>, action: GetUtenteDetail) {
+        this._gestioneUtenti.getUtente(action.id).subscribe((utente: GestioneUtente) => {
+            if (utente) {
+                dispatch(new SetUtenteDetail(utente));
+            }
+        });
+    }
+
+    @Action(SetUtenteDetail)
+    setUtenteDetail({ patchState }: StateContext<GestioneUtentiStateModel>, action: SetUtenteDetail) {
+        patchState({
+            utenteDetail: action.utente
+        });
+    }
+
+    @Action(ClearUtenteDetail)
+    clearUtenteDetail({ patchState }: StateContext<GestioneUtentiStateModel>) {
+        patchState({
+            utenteDetail: null
         });
     }
 
