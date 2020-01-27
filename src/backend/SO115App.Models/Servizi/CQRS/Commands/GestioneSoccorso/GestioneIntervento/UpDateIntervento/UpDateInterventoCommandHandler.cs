@@ -72,7 +72,6 @@ namespace DomainModel.CQRS.Commands.UpDateIntervento
             richiesta.UtPresaInCarico = utentiPresaInCarico;
             richiesta.NotePrivate = command.Chiamata.NotePrivate;
             richiesta.NotePubbliche = command.Chiamata.NotePubbliche;
-            richiesta.Id = command.Chiamata.Codice;
 
             if (command.Chiamata.Tags != null)
             {
@@ -82,13 +81,13 @@ namespace DomainModel.CQRS.Commands.UpDateIntervento
                 }
             }
 
-            richiesta.SincronizzaRilevanza(command.Chiamata.RilevanteGrave, command.Chiamata.RilevanteStArCu, command.Chiamata.Operatore.Id, command.Chiamata.Descrizione, DateTime.UtcNow);
+            richiesta.SincronizzaRilevanza(command.Chiamata.RilevanteGrave, command.Chiamata.RilevanteStArCu, command.CodUtente, command.Chiamata.Descrizione, DateTime.UtcNow);
 
-            richiesta.SincronizzaStatoRichiesta(command.Chiamata.Stato, richiesta.StatoRichiesta, command.Chiamata.Operatore.Id, command.Chiamata.Motivazione);
+            richiesta.SincronizzaStatoRichiesta(command.Chiamata.Stato, richiesta.StatoRichiesta, command.CodUtente, command.Chiamata.Motivazione);
 
             if (richiesta.PrioritaRichiesta != command.Chiamata.PrioritaRichiesta)
             {
-                new AssegnazionePriorita(richiesta, priorita, DateTime.UtcNow, command.Chiamata.Operatore.Id);
+                new AssegnazionePriorita(richiesta, priorita, DateTime.UtcNow, command.CodUtente);
             }
 
             _updateRichiestaAssistenza.UpDate(richiesta);
