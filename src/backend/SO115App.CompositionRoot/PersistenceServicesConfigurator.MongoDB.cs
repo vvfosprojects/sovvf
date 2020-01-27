@@ -5,6 +5,7 @@ using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.Box;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Persistence.MongoDB;
+using SO115App.Persistence.MongoDB.GestioneInterventi;
 using SO115App.Persistence.MongoDB.GestioneMezzi;
 using SO115App.Persistence.MongoDB.Marker;
 
@@ -103,7 +104,7 @@ namespace SO115App.CompositionRoot
 
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GenerazioneCodiciRichiesta.IGeneraCodiceRichiesta,
-                SO115App.FakePersistence.JSon.Utility.GeneraCodiceRichiesta>();
+                GeneraCodiceRichiesta>();
             container.Register<
                 Models.Servizi.Infrastruttura.SistemiEsterni.IdentityManagement.IGetDistaccamentoByCodiceSede,
                 FakePersistence.JSon.Distaccamenti.GetDistaccamentoByCodiceSede>();

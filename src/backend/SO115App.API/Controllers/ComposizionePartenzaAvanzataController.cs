@@ -60,7 +60,7 @@ namespace SO115App.API.Controllers
         /// <summary>
         ///   Metodo di accesso alle richieste di assistenza
         /// </summary>
-        /// <param name="filtro">Il filtro per le richieste</param>
+        /// <param name="filtri">Il filtro per le richieste</param>
         /// <returns>Le sintesi delle richieste di assistenza</returns>
         [HttpPost]
         public async Task<IActionResult> Post(FiltriComposizionePartenza filtri)
