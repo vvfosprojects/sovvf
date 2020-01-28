@@ -100,24 +100,12 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         /// <summary>
         ///   Indica se la richiesta è aperta
         /// </summary>
-        public bool Chiusa
-        {
-            get
-            {
-                return this.IstanteChiusura.HasValue;
-            }
-        }
+        public bool Chiusa { get; set; }
 
         /// <summary>
         ///   Indica se la richiesta è chiusa
         /// </summary>
-        public bool Aperta
-        {
-            get
-            {
-                return !this.Chiusa;
-            }
-        }
+        public bool Aperta { get; set; }
 
         /// <summary>
         ///   Priorita della richiesta

@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter, Input, HostBinding } from '@angular/core';
+import { Component, Output, EventEmitter, Input } from '@angular/core';
 import { makeCopy } from '../../../../../shared/helper/function';
 
 @Component({
@@ -8,17 +8,9 @@ import { makeCopy } from '../../../../../shared/helper/function';
 })
 export class RicercaComponent {
 
-    @HostBinding('class') classes = 'input-group';
-
     @Input() ricerca = '';
     @Input() disabled = false;
-
-    // Events
     @Output() search: EventEmitter<string> = new EventEmitter();
-
-
-    constructor() {
-    }
 
     onSearch() {
         this.search.emit(makeCopy(this.ricerca));

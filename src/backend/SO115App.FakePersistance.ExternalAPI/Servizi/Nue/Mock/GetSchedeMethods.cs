@@ -225,7 +225,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
         public InfoNue GetConteggio(string codiceSede)
         {
             var listaSchede = GetSchede(codiceSede);
-            var listaSchedeCompetenza = listaSchede.FindAll(x => x.Classificazione.Equals(Competenza));
+            var listaSchedeCompetenza = listaSchede.FindAll(x => x.Classificazione.Equals(Competenza) && x.Collegata == false);
             var listaSchedeConoscenza = listaSchede.FindAll(x => x.Classificazione.Equals(Conoscenza));
             var listaSchedeDifferibile = listaSchede.FindAll(x => x.Classificazione.Equals(Differibile));
             return new InfoNue
