@@ -1,5 +1,4 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
-import { GestioneUtente } from '../../../../../shared/interface/gestione-utente.interface';
 import {
     AddUtente,
     UpdateUtenteGestione,
@@ -8,10 +7,6 @@ import {
     SetUtentiGestione,
     OpenModalRemoveUtente, GetUtenteDetail, SetUtenteDetail, ClearUtenteDetail
 } from '../../actions/gestione-utenti/gestione-utenti.actions';
-import { GestioneUtentiService } from '../../../../../core/service/gestione-utenti-service/gestione-utenti.service';
-import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
-import { ToastrType } from '../../../../../shared/enum/toastr';
-import { insertItem, patch, updateItem } from '@ngxs/store/operators';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgZone } from '@angular/core';
 import { ConfirmModalComponent } from '../../../../../shared';
@@ -19,10 +14,16 @@ import { RicercaUtentiState } from '../ricerca-utenti/ricerca-utenti.state';
 import { PatchPagination } from '../../../../../shared/store/actions/pagination/pagination.actions';
 import { ResponseInterface } from '../../../../../shared/interface/response.interface';
 import { TreeviewSelezione } from '../../../../../shared/model/treeview-selezione.model';
+import { UserService } from '../../../../../core/auth/_services';
+import { Utente } from '../../../../../shared/model/utente.model';
+import { insertItem, patch, updateItem } from '@ngxs/store/operators';
+import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
+import { ToastrType } from '../../../../../shared/enum/toastr';
+import { GestioneUtentiService } from '../../../../../core/service/gestione-utenti-service/gestione-utenti.service';
 
 export interface GestioneUtentiStateModel {
-    listaUtenti: GestioneUtente[];
-    utenteDetail: GestioneUtente;
+    listaUtenti: Utente[];
+    utenteDetail: Utente;
     nuovoUtenteForm: {
         model?: {
             utente: string;
@@ -86,6 +87,7 @@ export class GestioneUtentiState {
 
     @Action(SetUtentiGestione)
     setUtentiGestione({ patchState }: StateContext<GestioneUtentiStateModel>, action: SetUtentiGestione) {
+        console.log('Utenti', action.utenti);
         patchState({
             listaUtenti: action.utenti
         });
@@ -93,7 +95,7 @@ export class GestioneUtentiState {
 
     @Action(GetUtenteDetail)
     getUtenteDetail({ dispatch }: StateContext<GestioneUtentiStateModel>, action: GetUtenteDetail) {
-        this._gestioneUtenti.getUtente(action.id).subscribe((utente: GestioneUtente) => {
+        this._gestioneUtenti.getUtente(action.id).subscribe((utente: Utente) => {
             if (utente) {
                 dispatch(new SetUtenteDetail(utente));
             }
@@ -116,7 +118,7 @@ export class GestioneUtentiState {
 
     @Action(UpdateUtenteGestione)
     updateUtenteGestione({ dispatch }: StateContext<GestioneUtentiStateModel>, action: UpdateUtenteGestione) {
-        this._gestioneUtenti.updateUtente(action.utente).subscribe((utente: GestioneUtente) => {
+        this._gestioneUtenti.updateUtente(action.utente).subscribe((utente: Utente) => {
             if (utente) {
                 patch(
                     updateItem(+utente.id, utente)
@@ -128,7 +130,7 @@ export class GestioneUtentiState {
 
     @Action(AddUtente)
     addUtente({ dispatch }: StateContext<GestioneUtentiStateModel>, action: AddUtente) {
-        this._gestioneUtenti.addUtente(action.utente).subscribe((utente: GestioneUtente) => {
+        this._gestioneUtenti.addUtente(action.utente).subscribe((utente: Utente) => {
             if (utente) {
                 patch(
                     insertItem(utente)
@@ -168,11 +170,11 @@ export class GestioneUtentiState {
 
     @Action(RemoveUtente)
     removeUtente({ dispatch }: StateContext<GestioneUtentiStateModel>, action: RemoveUtente) {
-        this._gestioneUtenti.removeUtente(action.id).subscribe(() => {
-            patch(
-                insertItem(u => u.id === action.id)
-            );
-            dispatch(new ShowToastr(ToastrType.Info, 'Utente Rimosso', 'Utente rimosso con successo.', 3));
-        });
+        // this._user.removeUtente(action.id).subscribe(() => {
+        //     patch(
+        //         insertItem(u => u.id === action.id)
+        //     );
+        //     dispatch(new ShowToastr(ToastrType.Info, 'Utente Rimosso', 'Utente rimosso con successo.', 3));
+        // });
     }
 }

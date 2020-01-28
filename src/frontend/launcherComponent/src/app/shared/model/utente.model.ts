@@ -60,10 +60,15 @@ export class Utente {
 
 export interface Ruolo {
     descrizione: Role;
-    sede: Sede;
+    codSede: string;
 }
 
 export enum Role {
     CallTracker = 'CallTracker',
     GestoreRichieste = 'GestoreRichieste'
 }
+
+// export enum Role {
+//     Operator = 'Operatore',
+//     Administrator = 'Amministratore'
+// }

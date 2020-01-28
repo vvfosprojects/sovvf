@@ -1,4 +1,4 @@
-import { Component, Input, NgZone, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, Input, NgZone, OnChanges, OnDestroy, OnInit } from '@angular/core';
 import { Utente } from '../../../shared/model/utente.model';
 import { Select, Store } from '@ngxs/store';
 import { Observable, Subscription } from 'rxjs';
@@ -12,15 +12,14 @@ import { RuoliState } from '../store/states/ruoli/ruoli.state';
 import { GetUtenti } from '../../../shared/store/actions/utenti/utenti.actions';
 import { UtentiState } from '../../../shared/store/states/utenti/utenti.state';
 import { findItem } from '../../../shared/store/states/sedi-treeview/sedi-treeview.helper';
-import { GestioneUtente } from '../../../shared/interface/gestione-utente.interface';
-import { UpdateFormValue } from '@ngxs/form-plugin';
+import { SetFormDisabled, SetFormEnabled, UpdateFormValue } from '@ngxs/form-plugin';
 
 @Component({
     selector: 'app-gestione-utente-modal',
     templateUrl: './gestione-utente-modal.component.html',
     styleUrls: ['./gestione-utente-modal.component.css']
 })
-export class GestioneUtenteModalComponent implements OnInit {
+export class GestioneUtenteModalComponent implements OnInit, OnDestroy {
 
     @Select(UtentiState.utenti) listaUtenti$: Observable<Utente[]>;
     @Select(RuoliState.ruoli) ruoli$: Observable<any[]>;
@@ -32,23 +31,26 @@ export class GestioneUtenteModalComponent implements OnInit {
     gestioneUtenteForm: FormGroup;
     submitted: boolean;
 
-    utenteEdit: GestioneUtente;
+    utenteEdit: Utente;
     editMode: boolean;
+    detailMode: boolean;
 
     subscription: Subscription = new Subscription();
 
     constructor(private store: Store,
                 private modal: NgbActiveModal,
                 private fb: FormBuilder) {
-        if (!this.editMode) {
-            this.store.dispatch(new GetUtenti());
-            this.initForm();
-            this.inizializzaSediTreeview();
-            this.getSediSelezionate();
-        }
+        this.initForm();
+        this.inizializzaSediTreeview();
+        this.getSediSelezionate();
     }
 
     initForm() {
+        this.gestioneUtenteForm = new FormGroup({
+            utente: new FormControl(),
+            sedi: new FormControl(),
+            ruolo: new FormControl()
+        });
         this.gestioneUtenteForm = this.fb.group({
             utente: [null, Validators.required],
             sedi: [null, Validators.required],
@@ -58,30 +60,31 @@ export class GestioneUtenteModalComponent implements OnInit {
 
     ngOnInit(): void {
         if (this.editMode) {
-            this.store.dispatch(new GetUtenti());
             this.patchEditForm();
-            this.initPatchedForm();
-            this.inizializzaSediTreeview();
-            this.getSediSelezionate();
+        } else if (this.detailMode) {
+            this.patchEditForm();
+            this.store.dispatch(new SetFormDisabled('gestioneUtenti.nuovoUtenteForm'));
         }
     }
 
-    initPatchedForm() {
-        this.gestioneUtenteForm = this.fb.group({
-            utente: [this.utenteEdit.id, Validators.required],
-            sedi: [null, Validators.required],
-            ruolo: [this.utenteEdit.ruolo, Validators.required]
-        });
+
+    ngOnDestroy(): void {
+        this.subscription.unsubscribe();
+        this.store.dispatch(new UpdateFormValue({
+            value: null,
+            path: 'gestioneUtenti.nuovoUtenteForm'
+        }));
+        this.store.dispatch(new SetFormEnabled('gestioneUtenti.nuovoUtenteForm'));
     }
 
     patchEditForm() {
-        this.store.dispatch(new UpdateFormValue({
-            value: {
-                utente: this.utenteEdit.id,
-                ruolo: this.utenteEdit.ruolo
-            },
-            path: 'gestioneUtenti.nuovoUtenteForm'
-        }));
+        // this.store.dispatch(new UpdateFormValue({
+        //     value: {
+        //         utente: this.utenteEdit.id,
+        //         ruolo: this.utenteEdit.ruolo.desc
+        //     },
+        //     path: 'gestioneUtenti.nuovoUtenteForm'
+        // }));
     }
 
     get f() {
@@ -92,6 +95,9 @@ export class GestioneUtenteModalComponent implements OnInit {
         this.subscription.add(
             this.listeSediNavbar$.subscribe((listaSedi: TreeItem) => {
                 this.listeSediNavbar = [];
+                if (this.detailMode) {
+                    listaSedi.disabled = true;
+                }
                 this.listeSediNavbar[0] = new TreeviewItem(listaSedi);
             })
         );
