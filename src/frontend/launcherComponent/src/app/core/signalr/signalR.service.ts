@@ -44,7 +44,14 @@ import { ViewComponentState } from '../../features/home/store/states/view/view.s
 import { GetListeComposizioneAvanzata } from '../../features/home/store/actions/composizione-partenza/composizione-avanzata.actions';
 import { IdPreaccoppiati } from '../../features/home/composizione-partenza/interface/id-preaccoppiati-interface';
 import { UpdateMezzoMarker } from '../../features/home/store/actions/maps/mezzi-markers.actions';
-import { SetContatoriSchedeContatto, SetListaSchedeContatto, UpdateSchedaContatto } from 'src/app/features/home/store/actions/schede-contatto/schede-contatto.actions';
+import {
+    RemoveSchedeContatto,
+    SetContatoriSchedeContatto,
+    SetListaSchedeContatto,
+    UpdateSchedaContatto
+} from 'src/app/features/home/store/actions/schede-contatto/schede-contatto.actions';
+import { ContatoriSchedeContatto } from '../../shared/interface/contatori-schede-contatto.interface';
+import { SchedaContatto } from '../../shared/interface/scheda-contatto.interface';
 
 const HUB_URL = environment.signalRHub;
 const SIGNALR_BYPASS = !environment.signalR;
@@ -223,7 +230,10 @@ export class SignalRService {
             console.log('NotifyUpdateSchedaContatto', data);
             this.store.dispatch(new UpdateSchedaContatto(data));
         });
-        // TODO: creare metodo per aggiungere una o più schede contatto
+        this.hubNotification.on('NotifyRemoveSchedeContatto', (data: string[]) => {
+            console.log('NotifyRemoveSchedeContatto', data);
+            this.store.dispatch(new RemoveSchedeContatto(data));
+        });
 
         /**
          * Composizione Partenza
