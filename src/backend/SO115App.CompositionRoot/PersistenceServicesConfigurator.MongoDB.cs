@@ -8,6 +8,7 @@ using SO115App.Persistence.MongoDB;
 using SO115App.Persistence.MongoDB.GestioneInterventi;
 using SO115App.Persistence.MongoDB.GestioneMezzi;
 using SO115App.Persistence.MongoDB.Marker;
+using SO115App.SignalR.Sender.GestioneSchedeContatto;
 
 namespace SO115App.CompositionRoot
 {
@@ -66,6 +67,18 @@ namespace SO115App.CompositionRoot
                     GetStatoMezzoByCodice>();
 
             #endregion StatoMezzo
+
+            #region Schede Contatto
+
+            container.Register<
+                    Models.Servizi.Infrastruttura.SistemiEsterni.Nue.IMergeSchedeContatto,
+                    UpDateSchedeContatto>();
+
+            container.Register<
+                    Models.Servizi.Infrastruttura.Notification.GestioneSchedeContatto.INotificationMergeSchedeNue,
+                    NotificationMergeSchedeNue>();
+
+            #endregion Schede Contatto
 
             #region DA TRASFORMARE SU MONGO
 
