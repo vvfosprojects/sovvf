@@ -17,10 +17,12 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using MongoDB.Bson.Serialization.Attributes;
 using System.Collections.Generic;
 
 namespace SO115App.API.Models.Classi.Filtri
 {
+    [BsonIgnoreExtraElements]
     public class Filtri
     {
         public List<Distaccamenti> Distaccamenti { get; set; }

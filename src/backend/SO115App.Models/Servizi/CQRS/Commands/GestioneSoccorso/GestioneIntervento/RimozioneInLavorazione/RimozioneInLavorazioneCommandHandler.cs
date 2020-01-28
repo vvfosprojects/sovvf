@@ -40,12 +40,10 @@ namespace DomainModel.CQRS.Commands.RimozioneInLavorazione
 
         public void Handle(RimozioneInLavorazioneCommand command)
         {
-            var richiesta = _getRichiestaById.GetByCodice(command.IdRichiesta);
+            var richiesta = _getRichiestaById.GetById(command.IdRichiesta);
             var attivita = new AttivitaUtente();
 
             richiesta.UtInLavorazione.RemoveAll(x => x == command.IdUtente);
-
-            richiesta.Id = richiesta.Codice;
 
             //if (command.Chiamata.ListaUtentiInLavorazione != null)
             //    command.Chiamata.ListaUtentiInLavorazione = richiesta.UtInLavorazione;

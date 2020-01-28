@@ -62,8 +62,7 @@ namespace SO115App.API.Controllers
         [HttpPost("DeleteInLavorazione")]
         public async Task<IActionResult> DeleteInLavorazione([FromBody]SintesiRichiesta intervento)
         {
-            var headerValues = Request.Headers["IdUtente"];
-            string IdUtente = headerValues.FirstOrDefault();
+            var IdUtente = Request.Headers["IdUtente"];
 
             var command = new RimozioneInLavorazioneCommand()
             {
