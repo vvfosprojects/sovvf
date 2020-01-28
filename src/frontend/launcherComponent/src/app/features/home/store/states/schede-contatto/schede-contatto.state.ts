@@ -6,7 +6,7 @@ import {
     ClearSchedaContattoHover,
     ClearSchedaContattoTelefonata,
     GetListaSchedeContatto,
-    ReducerSetFiltroSchedeContatto,
+    ReducerSetFiltroSchedeContatto, RemoveSchedeContatto,
     ResetFiltriSelezionatiSchedeContatto, SaveMergeSchedeContatto,
     SetContatoriSchedeContatto,
     SetFiltroGestitaSchedeContatto,
@@ -28,7 +28,7 @@ import { resetFiltriSelezionati as _resetFiltriSelezionati, setFiltroSelezionato
 import { CategoriaFiltriSchedeContatto as Categoria } from '../../../../../shared/enum/categoria-filtri-schede-contatto';
 import { ContatoriSchedeContatto } from '../../../../../shared/interface/contatori-schede-contatto.interface';
 import { ContatoriSchedeContattoModel } from '../../../../../shared/model/contatori-schede-contatto.model';
-import { patch, updateItem } from '@ngxs/store/operators';
+import { patch, removeItem, updateItem } from '@ngxs/store/operators';
 import { RangeSchedeContattoEnum } from '../../../../../shared/enum/range-schede-contatto';
 import { SetSchedeContattoMarkers } from '../../actions/maps/schede-contatto-markers.actions';
 import { MergeSchedeContattoState } from './merge-schede-contatto.state';
@@ -212,6 +212,22 @@ export class SchedeContattoState {
         );
     }
 
+    @Action(RemoveSchedeContatto)
+    removeSchedeContatto({ setState }: StateContext<SchedeContattoStateModel>, { idSchedeRimosse }: RemoveSchedeContatto) {
+        console.log(idSchedeRimosse);
+        idSchedeRimosse.forEach( idScheda => {
+            setState(
+                patch({
+                    schedeContatto: removeItem<SchedaContatto>(scheda => scheda.codiceScheda === idScheda),
+                    schedeContattoCompetenza: removeItem<SchedaContatto>(scheda => scheda.codiceScheda === idScheda),
+                    schedeContattoConoscenza: removeItem<SchedaContatto>(scheda => scheda.codiceScheda === idScheda),
+                    schedeContattoDifferibili: removeItem<SchedaContatto>(scheda => scheda.codiceScheda === idScheda)
+                })
+            );
+        });
+
+    }
+
     @Action(SetSchedaContattoGestita)
     setSchedaContattoGestita({ patchState }: StateContext<SchedeContattoStateModel>, action: SetSchedaContattoGestita) {
         this.schedeContattoService.setSchedaContattoGestita(action.codiceScheda, action.gestita).subscribe(() => {
@@ -350,17 +366,21 @@ export class SchedeContattoState {
         }).sort((a, b) => new Date(a.dataInserimento).getTime() - new Date(b.dataInserimento).getTime());
         const mergeSchedeContatto: SchedaContatto = {
             ...schedeSelezionate[0],
-            collegate: [ ...schedeSelezionate.slice(1) ]
+            collegate: [ ...schedeSelezionate.slice(1).map( value => {
+                return {
+                    ...value,
+                    collegata: true
+                };
+            }) ]
         };
-        console.log('Scheda contatto unita:', mergeSchedeContatto);
         this.schedeContattoService.mergeSchedeContatto(mergeSchedeContatto).subscribe( () => {
-            console.log('Unione schede completata');
+            console.log('Unione schede completata', mergeSchedeContatto);
             dispatch([
                 new ClearMergeSchedeContatto(),
                 new ShowToastr(ToastrType.Success, 'Unione schede contatto', 'Unione completata con successo')
             ]);
         }, () => {
-            console.log('Unione schede fallita');
+            console.log('Unione schede fallita', mergeSchedeContatto);
             dispatch(new ShowToastr(ToastrType.Error, 'Unione schede contatto', 'Impossibile unire le schede contatto'));
         });
     }

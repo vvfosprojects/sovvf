@@ -32,6 +32,13 @@ export class UpdateSchedaContatto {
     }
 }
 
+export class RemoveSchedeContatto {
+    static readonly type = '[Schede Contatto] Remove Schede Contatto';
+
+    constructor(public idSchedeRimosse: string[]) {
+    }
+}
+
 export class SetSchedaContattoGestita {
     static readonly type = '[Schede Contatto] Set Scheda Contatto Gestita';
 

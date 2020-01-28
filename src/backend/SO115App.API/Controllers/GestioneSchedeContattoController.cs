@@ -21,6 +21,8 @@ using CQRS.Commands;
 using CQRS.Queries;
 using Microsoft.AspNetCore.Mvc;
 using SO115App.Models.Classi.Filtri;
+using SO115App.Models.Classi.NUE;
+using SO115App.Models.Servizi.CQRS.Commands.GestioneSchedeNue.MergeSchedeNue;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSchedeNue.SetSchedaGestita;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSchedeNue.SetSchedaLetta;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneSchedeNue.GetSchedeFiltrate;
@@ -36,15 +38,19 @@ namespace SO115App.API.Controllers
         private readonly IQueryHandler<GetSchedeFiltrateQuery, GetSchedeFiltrateResult> _queryHandler;
         private readonly ICommandHandler<SetSchedaGestitaCommand> _setGestita;
         private readonly ICommandHandler<SetSchedaLettaCommand> _setLetta;
+        private readonly ICommandHandler<MergeSchedeNueCommand> _setMerge;
 
         public GestioneSchedeContattoController(
             IQueryHandler<GetSchedeFiltrateQuery, GetSchedeFiltrateResult> queryHandler,
             ICommandHandler<SetSchedaGestitaCommand> setGestita,
-            ICommandHandler<SetSchedaLettaCommand> setLetta)
+            ICommandHandler<SetSchedaLettaCommand> setLetta,
+            ICommandHandler<MergeSchedeNueCommand> setMerge
+            )
         {
             _queryHandler = queryHandler ?? throw new ArgumentNullException(nameof(_queryHandler));
             _setGestita = setGestita ?? throw new ArgumentNullException(nameof(_setGestita));
             _setLetta = setLetta ?? throw new ArgumentNullException(nameof(_setLetta));
+            _setMerge = setMerge;
         }
 
         [HttpPost("GetSchede")]
@@ -80,6 +86,30 @@ namespace SO115App.API.Controllers
                 return Ok();
             }
             catch (Exception ex)
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpPost("MergeSchede")]
+        public async Task<IActionResult> MergeSchede([FromBody]SchedaContatto scheda)
+        {
+            string IdUtente = Request.Headers["IdUtente"];
+            string codiceSede = Request.Headers["codiceSede"];
+
+            var command = new MergeSchedeNueCommand()
+            {
+                CodiceSede = Request.Headers["codiceSede"],
+                IdUtente = IdUtente,
+                SchedaNue = scheda
+            };
+
+            try
+            {
+                _setMerge.Handle(command);
+                return Ok();
+            }
+            catch (Exception)
             {
                 return BadRequest();
             }
