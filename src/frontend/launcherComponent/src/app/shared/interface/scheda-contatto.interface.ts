@@ -18,6 +18,7 @@ export interface SchedaContatto {
     classificazione: ClassificazioneSchedaContatto;
     gestita: boolean;
     collegate?: SchedaContatto[];
+    collegata?: boolean;
 }
 
 interface OperatoreSchedaContatto {
