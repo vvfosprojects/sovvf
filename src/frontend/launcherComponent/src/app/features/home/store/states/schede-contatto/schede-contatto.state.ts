@@ -350,7 +350,12 @@ export class SchedeContattoState {
         }).sort((a, b) => new Date(a.dataInserimento).getTime() - new Date(b.dataInserimento).getTime());
         const mergeSchedeContatto: SchedaContatto = {
             ...schedeSelezionate[0],
-            collegate: [ ...schedeSelezionate.slice(1) ]
+            collegate: [ ...schedeSelezionate.slice(1).map( value => {
+                return {
+                    ...value,
+                    collegata: true
+                };
+            }) ]
         };
         console.log('Scheda contatto unita:', mergeSchedeContatto);
         this.schedeContattoService.mergeSchedeContatto(mergeSchedeContatto).subscribe( () => {
