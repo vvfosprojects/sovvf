@@ -65,7 +65,7 @@ namespace SO115App.Persistence.MongoDB
         {
             var ListaRichiesteAssistenza = _dbContext.RichiestaAssistenzaCollection.Find(Builders<RichiestaAssistenza>.Filter.Empty).ToList();
 
-            MapperRichiestaAssistenzaSuSintesi mapSintesi = new MapperRichiestaAssistenzaSuSintesi(_mapper);
+            MapperRichiestaAssistenzaSuSintesi mapSintesi = new MapperRichiestaAssistenzaSuSintesi(_mapper, _getTipologiaByCodice);
 
             var ListaSistesiRichieste = new List<SintesiRichiesta>();
 
@@ -88,7 +88,6 @@ namespace SO115App.Persistence.MongoDB
                     if (richiesta.CodUOCompetenza.Where(x => filtro.CodUOCompetenza.Contains(x)).ToList().Count > 0)
                     {
                         sintesi = mapSintesi.Map(richiesta);
-                        sintesi.Tipologie = _getTipologiaByCodice.Get(richiesta.Tipologie);
                         sintesi.ListaUtentiInLavorazione = utentiFake;
                         sintesi.ListaUtentiPresaInCarico = utentiFake;
                         ListaSistesiRichieste.Add(sintesi);

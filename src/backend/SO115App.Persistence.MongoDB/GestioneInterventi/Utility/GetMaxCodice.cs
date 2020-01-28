@@ -41,13 +41,15 @@ namespace SO115App.Persistence.MongoDB.GestioneInterventi.Utility
 
             var ListaRichieste = _dbContext.RichiestaAssistenzaCollection.Find(Builders<RichiestaAssistenza>.Filter.Empty).ToList();
 
-            if (ListaRichieste != null)
+            if (ListaRichieste.Any())
             {
                 string codice = ListaRichieste.OrderByDescending(x => x.Codice).FirstOrDefault().Codice;
                 MaxIdSintesi = Convert.ToInt16(codice.Substring(codice.Length - 5)) + 1;
             }
             else
+            {
                 MaxIdSintesi = 0;
+            }
 
             return MaxIdSintesi;
         }
