@@ -21,6 +21,7 @@ using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Driver;
 using SO115App.API.Models.Classi.Condivise;
+using SO115App.API.Models.Classi.Filtri;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.Eventi;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
@@ -77,6 +78,9 @@ namespace Persistence.MongoDB
             BsonClassMap.RegisterClassMap<AdeguatezzaMezzo>();
             BsonClassMap.RegisterClassMap<Localita>();
             BsonClassMap.RegisterClassMap<Coordinate>();
+            BsonClassMap.RegisterClassMap<Distaccamenti>();
+            BsonClassMap.RegisterClassMap<GeneriMezzi>();
+            BsonClassMap.RegisterClassMap<Stati>();
         }
 
         public IMongoCollection<RichiestaAssistenza> RichiestaAssistenzaCollection
@@ -108,6 +112,14 @@ namespace Persistence.MongoDB
             get
             {
                 return database.GetCollection<ChiamateInCorso>("chiamateInCorso");
+            }
+        }
+
+        public IMongoCollection<Filtri> FiltriCollection
+        {
+            get
+            {
+                return database.GetCollection<Filtri>("filtri");
             }
         }
     }
