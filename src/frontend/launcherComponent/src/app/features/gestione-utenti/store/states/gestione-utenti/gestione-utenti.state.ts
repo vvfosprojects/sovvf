@@ -1,11 +1,11 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import {
-    AddUtente,
+    AddRuoloUtenteGestione,
     UpdateUtenteGestione,
     GetUtentiGestione,
     RemoveUtente,
     SetUtentiGestione,
-    OpenModalRemoveUtente, GetUtenteDetail, SetUtenteDetail, ClearUtenteDetail
+    OpenModalRemoveUtente, GetUtenteDetail, SetUtenteDetail, ClearUtenteDetail, GetUtentiVVF, SetUtentiVVF, ClearUtentiVVF
 } from '../../actions/gestione-utenti/gestione-utenti.actions';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgZone } from '@angular/core';
@@ -14,17 +14,19 @@ import { RicercaUtentiState } from '../ricerca-utenti/ricerca-utenti.state';
 import { PatchPagination } from '../../../../../shared/store/actions/pagination/pagination.actions';
 import { ResponseInterface } from '../../../../../shared/interface/response.interface';
 import { TreeviewSelezione } from '../../../../../shared/model/treeview-selezione.model';
-import { UserService } from '../../../../../core/auth/_services';
-import { Utente } from '../../../../../shared/model/utente.model';
+import { Role, Utente } from '../../../../../shared/model/utente.model';
 import { insertItem, patch, updateItem } from '@ngxs/store/operators';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from '../../../../../shared/enum/toastr';
 import { GestioneUtentiService } from '../../../../../core/service/gestione-utenti-service/gestione-utenti.service';
+import { UtenteVvfInterface } from '../../../../../shared/interface/utente-vvf.interface';
+import { AddRuoloUtenteInterface } from '../../../../../shared/interface/add-ruolo-utente.interface';
 
 export interface GestioneUtentiStateModel {
+    listaUtentiVVF: UtenteVvfInterface[];
     listaUtenti: Utente[];
     utenteDetail: Utente;
-    nuovoUtenteForm: {
+    addUtenteRuoloForm: {
         model?: {
             utente: string;
             ruolo: string;
@@ -37,9 +39,10 @@ export interface GestioneUtentiStateModel {
 }
 
 export const GestioneUtentiStateModelDefaults: GestioneUtentiStateModel = {
+    listaUtentiVVF: [],
     listaUtenti: [],
     utenteDetail: null,
-    nuovoUtenteForm: {
+    addUtenteRuoloForm: {
         model: undefined,
         dirty: false,
         status: '',
@@ -65,13 +68,40 @@ export class GestioneUtentiState {
     }
 
     @Selector()
+    static listaUtentiVVF(state: GestioneUtentiStateModel) {
+        return state.listaUtentiVVF;
+    }
+
+    @Selector()
     static utenteDetail(state: GestioneUtentiStateModel) {
         return state.utenteDetail;
     }
 
     @Selector()
     static sedeSelezionata(state: GestioneUtentiStateModel) {
-        return state.nuovoUtenteForm.model.sedi;
+        return state.addUtenteRuoloForm.model.sedi;
+    }
+
+    @Action(GetUtentiVVF)
+    getUtentiVVF({ dispatch }: StateContext<GestioneUtentiStateModel>, action: GetUtentiVVF) {
+        this._gestioneUtenti.getUtentiVVF(action.text).subscribe((data: UtenteVvfInterface[]) => {
+            dispatch(new SetUtentiVVF(data));
+        });
+    }
+
+    @Action(SetUtentiVVF)
+    setUtentiVVF({ patchState }: StateContext<GestioneUtentiStateModel>, action: SetUtentiVVF) {
+        console.log('Utenti VVF', action.utenti);
+        patchState({
+            listaUtentiVVF: action.utenti
+        });
+    }
+
+    @Action(ClearUtentiVVF)
+    clearUtentiVVF({ patchState }: StateContext<GestioneUtentiStateModel>) {
+        patchState({
+            listaUtentiVVF: []
+        });
     }
 
     @Action(GetUtentiGestione)
@@ -79,7 +109,7 @@ export class GestioneUtentiState {
         const filters = {
             search: this.store.selectSnapshot(RicercaUtentiState.ricerca)
         };
-        this._gestioneUtenti.getUtenti(filters).subscribe((response: ResponseInterface) => {
+        this._gestioneUtenti.getListaUtentiGestione(filters).subscribe((response: ResponseInterface) => {
             dispatch(new SetUtentiGestione(response.dataArray));
             dispatch(new PatchPagination(response.pagination));
         });
@@ -128,9 +158,20 @@ export class GestioneUtentiState {
         });
     }
 
-    @Action(AddUtente)
-    addUtente({ dispatch }: StateContext<GestioneUtentiStateModel>, action: AddUtente) {
-        this._gestioneUtenti.addUtente(action.utente).subscribe((utente: Utente) => {
+    @Action(AddRuoloUtenteGestione)
+    addUtenteGestione({ getState, dispatch }: StateContext<GestioneUtentiStateModel>) {
+        const form = getState().addUtenteRuoloForm.model;
+        const obj: AddRuoloUtenteInterface = {
+            codFiscale: form.utente,
+            ruoli: []
+        };
+        form.sedi.forEach((value: TreeviewSelezione) => {
+            obj.ruoli.push({
+                descrizione: form.ruolo.replace(/ /g, ''),
+                codSede: value.idSede
+            });
+        });
+        this._gestioneUtenti.addRuoloUtente(obj).subscribe((utente: Utente) => {
             if (utente) {
                 patch(
                     insertItem(utente)

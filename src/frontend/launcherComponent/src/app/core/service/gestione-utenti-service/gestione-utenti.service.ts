@@ -6,8 +6,10 @@ import { environment } from '../../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { ResponseInterface } from '../../../shared/interface/response.interface';
 import { Utente } from '../../../shared/model/utente.model';
+import { UtenteVvfInterface } from '../../../shared/interface/utente-vvf.interface';
+import { AddRuoloUtenteInterface } from '../../../shared/interface/add-ruolo-utente.interface';
 
-const API_URL = environment.apiUrl.utentiGestione;
+const API_URL = environment.apiUrl.utenti;
 
 @Injectable({
     providedIn: 'root'
@@ -17,7 +19,15 @@ export class GestioneUtentiService {
     constructor(private http: HttpClient) {
     }
 
-    getUtenti(filters: any): Observable<ResponseInterface> {
+    getUtentiVVF(text: string): Observable<UtenteVvfInterface[]> {
+        const url = !text ? API_URL : API_URL + '/?text=' + text;
+        return this.http.get<UtenteVvfInterface[]>(url).pipe(
+            retry(3),
+            catchError(handleError)
+        );
+    }
+
+    getListaUtentiGestione(filters: any): Observable<ResponseInterface> {
         return this.http.post<ResponseInterface>(API_URL, filters).pipe(
             retry(3),
             catchError(handleError)
@@ -38,8 +48,8 @@ export class GestioneUtentiService {
         );
     }
 
-    addUtente(utente: Utente) {
-        return this.http.post<Utente>(API_URL + '/Add', utente).pipe(
+    addRuoloUtente(value: AddRuoloUtenteInterface): Observable<Utente> {
+        return this.http.post<Utente>(API_URL + '/AddRuoloUtente', value).pipe(
             retry(3),
             catchError(handleError)
         );

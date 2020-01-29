@@ -59,8 +59,9 @@ export class Utente {
 }
 
 export interface Ruolo {
-    descrizione: Role;
+    descrizione: string;
     codSede: string;
+    descSede?: string;
 }
 
 export enum Role {

@@ -1,4 +1,22 @@
 import { Utente } from '../../../../../shared/model/utente.model';
+import { UtenteVvfInterface } from '../../../../../shared/interface/utente-vvf.interface';
+import { AddRuoloUtenteInterface } from '../../../../../shared/interface/add-ruolo-utente.interface';
+
+export class GetUtentiVVF {
+    static readonly type = '[GestioneUtenti] Get Utenti VVF';
+
+    constructor(public text?: string) { }
+}
+
+export class SetUtentiVVF {
+    static readonly type = '[GestioneUtenti] Set Utenti VVF';
+
+    constructor(public utenti: UtenteVvfInterface[]) { }
+}
+
+export class ClearUtentiVVF {
+    static readonly type = '[GestioneUtenti] Clear Utenti VVF';
+}
 
 export class GetUtentiGestione {
     static readonly type = '[GestioneUtenti] Get List Utenti';
@@ -34,10 +52,8 @@ export class UpdateUtenteGestione {
     constructor(public utente: Utente) { }
 }
 
-export class AddUtente {
-    static readonly type = '[GestioneUtenti] Add Utente';
-
-    constructor(public utente: Utente) { }
+export class AddRuoloUtenteGestione {
+    static readonly type = '[GestioneUtenti] Add Ruolo Utente Gestione';
 }
 
 export class OpenModalRemoveUtente {

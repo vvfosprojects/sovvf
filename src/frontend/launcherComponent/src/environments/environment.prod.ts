@@ -22,7 +22,6 @@ export const environment = {
             prenotazione: 'api/PrenotazioneMezzo'
         },
         chiamata: '/api/Chiamata/',
-        utentiGestione: '/api/UtentiGestione',
         utenti: '/api/Utenti',
         auth: '/api/Auth',
         navbar: '/api/Navbar',

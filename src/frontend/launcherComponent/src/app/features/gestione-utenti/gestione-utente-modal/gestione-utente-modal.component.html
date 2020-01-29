@@ -5,20 +5,25 @@
     </button>
 </div>
 <div class="modal-body height">
-    <form [formGroup]="gestioneUtenteForm" ngxsForm="gestioneUtenti.nuovoUtenteForm">
+    <form [formGroup]="addUtenteRuoloForm" ngxsForm="gestioneUtenti.addUtenteRuoloForm">
         <div class="mb-3">
             <label for="utente">Nominativo</label>
             <ng-select
                     id="utente"
-                    [items]="listaUtenti$ | async"
-                    bindLabel="cognome"
-                    bindValue="id"
+                    [items]="listaUtentiVVF$ | async"
+                    bindLabel="nominativo"
+                    bindValue="codFiscale"
                     formControlName="utente"
-                    placeholder="Seleziona un utente"
-                    [notFoundText]="'Nessun utente disponibile'"
+                    placeholder="Cerca un nominativo"
+                    typeToSearchText="Cerca un nominativo"
+                    [hideSelected]="true"
+                    [trackByFn]="trackByFn"
+                    [notFoundText]="'Nessun risultato'"
+                    (search)="onSearchUtentiVVF($event)"
                     [ngClass]="{ 'is-invalid': submitted && f.utente.errors }">
                 <ng-template ng-option-tmp let-item="item">
-                    {{item.nome}} {{item.cognome}}
+                    {{item.nominativo}} <br/>
+                    <small>{{item.codFiscale}} - {{item.sede}}</small>
                 </ng-template>
             </ng-select>
         </div>
@@ -45,7 +50,7 @@
             <label for="ruoli">Ruolo</label>
             <ng-select
                     id="ruoli"
-                    [items]="[]"
+                    [items]="ruoli"
                     formControlName="ruolo"
                     placeholder="Seleziona un ruolo"
                     [notFoundText]="'Nessun ruolo disponibile'"
