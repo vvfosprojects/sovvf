@@ -15,7 +15,7 @@
                 Visualizza
             </button>
             <button class="btn btn-sm btn-danger mt-1"
-                    (click)="onRemove(utente.id)">
+                    (click)="onRemoveUtente(utente.id)">
                 <i class="fa fa-trash mr-1"></i>
                 Rimuovi
             </button>
@@ -30,7 +30,7 @@
                 <ul class="pl-3 mb-0">
                     <li *ngFor="let ruolo of utente.ruoli" class="mb-1">
                         {{ruolo.descrizione}} - {{ruolo.descSede}} ({{ruolo.codSede}})
-                        <button class="btn btn-danger btn-sm ml-2">
+                        <button class="btn btn-danger btn-sm ml-2" (click)="onRemoveRuoloUtente(utente.id, ruolo)">
                             <i class="fa fa-trash"></i>
                         </button>
                     </li>
