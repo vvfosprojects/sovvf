@@ -18,7 +18,6 @@ export class TabellaUtentiComponent {
     @Input() loading: boolean;
 
     @Output() detail: EventEmitter<string> = new EventEmitter<string>();
-    @Output() modify: EventEmitter<string> = new EventEmitter<string>();
     @Output() remove: EventEmitter<string> = new EventEmitter<string>();
     @Output() pageChange: EventEmitter<number> = new EventEmitter<number>();
 
@@ -27,10 +26,6 @@ export class TabellaUtentiComponent {
 
     onDetail(id: string) {
         this.detail.emit(id);
-    }
-
-    onModify(id: string) {
-        this.modify.emit(id);
     }
 
     onRemove(id: string) {

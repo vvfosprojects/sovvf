@@ -61,7 +61,7 @@ export class GestioneUtentiServiceFake {
                         descrizione: Role.GestoreRichieste,
                         codSede: 'FR.2000',
                         descSede: 'Comando di Frosinone'
-                    },
+                    }
                 ]
             )
         ];

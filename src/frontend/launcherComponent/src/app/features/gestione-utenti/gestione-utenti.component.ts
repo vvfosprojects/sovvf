@@ -13,7 +13,6 @@ import { RicercaUtentiState } from './store/states/ricerca-utenti/ricerca-utenti
 import { PaginationState } from '../../shared/store/states/pagination/pagination.state';
 import { LoadingState } from '../../shared/store/states/loading/loading.state';
 import { GestioneUtenteModalComponent } from './gestione-utente-modal/gestione-utente-modal.component';
-import { GetUtenti } from '../../shared/store/actions/utenti/utenti.actions';
 
 @Component({
     selector: 'app-gestione-utenti',
@@ -77,30 +76,6 @@ export class GestioneUtentiComponent implements OnInit {
                         },
                         (err) => console.error('Modal chiusa senza bottoni. Err ->', err)
                     );
-                    // TODO: DEBUG
-                    // const utente = event.utente.nome + ' ' + event.utente.cognome;
-                    // const ruolo = event.ruoli;
-                    // const sede = event.sede.descrizione;
-                    // console.warn(utente + ' è diventato ' + ruolo + ' nel ' + sede);
-                }
-            })
-        );
-    }
-
-    onModifyUtente(id: string) {
-        this.store.dispatch(new GetUtenteDetail(id));
-        this.subscription.add(
-            this.utenteGestioneDetail$.subscribe((utente: any) => {
-                if (utente) {
-                    const modificaUtenteModal = this.modalService.open(GestioneUtenteModalComponent, { backdropClass: 'light-blue-backdrop', centered: true, size: 'lg' });
-                    modificaUtenteModal.componentInstance.editMode = true;
-                    modificaUtenteModal.componentInstance.utenteEdit = utente;
-                    modificaUtenteModal.result.then((risultatoModal: any) => {
-                            console.log('Modal "modifyUtente" chiusa con val ->', risultatoModal);
-                        },
-                        (err) => console.error('Modal chiusa senza bottoni. Err ->', err)
-                    );
-                    // this.store.dispatch(new UpdateUtenteGestione(utente));
                     // TODO: DEBUG
                     // const utente = event.utente.nome + ' ' + event.utente.cognome;
                     // const ruolo = event.ruoli;
