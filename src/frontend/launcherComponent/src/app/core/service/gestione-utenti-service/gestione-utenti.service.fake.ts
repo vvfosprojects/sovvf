@@ -1,77 +1,60 @@
 import { Injectable } from '@angular/core';
-import { GestioneUtente } from '../../../shared/interface/gestione-utente.interface';
 import { Observable, of } from 'rxjs';
-import { Role } from '../../../shared/model/utente.model';
+import { Utente } from '../../../shared/model/utente.model';
 import { ResponseInterface } from '../../../shared/interface/response.interface';
-import { catchError, retry } from 'rxjs/operators';
-import { handleError } from '../../../shared/helper/handleError';
+import { Sede } from '../../../shared/model/sede.model';
+import { Coordinate } from '../../../shared/model/coordinate.model';
 
 @Injectable({
     providedIn: 'root'
 })
 export class GestioneUtentiServiceFake {
 
-    private gestioneUtenti: GestioneUtente[];
+    private utenti: Utente[];
 
     getUtenti(): Observable<ResponseInterface> {
-        this.gestioneUtenti = [
-            {
-                id: '1',
-                nominativo: 'Mario Rossi',
-                ruolo: Role.CallTracker,
-                sede: {
-                    codice: '1',
-                    descrizione: 'Comando di Roma',
-                    coordinate: {
-                        latitudine: 41.89994,
-                        longitudine: 12.49127
-                    },
-                    indirizzo: 'Via Genova, 1, 00184 Roma RM',
-                    tipo: 'Comando',
-                    regione: 'Lazio',
-                    provincia: 'Roma'
-                }
-            },
-            {
-                id: '2',
-                nominativo: 'Teresio Mancini',
-                ruolo: Role.GestoreRichieste,
-                sede: {
-                    codice: '1',
-                    descrizione: 'Comando di Roma',
-                    coordinate: {
-                        latitudine: 41.89994,
-                        longitudine: 12.49127
-                    },
-                    indirizzo: 'Via Genova, 1, 00184 Roma RM',
-                    tipo: 'Comando',
-                    regione: 'Lazio',
-                    provincia: 'Roma'
-                }
-            }
+        this.utenti = [
+            new Utente(
+                '1',
+                'Mario',
+                'Rossi',
+                'AAAAAAAAAAAA',
+                new Sede(
+                    '1',
+                    'Comando di Roma',
+                    new Coordinate(
+                        11111,
+                        111111
+                    ),
+                    'Via Ignorasi, 3',
+                    'Comando',
+                    'Lazio',
+                    'Roma'
+                ),
+                'mario_rossi'
+            )
         ];
-
-        const response: ResponseInterface = {
-            dataArray: this.gestioneUtenti,
+        const response = {
+            dataArray: this.utenti,
             pagination: {
                 page: 1,
                 limit: 10,
-                totalItems: this.gestioneUtenti.length,
-                totalFilteredItems: this.gestioneUtenti.length
+                totalItems: this.utenti.length,
+                totalFilteredItems: this.utenti.length
             }
         };
         return of(response);
     }
 
-    getUtente(id: string): Observable<GestioneUtente> {
-        return of(this.gestioneUtenti.filter(x => x.id === id)[0]);
+    getUtente(id: string): Observable<Utente> {
+        return of(this.utenti.filter(x => x.id === id)[0]);
     }
 
-    updateUtente(utente: GestioneUtente): Observable<GestioneUtente> {
+    updateUtente(utente: Utente): Observable<Utente> {
         return of(utente);
     }
 
-    addUtente(utente: GestioneUtente): Observable<GestioneUtente> {
+    addUtente(utente: Utente): Observable<Utente> {
         return of(utente);
     }
 

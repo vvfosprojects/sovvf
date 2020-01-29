@@ -1,4 +1,4 @@
-import { GestioneUtente } from '../../../../../shared/interface/gestione-utente.interface';
+import { Utente } from '../../../../../shared/model/utente.model';
 
 export class GetUtentiGestione {
     static readonly type = '[GestioneUtenti] Get List Utenti';
@@ -9,7 +9,7 @@ export class GetUtentiGestione {
 export class SetUtentiGestione {
     static readonly type = '[GestioneUtenti] Set List Utenti';
 
-    constructor(public utenti: GestioneUtente[]) { }
+    constructor(public utenti: Utente[]) { }
 }
 
 export class GetUtenteDetail {
@@ -21,7 +21,7 @@ export class GetUtenteDetail {
 export class SetUtenteDetail {
     static readonly type = '[GestioneUtenti] Set Utente Detail';
 
-    constructor(public utente: GestioneUtente) { }
+    constructor(public utente: Utente) { }
 }
 
 export class ClearUtenteDetail {
@@ -31,13 +31,13 @@ export class ClearUtenteDetail {
 export class UpdateUtenteGestione {
     static readonly type = '[GestioneUtenti] Update Utente';
 
-    constructor(public utente: GestioneUtente) { }
+    constructor(public utente: Utente) { }
 }
 
 export class AddUtente {
     static readonly type = '[GestioneUtenti] Add Utente';
 
-    constructor(public utente: GestioneUtente) { }
+    constructor(public utente: Utente) { }
 }
 
 export class OpenModalRemoveUtente {
