@@ -19,7 +19,8 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 ruoli: [
                     {
                         descrizione: Role.CallTracker,
-                        codSede: 'RM.1000'
+                        codSede: 'RM.1000',
+                        descSede: 'Comando VVF Roma'
                     }
                 ],
                 qualifica: 'Operatore SO115',
@@ -46,7 +47,8 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 ruoli: [
                     {
                         descrizione: Role.CallTracker,
-                        codSede: 'RM.1000'
+                        codSede: 'RM.1000',
+                        descSede: 'Comando VVF Roma'
                     }
                 ],
                 qualifica: 'Operatore SO115',
@@ -73,7 +75,8 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 ruoli: [
                     {
                         descrizione: Role.GestoreRichieste,
-                        codSede: 'RM.1000'
+                        codSede: 'RM.1000',
+                        descSede: 'Comando VVF Roma'
                     }
                 ],
                 qualifica: 'Operatore SO115',
@@ -100,7 +103,8 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 ruoli: [
                     {
                         descrizione: Role.GestoreRichieste,
-                        codSede: 'RM.1000'
+                        codSede: 'RM.1000',
+                        descSede: 'Comando VVF Roma'
                     }
                 ],
                 qualifica: 'Operatore SO115',
@@ -127,7 +131,8 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 ruoli: [
                     {
                         descrizione: Role.GestoreRichieste,
-                        codSede: 'RM.1000'
+                        codSede: 'RM.1000',
+                        descSede: 'Comando VVF Roma'
                     }
                 ],
                 qualifica: 'Operatore SO115',
@@ -154,7 +159,8 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 ruoli: [
                     {
                         descrizione: Role.GestoreRichieste,
-                        codSede: 'RM.1000'
+                        codSede: 'RM.1000',
+                        descSede: 'Comando VVF Roma'
                     }
                 ],
                 qualifica: 'Operatore SO115',
@@ -181,7 +187,8 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 ruoli: [
                     {
                         descrizione: Role.CallTracker,
-                        codSede: 'RM.1000'
+                        codSede: 'RM.1000',
+                        descSede: 'Comando VVF Roma'
                     }
                 ],
                 qualifica: 'Operatore SO115',
@@ -208,7 +215,8 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 ruoli: [
                     {
                         descrizione: Role.GestoreRichieste,
-                        codSede: 'RM.1000'
+                        codSede: 'RM.1000',
+                        descSede: 'Comando VVF Roma'
                     }
                 ],
                 qualifica: 'Operatore SO115',
@@ -235,7 +243,8 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 ruoli: [
                     {
                         descrizione: Role.CallTracker,
-                        codSede: 'RM.1000'
+                        codSede: 'RM.1000',
+                        descSede: 'Comando VVF Roma'
                     }
                 ],
                 qualifica: 'Operatore SO115',
@@ -262,7 +271,8 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 ruoli: [
                     {
                         descrizione: Role.CallTracker,
-                        codSede: 'RM.1000'
+                        codSede: 'RM.1000',
+                        descSede: 'Comando VVF Roma'
                     }
                 ],
                 qualifica: 'Operatore SO115',
@@ -289,7 +299,8 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 ruoli: [
                     {
                         descrizione: Role.GestoreRichieste,
-                        codSede: 'RM.1000'
+                        codSede: 'RM.1000',
+                        descSede: 'Comando VVF Roma'
                     }
                 ],
                 qualifica: 'Operatore SO115',
@@ -316,7 +327,8 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 ruoli: [
                     {
                         descrizione: Role.GestoreRichieste,
-                        codSede: 'RM.1000'
+                        codSede: 'RM.1000',
+                        descSede: 'Comando VVF Roma'
                     }
                 ],
                 qualifica: 'Operatore SO115',
@@ -343,7 +355,8 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 ruoli: [
                     {
                         descrizione: Role.GestoreRichieste,
-                        codSede: 'RM.1000'
+                        codSede: 'RM.1000',
+                        descSede: 'Comando VVF Roma'
                     }
                 ],
                 qualifica: 'Operatore SO115',
@@ -370,7 +383,8 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 ruoli: [
                     {
                         descrizione: Role.CallTracker,
-                        codSede: 'RM.1000'
+                        codSede: 'RM.1000',
+                        descSede: 'Comando VVF Roma'
                     }
                 ],
                 qualifica: 'Operatore SO115',
@@ -397,7 +411,8 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 ruoli: [
                     {
                         descrizione: Role.GestoreRichieste,
-                        codSede: 'RM.1000'
+                        codSede: 'RM.1000',
+                        descSede: 'Comando VVF Roma'
                     }
                 ],
                 qualifica: 'Operatore SO115',

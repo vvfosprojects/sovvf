@@ -3,7 +3,7 @@
     <tr>
         <th scope="col" width="20%">Azioni</th>
         <th scope="col" width="30%">Utente</th>
-        <th scope="col" width="30%">Sede - Ruolo</th>
+        <th scope="col" width="30%">Ruolo - Sede</th>
     </tr>
     </thead>
     <tbody>
@@ -26,13 +26,13 @@
             <h6 class="font-weight-normal">{{utente.nome}} {{utente.cognome}}</h6>
         </td>
         <td width="30%">
-            <h6 class="font-weight-normal">
-                <ul>
-                    <li *ngFor="let r of utente.ruoli">
-                        {{r.descrizione}} {{r.sede}}
+            <span class="h6" class="font-weight-normal">
+                <ul class="pl-3 mb-0">
+                    <li *ngFor="let r of utente.ruoli" class="mt-1">
+                        {{r.descrizione}} - {{r.codSede}}
                     </li>
                 </ul>
-            </h6>
+            </span>
         </td>
     </tr>
     <tr *ngIf="listaUtenti?.length <= 0">

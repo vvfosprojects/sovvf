@@ -1,5 +1,4 @@
-import { AfterViewInit, ChangeDetectorRef, Component, Input, NgZone, OnChanges, OnDestroy, OnInit } from '@angular/core';
-import { Utente } from '../../../shared/model/utente.model';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import { Observable, Subscription } from 'rxjs';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
@@ -8,11 +7,12 @@ import { TreeItem, TreeviewItem } from 'ngx-treeview';
 import { TreeviewSelezione } from '../../../shared/model/treeview-selezione.model';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { GestioneUtentiState } from '../store/states/gestione-utenti/gestione-utenti.state';
-import { RuoliState } from '../store/states/ruoli/ruoli.state';
-import { GetUtenti } from '../../../shared/store/actions/utenti/utenti.actions';
-import { UtentiState } from '../../../shared/store/states/utenti/utenti.state';
 import { findItem } from '../../../shared/store/states/sedi-treeview/sedi-treeview.helper';
 import { SetFormDisabled, SetFormEnabled, UpdateFormValue } from '@ngxs/form-plugin';
+import { UtenteVvfInterface } from '../../../shared/interface/utente-vvf.interface';
+import { AddRuoloUtenteGestione, ClearUtentiVVF, GetUtentiVVF } from '../store/actions/gestione-utenti/gestione-utenti.actions';
+import { Role } from '../../../shared/model/utente.model';
+import { AddRuoloUtenteInterface } from '../../../shared/interface/add-ruolo-utente.interface';
 
 @Component({
     selector: 'app-gestione-utente-modal',
@@ -21,17 +21,17 @@ import { SetFormDisabled, SetFormEnabled, UpdateFormValue } from '@ngxs/form-plu
 })
 export class GestioneUtenteModalComponent implements OnInit, OnDestroy {
 
-    @Select(UtentiState.utenti) listaUtenti$: Observable<Utente[]>;
-    @Select(RuoliState.ruoli) ruoli$: Observable<any[]>;
+    @Select(GestioneUtentiState.listaUtentiVVF) listaUtentiVVF$: Observable<UtenteVvfInterface[]>;
     @Select(SediTreeviewState.listeSediNavbar) listeSediNavbar$: Observable<TreeItem>;
     listeSediNavbar: TreeviewItem[];
     @Select(GestioneUtentiState.sedeSelezionata) sediSelezionate$: Observable<TreeviewSelezione[]>;
     sediSelezionate: string;
+    ruoli: string[] = [];
 
-    gestioneUtenteForm: FormGroup;
+    addUtenteRuoloForm: FormGroup;
     submitted: boolean;
 
-    utenteEdit: Utente;
+    utenteEdit: any;
     editMode: boolean;
     detailMode: boolean;
 
@@ -41,17 +41,19 @@ export class GestioneUtenteModalComponent implements OnInit, OnDestroy {
                 private modal: NgbActiveModal,
                 private fb: FormBuilder) {
         this.initForm();
+        this.getUtentiVVF();
         this.inizializzaSediTreeview();
+        this.getRuoli();
         this.getSediSelezionate();
     }
 
     initForm() {
-        this.gestioneUtenteForm = new FormGroup({
+        this.addUtenteRuoloForm = new FormGroup({
             utente: new FormControl(),
             sedi: new FormControl(),
             ruolo: new FormControl()
         });
-        this.gestioneUtenteForm = this.fb.group({
+        this.addUtenteRuoloForm = this.fb.group({
             utente: [null, Validators.required],
             sedi: [null, Validators.required],
             ruolo: [null, Validators.required]
@@ -63,7 +65,7 @@ export class GestioneUtenteModalComponent implements OnInit, OnDestroy {
             this.patchEditForm();
         } else if (this.detailMode) {
             this.patchEditForm();
-            this.store.dispatch(new SetFormDisabled('gestioneUtenti.nuovoUtenteForm'));
+            this.store.dispatch(new SetFormDisabled('gestioneUtenti.addUtenteRuoloForm'));
         }
     }
 
@@ -72,9 +74,10 @@ export class GestioneUtenteModalComponent implements OnInit, OnDestroy {
         this.subscription.unsubscribe();
         this.store.dispatch(new UpdateFormValue({
             value: null,
-            path: 'gestioneUtenti.nuovoUtenteForm'
+            path: 'gestioneUtenti.addUtenteRuoloForm'
         }));
-        this.store.dispatch(new SetFormEnabled('gestioneUtenti.nuovoUtenteForm'));
+        this.store.dispatch(new SetFormEnabled('gestioneUtenti.addUtenteRuoloForm'));
+        this.store.dispatch(new ClearUtentiVVF());
     }
 
     patchEditForm() {
@@ -88,7 +91,7 @@ export class GestioneUtenteModalComponent implements OnInit, OnDestroy {
     }
 
     get f() {
-        return this.gestioneUtenteForm.controls;
+        return this.addUtenteRuoloForm.controls;
     }
 
     inizializzaSediTreeview() {
@@ -132,14 +135,41 @@ export class GestioneUtenteModalComponent implements OnInit, OnDestroy {
         );
     }
 
+    getUtentiVVF(search?: string) {
+        const text = search && search.length > 0 ? search : null;
+        this.store.dispatch(new GetUtentiVVF(text));
+    }
+
+    onSearchUtentiVVF(event: { term: string, items: any[] }) {
+        this.getUtentiVVF(event.term);
+    }
+
+    trackByFn(item: UtenteVvfInterface) {
+        return item.codFiscale;
+    }
+
+    getRuoli() {
+        Object.values(Role).forEach((role: string) => {
+            const splittedRole = role.split(/(?=[A-Z])/);
+            let finalRole = '';
+            splittedRole.forEach((val: string, index) => {
+                if (index !== 0) {
+                    finalRole = finalRole + ' ';
+                }
+                finalRole = finalRole + val;
+            });
+            this.ruoli.push(finalRole);
+        });
+    }
+
     onConferma() {
         this.submitted = true;
 
-        if (this.gestioneUtenteForm.invalid) {
+        if (this.addUtenteRuoloForm.invalid) {
             return;
         }
 
-        console.log(this.gestioneUtenteForm.value);
+        this.store.dispatch(new AddRuoloUtenteGestione());
 
         //     let utente: Utente;
         //     // let sede: Sede;
