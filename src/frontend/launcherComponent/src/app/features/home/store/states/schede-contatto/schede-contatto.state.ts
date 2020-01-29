@@ -410,10 +410,12 @@ export class SchedeContattoState {
             if (action.schedeSelezionateId.includes(value.codiceScheda)) {
                 return value;
             }
-        }).sort((a, b) => new Date(a.dataInserimento).getTime() - new Date(b.dataInserimento).getTime());
+        }).sort((a, b) =>
+            (a.priorita > b.priorita) ? 1 :
+                (a.priorita === b.priorita) ? ((new Date(a.dataInserimento).getTime() > new Date(b.dataInserimento).getTime()) ? 1 : -1) : -1);
         const mergeSchedeContatto: SchedaContatto = {
             ...schedeSelezionate[0],
-            collegate: [ ...schedeSelezionate.slice(1).map( value => {
+            collegate: [ ...schedeSelezionate.slice(1).map(value => {
                 return {
                     ...value,
                     collegata: true
