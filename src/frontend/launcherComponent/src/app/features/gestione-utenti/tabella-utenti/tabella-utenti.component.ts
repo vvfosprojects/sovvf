@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
-import { Utente } from '../../../shared/model/utente.model';
+import { Ruolo, Utente } from '../../../shared/model/utente.model';
 
 
 @Component({
@@ -18,8 +18,8 @@ export class TabellaUtentiComponent {
     @Input() loading: boolean;
 
     @Output() detail: EventEmitter<string> = new EventEmitter<string>();
-    @Output() modify: EventEmitter<string> = new EventEmitter<string>();
-    @Output() remove: EventEmitter<string> = new EventEmitter<string>();
+    @Output() removeUser: EventEmitter<string> = new EventEmitter<string>();
+    @Output() removeRoleUser: EventEmitter<{id: string, ruolo: Ruolo}> = new EventEmitter<{id: string, ruolo: Ruolo}>();
     @Output() pageChange: EventEmitter<number> = new EventEmitter<number>();
 
     constructor() {
@@ -29,11 +29,12 @@ export class TabellaUtentiComponent {
         this.detail.emit(id);
     }
 
-    onModify(id: string) {
-        this.modify.emit(id);
+    onRemoveUtente(id: string) {
+        this.removeUser.emit(id);
     }
 
-    onRemove(id: string) {
-        this.remove.emit(id);
+    onRemoveRuoloUtente(id: string, ruolo: Ruolo) {
+        const obj = {id, ruolo};
+        this.removeRoleUser.emit(obj);
     }
 }
