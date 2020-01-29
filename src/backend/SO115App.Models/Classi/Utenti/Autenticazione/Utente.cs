@@ -185,7 +185,7 @@ namespace SO115App.API.Models.Classi.Autenticazione
                 List<string> ListaUOAbilitate = new List<string>();
                 foreach (var ruolo in this.Ruoli)
                 {
-                    ListaUOAbilitate.Add(ruolo.sede.Codice);
+                    ListaUOAbilitate.Add(ruolo.Codicesede); //TODO COME SI COMPORTA CON IL CODICE DEL LAZIO, DALLA COMPOSIZIONE PARTENZA ED OLTRE.
                 }
 
                 return ListaUOAbilitate;
@@ -238,13 +238,13 @@ namespace SO115App.API.Models.Classi.Autenticazione
 
     public class Role
     {
-        public Role(string _descrizione, Sede _sede)
+        public Role(string _descrizione, string _sede)
         {
-            this.sede = _sede;
+            this.Codicesede = _sede;
             this.descrizione = _descrizione;
         }
 
         public string descrizione { get; set; }
-        public Sede sede { get; set; }
+        public string Codicesede { get; set; }
     }
 }
