@@ -1,4 +1,4 @@
-<li class="cursor-pointer border-top border-bottom py-1"
+<li *ngIf="idVisualizzati.includes(scheda.codiceScheda)" class="cursor-pointer border-top border-bottom py-1"
     (mouseenter)="hoverIn.emit(scheda.codiceScheda)" (mouseleave)="hoverOut.emit()"
     (click)="dettaglioScheda.emit(scheda)" [ngClass]="cardClasses(scheda.codiceScheda)">
     <div class="row">

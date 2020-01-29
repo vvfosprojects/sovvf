@@ -1,7 +1,13 @@
 import { Component, isDevMode, OnDestroy, OnInit } from '@angular/core';
 import { Store, Select } from '@ngxs/store';
 import {
-    SetSchedaContattoTelefonata, SetSchedaContattoHover, ClearSchedaContattoHover, SetSchedaContattoGestita, GetListaSchedeContatto, SetRangeVisualizzazioneSchedeContatto
+    SetSchedaContattoTelefonata,
+    SetSchedaContattoHover,
+    ClearSchedaContattoHover,
+    SetSchedaContattoGestita,
+    GetListaSchedeContatto,
+    SetRangeVisualizzazioneSchedeContatto,
+    SetTabAttivo
 } from '../store/actions/schede-contatto/schede-contatto.actions';
 import { SchedeContattoState } from '../store/states/schede-contatto/schede-contatto.state';
 import { Observable, Subscription } from 'rxjs';
@@ -33,12 +39,12 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
 
     @Select(SchedeContattoState.schedeContatto) schedeContatto$: Observable<SchedaContatto[]>;
     schedeContatto: SchedaContatto[];
-    @Select(SchedeContattoState.schedeContattoCompetenza) schedeContattoCompetenza$: Observable<SchedaContatto[]>;
-    schedeContattoCompetenza: SchedaContatto[];
-    @Select(SchedeContattoState.schedeContattoConoscenza) schedeContattoConoscenza$: Observable<SchedaContatto[]>;
-    schedeContattoConoscenza: SchedaContatto[];
-    @Select(SchedeContattoState.schedeContattoDifferibili) schedeContattoDifferibili$: Observable<SchedaContatto[]>;
-    schedeContattoDifferibili: SchedaContatto[];
+
+    @Select(SchedeContattoState.idSchedeCompetenza) idSchedeCompetenza$: Observable<string[]>;
+    @Select(SchedeContattoState.idSchedeConoscenza) idSchedeConoscenza$: Observable<string[]>;
+    @Select(SchedeContattoState.idSchedeDifferibili) idSchedeDifferibili$: Observable<string[]>;
+    @Select(SchedeContattoState.idVisualizzati) idVisualizzati$: Observable<string[]>;
+
     @Select(SchedeContattoState.codiceSchedaContattoHover) codiceSchedaContattoHover$: Observable<string>;
     codiceSchedaContattoHover: string;
     @Select(SchedeContattoState.contatoriSchedeContatto) contatoriSchedeContatto$: Observable<ContatoriSchedeContatto>;
@@ -58,6 +64,8 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
     RangeVisualizzazione = RangeSchedeContattoEnum;
     private subscription: Subscription = new Subscription();
 
+    ClassificazioneEnum = ClassificazioneSchedaContatto;
+
     constructor(private store: Store,
                 private modal: NgbModal) {
         this.subscription.add(
@@ -65,21 +73,7 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
                 this.schedeContatto = schedeContatto;
             })
         );
-        this.subscription.add(
-            this.schedeContattoCompetenza$.subscribe((schedeContatto: SchedaContatto[]) => {
-                this.schedeContattoCompetenza = schedeContatto;
-            })
-        );
-        this.subscription.add(
-            this.schedeContattoConoscenza$.subscribe((schedeContatto: SchedaContatto[]) => {
-                this.schedeContattoConoscenza = schedeContatto;
-            })
-        );
-        this.subscription.add(
-            this.schedeContattoDifferibili$.subscribe((schedeContatto: SchedaContatto[]) => {
-                this.schedeContattoDifferibili = schedeContatto;
-            })
-        );
+
         this.subscription.add(
             this.codiceSchedaContattoHover$.subscribe((codiceSchedaContatto: string) => {
                 this.codiceSchedaContattoHover = codiceSchedaContatto;
@@ -156,6 +150,10 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
 
     onSaveMerge() {
         this.store.dispatch(new InitSaveMergeSchedeContatto());
+    }
+
+    onSelectTab($event: ClassificazioneSchedaContatto) {
+        this.store.dispatch(new SetTabAttivo($event));
     }
 
 

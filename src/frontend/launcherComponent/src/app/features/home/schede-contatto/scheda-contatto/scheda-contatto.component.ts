@@ -16,6 +16,7 @@ export class SchedaContattoComponent implements OnChanges {
     @Input() editSchedaContatto: boolean;
     @Input() schedeContattoSelezionate: string[];
     @Input() classificazione: ClassificazioneSchedaContatto;
+    @Input() idVisualizzati: string[];
     @Output() hoverIn = new EventEmitter<string>();
     @Output() hoverOut = new EventEmitter();
     @Output() dettaglioScheda = new EventEmitter<SchedaContatto>();
