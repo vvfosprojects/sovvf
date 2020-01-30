@@ -467,11 +467,11 @@ export class SchedeContattoState {
             console.log('Undo Merge Schede completata', undoMergeSchedaContatto);
             dispatch([
                 new ClearMergeSchedeContatto(),
-                new ShowToastr(ToastrType.Success, 'Unione schede contatto', 'Unione completata con successo')
+                new ShowToastr(ToastrType.Success, 'Undo schede contatto', 'Undo Merge completata con successo')
             ]);
         }, () => {
             console.log('Unione Schede fallita', undoMergeSchedaContatto);
-            dispatch(new ShowToastr(ToastrType.Error, 'Unione schede contatto', 'Impossibile unire le schede contatto'));
+            dispatch(new ShowToastr(ToastrType.Error, 'Undo schede contatto', 'Impossibile annullare il raggruppamento delle schede contatto'));
         });
     }
 }
