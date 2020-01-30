@@ -1,4 +1,4 @@
-import { Utente } from '../../../../../shared/model/utente.model';
+import { Ruolo, Utente } from '../../../../../shared/model/utente.model';
 import { UtenteVvfInterface } from '../../../../../shared/interface/utente-vvf.interface';
 import { AddRuoloUtenteInterface } from '../../../../../shared/interface/add-ruolo-utente.interface';
 
@@ -59,11 +59,23 @@ export class AddRuoloUtenteGestione {
 export class OpenModalRemoveUtente {
     static readonly type = '[GestioneUtenti] Open Modal Remove Utente';
 
-    constructor(public id: string) { }
+    constructor(public id: string, public nominativoUtente: string) { }
 }
 
 export class RemoveUtente {
     static readonly type = '[GestioneUtenti] Remove Utente';
 
     constructor(public id: string) { }
+}
+
+export class OpenModalRemoveRuoloUtente {
+    static readonly type = '[GestioneUtenti] Open Modal Remove Ruolo Utente';
+
+    constructor(public id: string, public ruolo: Ruolo, public nominativoUtente: string) { }
+}
+
+export class RemoveRuoloUtente {
+    static readonly type = '[GestioneUtenti] Remove Utente';
+
+    constructor(public id: string, public ruolo: Ruolo) { }
 }

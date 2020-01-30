@@ -1,11 +1,19 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import {
     AddRuoloUtenteGestione,
-    UpdateUtenteGestione,
+    ClearUtenteDetail,
+    ClearUtentiVVF,
+    GetUtenteDetail,
     GetUtentiGestione,
+    GetUtentiVVF,
+    OpenModalRemoveRuoloUtente,
+    OpenModalRemoveUtente,
+    RemoveRuoloUtente,
     RemoveUtente,
+    SetUtenteDetail,
     SetUtentiGestione,
-    OpenModalRemoveUtente, GetUtenteDetail, SetUtenteDetail, ClearUtenteDetail, GetUtentiVVF, SetUtentiVVF, ClearUtentiVVF
+    SetUtentiVVF,
+    UpdateUtenteGestione
 } from '../../actions/gestione-utenti/gestione-utenti.actions';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgZone } from '@angular/core';
@@ -14,8 +22,8 @@ import { RicercaUtentiState } from '../ricerca-utenti/ricerca-utenti.state';
 import { PatchPagination } from '../../../../../shared/store/actions/pagination/pagination.actions';
 import { ResponseInterface } from '../../../../../shared/interface/response.interface';
 import { TreeviewSelezione } from '../../../../../shared/model/treeview-selezione.model';
-import { Role, Utente } from '../../../../../shared/model/utente.model';
-import { insertItem, patch, updateItem } from '@ngxs/store/operators';
+import { Utente } from '../../../../../shared/model/utente.model';
+import { insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from '../../../../../shared/enum/toastr';
 import { GestioneUtentiService } from '../../../../../core/service/gestione-utenti-service/gestione-utenti.service';
@@ -171,7 +179,7 @@ export class GestioneUtentiState {
                 codSede: value.idSede
             });
         });
-        this._gestioneUtenti.addRuoloUtente(obj).subscribe((utente: Utente) => {
+        this._gestioneUtenti.addUtente(obj).subscribe((utente: Utente) => {
             if (utente) {
                 patch(
                     insertItem(utente)
@@ -186,8 +194,8 @@ export class GestioneUtentiState {
         this.ngZone.run(() => {
             const modalConfermaAnnulla = this.modalService.open(ConfirmModalComponent, { backdropClass: 'light-blue-backdrop', centered: true });
             modalConfermaAnnulla.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
-            modalConfermaAnnulla.componentInstance.titolo = 'Elimina permesso utente';
-            modalConfermaAnnulla.componentInstance.messaggioAttenzione = 'Sei sicuro di voler eliminare questo utente dai permessi?';
+            modalConfermaAnnulla.componentInstance.titolo = 'Elimina ' + action.nominativoUtente;
+            modalConfermaAnnulla.componentInstance.messaggioAttenzione = 'Sei sicuro di voler rimuovere l\'utente?';
             modalConfermaAnnulla.componentInstance.bottoni = [
                 { type: 'ko', descrizione: 'Annulla', colore: 'danger' },
                 { type: 'ok', descrizione: 'Conferma', colore: 'dark' },
@@ -210,12 +218,52 @@ export class GestioneUtentiState {
     }
 
     @Action(RemoveUtente)
-    removeUtente({ dispatch }: StateContext<GestioneUtentiStateModel>, action: RemoveUtente) {
-        // this._user.removeUtente(action.id).subscribe(() => {
-        //     patch(
-        //         insertItem(u => u.id === action.id)
-        //     );
-        //     dispatch(new ShowToastr(ToastrType.Info, 'Utente Rimosso', 'Utente rimosso con successo.', 3));
-        // });
+    removeUtente({ dispatch, setState }: StateContext<GestioneUtentiStateModel>, action: RemoveUtente) {
+        this._gestioneUtenti.removeUtente(action.id).subscribe(() => {
+            setState(
+                patch({
+                    listaUtenti: removeItem<Utente>(u => u.id === action.id)
+                })
+            );
+            dispatch(new ShowToastr(ToastrType.Info, 'Utente Rimosso', 'Utente rimosso con successo.', 3));
+        });
+    }
+
+    @Action(OpenModalRemoveRuoloUtente)
+    openModalRemoveRuoloUtente({ dispatch }: StateContext<GestioneUtentiStateModel>, action: OpenModalRemoveRuoloUtente) {
+        this.ngZone.run(() => {
+            const modalConfermaAnnulla = this.modalService.open(ConfirmModalComponent, { backdropClass: 'light-blue-backdrop', centered: true });
+            modalConfermaAnnulla.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
+            modalConfermaAnnulla.componentInstance.titolo = 'Elimina ruolo a ' + action.nominativoUtente;
+            modalConfermaAnnulla.componentInstance.messaggioAttenzione = 'Sei sicuro di voler rimuovere il ruolo "' + action.ruolo.descrizione + '" su "' + action.ruolo.descSede + '"?';
+            modalConfermaAnnulla.componentInstance.bottoni = [
+                { type: 'ko', descrizione: 'Annulla', colore: 'danger' },
+                { type: 'ok', descrizione: 'Conferma', colore: 'dark' },
+            ];
+            modalConfermaAnnulla.result.then(
+                (val) => {
+                    switch (val) {
+                        case 'ok':
+                            dispatch(new RemoveRuoloUtente(action.id, action.ruolo));
+                            break;
+                        case 'ko':
+                            // console.log('Azione annullata');
+                            break;
+                    }
+                    // console.log('Modal chiusa con val ->', val);
+                },
+                (err) => console.error('Modal chiusa senza bottoni. Err ->', err)
+            );
+        });
+    }
+
+    @Action(RemoveRuoloUtente)
+    removeRuoloUtente({ dispatch }: StateContext<GestioneUtentiStateModel>, action: RemoveRuoloUtente) {
+        this._gestioneUtenti.removeRuoloUtente(action.id, action.ruolo).subscribe(() => {
+            // patch(
+            //     insertItem(u => u.id === action.id)
+            // );
+            // dispatch(new ShowToastr(ToastrType.Info, 'Ruolo Utente Rimosso', 'Ruolo Utente rimosso con successo.', 3));
+        });
     }
 }

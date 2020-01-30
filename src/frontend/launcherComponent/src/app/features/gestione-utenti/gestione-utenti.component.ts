@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { Utente } from 'src/app/shared/model/utente.model';
+import { Ruolo, Utente } from 'src/app/shared/model/utente.model';
 import { Observable, Subscription } from 'rxjs';
 import { Select, Store } from '@ngxs/store';
 import { SetRicercaUtenti } from './store/actions/ricerca-utenti/ricerca-utenti.actons';
 import { UtenteState } from '../navbar/store/states/operatore/utente.state';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { GetUtenteDetail, GetUtentiGestione, OpenModalRemoveUtente } from './store/actions/gestione-utenti/gestione-utenti.actions';
+import { GetUtenteDetail, GetUtentiGestione, OpenModalRemoveRuoloUtente, OpenModalRemoveUtente } from './store/actions/gestione-utenti/gestione-utenti.actions';
 import { GetRuoli } from './store/actions/ruoli/ruoli.actions';
 import { RuoliState } from './store/states/ruoli/ruoli.state';
 import { GestioneUtentiState } from './store/states/gestione-utenti/gestione-utenti.state';
@@ -59,8 +59,6 @@ export class GestioneUtentiComponent implements OnInit {
             },
             (err) => console.error('Modal chiusa senza bottoni. Err ->', err)
         );
-        // TODO: DEBUG
-        // console.warn('add utente modal');
     }
 
     onDetailUtente(id: string) {
@@ -76,23 +74,17 @@ export class GestioneUtentiComponent implements OnInit {
                         },
                         (err) => console.error('Modal chiusa senza bottoni. Err ->', err)
                     );
-                    // TODO: DEBUG
-                    // const utente = event.utente.nome + ' ' + event.utente.cognome;
-                    // const ruolo = event.ruoli;
-                    // const sede = event.sede.descrizione;
-                    // console.warn(utente + ' è diventato ' + ruolo + ' nel ' + sede);
                 }
             })
         );
     }
 
-    onRemoveUtente(id: string) {
-        this.store.dispatch(new OpenModalRemoveUtente(id));
-        // TODO: DEBUG
-        // const utente = event.utente.nome + ' ' + event.utente.cognome;
-        // const ruolo = event.ruoli;
-        // const sede = event.sede.descrizione;
-        // console.warn('remove utente modal (' + id + ')');
+    onRemoveUtente(payload: {id: string, nominativoUtente: string}) {
+        this.store.dispatch(new OpenModalRemoveUtente(payload.id, payload.nominativoUtente));
+    }
+
+    onRemoveRuoloUtente(payload: {id: string, ruolo: Ruolo, nominativoUtente: string}) {
+        this.store.dispatch(new OpenModalRemoveRuoloUtente(payload.id, payload.ruolo, payload.nominativoUtente));
     }
 
     getUtentiGestione() {
