@@ -6,8 +6,7 @@ import { Sede } from '../../../shared/model/sede.model';
 import { Coordinate } from '../../../shared/model/coordinate.model';
 import { UtenteVvfInterface } from '../../../shared/interface/utente-vvf.interface';
 import { AddRuoloUtenteInterface } from '../../../shared/interface/add-ruolo-utente.interface';
-import { catchError, retry } from 'rxjs/operators';
-import { handleError } from '../../../shared/helper/handleError';
+import { makeCopy } from '../../../shared/helper/function';
 
 @Injectable({
     providedIn: 'root'
@@ -91,11 +90,16 @@ export class GestioneUtentiServiceFake {
         return of(this.utenti[0]);
     }
 
-    removeUtente(id: string): Observable<any> {
+    removeUtente(id: string): Observable<boolean> {
         return of(true);
     }
 
-    removeRuoloUtente(id: string, ruolo: Ruolo): Observable<any> {
-        return of(true);
+    removeRuoloUtente(id: string, ruolo: Ruolo): Observable<Utente> {
+        let utente = this.utenti.filter(x => x.id === id)[0];
+        if (utente) {
+            utente = makeCopy(utente);
+            utente.ruoli = utente.ruoli.filter((r: Ruolo) => r.descrizione !== ruolo.descrizione && r.codSede !== ruolo.codSede);
+        }
+        return of(utente);
     }
 }

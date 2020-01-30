@@ -75,7 +75,7 @@ export class OpenModalRemoveRuoloUtente {
 }
 
 export class RemoveRuoloUtente {
-    static readonly type = '[GestioneUtenti] Remove Utente';
+    static readonly type = '[GestioneUtenti] Remove Ruolo Utente';
 
     constructor(public id: string, public ruolo: Ruolo) { }
 }
