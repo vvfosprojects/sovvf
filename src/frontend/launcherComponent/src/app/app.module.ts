@@ -11,7 +11,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { PipeModule } from './shared/pipes/pipe.module';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SidebarModule } from 'ng-sidebar';
@@ -27,8 +26,6 @@ import { ToastrModule } from 'ngx-toastr';
 import { NgxsModule } from '@ngxs/store';
 import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
 import { NgxsRouterPluginModule } from '@ngxs/router-plugin';
-import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
-import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
 /**
  * State
  */
@@ -85,7 +82,6 @@ import { UserServiceFake } from './core/auth/_services/user.service.fake';
         NgProgressHttpModule,
         SharedModule,
         NavbarModule,
-        PipeModule.forRoot(),
         SidebarModule.forRoot(),
         TimeagoModule.forRoot({
             intl: TimeagoIntl,
@@ -99,18 +95,12 @@ import { UserServiceFake } from './core/auth/_services/user.service.fake';
             [AppState, UtenteState, SignalRState, ToastrState, SediTreeviewState, PaginationState, LoadingState, UtentiState],
             { developmentMode: !environment.production }
         ),
-        // NgxsStoragePluginModule.forRoot({
-        //     key: []
-        // }),
         NgxsRouterPluginModule.forRoot(),
         NgxsReduxDevtoolsPluginModule.forRoot({
             name: 'SO115 - NGXS',
             disabled: environment.production,
         }),
         NgxsFormPluginModule.forRoot(),
-        // NgxsLoggerPluginModule.forRoot({
-        //     disabled: environment.production,
-        // }),
     ],
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

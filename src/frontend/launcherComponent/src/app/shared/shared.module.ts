@@ -40,7 +40,8 @@ const COMPONENTS = [
         ...COMPONENTS
     ],
     exports: [
-        ...COMPONENTS
+        ...COMPONENTS,
+        PipeModule
     ]
 })
 export class SharedModule {

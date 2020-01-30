@@ -13,7 +13,6 @@ import { ModalServiziComponent } from './info-aggregate/modal-servizi/modal-serv
 /**
  * Modules
  */
-import { PipeModule } from '../../../shared/pipes/pipe.module';
 import { SharedModule } from '../../../shared/shared.module';
 /**
  * Ngxs
@@ -28,7 +27,6 @@ import { BoxRichiesteState } from '../store/states/boxes/box-richieste.state';
     imports: [
         CommonModule,
         NgbModule,
-        PipeModule.forRoot(),
         SharedModule.forRoot(),
         NgxsModule.forFeature([
             BoxRichiesteState,

@@ -22,7 +22,6 @@ import { GestioneUtentiRouting } from './gestione-utenti.routing';
 /**
  * Module
  */
-import { PipeModule } from '../../shared/pipes/pipe.module';
 import { SharedModule } from '../../shared/shared.module';
 import { UiSwitchModule } from 'ngx-ui-switch';
 /**
@@ -56,7 +55,6 @@ import { NgxsFormPluginModule } from '@ngxs/form-plugin';
         FilterPipeModule,
         SharedModule,
         TreeviewModule.forRoot(),
-        PipeModule.forRoot(),
         SharedModule.forRoot(),
         UiSwitchModule.forRoot(null),
         NgxsModule.forFeature(
