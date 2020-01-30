@@ -411,7 +411,7 @@ export class SchedeContattoState {
                 return value;
             }
         }).sort((a, b) =>
-            (a.priorita > b.priorita) ? 1 :
+            (a.priorita < b.priorita) ? 1 :
                 (a.priorita === b.priorita) ? ((new Date(a.dataInserimento).getTime() > new Date(b.dataInserimento).getTime()) ? 1 : -1) : -1);
         const mergeSchedeContatto: SchedaContatto = {
             ...schedeSelezionate[0],
