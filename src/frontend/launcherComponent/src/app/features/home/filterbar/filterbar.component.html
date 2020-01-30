@@ -29,7 +29,7 @@
                 </app-filtri-mezzi-servizio>
             </div>
             <div class="col-7 pl-0">
-                <app-ricerca [ricerca]="(ricercaRichieste$ | async)" (search)="onSearchRichieste($event)" [disabled]="(mezziInServizioStatus$ | async)">
+                <app-ricerca *ngIf="!(chiamataStatus$ | async) && !(composizioneStatus$ | async)" [ricerca]="(ricercaRichieste$ | async)" (search)="onSearchRichieste($event)" [disabled]="(mezziInServizioStatus$ | async)">
                 </app-ricerca>
             </div>
         </div>
