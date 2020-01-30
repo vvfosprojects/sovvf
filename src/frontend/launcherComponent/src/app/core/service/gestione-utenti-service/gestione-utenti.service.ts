@@ -5,7 +5,7 @@ import { handleError } from '../../../shared/helper/handleError';
 import { environment } from '../../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { ResponseInterface } from '../../../shared/interface/response.interface';
-import { Utente } from '../../../shared/model/utente.model';
+import { Ruolo, Utente } from '../../../shared/model/utente.model';
 import { UtenteVvfInterface } from '../../../shared/interface/utente-vvf.interface';
 import { AddRuoloUtenteInterface } from '../../../shared/interface/add-ruolo-utente.interface';
 
@@ -48,15 +48,22 @@ export class GestioneUtentiService {
         );
     }
 
-    addRuoloUtente(value: AddRuoloUtenteInterface): Observable<Utente> {
-        return this.http.post<Utente>(API_URL + '/AddRuoloUtente', value).pipe(
+    removeUtente(id: string) {
+        return this.http.post<Utente>(API_URL + '/RemoveUtente', id).pipe(
             retry(3),
             catchError(handleError)
         );
     }
 
-    removeUtente(id: string) {
-        return this.http.post<Utente>(API_URL + '/Remove', id).pipe(
+    addUtente(value: AddRuoloUtenteInterface): Observable<Utente> {
+        return this.http.post<Utente>(API_URL + '/AddUtente', value).pipe(
+            retry(3),
+            catchError(handleError)
+        );
+    }
+
+    removeRuoloUtente(id: string, ruolo: Ruolo) {
+        return this.http.post<Utente>(API_URL + '/RemoveRuolo', id).pipe(
             retry(3),
             catchError(handleError)
         );

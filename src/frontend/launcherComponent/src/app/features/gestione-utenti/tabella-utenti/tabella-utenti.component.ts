@@ -18,8 +18,8 @@ export class TabellaUtentiComponent {
     @Input() loading: boolean;
 
     @Output() detail: EventEmitter<string> = new EventEmitter<string>();
-    @Output() removeUser: EventEmitter<string> = new EventEmitter<string>();
-    @Output() removeRoleUser: EventEmitter<{id: string, ruolo: Ruolo}> = new EventEmitter<{id: string, ruolo: Ruolo}>();
+    @Output() removeUser: EventEmitter<{ id: string, nominativoUtente: string }> = new EventEmitter<{ id: string, nominativoUtente: string }>();
+    @Output() removeRoleUser: EventEmitter<{ id: string, ruolo: Ruolo, nominativoUtente: string }> = new EventEmitter<{ id: string, ruolo: Ruolo, nominativoUtente: string }>();
     @Output() pageChange: EventEmitter<number> = new EventEmitter<number>();
 
     constructor() {
@@ -29,12 +29,13 @@ export class TabellaUtentiComponent {
         this.detail.emit(id);
     }
 
-    onRemoveUtente(id: string) {
-        this.removeUser.emit(id);
+    onRemoveUtente(id: string, nominativoUtente: string) {
+        const obj = { id, nominativoUtente };
+        this.removeUser.emit(obj);
     }
 
-    onRemoveRuoloUtente(id: string, ruolo: Ruolo) {
-        const obj = {id, ruolo};
+    onRemoveRuoloUtente(id: string, ruolo: Ruolo, nominativoUtente: string) {
+        const obj = { id, ruolo, nominativoUtente };
         this.removeRoleUser.emit(obj);
     }
 }

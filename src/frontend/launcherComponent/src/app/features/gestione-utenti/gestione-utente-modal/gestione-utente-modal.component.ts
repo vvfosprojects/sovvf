@@ -32,7 +32,6 @@ export class GestioneUtenteModalComponent implements OnInit, OnDestroy {
     submitted: boolean;
 
     utenteEdit: any;
-    editMode: boolean;
     detailMode: boolean;
 
     subscription: Subscription = new Subscription();
@@ -61,10 +60,8 @@ export class GestioneUtenteModalComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        if (this.editMode) {
-            this.patchEditForm();
-        } else if (this.detailMode) {
-            this.patchEditForm();
+        if (this.detailMode) {
+            this.patchDetailForm();
             this.store.dispatch(new SetFormDisabled('gestioneUtenti.addUtenteRuoloForm'));
         }
     }
@@ -80,14 +77,13 @@ export class GestioneUtenteModalComponent implements OnInit, OnDestroy {
         this.store.dispatch(new ClearUtentiVVF());
     }
 
-    patchEditForm() {
-        // this.store.dispatch(new UpdateFormValue({
-        //     value: {
-        //         utente: this.utenteEdit.id,
-        //         ruolo: this.utenteEdit.ruolo.desc
-        //     },
-        //     path: 'gestioneUtenti.nuovoUtenteForm'
-        // }));
+    patchDetailForm() {
+        this.store.dispatch(new UpdateFormValue({
+            value: {
+                ruolo: this.utenteEdit.ruolo.desc
+            },
+            path: 'gestioneUtenti.addUtenteRuoloForm'
+        }));
     }
 
     get f() {

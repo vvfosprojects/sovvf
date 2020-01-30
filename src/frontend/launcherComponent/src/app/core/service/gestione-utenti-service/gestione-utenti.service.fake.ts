@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { Utente, Role } from '../../../shared/model/utente.model';
+import { Utente, Role, Ruolo } from '../../../shared/model/utente.model';
 import { ResponseInterface } from '../../../shared/interface/response.interface';
 import { Sede } from '../../../shared/model/sede.model';
 import { Coordinate } from '../../../shared/model/coordinate.model';
 import { UtenteVvfInterface } from '../../../shared/interface/utente-vvf.interface';
 import { AddRuoloUtenteInterface } from '../../../shared/interface/add-ruolo-utente.interface';
+import { catchError, retry } from 'rxjs/operators';
+import { handleError } from '../../../shared/helper/handleError';
 
 @Injectable({
     providedIn: 'root'
@@ -85,11 +87,15 @@ export class GestioneUtentiServiceFake {
         return of(utente);
     }
 
-    addRuoloUtente(value: AddRuoloUtenteInterface): Observable<Utente> {
+    addUtente(value: AddRuoloUtenteInterface): Observable<Utente> {
         return of(this.utenti[0]);
     }
 
-    removeUtente(id: string): Observable<boolean> {
+    removeUtente(id: string): Observable<any> {
+        return of(true);
+    }
+
+    removeRuoloUtente(id: string, ruolo: Ruolo): Observable<any> {
         return of(true);
     }
 }

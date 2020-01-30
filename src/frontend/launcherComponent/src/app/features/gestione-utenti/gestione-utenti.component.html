@@ -26,7 +26,8 @@
                                 [page]="page$ | async"
                                 [loading]="loading$ | async"
                                 (detail)="onDetailUtente($event)"
-                                (remove)="onRemoveUtente($event)"></app-tabella-utenti>
+                                (removeUser)="onRemoveUtente($event)"
+                                (removeRoleUser)="onRemoveRuoloUtente($event)"></app-tabella-utenti>
         </div>
     </div>
 </div>
