@@ -10,6 +10,7 @@ import { SchedeContattoComponent } from './schede-contatto.component';
 import { DettaglioSchedaModalComponent } from './dettaglio-scheda-modal/dettaglio-scheda-modal.component';
 import { SchedaContattoComponent } from './scheda-contatto/scheda-contatto.component';
 import { MergeSchedeContattoState } from '../store/states/schede-contatto/merge-schede-contatto.state';
+import { SchedaCollegataComponent } from './scheda-collegata/scheda-collegata.component';
 
 @NgModule({
     imports: [
@@ -22,12 +23,13 @@ import { MergeSchedeContattoState } from '../store/states/schede-contatto/merge-
             [
                 SchedeContattoState, MergeSchedeContattoState
             ]
-        ),
+        )
     ],
     declarations: [
         SchedeContattoComponent,
         DettaglioSchedaModalComponent,
-        SchedaContattoComponent
+        SchedaContattoComponent,
+        SchedaCollegataComponent
     ],
     exports: [
         SchedeContattoComponent

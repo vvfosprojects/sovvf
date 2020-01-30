@@ -7,7 +7,7 @@ import {
     SetSchedaContattoGestita,
     GetListaSchedeContatto,
     SetRangeVisualizzazioneSchedeContatto,
-    SetTabAttivo
+    SetTabAttivo, ToggleCollapsed, UndoMergeSchedeContatto
 } from '../store/actions/schede-contatto/schede-contatto.actions';
 import { SchedeContattoState } from '../store/states/schede-contatto/schede-contatto.state';
 import { Observable, Subscription } from 'rxjs';
@@ -44,6 +44,7 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
     @Select(SchedeContattoState.idSchedeConoscenza) idSchedeConoscenza$: Observable<string[]>;
     @Select(SchedeContattoState.idSchedeDifferibili) idSchedeDifferibili$: Observable<string[]>;
     @Select(SchedeContattoState.idVisualizzati) idVisualizzati$: Observable<string[]>;
+    @Select(SchedeContattoState.idCollapsed) idCollapsed$: Observable<string[]>;
 
     @Select(SchedeContattoState.codiceSchedaContattoHover) codiceSchedaContattoHover$: Observable<string>;
     codiceSchedaContattoHover: string;
@@ -154,6 +155,14 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
 
     onSelectTab($event: ClassificazioneSchedaContatto) {
         this.store.dispatch(new SetTabAttivo($event));
+    }
+
+    onCollapsed($event: string) {
+        this.store.dispatch(new ToggleCollapsed($event));
+    }
+
+    onUndoMergeSchedaContatto($event: string) {
+        this.store.dispatch(new UndoMergeSchedeContatto($event));
     }
 
 

@@ -31,15 +31,8 @@ export class SchedeContattoService {
         );
     }
 
-    modifyMergeSchedeContatto(schedaUnita: SchedaContatto) {
-        return this.http.post<SchedaContatto[]>(`${API_SCHEDE_CONTATTO}/ModifyMergeSchede`, schedaUnita).pipe(
-            retry(3),
-            catchError(handleError)
-        );
-    }
-
-    removeMergeSchedeContatto(schedaUnita: SchedaContatto) {
-        return this.http.post<SchedaContatto[]>(`${API_SCHEDE_CONTATTO}/RemoveMergeSchede`, schedaUnita).pipe(
+    undoMergeSchedeContatto(schedaUnita: SchedaContatto) {
+        return this.http.post<SchedaContatto[]>(`${API_SCHEDE_CONTATTO}/UndoMergeSchede`, schedaUnita).pipe(
             retry(3),
             catchError(handleError)
         );

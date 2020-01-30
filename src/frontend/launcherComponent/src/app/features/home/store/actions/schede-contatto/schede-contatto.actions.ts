@@ -123,6 +123,13 @@ export class SaveMergeSchedeContatto {
     }
 }
 
+export class UndoMergeSchedeContatto {
+    static readonly type = '[Schede Contatto] Undo Merge Schede Contatto';
+
+    constructor(public codiceScheda: string) {
+    }
+}
+
 export class SetTabAttivo {
     static readonly type = '[Schede Contatto] Set Tab Attivo';
 
@@ -132,4 +139,11 @@ export class SetTabAttivo {
 
 export class SetIdVisualizzati {
     static readonly type = '[Schede Contatto] Set Id Visualizzati';
+}
+
+export class ToggleCollapsed {
+    static readonly type = '[Schede Contatto] Toggle Collapsed';
+
+    constructor(public codiceScheda: string) {
+    }
 }
