@@ -90,6 +90,11 @@ export class GestioneUtentiState {
         return state.addUtenteRuoloForm.model.sedi;
     }
 
+    @Selector()
+    static formValid(state: GestioneUtentiStateModel) {
+        return state.addUtenteRuoloForm.status !== 'INVALID';
+    }
+
     @Action(GetUtentiVVF)
     getUtentiVVF({ dispatch }: StateContext<GestioneUtentiStateModel>, action: GetUtentiVVF) {
         this._gestioneUtenti.getUtentiVVF(action.text).subscribe((data: UtenteVvfInterface[]) => {
@@ -218,7 +223,7 @@ export class GestioneUtentiState {
     }
 
     @Action(RemoveUtente)
-    removeUtente({ dispatch, setState }: StateContext<GestioneUtentiStateModel>, action: RemoveUtente) {
+    removeUtente({ setState, dispatch }: StateContext<GestioneUtentiStateModel>, action: RemoveUtente) {
         this._gestioneUtenti.removeUtente(action.id).subscribe(() => {
             setState(
                 patch({
@@ -258,12 +263,15 @@ export class GestioneUtentiState {
     }
 
     @Action(RemoveRuoloUtente)
-    removeRuoloUtente({ dispatch }: StateContext<GestioneUtentiStateModel>, action: RemoveRuoloUtente) {
-        this._gestioneUtenti.removeRuoloUtente(action.id, action.ruolo).subscribe(() => {
-            // patch(
-            //     insertItem(u => u.id === action.id)
-            // );
-            // dispatch(new ShowToastr(ToastrType.Info, 'Ruolo Utente Rimosso', 'Ruolo Utente rimosso con successo.', 3));
+    removeRuoloUtente({ setState, dispatch }: StateContext<GestioneUtentiStateModel>, action: RemoveRuoloUtente) {
+        this._gestioneUtenti.removeRuoloUtente(action.id, action.ruolo).subscribe((utente: Utente) => {
+            console.log('utente', utente);
+            setState(
+                patch({
+                    listaUtenti: updateItem<Utente>(u => u.id === action.id, utente)
+                })
+            );
+            dispatch(new ShowToastr(ToastrType.Info, 'Ruolo Utente Rimosso', 'Ruolo Utente rimosso con successo.', 3));
         });
     }
 }
