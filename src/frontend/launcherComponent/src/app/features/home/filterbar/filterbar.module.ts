@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FilterPipeModule } from 'ngx-filter-pipe';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { PipeModule } from '../../../shared/pipes/pipe.module';
 import { SharedModule } from '../../../shared/shared.module';
 import { FormsModule } from '@angular/forms';
 import { NgxPaginationModule } from 'ngx-pagination';
@@ -27,7 +26,6 @@ import { FiltriMezziServizioComponent } from './ricerca-group/filtri-mezzi-servi
         FilterPipeModule,
         NgxPaginationModule,
         NgbModule,
-        PipeModule.forRoot(),
         SharedModule.forRoot(),
         UiSwitchModule.forRoot(null)
     ],

@@ -8,7 +8,6 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FilterPipeModule } from 'ngx-filter-pipe';
 import { SharedModule } from '../../shared/shared.module';
-import { PipeModule } from '../../shared/pipes/pipe.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { TimeagoCustomFormatter, TimeagoFormatter, TimeagoIntl, TimeagoModule } from 'ngx-timeago';
 import { NgxsModule } from '@ngxs/store';
@@ -59,7 +58,6 @@ import { MapsFiltroState } from './store/states/maps/maps-filtro.state';
         ReactiveFormsModule,
         FilterPipeModule,
         SharedModule,
-        PipeModule.forRoot(),
         NgbModule,
         TimeagoModule.forRoot({
             intl: TimeagoIntl,

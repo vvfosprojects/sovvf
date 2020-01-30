@@ -5,7 +5,6 @@ import { environment } from '../../../../environments/environment';
 /**
  Modules
  */
-import { PipeModule } from '../../../shared/pipes/pipe.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FilterPipeModule } from 'ngx-filter-pipe';
 import { NgSelectModule } from '@ng-select/ng-select';
@@ -53,7 +52,6 @@ import { RichiestaAttivitaUtenteState } from '../store/states/richieste/richiest
         NgbModule,
         UiSwitchModule.forRoot(null),
         NgSelectModule,
-        PipeModule.forRoot(),
         SharedModule.forRoot(),
         ScrollingModule,
         SintesiRichiestaModule,

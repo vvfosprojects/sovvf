@@ -4,7 +4,6 @@ import { CommonModule } from '@angular/common';
 import { EventiRichiestaComponent } from './eventi-richiesta.component';
 import { EventoRichiestaComponent } from './evento-richiesta/evento-richiesta.component';
 import { ListaEventiRichiestaComponent } from './lista-eventi-richiesta/lista-eventi-richiesta.component';
-import { PipeModule } from '../../../shared/pipes/pipe.module';
 import { SharedModule } from '../../../shared/shared.module';
 import { EventiRichiestaService } from '../../../core/service/eventi-richiesta-service/eventi-richiesta.service';
 import { EventiRichiestaServiceFake } from '../../../core/service/eventi-richiesta-service/eventi-richiesta.service.fake';
@@ -24,7 +23,6 @@ import { NgSelectModule } from '@ng-select/ng-select';
         FilterPipeModule,
         NgbModule,
         NgSelectModule,
-        PipeModule.forRoot(),
         SharedModule.forRoot(),
         NgxsModule.forFeature([
             EventiRichiestaState

@@ -70,10 +70,6 @@ export class SchedaContattoComponent implements OnChanges {
         return _returnClass;
     }
 
-    getPrioritaIconClass() {
-        return this.scheda.priorita === Priorita.Altissima ? 'fa fa-exclamation-triangle text-danger' : 'fa fa-exclamation-circle text-muted';
-    }
-
     checkDisabled() {
         if (this.scheda) {
             if (!this.classificazione) {

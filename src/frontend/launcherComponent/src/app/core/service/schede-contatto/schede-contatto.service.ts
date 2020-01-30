@@ -10,40 +10,54 @@ import { FiltriSchedeContatto } from '../../../shared/interface/filtri-schede-co
 const API_SCHEDE_CONTATTO = environment.apiUrl.schedeContatto;
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class SchedeContattoService {
 
-  constructor(private http: HttpClient) {
-  }
+    constructor(private http: HttpClient) {
+    }
 
-  getSchedeContatto(filtri: FiltriSchedeContatto): Observable<SchedaContatto[]> {
-    return this.http.post<SchedaContatto[]>(`${API_SCHEDE_CONTATTO}/GetSchede`, filtri).pipe(
-      retry(3),
-      catchError(handleError)
-    );
-  }
+    getSchedeContatto(filtri: FiltriSchedeContatto): Observable<SchedaContatto[]> {
+        return this.http.post<SchedaContatto[]>(`${API_SCHEDE_CONTATTO}/GetSchede`, filtri).pipe(
+            retry(3),
+            catchError(handleError)
+        );
+    }
 
-  mergeSchedeContatto(schedaUnita: SchedaContatto) {
-      return this.http.post<SchedaContatto[]>(`${API_SCHEDE_CONTATTO}/MergeSchede`, schedaUnita).pipe(
-          retry(3),
-          catchError(handleError)
-      );
-  }
+    mergeSchedeContatto(schedaUnita: SchedaContatto) {
+        return this.http.post<SchedaContatto[]>(`${API_SCHEDE_CONTATTO}/MergeSchede`, schedaUnita).pipe(
+            retry(3),
+            catchError(handleError)
+        );
+    }
 
-  setSchedaContattoLetta(codiceScheda: string, letta: boolean) {
-    const obj = { codiceScheda, letta };
-    return this.http.put<any>(`${API_SCHEDE_CONTATTO}/SetLetta`, obj).pipe(
-      retry(3),
-      catchError(handleError)
-    );
-  }
+    modifyMergeSchedeContatto(schedaUnita: SchedaContatto) {
+        return this.http.post<SchedaContatto[]>(`${API_SCHEDE_CONTATTO}/ModifyMergeSchede`, schedaUnita).pipe(
+            retry(3),
+            catchError(handleError)
+        );
+    }
 
-  setSchedaContattoGestita(codiceScheda: string, gestita: boolean) {
-    const obj = { codiceScheda, gestita };
-    return this.http.put<any>(`${API_SCHEDE_CONTATTO}/SetGestita`, obj).pipe(
-      retry(3),
-      catchError(handleError)
-    );
-  }
+    removeMergeSchedeContatto(schedaUnita: SchedaContatto) {
+        return this.http.post<SchedaContatto[]>(`${API_SCHEDE_CONTATTO}/RemoveMergeSchede`, schedaUnita).pipe(
+            retry(3),
+            catchError(handleError)
+        );
+    }
+
+    setSchedaContattoLetta(codiceScheda: string, letta: boolean) {
+        const obj = { codiceScheda, letta };
+        return this.http.put<any>(`${API_SCHEDE_CONTATTO}/SetLetta`, obj).pipe(
+            retry(3),
+            catchError(handleError)
+        );
+    }
+
+    setSchedaContattoGestita(codiceScheda: string, gestita: boolean) {
+        const obj = { codiceScheda, gestita };
+        return this.http.put<any>(`${API_SCHEDE_CONTATTO}/SetGestita`, obj).pipe(
+            retry(3),
+            catchError(handleError)
+        );
+    }
 }

@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { PipeModule } from '../../../shared/pipes/pipe.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SharedModule } from '../../../shared/shared.module';
 /**
@@ -63,7 +62,6 @@ import { SchedeContattoMarkers } from '../store/states/maps/schede-contatto-mark
     imports: [
         CommonModule,
         NgbModule,
-        PipeModule.forRoot(),
         AgmCoreModule.forRoot(),
         AgmDirectionModule,
         AgmJsMarkerClustererModule,
