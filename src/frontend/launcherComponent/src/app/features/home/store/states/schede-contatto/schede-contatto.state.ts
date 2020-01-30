@@ -19,7 +19,7 @@ import {
     SetRangeVisualizzazioneSchedeContatto,
     SetSchedaContattoGestita,
     SetSchedaContattoHover,
-    SetSchedaContattoTelefonata, SetTabAttivo,
+    SetSchedaContattoTelefonata, SetTabAttivo, ToggleCollapsed, UndoMergeSchedeContatto,
     UpdateSchedaContatto
 } from '../../actions/schede-contatto/schede-contatto.actions';
 import { ClassificazioneSchedaContatto } from '../../../../../shared/enum/classificazione-scheda-contatto.enum';
@@ -34,7 +34,7 @@ import {
 import { CategoriaFiltriSchedeContatto as Categoria } from '../../../../../shared/enum/categoria-filtri-schede-contatto';
 import { ContatoriSchedeContatto } from '../../../../../shared/interface/contatori-schede-contatto.interface';
 import { ContatoriSchedeContattoModel } from '../../../../../shared/model/contatori-schede-contatto.model';
-import { patch, removeItem, updateItem } from '@ngxs/store/operators';
+import { insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
 import { RangeSchedeContattoEnum } from '../../../../../shared/enum/range-schede-contatto';
 import { SetSchedeContattoMarkers } from '../../actions/maps/schede-contatto-markers.actions';
 import { MergeSchedeContattoState } from './merge-schede-contatto.state';
@@ -54,6 +54,7 @@ export interface SchedeContattoStateModel {
     filtriSelezionati: FiltriSchedeContatto;
     tabAttivo: ClassificazioneSchedaContatto;
     idVisualizzati: string[];
+    idCollapsed: string[];
 }
 
 export const SchedeContattoEmpty = {
@@ -62,7 +63,8 @@ export const SchedeContattoEmpty = {
     idSchedeContattoConoscenza: [],
     idSchedeContattoDifferibili: [],
     tabAttivo: null,
-    idVisualizzati: []
+    idVisualizzati: [],
+    idCollapsed: []
 };
 
 export const SchedeContattoStateDefaults: SchedeContattoStateModel = {
@@ -123,6 +125,11 @@ export class SchedeContattoState {
     @Selector()
     static idVisualizzati(state: SchedeContattoStateModel) {
         return state.idVisualizzati;
+    }
+
+    @Selector()
+    static idCollapsed(state: SchedeContattoStateModel) {
+        return state.idCollapsed;
     }
 
     @Selector()
@@ -270,8 +277,26 @@ export class SchedeContattoState {
             });
         } else {
             patchState({
-                idVisualizzati: [...state.idSchedeContattoCompetenza, ...state.idSchedeContattoConoscenza, ...state.idSchedeContattoDifferibili]
+                idVisualizzati: [ ...state.idSchedeContattoCompetenza, ...state.idSchedeContattoConoscenza, ...state.idSchedeContattoDifferibili ]
             });
+        }
+    }
+
+    @Action(ToggleCollapsed)
+    toggleCollapsed({ getState, setState }: StateContext<SchedeContattoStateModel>, action: ToggleCollapsed) {
+        const state = getState();
+        if (state.idCollapsed.length === 0 || !state.idCollapsed.includes(action.codiceScheda)) {
+            setState(
+                patch({
+                    idCollapsed: insertItem<string>(action.codiceScheda)
+                })
+            );
+        } else {
+            setState(
+                patch({
+                    idCollapsed: removeItem<string>(id => id === action.codiceScheda)
+                })
+            );
         }
     }
 
@@ -430,6 +455,22 @@ export class SchedeContattoState {
             ]);
         }, () => {
             console.log('Unione schede fallita', mergeSchedeContatto);
+            dispatch(new ShowToastr(ToastrType.Error, 'Unione schede contatto', 'Impossibile unire le schede contatto'));
+        });
+    }
+
+    @Action(UndoMergeSchedeContatto)
+    undoMergeSchedeContatto({ getState, dispatch }: StateContext<SchedeContattoStateModel>, action: UndoMergeSchedeContatto) {
+        console.log('Id Scheda Contato Undo Merge', action.codiceScheda);
+        const undoMergeSchedaContatto = getState().schedeContatto.filter(value => value.codiceScheda === action.codiceScheda)[0];
+        this.schedeContattoService.undoMergeSchedeContatto(undoMergeSchedaContatto).subscribe( () => {
+            console.log('Undo Merge Schede completata', undoMergeSchedaContatto);
+            dispatch([
+                new ClearMergeSchedeContatto(),
+                new ShowToastr(ToastrType.Success, 'Unione schede contatto', 'Unione completata con successo')
+            ]);
+        }, () => {
+            console.log('Unione Schede fallita', undoMergeSchedaContatto);
             dispatch(new ShowToastr(ToastrType.Error, 'Unione schede contatto', 'Impossibile unire le schede contatto'));
         });
     }

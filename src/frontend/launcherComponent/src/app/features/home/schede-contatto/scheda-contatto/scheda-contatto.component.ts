@@ -17,6 +17,7 @@ export class SchedaContattoComponent implements OnChanges {
     @Input() schedeContattoSelezionate: string[];
     @Input() classificazione: ClassificazioneSchedaContatto;
     @Input() idVisualizzati: string[];
+    @Input() idCollapsed: string[];
     @Output() hoverIn = new EventEmitter<string>();
     @Output() hoverOut = new EventEmitter();
     @Output() dettaglioScheda = new EventEmitter<SchedaContatto>();
@@ -24,6 +25,8 @@ export class SchedaContattoComponent implements OnChanges {
     @Output() setSchedaContattoGestita = new EventEmitter<boolean>();
     @Output() editSelezionata = new EventEmitter<CheckboxInterface>();
     @Output() checkBoxError = new EventEmitter();
+    @Output() collapsed = new EventEmitter<string>();
+    @Output() undoRaggruppamento = new EventEmitter<string>();
 
     btnLetta = { type: '', tooltip: '' };
     btnGestita = { type: '', tooltip: '' };
@@ -96,5 +99,13 @@ export class SchedaContattoComponent implements OnChanges {
         console.log('click checkbox', $event);
         $event.object = this.scheda;
         this.editSelezionata.emit($event);
+    }
+
+    onCollapse() {
+        this.collapsed.emit(this.scheda.codiceScheda);
+    }
+
+    onUndoRaggruppamento() {
+        this.undoRaggruppamento.emit(this.scheda.codiceScheda);
     }
 }

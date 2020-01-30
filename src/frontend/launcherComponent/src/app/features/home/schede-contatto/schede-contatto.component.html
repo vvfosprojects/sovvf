@@ -75,15 +75,18 @@
                 </ng-template>
             </ngb-tab>
         </ngb-tabset>
-        <ul class="col-12 my-2 list-unstyled">
+        <ul class="my-2 list-unstyled">
             <app-scheda-contatto *ngFor="let scheda of schedeContatto"
                                  [scheda]="scheda"
                                  [idVisualizzati]="idVisualizzati$ | async"
+                                 [idCollapsed]="idCollapsed$ | async"
                                  [idSchedaContattoHover]="codiceSchedaContattoHover"
                                  [editSchedaContatto]="statoModalita"
                                  [schedeContattoSelezionate]="idSelezionatiMerge"
                                  [classificazione]="classificazioneMerge"
                                  (hoverOut)="hoverOut()" (hoverIn)="hoverIn($event)"
+                                 (collapsed)="onCollapsed($event)"
+                                 (undoRaggruppamento)="onUndoMergeSchedaContatto($event)"
                                  (dettaglioScheda)="dettaglioScheda($event)"
                                  (editSelezionata)="onEditSchedaSelezionata($event)"
                                  (checkBoxError)="onCheckboxError()"

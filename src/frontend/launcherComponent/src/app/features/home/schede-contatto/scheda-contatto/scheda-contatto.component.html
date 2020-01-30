@@ -1,42 +1,66 @@
-<li *ngIf="idVisualizzati.includes(scheda.codiceScheda)" class="cursor-pointer border-top border-bottom py-1"
-    (mouseenter)="hoverIn.emit(scheda.codiceScheda)" (mouseleave)="hoverOut.emit()"
-    (click)="dettaglioScheda.emit(scheda)" [ngClass]="cardClasses(scheda.codiceScheda)">
-    <div class="row">
-        <div class="col-1 text-center cursor-pointer py-1">
-            <i [ngClass]="getPrioritaIconClass()"
-               [ngbTooltip]="scheda.priorita === priorita.Altissima ? altaPriorita : bassaPriorita"></i>
-            <ng-template #altaPriorita><b>Scheda ad alta priorità</b></ng-template>
-            <ng-template #bassaPriorita>Scheda a bassa priorità</ng-template>
-        </div>
-        <div class="col-3 px-0 py-1">
-            {{scheda.dataInserimento | date: 'dd/MM/yyyy HH:mm:ss'}}
-        </div>
-        <div class="col py-1">
-            <i class="fa fa-map-marker mr-1"></i>
-            {{scheda.localita.indirizzo}}
-        </div>
-        <div class="col-1 py-1 text-right cursor-pointer" ngbTooltip="Postazione Operatore">
-            {{scheda.operatoreChiamata.codicePostazioneOperatore}}
-            <i class="fa fa-desktop ml-1"></i>
-        </div>
-        <div class="col-2 pr-4">
-            <ng-container *ngIf="!editSchedaContatto">
-                <button class="btn btn-success float-right px-2 py-1" ngbTooltip="Crea richiesta di assistenza"
-                        (click)="setSchedaContattoTelefonata.emit(scheda); $event.stopPropagation()">
-                    <i class="fa fa-arrow-right"></i>
-                </button>
-                <button *ngIf="scheda.classificazione === classificazioneSchedaContatto.Differibile"
-                        class="btn float-right px-2 py-1 mr-1" [ngClass]="btnGestita.type"
-                        ngbTooltip="{{btnGestita.tooltip}}"
-                        (click)="setSchedaContattoGestita.emit(!scheda.gestita); $event.stopPropagation()">
-                    <i class="fa fa-cog"></i>
-                </button>
-            </ng-container>
-            <div *ngIf="editSchedaContatto && !this.scheda.gestita" class="float-right py-1">
-                <app-checkbox appClickStopPropagation [typeName]="'nue' + scheda.classificazione"
-                              [checkboxState]="{id: scheda.codiceScheda, status: schedeContattoSelezionate.includes(scheda.codiceScheda), disabled: checkDisabled()}"
-                              (checkbox)="onEditSchedaSelezionata($event)" [tooltipMessage]="checkMessage()" (container)="onCheckBoxClick()"></app-checkbox>
+<ng-container *ngIf="idVisualizzati.includes(scheda.codiceScheda)">
+    <li class="cursor-pointer border-top border-bottom py-1"
+        (mouseenter)="hoverIn.emit(scheda.codiceScheda)" (mouseleave)="hoverOut.emit()"
+        (click)="dettaglioScheda.emit(scheda)" [ngClass]="cardClasses(scheda.codiceScheda)">
+        <div class="row position-relative">
+            <span style="position: absolute; top: -4px; left: 20px; z-index: 99999"
+                  (click)="onCollapse(); $event.stopPropagation()">
+                <i *ngIf="scheda.collegate && scheda.collegate.length > 0 && !idCollapsed.includes(scheda.codiceScheda)"
+                   class="fa fa-plus-square-o"></i>
+                <i *ngIf="scheda.collegate && scheda.collegate.length > 0 && idCollapsed.includes(scheda.codiceScheda)"
+                   class="fa fa-minus-square-o"></i>
+            </span>
+            <div class="col-1 text-right cursor-pointer py-1">
+                <i [ngClass]="scheda.priorita | contattoPriorita"
+                   [ngbTooltip]="scheda.priorita === priorita.Altissima ? altaPriorita : bassaPriorita"></i>
+                <ng-template #altaPriorita><b>Scheda ad alta priorità</b></ng-template>
+                <ng-template #bassaPriorita>Scheda a bassa priorità</ng-template>
+            </div>
+            <div class="col-2 px-0 py-1">
+                {{scheda.dataInserimento | date: 'dd/MM/yyyy HH:mm:ss'}}
+            </div>
+            <div class="col py-1">
+                <i class="fa fa-map-marker mr-1"></i>
+                {{scheda.localita.indirizzo}}
+            </div>
+            <div class="col-1 py-1 text-right cursor-pointer" ngbTooltip="Postazione Operatore">
+                {{scheda.operatoreChiamata.codicePostazioneOperatore}}
+                <i class="fa fa-desktop ml-1"></i>
+            </div>
+            <div class="col-2 pr-4">
+                <ng-container *ngIf="!editSchedaContatto">
+                    <button class="btn btn-success float-right px-2 py-1" ngbTooltip="Crea richiesta di assistenza"
+                            (click)="setSchedaContattoTelefonata.emit(scheda); $event.stopPropagation()">
+                        <i class="fa fa-arrow-right"></i>
+                    </button>
+                    <button *ngIf="scheda.classificazione === classificazioneSchedaContatto.Differibile"
+                            class="btn float-right px-2 py-1 mr-1" [ngClass]="btnGestita.type"
+                            ngbTooltip="{{btnGestita.tooltip}}"
+                            (click)="setSchedaContattoGestita.emit(!scheda.gestita); $event.stopPropagation()">
+                        <i class="fa fa-cog"></i>
+                    </button>
+                </ng-container>
+                <div *ngIf="editSchedaContatto && !this.scheda.gestita && this.scheda.collegate?.length <= 0"
+                     class="float-right py-1">
+                    <app-checkbox appClickStopPropagation [typeName]="'nue' + scheda.classificazione"
+                                  [checkboxState]="{id: scheda.codiceScheda, status: schedeContattoSelezionate.includes(scheda.codiceScheda), disabled: checkDisabled()}"
+                                  (checkbox)="onEditSchedaSelezionata($event)" [tooltipMessage]="checkMessage()"
+                                  (container)="onCheckBoxClick()"></app-checkbox>
+                </div>
+                <ng-container *ngIf="editSchedaContatto && !this.scheda.gestita && this.scheda.collegate?.length > 0">
+                    <button class="btn btn-danger float-right px-2 py-1" (click)="onUndoRaggruppamento(); $event.stopPropagation()"
+                            ngbTooltip="Elimina raggruppamento">
+                        <i class="fa fa-remove"></i>
+                    </button>
+                </ng-container>
             </div>
         </div>
-    </div>
-</li>
+        <ng-container *ngIf="idCollapsed.includes(scheda.codiceScheda)">
+            <ul class="list-unstyled">
+                <ng-container *ngFor="let collegata of scheda.collegate">
+                    <app-scheda-collegata [scheda]="collegata"></app-scheda-collegata>
+                </ng-container>
+            </ul>
+        </ng-container>
+    </li>
+</ng-container>
