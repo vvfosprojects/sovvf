@@ -90,6 +90,11 @@ export class GestioneUtentiState {
         return state.addUtenteRuoloForm.model.sedi;
     }
 
+    @Selector()
+    static formValid(state: GestioneUtentiStateModel) {
+        return state.addUtenteRuoloForm.status !== 'INVALID';
+    }
+
     @Action(GetUtentiVVF)
     getUtentiVVF({ dispatch }: StateContext<GestioneUtentiStateModel>, action: GetUtentiVVF) {
         this._gestioneUtenti.getUtentiVVF(action.text).subscribe((data: UtenteVvfInterface[]) => {
