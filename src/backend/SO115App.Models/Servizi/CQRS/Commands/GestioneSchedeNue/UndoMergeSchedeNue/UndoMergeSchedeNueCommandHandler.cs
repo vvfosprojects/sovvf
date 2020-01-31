@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="SetSchedaGestitaCommandHandler.cs" company="CNVVF">
+// <copyright file="UndoMergeSchedeNueCommandHandler.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -20,20 +20,27 @@
 using CQRS.Commands;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
 
-namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSchedeNue.MergeSchedeNue
+namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSchedeNue.UndoMergeSchedeNue
 {
-    public class MergeSchedeNueCommandHandler : ICommandHandler<MergeSchedeNueCommand>
+    /// <summary>
+    ///   servizio che elimina le schede raggruppate
+    /// </summary>
+    internal class UndoMergeSchedeNueCommandHandler : ICommandHandler<UndoMergeSchedeNueCommand>
     {
-        private readonly IMergeSchedeContatto _mergeSchede;
+        private readonly IUndoSchedeContattoMerge _undoSchedeContattoMerge;
 
-        public MergeSchedeNueCommandHandler(IMergeSchedeContatto mergeSchede)
+        public UndoMergeSchedeNueCommandHandler(IUndoSchedeContattoMerge undoSchedeContattoMerge)
         {
-            _mergeSchede = mergeSchede;
+            _undoSchedeContattoMerge = undoSchedeContattoMerge;
         }
 
-        public void Handle(MergeSchedeNueCommand command)
+        /// <summary>
+        ///   metodo della classe che elimina le schede passate in input dalla collection relativa.
+        /// </summary>
+        /// <param name="command">il commando di ingresso</param>
+        public void Handle(UndoMergeSchedeNueCommand command)
         {
-            _mergeSchede.Merge(command.SchedaNue, command.CodiceSede);
+            _undoSchedeContattoMerge.Undo(command.SchedaNue);
         }
     }
 }

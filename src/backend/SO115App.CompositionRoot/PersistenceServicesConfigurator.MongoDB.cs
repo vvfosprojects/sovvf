@@ -78,6 +78,11 @@ namespace SO115App.CompositionRoot
                     Models.Servizi.Infrastruttura.Notification.GestioneSchedeContatto.INotificationMergeSchedeNue,
                     NotificationMergeSchedeNue>();
 
+            container.Register<Models.Servizi.Infrastruttura.Notification.GestioneSchedeContatto.INotificationUndoMergeSchedeNue,
+                NotificationUndoMergeSchedeNue>();
+            container.Register<Models.Servizi.Infrastruttura.SistemiEsterni.Nue.IUndoSchedeContattoMerge,
+                Persistence.MongoDB.GestioneSchedeContatto.UndoSchedeContattoMerge>();
+
             #endregion Schede Contatto
 
             #region DA TRASFORMARE SU MONGO

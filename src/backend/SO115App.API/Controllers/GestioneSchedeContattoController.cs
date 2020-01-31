@@ -25,6 +25,7 @@ using SO115App.Models.Classi.NUE;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSchedeNue.MergeSchedeNue;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSchedeNue.SetSchedaGestita;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSchedeNue.SetSchedaLetta;
+using SO115App.Models.Servizi.CQRS.Commands.GestioneSchedeNue.UndoMergeSchedeNue;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneSchedeNue.GetSchedeFiltrate;
 using System;
 using System.Threading.Tasks;
@@ -39,18 +40,20 @@ namespace SO115App.API.Controllers
         private readonly ICommandHandler<SetSchedaGestitaCommand> _setGestita;
         private readonly ICommandHandler<SetSchedaLettaCommand> _setLetta;
         private readonly ICommandHandler<MergeSchedeNueCommand> _setMerge;
+        private readonly ICommandHandler<UndoMergeSchedeNueCommand> _undoMergeSchede;
 
         public GestioneSchedeContattoController(
             IQueryHandler<GetSchedeFiltrateQuery, GetSchedeFiltrateResult> queryHandler,
             ICommandHandler<SetSchedaGestitaCommand> setGestita,
             ICommandHandler<SetSchedaLettaCommand> setLetta,
-            ICommandHandler<MergeSchedeNueCommand> setMerge
-            )
+            ICommandHandler<MergeSchedeNueCommand> setMerge,
+            ICommandHandler<UndoMergeSchedeNueCommand> undoMergeSchede)
         {
             _queryHandler = queryHandler ?? throw new ArgumentNullException(nameof(_queryHandler));
             _setGestita = setGestita ?? throw new ArgumentNullException(nameof(_setGestita));
             _setLetta = setLetta ?? throw new ArgumentNullException(nameof(_setLetta));
             _setMerge = setMerge;
+            _undoMergeSchede = undoMergeSchede ?? throw new ArgumentNullException(nameof(_undoMergeSchede));
         }
 
         [HttpPost("GetSchede")]
@@ -94,19 +97,41 @@ namespace SO115App.API.Controllers
         [HttpPost("MergeSchede")]
         public async Task<IActionResult> MergeSchede([FromBody]SchedaContatto scheda)
         {
-            string IdUtente = Request.Headers["IdUtente"];
-            string codiceSede = Request.Headers["codiceSede"];
+            string idUtente = Request.Headers["IdUtente"];
 
             var command = new MergeSchedeNueCommand()
             {
                 CodiceSede = Request.Headers["codiceSede"],
-                IdUtente = IdUtente,
+                IdUtente = idUtente,
                 SchedaNue = scheda
             };
 
             try
             {
                 _setMerge.Handle(command);
+                return Ok();
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpPost("UndoMergeSchede")]
+        public async Task<IActionResult> UndoMerge([FromBody]SchedaContatto scheda)
+        {
+            var idUtente = Request.Headers["IdUtente"];
+            string codiceSede = Request.Headers["codiceSede"];
+            var command = new UndoMergeSchedeNueCommand
+            {
+                CodiceSede = codiceSede,
+                IdUtente = idUtente,
+                SchedaNue = scheda
+            };
+
+            try
+            {
+                _undoMergeSchede.Handle(command);
                 return Ok();
             }
             catch (Exception)

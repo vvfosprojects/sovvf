@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="SetSchedaGestitaCommandHandler.cs" company="CNVVF">
+// <copyright file="UndoSchedeContattoMerge.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,23 +17,29 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using CQRS.Commands;
+using MongoDB.Driver;
+using Persistence.MongoDB;
+using SO115App.Models.Classi.NUE;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
 
-namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSchedeNue.MergeSchedeNue
+namespace SO115App.Persistence.MongoDB.GestioneSchedeContatto
 {
-    public class MergeSchedeNueCommandHandler : ICommandHandler<MergeSchedeNueCommand>
+    internal class UndoSchedeContattoMerge : IUndoSchedeContattoMerge
     {
-        private readonly IMergeSchedeContatto _mergeSchede;
+        private readonly DbContext _dbContext;
 
-        public MergeSchedeNueCommandHandler(IMergeSchedeContatto mergeSchede)
+        public UndoSchedeContattoMerge(DbContext dbContext)
         {
-            _mergeSchede = mergeSchede;
+            _dbContext = dbContext;
         }
 
-        public void Handle(MergeSchedeNueCommand command)
+        public void Undo(SchedaContatto scheda)
         {
-            _mergeSchede.Merge(command.SchedaNue, command.CodiceSede);
+            foreach (var schedaMergiata in scheda.Collegate)
+            {
+                _dbContext.SchedeContattoCollection.DeleteOne(Builders<SchedaContatto>.Filter.Eq(x => x.CodiceScheda, schedaMergiata.CodiceScheda));
+            }
+            _dbContext.SchedeContattoCollection.DeleteOne(Builders<SchedaContatto>.Filter.Eq(x => x.CodiceScheda, scheda.CodiceScheda));
         }
     }
 }

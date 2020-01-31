@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="NotificationSetSchedaGestita.cs" company="CNVVF">
+// <copyright file="NotificationUndoMergeSchedeNue.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -19,45 +19,32 @@
 //-----------------------------------------------------------------------
 using CQRS.Queries;
 using Microsoft.AspNetCore.SignalR;
-using SO115App.Models.Servizi.CQRS.Commands.GestioneSchedeNue.SetSchedaGestita;
-using SO115App.Models.Servizi.CQRS.Queries.GestioneSchedeNue.GetContatoreSchede;
+using SO115App.Models.Servizi.CQRS.Commands.GestioneSchedeNue.UndoMergeSchedeNue;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneSchedeNue.GetSchedeContatto;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneSchedeContatto;
 using System.Threading.Tasks;
 
 namespace SO115App.SignalR.Sender.GestioneSchedeContatto
 {
-    public class NotificationSetSchedaGestita : INotificationSetSchedaGestita
+    public class NotificationUndoMergeSchedeNue : INotificationUndoMergeSchedeNue
     {
         private readonly IHubContext<NotificationHub> _notificationHubContext;
-        private readonly IQueryHandler<GetConteggioSchedeQuery, GetConteggioSchedeResult> _getConteggioSchedeHandler;
         private readonly IQueryHandler<GetSchedeContattoQuery, GetSchedeContattoResult> _getSchedeContattoHandler;
 
-        public NotificationSetSchedaGestita(
-            IHubContext<NotificationHub> notificationHubContext,
-            IQueryHandler<GetConteggioSchedeQuery, GetConteggioSchedeResult> getConteggioSchedeHandler, IQueryHandler<GetSchedeContattoQuery, GetSchedeContattoResult> getSchedeContatto)
+        public NotificationUndoMergeSchedeNue(IHubContext<NotificationHub> notificationHubContext, IQueryHandler<GetSchedeContattoQuery, GetSchedeContattoResult> getSchedeContattoHandler)
         {
             _notificationHubContext = notificationHubContext;
-            _getConteggioSchedeHandler = getConteggioSchedeHandler;
-            _getSchedeContattoHandler = getSchedeContatto;
+            _getSchedeContattoHandler = getSchedeContattoHandler;
         }
 
-        public async Task SendNotification(SetSchedaGestitaCommand command)
+        public async Task SendNotification(UndoMergeSchedeNueCommand command)
         {
-            var getConteggioSchedeQuery = new GetConteggioSchedeQuery
-            {
-                CodiceSede = command.CodiceSede
-            };
-
             var getSchedeContatto = new GetSchedeContattoQuery
             {
                 CodiceSede = command.CodiceSede
             };
 
-            var schedaContattoUpdated = _getSchedeContattoHandler.Handle(getSchedeContatto).SchedeContatto.Find(x => x.CodiceScheda.Equals(command.CodiceScheda));
-
-            var infoNue = _getConteggioSchedeHandler.Handle(getConteggioSchedeQuery).InfoNue;
-            await _notificationHubContext.Clients.Group(command.CodiceSede).SendAsync("NotifyGetContatoriSchedeContatto", infoNue);
+            var schedaContattoUpdated = _getSchedeContattoHandler.Handle(getSchedeContatto).SchedeContatto;
             await _notificationHubContext.Clients.Groups(command.CodiceSede).SendAsync("NotifyGetUpdateSchedaContatto", schedaContattoUpdated);
         }
     }

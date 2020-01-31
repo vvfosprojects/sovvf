@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="SetSchedaGestitaCommandHandler.cs" company="CNVVF">
+// <copyright file="IUndoSchedeContattoMerge.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,23 +17,12 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using CQRS.Commands;
-using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
+using SO115App.Models.Classi.NUE;
 
-namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSchedeNue.MergeSchedeNue
+namespace SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue
 {
-    public class MergeSchedeNueCommandHandler : ICommandHandler<MergeSchedeNueCommand>
+    public interface IUndoSchedeContattoMerge
     {
-        private readonly IMergeSchedeContatto _mergeSchede;
-
-        public MergeSchedeNueCommandHandler(IMergeSchedeContatto mergeSchede)
-        {
-            _mergeSchede = mergeSchede;
-        }
-
-        public void Handle(MergeSchedeNueCommand command)
-        {
-            _mergeSchede.Merge(command.SchedaNue, command.CodiceSede);
-        }
+        void Undo(SchedaContatto scheda);
     }
 }

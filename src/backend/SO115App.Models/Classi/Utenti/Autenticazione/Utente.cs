@@ -246,5 +246,7 @@ namespace SO115App.API.Models.Classi.Autenticazione
 
         public string descrizione { get; set; }
         public string Codicesede { get; set; }
+
+        public string DescSede { get; set; }
     }
 }
