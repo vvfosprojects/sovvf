@@ -10,6 +10,11 @@ namespace SO115App.Persistence.MongoDB.Marker
     {
         private readonly DbContext _dbContext;
 
+        public UpdateChiamataInCorso(DbContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
+
         public void UpDateChiamata(ChiamateInCorso chiamata)
         {
             _dbContext.ChiamateInCorsoCollection.ReplaceOne(Builders<ChiamateInCorso>.Filter.Eq(x => x.Id, chiamata.Id), chiamata);
