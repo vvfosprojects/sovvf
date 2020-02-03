@@ -50,16 +50,16 @@ namespace SO115App.SignalR.Sender.GestioneSchedeContatto
             await _notificationHubContext.Clients.Group(command.CodiceSede).SendAsync("NotifyGetContatoriSchedeContatto", infoNue);
             await _notificationHubContext.Clients.Groups(command.CodiceSede).SendAsync("NotifyUpdateSchedaContatto", command.SchedaNue);
 
-            var CodiciShedecollegate = new string[command.SchedaNue.Collegate.Count];
+            var codiciSchedecollegate = new string[command.SchedaNue.Collegate.Count];
             int i = 0;
 
             foreach (var schedaCollegata in command.SchedaNue.Collegate)
             {
-                CodiciShedecollegate[i] = schedaCollegata.CodiceScheda;
+                codiciSchedecollegate[i] = schedaCollegata.CodiceScheda;
                 i++;
             }
 
-            await _notificationHubContext.Clients.Groups(command.CodiceSede).SendAsync("NotifyRemoveSchedeContatto", CodiciShedecollegate);
+            await _notificationHubContext.Clients.Groups(command.CodiceSede).SendAsync("NotifyRemoveSchedeContatto", codiciSchedecollegate);
         }
     }
 }

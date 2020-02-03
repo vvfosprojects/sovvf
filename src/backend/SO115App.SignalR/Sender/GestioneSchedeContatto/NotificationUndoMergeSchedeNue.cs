@@ -19,9 +19,11 @@
 //-----------------------------------------------------------------------
 using CQRS.Queries;
 using Microsoft.AspNetCore.SignalR;
+using SO115App.Models.Classi.NUE;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSchedeNue.UndoMergeSchedeNue;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneSchedeNue.GetSchedeContatto;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneSchedeContatto;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace SO115App.SignalR.Sender.GestioneSchedeContatto
@@ -39,13 +41,22 @@ namespace SO115App.SignalR.Sender.GestioneSchedeContatto
 
         public async Task SendNotification(UndoMergeSchedeNueCommand command)
         {
-            var getSchedeContatto = new GetSchedeContattoQuery
-            {
-                CodiceSede = command.CodiceSede
-            };
+            //var getSchedeContatto = new GetSchedeContattoQuery
+            //{
+            //    CodiceSede = command.CodiceSede
+            //};
+            //var schedaContattoUpdated = _getSchedeContattoHandler.Handle(getSchedeContatto).SchedeContatto;
 
-            var schedaContattoUpdated = _getSchedeContattoHandler.Handle(getSchedeContatto).SchedeContatto;
-            await _notificationHubContext.Clients.Groups(command.CodiceSede).SendAsync("NotifyGetUpdateSchedaContatto", schedaContattoUpdated);
+            var listaSchedeNueNonMergiate = new List<SchedaContatto>();
+            foreach (var schedafiglia in command.SchedaNue.Collegate)
+            {
+                schedafiglia.Collegata = false;
+                listaSchedeNueNonMergiate.Add(schedafiglia);
+            }
+            command.SchedaNue.Collegate = null;
+
+            await _notificationHubContext.Clients.Groups(command.CodiceSede).SendAsync("NotifyInsertSchedeContatto", listaSchedeNueNonMergiate);
+            await _notificationHubContext.Clients.Groups(command.CodiceSede).SendAsync("NotifyUpdateSchedaContatto", command.SchedaNue);
         }
     }
 }
