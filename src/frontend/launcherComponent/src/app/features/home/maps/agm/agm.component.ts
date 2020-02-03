@@ -19,13 +19,14 @@ import { MeteoMarkersState } from '../../store/states/maps/meteo-markers.state';
 import { AppFeatures } from '../../../../shared/enum/app-features.enum';
 import { MouseE } from '../../../../shared/enum/mouse-e.enum';
 import { MapsDirectionState } from '../../store/states/maps/maps-direction.state';
-import { markerColor, markerColorRichiesta } from '../../../../shared/helper/function-colori';
+import { markerColor, markerColorRichiesta, markerColorSC } from '../../../../shared/helper/function-colori';
 import { StatoRichiesta } from '../../../../shared/enum/stato-richiesta.enum';
 import { makeAreaMappa, makeCentroMappa, makeCoordinate, wipeStatoRichiesta } from '../../../../shared/helper/function';
 import { MapsButtonsState } from '../../store/states/maps/maps-buttons.state';
 import { ButtonControlAnimation, CustomButtonsMaps } from '../maps-interface/maps-custom-buttons';
 import { MapsOptionsInterface } from '../../../../core/settings/maps-options';
 import { SchedaContattoMarker } from '../maps-model/scheda-contatto.model';
+import { ClassificazioneSchedaContatto } from '../../../../shared/enum/classificazione-scheda-contatto.enum';
 
 declare var google: any;
 
@@ -300,6 +301,10 @@ export class AgmComponent implements OnDestroy {
 
     colorWindowRichiesta(stato: StatoRichiesta): string {
         return markerColorRichiesta(stato);
+    }
+
+    colorWindowSC(stato: ClassificazioneSchedaContatto): string {
+        return markerColorSC(stato);
     }
 
     wipeStatoRichiesta(statoEnum: StatoRichiesta): string {

@@ -1,4 +1,5 @@
 import { StatoRichiesta } from '../enum/stato-richiesta.enum';
+import { ClassificazioneSchedaContatto } from '../enum/classificazione-scheda-contatto.enum';
 
 export function markerColor(stato: string): string {
     const mapColorStato = new Map([
@@ -28,4 +29,19 @@ export function markerColorRichiesta(stato: StatoRichiesta): string {
     ]);
     const color = mapColorStato.get(stato);
     return color ? color : '#343a40';
+}
+
+/**
+ * ritorna il colore di un marker scheda contatto
+ * @param {string} stato
+ * @returns {string}
+ */
+export function markerColorSC(stato: ClassificazioneSchedaContatto): string {
+    const mapColorStato = new Map([
+        [ClassificazioneSchedaContatto.Conoscenza, '#ffc107'],
+        [ClassificazioneSchedaContatto.Differibile, '#868e96'],
+        [ClassificazioneSchedaContatto.Competenza, '#dc3545']
+
+    ]);
+    return mapColorStato.get(stato);
 }

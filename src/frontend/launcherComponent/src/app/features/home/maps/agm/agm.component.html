@@ -266,37 +266,46 @@
                         </ng-container>
                     </agm-marker>
                 </ng-container>
-                <ng-container *ngFor="let schedaContattoMarker of schedeContattoMarkers;">
-                    <agm-marker [latitude]="schedaContattoMarker.schedaContatto.localita.coordinate.latitudine"
-                                [longitude]="schedaContattoMarker.schedaContatto.localita.coordinate.longitudine"
-                                (markerClick)="actionSchedaContattoMarker(schedaContattoMarker.schedaContatto.codiceScheda, MouseE.Click)"
-                                (mouseOver)="actionSchedaContattoMarker(schedaContattoMarker.schedaContatto.codiceScheda, MouseE.HoverIn)"
-                                (mouseOut)="actionSchedaContattoMarker(schedaContattoMarker.schedaContatto.codiceScheda, MouseE.HoverOut)"
-                                [iconUrl]="iconaSchedaContattoMarker(schedaContattoMarker)">
-                        <ng-container>
-                            <agm-snazzy-info-window
-                                    [shadow]="{h: '2px',v: '0px',blur: '2px',spread: '2px',opacity: 0.3,color: '#dc3545'}"
-                                    [pointer]="'5px'"
-                                    [backgroundColor]="'#f5f5f0'"
-                                    [border]="{width: '2px', color: '#dc3545'}"
-                                    [borderRadius]="'10px 10px'"
-                                    [maxHeight]="1000"
-                                    [maxWidth]="1000"
-                                    [padding]="'5px'"
-                                    [isOpen]="isSelfHovered(schedaContattoMarker.schedaContatto.codiceScheda, 'schedaContatto')"
-                                    [openOnMarkerClick]="false"
-                                    [closeOnMapClick]="true"
-                                    [closeWhenOthersOpen]="true"
-                                    [showCloseButton]="false">
-                                <ng-template>
-                                    <app-info-window [schedaContattoMarker]="schedaContattoMarker"
-                                                     [compact]="true">
-                                    </app-info-window>
-                                </ng-template>
-                            </agm-snazzy-info-window>
-                        </ng-container>
-                    </agm-marker>
-                </ng-container>
+                <agm-marker-cluster
+                        [imagePath]="mapsOptions.clusterOptions.path.schedeContatto"
+                        [minimumClusterSize]="mapsOptions.clusterOptions.minMarkerCluster"
+                        [gridSize]="mapsOptions.clusterOptions.gridSize"
+                        [maxZoom]="mapsOptions.clusterOptions.maxZoom"
+                        [averageCenter]="mapsOptions.clusterOptions.averageCenter"
+                        [zoomOnClick]="mapsOptions.clusterOptions.zoomOnClick">
+                    <ng-container *ngIf="isVisible('schedeContatto')">
+                        <agm-marker *ngFor="let schedaContattoMarker of schedeContattoMarkers;"
+                                    [latitude]="schedaContattoMarker.schedaContatto.localita.coordinate.latitudine"
+                                    [longitude]="schedaContattoMarker.schedaContatto.localita.coordinate.longitudine"
+                                    (markerClick)="actionSchedaContattoMarker(schedaContattoMarker.schedaContatto.codiceScheda, MouseE.Click)"
+                                    (mouseOver)="actionSchedaContattoMarker(schedaContattoMarker.schedaContatto.codiceScheda, MouseE.HoverIn)"
+                                    (mouseOut)="actionSchedaContattoMarker(schedaContattoMarker.schedaContatto.codiceScheda, MouseE.HoverOut)"
+                                    [iconUrl]="iconaSchedaContattoMarker(schedaContattoMarker)">
+                            <ng-container>
+                                <agm-snazzy-info-window
+                                        [shadow]="{h: '2px',v: '0px',blur: '2px',spread: '2px',opacity: 0.3,color: colorWindowSC(schedaContattoMarker.schedaContatto.classificazione)}"
+                                        [pointer]="'5px'"
+                                        [backgroundColor]="'#f5f5f0'"
+                                        [border]="{width: '2px', color: colorWindowSC(schedaContattoMarker.schedaContatto.classificazione)}"
+                                        [borderRadius]="'10px 10px'"
+                                        [maxHeight]="1000"
+                                        [maxWidth]="1000"
+                                        [padding]="'5px'"
+                                        [isOpen]="isSelfHovered(schedaContattoMarker.schedaContatto.codiceScheda, 'schedaContatto')"
+                                        [openOnMarkerClick]="false"
+                                        [closeOnMapClick]="true"
+                                        [closeWhenOthersOpen]="true"
+                                        [showCloseButton]="false">
+                                    <ng-template>
+                                        <app-info-window [schedaContattoMarker]="schedaContattoMarker"
+                                                         [compact]="true">
+                                        </app-info-window>
+                                    </ng-template>
+                                </agm-snazzy-info-window>
+                            </ng-container>
+                        </agm-marker>
+                    </ng-container>
+                </agm-marker-cluster>
                 <ng-container *ngFor="let mMarker of (meteoMarkers$ | async);">
                     <agm-marker [latitude]="mMarker.localita.coordinate.latitudine"
                                 [longitude]="mMarker.localita.coordinate.longitudine"
