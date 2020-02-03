@@ -56,6 +56,7 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
     contatoriSchedeContatto: ContatoriSchedeContatto;
     @Select(SchedeContattoState.rangeVisualizzazione) rangeVisualizzazione$: Observable<RangeSchedeContattoEnum>;
     rangeVisualizzazione: RangeSchedeContattoEnum;
+    @Select(SchedeContattoState.tabAttivo) tabAttivo$: Observable<ClassificazioneSchedaContatto>;
 
     @Select(MergeSchedeContattoState.statoModalita) statoModalita$: Observable<boolean>;
     statoModalita: boolean;

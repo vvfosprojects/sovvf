@@ -167,6 +167,15 @@ export class SchedeContattoState {
         return state.filtriSelezionati.rangeVisualizzazione;
     }
 
+    @Selector()
+    static tabAttivo(state: SchedeContattoStateModel) {
+        if (state.tabAttivo) {
+            return state.tabAttivo;
+        } else {
+            return 'Tutte';
+        }
+    }
+
     constructor(private schedeContattoService: SchedeContattoService) {
     }
 

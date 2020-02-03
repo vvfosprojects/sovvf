@@ -1,7 +1,7 @@
 <div class="row mt-2 px-0" style="height:750px">
     <div *ngIf="schedeContatto" class="col-12 scroll-y" style="height:700px">
-        <ngb-tabset>
-            <ngb-tab id="tab-tutte">
+        <ngb-tabset [activeId]="tabAttivo$ | async">
+            <ngb-tab id="Tutte">
                 <ng-template ngbTabTitle>
                     <div [ngbTooltip]="tipTutte" (click)="onSelectTab(null)">
                         <b>Tutte ({{contatoriSchedeContatto.totaleSchede.contatoreDaGestire}})</b>
@@ -19,7 +19,7 @@
                     </div>
                 </ng-template>
             </ngb-tab>
-            <ngb-tab id="tab-competenza">
+            <ngb-tab [id]="ClassificazioneEnum.Competenza">
                 <ng-template ngbTabTitle>
                     <div [ngbTooltip]="tipCompetenza" (click)="onSelectTab(ClassificazioneEnum.Competenza)">
                         <i class="fa fa-square text-danger mr-2"></i>
@@ -37,7 +37,7 @@
                     </div>
                 </ng-template>
             </ngb-tab>
-            <ngb-tab id="tab-differibile">
+            <ngb-tab [id]="ClassificazioneEnum.Differibile">
                 <ng-template ngbTabTitle>
                     <div [ngbTooltip]="tipDifferibile" (click)="onSelectTab(ClassificazioneEnum.Differibile)">
                         <i class="fa fa-square text-secondary mr-2"></i>
@@ -56,7 +56,7 @@
                     </div>
                 </ng-template>
             </ngb-tab>
-            <ngb-tab id="tab-conoscenza">
+            <ngb-tab [id]="ClassificazioneEnum.Conoscenza">
                 <ng-template ngbTabTitle>
                     <div [ngbTooltip]="tipConoscenza" (click)="onSelectTab(ClassificazioneEnum.Conoscenza)">
                         <i class="fa fa-square text-warning mr-2"></i>
