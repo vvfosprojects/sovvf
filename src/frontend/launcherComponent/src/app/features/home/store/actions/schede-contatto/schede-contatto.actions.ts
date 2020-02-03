@@ -37,6 +37,13 @@ export class UpdateSchedaContatto {
     }
 }
 
+export class InsertSchedeContatto {
+    static readonly type = '[Schede Contatto] Update Scheda Contatto';
+
+    constructor(public schedaContatto: SchedaContatto[]) {
+    }
+}
+
 export class RemoveSchedeContatto {
     static readonly type = '[Schede Contatto] Remove Schede Contatto';
 

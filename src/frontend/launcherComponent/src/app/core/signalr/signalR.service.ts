@@ -45,6 +45,7 @@ import { GetListeComposizioneAvanzata } from '../../features/home/store/actions/
 import { IdPreaccoppiati } from '../../features/home/composizione-partenza/interface/id-preaccoppiati-interface';
 import { UpdateMezzoMarker } from '../../features/home/store/actions/maps/mezzi-markers.actions';
 import {
+    InsertSchedeContatto,
     RemoveSchedeContatto,
     SetContatoriSchedeContatto,
     SetListaSchedeContatto,
@@ -225,6 +226,10 @@ export class SignalRService {
         this.hubNotification.on('NotifyGetListaSchedeContatto', (data: SchedaContatto[]) => {
             console.log('NotifyGetListaSchedeContatto', data);
             this.store.dispatch(new SetListaSchedeContatto(data));
+        });
+        this.hubNotification.on('NotifyInsertSchedeContatto', (data: SchedaContatto[]) => {
+            console.log('NotifyGetListaSchedeContatto', data);
+            this.store.dispatch(new InsertSchedeContatto(data));
         });
         this.hubNotification.on('NotifyUpdateSchedaContatto', (data: SchedaContatto) => {
             console.log('NotifyUpdateSchedaContatto', data);

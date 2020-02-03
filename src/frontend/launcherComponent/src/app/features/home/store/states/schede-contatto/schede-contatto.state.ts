@@ -6,7 +6,7 @@ import {
     ClearSchedaContattoHover,
     ClearSchedaContattoTelefonata,
     GeneraListaSchedeContatto,
-    GetListaSchedeContatto,
+    GetListaSchedeContatto, InsertSchedeContatto,
     ReducerSetFiltroSchedeContatto,
     RemoveSchedeContatto,
     ResetFiltriSelezionatiSchedeContatto,
@@ -34,7 +34,7 @@ import {
 import { CategoriaFiltriSchedeContatto as Categoria } from '../../../../../shared/enum/categoria-filtri-schede-contatto';
 import { ContatoriSchedeContatto } from '../../../../../shared/interface/contatori-schede-contatto.interface';
 import { ContatoriSchedeContattoModel } from '../../../../../shared/model/contatori-schede-contatto.model';
-import { insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
+import { append, insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
 import { RangeSchedeContattoEnum } from '../../../../../shared/enum/range-schede-contatto';
 import { SetSchedeContattoMarkers } from '../../actions/maps/schede-contatto-markers.actions';
 import { MergeSchedeContattoState } from './merge-schede-contatto.state';
@@ -235,6 +235,16 @@ export class SchedeContattoState {
                 schedeContatto: updateItem<SchedaContatto>(s => s.codiceScheda === action.schedaContatto.codiceScheda, action.schedaContatto)
             })
         );
+    }
+
+    @Action(InsertSchedeContatto)
+    insertSchedeContatto({ setState, dispatch }: StateContext<SchedeContattoStateModel>, action: InsertSchedeContatto) {
+        setState(
+            patch({
+                schedeContatto: append(<SchedaContatto[]>(action.schedaContatto))
+            })
+        );
+        dispatch(new GeneraListaSchedeContatto());
     }
 
     @Action(RemoveSchedeContatto)
