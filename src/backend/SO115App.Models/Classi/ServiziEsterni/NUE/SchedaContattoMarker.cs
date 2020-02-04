@@ -46,5 +46,10 @@ namespace SO115App.Models.Classi.ServiziEsterni.NUE
         ///   E' la priorità della scheda contatto, proveniente dal NUE.
         /// </summary>
         public int Priorita { get; set; }
+
+        /// <summary>
+        ///   Indica il tipo di scheda contatto: Competenza, Conoscenza, Differibile
+        /// </summary>
+        public string Classificazione { get; set; }
     }
 }
