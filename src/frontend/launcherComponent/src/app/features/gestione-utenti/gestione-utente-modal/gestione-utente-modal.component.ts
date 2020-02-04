@@ -12,7 +12,6 @@ import { SetFormDisabled, SetFormEnabled, UpdateFormValue } from '@ngxs/form-plu
 import { UtenteVvfInterface } from '../../../shared/interface/utente-vvf.interface';
 import { AddRuoloUtenteGestione, ClearUtentiVVF, GetUtentiVVF } from '../store/actions/gestione-utenti/gestione-utenti.actions';
 import { Role } from '../../../shared/model/utente.model';
-import { AddRuoloUtenteInterface } from '../../../shared/interface/add-ruolo-utente.interface';
 
 @Component({
     selector: 'app-gestione-utente-modal',
@@ -54,12 +53,14 @@ export class GestioneUtenteModalComponent implements OnInit, OnDestroy {
         this.addUtenteRuoloForm = new FormGroup({
             utente: new FormControl(),
             sedi: new FormControl(),
-            ruolo: new FormControl()
+            ruolo: new FormControl(),
+            soloDistaccamenti: new FormControl()
         });
         this.addUtenteRuoloForm = this.fb.group({
             utente: [null, Validators.required],
             sedi: [null, Validators.required],
-            ruolo: [null, Validators.required]
+            ruolo: [null, Validators.required],
+            soloDistaccamenti: [null, Validators.required]
         });
     }
 
@@ -166,6 +167,18 @@ export class GestioneUtenteModalComponent implements OnInit, OnDestroy {
             });
             this.ruoli.push(finalRole);
         });
+    }
+
+    setOnlyDistaccamentiValue(value: {id: string, status: boolean}) {
+        this.f[value.id].patchValue(value.status);
+        this.store.dispatch(new UpdateFormValue({
+            value: {
+                ...this.addUtenteRuoloForm.value,
+                'soloDistaccamenti': value.status
+            },
+            path: 'gestioneUtenti.addUtenteRuoloForm'
+        }));
+        console.log('checkbox only distaccamenti', value.status);
     }
 
     onConferma() {

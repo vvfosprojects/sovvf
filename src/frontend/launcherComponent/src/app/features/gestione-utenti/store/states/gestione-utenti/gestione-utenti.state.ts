@@ -29,6 +29,7 @@ import { ToastrType } from '../../../../../shared/enum/toastr';
 import { GestioneUtentiService } from '../../../../../core/service/gestione-utenti-service/gestione-utenti.service';
 import { UtenteVvfInterface } from '../../../../../shared/interface/utente-vvf.interface';
 import { AddRuoloUtenteInterface } from '../../../../../shared/interface/add-ruolo-utente.interface';
+import { SediTreeviewState } from '../../../../../shared/store/states/sedi-treeview/sedi-treeview.state';
 
 export interface GestioneUtentiStateModel {
     listaUtentiVVF: UtenteVvfInterface[];
@@ -38,7 +39,8 @@ export interface GestioneUtentiStateModel {
         model?: {
             utente: string;
             ruolo: string;
-            sedi: TreeviewSelezione[]
+            sedi: TreeviewSelezione[];
+            soloDistaccamenti: boolean;
         };
         dirty: boolean;
         status: string;
@@ -178,12 +180,17 @@ export class GestioneUtentiState {
             codFiscale: form.utente,
             ruoli: []
         };
+        if (form.soloDistaccamenti) {
+            const sedi = this.store.selectSnapshot(SediTreeviewState.listeSediNavbar);
+            console.log(sedi);
+        }
         form.sedi.forEach((value: TreeviewSelezione) => {
             obj.ruoli.push({
                 descrizione: form.ruolo.replace(/ /g, ''),
                 codSede: value.idSede
             });
         });
+        console.log('Add Utente Ruolo OBJ', obj);
         this._gestioneUtenti.addUtente(obj).subscribe((utente: Utente) => {
             if (utente) {
                 patch(

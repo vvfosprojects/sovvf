@@ -47,6 +47,16 @@
             </div>
         </div>
         <div class="mb-3">
+            <app-checkbox appClickStopPropagation [typeName]="'test'"
+                          [checkboxState]="{id: 'soloDistaccamenti', status: this.f.soloDistaccamenti.value, label: 'Solo Distaccamenti', disabled: false}"
+                          (checkbox)="setOnlyDistaccamentiValue($event)"></app-checkbox>
+            <small class="text-danger">
+                <i class="fa fa-exclamation-triangle mr-1"></i>
+                Selezionando "Solo Distaccamenti" il ruolo scelto per l'utente verrà diramato solo sui "Distaccamenti" e
+                non sul "Comando"
+            </small>
+        </div>
+        <div class="mb-3">
             <label for="ruoli">Ruolo</label>
             <ng-select
                     id="ruoli"
