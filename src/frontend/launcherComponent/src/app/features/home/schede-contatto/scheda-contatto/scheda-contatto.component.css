@@ -37,3 +37,7 @@
   rgba(255, 255, 255, 0.5) 35px,
   rgba(255, 255, 255, 0.5) 70px);
 }
+
+.btn-gestita:not(:hover) {
+  background-color: #f8f8f8;
+}

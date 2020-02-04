@@ -18,10 +18,12 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Queries;
+using SO115App.Models.Classi.ServiziEsterni.NUE;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
+using System.Collections.Generic;
 using System.Linq;
 
-namespace SO115App.API.Models.Servizi.CQRS.Queries.Marker.SchedeNueMarker
+namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.Marker.SchedeNueMarker
 {
     public class SchedeNueMarkerQueryHandler : IQueryHandler<SchedeNueMarkerQuery, SchedeNueMarkerResult>
     {
@@ -32,7 +34,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.Marker.SchedeNueMarker
         /// </summary>
         public SchedeNueMarkerQueryHandler(IGetSchedeContattoBySpatialArea iGetSchedeNueMarker)
         {
-            this._iGetSchedeNueMarker = iGetSchedeNueMarker;
+            _iGetSchedeNueMarker = iGetSchedeNueMarker;
         }
 
         /// <summary>
@@ -43,12 +45,25 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.Marker.SchedeNueMarker
         public SchedeNueMarkerResult Handle(SchedeNueMarkerQuery query)
         {
             var SchedeMarker = _iGetSchedeNueMarker.SchedeContattoBySpatialArea(query.Filtro.BottomLeft.Latitudine, query.Filtro.BottomLeft.Longitudine, query.Filtro.TopRight.Latitudine, query.Filtro.TopRight.Longitudine);
+            var listaSchedeMarker = new List<SchedaContattoMarker>();
+            foreach (var scheda in SchedeMarker)
+            {
+                var schedaMarker = new SchedaContattoMarker
+                {
+                    CodiceOperatore = scheda.OperatoreChiamata.CodicePostazioneOperatore,
+                    CodiceScheda = scheda.CodiceScheda,
+                    Localita = scheda.Localita,
+                    Priorita = scheda.Priorita,
+                    Classificazione = scheda.Classificazione
+                };
+                listaSchedeMarker.Add(schedaMarker);
+            }
 
-            var gruppi = SchedeMarker.GroupBy(x => x.Localita.Coordinate).ToList();
+            var gruppi = listaSchedeMarker.GroupBy(x => x.Localita.Coordinate).ToList();
 
             return new SchedeNueMarkerResult()
             {
-                ListaSchedeMarker = SchedeMarker,
+                ListaSchedeMarker = listaSchedeMarker,
                 ListaGruppiSchedeMarker = gruppi
             };
         }

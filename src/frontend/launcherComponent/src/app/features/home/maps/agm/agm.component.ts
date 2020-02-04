@@ -167,10 +167,12 @@ export class AgmComponent implements OnDestroy {
         return this.markerService.zIndex(id, tipoMarker, rilevante, rilevanzaStArCu);
     }
 
+    // Todo da togliere
     isClicked(id: string, tipoMarker: string): boolean {
         return this.markerService.isClicked(id, tipoMarker);
     }
 
+    // Todo da togliere
     isHovered(id: string, tipoMarker: string): boolean {
         return this.markerService.isHovered(id, tipoMarker);
     }
@@ -197,6 +199,7 @@ export class AgmComponent implements OnDestroy {
         return this.markerService.isSelfClicked(id, tipoMarker);
     }
 
+    // Todo da togliere
     isVisible(tipoMarker: string): boolean {
         return this.markerService.isVisible(tipoMarker);
     }
