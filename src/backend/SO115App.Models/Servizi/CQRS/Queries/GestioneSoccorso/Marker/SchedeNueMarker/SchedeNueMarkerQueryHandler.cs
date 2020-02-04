@@ -53,7 +53,8 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.Marker.SchedeNue
                     CodiceOperatore = scheda.OperatoreChiamata.CodicePostazioneOperatore,
                     CodiceScheda = scheda.CodiceScheda,
                     Localita = scheda.Localita,
-                    Priorita = scheda.Priorita
+                    Priorita = scheda.Priorita,
+                    Classificazione = scheda.Classificazione
                 };
                 listaSchedeMarker.Add(schedaMarker);
             }
