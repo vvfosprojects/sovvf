@@ -24,7 +24,7 @@ using CQRS.Queries.Authorizers;
 using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.Models.Classi.Utility;
 
-namespace SO115App.API.Models.Servizi.CQRS.Queries.Marker.SchedeNueMarker
+namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.Marker.SchedeNueMarker
 {
     public class SchedeNueMarkerAuthorizationQueryHandlerDecorator : IQueryAuthorizer<SchedeNueMarkerQuery, SchedeNueMarkerResult>
     {
@@ -32,15 +32,15 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.Marker.SchedeNueMarker
 
         public SchedeNueMarkerAuthorizationQueryHandlerDecorator(IPrincipal currentUser)
         {
-            this._currentUser = currentUser;
+            _currentUser = currentUser;
         }
 
         public IEnumerable<AuthorizationResult> Authorize(SchedeNueMarkerQuery query)
         {
-            var username = this._currentUser.Identity.Name;
+            var username = _currentUser.Identity.Name;
             var user = Utente.FindUserByUsername(username);
 
-            if (this._currentUser.Identity.IsAuthenticated)
+            if (_currentUser.Identity.IsAuthenticated)
             {
                 if (user == null)
                     yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
