@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Ruolo, Utente } from 'src/app/shared/model/utente.model';
+import { Role, Ruolo, Utente } from 'src/app/shared/model/utente.model';
 import { Observable, Subscription } from 'rxjs';
 import { Select, Store } from '@ngxs/store';
 import { SetRicercaUtenti } from './store/actions/ricerca-utenti/ricerca-utenti.actons';
@@ -13,6 +13,7 @@ import { RicercaUtentiState } from './store/states/ricerca-utenti/ricerca-utenti
 import { PaginationState } from '../../shared/store/states/pagination/pagination.state';
 import { LoadingState } from '../../shared/store/states/loading/loading.state';
 import { GestioneUtenteModalComponent } from './gestione-utente-modal/gestione-utente-modal.component';
+import { getPermessiByRole } from '../../shared/helper/function';
 
 @Component({
     selector: 'app-gestione-utenti',
@@ -79,11 +80,11 @@ export class GestioneUtentiComponent implements OnInit {
         );
     }
 
-    onRemoveUtente(payload: {id: string, nominativoUtente: string}) {
+    onRemoveUtente(payload: { id: string, nominativoUtente: string }) {
         this.store.dispatch(new OpenModalRemoveUtente(payload.id, payload.nominativoUtente));
     }
 
-    onRemoveRuoloUtente(payload: {id: string, ruolo: Ruolo, nominativoUtente: string}) {
+    onRemoveRuoloUtente(payload: { id: string, ruolo: Ruolo, nominativoUtente: string }) {
         this.store.dispatch(new OpenModalRemoveRuoloUtente(payload.id, payload.ruolo, payload.nominativoUtente));
     }
 

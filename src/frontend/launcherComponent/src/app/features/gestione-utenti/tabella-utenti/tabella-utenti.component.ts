@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
-import { Ruolo, Utente } from '../../../shared/model/utente.model';
+import { Role, Ruolo, Utente } from '../../../shared/model/utente.model';
+import { getPermessiByRole } from '../../../shared/helper/function';
 
 
 @Component({
@@ -18,15 +19,22 @@ export class TabellaUtentiComponent {
     @Input() loading: boolean;
 
     @Output() detail: EventEmitter<string> = new EventEmitter<string>();
+    @Output() detailPermessi: EventEmitter<Role> = new EventEmitter<Role>();
     @Output() removeUser: EventEmitter<{ id: string, nominativoUtente: string }> = new EventEmitter<{ id: string, nominativoUtente: string }>();
     @Output() removeRoleUser: EventEmitter<{ id: string, ruolo: Ruolo, nominativoUtente: string }> = new EventEmitter<{ id: string, ruolo: Ruolo, nominativoUtente: string }>();
     @Output() pageChange: EventEmitter<number> = new EventEmitter<number>();
+
+    dettaglioPermessi: string[];
 
     constructor() {
     }
 
     onDetail(id: string) {
         this.detail.emit(id);
+    }
+
+    onDetailPermessi(event: { descrizione: Role, codSede: string, descSede: string }) {
+        this.dettaglioPermessi = getPermessiByRole(event.descrizione);
     }
 
     onRemoveUtente(id: string, nominativoUtente: string) {
