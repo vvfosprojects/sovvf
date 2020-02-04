@@ -24,7 +24,6 @@ using SO115App.Models.Classi.Filtri;
 using SO115App.Models.Classi.NUE;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSchedeNue.MergeSchedeNue;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSchedeNue.SetSchedaGestita;
-using SO115App.Models.Servizi.CQRS.Commands.GestioneSchedeNue.SetSchedaLetta;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSchedeNue.UndoMergeSchedeNue;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneSchedeNue.GetSchedeFiltrate;
 using System;
@@ -38,20 +37,17 @@ namespace SO115App.API.Controllers
     {
         private readonly IQueryHandler<GetSchedeFiltrateQuery, GetSchedeFiltrateResult> _queryHandler;
         private readonly ICommandHandler<SetSchedaGestitaCommand> _setGestita;
-        private readonly ICommandHandler<SetSchedaLettaCommand> _setLetta;
         private readonly ICommandHandler<MergeSchedeNueCommand> _setMerge;
         private readonly ICommandHandler<UndoMergeSchedeNueCommand> _undoMergeSchede;
 
         public GestioneSchedeContattoController(
             IQueryHandler<GetSchedeFiltrateQuery, GetSchedeFiltrateResult> queryHandler,
             ICommandHandler<SetSchedaGestitaCommand> setGestita,
-            ICommandHandler<SetSchedaLettaCommand> setLetta,
             ICommandHandler<MergeSchedeNueCommand> setMerge,
             ICommandHandler<UndoMergeSchedeNueCommand> undoMergeSchede)
         {
             _queryHandler = queryHandler ?? throw new ArgumentNullException(nameof(_queryHandler));
             _setGestita = setGestita ?? throw new ArgumentNullException(nameof(_setGestita));
-            _setLetta = setLetta ?? throw new ArgumentNullException(nameof(_setLetta));
             _setMerge = setMerge;
             _undoMergeSchede = undoMergeSchede ?? throw new ArgumentNullException(nameof(_undoMergeSchede));
         }
