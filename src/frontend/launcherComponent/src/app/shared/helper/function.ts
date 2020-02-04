@@ -9,6 +9,7 @@ import { StatoRichiestaActions } from '../enum/stato-richiesta-actions.enum';
 import { Tipologia } from '../model/tipologia.model';
 import { LatLngBounds } from '@agm/core';
 import { AreaMappa } from '../../features/home/maps/maps-model/area-mappa-model';
+import { Role } from '../model/utente.model';
 
 export function makeCopy(value): any {
     return (JSON.parse(JSON.stringify(value)));
@@ -295,4 +296,16 @@ export function visualizzaBoschiSterpaglie(tipologieRichiesta: Tipologia[]) {
 
 export function onlyUnique(value, index, self) {
     return self.indexOf(value) === index;
+}
+
+export function getPermessiByRole(role: Role) {
+    switch (role) {
+        case Role.CallTracker:
+            return ['Scheda Telefonata'];
+        case Role.GestoreRichieste:
+            return ['Composizione Partenza', 'Lista Richieste', 'Gestione Ruoli Utenti'];
+        default:
+            console.warn('Nessun permesso assegnato al ruolo "' + role + '"');
+            break;
+    }
 }

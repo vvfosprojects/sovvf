@@ -25,8 +25,17 @@
             <span class="h6 font-weight-normal">
                 <ul *ngIf="utente.ruoli && utente.ruoli.length > 0" class="pl-3 mb-0 list-unstyled">
                     <li *ngFor="let ruolo of utente.ruoli" class="mb-1">
-                        <i class="fa fa-info-circle cursor-pointer mr-1" ngbTooltip="Premi per visualizzare i permessi"
-                           placement="bottom"></i>
+                        <i class="fa fa-info-circle cursor-pointer mr-1" ngbTooltip="Visualizza i permessi"
+                           placement="bottom" [ngbPopover]="popPermessiRole" (click)="onDetailPermessi(ruolo)"></i>
+                        <ng-template #popPermessiRole>
+                            <ul *ngIf="dettaglioPermessi && dettaglioPermessi.length > 0" class="list-unstyled">
+                                <li *ngFor="let perm of dettaglioPermessi">
+                                    <i class="fa fa-cog mr-1"></i>
+                                    {{perm}}
+                                </li>
+                            </ul>
+                            <small *ngIf="!dettaglioPermessi || dettaglioPermessi.length <= 0" class="text-danger">Nessun Permesso Assegnato</small>
+                        </ng-template>
                         {{ruolo.descrizione}}
                         - {{ruolo.descSede}} ({{ruolo.codSede}})
                         <button class="btn btn-danger btn-sm ml-2"
