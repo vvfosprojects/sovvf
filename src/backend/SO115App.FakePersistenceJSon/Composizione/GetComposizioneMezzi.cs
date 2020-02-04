@@ -41,7 +41,6 @@ namespace SO115App.FakePersistenceJSon.Composizione
     public class GetComposizioneMezzi : IGetComposizioneMezzi
     {
         private readonly IGetStatoMezzi _getMezziPrenotati;
-        private readonly IGetRichiestaById _getRichiestaById;
         private readonly OrdinamentoMezzi _ordinamentoMezzi;
 
         public GetComposizioneMezzi(IGetStatoMezzi getMezziPrenotati, OrdinamentoMezzi ordinamentoMezzi)
