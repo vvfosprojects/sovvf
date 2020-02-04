@@ -52,5 +52,7 @@ namespace SO115App.API.Models.Classi.Geo
         ///   Contiene i filtri per la ricerca mirata dei mezzi
         /// </summary>
         public FiltroMezzi FiltroMezzi { get; set; }
+
+        public FiltroSchedeContatto FiltroSchede { get; set; }
     }
 }

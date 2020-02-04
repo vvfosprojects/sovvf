@@ -27,14 +27,14 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.Marker.SchedeNue
 {
     public class SchedeNueMarkerQueryHandler : IQueryHandler<SchedeNueMarkerQuery, SchedeNueMarkerResult>
     {
-        private readonly IGetSchedeContattoBySpatialArea _iGetSchedeNueMarker;
+        private readonly IGetSchedeContattoMarkerFiltered _iGetSchedeMarker;
 
         /// <summary>
         ///   Costruttore della classe
         /// </summary>
-        public SchedeNueMarkerQueryHandler(IGetSchedeContattoBySpatialArea iGetSchedeNueMarker)
+        public SchedeNueMarkerQueryHandler(IGetSchedeContattoMarkerFiltered iGetSchedeMarker)
         {
-            _iGetSchedeNueMarker = iGetSchedeNueMarker;
+            _iGetSchedeMarker = iGetSchedeMarker;
         }
 
         /// <summary>
@@ -44,21 +44,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.Marker.SchedeNue
         /// <returns>Il DTO di uscita della query</returns>
         public SchedeNueMarkerResult Handle(SchedeNueMarkerQuery query)
         {
-            var SchedeMarker = _iGetSchedeNueMarker.SchedeContattoBySpatialArea(query.Filtro.TopRight.Latitudine, query.Filtro.TopRight.Longitudine, query.Filtro.BottomLeft.Latitudine, query.Filtro.BottomLeft.Longitudine);
-            var listaSchedeMarker = new List<SchedaContattoMarker>();
-            foreach (var scheda in SchedeMarker)
-            {
-                var schedaMarker = new SchedaContattoMarker
-                {
-                    CodiceOperatore = scheda.OperatoreChiamata.CodicePostazioneOperatore,
-                    CodiceScheda = scheda.CodiceScheda,
-                    Localita = scheda.Localita,
-                    Priorita = scheda.Priorita,
-                    Classificazione = scheda.Classificazione,
-                    Gestita = scheda.Gestita
-                };
-                listaSchedeMarker.Add(schedaMarker);
-            }
+            var listaSchedeMarker = _iGetSchedeMarker.Get(query.Filtro);
 
             return new SchedeNueMarkerResult()
             {

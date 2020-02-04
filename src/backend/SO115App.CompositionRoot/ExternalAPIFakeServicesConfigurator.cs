@@ -49,10 +49,9 @@ namespace SO115App.CompositionRoot
             container.Register<IGetSchedeContattoByTipo, GetSchedeContattoByListTipo>();
             container.Register<IGetSchedeContattoByText, GetSchedeContattoByText>();
             container.Register<IGetSchedeContattoGestita, GetSchedeContattoGestita>();
-            container.Register<IGetSchedeContattoLetta, GetSchedeContattoLetta>();
             container.Register<IGetSchedeContattoTimeSpan, GetSchedeContattoTimeSpan>();
             container.Register<ISetStatoGestioneSchedaContatto, SetGestita>();
-            container.Register<ISetLetturaSchedaContatto, SetLetta>();
+            container.Register<IGetSchedeContattoMarkerFiltered, ExternalAPI.Fake.Servizi.Nue.GetSchedeContattoMarkerFiltered>();
 
             container.Register<SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue.IGetConteggioSchede,
                 ExternalAPI.Fake.Servizi.Nue.GetConteggioSchede>(); //TODO gestione composition Root per l'externalAPI
