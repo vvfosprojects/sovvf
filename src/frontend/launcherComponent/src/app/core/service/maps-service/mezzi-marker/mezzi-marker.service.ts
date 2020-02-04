@@ -7,7 +7,6 @@ import { handleError } from '../../../../shared/helper/handleError';
 import { AreaMappa } from '../../../../features/home/maps/maps-model/area-mappa-model';
 import { FiltroMezzi } from '../../../../features/home/maps/maps-model/filtro-mezzi.interface';
 import { AreaMappaFiltrata } from '../../../../shared/helper/query-helper';
-import { Markers } from '../../../../shared/enum/markers.enum';
 
 const API_MARKER = environment.apiUrl.markers;
 
@@ -18,7 +17,7 @@ export class MezziMarkerService {
     }
 
     public getMezziMarkers(areaMappa: AreaMappa, filtroMezzi?: FiltroMezzi): Observable<any> {
-        return this.http.post(`${API_MARKER}/GetMezzi`, AreaMappaFiltrata(areaMappa, filtroMezzi, null, Markers.Mezzi)).pipe(
+        return this.http.post(`${API_MARKER}/GetMezzi`, AreaMappaFiltrata(areaMappa, { filtroMezzi })).pipe(
             retry(3),
             catchError(handleError));
     }

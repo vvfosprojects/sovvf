@@ -17,7 +17,7 @@ import { MarkerService } from './service/marker-service/marker-service.service';
 import { ChiamateMarkersState } from '../store/states/maps/chiamate-markers.state';
 import { ComposizionePartenzaState } from '../store/states/composizione-partenza/composizione-partenza.state';
 import { SchedeContattoMarkersState } from '../store/states/maps/schede-contatto-markers.state';
-import { SchedaContattoMarker } from './maps-model/scheda-contatto.model';
+import { SchedaContattoMarker } from './maps-model/scheda-contatto-marker.model';
 
 @Component({
     selector: 'app-maps',

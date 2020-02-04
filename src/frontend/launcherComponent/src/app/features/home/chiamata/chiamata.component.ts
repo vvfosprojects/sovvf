@@ -3,8 +3,8 @@ import { Observable } from 'rxjs';
 import { Select } from '@ngxs/store';
 import { Utente } from '../../../shared/model/utente.model';
 import { UtenteState } from '../../navbar/store/states/operatore/utente.state';
-import { NavbarState } from '../../navbar/store/states/navbar.state';
 import { Tipologia } from '../../../shared/model/tipologia.model';
+import { HomeState } from '../store/states/home.state';
 
 
 @Component({
@@ -15,7 +15,7 @@ import { Tipologia } from '../../../shared/model/tipologia.model';
 export class ChiamataComponent implements OnInit, OnDestroy {
 
     @Select(UtenteState.utente) utente$: Observable<Utente>;
-    @Select(NavbarState.tipologie) tipologie$: Observable<Tipologia[]>;
+    @Select(HomeState.tipologie) tipologie$: Observable<Tipologia[]>;
 
     constructor() {
     }

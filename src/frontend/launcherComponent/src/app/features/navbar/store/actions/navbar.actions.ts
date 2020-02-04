@@ -15,10 +15,3 @@ export class SetDataNavbar {
     constructor(public settings: AppSettings) {
     }
 }
-
-export class SetDataTipologie {
-    static readonly type = '[Navbar Component] Set Data Tipologie';
-
-    constructor(public tipologie: Tipologia[]) {
-    }
-}

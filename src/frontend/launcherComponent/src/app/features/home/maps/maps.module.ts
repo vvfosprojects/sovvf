@@ -57,6 +57,7 @@ import { AreaMappaState } from '../store/states/maps/area-mappa.state';
 import { FiltriMarkersState } from '../store/states/maps/filtri-markers.state';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { SchedeContattoMarkersState } from '../store/states/maps/schede-contatto-markers.state';
+import { SchedeContattoMarkerService } from '../../../core/service/maps-service/schede-contatto-marker/schede-contatto-marker.service';
 
 @NgModule({
     imports: [
@@ -107,6 +108,7 @@ import { SchedeContattoMarkersState } from '../store/states/maps/schede-contatto
     ],
     providers: [
         RichiesteMarkerAdapterService,
+        SchedeContattoMarkerService,
         { provide: RichiesteMarkerService, useClass: environment.fakeProvider ? RichiesteMarkerServiceFake : RichiesteMarkerService },
         { provide: MezziMarkerService, useClass: environment.fakeProvider ? MezziMarkerServiceFake : MezziMarkerService},
         { provide: SediMarkerService, useClass: environment.fakeProvider ? SediMarkerServiceFake : SediMarkerService},

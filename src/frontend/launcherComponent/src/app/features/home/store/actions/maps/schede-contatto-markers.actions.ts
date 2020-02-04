@@ -1,10 +1,17 @@
-import { SchedaContattoMarker } from '../../../maps/maps-model/scheda-contatto.model';
-import { SchedaContatto } from '../../../../../shared/interface/scheda-contatto.interface';
+import { SchedaContattoMarker } from '../../../maps/maps-model/scheda-contatto-marker.model';
+import { AreaMappa } from '../../../maps/maps-model/area-mappa-model';
+
+export class GetSchedeContattoMarkers {
+    static readonly type = '[Schede Contatto Marker] Get Schede Contatto Marker';
+
+    constructor(public areaMappa: AreaMappa) {
+    }
+}
 
 export class SetSchedeContattoMarkers {
     static readonly type = '[Schede Contatto Marker] Set Schede Contatto Marker';
 
-    constructor(public schedeContatto: SchedaContatto[]) {
+    constructor(public schedeContatto: SchedaContattoMarker[]) {
     }
 }
 

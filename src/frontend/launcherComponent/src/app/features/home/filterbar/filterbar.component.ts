@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 // View
 import { ViewInterfaceButton, ViewLayouts } from '../../../shared/interface/view.interface';
 // Filtri Richieste
-import { GetFiltriRichieste, ResetFiltriSelezionatiRichieste, SetFiltroSelezionatoRichieste } from '../store/actions/filterbar/filtri-richieste.actions';
+import { ResetFiltriSelezionatiRichieste, SetFiltroSelezionatoRichieste } from '../store/actions/filterbar/filtri-richieste.actions';
 import { FiltriRichiesteState } from '../store/states/filterbar/filtri-richieste.state';
 import { VoceFiltro } from './ricerca-group/filtri-richieste/voce-filtro.model';
 // Ricerca Richieste
@@ -34,7 +34,7 @@ import { ClearFiltriMezziInServizio, SetFiltroMezziInServizio } from '../store/a
     templateUrl: './filterbar.component.html',
     styleUrls: ['./filterbar.component.css']
 })
-export class FilterbarComponent implements OnInit {
+export class FilterbarComponent {
 
     @Input() colorButton: ViewInterfaceButton;
     @Input() viewState: ViewLayouts;
@@ -82,10 +82,6 @@ export class FilterbarComponent implements OnInit {
         this.markerOnLoading$.subscribe((loading: boolean) => {
             this.markerOnLoading = loading;
         });
-    }
-
-    ngOnInit() {
-        this.store.dispatch(new GetFiltriRichieste());
     }
 
     /**
