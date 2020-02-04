@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="SchedeNueMarkerResult.cs" company="CNVVF">
+// <copyright file="SchedaContattoMarker.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,25 +17,34 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System.Collections.Generic;
 using SO115App.API.Models.Classi.Condivise;
-using SO115App.Models.Classi.Marker;
-using SO115App.Models.Classi.NUE;
-using SO115App.Models.Classi.ServiziEsterni.NUE;
 
-namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.Marker.SchedeNueMarker
+namespace SO115App.Models.Classi.ServiziEsterni.NUE
 {
     /// <summary>
-    ///   DTO di output
+    ///   modello per i marker delle schede contatto da visualizzare su mappa
     /// </summary>
-    public class SchedeNueMarkerResult
+    public class SchedaContattoMarker
     {
         /// <summary>
-        ///   La sintesi delle richieste di assistenza
+        ///   E' il codice della scheda contatto, proveniente dal NUE.
         /// </summary>
-        public IEnumerable<SchedaContattoMarker> ListaSchedeMarker
-        { get; set; }
+        public string CodiceScheda { get; set; }
 
-        public IEnumerable<System.Linq.IGrouping<Coordinate, SchedaContattoMarker>> ListaGruppiSchedeMarker { get; set; }
+        /// <summary>
+        ///   E' la geolocalizzazione della scheda contatto.
+        /// </summary>
+        public Localita Localita { get; set; }
+
+        /// <summary>
+        ///   Contiente informazioni sul codice postazione dell'operatore che gestirà eventualmente
+        ///   la scheda contatto
+        /// </summary>
+        public string CodiceOperatore { get; set; }
+
+        /// <summary>
+        ///   E' la priorità della scheda contatto, proveniente dal NUE.
+        /// </summary>
+        public int Priorita { get; set; }
     }
 }
