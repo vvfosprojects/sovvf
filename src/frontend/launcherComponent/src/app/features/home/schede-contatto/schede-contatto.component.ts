@@ -19,7 +19,10 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DettaglioSchedaModalComponent } from './dettaglio-scheda-modal/dettaglio-scheda-modal.component';
 import { ContatoriSchedeContatto } from '../../../shared/interface/contatori-schede-contatto.interface';
 import { RangeSchedeContattoEnum } from '../../../shared/enum/range-schede-contatto';
-import { ClearSchedeContattoMarkers } from '../store/actions/maps/schede-contatto-markers.actions';
+import {
+    ClearSchedeContattoMarkers,
+    GetSchedeContattoMarkers
+} from '../store/actions/maps/schede-contatto-markers.actions';
 import { MergeSchedeContattoState } from '../store/states/schede-contatto/merge-schede-contatto.state';
 import {
     CheckboxError,
@@ -32,6 +35,7 @@ import { CheckboxInterface } from '../../../shared/interface/checkbox.interface'
 import { ClassificazioneSchedaContatto } from '../../../shared/enum/classificazione-scheda-contatto.enum';
 import { LoadingState } from '../../../shared/store/states/loading/loading.state';
 import { ConfirmModalComponent } from '../../../shared';
+import { AreaMappaState } from '../store/states/maps/area-mappa.state';
 
 @Component({
     selector: 'app-schede-contatto',
@@ -103,7 +107,8 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         isDevMode() && console.log('Componente Schede Contatto creato');
-        this.store.dispatch(new GetListaSchedeContatto());
+        const areaMappa = this.store.selectSnapshot(AreaMappaState.areaMappa);
+        this.store.dispatch([ new GetListaSchedeContatto(), new GetSchedeContattoMarkers(areaMappa) ]);
     }
 
     ngOnDestroy(): void {

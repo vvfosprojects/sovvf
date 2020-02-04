@@ -25,7 +25,7 @@ import { makeAreaMappa, makeCentroMappa, makeCoordinate, wipeStatoRichiesta } fr
 import { MapsButtonsState } from '../../store/states/maps/maps-buttons.state';
 import { ButtonControlAnimation, CustomButtonsMaps } from '../maps-interface/maps-custom-buttons';
 import { MapsOptionsInterface } from '../../../../core/settings/maps-options';
-import { SchedaContattoMarker } from '../maps-model/scheda-contatto.model';
+import { SchedaContattoMarker } from '../maps-model/scheda-contatto-marker.model';
 import { ClassificazioneSchedaContatto } from '../../../../shared/enum/classificazione-scheda-contatto.enum';
 
 declare var google: any;
@@ -260,7 +260,7 @@ export class AgmComponent implements OnDestroy {
         /**
          * ritorno l'url dell'icona del marker scheda contatto
          */
-        return this.markerService.iconaSchedaContattoMarker(schedaContatto.schedaContatto.classificazione);
+        return this.markerService.iconaSchedaContattoMarker(schedaContatto.classificazione);
     }
 
     actionRichiestaMarker(id: string, event: MouseE): void {

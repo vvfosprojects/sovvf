@@ -36,7 +36,6 @@ import { ContatoriSchedeContatto } from '../../../../../shared/interface/contato
 import { ContatoriSchedeContattoModel } from '../../../../../shared/model/contatori-schede-contatto.model';
 import { append, insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
 import { RangeSchedeContattoEnum } from '../../../../../shared/enum/range-schede-contatto';
-import { SetSchedeContattoMarkers } from '../../actions/maps/schede-contatto-markers.actions';
 import { MergeSchedeContattoState } from './merge-schede-contatto.state';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from '../../../../../shared/enum/toastr';
@@ -208,8 +207,6 @@ export class SchedeContattoState {
         }
         this.schedeContattoService.getSchedeContatto(filtri).subscribe((schedeContatto: SchedaContatto[]) => {
             dispatch(new SetListaSchedeContatto(schedeContatto));
-            // Todo da modificare serve un controller separato per i marker delle schede contatto.
-            dispatch(new SetSchedeContattoMarkers(schedeContatto));
         });
     }
 
