@@ -10,7 +10,8 @@ export let MAPSOPTIONS: MapsOptionsInterface = {
         path: {
             richieste: 'assets/img/cluster-markers/m',
             mezzi: 'assets/img/cluster-markers/m',
-            sedi: 'assets/img/cluster-markers/m'
+            sedi: 'assets/img/cluster-markers/m',
+            schedeContatto: 'assets/img/cluster-markers/m'
         },
         styles: [
             {
@@ -64,4 +65,5 @@ export interface PathClusterInterface {
     richieste: string;
     sedi: string;
     mezzi: string;
+    schedeContatto: string;
 }

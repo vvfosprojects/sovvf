@@ -31,7 +31,7 @@ export const SchedeContattoMarkersStateDefaults: SchedeContattoMarkersStateModel
     defaults: SchedeContattoMarkersStateDefaults
 })
 
-export class SchedeContattoMarkers {
+export class SchedeContattoMarkersState {
 
     @Selector()
     static schedeContattoMarkers(state: SchedeContattoMarkersStateModel) {

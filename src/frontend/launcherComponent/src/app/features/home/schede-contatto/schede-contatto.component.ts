@@ -1,18 +1,20 @@
 import { Component, isDevMode, OnDestroy, OnInit } from '@angular/core';
-import { Store, Select } from '@ngxs/store';
+import { Select, Store } from '@ngxs/store';
 import {
-    SetSchedaContattoTelefonata,
-    SetSchedaContattoHover,
     ClearSchedaContattoHover,
-    SetSchedaContattoGestita,
     GetListaSchedeContatto,
     SetRangeVisualizzazioneSchedeContatto,
-    SetTabAttivo, ToggleCollapsed, UndoMergeSchedeContatto
+    SetSchedaContattoGestita,
+    SetSchedaContattoHover,
+    SetSchedaContattoTelefonata,
+    SetTabAttivo,
+    ToggleCollapsed,
+    UndoMergeSchedeContatto
 } from '../store/actions/schede-contatto/schede-contatto.actions';
 import { SchedeContattoState } from '../store/states/schede-contatto/schede-contatto.state';
 import { Observable, Subscription } from 'rxjs';
 import { SchedaContatto } from 'src/app/shared/interface/scheda-contatto.interface';
-import { ToggleSchedeContatto, ToggleChiamata } from '../store/actions/view/view.actions';
+import { ToggleChiamata, ToggleSchedeContatto } from '../store/actions/view/view.actions';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DettaglioSchedaModalComponent } from './dettaglio-scheda-modal/dettaglio-scheda-modal.component';
 import { ContatoriSchedeContatto } from '../../../shared/interface/contatori-schede-contatto.interface';
@@ -21,13 +23,15 @@ import { ClearSchedeContattoMarkers } from '../store/actions/maps/schede-contatt
 import { MergeSchedeContattoState } from '../store/states/schede-contatto/merge-schede-contatto.state';
 import {
     CheckboxError,
-    ClearMergeSchedeContatto, InitSaveMergeSchedeContatto,
+    ClearMergeSchedeContatto,
+    InitSaveMergeSchedeContatto,
     SetMergeSchedaId,
     ToggleModalitaMerge
 } from '../store/actions/schede-contatto/merge-schede-contatto.actions';
 import { CheckboxInterface } from '../../../shared/interface/checkbox.interface';
 import { ClassificazioneSchedaContatto } from '../../../shared/enum/classificazione-scheda-contatto.enum';
 import { LoadingState } from '../../../shared/store/states/loading/loading.state';
+import { ConfirmModalComponent } from '../../../shared';
 
 @Component({
     selector: 'app-schede-contatto',
@@ -52,6 +56,7 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
     contatoriSchedeContatto: ContatoriSchedeContatto;
     @Select(SchedeContattoState.rangeVisualizzazione) rangeVisualizzazione$: Observable<RangeSchedeContattoEnum>;
     rangeVisualizzazione: RangeSchedeContattoEnum;
+    @Select(SchedeContattoState.tabAttivo) tabAttivo$: Observable<ClassificazioneSchedaContatto>;
 
     @Select(MergeSchedeContattoState.statoModalita) statoModalita$: Observable<boolean>;
     statoModalita: boolean;
@@ -161,9 +166,34 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
         this.store.dispatch(new ToggleCollapsed($event));
     }
 
-    onUndoMergeSchedaContatto($event: string) {
-        this.store.dispatch(new UndoMergeSchedeContatto($event));
-    }
+    onUndoMergeSchedaContatto($event: string): void {
+        const modalConfermaAnnulla = this.modal.open(ConfirmModalComponent, {
+            backdropClass: 'light-blue-backdrop',
+            centered: true
+        });
+        modalConfermaAnnulla.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
+        modalConfermaAnnulla.componentInstance.titolo = 'Annulla Raggruppamento';
+        modalConfermaAnnulla.componentInstance.messaggio = 'Sei sicuro di voler annullare il raggruppamento delle schede contatto selezionate?';
+        modalConfermaAnnulla.componentInstance.messaggioAttenzione = 'Il raggruppamento sarà eliminato.';
+        modalConfermaAnnulla.componentInstance.bottoni = [
+            { type: 'ko', descrizione: 'Annulla', colore: 'danger' },
+            { type: 'ok', descrizione: 'Conferma', colore: 'dark' },
+        ];
 
+        modalConfermaAnnulla.result.then(
+            (val) => {
+                switch (val) {
+                    case 'ok':
+                        this.store.dispatch(new UndoMergeSchedeContatto($event));
+                        break;
+                    case 'ko':
+                        this.store.dispatch(new ToggleModalitaMerge());
+                        break;
+                }
+                console.log('Modal chiusa con val ->', val);
+            },
+            (err) => console.error('Modal chiusa senza bottoni. Err ->', err)
+        );
+    }
 
 }

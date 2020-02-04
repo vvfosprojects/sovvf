@@ -308,6 +308,8 @@ export class MarkerService implements OnDestroy {
                 case 'sede':
                     isVisible = this.filtroMarkerAttivo.includes(tipoMarker);
                     break;
+                case 'schedeContatto':
+                    isVisible = this.viewStateMaps.active === AppFeatures.SchedeContatto;
             }
             return isVisible;
         }
