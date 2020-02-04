@@ -63,7 +63,7 @@ export class MezziMarkersState {
     getMezziMarkers({ dispatch }: StateContext<MezziMarkersStateModel>, action: GetMezziMarkers) {
         dispatch(new SetMarkerLoading(true));
         console.log('filtroMezzi', action.filtri);
-        this._mezzi.getMezziMarkers(action.areaMappa).subscribe((data: MezzoMarker[]) => {
+        this._mezzi.getMezziMarkers(action.areaMappa, action.filtri).subscribe((data: MezzoMarker[]) => {
                 dispatch([
                     new SetMezziMarkers(data),
                     new SetMarkerLoading(false)

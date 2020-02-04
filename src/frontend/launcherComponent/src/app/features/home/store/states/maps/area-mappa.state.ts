@@ -1,5 +1,5 @@
 import { AreaMappa } from '../../../maps/maps-model/area-mappa-model';
-import { Action, Select, State, StateContext, Store } from '@ngxs/store';
+import { Action, Select, Selector, State, StateContext, Store } from '@ngxs/store';
 import { GetMarkersMappa, SetAreaMappa } from '../../actions/maps/area-mappa.actions';
 import { ClearRichiesteMarkers, GetRichiesteMarkers } from '../../actions/maps/richieste-markers.actions';
 import { ClearMezziMarkers, GetMezziMarkers } from '../../actions/maps/mezzi-markers.actions';
@@ -11,6 +11,10 @@ import { FiltroRichieste } from '../../../maps/maps-model/filtro-richieste.inter
 import { FiltroMezzi } from '../../../maps/maps-model/filtro-mezzi.interface';
 import { ReducerFiltroMarker } from '../../actions/maps/maps-filtro.actions';
 import { ViewComponentState } from '../view/view.state';
+import {
+    ClearSchedeContattoMarkers,
+    GetSchedeContattoMarkers
+} from '../../actions/maps/schede-contatto-markers.actions';
 
 export interface AreaMappaStateModel {
     areaMappa: AreaMappa;
@@ -30,6 +34,11 @@ export class AreaMappaState {
     @Select(MapsFiltroState.filtroMarkerAttivo) filtroMarkerAttivo$: Observable<string[]>;
     @Select(FiltriMarkersState.filtroRichieste) filtroRichieste$: Observable<FiltroRichieste>;
     @Select(FiltriMarkersState.filtroMezzi) filtroMezzi$: Observable<FiltroMezzi>;
+
+    @Selector()
+    static areaMappa(state: AreaMappaStateModel) {
+        return state.areaMappa;
+    }
 
     constructor(private store: Store) {
         this.subscription.add(
@@ -88,11 +97,10 @@ export class AreaMappaState {
             } else {
                 dispatch(new ClearMezziMarkers());
             }
-            // Todo schede contatto Markers
             if (schedaContattoModeOn) {
-                // dispatch(new GetSchedeContattoMarkers(state.areaMappa));
+                dispatch(new GetSchedeContattoMarkers(state.areaMappa));
             } else {
-                // dispatch(new ClearSchedeContattoMarkers());
+                dispatch(new ClearSchedeContattoMarkers());
             }
         }
     }

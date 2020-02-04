@@ -51,5 +51,10 @@ namespace SO115App.Models.Classi.ServiziEsterni.NUE
         ///   Indica il tipo di scheda contatto: Competenza, Conoscenza, Differibile
         /// </summary>
         public string Classificazione { get; set; }
+
+        /// <summary>
+        ///   Indica se la scheda contatto è stata gestita o meno
+        /// </summary>
+        public bool Gestita { get; set; }
     }
 }

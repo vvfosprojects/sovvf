@@ -35,7 +35,5 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.Marker.SchedeNue
         /// </summary>
         public IEnumerable<SchedaContattoMarker> ListaSchedeMarker
         { get; set; }
-
-        public IEnumerable<System.Linq.IGrouping<Coordinate, SchedaContattoMarker>> ListaGruppiSchedeMarker { get; set; }
     }
 }
