@@ -91,11 +91,6 @@ namespace SO115App.Models.Classi.NUE
         public string Classificazione { get; set; }
 
         /// <summary>
-        ///   Indica se la scheda contatto è stata letta o meno
-        /// </summary>
-        public bool Letta { get; set; }
-
-        /// <summary>
         ///   Indica se la scheda contatto è stata gestita o meno
         /// </summary>
         public bool Gestita { get; set; }

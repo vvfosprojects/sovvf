@@ -54,7 +54,8 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.Marker.SchedeNue
                     CodiceScheda = scheda.CodiceScheda,
                     Localita = scheda.Localita,
                     Priorita = scheda.Priorita,
-                    Classificazione = scheda.Classificazione
+                    Classificazione = scheda.Classificazione,
+                    Gestita = scheda.Gestita
                 };
                 listaSchedeMarker.Add(schedaMarker);
             }
