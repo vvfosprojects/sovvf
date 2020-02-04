@@ -47,7 +47,7 @@
                         [maxZoom]="mapsOptions.clusterOptions.maxZoom"
                         [averageCenter]="mapsOptions.clusterOptions.averageCenter"
                         [zoomOnClick]="mapsOptions.clusterOptions.zoomOnClick">
-                    <ng-container *ngIf="isVisible('richiesta')">
+                    <ng-container>
                         <agm-marker *ngFor="let richiestaMarker of richiesteMarkers;"
                                     [latitude]="richiestaMarker.localita.coordinate.latitudine"
                                     [longitude]="richiestaMarker.localita.coordinate.longitudine"
@@ -114,7 +114,7 @@
                         [maxZoom]="mapsOptions.clusterOptions.maxZoom"
                         [averageCenter]="mapsOptions.clusterOptions.averageCenter"
                         [zoomOnClick]="mapsOptions.clusterOptions.zoomOnClick">
-                    <ng-container *ngIf="isVisible('sede')">
+                    <ng-container>
                         <agm-marker *ngFor="let sedeMarker of sediMarkers;"
                                     [latitude]="sedeMarker.coordinate.latitudine"
                                     [longitude]="sedeMarker.coordinate.longitudine"
@@ -178,7 +178,7 @@
                         [maxZoom]="mapsOptions.clusterOptions.maxZoom"
                         [averageCenter]="mapsOptions.clusterOptions.averageCenter"
                         [zoomOnClick]="mapsOptions.clusterOptions.zoomOnClick">
-                    <ng-container *ngIf="isVisible('mezzo')">
+                    <ng-container>
                         <agm-marker *ngFor="let mezzoMarker of mezziMarkers;"
                                     [latitude]="mezzoMarker.mezzo.coordinate.latitudine"
                                     [longitude]="mezzoMarker.mezzo.coordinate.longitudine"
@@ -273,7 +273,7 @@
                         [maxZoom]="mapsOptions.clusterOptions.maxZoom"
                         [averageCenter]="mapsOptions.clusterOptions.averageCenter"
                         [zoomOnClick]="mapsOptions.clusterOptions.zoomOnClick">
-                    <ng-container *ngIf="isVisible('schedeContatto')">
+                    <ng-container>
                         <agm-marker *ngFor="let schedaContattoMarker of schedeContattoMarkers;"
                                     [latitude]="schedaContattoMarker.schedaContatto.localita.coordinate.latitudine"
                                     [longitude]="schedaContattoMarker.schedaContatto.localita.coordinate.longitudine"
