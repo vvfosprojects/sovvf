@@ -44,7 +44,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.Marker.SchedeNue
         /// <returns>Il DTO di uscita della query</returns>
         public SchedeNueMarkerResult Handle(SchedeNueMarkerQuery query)
         {
-            var SchedeMarker = _iGetSchedeNueMarker.SchedeContattoBySpatialArea(query.Filtro.BottomLeft.Latitudine, query.Filtro.BottomLeft.Longitudine, query.Filtro.TopRight.Latitudine, query.Filtro.TopRight.Longitudine);
+            var SchedeMarker = _iGetSchedeNueMarker.SchedeContattoBySpatialArea(query.Filtro.TopRight.Latitudine, query.Filtro.TopRight.Longitudine, query.Filtro.BottomLeft.Latitudine, query.Filtro.BottomLeft.Longitudine);
             var listaSchedeMarker = new List<SchedaContattoMarker>();
             foreach (var scheda in SchedeMarker)
             {
@@ -59,12 +59,9 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.Marker.SchedeNue
                 listaSchedeMarker.Add(schedaMarker);
             }
 
-            var gruppi = listaSchedeMarker.GroupBy(x => x.Localita.Coordinate).ToList();
-
             return new SchedeNueMarkerResult()
             {
                 ListaSchedeMarker = listaSchedeMarker,
-                ListaGruppiSchedeMarker = gruppi
             };
         }
     }
