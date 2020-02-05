@@ -1,7 +1,7 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 import { Select, Store } from '@ngxs/store';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { FiltriMarkersState } from '../../../store/states/maps/filtri-markers.state';
 import { FiltroRichieste } from '../../maps-model/filtro-richieste.interface';
 import { Priorita } from '../../../../../shared/model/sintesi-richiesta.model';
@@ -28,9 +28,13 @@ import { ViewComponentState } from '../../../store/states/view/view.state';
 })
 export class FiltriMarkersComponent {
 
+    private subscription = new Subscription();
+
     @Select(FiltriMarkersState.filtroRichieste) filtroRichieste$: Observable<FiltroRichieste>;
     @Select(FiltriMarkersState.filtroMezzi) filtroMezzi$: Observable<FiltroMezzi>;
     @Select(FiltriMarkersState.filtroSC) filtroSC$: Observable<FiltroSchedeContatto>;
+    @Select(FiltriMarkersState.filtriAttivi) filtriAttivi$: Observable<boolean>;
+    filtriAttivi: boolean;
     @Select(TipologicheMezziState.generiMezzi) generiMezzi$: Observable<DescrizioneTipologicaMezzo[]>;
     @Select(ViewComponentState.schedeContattoStatus) scStatus$: Observable<boolean>;
 
@@ -38,6 +42,7 @@ export class FiltriMarkersComponent {
                 config: NgbDropdownConfig) {
         config.placement = 'bottom-right';
         config.autoClose = 'outside';
+        this.subscription.add(this.filtriAttivi$.subscribe(r => this.filtriAttivi = r));
     }
 
     changePriorita(priorita: Priorita) {
