@@ -40,6 +40,7 @@ import { MergeSchedeContattoState } from './merge-schede-contatto.state';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from '../../../../../shared/enum/toastr';
 import { ClearMergeSchedeContatto } from '../../actions/schede-contatto/merge-schede-contatto.actions';
+import { ToggleOpacitaSchedeContattoMarkers } from '../../actions/maps/schede-contatto-markers.actions';
 
 export interface SchedeContattoStateModel {
     contatoriSchedeContatto: ContatoriSchedeContatto;
@@ -276,10 +277,12 @@ export class SchedeContattoState {
             patchState({
                 tabAttivo: action.tabAttivo,
             });
+            dispatch(new ToggleOpacitaSchedeContattoMarkers(true, action.tabAttivo));
         } else {
             patchState({
                 tabAttivo: SchedeContattoStateDefaults.tabAttivo,
             });
+            dispatch(new ToggleOpacitaSchedeContattoMarkers(false));
         }
         dispatch(new SetIdVisualizzati());
     }

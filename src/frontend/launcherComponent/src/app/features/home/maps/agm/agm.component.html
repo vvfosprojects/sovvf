@@ -280,7 +280,8 @@
                                     (markerClick)="actionSchedaContattoMarker(schedaContattoMarker.codiceScheda, MouseE.Click)"
                                     (mouseOver)="actionSchedaContattoMarker(schedaContattoMarker.codiceScheda, MouseE.HoverIn)"
                                     (mouseOut)="actionSchedaContattoMarker(schedaContattoMarker.codiceScheda, MouseE.HoverOut)"
-                                    [iconUrl]="iconaSchedaContattoMarker(schedaContattoMarker)">
+                                    [iconUrl]="iconaSchedaContattoMarker(schedaContattoMarker)"
+                                    [opacity]="isOpaque(schedaContattoMarker.codiceScheda, 'scheda-contatto')">
                             <ng-container>
                                 <agm-snazzy-info-window
                                         [shadow]="{h: '2px',v: '0px',blur: '2px',spread: '2px',opacity: 0.3,color: colorWindowSC(schedaContattoMarker.classificazione)}"
