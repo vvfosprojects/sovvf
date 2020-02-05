@@ -62,7 +62,7 @@ export class GestioneUtenteModalComponent implements OnInit, OnDestroy {
         this.addUtenteRuoloForm = this.fb.group({
             utente: [null, Validators.required],
             sedi: [null, Validators.required],
-            soloDistaccamenti: [null],
+            soloDistaccamenti: [false],
             ruolo: [null, Validators.required]
         });
         // Init disabled input
@@ -186,7 +186,6 @@ export class GestioneUtenteModalComponent implements OnInit, OnDestroy {
             },
             path: 'gestioneUtenti.addUtenteRuoloForm'
         }));
-        console.log('checkbox only distaccamenti', value.status);
     }
 
     checkUtenteValueChanges() {

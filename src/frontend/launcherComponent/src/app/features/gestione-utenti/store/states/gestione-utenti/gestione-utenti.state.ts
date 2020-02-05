@@ -30,6 +30,7 @@ import { GestioneUtentiService } from '../../../../../core/service/gestione-uten
 import { UtenteVvfInterface } from '../../../../../shared/interface/utente-vvf.interface';
 import { AddRuoloUtenteInterface } from '../../../../../shared/interface/add-ruolo-utente.interface';
 import { SediTreeviewState } from '../../../../../shared/store/states/sedi-treeview/sedi-treeview.state';
+import { ListaSedi } from '../../../../../shared/interface/lista-sedi';
 
 export interface GestioneUtentiStateModel {
     listaUtentiVVF: UtenteVvfInterface[];
@@ -178,12 +179,9 @@ export class GestioneUtentiState {
         const form = getState().addUtenteRuoloForm.model;
         const obj: AddRuoloUtenteInterface = {
             codFiscale: form.utente,
-            ruoli: []
+            ruoli: [],
+            soloDistaccamenti: form.soloDistaccamenti
         };
-        if (form.soloDistaccamenti) {
-            const sedi = this.store.selectSnapshot(SediTreeviewState.listeSediNavbar);
-            console.log(sedi);
-        }
         form.sedi.forEach((value: TreeviewSelezione) => {
             obj.ruoli.push({
                 descrizione: form.ruolo.replace(/ /g, ''),
