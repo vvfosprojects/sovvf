@@ -1,4 +1,6 @@
-﻿using System;
+﻿using SO115App.Persistence.Oracle.Classi;
+using SO115App.Persistence.Oracle.Servizi.Mezzi;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -9,16 +11,11 @@ namespace SO115App.API.Oracle.Controllers
 {
     public class MezziController : ApiController
     {
-        // GET: api/Mezzi
-        public IEnumerable<string> Get()
+        [HttpGet]
+        public List<ORAAutomezzi> GetListaMezziUtilizzabili(string CodSede)
         {
-            return new string[] { "value1", "value2" };
-        }
-
-        // GET: api/Mezzi/5
-        public string Get(int id)
-        {
-            return "value";
+            GetListaMezziUtilizzabili listamezzi = new GetListaMezziUtilizzabili();
+            return listamezzi.GetListaAutomezziUtilizzabili(CodSede);
         }
 
         // POST: api/Mezzi
