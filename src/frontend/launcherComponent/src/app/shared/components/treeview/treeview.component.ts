@@ -48,7 +48,7 @@ export class TreeviewComponent implements OnChanges, OnDestroy, OnInit {
 
     config = TreeviewConfig.create({
         hasAllCheckBox: false,
-        hasFilter: true,
+        hasFilter: false,
         hasCollapseExpand: false,
         decoupleChildFromParent: false,
         maxHeight: 400
