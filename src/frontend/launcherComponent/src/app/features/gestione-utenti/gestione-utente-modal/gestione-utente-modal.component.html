@@ -17,9 +17,8 @@
                     placeholder="Cerca un nominativo"
                     typeToSearchText="Cerca un nominativo"
                     [hideSelected]="true"
-                    [trackByFn]="trackByFn"
+                    [typeahead]="typeahead"
                     [notFoundText]="'Nessun risultato'"
-                    (search)="onSearchUtentiVVF($event)"
                     [ngClass]="{ 'is-invalid': submitted && f.utente.errors }">
                 <ng-template ng-option-tmp let-item="item">
                     {{item.nominativo}} <br/>

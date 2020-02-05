@@ -1,6 +1,6 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subject, Subscription } from 'rxjs';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { SediTreeviewState } from '../../../shared/store/states/sedi-treeview/sedi-treeview.state';
 import { TreeItem, TreeviewItem } from 'ngx-treeview';
@@ -12,13 +12,14 @@ import { SetFormEnabled, UpdateFormValue } from '@ngxs/form-plugin';
 import { UtenteVvfInterface } from '../../../shared/interface/utente-vvf.interface';
 import { AddRuoloUtenteGestione, ClearUtentiVVF, GetUtentiVVF } from '../store/actions/gestione-utenti/gestione-utenti.actions';
 import { Role } from '../../../shared/model/utente.model';
+import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 
 @Component({
     selector: 'app-gestione-utente-modal',
     templateUrl: './gestione-utente-modal.component.html',
     styleUrls: ['./gestione-utente-modal.component.css']
 })
-export class GestioneUtenteModalComponent implements OnInit, OnDestroy {
+export class GestioneUtenteModalComponent implements OnDestroy {
 
     @Select(GestioneUtentiState.listaUtentiVVF) listaUtentiVVF$: Observable<UtenteVvfInterface[]>;
     @Select(GestioneUtentiState.formValid) formValid$: Observable<boolean>;
@@ -31,6 +32,7 @@ export class GestioneUtenteModalComponent implements OnInit, OnDestroy {
     ruoli: string[] = [];
 
     addUtenteRuoloForm: FormGroup;
+    typeahead = new Subject<string>();
     checkboxState: { id: string, status: boolean, label: string, disabled: boolean };
     treeviewState: { disabled: boolean };
     submitted: boolean;
@@ -39,6 +41,7 @@ export class GestioneUtenteModalComponent implements OnInit, OnDestroy {
     detailMode: boolean;
 
     subscription: Subscription = new Subscription();
+
 
     constructor(private store: Store,
                 private modal: NgbActiveModal,
@@ -50,6 +53,7 @@ export class GestioneUtenteModalComponent implements OnInit, OnDestroy {
         this.inizializzaSediTreeview();
         this.getRuoli();
         this.getSediSelezionate();
+        this.getSearchUtentiVVF();
     }
 
     initForm() {
@@ -70,14 +74,6 @@ export class GestioneUtenteModalComponent implements OnInit, OnDestroy {
         this.treeviewState = { disabled: true };
         this.f.ruolo.disable();
     }
-
-    ngOnInit(): void {
-        // if (this.detailMode) {
-        //     this.patchDetailForm();
-        //     this.store.dispatch(new SetFormDisabled('gestioneUtenti.addUtenteRuoloForm'));
-        // }
-    }
-
 
     ngOnDestroy(): void {
         this.subscription.unsubscribe();
@@ -154,12 +150,13 @@ export class GestioneUtenteModalComponent implements OnInit, OnDestroy {
         this.store.dispatch(new GetUtentiVVF(text));
     }
 
-    onSearchUtentiVVF(event: { term: string, items: any[] }) {
-        this.getUtentiVVF(event.term);
-    }
-
-    trackByFn(item: UtenteVvfInterface) {
-        return item.codFiscale;
+    getSearchUtentiVVF() {
+        this.typeahead.pipe(
+            distinctUntilChanged(),
+            debounceTime(500)
+        ).subscribe((term) => {
+            this.getUtentiVVF(term);
+        });
     }
 
     getRuoli() {
