@@ -26,9 +26,9 @@
                     <small>{{item.codFiscale}} - {{item.sede}}</small>
                 </ng-template>
             </ng-select>
-        </div>
-        <div *ngIf="submitted && f.utente.errors" class="invalid-feedback">
-            <div *ngIf="f.utente.errors.required">Campo Obbligatorio</div>
+            <div *ngIf="submitted && f.utente.errors" class="text-danger mt-1">
+                <div *ngIf="f.utente.errors.required">Campo Obbligatorio</div>
+            </div>
         </div>
         <div class="mb-3">
             <label for="sede">Sede</label>
@@ -39,18 +39,19 @@
                                      [testoSedeSelezionata]="sediSelezionate"
                                      [placement]="'bottom-left'"
                                      [visualizzaTasti]="false"
+                                     [disabled]="treeviewState.disabled"
                                      (confermaSelezione)="onPatchSedi($event)">
                 </app-shared-treeview>
             </div>
-            <div *ngIf="submitted && f.sedi.errors" class="invalid-feedback">
+            <div *ngIf="submitted && f.sedi.errors" class="text-danger mt-1">
                 <div *ngIf="f.sedi.errors.required">Campo Obbligatorio</div>
             </div>
         </div>
         <div class="mb-3">
             <app-checkbox appClickStopPropagation [typeName]="'test'"
-                          [checkboxState]="{id: 'soloDistaccamenti', status: this.f.soloDistaccamenti.value, label: 'Solo Distaccamenti', disabled: false}"
+                          [checkboxState]="checkboxState"
                           (checkbox)="setOnlyDistaccamentiValue($event)"></app-checkbox>
-            <small class="text-danger">
+            <small *ngIf="!checkboxState.disabled" class="text-danger">
                 <i class="fa fa-exclamation-triangle mr-1"></i>
                 Selezionando "Solo Distaccamenti" il ruolo scelto per l'utente verrà diramato solo sui "Distaccamenti" e
                 non sul "Comando"
@@ -66,13 +67,13 @@
                     [notFoundText]="'Nessun ruolo disponibile'"
                     [ngClass]="{ 'is-invalid': submitted && f.ruolo.errors }">
             </ng-select>
-        </div>
-        <div *ngIf="submitted && f.ruolo.errors" class="invalid-feedback">
-            <div *ngIf="f.ruolo.errors.required">Campo Obbligatorio</div>
+            <div *ngIf="submitted && f.ruolo.errors" class="text-danger mt-1">
+                <div *ngIf="f.ruolo.errors.required">Campo Obbligatorio</div>
+            </div>
         </div>
     </form>
 </div>
 <div class="modal-footer">
     <button type="button" class="btn btn-outline-danger" (click)="modal.close('ko')">Annulla</button>
-    <button type="button" class="btn btn-success" (click)="onConferma()">Conferma</button>
+    <button type="button" class="btn btn-success" [disabled]="!formValid" (click)="onConferma()">Conferma</button>
 </div>
