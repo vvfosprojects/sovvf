@@ -19,6 +19,7 @@
 //-----------------------------------------------------------------------
 using SO115App.API.Models.Classi.Geo;
 using SO115App.API.Models.Classi.Marker;
+using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.InfoRichiesta;
 using SO115App.Models.Servizi.Infrastruttura.Marker;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
@@ -67,6 +68,39 @@ namespace SO115App.ExternalAPI.Fake.Marker
             if (filtroAreaMappa == null) return listaMezziMarker;
 
             listaMezziFilter.AddRange(listaMezziMarker.Where(mezzo => mezzo.Mezzo.Coordinate.Latitudine >= filtroAreaMappa.BottomLeft.Latitudine && mezzo.Mezzo.Coordinate.Latitudine <= filtroAreaMappa.TopRight.Latitudine && mezzo.Mezzo.Coordinate.Longitudine >= filtroAreaMappa.BottomLeft.Longitudine && mezzo.Mezzo.Coordinate.Longitudine <= filtroAreaMappa.TopRight.Longitudine));
+
+            var listaMezziFiltrataPerStato = new List<MezzoMarker>();
+            var listaMezziFitrataPerStatoEGenere = new List<MezzoMarker>();
+            var listaMezziFiltrataPerGenere = new List<MezzoMarker>();
+
+            if (filtroAreaMappa.FiltroMezzi.Stato.Any())
+            {
+                foreach (var stato in filtroAreaMappa.FiltroMezzi.Stato)
+                {
+                    listaMezziFiltrataPerStato.AddRange(listaMezziFilter.FindAll(x => x.Mezzo.Stato.Equals(stato)));
+                }
+
+                if (!filtroAreaMappa.FiltroMezzi.Tipologia.Any())
+                {
+                    return listaMezziFiltrataPerStato;
+                }
+            }
+            if (filtroAreaMappa.FiltroMezzi.Tipologia.Any())
+            {
+                foreach (var genere in filtroAreaMappa.FiltroMezzi.Tipologia)
+                {
+                    listaMezziFiltrataPerGenere.AddRange(listaMezziFilter.FindAll(x => x.Mezzo.Genere.Equals(genere)));
+                }
+                if (!filtroAreaMappa.FiltroMezzi.Stato.Any())
+                {
+                    return listaMezziFiltrataPerGenere;
+                }
+            }
+
+            if (filtroAreaMappa.FiltroMezzi.Tipologia.Any() && filtroAreaMappa.FiltroMezzi.Stato.Any())
+            {
+                return listaMezziFitrataPerStatoEGenere = listaMezziFiltrataPerStato.FindAll(x => listaMezziFiltrataPerGenere.Contains(x));
+            }
 
             return listaMezziFilter;
         }
