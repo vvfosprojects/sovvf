@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
@@ -26,21 +26,18 @@ import { ViewComponentState } from '../../../store/states/view/view.state';
     styleUrls: ['./filtri-markers.component.css'],
     encapsulation: ViewEncapsulation.None
 })
-export class FiltriMarkersComponent implements OnInit {
+export class FiltriMarkersComponent {
 
     @Select(FiltriMarkersState.filtroRichieste) filtroRichieste$: Observable<FiltroRichieste>;
     @Select(FiltriMarkersState.filtroMezzi) filtroMezzi$: Observable<FiltroMezzi>;
     @Select(FiltriMarkersState.filtroSC) filtroSC$: Observable<FiltroSchedeContatto>;
-    @Select(TipologicheMezziState.generiMezzi) generiMezzi$: Observable<DescrizioneTipologicaMezzo>;
+    @Select(TipologicheMezziState.generiMezzi) generiMezzi$: Observable<DescrizioneTipologicaMezzo[]>;
     @Select(ViewComponentState.schedeContattoStatus) scStatus$: Observable<boolean>;
 
     constructor(private store: Store,
                 config: NgbDropdownConfig) {
         config.placement = 'bottom-right';
         config.autoClose = 'outside';
-    }
-
-    ngOnInit() {
     }
 
     changePriorita(priorita: Priorita) {

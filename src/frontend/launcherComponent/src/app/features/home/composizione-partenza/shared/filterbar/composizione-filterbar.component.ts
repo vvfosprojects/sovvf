@@ -3,7 +3,7 @@ import { Store, Select } from '@ngxs/store';
 import {
     AddFiltroSelezionatoComposizione,
     RemoveFiltriSelezionatiComposizione,
-    RemoveFiltroSelezionatoComposizione, StartListaComposizioneLoading, UpdateListe
+    RemoveFiltroSelezionatoComposizione, UpdateListe
 } from '../../../store/actions/composizione-partenza/composizione-partenza.actions';
 import { ComposizionePartenzaState } from '../../../store/states/composizione-partenza/composizione-partenza.state';
 import { MezziComposizioneState } from '../../../store/states/composizione-partenza/mezzi-composizione.state';
@@ -24,7 +24,7 @@ export class ComposizioneFilterbarComponent {
 
     @Input() filtri: any;
 
-    @Select(ViewComponentState.composizioneMode) composizioneMode$: Observable<FiltriComposizione>;
+    @Select(ViewComponentState.composizioneMode) composizioneMode$: Observable<Composizione>;
 
     constructor(private store: Store) {
     }
