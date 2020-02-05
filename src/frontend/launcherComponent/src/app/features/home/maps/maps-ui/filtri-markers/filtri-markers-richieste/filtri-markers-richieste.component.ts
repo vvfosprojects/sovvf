@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FiltroRichieste } from '../../../maps-model/filtro-richieste.interface';
 import { Priorita } from '../../../../../../shared/model/sintesi-richiesta.model';
 import { StatoRichiesta } from '../../../../../../shared/enum/stato-richiesta.enum';
@@ -8,7 +8,7 @@ import { StatoRichiesta } from '../../../../../../shared/enum/stato-richiesta.en
     templateUrl: './filtri-markers-richieste.component.html',
     styleUrls: ['./filtri-markers-richieste.component.css']
 })
-export class FiltriMarkersRichiesteComponent implements OnInit {
+export class FiltriMarkersRichiesteComponent {
     @Input() filtroRichieste: FiltroRichieste;
 
     @Output() changePriorita: EventEmitter<Priorita> = new EventEmitter<Priorita>();
@@ -16,9 +16,8 @@ export class FiltriMarkersRichiesteComponent implements OnInit {
 
     statiRichiesta = Object.keys(StatoRichiesta);
 
-    constructor() {
+    onClearPriorita() {
+        this.changePriorita.emit(null);
     }
 
-    ngOnInit() {
-    }
 }
