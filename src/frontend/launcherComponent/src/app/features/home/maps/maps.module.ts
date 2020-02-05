@@ -59,6 +59,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { SchedeContattoMarkersState } from '../store/states/maps/schede-contatto-markers.state';
 import { SchedeContattoMarkerService } from '../../../core/service/maps-service/schede-contatto-marker/schede-contatto-marker.service';
 import { FiltriScComponent } from './maps-ui/filtri-markers/filtri-sc/filtri-sc.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
     imports: [
@@ -89,7 +90,8 @@ import { FiltriScComponent } from './maps-ui/filtri-markers/filtri-sc/filtri-sc.
                 FiltriMarkersState,
                 SchedeContattoMarkersState
             ]
-        )
+        ),
+        FormsModule
     ],
     declarations: [
         MapsComponent,

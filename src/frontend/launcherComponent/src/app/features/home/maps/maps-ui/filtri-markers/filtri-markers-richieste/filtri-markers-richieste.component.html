@@ -14,6 +14,6 @@
     <label>Stato</label>
     <div>
         <ng-select [items]="statiRichiesta" [multiple]="true" placeholder="Nessuno stato selezionato"
-                   (change)="changeStati.emit($event)"></ng-select>
+                   (change)="onChangeStati($event)" [(ngModel)]="statiSelezionati"></ng-select>
     </div>
 </div>
