@@ -229,7 +229,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
                 };
                 listaSchedeMarker.Add(schedaMarker);
             }
-            if (area.FiltroSchede != null && area.FiltroSchede.MostraGestite)
+            if (area.FiltroSchedeContatto?.MostraGestite == true)
             {
                 return listaSchedeMarker;
             }

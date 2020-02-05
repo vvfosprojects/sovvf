@@ -53,6 +53,6 @@ namespace SO115App.API.Models.Classi.Geo
         /// </summary>
         public FiltroMezzi FiltroMezzi { get; set; }
 
-        public FiltroSchedeContatto FiltroSchede { get; set; }
+        public FiltroSchedeContatto FiltroSchedeContatto { get; set; }
     }
 }
