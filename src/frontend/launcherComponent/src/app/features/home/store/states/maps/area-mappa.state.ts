@@ -15,6 +15,7 @@ import {
     ClearSchedeContattoMarkers,
     GetSchedeContattoMarkers
 } from '../../actions/maps/schede-contatto-markers.actions';
+import { FiltroSchedeContatto } from '../../../maps/maps-model/filtro-schede-contatto';
 
 export interface AreaMappaStateModel {
     areaMappa: AreaMappa;
@@ -34,6 +35,7 @@ export class AreaMappaState {
     @Select(MapsFiltroState.filtroMarkerAttivo) filtroMarkerAttivo$: Observable<string[]>;
     @Select(FiltriMarkersState.filtroRichieste) filtroRichieste$: Observable<FiltroRichieste>;
     @Select(FiltriMarkersState.filtroMezzi) filtroMezzi$: Observable<FiltroMezzi>;
+    @Select(FiltriMarkersState.filtroSC) filtroSC$: Observable<FiltroSchedeContatto>;
 
     @Selector()
     static areaMappa(state: AreaMappaStateModel) {
@@ -63,6 +65,11 @@ export class AreaMappaState {
                 this.store.dispatch(new GetMarkersMappa());
             }
         });
+        this.filtroSC$.subscribe((filtroSC: FiltroSchedeContatto) => {
+            if (filtroSC) {
+                this.store.dispatch(new GetMarkersMappa());
+            }
+        });
     }
 
     @Action(SetAreaMappa)
@@ -80,6 +87,7 @@ export class AreaMappaState {
             const filtriAttivi = this.store.selectSnapshot(MapsFiltroState.filtroMarkerAttivo);
             const filtroRichieste = this.store.selectSnapshot(FiltriMarkersState.filtroRichieste);
             const filtroMezzi = this.store.selectSnapshot(FiltriMarkersState.filtroMezzi);
+            const filtroSC = this.store.selectSnapshot(FiltriMarkersState.filtroSC);
             const schedaContattoModeOn = this.store.selectSnapshot(ViewComponentState.schedeContattoStatus);
 
             if (filtriAttivi.includes('richiesta')) {
@@ -98,7 +106,7 @@ export class AreaMappaState {
                 dispatch(new ClearMezziMarkers());
             }
             if (schedaContattoModeOn) {
-                dispatch(new GetSchedeContattoMarkers(state.areaMappa));
+                dispatch(new GetSchedeContattoMarkers(state.areaMappa, filtroSC));
             } else {
                 dispatch(new ClearSchedeContattoMarkers());
             }

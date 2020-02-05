@@ -10,5 +10,9 @@
                                   [genereMezzo]="generiMezzi$ | async"
                                   (changeStati)="changeStatiMezzi($event)"
                                   (changeGenere)="changeGenere($event)"></app-filtri-markers-mezzi>
+        <ng-container *ngIf="scStatus$ | async">
+            <hr class="my-2">
+            <app-filtri-sc [statoFiltro]="(filtroSC$ | async).mostraGestite" (toggleSC)="toggleGestitaSC()"></app-filtri-sc>
+        </ng-container>
     </div>
 </div>

@@ -1,10 +1,11 @@
 import { SchedaContattoMarker } from '../../../maps/maps-model/scheda-contatto-marker.model';
 import { AreaMappa } from '../../../maps/maps-model/area-mappa-model';
+import { FiltroSchedeContatto } from '../../../maps/maps-model/filtro-schede-contatto';
 
 export class GetSchedeContattoMarkers {
     static readonly type = '[Schede Contatto Marker] Get Schede Contatto Marker';
 
-    constructor(public areaMappa: AreaMappa) {
+    constructor(public areaMappa: AreaMappa, public filtri?: FiltroSchedeContatto) {
     }
 }
 

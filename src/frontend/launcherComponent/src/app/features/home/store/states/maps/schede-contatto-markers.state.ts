@@ -57,7 +57,7 @@ export class SchedeContattoMarkersState {
     @Action(GetSchedeContattoMarkers)
     getSchedeContattoMarkers({ dispatch }: StateContext<SchedeContattoMarkersStateModel>, action: GetSchedeContattoMarkers) {
         dispatch(new SetMarkerLoading(true));
-        this._schedeContatto.getSchedeContattoMarkers(action.areaMappa).subscribe((data: any) => {
+        this._schedeContatto.getSchedeContattoMarkers(action.areaMappa, action.filtri).subscribe((data: any) => {
                 dispatch([
                     new SetSchedeContattoMarkers(data.listaSchedeMarker),
                     new SetMarkerLoading(false)

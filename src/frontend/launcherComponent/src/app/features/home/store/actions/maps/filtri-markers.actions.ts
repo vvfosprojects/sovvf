@@ -29,3 +29,7 @@ export class UpdateGenereMezzi {
     constructor(public tipologie: string[]) {
     }
 }
+
+export class ToggleGestitaSC {
+    static readonly type = '[Filtri Markers] Toggle Gestita SC';
+}
