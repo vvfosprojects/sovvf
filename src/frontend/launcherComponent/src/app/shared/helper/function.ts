@@ -1,7 +1,6 @@
 import { StatoRichiesta } from '../enum/stato-richiesta.enum';
 import { Coordinate } from '../model/coordinate.model';
 import { CentroMappa } from '../../features/home/maps/maps-model/centro-mappa.model';
-import { Mezzo } from '../model/mezzo.model';
 import { StatoMezzo } from '../enum/stato-mezzo.enum';
 import { StatoMezzoActions } from '../enum/stato-mezzo-actions.enum';
 import { SintesiRichiesta } from '../model/sintesi-richiesta.model';
@@ -303,22 +302,26 @@ export function getPermessiByRole(role: Role) {
     switch (role) {
         case Role.CallTracker:
             return [
-                Object.values(AppFeatures)[3].toString().replace(/(?=[A-Z])/g, ' '),
-                Object.values(AppFeatures)[0].toString().replace(/(?=[A-Z])/g, ' '),
-                Object.values(AppFeatures)[1].toString().replace(/(?=[A-Z])/g, ' '),
-                Object.values(AppFeatures)[2].toString().replace(/(?=[A-Z])/g, ' ')
+                wipeStringUppercase(Object.values(AppFeatures)[3].toString()),
+                wipeStringUppercase(Object.values(AppFeatures)[0].toString()),
+                wipeStringUppercase(Object.values(AppFeatures)[1].toString()),
+                wipeStringUppercase(Object.values(AppFeatures)[2].toString())
             ];
         case Role.GestoreRichieste:
             return [
-                Object.values(AppFeatures)[1].toString().replace(/(?=[A-Z])/g, ' '),
-                Object.values(AppFeatures)[2].toString().replace(/(?=[A-Z])/g, ' '),
-                Object.values(AppFeatures)[0].toString().replace(/(?=[A-Z])/g, ' '),
-                Object.values(AppFeatures)[6].toString().replace(/(?=[A-Z])/g, ' '),
-                Object.values(AppFeatures)[5].toString().replace(/(?=[A-Z])/g, ' '),
-                Object.values(AppFeatures)[4].toString().replace(/(?=[A-Z])/g, ' ')
+                wipeStringUppercase(Object.values(AppFeatures)[1].toString()),
+                wipeStringUppercase(Object.values(AppFeatures)[2].toString()),
+                wipeStringUppercase(Object.values(AppFeatures)[0].toString()),
+                wipeStringUppercase(Object.values(AppFeatures)[6].toString()),
+                wipeStringUppercase(Object.values(AppFeatures)[5].toString()),
+                wipeStringUppercase(Object.values(AppFeatures)[4].toString())
             ];
         default:
             console.warn('Nessun permesso assegnato al ruolo "' + role + '"');
             break;
     }
+}
+
+export function wipeStringUppercase(text: string) {
+    return text.replace(/(?=[A-Z])/g, ' ');
 }

@@ -13,6 +13,7 @@ import { UtenteVvfInterface } from '../../../shared/interface/utente-vvf.interfa
 import { AddRuoloUtenteGestione, ClearUtentiVVF, GetUtentiVVF } from '../store/actions/gestione-utenti/gestione-utenti.actions';
 import { Role } from '../../../shared/model/utente.model';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { wipeStringUppercase } from 'src/app/shared/helper/function';
 
 @Component({
     selector: 'app-gestione-utente-modal',
@@ -44,8 +45,8 @@ export class GestioneUtenteModalComponent implements OnDestroy {
 
 
     constructor(private store: Store,
-                private modal: NgbActiveModal,
-                private fb: FormBuilder) {
+        private modal: NgbActiveModal,
+        private fb: FormBuilder) {
         this.initForm();
         this.getFormValid();
         this.checkUtenteValueChanges();
@@ -161,15 +162,7 @@ export class GestioneUtenteModalComponent implements OnDestroy {
 
     getRuoli() {
         Object.values(Role).forEach((role: string) => {
-            const splittedRole = role.split(/(?=[A-Z])/);
-            let finalRole = '';
-            splittedRole.forEach((val: string, index) => {
-                if (index !== 0) {
-                    finalRole = finalRole + ' ';
-                }
-                finalRole = finalRole + val;
-            });
-            this.ruoli.push(finalRole);
+            this.ruoli.push(wipeStringUppercase(role));
         });
     }
 
