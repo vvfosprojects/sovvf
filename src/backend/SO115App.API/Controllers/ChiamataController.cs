@@ -69,7 +69,7 @@ namespace SO115App.API.Controllers
             try
             {
                 this._Addhandler.Handle(command);
-                return Ok(command.Chiamata.Codice);
+                return Ok(command.Chiamata);
             }
             catch (Exception ex)
             {
