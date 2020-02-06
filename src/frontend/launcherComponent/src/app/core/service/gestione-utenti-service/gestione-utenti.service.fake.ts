@@ -37,7 +37,7 @@ export class GestioneUtentiServiceFake {
                 '1',
                 'Mario',
                 'Rossi',
-                'AAAAAAAAAAAA',
+                'MRSMXHAJ2AJAC12AC',
                 new Sede(
                     '1',
                     'Comando di Roma',
@@ -69,7 +69,7 @@ export class GestioneUtentiServiceFake {
                 '2',
                 'Francesco',
                 'Verdi',
-                'AAAAAAAAAAAA',
+                'TESTCODICEFISCALE',
                 new Sede(
                     '1',
                     'Comando di Roma',

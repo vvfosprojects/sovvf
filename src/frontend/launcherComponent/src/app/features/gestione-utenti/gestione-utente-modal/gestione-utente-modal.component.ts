@@ -8,11 +8,11 @@ import { TreeviewSelezione } from '../../../shared/model/treeview-selezione.mode
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { GestioneUtentiState } from '../store/states/gestione-utenti/gestione-utenti.state';
 import { findItem } from '../../../shared/store/states/sedi-treeview/sedi-treeview.helper';
-import { SetFormEnabled, UpdateFormValue } from '@ngxs/form-plugin';
+import { UpdateFormValue } from '@ngxs/form-plugin';
 import { UtenteVvfInterface } from '../../../shared/interface/utente-vvf.interface';
-import { AddRuoloUtenteGestione, ClearUtentiVVF, GetUtentiVVF } from '../store/actions/gestione-utenti/gestione-utenti.actions';
+import { GetUtentiVVF } from '../store/actions/gestione-utenti/gestione-utenti.actions';
 import { Role } from '../../../shared/model/utente.model';
-import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { wipeStringUppercase } from 'src/app/shared/helper/function';
 
 @Component({
@@ -96,12 +96,12 @@ export class GestioneUtenteModalComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(): void {
         this.subscription.unsubscribe();
-        this.store.dispatch(new UpdateFormValue({
-            value: null,
-            path: 'gestioneUtenti.addUtenteRuoloForm'
-        }));
-        this.store.dispatch(new SetFormEnabled('gestioneUtenti.addUtenteRuoloForm'));
-        this.store.dispatch(new ClearUtentiVVF());
+        // this.store.dispatch(new UpdateFormValue({
+        //     value: null,
+        //     path: 'gestioneUtenti.addUtenteRuoloForm'
+        // }));
+        // this.store.dispatch(new SetFormEnabled('gestioneUtenti.addUtenteRuoloForm'));
+        // this.store.dispatch(new ClearUtentiVVF());
     }
 
     getFormValid() {
@@ -217,8 +217,7 @@ export class GestioneUtenteModalComponent implements OnInit, OnDestroy {
             return;
         }
 
-        this.store.dispatch(new AddRuoloUtenteGestione());
-        this.modal.close();
+        this.modal.close({ success: true });
     }
 
     closeModal(type: string) {
