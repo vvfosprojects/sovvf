@@ -117,6 +117,9 @@ export class SchedeContattoMarkersState {
                     dispatch(new AddSchedeContattoMarkers(schedeAdd));
                 }
             }
+            if (state.statoOpacita) {
+                dispatch(new OpacizzaSchedeContattoMarkers());
+            }
         }
     }
 

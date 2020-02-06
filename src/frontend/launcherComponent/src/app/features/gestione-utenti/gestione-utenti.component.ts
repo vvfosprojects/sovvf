@@ -13,7 +13,6 @@ import { RicercaUtentiState } from './store/states/ricerca-utenti/ricerca-utenti
 import { PaginationState } from '../../shared/store/states/pagination/pagination.state';
 import { LoadingState } from '../../shared/store/states/loading/loading.state';
 import { GestioneUtenteModalComponent } from './gestione-utente-modal/gestione-utente-modal.component';
-import { getPermessiByRole } from '../../shared/helper/function';
 
 @Component({
     selector: 'app-gestione-utenti',
@@ -35,7 +34,7 @@ export class GestioneUtentiComponent implements OnInit {
     private subscription: Subscription = new Subscription();
 
     constructor(public modalService: NgbModal,
-                private store: Store) {
+        private store: Store) {
         this.getUtentiGestione();
         this.getRuoli();
         this.getRicerca();
@@ -50,13 +49,29 @@ export class GestioneUtentiComponent implements OnInit {
 
     onAddUtente() {
         const aggiungiUtenteModal = this.modalService.open(GestioneUtenteModalComponent, { backdropClass: 'light-blue-backdrop', centered: true, size: 'lg' });
-        aggiungiUtenteModal.componentInstance.insertMode = true;
         aggiungiUtenteModal.result.then(
             (risultatoModal: any) => {
                 // if (risultatoModal[0] === 'ok') {
                 //     this.store.dispatch(new AddUtente(risultatoModal[1]));
                 // }
                 console.log('Modal "addUtente" chiusa con val ->', risultatoModal);
+            },
+            (err) => console.error('Modal chiusa senza bottoni. Err ->', err)
+        );
+    }
+
+    onAddRuoloUtente(event: { codFiscale: string, fullName: string }) {
+        const aggiungiRuoloUtenteModal = this.modalService.open(GestioneUtenteModalComponent, { backdropClass: 'light-blue-backdrop', centered: true, size: 'lg' });
+        const codFiscaleUtenteVVF = event.codFiscale;
+        const nominativoUtenteVVF = event.fullName;
+        aggiungiRuoloUtenteModal.componentInstance.codFiscaleUtenteVVF = codFiscaleUtenteVVF;
+        aggiungiRuoloUtenteModal.componentInstance.nominativoUtenteVVF = nominativoUtenteVVF;
+        aggiungiRuoloUtenteModal.result.then(
+            (risultatoModal: any) => {
+                // if (risultatoModal[0] === 'ok') {
+                //     this.store.dispatch(new AddUtente(risultatoModal[1]));
+                // }
+                console.log('Modal "addRuoloUtente" chiusa con val ->', risultatoModal);
             },
             (err) => console.error('Modal chiusa senza bottoni. Err ->', err)
         );
@@ -71,8 +86,8 @@ export class GestioneUtentiComponent implements OnInit {
                     modificaUtenteModal.componentInstance.detailMode = true;
                     modificaUtenteModal.componentInstance.utenteEdit = utente;
                     modificaUtenteModal.result.then((risultatoModal: any) => {
-                            console.log('Modal "detailUtente" chiusa con val ->', risultatoModal);
-                        },
+                        console.log('Modal "detailUtente" chiusa con val ->', risultatoModal);
+                    },
                         (err) => console.error('Modal chiusa senza bottoni. Err ->', err)
                     );
                 }

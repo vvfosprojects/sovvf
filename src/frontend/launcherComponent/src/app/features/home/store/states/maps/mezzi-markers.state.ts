@@ -117,7 +117,9 @@ export class MezziMarkersState {
                     dispatch(new AddMezziMarkers(mezzoMarkerAdd));
                 }
             }
-            dispatch(new OpacizzaMezziMarkers());
+            if (state.statoOpacita) {
+                dispatch(new OpacizzaMezziMarkers());
+            }
         }
     }
 

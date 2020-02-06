@@ -1,7 +1,6 @@
 import { StatoRichiesta } from '../enum/stato-richiesta.enum';
 import { Coordinate } from '../model/coordinate.model';
 import { CentroMappa } from '../../features/home/maps/maps-model/centro-mappa.model';
-import { Mezzo } from '../model/mezzo.model';
 import { StatoMezzo } from '../enum/stato-mezzo.enum';
 import { StatoMezzoActions } from '../enum/stato-mezzo-actions.enum';
 import { SintesiRichiesta } from '../model/sintesi-richiesta.model';
@@ -10,6 +9,7 @@ import { Tipologia } from '../model/tipologia.model';
 import { LatLngBounds } from '@agm/core';
 import { AreaMappa } from '../../features/home/maps/maps-model/area-mappa-model';
 import { Role } from '../model/utente.model';
+import { AppFeatures } from '../enum/app-features.enum';
 
 export function makeCopy(value): any {
     return (JSON.parse(JSON.stringify(value)));
@@ -301,11 +301,27 @@ export function onlyUnique(value, index, self) {
 export function getPermessiByRole(role: Role) {
     switch (role) {
         case Role.CallTracker:
-            return ['Scheda Telefonata'];
+            return [
+                wipeStringUppercase(Object.values(AppFeatures)[3].toString()),
+                wipeStringUppercase(Object.values(AppFeatures)[0].toString()),
+                wipeStringUppercase(Object.values(AppFeatures)[1].toString()),
+                wipeStringUppercase(Object.values(AppFeatures)[2].toString())
+            ];
         case Role.GestoreRichieste:
-            return ['Composizione Partenza', 'Lista Richieste', 'Gestione Ruoli Utenti'];
+            return [
+                wipeStringUppercase(Object.values(AppFeatures)[1].toString()),
+                wipeStringUppercase(Object.values(AppFeatures)[2].toString()),
+                wipeStringUppercase(Object.values(AppFeatures)[0].toString()),
+                wipeStringUppercase(Object.values(AppFeatures)[6].toString()),
+                wipeStringUppercase(Object.values(AppFeatures)[5].toString()),
+                wipeStringUppercase(Object.values(AppFeatures)[4].toString())
+            ];
         default:
             console.warn('Nessun permesso assegnato al ruolo "' + role + '"');
             break;
     }
+}
+
+export function wipeStringUppercase(text: string) {
+    return text.replace(/(?=[A-Z])/g, ' ');
 }

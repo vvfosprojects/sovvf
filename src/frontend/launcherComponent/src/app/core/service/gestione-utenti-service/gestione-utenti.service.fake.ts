@@ -64,6 +64,53 @@ export class GestioneUtentiServiceFake {
                         descSede: 'Comando di Frosinone'
                     }
                 ]
+            ),
+            new Utente(
+                '2',
+                'Francesco',
+                'Verdi',
+                'AAAAAAAAAAAA',
+                new Sede(
+                    '1',
+                    'Comando di Roma',
+                    new Coordinate(
+                        11111,
+                        111111
+                    ),
+                    'Via Ignorasi, 3',
+                    'Comando',
+                    'Lazio',
+                    'Roma'
+                ),
+                'mario_rossi',
+                'test',
+                [
+                    {
+                        descrizione: Role.CallTracker,
+                        codSede: 'RM.1000',
+                        descSede: 'Comando di Roma'
+                    },
+                    {
+                        descrizione: Role.GestoreRichieste,
+                        codSede: 'FR.2000',
+                        descSede: 'Comando di Frosinone'
+                    },
+                    {
+                        descrizione: Role.GestoreRichieste,
+                        codSede: 'FR.2000',
+                        descSede: 'Comando di Frosinone'
+                    },
+                    {
+                        descrizione: Role.GestoreRichieste,
+                        codSede: 'FR.2000',
+                        descSede: 'Comando di Frosinone'
+                    },
+                    {
+                        descrizione: Role.GestoreRichieste,
+                        codSede: 'FR.2000',
+                        descSede: 'Comando di Frosinone'
+                    }
+                ]
             )
         ];
         const response = {

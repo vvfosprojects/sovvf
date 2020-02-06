@@ -1,9 +1,9 @@
 <div class="row mt-2 px-0" style="height:750px">
     <div *ngIf="schedeContatto" class="col-12 scroll-y" style="height:700px">
-        <ngb-tabset [activeId]="tabAttivo$ | async">
+        <ngb-tabset [activeId]="tabAttivo$ | async" (tabChange)="onSelectTab($event)">
             <ngb-tab id="Tutte">
                 <ng-template ngbTabTitle>
-                    <div [ngbTooltip]="tipTutte" (click)="onSelectTab(null)">
+                    <div [ngbTooltip]="tipTutte">
                         <b>Tutte ({{contatoriSchedeContatto.totaleSchede.contatoreDaGestire}})</b>
                     </div>
                     <ng-template #tipTutte>
@@ -21,7 +21,7 @@
             </ngb-tab>
             <ngb-tab [id]="ClassificazioneEnum.Competenza">
                 <ng-template ngbTabTitle>
-                    <div [ngbTooltip]="tipCompetenza" (click)="onSelectTab(ClassificazioneEnum.Competenza)">
+                    <div [ngbTooltip]="tipCompetenza">
                         <i class="fa fa-square text-danger mr-2"></i>
                         <b>Competenza</b>
                     </div>
@@ -39,7 +39,7 @@
             </ngb-tab>
             <ngb-tab [id]="ClassificazioneEnum.Differibile">
                 <ng-template ngbTabTitle>
-                    <div [ngbTooltip]="tipDifferibile" (click)="onSelectTab(ClassificazioneEnum.Differibile)">
+                    <div [ngbTooltip]="tipDifferibile">
                         <i class="fa fa-square text-secondary mr-2"></i>
                         <b>Differibile ({{contatoriSchedeContatto.differibileSchede.contatoreDaGestire}})</b>
                     </div>
@@ -58,7 +58,7 @@
             </ngb-tab>
             <ngb-tab [id]="ClassificazioneEnum.Conoscenza">
                 <ng-template ngbTabTitle>
-                    <div [ngbTooltip]="tipConoscenza" (click)="onSelectTab(ClassificazioneEnum.Conoscenza)">
+                    <div [ngbTooltip]="tipConoscenza">
                         <i class="fa fa-square text-warning mr-2"></i>
                         <b>Conoscenza</b>
                     </div>
