@@ -20,7 +20,8 @@ export class GestioneUtentiService {
     }
 
     getUtentiVVF(text: string): Observable<UtenteVvfInterface[]> {
-        const url = !text ? API_URL : API_URL + '/?text=' + text;
+        const finalApi = API_URL + '/UtentiVVF';
+        const url = !text ? finalApi : finalApi + '?text=' + text;
         return this.http.get<UtenteVvfInterface[]>(url).pipe(
             retry(3),
             catchError(handleError)
