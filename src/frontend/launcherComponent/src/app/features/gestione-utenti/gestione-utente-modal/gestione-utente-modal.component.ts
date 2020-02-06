@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import { Observable, Subject, Subscription } from 'rxjs';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
@@ -20,7 +20,7 @@ import { wipeStringUppercase } from 'src/app/shared/helper/function';
     templateUrl: './gestione-utente-modal.component.html',
     styleUrls: ['./gestione-utente-modal.component.css']
 })
-export class GestioneUtenteModalComponent implements OnDestroy {
+export class GestioneUtenteModalComponent implements OnInit, OnDestroy {
 
     @Select(GestioneUtentiState.listaUtentiVVF) listaUtentiVVF$: Observable<UtenteVvfInterface[]>;
     @Select(GestioneUtentiState.formValid) formValid$: Observable<boolean>;
@@ -38,8 +38,12 @@ export class GestioneUtenteModalComponent implements OnDestroy {
     treeviewState: { disabled: boolean };
     submitted: boolean;
 
-    utenteEdit: any;
-    detailMode: boolean;
+    // aggiungi ruolo utente
+    codFiscaleUtenteVVF: string;
+    nominativoUtenteVVF: string;
+
+    // utenteEdit: any;
+    // detailMode: boolean;
 
     subscription: Subscription = new Subscription();
 
@@ -74,6 +78,20 @@ export class GestioneUtenteModalComponent implements OnDestroy {
         this.checkboxState = { id: 'soloDistaccamenti', status: this.f.soloDistaccamenti.value, label: 'Solo Distaccamenti', disabled: true };
         this.treeviewState = { disabled: true };
         this.f.ruolo.disable();
+    }
+
+    ngOnInit(): void {
+        if (this.codFiscaleUtenteVVF) {
+            this.f.utente.patchValue(this.codFiscaleUtenteVVF);
+            this.f.utente.clearValidators();
+            this.store.dispatch(new UpdateFormValue({
+                value: {
+                    ...this.addUtenteRuoloForm.value,
+                    'utente': this.codFiscaleUtenteVVF
+                },
+                path: 'gestioneUtenti.addUtenteRuoloForm'
+            }));
+        }
     }
 
     ngOnDestroy(): void {
@@ -111,9 +129,9 @@ export class GestioneUtenteModalComponent implements OnDestroy {
         this.subscription.add(
             this.listeSediNavbar$.subscribe((listaSedi: TreeItem) => {
                 this.listeSediNavbar = [];
-                if (this.detailMode) {
-                    listaSedi.disabled = true;
-                }
+                // if (this.detailMode) {
+                //    listaSedi.disabled = true;
+                // }
                 this.listeSediNavbar[0] = new TreeviewItem(listaSedi);
             })
         );
