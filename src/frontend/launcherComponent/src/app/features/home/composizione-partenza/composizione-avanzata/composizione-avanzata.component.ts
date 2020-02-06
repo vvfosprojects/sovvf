@@ -58,7 +58,6 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
     @Input() richiesta: SintesiRichiesta;
     @Input() disablePrenota: boolean;
     @Input() prenotato: boolean;
-    @Input() loading: boolean;
 
     // Mezzi Composizione
     @Select(MezziComposizioneState.mezziComposizione) mezziComposizione$: Observable<MezzoComposizione[]>;
@@ -94,6 +93,9 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
 
     @Select(BoxPartenzaState.disableConfirmPartenza) disableConfirmPartenza$: Observable<boolean>;
     @Select(BoxPartenzaState.disableNuovaPartenza) disableNuovaPartenza$: Observable<boolean>;
+
+    @Select(ComposizionePartenzaState.loading) loading$: Observable<boolean>;
+    loading: boolean;
 
     Composizione = Composizione;
     subscription = new Subscription();
@@ -202,6 +204,8 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
                 // console.log(idBoxPartenza);
             })
         );
+
+        this.subscription.add(this.loading$.subscribe(res => this.loading = res));
 
     }
 

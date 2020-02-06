@@ -21,7 +21,7 @@
             </app-composizione-veloce>
         </div>
         <div *ngIf="richiesta && compPartenzaMode === Composizione.Avanzata" class="px-3">
-            <app-composizione-avanzata [richiesta]="richiesta" [loading]="loading$ | async"
+            <app-composizione-avanzata [richiesta]="richiesta"
                                        (sendDirection)="onSendDirection($event)"
                                        (clearDirection)="onClearDirection()" (centraMappa)="centraMappa()"
                                        (prenota)="onPrenota($event)"
