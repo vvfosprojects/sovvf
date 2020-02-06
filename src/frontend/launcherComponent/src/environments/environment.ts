@@ -21,7 +21,7 @@ export const environment = {
             confermaPartenze: '/api/ConfermaPartenze',
             prenotazione: 'api/PrenotazioneMezzo'
         },
-        chiamata: '/api/Chiamata/',
+        chiamata: '/api/Chiamata',
         utenti: '/api/Utenti',
         auth: '/api/Auth',
         navbar: '/api/Navbar',

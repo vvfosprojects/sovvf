@@ -23,7 +23,6 @@ import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.ac
 import { ToastrType } from '../../../../../shared/enum/toastr';
 import { ChiamataService } from '../../../../../core/service/chiamata-service/chiamata.service';
 import { AddRichiesta, SetIdChiamataInviaPartenza, StartInviaPartenzaFromChiamata } from '../../actions/richieste/richieste.actions';
-import { environment } from '../../../../../../environments/environment';
 
 export interface SchedaTelefonataStateModel {
     coordinate: Coordinate;
@@ -94,15 +93,11 @@ export class SchedaTelefonataState {
 
         this.chiamataService.insertChiamata(action.nuovaRichiesta).subscribe((data: SintesiRichiesta) => {
             if (data && action.azioneChiamata === AzioneChiamataEnum.InviaPartenza) {
-                console.log(`Invia partenza idRichiesta: ${data}`);
-                if (!environment.fakeProvider) {
-                    dispatch([
-                        new CestinaChiamata(),
-                        new StartInviaPartenzaFromChiamata(data)
-                    ]);
-                } else {
-                    dispatch(new SetIdChiamataInviaPartenza(data.id));
-                }
+                console.log(`Invia partenza idRichiesta:`, data);
+                dispatch([
+                    new CestinaChiamata(),
+                    new SetIdChiamataInviaPartenza(data.codice)
+                ]);
             } else {
                 dispatch(new CestinaChiamata());
             }
