@@ -339,6 +339,13 @@ export class MarkerService implements OnDestroy {
                     }
                 }
                 break;
+            case 'scheda-contatto':
+                if (this.markerOpachi.stato.schedeContatto) {
+                    if (!this.markerOpachi.markerOpachiId.schedeContattoId.includes(id)) {
+                        isOpaque = this.mapsOptions.livelloOpacita;
+                    }
+                }
+                break;
         }
         return isOpaque;
     }

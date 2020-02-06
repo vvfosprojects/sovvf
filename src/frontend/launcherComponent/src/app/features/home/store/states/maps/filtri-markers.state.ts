@@ -9,6 +9,7 @@ import {
     ToggleGestitaSC
 } from '../../actions/maps/filtri-markers.actions';
 import { FiltroSchedeContatto } from '../../../maps/maps-model/filtro-schede-contatto';
+import { isEqual } from 'lodash';
 
 export interface FiltriMarkersStateModel {
     filtroRichieste: FiltroRichieste;
@@ -19,7 +20,7 @@ export interface FiltriMarkersStateModel {
 export const FiltriMarkersStateDefaults: FiltriMarkersStateModel = {
     filtroRichieste: {
         stato: [],
-        priorita: null
+        priorita: 0
     },
     filtroMezzi: {
         tipologia: [],
@@ -49,6 +50,11 @@ export class FiltriMarkersState {
     @Selector()
     static filtroSC(state: FiltriMarkersStateModel) {
         return state.filtroSchedeContatto;
+    }
+
+    @Selector()
+    static filtriAttivi(state: FiltriMarkersState): boolean {
+        return !isEqual(state, FiltriMarkersStateDefaults);
     }
 
     @Action(SetPropritaRichiesta)

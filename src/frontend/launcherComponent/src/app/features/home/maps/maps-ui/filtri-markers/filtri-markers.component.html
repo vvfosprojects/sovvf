@@ -1,5 +1,11 @@
 <div ngbDropdown class="mt-2 mr-2">
-    <button class="btn button-menu" id="dropdownConfig" ngbDropdownToggle><i class="fa fa-bars"></i>
+    <button class="btn button-menu" id="dropdownConfig" ngbDropdownToggle [ngClass]="{'filtro-attivo': filtriAttivi}">
+        <ng-container *ngIf="!filtriAttivi else filtriAttiviTp">
+            <i class="fa fa-bars"></i>
+        </ng-container>
+        <ng-template #filtriAttiviTp>
+            <i class="fa fa-filter"></i>
+        </ng-template>
     </button>
     <div id="menu-mappa" ngbDropdownMenu class="px-2">
         <app-filtri-markers-richieste [filtroRichieste]="filtroRichieste$ | async"
