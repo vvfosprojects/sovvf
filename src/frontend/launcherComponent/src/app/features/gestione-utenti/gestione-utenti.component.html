@@ -23,7 +23,8 @@
       <app-tabella-utenti [ruoli]="ruoli$ | async" [listaUtenti]="listaUtenti$ | async"
         [totalItems]="totalItems$ | async" [pageSize]="pageSize$ | async" [page]="page$ | async"
         [loading]="loading$ | async" (detail)="onDetailUtente($event)" (removeUser)="onRemoveUtente($event)"
-        (removeRoleUser)="onRemoveRuoloUtente($event)"></app-tabella-utenti>
+        (removeRoleUser)="onRemoveRuoloUtente($event)" (addRuoloUtente)="onAddRuoloUtente($event)">
+      </app-tabella-utenti>
     </div>
   </div>
 </div>
