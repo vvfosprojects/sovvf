@@ -1,65 +1,68 @@
 <table class="table table-striped app-shadow mt-2">
-    <thead>
+  <thead>
     <tr>
-        <th scope="col" width="20%">Azioni</th>
-        <th scope="col" width="25%">Utente</th>
-        <th scope="col" width="40%">Ruolo - Sede</th>
+      <th scope="col" width="20%">Azioni</th>
+      <th scope="col" width="25%">Utente</th>
+      <th scope="col" width="40%">Ruolo - Sede</th>
     </tr>
-    </thead>
-    <tbody>
-    <tr *ngFor="let utente of listaUtenti | paginate: { itemsPerPage: pageSize, currentPage: page, totalItems: totalItems }">
-        <td width="20%" class="pt-2 pb-0">
-            <button class="btn btn-sm btn-danger mt-1"
-                    ngbTooltip="Rimuovi utente" placement="bottom"
-                    (click)="onRemoveUtente(utente.id, utente.nome + ' ' + utente.cognome)">
-                <i class="fa fa-trash mr-1"></i>
-                Rimuovi
-            </button>
-        </td>
-        <td width="25%" class="pt-3">
-            <span class="h6 font-weight-normal">
-                {{utente.nome}} {{utente.cognome}}
-            </span>
-        </td>
-        <td width="40%">
-            <span class="h6 font-weight-normal">
-                <ul *ngIf="utente.ruoli && utente.ruoli.length > 0" class="pl-3 mb-0 list-unstyled">
-                    <li *ngFor="let ruolo of utente.ruoli" class="mb-1">
-                        <i class="fa fa-info-circle cursor-pointer mr-1" ngbTooltip="Visualizza i permessi"
-                           placement="bottom" [ngbPopover]="popPermessiRole" (click)="onDetailPermessi(ruolo)"></i>
-                        <ng-template #popPermessiRole>
-                            <ul *ngIf="dettaglioPermessi && dettaglioPermessi.length > 0" class="list-unstyled">
-                                <li *ngFor="let perm of dettaglioPermessi">
-                                    <i class="fa fa-cog mr-1"></i>
-                                    {{perm}}
-                                </li>
-                            </ul>
-                            <small *ngIf="!dettaglioPermessi || dettaglioPermessi.length <= 0" class="text-danger">Nessun Permesso Assegnato</small>
-                        </ng-template>
-                        {{ruolo.descrizione}}
-                        - {{ruolo.descSede}} ({{ruolo.codSede}})
-                        <button class="btn btn-danger btn-sm ml-2"
-                                ngbTooltip="Rimuovi ruolo utente" placement="bottom"
-                                (click)="onRemoveRuoloUtente(utente.id, ruolo, utente.nome + ' ' + utente.cognome)">
-                            <i class="fa fa-trash"></i>
-                        </button>
-                    </li>
+  </thead>
+  <tbody>
+    <tr
+      *ngFor="let utente of listaUtenti | paginate: { itemsPerPage: pageSize, currentPage: page, totalItems: totalItems }">
+      <td width="20%" class="pt-2 pb-0">
+        <button class="btn btn-sm btn-danger font-weight-bold mt-1" ngbTooltip="Rimuovi utente" placement="bottom"
+          (click)="onRemoveUtente(utente.id, utente.cognome + ' ' + utente.nome)">
+          <i class="fa fa-trash mr-1"></i>
+          Rimuovi
+        </button>
+      </td>
+      <td width="25%" class="pt-3">
+        <span class="h6 font-weight-normal font-weight-bold">{{utente.cognome}} {{utente.nome}}</span>
+      </td>
+      <td width="40%">
+        <span class="h6 font-weight-normal">
+          <ul *ngIf="utente.ruoli && utente.ruoli.length > 0" class="mb-2 list-unstyled scroll-y"
+            style="max-height:110px">
+            <li *ngFor="let ruolo of utente.ruoli, let i = index" [ngClass]="{'mb-2': i !== (utente.ruoli.length - 1)}">
+              <button class="btn btn-danger btn-sm mr-1" ngbTooltip="Rimuovi ruolo utente" placement="bottom"
+                (click)="onRemoveRuoloUtente(utente.id, ruolo, utente.cognome + ' ' + utente.nome)">
+                <i class="fa fa-trash"></i>
+              </button>
+              <button class="btn btn-secondary btn-sm mr-2" ngbTooltip="Visualizza i permessi" placement="bottom"
+                [ngbPopover]="popPermessiRole" (click)="onDetailPermessi(ruolo)">
+                <i class="fa fa-cogs"></i>
+              </button>
+              <ng-template #popPermessiRole>
+                <ul *ngIf="dettaglioPermessi && dettaglioPermessi.length > 0" class="list-unstyled">
+                  <li *ngFor="let perm of dettaglioPermessi">
+                    <i class="fa fa-cog mr-1"></i>
+                    {{perm}}
+                  </li>
                 </ul>
-            </span>
-        </td>
+                <small *ngIf="!dettaglioPermessi || dettaglioPermessi.length <= 0" class="text-danger">Nessun Permesso
+                  Assegnato</small>
+              </ng-template>
+              <span class="font-weight-bold">{{wipeRoleString(ruolo.descrizione)}}</span>
+              - {{ruolo.descSede}} ({{ruolo.codSede}})
+              <hr *ngIf="i !== (utente.ruoli.length - 1)" class="mt-2 mb-1">
+            </li>
+          </ul>
+          <button class="btn btn-primary btn-sm btn-block font-weight-bold">Aggiungi ruolo a "{{utente.cognome}}
+            {{utente.nome}}"</button>
+        </span>
+      </td>
     </tr>
     <tr *ngIf="listaUtenti?.length <= 0">
-        <td>
-            Nessun Utente trovato
-        </td>
-        <td *ngFor="let ruolo of ruoli"></td>
-        <td></td>
-        <td></td>
+      <td>
+        Nessun Utente trovato
+      </td>
+      <td *ngFor="let ruolo of ruoli"></td>
+      <td></td>
+      <td></td>
     </tr>
-    </tbody>
+  </tbody>
 </table>
 <div *ngIf="listaUtenti?.length > 0" class="d-flex justify-content-between p-2">
-    <pagination-controls [previousLabel]="'Precedente'"
-                         [nextLabel]="'Successiva'"
-                         (pageChange)="pageChange.emit($event)"></pagination-controls>
+  <pagination-controls [previousLabel]="'Precedente'" [nextLabel]="'Successiva'" (pageChange)="pageChange.emit($event)">
+  </pagination-controls>
 </div>

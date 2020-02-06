@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
 import { Role, Ruolo, Utente } from '../../../shared/model/utente.model';
-import { getPermessiByRole } from '../../../shared/helper/function';
+import { getPermessiByRole, wipeStringUppercase } from '../../../shared/helper/function';
 
 
 @Component({
@@ -45,5 +45,9 @@ export class TabellaUtentiComponent {
     onRemoveRuoloUtente(id: string, ruolo: Ruolo, nominativoUtente: string) {
         const obj = { id, ruolo, nominativoUtente };
         this.removeRoleUser.emit(obj);
+    }
+
+    wipeRoleString(text: string) {
+        return wipeStringUppercase(text);
     }
 }
