@@ -15,7 +15,7 @@ import { SchedeContattoState } from '../store/states/schede-contatto/schede-cont
 import { Observable, Subscription } from 'rxjs';
 import { SchedaContatto } from 'src/app/shared/interface/scheda-contatto.interface';
 import { ToggleChiamata, ToggleSchedeContatto } from '../store/actions/view/view.actions';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { DettaglioSchedaModalComponent } from './dettaglio-scheda-modal/dettaglio-scheda-modal.component';
 import { ContatoriSchedeContatto } from '../../../shared/interface/contatori-schede-contatto.interface';
 import { RangeSchedeContattoEnum } from '../../../shared/enum/range-schede-contatto';
@@ -163,8 +163,12 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
         this.store.dispatch(new InitSaveMergeSchedeContatto());
     }
 
-    onSelectTab($event: ClassificazioneSchedaContatto) {
-        this.store.dispatch(new SetTabAttivo($event));
+    onSelectTab($event: NgbTabChangeEvent) {
+        let classificazione: ClassificazioneSchedaContatto = null;
+        if ($event.nextId !== 'Tutte') {
+            classificazione = $event.nextId as ClassificazioneSchedaContatto;
+        }
+        this.store.dispatch(new SetTabAttivo(classificazione));
     }
 
     onCollapsed($event: string) {
