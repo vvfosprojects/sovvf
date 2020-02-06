@@ -10,6 +10,7 @@ import { Tipologia } from '../model/tipologia.model';
 import { LatLngBounds } from '@agm/core';
 import { AreaMappa } from '../../features/home/maps/maps-model/area-mappa-model';
 import { Role } from '../model/utente.model';
+import { AppFeatures } from '../enum/app-features.enum';
 
 export function makeCopy(value): any {
     return (JSON.parse(JSON.stringify(value)));
@@ -301,9 +302,21 @@ export function onlyUnique(value, index, self) {
 export function getPermessiByRole(role: Role) {
     switch (role) {
         case Role.CallTracker:
-            return ['Scheda Telefonata'];
+            return [
+                Object.values(AppFeatures)[3].toString().replace(/(?=[A-Z])/g, ' '),
+                Object.values(AppFeatures)[0].toString().replace(/(?=[A-Z])/g, ' '),
+                Object.values(AppFeatures)[1].toString().replace(/(?=[A-Z])/g, ' '),
+                Object.values(AppFeatures)[2].toString().replace(/(?=[A-Z])/g, ' ')
+            ];
         case Role.GestoreRichieste:
-            return ['Composizione Partenza', 'Lista Richieste', 'Gestione Ruoli Utenti'];
+            return [
+                Object.values(AppFeatures)[1].toString().replace(/(?=[A-Z])/g, ' '),
+                Object.values(AppFeatures)[2].toString().replace(/(?=[A-Z])/g, ' '),
+                Object.values(AppFeatures)[0].toString().replace(/(?=[A-Z])/g, ' '),
+                Object.values(AppFeatures)[6].toString().replace(/(?=[A-Z])/g, ' '),
+                Object.values(AppFeatures)[5].toString().replace(/(?=[A-Z])/g, ' '),
+                Object.values(AppFeatures)[4].toString().replace(/(?=[A-Z])/g, ' ')
+            ];
         default:
             console.warn('Nessun permesso assegnato al ruolo "' + role + '"');
             break;
