@@ -1,6 +1,5 @@
 import { Ruolo, Utente } from '../../../../../shared/model/utente.model';
 import { UtenteVvfInterface } from '../../../../../shared/interface/utente-vvf.interface';
-import { AddRuoloUtenteInterface } from '../../../../../shared/interface/add-ruolo-utente.interface';
 
 export class GetUtentiVVF {
     static readonly type = '[GestioneUtenti] Get Utenti VVF';
@@ -54,6 +53,8 @@ export class UpdateUtenteGestione {
 
 export class AddRuoloUtenteGestione {
     static readonly type = '[GestioneUtenti] Add Ruolo Utente Gestione';
+
+    constructor(public options?: any) { }
 }
 
 export class OpenModalRemoveUtente {
