@@ -165,8 +165,9 @@ export class GestioneUtenteModalComponent implements OnInit, OnDestroy {
     }
 
     getUtentiVVF(search?: string) {
-        const text = search && search.length > 0 ? search : null;
-        this.store.dispatch(new GetUtentiVVF(text));
+        if (search && search.length >= 3) {
+            this.store.dispatch(new GetUtentiVVF(search));
+        }
     }
 
     getSearchUtentiVVF() {
