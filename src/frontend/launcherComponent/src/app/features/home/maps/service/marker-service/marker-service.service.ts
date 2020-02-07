@@ -397,7 +397,7 @@ export class MarkerService implements OnDestroy {
         return this.icone.iconaSede(tipo, selezionato);
     }
 
-    iconaSchedaContattoMarker(tipo): string {
+    iconaSchedaContattoMarker(tipo: string): string {
         return this.icone.iconaSchedaContatto(tipo);
     }
 

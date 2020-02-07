@@ -1,7 +1,6 @@
 /**
  *  classe che ritorna l'url del marker da visualizzare sulla mappa
  */
-import { ClassificazioneSchedaContatto } from '../../../../../shared/enum/classificazione-scheda-contatto.enum';
 
 export class IconMappe {
     /**
@@ -196,7 +195,7 @@ export class IconMappe {
         return this.iconaStatoCorrenteUrl;
     }
 
-    iconaSchedaContatto(tipo: ClassificazioneSchedaContatto): string {
+    iconaSchedaContatto(tipo: string): string {
         /**
          * metodo che mi ritorna l'url del' icona da utilizzare per ogni scheda contatto marker
          */
