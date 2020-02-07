@@ -260,7 +260,8 @@ export class AgmComponent implements OnDestroy {
         /**
          * ritorno l'url dell'icona del marker scheda contatto
          */
-        return this.markerService.iconaSchedaContattoMarker(schedaContatto.classificazione);
+        const checkGestita = schedaContatto.gestita ? '-g' : '';
+        return this.markerService.iconaSchedaContattoMarker(schedaContatto.classificazione + checkGestita);
     }
 
     actionRichiestaMarker(id: string, event: MouseE): void {

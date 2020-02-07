@@ -105,6 +105,9 @@ export class IconMappe {
             ['Competenza', 'speciali/scheda-contatto-marker.png'],
             ['Conoscenza', 'speciali/scheda-contatto-marker-conoscenza.png'],
             ['Differibile', 'speciali/scheda-contatto-marker-differibile.png'],
+            ['Competenza-g', 'speciali/scheda-contatto-marker-g.png'],
+            ['Conoscenza-g', 'speciali/scheda-contatto-marker-conoscenza-g.png'],
+            ['Differibile-g', 'speciali/scheda-contatto-marker-differibile-g.png'],
         ];
         this.mapIconeSpeciali = new Map(this.iconeSpeciali);
     }
