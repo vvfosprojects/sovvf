@@ -39,11 +39,14 @@ import { RangeSchedeContattoEnum } from '../../../../../shared/enum/range-schede
 import { MergeSchedeContattoState } from './merge-schede-contatto.state';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from '../../../../../shared/enum/toastr';
-import { ClearMergeSchedeContatto } from '../../actions/schede-contatto/merge-schede-contatto.actions';
+import {
+    ClearMergeSchedeContatto
+} from '../../actions/schede-contatto/merge-schede-contatto.actions';
 import { ToggleOpacitaSchedeContattoMarkers } from '../../actions/maps/schede-contatto-markers.actions';
 import { DettaglioSchedaModalComponent } from '../../../schede-contatto/dettaglio-scheda-modal/dettaglio-scheda-modal.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgZone } from '@angular/core';
+import { ClearMarkerSCSelezionato } from '../../actions/maps/marker.actions';
 
 export interface SchedeContattoStateModel {
     contatoriSchedeContatto: ContatoriSchedeContatto;
@@ -500,7 +503,7 @@ export class SchedeContattoState {
     }
 
     @Action(OpenDetailSC)
-    openDetailSC({ getState }: StateContext<SchedeContattoStateModel>, action: OpenDetailSC) {
+    openDetailSC({ getState, dispatch }: StateContext<SchedeContattoStateModel>, action: OpenDetailSC) {
         const state = getState();
         const schedaContattoDetail = state.schedeContatto.filter(value => value.codiceScheda === action.codiceScheda)[0];
         this.ngZone.run(() => {
@@ -508,6 +511,10 @@ export class SchedeContattoState {
                 { windowClass: 'xlModal', backdropClass: 'light-blue-backdrop', centered: true }
                 );
             modal.componentInstance.schedaContatto = schedaContattoDetail;
+            modal.result.then(
+                () => {},
+                () => dispatch(new ClearMarkerSCSelezionato())
+            );
         });
     }
 }
