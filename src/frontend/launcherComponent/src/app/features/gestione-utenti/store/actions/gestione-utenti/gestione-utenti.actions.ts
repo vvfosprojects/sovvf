@@ -80,3 +80,7 @@ export class RemoveRuoloUtente {
 
     constructor(public id: string, public ruolo: Ruolo) { }
 }
+
+export class ClearDataModalAddUtenteModal {
+    static readonly type = '[GestioneUtenti] Clear Data Modal "AddUtenteModal"';
+}

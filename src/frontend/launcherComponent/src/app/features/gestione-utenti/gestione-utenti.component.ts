@@ -5,7 +5,8 @@ import { Select, Store } from '@ngxs/store';
 import { SetRicercaUtenti } from './store/actions/ricerca-utenti/ricerca-utenti.actons';
 import { UtenteState } from '../navbar/store/states/operatore/utente.state';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { GetUtenteDetail, GetUtentiGestione, OpenModalRemoveRuoloUtente, OpenModalRemoveUtente, AddRuoloUtenteGestione } from './store/actions/gestione-utenti/gestione-utenti.actions';
+// tslint:disable-next-line: max-line-length
+import { GetUtenteDetail, GetUtentiGestione, OpenModalRemoveRuoloUtente, OpenModalRemoveUtente, AddRuoloUtenteGestione, ClearDataModalAddUtenteModal } from './store/actions/gestione-utenti/gestione-utenti.actions';
 import { GetRuoli } from './store/actions/ruoli/ruoli.actions';
 import { RuoliState } from './store/states/ruoli/ruoli.state';
 import { GestioneUtentiState } from './store/states/gestione-utenti/gestione-utenti.state';
@@ -54,10 +55,14 @@ export class GestioneUtentiComponent implements OnInit {
                 if (result.success) {
                     this.store.dispatch(new AddRuoloUtenteGestione());
                 } else if (!result.success) {
+                    this.store.dispatch(new ClearDataModalAddUtenteModal());
                     console.log('Modal "addUtente" chiusa con val ->', result);
                 }
             },
-            (err) => console.error('Modal chiusa senza bottoni. Err ->', err)
+            (err) => {
+                this.store.dispatch(new ClearDataModalAddUtenteModal());
+                console.error('Modal chiusa senza bottoni. Err ->', err);
+            }
         );
     }
 
@@ -72,10 +77,14 @@ export class GestioneUtentiComponent implements OnInit {
                 if (result.success) {
                     this.store.dispatch(new AddRuoloUtenteGestione({ codFiscaleUtenteVVF: codFiscaleUtenteVVF }));
                 } else if (!result.success) {
+                    this.store.dispatch(new ClearDataModalAddUtenteModal());
                     console.log('Modal "addRuoloUtente" chiusa con val ->', result);
                 }
             },
-            (err) => console.error('Modal chiusa senza bottoni. Err ->', err)
+            (err) => {
+                this.store.dispatch(new ClearDataModalAddUtenteModal());
+                console.error('Modal chiusa senza bottoni. Err ->', err);
+            }
         );
     }
 
