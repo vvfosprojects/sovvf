@@ -29,8 +29,7 @@ import { ToastrType } from '../../../../../shared/enum/toastr';
 import { GestioneUtentiService } from '../../../../../core/service/gestione-utenti-service/gestione-utenti.service';
 import { UtenteVvfInterface } from '../../../../../shared/interface/utente-vvf.interface';
 import { AddRuoloUtenteInterface } from '../../../../../shared/interface/add-ruolo-utente.interface';
-import { SediTreeviewState } from '../../../../../shared/store/states/sedi-treeview/sedi-treeview.state';
-import { ListaSedi } from '../../../../../shared/interface/lista-sedi';
+import { UpdateFormValue, SetFormEnabled } from '@ngxs/form-plugin';
 
 export interface GestioneUtentiStateModel {
     listaUtentiVVF: UtenteVvfInterface[];
@@ -68,9 +67,9 @@ export const GestioneUtentiStateModelDefaults: GestioneUtentiStateModel = {
 export class GestioneUtentiState {
 
     constructor(private _gestioneUtenti: GestioneUtentiService,
-                private modalService: NgbModal,
-                private store: Store,
-                private ngZone: NgZone) {
+        private modalService: NgbModal,
+        private store: Store,
+        private ngZone: NgZone) {
     }
 
     @Selector()
@@ -175,10 +174,15 @@ export class GestioneUtentiState {
     }
 
     @Action(AddRuoloUtenteGestione)
-    addUtenteGestione({ getState, dispatch }: StateContext<GestioneUtentiStateModel>) {
+    addUtenteGestione({ getState, dispatch }: StateContext<GestioneUtentiStateModel>, action: AddRuoloUtenteGestione) {
         const form = getState().addUtenteRuoloForm.model;
+        let optionCodFiscaleUtenteVVF: string;
+        if (action.options) {
+            optionCodFiscaleUtenteVVF = action.options.codFiscaleUtenteVVF;
+        }
+
         const obj: AddRuoloUtenteInterface = {
-            codFiscale: form.utente,
+            codFiscale: optionCodFiscaleUtenteVVF ? optionCodFiscaleUtenteVVF : form.utente,
             ruoli: [],
             soloDistaccamenti: form.soloDistaccamenti
         };
@@ -197,6 +201,14 @@ export class GestioneUtentiState {
                 dispatch(new ShowToastr(ToastrType.Info, 'Utente Aggiunto', 'Utente aggiunto con successo.', 3));
             }
         });
+
+        // Clear data
+        dispatch(new UpdateFormValue({
+            value: null,
+            path: 'gestioneUtenti.addUtenteRuoloForm'
+        }));
+        dispatch(new SetFormEnabled('gestioneUtenti.addUtenteRuoloForm'));
+        dispatch(new ClearUtentiVVF());
     }
 
     @Action(OpenModalRemoveUtente)
