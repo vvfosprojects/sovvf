@@ -76,6 +76,31 @@ export class ClearMarkerSedeHover {
 }
 
 /**
+ * inizio action schede contatto
+ */
+export class SetMarkerSCSelezionato {
+    static readonly type = '[Marker] Set Marker SC Selezionato';
+
+    constructor(public markerSCSelezionato: string) {
+    }
+}
+
+export class ClearMarkerSCSelezionato {
+    static readonly type = '[Marker] Clear Marker SC Selezionato';
+}
+
+export class SetMarkerSCHover {
+    static readonly type = '[Marker] Set Marker SC Hover';
+
+    constructor(public markerSCHover: string) {
+    }
+}
+
+export class ClearMarkerSCHover {
+    static readonly type = '[Marker] Clear Marker SC Hover';
+}
+
+/**
  * Action Clear marker State
  */
 export class ClearMarkerState {

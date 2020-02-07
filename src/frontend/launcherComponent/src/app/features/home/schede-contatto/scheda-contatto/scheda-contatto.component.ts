@@ -20,7 +20,7 @@ export class SchedaContattoComponent implements OnChanges {
     @Input() idCollapsed: string[];
     @Output() hoverIn = new EventEmitter<string>();
     @Output() hoverOut = new EventEmitter();
-    @Output() dettaglioScheda = new EventEmitter<SchedaContatto>();
+    @Output() dettaglioScheda = new EventEmitter<string>();
     @Output() setSchedaContattoTelefonata = new EventEmitter<SchedaContatto>();
     @Output() setSchedaContattoGestita = new EventEmitter<boolean>();
     @Output() editSelezionata = new EventEmitter<CheckboxInterface>();

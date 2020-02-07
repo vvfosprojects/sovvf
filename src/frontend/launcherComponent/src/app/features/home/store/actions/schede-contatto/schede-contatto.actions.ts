@@ -154,3 +154,10 @@ export class ToggleCollapsed {
     constructor(public codiceScheda: string) {
     }
 }
+
+export class OpenDetailSC {
+    static readonly type = '[Schede Contatto] Open Detail';
+
+    constructor(public codiceScheda: string) {
+    }
+}

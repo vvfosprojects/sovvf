@@ -25,13 +25,13 @@ import {
     ClearMarkerMezzoHover,
     ClearMarkerMezzoSelezionato,
     ClearMarkerRichiestaHover,
-    ClearMarkerRichiestaSelezionato,
+    ClearMarkerRichiestaSelezionato, ClearMarkerSCHover, ClearMarkerSCSelezionato,
     ClearMarkerSedeHover,
     ClearMarkerSedeSelezionato,
     SetMarkerMezzoHover,
     SetMarkerMezzoSelezionato,
     SetMarkerRichiestaHover,
-    SetMarkerRichiestaSelezionato,
+    SetMarkerRichiestaSelezionato, SetMarkerSCHover, SetMarkerSCSelezionato,
     SetMarkerSedeHover,
     SetMarkerSedeSelezionato,
 } from '../../../store/actions/maps/marker.actions';
@@ -62,6 +62,10 @@ import { ViewInterfaceMaps } from '../../../../../shared/interface/view.interfac
 import { ViewComponentState } from '../../../store/states/view/view.state';
 import { AppFeatures } from '../../../../../shared/enum/app-features.enum';
 import { ClearMezzoInServizioHover, SetMezzoInServizioHover, SetMezzoInServizioSelezionato } from '../../../store/actions/mezzi-in-servizio/mezzi-in-servizio.actions';
+import {
+    ClearSchedaContattoHover, OpenDetailSC,
+    SetSchedaContattoHover
+} from '../../../store/actions/schede-contatto/schede-contatto.actions';
 
 
 @Injectable()
@@ -94,6 +98,12 @@ export class MarkerService implements OnDestroy {
     @Select(MarkerState.markerSedeHover) markerSedeHover$: Observable<string>;
     private markerSedeHover: string;
 
+    @Select(MarkerState.markerSCSelezionato) markerSCSelezionato$: Observable<string>;
+    private markerSCSelezionato: string;
+
+    @Select(MarkerState.markerSCHover) markerSCHover$: Observable<string>;
+    private markerSCHover: string;
+
     @Select(MapsFiltroState.filtroMarkerAttivo) filtroMarkerAttivo$: Observable<string[]>;
     private filtroMarkerAttivo: string[];
 
@@ -124,6 +134,8 @@ export class MarkerService implements OnDestroy {
         this.subscription.add(this.markerMezzoHover$.subscribe((id: string) => this.markerMezzoHover = id));
         this.subscription.add(this.markerSedeSelezionato$.subscribe((id: string) => this.markerSedeSelezionato = id));
         this.subscription.add(this.markerSedeHover$.subscribe((id: string) => this.markerSedeHover = id));
+        this.subscription.add(this.markerSCSelezionato$.subscribe((id: string) => this.markerSCSelezionato = id));
+        this.subscription.add(this.markerSCHover$.subscribe((id: string) => this.markerSCHover = id));
         this.subscription.add(this.datiMeteo$.subscribe((meteo: MarkerDatiMeteo[]) => this.datiMeteo = meteo));
         this.subscription.add(this.viewStateMaps$.subscribe((viewStateMaps: ViewInterfaceMaps) => this.viewStateMaps = viewStateMaps));
         this.subscription.add(this.markerStateNull$.subscribe((isNull: boolean) => {
@@ -177,6 +189,11 @@ export class MarkerService implements OnDestroy {
                     trueMarkerValue = true;
                 }
                 break;
+            case 'schedaContatto':
+                if (this.markerSCSelezionato === id) {
+                    trueMarkerValue = true;
+                }
+                break;
         }
         return trueMarkerValue;
     }
@@ -199,33 +216,19 @@ export class MarkerService implements OnDestroy {
                     trueMarkerValue = true;
                 }
                 break;
+            case 'schedaContatto':
+                if (this.markerSCHover === id) {
+                    trueMarkerValue = true;
+                }
+                break;
         }
         return trueMarkerValue;
     }
 
     isSelfHovered(id: string, tipoMarker: string): boolean {
         let trueMarkerValue = false;
-        switch (tipoMarker) {
-            case 'richiesta':
-                if (this.selfHoveredMarker === `richiesta-${id}` && !this.isClicked(id, tipoMarker)) {
-                    trueMarkerValue = true;
-                }
-                break;
-            case 'mezzo':
-                if (this.selfHoveredMarker === `mezzo-${id}` && !this.isClicked(id, tipoMarker)) {
-                    trueMarkerValue = true;
-                }
-                break;
-            case 'sede':
-                if (this.selfHoveredMarker === `sede-${id}` && !this.isClicked(id, tipoMarker)) {
-                    trueMarkerValue = true;
-                }
-                break;
-            case 'schedaContatto':
-                if (this.selfHoveredMarker === `scheda-contatto-${id}` && !this.isClicked(id, tipoMarker)) {
-                    trueMarkerValue = true;
-                }
-                break;
+        if (this.selfHoveredMarker === `${tipoMarker}-${id}` && !this.isClicked(id, tipoMarker)) {
+            trueMarkerValue = true;
         }
         return trueMarkerValue;
     }
@@ -233,22 +236,8 @@ export class MarkerService implements OnDestroy {
     isSelfClicked(id: string, tipoMarker: string): boolean {
         let trueMarkerValue = false;
         if (this.isVisible(tipoMarker)) {
-            switch (tipoMarker) {
-                case 'richiesta':
-                    if (this.selfClickedMarker === `richiesta-${id}` || (this.selfHoveredMarker === `richiesta-${id}` && this.isClicked(id, tipoMarker))) {
-                        trueMarkerValue = true;
-                    }
-                    break;
-                case 'mezzo':
-                    if (this.selfClickedMarker === `mezzo-${id}` || (this.selfHoveredMarker === `mezzo-${id}` && this.isClicked(id, tipoMarker))) {
-                        trueMarkerValue = true;
-                    }
-                    break;
-                case 'sede':
-                    if (this.selfClickedMarker === `sede-${id}` || (this.selfHoveredMarker === `sede-${id}` && this.isClicked(id, tipoMarker))) {
-                        trueMarkerValue = true;
-                    }
-                    break;
+            if (this.selfClickedMarker === `${tipoMarker}-${id}` || (this.selfHoveredMarker === `${tipoMarker}-${id}` && this.isClicked(id, tipoMarker))) {
+                trueMarkerValue = true;
             }
         }
         return trueMarkerValue;
@@ -291,6 +280,16 @@ export class MarkerService implements OnDestroy {
                     }
                 }
                 break;
+            case 'schedaContatto':
+                if (this.markerSCSelezionato === id || this.markerSCHover === id) {
+                    zIndexValue += zIndexUp;
+                }
+                if (this.markerOpachi.stato.schedeContatto) {
+                    if (this.markerOpachi.markerOpachiId.schedeContattoId.includes(id)) {
+                        zIndexValue += zIndexUp;
+                    }
+                }
+                break;
         }
         return zIndexValue;
     }
@@ -308,7 +307,7 @@ export class MarkerService implements OnDestroy {
                 case 'sede':
                     isVisible = this.filtroMarkerAttivo.includes(tipoMarker);
                     break;
-                case 'schedeContatto':
+                case 'schedaContatto':
                     isVisible = this.viewStateMaps.active === AppFeatures.SchedeContatto;
             }
             return isVisible;
@@ -339,7 +338,7 @@ export class MarkerService implements OnDestroy {
                     }
                 }
                 break;
-            case 'scheda-contatto':
+            case 'schedaContatto':
                 if (this.markerOpachi.stato.schedeContatto) {
                     if (!this.markerOpachi.markerOpachiId.schedeContattoId.includes(id)) {
                         isOpaque = this.mapsOptions.livelloOpacita;
@@ -485,20 +484,25 @@ export class MarkerService implements OnDestroy {
     actionSchedaContattoMarker(id: string, mouse: MouseE) {
         switch (mouse) {
             case MouseE.HoverIn: {
-                // this.store.dispatch(new SetMarkerSedeHover(id));
-                this.selfHoveredMarker = `scheda-contatto-${id}`;
+                this.store.dispatch(new SetMarkerSCHover(id));
+                this.store.dispatch(new SetSchedaContattoHover(id));
+                this.selfHoveredMarker = `schedaContatto-${id}`;
             }
                 break;
             case MouseE.HoverOut: {
-                // this.store.dispatch(new ClearMarkerSedeHover());
+                this.store.dispatch(new ClearMarkerSCHover());
+                this.store.dispatch(new ClearSchedaContattoHover());
                 this.selfHoveredMarker = ``;
             }
                 break;
             case MouseE.Click: {
-                if (this.markerSedeSelezionato !== id) {
-                    // this.store.dispatch(new SetMarkerSedeSelezionato(id));
+                if (this.markerSCSelezionato !== id) {
+                    this.store.dispatch([
+                        new OpenDetailSC(id),
+                        new SetMarkerSCSelezionato(id)
+                    ]);
                 }
-                this.selfClickedMarker = `scheda-contatto-${id}`;
+                this.selfClickedMarker = `schedaContatto-${id}`;
             }
                 break;
         }
@@ -510,11 +514,14 @@ export class MarkerService implements OnDestroy {
 
     noAction() {
         if (this.viewStateMaps.active !== AppFeatures.ComposizionePartenza) {
-            this.store.dispatch(new ClearRichiestaFissata());
-            this.store.dispatch(new ClearRichiestaSelezionata());
-            this.store.dispatch(new ClearMarkerRichiestaSelezionato());
-            this.store.dispatch(new ClearMarkerSedeSelezionato());
-            this.store.dispatch(new ClearMarkerMezzoSelezionato());
+            this.store.dispatch([
+                new ClearRichiestaFissata(),
+                new ClearRichiestaSelezionata(),
+                new ClearMarkerRichiestaSelezionato(),
+                new ClearMarkerSedeSelezionato(),
+                new ClearMarkerMezzoSelezionato(),
+                new ClearMarkerSCSelezionato()
+            ]);
         }
         this.store.dispatch(new GetInitCentroMappa());
     }

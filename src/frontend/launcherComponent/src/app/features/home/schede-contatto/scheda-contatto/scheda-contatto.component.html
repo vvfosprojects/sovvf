@@ -1,7 +1,7 @@
 <ng-container *ngIf="idVisualizzati.includes(scheda.codiceScheda)">
     <li class="cursor-pointer border-top border-bottom py-1"
         (mouseenter)="hoverIn.emit(scheda.codiceScheda)" (mouseleave)="hoverOut.emit()"
-        (click)="dettaglioScheda.emit(scheda)" [ngClass]="cardClasses(scheda.codiceScheda)">
+        (click)="dettaglioScheda.emit(scheda.codiceScheda)" [ngClass]="cardClasses(scheda.codiceScheda)">
         <div class="row position-relative">
             <span style="position: absolute; top: -4px; left: 20px; z-index: 99999"
                   (click)="onCollapse(); $event.stopPropagation()">

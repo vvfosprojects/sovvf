@@ -2,7 +2,7 @@ import { Component, isDevMode, OnDestroy, OnInit } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import {
     ClearSchedaContattoHover,
-    GetListaSchedeContatto,
+    GetListaSchedeContatto, OpenDetailSC,
     SetRangeVisualizzazioneSchedeContatto,
     SetSchedaContattoGestita,
     SetSchedaContattoHover,
@@ -16,7 +16,6 @@ import { Observable, Subscription } from 'rxjs';
 import { SchedaContatto } from 'src/app/shared/interface/scheda-contatto.interface';
 import { ToggleChiamata, ToggleSchedeContatto } from '../store/actions/view/view.actions';
 import { NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
-import { DettaglioSchedaModalComponent } from './dettaglio-scheda-modal/dettaglio-scheda-modal.component';
 import { ContatoriSchedeContatto } from '../../../shared/interface/contatori-schede-contatto.interface';
 import { RangeSchedeContattoEnum } from '../../../shared/enum/range-schede-contatto';
 import {
@@ -130,9 +129,8 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
         this.store.dispatch(new SetRangeVisualizzazioneSchedeContatto(range));
     }
 
-    dettaglioScheda(scheda: SchedaContatto) {
-        const modal = this.modal.open(DettaglioSchedaModalComponent, { windowClass: 'xlModal', backdropClass: 'light-blue-backdrop', centered: true });
-        modal.componentInstance.schedaContatto = scheda;
+    dettaglioScheda(idSchedaContatto: string) {
+        this.store.dispatch(new OpenDetailSC(idSchedaContatto));
     }
 
     hoverIn(idSchedaContatto: string) {
