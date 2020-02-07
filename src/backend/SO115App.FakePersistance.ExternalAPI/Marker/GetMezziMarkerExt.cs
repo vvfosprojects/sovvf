@@ -17,6 +17,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Geo;
 using SO115App.API.Models.Classi.Marker;
 using SO115App.Models.Classi.Utility;
@@ -52,6 +53,7 @@ namespace SO115App.ExternalAPI.Fake.Marker
             var listaMezziFilter = new List<MezzoMarker>();
 
             var listaMezzi = _getMezziUtilizzabili.Get(filtroAreaMappa.CodiceSede).Result;
+
             var listaMezziMarker = new List<MezzoMarker>();
 
             foreach (var mezzo in listaMezzi)
@@ -61,13 +63,14 @@ namespace SO115App.ExternalAPI.Fake.Marker
                     Mezzo = mezzo,
                     InfoRichiesta = _getInfoRichiesta.GetInfoRichiestaFromIdRichiestaMezzo(mezzo.IdRichiesta)
                 };
-
                 listaMezziMarker.Add(mezzoMarker);
             }
 
             if (filtroAreaMappa == null) return listaMezziMarker;
 
             listaMezziFilter.AddRange(listaMezziMarker.Where(mezzo => mezzo.Mezzo.Coordinate.Latitudine >= filtroAreaMappa.BottomLeft.Latitudine && mezzo.Mezzo.Coordinate.Latitudine <= filtroAreaMappa.TopRight.Latitudine && mezzo.Mezzo.Coordinate.Longitudine >= filtroAreaMappa.BottomLeft.Longitudine && mezzo.Mezzo.Coordinate.Longitudine <= filtroAreaMappa.TopRight.Longitudine));
+
+            var listaMezziMarkerRaggruppata = new List<MezzoMarker>();
 
             var listaMezziFiltrataPerStato = new List<MezzoMarker>();
             var listaMezziFitrataPerStatoEGenere = new List<MezzoMarker>();
@@ -82,7 +85,7 @@ namespace SO115App.ExternalAPI.Fake.Marker
 
                 if (!filtroAreaMappa.FiltroMezzi.Tipologia.Any())
                 {
-                    return listaMezziFiltrataPerStato;
+                    listaMezziFilter = listaMezziFiltrataPerStato;
                 }
             }
             if (filtroAreaMappa.FiltroMezzi.Tipologia.Any())
@@ -93,16 +96,17 @@ namespace SO115App.ExternalAPI.Fake.Marker
                 }
                 if (!filtroAreaMappa.FiltroMezzi.Stato.Any())
                 {
-                    return listaMezziFiltrataPerGenere;
+                    listaMezziFilter = listaMezziFiltrataPerGenere;
                 }
             }
 
             if (filtroAreaMappa.FiltroMezzi.Tipologia.Any() && filtroAreaMappa.FiltroMezzi.Stato.Any())
             {
-                return listaMezziFitrataPerStatoEGenere = listaMezziFiltrataPerStato.FindAll(x => listaMezziFiltrataPerGenere.Contains(x));
+                listaMezziFilter = listaMezziFiltrataPerStato.FindAll(x => listaMezziFiltrataPerGenere.Contains(x));
             }
 
             return listaMezziFilter;
+            //return GroupListaMezziMarker.Group(listaMezziFilter); //TODO da integrare con la clusterizzazione.
         }
     }
 }
