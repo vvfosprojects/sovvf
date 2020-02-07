@@ -13,7 +13,8 @@ import {
     SetUtenteDetail,
     SetUtentiGestione,
     SetUtentiVVF,
-    UpdateUtenteGestione
+    UpdateUtenteGestione,
+    ClearDataModalAddUtenteModal
 } from '../../actions/gestione-utenti/gestione-utenti.actions';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgZone } from '@angular/core';
@@ -203,12 +204,7 @@ export class GestioneUtentiState {
         });
 
         // Clear data
-        dispatch(new UpdateFormValue({
-            value: null,
-            path: 'gestioneUtenti.addUtenteRuoloForm'
-        }));
-        dispatch(new SetFormEnabled('gestioneUtenti.addUtenteRuoloForm'));
-        dispatch(new ClearUtentiVVF());
+        dispatch(new ClearDataModalAddUtenteModal());
     }
 
     @Action(OpenModalRemoveUtente)
@@ -290,5 +286,15 @@ export class GestioneUtentiState {
             );
             dispatch(new ShowToastr(ToastrType.Info, 'Ruolo Utente Rimosso', 'Ruolo Utente rimosso con successo.', 3));
         });
+    }
+
+    @Action(ClearDataModalAddUtenteModal)
+    clearDataModalAddUtenteModal({ dispatch }: StateContext<GestioneUtentiStateModel>) {
+        dispatch(new UpdateFormValue({
+            value: null,
+            path: 'gestioneUtenti.addUtenteRuoloForm'
+        }));
+        dispatch(new SetFormEnabled('gestioneUtenti.addUtenteRuoloForm'));
+        dispatch(new ClearUtentiVVF());
     }
 }
