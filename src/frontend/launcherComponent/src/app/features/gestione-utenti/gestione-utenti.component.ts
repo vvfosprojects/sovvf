@@ -114,6 +114,10 @@ export class GestioneUtentiComponent implements OnInit {
         this.store.dispatch(new OpenModalRemoveRuoloUtente(payload.id, payload.ruolo, payload.nominativoUtente));
     }
 
+    onPageChange(page: number) {
+        this.store.dispatch(new GetUtentiGestione(page));
+    }
+
     getUtentiGestione() {
         this.store.dispatch(new GetUtentiGestione());
     }

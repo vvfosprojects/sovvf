@@ -22,8 +22,8 @@
     <div class="col-12 mx-auto">
       <app-tabella-utenti [ruoli]="ruoli$ | async" [listaUtenti]="listaUtenti$ | async"
         [totalItems]="totalItems$ | async" [pageSize]="pageSize$ | async" [page]="page$ | async"
-        [loading]="loading$ | async" (detail)="onDetailUtente($event)" (removeUser)="onRemoveUtente($event)"
-        (removeRoleUser)="onRemoveRuoloUtente($event)" (addRuoloUtente)="onAddRuoloUtente($event)">
+        [loading]="loading$ | async" (page) (detail)="onDetailUtente($event)" (removeUser)="onRemoveUtente($event)"
+        (removeRoleUser)="onRemoveRuoloUtente($event)" (addRuoloUtente)="onAddRuoloUtente($event)" (pageChange)="">
       </app-tabella-utenti>
     </div>
   </div>

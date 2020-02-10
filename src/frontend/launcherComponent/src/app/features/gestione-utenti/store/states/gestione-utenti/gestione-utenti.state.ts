@@ -121,11 +121,14 @@ export class GestioneUtentiState {
     }
 
     @Action(GetUtentiGestione)
-    getGestioneUtenti({ dispatch }: StateContext<GestioneUtentiStateModel>) {
+    getGestioneUtenti({ dispatch }: StateContext<GestioneUtentiStateModel>, action: GetUtentiGestione) {
         const filters = {
-            search: this.store.selectSnapshot(RicercaUtentiState.ricerca)
+            search: this.store.selectSnapshot(RicercaUtentiState.ricerca),
         };
-        this._gestioneUtenti.getListaUtentiGestione(filters).subscribe((response: ResponseInterface) => {
+        const pagination = {
+            page: action.page ? action.page : 1
+        };
+        this._gestioneUtenti.getListaUtentiGestione(filters, pagination).subscribe((response: ResponseInterface) => {
             dispatch(new SetUtentiGestione(response.dataArray));
             dispatch(new PatchPagination(response.pagination));
         });

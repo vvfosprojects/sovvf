@@ -20,7 +20,7 @@ export class ClearUtentiVVF {
 export class GetUtentiGestione {
     static readonly type = '[GestioneUtenti] Get List Utenti';
 
-    constructor() { }
+    constructor(public page?: number) { }
 }
 
 export class SetUtentiGestione {

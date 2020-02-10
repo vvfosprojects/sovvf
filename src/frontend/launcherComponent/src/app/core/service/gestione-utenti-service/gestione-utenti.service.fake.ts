@@ -7,6 +7,7 @@ import { Coordinate } from '../../../shared/model/coordinate.model';
 import { UtenteVvfInterface } from '../../../shared/interface/utente-vvf.interface';
 import { AddRuoloUtenteInterface } from '../../../shared/interface/add-ruolo-utente.interface';
 import { makeCopy } from '../../../shared/helper/function';
+import { PaginationInterface } from 'src/app/shared/interface/pagination.interface';
 
 @Injectable({
     providedIn: 'root'
@@ -31,7 +32,7 @@ export class GestioneUtentiServiceFake {
         return of(this.utentiVVF);
     }
 
-    getListaUtentiGestione(): Observable<ResponseInterface> {
+    getListaUtentiGestione(filters: any, pagination: PaginationInterface): Observable<ResponseInterface> {
         this.utenti = [
             new Utente(
                 '1',

@@ -8,6 +8,7 @@ import { ResponseInterface } from '../../../shared/interface/response.interface'
 import { Ruolo, Utente } from '../../../shared/model/utente.model';
 import { UtenteVvfInterface } from '../../../shared/interface/utente-vvf.interface';
 import { AddRuoloUtenteInterface } from '../../../shared/interface/add-ruolo-utente.interface';
+import { PaginationInterface } from 'src/app/shared/interface/pagination.interface';
 
 const API_URL = environment.apiUrl.utenti;
 
@@ -28,15 +29,19 @@ export class GestioneUtentiService {
         );
     }
 
-    getListaUtentiGestione(filters: any): Observable<ResponseInterface> {
-        return this.http.post<ResponseInterface>(API_URL, filters).pipe(
+    getListaUtentiGestione(filters: any, pagination: PaginationInterface): Observable<ResponseInterface> {
+        const obj = {
+            filters,
+            pagination
+        };
+        return this.http.post<ResponseInterface>(API_URL, obj).pipe(
             retry(3),
             catchError(handleError)
         );
     }
 
-    getUtente(id: string): Observable<Utente> {
-        return this.http.get<Utente>(API_URL + '/' + id).pipe(
+    addUtente(value: AddRuoloUtenteInterface): Observable<Utente> {
+        return this.http.post<Utente>(API_URL + '/AddUtente', value).pipe(
             retry(3),
             catchError(handleError)
         );
@@ -49,15 +54,15 @@ export class GestioneUtentiService {
         );
     }
 
-    removeUtente(id: string) {
-        return this.http.post<Utente>(API_URL + '/RemoveUtente', id).pipe(
+    getUtente(id: string): Observable<Utente> {
+        return this.http.get<Utente>(API_URL + '/' + id).pipe(
             retry(3),
             catchError(handleError)
         );
     }
 
-    addUtente(value: AddRuoloUtenteInterface): Observable<Utente> {
-        return this.http.post<Utente>(API_URL + '/AddUtente', value).pipe(
+    removeUtente(id: string) {
+        return this.http.delete<any>(API_URL + '?id=' + id).pipe(
             retry(3),
             catchError(handleError)
         );
