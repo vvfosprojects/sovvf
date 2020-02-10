@@ -1,11 +1,7 @@
 ﻿using Oracle.ManagedDataAccess.Client;
 using SO115App.Persistence.Oracle.Classi;
-using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SO115App.Persistence.Oracle.Servizi.Personale
 {
@@ -22,10 +18,12 @@ namespace SO115App.Persistence.Oracle.Servizi.Personale
             OracleCommand cmd = new OracleCommand
             {
                 Connection = conn,
-                CommandText = $"SELECT NVL(COGNOME,' '), NVL(NOME,' '), NVL(MATDIP,0), NVL(COD_DISTACCAMENTO,0) FROM SALAOPER.PERSONALE p WHERE NOME LIKE'%{text.ToUpper()}%' OR COGNOME LIKE '%{text.ToUpper()}%'"
+                CommandText = $"SELECT NVL(COGNOME,' '), NVL(NOME,' '), NVL(MATDIP,0), NVL(COD_DISTACCAMENTO,0) FROM SALAOPER.PERSONALE p WHERE NOME LIKE :NAME OR COGNOME LIKE :SURNAME"
             };
 
             cmd.CommandType = CommandType.Text;
+            cmd.Parameters.Add(new OracleParameter("NAME", "%" + text.ToUpper() + "%"));
+            cmd.Parameters.Add(new OracleParameter("SURNAME", "%" + text.ToUpper() + "%"));
             OracleDataReader dr = cmd.ExecuteReader();
 
             while (dr.Read())
@@ -34,7 +32,7 @@ namespace SO115App.Persistence.Oracle.Servizi.Personale
                 {
                     CodFiscale = dr.GetString(2),
                     Nominativo = $"{dr.GetString(1)}.{dr.GetString(0)}",
-                    Sede = $"{codiceSede}.{dr.GetInt32(3).ToString()}"
+                    Sede = dr.GetInt32(3).ToString()
                 };
 
                 listaPersonale.Add(personaSingola);
