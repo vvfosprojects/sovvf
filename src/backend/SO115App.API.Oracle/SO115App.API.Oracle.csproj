@@ -85,11 +85,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\CompetenzeController.cs" />
     <Compile Include="Controllers\GestioneUtenteController.cs" />
     <Compile Include="Controllers\MezziController.cs" />
+    <Compile Include="Controllers\PartenzeController.cs" />
     <Compile Include="Controllers\RichiesteController.cs" />
     <Compile Include="Controllers\SchedeContattoController.cs" />
+    <Compile Include="Controllers\SicurezzaController.cs" />
     <Compile Include="Controllers\SquadreController.cs" />
+    <Compile Include="Controllers\TipologieController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

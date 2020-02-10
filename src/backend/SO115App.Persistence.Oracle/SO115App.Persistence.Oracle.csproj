@@ -62,14 +62,41 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classi\Connessione.cs" />
+    <Compile Include="Classi\ORAAccessi.cs" />
+    <Compile Include="Classi\ORAAccessiOperatori.cs" />
     <Compile Include="Classi\ORAAutomezzi.cs" />
+    <Compile Include="Classi\ORAChiamate.cs" />
+    <Compile Include="Classi\ORACompetenzeElenco.cs" />
+    <Compile Include="Classi\ORACompetenzeZone.cs" />
+    <Compile Include="Classi\ORAGesPreaccoppiati.cs" />
+    <Compile Include="Classi\ORAGruppo_Tipologie.cs" />
+    <Compile Include="Classi\ORAInterventi.cs" />
+    <Compile Include="Classi\ORAInterventiChiusi.cs" />
+    <Compile Include="Classi\ORAListaMachine.cs" />
+    <Compile Include="Classi\ORAOperatori.cs" />
+    <Compile Include="Classi\ORAPartenze.cs" />
+    <Compile Include="Classi\OraPersonaleSquadre.cs" />
     <Compile Include="Classi\ORAPersonaleVVF.cs" />
     <Compile Include="Classi\ORASchedaContatto.cs" />
+    <Compile Include="Classi\ORAServizi.cs" />
+    <Compile Include="Classi\ORASQPersonaleSquadre.cs" />
+    <Compile Include="Classi\ORASquadre.cs" />
+    <Compile Include="Classi\ORATipologie.cs" />
     <Compile Include="DBContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Servizi\Competenze\GetCompetenze.cs" />
     <Compile Include="Servizi\Mezzi\GetListaMezziUtilizzabili.cs" />
+    <Compile Include="Servizi\Partenze\GetPartenze.cs" />
     <Compile Include="Servizi\Personale\GetPersonaleVVF.cs" />
+    <Compile Include="Servizi\Richieste\GetChiamate.cs" />
+    <Compile Include="Servizi\Richieste\GetInterventi.cs" />
     <Compile Include="Servizi\SchedeContatto\GetSchedeContatto.cs" />
+    <Compile Include="Servizi\Sicurezza\GetAccessi.cs" />
+    <Compile Include="Servizi\Sicurezza\GetOperatori.cs" />
+    <Compile Include="Servizi\Squadre\GetServizi.cs" />
+    <Compile Include="Servizi\Squadre\GetSquadre.cs" />
+    <Compile Include="Servizi\Tipologie\GetTipologie.cs" />
+    <Compile Include="Utility\Utility.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
