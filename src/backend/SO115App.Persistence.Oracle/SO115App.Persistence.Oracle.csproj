@@ -63,10 +63,12 @@
   <ItemGroup>
     <Compile Include="Classi\Connessione.cs" />
     <Compile Include="Classi\ORAAutomezzi.cs" />
+    <Compile Include="Classi\ORAPersonaleVVF.cs" />
     <Compile Include="Classi\ORASchedaContatto.cs" />
     <Compile Include="DBContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Servizi\Mezzi\GetListaMezziUtilizzabili.cs" />
+    <Compile Include="Servizi\Personale\GetPersonaleVVF.cs" />
     <Compile Include="Servizi\SchedeContatto\GetSchedeContatto.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -74,7 +76,9 @@
     <None Include="Connection.json" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

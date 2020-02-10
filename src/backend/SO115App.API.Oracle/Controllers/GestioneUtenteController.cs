@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
+﻿using SO115App.Persistence.Oracle.Servizi.Personale;
 using System.Web.Http;
 
 namespace SO115App.API.Oracle.Controllers
@@ -10,20 +6,18 @@ namespace SO115App.API.Oracle.Controllers
     public class GestioneUtenteController : ApiController
     {
         // GET: api/GestioneUtente
-        public IEnumerable<string> Get()
+        [HttpGet]
+        public IHttpActionResult GetPersonale(string text, string codiceSede)
         {
-            return new string[] { "value1", "value2" };
-        }
-
-        // GET: api/GestioneUtente/5
-        public string Get(int id)
-        {
-            return "value";
-        }
-
-        // POST: api/GestioneUtente
-        public void Post([FromBody]string value)
-        {
+            try
+            {
+                var getPersonaleVVF = new GetPersonaleVVF();
+                return Ok(getPersonaleVVF.GetPersoneVVF(text, codiceSede));
+            }
+            catch (System.Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }
