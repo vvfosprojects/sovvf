@@ -5,8 +5,7 @@ import { Select, Store } from '@ngxs/store';
 import { SetRicercaUtenti } from './store/actions/ricerca-utenti/ricerca-utenti.actons';
 import { UtenteState } from '../navbar/store/states/operatore/utente.state';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-// tslint:disable-next-line: max-line-length
-import { GetUtenteDetail, GetUtentiGestione, OpenModalRemoveRuoloUtente, OpenModalRemoveUtente, AddRuoloUtenteGestione, ClearDataModalAddUtenteModal } from './store/actions/gestione-utenti/gestione-utenti.actions';
+import { GetUtentiGestione, OpenModalRemoveUtente, AddRuoloUtenteGestione, ClearDataModalAddUtenteModal, RemoveRuoloUtente } from './store/actions/gestione-utenti/gestione-utenti.actions';
 import { GetRuoli } from './store/actions/ruoli/ruoli.actions';
 import { RuoliState } from './store/states/ruoli/ruoli.state';
 import { GestioneUtentiState } from './store/states/gestione-utenti/gestione-utenti.state';
@@ -14,6 +13,7 @@ import { RicercaUtentiState } from './store/states/ricerca-utenti/ricerca-utenti
 import { PaginationState } from '../../shared/store/states/pagination/pagination.state';
 import { LoadingState } from '../../shared/store/states/loading/loading.state';
 import { GestioneUtenteModalComponent } from './gestione-utente-modal/gestione-utente-modal.component';
+import { ConfirmModalComponent } from 'src/app/shared';
 
 @Component({
     selector: 'app-gestione-utenti',
@@ -88,7 +88,32 @@ export class GestioneUtentiComponent implements OnInit {
         );
     }
 
-    onDetailUtente(id: string) {
+    onRemoveRuoloUtente(payload: { id: string, ruolo: Ruolo, nominativoUtente: string }) {
+        const modalConfermaAnnulla = this.modalService.open(ConfirmModalComponent, { backdropClass: 'light-blue-backdrop', centered: true });
+        modalConfermaAnnulla.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
+        modalConfermaAnnulla.componentInstance.titolo = 'Elimina ruolo a ' + payload.nominativoUtente;
+        modalConfermaAnnulla.componentInstance.messaggioAttenzione = 'Sei sicuro di voler rimuovere il ruolo "' + payload.ruolo.descrizione + '" su "' + payload.ruolo.descSede + '"?';
+        modalConfermaAnnulla.componentInstance.bottoni = [
+            { type: 'ko', descrizione: 'Annulla', colore: 'danger' },
+            { type: 'ok', descrizione: 'Conferma', colore: 'dark' },
+        ];
+        modalConfermaAnnulla.result.then(
+            (val) => {
+                switch (val) {
+                    case 'ok':
+                        this.store.dispatch(new RemoveRuoloUtente(payload.id, payload.ruolo));
+                        break;
+                    case 'ko':
+                        // console.log('Azione annullata');
+                        break;
+                }
+                // console.log('Modal chiusa con val ->', val);
+            },
+            (err) => console.error('Modal chiusa senza bottoni. Err ->', err)
+        );
+    }
+
+    /* onDetailUtente(id: string) {
         this.store.dispatch(new GetUtenteDetail(id));
         this.subscription.add(
             this.utenteGestioneDetail$.subscribe((utente: any) => {
@@ -104,14 +129,10 @@ export class GestioneUtentiComponent implements OnInit {
                 }
             })
         );
-    }
+    } */
 
     onRemoveUtente(payload: { id: string, nominativoUtente: string }) {
         this.store.dispatch(new OpenModalRemoveUtente(payload.id, payload.nominativoUtente));
-    }
-
-    onRemoveRuoloUtente(payload: { id: string, ruolo: Ruolo, nominativoUtente: string }) {
-        this.store.dispatch(new OpenModalRemoveRuoloUtente(payload.id, payload.ruolo, payload.nominativoUtente));
     }
 
     onPageChange(page: number) {

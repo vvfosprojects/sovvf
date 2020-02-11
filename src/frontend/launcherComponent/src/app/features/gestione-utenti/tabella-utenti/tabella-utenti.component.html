@@ -2,52 +2,51 @@
   <thead>
     <tr>
       <th scope="col" width="25%">Nominativo</th>
-      <th scope="col" width="40%">Ruolo - Sede</th>
+      <th scope="col" width="40%">Permessi</th>
     </tr>
   </thead>
   <tbody>
     <tr
       *ngFor="let utente of listaUtenti | paginate: { itemsPerPage: pageSize, currentPage: page, totalItems: totalItems }">
-      <td width="40%">
+      <td width="40%" class="pb-1">
         <button class="btn btn-sm btn-danger font-weight-bold mr-2" ngbTooltip="Rimuovi utente" placement="bottom"
           (click)="onRemoveUtente(utente.id, utente.cognome + ' ' + utente.nome)">
           <i class="fa fa-trash"></i>
         </button>
         <span class="h6 font-weight-normal font-weight-bold">{{utente.cognome}} {{utente.nome}}</span>
       </td>
-      <td width="60%">
-        <span class="h6 font-weight-normal">
-          <ul *ngIf="utente.ruoli && utente.ruoli.length > 0" class="mb-2 list-unstyled scroll-y"
-            style="max-height:110px">
-            <li *ngFor="let ruolo of utente.ruoli, let i = index" [ngClass]="{'mb-2': i !== (utente.ruoli.length - 1)}">
-              <button class="btn btn-danger btn-sm mr-1" ngbTooltip="Rimuovi ruolo utente" placement="bottom"
-                (click)="onRemoveRuoloUtente(utente.id, ruolo, utente.cognome + ' ' + utente.nome)">
-                <i class="fa fa-trash"></i>
-              </button>
-              <button class="btn btn-secondary btn-sm mr-2" ngbTooltip="Visualizza i permessi" placement="bottom"
-                [ngbPopover]="popPermessiRole" (click)="onDetailPermessi(ruolo)">
-                <i class="fa fa-cogs"></i>
-              </button>
-              <ng-template #popPermessiRole>
-                <ul *ngIf="dettaglioPermessi && dettaglioPermessi.length > 0" class="list-unstyled">
-                  <li *ngFor="let perm of dettaglioPermessi">
-                    <i class="fa fa-cog mr-1"></i>
-                    {{perm}}
-                  </li>
-                </ul>
-                <small *ngIf="!dettaglioPermessi || dettaglioPermessi.length <= 0" class="text-danger">Nessun Permesso
-                  Assegnato</small>
-              </ng-template>
-              <span class="font-weight-bold">{{wipeRoleString(ruolo.descrizione)}}</span>
-              - {{ruolo.descSede}} ({{ruolo.codSede}})
-              <hr *ngIf="i !== (utente.ruoli.length - 1)" class="mt-2 mb-1">
-            </li>
-          </ul>
-          <button class="btn btn-primary btn-sm btn-block font-weight-bold"
-            (click)="onAddRuoloUtente(utente.codiceFiscale, utente.cognome + ' ' + utente.nome)">
-            Aggiungi ruolo a "{{utente.cognome}} {{utente.nome}}"
+      <td width="60%" class="pb-1">
+        <button class="btn btn-primary btn-sm font-weight-bold mr-2"
+          (click)="onAddRuoloUtente(utente.codiceFiscale, utente.cognome + ' ' + utente.nome)">
+          <i class="fa fa-plus"></i>
+        </button>
+        <div *ngFor="let ruolo of utente.ruoli, let i=index" class="d-inline-block h6 font-weight-normal">
+          <button class="btn btn-warning btn-sm font-weight-bold mr-1" ngbTooltip="Visualizza i permessi"
+            placement="top" [ngbPopover]="popPermessiRole" (click)="onDetailPermessi(ruolo)">
+            {{ruolo.codSede}}
           </button>
-        </span>
+          <ng-template #popPermessiRole>
+            <div class="py-2">
+              <h5 class="mb-0">{{wipeRoleString(ruolo.descrizione)}}</h5>
+              <small>
+                <i class="fa fa-map-pin mr-1"></i>
+                {{ruolo.descSede}}
+              </small>
+              <ul *ngIf="dettaglioPermessi && dettaglioPermessi.length > 0" class="list-unstyled mt-2">
+                <li *ngFor="let perm of dettaglioPermessi">
+                  <i class="fa fa-cog mr-1"></i>
+                  {{perm}}
+                </li>
+              </ul>
+              <small *ngIf="!dettaglioPermessi || dettaglioPermessi.length <= 0" class="text-danger">Nessun Permesso
+                Assegnato</small>
+              <button class="btn btn-danger btn-sm btn-block mr-1" ngbTooltip="Rimuovi ruolo utente" placement="bottom"
+                (click)="onRemoveRuoloUtente(utente.id, ruolo, utente.cognome + ' ' + utente.nome)">
+                Rimuovi
+              </button>
+            </div>
+          </ng-template>
+        </div>
       </td>
     </tr>
     <tr *ngIf="listaUtenti?.length <= 0">

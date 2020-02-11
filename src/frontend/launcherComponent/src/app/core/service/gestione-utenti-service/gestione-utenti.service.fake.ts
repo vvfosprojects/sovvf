@@ -93,23 +93,18 @@ export class GestioneUtentiServiceFake {
                     },
                     {
                         descrizione: Role.GestoreRichieste,
-                        codSede: 'FR.2000',
-                        descSede: 'Comando di Frosinone'
+                        codSede: 'LT.1001',
+                        descSede: 'Distaccamento di Latina'
                     },
                     {
                         descrizione: Role.GestoreRichieste,
-                        codSede: 'FR.2000',
-                        descSede: 'Comando di Frosinone'
+                        codSede: 'FR.1002',
+                        descSede: 'Distaccamento di Frosinone'
                     },
                     {
                         descrizione: Role.GestoreRichieste,
-                        codSede: 'FR.2000',
-                        descSede: 'Comando di Frosinone'
-                    },
-                    {
-                        descrizione: Role.GestoreRichieste,
-                        codSede: 'FR.2000',
-                        descSede: 'Comando di Frosinone'
+                        codSede: 'FN.2000',
+                        descSede: 'Distaccamento di Fondi'
                     }
                 ]
             )
