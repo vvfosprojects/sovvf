@@ -17,10 +17,12 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using MongoDB.Bson.Serialization.Attributes;
 using SO115App.Models.Classi.Condivise;
 
 namespace SO115App.API.Models.Classi.Condivise
 {
+    [BsonIgnoreExtraElements]
     public class Tipologia
     {
         public Tipologia(string codice, string descrizione, string icona)
@@ -65,8 +67,8 @@ namespace SO115App.API.Models.Classi.Condivise
         /// </summary>
         public bool Boschivo { get; set; }
 
-        public MatriceAdeguatezzaMezzo AdeguatezzaMezzo { get; set; }
+        public AdeguatezzaMezzo AdeguatezzaMezzo { get; set; }
 
-        public int OpportunitaSganciamento { get; set; }
+        public int OppSganc { get; set; }
     }
 }

@@ -17,7 +17,6 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using DomainModel.CQRS.Commands.GestrionePartenza.AggiornaStatoMezzo;
 using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Composizione;
 using SO115App.API.Models.Classi.Condivise;
@@ -25,6 +24,7 @@ using SO115App.API.Models.Classi.Soccorso;
 using SO115App.FakePersistence.JSon.Utility;
 using SO115App.FakePersistenceJSon.Classi;
 using SO115App.FakePersistenceJSon.Utility;
+using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AggiornaStatoMezzo;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using System.Collections.Generic;
 using System.IO;
@@ -75,7 +75,7 @@ namespace SO115App.FakePersistenceJSon.Composizione
             if (listaRichieste != null)
             {
                 var listaRichiesteNew = new List<RichiestaAssistenza>();
-                var richiestaDTO = listaRichieste.FirstOrDefault(x => x.Codice == command.Richiesta.Codice);
+                var richiestaDTO = listaRichieste.FirstOrDefault(x => x.Cod == command.Richiesta.Codice);
                 listaRichieste.Remove(richiestaDTO);
 
                 foreach (var richiesta in listaRichieste)

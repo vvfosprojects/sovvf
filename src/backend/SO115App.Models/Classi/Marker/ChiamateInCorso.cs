@@ -23,14 +23,14 @@ namespace SO115App.Models.Classi.Marker
 {
     public class ChiamateInCorso
     {
-        public string id { get; set; }
+        public string Id { get; set; }
 
-        public string descrizioneOperatore { get; set; }
+        public string DescrizioneOperatore { get; set; }
 
-        public string codiceSedeOperatore { get; set; }
+        public string CodiceSedeOperatore { get; set; }
 
-        public Localita localita { get; set; }
+        public Localita Localita { get; set; }
 
-        public string label { get; set; }
+        public string Label { get; set; }
     }
 }

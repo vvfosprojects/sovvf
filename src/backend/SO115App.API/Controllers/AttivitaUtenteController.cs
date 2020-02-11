@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using CQRS.Commands;
 using DomainModel.CQRS.Commands.MessaInLavorazione;
@@ -38,12 +39,11 @@ namespace SO115App.API.Controllers
         [HttpPost("AddInLavorazione")]
         public async Task<IActionResult> AddInLavorazione([FromBody]SintesiRichiesta intervento)
         {
-            var headerValues = Request.Headers["IdUtente"];
-            string IdUtente = headerValues.FirstOrDefault();
+            var IdUtente = Request.Headers["IdUtente"];
 
             var command = new MessaInLavorazioneCommand()
             {
-                IdRichiesta = intervento.Id,
+                IdRichiesta = intervento.Codice,
                 IdUtente = IdUtente,
                 Chiamata = intervento
             };
@@ -53,7 +53,7 @@ namespace SO115App.API.Controllers
                 this._addhandler.Handle(command);
                 return Ok();
             }
-            catch
+            catch (Exception ex)
             {
                 return BadRequest();
             }
@@ -62,8 +62,7 @@ namespace SO115App.API.Controllers
         [HttpPost("DeleteInLavorazione")]
         public async Task<IActionResult> DeleteInLavorazione([FromBody]SintesiRichiesta intervento)
         {
-            var headerValues = Request.Headers["IdUtente"];
-            string IdUtente = headerValues.FirstOrDefault();
+            var IdUtente = Request.Headers["IdUtente"];
 
             var command = new RimozioneInLavorazioneCommand()
             {

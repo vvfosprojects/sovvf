@@ -1,8 +1,9 @@
 ﻿using CQRS.Commands;
-using DomainModel.CQRS.Commands.MezzoPrenotato;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SO115App.API.Models.Classi.Composizione;
+using SO115App.Models.Classi.Condivise;
+using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.SetMezzoPrenotato;
+using System;
 using System.Threading.Tasks;
 
 namespace SO115App.API.Controllers
@@ -12,23 +13,25 @@ namespace SO115App.API.Controllers
     [ApiController]
     public class PrenotazioneMezzoController : ControllerBase
     {
-        private readonly ICommandHandler<MezzoPrenotatoCommand> _mezzoPrenotatoHandler;
+        private readonly ICommandHandler<SetMezzoPrenotatoCommand> _mezzoPrenotatoHandler;
 
-        public PrenotazioneMezzoController(ICommandHandler<MezzoPrenotatoCommand> mezzoPrenotatoHandler)
+        public PrenotazioneMezzoController(ICommandHandler<SetMezzoPrenotatoCommand> mezzoPrenotatoHandler)
         {
             _mezzoPrenotatoHandler = mezzoPrenotatoHandler;
         }
 
         [HttpPost("PrenotaMezzo")]
-        public async Task<IActionResult> PrenotaMezzo([FromBody]MezzoPrenotato mezzoPrenotato)
+        public async Task<IActionResult> PrenotaMezzo([FromBody]StatoOperativoMezzo mezzoPrenotato)
         {
-            var codiceSede = Request.Headers["codicesede"];
+            mezzoPrenotato.CodiceSede = Request.Headers["codicesede"];
             mezzoPrenotato.SbloccaMezzo = false;
 
-            var command = new MezzoPrenotatoCommand()
+            mezzoPrenotato.IstantePrenotazione = DateTime.UtcNow;
+            mezzoPrenotato.IstanteScadenzaSelezione = DateTime.UtcNow.AddSeconds(15);
+
+            var command = new SetMezzoPrenotatoCommand()
             {
                 MezzoPrenotato = mezzoPrenotato,
-                CodiceSede = codiceSede
             };
 
             try
@@ -37,22 +40,21 @@ namespace SO115App.API.Controllers
 
                 return Ok();
             }
-            catch
+            catch (Exception ex)
             {
                 return BadRequest();
             }
         }
 
         [HttpPost("SbloccaMezzo")]
-        public async Task<IActionResult> SbloccaMezzo([FromBody] MezzoPrenotato mezzoPrenotato)
+        public async Task<IActionResult> SbloccaMezzo([FromBody] StatoOperativoMezzo mezzoPrenotato)
         {
-            var codiceSede = Request.Headers["codicesede"];
+            mezzoPrenotato.CodiceSede = Request.Headers["codicesede"];
             mezzoPrenotato.SbloccaMezzo = true;
 
-            var command = new MezzoPrenotatoCommand()
+            var command = new SetMezzoPrenotatoCommand()
             {
                 MezzoPrenotato = mezzoPrenotato,
-                CodiceSede = codiceSede
             };
 
             try

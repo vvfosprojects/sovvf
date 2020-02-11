@@ -18,7 +18,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-using DomainModel.CQRS.Commands.GestrionePartenza.AggiornaStatoMezzo;
+using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AggiornaStatoMezzo;
 using System.Threading.Tasks;
 
 namespace SO115App.Models.Servizi.Infrastruttura.Notification.GestionePartenza

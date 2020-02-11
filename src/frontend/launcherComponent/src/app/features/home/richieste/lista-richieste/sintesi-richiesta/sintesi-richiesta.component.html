@@ -361,7 +361,7 @@
                         <!-- II colonna -->
                         <div class="col-md-6 bg-red border p-2"
                              [ngClass]="{'shadow border-info rounded': inGestione, 'border-light': !inGestione}">
-                            <div class="scroll-y" style="max-height: 115px">
+                            <div class="scroll-y" style="max-height: 135px">
                                 <app-lista-partenze [partenze]="richiesta.partenzeRichiesta" [statoRichiesta]="richiesta.stato" [inGestione]="inGestione"
                                                     (actionMezzo)="onActionMezzo($event)"></app-lista-partenze>
                             </div>

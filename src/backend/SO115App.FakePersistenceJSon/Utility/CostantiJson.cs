@@ -19,6 +19,6 @@ namespace SO115App.FakePersistence.JSon.Utility
         public static string FlottaMezzi = "Fake/FlottaMezzi.json";
         public static string SchedeContatti = "Fake/SchedeContatti.json";
         public static string Mezzo = "Fake/Mezzo.json";
-        public static string PrenotazioneMezzo = "Fake/PrenotazioneMezzo.json";
+        public static string StatoMezzo = "Fake/StatoMezzo.json";
     }
 }

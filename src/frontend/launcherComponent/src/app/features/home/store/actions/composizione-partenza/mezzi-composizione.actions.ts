@@ -34,6 +34,13 @@ export class UpdateMezzoComposizione {
     }
 }
 
+export class UpdateMezzoComposizioneScadenzaByCodiceMezzo {
+    static readonly type = '[MezziComposizione] Update Mezzo Composizione Scadenza By Codice Mezzo';
+
+    constructor(public codiceMezzo: string, public istanteScadenzaSelezione: string) {
+    }
+}
+
 export class ReducerSelectMezzoComposizione {
     static readonly type = '[MezziComposizione] Reducer Select Mezzo Composizione';
 
@@ -84,7 +91,7 @@ export class RequestBookMezzoComposizione {
 export class AddBookMezzoComposizione {
     static readonly type = '[MezziComposizione] Book Mezzo Composizione';
 
-    constructor(public mezzoComp: MezzoComposizione) {
+    constructor(public codiceMezzo: string) {
     }
 }
 
@@ -105,7 +112,7 @@ export class RequestRemoveBookMezzoComposizione {
 export class RemoveBookMezzoComposizione {
     static readonly type = '[MezziComposizione] Remove Book Mezzo Composizione';
 
-    constructor(public mezzoComp: MezzoComposizione) {
+    constructor(public codiceMezzo: string) {
     }
 }
 
@@ -113,7 +120,7 @@ export class RemoveBookMezzoComposizione {
 export class RemoveBookingMezzoComposizione {
     static readonly type = '[MezziComposizione] Remove Booking Mezzo Composizione';
 
-    constructor(public mezzoComp: MezzoComposizione) {
+    constructor(public codiceMezzo: string) {
     }
 }
 

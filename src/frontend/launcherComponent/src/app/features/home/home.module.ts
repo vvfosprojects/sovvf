@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
 import { HomeRouting } from './home.routing';
 import { HomeComponent } from './home.component';
 import { NgxPaginationModule } from 'ngx-pagination';
@@ -9,7 +8,6 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FilterPipeModule } from 'ngx-filter-pipe';
 import { SharedModule } from '../../shared/shared.module';
-import { PipeModule } from '../../shared/pipes/pipe.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { TimeagoCustomFormatter, TimeagoFormatter, TimeagoIntl, TimeagoModule } from 'ngx-timeago';
 import { NgxsModule } from '@ngxs/store';
@@ -37,54 +35,53 @@ import { BoxClickState } from './store/states/boxes/box-click.state';
 import { MapsFiltroState } from './store/states/maps/maps-filtro.state';
 
 @NgModule({
-  declarations: [
-    HomeComponent
-  ],
-  imports: [
-    CommonModule,
-    HomeRouting,
-    BoxesModule,
-    ChiamataModule,
-    EventiRichiestaModule,
-    FilterbarModule,
-    MapsModule,
-    RichiesteModule,
-    ComposizionePartenzaModule,
-    MezziInServizioModule,
-    SchedeContattoModule,
-    NgxPaginationModule,
-    NgSelectModule,
-    ScrollingModule,
-    NgxPaginationModule,
-    FormsModule,
-    ReactiveFormsModule,
-    FilterPipeModule,
-    SharedModule,
-    PipeModule.forRoot(),
-    NgbModule,
-    TimeagoModule.forRoot({
-      intl: TimeagoIntl,
-      formatter: { provide: TimeagoFormatter, useClass: TimeagoCustomFormatter },
-    }),
-    NgxsModule.forFeature(
-      [
-        HomeState,
-        ViewComponentState,
-        BackupViewComponentState,
-        FiltriRichiesteState,
-        RicercaRichiesteState,
-        MarkerMeteoState,
-        RichiestaModificaState,
-        TipologicheMezziState,
-        BoxClickState,
-        MapsFiltroState
-      ]
-    ),
-  ],
-  exports: [],
-  providers: [
-    { provide: HomeService, useClass: environment.fakeProvider ? HomeServiceFake : HomeService }
-  ]
+    declarations: [
+        HomeComponent
+    ],
+    imports: [
+        CommonModule,
+        HomeRouting,
+        BoxesModule,
+        ChiamataModule,
+        EventiRichiestaModule,
+        FilterbarModule,
+        MapsModule,
+        RichiesteModule,
+        ComposizionePartenzaModule,
+        MezziInServizioModule,
+        SchedeContattoModule,
+        NgxPaginationModule,
+        NgSelectModule,
+        ScrollingModule,
+        NgxPaginationModule,
+        FormsModule,
+        ReactiveFormsModule,
+        FilterPipeModule,
+        SharedModule,
+        NgbModule,
+        TimeagoModule.forRoot({
+            intl: TimeagoIntl,
+            formatter: { provide: TimeagoFormatter, useClass: TimeagoCustomFormatter },
+        }),
+        NgxsModule.forFeature(
+            [
+                HomeState,
+                ViewComponentState,
+                BackupViewComponentState,
+                FiltriRichiesteState,
+                RicercaRichiesteState,
+                MarkerMeteoState,
+                RichiestaModificaState,
+                TipologicheMezziState,
+                BoxClickState,
+                MapsFiltroState
+            ]
+        ),
+    ],
+    exports: [],
+    providers: [
+        { provide: HomeService, useClass: environment.fakeProvider ? HomeServiceFake : HomeService }
+    ]
 })
 export class HomeModule {
 }

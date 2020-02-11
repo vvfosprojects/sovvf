@@ -17,17 +17,18 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Conventions;
-using MongoDB.Bson.Serialization.IdGenerators;
-using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Driver;
-using SO115App.API.Models.Classi.Persistenza;
+using SO115App.API.Models.Classi.Condivise;
+using SO115App.API.Models.Classi.Filtri;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.Eventi;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
+using SO115App.Models.Classi.Condivise;
+using SO115App.Models.Classi.Marker;
+using SO115App.Models.Classi.NUE;
 using SO115App.Persistence.MongoDB.Mappings;
 using System.Runtime.CompilerServices;
 
@@ -75,6 +76,13 @@ namespace Persistence.MongoDB
             BsonClassMap.RegisterClassMap<PartenzaInRientro>();
             BsonClassMap.RegisterClassMap<ChiusuraRichiesta>();
             BsonClassMap.RegisterClassMap<RiaperturaRichiesta>();
+            BsonClassMap.RegisterClassMap<AdeguatezzaMezzo>();
+            BsonClassMap.RegisterClassMap<Localita>();
+            BsonClassMap.RegisterClassMap<Coordinate>();
+            BsonClassMap.RegisterClassMap<Distaccamenti>();
+            BsonClassMap.RegisterClassMap<GeneriMezzi>();
+            BsonClassMap.RegisterClassMap<Stati>();
+            BsonClassMap.RegisterClassMap<SchedaContatto>();
         }
 
         public IMongoCollection<RichiestaAssistenza> RichiestaAssistenzaCollection
@@ -82,6 +90,46 @@ namespace Persistence.MongoDB
             get
             {
                 return database.GetCollection<RichiestaAssistenza>("richiesteAssistenza");
+            }
+        }
+
+        public IMongoCollection<Tipologia> TipologieCollection
+        {
+            get
+            {
+                return database.GetCollection<Tipologia>("tipologie");
+            }
+        }
+
+        public IMongoCollection<StatoOperativoMezzo> StatoMezzoCollection
+        {
+            get
+            {
+                return database.GetCollection<StatoOperativoMezzo>("statoMezzo");
+            }
+        }
+
+        public IMongoCollection<ChiamateInCorso> ChiamateInCorsoCollection
+        {
+            get
+            {
+                return database.GetCollection<ChiamateInCorso>("chiamateInCorso");
+            }
+        }
+
+        public IMongoCollection<Filtri> FiltriCollection
+        {
+            get
+            {
+                return database.GetCollection<Filtri>("filtri");
+            }
+        }
+
+        public IMongoCollection<SchedaContatto> SchedeContattoCollection
+        {
+            get
+            {
+                return database.GetCollection<SchedaContatto>("schedecontatto");
             }
         }
     }

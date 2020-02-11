@@ -1,50 +1,86 @@
-import { GestioneUtente } from '../../../../../shared/model/gestione-utente.model';
-import { Role } from 'src/app/shared/model/utente.model';
+import { Ruolo, Utente } from '../../../../../shared/model/utente.model';
+import { UtenteVvfInterface } from '../../../../../shared/interface/utente-vvf.interface';
 
-export class GetGestioneUtenti {
-    static readonly type = '[GestioneUtenti] Get data';
+export class GetUtentiVVF {
+    static readonly type = '[GestioneUtenti] Get Utenti VVF';
 
-    constructor() { }
+    constructor(public text?: string) { }
 }
 
-export class SetGestioneUtenti {
-    static readonly type = '[GestioneUtenti] Set data';
+export class SetUtentiVVF {
+    static readonly type = '[GestioneUtenti] Set Utenti VVF';
 
-    constructor(public gestioneUtenti: GestioneUtente[]) { }
+    constructor(public utenti: UtenteVvfInterface[]) { }
 }
 
-export class ChangeRoleUtente {
-    static readonly type = '[GestioneUtenti] Change Role utente';
-
-    constructor(public idUtente: string, public ruolo: Role) { }
+export class ClearUtentiVVF {
+    static readonly type = '[GestioneUtenti] Clear Utenti VVF';
 }
 
-export class ChangeRoleUtenteSuccess {
-    static readonly type = '[GestioneUtenti] Change Role utente success';
+export class GetUtentiGestione {
+    static readonly type = '[GestioneUtenti] Get List Utenti';
 
-    constructor(public idUtente: string, public ruolo: Role) { }
+    constructor(public page?: number) { }
 }
 
-export class AddUtente {
-    static readonly type = '[GestioneUtenti] Add utente';
+export class SetUtentiGestione {
+    static readonly type = '[GestioneUtenti] Set List Utenti';
 
-    constructor(public nuovoUtente: GestioneUtente) { }
+    constructor(public utenti: Utente[]) { }
 }
 
-export class AddUtenteSuccess {
-    static readonly type = '[GestioneUtenti] Add utente success';
+export class GetUtenteDetail {
+    static readonly type = '[GestioneUtenti] Get Utente Detail';
 
-    constructor(public nuovoUtente: GestioneUtente) { }
+    constructor(public id: string) { }
+}
+
+export class SetUtenteDetail {
+    static readonly type = '[GestioneUtenti] Set Utente Detail';
+
+    constructor(public utente: Utente) { }
+}
+
+export class ClearUtenteDetail {
+    static readonly type = '[GestioneUtenti] Clear Utente Detail';
+}
+
+export class UpdateUtenteGestione {
+    static readonly type = '[GestioneUtenti] Update Utente';
+
+    constructor(public utente: Utente) { }
+}
+
+export class AddRuoloUtenteGestione {
+    static readonly type = '[GestioneUtenti] Add Ruolo Utente Gestione';
+
+    constructor(public options?: any) { }
+}
+
+export class OpenModalRemoveUtente {
+    static readonly type = '[GestioneUtenti] Open Modal Remove Utente';
+
+    constructor(public id: string, public nominativoUtente: string) { }
 }
 
 export class RemoveUtente {
-    static readonly type = '[GestioneUtenti] Remove utente';
+    static readonly type = '[GestioneUtenti] Remove Utente';
 
-    constructor(public id_utente: string, public codice_sede: string) { }
+    constructor(public id: string) { }
 }
 
-export class RemoveUtenteSuccess {
-    static readonly type = '[GestioneUtenti] Remove utente success';
+export class OpenModalRemoveRuoloUtente {
+    static readonly type = '[GestioneUtenti] Open Modal Remove Ruolo Utente';
 
-    constructor(public id_utente: string, public codice_sede: string) { }
+    constructor(public id: string, public ruolo: Ruolo, public nominativoUtente: string) { }
+}
+
+export class RemoveRuoloUtente {
+    static readonly type = '[GestioneUtenti] Remove Ruolo Utente';
+
+    constructor(public id: string, public ruolo: Ruolo) { }
+}
+
+export class ClearDataModalAddUtenteModal {
+    static readonly type = '[GestioneUtenti] Clear Data Modal "AddUtenteModal"';
 }

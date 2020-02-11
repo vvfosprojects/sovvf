@@ -24,16 +24,16 @@ namespace DomainModel.CQRS.Commands.ChiamataInCorsoMarker
 {
     public class AddChiamataInCorsoCommandHandler : ICommandHandler<ChiamataInCorsoMarkerCommand>
     {
-        private readonly IChiamateInCorso _iAddChiamataInCorso;
+        private readonly IAddChiamataInCorso _iAddChiamataInCorso;
 
-        public AddChiamataInCorsoCommandHandler(IChiamateInCorso iAddChiamataInCorso)
+        public AddChiamataInCorsoCommandHandler(IAddChiamataInCorso iAddChiamataInCorso)
         {
             this._iAddChiamataInCorso = iAddChiamataInCorso;
         }
 
         public void Handle(ChiamataInCorsoMarkerCommand command)
         {
-            _iAddChiamataInCorso.AddChiamata(command.AddChiamataInCorso);
+            _iAddChiamataInCorso.Add(command.AddChiamataInCorso);
         }
     }
 }

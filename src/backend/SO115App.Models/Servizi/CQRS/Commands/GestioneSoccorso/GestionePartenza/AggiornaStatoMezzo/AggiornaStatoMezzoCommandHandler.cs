@@ -18,15 +18,13 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Commands;
-using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using System;
-using SO115App.API.Models.Classi.Condivise;
 
-namespace DomainModel.CQRS.Commands.GestrionePartenza.AggiornaStatoMezzo
+namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AggiornaStatoMezzo
 {
     public class AggiornaStatoMezzoCommandHandler : ICommandHandler<AggiornaStatoMezzoCommand>
     {
@@ -45,21 +43,22 @@ namespace DomainModel.CQRS.Commands.GestrionePartenza.AggiornaStatoMezzo
 
         public void Handle(AggiornaStatoMezzoCommand command)
         {
-            var richiesta = _getRichiestaById.Get(command.Chiamata.Id);
+            var richiesta = _getRichiestaById.GetById(command.Chiamata.Id);
+            richiesta.CodOperatore = "30"; //TODO GESTIRE IL CODICE OPERATORE
 
             if (command.StatoMezzo == Costanti.MezzoSulPosto)
             {
-                new ArrivoSulPosto(richiesta, command.IdMezzo, DateTime.UtcNow, richiesta.Operatore.Id);
+                new ArrivoSulPosto(richiesta, command.IdMezzo, DateTime.UtcNow, richiesta.CodOperatore);
 
                 richiesta.SincronizzaStatoRichiesta(Costanti.RichiestaPresidiata, richiesta.StatoRichiesta,
-                    richiesta.Operatore.Id, "");
+                    richiesta.CodOperatore, "");
 
                 foreach (var composizione in richiesta.Partenze)
                 {
                     if (composizione.Partenza.Mezzo.Codice == command.IdMezzo)
                     {
                         composizione.Partenza.Mezzo.Stato = Costanti.MezzoSulPosto;
-                        composizione.Partenza.Mezzo.IdRichiesta = richiesta.CodiceRichiesta;
+                        composizione.Partenza.Mezzo.IdRichiesta = richiesta.CodRichiesta;
                     }
                 }
             }
@@ -84,7 +83,7 @@ namespace DomainModel.CQRS.Commands.GestrionePartenza.AggiornaStatoMezzo
                 }
 
                 if (_mezziTuttiInSede)
-                    new PartenzaInRientro(richiesta, command.IdMezzo, DateTime.UtcNow, richiesta.Operatore.Id);
+                    new PartenzaInRientro(richiesta, command.IdMezzo, DateTime.UtcNow, richiesta.CodOperatore); //TODO GESTIRE IL CODICE OPERATORE
             }
             else if (command.StatoMezzo == Costanti.MezzoRientrato)
             {
@@ -108,7 +107,7 @@ namespace DomainModel.CQRS.Commands.GestrionePartenza.AggiornaStatoMezzo
                 }
 
                 if (_mezziTuttiInSede)
-                    new PartenzaRientrata(richiesta, command.IdMezzo, DateTime.UtcNow, richiesta.Operatore.Id);
+                    new PartenzaRientrata(richiesta, command.IdMezzo, DateTime.UtcNow, richiesta.CodOperatore);
             }
             else if (command.StatoMezzo == Costanti.MezzoInViaggio)
             {
@@ -117,7 +116,7 @@ namespace DomainModel.CQRS.Commands.GestrionePartenza.AggiornaStatoMezzo
                     if (composizione.Partenza.Mezzo.Codice == command.IdMezzo)
                     {
                         composizione.Partenza.Mezzo.Stato = Costanti.MezzoInViaggio;
-                        composizione.Partenza.Mezzo.IdRichiesta = richiesta.CodiceRichiesta;
+                        composizione.Partenza.Mezzo.IdRichiesta = richiesta.CodRichiesta;
                     }
                 }
             }

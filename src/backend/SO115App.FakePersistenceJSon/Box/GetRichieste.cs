@@ -54,7 +54,7 @@ namespace SO115App.FakePersistenceJSon.Box
                 {
                     foreach (RichiestaAssistenzaDTO richiesta in listaRichieste)
                     {
-                        richiesta.Id = richiesta.Codice;
+                        richiesta.Id = richiesta.Cod;
                         listaRichiesteAssistenza.Add(MapperDTO.MapRichiestaDTOtoRichiesta(richiesta));
                     }
 

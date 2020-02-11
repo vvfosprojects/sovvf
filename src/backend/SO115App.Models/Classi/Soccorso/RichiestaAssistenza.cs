@@ -17,13 +17,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using Newtonsoft.Json;
-using SO115App.API.Models.Classi.Autenticazione;
-using SO115App.API.Models.Classi.Composizione;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Persistenza;
 using SO115App.API.Models.Classi.Soccorso.Eventi;
@@ -32,10 +26,11 @@ using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
 using SO115App.API.Models.Classi.Soccorso.Mezzi.StatiMezzo;
 using SO115App.API.Models.Classi.Soccorso.StatiRichiesta;
-using SO115App.API.Models.Classi.Utenti;
 using SO115App.Models.Classi.Condivise;
-using SO115App.Models.Classi.Soccorso;
 using SO115App.Models.Classi.Utility;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SO115App.API.Models.Classi.Soccorso
 {
@@ -63,10 +58,10 @@ namespace SO115App.API.Models.Classi.Soccorso
         public RichiestaAssistenza()
         {
             this._eventi = new List<Evento>();
-            this.Tipologie = new List<Tipologia>();
+            this.Tipologie = new List<string>();
             this.Tags = new HashSet<string>();
-            this.ListaUtentiInLavorazione = new List<AttivitaUtente>();
-            this.ListaUtentiPresaInCarico = new List<AttivitaUtente>();
+            this.UtInLavorazione = new List<string>();
+            this.UtPresaInCarico = new List<string>();
             //this.ListaPartenze = new List<Partenza>();
         }
 
@@ -205,7 +200,12 @@ namespace SO115App.API.Models.Classi.Soccorso
         ///   A differenza del codice questo campo non è giornaliero ma annuale, per questo nel
         ///   codice non sono presenti il giorno il mese e l'anno
         /// </remarks>
-        public string CodiceRichiesta { get; set; }
+        public string CodRichiesta { get; set; }
+
+        /// <summary>
+        ///   E' il codice dell'operatore che ha registrato la richiesta
+        /// </summary>
+        public string CodOperatore { get; set; }
 
         /// <summary>
         ///   E' il codice dell'unità operativa competente per l'intervento
@@ -214,7 +214,7 @@ namespace SO115App.API.Models.Classi.Soccorso
         ///   La competenza di un intervento può cambiare durante la vita della richiesta. Il cambio
         ///   è documentato da un apposito evento della richiesta.
         /// </remarks>
-        public string CodiceUnitaOperativaCompetente { get; set; }
+        public string CodSOCompetente { get; set; }
 
         /// <summary>
         ///   E' il set dei codici delle unità operative che sono chiamate a supporto.
@@ -224,7 +224,7 @@ namespace SO115App.API.Models.Classi.Soccorso
         ///   determinati specifici casi d'uso (per es. composizione partenza, apposizione nota
         ///   intervento, ecc.)
         /// </remarks>
-        public ISet<string> CodiciUnitaOperativeAllertate { get; set; }
+        public ISet<string> CodSOAllertate { get; set; }
 
         /// <summary>
         ///   Espone la lista degli eventi considerati di interesse per la richiesta.
@@ -236,11 +236,6 @@ namespace SO115App.API.Models.Classi.Soccorso
                 return this._eventi;
             }
         }
-
-        /// <summary>
-        ///   Operatore che ha generato la segnalazione
-        /// </summary>
-        public Utente Operatore { get; set; }
 
         /// <summary>
         ///   Indica se la richiesta è sospesa
@@ -335,7 +330,20 @@ namespace SO115App.API.Models.Classi.Soccorso
         /// <summary>
         ///   Indica l'istante di chiusura della richiesta, impostato dall'evento <see cref="ChiusuraRichiesta" />
         /// </summary>
-        public DateTime? IstanteChiusura { get; internal set; }
+        public DateTime? IstanteChiusura
+        {
+            get
+            {
+                var ultimaChiusura = this.Eventi
+                    .OfType<ChiusuraRichiesta>()
+                    .ToList().LastOrDefault();
+
+                return ultimaChiusura != null ? (DateTime?)ultimaChiusura.Istante : null;
+            }
+            set
+            {
+            }
+        }
 
         /// <summary>
         ///   E' la lista ordinata (per importanza decrescente) delle tipologie di soccorso.
@@ -344,7 +352,7 @@ namespace SO115App.API.Models.Classi.Soccorso
         ///   Per es. è la lista { valanga, soccorso a persona, ricerca disperso, messa in sicurezza
         ///   } in un sinistro simile al Rigopiano
         /// </remarks>
-        public virtual List<Tipologia> Tipologie { get; set; }
+        public virtual List<string> Tipologie { get; set; }
 
         /// <summary>
         ///   La località dove è avvenuto il fatto
@@ -354,12 +362,7 @@ namespace SO115App.API.Models.Classi.Soccorso
         /// <summary>
         ///   Il turno nel quale viene presa la chiamata
         /// </summary>
-        public Turno TurnoInserimentoChiamata { get; set; }
-
-        /// <summary>
-        ///   Il turno nel quale viene lavorato l'intervento
-        /// </summary>
-        public Turno TurnoIntervento { get; set; }
+        public string TrnInsChiamata { get; set; }
 
         /// <summary>
         ///   Indica se il terreno è uno tra Boschi/Campi/Sterpaglie e ne indica i mq.
@@ -369,12 +372,12 @@ namespace SO115App.API.Models.Classi.Soccorso
         /// <summary>
         ///   Lista degli enti intervenuti (Es. ACEA)
         /// </summary>
-        public List<EntiIntervenuti> ListaEntiIntervenuti { get; set; }
+        public List<string> CodEntiIntervenuti { get; set; }
 
         /// <summary>
         ///   Lista degli enti al quale è stata passata la richiesta (Es. ACEA)
         /// </summary>
-        public List<EntiIntervenuti> ListaEntiPresaInCarico { get; set; }
+        public List<string> CodEntiPresaInCarico { get; set; }
 
         /// <summary>
         ///   Se l'intervento è su un obiettivo ritenuto rilevante (Es. Colosseo) si seleziona da
@@ -390,7 +393,7 @@ namespace SO115App.API.Models.Classi.Soccorso
         /// <summary>
         ///   E' la zona di emergenza a cui la richiesta è legata
         /// </summary>
-        public virtual string[] ZoneEmergenza { get; set; }
+        public virtual string[] CodZoneEmergenza { get; set; }
 
         /// <summary>
         ///   Sono i tags legati alla richiesta di assistenza
@@ -404,7 +407,15 @@ namespace SO115App.API.Models.Classi.Soccorso
         {
             get
             {
-                return this.IstanteChiusura.HasValue;
+                var ultimoEventoChiusura = this._eventi.LastOrDefault() is ChiusuraRichiesta;
+                if (ultimoEventoChiusura)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
         }
 
@@ -492,14 +503,14 @@ namespace SO115App.API.Models.Classi.Soccorso
         /// Restituisce la lista di Utenti che hanno in lavorazione la richiesta
         ///
         /// </summary>
-        public List<AttivitaUtente> ListaUtentiInLavorazione { get; set; }
+        public List<string> UtInLavorazione { get; set; }
 
         ///<summary>
         ///
         /// Restituisce la lista di Utenti che hanno preso in carico la richiesta
         ///
         /// </summary>
-        public List<AttivitaUtente> ListaUtentiPresaInCarico { get; set; }
+        public List<string> UtPresaInCarico { get; set; }
 
         /// <summary>
         ///   Restituisce l'istante della prima assegnazione di una risorsa squadra/mezzo alla <see cref="RichiestaAssistenza" />.
@@ -653,7 +664,7 @@ namespace SO115App.API.Models.Classi.Soccorso
         ///   E' il codice delle unità operative di prima, seconda, terza... competenza, in ordine
         ///   di preferenza.
         /// </summary>
-        public virtual string[] CodiciUOCompetenza { get; set; }
+        public virtual string[] CodUOCompetenza { get; set; }
 
         /// <summary>
         ///   Lista delle Competenze della richiesta
@@ -664,7 +675,7 @@ namespace SO115App.API.Models.Classi.Soccorso
         ///   Codice della scheda Nue, estratto dalla prima telefonata che è legata ad una scheda
         ///   contatto del Nue.
         /// </summary>
-        public virtual string CodiceSchedaNue
+        public virtual string CodNue
         {
             get
             {

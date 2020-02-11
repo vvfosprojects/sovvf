@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 /*
     Module
  */
-import { PipeModule } from '../../../shared/pipes/pipe.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SharedModule } from '../../../shared/shared.module';
 import { TimeagoModule, TimeagoIntl, TimeagoFormatter, TimeagoCustomFormatter } from 'ngx-timeago';
@@ -60,7 +59,6 @@ import { TastoCompPartenzaComponent } from './shared/tasto-comp-partenza/tasto-c
         CommonModule,
         NgbModule,
         SintesiRichiestaModule,
-        PipeModule.forRoot(),
         SharedModule.forRoot(),
         TimeagoModule.forRoot({
             intl: TimeagoIntl,

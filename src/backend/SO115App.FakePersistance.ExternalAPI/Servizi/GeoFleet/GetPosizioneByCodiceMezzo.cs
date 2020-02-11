@@ -50,6 +50,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GeoFleet
         {
             if (codiceMezzo.Contains(".")) codiceMezzo += "/";
             var response = await _client.GetAsync(_configuration.GetSection("UrlExternalApi").GetSection("GeofleetApi").Value + Costanti.GeoFleetGetPosizioneByCodiceMezzo + codiceMezzo).ConfigureAwait(false);//L'API GeoFleet ancora non si aspetta una lista di codici mezzo
+            if (response.StatusCode != System.Net.HttpStatusCode.OK) return null;
             response.EnsureSuccessStatusCode();
             using HttpContent content = response.Content;
             string data = await content.ReadAsStringAsync().ConfigureAwait(false);

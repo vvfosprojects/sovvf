@@ -19,6 +19,7 @@
 //-----------------------------------------------------------------------
 using Microsoft.Extensions.Configuration;
 using SimpleInjector;
+using System;
 
 namespace SO115App.CompositionRoot
 {
@@ -26,14 +27,14 @@ namespace SO115App.CompositionRoot
     {
         public static void Bind(Container container, IConfiguration configuration)
         {
-            bool EnableFake = true;
             CQRSConfigurator.Configure(container);
+            PersistenceServicesConfigurator.Configure(container);
 
-            if (EnableFake)
-            {
+            if (Convert.ToBoolean(configuration.GetSection("GenericSettings").GetSection("Fake").Value))
                 ServicesConfigurator.Configure(container);
+            else
+            {
                 ExternalAPIFakeServicesConfigurator.Configure(container);
-                PersistenceServicesConfigurator.Configure(container);
                 PersistenceServicesConfigurator_MongoDB.Configure(container, configuration);
             }
         }

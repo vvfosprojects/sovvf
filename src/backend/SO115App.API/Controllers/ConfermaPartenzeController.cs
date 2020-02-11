@@ -18,15 +18,10 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Commands;
-using CQRS.Queries;
 using DomainModel.CQRS.Commands.ConfermaPartenze;
-using DomainModel.CQRS.Commands.MezzoPrenotato;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SO115App.API.Models.Classi.Composizione;
-using SO115App.API.Models.Classi.Condivise;
-using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
-using SO115App.Models.Classi.Composizione;
 using System;
 using System.Security.Principal;
 using System.Threading.Tasks;
@@ -63,16 +58,16 @@ namespace SO115App.API.Controllers
         /// <summary>
         ///   Metodo di accesso alle richieste di assistenza
         /// </summary>
-        /// <param name="mezzoPrenotato">il modello del mezzoPrenotato</param>
         /// <returns>il modello del mezzo prenotato</returns>
         [HttpPost]
         public async Task<IActionResult> Post(ConfermaPartenze conferma)
         {
             conferma.CodiceSede = Request.Headers["codicesede"];
+            conferma.IdOperatore = Request.Headers["IdUtente"];
 
             var command = new ConfermaPartenzeCommand()
             {
-                ConfermaPartenze = conferma,
+                ConfermaPartenze = conferma
             };
 
             try

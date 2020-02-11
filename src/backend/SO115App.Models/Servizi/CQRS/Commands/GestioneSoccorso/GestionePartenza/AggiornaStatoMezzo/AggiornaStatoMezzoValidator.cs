@@ -22,7 +22,7 @@ using CQRS.Commands.Validators;
 using SO115App.Models.Classi.Utility;
 using ValidationResult = CQRS.Validation.ValidationResult;
 
-namespace DomainModel.CQRS.Commands.GestrionePartenza.AggiornaStatoMezzo
+namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AggiornaStatoMezzo
 {
     public class AggiornaStatoMezzoValidator : ICommandValidator<AggiornaStatoMezzoCommand>
     {

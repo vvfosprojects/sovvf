@@ -44,7 +44,7 @@ namespace SO115App.FakePersistenceJSon.Marker
 
                 if (ListaRichieste != null)
                 {
-                    ChiamateInCorso chiamata = (ChiamateInCorso)ListaRichieste.FirstOrDefault(x => x.id == IdChiamataInCorso);
+                    ChiamateInCorso chiamata = (ChiamateInCorso)ListaRichieste.FirstOrDefault(x => x.Id == IdChiamataInCorso);
                     ListaRichieste.Remove(chiamata);
 
                     string jsonNew = JsonConvert.SerializeObject(ListaRichieste);

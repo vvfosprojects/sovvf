@@ -24,7 +24,7 @@ using CQRS.Commands.Authorizers;
 using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.Models.Classi.Utility;
 
-namespace DomainModel.CQRS.Commands.GestrionePartenza.AggiornaStatoMezzo
+namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AggiornaStatoMezzo
 {
     public class AggiornaStatoMezzoAuthorization : ICommandAuthorizer<AggiornaStatoMezzoCommand>
     {
@@ -37,12 +37,11 @@ namespace DomainModel.CQRS.Commands.GestrionePartenza.AggiornaStatoMezzo
 
         public IEnumerable<AuthorizationResult> Authorize(AggiornaStatoMezzoCommand command)
         {
-            var username = this._currentUser.Identity.Name;
+            var username = _currentUser.Identity.Name;
             var user = Utente.FindUserByUsername(username);
 
             if (_currentUser.Identity.IsAuthenticated)
             {
-
                 if (user == null)
                     yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
             }

@@ -26,6 +26,6 @@ namespace SO115App.Models.Servizi.Infrastruttura.Turni
 {
     public interface IGetTurno
     {
-        Turno Get();
+        Turno Get(DateTime? data = null);
     }
 }

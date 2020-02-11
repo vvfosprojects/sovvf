@@ -160,7 +160,7 @@ namespace Modello.Test.Classi.Soccorso
         {
             var richiesta = new RichiestaAssistenza();
 
-            var codiceSchedaNue = richiesta.CodiceSchedaNue;
+            var codiceSchedaNue = richiesta.CodNue;
 
             Assert.That(codiceSchedaNue, Is.Null);
         }
@@ -172,7 +172,7 @@ namespace Modello.Test.Classi.Soccorso
             var now = DateTime.Now;
             new Telefonata(richiesta, "CodRichiesta", now, "fonte") { CodiceSchedaContatto = "CodNue1" };
             new Telefonata(richiesta, "CodRichiesta", now.AddSeconds(5), "fonte") { CodiceSchedaContatto = "CodNue2" };
-            var codiceSchedaNue = richiesta.CodiceSchedaNue;
+            var codiceSchedaNue = richiesta.CodNue;
 
             Assert.That(codiceSchedaNue, Is.EqualTo("CodNue1"));
         }
@@ -184,7 +184,7 @@ namespace Modello.Test.Classi.Soccorso
             var now = DateTime.Now;
             new Telefonata(richiesta, "CodRichiesta", now, "fonte");
             new Telefonata(richiesta, "CodRichiesta", now.AddSeconds(5), "fonte") { CodiceSchedaContatto = "CodNue2" };
-            var codiceSchedaNue = richiesta.CodiceSchedaNue;
+            var codiceSchedaNue = richiesta.CodNue;
 
             Assert.That(codiceSchedaNue, Is.EqualTo("CodNue2"));
         }

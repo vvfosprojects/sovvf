@@ -29,6 +29,6 @@ namespace SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue
         ///   Aggiorna lo stato di lettura della Scheda Contatto
         /// </summary>
         /// <returns>Non restituisce nulla</returns>
-        void Letta(string codiceSede, string codiceScheda, string codiceFiscale, bool letta);
+        void Letta(string codiceScheda, string codiceSede, string codiceFiscale, bool letta);
     }
 }

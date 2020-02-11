@@ -24,17 +24,15 @@ namespace SO115App.ExternalAPI.Fake.Classi
     {
         #region Url
 
-        public static string TerritorioUrl = "http://172.16.25.10:5002/swagger/";
+        public static string TerritorioUrl = "http://172.16.25.10:7002/api/";
+        public static string UosUrl = "http://172.16.25.10:7002/api/";
 
-        public static string ServiziUrl = "http://172.16.15.34:5000/api/";
-
-        public static string IdentityManagementUrl = "http://172.16.25.10:5000/api/RicercaPerElencoCodiciFiscali";
+        public static string ServiziUrl = "http://172.16.15.34:7000/api/";
+        public static string IdentityManagementUrl = "http://172.16.25.10:7000/api/PersonaFisica";
 
         public static string NueUrl = "http://localhost:5001/api/SchedaContatto/";
         public static string GeoFleetUrl = "http://geofleet-ws.dipvvf.it/api/";
         public static string GacUrl = "http://localhost:5002/api/AnagraficaMezzi/";
-
-        public static string UosUrl = "http://172.16.25.10:5001/api/";
 
         #endregion Url
 
@@ -75,7 +73,7 @@ namespace SO115App.ExternalAPI.Fake.Classi
 
         #region GacMethods
 
-        public static string GacGetMezziUtilizzabili = "MezziUtilizzabili";
+        public static string GacGetMezziUtilizzabili = "/SO115/AnagraficaMezzi/MezziUtilizzabili";
         public static string GacGetMezziFuoriServizio = "MezziFuoriServizio";
         public static string GacGetID = "ID";
         public static string GacGetICCID = "ICCID";
@@ -106,5 +104,12 @@ namespace SO115App.ExternalAPI.Fake.Classi
         public static string UosAssUrl = "AssociazioneUOSedi";
 
         #endregion Uos
+
+        #region Utility
+
+        public static string MezzoDisponibile = "DISPONIBILE";
+        public static string MezzoInSede = "In Sede";
+
+        #endregion Utility
     }
 }

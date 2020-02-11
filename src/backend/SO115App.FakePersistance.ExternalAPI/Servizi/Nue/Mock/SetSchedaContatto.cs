@@ -22,6 +22,7 @@ using SO115App.ExternalAPI.Fake.Classi;
 using SO115App.Models.Classi.NUE;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 
 namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
 {
@@ -30,7 +31,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
     /// </summary>
     public class SetSchedaContatto
     {
-        private readonly string filepath = Costanti.NueJson;
+        private readonly string filepath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), Costanti.NueJson);
 
         /// <summary>
         ///   Metodo che restituisce la lista di tutte le schede contatto sul json
@@ -58,27 +59,6 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
         }
 
         /// <summary>
-        ///   Metodo che aggiorna la stato della scheda contatto in letta
-        /// </summary>
-        /// <param name="codiceScheda">il codice della scheda contatto</param>
-        /// <param name="codiceSede">il codice sede dell'operatore</param>
-        /// <param name="codiceFiscale">il codice fiscale dell'operatore</param>
-        /// <param name="letta">la booleana letta</param>
-        public void SetLetta(string codiceScheda, string codiceSede, string codiceFiscale, bool letta)
-        {
-            var schedeContatto = Get();
-
-            foreach (var schedaContatto in schedeContatto.FindAll(x => x.CodiceScheda.Equals(codiceScheda)))
-            {
-                schedaContatto.OperatoreChiamata.CodiceFiscale = codiceFiscale;
-                schedaContatto.OperatoreChiamata.CodiceSede = codiceSede;
-                schedaContatto.Letta = letta;
-            }
-
-            Set(schedeContatto);
-        }
-
-        /// <summary>
         ///   Metodo che aggiorna la stato della scheda contatto in gestita e di conseguenza in letta
         /// </summary>
         /// <param name="codiceScheda">il codice della scheda contatto</param>
@@ -94,10 +74,6 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
                 schedaContatto.OperatoreChiamata.CodiceFiscale = codiceFiscale;
                 schedaContatto.OperatoreChiamata.CodiceSede = codiceSede;
                 schedaContatto.Gestita = gestita;
-                if (gestita)
-                {
-                    schedaContatto.Letta = true;
-                }
             }
 
             Set(schedeContatto);

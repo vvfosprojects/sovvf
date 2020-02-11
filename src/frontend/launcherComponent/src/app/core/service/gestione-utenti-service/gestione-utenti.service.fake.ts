@@ -1,59 +1,148 @@
 import { Injectable } from '@angular/core';
-import { GestioneUtente } from '../../../shared/model/gestione-utente.model';
-import { of } from 'rxjs';
-import { Role } from '../../../shared/model/utente.model';
+import { Observable, of } from 'rxjs';
+import { Utente, Role, Ruolo } from '../../../shared/model/utente.model';
+import { ResponseInterface } from '../../../shared/interface/response.interface';
+import { Sede } from '../../../shared/model/sede.model';
+import { Coordinate } from '../../../shared/model/coordinate.model';
+import { UtenteVvfInterface } from '../../../shared/interface/utente-vvf.interface';
+import { AddRuoloUtenteInterface } from '../../../shared/interface/add-ruolo-utente.interface';
+import { makeCopy } from '../../../shared/helper/function';
+import { PaginationInterface } from 'src/app/shared/interface/pagination.interface';
 
 @Injectable({
     providedIn: 'root'
 })
 export class GestioneUtentiServiceFake {
 
-    private gestioneUtenti: GestioneUtente[];
+    private utenti: Utente[];
+    private utentiVVF: UtenteVvfInterface[];
 
-    getGestioneUtenti() {
-        this.gestioneUtenti = [
-            {
-                id_utente: '1',
-                nome: 'Mario',
-                cognome: 'Rossi',
-                ruolo: Role.CallTracker,
-                sede: {
-                    codice: '1',
-                    descrizione: 'Comando di Roma',
-                    coordinate: {
-                        latitudine: 41.89994,
-                        longitudine: 12.49127
-                    },
-                    indirizzo: 'Via Genova, 1, 00184 Roma RM',
-                    tipo: 'Comando',
-                    regione: 'Lazio',
-                    provincia: 'Roma'
+    getUtentiVVF(text: string): Observable<UtenteVvfInterface[]> {
+        if (text) {
+            this.utentiVVF = [
+                {
+                    codFiscale: 'MRSMXHAJ2AJAC12AC',
+                    nominativo: 'Mario Rossi',
+                    sede: 'Comando VVF Roma (RM.1000)',
                 }
-            },
-            {
-                id_utente: '2',
-                nome: 'Teresio',
-                cognome: 'Mancini',
-                ruolo: Role.GestoreRichieste,
-                sede: {
-                    codice: '1',
-                    descrizione: 'Comando di Roma',
-                    coordinate: {
-                        latitudine: 41.89994,
-                        longitudine: 12.49127
-                    },
-                    indirizzo: 'Via Genova, 1, 00184 Roma RM',
-                    tipo: 'Comando',
-                    regione: 'Lazio',
-                    provincia: 'Roma'
-                }
-            },
-        ];
-
-        return of(this.gestioneUtenti);
+            ];
+        } else {
+            this.utentiVVF = [];
+        }
+        return of(this.utentiVVF);
     }
 
-    addUtente(nuovoUtente: GestioneUtente) {
-        this.gestioneUtenti.unshift(nuovoUtente);
+    getListaUtentiGestione(filters: any, pagination: PaginationInterface): Observable<ResponseInterface> {
+        this.utenti = [
+            new Utente(
+                '1',
+                'Mario',
+                'Rossi',
+                'MRSMXHAJ2AJAC12AC',
+                new Sede(
+                    '1',
+                    'Comando di Roma',
+                    new Coordinate(
+                        11111,
+                        111111
+                    ),
+                    'Via Ignorasi, 3',
+                    'Comando',
+                    'Lazio',
+                    'Roma'
+                ),
+                'mario_rossi',
+                'test',
+                [
+                    {
+                        descrizione: Role.CallTracker,
+                        codSede: 'RM.1000',
+                        descSede: 'Comando di Roma'
+                    },
+                    {
+                        descrizione: Role.GestoreRichieste,
+                        codSede: 'FR.2000',
+                        descSede: 'Comando di Frosinone'
+                    }
+                ]
+            ),
+            new Utente(
+                '2',
+                'Francesco',
+                'Verdi',
+                'TESTCODICEFISCALE',
+                new Sede(
+                    '1',
+                    'Comando di Roma',
+                    new Coordinate(
+                        11111,
+                        111111
+                    ),
+                    'Via Ignorasi, 3',
+                    'Comando',
+                    'Lazio',
+                    'Roma'
+                ),
+                'mario_rossi',
+                'test',
+                [
+                    {
+                        descrizione: Role.CallTracker,
+                        codSede: 'RM.1000',
+                        descSede: 'Comando di Roma'
+                    },
+                    {
+                        descrizione: Role.GestoreRichieste,
+                        codSede: 'LT.1001',
+                        descSede: 'Distaccamento di Latina'
+                    },
+                    {
+                        descrizione: Role.GestoreRichieste,
+                        codSede: 'FR.1002',
+                        descSede: 'Distaccamento di Frosinone'
+                    },
+                    {
+                        descrizione: Role.GestoreRichieste,
+                        codSede: 'FN.2000',
+                        descSede: 'Distaccamento di Fondi'
+                    }
+                ]
+            )
+        ];
+        const response = {
+            dataArray: this.utenti,
+            pagination: {
+                page: 1,
+                limit: 10,
+                totalItems: this.utenti.length,
+                totalFilteredItems: this.utenti.length
+            }
+        };
+        return of(response);
+    }
+
+    getUtente(id: string): Observable<Utente> {
+        return of(this.utenti.filter(x => x.id === id)[0]);
+    }
+
+    updateUtente(utente: Utente): Observable<Utente> {
+        return of(utente);
+    }
+
+    addUtente(value: AddRuoloUtenteInterface): Observable<Utente> {
+        return of(this.utenti[0]);
+    }
+
+    removeUtente(id: string): Observable<boolean> {
+        return of(true);
+    }
+
+    removeRuoloUtente(id: string, ruolo: Ruolo): Observable<Utente> {
+        let utente = this.utenti.filter(x => x.id === id)[0];
+        if (utente) {
+            utente = makeCopy(utente);
+            utente.ruoli = utente.ruoli.filter((r: Ruolo) => r.descrizione !== ruolo.descrizione && r.codSede !== ruolo.codSede);
+        }
+        return of(utente);
     }
 }

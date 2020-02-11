@@ -19,30 +19,22 @@
 //-----------------------------------------------------------------------
 using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Composizione;
+using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.FakePersistence.JSon.Utility;
 using SO115App.FakePersistenceJSon.Classi;
 using SO115App.FakePersistenceJSon.Utility;
-using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
-using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace SO115App.FakePersistenceJSon.GestioneIntervento
+namespace SO115App.FakePersistence.JSon.GestioneIntervento
 {
     /// <summary>
     ///   La classe aggiorna i dati dell'intervento qualora l'intervento sia stato chiuso o riaperto
     /// </summary>
     public class UpDateRichiesta : IUpDateRichiestaAssistenza
     {
-        private readonly ISetMovimentazione _setMovimentazione;
-
-        public UpDateRichiesta(ISetMovimentazione setMovimentazione)
-        {
-            _setMovimentazione = setMovimentazione;
-        }
-
         /// <summary>
         ///   Il metodo accetta in firma la richiesta, e in seguito alla chiusura o riapertura della
         ///   richiesta aggiorna i dati relativi a quella richiesta
@@ -52,12 +44,13 @@ namespace SO115App.FakePersistenceJSon.GestioneIntervento
         {
             var filepath = CostantiJson.ListaRichiesteAssistenza;
             var filePathSquadre = CostantiJson.SquadreComposizione;
-            var dataMovimentazione = DateTime.UtcNow;
+            var filePathMezzi = CostantiJson.Mezzo;
 
             var listaRichiesteNew = new List<RichiestaAssistenza>();
 
             string json;
             string jsonSquadre;
+            string jsonMezzi;
 
             using (var r = new StreamReader(filepath))
             {
@@ -69,14 +62,20 @@ namespace SO115App.FakePersistenceJSon.GestioneIntervento
                 jsonSquadre = r.ReadToEnd();
             }
 
+            using (StreamReader r = new StreamReader(filePathMezzi))
+            {
+                jsonMezzi = r.ReadToEnd();
+            }
+
             var listaRichieste = JsonConvert.DeserializeObject<List<RichiestaAssistenzaDTO>>(json);
             var listaSquadre = JsonConvert.DeserializeObject<List<ComposizioneSquadre>>(jsonSquadre);
+            var listaMezzi = JsonConvert.DeserializeObject<List<Mezzo>>(jsonMezzi);
 
             if (listaRichieste != null)
             {
                 foreach (var richiesta in listaRichieste)
                 {
-                    if (richiesta.Codice != richiestaAssistenza.Codice)
+                    if (richiesta.Cod != richiestaAssistenza.Codice)
                         listaRichiesteNew.Add(MapperDTO.MapRichiestaDTOtoRichiesta(richiesta));
                 }
 
@@ -90,12 +89,18 @@ namespace SO115App.FakePersistenceJSon.GestioneIntervento
                 listaRichiesteNew.Add(richiestaAssistenza);
 
                 var jsonNew = JsonConvert.SerializeObject(listaRichiesteNew);
-                System.IO.File.WriteAllText(CostantiJson.ListaRichiesteAssistenza, jsonNew);
+                File.WriteAllText(CostantiJson.ListaRichiesteAssistenza, jsonNew);
             }
 
             foreach (var partenza in richiestaAssistenza.Partenze)
             {
-                _setMovimentazione.Set(partenza.Partenza.Mezzo.Codice, partenza.CodiceRichiesta, partenza.Partenza.Mezzo.Stato, dataMovimentazione);
+                foreach (var mezzo in listaMezzi)
+                {
+                    if (mezzo.Codice == partenza.Partenza.Mezzo.Codice)
+                    {
+                        mezzo.Stato = partenza.Partenza.Mezzo.Stato;
+                    }
+                }
 
                 foreach (var composizioneSquadra in listaSquadre)
                 {
@@ -109,8 +114,10 @@ namespace SO115App.FakePersistenceJSon.GestioneIntervento
                 }
             }
 
+            var jsonListaMezzi = JsonConvert.SerializeObject(listaMezzi);
+            File.WriteAllText(CostantiJson.Mezzo, jsonListaMezzi);
             var jsonListaSquadre = JsonConvert.SerializeObject(listaSquadre);
-            System.IO.File.WriteAllText(CostantiJson.SquadreComposizione, jsonListaSquadre);
+            File.WriteAllText(CostantiJson.SquadreComposizione, jsonListaSquadre);
         }
     }
 }

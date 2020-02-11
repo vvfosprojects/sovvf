@@ -5,6 +5,6 @@ export class GetRuoli {
 export class SetRuoli {
     static readonly type = '[Ruoli] Set ruoli';
 
-    constructor(public ruoli: any) {
+    constructor(public ruoli: any[]) {
     }
 }

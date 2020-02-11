@@ -18,13 +18,13 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-using DomainModel.CQRS.Commands.MezzoPrenotato;
+using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.SetMezzoPrenotato;
 using System.Threading.Tasks;
 
 namespace SO115App.Models.Servizi.Infrastruttura.Notification.ComposizionePartenza.MezzoPrenotato
 {
     public interface INotificationAddPrenotazioneMezzo
     {
-        Task SendNotification(MezzoPrenotatoCommand command);
+        Task SendNotification(SetMezzoPrenotatoCommand command);
     }
 }

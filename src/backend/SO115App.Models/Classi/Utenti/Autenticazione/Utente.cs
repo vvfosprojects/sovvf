@@ -128,9 +128,6 @@ namespace SO115App.API.Models.Classi.Autenticazione
         /// <summary>
         ///   CodiceFiscale Operatore
         /// </summary>
-        [Required(ErrorMessage = "Il codice fiscale è obbligatorio")]
-        [StringLength(16, ErrorMessage = "Il codice fiscale deve essere lungo 16 caratteri")]
-        [RegularExpression(@"^[A-Z]{6}[A-Z0-9]{2}[A-Z][A-Z0-9]{2}[A-Z][A-Z0-9]{3}[A-Z]$", ErrorMessage = "Il codice fiscale non è nel formato corretto")]
         public string CodiceFiscale { get; set; }
 
         /// <summary>
@@ -181,6 +178,20 @@ namespace SO115App.API.Models.Classi.Autenticazione
         /// </summary>
         public string Qualifica { get; set; }
 
+        public List<string> ListaUnitaOperativeAbilitate
+        {
+            get
+            {
+                List<string> ListaUOAbilitate = new List<string>();
+                foreach (var ruolo in this.Ruoli)
+                {
+                    ListaUOAbilitate.Add(ruolo.Codicesede); //TODO COME SI COMPORTA CON IL CODICE DEL LAZIO, DALLA COMPOSIZIONE PARTENZA ED OLTRE.
+                }
+
+                return ListaUOAbilitate;
+            }
+        }
+
         public static Utente FindUserByUsername(string username)
         {
             Utente userFind = new Utente(username);
@@ -227,13 +238,15 @@ namespace SO115App.API.Models.Classi.Autenticazione
 
     public class Role
     {
-        public Role(string _descrizione, Sede _sede)
+        public Role(string _descrizione, string _sede)
         {
-            this.sede = _sede;
+            this.Codicesede = _sede;
             this.descrizione = _descrizione;
         }
 
         public string descrizione { get; set; }
-        public Sede sede { get; set; }
+        public string Codicesede { get; set; }
+
+        public string DescSede { get; set; }
     }
 }

@@ -29,19 +29,6 @@ import { Observable } from 'rxjs';
     ]
 })
 export class TreeviewComponent implements OnChanges, OnDestroy, OnInit {
-    treeViewOpened: boolean;
-
-    config = TreeviewConfig.create({
-        hasAllCheckBox: false,
-        hasFilter: true,
-        hasCollapseExpand: false,
-        decoupleChildFromParent: false,
-        maxHeight: 400
-    });
-
-    treeViewSelection: TreeviewSelezione[];
-    tastoConferma: boolean;
-
     @Input() colorButton = 'btn-default';
     @Input() items: TreeviewItem[];
     @Input() testoSedeSelezionata$: Observable<string>;
@@ -49,9 +36,23 @@ export class TreeviewComponent implements OnChanges, OnDestroy, OnInit {
     @Input() testoSedeSelezionata: string;
     @Input() visualizzaTasti = false;
     @Input() placement: string;
+    @Input() maxHeight: number;
+    @Input() disabled: boolean;
     @Output() annullaSelezione = new EventEmitter();
     @Output() confermaSelezione = new EventEmitter<TreeviewSelezione[]>();
     @Output() patchSelezione = new EventEmitter<TreeviewEmitterInterface>();
+
+    treeViewOpened: boolean;
+    treeViewSelection: TreeviewSelezione[];
+    tastoConferma: boolean;
+
+    config = TreeviewConfig.create({
+        hasAllCheckBox: false,
+        hasFilter: false,
+        hasCollapseExpand: false,
+        decoupleChildFromParent: false,
+        maxHeight: 400
+    });
 
     constructor(config: NgbDropdownConfig) {
         config.autoClose = 'outside';

@@ -27,6 +27,7 @@ using SO115App.API.Models.Classi.Geo;
 using SO115App.API.Models.Servizi.CQRS.Queries.Marker.MezziMarker;
 using SO115App.API.Models.Servizi.CQRS.Queries.Marker.SediMarker;
 using SO115App.API.Models.Servizi.CQRS.Queries.Marker.SintesiRichiesteAssistenzaMarker;
+using SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.Marker.SchedeNueMarker;
 
 namespace SO115App.API.Controllers
 {
@@ -38,14 +39,17 @@ namespace SO115App.API.Controllers
         private readonly IQueryHandler<MezziMarkerQuery, MezziMarkerResult> _mezziMarkerHandler;
         private readonly IQueryHandler<SediMarkerQuery, SediMarkerResult> _sediMarkerHandler;
         private readonly IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> _sintesiRichiesteAssistenzaMarkerHandler;
+        private readonly IQueryHandler<SchedeNueMarkerQuery, SchedeNueMarkerResult> _schedeNueMarkerHandler;
 
         public MarkerController(IQueryHandler<MezziMarkerQuery, MezziMarkerResult> mezziMarkerHandler,
                                 IQueryHandler<SediMarkerQuery, SediMarkerResult> sediMarkerHandler,
-                                IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> sintesiRichiesteAssistenzaMarkerHandler)
+                                IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> sintesiRichiesteAssistenzaMarkerHandler,
+                                IQueryHandler<SchedeNueMarkerQuery, SchedeNueMarkerResult> schedeNueMarkerHandler)
         {
             _mezziMarkerHandler = mezziMarkerHandler;
             _sediMarkerHandler = sediMarkerHandler;
             _sintesiRichiesteAssistenzaMarkerHandler = sintesiRichiesteAssistenzaMarkerHandler;
+            _schedeNueMarkerHandler = schedeNueMarkerHandler;
         }
 
         /// <summary>
@@ -108,6 +112,31 @@ namespace SO115App.API.Controllers
                 };
 
                 return Ok(this._mezziMarkerHandler.Handle(query).ListaMezziMarker);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        /// <summary>
+        ///   Metodo che restituisce i marker di tutti i mezzi in un quadrante
+        /// </summary>
+        [HttpPost("GetSchedeContatto")]
+        public async Task<IActionResult> GetSchedeContatto(AreaMappa filtroCentroMappa)
+        {
+            filtroCentroMappa.CodiceSede = new List<string>
+            {
+                Request.Headers["codiceSede"].ToString()
+            };
+            try
+            {
+                var query = new SchedeNueMarkerQuery()
+                {
+                    Filtro = filtroCentroMappa
+                };
+
+                return Ok(this._schedeNueMarkerHandler.Handle(query));
             }
             catch (Exception ex)
             {

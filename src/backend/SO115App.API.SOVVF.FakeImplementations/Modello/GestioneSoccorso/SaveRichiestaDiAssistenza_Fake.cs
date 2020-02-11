@@ -37,7 +37,7 @@ namespace SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso
             if (string.IsNullOrWhiteSpace(richiestaAssistenza.Codice))
             {
                 richiestaAssistenza.Codice = Guid.NewGuid().ToString();
-                richiestaAssistenza.CodiceUnitaOperativaCompetente = "RM";
+                richiestaAssistenza.CodSOCompetente = "RM";
             }
         }
     }

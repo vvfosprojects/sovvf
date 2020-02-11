@@ -25,9 +25,9 @@ using SO115App.Models.Servizi.Infrastruttura.Marker;
 
 namespace SO115App.FakePersistenceJSon.Marker
 {
-    public class AddChiamateInCorso : IChiamateInCorso
+    public class AddChiamateInCorso : IAddChiamataInCorso
     {
-        public void AddChiamata(ChiamateInCorso chiamata)
+        public void Add(ChiamateInCorso chiamata)
         {
             string filepath = "Fake/ListaChiamateInCorso.json";
             string json;

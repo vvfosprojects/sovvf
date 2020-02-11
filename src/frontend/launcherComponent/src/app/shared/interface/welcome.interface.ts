@@ -5,7 +5,8 @@ import { SintesiRichiesta } from '../model/sintesi-richiesta.model';
 import { ChiamataMarker } from '../../features/home/maps/maps-model/chiamata-marker.model';
 import { CentroMappa } from '../../features/home/maps/maps-model/centro-mappa.model';
 import { ListaTipologicheMezzi } from '../../features/home/composizione-partenza/interface/filtri/lista-filtri-composizione-interface';
-import { SchedaContatto } from './scheda-contatto.interface';
+import { ContatoriSchedeContatto } from './contatori-schede-contatto.interface';
+import { Tipologia } from '../model/tipologia.model';
 
 export interface Welcome {
     boxListaMezzi: BoxMezzi;
@@ -15,5 +16,6 @@ export interface Welcome {
     listaChiamateInCorso: ChiamataMarker[];
     centroMappaMarker: CentroMappa;
     listaFiltri: ListaTipologicheMezzi;
-    listaSchedeContatto: SchedaContatto[];
+    infoNue: ContatoriSchedeContatto;
+    tipologie: Tipologia[];
 }

@@ -1,4 +1,5 @@
 import { AppSettings } from '../../../../shared/interface/app-settings.interface';
+import { Tipologia } from '../../../../shared/model/tipologia.model';
 
 export class ClearDataNavbar {
     static readonly type = '[Navbar Component] Clear Data';

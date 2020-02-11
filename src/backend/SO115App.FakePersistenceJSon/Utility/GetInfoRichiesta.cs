@@ -17,11 +17,11 @@ namespace SO115App.FakePersistence.JSon.Utility
         {
             if (idRichiesta == null) return null;
 
-            var richiesta = _getRichiestaById.Get(idRichiesta);
+            var richiesta = _getRichiestaById.GetByCodice(idRichiesta);
 
             return new InfoRichiesta()
             {
-                CodiceRichiesta = richiesta.CodiceRichiesta,
+                CodiceRichiesta = richiesta.CodRichiesta,
                 Indirizzo = richiesta.Localita.Indirizzo
             };
         }

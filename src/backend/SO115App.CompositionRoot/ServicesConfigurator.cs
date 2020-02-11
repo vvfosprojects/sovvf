@@ -18,10 +18,11 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using SimpleInjector;
-using SO115App.ExternalAPI.Fake.Nue;
-using SO115App.ExternalAPI.Fake.Uos;
-using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
-using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
+using SO115App.FakePersistence.JSon.GestioneIntervento;
+using SO115App.FakePersistenceJSon.Box;
+using SO115App.FakePersistenceJSon.Composizione;
+using SO115App.FakePersistenceJSon.GestioneMezzi;
+using SO115App.FakePersistenceJSon.Marker;
 
 namespace SO115App.CompositionRoot
 {
@@ -29,7 +30,8 @@ namespace SO115App.CompositionRoot
     {
         internal static void Configure(Container container)
         {
-            //Trasportate in MongoDB
+            #region Trasportate in MongoDB
+
             container.Register<
                 API.Models.Servizi.Infrastruttura.GestioneSoccorso.ISaveRichiestaAssistenza,
                 FakePersistenceJSon.GestioneIntervento.InserimentoRichiesta>();
@@ -40,22 +42,31 @@ namespace SO115App.CompositionRoot
 
             container.Register<
                 API.Models.Servizi.Infrastruttura.GestioneSoccorso.IUpDateRichiestaAssistenza,
-                FakePersistenceJSon.GestioneIntervento.UpDateRichiesta>();
+                UpDateRichiesta>();
+
+            container.Register<
+                  SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.IGetRichiestaById,
+                  FakePersistenceJSon.GestioneIntervento.GetRichiestaById>();
+
+            container.Register<
+                    SO115App.Models.Servizi.Infrastruttura.Box.IGetBoxRichieste,
+                    FakePersistenceJSon.Box.GetRichieste>();
+
+            #endregion Trasportate in MongoDB
+
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.Box.IGetBoxMezzi,
-                ExternalAPI.Fake.Box.GetBoxMezziExt>();//TODO gestione composition Root per l'externalAPI
+                GetBoxMezzi>();
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.Box.IGetBoxPersonale,
-                ExternalAPI.Fake.Box.GetBoxPersonaleExt>();//TODO gestione composition Root per l'externalAPI
-            container.Register<
-                SO115App.Models.Servizi.Infrastruttura.Box.IGetBoxRichieste,
-                FakePersistenceJSon.Box.GetRichieste>();
+                GetPersonale>();
+
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.GetFiltri.IGetFiltri,
                 FakePersistenceJSon.Filtri.GetFiltri>();
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.Marker.IGetMezziMarker,
-                FakePersistenceJSon.Marker.GetMezziMarker>();
+                GetMezziMarker>();
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.Marker.IGetRichiesteMarker,
                 FakePersistenceJSon.Marker.GetRichiesteMarker>();
@@ -71,7 +82,7 @@ namespace SO115App.CompositionRoot
                 SO115App.FakePersistenceJSon.Navbar.GetNavbar>();
 
             container.Register<
-                SO115App.Models.Servizi.Infrastruttura.Marker.IChiamateInCorso,
+                SO115App.Models.Servizi.Infrastruttura.Marker.IAddChiamataInCorso,
                 FakePersistenceJSon.Marker.AddChiamateInCorso>();
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.Marker.IGetChiamateInCorso,
@@ -87,28 +98,28 @@ namespace SO115App.CompositionRoot
                 FakePersistenceJSon.Composizione.GetComposizioneSquadre>();
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.GetComposizioneMezzi.IGetComposizioneMezzi,
-                ExternalAPI.Fake.Composizione.GetComposizioneMezziExt>();//TODO gestione composition Root per l'externalAPI
+                GetComposizioneMezzi>();
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.GetPreAccoppiati.IGetPreAccoppiati,
                 FakePersistenceJSon.Composizione.GetPreAccoppiati>();
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.GetListaEventi.IGetListaEventi,
                 FakePersistenceJSon.ListaEventi.GetListaEventi>();
-            container.Register<
-                SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.IGetRichiestaById,
-                FakePersistenceJSon.GestioneIntervento.GetRichiestaById>();
+
             container.Register<
                 SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.IGetIdByCodice,
                 FakePersistenceJSon.GestioneIntervento.GetIdByCodice>();
             container.Register<
-                SO115App.Models.Servizi.Infrastruttura.GetMezzoPrenotato.IGetMezzoPrenotato,
-                FakePersistenceJSon.Composizione.GetMezzoPrenotato>();
+                Models.Servizi.Infrastruttura.Composizione.ISetMezzoPrenotato,
+                FakePersistence.JSon.Composizione.SetMezzoPrenotato>();
+            container.Register<Models.Servizi.Infrastruttura.Composizione.IGetStatoMezzi,
+                FakePersistence.JSon.GestioneMezzi.GetStatoMezzi>();
             container.Register<
          SO115App.Models.Servizi.Infrastruttura.Composizione.IUpdateConfermaPartenze,
-         ExternalAPI.Fake.Composizione.UpdateConfermaPartenzeExt>(); //TODO gestione composition Root per l'externalAPI
+            UpdateConfermaPartenze>();
             container.Register<
          SO115App.Models.Servizi.Infrastruttura.Composizione.IUpdateStatoPartenze,
-         ExternalAPI.Fake.Composizione.UpdateStatoPartenzaExt>(); //TODO gestione composition Root per l'externalAPI
+            UpdateStatoPartenza>();
             container.Register<
             SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi.IGetMezzoByCodice,
          SO115App.FakePersistence.JSon.GestioneMezzi.GetMezzoById>();
@@ -116,14 +127,16 @@ namespace SO115App.CompositionRoot
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GenerazioneCodiciRichiesta.IGeneraCodiceRichiesta,
                 SO115App.FakePersistence.JSon.Utility.GeneraCodiceRichiesta>();
-
+            container.Register<
+                Models.Servizi.Infrastruttura.SistemiEsterni.IdentityManagement.IGetDistaccamentoByCodiceSede,
+                FakePersistence.JSon.Distaccamenti.GetDistaccamentoByCodiceSede>();
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.IGetUtenteById,
                 SO115App.FakePersistence.JSon.GestioneUtenti.GetUtenteById>();
 
             container.Register<
                 SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi.IGetListaMezzi,
-                SO115App.FakePersistenceJSon.GestioneMezzi.GetListaMezzi>();
+                GetListaMezzi>();
             container.Register<
             SO115App.Models.Servizi.Infrastruttura.Turni.IUpdateTurni,
             SO115App.FakePersistence.JSon.Turni.UpdateTurni>();
@@ -133,6 +146,9 @@ namespace SO115App.CompositionRoot
             container.Register<
     SO115App.Models.Servizi.Infrastruttura.InfoRichiesta.IGetInfoRichiesta,
     FakePersistence.JSon.Utility.GetInfoRichiesta>();
+            container.Register<
+                Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi.ISetStatoOperativoMezzo,
+                FakePersistence.JSon.GestioneMezzi.SetStatoOperativoMezzo>();
 
             container.Register<
             SO115App.Models.Servizi.Infrastruttura.Notification.GestioneChiamata.INotifyInserimentoChiamata,
@@ -151,7 +167,7 @@ namespace SO115App.CompositionRoot
             SO115App.SignalR.Sender.GestioneChiamateInCorso.NotificationUpDateChiamataInCorso>();
             container.Register<
             SO115App.Models.Servizi.Infrastruttura.Notification.ComposizionePartenza.MezzoPrenotato.INotificationAddPrenotazioneMezzo,
-            SO115App.SignalR.Sender.ComposizionePartenza.MezzoPrenotato.NotificationAddPrenotazioneMezzo>();
+            SignalR.Sender.ComposizionePartenza.GestioneMezzoPrenotato.NotificationAddPrenotazioneMezzo>();
             container.Register<
             SO115App.Models.Servizi.Infrastruttura.Notification.ComposizionePartenza.INotificationConfermaPartenze,
             SO115App.SignalR.Sender.ComposizionePartenza.NotificationConfermaPartenze>();
@@ -173,6 +189,8 @@ namespace SO115App.CompositionRoot
             container.Register<
             SO115App.Models.Servizi.Infrastruttura.Notification.GestioneIntervento.INotifyUpDateStatoRichiesta,
             SO115App.SignalR.Sender.GestioneIntervento.NotificationUpDateStato>();
+            container.Register<SO115App.Models.Servizi.Infrastruttura.Notification.GestioneSchedeContatto.INotificationSetSchedaGestita,
+                SO115App.SignalR.Sender.GestioneSchedeContatto.NotificationSetSchedaGestita>();
 
             container.Register<
                 API.Models.Servizi.Infrastruttura.Organigramma.IGetUnitaOperativaPerCodice,

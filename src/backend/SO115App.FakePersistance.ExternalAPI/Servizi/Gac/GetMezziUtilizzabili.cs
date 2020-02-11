@@ -17,11 +17,16 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Condivise;
+using SO115App.ExternalAPI.Fake.Classi;
+using SO115App.ExternalAPI.Fake.Classi.Gac;
 using SO115App.ExternalAPI.Fake.Classi.Utility;
-using SO115App.ExternalAPI.Fake.Servizi.Gac.Mock;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
 using System.Collections.Generic;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace SO115App.ExternalAPI.Fake.Servizi.Gac
 {
@@ -31,17 +36,18 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
     public class GetMezziUtilizzabili : IGetMezziUtilizzabili
     {
         private readonly MapMezzoDTOsuMezzo _mapper;
-        private readonly GetMezzi _getMezzi;
+        private readonly HttpClient _client;
+        private readonly IConfiguration _configuration;
 
         /// <summary>
         ///   costruttore della classe
         /// </summary>
         /// <param name="mapper">injection del mapper Mezzo-MezzoDTO</param>
-        /// <param name="getMezzi">mock del servizio Gac</param>
-        public GetMezziUtilizzabili(MapMezzoDTOsuMezzo mapper, GetMezzi getMezzi)
+        public GetMezziUtilizzabili(MapMezzoDTOsuMezzo mapper, HttpClient client, IConfiguration configuration)
         {
             _mapper = mapper;
-            _getMezzi = getMezzi;
+            _client = client;
+            _configuration = configuration;
         }
 
         /// <summary>
@@ -49,17 +55,19 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
         /// </summary>
         /// <param name="sedi">una lista di codici sede</param>
         /// <param name="genereMezzo">il genere del mezzo (opzionale)</param>
-        /// <param name="siglaMezzo">la sigla del mezzo (opzionale)</param>
+        /// <param name="codiceMezzo">la sigla del mezzo (opzionale)</param>
         /// <returns>una lista mezzi</returns>
-        public List<Mezzo> Get(List<string> sedi, string genereMezzo, string siglaMezzo)
+        public async Task<List<Mezzo>> Get(List<string> sedi, string genereMezzo = null, string codiceMezzo = null)
         {
-            //---------------TODO Implementazione con il servizio esterno reale che sostituirà i json
+            var listaSedi = string.Join("&codiciSedi=", sedi.ToArray());
+            _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("test");
+            var response = await _client.GetAsync($"{_configuration.GetSection("UrlExternalApi").GetSection("GacApi").Value}{Costanti.GacGetMezziUtilizzabili}?codiciSedi={listaSedi}&genereMezzo={genereMezzo}&codiceMezzo={codiceMezzo}").ConfigureAwait(false);
+            response.EnsureSuccessStatusCode();
+            using HttpContent content = response.Content;
+            var dati = await content.ReadAsStringAsync().ConfigureAwait(false);
+            var listaMezziDTO = JsonConvert.DeserializeObject<List<MezzoDTO>>(dati);
 
-            var listaMezzoDTO = _getMezzi.GetMezziUtilizzabili(sedi, genereMezzo, siglaMezzo); //json
-
-            //---------------------------------------------------------------------------------------
-
-            return _mapper.MappaMezzoDTOsuMezzo(listaMezzoDTO);
+            return _mapper.MappaMezzoDTOsuMezzo(listaMezziDTO);
         }
     }
 }

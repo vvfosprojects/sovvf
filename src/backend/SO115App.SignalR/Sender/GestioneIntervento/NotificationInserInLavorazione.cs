@@ -29,6 +29,7 @@ using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza;
 using SO115App.API.Models.Servizi.CQRS.Queries.Marker.SintesiRichiesteAssistenzaMarker;
+using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneIntervento;
 using System.Collections.Generic;
 using System.Linq;
@@ -57,10 +58,16 @@ namespace SO115App.SignalR.Sender.GestioneIntervento
 
         public async Task SendNotification(MessaInLavorazioneCommand intervento)
         {
-            var SintesiRichiesteAssistenzaquery = new SintesiRichiesteAssistenzaQuery();
-            var ListaSintesi = (List<SintesiRichiesta>)this.sintesiRichiesteAssistenzahandler.Handle(SintesiRichiesteAssistenzaquery).SintesiRichiesta;
+            var sintesiRichiesteAssistenzaQuery = new SintesiRichiesteAssistenzaQuery
+            {
+                Filtro = new FiltroRicercaRichiesteAssistenza
+                {
+                    idOperatore = intervento.IdUtente
+                }
+            };
+            var listaSintesi = (List<SintesiRichiesta>)this.sintesiRichiesteAssistenzahandler.Handle(sintesiRichiesteAssistenzaQuery).SintesiRichiesta;
 
-            intervento.Chiamata = ListaSintesi.LastOrDefault(richiesta => richiesta.Id == intervento.Chiamata.Id);
+            intervento.Chiamata = listaSintesi.LastOrDefault(richiesta => richiesta.Id == intervento.Chiamata.Id);
 
             await _notificationHubContext.Clients.Group(intervento.Chiamata.Operatore.Sede.Codice).SendAsync("ModifyAndNotifySuccess", intervento);
         }

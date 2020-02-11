@@ -1,15 +1,10 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { makeCopy } from '../../../../../shared/helper/function';
-
-// Model
 import { VoceFiltro } from '../../../filterbar/ricerca-group/filtri-richieste/voce-filtro.model';
-
-// Action
-import { GetFiltriRichieste, SetFiltroSelezionato, ResetFiltriSelezionati } from '../../actions/filterbar/filtri-richieste.actions';
-
-// Tipologie
-import { NavbarState } from '../../../../navbar/store/states/navbar.state';
+import { GetFiltriRichieste, SetFiltroSelezionatoRichieste, ResetFiltriSelezionatiRichieste } from '../../actions/filterbar/filtri-richieste.actions';
 import { Tipologia } from '../../../../../shared/model/tipologia.model';
+import { resetFiltriSelezionati as _resetFiltriSelezionati, setFiltroSelezionato as _setFiltroSelezionato } from '../../../../../shared/helper/function-filtro';
+import { HomeState } from '../home.state';
 
 
 export interface FiltriRichiesteStateModel {
@@ -64,18 +59,19 @@ export class FiltriRichiesteState {
             new VoceFiltro('3', 'Rilevante', 'Rilevante', true),
             new VoceFiltro('4', 'Rilevante', 'Non Rilevante', true)
         ];
-        const tipologie: Tipologia[] = this.store.selectSnapshot(NavbarState.tipologie);
+        const tipologie: Tipologia[] = this.store.selectSnapshot(HomeState.tipologie);
         filtriRichieste.push(...filtriStatici);
-        tipologie.forEach(tipologia => {
-            filtriRichieste.push(new VoceFiltro('' + tipologia.codice, tipologia.categoria, tipologia.descrizione, tipologia.star));
-        });
+        if (tipologie && tipologie.length > 0) {
+            tipologie.forEach(tipologia => {
+                filtriRichieste.push(new VoceFiltro('' + tipologia.codice, tipologia.categoria, tipologia.descrizione, tipologia.star));
+            });
+        }
         const categorie: string[] = [];
         filtriRichieste.forEach(filtro => {
             if (categorie.indexOf(filtro.categoria) < 0) {
                 categorie.push(filtro.categoria);
             }
         });
-
         patchState({
             ...state,
             filtriRichieste: filtriRichieste,
@@ -84,8 +80,8 @@ export class FiltriRichiesteState {
     }
 
     // SET FILTRO SELEZIONATO (SELEZIONATO, NON-SELEZIONATO)
-    @Action(SetFiltroSelezionato)
-    setFiltroSelezionato({ getState, patchState }: StateContext<FiltriRichiesteStateModel>, action: SetFiltroSelezionato) {
+    @Action(SetFiltroSelezionatoRichieste)
+    setFiltroSelezionato({ getState, patchState }: StateContext<FiltriRichiesteStateModel>, action: SetFiltroSelezionatoRichieste) {
         const state = getState();
 
         const filtriRichieste = makeCopy(state.filtriRichieste);
@@ -93,12 +89,12 @@ export class FiltriRichiesteState {
 
         patchState({
             ...state,
-            filtriRichieste: setFiltroSelezionato(filtriRichieste, filtro)
+            filtriRichieste: _setFiltroSelezionato(filtriRichieste, filtro)
         });
     }
 
     // RESET FILTRI SELEZIONATI
-    @Action(ResetFiltriSelezionati)
+    @Action(ResetFiltriSelezionatiRichieste)
     resetFiltriSelezionati({ getState, patchState }: StateContext<FiltriRichiesteStateModel>) {
         const state = getState();
 
@@ -106,31 +102,7 @@ export class FiltriRichiesteState {
 
         patchState({
             ...state,
-            filtriRichieste: resetFiltriSelezionati(filtriRichieste)
+            filtriRichieste: _resetFiltriSelezionati(filtriRichieste)
         });
     }
-}
-
-export function setFiltroSelezionato(filtriRichieste: VoceFiltro[], filtro: VoceFiltro) {
-    filtriRichieste.forEach((fR: VoceFiltro, index: any) => {
-        if (fR.codice === filtro.codice) {
-            filtro = toggleFiltro(filtro);
-            filtriRichieste[index] = filtro;
-        }
-    });
-
-    return filtriRichieste;
-}
-
-export function toggleFiltro(filtro: VoceFiltro) {
-    filtro.selezionato = !filtro.selezionato;
-
-    return filtro;
-}
-
-export function resetFiltriSelezionati(filtriRichieste: VoceFiltro[]) {
-    filtriRichieste.forEach((fR: VoceFiltro) => {
-        fR.selezionato = false;
-    });
-    return filtriRichieste;
 }

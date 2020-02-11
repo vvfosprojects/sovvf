@@ -22,8 +22,11 @@ using SO115App.API.Models.Classi.Composizione;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneMezzi;
 using SO115App.FakePersistence.JSon.Utility;
+using SO115App.Models.Servizi.Infrastruttura.Composizione;
+using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.GetComposizioneMezzi;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
+using SO115App.Persistence.MongoDB.GestioneMezzi;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -39,10 +42,14 @@ namespace SO115App.ExternalAPI.Fake.Composizione
     public class GetComposizioneMezziExt : IGetComposizioneMezzi
     {
         private readonly IGetMezziUtilizzabili _getMezziUtilizzabili;
+        private readonly IGetStatoMezzi _getMezziPrenotati;
+        private readonly OrdinamentoMezzi _ordinamentoMezzi;
 
-        public GetComposizioneMezziExt(IGetMezziUtilizzabili getMezziUtilizzabili)
+        public GetComposizioneMezziExt(IGetMezziUtilizzabili getMezziUtilizzabili, IGetStatoMezzi getMezziPrenotati, OrdinamentoMezzi ordinamentoMezzi)
         {
             _getMezziUtilizzabili = getMezziUtilizzabili;
+            _getMezziPrenotati = getMezziPrenotati;
+            _ordinamentoMezzi = ordinamentoMezzi;
         }
 
         /// <summary>
@@ -58,7 +65,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             {
                 query.CodiceSede
             };
-            var listaMezzi = _getMezziUtilizzabili.Get(listaCodici, "", "");
+            var listaMezzi = _getMezziUtilizzabili.Get(listaCodici).Result;
 
             var composizioneMezzi = GeneraListaComposizioneMezzi(listaMezzi);
 
@@ -118,10 +125,9 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                 if (!string.IsNullOrEmpty(query.Filtro.CodiceMezzo))
                     composizioneMezzi = composizioneMezzi.Where(x => x.Mezzo.Codice == query.Filtro.CodiceMezzo).ToList();
 
-                var ordinamento = new OrdinamentoMezzi();
                 foreach (var composizione in composizioneMezzi)
                 {
-                    composizione.IndiceOrdinamento = ordinamento.GetIndiceOrdinamento(query.Filtro.IdRichiesta, composizione, composizione.Mezzo.IdRichiesta);
+                    composizione.IndiceOrdinamento = _ordinamentoMezzi.GetIndiceOrdinamento(query.Filtro.IdRichiesta, composizione, composizione.Mezzo.IdRichiesta);
                     composizione.Id = composizione.Mezzo.Codice;
 
                     if (composizione.IstanteScadenzaSelezione < DateTime.Now)
@@ -130,14 +136,15 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                     }
                 }
 
-                return composizioneMezzi.OrderByDescending(x => x.IndiceOrdinamento).ToList();
+                var composizioneMezziPrenotati = GetComposizioneMezziPrenotati(composizioneMezzi, query.CodiceSede);
+
+                return composizioneMezziPrenotati.OrderByDescending(x => x.IndiceOrdinamento).ToList();
             }
             else
             {
-                var ordinamento = new OrdinamentoMezzi();
                 foreach (var composizione in composizioneMezzi)
                 {
-                    composizione.IndiceOrdinamento = ordinamento.GetIndiceOrdinamento(query.Filtro.IdRichiesta, composizione, composizione.Mezzo.IdRichiesta);
+                    composizione.IndiceOrdinamento = _ordinamentoMezzi.GetIndiceOrdinamento(query.Filtro.IdRichiesta, composizione, composizione.Mezzo.IdRichiesta);
                     composizione.Id = composizione.Mezzo.Codice;
 
                     if (composizione.IstanteScadenzaSelezione < DateTime.Now)
@@ -146,8 +153,21 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                     }
                 }
 
-                return composizioneMezzi.OrderByDescending(x => x.IndiceOrdinamento).ToList();
+                var composizioneMezziPrenotati = GetComposizioneMezziPrenotati(composizioneMezzi, query.CodiceSede);
+
+                return composizioneMezziPrenotati.OrderByDescending(x => x.IndiceOrdinamento).ToList();
             }
+        }
+
+        private List<ComposizioneMezzi> GetComposizioneMezziPrenotati(List<ComposizioneMezzi> composizioneMezzi, string codiceSede)
+        {
+            var mezziPrenotati = _getMezziPrenotati.Get(codiceSede);
+            foreach (var composizione in composizioneMezzi)
+            {
+                if (mezziPrenotati.Find(x => x.CodiceMezzo.Equals(composizione.Mezzo.Codice)) != null)
+                    composizione.IstanteScadenzaSelezione = mezziPrenotati.Find(x => x.CodiceMezzo.Equals(composizione.Mezzo.Codice)).IstanteScadenzaSelezione;
+            }
+            return composizioneMezzi;
         }
 
         private static List<ComposizioneMezzi> GeneraListaComposizioneMezzi(IEnumerable<Mezzo> listaMezzi)

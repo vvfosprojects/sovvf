@@ -18,7 +18,6 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using System.Collections.Generic;
-using System.Web.Http.ModelBinding;
 using CQRS.Commands.Validators;
 using SO115App.Models.Classi.Utility;
 using ValidationResult = CQRS.Validation.ValidationResult;

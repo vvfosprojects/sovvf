@@ -5,7 +5,6 @@ import { catchError, map, retry, tap } from 'rxjs/operators';
 import { handleError } from '../../../shared/helper/handleError';
 import { AppSettings, AppSettingsAPI } from '../../../shared/interface/app-settings.interface';
 import { Observable } from 'rxjs';
-import { Tipologia } from '../../../shared/model/tipologia.model';
 
 const API_URL_NAVBAR = environment.apiUrl.navbar;
 
@@ -26,12 +25,6 @@ export class NavbarService {
 
         function mapAppSettings(data: AppSettingsAPI): AppSettings {
             const result = {} as AppSettings;
-            result.tipologie = data.tipologie.map((tipologia: Tipologia) => {
-                return {
-                    ...tipologia,
-                    codiceDescrizione: `${tipologia.descrizione} (${tipologia.codice})`
-                };
-            });
             const mapper = e => ({
                 text: e.nome,
                 value: e.codice,

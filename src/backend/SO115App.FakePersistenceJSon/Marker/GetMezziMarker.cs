@@ -21,13 +21,9 @@ using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Geo;
 using SO115App.API.Models.Classi.Marker;
-using SO115App.FakePersistence.JSon.Classi;
 using SO115App.FakePersistence.JSon.Utility;
-using SO115App.Models.Servizi.Infrastruttura.GeoFleet;
 using SO115App.Models.Servizi.Infrastruttura.InfoRichiesta;
 using SO115App.Models.Servizi.Infrastruttura.Marker;
-using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -40,12 +36,10 @@ namespace SO115App.FakePersistenceJSon.Marker
     public class GetMezziMarker : IGetMezziMarker
     {
         private readonly IGetInfoRichiesta _getInfoRichiesta;
-        private readonly IGetMezziUtilizzabili _getMezziUtilizzabili;
 
-        public GetMezziMarker(IGetInfoRichiesta getInfoRichiesta, IGetMezziUtilizzabili getMezziUtilizzabili)
+        public GetMezziMarker(IGetInfoRichiesta getInfoRichiesta)
         {
             _getInfoRichiesta = getInfoRichiesta;
-            _getMezziUtilizzabili = getMezziUtilizzabili;
         }
 
         /// <summary>
@@ -57,7 +51,15 @@ namespace SO115App.FakePersistenceJSon.Marker
         {
             var listaMezziFilter = new List<MezzoMarker>();
 
-            var listaMezzi = _getMezziUtilizzabili.Get(filtroAreaMappa.CodiceSede, "", "");
+            var filepath = CostantiJson.Mezzo;
+
+            string json;
+            using (var r = new StreamReader(filepath))
+            {
+                json = r.ReadToEnd();
+            }
+
+            var listaMezzi = JsonConvert.DeserializeObject<List<Mezzo>>(json);
             var listaMezziMarker = new List<MezzoMarker>();
 
             foreach (var mezzo in listaMezzi)
@@ -74,6 +76,39 @@ namespace SO115App.FakePersistenceJSon.Marker
             if (filtroAreaMappa == null) return listaMezziMarker;
 
             listaMezziFilter.AddRange(listaMezziMarker.Where(mezzo => (mezzo.Mezzo.Coordinate.Latitudine >= filtroAreaMappa.BottomLeft.Latitudine) && (mezzo.Mezzo.Coordinate.Latitudine <= filtroAreaMappa.TopRight.Latitudine) && ((mezzo.Mezzo.Coordinate.Longitudine >= filtroAreaMappa.BottomLeft.Longitudine) && (mezzo.Mezzo.Coordinate.Longitudine <= filtroAreaMappa.TopRight.Longitudine))));
+
+            var listaMezziFiltrataPerStato = new List<MezzoMarker>();
+            var listaMezziFitrataPerStatoEGenere = new List<MezzoMarker>();
+            var listaMezziFiltrataPerGenere = new List<MezzoMarker>();
+
+            if (filtroAreaMappa.FiltroMezzi.Stato.Any())
+            {
+                foreach (var stato in filtroAreaMappa.FiltroMezzi.Stato)
+                {
+                    listaMezziFiltrataPerStato.AddRange(listaMezziFilter.FindAll(x => x.Mezzo.Stato.Equals(stato)));
+                }
+
+                if (!filtroAreaMappa.FiltroMezzi.Tipologia.Any())
+                {
+                    return listaMezziFiltrataPerStato;
+                }
+            }
+            if (filtroAreaMappa.FiltroMezzi.Tipologia.Any())
+            {
+                foreach (var genere in filtroAreaMappa.FiltroMezzi.Tipologia)
+                {
+                    listaMezziFiltrataPerGenere.AddRange(listaMezziFilter.FindAll(x => x.Mezzo.Genere.Equals(genere)));
+                }
+                if (!filtroAreaMappa.FiltroMezzi.Stato.Any())
+                {
+                    return listaMezziFiltrataPerGenere;
+                }
+            }
+
+            if (filtroAreaMappa.FiltroMezzi.Tipologia.Any() && filtroAreaMappa.FiltroMezzi.Stato.Any())
+            {
+                return listaMezziFitrataPerStatoEGenere = listaMezziFiltrataPerStato.FindAll(x => listaMezziFiltrataPerGenere.Contains(x));
+            }
 
             return listaMezziFilter;
         }

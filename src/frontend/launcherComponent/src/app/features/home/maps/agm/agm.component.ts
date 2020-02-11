@@ -19,12 +19,14 @@ import { MeteoMarkersState } from '../../store/states/maps/meteo-markers.state';
 import { AppFeatures } from '../../../../shared/enum/app-features.enum';
 import { MouseE } from '../../../../shared/enum/mouse-e.enum';
 import { MapsDirectionState } from '../../store/states/maps/maps-direction.state';
-import { markerColor, markerColorRichiesta } from '../../../../shared/helper/function-colori';
+import { markerColor, markerColorRichiesta, markerColorSC } from '../../../../shared/helper/function-colori';
 import { StatoRichiesta } from '../../../../shared/enum/stato-richiesta.enum';
 import { makeAreaMappa, makeCentroMappa, makeCoordinate, wipeStatoRichiesta } from '../../../../shared/helper/function';
 import { MapsButtonsState } from '../../store/states/maps/maps-buttons.state';
 import { ButtonControlAnimation, CustomButtonsMaps } from '../maps-interface/maps-custom-buttons';
 import { MapsOptionsInterface } from '../../../../core/settings/maps-options';
+import { SchedaContattoMarker } from '../maps-model/scheda-contatto-marker.model';
+import { ClassificazioneSchedaContatto } from '../../../../shared/enum/classificazione-scheda-contatto.enum';
 
 declare var google: any;
 
@@ -43,6 +45,7 @@ export class AgmComponent implements OnDestroy {
     @Input() chiamateMarkers: ChiamataMarker[];
     @Input() viewStateMappa: ViewInterfaceMaps;
     @Input() composizioneMarkers: ComposizioneMarker[];
+    @Input() schedeContattoMarkers: SchedaContattoMarker[];
     @Output() mapFullyLoaded = new EventEmitter<boolean>();
     cachedMarkers: CachedMarker[] = [];
     AppFeatures = AppFeatures;
@@ -58,6 +61,7 @@ export class AgmComponent implements OnDestroy {
     mapWrapper: GoogleMap;
     richiestaMarkerIconUrl: string;
     meteoMarkerIconUrl: string;
+    schedaContattoMarkerIconUrl: string;
 
     zoomControlOptions: ZoomControlOptions = {
         position: ControlPosition.BOTTOM_RIGHT
@@ -118,6 +122,7 @@ export class AgmComponent implements OnDestroy {
          */
         this.richiestaMarkerIconUrl = this.markerService.iconaSpeciale('chiamata');
         this.meteoMarkerIconUrl = this.markerService.iconaSpeciale('meteo');
+        this.schedaContattoMarkerIconUrl = this.markerService.iconaSpeciale('schedaContatto');
         /**
          * stato dei custom button
          */
@@ -162,10 +167,12 @@ export class AgmComponent implements OnDestroy {
         return this.markerService.zIndex(id, tipoMarker, rilevante, rilevanzaStArCu);
     }
 
+    // Todo da togliere
     isClicked(id: string, tipoMarker: string): boolean {
         return this.markerService.isClicked(id, tipoMarker);
     }
 
+    // Todo da togliere
     isHovered(id: string, tipoMarker: string): boolean {
         return this.markerService.isHovered(id, tipoMarker);
     }
@@ -192,6 +199,7 @@ export class AgmComponent implements OnDestroy {
         return this.markerService.isSelfClicked(id, tipoMarker);
     }
 
+    // Todo da togliere
     isVisible(tipoMarker: string): boolean {
         return this.markerService.isVisible(tipoMarker);
     }
@@ -248,6 +256,14 @@ export class AgmComponent implements OnDestroy {
         return this.markerService.iconaSedeTipoWindow(tipo);
     }
 
+    iconaSchedaContattoMarker(schedaContatto: SchedaContattoMarker): string {
+        /**
+         * ritorno l'url dell'icona del marker scheda contatto
+         */
+        const checkGestita = schedaContatto.gestita ? '-g' : '';
+        return this.markerService.iconaSchedaContattoMarker(schedaContatto.classificazione + checkGestita);
+    }
+
     actionRichiestaMarker(id: string, event: MouseE): void {
         /**
          * scateno l'azione relativa all'evento del mouse ricevuto
@@ -269,6 +285,13 @@ export class AgmComponent implements OnDestroy {
         this.markerService.actionSedeMarker(id, event);
     }
 
+    actionSchedaContattoMarker(id: string, event: MouseE): void {
+        /**
+         * scateno l'azione relativa all'evento del mouse ricevuto
+         */
+        this.markerService.actionSchedaContattoMarker(id, event);
+    }
+
     findDatiMeteo(_id: string): Meteo {
         /**
          * ritorno i dati meteo del marker selezionato
@@ -282,6 +305,10 @@ export class AgmComponent implements OnDestroy {
 
     colorWindowRichiesta(stato: StatoRichiesta): string {
         return markerColorRichiesta(stato);
+    }
+
+    colorWindowSC(stato: ClassificazioneSchedaContatto): string {
+        return markerColorSC(stato);
     }
 
     wipeStatoRichiesta(statoEnum: StatoRichiesta): string {

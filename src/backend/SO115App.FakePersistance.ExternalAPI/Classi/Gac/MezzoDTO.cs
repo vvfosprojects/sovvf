@@ -17,11 +17,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using SO115App.API.Models.Classi.Condivise;
 using SO115App.Models.Classi.ServiziEsterni.Gac;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace SO115App.ExternalAPI.Fake.Classi.Gac
 {
@@ -30,7 +26,8 @@ namespace SO115App.ExternalAPI.Fake.Classi.Gac
         /// <summary>
         ///   Codice del mezzo
         /// </summary>
-        public string Codice { get; set; }
+
+        public string CodiceMezzo { get; set; }
 
         /// <summary>
         ///   Codice del radio trasmittente
@@ -60,16 +57,18 @@ namespace SO115App.ExternalAPI.Fake.Classi.Gac
         /// <summary>
         ///   Appartenenza del mezzo
         /// </summary>
-        public int Appartenenza { get; set; }
+
+        public string Appartenenza { get; set; }
 
         /// <summary>
-        ///   Indica il distaccamento del mezzo
+        ///   Indica codice distaccamento del mezzo
         /// </summary>
-        public Sede Distaccamento { get; set; }
+        public string CodiceDistaccamento { get; set; }
 
         /// <summary>
         ///   Descrizione dell'appartenenza del mezzo
         /// </summary>
+
         public string DescrizioneAppartenenza { get; set; }
 
         /// <summary>
@@ -106,10 +105,5 @@ namespace SO115App.ExternalAPI.Fake.Classi.Gac
         ///   descrive il livello dell'estinguente del mezzo
         /// </summary>
         public string DescrizioneLivelloEstinguente { get; set; }
-
-        /// <summary>
-        ///   identifica la destinazione d'uso del mezzo
-        /// </summary>
-        public string DestinazioneUso { get; set; }
     }
 }

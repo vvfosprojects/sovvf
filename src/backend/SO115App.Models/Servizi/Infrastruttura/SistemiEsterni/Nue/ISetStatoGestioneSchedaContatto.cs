@@ -29,6 +29,6 @@ namespace SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue
         ///   Aggiorna lo stato di gestione della Scheda Contatto
         /// </summary>
         /// <returns>Non restituisce nulla</returns>
-        void Gestita(string codiceSede, string codiceScheda, string codiceFiscale, bool gestita);
+        void Gestita(string codiceScheda, string codiceSede, string codiceFiscale, bool gestita);
     }
 }

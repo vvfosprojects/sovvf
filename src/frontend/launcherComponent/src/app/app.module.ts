@@ -11,7 +11,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { PipeModule } from './shared/pipes/pipe.module';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SidebarModule } from 'ng-sidebar';
@@ -27,8 +26,6 @@ import { ToastrModule } from 'ngx-toastr';
 import { NgxsModule } from '@ngxs/store';
 import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
 import { NgxsRouterPluginModule } from '@ngxs/router-plugin';
-import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
-import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
 /**
  * State
  */
@@ -49,7 +46,7 @@ import { APP_ROUTING } from './app.routing';
 /**
  * Interceptor
  */
-import { JwtInterceptor, ErrorInterceptor, FakeBackendInterceptor } from './core/auth/_helpers';
+import { JwtInterceptor, ErrorInterceptor, FakeBackendInterceptor } from './core/_helpers';
 import { SignalRInterceptor } from './core/signalr/signalR.interceptor';
 /**
  * Module Components
@@ -58,6 +55,13 @@ import { NavbarModule } from './features/navbar/navbar.module';
 import { SharedModule } from './shared/shared.module';
 import { AppLoadModule } from './core/app-load/app-load.module';
 import { RpcInterceptor } from './core/rpc/rpc-interceptor.service';
+import { LoaderInterceptor } from './core/_helpers/loader.interceptor';
+import { LoadingState } from './shared/store/states/loading/loading.state';
+import { PaginationState } from './shared/store/states/pagination/pagination.state';
+import { NgxsFormPluginModule } from '@ngxs/form-plugin';
+import { UtentiState } from './shared/store/states/utenti/utenti.state';
+import { UserService } from './core/auth/_services';
+import { UserServiceFake } from './core/auth/_services/user.service.fake';
 
 
 @NgModule({
@@ -78,7 +82,6 @@ import { RpcInterceptor } from './core/rpc/rpc-interceptor.service';
         NgProgressHttpModule,
         SharedModule,
         NavbarModule,
-        PipeModule.forRoot(),
         SidebarModule.forRoot(),
         TimeagoModule.forRoot({
             intl: TimeagoIntl,
@@ -89,29 +92,26 @@ import { RpcInterceptor } from './core/rpc/rpc-interceptor.service';
             preventDuplicates: true,
         }),
         NgxsModule.forRoot(
-            [AppState, UtenteState, SignalRState, ToastrState, SediTreeviewState],
+            [AppState, UtenteState, SignalRState, ToastrState, SediTreeviewState, PaginationState, LoadingState, UtentiState],
             { developmentMode: !environment.production }
         ),
-        // NgxsStoragePluginModule.forRoot({
-        //     key: []
-        // }),
         NgxsRouterPluginModule.forRoot(),
         NgxsReduxDevtoolsPluginModule.forRoot({
             name: 'SO115 - NGXS',
             disabled: environment.production,
         }),
-        // NgxsLoggerPluginModule.forRoot({
-        //     disabled: environment.production,
-        // }),
+        NgxsFormPluginModule.forRoot(),
     ],
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
         { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+        { provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true },
         { provide: HTTP_INTERCEPTORS, useClass: SignalRInterceptor, multi: true },
         { provide: HTTP_INTERCEPTORS, useClass: RpcInterceptor, multi: true },
         environment.fakeProvider ? { provide: HTTP_INTERCEPTORS, useClass: FakeBackendInterceptor, multi: true } : [],
         I18n,
-        { provide: NavbarService, useClass: environment.fakeProvider ? NavbarServiceFake : NavbarService},
+        { provide: NavbarService, useClass: environment.fakeProvider ? NavbarServiceFake : NavbarService },
+        { provide: UserService, useClass: UserServiceFake }
     ],
     bootstrap: [AppComponent]
 })

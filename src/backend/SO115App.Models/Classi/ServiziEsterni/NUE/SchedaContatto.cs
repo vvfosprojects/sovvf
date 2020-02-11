@@ -19,8 +19,8 @@
 //-----------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using SO115App.API.Models.Classi.Condivise;
-using SO115App.API.Models.Classi.Soccorso;
 
 namespace SO115App.Models.Classi.NUE
 {
@@ -75,7 +75,8 @@ namespace SO115App.Models.Classi.NUE
         public int Priorita { get; set; }
 
         /// <summary>
-        ///   E' il numero delle persone coinvolte provenienti dalla scheda contatto, proveniente dal NUE.
+        ///   E' il numero delle persone coinvolte provenienti dalla scheda contatto, proveniente
+        ///   dal NUE.
         /// </summary>
         public int NumeroPersoneCoinvolte { get; set; }
 
@@ -90,13 +91,15 @@ namespace SO115App.Models.Classi.NUE
         public string Classificazione { get; set; }
 
         /// <summary>
-        ///   Indica se la scheda contatto è stata letta o meno
-        /// </summary>
-        public bool Letta { get; set; }
-
-        /// <summary>
         ///   Indica se la scheda contatto è stata gestita o meno
         /// </summary>
         public bool Gestita { get; set; }
+
+        /// <summary>
+        ///   Indica se la scheda è stata mergiata all'interno di un altra
+        /// </summary>
+        public bool Collegata { get; set; }
+
+        public List<SchedaContatto> Collegate { get; set; }
     }
 }

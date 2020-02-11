@@ -18,7 +18,6 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using SO115App.API.Models.Classi.Boxes;
-using System.Collections.Generic;
 
 namespace SO115App.Models.Servizi.Infrastruttura.Box
 {

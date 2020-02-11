@@ -1,108 +1,206 @@
 import { Component, isDevMode, OnDestroy, OnInit } from '@angular/core';
-import { Store, Select } from '@ngxs/store';
+import { Select, Store } from '@ngxs/store';
 import {
-  SetSchedaContattoTelefonata,
-  SetSchedaContattoHover,
-  ClearSchedaContattoHover, SetSchedaContattoLetta, SetSchedaContattoGestita
+    ClearSchedaContattoHover,
+    GetListaSchedeContatto, OpenDetailSC,
+    SetRangeVisualizzazioneSchedeContatto,
+    SetSchedaContattoGestita,
+    SetSchedaContattoHover,
+    SetSchedaContattoTelefonata,
+    SetTabAttivo,
+    ToggleCollapsed,
+    UndoMergeSchedeContatto
 } from '../store/actions/schede-contatto/schede-contatto.actions';
 import { SchedeContattoState } from '../store/states/schede-contatto/schede-contatto.state';
 import { Observable, Subscription } from 'rxjs';
 import { SchedaContatto } from 'src/app/shared/interface/scheda-contatto.interface';
-import { ToggleSchedeContatto, ToggleChiamata } from '../store/actions/view/view.actions';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { DettaglioSchedaModalComponent } from './dettaglio-scheda-modal/dettaglio-scheda-modal.component';
+import { ToggleChiamata, ToggleSchedeContatto } from '../store/actions/view/view.actions';
+import { NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
+import { ContatoriSchedeContatto } from '../../../shared/interface/contatori-schede-contatto.interface';
+import { RangeSchedeContattoEnum } from '../../../shared/enum/range-schede-contatto';
+import {
+    ClearSchedeContattoMarkers,
+    GetSchedeContattoMarkers
+} from '../store/actions/maps/schede-contatto-markers.actions';
+import { MergeSchedeContattoState } from '../store/states/schede-contatto/merge-schede-contatto.state';
+import {
+    CheckboxError,
+    ClearMergeSchedeContatto,
+    InitSaveMergeSchedeContatto,
+    SetMergeSchedaId,
+    ToggleModalitaMerge
+} from '../store/actions/schede-contatto/merge-schede-contatto.actions';
+import { CheckboxInterface } from '../../../shared/interface/checkbox.interface';
+import { ClassificazioneSchedaContatto } from '../../../shared/enum/classificazione-scheda-contatto.enum';
+import { LoadingState } from '../../../shared/store/states/loading/loading.state';
+import { ConfirmModalComponent } from '../../../shared';
+import { AreaMappaState } from '../store/states/maps/area-mappa.state';
 
 @Component({
-  selector: 'app-schede-contatto',
-  templateUrl: './schede-contatto.component.html',
-  styleUrls: ['./schede-contatto.component.css']
+    selector: 'app-schede-contatto',
+    templateUrl: './schede-contatto.component.html',
+    styleUrls: [ './schede-contatto.component.css' ]
 })
 export class SchedeContattoComponent implements OnInit, OnDestroy {
 
 
-  @Select(SchedeContattoState.schedeContatto) schedeContatto$: Observable<SchedaContatto[]>;
-  schedeContatto: SchedaContatto[];
-  @Select(SchedeContattoState.schedeContattoCompetenza) schedeContattoCompetenza$: Observable<SchedaContatto[]>;
-  schedeContattoCompetenza: SchedaContatto[];
-  @Select(SchedeContattoState.schedeContattoConoscenza) schedeContattoConoscenza$: Observable<SchedaContatto[]>;
-  schedeContattoConoscenza: SchedaContatto[];
-  @Select(SchedeContattoState.schedeContattoDifferibili) schedeContattoDifferibili$: Observable<SchedaContatto[]>;
-  schedeContattoDifferibili: SchedaContatto[];
-  @Select(SchedeContattoState.codiceSchedaContattoHover) codiceSchedaContattoHover$: Observable<string>;
-  codiceSchedaContattoHover: string;
+    @Select(SchedeContattoState.schedeContatto) schedeContatto$: Observable<SchedaContatto[]>;
+    schedeContatto: SchedaContatto[];
 
-  subscription: Subscription = new Subscription();
+    @Select(SchedeContattoState.idSchedeCompetenza) idSchedeCompetenza$: Observable<string[]>;
+    @Select(SchedeContattoState.idSchedeConoscenza) idSchedeConoscenza$: Observable<string[]>;
+    @Select(SchedeContattoState.idSchedeDifferibili) idSchedeDifferibili$: Observable<string[]>;
+    @Select(SchedeContattoState.idVisualizzati) idVisualizzati$: Observable<string[]>;
+    @Select(SchedeContattoState.idCollapsed) idCollapsed$: Observable<string[]>;
 
-  constructor(private store: Store,
-              private modal: NgbModal) {
-    this.subscription.add(
-      this.schedeContatto$.subscribe((schedeContatto: SchedaContatto[]) => {
-        this.schedeContatto = schedeContatto;
-      })
-    );
-    this.subscription.add(
-      this.schedeContattoCompetenza$.subscribe((schedeContatto: SchedaContatto[]) => {
-        this.schedeContattoCompetenza = schedeContatto;
-      })
-    );
-    this.subscription.add(
-      this.schedeContattoConoscenza$.subscribe((schedeContatto: SchedaContatto[]) => {
-        this.schedeContattoConoscenza = schedeContatto;
-      })
-    );
-    this.subscription.add(
-      this.schedeContattoDifferibili$.subscribe((schedeContatto: SchedaContatto[]) => {
-        this.schedeContattoDifferibili = schedeContatto;
-      })
-    );
-    this.subscription.add(
-      this.codiceSchedaContattoHover$.subscribe((codiceSchedaContatto: string) => {
-        this.codiceSchedaContattoHover = codiceSchedaContatto;
-      })
-    );
-  }
+    @Select(SchedeContattoState.codiceSchedaContattoHover) codiceSchedaContattoHover$: Observable<string>;
+    codiceSchedaContattoHover: string;
+    @Select(SchedeContattoState.contatoriSchedeContatto) contatoriSchedeContatto$: Observable<ContatoriSchedeContatto>;
+    contatoriSchedeContatto: ContatoriSchedeContatto;
+    @Select(SchedeContattoState.rangeVisualizzazione) rangeVisualizzazione$: Observable<RangeSchedeContattoEnum>;
+    rangeVisualizzazione: RangeSchedeContattoEnum;
+    @Select(SchedeContattoState.tabAttivo) tabAttivo$: Observable<ClassificazioneSchedaContatto>;
 
-  ngOnInit(): void {
-    isDevMode() && console.log('Componente Schede Contatto creato');
-  }
+    @Select(MergeSchedeContattoState.statoModalita) statoModalita$: Observable<boolean>;
+    statoModalita: boolean;
+    @Select(MergeSchedeContattoState.classificazione) classificazioneMerge$: Observable<ClassificazioneSchedaContatto>;
+    classificazioneMerge: ClassificazioneSchedaContatto;
+    @Select(MergeSchedeContattoState.schedeSelezionateId) idSelezionatiMerge$: Observable<string[]>;
+    idSelezionatiMerge: string[];
+    @Select(LoadingState.loading) loading$: Observable<boolean>;
 
-  ngOnDestroy(): void {
-    isDevMode() && console.log('Componente Schede Contatto distrutto');
-  }
+    rangeSchedeContattoEnumValues = Object.values(RangeSchedeContattoEnum);
+    RangeVisualizzazione = RangeSchedeContattoEnum;
+    private subscription: Subscription = new Subscription();
 
-  setSchedaContattoLetta(codiceScheda: string, letta: boolean) {
-    this.store.dispatch(new SetSchedaContattoLetta(codiceScheda, letta));
-  }
+    ClassificazioneEnum = ClassificazioneSchedaContatto;
 
-  setSchedaContattoGestita(codiceScheda: string, gestita: boolean) {
-    this.store.dispatch(new SetSchedaContattoGestita(codiceScheda, gestita));
-  }
+    constructor(private store: Store,
+                private modal: NgbModal) {
+        this.subscription.add(
+            this.schedeContatto$.subscribe((schedeContatto: SchedaContatto[]) => {
+                this.schedeContatto = schedeContatto;
+            })
+        );
 
-  setSchedaContattoTelefonata(schedaContatto: SchedaContatto) {
-    this.store.dispatch(new SetSchedaContattoTelefonata(schedaContatto));
-    this.store.dispatch(new ToggleChiamata());
-  }
+        this.subscription.add(
+            this.codiceSchedaContattoHover$.subscribe((codiceSchedaContatto: string) => {
+                this.codiceSchedaContattoHover = codiceSchedaContatto;
+            })
+        );
+        this.subscription.add(
+            this.contatoriSchedeContatto$.subscribe((contaotoriSchede: ContatoriSchedeContatto) => {
+                this.contatoriSchedeContatto = contaotoriSchede;
+            })
+        );
+        this.subscription.add(
+            this.rangeVisualizzazione$.subscribe((range: RangeSchedeContattoEnum) => {
+                this.rangeVisualizzazione = range;
+            })
+        );
+        this.subscription.add(this.statoModalita$.subscribe((stato: boolean) => this.statoModalita = stato));
+        this.subscription.add(this.classificazioneMerge$.subscribe((classificazione: ClassificazioneSchedaContatto) => this.classificazioneMerge = classificazione));
+        this.subscription.add(this.idSelezionatiMerge$.subscribe((idSelezionatiMerge: string[]) => this.idSelezionatiMerge = idSelezionatiMerge));
 
-  dettaglioScheda(scheda: SchedaContatto) {
-    const modal = this.modal.open(DettaglioSchedaModalComponent, { windowClass: 'xlModal', backdropClass: 'light-blue-backdrop', centered: true });
-    modal.componentInstance.schedaContatto = scheda;
-  }
+    }
 
-  getNonLette(schede: SchedaContatto[]) {
-    return schede.filter(s => s.letta === false).length;
-  }
+    ngOnInit(): void {
+        isDevMode() && console.log('Componente Schede Contatto creato');
+        const areaMappa = this.store.selectSnapshot(AreaMappaState.areaMappa);
+        this.store.dispatch([ new GetListaSchedeContatto(), new GetSchedeContattoMarkers(areaMappa) ]);
+    }
 
-  hoverIn(idSchedaContatto: string) {
-    this.store.dispatch(new SetSchedaContattoHover(idSchedaContatto));
-  }
+    ngOnDestroy(): void {
+        this.store.dispatch(new ClearSchedeContattoMarkers());
+        this.store.dispatch(new ClearMergeSchedeContatto());
+        isDevMode() && console.log('Componente Schede Contatto distrutto');
+    }
 
-  hoverOut() {
-    this.store.dispatch(new ClearSchedaContattoHover());
-  }
+    setSchedaContattoGestita(codiceScheda: string, gestita: boolean) {
+        this.store.dispatch(new SetSchedaContattoGestita(codiceScheda, gestita));
+    }
 
-  tornaIndietro() {
-    this.store.dispatch(new ToggleSchedeContatto());
-  }
+    setSchedaContattoTelefonata(schedaContatto: SchedaContatto) {
+        this.store.dispatch(new SetSchedaContattoTelefonata(schedaContatto));
+        this.store.dispatch(new ToggleChiamata());
+    }
 
+    setFiltroRange(range: RangeSchedeContattoEnum) {
+        this.store.dispatch(new SetRangeVisualizzazioneSchedeContatto(range));
+    }
+
+    dettaglioScheda(idSchedaContatto: string) {
+        this.store.dispatch(new OpenDetailSC(idSchedaContatto));
+    }
+
+    hoverIn(idSchedaContatto: string) {
+        this.store.dispatch(new SetSchedaContattoHover(idSchedaContatto));
+    }
+
+    hoverOut() {
+        this.store.dispatch(new ClearSchedaContattoHover());
+    }
+
+    tornaIndietro() {
+        this.store.dispatch(new ToggleSchedeContatto());
+    }
+
+    onToggleModalitaMerge() {
+        this.store.dispatch(new ToggleModalitaMerge());
+    }
+
+    onEditSchedaSelezionata($event: CheckboxInterface) {
+        this.store.dispatch(new SetMergeSchedaId($event.object));
+    }
+
+    onCheckboxError() {
+        this.store.dispatch(new CheckboxError());
+    }
+
+    onSaveMerge() {
+        this.store.dispatch(new InitSaveMergeSchedeContatto());
+    }
+
+    onSelectTab($event: NgbTabChangeEvent) {
+        let classificazione: ClassificazioneSchedaContatto = null;
+        if ($event.nextId !== 'Tutte') {
+            classificazione = $event.nextId as ClassificazioneSchedaContatto;
+        }
+        this.store.dispatch(new SetTabAttivo(classificazione));
+    }
+
+    onCollapsed($event: string) {
+        this.store.dispatch(new ToggleCollapsed($event));
+    }
+
+    onUndoMergeSchedaContatto($event: string): void {
+        const modalConfermaAnnulla = this.modal.open(ConfirmModalComponent, {
+            backdropClass: 'light-blue-backdrop',
+            centered: true
+        });
+        modalConfermaAnnulla.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
+        modalConfermaAnnulla.componentInstance.titolo = 'Annulla Raggruppamento';
+        modalConfermaAnnulla.componentInstance.messaggio = 'Sei sicuro di voler annullare il raggruppamento delle schede contatto selezionate?';
+        modalConfermaAnnulla.componentInstance.messaggioAttenzione = 'Il raggruppamento sarà eliminato.';
+        modalConfermaAnnulla.componentInstance.bottoni = [
+            { type: 'ko', descrizione: 'Annulla', colore: 'danger' },
+            { type: 'ok', descrizione: 'Conferma', colore: 'dark' },
+        ];
+
+        modalConfermaAnnulla.result.then(
+            (val) => {
+                switch (val) {
+                    case 'ok':
+                        this.store.dispatch(new UndoMergeSchedeContatto($event));
+                        break;
+                    case 'ko':
+                        this.store.dispatch(new ToggleModalitaMerge());
+                        break;
+                }
+                console.log('Modal chiusa con val ->', val);
+            },
+            (err) => console.error('Modal chiusa senza bottoni. Err ->', err)
+        );
+    }
 
 }

@@ -17,14 +17,13 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using DomainModel.CQRS.Commands.GestrionePartenza.AggiornaStatoMezzo;
 using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Composizione;
-using SO115App.API.Models.Classi.Soccorso;
+using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.FakePersistence.JSon.Utility;
-using SO115App.FakePersistenceJSon.Classi;
-using SO115App.FakePersistenceJSon.Utility;
+using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AggiornaStatoMezzo;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
+using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
 using System;
 using System.Collections.Generic;
@@ -39,16 +38,18 @@ namespace SO115App.ExternalAPI.Fake.Composizione
     /// </summary>
     public class UpdateStatoPartenzaExt : IUpdateStatoPartenze
     {
-        private readonly IGetMezziById _getMezzo;
+        private readonly ISetStatoOperativoMezzo _setStatoOperativoMezzo;
         private readonly ISetMovimentazione _setMovimentazione;
+        private readonly IUpDateRichiestaAssistenza _upDateRichiestaAssistenza;
 
         /// <summary>
         ///   Costruttore della classe
         /// </summary>
-        public UpdateStatoPartenzaExt(IGetMezziById getMezzo, ISetMovimentazione setMovimentazione)
+        public UpdateStatoPartenzaExt(ISetMovimentazione setMovimentazione, ISetStatoOperativoMezzo setStatoOperativoMezzo, IUpDateRichiestaAssistenza upDateRichiestaAssistenza)
         {
-            _getMezzo = getMezzo;
             _setMovimentazione = setMovimentazione;
+            _setStatoOperativoMezzo = setStatoOperativoMezzo;
+            _upDateRichiestaAssistenza = upDateRichiestaAssistenza;
         }
 
         /// <summary>
@@ -59,14 +60,8 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
         public void Update(AggiornaStatoMezzoCommand command)
         {
-            var filepath = CostantiJson.ListaRichiesteAssistenza;
             var filePathSquadre = CostantiJson.SquadreComposizione;
-            string json;
             string jsonSquadre;
-            using (var r = new StreamReader(filepath))
-            {
-                json = r.ReadToEnd();
-            }
 
             using (var r = new StreamReader(filePathSquadre))
             {
@@ -74,47 +69,17 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             }
 
             var conferma = new ConfermaPartenze();
-            var richiestaNew = new RichiestaAssistenzaDTO();
-            var listaRichieste = JsonConvert.DeserializeObject<List<RichiestaAssistenzaDTO>>(json);
             var listaCodiceSede = new List<string>
             {
                 command.CodiceSede
             };
             var listaSquadre = JsonConvert.DeserializeObject<List<ComposizioneSquadre>>(jsonSquadre);
 
-            if (listaRichieste != null)
-            {
-                var listaRichiesteNew = new List<RichiestaAssistenza>();
-                var richiestaDTO = listaRichieste.Find(x => x.Codice == command.Richiesta.Codice);
-                listaRichieste.Remove(richiestaDTO);
-
-                foreach (var richiesta in listaRichieste)
-                {
-                    listaRichiesteNew.Add(MapperDTO.MapRichiestaDTOtoRichiesta(richiesta));
-                }
-
-                listaRichiesteNew.Add(command.Richiesta);
-
-                var jsonListaPresente = JsonConvert.SerializeObject(listaRichiesteNew);
-                File.WriteAllText(CostantiJson.ListaRichiesteAssistenza, jsonListaPresente);
-            }
-            else
-            {
-                var listaRichiesteNew = new List<RichiestaAssistenza> { command.Richiesta };
-
-                string jsonNew = JsonConvert.SerializeObject(listaRichiesteNew);
-                File.WriteAllText(CostantiJson.ListaRichiesteAssistenza, jsonNew);
-            }
-            var listaCodiciMezzo = new List<string>
-            {
-                command.IdMezzo
-            };
+            _upDateRichiestaAssistenza.UpDate(command.Richiesta);
 
             var dataMovimentazione = DateTime.UtcNow;
-            foreach (var mezzo in _getMezzo.Get(listaCodiciMezzo))
-            {
-                _setMovimentazione.Set(mezzo.Codice, command.Richiesta.Codice, command.StatoMezzo, dataMovimentazione);
-            }
+            _setMovimentazione.Set(command.IdMezzo, command.Richiesta.Codice, command.StatoMezzo, dataMovimentazione); //TODO IMPLEMENTARE CON GAC (PER SPER SCRIVERE DIRETTAMENTE SU DB)
+            //_setStatoOperativoMezzo.Set(command.CodiceSede, command.IdMezzo, command.StatoMezzo, command.Richiesta.Codice);//TODO CANCELLARE NON PIU' NECESSARIO
 
             foreach (var partenza in command.Richiesta.Partenze)
             {

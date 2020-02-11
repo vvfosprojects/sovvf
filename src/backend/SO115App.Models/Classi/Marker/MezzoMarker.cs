@@ -18,6 +18,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using SO115App.API.Models.Classi.Condivise;
+using SO115App.Models.Classi.Marker;
 
 namespace SO115App.API.Models.Classi.Marker
 {
@@ -36,5 +37,7 @@ namespace SO115App.API.Models.Classi.Marker
         ///   Contiene informazioni della richiesta a cui è associato il mezzo
         /// </summary>
         public InfoRichiesta InfoRichiesta { get; set; }
+
+        public string Conteggi { get; set; }
     }
 }

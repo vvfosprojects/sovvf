@@ -1,5 +1,5 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
-import { ClearDataHome, GetDataHome, SetMapLoaded, SetMarkerLoading } from '../actions/home.actions';
+import { ClearDataHome, GetDataHome, SetDataTipologie, SetMapLoaded, SetMarkerLoading } from '../actions/home.actions';
 import { ClearRichieste, SetRichieste } from '../actions/richieste/richieste.actions';
 import { ClearSediMarkers } from '../actions/maps/sedi-markers.actions';
 import {
@@ -17,18 +17,22 @@ import { ShowToastr } from '../../../../shared/store/actions/toastr/toastr.actio
 import { ToastrType } from '../../../../shared/enum/toastr';
 import { Welcome } from '../../../../shared/interface/welcome.interface';
 import { SetTipologicheMezzi } from '../actions/composizione-partenza/tipologiche-mezzi.actions';
-import { SetListaSchedeContatto } from '../actions/schede-contatto/schede-contatto.actions';
+import { SetContatoriSchedeContatto } from '../actions/schede-contatto/schede-contatto.actions';
+import { Tipologia } from '../../../../shared/model/tipologia.model';
+import { GetFiltriRichieste } from '../actions/filterbar/filtri-richieste.actions';
 
 export interface HomeStateModel {
     loaded: boolean;
     mapIsLoaded: boolean;
     markerLoading: boolean;
+    tipologie: Tipologia[];
 }
 
 export const HomeStateDefaults: HomeStateModel = {
     loaded: false,
     mapIsLoaded: false,
-    markerLoading: false
+    markerLoading: false,
+    tipologie: null
 };
 
 @State<HomeStateModel>({
@@ -45,6 +49,11 @@ export class HomeState {
     @Selector()
     static markerOnLoading(state: HomeStateModel) {
         return state.markerLoading;
+    }
+
+    @Selector()
+    static tipologie(state: HomeStateModel) {
+        return state.tipologie;
     }
 
     constructor(private homeService: HomeService) {
@@ -78,7 +87,8 @@ export class HomeState {
                 new SetChiamateMarkers(data.listaChiamateInCorso),
                 new SetInitCentroMappa(data.centroMappaMarker),
                 new SetTipologicheMezzi(data.listaFiltri),
-                new SetListaSchedeContatto(data.listaSchedeContatto)
+                new SetContatoriSchedeContatto(data.infoNue),
+                new SetDataTipologie(data.tipologie)
             ]);
         }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5)));
         patchState({
@@ -101,4 +111,11 @@ export class HomeState {
         });
     }
 
+    @Action(SetDataTipologie)
+    setDataTipologie({ patchState, dispatch }: StateContext<HomeStateModel>, action: SetDataTipologie) {
+        patchState({
+            tipologie: action.tipologie
+        });
+        dispatch(new GetFiltriRichieste());
+    }
 }

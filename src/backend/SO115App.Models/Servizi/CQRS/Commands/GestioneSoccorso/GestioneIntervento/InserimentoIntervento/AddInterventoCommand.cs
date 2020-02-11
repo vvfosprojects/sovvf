@@ -24,5 +24,9 @@ namespace DomainModel.CQRS.Commands.AddIntervento
     public class AddInterventoCommand
     {
         public Intervento Chiamata { get; set; }
+
+        public string CodiceSede { get; set; }
+
+        public string CodUtente { get; set; }
     }
 }

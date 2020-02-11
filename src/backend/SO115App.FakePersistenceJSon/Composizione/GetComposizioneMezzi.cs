@@ -17,18 +17,20 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Composizione;
+using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneMezzi;
-using SO115App.Models.Servizi.Infrastruttura.GetComposizioneMezzi;
 using SO115App.FakePersistence.JSon.Utility;
+using SO115App.Models.Servizi.Infrastruttura.Composizione;
+using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
+using SO115App.Models.Servizi.Infrastruttura.GetComposizioneMezzi;
+using SO115App.Persistence.MongoDB.GestioneMezzi;
 using System;
-using SO115App.FakePersistence.JSon.Classi;
-using SO115App.API.Models.Classi.Marker;
+using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
+using System.Linq;
 
 namespace SO115App.FakePersistenceJSon.Composizione
 {
@@ -38,9 +40,18 @@ namespace SO115App.FakePersistenceJSon.Composizione
     /// </summary>
     public class GetComposizioneMezzi : IGetComposizioneMezzi
     {
+        private readonly IGetStatoMezzi _getMezziPrenotati;
+        private readonly OrdinamentoMezzi _ordinamentoMezzi;
+
+        public GetComposizioneMezzi(IGetStatoMezzi getMezziPrenotati, OrdinamentoMezzi ordinamentoMezzi)
+        {
+            _getMezziPrenotati = getMezziPrenotati;
+            _ordinamentoMezzi = ordinamentoMezzi;
+        }
+
         public List<ComposizioneMezzi> Get(ComposizioneMezziQuery query)
         {
-            List<MezzoMarker> ListaMezzi = new List<MezzoMarker>();
+            var listaMezzi = new List<Mezzo>();
 
             var filepath = CostantiJson.Mezzo;
             string json;
@@ -49,9 +60,9 @@ namespace SO115App.FakePersistenceJSon.Composizione
                 json = r.ReadToEnd();
             }
 
-            //ListaMezzi = mapper.MappaFlottaMezziSuMezziMarker(FlottaMezzi).Where(x => x.Mezzo.Distaccamento.Codice == query.CodiceSede).ToList();
+            listaMezzi = JsonConvert.DeserializeObject<List<Mezzo>>(json);
 
-            List<ComposizioneMezzi> composizioneMezzi = GeneraListaComposizioneMezzi(ListaMezzi);
+            var composizioneMezzi = GeneraListaComposizioneMezzi(listaMezzi);
 
             string[] generiMezzi;
             string[] statiMezzi;
@@ -109,10 +120,9 @@ namespace SO115App.FakePersistenceJSon.Composizione
                 if (!string.IsNullOrEmpty(query.Filtro.CodiceMezzo))
                     composizioneMezzi = composizioneMezzi.Where(x => x.Mezzo.Codice == query.Filtro.CodiceMezzo).ToList();
 
-                var ordinamento = new OrdinamentoMezzi();
                 foreach (var composizione in composizioneMezzi)
                 {
-                    composizione.IndiceOrdinamento = ordinamento.GetIndiceOrdinamento(query.Filtro.IdRichiesta, composizione, composizione.Mezzo.IdRichiesta);
+                    composizione.IndiceOrdinamento = _ordinamentoMezzi.GetIndiceOrdinamento(query.Filtro.IdRichiesta, composizione, composizione.Mezzo.IdRichiesta);
                     composizione.Id = composizione.Mezzo.Codice;
 
                     if (composizione.IstanteScadenzaSelezione < DateTime.Now)
@@ -121,14 +131,15 @@ namespace SO115App.FakePersistenceJSon.Composizione
                     }
                 }
 
-                return composizioneMezzi.OrderByDescending(x => x.IndiceOrdinamento).ToList();
+                var composizioneMezziPrenotati = GetComposizioneMezziPrenotati(composizioneMezzi, query.CodiceSede);
+
+                return composizioneMezziPrenotati.OrderByDescending(x => x.IndiceOrdinamento).ToList();
             }
             else
             {
-                var ordinamento = new OrdinamentoMezzi();
                 foreach (var composizione in composizioneMezzi)
                 {
-                    composizione.IndiceOrdinamento = ordinamento.GetIndiceOrdinamento(query.Filtro.IdRichiesta, composizione, composizione.Mezzo.IdRichiesta);
+                    composizione.IndiceOrdinamento = _ordinamentoMezzi.GetIndiceOrdinamento(query.Filtro.IdRichiesta, composizione, composizione.Mezzo.IdRichiesta);
                     composizione.Id = composizione.Mezzo.Codice;
 
                     if (composizione.IstanteScadenzaSelezione < DateTime.Now)
@@ -137,32 +148,45 @@ namespace SO115App.FakePersistenceJSon.Composizione
                     }
                 }
 
-                return composizioneMezzi.OrderByDescending(x => x.IndiceOrdinamento).ToList();
+                var composizioneMezziPrenotati = GetComposizioneMezziPrenotati(composizioneMezzi, query.CodiceSede);
+
+                return composizioneMezziPrenotati.OrderByDescending(x => x.IndiceOrdinamento).ToList();
             }
         }
 
-        private List<ComposizioneMezzi> GeneraListaComposizioneMezzi(List<MezzoMarker> listaMezzi)
+        private List<ComposizioneMezzi> GetComposizioneMezziPrenotati(List<ComposizioneMezzi> composizioneMezzi, string codiceSede)
         {
-            List<ComposizioneMezzi> ListaComposizione = new List<ComposizioneMezzi>();
+            var mezziPrenotati = _getMezziPrenotati.Get(codiceSede);
+            foreach (var composizione in composizioneMezzi)
+            {
+                if (mezziPrenotati.Find(x => x.CodiceMezzo.Equals(composizione.Mezzo.Codice)) != null)
+                    composizione.IstanteScadenzaSelezione = mezziPrenotati.Find(x => x.CodiceMezzo.Equals(composizione.Mezzo.Codice)).IstanteScadenzaSelezione;
+            }
+            return composizioneMezzi;
+        }
+
+        private List<ComposizioneMezzi> GeneraListaComposizioneMezzi(List<Mezzo> listaMezzi)
+        {
+            var listaComposizione = new List<ComposizioneMezzi>();
 
             Random random = new Random();
 
-            foreach (MezzoMarker mezzoMarker in listaMezzi)
+            foreach (var mezzo in listaMezzi)
             {
                 string kmGen = random.Next(1, 60).ToString();
                 double TempoPer = Convert.ToDouble(kmGen.Replace(".", ",")) / 1.75;
 
-                ComposizioneMezzi composizione = new ComposizioneMezzi()
+                var composizione = new ComposizioneMezzi()
                 {
-                    Mezzo = mezzoMarker.Mezzo,
+                    Mezzo = mezzo,
                     Km = kmGen,
                     TempoPercorrenza = Math.Round(TempoPer, 2).ToString(CultureInfo.InvariantCulture),
                 };
 
-                ListaComposizione.Add(composizione);
+                listaComposizione.Add(composizione);
             }
 
-            return ListaComposizione;
+            return listaComposizione;
         }
     }
 }

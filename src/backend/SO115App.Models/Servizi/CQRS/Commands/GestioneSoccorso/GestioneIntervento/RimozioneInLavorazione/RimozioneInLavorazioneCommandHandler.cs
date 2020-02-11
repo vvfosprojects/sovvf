@@ -18,13 +18,9 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Commands;
-using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Classi.Soccorso;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace DomainModel.CQRS.Commands.RimozioneInLavorazione
 {
@@ -44,23 +40,21 @@ namespace DomainModel.CQRS.Commands.RimozioneInLavorazione
 
         public void Handle(RimozioneInLavorazioneCommand command)
         {
-            var richiesta = _getRichiestaById.Get(command.IdRichiesta);
+            var richiesta = _getRichiestaById.GetById(command.IdRichiesta);
             var attivita = new AttivitaUtente();
 
-            richiesta.ListaUtentiInLavorazione.RemoveAll(x => x.IdUtente == command.IdUtente);
+            richiesta.UtInLavorazione.RemoveAll(x => x == command.IdUtente);
 
-            richiesta.Id = richiesta.Codice;
-
-            if (command.Chiamata.ListaUtentiInLavorazione != null)
-                command.Chiamata.ListaUtentiInLavorazione = richiesta.ListaUtentiInLavorazione;
-            else
-            {
-                if (richiesta.ListaUtentiInLavorazione.Count > 0)
-                {
-                    command.Chiamata.ListaUtentiInLavorazione = new List<AttivitaUtente>();
-                    command.Chiamata.ListaUtentiInLavorazione = richiesta.ListaUtentiInLavorazione;
-                }
-            }
+            //if (command.Chiamata.ListaUtentiInLavorazione != null)
+            //    command.Chiamata.ListaUtentiInLavorazione = richiesta.UtInLavorazione;
+            //else
+            //{
+            //    if (richiesta.UtInLavorazione.Count > 0)
+            //    {
+            //        command.Chiamata.ListaUtentiInLavorazione = new List<AttivitaUtente>();
+            //        command.Chiamata.ListaUtentiInLavorazione = richiesta.UtInLavorazione;
+            //    }
+            //}
 
             _updateRichiestaAssistenza.UpDate(richiesta);
         }

@@ -1,11 +1,11 @@
 [
   {
-    "Codice": "RM.1000.BA",
+    "Codice": "O.13362",
     "IdRichiesta": null,
-    "Descrizione": "Sbealla",
-    "Genere": "BA",
+    "Descrizione": "13362",
+    "Genere": "ACT/OP",
     "Stato": "Fuori Servizio",
-    "Appartenenza": 0,
+    "Appartenenza": "0",
     "Distaccamento": {
       "Codice": "RM.1000",
       "Descrizione": "Comando di Roma",
@@ -29,17 +29,21 @@
     "LivelloEstinguente": 0,
     "DescrizioneLivelloEstinguente": null,
     "Notifiche": null,
-    "Coordinate": null,
+    "Coordinate": {
+      "Latitudine": 41.89994,
+      "Longitudine": 12.49127
+    },
     "IstanteAcquisizione": "0001-01-01T00:00:00",
-    "IstantePrenotazione": null
+    "IstantePrenotazione": null,
+    "IstanteMovimentazione": null
   },
   {
-    "Codice": "RM.1000.BA/JET",
+    "Codice": "O.14512",
     "IdRichiesta": null,
-    "Descrizione": "1000.BA/JET",
-    "Genere": "BA/JET",
-    "Stato": "In Sede",
-    "Appartenenza": 0,
+    "Descrizione": "14512",
+    "Genere": "AA",
+    "Stato": "Fuori Servizio",
+    "Appartenenza": "0",
     "Distaccamento": {
       "Codice": "RM.1000",
       "Descrizione": "Comando di Roma",
@@ -63,51 +67,21 @@
     "LivelloEstinguente": 0,
     "DescrizioneLivelloEstinguente": null,
     "Notifiche": null,
-    "Coordinate": null,
-    "IstanteAcquisizione": "0001-01-01T00:00:00",
-    "IstantePrenotazione": null
-  },
-  {
-    "Codice": "TO.1000.APL",
-    "IdRichiesta": null,
-    "Descrizione": "1000.APL",
-    "Genere": "APL/M",
-    "Stato": "In Sede",
-    "Appartenenza": 0,
-    "Distaccamento": {
-      "Codice": "TO.1000",
-      "Descrizione": "Comando di Torino",
-      "Coordinate": {
-        "Latitudine": 40.933318,
-        "Longitudine": 14.524047
-      },
-      "Indirizzo": "Via Torino, 98 000000 Torino",
-      "Tipo": null,
-      "Regione": null,
-      "Provincia": null,
-      "Label": null,
-      "Icona": null
+    "Coordinate": {
+      "Latitudine": 41.89994,
+      "Longitudine": 12.49127
     },
-    "DescrizioneAppartenenza": null,
-    "DescrizioneStato": null,
-    "StatoEfficenza": 0,
-    "DescrizioneStatoEfficenza": null,
-    "LivelloCarburante": 0,
-    "DescrizioneLivelloCarburante": null,
-    "LivelloEstinguente": 0,
-    "DescrizioneLivelloEstinguente": null,
-    "Notifiche": null,
-    "Coordinate": null,
     "IstanteAcquisizione": "0001-01-01T00:00:00",
-    "IstantePrenotazione": null
+    "IstantePrenotazione": null,
+    "IstanteMovimentazione": null
   },
   {
-    "Codice": "RM.1007.11/A",
+    "Codice": "O.18195",
     "IdRichiesta": null,
-    "Descrizione": "1007.11/A",
+    "Descrizione": "18195",
     "Genere": "APS",
     "Stato": "In Sede",
-    "Appartenenza": 0,
+    "Appartenenza": "0",
     "Distaccamento": {
       "Codice": "RM.1000",
       "Descrizione": "Comando di Roma",
@@ -131,17 +105,21 @@
     "LivelloEstinguente": 0,
     "DescrizioneLivelloEstinguente": null,
     "Notifiche": null,
-    "Coordinate": null,
+    "Coordinate": {
+      "Latitudine": 41.8975193,
+      "Longitudine": 12.576130004882812
+    },
     "IstanteAcquisizione": "0001-01-01T00:00:00",
-    "IstantePrenotazione": null
+    "IstantePrenotazione": null,
+    "IstanteMovimentazione": null
   },
   {
-    "Codice": "RM.1000.M.1",
+    "Codice": "O.29319",
     "IdRichiesta": null,
-    "Descrizione": "1000.M.1",
-    "Genere": "AP",
+    "Descrizione": "16022",
+    "Genere": "AF/OP",
     "Stato": "In Sede",
-    "Appartenenza": 0,
+    "Appartenenza": "0",
     "Distaccamento": {
       "Codice": "RM.1000",
       "Descrizione": "Comando di Roma",
@@ -165,17 +143,21 @@
     "LivelloEstinguente": 0,
     "DescrizioneLivelloEstinguente": null,
     "Notifiche": null,
-    "Coordinate": null,
+    "Coordinate": {
+      "Latitudine": 41.83294677734375,
+      "Longitudine": 12.46554183959961
+    },
     "IstanteAcquisizione": "0001-01-01T00:00:00",
-    "IstantePrenotazione": null
+    "IstantePrenotazione": null,
+    "IstanteMovimentazione": null
   },
   {
-    "Codice": "RM.1000.UCL",
+    "Codice": "O.29729",
     "IdRichiesta": null,
-    "Descrizione": "1000.UCL",
-    "Genere": "ZA",
+    "Descrizione": "16023",
+    "Genere": "AF/OP",
     "Stato": "In Sede",
-    "Appartenenza": 0,
+    "Appartenenza": "0",
     "Distaccamento": {
       "Codice": "RM.1000",
       "Descrizione": "Comando di Roma",
@@ -199,17 +181,21 @@
     "LivelloEstinguente": 0,
     "DescrizioneLivelloEstinguente": null,
     "Notifiche": null,
-    "Coordinate": null,
+    "Coordinate": {
+      "Latitudine": 41.87828063964844,
+      "Longitudine": 12.478638648986816
+    },
     "IstanteAcquisizione": "0001-01-01T00:00:00",
-    "IstantePrenotazione": null
+    "IstantePrenotazione": null,
+    "IstanteMovimentazione": null
   },
   {
-    "Codice": "RM.2009.17/A",
+    "Codice": "O.29730",
     "IdRichiesta": null,
-    "Descrizione": "2009.17/A",
-    "Genere": "APS",
+    "Descrizione": "16204",
+    "Genere": "AF/COMBI",
     "Stato": "In Sede",
-    "Appartenenza": 0,
+    "Appartenenza": "0",
     "Distaccamento": {
       "Codice": "RM.1000",
       "Descrizione": "Comando di Roma",
@@ -233,17 +219,21 @@
     "LivelloEstinguente": 0,
     "DescrizioneLivelloEstinguente": null,
     "Notifiche": null,
-    "Coordinate": null,
+    "Coordinate": {
+      "Latitudine": 42.09697723388672,
+      "Longitudine": 11.788607597351074
+    },
     "IstanteAcquisizione": "0001-01-01T00:00:00",
-    "IstantePrenotazione": null
+    "IstantePrenotazione": null,
+    "IstanteMovimentazione": null
   },
   {
-    "Codice": "RM.1005.9/A",
+    "Codice": "O.21826",
     "IdRichiesta": null,
-    "Descrizione": "1005.9/A",
-    "Genere": "APS",
+    "Descrizione": "16216",
+    "Genere": "AF/COMBI",
     "Stato": "In Sede",
-    "Appartenenza": 0,
+    "Appartenenza": "0",
     "Distaccamento": {
       "Codice": "RM.1000",
       "Descrizione": "Comando di Roma",
@@ -267,51 +257,97 @@
     "LivelloEstinguente": 0,
     "DescrizioneLivelloEstinguente": null,
     "Notifiche": null,
-    "Coordinate": null,
-    "IstanteAcquisizione": "0001-01-01T00:00:00",
-    "IstantePrenotazione": null
-  },
-  {
-    "Codice": "RM.1000.1A.1",
-    "IdRichiesta": "RM2391900000",
-    "Descrizione": "1000.1A.1",
-    "Genere": "APS",
-    "Stato": "Sul Posto",
-    "Appartenenza": 0,
-    "Distaccamento": {
-      "Codice": "RM.1000",
-      "Descrizione": "Comando di Roma",
-      "Coordinate": {
-        "Latitudine": 41.89994,
-        "Longitudine": 12.49127
-      },
-      "Indirizzo": "Via Genova, 1, 00184 Roma RM",
-      "Tipo": "Comando",
-      "Regione": "Lazio",
-      "Provincia": "Roma",
-      "Label": null,
-      "Icona": null
+    "Coordinate": {
+      "Latitudine": 41.94144821166992,
+      "Longitudine": 12.546906471252441
     },
-    "DescrizioneAppartenenza": null,
-    "DescrizioneStato": null,
-    "StatoEfficenza": 0,
-    "DescrizioneStatoEfficenza": null,
-    "LivelloCarburante": 0,
-    "DescrizioneLivelloCarburante": null,
-    "LivelloEstinguente": 0,
-    "DescrizioneLivelloEstinguente": null,
-    "Notifiche": null,
-    "Coordinate": null,
     "IstanteAcquisizione": "0001-01-01T00:00:00",
-    "IstantePrenotazione": null
+    "IstantePrenotazione": null,
+    "IstanteMovimentazione": null
   },
   {
-    "Codice": "RM.2001.TUSCOLANA.1",
+    "Codice": "O.16225",
     "IdRichiesta": null,
-    "Descrizione": "2001.TUSCOLANA.1",
-    "Genere": "ZA",
+    "Descrizione": "16225",
+    "Genere": "AF/OP",
     "Stato": "In Sede",
-    "Appartenenza": 0,
+    "Appartenenza": "0",
+    "Distaccamento": {
+      "Codice": "RM.1000",
+      "Descrizione": "Comando di Roma",
+      "Coordinate": {
+        "Latitudine": 41.89994,
+        "Longitudine": 12.49127
+      },
+      "Indirizzo": "Via Genova, 1, 00184 Roma RM",
+      "Tipo": "Comando",
+      "Regione": "Lazio",
+      "Provincia": "Roma",
+      "Label": null,
+      "Icona": null
+    },
+    "DescrizioneAppartenenza": null,
+    "DescrizioneStato": null,
+    "StatoEfficenza": 0,
+    "DescrizioneStatoEfficenza": null,
+    "LivelloCarburante": 0,
+    "DescrizioneLivelloCarburante": null,
+    "LivelloEstinguente": 0,
+    "DescrizioneLivelloEstinguente": null,
+    "Notifiche": null,
+    "Coordinate": {
+      "Latitudine": 41.909366607666016,
+      "Longitudine": 12.614013671875
+    },
+    "IstanteAcquisizione": "0001-01-01T00:00:00",
+    "IstantePrenotazione": null,
+    "IstanteMovimentazione": null
+  },
+  {
+    "Codice": "O.19610",
+    "IdRichiesta": null,
+    "Descrizione": "19610",
+    "Genere": "CA",
+    "Stato": "In Sede",
+    "Appartenenza": "0",
+    "Distaccamento": {
+      "Codice": "RM.1000",
+      "Descrizione": "Comando di Roma",
+      "Coordinate": {
+        "Latitudine": 41.89994,
+        "Longitudine": 12.49127
+      },
+      "Indirizzo": "Via Genova, 1, 00184 Roma RM",
+      "Tipo": "Comando",
+      "Regione": "Lazio",
+      "Provincia": "Roma",
+      "Label": null,
+      "Icona": null
+    },
+    "DescrizioneAppartenenza": null,
+    "DescrizioneStato": null,
+    "StatoEfficenza": 0,
+    "DescrizioneStatoEfficenza": null,
+    "LivelloCarburante": 0,
+    "DescrizioneLivelloCarburante": null,
+    "LivelloEstinguente": 0,
+    "DescrizioneLivelloEstinguente": null,
+    "Notifiche": null,
+    "Coordinate": {
+      "Latitudine": 41.665157318115234,
+      "Longitudine": 12.520912170410156
+    },
+    "IstanteAcquisizione": "0001-01-01T00:00:00",
+    "IstantePrenotazione": null,
+    "IstanteMovimentazione": null
+  },
+  {
+    "Codice": "O.19611",
+    "IdRichiesta": null,
+    "Descrizione": "19611",
+    "Genere": "CA",
+    "Stato": "In Sede",
+    "Appartenenza": "0",
     "Distaccamento": {
       "Codice": "RM.1000",
       "Descrizione": "Distaccamento Cittadino Roma Tuscolano I",
@@ -335,17 +371,21 @@
     "LivelloEstinguente": 0,
     "DescrizioneLivelloEstinguente": null,
     "Notifiche": null,
-    "Coordinate": null,
+    "Coordinate": {
+      "Latitudine": 41.836116790771484,
+      "Longitudine": 12.563673973083496
+    },
     "IstanteAcquisizione": "0001-01-01T00:00:00",
-    "IstantePrenotazione": null
+    "IstantePrenotazione": null,
+    "IstanteMovimentazione": null
   },
   {
-    "Codice": "RM.2005.24/A",
+    "Codice": "O.26679",
     "IdRichiesta": null,
-    "Descrizione": "2005.24/A",
-    "Genere": "APS",
+    "Descrizione": "26679",
+    "Genere": "ACT/TRI",
     "Stato": "In Sede",
-    "Appartenenza": 0,
+    "Appartenenza": "0",
     "Distaccamento": {
       "Codice": "RM.1000",
       "Descrizione": "Distaccamento Cittadino Roma Tuscolano I",
@@ -369,28 +409,32 @@
     "LivelloEstinguente": 0,
     "DescrizioneLivelloEstinguente": null,
     "Notifiche": null,
-    "Coordinate": null,
+    "Coordinate": {
+      "Latitudine": 41.8638801574707,
+      "Longitudine": 12.555130004882812
+    },
     "IstanteAcquisizione": "0001-01-01T00:00:00",
-    "IstantePrenotazione": null
+    "IstantePrenotazione": null,
+    "IstanteMovimentazione": null
   },
   {
-    "Codice": "RM.2008.18/A",
+    "Codice": "O.27790",
     "IdRichiesta": null,
-    "Descrizione": "Pijaamaghinaa",
+    "Descrizione": "27790",
     "Genere": "AV",
     "Stato": "In Sede",
-    "Appartenenza": 0,
+    "Appartenenza": "0",
     "Distaccamento": {
-      "Codice": "RM.1000",
-      "Descrizione": "Distaccamento Cittadino Roma Tuscolano I",
+      "Codice": "TO.1000",
+      "Descrizione": "Distaccamento Cittadino Torino I",
       "Coordinate": {
         "Latitudine": 41.8815193,
         "Longitudine": 12.5164942
       },
-      "Indirizzo": "Via Tuscolana, 126 00182 Roma RM",
+      "Indirizzo": "Via Torino, 123 00000 Torino TO",
       "Tipo": "Comando",
-      "Regione": "Lazio",
-      "Provincia": "Roma",
+      "Regione": "Piemonte",
+      "Provincia": "Torino",
       "Label": null,
       "Icona": null
     },
@@ -403,8 +447,50 @@
     "LivelloEstinguente": 0,
     "DescrizioneLivelloEstinguente": null,
     "Notifiche": null,
-    "Coordinate": null,
+    "Coordinate": {
+      "Latitudine": 41.89994,
+      "Longitudine": 12.49127
+    },
     "IstanteAcquisizione": "0001-01-01T00:00:00",
-    "IstantePrenotazione": null
+    "IstantePrenotazione": null,
+    "IstanteMovimentazione": null
+  },
+  {
+    "Codice": "O.27791",
+    "IdRichiesta": null,
+    "Descrizione": "27791",
+    "Genere": "AV",
+    "Stato": "In Sede",
+    "Appartenenza": "0",
+    "Distaccamento": {
+      "Codice": "TO.1000",
+      "Descrizione": "Distaccamento Cittadino Torino I",
+      "Coordinate": {
+        "Latitudine": 41.8815193,
+        "Longitudine": 12.5164942
+      },
+      "Indirizzo": "Via Torino, 123 00000 Torino TO",
+      "Tipo": "Comando",
+      "Regione": "Piemonte",
+      "Provincia": "Torino",
+      "Label": null,
+      "Icona": null
+    },
+    "DescrizioneAppartenenza": null,
+    "DescrizioneStato": null,
+    "StatoEfficenza": 0,
+    "DescrizioneStatoEfficenza": null,
+    "LivelloCarburante": 0,
+    "DescrizioneLivelloCarburante": null,
+    "LivelloEstinguente": 0,
+    "DescrizioneLivelloEstinguente": null,
+    "Notifiche": null,
+    "Coordinate": {
+      "Latitudine": 41.89994,
+      "Longitudine": 12.49127
+    },
+    "IstanteAcquisizione": "0001-01-01T00:00:00",
+    "IstantePrenotazione": null,
+    "IstanteMovimentazione": null
   }
 ]

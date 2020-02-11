@@ -29,26 +29,21 @@ import { SganciamentoMezzoComposizione } from '../store/actions/composizione-par
 @Component({
     selector: 'app-composizione-partenza',
     templateUrl: './composizione-partenza.component.html',
-    styleUrls: ['./composizione-partenza.component.css']
+    styleUrls: [ './composizione-partenza.component.css' ]
 })
 export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
+
     @Input() compPartenzaMode: Composizione;
 
     Composizione = Composizione;
 
-    subscription = new Subscription();
-
     @Select(ComposizioneVeloceState.preAccoppiati) preAccoppiati$: Observable<BoxPartenza[]>;
-
     @Select(ComposizionePartenzaState.filtriAffini) filtriAffini$: Observable<any>;
-    @Select(ComposizionePartenzaState.loading) loading$: Observable<boolean>;
     @Select(ComposizionePartenzaState.richiestaComposizione) richiestaComposizione$: Observable<SintesiRichiesta>;
+    private subscription = new Subscription();
     richiesta: SintesiRichiesta;
-
     prevStateBoxClick: BoxClickStateModel;
-
     methods = new HelperSintesiRichiesta;
-
     disablePrenota: boolean;
     prenotato: boolean;
 
@@ -109,7 +104,7 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
         if (sintesi) {
             if (sintesi.listaUtentiPresaInCarico && sintesi.listaUtentiPresaInCarico.length > 0) {
                 const currentUserId = this.store.selectSnapshot(UtenteState.utente).id;
-                return !!(sintesi.listaUtentiPresaInCarico.filter((attivita: AttivitaUtente) => attivita.idUtente === currentUserId).length > 0);
+                return (sintesi.listaUtentiPresaInCarico.filter((attivita: AttivitaUtente) => attivita.idUtente === currentUserId).length > 0);
             } else {
                 return false;
             }

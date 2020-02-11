@@ -18,8 +18,6 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Commands;
-using SO115App.API.Models.Classi.Autenticazione;
-using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.Eventi;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Classi.Soccorso;
@@ -33,7 +31,6 @@ namespace DomainModel.CQRS.Commands.PresaInCarico
     public class PresaInCaricoCommandHandler : ICommandHandler<PresaInCaricoCommand>
     {
         private readonly IGetRichiestaById _getRichiestaById;
-
         private readonly IGetUtenteById _getUtenteById;
         private readonly IUpDateRichiestaAssistenza _updateRichiestaAssistenza;
 
@@ -50,7 +47,7 @@ namespace DomainModel.CQRS.Commands.PresaInCarico
 
         public void Handle(PresaInCaricoCommand command)
         {
-            var richiesta = _getRichiestaById.Get(command.IdRichiesta);
+            var richiesta = _getRichiestaById.GetByCodice(command.IdRichiesta);
             var utente = _getUtenteById.GetUtenteById(command.IdUtente);
             var attivita = new AttivitaUtente
             {
@@ -58,19 +55,20 @@ namespace DomainModel.CQRS.Commands.PresaInCarico
                 Nominativo = utente.Nome + " " + utente.Cognome,
                 DataInizioAttivita = DateTime.UtcNow
             };
+            var nominativoPresaInCarico = utente.Nome + "." + utente.Cognome;
 
             richiesta.Id = richiesta.Codice;
-            if (richiesta.ListaUtentiPresaInCarico != null)
+            if (richiesta.UtPresaInCarico != null)
             {
-                new InizioPresaInCarico(richiesta, DateTime.UtcNow, richiesta.Operatore.Id);
+                new InizioPresaInCarico(richiesta, DateTime.UtcNow, richiesta.CodOperatore);
 
-                richiesta.ListaUtentiPresaInCarico.Add(attivita);
+                richiesta.UtPresaInCarico.Add(attivita.Nominativo);
             }
             else
             {
-                richiesta.ListaUtentiPresaInCarico = new List<AttivitaUtente>
+                richiesta.UtPresaInCarico = new List<string>
                 {
-                    attivita
+                    nominativoPresaInCarico
                 };
             }
 
@@ -78,7 +76,7 @@ namespace DomainModel.CQRS.Commands.PresaInCarico
                 command.Chiamata.ListaUtentiPresaInCarico.Add(attivita);
             else
             {
-                richiesta.ListaUtentiPresaInCarico = new List<AttivitaUtente>();
+                richiesta.UtPresaInCarico = new List<string>();
                 command.Chiamata.ListaUtentiPresaInCarico.Add(attivita);
             }
 

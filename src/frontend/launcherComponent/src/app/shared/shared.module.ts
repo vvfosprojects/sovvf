@@ -4,14 +4,13 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { PipeModule } from './pipes/pipe.module';
 import { TreeviewI18n, TreeviewModule } from 'ngx-treeview';
 import { DefaultTreeviewI18n } from './store/states/sedi-treeview/default-treeview-i18n';
-import { ListaPartenzeComponent } from './components/lista-partenze/lista-partenze.component';
 import * as Shared from './index';
 import { ReactiveFormsModule } from '@angular/forms';
-import { SchedeContattoComponent } from '../features/home/schede-contatto/schede-contatto.component';
 
 const COMPONENTS = [
     Shared.DebounceClickDirective,
     Shared.DebounceKeyUpDirective,
+    Shared.ClickStopPropagationDirective,
     Shared.ComponenteComponent,
     Shared.CompetenzaComponent,
     Shared.MezzoComponent,
@@ -25,7 +24,8 @@ const COMPONENTS = [
     Shared.MezzoActionsComponent,
     Shared.SintesiRichiestaActionsComponent,
     Shared.ActionRichiestaModalComponent,
-    ListaPartenzeComponent
+    Shared.ListaPartenzeComponent,
+    Shared.CheckboxComponent
 ];
 
 @NgModule({
@@ -37,10 +37,11 @@ const COMPONENTS = [
         TreeviewModule.forRoot()
     ],
     declarations: [
-        ...COMPONENTS,
+        ...COMPONENTS
     ],
     exports: [
-        ...COMPONENTS
+        ...COMPONENTS,
+        PipeModule
     ]
 })
 export class SharedModule {

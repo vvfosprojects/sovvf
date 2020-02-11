@@ -49,10 +49,14 @@ namespace SO115App.CompositionRoot
             container.Register<IGetSchedeContattoByTipo, GetSchedeContattoByListTipo>();
             container.Register<IGetSchedeContattoByText, GetSchedeContattoByText>();
             container.Register<IGetSchedeContattoGestita, GetSchedeContattoGestita>();
-            container.Register<IGetSchedeContattoLetta, GetSchedeContattoLetta>();
             container.Register<IGetSchedeContattoTimeSpan, GetSchedeContattoTimeSpan>();
             container.Register<ISetStatoGestioneSchedaContatto, SetGestita>();
-            container.Register<ISetLetturaSchedaContatto, SetLetta>();
+            container.Register<IGetSchedeContattoMarkerFiltered, ExternalAPI.Fake.Servizi.Nue.GetSchedeContattoMarkerFiltered>();
+
+            container.Register<SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue.IGetConteggioSchede,
+                ExternalAPI.Fake.Servizi.Nue.GetConteggioSchede>(); //TODO gestione composition Root per l'externalAPI
+            container.Register<SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue.IGetSchedeFiltrate,
+                ExternalAPI.Fake.Servizi.Nue.GetSchedeFiltrate>(); //TODO gestione composition Root per l'externalAPI
 
             #endregion NUE
 
@@ -81,11 +85,25 @@ namespace SO115App.CompositionRoot
             #region Gac
 
             container.Register<IGetMezziByICCID, GetMezziByICCID>();
-            container.Register<IGetMezziById, GetMezziByID>();
+            container.Register<IGetMezziByCodiceMezzo, GetMezziByCodiceMezzo>();
             container.Register<IGetMezziBySelettiva, GetMezziBySelettiva>();
             container.Register<IGetMezziFuoriServizio, GetMezziFuoriServizio>();
             container.Register<IGetMezziUtilizzabili, GetMezziUtilizzabili>();
             container.Register<ISetMovimentazione, SetMovimentazione>();
+            container.Register<
+                SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi.IGetListaMezzi,
+                ExternalAPI.Fake.GestioneMezzi.GetListaMezziExt>(); //TODO gestione composition Root per l'externalAPI
+
+            container.Register<
+                SO115App.Models.Servizi.Infrastruttura.Composizione.IUpdateConfermaPartenze,
+                ExternalAPI.Fake.Composizione.UpdateConfermaPartenzeExt>(); //TODO gestione composition Root per l'externalAPI
+            container.Register<
+                 SO115App.Models.Servizi.Infrastruttura.Composizione.IUpdateStatoPartenze,
+                ExternalAPI.Fake.Composizione.UpdateStatoPartenzaExt>(); //TODO gestione composition Root per l'externalAPI
+
+            container.Register<
+                SO115App.Models.Servizi.Infrastruttura.GetComposizioneMezzi.IGetComposizioneMezzi,
+                ExternalAPI.Fake.Composizione.GetComposizioneMezziExt>();//TODO gestione composition Root per l'externalAPI
 
             #endregion Gac
 
@@ -94,6 +112,16 @@ namespace SO115App.CompositionRoot
             container.Register<IGetAlberaturaUnitaOperative, GetListaSediAlberata>();
 
             #endregion Sedi
+
+            container.Register<
+                SO115App.Models.Servizi.Infrastruttura.Box.IGetBoxMezzi,
+                ExternalAPI.Fake.Box.GetBoxMezziExt>();//TODO gestione composition Root per l'externalAPI
+            container.Register<
+                SO115App.Models.Servizi.Infrastruttura.Box.IGetBoxPersonale,
+                ExternalAPI.Fake.Box.GetBoxPersonaleExt>();//TODO gestione composition Root per l'externalAPI
+            container.Register<
+                SO115App.Models.Servizi.Infrastruttura.Marker.IGetMezziMarker,
+                ExternalAPI.Fake.Marker.GetMezziMarkerExt>();
         }
     }
 }

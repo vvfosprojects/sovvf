@@ -1,5 +1,4 @@
 import { BoxPartenza } from '../../../composizione-partenza/interface/box-partenza-interface';
-import { MezzoComposizione } from '../../../composizione-partenza/interface/mezzo-composizione-interface';
 import { IdPreaccoppiati } from '../../../composizione-partenza/interface/id-preaccoppiati-interface';
 import { BoxPartenzaHover } from '../../../composizione-partenza/interface/composizione/box-partenza-hover-interface';
 
@@ -39,7 +38,7 @@ export class ClearPreAccoppiatiSelezionatiComposizione {
 export class UpdateMezzoPreAccoppiatoComposizione {
     static readonly type = '[PreAccoppiati] Update Mezzo BoxPartenza Composizione';
 
-    constructor(public mezzoComp: MezzoComposizione) {
+    constructor(public codiceMezzo: string) {
     }
 }
 

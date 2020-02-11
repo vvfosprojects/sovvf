@@ -75,5 +75,12 @@ namespace SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRic
         ///   Indica l'estensione territoriale delle richieste da cercare
         /// </summary>
         public Geolocalizzazione GeoLocalizzazione { get; set; }
+
+        /// <summary>
+        ///   L'id dell'operatore che sta facendo la richiesta
+        /// </summary>
+        public string idOperatore { get; set; }
+
+        public List<string> CodUOCompetenza { get; set; }
     }
 }

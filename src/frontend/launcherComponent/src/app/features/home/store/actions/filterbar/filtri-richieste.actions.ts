@@ -7,13 +7,13 @@ export class GetFiltriRichieste {
 }
 
 // SET FILTRO SELEZIONATO (SELEZIONATO, NON SELEZIONATO)
-export class SetFiltroSelezionato {
+export class SetFiltroSelezionatoRichieste {
     static readonly type = '[FiltriRichieste] Toggle filtro';
 
     constructor(public filtro: VoceFiltro) {}
 }
 
 // RESET FILTRI SELEZIONATI
-export class ResetFiltriSelezionati {
+export class ResetFiltriSelezionatiRichieste {
     static readonly type = '[FiltriRichieste] Reset dei filtri selezionati';
 }

@@ -31,6 +31,7 @@
             </tr>
         </table>
     </ng-template>
+
     <div *ngIf="richiestaMarker">
         <table class="table">
             <thead class="thead-light">
@@ -279,6 +280,7 @@
             </tbody>
         </table>
     </div>
+
     <div *ngIf="meteoMarker">
         <table class="table">
             <thead class="thead-light">
@@ -303,5 +305,22 @@
             </tr>
             </tbody>
         </table>
+    </div>
+
+    <div *ngIf="schedaContattoMarker">
+        <div class="p-2">
+            <div class="clearfix">
+                <h6 class="mb-1 float-left">Scheda contatto<span *ngIf="schedaContattoMarker.gestita" class="text-info font-weight-bold"> GESTITA</span></h6>
+                <h6 class="mb-1 float-right">
+                    <i class="fa fa-desktop mr-1"></i>
+                    {{schedaContattoMarker.codiceOperatore}}
+                </h6>
+            </div>
+            <hr class="my-1">
+            <i class="fa fa-map-marker mr-1"></i>
+            <span class="d-inline-block mt-1">
+                {{schedaContattoMarker.localita.indirizzo}}
+            </span>
+        </div>
     </div>
 </div>

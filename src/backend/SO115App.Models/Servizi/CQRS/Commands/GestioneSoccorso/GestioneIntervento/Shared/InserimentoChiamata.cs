@@ -17,15 +17,13 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Utenti;
 using SO115App.API.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestrioneIntervento.Shared.AddIntervento;
 using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.Soccorso;
+using System;
+using System.Collections.Generic;
 
 namespace SO115App.API.Models.Servizi.CQRS.Command.GestioneSoccorso.Shared
 {
@@ -63,41 +61,33 @@ namespace SO115App.API.Models.Servizi.CQRS.Command.GestioneSoccorso.Shared
         /// <summary>
         ///   Utente che ha generato la segnalazione
         /// </summary>
-        [Required(ErrorMessage = "Operatore obbligatorio.")]
-        public Utente Operatore { get; set; }
+        //public Utente Operatore { get; set; }
 
         /// <summary>
         ///   Ricezione della richiesta (via telefono, ecc.)
         /// </summary>
-        [Required(ErrorMessage = "Istante ricezione richiesta obbligatorio.")]
-        [DataType(DataType.DateTime)]
         public DateTime IstanteRicezioneRichiesta { get; set; }
 
         /// <summary>
         ///   Stato della richiesta
         /// </summary>
-        [Required(ErrorMessage = "Stato obbligatorio.")]
         public string Stato { get; set; }
 
-        [Required(ErrorMessage = "Tipologia obbligatoria.")]
         public List<Tipologia> Tipologie { get; set; }
 
         /// <summary>
         ///   Descrizione della richiesta
         /// </summary>
-        [Required(ErrorMessage = "Descrizione obbligatoria.")]
         public string Descrizione { get; set; }
 
         /// <summary>
         ///   Descrizione del richiedente
         /// </summary>
-        [Required(ErrorMessage = "Richiedtente obbligatorio.")]
         public Richiedente Richiedente { get; set; }
 
         /// <summary>
         ///   Localita della richiesta
         /// </summary>
-        [Required(ErrorMessage = "Località obbligatoria.")]
         public Localita Localita { get; set; }
 
         /// <summary>
@@ -134,7 +124,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Command.GestioneSoccorso.Shared
         /// <summary>
         ///   Eventuale istante di presa in carico della richiesta
         /// </summary>
-        [DataType(DataType.DateTime)]
         public DateTime? IstantePresaInCarico { get; set; }
 
         ///<summary>

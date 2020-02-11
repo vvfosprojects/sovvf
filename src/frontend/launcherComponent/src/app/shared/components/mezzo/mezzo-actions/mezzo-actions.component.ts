@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { NgbDropdownConfig, NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
 import { Mezzo } from '../../../model/mezzo.model';
-import { calcolaActionSuggeritaMezzo, statoMezzoColor, statoMezzoActionsEnumToStringArray } from '../../../helper/function';
+import { calcolaActionSuggeritaMezzo, statoMezzoActionColor, statoMezzoActionsEnumToStringArray } from '../../../helper/function';
 import { StatoMezzoActions } from '../../../enum/stato-mezzo-actions.enum';
 import { StatoMezzo } from 'src/app/shared/enum/stato-mezzo.enum';
 
@@ -27,7 +27,7 @@ export class MezzoActionsComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.statoMezzoString = statoMezzoActionsEnumToStringArray([this.mezzo.stato, calcolaActionSuggeritaMezzo(this.mezzo.stato)]);
+        this.statoMezzoString = statoMezzoActionsEnumToStringArray([this.mezzo.stato, StatoMezzo.Istituto, calcolaActionSuggeritaMezzo(this.mezzo.stato)]);
     }
 
     onClick(action?: string) {
@@ -43,7 +43,7 @@ export class MezzoActionsComponent implements OnInit {
         return calcolaActionSuggeritaMezzo(stato);
     }
 
-    statoMezzoColor(stato: StatoMezzo) {
-        return statoMezzoColor(stato);
+    getBtnColor(stato: StatoMezzo) {
+        return statoMezzoActionColor(calcolaActionSuggeritaMezzo(stato));
     }
 }

@@ -12,8 +12,7 @@
       <div class="card-block pt-1 pb-0">
         <h6 class="font-weight-bold">Principali</h6>
         <div *ngFor="let f of filtri" class="mb-2">
-          <app-filtro *ngIf="f.star === true" [filtro]="f" (filtroSelezionato)="onSelezioneFiltro($event)"
-            (filtroDeselezionato)="onDeselezioneFiltro($event)"></app-filtro>
+          <app-filtro *ngIf="f.star === true" [filtro]="f" (filtroSelezionato)="onSelezioneFiltro($event)"></app-filtro>
         </div>
       </div>
       <div class="text-center">
@@ -47,7 +46,7 @@
               <div class="col-6 text-center" style="height:290px; overflow-y:auto;">
                 <span *ngFor="let f of filtri | filterBy: filtersSearch">
                   <app-filtro *ngIf="f.categoria === categoriaSelezionata" [filtro]="f"
-                    (filtroSelezionato)="onSelezioneFiltro($event)" (filtroDeselezionato)="onDeselezioneFiltro($event)">
+                    (filtroSelezionato)="onSelezioneFiltro($event)">
                   </app-filtro>
                 </span>
               </div>

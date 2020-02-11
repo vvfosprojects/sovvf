@@ -19,7 +19,7 @@ import { SintesiRichiestaModalComponent } from '../maps/maps-ui/info-window/sint
 import { MezzoInServizio } from '../../../shared/interface/mezzo-in-servizio.interface';
 import { Mezzo } from '../../../shared/model/mezzo.model';
 import { BoxClickState, BoxClickStateModel } from '../store/states/boxes/box-click.state';
-import { AllTrueBoxMezziPresenti, UndoAllBoxes } from '../store/actions/boxes/box-click.actions';
+import { AllTrueBoxMezzi, AllTrueBoxMezziPresenti, UndoAllBoxes } from '../store/actions/boxes/box-click.actions';
 import { ReducerFiltroMarker } from '../store/actions/maps/maps-filtro.actions';
 import { onlyUnique } from '../../../shared/helper/function';
 import { StatoMezzo } from '../../../shared/enum/stato-mezzo.enum';
@@ -31,7 +31,7 @@ import { StatoMezzo } from '../../../shared/enum/stato-mezzo.enum';
 })
 export class MezziInServizioComponent implements OnInit, OnDestroy {
 
-    @Select(MezziInServizioState.mezziInServizio) mezziInServizio$: Observable<MezzoInServizio[]>;
+    @Select(MezziInServizioState.mezziInServizioFiltered) mezziInServizio$: Observable<MezzoInServizio[]>;
     mezziInServizio: MezzoInServizio[];
     @Select(MezziInServizioState.idMezzoInServizioHover) idMezzoInServizioHover$: Observable<string>;
     idMezzoInServizioHover: string;
@@ -58,6 +58,8 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
                 if (this.mezziInServizio && this.mezziInServizio.length > 0) {
                     this.statiMezziInServizio = this.mezziInServizio.map(data => data.mezzo.mezzo.stato).filter(onlyUnique);
                     this.store.dispatch(new AllTrueBoxMezziPresenti(this.statiMezziInServizio));
+                } else {
+                    this.store.dispatch(new AllTrueBoxMezzi());
                 }
             })
         );
@@ -79,12 +81,14 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.store.dispatch(new ReducerFiltroMarker('mezzo', true));
+        this.store.dispatch(new ReducerFiltroMarker('mezzo'));
+        isDevMode() && console.log('Componente Mezzo in Servizio creato');
     }
 
     ngOnDestroy(): void {
         this.store.dispatch(new UndoAllBoxes(this.prevStateBoxClick));
         this.subscription.unsubscribe();
+        isDevMode() && console.log('Componente Mezzo in Servizio distrutto');
     }
 
     onActionMezzo(mezzoInServizio: Mezzo, mezzoAction: MezzoActionInterface) {

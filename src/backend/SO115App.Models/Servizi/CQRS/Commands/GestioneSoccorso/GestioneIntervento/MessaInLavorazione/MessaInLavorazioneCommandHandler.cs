@@ -18,16 +18,9 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Commands;
-using SO115App.API.Models.Classi.Autenticazione;
-using SO115App.API.Models.Classi.Soccorso;
-using SO115App.API.Models.Classi.Soccorso.Eventi;
-using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
-using SO115App.Models.Classi.Soccorso;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
-using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GenerazioneCodiciRichiesta;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti;
-using System;
 using System.Collections.Generic;
 
 namespace DomainModel.CQRS.Commands.MessaInLavorazione
@@ -52,31 +45,32 @@ namespace DomainModel.CQRS.Commands.MessaInLavorazione
 
         public void Handle(MessaInLavorazioneCommand command)
         {
-            RichiestaAssistenza richiesta = _getRichiestaById.Get(command.IdRichiesta);
-            Utente utente = _getUtenteById.GetUtenteById(command.IdUtente);
-            AttivitaUtente attivita = new AttivitaUtente();
+            var richiesta = _getRichiestaById.GetByCodice(command.IdRichiesta);
+            var utente = _getUtenteById.GetUtenteById(command.IdUtente);
+            //AttivitaUtente attivita = new AttivitaUtente();
 
-            attivita.IdUtente = utente.Id;
-            attivita.Nominativo = utente.Nome + " " + utente.Cognome;
-            attivita.DataInizioAttivita = DateTime.UtcNow;
+            //attivita.IdUtente = utente.Id;
+            //attivita.Nominativo = utente.Nome + " " + utente.Cognome;
+            //attivita.DataInizioAttivita = DateTime.UtcNow;
+            var nominativoInLavorazione = utente.Nome + "." + utente.Cognome;
 
-            if (richiesta.ListaUtentiInLavorazione != null)
-                richiesta.ListaUtentiInLavorazione.Add(attivita);
+            if (richiesta.UtInLavorazione != null)
+                richiesta.UtInLavorazione.Add(nominativoInLavorazione);
             else
             {
-                richiesta.ListaUtentiInLavorazione = new List<AttivitaUtente>();
-                richiesta.ListaUtentiInLavorazione.Add(attivita);
+                richiesta.UtInLavorazione = new List<string>();
+                richiesta.UtInLavorazione.Add(nominativoInLavorazione);
             }
 
-            if (command.Chiamata.ListaUtentiInLavorazione != null)
-                command.Chiamata.ListaUtentiInLavorazione.Add(attivita);
-            else
-            {
-                command.Chiamata.ListaUtentiInLavorazione = new List<AttivitaUtente>();
-                command.Chiamata.ListaUtentiInLavorazione.Add(attivita);
-            }
+            //if (command.Chiamata.ListaUtentiInLavorazione != null)
+            //    command.Chiamata.ListaUtentiInLavorazione.Add(attivita);
+            //else
+            //{
+            //    command.Chiamata.ListaUtentiInLavorazione = new List<AttivitaUtente>();
+            //    command.Chiamata.ListaUtentiInLavorazione.Add(attivita);
+            //}
 
-            richiesta.Id = richiesta.Codice;
+            //richiesta.Id = richiesta.Codice;
 
             this._upDateRichiestaAssistenza.UpDate(richiesta);
         }

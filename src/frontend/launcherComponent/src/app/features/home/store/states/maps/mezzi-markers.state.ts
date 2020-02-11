@@ -46,6 +46,11 @@ export class MezziMarkersState {
     }
 
     @Selector()
+    static mezziMarkersIds(state: MezziMarkersStateModel) {
+        return state.mezziMarkersId;
+    }
+
+    @Selector()
     static getMezzoById(state: MezziMarkersStateModel) {
         return state.mezzoMarker;
     }
@@ -58,7 +63,7 @@ export class MezziMarkersState {
     getMezziMarkers({ dispatch }: StateContext<MezziMarkersStateModel>, action: GetMezziMarkers) {
         dispatch(new SetMarkerLoading(true));
         console.log('filtroMezzi', action.filtri);
-        this._mezzi.getMezziMarkers(action.areaMappa).subscribe((data: MezzoMarker[]) => {
+        this._mezzi.getMezziMarkers(action.areaMappa, action.filtri).subscribe((data: MezzoMarker[]) => {
                 dispatch([
                     new SetMezziMarkers(data),
                     new SetMarkerLoading(false)
@@ -112,7 +117,9 @@ export class MezziMarkersState {
                     dispatch(new AddMezziMarkers(mezzoMarkerAdd));
                 }
             }
-            dispatch(new OpacizzaMezziMarkers());
+            if (state.statoOpacita) {
+                dispatch(new OpacizzaMezziMarkers());
+            }
         }
     }
 
@@ -135,7 +142,7 @@ export class MezziMarkersState {
     }
 
     @Action(InsertMezzoMarker)
-    insertRichiestaMarker({ setState }: StateContext<MezziMarkersStateModel>, { payload, before }: InsertMezzoMarker) {
+    insertMezzoMarker({ setState }: StateContext<MezziMarkersStateModel>, { payload, before }: InsertMezzoMarker) {
         setState(
             patch({
                 mezziMarkers: insertItem(payload, before),
@@ -145,7 +152,7 @@ export class MezziMarkersState {
     }
 
     @Action(UpdateMezzoMarker)
-    updateRichiestaMarker({ setState }: StateContext<MezziMarkersStateModel>, { payload }: UpdateMezzoMarker) {
+    updateMezzoMarker({ setState }: StateContext<MezziMarkersStateModel>, { payload }: UpdateMezzoMarker) {
         setState(
             patch({
                 mezziMarkers: updateItem<MezzoMarker>(mezzo => mezzo.mezzo.codice === payload.mezzo.codice, payload)
@@ -154,7 +161,7 @@ export class MezziMarkersState {
     }
 
     @Action(RemoveMezzoMarker)
-    removeRichiestaMarker({ setState }: StateContext<MezziMarkersStateModel>, { payload }: RemoveMezzoMarker) {
+    removeMezzoMarker({ setState }: StateContext<MezziMarkersStateModel>, { payload }: RemoveMezzoMarker) {
         setState(
             patch({
                 mezziMarkers: removeItem<MezzoMarker>(mezzo => mezzo.mezzo.codice === payload),

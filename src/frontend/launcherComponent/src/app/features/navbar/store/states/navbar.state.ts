@@ -5,19 +5,16 @@ import { ToastrType } from '../../../../shared/enum/toastr';
 import { NavbarService } from '../../../../core/service/navbar-service/navbar.service';
 import { ListaSedi } from '../../../../shared/interface/lista-sedi';
 import { SetListaSediTreeview } from '../../../../shared/store/actions/sedi-treeview/sedi-treeview.actions';
-import { Tipologia } from '../../../../shared/model/tipologia.model';
 import { AppSettings } from '../../../../shared/interface/app-settings.interface';
 
 export interface NavbarStateModel {
     loaded: boolean;
     listaSedi: ListaSedi;
-    tipologie: Tipologia[];
 }
 
 export const NavbarStateDefaults: NavbarStateModel = {
     loaded: false,
     listaSedi: null,
-    tipologie: null
 };
 
 @State<NavbarStateModel>({
@@ -26,10 +23,6 @@ export const NavbarStateDefaults: NavbarStateModel = {
 })
 export class NavbarState {
 
-    @Selector()
-    static tipologie(state: NavbarStateModel) {
-        return state.tipologie;
-    }
 
     @Selector()
     static listaSedi(state: NavbarStateModel) {
@@ -59,7 +52,6 @@ export class NavbarState {
     @Action(SetDataNavbar)
     setDataNavbar({ patchState, dispatch }: StateContext<NavbarStateModel>, action: SetDataNavbar) {
         patchState({
-            tipologie: action.settings.tipologie,
             listaSedi: action.settings.listaSedi,
             loaded: true
         });

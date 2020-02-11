@@ -5,8 +5,7 @@ export interface ContatoriSchedeContatto {
   differibileSchede: ContatoreSchedeContatto;
 }
 
-interface ContatoreSchedeContatto {
+export interface ContatoreSchedeContatto {
   contatoreTutte: number;
-  contatoreLette: number;
-  contatoreGestite: number;
+  contatoreDaGestire?: number;
 }

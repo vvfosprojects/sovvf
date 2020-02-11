@@ -1,3 +1,5 @@
+import { Tipologia } from '../../../../shared/model/tipologia.model';
+
 export class ClearDataHome {
     static readonly type = '[Home] Clear Data';
 }
@@ -17,3 +19,9 @@ export class SetMarkerLoading {
     }
 }
 
+export class SetDataTipologie {
+    static readonly type = '[Navbar Component] Set Data Tipologie';
+
+    constructor(public tipologie: Tipologia[]) {
+    }
+}

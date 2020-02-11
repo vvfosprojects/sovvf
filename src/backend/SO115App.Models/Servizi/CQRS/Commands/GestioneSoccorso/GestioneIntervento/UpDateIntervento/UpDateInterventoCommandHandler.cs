@@ -18,12 +18,12 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-using System;
 using CQRS.Commands;
-using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.Eventi;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
+using System;
+using System.Collections.Generic;
 
 namespace DomainModel.CQRS.Commands.UpDateIntervento
 {
@@ -42,24 +42,35 @@ namespace DomainModel.CQRS.Commands.UpDateIntervento
 
         public void Handle(UpDateInterventoCommand command)
         {
-            var richiesta = _getRichiestaById.Get(command.Chiamata.Codice);
+            var richiesta = _getRichiestaById.GetByCodice(command.Chiamata.Codice);
             var priorita = command.Chiamata.PrioritaRichiesta;
+            var listaCodiciTipologie = new List<string>();
+            var utentiInLavorazione = new List<string>();
+            var utentiPresaInCarico = new List<string>();
+            foreach (var tipologia in command.Chiamata.Tipologie)
+            {
+                listaCodiciTipologie.Add(tipologia.Codice);
+            }
+            foreach (var utente in command.Chiamata.ListaUtentiInLavorazione)
+            {
+                utentiInLavorazione.Add(utente.Nominativo);
+            }
+            foreach (var utente in command.Chiamata.ListaUtentiPresaInCarico)
+            {
+                utentiPresaInCarico.Add(utente.Nominativo);
+            }
 
-            richiesta.Tipologie = command.Chiamata.Tipologie;
-            richiesta.ZoneEmergenza = command.Chiamata.ZoneEmergenza;
-            richiesta.Operatore = command.Chiamata.Operatore;
+            richiesta.Tipologie = listaCodiciTipologie;
+            richiesta.CodZoneEmergenza = command.Chiamata.ZoneEmergenza;
             richiesta.Richiedente = command.Chiamata.Richiedente;
             richiesta.Localita = command.Chiamata.Localita;
             richiesta.Descrizione = command.Chiamata.Descrizione;
-            richiesta.TurnoInserimentoChiamata = command.Chiamata.TurnoInserimentoChiamata;
             richiesta.TipoTerreno = command.Chiamata.TipoTerreno;
-            richiesta.ListaEntiIntervenuti = command.Chiamata.ListaEntiIntervenuti;
             richiesta.ObiettivoSensibile = command.Chiamata.ObiettivoSensibile;
-            richiesta.ListaUtentiInLavorazione = command.Chiamata.ListaUtentiInLavorazione;
-            richiesta.ListaUtentiPresaInCarico = command.Chiamata.ListaUtentiPresaInCarico;
+            richiesta.UtInLavorazione = utentiInLavorazione;
+            richiesta.UtPresaInCarico = utentiPresaInCarico;
             richiesta.NotePrivate = command.Chiamata.NotePrivate;
             richiesta.NotePubbliche = command.Chiamata.NotePubbliche;
-            richiesta.Id = command.Chiamata.Codice;
 
             if (command.Chiamata.Tags != null)
             {
@@ -69,13 +80,13 @@ namespace DomainModel.CQRS.Commands.UpDateIntervento
                 }
             }
 
-            richiesta.SincronizzaRilevanza(command.Chiamata.RilevanteGrave, command.Chiamata.RilevanteStArCu, command.Chiamata.Operatore.Id, command.Chiamata.Descrizione, DateTime.UtcNow);
+            richiesta.SincronizzaRilevanza(command.Chiamata.RilevanteGrave, command.Chiamata.RilevanteStArCu, command.CodUtente, command.Chiamata.Descrizione, DateTime.UtcNow);
 
-            richiesta.SincronizzaStatoRichiesta(command.Chiamata.Stato, richiesta.StatoRichiesta, command.Chiamata.Operatore.Id, command.Chiamata.Motivazione);
+            richiesta.SincronizzaStatoRichiesta(command.Chiamata.Stato, richiesta.StatoRichiesta, command.CodUtente, command.Chiamata.Motivazione);
 
             if (richiesta.PrioritaRichiesta != command.Chiamata.PrioritaRichiesta)
             {
-                new AssegnazionePriorita(richiesta, priorita, DateTime.UtcNow, command.Chiamata.Operatore.Id);
+                new AssegnazionePriorita(richiesta, priorita, DateTime.UtcNow, command.CodUtente);
             }
 
             _updateRichiestaAssistenza.UpDate(richiesta);

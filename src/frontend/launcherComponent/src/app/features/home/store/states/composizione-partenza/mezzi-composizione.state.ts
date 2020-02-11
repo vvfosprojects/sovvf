@@ -22,7 +22,7 @@ import {
     UnlockMezzoComposizione,
     UnselectMezzoComposizione,
     UpdateMezzoComposizione,
-    ReducerSelectMezzoComposizione, SelectMezzoComposizioneFromMappa, SganciamentoMezzoComposizione
+    ReducerSelectMezzoComposizione, SelectMezzoComposizioneFromMappa, SganciamentoMezzoComposizione, UpdateMezzoComposizioneScadenzaByCodiceMezzo
 } from '../../actions/composizione-partenza/mezzi-composizione.actions';
 import { insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
@@ -52,6 +52,7 @@ import { ConfermaPartenze } from '../../../composizione-partenza/interface/confe
 import { ComposizionePartenzaState } from './composizione-partenza.state';
 import { TurnoState } from 'src/app/features/navbar/store/states/turno/turno.state';
 import { ConfirmPartenze } from '../../actions/composizione-partenza/composizione-partenza.actions';
+import { makeCopy } from '../../../../../shared/helper/function';
 
 export interface MezziComposizioneStateStateModel {
     mezziComposizione: MezzoComposizione[];
@@ -127,9 +128,9 @@ export class MezziComposizioneState {
         });
         action.mezziComp.forEach((mezzoComp: MezzoComposizione) => {
             if (mezzoComp.istanteScadenzaSelezione) {
-                dispatch(new AddBookMezzoComposizione(mezzoComp));
-            } else if (state.idMezziPrenotati.indexOf(mezzoComp.id) >= 0) {
-                dispatch(new RemoveBookMezzoComposizione(mezzoComp));
+                dispatch(new AddBookMezzoComposizione(mezzoComp.mezzo.codice));
+            } else if (state.idMezziPrenotati.indexOf(mezzoComp.mezzo.codice) >= 0 && !mezzoComp.istanteScadenzaSelezione) {
+                dispatch(new RemoveBookMezzoComposizione(mezzoComp.mezzo.codice));
             }
         });
     }
@@ -160,6 +161,23 @@ export class MezziComposizioneState {
         );
         dispatch(new UpdateMezzoBoxPartenza(action.mezzoComp));
         // console.log('Update mezzo composizione', action.mezzoComp);
+    }
+
+    @Action(UpdateMezzoComposizioneScadenzaByCodiceMezzo)
+    updateMezzoComposizioneScadenzaByCodiceMezzo({ getState, setState, dispatch }: StateContext<MezziComposizioneStateStateModel>, action: UpdateMezzoComposizioneScadenzaByCodiceMezzo) {
+        const state = getState();
+        let mezzoComposizione = state.mezziComposizione.filter(mezzoComp => mezzoComp.mezzo.codice === action.codiceMezzo)[0];
+        if (mezzoComposizione) {
+            mezzoComposizione = makeCopy(mezzoComposizione);
+            mezzoComposizione.istanteScadenzaSelezione = action.istanteScadenzaSelezione;
+        }
+        setState(
+            patch({
+                mezziComposizione: updateItem<MezzoComposizione>(mezzoComp => mezzoComp.mezzo.codice === action.codiceMezzo, mezzoComposizione)
+            })
+        );
+        dispatch(new UpdateMezzoBoxPartenza(mezzoComposizione));
+        // console.log('Update mezzo composizione', mezzoComposizione);
     }
 
     @Action(ReducerSelectMezzoComposizione)
@@ -272,7 +290,8 @@ export class MezziComposizioneState {
     @Action(RequestBookMezzoComposizione)
     requestBookMezzoComposizione({ dispatch }: StateContext<MezziComposizioneStateStateModel>, action: RequestBookMezzoComposizione) {
         const mezzoPrenotatoObj = {
-            'mezzoComposizione': action.mezzoComp
+            'codiceMezzo': action.mezzoComp.mezzo.codice,
+            'codiceRichiesta': this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione).id
         };
         dispatch(new AddBookingMezzoComposizione(action.mezzoComp));
         this._compPartenzaService.setMezzoPrenotato(mezzoPrenotatoObj).subscribe(() => {
@@ -287,7 +306,7 @@ export class MezziComposizioneState {
     @Action(AddBookMezzoComposizione)
     addBookMezzoComposizione({ getState, setState }: StateContext<MezziComposizioneStateStateModel>, action: AddBookMezzoComposizione) {
         const state = getState();
-        const mezzoComp = state.mezziComposizione.length > 0 ? state.mezziComposizione.filter(x => x.mezzo.codice === action.mezzoComp.mezzo.codice)[0] : null;
+        const mezzoComp = state.mezziComposizione.length > 0 ? state.mezziComposizione.filter(x => x.mezzo.codice === action.codiceMezzo)[0] : null;
         const idMezzoComp = mezzoComp ? mezzoComp.id : null;
         if (idMezzoComp) {
             if (state.idMezziPrenotati.indexOf(idMezzoComp) === -1) {
@@ -312,8 +331,8 @@ export class MezziComposizioneState {
     @Action(RequestRemoveBookMezzoComposizione)
     requestRemoveBookMezzoComposizione({ dispatch }: StateContext<MezziComposizioneStateStateModel>, action: RequestRemoveBookMezzoComposizione) {
         const mezzoPrenotatoObj = {
-            'mezzoComposizione': action.mezzoComp,
-            'remove': true
+            'codiceMezzo': action.mezzoComp.mezzo.codice,
+            'codiceRichiesta': this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione).id
         };
         this._compPartenzaService.removeMezzoPrenotato(mezzoPrenotatoObj).subscribe(() => {
         }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore Rimozione Prenotazione Mezzo', 'Il server web non risponde', 5)));
@@ -322,7 +341,7 @@ export class MezziComposizioneState {
     @Action(RemoveBookMezzoComposizione)
     removeBookMezzoComposizione({ getState, setState }: StateContext<MezziComposizioneStateStateModel>, action: RemoveBookMezzoComposizione) {
         const state = getState();
-        const mezzoComp = state.mezziComposizione.filter(x => x.mezzo.codice === action.mezzoComp.mezzo.codice);
+        const mezzoComp = state.mezziComposizione.filter(x => x.mezzo.codice === action.codiceMezzo);
         const idMezzoComp = mezzoComp && mezzoComp.length > 0 ? mezzoComp[0].id : null;
         if (idMezzoComp && state.idMezziPrenotati.indexOf(idMezzoComp) > -1) {
             setState(
@@ -337,7 +356,7 @@ export class MezziComposizioneState {
     removeBookingMezzoComposizione({ getState, setState }: StateContext<MezziComposizioneStateStateModel>, action: RemoveBookingMezzoComposizione) {
         setState(
             patch({
-                idMezziInPrenotazione: removeItem(id => id === action.mezzoComp.id)
+                idMezziInPrenotazione: removeItem(id => id === action.codiceMezzo)
             })
         );
     }

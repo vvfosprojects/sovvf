@@ -13,7 +13,7 @@ export const environment = {
         gestioneRichiesta: '/api/GestioneRichiesta',
         gestionePartenza: '/api/GestionePartenza/',
         mezziInServizio: '/api/GestioneMezziInServizio',
-        schedeContatto: '/api/SchedeContatto',
+        schedeContatto: '/api/GestioneSchedeContatto',
         turno: '',  // TodoBackEnd: controller mancante
         composizione: {
             preaccoppiati: '/api/PreAccoppiati',
@@ -21,7 +21,8 @@ export const environment = {
             confermaPartenze: '/api/ConfermaPartenze',
             prenotazione: 'api/PrenotazioneMezzo'
         },
-        chiamata: '/api/Chiamata/',
+        chiamata: '/api/Chiamata',
+        utenti: '/api/Utenti',
         auth: '/api/Auth',
         navbar: '/api/Navbar',
         meteo: 'http://api.openweathermap.org/data/2.5/weather?'

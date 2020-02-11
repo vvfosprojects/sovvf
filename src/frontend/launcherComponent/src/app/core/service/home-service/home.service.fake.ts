@@ -1,21 +1,35 @@
 import { Injectable } from '@angular/core';
-import { Store } from '@ngxs/store';
-import { GetRichieste } from '../../../features/home/store/actions/richieste/richieste.actions';
-import { GetChiamateMarkers } from '../../../features/home/store/actions/maps/chiamate-markers.actions';
-import { of } from 'rxjs';
+import { Welcome } from '../../../shared/interface/welcome.interface';
+import { catchError, map, retry } from 'rxjs/operators';
+import { handleError } from '../../../shared/helper/handleError';
+import { Tipologia } from '../../../shared/model/tipologia.model';
+import { HttpClient } from '@angular/common/http';
+
+const API_WELCOME = 'assets/json-fake/welcome.json';
+
 
 @Injectable()
 export class HomeServiceFake {
 
-    constructor(private store: Store) {
+    constructor(private http: HttpClient) {
     }
 
     getHome() {
-        this.store.dispatch([
-            new GetRichieste(),
-            new GetChiamateMarkers()
-        ]);
+        return this.http.get<Welcome>(API_WELCOME).pipe(
+            map((data: Welcome) => mapAppSettings(data)),
+            retry(3),
+            catchError(handleError)
+        );
 
-        return of();
+        function mapAppSettings(data: Welcome): Welcome {
+            data.tipologie = data.tipologie.map((tipologia: Tipologia) => {
+                return {
+                    ...tipologia,
+                    codiceDescrizione: `${tipologia.descrizione} (${tipologia.codice})`
+                };
+            });
+            return data;
+        }
     }
+
 }

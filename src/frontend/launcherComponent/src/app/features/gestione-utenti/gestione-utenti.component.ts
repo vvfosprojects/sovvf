@@ -1,17 +1,19 @@
 import { Component, OnInit } from '@angular/core';
-import { Utente } from 'src/app/shared/model/utente.model';
+import { Ruolo, Utente } from 'src/app/shared/model/utente.model';
 import { Observable, Subscription } from 'rxjs';
 import { Select, Store } from '@ngxs/store';
 import { SetRicercaUtenti } from './store/actions/ricerca-utenti/ricerca-utenti.actons';
-import { makeCopy } from '../../shared/helper/function';
-import { Sede } from '../../shared/model/sede.model';
 import { UtenteState } from '../navbar/store/states/operatore/utente.state';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { AddUtente, GetGestioneUtenti, RemoveUtente, ChangeRoleUtente } from './store/actions/gestione-utenti/gestione-utenti.actions';
-import { AggiungiUtenteModalComponent } from './aggiungi-utente-modal/aggiungi-utente-modal.component';
+import { GetUtentiGestione, OpenModalRemoveUtente, AddRuoloUtenteGestione, ClearDataModalAddUtenteModal, RemoveRuoloUtente } from './store/actions/gestione-utenti/gestione-utenti.actions';
 import { GetRuoli } from './store/actions/ruoli/ruoli.actions';
 import { RuoliState } from './store/states/ruoli/ruoli.state';
-import { ConfirmModalComponent } from 'src/app/shared/modal/confirm-modal/confirm-modal.component';
+import { GestioneUtentiState } from './store/states/gestione-utenti/gestione-utenti.state';
+import { RicercaUtentiState } from './store/states/ricerca-utenti/ricerca-utenti.state';
+import { PaginationState } from '../../shared/store/states/pagination/pagination.state';
+import { LoadingState } from '../../shared/store/states/loading/loading.state';
+import { GestioneUtenteModalComponent } from './gestione-utente-modal/gestione-utente-modal.component';
+import { ConfirmModalComponent } from 'src/app/shared';
 
 @Component({
     selector: 'app-gestione-utenti',
@@ -21,75 +23,85 @@ import { ConfirmModalComponent } from 'src/app/shared/modal/confirm-modal/confir
 export class GestioneUtentiComponent implements OnInit {
 
     @Select(UtenteState.utente) user$: Observable<Utente>;
-
+    @Select(GestioneUtentiState.listaUtenti) listaUtenti$: Observable<Utente[]>;
+    @Select(GestioneUtentiState.utenteDetail) utenteGestioneDetail$: Observable<Utente>;
     @Select(RuoliState.ruoli) ruoli$: Observable<Array<any>>;
-    ruoli: Array<any>;
+    @Select(RicercaUtentiState.ricerca) ricerca$: Observable<any>;
+    @Select(PaginationState.limit) pageSize$: Observable<number>;
+    @Select(PaginationState.totalItems) totalItems$: Observable<number>;
+    @Select(PaginationState.page) page$: Observable<number>;
+    @Select(LoadingState.loading) loading$: Observable<boolean>;
 
-    unitaOperativaAttuale: Sede;
-    subscription: Subscription = new Subscription();
+    private subscription: Subscription = new Subscription();
 
     constructor(public modalService: NgbModal,
-                private store: Store) {
-
-        this.store.dispatch(new GetGestioneUtenti());
-        this.store.dispatch(new GetRuoli());
-
-        this.subscription.add(
-            this.ruoli$.subscribe((ruoli: Array<any>) => {
-                this.ruoli = ruoli;
-            })
-        );
+        private store: Store) {
+        this.getUtentiGestione();
+        this.getRuoli();
+        this.getRicerca();
     }
 
     onRicercaUtenti(ricerca: any) {
-        this.store.dispatch(new SetRicercaUtenti(makeCopy(ricerca)));
+        this.store.dispatch(new SetRicercaUtenti(ricerca));
     }
 
     ngOnInit(): void {
-        this.user$.subscribe((utente: Utente) => {
-            this.unitaOperativaAttuale = utente.sede;
-        });
     }
 
-    onAggiungiUtente() {
-        const aggiungiUtenteModal = this.modalService.open(AggiungiUtenteModalComponent, { backdropClass: 'light-blue-backdrop', centered: true, size: 'lg' });
-        aggiungiUtenteModal.componentInstance.ruoli = this.ruoli;
+    onAddUtente() {
+        const aggiungiUtenteModal = this.modalService.open(GestioneUtenteModalComponent, { backdropClass: 'light-blue-backdrop', centered: true, size: 'lg' });
         aggiungiUtenteModal.result.then(
-            (risultatoModal) => {
-                if (risultatoModal[0] === 'ok') {
-                    this.store.dispatch(new AddUtente(
-                        risultatoModal[1]
-                    ));
+            (result: { success: boolean }) => {
+                if (result.success) {
+                    this.store.dispatch(new AddRuoloUtenteGestione());
+                } else if (!result.success) {
+                    this.store.dispatch(new ClearDataModalAddUtenteModal());
+                    console.log('Modal "addUtente" chiusa con val ->', result);
                 }
-                // console.log('Modal chiusa con val ->', val);
             },
-            (err) => console.error('Modal chiusa senza bottoni. Err ->', err)
+            (err) => {
+                this.store.dispatch(new ClearDataModalAddUtenteModal());
+                console.error('Modal chiusa senza bottoni. Err ->', err);
+            }
         );
     }
 
-    onSetRuolo(event: any) {
-        const utente = event.utente.nome + ' ' + event.utente.cognome;
-        const ruolo = event.ruoli;
-        const sede = event.sede.descrizione;
-        console.warn(utente + ' è diventato ' + ruolo + ' nel ' + sede);
-        this.store.dispatch(new ChangeRoleUtente(event.utente.id_utente, event.ruoli));
+    onAddRuoloUtente(event: { codFiscale: string, fullName: string }) {
+        const aggiungiRuoloUtenteModal = this.modalService.open(GestioneUtenteModalComponent, { backdropClass: 'light-blue-backdrop', centered: true, size: 'lg' });
+        const codFiscaleUtenteVVF = event.codFiscale;
+        const nominativoUtenteVVF = event.fullName;
+        aggiungiRuoloUtenteModal.componentInstance.codFiscaleUtenteVVF = codFiscaleUtenteVVF;
+        aggiungiRuoloUtenteModal.componentInstance.nominativoUtenteVVF = nominativoUtenteVVF;
+        aggiungiRuoloUtenteModal.result.then(
+            (result: { success: boolean }) => {
+                if (result.success) {
+                    this.store.dispatch(new AddRuoloUtenteGestione({ codFiscaleUtenteVVF: codFiscaleUtenteVVF }));
+                } else if (!result.success) {
+                    this.store.dispatch(new ClearDataModalAddUtenteModal());
+                    console.log('Modal "addRuoloUtente" chiusa con val ->', result);
+                }
+            },
+            (err) => {
+                this.store.dispatch(new ClearDataModalAddUtenteModal());
+                console.error('Modal chiusa senza bottoni. Err ->', err);
+            }
+        );
     }
 
-    onEliminaGestioneUtente(event: any) {
+    onRemoveRuoloUtente(payload: { id: string, ruolo: Ruolo, nominativoUtente: string }) {
         const modalConfermaAnnulla = this.modalService.open(ConfirmModalComponent, { backdropClass: 'light-blue-backdrop', centered: true });
         modalConfermaAnnulla.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
-        modalConfermaAnnulla.componentInstance.titolo = 'Elimina permesso utente';
-        modalConfermaAnnulla.componentInstance.messaggioAttenzione = 'Sei sicuro di voler eliminare questo utente dai permessi?';
+        modalConfermaAnnulla.componentInstance.titolo = 'Elimina ruolo a ' + payload.nominativoUtente;
+        modalConfermaAnnulla.componentInstance.messaggioAttenzione = 'Sei sicuro di voler rimuovere il ruolo "' + payload.ruolo.descrizione + '" su "' + payload.ruolo.descSede + '"?';
         modalConfermaAnnulla.componentInstance.bottoni = [
             { type: 'ko', descrizione: 'Annulla', colore: 'danger' },
             { type: 'ok', descrizione: 'Conferma', colore: 'dark' },
         ];
-
         modalConfermaAnnulla.result.then(
             (val) => {
                 switch (val) {
                     case 'ok':
-                        this.store.dispatch(new RemoveUtente(event.id_utente, event.codice_sede));
+                        this.store.dispatch(new RemoveRuoloUtente(payload.id, payload.ruolo));
                         break;
                     case 'ko':
                         // console.log('Azione annullata');
@@ -99,5 +111,45 @@ export class GestioneUtentiComponent implements OnInit {
             },
             (err) => console.error('Modal chiusa senza bottoni. Err ->', err)
         );
+    }
+
+    /* onDetailUtente(id: string) {
+        this.store.dispatch(new GetUtenteDetail(id));
+        this.subscription.add(
+            this.utenteGestioneDetail$.subscribe((utente: any) => {
+                if (utente) {
+                    const modificaUtenteModal = this.modalService.open(GestioneUtenteModalComponent, { backdropClass: 'light-blue-backdrop', centered: true, size: 'lg' });
+                    modificaUtenteModal.componentInstance.detailMode = true;
+                    modificaUtenteModal.componentInstance.utenteEdit = utente;
+                    modificaUtenteModal.result.then((risultatoModal: any) => {
+                        console.log('Modal "detailUtente" chiusa con val ->', risultatoModal);
+                    },
+                        (err) => console.error('Modal chiusa senza bottoni. Err ->', err)
+                    );
+                }
+            })
+        );
+    } */
+
+    onRemoveUtente(payload: { id: string, nominativoUtente: string }) {
+        this.store.dispatch(new OpenModalRemoveUtente(payload.id, payload.nominativoUtente));
+    }
+
+    onPageChange(page: number) {
+        this.store.dispatch(new GetUtentiGestione(page));
+    }
+
+    getUtentiGestione() {
+        this.store.dispatch(new GetUtentiGestione());
+    }
+
+    getRuoli() {
+        this.store.dispatch(new GetRuoli());
+    }
+
+    getRicerca() {
+        this.ricerca$.subscribe(() => {
+            this.store.dispatch(new GetUtentiGestione());
+        });
     }
 }

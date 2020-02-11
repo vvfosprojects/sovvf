@@ -127,7 +127,9 @@ export class RichiesteMarkersState {
                     dispatch(new ToggleAnimation());
                 }
             });
-            dispatch(new OpacizzaRichiesteMarkers());
+            if (state.statoOpacita) {
+                dispatch(new OpacizzaRichiesteMarkers());
+            }
         }
     }
 

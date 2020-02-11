@@ -9,7 +9,6 @@ import { PatchRichiesta } from '../../store/actions/richieste/richieste.actions'
 import { Address } from 'ngx-google-places-autocomplete/objects/address';
 import { Coordinate } from '../../../../shared/model/coordinate.model';
 import { CopyToClipboard } from '../../store/actions/chiamata/clipboard.actions';
-import { NavbarState } from '../../../navbar/store/states/navbar.state';
 import { ChiudiRichiestaModifica, ModificaIndirizzo, ClearRichiestaModifica } from '../../store/actions/richieste/richiesta-modifica.actions';
 import { Tipologia } from '../../../../shared/model/tipologia.model';
 import { GOOGLEPLACESOPTIONS } from '../../../../core/settings/google-places-options';
@@ -17,6 +16,7 @@ import { Localita } from '../../../../shared/model/localita.model';
 import { HelperSintesiRichiesta } from '../helper/_helper-sintesi-richiesta';
 import { TipoTerreno } from '../../../../shared/model/tipo-terreno';
 import { ToggleModifica } from '../../store/actions/view/view.actions';
+import { HomeState } from '../../store/states/home.state';
 
 @Component({
     selector: 'app-modifica-richiesta',
@@ -29,7 +29,7 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
     options = GOOGLEPLACESOPTIONS;
 
     tipologiaRichiedente: string;
-    @Select(NavbarState.tipologie) tipologie$: Observable<Tipologia[]>;
+    @Select(HomeState.tipologie) tipologie$: Observable<Tipologia[]>;
     tipologie: Tipologia[];
 
     @Select(RichiestaModificaState.richiestaModifica) richiestaModifica$: Observable<SintesiRichiesta>;

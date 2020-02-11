@@ -1,15 +1,21 @@
 import { AreaMappa } from '../../../maps/maps-model/area-mappa-model';
-import { Action, Select, State, StateContext, Store } from '@ngxs/store';
+import { Action, Select, Selector, State, StateContext, Store } from '@ngxs/store';
 import { GetMarkersMappa, SetAreaMappa } from '../../actions/maps/area-mappa.actions';
-import { GetRichiesteMarkers } from '../../actions/maps/richieste-markers.actions';
-import { GetMezziMarkers } from '../../actions/maps/mezzi-markers.actions';
-import { GetSediMarkers } from '../../actions/maps/sedi-markers.actions';
+import { ClearRichiesteMarkers, GetRichiesteMarkers } from '../../actions/maps/richieste-markers.actions';
+import { ClearMezziMarkers, GetMezziMarkers } from '../../actions/maps/mezzi-markers.actions';
+import { ClearSediMarkers, GetSediMarkers } from '../../actions/maps/sedi-markers.actions';
 import { Observable, Subscription } from 'rxjs';
 import { MapsFiltroState } from './maps-filtro.state';
 import { FiltriMarkersState } from './filtri-markers.state';
 import { FiltroRichieste } from '../../../maps/maps-model/filtro-richieste.interface';
 import { FiltroMezzi } from '../../../maps/maps-model/filtro-mezzi.interface';
 import { ReducerFiltroMarker } from '../../actions/maps/maps-filtro.actions';
+import { ViewComponentState } from '../view/view.state';
+import {
+    ClearSchedeContattoMarkers,
+    GetSchedeContattoMarkers
+} from '../../actions/maps/schede-contatto-markers.actions';
+import { FiltroSchedeContatto } from '../../../maps/maps-model/filtro-schede-contatto';
 
 export interface AreaMappaStateModel {
     areaMappa: AreaMappa;
@@ -29,6 +35,12 @@ export class AreaMappaState {
     @Select(MapsFiltroState.filtroMarkerAttivo) filtroMarkerAttivo$: Observable<string[]>;
     @Select(FiltriMarkersState.filtroRichieste) filtroRichieste$: Observable<FiltroRichieste>;
     @Select(FiltriMarkersState.filtroMezzi) filtroMezzi$: Observable<FiltroMezzi>;
+    @Select(FiltriMarkersState.filtroSC) filtroSC$: Observable<FiltroSchedeContatto>;
+
+    @Selector()
+    static areaMappa(state: AreaMappaStateModel) {
+        return state.areaMappa;
+    }
 
     constructor(private store: Store) {
         this.subscription.add(
@@ -53,6 +65,11 @@ export class AreaMappaState {
                 this.store.dispatch(new GetMarkersMappa());
             }
         });
+        this.filtroSC$.subscribe((filtroSC: FiltroSchedeContatto) => {
+            if (filtroSC) {
+                this.store.dispatch(new GetMarkersMappa());
+            }
+        });
     }
 
     @Action(SetAreaMappa)
@@ -70,15 +87,28 @@ export class AreaMappaState {
             const filtriAttivi = this.store.selectSnapshot(MapsFiltroState.filtroMarkerAttivo);
             const filtroRichieste = this.store.selectSnapshot(FiltriMarkersState.filtroRichieste);
             const filtroMezzi = this.store.selectSnapshot(FiltriMarkersState.filtroMezzi);
+            const filtroSC = this.store.selectSnapshot(FiltriMarkersState.filtroSC);
+            const schedaContattoModeOn = this.store.selectSnapshot(ViewComponentState.schedeContattoStatus);
 
             if (filtriAttivi.includes('richiesta')) {
                 dispatch(new GetRichiesteMarkers(state.areaMappa, filtroRichieste));
+            } else {
+                dispatch(new ClearRichiesteMarkers());
             }
             if (filtriAttivi.includes('sede')) {
                 dispatch(new GetSediMarkers(state.areaMappa));
+            } else {
+                dispatch(new ClearSediMarkers());
             }
             if (filtriAttivi.includes('mezzo')) {
                 dispatch(new GetMezziMarkers(state.areaMappa, filtroMezzi));
+            } else {
+                dispatch(new ClearMezziMarkers());
+            }
+            if (schedaContattoModeOn) {
+                dispatch(new GetSchedeContattoMarkers(state.areaMappa, filtroSC));
+            } else {
+                dispatch(new ClearSchedeContattoMarkers());
             }
         }
     }

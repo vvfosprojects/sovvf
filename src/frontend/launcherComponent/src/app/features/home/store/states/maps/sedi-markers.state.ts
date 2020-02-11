@@ -169,7 +169,7 @@ export class SediMarkersState {
     }
 
     @Action(ClearSediMarkers)
-    clearRichieste({ patchState }: StateContext<SediMarkersStateModel>) {
+    clearSediMarkers({ patchState }: StateContext<SediMarkersStateModel>) {
         patchState(SediMarkersStateDefaults);
     }
 }

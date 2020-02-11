@@ -22,6 +22,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizionePartenzaAvanzata;
 using SO115App.Models.Classi.Composizione;
+using System;
 using System.Security.Principal;
 using System.Threading.Tasks;
 
@@ -59,7 +60,7 @@ namespace SO115App.API.Controllers
         /// <summary>
         ///   Metodo di accesso alle richieste di assistenza
         /// </summary>
-        /// <param name="filtro">Il filtro per le richieste</param>
+        /// <param name="filtri">Il filtro per le richieste</param>
         /// <returns>Le sintesi delle richieste di assistenza</returns>
         [HttpPost]
         public async Task<IActionResult> Post(FiltriComposizionePartenza filtri)
@@ -78,7 +79,7 @@ namespace SO115App.API.Controllers
                 {
                     return Ok(this._handler.Handle(partenzaAvanzataQuery).ComposizionePartenzaAvanzata);
                 }
-                catch
+                catch (Exception ex)
                 {
                     return BadRequest();
                 }

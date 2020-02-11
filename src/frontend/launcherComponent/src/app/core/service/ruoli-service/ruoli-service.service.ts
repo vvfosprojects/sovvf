@@ -9,7 +9,7 @@ export class RuoliService {
     constructor() {
     }
 
-    getRuoli(): Observable<any> {
+    getRuoli(): Observable<string[]> {
         return;
     }
 }

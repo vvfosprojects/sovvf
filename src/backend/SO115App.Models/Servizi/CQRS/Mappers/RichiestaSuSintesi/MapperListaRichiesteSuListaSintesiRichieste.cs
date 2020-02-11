@@ -20,6 +20,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.StatiRichiesta;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
@@ -38,9 +39,10 @@ namespace SO115App.API.Models.Servizi.CQRS.Mappers.RichiestaSuSintesi
             {
                 SintesiRichiesta sintesi = new SintesiRichiesta();
                 string statoRichiesta = DecodifcaStatoRichiesta(elemento.StatoRichiesta);
+                var utente =
 
                 sintesi.Codice = elemento.Codice;
-                sintesi.CodiceSchedaNue = elemento.CodiceSchedaNue;
+                sintesi.CodiceSchedaNue = elemento.CodNue;
                 sintesi.Competenze = elemento.Competenze;
                 //sintesi.complessita = elemento.Richiesta.Complessita;
                 sintesi.Descrizione = elemento.Descrizione;
@@ -53,11 +55,11 @@ namespace SO115App.API.Models.Servizi.CQRS.Mappers.RichiestaSuSintesi
 
                 sintesi.IstanteRicezioneRichiesta = sintesi.Eventi.Count > 0 ? elemento.IstanteRicezioneRichiesta.Value : DateTime.MinValue;
                 sintesi.Localita = elemento.Localita;
-                sintesi.Operatore = elemento.Operatore;
+                //sintesi.Operatore = elemento.Operatore;
                 sintesi.Richiedente = elemento.Richiedente;
                 //sintesi.Stato = statoRichiesta;
-                sintesi.Tipologie = elemento.Tipologie;
-                sintesi.ZoneEmergenza = elemento.ZoneEmergenza;
+                sintesi.Tipologie = new List<Tipologia>(); //TODO getTipologiaByID
+                sintesi.ZoneEmergenza = elemento.CodZoneEmergenza;
 
                 if (statoRichiesta.Equals("Chiamata"))
                     AppoListaSintesiChiamate.Add(sintesi);

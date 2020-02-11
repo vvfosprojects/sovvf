@@ -20,13 +20,19 @@
 using AutoMapper;
 using MongoDB.Driver;
 using Persistence.MongoDB;
+using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
+using SO115App.Models.Classi.Condivise;
+using SO115App.Models.Classi.Soccorso;
 using SO115App.Models.Servizi.CustomMapper;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
+using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SO115App.Persistence.MongoDB
 {
@@ -34,35 +40,59 @@ namespace SO115App.Persistence.MongoDB
     {
         private readonly DbContext _dbContext;
         private readonly IMapper _mapper;
+        private readonly IGetTipologieByCodice _getTipologiaByCodice;
 
-        public GetRichiesta(DbContext dbContext, IMapper mapper)
+        public GetRichiesta(DbContext dbContext, IMapper mapper, IGetTipologieByCodice getTipologiaByCodice)
         {
             _dbContext = dbContext;
             _mapper = mapper;
+            _getTipologiaByCodice = getTipologiaByCodice;
         }
 
-        public RichiestaAssistenza Get(string idRichiestaAssistenza)
+        public RichiestaAssistenza GetByCodice(string codiceRichiesta)
         {
             return _dbContext.RichiestaAssistenzaCollection
-                .Find(s => s.Codice == idRichiestaAssistenza)
+                .Find(s => s.Codice == codiceRichiesta)
                 .Single();
+        }
+
+        public RichiestaAssistenza GetById(string idRichiesta)
+        {
+            return _dbContext.RichiestaAssistenzaCollection.Find(s => s.Id == idRichiesta).Single();
         }
 
         public List<SintesiRichiesta> GetListaSintesiRichieste(FiltroRicercaRichiesteAssistenza filtro)
         {
             var ListaRichiesteAssistenza = _dbContext.RichiestaAssistenzaCollection.Find(Builders<RichiestaAssistenza>.Filter.Empty).ToList();
 
-            MapperRichiestaAssistenzaSuSintesi mapSintesi = new MapperRichiestaAssistenzaSuSintesi(_mapper);
+            MapperRichiestaAssistenzaSuSintesi mapSintesi = new MapperRichiestaAssistenzaSuSintesi(_mapper, _getTipologiaByCodice);
 
             var ListaSistesiRichieste = new List<SintesiRichiesta>();
+
+            var utentiFake = new List<AttivitaUtente>
+            {
+                new AttivitaUtente
+                {
+                    IdUtente = "5",
+                    Nominativo = "Mario Rossi",
+                    DataInizioAttivita = DateTime.UtcNow
+                }
+            };
 
             foreach (RichiestaAssistenza richiesta in ListaRichiesteAssistenza)
             {
                 SintesiRichiesta sintesi = new SintesiRichiesta();
 
-                sintesi = mapSintesi.Map(richiesta);
-
-                ListaSistesiRichieste.Add(sintesi);
+                if (richiesta.CodUOCompetenza != null)
+                {
+                    if (richiesta.CodUOCompetenza.Where(x => filtro.CodUOCompetenza.Contains(x)).ToList().Count > 0)
+                    {
+                        sintesi = mapSintesi.Map(richiesta);
+                        sintesi.ListaUtentiInLavorazione = utentiFake;
+                        sintesi.ListaUtentiPresaInCarico = utentiFake;
+                        ListaSistesiRichieste.Add(sintesi);
+                    }
+                }
             }
 
             return ListaSistesiRichieste;

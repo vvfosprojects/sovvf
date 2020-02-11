@@ -28,6 +28,7 @@ using SO115App.FakePersistenceJSon.Classi;
 using SO115App.FakePersistenceJSon.Utility;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.CustomMapper;
+using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -37,15 +38,17 @@ namespace SO115App.FakePersistenceJSon.GestioneIntervento
     public class GetListaSintesi : IGetListaSintesi
     {
         private readonly IMapper _mapper;
+        private readonly IGetTipologieByCodice _getTipologieByCodice;
 
-        public GetListaSintesi(IMapper mapper)
+        public GetListaSintesi(IMapper mapper, IGetTipologieByCodice getTipologieByCodice)
         {
             _mapper = mapper;
+            _getTipologieByCodice = getTipologieByCodice;
         }
 
         public List<SintesiRichiesta> GetListaSintesiRichieste(FiltroRicercaRichiesteAssistenza filtro)
         {
-            var mapper = new MapperRichiestaAssistenzaSuSintesi(_mapper);
+            var mapper = new MapperRichiestaAssistenzaSuSintesi(_mapper, _getTipologieByCodice);
             var listaSintesiRichieste = new List<SintesiRichiesta>();
             var listaSintesiRichiesteVuota = new List<SintesiRichiesta>();
             var listaRichiesteAssistenza = new List<RichiestaAssistenza>();
@@ -63,7 +66,7 @@ namespace SO115App.FakePersistenceJSon.GestioneIntervento
             {
                 foreach (RichiestaAssistenzaDTO richiesta in listaRichieste)
                 {
-                    richiesta.Id = richiesta.Codice;
+                    richiesta.Id = richiesta.Cod;
                     listaRichiesteAssistenza.Add(MapperDTO.MapRichiestaDTOtoRichiesta(richiesta));
                 }
 
