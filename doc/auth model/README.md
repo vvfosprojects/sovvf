@@ -1,5 +1,10 @@
-// https://www.websequencediagrams.com/
+# Auth model
 
+![Auth model](sequence-diagram.png)
+
+Il diagramma di sopra può essere renderizzato copiando il listato di sotto all'indirizzo [https://www.websequencediagrams.com/](https://www.websequencediagrams.com/).
+
+```
 title Auth example - ST
 
 User->Browser: Va all'applicazione
@@ -36,3 +41,4 @@ Backend->Backend: Valida JWT
 Backend->Backend: Esegue azione
 Backend-->Browser: 200 OK
 end
+```
