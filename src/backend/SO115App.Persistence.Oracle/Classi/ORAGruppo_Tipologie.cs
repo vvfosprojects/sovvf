@@ -2,12 +2,8 @@
 
 namespace SO115App.Persistence.Oracle.Classi
 {
-   public class ORAGruppo_Tipologie
+    public class ORAGruppo_Tipologie
     {
-        public ORAGruppo_Tipologie()
-        {
-        }
-
         /// <summary>
         ///   CAMPO COD_GRUPPO DELLA TABELLA GRUPPO_TIPOLOGIE
         /// </summary>
@@ -22,7 +18,5 @@ namespace SO115App.Persistence.Oracle.Classi
         ///   CAMPO PRIORITA_GRUPPO DELLA TABELLA GRUPPO_TIPOLOGIE
         /// </summary>
         public decimal PRIORITA_GRUPPO { get; set; }
-
-
     }
 }

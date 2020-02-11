@@ -2,12 +2,8 @@
 
 namespace SO115App.Persistence.Oracle.Classi
 {
-   public class ORACompetenzeZone
+    public class ORACompetenzeZone
     {
-        public ORACompetenzeZone()
-        {
-        }
-
         /// <summary>
         ///   CAMPO ID_ZONA DELLA TABELLA COMPETENZE_ZONE
         /// </summary>
@@ -17,7 +13,5 @@ namespace SO115App.Persistence.Oracle.Classi
         ///   CAMPO DESCRIZIONE DELLA TABELLA COMPETENZE_ZONE
         /// </summary>
         public string DESCRIZIONE { get; set; }
-
-
     }
 }

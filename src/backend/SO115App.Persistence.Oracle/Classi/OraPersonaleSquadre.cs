@@ -2,15 +2,9 @@
 
 namespace SO115App.Persistence.Oracle.Classi
 {
-   public class ORAPersonaleSquadre
+    public class ORAPersonaleSquadre
     {
-        public ORAPersonaleSquadre()
-        {
-        }
-
-        /// <SUMMARY>
-        ///   CAMPO COD_SQUADRA DELLA TABELLA PERSONALE_SQUADRE
-        /// </SUMMARY>
+        /// <SUMMARY>CAMPO COD_SQUADRA DELLA TABELLA PERSONALE_SQUADRE</SUMMARY>
         public decimal COD_SQUADRA { get; set; }
 
         //// <SUMMARY>
@@ -18,9 +12,7 @@ namespace SO115App.Persistence.Oracle.Classi
         /// </SUMMARY>
         public string MATDIP { get; set; }
 
-        /// <SUMMARY>
-        ///   CAMPO FLAG_CAPO_SQUADRA DELLA TABELLA PERSONALE_SQUADRE
-        /// </SUMMARY>
+        /// <SUMMARY>CAMPO FLAG_CAPO_SQUADRA DELLA TABELLA PERSONALE_SQUADRE</SUMMARY>
         public string FLAG_CAPO_SQUADRA { get; set; }
 
         //// <SUMMARY>
@@ -38,9 +30,7 @@ namespace SO115App.Persistence.Oracle.Classi
         /// </SUMMARY>
         public string AUTISTA { get; set; }
 
-        /// <SUMMARY>
-        ///   CAMPO QUALIFICA_ABBREV DELLA TABELLA SQ_PERSONALE_SQUADRE
-        /// </SUMMARY>
+        /// <SUMMARY>CAMPO QUALIFICA_ABBREV DELLA TABELLA SQ_PERSONALE_SQUADRE</SUMMARY>
         public string QUALIFICA_ABBREV { get; set; }
 
         //// <SUMMARY>
@@ -48,9 +38,7 @@ namespace SO115App.Persistence.Oracle.Classi
         /// </SUMMARY>
         public decimal COD_DISTACCAMENTO { get; set; }
 
-        /// <SUMMARY>
-        ///   CAMPO PROGRESSIVO DELLA TABELLA SQ_PERSONALE_SQUADRE
-        /// </SUMMARY>
+        /// <SUMMARY>CAMPO PROGRESSIVO DELLA TABELLA SQ_PERSONALE_SQUADRE</SUMMARY>
         public decimal PROGRESSIVO { get; set; }
 
         //// <SUMMARY>
@@ -58,9 +46,7 @@ namespace SO115App.Persistence.Oracle.Classi
         /// </SUMMARY>
         public DateTime? ORA_INIZIO { get; set; }
 
-        /// <SUMMARY>
-        ///   CAMPO ORA_FINE DELLA TABELLA SQ_PERSONALE_SQUADRE
-        /// </SUMMARY>
+        /// <SUMMARY>CAMPO ORA_FINE DELLA TABELLA SQ_PERSONALE_SQUADRE</SUMMARY>
         public DateTime? ORA_FINE { get; set; }
 
         //// <SUMMARY>
@@ -72,7 +58,5 @@ namespace SO115App.Persistence.Oracle.Classi
         ///   CAMPO ULTERIORI_AUTISTI DELLA TABELLA SQ_PERSONALE_SQUADRE
         /// </SUMMARY>
         public decimal ULTERIORI_AUTISTI { get; set; }
-
-
     }
 }

@@ -2,14 +2,8 @@
 
 namespace SO115App.Persistence.Oracle.Classi
 {
-   public class ORAGesPreaccoppiati
+    public class ORAGesPreaccoppiati
     {
-        public ORAGesPreaccoppiati()
-        {
-        }
-
-
-
         /// <summary>
         ///   CAMPO COD_SQUADRA DELLA TABELLA GES_PREACCOPPIATI
         /// </summary>
@@ -24,7 +18,5 @@ namespace SO115App.Persistence.Oracle.Classi
         ///   CAMPO CMOB_PARTENZA DELLA TABELLA GES_PREACCOPPIATI
         /// </summary>
         public string CMOB_PARTENZA { get; set; }
-
-
     }
 }

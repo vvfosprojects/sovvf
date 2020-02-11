@@ -2,13 +2,8 @@
 
 namespace SO115App.Persistence.Oracle.Classi
 {
-   public class ORAAccessiOperatori
+    public class ORAAccessiOperatori
     {
-
-        public ORAAccessiOperatori()
-        {
-        }
-
         /// <summary>
         ///   Campo Matricola della tabella ACCESSI_OPERATORI
         /// </summary>
@@ -18,7 +13,5 @@ namespace SO115App.Persistence.Oracle.Classi
         ///   Campo Livello della tabella ACCESSI_OPERATORI
         /// </summary>
         public decimal LIVELLO { get; set; }
-
-
     }
 }
