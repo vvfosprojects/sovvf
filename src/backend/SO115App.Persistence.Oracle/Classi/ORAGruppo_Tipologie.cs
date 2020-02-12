@@ -7,7 +7,7 @@ namespace SO115App.Persistence.Oracle.Classi
         /// <summary>
         ///   CAMPO COD_GRUPPO DELLA TABELLA GRUPPO_TIPOLOGIE
         /// </summary>
-        public decimal COD_GRUPPO { get; set; }
+        public int COD_GRUPPO { get; set; }
 
         /// <summary>
         ///   CAMPO DESC_GRUPPO DELLA TABELLA GRUPPO_TIPOLOGIE
