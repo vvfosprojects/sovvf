@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
     selector: 'app-utenti-per-pagina',
@@ -7,9 +7,8 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 })
 export class UtentiPerPaginaComponent implements OnInit {
 
-    @Input() ricercaUtenti: any;
-    @Input() utentiFiltratiLength: number;
     @Input() pageSize: number;
+    @Input() pageSizes: number[];
 
     @Output() changePageSize: EventEmitter<number> = new EventEmitter<number>();
 
@@ -20,6 +19,6 @@ export class UtentiPerPaginaComponent implements OnInit {
     }
 
     onChangePageSize(pageSize: number) {
-        this.changePageSize.emit((pageSize));
+        this.changePageSize.emit(pageSize);
     }
 }

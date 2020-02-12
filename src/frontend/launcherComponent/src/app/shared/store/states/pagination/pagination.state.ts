@@ -4,12 +4,14 @@ import { PatchPagination } from '../../actions/pagination/pagination.actions';
 
 export interface PaginationStateModel {
     pagination: PaginationInterface;
+    pageSizes: number[];
 }
 
 export const PaginationStateModelDefaults: PaginationStateModel = {
     pagination: {
         page: 1
-    }
+    },
+    pageSizes: [10, 20, 30]
 };
 
 @State<PaginationStateModel>({
@@ -41,6 +43,11 @@ export class PaginationState {
     @Selector()
     static totalFilteredItems(state: PaginationStateModel) {
         return state.pagination.totalFilteredItems;
+    }
+
+    @Selector()
+    static pageSizes(state: PaginationStateModel) {
+        return state.pageSizes;
     }
 
     constructor() {

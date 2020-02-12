@@ -15,6 +15,7 @@ export class TabellaUtentiComponent {
     @Input() listaUtenti: Utente[];
     @Input() page: number;
     @Input() pageSize: number;
+    @Input() pageSizes: number[];
     @Input() totalItems: number;
     @Input() loading: boolean;
 

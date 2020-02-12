@@ -62,4 +62,5 @@
 <div *ngIf="listaUtenti?.length > 0" class="d-flex justify-content-between p-2">
   <pagination-controls [previousLabel]="'Precedente'" [nextLabel]="'Successiva'" (pageChange)="pageChange.emit($event)">
   </pagination-controls>
+  <app-utenti-per-pagina [pageSize]="pageSize" [pageSizes]="pageSizes"></app-utenti-per-pagina>
 </div>

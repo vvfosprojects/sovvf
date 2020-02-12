@@ -28,6 +28,7 @@ export class GestioneUtentiComponent implements OnInit {
     @Select(RuoliState.ruoli) ruoli$: Observable<Array<any>>;
     @Select(RicercaUtentiState.ricerca) ricerca$: Observable<any>;
     @Select(PaginationState.pageSize) pageSize$: Observable<number>;
+    @Select(PaginationState.pageSizes) pageSizes$: Observable<number[]>;
     @Select(PaginationState.totalItems) totalItems$: Observable<number>;
     @Select(PaginationState.page) page$: Observable<number>;
     @Select(LoadingState.loading) loading$: Observable<boolean>;
