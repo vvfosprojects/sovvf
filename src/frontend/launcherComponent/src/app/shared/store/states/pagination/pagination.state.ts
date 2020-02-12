@@ -29,8 +29,8 @@ export class PaginationState {
     }
 
     @Selector()
-    static limit(state: PaginationStateModel) {
-        return state.pagination.limit;
+    static pageSize(state: PaginationStateModel) {
+        return state.pagination.pageSize;
     }
 
     @Selector()

@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Ruolo, Utente } from 'src/app/shared/model/utente.model';
-import { Observable, Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Select, Store } from '@ngxs/store';
 import { SetRicercaUtenti } from './store/actions/ricerca-utenti/ricerca-utenti.actons';
 import { UtenteState } from '../navbar/store/states/operatore/utente.state';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { GetUtentiGestione, OpenModalRemoveUtente, AddRuoloUtenteGestione, ClearDataModalAddUtenteModal, RemoveRuoloUtente } from './store/actions/gestione-utenti/gestione-utenti.actions';
+import { GetUtentiGestione, AddRuoloUtenteGestione, ClearDataModalAddUtenteModal, RemoveRuoloUtente, AddUtenteGestione, RemoveUtente } from './store/actions/gestione-utenti/gestione-utenti.actions';
 import { GetRuoli } from './store/actions/ruoli/ruoli.actions';
 import { RuoliState } from './store/states/ruoli/ruoli.state';
 import { GestioneUtentiState } from './store/states/gestione-utenti/gestione-utenti.state';
@@ -27,12 +27,10 @@ export class GestioneUtentiComponent implements OnInit {
     @Select(GestioneUtentiState.utenteDetail) utenteGestioneDetail$: Observable<Utente>;
     @Select(RuoliState.ruoli) ruoli$: Observable<Array<any>>;
     @Select(RicercaUtentiState.ricerca) ricerca$: Observable<any>;
-    @Select(PaginationState.limit) pageSize$: Observable<number>;
+    @Select(PaginationState.pageSize) pageSize$: Observable<number>;
     @Select(PaginationState.totalItems) totalItems$: Observable<number>;
     @Select(PaginationState.page) page$: Observable<number>;
     @Select(LoadingState.loading) loading$: Observable<boolean>;
-
-    private subscription: Subscription = new Subscription();
 
     constructor(public modalService: NgbModal,
         private store: Store) {
@@ -53,7 +51,7 @@ export class GestioneUtentiComponent implements OnInit {
         aggiungiUtenteModal.result.then(
             (result: { success: boolean }) => {
                 if (result.success) {
-                    this.store.dispatch(new AddRuoloUtenteGestione());
+                    this.store.dispatch(new AddUtenteGestione());
                 } else if (!result.success) {
                     this.store.dispatch(new ClearDataModalAddUtenteModal());
                     console.log('Modal "addUtente" chiusa con val ->', result);
@@ -75,7 +73,7 @@ export class GestioneUtentiComponent implements OnInit {
         aggiungiRuoloUtenteModal.result.then(
             (result: { success: boolean }) => {
                 if (result.success) {
-                    this.store.dispatch(new AddRuoloUtenteGestione({ codFiscaleUtenteVVF: codFiscaleUtenteVVF }));
+                    this.store.dispatch(new AddRuoloUtenteGestione(codFiscaleUtenteVVF));
                 } else if (!result.success) {
                     this.store.dispatch(new ClearDataModalAddUtenteModal());
                     console.log('Modal "addRuoloUtente" chiusa con val ->', result);
@@ -113,26 +111,29 @@ export class GestioneUtentiComponent implements OnInit {
         );
     }
 
-    /* onDetailUtente(id: string) {
-        this.store.dispatch(new GetUtenteDetail(id));
-        this.subscription.add(
-            this.utenteGestioneDetail$.subscribe((utente: any) => {
-                if (utente) {
-                    const modificaUtenteModal = this.modalService.open(GestioneUtenteModalComponent, { backdropClass: 'light-blue-backdrop', centered: true, size: 'lg' });
-                    modificaUtenteModal.componentInstance.detailMode = true;
-                    modificaUtenteModal.componentInstance.utenteEdit = utente;
-                    modificaUtenteModal.result.then((risultatoModal: any) => {
-                        console.log('Modal "detailUtente" chiusa con val ->', risultatoModal);
-                    },
-                        (err) => console.error('Modal chiusa senza bottoni. Err ->', err)
-                    );
-                }
-            })
-        );
-    } */
-
     onRemoveUtente(payload: { id: string, nominativoUtente: string }) {
-        this.store.dispatch(new OpenModalRemoveUtente(payload.id, payload.nominativoUtente));
+        const modalConfermaAnnulla = this.modalService.open(ConfirmModalComponent, { backdropClass: 'light-blue-backdrop', centered: true });
+        modalConfermaAnnulla.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
+        modalConfermaAnnulla.componentInstance.titolo = 'Elimina ' + payload.nominativoUtente;
+        modalConfermaAnnulla.componentInstance.messaggioAttenzione = 'Sei sicuro di voler rimuovere l\'utente?';
+        modalConfermaAnnulla.componentInstance.bottoni = [
+            { type: 'ko', descrizione: 'Annulla', colore: 'danger' },
+            { type: 'ok', descrizione: 'Conferma', colore: 'dark' },
+        ];
+        modalConfermaAnnulla.result.then(
+            (val) => {
+                switch (val) {
+                    case 'ok':
+                        this.store.dispatch(new RemoveUtente(payload.id));
+                        break;
+                    case 'ko':
+                        // console.log('Azione annullata');
+                        break;
+                }
+                // console.log('Modal chiusa con val ->', val);
+            },
+            (err) => console.error('Modal chiusa senza bottoni. Err ->', err)
+        );
     }
 
     onPageChange(page: number) {
