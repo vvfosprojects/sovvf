@@ -1,7 +1,2 @@
-<select class="custom-select app-shadow" style="width: auto"
-        [disabled]="ricercaUtenti.cognome.length > 1 && utentiFiltratiLength <= pageSize"
-        [(ngModel)]="pageSize" (ngModelChange)="onChangePageSize($event)">
-  <option [ngValue]="10">10 utenti per pagina</option>
-  <option [ngValue]="20">20 utenti per pagina</option>
-  <option [ngValue]="30">30 utenti per pagina</option>
-</select>
+<ng-select [items]="pageSizes" [(ngModel)]="pageSize" [clearable]="false" (ngModelChange)="onChangePageSize($event)">
+</ng-select>

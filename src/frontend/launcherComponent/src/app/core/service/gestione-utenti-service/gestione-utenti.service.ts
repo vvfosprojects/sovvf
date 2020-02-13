@@ -9,8 +9,9 @@ import { Ruolo, Utente } from '../../../shared/model/utente.model';
 import { UtenteVvfInterface } from '../../../shared/interface/utente-vvf.interface';
 import { AddRuoloUtenteInterface } from '../../../shared/interface/add-ruolo-utente.interface';
 import { PaginationInterface } from 'src/app/shared/interface/pagination.interface';
+import { FiltersInterface } from 'src/app/shared/interface/filters.interface';
 
-const API_URL = environment.apiUrl.utenti;
+const API_URL = environment.apiUrl.gestioneUtenti;
 
 @Injectable({
     providedIn: 'root'
@@ -29,7 +30,7 @@ export class GestioneUtentiService {
         );
     }
 
-    getListaUtentiGestione(filters: any, pagination: PaginationInterface): Observable<ResponseInterface> {
+    getListaUtentiGestione(filters: FiltersInterface, pagination: PaginationInterface): Observable<ResponseInterface> {
         const obj = {
             filters,
             pagination
@@ -40,36 +41,33 @@ export class GestioneUtentiService {
         );
     }
 
-    addUtente(value: AddRuoloUtenteInterface): Observable<Utente> {
-        return this.http.post<Utente>(API_URL + '/AddUtente', value).pipe(
+    addUtente(addUtente: AddRuoloUtenteInterface): Observable<Utente> {
+        return this.http.post<Utente>(API_URL + '/AddUtente', addUtente).pipe(
             retry(3),
             catchError(handleError)
         );
     }
 
-    updateUtente(utente: Utente): Observable<Utente> {
-        return this.http.post<Utente>(API_URL + '/Update', utente).pipe(
+    removeUtente(codFiscale: string) {
+        return this.http.delete<any>(API_URL + '?codFiscale=' + codFiscale).pipe(
             retry(3),
             catchError(handleError)
         );
     }
 
-    getUtente(id: string): Observable<Utente> {
-        return this.http.get<Utente>(API_URL + '/' + id).pipe(
+    addRuoloUtente(addRuolo: AddRuoloUtenteInterface): Observable<Utente> {
+        return this.http.post<Utente>(API_URL + '/AddRuolo', addRuolo).pipe(
             retry(3),
             catchError(handleError)
         );
     }
 
-    removeUtente(id: string) {
-        return this.http.delete<any>(API_URL + '?id=' + id).pipe(
-            retry(3),
-            catchError(handleError)
-        );
-    }
-
-    removeRuoloUtente(id: string, ruolo: Ruolo) {
-        return this.http.post<Utente>(API_URL + '/RemoveRuolo', id).pipe(
+    removeRuoloUtente(codFiscale: string, ruolo: Ruolo) {
+        const obj = {
+            codFiscale,
+            ruolo
+        };
+        return this.http.post<Utente>(API_URL + '/RemoveRuolo', obj).pipe(
             retry(3),
             catchError(handleError)
         );

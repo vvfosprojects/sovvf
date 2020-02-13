@@ -57,12 +57,14 @@ export class GestioneUtentiServiceFake {
                     {
                         descrizione: Role.CallTracker,
                         codSede: 'RM.1000',
-                        descSede: 'Comando di Roma'
+                        descSede: 'Comando di Roma',
+                        ricorsivo: false
                     },
                     {
                         descrizione: Role.GestoreRichieste,
                         codSede: 'FR.2000',
-                        descSede: 'Comando di Frosinone'
+                        descSede: 'Comando di Frosinone',
+                        ricorsivo: true
                     }
                 ]
             ),
@@ -89,22 +91,26 @@ export class GestioneUtentiServiceFake {
                     {
                         descrizione: Role.CallTracker,
                         codSede: 'RM.1000',
-                        descSede: 'Comando di Roma'
+                        descSede: 'Comando di Roma',
+                        ricorsivo: true
                     },
                     {
                         descrizione: Role.GestoreRichieste,
                         codSede: 'LT.1001',
-                        descSede: 'Distaccamento di Latina'
+                        descSede: 'Distaccamento di Latina',
+                        ricorsivo: false
                     },
                     {
                         descrizione: Role.GestoreRichieste,
                         codSede: 'FR.1002',
-                        descSede: 'Distaccamento di Frosinone'
+                        descSede: 'Distaccamento di Frosinone',
+                        ricorsivo: false
                     },
                     {
                         descrizione: Role.GestoreRichieste,
                         codSede: 'FN.2000',
-                        descSede: 'Distaccamento di Fondi'
+                        descSede: 'Distaccamento di Fondi',
+                        ricorsivo: false
                     }
                 ]
             )
@@ -113,7 +119,7 @@ export class GestioneUtentiServiceFake {
             dataArray: this.utenti,
             pagination: {
                 page: 1,
-                limit: 10,
+                pageSize: 10,
                 totalItems: this.utenti.length,
                 totalFilteredItems: this.utenti.length
             }

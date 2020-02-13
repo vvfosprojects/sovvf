@@ -1,24 +1,17 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import {
     AddRuoloUtenteGestione,
-    ClearUtenteDetail,
     ClearUtentiVVF,
-    GetUtenteDetail,
     GetUtentiGestione,
     GetUtentiVVF,
-    OpenModalRemoveRuoloUtente,
-    OpenModalRemoveUtente,
     RemoveRuoloUtente,
     RemoveUtente,
-    SetUtenteDetail,
     SetUtentiGestione,
     SetUtentiVVF,
-    UpdateUtenteGestione,
     ClearDataModalAddUtenteModal
 } from '../../actions/gestione-utenti/gestione-utenti.actions';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgZone } from '@angular/core';
-import { ConfirmModalComponent } from '../../../../../shared';
 import { RicercaUtentiState } from '../ricerca-utenti/ricerca-utenti.state';
 import { PatchPagination } from '../../../../../shared/store/actions/pagination/pagination.actions';
 import { ResponseInterface } from '../../../../../shared/interface/response.interface';
@@ -142,51 +135,12 @@ export class GestioneUtentiState {
         });
     }
 
-    @Action(GetUtenteDetail)
-    getUtenteDetail({ dispatch }: StateContext<GestioneUtentiStateModel>, action: GetUtenteDetail) {
-        this._gestioneUtenti.getUtente(action.id).subscribe((utente: Utente) => {
-            if (utente) {
-                dispatch(new SetUtenteDetail(utente));
-            }
-        });
-    }
-
-    @Action(SetUtenteDetail)
-    setUtenteDetail({ patchState }: StateContext<GestioneUtentiStateModel>, action: SetUtenteDetail) {
-        patchState({
-            utenteDetail: action.utente
-        });
-    }
-
-    @Action(ClearUtenteDetail)
-    clearUtenteDetail({ patchState }: StateContext<GestioneUtentiStateModel>) {
-        patchState({
-            utenteDetail: null
-        });
-    }
-
-    @Action(UpdateUtenteGestione)
-    updateUtenteGestione({ dispatch }: StateContext<GestioneUtentiStateModel>, action: UpdateUtenteGestione) {
-        this._gestioneUtenti.updateUtente(action.utente).subscribe((utente: Utente) => {
-            if (utente) {
-                patch(
-                    updateItem(+utente.id, utente)
-                );
-                dispatch(new ShowToastr(ToastrType.Info, 'Ruolo Utente Aggiornato', 'Ruolo utente aggiornato con successo.', 2));
-            }
-        });
-    }
-
     @Action(AddRuoloUtenteGestione)
-    addUtenteGestione({ getState, dispatch }: StateContext<GestioneUtentiStateModel>, action: AddRuoloUtenteGestione) {
+    addUtenteGestione({ getState, dispatch }: StateContext<GestioneUtentiStateModel>) {
         const form = getState().addUtenteRuoloForm.model;
-        let optionCodFiscaleUtenteVVF: string;
-        if (action.options) {
-            optionCodFiscaleUtenteVVF = action.options.codFiscaleUtenteVVF;
-        }
 
         const obj: AddRuoloUtenteInterface = {
-            codFiscale: optionCodFiscaleUtenteVVF ? optionCodFiscaleUtenteVVF : form.utente,
+            codFiscale: form.utente,
             ruoli: [],
             soloDistaccamenti: form.soloDistaccamenti
         };
@@ -210,34 +164,6 @@ export class GestioneUtentiState {
         dispatch(new ClearDataModalAddUtenteModal());
     }
 
-    @Action(OpenModalRemoveUtente)
-    openModalRemoveUtente({ dispatch }: StateContext<GestioneUtentiStateModel>, action: OpenModalRemoveUtente) {
-        this.ngZone.run(() => {
-            const modalConfermaAnnulla = this.modalService.open(ConfirmModalComponent, { backdropClass: 'light-blue-backdrop', centered: true });
-            modalConfermaAnnulla.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
-            modalConfermaAnnulla.componentInstance.titolo = 'Elimina ' + action.nominativoUtente;
-            modalConfermaAnnulla.componentInstance.messaggioAttenzione = 'Sei sicuro di voler rimuovere l\'utente?';
-            modalConfermaAnnulla.componentInstance.bottoni = [
-                { type: 'ko', descrizione: 'Annulla', colore: 'danger' },
-                { type: 'ok', descrizione: 'Conferma', colore: 'dark' },
-            ];
-            modalConfermaAnnulla.result.then(
-                (val) => {
-                    switch (val) {
-                        case 'ok':
-                            dispatch(new RemoveUtente(action.id));
-                            break;
-                        case 'ko':
-                            // console.log('Azione annullata');
-                            break;
-                    }
-                    // console.log('Modal chiusa con val ->', val);
-                },
-                (err) => console.error('Modal chiusa senza bottoni. Err ->', err)
-            );
-        });
-    }
-
     @Action(RemoveUtente)
     removeUtente({ setState, dispatch }: StateContext<GestioneUtentiStateModel>, action: RemoveUtente) {
         this._gestioneUtenti.removeUtente(action.id).subscribe(() => {
@@ -247,34 +173,6 @@ export class GestioneUtentiState {
                 })
             );
             dispatch(new ShowToastr(ToastrType.Info, 'Utente Rimosso', 'Utente rimosso con successo.', 3));
-        });
-    }
-
-    @Action(OpenModalRemoveRuoloUtente)
-    openModalRemoveRuoloUtente({ dispatch }: StateContext<GestioneUtentiStateModel>, action: OpenModalRemoveRuoloUtente) {
-        this.ngZone.run(() => {
-            const modalConfermaAnnulla = this.modalService.open(ConfirmModalComponent, { backdropClass: 'light-blue-backdrop', centered: true });
-            modalConfermaAnnulla.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
-            modalConfermaAnnulla.componentInstance.titolo = 'Elimina ruolo a ' + action.nominativoUtente;
-            modalConfermaAnnulla.componentInstance.messaggioAttenzione = 'Sei sicuro di voler rimuovere il ruolo "' + action.ruolo.descrizione + '" su "' + action.ruolo.descSede + '"?';
-            modalConfermaAnnulla.componentInstance.bottoni = [
-                { type: 'ko', descrizione: 'Annulla', colore: 'danger' },
-                { type: 'ok', descrizione: 'Conferma', colore: 'dark' },
-            ];
-            modalConfermaAnnulla.result.then(
-                (val) => {
-                    switch (val) {
-                        case 'ok':
-                            dispatch(new RemoveRuoloUtente(action.id, action.ruolo));
-                            break;
-                        case 'ko':
-                            // console.log('Azione annullata');
-                            break;
-                    }
-                    // console.log('Modal chiusa con val ->', val);
-                },
-                (err) => console.error('Modal chiusa senza bottoni. Err ->', err)
-            );
         });
     }
 
