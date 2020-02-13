@@ -2,11 +2,7 @@
 
 ![Auth model](sequence-diagram.png)
 
-<<<<<<< HEAD:doc/auth model/README.md
 Il diagramma di sopra può essere renderizzato copiando il listato di sotto all'indirizzo [https://www.websequencediagrams.com/](https://www.websequencediagrams.com/).
-=======
-Il diagramma di sopra può essere renderizzato copiando il listato di sotto all'indirizzo [// https://www.websequencediagrams.com/](// https://www.websequencediagrams.com/).
->>>>>>> 30c6b27fc83c45849a548e2aaf739a769907699a:doc/auth model/README.md
 
 ```
 // https://www.websequencediagrams.com/
