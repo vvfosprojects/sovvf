@@ -3,6 +3,7 @@ using SO115App.Persistence.Oracle.Classi;
 using System.Collections.Generic;
 using System.Data;
 using SO115App.Persistence.Oracle.Utility;
+using System;
 
 namespace SO115App.Persistence.Oracle.Servizi.Competenze
 {
@@ -19,7 +20,7 @@ namespace SO115App.Persistence.Oracle.Servizi.Competenze
             conn.Open();
             OracleCommand cmd = new OracleCommand();
             cmd.Connection = conn;
-            cmd.CommandText = "SELECT COD_GRUPPO, DESC_GRUPPO, PRIORITA_GRUPPO" +
+            cmd.CommandText = "SELECT NVL(COD_GRUPPO,0) as COD_GRUPPO, DESC_GRUPPO, NVL(PRIORITA_GRUPPO,0) as PRIORITA_GRUPPO" +
                               " FROM SALAOPER.GRUPPO_TIPOLOGIE";
 
             cmd.CommandType = CommandType.Text;
@@ -28,7 +29,7 @@ namespace SO115App.Persistence.Oracle.Servizi.Competenze
             while (dr.Read())
             {
                 ORAGruppo_Tipologie ORAgt = new ORAGruppo_Tipologie();
-                ORAgt.COD_GRUPPO = Utility.Utility.GetDBField(dr, "COD_GRUPPO");
+                ORAgt.COD_GRUPPO = Convert.ToInt32(Utility.Utility.GetDBField(dr, "COD_GRUPPO"));
                 ORAgt.DESC_GRUPPO = Utility.Utility.GetDBField(dr, "DESC_GRUPPO");
                 ORAgt.PRIORITA_GRUPPO = Utility.Utility.GetDBField(dr, "PRIORITA_GRUPPO");
 
@@ -50,7 +51,7 @@ namespace SO115App.Persistence.Oracle.Servizi.Competenze
             conn.Open();
             OracleCommand cmd = new OracleCommand();
             cmd.Connection = conn;
-            cmd.CommandText = "SELECT COD_TIPOLOGIA, DESCRIZIONE, COD_GRUPPO, COD_PRIORITA, OBSOLETO, COD_UTILITA_SOCCORSO_AEREO" +
+            cmd.CommandText = "SELECT NVL(COD_TIPOLOGIA,0) as COD_TIPOLOGIA, DESCRIZIONE, NVL(COD_GRUPPO,0) as COD_GRUPPO, NVL(COD_PRIORITA,0) as COD_PRIORITA, OBSOLETO, NVL(COD_UTILITA_SOCCORSO_AEREO,0) as COD_UTILITA_SOCCORSO_AEREO" +
                               " FROM SALAOPER.TIPOLOGIE ";
 
             cmd.CommandType = CommandType.Text;
@@ -60,9 +61,9 @@ namespace SO115App.Persistence.Oracle.Servizi.Competenze
             {
                 ORATipologie ORATip = new ORATipologie();
 
-                ORATip.COD_TIPOLOGIA = Utility.Utility.GetDBField(dr, "COD_TIPOLOGIA");
+                ORATip.COD_TIPOLOGIA = Convert.ToInt32(Utility.Utility.GetDBField(dr, "COD_TIPOLOGIA"));
                 ORATip.DESCRIZIONE = Utility.Utility.GetDBField(dr, "DESCRIZIONE");
-                ORATip.COD_GRUPPO = Utility.Utility.GetDBField(dr, "COD_GRUPPO");
+                ORATip.COD_GRUPPO = Convert.ToInt32(Utility.Utility.GetDBField(dr, "COD_GRUPPO"));
                 ORATip.COD_PRIORITA = Utility.Utility.GetDBField(dr, "COD_PRIORITA");
                 ORATip.OBSOLETO = Utility.Utility.GetDBField(dr, "OBSOLETO");
                 ORATip.COD_UTILITA_SOCCORSO_AEREO = Utility.Utility.GetDBField(dr, "COD_UTILITA_SOCCORSO_AEREO");

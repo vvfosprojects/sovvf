@@ -2,13 +2,14 @@
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.ExternalAPI.Fake.Classi.DTOOracle;
 using SO115App.Models.Classi.Condivise;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Tipologie;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace SO115App.ExternalAPI.Fake.ImportOracle.TipologieMapper
 {
-    public class GetTipologie
+    public class GetTipologie : IGetListaTipologie
     {
         private readonly HttpClient _client;
         private readonly IConfiguration _configuration;
@@ -19,10 +20,15 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.TipologieMapper
             _configuration = configuration;
         }
 
+        public List<Tipologia> ListaTipologie(string CodSede)
+        {
+            return GetListaTipologie(CodSede).Result;
+        }
+
         public async Task<List<Tipologia>> GetListaTipologie(string CodSede)
         {
             _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("test");
-            var response = await _client.GetAsync($"{_configuration.GetSection("OracleImplementation").GetSection(CodSede).GetSection("UrlAPITipologie").Value}/GetListaTipologie?CodSede={CodSede}").ConfigureAwait(false);
+            var response = await _client.GetAsync($"{_configuration.GetSection("OracleImplementation").GetSection(CodSede).GetSection("UrlAPITipologie").Value}GetListaTipologie?CodSede={CodSede}").ConfigureAwait(false);
             response.EnsureSuccessStatusCode();
             using HttpContent content = response.Content;
             var ListaTipoligeOracle = await content.ReadAsAsync<List<ORATipologie>>().ConfigureAwait(false);
@@ -35,7 +41,7 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.TipologieMapper
         public async Task<List<ORAGruppo_Tipologie>> GetListaGruppiTipologie(string CodSede)
         {
             _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("test");
-            var response = await _client.GetAsync($"{_configuration.GetSection("OracleImplementation").GetSection(CodSede).GetSection("UrlAPITipologie").Value}/GetListaGruppoTipologie?CodSede={CodSede}").ConfigureAwait(false);
+            var response = await _client.GetAsync($"{_configuration.GetSection("OracleImplementation").GetSection(CodSede).GetSection("UrlAPITipologie").Value}GetListaGruppoTipologie?CodSede={CodSede}").ConfigureAwait(false);
             response.EnsureSuccessStatusCode();
             using HttpContent content = response.Content;
 

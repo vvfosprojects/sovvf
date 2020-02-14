@@ -32,6 +32,7 @@ using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Personale;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Territorio;
+
 using System.Net.Http;
 
 namespace SO115App.CompositionRoot
@@ -123,6 +124,10 @@ namespace SO115App.CompositionRoot
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.Marker.IGetMezziMarker,
                 ExternalAPI.Fake.Marker.GetMezziMarkerExt>();
+
+            container.Register<
+                SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Tipologie.IGetListaTipologie,
+                SO115App.ExternalAPI.Fake.ImportOracle.TipologieMapper.GetTipologie>();
         }
     }
 }

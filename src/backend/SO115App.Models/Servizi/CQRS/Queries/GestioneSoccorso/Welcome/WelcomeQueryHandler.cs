@@ -119,7 +119,10 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
                 CodiceSede = query.CodiceSede
             };
 
-            var tipologie = new TipologieQuery();
+            var tipologie = new TipologieQuery()
+            {
+                CodSede = query.CodiceSede
+            };
 
             var welcome = new SO115App.Models.Classi.Condivise.Welcome()
             {
