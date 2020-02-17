@@ -15,25 +15,23 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.CompetenzeMapper
     {
         private readonly HttpClient _client;
         private readonly IConfiguration _configuration;
-        private readonly IMemoryCache _memoryCache;
 
-        public GetCompetenze(HttpClient client, IConfiguration configuration, IMemoryCache memoryCache)
+        public GetCompetenze(HttpClient client, IConfiguration configuration)
         {
             _client = client;
             _configuration = configuration;
-            _memoryCache = memoryCache;
         }
 
         public List<Competenza> GetListaCompetenze(string codSede)
         {
             List<Competenza> ListaCompetenze = new List<Competenza>();
 
-            if (!_memoryCache.TryGetValue("ListaCompetenze", out ListaCompetenze))
-            {
-                ListaCompetenze = CallOra(codSede).Result;
-                var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromHours(2));
-                _memoryCache.Set("ListaCompetenze", ListaCompetenze, cacheEntryOptions);
-            }
+            //if (!_memoryCache.TryGetValue("ListaCompetenze", out ListaCompetenze))
+            //{
+            ListaCompetenze = CallOra(codSede).Result;
+            //    var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromHours(2));
+            //    _memoryCache.Set("ListaCompetenze", ListaCompetenze, cacheEntryOptions);
+            //}
 
             return ListaCompetenze;
         }
