@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.ExternalAPI.Fake.Classi.DTOOracle;
 using SO115App.Models.Classi.Condivise;
@@ -44,7 +45,8 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.TipologieMapper
             var response = await _client.GetAsync($"{_configuration.GetSection("OracleImplementation").GetSection(CodSede).GetSection("UrlAPITipologie").Value}GetListaTipologie?CodSede={CodSede}").ConfigureAwait(false);
             response.EnsureSuccessStatusCode();
             using HttpContent content = response.Content;
-            var ListaTipoligeOracle = await content.ReadAsAsync<List<ORATipologie>>().ConfigureAwait(false);
+            string data = await content.ReadAsStringAsync().ConfigureAwait(false);
+            var ListaTipoligeOracle = JsonConvert.DeserializeObject<List<ORATipologie>>(data);
 
             var ListaGruppiTipologie = await GetListaGruppiTipologie(CodSede);
 
@@ -57,8 +59,8 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.TipologieMapper
             var response = await _client.GetAsync($"{_configuration.GetSection("OracleImplementation").GetSection(CodSede).GetSection("UrlAPITipologie").Value}GetListaGruppoTipologie?CodSede={CodSede}").ConfigureAwait(false);
             response.EnsureSuccessStatusCode();
             using HttpContent content = response.Content;
-
-            return await content.ReadAsAsync<List<ORAGruppo_Tipologie>>().ConfigureAwait(false);
+            string data = await content.ReadAsStringAsync().ConfigureAwait(false);
+            return JsonConvert.DeserializeObject<List<ORAGruppo_Tipologie>>(data);
         }
 
         private List<Tipologia> MapListaTipologieOraInMongoDB(List<ORATipologie> listaTipoligeOracle, List<ORAGruppo_Tipologie> ListaGruppiTipologie)
