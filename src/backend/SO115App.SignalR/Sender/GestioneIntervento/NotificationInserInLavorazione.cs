@@ -62,7 +62,7 @@ namespace SO115App.SignalR.Sender.GestioneIntervento
 
             intervento.Chiamata = ListaSintesi.LastOrDefault(richiesta => richiesta.Id == intervento.Chiamata.Id);
 
-            await _notificationHubContext.Clients.Group(intervento.Chiamata.Operatore.Sede.Codice).SendAsync("ModifyAndNotifySuccess", intervento);
+            await _notificationHubContext.Clients.Group(intervento.Chiamata.Operatore.Sede).SendAsync("ModifyAndNotifySuccess", intervento);
         }
     }
 }

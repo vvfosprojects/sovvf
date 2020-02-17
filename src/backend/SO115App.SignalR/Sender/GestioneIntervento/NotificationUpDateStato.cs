@@ -81,12 +81,12 @@ namespace SO115App.SignalR.Sender.GestioneIntervento
 
             richiesta.Chiamata = listaSintesi.LastOrDefault(sintesi => sintesi.Id == richiesta.IdRichiesta);
 
-            await _notificationHubContext.Clients.Group(richiesta.Chiamata.Operatore.Sede.Codice).SendAsync("ModifyAndNotifySuccess", richiesta);
-            await _notificationHubContext.Clients.Group(richiesta.Chiamata.Operatore.Sede.Codice).SendAsync("ChangeStateSuccess", notificaChangeState);
-            await _notificationHubContext.Clients.Group(richiesta.Chiamata.Operatore.Sede.Codice).SendAsync("NotifyGetBoxInterventi", boxInterventi);
-            await _notificationHubContext.Clients.Group(richiesta.Chiamata.Operatore.Sede.Codice).SendAsync("NotifyGetBoxMezzi", boxMezzi);
-            await _notificationHubContext.Clients.Group(richiesta.Chiamata.Operatore.Sede.Codice).SendAsync("NotifyGetBoxPersonale", boxPersonale);
-            await _notificationHubContext.Clients.Group(richiesta.Chiamata.Operatore.Sede.Codice).SendAsync("NotifyGetRichiestaUpDateMarker", listaSintesiMarker.LastOrDefault(marker => marker.Codice == richiesta.Chiamata.Codice));
+            await _notificationHubContext.Clients.Group(richiesta.CodiceSede).SendAsync("ModifyAndNotifySuccess", richiesta);
+            await _notificationHubContext.Clients.Group(richiesta.CodiceSede).SendAsync("ChangeStateSuccess", notificaChangeState);
+            await _notificationHubContext.Clients.Group(richiesta.CodiceSede).SendAsync("NotifyGetBoxInterventi", boxInterventi);
+            await _notificationHubContext.Clients.Group(richiesta.CodiceSede).SendAsync("NotifyGetBoxMezzi", boxMezzi);
+            await _notificationHubContext.Clients.Group(richiesta.CodiceSede).SendAsync("NotifyGetBoxPersonale", boxPersonale);
+            await _notificationHubContext.Clients.Group(richiesta.CodiceSede).SendAsync("NotifyGetRichiestaUpDateMarker", listaSintesiMarker.LastOrDefault(marker => marker.Codice == richiesta.Chiamata.Codice));
         }
     }
 }
