@@ -19,24 +19,25 @@
 //-----------------------------------------------------------------------
 using CQRS.Queries;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Tipologie;
 using System;
 
 namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.Tipologie
 {
     public class TipologieQueryHandler : IQueryHandler<TipologieQuery, TipologieResult>
     {
-        private readonly IGetTipologieByCodice _getTipologieByCodice;
+        private readonly IGetListaTipologie _getTipologie;
 
-        public TipologieQueryHandler(IGetTipologieByCodice getTipologieByCodice)
+        public TipologieQueryHandler(IGetListaTipologie getTipologie)
         {
-            _getTipologieByCodice = getTipologieByCodice;
+            _getTipologie = getTipologie;
         }
 
         public TipologieResult Handle(TipologieQuery query)
         {
             return new TipologieResult
             {
-                Tipologie = _getTipologieByCodice.Get()
+                Tipologie = _getTipologie.ListaTipologie(query.CodSede)
             };
         }
     }

@@ -32,6 +32,7 @@ using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Personale;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Territorio;
+
 using System.Net.Http;
 
 namespace SO115App.CompositionRoot
@@ -71,6 +72,8 @@ namespace SO115App.CompositionRoot
             container.Register<IGetSquadreBySede, GetSquadreBySede>();
             container.Register<IGetPersonaFisica, GetPersonaFisica>();
             container.Register<IGetSquadreNelTurno, GetSquadreNelTurno>();
+            container.Register<IGetPersonaleVVF, ExternalAPI.Fake.ImportOracle.GestioniUtenti.GetPersonaleVVF>();
+            container.Register<IGetPersonaleByCF, ExternalAPI.Fake.ImportOracle.GestioniUtenti.GetPersonaleByCF>();
 
             #endregion Personale
 
@@ -122,6 +125,14 @@ namespace SO115App.CompositionRoot
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.Marker.IGetMezziMarker,
                 ExternalAPI.Fake.Marker.GetMezziMarkerExt>();
+
+            container.Register<
+                SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Tipologie.IGetListaTipologie,
+                SO115App.ExternalAPI.Fake.ImportOracle.TipologieMapper.GetTipologie>();
+
+            container.Register<
+                SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Competenze.IGetListaCompetenze,
+                SO115App.ExternalAPI.Fake.ImportOracle.CompetenzeMapper.GetCompetenze>();
         }
     }
 }

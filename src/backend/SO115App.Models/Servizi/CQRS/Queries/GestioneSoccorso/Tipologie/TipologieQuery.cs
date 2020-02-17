@@ -23,5 +23,8 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.Tipologie
 {
     public class TipologieQuery : IQuery<TipologieResult>
     {
+        public string CodSede { get; set; }
+
+        public string CodTipologia { get; set; }
     }
 }

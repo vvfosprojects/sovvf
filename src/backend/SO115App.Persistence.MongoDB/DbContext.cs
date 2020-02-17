@@ -20,6 +20,7 @@
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Driver;
+using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Filtri;
 using SO115App.API.Models.Classi.Soccorso;
@@ -130,6 +131,14 @@ namespace Persistence.MongoDB
             get
             {
                 return database.GetCollection<SchedaContatto>("schedecontatto");
+            }
+        }
+
+        public IMongoCollection<Utente> UtenteCollection
+        {
+            get
+            {
+                return database.GetCollection<Utente>("utente");
             }
         }
     }

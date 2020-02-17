@@ -191,6 +191,12 @@ namespace SO115App.CompositionRoot
             SO115App.SignalR.Sender.GestioneIntervento.NotificationUpDateStato>();
             container.Register<SO115App.Models.Servizi.Infrastruttura.Notification.GestioneSchedeContatto.INotificationSetSchedaGestita,
                 SO115App.SignalR.Sender.GestioneSchedeContatto.NotificationSetSchedaGestita>();
+            container.Register<SO115App.Models.Servizi.Infrastruttura.Notification.GestioneSchedeContatto.INotificationSetSchedaLetta,
+               SO115App.SignalR.Sender.GestioneSchedeContatto.NotificationSetSchedaLetta>();
+            container.Register<Models.Servizi.Infrastruttura.Notification.GestioneUtenti.INotifyAddUtente, SignalR.Sender.GestioneUtenti.NotificationAddUtente>();
+            container.Register<Models.Servizi.Infrastruttura.Notification.GestioneUtenti.INotifyDeleteUtente, SignalR.Sender.GestioneUtenti.NotificationDeleteUtente>();
+            container.Register<Models.Servizi.Infrastruttura.Notification.GestioneUtenti.GestioneRuoli.INotifyAddRuoli, SignalR.Sender.GestioneRuoli.NotificationAddRuoli>();
+            container.Register<Models.Servizi.Infrastruttura.Notification.GestioneUtenti.GestioneRuoli.INotifyDeleteRuolo, SignalR.Sender.GestioneRuoli.NotificationDeleteRuolo>();
 
             container.Register<
                 API.Models.Servizi.Infrastruttura.Organigramma.IGetUnitaOperativaPerCodice,
