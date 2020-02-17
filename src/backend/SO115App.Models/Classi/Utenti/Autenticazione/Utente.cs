@@ -37,9 +37,9 @@ namespace SO115App.API.Models.Classi.Autenticazione
         /// <param name="id">id all'utente</param>
         /// <remarks>L'utenza viene create per default con il flag attivo impostato a true</remarks>
         [JsonConstructor]
-        public Utente(string id, string nome, string cognome)
+        public Utente(string codiceFiscale, string nome, string cognome)
         {
-            this.Id = id;
+            this.CodiceFiscale = codiceFiscale;
             this.Nome = nome;
             this.Cognome = cognome;
             this.Attivo = true;
@@ -134,7 +134,7 @@ namespace SO115App.API.Models.Classi.Autenticazione
         ///   Sede utente loggato
         /// </summary>
         [Required]
-        public Sede Sede { get; set; }
+        public string Sede { get; set; }
 
         /// <summary>
         ///   La username
@@ -178,6 +178,11 @@ namespace SO115App.API.Models.Classi.Autenticazione
         /// </summary>
         public string Qualifica { get; set; }
 
+        /// <summary>
+        ///   Machine associata all'Utente di SalaOperativa
+        /// </summary>
+        public string Machine { get; set; }
+
         public List<string> ListaUnitaOperativeAbilitate
         {
             get
@@ -185,7 +190,7 @@ namespace SO115App.API.Models.Classi.Autenticazione
                 List<string> ListaUOAbilitate = new List<string>();
                 foreach (var ruolo in this.Ruoli)
                 {
-                    ListaUOAbilitate.Add(ruolo.sede.Codice);
+                    ListaUOAbilitate.Add(ruolo.Codsede);
                 }
 
                 return ListaUOAbilitate;
@@ -238,13 +243,13 @@ namespace SO115App.API.Models.Classi.Autenticazione
 
     public class Role
     {
-        public Role(string _descrizione, Sede _sede)
+        public Role(string _descrizione, string _sede)
         {
-            this.sede = _sede;
+            this.Codsede = _sede;
             this.descrizione = _descrizione;
         }
 
         public string descrizione { get; set; }
-        public Sede sede { get; set; }
+        public string Codsede { get; set; }
     }
 }
