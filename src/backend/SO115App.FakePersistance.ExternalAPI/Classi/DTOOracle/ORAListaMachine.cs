@@ -4,10 +4,6 @@ namespace SO115App.ExternalAPI.Fake.Classi.DTOOracle
 {
     public class ORAListaMachine
     {
-        public ORAListaMachine()
-        {
-        }
-
         /// <summary> CAMPO MACHINE DELLA VIEW LISTA_MACHINE </SUMMARY>
         public string MACHINE { get; set; }
 

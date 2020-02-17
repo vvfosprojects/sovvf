@@ -18,6 +18,13 @@ namespace SO115App.API.Oracle.Controllers
             return listamezzi.GetListaAutomezziUtilizzabili(CodSede);
         }
 
+        [HttpGet]
+        public ORAAutomezzi GetMezzoUtilizzabileByCodMezzo(string CodSede, decimal CodMezzo)
+        {
+            GetListaMezziUtilizzabili listamezzi = new GetListaMezziUtilizzabili();
+            return listamezzi.GetMezzoUtilizzabileByCodMezzo(CodSede, CodMezzo);
+        }
+
         // POST: api/Mezzi
         public void Post([FromBody]string value)
         {

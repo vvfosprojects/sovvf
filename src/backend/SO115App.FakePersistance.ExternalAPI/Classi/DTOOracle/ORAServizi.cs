@@ -4,10 +4,6 @@ namespace SO115App.ExternalAPI.Fake.Classi.DTOOracle
 {
     public class ORAServizi
     {
-        public ORAServizi()
-        {
-        }
-
         /// <SUMMARY>CAMPO DATA_SERVIZIO DELLA TABELLA SERVIZI</SUMMARY>
         public DateTime DATA_SERVIZIO { get; set; }
 

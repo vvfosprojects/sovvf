@@ -4,10 +4,6 @@ namespace SO115App.ExternalAPI.Fake.Classi.DTOOracle
 {
     public class ORAOperatori
     {
-        public ORAOperatori()
-        {
-        }
-
         /// <SUMMARY>CAMPO MATRICOLA DELLA TABELLA OPERATORI</SUMMARY>
         public string MATRICOLA { get; set; }
 
