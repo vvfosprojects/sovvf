@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Configuration;
 using SO115App.ExternalAPI.Fake.Classi.DTOOracle;
 using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Competenze;
@@ -14,16 +15,27 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.CompetenzeMapper
     {
         private readonly HttpClient _client;
         private readonly IConfiguration _configuration;
+        private readonly IMemoryCache _memoryCache;
 
-        public GetCompetenze(HttpClient client, IConfiguration configuration)
+        public GetCompetenze(HttpClient client, IConfiguration configuration, IMemoryCache memoryCache)
         {
             _client = client;
             _configuration = configuration;
+            _memoryCache = memoryCache;
         }
 
         public List<Competenza> GetListaCompetenze(string codSede)
         {
-            return CallOra(codSede).Result;
+            List<Competenza> ListaCompetenze = new List<Competenza>();
+
+            if (!_memoryCache.TryGetValue("ListaCompetenze", out ListaCompetenze))
+            {
+                ListaCompetenze = CallOra(codSede).Result;
+                var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromHours(2));
+                _memoryCache.Set("ListaCompetenze", ListaCompetenze, cacheEntryOptions);
+            }
+
+            return ListaCompetenze;
         }
 
         private async Task<List<Competenza>> CallOra(string codSede)
