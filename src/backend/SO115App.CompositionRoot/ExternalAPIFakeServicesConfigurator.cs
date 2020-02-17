@@ -128,6 +128,10 @@ namespace SO115App.CompositionRoot
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Tipologie.IGetListaTipologie,
                 SO115App.ExternalAPI.Fake.ImportOracle.TipologieMapper.GetTipologie>();
+
+            container.Register<
+                SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Competenze.IGetListaCompetenze,
+                SO115App.ExternalAPI.Fake.ImportOracle.CompetenzeMapper.GetCompetenze>();
         }
     }
 }

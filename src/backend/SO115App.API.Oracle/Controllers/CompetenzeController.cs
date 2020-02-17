@@ -7,31 +7,23 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 
-
 namespace SO115App.API.Oracle.Controllers
 {
     public class CompetenzeController : ApiController
     {
-        
-        [HttpGet]    
+        [HttpGet]
         public List<ORACompetenzeElenco> GetListaCompetenzeElenco(string CodSede)
         {
             GetCompetenze competenze = new GetCompetenze();
             return competenze.GetListaCompetenzeElenco(CodSede);
         }
-               
+
         [HttpGet]
         public List<ORACompetenzeZone> GetListaCompetenzeZone(string CodSede)
         {
             GetCompetenze competenze = new GetCompetenze();
             return competenze.GetListaCompetenzeZone(CodSede);
         }
-        
-        //// GET: api/Squadre/5
-        //public string Get(int id)
-        //{
-        //    return "value";
-        //}
 
         // POST: api/Squadre
         public void Post([FromBody]string value)

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using SO115App.ExternalAPI.Fake.Classi.DTOOracle;
 using SO115App.Models.Classi.Condivise;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Competenze;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace SO115App.ExternalAPI.Fake.ImportOracle.CompetenzeMapper
 {
-    public class GetCompetenze
+    public class GetCompetenze : IGetListaCompetenze
     {
         private readonly HttpClient _client;
         private readonly IConfiguration _configuration;
