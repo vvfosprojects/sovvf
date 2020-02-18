@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using SO115App.ExternalAPI.Fake.Classi.DTOOracle;
 using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Competenze;
@@ -35,7 +36,9 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.CompetenzeMapper
 
             responseElenco.EnsureSuccessStatusCode();
             using HttpContent content = responseElenco.Content;
-            var ElencoCompetenze = await content.ReadAsAsync<List<ORACompetenzeByNomeVia>>().ConfigureAwait(false);
+
+            string data = await content.ReadAsStringAsync().ConfigureAwait(false);
+            var ElencoCompetenze = JsonConvert.DeserializeObject<List<ORACompetenzeByNomeVia>>(data);
 
             return MapOraInMongo(ElencoCompetenze);
         }

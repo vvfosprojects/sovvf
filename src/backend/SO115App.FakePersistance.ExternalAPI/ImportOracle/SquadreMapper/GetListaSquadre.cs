@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Organigramma;
 using SO115App.API.SOVVF.FakeImplementations.Modello.Organigramma;
@@ -30,7 +31,10 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.SquadreMapper
             var response = await _client.GetAsync($"{_configuration.GetSection("OracleImplementation").GetSection(CodSede).GetSection("UrlAPISquadre").Value}/GetListaSquadre?CodSede={CodSede}").ConfigureAwait(false);
             response.EnsureSuccessStatusCode();
             using HttpContent content = response.Content;
-            var ListaSquadreOracle = await content.ReadAsAsync<List<ORASquadre>>().ConfigureAwait(false);
+
+            string data = await content.ReadAsStringAsync().ConfigureAwait(false);
+
+            var ListaSquadreOracle = JsonConvert.DeserializeObject<List<ORASquadre>>(data);
 
             var GetListaPersonaleSquadre = new GetListaPersonaleSquadre(_client, _configuration);
 

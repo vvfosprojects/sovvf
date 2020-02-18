@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using SO115App.ExternalAPI.Fake.Classi.DTOOracle;
 using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
@@ -33,8 +34,8 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.DistaccamentiMapper
 
             responseElenco.EnsureSuccessStatusCode();
             using HttpContent content = responseElenco.Content;
-            var ElencoDistaccamenti = await content.ReadAsAsync<List<ORADistaccamenti>>().ConfigureAwait(false);
-
+            string data = await content.ReadAsStringAsync().ConfigureAwait(false);
+            var ElencoDistaccamenti = JsonConvert.DeserializeObject<List<ORADistaccamenti>>(data);
             return MapOraInMongo(ElencoDistaccamenti);
         }
 

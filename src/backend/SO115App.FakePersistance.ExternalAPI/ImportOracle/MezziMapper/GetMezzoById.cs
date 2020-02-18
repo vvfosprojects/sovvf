@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Organigramma;
 using SO115App.API.SOVVF.FakeImplementations.Modello.Organigramma;
@@ -29,7 +30,9 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper
             var response = await _client.GetAsync($"{_configuration.GetSection("OracleImplementation").GetSection(CodSede).GetSection("UrlAPIMezzi").Value}/GetMezzoUtilizzabileByCodMezzo?CodSede={CodSede}&CodMezzo={CodMezzo}").ConfigureAwait(false);
             response.EnsureSuccessStatusCode();
             using HttpContent content = response.Content;
-            var MezzoOracle = await content.ReadAsAsync<ORAAutomezzi>().ConfigureAwait(false);
+            string data = await content.ReadAsStringAsync().ConfigureAwait(false);
+            var MezzoOracle = JsonConvert.DeserializeObject<ORAAutomezzi>(data);
+
             return MapMezzoByIdOraInMongoDB(MezzoOracle, CodMezzo);
         }
 
