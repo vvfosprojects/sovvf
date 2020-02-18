@@ -184,6 +184,10 @@ namespace SO115App.CompositionRoot
             SO115App.SignalR.Sender.GestioneIntervento.NotificationUpDateStato>();
             container.Register<SO115App.Models.Servizi.Infrastruttura.Notification.GestioneSchedeContatto.INotificationSetSchedaGestita,
                 SO115App.SignalR.Sender.GestioneSchedeContatto.NotificationSetSchedaGestita>();
+            container.Register<Models.Servizi.Infrastruttura.Notification.GestioneUtenti.INotifyAddUtente, SignalR.Sender.GestioneUtenti.NotificationAddUtente>();
+            container.Register<Models.Servizi.Infrastruttura.Notification.GestioneUtenti.INotifyDeleteUtente, SignalR.Sender.GestioneUtenti.NotificationDeleteUtente>();
+            container.Register<Models.Servizi.Infrastruttura.Notification.GestioneUtenti.GestioneRuoli.INotifyAddRuoli, SignalR.Sender.GestioneRuoli.NotificationAddRuoli>();
+            container.Register<Models.Servizi.Infrastruttura.Notification.GestioneUtenti.GestioneRuoli.INotifyDeleteRuolo, SignalR.Sender.GestioneRuoli.NotificationDeleteRuolo>();
 
             container.Register<
                 API.Models.Servizi.Infrastruttura.Organigramma.IGetUnitaOperativaPerCodice,
@@ -232,6 +236,16 @@ namespace SO115App.CompositionRoot
                 API.SOVVF.FakeImplementations.Modello.Infrastruttura.CompetenzeTerritoriali.GetCompetenzeByPunto_Fake_Hardcoded>();
 
             #endregion DA TRASFORMARE SU MONGO
+
+            #region Gestione Utenti e Ruoli
+
+            container.Register<Models.Servizi.Infrastruttura.GestioneUtenti.IDeleteUtente, Persistence.MongoDB.GestioneUtenti.GestioneUtente.DeleteUtente>();
+            container.Register<Models.Servizi.Infrastruttura.GestioneUtenti.IAddUtente, Persistence.MongoDB.GestioneUtenti.GestioneUtente.AddUtente>();
+            container.Register<Models.Servizi.Infrastruttura.SistemiEsterni.Personale.IGetUtenti, Persistence.MongoDB.GestioneUtenti.GestioneUtente.GetUtenti>();
+            container.Register<Models.Servizi.Infrastruttura.GestioneUtenti.GestioneRuolo.IDeleteRuolo, Persistence.MongoDB.GestioneUtenti.GestioneRuoli.DeleteRuolo>();
+            container.Register<Models.Servizi.Infrastruttura.GestioneUtenti.GestioneRuolo.IAddRuoli, Persistence.MongoDB.GestioneUtenti.GestioneRuoli.AddRuoli>();
+
+            #endregion Gestione Utenti e Ruoli
         }
     }
 }
