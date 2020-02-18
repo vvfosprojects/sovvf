@@ -19,5 +19,19 @@ namespace SO115App.API.Oracle.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpGet]
+        public IHttpActionResult GetPersonaleByCF(string codiceFiscale, string codiceSede)
+        {
+            try
+            {
+                var getPersonaleByCF = new GetPersonaleByCF();
+                return Ok(getPersonaleByCF.GetByCF(codiceSede, codiceFiscale));
+            }
+            catch (System.Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

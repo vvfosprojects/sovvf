@@ -87,6 +87,7 @@
     <Compile Include="Servizi\Competenze\GetCompetenze.cs" />
     <Compile Include="Servizi\Mezzi\GetListaMezziUtilizzabili.cs" />
     <Compile Include="Servizi\Partenze\GetPartenze.cs" />
+    <Compile Include="Servizi\Personale\GetPersonaleByCF.cs" />
     <Compile Include="Servizi\Personale\GetPersonaleVVF.cs" />
     <Compile Include="Servizi\Richieste\GetChiamate.cs" />
     <Compile Include="Servizi\Richieste\GetInterventi.cs" />

@@ -32,6 +32,7 @@ using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Personale;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Territorio;
+
 using System.Net.Http;
 
 namespace SO115App.CompositionRoot
@@ -72,6 +73,8 @@ namespace SO115App.CompositionRoot
             container.Register<IGetSquadreBySede, GetSquadreBySede>();
             container.Register<IGetPersonaFisica, GetPersonaFisica>();
             container.Register<IGetSquadreNelTurno, GetSquadreNelTurno>();
+            container.Register<IGetPersonaleVVF, ExternalAPI.Fake.ImportOracle.GestioniUtenti.GetPersonaleVVF>();
+            container.Register<IGetPersonaleByCF, ExternalAPI.Fake.ImportOracle.GestioniUtenti.GetPersonaleByCF>();
 
             #endregion Personale
 

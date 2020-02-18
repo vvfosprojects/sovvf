@@ -7,7 +7,7 @@ namespace SO115App.Persistence.Oracle.Classi
         /// <summary>
         ///   CAMPO COD_TIPOLOGIA DELLA TABELLA TIPOLOGIE
         /// </summary>
-        public decimal COD_TIPOLOGIA { get; set; }
+        public int COD_TIPOLOGIA { get; set; }
 
         /// <summary>
         ///   CAMPO DESCRIZIONE DELLA TABELLA TIPOLOGIE
@@ -17,7 +17,7 @@ namespace SO115App.Persistence.Oracle.Classi
         /// <summary>
         ///   CAMPO COD_GRUPPO DELLA TABELLA TIPOLOGIE
         /// </summary>
-        public decimal COD_GRUPPO { get; set; }
+        public int COD_GRUPPO { get; set; }
 
         /// <summary>
         ///   CAMPO COD_PRIORITA DELLA TABELLA TIPOLOGIE

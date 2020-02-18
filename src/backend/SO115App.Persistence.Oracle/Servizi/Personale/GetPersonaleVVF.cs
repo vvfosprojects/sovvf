@@ -18,7 +18,7 @@ namespace SO115App.Persistence.Oracle.Servizi.Personale
             OracleCommand cmd = new OracleCommand
             {
                 Connection = conn,
-                CommandText = $"SELECT NVL(COGNOME,' '), NVL(NOME,' '), NVL(MATDIP,0), NVL(COD_DISTACCAMENTO,0) FROM SALAOPER.PERSONALE p WHERE NOME LIKE :NAME OR COGNOME LIKE :SURNAME"
+                CommandText = "SELECT NVL(COGNOME,' '), NVL(NOME,' '), NVL(MATDIP,0), NVL(COD_DISTACCAMENTO,0) FROM SALAOPER.PERSONALE p WHERE NOME LIKE :NAME OR COGNOME LIKE :SURNAME"
             };
 
             cmd.CommandType = CommandType.Text;
