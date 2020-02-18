@@ -31,8 +31,6 @@ export class SetUtentiGestione {
 
 export class AddUtenteGestione {
     static readonly type = '[GestioneUtenti] Add Utente Gestione';
-
-    constructor() { }
 }
 
 export class AddRuoloUtenteGestione {
@@ -48,7 +46,7 @@ export class RemoveUtente {
 export class RemoveRuoloUtente {
     static readonly type = '[GestioneUtenti] Remove Ruolo Utente';
 
-    constructor(public id: string, public ruolo: Ruolo) { }
+    constructor(public codFiscale: string, public ruolo: Ruolo) { }
 }
 
 export class ClearDataModalAddUtenteModal {

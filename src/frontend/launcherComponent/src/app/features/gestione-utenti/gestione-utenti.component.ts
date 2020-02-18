@@ -14,7 +14,8 @@ import { PaginationState } from '../../shared/store/states/pagination/pagination
 import { LoadingState } from '../../shared/store/states/loading/loading.state';
 import { GestioneUtenteModalComponent } from './gestione-utente-modal/gestione-utente-modal.component';
 import { ConfirmModalComponent } from 'src/app/shared';
-import { SetPageSize } from '../../shared/store/actions/pagination/pagination.actions';
+import { SetCodiceSede } from '../../core/signalr/store/signalR.actions';
+import { AuthenticationService } from '../../core/auth/_services';
 
 @Component({
     selector: 'app-gestione-utenti',
@@ -35,7 +36,9 @@ export class GestioneUtentiComponent implements OnInit {
     @Select(LoadingState.loading) loading$: Observable<boolean>;
 
     constructor(public modalService: NgbModal,
-        private store: Store) {
+                private store: Store,
+                private authService: AuthenticationService) {
+        this.store.dispatch(new SetCodiceSede(this.authService.currentUserValue.sede.codice));
         this.getUtentiGestione();
         this.getRuoli();
         this.getRicerca();
@@ -72,11 +75,11 @@ export class GestioneUtentiComponent implements OnInit {
         const nominativoUtenteVVF = event.fullName;
         aggiungiRuoloUtenteModal.componentInstance.codFiscaleUtenteVVF = codFiscaleUtenteVVF;
         aggiungiRuoloUtenteModal.componentInstance.nominativoUtenteVVF = nominativoUtenteVVF;
-        /* aggiungiRuoloUtenteModal.result.then(
-            (result: any) => {
+        aggiungiRuoloUtenteModal.result.then(
+            (result: { success: boolean }) => {
                 if (result.success) {
                     this.store.dispatch(new AddRuoloUtenteGestione());
-                } else {
+                } else if (!result.success) {
                     this.store.dispatch(new ClearDataModalAddUtenteModal());
                     console.log('Modal "addRuoloUtente" chiusa con val ->', result);
                 }
@@ -85,10 +88,10 @@ export class GestioneUtentiComponent implements OnInit {
                 this.store.dispatch(new ClearDataModalAddUtenteModal());
                 console.error('Modal chiusa senza bottoni. Err ->', err);
             }
-        ); */
+        );
     }
 
-    onRemoveRuoloUtente(payload: { id: string, ruolo: Ruolo, nominativoUtente: string }) {
+    onRemoveRuoloUtente(payload: { codFiscale: string, ruolo: Ruolo, nominativoUtente: string }) {
         const modalConfermaAnnulla = this.modalService.open(ConfirmModalComponent, { backdropClass: 'light-blue-backdrop', centered: true });
         modalConfermaAnnulla.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
         modalConfermaAnnulla.componentInstance.titolo = 'Elimina ruolo a ' + payload.nominativoUtente;
@@ -101,7 +104,7 @@ export class GestioneUtentiComponent implements OnInit {
             (val) => {
                 switch (val) {
                     case 'ok':
-                        this.store.dispatch(new RemoveRuoloUtente(payload.id, payload.ruolo));
+                        this.store.dispatch(new RemoveRuoloUtente(payload.codFiscale, payload.ruolo));
                         break;
                     case 'ko':
                         // console.log('Azione annullata');
@@ -143,7 +146,6 @@ export class GestioneUtentiComponent implements OnInit {
     }
 
     getUtentiGestione() {
-        this.store.dispatch(new SetPageSize(10));
         this.store.dispatch(new GetUtentiGestione());
     }
 

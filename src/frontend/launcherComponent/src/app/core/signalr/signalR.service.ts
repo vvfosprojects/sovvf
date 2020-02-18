@@ -298,7 +298,7 @@ export class SignalRService {
         /**
          * Gestione Utenti
          */
-        this.hubNotification.on('NotifyAddUtente', (success: boolean) => {
+        this.hubNotification.on('NotifyRefreshUtenti', (success: boolean) => {
             if (success) {
                 this.store.dispatch(new GetUtentiGestione());
             }

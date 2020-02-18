@@ -8,7 +8,7 @@ import {
     RemoveUtente,
     SetUtentiGestione,
     SetUtentiVVF,
-    ClearDataModalAddUtenteModal
+    ClearDataModalAddUtenteModal, AddUtenteGestione
 } from '../../actions/gestione-utenti/gestione-utenti.actions';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgZone } from '@angular/core';
@@ -137,7 +137,7 @@ export class GestioneUtentiState {
         });
     }
 
-    @Action(AddRuoloUtenteGestione)
+    @Action(AddUtenteGestione)
     addUtenteGestione({ getState, dispatch }: StateContext<GestioneUtentiStateModel>) {
         const form = getState().addUtenteRuoloForm.model;
 
@@ -152,8 +152,37 @@ export class GestioneUtentiState {
                 codSede: value.idSede
             });
         });
-        console.log('Add Utente Ruolo OBJ', obj);
+        console.log('Add Utente OBJ', obj);
         this._gestioneUtenti.addUtente(obj).subscribe((utente: Utente) => {
+            if (utente) {
+                patch(
+                    insertItem(utente)
+                );
+                dispatch(new ShowToastr(ToastrType.Info, 'Utente Aggiunto', 'Utente aggiunto con successo.', 3));
+            }
+        });
+
+        // Clear data
+        dispatch(new ClearDataModalAddUtenteModal());
+    }
+
+    @Action(AddRuoloUtenteGestione)
+    addRuoloUtenteGestione({ getState, dispatch }: StateContext<GestioneUtentiStateModel>) {
+        const form = getState().addUtenteRuoloForm.model;
+
+        const obj: AddRuoloUtenteInterface = {
+            codFiscale: form.utente,
+            ruoli: [],
+            soloDistaccamenti: form.soloDistaccamenti
+        };
+        form.sedi.forEach((value: TreeviewSelezione) => {
+            obj.ruoli.push({
+                descrizione: form.ruolo.replace(/ /g, ''),
+                codSede: value.idSede
+            });
+        });
+        console.log('Add Utente Ruolo OBJ', obj);
+        this._gestioneUtenti.addRuoloUtente(obj).subscribe((utente: Utente) => {
             if (utente) {
                 patch(
                     insertItem(utente)
@@ -180,13 +209,7 @@ export class GestioneUtentiState {
 
     @Action(RemoveRuoloUtente)
     removeRuoloUtente({ setState, dispatch }: StateContext<GestioneUtentiStateModel>, action: RemoveRuoloUtente) {
-        this._gestioneUtenti.removeRuoloUtente(action.id, action.ruolo).subscribe((utente: Utente) => {
-            console.log('utente', utente);
-            setState(
-                patch({
-                    listaUtenti: updateItem<Utente>(u => u.id === action.id, utente)
-                })
-            );
+        this._gestioneUtenti.removeRuoloUtente(action.codFiscale, action.ruolo).subscribe(() => {
             dispatch(new ShowToastr(ToastrType.Info, 'Ruolo Utente Rimosso', 'Ruolo Utente rimosso con successo.', 3));
         });
     }

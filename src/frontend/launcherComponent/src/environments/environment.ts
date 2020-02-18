@@ -24,6 +24,7 @@ export const environment = {
         chiamata: '/api/Chiamata',
         utenti: '/api/Utenti',
         gestioneUtenti: '/api/GestioneUtenti',
+        gestioneRuolo: '/api/GestioneRuolo',
         personaleVVF: '/api/PersonaleVVF',
         auth: '/api/Auth',
         navbar: '/api/Navbar',

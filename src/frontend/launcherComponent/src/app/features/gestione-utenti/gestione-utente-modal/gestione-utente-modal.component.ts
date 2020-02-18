@@ -218,8 +218,7 @@ export class GestioneUtenteModalComponent implements OnInit, OnDestroy {
             return;
         }
 
-        this.store.dispatch(new AddRuoloUtenteGestione());
-        // this.modal.close({ success: true });
+        this.modal.close({ success: true });
     }
 
     closeModal(type: string) {

@@ -22,6 +22,7 @@ const PROXY_CONFIG = [{
         '/api/PrenotazioneMezzo',
         '/api/GestioneSchedeContatto',
         '/api/GestioneUtenti',
+        '/api/GestioneRuolo',
         '/api/PersonaleVVF'
     ],
     target: "http://localhost:31497/",

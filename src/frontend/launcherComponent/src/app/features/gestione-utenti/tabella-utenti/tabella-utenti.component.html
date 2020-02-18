@@ -23,15 +23,12 @@
         <div *ngFor="let ruolo of utente.ruoli, let i=index" class="d-inline-block h6 font-weight-normal">
           <button class="btn btn-warning btn-sm font-weight-bold mr-1" ngbTooltip="Visualizza i permessi"
             placement="top" [ngbPopover]="popPermessiRole" (click)="onDetailPermessi(ruolo)">
-            {{ruolo.codSede}}
+            <div>{{ruolo.codSede}}</div>
+            <div>{{ruolo.descrizione}}</div>
           </button>
           <ng-template #popPermessiRole>
             <div class="py-2">
               <h5 class="mb-0">{{wipeRoleString(ruolo.descrizione)}}</h5>
-              <small>
-                <i class="fa fa-map-pin mr-1"></i>
-                {{ruolo.descSede}}
-              </small>
               <ul *ngIf="dettaglioPermessi && dettaglioPermessi.length > 0" class="list-unstyled mt-2">
                 <li *ngFor="let perm of dettaglioPermessi">
                   <i class="fa fa-cog mr-1"></i>
@@ -41,7 +38,7 @@
               <small *ngIf="!dettaglioPermessi || dettaglioPermessi.length <= 0" class="text-danger">Nessun Permesso
                 Assegnato</small>
               <button class="btn btn-danger btn-sm btn-block mr-1" ngbTooltip="Rimuovi ruolo utente" placement="bottom"
-                (click)="onRemoveRuoloUtente(utente.id, ruolo, utente.cognome + ' ' + utente.nome)">
+                (click)="onRemoveRuoloUtente(utente.codiceFiscale, ruolo, utente.cognome + ' ' + utente.nome)">
                 Rimuovi
               </button>
             </div>

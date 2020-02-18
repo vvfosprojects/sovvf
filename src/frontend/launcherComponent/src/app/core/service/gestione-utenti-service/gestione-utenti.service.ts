@@ -12,6 +12,7 @@ import { PaginationInterface } from 'src/app/shared/interface/pagination.interfa
 import { FiltersInterface } from 'src/app/shared/interface/filters.interface';
 
 const API_URL = environment.apiUrl.gestioneUtenti;
+const API_URL_RUOLO = environment.apiUrl.gestioneRuolo;
 const API_URL_PERSONALE_VVF = environment.apiUrl.personaleVVF;
 
 @Injectable({
@@ -56,7 +57,7 @@ export class GestioneUtentiService {
     }
 
     addRuoloUtente(addRuolo: AddRuoloUtenteInterface): Observable<Utente> {
-        return this.http.post<Utente>(API_URL + '/AddRuolo', addRuolo).pipe(
+        return this.http.post<Utente>(API_URL_RUOLO + '/AddRuolo', addRuolo).pipe(
             retry(3),
             catchError(handleError)
         );
@@ -67,7 +68,7 @@ export class GestioneUtentiService {
             codFiscale,
             ruolo
         };
-        return this.http.post<Utente>(API_URL + '/RemoveRuolo', obj).pipe(
+        return this.http.post<Utente>(API_URL_RUOLO + '/DeleteRuolo', obj).pipe(
             retry(3),
             catchError(handleError)
         );
