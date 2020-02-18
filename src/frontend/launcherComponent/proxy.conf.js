@@ -20,7 +20,9 @@ const PROXY_CONFIG = [{
         '/api/GestioneMezziInServizio',
         '/api/Marker',
         '/api/PrenotazioneMezzo',
-        '/api/GestioneSchedeContatto'
+        '/api/GestioneSchedeContatto',
+        '/api/GestioneUtenti',
+        '/api/PersonaleVVF'
     ],
     target: "http://DESKTOP-RC0RAUA:5000/",
     secure: false,

@@ -6,3 +6,10 @@ export class PatchPagination {
     constructor(public pagination: PaginationInterface) {
     }
 }
+
+export class SetPageSize {
+    static readonly type = '[Pagination] Set Page Size';
+
+    constructor(public pageSize: number) {
+    }
+}

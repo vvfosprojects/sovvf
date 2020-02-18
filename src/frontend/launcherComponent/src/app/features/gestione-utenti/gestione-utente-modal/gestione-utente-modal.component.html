@@ -15,7 +15,7 @@
         [ngClass]="{ 'is-invalid': submitted && f.utente.errors }">
         <ng-template ng-option-tmp let-item="item">
           {{item.nominativo}} <br />
-          <small>{{item.codFiscale}} - {{item.sede}}</small>
+          <small>{{item.codFiscale}}</small>
         </ng-template>
       </ng-select>
       <div *ngIf="submitted && f.utente.errors" class="text-danger mt-1">

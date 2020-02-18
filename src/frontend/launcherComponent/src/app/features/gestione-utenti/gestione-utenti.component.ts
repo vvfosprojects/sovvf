@@ -14,6 +14,7 @@ import { PaginationState } from '../../shared/store/states/pagination/pagination
 import { LoadingState } from '../../shared/store/states/loading/loading.state';
 import { GestioneUtenteModalComponent } from './gestione-utente-modal/gestione-utente-modal.component';
 import { ConfirmModalComponent } from 'src/app/shared';
+import { SetPageSize } from '../../shared/store/actions/pagination/pagination.actions';
 
 @Component({
     selector: 'app-gestione-utenti',
@@ -71,11 +72,11 @@ export class GestioneUtentiComponent implements OnInit {
         const nominativoUtenteVVF = event.fullName;
         aggiungiRuoloUtenteModal.componentInstance.codFiscaleUtenteVVF = codFiscaleUtenteVVF;
         aggiungiRuoloUtenteModal.componentInstance.nominativoUtenteVVF = nominativoUtenteVVF;
-        aggiungiRuoloUtenteModal.result.then(
-            (result: { success: boolean }) => {
+        /* aggiungiRuoloUtenteModal.result.then(
+            (result: any) => {
                 if (result.success) {
-                    this.store.dispatch(new AddRuoloUtenteGestione(codFiscaleUtenteVVF));
-                } else if (!result.success) {
+                    this.store.dispatch(new AddRuoloUtenteGestione());
+                } else {
                     this.store.dispatch(new ClearDataModalAddUtenteModal());
                     console.log('Modal "addRuoloUtente" chiusa con val ->', result);
                 }
@@ -84,7 +85,7 @@ export class GestioneUtentiComponent implements OnInit {
                 this.store.dispatch(new ClearDataModalAddUtenteModal());
                 console.error('Modal chiusa senza bottoni. Err ->', err);
             }
-        );
+        ); */
     }
 
     onRemoveRuoloUtente(payload: { id: string, ruolo: Ruolo, nominativoUtente: string }) {
@@ -142,6 +143,7 @@ export class GestioneUtentiComponent implements OnInit {
     }
 
     getUtentiGestione() {
+        this.store.dispatch(new SetPageSize(10));
         this.store.dispatch(new GetUtentiGestione());
     }
 

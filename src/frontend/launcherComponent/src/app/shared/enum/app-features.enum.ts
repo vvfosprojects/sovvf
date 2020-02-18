@@ -6,5 +6,6 @@ export enum AppFeatures {
     ComposizionePartenza,
     MezziInServizio,
     SchedeContatto,
+    GestioneUtenti,
     Default
 }

@@ -12,6 +12,7 @@ import { PaginationInterface } from 'src/app/shared/interface/pagination.interfa
 import { FiltersInterface } from 'src/app/shared/interface/filters.interface';
 
 const API_URL = environment.apiUrl.gestioneUtenti;
+const API_URL_PERSONALE_VVF = environment.apiUrl.personaleVVF;
 
 @Injectable({
     providedIn: 'root'
@@ -22,8 +23,7 @@ export class GestioneUtentiService {
     }
 
     getUtentiVVF(text: string): Observable<UtenteVvfInterface[]> {
-        const finalApi = API_URL + '/PersonaleVVF';
-        const url = !text ? finalApi : finalApi + '?text=' + text;
+        const url = !text ? API_URL_PERSONALE_VVF : API_URL_PERSONALE_VVF + '?text=' + text;
         return this.http.get<UtenteVvfInterface[]>(url).pipe(
             retry(3),
             catchError(handleError)
@@ -35,7 +35,7 @@ export class GestioneUtentiService {
             filters,
             pagination
         };
-        return this.http.post<ResponseInterface>(API_URL, obj).pipe(
+        return this.http.post<ResponseInterface>(API_URL + '/GetUtenti', obj).pipe(
             retry(3),
             catchError(handleError)
         );

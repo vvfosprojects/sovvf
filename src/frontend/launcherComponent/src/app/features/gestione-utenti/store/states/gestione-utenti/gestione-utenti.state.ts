@@ -24,6 +24,7 @@ import { GestioneUtentiService } from '../../../../../core/service/gestione-uten
 import { UtenteVvfInterface } from '../../../../../shared/interface/utente-vvf.interface';
 import { AddRuoloUtenteInterface } from '../../../../../shared/interface/add-ruolo-utente.interface';
 import { UpdateFormValue, SetFormEnabled } from '@ngxs/form-plugin';
+import { PaginationState } from '../../../../../shared/store/states/pagination/pagination.state';
 
 export interface GestioneUtentiStateModel {
     listaUtentiVVF: UtenteVvfInterface[];
@@ -119,7 +120,8 @@ export class GestioneUtentiState {
             search: this.store.selectSnapshot(RicercaUtentiState.ricerca),
         };
         const pagination = {
-            page: action.page ? action.page : 1
+            page: action.page ? action.page : 1,
+            pageSize: this.store.selectSnapshot(PaginationState.pageSize)
         };
         this._gestioneUtenti.getListaUtentiGestione(filters, pagination).subscribe((response: ResponseInterface) => {
             dispatch(new SetUtentiGestione(response.dataArray));

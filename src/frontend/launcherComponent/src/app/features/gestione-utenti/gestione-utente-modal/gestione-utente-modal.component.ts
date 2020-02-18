@@ -10,7 +10,7 @@ import { GestioneUtentiState } from '../store/states/gestione-utenti/gestione-ut
 import { findItem } from '../../../shared/store/states/sedi-treeview/sedi-treeview.helper';
 import { UpdateFormValue } from '@ngxs/form-plugin';
 import { UtenteVvfInterface } from '../../../shared/interface/utente-vvf.interface';
-import { GetUtentiVVF } from '../store/actions/gestione-utenti/gestione-utenti.actions';
+import { AddRuoloUtenteGestione, GetUtentiVVF } from '../store/actions/gestione-utenti/gestione-utenti.actions';
 import { Role } from '../../../shared/model/utente.model';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { wipeStringUppercase } from 'src/app/shared/helper/function';
@@ -218,7 +218,8 @@ export class GestioneUtenteModalComponent implements OnInit, OnDestroy {
             return;
         }
 
-        this.modal.close({ success: true });
+        this.store.dispatch(new AddRuoloUtenteGestione());
+        // this.modal.close({ success: true });
     }
 
     closeModal(type: string) {

@@ -1,6 +1,6 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { PaginationInterface } from '../../../interface/pagination.interface';
-import { PatchPagination } from '../../actions/pagination/pagination.actions';
+import { PatchPagination, SetPageSize } from '../../actions/pagination/pagination.actions';
 
 export interface PaginationStateModel {
     pagination: PaginationInterface;
@@ -11,7 +11,7 @@ export const PaginationStateModelDefaults: PaginationStateModel = {
     pagination: {
         page: 1
     },
-    pageSizes: [10, 20, 30]
+    pageSizes: [ 10, 20, 30 ]
 };
 
 @State<PaginationStateModel>({
@@ -54,9 +54,20 @@ export class PaginationState {
     }
 
     @Action(PatchPagination)
-    patchPagination({ patchState }: StateContext<PatchPagination>, action: PatchPagination) {
+    patchPagination({patchState}: StateContext<PatchPagination>, action: PatchPagination) {
         patchState({
             pagination: action.pagination
+        });
+    }
+
+    @Action(SetPageSize)
+    setPageSize({getState, patchState}: StateContext<PatchPagination>, action: SetPageSize) {
+        const state = getState();
+        patchState({
+            pagination: {
+                ...state.pagination,
+                pageSize: action.pageSize
+            }
         });
     }
 }

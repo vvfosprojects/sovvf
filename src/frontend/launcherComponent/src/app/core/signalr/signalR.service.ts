@@ -53,6 +53,7 @@ import {
 } from 'src/app/features/home/store/actions/schede-contatto/schede-contatto.actions';
 import { ContatoriSchedeContatto } from '../../shared/interface/contatori-schede-contatto.interface';
 import { SchedaContatto } from '../../shared/interface/scheda-contatto.interface';
+import { GetUtentiGestione } from '../../features/gestione-utenti/store/actions/gestione-utenti/gestione-utenti.actions';
 
 const HUB_URL = environment.signalRHub;
 const SIGNALR_BYPASS = !environment.signalR;
@@ -291,6 +292,15 @@ export class SignalRService {
                 }
                 this.store.dispatch(new ShowToastr(ToastrType.Info, 'Prenotazione Scaduta', 'La prenotazione del mezzo ' + data.codiceMezzo + ' è scaduta.', 5));
                 console.log('Mezzo remove prenotato signalr', data);
+            }
+        });
+
+        /**
+         * Gestione Utenti
+         */
+        this.hubNotification.on('NotifyAddUtente', (success: boolean) => {
+            if (success) {
+                this.store.dispatch(new GetUtentiGestione());
             }
         });
 

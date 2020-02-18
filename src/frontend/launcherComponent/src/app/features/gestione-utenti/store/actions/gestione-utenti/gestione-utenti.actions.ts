@@ -37,8 +37,6 @@ export class AddUtenteGestione {
 
 export class AddRuoloUtenteGestione {
     static readonly type = '[GestioneUtenti] Add Ruolo Utente Gestione';
-
-    constructor(public codFiscale: string) { }
 }
 
 export class RemoveUtente {
