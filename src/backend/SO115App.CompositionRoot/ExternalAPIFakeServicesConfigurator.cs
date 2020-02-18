@@ -135,9 +135,29 @@ namespace SO115App.CompositionRoot
                 SO115App.Models.Servizi.Infrastruttura.Marker.IGetMezziMarker,
                 ExternalAPI.Fake.Marker.GetMezziMarkerExt>();
 
+            #region Mezzi
+
             container.Register<
-                SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Tipologie.IGetListaTipologie,
-                SO115App.ExternalAPI.Fake.ImportOracle.TipologieMapper.GetTipologie>();
+                SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Mezzi.IGetListaMezzi,
+                SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper.GetListaMezzi>();
+            container.Register<
+                SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Mezzi.IGetMezzoById,
+                SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper.GetMezzoById>();
+
+            #endregion Mezzi
+
+            #region Squadre
+
+            container.Register<
+                SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Squadre.IGetListaSquadre,
+                SO115App.ExternalAPI.Fake.ImportOracle.SquadreMapper.GetListaSquadre>();
+            container.Register<
+                SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Squadre.IGetSquadraById,
+                SO115App.ExternalAPI.Fake.ImportOracle.SquadreMapper.GetSquadraById>();
+
+            #endregion Squadre
+
+            #region GesPreaccoppiati
 
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Competenze.IGetListaCompetenze,
@@ -146,6 +166,10 @@ namespace SO115App.CompositionRoot
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Competenze.IGetCompetenzeRichiesta,
                 SO115App.ExternalAPI.Fake.ImportOracle.CompetenzeMapper.GetCompetenzeByNomeVia>();
+                SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.GesPreaccoppiati.IGetListaGesPreaccoppiati,
+                SO115App.ExternalAPI.Fake.ImportOracle.GesPreaccoppiatiMapper.GetListaGesPreaccoppiati>();
+
+            #endregion GesPreaccoppiati
         }
     }
 }

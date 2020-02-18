@@ -7,28 +7,18 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 
-
 namespace SO115App.API.Oracle.Controllers
 {
     public class PartenzeController : ApiController
     {
-        
-        [HttpGet]    
-        public List<ORAPartenze> GetListaPartenze(string CodSede)
+        // GET: api/Partenze/GetListaPartenzeByCodIntervento
+        [HttpGet]
+        public List<ORAPartenze> GetListaPartenzeByCodIntervento(string CodSede, decimal CodIntervento)
         {
             GetPartenze partenze = new GetPartenze();
-            return partenze.GetListaPartenze(CodSede);
+            return partenze.GetListaPartenzeByCodIntervento(CodSede, CodIntervento);
         }
-               
-      
 
-        //// GET: api/Squadre/5
-        //public string Get(int id)
-        //{
-        //    return "value";
-        //}
-
-        // POST: api/Squadre
         public void Post([FromBody]string value)
         {
         }

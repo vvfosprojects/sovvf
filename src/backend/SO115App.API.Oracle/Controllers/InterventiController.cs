@@ -9,17 +9,24 @@ using SO115App.Persistence.Oracle.Classi;
 
 namespace SO115App.API.Oracle.Controllers
 {
-    public class RichiesteController : ApiController
+    public class InterventiController : ApiController
     {
-        // GET: api/Richieste/GetListaChiamate
+        // GET: api/Interventi/GetListaInterventi
         [HttpGet]
-        public List<ORAChiamate> GetListaChiamate(string CodSede)
+        public List<ORAInterventi> GetListaInterventi(string CodSede)
         {
-            GetChiamate chiamate = new GetChiamate();
-            return chiamate.GetListaChiamate(CodSede);
+            GetInterventi interventi = new GetInterventi();
+            return interventi.GetListaInterventi(CodSede);
         }
 
-        // GET: api/Richieste
+        // GET: api/Interventi/GetListaInterventiChiusi
+        [HttpGet]
+        public List<ORAInterventiChiusi> GetListaInterventiChiusi(string CodSede)
+        {
+            GetInterventi interventi = new GetInterventi();
+            return interventi.GetListaInterventiChiusi(CodSede);
+        }
+
         public IEnumerable<string> Get()
         {
             return new string[] { "value1", "value2" };

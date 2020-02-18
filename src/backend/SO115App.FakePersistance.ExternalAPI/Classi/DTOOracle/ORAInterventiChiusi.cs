@@ -4,10 +4,6 @@ namespace SO115App.ExternalAPI.Fake.Classi.DTOOracle
 {
     public class ORAInterventiChiusi
     {
-        public ORAInterventiChiusi()
-        {
-        }
-
         /// <SUMMARY>CAMPO INTERVENTO DELLA TABELLA INTERVENTI_CHIUSI</SUMMARY>
         public decimal INTERVENTO { get; set; }
 

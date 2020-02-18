@@ -90,9 +90,11 @@
     <Compile Include="Controllers\GestioneUtenteController.cs" />
     <Compile Include="Controllers\MezziController.cs" />
     <Compile Include="Controllers\PartenzeController.cs" />
+    <Compile Include="Controllers\InterventiController.cs" />
     <Compile Include="Controllers\RichiesteController.cs" />
     <Compile Include="Controllers\SchedeContattoController.cs" />
     <Compile Include="Controllers\SicurezzaController.cs" />
+    <Compile Include="Controllers\ServiziController.cs" />
     <Compile Include="Controllers\SquadreController.cs" />
     <Compile Include="Controllers\TipologieController.cs" />
     <Compile Include="Global.asax.cs">

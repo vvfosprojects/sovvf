@@ -4,10 +4,6 @@ namespace SO115App.ExternalAPI.Fake.Classi.DTOOracle
 {
     public class ORASQPersonaleSquadre
     {
-        public ORASQPersonaleSquadre()
-        {
-        }
-
         /// <SUMMARY>CAMPO COD_SQUADRA DELLA TABELLA SQ_PERSONALE_SQUADRE</SUMMARY>
         public decimal COD_SQUADRA { get; set; }
 

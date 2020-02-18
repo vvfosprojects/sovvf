@@ -4,12 +4,10 @@ using System.Collections.Generic;
 using System.Data;
 using SO115App.Persistence.Oracle.Utility;
 
-
 namespace SO115App.Persistence.Oracle.Servizi.Squadre
 {
     public class GetServizi
     {
-
         public List<ORAServizi> GetListaServizi(string CodSede)
         {
             List<ORAServizi> ListaServizi = new List<ORAServizi>();
@@ -21,7 +19,6 @@ namespace SO115App.Persistence.Oracle.Servizi.Squadre
             conn.Open();
             OracleCommand cmd = new OracleCommand();
             cmd.Connection = conn;
-
 
             cmd.CommandText = "select 	" +
                 "NVL(DATA_SERVIZIO,	'') as	 DATA_SERVIZIO, " +
@@ -37,7 +34,6 @@ namespace SO115App.Persistence.Oracle.Servizi.Squadre
                 "NVL(CAPO_TURNO,	'') as	 CAPO_TURNO, " +
                 "NVL(DISP_SQUADRE,	'') as	 DISP_SQUADRE " +
                 "FROM SALAOPER.SERVIZI";
-
 
             cmd.CommandType = CommandType.Text;
             OracleDataReader dr = cmd.ExecuteReader();
@@ -62,8 +58,6 @@ namespace SO115App.Persistence.Oracle.Servizi.Squadre
 
             conn.Dispose();
             return ListaServizi;
-
         }
-
     }
 }
