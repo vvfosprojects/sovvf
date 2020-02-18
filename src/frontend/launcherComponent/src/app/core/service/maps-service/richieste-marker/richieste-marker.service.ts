@@ -7,7 +7,6 @@ import { handleError } from '../../../../shared/helper/handleError';
 import { AreaMappa } from '../../../../features/home/maps/maps-model/area-mappa-model';
 import { FiltroRichieste } from '../../../../features/home/maps/maps-model/filtro-richieste.interface';
 import { AreaMappaFiltrata } from '../../../../shared/helper/query-helper';
-import { Markers } from '../../../../shared/enum/markers.enum';
 
 const API_MARKER = environment.apiUrl.markers;
 
@@ -19,7 +18,7 @@ export class RichiesteMarkerService {
     }
 
     public getRichiesteMarkers(areaMappa: AreaMappa, filtroRichieste?: FiltroRichieste): Observable<any> {
-        return this.http.post(`${API_MARKER}/GetRichieste`, AreaMappaFiltrata(areaMappa, null, filtroRichieste, Markers.Richieste)).pipe(
+        return this.http.post(`${API_MARKER}/GetRichieste`, AreaMappaFiltrata(areaMappa, { filtroRichieste })).pipe(
             retry(3),
             catchError(handleError));
     }

@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FiltroMezzi } from '../../../maps-model/filtro-mezzi.interface';
 import { StatoMezzo } from '../../../../../../shared/enum/stato-mezzo.enum';
+import { DescrizioneTipologicaMezzo } from '../../../../composizione-partenza/interface/filtri/descrizione-filtro-composizione-interface';
 
 @Component({
     selector: 'app-filtri-markers-mezzi',
@@ -10,16 +11,28 @@ import { StatoMezzo } from '../../../../../../shared/enum/stato-mezzo.enum';
 export class FiltriMarkersMezziComponent implements OnInit {
 
     @Input() filtroMezziAttivi: FiltroMezzi;
-    @Input() statiMezzo = Object.values(StatoMezzo);
-    @Input() genereMezzo: any;
+    @Input() genereMezzo: DescrizioneTipologicaMezzo[];
 
-    @Output() changeStati: EventEmitter<any> = new EventEmitter<any>();
-    @Output() changeGenere: EventEmitter<any> = new EventEmitter<any>();
+    @Output() changeStati = new EventEmitter<StatoMezzo[]>();
+    @Output() changeGenere = new EventEmitter<DescrizioneTipologicaMezzo[]>();
 
-    constructor() {
+    statiMezzo = Object.values(StatoMezzo);
+    statiSelezionati: string[] = [];
+    generiSelezionati: string[] = [];
+
+    ngOnInit(): void {
+        this.statiSelezionati = this.filtroMezziAttivi.stato;
+        this.generiSelezionati = this.filtroMezziAttivi.tipologia;
     }
 
-    ngOnInit() {
+    onChangeGenere($event) {
+        console.log($event);
+        this.changeGenere.emit($event);
+    }
+
+    onChangeStati($event) {
+        console.log($event);
+        this.changeStati.emit($event);
     }
 
 }

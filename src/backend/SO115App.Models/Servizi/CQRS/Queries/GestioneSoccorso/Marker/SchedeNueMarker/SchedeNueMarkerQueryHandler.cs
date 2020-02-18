@@ -19,20 +19,19 @@
 //-----------------------------------------------------------------------
 using CQRS.Queries;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
-using System.Linq;
 
-namespace SO115App.API.Models.Servizi.CQRS.Queries.Marker.SchedeNueMarker
+namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.Marker.SchedeNueMarker
 {
     public class SchedeNueMarkerQueryHandler : IQueryHandler<SchedeNueMarkerQuery, SchedeNueMarkerResult>
     {
-        private readonly IGetSchedeContattoBySpatialArea _iGetSchedeNueMarker;
+        private readonly IGetSchedeContattoMarkerFiltered _iGetSchedeMarker;
 
         /// <summary>
         ///   Costruttore della classe
         /// </summary>
-        public SchedeNueMarkerQueryHandler(IGetSchedeContattoBySpatialArea iGetSchedeNueMarker)
+        public SchedeNueMarkerQueryHandler(IGetSchedeContattoMarkerFiltered iGetSchedeMarker)
         {
-            this._iGetSchedeNueMarker = iGetSchedeNueMarker;
+            _iGetSchedeMarker = iGetSchedeMarker;
         }
 
         /// <summary>
@@ -42,14 +41,11 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.Marker.SchedeNueMarker
         /// <returns>Il DTO di uscita della query</returns>
         public SchedeNueMarkerResult Handle(SchedeNueMarkerQuery query)
         {
-            var SchedeMarker = _iGetSchedeNueMarker.SchedeContattoBySpatialArea(query.Filtro.BottomLeft.Latitudine, query.Filtro.BottomLeft.Longitudine, query.Filtro.TopRight.Latitudine, query.Filtro.TopRight.Longitudine);
-
-            var gruppi = SchedeMarker.GroupBy(x => x.Localita.Coordinate).ToList();
+            var listaSchedeMarker = _iGetSchedeMarker.Get(query.Filtro);
 
             return new SchedeNueMarkerResult()
             {
-                ListaSchedeMarker = SchedeMarker,
-                ListaGruppiSchedeMarker = gruppi
+                ListaSchedeMarker = listaSchedeMarker,
             };
         }
     }

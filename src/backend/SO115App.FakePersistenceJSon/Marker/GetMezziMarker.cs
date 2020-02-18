@@ -77,6 +77,39 @@ namespace SO115App.FakePersistenceJSon.Marker
 
             listaMezziFilter.AddRange(listaMezziMarker.Where(mezzo => (mezzo.Mezzo.Coordinate.Latitudine >= filtroAreaMappa.BottomLeft.Latitudine) && (mezzo.Mezzo.Coordinate.Latitudine <= filtroAreaMappa.TopRight.Latitudine) && ((mezzo.Mezzo.Coordinate.Longitudine >= filtroAreaMappa.BottomLeft.Longitudine) && (mezzo.Mezzo.Coordinate.Longitudine <= filtroAreaMappa.TopRight.Longitudine))));
 
+            var listaMezziFiltrataPerStato = new List<MezzoMarker>();
+            var listaMezziFitrataPerStatoEGenere = new List<MezzoMarker>();
+            var listaMezziFiltrataPerGenere = new List<MezzoMarker>();
+
+            if (filtroAreaMappa.FiltroMezzi.Stato.Any())
+            {
+                foreach (var stato in filtroAreaMappa.FiltroMezzi.Stato)
+                {
+                    listaMezziFiltrataPerStato.AddRange(listaMezziFilter.FindAll(x => x.Mezzo.Stato.Equals(stato)));
+                }
+
+                if (!filtroAreaMappa.FiltroMezzi.Tipologia.Any())
+                {
+                    return listaMezziFiltrataPerStato;
+                }
+            }
+            if (filtroAreaMappa.FiltroMezzi.Tipologia.Any())
+            {
+                foreach (var genere in filtroAreaMappa.FiltroMezzi.Tipologia)
+                {
+                    listaMezziFiltrataPerGenere.AddRange(listaMezziFilter.FindAll(x => x.Mezzo.Genere.Equals(genere)));
+                }
+                if (!filtroAreaMappa.FiltroMezzi.Stato.Any())
+                {
+                    return listaMezziFiltrataPerGenere;
+                }
+            }
+
+            if (filtroAreaMappa.FiltroMezzi.Tipologia.Any() && filtroAreaMappa.FiltroMezzi.Stato.Any())
+            {
+                return listaMezziFitrataPerStatoEGenere = listaMezziFiltrataPerStato.FindAll(x => listaMezziFiltrataPerGenere.Contains(x));
+            }
+
             return listaMezziFilter;
         }
     }

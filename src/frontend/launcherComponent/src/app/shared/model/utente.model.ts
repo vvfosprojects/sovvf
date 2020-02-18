@@ -59,11 +59,19 @@ export class Utente {
 }
 
 export interface Ruolo {
-    descrizione: Role;
-    sede: Sede;
+    descrizione: string;
+    codSede: string;
+    descSede?: string;
+    ricorsivo?: boolean;
 }
 
 export enum Role {
+    Amministratore = 'Amministratore',
     CallTracker = 'CallTracker',
     GestoreRichieste = 'GestoreRichieste'
 }
+
+// export enum Role {
+//     Operator = 'Operatore',
+//     Administrator = 'Amministratore'
+// }

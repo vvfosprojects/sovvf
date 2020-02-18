@@ -1,4 +1,11 @@
 ﻿[*.cs]
 
+# CS1998: Async method lacks 'await' operators and will run synchronously
+dotnet_diagnostic.CS1998.severity = silent
+
+# CS0168: Variable is declared but never used
+dotnet_diagnostic.CS0168.severity = silent
+[*.cs]
+
 # IDE0005: Using directive is unnecessary.
 dotnet_diagnostic.IDE0005.severity = suggestion

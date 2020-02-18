@@ -9,7 +9,6 @@ import {
     ToggleComposizioneMode,
     UpdateListe, UpdateRichiestaComposizione, SetListaFiltriAffini, StartListaComposizioneLoading, StopListaComposizioneLoading
 } from '../../actions/composizione-partenza/composizione-partenza.actions';
-import { ComposizionePartenzaStateModel } from './composizione-partenza.state';
 import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.model';
 import { ComposizioneMarker } from '../../../maps/maps-model/composizione-marker.model';
 import {
@@ -25,11 +24,15 @@ import {
 } from '../../actions/composizione-partenza/composizione-avanzata.actions';
 import {
     ClearListaMezziComposizione,
-    ClearMezzoComposizione
+    ClearMezzoComposizione,
+    ClearSelectedMezziComposizione,
+    UnselectMezzoComposizione
 } from '../../actions/composizione-partenza/mezzi-composizione.actions';
 import {
     ClearListaSquadreComposizione,
-    ClearSquadraComposizione
+    ClearSquadraComposizione,
+    ClearSelectedSquadreComposizione,
+    UnselectSquadraComposizione
 } from '../../actions/composizione-partenza/squadre-composizione.actions';
 import { CompPartenzaService } from '../../../../../core/service/comp-partenza-service/comp-partenza.service';
 import { AddInLavorazione, DeleteInLavorazione } from '../../actions/richieste/richiesta-attivita-utente.actions';
@@ -41,6 +44,7 @@ import { ComposizioneFilterbar } from '../../../composizione-partenza/interface/
 import { ListaComposizioneAvanzata } from '../../../composizione-partenza/interface/lista-composizione-avanzata-interface';
 import { MezzoComposizione } from '../../../composizione-partenza/interface/mezzo-composizione-interface';
 import { DescrizioneTipologicaMezzo } from '../../../composizione-partenza/interface/filtri/descrizione-filtro-composizione-interface';
+import { ClearBoxPartenze } from '../../actions/composizione-partenza/box-partenza.actions';
 
 export interface ComposizionePartenzaStateModel {
     filtriAffini: ListaTipologicheMezzi;
@@ -114,7 +118,7 @@ export class ComposizionePartenzaState {
 
 
     constructor(private store: Store,
-                private compPartenzaService: CompPartenzaService) {
+        private compPartenzaService: CompPartenzaService) {
     }
 
     @Action(GetFiltriComposizione)
@@ -345,7 +349,14 @@ export class ComposizionePartenzaState {
     confirmPartenze({ getState, patchState, dispatch }: StateContext<ComposizionePartenzaStateModel>, action: ConfirmPartenze) {
         this.compPartenzaService.confermaPartenze(action.partenze).subscribe(() => {
             console.log('Richiesta aggiornata con le partenze', action.partenze);
-            dispatch([new ClearMarkerMezzoSelezionato(), new ClearDirection()]);
+            dispatch([
+                new ClearMarkerMezzoSelezionato(),
+                new ClearDirection(),
+                new ClearBoxPartenze(),
+                new ClearSelectedMezziComposizione(),
+                new ClearSelectedSquadreComposizione(),
+                new UnselectMezziAndSquadreComposizioneAvanzata()
+            ]);
             const state = getState();
             if (state.composizioneMode === Composizione.Veloce) {
                 dispatch(new ClearPreAccoppiatiSelezionatiComposizione());

@@ -52,7 +52,6 @@ namespace DomainModel.CQRS.Commands.AddIntervento
             var prioritaRichiesta = (RichiestaAssistenza.Priorita)command.Chiamata.PrioritaRichiesta;
             var codiceChiamata = _generaCodiceRichiesta.GeneraCodiceChiamata(sedeRichiesta, DateTime.UtcNow.Year);
             command.Chiamata.Codice = codiceChiamata;
-            command.Chiamata.Id = codiceChiamata;
             var listaCodiciTipologie = new List<string>();
             var utentiInLavorazione = new List<string>();
             var utentiPresaInCarico = new List<string>();
@@ -94,7 +93,6 @@ namespace DomainModel.CQRS.Commands.AddIntervento
                 UtPresaInCarico = utentiPresaInCarico,
                 NotePubbliche = command.Chiamata.NotePubbliche,
                 NotePrivate = command.Chiamata.NotePrivate,
-                //Id = codiceChiamata // TODO DA TOGLIERE QUANDO AVREMO UN DB
                 CodUOCompetenza = CodUOCompetenzaAppo
             };
 

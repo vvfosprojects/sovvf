@@ -11,14 +11,24 @@ import { StatoRichiesta } from '../../../../../../shared/enum/stato-richiesta.en
 export class FiltriMarkersRichiesteComponent implements OnInit {
     @Input() filtroRichieste: FiltroRichieste;
 
-    @Output() changePriorita: EventEmitter<Priorita> = new EventEmitter<Priorita>();
-    @Output() changeStati: EventEmitter<any> = new EventEmitter<any>();
+    @Output() changePriorita = new EventEmitter<Priorita>();
+    @Output() changeStati = new EventEmitter<StatoRichiesta[]>();
 
     statiRichiesta = Object.keys(StatoRichiesta);
 
-    constructor() {
+    statiSelezionati: string[] = [];
+
+    ngOnInit(): void {
+        this.statiSelezionati = this.filtroRichieste.stato;
     }
 
-    ngOnInit() {
+    onClearPriorita() {
+        this.changePriorita.emit(null);
     }
+
+    onChangeStati($event) {
+        console.log($event);
+        this.changeStati.emit($event);
+    }
+
 }

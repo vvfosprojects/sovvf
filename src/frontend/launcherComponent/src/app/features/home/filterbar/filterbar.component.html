@@ -10,39 +10,27 @@
                                                [disabled]="(chiamataStatus$ | async)"></app-tasto-schede-contatto>
                 </app-tasto-chiamata-group>
             </div>
-            <div *ngIf="(richiesteStatus$ | async)" class="col-9 pl-0">
-                <app-ricerca-group [filtriSelezionati]="(filtriSelezionatiRichieste$ | async).length > 0">
-                    <app-ricerca [ricerca]="(ricercaRichieste$ | async)" (search)="onSearchRichieste($event)">
-                        <app-filtri-richieste [filtri]="(filtriRichieste$ | async)"
-                                              [filtriSelezionati]="(filtriSelezionatiRichieste$ | async)"
-                                              [categorie]="(categoriaFiltriRichieste$| async)"
-                                              (filtroSelezionato)="onSelezioneFiltroRichieste($event)"
-                                              (filtriReset)="eliminaFiltriAttiviRichieste()">
-                        </app-filtri-richieste>
-                    </app-ricerca>
-                </app-ricerca-group>
+            <div class="col-2 pl-0 text-left">
+                <app-filtri-richieste *ngIf="(richiesteStatus$ | async)" [filtri]="(filtriRichieste$ | async)"
+                                      [filtriSelezionati]="(filtriSelezionatiRichieste$ | async)"
+                                      [categorie]="(categoriaFiltriRichieste$| async)"
+                                      (filtroSelezionato)="onSelezioneFiltroRichieste($event)"
+                                      (filtriReset)="eliminaFiltriAttiviRichieste()">
+                </app-filtri-richieste>
+                <app-filtri-schede-contatto *ngIf="(schedeContattoStatus$ | async)" [filtri]="(filtriSchedeContatto$ | async)"
+                                            [filtriSelezionati]="(filtriSelezionatiSchedeContatto$ | async)"
+                                            (filtroSelezionato)="onSelezioneFiltroSchedeContatto($event)"
+                                            (filtriReset)="eliminaFiltriAttiviSchedeContatto()">
+                </app-filtri-schede-contatto>
+                <app-filtri-mezzi-servizio *ngIf="(mezziInServizioStatus$ | async)" [filtri]="(filtriMezziInServizio$ | async)"
+                                           [filtriSelezionati]="(filtriSelezionatiMezziInServizio$ | async)"
+                                           (filtroSelezionato)="onSelezioneFiltroMezziInServizio($event)"
+                                           (filtriReset)="eliminaFiltriAttiviMezziInServizio()">
+                </app-filtri-mezzi-servizio>
             </div>
-            <div *ngIf="(schedeContattoStatus$ | async)" class="col-9 pl-0">
-                <app-ricerca-group [filtriSelezionati]="(filtriSelezionatiSchedeContatto$ | async).length > 0">
-                    <app-ricerca [ricerca]="(ricercaSchedeContatto$ | async)" (search)="onSearchSchedeContatto($event)">
-                        <app-filtri-schede-contatto [filtri]="(filtriSchedeContatto$ | async)"
-                                                    [filtriSelezionati]="(filtriSelezionatiSchedeContatto$ | async)"
-                                                    (filtroSelezionato)="onSelezioneFiltroSchedeContatto($event)"
-                                                    (filtriReset)="eliminaFiltriAttiviSchedeContatto()">
-                        </app-filtri-schede-contatto>
-                    </app-ricerca>
-                </app-ricerca-group>
-            </div>
-            <div *ngIf="(mezziInServizioStatus$ | async)" class="col-9 pl-0">
-                <app-ricerca-group [filtriSelezionati]="(filtriSelezionatiMezziInServizio$ | async).length > 0">
-                    <app-ricerca [disabled]="true">
-                        <app-filtri-mezzi-servizio [filtri]="(filtriMezziInServizio$ | async)"
-                                                    [filtriSelezionati]="(filtriSelezionatiMezziInServizio$ | async)"
-                                                    (filtroSelezionato)="onSelezioneFiltroMezziInServizio($event)"
-                                                    (filtriReset)="eliminaFiltriAttiviMezziInServizio()">
-                        </app-filtri-mezzi-servizio>
-                    </app-ricerca>
-                </app-ricerca-group>
+            <div class="col-7 pl-0">
+                <app-ricerca *ngIf="!(chiamataStatus$ | async) && !(composizioneStatus$ | async)" [ricerca]="(ricercaRichieste$ | async)" (search)="onSearchRichieste($event)" [disabled]="(mezziInServizioStatus$ | async)">
+                </app-ricerca>
             </div>
         </div>
     </div>

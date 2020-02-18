@@ -27,9 +27,9 @@ export class UtentiState {
 
     @Action(GetUtenti)
     getUtenti({ dispatch }: StateContext<UtentiStateModel>) {
-        this._users.getAll().subscribe((u: Utente[]) => {
-            dispatch(new SetUtenti(u));
-        });
+        // this._users.getAll().subscribe((u: Utente[]) => {
+        //     dispatch(new SetUtenti(u));
+        // });
     }
 
     @Action(SetUtenti)

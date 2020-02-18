@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="SetSchedaLettaCommand.cs" company="CNVVF">
+// <copyright file="UndoMergeSchedeNueCommand.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,15 +17,28 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSchedeNue.SetSchedaLetta
+using SO115App.Models.Classi.NUE;
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSchedeNue.UndoMergeSchedeNue
 {
-    public class SetSchedaLettaCommand
+    public class UndoMergeSchedeNueCommand
     {
+        /// <summary>
+        ///   l'id dell'utente che effettua l'undo sul raggruppamento delle schede contatto
+        /// </summary>
         public string IdUtente { get; set; }
-        public bool Letta { get; set; }
 
-        public string CodiceScheda { get; set; }
-
+        /// <summary>
+        ///   il codice sede dell'operatore che effettua l'undo
+        /// </summary>
         public string CodiceSede { get; set; }
+
+        /// <summary>
+        ///   la scheda contatto raggruppata e le sue figlie
+        /// </summary>
+        public SchedaContatto SchedaNue { get; set; }
     }
 }

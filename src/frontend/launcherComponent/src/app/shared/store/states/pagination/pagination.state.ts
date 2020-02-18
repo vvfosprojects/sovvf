@@ -1,15 +1,17 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { PaginationInterface } from '../../../interface/pagination.interface';
-import { PatchPagination } from '../../actions/pagination/pagination.actions';
+import { PatchPagination, SetPageSize } from '../../actions/pagination/pagination.actions';
 
 export interface PaginationStateModel {
     pagination: PaginationInterface;
+    pageSizes: number[];
 }
 
 export const PaginationStateModelDefaults: PaginationStateModel = {
     pagination: {
         page: 1
-    }
+    },
+    pageSizes: [ 10, 20, 30 ]
 };
 
 @State<PaginationStateModel>({
@@ -29,8 +31,8 @@ export class PaginationState {
     }
 
     @Selector()
-    static limit(state: PaginationStateModel) {
-        return state.pagination.limit;
+    static pageSize(state: PaginationStateModel) {
+        return state.pagination.pageSize;
     }
 
     @Selector()
@@ -43,13 +45,29 @@ export class PaginationState {
         return state.pagination.totalFilteredItems;
     }
 
+    @Selector()
+    static pageSizes(state: PaginationStateModel) {
+        return state.pageSizes;
+    }
+
     constructor() {
     }
 
     @Action(PatchPagination)
-    patchPagination({ patchState }: StateContext<PatchPagination>, action: PatchPagination) {
+    patchPagination({patchState}: StateContext<PatchPagination>, action: PatchPagination) {
         patchState({
             pagination: action.pagination
+        });
+    }
+
+    @Action(SetPageSize)
+    setPageSize({getState, patchState}: StateContext<PatchPagination>, action: SetPageSize) {
+        const state = getState();
+        patchState({
+            pagination: {
+                ...state.pagination,
+                pageSize: action.pageSize
+            }
         });
     }
 }

@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="SetSchedaLettaCommandHandler.cs" company="CNVVF">
+// <copyright file="UndoMergeSchedeNueCommandHandler.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -18,27 +18,29 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Commands;
-using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
-using System;
 
-namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSchedeNue.SetSchedaLetta
+namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSchedeNue.UndoMergeSchedeNue
 {
-    public class SetSchedaLettaCommandHandler : ICommandHandler<SetSchedaLettaCommand>
+    /// <summary>
+    ///   servizio che elimina le schede raggruppate
+    /// </summary>
+    internal class UndoMergeSchedeNueCommandHandler : ICommandHandler<UndoMergeSchedeNueCommand>
     {
-        private readonly ISetLetturaSchedaContatto _setLetta;
-        private readonly IGetUtenteById _getUtenteById;
+        private readonly IUndoSchedeContattoMerge _undoSchedeContattoMerge;
 
-        public SetSchedaLettaCommandHandler(ISetLetturaSchedaContatto setLetta, IGetUtenteById getUtenteById)
+        public UndoMergeSchedeNueCommandHandler(IUndoSchedeContattoMerge undoSchedeContattoMerge)
         {
-            _setLetta = setLetta;
-            _getUtenteById = getUtenteById;
+            _undoSchedeContattoMerge = undoSchedeContattoMerge;
         }
 
-        public void Handle(SetSchedaLettaCommand command)
+        /// <summary>
+        ///   metodo della classe che elimina le schede passate in input dalla collection relativa.
+        /// </summary>
+        /// <param name="command">il commando di ingresso</param>
+        public void Handle(UndoMergeSchedeNueCommand command)
         {
-            var codiceFiscaleOperatore = _getUtenteById.GetUtenteById(command.IdUtente).CodiceFiscale;
-            _setLetta.Letta(command.CodiceSede, command.CodiceScheda, codiceFiscaleOperatore, command.Letta);
+            _undoSchedeContattoMerge.Undo(command.SchedaNue);
         }
     }
 }

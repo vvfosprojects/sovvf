@@ -1,16 +1,24 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
-import { ClearMarkerOpachiMezzi, ClearMarkerOpachiRichieste, SetMarkerOpachiMezzi, SetMarkerOpachiRichieste } from '../../actions/maps/marker-opachi.actions';
+import {
+    ClearMarkerOpachiMezzi,
+    ClearMarkerOpachiRichieste, ClearMarkerOpachiSC,
+    SetMarkerOpachiMezzi,
+    SetMarkerOpachiRichieste,
+    SetMarkerOpachiSC
+} from '../../actions/maps/marker-opachi.actions';
 
 export interface MarkerOpachiStateModel {
     markerOpachiId: {
         richiesteId: string[];
         mezziId: string[];
         sediId: string[];
+        schedeContattoId: string[];
     };
     stato: {
         richieste: boolean;
         mezzi: boolean;
         sedi: boolean;
+        schedeContatto: boolean;
     };
 }
 
@@ -18,12 +26,14 @@ export const MarkerOpachiStateDefaults: MarkerOpachiStateModel = {
     markerOpachiId: {
         richiesteId: [],
         mezziId: [],
-        sediId: []
+        sediId: [],
+        schedeContattoId: []
     },
     stato: {
         richieste: false,
         mezzi: false,
-        sedi: false
+        sedi: false,
+        schedeContatto: false
     }
 };
 
@@ -38,24 +48,18 @@ export class MarkerOpachiState {
         return state;
     }
 
-    constructor() {
-
-    }
-
     @Action(SetMarkerOpachiRichieste)
     setMarkerOpachiRichieste({ getState, setState }: StateContext<MarkerOpachiStateModel>, action: SetMarkerOpachiRichieste) {
         const state = getState();
         setState({
             ...state,
             markerOpachiId: {
-                richiesteId: action.payload,
-                mezziId: state.markerOpachiId.mezziId,
-                sediId: state.markerOpachiId.sediId
+                ...state.markerOpachiId,
+                richiesteId: action.payload
             },
             stato: {
-                richieste: true,
-                mezzi: state.stato.mezzi,
-                sedi: state.stato.sedi
+                ...state.stato,
+                richieste: true
             }
         });
     }
@@ -66,14 +70,12 @@ export class MarkerOpachiState {
         setState({
             ...state,
             markerOpachiId: {
-                richiesteId: [],
-                mezziId: state.markerOpachiId.mezziId,
-                sediId: state.markerOpachiId.sediId
+                ...state.markerOpachiId,
+                richiesteId: []
             },
             stato: {
-                richieste: false,
-                mezzi: state.stato.mezzi,
-                sedi: state.stato.sedi
+                ...state.stato,
+                richieste: false
             }
         });
     }
@@ -84,14 +86,12 @@ export class MarkerOpachiState {
         setState({
             ...state,
             markerOpachiId: {
-                richiesteId: state.markerOpachiId.richiesteId,
-                mezziId: action.payload,
-                sediId: state.markerOpachiId.sediId
+                ...state.markerOpachiId,
+                mezziId: action.payload
             },
             stato: {
-                richieste: state.stato.richieste,
-                mezzi: true,
-                sedi: state.stato.sedi
+                ...state.stato,
+                mezzi: true
             }
         });
     }
@@ -102,15 +102,48 @@ export class MarkerOpachiState {
         setState({
             ...state,
             markerOpachiId: {
-                richiesteId: state.markerOpachiId.richiesteId,
-                mezziId: [],
-                sediId: state.markerOpachiId.sediId
+                ...state.markerOpachiId,
+                mezziId: []
+
             },
             stato: {
-                richieste: state.stato.richieste,
-                mezzi: false,
-                sedi: state.stato.sedi
+                ...state.stato,
+                mezzi: false
             }
         });
     }
+
+    @Action(SetMarkerOpachiSC)
+    setMarkerOpachiSC({ getState, setState }: StateContext<MarkerOpachiStateModel>, action: SetMarkerOpachiSC) {
+        const state = getState();
+        setState({
+            ...state,
+            markerOpachiId: {
+                ...state.markerOpachiId,
+                schedeContattoId: action.payload
+            },
+            stato: {
+                ...state.stato,
+                schedeContatto: true
+            }
+        });
+    }
+
+    @Action(ClearMarkerOpachiSC)
+    clearMarkerOpachiSC({ getState, setState }: StateContext<MarkerOpachiStateModel>) {
+        const state = getState();
+        setState({
+            ...state,
+            markerOpachiId: {
+                ...state.markerOpachiId,
+                schedeContattoId: []
+
+            },
+            stato: {
+                ...state.stato,
+                schedeContatto: false
+            }
+        });
+    }
+
 }

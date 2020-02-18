@@ -37,6 +37,7 @@ export class TreeviewComponent implements OnChanges, OnDestroy, OnInit {
     @Input() visualizzaTasti = false;
     @Input() placement: string;
     @Input() maxHeight: number;
+    @Input() disabled: boolean;
     @Output() annullaSelezione = new EventEmitter();
     @Output() confermaSelezione = new EventEmitter<TreeviewSelezione[]>();
     @Output() patchSelezione = new EventEmitter<TreeviewEmitterInterface>();
@@ -47,7 +48,7 @@ export class TreeviewComponent implements OnChanges, OnDestroy, OnInit {
 
     config = TreeviewConfig.create({
         hasAllCheckBox: false,
-        hasFilter: true,
+        hasFilter: false,
         hasCollapseExpand: false,
         decoupleChildFromParent: false,
         maxHeight: 400

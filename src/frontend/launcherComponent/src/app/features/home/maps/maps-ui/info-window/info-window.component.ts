@@ -14,7 +14,7 @@ import { mezzoComposizioneBusy } from '../../../composizione-partenza/shared/fun
 import { SganciamentoMezzoComposizione } from '../../../store/actions/composizione-partenza/mezzi-composizione.actions';
 import { SganciamentoInterface } from 'src/app/shared/interface/sganciamento.interface';
 import { SetRichiestaById } from '../../../store/actions/richieste/richieste.actions';
-import { SchedaContattoMarker } from '../../maps-model/scheda-contatto.model';
+import { SchedaContattoMarker } from '../../maps-model/scheda-contatto-marker.model';
 
 @Component({
     selector: 'app-info-window',

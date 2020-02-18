@@ -1,97 +1,137 @@
-import { Component, Input, NgZone, OnInit } from '@angular/core';
-import { Utente } from '../../../shared/model/utente.model';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subject, Subscription } from 'rxjs';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { SediTreeviewState } from '../../../shared/store/states/sedi-treeview/sedi-treeview.state';
 import { TreeItem, TreeviewItem } from 'ngx-treeview';
 import { TreeviewSelezione } from '../../../shared/model/treeview-selezione.model';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { GestioneUtentiState } from '../store/states/gestione-utenti/gestione-utenti.state';
-import { RuoliState } from '../store/states/ruoli/ruoli.state';
-import { GetUtenti } from '../../../shared/store/actions/utenti/utenti.actions';
-import { UtentiState } from '../../../shared/store/states/utenti/utenti.state';
 import { findItem } from '../../../shared/store/states/sedi-treeview/sedi-treeview.helper';
-import { GestioneUtente } from '../../../shared/interface/gestione-utente.interface';
 import { UpdateFormValue } from '@ngxs/form-plugin';
+import { UtenteVvfInterface } from '../../../shared/interface/utente-vvf.interface';
+import { AddRuoloUtenteGestione, GetUtentiVVF } from '../store/actions/gestione-utenti/gestione-utenti.actions';
+import { Role } from '../../../shared/model/utente.model';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { wipeStringUppercase } from 'src/app/shared/helper/function';
 
 @Component({
     selector: 'app-gestione-utente-modal',
     templateUrl: './gestione-utente-modal.component.html',
     styleUrls: ['./gestione-utente-modal.component.css']
 })
-export class GestioneUtenteModalComponent implements OnInit {
+export class GestioneUtenteModalComponent implements OnInit, OnDestroy {
 
-    @Select(UtentiState.utenti) listaUtenti$: Observable<Utente[]>;
-    @Select(RuoliState.ruoli) ruoli$: Observable<any[]>;
-    @Select(SediTreeviewState.listeSediNavbar) listeSediNavbar$: Observable<TreeItem>;
-    listeSediNavbar: TreeviewItem[];
+    @Select(GestioneUtentiState.listaUtentiVVF) listaUtentiVVF$: Observable<UtenteVvfInterface[]>;
+    @Select(GestioneUtentiState.formValid) formValid$: Observable<boolean>;
+    formValid: boolean;
     @Select(GestioneUtentiState.sedeSelezionata) sediSelezionate$: Observable<TreeviewSelezione[]>;
     sediSelezionate: string;
+    @Select(SediTreeviewState.listeSediNavbar) listeSediNavbar$: Observable<TreeItem>;
+    listeSediNavbar: TreeviewItem[];
 
-    gestioneUtenteForm: FormGroup;
+    ruoli: string[] = [];
+
+    addUtenteRuoloForm: FormGroup;
+    typeahead = new Subject<string>();
+    checkboxState: { id: string, status: boolean, label: string, disabled: boolean };
+    treeviewState: { disabled: boolean };
     submitted: boolean;
 
-    utenteEdit: GestioneUtente;
-    editMode: boolean;
+    // aggiungi ruolo utente
+    codFiscaleUtenteVVF: string;
+    nominativoUtenteVVF: string;
+
+    // utenteEdit: any;
+    // detailMode: boolean;
 
     subscription: Subscription = new Subscription();
 
+
     constructor(private store: Store,
-                private modal: NgbActiveModal,
-                private fb: FormBuilder) {
-        if (!this.editMode) {
-            this.store.dispatch(new GetUtenti());
-            this.initForm();
-            this.inizializzaSediTreeview();
-            this.getSediSelezionate();
-        }
+        private modal: NgbActiveModal,
+        private fb: FormBuilder) {
+        this.initForm();
+        this.getFormValid();
+        this.checkUtenteValueChanges();
+        this.getUtentiVVF();
+        this.inizializzaSediTreeview();
+        this.getRuoli();
+        this.getSediSelezionate();
+        this.getSearchUtentiVVF();
     }
 
     initForm() {
-        this.gestioneUtenteForm = this.fb.group({
+        this.addUtenteRuoloForm = new FormGroup({
+            utente: new FormControl(),
+            sedi: new FormControl(),
+            soloDistaccamenti: new FormControl(),
+            ruolo: new FormControl()
+        });
+        this.addUtenteRuoloForm = this.fb.group({
             utente: [null, Validators.required],
             sedi: [null, Validators.required],
+            soloDistaccamenti: [false],
             ruolo: [null, Validators.required]
         });
+        // Init disabled input
+        this.checkboxState = { id: 'soloDistaccamenti', status: this.f.soloDistaccamenti.value, label: 'Solo Distaccamenti', disabled: true };
+        this.treeviewState = { disabled: true };
+        this.f.ruolo.disable();
     }
 
     ngOnInit(): void {
-        if (this.editMode) {
-            this.store.dispatch(new GetUtenti());
-            this.patchEditForm();
-            this.initPatchedForm();
-            this.inizializzaSediTreeview();
-            this.getSediSelezionate();
+        if (this.codFiscaleUtenteVVF) {
+            this.f.utente.patchValue(this.codFiscaleUtenteVVF);
+            this.f.utente.clearValidators();
+            this.store.dispatch(new UpdateFormValue({
+                value: {
+                    ...this.addUtenteRuoloForm.value,
+                    'utente': this.codFiscaleUtenteVVF
+                },
+                path: 'gestioneUtenti.addUtenteRuoloForm'
+            }));
         }
     }
 
-    initPatchedForm() {
-        this.gestioneUtenteForm = this.fb.group({
-            utente: [this.utenteEdit.id, Validators.required],
-            sedi: [null, Validators.required],
-            ruolo: [this.utenteEdit.ruolo, Validators.required]
-        });
+    ngOnDestroy(): void {
+        this.subscription.unsubscribe();
+        // this.store.dispatch(new UpdateFormValue({
+        //     value: null,
+        //     path: 'gestioneUtenti.addUtenteRuoloForm'
+        // }));
+        // this.store.dispatch(new SetFormEnabled('gestioneUtenti.addUtenteRuoloForm'));
+        // this.store.dispatch(new ClearUtentiVVF());
     }
 
-    patchEditForm() {
-        this.store.dispatch(new UpdateFormValue({
-            value: {
-                utente: this.utenteEdit.id,
-                ruolo: this.utenteEdit.ruolo
-            },
-            path: 'gestioneUtenti.nuovoUtenteForm'
-        }));
+    getFormValid() {
+        this.subscription.add(
+            this.formValid$.subscribe((valid: boolean) => {
+                this.formValid = valid;
+            })
+        );
     }
+
+    // patchDetailForm() {
+    //     this.store.dispatch(new UpdateFormValue({
+    //         value: {
+    //             ruolo: this.utenteEdit.ruolo.desc
+    //         },
+    //         path: 'gestioneUtenti.addUtenteRuoloForm'
+    //     }));
+    // }
 
     get f() {
-        return this.gestioneUtenteForm.controls;
+        return this.addUtenteRuoloForm.controls;
     }
 
     inizializzaSediTreeview() {
         this.subscription.add(
             this.listeSediNavbar$.subscribe((listaSedi: TreeItem) => {
                 this.listeSediNavbar = [];
+                // if (this.detailMode) {
+                //    listaSedi.disabled = true;
+                // }
                 this.listeSediNavbar[0] = new TreeviewItem(listaSedi);
             })
         );
@@ -99,8 +139,6 @@ export class GestioneUtenteModalComponent implements OnInit {
 
     onPatchSedi(event: TreeviewSelezione[]) {
         this.f.sedi.patchValue(event);
-        console.log('Patch Sedi', event);
-        console.log('Sedi Selezionate', this.f.sedi.value);
     }
 
     getSediSelezionate() {
@@ -126,42 +164,62 @@ export class GestioneUtenteModalComponent implements OnInit {
         );
     }
 
+    getUtentiVVF(search?: string) {
+        if (search && search.length >= 3) {
+            this.store.dispatch(new GetUtentiVVF(search));
+        }
+    }
+
+    getSearchUtentiVVF() {
+        this.typeahead.pipe(
+            distinctUntilChanged(),
+            debounceTime(500)
+        ).subscribe((term) => {
+            this.getUtentiVVF(term);
+        });
+    }
+
+    getRuoli() {
+        Object.values(Role).forEach((role: string) => {
+            this.ruoli.push(wipeStringUppercase(role));
+        });
+    }
+
+    setOnlyDistaccamentiValue(value: { id: string, status: boolean }) {
+        this.checkboxState.status = value.status;
+        this.f[value.id].patchValue(value.status);
+        this.store.dispatch(new UpdateFormValue({
+            value: {
+                ...this.addUtenteRuoloForm.value,
+                'soloDistaccamenti': value.status
+            },
+            path: 'gestioneUtenti.addUtenteRuoloForm'
+        }));
+    }
+
+    checkUtenteValueChanges() {
+        this.f.utente.valueChanges.subscribe((value: any) => {
+            if (value) {
+                this.checkboxState.disabled = false;
+                this.treeviewState.disabled = false;
+                this.f.ruolo.enable();
+            } else {
+                this.checkboxState.disabled = true;
+                this.treeviewState.disabled = true;
+                this.f.ruolo.disable();
+            }
+        });
+    }
+
     onConferma() {
         this.submitted = true;
 
-        if (this.gestioneUtenteForm.invalid) {
+        if (!this.formValid) {
             return;
         }
 
-        console.log(this.gestioneUtenteForm.value);
-
-        //     let utente: Utente;
-        //     // let sede: Sede;
-        //
-        //     utente = this.utenti.find(value => value.id === this.idUtenteSelezionato);
-        //     const nomeCognome = utente.cognome.split(' ');
-        //     // sede = this.sedi.find(value => value.codice === this.codiceSedeSelezionata);
-        //
-        //     // console.log('Sedi selezionate', this.sediSelezionateTreeview);
-        //     const nuovoRuolo = {
-        //         id_utente: utente.id,
-        //         nome: nomeCognome[0],
-        //         cognome: nomeCognome[1],
-        //         ruolo: this.ruoloSelezionato,
-        //         sede: this.sediSelezionateTreeview
-        //     };
-        //     console.log('Ruolo da inserire', nuovoRuolo);
-        //
-        // this.modal.close([
-        //     'ok',
-        //     {
-        //         id_utente: utente.id,
-        //         nome: nomeCognome[0],
-        //         cognome: nomeCognome[1],
-        //         ruolo: this.ruoloSelezionato,
-        //         sede: sede
-        //     }
-        // ]);
+        this.store.dispatch(new AddRuoloUtenteGestione());
+        // this.modal.close({ success: true });
     }
 
     closeModal(type: string) {

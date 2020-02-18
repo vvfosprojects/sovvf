@@ -46,6 +46,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SO115App.Persistence.MongoD
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SO115App.Persistence.MongoDB.Test", "SO115App.Persistence.MongoDB.Test\SO115App.Persistence.MongoDB.Test.csproj", "{2F4AD395-F933-4E68-8EE9-53B961B03EAB}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C1A254C5-4745-4A76-8175-33F0B8822362}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
+EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SO115App.Persistence.Oracle.Test", "SO115App.Persistence.Oracle.Test\SO115App.Persistence.Oracle.Test.csproj", "{58820647-3D33-449F-8815-5354B3DEB195}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SO115App.API.Oracle", "SO115App.API.Oracle\SO115App.API.Oracle.csproj", "{2CBA8ED2-53D4-4DC1-A30E-3DECFE00B5F1}"

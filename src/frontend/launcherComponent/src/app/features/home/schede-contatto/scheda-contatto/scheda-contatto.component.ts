@@ -16,13 +16,17 @@ export class SchedaContattoComponent implements OnChanges {
     @Input() editSchedaContatto: boolean;
     @Input() schedeContattoSelezionate: string[];
     @Input() classificazione: ClassificazioneSchedaContatto;
+    @Input() idVisualizzati: string[];
+    @Input() idCollapsed: string[];
     @Output() hoverIn = new EventEmitter<string>();
     @Output() hoverOut = new EventEmitter();
-    @Output() dettaglioScheda = new EventEmitter<SchedaContatto>();
+    @Output() dettaglioScheda = new EventEmitter<string>();
     @Output() setSchedaContattoTelefonata = new EventEmitter<SchedaContatto>();
     @Output() setSchedaContattoGestita = new EventEmitter<boolean>();
     @Output() editSelezionata = new EventEmitter<CheckboxInterface>();
     @Output() checkBoxError = new EventEmitter();
+    @Output() collapsed = new EventEmitter<string>();
+    @Output() undoRaggruppamento = new EventEmitter<string>();
 
     btnLetta = { type: '', tooltip: '' };
     btnGestita = { type: '', tooltip: '' };
@@ -38,7 +42,7 @@ export class SchedaContattoComponent implements OnChanges {
                 this.btnLetta = { type: 'btn-primary', tooltip: 'Segna come "Letta"' };
             }
             if (changes.scheda.currentValue.gestita) {
-                this.btnGestita = { type: 'btn-outline-warning', tooltip: 'Segna come "Non Gestita"' };
+                this.btnGestita = { type: 'btn-outline-warning btn-gestita', tooltip: 'Segna come "Non Gestita"' };
             } else {
                 this.btnGestita = { type: 'btn-warning', tooltip: 'Segna come "Gestita"' };
             }
@@ -69,10 +73,6 @@ export class SchedaContattoComponent implements OnChanges {
         return _returnClass;
     }
 
-    getPrioritaIconClass() {
-        return this.scheda.priorita === Priorita.Altissima ? 'fa fa-exclamation-triangle text-danger' : 'fa fa-exclamation-circle text-muted';
-    }
-
     checkDisabled() {
         if (this.scheda) {
             if (!this.classificazione) {
@@ -99,5 +99,13 @@ export class SchedaContattoComponent implements OnChanges {
         console.log('click checkbox', $event);
         $event.object = this.scheda;
         this.editSelezionata.emit($event);
+    }
+
+    onCollapse() {
+        this.collapsed.emit(this.scheda.codiceScheda);
+    }
+
+    onUndoRaggruppamento() {
+        this.undoRaggruppamento.emit(this.scheda.codiceScheda);
     }
 }

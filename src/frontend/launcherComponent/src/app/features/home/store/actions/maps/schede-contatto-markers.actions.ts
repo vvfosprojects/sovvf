@@ -1,10 +1,19 @@
-import { SchedaContattoMarker } from '../../../maps/maps-model/scheda-contatto.model';
-import { SchedaContatto } from '../../../../../shared/interface/scheda-contatto.interface';
+import { SchedaContattoMarker } from '../../../maps/maps-model/scheda-contatto-marker.model';
+import { AreaMappa } from '../../../maps/maps-model/area-mappa-model';
+import { FiltroSchedeContatto } from '../../../maps/maps-model/filtro-schede-contatto';
+import { ClassificazioneSchedaContatto } from '../../../../../shared/enum/classificazione-scheda-contatto.enum';
+
+export class GetSchedeContattoMarkers {
+    static readonly type = '[Schede Contatto Marker] Get Schede Contatto Marker';
+
+    constructor(public areaMappa: AreaMappa, public filtri?: FiltroSchedeContatto) {
+    }
+}
 
 export class SetSchedeContattoMarkers {
     static readonly type = '[Schede Contatto Marker] Set Schede Contatto Marker';
 
-    constructor(public schedeContatto: SchedaContatto[]) {
+    constructor(public schedeContatto: SchedaContattoMarker[]) {
     }
 }
 
@@ -48,6 +57,20 @@ export class SetSchedaContattoMarkerById {
     static readonly type = '[Schede Contatto Marker] Set Schede Contatto Marker by ID';
 
     constructor(public id?: string) {
+    }
+}
+
+export class ToggleOpacitaSchedeContattoMarkers {
+    static readonly type = '[Schede Contatto Marker] Toggle Opacità Schede Contatto Marker';
+
+    constructor(public toggle: boolean, public stato?: ClassificazioneSchedaContatto) {
+    }
+}
+
+export class SetTipoOpacitaSchedeContattoMarkers {
+    static readonly type = '[Schede Contatto Marker] Set Tipo Opacità Schede Contatto Marker';
+
+    constructor(public stato: ClassificazioneSchedaContatto) {
     }
 }
 

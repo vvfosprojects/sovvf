@@ -29,6 +29,8 @@ using SO115App.Models.Servizi.Infrastruttura.Notification.ComposizionePartenza;
 using System.Linq;
 using System.Threading.Tasks;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza;
+using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
+using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
 
 namespace SO115App.SignalR.Sender.ComposizionePartenza
 {
@@ -41,6 +43,7 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
         private readonly IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> _sintesiRichiesteAssistenzaMarkerhandler;
         private readonly IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> _sintesiRichiesteHandler;
         private readonly IMapper _mapper;
+        private readonly IGetTipologieByCodice _getTipologieByCodice;
 
         public NotificationConfermaPartenze(IHubContext<NotificationHub> notificationHubContext,
             IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> boxRichiestehandler,
@@ -48,7 +51,7 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
             IQueryHandler<BoxPersonaleQuery, BoxPersonaleResult> boxPersonalehandler,
             IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> sintesiRichiesteAssistenzaMarkerhandler,
             IMapper mapper,
-            IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> sintesiRichiesteHandler)
+            IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> sintesiRichiesteHandler, IGetTipologieByCodice getTipologieByCodice)
         {
             _notificationHubContext = notificationHubContext;
             _boxRichiestehandler = boxRichiestehandler;
@@ -57,11 +60,12 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
             _sintesiRichiesteAssistenzaMarkerhandler = sintesiRichiesteAssistenzaMarkerhandler;
             _mapper = mapper;
             _sintesiRichiesteHandler = sintesiRichiesteHandler;
+            _getTipologieByCodice = getTipologieByCodice;
         }
 
         public async Task SendNotification(ConfermaPartenzeCommand conferma)
         {
-            var mapper = new MapperRichiestaAssistenzaSuSintesi(_mapper);
+            var mapper = new MapperRichiestaAssistenzaSuSintesi(_mapper, _getTipologieByCodice);
             const bool notificaChangeState = true;
 
             var richiesta = conferma.ConfermaPartenze.richiesta;
@@ -75,12 +79,19 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
                 CodiceSede = conferma.ConfermaPartenze.CodiceSede
             };
             var boxPersonaleQuery = new BoxPersonaleQuery();
-            var sintesiRichiesteQuery = new SintesiRichiesteAssistenzaQuery();
+            var sintesiRichiesteAssistenzaQuery = new SintesiRichiesteAssistenzaQuery
+            {
+                Filtro = new FiltroRicercaRichiesteAssistenza
+                {
+                    idOperatore = conferma.ConfermaPartenze.IdOperatore
+                }
+            };
+
             var sintesiRichiesteAssistenzaMarkerQuery = new SintesiRichiesteAssistenzaMarkerQuery();
             var boxInterventi = _boxRichiestehandler.Handle(boxRichiesteQuery).BoxRichieste;
             var boxMezzi = _boxMezzihandler.Handle(boxMezziQuery).BoxMezzi;
             var boxPersonale = _boxPersonalehandler.Handle(boxPersonaleQuery).BoxPersonale;
-            var sintesiRichieste = _sintesiRichiesteHandler.Handle(sintesiRichiesteQuery).SintesiRichiesta;
+            var sintesiRichieste = _sintesiRichiesteHandler.Handle(sintesiRichiesteAssistenzaQuery).SintesiRichiesta;
             var listaSintesiMarker = _sintesiRichiesteAssistenzaMarkerhandler.Handle(sintesiRichiesteAssistenzaMarkerQuery).SintesiRichiestaMarker;
 
             conferma.ConfermaPartenze.Chiamata = sintesi;

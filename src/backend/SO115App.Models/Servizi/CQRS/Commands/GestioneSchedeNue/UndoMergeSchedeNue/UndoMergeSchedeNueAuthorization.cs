@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="SetSchedaLettaAuthorization.cs" company="CNVVF">
+// <copyright file="UndoMergeSchedeNueAuthorization.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -20,21 +20,23 @@
 using CQRS.Authorization;
 using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.Models.Classi.Utility;
+using System;
 using System.Collections.Generic;
 using System.Security.Principal;
+using System.Text;
 
-namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSchedeNue.SetSchedaLetta
+namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSchedeNue.UndoMergeSchedeNue
 {
-    internal class SetSchedaLettaAuthorization
+    internal class UndoMergeSchedeNueAuthorization
     {
         private readonly IPrincipal _currentUser;
 
-        public SetSchedaLettaAuthorization(IPrincipal currentUser)
+        public UndoMergeSchedeNueAuthorization(IPrincipal currentUser)
         {
-            _currentUser = currentUser;
+            this._currentUser = currentUser;
         }
 
-        public IEnumerable<AuthorizationResult> Authorize(SetSchedaLettaCommand command)
+        public IEnumerable<AuthorizationResult> Authorize(UndoMergeSchedeNueCommand command)
         {
             var username = _currentUser.Identity.Name;
             var user = Utente.FindUserByUsername(username);

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using SO115App.ExternalAPI.Fake.Classi.DTOOracle;
 using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Competenze;
@@ -46,13 +47,14 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.CompetenzeMapper
 
             responseElenco.EnsureSuccessStatusCode();
             using HttpContent content = responseElenco.Content;
-            var ElencoCompetenze = await content.ReadAsAsync<List<ORACompetenzeElenco>>().ConfigureAwait(false);
-
+            var data = await content.ReadAsStringAsync().ConfigureAwait(false);
+            var listaCompetenzaElenco = JsonConvert.DeserializeObject<List<ORACompetenzeElenco>>(data);
             responseZone.EnsureSuccessStatusCode();
             using HttpContent contentZone = responseZone.Content;
-            var ElencoZoneCompetenze = await content.ReadAsAsync<List<ORACompetenzeZone>>().ConfigureAwait(false);
+            var dataZone = await content.ReadAsStringAsync().ConfigureAwait(false);
+            var listaCompetenzeZone = JsonConvert.DeserializeObject<List<ORACompetenzeZone>>(dataZone);
 
-            return MapOraInMongo(ElencoCompetenze, ElencoZoneCompetenze);
+            return MapOraInMongo(listaCompetenzaElenco, listaCompetenzeZone);
         }
 
         private List<CompetenzeRichiesta> MapOraInMongo(List<ORACompetenzeElenco> elencoCompetenze, List<ORACompetenzeZone> elencoZoneCompetenze)

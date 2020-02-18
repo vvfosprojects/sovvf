@@ -15,7 +15,7 @@ export class ChiamataService {
     constructor(private http: HttpClient) {
     }
 
-    public insertChiamata(chiamata: SintesiRichiesta): Observable<any> {
+    public insertChiamata(chiamata: SintesiRichiesta): Observable<SintesiRichiesta> {
         return this.http.post<SintesiRichiesta>(`${API_CHIAMATA}/Add`, chiamata).pipe(
             // retry(3),
             catchError(handleError)

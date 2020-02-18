@@ -18,6 +18,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.ExternalAPI.Fake.Classi;
 using SO115App.ExternalAPI.Fake.Classi.Gac;
@@ -63,7 +64,8 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
             var response = await _client.GetAsync($"{_configuration.GetSection("UrlExternalApi").GetSection("GacApi").Value}{Costanti.GacGetMezziUtilizzabili}?codiciSedi={listaSedi}&genereMezzo={genereMezzo}&codiceMezzo={codiceMezzo}").ConfigureAwait(false);
             response.EnsureSuccessStatusCode();
             using HttpContent content = response.Content;
-            var listaMezziDTO = await content.ReadAsAsync<List<MezzoDTO>>().ConfigureAwait(false);
+            var dati = await content.ReadAsStringAsync().ConfigureAwait(false);
+            var listaMezziDTO = JsonConvert.DeserializeObject<List<MezzoDTO>>(dati);
 
             return _mapper.MappaMezzoDTOsuMezzo(listaMezziDTO);
         }

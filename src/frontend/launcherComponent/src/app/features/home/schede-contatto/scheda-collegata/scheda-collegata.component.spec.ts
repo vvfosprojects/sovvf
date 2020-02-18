@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RicercaGroupComponent } from './ricerca-group.component';
+import { SchedaCollegataComponent } from './scheda-collegata.component';
 
-describe('RicercaGroupComponent', () => {
-  let component: RicercaGroupComponent;
-  let fixture: ComponentFixture<RicercaGroupComponent>;
+describe('SchedaCollegataComponent', () => {
+  let component: SchedaCollegataComponent;
+  let fixture: ComponentFixture<SchedaCollegataComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ RicercaGroupComponent ]
+      declarations: [ SchedaCollegataComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(RicercaGroupComponent);
+    fixture = TestBed.createComponent(SchedaCollegataComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

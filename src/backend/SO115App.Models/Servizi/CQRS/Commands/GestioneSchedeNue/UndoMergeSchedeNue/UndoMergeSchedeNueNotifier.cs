@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="SetSchedaLettaNotifier.cs" company="CNVVF">
+// <copyright file="UndoMergeSchedeNueNotifier.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -19,19 +19,28 @@
 //-----------------------------------------------------------------------
 using CQRS.Commands.Notifiers;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneSchedeContatto;
+using System;
 
-namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSchedeNue.SetSchedaLetta
+namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSchedeNue.UndoMergeSchedeNue
 {
-    public class SetSchedaLettaNotifier : ICommandNotifier<SetSchedaLettaCommand>
+    /// <summary>
+    ///   classe che si occupa di mandare la notifica dell'avvenuto undo dei merge e rimanda la
+    ///   lista aggiornata
+    /// </summary>
+    internal class UndoMergeSchedeNueNotifier : ICommandNotifier<UndoMergeSchedeNueCommand>
     {
-        private readonly INotificationSetSchedaLetta _sender;
+        private readonly INotificationUndoMergeSchedeNue _sender;
 
-        public SetSchedaLettaNotifier(INotificationSetSchedaLetta sender)
+        public UndoMergeSchedeNueNotifier(INotificationUndoMergeSchedeNue sender)
         {
             _sender = sender;
         }
 
-        public void Notify(SetSchedaLettaCommand command)
+        /// <summary>
+        ///   metodo della classe che invia la notifica
+        /// </summary>
+        /// <param name="command"></param>
+        public void Notify(UndoMergeSchedeNueCommand command)
         {
             _sender.SendNotification(command);
         }

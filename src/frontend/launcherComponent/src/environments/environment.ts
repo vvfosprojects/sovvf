@@ -21,9 +21,10 @@ export const environment = {
             confermaPartenze: '/api/ConfermaPartenze',
             prenotazione: 'api/PrenotazioneMezzo'
         },
-        chiamata: '/api/Chiamata/',
-        utentiGestione: '/api/UtentiGestione',
+        chiamata: '/api/Chiamata',
         utenti: '/api/Utenti',
+        gestioneUtenti: '/api/GestioneUtenti',
+        personaleVVF: '/api/PersonaleVVF',
         auth: '/api/Auth',
         navbar: '/api/Navbar',
         meteo: 'http://api.openweathermap.org/data/2.5/weather?'

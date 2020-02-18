@@ -144,10 +144,12 @@ export class RichiesteState {
             })
         );
         if (state.chiamataInviaPartenza) {
-            if (richiesta && richiesta.id === state.chiamataInviaPartenza) {
-                setTimeout(() => {
-                    dispatch(new StartInviaPartenzaFromChiamata(richiesta));
-                });
+            /**
+             * controllo che ci sia in pending una chiamata appena inserita da farci una composizione partenza
+             */
+            if (richiesta && richiesta.codice === state.chiamataInviaPartenza) {
+                console.log('Codice trovato:', richiesta.codice);
+                dispatch(new StartInviaPartenzaFromChiamata(richiesta));
             }
         }
     }
@@ -163,10 +165,15 @@ export class RichiesteState {
     }
 
     @Action(SetIdChiamataInviaPartenza)
-    setIdChiamataInviaPartenza({ patchState }: StateContext<RichiesteStateModel>, action: SetIdChiamataInviaPartenza) {
+    setIdChiamataInviaPartenza({ getState, patchState, dispatch }: StateContext<RichiesteStateModel>, action: SetIdChiamataInviaPartenza) {
+        const state = getState();
         patchState({
             chiamataInviaPartenza: action.chiamataInviaPartenza
         });
+        const chiamataInviaPartenza = state.richieste.filter( value => value.codice === action.chiamataInviaPartenza);
+        if (chiamataInviaPartenza.length === 1) {
+            dispatch(new StartInviaPartenzaFromChiamata(chiamataInviaPartenza[0]));
+        }
     }
 
     @Action(ClearIdChiamataInviaPartenza)
@@ -179,10 +186,10 @@ export class RichiesteState {
     @Action(StartInviaPartenzaFromChiamata)
     startInviaPartenzaFromChiamata({ dispatch, patchState }: StateContext<RichiesteStateModel>, action: StartInviaPartenzaFromChiamata) {
         dispatch([
+            new ClearIdChiamataInviaPartenza(),
             new ToggleComposizione(Composizione.Avanzata),
             new SetMarkerRichiestaSelezionato(action.richiesta.id),
-            new RichiestaComposizione(action.richiesta),
-            new ClearIdChiamataInviaPartenza()
+            new RichiestaComposizione(action.richiesta)
         ]);
     }
 

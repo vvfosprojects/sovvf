@@ -19,13 +19,14 @@ import { MeteoMarkersState } from '../../store/states/maps/meteo-markers.state';
 import { AppFeatures } from '../../../../shared/enum/app-features.enum';
 import { MouseE } from '../../../../shared/enum/mouse-e.enum';
 import { MapsDirectionState } from '../../store/states/maps/maps-direction.state';
-import { markerColor, markerColorRichiesta } from '../../../../shared/helper/function-colori';
+import { markerColor, markerColorRichiesta, markerColorSC } from '../../../../shared/helper/function-colori';
 import { StatoRichiesta } from '../../../../shared/enum/stato-richiesta.enum';
 import { makeAreaMappa, makeCentroMappa, makeCoordinate, wipeStatoRichiesta } from '../../../../shared/helper/function';
 import { MapsButtonsState } from '../../store/states/maps/maps-buttons.state';
 import { ButtonControlAnimation, CustomButtonsMaps } from '../maps-interface/maps-custom-buttons';
 import { MapsOptionsInterface } from '../../../../core/settings/maps-options';
-import { SchedaContattoMarker } from '../maps-model/scheda-contatto.model';
+import { SchedaContattoMarker } from '../maps-model/scheda-contatto-marker.model';
+import { ClassificazioneSchedaContatto } from '../../../../shared/enum/classificazione-scheda-contatto.enum';
 
 declare var google: any;
 
@@ -166,10 +167,12 @@ export class AgmComponent implements OnDestroy {
         return this.markerService.zIndex(id, tipoMarker, rilevante, rilevanzaStArCu);
     }
 
+    // Todo da togliere
     isClicked(id: string, tipoMarker: string): boolean {
         return this.markerService.isClicked(id, tipoMarker);
     }
 
+    // Todo da togliere
     isHovered(id: string, tipoMarker: string): boolean {
         return this.markerService.isHovered(id, tipoMarker);
     }
@@ -196,6 +199,7 @@ export class AgmComponent implements OnDestroy {
         return this.markerService.isSelfClicked(id, tipoMarker);
     }
 
+    // Todo da togliere
     isVisible(tipoMarker: string): boolean {
         return this.markerService.isVisible(tipoMarker);
     }
@@ -256,7 +260,8 @@ export class AgmComponent implements OnDestroy {
         /**
          * ritorno l'url dell'icona del marker scheda contatto
          */
-        return this.markerService.iconaSchedaContattoMarker(schedaContatto.schedaContatto.classificazione);
+        const checkGestita = schedaContatto.gestita ? '-g' : '';
+        return this.markerService.iconaSchedaContattoMarker(schedaContatto.classificazione + checkGestita);
     }
 
     actionRichiestaMarker(id: string, event: MouseE): void {
@@ -300,6 +305,10 @@ export class AgmComponent implements OnDestroy {
 
     colorWindowRichiesta(stato: StatoRichiesta): string {
         return markerColorRichiesta(stato);
+    }
+
+    colorWindowSC(stato: ClassificazioneSchedaContatto): string {
+        return markerColorSC(stato);
     }
 
     wipeStatoRichiesta(statoEnum: StatoRichiesta): string {

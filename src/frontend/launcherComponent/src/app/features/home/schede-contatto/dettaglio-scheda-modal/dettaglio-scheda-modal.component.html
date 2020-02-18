@@ -1,4 +1,4 @@
-<div class="modal-header bg-light">
+<div class="modal-header" [ngClass]="{'gestita': schedaContatto.gestita, 'bg-light': !schedaContatto.gestita}">
     <h4 class="mb-0">
         <span class="d-inline-block mr-3">
             <i class="fa fa-info-circle mr-1"></i>

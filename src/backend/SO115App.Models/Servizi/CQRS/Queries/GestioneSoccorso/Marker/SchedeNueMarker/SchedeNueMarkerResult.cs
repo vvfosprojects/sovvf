@@ -17,12 +17,10 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using SO115App.Models.Classi.ServiziEsterni.NUE;
 using System.Collections.Generic;
-using SO115App.API.Models.Classi.Condivise;
-using SO115App.Models.Classi.Marker;
-using SO115App.Models.Classi.NUE;
 
-namespace SO115App.API.Models.Servizi.CQRS.Queries.Marker.SchedeNueMarker
+namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.Marker.SchedeNueMarker
 {
     /// <summary>
     ///   DTO di output
@@ -32,9 +30,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.Marker.SchedeNueMarker
         /// <summary>
         ///   La sintesi delle richieste di assistenza
         /// </summary>
-        public IEnumerable<SchedaContatto> ListaSchedeMarker
+        public IEnumerable<SchedaContattoMarker> ListaSchedeMarker
         { get; set; }
-
-        public IEnumerable<System.Linq.IGrouping<Coordinate, SchedaContatto>> ListaGruppiSchedeMarker { get; set; }
     }
 }

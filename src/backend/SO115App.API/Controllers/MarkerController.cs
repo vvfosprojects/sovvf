@@ -25,9 +25,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SO115App.API.Models.Classi.Geo;
 using SO115App.API.Models.Servizi.CQRS.Queries.Marker.MezziMarker;
-using SO115App.API.Models.Servizi.CQRS.Queries.Marker.SchedeNueMarker;
 using SO115App.API.Models.Servizi.CQRS.Queries.Marker.SediMarker;
 using SO115App.API.Models.Servizi.CQRS.Queries.Marker.SintesiRichiesteAssistenzaMarker;
+using SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.Marker.SchedeNueMarker;
 
 namespace SO115App.API.Controllers
 {
@@ -122,8 +122,8 @@ namespace SO115App.API.Controllers
         /// <summary>
         ///   Metodo che restituisce i marker di tutti i mezzi in un quadrante
         /// </summary>
-        [HttpPost("GetSchedeNue")]
-        public async Task<IActionResult> GetSchedeNue(AreaMappa filtroCentroMappa)
+        [HttpPost("GetSchedeContatto")]
+        public async Task<IActionResult> GetSchedeContatto(AreaMappa filtroCentroMappa)
         {
             filtroCentroMappa.CodiceSede = new List<string>
             {

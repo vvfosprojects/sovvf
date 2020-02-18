@@ -407,7 +407,15 @@ namespace SO115App.API.Models.Classi.Soccorso
         {
             get
             {
-                return this.IstanteChiusura.HasValue;
+                var ultimoEventoChiusura = this._eventi.LastOrDefault() is ChiusuraRichiesta;
+                if (ultimoEventoChiusura)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
         }
 

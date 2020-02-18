@@ -2,6 +2,7 @@ import { SchedaContatto } from 'src/app/shared/interface/scheda-contatto.interfa
 import { VoceFiltro } from '../../../filterbar/ricerca-group/filtri-richieste/voce-filtro.model';
 import { ContatoriSchedeContatto } from '../../../../../shared/interface/contatori-schede-contatto.interface';
 import { RangeSchedeContattoEnum } from '../../../../../shared/enum/range-schede-contatto';
+import { ClassificazioneSchedaContatto } from '../../../../../shared/enum/classificazione-scheda-contatto.enum';
 
 export class SetContatoriSchedeContatto {
     static readonly type = '[Schede Contatto] Set Contatori Schede Contatto';
@@ -21,6 +22,10 @@ export class SetListaSchedeContatto {
     }
 }
 
+export class GeneraListaSchedeContatto {
+    static readonly type = '[Schede Contatto] Genera Lista Schede Contatto';
+}
+
 export class ClearListaSchedeContatto {
     static readonly type = '[Schede Contatto] Clear Lista Schede Contatto';
 }
@@ -29,6 +34,13 @@ export class UpdateSchedaContatto {
     static readonly type = '[Schede Contatto] Update Scheda Contatto';
 
     constructor(public schedaContatto: SchedaContatto) {
+    }
+}
+
+export class InsertSchedeContatto {
+    static readonly type = '[Schede Contatto] Update Scheda Contatto';
+
+    constructor(public schedaContatto: SchedaContatto[]) {
     }
 }
 
@@ -115,5 +127,37 @@ export class SaveMergeSchedeContatto {
     static readonly type = '[Schede Contatto] Save Merge Schede Contatto';
 
     constructor(public schedeSelezionateId: string[]) {
+    }
+}
+
+export class UndoMergeSchedeContatto {
+    static readonly type = '[Schede Contatto] Undo Merge Schede Contatto';
+
+    constructor(public codiceScheda: string) {
+    }
+}
+
+export class SetTabAttivo {
+    static readonly type = '[Schede Contatto] Set Tab Attivo';
+
+    constructor(public tabAttivo: ClassificazioneSchedaContatto) {
+    }
+}
+
+export class SetIdVisualizzati {
+    static readonly type = '[Schede Contatto] Set Id Visualizzati';
+}
+
+export class ToggleCollapsed {
+    static readonly type = '[Schede Contatto] Toggle Collapsed';
+
+    constructor(public codiceScheda: string) {
+    }
+}
+
+export class OpenDetailSC {
+    static readonly type = '[Schede Contatto] Open Detail';
+
+    constructor(public codiceScheda: string) {
     }
 }

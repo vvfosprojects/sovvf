@@ -22,7 +22,6 @@ import { GestioneUtentiRouting } from './gestione-utenti.routing';
 /**
  * Module
  */
-import { PipeModule } from '../../shared/pipes/pipe.module';
 import { SharedModule } from '../../shared/shared.module';
 import { UiSwitchModule } from 'ngx-ui-switch';
 /**
@@ -41,8 +40,6 @@ import { GestioneUtentiState } from './store/states/gestione-utenti/gestione-ute
 import { UtentiState } from '../../shared/store/states/utenti/utenti.state';
 import { RuoliState } from './store/states/ruoli/ruoli.state';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { PermessiService } from '../../core/service/permessi-service/permessi-service.service';
-import { PermessiServiceFake } from '../../core/service/permessi-service/permessi.service.fake';
 import { NgxsFormPluginModule } from '@ngxs/form-plugin';
 
 
@@ -58,7 +55,6 @@ import { NgxsFormPluginModule } from '@ngxs/form-plugin';
         FilterPipeModule,
         SharedModule,
         TreeviewModule.forRoot(),
-        PipeModule.forRoot(),
         SharedModule.forRoot(),
         UiSwitchModule.forRoot(null),
         NgxsModule.forFeature(
@@ -74,9 +70,8 @@ import { NgxsFormPluginModule } from '@ngxs/form-plugin';
     ],
     entryComponents: [GestioneUtenteModalComponent, ConfirmModalComponent],
     providers: [
-        { provide: GestioneUtentiService, useClass: GestioneUtentiServiceFake },
-        { provide: RuoliService, useClass: RuoliServiceFake },
-        { provide: PermessiService, useClass: PermessiServiceFake }
+        // { provide: GestioneUtentiService, useClass: GestioneUtentiServiceFake },
+        { provide: RuoliService, useClass: RuoliServiceFake }
     ]
 })
 export class GestioneUtentiModule {

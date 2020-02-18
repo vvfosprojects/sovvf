@@ -1,33 +1,41 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
-import { GestioneUtente } from '../../../../../shared/interface/gestione-utente.interface';
 import {
-    AddUtente,
-    UpdateUtenteGestione,
+    AddRuoloUtenteGestione,
+    ClearUtentiVVF,
     GetUtentiGestione,
+    GetUtentiVVF,
+    RemoveRuoloUtente,
     RemoveUtente,
     SetUtentiGestione,
-    OpenModalRemoveUtente, GetUtenteDetail, SetUtenteDetail, ClearUtenteDetail
+    SetUtentiVVF,
+    ClearDataModalAddUtenteModal
 } from '../../actions/gestione-utenti/gestione-utenti.actions';
-import { GestioneUtentiService } from '../../../../../core/service/gestione-utenti-service/gestione-utenti.service';
-import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
-import { ToastrType } from '../../../../../shared/enum/toastr';
-import { insertItem, patch, updateItem } from '@ngxs/store/operators';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgZone } from '@angular/core';
-import { ConfirmModalComponent } from '../../../../../shared';
 import { RicercaUtentiState } from '../ricerca-utenti/ricerca-utenti.state';
 import { PatchPagination } from '../../../../../shared/store/actions/pagination/pagination.actions';
 import { ResponseInterface } from '../../../../../shared/interface/response.interface';
 import { TreeviewSelezione } from '../../../../../shared/model/treeview-selezione.model';
+import { Utente } from '../../../../../shared/model/utente.model';
+import { insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
+import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
+import { ToastrType } from '../../../../../shared/enum/toastr';
+import { GestioneUtentiService } from '../../../../../core/service/gestione-utenti-service/gestione-utenti.service';
+import { UtenteVvfInterface } from '../../../../../shared/interface/utente-vvf.interface';
+import { AddRuoloUtenteInterface } from '../../../../../shared/interface/add-ruolo-utente.interface';
+import { UpdateFormValue, SetFormEnabled } from '@ngxs/form-plugin';
+import { PaginationState } from '../../../../../shared/store/states/pagination/pagination.state';
 
 export interface GestioneUtentiStateModel {
-    listaUtenti: GestioneUtente[];
-    utenteDetail: GestioneUtente;
-    nuovoUtenteForm: {
+    listaUtentiVVF: UtenteVvfInterface[];
+    listaUtenti: Utente[];
+    utenteDetail: Utente;
+    addUtenteRuoloForm: {
         model?: {
             utente: string;
             ruolo: string;
-            sedi: TreeviewSelezione[]
+            sedi: TreeviewSelezione[];
+            soloDistaccamenti: boolean;
         };
         dirty: boolean;
         status: string;
@@ -36,9 +44,10 @@ export interface GestioneUtentiStateModel {
 }
 
 export const GestioneUtentiStateModelDefaults: GestioneUtentiStateModel = {
+    listaUtentiVVF: [],
     listaUtenti: [],
     utenteDetail: null,
-    nuovoUtenteForm: {
+    addUtenteRuoloForm: {
         model: undefined,
         dirty: false,
         status: '',
@@ -53,14 +62,19 @@ export const GestioneUtentiStateModelDefaults: GestioneUtentiStateModel = {
 export class GestioneUtentiState {
 
     constructor(private _gestioneUtenti: GestioneUtentiService,
-                private modalService: NgbModal,
-                private store: Store,
-                private ngZone: NgZone) {
+        private modalService: NgbModal,
+        private store: Store,
+        private ngZone: NgZone) {
     }
 
     @Selector()
     static listaUtenti(state: GestioneUtentiStateModel) {
         return state.listaUtenti;
+    }
+
+    @Selector()
+    static listaUtentiVVF(state: GestioneUtentiStateModel) {
+        return state.listaUtentiVVF;
     }
 
     @Selector()
@@ -70,15 +84,46 @@ export class GestioneUtentiState {
 
     @Selector()
     static sedeSelezionata(state: GestioneUtentiStateModel) {
-        return state.nuovoUtenteForm.model.sedi;
+        return state.addUtenteRuoloForm.model.sedi;
+    }
+
+    @Selector()
+    static formValid(state: GestioneUtentiStateModel) {
+        return state.addUtenteRuoloForm.status !== 'INVALID';
+    }
+
+    @Action(GetUtentiVVF)
+    getUtentiVVF({ dispatch }: StateContext<GestioneUtentiStateModel>, action: GetUtentiVVF) {
+        this._gestioneUtenti.getUtentiVVF(action.text).subscribe((data: UtenteVvfInterface[]) => {
+            dispatch(new SetUtentiVVF(data));
+        });
+    }
+
+    @Action(SetUtentiVVF)
+    setUtentiVVF({ patchState }: StateContext<GestioneUtentiStateModel>, action: SetUtentiVVF) {
+        console.log('Utenti VVF', action.utenti);
+        patchState({
+            listaUtentiVVF: action.utenti
+        });
+    }
+
+    @Action(ClearUtentiVVF)
+    clearUtentiVVF({ patchState }: StateContext<GestioneUtentiStateModel>) {
+        patchState({
+            listaUtentiVVF: []
+        });
     }
 
     @Action(GetUtentiGestione)
-    getGestioneUtenti({ dispatch }: StateContext<GestioneUtentiStateModel>) {
+    getGestioneUtenti({ dispatch }: StateContext<GestioneUtentiStateModel>, action: GetUtentiGestione) {
         const filters = {
-            search: this.store.selectSnapshot(RicercaUtentiState.ricerca)
+            search: this.store.selectSnapshot(RicercaUtentiState.ricerca),
         };
-        this._gestioneUtenti.getUtenti(filters).subscribe((response: ResponseInterface) => {
+        const pagination = {
+            page: action.page ? action.page : 1,
+            pageSize: this.store.selectSnapshot(PaginationState.pageSize)
+        };
+        this._gestioneUtenti.getListaUtentiGestione(filters, pagination).subscribe((response: ResponseInterface) => {
             dispatch(new SetUtentiGestione(response.dataArray));
             dispatch(new PatchPagination(response.pagination));
         });
@@ -86,49 +131,29 @@ export class GestioneUtentiState {
 
     @Action(SetUtentiGestione)
     setUtentiGestione({ patchState }: StateContext<GestioneUtentiStateModel>, action: SetUtentiGestione) {
+        console.log('Utenti', action.utenti);
         patchState({
             listaUtenti: action.utenti
         });
     }
 
-    @Action(GetUtenteDetail)
-    getUtenteDetail({ dispatch }: StateContext<GestioneUtentiStateModel>, action: GetUtenteDetail) {
-        this._gestioneUtenti.getUtente(action.id).subscribe((utente: GestioneUtente) => {
-            if (utente) {
-                dispatch(new SetUtenteDetail(utente));
-            }
-        });
-    }
+    @Action(AddRuoloUtenteGestione)
+    addUtenteGestione({ getState, dispatch }: StateContext<GestioneUtentiStateModel>) {
+        const form = getState().addUtenteRuoloForm.model;
 
-    @Action(SetUtenteDetail)
-    setUtenteDetail({ patchState }: StateContext<GestioneUtentiStateModel>, action: SetUtenteDetail) {
-        patchState({
-            utenteDetail: action.utente
+        const obj: AddRuoloUtenteInterface = {
+            codFiscale: form.utente,
+            ruoli: [],
+            soloDistaccamenti: form.soloDistaccamenti
+        };
+        form.sedi.forEach((value: TreeviewSelezione) => {
+            obj.ruoli.push({
+                descrizione: form.ruolo.replace(/ /g, ''),
+                codSede: value.idSede
+            });
         });
-    }
-
-    @Action(ClearUtenteDetail)
-    clearUtenteDetail({ patchState }: StateContext<GestioneUtentiStateModel>) {
-        patchState({
-            utenteDetail: null
-        });
-    }
-
-    @Action(UpdateUtenteGestione)
-    updateUtenteGestione({ dispatch }: StateContext<GestioneUtentiStateModel>, action: UpdateUtenteGestione) {
-        this._gestioneUtenti.updateUtente(action.utente).subscribe((utente: GestioneUtente) => {
-            if (utente) {
-                patch(
-                    updateItem(+utente.id, utente)
-                );
-                dispatch(new ShowToastr(ToastrType.Info, 'Ruolo Utente Aggiornato', 'Ruolo utente aggiornato con successo.', 2));
-            }
-        });
-    }
-
-    @Action(AddUtente)
-    addUtente({ dispatch }: StateContext<GestioneUtentiStateModel>, action: AddUtente) {
-        this._gestioneUtenti.addUtente(action.utente).subscribe((utente: GestioneUtente) => {
+        console.log('Add Utente Ruolo OBJ', obj);
+        this._gestioneUtenti.addUtente(obj).subscribe((utente: Utente) => {
             if (utente) {
                 patch(
                     insertItem(utente)
@@ -136,43 +161,43 @@ export class GestioneUtentiState {
                 dispatch(new ShowToastr(ToastrType.Info, 'Utente Aggiunto', 'Utente aggiunto con successo.', 3));
             }
         });
-    }
 
-    @Action(OpenModalRemoveUtente)
-    openModalRemoveUtente({ dispatch }: StateContext<GestioneUtentiStateModel>, action: OpenModalRemoveUtente) {
-        this.ngZone.run(() => {
-            const modalConfermaAnnulla = this.modalService.open(ConfirmModalComponent, { backdropClass: 'light-blue-backdrop', centered: true });
-            modalConfermaAnnulla.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
-            modalConfermaAnnulla.componentInstance.titolo = 'Elimina permesso utente';
-            modalConfermaAnnulla.componentInstance.messaggioAttenzione = 'Sei sicuro di voler eliminare questo utente dai permessi?';
-            modalConfermaAnnulla.componentInstance.bottoni = [
-                { type: 'ko', descrizione: 'Annulla', colore: 'danger' },
-                { type: 'ok', descrizione: 'Conferma', colore: 'dark' },
-            ];
-            modalConfermaAnnulla.result.then(
-                (val) => {
-                    switch (val) {
-                        case 'ok':
-                            dispatch(new RemoveUtente(action.id));
-                            break;
-                        case 'ko':
-                            // console.log('Azione annullata');
-                            break;
-                    }
-                    // console.log('Modal chiusa con val ->', val);
-                },
-                (err) => console.error('Modal chiusa senza bottoni. Err ->', err)
-            );
-        });
+        // Clear data
+        dispatch(new ClearDataModalAddUtenteModal());
     }
 
     @Action(RemoveUtente)
-    removeUtente({ dispatch }: StateContext<GestioneUtentiStateModel>, action: RemoveUtente) {
+    removeUtente({ setState, dispatch }: StateContext<GestioneUtentiStateModel>, action: RemoveUtente) {
         this._gestioneUtenti.removeUtente(action.id).subscribe(() => {
-            patch(
-                insertItem(u => u.id === action.id)
+            setState(
+                patch({
+                    listaUtenti: removeItem<Utente>(u => u.id === action.id)
+                })
             );
             dispatch(new ShowToastr(ToastrType.Info, 'Utente Rimosso', 'Utente rimosso con successo.', 3));
         });
+    }
+
+    @Action(RemoveRuoloUtente)
+    removeRuoloUtente({ setState, dispatch }: StateContext<GestioneUtentiStateModel>, action: RemoveRuoloUtente) {
+        this._gestioneUtenti.removeRuoloUtente(action.id, action.ruolo).subscribe((utente: Utente) => {
+            console.log('utente', utente);
+            setState(
+                patch({
+                    listaUtenti: updateItem<Utente>(u => u.id === action.id, utente)
+                })
+            );
+            dispatch(new ShowToastr(ToastrType.Info, 'Ruolo Utente Rimosso', 'Ruolo Utente rimosso con successo.', 3));
+        });
+    }
+
+    @Action(ClearDataModalAddUtenteModal)
+    clearDataModalAddUtenteModal({ dispatch }: StateContext<GestioneUtentiStateModel>) {
+        dispatch(new UpdateFormValue({
+            value: null,
+            path: 'gestioneUtenti.addUtenteRuoloForm'
+        }));
+        dispatch(new SetFormEnabled('gestioneUtenti.addUtenteRuoloForm'));
+        dispatch(new ClearUtentiVVF());
     }
 }

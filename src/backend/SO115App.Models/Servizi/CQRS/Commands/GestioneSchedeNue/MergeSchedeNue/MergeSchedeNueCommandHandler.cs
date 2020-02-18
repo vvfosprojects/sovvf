@@ -18,16 +18,15 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Commands;
-using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
 
 namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSchedeNue.MergeSchedeNue
 {
-    public class SetSchedaGestitaHandler : ICommandHandler<MergeSchedeNueCommand>
+    public class MergeSchedeNueCommandHandler : ICommandHandler<MergeSchedeNueCommand>
     {
         private readonly IMergeSchedeContatto _mergeSchede;
 
-        public SetSchedaGestitaHandler(IMergeSchedeContatto mergeSchede)
+        public MergeSchedeNueCommandHandler(IMergeSchedeContatto mergeSchede)
         {
             _mergeSchede = mergeSchede;
         }

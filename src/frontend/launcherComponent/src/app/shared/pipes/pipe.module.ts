@@ -7,9 +7,10 @@ import { FriendlyTimePipe } from './friendly-time.pipe';
 import { DistanzaTemporalePipe } from './distanza-temporale.pipe';
 import { PersonalePipe } from './personale.pipe';
 import { EventiPipe } from './eventi.pipe';
+import { ContattoPrioritaPipe } from './contatto-priorita.pipe';
 
 const COMPONENTS = [
-    TruncatePipe, FriendlyDatePipe, FriendlyDateTooltipPipe, FriendlyHourPipe, FriendlyTimePipe, DistanzaTemporalePipe, PersonalePipe, EventiPipe
+    TruncatePipe, FriendlyDatePipe, FriendlyDateTooltipPipe, FriendlyHourPipe, FriendlyTimePipe, DistanzaTemporalePipe, PersonalePipe, EventiPipe, ContattoPrioritaPipe
 ];
 
 @NgModule({

@@ -20,7 +20,9 @@ const PROXY_CONFIG = [{
         '/api/GestioneMezziInServizio',
         '/api/Marker',
         '/api/PrenotazioneMezzo',
-        '/api/GestioneSchedeContatto'
+        '/api/GestioneSchedeContatto',
+        '/api/GestioneUtenti',
+        '/api/PersonaleVVF'
     ],
     target: "http://172.16.16.156:5000/",
     secure: false,

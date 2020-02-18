@@ -19,6 +19,7 @@
 //-----------------------------------------------------------------------
 using GeoCoordinatePortable;
 using Newtonsoft.Json;
+using SO115App.API.Models.Classi.Geo;
 using SO115App.ExternalAPI.Fake.Classi;
 using SO115App.Models.Classi.NUE;
 using SO115App.Models.Classi.ServiziEsterni.NUE;
@@ -117,16 +118,6 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
         }
 
         /// <summary>
-        ///   Metodo che restituisce tutte le schede contatto che hanno lo stato a letta
-        /// </summary>
-        /// <param name="letta">booleana letta</param>
-        /// <returns>Una lista di SchedaContatto</returns>
-        public List<SchedaContatto> GetSchedeContattoLetta(bool letta)
-        {
-            return GetList().FindAll(x => x.Letta.Equals(letta));
-        }
-
-        /// <summary>
         ///   Metodo che restituisce tutte le schede contatto che hanno lo stato a gestita
         /// </summary>
         /// <param name="gestita">booleana getsita</param>
@@ -214,6 +205,38 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
             }
 
             return listaSchedeFiltrate;
+        }
+
+        /// <summary>
+        ///   Metodo che restituisce le schede contatto Marker
+        /// </summary>
+        /// <param name="area">l'area mappa con i filtri</param>
+        /// <returns>una lista di schede marker</returns>
+        public List<SchedaContattoMarker> GetMarkerFiltered(AreaMappa area)
+        {
+            var listaSchedeContatto = GetSchedeContattoBySpatialArea(area.TopRight.Latitudine, area.TopRight.Longitudine, area.BottomLeft.Latitudine, area.BottomLeft.Longitudine);
+            var listaSchedeMarker = new List<SchedaContattoMarker>();
+            foreach (var scheda in listaSchedeContatto)
+            {
+                var schedaMarker = new SchedaContattoMarker
+                {
+                    CodiceOperatore = scheda.OperatoreChiamata.CodicePostazioneOperatore,
+                    CodiceScheda = scheda.CodiceScheda,
+                    Localita = scheda.Localita,
+                    Priorita = scheda.Priorita,
+                    Classificazione = scheda.Classificazione,
+                    Gestita = scheda.Gestita
+                };
+                listaSchedeMarker.Add(schedaMarker);
+            }
+            if (area.FiltroSchedeContatto?.MostraGestite == true)
+            {
+                return listaSchedeMarker;
+            }
+            else
+            {
+                return listaSchedeMarker.FindAll(x => !x.Gestita);
+            }
         }
 
         /// <summary>

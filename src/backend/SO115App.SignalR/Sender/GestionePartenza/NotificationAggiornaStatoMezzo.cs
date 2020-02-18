@@ -29,6 +29,7 @@ using System.Threading.Tasks;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneMezziInServizio.ListaMezziInSerivizio;
 using SO115App.API.Models.Servizi.CQRS.Queries.Marker.MezziMarker;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AggiornaStatoMezzo;
+using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
 
 namespace SO115App.SignalR.Sender.GestionePartenza
 {
@@ -65,7 +66,13 @@ namespace SO115App.SignalR.Sender.GestionePartenza
         public async Task SendNotification(AggiornaStatoMezzoCommand intervento)
         {
             const bool notificaChangeState = true;
-            var sintesiRichiesteAssistenzaQuery = new SintesiRichiesteAssistenzaQuery();
+            var sintesiRichiesteAssistenzaQuery = new SintesiRichiesteAssistenzaQuery
+            {
+                Filtro = new FiltroRicercaRichiesteAssistenza
+                {
+                    idOperatore = intervento.IdUtente
+                }
+            };
             var listaSintesi = _sintesiRichiesteAssistenzahandler.Handle(sintesiRichiesteAssistenzaQuery).SintesiRichiesta;
 
             var boxRichiesteQuery = new BoxRichiesteQuery();

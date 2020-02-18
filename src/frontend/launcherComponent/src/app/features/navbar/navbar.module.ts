@@ -20,7 +20,6 @@ import { TurnoComponent } from './turno/turno.component';
 /**
  * Module
  */
-import { PipeModule } from '../../shared/pipes/pipe.module';
 import { SharedModule } from '../../shared/shared.module';
 import { FilterPipeModule } from 'ngx-filter-pipe';
 /**
@@ -37,7 +36,6 @@ import { NavbarState } from './store/states/navbar.state';
     imports: [
         CommonModule,
         NgbModule,
-        PipeModule.forRoot(),
         SharedModule.forRoot(),
         BrowserAnimationsModule,
         FilterPipeModule,
