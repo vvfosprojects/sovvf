@@ -7,27 +7,27 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 
-
 namespace SO115App.API.Oracle.Controllers
 {
     public class SicurezzaController : ApiController
     {
-
-        [HttpGet]    
+        // GET: api/Sicurezza/GetListaOperatori
+        [HttpGet]
         public List<ORAOperatori> GetListaOperatori(string CodSede)
         {
             GetOperatori listaOperatori = new GetOperatori();
             return listaOperatori.GetListaOperatori(CodSede);
         }
 
-        [HttpGet]        
+        // GET: api/Sicurezza/GetListaAccessi
+        [HttpGet]
         public List<ORAAccessi> GetListaAccessi(string CodSede)
         {
             GetAccessi listaAccessi = new GetAccessi();
             return listaAccessi.GetListaAccessi(CodSede);
         }
 
-
+        // GET: api/Sicurezza/GetListaAccessiOperatrori
         [HttpGet]
         public List<ORAAccessiOperatori> GetListaAccessiOperatrori(string CodSede)
         {
@@ -35,6 +35,7 @@ namespace SO115App.API.Oracle.Controllers
             return GetAccessi.GetListaAccessiOperatori(CodSede);
         }
 
+        // GET: api/Sicurezza/GetListaMacchine
         [HttpGet]
         public List<ORAListaMachine> GetListaMacchine(string CodSede)
         {
@@ -42,14 +43,6 @@ namespace SO115App.API.Oracle.Controllers
             return GetAccessi.GetListaMacchine(CodSede);
         }
 
-
-        //// GET: api/Squadre/5
-        //public string Get(int id)
-        //{
-        //    return "value";
-        //}
-
-        // POST: api/Squadre
         public void Post([FromBody]string value)
         {
         }

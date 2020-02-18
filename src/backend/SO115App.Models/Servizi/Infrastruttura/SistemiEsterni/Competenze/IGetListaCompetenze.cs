@@ -7,6 +7,6 @@ namespace SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Competenze
 {
     public interface IGetListaCompetenze
     {
-        List<Competenza> GetListaCompetenze(string codSede);
+        List<CompetenzeRichiesta> GetListaCompetenze(string codSede);
     }
 }

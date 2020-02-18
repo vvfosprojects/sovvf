@@ -66,8 +66,10 @@
     <Compile Include="Classi\ORAAccessiOperatori.cs" />
     <Compile Include="Classi\ORAAutomezzi.cs" />
     <Compile Include="Classi\ORAChiamate.cs" />
+    <Compile Include="Classi\ORACompetenzeByNomeVia.cs" />
     <Compile Include="Classi\ORACompetenzeElenco.cs" />
     <Compile Include="Classi\ORACompetenzeZone.cs" />
+    <Compile Include="Classi\ORADistaccamenti.cs" />
     <Compile Include="Classi\ORAGesPreaccoppiati.cs" />
     <Compile Include="Classi\ORAGruppo_Tipologie.cs" />
     <Compile Include="Classi\ORAInterventi.cs" />
@@ -85,6 +87,8 @@
     <Compile Include="DBContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Servizi\Competenze\GetCompetenze.cs" />
+    <Compile Include="Servizi\Competenze\GetCompetenzeByNomeVia.cs" />
+    <Compile Include="Servizi\Distaccamenti\GetDistaccamentiByCodSede.cs" />
     <Compile Include="Servizi\Mezzi\GetListaMezziUtilizzabili.cs" />
     <Compile Include="Servizi\Partenze\GetPartenze.cs" />
     <Compile Include="Servizi\Personale\GetPersonaleByCF.cs" />
@@ -100,6 +104,9 @@
     <Compile Include="Utility\Utility.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\.editorconfig">
+      <Link>.editorconfig</Link>
+    </None>
     <None Include="App.config" />
     <None Include="Connection.json" />
     <None Include="packages.config" />

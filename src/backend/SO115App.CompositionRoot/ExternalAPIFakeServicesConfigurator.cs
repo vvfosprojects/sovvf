@@ -17,6 +17,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using Microsoft.Extensions.Caching.Memory;
 using SimpleInjector;
 using SO115App.ExternalAPI.Fake.Nue;
 using SO115App.ExternalAPI.Fake.Personale;
@@ -32,7 +33,7 @@ using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Personale;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Territorio;
-
+using System;
 using System.Net.Http;
 
 namespace SO115App.CompositionRoot
@@ -41,6 +42,13 @@ namespace SO115App.CompositionRoot
     {
         internal static void Configure(Container container)
         {
+            container.Register<IMemoryCache>(() => new MemoryCache(
+                new MemoryCacheOptions()
+                {
+                    ExpirationScanFrequency = TimeSpan.FromHours(2)
+                }
+                ), Lifestyle.Singleton);
+
             #region NUE
 
             container.Register<IGetSchedeContatto, GetSchedeContatto>();
@@ -126,13 +134,55 @@ namespace SO115App.CompositionRoot
                 SO115App.Models.Servizi.Infrastruttura.Marker.IGetMezziMarker,
                 ExternalAPI.Fake.Marker.GetMezziMarkerExt>();
 
+            #region Mezzi
+
             container.Register<
-                SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Tipologie.IGetListaTipologie,
-                SO115App.ExternalAPI.Fake.ImportOracle.TipologieMapper.GetTipologie>();
+                SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Mezzi.IGetListaMezzi,
+                SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper.GetListaMezzi>();
+            container.Register<
+                SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Mezzi.IGetMezzoById,
+                SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper.GetMezzoById>();
+
+            #endregion Mezzi
+
+            #region Squadre
+
+            container.Register<
+                SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Squadre.IGetListaSquadre,
+                SO115App.ExternalAPI.Fake.ImportOracle.SquadreMapper.GetListaSquadre>();
+            container.Register<
+                SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Squadre.IGetSquadraById,
+                SO115App.ExternalAPI.Fake.ImportOracle.SquadreMapper.GetSquadraById>();
+
+            #endregion Squadre
+
+            #region GesPreaccoppiati
+
+            container.Register<
+                SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.GesPreaccoppiati.IGetListaGesPreaccoppiati,
+                SO115App.ExternalAPI.Fake.ImportOracle.GesPreaccoppiatiMapper.GetListaGesPreaccoppiati>();
+
+            #endregion GesPreaccoppiati
+
+            #region Competenze
 
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Competenze.IGetListaCompetenze,
                 SO115App.ExternalAPI.Fake.ImportOracle.CompetenzeMapper.GetCompetenze>();
+
+            container.Register<
+                SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Competenze.IGetCompetenzeRichiesta,
+                SO115App.ExternalAPI.Fake.ImportOracle.CompetenzeMapper.GetCompetenzeByNomeVia>();
+
+            #endregion Competenze
+
+            #region Distaccamenti
+
+            container.Register<
+                SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti.IGetListaDistaccamentiByCodiceSede,
+                SO115App.ExternalAPI.Fake.ImportOracle.DistaccamentiMapper.GetDistaccamentiByCodSede>();
+
+            #endregion Distaccamenti
         }
     }
 }

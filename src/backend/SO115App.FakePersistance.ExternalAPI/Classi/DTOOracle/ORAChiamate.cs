@@ -4,10 +4,6 @@ namespace SO115App.ExternalAPI.Fake.Classi.DTOOracle
 {
     public class ORAChiamate
     {
-        public ORAChiamate()
-        {
-        }
-
         /// <SUMMARY>CAMPO CHIAMATA DELLA TABELLA CHIAMATE</SUMMARY>
         public int CHIAMATA { get; set; }
 
