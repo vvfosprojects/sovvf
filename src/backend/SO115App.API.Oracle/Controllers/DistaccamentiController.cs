@@ -12,7 +12,7 @@ namespace SO115App.API.Oracle.Controllers
     public class DistaccamentiController : ApiController
     {
         [HttpGet]
-        public List<ORADistaccamenti> GetDistaccamentoByCodiceSede(string CodSede)
+        public List<ORADistaccamenti> GetDistaccamentiByCodiceSede(string CodSede)
         {
             GetDistaccamentiByCodSede Distaccamenti = new GetDistaccamentiByCodSede();
 
