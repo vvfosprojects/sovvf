@@ -159,17 +159,30 @@ namespace SO115App.CompositionRoot
             #region GesPreaccoppiati
 
             container.Register<
+                SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.GesPreaccoppiati.IGetListaGesPreaccoppiati,
+                SO115App.ExternalAPI.Fake.ImportOracle.GesPreaccoppiatiMapper.GetListaGesPreaccoppiati>();
+
+            #endregion GesPreaccoppiati
+
+            #region Competenze
+
+            container.Register<
                 SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Competenze.IGetListaCompetenze,
                 SO115App.ExternalAPI.Fake.ImportOracle.CompetenzeMapper.GetCompetenze>();
 
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Competenze.IGetCompetenzeRichiesta,
                 SO115App.ExternalAPI.Fake.ImportOracle.CompetenzeMapper.GetCompetenzeByNomeVia>();
-            container.Register<
-                SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.GesPreaccoppiati.IGetListaGesPreaccoppiati,
-                SO115App.ExternalAPI.Fake.ImportOracle.GesPreaccoppiatiMapper.GetListaGesPreaccoppiati>();
 
-            #endregion GesPreaccoppiati
+            #endregion Competenze
+
+            #region Distaccamenti
+
+            container.Register<
+                SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti.IGetListaDistaccamentiByCodiceSede,
+                SO115App.ExternalAPI.Fake.ImportOracle.DistaccamentiMapper.GetDistaccamentiByCodSede>();
+
+            #endregion Distaccamenti
         }
     }
 }
