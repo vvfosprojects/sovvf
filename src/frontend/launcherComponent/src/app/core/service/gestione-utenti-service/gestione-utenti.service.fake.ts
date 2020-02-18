@@ -22,8 +22,7 @@ export class GestioneUtentiServiceFake {
             this.utentiVVF = [
                 {
                     codFiscale: 'MRSMXHAJ2AJAC12AC',
-                    nominativo: 'Mario Rossi',
-                    sede: 'Comando VVF Roma (RM.1000)',
+                    nominativo: 'Mario Rossi'
                 }
             ];
         } else {
