@@ -70,7 +70,7 @@ import { NgxsFormPluginModule } from '@ngxs/form-plugin';
     ],
     entryComponents: [GestioneUtenteModalComponent, ConfirmModalComponent],
     providers: [
-        { provide: GestioneUtentiService, useClass: GestioneUtentiServiceFake },
+        // { provide: GestioneUtentiService, useClass: GestioneUtentiServiceFake },
         { provide: RuoliService, useClass: RuoliServiceFake }
     ]
 })
