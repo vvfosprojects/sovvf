@@ -15,28 +15,30 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.CompetenzeMapper
     {
         private readonly HttpClient _client;
         private readonly IConfiguration _configuration;
+        private readonly IMemoryCache _memoryCache;
 
-        public GetCompetenze(HttpClient client, IConfiguration configuration)
+        public GetCompetenze(HttpClient client, IConfiguration configuration, IMemoryCache memoryCache)
         {
             _client = client;
             _configuration = configuration;
+            _memoryCache = memoryCache;
         }
 
-        public List<Competenza> GetListaCompetenze(string codSede)
+        public List<CompetenzeRichiesta> GetListaCompetenze(string codSede)
         {
-            List<Competenza> ListaCompetenze = new List<Competenza>();
+            List<CompetenzeRichiesta> ListaCompetenze = new List<CompetenzeRichiesta>();
 
-            //if (!_memoryCache.TryGetValue("ListaCompetenze", out ListaCompetenze))
-            //{
-            ListaCompetenze = CallOra(codSede).Result;
-            //    var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromHours(2));
-            //    _memoryCache.Set("ListaCompetenze", ListaCompetenze, cacheEntryOptions);
-            //}
+            if (!_memoryCache.TryGetValue("ListaCompetenze", out ListaCompetenze))
+            {
+                ListaCompetenze = CallOra(codSede).Result;
+                var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromHours(2));
+                _memoryCache.Set("ListaCompetenze", ListaCompetenze, cacheEntryOptions);
+            }
 
             return ListaCompetenze;
         }
 
-        private async Task<List<Competenza>> CallOra(string codSede)
+        private async Task<List<CompetenzeRichiesta>> CallOra(string codSede)
         {
             _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("test");
             var responseElenco = await _client.GetAsync($"{_configuration.GetSection("OracleImplementation").GetSection(codSede).GetSection("UrlAPICompetenze").Value}GetListaCompetenzeElenco?CodSede={codSede}").ConfigureAwait(false);
@@ -53,13 +55,13 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.CompetenzeMapper
             return MapOraInMongo(ElencoCompetenze, ElencoZoneCompetenze);
         }
 
-        private List<Competenza> MapOraInMongo(List<ORACompetenzeElenco> elencoCompetenze, List<ORACompetenzeZone> elencoZoneCompetenze)
+        private List<CompetenzeRichiesta> MapOraInMongo(List<ORACompetenzeElenco> elencoCompetenze, List<ORACompetenzeZone> elencoZoneCompetenze)
         {
-            List<Competenza> ListaCompetenze = new List<Competenza>();
+            List<CompetenzeRichiesta> ListaCompetenze = new List<CompetenzeRichiesta>();
 
             foreach (ORACompetenzeElenco oraCompetenza in elencoCompetenze)
             {
-                Competenza competenza = new Competenza();
+                CompetenzeRichiesta competenza = new CompetenzeRichiesta();
 
                 competenza.CodDistaccamento = Convert.ToInt32(oraCompetenza.COD_DISTACCAMENTO);
                 competenza.CodZona = Convert.ToInt32(oraCompetenza.ID_ZONA);

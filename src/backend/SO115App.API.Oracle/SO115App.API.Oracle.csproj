@@ -86,6 +86,7 @@
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\CompetenzeController.cs" />
+    <Compile Include="Controllers\DistaccamentiController.cs" />
     <Compile Include="Controllers\GestioneUtenteController.cs" />
     <Compile Include="Controllers\MezziController.cs" />
     <Compile Include="Controllers\PartenzeController.cs" />

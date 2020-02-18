@@ -25,6 +25,13 @@ namespace SO115App.API.Oracle.Controllers
             return competenze.GetListaCompetenzeZone(CodSede);
         }
 
+        [HttpGet]
+        public List<ORACompetenzeByNomeVia> GetCompetenzeByNomeVia(string CodSede, string NomeVia, string Civico)
+        {
+            GetCompetenzeByNomeVia competenze = new GetCompetenzeByNomeVia();
+            return competenze.GetCompetenzeByNomeStrada(CodSede, NomeVia, Civico);
+        }
+
         // POST: api/Squadre
         public void Post([FromBody]string value)
         {

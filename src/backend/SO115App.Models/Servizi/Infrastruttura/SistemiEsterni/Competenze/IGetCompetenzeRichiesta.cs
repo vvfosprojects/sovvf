@@ -5,8 +5,8 @@ using System.Text;
 
 namespace SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Competenze
 {
-    public interface IGetListaCompetenze
+    public interface IGetCompetenzeRichiesta
     {
-        List<CompetenzeRichiesta> GetListaCompetenze(string codSede);
+        List<CompetenzeRichiesta> GetCompetenzeRichiesta(string CodSede, string NomeVia, string Civico);
     }
 }

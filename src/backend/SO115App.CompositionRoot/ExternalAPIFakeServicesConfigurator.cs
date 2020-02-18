@@ -17,6 +17,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using Microsoft.Extensions.Caching.Memory;
 using SimpleInjector;
 using SO115App.ExternalAPI.Fake.Nue;
 using SO115App.ExternalAPI.Fake.Personale;
@@ -32,7 +33,7 @@ using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Personale;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Territorio;
-
+using System;
 using System.Net.Http;
 
 namespace SO115App.CompositionRoot
@@ -41,6 +42,13 @@ namespace SO115App.CompositionRoot
     {
         internal static void Configure(Container container)
         {
+            container.Register<IMemoryCache>(() => new MemoryCache(
+                new MemoryCacheOptions()
+                {
+                    ExpirationScanFrequency = TimeSpan.FromHours(2)
+                }
+                ), Lifestyle.Singleton);
+
             #region NUE
 
             container.Register<IGetSchedeContatto, GetSchedeContatto>();
@@ -134,6 +142,10 @@ namespace SO115App.CompositionRoot
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Competenze.IGetListaCompetenze,
                 SO115App.ExternalAPI.Fake.ImportOracle.CompetenzeMapper.GetCompetenze>();
+
+            container.Register<
+                SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Competenze.IGetCompetenzeRichiesta,
+                SO115App.ExternalAPI.Fake.ImportOracle.CompetenzeMapper.GetCompetenzeByNomeVia>();
         }
     }
 }
