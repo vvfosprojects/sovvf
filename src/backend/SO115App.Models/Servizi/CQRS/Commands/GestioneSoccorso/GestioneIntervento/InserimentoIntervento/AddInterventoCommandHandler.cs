@@ -26,6 +26,7 @@ using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GenerazioneCodiciRichiesta;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Competenze;
 using SO115App.Models.Servizi.Infrastruttura.Turni;
 using System;
 using System.Collections.Generic;
@@ -38,12 +39,14 @@ namespace DomainModel.CQRS.Commands.AddIntervento
         private readonly ISaveRichiestaAssistenza _saveRichiestaAssistenza;
         private readonly IGeneraCodiceRichiesta _generaCodiceRichiesta;
         private readonly IGetTurno _getTurno;
+        private readonly IGetCompetenzeRichiesta _getCompetenze;
 
-        public AddInterventoCommandHandler(ISaveRichiestaAssistenza saveRichiestaAssistenza, IGeneraCodiceRichiesta generaCodiceRichiesta, IGetTurno getTurno)
+        public AddInterventoCommandHandler(ISaveRichiestaAssistenza saveRichiestaAssistenza, IGeneraCodiceRichiesta generaCodiceRichiesta, IGetTurno getTurno, IGetCompetenzeRichiesta getCompetenze)
         {
             this._saveRichiestaAssistenza = saveRichiestaAssistenza;
             _generaCodiceRichiesta = generaCodiceRichiesta;
             _getTurno = getTurno;
+            _getCompetenze = _getCompetenze;
         }
 
         public void Handle(AddInterventoCommand command)
@@ -74,8 +77,27 @@ namespace DomainModel.CQRS.Commands.AddIntervento
                 }
             }
 
-            //DA TOGLIERE COM MONGO
-            string[] CodUOCompetenzaAppo = { "RM.1000" };
+            string Indirizzo = "";
+            string Civico = "";
+            //Se è presente il civico è lungo 5, altrimenti è lungo 4
+            if (command.Chiamata.Localita.Indirizzo.Split(',').Length == 5)
+            {
+                Indirizzo = command.Chiamata.Localita.Indirizzo.Split(',')[0];
+                Civico = command.Chiamata.Localita.Indirizzo.Split(',')[1];
+            }
+            else
+            {
+                Indirizzo = command.Chiamata.Localita.Indirizzo.Split(',')[0];
+                Civico = "0";
+            }
+
+            var Competenza = _getCompetenze.GetCompetenzeRichiesta(command.CodiceSede.Split('.')[0], Indirizzo, Civico);
+
+            string[] CodUOCompetenzaAppo = {
+                command.CodiceSede.Split('.')[0] + Competenza.CodDistaccamento,
+                command.CodiceSede.Split('.')[0] + Competenza.CodDistaccamento2,
+                command.CodiceSede.Split('.')[0] + Competenza.CodDistaccamento3
+            };
 
             var richiesta = new RichiestaAssistenza()
             {

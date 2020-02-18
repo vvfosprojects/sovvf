@@ -24,12 +24,12 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.CompetenzeMapper
             _configuration = configuration;
         }
 
-        public List<CompetenzeRichiesta> GetCompetenzeRichiesta(string CodSede, string NomeVia, string Civico)
+        public CompetenzeRichiesta GetCompetenzeRichiesta(string CodSede, string NomeVia, string Civico)
         {
             return CallOra(CodSede, NomeVia, Civico).Result;
         }
 
-        private async Task<List<CompetenzeRichiesta>> CallOra(string CodSede, string NomeVia, string Civico)
+        private async Task<CompetenzeRichiesta> CallOra(string CodSede, string NomeVia, string Civico)
         {
             _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("test");
             var responseElenco = await _client.GetAsync($"{_configuration.GetSection("OracleImplementation").GetSection(CodSede).GetSection("UrlAPICompetenze").Value}GetCompetenzeByNomeVia?CodSede={CodSede}&NomeVia={NomeVia}&Civico={Civico}").ConfigureAwait(false);
@@ -38,33 +38,26 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.CompetenzeMapper
             using HttpContent content = responseElenco.Content;
 
             string data = await content.ReadAsStringAsync().ConfigureAwait(false);
-            var ElencoCompetenze = JsonConvert.DeserializeObject<List<ORACompetenzeByNomeVia>>(data);
+            var Competenza = JsonConvert.DeserializeObject<ORACompetenzeByNomeVia>(data);
 
-            return MapOraInMongo(ElencoCompetenze);
+            return MapOraInMongo(Competenza);
         }
 
-        private List<CompetenzeRichiesta> MapOraInMongo(List<ORACompetenzeByNomeVia> elencoCompetenze)
+        private CompetenzeRichiesta MapOraInMongo(ORACompetenzeByNomeVia oraCompetenza)
         {
-            List<CompetenzeRichiesta> ListaCompetenze = new List<CompetenzeRichiesta>();
-
-            foreach (ORACompetenzeByNomeVia oraCompetenza in elencoCompetenze)
+            CompetenzeRichiesta competenza = new CompetenzeRichiesta()
             {
-                CompetenzeRichiesta competenza = new CompetenzeRichiesta()
-                {
-                    CodDistaccamento = Convert.ToInt32(oraCompetenza.COD_DISTACCAMENTO1),
-                    CodDistaccamento2 = Convert.ToInt32(oraCompetenza.COD_DISTACCAMENTO2),
-                    CodDistaccamento3 = Convert.ToInt32(oraCompetenza.COD_DISTACCAMENTO3),
-                    DescDistaccamento = oraCompetenza.DESC_DISTACCAMENTO1,
-                    DescDistaccamento2 = oraCompetenza.DESC_DISTACCAMENTO2,
-                    DescDistaccamento3 = oraCompetenza.DESC_DISTACCAMENTO3,
-                    CodZona = oraCompetenza.ID_ZONA,
-                    flag_attivo = "1"
-                };
+                CodDistaccamento = Convert.ToInt32(oraCompetenza.COD_DISTACCAMENTO1),
+                CodDistaccamento2 = Convert.ToInt32(oraCompetenza.COD_DISTACCAMENTO2),
+                CodDistaccamento3 = Convert.ToInt32(oraCompetenza.COD_DISTACCAMENTO3),
+                DescDistaccamento = oraCompetenza.DESC_DISTACCAMENTO1,
+                DescDistaccamento2 = oraCompetenza.DESC_DISTACCAMENTO2,
+                DescDistaccamento3 = oraCompetenza.DESC_DISTACCAMENTO3,
+                CodZona = oraCompetenza.ID_ZONA,
+                flag_attivo = "1"
+            };
 
-                ListaCompetenze.Add(competenza);
-            }
-
-            return ListaCompetenze;
+            return competenza;
         }
     }
 }
