@@ -8,9 +8,9 @@
   <tbody>
     <tr
       *ngFor="let utente of listaUtenti | paginate: { itemsPerPage: pageSize, currentPage: page, totalItems: totalItems }">
-      <td width="40%" class="pb-1">
+      <td width="40%" class="pt-4">
         <button class="btn btn-sm btn-danger font-weight-bold mr-2" ngbTooltip="Rimuovi utente" placement="bottom"
-          (click)="onRemoveUtente(utente.id, utente.cognome + ' ' + utente.nome)">
+          (click)="onRemoveUtente(utente.codiceFiscale, utente.cognome + ' ' + utente.nome)">
           <i class="fa fa-trash"></i>
         </button>
         <span class="h6 font-weight-normal font-weight-bold">{{utente.cognome}} {{utente.nome}}</span>
@@ -24,7 +24,7 @@
           <button class="btn btn-warning btn-sm font-weight-bold mr-1" ngbTooltip="Visualizza i permessi"
             placement="top" [ngbPopover]="popPermessiRole" (click)="onDetailPermessi(ruolo)">
             <div>{{ruolo.codSede}}</div>
-            <div>{{ruolo.descrizione}}</div>
+            <div>{{wipeRoleString(ruolo.descrizione)}}</div>
           </button>
           <ng-template #popPermessiRole>
             <div class="py-2">
