@@ -50,7 +50,10 @@ export class GestioneUtentiService {
     }
 
     removeUtente(codFiscale: string) {
-        return this.http.delete<any>(API_URL + '?codFiscale=' + codFiscale).pipe(
+        const obj = {
+            codFiscale
+        };
+        return this.http.post<any>(API_URL + '/DeleteUtente', obj).pipe(
             retry(3),
             catchError(handleError)
         );

@@ -21,7 +21,7 @@ export class TabellaUtentiComponent {
 
     @Output() detail: EventEmitter<string> = new EventEmitter<string>();
     @Output() detailPermessi: EventEmitter<Role> = new EventEmitter<Role>();
-    @Output() removeUser: EventEmitter<{ id: string, nominativoUtente: string }> = new EventEmitter<{ id: string, nominativoUtente: string }>();
+    @Output() removeUser: EventEmitter<{ codFiscale: string, nominativoUtente: string }> = new EventEmitter<{ codFiscale: string, nominativoUtente: string }>();
     @Output() removeRoleUser: EventEmitter<{ codFiscale: string, ruolo: Ruolo, nominativoUtente: string }> = new EventEmitter<{ codFiscale: string, ruolo: Ruolo, nominativoUtente: string }>();
     @Output() addRuoloUtente: EventEmitter<{ codFiscale: string, fullName: string }> = new EventEmitter<{ codFiscale: string, fullName: string }>();
     @Output() pageChange: EventEmitter<number> = new EventEmitter<number>();
@@ -39,8 +39,8 @@ export class TabellaUtentiComponent {
         this.dettaglioPermessi = getPermessiByRole(event.descrizione);
     }
 
-    onRemoveUtente(id: string, nominativoUtente: string) {
-        const obj = { id, nominativoUtente };
+    onRemoveUtente(codFiscale: string, nominativoUtente: string) {
+        const obj = { codFiscale, nominativoUtente };
         this.removeUser.emit(obj);
     }
 

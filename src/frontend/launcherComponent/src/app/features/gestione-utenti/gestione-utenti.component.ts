@@ -116,7 +116,7 @@ export class GestioneUtentiComponent implements OnInit {
         );
     }
 
-    onRemoveUtente(payload: { id: string, nominativoUtente: string }) {
+    onRemoveUtente(payload: { codFiscale: string, nominativoUtente: string }) {
         const modalConfermaAnnulla = this.modalService.open(ConfirmModalComponent, { backdropClass: 'light-blue-backdrop', centered: true });
         modalConfermaAnnulla.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
         modalConfermaAnnulla.componentInstance.titolo = 'Elimina ' + payload.nominativoUtente;
@@ -129,7 +129,7 @@ export class GestioneUtentiComponent implements OnInit {
             (val) => {
                 switch (val) {
                     case 'ok':
-                        this.store.dispatch(new RemoveUtente(payload.id));
+                        this.store.dispatch(new RemoveUtente(payload.codFiscale));
                         break;
                     case 'ko':
                         // console.log('Azione annullata');
