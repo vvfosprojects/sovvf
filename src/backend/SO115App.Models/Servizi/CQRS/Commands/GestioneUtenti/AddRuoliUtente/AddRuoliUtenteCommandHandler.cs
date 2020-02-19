@@ -40,7 +40,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneUtenti.AddRuoliUtente
         /// <param name="command">il command con i parametri di input</param>
         public void Handle(AddRuoliUtenteCommand command)
         {
-            _addRuoli.Add(command.CodiceFiscale, command.Ruoli);
+            _addRuoli.Add(command.CodFiscale, command.Ruoli);
         }
     }
 }

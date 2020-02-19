@@ -40,7 +40,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneUtenti.CancellazioneUten
         /// <param name="command">i parametri di ingresso</param>
         public void Handle(DeleteUtenteCommand command)
         {
-            _deleteUtente.Delete(command.CodiceFiscale);
+            _deleteUtente.Delete(command.CodFiscale);
         }
     }
 }

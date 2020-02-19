@@ -17,7 +17,11 @@ namespace SO115App.Persistence.MongoDB.GestioneUtenti.GestioneRuoli
 
         public void Add(string codFiscale, List<Role> ruoli)
         {
-            dbContext.UtenteCollection.UpdateOne(Builders<Utente>.Filter.Eq(x => x.CodiceFiscale, codFiscale), Builders<Utente>.Update.AddToSet("ruoli", ruoli));
+            foreach (var ruolo in ruoli)
+            {
+                dbContext.UtenteCollection.UpdateOne(Builders<Utente>.Filter.Eq(x => x.CodiceFiscale, codFiscale), Builders<Utente>.Update.AddToSet("ruoli", ruolo));
+            }
+            
         }
     }
 }

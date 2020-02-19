@@ -15,12 +15,12 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneUtente.ListaOperatori
 
         public ListaOperatoriResult Handle(ListaOperatoriQuery query)
         {
-            var utentiPaginati = _getUtenti.Get(query.CodiceSede, query.Filtri.Search).Skip(query.Paginazione.Page - 1).Take(query.Paginazione.PageSize).ToList();
-            query.Paginazione.Count = utentiPaginati.Count;
+            var utentiPaginati = _getUtenti.Get(query.CodiceSede, query.Filters.Search).Skip(query.Pagination.Page - 1).Take(query.Pagination.PageSize).ToList();
+            query.Pagination.Count = utentiPaginati.Count;
             return new ListaOperatoriResult
             {
-                ListaOperatori = utentiPaginati,
-                Paginazione = query.Paginazione
+                DataArray = utentiPaginati,
+                Pagination = query.Pagination
             };
         }
     }

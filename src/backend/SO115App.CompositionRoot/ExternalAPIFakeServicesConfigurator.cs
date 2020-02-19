@@ -183,6 +183,12 @@ namespace SO115App.CompositionRoot
                 SO115App.ExternalAPI.Fake.ImportOracle.DistaccamentiMapper.GetDistaccamentiByCodSede>();
 
             #endregion Distaccamenti
+
+            #region Tipologie
+
+            container.Register<Models.Servizi.Infrastruttura.SistemiEsterni.Tipologie.IGetListaTipologie, ExternalAPI.Fake.ImportOracle.TipologieMapper.GetTipologie>();
+
+            #endregion Tipologie
         }
     }
 }

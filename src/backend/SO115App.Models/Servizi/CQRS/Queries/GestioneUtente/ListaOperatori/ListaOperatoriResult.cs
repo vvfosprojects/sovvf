@@ -8,7 +8,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneUtente.ListaOperatori
 {
     public class ListaOperatoriResult
     {
-        public Paginazione Paginazione { get; set; }
-        public List<Utente> ListaOperatori { get; set; }
+        public Paginazione Pagination { get; set; }
+        public List<Utente> DataArray { get; set; }
     }
 }

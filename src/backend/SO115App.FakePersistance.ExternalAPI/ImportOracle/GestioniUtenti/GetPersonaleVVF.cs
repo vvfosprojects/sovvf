@@ -24,7 +24,7 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.GestioniUtenti
         public async Task<List<PersonaleVVF>> Get(string text, string codSede)
         {
             _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("test");
-            var response = await _client.GetAsync($"{_configuration.GetSection("OracleImplementation").GetSection(codSede).GetSection("UrlAPIGestioneUtente").Value}/GetPersonale?text={text}&codiceSede={codSede}").ConfigureAwait(false);
+            var response = await _client.GetAsync($"{_configuration.GetSection("OracleImplementation").GetSection(codSede.Split(".")[0]).GetSection("UrlAPIGestioneUtente").Value}/GetPersonale?text={text}&codiceSede={codSede.Split(".")[0]}").ConfigureAwait(false);
             response.EnsureSuccessStatusCode();
             using HttpContent content = response.Content;
             string data = await content.ReadAsStringAsync().ConfigureAwait(false);

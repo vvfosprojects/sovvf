@@ -98,17 +98,17 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             }
 
             if (richiesta.Eventi.Where(x => x is InizioPresaInCarico).ToList().Count == 0)
-                new InizioPresaInCarico(richiesta, DateTime.UtcNow, utente.Id);
+                new InizioPresaInCarico(richiesta, DateTime.UtcNow, utente.Codice);
 
             foreach (var partenza in command.ConfermaPartenze.Partenze)
             {
-                new ComposizionePartenze(richiesta, DateTime.UtcNow, utente.Id, false)
+                new ComposizionePartenze(richiesta, DateTime.UtcNow, utente.Codice, false)
                 {
                     Partenza = partenza
                 };
             }
 
-            richiesta.SincronizzaStatoRichiesta(Costanti.RichiestaAssegnata, richiesta.StatoRichiesta, utente.Id, "");
+            richiesta.SincronizzaStatoRichiesta(Costanti.RichiestaAssegnata, richiesta.StatoRichiesta, utente.Codice, "");
 
             //richiesta.Id = command.ConfermaPartenze.IdRichiesta;
             command.ConfermaPartenze.richiesta = richiesta;

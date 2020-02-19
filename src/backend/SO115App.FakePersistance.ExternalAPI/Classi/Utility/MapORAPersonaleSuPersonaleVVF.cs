@@ -13,7 +13,7 @@ namespace SO115App.ExternalAPI.Fake.Classi.Utility
             {
                 var personaFisica = new PersonaleVVF
                 {
-                    CodiceFiscale = persona.CodFiscale,
+                    CodFiscale = persona.CodFiscale,
                     Nominativo = persona.Nominativo
                 };
                 listaPersonale.Add(personaFisica);
@@ -25,7 +25,7 @@ namespace SO115App.ExternalAPI.Fake.Classi.Utility
         {
             return new PersonaleVVF
             {
-                CodiceFiscale = persona.CodFiscale,
+                CodFiscale = persona.CodFiscale,
                 Nominativo = persona.Nominativo,
             };
         }

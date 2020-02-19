@@ -17,8 +17,6 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 
 namespace SO115App.API.Models.Classi.Condivise
 {
@@ -40,43 +38,36 @@ namespace SO115App.API.Models.Classi.Condivise
         /// <summary>
         ///   Codice Sede
         /// </summary>
-        [Required]
         public string Codice { get; set; }
 
         /// <summary>
         ///   Descrizione Sede
         /// </summary>
-        [Required]
         public string Descrizione { get; set; }
 
         /// <summary>
         ///   Coordinate
         /// </summary>
-        [Required]
         public Coordinate Coordinate { get; set; }
 
         /// <summary>
         ///   Indirizzo della Sede
         /// </summary>
-        [Required]
         public string Indirizzo { get; set; }
 
         /// <summary>
         ///   Tipologia Sede
         /// </summary>
-        [Required]
         public string Tipo { get; set; }
 
         /// <summary>
         ///   Tipologia Sede
         /// </summary>
-        [Required]
         public string Regione { get; set; }
 
         /// <summary>
         ///   Tipologia Sede
         /// </summary>
-        [Required]
         public string Provincia { get; set; }
 
         /// <summary>

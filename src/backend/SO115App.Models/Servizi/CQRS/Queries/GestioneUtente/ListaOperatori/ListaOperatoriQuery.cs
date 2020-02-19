@@ -1,9 +1,6 @@
 ﻿using CQRS.Queries;
 using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.Filtri;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace SO115App.Models.Servizi.CQRS.Queries.GestioneUtente.ListaOperatori
 {
@@ -11,8 +8,8 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneUtente.ListaOperatori
     {
         public string CodiceSede { get; set; }
 
-        public Paginazione Paginazione { get; set; }
+        public Paginazione Pagination { get; set; }
 
-        public FiltriUtenti Filtri { get; set; }
+        public FiltriUtenti Filters { get; set; }
     }
 }

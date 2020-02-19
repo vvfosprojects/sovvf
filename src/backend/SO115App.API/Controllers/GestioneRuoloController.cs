@@ -42,6 +42,7 @@ namespace SO115App.API.Controllers
         [HttpPost("AddRuolo")]
         public IActionResult AddRuolo(AddRuoliUtenteCommand command)
         {
+            command.CodiceSede = Request.Headers["codiceSede"];
             try
             {
                 _addRuoliCommand.Handle(command);
@@ -56,6 +57,7 @@ namespace SO115App.API.Controllers
         [HttpPost("DeleteRuolo")]
         public IActionResult DeleteRuolo(DeleteRuoliUtenteCommand command)
         {
+            command.CodiceSede = Request.Headers["codiceSede"];
             try
             {
                 _deleteRuoliCommand.Handle(command);

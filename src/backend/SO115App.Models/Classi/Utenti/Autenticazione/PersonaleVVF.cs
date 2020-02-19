@@ -13,6 +13,6 @@
         /// <summary>
         ///   codice fiscale
         /// </summary>
-        public string CodiceFiscale { get; set; }
+        public string CodFiscale { get; set; }
     }
 }

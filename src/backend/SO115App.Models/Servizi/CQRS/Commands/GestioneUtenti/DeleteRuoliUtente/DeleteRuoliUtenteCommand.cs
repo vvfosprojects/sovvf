@@ -29,11 +29,13 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneUtenti.DeleteRuoliUtente
         /// <summary>
         ///   Il codice fiscale dell operatore
         /// </summary>
-        public string CodiceFiscali { get; set; }
+        public string CodFiscale { get; set; }
 
         /// <summary>
         ///   il ruolo da cancellare
         /// </summary>
         public Role Ruolo { get; set; }
+
+        public string CodiceSede { get; set; }
     }
 }

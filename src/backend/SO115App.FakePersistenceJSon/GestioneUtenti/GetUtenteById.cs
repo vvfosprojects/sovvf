@@ -22,7 +22,7 @@ namespace SO115App.FakePersistence.JSon.GestioneUtenti
 
             ListUtenti = JsonConvert.DeserializeObject<List<Utente>>(json);
 
-            return ListUtenti.FirstOrDefault(x => x.Id == id);
+            return ListUtenti.FirstOrDefault(x => x.Codice == id);
         }
     }
 }

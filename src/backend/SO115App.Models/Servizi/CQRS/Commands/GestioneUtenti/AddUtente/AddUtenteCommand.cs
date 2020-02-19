@@ -35,7 +35,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneUtenti.AddUtente
         /// <summary>
         ///   codice fiscale dell'operatore
         /// </summary>
-        public string CodiceFiscale { get; set; }
+        public string CodFiscale { get; set; }
 
         /// <summary>
         ///   lista di ruoli da aggiungere

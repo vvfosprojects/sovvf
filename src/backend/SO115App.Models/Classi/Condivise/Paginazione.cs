@@ -17,7 +17,7 @@ namespace SO115App.Models.Classi.Condivise
         /// <summary>
         ///   elementi contenuti in una singola pagina
         /// </summary>
-        public int PageSize { get; set; }
+        public int PageSize { get; set; } = 10;
 
         /// <summary>
         ///   conteggio dei risultati

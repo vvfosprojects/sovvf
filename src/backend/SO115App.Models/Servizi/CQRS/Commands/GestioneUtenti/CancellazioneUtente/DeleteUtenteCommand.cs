@@ -27,6 +27,8 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneUtenti.CancellazioneUten
         /// <summary>
         ///   il codice fiscale dell'utente
         /// </summary>
-        public string CodiceFiscale { get; set; }
+        public string CodFiscale { get; set; }
+
+        public string CodiceSede { get; set; }
     }
 }

@@ -23,6 +23,7 @@ using Microsoft.AspNetCore.Mvc;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneUtenti.AddUtente;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneUtenti.CancellazioneUtente;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneUtente.ListaOperatori;
+using System.Threading.Tasks;
 
 namespace SO115App.API.Controllers
 {
@@ -47,6 +48,7 @@ namespace SO115App.API.Controllers
         [HttpPost("AddUtente")]
         public IActionResult AddUtente([FromBody]AddUtenteCommand command)
         {
+            command.CodiceSede = Request.Headers["codiceSede"];
             try
             {
                 _addUtenteCommand.Handle(command);
@@ -61,6 +63,7 @@ namespace SO115App.API.Controllers
         [HttpPost("DeleteUtente")]
         public IActionResult DeleteUtente([FromBody]DeleteUtenteCommand command)
         {
+            command.CodiceSede = Request.Headers["codiceSede"];
             try
             {
                 _deleteUtenteCommand.Handle(command);

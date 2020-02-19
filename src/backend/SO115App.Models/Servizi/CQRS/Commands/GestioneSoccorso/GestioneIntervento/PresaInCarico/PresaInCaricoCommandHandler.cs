@@ -51,7 +51,7 @@ namespace DomainModel.CQRS.Commands.PresaInCarico
             var utente = _getUtenteById.GetUtenteById(command.IdUtente);
             var attivita = new AttivitaUtente
             {
-                IdUtente = utente.Id,
+                IdUtente = utente.Codice,
                 Nominativo = utente.Nome + " " + utente.Cognome,
                 DataInizioAttivita = DateTime.UtcNow
             };

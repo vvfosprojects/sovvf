@@ -24,7 +24,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneUtente.ListaPersonaleVVF
             var listaUtentiNonCensiti = new List<PersonaleVVF>();
             foreach (var personale in listaPersonaleVVF)
             {
-                if (listaUtenti.Where(x => x.CodiceFiscale == personale.CodiceFiscale).ToList().Count == 0)
+                if (listaUtenti.Where(x => x.CodiceFiscale == personale.CodFiscale).ToList().Count == 0)
                 {
                     listaUtentiNonCensiti.Add(personale);
                 }

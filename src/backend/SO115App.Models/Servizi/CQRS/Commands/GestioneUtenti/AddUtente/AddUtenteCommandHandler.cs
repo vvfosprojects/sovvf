@@ -18,7 +18,13 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Commands;
+using SO115App.API.Models.Classi.Autenticazione;
+using SO115App.API.Models.Classi.Condivise;
+using SO115App.API.Models.Classi.Organigramma;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Personale;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
+using System.Collections.Generic;
 
 namespace SO115App.Models.Servizi.CQRS.Commands.GestioneUtenti.AddUtente
 {
@@ -28,10 +34,12 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneUtenti.AddUtente
     public class AddUtenteCommandHandler : ICommandHandler<AddUtenteCommand>
     {
         private readonly IAddUtente _addUtente;
+        private readonly IGetPersonaleByCF _personaleByCF;
 
-        public AddUtenteCommandHandler(IAddUtente addUtente)
+        public AddUtenteCommandHandler(IAddUtente addUtente, IGetPersonaleByCF personaleByCF)
         {
             _addUtente = addUtente;
+            _personaleByCF = personaleByCF;
         }
 
         /// <summary>
@@ -40,7 +48,17 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneUtenti.AddUtente
         /// <param name="command">il command con i parametri di ingresso</param>
         public void Handle(AddUtenteCommand command)
         {
-            _addUtente.Add(command);
+            var personale = _personaleByCF.Get(command.CodFiscale, command.CodiceSede.Split(".")[0]).Result;
+
+            var utenteVVF = new Utente(command.CodFiscale, personale.Nominativo.Split(".")[0], personale.Nominativo.Split(".")[1])
+            {
+                Ruoli = command.Ruoli,
+                Username = "test",
+                Password = "test",
+                Sede = new Sede(command.CodiceSede, "", "", new Coordinate(0, 0), "", "", "", "", "")
+            };
+
+            _addUtente.Add(utenteVVF);
         }
     }
 }

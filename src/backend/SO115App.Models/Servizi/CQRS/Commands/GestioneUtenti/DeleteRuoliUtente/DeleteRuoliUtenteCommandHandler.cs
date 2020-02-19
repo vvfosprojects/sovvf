@@ -44,7 +44,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneUtenti.DeleteRuoliUtente
         /// <param name="command">il command con i parametri di ingresso</param>
         public void Handle(DeleteRuoliUtenteCommand command)
         {
-            _deleteRuolo.Delete(command.CodiceFiscali, command.Ruolo);
+            _deleteRuolo.Delete(command.CodFiscale, command.Ruolo);
         }
     }
 }

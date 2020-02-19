@@ -121,26 +121,33 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
 
             var tipologie = new TipologieQuery()
             {
-                CodSede = query.CodiceSede
+                CodSede = query.CodiceSede.Split('.')[0]
             };
 
-            var welcome = new SO115App.Models.Classi.Condivise.Welcome()
+            try
             {
-                BoxListaInterventi = _boxRichiesteHandler.Handle(boxRichiesteQuery).BoxRichieste,
-                BoxListaMezzi = _boxMezziHandler.Handle(boxMezziQuery).BoxMezzi,
-                BoxListaPersonale = _boxPersonaleHandler.Handle(boxPersonaleQuery).BoxPersonale,
-                ListaChiamateInCorso = (List<ChiamateInCorso>)_listaChiamateInCorsoMarkerHandler.Handle(listaQuery).ListaChiamateInCorsoMarker,
-                ListaSintesi = (List<SintesiRichiesta>)_sintesiRichiesteAssistenzaHandler.Handle(sintesiRichiesteAssistenzaQuery).SintesiRichiesta,
-                CentroMappaMarker = _centroMappaMarkerHandler.Handle(centroMappaQuery).CentroMappaMarker,
-                ListaFiltri = _filtriHandler.Handle(listaFiltriQuery).Filtri,
-                InfoNue = _getConteggioSchedeHandler.Handle(getConteggioSchede).InfoNue,
-                Tipologie = _tipologieQueryHandler.Handle(tipologie).Tipologie
-            };
+                var welcome = new SO115App.Models.Classi.Condivise.Welcome()
+                {
+                    BoxListaInterventi = _boxRichiesteHandler.Handle(boxRichiesteQuery).BoxRichieste,
+                    BoxListaMezzi = _boxMezziHandler.Handle(boxMezziQuery).BoxMezzi,
+                    BoxListaPersonale = _boxPersonaleHandler.Handle(boxPersonaleQuery).BoxPersonale,
+                    ListaChiamateInCorso = (List<ChiamateInCorso>)_listaChiamateInCorsoMarkerHandler.Handle(listaQuery).ListaChiamateInCorsoMarker,
+                    ListaSintesi = (List<SintesiRichiesta>)_sintesiRichiesteAssistenzaHandler.Handle(sintesiRichiesteAssistenzaQuery).SintesiRichiesta,
+                    CentroMappaMarker = _centroMappaMarkerHandler.Handle(centroMappaQuery).CentroMappaMarker,
+                    ListaFiltri = _filtriHandler.Handle(listaFiltriQuery).Filtri,
+                    InfoNue = _getConteggioSchedeHandler.Handle(getConteggioSchede).InfoNue,
+                    Tipologie = _tipologieQueryHandler.Handle(tipologie).Tipologie
+                };
 
-            return new WelcomeResult()
+                return new WelcomeResult()
+                {
+                    WelcomeRes = welcome
+                };
+            }
+            catch (System.Exception ex)
             {
-                WelcomeRes = welcome
-            };
+                throw;
+            }
         }
     }
 }

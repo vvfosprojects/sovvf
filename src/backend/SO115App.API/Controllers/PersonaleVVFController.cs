@@ -34,7 +34,7 @@ namespace SO115App.API.Controllers
             _queryHandlerPersonale = queryHandlerPersonale;
         }
 
-        [HttpGet("PersonaleVVF")]
+        [HttpGet()]
         public IActionResult Get(string text)
         {
             var codiceSede = Request.Headers["codiceSede"];

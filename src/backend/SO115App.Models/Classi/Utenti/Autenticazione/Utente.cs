@@ -21,6 +21,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
+using MongoDB.Bson.Serialization.Attributes;
 using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Condivise;
 
@@ -29,6 +30,7 @@ namespace SO115App.API.Models.Classi.Autenticazione
     /// <summary>
     ///   Modella un utente del sistema.
     /// </summary>
+    [BsonIgnoreExtraElements]
     public class Utente
     {
         /// <summary>
@@ -105,8 +107,7 @@ namespace SO115App.API.Models.Classi.Autenticazione
         /// <summary>
         ///   Id
         /// </summary>
-        [Required(ErrorMessage = "Id obbligatorio.")]
-        public string Id { get; set; }
+        public string Codice { get; set; }
 
         /// <summary>
         ///   Nome Operatore
@@ -134,7 +135,7 @@ namespace SO115App.API.Models.Classi.Autenticazione
         ///   Sede utente loggato
         /// </summary>
         [Required]
-        public string Sede { get; set; }
+        public Sede Sede { get; set; }
 
         /// <summary>
         ///   La username
@@ -190,7 +191,7 @@ namespace SO115App.API.Models.Classi.Autenticazione
                 List<string> ListaUOAbilitate = new List<string>();
                 foreach (var ruolo in this.Ruoli)
                 {
-                    ListaUOAbilitate.Add(ruolo.Codsede);
+                    ListaUOAbilitate.Add(ruolo.CodSede);
                 }
 
                 return ListaUOAbilitate;
@@ -245,11 +246,11 @@ namespace SO115App.API.Models.Classi.Autenticazione
     {
         public Role(string _descrizione, string _sede)
         {
-            this.Codsede = _sede;
+            this.CodSede = _sede;
             this.descrizione = _descrizione;
         }
 
         public string descrizione { get; set; }
-        public string Codsede { get; set; }
+        public string CodSede { get; set; }
     }
 }

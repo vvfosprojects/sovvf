@@ -1,6 +1,6 @@
 [
   {
-    "id": "1",
+    "codice": "1",
     "nome": "Luigi",
     "cognome": "Bianchi",
     "username": "admin",
@@ -35,7 +35,7 @@
     }
   },
   {
-    "id": "2",
+    "codice": "2",
     "nome": "Teresio",
     "cognome": "Mancini",
     "username": "user",
@@ -66,19 +66,15 @@
     }
   },
   {
-    "id": "3",
+    "codice": "3",
     "nome": "Mario",
     "cognome": "Rossi",
     "username": "test",
     "password": "test",
     "ruoli": [
       {
-        "descrizione": "CallTracker",
+        "descrizione": "Amministratore",
         "codiceSede": "RM.1000"
-      },
-      {
-        "descrizione": "Viewer",
-        "codiceSede": null
       }
     ],
     "qualifica": "Operatore SO115",
@@ -97,7 +93,7 @@
     }
   },
   {
-    "id": "4",
+    "codice": "4",
     "nome": "Gualtiero",
     "cognome": "Milano",
     "username": "gualtiero",
@@ -128,7 +124,7 @@
     }
   },
   {
-    "id": "5",
+    "codice": "5",
     "nome": "Marco",
     "cognome": "Rossi",
     "username": "marco",
@@ -159,7 +155,7 @@
     }
   },
   {
-    "id": "6",
+    "codice": "6",
     "nome": "Marco",
     "cognome": "Verdi",
     "username": "marco.verdi",
@@ -186,7 +182,7 @@
     }
   },
   {
-    "id": "7",
+    "codice": "7",
     "nome": "Isabella",
     "cognome": "Monaldo",
     "username": "isabella",
@@ -222,7 +218,7 @@
     }
   },
   {
-    "id": "8",
+    "codice": "8",
     "nome": "Ivone",
     "cognome": "Sabbatini",
     "username": "ivone",
@@ -257,7 +253,7 @@
     }
   },
   {
-    "id": "9",
+    "codice": "9",
     "nome": "Flavio",
     "cognome": "Pinto",
     "username": "flavio",
@@ -288,7 +284,7 @@
     }
   },
   {
-    "id": "10",
+    "codice": "10",
     "nome": "Sandro",
     "cognome": "Marcelo",
     "username": "sandro",
@@ -319,7 +315,7 @@
     }
   },
   {
-    "id": "11",
+    "codice": "11",
     "nome": "Isidora",
     "cognome": "Trentino",
     "username": "isidora",
@@ -350,7 +346,7 @@
     }
   },
   {
-    "id": "12",
+    "codice": "12",
     "nome": "Amina",
     "cognome": "Zetticci",
     "username": "amina",
@@ -381,7 +377,7 @@
     }
   },
   {
-    "id": "13",
+    "codice": "13",
     "nome": "Piera",
     "cognome": "Lori",
     "username": "piera",
@@ -408,7 +404,7 @@
     }
   },
   {
-    "id": "14",
+    "codice": "14",
     "nome": "Romeo",
     "cognome": "Marchesi",
     "username": "romeo",
@@ -439,7 +435,7 @@
     }
   },
   {
-    "id": "15",
+    "codice": "15",
     "nome": "Cora",
     "cognome": "Trentini",
     "username": "cora",

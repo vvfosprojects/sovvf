@@ -30,11 +30,13 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneUtenti.AddRuoliUtente
         /// <summary>
         ///   il codice fiscale dell'utente
         /// </summary>
-        public string CodiceFiscale { get; set; }
+        public string CodFiscale { get; set; }
 
         /// <summary>
         ///   la lista dei ruoli da aggiungere
         /// </summary>
         public List<Role> Ruoli { get; set; }
+
+        public string CodiceSede { get; set; }
     }
 }
