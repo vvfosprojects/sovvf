@@ -15,8 +15,9 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneUtente.ListaOperatori
 
         public ListaOperatoriResult Handle(ListaOperatoriQuery query)
         {
-            var utentiPaginati = _getUtenti.Get(query.CodiceSede, query.Filters.Search).Skip(query.Pagination.Page - 1).Take(query.Pagination.PageSize).ToList();
-            query.Pagination.Count = utentiPaginati.Count;
+            var utenti = _getUtenti.Get(query.CodiceSede, query.Filters.Search);
+            var utentiPaginati = utenti.Skip((query.Pagination.Page - 1) * query.Pagination.PageSize).Take(query.Pagination.PageSize).ToList();
+            query.Pagination.TotalItems = utenti.Count;
             return new ListaOperatoriResult
             {
                 DataArray = utentiPaginati,

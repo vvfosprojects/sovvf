@@ -22,11 +22,11 @@ namespace SO115App.Models.Classi.Condivise
         /// <summary>
         ///   conteggio dei risultati
         /// </summary>
-        public int Count { get; set; }
+        public int TotalItems { get; set; }
 
         /// <summary>
         ///   conteggio delle pagine
         /// </summary>
-        public int TotalPages => (int)Math.Ceiling(decimal.Divide(Count, PageSize));
+        public int TotalPages => (int)Math.Ceiling(decimal.Divide(TotalItems, PageSize));
     }
 }
