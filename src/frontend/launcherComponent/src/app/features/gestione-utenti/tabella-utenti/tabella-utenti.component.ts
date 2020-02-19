@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
-import { Role, Ruolo, Utente } from '../../../shared/model/utente.model';
-import { getPermessiByRole, wipeStringUppercase } from '../../../shared/helper/function';
+import { Ruolo, Utente } from '../../../shared/model/utente.model';
+import { wipeStringUppercase } from '../../../shared/helper/function';
 
 
 @Component({
@@ -19,8 +19,6 @@ export class TabellaUtentiComponent {
     @Input() totalItems: number;
     @Input() loading: boolean;
 
-    @Output() detail: EventEmitter<string> = new EventEmitter<string>();
-    @Output() detailPermessi: EventEmitter<Role> = new EventEmitter<Role>();
     @Output() removeUser: EventEmitter<{ codFiscale: string, nominativoUtente: string }> = new EventEmitter<{ codFiscale: string, nominativoUtente: string }>();
     @Output() removeRoleUser: EventEmitter<{ codFiscale: string, ruolo: Ruolo, nominativoUtente: string }> = new EventEmitter<{ codFiscale: string, ruolo: Ruolo, nominativoUtente: string }>();
     @Output() addRuoloUtente: EventEmitter<{ codFiscale: string, fullName: string }> = new EventEmitter<{ codFiscale: string, fullName: string }>();
@@ -29,14 +27,6 @@ export class TabellaUtentiComponent {
     dettaglioPermessi: string[];
 
     constructor() {
-    }
-
-    onDetail(id: string) {
-        this.detail.emit(id);
-    }
-
-    onDetailPermessi(event: { descrizione: Role, codSede: string, descSede: string }) {
-        this.dettaglioPermessi = getPermessiByRole(event.descrizione);
     }
 
     onRemoveUtente(codFiscale: string, nominativoUtente: string) {

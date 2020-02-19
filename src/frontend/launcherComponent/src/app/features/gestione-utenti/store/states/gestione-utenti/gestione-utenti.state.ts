@@ -25,6 +25,7 @@ import { UtenteVvfInterface } from '../../../../../shared/interface/utente-vvf.i
 import { AddRuoloUtenteInterface } from '../../../../../shared/interface/add-ruolo-utente.interface';
 import { UpdateFormValue, SetFormEnabled } from '@ngxs/form-plugin';
 import { PaginationState } from '../../../../../shared/store/states/pagination/pagination.state';
+import { StartLoading, StopLoading } from '../../../../../shared/store/actions/loading/loading.actions';
 
 export interface GestioneUtentiStateModel {
     listaUtentiVVF: UtenteVvfInterface[];
@@ -96,6 +97,7 @@ export class GestioneUtentiState {
     getUtentiVVF({ dispatch }: StateContext<GestioneUtentiStateModel>, action: GetUtentiVVF) {
         this._gestioneUtenti.getUtentiVVF(action.text).subscribe((data: UtenteVvfInterface[]) => {
             dispatch(new SetUtentiVVF(data));
+            dispatch(new StopLoading());
         });
     }
 
