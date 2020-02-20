@@ -1,6 +1,6 @@
 [
   {
-    "codice": "1",
+    "id": "1",
     "nome": "Luigi",
     "cognome": "Bianchi",
     "username": "admin",
@@ -35,7 +35,7 @@
     }
   },
   {
-    "codice": "2",
+    "id": "2",
     "nome": "Teresio",
     "cognome": "Mancini",
     "username": "user",
@@ -66,7 +66,7 @@
     }
   },
   {
-    "codice": "3",
+    "id": "3",
     "nome": "Mario",
     "cognome": "Rossi",
     "username": "test",
@@ -93,7 +93,7 @@
     }
   },
   {
-    "codice": "4",
+    "id": "4",
     "nome": "Gualtiero",
     "cognome": "Milano",
     "username": "gualtiero",
@@ -124,7 +124,7 @@
     }
   },
   {
-    "codice": "5",
+    "id": "5",
     "nome": "Marco",
     "cognome": "Rossi",
     "username": "marco",
@@ -155,7 +155,7 @@
     }
   },
   {
-    "codice": "6",
+    "id": "6",
     "nome": "Marco",
     "cognome": "Verdi",
     "username": "marco.verdi",
@@ -182,7 +182,7 @@
     }
   },
   {
-    "codice": "7",
+    "id": "7",
     "nome": "Isabella",
     "cognome": "Monaldo",
     "username": "isabella",
@@ -218,7 +218,7 @@
     }
   },
   {
-    "codice": "8",
+    "id": "8",
     "nome": "Ivone",
     "cognome": "Sabbatini",
     "username": "ivone",
@@ -253,7 +253,7 @@
     }
   },
   {
-    "codice": "9",
+    "id": "9",
     "nome": "Flavio",
     "cognome": "Pinto",
     "username": "flavio",
@@ -284,7 +284,7 @@
     }
   },
   {
-    "codice": "10",
+    "id": "10",
     "nome": "Sandro",
     "cognome": "Marcelo",
     "username": "sandro",
@@ -315,7 +315,7 @@
     }
   },
   {
-    "codice": "11",
+    "id": "11",
     "nome": "Isidora",
     "cognome": "Trentino",
     "username": "isidora",
@@ -346,7 +346,7 @@
     }
   },
   {
-    "codice": "12",
+    "id": "12",
     "nome": "Amina",
     "cognome": "Zetticci",
     "username": "amina",
@@ -377,7 +377,7 @@
     }
   },
   {
-    "codice": "13",
+    "id": "13",
     "nome": "Piera",
     "cognome": "Lori",
     "username": "piera",
@@ -404,7 +404,7 @@
     }
   },
   {
-    "codice": "14",
+    "id": "14",
     "nome": "Romeo",
     "cognome": "Marchesi",
     "username": "romeo",
@@ -435,7 +435,7 @@
     }
   },
   {
-    "codice": "15",
+    "id": "15",
     "nome": "Cora",
     "cognome": "Trentini",
     "username": "cora",

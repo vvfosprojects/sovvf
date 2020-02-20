@@ -7,6 +7,6 @@ namespace SO115App.Models.Servizi.Infrastruttura.GestioneUtenti
 {
     public interface IGetUtenteById
     {
-        Utente GetUtenteById(string id);
+        Utente GetUtenteByCodice(string id);
     }
 }

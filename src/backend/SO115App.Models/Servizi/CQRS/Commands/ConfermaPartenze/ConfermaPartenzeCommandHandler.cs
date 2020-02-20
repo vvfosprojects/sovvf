@@ -66,7 +66,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             /// preparazione del DTO
             var richiesta = _getRichiestaById.GetByCodice(command.ConfermaPartenze.IdRichiesta);
             var richiestaDaSganciare = new RichiestaAssistenza();
-            var utente = _getUtenteById.GetUtenteById(command.ConfermaPartenze.IdOperatore);
+            var utente = _getUtenteById.GetUtenteByCodice(command.ConfermaPartenze.IdOperatore);
 
             var attivita = new AttivitaUtente();
             var idComposizioneDaSganciare = 0;
@@ -98,17 +98,17 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             }
 
             if (richiesta.Eventi.Where(x => x is InizioPresaInCarico).ToList().Count == 0)
-                new InizioPresaInCarico(richiesta, DateTime.UtcNow, utente.Codice);
+                new InizioPresaInCarico(richiesta, DateTime.UtcNow, utente.Id);
 
             foreach (var partenza in command.ConfermaPartenze.Partenze)
             {
-                new ComposizionePartenze(richiesta, DateTime.UtcNow, utente.Codice, false)
+                new ComposizionePartenze(richiesta, DateTime.UtcNow, utente.Id, false)
                 {
                     Partenza = partenza
                 };
             }
 
-            richiesta.SincronizzaStatoRichiesta(Costanti.RichiestaAssegnata, richiesta.StatoRichiesta, utente.Codice, "");
+            richiesta.SincronizzaStatoRichiesta(Costanti.RichiestaAssegnata, richiesta.StatoRichiesta, utente.Id, "");
 
             //richiesta.Id = command.ConfermaPartenze.IdRichiesta;
             command.ConfermaPartenze.richiesta = richiesta;

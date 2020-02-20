@@ -48,10 +48,10 @@ namespace DomainModel.CQRS.Commands.PresaInCarico
         public void Handle(PresaInCaricoCommand command)
         {
             var richiesta = _getRichiestaById.GetByCodice(command.IdRichiesta);
-            var utente = _getUtenteById.GetUtenteById(command.IdUtente);
+            var utente = _getUtenteById.GetUtenteByCodice(command.IdUtente);
             var attivita = new AttivitaUtente
             {
-                IdUtente = utente.Codice,
+                IdUtente = utente.Id,
                 Nominativo = utente.Nome + " " + utente.Cognome,
                 DataInizioAttivita = DateTime.UtcNow
             };

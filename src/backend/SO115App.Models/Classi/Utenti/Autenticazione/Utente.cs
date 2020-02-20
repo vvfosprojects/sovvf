@@ -107,7 +107,7 @@ namespace SO115App.API.Models.Classi.Autenticazione
         /// <summary>
         ///   Id
         /// </summary>
-        public string Codice { get; set; }
+        public string Id { get; set; }
 
         /// <summary>
         ///   Nome Operatore
@@ -247,10 +247,11 @@ namespace SO115App.API.Models.Classi.Autenticazione
         public Role(string _descrizione, string _sede)
         {
             this.CodSede = _sede;
-            this.descrizione = _descrizione;
+            this.Descrizione = _descrizione;
         }
 
-        public string descrizione { get; set; }
+        public string Descrizione { get; set; }
         public string CodSede { get; set; }
+        public bool Ricorsivo { get; set; }
     }
 }

@@ -85,7 +85,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichi
         /// <returns>Il DTO di uscita della query</returns>
         public SintesiRichiesteAssistenzaResult Handle(SintesiRichiesteAssistenzaQuery query)
         {
-            query.Filtro.CodUOCompetenza = _getUtenteById.GetUtenteById(query.Filtro.idOperatore).ListaUnitaOperativeAbilitate;
+            query.Filtro.CodUOCompetenza = _getUtenteById.GetUtenteByCodice(query.Filtro.idOperatore).ListaUnitaOperativeAbilitate;
 
             var listaSintesi = _iGetListaSintesi.GetListaSintesiRichieste(query.Filtro);
 

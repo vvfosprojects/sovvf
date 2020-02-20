@@ -9,7 +9,7 @@ namespace SO115App.FakePersistence.JSon.GestioneUtenti
 {
     public class GetUtenteById : IGetUtenteById
     {
-        Utente IGetUtenteById.GetUtenteById(string id)
+        Utente IGetUtenteById.GetUtenteByCodice(string id)
         {
             List<Utente> ListUtenti = new List<Utente>();
 
@@ -22,7 +22,7 @@ namespace SO115App.FakePersistence.JSon.GestioneUtenti
 
             ListUtenti = JsonConvert.DeserializeObject<List<Utente>>(json);
 
-            return ListUtenti.FirstOrDefault(x => x.Codice == id);
+            return ListUtenti.FirstOrDefault(x => x.Id == id);
         }
     }
 }
