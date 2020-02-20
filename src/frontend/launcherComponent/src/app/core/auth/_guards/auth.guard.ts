@@ -26,7 +26,7 @@ export class AuthGuard implements CanActivate {
                  * utente loggato ma senza permesso
                  */
                 this.store.dispatch(new ShowToastr(ToastrType.Error, 'Utente non abilitato', 'La risorsa richiesta non è accessibile da ' + currentUser.nome + ' ' + currentUser.cognome));
-                const homeAcceptedRoles = [ Role.Amministratore, Role.GestoreRichieste, Role.CallTracker ];
+                const homeAcceptedRoles = [ Role.Amministratore, Role.GestoreRichieste, Role.CallTaker ];
                 console.log('homeAcceptedRoles', homeAcceptedRoles);
                 console.log('Amministratore value', Object.values(Role.Amministratore));
                 // if (homeAcceptedRoles.indexOf(currentUser.ruoli[0].descrizione) === -1) {

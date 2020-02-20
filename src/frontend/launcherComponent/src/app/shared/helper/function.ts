@@ -298,40 +298,6 @@ export function onlyUnique(value, index, self) {
     return self.indexOf(value) === index;
 }
 
-export function getPermessiByRole(role: Role) {
-    switch (role) {
-        case Role.CallTracker:
-            return [
-                wipeStringUppercase(Object.values(AppFeatures)[3].toString()),
-                wipeStringUppercase(Object.values(AppFeatures)[0].toString()),
-                wipeStringUppercase(Object.values(AppFeatures)[1].toString()),
-                wipeStringUppercase(Object.values(AppFeatures)[2].toString())
-            ];
-        case Role.GestoreRichieste:
-            return [
-                wipeStringUppercase(Object.values(AppFeatures)[1].toString()),
-                wipeStringUppercase(Object.values(AppFeatures)[2].toString()),
-                wipeStringUppercase(Object.values(AppFeatures)[0].toString()),
-                wipeStringUppercase(Object.values(AppFeatures)[6].toString()),
-                wipeStringUppercase(Object.values(AppFeatures)[5].toString()),
-                wipeStringUppercase(Object.values(AppFeatures)[4].toString())
-            ];
-        case Role.Amministratore:
-            return [
-                wipeStringUppercase(Object.values(AppFeatures)[1].toString()),
-                wipeStringUppercase(Object.values(AppFeatures)[2].toString()),
-                wipeStringUppercase(Object.values(AppFeatures)[0].toString()),
-                wipeStringUppercase(Object.values(AppFeatures)[6].toString()),
-                wipeStringUppercase(Object.values(AppFeatures)[5].toString()),
-                wipeStringUppercase(Object.values(AppFeatures)[4].toString()),
-                wipeStringUppercase(Object.values(AppFeatures)[7].toString())
-            ];
-        default:
-            console.warn('Nessun permesso assegnato al ruolo "' + role + '"');
-            break;
-    }
-}
-
 export function wipeStringUppercase(text: string) {
     return text.replace(/(?=[A-Z])/g, ' ');
 }
