@@ -37,7 +37,8 @@
     </tr>
     <tr *ngIf="listaUtenti?.length <= 0">
         <td>
-            Nessun Utente trovato
+            <ng-template [ngIf]="!loading">Nessun Utente trovato</ng-template>
+            <ng-template [ngIf]="loading">Caricamento risultati in corso...</ng-template>
         </td>
         <td *ngFor="let ruolo of ruoli"></td>
         <td></td>

@@ -15,7 +15,7 @@
                     </button>
                 </div>
                 <div class="col text-right">
-                    <app-ricerca-utenti (ricercaChange)="onRicercaUtenti($event)"></app-ricerca-utenti>
+                    <app-ricerca-utenti [loading]="loading$ | async" (ricercaChange)="onRicercaUtenti($event)"></app-ricerca-utenti>
                 </div>
             </div>
         </div>
