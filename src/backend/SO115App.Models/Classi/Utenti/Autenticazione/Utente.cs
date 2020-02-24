@@ -245,5 +245,6 @@ namespace SO115App.API.Models.Classi.Autenticazione
         public string Descrizione { get; set; }
         public string CodSede { get; set; }
         public bool Ricorsivo { get; set; }
+        public string DescSede { get; set; }
     }
 }

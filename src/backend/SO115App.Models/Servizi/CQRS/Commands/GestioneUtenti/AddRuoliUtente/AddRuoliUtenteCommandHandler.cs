@@ -18,7 +18,11 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Commands;
+using SO115App.API.Models.Classi.Organigramma;
+using SO115App.API.Models.Servizi.Infrastruttura.Organigramma;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.GestioneRuolo;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
+using System.Collections.Generic;
 
 namespace SO115App.Models.Servizi.CQRS.Commands.GestioneUtenti.AddRuoliUtente
 {
@@ -28,10 +32,12 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneUtenti.AddRuoliUtente
     public class AddRuoliUtenteCommandHandler : ICommandHandler<AddRuoliUtenteCommand>
     {
         private readonly IAddRuoli _addRuoli;
+        private readonly IGetAlberaturaUnitaOperative _getAlberaturaUnitaOperative;
 
-        public AddRuoliUtenteCommandHandler(IAddRuoli addRuoli)
+        public AddRuoliUtenteCommandHandler(IAddRuoli addRuoli, IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative)
         {
             _addRuoli = addRuoli;
+            _getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
         }
 
         /// <summary>
@@ -40,6 +46,19 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneUtenti.AddRuoliUtente
         /// <param name="command">il command con i parametri di input</param>
         public void Handle(AddRuoliUtenteCommand command)
         {
+            var listaPin = new List<PinNodo>();
+            var sediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
+            foreach (var ruolo in command.Ruoli)
+            {
+                listaPin.Add(new PinNodo(ruolo.CodSede, ruolo.Ricorsivo));
+                foreach (var figli in sediAlberate.GetSottoAlbero(listaPin))
+                {
+                    if (figli.Codice.Equals(ruolo.CodSede))
+                    {
+                        ruolo.DescSede = figli.Nome;
+                    }
+                }
+            }
             _addRuoli.Add(command.CodFiscale, command.Ruoli);
         }
     }
