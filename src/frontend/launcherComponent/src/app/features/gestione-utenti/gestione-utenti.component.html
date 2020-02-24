@@ -15,7 +15,8 @@
                     </button>
                 </div>
                 <div class="col text-right">
-                    <app-ricerca-utenti [loading]="loading$ | async" (ricercaChange)="onRicercaUtenti($event)"></app-ricerca-utenti>
+                    <app-ricerca-utenti [loading]="loading$ | async"
+                                        (ricercaChange)="onRicercaUtenti($event)"></app-ricerca-utenti>
                 </div>
             </div>
         </div>
@@ -24,7 +25,8 @@
                                 [totalItems]="totalItems$ | async" [pageSize]="pageSize$ | async" [page]="page$ | async"
                                 [loading]="loading$ | async" [pageSizes]="pageSizes$ | async"
                                 (removeUser)="onRemoveUtente($event)" (removeRoleUser)="onRemoveRuoloUtente($event)"
-                                (addRuoloUtente)="onAddRuoloUtente($event)" (pageChange)="onPageChange($event)">
+                                (addRuoloUtente)="onAddRuoloUtente($event)" (pageChange)="onPageChange($event)"
+                                (pageSizeChange)="onPageSizeChange($event)">
             </app-tabella-utenti>
         </div>
     </div>
