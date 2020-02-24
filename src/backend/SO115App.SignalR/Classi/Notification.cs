@@ -24,6 +24,6 @@ namespace SO115App.SignalR.Notifications
         public string CodiceSede { get; set; }
         public string NominativoUtente { get; set; }
         public T ActionObj { get; set; }
-        public int IdUtente { get; set; }
+        public string IdUtente { get; set; }
     }
 }
