@@ -118,6 +118,7 @@ export class GestioneUtentiState {
 
     @Action(GetUtentiGestione)
     getGestioneUtenti({ dispatch }: StateContext<GestioneUtentiStateModel>, action: GetUtentiGestione) {
+        dispatch(new StartLoading());
         const filters = {
             search: this.store.selectSnapshot(RicercaUtentiState.ricerca),
         };
@@ -128,6 +129,7 @@ export class GestioneUtentiState {
         this._gestioneUtenti.getListaUtentiGestione(filters, pagination).subscribe((response: ResponseInterface) => {
             dispatch(new SetUtentiGestione(response.dataArray));
             dispatch(new PatchPagination(response.pagination));
+            dispatch(new StopLoading());
         });
     }
 

@@ -9,7 +9,8 @@
     <tr
             *ngFor="let utente of listaUtenti | paginate: { itemsPerPage: pageSize, currentPage: page, totalItems: totalItems }">
         <td width="40%" class="pb-1">
-            <button class="btn btn-sm btn-danger font-weight-bold float-left mt-3 mr-2" ngbTooltip="Rimuovi utente" placement="bottom"
+            <button class="btn btn-sm btn-danger font-weight-bold float-left mt-3 mr-2" ngbTooltip="Rimuovi utente"
+                    placement="bottom"
                     (click)="onRemoveUtente(utente.codiceFiscale, utente.cognome + ' ' + utente.nome)">
                 <i class="fa fa-trash"></i>
             </button>
@@ -21,7 +22,8 @@
                 <i class="fa fa-plus"></i>
             </button>
             <div *ngFor="let ruolo of utente.ruoli, let i=index" class="d-inline-block h6 font-weight-normal">
-                <div class="badge badge-warning font-weight-bold cursor-pointer clearfix py-3 px-2 mr-2" [ngbTooltip]="ruolo.codSede"
+                <div class="badge badge-warning font-weight-bold clearfix cursor-pointer shadow-sm py-3 px-2 mr-2"
+                     [ngbTooltip]="ruolo.codSede"
                      placement="top">
                     <span class="d-inline-block float-left">
                           <span class="d-block">{{ruolo.descSede ? ruolo.descSede : ruolo.codSede}}</span>
@@ -33,11 +35,17 @@
                     </button>
                 </div>
             </div>
+            <div *ngIf="utente?.ruoli.length <= 0 && !loading" class="d-inline-block h6 font-weight-normal">
+                <div class="badge badge-secondary d-flex align-items-center justify-content-center cursor-pointer shadow-sm py-3 px-2" style="opacity:.6; min-height:67px">
+                    <span class="d-block">Nessun ruolo assegnato</span>
+                </div>
+            </div>
         </td>
     </tr>
     <tr *ngIf="listaUtenti?.length <= 0">
         <td>
-            Nessun Utente trovato
+            <ng-template [ngIf]="!loading">Nessun Utente trovato</ng-template>
+            <ng-template [ngIf]="loading">Caricamento risultati in corso...</ng-template>
         </td>
         <td *ngFor="let ruolo of ruoli"></td>
         <td></td>
