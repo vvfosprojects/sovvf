@@ -23,6 +23,7 @@ export class TabellaUtentiComponent {
     @Output() removeRoleUser: EventEmitter<{ codFiscale: string, ruolo: Ruolo, nominativoUtente: string }> = new EventEmitter<{ codFiscale: string, ruolo: Ruolo, nominativoUtente: string }>();
     @Output() addRuoloUtente: EventEmitter<{ codFiscale: string, fullName: string }> = new EventEmitter<{ codFiscale: string, fullName: string }>();
     @Output() pageChange: EventEmitter<number> = new EventEmitter<number>();
+    @Output() pageSizeChange: EventEmitter<number> = new EventEmitter<number>();
 
     dettaglioPermessi: string[];
 

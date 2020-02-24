@@ -35,11 +35,13 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneUtenti.AddUtente
     {
         private readonly IAddUtente _addUtente;
         private readonly IGetPersonaleByCF _personaleByCF;
+        private readonly IGetAlberaturaUnitaOperative _getAlberaturaUnitaOperative;
 
-        public AddUtenteCommandHandler(IAddUtente addUtente, IGetPersonaleByCF personaleByCF)
+        public AddUtenteCommandHandler(IAddUtente addUtente, IGetPersonaleByCF personaleByCF, IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative)
         {
             _addUtente = addUtente;
             _personaleByCF = personaleByCF;
+            _getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
         }
 
         /// <summary>
@@ -49,7 +51,19 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneUtenti.AddUtente
         public void Handle(AddUtenteCommand command)
         {
             var personale = _personaleByCF.Get(command.CodFiscale, command.CodiceSede.Split(".")[0]).Result;
-
+            var listaPin = new List<PinNodo>();
+            var sediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
+            foreach (var ruolo in command.Ruoli)
+            {
+                listaPin.Add(new PinNodo(ruolo.CodSede, ruolo.Ricorsivo));
+                foreach (var figli in sediAlberate.GetSottoAlbero(listaPin))
+                {
+                    if (figli.Codice.Equals(ruolo.CodSede))
+                    {
+                        ruolo.DescSede = figli.Nome;
+                    }
+                }
+            }
             var utenteVVF = new Utente(command.CodFiscale, personale.Nominativo.Split(".")[0], personale.Nominativo.Split(".")[1])
             {
                 Ruoli = command.Ruoli,

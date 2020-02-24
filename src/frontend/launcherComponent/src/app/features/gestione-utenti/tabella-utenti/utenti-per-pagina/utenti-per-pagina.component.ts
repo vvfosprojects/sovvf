@@ -10,7 +10,7 @@ export class UtentiPerPaginaComponent implements OnInit {
     @Input() pageSize: number;
     @Input() pageSizes: number[];
 
-    @Output() changePageSize: EventEmitter<number> = new EventEmitter<number>();
+    @Output() pageSizeChange: EventEmitter<number> = new EventEmitter<number>();
 
     constructor() {
     }
@@ -19,6 +19,6 @@ export class UtentiPerPaginaComponent implements OnInit {
     }
 
     onChangePageSize(pageSize: number) {
-        this.changePageSize.emit(pageSize);
+        this.pageSizeChange.emit(pageSize);
     }
 }
