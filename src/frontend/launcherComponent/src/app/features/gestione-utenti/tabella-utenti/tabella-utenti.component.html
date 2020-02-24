@@ -36,7 +36,8 @@
                 </div>
             </div>
             <div *ngIf="utente?.ruoli.length <= 0 && !loading" class="d-inline-block h6 font-weight-normal">
-                <div class="badge badge-secondary d-flex align-items-center justify-content-center cursor-pointer shadow-sm py-3 px-2" style="opacity:.6; min-height:67px">
+                <div class="badge badge-secondary d-flex align-items-center justify-content-center cursor-pointer shadow-sm py-3 px-2"
+                     style="opacity:.6; min-height:67px">
                     <span class="d-block">Nessun ruolo assegnato</span>
                 </div>
             </div>
@@ -57,5 +58,6 @@
     <pagination-controls [previousLabel]="'Precedente'" [nextLabel]="'Successiva'"
                          (pageChange)="pageChange.emit($event)">
     </pagination-controls>
-    <app-utenti-per-pagina [pageSize]="pageSize" [pageSizes]="pageSizes"></app-utenti-per-pagina>
+    <app-utenti-per-pagina [pageSize]="pageSize" [pageSizes]="pageSizes"
+                           (pageSizeChange)="pageSizeChange.emit($event)"></app-utenti-per-pagina>
 </div>

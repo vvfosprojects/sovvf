@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Ruolo, Utente } from 'src/app/shared/model/utente.model';
 import { Observable } from 'rxjs';
 import { Select, Store } from '@ngxs/store';
@@ -16,13 +16,14 @@ import { GestioneUtenteModalComponent } from './gestione-utente-modal/gestione-u
 import { ConfirmModalComponent } from 'src/app/shared';
 import { SetCodiceSede } from '../../core/signalr/store/signalR.actions';
 import { AuthenticationService } from '../../core/auth/_services';
+import { SetPageSize } from '../../shared/store/actions/pagination/pagination.actions';
 
 @Component({
     selector: 'app-gestione-utenti',
     templateUrl: './gestione-utenti.component.html',
-    styleUrls: ['./gestione-utenti.component.css']
+    styleUrls: [ './gestione-utenti.component.css' ]
 })
-export class GestioneUtentiComponent implements OnInit {
+export class GestioneUtentiComponent {
 
     @Select(UtenteState.utente) user$: Observable<Utente>;
     @Select(GestioneUtentiState.listaUtenti) listaUtenti$: Observable<Utente[]>;
@@ -42,17 +43,15 @@ export class GestioneUtentiComponent implements OnInit {
         this.getUtentiGestione();
         this.getRuoli();
         this.getRicerca();
+        this.getPageSize();
     }
 
     onRicercaUtenti(ricerca: any) {
         this.store.dispatch(new SetRicercaUtenti(ricerca));
     }
 
-    ngOnInit(): void {
-    }
-
     onAddUtente() {
-        const aggiungiUtenteModal = this.modalService.open(GestioneUtenteModalComponent, { backdropClass: 'light-blue-backdrop', centered: true, size: 'lg' });
+        const aggiungiUtenteModal = this.modalService.open(GestioneUtenteModalComponent, {backdropClass: 'light-blue-backdrop', centered: true, size: 'lg'});
         aggiungiUtenteModal.result.then(
             (result: { success: boolean }) => {
                 if (result.success) {
@@ -70,7 +69,7 @@ export class GestioneUtentiComponent implements OnInit {
     }
 
     onAddRuoloUtente(event: { codFiscale: string, fullName: string }) {
-        const aggiungiRuoloUtenteModal = this.modalService.open(GestioneUtenteModalComponent, { backdropClass: 'light-blue-backdrop', centered: true, size: 'lg' });
+        const aggiungiRuoloUtenteModal = this.modalService.open(GestioneUtenteModalComponent, {backdropClass: 'light-blue-backdrop', centered: true, size: 'lg'});
         const codFiscaleUtenteVVF = event.codFiscale;
         const nominativoUtenteVVF = event.fullName;
         aggiungiRuoloUtenteModal.componentInstance.codFiscaleUtenteVVF = codFiscaleUtenteVVF;
@@ -92,13 +91,13 @@ export class GestioneUtentiComponent implements OnInit {
     }
 
     onRemoveRuoloUtente(payload: { codFiscale: string, ruolo: Ruolo, nominativoUtente: string }) {
-        const modalConfermaAnnulla = this.modalService.open(ConfirmModalComponent, { backdropClass: 'light-blue-backdrop', centered: true });
-        modalConfermaAnnulla.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
+        const modalConfermaAnnulla = this.modalService.open(ConfirmModalComponent, {backdropClass: 'light-blue-backdrop', centered: true});
+        modalConfermaAnnulla.componentInstance.icona = {descrizione: 'trash', colore: 'danger'};
         modalConfermaAnnulla.componentInstance.titolo = 'Elimina ruolo a ' + payload.nominativoUtente;
         modalConfermaAnnulla.componentInstance.messaggioAttenzione = 'Sei sicuro di voler rimuovere il ruolo "' + payload.ruolo.descrizione + '" su "' + payload.ruolo.descSede + '"?';
         modalConfermaAnnulla.componentInstance.bottoni = [
-            { type: 'ko', descrizione: 'Annulla', colore: 'danger' },
-            { type: 'ok', descrizione: 'Conferma', colore: 'dark' },
+            {type: 'ko', descrizione: 'Annulla', colore: 'danger'},
+            {type: 'ok', descrizione: 'Conferma', colore: 'dark'},
         ];
         modalConfermaAnnulla.result.then(
             (val) => {
@@ -117,13 +116,13 @@ export class GestioneUtentiComponent implements OnInit {
     }
 
     onRemoveUtente(payload: { codFiscale: string, nominativoUtente: string }) {
-        const modalConfermaAnnulla = this.modalService.open(ConfirmModalComponent, { backdropClass: 'light-blue-backdrop', centered: true });
-        modalConfermaAnnulla.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
+        const modalConfermaAnnulla = this.modalService.open(ConfirmModalComponent, {backdropClass: 'light-blue-backdrop', centered: true});
+        modalConfermaAnnulla.componentInstance.icona = {descrizione: 'trash', colore: 'danger'};
         modalConfermaAnnulla.componentInstance.titolo = 'Elimina ' + payload.nominativoUtente;
         modalConfermaAnnulla.componentInstance.messaggioAttenzione = 'Sei sicuro di voler rimuovere l\'utente?';
         modalConfermaAnnulla.componentInstance.bottoni = [
-            { type: 'ko', descrizione: 'Annulla', colore: 'danger' },
-            { type: 'ok', descrizione: 'Conferma', colore: 'dark' },
+            {type: 'ko', descrizione: 'Annulla', colore: 'danger'},
+            {type: 'ok', descrizione: 'Conferma', colore: 'dark'},
         ];
         modalConfermaAnnulla.result.then(
             (val) => {
@@ -145,6 +144,10 @@ export class GestioneUtentiComponent implements OnInit {
         this.store.dispatch(new GetUtentiGestione(page));
     }
 
+    onPageSizeChange(page: number) {
+        this.store.dispatch(new SetPageSize(page));
+    }
+
     getUtentiGestione() {
         this.store.dispatch(new GetUtentiGestione());
     }
@@ -155,6 +158,12 @@ export class GestioneUtentiComponent implements OnInit {
 
     getRicerca() {
         this.ricerca$.subscribe(() => {
+            this.store.dispatch(new GetUtentiGestione());
+        });
+    }
+
+    getPageSize() {
+        this.pageSize$.subscribe(() => {
             this.store.dispatch(new GetUtentiGestione());
         });
     }
