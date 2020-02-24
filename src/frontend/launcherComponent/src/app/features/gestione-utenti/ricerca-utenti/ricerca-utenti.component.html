@@ -1,11 +1,14 @@
-<div class="input-group">
-    <input [(ngModel)]="ricerca" class="form-control" type="text" placeholder="Chi stai cercando?"
-           name="ricercaRichieste"
-           id="ricercaRichieste" appDebounceKeyUp (debounceKeyUp)="ricercaChange.emit(ricerca)" [debounceTime]="600">
-    <div class="input-group-append">
-        <button class="btn btn-primary">
-            <i *ngIf="!loading" class="fa fa-search text-light"></i>
-            <i *ngIf="loading" class="fa fa-spinner fa-spin text-light"></i>
-        </button>
+<form class="m-0" autocomplete="off">
+    <div class="input-group">
+        <label for="ricercaRichieste" class="d-none"></label>
+        <input id="ricercaRichieste" name="ricercaRichieste" [(ngModel)]="ricerca"
+               class="form-control" type="text" placeholder="Chi stai cercando?" appDebounceKeyUp
+               (debounceKeyUp)="ricercaChange.emit(ricerca)" [debounceTime]="600">
+        <div class="input-group-append">
+            <button class="btn btn-primary">
+                <i *ngIf="!loading" class="fa fa-search text-light"></i>
+                <i *ngIf="loading" class="fa fa-spinner fa-spin text-light"></i>
+            </button>
+        </div>
     </div>
-</div>
+</form>

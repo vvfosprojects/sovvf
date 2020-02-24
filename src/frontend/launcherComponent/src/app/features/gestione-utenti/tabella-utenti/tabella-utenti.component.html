@@ -2,7 +2,7 @@
     <thead>
     <tr>
         <th scope="col" width="25%">Nominativo</th>
-        <th scope="col" width="40%">Permessi</th>
+        <th scope="col" width="40%">Ruoli Assegnati</th>
     </tr>
     </thead>
     <tbody>
@@ -38,7 +38,7 @@
             <div *ngIf="utente?.ruoli.length <= 0 && !loading" class="d-inline-block h6 font-weight-normal">
                 <div class="badge badge-secondary d-flex align-items-center justify-content-center cursor-pointer shadow-sm py-3 px-2"
                      style="opacity:.6; min-height:67px">
-                    <span class="d-block">Nessun ruolo assegnato</span>
+                    <span class="d-block">Solo Visualizzazione</span>
                 </div>
             </div>
         </td>
@@ -48,14 +48,12 @@
             <ng-template [ngIf]="!loading">Nessun Utente trovato</ng-template>
             <ng-template [ngIf]="loading">Caricamento risultati in corso...</ng-template>
         </td>
-        <td *ngFor="let ruolo of ruoli"></td>
-        <td></td>
         <td></td>
     </tr>
     </tbody>
 </table>
 <div *ngIf="listaUtenti?.length > 0" class="d-flex justify-content-between p-2">
-    <pagination-controls [previousLabel]="'Precedente'" [nextLabel]="'Successiva'"
+    <pagination-controls class="mt-1 mb-0" [previousLabel]="'Precedente'" [nextLabel]="'Successiva'"
                          (pageChange)="pageChange.emit($event)">
     </pagination-controls>
     <app-utenti-per-pagina [pageSize]="pageSize" [pageSizes]="pageSizes"

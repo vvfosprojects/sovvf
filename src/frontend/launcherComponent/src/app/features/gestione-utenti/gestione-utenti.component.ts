@@ -26,10 +26,12 @@ import { SetPageSize } from '../../shared/store/actions/pagination/pagination.ac
 export class GestioneUtentiComponent {
 
     @Select(UtenteState.utente) user$: Observable<Utente>;
+    utente: Utente;
     @Select(GestioneUtentiState.listaUtenti) listaUtenti$: Observable<Utente[]>;
     @Select(GestioneUtentiState.utenteDetail) utenteGestioneDetail$: Observable<Utente>;
     @Select(RuoliState.ruoli) ruoli$: Observable<Array<any>>;
-    @Select(RicercaUtentiState.ricerca) ricerca$: Observable<any>;
+    @Select(RicercaUtentiState.ricerca) ricerca$: Observable<string>;
+    ricerca: string;
     @Select(PaginationState.pageSize) pageSize$: Observable<number>;
     @Select(PaginationState.pageSizes) pageSizes$: Observable<number[]>;
     @Select(PaginationState.totalItems) totalItems$: Observable<number>;
@@ -40,6 +42,7 @@ export class GestioneUtentiComponent {
                 private store: Store,
                 private authService: AuthenticationService) {
         this.store.dispatch(new SetCodiceSede(this.authService.currentUserValue.sede.codice));
+        this.getUtente();
         this.getUtentiGestione();
         this.getRuoli();
         this.getRicerca();
@@ -156,8 +159,15 @@ export class GestioneUtentiComponent {
         this.store.dispatch(new GetRuoli());
     }
 
+    getUtente() {
+        this.user$.subscribe((utente: Utente) => {
+            this.utente = utente;
+        });
+    }
+
     getRicerca() {
-        this.ricerca$.subscribe(() => {
+        this.ricerca$.subscribe((ricerca: string) => {
+            this.ricerca = ricerca;
             this.store.dispatch(new GetUtentiGestione());
         });
     }

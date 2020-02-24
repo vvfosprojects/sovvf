@@ -1,2 +1,8 @@
 <ng-select [items]="pageSizes" [(ngModel)]="pageSize" [clearable]="false" (ngModelChange)="onChangePageSize($event)">
+    <ng-template ng-label-tmp let-item="item">
+        Stai visualizzando <span class="font-weight-bold">{{item}}</span> utenti per pagina
+    </ng-template>
+    <ng-template ng-option-tmp let-item="item">
+        Visualizza <span class="font-weight-bold">{{item}}</span> utenti per pagina
+    </ng-template>
 </ng-select>
