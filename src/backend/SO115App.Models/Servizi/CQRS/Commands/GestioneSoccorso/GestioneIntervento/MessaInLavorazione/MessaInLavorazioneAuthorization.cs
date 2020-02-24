@@ -22,16 +22,19 @@ using System.Security.Principal;
 using CQRS.Authorization;
 using CQRS.Commands.Authorizers;
 using SO115App.API.Models.Classi.Autenticazione;
+using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.VerificaUtente;
 
 namespace DomainModel.CQRS.Commands.MessaInLavorazione
 {
     public class MessaInLavorazioneAuthorization : ICommandAuthorizer<MessaInLavorazioneCommand>
     {
         private readonly IPrincipal currentUser;
+        private readonly IFindUserByUsername _findUserByUsername;
 
-        public MessaInLavorazioneAuthorization(IPrincipal currentUser)
+        public MessaInLavorazioneAuthorization(IPrincipal currentUser, IFindUserByUsername findUserByUsername)
         {
             this.currentUser = currentUser;
+            _findUserByUsername = findUserByUsername;
         }
 
         public IEnumerable<AuthorizationResult> Authorize(MessaInLavorazioneCommand command)
@@ -40,7 +43,7 @@ namespace DomainModel.CQRS.Commands.MessaInLavorazione
 
             if (this.currentUser.Identity.IsAuthenticated)
             {
-                Utente user = Utente.FindUserByUsername(username);
+                Utente user = _findUserByUsername.FindUserByUs(username);
                 if (user == null)
                     yield return new AuthorizationResult("Utente non autorizzato");
             }

@@ -25,6 +25,7 @@ using CQRS.Queries;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using SO115App.API.Models.Classi.Autenticazione;
+using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.VerificaUtente;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneUtente.LogIn
 {
@@ -34,10 +35,12 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneUtente.LogIn
     public class LogInQueryHandler : IQueryHandler<LogInQuery, LogInResult>
     {
         private readonly IConfiguration _config;
+        private readonly IVerificaLogIn _verificaLogIn;
 
-        public LogInQueryHandler(IConfiguration config)
+        public LogInQueryHandler(IConfiguration config, IVerificaLogIn verificaLogIn)
         {
             this._config = config;
+            _verificaLogIn = verificaLogIn;
         }
 
         /// <summary>
@@ -48,7 +51,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneUtente.LogIn
         public LogInResult Handle(LogInQuery query)
         {
             // preparazione del DTO
-            var utente = Utente.VerificaLogIn(query.Username, query.Password);
+            var utente = _verificaLogIn.Verifica(query.Username, query.Password);
 
             var claim = new[]
                 {

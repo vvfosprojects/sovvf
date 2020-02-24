@@ -126,9 +126,6 @@ namespace SO115App.CompositionRoot
             container.Register<
                 Models.Servizi.Infrastruttura.SistemiEsterni.IdentityManagement.IGetDistaccamentoByCodiceSede,
                 FakePersistence.JSon.Distaccamenti.GetDistaccamentoByCodiceSede>();
-            container.Register<
-                SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.IGetUtenteById,
-                SO115App.FakePersistence.JSon.GestioneUtenti.GetUtenteById>();
 
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.Turni.IUpdateTurni,
@@ -244,6 +241,9 @@ namespace SO115App.CompositionRoot
             container.Register<Models.Servizi.Infrastruttura.SistemiEsterni.Personale.IGetUtenti, Persistence.MongoDB.GestioneUtenti.GestioneUtente.GetUtenti>();
             container.Register<Models.Servizi.Infrastruttura.GestioneUtenti.GestioneRuolo.IDeleteRuolo, Persistence.MongoDB.GestioneUtenti.GestioneRuoli.DeleteRuolo>();
             container.Register<Models.Servizi.Infrastruttura.GestioneUtenti.GestioneRuolo.IAddRuoli, Persistence.MongoDB.GestioneUtenti.GestioneRuoli.AddRuoli>();
+            container.Register<Models.Servizi.Infrastruttura.GestioneUtenti.VerificaUtente.IFindUserByUsername, Persistence.MongoDB.GestioneUtenti.GestioneUtente.FindUserByUsername>();
+            container.Register<Models.Servizi.Infrastruttura.GestioneUtenti.IGetUtenteById, Persistence.MongoDB.GestioneUtenti.GestioneUtente.GetUtenteById>();
+            container.Register<Models.Servizi.Infrastruttura.GestioneUtenti.VerificaUtente.IVerificaLogIn, Persistence.MongoDB.GestioneUtenti.GestioneUtente.VerificaLogIn>();
 
             #endregion Gestione Utenti e Ruoli
         }

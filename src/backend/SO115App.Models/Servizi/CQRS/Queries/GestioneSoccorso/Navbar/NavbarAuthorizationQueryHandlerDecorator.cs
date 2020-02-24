@@ -23,26 +23,28 @@ using CQRS.Authorization;
 using CQRS.Queries.Authorizers;
 using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.Models.Classi.Utility;
+using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.VerificaUtente;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Navbar
 {
     public class NavbarAuthorizationQueryHandlerDecorator : IQueryAuthorizer<NavbarQuery, NavbarResult>
     {
         private readonly IPrincipal _currentUser;
+        private readonly IFindUserByUsername _findUserByUsername;
 
-        public NavbarAuthorizationQueryHandlerDecorator(IPrincipal currentUser)
+        public NavbarAuthorizationQueryHandlerDecorator(IPrincipal currentUser, IFindUserByUsername findUserByUsername)
         {
             this._currentUser = currentUser;
+            _findUserByUsername = findUserByUsername;
         }
 
         public IEnumerable<AuthorizationResult> Authorize(NavbarQuery query)
         {
             var username = this._currentUser.Identity.Name;
-            var user = Utente.FindUserByUsername(username);
+            var user = _findUserByUsername.FindUserByUs(username);
 
             if (_currentUser.Identity.IsAuthenticated)
             {
-
                 if (user == null)
                     yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
             }

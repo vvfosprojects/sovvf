@@ -23,26 +23,28 @@ using CQRS.Authorization;
 using CQRS.Commands.Authorizers;
 using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.Models.Classi.Utility;
+using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.VerificaUtente;
 
 namespace DomainModel.CQRS.Commands.UpDateIntervento
 {
     public class UpDateInterventoAuthorization : ICommandAuthorizer<UpDateInterventoCommand>
     {
         private readonly IPrincipal _currentUser;
+        private readonly IFindUserByUsername _findUserByUsername;
 
-        public UpDateInterventoAuthorization(IPrincipal currentUser)
+        public UpDateInterventoAuthorization(IPrincipal currentUser, IFindUserByUsername findUserByUsername)
         {
             _currentUser = currentUser;
+            _findUserByUsername = findUserByUsername;
         }
 
         public IEnumerable<AuthorizationResult> Authorize(UpDateInterventoCommand command)
         {
             var username = this._currentUser.Identity.Name;
-            var user = Utente.FindUserByUsername(username);
+            var user = _findUserByUsername.FindUserByUs(username);
 
             if (_currentUser.Identity.IsAuthenticated)
             {
-
                 if (user == null)
                     yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
             }

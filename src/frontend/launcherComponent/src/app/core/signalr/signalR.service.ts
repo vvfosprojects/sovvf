@@ -342,7 +342,7 @@ export class SignalRService {
 
     addToGroup(notification: SignalRNotification) {
         if (!SIGNALR_BYPASS) {
-            console.log(notification);
+            console.log('addToGroup',notification);
             this.hubNotification.invoke('AddToGroup', notification).then(
                 () => this.store.dispatch(new ShowToastr(ToastrType.Info, 'Connessione al gruppo effettuata con successo', null, 3))
             ).catch(

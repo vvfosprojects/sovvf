@@ -26,7 +26,7 @@ namespace SO115App.Persistence.MongoDB.GestioneUtenti.GestioneUtente
         /// </summary>
         /// <param name="username">l'username dell'utente</param>
         /// <returns>L'utente</returns>
-        public Utente Find(string username)
+        public Utente FindUserByUs(string username)
         {
             return _dbContext.UtenteCollection.Find(Builders<Utente>.Filter.Eq(x => x.Username, username)).Single();
         }

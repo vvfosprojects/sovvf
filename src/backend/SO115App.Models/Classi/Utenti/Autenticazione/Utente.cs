@@ -198,48 +198,40 @@ namespace SO115App.API.Models.Classi.Autenticazione
             }
         }
 
-        public static Utente FindUserByUsername(string username)
-        {
-            Utente userFind = new Utente(username);
+        //public static Utente FindUserByUsername(string username)
+        //{
+        //    Utente userFind = new Utente(username);
 
-            string filepath = "Fake/user.json";
-            string json;
-            using (StreamReader r = new StreamReader(filepath))
-            {
-                json = r.ReadToEnd();
-            }
+        // string filepath = "Fake/user.json"; string json; using (StreamReader r = new
+        // StreamReader(filepath)) { json = r.ReadToEnd(); }
 
-            List<Utente> ListaUtenti = JsonConvert.DeserializeObject<List<Utente>>(json);
+        // List<Utente> ListaUtenti = JsonConvert.DeserializeObject<List<Utente>>(json);
 
-            userFind = ListaUtenti.Find(x => x.Username.Equals(username));
+        // userFind = ListaUtenti.Find(x => x.Username.Equals(username));
 
-            if (userFind != null)
-                return userFind;
-            else
-                return null;
-        }
+        //    if (userFind != null)
+        //        return userFind;
+        //    else
+        //        return null;
+        //}
 
         //TODO DA MODIFICARE CON LA LOGICA DEL DB
-        public static Utente VerificaLogIn(string username, string password)
-        {
-            Utente user = new Utente(username);
+        //public static Utente VerificaLogIn(string username, string password)
+        //{
+        //    Utente user = new Utente(username);
 
-            string filepath = "Fake/user.json";
-            string json;
-            using (StreamReader r = new StreamReader(filepath))
-            {
-                json = r.ReadToEnd();
-            }
+        // string filepath = "Fake/user.json"; string json; using (StreamReader r = new
+        // StreamReader(filepath)) { json = r.ReadToEnd(); }
 
-            List<Utente> ListaUtenti = JsonConvert.DeserializeObject<List<Utente>>(json);
+        // List<Utente> ListaUtenti = JsonConvert.DeserializeObject<List<Utente>>(json);
 
-            user = ListaUtenti.Find(x => x.Password.Equals(password) && x.Username.Equals(username));
+        // user = ListaUtenti.Find(x => x.Password.Equals(password) && x.Username.Equals(username));
 
-            if (user != null)
-                return user;
-            else
-                return null;
-        }
+        //    if (user != null)
+        //        return user;
+        //    else
+        //        return null;
+        //}
     }
 
     public class Role

@@ -133,6 +133,10 @@ namespace SO115App.CompositionRoot
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.IGetUtenteById,
                 SO115App.FakePersistence.JSon.GestioneUtenti.GetUtenteById>();
+            // da trasportare su un altro file di configurazione
+            container.Register<Models.Servizi.Infrastruttura.GestioneUtenti.VerificaUtente.IFindUserByUsername, FakePersistence.JSon.GestioneUtenti.FindByUsername>();
+            container.Register<Models.Servizi.Infrastruttura.GestioneUtenti.IGetUtenteById, FakePersistence.JSon.GestioneUtenti.GetUtenteById>();
+            container.Register<Models.Servizi.Infrastruttura.GestioneUtenti.VerificaUtente.IVerificaLogIn, FakePersistence.JSon.GestioneUtenti.VerificaLogIn>();
 
             container.Register<
                 SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi.IGetListaMezzi,

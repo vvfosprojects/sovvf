@@ -23,22 +23,25 @@ using CQRS.Authorization;
 using CQRS.Commands.Authorizers;
 using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.Models.Classi.Utility;
+using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.VerificaUtente;
 
 namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.SetMezzoPrenotato
 {
     public class SetMezzoPrenotatoAuthorization : ICommandAuthorizer<SetMezzoPrenotatoCommand>
     {
         private readonly IPrincipal currentUser;
+        private readonly IFindUserByUsername _findUserByUsername;
 
-        public SetMezzoPrenotatoAuthorization(IPrincipal currentUser)
+        public SetMezzoPrenotatoAuthorization(IPrincipal currentUser, IFindUserByUsername findUserByUsername)
         {
             this.currentUser = currentUser;
+            _findUserByUsername = findUserByUsername;
         }
 
         public IEnumerable<AuthorizationResult> Authorize(SetMezzoPrenotatoCommand command)
         {
             var username = currentUser.Identity.Name;
-            var user = Utente.FindUserByUsername(username);
+            var user = _findUserByUsername.FindUserByUs(username);
 
             if (currentUser.Identity.IsAuthenticated)
             {

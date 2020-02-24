@@ -26,6 +26,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneUtente.ListaPersonaleVVF
             {
                 if (listaUtenti.Where(x => x.CodiceFiscale == personale.CodFiscale).ToList().Count == 0)
                 {
+                    personale.Nominativo.Replace(".", " ");
                     listaUtentiNonCensiti.Add(personale);
                 }
             }

@@ -20,6 +20,7 @@
 using CQRS.Authorization;
 using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.Models.Classi.Utility;
+using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.VerificaUtente;
 using System;
 using System.Collections.Generic;
 using System.Security.Principal;
@@ -30,16 +31,18 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSchedeNue.UndoMergeSched
     internal class UndoMergeSchedeNueAuthorization
     {
         private readonly IPrincipal _currentUser;
+        private readonly IFindUserByUsername _findUserByUsername;
 
-        public UndoMergeSchedeNueAuthorization(IPrincipal currentUser)
+        public UndoMergeSchedeNueAuthorization(IPrincipal currentUser, IFindUserByUsername findUserByUsername)
         {
             this._currentUser = currentUser;
+            _findUserByUsername = findUserByUsername;
         }
 
         public IEnumerable<AuthorizationResult> Authorize(UndoMergeSchedeNueCommand command)
         {
             var username = _currentUser.Identity.Name;
-            var user = Utente.FindUserByUsername(username);
+            var user = _findUserByUsername.FindUserByUs(username);
 
             if (_currentUser.Identity.IsAuthenticated)
             {

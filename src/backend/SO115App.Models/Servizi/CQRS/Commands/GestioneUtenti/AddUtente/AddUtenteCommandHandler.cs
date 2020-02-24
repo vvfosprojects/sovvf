@@ -53,7 +53,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneUtenti.AddUtente
             var utenteVVF = new Utente(command.CodFiscale, personale.Nominativo.Split(".")[0], personale.Nominativo.Split(".")[1])
             {
                 Ruoli = command.Ruoli,
-                Username = "test",
+                Username = personale.Nominativo.ToLower(),
                 Password = "test",
                 Sede = new Sede(command.CodiceSede, "", "", new Coordinate(0, 0), "", "", "", "", "")
             };

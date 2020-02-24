@@ -23,22 +23,25 @@ using CQRS.Authorization;
 using CQRS.Commands.Authorizers;
 using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.Models.Classi.Utility;
+using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.VerificaUtente;
 
 namespace DomainModel.CQRS.Commands.ChiamataInCorsoMarker
 {
     public class ChiamataInCorsoMarkerAuthorization : ICommandAuthorizer<ChiamataInCorsoMarkerCommand>
     {
         private readonly IPrincipal _currentUser;
+        private readonly IFindUserByUsername _findUserByUsername;
 
-        public ChiamataInCorsoMarkerAuthorization(IPrincipal currentUser)
+        public ChiamataInCorsoMarkerAuthorization(IPrincipal currentUser, IFindUserByUsername findUserByUsername)
         {
             _currentUser = currentUser;
+            _findUserByUsername = findUserByUsername;
         }
 
         public IEnumerable<AuthorizationResult> Authorize(ChiamataInCorsoMarkerCommand command)
         {
             var username = _currentUser.Identity.Name;
-            var user = Utente.FindUserByUsername(username);
+            var user = _findUserByUsername.FindUserByUs(username);
 
             if (_currentUser.Identity.IsAuthenticated)
             {

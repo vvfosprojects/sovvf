@@ -12,6 +12,6 @@ namespace SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.VerificaUtente
         /// </summary>
         /// <param name="username">l'username dell'utente</param>
         /// <returns>un utente</returns>
-        Utente Find(string username);
+        Utente FindUserByUs(string username);
     }
 }

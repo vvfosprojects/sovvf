@@ -21,6 +21,7 @@ using CQRS.Authorization;
 using CQRS.Commands.Authorizers;
 using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.Models.Classi.Utility;
+using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.VerificaUtente;
 using System.Collections.Generic;
 using System.Security.Principal;
 
@@ -29,16 +30,18 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneUtenti.DeleteRuoliUtente
     public class DeleteRuoliUtenteAuthorization : ICommandAuthorizer<DeleteRuoliUtenteCommand>
     {
         private readonly IPrincipal currentUser;
+        private readonly IFindUserByUsername _findUserByUsername;
 
-        public DeleteRuoliUtenteAuthorization(IPrincipal currentUser)
+        public DeleteRuoliUtenteAuthorization(IPrincipal currentUser, IFindUserByUsername findUserByUsername)
         {
             this.currentUser = currentUser;
+            _findUserByUsername = findUserByUsername;
         }
 
         public IEnumerable<AuthorizationResult> Authorize(DeleteRuoliUtenteCommand command)
         {
             var username = currentUser.Identity.Name;
-            var user = Utente.FindUserByUsername(username);
+            var user = _findUserByUsername.FindUserByUs(username);
 
             if (currentUser.Identity.IsAuthenticated)
             {

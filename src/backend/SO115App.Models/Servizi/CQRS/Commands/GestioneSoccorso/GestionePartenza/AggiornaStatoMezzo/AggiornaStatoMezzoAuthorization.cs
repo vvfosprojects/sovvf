@@ -23,22 +23,25 @@ using CQRS.Authorization;
 using CQRS.Commands.Authorizers;
 using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.Models.Classi.Utility;
+using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.VerificaUtente;
 
 namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AggiornaStatoMezzo
 {
     public class AggiornaStatoMezzoAuthorization : ICommandAuthorizer<AggiornaStatoMezzoCommand>
     {
         private readonly IPrincipal _currentUser;
+        private readonly IFindUserByUsername _findUserByUsername;
 
-        public AggiornaStatoMezzoAuthorization(IPrincipal currentUser)
+        public AggiornaStatoMezzoAuthorization(IPrincipal currentUser, IFindUserByUsername findUserByUsername)
         {
             _currentUser = currentUser;
+            _findUserByUsername = findUserByUsername;
         }
 
         public IEnumerable<AuthorizationResult> Authorize(AggiornaStatoMezzoCommand command)
         {
             var username = _currentUser.Identity.Name;
-            var user = Utente.FindUserByUsername(username);
+            var user = _findUserByUsername.FindUserByUs(username);
 
             if (_currentUser.Identity.IsAuthenticated)
             {
