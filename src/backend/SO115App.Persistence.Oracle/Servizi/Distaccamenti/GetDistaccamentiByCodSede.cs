@@ -33,7 +33,7 @@ namespace SO115App.Persistence.Oracle.Servizi.Distaccamenti
                               "TABELLE_COMUNI.DISTACCAMENTI.CODDISTAC = TABELLE_COMUNI.ANAGRAFICADISTAC.CODDISTAC " +
                               "AND TABELLE_COMUNI.DISTACCAMENTI.CODSEDE = TABELLE_COMUNI.ANAGRAFICADISTAC.CODSEDE " +
                               "WHERE(TABELLE_COMUNI.DISTACCAMENTI.CODSEDE = :CodSede) " +
-                              "AND TABELLE_COMUNI.DISTACCAMENTI.FLG_ATTIVO = 1 " +
+                              "AND TABELLE_COMUNI.DISTACCAMENTI.FLGATTIVO = 1 " +
                               "ORDER BY TABELLE_COMUNI.DISTACCAMENTI.CODDISTAC ";
 
             cmd.CommandType = CommandType.Text;
