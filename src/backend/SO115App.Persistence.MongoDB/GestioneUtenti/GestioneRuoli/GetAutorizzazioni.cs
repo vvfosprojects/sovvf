@@ -44,9 +44,9 @@ namespace SO115App.Persistence.MongoDB.GestioneUtenti.GestioneRuoli
 
                 var ListaUOCON = _getListaUO.ListaSediAlberata();
 
-                foreach (UnitaOperativa unitaCON in ((List<UnitaOperativa>)ListaUOCON.GetSottoAlbero()))
+                foreach (UnitaOperativa unitaCON in (ListaUOCON.GetSottoAlbero().ToList()))
                 {
-                    var IsFiglio = ((List<UnitaOperativa>)unitaCON.GetSottoAlbero()).Find(x => x.Codice.Equals(idSede));
+                    var IsFiglio = unitaCON.GetSottoAlbero().ToList().Find(x => x.Codice.Equals(idSede));
 
                     if (IsFiglio != null)
                     {
@@ -56,7 +56,7 @@ namespace SO115App.Persistence.MongoDB.GestioneUtenti.GestioneRuoli
                     {
                         foreach (UnitaOperativa UODirRegionale in (List<UnitaOperativa>)unitaCON.GetSottoAlbero())
                         {
-                            var IsFiglioL2 = ((List<UnitaOperativa>)UODirRegionale.GetSottoAlbero()).Find(x => x.Codice.Equals(idSede));
+                            var IsFiglioL2 = UODirRegionale.GetSottoAlbero().ToList().Find(x => x.Codice.Equals(idSede));
 
                             if (IsFiglioL2 != null)
                             {
@@ -67,7 +67,7 @@ namespace SO115App.Persistence.MongoDB.GestioneUtenti.GestioneRuoli
                             {
                                 foreach (UnitaOperativa UOComando in (List<UnitaOperativa>)UODirRegionale.GetSottoAlbero())
                                 {
-                                    var IsFiglioL3 = ((List<UnitaOperativa>)UOComando.GetSottoAlbero()).Find(x => x.Codice.Equals(idSede));
+                                    var IsFiglioL3 = UOComando.GetSottoAlbero().ToList().Find(x => x.Codice.Equals(idSede));
 
                                     if (IsFiglioL3 != null)
                                     {

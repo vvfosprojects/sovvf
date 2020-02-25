@@ -46,7 +46,7 @@ namespace DomainModel.CQRS.Commands.AddIntervento
             this._saveRichiestaAssistenza = saveRichiestaAssistenza;
             _generaCodiceRichiesta = generaCodiceRichiesta;
             _getTurno = getTurno;
-            _getCompetenze = _getCompetenze;
+            _getCompetenze = getCompetenze;
         }
 
         public void Handle(AddInterventoCommand command)
@@ -90,7 +90,7 @@ namespace DomainModel.CQRS.Commands.AddIntervento
             else
             {
                 Indirizzo = command.Chiamata.Localita.Indirizzo.Split(',')[0];
-                Citta = command.Chiamata.Localita.Indirizzo.Split(',')[1];
+                Citta = command.Chiamata.Localita.Indirizzo.Split(',')[1][0..^2];
                 Civico = "0";
             }
 

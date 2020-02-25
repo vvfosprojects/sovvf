@@ -22,8 +22,10 @@ using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Organigramma;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Personale;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
+using System;
 using System.Collections.Generic;
 
 namespace SO115App.Models.Servizi.CQRS.Commands.GestioneUtenti.AddUtente
@@ -36,12 +38,14 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneUtenti.AddUtente
         private readonly IAddUtente _addUtente;
         private readonly IGetPersonaleByCF _personaleByCF;
         private readonly IGetAlberaturaUnitaOperative _getAlberaturaUnitaOperative;
+        private readonly IGetListaDistaccamentiByCodiceSede _getListaDistaccamentiByCodiceSede;
 
-        public AddUtenteCommandHandler(IAddUtente addUtente, IGetPersonaleByCF personaleByCF, IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative)
+        public AddUtenteCommandHandler(IAddUtente addUtente, IGetPersonaleByCF personaleByCF, IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative, IGetListaDistaccamentiByCodiceSede getListaDistaccamentiByCodiceSede)
         {
             _addUtente = addUtente;
             _personaleByCF = personaleByCF;
             _getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
+            _getListaDistaccamentiByCodiceSede = getListaDistaccamentiByCodiceSede;
         }
 
         /// <summary>
@@ -53,6 +57,8 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneUtenti.AddUtente
             var personale = _personaleByCF.Get(command.CodFiscale, command.CodiceSede.Split(".")[0]).Result;
             var listaPin = new List<PinNodo>();
             var sediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
+            var distaccamenti = _getListaDistaccamentiByCodiceSede.GetListaDistaccamenti(personale.Sede.Split(".")[0]);
+            var distaccamento = distaccamenti.Find(x => x.CodDistaccamento.Equals(Convert.ToInt32(personale.Sede.Split(".")[1])));
             foreach (var ruolo in command.Ruoli)
             {
                 listaPin.Add(new PinNodo(ruolo.CodSede, ruolo.Ricorsivo));
@@ -69,7 +75,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneUtenti.AddUtente
                 Ruoli = command.Ruoli,
                 Username = personale.Nominativo.ToLower(),
                 Password = "test",
-                Sede = new Sede(command.CodiceSede, "", "", new Coordinate(0, 0), "", "", "", "", "")
+                Sede = new Sede($"{distaccamento.CodSede}.{distaccamento.CodDistaccamento}", distaccamento.DescDistaccamento, distaccamento.Indirizzo, new Coordinate(0, 0), "", "", "", "", "")
             };
 
             _addUtente.Add(utenteVVF);

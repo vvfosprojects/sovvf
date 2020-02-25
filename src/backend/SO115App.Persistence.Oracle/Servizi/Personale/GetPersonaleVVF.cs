@@ -32,7 +32,7 @@ namespace SO115App.Persistence.Oracle.Servizi.Personale
                 {
                     CodFiscale = dr.GetString(2),
                     Nominativo = $"{dr.GetString(1)}.{dr.GetString(0)}",
-                    Sede = dr.GetInt32(3).ToString()
+                    Sede = $"{codiceSede}.{dr.GetInt32(3).ToString()}"
                 };
 
                 listaPersonale.Add(personaSingola);

@@ -5,17 +5,30 @@ using System.Collections.Generic;
 
 namespace SO115App.FakePersistence.JSon.Turni
 {
+    /// <summary>
+    ///   classe che calcola e restituisce il turno nella sua completezza
+    /// </summary>
     public class GetTurno : IGetTurno
     {
         private char _letteraTurno;
         private List<Turno> _listaTurniNew;
         private readonly IUpdateTurni _updateTurni;
 
+        /// <summary>
+        ///   costruttore della classe
+        /// </summary>
+        /// <param name="updateTurni">l'interfaccia che scrive sul json fake</param>
         public GetTurno(IUpdateTurni updateTurni)
         {
             _updateTurni = updateTurni;
         }
 
+        /// <summary>
+        ///   metodo della classe restituisce il turno corrente oppure, accettando in firma una
+        ///   data, calcola il turno passato o futuro,
+        /// </summary>
+        /// <param name="data">la data in input; default = null</param>
+        /// <returns>Il Turno</returns>
         public Turno Get(DateTime? data = null)
         {
             var listaTurni = TurniHardCoded.Get();
@@ -35,7 +48,17 @@ namespace SO115App.FakePersistence.JSon.Turni
             }
         }
 
-        public Turno SceltaCalcolatore(DateTime data, Turno turnoD, Turno turnoN, int numeroTurnoD, int numeroTurnoN)
+        /// <summary>
+        ///   medoto che a seconda della data switcha il calcolatore a seconda si voglia calcolare
+        ///   un turno corrente, futuro o passato.
+        /// </summary>
+        /// <param name="data">la data in input</param>
+        /// <param name="turnoD">il turno diurno</param>
+        /// <param name="turnoN">il turno notturno</param>
+        /// <param name="numeroTurnoD">il numero associato al turno</param>
+        /// <param name="numeroTurnoN">il numero associato al turno</param>
+        /// <returns>Il turno</returns>
+        internal Turno SceltaCalcolatore(DateTime data, Turno turnoD, Turno turnoN, int numeroTurnoD, int numeroTurnoN)
         {
             {
                 var giorniTrascorsiDiurni = (int)(data - turnoD.DataOraFine).TotalDays;
@@ -63,7 +86,14 @@ namespace SO115App.FakePersistence.JSon.Turni
             }
         }
 
-        public Turno CalcolaTurnoCorrente(Turno turnoPassato, int numeroTurno, int giorniTrascorsi)
+        /// <summary>
+        ///   metodo della classe che accetta il turno e calcola il turno corrente
+        /// </summary>
+        /// <param name="turnoPassato">turno in input</param>
+        /// <param name="numeroTurno">il numero del turno</param>
+        /// <param name="giorniTrascorsi">giorni trascorsi dal turno hardcoded di partenza</param>
+        /// <returns>Un Turno</returns>
+        internal Turno CalcolaTurnoCorrente(Turno turnoPassato, int numeroTurno, int giorniTrascorsi)
         {
             for (var i = 0; i <= giorniTrascorsi; i++)
             {
@@ -102,7 +132,14 @@ namespace SO115App.FakePersistence.JSon.Turni
             return turnoPassato;
         }
 
-        public Turno CalcolaTurnoPassato(Turno turnoInput, int numeroTurno, int giorniTrascorsi)
+        /// <summary>
+        ///   calcola il turno in passato
+        /// </summary>
+        /// <param name="turnoInput">il turno in input</param>
+        /// <param name="numeroTurno">il numero del turno in input</param>
+        /// <param name="giorniTrascorsi">giorni trascorsi calcolati dalla classe</param>
+        /// <returns>il turno</returns>
+        internal Turno CalcolaTurnoPassato(Turno turnoInput, int numeroTurno, int giorniTrascorsi)
         {
             for (var i = 0; i >= giorniTrascorsi; i--)
             {
@@ -141,6 +178,13 @@ namespace SO115App.FakePersistence.JSon.Turni
             return turnoInput;
         }
 
+        /// <summary>
+        ///   medoto della classe che calcola se il turno è diurno o notturno
+        /// </summary>
+        /// <param name="dataOdierna">la data odierna</param>
+        /// <param name="turnoDiurno">il turno diurno</param>
+        /// <param name="turnoNotturno">il turno notturno</param>
+        /// <returns>il Turno</returns>
         internal Turno RestituisciDiurnooNotturno(DateTime dataOdierna, Turno turnoDiurno, Turno turnoNotturno)
         {
             _listaTurniNew = new List<Turno>

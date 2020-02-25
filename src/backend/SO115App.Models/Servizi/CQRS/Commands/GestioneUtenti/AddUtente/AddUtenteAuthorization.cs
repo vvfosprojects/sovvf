@@ -21,6 +21,7 @@ using CQRS.Authorization;
 using CQRS.Commands.Authorizers;
 using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.Models.Classi.Utility;
+using SO115App.Models.Servizi.Infrastruttura.Autenticazione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.VerificaUtente;
 using System.Collections.Generic;
 using System.Security.Principal;
@@ -31,11 +32,13 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneUtenti.AddUtente
     {
         private readonly IPrincipal currentUser;
         private readonly IFindUserByUsername _findUserByUsername;
+        private readonly IGetAutorizzazioni _getAutorizzazioni;
 
-        public AddUtenteAuthorization(IPrincipal currentUser, IFindUserByUsername findUserByUsername)
+        public AddUtenteAuthorization(IPrincipal currentUser, IFindUserByUsername findUserByUsername, IGetAutorizzazioni getAutorizzazioni)
         {
             this.currentUser = currentUser;
             _findUserByUsername = findUserByUsername;
+            _getAutorizzazioni = getAutorizzazioni;
         }
 
         public IEnumerable<AuthorizationResult> Authorize(AddUtenteCommand command)
@@ -47,6 +50,17 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneUtenti.AddUtente
             {
                 if (user == null)
                     yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
+                else
+                {
+                    foreach (var ruolo in command.Ruoli)
+                    {
+                        var listaruoli = _getAutorizzazioni.GetAutorizzazioniUtente(user.Id, ruolo.CodSede);
+                        if (listaruoli.Find(x => x.Descrizione.Equals("Amministratore")) == null)
+                        {
+                            yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
+                        }
+                    }
+                }
             }
             else
                 yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);

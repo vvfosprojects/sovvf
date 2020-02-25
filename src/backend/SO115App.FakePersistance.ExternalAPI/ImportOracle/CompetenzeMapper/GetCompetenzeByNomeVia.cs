@@ -6,6 +6,7 @@ using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Competenze;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -38,9 +39,9 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.CompetenzeMapper
             using HttpContent content = responseElenco.Content;
 
             string data = await content.ReadAsStringAsync().ConfigureAwait(false);
-            var Competenza = JsonConvert.DeserializeObject<ORACompetenzeByNomeVia>(data);
+            var listaCompetenza = JsonConvert.DeserializeObject<List<ORACompetenzeByNomeVia>>(data);
 
-            return MapOraInMongo(Competenza);
+            return MapOraInMongo(listaCompetenza[0]);
         }
 
         private CompetenzeRichiesta MapOraInMongo(ORACompetenzeByNomeVia oraCompetenza)

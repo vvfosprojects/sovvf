@@ -14,5 +14,10 @@
         ///   codice fiscale
         /// </summary>
         public string CodFiscale { get; set; }
+
+        /// <summary>
+        ///   il codice della sede
+        /// </summary>
+        public string Sede { get; set; }
     }
 }

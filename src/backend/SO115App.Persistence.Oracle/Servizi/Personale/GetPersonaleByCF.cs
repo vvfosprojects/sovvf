@@ -20,14 +20,14 @@ namespace SO115App.Persistence.Oracle.Servizi.Personale
             };
 
             cmd.CommandType = CommandType.Text;
-            cmd.Parameters.Add(new OracleParameter("COD_FISC",  codiceFiscale ));
+            cmd.Parameters.Add(new OracleParameter("COD_FISC", codiceFiscale));
             OracleDataReader dr = cmd.ExecuteReader();
             var personaSingola = new ORAPersonaleVVF();
             while (dr.Read())
             {
                 personaSingola.CodFiscale = dr.GetString(2);
                 personaSingola.Nominativo = $"{dr.GetString(1)}.{dr.GetString(0)}";
-                personaSingola.Sede = dr.GetInt32(3).ToString();
+                personaSingola.Sede = $"{codiceSede}.{dr.GetInt32(3).ToString()}";
             }
 
             return personaSingola;
