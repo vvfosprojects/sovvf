@@ -24,15 +24,15 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.CompetenzeMapper
             _configuration = configuration;
         }
 
-        public CompetenzeRichiesta GetCompetenzeRichiesta(string CodSede, string NomeVia, string Civico)
+        public CompetenzeRichiesta GetCompetenzeRichiesta(string CodSede, string NomeVia, string Civico, string Citta)
         {
-            return CallOra(CodSede, NomeVia, Civico).Result;
+            return CallOra(CodSede, NomeVia, Civico, Citta).Result;
         }
 
-        private async Task<CompetenzeRichiesta> CallOra(string CodSede, string NomeVia, string Civico)
+        private async Task<CompetenzeRichiesta> CallOra(string CodSede, string NomeVia, string Civico, string Citta)
         {
             _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("test");
-            var responseElenco = await _client.GetAsync($"{_configuration.GetSection("OracleImplementation").GetSection(CodSede).GetSection("UrlAPICompetenze").Value}GetCompetenzeByNomeVia?CodSede={CodSede}&NomeVia={NomeVia}&Civico={Civico}").ConfigureAwait(false);
+            var responseElenco = await _client.GetAsync($"{_configuration.GetSection("OracleImplementation").GetSection(CodSede).GetSection("UrlAPICompetenze").Value}GetCompetenzeByNomeVia?CodSede={CodSede}&NomeVia={NomeVia}&Civico={Civico}&Citta={Citta}").ConfigureAwait(false);
 
             responseElenco.EnsureSuccessStatusCode();
             using HttpContent content = responseElenco.Content;
