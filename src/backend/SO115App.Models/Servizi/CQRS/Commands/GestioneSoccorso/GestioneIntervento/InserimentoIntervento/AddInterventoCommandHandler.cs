@@ -79,19 +79,22 @@ namespace DomainModel.CQRS.Commands.AddIntervento
 
             string Indirizzo = "";
             string Civico = "";
+            string Citta = "";
             //Se è presente il civico è lungo 5, altrimenti è lungo 4
             if (command.Chiamata.Localita.Indirizzo.Split(',').Length == 5)
             {
                 Indirizzo = command.Chiamata.Localita.Indirizzo.Split(',')[0];
                 Civico = command.Chiamata.Localita.Indirizzo.Split(',')[1];
+                Citta = command.Chiamata.Localita.Indirizzo.Split(',')[2];
             }
             else
             {
                 Indirizzo = command.Chiamata.Localita.Indirizzo.Split(',')[0];
+                Citta = command.Chiamata.Localita.Indirizzo.Split(',')[1];
                 Civico = "0";
             }
 
-            var Competenza = _getCompetenze.GetCompetenzeRichiesta(command.CodiceSede.Split('.')[0], Indirizzo, Civico);
+            var Competenza = _getCompetenze.GetCompetenzeRichiesta(command.CodiceSede.Split('.')[0], Indirizzo, Civico, Citta);
 
             string[] CodUOCompetenzaAppo = {
                 command.CodiceSede.Split('.')[0] + Competenza.CodDistaccamento,

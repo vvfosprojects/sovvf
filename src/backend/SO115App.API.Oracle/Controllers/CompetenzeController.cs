@@ -26,10 +26,10 @@ namespace SO115App.API.Oracle.Controllers
         }
 
         [HttpGet]
-        public List<ORACompetenzeByNomeVia> GetCompetenzeByNomeVia(string CodSede, string NomeVia, string Civico)
+        public List<ORACompetenzeByNomeVia> GetCompetenzeByNomeVia(string CodSede, string NomeVia, string Civico, string Citta)
         {
             GetCompetenzeByNomeVia competenze = new GetCompetenzeByNomeVia();
-            return competenze.GetCompetenzeByNomeStrada(CodSede, NomeVia, Civico);
+            return competenze.GetCompetenzeByNomeStrada(CodSede, NomeVia, Civico, Citta);
         }
 
         // POST: api/Squadre

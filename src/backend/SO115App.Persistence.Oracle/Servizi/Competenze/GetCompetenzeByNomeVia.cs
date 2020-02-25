@@ -12,7 +12,7 @@ namespace SO115App.Persistence.Oracle.Servizi.Competenze
 {
     public class GetCompetenzeByNomeVia
     {
-        public List<ORACompetenzeByNomeVia> GetCompetenzeByNomeStrada(string CodSede, string NomeVia, string civico)
+        public List<ORACompetenzeByNomeVia> GetCompetenzeByNomeStrada(string CodSede, string NomeVia, string civico, string Citta)
         {
             List<ORACompetenzeByNomeVia> ListaCompetenzeElenco = new List<ORACompetenzeByNomeVia>();
 
@@ -51,6 +51,7 @@ namespace SO115App.Persistence.Oracle.Servizi.Competenze
                               "INNER JOIN SALAOPER.HNR_CIVICI ON SALAOPER.ROA_TRATTI.EDGID = SALAOPER.HNR_CIVICI.EDGID " +
                               "WHERE (UPPER(TABELLE_COMUNI.DISTACCAMENTI.CODSEDE) = :SEDE) " +
                               "AND   (UPPER(SALAOPER.INDIRIZZI_COMUNI.NAME) = '" + NomeVia.ToUpper() + "' ) " +
+                              "AND   (UPPER(SALAOPER.INDIRIZZI_COMUNI.COMUNE) = '" + Citta.ToUpper() + "' ) " +
                               "GROUP BY TABELLE_COMUNI.DISTACCAMENTI.CODSEDE, TABELLE_COMUNI.DISTACCAMENTI.CODDISTAC, SALAOPER.ROA_TRATTI.COD_DISTACCAMENTO1, " +
                               "SALAOPER.ROA_TRATTI.COD_DISTACCAMENTO2, SALAOPER.ROA_TRATTI.COD_DISTACCAMENTO3, SALAOPER.ROA_TRATTI.ID_ZONA, SALAOPER.ROA_TRATTI.ID_ZONA2, " +
                               "SALAOPER.ROA_TRATTI.ID_ZONA3, SALAOPER.INDIRIZZI_COMUNI.NAME, SALAOPER.INDIRIZZI_COMUNI.COMUNE, SALAOPER.INDIRIZZI_COMUNI.SIGLA_PROVINCIA, " +
