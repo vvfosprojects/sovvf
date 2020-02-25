@@ -10,18 +10,16 @@ import { GestioneUtentiState } from '../store/states/gestione-utenti/gestione-ut
 import { findItem } from '../../../shared/store/states/sedi-treeview/sedi-treeview.helper';
 import { UpdateFormValue } from '@ngxs/form-plugin';
 import { UtenteVvfInterface } from '../../../shared/interface/utente-vvf.interface';
-import { AddRuoloUtenteGestione, ClearUtentiVVF, GetUtentiVVF } from '../store/actions/gestione-utenti/gestione-utenti.actions';
+import { ClearUtentiVVF, GetUtentiVVF } from '../store/actions/gestione-utenti/gestione-utenti.actions';
 import { Role } from '../../../shared/model/utente.model';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { wipeStringUppercase } from 'src/app/shared/helper/function';
 import { LoadingState } from '../../../shared/store/states/loading/loading.state';
-import { StartLoading } from '../../../shared/store/actions/loading/loading.actions';
-import { ClearUtente } from '../../navbar/store/actions/operatore/utente.actions';
 
 @Component({
     selector: 'app-gestione-utente-modal',
     templateUrl: './gestione-utente-modal.component.html',
-    styleUrls: [ './gestione-utente-modal.component.css' ]
+    styleUrls: ['./gestione-utente-modal.component.css']
 })
 export class GestioneUtenteModalComponent implements OnInit, OnDestroy {
 
@@ -38,7 +36,6 @@ export class GestioneUtenteModalComponent implements OnInit, OnDestroy {
 
     addUtenteRuoloForm: FormGroup;
     typeahead = new Subject<string>();
-    searchTerm: string;
     checkboxState: { id: string, status: boolean, label: string, disabled: boolean };
     treeviewState: { disabled: boolean };
     submitted: boolean;
@@ -47,11 +44,7 @@ export class GestioneUtenteModalComponent implements OnInit, OnDestroy {
     codFiscaleUtenteVVF: string;
     nominativoUtenteVVF: string;
 
-    // utenteEdit: any;
-    // detailMode: boolean;
-
     subscription: Subscription = new Subscription();
-
 
     constructor(private store: Store,
                 private modal: NgbActiveModal,
@@ -70,18 +63,18 @@ export class GestioneUtenteModalComponent implements OnInit, OnDestroy {
         this.addUtenteRuoloForm = new FormGroup({
             utente: new FormControl(),
             sedi: new FormControl(),
-            soloDistaccamenti: new FormControl(),
+            ricorsivo: new FormControl(),
             ruolo: new FormControl()
         });
         this.addUtenteRuoloForm = this.fb.group({
-            utente: [ null, Validators.required ],
-            sedi: [ null, Validators.required ],
-            soloDistaccamenti: [ false ],
-            ruolo: [ null, Validators.required ]
+            utente: [null, Validators.required],
+            sedi: [null, Validators.required],
+            ricorsivo: [false],
+            ruolo: [null, Validators.required]
         });
         // Init disabled input
-        this.checkboxState = {id: 'soloDistaccamenti', status: this.f.soloDistaccamenti.value, label: 'Solo Distaccamenti', disabled: true};
-        this.treeviewState = {disabled: true};
+        this.checkboxState = { id: 'ricorsivo', status: this.f.ricorsivo.value, label: 'Ricorsivo', disabled: true };
+        this.treeviewState = { disabled: true };
         this.f.ruolo.disable();
     }
 
@@ -101,12 +94,6 @@ export class GestioneUtenteModalComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(): void {
         this.subscription.unsubscribe();
-        // this.store.dispatch(new UpdateFormValue({
-        //     value: null,
-        //     path: 'gestioneUtenti.addUtenteRuoloForm'
-        // }));
-        // this.store.dispatch(new SetFormEnabled('gestioneUtenti.addUtenteRuoloForm'));
-        // this.store.dispatch(new ClearUtentiVVF());
     }
 
     getFormValid() {
@@ -117,15 +104,6 @@ export class GestioneUtenteModalComponent implements OnInit, OnDestroy {
         );
     }
 
-    // patchDetailForm() {
-    //     this.store.dispatch(new UpdateFormValue({
-    //         value: {
-    //             ruolo: this.utenteEdit.ruolo.desc
-    //         },
-    //         path: 'gestioneUtenti.addUtenteRuoloForm'
-    //     }));
-    // }
-
     get f() {
         return this.addUtenteRuoloForm.controls;
     }
@@ -134,9 +112,6 @@ export class GestioneUtenteModalComponent implements OnInit, OnDestroy {
         this.subscription.add(
             this.listeSediNavbar$.subscribe((listaSedi: TreeItem) => {
                 this.listeSediNavbar = [];
-                // if (this.detailMode) {
-                //    listaSedi.disabled = true;
-                // }
                 this.listeSediNavbar[0] = new TreeviewItem(listaSedi);
             })
         );
@@ -192,13 +167,13 @@ export class GestioneUtenteModalComponent implements OnInit, OnDestroy {
         });
     }
 
-    setOnlyDistaccamentiValue(value: { id: string, status: boolean }) {
+    setRicorsivoValue(value: { id: string, status: boolean }) {
         this.checkboxState.status = value.status;
         this.f[value.id].patchValue(value.status);
         this.store.dispatch(new UpdateFormValue({
             value: {
                 ...this.addUtenteRuoloForm.value,
-                'soloDistaccamenti': value.status
+                ricorsivo: value.status
             },
             path: 'gestioneUtenti.addUtenteRuoloForm'
         }));
@@ -225,7 +200,7 @@ export class GestioneUtenteModalComponent implements OnInit, OnDestroy {
             return;
         }
 
-        this.modal.close({success: true});
+        this.modal.close({ success: true });
     }
 
     closeModal(type: string) {

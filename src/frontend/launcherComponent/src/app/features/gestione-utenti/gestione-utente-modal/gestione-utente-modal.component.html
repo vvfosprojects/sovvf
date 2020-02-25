@@ -2,7 +2,7 @@
     <h4 *ngIf="!codFiscaleUtenteVVF" class="modal-title">Aggiungi un nuovo utente</h4>
     <h4 *ngIf="codFiscaleUtenteVVF" class="modal-title">Aggiungi ruolo a <b>{{nominativoUtenteVVF}}</b></h4>
     <button type="button" class="close" aria-label="Close" (click)="closeModal('Cross click')">
-        <span aria-hidden="true">&times;</span>
+        <span aria-hidden="true"><i class="fa fa-plus"></i></span>
     </button>
 </div>
 <div class="modal-body height">
@@ -17,8 +17,10 @@
                        [hideSelected]="true" [typeahead]="typeahead" [notFoundText]="'Nessun risultato'"
                        [loading]="loading$ | async" [ngClass]="{ 'is-invalid': submitted && f.utente.errors }">
                 <ng-template ng-option-tmp let-item="item">
-                    {{item.nominativo}} <br/>
-                    <small>{{item.codFiscale}}</small>
+                    <div class="pb-1">
+                        <div class="font-weight-bold">{{item.nominativo}}</div>
+                        <div class="small">{{item.codFiscale}}</div>
+                    </div>
                 </ng-template>
             </ng-select>
             <div *ngIf="submitted && f.utente.errors" class="text-danger mt-1">
@@ -40,12 +42,7 @@
         </div>
         <div class="mb-3">
             <app-checkbox appClickStopPropagation [typeName]="'test'" [checkboxState]="checkboxState"
-                          (checkbox)="setOnlyDistaccamentiValue($event)"></app-checkbox>
-            <small *ngIf="!checkboxState.disabled" class="text-danger">
-                <i class="fa fa-exclamation-triangle mr-1"></i>
-                Selezionando "Solo Distaccamenti" il ruolo scelto per l'utente verrà diramato solo sui "Distaccamenti" e
-                non sul "Comando"
-            </small>
+                          (checkbox)="setRicorsivoValue($event)"></app-checkbox>
         </div>
         <div class="mb-3">
             <label for="ruoli">Ruolo</label>
