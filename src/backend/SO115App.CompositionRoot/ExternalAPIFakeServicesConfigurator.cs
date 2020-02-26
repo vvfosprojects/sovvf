@@ -52,7 +52,7 @@ namespace SO115App.CompositionRoot
 
             #region NUE
 
-            container.Register<IGetSchedeContatto, GetSchedeContatto>();
+            container.Register<IGetSchedeContatto, SO115App.ExternalAPI.Fake.ImportOracle.SchedeContatto.GetSchedeContatto>();
             container.Register<IGetSchedaContattoAttuale, GetSchedaContattoAttuale>();
             container.Register<IGetSchedeContattoBySpatialArea, GetSchedeContattoBySpatialArea>();
             container.Register<IGetSchedeContattoByCodiciFiscali, GetSchedeContattoByCodiciFiscali>();
