@@ -49,7 +49,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
         /// </summary>
         /// <param name="codiceMezzo">una lista di codici mezzo</param>
         /// <returns>una lista mezzi</returns>
-        public List<Mezzo> Get(List<string> codiceMezzo)
+        public List<Mezzo> Get(List<string> codiceMezzo, string codSede)
         {
             //---------------TODO Implementazione con il servizio esterno reale che sostituirà i json
 

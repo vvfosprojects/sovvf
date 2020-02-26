@@ -8,6 +8,6 @@ namespace SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Squadre
 {
     public interface IGetListaSquadre
     {
-        Task<List<Squadra>> Get(string CodSede);
+        Task<List<Squadra>> Get(List<string> sedi);
     }
 }

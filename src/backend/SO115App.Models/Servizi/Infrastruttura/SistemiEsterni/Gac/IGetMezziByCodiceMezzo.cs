@@ -32,6 +32,6 @@ namespace SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac
         /// </summary>
         /// <param name="codiceMezzo">una lista di codici mezzo</param>
         /// <returns>una lista mezzi</returns>
-        List<Mezzo> Get(List<string> codiceMezzo);
+        List<Mezzo> Get(List<string> codiceMezzo, string codSede);
     }
 }

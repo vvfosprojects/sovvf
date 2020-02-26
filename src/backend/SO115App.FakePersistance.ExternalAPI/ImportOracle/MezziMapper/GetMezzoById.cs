@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Condivise;
-using SO115App.API.Models.Classi.Organigramma;
-using SO115App.API.SOVVF.FakeImplementations.Modello.Organigramma;
 using SO115App.ExternalAPI.Fake.Classi.DTOOracle;
 using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Mezzi;
@@ -9,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using SO115App.ExternalAPI.Fake.ImportOracle.DistaccamentiMapper;
 
 namespace SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper
 {
@@ -29,19 +29,19 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper
             var response = await _client.GetAsync($"{_configuration.GetSection("OracleImplementation").GetSection(CodSede).GetSection("UrlAPIMezzi").Value}/GetMezzoUtilizzabileByCodMezzo?CodSede={CodSede}&CodMezzo={CodMezzo}").ConfigureAwait(false);
             response.EnsureSuccessStatusCode();
             using HttpContent content = response.Content;
-            var MezzoOracle = await content.ReadAsAsync<ORAAutomezzi>().ConfigureAwait(false);
+            string data = await content.ReadAsStringAsync().ConfigureAwait(false);
+            ORAAutomezzi MezzoOracle = JsonConvert.DeserializeObject<ORAAutomezzi>(data);
             return MapMezzoByIdOraInMongoDB(MezzoOracle, CodMezzo);
         }
 
         private Mezzo MapMezzoByIdOraInMongoDB(ORAAutomezzi MezzoOracle, int CodMezzo)
         {
             ORAAutomezzi OraM = MezzoOracle;
-            Coordinate coordinate = new Coordinate(1, 1);
-            var organigramma = new GetUnitaOperativaRadice_Con_Dir_Com_Dist();
-            var radice = organigramma.Get();
-            UnitaOperativa Uo = radice.GetSottoAlbero().Single(uo => uo.Codice == OraM.COD_COMANDO + "." + OraM.COD_DISTACCAMENTO);
+            GetDistaccamentiByCodSede GetDistaccamentiByCodSede = new GetDistaccamentiByCodSede(_client, _configuration);
+            List<Distaccamento> distaccamenti = GetDistaccamentiByCodSede.GetListaDistaccamenti(OraM.COD_COMANDO);
+            var d = distaccamenti.Find(x => x.CodDistaccamento.Equals(OraM.COD_DISTACCAMENTO));
+            var sede = new Sede(OraM.COD_COMANDO + "." + OraM.COD_DISTACCAMENTO, d.DescDistaccamento, d.Indirizzo, new Coordinate(1, 1), "", "", "", "", "");
 
-            Sede sede = new Sede(Uo.Codice, Uo.Nome, "", coordinate, "", "", "", "", "");
             Mezzo mezzo = new Mezzo
             (
                 OraM.COD_AUTOMEZZO.ToString(),
@@ -50,10 +50,10 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper
                 OraM.DISTACCAMENTO,
                 OraM.COD_DESTINAZIONE,
                 sede,
-                coordinate
+                new Coordinate(1, 1)
              )
-
             {
+                Genere = OraM.COD_GENERE_MEZZO,
             };
 
             return mezzo;

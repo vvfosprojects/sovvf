@@ -98,11 +98,17 @@ namespace SO115App.CompositionRoot
                 SO115App.FakePersistenceJSon.Navbar.GetNavbar>();
 
             container.Register<
-                SO115App.Models.Servizi.Infrastruttura.GetComposizioneSquadre.IGetComposizioneSquadre,
-                FakePersistenceJSon.Composizione.GetComposizioneSquadre>();
-            container.Register<
-                SO115App.Models.Servizi.Infrastruttura.GetPreAccoppiati.IGetPreAccoppiati,
-                FakePersistenceJSon.Composizione.GetPreAccoppiati>();
+               SO115App.Models.Servizi.Infrastruttura.GetComposizioneSquadre.IGetComposizioneSquadre,
+               SO115App.ExternalAPI.Fake.ImportOracle.SquadreMapper.GetComposizioneSquadre>();
+            //container.Register<
+            //    SO115App.Models.Servizi.Infrastruttura.GetComposizioneSquadre.IGetComposizioneSquadre,
+            //    FakePersistenceJSon.Composizione.GetComposizioneSquadre>();
+            //   container.Register<
+            //  SO115App.Models.Servizi.Infrastruttura.GetPreAccoppiati.IGetPreAccoppiati,
+            //SO115App.ExternalAPI.Fake.ImportOracle.GesPreaccoppiatiMapper.GetPreAccoppiati>();
+            //container.Register<
+            //    SO115App.Models.Servizi.Infrastruttura.GetPreAccoppiati.IGetPreAccoppiati,
+            //    FakePersistenceJSon.Composizione.GetPreAccoppiati>();
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.GetListaEventi.IGetListaEventi,
                 FakePersistenceJSon.ListaEventi.GetListaEventi>();
@@ -185,7 +191,6 @@ namespace SO115App.CompositionRoot
             container.Register<Models.Servizi.Infrastruttura.Notification.GestioneUtenti.INotifyDeleteUtente, SignalR.Sender.GestioneUtenti.NotificationDeleteUtente>();
             container.Register<Models.Servizi.Infrastruttura.Notification.GestioneUtenti.GestioneRuoli.INotifyAddRuoli, SignalR.Sender.GestioneRuoli.NotificationAddRuoli>();
             container.Register<Models.Servizi.Infrastruttura.Notification.GestioneUtenti.GestioneRuoli.INotifyDeleteRuolo, SignalR.Sender.GestioneRuoli.NotificationDeleteRuolo>();
-
 
             container.Register<
                 API.Models.Servizi.Infrastruttura.Organigramma.IGetUnitaOperativaPerCodice,
