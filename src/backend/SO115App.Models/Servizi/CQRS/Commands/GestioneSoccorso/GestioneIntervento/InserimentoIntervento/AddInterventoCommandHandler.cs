@@ -76,18 +76,20 @@ namespace DomainModel.CQRS.Commands.AddIntervento
 
             string Indirizzo = "";
             string Civico = "";
+            int provaCap;
             string Citta = "";
-            //Se è presente il civico è lungo 5, altrimenti è lungo 4
-            if (command.Chiamata.Localita.Indirizzo.Split(',').Length == 5)
+            //Se è presente il civico è lungo 4, altrimenti è lungo 3
+            if (command.Chiamata.Localita.Indirizzo.Split(',').Length == 4)
             {
                 Indirizzo = command.Chiamata.Localita.Indirizzo.Split(',')[0];
                 Civico = command.Chiamata.Localita.Indirizzo.Split(',')[1];
-                Citta = command.Chiamata.Localita.Indirizzo.Split(',')[2];
+                Citta = int.TryParse(command.Chiamata.Localita.Indirizzo.Split(',')[2].TrimStart().Split(' ')[0], out provaCap) ? command.Chiamata.Localita.Indirizzo.Split(',')[2].Split(' ')[2] : command.Chiamata.Localita.Indirizzo.Split(',')[2][0..^2];
             }
             else
             {
                 Indirizzo = command.Chiamata.Localita.Indirizzo.Split(',')[0];
-                Citta = command.Chiamata.Localita.Indirizzo.Split(',')[1][0..^2];
+                var isCap = int.TryParse(command.Chiamata.Localita.Indirizzo.Split(',')[2].Split(' ')[0], out provaCap);
+                Citta = isCap ? command.Chiamata.Localita.Indirizzo.Split(',')[1].Split(' ')[1][0..^2] : command.Chiamata.Localita.Indirizzo.Split(',')[1][0..^2];
                 Civico = "0";
             }
 
