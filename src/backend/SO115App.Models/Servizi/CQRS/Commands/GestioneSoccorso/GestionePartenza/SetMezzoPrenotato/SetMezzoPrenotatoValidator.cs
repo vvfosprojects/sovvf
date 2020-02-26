@@ -36,12 +36,12 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 
         public IEnumerable<ValidationResult> Validate(SetMezzoPrenotatoCommand command)
         {
-            var listaCodiciSedi = new List<string>
+            var listaCodiciMezzi = new List<string>
             {
                 command.MezzoPrenotato.CodiceMezzo
             };
 
-            if (command.MezzoPrenotato.SbloccaMezzo && _getMezziById.Get(listaCodiciSedi) == null)
+            if (command.MezzoPrenotato.SbloccaMezzo && _getMezziById.Get(listaCodiciMezzi, null) == null)
                 yield return new ValidationResult(Costanti.MezzoNonPresente);
         }
     }
