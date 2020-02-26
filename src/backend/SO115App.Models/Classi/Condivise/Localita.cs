@@ -34,6 +34,11 @@ namespace SO115App.API.Models.Classi.Condivise
         public Coordinate Coordinate { get; set; }
 
         public string Indirizzo { get; set; }
+
+        public string Citta { get; set; }
+
+        public string Provincia { get; set; }
+
         public string Note { get; set; }
 
         public string Piano { get; set; }
