@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Composizione;
 using SO115App.ExternalAPI.Fake.Classi.DTOOracle;
 using SO115App.Models.Classi.Condivise;
@@ -24,10 +25,13 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.GesPreaccoppiatiMapper
         public async Task<List<PreAccoppiati>> Get(string CodSede)
         {
             _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("test");
+
             var response = await _client.GetAsync($"{_configuration.GetSection("OracleImplementation").GetSection(CodSede).GetSection("UrlAPISquadre").Value}/GetListaGesPreaccoppiati?CodSede={CodSede}").ConfigureAwait(false);
             response.EnsureSuccessStatusCode();
             using HttpContent content = response.Content;
-            List<ORAGesPreaccoppiati> ListaPreAccoppiatiOracle = await content.ReadAsAsync<List<ORAGesPreaccoppiati>>().ConfigureAwait(false);
+            var data = await content.ReadAsStringAsync().ConfigureAwait(false);
+            List<ORAGesPreaccoppiati> ListaPreAccoppiatiOracle = JsonConvert.DeserializeObject<List<ORAGesPreaccoppiati>>(data);
+
             return MapListaPreAccoppiatiOraInMongoDB(ListaPreAccoppiatiOracle);
         }
 

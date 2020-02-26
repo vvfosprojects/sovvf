@@ -92,7 +92,7 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.SquadreMapper
                         if (p.AUTISTA.Equals("S")) autista = true;
 
                         Componente c = new Componente(p.QUALIFICA_ABBREV, pVVf.Nominativo, pVVf.Nominativo, capoPartenza, autista, false);
-                        c.CodiceFiscale = pVVf.CodiceFiscale;
+                        c.CodiceFiscale = pVVf.CodFiscale;
 
                         if (p.ORA_INIZIO.HasValue) c.OrarioInizio = (DateTime)p.ORA_INIZIO;
                         if (p.ORA_FINE.HasValue) c.OrarioInizio = (DateTime)p.ORA_FINE;

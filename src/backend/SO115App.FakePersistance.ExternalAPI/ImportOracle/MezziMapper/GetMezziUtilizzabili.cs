@@ -10,6 +10,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
+using Newtonsoft.Json;
 
 namespace SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper
 {
@@ -48,10 +49,11 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper
                 var response = await _client.GetAsync($"{_configuration.GetSection("OracleImplementation").GetSection(CodSede).GetSection("UrlAPIMezzi").Value}/GetListaMezziUtilizzabili?CodSede={CodSede}").ConfigureAwait(false);
                 response.EnsureSuccessStatusCode();
                 using HttpContent content = response.Content;
-                var ListaMezziOracle = await content.ReadAsAsync<List<ORAAutomezzi>>().ConfigureAwait(false);
+                var data = await content.ReadAsStringAsync().ConfigureAwait(false);
+                var ListaMezziOracle = JsonConvert.DeserializeObject<List<ORAAutomezzi>>(data);
                 List<Mezzo> ListaMezziCodiceSede = MapListaMezziOraInMongoDB(ListaMezziOracle);
-                foreach (Mezzo Mezzo in ListaMezziCodiceSede)
 
+                foreach (Mezzo Mezzo in ListaMezziCodiceSede)
                 {
                     ListaMezzi.Add(Mezzo);
                 }

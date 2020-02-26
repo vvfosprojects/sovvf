@@ -103,7 +103,6 @@ namespace SO115App.CompositionRoot
             container.Register<IGetMezziFuoriServizio, GetMezziFuoriServizio>();
             //container.Register<IGetMezziUtilizzabili, GetMezziUtilizzabili>();
             container.Register<IGetMezziUtilizzabili, SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper.GetMezziUtilizzabili>();
-            container.Register<IGetListaDistaccamentiByCodiceSede, SO115App.ExternalAPI.Fake.ImportOracle.DistaccamentiMapper.GetDistaccamentiByCodSede>();
             container.Register<ISetMovimentazione, SetMovimentazione>();
             container.Register<
                 SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi.IGetListaMezzi,
@@ -197,6 +196,8 @@ namespace SO115App.CompositionRoot
             #region Tipologie
 
             container.Register<Models.Servizi.Infrastruttura.SistemiEsterni.Tipologie.IGetListaTipologie, ExternalAPI.Fake.ImportOracle.TipologieMapper.GetTipologie>();
+
+            #endregion Tipologie
         }
     }
 }

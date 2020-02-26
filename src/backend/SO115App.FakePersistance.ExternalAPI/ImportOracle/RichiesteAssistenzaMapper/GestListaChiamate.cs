@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.Eventi;
@@ -30,7 +31,8 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.ChiamateMapper
             var response = await _client.GetAsync($"{_configuration.GetSection("OracleImplementation").GetSection(CodSede).GetSection("UrlAPIRichieste").Value}/GetListaChiamate?CodSede={CodSede}").ConfigureAwait(false);
             response.EnsureSuccessStatusCode();
             using HttpContent content = response.Content;
-            var ListaChiamateOracle = await content.ReadAsAsync<List<ORAChiamate>>().ConfigureAwait(false);
+            var data = await content.ReadAsStringAsync().ConfigureAwait(false);
+            var ListaChiamateOracle = JsonConvert.DeserializeObject<List<ORAChiamate>>(data);
             return MapListaChiamateOraInMongoDB(ListaChiamateOracle);
         }
 
