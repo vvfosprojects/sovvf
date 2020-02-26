@@ -20,6 +20,7 @@
 using CQRS.Authorization;
 using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.Models.Classi.Utility;
+using SO115App.Models.Servizi.Infrastruttura.Autenticazione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.VerificaUtente;
 using System;
 using System.Collections.Generic;
@@ -32,11 +33,13 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSchedeNue.UndoMergeSched
     {
         private readonly IPrincipal _currentUser;
         private readonly IFindUserByUsername _findUserByUsername;
+        private readonly IGetAutorizzazioni _getAutorizzazioni;
 
-        public UndoMergeSchedeNueAuthorization(IPrincipal currentUser, IFindUserByUsername findUserByUsername)
+        public UndoMergeSchedeNueAuthorization(IPrincipal currentUser, IFindUserByUsername findUserByUsername, IGetAutorizzazioni getAutorizzazioni)
         {
             this._currentUser = currentUser;
             _findUserByUsername = findUserByUsername;
+            _getAutorizzazioni = getAutorizzazioni;
         }
 
         public IEnumerable<AuthorizationResult> Authorize(UndoMergeSchedeNueCommand command)
@@ -48,6 +51,14 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSchedeNue.UndoMergeSched
             {
                 if (user == null)
                     yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
+                else
+                {
+                    foreach (var ruolo in user.Ruoli)
+                    {
+                        if (!_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, command.CodiceSede, Costanti.GestoreChiamate))
+                            yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
+                    }
+                }
             }
             else
                 yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);

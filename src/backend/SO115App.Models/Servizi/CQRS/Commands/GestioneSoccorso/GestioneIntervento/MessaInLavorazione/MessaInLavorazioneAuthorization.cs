@@ -22,6 +22,8 @@ using System.Security.Principal;
 using CQRS.Authorization;
 using CQRS.Commands.Authorizers;
 using SO115App.API.Models.Classi.Autenticazione;
+using SO115App.Models.Classi.Utility;
+using SO115App.Models.Servizi.Infrastruttura.Autenticazione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.VerificaUtente;
 
 namespace DomainModel.CQRS.Commands.MessaInLavorazione
@@ -30,11 +32,13 @@ namespace DomainModel.CQRS.Commands.MessaInLavorazione
     {
         private readonly IPrincipal currentUser;
         private readonly IFindUserByUsername _findUserByUsername;
+        private readonly IGetAutorizzazioni _getAutorizzazioni;
 
-        public MessaInLavorazioneAuthorization(IPrincipal currentUser, IFindUserByUsername findUserByUsername)
+        public MessaInLavorazioneAuthorization(IPrincipal currentUser, IFindUserByUsername findUserByUsername, IGetAutorizzazioni getAutorizzazioni)
         {
             this.currentUser = currentUser;
             _findUserByUsername = findUserByUsername;
+            _getAutorizzazioni = getAutorizzazioni;
         }
 
         public IEnumerable<AuthorizationResult> Authorize(MessaInLavorazioneCommand command)
@@ -46,6 +50,14 @@ namespace DomainModel.CQRS.Commands.MessaInLavorazione
                 Utente user = _findUserByUsername.FindUserByUs(username);
                 if (user == null)
                     yield return new AuthorizationResult("Utente non autorizzato");
+                else
+                {
+                    foreach (var ruolo in user.Ruoli)
+                    {
+                        if (!_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, command.CodSede, Costanti.GestoreRichieste))
+                            yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
+                    }
+                }
             }
             else
                 yield return new AuthorizationResult("Utente non autorizzato");

@@ -21,6 +21,7 @@ using CQRS.Authorization;
 using CQRS.Commands.Authorizers;
 using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.Models.Classi.Utility;
+using SO115App.Models.Servizi.Infrastruttura.Autenticazione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.VerificaUtente;
 using System.Collections.Generic;
 using System.Security.Principal;
@@ -31,11 +32,13 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneUtenti.AddRuoliUtente
     {
         private readonly IPrincipal _currentUser;
         private readonly IFindUserByUsername _findUserByUsername;
+        private readonly IGetAutorizzazioni _getAutorizzazioni;
 
-        public AddRuoliUtenteAuthorization(IPrincipal currentUser, IFindUserByUsername findUserByUsername)
+        public AddRuoliUtenteAuthorization(IPrincipal currentUser, IFindUserByUsername findUserByUsername, IGetAutorizzazioni getAutorizzazioni)
         {
             _currentUser = currentUser;
             _findUserByUsername = findUserByUsername;
+            _getAutorizzazioni = getAutorizzazioni;
         }
 
         public IEnumerable<AuthorizationResult> Authorize(AddRuoliUtenteCommand command)
@@ -47,6 +50,17 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneUtenti.AddRuoliUtente
             {
                 if (user == null)
                     yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
+                else
+                {
+                    foreach (var ruolo in user.Ruoli)
+                    {
+                        foreach (var ruoloNew in command.Ruoli)
+                        {
+                            if (!_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, ruoloNew.CodSede, Costanti.Amministratore))
+                                yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
+                        }
+                    }
+                }
             }
             else
                 yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);

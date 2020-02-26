@@ -27,6 +27,7 @@ namespace DomainModel.CQRS.Commands.MessaInLavorazione
         public string IdRichiesta { get; set; }
         public string IdUtente { get; set; }
 
+        public string CodSede { get; set; }
         public SintesiRichiesta Chiamata { get; set; }
     }
 }

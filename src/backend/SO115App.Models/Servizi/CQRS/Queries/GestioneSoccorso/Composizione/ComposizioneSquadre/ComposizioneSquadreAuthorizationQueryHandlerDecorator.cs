@@ -24,6 +24,7 @@ using CQRS.Queries.Authorizers;
 using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneSquadre;
 using SO115App.Models.Classi.Utility;
+using SO115App.Models.Servizi.Infrastruttura.Autenticazione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.VerificaUtente;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneMezzi
@@ -32,11 +33,13 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
     {
         private readonly IPrincipal _currentUser;
         private readonly IFindUserByUsername _findUserByUsername;
+        private readonly IGetAutorizzazioni _getAutorizzazioni;
 
-        public ComposizioneSquadreAuthorizationQueryHandlerDecorator(IPrincipal currentUser, IFindUserByUsername findUserByUsername)
+        public ComposizioneSquadreAuthorizationQueryHandlerDecorator(IPrincipal currentUser, IFindUserByUsername findUserByUsername, IGetAutorizzazioni getAutorizzazioni)
         {
             this._currentUser = currentUser;
             _findUserByUsername = findUserByUsername;
+            this._getAutorizzazioni = getAutorizzazioni;
         }
 
         public IEnumerable<AuthorizationResult> Authorize(ComposizioneSquadreQuery query)
@@ -48,6 +51,17 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             {
                 if (user == null)
                     yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
+                else
+                {
+                    foreach (var ruolo in user.Ruoli)
+                    {
+                        foreach (string codSede in query.Filtro.CodiceDistaccamento)
+                        {
+                            if (!_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, codSede, Costanti.GestoreRichieste))
+                                yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
+                        }
+                    }
+                }
             }
             else
                 yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);

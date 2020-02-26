@@ -92,5 +92,13 @@ namespace SO115App.Models.Classi.Utility
         public static string EventoMezzoRientrato = "MezzoRientrato";
 
         #endregion Eventi
+
+        #region Ruoli Utenti
+
+        public static string GestoreChiamate = "Gestore Chiamate";
+        public static string GestoreRichieste = "Gestore Richieste";
+        public static string Amministratore = "Amministratore";
+
+        #endregion Ruoli Utenti
     }
 }

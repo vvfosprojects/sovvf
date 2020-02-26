@@ -40,12 +40,14 @@ namespace SO115App.API.Controllers
         public async Task<IActionResult> AddInLavorazione([FromBody]SintesiRichiesta intervento)
         {
             var IdUtente = Request.Headers["IdUtente"];
+            var codiceSede = Request.Headers["codicesede"];
 
             var command = new MessaInLavorazioneCommand()
             {
                 IdRichiesta = intervento.Codice,
                 IdUtente = IdUtente,
-                Chiamata = intervento
+                Chiamata = intervento,
+                CodSede = codiceSede
             };
 
             try
@@ -63,12 +65,14 @@ namespace SO115App.API.Controllers
         public async Task<IActionResult> DeleteInLavorazione([FromBody]SintesiRichiesta intervento)
         {
             var IdUtente = Request.Headers["IdUtente"];
+            var codiceSede = Request.Headers["codicesede"];
 
             var command = new RimozioneInLavorazioneCommand()
             {
                 IdRichiesta = intervento.Id,
                 IdUtente = IdUtente,
-                Chiamata = intervento
+                Chiamata = intervento,
+                CodSede = codiceSede
             };
 
             try
@@ -86,13 +90,15 @@ namespace SO115App.API.Controllers
         public async Task<IActionResult> AddPresaInCarico([FromBody]SintesiRichiesta intervento)
         {
             var headerValues = Request.Headers["IdUtente"];
+            var codiceSede = Request.Headers["codicesede"];
             string IdUtente = headerValues.FirstOrDefault();
 
             var command = new PresaInCaricoCommand()
             {
                 IdRichiesta = intervento.Id,
                 IdUtente = IdUtente,
-                Chiamata = intervento
+                Chiamata = intervento,
+                CodSede = codiceSede
             };
 
             try
@@ -110,13 +116,15 @@ namespace SO115App.API.Controllers
         public async Task<IActionResult> DeletePresaInCarico([FromBody]SintesiRichiesta intervento)
         {
             var headerValues = Request.Headers["IdUtente"];
+            var codiceSede = Request.Headers["codicesede"];
             string IdUtente = headerValues.FirstOrDefault();
 
             var command = new RimozionePresaInCaricoCommand()
             {
                 IdRichiesta = intervento.Id,
                 IdUtente = IdUtente,
-                Chiamata = intervento
+                Chiamata = intervento,
+                CodSede = codiceSede
             };
 
             try
