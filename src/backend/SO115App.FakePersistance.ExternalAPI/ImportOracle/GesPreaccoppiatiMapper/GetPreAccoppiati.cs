@@ -1,44 +1,48 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using System;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Composizione;
+using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.PreAccoppiati;
 using SO115App.ExternalAPI.Fake.Classi.DTOOracle;
-using SO115App.Models.Classi.Condivise;
-using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.GesPreaccoppiati;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Threading.Tasks;
+using SO115App.Models.Servizi.Infrastruttura.GetPreAccoppiati;
 
 namespace SO115App.ExternalAPI.Fake.ImportOracle.GesPreaccoppiatiMapper
 {
-    public class GetListaGesPreaccoppiati : IGetListaGesPreaccoppiati
+    public class GetPreAccoppiati : IGetPreAccoppiati
     {
         private readonly HttpClient _client;
         private readonly IConfiguration _configuration;
 
-        public GetListaGesPreaccoppiati(HttpClient client, IConfiguration configuration)
+        public GetPreAccoppiati(HttpClient client, IConfiguration configuration)
         {
             _client = client;
             _configuration = configuration;
         }
 
-        public async Task<List<PreAccoppiati>> Get(string CodSede)
+        public List<PreAccoppiati> Get(PreAccoppiatiQuery query)
         {
-            _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("test");
+            return GetAsync(query).Result;
+        }
 
+        public async Task<List<PreAccoppiati>> GetAsync(PreAccoppiatiQuery query)
+        {
+            string CodSede = query.CodiceSede.Substring(0, 2);
+            _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("test");
             var response = await _client.GetAsync($"{_configuration.GetSection("OracleImplementation").GetSection(CodSede).GetSection("UrlAPISquadre").Value}/GetListaGesPreaccoppiati?CodSede={CodSede}").ConfigureAwait(false);
             response.EnsureSuccessStatusCode();
             using HttpContent content = response.Content;
-            var data = await content.ReadAsStringAsync().ConfigureAwait(false);
+            string data = await content.ReadAsStringAsync().ConfigureAwait(false);
             List<ORAGesPreaccoppiati> ListaPreAccoppiatiOracle = JsonConvert.DeserializeObject<List<ORAGesPreaccoppiati>>(data);
-
             return MapListaPreAccoppiatiOraInMongoDB(ListaPreAccoppiatiOracle);
         }
 
         private List<PreAccoppiati> MapListaPreAccoppiatiOraInMongoDB(List<ORAGesPreaccoppiati> ListaPreAccoppiatiOracle)
         {
             List<PreAccoppiati> ListaPreAccoppiati = new List<PreAccoppiati>();
-
             foreach (ORAGesPreaccoppiati OraP in ListaPreAccoppiatiOracle)
             {
                 List<string> sList = new List<string>();

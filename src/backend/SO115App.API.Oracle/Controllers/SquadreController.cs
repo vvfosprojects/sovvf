@@ -45,26 +45,26 @@ namespace SO115App.API.Oracle.Controllers
 
         // GET: api/Squadre/GetListaSquadre
         [HttpGet]
-        public List<ORASquadre> GetListaSquadre(string CodSede)
+        public IHttpActionResult GetListaSquadre(string CodSede)
         {
             GetSquadre Squadre = new GetSquadre();
-            return Squadre.GetListaSquadre(CodSede);
+            return Ok(Squadre.GetListaSquadre(CodSede));
         }
 
         // GET: api/Squadre/GetSquadraByCodSquadra
         [HttpGet]
-        public ORASquadre GetSquadraByCodSquadra(string CodSede, decimal CodSquadra)
+        public IHttpActionResult GetSquadraByCodSquadra(string CodSede, decimal CodSquadra)
         {
             GetSquadre Squadre = new GetSquadre();
-            return Squadre.GetSquadraByCodSquadra(CodSede, CodSquadra);
+            return Ok(Squadre.GetSquadraByCodSquadra(CodSede, CodSquadra));
         }
 
         // GET: api/Squadre/GetListaGesPreaccoppiati
         [HttpGet]
-        public List<ORAGesPreaccoppiati> GetListaGesPreaccoppiati(string CodSede)
+        public IHttpActionResult GetListaGesPreaccoppiati(string CodSede)
         {
             GetSquadre Squadre = new GetSquadre();
-            return Squadre.GetListaGesPreaccoppiati(CodSede);
+            return Ok(Squadre.GetListaGesPreaccoppiati(CodSede));
         }
 
         public IEnumerable<string> Get()

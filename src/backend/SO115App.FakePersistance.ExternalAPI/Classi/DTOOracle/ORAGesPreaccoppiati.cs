@@ -23,7 +23,7 @@ namespace SO115App.ExternalAPI.Fake.Classi.DTOOracle
         ///   CAMPO COD_DISTACCAMENTO DELLA TABELLA AUTOMEZZI (estratta in join con
         ///   AUTOMEZZI.COD_AUTOMEZZO = GES_PREACCOPPIATI.COD_AUTOMEZZO)
         /// </summary>
-        public int COD_DISTACCAMENTO { get; set; }
+        public decimal COD_DISTACCAMENTO { get; set; }
 
         /// <summary>
         ///   CAMPO COD_COMANDO DELLA TABELLA AUTOMEZZI (estratta in join con
