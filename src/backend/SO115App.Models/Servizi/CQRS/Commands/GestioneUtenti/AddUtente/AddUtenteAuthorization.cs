@@ -54,16 +54,15 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneUtenti.AddUtente
                 {
                     foreach (var ruolo in command.Ruoli)
                     {
-                        var listaruoli = _getAutorizzazioni.GetAutorizzazioniUtente(user.Id, ruolo.CodSede);
-                        if (listaruoli.Find(x => x.Descrizione.Equals("Amministratore")) == null)
-                        {
+                        if (!_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, ruolo.CodSede, "Amministratore"))
                             yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
-                        }
                     }
                 }
             }
             else
+            {
                 yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
+            }
         }
     }
 }

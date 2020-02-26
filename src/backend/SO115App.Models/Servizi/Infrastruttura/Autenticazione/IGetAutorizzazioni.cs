@@ -5,6 +5,6 @@ namespace SO115App.Models.Servizi.Infrastruttura.Autenticazione
 {
     public interface IGetAutorizzazioni
     {
-        List<Role> GetAutorizzazioniUtente(string idUtente, string idSede);
+        bool GetAutorizzazioniUtente(List<Role> ruoli, string codSedeDaVerificare, string ruoloNecessario);
     }
 }

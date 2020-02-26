@@ -18,19 +18,16 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Commands;
-using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.Eventi;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
-using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GenerazioneCodiciRichiesta;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Competenze;
 using SO115App.Models.Servizi.Infrastruttura.Turni;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace DomainModel.CQRS.Commands.AddIntervento
 {
@@ -97,9 +94,9 @@ namespace DomainModel.CQRS.Commands.AddIntervento
             var Competenza = _getCompetenze.GetCompetenzeRichiesta(command.CodiceSede.Split('.')[0], Indirizzo, Civico, Citta);
 
             string[] CodUOCompetenzaAppo = {
-                command.CodiceSede.Split('.')[0] + Competenza.CodDistaccamento,
-                command.CodiceSede.Split('.')[0] + Competenza.CodDistaccamento2,
-                command.CodiceSede.Split('.')[0] + Competenza.CodDistaccamento3
+                command.CodiceSede.Split('.')[0] + "." + Competenza.CodDistaccamento,
+                command.CodiceSede.Split('.')[0] + "." + Competenza.CodDistaccamento2,
+                command.CodiceSede.Split('.')[0] + "." + Competenza.CodDistaccamento3
             };
 
             var richiesta = new RichiestaAssistenza()
