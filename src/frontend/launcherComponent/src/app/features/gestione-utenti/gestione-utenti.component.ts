@@ -14,8 +14,6 @@ import { PaginationState } from '../../shared/store/states/pagination/pagination
 import { LoadingState } from '../../shared/store/states/loading/loading.state';
 import { GestioneUtenteModalComponent } from './gestione-utente-modal/gestione-utente-modal.component';
 import { ConfirmModalComponent } from 'src/app/shared';
-import { SetCodiceSede } from '../../core/signalr/store/signalR.actions';
-import { AuthenticationService } from '../../core/auth/_services';
 import { SetPageSize } from '../../shared/store/actions/pagination/pagination.actions';
 
 @Component({
@@ -25,7 +23,7 @@ import { SetPageSize } from '../../shared/store/actions/pagination/pagination.ac
 })
 export class GestioneUtentiComponent {
 
-    @Select(UtenteState.utente) user$: Observable<Utente>;
+    @Select(UtenteState.utente) utente$: Observable<Utente>;
     utente: Utente;
     @Select(GestioneUtentiState.listaUtenti) listaUtenti$: Observable<Utente[]>;
     @Select(GestioneUtentiState.utenteDetail) utenteGestioneDetail$: Observable<Utente>;
@@ -39,9 +37,7 @@ export class GestioneUtentiComponent {
     @Select(LoadingState.loading) loading$: Observable<boolean>;
 
     constructor(public modalService: NgbModal,
-                private store: Store,
-                private authService: AuthenticationService) {
-        this.store.dispatch(new SetCodiceSede(this.authService.currentUserValue.sede.codice));
+                private store: Store) {
         this.getUtente();
         this.getUtentiGestione();
         this.getRuoli();
@@ -160,7 +156,7 @@ export class GestioneUtentiComponent {
     }
 
     getUtente() {
-        this.user$.subscribe((utente: Utente) => {
+        this.utente$.subscribe((utente: Utente) => {
             this.utente = utente;
         });
     }
