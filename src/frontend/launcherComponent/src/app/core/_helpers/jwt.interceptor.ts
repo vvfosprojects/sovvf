@@ -1,17 +1,18 @@
 import { Injectable } from '@angular/core';
 import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
-import { AuthenticationService } from '../auth/_services';
+import { Store } from '@ngxs/store';
+import { UtenteState } from '../../features/navbar/store/states/operatore/utente.state';
 
 @Injectable()
 export class JwtInterceptor implements HttpInterceptor {
-    constructor(private authenticationService: AuthenticationService) {
+
+    constructor(private store: Store) {
     }
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
-        const currentUser = this.authenticationService.currentUserValue;
+        const currentUser = this.store.selectSnapshot(UtenteState.utente);
 
         if (currentUser && currentUser.token) {
             request = request.clone({

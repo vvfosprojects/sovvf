@@ -1,15 +1,13 @@
 import { Component, OnInit, EventEmitter, Output, isDevMode, OnDestroy, Input } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { ClockService } from './clock/clock-service/clock.service';
-import { AuthenticationService } from '../../core/auth/_services';
 import { Store, Select } from '@ngxs/store';
 import { TurnoState } from './store/states/turno/turno.state';
 import { Utente } from '../../shared/model/utente.model';
-import { ClearUtente, SetUtente } from './store/actions/operatore/utente.actions';
+import { ClearUtente } from './store/actions/operatore/utente.actions';
 import { TurnoExtra } from './turno/turno-extra.model';
 import { ClearDataNavbar, GetDataNavbar } from './store/actions/navbar.actions';
 import { SediTreeviewState } from '../../shared/store/states/sedi-treeview/sedi-treeview.state';
-import { SetCodiceSede, SetIdUtente } from '../../core/signalr/store/signalR.actions';
 import { TurnoCalendario } from './turno/turno-calendario.model';
 import { calcolaTurnoCalendario } from 'src/app/shared/helper/calcola-turno';
 import { SetTurnoCalendario } from './store/actions/turno/turno.actions';
@@ -38,11 +36,9 @@ export class NavbarComponent implements OnInit, OnDestroy {
     @Select(SediTreeviewState.listeSediNavbarLoaded) listeSediNavbarLoaded$: Observable<boolean>;
 
     constructor(private store: Store,
-        private _clock: ClockService,
-        private authService: AuthenticationService) {
+        private _clock: ClockService) {
         this.time = new Date();
         this.clock$ = this._clock.getClock();
-        this.setUtente();
         this.subscription.add(this.clock$.subscribe((tick: Date) => {
             this.time = tick;
             this.checkTurno();
@@ -69,12 +65,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
     openSidebar() {
         this.openedSidebar.emit();
-    }
-
-    setUtente() {
-        this.store.dispatch(new SetUtente(this.authService.currentUserValue));
-        this.store.dispatch(new SetCodiceSede(this.authService.currentUserValue.sede.codice));
-        this.store.dispatch(new SetIdUtente(this.authService.currentUserValue.id));
     }
 
     checkTurno(): void {

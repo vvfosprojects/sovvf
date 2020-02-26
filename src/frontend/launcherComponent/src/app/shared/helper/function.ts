@@ -299,5 +299,5 @@ export function onlyUnique(value, index, self) {
 }
 
 export function wipeStringUppercase(text: string) {
-    return text.replace(/(?=[A-Z])/g, ' ');
+    return text.replace(/(?=[A-Z])/g, ' ').trim();
 }
