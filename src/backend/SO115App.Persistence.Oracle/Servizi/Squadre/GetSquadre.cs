@@ -8,6 +8,8 @@ namespace SO115App.Persistence.Oracle.Servizi.Squadre
 {
     public class GetSquadre
     {
+        public string prova = "+ 4 / 24 "; //questa stringa serve per fare le prove. data del server è indietro e se vengono aggiunte 4 ore si possono fare i test. Deve essere tolta
+
         public List<ORAGesPreaccoppiati> GetListaGesPreaccoppiati(string CodSede)
         {
             List<ORAGesPreaccoppiati> ListaGesPreaccoppiat = new List<ORAGesPreaccoppiati>();
@@ -22,10 +24,10 @@ namespace SO115App.Persistence.Oracle.Servizi.Squadre
 
             cmd.CommandText = "select 	" +
                     "NVL(COD_SQUADRA,	0) as	COD_SQUADRA  , " +
-                    "NVL(COD_AUTOMEZZO,	0) as	COD_AUTOMEZZO," +
+                    "NVL(SALAOPER.AUTOMEZZI.COD_AUTOMEZZO,	0) as	COD_AUTOMEZZO," +
                     "NVL(CMOB_PARTENZA,	0) as	CMOB_PARTENZA " +
                     ",NVL(SALAOPER.AUTOMEZZI.COD_DISTACCAMENTO,	0) as	COD_DISTACCAMENTO " +
-                   " ,NVLSALAOPER.AUTOMEZZI.COD_COMANDO,0) as COD_COMANDO " +
+                   " ,NVL(SALAOPER.AUTOMEZZI.COD_COMANDO,0) as COD_COMANDO " +
                     "FROM  SALAOPER.GES_PREACCOPPIATI , SALAOPER.AUTOMEZZI " +
                    " where      SALAOPER.AUTOMEZZI.COD_AUTOMEZZO = SALAOPER.GES_PREACCOPPIATI.COD_AUTOMEZZO " +
                    "and  COD_COMANDO = :COD_COMANDO ";
@@ -74,7 +76,13 @@ namespace SO115App.Persistence.Oracle.Servizi.Squadre
                     "NVL(VISUALIZZA              	,	'') as	VISUALIZZA              	," +
                     "NVL(CONTEGGIO_MENSA         	,	'') as	CONTEGGIO_MENSA         	," +
                     "NVL(SUPPORTO                	,	'') as	SUPPORTO                	" +
-                    "FROM SALAOPER.SQUADRE WHERE COD_SQUADRA =:COD_SQUADRA";
+                  "  FROM SALAOPER.SQUADRE INNER JOIN " +
+                    " SALAOPER.PERSONALE_SQUADRE ON SALAOPER.SQUADRE.COD_SQUADRA = SALAOPER.PERSONALE_SQUADRE.COD_SQUADRA " +
+               " WHERE " +
+            " TO_CHAR(CURRENT_DATE, 'DD-MM-YYYY') = TO_CHAR(SALAOPER.PERSONALE_SQUADRE.DATA_SERVIZIO, 'DD-MM-YYYY') AND " +
+              "         SALAOPER.PERSONALE_SQUADRE.ORA_FINE >= (CURRENT_DATE " + prova + ") " +
+              "AND SALAOPER.PERSONALE_SQUADRE.ORA_INIZIO <= (CURRENT_DATE " + prova + ") " +
+               "   AND SALAOPER.SQUADRE =:COD_SQUADRA   AND SQUADRE_MANSIONE= 'S'";
 
             cmd.CommandType = CommandType.Text;
             cmd.BindByName = true;
@@ -113,22 +121,26 @@ namespace SO115App.Persistence.Oracle.Servizi.Squadre
             conn.Open();
             OracleCommand cmd = new OracleCommand();
             cmd.Connection = conn;
-
-            cmd.CommandText = "select 	" +
-                    "NVL(COD_SQUADRA             	,	0) as	COD_SQUADRA             	, " +
-                    "NVL(SIGLA                   	,	'') as	SIGLA                   	," +
-                    "NVL(COD_DISTACCAMENTO       	,	0) as	COD_DISTACCAMENTO       	," +
-                    "NVL(COL_MOB                 	,	'') as	COL_MOB                 	," +
-                    "NVL(PRIORITA_COMANDO        	,	0) as	PRIORITA_COMANDO        	," +
-                    "NVL(PRIORITA_DISTACCAMENTO  	,	0) as	PRIORITA_DISTACCAMENTO  	," +
-                    "NVL(SQUADRE_MANSIONE        	,	'') as	SQUADRE_MANSIONE        	," +
-                    "NVL(STAMPA                  	,	'') as	STAMPA                  	," +
-                    "NVL(SQUADRE_EMERGENZA       	,	'') as	SQUADRE_EMERGENZA       	," +
-                    "NVL(NUMERO_PERSONE          	,	0) as	NUMERO_PERSONE          	," +
-                    "NVL(VISUALIZZA              	,	'') as	VISUALIZZA              	," +
-                    "NVL(CONTEGGIO_MENSA         	,	'') as	CONTEGGIO_MENSA         	," +
-                    "NVL(SUPPORTO                	,	'') as	SUPPORTO                	" +
-                    "FROM SALAOPER.SQUADRE";
+            cmd.CommandText = " select SALAOPER.PERSONALE_SQUADRE.DATA_SERVIZIO, " +
+                            " SALAOPER.PERSONALE_SQUADRE.COD_SQUADRA, " +
+                            " NVL(SALAOPER.SQUADRE.COD_SQUADRA, 0) as COD_SQUADRA ,  " +
+                            " NVL(SALAOPER.SQUADRE.SIGLA, '') as SIGLA                       ," +
+                            " NVL(SALAOPER.SQUADRE.COD_DISTACCAMENTO, 0) as COD_DISTACCAMENTO           ," +
+                            " NVL(SALAOPER.SQUADRE.COL_MOB, '') as COL_MOB                     ," +
+                            " NVL(SALAOPER.SQUADRE.PRIORITA_COMANDO, 0) as PRIORITA_COMANDO    ,        " +
+                            " NVL(PRIORITA_DISTACCAMENTO, 0) as PRIORITA_DISTACCAMENTO,      " +
+                            " NVL(SQUADRE_MANSIONE, '') as SQUADRE_MANSIONE            ," +
+                            " NVL(STAMPA, '') as STAMPA                      ," +
+                            " NVL(SQUADRE_EMERGENZA, '') as SQUADRE_EMERGENZA           ," +
+                            " NVL(NUMERO_PERSONE, 0) as NUMERO_PERSONE              ," +
+                            " NVL(VISUALIZZA, '') as VISUALIZZA                  , " +
+                            " NVL(CONTEGGIO_MENSA, '') as CONTEGGIO_MENSA   ,       " +
+                            " NVL(SUPPORTO, '') as SUPPORTO    " +
+                            " FROM SALAOPER.SQUADRE INNER JOIN " +
+                            " SALAOPER.PERSONALE_SQUADRE ON  SALAOPER.SQUADRE.COD_SQUADRA = SALAOPER.PERSONALE_SQUADRE.COD_SQUADRA  " +
+                           "  WHERE TO_CHAR(CURRENT_DATE, 'DD-MM-YYYY') = TO_CHAR(SALAOPER.PERSONALE_SQUADRE.DATA_SERVIZIO, 'DD-MM-YYYY') " +
+                            " AND SALAOPER.PERSONALE_SQUADRE.ORA_FINE >= (CURRENT_DATE " + "" + prova + " " + ")" +
+                            " AND SALAOPER.PERSONALE_SQUADRE.ORA_INIZIO <= (CURRENT_DATE " + prova + ") AND SQUADRE_MANSIONE = 'S' ";
 
             cmd.CommandType = CommandType.Text;
             OracleDataReader dr = cmd.ExecuteReader();
@@ -255,21 +267,23 @@ namespace SO115App.Persistence.Oracle.Servizi.Squadre
             OracleCommand cmd = new OracleCommand();
             cmd.Connection = conn;
 
-            cmd.CommandText = "select 	" +
-                      "	NVL( COD_SQUADRA              	,	0) as	 COD_SQUADRA ,	" +
-                    "	NVL(MATDIP                  	,	'') as	 MATDIP                  	,	" +
-                    "	NVL(FLAG_CAPO_SQUADRA       	,	'') as	 FLAG_CAPO_SQUADRA       	,	" +
-                    "	NVL(DATA_SERVIZIO           	,	'') as	 DATA_SERVIZIO           	,	" +
-                    "	NVL(TURNO                   	,	'') as	 TURNO                   	,	" +
-                    "	NVL(AUTISTA                 	,	'') as	 AUTISTA                 	,	" +
-                    "	NVL(QUALIFICA_ABBREV        	,	'') as	 QUALIFICA_ABBREV        	,	" +
-                    "	NVL(COD_DISTACCAMENTO       	,	0) as	 COD_DISTACCAMENTO       	,	" +
-                    "	NVL(PROGRESSIVO             	,	0) as	 PROGRESSIVO             	,	" +
-                    "	NVL(ORA_INIZIO              	,	'') as	 ORA_INIZIO              	,	" +
-                    "	NVL(ORA_FINE                	,	'') as	 ORA_FINE                	,	" +
-                    "	NVL(DATA_ULT_AGG            	,	'') as	 DATA_ULT_AGG            	,	" +
-                    "	NVL(ULTERIORI_AUTISTI 	,	0) as	 ULTERIORI_AUTISTI 	" +
-                       "FROM SALAOPER.PERSONALE_SQUADRE WHERE COD_SQUADRA =:COD_SQUADRA";
+            cmd.CommandText = "SELECT 	" +
+                      "	NVL( COD_SQUADRA              	,	0) AS	 COD_SQUADRA ,	" +
+                    "	NVL(MATDIP                  	,	'') AS	 MATDIP                  	,	" +
+                    "	NVL(FLAG_CAPO_SQUADRA       	,	'') AS	 FLAG_CAPO_SQUADRA       	,	" +
+                    "	NVL(DATA_SERVIZIO           	,	'') AS	 DATA_SERVIZIO           	,	" +
+                    "	NVL(TURNO                   	,	'') AS	 TURNO                   	,	" +
+                    "	NVL(AUTISTA                 	,	'') AS	 AUTISTA                 	,	" +
+                    "	NVL(QUALIFICA_ABBREV        	,	'') AS	 QUALIFICA_ABBREV        	,	" +
+                    "	NVL(COD_DISTACCAMENTO       	,	0) AS	 COD_DISTACCAMENTO       	,	" +
+                    "	NVL(PROGRESSIVO             	,	0) AS	 PROGRESSIVO             	,	" +
+                    "	NVL(TO_CHAR(ORA_INIZIO, 'DD-MM-YYYY HH24:MI:SS')	,'') AS	 ORA_INIZIO , 	" +
+                    "	NVL(TO_CHAR(ORA_FINE, 'DD-MM-YYYY HH24:MI:SS') ,'') AS	 ORA_FINE ,    	" +
+                    "	NVL(DATA_ULT_AGG            	,	'') AS	 DATA_ULT_AGG ,	" +
+                    "	NVL(ULTERIORI_AUTISTI 	,	0) AS	 ULTERIORI_AUTISTI 	" +
+                       "FROM SALAOPER.PERSONALE_SQUADRE WHERE COD_SQUADRA =:COD_SQUADRA  AND " +
+                     " TO_CHAR(CURRENT_DATE  , 'DD-MM-YYYY') = TO_CHAR(DATA_SERVIZIO, 'DD-MM-YYYY') AND " +
+                       "ORA_FINE >= (CURRENT_DATE  " + prova + ") AND (ORA_INIZIO <= (CURRENT_DATE  " + prova + "))";
 
             cmd.CommandType = CommandType.Text;
             cmd.BindByName = true;
@@ -320,11 +334,13 @@ namespace SO115App.Persistence.Oracle.Servizi.Squadre
                     "	NVL(QUALIFICA_ABBREV        	,	'') as	 QUALIFICA_ABBREV        	,	" +
                     "	NVL(COD_DISTACCAMENTO       	,	0) as	 COD_DISTACCAMENTO       	,	" +
                     "	NVL(PROGRESSIVO             	,	0) as	 PROGRESSIVO             	,	" +
-                    "	NVL(ORA_INIZIO              	,	'') as	 ORA_INIZIO              	,	" +
-                    "	NVL(ORA_FINE                	,	'') as	 ORA_FINE                	,	" +
+                   "	NVL(to_date(TO_CHAR(ORA_INIZIO, 'DD-MM-YYYY HH24:MI:SS'),'DD-MM-YYYY HH24:MI:SS')	,'') AS	 ORA_INIZIO , 	" +
+                   "	NVL(to_date(TO_CHAR(ORA_FINE, 'DD-MM-YYYY HH24:MI:SS'),'DD-MM-YYYY HH24:MI:SS')	,'') AS	 ORA_FINE , 	" +
                     "	NVL(DATA_ULT_AGG            	,	'') as	 DATA_ULT_AGG            	,	" +
                     "	NVL(ULTERIORI_AUTISTI 	,	0) as	 ULTERIORI_AUTISTI 	" +
-                       "FROM SALAOPER.PERSONALE_SQUADRE";
+                         "FROM SALAOPER.PERSONALE_SQUADRE WHERE " +
+                     " TO_CHAR(CURRENT_DATE  , 'DD-MM-YYYY') = TO_CHAR(DATA_SERVIZIO, 'DD-MM-YYYY') AND " +
+                       "ORA_FINE >= (CURRENT_DATE  " + prova + ") AND (ORA_INIZIO <= (CURRENT_DATE  " + prova + "))";
 
             cmd.CommandType = CommandType.Text;
             OracleDataReader dr = cmd.ExecuteReader();
