@@ -44,7 +44,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSchedeNue.GetSchedeFiltra
                 codiceFiscale = utente.CodiceFiscale;
             }
 
-            var listaSchedeContatto = _getSchedeFiltrate.Get(query.Filtro.TestoLibero, query.Filtro.Gestita, codiceFiscale, query.Filtro.RangeVisualizzazione).OrderByDescending(x => !x.Gestita).ThenByDescending(x => x.Priorita).ThenBy(x => x.DataInserimento).ToList();
+            var listaSchedeContatto = _getSchedeFiltrate.Get(query.Filtro.TestoLibero, query.Filtro.Gestita, codiceFiscale, query.Filtro.RangeVisualizzazione, query.CodiceSede).OrderByDescending(x => !x.Gestita).ThenByDescending(x => x.Priorita).ThenBy(x => x.DataInserimento).ToList();
 
             return new GetSchedeFiltrateResult()
             {
