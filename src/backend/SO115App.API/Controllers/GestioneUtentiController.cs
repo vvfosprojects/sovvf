@@ -79,6 +79,7 @@ namespace SO115App.API.Controllers
         public IActionResult GetUtenti([FromBody]ListaOperatoriQuery query)
         {
             query.CodiceSede = Request.Headers["codiceSede"];
+            query.IdUtente = Request.Headers["IdUtente"];
 
             try
             {
