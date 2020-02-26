@@ -1,36 +1,36 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject } from 'rxjs';
-import { Utente } from '../../../shared/model/utente.model';
 import { map } from 'rxjs/operators';
 import { environment } from '../../../../environments/environment';
+import { SetUtente } from '../../../features/navbar/store/actions/operatore/utente.actions';
+import { Store } from '@ngxs/store';
+import { UtenteState } from '../../../features/navbar/store/states/operatore/utente.state';
+import { StartLoading, StopLoading } from '../../../shared/store/actions/loading/loading.actions';
 
 const API_AUTH = environment.apiUrl.auth;
 
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
-    currentUserSubject: BehaviorSubject<Utente>;
     private isLogged: boolean;
-    private localName = 'userSO115';
+    localName: string;
 
-    constructor(private http: HttpClient) {
-        this.currentUserSubject = new BehaviorSubject<Utente>(JSON.parse(localStorage.getItem(this.localName)));
-    }
-
-    public get currentUserValue(): Utente {
-        return this.currentUserSubject.value;
+    constructor(private http: HttpClient,
+                private store: Store) {
+        this.localName = this.store.selectSnapshot(UtenteState.localName);
+        this.store.dispatch(new SetUtente(JSON.parse(localStorage.getItem(this.localName))));
     }
 
     login(username: string, password: string) {
+        this.store.dispatch(new StartLoading());
         return this.http.post<any>(`${API_AUTH}/Login`, { 'username': username, 'password': password }).pipe(map(response => {
             if (response && response.token) {
-                localStorage.setItem(this.localName, JSON.stringify(response));
-                this.currentUserSubject.next(response);
+                this.store.dispatch(new SetUtente(response));
             }
             if (response) {
                 return response;
             }
+            this.store.dispatch(new StopLoading());
         }));
     }
 
@@ -39,7 +39,6 @@ export class AuthenticationService {
     }
 
     logout() {
-        localStorage.removeItem(this.localName);
-        this.currentUserSubject.next(null);
+        return;
     }
 }

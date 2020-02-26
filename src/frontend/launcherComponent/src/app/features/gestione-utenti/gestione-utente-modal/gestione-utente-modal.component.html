@@ -18,7 +18,7 @@
                        [loading]="loading$ | async" [ngClass]="{ 'is-invalid': submitted && f.utente.errors }">
                 <ng-template ng-option-tmp let-item="item">
                     <div class="pb-1">
-                        <div class="font-weight-bold">{{item.nominativo}}</div>
+                        <div class="font-weight-bold">{{item.nominativo.replace('.', ' ')}}</div>
                         <div class="small">{{item.codFiscale}}</div>
                     </div>
                 </ng-template>

@@ -3,12 +3,18 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 import { AuthenticationService } from '../../core/auth/_services';
+import { Select } from '@ngxs/store';
+import { LoadingState } from '../../shared/store/states/loading/loading.state';
+import { Observable } from 'rxjs';
 
 
 @Component({ templateUrl: 'login.component.html' })
 export class LoginComponent implements OnInit {
+
+    @Select(LoadingState.loading) loading$: Observable<boolean>;
+    loading: boolean;
+
     loginForm: FormGroup;
-    loading = false;
     submitted = false;
     returnUrl: string;
     error = '';
@@ -18,6 +24,7 @@ export class LoginComponent implements OnInit {
         private route: ActivatedRoute,
         private router: Router,
         private authenticationService: AuthenticationService) {
+        this.loading$.subscribe((loading: boolean) => this.loading = loading);
     }
 
     ngOnInit() {
@@ -42,7 +49,6 @@ export class LoginComponent implements OnInit {
             return;
         }
 
-        this.loading = true;
         this.authenticationService.login(this.f.username.value, this.f.password.value)
             .pipe(first())
             .subscribe(
@@ -51,7 +57,6 @@ export class LoginComponent implements OnInit {
                 },
                 error => {
                     this.error = error;
-                    this.loading = false;
                 });
     }
 }

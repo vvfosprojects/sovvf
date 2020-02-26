@@ -154,13 +154,17 @@ export class GestioneUtentiState {
         });
 
         this._gestioneUtenti.addUtente(obj).subscribe((utente: Utente) => {
-            if (utente) {
-                patch(
-                    insertItem(utente)
-                );
-                dispatch(new ShowToastr(ToastrType.Info, 'Utente Aggiunto', 'Utente aggiunto con successo.', 3));
+                if (utente) {
+                    patch(
+                        insertItem(utente)
+                    );
+                    dispatch(new ShowToastr(ToastrType.Info, 'Utente Aggiunto', 'Utente aggiunto con successo.', 3));
+                }
+            },
+            () => {
+                this.store.dispatch(new ShowToastr(ToastrType.Error, 'Si è verificato un errore', 'Utente non autorizzato'));
             }
-        });
+        );
 
         // Clear data
         dispatch(new ClearDataModalAddUtenteModal());

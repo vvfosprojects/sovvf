@@ -7,6 +7,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneUtente.ListaOperatori
     public class ListaOperatoriQuery : IQuery<ListaOperatoriResult>
     {
         public string CodiceSede { get; set; }
+        public string IdUtente { get; set; }
 
         public Paginazione Pagination { get; set; }
 
