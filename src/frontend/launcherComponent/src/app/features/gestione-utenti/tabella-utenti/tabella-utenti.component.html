@@ -23,7 +23,7 @@
             </button>
             <div *ngFor="let ruolo of utente.ruoli, let i=index" class="d-inline-block h6 font-weight-normal">
                 <div class="badge badge-warning font-weight-bold clearfix cursor-pointer shadow-sm py-3 px-2 mr-2"
-                     [ngbTooltip]="ruolo.codSede"
+                     [ngbTooltip]="'Codice sede: ' + ruolo.codSede"
                      placement="top">
                     <span class="d-inline-block float-left">
                           <span class="d-block">{{ruolo.descSede ? ruolo.descSede : ruolo.codSede}}</span>

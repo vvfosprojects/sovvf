@@ -11,13 +11,12 @@ import {
     ClearDataModalAddUtenteModal, AddUtenteGestione
 } from '../../actions/gestione-utenti/gestione-utenti.actions';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { NgZone } from '@angular/core';
 import { RicercaUtentiState } from '../ricerca-utenti/ricerca-utenti.state';
 import { PatchPagination } from '../../../../../shared/store/actions/pagination/pagination.actions';
 import { ResponseInterface } from '../../../../../shared/interface/response.interface';
 import { TreeviewSelezione } from '../../../../../shared/model/treeview-selezione.model';
 import { Utente } from '../../../../../shared/model/utente.model';
-import { insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
+import { insertItem, patch, removeItem } from '@ngxs/store/operators';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from '../../../../../shared/enum/toastr';
 import { GestioneUtentiService } from '../../../../../core/service/gestione-utenti-service/gestione-utenti.service';
@@ -36,7 +35,7 @@ export interface GestioneUtentiStateModel {
             utente: string;
             ruolo: string;
             sedi: TreeviewSelezione[];
-            soloDistaccamenti: boolean;
+            ricorsivo: boolean;
         };
         dirty: boolean;
         status: string;
@@ -63,9 +62,8 @@ export const GestioneUtentiStateModelDefaults: GestioneUtentiStateModel = {
 export class GestioneUtentiState {
 
     constructor(private _gestioneUtenti: GestioneUtentiService,
-        private modalService: NgbModal,
-        private store: Store,
-        private ngZone: NgZone) {
+                private modalService: NgbModal,
+                private store: Store) {
     }
 
     @Selector()
@@ -103,7 +101,6 @@ export class GestioneUtentiState {
 
     @Action(SetUtentiVVF)
     setUtentiVVF({ patchState }: StateContext<GestioneUtentiStateModel>, action: SetUtentiVVF) {
-        console.log('Utenti VVF', action.utenti);
         patchState({
             listaUtentiVVF: action.utenti
         });
@@ -135,7 +132,6 @@ export class GestioneUtentiState {
 
     @Action(SetUtentiGestione)
     setUtentiGestione({ patchState }: StateContext<GestioneUtentiStateModel>, action: SetUtentiGestione) {
-        console.log('Utenti', action.utenti);
         patchState({
             listaUtenti: action.utenti
         });
@@ -147,16 +143,16 @@ export class GestioneUtentiState {
 
         const obj: AddRuoloUtenteInterface = {
             codFiscale: form.utente,
-            ruoli: [],
-            soloDistaccamenti: form.soloDistaccamenti
+            ruoli: []
         };
         form.sedi.forEach((value: TreeviewSelezione) => {
             obj.ruoli.push({
                 descrizione: form.ruolo.replace(/ /g, ''),
-                codSede: value.idSede
+                codSede: value.idSede,
+                ricorsivo: form.ricorsivo
             });
         });
-        console.log('Add Utente OBJ', obj);
+
         this._gestioneUtenti.addUtente(obj).subscribe((utente: Utente) => {
             if (utente) {
                 patch(
@@ -176,16 +172,16 @@ export class GestioneUtentiState {
 
         const obj: AddRuoloUtenteInterface = {
             codFiscale: form.utente,
-            ruoli: [],
-            soloDistaccamenti: form.soloDistaccamenti
+            ruoli: []
         };
         form.sedi.forEach((value: TreeviewSelezione) => {
             obj.ruoli.push({
                 descrizione: form.ruolo.replace(/ /g, ''),
-                codSede: value.idSede
+                codSede: value.idSede,
+                ricorsivo: form.ricorsivo
             });
         });
-        console.log('Add Utente Ruolo OBJ', obj);
+
         this._gestioneUtenti.addRuoloUtente(obj).subscribe((utente: Utente) => {
             if (utente) {
                 patch(

@@ -4,7 +4,7 @@
         class="fa fa-cogs"></i>
 </button>
 <div *ngIf="user" class="btn-group" role="group">
-    <button class="btn btn-light mr-2" [ngbPopover]="ruolo" placement="bottom">
+    <button class="btn btn-light mr-2" [ngbPopover]="ruoli" placement="bottom">
         <i class="fa fa-user"></i>
         {{user.nome}} {{user.cognome}}
     </button>
@@ -19,6 +19,14 @@
 <ng-template #impostazioni>
     <h6 class="mb-2">Impostazioni</h6>
 </ng-template>
-<ng-template #ruolo>
-    <h6 *ngFor="let ruolo of user.ruoli" class="mb-2">{{ruolo.descrizione}}</h6>
+<ng-template #ruoli>
+    <div class="py-1">
+        <small class="d-block font-weight-bold">Ruoli Assegnati:</small>
+        <div *ngFor="let ruolo of user.ruoli" class="d-block badge badge-primary mt-2 p-2">
+            {{ruolo.descrizione}}
+        </div>
+        <div *ngIf="!user.ruoli || (user.ruoli && user.ruoli.length === 0)" class="badge badge-secondary mt-2 p-2">
+            Solo Visualizzazione
+        </div>
+    </div>
 </ng-template>

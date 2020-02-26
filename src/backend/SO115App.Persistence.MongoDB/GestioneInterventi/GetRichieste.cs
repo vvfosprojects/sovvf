@@ -30,6 +30,7 @@ using SO115App.Models.Classi.Soccorso;
 using SO115App.Models.Servizi.CustomMapper;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,12 +42,14 @@ namespace SO115App.Persistence.MongoDB
         private readonly DbContext _dbContext;
         private readonly IMapper _mapper;
         private readonly IGetTipologieByCodice _getTipologiaByCodice;
+        private readonly IGetListaDistaccamentiByCodiceSede _getAnagraficaDistaccamento;
 
-        public GetRichiesta(DbContext dbContext, IMapper mapper, IGetTipologieByCodice getTipologiaByCodice)
+        public GetRichiesta(DbContext dbContext, IMapper mapper, IGetTipologieByCodice getTipologiaByCodice, IGetListaDistaccamentiByCodiceSede getAnagraficaDistaccamento)
         {
             _dbContext = dbContext;
             _mapper = mapper;
             _getTipologiaByCodice = getTipologiaByCodice;
+            _getAnagraficaDistaccamento = getAnagraficaDistaccamento;
         }
 
         public RichiestaAssistenza GetByCodice(string codiceRichiesta)
@@ -88,6 +91,7 @@ namespace SO115App.Persistence.MongoDB
                     if (richiesta.CodUOCompetenza.Where(x => filtro.CodUOCompetenza.Contains(x)).ToList().Count > 0)
                     {
                         sintesi = mapSintesi.Map(richiesta);
+                        sintesi.Competenze = MapCompetenze(richiesta.CodUOCompetenza);
                         sintesi.ListaUtentiInLavorazione = utentiFake;
                         sintesi.ListaUtentiPresaInCarico = utentiFake;
                         ListaSistesiRichieste.Add(sintesi);
@@ -96,6 +100,21 @@ namespace SO115App.Persistence.MongoDB
             }
 
             return ListaSistesiRichieste;
+        }
+
+        private List<Sede> MapCompetenze(string[] codUOCompetenza)
+        {
+            var ListaDistaccamenti = _getAnagraficaDistaccamento.GetListaDistaccamenti(codUOCompetenza[0].Split('.')[0]);
+            List<Sede> ListaSedi = new List<Sede>();
+
+            foreach (var codCompetenza in codUOCompetenza)
+            {
+                var Distaccamento = ListaDistaccamenti.Find(x => x.CodDistaccamento == Convert.ToInt32(codCompetenza.Split('.')[1]));
+                Sede sede = new Sede(codCompetenza, Distaccamento.DescDistaccamento, Distaccamento.Indirizzo, null, "", "", "", "", "");
+                ListaSedi.Add(sede);
+            }
+
+            return ListaSedi;
         }
     }
 }
