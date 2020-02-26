@@ -23,7 +23,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue
         /// </summary>
         /// <param name="area">l'area circoscritta con i filtri</param>
         /// <returns>una lista di schede contatto marker</returns>
-        public List<SchedaContattoMarker> Get(AreaMappa area)
+        public List<SchedaContattoMarker> Get(AreaMappa area, string codSede)
         {
             return _getSchedeMethods.GetMarkerFiltered(area);
         }

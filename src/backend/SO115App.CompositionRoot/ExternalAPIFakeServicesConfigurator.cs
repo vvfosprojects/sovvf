@@ -61,12 +61,11 @@ namespace SO115App.CompositionRoot
             container.Register<IGetSchedeContattoGestita, GetSchedeContattoGestita>();
             container.Register<IGetSchedeContattoTimeSpan, GetSchedeContattoTimeSpan>();
             container.Register<ISetStatoGestioneSchedaContatto, SetGestita>();
-            container.Register<IGetSchedeContattoMarkerFiltered, ExternalAPI.Fake.Servizi.Nue.GetSchedeContattoMarkerFiltered>();
-
+            container.Register<IGetSchedeContattoMarkerFiltered, SO115App.ExternalAPI.Fake.ImportOracle.SchedeContatto.GetSchedeContattoMarkerFiltered>();
             container.Register<SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue.IGetConteggioSchede,
-                ExternalAPI.Fake.Servizi.Nue.GetConteggioSchede>(); //TODO gestione composition Root per l'externalAPI
+                SO115App.ExternalAPI.Fake.ImportOracle.SchedeContatto.GetConteggioSchedeContatto>();
             container.Register<SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue.IGetSchedeFiltrate,
-                ExternalAPI.Fake.Servizi.Nue.GetSchedeFiltrate>(); //TODO gestione composition Root per l'externalAPI
+                SO115App.ExternalAPI.Fake.ImportOracle.SchedeContatto.GetSchedeContattoFiltrate>();
 
             #endregion NUE
 

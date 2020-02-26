@@ -6,6 +6,6 @@ namespace SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue
 {
     public interface IGetSchedeContattoMarkerFiltered
     {
-        List<SchedaContattoMarker> Get(AreaMappa area);
+        List<SchedaContattoMarker> Get(AreaMappa area, string codSede);
     }
 }

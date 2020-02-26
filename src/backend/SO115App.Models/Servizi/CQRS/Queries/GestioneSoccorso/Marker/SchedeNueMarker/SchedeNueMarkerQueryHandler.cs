@@ -41,7 +41,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.Marker.SchedeNue
         /// <returns>Il DTO di uscita della query</returns>
         public SchedeNueMarkerResult Handle(SchedeNueMarkerQuery query)
         {
-            var listaSchedeMarker = _iGetSchedeMarker.Get(query.Filtro);
+            var listaSchedeMarker = _iGetSchedeMarker.Get(query.Filtro, query.CodSede);
 
             return new SchedeNueMarkerResult()
             {

@@ -31,5 +31,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.Marker.SchedeNue
         ///   Il filtro utilizzato per la ricerca delle richieste di assistenza
         /// </summary>
         public AreaMappa Filtro { get; set; }
+
+        public string CodSede { get; set; }
     }
 }
