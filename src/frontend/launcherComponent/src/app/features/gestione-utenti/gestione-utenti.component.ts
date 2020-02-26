@@ -15,11 +15,12 @@ import { LoadingState } from '../../shared/store/states/loading/loading.state';
 import { GestioneUtenteModalComponent } from './gestione-utente-modal/gestione-utente-modal.component';
 import { ConfirmModalComponent } from 'src/app/shared';
 import { SetPageSize } from '../../shared/store/actions/pagination/pagination.actions';
+import { wipeStringUppercase } from '../../shared/helper/function';
 
 @Component({
     selector: 'app-gestione-utenti',
     templateUrl: './gestione-utenti.component.html',
-    styleUrls: [ './gestione-utenti.component.css' ]
+    styleUrls: ['./gestione-utenti.component.css']
 })
 export class GestioneUtentiComponent {
 
@@ -50,7 +51,7 @@ export class GestioneUtentiComponent {
     }
 
     onAddUtente() {
-        const aggiungiUtenteModal = this.modalService.open(GestioneUtenteModalComponent, {backdropClass: 'light-blue-backdrop', centered: true, size: 'lg'});
+        const aggiungiUtenteModal = this.modalService.open(GestioneUtenteModalComponent, { backdropClass: 'light-blue-backdrop', centered: true, size: 'lg' });
         aggiungiUtenteModal.result.then(
             (result: { success: boolean }) => {
                 if (result.success) {
@@ -68,7 +69,7 @@ export class GestioneUtentiComponent {
     }
 
     onAddRuoloUtente(event: { codFiscale: string, fullName: string }) {
-        const aggiungiRuoloUtenteModal = this.modalService.open(GestioneUtenteModalComponent, {backdropClass: 'light-blue-backdrop', centered: true, size: 'lg'});
+        const aggiungiRuoloUtenteModal = this.modalService.open(GestioneUtenteModalComponent, { backdropClass: 'light-blue-backdrop', centered: true, size: 'lg' });
         const codFiscaleUtenteVVF = event.codFiscale;
         const nominativoUtenteVVF = event.fullName;
         aggiungiRuoloUtenteModal.componentInstance.codFiscaleUtenteVVF = codFiscaleUtenteVVF;
@@ -90,13 +91,13 @@ export class GestioneUtentiComponent {
     }
 
     onRemoveRuoloUtente(payload: { codFiscale: string, ruolo: Ruolo, nominativoUtente: string }) {
-        const modalConfermaAnnulla = this.modalService.open(ConfirmModalComponent, {backdropClass: 'light-blue-backdrop', centered: true});
-        modalConfermaAnnulla.componentInstance.icona = {descrizione: 'trash', colore: 'danger'};
+        const modalConfermaAnnulla = this.modalService.open(ConfirmModalComponent, { backdropClass: 'light-blue-backdrop', centered: true });
+        modalConfermaAnnulla.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
         modalConfermaAnnulla.componentInstance.titolo = 'Elimina ruolo a ' + payload.nominativoUtente;
-        modalConfermaAnnulla.componentInstance.messaggioAttenzione = 'Sei sicuro di voler rimuovere il ruolo "' + payload.ruolo.descrizione + '" su "' + payload.ruolo.descSede + '"?';
+        modalConfermaAnnulla.componentInstance.messaggioAttenzione = 'Sei sicuro di voler rimuovere il ruolo "' + wipeStringUppercase(payload.ruolo.descrizione) + '" su "' + payload.ruolo.descSede + '"?';
         modalConfermaAnnulla.componentInstance.bottoni = [
-            {type: 'ko', descrizione: 'Annulla', colore: 'danger'},
-            {type: 'ok', descrizione: 'Conferma', colore: 'dark'},
+            { type: 'ko', descrizione: 'Annulla', colore: 'danger' },
+            { type: 'ok', descrizione: 'Conferma', colore: 'dark' },
         ];
         modalConfermaAnnulla.result.then(
             (val) => {
@@ -115,13 +116,13 @@ export class GestioneUtentiComponent {
     }
 
     onRemoveUtente(payload: { codFiscale: string, nominativoUtente: string }) {
-        const modalConfermaAnnulla = this.modalService.open(ConfirmModalComponent, {backdropClass: 'light-blue-backdrop', centered: true});
-        modalConfermaAnnulla.componentInstance.icona = {descrizione: 'trash', colore: 'danger'};
+        const modalConfermaAnnulla = this.modalService.open(ConfirmModalComponent, { backdropClass: 'light-blue-backdrop', centered: true });
+        modalConfermaAnnulla.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
         modalConfermaAnnulla.componentInstance.titolo = 'Elimina ' + payload.nominativoUtente;
         modalConfermaAnnulla.componentInstance.messaggioAttenzione = 'Sei sicuro di voler rimuovere l\'utente?';
         modalConfermaAnnulla.componentInstance.bottoni = [
-            {type: 'ko', descrizione: 'Annulla', colore: 'danger'},
-            {type: 'ok', descrizione: 'Conferma', colore: 'dark'},
+            { type: 'ko', descrizione: 'Annulla', colore: 'danger' },
+            { type: 'ok', descrizione: 'Conferma', colore: 'dark' },
         ];
         modalConfermaAnnulla.result.then(
             (val) => {
