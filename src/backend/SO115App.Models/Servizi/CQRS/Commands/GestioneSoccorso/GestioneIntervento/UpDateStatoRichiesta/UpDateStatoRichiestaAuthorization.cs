@@ -54,7 +54,7 @@ namespace DomainModel.CQRS.Commands.UpDateStatoRichiesta
                 {
                     foreach (var ruolo in user.Ruoli)
                     {
-                        if (!_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, command.CodiceSede, Costanti.GestoreRichieste))
+                        if (!_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, command.CodiceSede, Costanti.GestoreChiamate))
                             yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
                     }
                 }
