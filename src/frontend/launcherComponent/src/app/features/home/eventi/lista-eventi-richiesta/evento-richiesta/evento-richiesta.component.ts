@@ -1,8 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { EventoRichiesta } from '../../../../shared/model/evento-richiesta.model';
+import { EventoRichiesta } from '../../../../../shared/model/evento-richiesta.model';
 
 @Component({
-  selector: '[app-evento-richiesta]',
+  selector: 'app-evento-richiesta',
   templateUrl: './evento-richiesta.component.html',
   styleUrls: ['./evento-richiesta.component.css']
 })
