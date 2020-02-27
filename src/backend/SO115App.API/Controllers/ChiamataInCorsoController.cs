@@ -17,7 +17,9 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using CQRS.Commands;
 using CQRS.Queries;
@@ -26,6 +28,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SO115App.API.Models.Servizi.CQRS.Queries.Marker.ListaChiamateInCorsoMarker;
 using SO115App.Models.Classi.Marker;
+using SO115App.Models.Classi.Utility;
 
 namespace SO115App.API.Controllers
 {
@@ -68,8 +71,10 @@ namespace SO115App.API.Controllers
             {
                 return Ok((List<ChiamateInCorso>)this._listaChiamateInCorsoMarkerhandler.Handle(Listaquery).ListaChiamateInCorsoMarker);
             }
-            catch
+            catch (Exception ex)
             {
+                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                    return StatusCode(403, Costanti.UtenteNonAutorizzato);
                 return BadRequest();
             };
         }
@@ -87,8 +92,10 @@ namespace SO115App.API.Controllers
                 this._Addhandler.Handle(command);
                 return Ok();
             }
-            catch
+            catch (Exception ex)
             {
+                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                    return StatusCode(403, Costanti.UtenteNonAutorizzato);
                 return BadRequest();
             }
         }
@@ -125,8 +132,10 @@ namespace SO115App.API.Controllers
                 this._upDatehandler.Handle(command);
                 return Ok();
             }
-            catch
+            catch (Exception ex)
             {
+                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                    return StatusCode(403, Costanti.UtenteNonAutorizzato);
                 return BadRequest();
             }
         }
