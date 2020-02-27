@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { environment } from '../../../../environments/environment';
-import { SetUtente } from '../../../features/navbar/store/actions/operatore/utente.actions';
+import { ClearUtente, SetUtente } from '../../../features/navbar/store/actions/operatore/utente.actions';
 import { Store } from '@ngxs/store';
 import { UtenteState } from '../../../features/navbar/store/states/operatore/utente.state';
 import { StartLoading, StopLoading } from '../../../shared/store/actions/loading/loading.actions';
@@ -18,7 +18,10 @@ export class AuthenticationService {
     constructor(private http: HttpClient,
                 private store: Store) {
         this.localName = this.store.selectSnapshot(UtenteState.localName);
-        this.store.dispatch(new SetUtente(JSON.parse(localStorage.getItem(this.localName))));
+        const userLocalStorage = JSON.parse(localStorage.getItem(this.localName));
+        if (userLocalStorage) {
+            this.store.dispatch(new SetUtente(userLocalStorage));
+        }
     }
 
     login(username: string, password: string) {
@@ -39,6 +42,6 @@ export class AuthenticationService {
     }
 
     logout() {
-        return;
+        this.store.dispatch(new ClearUtente());
     }
 }
