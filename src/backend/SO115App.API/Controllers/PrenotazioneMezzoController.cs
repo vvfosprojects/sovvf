@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SO115App.Models.Classi.Condivise;
+using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.SetMezzoPrenotato;
 using System;
 using System.Threading.Tasks;
@@ -42,6 +43,8 @@ namespace SO115App.API.Controllers
             }
             catch (Exception ex)
             {
+                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                    return StatusCode(403, Costanti.UtenteNonAutorizzato);
                 return BadRequest();
             }
         }
@@ -63,8 +66,10 @@ namespace SO115App.API.Controllers
 
                 return Ok();
             }
-            catch
+            catch (Exception ex)
             {
+                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                    return StatusCode(403, Costanti.UtenteNonAutorizzato);
                 return BadRequest();
             }
         }

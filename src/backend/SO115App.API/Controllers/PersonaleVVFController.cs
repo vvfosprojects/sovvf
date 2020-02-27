@@ -19,6 +19,7 @@
 //-----------------------------------------------------------------------
 using CQRS.Queries;
 using Microsoft.AspNetCore.Mvc;
+using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneUtente.ListaPersonaleVVF;
 
 namespace SO115App.API.Controllers
@@ -50,7 +51,9 @@ namespace SO115App.API.Controllers
             }
             catch (System.Exception ex)
             {
-                return BadRequest(ex.Message);
+                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                    return StatusCode(403, Costanti.UtenteNonAutorizzato);
+                return BadRequest();
             }
         }
     }

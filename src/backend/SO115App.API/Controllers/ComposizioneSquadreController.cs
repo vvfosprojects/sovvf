@@ -17,6 +17,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
@@ -27,6 +28,7 @@ using Microsoft.AspNetCore.Mvc;
 using SO115App.API.Models.Classi.Composizione;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneSquadre;
 using SO115App.Models.Classi.Composizione;
+using SO115App.Models.Classi.Utility;
 
 /* using SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.GenerazioneRichieste; */
 
@@ -52,7 +54,7 @@ namespace SO115App.API.Controllers
         ///   Costruttore della classe
         /// </summary>
         /// <param name="handler">L'handler iniettato del servizio</param>
-        public ComposizioneSquadreController( IPrincipal currentUser,
+        public ComposizioneSquadreController(IPrincipal currentUser,
             IQueryHandler<ComposizioneSquadreQuery, ComposizioneSquadreResult> handler)
         {
             this.handler = handler;
@@ -67,7 +69,6 @@ namespace SO115App.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Post(FiltriComposizionePartenza filtri)
         {
-
             var query = new ComposizioneSquadreQuery()
             {
                 Filtro = filtri
@@ -80,8 +81,10 @@ namespace SO115App.API.Controllers
                     List<ComposizioneSquadre> composizioneSquadre = handler.Handle(query).ComposizioneSquadre;
                     return Ok();
                 }
-                catch
+                catch (Exception ex)
                 {
+                    if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                        return StatusCode(403, Costanti.UtenteNonAutorizzato);
                     return BadRequest();
                 }
             }

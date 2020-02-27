@@ -23,6 +23,8 @@ using DomainModel.CQRS.Commands.UpDateStatoRichiesta;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza;
+using SO115App.Models.Classi.Utility;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -66,8 +68,10 @@ namespace SO115App.API.Controllers
                 this._addhandler.Handle(command);
                 return Ok();
             }
-            catch
+            catch (Exception ex)
             {
+                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                    return StatusCode(403, Costanti.UtenteNonAutorizzato);
                 return BadRequest();
             }
         }
@@ -81,8 +85,10 @@ namespace SO115App.API.Controllers
                 var listaSintesi = _sintesiRichiesteQuery.Handle(sintesiQuery).SintesiRichiesta;
                 return Ok(listaSintesi.LastOrDefault(x => x.Codice == idRichiesta));
             }
-            catch
+            catch (Exception ex)
             {
+                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                    return StatusCode(403, Costanti.UtenteNonAutorizzato);
                 return BadRequest();
             }
         }

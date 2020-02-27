@@ -22,6 +22,7 @@ using DomainModel.CQRS.Commands.ConfermaPartenze;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SO115App.API.Models.Classi.Composizione;
+using SO115App.Models.Classi.Utility;
 using System;
 using System.Security.Principal;
 using System.Threading.Tasks;
@@ -78,6 +79,8 @@ namespace SO115App.API.Controllers
             }
             catch (Exception ex)
             {
+                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                    return StatusCode(403, Costanti.UtenteNonAutorizzato);
                 return BadRequest();
             }
         }

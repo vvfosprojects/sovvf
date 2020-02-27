@@ -17,12 +17,14 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using System;
 using System.Security.Principal;
 using System.Threading.Tasks;
 using CQRS.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.PreAccoppiati;
+using SO115App.Models.Classi.Utility;
 
 namespace SO115App.API.Controllers
 {
@@ -66,8 +68,10 @@ namespace SO115App.API.Controllers
             {
                 return Ok(_handler.Handle(query).preAccoppiati);
             }
-            catch
+            catch (Exception ex)
             {
+                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                    return StatusCode(403, Costanti.UtenteNonAutorizzato);
                 return BadRequest();
             }
         }

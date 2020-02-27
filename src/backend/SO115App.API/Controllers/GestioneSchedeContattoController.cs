@@ -22,6 +22,7 @@ using CQRS.Queries;
 using Microsoft.AspNetCore.Mvc;
 using SO115App.Models.Classi.Filtri;
 using SO115App.Models.Classi.NUE;
+using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSchedeNue.MergeSchedeNue;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSchedeNue.SetSchedaGestita;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSchedeNue.UndoMergeSchedeNue;
@@ -67,8 +68,10 @@ namespace SO115App.API.Controllers
             {
                 return Ok(this._queryHandler.Handle(query).SchedeContatto);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                    return StatusCode(403, Costanti.UtenteNonAutorizzato);
                 return BadRequest();
             }
         }
@@ -86,6 +89,8 @@ namespace SO115App.API.Controllers
             }
             catch (Exception ex)
             {
+                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                    return StatusCode(403, Costanti.UtenteNonAutorizzato);
                 return BadRequest();
             }
         }
@@ -107,8 +112,10 @@ namespace SO115App.API.Controllers
                 _setMerge.Handle(command);
                 return Ok();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                    return StatusCode(403, Costanti.UtenteNonAutorizzato);
                 return BadRequest();
             }
         }
@@ -130,8 +137,10 @@ namespace SO115App.API.Controllers
                 _undoMergeSchede.Handle(command);
                 return Ok();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                    return StatusCode(403, Costanti.UtenteNonAutorizzato);
                 return BadRequest();
             }
         }
