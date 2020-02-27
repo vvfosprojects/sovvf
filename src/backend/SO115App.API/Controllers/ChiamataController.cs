@@ -98,7 +98,7 @@ namespace SO115App.API.Controllers
                 this._Updatehandler.Handle(command);
                 return Ok();
             }
-            catch
+            catch (Exception ex)
             {
                 if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
                     return StatusCode(403, Costanti.UtenteNonAutorizzato);
