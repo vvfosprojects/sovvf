@@ -1,6 +1,6 @@
 import { Utente } from '../../../../../shared/model/utente.model';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
-import { ClearUtente, SetUtente } from '../../actions/operatore/utente.actions';
+import { ClearUtente, SetUtente, SetUtenteLocalStorage, SetUtenteSignalR, UpdateUtente } from '../../actions/operatore/utente.actions';
 import { SignalRService } from '../../../../../core/signalr/signalR.service';
 import { SignalRNotification } from '../../../../../core/signalr/model/signalr-notification.model';
 import { SetCodiceSede, SetIdUtente } from '../../../../../core/signalr/store/signalR.actions';
@@ -35,9 +35,19 @@ export class UtenteState {
     }
 
     @Action(SetUtente)
-    setUtente({ getState, patchState, dispatch }: StateContext<UtenteStateModel>, action: SetUtente) {
-        const state = getState();
+    setUtente({ patchState, dispatch }: StateContext<UtenteStateModel>, action: SetUtente) {
         // Set SignalR Data
+        dispatch(new SetUtenteSignalR(action.utente));
+        // Local Storage
+        dispatch(new SetUtenteLocalStorage(action.utente));
+        // Store User Data
+        patchState({
+            utente: action.utente
+        });
+    }
+
+    @Action(SetUtenteSignalR)
+    setUtenteSignalR({ dispatch }: StateContext<UtenteStateModel>, action: SetUtenteSignalR) {
         this.signalR.addToGroup(new SignalRNotification(
             action.utente.sede.codice,
             action.utente.id,
@@ -45,12 +55,22 @@ export class UtenteState {
         ));
         dispatch(new SetCodiceSede(action.utente.sede.codice));
         dispatch(new SetIdUtente(action.utente.id));
-        // Local Storage
+    }
+
+    @Action(SetUtenteLocalStorage)
+    setUtenteLocalStorage({ getState }: StateContext<UtenteStateModel>, action: SetUtenteLocalStorage) {
+        const state = getState();
         localStorage.setItem(state.localName, JSON.stringify(action.utente));
-        // Store User Data
+    }
+
+    @Action(UpdateUtente)
+    updateUtente({ patchState, dispatch }: StateContext<UtenteStateModel>, action: UpdateUtente) {
         patchState({
             utente: action.utente
         });
+        if (action.options.localStorage) {
+            dispatch(new SetUtenteLocalStorage(action.utente));
+        }
     }
 
     @Action(ClearUtente)

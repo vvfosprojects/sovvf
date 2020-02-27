@@ -59,7 +59,6 @@ import { LoaderInterceptor } from './core/_helpers/loader.interceptor';
 import { LoadingState } from './shared/store/states/loading/loading.state';
 import { PaginationState } from './shared/store/states/pagination/pagination.state';
 import { NgxsFormPluginModule } from '@ngxs/form-plugin';
-import { UtentiState } from './shared/store/states/utenti/utenti.state';
 import { UserService } from './core/auth/_services';
 import { UserServiceFake } from './core/auth/_services/user.service.fake';
 
@@ -92,7 +91,7 @@ import { UserServiceFake } from './core/auth/_services/user.service.fake';
             preventDuplicates: true,
         }),
         NgxsModule.forRoot(
-            [AppState, UtenteState, SignalRState, ToastrState, SediTreeviewState, PaginationState, LoadingState, UtentiState],
+            [AppState, UtenteState, SignalRState, ToastrState, SediTreeviewState, PaginationState, LoadingState],
             { developmentMode: !environment.production }
         ),
         NgxsRouterPluginModule.forRoot(),
