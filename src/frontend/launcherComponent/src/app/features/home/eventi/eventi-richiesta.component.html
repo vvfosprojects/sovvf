@@ -1,8 +1,16 @@
-<app-filtri-eventi-richiesta [idRichiesta]="(idRichiesta$ | async)" [listaTargaMezzo]="(listaTargaMezzo$ | async)"
-                             [iconeNomeClasseEvento]="visualizzazioneIconeNomeClasseEvento$ | async"
-                             (toggleIconeNomeClasseEvento)="toggleIconeNomeClasseEvento()"
-                             (targheSelezionate)="onSelezioneTarga($event)"
-                             [initValue]="(targheSelezionate$ | async)"></app-filtri-eventi-richiesta>
-<app-lista-eventi-richiesta [elencoEventi]="(eventiRichiesta$ | async)"
-                            [iconeNomeClasseEvento]="visualizzazioneIconeNomeClasseEvento$ | async"
-                            (targheSelezionate)="onSelezioneTarga($event)"></app-lista-eventi-richiesta>
+<div class="modal-header">
+    <div class="w-100">
+        <app-filtri-eventi-richiesta [idRichiesta]="idRichiesta$ | async"
+                                     [listaTargaMezzo]="listaTargaMezzo$ | async"
+                                     [iconeNomeClasseEvento]="visualizzazioneIconeNomeClasseEvento$ | async"
+                                     [initValue]="targheSelezionate$ | async"
+                                     [elencoEventi]="eventiRichiesta$ | async"
+                                     (toggleIconeNomeClasseEvento)="toggleIconeNomeClasseEvento()"
+                                     (targheSelezionate)="onSelezioneTarga($event)"></app-filtri-eventi-richiesta>
+    </div>
+</div>
+<div class="modal-body">
+    <app-lista-eventi-richiesta [elencoEventi]="eventiRichiesta$ | async"
+                                [iconeNomeClasseEvento]="visualizzazioneIconeNomeClasseEvento$ | async"
+                                (targheSelezionate)="onSelezioneTarga($event)"></app-lista-eventi-richiesta>
+</div>

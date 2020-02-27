@@ -21,6 +21,7 @@ import { FiltroTargaMezzo } from '../../../eventi/filtro-targa-mezzo.interface';
 
 export interface EventiRichiestaStateModel {
   idRichiesta: string;
+  codiceRichiesta: string;
   eventi: EventoRichiesta[];
   listaEventiFiltrata: EventoRichiesta[];
   listaTargaMezzo: FiltroTargaMezzo[];
@@ -30,6 +31,7 @@ export interface EventiRichiestaStateModel {
 
 export const eventiRichiestaStateDefaults: EventiRichiestaStateModel = {
   idRichiesta: null,
+  codiceRichiesta: null,
   eventi: null,
   listaEventiFiltrata: null,
   listaTargaMezzo: null,

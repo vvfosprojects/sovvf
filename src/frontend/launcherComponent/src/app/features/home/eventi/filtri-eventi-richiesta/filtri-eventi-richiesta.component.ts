@@ -1,6 +1,7 @@
 import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { FiltroTargaMezzo } from '../filtro-targa-mezzo.interface';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { EventoRichiesta } from '../../../../shared/model/evento-richiesta.model';
 
 @Component({
   selector: 'app-filtri-eventi-richiesta',
@@ -13,6 +14,7 @@ export class FiltriEventiRichiestaComponent implements OnChanges {
   @Input() listaTargaMezzo: FiltroTargaMezzo[];
   @Input() initValue: string[];
   @Input() iconeNomeClasseEvento: boolean;
+  @Input() elencoEventi: EventoRichiesta[];
 
   @Output() targheSelezionate = new EventEmitter<string[]>();
   @Output() toggleIconeNomeClasseEvento = new EventEmitter<boolean>();

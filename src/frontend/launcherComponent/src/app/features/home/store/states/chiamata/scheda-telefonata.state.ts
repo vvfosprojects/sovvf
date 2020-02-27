@@ -102,7 +102,7 @@ export class SchedaTelefonataState {
                 dispatch(new CestinaChiamata());
             }
         }, () => {
-            dispatch(new ShowToastr(ToastrType.Error, 'Inserimento della chiamata fallito', 'Si è verificato un errore, riprova.', 5));
+            // dispatch(new ShowToastr(ToastrType.Error, 'Inserimento della chiamata fallito', 'Si è verificato un errore, riprova.', 5));
             patchState({
                 nuovaRichiesta: null,
                 azioneChiamata: null

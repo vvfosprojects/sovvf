@@ -1,40 +1,38 @@
 <div class="row_text scroll-y" style="max-height: calc(100vh - 60px)">
-  <table *ngIf="elencoEventi" class="table table-striped">
-    <thead class="bg-primary text-light h5">
-    <th scope="col" style="width:22%">
-      Evento
-    </th>
-    <th scope="col" style="width:16%">
-      Quando
-    </th>
-    <th scope="col" style="width:12%">
-      Precedente
-    </th>
-    <th scope="col" style="width:12%">
-      Primo
-    </th>
-    <th scope="col" style="width:12%">
-      Targa
-    </th>
-    <th scope="col" style="width:26%">
-      Note
-    </th>
-    </thead>
-    <tbody class="h6">
-    <tr app-evento-richiesta *ngFor="let r of elencoEventi; let i = index"
-        [eventoRichiesta]="r" [nomeClasseEvento]="r.nomeClasseEvento"
-        [visualizzaIconeNomeClasseEvento]="iconeNomeClasseEvento" [istantePrimoEvento]="istantePrimoEvento"
-        [istanteEventoPrecedente]="setIstanteEventoPrecedente(i)" (filtroTarga)="setRicercaTargaMezzo($event)"></tr>
-    </tbody>
-  </table>
-  <div *ngIf="!elencoEventi">
-    <div class="row">
-      <div class="col-12 my-5">
-        <div class="text-center">
-          <i class="fa fa-spinner fa-3x fa-spin"></i>
-          <h6 class="m-0 mt-2">Caricamento...</h6>
-        </div>
-      </div>
-    </div>
-  </div>
+    <ng-template [ngIf]="elencoEventi?.length > 0">
+        <table class="table table-striped">
+            <thead class="bg-primary text-light h5">
+            <th scope="col" style="width:22%">
+                Evento
+            </th>
+            <th scope="col" style="width:16%">
+                Quando
+            </th>
+            <th scope="col" style="width:12%">
+                Precedente
+            </th>
+            <th scope="col" style="width:12%">
+                Primo
+            </th>
+            <th scope="col" style="width:12%">
+                Targa
+            </th>
+            <th scope="col" style="width:26%">
+                Note
+            </th>
+            </thead>
+            <tbody class="h6">
+            <tr *ngFor="let r of elencoEventi; let i = index">
+                <app-evento-richiesta [eventoRichiesta]="r" [nomeClasseEvento]="r.nomeClasseEvento"
+                                      [visualizzaIconeNomeClasseEvento]="iconeNomeClasseEvento"
+                                      [istantePrimoEvento]="istantePrimoEvento"
+                                      [istanteEventoPrecedente]="setIstanteEventoPrecedente(i)"
+                                      (filtroTarga)="setRicercaTargaMezzo($event)"></app-evento-richiesta>
+            </tr>
+            </tbody>
+        </table>
+    </ng-template>
+    <ng-template [ngIf]="elencoEventi?.length <= 0">
+        <div class="alert alert-danger font-weight-bold h5">Non ci sono eventi associati alla richiesta</div>
+    </ng-template>
 </div>

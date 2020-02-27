@@ -55,7 +55,7 @@ export class ChiamateMarkersState {
         this.chiamateMarkerService.setChiamataInCorso(action.chiamataMarker).subscribe(() => {
         }, error => {
             console.error(error);
-            dispatch(new ShowToastr(ToastrType.Error, 'Inserimento della chiamata in corso fallito', 'Si è verificato un errore, riprova.', 5));
+            // dispatch(new ShowToastr(ToastrType.Error, 'Inserimento della chiamata in corso fallito', 'Si è verificato un errore, riprova.', 5));
         });
     }
 
@@ -64,7 +64,7 @@ export class ChiamateMarkersState {
         this.chiamateMarkerService.updateChiamataInCorso(action.chiamataMarker).subscribe(() => {
         }, error => {
             console.error(error);
-            dispatch(new ShowToastr(ToastrType.Error, 'Inserimento della chiamata in corso fallito', 'Si è verificato un errore, riprova.', 5));
+            // dispatch(new ShowToastr(ToastrType.Error, 'Inserimento della chiamata in corso fallito', 'Si è verificato un errore, riprova.', 5));
         });
     }
 

@@ -11,6 +11,7 @@ import { SediTreeviewState } from '../../shared/store/states/sedi-treeview/sedi-
 import { TurnoCalendario } from './turno/turno-calendario.model';
 import { calcolaTurnoCalendario } from 'src/app/shared/helper/calcola-turno';
 import { SetTurnoCalendario } from './store/actions/turno/turno.actions';
+import { AuthenticationService } from '../../core/auth/_services';
 
 @Component({
     selector: 'app-navbar',
@@ -36,6 +37,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     @Select(SediTreeviewState.listeSediNavbarLoaded) listeSediNavbarLoaded$: Observable<boolean>;
 
     constructor(private store: Store,
+        private authenticationService: AuthenticationService,
         private _clock: ClockService) {
         this.time = new Date();
         this.clock$ = this._clock.getClock();
@@ -83,7 +85,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     }
 
     logout() {
-        this.store.dispatch(new ClearUtente());
+        this.authenticationService.logout();
     }
 
 }
