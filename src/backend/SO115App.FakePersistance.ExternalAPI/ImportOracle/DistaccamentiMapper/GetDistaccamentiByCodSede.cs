@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using SO115App.ExternalAPI.Fake.Classi.DTOOracle;
 using SO115App.Models.Classi.Condivise;
@@ -15,16 +16,27 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.DistaccamentiMapper
     {
         private readonly HttpClient _client;
         private readonly IConfiguration _configuration;
+        private readonly IMemoryCache _memoryCache;
 
-        public GetDistaccamentiByCodSede(HttpClient client, IConfiguration configuration)
+        public GetDistaccamentiByCodSede(HttpClient client, IConfiguration configuration, IMemoryCache memoryCache)
         {
             _client = client;
             _configuration = configuration;
+            _memoryCache = memoryCache;
         }
 
         public List<Distaccamento> GetListaDistaccamenti(string CodSede)
         {
-            return CallOra(CodSede).Result;
+            List<Distaccamento> ListaDistaccamenti = new List<Distaccamento>();
+
+            if (!_memoryCache.TryGetValue("ListaDistaccamenti", out ListaDistaccamenti))
+            {
+                ListaDistaccamenti = CallOra(CodSede).Result;
+                var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromHours(2));
+                _memoryCache.Set("ListaDistaccamenti", ListaDistaccamenti, cacheEntryOptions);
+            }
+
+            return ListaDistaccamenti;
         }
 
         private async Task<List<Distaccamento>> CallOra(string CodSede)
