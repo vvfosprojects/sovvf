@@ -7,6 +7,7 @@ using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
 using SO115App.ExternalAPI.Fake.ImportOracle.DistaccamentiMapper;
 using System.Collections.Generic;
 using System.Net.Http;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
 
 namespace SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper
 {
@@ -14,11 +15,13 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper
     {
         private readonly HttpClient _client;
         private readonly IConfiguration _configuration;
+        private readonly IGetListaDistaccamentiByCodiceSede _getDistaccamentoByCodSede;
 
-        public GetMezziByCodiceMezzo(HttpClient client, IConfiguration configuration)
+        public GetMezziByCodiceMezzo(HttpClient client, IConfiguration configuration, IGetListaDistaccamentiByCodiceSede getDistaccamentoByCodSede)
         {
             _client = client;
             _configuration = configuration;
+            _getDistaccamentoByCodSede = getDistaccamentoByCodSede;
         }
 
         public List<Mezzo> Get(List<string> codiceMezzo, string codSede)
@@ -38,8 +41,7 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper
             {
                 var OraM = ListaMezziOracle.Find(x => x.COD_AUTOMEZZO.Equals(codice));
 
-                GetDistaccamentiByCodSede GetDistaccamentiByCodSede = new GetDistaccamentiByCodSede(_client, _configuration);
-                List<Distaccamento> distaccamenti = GetDistaccamentiByCodSede.GetListaDistaccamenti(OraM.COD_COMANDO);
+                List<Distaccamento> distaccamenti = _getDistaccamentoByCodSede.GetListaDistaccamenti(OraM.COD_COMANDO);
                 var d = distaccamenti.Find(x => x.CodDistaccamento.Equals(OraM.COD_DISTACCAMENTO));
 
                 var sede = new Sede(OraM.COD_COMANDO + "." + OraM.COD_DISTACCAMENTO, d.DescDistaccamento, d.Indirizzo, new Coordinate(1, 1), "", "", "", "", "");
