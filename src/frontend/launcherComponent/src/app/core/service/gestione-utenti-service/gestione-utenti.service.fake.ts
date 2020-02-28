@@ -54,7 +54,7 @@ export class GestioneUtentiServiceFake {
                 'test',
                 [
                     {
-                        descrizione: Role.CallTaker,
+                        descrizione: Role.GestoreChiamate,
                         codSede: 'RM.1000',
                         descSede: 'Comando di Roma',
                         ricorsivo: false
@@ -88,7 +88,7 @@ export class GestioneUtentiServiceFake {
                 'test',
                 [
                     {
-                        descrizione: Role.CallTaker,
+                        descrizione: Role.GestoreChiamate,
                         codSede: 'RM.1000',
                         descSede: 'Comando di Roma',
                         ricorsivo: true
