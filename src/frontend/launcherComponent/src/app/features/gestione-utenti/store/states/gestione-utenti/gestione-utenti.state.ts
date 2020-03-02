@@ -147,7 +147,7 @@ export class GestioneUtentiState {
         };
         form.sedi.forEach((value: TreeviewSelezione) => {
             obj.ruoli.push({
-                descrizione: form.ruolo.replace(/ /g, ''),
+                descrizione: form.ruolo,
                 codSede: value.idSede,
                 ricorsivo: form.ricorsivo
             });
@@ -180,7 +180,7 @@ export class GestioneUtentiState {
         };
         form.sedi.forEach((value: TreeviewSelezione) => {
             obj.ruoli.push({
-                descrizione: form.ruolo.replace(/ /g, ''),
+                descrizione: form.ruolo,
                 codSede: value.idSede,
                 ricorsivo: form.ricorsivo
             });

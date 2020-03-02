@@ -8,14 +8,15 @@ import { DistanzaTemporalePipe } from './distanza-temporale.pipe';
 import { PersonalePipe } from './personale.pipe';
 import { EventiPipe } from './eventi.pipe';
 import { ContattoPrioritaPipe } from './contatto-priorita.pipe';
+import { CheckPermissionPipe } from './check-permission.pipe';
 
 const COMPONENTS = [
-    TruncatePipe, FriendlyDatePipe, FriendlyDateTooltipPipe, FriendlyHourPipe, FriendlyTimePipe, DistanzaTemporalePipe, PersonalePipe, EventiPipe, ContattoPrioritaPipe
+    TruncatePipe, FriendlyDatePipe, FriendlyDateTooltipPipe, FriendlyHourPipe, FriendlyTimePipe, DistanzaTemporalePipe, PersonalePipe, EventiPipe, ContattoPrioritaPipe, CheckPermissionPipe
 ];
 
 @NgModule({
     imports: [],
-    declarations: [...COMPONENTS],
+    declarations: [...COMPONENTS, CheckPermissionPipe],
     exports: [...COMPONENTS],
 })
 
