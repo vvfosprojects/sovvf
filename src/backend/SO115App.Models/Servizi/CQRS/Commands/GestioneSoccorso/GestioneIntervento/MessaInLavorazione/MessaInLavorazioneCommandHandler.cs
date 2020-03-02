@@ -47,11 +47,6 @@ namespace DomainModel.CQRS.Commands.MessaInLavorazione
         {
             var richiesta = _getRichiestaById.GetByCodice(command.IdRichiesta);
             var utente = _getUtenteById.GetUtenteByCodice(command.IdUtente);
-            //AttivitaUtente attivita = new AttivitaUtente();
-
-            //attivita.IdUtente = utente.Id;
-            //attivita.Nominativo = utente.Nome + " " + utente.Cognome;
-            //attivita.DataInizioAttivita = DateTime.UtcNow;
             var nominativoInLavorazione = utente.Nome + "." + utente.Cognome;
 
             if (richiesta.UtInLavorazione != null)
@@ -62,15 +57,6 @@ namespace DomainModel.CQRS.Commands.MessaInLavorazione
                 richiesta.UtInLavorazione.Add(nominativoInLavorazione);
             }
 
-            //if (command.Chiamata.ListaUtentiInLavorazione != null)
-            //    command.Chiamata.ListaUtentiInLavorazione.Add(attivita);
-            //else
-            //{
-            //    command.Chiamata.ListaUtentiInLavorazione = new List<AttivitaUtente>();
-            //    command.Chiamata.ListaUtentiInLavorazione.Add(attivita);
-            //}
-
-            //richiesta.Id = richiesta.Codice;
 
             this._upDateRichiestaAssistenza.UpDate(richiesta);
         }

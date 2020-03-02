@@ -116,7 +116,8 @@ namespace DomainModel.CQRS.Commands.AddIntervento
                 UtPresaInCarico = utentiPresaInCarico,
                 NotePubbliche = command.Chiamata.NotePubbliche,
                 NotePrivate = command.Chiamata.NotePrivate,
-                CodUOCompetenza = CodUOCompetenzaAppo
+                CodUOCompetenza = CodUOCompetenzaAppo,
+                CodOperatore = command.CodUtente
             };
 
             if (command.Chiamata.Stato == Costanti.RichiestaChiusa)
