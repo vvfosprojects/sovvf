@@ -35,7 +35,7 @@ namespace SO115App.API.Oracle.Controllers
         }
 
         [HttpGet]
-        public IHttpActionResult GetPersonaleByCodSede(string codiceSede)
+        public IHttpActionResult GetPersonaleBySede(string codiceSede)
         {
             try
             {

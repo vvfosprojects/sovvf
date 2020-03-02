@@ -91,8 +91,18 @@ namespace SO115App.Persistence.Oracle.Servizi.Competenze
             }
 
             conn.Dispose();
-            return ListaCompetenzeElenco.FindAll(x => (Convert.ToDecimal(civico) >= Convert.ToDecimal(x.LFTFSTHNR) && Convert.ToDecimal(civico) <= Convert.ToDecimal(x.LFTLSTHNR))
-                                                   || (Convert.ToDecimal(civico) >= Convert.ToDecimal(x.RGHTFSTHNR) && Convert.ToDecimal(civico) <= Convert.ToDecimal(x.RGHTLSTHNR)));
+
+            if (ListaCompetenzeElenco.FindAll(x => (Convert.ToDecimal(civico) >= Convert.ToDecimal(x.LFTFSTHNR) && Convert.ToDecimal(civico) <= Convert.ToDecimal(x.LFTLSTHNR))
+                                                    || (Convert.ToDecimal(civico) >= Convert.ToDecimal(x.RGHTFSTHNR) && Convert.ToDecimal(civico) <= Convert.ToDecimal(x.RGHTLSTHNR))).Count > 0)
+
+                return ListaCompetenzeElenco.FindAll(x => (Convert.ToDecimal(civico) >= Convert.ToDecimal(x.LFTFSTHNR) && Convert.ToDecimal(civico) <= Convert.ToDecimal(x.LFTLSTHNR))
+                                                       || (Convert.ToDecimal(civico) >= Convert.ToDecimal(x.RGHTFSTHNR) && Convert.ToDecimal(civico) <= Convert.ToDecimal(x.RGHTLSTHNR)));
+            else
+            {
+                List<ORACompetenzeByNomeVia> ListaCompetenza = new List<ORACompetenzeByNomeVia>();
+                ListaCompetenza.Add(ListaCompetenzeElenco.FirstOrDefault());
+                return ListaCompetenza;
+            }
         }
     }
 }

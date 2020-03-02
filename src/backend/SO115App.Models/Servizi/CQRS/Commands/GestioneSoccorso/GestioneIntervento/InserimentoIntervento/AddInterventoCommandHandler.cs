@@ -88,9 +88,9 @@ namespace DomainModel.CQRS.Commands.AddIntervento
             else
             {
                 Indirizzo = command.Chiamata.Localita.Indirizzo.Split(',')[0];
-                var isCap = int.TryParse(command.Chiamata.Localita.Indirizzo.Split(',')[2].Split(' ')[0], out provaCap);
-                Citta = isCap ? command.Chiamata.Localita.Indirizzo.Split(',')[1].Split(' ')[1][0..^2] : command.Chiamata.Localita.Indirizzo.Split(',')[1][0..^2];
-                Civico = "0";
+                var isCap = int.TryParse(command.Chiamata.Localita.Indirizzo.Split(',')[1].TrimStart().Split(' ')[0], out provaCap);
+                Citta = isCap ? command.Chiamata.Localita.Indirizzo.Split(',')[1].Split(' ')[2] : command.Chiamata.Localita.Indirizzo.Split(',')[1][0..^2];
+                Civico = "1";
             }
 
             var Competenza = _getCompetenze.GetCompetenzeRichiesta(command.CodiceSede.Split('.')[0], Indirizzo, Civico, Citta);
@@ -111,7 +111,6 @@ namespace DomainModel.CQRS.Commands.AddIntervento
                 Codice = codiceChiamata,
                 TrnInsChiamata = $"Turno {_getTurno.Get().Codice.Substring(0, 1)}",
                 TipoTerreno = command.Chiamata.TipoTerreno,
-                //CodEntiIntervenuti = command.Chiamata.ListaEntiIntervenuti, TODO
                 ObiettivoSensibile = command.Chiamata.ObiettivoSensibile,
                 UtInLavorazione = utentiInLavorazione,
                 UtPresaInCarico = utentiPresaInCarico,
