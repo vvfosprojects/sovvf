@@ -12,6 +12,26 @@ export const PermessiStateDefaults: PermessiStateModel = {
         {
             feature: PermissionFeatures.SchedaTelefonata,
             roles: [Role.GestoreChiamate]
+        },
+        {
+            feature: PermissionFeatures.SchedeContatto,
+            roles: [Role.GestoreChiamate]
+        },
+        {
+            feature: PermissionFeatures.MezziInServizio,
+            roles: [Role.GestoreRichieste]
+        },
+        {
+            feature: PermissionFeatures.ModificaRichiesta,
+            roles: [Role.GestoreRichieste]
+        },
+        {
+            feature: PermissionFeatures.GestisciRichiesta,
+            roles: [Role.GestoreRichieste]
+        },
+        {
+            feature: PermissionFeatures.ComposizionePartenzaRichiesta,
+            roles: [Role.GestoreRichieste]
         }
     ]
 };

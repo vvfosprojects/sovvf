@@ -1,5 +1,6 @@
 <div class="pl-3">
-<app-scheda-telefonata [tipologie]="(tipologie$ | async)"
-                       [operatore]="(utente$ | async)">
-</app-scheda-telefonata>
+    <app-scheda-telefonata [tipologie]="(tipologie$ | async)"
+                           [operatore]="(utente$ | async)"
+                           [disabledInviaPartenza]="permessiFeature.ComposizionePartenzaRichiesta | checkPermission">
+    </app-scheda-telefonata>
 </div>

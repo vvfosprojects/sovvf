@@ -14,7 +14,7 @@
       </div>
     </div>
     <button type="button" class="btn" ngbTooltip="Vai ai mezzi in servizio"
-      [disabled]="colorButtonView[2] === 'btn-secondary'"
+      [disabled]="colorButtonView[2] === 'btn-secondary' || disabledMezziInServizio"
       (click)="buttonOptionRichieste(OptionsRichieste.MezziInServizio)"
       [ngClass]="{'btn-secondary': mezziInServizioActive, 'btn-outline-secondary': !mezziInServizioActive}">
       <i class="fa fa-truck"></i>

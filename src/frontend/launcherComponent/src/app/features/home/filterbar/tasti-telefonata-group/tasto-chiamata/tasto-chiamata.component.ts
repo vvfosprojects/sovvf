@@ -20,4 +20,12 @@ export class TastoChiamataComponent {
         }
     }
 
+    getClasses() {
+        let returnClass = 'btn-outline-success';
+        if (this.disabled) {
+            returnClass += ' cursor-not-allowed';
+        }
+        return returnClass;
+    }
+
 }

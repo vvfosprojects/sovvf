@@ -14,6 +14,7 @@ export class ViewModeComponent {
     @Input() mezziInServizioActive: boolean;
     @Input() stateSwitch: boolean;
     @Input() mapStatus: boolean;
+    @Input() disabledMezziInServizio: boolean;
 
     @Output() buttonView = new EventEmitter<AppFeatures>();
     @Output() optionRichieste = new EventEmitter<OptionsRichieste>();

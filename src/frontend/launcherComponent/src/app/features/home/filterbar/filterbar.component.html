@@ -24,14 +24,17 @@
                                             (filtroSelezionato)="onSelezioneFiltroSchedeContatto($event)"
                                             (filtriReset)="eliminaFiltriAttiviSchedeContatto()">
                 </app-filtri-schede-contatto>
-                <app-filtri-mezzi-servizio *ngIf="(mezziInServizioStatus$ | async)" [filtri]="(filtriMezziInServizio$ | async)"
+                <app-filtri-mezzi-servizio *ngIf="(mezziInServizioStatus$ | async)"
+                                           [filtri]="(filtriMezziInServizio$ | async)"
                                            [filtriSelezionati]="(filtriSelezionatiMezziInServizio$ | async)"
                                            (filtroSelezionato)="onSelezioneFiltroMezziInServizio($event)"
                                            (filtriReset)="eliminaFiltriAttiviMezziInServizio()">
                 </app-filtri-mezzi-servizio>
             </div>
             <div class="col-7 pl-0">
-                <app-ricerca *ngIf="!(chiamataStatus$ | async) && !(composizioneStatus$ | async)" [ricerca]="(ricercaRichieste$ | async)" (search)="onSearchRichieste($event)" [disabled]="(mezziInServizioStatus$ | async)">
+                <app-ricerca *ngIf="!(chiamataStatus$ | async) && !(composizioneStatus$ | async)"
+                             [ricerca]="(ricercaRichieste$ | async)" (search)="onSearchRichieste($event)"
+                             [disabled]="(mezziInServizioStatus$ | async)">
                 </app-ricerca>
             </div>
         </div>
@@ -41,6 +44,7 @@
         <div class="row">
             <div class="col-12">
                 <app-view-mode [colorButtonView]="colorButton.buttonView"
+                               [disabledMezziInServizio]="permessiFeature.MezziInServizio | checkPermission"
                                [mezziInServizioActive]="viewState?.mezziInServizio.active"
                                (buttonView)="switchView($event)"
                                (optionRichieste)="onOptionsRichieste($event)"
