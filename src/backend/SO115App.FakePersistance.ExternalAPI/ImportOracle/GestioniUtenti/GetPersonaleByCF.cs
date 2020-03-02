@@ -14,18 +14,16 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.GestioniUtenti
     /// </summary>
     public class GetPersonaleByCF : IGetPersonaleByCF
     {
-        private readonly HttpClient _client;
-        private readonly IConfiguration _configuration;
+        private readonly IGetPersonaleByCodSede _getListaPersonale;
 
         /// <summary>
         ///   costruttore della classe
         /// </summary>
         /// <param name="client"></param>
         /// <param name="configuration"></param>
-        public GetPersonaleByCF(HttpClient client, IConfiguration configuration)
+        public GetPersonaleByCF(IGetPersonaleByCodSede getListaPersonale)
         {
-            _client = client;
-            _configuration = configuration;
+            _getListaPersonale = getListaPersonale;
         }
 
         /// <summary>
@@ -36,13 +34,7 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.GestioniUtenti
         /// <returns>PersonaleVVF</returns>
         public async Task<PersonaleVVF> Get(string codiceFiscale, string codSede)
         {
-            _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("test");
-            var response = await _client.GetAsync($"{_configuration.GetSection("OracleImplementation").GetSection(codSede).GetSection("UrlAPIGestioneUtente").Value}/GetPersonaleByCF?codiceFiscale={codiceFiscale}&codiceSede={codSede}").ConfigureAwait(false);
-            response.EnsureSuccessStatusCode();
-            using HttpContent content = response.Content;
-            string data = await content.ReadAsStringAsync().ConfigureAwait(false);
-            var oraPersonale = JsonConvert.DeserializeObject<ORAPersonaleVVF>(data);
-            return MapORAPersonaleSuPersonaleVVF.Map(oraPersonale);
+            return _getListaPersonale.Get(codSede).Result.Find(x => x.CodFiscale.Equals(codiceFiscale));
         }
     }
 }

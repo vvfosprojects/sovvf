@@ -73,20 +73,26 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper
         private string GetStatoOperativoMezzo(string codiceSedeDistaccamento, string codiceMezzo, string StatoMezzoOra)
         {
             string stato;
-            var ListaStatoOperativoMezzo = _getStatoMezzi.Get(codiceSedeDistaccamento, codiceMezzo);
-            if (ListaStatoOperativoMezzo.Any())
+            if (StatoMezzoOra.Equals("I"))
             {
-                switch (StatoMezzoOra)
-                {
-                    case "D": stato = "In Sede"; break;
-                    case "I": stato = "Sul Posto"; break;
-                    case "R": stato = "In Rientro"; break;
-                    default: stato = "Sconosciuto"; break;
-                }
+                stato = "Sul Posto";
             }
             else
             {
-                stato = ListaStatoOperativoMezzo.Find(x => x.CodiceMezzo.Equals(codiceMezzo)).StatoOperativo;
+                var ListaStatoOperativoMezzo = _getStatoMezzi.Get(codiceSedeDistaccamento, codiceMezzo);
+                if (ListaStatoOperativoMezzo.Count == 0)
+                {
+                    switch (StatoMezzoOra)
+                    {
+                        case "D": stato = "In Sede"; break;
+                        case "R": stato = "In Rientro"; break;
+                        default: stato = "Sconosciuto"; break;
+                    }
+                }
+                else
+                {
+                    stato = ListaStatoOperativoMezzo.Find(x => x.CodiceMezzo.Equals(codiceMezzo)).StatoOperativo;
+                }
             }
             return stato;
         }

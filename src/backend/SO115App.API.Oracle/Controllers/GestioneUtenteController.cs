@@ -33,5 +33,19 @@ namespace SO115App.API.Oracle.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpGet]
+        public IHttpActionResult GetPersonaleByCodSede(string codiceSede)
+        {
+            try
+            {
+                var getPersonaleByCodSede = new GetPersonaleByCodSede();
+                return Ok(getPersonaleByCodSede.GetByCodSede(codiceSede));
+            }
+            catch (System.Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

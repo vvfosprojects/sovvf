@@ -82,6 +82,7 @@ namespace SO115App.CompositionRoot
             container.Register<IGetSquadreNelTurno, GetSquadreNelTurno>();
             container.Register<IGetPersonaleVVF, ExternalAPI.Fake.ImportOracle.GestioniUtenti.GetPersonaleVVF>();
             container.Register<IGetPersonaleByCF, ExternalAPI.Fake.ImportOracle.GestioniUtenti.GetPersonaleByCF>();
+            container.Register<IGetPersonaleByCodSede, ExternalAPI.Fake.ImportOracle.GestioniUtenti.GetPersonaleByCodSede>();
 
             #endregion Personale
 

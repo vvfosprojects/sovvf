@@ -14,22 +14,16 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.GestioniUtenti
     {
         private readonly HttpClient _client;
         private readonly IConfiguration _configuration;
+        private readonly IGetPersonaleByCodSede _getListaPersonale;
 
-        public GetPersonaleVVF(HttpClient client, IConfiguration configuration)
+        public GetPersonaleVVF(IGetPersonaleByCodSede getListaPersonale)
         {
-            _client = client;
-            _configuration = configuration;
+            _getListaPersonale = getListaPersonale;
         }
 
         public async Task<List<PersonaleVVF>> Get(string text, string codSede)
         {
-            _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("test");
-            var response = await _client.GetAsync($"{_configuration.GetSection("OracleImplementation").GetSection(codSede.Split(".")[0]).GetSection("UrlAPIGestioneUtente").Value}/GetPersonale?text={text}&codiceSede={codSede.Split(".")[0]}").ConfigureAwait(false);
-            response.EnsureSuccessStatusCode();
-            using HttpContent content = response.Content;
-            string data = await content.ReadAsStringAsync().ConfigureAwait(false);
-            var oraPersonale = JsonConvert.DeserializeObject<List<ORAPersonaleVVF>>(data);
-            return MapORAPersonaleSuPersonaleVVF.MapLista(oraPersonale);
+            return _getListaPersonale.Get(codSede).Result.FindAll(x => x.Nominativo.Contains(text));
         }
     }
 }

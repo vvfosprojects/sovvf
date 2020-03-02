@@ -91,6 +91,7 @@
     <Compile Include="Servizi\Distaccamenti\GetDistaccamentiByCodSede.cs" />
     <Compile Include="Servizi\Mezzi\GetListaMezziUtilizzabili.cs" />
     <Compile Include="Servizi\Partenze\GetPartenze.cs" />
+    <Compile Include="Servizi\Personale\GetPersonaleByCodSede.cs" />
     <Compile Include="Servizi\Personale\GetPersonaleByCF.cs" />
     <Compile Include="Servizi\Personale\GetPersonaleVVF.cs" />
     <Compile Include="Servizi\Richieste\GetChiamate.cs" />

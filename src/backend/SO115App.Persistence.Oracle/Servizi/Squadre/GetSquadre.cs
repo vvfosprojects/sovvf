@@ -8,7 +8,8 @@ namespace SO115App.Persistence.Oracle.Servizi.Squadre
 {
     public class GetSquadre
     {
-        public string AddOreOracle = "+ 6 / 24 "; //questa stringa serve per fare le prove. data del server è indietro e se vengono aggiunte 6 ore si possono fare i test. Deve essere tolta
+        // public string AddOreOracle = "+ 6 / 24 "; //questa stringa serve per fare le prove. data
+        // del server è indietro e se vengono aggiunte 6 ore si possono fare i test. Deve essere tolta
 
         public List<ORAGesPreaccoppiati> GetListaGesPreaccoppiati(string CodSede)
         {
@@ -83,9 +84,9 @@ namespace SO115App.Persistence.Oracle.Servizi.Squadre
             " NVL(SUPPORTO, '') as SUPPORTO    " +
             " FROM SALAOPER.SQUADRE S INNER JOIN " +
             " SALAOPER.PERSONALE_SQUADRE P_S ON  S.COD_SQUADRA = P_S.COD_SQUADRA  " +
-            "  WHERE TO_CHAR(CURRENT_DATE, 'DD-MM-YYYY') = TO_CHAR(P_S.DATA_SERVIZIO, 'DD-MM-YYYY') " +
-            " AND P_S.ORA_FINE >= (CURRENT_DATE " + "" + AddOreOracle + " " + ")" +
-            " AND P_S.ORA_INIZIO <= (CURRENT_DATE " + AddOreOracle + ") AND SQUADRE_MANSIONE = 'S'  AND S.COD_SQUADRA =:COD_SQUADRA  " +
+            "  WHERE TO_CHAR(SYSDATE, 'DD-MM-YYYY') = TO_CHAR(P_S.DATA_SERVIZIO, 'DD-MM-YYYY') " +
+            " AND P_S.ORA_FINE >= (SYSDATE )" +
+            " AND P_S.ORA_INIZIO <= (SYSDATE ) AND SQUADRE_MANSIONE = 'S'  AND S.COD_SQUADRA =:COD_SQUADRA  " +
             " GROUP BY " +
             "  P_S.DATA_SERVIZIO,  " +
             "  P_S.COD_SQUADRA, " +
@@ -161,9 +162,9 @@ namespace SO115App.Persistence.Oracle.Servizi.Squadre
                        " INNER JOIN SALAOPER.SQ_PERSONALE_SQUADRE SQP_S ON S.COD_SQUADRA = SQP_S.COD_SQUADRA " +
                          "  WHERE " +
                        "TO_CHAR(SQP_S.DATA_SERVIZIO, 'DD-MM-YYYY') = TO_CHAR(P_S.DATA_SERVIZIO, 'DD-MM-YYYY') AND (SQP_S.TURNO = P_S.TURNO ) AND " +
-                        "TO_CHAR(CURRENT_DATE, 'DD-MM-YYYY') = TO_CHAR(P_S.DATA_SERVIZIO, 'DD-MM-YYYY') " +
-                        " AND P_S.ORA_FINE >= (CURRENT_DATE " + "" + AddOreOracle + " " + ")" +
-                        " AND P_S.ORA_INIZIO <= (CURRENT_DATE " + AddOreOracle + ") AND SQUADRE_MANSIONE = 'S' " +
+                        "TO_CHAR(SYSDATE, 'DD-MM-YYYY') = TO_CHAR(P_S.DATA_SERVIZIO, 'DD-MM-YYYY') " +
+                        " AND P_S.ORA_FINE >= (SYSDATE )" +
+                        " AND P_S.ORA_INIZIO <= (SYSDATE ) AND SQUADRE_MANSIONE = 'S' " +
                         " GROUP BY " +
                         "  P_S.DATA_SERVIZIO,  " +
                         "  P_S.COD_SQUADRA, " +
@@ -231,7 +232,7 @@ namespace SO115App.Persistence.Oracle.Servizi.Squadre
                 "NVL(VISUALIZZA,	'') as	 VISUALIZZA  " +
                "FROM SALAOPER.SQ_PERSONALE_SQUADRE WHERE COD_SQUADRA =:COD_SQUADRA" +
                "  AND STATO  IN ('L','A','R') " +
-               "and  TO_CHAR(CURRENT_DATE  , 'DD-MM-YYYY') = TO_CHAR(DATA_SERVIZIO, 'DD-MM-YYYY') ";
+               "and  TO_CHAR(SYSDATE  , 'DD-MM-YYYY') = TO_CHAR(DATA_SERVIZIO, 'DD-MM-YYYY') ";
 
             cmd.CommandType = CommandType.Text;
             cmd.BindByName = true;
@@ -324,8 +325,8 @@ namespace SO115App.Persistence.Oracle.Servizi.Squadre
                     "	NVL(DATA_ULT_AGG            	,	'') AS	 DATA_ULT_AGG ,	" +
                     "	NVL(ULTERIORI_AUTISTI 	,	0) AS	 ULTERIORI_AUTISTI 	" +
                        "FROM SALAOPER.PERSONALE_SQUADRE WHERE COD_SQUADRA =:COD_SQUADRA  AND " +
-                     " TO_CHAR(CURRENT_DATE  , 'DD-MM-YYYY') = TO_CHAR(DATA_SERVIZIO, 'DD-MM-YYYY') AND " +
-                       "ORA_FINE >= (CURRENT_DATE  " + AddOreOracle + ") AND (ORA_INIZIO <= (CURRENT_DATE  " + AddOreOracle + "))";
+                     " TO_CHAR(SYSDATE  , 'DD-MM-YYYY') = TO_CHAR(DATA_SERVIZIO, 'DD-MM-YYYY') AND " +
+                       "ORA_FINE >= (SYSDATE ) AND (ORA_INIZIO <= (SYSDATE ))";
 
             cmd.CommandType = CommandType.Text;
             cmd.BindByName = true;
@@ -381,8 +382,8 @@ namespace SO115App.Persistence.Oracle.Servizi.Squadre
                     "	NVL(DATA_ULT_AGG            	,	'') as	 DATA_ULT_AGG            	,	" +
                     "	NVL(ULTERIORI_AUTISTI 	,	0) as	 ULTERIORI_AUTISTI 	" +
                      "FROM SALAOPER.PERSONALE_SQUADRE WHERE " +
-                     " TO_CHAR(CURRENT_DATE  , 'DD-MM-YYYY') = TO_CHAR(DATA_SERVIZIO, 'DD-MM-YYYY') AND " +
-                       "ORA_FINE >= (CURRENT_DATE  " + AddOreOracle + ") AND (ORA_INIZIO <= (CURRENT_DATE  " + AddOreOracle + "))";
+                     " TO_CHAR(SYSDATE  , 'DD-MM-YYYY') = TO_CHAR(DATA_SERVIZIO, 'DD-MM-YYYY') AND " +
+                       "ORA_FINE >= (SYSDATE ) AND (ORA_INIZIO <= (SYSDATE))";
 
             cmd.CommandType = CommandType.Text;
             OracleDataReader dr = cmd.ExecuteReader();

@@ -87,7 +87,6 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.SquadreMapper
                 {
                     sedeDistaccamento = new Sede(CodSede.ToString() + "." + d.CodDistaccamento.ToString(), d.DescDistaccamento, d.Indirizzo, new Coordinate(1, 1), "", "", "", "", "");
                     Squadra.StatoSquadra Stato;
-                    ORASQPersonaleSquadre SQPersonaleSquadre = new ORASQPersonaleSquadre();
 
                     switch (OraS.STATO.ToString())
                     {
@@ -96,9 +95,6 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.SquadreMapper
                         case "R": Stato = Squadra.StatoSquadra.InRientro; break;
                         default: Stato = Squadra.StatoSquadra.InSede; break;
                     }
-
-                    // var GetSQPersonaleSquadreByCodSquadra = new
-                    // GetSQPersonaleSquadreByCodSquadra(_client, _configuration);
 
                     Stato = Squadra.StatoSquadra.InSede;
 

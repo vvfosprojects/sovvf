@@ -20,17 +20,15 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper
     public class GetComposizioneMezzi : IGetComposizioneMezzi
     {
         private readonly IGetStatoMezzi _getMezziPrenotati;
-        private readonly IGetRichiestaById _getRichiestaById;
         private readonly OrdinamentoMezzi _ordinamentoMezzi;
         private readonly IGetMezziUtilizzabili _getMezziUtilizzabili;
         private readonly IGetListaSquadre _getSquadre;
 
-        public GetComposizioneMezzi(IGetStatoMezzi getMezziPrenotati, IGetRichiestaById getRichiestaById, OrdinamentoMezzi ordinamentoMezzi, IGetMezziUtilizzabili getMezziUtilizzabili, IGetListaSquadre getSquadre)
+        public GetComposizioneMezzi(IGetStatoMezzi getMezziPrenotati, OrdinamentoMezzi ordinamentoMezzi, IGetMezziUtilizzabili getMezziUtilizzabili, IGetListaSquadre getSquadre)
         {
             _getMezziUtilizzabili = getMezziUtilizzabili;
             _getSquadre = getSquadre;
             _getMezziPrenotati = getMezziPrenotati;
-            _getRichiestaById = getRichiestaById;
             _ordinamentoMezzi = ordinamentoMezzi;
         }
 
