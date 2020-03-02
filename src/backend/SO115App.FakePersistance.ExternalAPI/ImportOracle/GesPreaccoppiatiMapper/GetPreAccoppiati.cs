@@ -48,9 +48,9 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.GesPreaccoppiatiMapper
                 List<string> sList = new List<string>();
                 PreAccoppiati p = new PreAccoppiati
                 {
-                    Id = OraP.COD_DISTACCAMENTO.ToString() + "-" + OraP.COD_AUTOMEZZO.ToString() + "-" + OraP.COD_SQUADRA.ToString(),
-                    Mezzo = OraP.COD_AUTOMEZZO.ToString(),
-                    CodiceSede = OraP.COD_COMANDO
+                    Id = Decimal.ToInt32(OraP.COD_DISTACCAMENTO).ToString() + "-" + Decimal.ToInt32(OraP.COD_AUTOMEZZO).ToString() + "-" + Decimal.ToInt32(OraP.COD_SQUADRA).ToString(), //OraP.COD_SQUADRA.ToString(),
+                    Mezzo = OraP.TIPO_MEZZO + "." + OraP.TARGA_MEZZO,
+                    CodiceSede = OraP.COD_COMANDO + "." + Decimal.ToInt32(OraP.COD_DISTACCAMENTO).ToString()
                 };
 
                 sList.Add(OraP.COD_SQUADRA.ToString());

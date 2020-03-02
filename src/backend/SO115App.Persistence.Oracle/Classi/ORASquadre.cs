@@ -67,5 +67,10 @@ namespace SO115App.Persistence.Oracle.Classi
         // <summary>
         /// CAMPO SUPPORTO DELLA TABELLA SQUADRE </summary>
         public string SUPPORTO { get; set; }
+
+        //// <SUMMARY>
+        ///   CAMPO STATO DELLA TABELLA SQ_PERSONALE_SQUADRE (IN JOIN CON LA TABELLA SQUADRE)
+        /// </SUMMARY>
+        public string STATO { get; set; }
     }
 }

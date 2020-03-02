@@ -55,11 +55,10 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                 {
                     foreach (var ruolo in user.Ruoli)
                     {
-                        foreach (string codSede in query.Filtro.CodiceDistaccamento)
-                        {
-                            if (!_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, codSede, Costanti.GestoreRichieste))
-                                yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
-                        }
+                        // foreach (string codSede in query.CodiceSede) {
+                        if (!_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, query.CodiceSede, Costanti.GestoreRichieste))
+                            yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
+                        // }
                     }
                 }
             }

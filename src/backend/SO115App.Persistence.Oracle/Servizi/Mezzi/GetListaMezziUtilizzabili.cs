@@ -26,7 +26,8 @@ namespace SO115App.Persistence.Oracle.Servizi.Mezzi
                 "NVL(CASA_COSTRUTTRICE,' ') as CASA_COSTRUTTRICE, " +
                 "NVL(COD_DISTACCAMENTO,0) as COD_DISTACCAMENTO, " +
                 "NVL(DISTACCAMENTO,' ') as DISTACCAMENTO, " +
-                "NVL(COD_DESTINAZIONE,' ') as COD_DESTINAZIONE, " +
+                //"NVL(COD_DESTINAZIONE,' ') as COD_DESTINAZIONE, " +
+                " NVL(SALAOPER.AUTOMEZZI.COD_DESTINAZIONE, ' ') as COD_DESTINAZIONE , " +
                 "NVL(SEZIONE,' ') as SEZIONE, " +
                 "NVL(TARGA,' ') as TARGA, " +
                 "NVL(SIGLA,' ') as SIGLA, " +
@@ -45,7 +46,10 @@ namespace SO115App.Persistence.Oracle.Servizi.Mezzi
                 "NVL(FONTE,' ') as FONTE, " +
                 "NVL(UTENTE,' ') as UTENTE, " +
                 "NVL(DISPOSITIVO_GPS_ATTIVO,' ') as DISPOSITIVO_GPS_ATTIVO " +
-                "FROM SALAOPER.AUTOMEZZI " +
+                 ", NVL( SALAOPER.DESTINAZIONE_MEZZI.DESC_DESTINAZIONE,' ') as  DESC_DESTINAZIONE " +
+                //"FROM SALAOPER.AUTOMEZZI " +
+                "FROM SALAOPER.AUTOMEZZI INNER JOIN SALAOPER.DESTINAZIONE_MEZZI  " +
+                " ON SALAOPER.AUTOMEZZI.COD_DESTINAZIONE = SALAOPER.DESTINAZIONE_MEZZI.COD_DESTINAZIONE " +
                 "WHERE COD_COMANDO = :COD_COMANDO and  COD_AUTOMEZZO = :COD_AUTOMEZZO " +
                 "AND FLAG_OPER = 'S' " +
                 "AND FONTE ='TC' " +
@@ -86,6 +90,7 @@ namespace SO115App.Persistence.Oracle.Servizi.Mezzi
                 MezzoUtilizzabile.FONTE = dr.GetString(22);
                 MezzoUtilizzabile.UTENTE = dr.GetString(23);
                 MezzoUtilizzabile.DISPOSITIVO_GPS_ATTIVO = dr.GetString(24);
+                MezzoUtilizzabile.DESC_DESTINAZIONE = dr.GetString(25);
             }
             conn.Dispose();
 
@@ -109,7 +114,8 @@ namespace SO115App.Persistence.Oracle.Servizi.Mezzi
                 "NVL(CASA_COSTRUTTRICE,' ') as CASA_COSTRUTTRICE, " +
                 "NVL(COD_DISTACCAMENTO,0) as COD_DISTACCAMENTO, " +
                 "NVL(DISTACCAMENTO,' ') as DISTACCAMENTO, " +
-                "NVL(COD_DESTINAZIONE,' ') as COD_DESTINAZIONE, " +
+                //"NVL(COD_DESTINAZIONE,' ') as COD_DESTINAZIONE, " +
+                " NVL(SALAOPER.AUTOMEZZI.COD_DESTINAZIONE, ' ') as COD_DESTINAZIONE, " +
                 "NVL(SEZIONE,' ') as SEZIONE, " +
                 "NVL(TARGA,' ') as TARGA, " +
                 "NVL(SIGLA,' ') as SIGLA, " +
@@ -128,7 +134,10 @@ namespace SO115App.Persistence.Oracle.Servizi.Mezzi
                 "NVL(FONTE,' ') as FONTE, " +
                 "NVL(UTENTE,' ') as UTENTE, " +
                 "NVL(DISPOSITIVO_GPS_ATTIVO,' ') as DISPOSITIVO_GPS_ATTIVO " +
-                "FROM SALAOPER.AUTOMEZZI " +
+                ",NVL( SALAOPER.DESTINAZIONE_MEZZI.DESC_DESTINAZIONE,' ') as  DESC_DESTINAZIONE " +
+                //"FROM SALAOPER.AUTOMEZZI " +
+                "FROM SALAOPER.AUTOMEZZI INNER JOIN SALAOPER.DESTINAZIONE_MEZZI  " +
+                " ON SALAOPER.AUTOMEZZI.COD_DESTINAZIONE = SALAOPER.DESTINAZIONE_MEZZI.COD_DESTINAZIONE " +
                  "WHERE COD_COMANDO = :COD_COMANDO  " +
                 "AND FLAG_OPER = 'S' " +
                 "AND FONTE ='TC' " +
@@ -168,6 +177,7 @@ namespace SO115App.Persistence.Oracle.Servizi.Mezzi
                 mezzo.FONTE = dr.GetString(22);
                 mezzo.UTENTE = dr.GetString(23);
                 mezzo.DISPOSITIVO_GPS_ATTIVO = dr.GetString(24);
+                mezzo.DESC_DESTINAZIONE = dr.GetString(25);
 
                 ListaMezzi.Add(mezzo);
             }

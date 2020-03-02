@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Text;
 using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Composizione;
 using SO115App.API.Models.Classi.Condivise;
@@ -37,11 +36,12 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper
 
         public List<ComposizioneMezzi> Get(ComposizioneMezziQuery query)
         {
-            List<Mezzo> ListaMezzi = _getMezziUtilizzabili.Get(query.Filtro.CodiceDistaccamento.ToList()).Result;
+            List<string> ListaSedi = new List<string>();
+            ListaSedi.Add(query.CodiceSede);
+            List<Mezzo> ListaMezzi = _getMezziUtilizzabili.Get(ListaSedi).Result;
 
             var composizioneMezzi = GeneraListaComposizioneMezzi(ListaMezzi);
-
-            var ListaSquadre = _getSquadre.Get(query.Filtro.CodiceDistaccamento.ToList()).Result;
+            var ListaSquadre = _getSquadre.Get(ListaSedi).Result;
             string[] generiMezzi;
             string[] statiMezzi;
             string codiceDistaccamento;
@@ -100,13 +100,18 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper
 
                 for (int i = 0; i < composizioneMezzi.Count; i++)
                 {
-                    ComposizioneMezzi composizione = composizioneMezzi[i];
-                    composizione.IndiceOrdinamento = _ordinamentoMezzi.GetIndiceOrdinamento(query.Filtro.IdRichiesta, composizione, composizione.Mezzo.IdRichiesta);
-                    composizione.Id = composizione.Mezzo.Codice;
-
-                    if (composizione.IstanteScadenzaSelezione < DateTime.Now)
+                    if (query.Filtro.IdRichiesta.Length > 0 && !string.IsNullOrEmpty(query.Filtro.IdRichiesta))
                     {
-                        composizione.IstanteScadenzaSelezione = null;
+                        ComposizioneMezzi composizione = composizioneMezzi[i];
+                        composizione.IndiceOrdinamento =
+                        _ordinamentoMezzi.GetIndiceOrdinamento(query.Filtro.IdRichiesta,
+                        composizione, composizione.Mezzo.IdRichiesta);
+                        composizione.Id = composizione.Mezzo.Codice;
+
+                        if (composizione.IstanteScadenzaSelezione < DateTime.Now)
+                        {
+                            composizione.IstanteScadenzaSelezione = null;
+                        }
                     }
                 }
 
