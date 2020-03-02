@@ -22,6 +22,7 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.DistaccamentiMapper
         {
             _client = client;
             _configuration = configuration;
+
             _memoryCache = memoryCache;
         }
 
