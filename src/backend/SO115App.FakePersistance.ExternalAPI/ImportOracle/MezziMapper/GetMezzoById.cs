@@ -3,12 +3,11 @@ using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.ExternalAPI.Fake.Classi.DTOOracle;
 using SO115App.Models.Classi.Condivise;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Mezzi;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
-using SO115App.ExternalAPI.Fake.ImportOracle.DistaccamentiMapper;
 
 namespace SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper
 {
@@ -16,11 +15,13 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper
     {
         private readonly HttpClient _client;
         private readonly IConfiguration _configuration;
+        private readonly IGetListaDistaccamentiByCodiceSede _getDistaccamentoByCodSede;
 
-        public GetMezzoById(HttpClient client, IConfiguration configuration)
+        public GetMezzoById(HttpClient client, IConfiguration configuration, IGetListaDistaccamentiByCodiceSede getDistaccamentoByCodSede)
         {
             _client = client;
             _configuration = configuration;
+            _getDistaccamentoByCodSede = getDistaccamentoByCodSede;
         }
 
         public async Task<Mezzo> Get(string CodSede, int CodMezzo)
@@ -37,8 +38,7 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper
         private Mezzo MapMezzoByIdOraInMongoDB(ORAAutomezzi MezzoOracle, int CodMezzo)
         {
             ORAAutomezzi OraM = MezzoOracle;
-            GetDistaccamentiByCodSede GetDistaccamentiByCodSede = new GetDistaccamentiByCodSede(_client, _configuration);
-            List<Distaccamento> distaccamenti = GetDistaccamentiByCodSede.GetListaDistaccamenti(OraM.COD_COMANDO);
+            List<Distaccamento> distaccamenti = _getDistaccamentoByCodSede.GetListaDistaccamenti(OraM.COD_COMANDO);
             var d = distaccamenti.Find(x => x.CodDistaccamento.Equals(OraM.COD_DISTACCAMENTO));
             var sede = new Sede(OraM.COD_COMANDO + "." + OraM.COD_DISTACCAMENTO, d.DescDistaccamento, d.Indirizzo, new Coordinate(1, 1), "", "", "", "", "");
 
