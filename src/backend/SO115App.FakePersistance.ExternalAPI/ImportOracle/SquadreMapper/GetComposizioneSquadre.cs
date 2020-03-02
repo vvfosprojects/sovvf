@@ -2,20 +2,12 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net.Http;
-using System.Text;
-using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Composizione;
 using SO115App.API.Models.Classi.Condivise;
-using SO115App.API.Models.Classi.Organigramma;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneSquadre;
-using SO115App.API.SOVVF.FakeImplementations.Modello.Organigramma;
-using SO115App.ExternalAPI.Fake.Classi.DTOOracle;
-using SO115App.ExternalAPI.Fake.ImportOracle.GestioniUtenti;
 using SO115App.FakePersistence.JSon.Utility;
 using SO115App.FakePersistenceJSon.GestioneIntervento;
-using SO115App.Models.Classi.Utenti.Autenticazione;
 using SO115App.Models.Servizi.Infrastruttura.GetComposizioneSquadre;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Squadre;
@@ -35,8 +27,10 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.SquadreMapper
 
         public List<ComposizioneSquadre> Get(ComposizioneSquadreQuery query)
         {
-            var ListaSquadre = _getSquadre.Get(query.Filtro.CodiceDistaccamento.ToList()).Result;
-            var ListaMezzi = _getMezziUtilizzabili.Get(query.Filtro.CodiceDistaccamento.ToList()).Result;
+            List<string> ListaSedi = new List<string>();
+            ListaSedi.Add(query.CodiceSede);
+            var ListaMezzi = _getMezziUtilizzabili.Get(ListaSedi).Result;
+            var ListaSquadre = _getSquadre.Get(ListaSedi).Result;
 
             var codiceDistaccamento = "";
             var composizioneSquadre = new List<ComposizioneSquadre>();

@@ -28,8 +28,7 @@ export class AuthGuard implements CanActivate {
                  * utente loggato ma senza permesso
                  */
                 this.store.dispatch(new ShowToastr(ToastrType.Error, 'Utente non abilitato', 'La risorsa richiesta non è accessibile da ' + this.currentUser.nome + ' ' + this.currentUser.cognome));
-                this.router.navigate(['/' + RoutesPath.Home]);
-                // this.router.navigate(['/' + RoutesPath.Logged]);
+                this.router.navigate(['/' + RoutesPath.Logged]);
                 return false;
             }
 

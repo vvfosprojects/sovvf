@@ -67,16 +67,6 @@ namespace SO115App.API.Oracle.Controllers
             return Ok(Squadre.GetListaGesPreaccoppiati(CodSede));
         }
 
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
-
-        public string Get(int id)
-        {
-            return "value";
-        }
-
         // POST: api/Squadre
         public void Post([FromBody]string value)
         {

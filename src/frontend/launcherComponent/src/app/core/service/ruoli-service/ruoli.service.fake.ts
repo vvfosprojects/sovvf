@@ -14,7 +14,7 @@ export class RuoliServiceFake {
 
     getRuoli(): Observable<string[]> {
         this.ruoli = [
-            Role.GestoreChiamate,
+            Role.CallTaker,
             Role.GestoreRichieste
         ];
         return of(this.ruoli);

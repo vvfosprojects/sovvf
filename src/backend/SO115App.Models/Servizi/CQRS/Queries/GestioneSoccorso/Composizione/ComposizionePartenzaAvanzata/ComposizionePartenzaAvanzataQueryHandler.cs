@@ -20,6 +20,7 @@
 using CQRS.Queries;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneMezzi;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneSquadre;
+using SO115App.Models.Classi.Composizione;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizionePartenzaAvanzata
 {
@@ -51,9 +52,11 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                 Filtro = query.Filtro,
                 CodiceSede = query.CodiceSede
             };
+
             var composizioneSquadreQuery = new ComposizioneSquadreQuery
             {
-                Filtro = query.Filtro
+                Filtro = query.Filtro,
+                CodiceSede = query.CodiceSede
             };
 
             var composizioneAvanzata = new Classi.Composizione.ComposizionePartenzaAvanzata()

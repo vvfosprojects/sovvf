@@ -2,8 +2,9 @@
 using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.ExternalAPI.Fake.Classi.DTOOracle;
-using SO115App.ExternalAPI.Fake.ImportOracle.DistaccamentiMapper;
-using SO115App.ExternalAPI.Fake.ImportOracle.GestioniUtenti;
+
+//using SO115App.ExternalAPI.Fake.ImportOracle.DistaccamentiMapper;
+//using SO115App.ExternalAPI.Fake.ImportOracle.GestioniUtenti;
 using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.Utenti.Autenticazione;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Squadre;
@@ -14,6 +15,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using static SO115App.API.Models.Classi.Condivise.Squadra;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Personale;
 
 namespace SO115App.ExternalAPI.Fake.ImportOracle.SquadreMapper
 {
@@ -22,12 +24,14 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.SquadreMapper
         private readonly HttpClient _client;
         private readonly IConfiguration _configuration;
         private readonly IGetListaDistaccamentiByCodiceSede _getListaDistaccamentiByCodiceSede;
+        private readonly IGetPersonaleByCF _getPersonaleByCF;
 
-        public GetListaSquadre(HttpClient client, IConfiguration configuration, IGetListaDistaccamentiByCodiceSede GetListaDistaccamentiByCodiceSede)
+        public GetListaSquadre(HttpClient client, IConfiguration configuration, IGetListaDistaccamentiByCodiceSede GetListaDistaccamentiByCodiceSede, IGetPersonaleByCF GetPersonaleByCF)
         {
             _client = client;
             _configuration = configuration;
             _getListaDistaccamentiByCodiceSede = GetListaDistaccamentiByCodiceSede;
+            _getPersonaleByCF = GetPersonaleByCF;
         }
 
         public async Task<List<Squadra>> Get(List<string> sedi)
@@ -58,13 +62,9 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.SquadreMapper
                 var GetListaPersonaleSquadre = new GetListaPersonaleSquadre(_client, _configuration);
                 var ListaPersonaleSquadre = await GetListaPersonaleSquadre.Get(CodSede);
 
-                var GetListaSQPersonaleSquadre = new GetListaSQPersonaleSquadre(_client, _configuration);
-                var ListaSQPersonaleSquadre = await GetListaSQPersonaleSquadre.Get(CodSede);
-
-                List<Squadra> listaSquadrePerSede = MapListaSquadreOraInMongoDB(ListaSquadreOracle, ListaPersonaleSquadre, ListaSQPersonaleSquadre, CodSede);
+                List<Squadra> listaSquadrePerSede = MapListaSquadreOraInMongoDB(ListaSquadreOracle, ListaPersonaleSquadre, CodSede);
 
                 foreach (Squadra s in listaSquadrePerSede)
-
                 {
                     listaSquadre.Add(s);
                 }
@@ -73,7 +73,7 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.SquadreMapper
             return listaSquadre;
         }
 
-        private List<Squadra> MapListaSquadreOraInMongoDB(List<ORASquadre> ListaSquadreOracle, List<ORAPersonaleSquadre> ListaPersonaleSquadre, List<ORASQPersonaleSquadre> ListaSQPersonaleSquadre, string CodSede)
+        private List<Squadra> MapListaSquadreOraInMongoDB(List<ORASquadre> ListaSquadreOracle, List<ORAPersonaleSquadre> ListaPersonaleSquadre, string CodSede)
         {
             List<Squadra> ListaSquadre = new List<Squadra>();
             List<ORAPersonaleSquadre> ListOraPS = new List<ORAPersonaleSquadre>();
@@ -86,52 +86,49 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.SquadreMapper
                 if (d != null)
                 {
                     sedeDistaccamento = new Sede(CodSede.ToString() + "." + d.CodDistaccamento.ToString(), d.DescDistaccamento, d.Indirizzo, new Coordinate(1, 1), "", "", "", "", "");
-
                     Squadra.StatoSquadra Stato;
                     ORASQPersonaleSquadre SQPersonaleSquadre = new ORASQPersonaleSquadre();
-                    SQPersonaleSquadre = ListaSQPersonaleSquadre.Find(x => x.COD_SQUADRA.Equals(OraS.COD_SQUADRA));
+
+                    switch (OraS.STATO.ToString())
+                    {
+                        case "L": Stato = Squadra.StatoSquadra.InSede; break;
+                        case "A": Stato = Squadra.StatoSquadra.SulPosto; break;
+                        case "R": Stato = Squadra.StatoSquadra.InRientro; break;
+                        default: Stato = Squadra.StatoSquadra.InSede; break;
+                    }
+
+                    // var GetSQPersonaleSquadreByCodSquadra = new
+                    // GetSQPersonaleSquadreByCodSquadra(_client, _configuration);
+
                     Stato = Squadra.StatoSquadra.InSede;
-                    if (SQPersonaleSquadre == null)
-                    {
-                        Stato = Squadra.StatoSquadra.InSede;
-                    }
-                    else
-                    {
-                        switch (SQPersonaleSquadre.STATO.ToString())
-                        {
-                            case "L": Stato = Squadra.StatoSquadra.InSede; break;
-                            case "A": Stato = Squadra.StatoSquadra.SulPosto; break;
-                            case "R": Stato = Squadra.StatoSquadra.InRientro; break;
-                            default: Stato = Squadra.StatoSquadra.InSede; break;
-                        }
-                    }
 
                     List<Componente> ComponentiSquadra = new List<Componente>();
                     List<string> ListaCodiciFiscaliComponentiSquadra = new List<string>();
                     ListOraPS = ListaPersonaleSquadre.FindAll(x => x.COD_SQUADRA.Equals(OraS.COD_SQUADRA));
                     if (ListOraPS.Count > 0)
+                    //if (!istOraPS.Any())
                     {
                         foreach (ORAPersonaleSquadre p in ListOraPS)
                         {
-                            ListaCodiciFiscaliComponentiSquadra.Add(p.MATDIP);
-                            var GetPByCF = new GetPersonaleByCF(_client, _configuration);
-                            PersonaleVVF pVVf = GetPByCF.Get(p.MATDIP, CodSede).Result;
+                            PersonaleVVF pVVf = _getPersonaleByCF.Get(p.MATDIP, CodSede).Result;
 
                             bool capoPartenza = false; bool autista = false;
                             if (p.FLAG_CAPO_SQUADRA.Equals("S")) capoPartenza = true;
                             if (p.AUTISTA.Equals("S")) autista = true;
-
-                            Componente c = new Componente(p.QUALIFICA_ABBREV, pVVf.Nominativo, pVVf.Nominativo, capoPartenza, autista, false);
-                            c.CodiceFiscale = pVVf.CodFiscale;
-
+                            Componente c = new Componente(p.QUALIFICA_ABBREV, pVVf.Nominativo, pVVf.Nominativo, capoPartenza, autista, false)
+                            {
+                                CodiceFiscale = pVVf.CodFiscale,
+                            };
                             if (p.ORA_INIZIO.HasValue) c.OrarioInizio = (DateTime)p.ORA_INIZIO;
                             if (p.ORA_FINE.HasValue) c.OrarioInizio = (DateTime)p.ORA_FINE;
 
                             ComponentiSquadra.Add(c);
+                            ListaCodiciFiscaliComponentiSquadra.Add(p.MATDIP);
                         }
                     }
                     Squadra squadra = new Squadra(OraS.SIGLA, Stato, ComponentiSquadra, sedeDistaccamento);
                     squadra.Id = OraS.COD_SQUADRA.ToString();
+
                     squadra.ListaCodiciFiscaliComponentiSquadra = ListaCodiciFiscaliComponentiSquadra;
                     ListaSquadre.Add(squadra);
                 }

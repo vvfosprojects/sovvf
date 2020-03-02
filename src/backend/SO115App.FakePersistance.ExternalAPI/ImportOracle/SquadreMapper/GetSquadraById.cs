@@ -12,6 +12,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
 using System;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Personale;
 
 namespace SO115App.ExternalAPI.Fake.ImportOracle.SquadreMapper
 {
@@ -20,12 +21,14 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.SquadreMapper
         private readonly HttpClient _client;
         private readonly IConfiguration _configuration;
         private readonly IGetListaDistaccamentiByCodiceSede _getListaDistaccamentiByCodiceSede;
+        private readonly IGetPersonaleByCF _getPersonaleByCF;
 
-        public GetSquadraById(HttpClient client, IConfiguration configuration, IGetListaDistaccamentiByCodiceSede GetListaDistaccamentiByCodiceSede)
+        public GetSquadraById(HttpClient client, IConfiguration configuration, IGetListaDistaccamentiByCodiceSede GetListaDistaccamentiByCodiceSede, IGetPersonaleByCF GetPersonaleByCF)
         {
             _client = client;
             _configuration = configuration;
             _getListaDistaccamentiByCodiceSede = GetListaDistaccamentiByCodiceSede;
+            _getPersonaleByCF = GetPersonaleByCF;
         }
 
         public async Task<Squadra> Get(string CodSede, decimal CodSquadra)
@@ -84,12 +87,12 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.SquadreMapper
                     foreach (ORAPersonaleSquadre p in ListOraPS)
                     {
                         ListaCodiciFiscaliComponentiSquadra.Add(p.MATDIP);
-                        var GetPByCF = new GetPersonaleByCF(_client, _configuration);
-                        PersonaleVVF pVVf = GetPByCF.Get(p.MATDIP, CodSede).Result;
 
                         bool capoPartenza = false; bool autista = false;
                         if (p.FLAG_CAPO_SQUADRA.Equals("S")) capoPartenza = true;
                         if (p.AUTISTA.Equals("S")) autista = true;
+
+                        PersonaleVVF pVVf = _getPersonaleByCF.Get(p.MATDIP, CodSede).Result;
 
                         Componente c = new Componente(p.QUALIFICA_ABBREV, pVVf.Nominativo, pVVf.Nominativo, capoPartenza, autista, false);
                         c.CodiceFiscale = pVVf.CodFiscale;

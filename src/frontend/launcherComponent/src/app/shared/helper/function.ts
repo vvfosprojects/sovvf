@@ -8,6 +8,8 @@ import { StatoRichiestaActions } from '../enum/stato-richiesta-actions.enum';
 import { Tipologia } from '../model/tipologia.model';
 import { LatLngBounds } from '@agm/core';
 import { AreaMappa } from '../../features/home/maps/maps-model/area-mappa-model';
+import { Role } from '../model/utente.model';
+import { AppFeatures } from '../enum/app-features.enum';
 
 export function makeCopy(value): any {
     return (JSON.parse(JSON.stringify(value)));

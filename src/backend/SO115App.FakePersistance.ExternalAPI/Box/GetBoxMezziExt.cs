@@ -58,7 +58,7 @@ namespace SO115App.ExternalAPI.Fake.Box
             };
 
             var listaMezzi = _getMezziUtilizzabili.Get(listaCodici).Result;
-            var listaStatiOperativi = _getStatoMezzi.Get(codiceSede); // TODO NON E' PIU NECESSARIO IN QUANTO DATI PROPRIETARI DI GAC E NON DI SO
+            var listaStatiOperativi = _getStatoMezzi.Get(codiceSede);
 
             mezzi.InSede = listaMezzi.Where(x => x.Stato == Costanti.MezzoInSede || x.Stato == Costanti.MezzoRientrato)
                 .Select(x => x.Stato)

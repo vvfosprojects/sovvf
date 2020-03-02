@@ -1,17 +1,17 @@
 import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { NgbModal, NgbPopoverConfig, NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
-import { TimeagoIntl } from 'ngx-timeago';
-import { strings as italianStrings } from 'ngx-timeago/language-strings/it';
 import { ListaEntiComponent } from '../../../../../shared';
+import { TimeagoIntl } from 'ngx-timeago';
 
 // Model
 import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.model';
+import { strings as italianStrings } from 'ngx-timeago/language-strings/it';
 import { StatoRichiesta } from 'src/app/shared/enum/stato-richiesta.enum';
 import { MezzoActionInterface } from '../../../../../shared/interface/mezzo-action.interface';
-import { RichiestaActionInterface } from '../../../../../shared/interface/richiesta-action.interface';
 
 // Helper Methods
 import { HelperSintesiRichiesta } from '../../helper/_helper-sintesi-richiesta';
+import { RichiestaActionInterface } from '../../../../../shared/interface/richiesta-action.interface';
 
 @Component({
     selector: 'app-sintesi-richiesta',

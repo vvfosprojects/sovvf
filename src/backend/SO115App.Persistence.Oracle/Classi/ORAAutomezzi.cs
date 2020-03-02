@@ -33,5 +33,6 @@ namespace SO115App.Persistence.Oracle.Classi
         public string FONTE { get; set; }
         public string UTENTE { get; set; }
         public string DISPOSITIVO_GPS_ATTIVO { get; set; }
+        public string DESC_DESTINAZIONE { get; set; }   //DESC_DESTINAZIONE DELLA TABELLA DESTINAZIONE_MEZZI
     }
 }

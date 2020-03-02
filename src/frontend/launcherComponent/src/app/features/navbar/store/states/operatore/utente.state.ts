@@ -77,14 +77,12 @@ export class UtenteState {
     clearUtente({ getState, patchState }: StateContext<UtenteStateModel>) {
         const state = getState();
         // Set SignalR Data
-        if (state.utente) {
-            this.signalR.removeToGroup(new SignalRNotification(
-                state.utente.sede.codice,
-                state.utente.id,
-                `${state.utente.nome} ${state.utente.cognome}`
-                )
-            );
-        }
+        this.signalR.removeToGroup(new SignalRNotification(
+            state.utente.sede.codice,
+            state.utente.id,
+            `${state.utente.nome} ${state.utente.cognome}`
+            )
+        );
         // Local Storage
         localStorage.removeItem(state.localName);
         // Store User Data
