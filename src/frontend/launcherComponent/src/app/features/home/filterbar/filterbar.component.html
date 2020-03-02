@@ -4,10 +4,11 @@
             <div class="col-3 text-left">
                 <app-tasto-chiamata-group>
                     <app-tasto-chiamata [colorButtonChiamata]="colorButton.chiamata"
+                                        [disabled]="permessiFeature.SchedaTelefonata | checkPermission"
                                         (startChiamata)="toggleChiamata()">
                     </app-tasto-chiamata>
                     <app-tasto-schede-contatto [active]="(schedeContattoStatus$ | async)"
-                                               [disabled]="(chiamataStatus$ | async)"></app-tasto-schede-contatto>
+                                               [disabled]="(chiamataStatus$ | async) || (permessiFeature.SchedeContatto | checkPermission)"></app-tasto-schede-contatto>
                 </app-tasto-chiamata-group>
             </div>
             <div class="col-2 pl-0 text-left">
@@ -17,7 +18,8 @@
                                       (filtroSelezionato)="onSelezioneFiltroRichieste($event)"
                                       (filtriReset)="eliminaFiltriAttiviRichieste()">
                 </app-filtri-richieste>
-                <app-filtri-schede-contatto *ngIf="(schedeContattoStatus$ | async)" [filtri]="(filtriSchedeContatto$ | async)"
+                <app-filtri-schede-contatto *ngIf="(schedeContattoStatus$ | async)"
+                                            [filtri]="(filtriSchedeContatto$ | async)"
                                             [filtriSelezionati]="(filtriSelezionatiSchedeContatto$ | async)"
                                             (filtroSelezionato)="onSelezioneFiltroSchedeContatto($event)"
                                             (filtriReset)="eliminaFiltriAttiviSchedeContatto()">

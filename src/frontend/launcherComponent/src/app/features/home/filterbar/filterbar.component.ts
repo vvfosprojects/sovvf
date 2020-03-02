@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 // View
@@ -22,12 +22,10 @@ import { OptionsRichieste } from '../../../shared/enum/options-richieste';
 import { ClearRichiesteEspanse } from '../store/actions/richieste/richieste-espanse.actions';
 import { HomeState } from '../store/states/home.state';
 import { SchedeContattoState } from '../store/states/schede-contatto/schede-contatto.state';
-import {
-    ClearFiltriSchedeContatto,
-    ReducerSetFiltroSchedeContatto, SetFiltroKeySchedeContatto
-} from '../store/actions/schede-contatto/schede-contatto.actions';
+import { ClearFiltriSchedeContatto, ReducerSetFiltroSchedeContatto, SetFiltroKeySchedeContatto } from '../store/actions/schede-contatto/schede-contatto.actions';
 import { MezziInServizioState } from '../store/states/mezzi-in-servizio/mezzi-in-servizio.state';
 import { ClearFiltriMezziInServizio, SetFiltroMezziInServizio } from '../store/actions/mezzi-in-servizio/mezzi-in-servizio.actions';
+import { PermissionFeatures } from '../../../shared/enum/permission-features.enum';
 
 @Component({
     selector: 'app-filterbar',
@@ -38,6 +36,8 @@ export class FilterbarComponent {
 
     @Input() colorButton: ViewInterfaceButton;
     @Input() viewState: ViewLayouts;
+
+    permessiFeature = PermissionFeatures;
 
     // Filtri Richieste
     @Select(FiltriRichiesteState.filtriTipologie) filtriRichieste$: Observable<VoceFiltro[]>;
@@ -157,5 +157,4 @@ export class FilterbarComponent {
                 break;
         }
     }
-
 }

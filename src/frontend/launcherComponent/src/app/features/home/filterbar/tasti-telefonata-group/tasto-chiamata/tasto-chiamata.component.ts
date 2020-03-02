@@ -10,6 +10,7 @@ export class TastoChiamataComponent {
     @HostBinding('class') classes = 'btn-group';
 
     @Input() colorButtonChiamata = 'btn-outline-success';
+    @Input() disabled = false;
     @Output() startChiamata = new EventEmitter();
 
     chiamata() {
