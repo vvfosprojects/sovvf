@@ -72,30 +72,15 @@ namespace SO115App.Persistence.MongoDB
 
             var ListaSistesiRichieste = new List<SintesiRichiesta>();
 
-            var utentiFake = new List<AttivitaUtente>
-            {
-                new AttivitaUtente
-                {
-                    IdUtente = "5",
-                    Nominativo = "Mario Rossi",
-                    DataInizioAttivita = DateTime.UtcNow
-                }
-            };
-
             foreach (RichiestaAssistenza richiesta in ListaRichiesteAssistenza)
             {
                 SintesiRichiesta sintesi = new SintesiRichiesta();
 
                 if (richiesta.CodUOCompetenza != null)
                 {
-                    if (richiesta.CodUOCompetenza.Where(x => filtro.CodUOCompetenza.Contains(x)).ToList().Count > 0)
-                    {
-                        sintesi = mapSintesi.Map(richiesta);
-                        sintesi.Competenze = MapCompetenze(richiesta.CodUOCompetenza);
-                        sintesi.ListaUtentiInLavorazione = utentiFake;
-                        sintesi.ListaUtentiPresaInCarico = utentiFake;
-                        ListaSistesiRichieste.Add(sintesi);
-                    }
+                    sintesi = mapSintesi.Map(richiesta);
+                    sintesi.Competenze = MapCompetenze(richiesta.CodUOCompetenza);
+                    ListaSistesiRichieste.Add(sintesi);
                 }
             }
 
