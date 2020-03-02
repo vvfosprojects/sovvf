@@ -1,13 +1,10 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
-
 // Model
 import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.model';
-
 // Helper methods
 import { HelperSintesiRichiesta } from '../helper/_helper-sintesi-richiesta';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { MezzoActionInterface } from '../../../../shared/interface/mezzo-action.interface';
-import { StatoRichiesta } from '../../../../shared/enum/stato-richiesta.enum';
 import { RichiestaActionInterface } from '../../../../shared/interface/richiesta-action.interface';
 
 export const scrolledItems = 11;
@@ -32,6 +29,11 @@ export class ListaRichiesteComponent implements OnInit {
     @Input() itemSize = 10;
     @Input() listHeightClass: string;
     @Input() idRichiesteEspanse: string[] = [];
+
+    // Permessi
+    @Input() disabledModificaRichiesta = false;
+    @Input() disabledGestisciRichiesta = false;
+    @Input() disabledComposizionePartenza = false;
 
     @Output() statoPartenza = new EventEmitter<boolean>();
     @Output() composizionePartenza = new EventEmitter<SintesiRichiesta>();

@@ -3,13 +3,11 @@ import { NgbModal, NgbPopoverConfig, NgbTooltipConfig } from '@ng-bootstrap/ng-b
 import { TimeagoIntl } from 'ngx-timeago';
 import { strings as italianStrings } from 'ngx-timeago/language-strings/it';
 import { ListaEntiComponent } from '../../../../../shared';
-
 // Model
 import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.model';
 import { StatoRichiesta } from 'src/app/shared/enum/stato-richiesta.enum';
 import { MezzoActionInterface } from '../../../../../shared/interface/mezzo-action.interface';
 import { RichiestaActionInterface } from '../../../../../shared/interface/richiesta-action.interface';
-
 // Helper Methods
 import { HelperSintesiRichiesta } from '../../helper/_helper-sintesi-richiesta';
 
@@ -36,6 +34,11 @@ export class SintesiRichiestaComponent {
     @Input() modificabile = true;
     @Input() gestibile = true;
 
+    // Permessi
+    @Input() disabledModificaRichiesta = false;
+    @Input() disabledGestisciRichiesta = false;
+    @Input() disabledComposizionePartenza = false;
+
     @Output() clickRichiesta = new EventEmitter<any>();
     @Output() doubleClickRichiesta = new EventEmitter<any>();
     @Output() fissaInAlto = new EventEmitter<any>();
@@ -59,9 +62,9 @@ export class SintesiRichiestaComponent {
     StatoRichiesta = StatoRichiesta;
 
     constructor(private modalService: NgbModal,
-        popoverConfig: NgbPopoverConfig,
-        tooltipConfig: NgbTooltipConfig,
-        intl: TimeagoIntl) {
+                popoverConfig: NgbPopoverConfig,
+                tooltipConfig: NgbTooltipConfig,
+                intl: TimeagoIntl) {
 
         intl.strings = italianStrings;
         intl.changes.next();
