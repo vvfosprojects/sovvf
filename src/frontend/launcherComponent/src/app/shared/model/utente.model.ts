@@ -59,7 +59,7 @@ export class Utente {
 }
 
 export interface Ruolo {
-    descrizione: string;
+    descrizione: Role | string;
     codSede: string;
     descSede?: string;
     ricorsivo?: boolean;

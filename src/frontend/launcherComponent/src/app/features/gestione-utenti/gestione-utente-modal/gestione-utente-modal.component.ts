@@ -13,7 +13,6 @@ import { UtenteVvfInterface } from '../../../shared/interface/utente-vvf.interfa
 import { ClearUtentiVVF, GetUtentiVVF } from '../store/actions/gestione-utenti/gestione-utenti.actions';
 import { Role } from '../../../shared/model/utente.model';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import { wipeStringUppercase } from 'src/app/shared/helper/function';
 import { LoadingState } from '../../../shared/store/states/loading/loading.state';
 
 @Component({
@@ -163,7 +162,7 @@ export class GestioneUtenteModalComponent implements OnInit, OnDestroy {
 
     getRuoli() {
         Object.values(Role).forEach((role: string) => {
-            this.ruoli.push(wipeStringUppercase(role));
+            this.ruoli.push(role);
         });
     }
 
