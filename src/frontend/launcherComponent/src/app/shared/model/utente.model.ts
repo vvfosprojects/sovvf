@@ -67,8 +67,8 @@ export interface Ruolo {
 
 export enum Role {
     Amministratore = 'Amministratore',
-    CallTaker = 'CallTaker',
-    GestoreRichieste = 'GestoreRichieste'
+    GestoreChiamate = 'Gestore Chiamate',
+    GestoreRichieste = 'Gestore Richieste'
 }
 
 // export enum Role {
