@@ -29,15 +29,17 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.SchedeContatto
                 TotaleSchede = new ContatoreNue
                 {
                     ContatoreTutte = listaSchede.Count,
-                    ContatoreDaGestire = listaSchedeDifferibile.FindAll(x => !x.Gestita).Count,
+                    ContatoreDaGestire = listaSchede.FindAll(x => !x.Gestita).Count,
                 },
                 CompetenzaSchede = new ContatoreNue
                 {
                     ContatoreTutte = listaSchedeCompetenza.Count,
+                    ContatoreDaGestire = listaSchedeCompetenza.FindAll(x => !x.Gestita).Count,
                 },
                 ConoscenzaSchede = new ContatoreNue
                 {
                     ContatoreTutte = listaSchedeConoscenza.Count,
+                    ContatoreDaGestire = listaSchedeConoscenza.FindAll(x => !x.Gestita).Count,
                 },
                 DifferibileSchede = new ContatoreNue
                 {

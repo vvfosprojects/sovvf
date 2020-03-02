@@ -1,26 +1,47 @@
 ﻿using CQRS.Queries;
 using SO115App.API.Models.Classi.Organigramma;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti;
-using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Personale;
+using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.GetUtenti;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace SO115App.Models.Servizi.CQRS.Queries.GestioneUtente.ListaOperatori
 {
+    /// <summary>
+    ///   Il query handler che cerca la lista degli operatori
+    /// </summary>
     public class ListaOperatoriQueryHandler : IQueryHandler<ListaOperatoriQuery, ListaOperatoriResult>
     {
-        private readonly IGetUtenti _getUtenti;
         private readonly IGetUtenteById _getUtenteById;
+        private readonly IGetUtentiByCodiciSedi _getUtenteByCodiciSedi;
         private readonly IGetAlberaturaUnitaOperative _getAlberaturaUnitaOperative;
 
-        public ListaOperatoriQueryHandler(IGetUtenti getUtenti, IGetUtenteById getUtenteById, IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative)
+        /// <summary>
+        ///   costruttore della classe
+        /// </summary>
+        /// <param name="getUtenteById">
+        ///   interfaccia per il reperimento degli utenti a partire dall'id
+        /// </param>
+        /// <param name="getAlberaturaUnitaOperative">
+        ///   interfaccia per il reperimento delle uo alberate
+        /// </param>
+        /// <param name="getUtenteByCodiciSedi">
+        ///   interfaccia per la lista degli utenti a partire da una lista di codici sede
+        /// </param>
+        public ListaOperatoriQueryHandler(IGetUtenteById getUtenteById, IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative, IGetUtentiByCodiciSedi getUtenteByCodiciSedi)
         {
-            _getUtenti = getUtenti;
             _getUtenteById = getUtenteById;
             _getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
+            _getUtenteByCodiciSedi = getUtenteByCodiciSedi;
         }
 
+        /// <summary>
+        ///   metodo che utilizza la query in firma per effettuare la ricerca degli operatori a
+        ///   seconda dei parametri immessi nella query stessa
+        /// </summary>
+        /// <param name="query">la query in firma</param>
+        /// <returns>ListaOperatoriResult</returns>
         public ListaOperatoriResult Handle(ListaOperatoriQuery query)
         {
             var utente = _getUtenteById.GetUtenteByCodice(query.IdUtente);
@@ -40,10 +61,10 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneUtente.ListaOperatori
                     }
                 }
             }
-            var utenti = _getUtenti.Get(query.CodiceSede, query.Filters.Search);
-            utenti.Reverse();
-            var utentiPaginati = utenti.Skip((query.Pagination.Page - 1) * query.Pagination.PageSize).Take(query.Pagination.PageSize).ToList();
-            query.Pagination.TotalItems = utenti.Count;
+            var utentiByCodSede = _getUtenteByCodiciSedi.Get(listaCodiciSedeRuoloAdmin, query.Filters.Search);
+            utentiByCodSede.Reverse();
+            var utentiPaginati = utentiByCodSede.Skip((query.Pagination.Page - 1) * query.Pagination.PageSize).Take(query.Pagination.PageSize).ToList();
+            query.Pagination.TotalItems = utentiByCodSede.Count;
             return new ListaOperatoriResult
             {
                 DataArray = utentiPaginati,

@@ -32,7 +32,7 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.SchedeContatto
             {
                 var schedaMarker = new SchedaContattoMarker
                 {
-                    CodiceOperatore = scheda.OperatoreChiamata.CodicePostazioneOperatore,
+                    CodiceOperatore = scheda.OperatoreChiamata?.CodicePostazioneOperatore ?? "",
                     CodiceScheda = scheda.CodiceScheda,
                     Localita = scheda.Localita,
                     Priorita = scheda.Priorita,
