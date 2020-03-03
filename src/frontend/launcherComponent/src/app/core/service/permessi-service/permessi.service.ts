@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Select } from '@ngxs/store';
+import { Select, Store } from '@ngxs/store';
 import { PermessiState } from '../../../shared/store/states/permessi/permessi.state';
 import { Observable } from 'rxjs';
 import { PermessiFeatureInterface } from '../../../shared/interface/permessi-feature.interface';
@@ -12,20 +12,18 @@ import { PermissionFeatures } from '../../../shared/enum/permission-features.enu
 })
 export class PermessiService {
 
-    @Select(PermessiState.permessi) permessi$: Observable<PermessiFeatureInterface[]>;
-    permessi: PermessiFeatureInterface[];
     @Select(UtenteState.utente) utente$: Observable<Utente>;
     utente: Utente;
 
-    constructor() {
+    permessi: PermessiFeatureInterface[];
+
+    constructor(private store: Store) {
         this.getUtente();
         this.getPermessi();
     }
 
     getPermessi() {
-        this.permessi$.subscribe((permessi: PermessiFeatureInterface[]) => {
-            this.permessi = permessi;
-        });
+        this.permessi = this.store.selectSnapshot(PermessiState.permessi);
     }
 
     getUtente() {
@@ -36,7 +34,7 @@ export class PermessiService {
 
     checkUserPermissionByFeature(feature: PermissionFeatures) {
         const featureIndex = searchFeatureIndex(this.permessi, feature);
-        if (featureIndex !== null) {
+        if (this.utente && this.utente.ruoli && this.utente.ruoli.length > 0 && this.permessi && featureIndex !== null) {
             if (checkRuoliUtente(this.utente, this.permessi, featureIndex)) {
                 return true;
             }

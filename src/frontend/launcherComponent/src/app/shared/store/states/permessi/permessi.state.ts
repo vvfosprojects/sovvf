@@ -32,6 +32,22 @@ export const PermessiStateDefaults: PermessiStateModel = {
         {
             feature: PermissionFeatures.ComposizionePartenzaRichiesta,
             roles: [Role.GestoreRichieste]
+        },
+        {
+            feature: PermissionFeatures.GestioneUtenti,
+            roles: [Role.Amministratore]
+        },
+        {
+            feature: PermissionFeatures.Autorimessa,
+            roles: []
+        },
+        {
+            feature: PermissionFeatures.Servizi,
+            roles: []
+        },
+        {
+            feature: PermissionFeatures.Statistiche,
+            roles: []
         }
     ]
 };

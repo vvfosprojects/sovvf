@@ -5,28 +5,49 @@
         <div class="container-fluid py-2">
             <div class="row">
                 <div class="col-2 px-4">
-                    <button class="btn btn-block btn-secondary" [routerLink]="['/'+ RoutesPath.Home]" [routerLinkActive]="['btn-dark']"
+                    <button class="btn btn-block btn-secondary" [routerLink]="['/'+ RoutesPath.Home]"
+                            [routerLinkActive]="['btn-dark']"
                             (click)="_toggleOpened()"><i class="fa fa-home fa-lg"></i> Home
                     </button>
                 </div>
                 <div class="col-2 px-4">
-                    <button class="btn btn-block btn-secondary" [routerLink]="['/'+ RoutesPath.Autorimessa]" [routerLinkActive]="['btn-dark']"
-                            (click)="_toggleOpened()"><i class="fa fa-truck fa-lg"></i> Autorimessa
+                    <button class="btn btn-block btn-secondary" [routerLink]="['/'+ RoutesPath.Autorimessa]"
+                            [routerLinkActive]="['btn-dark']"
+                            [disabled]="getPermissionByFeature(permissionFeatures.Autorimessa)"
+                            [ngClass]="{'cursor-not-allowed': getPermissionByFeature(permissionFeatures.Autorimessa)}"
+                            (click)="_toggleOpened()">
+                        <i class="fa fa-truck fa-lg mr-1"></i>
+                        Autorimessa
                     </button>
                 </div>
                 <div class="col-2 px-4">
-                    <button class="btn btn-block btn-secondary" [routerLink]="['/'+ RoutesPath.Servizi]" [routerLinkActive]="['btn-dark']"
-                            (click)="_toggleOpened()"><i class="fa fa-wrench fa-lg"></i> Servizi
+                    <button class="btn btn-block btn-secondary" [routerLink]="['/'+ RoutesPath.Servizi]"
+                            [routerLinkActive]="['btn-dark']"
+                            [disabled]="getPermissionByFeature(permissionFeatures.Servizi)"
+                            [ngClass]="{'cursor-not-allowed': getPermissionByFeature(permissionFeatures.Servizi)}"
+                            (click)="_toggleOpened()">
+                        <i class="fa fa-users fa-lg mr-1"></i>
+                        Servizi
                     </button>
                 </div>
                 <div class="col-2 px-4">
-                    <button class="btn btn-block btn-secondary" [routerLink]="['/'+ RoutesPath.Statistiche]" [routerLinkActive]="['btn-dark']"
-                            (click)="_toggleOpened()"><i class="fa fa-bar-chart fa-lg"></i> Statistiche
+                    <button class="btn btn-block btn-secondary" [routerLink]="['/'+ RoutesPath.Statistiche]"
+                            [routerLinkActive]="['btn-dark']"
+                            [disabled]="getPermissionByFeature(permissionFeatures.Statistiche)"
+                            [ngClass]="{'cursor-not-allowed': getPermissionByFeature(permissionFeatures.Statistiche)}"
+                            (click)="_toggleOpened()">
+                        <i class="fa fa-line-chart fa-lg mr-1"></i>
+                        Statistiche
                     </button>
                 </div>
                 <div class="col-2 px-5">
-                    <button class="btn btn-block btn-secondary" [routerLink]="['/'+ RoutesPath.GestioneUtenti]" [routerLinkActive]="['btn-dark']"
-                            (click)="_toggleOpened()"><i class="fa fa-user fa-lg"></i> Gestione Utenti
+                    <button class="btn btn-block btn-secondary" [routerLink]="['/'+ RoutesPath.GestioneUtenti]"
+                            [routerLinkActive]="['btn-dark']"
+                            [disabled]="getPermissionByFeature(permissionFeatures.GestioneUtenti)"
+                            [ngClass]="{'cursor-not-allowed': getPermissionByFeature(permissionFeatures.GestioneUtenti)}"
+                            (click)="_toggleOpened()">
+                        <i class="fa fa-user fa-lg mr-1"></i>
+                        Gestione Utenti
                     </button>
                 </div>
                 <div class="col-2 text-center px-4">

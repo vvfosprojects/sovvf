@@ -12,6 +12,8 @@ import { UtenteState } from './features/navbar/store/states/operatore/utente.sta
 import { ClearListaSediNavbar, PatchListaSediNavbar } from './shared/store/actions/sedi-treeview/sedi-treeview.actions';
 import { SediTreeviewState } from './shared/store/states/sedi-treeview/sedi-treeview.state';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { PermissionFeatures } from './shared/enum/permission-features.enum';
+import { PermessiService } from './core/service/permessi-service/permessi.service';
 
 @Component({
     selector: 'app-root',
@@ -36,6 +38,8 @@ export class AppComponent implements OnInit, OnDestroy {
     @Select(UtenteState.utente) user$: Observable<Utente>;
     user: Utente;
 
+    permissionFeatures = PermissionFeatures;
+
     isReady = false;
 
     _opened = false;
@@ -46,6 +50,7 @@ export class AppComponent implements OnInit, OnDestroy {
     constructor(private router: Router,
                 private authService: AuthenticationService,
                 private store: Store,
+                private _permessiService: PermessiService,
                 private modals: NgbModal) {
         router.events.subscribe((val) => {
             if (val instanceof NavigationEnd) {
@@ -95,6 +100,10 @@ export class AppComponent implements OnInit, OnDestroy {
 
     _toggleOpened() {
         this._opened = !this._opened;
+    }
+
+    getPermissionByFeature(feature: PermissionFeatures) {
+        return !this._permessiService.checkUserPermissionByFeature(feature);
     }
 
 }

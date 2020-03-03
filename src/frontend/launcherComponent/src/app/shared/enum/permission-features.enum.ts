@@ -4,5 +4,9 @@ export enum PermissionFeatures {
     MezziInServizio,
     ModificaRichiesta,
     GestisciRichiesta,
-    ComposizionePartenzaRichiesta
+    ComposizionePartenzaRichiesta,
+    GestioneUtenti,
+    Autorimessa,
+    Servizi,
+    Statistiche
 }
