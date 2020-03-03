@@ -75,7 +75,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneUtenti.AddUtente
                 Ruoli = command.Ruoli,
                 Username = personale.Nominativo.ToLower(),
                 Password = "test",
-                Sede = new Sede($"{distaccamento.CodSede}.{distaccamento.CodDistaccamento}", distaccamento.DescDistaccamento, distaccamento.Indirizzo, new Coordinate(0, 0), "", "", "", "", "")
+                Sede = new Sede($"{distaccamento.CodSede}.{distaccamento.CodDistaccamento}", distaccamento.DescDistaccamento, distaccamento.Indirizzo, distaccamento.Coordinate, "", "", "", "", "")
             };
 
             _addUtente.Add(utenteVVF);

@@ -59,7 +59,7 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.SquadreMapper
             Sede sedeDistaccamento;
             if (d != null)
             {
-                sedeDistaccamento = new Sede(CodSede.ToString() + "." + d.CodDistaccamento.ToString(), d.DescDistaccamento, d.Indirizzo, new Coordinate(1, 1), "", "", "", "", "");
+                sedeDistaccamento = new Sede(CodSede.ToString() + "." + d.CodDistaccamento.ToString(), d.DescDistaccamento, d.Indirizzo, d.Coordinate, "", "", "", "", "");
 
                 Squadra.StatoSquadra Stato;
 

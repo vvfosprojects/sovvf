@@ -64,7 +64,8 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.DistaccamentiMapper
                     CodDistaccamento = OraDistaccamento.CODDISTAC,
                     CodSede = OraDistaccamento.CODSEDE,
                     DescDistaccamento = OraDistaccamento.DESCDISTAC,
-                    Indirizzo = OraDistaccamento.INDIRIZZO
+                    Indirizzo = OraDistaccamento.INDIRIZZO,
+                    Coordinate = new API.Models.Classi.Condivise.Coordinate(Convert.ToDouble(OraDistaccamento.X), Convert.ToDouble(OraDistaccamento.Y))
                 };
 
                 ListaDistaccamenti.Add(distaccamento);

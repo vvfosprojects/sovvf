@@ -49,7 +49,7 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper
                 List<Distaccamento> distaccamenti = _getListaDistaccamentiByCodiceSede.GetListaDistaccamenti(OraM.COD_COMANDO);
                 var d = distaccamenti.Find(x => x.CodDistaccamento.Equals(OraM.COD_DISTACCAMENTO));
 
-                var sede = new Sede(OraM.COD_COMANDO + "." + OraM.COD_DISTACCAMENTO, d.DescDistaccamento, d.Indirizzo, new Coordinate(1, 1), "", "", "", "", "");
+                var sede = new Sede(OraM.COD_COMANDO + "." + OraM.COD_DISTACCAMENTO, d.DescDistaccamento, d.Indirizzo, d.Coordinate, "", "", "", "", "");
 
                 Mezzo mezzo = new Mezzo(OraM.TIPO_MEZZO + "." + OraM.TARGA,
                     OraM.TARGA,
