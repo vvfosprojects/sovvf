@@ -44,7 +44,6 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
         public void Handle(AggiornaStatoMezzoCommand command)
         {
             var richiesta = _getRichiestaById.GetById(command.Chiamata.Id);
-            richiesta.CodOperatore = "30"; //TODO GESTIRE IL CODICE OPERATORE
 
             if (command.StatoMezzo == Costanti.MezzoSulPosto)
             {
