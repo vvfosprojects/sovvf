@@ -39,4 +39,18 @@ export class ViewModeComponent {
         this.toggleMeteo.emit(!this.stateSwitch);
     }
 
+    getMezziInServizioBtnClasses() {
+        let returnClasses = '';
+        if (this.mezziInServizioActive) {
+            returnClasses = 'btn-secondary';
+        } else if (!this.mezziInServizioActive) {
+            returnClasses = 'btn-outline-secondary';
+        }
+        if (this.disabledMezziInServizio) {
+            returnClasses += ' cursor-not-allowed';
+        }
+        return returnClasses;
+    }
+
+
 }
