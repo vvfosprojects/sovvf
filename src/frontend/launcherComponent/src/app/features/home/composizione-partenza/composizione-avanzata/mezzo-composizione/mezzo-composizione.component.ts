@@ -8,6 +8,7 @@ import { MezzoDirection } from '../../../../../shared/interface/mezzo-direction'
 import { SganciamentoInterface } from 'src/app/shared/interface/sganciamento.interface';
 import { iconaStatiClass, mezzoComposizioneBusy } from '../../shared/functions/composizione-functions';
 import { StatoMezzo } from '../../../../../shared/enum/stato-mezzo.enum';
+import { Sede } from '../../../../../shared/model/sede.model';
 
 @Component({
     selector: 'app-mezzo-composizione',
@@ -132,11 +133,14 @@ export class MezzoComposizioneComponent implements OnInit {
             const distaccamentoMezzo = this.mezzoComp.mezzo.distaccamento.descrizione;
 
             if (this.richiesta.competenze && this.richiesta.competenze.length > 0) {
-                if (this.richiesta.competenze[0].descrizione === distaccamentoMezzo) {
-                    result = 'badge-primary';
-                } else if (this.richiesta.competenze[1].descrizione === distaccamentoMezzo) {
-                    result = 'badge-info';
-                }
+                this.richiesta.competenze.forEach((competenza: Sede, index: number) => {
+                    if (competenza.descrizione === distaccamentoMezzo && index === 0) {
+                        result = 'badge-primary';
+                    }
+                    if (competenza.descrizione === distaccamentoMezzo && index === 1) {
+                        result = 'badge-info';
+                    }
+                });
             }
         }
         return result;

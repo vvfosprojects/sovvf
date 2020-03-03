@@ -28,6 +28,7 @@ import { MezzoActionInterface } from '../../../shared/interface/mezzo-action.int
 import { ActionMezzo, ActionRichiesta } from '../store/actions/richieste/richieste.actions';
 import { ReducerRichiesteEspanse } from '../store/actions/richieste/richieste-espanse.actions';
 import { RichiestaActionInterface } from '../../../shared/interface/richiesta-action.interface';
+import { PermissionFeatures } from '../../../shared/enum/permission-features.enum';
 
 @Component({
     selector: 'app-richieste',
@@ -65,6 +66,7 @@ export class RichiesteComponent implements OnInit, OnDestroy {
     contatoreNuoveRichieste = true;
     richiesteTerminate: boolean;
     listHeightClass = 'm-h-750';
+    permessiFeature = PermissionFeatures;
 
     subscription = new Subscription();
 

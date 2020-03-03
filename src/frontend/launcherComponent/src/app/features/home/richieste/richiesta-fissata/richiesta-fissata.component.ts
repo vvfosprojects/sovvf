@@ -1,9 +1,7 @@
 import { Component, OnInit, Output, EventEmitter, ViewChild, ElementRef, Input, OnDestroy, isDevMode } from '@angular/core';
 import { animate, style, AnimationBuilder, AnimationPlayer } from '@angular/animations';
-
 // Model
 import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.model';
-
 // Helper Methods
 import { HelperSintesiRichiesta } from '../helper/_helper-sintesi-richiesta';
 import { MezzoActionInterface } from '../../../../shared/interface/mezzo-action.interface';
@@ -20,6 +18,11 @@ export class RichiestaFissataComponent implements OnInit, OnDestroy {
     @Input() richiestaFissata: SintesiRichiesta;
     @Input() idRichiesteEspanse: string[] = [];
     @Input() richiestaGestione: SintesiRichiesta;
+
+    // Permessi
+    @Input() disabledModificaRichiesta = false;
+    @Input() disabledGestisciRichiesta = false;
+    @Input() disabledComposizionePartenza = false;
 
     @Output() eventiRichiesta = new EventEmitter<string>();
     @Output() statoPartenza = new EventEmitter<boolean>();
