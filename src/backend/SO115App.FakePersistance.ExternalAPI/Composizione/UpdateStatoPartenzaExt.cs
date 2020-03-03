@@ -79,7 +79,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
             var dataMovimentazione = DateTime.UtcNow;
             _setMovimentazione.Set(command.IdMezzo, command.Richiesta.Codice, command.StatoMezzo, dataMovimentazione);
-            //_setStatoOperativoMezzo.Set(command.CodiceSede, command.IdMezzo, command.StatoMezzo, command.Richiesta.Codice);
+            _setStatoOperativoMezzo.Set(command.CodiceSede, command.IdMezzo, command.StatoMezzo, command.Richiesta.Codice);
 
             foreach (var partenza in command.Richiesta.Partenze)
             {

@@ -24,6 +24,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza;
 using SO115App.Models.Classi.Utility;
+using SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GetSintesiRichiestaAssistenza;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -40,11 +41,14 @@ namespace SO115App.API.Controllers
         private readonly IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult>
             _sintesiRichiesteQuery;
 
+        private readonly IQueryHandler<GetSintesiRichiestaAssistenzaQuery, GetSintesiRichiestaAssistenzaResult> _getSingolaRichiesta;
+
         public GestioneRichiestaController(
-            ICommandHandler<UpDateStatoRichiestaCommand> addhandler, IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> sintesiRichiesteQuery)
+            ICommandHandler<UpDateStatoRichiestaCommand> addhandler, IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> sintesiRichiesteQuery, IQueryHandler<GetSintesiRichiestaAssistenzaQuery, GetSintesiRichiestaAssistenzaResult> getSingolaRichiesta)
         {
             _addhandler = addhandler;
             _sintesiRichiesteQuery = sintesiRichiesteQuery;
+            _getSingolaRichiesta = getSingolaRichiesta;
         }
 
         [HttpPost("AggiornaStato")]
@@ -79,11 +83,14 @@ namespace SO115App.API.Controllers
         [HttpGet("GetRichiesta")]
         public async Task<IActionResult> GetRichiesta(string idRichiesta)
         {
-            var sintesiQuery = new SintesiRichiesteAssistenzaQuery();
+            var sintesiQuery = new GetSintesiRichiestaAssistenzaQuery
+            {
+                CodiceRichiesta = idRichiesta,
+                CodiceSede = Request.Headers["codiceSede"]
+            };
             try
             {
-                var listaSintesi = _sintesiRichiesteQuery.Handle(sintesiQuery).SintesiRichiesta;
-                return Ok(listaSintesi.LastOrDefault(x => x.Codice == idRichiesta));
+                return Ok(_getSingolaRichiesta.Handle(sintesiQuery).SintesiRichiesta);
             }
             catch (Exception ex)
             {

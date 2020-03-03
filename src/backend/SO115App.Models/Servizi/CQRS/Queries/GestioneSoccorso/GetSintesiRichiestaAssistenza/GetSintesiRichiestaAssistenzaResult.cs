@@ -1,5 +1,5 @@
-﻿//-----------------------------------------------------------------------
-// <copyright file="IGetSintesiRichiestaAssistenzaById.cs" company="CNVVF">
+//-----------------------------------------------------------------------
+// <copyright file="SintesiRichiestaAssistenzaResult.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -19,18 +19,16 @@
 //-----------------------------------------------------------------------
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
 
-namespace SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso
+namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GetSintesiRichiestaAssistenza
 {
     /// <summary>
-    ///   Servizio di erogazione del contenuto di una Richiesta di Assistenza
+    ///   DTO di output
     /// </summary>
-    public interface IGetSintesiRichiestaAssistenzaById
+    public class GetSintesiRichiestaAssistenzaResult
     {
         /// <summary>
-        ///   Restituisce la Sintesi di una Richiesta di Assistenza
+        ///   La sintesi della richiesta di assistenza
         /// </summary>
-        /// <param name="idRichiestaAssistenza">Identificativo della Richiesta di Assistenza</param>
-        /// <returns>Sintesi di una Richiesta di Assistenza</returns>
-        SintesiRichiesta Get(string idRichiestaAssistenza);
+        public SintesiRichiesta SintesiRichiesta { get; internal set; }
     }
 }

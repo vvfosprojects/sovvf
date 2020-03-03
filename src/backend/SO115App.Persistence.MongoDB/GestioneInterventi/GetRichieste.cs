@@ -26,7 +26,6 @@ using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRi
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
 using SO115App.Models.Classi.Condivise;
-using SO115App.Models.Classi.Soccorso;
 using SO115App.Models.Servizi.CustomMapper;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
@@ -37,7 +36,7 @@ using System.Linq;
 
 namespace SO115App.Persistence.MongoDB
 {
-    public class GetRichiesta : IGetRichiestaById, IGetListaSintesi
+    public class GetRichiesta : IGetRichiestaById, IGetListaSintesi, IGetSintesiRichiestaAssistenzaByCodice
     {
         private readonly DbContext _dbContext;
         private readonly IMapper _mapper;
@@ -100,6 +99,20 @@ namespace SO115App.Persistence.MongoDB
             }
 
             return ListaSedi;
+        }
+
+        public SintesiRichiesta GetSintesi(string codiceRichiesta)
+        {
+            var richiesta = GetByCodice(codiceRichiesta);
+            var sintesi = new SintesiRichiesta();
+
+            if (richiesta.CodUOCompetenza != null)
+            {
+                sintesi = _mapperSintesi.Map(richiesta);
+                sintesi.Competenze = MapCompetenze(richiesta.CodUOCompetenza);
+            }
+
+            return sintesi;
         }
     }
 }

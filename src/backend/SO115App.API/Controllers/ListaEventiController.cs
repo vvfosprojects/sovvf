@@ -66,7 +66,7 @@ namespace SO115App.API.Controllers
 
             var query = new ListaEventiQuery()
             {
-                Id = Id
+                IdRichiesta = Id
             };
 
             try

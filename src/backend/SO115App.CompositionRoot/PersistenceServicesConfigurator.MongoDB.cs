@@ -32,6 +32,9 @@ namespace SO115App.CompositionRoot
 
             container.Register<Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie.IGetTipologieByCodice,
                 Persistence.MongoDB.GestioneInterventi.GestioneTipologie.GetTipologieByCodice>();
+            container.Register<IGetSintesiRichiestaAssistenzaByCodice, GetRichiesta>();
+
+            container.Register<SO115App.Models.Servizi.Infrastruttura.GetListaEventi.IGetListaEventi, GetListaEventiByCodiceRichiesta>();
 
             #endregion Gestione richiesta di assistenza
 
@@ -115,9 +118,6 @@ namespace SO115App.CompositionRoot
             //container.Register<
             //    SO115App.Models.Servizi.Infrastruttura.GetPreAccoppiati.IGetPreAccoppiati,
             //    FakePersistenceJSon.Composizione.GetPreAccoppiati>();
-            container.Register<
-                SO115App.Models.Servizi.Infrastruttura.GetListaEventi.IGetListaEventi,
-                FakePersistenceJSon.ListaEventi.GetListaEventi>();
 
             container.Register<
                 SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.IGetIdByCodice,

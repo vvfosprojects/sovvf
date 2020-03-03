@@ -19,30 +19,29 @@
 //-----------------------------------------------------------------------
 using CQRS.Queries;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
-using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiestaAssistenza.QueryDTO;
-using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiestaAssistenza.ResultDTO;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
+using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 
-namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiestaAssistenza
+namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GetSintesiRichiestaAssistenza
 {
     /// <summary>
     ///   Restituisce una Richiesta di assistenza per un IdRichiesta
     /// </summary>
-    public class SintesiRichiestaAssistenzaQueryHandler : IQueryHandler<SintesiRichiestaAssistenzaQuery, SintesiRichiestaAssistenzaResult>
+    public class GetSintesiRichiestaAssistenzaQueryHandler : IQueryHandler<GetSintesiRichiestaAssistenzaQuery, GetSintesiRichiestaAssistenzaResult>
     {
         /// <summary>
         ///   Handler del servizio
         /// </summary>
-        private readonly IGetRichiestaAssistenzaById _getRichiestaAssistenzaById;
+        private readonly IGetSintesiRichiestaAssistenzaByCodice _getRichiestaAssistenzaById;
 
         /// <summary>
         ///   Costruttore del servizio
         /// </summary>
-        /// <param name="getRichiestaAssistenzaById">Istanza del servizio <see cref="IGetRichiestaAssistenzaById" /></param>
-        public SintesiRichiestaAssistenzaQueryHandler(
-                IGetRichiestaAssistenzaById getRichiestaAssistenzaById)
+        /// <param name="getRichiestaAssistenzaById">Istanza del servizio <see cref="IGetSintesiRichiestaAssistenzaByCodice" /></param>
+        public GetSintesiRichiestaAssistenzaQueryHandler(
+                IGetSintesiRichiestaAssistenzaByCodice getRichiestaAssistenzaById)
         {
-            this._getRichiestaAssistenzaById = getRichiestaAssistenzaById;
+            _getRichiestaAssistenzaById = getRichiestaAssistenzaById;
         }
 
         /// <summary>
@@ -50,20 +49,15 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichi
         /// </summary>
         /// <param name="query">Il DTO di ingresso della query</param>
         /// <returns>Il DTO di uscita della query</returns>
-        public SintesiRichiestaAssistenzaResult Handle(SintesiRichiestaAssistenzaQuery query)
+        public GetSintesiRichiestaAssistenzaResult Handle(GetSintesiRichiestaAssistenzaQuery query)
         {
             // estrae la richieste di assistenza indicata
-            var richiesteAssistenza = this._getRichiestaAssistenzaById.Get(query.IdRichiesta);
+            var sintesiAssistenza = _getRichiestaAssistenzaById.GetSintesi(query.CodiceRichiesta);
 
-            var result = new SintesiRichiestaAssistenzaResult()
+            return new GetSintesiRichiestaAssistenzaResult()
             {
-                SintesiRichiesta = new SintesiRichiesta()
-                {
-                    Codice = richiesteAssistenza.Codice
-                }
+                SintesiRichiesta = sintesiAssistenza
             };
-
-            return result;
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="SintesiRichiestaAssistenzaQuery.cs" company="CNVVF">
+// <copyright file="IGetSintesiRichiestaAssistenzaById.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,19 +17,20 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using CQRS.Queries;
-using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiestaAssistenza.ResultDTO;
+using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
 
-namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiestaAssistenza.QueryDTO
+namespace SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso
 {
     /// <summary>
-    ///   Contiene le informazioni di sintesi di una Richiesta di Assistenza
+    ///   Servizio di erogazione del contenuto di una Richiesta di Assistenza
     /// </summary>
-    public class SintesiRichiestaAssistenzaQuery : IQuery<SintesiRichiestaAssistenzaResult>
+    public interface IGetSintesiRichiestaAssistenzaByCodice
     {
         /// <summary>
-        ///   E' l'ID della Richiesta da estrarre
+        ///   Restituisce la Sintesi di una Richiesta di Assistenza
         /// </summary>
-        public string IdRichiesta { get; set; }
+        /// <param name="codiceRichiesta">Identificativo della Richiesta di Assistenza</param>
+        /// <returns>Sintesi di una Richiesta di Assistenza</returns>
+        SintesiRichiesta GetSintesi(string codiceRichiesta);
     }
 }

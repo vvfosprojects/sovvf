@@ -28,9 +28,9 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
     public class ListaEventiQuery : IQuery<ListaEventiResult>
     {
         /// <summary>
-        ///   Il filtro utilizzato per la ricerca delle richieste di assistenza
+        ///   L'id della richiesta assistenza
         /// </summary>
-        public string Id { get; set; }
+        public string IdRichiesta { get; set; }
 
         public FiltroRicercaRichiesteAssistenza Filtro { get; set; }
     }

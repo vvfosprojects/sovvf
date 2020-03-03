@@ -1,5 +1,5 @@
-//-----------------------------------------------------------------------
-// <copyright file="SintesiRichiestaAssistenzaResult.cs" company="CNVVF">
+﻿//-----------------------------------------------------------------------
+// <copyright file="SintesiRichiestaAssistenzaQuery.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,18 +17,23 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
+using CQRS.Queries;
 
-namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiestaAssistenza.ResultDTO
+namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GetSintesiRichiestaAssistenza
 {
     /// <summary>
-    ///   DTO di output
+    ///   Contiene le informazioni di sintesi di una Richiesta di Assistenza
     /// </summary>
-    public class SintesiRichiestaAssistenzaResult
+    public class GetSintesiRichiestaAssistenzaQuery : IQuery<GetSintesiRichiestaAssistenzaResult>
     {
         /// <summary>
-        ///   La sintesi della richiesta di assistenza
+        ///   E' l'ID della Richiesta da estrarre
         /// </summary>
-        public SintesiRichiesta SintesiRichiesta { get; internal set; }
+        public string CodiceRichiesta { get; set; }
+
+        /// <summary>
+        ///   il codice sede per il quale si deve cercare la richiesta
+        /// </summary>
+        public string CodiceSede { get; set; }
     }
 }

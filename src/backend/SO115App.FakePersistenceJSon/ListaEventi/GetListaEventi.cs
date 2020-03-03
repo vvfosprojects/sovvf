@@ -48,7 +48,7 @@ namespace SO115App.FakePersistenceJSon.ListaEventi
 
             foreach (RichiestaAssistenzaDTO richiesta in richieste)
             {
-                if (richiesta.Id == query.Id)
+                if (richiesta.Id == query.IdRichiesta)
                     richiestaAss = MapperDTO.MapRichiestaDTOtoRichiesta(richiesta);
             }
 
