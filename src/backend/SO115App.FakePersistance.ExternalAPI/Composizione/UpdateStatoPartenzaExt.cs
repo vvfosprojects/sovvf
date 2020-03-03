@@ -78,8 +78,8 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             _upDateRichiestaAssistenza.UpDate(command.Richiesta);
 
             var dataMovimentazione = DateTime.UtcNow;
-            _setMovimentazione.Set(command.IdMezzo, command.Richiesta.Codice, command.StatoMezzo, dataMovimentazione); //TODO IMPLEMENTARE CON GAC (PER SPER SCRIVERE DIRETTAMENTE SU DB)
-            //_setStatoOperativoMezzo.Set(command.CodiceSede, command.IdMezzo, command.StatoMezzo, command.Richiesta.Codice);//TODO CANCELLARE NON PIU' NECESSARIO
+            _setMovimentazione.Set(command.IdMezzo, command.Richiesta.Codice, command.StatoMezzo, dataMovimentazione);
+            //_setStatoOperativoMezzo.Set(command.CodiceSede, command.IdMezzo, command.StatoMezzo, command.Richiesta.Codice);
 
             foreach (var partenza in command.Richiesta.Partenze)
             {

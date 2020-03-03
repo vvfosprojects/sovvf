@@ -39,16 +39,17 @@ namespace SO115App.FakePersistenceJSon.GestioneIntervento
     {
         private readonly IMapper _mapper;
         private readonly IGetTipologieByCodice _getTipologieByCodice;
+        private readonly MapperRichiestaAssistenzaSuSintesi _mapperSintesi;
 
-        public GetListaSintesi(IMapper mapper, IGetTipologieByCodice getTipologieByCodice)
+        public GetListaSintesi(IMapper mapper, IGetTipologieByCodice getTipologieByCodice, MapperRichiestaAssistenzaSuSintesi mapperSintesi)
         {
             _mapper = mapper;
             _getTipologieByCodice = getTipologieByCodice;
+            _mapperSintesi = mapperSintesi;
         }
 
         public List<SintesiRichiesta> GetListaSintesiRichieste(FiltroRicercaRichiesteAssistenza filtro)
         {
-            var mapper = new MapperRichiestaAssistenzaSuSintesi(_mapper, _getTipologieByCodice);
             var listaSintesiRichieste = new List<SintesiRichiesta>();
             var listaSintesiRichiesteVuota = new List<SintesiRichiesta>();
             var listaRichiesteAssistenza = new List<RichiestaAssistenza>();
@@ -72,7 +73,7 @@ namespace SO115App.FakePersistenceJSon.GestioneIntervento
 
                 foreach (RichiestaAssistenza richiesta in listaRichiesteAssistenza)
                 {
-                    listaSintesiRichieste.Add(mapper.Map(richiesta));
+                    listaSintesiRichieste.Add(_mapperSintesi.Map(richiesta));
                 }
 
                 listaSintesiRichieste = listaSintesiRichieste.OrderByDescending(x => x.Stato == Costanti.Chiamata)

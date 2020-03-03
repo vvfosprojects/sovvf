@@ -41,7 +41,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 command.MezzoPrenotato.CodiceMezzo
             };
 
-            if (command.MezzoPrenotato.SbloccaMezzo && _getMezziById.Get(listaCodiciMezzi, null) == null)
+            if (command.MezzoPrenotato.SbloccaMezzo && _getMezziById.Get(listaCodiciMezzi, command.MezzoPrenotato.CodiceSede) == null)
                 yield return new ValidationResult(Costanti.MezzoNonPresente);
         }
     }

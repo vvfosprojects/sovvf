@@ -43,13 +43,15 @@ namespace SO115App.Persistence.MongoDB
         private readonly IMapper _mapper;
         private readonly IGetTipologieByCodice _getTipologiaByCodice;
         private readonly IGetListaDistaccamentiByCodiceSede _getAnagraficaDistaccamento;
+        private readonly MapperRichiestaAssistenzaSuSintesi _mapperSintesi;
 
-        public GetRichiesta(DbContext dbContext, IMapper mapper, IGetTipologieByCodice getTipologiaByCodice, IGetListaDistaccamentiByCodiceSede getAnagraficaDistaccamento)
+        public GetRichiesta(DbContext dbContext, IMapper mapper, IGetTipologieByCodice getTipologiaByCodice, IGetListaDistaccamentiByCodiceSede getAnagraficaDistaccamento, MapperRichiestaAssistenzaSuSintesi mapperSintesi)
         {
             _dbContext = dbContext;
             _mapper = mapper;
             _getTipologiaByCodice = getTipologiaByCodice;
             _getAnagraficaDistaccamento = getAnagraficaDistaccamento;
+            _mapperSintesi = mapperSintesi;
         }
 
         public RichiestaAssistenza GetByCodice(string codiceRichiesta)
@@ -68,8 +70,6 @@ namespace SO115App.Persistence.MongoDB
         {
             var ListaRichiesteAssistenza = _dbContext.RichiestaAssistenzaCollection.Find(Builders<RichiestaAssistenza>.Filter.Empty).ToList();
 
-            MapperRichiestaAssistenzaSuSintesi mapSintesi = new MapperRichiestaAssistenzaSuSintesi(_mapper, _getTipologiaByCodice);
-
             var ListaSistesiRichieste = new List<SintesiRichiesta>();
 
             foreach (RichiestaAssistenza richiesta in ListaRichiesteAssistenza)
@@ -78,7 +78,7 @@ namespace SO115App.Persistence.MongoDB
 
                 if (richiesta.CodUOCompetenza != null)
                 {
-                    sintesi = mapSintesi.Map(richiesta);
+                    sintesi = _mapperSintesi.Map(richiesta);
                     sintesi.Competenze = MapCompetenze(richiesta.CodUOCompetenza);
                     ListaSistesiRichieste.Add(sintesi);
                 }

@@ -19,6 +19,7 @@
 //-----------------------------------------------------------------------
 using SO115App.API.Models.Classi.Condivise;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac
 {
@@ -32,6 +33,6 @@ namespace SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac
         /// </summary>
         /// <param name="codiceMezzo">una lista di codici mezzo</param>
         /// <returns>una lista mezzi</returns>
-        List<Mezzo> Get(List<string> codiceMezzo, string codSede);
+        Task<List<Mezzo>> Get(List<string> codiceMezzo, string codSede);
     }
 }

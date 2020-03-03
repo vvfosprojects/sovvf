@@ -9,6 +9,7 @@ using System.Net.Http;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper
 {
@@ -27,11 +28,14 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper
             _getStatoMezzi = GetStatoMezzi;
         }
 
-        public List<Mezzo> Get(List<string> codiceMezzo, string codSede)
+        public async Task<List<Mezzo>> Get(List<string> codiceMezzo, string codSede)
         {
             _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("test");
-            var response = _client.GetAsync($"{_configuration.GetSection("OracleImplementation").GetSection(codSede.Substring(0, 2)).GetSection("UrlAPIMezzi").Value}/GetListaMezziUtilizzabili?CodSede={codSede.Substring(0, 2)}").ConfigureAwait(false);
-            List<ORAAutomezzi> ListaMezziOracle = JsonConvert.DeserializeObject<List<ORAAutomezzi>>(response.ToString());
+            var response = await _client.GetAsync($"{_configuration.GetSection("OracleImplementation").GetSection(codSede.Substring(0, 2)).GetSection("UrlAPIMezzi").Value}/GetListaMezziUtilizzabili?CodSede={codSede.Substring(0, 2)}").ConfigureAwait(false);
+            response.EnsureSuccessStatusCode();
+            using HttpContent content = response.Content;
+            string data = await content.ReadAsStringAsync().ConfigureAwait(false);
+            var ListaMezziOracle = JsonConvert.DeserializeObject<List<ORAAutomezzi>>(data);
 
             return MapListaMezziOraInMongoDB(ListaMezziOracle, codiceMezzo);
         }

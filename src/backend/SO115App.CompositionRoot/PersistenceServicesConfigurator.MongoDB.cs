@@ -65,6 +65,7 @@ namespace SO115App.CompositionRoot
                     SetMezzoPrenotato>();
             container.Register<Models.Servizi.Infrastruttura.Composizione.IGetStatoMezzi,
                     GetStatoMezzoByCodice>();
+            container.Register<Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi.ISetStatoOperativoMezzo, SetStatoOperativoMezzo>();
 
             #endregion StatoMezzo
 
@@ -142,9 +143,9 @@ namespace SO115App.CompositionRoot
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.InfoRichiesta.IGetInfoRichiesta,
                 FakePersistence.JSon.Utility.GetInfoRichiesta>();
-            container.Register<
-                Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi.ISetStatoOperativoMezzo,
-                FakePersistence.JSon.GestioneMezzi.SetStatoOperativoMezzo>();
+            //container.Register<
+            //    Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi.ISetStatoOperativoMezzo,
+            //    FakePersistence.JSon.GestioneMezzi.SetStatoOperativoMezzo>();
 
             container.Register<
             SO115App.Models.Servizi.Infrastruttura.Notification.GestioneChiamata.INotifyInserimentoChiamata,

@@ -22,6 +22,7 @@ using SO115App.ExternalAPI.Fake.Classi.Utility;
 using SO115App.ExternalAPI.Fake.Servizi.Gac.Mock;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace SO115App.ExternalAPI.Fake.Servizi.Gac
 {
@@ -49,14 +50,19 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
         /// </summary>
         /// <param name="codiceMezzo">una lista di codici mezzo</param>
         /// <returns>una lista mezzi</returns>
-        public List<Mezzo> Get(List<string> codiceMezzo, string codSede)
+        //public Task<List<Mezzo>> Get(List<string> codiceMezzo, string codSede)
+        //{
+        //    //---------------TODO Implementazione con il servizio esterno reale che sostituirà i json
+
+        // var listaMezzoDTO = _getMezzi.GetMezziFromCodiceMezzo(codiceMezzo); //json
+
+        //    //---------------------------------------------------------------------------------------
+        //    return  _mapper.MappaMezzoDTOsuMezzo(listaMezzoDTO);
+        //}
+
+        Task<List<Mezzo>> IGetMezziByCodiceMezzo.Get(List<string> codiceMezzo, string codSede)
         {
-            //---------------TODO Implementazione con il servizio esterno reale che sostituirà i json
-
-            var listaMezzoDTO = _getMezzi.GetMezziFromCodiceMezzo(codiceMezzo); //json
-
-            //---------------------------------------------------------------------------------------
-            return _mapper.MappaMezzoDTOsuMezzo(listaMezzoDTO);
+            throw new System.NotImplementedException();
         }
     }
 }

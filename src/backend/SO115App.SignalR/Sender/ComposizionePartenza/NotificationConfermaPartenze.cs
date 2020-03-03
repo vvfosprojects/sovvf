@@ -44,6 +44,7 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
         private readonly IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> _sintesiRichiesteHandler;
         private readonly IMapper _mapper;
         private readonly IGetTipologieByCodice _getTipologieByCodice;
+        private readonly MapperRichiestaAssistenzaSuSintesi _mapperSintesi;
 
         public NotificationConfermaPartenze(IHubContext<NotificationHub> notificationHubContext,
             IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> boxRichiestehandler,
@@ -51,7 +52,7 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
             IQueryHandler<BoxPersonaleQuery, BoxPersonaleResult> boxPersonalehandler,
             IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> sintesiRichiesteAssistenzaMarkerhandler,
             IMapper mapper,
-            IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> sintesiRichiesteHandler, IGetTipologieByCodice getTipologieByCodice)
+            IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> sintesiRichiesteHandler, IGetTipologieByCodice getTipologieByCodice, MapperRichiestaAssistenzaSuSintesi mapperSintesi)
         {
             _notificationHubContext = notificationHubContext;
             _boxRichiestehandler = boxRichiestehandler;
@@ -61,15 +62,15 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
             _mapper = mapper;
             _sintesiRichiesteHandler = sintesiRichiesteHandler;
             _getTipologieByCodice = getTipologieByCodice;
+            _mapperSintesi = mapperSintesi;
         }
 
         public async Task SendNotification(ConfermaPartenzeCommand conferma)
         {
-            var mapper = new MapperRichiestaAssistenzaSuSintesi(_mapper, _getTipologieByCodice);
             const bool notificaChangeState = true;
 
             var richiesta = conferma.ConfermaPartenze.richiesta;
-            var sintesi = mapper.Map(richiesta);
+            var sintesi = _mapperSintesi.Map(richiesta);
 
             sintesi.Motivazione = sintesi.Descrizione;
 
