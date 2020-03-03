@@ -11,7 +11,7 @@ import { findItem } from '../../../shared/store/states/sedi-treeview/sedi-treevi
 import { UpdateFormValue } from '@ngxs/form-plugin';
 import { UtenteVvfInterface } from '../../../shared/interface/utente-vvf.interface';
 import { ClearUtentiVVF, GetUtentiVVF } from '../store/actions/gestione-utenti/gestione-utenti.actions';
-import { Role } from '../../../shared/model/utente.model';
+import { Role, Ruolo } from '../../../shared/model/utente.model';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { LoadingState } from '../../../shared/store/states/loading/loading.state';
 
@@ -42,6 +42,7 @@ export class GestioneUtenteModalComponent implements OnInit, OnDestroy {
     // aggiungi ruolo utente
     codFiscaleUtenteVVF: string;
     nominativoUtenteVVF: string;
+    ruoliAttuali: Ruolo[];
 
     subscription: Subscription = new Subscription();
 
@@ -53,7 +54,6 @@ export class GestioneUtenteModalComponent implements OnInit, OnDestroy {
         this.checkUtenteValueChanges();
         this.getUtentiVVF();
         this.inizializzaSediTreeview();
-        this.getRuoli();
         this.getSediSelezionate();
         this.getSearchUtentiVVF();
     }
@@ -78,6 +78,7 @@ export class GestioneUtenteModalComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
+        this.setRuoli();
         if (this.codFiscaleUtenteVVF) {
             this.f.utente.patchValue(this.codFiscaleUtenteVVF);
             this.f.utente.clearValidators();
@@ -160,10 +161,17 @@ export class GestioneUtenteModalComponent implements OnInit, OnDestroy {
         });
     }
 
-    getRuoli() {
+    setRuoli() {
         Object.values(Role).forEach((role: string) => {
             this.ruoli.push(role);
         });
+        if (this.ruoliAttuali && this.ruoliAttuali.length > 0) {
+            this.ruoliAttuali.forEach((ruolo: Ruolo) => {
+                if (this.ruoli.indexOf(ruolo.descrizione) !== -1) {
+                    this.ruoli.splice(this.ruoli.indexOf(ruolo.descrizione), 1);
+                }
+            });
+        }
     }
 
     setRicorsivoValue(value: { id: string, status: boolean }) {

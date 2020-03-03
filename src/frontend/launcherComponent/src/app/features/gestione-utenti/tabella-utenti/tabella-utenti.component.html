@@ -17,7 +17,7 @@
         </td>
         <td width="60%" class="pb-1">
             <button class="btn btn-primary btn-sm font-weight-bold mt-3 mr-3 float-left"
-                    (click)="onAddRuoloUtente(utente.codiceFiscale, utente.cognome + ' ' + utente.nome)">
+                    (click)="onAddRuoloUtente(utente.codiceFiscale, utente.cognome + ' ' + utente.nome, utente.ruoli)">
                 <i class="fa fa-plus"></i>
             </button>
             <div *ngFor="let ruolo of utente.ruoli, let i=index" class="d-inline-block h6 font-weight-normal">

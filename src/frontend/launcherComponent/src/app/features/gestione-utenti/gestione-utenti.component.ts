@@ -68,12 +68,14 @@ export class GestioneUtentiComponent {
         );
     }
 
-    onAddRuoloUtente(event: { codFiscale: string, fullName: string }) {
+    onAddRuoloUtente(event: { codFiscale: string, fullName: string, ruoliAttuali: Ruolo[] }) {
         const aggiungiRuoloUtenteModal = this.modalService.open(GestioneUtenteModalComponent, { backdropClass: 'light-blue-backdrop', centered: true, size: 'lg' });
         const codFiscaleUtenteVVF = event.codFiscale;
         const nominativoUtenteVVF = event.fullName;
+        const ruoliAttuali = event.ruoliAttuali;
         aggiungiRuoloUtenteModal.componentInstance.codFiscaleUtenteVVF = codFiscaleUtenteVVF;
         aggiungiRuoloUtenteModal.componentInstance.nominativoUtenteVVF = nominativoUtenteVVF;
+        aggiungiRuoloUtenteModal.componentInstance.ruoliAttuali = ruoliAttuali;
         aggiungiRuoloUtenteModal.result.then(
             (result: { success: boolean }) => {
                 if (result.success) {
