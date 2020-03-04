@@ -3,11 +3,10 @@ import { loadModules } from 'esri-loader';
 import { RichiestaMarker } from '../maps-model/richiesta-marker.model';
 import { makeAreaMappaEsri } from '../../../../shared/helper/function';
 import { MapService } from '../service/map-service/map-service.service';
+import { MarkerService } from '../service/marker-service/marker-service.service';
 import esri = __esri;
 import Extent = __esri.geometry.Extent;
 import GraphicsLayer = __esri.GraphicsLayer;
-import { MarkerService } from '../service/marker-service/marker-service.service';
-import GraphicsLayerLayerviewCreateEvent = __esri.GraphicsLayerLayerviewCreateEvent;
 
 @Component({
     selector: 'app-esri',
@@ -40,6 +39,7 @@ export class EsriComponent implements OnInit, OnChanges, OnDestroy {
     private _EsriGraphicsLayer = null;
     private _EsriGraphic = null;
     private _EsriWebMercatorUtils = null;
+    private _EsriWatchUtils = null;
     private _layerChiamate: GraphicsLayer = null;
 
     get mapLoaded(): boolean {
@@ -95,6 +95,7 @@ export class EsriComponent implements OnInit, OnChanges, OnDestroy {
                     latitude: rMarker.localita.coordinate.latitudine
                 };
                 const graphic = new this._EsriGraphic({
+                    attributes: rMarker,
                     geometry: point,
                     symbol: markerChiamata
                 });
@@ -106,12 +107,13 @@ export class EsriComponent implements OnInit, OnChanges, OnDestroy {
     async initializeMap() {
         try {
             // Load the modules for the ArcGIS API for JavaScript
-            [this._EsriMap, this._EsriMapView, this._EsriGraphicsLayer, this._EsriGraphic, this._EsriWebMercatorUtils] = await loadModules([
+            [this._EsriMap, this._EsriMapView, this._EsriGraphicsLayer, this._EsriGraphic, this._EsriWebMercatorUtils, this._EsriWatchUtils] = await loadModules([
                 'esri/Map',
                 'esri/views/MapView',
                 'esri/layers/GraphicsLayer',
                 'esri/Graphic',
-                'esri/geometry/support/webMercatorUtils'
+                'esri/geometry/support/webMercatorUtils',
+                'esri/core/watchUtils'
             ]);
 
             // Configure the Map
@@ -157,8 +159,17 @@ export class EsriComponent implements OnInit, OnChanges, OnDestroy {
                 this._loaded = this._view.ready;
                 this.mapLoadedEvent.emit(true);
 
-                this._view.on('pointer-move', (event: any) => {
-                    console.log('event', event);
+                mapView.on('pointer-move', function (evt) {
+                    const screenPoint = {
+                        x: evt.x,
+                        y: evt.y
+                    };
+                    mapView.hitTest(screenPoint)
+                        .then(function (response) {
+                            if (response.results && response.results.length > 0) {
+                                console.log('response', response);
+                            }
+                        });
                 });
             }
         });
