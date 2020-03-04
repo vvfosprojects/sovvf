@@ -7,7 +7,7 @@ import { ChiamataMarker } from './maps-model/chiamata-marker.model';
 import { ComposizioneMarker } from './maps-model/composizione-marker.model';
 import { Observable, Subscription } from 'rxjs';
 import { ViewInterfaceMaps } from '../../../shared/interface/view.interface';
-import { Select } from '@ngxs/store';
+import { Select, Store } from '@ngxs/store';
 import { MezziMarkersState } from '../store/states/maps/mezzi-markers.state';
 import { SediMarkersState } from '../store/states/maps/sedi-markers.state';
 import { RichiesteMarkersState } from '../store/states/maps/richieste-markers.state';
@@ -41,9 +41,20 @@ export class MapsComponent implements OnInit, OnDestroy {
     mapsFullyLoaded = false;
     @Output() mapFullLoaded = new EventEmitter<boolean>();
 
+    // ESRI
+    mapCenter = null;
+    basemapType = 'streets';
+    mapZoomLevel = null;
+
     constructor() {
         this.subscription.add(this.centroMappa$.subscribe((r: CentroMappa) => {
-            this.centroMappa = r;
+            if (r) {
+                this.centroMappa = r;
+
+                // ESRI
+                this.mapCenter = [r.coordinateCentro.longitudine, r.coordinateCentro.latitudine];
+                this.mapZoomLevel = r.zoom;
+            }
         }));
     }
 
@@ -67,4 +78,10 @@ export class MapsComponent implements OnInit, OnDestroy {
         }
     }
 
+    // ESRI
+    mapLoadedEvent(event: any) {
+        setTimeout(() => {
+            this.mapFullLoaded.emit(this.mapsFullyLoaded);
+        }, 2000);
+    }
 }

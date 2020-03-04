@@ -8,6 +8,7 @@ import { StatoRichiestaActions } from '../enum/stato-richiesta-actions.enum';
 import { Tipologia } from '../model/tipologia.model';
 import { LatLngBounds } from '@agm/core';
 import { AreaMappa } from '../../features/home/maps/maps-model/area-mappa-model';
+import Extent = __esri.geometry.Extent;
 
 export function makeCopy(value): any {
     return (JSON.parse(JSON.stringify(value)));
@@ -45,6 +46,13 @@ export function makeAreaMappa(bounds: LatLngBounds): AreaMappa {
     return new AreaMappa(
         new Coordinate(bounds.getNorthEast().lat(), bounds.getNorthEast().lng()),
         new Coordinate(bounds.getSouthWest().lat(), bounds.getSouthWest().lng())
+    );
+}
+
+export function makeAreaMappaEsri(extent: Extent): AreaMappa {
+    return new AreaMappa(
+        new Coordinate(extent.ymax, extent.xmax),
+        new Coordinate(extent.ymin, extent.xmin)
     );
 }
 

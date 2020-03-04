@@ -69,6 +69,7 @@ export class RichiesteMarkersState {
         dispatch(new SetMarkerLoading(true));
         console.log('FiltroRichieste', action.filtri);
         this._richieste.getRichiesteMarkers(action.areaMappa, action.filtri).subscribe((data: RichiestaMarker[]) => {
+                console.log('test', action.areaMappa);
                 dispatch([
                     new SetRichiesteMarkers(data),
                     new SetMarkerLoading(false)
