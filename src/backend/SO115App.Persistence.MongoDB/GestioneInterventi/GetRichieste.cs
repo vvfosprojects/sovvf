@@ -26,6 +26,7 @@ using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRi
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
 using SO115App.Models.Classi.Condivise;
+using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.CustomMapper;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
@@ -96,7 +97,10 @@ namespace SO115App.Persistence.MongoDB
             if (filtro.Chiamate.HasValue) listaSistesiRichieste = listaSistesiRichieste.FindAll(x => x.Partenze.Count.Equals(0));
             if (filtro.Interventi.HasValue) listaSistesiRichieste = listaSistesiRichieste.FindAll(x => x.Partenze.Count >= 1);
 
-            return listaSistesiRichieste;
+            return listaSistesiRichieste.OrderByDescending(x => x.Stato == Costanti.Chiamata)
+                    .ThenByDescending(x => x.PrioritaRichiesta)
+                    .ThenBy(x => x.IstanteRicezioneRichiesta)
+                    .ToList(); ;
         }
 
         private List<Sede> MapCompetenze(string[] codUOCompetenza)
