@@ -100,7 +100,7 @@ namespace SO115App.Persistence.MongoDB
             return listaSistesiRichieste.OrderByDescending(x => x.Stato == Costanti.Chiamata)
                     .ThenByDescending(x => x.PrioritaRichiesta)
                     .ThenBy(x => x.IstanteRicezioneRichiesta)
-                    .ToList(); ;
+                    .ToList();
         }
 
         private List<Sede> MapCompetenze(string[] codUOCompetenza)
