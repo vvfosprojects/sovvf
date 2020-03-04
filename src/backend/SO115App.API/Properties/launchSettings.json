@@ -19,7 +19,6 @@
     },
     "SO115App.API": {
       "commandName": "IISExpress",
-      "launchBrowser": true,
       "launchUrl": "api/Auth/Login",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"

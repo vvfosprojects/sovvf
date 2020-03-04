@@ -73,6 +73,7 @@ namespace Persistence.MongoDB
             BsonClassMap.RegisterClassMap<ComposizionePartenze>();
             BsonClassMap.RegisterClassMap<AssegnataRichiesta>();
             BsonClassMap.RegisterClassMap<ArrivoSulPosto>();
+            BsonClassMap.RegisterClassMap<UscitaPartenza>();
             BsonClassMap.RegisterClassMap<RichiestaPresidiata>();
             BsonClassMap.RegisterClassMap<PartenzaRientrata>();
             BsonClassMap.RegisterClassMap<PartenzaInRientro>();
