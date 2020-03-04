@@ -30,6 +30,7 @@ using SO115App.Models.Servizi.CustomMapper;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,14 +44,16 @@ namespace SO115App.Persistence.MongoDB
         private readonly IGetTipologieByCodice _getTipologiaByCodice;
         private readonly IGetListaDistaccamentiByCodiceSede _getAnagraficaDistaccamento;
         private readonly MapperRichiestaAssistenzaSuSintesi _mapperSintesi;
+        private readonly IGetAlberaturaUnitaOperative _getAlberaturaUnitaOperative;
 
-        public GetRichiesta(DbContext dbContext, IMapper mapper, IGetTipologieByCodice getTipologiaByCodice, IGetListaDistaccamentiByCodiceSede getAnagraficaDistaccamento, MapperRichiestaAssistenzaSuSintesi mapperSintesi)
+        public GetRichiesta(DbContext dbContext, IMapper mapper, IGetTipologieByCodice getTipologiaByCodice, IGetListaDistaccamentiByCodiceSede getAnagraficaDistaccamento, MapperRichiestaAssistenzaSuSintesi mapperSintesi, IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative)
         {
             _dbContext = dbContext;
             _mapper = mapper;
             _getTipologiaByCodice = getTipologiaByCodice;
             _getAnagraficaDistaccamento = getAnagraficaDistaccamento;
             _mapperSintesi = mapperSintesi;
+            _getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
         }
 
         public RichiestaAssistenza GetByCodice(string codiceRichiesta)
@@ -67,11 +70,16 @@ namespace SO115App.Persistence.MongoDB
 
         public List<SintesiRichiesta> GetListaSintesiRichieste(FiltroRicercaRichiesteAssistenza filtro)
         {
-            var ListaRichiesteAssistenza = _dbContext.RichiestaAssistenzaCollection.Find(Builders<RichiestaAssistenza>.Filter.Empty).ToList();
+            var listaRichiesteAssistenza = new List<RichiestaAssistenza>();
+            var listaSediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
+            foreach (var figlio in listaSediAlberate.GetSottoAlbero(filtro.UnitaOperative))
+            {
+                listaRichiesteAssistenza.AddRange(_dbContext.RichiestaAssistenzaCollection.Find(Builders<RichiestaAssistenza>.Filter.Eq(x => x.CodSOCompetente, figlio.Codice)).ToList());
+            }
 
-            var ListaSistesiRichieste = new List<SintesiRichiesta>();
+            var listaSistesiRichieste = new List<SintesiRichiesta>();
 
-            foreach (RichiestaAssistenza richiesta in ListaRichiesteAssistenza)
+            foreach (RichiestaAssistenza richiesta in listaRichiesteAssistenza)
             {
                 SintesiRichiesta sintesi = new SintesiRichiesta();
 
@@ -79,11 +87,16 @@ namespace SO115App.Persistence.MongoDB
                 {
                     sintesi = _mapperSintesi.Map(richiesta);
                     sintesi.Competenze = MapCompetenze(richiesta.CodUOCompetenza);
-                    ListaSistesiRichieste.Add(sintesi);
+                    listaSistesiRichieste.Add(sintesi);
                 }
             }
 
-            return ListaSistesiRichieste;
+            if (filtro.Aperte.HasValue) listaSistesiRichieste = listaSistesiRichieste.FindAll(x => x.Aperta.Equals(filtro.Aperte));
+            if (filtro.Chiuse.HasValue) listaSistesiRichieste = listaSistesiRichieste.FindAll(x => x.Chiusa.Equals(filtro.Chiuse));
+            if (filtro.Chiamate.HasValue) listaSistesiRichieste = listaSistesiRichieste.FindAll(x => x.Partenze.Count.Equals(0));
+            if (filtro.Interventi.HasValue) listaSistesiRichieste = listaSistesiRichieste.FindAll(x => x.Partenze.Count >= 1);
+
+            return listaSistesiRichieste;
         }
 
         private List<Sede> MapCompetenze(string[] codUOCompetenza)

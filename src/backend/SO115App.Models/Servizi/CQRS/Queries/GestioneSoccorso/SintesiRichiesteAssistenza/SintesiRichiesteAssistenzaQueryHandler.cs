@@ -19,10 +19,14 @@
 //-----------------------------------------------------------------------
 using AutoMapper;
 using CQRS.Queries;
+using SO115App.API.Models.Classi.Organigramma;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
+using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Servizi.CustomMapper;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza
 {
@@ -85,13 +89,28 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichi
         /// <returns>Il DTO di uscita della query</returns>
         public SintesiRichiesteAssistenzaResult Handle(SintesiRichiesteAssistenzaQuery query)
         {
-            query.Filtro.CodUOCompetenza = _getUtenteById.GetUtenteByCodice(query.Filtro.idOperatore).ListaUnitaOperativeAbilitate;
+            var listaSediUtenteAbilitate = _getUtenteById.GetUtenteByCodice(query.Filtro.idOperatore).ListaUnitaOperativeAbilitate.ToHashSet();
+            var pinNodi = new List<PinNodo>();
+            foreach (var sede in listaSediUtenteAbilitate)
+            {
+                pinNodi.Add(new PinNodo(sede, true));
+            }
+            query.Filtro.UnitaOperative = pinNodi.ToHashSet();
 
             var listaSintesi = _iGetListaSintesi.GetListaSintesiRichieste(query.Filtro);
 
+            var listaSintesiPaginata = listaSintesi.Skip((query.Filtro.Page - 1) * query.Filtro.PageSize).Take(query.Filtro.PageSize).ToList();
+
             return new SintesiRichiesteAssistenzaResult()
             {
-                SintesiRichiesta = listaSintesi
+                //SintesiRichiesta = listaSintesiPaginata,
+                SintesiRichiesta = listaSintesi,
+                Paginazione = new Paginazione
+                {
+                    Page = query.Filtro.Page,
+                    PageSize = query.Filtro.PageSize,
+                    TotalItems = listaSintesi.Count
+                }
             };
         }
     }

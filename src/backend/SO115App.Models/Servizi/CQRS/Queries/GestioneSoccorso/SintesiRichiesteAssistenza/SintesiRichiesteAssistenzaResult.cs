@@ -17,10 +17,9 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System.Collections.Generic;
-using SO115App.API.Models.Classi.Condivise;
-using SO115App.API.Models.Servizi.CQRS.Command.GestioneSoccorso.Shared;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
+using SO115App.Models.Classi.Condivise;
+using System.Collections.Generic;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza
 {
@@ -34,5 +33,10 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichi
         /// </summary>
         public IEnumerable<SintesiRichiesta> SintesiRichiesta
         { get; set; }
+
+        /// <summary>
+        ///   Il modello della paginazione che restituisce i dati utili per la paginazione lato FE
+        /// </summary>
+        public Paginazione Paginazione { get; set; }
     }
 }

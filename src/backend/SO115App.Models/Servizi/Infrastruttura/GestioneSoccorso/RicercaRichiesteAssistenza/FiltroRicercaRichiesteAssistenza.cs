@@ -47,29 +47,27 @@ namespace SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRic
         /// <summary>
         ///   Indica se si vogliono includere le richieste aperte
         /// </summary>
-        public bool Aperte { get; set; }
+        public bool? Aperte { get; set; }
 
         /// <summary>
         ///   Indica se si vogliono includere le richieste chiuse
         /// </summary>
-        public bool Chiuse { get; set; }
+        public bool? Chiuse { get; set; }
 
         /// <summary>
         ///   Indica se si vogliono includere le chiamate (richieste senza composizione partenza)
         /// </summary>
-        public bool Chiamate { get; set; }
+        public bool? Chiamate { get; set; }
 
         /// <summary>
         ///   Indica se si vogliono includere gli interventi (richieste con almeno una composizione partenza)
         /// </summary>
-        public bool Interventi { get; set; }
+        public bool? Interventi { get; set; }
 
         /// <summary>
         ///   Indica una chiave di ricerca full-text
         /// </summary>
         public string SearchKey { get; set; }
-
-        public bool RichiestaSingola { get; set; }
 
         /// <summary>
         ///   Indica l'estensione territoriale delle richieste da cercare

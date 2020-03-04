@@ -35,7 +35,7 @@ namespace SO115App.Persistence.Oracle.Servizi.Distaccamenti
                               "TABELLE_COMUNI.DISTACCAMENTI.CODDISTAC = TABELLE_COMUNI.ANAGRAFICADISTAC.CODDISTAC " +
                               "AND TABELLE_COMUNI.DISTACCAMENTI.CODSEDE = TABELLE_COMUNI.ANAGRAFICADISTAC.CODSEDE " +
                               "INNER JOIN SALAOPER.DISTACCAMENTI_5000 ON " +
-                              "SALAOPER.DISTACCAMENTI_5000.COD_DISTACCAMENTO = TABELLE_COMUNI.ANAGRAFICADISTAC.CODDISTAC" +
+                              "SALAOPER.DISTACCAMENTI_5000.COD_DISTACCAMENTO = TABELLE_COMUNI.ANAGRAFICADISTAC.CODDISTAC " +
                               "WHERE(TABELLE_COMUNI.DISTACCAMENTI.CODSEDE = :CodSede) " +
                               "AND TABELLE_COMUNI.DISTACCAMENTI.FLGATTIVO = 1 " +
                               "ORDER BY TABELLE_COMUNI.DISTACCAMENTI.CODDISTAC ";
@@ -53,8 +53,8 @@ namespace SO115App.Persistence.Oracle.Servizi.Distaccamenti
                     CAP = Utility.Utility.GetDBField(dr, "CAP"),
                     DESCDISTAC = Utility.Utility.GetDBField(dr, "DESCDISTAC"),
                     INDIRIZZO = Utility.Utility.GetDBField(dr, "INDIRIZZO"),
-                    X = Utility.Utility.GetDBField(dr, "X"),
-                    Y = Utility.Utility.GetDBField(dr, "Y"),
+                    X = Utility.Utility.GetDBField(dr, "X").ToString(),
+                    Y = Utility.Utility.GetDBField(dr, "Y").ToString(),
                 };
 
                 ListaDistaccamenti.Add(Distaccamento);
