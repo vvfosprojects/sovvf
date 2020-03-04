@@ -179,12 +179,18 @@ namespace SO115App.GeneratoreRichiesteFake
             var zoneEmergenza = new[] { "Sisma Gotham City", "Alluvione Smallville", "Uragano Metropolis" }.ToList();
             var fakerRichiesteAssistenza = new Faker<RichiestaAssistenza>("it")
                 .StrictMode(true)
-                .RuleFor(ra => ra.Id, f => f.UniqueIndex.ToString())
-                .RuleFor(ra => ra.Codice, f => f.IndexGlobal.ToString())
+                //.RuleFor(ra => ra.Id, f => f.UniqueIndex.ToString())
+                .RuleFor(ra => ra.Codice, f => string.Format("{0}{1}{2:D5}", this.codiceUnitaOperativa.Substring(0, 2), DateTime.Now.Day.ToString() + DateTime.Now.Month.ToString() + DateTime.Now.Year.ToString().Substring(2, 2), f.IndexGlobal))
+                .RuleFor(ra => ra.NotePubbliche, "")
+                .RuleFor(ra => ra.NotePrivate, "")
+                .RuleFor(ra => ra.UtInLavorazione, new List<string> { "" })
+                .RuleFor(ra => ra.UtPresaInCarico, new List<string> { "" })
+                .RuleFor(ra => ra.CodRichiesta, "")
+
                 .RuleFor(ra => ra.CodSOCompetente, f => this.codiceUnitaOperativa)
-                //.RuleFor(ra => ra.Operatore, f => GeneraOperatore())
+                .RuleFor(ra => ra.CodOperatore, f => GeneraOperatore())
                 .RuleFor(ra => ra.CodSOAllertate, f => new HashSet<string> { this.codiceUnitaOperativa })
-                //.RuleFor(ra => ra.Tipologie, f => this.GeneraTipologie())
+                .RuleFor(ra => ra.Tipologie, f => this.GeneraTipologie())
                 .RuleFor(ra => ra.IstanteChiusura, f => null)
                 .RuleFor(ra => ra.CodZoneEmergenza, f => f.Random.Float() < 0.001 ? new[] { f.Random.ListItem(zoneEmergenza) } : new string[0])
                 .RuleFor(ra => ra.Descrizione, f => f.Lorem.Sentence())
@@ -200,7 +206,8 @@ namespace SO115App.GeneratoreRichiesteFake
                 .Ignore(ra => ra.TipoTerreno)
                 .Ignore(ra => ra.CodEntiIntervenuti)
                 .Ignore(ra => ra.CodEntiPresaInCarico)
-                .Ignore(ra => ra.ObiettivoSensibile);
+                .Ignore(ra => ra.ObiettivoSensibile)
+                .Ignore(ra => ra.Id);
 
             var fakerTelefonata = new Faker<Telefonata>()
                 .StrictMode(true)
@@ -211,7 +218,8 @@ namespace SO115App.GeneratoreRichiesteFake
                 .RuleFor(t => t.NominativoChiamante, f => f.Name.FirstName())
                 .RuleFor(t => t.NotePrivate, f => f.Lorem.Sentence(10))
                 .RuleFor(t => t.NotePubbliche, f => f.Lorem.Sentence(10))
-                .RuleFor(t => t.NumeroTelefono, f => f.Phone.PhoneNumber());
+                .RuleFor(t => t.NumeroTelefono, f => f.Phone.PhoneNumber())
+                .Ignore(t => t.TipoEvento);
 
             var numeroInterventi = (int)(this.dataMax.Subtract(this.dataMin).TotalDays * this.richiesteMedieAlGiorno);
             var richiesteConParametri =
@@ -282,14 +290,11 @@ namespace SO115App.GeneratoreRichiesteFake
             return richiesteConParametri.Select(r => r.Richiesta);
         }
 
-        public static Utente GeneraOperatore()
+        public static string GeneraOperatore()
         {
             Bogus.Faker faker = new Bogus.Faker("it");
 
-            string Nome = faker.Name.FirstName();
-            string Cognome = faker.Name.LastName();
-
-            return new Utente(Nome + Cognome + faker.Random.Number(0, 99).ToString(), Nome, Cognome, faker.Random.AlphaNumeric(16));
+            return faker.Random.AlphaNumeric(16);
         }
 
         private List<Sede> GeneraCompetenze()
@@ -335,28 +340,13 @@ namespace SO115App.GeneratoreRichiesteFake
             }
         }
 
-        private Localita GeneraLocalita()
-        {
-            throw new NotImplementedException();
-        }
-
-        private Richiedente GeneraRichiedente()
-        {
-            var fakerRichiedente = new Faker<Richiedente>()
-                .StrictMode(true)
-                .RuleFor(t => t.Nominativo, f => f.Name.FirstName())
-                .RuleFor(t => t.Telefono, f => f.Phone.PhoneNumber());
-
-            return fakerRichiedente;
-        }
-
         /// <summary>
         ///   Restituisce una lista di tipologie. Con probabilità 75% la lista contiene una sola
         ///   tipologia. Con probabilità 20% la lista contiene due tipologie. Con probabilità 5% la
         ///   lista contiene tre tipologie.
         /// </summary>
         /// <returns>La lista delle tipologie</returns>
-        private List<Tipologia> GeneraTipologie()
+        private List<string> GeneraTipologie()
         {
             var tipologie =
                 new Tipologia[]
@@ -373,13 +363,13 @@ namespace SO115App.GeneratoreRichiesteFake
 
             var f = new Faker();
             var numeroTipologie = f.Random.WeightedRandom<int>(new int[] { 1, 2, 3 }, new float[] { .7F, .2F, .1F });
-            var range = Enumerable.Range(1, numeroTipologie).Select(x => f.PickRandom(tipologie));
-            var set = new HashSet<Tipologia>(range); // elimina i duplicati
+            var range = Enumerable.Range(1, numeroTipologie).Select(x => f.PickRandom(tipologie).Codice);
+            var set = new HashSet<string>(range); // elimina i duplicati
 
             return set.ToList();
         }
 
-        private static List<Partenza> GeneraListaPartenze()
+        public List<Partenza> GeneraListaPartenze(string CodiceSede, string codMezzo)
         {
             Bogus.Faker faker = new Bogus.Faker();
 
@@ -392,6 +382,7 @@ namespace SO115App.GeneratoreRichiesteFake
                 new Componente("CS","Riccardo Trionfera", "RT", true,false,false),
                 new Componente("CS","Davide Cappa", "DC", false,true,false),
                 new Componente("CS","Michele Dragonetti", "MD", false,false,false),
+                new Componente("CS","Davide Durante", "MD", false,false,false),
             };
 
             List<Squadra> ListaSquadre = new List<Squadra>()
@@ -399,7 +390,7 @@ namespace SO115App.GeneratoreRichiesteFake
                 new Squadra("SO115",Squadra.StatoSquadra.InViaggio,ListaComponentiSquadra,distaccamento)
             };
 
-            Mezzo mezzo = new Mezzo("0", "APS", "Auto pompa serbatoio", "In sede", "CMOB", distaccamento, coordinate: null);
+            Mezzo mezzo = new Mezzo(codMezzo, "APS", "Auto pompa serbatoio", "In sede", "CMOB", distaccamento, coordinate: null);
 
             Partenza partenza = new Partenza();
             partenza.Mezzo = mezzo;
