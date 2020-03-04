@@ -18,13 +18,18 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
+using Persistence.MongoDB;
 using Serilog;
+using SO115App.API.Models.Classi.Condivise;
+using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.API.Models.Servizi.Infrastruttura.Organigramma.Implementazioni;
 using SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.Mezzi;
 using SO115App.API.SOVVF.FakeImplementations.Modello.Organigramma;
 using SO115App.GeneratoreRichiesteFake;
+using SO115App.Persistence.MongoDB;
 
 namespace SO115App.GeneratoreFakeRichieste.ConsoleRunner
 {
@@ -38,6 +43,9 @@ namespace SO115App.GeneratoreFakeRichieste.ConsoleRunner
         private static void Main(string[] args)
         {
             ConfigureLog();
+
+            var DBContext = new DbContext("mongodb://localhost:27017", "sovvf");
+            var Salvataggio = new SaveRichiesta(DBContext);
 
             var getUnitaOperativaRadice = new GetUnitaOperativaRadice_Con_Dir_Com_Dist();
             var espandiPinNodoSuOrganigramma = new EspandiPinNodoSuOrganigramma(getUnitaOperativaRadice);
@@ -59,7 +67,37 @@ namespace SO115App.GeneratoreFakeRichieste.ConsoleRunner
 
             var richieste = generatoreFakeRichieste.Genera().ToArray();
 
-            Log.Debug(JsonConvert.SerializeObject(richieste));
+            int indice = 00000;
+            int anno = DateTime.Now.Year;
+            foreach (var richiesta in richieste)
+            {
+                if (richiesta.Partenze.Count > 0)
+                {
+                    int ultimeDueCifreAnno = anno % 100;
+                    int maxNumero = indice;
+                    string returnFormatString = string.Format("{0}{1}{2:D5}", richiesta.CodSOCompetente.Split('.')[0], ultimeDueCifreAnno, maxNumero);
+                    string codiceMezzo = "";
+
+                    if (richiesta.Eventi.ToList().Find(x => x is UscitaPartenza) != null)
+                        codiceMezzo = ((UscitaPartenza)richiesta.Eventi.ToList().Find(x => x is UscitaPartenza)).CodiceMezzo;
+
+                    foreach (var evento in richiesta.Eventi)
+                    {
+                        if (evento is ComposizionePartenze)
+                        {
+                            ((ComposizionePartenze)evento).Partenza = generatoreFakeRichieste.GeneraListaPartenze(richiesta.CodSOCompetente.Split('.')[0], codiceMezzo).First();
+                            ((ComposizionePartenze)evento).Componenti = new List<ComponentePartenza>().ToHashSet();
+                        }
+                    }
+
+                    richiesta.CodRichiesta = returnFormatString;
+                }
+
+                Salvataggio.Save(richiesta);
+                indice++;
+            }
+
+            //Log.Debug(JsonConvert.SerializeObject(richieste));
         }
 
         private static void ConfigureLog()
