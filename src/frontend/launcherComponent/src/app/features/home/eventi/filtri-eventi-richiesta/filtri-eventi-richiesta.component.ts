@@ -11,6 +11,7 @@ import { EventoRichiesta } from '../../../../shared/model/evento-richiesta.model
 export class FiltriEventiRichiestaComponent implements OnChanges {
 
   @Input() idRichiesta: string;
+  @Input() codiceRichiesta: string;
   @Input() listaTargaMezzo: FiltroTargaMezzo[];
   @Input() initValue: string[];
   @Input() iconeNomeClasseEvento: boolean;

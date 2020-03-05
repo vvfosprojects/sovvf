@@ -2,7 +2,7 @@
     <div class="float-left">
       <span class="h5 font-weight-bold d-inline-block float-left mt-2">
         <i class="fa fa-hashtag"></i>
-        {{idRichiesta}}
+        {{codiceRichiesta ? codiceRichiesta : idRichiesta}}
       </span>
         <button class="btn btn-secondary ml-3" [disabled]="elencoEventi?.length <= 0"
                 (click)="toggleIconeNomeClasseEvento.emit()">

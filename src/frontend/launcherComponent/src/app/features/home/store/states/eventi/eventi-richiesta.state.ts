@@ -1,4 +1,4 @@
-import { Action, Selector, State, StateContext } from '@ngxs/store';
+import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 
 // Service
 import { EventiRichiestaService } from 'src/app/core/service/eventi-richiesta-service/eventi-richiesta.service';
@@ -18,6 +18,7 @@ import {
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from '../../../../../shared/enum/toastr';
 import { FiltroTargaMezzo } from '../../../eventi/filtro-targa-mezzo.interface';
+import { RichiesteState } from '../richieste/richieste.state';
 
 export interface EventiRichiestaStateModel {
   idRichiesta: string;
@@ -45,7 +46,8 @@ export const eventiRichiestaStateDefaults: EventiRichiestaStateModel = {
 })
 export class EventiRichiestaState {
 
-  constructor(private _eventiRichiesta: EventiRichiestaService) {
+  constructor(private store: Store,
+              private _eventiRichiesta: EventiRichiestaService) {
   }
 
   @Selector()
@@ -56,6 +58,11 @@ export class EventiRichiestaState {
   @Selector()
   static idRichiesta(state: EventiRichiestaStateModel) {
     return state.idRichiesta;
+  }
+
+  @Selector()
+  static codiceRichiesta(state: EventiRichiestaStateModel) {
+    return state.codiceRichiesta;
   }
 
   @Selector()
@@ -75,8 +82,10 @@ export class EventiRichiestaState {
 
   @Action(SetIdRichiestaEventi)
   setIdRichiesta({ patchState, dispatch }: StateContext<EventiRichiestaStateModel>, action: SetIdRichiestaEventi) {
+    const richiesta = this.store.selectSnapshot(RichiesteState.richieste).filter(r => r.id === action.idRichiesta)[0];
     patchState({
-      idRichiesta: action.idRichiesta
+      idRichiesta: action.idRichiesta,
+      codiceRichiesta: richiesta && richiesta.codiceRichiesta ? richiesta.codiceRichiesta : richiesta.codice
     });
     dispatch(new GetEventiRichiesta());
   }
