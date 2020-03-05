@@ -22,13 +22,12 @@
             </th>
             </thead>
             <tbody class="h6">
-            <tr *ngFor="let r of elencoEventi; let i = index">
-                <app-evento-richiesta [eventoRichiesta]="r" [nomeClasseEvento]="r.nomeClasseEvento"
-                                      [visualizzaIconeNomeClasseEvento]="iconeNomeClasseEvento"
-                                      [istantePrimoEvento]="istantePrimoEvento"
-                                      [istanteEventoPrecedente]="setIstanteEventoPrecedente(i)"
-                                      (filtroTarga)="setRicercaTargaMezzo($event)"></app-evento-richiesta>
-            </tr>
+                <tr app-evento-richiesta *ngFor="let r of elencoEventi; let i = index" [eventoRichiesta]="r"
+                    [nomeClasseEvento]="r.nomeClasseEvento"
+                    [visualizzaIconeNomeClasseEvento]="iconeNomeClasseEvento"
+                    [istantePrimoEvento]="istantePrimoEvento"
+                    [istanteEventoPrecedente]="setIstanteEventoPrecedente(i)"
+                    (filtroTarga)="setRicercaTargaMezzo($event)"></tr>
             </tbody>
         </table>
     </ng-template>
