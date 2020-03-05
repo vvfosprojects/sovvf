@@ -15,7 +15,7 @@ namespace SO115App.ExternalAPI.Fake.Classi.Utility
                 {
                     CodFiscale = persona.CodFiscale,
                     Nominativo = persona.Nominativo,
-                    Sede = persona.Sede
+                    CodSede = persona.Sede
                 };
                 listaPersonale.Add(personaFisica);
             }
@@ -28,7 +28,7 @@ namespace SO115App.ExternalAPI.Fake.Classi.Utility
             {
                 CodFiscale = persona.CodFiscale,
                 Nominativo = persona.Nominativo,
-                Sede = persona.Sede
+                CodSede = persona.Sede
             };
         }
     }

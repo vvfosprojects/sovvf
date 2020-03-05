@@ -35,10 +35,6 @@ namespace SO115App.API.Models.Classi.Boxes
 
         public int TotTurnoPrecedente { get; set; }
 
-        public string NomeTurnoCorrente { get; set; }
-
-        public string NomeTurnoPrecedente { get; set; }
-
         public int AnnoCorrente { get; set; }
 
         public int TotAnnoCorrente { get; set; }

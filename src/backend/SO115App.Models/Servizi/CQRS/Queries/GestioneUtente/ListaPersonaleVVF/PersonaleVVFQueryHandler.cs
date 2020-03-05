@@ -6,6 +6,9 @@ using System.Linq;
 
 namespace SO115App.Models.Servizi.CQRS.Queries.GestioneUtente.ListaPersonaleVVF
 {
+    /// <summary>
+    ///   l'handler che gestisce la lista degli utenti reperiti su mongoDB e dai servizi esterni
+    /// </summary>
     public class PersonaleVVFQueryHandler : IQueryHandler<PersonaleVVFQuery, PersonaleVVFResult>
     {
         private readonly IGetUtenti _getUtenti;
@@ -17,6 +20,11 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneUtente.ListaPersonaleVVF
             _getPersonaleVVF = getPersonaleVVF;
         }
 
+        /// <summary>
+        ///   metodo handler
+        /// </summary>
+        /// <param name="query">la query in input con i parametri</param>
+        /// <returns>un risultato</returns>
         public PersonaleVVFResult Handle(PersonaleVVFQuery query)
         {
             var listaPersonaleVVF = _getPersonaleVVF.Get(query.Text, query.CodiceSede).Result;
@@ -26,7 +34,6 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneUtente.ListaPersonaleVVF
             {
                 if (listaUtenti.Where(x => x.CodiceFiscale == personale.CodFiscale).ToList().Count == 0)
                 {
-                    personale.Nominativo.Replace(".", " ");
                     listaUtentiNonCensiti.Add(personale);
                 }
             }

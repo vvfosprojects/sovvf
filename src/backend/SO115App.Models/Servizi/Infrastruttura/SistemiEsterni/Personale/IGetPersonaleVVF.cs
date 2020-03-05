@@ -6,6 +6,6 @@ namespace SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Personale
 {
     public interface IGetPersonaleVVF
     {
-        Task<List<PersonaleVVF>> Get(string text, string codSede);
+        Task<List<PersonaleVVF>> Get(string text, string codSede = null);
     }
 }

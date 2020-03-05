@@ -1,12 +1,7 @@
-﻿using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json;
-using SO115App.ExternalAPI.Fake.Classi.DTOOracle;
-using SO115App.ExternalAPI.Fake.Classi.Utility;
-using SO115App.Models.Classi.Utenti.Autenticazione;
+﻿using SO115App.Models.Classi.Utenti.Autenticazione;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Personale;
 using System;
 using System.Collections.Generic;
-using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace SO115App.ExternalAPI.Fake.ImportOracle.GestioniUtenti

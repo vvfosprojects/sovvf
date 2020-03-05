@@ -84,7 +84,7 @@ namespace SO115App.GeneratoreFakeRichieste.ConsoleRunner
                         codiceMezzo = ((UscitaPartenza)richiesta.Eventi.ToList().Find(x => x is UscitaPartenza)).CodiceMezzo;
                     if (richiesta.Eventi.ToList().Find(x => x is InizioPresaInCarico) != null)
                         codiceFonte = ((InizioPresaInCarico)richiesta.Eventi.ToList().Find(x => x is InizioPresaInCarico)).CodiceFonte;
-                    if (string.IsNullOrWhiteSpace(codiceFonte))
+                    if (!string.IsNullOrWhiteSpace(codiceFonte))
                         richiesta.UtPresaInCarico = new List<string> { codiceFonte };
 
                     foreach (var evento in richiesta.Eventi)

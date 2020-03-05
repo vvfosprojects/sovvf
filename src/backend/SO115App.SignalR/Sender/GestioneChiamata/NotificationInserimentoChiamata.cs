@@ -64,7 +64,10 @@ namespace SO115App.SignalR.Sender.GestioneChiamata
             };
             var listaSintesi = (List<SintesiRichiesta>)this._sintesiRichiesteAssistenzaHandler.Handle(sintesiRichiesteAssistenzaQuery).SintesiRichiesta;
 
-            var boxRichiesteQuery = new BoxRichiesteQuery();
+            var boxRichiesteQuery = new BoxRichiesteQuery
+            {
+                CodiceSede = intervento.CodiceSede
+            };
             var boxInterventi = (BoxInterventi)this._boxRichiesteHandler.Handle(boxRichiesteQuery).BoxRichieste;
 
             var sintesiRichiesteAssistenzaMarkerQuery = new SintesiRichiesteAssistenzaMarkerQuery();

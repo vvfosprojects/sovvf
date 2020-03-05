@@ -57,8 +57,8 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneUtenti.AddUtente
             var personale = _personaleByCF.Get(command.CodFiscale, command.CodiceSede.Split(".")[0]).Result;
             var listaPin = new List<PinNodo>();
             var sediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
-            var distaccamenti = _getListaDistaccamentiByCodiceSede.GetListaDistaccamenti(personale.Sede.Split(".")[0]);
-            var distaccamento = distaccamenti.Find(x => x.CodDistaccamento.Equals(Convert.ToInt32(personale.Sede.Split(".")[1])));
+            var distaccamenti = _getListaDistaccamentiByCodiceSede.GetListaDistaccamenti(personale.CodSede.Split(".")[0]);
+            var distaccamento = distaccamenti.Find(x => x.CodDistaccamento.Equals(Convert.ToInt32(personale.CodSede.Split(".")[1])));
             foreach (var ruolo in command.Ruoli)
             {
                 listaPin.Add(new PinNodo(ruolo.CodSede, ruolo.Ricorsivo));

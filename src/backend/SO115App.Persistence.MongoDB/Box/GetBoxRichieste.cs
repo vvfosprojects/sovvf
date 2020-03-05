@@ -51,12 +51,12 @@ namespace SO115App.Persistence.MongoDB
 
             if (listaSintesi.Count > 0)
             {
-                interventi.Assegnati = listaSintesi.FindAll(x => x.Partenze.Count > 0).Count;
-                interventi.Chiamate = listaSintesi.FindAll(x => x.Partenze.Count == 0).Count;
-                interventi.Presidiati = listaSintesi.FindAll(x => x.Presidiata).Count;
-                interventi.Sospesi = listaSintesi.FindAll(x => x.Sospesa).Count;
-                interventi.TotAnnoCorrente = listaSintesi.FindAll(x => x.IstanteRicezioneRichiesta.Year == DateTime.Now.Year).Count;
-                interventi.TotTurnoCorrente = listaSintesi.FindAll(x => x.IstanteRicezioneRichiesta.Year == DateTime.Now.Year).Count;
+                interventi.Assegnati = listaSintesi.Count(x => x.Partenze.Count > 0);
+                interventi.Chiamate = listaSintesi.Count(x => x.Partenze.Count == 0);
+                interventi.Presidiati = listaSintesi.Count(x => x.Presidiata);
+                interventi.Sospesi = listaSintesi.Count(x => x.Sospesa);
+                interventi.TotAnnoCorrente = listaSintesi.Count(x => x.IstanteRicezioneRichiesta.Year == DateTime.Now.Year);
+                interventi.TotTurnoCorrente = listaSintesi.Count(x => x.IstanteRicezioneRichiesta.Year == DateTime.Now.Year);
                 interventi.TotTurnoPrecedente = 0;
                 interventi.Totale = listaSintesi.Count;
             }

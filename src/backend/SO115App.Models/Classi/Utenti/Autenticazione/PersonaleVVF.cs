@@ -18,6 +18,11 @@
         /// <summary>
         ///   il codice della sede
         /// </summary>
-        public string Sede { get; set; }
+        public string CodSede { get; set; }
+
+        /// <summary>
+        ///   la descrizione della sede
+        /// </summary>
+        public string DescSede { get; set; }
     }
 }
