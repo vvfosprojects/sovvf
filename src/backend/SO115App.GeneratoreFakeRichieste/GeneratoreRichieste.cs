@@ -183,19 +183,17 @@ namespace SO115App.GeneratoreRichiesteFake
                 .RuleFor(ra => ra.Codice, f => string.Format("{0}{1}{2:D5}", this.codiceUnitaOperativa.Substring(0, 2), DateTime.Now.Day.ToString() + DateTime.Now.Month.ToString() + DateTime.Now.Year.ToString().Substring(2, 2), f.IndexGlobal))
                 .RuleFor(ra => ra.NotePubbliche, "")
                 .RuleFor(ra => ra.NotePrivate, "")
-                .RuleFor(ra => ra.UtInLavorazione, new List<string> { "" })
-                .RuleFor(ra => ra.UtPresaInCarico, new List<string> { "" })
                 .RuleFor(ra => ra.CodRichiesta, "")
 
                 .RuleFor(ra => ra.CodSOCompetente, f => this.codiceUnitaOperativa)
-                .RuleFor(ra => ra.CodOperatore, f => GeneraOperatore())
+                .RuleFor(ra => ra.CodOperatore, f => "5e53e1345325498641f2fe2b")
                 .RuleFor(ra => ra.CodSOAllertate, f => new HashSet<string> { this.codiceUnitaOperativa })
                 .RuleFor(ra => ra.Tipologie, f => this.GeneraTipologie())
                 .RuleFor(ra => ra.IstanteChiusura, f => null)
                 .RuleFor(ra => ra.CodZoneEmergenza, f => f.Random.Float() < 0.001 ? new[] { f.Random.ListItem(zoneEmergenza) } : new string[0])
                 .RuleFor(ra => ra.Descrizione, f => f.Lorem.Sentence())
                 .RuleFor(ra => ra.Richiedente, f => new Richiedente(f.Name.FirstName(), f.Phone.Locale))
-                .RuleFor(ra => ra.CodUOCompetenza, f => new[] { f.Address.StateAbbr(), f.Address.StateAbbr(), f.Address.StateAbbr() })
+                .RuleFor(ra => ra.CodUOCompetenza, f => new[] { "RM.1000", "RM.1007", "RM.1001" })
                 .RuleFor(ra => ra.Localita, f => new Localita(
                     this.generatoreCoordinateInterventoPerUO.Genera(codiceUnitaOperativa),
                     indirizzo,
@@ -207,7 +205,10 @@ namespace SO115App.GeneratoreRichiesteFake
                 .Ignore(ra => ra.CodEntiIntervenuti)
                 .Ignore(ra => ra.CodEntiPresaInCarico)
                 .Ignore(ra => ra.ObiettivoSensibile)
-                .Ignore(ra => ra.Id);
+                .Ignore(ra => ra.Id)
+                .Ignore(ra => ra.UtInLavorazione)
+                .Ignore(ra=>ra.UtPresaInCarico);
+                
 
             var fakerTelefonata = new Faker<Telefonata>()
                 .StrictMode(true)
@@ -288,13 +289,6 @@ namespace SO115App.GeneratoreRichiesteFake
             }
 
             return richiesteConParametri.Select(r => r.Richiesta);
-        }
-
-        public static string GeneraOperatore()
-        {
-            Bogus.Faker faker = new Bogus.Faker("it");
-
-            return faker.Random.AlphaNumeric(16);
         }
 
         private List<Sede> GeneraCompetenze()

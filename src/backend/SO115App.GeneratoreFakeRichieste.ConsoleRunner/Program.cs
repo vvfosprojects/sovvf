@@ -24,6 +24,7 @@ using Newtonsoft.Json;
 using Persistence.MongoDB;
 using Serilog;
 using SO115App.API.Models.Classi.Condivise;
+using SO115App.API.Models.Classi.Soccorso.Eventi;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.API.Models.Servizi.Infrastruttura.Organigramma.Implementazioni;
 using SO115App.API.SOVVF.FakeImplementations.Modello.GestioneSoccorso.Mezzi;
@@ -52,7 +53,7 @@ namespace SO115App.GeneratoreFakeRichieste.ConsoleRunner
             var getMezziInServizioPerUnitaOperativa_Fake = new GetMezziInServizioPerUnitaOperativa_Fake(espandiPinNodoSuOrganigramma);
             var generatoreCoordinateIntervento = new GeneratoreCoordinateInterventoPerUO();
             var generatoreFakeRichieste = new GeneratoreRichieste(
-                "TO.1000",
+                "RM.1000",
                 getMezziInServizioPerUnitaOperativa_Fake,
                 DateTime.UtcNow.AddDays(-5),
                 DateTime.UtcNow,
@@ -77,9 +78,14 @@ namespace SO115App.GeneratoreFakeRichieste.ConsoleRunner
                     int maxNumero = indice;
                     string returnFormatString = string.Format("{0}{1}{2:D5}", richiesta.CodSOCompetente.Split('.')[0], ultimeDueCifreAnno, maxNumero);
                     string codiceMezzo = "";
+                    string codiceFonte = "";
 
                     if (richiesta.Eventi.ToList().Find(x => x is UscitaPartenza) != null)
                         codiceMezzo = ((UscitaPartenza)richiesta.Eventi.ToList().Find(x => x is UscitaPartenza)).CodiceMezzo;
+                    if (richiesta.Eventi.ToList().Find(x => x is InizioPresaInCarico) != null)
+                        codiceFonte = ((InizioPresaInCarico)richiesta.Eventi.ToList().Find(x => x is InizioPresaInCarico)).CodiceFonte;
+                    if (string.IsNullOrWhiteSpace(codiceFonte))
+                        richiesta.UtPresaInCarico = new List<string> { codiceFonte };
 
                     foreach (var evento in richiesta.Eventi)
                     {
