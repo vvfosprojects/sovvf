@@ -7,10 +7,8 @@ using SO115App.API.Models.Classi.Soccorso;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
 using SO115App.Models.Servizi.Infrastruttura.Marker;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace SO115App.Persistence.MongoDB.Marker
 {

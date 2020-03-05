@@ -111,7 +111,7 @@ namespace SO115App.Persistence.MongoDB
             foreach (var codCompetenza in codUOCompetenza)
             {
                 var Distaccamento = ListaDistaccamenti.Find(x => x.CodDistaccamento == Convert.ToInt32(codCompetenza.Split('.')[1]));
-                Sede sede = new Sede(codCompetenza, Distaccamento.DescDistaccamento, Distaccamento.Indirizzo, Distaccamento.Coordinate, "", "", "", "", "");
+                Sede sede = Distaccamento == null ? null : new Sede(codCompetenza, Distaccamento.DescDistaccamento, Distaccamento.Indirizzo, Distaccamento.Coordinate, "", "", "", "", "");
                 ListaSedi.Add(sede);
             }
 

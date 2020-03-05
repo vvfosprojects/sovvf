@@ -18,8 +18,11 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Queries;
+using SO115App.API.Models.Classi.Organigramma;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes;
 using SO115App.Models.Servizi.Infrastruttura.Box;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.DisponibilitaMezzi
 {
@@ -42,8 +45,9 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Disponibilit
         /// <returns>Elenco dei mezzi disponibili</returns>
         public BoxRichiesteResult Handle(BoxRichiesteQuery query)
         {
+            var listaPin = new List<PinNodo> { new PinNodo(query.CodiceSede, true) };
             // preparazione del DTO
-            var boxes = _iGetBox.Get();
+            var boxes = _iGetBox.Get(listaPin.ToHashSet());
 
             return new BoxRichiesteResult()
             {

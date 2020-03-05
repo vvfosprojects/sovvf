@@ -19,6 +19,7 @@
 //-----------------------------------------------------------------------
 using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Boxes;
+using SO115App.API.Models.Classi.Organigramma;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.StatiRichiesta;
 using SO115App.FakePersistence.JSon.Utility;
@@ -33,7 +34,7 @@ namespace SO115App.FakePersistenceJSon.Box
 {
     public class GetRichieste : IGetBoxRichieste
     {
-        public BoxInterventi Get()
+        public BoxInterventi Get(ISet<PinNodo> listaPin)
         {
             var interventi = new BoxInterventi();
             var listaRichiesteAssistenza = new List<RichiestaAssistenza>();

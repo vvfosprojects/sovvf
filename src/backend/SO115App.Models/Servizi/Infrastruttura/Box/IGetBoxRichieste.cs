@@ -18,6 +18,8 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using SO115App.API.Models.Classi.Boxes;
+using SO115App.API.Models.Classi.Organigramma;
+using System.Collections.Generic;
 
 namespace SO115App.Models.Servizi.Infrastruttura.Box
 {
@@ -27,6 +29,6 @@ namespace SO115App.Models.Servizi.Infrastruttura.Box
         ///   Restituisce i dati riguardanti gli Interventi, da posizionare nel Box in Home Page
         /// </summary>
         /// <returns>Il numero totale dei Squadre</returns>
-        BoxInterventi Get();
+        BoxInterventi Get(ISet<PinNodo> listaPin);
     }
 }
