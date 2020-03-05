@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { EventoRichiesta } from '../../../shared/model/evento-richiesta.model';
 import { FiltroTargaMezzo } from './filtro-targa-mezzo.interface';
 import { SetFiltroTargaMezzo, ToggleIconeNomeClasseEvento } from '../store/actions/eventi/eventi-richiesta.actions';
+import { LoadingState } from '../../../shared/store/states/loading/loading.state';
 
 @Component({
   selector: 'app-eventi-richiesta',
@@ -19,6 +20,7 @@ export class EventiRichiestaComponent implements OnInit, OnDestroy {
   @Select(EventiRichiestaState.codiceRichiesta) codiceRichiesta$: Observable<string>;
   @Select(EventiRichiestaState.targheSelezionate) targheSelezionate$: Observable<string[]>;
   @Select(EventiRichiestaState.visualizzazioneIconeNomeClasseEvento) visualizzazioneIconeNomeClasseEvento$: Observable<boolean>;
+  @Select(LoadingState.loading) loading$: Observable<boolean>;
 
   constructor(private store: Store) {
   }

@@ -13,5 +13,6 @@
 <div class="modal-body">
     <app-lista-eventi-richiesta [elencoEventi]="eventiRichiesta$ | async"
                                 [iconeNomeClasseEvento]="visualizzazioneIconeNomeClasseEvento$ | async"
+                                [loading]="loading$ | async"
                                 (targheSelezionate)="onSelezioneTarga($event)"></app-lista-eventi-richiesta>
 </div>

@@ -31,7 +31,13 @@
             </tbody>
         </table>
     </ng-template>
-    <ng-template [ngIf]="elencoEventi?.length <= 0">
+    <ng-template [ngIf]="!loading && elencoEventi?.length <= 0">
         <div class="alert alert-danger font-weight-bold h5">Non ci sono eventi associati alla richiesta</div>
+    </ng-template>
+    <ng-template [ngIf]="loading">
+        <div class="alert alert-warning font-weight-bold h5">
+            <i class="fa fa-spinner fa-spin mr-1"></i>
+            Caricamento...
+        </div>
     </ng-template>
 </div>

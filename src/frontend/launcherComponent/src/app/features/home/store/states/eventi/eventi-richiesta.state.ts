@@ -1,12 +1,6 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
-
-// Service
 import { EventiRichiestaService } from 'src/app/core/service/eventi-richiesta-service/eventi-richiesta.service';
-
-// Model
 import { EventoRichiesta } from '../../../../../shared/model/evento-richiesta.model';
-
-// Action
 import {
   ClearEventiRichiesta,
   GetEventiRichiesta,
@@ -19,6 +13,7 @@ import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.ac
 import { ToastrType } from '../../../../../shared/enum/toastr';
 import { FiltroTargaMezzo } from '../../../eventi/filtro-targa-mezzo.interface';
 import { RichiesteState } from '../richieste/richieste.state';
+import { StartLoading, StopLoading } from '../../../../../shared/store/actions/loading/loading.actions';
 
 export interface EventiRichiestaStateModel {
   idRichiesta: string;
@@ -93,9 +88,11 @@ export class EventiRichiestaState {
   @Action(GetEventiRichiesta)
   getEventiRichiesta({ getState, dispatch }: StateContext<EventiRichiestaStateModel>) {
     const idRichiesta = getState().idRichiesta;
+    dispatch(new StartLoading());
     this._eventiRichiesta.getEventiRichiesta(idRichiesta).subscribe((data: EventoRichiesta[]) => {
-      console.log(`Get Eventi Richiesta: ${idRichiesta}`);
+      // console.log(`Get Eventi Richiesta: ${idRichiesta}`);
       dispatch(new SetEventiRichiesta(data));
+      dispatch(new StopLoading());
     }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5)));
 
   }
