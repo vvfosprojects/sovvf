@@ -212,8 +212,7 @@
                                 <button *ngIf="gestibile" class="btn border py-0 px-0 mr-1"
                                         ngbTooltip="Gestisci"
                                         [disabled]="disabledGestisciRichiesta"
-                                        [ngClass]="{'cursor-not-allowed': disabledGestisciRichiesta}"
-                                        [ngClass]="{'btn-light': !inGestione, 'btn-secondary': inGestione}"
+                                        [ngClass]="{'btn-light': !inGestione, 'btn-secondary': inGestione, 'cursor-not-allowed': disabledGestisciRichiesta}"
                                         (click)="onGestioneRichiesta(); $event.stopPropagation()">
                                     <i class="fa fa-fw fa-gear"
                                        [ngClass]="{'text-secondary': !inGestione, 'text-light': inGestione}"></i>
