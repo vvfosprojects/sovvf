@@ -173,7 +173,7 @@ export class HelperSintesiRichiesta {
 
     cardBorder(r: SintesiRichiesta) {
         if (r) {
-            if (!this._isInLavorazione(r.stato, r.listaUtentiInLavorazione)) {
+            if (!this._isPresaInCarico(r.stato, r.listaUtentiPresaInCarico)) {
                 return {
                     // Bordo sinistro (stato)
                     'status_chiamata': r.stato === StatoRichiesta.Chiamata,
@@ -253,6 +253,20 @@ export class HelperSintesiRichiesta {
         } else {
             return null;
         }
+    }
+
+    _isPresaInCarico(stato: StatoRichiesta, attivita: AttivitaUtente[]): boolean {
+        if (attivita && stato === StatoRichiesta.Chiamata) {
+            for (const _attivita in attivita) {
+                /**
+                 * eventuale logica di controllo
+                 */
+                if (_attivita) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     _isInLavorazione(stato: StatoRichiesta, attivita: AttivitaUtente[]): boolean {
