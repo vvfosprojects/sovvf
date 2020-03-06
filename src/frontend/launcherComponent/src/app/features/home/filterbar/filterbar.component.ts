@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 // View
 import { ViewInterfaceButton, ViewLayouts } from '../../../shared/interface/view.interface';
 // Filtri Richieste
-import { ResetFiltriSelezionatiRichieste, SetFiltroSelezionatoRichieste } from '../store/actions/filterbar/filtri-richieste.actions';
+import { ClearFiltroSelezionatoRichieste, ResetFiltriSelezionatiRichieste, SetFiltroSelezionatoRichieste } from '../store/actions/filterbar/filtri-richieste.actions';
 import { FiltriRichiesteState } from '../store/states/filterbar/filtri-richieste.state';
 import { VoceFiltro } from './ricerca-group/filtri-richieste/voce-filtro.model';
 // Ricerca Richieste
@@ -41,7 +41,7 @@ export class FilterbarComponent {
 
     // Filtri Richieste
     @Select(FiltriRichiesteState.filtriTipologie) filtriRichieste$: Observable<VoceFiltro[]>;
-    @Select(FiltriRichiesteState.filtriSelezionati) filtriSelezionatiRichieste$: Observable<VoceFiltro[]>;
+    @Select(FiltriRichiesteState.filtriRichiesteSelezionati) filtriRichiesteSelezionati$: Observable<VoceFiltro[]>;
     @Select(FiltriRichiesteState.categoriaFiltriTipologie) categoriaFiltriRichieste$: Observable<string[]>;
 
     // Ricerca Richieste
@@ -89,6 +89,10 @@ export class FilterbarComponent {
      */
     onSelezioneFiltroRichieste(filtro: VoceFiltro) {
         this.store.dispatch(new SetFiltroSelezionatoRichieste(filtro));
+    }
+
+    onDeselezioneFiltroRichieste(filtro: VoceFiltro) {
+        this.store.dispatch(new ClearFiltroSelezionatoRichieste(filtro));
     }
 
     eliminaFiltriAttiviRichieste() {

@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, HostBinding } from '@angular/core';
+import { Component, Input, Output, EventEmitter, HostBinding, OnChanges, SimpleChanges } from '@angular/core';
 import { VoceFiltro } from './voce-filtro.model';
 import { NgbDropdownConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
@@ -7,7 +7,7 @@ import { NgbDropdownConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
     templateUrl: './filtri-richieste.component.html',
     styleUrls: ['./filtri-richieste.component.css']
 })
-export class FiltriRichiesteComponent {
+export class FiltriRichiesteComponent implements OnChanges {
 
     @HostBinding('class') classes = 'input-group-append';
 
@@ -16,9 +16,10 @@ export class FiltriRichiesteComponent {
     @Input() categorie: string[];
 
     @Output() filtroSelezionato: EventEmitter<VoceFiltro> = new EventEmitter();
+    @Output() filtroDeselezionato: EventEmitter<VoceFiltro> = new EventEmitter();
     @Output() filtriReset: EventEmitter<any> = new EventEmitter();
 
-    categoriaSelezionata = 'Presidiato';
+    categoriaSelezionata: string;
     filtersSearch = { descrizione: '' };
     p: number;
 
@@ -27,6 +28,11 @@ export class FiltriRichiesteComponent {
         dropdownOpts.placement = 'bottom-left';
     }
 
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes && changes.categorie && changes.categorie.currentValue) {
+            this.categoriaSelezionata = changes.categorie.currentValue[0];
+        }
+    }
 
     onSelezioneCategoria(categoria: any) {
         this.categoriaSelezionata = categoria;
@@ -41,7 +47,15 @@ export class FiltriRichiesteComponent {
         this.filtroSelezionato.emit(filtro);
     }
 
+    onDeselezioneFiltro(filtro: VoceFiltro) {
+        this.filtroDeselezionato.emit(filtro);
+    }
+
     eliminaFiltriAttivi() {
         this.filtriReset.emit();
+    }
+
+    _isSelezionato(filtro: VoceFiltro) {
+        return this.filtriSelezionati.indexOf(filtro) !== -1;
     }
 }

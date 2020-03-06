@@ -23,3 +23,7 @@ export function resetFiltriSelezionati(filtriRichieste: VoceFiltro[]) {
     });
     return filtriRichieste;
 }
+
+export function _isStatico(filtriStatici: VoceFiltro[], filtro: VoceFiltro) {
+    return filtriStatici.indexOf(filtro) !== -1;
+}

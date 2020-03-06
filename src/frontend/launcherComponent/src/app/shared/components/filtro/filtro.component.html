@@ -1,2 +1,11 @@
-<button class="btn btn-block mb-1" [ngClass]="{'btn-outline-primary': !filtro.selezionato, 'btn-success': filtro.selezionato}"
-  appDebounceClick (debounceClick)="onSelezione(filtro)" [debounceTime]="700">{{ filtro.descrizione | truncate:70 }}</button>
+<button *ngIf="!useCheckbox" class="btn btn-block mb-1"
+        [ngClass]="{'btn-outline-primary': !selezionato, 'btn-success': selezionato}"
+        [debounceTime]="700" appDebounceClick (debounceClick)="onSelezione(filtro)">
+    {{ filtro.descrizione | truncate:70 }}
+</button>
+
+<div *ngIf="useCheckbox">
+    <app-checkbox [checkboxState]="{id: filtro.codice, status: selezionato, label: filtro.descrizione | truncate:70}"
+                  [debounceTime]="700" appDebounceClick
+                  (debounceClick)="onSelezione(filtro)"></app-checkbox>
+</div>
