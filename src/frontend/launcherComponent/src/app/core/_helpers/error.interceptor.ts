@@ -40,6 +40,10 @@ export class ErrorInterceptor implements HttpInterceptor {
                 this.store.dispatch(new ShowToastr(ToastrType.Error, 'Risorsa non accessibile', err.error));
             }
 
+            if ([400].indexOf(err.status) !== -1) {
+                this.store.dispatch(new ShowToastr(ToastrType.Error, 'Bad Request', err.error));
+            }
+
             const error = err.error.message || err.statusText;
             return throwError(error);
         }));
