@@ -8,9 +8,6 @@ namespace SO115App.Persistence.Oracle.Servizi.Squadre
 {
     public class GetSquadre
     {
-        // public string AddOreOracle = "+ 6 / 24 "; //questa stringa serve per fare le prove. data
-        // del server è indietro e se vengono aggiunte 6 ore si possono fare i test. Deve essere tolta
-
         public List<ORAGesPreaccoppiati> GetListaGesPreaccoppiati(string CodSede)
         {
             List<ORAGesPreaccoppiati> ListaGesPreaccoppiat = new List<ORAGesPreaccoppiati>();
@@ -31,7 +28,7 @@ namespace SO115App.Persistence.Oracle.Servizi.Squadre
                     " ,NVL(SALAOPER.AUTOMEZZI.COD_COMANDO,0) as COD_COMANDO, " +
                     " NVL(SALAOPER.AUTOMEZZI.TARGA, 0) as TARGA , " +
                     " NVL(SALAOPER.AUTOMEZZI.TIPO_MEZZO, '') as TIPO_MEZZO " +
-                    "FROM  SALAOPER.GES_PREACCOPPIATI , SALAOPER.AUTOMEZZI " +
+                    "FROM  SALAOPER.PREACCOPPIATI , SALAOPER.AUTOMEZZI " +
                    " where      SALAOPER.AUTOMEZZI.COD_AUTOMEZZO = SALAOPER.GES_PREACCOPPIATI.COD_AUTOMEZZO " +
                    "and  COD_COMANDO = :COD_COMANDO ";
 

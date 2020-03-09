@@ -141,7 +141,8 @@ namespace SO115App.Persistence.Oracle.Servizi.Mezzi
                  "WHERE COD_COMANDO = :COD_COMANDO  " +
                 "AND FLAG_OPER = 'S' " +
                 "AND FONTE ='TC' " +
-                "AND STATO NOT IN ('A','O','R','F') "; // ESCLUDO I PREACCOPPIATI ED I MEZZI FUORI SERVIZIO
+                "AND STATO <> 'F'"; // ESCLUDO  I MEZZI FUORI SERVIZIO
+                                    //"AND STATO NOT IN ('A','O','R','F') "; // ESCLUDO I PREACCOPPIATI ED I MEZZI FUORI SERVIZIO
 
             cmd.CommandType = CommandType.Text;
             cmd.BindByName = true;

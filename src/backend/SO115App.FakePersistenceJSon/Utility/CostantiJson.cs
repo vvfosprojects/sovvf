@@ -20,5 +20,10 @@ namespace SO115App.FakePersistence.JSon.Utility
         public static string SchedeContatti = "Fake/SchedeContatti.json";
         public static string Mezzo = "Fake/Mezzo.json";
         public static string StatoMezzo = "Fake/StatoMezzo.json";
+        public static string ListaMezzi = "Fake/ListaMezzi.json";
+        public static string ListaSqaudre = "Fake/ListaSqaudre.json";
+        public static string ListaPreAccoppiati = "Fake/ListaPreAccoppiati.json";
+        public static string ListaAnagraficaPersonale = "Fake/ListaAnagraficaPersonale.json";
+        public static string ListaAnagraficaMezzi = "Fake/ListaAnagraficaMezzi.json";
     }
 }

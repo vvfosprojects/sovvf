@@ -1,0 +1,237 @@
+[
+    {
+        "CodiceSquadra": "1",
+        "NomeSquadra": "RM1",
+        "Sede": "RM.1000",
+        "Stato": "2",
+        "ListaCodiciFiscaliComponentiSquadra": [
+            "CHRNZE58M17A132V",
+            "BSLGLC74L18H501V",
+            "CLFRSO63R48F880Y",
+            "CRBGNN63S24C351M",
+            "FLCMSM73T14H501Z"
+        ]
+    },
+    {
+        "CodiceSquadra": "2",
+        "NomeSquadra": "RM2",
+        "Sede": "RM.1000",
+        "Stato": "2",
+        "ListaCodiciFiscaliComponentiSquadra": [
+
+            "NGLNDR82L20H501L",
+            "SNTGMR90L23H534Q",
+            "DLLLRI85E62F839L",
+            "FCIGPP80C14D423J",
+            "CTLNTN89P04F839A"
+        ]
+    },
+    {
+        "CodiceSquadra": "3",
+        "NomeSquadra": "RM3",
+        "Sede": "RM.1000",
+        "Stato": "2",
+        "ListaCodiciFiscaliComponentiSquadra": [
+            "CLNNDR75L20E435B",
+            "BCCSFN80S16D773C",
+            "SCRPRN79B07L063W",
+            "PRTGDU77S07C096R",
+            "CRRFNC83L06M082U"
+        ]
+    },
+    {
+        "CodiceSquadra": "4",
+        "NomeSquadra": "RM4",
+        "Sede": "RM.1000",
+        "Stato": "2",
+        "ListaCodiciFiscaliComponentiSquadra": [
+            "DPTTMS79A25H501X",
+            "MNNGLM82A06A176C",
+            "MTCNTN82S25D643D",
+            "FSLMCL86M27E791Z",
+            "RSSRRT85R09F839B"
+        ]
+    },
+    {
+        "CodiceSquadra": "5",
+        "NomeSquadra": "RM5",
+        "Sede": "RM.3101",
+        "Stato": "0",
+        "ListaCodiciFiscaliComponentiSquadra": [
+            "BGNLSN66D04H501P",
+            "BRCRMN58B24H501S",
+            "BRNRRT49T28H501Y",
+            "BRSNGL52S66F839I",
+            "CCCMRC69A12H501H"
+        ]
+    },
+    {
+        "CodiceSquadra": "6",
+        "NomeSquadra": "RM6",
+        "Sede": "RM.3101",
+        "Stato": "0",
+        "ListaCodiciFiscaliComponentiSquadra": [
+            "DLLCST68R21G587C",
+            "DGTMRA72M28H501V",
+            "CSTSFN58H22H501Q",
+            "DMNVCN70T23F839K",
+            "DMRFBA64R25L719U"
+        ]
+    },
+    {
+        "CodiceSquadra": "7",
+        "NomeSquadra": "RM7",
+        "Sede": "RM.3101",
+        "Stato": "0",
+        "ListaCodiciFiscaliComponentiSquadra": [
+
+            "MRGMRA62E19H501I",
+            "MPVDNI68A08A256M",
+            "MRNMRT63M28L182T",
+            "MNCMRA64P08I992K",
+            "MNCNGL71M23H501K"
+        ]
+    },
+    {
+        "CodiceSquadra": "8",
+        "NomeSquadra": "RM8",
+        "Sede": "RM.2001",
+        "Stato": "2",
+        "ListaCodiciFiscaliComponentiSquadra": [
+
+            "BCCFBA63S09H501F",
+            "BRZGLC70L11H501Q",
+            "BTTNRC79E27B114R",
+            "CRCLSS77L07H501D",
+            "CPPMSM75H07H501F"
+        ]
+    },
+    {
+        "CodiceSquadra": "9",
+        "NomeSquadra": "RM9",
+        "Sede": "RM.2001",
+        "Stato": "2",
+        "ListaCodiciFiscaliComponentiSquadra": [
+
+            "MPCMRZ63B24H501C",
+            "LCNMRT67D10H501M",
+            "RMNSTG72H26H501V",
+            "RTNMRC70H27H501M",
+            "NRDMSM64D20B114Q"
+        ]
+    },
+    {
+        "CodiceSquadra": "10",
+        "NomeSquadra": "MI1",
+        "Sede": "MI.1000",
+        "Stato": "2",
+        "ListaCodiciFiscaliComponentiSquadra": [
+
+            "GLNCSM66L13L049M",
+            "FRNMLG65E09B729H",
+            "FRRGNN60A02G273T",
+            "DTLVTI57S18A662V",
+            "GMINTN62A31C342V",
+            "DFRCLD66A26A940Q"
+        ]
+    },
+    {
+        "CodiceSquadra": "11",
+        "NomeSquadra": "MI2",
+        "Sede": "MI.1000",
+        "Stato": "2",
+        "ListaCodiciFiscaliComponentiSquadra": [
+
+            "BDUMRC63P09F205C",
+            "BFFMRZ57C13F205P",
+            "BLLRCC74B24H926M",
+            "BLSMHL68M08A271F",
+            "BLSMRA72B03I480R"
+
+        ]
+    },
+    {
+        "CodiceSquadra": "12",
+        "NomeSquadra": "MI3",
+        "Sede": "MI.1000",
+        "Stato": "2",
+        "ListaCodiciFiscaliComponentiSquadra": [
+
+            "CLVNTN67M03F205G",
+            "CPLNGL61E14F205R",
+            "CRBDVD73L18H501Y",
+            "CRSVTI63L22A662C",
+            "CRTGNN66M24E648L"
+        ]
+    },
+    {
+        "CodiceSquadra": "13",
+        "NomeSquadra": "MI4",
+        "Sede": "MI.2005",
+        "Stato": "2",
+        "ListaCodiciFiscaliComponentiSquadra": [
+
+            "TRTMSM73C14F839I",
+            "TRVCSM63M25B180Y",
+            "SPDPTR70D16D423L",
+            "NZZVCN83E22F258X"
+
+        ]
+    },
+    {
+        "CodiceSquadra": "13",
+        "NomeSquadra": "MI5",
+        "Sede": "MI.2005",
+        "Stato": "2",
+        "ListaCodiciFiscaliComponentiSquadra": [
+            "FFCGNR85D18F839J",
+            "SNGMZN79A17L400Y",
+            "LRSMKG82D19C933G",
+            "CPLGPP79P05A08VF",
+            "MRNNNN65B25H224D"
+        ]
+    },
+    {
+        "CodiceSquadra": "14",
+        "NomeSquadra": "MI6",
+        "Sede": "MI.2005",
+        "Stato": "2",
+        "ListaCodiciFiscaliComponentiSquadra": [
+            "PGLNDR83L19E625C",
+            "MNCLSN74L16F842Q",
+            "DMAVCN81L21A176D",
+            "DNGGPP70B07G273O",
+            "MRUNNL69T04I719H"
+
+        ]
+    },
+    {
+        "CodiceSquadra": "15",
+        "NomeSquadra": "MI7",
+        "Sede": "MI.1003",
+        "Stato": "2",
+        "ListaCodiciFiscaliComponentiSquadra": [
+
+            "LTNGLC67E08G388P",
+            "LZZMRC79R11H501Z",
+            "RMNFDN68H19F205U",
+            "RSTRRT64L14F205K",
+            "MZZSFN82B03L570O"
+        ]
+    },
+    {
+        "CodiceSquadra": "16",
+        "NomeSquadra": "MI8",
+        "Sede": "MI.1003",
+        "Stato": "2",
+        "ListaCodiciFiscaliComponentiSquadra": [
+
+            "BLLPTR80H26F205H",
+            "FRSDDG78B20F205F",
+            "MCRFPP79L17M109C",
+            "MRTNDR80S26F205B",
+            "PTRRCR88M06F205W"
+
+        ]
+    }
+]
