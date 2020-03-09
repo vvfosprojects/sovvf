@@ -1,19 +1,21 @@
-// Model
 import { VoceFiltro } from '../../../filterbar/ricerca-group/filtri-richieste/voce-filtro.model';
 
-// GET
 export class GetFiltriRichieste {
     static readonly type = '[FiltriRichieste] Get Filtri Richieste';
 }
 
-// SET FILTRO SELEZIONATO (SELEZIONATO, NON SELEZIONATO)
 export class SetFiltroSelezionatoRichieste {
-    static readonly type = '[FiltriRichieste] Toggle filtro';
+    static readonly type = '[FiltriRichieste] Set Filtro Richieste Selezionato';
 
     constructor(public filtro: VoceFiltro) {}
 }
 
-// RESET FILTRI SELEZIONATI
+export class ClearFiltroSelezionatoRichieste {
+    static readonly type = '[FiltriRichieste] Clear Filtro Richieste Selezionato';
+
+    constructor(public filtro: VoceFiltro) {}
+}
+
 export class ResetFiltriSelezionatiRichieste {
-    static readonly type = '[FiltriRichieste] Reset dei filtri selezionati';
+    static readonly type = '[FiltriRichieste] Reset Filtri Richieste Selezionati';
 }

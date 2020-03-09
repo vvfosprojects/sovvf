@@ -1,25 +1,30 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
-import { makeCopy } from '../../../../../shared/helper/function';
 import { VoceFiltro } from '../../../filterbar/ricerca-group/filtri-richieste/voce-filtro.model';
-import { GetFiltriRichieste, SetFiltroSelezionatoRichieste, ResetFiltriSelezionatiRichieste } from '../../actions/filterbar/filtri-richieste.actions';
+import { GetFiltriRichieste, SetFiltroSelezionatoRichieste, ResetFiltriSelezionatiRichieste, ClearFiltroSelezionatoRichieste } from '../../actions/filterbar/filtri-richieste.actions';
 import { Tipologia } from '../../../../../shared/model/tipologia.model';
-import { resetFiltriSelezionati as _resetFiltriSelezionati, setFiltroSelezionato as _setFiltroSelezionato } from '../../../../../shared/helper/function-filtro';
 import { HomeState } from '../home.state';
-
+import { _isStatico } from '../../../../../shared/helper/function-filtro';
+import { insertItem, patch, removeItem } from '@ngxs/store/operators';
 
 export interface FiltriRichiesteStateModel {
+    filtriStaticiRichieste: VoceFiltro[];
     filtriRichieste: VoceFiltro[];
     categoriaFiltriRichieste: string[];
+    filtriRichiesteSelezionati: VoceFiltro[];
 }
 
 export const filtriRichiesteStateDefaults: FiltriRichiesteStateModel = {
-    filtriRichieste: [
-        { codice: '1', categoria: 'Presidiato', descrizione: 'Presidiato', star: true, selezionato: false },
-        { codice: '2', categoria: 'Presidiato', descrizione: 'Non Presidiato', star: true, selezionato: false },
-        { codice: '3', categoria: 'Rilevante', descrizione: 'Rilevante', star: true, selezionato: false },
-        { codice: '4', categoria: 'Rilevante', descrizione: 'Non Rilevante', star: true, selezionato: false },
+    filtriStaticiRichieste: [
+        { codice: '1', categoria: 'Tipo', descrizione: 'Chiamate', star: true },
+        { codice: '2', categoria: 'Tipo', descrizione: 'Richieste', star: true },
+        { codice: '3', categoria: 'Presidio', descrizione: 'Presidiate', star: true },
+        { codice: '4', categoria: 'Presidio', descrizione: 'Non Presidiate', star: true },
+        { codice: '5', categoria: 'Rilevanza', descrizione: 'Rilevanti', star: true },
+        { codice: '6', categoria: 'Rilevanza', descrizione: 'Non Rilevanti', star: true }
     ],
-    categoriaFiltriRichieste: []
+    filtriRichieste: [],
+    categoriaFiltriRichieste: [],
+    filtriRichiesteSelezionati: []
 };
 
 @State<FiltriRichiesteStateModel>({
@@ -31,7 +36,6 @@ export class FiltriRichiesteState {
     constructor(private store: Store) {
     }
 
-    // SELECTORS
     @Selector()
     static filtriTipologie(state: FiltriRichiesteStateModel) {
         return state.filtriRichieste;
@@ -43,35 +47,31 @@ export class FiltriRichiesteState {
     }
 
     @Selector()
-    static filtriSelezionati(state: FiltriRichiesteStateModel) {
-        return state.filtriRichieste.filter(f => f.selezionato === true);
+    static filtriRichiesteSelezionati(state: FiltriRichiesteStateModel) {
+        return state.filtriRichiesteSelezionati;
     }
 
-    // GET
     @Action(GetFiltriRichieste)
     getFiltriRichieste({ getState, patchState }: StateContext<FiltriRichiesteStateModel>) {
         const state = getState();
 
-        const filtriRichieste: VoceFiltro[] = [];
-        const filtriStatici: VoceFiltro[] = [
-            new VoceFiltro('1', 'Presidiato', 'Presidiato', true),
-            new VoceFiltro('2', 'Presidiato', 'Non Presidiato', true),
-            new VoceFiltro('3', 'Rilevante', 'Rilevante', true),
-            new VoceFiltro('4', 'Rilevante', 'Non Rilevante', true)
-        ];
+        const filtriStatici: VoceFiltro[] = state.filtriStaticiRichieste;
         const tipologie: Tipologia[] = this.store.selectSnapshot(HomeState.tipologie);
-        filtriRichieste.push(...filtriStatici);
+        const filtriRichieste: VoceFiltro[] = [...filtriStatici];
+
         if (tipologie && tipologie.length > 0) {
             tipologie.forEach(tipologia => {
                 filtriRichieste.push(new VoceFiltro('' + tipologia.codice, tipologia.categoria, tipologia.descrizione, tipologia.star));
             });
         }
+
         const categorie: string[] = [];
         filtriRichieste.forEach(filtro => {
-            if (categorie.indexOf(filtro.categoria) < 0) {
+            if (categorie.indexOf(filtro.categoria) < 0 && !filtro.star) {
                 categorie.push(filtro.categoria);
             }
         });
+
         patchState({
             ...state,
             filtriRichieste: filtriRichieste,
@@ -79,30 +79,47 @@ export class FiltriRichiesteState {
         });
     }
 
-    // SET FILTRO SELEZIONATO (SELEZIONATO, NON-SELEZIONATO)
     @Action(SetFiltroSelezionatoRichieste)
-    setFiltroSelezionato({ getState, patchState }: StateContext<FiltriRichiesteStateModel>, action: SetFiltroSelezionatoRichieste) {
+    setFiltroSelezionato({ getState, setState, patchState }: StateContext<FiltriRichiesteStateModel>, action: SetFiltroSelezionatoRichieste) {
         const state = getState();
-
-        const filtriRichieste = makeCopy(state.filtriRichieste);
-        const filtro = makeCopy(action.filtro);
-
-        patchState({
-            ...state,
-            filtriRichieste: _setFiltroSelezionato(filtriRichieste, filtro)
-        });
+        if (_isStatico(state.filtriStaticiRichieste, action.filtro)) {
+            const filtroStaticoSelezionato = state.filtriRichiesteSelezionati.filter((f: VoceFiltro) => f.categoria === action.filtro.categoria)[0];
+            if (filtroStaticoSelezionato) {
+                setState(
+                    patch({
+                        filtriRichiesteSelezionati: removeItem<VoceFiltro>(filtro => filtro.codice === filtroStaticoSelezionato.codice)
+                    })
+                );
+            }
+            setState(
+                patch({
+                    filtriRichiesteSelezionati: insertItem<VoceFiltro>(action.filtro)
+                })
+            );
+        } else {
+            setState(
+                patch({
+                    filtriRichiesteSelezionati: insertItem<VoceFiltro>(action.filtro)
+                })
+            );
+        }
     }
 
-    // RESET FILTRI SELEZIONATI
+    @Action(ClearFiltroSelezionatoRichieste)
+    clearFiltroSelezionatoRichieste({ getState, setState, patchState }: StateContext<FiltriRichiesteStateModel>, action: ClearFiltroSelezionatoRichieste) {
+        setState(
+            patch({
+                filtriRichiesteSelezionati: removeItem<VoceFiltro>(filtro => filtro.codice === action.filtro.codice)
+            })
+        );
+    }
+
     @Action(ResetFiltriSelezionatiRichieste)
     resetFiltriSelezionati({ getState, patchState }: StateContext<FiltriRichiesteStateModel>) {
         const state = getState();
-
-        const filtriRichieste = makeCopy(state.filtriRichieste);
-
         patchState({
             ...state,
-            filtriRichieste: _resetFiltriSelezionati(filtriRichieste)
+            filtriRichiesteSelezionati: []
         });
     }
 }
