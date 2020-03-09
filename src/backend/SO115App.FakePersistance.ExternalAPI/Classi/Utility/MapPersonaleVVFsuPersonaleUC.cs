@@ -1,13 +1,11 @@
 ﻿using SO115App.ExternalAPI.Fake.Classi.PersonaleUtentiComuni;
 using SO115App.Models.Classi.Utenti.Autenticazione;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace SO115App.ExternalAPI.Fake.Classi.Utility
 {
     /// <summary>
-    ///   classe statica che si occupa del mapping tra l'ogetto in arrivo da Utenti Comuni e la
+    ///   classe statica che si occupa del mapping tra l'oggetto in arrivo da Utenti Comuni e la
     ///   classe personale VVF
     /// </summary>
     internal static class MapPersonaleVVFsuPersonaleUC
@@ -27,7 +25,7 @@ namespace SO115App.ExternalAPI.Fake.Classi.Utility
                     CodFiscale = personaUC.CodiceFiscale,
                     CodSede = personaUC.Sede.Id,
                     DescSede = personaUC.Sede.Descrizione,
-                    Nominativo = $"{personaUC.Cognome} {personaUC.Nome}"
+                    Nominativo = $"{personaUC.Cognome}.{personaUC.Nome}"
                 });
             }
             return listaPersonaleVVF;

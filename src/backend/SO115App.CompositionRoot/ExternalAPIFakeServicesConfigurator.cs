@@ -21,13 +21,13 @@ using Microsoft.Extensions.Caching.Memory;
 using SimpleInjector;
 using SO115App.ExternalAPI.Fake.Nue;
 using SO115App.ExternalAPI.Fake.Personale;
+using SO115App.ExternalAPI.Fake.Servizi.DistaccamentoUtentiComuni;
 using SO115App.ExternalAPI.Fake.Servizi.Gac;
 using SO115App.ExternalAPI.Fake.Servizi.GeoFleet;
 using SO115App.ExternalAPI.Fake.Servizi.Identity;
 using SO115App.ExternalAPI.Fake.Territorio;
 using SO115App.ExternalAPI.Fake.Uos;
 using SO115App.Models.Servizi.Infrastruttura.GeoFleet;
-using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.IdentityManagement;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
@@ -35,7 +35,6 @@ using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Personale;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Territorio;
 using System;
-using System.Net.Http;
 
 namespace SO115App.CompositionRoot
 {
@@ -80,8 +79,8 @@ namespace SO115App.CompositionRoot
             container.Register<IGetSquadreBySede, GetSquadreBySede>();
             container.Register<IGetPersonaFisica, GetPersonaFisica>();
             container.Register<IGetSquadreNelTurno, GetSquadreNelTurno>();
-            container.Register<IGetPersonaleVVF, ExternalAPI.Fake.ImportOracle.GestioniUtenti.GetPersonaleVVF>();
-            container.Register<IGetPersonaleByCF, ExternalAPI.Fake.ImportOracle.GestioniUtenti.GetPersonaleByCF>();
+            container.Register<IGetPersonaleVVF, ExternalAPI.Fake.Servizi.Personale.GetPersonaleVVF>();
+            container.Register<IGetPersonaleByCF, ExternalAPI.Fake.Servizi.Personale.GetPersonaleByCF>();
             container.Register<IGetPersonaleByCodSede, ExternalAPI.Fake.ImportOracle.GestioniUtenti.GetPersonaleByCodSede>();
 
             #endregion Personale
@@ -190,6 +189,7 @@ namespace SO115App.CompositionRoot
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti.IGetListaDistaccamentiByCodiceSede,
                 SO115App.ExternalAPI.Fake.ImportOracle.DistaccamentiMapper.GetDistaccamentiByCodSede>();
+            container.Register<Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti.IGetDistaccamentoByCodiceSedeUC, GetDistaccamentoByCodiceSede>();
 
             #endregion Distaccamenti
 

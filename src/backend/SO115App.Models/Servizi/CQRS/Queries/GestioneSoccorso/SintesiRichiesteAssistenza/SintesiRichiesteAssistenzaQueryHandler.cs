@@ -20,10 +20,10 @@
 using AutoMapper;
 using CQRS.Queries;
 using SO115App.API.Models.Classi.Organigramma;
+using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
 using SO115App.Models.Classi.Condivise;
-using SO115App.Models.Servizi.CustomMapper;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti;
 using System.Collections.Generic;
 using System.Linq;
@@ -98,13 +98,15 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichi
             query.Filtro.UnitaOperative = pinNodi.ToHashSet();
 
             var listaSintesi = _iGetListaSintesi.GetListaSintesiRichieste(query.Filtro);
-
-            var listaSintesiPaginata = listaSintesi.Skip((query.Filtro.Page - 1) * query.Filtro.PageSize).Take(query.Filtro.PageSize).ToList();
+            var listaSintesiPaginata = new List<SintesiRichiesta>();
+            if (query.Filtro.Page > 0 && query.Filtro.PageSize > 0)
+            {
+                listaSintesiPaginata = listaSintesi.Skip((query.Filtro.Page - 1) * query.Filtro.PageSize).Take(query.Filtro.PageSize).ToList();
+            }
 
             return new SintesiRichiesteAssistenzaResult()
             {
-                //SintesiRichiesta = listaSintesiPaginata,
-                SintesiRichiesta = listaSintesi,
+                SintesiRichiesta = (query.Filtro.Page > 0 && query.Filtro.PageSize > 0) ? listaSintesiPaginata : listaSintesi,
                 Paginazione = new Paginazione
                 {
                     Page = query.Filtro.Page,

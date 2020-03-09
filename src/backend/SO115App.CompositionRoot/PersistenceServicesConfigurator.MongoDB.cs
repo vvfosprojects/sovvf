@@ -49,6 +49,11 @@ namespace SO115App.CompositionRoot
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.Marker.IGetRichiesteMarker,
                 GetRichiesteMarker>();
+
+            #endregion MARKER
+
+            #region GestioneChiamataInCorso
+
             container.Register<Models.Servizi.Infrastruttura.Marker.IAddChiamataInCorso,
                 AddChiamataInCorso>();
             container.Register<Models.Servizi.Infrastruttura.Marker.IDeleteChiamataInCorso,
@@ -59,7 +64,7 @@ namespace SO115App.CompositionRoot
                 SO115App.Models.Servizi.Infrastruttura.Marker.IGetChiamateInCorso,
                 GetChiamateInCorso>();
 
-            #endregion MARKER
+            #endregion GestioneChiamataInCorso
 
             #region StatoMezzo
 

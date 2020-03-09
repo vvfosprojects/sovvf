@@ -23,6 +23,7 @@ using DomainModel.CQRS.Commands.UpDateStatoRichiesta;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza;
+using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GetSintesiRichiestaAssistenza;
 using System;
@@ -91,6 +92,27 @@ namespace SO115App.API.Controllers
             try
             {
                 return Ok(_getSingolaRichiesta.Handle(sintesiQuery).SintesiRichiesta);
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                    return StatusCode(403, Costanti.UtenteNonAutorizzato);
+                return BadRequest();
+            }
+        }
+
+        [HttpGet("GetRichieste")]
+        public async Task<IActionResult> GetRichieste(FiltroRicercaRichiesteAssistenza filtro)
+        {
+            var sintesiRichiesteAssistenzaQuery = new SintesiRichiesteAssistenzaQuery
+            {
+                CodiceSede = Request.Headers["codiceSede"],
+                Filtro = filtro
+            };
+
+            try
+            {
+                return Ok(_sintesiRichiesteQuery.Handle(sintesiRichiesteAssistenzaQuery));
             }
             catch (Exception ex)
             {

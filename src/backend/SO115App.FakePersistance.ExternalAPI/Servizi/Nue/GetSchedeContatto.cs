@@ -17,16 +17,12 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json;
 using SO115App.ExternalAPI.Fake.Servizi.Nue.Mock;
 using SO115App.Models.Classi.NUE;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
-using System;
 using System.Collections.Generic;
-using System.Net.Http;
 
-namespace SO115App.ExternalAPI.Fake.Nue
+namespace SO115App.ExternalAPI.Fake.Servizi.Nue
 {
     /// <summary>
     ///   Classe implementa l'interfaccia per il recupero di tutte le schede contatto di quella sede

@@ -39,13 +39,15 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneUtenti.AddUtente
         private readonly IGetPersonaleByCF _personaleByCF;
         private readonly IGetAlberaturaUnitaOperative _getAlberaturaUnitaOperative;
         private readonly IGetListaDistaccamentiByCodiceSede _getListaDistaccamentiByCodiceSede;
+        private readonly IGetDistaccamentoByCodiceSedeUC _getDistaccamentoByCodiceSede;
 
-        public AddUtenteCommandHandler(IAddUtente addUtente, IGetPersonaleByCF personaleByCF, IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative, IGetListaDistaccamentiByCodiceSede getListaDistaccamentiByCodiceSede)
+        public AddUtenteCommandHandler(IAddUtente addUtente, IGetPersonaleByCF personaleByCF, IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative, IGetListaDistaccamentiByCodiceSede getListaDistaccamentiByCodiceSede, IGetDistaccamentoByCodiceSedeUC getDistaccamentoByCodiceSede)
         {
             _addUtente = addUtente;
             _personaleByCF = personaleByCF;
             _getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
             _getListaDistaccamentiByCodiceSede = getListaDistaccamentiByCodiceSede;
+            _getDistaccamentoByCodiceSede = getDistaccamentoByCodiceSede;
         }
 
         /// <summary>
@@ -54,11 +56,10 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneUtenti.AddUtente
         /// <param name="command">il command con i parametri di ingresso</param>
         public void Handle(AddUtenteCommand command)
         {
-            var personale = _personaleByCF.Get(command.CodFiscale, command.CodiceSede.Split(".")[0]).Result;
+            var personale = _personaleByCF.Get(command.CodFiscale).Result;
             var listaPin = new List<PinNodo>();
             var sediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
-            var distaccamenti = _getListaDistaccamentiByCodiceSede.GetListaDistaccamenti(personale.CodSede.Split(".")[0]);
-            var distaccamento = distaccamenti.Find(x => x.CodDistaccamento.Equals(Convert.ToInt32(personale.CodSede.Split(".")[1])));
+            var distaccamento = _getDistaccamentoByCodiceSede.Get(personale.CodSede).Result;
             foreach (var ruolo in command.Ruoli)
             {
                 listaPin.Add(new PinNodo(ruolo.CodSede, ruolo.Ricorsivo));
