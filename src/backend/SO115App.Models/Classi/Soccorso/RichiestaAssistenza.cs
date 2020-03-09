@@ -754,5 +754,16 @@ namespace SO115App.API.Models.Classi.Soccorso
 
             this._eventi.Add(evento);
         }
+
+        /// <summary>
+        ///   E' un testo che riassume lo stato della richiesta, tra i seguenti: X (chiusa), C
+        ///   (chiamata), A (assegnata), S (sospesa), P (presidiata). Gli stati sono mutuamente
+        ///   esclusivi e sono utilizzati esclusivamente a scopo di filtraggio efficiente sul database.
+        /// </summary>
+        public char TestoStatoRichiesta
+        {
+            get { throw new NotImplementedException(); }
+            protected set { }
+        }
     }
 }

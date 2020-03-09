@@ -29,6 +29,12 @@ namespace SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRic
     public class FiltroRicercaRichiesteAssistenza
     {
         /// <summary>
+        ///   Indica lo stato in cui può trovarsi una richiesta con riferimento all'avanzamento
+        ///   nella sua gestione.
+        /// </summary>
+        public enum StatoRichiesta { Qualsiasi, Chiamata, Intervento }
+
+        /// <summary>
         ///   Indica il numero di pagina che si vuole ricevere (la prima pagina ha indice 1)
         /// </summary>
         public int Page { get; set; }
@@ -47,22 +53,17 @@ namespace SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRic
         /// <summary>
         ///   Indica se si vogliono includere le richieste aperte
         /// </summary>
-        public bool? Aperte { get; set; }
+        public bool IncludiRichiesteAperte { get; set; }
 
         /// <summary>
         ///   Indica se si vogliono includere le richieste chiuse
         /// </summary>
-        public bool? Chiuse { get; set; }
+        public bool IncludiRichiesteChiuse { get; set; }
 
         /// <summary>
-        ///   Indica se si vogliono includere le chiamate (richieste senza composizione partenza)
+        ///   Indica quali richieste si vogliono includere nel risultato.
         /// </summary>
-        public bool? Chiamate { get; set; }
-
-        /// <summary>
-        ///   Indica se si vogliono includere gli interventi (richieste con almeno una composizione partenza)
-        /// </summary>
-        public bool? Interventi { get; set; }
+        public StatoRichiesta StatoRichieste { get; set; }
 
         /// <summary>
         ///   Indica una chiave di ricerca full-text
@@ -78,7 +79,5 @@ namespace SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRic
         ///   L'id dell'operatore che sta facendo la richiesta
         /// </summary>
         public string idOperatore { get; set; }
-
-        public List<string> CodUOCompetenza { get; set; }
     }
 }

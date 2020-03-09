@@ -34,5 +34,7 @@ namespace SO115App.API.Models.Classi.Soccorso.StatiRichiesta
                 return false;
             }
         }
+
+        public static char SelettoreDB => 'S';
     }
 }
