@@ -101,7 +101,7 @@ namespace SO115App.API.Controllers
             }
         }
 
-        [HttpGet("GetRichieste")]
+        [HttpPost("GetRichieste")]
         public async Task<IActionResult> GetRichieste(FiltroRicercaRichiesteAssistenza filtro)
         {
             var sintesiRichiesteAssistenzaQuery = new SintesiRichiesteAssistenzaQuery
