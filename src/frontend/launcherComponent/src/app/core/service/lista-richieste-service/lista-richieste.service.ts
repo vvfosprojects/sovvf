@@ -5,6 +5,9 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { handleError } from '../../../shared/helper/handleError';
 import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
+import { FiltersInterface } from '../../../shared/interface/filters.interface';
+import { PaginationInterface } from '../../../shared/interface/pagination.interface';
+import { VoceFiltro } from '../../../features/home/filterbar/ricerca-group/filtri-richieste/voce-filtro.model';
 
 const API_URL_RICHIESTE = environment.apiUrl.rigaElencoRichieste;
 const API_CHIAMATA = environment.apiUrl.chiamata;
@@ -17,9 +20,17 @@ export class SintesiRichiesteService {
     constructor(private http: HttpClient) {
     }
 
-    // TodoBackEnd: check esistenza controller
-    public getRichieste(idUltimaRichiesta?: string): Observable<any> {
-        return this.http.get(API_URL_RICHIESTE).pipe(
+    // TODO: implementare
+    public getRichieste(filters: FiltersInterface, pagination: PaginationInterface): Observable<any> {
+        const obj = {
+            'page': pagination.page,
+            'pageSize': pagination.pageSize || 30
+        };
+        filters.others.forEach((f: VoceFiltro) => {
+            obj[f.descrizione.toLocaleLowerCase()] = true;
+        });
+        console.log('obj getRichieste', obj);
+        return this.http.post(API_URL_RICHIESTE, obj).pipe(
             retry(3),
             catchError(handleError));
     }

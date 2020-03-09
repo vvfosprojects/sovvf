@@ -25,7 +25,7 @@ import { RichiesteEspanseState } from '../store/states/richieste/richieste-espan
 import { SetRichiestaGestione } from '../store/actions/richieste/richiesta-gestione.actions';
 import { RichiestaGestioneState } from '../store/states/richieste/richiesta-gestione.state';
 import { MezzoActionInterface } from '../../../shared/interface/mezzo-action.interface';
-import { ActionMezzo, ActionRichiesta } from '../store/actions/richieste/richieste.actions';
+import { ActionMezzo, ActionRichiesta, GetListaRichieste } from '../store/actions/richieste/richieste.actions';
 import { ReducerRichiesteEspanse } from '../store/actions/richieste/richieste-espanse.actions';
 import { RichiestaActionInterface } from '../../../shared/interface/richiesta-action.interface';
 import { PermissionFeatures } from '../../../shared/enum/permission-features.enum';
@@ -113,13 +113,7 @@ export class RichiesteComponent implements OnInit, OnDestroy {
 
     // Carica nuove richieste attraverso lo scroll
     onNuoveRichieste() {
-        if (this.contatoreNuoveRichieste === false && !this.loaderRichieste) {
-            this.contatoreNuoveRichieste = true;
-            this.loaderNuoveRichieste = true;
-            this.richiesteTerminate = false;
-            // Todo: in caso di signalR - richieste, non serve
-            // this.store.dispatch(new GetRichieste(this.richieste[this.richieste.length - 1].id));
-        }
+        this.store.dispatch(new GetListaRichieste());
     }
 
     // Restituisce la Richiesta Fissata

@@ -1,13 +1,10 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
-// Model
 import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.model';
-// Helper methods
 import { HelperSintesiRichiesta } from '../helper/_helper-sintesi-richiesta';
-import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
+import { CdkVirtualScrollViewport, ScrollDispatcher } from '@angular/cdk/scrolling';
 import { MezzoActionInterface } from '../../../../shared/interface/mezzo-action.interface';
 import { RichiestaActionInterface } from '../../../../shared/interface/richiesta-action.interface';
-
-export const scrolledItems = 11;
+import { filter } from 'rxjs/operators';
 
 @Component({
     selector: 'app-lista-richieste',
@@ -52,17 +49,16 @@ export class ListaRichiesteComponent implements OnInit {
 
     methods = new HelperSintesiRichiesta;
 
-    @ViewChild(CdkVirtualScrollViewport) viewport: CdkVirtualScrollViewport;
+    @ViewChild(CdkVirtualScrollViewport) virtualScroll: CdkVirtualScrollViewport;
 
-    constructor() {
+    constructor(private scrollDispatcher: ScrollDispatcher) {
     }
 
     ngOnInit() {
-        this.viewport.scrolledIndexChange.subscribe(() => {
-            const bottomOffset = this.viewport.measureScrollOffset('bottom');
-            if (bottomOffset < 100 && this.viewport.getDataLength() >= scrolledItems) {
-                this.onNuoveRichieste();
-            }
+        this.scrollDispatcher.scrolled().pipe(
+            filter(event => this.virtualScroll.measureScrollOffset('bottom') === 0)
+        ).subscribe(event => {
+            this.onNuoveRichieste();
         });
     }
 

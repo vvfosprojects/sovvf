@@ -1,6 +1,6 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { ClearDataHome, GetDataHome, SetDataTipologie, SetMapLoaded, SetMarkerLoading } from '../actions/home.actions';
-import { ClearRichieste, SetRichieste } from '../actions/richieste/richieste.actions';
+import { ClearRichieste, AddRichieste } from '../actions/richieste/richieste.actions';
 import { ClearSediMarkers } from '../actions/maps/sedi-markers.actions';
 import {
     ClearCentroMappa,
@@ -80,7 +80,7 @@ export class HomeState {
         this.homeService.getHome().subscribe((data: Welcome) => {
             console.log('Welcome', data);
             dispatch([
-                new SetRichieste(data.listaSintesi),
+                new AddRichieste(data.listaSintesi),
                 new SetBoxRichieste(data.boxListaInterventi),
                 new SetBoxMezzi(data.boxListaMezzi),
                 new SetBoxPersonale(data.boxListaPersonale),

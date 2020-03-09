@@ -1,9 +1,5 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
-
-// Action
 import { SetRicercaRichieste } from '../../actions/filterbar/ricerca-richieste.actions';
-
-// State
 import { FiltriRichiesteState } from './filtri-richieste.state';
 
 export interface RicercaRichiesteStateModel {
@@ -23,19 +19,17 @@ export class RicercaRichiesteState {
 
     constructor() { }
 
-    // SELECTORS
     @Selector()
     static ricerca(state: RicercaRichiesteStateModel) {
         return state.ricerca;
     }
 
-    // @Selector([FiltriRichiesteState])
-    // static ricercaConFiltri(state: RicercaRichiesteStateModel) {
-    //     const ricerca = state.ricerca;
-    //     const filtri = FiltriRichiesteState.filtriSelezionati;
-    //
-    //     return {ricerca: ricerca, filtri: filtri};
-    // }
+    @Selector([FiltriRichiesteState])
+    static ricercaConFiltri(state: RicercaRichiesteStateModel) {
+        const ricerca = state.ricerca;
+        const filtri = FiltriRichiesteState.filtriRichiesteSelezionati;
+        return {ricerca , filtri};
+    }
 
     @Action(SetRicercaRichieste)
     setRicerca({ getState, patchState }: StateContext<RicercaRichiesteStateModel>, action: SetRicercaRichieste) {

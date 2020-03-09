@@ -4,11 +4,10 @@ import { StatoRichiesta } from '../../../../../shared/enum/stato-richiesta.enum'
 import { RichiestaActionInterface } from '../../../../../shared/interface/richiesta-action.interface';
 import { ListaSquadre } from '../../../../../shared/interface/lista-squadre';
 
-export class GetRichieste {
+export class GetListaRichieste {
     static readonly type = '[Richieste] Get Lista Richieste API';
 
-    constructor(public idUltimaRichiesta?: string) {
-    }
+    constructor(public page?: number) { }
 }
 
 export class PatchRichiesta {
@@ -18,8 +17,8 @@ export class PatchRichiesta {
     }
 }
 
-export class SetRichieste {
-    static readonly type = '[Richieste] Set Lista Richieste';
+export class AddRichieste {
+    static readonly type = '[Richieste] Add Richieste';
 
     constructor(public richieste: SintesiRichiesta[]) {
     }
