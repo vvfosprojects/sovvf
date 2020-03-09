@@ -7,7 +7,7 @@ export const environment = {
         welcome: '/api/Welcome',
         markers: '/api/Marker',
         markerChiamataInCorso: '/api/ChiamataInCorso',
-        rigaElencoRichieste: '/api/SintesiRichiesteAssistenza',
+        rigaElencoRichieste: '/api/GestioneRichiesta/GetRichieste',
         eventiRichieste: '/api/ListaEventi',
         attivitaUtente: '/api/AttivitaUtente',
         gestioneRichiesta: '/api/GestioneRichiesta',

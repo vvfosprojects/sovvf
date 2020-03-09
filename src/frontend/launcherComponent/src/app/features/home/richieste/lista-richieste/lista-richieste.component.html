@@ -7,7 +7,7 @@
     </div>
     <!-- Lista di singole Richieste -->
     <div class="col-12 px-0 border-bottom" [ngClass]="heightControl()">
-        <cdk-virtual-scroll-viewport [itemSize]="itemSize" style="min-height:300px; height:100%">
+        <cdk-virtual-scroll-viewport #virtualScroll [itemSize]="itemSize" style="height:100%">
             <div class="pt-1">
                 <div *cdkVirtualFor="let r of richieste | filterBy: ricerca; templateCacheSize: 0"
                      [ngClass]="{'col-double': !_split, 'col-12': _split}">

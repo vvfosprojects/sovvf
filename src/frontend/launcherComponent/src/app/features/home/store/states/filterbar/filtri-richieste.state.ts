@@ -15,12 +15,10 @@ export interface FiltriRichiesteStateModel {
 
 export const filtriRichiesteStateDefaults: FiltriRichiesteStateModel = {
     filtriStaticiRichieste: [
-        { codice: '1', categoria: 'Tipo', descrizione: 'Chiamate', star: true },
-        { codice: '2', categoria: 'Tipo', descrizione: 'Richieste', star: true },
-        { codice: '3', categoria: 'Presidio', descrizione: 'Presidiate', star: true },
-        { codice: '4', categoria: 'Presidio', descrizione: 'Non Presidiate', star: true },
-        { codice: '5', categoria: 'Rilevanza', descrizione: 'Rilevanti', star: true },
-        { codice: '6', categoria: 'Rilevanza', descrizione: 'Non Rilevanti', star: true }
+        { codice: '1', categoria: 'Chiamate/Interventi', descrizione: 'Chiamate', star: true },
+        { codice: '2', categoria: 'Chiamate/Interventi', descrizione: 'Interventi', star: true },
+        { codice: '3', categoria: 'Aperte/Chiuse', descrizione: 'Aperte', star: true },
+        { codice: '4', categoria: 'Aperte/Chiuse', descrizione: 'Chiuse', star: true }
     ],
     filtriRichieste: [],
     categoriaFiltriRichieste: [],

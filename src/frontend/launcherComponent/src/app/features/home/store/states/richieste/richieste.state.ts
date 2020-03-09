@@ -1,25 +1,19 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
-
-// Model
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
-
-// Action
 import {
     ActionMezzo, ActionRichiesta,
     AddRichiesta, CambiaStatoRichiesta, ClearIdChiamataInviaPartenza, ClearRichiestaById,
     ClearRichieste,
-    GetRichieste,
+    GetListaRichieste,
     PatchRichiesta,
     SetIdChiamataInviaPartenza, SetRichiestaById,
-    SetRichieste,
+    AddRichieste,
     StartInviaPartenzaFromChiamata,
     UpdateRichiesta, VisualizzaListaSquadrePartenza
 } from '../../actions/richieste/richieste.actions';
-
-// Service
 import { SintesiRichiesteService } from 'src/app/core/service/lista-richieste-service/lista-richieste.service';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
-import { insertItem, patch, updateItem } from '@ngxs/store/operators';
+import { append, insertItem, patch, updateItem } from '@ngxs/store/operators';
 import { RichiestaFissataState } from './richiesta-fissata.state';
 import { RichiestaHoverState } from './richiesta-hover.state';
 import { RichiestaSelezionataState } from './richiesta-selezionata.state';
@@ -41,6 +35,12 @@ import { RichiestaGestioneState } from './richiesta-gestione.state';
 import { RichiestaAttivitaUtenteState } from './richiesta-attivita-utente.state';
 import { ListaSquadrePartenzaComponent } from '../../../../../shared';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { RicercaRichiesteState } from '../filterbar/ricerca-richieste.state';
+import { ResponseInterface } from '../../../../../shared/interface/response.interface';
+import { PatchPagination } from '../../../../../shared/store/actions/pagination/pagination.actions';
+import { StartLoading, StopLoading } from '../../../../../shared/store/actions/loading/loading.actions';
+import { PaginationState } from '../../../../../shared/store/states/pagination/pagination.state';
+import { FiltriRichiesteState } from '../filterbar/filtri-richieste.state';
 
 export interface RichiesteStateModel {
     richieste: SintesiRichiesta[];
@@ -67,7 +67,6 @@ export const RichiesteStateDefaults: RichiesteStateModel = {
 })
 export class RichiesteState {
 
-    // SELECTORS
     @Selector()
     static richieste(state: RichiesteStateModel) {
         return state.richieste;
@@ -88,11 +87,36 @@ export class RichiesteState {
                 private store: Store) {
     }
 
-    @Action(GetRichieste, { cancelUncompleted: true })
-    getRichieste({ dispatch }: StateContext<RichiesteStateModel>, action: GetRichieste) {
-        this.richiesteService.getRichieste(action.idUltimaRichiesta).subscribe((data: SintesiRichiesta[]) => {
-            dispatch(new SetRichieste(data));
-        }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5)));
+    @Action(GetListaRichieste, { cancelUncompleted: true })
+    getRichieste({ getState, dispatch }: StateContext<RichiesteStateModel>, action: GetListaRichieste) {
+        dispatch(new StartLoading());
+        const filters = {
+            search: this.store.selectSnapshot(RicercaRichiesteState.ricerca),
+            others: this.store.selectSnapshot(FiltriRichiesteState.filtriRichiesteSelezionati)
+        };
+        const pagination = {
+            page: action.page ? action.page : 1,
+            pageSize: this.store.selectSnapshot(PaginationState.pageSize)
+        };
+        this.richiesteService.getRichieste(filters, pagination).subscribe((response: ResponseInterface) => {
+            dispatch(new AddRichieste(response.dataArray));
+            dispatch(new PatchPagination(response.pagination));
+            dispatch(new StopLoading());
+        }, () => {
+            dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5));
+            dispatch(new StopLoading());
+        });
+
+        // TEST
+        // TODO: da eliminare
+        // console.warn('AddRichieste');
+        // const richieste = makeCopy(getState().richieste);
+        // richieste.forEach((r: SintesiRichiesta) => {
+        //     r.id += randomNumber(1, 500000);
+        //     r.codice += randomNumber(1, 500000);
+        //     r.codiceRichiesta += randomNumber(1, 500000);
+        // });
+        // dispatch(new AddRichieste(richieste));
     }
 
     @Action(PatchRichiesta)
@@ -102,11 +126,13 @@ export class RichiesteState {
         }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5)));
     }
 
-    @Action(SetRichieste)
-    setRichieste({ patchState }: StateContext<RichiesteStateModel>, action: SetRichieste) {
-        patchState({
-            richieste: action.richieste
-        });
+    @Action(AddRichieste)
+    setRichieste({ setState }: StateContext<RichiesteStateModel>, action: AddRichieste) {
+        setState(
+            patch({
+                richieste: append(action.richieste)
+            })
+        );
     }
 
     @Action(ClearRichieste)
@@ -170,7 +196,7 @@ export class RichiesteState {
         patchState({
             chiamataInviaPartenza: action.chiamataInviaPartenza
         });
-        const chiamataInviaPartenza = state.richieste.filter( value => value.codice === action.chiamataInviaPartenza);
+        const chiamataInviaPartenza = state.richieste.filter(value => value.codice === action.chiamataInviaPartenza);
         if (chiamataInviaPartenza.length === 1) {
             dispatch(new StartInviaPartenzaFromChiamata(chiamataInviaPartenza[0]));
         }
