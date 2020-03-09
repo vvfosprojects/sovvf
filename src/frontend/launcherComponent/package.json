@@ -65,7 +65,7 @@
     "ngx-toastr": "^10.0.2",
     "ngx-treeview": "^6.0.2",
     "ngx-ui-switch": "^8.0.1",
-    "node-sass": "^4.11.0",
+    "node-sass": "^4.13.1",
     "popper.js": "^1.15.0",
     "rxjs": "^6.4.0",
     "snazzy-info-window": "^1.1.1",
