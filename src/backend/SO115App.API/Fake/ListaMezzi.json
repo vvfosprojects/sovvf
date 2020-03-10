@@ -2,10 +2,10 @@
     {
         "Targa": "19609",
         "TipoMezzo": "O",
-        "Stato": "D",
+        "Stato": "I",
         "Sede": "RM.1000",
         "CodDestinazione": "CORP",
-        "DescDestinazione":"ASSEGNATO AL COMANDO"
+        "DescDestinazione": "ASSEGNATO AL COMANDO"
     },
     {
         "Targa": "28148",
@@ -14,7 +14,6 @@
         "Sede": "RM.1000",
         "CodDestinazione": "CMOB",
         "DescDestinazione": "COLONNA MOBILE"
-        
     },
     {
         "Targa": "27756",
@@ -51,7 +50,7 @@
     {
         "Targa": "19612",
         "TipoMezzo": "O",
-        "Stato": "I",
+        "Stato": "R",
         "Sede": "RM.3101",
         "CodDestinazione": "CORP",
         "DescDestinazione": "ASSEGNATO AL COMANDO"
@@ -59,13 +58,13 @@
     {
         "Targa": "19613",
         "TipoMezzo": "O",
-        "Stato": "I",
+        "Stato": "R",
         "Sede": "RM.3101",
         "CodDestinazione": "CMOB",
         "DescDestinazione": "COLONNA MOBILE"
     },
     {
-        "Targa": "20353",
+        "Targa": "30014",
         "TipoMezzo": "O",
         "Stato": "D",
         "Sede": "RM.3101",
