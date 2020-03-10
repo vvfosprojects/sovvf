@@ -12,7 +12,7 @@ import { SetBoxMezzi } from '../../features/home/store/actions/boxes/box-mezzi.a
 import { SetBoxRichieste } from '../../features/home/store/actions/boxes/box-richieste.actions';
 import { environment } from '../../../environments/environment';
 import { ToastrType } from '../../shared/enum/toastr';
-import { InsertChiamataSuccess, ReducerSchedaTelefonata } from '../../features/home/store/actions/chiamata/scheda-telefonata.actions';
+import { InsertChiamataSuccess } from '../../features/home/store/actions/chiamata/scheda-telefonata.actions';
 import {
     InsertChiamataMarker,
     RemoveChiamataMarker,

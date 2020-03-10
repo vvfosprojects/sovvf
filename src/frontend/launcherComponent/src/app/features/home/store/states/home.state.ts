@@ -80,7 +80,7 @@ export class HomeState {
         this.homeService.getHome().subscribe((data: Welcome) => {
             console.log('Welcome', data);
             dispatch([
-                new AddRichieste(data.listaSintesi),
+                new AddRichieste(data.listaSintesi, 'bottom'),
                 new SetBoxRichieste(data.boxListaInterventi),
                 new SetBoxMezzi(data.boxListaMezzi),
                 new SetBoxPersonale(data.boxListaPersonale),

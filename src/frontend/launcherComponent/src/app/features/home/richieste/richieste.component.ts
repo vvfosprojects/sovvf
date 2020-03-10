@@ -29,6 +29,8 @@ import { ActionMezzo, ActionRichiesta, GetListaRichieste } from '../store/action
 import { ReducerRichiesteEspanse } from '../store/actions/richieste/richieste-espanse.actions';
 import { RichiestaActionInterface } from '../../../shared/interface/richiesta-action.interface';
 import { PermissionFeatures } from '../../../shared/enum/permission-features.enum';
+import { PaginationState } from '../../../shared/store/states/pagination/pagination.state';
+import { LoadingState } from '../../../shared/store/states/loading/loading.state';
 
 @Component({
     selector: 'app-richieste',
@@ -61,18 +63,20 @@ export class RichiesteComponent implements OnInit, OnDestroy {
 
     @Select(RichiesteEspanseState.richiesteEspanse) idRichiesteEspanse$: Observable<string[]>;
 
+    @Select(LoadingState.loading) loading$: Observable<boolean>;
+
+    @Select(PaginationState.page) page$: Observable<number>;
+    @Select(PaginationState.pageSize) pageSize$: Observable<number>;
+
     loaderRichieste = true;
-    loaderNuoveRichieste = false;
-    contatoreNuoveRichieste = true;
-    richiesteTerminate: boolean;
     listHeightClass = 'm-h-750';
     permessiFeature = PermissionFeatures;
 
     subscription = new Subscription();
 
     constructor(private modalService: NgbModal,
-        private filter: FilterPipe,
-        private store: Store) {
+                private filter: FilterPipe,
+                private store: Store) {
         this.getRichieste();
     }
 
@@ -93,27 +97,16 @@ export class RichiesteComponent implements OnInit, OnDestroy {
 
     getRichieste() {
         this.subscription.add(
-            this.richieste$.subscribe((richieste: any) => {
-                if (richieste.length > 0) {
-                    this.richieste = richieste;
-                    setTimeout(() => {
-                        this.loaderNuoveRichieste = false;
-                    }, 500);
-                    this.contatoreNuoveRichieste = false;
-                } else if (richieste.length <= 0) {
-                    setTimeout(() => {
-                        this.loaderNuoveRichieste = false;
-                    }, 500);
-                    this.contatoreNuoveRichieste = false;
-                }
+            this.richieste$.subscribe((richieste: SintesiRichiesta[]) => {
+                this.richieste = richieste;
                 this.loaderRichieste = false;
             })
         );
     }
 
     // Carica nuove richieste attraverso lo scroll
-    onNuoveRichieste() {
-        this.store.dispatch(new GetListaRichieste());
+    onNuoveRichieste(position: string) {
+        this.store.dispatch(new GetListaRichieste(position));
     }
 
     // Restituisce la Richiesta Fissata
@@ -248,7 +241,7 @@ export class RichiesteComponent implements OnInit, OnDestroy {
         this.store.dispatch(new SetIdRichiestaEventi(idRichiesta));
         const modal = this.modalService.open(EventiRichiestaComponent, { windowClass: 'xlModal', backdropClass: 'light-blue-backdrop', centered: true });
         modal.result.then(() => {
-        },
+            },
             () => this.store.dispatch(new ClearEventiRichiesta()));
     }
 

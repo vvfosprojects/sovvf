@@ -1,15 +1,14 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.model';
 import { HelperSintesiRichiesta } from '../helper/_helper-sintesi-richiesta';
 import { CdkVirtualScrollViewport, ScrollDispatcher } from '@angular/cdk/scrolling';
 import { MezzoActionInterface } from '../../../../shared/interface/mezzo-action.interface';
 import { RichiestaActionInterface } from '../../../../shared/interface/richiesta-action.interface';
-import { filter } from 'rxjs/operators';
 
 @Component({
     selector: 'app-lista-richieste',
     templateUrl: './lista-richieste.component.html',
-    styleUrls: ['./lista-richieste.component.css']
+    styleUrls: ['./lista-richieste.component.scss']
 })
 export class ListaRichiesteComponent implements OnInit {
     @Input() ricerca: any;
@@ -20,12 +19,15 @@ export class ListaRichiesteComponent implements OnInit {
     @Input() richiestaFissata: SintesiRichiesta;
     @Input() richiestaGestione: SintesiRichiesta;
     @Input() loaderRichieste = true;
-    @Input() loaderNuoveRichieste: boolean;
-    @Input() contatoreNuoveRichieste;
-    @Input() richiesteTerminate: boolean;
-    @Input() itemSize = 10;
+    @Input() itemSize = 98;
     @Input() listHeightClass: string;
     @Input() idRichiesteEspanse: string[] = [];
+
+    @Input() loading: boolean;
+
+    // Paginazione
+    @Input() page: number;
+    @Input() pageSize: number;
 
     // Permessi
     @Input() disabledModificaRichiesta = false;
@@ -34,7 +36,7 @@ export class ListaRichiesteComponent implements OnInit {
 
     @Output() statoPartenza = new EventEmitter<boolean>();
     @Output() composizionePartenza = new EventEmitter<SintesiRichiesta>();
-    @Output() nuoveRichieste = new EventEmitter();
+    @Output() nuoveRichieste = new EventEmitter<string>();
     @Output() fissaInAlto = new EventEmitter<string>();
     @Output() hoverIn = new EventEmitter<string>();
     @Output() hoverOut = new EventEmitter<boolean>();
@@ -55,16 +57,23 @@ export class ListaRichiesteComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.scrollDispatcher.scrolled().pipe(
-            filter(event => this.virtualScroll.measureScrollOffset('bottom') === 0)
-        ).subscribe(event => {
-            this.onNuoveRichieste();
-        });
+        this.scrollDispatcher.scrolled().pipe().subscribe(event => {
+                if (this.virtualScroll.measureScrollOffset('bottom') === 0) {
+                    this.onNuoveRichieste('bottom');
+                }
+                if (this.virtualScroll.measureScrollOffset('top') === 0) {
+                    if (this.page > 1) {
+                        this.onNuoveRichieste('top');
+                        this.virtualScroll.scrollToIndex(this.pageSize, 'auto');
+                    }
+                }
+            }
+        );
     }
 
     /* Permette di caricare nuove richieste */
-    onNuoveRichieste() {
-        this.nuoveRichieste.emit();
+    onNuoveRichieste(position: string) {
+        this.nuoveRichieste.emit(position);
     }
 
     /* Gestisce il singolo click sulla richiesta */

@@ -13,7 +13,7 @@ import {
 } from '../../actions/richieste/richieste.actions';
 import { SintesiRichiesteService } from 'src/app/core/service/lista-richieste-service/lista-richieste.service';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
-import { append, insertItem, patch, updateItem } from '@ngxs/store/operators';
+import { append, iif, insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
 import { RichiestaFissataState } from './richiesta-fissata.state';
 import { RichiestaHoverState } from './richiesta-hover.state';
 import { RichiestaSelezionataState } from './richiesta-selezionata.state';
@@ -30,17 +30,16 @@ import { SetMarkerRichiestaSelezionato } from '../../actions/maps/marker.actions
 import { ComposizionePartenzaState } from '../composizione-partenza/composizione-partenza.state';
 import { ClearRichiesteEspanse } from '../../actions/richieste/richieste-espanse.actions';
 import { RichiesteEspanseState } from './richieste-espanse.state';
-import { calcolaActionSuggeritaMezzo } from '../../../../../shared/helper/function';
+import { calcolaActionSuggeritaMezzo, makeCopy, randomNumber } from '../../../../../shared/helper/function';
 import { RichiestaGestioneState } from './richiesta-gestione.state';
 import { RichiestaAttivitaUtenteState } from './richiesta-attivita-utente.state';
 import { ListaSquadrePartenzaComponent } from '../../../../../shared';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { RicercaRichiesteState } from '../filterbar/ricerca-richieste.state';
-import { ResponseInterface } from '../../../../../shared/interface/response.interface';
-import { PatchPagination } from '../../../../../shared/store/actions/pagination/pagination.actions';
 import { StartLoading, StopLoading } from '../../../../../shared/store/actions/loading/loading.actions';
 import { PaginationState } from '../../../../../shared/store/states/pagination/pagination.state';
 import { FiltriRichiesteState } from '../filterbar/filtri-richieste.state';
+import { PatchPagination } from '../../../../../shared/store/actions/pagination/pagination.actions';
 
 export interface RichiesteStateModel {
     richieste: SintesiRichiesta[];
@@ -95,28 +94,34 @@ export class RichiesteState {
             others: this.store.selectSnapshot(FiltriRichiesteState.filtriRichiesteSelezionati)
         };
         const pagination = {
-            page: action.page ? action.page : 1,
+            page: action.options && action.options.page ? action.options.page : 1,
             pageSize: this.store.selectSnapshot(PaginationState.pageSize)
         };
-        this.richiesteService.getRichieste(filters, pagination).subscribe((response: ResponseInterface) => {
-            dispatch(new AddRichieste(response.dataArray));
-            dispatch(new PatchPagination(response.pagination));
-            dispatch(new StopLoading());
-        }, () => {
-            dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5));
-            dispatch(new StopLoading());
-        });
+        // this.richiesteService.getRichieste(filters, pagination).subscribe((response: ResponseInterface) => {
+        //     dispatch(new AddRichieste(response.dataArray));
+        //     dispatch(new PatchPagination(response.pagination));
+        //     dispatch(new StopLoading());
+        // }, () => {
+        //     dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5));
+        //     dispatch(new StopLoading());
+        // });
 
         // TEST
         // TODO: da eliminare
-        // console.warn('AddRichieste');
-        // const richieste = makeCopy(getState().richieste);
-        // richieste.forEach((r: SintesiRichiesta) => {
-        //     r.id += randomNumber(1, 500000);
-        //     r.codice += randomNumber(1, 500000);
-        //     r.codiceRichiesta += randomNumber(1, 500000);
-        // });
-        // dispatch(new AddRichieste(richieste));
+        const pageSize = this.store.selectSnapshot(PaginationState.pageSize);
+        console.warn('AddRichieste');
+        let richieste = makeCopy(getState().richieste);
+        console.log('richieste length', richieste.length);
+        richieste.forEach((r: SintesiRichiesta, index: number) => {
+            if (index < pageSize) {
+                r.id += randomNumber(1, 500000);
+                r.codice += randomNumber(1, 500000);
+                r.codiceRichiesta += randomNumber(1, 500000);
+            }
+        });
+        richieste = richieste.filter((r: SintesiRichiesta, index: number) => index < pageSize);
+        dispatch(new AddRichieste(richieste, action.position));
+        setTimeout(() => dispatch(new StopLoading()), 500);
     }
 
     @Action(PatchRichiesta)
@@ -127,12 +132,46 @@ export class RichiesteState {
     }
 
     @Action(AddRichieste)
-    setRichieste({ setState }: StateContext<RichiesteStateModel>, action: AddRichieste) {
-        setState(
-            patch({
-                richieste: append(action.richieste)
-            })
-        );
+    setRichieste({ getState, setState, patchState, dispatch }: StateContext<RichiesteStateModel>, action: AddRichieste) {
+        const currentPage = this.store.selectSnapshot(PaginationState.page);
+        const pageSize = this.store.selectSnapshot(PaginationState.pageSize);
+        let richieste = makeCopy(getState().richieste);
+
+        switch (action.position) {
+            case 'top':
+                if (currentPage === 2) {
+                    richieste = richieste.filter((r: SintesiRichiesta, index: number) => index < pageSize);
+                    patchState({
+                        richieste: richieste
+                    });
+                } else if (currentPage > 2) {
+                    richieste = richieste.filter((r: SintesiRichiesta, index: number) => index < pageSize * 2);
+                    patchState({
+                        richieste: richieste
+                    });
+                }
+                richieste = makeCopy(getState().richieste);
+                richieste.unshift(...action.richieste);
+                patchState({
+                    richieste: richieste
+                });
+                dispatch(new PatchPagination({ page: currentPage - 1, pageSize: pageSize }));
+                break;
+            case 'bottom':
+                if (currentPage > 2) {
+                    richieste = richieste.filter((r: SintesiRichiesta, index: number) => index >= pageSize);
+                    patchState({
+                        richieste: richieste
+                    });
+                }
+                setState(
+                    patch({
+                        richieste: append(action.richieste)
+                    })
+                );
+                dispatch(new PatchPagination({ page: currentPage + 1, pageSize: pageSize }));
+                break;
+        }
     }
 
     @Action(ClearRichieste)
