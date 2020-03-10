@@ -258,7 +258,7 @@ namespace SO115App.CompositionRoot
             container.Register<Models.Servizi.Infrastruttura.GestioneUtenti.VerificaUtente.IVerificaLogIn, Persistence.MongoDB.GestioneUtenti.GestioneUtente.VerificaLogIn>();
             container.Register<Models.Servizi.Infrastruttura.GestioneUtenti.GetUtenti.IGetUtentiByCodiciSedi, Persistence.MongoDB.GestioneUtenti.GestioneUtente.GetUtentiByCodiciSede>();
             container.Register<Models.Servizi.Infrastruttura.GestioneUtenti.GetUtenti.IGetUtenteByCF, Persistence.MongoDB.GestioneUtenti.GestioneUtente.GetUtenteByCF>();
-
+            container.Register<Models.Servizi.Infrastruttura.GestioneUtenti.GestioneRuolo.IGetRuoliById, Persistence.MongoDB.GestioneUtenti.GestioneRuoli.GetRuoliById>();
             container.Register<Models.Servizi.Infrastruttura.Autenticazione.IGetAutorizzazioni, Persistence.MongoDB.GestioneUtenti.GestioneRuoli.GetAutorizzazioni>();
 
             #endregion Gestione Utenti e Ruoli

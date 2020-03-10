@@ -51,7 +51,8 @@ namespace SO115App.API.Controllers
         {
             var query = new NavbarQuery()
             {
-                FiltroBox = ""
+                FiltroBox = "",
+                IdUtente = Request.Headers["idUtente"]
             };
 
             try

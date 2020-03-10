@@ -31,5 +31,10 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Navbar
         /// </summary>
         /// <remarks>Eventualmente si può filtrare per cercare solo i dati di un singolo Box</remarks>
         public string FiltroBox { get; set; }
+
+        /// <summary>
+        ///   L'id utente loggato
+        /// </summary>
+        public string IdUtente { get; set; }
     }
 }

@@ -17,7 +17,9 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.API.Models.Classi.Organigramma;
+using System.Collections.Generic;
 
 namespace SO115App.API.Models.Classi.Navbar
 {
@@ -25,5 +27,6 @@ namespace SO115App.API.Models.Classi.Navbar
     {
         public UnitaOperativa ListaSedi { get; set; }
 
+        public IEnumerable<Role> RuoliUtLoggato { get; set; }
     }
 }
