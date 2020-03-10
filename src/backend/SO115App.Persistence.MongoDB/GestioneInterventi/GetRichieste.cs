@@ -92,11 +92,6 @@ namespace SO115App.Persistence.MongoDB
                 }
             }
 
-            if (filtro.Aperte.HasValue) listaSistesiRichieste = listaSistesiRichieste.FindAll(x => x.Aperta.Equals(filtro.Aperte));
-            if (filtro.Chiuse.HasValue) listaSistesiRichieste = listaSistesiRichieste.FindAll(x => x.Chiusa.Equals(filtro.Chiuse));
-            if (filtro.Chiamate.HasValue) listaSistesiRichieste = listaSistesiRichieste.FindAll(x => x.Partenze.Count.Equals(0));
-            if (filtro.Interventi.HasValue) listaSistesiRichieste = listaSistesiRichieste.FindAll(x => x.Partenze.Count >= 1);
-
             return listaSistesiRichieste.OrderByDescending(x => x.Stato == Costanti.Chiamata)
                     .ThenByDescending(x => x.PrioritaRichiesta)
                     .ThenBy(x => x.IstanteRicezioneRichiesta)
