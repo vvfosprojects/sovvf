@@ -13,13 +13,8 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
 {
     public class GetPreAccoppiati : IGetPreAccoppiati
     {
-        private readonly HttpClient _client;
-        private readonly IConfiguration _configuration;
-
-        public GetPreAccoppiati(HttpClient client, IConfiguration configuration)
+        public GetPreAccoppiati()
         {
-            _client = client;
-            _configuration = configuration;
         }
 
         public List<PreAccoppiati> Get(PreAccoppiatiQuery query)
@@ -43,32 +38,33 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
             var listaMezziFake = JsonConvert.DeserializeObject<List<MezzoFake>>(json);
 
             var ListaPreAccoppiatiSede = ListaPreAccoppiatiFake.FindAll(x => x.Sede.Contains(query.CodiceSede));
-            foreach (PreAccoppiatiFake p in ListaPreAccoppiatiSede)
+            foreach (PreAccoppiatiFake preAccoppiatiFake in ListaPreAccoppiatiSede)
             {
-                var MezzoFake = listaMezziFake.Find(x => x.Targa.Equals(p.Targa));
-                var PreAccoppiati = MapPreAccoppiati(p, MezzoFake);
+                var MezzoFake = listaMezziFake.Find(x => x.Targa.Equals(preAccoppiatiFake.Targa));
+                var PreAccoppiati = MapPreAccoppiati(preAccoppiatiFake, MezzoFake);
                 listaPreAccoppiati.Add(PreAccoppiati);
             }
 
             return listaPreAccoppiati;
         }
 
-        private PreAccoppiati MapPreAccoppiati(PreAccoppiatiFake p, MezzoFake m)
+        private PreAccoppiati MapPreAccoppiati(PreAccoppiatiFake preAccoppiatiFake, MezzoFake mezzoFake)
         {
-            List<string> Squadre = new List<string>();
-            PreAccoppiati pA = new PreAccoppiati
-            {
-                Id = p.Sede + "-" + m.TipoMezzo + "." + m.Targa,
-                Mezzo = m.TipoMezzo + "." + m.Targa,
-                CodiceSede = p.Sede
-            };
-            foreach (string s in p.Squadre)
-            {
-                Squadre.Add(s);
-            }
+            List<string> sList = new List<string>();
 
-            p.Squadre = Squadre;
-            return pA;
+            PreAccoppiati preAccoppiati = new PreAccoppiati
+            {
+                Id = preAccoppiatiFake.Sede + "-" + mezzoFake.TipoMezzo + "." + mezzoFake.Targa,
+                Mezzo = mezzoFake.TipoMezzo + "." + mezzoFake.Targa,
+                CodiceSede = preAccoppiatiFake.Sede
+            };
+            foreach (string s in preAccoppiatiFake.Squadre)
+            {
+                sList.Add(s);
+            }
+            string[] squadre = sList.ToArray();
+            preAccoppiati.Squadre = squadre;
+            return preAccoppiati;
         }
     }
 }
