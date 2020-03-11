@@ -14,6 +14,7 @@ import { allFalseTreeItem, checkTreeItem, findItem } from './sedi-treeview.helpe
 import { SetAppLoaded } from '../../actions/app/app.actions';
 import { ToastrType } from '../../../enum/toastr';
 import { SetTurnoCalendario } from 'src/app/features/navbar/store/actions/turno/turno.actions';
+import { SetVistaSedi } from '../../../../features/navbar/store/actions/operatore/utente.actions';
 
 export interface SediTreeviewStateModel {
     listeSedi: ListaSedi;
@@ -156,18 +157,18 @@ export class SediTreeviewState {
 
     @Action(SetSediNavbarSelezionate)
     setSediNavbarSelezionate({ getState, patchState, dispatch }: StateContext<SediTreeviewStateModel>) {
+        console.clear();
         const state = getState();
         patchState({
             sediNavbarSelezionate: {
                 iniziali: state.sediNavbarSelezionate.correnti,
-                correnti: SediTreeviewStateDefaults.sediNavbarSelezionate.correnti
             },
             sediNavbarTesto: {
                 iniziale: state.sediNavbarTesto.corrente,
-                corrente: SediTreeviewStateDefaults.sediNavbarTesto.corrente
             },
             sediNavbarDisableConfirm: SediTreeviewStateDefaults.sediNavbarDisableConfirm
         });
+        dispatch(new SetVistaSedi(state.sediNavbarSelezionate.correnti));
         dispatch(new SetTurnoCalendario());
         dispatch(new SetAppLoaded());
     }
