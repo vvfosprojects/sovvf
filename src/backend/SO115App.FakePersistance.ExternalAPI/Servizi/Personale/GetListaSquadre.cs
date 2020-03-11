@@ -8,18 +8,22 @@ using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Squadre;
 using SO115App.FakePersistence.JSon.Utility;
 using System.IO;
 using SO115App.ExternalAPI.Fake.Classi.DTOFake;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
+using SO115App.Models.Classi.Condivise;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Personale;
+using SO115App.Models.Classi.Utenti.Autenticazione;
 
 namespace SO115App.ExternalAPI.Fake.Servizi.Personale
 {
     public class GetListaSquadre : IGetListaSquadre
     {
-        private readonly HttpClient _client;
-        private readonly IConfiguration _configuration;
+        private readonly IGetDistaccamentoByCodiceSedeUC _getDistaccamentoByCodiceSedeUC;
+        private readonly IGetPersonaleByCF _getPersonaleByCF;
 
-        public GetListaSquadre(HttpClient client, IConfiguration configuration)
+        public GetListaSquadre(IGetDistaccamentoByCodiceSedeUC GetDistaccamentoByCodiceSedeUC, IGetPersonaleByCF GetPersonaleByCF)
         {
-            _client = client;
-            _configuration = configuration;
+            _getDistaccamentoByCodiceSedeUC = GetDistaccamentoByCodiceSedeUC;
+            _getPersonaleByCF = GetPersonaleByCF;
         }
 
         public async Task<List<Squadra>> Get(List<string> sedi)
@@ -51,9 +55,9 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
             foreach (string CodSede in ListaCodiciSedi)
             {
                 var ListaSquadreSede = listaSquadraFake.FindAll(x => x.Sede.Contains(CodSede));
-                foreach (SquadraFake s in ListaSquadreSede)
+                foreach (SquadraFake squadraFake in ListaSquadreSede)
                 {
-                    var squadra = MapSqaudra(s, CodSede);
+                    var squadra = MapSqaudra(squadraFake, CodSede);
                     listaSquadre.Add(squadra);
                 }
             }
@@ -61,11 +65,11 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
             return listaSquadre;
         }
 
-        private Squadra MapSqaudra(SquadraFake sF, string CodSede)
+        private Squadra MapSqaudra(SquadraFake squadraFake, string CodSede)
         {
             Squadra.StatoSquadra Stato;
 
-            switch (sF.Stato)
+            switch (squadraFake.Stato)
             {
                 case "L": Stato = Squadra.StatoSquadra.InSede; break;
                 case "A": Stato = Squadra.StatoSquadra.SulPosto; break;
@@ -73,22 +77,26 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
                 default: Stato = Squadra.StatoSquadra.InSede; break;
             }
 
-            //ToDo inseire la chiamata al servizio per i dati del distaccamento
-            var sedeDistaccamento = new Sede("xxx", "xxxx", "", new Coordinate(1, 1), "", "", "", "", "");
+            var distaccamento = new Distaccamento();
+            distaccamento = _getDistaccamentoByCodiceSedeUC.Get(squadraFake.Sede).Result;
+            var sedeDistaccamento = new Sede(squadraFake.Sede, distaccamento.DescDistaccamento, distaccamento.Indirizzo, distaccamento.Coordinate, "", "", "", "", "");
 
             List<string> ListaCodiciFiscaliComponentiSquadra = new List<string>();
             List<Componente> ComponentiSquadra = new List<Componente>();
-            foreach (string cf in sF.ListaCodiciFiscaliComponentiSquadra)
+            foreach (string cf in squadraFake.ListaCodiciFiscaliComponentiSquadra)
             {
-                //ToDo inseire la chiamata al servizio per i dati del personale
-                Componente c = new Componente("", "", "", true, true, false);
-                ComponentiSquadra.Add(c);
-                ListaCodiciFiscaliComponentiSquadra.Add(cf);
+                PersonaleVVF pVVf = _getPersonaleByCF.Get(cf).Result;
+
+                bool capoPartenza = false; bool autista = false;
+                Componente c = new Componente("", pVVf.Nominativo, pVVf.Nominativo, capoPartenza, autista, false)
+                {
+                    CodiceFiscale = pVVf.CodFiscale,
+                };
             }
 
-            Squadra s = new Squadra(sF.NomeSquadra, Stato, ComponentiSquadra, sedeDistaccamento);
+            Squadra s = new Squadra(squadraFake.NomeSquadra, Stato, ComponentiSquadra, sedeDistaccamento);
 
-            s.Id = sF.CodiceSquadra;
+            s.Id = squadraFake.CodiceSquadra;
             s.ListaCodiciFiscaliComponentiSquadra = ListaCodiciFiscaliComponentiSquadra;
             return s;
         }

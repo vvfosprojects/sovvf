@@ -69,6 +69,8 @@ namespace SO115App.Models.Classi.Utility
         public static string MezzoStatoSconosciuto = "Stato Sconosciuto";
         public static string MezzoNonDisponibile = "NON DISPONIBILE";
         public static string MezzoDisponibile = "DISPONIBILE";
+        public static string MezzoOperativoPreaccoppiato = "Operativo Preaccoppiato";
+        public static string MezzoAssegnatoPreaccoppiato = "Assegnato Preaccoppiato";
 
         #endregion StatiMezzi
 
