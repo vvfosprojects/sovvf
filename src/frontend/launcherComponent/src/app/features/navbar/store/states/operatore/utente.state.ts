@@ -63,7 +63,7 @@ export class UtenteState {
     @Action(SetUtenteSignalR)
     setUtenteSignalR({ dispatch }: StateContext<UtenteStateModel>, action: SetUtenteSignalR) {
         this.signalR.addToGroup(new SignalRNotification(
-            action.utente.sede.codice,
+            [ action.utente.sede.codice ],
             action.utente.id,
             `${action.utente.nome} ${action.utente.cognome}`
         ));
@@ -98,7 +98,7 @@ export class UtenteState {
         // Set SignalR Data
         if (state.utente) {
             this.signalR.removeToGroup(new SignalRNotification(
-                state.utente.sede.codice,
+                [ state.utente.sede.codice ],
                 state.utente.id,
                 `${state.utente.nome} ${state.utente.cognome}`
                 )
