@@ -6,8 +6,6 @@ import { SetRicercaUtenti } from './store/actions/ricerca-utenti/ricerca-utenti.
 import { UtenteState } from '../navbar/store/states/operatore/utente.state';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { GetUtentiGestione, AddRuoloUtenteGestione, ClearDataModalAddUtenteModal, RemoveRuoloUtente, AddUtenteGestione, RemoveUtente } from './store/actions/gestione-utenti/gestione-utenti.actions';
-import { GetRuoli } from './store/actions/ruoli/ruoli.actions';
-import { RuoliState } from './store/states/ruoli/ruoli.state';
 import { GestioneUtentiState } from './store/states/gestione-utenti/gestione-utenti.state';
 import { RicercaUtentiState } from './store/states/ricerca-utenti/ricerca-utenti.state';
 import { PaginationState } from '../../shared/store/states/pagination/pagination.state';
@@ -28,7 +26,6 @@ export class GestioneUtentiComponent {
     utente: Utente;
     @Select(GestioneUtentiState.listaUtenti) listaUtenti$: Observable<Utente[]>;
     @Select(GestioneUtentiState.utenteDetail) utenteGestioneDetail$: Observable<Utente>;
-    @Select(RuoliState.ruoli) ruoli$: Observable<Array<any>>;
     @Select(RicercaUtentiState.ricerca) ricerca$: Observable<string>;
     ricerca: string;
     @Select(PaginationState.pageSize) pageSize$: Observable<number>;
@@ -41,7 +38,6 @@ export class GestioneUtentiComponent {
                 private store: Store) {
         this.getUtente();
         this.getUtentiGestione();
-        this.getRuoli();
         this.getRicerca();
         this.getPageSize();
     }
@@ -152,10 +148,6 @@ export class GestioneUtentiComponent {
 
     getUtentiGestione() {
         this.store.dispatch(new GetUtentiGestione());
-    }
-
-    getRuoli() {
-        this.store.dispatch(new GetRuoli());
     }
 
     getUtente() {

@@ -155,6 +155,7 @@ export class NavbarServiceFake {
                     }
                 ]
             },
+            ruoliUtLoggato: []
         //     tipologie: [
         //         {
         //             codice: '5',

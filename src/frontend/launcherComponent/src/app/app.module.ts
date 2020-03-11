@@ -62,6 +62,7 @@ import { NgxsFormPluginModule } from '@ngxs/form-plugin';
 import { UserService } from './core/auth/_services';
 import { UserServiceFake } from './core/auth/_services/user.service.fake';
 import { PermessiState } from './shared/store/states/permessi/permessi.state';
+import { RuoliUtenteLoggatoState } from './shared/store/states/ruoli-utente-loggato/ruoli-utente-loggato.state';
 
 
 @NgModule({
@@ -92,7 +93,7 @@ import { PermessiState } from './shared/store/states/permessi/permessi.state';
             preventDuplicates: true,
         }),
         NgxsModule.forRoot(
-            [AppState, UtenteState, SignalRState, PermessiState, ToastrState, SediTreeviewState, PaginationState, LoadingState],
+            [AppState, UtenteState, SignalRState, RuoliUtenteLoggatoState, PermessiState, ToastrState, SediTreeviewState, PaginationState, LoadingState],
             { developmentMode: !environment.production }
         ),
         NgxsRouterPluginModule.forRoot(),

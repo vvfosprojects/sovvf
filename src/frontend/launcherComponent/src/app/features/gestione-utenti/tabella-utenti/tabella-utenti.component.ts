@@ -11,7 +11,6 @@ import { wipeStringUppercase } from '../../../shared/helper/function';
 })
 export class TabellaUtentiComponent {
 
-    @Input() ruoli: Array<any>;
     @Input() listaUtenti: Utente[];
     @Input() page: number;
     @Input() pageSize: number;

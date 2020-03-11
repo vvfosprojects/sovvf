@@ -3,22 +3,22 @@ import { Select, Store } from '@ngxs/store';
 import { PermessiState } from '../../../shared/store/states/permessi/permessi.state';
 import { Observable } from 'rxjs';
 import { PermessiFeatureInterface } from '../../../shared/interface/permessi-feature.interface';
-import { UtenteState } from '../../../features/navbar/store/states/operatore/utente.state';
 import { Ruolo, Utente } from '../../../shared/model/utente.model';
 import { PermissionFeatures } from '../../../shared/enum/permission-features.enum';
+import { RuoliUtenteLoggatoState } from '../../../shared/store/states/ruoli-utente-loggato/ruoli-utente-loggato.state';
 
 @Injectable({
     providedIn: 'root'
 })
 export class PermessiService {
 
-    @Select(UtenteState.utente) utente$: Observable<Utente>;
-    utente: Utente;
+    @Select(RuoliUtenteLoggatoState.ruoli) ruoli$: Observable<Ruolo[]>;
+    ruoli: Ruolo[];
 
     permessi: PermessiFeatureInterface[];
 
     constructor(private store: Store) {
-        this.getUtente();
+        this.getRuoliUtenteLoggato();
         this.getPermessi();
     }
 
@@ -26,24 +26,24 @@ export class PermessiService {
         this.permessi = this.store.selectSnapshot(PermessiState.permessi);
     }
 
-    getUtente() {
-        this.utente$.subscribe((utente: Utente) => {
-            this.utente = utente;
+    getRuoliUtenteLoggato() {
+        this.ruoli$.subscribe((ruoli: Ruolo[]) => {
+            this.ruoli = ruoli;
         });
     }
 
     checkUserPermissionByFeature(feature: PermissionFeatures) {
         const featureIndex = searchFeatureIndex(this.permessi, feature);
-        if (this.utente && this.utente.ruoli && this.utente.ruoli.length > 0 && this.permessi && featureIndex !== null) {
-            if (checkRuoliUtente(this.utente, this.permessi, featureIndex)) {
+        if (this.ruoli && this.ruoli && this.ruoli.length > 0 && this.permessi && featureIndex !== null) {
+            if (checkRuoliUtente(this.ruoli, this.permessi, featureIndex)) {
                 return true;
             }
         }
         return false;
 
-        function checkRuoliUtente(utente, permessi, index) {
+        function checkRuoliUtente(ruoli, permessi, index) {
             let count = 0;
-            utente.ruoli.forEach((ruolo: Ruolo) => {
+            ruoli.forEach((ruolo: Ruolo) => {
                 if (permessi[index].roles.indexOf(ruolo.descrizione) !== -1) {
                     count++;
                 }

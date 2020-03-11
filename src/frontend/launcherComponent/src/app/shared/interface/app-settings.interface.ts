@@ -3,9 +3,10 @@ import { Ruolo } from '../model/utente.model';
 
 export interface AppSettings {
     listaSedi: ListaSedi;
-    listaRuoli: Ruolo[];
+    ruoliUtLoggato: Ruolo[];
 }
 
 export interface AppSettingsAPI {
     listaSedi: ListaSediAPI;
+    ruoliUtLoggato: Ruolo[];
 }

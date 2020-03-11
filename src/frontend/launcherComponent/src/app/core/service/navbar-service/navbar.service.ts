@@ -35,6 +35,7 @@ export class NavbarService {
                 value: data.listaSedi.codice,
                 children: data.listaSedi.figli.map(mapper)
             };
+            result.ruoliUtLoggato = data.ruoliUtLoggato;
             return result;
         }
     }

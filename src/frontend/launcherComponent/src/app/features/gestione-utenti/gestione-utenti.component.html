@@ -27,10 +27,10 @@
             </h6>
         </div>
         <div class="col-12 mx-auto">
-            <app-tabella-utenti [ruoli]="ruoli$ | async" [listaUtenti]="listaUtenti$ | async"
-                                [totalItems]="totalItems$ | async" [pageSize]="pageSize$ | async" [page]="page$ | async"
-                                [loading]="loading$ | async" [pageSizes]="pageSizes$ | async"
-                                (removeUser)="onRemoveUtente($event)" (removeRoleUser)="onRemoveRuoloUtente($event)"
+            <app-tabella-utenti [listaUtenti]="listaUtenti$ | async" [totalItems]="totalItems$ | async"
+                                [pageSize]="pageSize$ | async" [page]="page$ | async" [loading]="loading$ | async"
+                                [pageSizes]="pageSizes$ | async" (removeUser)="onRemoveUtente($event)"
+                                (removeRoleUser)="onRemoveRuoloUtente($event)"
                                 (addRuoloUtente)="onAddRuoloUtente($event)" (pageChange)="onPageChange($event)"
                                 (pageSizeChange)="onPageSizeChange($event)">
             </app-tabella-utenti>
