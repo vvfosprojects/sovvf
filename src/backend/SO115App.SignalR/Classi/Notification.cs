@@ -17,11 +17,13 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using System.Collections.Generic;
+
 namespace SO115App.SignalR.Notifications
 {
     public class Notification<T>
     {
-        public string CodiceSede { get; set; }
+        public IEnumerable<string> CodiciSede { get; set; }
         public string NominativoUtente { get; set; }
         public T ActionObj { get; set; }
         public string IdUtente { get; set; }

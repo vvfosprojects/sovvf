@@ -29,25 +29,32 @@ namespace SO115App.SignalR
     {
         public async Task AddToGroup(Notification<Utente> utente)
         {
-            try
+            foreach (var codiceSede in utente.CodiciSede)
             {
-                await Groups.AddToGroupAsync(Context.ConnectionId, utente.CodiceSede);
+                try
+                {
+                    await Groups.AddToGroupAsync(Context.ConnectionId, codiceSede).ConfigureAwait(false);
 
-                //Notifico a tutti i client che l'utente si è appena loggato
-                await Clients.OthersInGroup(utente.CodiceSede).SendAsync("NotifyLogIn", "L'utente " + utente.NominativoUtente + " è stato inserito nella sede " + utente.CodiceSede);
+                    //Notifico a tutti i client che l'utente si è appena loggato
+                    await Clients.OthersInGroup(codiceSede).SendAsync("NotifyLogIn", "L'utente " + utente.NominativoUtente + " è stato inserito nella sede " + codiceSede);
+                }
+                catch (Exception ex)
+                {
+                    await Clients.Caller.SendAsync("NotifyLogIn", ex.Message).ConfigureAwait(false);
+                }
             }
-            catch (Exception ex)
-            {
-                await Clients.Caller.SendAsync("NotifyLogIn", ex.Message);
-            }
+
             await base.OnConnectedAsync();
         }
 
         public async Task RemoveToGroup(Notification<Utente> utente)
         {
-            await Groups.RemoveFromGroupAsync(Context.ConnectionId, utente.CodiceSede);
-            await Clients.OthersInGroup(utente.CodiceSede).SendAsync("NotifyLogOut", "L'utente " + utente.NominativoUtente + " è uscito dalla sede " + utente.CodiceSede);
-            await base.OnConnectedAsync();
+            foreach (var codiceSede in utente.CodiciSede)
+            {
+                await Groups.RemoveFromGroupAsync(Context.ConnectionId, codiceSede).ConfigureAwait(false);
+                await Clients.OthersInGroup(codiceSede).SendAsync("NotifyLogOut", "L'utente " + utente.NominativoUtente + " è uscito dalla sede " + codiceSede).ConfigureAwait(false);
+                await base.OnConnectedAsync().ConfigureAwait(false);
+            }
         }
 
         public string GetConnectionId()
