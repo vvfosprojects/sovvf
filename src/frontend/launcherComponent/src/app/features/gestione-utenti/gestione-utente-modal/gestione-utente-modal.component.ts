@@ -165,13 +165,13 @@ export class GestioneUtenteModalComponent implements OnInit, OnDestroy {
         Object.values(Role).forEach((role: string) => {
             this.ruoli.push(role);
         });
-        if (this.ruoliAttuali && this.ruoliAttuali.length > 0) {
-            this.ruoliAttuali.forEach((ruolo: Ruolo) => {
-                if (this.ruoli.indexOf(ruolo.descrizione) !== -1) {
-                    this.ruoli.splice(this.ruoli.indexOf(ruolo.descrizione), 1);
-                }
-            });
-        }
+        // if (this.ruoliAttuali && this.ruoliAttuali.length > 0) {
+        //     this.ruoliAttuali.forEach((ruolo: Ruolo) => {
+        //         if (this.ruoli.indexOf(ruolo.descrizione) !== -1) {
+        //             this.ruoli.splice(this.ruoli.indexOf(ruolo.descrizione), 1);
+        //         }
+        //     });
+        // }
     }
 
     setRicorsivoValue(value: { id: string, status: boolean }) {
