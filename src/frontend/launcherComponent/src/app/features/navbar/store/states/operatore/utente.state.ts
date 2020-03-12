@@ -1,6 +1,13 @@
 import { Utente } from '../../../../../shared/model/utente.model';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
-import { ClearUtente, SetUtente, SetUtenteLocalStorage, SetUtenteSignalR, UpdateUtente } from '../../actions/operatore/utente.actions';
+import {
+    ClearUtente,
+    SetUtente,
+    SetUtenteLocalStorage,
+    SetUtenteSignalR,
+    SetVistaSedi,
+    UpdateUtente
+} from '../../actions/operatore/utente.actions';
 import { SignalRService } from '../../../../../core/signalr/signalR.service';
 import { SignalRNotification } from '../../../../../core/signalr/model/signalr-notification.model';
 import { SetCodiceSede, SetIdUtente } from '../../../../../core/signalr/store/signalR.actions';
@@ -8,11 +15,13 @@ import { SetCodiceSede, SetIdUtente } from '../../../../../core/signalr/store/si
 export interface UtenteStateModel {
     localName: string;
     utente: Utente;
+    vistaSedi: string[];
 }
 
 export const UtenteStateDefaults: UtenteStateModel = {
     localName: 'userSO115',
-    utente: null
+    utente: null,
+    vistaSedi: null
 };
 
 @State<UtenteStateModel>({
@@ -29,6 +38,11 @@ export class UtenteState {
     @Selector()
     static localName(state: UtenteStateModel) {
         return state.localName;
+    }
+
+    @Selector()
+    static vistaSedi(state: UtenteStateModel) {
+        return state.vistaSedi;
     }
 
     constructor(private signalR: SignalRService) {
@@ -73,6 +87,11 @@ export class UtenteState {
         }
     }
 
+    @Action(SetVistaSedi)
+    setVistaSedi({ patchState }: StateContext<UtenteStateModel>, { vistaSedi }: SetVistaSedi) {
+        patchState({ vistaSedi });
+    }
+
     @Action(ClearUtente)
     clearUtente({ getState, patchState }: StateContext<UtenteStateModel>) {
         const state = getState();
@@ -88,8 +107,6 @@ export class UtenteState {
         // Local Storage
         localStorage.removeItem(state.localName);
         // Store User Data
-        patchState({
-            utente: null
-        });
+        patchState(UtenteStateDefaults);
     }
 }

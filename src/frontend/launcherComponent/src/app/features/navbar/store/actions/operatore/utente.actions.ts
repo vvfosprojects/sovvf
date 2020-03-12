@@ -21,6 +21,13 @@ export class SetUtenteLocalStorage {
     }
 }
 
+export class SetVistaSedi {
+    static readonly type = '[Utente] Set Vista Sedi Utente';
+
+    constructor(public vistaSedi: string[]) {
+    }
+}
+
 export class UpdateUtente {
     static readonly type = '[Utente] Update utente';
 
