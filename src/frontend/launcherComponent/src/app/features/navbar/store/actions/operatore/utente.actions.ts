@@ -7,18 +7,15 @@ export class SetUtente {
     }
 }
 
-export class SetUtenteSignalR {
-    static readonly type = '[Utente] Set utente SignalR';
-
-    constructor(public utente: Utente) {
-    }
-}
-
 export class SetUtenteLocalStorage {
     static readonly type = '[Utente] Set utente local storage';
 
     constructor(public utente: Utente) {
     }
+}
+
+export class ClearUtenteLocalStorage {
+    static readonly type = '[Utente] Clear utente local storage';
 }
 
 export class UpdateUtente {

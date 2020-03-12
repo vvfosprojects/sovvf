@@ -3,7 +3,7 @@ import { Select, Store } from '@ngxs/store';
 import { PermessiState } from '../../../shared/store/states/permessi/permessi.state';
 import { Observable } from 'rxjs';
 import { PermessiFeatureInterface } from '../../../shared/interface/permessi-feature.interface';
-import { Ruolo, Utente } from '../../../shared/model/utente.model';
+import { Ruolo } from '../../../shared/model/utente.model';
 import { PermissionFeatures } from '../../../shared/enum/permission-features.enum';
 import { RuoliUtenteLoggatoState } from '../../../shared/store/states/ruoli-utente-loggato/ruoli-utente-loggato.state';
 

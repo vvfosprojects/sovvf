@@ -102,8 +102,4 @@ export class AppComponent implements OnInit, OnDestroy {
         this._opened = !this._opened;
     }
 
-    getPermissionByFeature(feature: PermissionFeatures) {
-        return !this._permessiService.checkUserPermissionByFeature(feature);
-    }
-
 }

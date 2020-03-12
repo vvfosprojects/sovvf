@@ -1,9 +1,9 @@
 import { Utente } from '../../../../../shared/model/utente.model';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
-import { ClearUtente, SetUtente, SetUtenteLocalStorage, SetUtenteSignalR, UpdateUtente } from '../../actions/operatore/utente.actions';
-import { SignalRService } from '../../../../../core/signalr/signalR.service';
-import { SignalRNotification } from '../../../../../core/signalr/model/signalr-notification.model';
-import { SetCodiceSede, SetIdUtente } from '../../../../../core/signalr/store/signalR.actions';
+import { ClearUtenteLocalStorage, SetUtente, SetUtenteLocalStorage, UpdateUtente, ClearUtente } from '../../actions/operatore/utente.actions';
+import { ClearUtenteSignalR, SetUtenteSignalR } from '../../../../../core/signalr/store/signalR.actions';
+import { makeCopy } from '../../../../../shared/helper/function';
+import { ClearRuoliUtenteLoggato } from '../../../../../shared/store/actions/ruoli/ruoli.actions';
 
 export interface UtenteStateModel {
     localName: string;
@@ -31,9 +31,6 @@ export class UtenteState {
         return state.localName;
     }
 
-    constructor(private signalR: SignalRService) {
-    }
-
     @Action(SetUtente)
     setUtente({ patchState, dispatch }: StateContext<UtenteStateModel>, action: SetUtente) {
         // Set SignalR Data
@@ -46,48 +43,44 @@ export class UtenteState {
         });
     }
 
-    @Action(SetUtenteSignalR)
-    setUtenteSignalR({ dispatch }: StateContext<UtenteStateModel>, action: SetUtenteSignalR) {
-        this.signalR.addToGroup(new SignalRNotification(
-            action.utente.sede.codice,
-            action.utente.id,
-            `${action.utente.nome} ${action.utente.cognome}`
-        ));
-        dispatch(new SetCodiceSede(action.utente.sede.codice));
-        dispatch(new SetIdUtente(action.utente.id));
-    }
-
     @Action(SetUtenteLocalStorage)
     setUtenteLocalStorage({ getState }: StateContext<UtenteStateModel>, action: SetUtenteLocalStorage) {
         const state = getState();
         localStorage.setItem(state.localName, JSON.stringify(action.utente));
     }
 
+    @Action(ClearUtenteLocalStorage)
+    clearUtenteLocalStorage({ getState }: StateContext<UtenteStateModel>) {
+        const state = getState();
+        localStorage.removeItem(state.localName);
+    }
+
     @Action(UpdateUtente)
-    updateUtente({ patchState, dispatch }: StateContext<UtenteStateModel>, action: UpdateUtente) {
+    updateUtente({ getState, patchState, dispatch }: StateContext<UtenteStateModel>, action: UpdateUtente) {
+        const state = getState();
+        const token = JSON.parse(localStorage.getItem(state.localName)).token;
+        const utenteToSet = makeCopy(action.utente);
+        utenteToSet.token = token;
         patchState({
-            utente: action.utente
+            utente: utenteToSet
         });
         if (action.options.localStorage) {
-            dispatch(new SetUtenteLocalStorage(action.utente));
+            dispatch(new SetUtenteLocalStorage(utenteToSet));
         }
     }
 
     @Action(ClearUtente)
-    clearUtente({ getState, patchState }: StateContext<UtenteStateModel>) {
+    clearUtente({ getState, patchState, dispatch }: StateContext<UtenteStateModel>) {
         const state = getState();
-        // Set SignalR Data
         if (state.utente) {
-            this.signalR.removeToGroup(new SignalRNotification(
-                state.utente.sede.codice,
-                state.utente.id,
-                `${state.utente.nome} ${state.utente.cognome}`
-                )
-            );
+            // Clear SignalR Data
+            dispatch(new ClearUtenteSignalR(state.utente));
         }
         // Local Storage
-        localStorage.removeItem(state.localName);
-        // Store User Data
+        dispatch(new ClearUtenteLocalStorage());
+        // Current Roles Session Storage
+        dispatch(new ClearRuoliUtenteLoggato());
+        // Clear User Data
         patchState({
             utente: null
         });

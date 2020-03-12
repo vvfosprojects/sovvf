@@ -4,7 +4,6 @@ import { ClockService } from './clock/clock-service/clock.service';
 import { Store, Select } from '@ngxs/store';
 import { TurnoState } from './store/states/turno/turno.state';
 import { Utente } from '../../shared/model/utente.model';
-import { ClearUtente } from './store/actions/operatore/utente.actions';
 import { TurnoExtra } from './turno/turno-extra.model';
 import { ClearDataNavbar, GetDataNavbar } from './store/actions/navbar.actions';
 import { SediTreeviewState } from '../../shared/store/states/sedi-treeview/sedi-treeview.state';

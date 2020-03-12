@@ -8,6 +8,8 @@ import { StatoRichiestaActions } from '../enum/stato-richiesta-actions.enum';
 import { Tipologia } from '../model/tipologia.model';
 import { LatLngBounds } from '@agm/core';
 import { AreaMappa } from '../../features/home/maps/maps-model/area-mappa-model';
+import { Role, Utente } from '../model/utente.model';
+import { Sede } from '../model/sede.model';
 
 export function makeCopy(value): any {
     return (JSON.parse(JSON.stringify(value)));
@@ -298,4 +300,22 @@ export function onlyUnique(value, index, self) {
 
 export function wipeStringUppercase(text: string) {
     return text.replace(/(?=[A-Z])/g, ' ').trim();
+}
+
+export function _isAdministrator(utente: Utente, options?: { sede?: Sede }) {
+    let count = 0;
+    if (!options || !options.sede) {
+        for (const ruolo of utente.ruoli) {
+            if (ruolo.descrizione === Role.Amministratore) {
+                count += 1;
+            }
+        }
+    } else {
+        for (const ruolo of utente.ruoli) {
+            if (ruolo.descrizione === Role.Amministratore && ruolo.codSede === options.sede.codice) {
+                count += 1;
+            }
+        }
+    }
+    return count > 0;
 }

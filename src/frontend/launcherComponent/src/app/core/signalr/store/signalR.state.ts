@@ -1,7 +1,10 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
-import { SetCodiceSede, SetConnectionId, SetIdUtente, SignalRHubConnesso, SignalRHubDisconnesso } from './signalR.actions';
+import { SetCodiceSede, SetConnectionId, SetIdUtente, SetUtenteSignalR, ClearUtenteSignalR, SignalRHubConnesso, SignalRHubDisconnesso } from './signalR.actions';
 import { ShowToastr } from '../../../shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from '../../../shared/enum/toastr';
+import { SignalRNotification } from '../model/signalr-notification.model';
+import { UtenteStateModel } from '../../../features/navbar/store/states/operatore/utente.state';
+import { SignalRService } from '../signalR.service';
 
 export interface SignalRStateModel {
     connected: boolean;
@@ -48,6 +51,9 @@ export class SignalRState {
         return state.idUtente;
     }
 
+    constructor(private signalR: SignalRService) {
+    }
+
     @Action(SignalRHubConnesso)
     signalRConnesso({ getState, patchState, dispatch }: StateContext<SignalRStateModel>) {
         const state = getState();
@@ -83,6 +89,27 @@ export class SignalRState {
         patchState({
             connectionId: action.connectionId
         });
+    }
+
+    @Action(SetUtenteSignalR)
+    setUtenteSignalR({ dispatch }: StateContext<UtenteStateModel>, action: SetUtenteSignalR) {
+        this.signalR.addToGroup(new SignalRNotification(
+            action.utente.sede.codice,
+            action.utente.id,
+            `${action.utente.nome} ${action.utente.cognome}`
+        ));
+        dispatch(new SetCodiceSede(action.utente.sede.codice));
+        dispatch(new SetIdUtente(action.utente.id));
+    }
+
+    @Action(ClearUtenteSignalR)
+    ClearUtenteSignalR({ getState }: StateContext<UtenteStateModel>, action: ClearUtenteSignalR) {
+        this.signalR.removeToGroup(new SignalRNotification(
+            action.utente.sede.codice,
+            action.utente.id,
+            `${action.utente.nome} ${action.utente.cognome}`
+            )
+        );
     }
 
     @Action(SetCodiceSede)

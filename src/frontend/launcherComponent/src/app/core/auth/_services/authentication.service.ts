@@ -42,6 +42,9 @@ export class AuthenticationService {
     }
 
     logout() {
-        this.store.dispatch(new ClearUtente());
+        const utente = this.store.selectSnapshot(UtenteState.utente);
+        if (utente) {
+            this.store.dispatch(new ClearUtente());
+        }
     }
 }

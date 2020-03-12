@@ -12,12 +12,8 @@ import { SetBoxMezzi } from '../../features/home/store/actions/boxes/box-mezzi.a
 import { SetBoxRichieste } from '../../features/home/store/actions/boxes/box-richieste.actions';
 import { environment } from '../../../environments/environment';
 import { ToastrType } from '../../shared/enum/toastr';
-import { InsertChiamataSuccess, ReducerSchedaTelefonata } from '../../features/home/store/actions/chiamata/scheda-telefonata.actions';
-import {
-    InsertChiamataMarker,
-    RemoveChiamataMarker,
-    UpdateItemChiamataMarker
-} from '../../features/home/store/actions/maps/chiamate-markers.actions';
+import { InsertChiamataSuccess } from '../../features/home/store/actions/chiamata/scheda-telefonata.actions';
+import { InsertChiamataMarker, RemoveChiamataMarker, UpdateItemChiamataMarker } from '../../features/home/store/actions/maps/chiamate-markers.actions';
 import {
     AddBookMezzoComposizione,
     RemoveBookingMezzoComposizione,
@@ -25,20 +21,12 @@ import {
     SetListaMezziComposizione,
     UpdateMezzoComposizioneScadenzaByCodiceMezzo
 } from '../../features/home/store/actions/composizione-partenza/mezzi-composizione.actions';
-import {
-    SetListaSquadreComposizione
-} from '../../features/home/store/actions/composizione-partenza/squadre-composizione.actions';
+import { SetListaSquadreComposizione } from '../../features/home/store/actions/composizione-partenza/squadre-composizione.actions';
 import { RemoveBoxPartenzaByMezzoId } from '../../features/home/store/actions/composizione-partenza/box-partenza.actions';
-import {
-    InsertRichiestaMarker,
-    UpdateRichiestaMarker
-} from '../../features/home/store/actions/maps/richieste-markers.actions';
+import { InsertRichiestaMarker, UpdateRichiestaMarker } from '../../features/home/store/actions/maps/richieste-markers.actions';
 import { ComposizionePartenzaState } from '../../features/home/store/states/composizione-partenza/composizione-partenza.state';
 import { Composizione } from '../../shared/enum/composizione.enum';
-import {
-    SetListaIdPreAccoppiati,
-    UpdateMezzoPreAccoppiatoComposizione
-} from '../../features/home/store/actions/composizione-partenza/composizione-veloce.actions';
+import { SetListaIdPreAccoppiati, UpdateMezzoPreAccoppiatoComposizione } from '../../features/home/store/actions/composizione-partenza/composizione-veloce.actions';
 import { SetMezziInServizio } from 'src/app/features/home/store/actions/mezzi-in-servizio/mezzi-in-servizio.actions';
 import { ViewComponentState } from '../../features/home/store/states/view/view.state';
 import { GetListeComposizioneAvanzata } from '../../features/home/store/actions/composizione-partenza/composizione-avanzata.actions';
@@ -54,6 +42,12 @@ import {
 import { ContatoriSchedeContatto } from '../../shared/interface/contatori-schede-contatto.interface';
 import { SchedaContatto } from '../../shared/interface/scheda-contatto.interface';
 import { GetUtentiGestione } from '../../features/gestione-utenti/store/actions/gestione-utenti/gestione-utenti.actions';
+import { Utente } from '../../shared/model/utente.model';
+import { UpdateUtente } from '../../features/navbar/store/actions/operatore/utente.actions';
+import { UtenteState } from '../../features/navbar/store/states/operatore/utente.state';
+import { UpdateRuoliUtenteLoggato } from '../../shared/store/actions/ruoli/ruoli.actions';
+import { Navigate } from '@ngxs/router-plugin';
+import { _isAdministrator } from '../../shared/helper/function';
 
 const HUB_URL = environment.signalRHub;
 const SIGNALR_BYPASS = !environment.signalR;
@@ -298,6 +292,19 @@ export class SignalRService {
         /**
          * Gestione Utenti
          */
+        this.hubNotification.on('NotifyModificatoRuoloUtente', (utente: Utente) => {
+            if (utente) {
+                const utenteAttuale = this.store.selectSnapshot(UtenteState.utente);
+                if (utente.id === utenteAttuale.id) {
+                    this.store.dispatch(new UpdateUtente(utente, { localStorage: true }));
+                    this.store.dispatch(new UpdateRuoliUtenteLoggato(utente.ruoli));
+                    if (!_isAdministrator(utente)) {
+                        this.store.dispatch(new Navigate(['/home']));
+                    }
+                }
+            }
+        });
+
         this.hubNotification.on('NotifyRefreshUtenti', (success: boolean) => {
             if (success) {
                 this.store.dispatch(new GetUtentiGestione());

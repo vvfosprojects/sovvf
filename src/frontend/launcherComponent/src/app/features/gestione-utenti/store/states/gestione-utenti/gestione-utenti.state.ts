@@ -25,6 +25,10 @@ import { AddRuoloUtenteInterface } from '../../../../../shared/interface/add-ruo
 import { UpdateFormValue, SetFormEnabled } from '@ngxs/form-plugin';
 import { PaginationState } from '../../../../../shared/store/states/pagination/pagination.state';
 import { StartLoading, StopLoading } from '../../../../../shared/store/actions/loading/loading.actions';
+import { Navigate } from '@ngxs/router-plugin';
+import { ActivatedRoute } from '@angular/router';
+import { _isAdministrator } from '../../../../../shared/helper/function';
+import { UtenteState } from '../../../../navbar/store/states/operatore/utente.state';
 
 export interface GestioneUtentiStateModel {
     listaUtentiVVF: UtenteVvfInterface[];
@@ -63,6 +67,7 @@ export class GestioneUtentiState {
 
     constructor(private _gestioneUtenti: GestioneUtentiService,
                 private modalService: NgbModal,
+                private router: ActivatedRoute,
                 private store: Store) {
     }
 
@@ -115,19 +120,29 @@ export class GestioneUtentiState {
 
     @Action(GetUtentiGestione)
     getGestioneUtenti({ dispatch }: StateContext<GestioneUtentiStateModel>, action: GetUtentiGestione) {
-        dispatch(new StartLoading());
-        const filters = {
-            search: this.store.selectSnapshot(RicercaUtentiState.ricerca),
-        };
-        const pagination = {
-            page: action.page ? action.page : 1,
-            pageSize: this.store.selectSnapshot(PaginationState.pageSize)
-        };
-        this._gestioneUtenti.getListaUtentiGestione(filters, pagination).subscribe((response: ResponseInterface) => {
-            dispatch(new SetUtentiGestione(response.dataArray));
-            dispatch(new PatchPagination(response.pagination));
-            dispatch(new StopLoading());
-        });
+        const route = this.router.children[0].snapshot.url[0].path;
+        console.log('route', route);
+        if (route === 'gestione-utenti') {
+            dispatch(new StartLoading());
+            const filters = {
+                search: this.store.selectSnapshot(RicercaUtentiState.ricerca),
+            };
+            const pagination = {
+                page: action.page ? action.page : 1,
+                pageSize: this.store.selectSnapshot(PaginationState.pageSize)
+            };
+            this._gestioneUtenti.getListaUtentiGestione(filters, pagination).subscribe((response: ResponseInterface) => {
+                    dispatch(new SetUtentiGestione(response.dataArray));
+                    dispatch(new PatchPagination(response.pagination));
+                    dispatch(new StopLoading());
+                },
+                error => {
+                    const utente = this.store.selectSnapshot(UtenteState.utente);
+                    if (!_isAdministrator(utente, { sede: utente.sede })) {
+                        this.store.dispatch(new Navigate(['/home']));
+                    }
+                });
+        }
     }
 
     @Action(SetUtentiGestione)
@@ -170,7 +185,6 @@ export class GestioneUtentiState {
     @Action(AddRuoloUtenteGestione)
     addRuoloUtenteGestione({ getState, dispatch }: StateContext<GestioneUtentiStateModel>) {
         const form = getState().addUtenteRuoloForm.model;
-
         const obj: AddRuoloUtenteInterface = {
             codFiscale: form.utente,
             ruoli: []
@@ -183,13 +197,8 @@ export class GestioneUtentiState {
             });
         });
 
-        this._gestioneUtenti.addRuoloUtente(obj).subscribe((utente: Utente) => {
-            if (utente) {
-                patch(
-                    insertItem(utente)
-                );
-                dispatch(new ShowToastr(ToastrType.Info, 'Utente Aggiunto', 'Utente aggiunto con successo.', 3));
-            }
+        this._gestioneUtenti.addRuoloUtente(obj).subscribe(() => {
+            dispatch(new ShowToastr(ToastrType.Info, 'Utente Aggiunto', 'Utente aggiunto con successo.', 3));
         });
 
         // Clear data

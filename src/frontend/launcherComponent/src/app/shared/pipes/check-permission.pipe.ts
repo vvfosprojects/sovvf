@@ -3,7 +3,8 @@ import { PermissionFeatures } from '../enum/permission-features.enum';
 import { PermessiService } from '../../core/service/permessi-service/permessi.service';
 
 @Pipe({
-  name: 'checkPermission'
+  name: 'checkPermission',
+  pure: false
 })
 export class CheckPermissionPipe implements PipeTransform {
 

@@ -13,8 +13,8 @@
                 <div class="col-2 px-4">
                     <button class="btn btn-block btn-secondary" [routerLink]="['/'+ RoutesPath.Autorimessa]"
                             [routerLinkActive]="['btn-dark']"
-                            [disabled]="getPermissionByFeature(permissionFeatures.Autorimessa)"
-                            [ngClass]="{'cursor-not-allowed': getPermissionByFeature(permissionFeatures.Autorimessa)}"
+                            [disabled]="permissionFeatures.Autorimessa | checkPermission"
+                            [ngClass]="{'cursor-not-allowed': permissionFeatures.Autorimessa | checkPermission}"
                             (click)="_toggleOpened()">
                         <i class="fa fa-truck fa-lg mr-1"></i>
                         Autorimessa
@@ -23,8 +23,8 @@
                 <div class="col-2 px-4">
                     <button class="btn btn-block btn-secondary" [routerLink]="['/'+ RoutesPath.Servizi]"
                             [routerLinkActive]="['btn-dark']"
-                            [disabled]="getPermissionByFeature(permissionFeatures.Servizi)"
-                            [ngClass]="{'cursor-not-allowed': getPermissionByFeature(permissionFeatures.Servizi)}"
+                            [disabled]="permissionFeatures.Servizi | checkPermission"
+                            [ngClass]="{'cursor-not-allowed': permissionFeatures.Servizi | checkPermission}"
                             (click)="_toggleOpened()">
                         <i class="fa fa-users fa-lg mr-1"></i>
                         Servizi
@@ -33,8 +33,8 @@
                 <div class="col-2 px-4">
                     <button class="btn btn-block btn-secondary" [routerLink]="['/'+ RoutesPath.Statistiche]"
                             [routerLinkActive]="['btn-dark']"
-                            [disabled]="getPermissionByFeature(permissionFeatures.Statistiche)"
-                            [ngClass]="{'cursor-not-allowed': getPermissionByFeature(permissionFeatures.Statistiche)}"
+                            [disabled]="permissionFeatures.Statistiche | checkPermission"
+                            [ngClass]="{'cursor-not-allowed': permissionFeatures.Statistiche | checkPermission}"
                             (click)="_toggleOpened()">
                         <i class="fa fa-line-chart fa-lg mr-1"></i>
                         Statistiche
@@ -43,8 +43,8 @@
                 <div class="col-2 px-5">
                     <button class="btn btn-block btn-secondary" [routerLink]="['/'+ RoutesPath.GestioneUtenti]"
                             [routerLinkActive]="['btn-dark']"
-                            [disabled]="getPermissionByFeature(permissionFeatures.GestioneUtenti)"
-                            [ngClass]="{'cursor-not-allowed': getPermissionByFeature(permissionFeatures.GestioneUtenti)}"
+                            [disabled]="permissionFeatures.GestioneUtenti | checkPermission"
+                            [ngClass]="{'cursor-not-allowed': permissionFeatures.GestioneUtenti | checkPermission}"
                             (click)="_toggleOpened()">
                         <i class="fa fa-user fa-lg mr-1"></i>
                         Gestione Utenti

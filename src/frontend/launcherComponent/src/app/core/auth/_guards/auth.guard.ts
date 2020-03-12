@@ -4,30 +4,30 @@ import { RoutesPath } from '../../../shared/enum/routes-path.enum';
 import { Select, Store } from '@ngxs/store';
 import { ShowToastr } from '../../../shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from '../../../shared/enum/toastr';
-import { Ruolo, Utente } from '../../../shared/model/utente.model';
-import { UtenteState } from '../../../features/navbar/store/states/operatore/utente.state';
+import { Ruolo } from '../../../shared/model/utente.model';
 import { Observable } from 'rxjs';
+import { RuoliUtenteLoggatoState } from '../../../shared/store/states/ruoli-utente-loggato/ruoli-utente-loggato.state';
 
 @Injectable({ providedIn: 'root' })
 export class AuthGuard implements CanActivate {
 
-    @Select(UtenteState.utente) utente$: Observable<Utente>;
-    currentUser: Utente;
+    @Select(RuoliUtenteLoggatoState.ruoli) ruoliUtente$: Observable<Ruolo[]>;
+    ruoliUtente: Ruolo[];
 
     constructor(
         private router: Router,
         private store: Store
     ) {
-        this.utente$.subscribe((utente: Utente) => this.currentUser = utente);
+        this.ruoliUtente$.subscribe((ruoliUtente: Ruolo[]) => this.ruoliUtente = ruoliUtente);
     }
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-        if (this.currentUser && this.currentUser.ruoli) {
-            if (!checkUserPermission(route.data.roles, this.currentUser) && route.data.roles && route.data.roles.length > 0) {
+        if (this.ruoliUtente) {
+            if (!checkUserPermission(route.data.roles, this.ruoliUtente) && route.data.roles && route.data.roles.length > 0) {
                 /**
                  * utente loggato ma senza permesso
                  */
-                this.store.dispatch(new ShowToastr(ToastrType.Error, 'Utente non abilitato', 'La risorsa richiesta non è accessibile da ' + this.currentUser.nome + ' ' + this.currentUser.cognome));
+                this.store.dispatch(new ShowToastr(ToastrType.Error, 'Utente non abilitato', 'La risorsa richiesta non è accessibile'));
                 this.router.navigate(['/' + RoutesPath.Home]);
                 // this.router.navigate(['/' + RoutesPath.Logged]);
                 return false;
@@ -39,10 +39,10 @@ export class AuthGuard implements CanActivate {
         this.router.navigate(['/' + RoutesPath.Login], { queryParams: { returnUrl: state.url } });
         return false;
 
-        function checkUserPermission(roles: Array<any>, utente: Utente) {
+        function checkUserPermission(roles: Array<any>, ruoliUtente: Ruolo[]) {
             let count = 0;
-            if (roles && utente.ruoli.length > 0) {
-                utente.ruoli.forEach((ruolo: Ruolo) => {
+            if (roles && ruoliUtente.length > 0) {
+                ruoliUtente.forEach((ruolo: Ruolo) => {
                     if (roles.indexOf(ruolo.descrizione) === -1) {
                         count++;
                     }
@@ -50,7 +50,7 @@ export class AuthGuard implements CanActivate {
             } else {
                 count++;
             }
-            return count === 0 || (utente.ruoli.length > 0 && count < utente.ruoli.length);
+            return count === 0 || (ruoliUtente.length > 0 && count < ruoliUtente.length);
         }
     }
 }
