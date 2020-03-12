@@ -70,8 +70,10 @@ export class AppComponent implements OnDestroy {
         this.subscription.add(this.offsetTime$.subscribe((serverTime: number) => OFFSET_SYNC_TIME.unshift(serverTime)));
         this.subscription.add(this.user$.subscribe((user: Utente) => {
             this.user = user;
-            if (this.listeSediLoaded && user) {
-                this.store.dispatch(new PatchListaSediNavbar([ user.sede.codice ]));
+            if (user) {
+                this.listeSediLoaded && this.store.dispatch(new PatchListaSediNavbar([ user.sede.codice ]));
+            } else {
+                this.store.dispatch(new ClearListaSediNavbar());
             }
         }));
         this.subscription.add(this.listeSediLoaded$.subscribe((r: boolean) => {
