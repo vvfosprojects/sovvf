@@ -69,7 +69,7 @@ export class MapsButtonsState {
                     controlAnimation: mapsButtonsStateDefaults.controlAnimation,
                     prevState: mapsButtonsStateDefaults.prevState
                 });
-                dispatch(new ToggleAnimation());
+                // dispatch(new ToggleAnimation());
             }
         } else if (!richiesteIsOn && !state.prevState) {
             patchState({
@@ -93,7 +93,8 @@ export class MapsButtonsState {
         if (state.controlAnimation.toggleStatus) {
             patchState(mapsButtonsStateDefaults);
         }
-        dispatch(new ToggleAnimation());
+        // Todo logica ToggleAnimation da rivedere
+        // dispatch(new ToggleAnimation());
     }
 
     @Action(ToggleAnimation)
