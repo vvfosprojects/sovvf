@@ -22,10 +22,10 @@
 <ng-template #ruoli>
     <div class="py-1">
         <small class="d-block font-weight-bold">Ruoli Assegnati:</small>
-        <div *ngFor="let ruolo of user.ruoli" class="d-block badge badge-primary mt-2 p-2">
+        <div *ngFor="let ruolo of ruoliUtenteLoggato" class="d-block badge badge-primary mt-2 p-2">
             {{ruolo.descrizione}}
         </div>
-        <div *ngIf="!user.ruoli || (user.ruoli && user.ruoli.length === 0)" class="badge badge-secondary mt-2 p-2">
+        <div *ngIf="ruoliUtenteLoggato?.length === 0" class="badge badge-secondary mt-2 p-2">
             Solo Visualizzazione
         </div>
     </div>

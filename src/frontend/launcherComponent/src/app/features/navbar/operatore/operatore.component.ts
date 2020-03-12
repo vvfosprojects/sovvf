@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { Utente } from '../../../shared/model/utente.model';
+import { Ruolo, Utente } from '../../../shared/model/utente.model';
 
 @Component({
     selector: 'app-operatore',
@@ -9,6 +9,7 @@ import { Utente } from '../../../shared/model/utente.model';
 export class OperatoreComponent {
 
     @Input() user: Utente;
+    @Input() ruoliUtenteLoggato: Ruolo[];
     @Output() _logout = new EventEmitter();
 
 }

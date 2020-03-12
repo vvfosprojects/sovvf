@@ -3,7 +3,7 @@ import { Observable, Subscription } from 'rxjs';
 import { ClockService } from './clock/clock-service/clock.service';
 import { Store, Select } from '@ngxs/store';
 import { TurnoState } from './store/states/turno/turno.state';
-import { Utente } from '../../shared/model/utente.model';
+import { Ruolo, Utente } from '../../shared/model/utente.model';
 import { TurnoExtra } from './turno/turno-extra.model';
 import { ClearDataNavbar, GetDataNavbar } from './store/actions/navbar.actions';
 import { SediTreeviewState } from '../../shared/store/states/sedi-treeview/sedi-treeview.state';
@@ -26,6 +26,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     colorButton = 'btn-dark';
 
     @Input() user: Utente;
+    @Input() ruoliUtenteLoggato: Ruolo[];
     @Output() openedSidebar = new EventEmitter<any>();
 
     @Select(TurnoState.turnoCalendario) turnoCalendario$: Observable<TurnoCalendario>;

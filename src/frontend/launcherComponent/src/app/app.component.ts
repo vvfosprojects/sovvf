@@ -7,13 +7,14 @@ import { Observable, Subscription } from 'rxjs';
 import { SignalRState } from './core/signalr/store/signalR.state';
 import { AppState } from './shared/store/states/app/app.state';
 import { OFFSET_SYNC_TIME } from './core/settings/referral-time';
-import { Utente } from './shared/model/utente.model';
+import { Ruolo, Utente } from './shared/model/utente.model';
 import { UtenteState } from './features/navbar/store/states/operatore/utente.state';
 import { ClearListaSediNavbar, PatchListaSediNavbar } from './shared/store/actions/sedi-treeview/sedi-treeview.actions';
 import { SediTreeviewState } from './shared/store/states/sedi-treeview/sedi-treeview.state';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PermissionFeatures } from './shared/enum/permission-features.enum';
 import { PermessiService } from './core/service/permessi-service/permessi.service';
+import { RuoliUtenteLoggatoState } from './shared/store/states/ruoli-utente-loggato/ruoli-utente-loggato.state';
 
 @Component({
     selector: 'app-root',
@@ -35,6 +36,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
     @Select(AppState.offsetTimeSync) offsetTime$: Observable<number>;
 
+    @Select(RuoliUtenteLoggatoState.ruoli) ruoliUtenteLoggato$: Observable<Ruolo[]>;
     @Select(UtenteState.utente) user$: Observable<Utente>;
     user: Utente;
 
