@@ -122,6 +122,7 @@ export class RichiesteMarkersState {
                     dispatch(new AddRichiesteMarkers(richiesteMarkerAdd));
                 }
             }
+            // Todo logica ToggleAnimation da rivedere
             // this.mapIsLoaded$.subscribe(isLoaded => {
             //     if (isLoaded) {
             //         dispatch(new ToggleAnimation());

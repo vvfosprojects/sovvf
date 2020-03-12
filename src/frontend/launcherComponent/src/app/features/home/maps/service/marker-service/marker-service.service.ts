@@ -158,6 +158,7 @@ export class MarkerService implements OnDestroy {
         /**
          * intervallo animazione dei marker rilevanti 30 sec.
          */
+        // Todo logica ToggleAnimation da rivedere
         // setInterval(() => {
         //     this.store.dispatch(new ToggleAnimation());
         // }, MAPSOPTIONS.animationTimeoutMs);

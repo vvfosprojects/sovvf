@@ -93,6 +93,7 @@ export class MapsButtonsState {
         if (state.controlAnimation.toggleStatus) {
             patchState(mapsButtonsStateDefaults);
         }
+        // Todo logica ToggleAnimation da rivedere
         // dispatch(new ToggleAnimation());
     }
 
