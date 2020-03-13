@@ -4,24 +4,19 @@ import {
     ClearUtente,
     SetUtente,
     SetUtenteLocalStorage,
-    SetUtenteSignalR,
-    SetVistaSedi,
     UpdateUtente
 } from '../../actions/operatore/utente.actions';
-import { SignalRService } from '../../../../../core/signalr/signalR.service';
-import { SignalRNotification } from '../../../../../core/signalr/model/signalr-notification.model';
-import { SetCodiceSede, SetIdUtente } from '../../../../../core/signalr/store/signalR.actions';
+import { ClearIdUtente, ClearUtenteSignalR, SetUtenteSignalR } from '../../../../../core/signalr/store/signalR.actions';
+import { ClearVistaSedi, SetVistaSedi } from '../../../../../shared/store/actions/app/app.actions';
 
 export interface UtenteStateModel {
     localName: string;
     utente: Utente;
-    vistaSedi: string[];
 }
 
 export const UtenteStateDefaults: UtenteStateModel = {
     localName: 'userSO115',
     utente: null,
-    vistaSedi: null
 };
 
 @State<UtenteStateModel>({
@@ -40,35 +35,15 @@ export class UtenteState {
         return state.localName;
     }
 
-    @Selector()
-    static vistaSedi(state: UtenteStateModel) {
-        return state.vistaSedi;
-    }
-
-    constructor(private signalR: SignalRService) {
-    }
-
     @Action(SetUtente)
     setUtente({ patchState, dispatch }: StateContext<UtenteStateModel>, action: SetUtente) {
-        // Set SignalR Data
-        dispatch(new SetUtenteSignalR(action.utente));
-        // Local Storage
-        dispatch(new SetUtenteLocalStorage(action.utente));
-        // Store User Data
         patchState({
-            utente: action.utente
+            utente: action.utente,
         });
-    }
-
-    @Action(SetUtenteSignalR)
-    setUtenteSignalR({ dispatch }: StateContext<UtenteStateModel>, action: SetUtenteSignalR) {
-        this.signalR.addToGroup(new SignalRNotification(
-            [ action.utente.sede.codice ],
-            action.utente.id,
-            `${action.utente.nome} ${action.utente.cognome}`
-        ));
-        dispatch(new SetCodiceSede(action.utente.sede.codice));
-        dispatch(new SetIdUtente(action.utente.id));
+        dispatch([
+            new SetVistaSedi([action.utente.sede.codice]),
+            new SetUtenteLocalStorage(action.utente)
+        ]);
     }
 
     @Action(SetUtenteLocalStorage)
@@ -87,26 +62,21 @@ export class UtenteState {
         }
     }
 
-    @Action(SetVistaSedi)
-    setVistaSedi({ patchState }: StateContext<UtenteStateModel>, { vistaSedi }: SetVistaSedi) {
-        patchState({ vistaSedi });
-    }
-
     @Action(ClearUtente)
-    clearUtente({ getState, patchState }: StateContext<UtenteStateModel>) {
+    clearUtente({ getState, patchState, dispatch }: StateContext<UtenteStateModel>) {
         const state = getState();
         // Set SignalR Data
         if (state.utente) {
-            this.signalR.removeToGroup(new SignalRNotification(
-                [ state.utente.sede.codice ],
-                state.utente.id,
-                `${state.utente.nome} ${state.utente.cognome}`
-                )
-            );
+            dispatch([
+                new ClearUtenteSignalR(state.utente),
+                new ClearVistaSedi(),
+                new ClearIdUtente()
+            ]);
         }
         // Local Storage
         localStorage.removeItem(state.localName);
         // Store User Data
         patchState(UtenteStateDefaults);
     }
+
 }

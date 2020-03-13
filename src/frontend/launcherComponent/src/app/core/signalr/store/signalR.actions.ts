@@ -1,3 +1,5 @@
+import { Utente } from '../../../shared/model/utente.model';
+
 export class SignalRHubConnesso {
     static readonly type = '[signalR] Hub Connesso';
 }
@@ -13,6 +15,17 @@ export class SetConnectionId {
     }
 }
 
+export class SetUtenteSignalR {
+    static readonly type = '[signalR] Set utente SignalR';
+}
+
+export class ClearUtenteSignalR {
+    static readonly type = '[Utente] Clear utente SignalR';
+
+    constructor(public utente?: Utente) {
+    }
+}
+
 export class SetCodiceSede {
     static readonly type = '[signalR] Set Codice Sede';
 
@@ -20,9 +33,17 @@ export class SetCodiceSede {
     }
 }
 
+export class ClearCodiceSede {
+    static readonly type = '[signalR] Clear Codice Sede';
+}
+
 export class SetIdUtente {
     static readonly type = '[signalR] Set ID Utente';
 
     constructor(public idUtente: string) {
     }
+}
+
+export class ClearIdUtente {
+    static readonly type = '[signalR] Clear ID Utente';
 }

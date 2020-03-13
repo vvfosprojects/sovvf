@@ -11,17 +11,16 @@ import {
 import { arraysEqual, makeCopy } from '../../../helper/function';
 import { ShowToastr } from '../../actions/toastr/toastr.actions';
 import { allFalseTreeItem, checkTreeItem, findItem } from './sedi-treeview.helper';
-import { SetAppLoaded } from '../../actions/app/app.actions';
+import { SetAppLoaded, SetVistaSedi } from '../../actions/app/app.actions';
 import { ToastrType } from '../../../enum/toastr';
 import { SetTurnoCalendario } from 'src/app/features/navbar/store/actions/turno/turno.actions';
-import { SetVistaSedi } from '../../../../features/navbar/store/actions/operatore/utente.actions';
+import { ClearUtenteSignalR, SetCodiceSede, SetUtenteSignalR } from '../../../../core/signalr/store/signalR.actions';
 
 export interface SediTreeviewStateModel {
     listeSedi: ListaSedi;
     listaSediNavbar: ListaSedi;
     sediNavbarTesto: TreeViewStateSelezione;
     sediNavbarSelezionate: TreeViewStateSelezioneArr;
-    sediNavbarDisableConfirm: boolean;
 }
 
 export const SediTreeviewStateDefaults: SediTreeviewStateModel = {
@@ -32,8 +31,7 @@ export const SediTreeviewStateDefaults: SediTreeviewStateModel = {
     },
     sediNavbarSelezionate: {
         iniziali: null,
-    },
-    sediNavbarDisableConfirm: true
+    }
 };
 
 @State<SediTreeviewStateModel>({
@@ -63,8 +61,13 @@ export class SediTreeviewState {
     }
 
     @Selector()
-    static sediNavbarTastoConferma(state: SediTreeviewStateModel) {
-        return state.sediNavbarDisableConfirm;
+    static sediNavbarTastoConferma(state: SediTreeviewStateModel): boolean {
+        const sediNavbar = state.sediNavbarSelezionate;
+        if (sediNavbar.correnti as string[]) {
+            return arraysEqual(sediNavbar.iniziali, sediNavbar.correnti);
+        } else {
+            return true;
+        }
     }
 
     @Action(SetListaSediTreeview)
@@ -94,8 +97,7 @@ export class SediTreeviewState {
         patchState({
             listaSediNavbar: SediTreeviewStateDefaults.listaSediNavbar,
             sediNavbarTesto: SediTreeviewStateDefaults.sediNavbarTesto,
-            sediNavbarSelezionate: SediTreeviewStateDefaults.sediNavbarSelezionate,
-            sediNavbarDisableConfirm: SediTreeviewStateDefaults.sediNavbarDisableConfirm,
+            sediNavbarSelezionate: SediTreeviewStateDefaults.sediNavbarSelezionate
         });
     }
 
@@ -131,8 +133,7 @@ export class SediTreeviewState {
                 sediNavbarTesto: {
                     iniziale: state.sediNavbarTesto.iniziale,
                     corrente: item,
-                },
-                sediNavbarDisableConfirm: (!!arraysEqual(state.sediNavbarSelezionate.iniziali, action.selected) || action.selected.length === 0)
+                }
             });
         }
     }
@@ -149,8 +150,7 @@ export class SediTreeviewState {
             sediNavbarTesto: {
                 iniziale: state.sediNavbarTesto.iniziale,
                 corrente: SediTreeviewStateDefaults.sediNavbarTesto.corrente
-            },
-            sediNavbarDisableConfirm: SediTreeviewStateDefaults.sediNavbarDisableConfirm
+            }
         });
         dispatch(new ShowToastr(ToastrType.Warning, 'Attenzione', 'Selezione della sede annullata', 5));
     }
@@ -165,12 +165,15 @@ export class SediTreeviewState {
             },
             sediNavbarTesto: {
                 iniziale: state.sediNavbarTesto.corrente,
-            },
-            sediNavbarDisableConfirm: SediTreeviewStateDefaults.sediNavbarDisableConfirm
+            }
         });
-        dispatch(new SetVistaSedi(state.sediNavbarSelezionate.correnti));
-        dispatch(new SetTurnoCalendario());
-        dispatch(new SetAppLoaded());
+        dispatch([
+            new ClearUtenteSignalR(),
+            new SetVistaSedi(state.sediNavbarSelezionate.correnti),
+            // new SetUtenteSignalR(),
+            new SetTurnoCalendario(),
+            new SetAppLoaded()
+        ]);
     }
 
 }
