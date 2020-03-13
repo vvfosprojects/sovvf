@@ -107,8 +107,6 @@ export class UtenteState {
         // Local Storage
         localStorage.removeItem(state.localName);
         // Store User Data
-        patchState({
-            utente: null
-        });
+        patchState(UtenteStateDefaults);
     }
 }
