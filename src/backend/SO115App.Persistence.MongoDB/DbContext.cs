@@ -29,6 +29,7 @@ using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
 using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.Marker;
+using SO115App.Models.Classi.MongoDTO;
 using SO115App.Models.Classi.NUE;
 using SO115App.Persistence.MongoDB.Mappings;
 using System.Runtime.CompilerServices;
@@ -141,6 +142,13 @@ namespace Persistence.MongoDB
             get
             {
                 return database.GetCollection<Utente>("utente");
+            }
+        }
+        public IMongoCollection<ListaSedi> SediCollection
+        {
+            get
+            {
+                return database.GetCollection<ListaSedi>("listasedi");
             }
         }
     }

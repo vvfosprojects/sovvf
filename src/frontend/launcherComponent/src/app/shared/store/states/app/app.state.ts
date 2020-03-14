@@ -1,15 +1,16 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
-import { SetAppLoaded, SetAppSede, SetTimeSync } from '../../actions/app/app.actions';
+import { SetAppLoaded, SetVistaSedi, SetTimeSync, ClearVistaSedi } from '../../actions/app/app.actions';
+import { SetCodiceSede } from '../../../../core/signalr/store/signalR.actions';
 
 export interface AppStateModel {
     appIsLoaded: boolean;
-    sedeAttuale: string[];
+    vistaSedi: string[];
     offsetTimeSync: number;
 }
 
 export const appStateDefaults: AppStateModel = {
     appIsLoaded: true,
-    sedeAttuale: [],
+    vistaSedi: null,
     offsetTimeSync: 0
 };
 
@@ -29,38 +30,37 @@ export class AppState {
         return state.offsetTimeSync;
     }
 
-    constructor() {
+    @Selector()
+    static vistaSedi(state: AppStateModel) {
+        return state.vistaSedi;
     }
 
     @Action(SetAppLoaded)
     setAppLoaded({ getState, patchState }: StateContext<AppStateModel>) {
-
         const appLoaded = getState().appIsLoaded;
-
         if (appLoaded) {
-            /**
-             * preloader fake, simula il ricaricamento dell'applicazione
-             */
-            fakeReloading();
-
+            reload();
             setTimeout(() => {
-                fakeReloading();
-            }, 1000);
-
+                reload();
+            }, 1);
         }
 
-        function fakeReloading() {
+        function reload() {
             patchState({
                 appIsLoaded: !getState().appIsLoaded
             });
         }
     }
 
-    @Action(SetAppSede)
-    setAppSede({ patchState }: StateContext<AppStateModel>, action: SetAppSede) {
-        patchState({
-            sedeAttuale: action.idSede
-        });
+    @Action(SetVistaSedi)
+    setVistaSedi({ patchState, dispatch }: StateContext<AppStateModel>, { vistaSedi }: SetVistaSedi) {
+        patchState({ vistaSedi });
+        dispatch(new SetCodiceSede(vistaSedi.join()));
+    }
+
+    @Action(ClearVistaSedi)
+    clearVistaSedi({ patchState }: StateContext<AppStateModel>) {
+        patchState({ vistaSedi: appStateDefaults.vistaSedi });
     }
 
     @Action(SetTimeSync)

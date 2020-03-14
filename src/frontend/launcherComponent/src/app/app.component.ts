@@ -34,11 +34,10 @@ export class AppComponent implements OnDestroy {
     listeSediLoaded: boolean;
 
     @Select(AppState.offsetTimeSync) offsetTime$: Observable<number>;
+    @Select(AppState.vistaSedi) vistaSedi$: Observable<string[]>;
 
     @Select(UtenteState.utente) user$: Observable<Utente>;
     user: Utente;
-
-    @Select(UtenteState.vistaSedi) vistaSedi$: Observable<string[]>;
 
     permissionFeatures = PermissionFeatures;
 
