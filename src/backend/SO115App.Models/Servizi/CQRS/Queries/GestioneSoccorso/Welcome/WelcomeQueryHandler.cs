@@ -129,7 +129,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
                 var welcome = new SO115App.Models.Classi.Condivise.Welcome()
                 {
                     BoxListaInterventi = _boxRichiesteHandler.Handle(boxRichiesteQuery).BoxRichieste,
-                    BoxListaMezzi = _boxMezziHandler.Handle(boxMezziQuery).BoxMezzi,
+                    //BoxListaMezzi = _boxMezziHandler.Handle(boxMezziQuery).BoxMezzi,
                     //BoxListaPersonale = _boxPersonaleHandler.Handle(boxPersonaleQuery).BoxPersonale,
                     ListaChiamateInCorso = (List<ChiamateInCorso>)_listaChiamateInCorsoMarkerHandler.Handle(listaQuery).ListaChiamateInCorsoMarker,
                     ListaSintesi = (List<SintesiRichiesta>)_sintesiRichiesteAssistenzaHandler.Handle(sintesiRichiesteAssistenzaQuery).SintesiRichiesta,
