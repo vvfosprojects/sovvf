@@ -21,23 +21,30 @@ using CQRS.Queries;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Tipologie;
 using System;
+using System.Collections.Generic;
 
 namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.Tipologie
 {
     public class TipologieQueryHandler : IQueryHandler<TipologieQuery, TipologieResult>
     {
-        private readonly IGetListaTipologie _getTipologie;
+        private readonly IGetTipologieByCodice _getTipologie;
 
-        public TipologieQueryHandler(IGetListaTipologie getTipologie)
+        public TipologieQueryHandler(IGetTipologieByCodice getTipologie)
         {
             _getTipologie = getTipologie;
         }
 
         public TipologieResult Handle(TipologieQuery query)
         {
+
+            List<string> listaSedi = new List<string>()
+            {
+                query.CodSede
+            };
+
             return new TipologieResult
             {
-                Tipologie = _getTipologie.ListaTipologie(query.CodSede)
+                Tipologie = _getTipologie.Get(listaSedi)
             };
         }
     }
