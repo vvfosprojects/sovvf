@@ -25,6 +25,7 @@ using SO115App.ExternalAPI.Fake.Servizi.DistaccamentoUtentiComuni;
 using SO115App.ExternalAPI.Fake.Servizi.Gac;
 using SO115App.ExternalAPI.Fake.Servizi.GeoFleet;
 using SO115App.ExternalAPI.Fake.Servizi.Identity;
+using SO115App.ExternalAPI.Fake.Servizi.Nue;
 using SO115App.ExternalAPI.Fake.Territorio;
 using SO115App.ExternalAPI.Fake.Uos;
 using SO115App.Models.Servizi.Infrastruttura.GeoFleet;
@@ -51,7 +52,7 @@ namespace SO115App.CompositionRoot
 
             #region NUE
 
-            container.Register<IGetSchedeContatto, SO115App.ExternalAPI.Fake.ImportOracle.SchedeContatto.GetSchedeContatto>();
+            container.Register<IGetSchedeContatto, GetSchedeContatto>();
             container.Register<IGetSchedaContattoAttuale, GetSchedaContattoAttuale>();
             container.Register<IGetSchedeContattoBySpatialArea, GetSchedeContattoBySpatialArea>();
             container.Register<IGetSchedeContattoByCodiciFiscali, GetSchedeContattoByCodiciFiscali>();
@@ -60,11 +61,11 @@ namespace SO115App.CompositionRoot
             container.Register<IGetSchedeContattoGestita, GetSchedeContattoGestita>();
             container.Register<IGetSchedeContattoTimeSpan, GetSchedeContattoTimeSpan>();
             container.Register<ISetStatoGestioneSchedaContatto, SetGestita>();
-            container.Register<IGetSchedeContattoMarkerFiltered, SO115App.ExternalAPI.Fake.ImportOracle.SchedeContatto.GetSchedeContattoMarkerFiltered>();
+            container.Register<IGetSchedeContattoMarkerFiltered, GetSchedeContattoMarkerFiltered>();
             container.Register<SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue.IGetConteggioSchede,
-                SO115App.ExternalAPI.Fake.ImportOracle.SchedeContatto.GetConteggioSchedeContatto>();
+                GetConteggioSchede>();
             container.Register<SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue.IGetSchedeFiltrate,
-                SO115App.ExternalAPI.Fake.ImportOracle.SchedeContatto.GetSchedeContattoFiltrate>();
+               GetSchedeFiltrate>();
 
             #endregion NUE
 
