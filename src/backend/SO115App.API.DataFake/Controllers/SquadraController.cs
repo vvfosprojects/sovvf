@@ -4,8 +4,10 @@ using Microsoft.AspNetCore.Mvc;
 using SO115App.API.DataFake.Services;
 using SO115App.Models.Classi.Utility;
 
-namespace SO115App.API.DataFake.Controllers
+namespace SO115App.API.DataFake.Controllers 
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class SquadraController : ControllerBase
     {
         [HttpGet("GetListaSquadreByCodComando")]

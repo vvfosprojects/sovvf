@@ -6,13 +6,13 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SO115App.API.DataFake.Services
+namespace SO115App.API.DataFake.Services 
 {
     public class GetSquadre
     {
-        public List<ListaSquadre> Get(string CodComando) 
+        public List<ListaSquadre> Get(string CodComando)
         {
-            var filepath = Costanti.ListaMezzi;
+            var filepath = Costanti.ListaSquadre;
             string json;
             using (var r = new StreamReader(filepath))
             {
@@ -21,7 +21,6 @@ namespace SO115App.API.DataFake.Services
 
             var listaSquadre = JsonConvert.DeserializeObject<List<ListaSquadre>>(json);
             return listaSquadre.FindAll(x => x.Sede.Split('.')[0].Equals(CodComando)).ToList();
-
         }
     }
 }

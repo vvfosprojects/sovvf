@@ -6,13 +6,13 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SO115App.API.DataFake.Services
+namespace SO115App.API.DataFake.Services 
 {
     public class GetPreaccoppiati
     {
-        public List<ListaPreaccoppiati> Get(string CodComando) 
+        public List<ListaPreaccoppiati> Get(string CodComando)
         {
-            var filepath = Costanti.ListaMezzi;
+            var filepath = Costanti.ListaPreAccoppiati;
             string json;
             using (var r = new StreamReader(filepath))
             {
@@ -22,7 +22,6 @@ namespace SO115App.API.DataFake.Services
             var listaPreaccoppiati = JsonConvert.DeserializeObject<List<ListaPreaccoppiati>>(json);
 
             return listaPreaccoppiati.FindAll(x => x.Sede.Split('.')[0].Equals(CodComando)).ToList();
-
         }
     }
 }
