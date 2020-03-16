@@ -44,7 +44,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.Tipologie
 
             return new TipologieResult
             {
-                Tipologie = _getTipologie.Get(listaSedi)
+                Tipologie = _getTipologie.Get()
             };
         }
     }
