@@ -26,6 +26,13 @@ export class ClearUtenteSignalR {
     }
 }
 
+export class LogoffUtenteSignalR {
+    static readonly type = '[Utente] Logoff utente SignalR';
+
+    constructor(public utente: Utente) {
+    }
+}
+
 export class SetCodiceSede {
     static readonly type = '[signalR] Set Codice Sede';
 

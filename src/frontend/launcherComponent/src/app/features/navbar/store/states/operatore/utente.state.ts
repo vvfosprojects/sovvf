@@ -6,7 +6,10 @@ import {
     SetUtenteLocalStorage,
     UpdateUtente
 } from '../../actions/operatore/utente.actions';
-import { ClearIdUtente, ClearUtenteSignalR, SetUtenteSignalR } from '../../../../../core/signalr/store/signalR.actions';
+import {
+    ClearIdUtente,
+    LogoffUtenteSignalR,
+} from '../../../../../core/signalr/store/signalR.actions';
 import { ClearVistaSedi, SetVistaSedi } from '../../../../../shared/store/actions/app/app.actions';
 
 export interface UtenteStateModel {
@@ -68,7 +71,7 @@ export class UtenteState {
         // Set SignalR Data
         if (state.utente) {
             dispatch([
-                new ClearUtenteSignalR(state.utente),
+                new LogoffUtenteSignalR(state.utente),
                 new ClearVistaSedi(),
                 new ClearIdUtente()
             ]);

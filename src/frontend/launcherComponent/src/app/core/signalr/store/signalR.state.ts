@@ -6,7 +6,7 @@ import {
     SetUtenteSignalR,
     ClearUtenteSignalR,
     SignalRHubConnesso,
-    SignalRHubDisconnesso, ClearIdUtente, ClearCodiceSede
+    SignalRHubDisconnesso, ClearIdUtente, ClearCodiceSede, LogoffUtenteSignalR
 } from './signalR.actions';
 import { ShowToastr } from '../../../shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from '../../../shared/enum/toastr';
@@ -133,6 +133,18 @@ export class SignalRState {
             codiciSede,
             _utente.id,
             `${_utente.nome} ${_utente.cognome}`
+            )
+        );
+        dispatch(new ClearCodiceSede());
+    }
+
+    @Action(LogoffUtenteSignalR)
+    logoffUtenteSignalR({ getState, dispatch }: StateContext<SignalRStateModel>, { utente }: LogoffUtenteSignalR) {
+        const codiciSede = getState().codiceSede;
+        this.signalR.removeToGroup(new SignalRNotification(
+            codiciSede,
+            utente.id,
+            `${utente.nome} ${utente.cognome}`
             )
         );
         dispatch(new ClearCodiceSede());
