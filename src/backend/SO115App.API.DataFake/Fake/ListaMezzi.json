@@ -1,7 +1,7 @@
 [
     {
         "Targa": "19609",
-        "TipoMezzo": "O",
+        "TipoMezzo": "O", 
         "Stato": "I",
         "Sede": "RM.1000",
         "CodDestinazione": "CORP",
@@ -182,6 +182,70 @@
         "Sede": "MI.1003",
         "CodDestinazione": "CMOB",
         "DescDestinazione": "COLONNA MOBILE"
+    },
+    {
+        "Targa": "11720",
+        "TipoMezzo": "O",
+        "Stato": "I",
+        "Sede": "TO.3025",
+        "CodDestinazione": "CORP",
+        "DescDestinazione": "ASSEGNATO AL COMANDO"
+    },
+    {
+        "Targa": "02478",
+        "TipoMezzo": "R",
+        "Stato": "I",
+        "Sede": "TO.3025",
+        "CodDestinazione": "CORP",
+        "DescDestinazione": "ASSEGNATO AL COMANDO"
+    },
+    {
+        "Targa": "18992",
+        "TipoMezzo": "O",
+        "Stato": "D",
+        "Sede": "TO.3025",
+        "CodDestinazione": "CORP",
+        "DescDestinazione": "ASSEGNATO AL COMANDO"
+    },
+    {
+        "Targa": "27186",
+        "TipoMezzo": "O",
+        "Stato": "D",
+        "Sede": "TO.1000",
+        "CodDestinazione": "CORP",
+        "DescDestinazione": "ASSEGNATO AL COMANDO"
+    },
+    {
+        "Targa": "27790",
+        "TipoMezzo": "O",
+        "Stato": "I",
+        "Sede": "TO.1000",
+        "CodDestinazione": "CORP",
+        "DescDestinazione": "ASSEGNATO AL COMANDO"
+    },
+    {
+        "Targa": "BP091",
+        "TipoMezzo": "P",
+        "Stato": "D",
+        "Sede": "TO.1000",
+        "CodDestinazione": "CORP",
+        "DescDestinazione": "ASSEGNATO AL COMANDO"
+    },
+    {
+        "Targa": "BP094",
+        "TipoMezzo": "P",
+        "Stato": "D",
+        "Sede": "TO.1000",
+        "CodDestinazione": "CORP",
+        "DescDestinazione": "ASSEGNATO AL COMANDO"
+    },
+    {
+        "Targa": "27655",
+        "TipoMezzo": "O",
+        "Stato": "D",
+        "Sede": "TO.1000",
+        "CodDestinazione": "CORP",
+        "DescDestinazione": "ASSEGNATO AL COMANDO"
     }
 
 ]

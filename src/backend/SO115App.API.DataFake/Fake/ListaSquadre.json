@@ -1,7 +1,7 @@
 [
     {
         "CodiceSquadra": "1",
-        "NomeSquadra": "RM1",
+        "NomeSquadra": "RM1", 
         "Sede": "RM.1000",
         "Stato": "2",
         "ListaCodiciFiscaliComponentiSquadra": [
@@ -179,7 +179,7 @@
         ]
     },
     {
-        "CodiceSquadra": "13",
+        "CodiceSquadra": "14",
         "NomeSquadra": "MI5",
         "Sede": "MI.2005",
         "Stato": "2",
@@ -192,7 +192,7 @@
         ]
     },
     {
-        "CodiceSquadra": "14",
+        "CodiceSquadra": "15",
         "NomeSquadra": "MI6",
         "Sede": "MI.2005",
         "Stato": "2",
@@ -206,7 +206,7 @@
         ]
     },
     {
-        "CodiceSquadra": "15",
+        "CodiceSquadra": "16",
         "NomeSquadra": "MI7",
         "Sede": "MI.1003",
         "Stato": "2",
@@ -220,7 +220,7 @@
         ]
     },
     {
-        "CodiceSquadra": "16",
+        "CodiceSquadra": "17",
         "NomeSquadra": "MI8",
         "Sede": "MI.1003",
         "Stato": "2",
@@ -231,6 +231,80 @@
             "MCRFPP79L17M109C",
             "MRTNDR80S26F205B",
             "PTRRCR88M06F205W"
+
+        ]
+    },
+    {
+        "CodiceSquadra": "18",
+        "NomeSquadra": "TO1",
+        "Sede": "TO.1000",
+        "Stato": "2",
+        "ListaCodiciFiscaliComponentiSquadra": [
+
+            "BLLSDR67H27L219X",
+            "BLLFLV67C14L013Y",
+            "BGNLCN62T22D933X",
+            "BNCMTT73E31L219D",
+            "BLSFNC68E18E482Y"
+
+        ]
+    },
+    {
+        "CodiceSquadra": "19",
+        "NomeSquadra": "TO2",
+        "Sede": "TO.1000",
+        "Stato": "2",
+        "ListaCodiciFiscaliComponentiSquadra": [
+
+            "CRCGNN71P30L219Z",
+            "CPPRCR61H25L219S",
+            "FRIRRT69M31L219U",
+            "CQRGPL67A12G337H"
+
+        ]
+    },
+    {
+        "CodiceSquadra": "20",
+        "NomeSquadra": "TO3",
+        "Sede": "TO.1000",
+        "Stato": "0",
+        "ListaCodiciFiscaliComponentiSquadra": [
+
+            "BRSMRC62S06L219D",
+            "BSONRC63S26F205S",
+            "BGNLCN62T22D933X",
+            "BSSDNL74P13L219E",
+            "CLBVCN67T03D643X"
+
+        ]
+    },
+    {
+        "CodiceSquadra": "21",
+        "NomeSquadra": "TO4",
+        "Sede": "TO.1000",
+        "Stato": "2",
+        "ListaCodiciFiscaliComponentiSquadra": [
+
+            "DROFBA71B28L219N",
+            "LDNBBR65S27C351G",
+            "RFFMRC68A14L219Q",
+            "PRVMSM76A14C351K",
+            "MZZGRI71M28L219B"
+
+        ]
+    },
+    {
+        "CodiceSquadra": "25",
+        "NomeSquadra": "TO5",
+        "Sede": "TO.3025",
+        "Stato": "0",
+        "ListaCodiciFiscaliComponentiSquadra": [
+
+            "MSSDMS75E28E445N",
+            "MCCPGC66B22C722H",
+            "MCRLRT77R21L219I",
+            "SMLGRL74C09L219I",
+            "DLLVMC78P03L219G"
 
         ]
     }
