@@ -168,9 +168,8 @@ export class SediTreeviewState {
             }
         });
         dispatch([
-            new ClearUtenteSignalR(),
+            new ClearUtenteSignalR(), // Todo: da togliere
             new SetVistaSedi(state.sediNavbarSelezionate.correnti),
-            // new SetUtenteSignalR(),
             new SetTurnoCalendario(),
             new SetAppLoaded()
         ]);

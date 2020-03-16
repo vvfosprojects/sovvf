@@ -19,7 +19,7 @@ export interface SignalRStateModel {
     reconnected: boolean;
     disconnected: boolean;
     connectionId: string;
-    codiceSede: string;
+    codiceSede: string[];
     idUtente: string;
 }
 
@@ -51,7 +51,7 @@ export class SignalRState {
 
     @Selector()
     static codiceSedeSignalR(state: SignalRStateModel): string {
-        return state.codiceSede;
+        return state.codiceSede ? state.codiceSede.join() : '';
     }
 
     @Selector()
@@ -111,7 +111,7 @@ export class SignalRState {
     @Action(SetUtenteSignalR)
     setUtenteSignalR({ getState, dispatch }: StateContext<SignalRStateModel>) {
         const utente = this.store.selectSnapshot(UtenteState.utente);
-        const codiciSede = getState().codiceSede.split(',');
+        const codiciSede = getState().codiceSede;
         this.signalR.addToGroup(new SignalRNotification(
             codiciSede,
             utente.id,
@@ -123,7 +123,7 @@ export class SignalRState {
     @Action(ClearUtenteSignalR)
     clearUtenteSignalR({ getState, dispatch }: StateContext<SignalRStateModel>, { utente }: ClearUtenteSignalR) {
         let _utente;
-        const codiciSede = getState().codiceSede.split(',');
+        const codiciSede = getState().codiceSede;
         if (!utente) {
             _utente = this.store.selectSnapshot(UtenteState.utente);
         } else {

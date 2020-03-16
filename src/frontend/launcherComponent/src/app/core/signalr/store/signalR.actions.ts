@@ -29,7 +29,7 @@ export class ClearUtenteSignalR {
 export class SetCodiceSede {
     static readonly type = '[signalR] Set Codice Sede';
 
-    constructor(public codiceSede: string) {
+    constructor(public codiceSede: string[]) {
     }
 }
 
