@@ -36,7 +36,7 @@ namespace SO115App.Persistence.MongoDB.Mappings
                 cm.MapIdMember(c => c.Id)
                     .SetIdGenerator(StringObjectIdGenerator.Instance)
                     .SetSerializer(new StringSerializer(BsonType.ObjectId));
-
+                
             });
         }
     }

@@ -31,9 +31,9 @@ namespace SO115App.Persistence.MongoDB.GestioneSedi
             var CodSede = codiceSede.Split('.')[0];
             var CodFiglio = Convert.ToInt32(codiceSede.Split('.')[1]);
 
-            List<ListaSedi> ListaSedi = _dbContext.SediCollection.Find(Builders<ListaSedi>.Filter.Empty).ToList();
+            List<ListaSedi> listaSedi = _dbContext.SediCollection.Find(Builders<ListaSedi>.Filter.Empty).ToList();
 
-            var sede = ListaSedi.Find(x => x.codFiglio_TC.Equals(CodFiglio) && x.codSede_TC.Equals(CodSede));
+            var sede = listaSedi.Find(x => x.codFiglio_TC.Equals(CodFiglio) && x.codSede_TC.Equals(CodSede));
 
             Coordinate coordinate = new Coordinate(sede.latitudine, sede.longitudine);
 

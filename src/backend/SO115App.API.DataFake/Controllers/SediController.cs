@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using SO115App.API.DataFake.Services.Sedi;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.Models.Classi.Utility;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Competenze;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
 
 namespace SO115App.API.DataFake.Controllers
@@ -16,10 +17,12 @@ namespace SO115App.API.DataFake.Controllers
     public class SediController : ControllerBase
     {
         private readonly IGetCoordinateByCodSede _IgetCoordinate;
+        private readonly IGetCompetenzeByCoordinateIntervento _IgetCompetenze;
 
-        public SediController(IGetCoordinateByCodSede IgetCoordinate)
+        public SediController(IGetCoordinateByCodSede IgetCoordinate, IGetCompetenzeByCoordinateIntervento IgetCompetenze)
         {
             this._IgetCoordinate = IgetCoordinate;
+            this._IgetCompetenze = IgetCompetenze;
         }
 
         [HttpGet("GetCoordinateByCodSede")]
@@ -39,13 +42,17 @@ namespace SO115App.API.DataFake.Controllers
             }
         }
 
-        [HttpGet("GetCompetenzeByProssimita")]
-        public async Task<IActionResult> GetCompetenzeByProssimita(Coordinate coordinate)
+        [HttpGet("GetCompetenzeByCoordinateIntervento")]
+        public async Task<IActionResult> GetCompetenzeByCoordinateIntervento(double lat, double lon)
         {
             try
             {
+                Coordinate coordinate = new Coordinate(lat, lon);
 
-                return Ok();
+                GetCompetenzeByCoordinateIntervento _getCompetenze = new GetCompetenzeByCoordinateIntervento(_IgetCompetenze);
+
+
+                return Ok(_getCompetenze.Get(coordinate));
             }
             catch (Exception ex)
             {
