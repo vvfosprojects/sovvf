@@ -80,8 +80,7 @@ import { MapsFiltroState } from './store/states/maps/maps-filtro.state';
     ],
     exports: [],
     providers: [
-        // { provide: HomeService, useClass: environment.fakeProvider ? HomeServiceFake : HomeService }
-        { provide: HomeService, useClass: HomeServiceFake }
+        { provide: HomeService, useClass: environment.fakeProvider ? HomeServiceFake : HomeService }
 
     ]
 })
