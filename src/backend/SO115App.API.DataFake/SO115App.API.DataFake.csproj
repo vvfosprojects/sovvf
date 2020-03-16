@@ -6,9 +6,11 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.1" />
+    <PackageReference Include="SimpleInjector.Integration.AspNetCore.Mvc.Core" Version="4.9.1" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\SO115App.CompositionRoot\SO115App.CompositionRoot.csproj" />
     <ProjectReference Include="..\SO115App.Models\SO115App.Models.csproj" />
     <ProjectReference Include="..\SO115App.Persistence.MongoDB\SO115App.Persistence.MongoDB.csproj" />
   </ItemGroup>
