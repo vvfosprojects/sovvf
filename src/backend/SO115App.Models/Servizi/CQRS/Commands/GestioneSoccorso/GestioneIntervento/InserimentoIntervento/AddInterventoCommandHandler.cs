@@ -36,9 +36,10 @@ namespace DomainModel.CQRS.Commands.AddIntervento
         private readonly ISaveRichiestaAssistenza _saveRichiestaAssistenza;
         private readonly IGeneraCodiceRichiesta _generaCodiceRichiesta;
         private readonly IGetTurno _getTurno;
-        private readonly IGetCompetenzeRichiesta _getCompetenze;
+        private readonly IGetCompetenzeByCoordinateIntervento _getCompetenze;
 
-        public AddInterventoCommandHandler(ISaveRichiestaAssistenza saveRichiestaAssistenza, IGeneraCodiceRichiesta generaCodiceRichiesta, IGetTurno getTurno, IGetCompetenzeRichiesta getCompetenze)
+        public AddInterventoCommandHandler(ISaveRichiestaAssistenza saveRichiestaAssistenza, IGeneraCodiceRichiesta generaCodiceRichiesta, 
+            IGetTurno getTurno, IGetCompetenzeByCoordinateIntervento getCompetenze)
         {
             this._saveRichiestaAssistenza = saveRichiestaAssistenza;
             _generaCodiceRichiesta = generaCodiceRichiesta;
@@ -93,7 +94,9 @@ namespace DomainModel.CQRS.Commands.AddIntervento
                 Civico = "1";
             }
 
-            var Competenza = _getCompetenze.GetCompetenzeRichiesta(command.CodiceSede.Split('.')[0], Indirizzo, Civico, Citta);
+            //var Competenza = _getCompetenze.GetCompetenzeRichiesta(command.CodiceSede.Split('.')[0], Indirizzo, Civico, Citta); -- PER ORACLE
+            
+            var Competenza = _getCompetenze.GetCompetenzeByCoordinateIntervento(command.Chiamata.Localita.Coordinate);
 
             string[] CodUOCompetenzaAppo = {
                 command.CodiceSede.Split('.')[0] + "." + Competenza.CodDistaccamento,

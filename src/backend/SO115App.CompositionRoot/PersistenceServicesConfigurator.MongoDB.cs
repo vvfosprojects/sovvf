@@ -52,6 +52,17 @@ namespace SO115App.CompositionRoot
 
             #endregion MARKER
 
+            #region Gestione Sedi
+
+            container.Register<Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti.IGetCoordinateByCodSede,
+                               Persistence.MongoDB.GestioneSedi.GetCoordinateByCodSede>();
+
+            container.Register<Models.Servizi.Infrastruttura.SistemiEsterni.Competenze.IGetCompetenzeByCoordinateIntervento,
+                               Persistence.MongoDB.GestioneSedi.GetcompetenzeByCoordinateIntervento>();
+
+            #endregion
+
+
             #region GestioneChiamataInCorso
 
             container.Register<Models.Servizi.Infrastruttura.Marker.IAddChiamataInCorso,
