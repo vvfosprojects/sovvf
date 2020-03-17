@@ -17,19 +17,29 @@ export class SetConnectionId {
 
 export class SetUtenteSignalR {
     static readonly type = '[signalR] Set utente SignalR';
+
+    constructor(public codiciSede: string[]) {
+    }
 }
 
 export class ClearUtenteSignalR {
     static readonly type = '[Utente] Clear utente SignalR';
 
-    constructor(public utente?: Utente) {
+    constructor(public codiciSede: string[]) {
+    }
+}
+
+export class LogoffUtenteSignalR {
+    static readonly type = '[Utente] Logoff utente SignalR';
+
+    constructor(public utente: Utente) {
     }
 }
 
 export class SetCodiceSede {
     static readonly type = '[signalR] Set Codice Sede';
 
-    constructor(public codiceSede: string) {
+    constructor(public codiciSede: string[]) {
     }
 }
 

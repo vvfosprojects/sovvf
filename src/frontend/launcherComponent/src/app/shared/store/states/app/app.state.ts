@@ -55,7 +55,7 @@ export class AppState {
     @Action(SetVistaSedi)
     setVistaSedi({ patchState, dispatch }: StateContext<AppStateModel>, { vistaSedi }: SetVistaSedi) {
         patchState({ vistaSedi });
-        dispatch(new SetCodiceSede(vistaSedi.join()));
+        dispatch(new SetCodiceSede(vistaSedi));
     }
 
     @Action(ClearVistaSedi)

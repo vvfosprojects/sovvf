@@ -63,7 +63,7 @@ export class SediTreeviewState {
     @Selector()
     static sediNavbarTastoConferma(state: SediTreeviewStateModel): boolean {
         const sediNavbar = state.sediNavbarSelezionate;
-        if (sediNavbar.correnti as string[]) {
+        if (sediNavbar.correnti as string[] && sediNavbar.correnti.length > 0) {
             return arraysEqual(sediNavbar.iniziali, sediNavbar.correnti);
         } else {
             return true;
@@ -168,9 +168,7 @@ export class SediTreeviewState {
             }
         });
         dispatch([
-            new ClearUtenteSignalR(),
             new SetVistaSedi(state.sediNavbarSelezionate.correnti),
-            // new SetUtenteSignalR(),
             new SetTurnoCalendario(),
             new SetAppLoaded()
         ]);
