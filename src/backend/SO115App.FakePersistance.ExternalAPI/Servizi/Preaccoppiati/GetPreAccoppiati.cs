@@ -1,74 +1,80 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
-using AutoMapper.Configuration;
 using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Composizione;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.PreAccoppiati;
 using SO115App.ExternalAPI.Fake.Classi.DTOFake;
 using SO115App.FakePersistence.JSon.Utility;
 using SO115App.Models.Servizi.Infrastruttura.GetPreAccoppiati;
+using Microsoft.Extensions.Caching.Memory;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
+using System;
 
 namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
+
 {
     public class GetPreAccoppiati : IGetPreAccoppiati
     {
         private readonly HttpClient _client;
         private readonly IConfiguration _configuration;
+        private readonly IMemoryCache _memoryCache;
 
-        public GetPreAccoppiati(HttpClient client, IConfiguration configuration)
+        public GetPreAccoppiati(HttpClient client, IConfiguration configuration, IMemoryCache memoryCache)
         {
             _client = client;
             _configuration = configuration;
+            _memoryCache = memoryCache;
         }
 
         public List<PreAccoppiati> Get(PreAccoppiatiQuery query)
         {
-            var listaPreAccoppiati = new List<PreAccoppiati>();
-            var filepath = CostantiJson.ListaPreAccoppiati;
-            string json;
-            using (var r = new StreamReader(filepath))
-            {
-                json = r.ReadToEnd();
-            }
-
-            var ListaPreAccoppiatiFake = JsonConvert.DeserializeObject<List<PreAccoppiatiFake>>(json);
-
-            filepath = CostantiJson.ListaMezzi;
-            using (var r = new StreamReader(filepath))
-            {
-                json = r.ReadToEnd();
-            }
-
-            var listaMezziFake = JsonConvert.DeserializeObject<List<MezzoFake>>(json);
-
-            var ListaPreAccoppiatiSede = ListaPreAccoppiatiFake.FindAll(x => x.Sede.Contains(query.CodiceSede));
-            foreach (PreAccoppiatiFake p in ListaPreAccoppiatiSede)
-            {
-                var MezzoFake = listaMezziFake.Find(x => x.Targa.Equals(p.Targa));
-                var PreAccoppiati = MapPreAccoppiati(p, MezzoFake);
-                listaPreAccoppiati.Add(PreAccoppiati);
-            }
-
-            return listaPreAccoppiati;
+            return GetAsync(query).Result;
         }
 
-        private PreAccoppiati MapPreAccoppiati(PreAccoppiatiFake p, MezzoFake m)
+        public async Task<List<PreAccoppiati>> GetAsync(PreAccoppiatiQuery query)
         {
-            List<string> Squadre = new List<string>();
-            PreAccoppiati pA = new PreAccoppiati
+            List<PreAccoppiati> ListaPreAccoppiati = new List<PreAccoppiati>();
+
+            string CodSede = query.CodiceSede.Substring(0, 2);
+            if (!_memoryCache.TryGetValue("ListaPreAccoppiati", out ListaPreAccoppiati))
             {
-                Id = p.Sede + "-" + m.TipoMezzo + "." + m.Targa,
-                Mezzo = m.TipoMezzo + "." + m.Targa,
-                CodiceSede = p.Sede
-            };
-            foreach (string s in p.Squadre)
+                _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("test");
+                var response = await _client.GetAsync($"{_configuration.GetSection("DataFakeImplementation").GetSection("UrlAPIPreAccoppiati").Value}/GetListaPreaccoppiatiByCodComando={CodSede}").ConfigureAwait(false);
+                response.EnsureSuccessStatusCode();
+                using HttpContent content = response.Content;
+                string data = await content.ReadAsStringAsync().ConfigureAwait(false);
+                var ListaPreAccoppiatiFake = JsonConvert.DeserializeObject<List<PreAccoppiatiFake>>(data);
+                ListaPreAccoppiati = MapPreAccoppiati(ListaPreAccoppiatiFake);
+                var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromHours(2));
+                _memoryCache.Set("ListaPreAccoppiati", ListaPreAccoppiati, cacheEntryOptions);
+            }
+            return ListaPreAccoppiati;
+        }
+
+        private List<PreAccoppiati> MapPreAccoppiati(List<PreAccoppiatiFake> ListaPreAccoppiatiFake)
+        {
+            List<PreAccoppiati> ListaPreAccoppiati = new List<PreAccoppiati>();
+            List<string> sList = new List<string>();
+            foreach (PreAccoppiatiFake preAccoppiatiFake in ListaPreAccoppiatiFake)
             {
-                Squadre.Add(s);
+                PreAccoppiati preAccoppiati = new PreAccoppiati
+                {
+                    Id = preAccoppiatiFake.Sede + "-" + preAccoppiatiFake.Mezzo,
+                    Mezzo = preAccoppiatiFake.Mezzo,
+                    CodiceSede = preAccoppiatiFake.Sede
+                };
+                foreach (string s in preAccoppiatiFake.Squadre)
+                {
+                    sList.Add(s);
+                }
+                string[] squadre = sList.ToArray();
+                preAccoppiati.Squadre = squadre;
+                ListaPreAccoppiati.Add(preAccoppiati);
             }
 
-            p.Squadre = Squadre;
-            return pA;
+            return ListaPreAccoppiati;
         }
     }
 }

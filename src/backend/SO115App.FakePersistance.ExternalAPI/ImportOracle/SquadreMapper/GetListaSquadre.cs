@@ -25,13 +25,16 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.SquadreMapper
         private readonly IConfiguration _configuration;
         private readonly IGetListaDistaccamentiByCodiceSede _getListaDistaccamentiByCodiceSede;
         private readonly IGetPersonaleByCF _getPersonaleByCF;
+        private readonly IGetDistaccamentoByCodiceSedeUC _getDistaccamentoByCodiceSedeUC;
 
-        public GetListaSquadre(HttpClient client, IConfiguration configuration, IGetListaDistaccamentiByCodiceSede GetListaDistaccamentiByCodiceSede, IGetPersonaleByCF GetPersonaleByCF)
+        public GetListaSquadre(HttpClient client, IConfiguration configuration, IGetListaDistaccamentiByCodiceSede GetListaDistaccamentiByCodiceSede,
+            IGetDistaccamentoByCodiceSedeUC GetDistaccamentoByCodiceSedeUC, IGetPersonaleByCF GetPersonaleByCF)
         {
             _client = client;
             _configuration = configuration;
             _getListaDistaccamentiByCodiceSede = GetListaDistaccamentiByCodiceSede;
             _getPersonaleByCF = GetPersonaleByCF;
+            _getListaDistaccamentiByCodiceSede = GetListaDistaccamentiByCodiceSede;
         }
 
         public async Task<List<Squadra>> Get(List<string> sedi)
@@ -81,11 +84,14 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.SquadreMapper
             foreach (ORASquadre OraS in ListaSquadreOracle)
             {
                 List<Distaccamento> distaccamenti = _getListaDistaccamentiByCodiceSede.GetListaDistaccamenti(CodSede);
-                var d = distaccamenti.Find(x => x.CodDistaccamento.Equals(Decimal.ToInt32(OraS.COD_DISTACCAMENTO)));
+                var distaccamentoCoordinate = distaccamenti.Find(x => x.CodDistaccamento.Equals(Decimal.ToInt32(OraS.COD_DISTACCAMENTO)));
+
+                var distaccamento = new Distaccamento();
+                distaccamento = _getDistaccamentoByCodiceSedeUC.Get(CodSede + "." + OraS.COD_DISTACCAMENTO.ToString()).Result;
                 Sede sedeDistaccamento;
-                if (d != null)
+                if (distaccamento != null)
                 {
-                    sedeDistaccamento = new Sede(CodSede.ToString() + "." + d.CodDistaccamento.ToString(), d.DescDistaccamento, d.Indirizzo, d.Coordinate, "", "", "", "", "");
+                    sedeDistaccamento = new Sede(CodSede.ToString() + "." + distaccamento.CodDistaccamento.ToString(), distaccamento.DescDistaccamento, distaccamento.Indirizzo, distaccamentoCoordinate.Coordinate, "", "", "", "", "");
                     Squadra.StatoSquadra Stato;
 
                     switch (OraS.STATO.ToString())

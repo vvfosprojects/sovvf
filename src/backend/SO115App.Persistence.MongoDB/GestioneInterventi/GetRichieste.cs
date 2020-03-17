@@ -31,6 +31,7 @@ using SO115App.Models.Servizi.CustomMapper;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti.CoordinateTask;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
 using System;
 using System.Collections.Generic;
@@ -46,8 +47,10 @@ namespace SO115App.Persistence.MongoDB
         private readonly IGetListaDistaccamentiByCodiceSede _getAnagraficaDistaccamento;
         private readonly MapperRichiestaAssistenzaSuSintesi _mapperSintesi;
         private readonly IGetAlberaturaUnitaOperative _getAlberaturaUnitaOperative;
+        private readonly IGetDistaccamentoByCodiceSedeUC _getDistaccamentoUC;
+        private readonly IGetCoordinateDistaccamento _getCooDistaccamento; //TODO chiedere ad Igor di implementare le coordinate
 
-        public GetRichiesta(DbContext dbContext, IMapper mapper, IGetTipologieByCodice getTipologiaByCodice, IGetListaDistaccamentiByCodiceSede getAnagraficaDistaccamento, MapperRichiestaAssistenzaSuSintesi mapperSintesi, IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative)
+        public GetRichiesta(DbContext dbContext, IMapper mapper, IGetTipologieByCodice getTipologiaByCodice, IGetListaDistaccamentiByCodiceSede getAnagraficaDistaccamento, MapperRichiestaAssistenzaSuSintesi mapperSintesi, IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative, IGetCoordinateDistaccamento getCooDistaccamento, IGetDistaccamentoByCodiceSedeUC getDistaccamentoUC)
         {
             _dbContext = dbContext;
             _mapper = mapper;
@@ -55,6 +58,8 @@ namespace SO115App.Persistence.MongoDB
             _getAnagraficaDistaccamento = getAnagraficaDistaccamento;
             _mapperSintesi = mapperSintesi;
             _getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
+            _getCooDistaccamento = getCooDistaccamento;
+            _getDistaccamentoUC = getDistaccamentoUC;
         }
 
         public RichiestaAssistenza GetByCodice(string codiceRichiesta)
@@ -100,17 +105,15 @@ namespace SO115App.Persistence.MongoDB
 
         private List<Sede> MapCompetenze(string[] codUOCompetenza)
         {
-            var ListaDistaccamenti = _getAnagraficaDistaccamento.GetListaDistaccamenti(codUOCompetenza[0].Split('.')[0]);
-            List<Sede> ListaSedi = new List<Sede>();
-
+            var listaSedi = new List<Sede>();
             foreach (var codCompetenza in codUOCompetenza)
             {
-                var Distaccamento = ListaDistaccamenti.Find(x => x.CodDistaccamento == Convert.ToInt32(codCompetenza.Split('.')[1]));
+                var Distaccamento = _getDistaccamentoUC.Get(codCompetenza).Result;
                 Sede sede = Distaccamento == null ? null : new Sede(codCompetenza, Distaccamento.DescDistaccamento, Distaccamento.Indirizzo, Distaccamento.Coordinate, "", "", "", "", "");
-                ListaSedi.Add(sede);
+                listaSedi.Add(sede);
             }
 
-            return ListaSedi;
+            return listaSedi;
         }
 
         public SintesiRichiesta GetSintesi(string codiceRichiesta)

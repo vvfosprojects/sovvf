@@ -25,6 +25,7 @@ using SO115App.ExternalAPI.Fake.Servizi.DistaccamentoUtentiComuni;
 using SO115App.ExternalAPI.Fake.Servizi.Gac;
 using SO115App.ExternalAPI.Fake.Servizi.GeoFleet;
 using SO115App.ExternalAPI.Fake.Servizi.Identity;
+using SO115App.ExternalAPI.Fake.Servizi.Nue;
 using SO115App.ExternalAPI.Fake.Territorio;
 using SO115App.ExternalAPI.Fake.Uos;
 using SO115App.Models.Servizi.Infrastruttura.GeoFleet;
@@ -51,7 +52,7 @@ namespace SO115App.CompositionRoot
 
             #region NUE
 
-            container.Register<IGetSchedeContatto, SO115App.ExternalAPI.Fake.ImportOracle.SchedeContatto.GetSchedeContatto>();
+            container.Register<IGetSchedeContatto, GetSchedeContatto>();
             container.Register<IGetSchedaContattoAttuale, GetSchedaContattoAttuale>();
             container.Register<IGetSchedeContattoBySpatialArea, GetSchedeContattoBySpatialArea>();
             container.Register<IGetSchedeContattoByCodiciFiscali, GetSchedeContattoByCodiciFiscali>();
@@ -60,11 +61,11 @@ namespace SO115App.CompositionRoot
             container.Register<IGetSchedeContattoGestita, GetSchedeContattoGestita>();
             container.Register<IGetSchedeContattoTimeSpan, GetSchedeContattoTimeSpan>();
             container.Register<ISetStatoGestioneSchedaContatto, SetGestita>();
-            container.Register<IGetSchedeContattoMarkerFiltered, SO115App.ExternalAPI.Fake.ImportOracle.SchedeContatto.GetSchedeContattoMarkerFiltered>();
+            container.Register<IGetSchedeContattoMarkerFiltered, GetSchedeContattoMarkerFiltered>();
             container.Register<SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue.IGetConteggioSchede,
-                SO115App.ExternalAPI.Fake.ImportOracle.SchedeContatto.GetConteggioSchedeContatto>();
+                GetConteggioSchede>();
             container.Register<SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue.IGetSchedeFiltrate,
-                SO115App.ExternalAPI.Fake.ImportOracle.SchedeContatto.GetSchedeContattoFiltrate>();
+               GetSchedeFiltrate>();
 
             #endregion NUE
 
@@ -101,7 +102,7 @@ namespace SO115App.CompositionRoot
             container.Register<IGetMezziBySelettiva, GetMezziBySelettiva>();
             container.Register<IGetMezziFuoriServizio, GetMezziFuoriServizio>();
             //container.Register<IGetMezziUtilizzabili, GetMezziUtilizzabili>();
-            container.Register<IGetMezziUtilizzabili, SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper.GetMezziUtilizzabili>();
+            //container.Register<IGetMezziUtilizzabili, SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper.GetMezziUtilizzabili>();
             container.Register<ISetMovimentazione, SetMovimentazione>();
             container.Register<
                 SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi.IGetListaMezzi,
@@ -141,19 +142,26 @@ namespace SO115App.CompositionRoot
             #region Mezzi
 
             container.Register<
-                SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Mezzi.IGetListaMezzi,
-                SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper.GetListaMezzi>();
+               SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Mezzi.IGetListaMezzi,
+               SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper.GetListaMezzi>();
+            //container.Register<
+            //    SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Mezzi.IGetListaMezzi,
+            //    SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper.GetListaMezzi>();
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Mezzi.IGetMezzoById,
                 SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper.GetMezzoById>();
+            container.Register<IGetMezziUtilizzabili, SO115App.ExternalAPI.Fake.GestioneMezzi.GetMezziUtilizzabili>();
 
             #endregion Mezzi
 
             #region Squadre
 
+            //container.Register<
+            //    SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Squadre.IGetListaSquadre,
+            //    SO115App.ExternalAPI.Fake.ImportOracle.SquadreMapper.GetListaSquadre>();
             container.Register<
-                SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Squadre.IGetListaSquadre,
-                SO115App.ExternalAPI.Fake.ImportOracle.SquadreMapper.GetListaSquadre>();
+              SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Squadre.IGetListaSquadre,
+              SO115App.ExternalAPI.Fake.Servizi.Personale.GetListaSquadre>();
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Squadre.IGetSquadraById,
                 SO115App.ExternalAPI.Fake.ImportOracle.SquadreMapper.GetSquadraById>();
@@ -166,6 +174,9 @@ namespace SO115App.CompositionRoot
                 SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.GesPreaccoppiati.IGetListaGesPreaccoppiati,
                 SO115App.ExternalAPI.Fake.ImportOracle.GesPreaccoppiatiMapper.GetListaGesPreaccoppiati>();
 
+            //  container.Register<
+            //  SO115App.Models.Servizi.Infrastruttura.GetPreAccoppiati.IGetPreAccoppiati,
+            //SO115App.ExternalAPI.Fake.ImportOracle.GesPreaccoppiatiMapper.GetPreAccoppiati>();
             container.Register<
             SO115App.Models.Servizi.Infrastruttura.GetPreAccoppiati.IGetPreAccoppiati,
           SO115App.ExternalAPI.Fake.ImportOracle.GesPreaccoppiatiMapper.GetPreAccoppiati>();
@@ -190,6 +201,7 @@ namespace SO115App.CompositionRoot
                 SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti.IGetListaDistaccamentiByCodiceSede,
                 SO115App.ExternalAPI.Fake.ImportOracle.DistaccamentiMapper.GetDistaccamentiByCodSede>();
             container.Register<Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti.IGetDistaccamentoByCodiceSedeUC, GetDistaccamentoByCodiceSede>();
+            container.Register<Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti.CoordinateTask.IGetCoordinateDistaccamento, ExternalAPI.Fake.Servizi.DistaccamentoCoordinate.GetCoordinateDistaccamento>();
 
             #endregion Distaccamenti
 
