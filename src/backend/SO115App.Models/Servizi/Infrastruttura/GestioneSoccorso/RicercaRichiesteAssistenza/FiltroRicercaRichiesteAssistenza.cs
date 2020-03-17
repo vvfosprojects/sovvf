@@ -42,7 +42,7 @@ namespace SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRic
         /// <summary>
         ///   Indica la dimensione di una pagina
         /// </summary>
-        public int PageSize { get; set; } = 15;
+        public int PageSize { get; set; } = 7;
 
         /// <summary>
         ///   Le unità operative per cui vengono selezionate le richieste. Se questo riferimento è
