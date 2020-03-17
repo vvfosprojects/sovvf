@@ -69,8 +69,7 @@ import { VirtualScrollerModule } from 'ngx-virtual-scroller';
             RichiesteEspanseState,
             RichiestaGestioneState,
             RichiestaAttivitaUtenteState
-        ]),
-        VirtualScrollerModule
+        ])
     ],
     declarations: [
         RichiesteComponent,

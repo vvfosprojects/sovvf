@@ -9,7 +9,7 @@ export interface PaginationStateModel {
 
 export const PaginationStateModelDefaults: PaginationStateModel = {
     pagination: {
-        page: 0,
+        page: 1,
         pageSize: 10
     },
     pageSizes: [ 10, 20, 30 ]

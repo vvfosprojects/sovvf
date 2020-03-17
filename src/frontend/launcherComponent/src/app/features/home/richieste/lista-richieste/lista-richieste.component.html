@@ -7,6 +7,8 @@
     </div>
     <!-- Lista di singole Richieste -->
     <div *ngIf="richieste && richieste.length > 0" class="col-12 px-0 border-bottom" [ngClass]="heightControl()">
+        <div *ngIf="loading"
+             style="width:100%; height:100%; background-color: lightgrey; opacity:.2; position: absolute; top:0; left: 0; z-index:999"></div>
         <cdk-virtual-scroll-viewport #virtualScroll [itemSize]="itemSize">
             <li *cdkVirtualFor="let r of richieste" class="list-unstyled"
                 [ngClass]="{'col-double': !_split, 'col-12': _split}">
@@ -19,6 +21,7 @@
                                            [disabledModificaRichiesta]="disabledModificaRichiesta"
                                            [disabledGestisciRichiesta]="disabledGestisciRichiesta"
                                            [disabledComposizionePartenza]="disabledComposizionePartenza"
+                                           [disableTooltips]="scrolling"
                                            (hoverIn)="richiestaHoverIn($event)"
                                            (hoverOut)="richiestaHoverOut($event)"
                                            (fissaInAlto)="onFissaInAlto($event)"
@@ -40,9 +43,34 @@
             </li>
         </cdk-virtual-scroll-viewport>
     </div>
-    <!--    <div *ngIf="richieste.length <= 0" class="col-12 px-0 text-center mt-4 border-bottom" [ngClass]="heightControl()">-->
-    <!--        <h5>Non ci sono richieste!</h5>-->
+    <!--    <div class="col-12">-->
+    <!--        <div class="row mt-1">-->
+    <!--            <div class="col-6 clearfix">-->
+    <!--                <div class="float-left">-->
+    <!--                    <button class="btn btn-primary" (click)="onPageOne()" [disabled]="loading">-->
+    <!--                        <i class="fa fa-arrow-up mr-1"></i>-->
+    <!--                        Prima Pagina-->
+    <!--                    </button>-->
+    <!--                </div>-->
+    <!--                <div class="float-right">-->
+    <!--                    <button class="btn btn-primary mr-2" (click)="onTop()" [disabled]="loading">-->
+    <!--                        <i class="fa fa-arrow-up mr-1"></i>-->
+    <!--                        Pagina Precedente-->
+    <!--                    </button>-->
+    <!--                    <button class="btn btn-primary" (click)="onBottom()" [disabled]="loading">-->
+    <!--                        <i class="fa fa-arrow-down mr-1"></i>-->
+    <!--                        Pagina Successiva-->
+    <!--                    </button>-->
+    <!--                </div>-->
+    <!--            </div>-->
+    <!--            <div class="col-6 text-center">-->
+    <!--                <h5 class="mt-2">Stai visualizzando da <b>{{ (1 * page) }}</b> a <b>20</b> di <b>83217</b> record</h5>-->
+    <!--            </div>-->
+    <!--        </div>-->
     <!--    </div>-->
+    <!--        <div *ngIf="richieste.length <= 0" class="col-12 px-0 text-center mt-4 border-bottom" [ngClass]="heightControl()">-->
+    <!--            <h5>Non ci sono richieste!</h5>-->
+    <!--        </div>-->
     <div *ngIf="loading" class="col-12 text-center mt-1">
         <i class="fa fa-spinner fa-spin fa-2x fa-fw"></i>
     </div>

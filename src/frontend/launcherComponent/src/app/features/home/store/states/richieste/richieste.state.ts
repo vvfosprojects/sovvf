@@ -13,7 +13,7 @@ import {
 } from '../../actions/richieste/richieste.actions';
 import { SintesiRichiesteService } from 'src/app/core/service/lista-richieste-service/lista-richieste.service';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
-import { append, iif, insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
+import { append, insertItem, patch, updateItem } from '@ngxs/store/operators';
 import { RichiestaFissataState } from './richiesta-fissata.state';
 import { RichiestaHoverState } from './richiesta-hover.state';
 import { RichiestaSelezionataState } from './richiesta-selezionata.state';
@@ -40,17 +40,20 @@ import { StartLoading, StopLoading } from '../../../../../shared/store/actions/l
 import { PaginationState } from '../../../../../shared/store/states/pagination/pagination.state';
 import { FiltriRichiesteState } from '../filterbar/filtri-richieste.state';
 import { PatchPagination } from '../../../../../shared/store/actions/pagination/pagination.actions';
+import { ResponseInterface } from '../../../../../shared/interface/response.interface';
 
 export interface RichiesteStateModel {
     richieste: SintesiRichiesta[];
     richiestaById: SintesiRichiesta;
     chiamataInviaPartenza: string;
+    loadedPages: number[];
 }
 
 export const RichiesteStateDefaults: RichiesteStateModel = {
     richieste: [],
     richiestaById: null,
-    chiamataInviaPartenza: null
+    chiamataInviaPartenza: null,
+    loadedPages: []
 };
 
 @State<RichiesteStateModel>({
@@ -97,31 +100,35 @@ export class RichiesteState {
             page: action.options && action.options.page ? action.options.page : 1,
             pageSize: this.store.selectSnapshot(PaginationState.pageSize)
         };
-        // this.richiesteService.getRichieste(filters, pagination).subscribe((response: ResponseInterface) => {
-        //     dispatch(new AddRichieste(response.dataArray));
-        //     dispatch(new PatchPagination(response.pagination));
-        //     dispatch(new StopLoading());
-        // }, () => {
-        //     dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5));
-        //     dispatch(new StopLoading());
-        // });
+        this.richiesteService.getRichieste(filters, pagination).subscribe((response: ResponseInterface) => {
+            dispatch(new AddRichieste(response.dataArray, 'bottom'));
+            dispatch(new PatchPagination(response.pagination));
+            dispatch(new StopLoading());
+        }, () => {
+            dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5));
+            dispatch(new StopLoading());
+        });
 
         // TEST
         // TODO: da eliminare
-        const pageSize = this.store.selectSnapshot(PaginationState.pageSize);
-        console.warn('AddRichieste');
-        let richieste = makeCopy(getState().richieste);
-        console.log('richieste length', richieste.length);
-        richieste.forEach((r: SintesiRichiesta, index: number) => {
-            if (index < pageSize) {
-                r.id += randomNumber(1, 500000);
-                r.codice += randomNumber(1, 500000);
-                r.codiceRichiesta += randomNumber(1, 500000);
-            }
-        });
-        richieste = richieste.filter((r: SintesiRichiesta, index: number) => index < pageSize);
-        dispatch(new AddRichieste(richieste, action.position));
-        setTimeout(() => dispatch(new StopLoading()), 500);
+        // const pageSize = this.store.selectSnapshot(PaginationState.pageSize);
+        // console.log('page', action.options.page);
+        // console.warn('AddRichieste');
+        // let richieste = makeCopy(getState().richieste);
+        // console.log('richieste length', richieste.length);
+        // richieste.forEach((r: SintesiRichiesta, index: number) => {
+        //     if (index < pageSize) {
+        //         r.id += randomNumber(1, 500000);
+        //         r.codice += randomNumber(1, 500000);
+        //         r.codiceRichiesta += randomNumber(1, 500000);
+        //     }
+        // });
+        // richieste = richieste.filter((r: SintesiRichiesta, index: number) => index < pageSize);
+        // setTimeout(() => {
+        //     dispatch(new AddRichieste(richieste, action.options.position));
+        //     dispatch(new PatchPagination({ page: action.options.page, pageSize: pageSize }));
+        //     dispatch(new StopLoading());
+        // }, 500);
     }
 
     @Action(PatchRichiesta)
@@ -155,7 +162,6 @@ export class RichiesteState {
                 patchState({
                     richieste: richieste
                 });
-                dispatch(new PatchPagination({ page: currentPage - 1, pageSize: pageSize }));
                 break;
             case 'bottom':
                 if (currentPage > 2) {
@@ -169,7 +175,6 @@ export class RichiesteState {
                         richieste: append(action.richieste)
                     })
                 );
-                dispatch(new PatchPagination({ page: currentPage + 1, pageSize: pageSize }));
                 break;
         }
     }

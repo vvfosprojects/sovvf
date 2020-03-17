@@ -72,6 +72,8 @@ cdk-virtual-scroll-viewport {
   // Bonus points
   &::-webkit-scrollbar {
     width: 1em;
+    // width: 0px;/* remove scrollbar space */
+    // background: transparent;
   }
 
   &::-webkit-scrollbar-track {
@@ -79,6 +81,6 @@ cdk-virtual-scroll-viewport {
   }
 
   &::-webkit-scrollbar-thumb {
-    background-color: rgb(238, 169, 79);
+    background-color: lightgrey;
   }
 }

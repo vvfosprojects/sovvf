@@ -105,8 +105,8 @@ export class RichiesteComponent implements OnInit, OnDestroy {
     }
 
     // Carica nuove richieste attraverso lo scroll
-    onNuoveRichieste(position: string) {
-        this.store.dispatch(new GetListaRichieste(position));
+    onNuoveRichieste(event: { page: number, position: string }) {
+        this.store.dispatch(new GetListaRichieste({ page: event.page, position: event.position }));
     }
 
     // Restituisce la Richiesta Fissata
