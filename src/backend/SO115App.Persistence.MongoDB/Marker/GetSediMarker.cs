@@ -19,7 +19,7 @@ namespace SO115App.Persistence.MongoDB.Marker
             this._context = context;
         }
 
-        public List<SedeMarker> GetListaSediMarker(AreaMappa Filtro)
+        public List<SedeMarker> GetListaSediMarker(AreaMappa filtroAreaMappa)
         {
 
             List<SedeMarker> listaSediMarker = new List<SedeMarker>();
@@ -30,15 +30,25 @@ namespace SO115App.Persistence.MongoDB.Marker
             {
                 SedeMarker sedeMarker = new SedeMarker();
 
-                sedeMarker.Codice = sede.codSede_TC + "." + sede.codFiglio_TC;
-                sedeMarker.Coordinate = new API.Models.Classi.Condivise.Coordinate(sede.latitudine, sede.longitudine);
-                sedeMarker.Descrizione = sede.sede;
-                sedeMarker.Provincia = sede.codProv;
-                sedeMarker.Tipo = GetTipoSede(sede);
+                if(filtroAreaMappa == null) 
+                {
+                    listaSediMarker.Add(sedeMarker);
+                }
 
-                listaSediMarker.Add(sedeMarker);
+                else if (((sede.latitudine >= filtroAreaMappa.BottomLeft.Latitudine) && (sede.latitudine <= filtroAreaMappa.TopRight.Latitudine)) &&
+                        ((sede.longitudine >= filtroAreaMappa.BottomLeft.Longitudine) && (sede.longitudine <= filtroAreaMappa.TopRight.Longitudine))
+                      )
+                {
+
+                    sedeMarker.Codice = sede.codSede_TC + "." + sede.codFiglio_TC;
+                    sedeMarker.Coordinate = new API.Models.Classi.Condivise.Coordinate(sede.latitudine, sede.longitudine);
+                    sedeMarker.Descrizione = sede.sede;
+                    sedeMarker.Provincia = sede.codProv;
+                    sedeMarker.Tipo = GetTipoSede(sede);
+
+                    listaSediMarker.Add(sedeMarker);
+                }
             }
-
 
             return listaSediMarker;
         }
