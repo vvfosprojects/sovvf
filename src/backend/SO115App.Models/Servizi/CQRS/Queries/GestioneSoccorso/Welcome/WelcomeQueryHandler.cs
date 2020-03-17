@@ -132,7 +132,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
                     BoxListaMezzi = _boxMezziHandler.Handle(boxMezziQuery).BoxMezzi,
                     //BoxListaPersonale = _boxPersonaleHandler.Handle(boxPersonaleQuery).BoxPersonale,
                     ListaChiamateInCorso = (List<ChiamateInCorso>)_listaChiamateInCorsoMarkerHandler.Handle(listaQuery).ListaChiamateInCorsoMarker,
-                    ListaSintesi = (List<SintesiRichiesta>)_sintesiRichiesteAssistenzaHandler.Handle(sintesiRichiesteAssistenzaQuery).SintesiRichiesta,
+                    ListaSintesi = _sintesiRichiesteAssistenzaHandler.Handle(sintesiRichiesteAssistenzaQuery),
                     CentroMappaMarker = _centroMappaMarkerHandler.Handle(centroMappaQuery).CentroMappaMarker,
                     ListaFiltri = _filtriHandler.Handle(listaFiltriQuery).Filtri,
                     InfoNue = _getConteggioSchedeHandler.Handle(getConteggioSchede).InfoNue,
