@@ -54,6 +54,10 @@ namespace SO115App.CompositionRoot
                 SO115App.Models.Servizi.Infrastruttura.Marker.IGetCentroMappaMarker,
                 SO115App.Persistence.MongoDB.Marker.GetCentroMappa>();
 
+            container.Register<
+                SO115App.Models.Servizi.Infrastruttura.Marker.IGetSediMarker,
+                SO115App.Persistence.MongoDB.Marker.GetSediMarker>();
+
             #endregion MARKER
 
             #region Gestione Sedi
@@ -113,10 +117,6 @@ namespace SO115App.CompositionRoot
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.GetFiltri.IGetFiltri,
                 FakePersistenceJSon.Filtri.GetFiltri>();
-
-            container.Register<
-                SO115App.Models.Servizi.Infrastruttura.Marker.IGetSediMarker,
-                FakePersistenceJSon.Marker.GetSediMarker>();
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.NavBar.IGetNavbar,
                 SO115App.FakePersistenceJSon.Navbar.GetNavbar>();
@@ -148,6 +148,10 @@ namespace SO115App.CompositionRoot
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.InfoRichiesta.IGetInfoRichiesta,
                 FakePersistence.JSon.Utility.GetInfoRichiesta>();
+
+
+
+
 
             container.Register<
                 API.Models.Servizi.Infrastruttura.Organigramma.IGetUnitaOperativaPerCodice,
