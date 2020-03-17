@@ -35,7 +35,12 @@ namespace SO115App.Persistence.MongoDB.GestioneSedi
 
             var sede = listaSedi.Find(x => x.codFiglio_TC.Equals(CodFiglio) && x.codSede_TC.Equals(CodSede));
 
-            Coordinate coordinate = new Coordinate(sede.latitudine, sede.longitudine);
+            var coordinate = new Coordinate(0, 0);
+
+            if (sede != null)
+            {
+                 coordinate = new Coordinate(sede.latitudine, sede.longitudine);
+            }
 
             return coordinate;
         }
