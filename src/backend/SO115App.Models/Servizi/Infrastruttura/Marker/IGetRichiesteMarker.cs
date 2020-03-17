@@ -20,11 +20,12 @@
 using System.Collections.Generic;
 using SO115App.API.Models.Classi.Geo;
 using SO115App.API.Models.Classi.Marker;
+using SO115App.API.Models.Servizi.CQRS.Queries.Marker.SintesiRichiesteAssistenzaMarker;
 
 namespace SO115App.Models.Servizi.Infrastruttura.Marker
 {
     public interface IGetRichiesteMarker
     {
-        List<SintesiRichiestaMarker> GetListaRichiesteMarker(AreaMappa Filtro);
+        List<SintesiRichiestaMarker> GetListaRichiesteMarker(SintesiRichiesteAssistenzaMarkerQuery Filtro);
     }
 }

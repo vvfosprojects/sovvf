@@ -4,6 +4,7 @@ using Persistence.MongoDB;
 using SO115App.API.Models.Classi.Geo;
 using SO115App.API.Models.Classi.Marker;
 using SO115App.API.Models.Classi.Soccorso;
+using SO115App.API.Models.Servizi.CQRS.Queries.Marker.SintesiRichiesteAssistenzaMarker;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
 using SO115App.Models.Servizi.Infrastruttura.Marker;
@@ -25,9 +26,14 @@ namespace SO115App.Persistence.MongoDB.Marker
             _getTipologie = getTipologie;
         }
 
-        public List<SintesiRichiestaMarker> GetListaRichiesteMarker(AreaMappa filtroAreaMappa)
+        public List<SintesiRichiestaMarker> GetListaRichiesteMarker(SintesiRichiesteAssistenzaMarkerQuery query)
         {
-            var listaSintesiRichieste = _dbContext.RichiestaAssistenzaCollection.Find(Builders<RichiestaAssistenza>.Filter.Empty).ToList();
+            var listaSintesiRichieste = new List<RichiestaAssistenza>();
+
+            foreach (var sede in query.CodiciSedi)
+            {
+                listaSintesiRichieste.AddRange(_dbContext.RichiestaAssistenzaCollection.Find(x => x.CodSOCompetente.Equals(sede)).ToList());
+            }
 
             var listaSintesiRichiesteMarker = new List<SintesiRichiestaMarker>();
 
@@ -58,27 +64,27 @@ namespace SO115App.Persistence.MongoDB.Marker
             List<SintesiRichiestaMarker> listaSintesiRichiestaMarkers;
 
             if (listaSintesiRichiesteMarker == null) return null;
-            switch (filtroAreaMappa)
+            switch (query.FiltroCentroMappa)
             {
                 case null:
                     return listaSintesiRichiesteMarker;
 
                 default:
                     listaSintesiRichiestaMarkers = listaSintesiRichiesteMarker.Where(richiesta =>
-                            (richiesta.Localita.Coordinate.Latitudine >= filtroAreaMappa.BottomLeft.Latitudine)
-                            && (richiesta.Localita.Coordinate.Latitudine <= filtroAreaMappa.TopRight.Latitudine)
-                            && (richiesta.Localita.Coordinate.Longitudine >= filtroAreaMappa.BottomLeft.Longitudine)
-                            && (richiesta.Localita.Coordinate.Longitudine <= filtroAreaMappa.TopRight.Longitudine))
+                            (richiesta.Localita.Coordinate.Latitudine >= query.FiltroCentroMappa.BottomLeft.Latitudine)
+                            && (richiesta.Localita.Coordinate.Latitudine <= query.FiltroCentroMappa.TopRight.Latitudine)
+                            && (richiesta.Localita.Coordinate.Longitudine >= query.FiltroCentroMappa.BottomLeft.Longitudine)
+                            && (richiesta.Localita.Coordinate.Longitudine <= query.FiltroCentroMappa.TopRight.Longitudine))
                         .ToList();
                     break;
             }
 
-            if (filtroAreaMappa.FiltroRichieste == null) return listaSintesiRichiestaMarkers;
+            if (query.FiltroCentroMappa.FiltroRichieste == null) return listaSintesiRichiestaMarkers;
             var listaRichiesteFiltrate = new List<SintesiRichiestaMarker>();
 
-            if (!filtroAreaMappa.FiltroRichieste.Stato.Any()) return filtroAreaMappa.FiltroRichieste.Priorita == null ? listaSintesiRichiestaMarkers : listaSintesiRichiestaMarkers.FindAll(x => x.PrioritaRichiesta >= filtroAreaMappa.FiltroRichieste.Priorita); ;
+            if (!query.FiltroCentroMappa.FiltroRichieste.Stato.Any()) return query.FiltroCentroMappa.FiltroRichieste.Priorita == null ? listaSintesiRichiestaMarkers : listaSintesiRichiestaMarkers.FindAll(x => x.PrioritaRichiesta >= query.FiltroCentroMappa.FiltroRichieste.Priorita); ;
 
-            foreach (var statoRichiesta in filtroAreaMappa.FiltroRichieste.Stato)
+            foreach (var statoRichiesta in query.FiltroCentroMappa.FiltroRichieste.Stato)
             {
                 if (statoRichiesta == Costanti.RichiestaAssegnata)
                 {
@@ -101,7 +107,7 @@ namespace SO115App.Persistence.MongoDB.Marker
                         listaSintesiRichiesteMarker.FindAll(x => x.Stato == Costanti.RichiestaSospesa));
                 }
             }
-            return filtroAreaMappa.FiltroRichieste.Priorita == null ? listaRichiesteFiltrate : listaRichiesteFiltrate.FindAll(x => x.PrioritaRichiesta >= filtroAreaMappa.FiltroRichieste.Priorita);
+            return query.FiltroCentroMappa.FiltroRichieste.Priorita == null ? listaRichiesteFiltrate : listaRichiesteFiltrate.FindAll(x => x.PrioritaRichiesta >= query.FiltroCentroMappa.FiltroRichieste.Priorita);
         }
     }
 }
