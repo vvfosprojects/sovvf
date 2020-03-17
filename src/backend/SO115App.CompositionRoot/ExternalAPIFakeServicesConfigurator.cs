@@ -102,7 +102,7 @@ namespace SO115App.CompositionRoot
             container.Register<IGetMezziBySelettiva, GetMezziBySelettiva>();
             container.Register<IGetMezziFuoriServizio, GetMezziFuoriServizio>();
             //container.Register<IGetMezziUtilizzabili, GetMezziUtilizzabili>();
-            container.Register<IGetMezziUtilizzabili, SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper.GetMezziUtilizzabili>();
+            //container.Register<IGetMezziUtilizzabili, SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper.GetMezziUtilizzabili>();
             container.Register<ISetMovimentazione, SetMovimentazione>();
             container.Register<
                 SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi.IGetListaMezzi,
@@ -142,19 +142,26 @@ namespace SO115App.CompositionRoot
             #region Mezzi
 
             container.Register<
-                SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Mezzi.IGetListaMezzi,
-                SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper.GetListaMezzi>();
+               SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Mezzi.IGetListaMezzi,
+               SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper.GetListaMezzi>();
+            //container.Register<
+            //    SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Mezzi.IGetListaMezzi,
+            //    SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper.GetListaMezzi>();
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Mezzi.IGetMezzoById,
                 SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper.GetMezzoById>();
+            container.Register<IGetMezziUtilizzabili, SO115App.ExternalAPI.Fake.GestioneMezzi.GetMezziUtilizzabili>();
 
             #endregion Mezzi
 
             #region Squadre
 
+            //container.Register<
+            //    SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Squadre.IGetListaSquadre,
+            //    SO115App.ExternalAPI.Fake.ImportOracle.SquadreMapper.GetListaSquadre>();
             container.Register<
-                SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Squadre.IGetListaSquadre,
-                SO115App.ExternalAPI.Fake.ImportOracle.SquadreMapper.GetListaSquadre>();
+              SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Squadre.IGetListaSquadre,
+              SO115App.ExternalAPI.Fake.Servizi.Personale.GetListaSquadre>();
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Squadre.IGetSquadraById,
                 SO115App.ExternalAPI.Fake.ImportOracle.SquadreMapper.GetSquadraById>();
@@ -167,6 +174,9 @@ namespace SO115App.CompositionRoot
                 SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.GesPreaccoppiati.IGetListaGesPreaccoppiati,
                 SO115App.ExternalAPI.Fake.ImportOracle.GesPreaccoppiatiMapper.GetListaGesPreaccoppiati>();
 
+            //  container.Register<
+            //  SO115App.Models.Servizi.Infrastruttura.GetPreAccoppiati.IGetPreAccoppiati,
+            //SO115App.ExternalAPI.Fake.ImportOracle.GesPreaccoppiatiMapper.GetPreAccoppiati>();
             container.Register<
             SO115App.Models.Servizi.Infrastruttura.GetPreAccoppiati.IGetPreAccoppiati,
           SO115App.ExternalAPI.Fake.ImportOracle.GesPreaccoppiatiMapper.GetPreAccoppiati>();

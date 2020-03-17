@@ -17,28 +17,23 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
 {
     public class GetListaSquadre : IGetListaSquadre
     {
+        private readonly HttpClient _client;
+        private readonly IConfiguration _configuration;
         private readonly IGetDistaccamentoByCodiceSedeUC _getDistaccamentoByCodiceSedeUC;
         private readonly IGetPersonaleByCF _getPersonaleByCF;
 
-        public GetListaSquadre(IGetDistaccamentoByCodiceSedeUC GetDistaccamentoByCodiceSedeUC, IGetPersonaleByCF GetPersonaleByCF)
+        public GetListaSquadre(HttpClient client, IConfiguration configuration, IGetDistaccamentoByCodiceSedeUC GetDistaccamentoByCodiceSedeUC, IGetPersonaleByCF GetPersonaleByCF)
         {
             _getDistaccamentoByCodiceSedeUC = GetDistaccamentoByCodiceSedeUC;
             _getPersonaleByCF = GetPersonaleByCF;
+            _client = client;
+            _configuration = configuration;
         }
 
         public async Task<List<Squadra>> Get(List<string> sedi)
         {
             List<Squadra> listaSquadre = new List<Squadra>();
             List<string> ListaCodiciSedi = new List<string>();
-
-            var filepath = CostantiJson.ListaSqaudre;
-            string json;
-            using (var r = new StreamReader(filepath))
-            {
-                json = r.ReadToEnd();
-            }
-
-            var listaSquadraFake = JsonConvert.DeserializeObject<List<SquadraFake>>(json);
 
             foreach (string sede in sedi)
             {
@@ -54,7 +49,14 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
             var ListaMezzi = new List<Mezzo>();
             foreach (string CodSede in ListaCodiciSedi)
             {
-                var ListaSquadreSede = listaSquadraFake.FindAll(x => x.Sede.Contains(CodSede));
+                _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("test");
+                var response = await _client.GetAsync($"{_configuration.GetSection("DataFakeImplementation").GetSection("UrlAPISquadre").Value}/GetListaSquadre?CodSede={CodSede}").ConfigureAwait(false);
+                response.EnsureSuccessStatusCode();
+                using HttpContent content = response.Content;
+
+                string data = await content.ReadAsStringAsync().ConfigureAwait(false);
+                List<SquadraFake> ListaSquadreSede = JsonConvert.DeserializeObject<List<SquadraFake>>(data);
+
                 foreach (SquadraFake squadraFake in ListaSquadreSede)
                 {
                     var squadra = MapSqaudra(squadraFake, CodSede);
