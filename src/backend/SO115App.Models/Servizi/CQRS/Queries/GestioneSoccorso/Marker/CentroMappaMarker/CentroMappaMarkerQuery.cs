@@ -30,6 +30,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.Marker.CentroMappaMarker
         /// <summary>
         ///   Il filtro utilizzato per la ricerca delle richieste di assistenza
         /// </summary>
-        public string CodiceSede { get; set; }
+        public string[] CodiceSede { get; set; }
     }
 }

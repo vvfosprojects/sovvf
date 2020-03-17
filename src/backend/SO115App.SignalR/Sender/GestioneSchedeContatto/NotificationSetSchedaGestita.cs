@@ -46,7 +46,7 @@ namespace SO115App.SignalR.Sender.GestioneSchedeContatto
         {
             var getConteggioSchedeQuery = new GetConteggioSchedeQuery
             {
-                CodiceSede = command.CodiceSede
+                CodiciSede = new string[] { command.CodiceSede }
             };
 
             var getSchedeContatto = new GetSchedeContattoQuery

@@ -27,8 +27,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes
     public class BoxRichiesteQuery : IQuery<BoxRichiesteResult>
     {
         /// <summary>
-        ///   Filtra solo le richieste appartenenti all'unità operativa indicata.
+        ///   Filtra solo le richieste appartenenti alle unità operative indicate.
         /// </summary>
-        public string CodiceSede { get; set; }
+        public string[] CodiciSede { get; set; }
     }
 }

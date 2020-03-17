@@ -77,7 +77,7 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
             var boxRichiesteQuery = new BoxRichiesteQuery();
             var boxMezziQuery = new BoxMezziQuery()
             {
-                CodiceSede = conferma.ConfermaPartenze.CodiceSede
+                CodiciSede = new string[] { conferma.ConfermaPartenze.CodiceSede }
             };
             var boxPersonaleQuery = new BoxPersonaleQuery();
             var sintesiRichiesteAssistenzaQuery = new SintesiRichiesteAssistenzaQuery

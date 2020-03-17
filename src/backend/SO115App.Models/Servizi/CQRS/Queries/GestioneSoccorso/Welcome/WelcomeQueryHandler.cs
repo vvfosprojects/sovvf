@@ -77,17 +77,17 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
         {
             var boxMezziQuery = new BoxMezziQuery()
             {
-                CodiceSede = query.CodiceSede
+                CodiciSede = query.CodiceSede
             };
 
             var boxPersonaleQuery = new BoxPersonaleQuery()
             {
-                CodiceSede = query.CodiceSede
+                CodiciSede = query.CodiceSede
             };
 
             var boxRichiesteQuery = new BoxRichiesteQuery()
             {
-                CodiceSede = query.CodiceSede
+                CodiciSede = query.CodiceSede
             };
 
             FiltroRicercaRichiesteAssistenza filtro = new FiltroRicercaRichiesteAssistenza
@@ -116,12 +116,12 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
 
             var getConteggioSchede = new GetConteggioSchedeQuery()
             {
-                CodiceSede = query.CodiceSede
+                CodiciSede = query.CodiceSede
             };
 
             var tipologie = new TipologieQuery()
             {
-                CodSede = query.CodiceSede.Split('.')[0]
+                CodSede = query.CodiceSede[0].Split('.')[0]
             };
 
             try

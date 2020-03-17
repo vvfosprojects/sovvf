@@ -26,6 +26,6 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSchedeNue.GetContatoreSch
 {
     public class GetConteggioSchedeQuery : IQuery<GetConteggioSchedeResult>
     {
-        public string CodiceSede { get; set; }
+        public string[] CodiciSede { get; set; }
     }
 }
