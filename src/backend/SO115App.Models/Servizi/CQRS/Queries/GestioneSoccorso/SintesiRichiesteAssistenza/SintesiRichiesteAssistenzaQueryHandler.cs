@@ -107,7 +107,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichi
             return new SintesiRichiesteAssistenzaResult()
             {
                 SintesiRichiesta = (query.Filtro.Page > 0 && query.Filtro.PageSize > 0) ? listaSintesiPaginata : listaSintesi,
-                Paginazione = new Paginazione
+                Pagination = new Paginazione
                 {
                     Page = query.Filtro.Page,
                     PageSize = query.Filtro.PageSize,

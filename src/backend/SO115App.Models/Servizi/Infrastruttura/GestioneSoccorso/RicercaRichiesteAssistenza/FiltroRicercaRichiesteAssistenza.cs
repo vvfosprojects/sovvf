@@ -37,12 +37,12 @@ namespace SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRic
         /// <summary>
         ///   Indica il numero di pagina che si vuole ricevere (la prima pagina ha indice 1)
         /// </summary>
-        public int Page { get; set; }
+        public int Page { get; set; } = 1;
 
         /// <summary>
         ///   Indica la dimensione di una pagina
         /// </summary>
-        public int PageSize { get; set; }
+        public int PageSize { get; set; } = 15;
 
         /// <summary>
         ///   Le unità operative per cui vengono selezionate le richieste. Se questo riferimento è
