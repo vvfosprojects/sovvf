@@ -66,7 +66,7 @@ namespace SO115App.SignalR.Sender.GestioneChiamata
 
             var boxRichiesteQuery = new BoxRichiesteQuery
             {
-                CodiceSede = intervento.CodiceSede
+                CodiciSede = new string[] { intervento.CodiceSede }
             };
             var boxInterventi = (BoxInterventi)this._boxRichiesteHandler.Handle(boxRichiesteQuery).BoxRichieste;
 

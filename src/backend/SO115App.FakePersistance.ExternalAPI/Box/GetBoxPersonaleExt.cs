@@ -20,6 +20,7 @@
 
 using SO115App.API.Models.Classi.Boxes;
 using SO115App.API.Models.Classi.Condivise;
+using SO115App.API.Models.Classi.Utenti;
 using SO115App.Models.Servizi.Infrastruttura.Box;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Personale;
 using System.Collections.Generic;
@@ -36,13 +37,19 @@ namespace SO115App.ExternalAPI.Fake.Box
             _getSquadreBySede = getSquadreBySede;
         }
 
-        public BoxPersonale Get(string codiceSede)
+        public BoxPersonale Get(string[] codiciSede)
         {
             var personale = new BoxPersonale();
             var numeroComponenti = 0;
             var listaFunzionari = new List<Componente>();
+            var ListaSquadreNelTurno = new List<Turno>();
 
-            foreach (var turno in _getSquadreBySede.SquadreBySede(codiceSede))
+            foreach(var sede in codiciSede) 
+            {
+                ListaSquadreNelTurno.AddRange(_getSquadreBySede.SquadreBySede(sede));
+            }
+
+            foreach (var turno in ListaSquadreNelTurno)
             {
                 personale.SquadreAssegnate +=
                 turno.ListaSquadre.Count(x => x.Stato == Squadra.StatoSquadra.InViaggio) +

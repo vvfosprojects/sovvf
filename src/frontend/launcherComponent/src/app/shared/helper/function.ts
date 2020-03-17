@@ -90,8 +90,23 @@ export function makeIDChiamata(): string {
     return `RM-0${text}`;
 }
 
-export function arraysEqual(a1: any[], a2: any[]) {
-    return JSON.stringify(a1) === JSON.stringify(a2);
+export function arraysEqual(array1: string[], array2: string[]): boolean {
+    if (array1.length !== array2.length) {
+        return false;
+    }
+
+    array1 = array1.slice();
+    array1.sort();
+    array2 = array2.slice();
+    array2.sort();
+
+    for (let i = 0; i < array1.length; i++) {
+        if (array1[i] !== array2[i]) {
+            return false;
+        }
+    }
+
+    return true;
 }
 
 export function arrayUnique(arr: any[]) {
@@ -100,13 +115,13 @@ export function arrayUnique(arr: any[]) {
     });
 }
 
-export function arrayDiff(a1, a2) {
-    return a1.filter(item => a2.indexOf(item) < 0);
-}
-
-export function randomNumber(min: number, max: number) {
-    return Math.floor(Math.random() * (max - min + 1) + min);
-}
+// export function arrayDiff(a1, a2) {
+//     return a1.filter(item => a2.indexOf(item) < 0);
+// }
+//
+// export function randomNumber(min: number, max: number) {
+//     return Math.floor(Math.random() * (max - min + 1) + min);
+// }
 
 export function objectDiff(current: object, previous: object) {
     const newObj: object = {};

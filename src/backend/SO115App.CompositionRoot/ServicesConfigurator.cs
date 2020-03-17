@@ -34,9 +34,12 @@ namespace SO115App.CompositionRoot
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.Box.IGetBoxMezzi,
                 GetBoxMezzi>();
+            //container.Register<
+            //    SO115App.Models.Servizi.Infrastruttura.Box.IGetBoxPersonale,
+            //    GetPersonale>();
             container.Register<
-                SO115App.Models.Servizi.Infrastruttura.Box.IGetBoxPersonale,
-                GetPersonale>();
+              SO115App.Models.Servizi.Infrastruttura.Box.IGetBoxPersonale,
+              ExternalAPI.Fake.Box.GetBoxPersonale>();//TODO gestione composition Root per l'externalAPI
 
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.GetFiltri.IGetFiltri,

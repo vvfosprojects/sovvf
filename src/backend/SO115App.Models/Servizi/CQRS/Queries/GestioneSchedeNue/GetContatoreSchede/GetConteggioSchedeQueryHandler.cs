@@ -33,7 +33,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSchedeNue.GetContatoreSch
 
         public GetConteggioSchedeResult Handle(GetConteggioSchedeQuery query)
         {
-            var infoNue = _getConteggioSchede.GetConteggio(query.CodiceSede);
+            var infoNue = _getConteggioSchede.GetConteggio(query.CodiciSede);
 
             return new GetConteggioSchedeResult
             {

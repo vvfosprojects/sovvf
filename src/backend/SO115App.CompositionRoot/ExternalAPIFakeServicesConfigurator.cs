@@ -132,9 +132,13 @@ namespace SO115App.CompositionRoot
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.Box.IGetBoxMezzi,
                 ExternalAPI.Fake.Box.GetBoxMezziExt>();//TODO gestione composition Root per l'externalAPI
+                                                       //container.Register<
+                                                       //    SO115App.Models.Servizi.Infrastruttura.Box.IGetBoxPersonale,
+                                                       //    ExternalAPI.Fake.Box.GetBoxPersonaleExt>();//TODO gestione composition Root per l'externalAPI
             container.Register<
-                SO115App.Models.Servizi.Infrastruttura.Box.IGetBoxPersonale,
-                ExternalAPI.Fake.Box.GetBoxPersonaleExt>();//TODO gestione composition Root per l'externalAPI
+               SO115App.Models.Servizi.Infrastruttura.Box.IGetBoxPersonale,
+               ExternalAPI.Fake.Box.GetBoxPersonale>();//TODO gestione composition Root per l'externalAPI
+
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.Marker.IGetMezziMarker,
                 ExternalAPI.Fake.Marker.GetMezziMarkerExt>();

@@ -2,11 +2,15 @@ export class SetAppLoaded {
     static readonly type = '[App] Caricamento...';
 }
 
-export class SetAppSede {
-    static readonly type = '[App] Sede attuale';
+export class SetVistaSedi {
+    static readonly type = '[App] Sedi correnti';
 
-    constructor(public idSede: string[]) {
+    constructor(public vistaSedi: string[]) {
     }
+}
+
+export class ClearVistaSedi {
+    static readonly type = '[App] Clear Sedi correnti';
 }
 
 export class SetTimeSync {

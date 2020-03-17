@@ -45,7 +45,13 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Disponibilit
         /// <returns>Elenco dei mezzi disponibili</returns>
         public BoxRichiesteResult Handle(BoxRichiesteQuery query)
         {
-            var listaPin = new List<PinNodo> { new PinNodo(query.CodiceSede, true) };
+            var listaPin = new List<PinNodo>();
+            foreach(var sede in query.CodiciSede) 
+            {
+                var pinnodo = new PinNodo(sede, true);
+                listaPin.Add(pinnodo);
+            };
+
             // preparazione del DTO
             var boxes = _iGetBox.Get(listaPin.ToHashSet());
 

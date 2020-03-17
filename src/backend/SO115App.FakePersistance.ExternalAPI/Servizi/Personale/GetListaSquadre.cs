@@ -50,7 +50,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
             foreach (string CodSede in ListaCodiciSedi)
             {
                 _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("test");
-                var response = await _client.GetAsync($"{_configuration.GetSection("DataFakeImplementation").GetSection("UrlAPISquadre").Value}/GetListaSquadre?CodSede={CodSede}").ConfigureAwait(false);
+                var response = await _client.GetAsync($"{_configuration.GetSection("DataFakeImplementation").GetSection("UrlAPISquadre").Value}/GetListaSquadreByCodComando?CodComando={CodSede}").ConfigureAwait(false);
                 response.EnsureSuccessStatusCode();
                 using HttpContent content = response.Content;
 
