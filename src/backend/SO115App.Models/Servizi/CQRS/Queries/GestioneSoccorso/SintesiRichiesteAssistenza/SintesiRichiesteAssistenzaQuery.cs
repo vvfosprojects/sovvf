@@ -36,6 +36,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichi
 
         public List<RichiestaAssistenza> ListaRichieste { get; set; }
 
-        public string[] CodiceSede { get; set; }
+        public string[] CodiciSede { get; set; }
     }
 }

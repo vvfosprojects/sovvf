@@ -106,7 +106,7 @@ namespace SO115App.API.Controllers
         {
             var sintesiRichiesteAssistenzaQuery = new SintesiRichiesteAssistenzaQuery
             {
-                CodiceSede = Request.Headers["codiceSede"],
+                CodiciSede = Request.Headers["codiceSede"].ToString().Split(','),
                 Filtro = filtro
             };
 

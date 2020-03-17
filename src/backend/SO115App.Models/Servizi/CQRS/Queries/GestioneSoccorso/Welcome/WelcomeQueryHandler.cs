@@ -98,7 +98,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
 
             var sintesiRichiesteAssistenzaQuery = new SintesiRichiesteAssistenzaQuery()
             {
-                CodiceSede = query.CodiceSede,
+                CodiciSede = query.CodiceSede,
                 Filtro = filtro
             };
 
