@@ -30,29 +30,6 @@ namespace SO115App.CompositionRoot
     {
         internal static void Configure(Container container)
         {
-            #region Trasportate in MongoDB
-
-            container.Register<
-                API.Models.Servizi.Infrastruttura.GestioneSoccorso.ISaveRichiestaAssistenza,
-                FakePersistenceJSon.GestioneIntervento.InserimentoRichiesta>();
-
-            container.Register<
-                SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.IGetListaSintesi,
-                SO115App.FakePersistenceJSon.GestioneIntervento.GetListaSintesi>();
-
-            container.Register<
-                API.Models.Servizi.Infrastruttura.GestioneSoccorso.IUpDateRichiestaAssistenza,
-                UpDateRichiesta>();
-
-            container.Register<
-                  SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.IGetRichiestaById,
-                  FakePersistenceJSon.GestioneIntervento.GetRichiestaById>();
-
-            container.Register<
-                    SO115App.Models.Servizi.Infrastruttura.Box.IGetBoxRichieste,
-                    FakePersistenceJSon.Box.GetRichieste>();
-
-            #endregion Trasportate in MongoDB
 
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.Box.IGetBoxMezzi,
@@ -94,26 +71,16 @@ namespace SO115App.CompositionRoot
                 SO115App.Models.Servizi.Infrastruttura.Marker.IUpDateChiamataInCorso,
                 FakePersistenceJSon.Marker.UpDateChiamateInCorso>();
             container.Register<
-    SO115App.Models.Servizi.Infrastruttura.GetComposizioneSquadre.IGetComposizioneSquadre,
-    SO115App.ExternalAPI.Fake.ImportOracle.SquadreMapper.GetComposizioneSquadre>();
-            //container.Register<
-            //    SO115App.Models.Servizi.Infrastruttura.GetComposizioneSquadre.IGetComposizioneSquadre,
-            //    FakePersistenceJSon.Composizione.GetComposizioneSquadre>();
-            //container.Register<
-            //    SO115App.Models.Servizi.Infrastruttura.GetComposizioneMezzi.IGetComposizioneMezzi,
-            //    GetComposizioneMezzi>();
+                SO115App.Models.Servizi.Infrastruttura.GetComposizioneSquadre.IGetComposizioneSquadre,
+                SO115App.ExternalAPI.Fake.ImportOracle.SquadreMapper.GetComposizioneSquadre>();
+
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.GetComposizioneMezzi.IGetComposizioneMezzi,
                 SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper.GetComposizioneMezzi>();
-            //container.Register<
-            //    SO115App.Models.Servizi.Infrastruttura.GetPreAccoppiati.IGetPreAccoppiati,
-            //    FakePersistenceJSon.Composizione.GetPreAccoppiati>();
-            //   container.Register<
-            //  SO115App.Models.Servizi.Infrastruttura.GetPreAccoppiati.IGetPreAccoppiati,
-            //SO115App.ExternalAPI.Fake.ImportOracle.GesPreaccoppiatiMapper.GetPreAccoppiati>();
+
             container.Register<
-          SO115App.Models.Servizi.Infrastruttura.GetPreAccoppiati.IGetPreAccoppiati,
-        SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati.GetPreAccoppiati>();
+                SO115App.Models.Servizi.Infrastruttura.GetPreAccoppiati.IGetPreAccoppiati,
+                SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati.GetPreAccoppiati>();
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.GetListaEventi.IGetListaEventi,
                 FakePersistenceJSon.ListaEventi.GetListaEventi>();
@@ -127,14 +94,14 @@ namespace SO115App.CompositionRoot
             container.Register<Models.Servizi.Infrastruttura.Composizione.IGetStatoMezzi,
                 FakePersistence.JSon.GestioneMezzi.GetStatoMezzi>();
             container.Register<
-         SO115App.Models.Servizi.Infrastruttura.Composizione.IUpdateConfermaPartenze,
+                SO115App.Models.Servizi.Infrastruttura.Composizione.IUpdateConfermaPartenze,
             UpdateConfermaPartenze>();
             container.Register<
-         SO115App.Models.Servizi.Infrastruttura.Composizione.IUpdateStatoPartenze,
+                SO115App.Models.Servizi.Infrastruttura.Composizione.IUpdateStatoPartenze,
             UpdateStatoPartenza>();
             container.Register<
-            SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi.IGetMezzoByCodice,
-         SO115App.FakePersistence.JSon.GestioneMezzi.GetMezzoById>();
+                SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi.IGetMezzoByCodice,
+                SO115App.FakePersistence.JSon.GestioneMezzi.GetMezzoById>();
 
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GenerazioneCodiciRichiesta.IGeneraCodiceRichiesta,

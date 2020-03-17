@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="Filtri.cs" company="CNVVF">
+// <copyright file="EntityMap.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,21 +17,29 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization;
+using MongoDB.Bson.Serialization.IdGenerators;
+using MongoDB.Bson.Serialization.Serializers;
+using SO115App.API.Models.Classi.Filtri;
+using SO115App.API.Models.Classi.Persistenza;
+using System;
 using System.Collections.Generic;
+using System.Text;
 
-namespace SO115App.API.Models.Classi.Filtri
+namespace SO115App.Persistence.MongoDB.Mappings
 {
-    [BsonIgnoreExtraElements]
-    public class Filtri
+    internal static class FiltriMap
     {
-        [BsonElement]
-        public string Id { get; set; }
-
-        [BsonElement]
-        public List<GeneriMezzi> GeneriMezzi { get; set; }
-
-        [BsonElement]
-        public List<Stati> Stati { get; set; }
+        public static void Map()
+        {
+            BsonClassMap.RegisterClassMap<Filtri>(cm =>
+            {
+                cm.AutoMap();
+                cm.MapIdMember(c => c.Id)
+                    .SetIdGenerator(StringObjectIdGenerator.Instance)
+                    .SetSerializer(new StringSerializer(BsonType.ObjectId));
+            });
+        }
     }
 }

@@ -108,10 +108,6 @@ namespace SO115App.CompositionRoot
             #region DA TRASFORMARE SU MONGO
 
             container.Register<
-                SO115App.Models.Servizi.Infrastruttura.GetFiltri.IGetFiltri,
-                FakePersistenceJSon.Filtri.GetFiltri>();
-
-            container.Register<
                 SO115App.Models.Servizi.Infrastruttura.Marker.IGetSediMarker,
                 FakePersistenceJSon.Marker.GetSediMarker>();
             container.Register<
@@ -125,15 +121,6 @@ namespace SO115App.CompositionRoot
             container.Register<
                SO115App.Models.Servizi.Infrastruttura.GetComposizioneSquadre.IGetComposizioneSquadre,
                SO115App.ExternalAPI.Fake.ImportOracle.SquadreMapper.GetComposizioneSquadre>();
-            //container.Register<
-            //    SO115App.Models.Servizi.Infrastruttura.GetComposizioneSquadre.IGetComposizioneSquadre,
-            //    FakePersistenceJSon.Composizione.GetComposizioneSquadre>();
-            //   container.Register<
-            //  SO115App.Models.Servizi.Infrastruttura.GetPreAccoppiati.IGetPreAccoppiati,
-            //SO115App.ExternalAPI.Fake.ImportOracle.GesPreaccoppiatiMapper.GetPreAccoppiati>();
-            //container.Register<
-            //    SO115App.Models.Servizi.Infrastruttura.GetPreAccoppiati.IGetPreAccoppiati,
-            //    FakePersistenceJSon.Composizione.GetPreAccoppiati>();
 
             container.Register<
                 SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.IGetIdByCodice,
@@ -273,6 +260,15 @@ namespace SO115App.CompositionRoot
             container.Register<Models.Servizi.Infrastruttura.Autenticazione.IGetAutorizzazioni, Persistence.MongoDB.GestioneUtenti.GestioneRuoli.GetAutorizzazioni>();
 
             #endregion Gestione Utenti e Ruoli
+
+            #region Utility
+
+            container.Register<
+                SO115App.Models.Servizi.Infrastruttura.GetFiltri.IGetFiltri,
+                SO115App.Persistence.MongoDB.GestioneFiltri.GetFiltri>();
+
+
+            #endregion
         }
     }
 }

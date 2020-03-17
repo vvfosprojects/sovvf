@@ -1,22 +1,4 @@
 {
-  "distaccamenti": [
-    {
-      "id": "RM.1000",
-      "descrizione": "Comando di Roma"
-    },
-    {
-      "id": "RM.1001",
-      "descrizione": "Distaccamento Cittadino Roma Tuscolano I"
-    },
-    {
-      "id": "RM.1002",
-      "descrizione": "Ostiense"
-    },
-    {
-      "id": "RM.1003",
-      "descrizione": "La Rustica"
-    }
-  ],
   "generiMezzi": [
     {
       "id": "1",
