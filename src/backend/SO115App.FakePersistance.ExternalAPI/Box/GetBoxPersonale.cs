@@ -27,6 +27,7 @@ using System.Linq;
 using SO115App.FakePersistence.JSon.Utility;
 using SO115App.Models.Servizi.Infrastruttura.GetComposizioneSquadre;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneSquadre;
+using SO115App.API.Models.Classi.Composizione;
 
 namespace SO115App.ExternalAPI.Fake.Box
 {
@@ -41,16 +42,24 @@ namespace SO115App.ExternalAPI.Fake.Box
 
         private readonly string _filepath = CostantiJson.SquadreComposizione;
 
-        public BoxPersonale Get(string codiceSede)
+        public BoxPersonale Get(string[] codiciSede)
         {
             var personale = new BoxPersonale();
             var numeroComponenti = 0;
             var listaFunzionari = new List<Componente>();
 
-            ComposizioneSquadreQuery query = new ComposizioneSquadreQuery();
-            query.CodiceSede = codiceSede;
 
-            var listaSquadreComposizione = _getComposizioneSquadre.Get(query);
+            var listaSquadreComposizione = new List<ComposizioneSquadre>();
+
+            foreach(var Codsede in codiciSede)
+            {
+                ComposizioneSquadreQuery query = new ComposizioneSquadreQuery();
+                query.CodiceSede = Codsede;
+
+                listaSquadreComposizione.AddRange(_getComposizioneSquadre.Get(query));
+
+            }
+
             personale.SquadreAssegnate =
                 listaSquadreComposizione.Count(x => x.Squadra.Stato == Squadra.StatoSquadra.InViaggio) +
                 listaSquadreComposizione.Count(x => x.Squadra.Stato == Squadra.StatoSquadra.SulPosto) +

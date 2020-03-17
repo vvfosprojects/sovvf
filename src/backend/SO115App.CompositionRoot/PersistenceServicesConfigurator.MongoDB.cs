@@ -113,10 +113,6 @@ namespace SO115App.CompositionRoot
             #endregion Schede Contatto
 
             #region DA TRASFORMARE SU MONGO
-
-            container.Register<
-                SO115App.Models.Servizi.Infrastruttura.GetFiltri.IGetFiltri,
-                FakePersistenceJSon.Filtri.GetFiltri>();
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.NavBar.IGetNavbar,
                 SO115App.FakePersistenceJSon.Navbar.GetNavbar>();
