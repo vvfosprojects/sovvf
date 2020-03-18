@@ -41,7 +41,6 @@ import { ListaSquadrePartenzaComponent } from '../../../shared/components/lista-
 import { RichiesteEspanseState } from '../store/states/richieste/richieste-espanse.state';
 import { RichiestaGestioneState } from '../store/states/richieste/richiesta-gestione.state';
 import { RichiestaAttivitaUtenteState } from '../store/states/richieste/richiesta-attivita-utente.state';
-import { VirtualScrollerModule } from 'ngx-virtual-scroller';
 
 @NgModule({
     imports: [

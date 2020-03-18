@@ -13,7 +13,7 @@ import {
 } from '../../actions/richieste/richieste.actions';
 import { SintesiRichiesteService } from 'src/app/core/service/lista-richieste-service/lista-richieste.service';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
-import { append, insertItem, patch, updateItem } from '@ngxs/store/operators';
+import { insertItem, patch, updateItem } from '@ngxs/store/operators';
 import { RichiestaFissataState } from './richiesta-fissata.state';
 import { RichiestaHoverState } from './richiesta-hover.state';
 import { RichiestaSelezionataState } from './richiesta-selezionata.state';
@@ -30,7 +30,7 @@ import { SetMarkerRichiestaSelezionato } from '../../actions/maps/marker.actions
 import { ComposizionePartenzaState } from '../composizione-partenza/composizione-partenza.state';
 import { ClearRichiesteEspanse } from '../../actions/richieste/richieste-espanse.actions';
 import { RichiesteEspanseState } from './richieste-espanse.state';
-import { calcolaActionSuggeritaMezzo, makeCopy, randomNumber } from '../../../../../shared/helper/function';
+import { calcolaActionSuggeritaMezzo } from '../../../../../shared/helper/function';
 import { RichiestaGestioneState } from './richiesta-gestione.state';
 import { RichiestaAttivitaUtenteState } from './richiesta-attivita-utente.state';
 import { ListaSquadrePartenzaComponent } from '../../../../../shared';
@@ -46,14 +46,12 @@ export interface RichiesteStateModel {
     richieste: SintesiRichiesta[];
     richiestaById: SintesiRichiesta;
     chiamataInviaPartenza: string;
-    loadedPages: number[];
 }
 
 export const RichiesteStateDefaults: RichiesteStateModel = {
     richieste: [],
     richiestaById: null,
-    chiamataInviaPartenza: null,
-    loadedPages: []
+    chiamataInviaPartenza: null
 };
 
 @State<RichiesteStateModel>({
@@ -101,34 +99,13 @@ export class RichiesteState {
             pageSize: this.store.selectSnapshot(PaginationState.pageSize)
         };
         this.richiesteService.getRichieste(filters, pagination).subscribe((response: ResponseInterface) => {
-            dispatch(new AddRichieste(response.dataArray, 'bottom'));
+            dispatch(new AddRichieste(response.sintesiRichiesta));
             dispatch(new PatchPagination(response.pagination));
             dispatch(new StopLoading());
         }, () => {
             dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5));
             dispatch(new StopLoading());
         });
-
-        // TEST
-        // TODO: da eliminare
-        // const pageSize = this.store.selectSnapshot(PaginationState.pageSize);
-        // console.log('page', action.options.page);
-        // console.warn('AddRichieste');
-        // let richieste = makeCopy(getState().richieste);
-        // console.log('richieste length', richieste.length);
-        // richieste.forEach((r: SintesiRichiesta, index: number) => {
-        //     if (index < pageSize) {
-        //         r.id += randomNumber(1, 500000);
-        //         r.codice += randomNumber(1, 500000);
-        //         r.codiceRichiesta += randomNumber(1, 500000);
-        //     }
-        // });
-        // richieste = richieste.filter((r: SintesiRichiesta, index: number) => index < pageSize);
-        // setTimeout(() => {
-        //     dispatch(new AddRichieste(richieste, action.options.position));
-        //     dispatch(new PatchPagination({ page: action.options.page, pageSize: pageSize }));
-        //     dispatch(new StopLoading());
-        // }, 500);
     }
 
     @Action(PatchRichiesta)
@@ -139,44 +116,10 @@ export class RichiesteState {
     }
 
     @Action(AddRichieste)
-    setRichieste({ getState, setState, patchState, dispatch }: StateContext<RichiesteStateModel>, action: AddRichieste) {
-        const currentPage = this.store.selectSnapshot(PaginationState.page);
-        const pageSize = this.store.selectSnapshot(PaginationState.pageSize);
-        let richieste = makeCopy(getState().richieste);
-
-        switch (action.position) {
-            case 'top':
-                if (currentPage === 2) {
-                    richieste = richieste.filter((r: SintesiRichiesta, index: number) => index < pageSize);
-                    patchState({
-                        richieste: richieste
-                    });
-                } else if (currentPage > 2) {
-                    richieste = richieste.filter((r: SintesiRichiesta, index: number) => index < pageSize * 2);
-                    patchState({
-                        richieste: richieste
-                    });
-                }
-                richieste = makeCopy(getState().richieste);
-                richieste.unshift(...action.richieste);
-                patchState({
-                    richieste: richieste
-                });
-                break;
-            case 'bottom':
-                if (currentPage > 2) {
-                    richieste = richieste.filter((r: SintesiRichiesta, index: number) => index >= pageSize);
-                    patchState({
-                        richieste: richieste
-                    });
-                }
-                setState(
-                    patch({
-                        richieste: append(action.richieste)
-                    })
-                );
-                break;
-        }
+    setRichieste({ patchState }: StateContext<RichiesteStateModel>, action: AddRichieste) {
+        patchState({
+            richieste: action.richieste
+        });
     }
 
     @Action(ClearRichieste)
