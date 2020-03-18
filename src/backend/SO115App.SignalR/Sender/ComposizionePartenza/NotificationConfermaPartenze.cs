@@ -74,7 +74,10 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
 
             sintesi.Motivazione = sintesi.Descrizione;
 
-            var boxRichiesteQuery = new BoxRichiesteQuery();
+            var boxRichiesteQuery = new BoxRichiesteQuery()
+            {
+                CodiciSede = new string[] { conferma.ConfermaPartenze.CodiceSede }
+            };
             var boxMezziQuery = new BoxMezziQuery()
             {
                 CodiciSede = new string[] { conferma.ConfermaPartenze.CodiceSede }
@@ -85,7 +88,8 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
                 Filtro = new FiltroRicercaRichiesteAssistenza
                 {
                     idOperatore = conferma.ConfermaPartenze.IdOperatore
-                }
+                },
+                CodiciSede = new string[] { conferma.ConfermaPartenze.CodiceSede }
             };
 
             var sintesiRichiesteAssistenzaMarkerQuery = new SintesiRichiesteAssistenzaMarkerQuery();

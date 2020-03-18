@@ -71,11 +71,15 @@ namespace SO115App.SignalR.Sender.GestionePartenza
                 Filtro = new FiltroRicercaRichiesteAssistenza
                 {
                     idOperatore = intervento.IdUtente
-                }
+                },
+                CodiciSede = new string[] { intervento.CodiceSede }
             };
             var listaSintesi = _sintesiRichiesteAssistenzahandler.Handle(sintesiRichiesteAssistenzaQuery).SintesiRichiesta;
 
-            var boxRichiesteQuery = new BoxRichiesteQuery();
+            var boxRichiesteQuery = new BoxRichiesteQuery()
+            {
+                CodiciSede = new string[] { intervento.CodiceSede }
+            };
             var boxInterventi = _boxRichiesteHandler.Handle(boxRichiesteQuery).BoxRichieste;
 
             var boxMezziQuery = new BoxMezziQuery()

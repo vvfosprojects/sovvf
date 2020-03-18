@@ -63,7 +63,8 @@ namespace SO115App.SignalR.Sender.GestioneIntervento
                 Filtro = new FiltroRicercaRichiesteAssistenza
                 {
                     idOperatore = intervento.IdUtente
-                }
+                },
+                CodiciSede = new string[] {intervento.CodSede}
             };
             var listaSintesi = (List<SintesiRichiesta>)this.sintesiRichiesteAssistenzahandler.Handle(sintesiRichiesteAssistenzaQuery).SintesiRichiesta;
 
