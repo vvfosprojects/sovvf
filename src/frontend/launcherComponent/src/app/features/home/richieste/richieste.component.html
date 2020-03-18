@@ -21,14 +21,12 @@
                      [disabledModificaRichiesta]="permessiFeature.ModificaRichiesta | checkPermission"
                      [disabledGestisciRichiesta]="permessiFeature.GestisciRichiesta | checkPermission"
                      [disabledComposizionePartenza]="permessiFeature.ComposizionePartenzaRichiesta | checkPermission"
-                     [page]="page$ | async" [pageSize]="pageSize$ | async" [loading]="loading$ | async"
-                     (statoPartenza)="toggleComposizione()" (composizionePartenza)="nuovaPartenza($event)"
-                     (fissaInAlto)="onFissaInAlto($event)" (eventiRichiesta)="onVisualizzaEventiRichiesta($event)"
-                     (hoverIn)="onHoverIn($event)" (hoverOut)="onHoverOut()"
-                     (selezione)="onSelezione($event)" (deselezione)="onDeselezione()"
-                     (nuoveRichieste)="onNuoveRichieste($event)" (modificaRichiesta)="onModificaRichiesta($event)"
-                     (gestioneRichiesta)="onGestioneRichiesta($event)"
-                     (actionMezzo)="onActionMezzo($event)"
-                     (actionRichiesta)="onActionRichiesta($event)"
-                     (outEspansoId)="toggleEspanso($event)">
+                     [page]="page$ | async" [pageSize]="pageSize$ | async" [totalItems]="totalItems$ | async"
+                     [loading]="loading$ | async" (statoPartenza)="toggleComposizione()"
+                     (composizionePartenza)="nuovaPartenza($event)" (fissaInAlto)="onFissaInAlto($event)"
+                     (eventiRichiesta)="onVisualizzaEventiRichiesta($event)" (hoverIn)="onHoverIn($event)"
+                     (hoverOut)="onHoverOut()" (selezione)="onSelezione($event)" (deselezione)="onDeselezione()"
+                     (pageChange)="onNuoveRichieste($event)" (modificaRichiesta)="onModificaRichiesta($event)"
+                     (gestioneRichiesta)="onGestioneRichiesta($event)" (actionMezzo)="onActionMezzo($event)"
+                     (actionRichiesta)="onActionRichiesta($event)" (outEspansoId)="toggleEspanso($event)">
 </app-lista-richieste>

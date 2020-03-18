@@ -7,7 +7,7 @@ import { ListaSquadre } from '../../../../../shared/interface/lista-squadre';
 export class GetListaRichieste {
     static readonly type = '[Richieste] Get Lista Richieste API';
 
-    constructor(public options?: { page: number, position: string }) {
+    constructor(public options?: { page: number}) {
     }
 }
 
@@ -21,7 +21,7 @@ export class PatchRichiesta {
 export class AddRichieste {
     static readonly type = '[Richieste] Add Richieste';
 
-    constructor(public richieste: SintesiRichiesta[], public position: string) {
+    constructor(public richieste: SintesiRichiesta[]) {
     }
 }
 

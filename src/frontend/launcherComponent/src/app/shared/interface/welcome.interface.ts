@@ -7,12 +7,13 @@ import { CentroMappa } from '../../features/home/maps/maps-model/centro-mappa.mo
 import { ListaTipologicheMezzi } from '../../features/home/composizione-partenza/interface/filtri/lista-filtri-composizione-interface';
 import { ContatoriSchedeContatto } from './contatori-schede-contatto.interface';
 import { Tipologia } from '../model/tipologia.model';
+import { ResponseInterface } from './response.interface';
 
 export interface Welcome {
     boxListaMezzi: BoxMezzi;
     boxListaPersonale: BoxPersonale;
     boxListaInterventi: BoxInterventi;
-    listaSintesi: SintesiRichiesta[];
+    listaSintesi: ResponseInterface;
     listaChiamateInCorso: ChiamataMarker[];
     centroMappaMarker: CentroMappa;
     listaFiltri: ListaTipologicheMezzi;

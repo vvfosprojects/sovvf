@@ -67,6 +67,7 @@ export class RichiesteComponent implements OnInit, OnDestroy {
 
     @Select(PaginationState.page) page$: Observable<number>;
     @Select(PaginationState.pageSize) pageSize$: Observable<number>;
+    @Select(PaginationState.totalItems) totalItems$: Observable<number>;
 
     loaderRichieste = true;
     listHeightClass = 'm-h-750';
@@ -105,8 +106,8 @@ export class RichiesteComponent implements OnInit, OnDestroy {
     }
 
     // Carica nuove richieste attraverso lo scroll
-    onNuoveRichieste(event: { page: number, position: string }) {
-        this.store.dispatch(new GetListaRichieste({ page: event.page, position: event.position }));
+    onNuoveRichieste(page: number) {
+        this.store.dispatch(new GetListaRichieste({ page: page }));
     }
 
     // Restituisce la Richiesta Fissata

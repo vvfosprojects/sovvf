@@ -20,6 +20,7 @@ import { SetTipologicheMezzi } from '../actions/composizione-partenza/tipologich
 import { SetContatoriSchedeContatto } from '../actions/schede-contatto/schede-contatto.actions';
 import { Tipologia } from '../../../../shared/model/tipologia.model';
 import { GetFiltriRichieste } from '../actions/filterbar/filtri-richieste.actions';
+import { PatchPagination } from '../../../../shared/store/actions/pagination/pagination.actions';
 
 export interface HomeStateModel {
     loaded: boolean;
@@ -80,7 +81,8 @@ export class HomeState {
         this.homeService.getHome().subscribe((data: Welcome) => {
             console.log('Welcome', data);
             dispatch([
-                new AddRichieste(data.listaSintesi, 'bottom'),
+                new AddRichieste(data.listaSintesi.sintesiRichiesta),
+                new PatchPagination(data.listaSintesi.pagination),
                 new SetBoxRichieste(data.boxListaInterventi),
                 new SetBoxMezzi(data.boxListaMezzi),
                 new SetBoxPersonale(data.boxListaPersonale),

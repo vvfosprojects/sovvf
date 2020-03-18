@@ -30,6 +30,7 @@ export class ListaRichiesteComponent implements OnInit {
     // Paginazione
     @Input() page: number;
     @Input() pageSize: number;
+    @Input() totalItems: number;
 
     // Permessi
     @Input() disabledModificaRichiesta = false;
@@ -38,7 +39,7 @@ export class ListaRichiesteComponent implements OnInit {
 
     @Output() statoPartenza = new EventEmitter<boolean>();
     @Output() composizionePartenza = new EventEmitter<SintesiRichiesta>();
-    @Output() nuoveRichieste = new EventEmitter<{ page: number, position: string }>();
+    @Output() pageChange = new EventEmitter<number>();
     @Output() fissaInAlto = new EventEmitter<string>();
     @Output() hoverIn = new EventEmitter<string>();
     @Output() hoverOut = new EventEmitter<boolean>();
@@ -61,51 +62,51 @@ export class ListaRichiesteComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.scrollDispatcher.scrolled().pipe().subscribe(event => {
-                this.scrolling = true;
-                if (!this.loading) {
-                    if (Math.floor(this.virtualScroll.measureScrollOffset('bottom')) <= 0) {
-                        this.onNuoveRichieste('bottom');
-                    }
-                    if (this.virtualScroll.measureScrollOffset('top') === 0) {
-                        if (this.page > 1) {
-                            this.onNuoveRichieste('top');
-                            this.virtualScroll.scrollToIndex(this.pageSize, 'auto');
-                        }
-                    }
-                }
-            }
-        );
+        // this.scrollDispatcher.scrolled().pipe().subscribe(event => {
+        //         this.scrolling = true;
+        //         if (!this.loading) {
+        //             if (Math.floor(this.virtualScroll.measureScrollOffset('bottom')) <= 0) {
+        //                 this.onNuoveRichieste('bottom');
+        //             }
+        //             if (this.virtualScroll.measureScrollOffset('top') === 0) {
+        //                 if (this.page > 1) {
+        //                     this.onNuoveRichieste('top');
+        //                     this.virtualScroll.scrollToIndex(this.pageSize, 'auto');
+        //                 }
+        //             }
+        //         }
+        //     }
+        // );
     }
 
-    onPageOne() {
-        this.onNuoveRichieste('top', 1);
-        if (!this.loading) {
-            this.virtualScroll.scrollToIndex(0, 'smooth');
-        }
-    }
-
-    onTop() {
-        if (!this.loading) {
-            this.virtualScroll.scrollToIndex(0, 'smooth');
-        }
-    }
-
-    onBottom() {
-        if (!this.loading) {
-            this.virtualScroll.scrollToIndex(this.richieste.length, 'smooth');
-        }
-    }
+    // onPageOne() {
+    //     this.onNuoveRichieste('top', 1);
+    //     if (!this.loading) {
+    //         this.virtualScroll.scrollToIndex(0, 'smooth');
+    //     }
+    // }
+    //
+    // onTop() {
+    //     if (!this.loading) {
+    //         this.virtualScroll.scrollToIndex(0, 'smooth');
+    //     }
+    // }
+    //
+    // onBottom() {
+    //     if (!this.loading) {
+    //         this.virtualScroll.scrollToIndex(this.richieste.length, 'smooth');
+    //     }
+    // }
 
 
     /* Permette di caricare nuove richieste */
-    onNuoveRichieste(position: string, page?: number) {
-        if (!page) {
-            this.nuoveRichieste.emit({ page: position === 'bottom' ? this.page + 1 : this.page - 1, position: position });
-        } else {
-            this.nuoveRichieste.emit({ page: page, position: position });
-        }
-    }
+    // onNuoveRichieste(position: string, page?: number) {
+    //     if (!page) {
+    //         this.nuoveRichieste.emit({ page: position === 'bottom' ? this.page + 1 : this.page - 1, position: position });
+    //     } else {
+    //         this.nuoveRichieste.emit({ page: page, position: position });
+    //     }
+    // }
 
     /* Gestisce il singolo click sulla richiesta */
     richiestaClick(richiesta: SintesiRichiesta) {
