@@ -50,7 +50,9 @@ namespace SO115App.Persistence.MongoDB
         private readonly IGetDistaccamentoByCodiceSedeUC _getDistaccamentoUC;
         private readonly IGetCoordinateDistaccamento _getCooDistaccamento; //TODO chiedere ad Igor di implementare le coordinate
 
-        public GetRichiesta(DbContext dbContext, IMapper mapper, IGetTipologieByCodice getTipologiaByCodice, IGetListaDistaccamentiByCodiceSede getAnagraficaDistaccamento, MapperRichiestaAssistenzaSuSintesi mapperSintesi, IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative, IGetCoordinateDistaccamento getCooDistaccamento, IGetDistaccamentoByCodiceSedeUC getDistaccamentoUC)
+        public GetRichiesta(DbContext dbContext, IMapper mapper, IGetTipologieByCodice getTipologiaByCodice, IGetListaDistaccamentiByCodiceSede getAnagraficaDistaccamento, 
+            MapperRichiestaAssistenzaSuSintesi mapperSintesi, IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative, 
+            IGetCoordinateDistaccamento getCooDistaccamento, IGetDistaccamentoByCodiceSedeUC getDistaccamentoUC)
         {
             _dbContext = dbContext;
             _mapper = mapper;

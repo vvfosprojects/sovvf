@@ -3,8 +3,6 @@ using SO115App.API.Models.Classi.Condivise;
 using SO115App.ExternalAPI.Fake.Classi.DTOOracle;
 using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
-using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Mezzi;
-using SO115App.ExternalAPI.Fake.ImportOracle.DistaccamentiMapper;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -14,6 +12,7 @@ using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using Newtonsoft.Json;
 using SO115App.ExternalAPI.Fake.Classi.Gac;
 using SO115App.Models.Classi.Utility;
+using SO115App.Models.Servizi.Infrastruttura.GeoFleet;
 
 namespace SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper
 {
@@ -23,19 +22,18 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper
         private readonly HttpClient _client;
         private readonly IConfiguration _configuration;
         private readonly IGetDistaccamentoByCodiceSedeUC _getDistaccamentoByCodiceSedeUC;
-        private readonly IGetListaDistaccamentiByCodiceSede _getListaDistaccamentiByCodiceSede;
         private readonly IGetStatoMezzi _getStatoMezzi;
+        private readonly IGetPosizioneByCodiceMezzo _getPosizioneByCodiceMezzo;
 
         public GetMezziUtilizzabili(HttpClient client, IConfiguration configuration,
              IGetDistaccamentoByCodiceSedeUC GetDistaccamentoByCodiceSedeUC,
-            IGetListaDistaccamentiByCodiceSede GetListaDistaccamentiByCodiceSede,
-            IGetStatoMezzi GetStatoMezzi)
+            IGetStatoMezzi GetStatoMezzi, IGetPosizioneByCodiceMezzo getPosizioneByCodiceMezzo)
         {
             _client = client;
             _configuration = configuration;
             _getDistaccamentoByCodiceSedeUC = GetDistaccamentoByCodiceSedeUC;
-            _getListaDistaccamentiByCodiceSede = GetListaDistaccamentiByCodiceSede;
             _getStatoMezzi = GetStatoMezzi;
+            _getPosizioneByCodiceMezzo = getPosizioneByCodiceMezzo;
         }
 
         public async Task<List<Mezzo>> Get(List<string> sedi, string genereMezzo = null, string codiceMezzo = null)
@@ -78,13 +76,21 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper
             foreach (ORAAutomezzi OraM in ListaMezziOracle)
             {
                 var anagraficaMezzo = GetAnagraficaMezzo(OraM.TARGA).Result;
-                List<Distaccamento> distaccamenti = _getListaDistaccamentiByCodiceSede.GetListaDistaccamenti(OraM.COD_COMANDO);
-                var distaccamentoPerCoordinate = distaccamenti.Find(x => x.CodDistaccamento.Equals(OraM.COD_DISTACCAMENTO));
 
                 var distaccamento = new Distaccamento();
+                var coordinate = new Coordinate(0, 0);
                 distaccamento = _getDistaccamentoByCodiceSedeUC.Get(OraM.COD_COMANDO + "." + OraM.COD_DISTACCAMENTO).Result;
 
-                var sede = new Sede(OraM.COD_COMANDO + "." + OraM.COD_DISTACCAMENTO, distaccamento.DescDistaccamento, distaccamento.Indirizzo, distaccamentoPerCoordinate.Coordinate, "", "", "", "", "");
+                var sede = new Sede(OraM.COD_COMANDO + "." + OraM.COD_DISTACCAMENTO, distaccamento.DescDistaccamento, distaccamento.Indirizzo, distaccamento.Coordinate, "", "", "", "", "");
+                var coordinateMezzo = _getPosizioneByCodiceMezzo.Get(anagraficaMezzo.GenereMezzo.CodiceTipo + "." + anagraficaMezzo.Targa).Result;
+                if (coordinateMezzo != null)
+                {
+                    coordinate = new Coordinate(coordinateMezzo.Localizzazione.Lat, coordinateMezzo.Localizzazione.Lon);
+                }
+                else
+                {
+                    coordinate = new Coordinate(sede.Coordinate.Latitudine, sede.Coordinate.Longitudine);
+                }
 
                 Mezzo mezzo = new Mezzo(anagraficaMezzo.GenereMezzo.CodiceTipo + "." + anagraficaMezzo.Targa,
                     anagraficaMezzo.Targa,
@@ -92,7 +98,7 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper
                     GetStatoOperativoMezzo(anagraficaMezzo.Sede.Id, anagraficaMezzo.GenereMezzo.CodiceTipo + "." + anagraficaMezzo.Targa, OraM.STATO),
                     OraM.COD_DESTINAZIONE,
                     sede,
-                    new Coordinate(1, 1))
+                    coordinate)
                 {
                     DescrizioneAppartenenza = OraM.COD_DESTINAZIONE,
                 };

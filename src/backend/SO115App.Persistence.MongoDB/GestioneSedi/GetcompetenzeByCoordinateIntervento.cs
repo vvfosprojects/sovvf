@@ -28,6 +28,8 @@ namespace SO115App.Persistence.MongoDB.GestioneSedi
 
             List<ListaSedi> CompetenzeVicine = _dbContext.SediCollection.Find(filter).ToList();
 
+            CompetenzeVicine = CompetenzeVicine.FindAll(x => !x.sede.Contains("Direzione"));
+
             CompetenzeRichiesta competenze = new CompetenzeRichiesta()
             {
                 CodDistaccamento = CompetenzeVicine[0].codFiglio_TC,

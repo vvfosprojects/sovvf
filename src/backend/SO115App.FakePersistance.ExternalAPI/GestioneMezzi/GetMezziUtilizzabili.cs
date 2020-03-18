@@ -14,6 +14,7 @@ using System.IO;
 using SO115App.ExternalAPI.Fake.Classi.DTOFake;
 using SO115App.ExternalAPI.Fake.Classi.Gac;
 using SO115App.Models.Classi.Utility;
+using SO115App.Models.Servizi.Infrastruttura.GeoFleet;
 
 namespace SO115App.ExternalAPI.Fake.GestioneMezzi
 {
@@ -24,14 +25,16 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
         private readonly IConfiguration _configuration;
         private readonly IGetStatoMezzi _getStatoMezzi;
         private readonly IGetDistaccamentoByCodiceSedeUC _getDistaccamentoByCodiceSedeUC;
+        private readonly IGetPosizioneByCodiceMezzo _getPosizioneByCodiceMezzo;
 
         public GetMezziUtilizzabili(HttpClient client, IConfiguration configuration, IGetStatoMezzi GetStatoMezzi,
-            IGetDistaccamentoByCodiceSedeUC GetDistaccamentoByCodiceSedeUC)
+            IGetDistaccamentoByCodiceSedeUC GetDistaccamentoByCodiceSedeUC, IGetPosizioneByCodiceMezzo getPosizioneByCodiceMezzo)
         {
             _client = client;
             _configuration = configuration;
             _getStatoMezzi = GetStatoMezzi;
             _getDistaccamentoByCodiceSedeUC = GetDistaccamentoByCodiceSedeUC;
+            _getPosizioneByCodiceMezzo = getPosizioneByCodiceMezzo;
         }
 
         public async Task<List<Mezzo>> Get(List<string> sedi, string genereMezzo = null, string codiceMezzo = null)
@@ -74,14 +77,26 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
         private Mezzo MapMezzo(AnagraficaMezzo anagraficaMezzo, MezzoFake mezzoFake)
         {
             var distaccamento = new Distaccamento();
+            var coordinate = new Coordinate(0, 0);
+
             distaccamento = _getDistaccamentoByCodiceSedeUC.Get(mezzoFake.Sede).Result;
             var sede = new Sede(mezzoFake.Sede, distaccamento.DescDistaccamento, distaccamento.Indirizzo, distaccamento.Coordinate, "", "", "", "", "");
+
+            var coordinateMezzo = _getPosizioneByCodiceMezzo.Get(anagraficaMezzo.GenereMezzo.CodiceTipo + "." + anagraficaMezzo.Targa).Result;
+            if (coordinateMezzo != null)
+            {
+                coordinate = new Coordinate(coordinateMezzo.Localizzazione.Lat, coordinateMezzo.Localizzazione.Lon);
+            }
+            else
+            {
+                coordinate = new Coordinate(sede.Coordinate.Latitudine, sede.Coordinate.Longitudine);
+            }
 
             Mezzo mezzo = new Mezzo(anagraficaMezzo.GenereMezzo.CodiceTipo + "." + anagraficaMezzo.Targa,
                 anagraficaMezzo.Targa,
                 anagraficaMezzo.GenereMezzo.Codice,
                 GetStatoOperativoMezzo(anagraficaMezzo.Sede.Id, anagraficaMezzo.GenereMezzo.CodiceTipo + "." + anagraficaMezzo.Targa, mezzoFake.Stato),
-               mezzoFake.CodDestinazione, sede, new Coordinate(1, 1))
+               mezzoFake.CodDestinazione, sede, coordinate)
             {
                 DescrizioneAppartenenza = mezzoFake.DescDestinazione,
             };

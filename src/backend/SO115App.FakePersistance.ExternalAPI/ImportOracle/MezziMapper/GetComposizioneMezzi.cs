@@ -142,7 +142,15 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper
             foreach (var composizione in composizioneMezzi)
             {
                 if (mezziPrenotati.Find(x => x.CodiceMezzo.Equals(composizione.Mezzo.Codice)) != null)
+                {
                     composizione.IstanteScadenzaSelezione = mezziPrenotati.Find(x => x.CodiceMezzo.Equals(composizione.Mezzo.Codice)).IstanteScadenzaSelezione;
+
+                    if(composizione.Mezzo.Stato.Equals("In Sede"))
+                    {
+                        composizione.Mezzo.Stato = mezziPrenotati.Find(x => x.CodiceMezzo.Equals(composizione.Mezzo.Codice)).StatoOperativo;
+                    }
+
+                }
             }
             return composizioneMezzi;
         }
