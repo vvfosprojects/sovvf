@@ -84,10 +84,17 @@ namespace SO115App.SignalR.Sender.GestioneIntervento
             };
             var boxMezzi = _boxMezziHandler.Handle(boxMezziQuery).BoxMezzi;
 
-            var boxPersonaleQuery = new BoxPersonaleQuery();
+            var boxPersonaleQuery = new BoxPersonaleQuery()
+            {
+                CodiciSede = new string[] { richiesta.CodiceSede }
+            };
             var boxPersonale = _boxPersonaleHandler.Handle(boxPersonaleQuery).BoxPersonale;
 
-            var sintesiRichiesteAssistenzaMarkerQuery = new SintesiRichiesteAssistenzaMarkerQuery();
+            var sintesiRichiesteAssistenzaMarkerQuery = new SintesiRichiesteAssistenzaMarkerQuery()
+            {
+                CodiciSedi = new string[] { richiesta.CodiceSede }
+            };
+
             var listaSintesiMarker = (List<SintesiRichiestaMarker>)_sintesiRichiesteAssistenzaMarkerHandler.Handle(sintesiRichiesteAssistenzaMarkerQuery).SintesiRichiestaMarker;
 
             richiesta.Chiamata = listaSintesi.LastOrDefault(sintesi => sintesi.Id == richiesta.IdRichiesta);

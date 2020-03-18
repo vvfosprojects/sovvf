@@ -88,7 +88,10 @@ namespace SO115App.SignalR.Sender.GestionePartenza
             };
             var boxMezzi = _boxMezziHandler.Handle(boxMezziQuery).BoxMezzi;
 
-            var boxPersonaleQuery = new BoxPersonaleQuery();
+            var boxPersonaleQuery = new BoxPersonaleQuery()
+            {
+                CodiciSede = new string[] { intervento.CodiceSede }
+            };
             var boxPersonale = _boxPersonaleHandler.Handle(boxPersonaleQuery).BoxPersonale;
 
             var listaMezziInServizioQuery = new ListaMezziInServizioQuery
@@ -97,7 +100,11 @@ namespace SO115App.SignalR.Sender.GestionePartenza
             };
             var listaMezziInServizio = _listaMezziInServizioHandler.Handle(listaMezziInServizioQuery).ListaMezzi;
 
-            var sintesiRichiesteAssistenzaMarkerQuery = new SintesiRichiesteAssistenzaMarkerQuery();
+            var sintesiRichiesteAssistenzaMarkerQuery = new SintesiRichiesteAssistenzaMarkerQuery()
+            {
+                CodiciSedi = new string[] { intervento.CodiceSede }
+            };
+
             var listaSintesiMarker = _sintesiRichiesteAssistenzaMarkerhandler.Handle(sintesiRichiesteAssistenzaMarkerQuery).SintesiRichiestaMarker;
 
             intervento.Chiamata = listaSintesi.LastOrDefault(richiesta => richiesta.Id == intervento.Chiamata.Id);

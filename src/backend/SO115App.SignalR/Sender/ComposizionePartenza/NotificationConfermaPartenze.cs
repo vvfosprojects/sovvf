@@ -82,7 +82,10 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
             {
                 CodiciSede = new string[] { conferma.ConfermaPartenze.CodiceSede }
             };
-            var boxPersonaleQuery = new BoxPersonaleQuery();
+            var boxPersonaleQuery = new BoxPersonaleQuery()
+            {
+                CodiciSede = new string[] { conferma.ConfermaPartenze.CodiceSede }
+            };
             var sintesiRichiesteAssistenzaQuery = new SintesiRichiesteAssistenzaQuery
             {
                 Filtro = new FiltroRicercaRichiesteAssistenza
@@ -92,7 +95,11 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
                 CodiciSede = new string[] { conferma.ConfermaPartenze.CodiceSede }
             };
 
-            var sintesiRichiesteAssistenzaMarkerQuery = new SintesiRichiesteAssistenzaMarkerQuery();
+            var sintesiRichiesteAssistenzaMarkerQuery = new SintesiRichiesteAssistenzaMarkerQuery()
+            {
+                CodiciSedi = new string[] { conferma.ConfermaPartenze.CodiceSede }
+            };
+
             var boxInterventi = _boxRichiestehandler.Handle(boxRichiesteQuery).BoxRichieste;
             var boxMezzi = _boxMezzihandler.Handle(boxMezziQuery).BoxMezzi;
             var boxPersonale = _boxPersonalehandler.Handle(boxPersonaleQuery).BoxPersonale;
