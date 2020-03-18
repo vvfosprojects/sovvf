@@ -20,33 +20,46 @@
 
 using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Boxes;
-using SO115App.API.Models.Classi.Composizione;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.Models.Servizi.Infrastruttura.Box;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using SO115App.FakePersistence.JSon.Utility;
+using SO115App.Models.Servizi.Infrastruttura.GetComposizioneSquadre;
+using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneSquadre;
+using SO115App.API.Models.Classi.Composizione;
 
-namespace SO115App.FakePersistenceJSon.Box
+namespace SO115App.ExternalAPI.Fake.Box
 {
-    public class GetPersonale : IGetBoxPersonale
+    public class GetBoxPersonale : IGetBoxPersonale
     {
+        private readonly IGetComposizioneSquadre _getComposizioneSquadre;
+
+        public GetBoxPersonale(IGetComposizioneSquadre GetComposizioneSquadre)
+        {
+            _getComposizioneSquadre = GetComposizioneSquadre;
+        }
+
         private readonly string _filepath = CostantiJson.SquadreComposizione;
 
-        public BoxPersonale Get(string[] codiceSede)
+        public BoxPersonale Get(string[] codiciSede)
         {
             var personale = new BoxPersonale();
             var numeroComponenti = 0;
             var listaFunzionari = new List<Componente>();
 
-            string json;
-            using (var r = new StreamReader(_filepath))
+
+            var listaSquadreComposizione = new List<ComposizioneSquadre>();
+
+            foreach(var Codsede in codiciSede)
             {
-                json = r.ReadToEnd();
+                ComposizioneSquadreQuery query = new ComposizioneSquadreQuery();
+                query.CodiceSede = Codsede;
+
+                listaSquadreComposizione.AddRange(_getComposizioneSquadre.Get(query));
+
             }
 
-            var listaSquadreComposizione = JsonConvert.DeserializeObject<List<ComposizioneSquadre>>(json);
             personale.SquadreAssegnate =
                 listaSquadreComposizione.Count(x => x.Squadra.Stato == Squadra.StatoSquadra.InViaggio) +
                 listaSquadreComposizione.Count(x => x.Squadra.Stato == Squadra.StatoSquadra.SulPosto) +

@@ -36,7 +36,7 @@ namespace SO115App.FakePersistenceJSon.Box
     /// </summary>
     public class GetBoxMezzi : IGetBoxMezzi
     {
-        public BoxMezzi Get(string codiceSede)
+        public BoxMezzi Get(string[] codiceSede)
         {
             var mezzi = new BoxMezzi();
 

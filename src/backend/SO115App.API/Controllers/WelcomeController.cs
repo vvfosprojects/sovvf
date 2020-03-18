@@ -44,7 +44,7 @@ namespace SO115App.API.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var codiceSede = Request.Headers["codicesede"];
+            var codiceSede = Request.Headers["codicesede"].ToString().Split(',');
             var idUtente = Request.Headers["IdUtente"];
 
             try

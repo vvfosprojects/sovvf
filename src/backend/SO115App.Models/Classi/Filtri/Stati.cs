@@ -18,11 +18,16 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
+using MongoDB.Bson.Serialization.Attributes;
+
 namespace SO115App.API.Models.Classi.Filtri
 {
     public class Stati
     {
-        public string Id { get; set; }
+        [BsonElement("id")]
+        public string codice { get; set; }
+
+        [BsonElement("descrizione")]
         public string Descrizione { get; set; }
     }
 }

@@ -44,7 +44,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.Marker.CentroMappaMarker
         /// <returns>Il DTO di uscita della query</returns>
         public CentroMappaMarkerResult Handle(CentroMappaMarkerQuery query)
         {
-            CentroMappa centroMappaMarker = _iGetCentroMappaMarker.GetCentroMappaMarker(query.CodiceSede);
+            CentroMappa centroMappaMarker = _iGetCentroMappaMarker.GetCentroMappaMarker(query.CodiceSede[0]);
 
             return new CentroMappaMarkerResult()
             {

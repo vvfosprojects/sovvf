@@ -91,7 +91,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichi
         {
             var listaSediUtenteAbilitate = _getUtenteById.GetUtenteByCodice(query.Filtro.idOperatore).ListaUnitaOperativeAbilitate.ToHashSet();
             var pinNodi = new List<PinNodo>();
-            foreach (var sede in listaSediUtenteAbilitate)
+            foreach (var sede in query.CodiciSede)
             {
                 pinNodi.Add(new PinNodo(sede, true));
             }

@@ -335,7 +335,7 @@ export class SignalRService {
                 .then((data: any) => {
                     this.store.dispatch(new SetTimeSync(data));
                 })
-                .catch(() => console.log('GetTime Error'));
+                .catch(() => console.error('GetTime Error'));
         }
     }
 
@@ -353,6 +353,7 @@ export class SignalRService {
 
     removeToGroup(notification: SignalRNotification) {
         if (!SIGNALR_BYPASS) {
+            console.log('removeToGroup', notification);
             this.hubNotification.invoke('RemoveToGroup', notification).then(
                 () => this.store.dispatch(new ShowToastr(ToastrType.Info, 'Disconnessione al gruppo effettuata con successo', null, 3))
             ).catch(

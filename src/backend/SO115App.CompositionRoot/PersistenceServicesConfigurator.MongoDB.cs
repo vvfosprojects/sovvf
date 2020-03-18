@@ -50,6 +50,14 @@ namespace SO115App.CompositionRoot
                 SO115App.Models.Servizi.Infrastruttura.Marker.IGetRichiesteMarker,
                 GetRichiesteMarker>();
 
+            container.Register<
+                SO115App.Models.Servizi.Infrastruttura.Marker.IGetCentroMappaMarker,
+                SO115App.Persistence.MongoDB.Marker.GetCentroMappa>();
+
+            container.Register<
+                SO115App.Models.Servizi.Infrastruttura.Marker.IGetSediMarker,
+                SO115App.Persistence.MongoDB.Marker.GetSediMarker>();
+
             #endregion MARKER
 
             #region Gestione Sedi
@@ -61,7 +69,6 @@ namespace SO115App.CompositionRoot
                                Persistence.MongoDB.GestioneSedi.GetcompetenzeByCoordinateIntervento>();
 
             #endregion
-
 
             #region GestioneChiamataInCorso
 
@@ -106,18 +113,6 @@ namespace SO115App.CompositionRoot
             #endregion Schede Contatto
 
             #region DA TRASFORMARE SU MONGO
-
-            container.Register<
-                SO115App.Models.Servizi.Infrastruttura.GetFiltri.IGetFiltri,
-                FakePersistenceJSon.Filtri.GetFiltri>();
-
-            container.Register<
-                SO115App.Models.Servizi.Infrastruttura.Marker.IGetSediMarker,
-                FakePersistenceJSon.Marker.GetSediMarker>();
-            container.Register<
-                SO115App.Models.Servizi.Infrastruttura.Marker.IGetCentroMappaMarker,
-                FakePersistenceJSon.Marker.GetCentroMappa>();
-
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.NavBar.IGetNavbar,
                 SO115App.FakePersistenceJSon.Navbar.GetNavbar>();
@@ -125,23 +120,14 @@ namespace SO115App.CompositionRoot
             container.Register<
                SO115App.Models.Servizi.Infrastruttura.GetComposizioneSquadre.IGetComposizioneSquadre,
                SO115App.ExternalAPI.Fake.ImportOracle.SquadreMapper.GetComposizioneSquadre>();
-            //container.Register<
-            //    SO115App.Models.Servizi.Infrastruttura.GetComposizioneSquadre.IGetComposizioneSquadre,
-            //    FakePersistenceJSon.Composizione.GetComposizioneSquadre>();
-            //   container.Register<
-            //  SO115App.Models.Servizi.Infrastruttura.GetPreAccoppiati.IGetPreAccoppiati,
-            //SO115App.ExternalAPI.Fake.ImportOracle.GesPreaccoppiatiMapper.GetPreAccoppiati>();
-            //container.Register<
-            //    SO115App.Models.Servizi.Infrastruttura.GetPreAccoppiati.IGetPreAccoppiati,
-            //    FakePersistenceJSon.Composizione.GetPreAccoppiati>();
 
             container.Register<
                 SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.IGetIdByCodice,
                 FakePersistenceJSon.GestioneIntervento.GetIdByCodice>();
 
             container.Register<
-            SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi.IGetMezzoByCodice,
-         SO115App.FakePersistence.JSon.GestioneMezzi.GetMezzoById>();
+                SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi.IGetMezzoByCodice,
+                SO115App.FakePersistence.JSon.GestioneMezzi.GetMezzoById>();
 
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GenerazioneCodiciRichiesta.IGeneraCodiceRichiesta,
@@ -159,55 +145,10 @@ namespace SO115App.CompositionRoot
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.InfoRichiesta.IGetInfoRichiesta,
                 FakePersistence.JSon.Utility.GetInfoRichiesta>();
-            //container.Register<
-            //    Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi.ISetStatoOperativoMezzo,
-            //    FakePersistence.JSon.GestioneMezzi.SetStatoOperativoMezzo>();
 
-            container.Register<
-            SO115App.Models.Servizi.Infrastruttura.Notification.GestioneChiamata.INotifyInserimentoChiamata,
-            SO115App.SignalR.Sender.GestioneChiamata.NotificationInserimentoChiamata>();
-            container.Register<
-            SO115App.Models.Servizi.Infrastruttura.Notification.GestioneChiamata.INotifyUpDateChiamata,
-            SO115App.SignalR.Sender.GestioneChiamata.NotificationUpDateChiamata>();
-            container.Register<
-            SO115App.Models.Servizi.Infrastruttura.Notification.GestioneChiamateInCorso.INotificationAddChiamataInCorso,
-            SO115App.SignalR.Sender.GestioneChiamateInCorso.NotificationAddChiamataInCorso>();
-            container.Register<
-            SO115App.Models.Servizi.Infrastruttura.Notification.GestioneChiamateInCorso.INotificationDeleteChiamataInCorso,
-            SO115App.SignalR.Sender.GestioneChiamateInCorso.NotificationDeleteChiamataInCorso>();
-            container.Register<
-            SO115App.Models.Servizi.Infrastruttura.Notification.GestioneChiamateInCorso.INotificationUpDateChiamataInCorso,
-            SO115App.SignalR.Sender.GestioneChiamateInCorso.NotificationUpDateChiamataInCorso>();
-            container.Register<
-            SO115App.Models.Servizi.Infrastruttura.Notification.ComposizionePartenza.MezzoPrenotato.INotificationAddPrenotazioneMezzo,
-            SignalR.Sender.ComposizionePartenza.GestioneMezzoPrenotato.NotificationAddPrenotazioneMezzo>();
-            container.Register<
-            SO115App.Models.Servizi.Infrastruttura.Notification.ComposizionePartenza.INotificationConfermaPartenze,
-            SO115App.SignalR.Sender.ComposizionePartenza.NotificationConfermaPartenze>();
-            container.Register<
-           SO115App.Models.Servizi.Infrastruttura.Notification.GestioneIntervento.INotifyMessaInLavorazioneRichiesta,
-           SO115App.SignalR.Sender.GestioneIntervento.NotificationInserInLavorazione>();
-            container.Register<
-           SO115App.Models.Servizi.Infrastruttura.Notification.GestioneIntervento.INotifyDeleteInLavorazioneRichiesta,
-           SO115App.SignalR.Sender.GestioneIntervento.NotificationDeleteInLavorazione>();
-            container.Register<
-           SO115App.Models.Servizi.Infrastruttura.Notification.GestioneIntervento.INotifyDeletePresaInCaricoRichiesta,
-           SO115App.SignalR.Sender.GestioneIntervento.NotificationDeletePresaInCarico>();
-            container.Register<
-           SO115App.Models.Servizi.Infrastruttura.Notification.GestioneIntervento.INotifyPresaInCaricoRichiesta,
-           SO115App.SignalR.Sender.GestioneIntervento.NotificationPresaInCarico>();
-            container.Register<
-           SO115App.Models.Servizi.Infrastruttura.Notification.GestionePartenza.INotifyAggiornaStatoMezzo,
-           SO115App.SignalR.Sender.GestionePartenza.NotificationAggiornaStatoMezzo>();
-            container.Register<
-            SO115App.Models.Servizi.Infrastruttura.Notification.GestioneIntervento.INotifyUpDateStatoRichiesta,
-            SO115App.SignalR.Sender.GestioneIntervento.NotificationUpDateStato>();
-            container.Register<SO115App.Models.Servizi.Infrastruttura.Notification.GestioneSchedeContatto.INotificationSetSchedaGestita,
-                SO115App.SignalR.Sender.GestioneSchedeContatto.NotificationSetSchedaGestita>();
-            container.Register<Models.Servizi.Infrastruttura.Notification.GestioneUtenti.INotifyAddUtente, SignalR.Sender.GestioneUtenti.NotificationAddUtente>();
-            container.Register<Models.Servizi.Infrastruttura.Notification.GestioneUtenti.INotifyDeleteUtente, SignalR.Sender.GestioneUtenti.NotificationDeleteUtente>();
-            container.Register<Models.Servizi.Infrastruttura.Notification.GestioneUtenti.GestioneRuoli.INotifyAddRuoli, SignalR.Sender.GestioneRuoli.NotificationAddRuoli>();
-            container.Register<Models.Servizi.Infrastruttura.Notification.GestioneUtenti.GestioneRuoli.INotifyDeleteRuolo, SignalR.Sender.GestioneRuoli.NotificationDeleteRuolo>();
+
+
+
 
             container.Register<
                 API.Models.Servizi.Infrastruttura.Organigramma.IGetUnitaOperativaPerCodice,
@@ -257,6 +198,57 @@ namespace SO115App.CompositionRoot
 
             #endregion DA TRASFORMARE SU MONGO
 
+            #region Notifiche
+
+            container.Register<
+                SO115App.Models.Servizi.Infrastruttura.Notification.GestioneChiamata.INotifyInserimentoChiamata,
+                SO115App.SignalR.Sender.GestioneChiamata.NotificationInserimentoChiamata>();
+            container.Register<
+                SO115App.Models.Servizi.Infrastruttura.Notification.GestioneChiamata.INotifyUpDateChiamata,
+                SO115App.SignalR.Sender.GestioneChiamata.NotificationUpDateChiamata>();
+            container.Register<
+                SO115App.Models.Servizi.Infrastruttura.Notification.GestioneChiamateInCorso.INotificationAddChiamataInCorso,
+                SO115App.SignalR.Sender.GestioneChiamateInCorso.NotificationAddChiamataInCorso>();
+            container.Register<
+                SO115App.Models.Servizi.Infrastruttura.Notification.GestioneChiamateInCorso.INotificationDeleteChiamataInCorso,
+                SO115App.SignalR.Sender.GestioneChiamateInCorso.NotificationDeleteChiamataInCorso>();
+            container.Register<
+                SO115App.Models.Servizi.Infrastruttura.Notification.GestioneChiamateInCorso.INotificationUpDateChiamataInCorso,
+                SO115App.SignalR.Sender.GestioneChiamateInCorso.NotificationUpDateChiamataInCorso>();
+            container.Register<
+                SO115App.Models.Servizi.Infrastruttura.Notification.ComposizionePartenza.MezzoPrenotato.INotificationAddPrenotazioneMezzo,
+                SignalR.Sender.ComposizionePartenza.GestioneMezzoPrenotato.NotificationAddPrenotazioneMezzo>();
+            container.Register<
+                SO115App.Models.Servizi.Infrastruttura.Notification.ComposizionePartenza.INotificationConfermaPartenze,
+                SO115App.SignalR.Sender.ComposizionePartenza.NotificationConfermaPartenze>();
+            container.Register<
+                SO115App.Models.Servizi.Infrastruttura.Notification.GestioneIntervento.INotifyMessaInLavorazioneRichiesta,
+                SO115App.SignalR.Sender.GestioneIntervento.NotificationInserInLavorazione>();
+            container.Register<
+                SO115App.Models.Servizi.Infrastruttura.Notification.GestioneIntervento.INotifyDeleteInLavorazioneRichiesta,
+                SO115App.SignalR.Sender.GestioneIntervento.NotificationDeleteInLavorazione>();
+            container.Register<
+                SO115App.Models.Servizi.Infrastruttura.Notification.GestioneIntervento.INotifyDeletePresaInCaricoRichiesta,
+                SO115App.SignalR.Sender.GestioneIntervento.NotificationDeletePresaInCarico>();
+            container.Register<
+                SO115App.Models.Servizi.Infrastruttura.Notification.GestioneIntervento.INotifyPresaInCaricoRichiesta,
+                SO115App.SignalR.Sender.GestioneIntervento.NotificationPresaInCarico>();
+            container.Register<
+                SO115App.Models.Servizi.Infrastruttura.Notification.GestionePartenza.INotifyAggiornaStatoMezzo,
+                SO115App.SignalR.Sender.GestionePartenza.NotificationAggiornaStatoMezzo>();
+            container.Register<
+                SO115App.Models.Servizi.Infrastruttura.Notification.GestioneIntervento.INotifyUpDateStatoRichiesta,
+                SO115App.SignalR.Sender.GestioneIntervento.NotificationUpDateStato>();
+            container.Register<SO115App.Models.Servizi.Infrastruttura.Notification.GestioneSchedeContatto.INotificationSetSchedaGestita,
+                SO115App.SignalR.Sender.GestioneSchedeContatto.NotificationSetSchedaGestita>();
+            container.Register<Models.Servizi.Infrastruttura.Notification.GestioneUtenti.INotifyAddUtente, SignalR.Sender.GestioneUtenti.NotificationAddUtente>();
+            container.Register<Models.Servizi.Infrastruttura.Notification.GestioneUtenti.INotifyDeleteUtente, SignalR.Sender.GestioneUtenti.NotificationDeleteUtente>();
+            container.Register<Models.Servizi.Infrastruttura.Notification.GestioneUtenti.GestioneRuoli.INotifyAddRuoli, SignalR.Sender.GestioneRuoli.NotificationAddRuoli>();
+            container.Register<Models.Servizi.Infrastruttura.Notification.GestioneUtenti.GestioneRuoli.INotifyDeleteRuolo, SignalR.Sender.GestioneRuoli.NotificationDeleteRuolo>();
+
+
+            #endregion
+
             #region Gestione Utenti e Ruoli
 
             container.Register<Models.Servizi.Infrastruttura.GestioneUtenti.IDeleteUtente, Persistence.MongoDB.GestioneUtenti.GestioneUtente.DeleteUtente>();
@@ -273,6 +265,15 @@ namespace SO115App.CompositionRoot
             container.Register<Models.Servizi.Infrastruttura.Autenticazione.IGetAutorizzazioni, Persistence.MongoDB.GestioneUtenti.GestioneRuoli.GetAutorizzazioni>();
 
             #endregion Gestione Utenti e Ruoli
+
+            #region Utility
+
+            container.Register<
+                SO115App.Models.Servizi.Infrastruttura.GetFiltri.IGetFiltri,
+                SO115App.Persistence.MongoDB.GestioneFiltri.GetFiltri>();
+
+
+            #endregion
         }
     }
 }

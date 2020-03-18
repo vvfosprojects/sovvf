@@ -245,9 +245,15 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
         /// <param name="codiceSede">il codice sede</param>
         /// ///
         /// <returns>InfoNue</returns>
-        public InfoNue GetConteggio(string codiceSede)
+        public InfoNue GetConteggio(string[] codiciSede)
         {
-            var listaSchede = GetSchede(codiceSede);
+            var listaSchede = new List<SchedaContatto>();
+
+            foreach(var sede in codiciSede) 
+            {
+                listaSchede.AddRange(GetSchede(sede));
+            }
+           
             var listaSchedeCompetenza = listaSchede.FindAll(x => x.Classificazione.Equals(Competenza) && x.Collegata == false);
             var listaSchedeConoscenza = listaSchede.FindAll(x => x.Classificazione.Equals(Conoscenza));
             var listaSchedeDifferibile = listaSchede.FindAll(x => x.Classificazione.Equals(Differibile));

@@ -12,6 +12,6 @@ namespace SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue
         /// </summary>
         /// <param name="codiceSede">il codice Sede</param>
         /// <returns>InfoNue</returns>
-        InfoNue GetConteggio(string codiceSede);
+        InfoNue GetConteggio(string[] codiceSede);
     }
 }

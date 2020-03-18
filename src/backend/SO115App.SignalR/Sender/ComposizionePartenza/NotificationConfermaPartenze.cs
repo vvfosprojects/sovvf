@@ -74,21 +74,32 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
 
             sintesi.Motivazione = sintesi.Descrizione;
 
-            var boxRichiesteQuery = new BoxRichiesteQuery();
+            var boxRichiesteQuery = new BoxRichiesteQuery()
+            {
+                CodiciSede = new string[] { conferma.ConfermaPartenze.CodiceSede }
+            };
             var boxMezziQuery = new BoxMezziQuery()
             {
-                CodiceSede = conferma.ConfermaPartenze.CodiceSede
+                CodiciSede = new string[] { conferma.ConfermaPartenze.CodiceSede }
             };
-            var boxPersonaleQuery = new BoxPersonaleQuery();
+            var boxPersonaleQuery = new BoxPersonaleQuery()
+            {
+                CodiciSede = new string[] { conferma.ConfermaPartenze.CodiceSede }
+            };
             var sintesiRichiesteAssistenzaQuery = new SintesiRichiesteAssistenzaQuery
             {
                 Filtro = new FiltroRicercaRichiesteAssistenza
                 {
                     idOperatore = conferma.ConfermaPartenze.IdOperatore
-                }
+                },
+                CodiciSede = new string[] { conferma.ConfermaPartenze.CodiceSede }
             };
 
-            var sintesiRichiesteAssistenzaMarkerQuery = new SintesiRichiesteAssistenzaMarkerQuery();
+            var sintesiRichiesteAssistenzaMarkerQuery = new SintesiRichiesteAssistenzaMarkerQuery()
+            {
+                CodiciSedi = new string[] { conferma.ConfermaPartenze.CodiceSede }
+            };
+
             var boxInterventi = _boxRichiestehandler.Handle(boxRichiesteQuery).BoxRichieste;
             var boxMezzi = _boxMezzihandler.Handle(boxMezziQuery).BoxMezzi;
             var boxPersonale = _boxPersonalehandler.Handle(boxPersonaleQuery).BoxPersonale;

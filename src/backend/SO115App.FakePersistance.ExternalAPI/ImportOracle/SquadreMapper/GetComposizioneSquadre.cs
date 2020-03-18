@@ -50,53 +50,57 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.SquadreMapper
                 jsonFiltri = r.ReadToEnd();
             }
             var filtri = JsonConvert.DeserializeObject<API.Models.Classi.Filtri.Filtri>(jsonFiltri);
-            if ((query.Filtro.CodiceDistaccamento?.Length > 0 && !string.IsNullOrEmpty(query.Filtro.CodiceDistaccamento[0]))
-                || (!string.IsNullOrEmpty(query.Filtro.CodiceMezzo) && !string.IsNullOrEmpty(query.Filtro.CodiceMezzo))
-                 || ((query.Filtro.CodiceSquadra?.Length > 0) && !string.IsNullOrEmpty(query.Filtro.CodiceSquadra[0]))
-                 || (query.Filtro.CodiceStatoMezzo?.Length > 0 && !string.IsNullOrEmpty(query.Filtro.CodiceStatoMezzo[0]))
-                 || (query.Filtro.CodiceTipoMezzo?.Length > 0 && !string.IsNullOrEmpty(query.Filtro.CodiceTipoMezzo[0])))
-            {
-                if (!string.IsNullOrEmpty(query.Filtro.CodiceMezzo) && !string.IsNullOrEmpty(query.Filtro.CodiceMezzo))
-                {
-                    var mezzo = ListaMezzi.Find(x => x.Codice == query.Filtro.CodiceMezzo);
 
-                    if (mezzo != null)
+            if (query.Filtro != null)
+            {
+                if ((query.Filtro.CodiceDistaccamento?.Length > 0 && !string.IsNullOrEmpty(query.Filtro.CodiceDistaccamento[0]))
+                    || (!string.IsNullOrEmpty(query.Filtro.CodiceMezzo) && !string.IsNullOrEmpty(query.Filtro.CodiceMezzo))
+                     || ((query.Filtro.CodiceSquadra?.Length > 0) && !string.IsNullOrEmpty(query.Filtro.CodiceSquadra[0]))
+                     || (query.Filtro.CodiceStatoMezzo?.Length > 0 && !string.IsNullOrEmpty(query.Filtro.CodiceStatoMezzo[0]))
+                     || (query.Filtro.CodiceTipoMezzo?.Length > 0 && !string.IsNullOrEmpty(query.Filtro.CodiceTipoMezzo[0])))
+                {
+                    if (!string.IsNullOrEmpty(query.Filtro.CodiceMezzo) && !string.IsNullOrEmpty(query.Filtro.CodiceMezzo))
                     {
-                        if (query.Filtro.CodiceDistaccamento.Count() > 0 && !string.IsNullOrEmpty(query.Filtro.CodiceDistaccamento[0]))
-                        {
-                            if (mezzo != null && !query.Filtro.CodiceDistaccamento.Any(mezzo.Distaccamento.Codice.Equals))
-                            {
-                                mezzo = null;
-                                composizioneSquadre = null;
-                            }
-                        }
+                        var mezzo = ListaMezzi.Find(x => x.Codice == query.Filtro.CodiceMezzo);
 
                         if (mezzo != null)
                         {
-                            codiceDistaccamento = mezzo.Distaccamento.Codice;
-
-                            if (mezzo.IdRichiesta != null)
+                            if (query.Filtro.CodiceDistaccamento.Count() > 0 && !string.IsNullOrEmpty(query.Filtro.CodiceDistaccamento[0]))
                             {
-                                var getRichiesta = new GetRichiestaById();
-                                var richiesta = getRichiesta.GetByCodice(mezzo.IdRichiesta);
-                                var listaSquadre = richiesta.Partenze
-                                    .Where(x => x.Partenza.Mezzo.Codice.Equals(mezzo.Codice))
-                                    .Select(x => x.Partenza.Squadre);
-                                composizioneSquadre = composizioneSquadre.Where(x => listaSquadre.Any(x.Squadra.Equals))
-                                    .ToList();
+                                if (mezzo != null && !query.Filtro.CodiceDistaccamento.Any(mezzo.Distaccamento.Codice.Equals))
+                                {
+                                    mezzo = null;
+                                    composizioneSquadre = null;
+                                }
                             }
-                            else
+
+                            if (mezzo != null)
                             {
-                                composizioneSquadre = composizioneSquadre
-                                   .Where(x => x.Squadra.Distaccamento.Codice == codiceDistaccamento).ToList();
+                                codiceDistaccamento = mezzo.Distaccamento.Codice;
+
+                                if (mezzo.IdRichiesta != null)
+                                {
+                                    var getRichiesta = new GetRichiestaById();
+                                    var richiesta = getRichiesta.GetByCodice(mezzo.IdRichiesta);
+                                    var listaSquadre = richiesta.Partenze
+                                        .Where(x => x.Partenza.Mezzo.Codice.Equals(mezzo.Codice))
+                                        .Select(x => x.Partenza.Squadre);
+                                    composizioneSquadre = composizioneSquadre.Where(x => listaSquadre.Any(x.Squadra.Equals))
+                                        .ToList();
+                                }
+                                else
+                                {
+                                    composizioneSquadre = composizioneSquadre
+                                       .Where(x => x.Squadra.Distaccamento.Codice == codiceDistaccamento).ToList();
+                                }
                             }
                         }
                     }
-                }
-                if (query.Filtro.CodiceDistaccamento?.Length > 0 && !string.IsNullOrEmpty(query.Filtro.CodiceDistaccamento[0]))
-                    composizioneSquadre = composizioneSquadre.Where(x => (query.Filtro.CodiceDistaccamento.Any(x.Squadra.Distaccamento.Codice.Equals))).ToList();
+                    if (query.Filtro.CodiceDistaccamento?.Length > 0 && !string.IsNullOrEmpty(query.Filtro.CodiceDistaccamento[0]))
+                        composizioneSquadre = composizioneSquadre.Where(x => (query.Filtro.CodiceDistaccamento.Any(x.Squadra.Distaccamento.Codice.Equals))).ToList();
 
-                return composizioneSquadre;
+                    return composizioneSquadre;
+                }
             }
 
             return composizioneSquadre;

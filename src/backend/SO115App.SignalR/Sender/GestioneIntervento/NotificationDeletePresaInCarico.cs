@@ -61,14 +61,22 @@ namespace SO115App.SignalR.Sender.GestioneIntervento
                 Filtro = new FiltroRicercaRichiesteAssistenza
                 {
                     idOperatore = intervento.IdUtente
-                }
+                },
+                CodiciSede = new string[] { intervento.CodSede }
             };
             var listaSintesi = (List<SintesiRichiesta>)this._sintesiRichiesteAssistenzaHandler.Handle(sintesiRichiesteAssistenzaQuery).SintesiRichiesta;
 
-            var boxRichiestequery = new BoxRichiesteQuery();
+            var boxRichiestequery = new BoxRichiesteQuery()
+            {
+                CodiciSede = new string[] { intervento.CodSede }
+            };
             var boxInterventi = (BoxInterventi)this._boxRichiesteHandler.Handle(boxRichiestequery).BoxRichieste;
 
-            var sintesiRichiesteAssistenzaMarkerQuery = new SintesiRichiesteAssistenzaMarkerQuery();
+            var sintesiRichiesteAssistenzaMarkerQuery = new SintesiRichiesteAssistenzaMarkerQuery()
+            {
+                CodiciSedi = new string[] { intervento.CodSede }
+            };
+
             var listaSintesiMarker = (List<SintesiRichiestaMarker>)this._sintesiRichiesteAssistenzaMarkerHandler.Handle(sintesiRichiesteAssistenzaMarkerQuery).SintesiRichiestaMarker;
 
             intervento.Chiamata = listaSintesi.LastOrDefault(richiesta => richiesta.Id == intervento.Chiamata.Id);

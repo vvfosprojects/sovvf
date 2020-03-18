@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="SintesiRichiesteAssistenzaMarkerQuery.cs" company="CNVVF">
+// <copyright file="EntityMap.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,22 +17,29 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using CQRS.Queries;
-using SO115App.API.Models.Classi.Geo;
-using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization;
+using MongoDB.Bson.Serialization.IdGenerators;
+using MongoDB.Bson.Serialization.Serializers;
+using SO115App.API.Models.Classi.Filtri;
+using SO115App.API.Models.Classi.Persistenza;
+using System;
+using System.Collections.Generic;
+using System.Text;
 
-namespace SO115App.API.Models.Servizi.CQRS.Queries.Marker.SintesiRichiesteAssistenzaMarker
+namespace SO115App.Persistence.MongoDB.Mappings
 {
-    /// <summary>
-    ///   DTO di input
-    /// </summary>
-    public class SintesiRichiesteAssistenzaMarkerQuery : IQuery<SintesiRichiesteAssistenzaMarkerResult>
+    internal static class FiltriMap
     {
-        /// <summary>
-        ///   Il filtro utilizzato per la ricerca delle richieste di assistenza
-        /// </summary>
-        public FiltroRicercaRichiesteAssistenza Filtro { get; set; }
-        public string[] CodiciSedi { get; set; }
-        public AreaMappa FiltroCentroMappa { get; set; }
+        public static void Map()
+        {
+            BsonClassMap.RegisterClassMap<Filtri>(cm =>
+            {
+                cm.AutoMap();
+                cm.MapIdMember(c => c.Id)
+                    .SetIdGenerator(StringObjectIdGenerator.Instance)
+                    .SetSerializer(new StringSerializer(BsonType.ObjectId));
+            });
+        }
     }
 }

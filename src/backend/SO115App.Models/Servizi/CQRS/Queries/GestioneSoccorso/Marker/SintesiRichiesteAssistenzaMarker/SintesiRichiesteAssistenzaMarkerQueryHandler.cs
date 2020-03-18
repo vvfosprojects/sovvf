@@ -41,7 +41,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.Marker.SintesiRichiesteAssist
         /// <returns>Il DTO di uscita della query</returns>
         public SintesiRichiesteAssistenzaMarkerResult Handle(SintesiRichiesteAssistenzaMarkerQuery query)
         {
-            var sintesiRichiestaMarker = _iGetListaRichieste.GetListaRichiesteMarker(query.FiltroCentroMappa);
+            var sintesiRichiestaMarker = _iGetListaRichieste.GetListaRichiesteMarker(query);
 
             return new SintesiRichiesteAssistenzaMarkerResult()
             {

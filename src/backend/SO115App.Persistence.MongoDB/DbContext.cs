@@ -69,6 +69,7 @@ namespace Persistence.MongoDB
             EventiMap.Map();
             UtenteMap.Map();
             SediMap.Map();
+            FiltriMap.Map();
             BsonClassMap.RegisterClassMap<Telefonata>();
             BsonClassMap.RegisterClassMap<AssegnazionePriorita>();
             BsonClassMap.RegisterClassMap<InizioPresaInCarico>();
