@@ -103,17 +103,17 @@ namespace SO115App.CompositionRoot
             container.Register<ISetMovimentazione, SetMovimentazione>();
             container.Register<
                 SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi.IGetListaMezzi,
-                ExternalAPI.Fake.GestioneMezzi.GetListaMezziExt>(); 
+                ExternalAPI.Fake.GestioneMezzi.GetListaMezziExt>();
 
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.Composizione.IUpdateConfermaPartenze,
-                ExternalAPI.Fake.Composizione.UpdateConfermaPartenzeExt>(); 
+                ExternalAPI.Fake.Composizione.UpdateConfermaPartenzeExt>();
             container.Register<
                  SO115App.Models.Servizi.Infrastruttura.Composizione.IUpdateStatoPartenze,
-                ExternalAPI.Fake.Composizione.UpdateStatoPartenzaExt>(); 
+                ExternalAPI.Fake.Composizione.UpdateStatoPartenzaExt>();
             container.Register<
                SO115App.Models.Servizi.Infrastruttura.GetComposizioneMezzi.IGetComposizioneMezzi,
-               SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper.GetComposizioneMezzi>();
+               SO115App.ExternalAPI.Fake.Composizione.GetComposizioneMezzi>();
 
             #endregion Gac
 
@@ -124,10 +124,11 @@ namespace SO115App.CompositionRoot
             #endregion Sedi
 
             #region Box
+
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.Box.IGetBoxMezzi,
                 ExternalAPI.Fake.Box.GetBoxMezziExt>();
-                                                    
+
             container.Register<
                SO115App.Models.Servizi.Infrastruttura.Box.IGetBoxPersonale,
                ExternalAPI.Fake.Box.GetBoxPersonale>();
@@ -136,7 +137,7 @@ namespace SO115App.CompositionRoot
                 SO115App.Models.Servizi.Infrastruttura.Marker.IGetMezziMarker,
                 ExternalAPI.Fake.Marker.GetMezziMarkerExt>();
 
-            #endregion
+            #endregion Box
 
             #region Mezzi
 
@@ -195,6 +196,7 @@ namespace SO115App.CompositionRoot
             #endregion Competenze
 
             #region Distaccamenti
+
             container.Register<
                 Models.Servizi.Infrastruttura.SistemiEsterni.IdentityManagement.IGetDistaccamentoByCodiceSede,
                 FakePersistence.JSon.Distaccamenti.GetDistaccamentoByCodiceSede>();
@@ -202,11 +204,12 @@ namespace SO115App.CompositionRoot
                 SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti.IGetListaDistaccamentiByCodiceSede,
                 SO115App.ExternalAPI.Fake.ImportOracle.DistaccamentiMapper.GetDistaccamentiByCodSede>();
             container.Register<
-                Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti.IGetDistaccamentoByCodiceSedeUC, 
+                Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti.IGetDistaccamentoByCodiceSedeUC,
                 GetDistaccamentoByCodiceSede>();
             container.Register<
-                Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti.CoordinateTask.IGetCoordinateDistaccamento, 
+                Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti.CoordinateTask.IGetCoordinateDistaccamento,
                 ExternalAPI.Fake.Servizi.DistaccamentoCoordinate.GetCoordinateDistaccamento>();
+
             #endregion Distaccamenti
 
             #region Tipologie
