@@ -199,7 +199,8 @@ namespace SO115App.CompositionRoot
 
             container.Register<
                 Models.Servizi.Infrastruttura.SistemiEsterni.IdentityManagement.IGetDistaccamentoByCodiceSede,
-                FakePersistence.JSon.Distaccamenti.GetDistaccamentoByCodiceSede>();
+                SO115App.ExternalAPI.Fake.Servizi.DistaccamentoUtentiComuni.GetDistaccamentoByCodiceSede>();
+
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti.IGetListaDistaccamentiByCodiceSede,
                 SO115App.ExternalAPI.Fake.ImportOracle.DistaccamentiMapper.GetDistaccamentiByCodSede>();

@@ -7,8 +7,6 @@ using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Persistence.MongoDB;
 using SO115App.Persistence.MongoDB.GestioneInterventi;
 using SO115App.Persistence.MongoDB.GestioneMezzi;
-using SO115App.Persistence.MongoDB.Marker;
-using SO115App.SignalR.Sender.GestioneSchedeContatto;
 
 namespace SO115App.CompositionRoot
 {
