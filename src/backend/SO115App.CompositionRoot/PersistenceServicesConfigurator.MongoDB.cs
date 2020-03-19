@@ -155,11 +155,11 @@ namespace SO115App.CompositionRoot
 
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.Turni.IGetTurno,
-                SO115App.FakePersistence.JSon.Turni.GetTurno>();
+                SO115App.Persistence.MongoDB.GestioneInterventi.Utility.GetTurno>();
             
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.Turni.IUpdateTurni,
-                SO115App.FakePersistence.JSon.Turni.UpdateTurni>();
+                SO115App.Persistence.MongoDB.GestioneInterventi.Utility.UpDateTurni>();
 
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.InfoRichiesta.IGetInfoRichiesta,
