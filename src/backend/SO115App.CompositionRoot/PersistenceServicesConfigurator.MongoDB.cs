@@ -164,7 +164,7 @@ namespace SO115App.CompositionRoot
 
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.InfoRichiesta.IGetInfoRichiesta,
-                FakePersistence.JSon.Utility.GetInfoRichiesta>();
+                SO115App.Persistence.MongoDB.GestioneInterventi.Utility.GetInfoRichiesta>();
 
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.GetFiltri.IGetFiltri,
