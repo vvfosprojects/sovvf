@@ -149,9 +149,10 @@ namespace SO115App.CompositionRoot
             #endregion Gestione Utenti e Ruoli
 
             #region Utility
+
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.NavBar.IGetNavbar,
-                SO115App.FakePersistenceJSon.Navbar.GetNavbar>();
+                SO115App.Persistence.MongoDB.GestioneInterventi.Utility.GetNavBar>();
 
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.Turni.IGetTurno,
