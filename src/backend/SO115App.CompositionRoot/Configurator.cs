@@ -30,12 +30,15 @@ namespace SO115App.CompositionRoot
             CQRSConfigurator.Configure(container);
             PersistenceServicesConfigurator.Configure(container);
 
+            ServicesConfigurator.Configure(container);            
+            PersistenceServicesConfigurator_MongoDB.Configure(container, configuration);
+            NotificationServicesConfigurator.Configure(container);
+
             if (Convert.ToBoolean(configuration.GetSection("GenericSettings").GetSection("Fake").Value))
-                ServicesConfigurator.Configure(container);
+                PersistanceServicesConfigurator_Json.Configure(container);
             else
             {
-                ExternalAPIFakeServicesConfigurator.Configure(container);
-                PersistenceServicesConfigurator_MongoDB.Configure(container, configuration);
+                ExternalAPIFakeServicesConfigurator.Configure(container);                        
             }
         }
     }
