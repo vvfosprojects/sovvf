@@ -182,8 +182,8 @@ namespace SO115App.CompositionRoot
             //  SO115App.Models.Servizi.Infrastruttura.GetPreAccoppiati.IGetPreAccoppiati,
             //SO115App.ExternalAPI.Fake.ImportOracle.GesPreaccoppiatiMapper.GetPreAccoppiati>();
             container.Register<
-            SO115App.Models.Servizi.Infrastruttura.GetPreAccoppiati.IGetPreAccoppiati,
-          SO115App.ExternalAPI.Fake.ImportOracle.GesPreaccoppiatiMapper.GetPreAccoppiati>();
+          SO115App.Models.Servizi.Infrastruttura.GetPreAccoppiati.IGetPreAccoppiati,
+          SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati.GetPreAccoppiati>();
 
             #endregion GesPreaccoppiati
 
