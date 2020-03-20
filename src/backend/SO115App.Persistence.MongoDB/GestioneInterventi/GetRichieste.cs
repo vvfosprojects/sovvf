@@ -22,6 +22,7 @@ using MongoDB.Driver;
 using Persistence.MongoDB;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Soccorso;
+using SO115App.API.Models.Classi.Soccorso.StatiRichiesta;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
@@ -50,8 +51,8 @@ namespace SO115App.Persistence.MongoDB
         private readonly IGetDistaccamentoByCodiceSedeUC _getDistaccamentoUC;
         private readonly IGetCoordinateDistaccamento _getCooDistaccamento; //TODO chiedere ad Igor di implementare le coordinate
 
-        public GetRichiesta(DbContext dbContext, IMapper mapper, IGetTipologieByCodice getTipologiaByCodice, IGetListaDistaccamentiByCodiceSede getAnagraficaDistaccamento, 
-            MapperRichiestaAssistenzaSuSintesi mapperSintesi, IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative, 
+        public GetRichiesta(DbContext dbContext, IMapper mapper, IGetTipologieByCodice getTipologiaByCodice, IGetListaDistaccamentiByCodiceSede getAnagraficaDistaccamento,
+            MapperRichiestaAssistenzaSuSintesi mapperSintesi, IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative,
             IGetCoordinateDistaccamento getCooDistaccamento, IGetDistaccamentoByCodiceSedeUC getDistaccamentoUC)
         {
             _dbContext = dbContext;
@@ -78,6 +79,81 @@ namespace SO115App.Persistence.MongoDB
 
         public List<SintesiRichiesta> GetListaSintesiRichieste(FiltroRicercaRichiesteAssistenza filtro)
         {
+            var filtroSediCompetenti = Builders<RichiestaAssistenza>.Filter
+                .In(richiesta => richiesta.CodSOCompetente, filtro.UnitaOperative.Select(uo => uo.Codice));
+
+            var filtriSediAllertate = filtro.UnitaOperative.Select(uo =>
+                Builders<RichiestaAssistenza>.Filter
+                    .ElemMatch(richiesta => richiesta.CodSOAllertate, x => x == uo.Codice)
+            );
+
+            FilterDefinition<RichiestaAssistenza> orFiltroSediAllertate = Builders<RichiestaAssistenza>.Filter.Empty;
+            foreach (var f in filtriSediAllertate)
+                orFiltroSediAllertate |= f;
+
+            List<RichiestaAssistenza> result = new List<RichiestaAssistenza>();
+            //Iniziamo col restituire le richieste aperte.
+            if (filtro.IncludiRichiesteAperte)
+            {
+                var filtroRichiesteAperte = Builders<RichiestaAssistenza>.Filter.Ne(r => r.TestoStatoRichiesta, 'X');
+                var filtroComplessivo = (filtroSediCompetenti | orFiltroSediAllertate) & filtroRichiesteAperte;
+
+                var richiesteAperte = _dbContext.RichiestaAssistenzaCollection.Find(filtroComplessivo)
+                    .ToList();
+
+                // qui l'ordinamento
+                var richiestePerStato = richiesteAperte.GroupBy(r => r.TestoStatoRichiesta == InAttesa.SelettoreDB)
+                    .ToDictionary(g => g.Key, g => g);
+
+                /*
+                 * true -> c1, c2, c3
+                 * false -> r5, r8, r19, r34
+                 */
+
+                if (richiestePerStato.ContainsKey(true))
+                    result.AddRange(
+                        richiestePerStato[true]
+                        .OrderBy(r => r.PrioritaRichiesta)
+                        .ThenBy(r => r.IstanteRicezioneRichiesta));
+
+                if (richiestePerStato.ContainsKey(false))
+                    result.AddRange(
+                        richiestePerStato[false]
+                        .OrderBy(r => r.PrioritaRichiesta)
+                        .ThenBy(r => r.IstanteRicezioneRichiesta));
+
+                // qui la paginazione var resultPaginato = result.Skip().Take();
+
+                // se abbiamo già raggiunto il numero di richieste desiderate, restituiamo e finisce
+                // qua return resultPaginato;
+
+                result.AddRange(richiesteAperte);
+            }
+
+            if (filtro.IncludiRichiesteChiuse)
+            {
+                var filtroRichiesteChiuse = Builders<RichiestaAssistenza>.Filter.Eq(r => r.TestoStatoRichiesta, 'X');
+                var filtroComplessivo = (filtroSediCompetenti | orFiltroSediAllertate) & filtroRichiesteChiuse;
+
+                var numeroRichiesteDaRecuperare = filtro.PageSize - result.Count;
+
+                if (numeroRichiesteDaRecuperare > 0)
+                {
+                    var closedToSkip = (filtro.Page - 1) * filtro.PageSize - result.Count;
+                    if (closedToSkip < 0)
+                        closedToSkip = 0;
+                    var richiesteChiuse = _dbContext.RichiestaAssistenzaCollection.Find(filtroComplessivo)
+                        .SortByDescending(r => r.IstanteRicezioneRichiesta)
+                        .Skip(closedToSkip)
+                        .Limit(numeroRichiesteDaRecuperare)
+                        .ToList();
+
+                    result.AddRange(richiesteChiuse);
+                }
+            }
+
+            return result.Select(r => _mapperSintesi.Map(r)).ToList();
+
             var listaRichiesteAssistenza = new List<RichiestaAssistenza>();
             var listaSediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
             foreach (var figlio in listaSediAlberate.GetSottoAlbero(filtro.UnitaOperative))
