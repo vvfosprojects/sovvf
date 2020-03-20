@@ -95,7 +95,7 @@ namespace SO115App.Persistence.MongoDB
             //Iniziamo col restituire le richieste aperte.
             if (filtro.IncludiRichiesteAperte)
             {
-                var filtroRichiesteAperte = Builders<RichiestaAssistenza>.Filter.Ne(r => r.TestoStatoRichiesta, 'X');
+                var filtroRichiesteAperte = Builders<RichiestaAssistenza>.Filter.Ne(r => r.TestoStatoRichiesta, "X");
                 var filtroComplessivo = (filtroSediCompetenti | orFiltroSediAllertate) & filtroRichiesteAperte;
 
                 var richiesteAperte = _dbContext.RichiestaAssistenzaCollection.Find(filtroRichiesteAperte)
@@ -132,7 +132,7 @@ namespace SO115App.Persistence.MongoDB
 
             if (filtro.IncludiRichiesteChiuse)
             {
-                var filtroRichiesteChiuse = Builders<RichiestaAssistenza>.Filter.Eq(r => r.TestoStatoRichiesta, 'X');
+                var filtroRichiesteChiuse = Builders<RichiestaAssistenza>.Filter.Eq(r => r.TestoStatoRichiesta, "X");
                 var filtroComplessivo = (filtroSediCompetenti | orFiltroSediAllertate) & filtroRichiesteChiuse;
 
                 var numeroRichiesteDaRecuperare = filtro.PageSize - result.Count;
