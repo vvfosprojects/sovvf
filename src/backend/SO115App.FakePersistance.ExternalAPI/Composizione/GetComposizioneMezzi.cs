@@ -11,11 +11,12 @@ using SO115App.FakePersistence.JSon.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.GetComposizioneMezzi;
+using SO115App.Models.Servizi.Infrastruttura.GetFiltri;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Squadre;
 using SO115App.Persistence.MongoDB.GestioneMezzi;
 
-namespace SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper
+namespace SO115App.ExternalAPI.Fake.Composizione
 {
     public class GetComposizioneMezzi : IGetComposizioneMezzi
     {
@@ -23,13 +24,17 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper
         private readonly OrdinamentoMezzi _ordinamentoMezzi;
         private readonly IGetMezziUtilizzabili _getMezziUtilizzabili;
         private readonly IGetListaSquadre _getSquadre;
+        private readonly IGetFiltri _getFiltri;
 
-        public GetComposizioneMezzi(IGetStatoMezzi getMezziPrenotati, OrdinamentoMezzi ordinamentoMezzi, IGetMezziUtilizzabili getMezziUtilizzabili, IGetListaSquadre getSquadre)
+        public GetComposizioneMezzi(IGetStatoMezzi getMezziPrenotati, OrdinamentoMezzi ordinamentoMezzi, IGetMezziUtilizzabili getMezziUtilizzabili,
+            IGetListaSquadre getSquadre, IGetFiltri getFiltri)
+
         {
             _getMezziUtilizzabili = getMezziUtilizzabili;
             _getSquadre = getSquadre;
             _getMezziPrenotati = getMezziPrenotati;
             _ordinamentoMezzi = ordinamentoMezzi;
+            _getFiltri = getFiltri;
         }
 
         public List<ComposizioneMezzi> Get(ComposizioneMezziQuery query)
@@ -67,13 +72,7 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper
                     }
                 }
 
-                var pathFiltri = CostantiJson.Filtri;
-                string jsonFiltri;
-                using (var r = new StreamReader(pathFiltri))
-                {
-                    jsonFiltri = r.ReadToEnd();
-                }
-                var filtri = JsonConvert.DeserializeObject<API.Models.Classi.Filtri.Filtri>(jsonFiltri);
+                var filtri = _getFiltri.Get();
 
                 if (query.Filtro.CodiceDistaccamento?.Length > 0
                     && !string.IsNullOrEmpty(query.Filtro.CodiceDistaccamento[0]))
@@ -145,11 +144,10 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper
                 {
                     composizione.IstanteScadenzaSelezione = mezziPrenotati.Find(x => x.CodiceMezzo.Equals(composizione.Mezzo.Codice)).IstanteScadenzaSelezione;
 
-                    if(composizione.Mezzo.Stato.Equals("In Sede"))
+                    if (composizione.Mezzo.Stato.Equals("In Sede"))
                     {
                         composizione.Mezzo.Stato = mezziPrenotati.Find(x => x.CodiceMezzo.Equals(composizione.Mezzo.Codice)).StatoOperativo;
                     }
-
                 }
             }
             return composizioneMezzi;

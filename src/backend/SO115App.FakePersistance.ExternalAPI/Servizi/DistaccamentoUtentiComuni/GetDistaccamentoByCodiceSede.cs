@@ -1,9 +1,11 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using SO115App.API.Models.Classi.Condivise;
 using SO115App.ExternalAPI.Fake.Classi.DistaccamentiUtenteComune;
 using SO115App.ExternalAPI.Fake.Classi.Utility;
 using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.IdentityManagement;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +17,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.DistaccamentoUtentiComuni
     /// <summary>
     ///   la classe che recupera il distaccamento dal servizio Utente Comune
     /// </summary>
-    public class GetDistaccamentoByCodiceSede : IGetDistaccamentoByCodiceSedeUC
+    public class GetDistaccamentoByCodiceSede : IGetDistaccamentoByCodiceSedeUC, IGetDistaccamentoByCodiceSede
     {
         private readonly HttpClient _client;
         private readonly IConfiguration _configuration;
@@ -47,6 +49,11 @@ namespace SO115App.ExternalAPI.Fake.Servizi.DistaccamentoUtentiComuni
             string data = await content.ReadAsStringAsync().ConfigureAwait(false);
             var personaleUC = JsonConvert.DeserializeObject<DistaccamentoUC>(data);
             return _mapper.Map(personaleUC);
+        }
+
+        Sede IGetDistaccamentoByCodiceSede.Get(string codiceSede)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -18,6 +18,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Queries;
+using SO115App.API.Models.Classi.NavBar;
 using SO115App.Models.Servizi.Infrastruttura.NavBar;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
 
@@ -28,12 +29,10 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Navbar
     /// </summary>
     public class NavbarQueryHandler : IQueryHandler<NavbarQuery, NavbarResult>
     {
-        private readonly IGetNavbar _iGetNavbar;
         private readonly IGetAlberaturaUnitaOperative _alberaturaUO;
 
-        public NavbarQueryHandler(IGetNavbar iGetNavbar, IGetAlberaturaUnitaOperative alberaturaUO)
+        public NavbarQueryHandler(IGetAlberaturaUnitaOperative alberaturaUO)
         {
-            this._iGetNavbar = iGetNavbar;
             this._alberaturaUO = alberaturaUO;
         }
 
@@ -44,10 +43,11 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Navbar
         /// <returns>Elenco dei mezzi disponibili</returns>
         public NavbarResult Handle(NavbarQuery query)
         {
-            var navbars = _iGetNavbar.Get();
+            var navbars = new SO115App.API.Models.Classi.NavBar.Navbar();
             navbars.ListaSedi = _alberaturaUO.ListaSediAlberata();
+
             return new NavbarResult()
-            {
+            {              
                 Navbar = navbars
             };
         }
