@@ -4,6 +4,7 @@ using SimpleInjector;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.Box;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
+using SO115App.Models.Servizi.Infrastruttura.GestioneStatoOperativoSquadra;
 using SO115App.Persistence.MongoDB;
 using SO115App.Persistence.MongoDB.GestioneInterventi;
 using SO115App.Persistence.MongoDB.GestioneMezzi;
@@ -68,7 +69,7 @@ namespace SO115App.CompositionRoot
             container.Register<Models.Servizi.Infrastruttura.SistemiEsterni.Competenze.IGetCompetenzeByCoordinateIntervento,
                                Persistence.MongoDB.GestioneSedi.GetcompetenzeByCoordinateIntervento>();
 
-            #endregion
+            #endregion Gestione Sedi
 
             #region GestioneChiamataInCorso
 
@@ -95,6 +96,13 @@ namespace SO115App.CompositionRoot
 
             #endregion StatoMezzo
 
+            #region StatoSquadra
+
+            container.Register<ISetStatoSquadra, Persistence.MongoDB.GestioneStatoSquadra.SetStatoSquadra>();
+            container.Register<IGetStatoSquadra, Persistence.MongoDB.GestioneStatoSquadra.GetStatoSquadra>();
+
+            #endregion StatoSquadra
+
             #region Schede Contatto
 
             container.Register<
@@ -113,13 +121,10 @@ namespace SO115App.CompositionRoot
             #endregion Schede Contatto
 
             #region DA TRASFORMARE SU MONGO
+
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.NavBar.IGetNavbar,
                 SO115App.FakePersistenceJSon.Navbar.GetNavbar>();
-
-            container.Register<
-               SO115App.Models.Servizi.Infrastruttura.GetComposizioneSquadre.IGetComposizioneSquadre,
-               SO115App.ExternalAPI.Fake.ImportOracle.SquadreMapper.GetComposizioneSquadre>();
 
             container.Register<
                 SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.IGetIdByCodice,
@@ -145,10 +150,6 @@ namespace SO115App.CompositionRoot
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.InfoRichiesta.IGetInfoRichiesta,
                 FakePersistence.JSon.Utility.GetInfoRichiesta>();
-
-
-
-
 
             container.Register<
                 API.Models.Servizi.Infrastruttura.Organigramma.IGetUnitaOperativaPerCodice,
@@ -246,8 +247,7 @@ namespace SO115App.CompositionRoot
             container.Register<Models.Servizi.Infrastruttura.Notification.GestioneUtenti.GestioneRuoli.INotifyAddRuoli, SignalR.Sender.GestioneRuoli.NotificationAddRuoli>();
             container.Register<Models.Servizi.Infrastruttura.Notification.GestioneUtenti.GestioneRuoli.INotifyDeleteRuolo, SignalR.Sender.GestioneRuoli.NotificationDeleteRuolo>();
 
-
-            #endregion
+            #endregion Notifiche
 
             #region Gestione Utenti e Ruoli
 
@@ -272,8 +272,7 @@ namespace SO115App.CompositionRoot
                 SO115App.Models.Servizi.Infrastruttura.GetFiltri.IGetFiltri,
                 SO115App.Persistence.MongoDB.GestioneFiltri.GetFiltri>();
 
-
-            #endregion
+            #endregion Utility
         }
     }
 }

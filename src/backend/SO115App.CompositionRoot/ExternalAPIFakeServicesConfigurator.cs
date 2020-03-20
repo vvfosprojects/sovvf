@@ -169,6 +169,9 @@ namespace SO115App.CompositionRoot
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Squadre.IGetSquadraById,
                 SO115App.ExternalAPI.Fake.ImportOracle.SquadreMapper.GetSquadraById>();
+            container.Register<
+                SO115App.Models.Servizi.Infrastruttura.GetComposizioneSquadre.IGetComposizioneSquadre,
+                SO115App.ExternalAPI.Fake.Composizione.GetComposizioneSquadre>();
 
             #endregion Squadre
 

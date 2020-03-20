@@ -22,8 +22,6 @@ using SO115App.API.Models.Classi.Composizione;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.FakePersistence.JSon.Utility;
-using SO115App.FakePersistenceJSon.Classi;
-using SO115App.FakePersistenceJSon.Utility;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
 using System;
 using System.Collections.Generic;
