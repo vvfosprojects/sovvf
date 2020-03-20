@@ -98,7 +98,7 @@ namespace SO115App.Persistence.MongoDB
                 var filtroRichiesteAperte = Builders<RichiestaAssistenza>.Filter.Ne(r => r.TestoStatoRichiesta, 'X');
                 var filtroComplessivo = (filtroSediCompetenti | orFiltroSediAllertate) & filtroRichiesteAperte;
 
-                var richiesteAperte = _dbContext.RichiestaAssistenzaCollection.Find(filtroComplessivo)
+                var richiesteAperte = _dbContext.RichiestaAssistenzaCollection.Find(filtroRichiesteAperte)
                     .ToList();
 
                 // qui l'ordinamento
@@ -110,15 +110,15 @@ namespace SO115App.Persistence.MongoDB
                  * false -> r5, r8, r19, r34
                  */
 
-                if (richiestePerStato.ContainsKey(true))
-                    result.AddRange(
-                        richiestePerStato[true]
-                        .OrderBy(r => r.PrioritaRichiesta)
-                        .ThenBy(r => r.IstanteRicezioneRichiesta));
-
                 if (richiestePerStato.ContainsKey(false))
                     result.AddRange(
                         richiestePerStato[false]
+                        .OrderBy(r => r.PrioritaRichiesta)
+                        .ThenBy(r => r.IstanteRicezioneRichiesta));
+
+                if (richiestePerStato.ContainsKey(true))
+                    result.AddRange(
+                        richiestePerStato[true]
                         .OrderBy(r => r.PrioritaRichiesta)
                         .ThenBy(r => r.IstanteRicezioneRichiesta));
 
@@ -127,7 +127,7 @@ namespace SO115App.Persistence.MongoDB
                 // se abbiamo già raggiunto il numero di richieste desiderate, restituiamo e finisce
                 // qua return resultPaginato;
 
-                result.AddRange(richiesteAperte);
+                result.ToList();
             }
 
             if (filtro.IncludiRichiesteChiuse)
@@ -151,8 +151,25 @@ namespace SO115App.Persistence.MongoDB
                     result.AddRange(richiesteChiuse);
                 }
             }
+       
+            var listaSistesiRichieste = new List<SintesiRichiesta>();
 
-            return result.Select(r => _mapperSintesi.Map(r)).ToList();
+            foreach (RichiestaAssistenza richiesta in result)
+            {
+                SintesiRichiesta sintesi = new SintesiRichiesta();
+
+                if (richiesta.CodUOCompetenza != null)
+                {
+                    sintesi = _mapperSintesi.Map(richiesta);
+                    sintesi.Competenze = MapCompetenze(richiesta.CodUOCompetenza);
+                    listaSistesiRichieste.Add(sintesi);
+                }
+            }
+
+            return listaSistesiRichieste.OrderByDescending(x => x.Stato == Costanti.Chiamata)
+                    .ThenByDescending(x => x.PrioritaRichiesta)
+                    .ThenBy(x => x.IstanteRicezioneRichiesta)
+                    .ToList();
 
             //var listaRichiesteAssistenza = new List<RichiestaAssistenza>();
             //var listaSediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
