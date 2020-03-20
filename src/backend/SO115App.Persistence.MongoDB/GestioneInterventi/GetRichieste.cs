@@ -154,31 +154,31 @@ namespace SO115App.Persistence.MongoDB
 
             return result.Select(r => _mapperSintesi.Map(r)).ToList();
 
-            var listaRichiesteAssistenza = new List<RichiestaAssistenza>();
-            var listaSediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
-            foreach (var figlio in listaSediAlberate.GetSottoAlbero(filtro.UnitaOperative))
-            {
-                listaRichiesteAssistenza.AddRange(_dbContext.RichiestaAssistenzaCollection.Find(Builders<RichiestaAssistenza>.Filter.Eq(x => x.CodSOCompetente, figlio.Codice)).ToList());
-            }
+            //var listaRichiesteAssistenza = new List<RichiestaAssistenza>();
+            //var listaSediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
+            //foreach (var figlio in listaSediAlberate.GetSottoAlbero(filtro.UnitaOperative))
+            //{
+            //    listaRichiesteAssistenza.AddRange(_dbContext.RichiestaAssistenzaCollection.Find(Builders<RichiestaAssistenza>.Filter.Eq(x => x.CodSOCompetente, figlio.Codice)).ToList());
+            //}
 
-            var listaSistesiRichieste = new List<SintesiRichiesta>();
+            //var listaSistesiRichieste = new List<SintesiRichiesta>();
 
-            foreach (RichiestaAssistenza richiesta in listaRichiesteAssistenza)
-            {
-                SintesiRichiesta sintesi = new SintesiRichiesta();
+            //foreach (RichiestaAssistenza richiesta in listaRichiesteAssistenza)
+            //{
+            //    SintesiRichiesta sintesi = new SintesiRichiesta();
 
-                if (richiesta.CodUOCompetenza != null)
-                {
-                    sintesi = _mapperSintesi.Map(richiesta);
-                    sintesi.Competenze = MapCompetenze(richiesta.CodUOCompetenza);
-                    listaSistesiRichieste.Add(sintesi);
-                }
-            }
+            //    if (richiesta.CodUOCompetenza != null)
+            //    {
+            //        sintesi = _mapperSintesi.Map(richiesta);
+            //        sintesi.Competenze = MapCompetenze(richiesta.CodUOCompetenza);
+            //        listaSistesiRichieste.Add(sintesi);
+            //    }
+            //}
 
-            return listaSistesiRichieste.OrderByDescending(x => x.Stato == Costanti.Chiamata)
-                    .ThenByDescending(x => x.PrioritaRichiesta)
-                    .ThenBy(x => x.IstanteRicezioneRichiesta)
-                    .ToList();
+            //return listaSistesiRichieste.OrderByDescending(x => x.Stato == Costanti.Chiamata)
+            //        .ThenByDescending(x => x.PrioritaRichiesta)
+            //        .ThenBy(x => x.IstanteRicezioneRichiesta)
+            //        .ToList();
         }
 
         private List<Sede> MapCompetenze(string[] codUOCompetenza)
