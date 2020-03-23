@@ -109,10 +109,12 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
                 PersonaleVVF pVVf = _getPersonaleByCF.Get(cf).Result;
 
                 bool capoPartenza = false; bool autista = false;
-                Componente c = new Componente("", pVVf.Nominativo, pVVf.Nominativo, capoPartenza, autista, false)
+                Componente componente = new Componente("", pVVf.Nominativo, pVVf.Nominativo, capoPartenza, autista, false)
                 {
                     CodiceFiscale = pVVf.CodFiscale,
                 };
+                ComponentiSquadra.Add(componente);
+                ListaCodiciFiscaliComponentiSquadra.Add(pVVf.CodFiscale);
             }
 
             Squadra s = new Squadra(squadraFake.NomeSquadra, Stato, ComponentiSquadra, sedeDistaccamento);
