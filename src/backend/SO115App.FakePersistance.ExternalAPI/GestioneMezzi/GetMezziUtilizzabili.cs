@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using Newtonsoft.Json;
-using SO115App.FakePersistence.JSon.Utility;
 using System.IO;
 using SO115App.ExternalAPI.Fake.Classi.DTOFake;
 using SO115App.ExternalAPI.Fake.Classi.Gac;

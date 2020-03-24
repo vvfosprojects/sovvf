@@ -21,7 +21,7 @@ using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Composizione;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
-using SO115App.FakePersistence.JSon.Utility;
+using SO115App.Models.Servizi.Infrastruttura.GetComposizioneSquadre;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
 using System;
 using System.Collections.Generic;
@@ -49,38 +49,8 @@ namespace SO115App.ExternalAPI.Fake.GestioneIntervento
         /// </summary>
         /// <param name="richiestaAssistenza">la richiesta assistenza</param>
         public void UpDate(RichiestaAssistenza richiestaAssistenza)
-        {
-            var filePathSquadre = CostantiJson.SquadreComposizione;
-            var dataMovimentazione = DateTime.UtcNow;
-
-            string jsonSquadre;
-            using (var r = new StreamReader(filePathSquadre))
-            {
-                jsonSquadre = r.ReadToEnd();
-            }
-
-            var listaSquadre = JsonConvert.DeserializeObject<List<ComposizioneSquadre>>(jsonSquadre);
-
+        {            
             _upDateRichiestaAssistenza.UpDate(richiestaAssistenza);
-
-            foreach (var partenza in richiestaAssistenza.Partenze)
-            {
-                _setMovimentazione.Set(partenza.Partenza.Mezzo.Codice, partenza.CodiceRichiesta, partenza.Partenza.Mezzo.Stato, dataMovimentazione);
-
-                foreach (var composizioneSquadra in listaSquadre)
-                {
-                    foreach (var squadra in partenza.Partenza.Squadre)
-                    {
-                        if (composizioneSquadra.Squadra.Id == squadra.Id)
-                        {
-                            composizioneSquadra.Squadra.Stato = squadra.Stato;
-                        }
-                    }
-                }
-            }
-
-            var jsonListaSquadre = JsonConvert.SerializeObject(listaSquadre);
-            File.WriteAllText(CostantiJson.SquadreComposizione, jsonListaSquadre);
         }
     }
 }
