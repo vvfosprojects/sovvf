@@ -150,7 +150,7 @@ namespace SO115App.CompositionRoot
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Mezzi.IGetMezzoById,
                 SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper.GetMezzoById>();
-            container.Register<IGetMezziUtilizzabili, SO115App.ExternalAPI.Fake.GestioneMezzi.GetMezziUtilizzabili>();
+            container.Register<IGetMezziUtilizzabili, SO115App.ExternalAPI.Fake.Servizi.Gac.GetMezziUtilizzabili>();
 
             #endregion Mezzi
 

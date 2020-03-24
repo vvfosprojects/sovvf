@@ -79,6 +79,7 @@ namespace SO115App.ExternalAPI.Fake.Classi
         public static string GacGetICCID = "ICCID";
         public static string GacGetSELETTIVA = "SELETTIVA";
         public static string GacPutMovimentazione = "Movimentazione";
+        public static string GacGetCodiceMezzo = "/SO115/AnagraficaMezzi/CodiceMezzo";
 
         #endregion GacMethods
 

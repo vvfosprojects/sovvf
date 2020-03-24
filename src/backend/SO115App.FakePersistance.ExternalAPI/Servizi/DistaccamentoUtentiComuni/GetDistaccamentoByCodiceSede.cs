@@ -22,17 +22,19 @@ namespace SO115App.ExternalAPI.Fake.Servizi.DistaccamentoUtentiComuni
         private readonly HttpClient _client;
         private readonly IConfiguration _configuration;
         private readonly MapDistaccamentoSuDistaccamentoUC _mapper;
+        private readonly MapSedeSuDistaccamentoUC _mapperSede;
 
         /// <summary>
         ///   il costruttore della classe
         /// </summary>
         /// <param name="client"></param>
         /// <param name="configuration"></param>
-        public GetDistaccamentoByCodiceSede(HttpClient client, IConfiguration configuration, MapDistaccamentoSuDistaccamentoUC mapper)
+        public GetDistaccamentoByCodiceSede(HttpClient client, IConfiguration configuration, MapDistaccamentoSuDistaccamentoUC mapper, MapSedeSuDistaccamentoUC mapperSede)
         {
             _client = client;
             _configuration = configuration;
             _mapper = mapper;
+            _mapperSede = mapperSede;
         }
 
         /// <summary>
@@ -53,7 +55,8 @@ namespace SO115App.ExternalAPI.Fake.Servizi.DistaccamentoUtentiComuni
 
         Sede IGetDistaccamentoByCodiceSede.Get(string codiceSede)
         {
-            throw new NotImplementedException();
+            var distaccamento = this.Get(codiceSede).Result;
+            return _mapperSede.Map(distaccamento);
         }
     }
 }
