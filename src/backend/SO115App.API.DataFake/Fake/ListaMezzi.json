@@ -2,7 +2,7 @@
     {
         "Targa": "19609",
         "TipoMezzo": "O", 
-        "Stato": "D",
+        "Stato": "O",
         "Sede": "RM.1000",
         "CodDestinazione": "CORP",
         "DescDestinazione": "ASSEGNATO AL COMANDO"
@@ -10,7 +10,7 @@
     {
         "Targa": "28148",
         "TipoMezzo": "O",
-        "Stato": "D",
+        "Stato": "O",
         "Sede": "RM.1000",
         "CodDestinazione": "CMOB",
         "DescDestinazione": "COLONNA MOBILE"
@@ -18,7 +18,7 @@
     {
         "Targa": "27756",
         "TipoMezzo": "O",
-        "Stato": "D",
+        "Stato": "O",
         "Sede": "RM.1000",
         "CodDestinazione": "CORP",
         "DescDestinazione": "ASSEGNATO AL COMANDO"
@@ -34,7 +34,7 @@
     {
         "Targa": "19610",
         "TipoMezzo": "O",
-        "Stato": "D",
+        "Stato": "O",
         "Sede": "RM.3101",
         "CodDestinazione": "CORP",
         "DescDestinazione": "ASSEGNATO AL COMANDO"
@@ -130,7 +130,7 @@
     {
         "Targa": "20643",
         "TipoMezzo": "O",
-        "Stato": "D",
+        "Stato": "O",
         "Sede": "MI.1000",
         "CodDestinazione": "CORP",
         "DescDestinazione": "ASSEGNATO AL COMANDO"
@@ -146,7 +146,7 @@
     {
         "Targa": "15936",
         "TipoMezzo": "O",
-        "Stato": "D",
+        "Stato": "O",
         "Sede": "MI.1000",
         "CodDestinazione": "CMOB",
         "DescDestinazione": "COLONNA MOBILE"
@@ -202,7 +202,7 @@
     {
         "Targa": "18992",
         "TipoMezzo": "O",
-        "Stato": "D",
+        "Stato": "O",
         "Sede": "TO.3025",
         "CodDestinazione": "CORP",
         "DescDestinazione": "ASSEGNATO AL COMANDO"
@@ -210,7 +210,7 @@
     {
         "Targa": "27186",
         "TipoMezzo": "O",
-        "Stato": "D",
+        "Stato": "O",
         "Sede": "TO.1000",
         "CodDestinazione": "CORP",
         "DescDestinazione": "ASSEGNATO AL COMANDO"
