@@ -114,6 +114,8 @@ namespace SO115App.CompositionRoot
             container.Register<
                SO115App.Models.Servizi.Infrastruttura.GetComposizioneMezzi.IGetComposizioneMezzi,
                SO115App.ExternalAPI.Fake.Composizione.GetComposizioneMezzi>();
+            container.Register<ISetMezzoLibero, SetMezzoLibero>();
+            container.Register<ISetMezzoOccupato, SetMezzoOccupato>();
 
             #endregion Gac
 

@@ -1,14 +1,11 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace SO115App.ExternalAPI.Fake.Classi.Gac
 {
-    /// <summary>
-    ///   L'oggetto MovimentazioneDTO è l'oggetto che viene passato al servizio GAC per aggiornare
-    ///   la movimentazione di un mezzo. Contiene informazioni quali lo stato del mezzo e l'id della
-    ///   richiesta a cui il mezzo è associato.
-    /// </summary>
-    public class MovimentazioneDTO
+    public class FineMovimentazioneDTO
     {
         /// <summary>
         ///   Id della richiesta a cui è stato associato il mezzo
@@ -27,11 +24,5 @@ namespace SO115App.ExternalAPI.Fake.Classi.Gac
         /// </summary>
         [JsonProperty(PropertyName = "dataMovimentazione")]
         public DateTime? DataMovimentazione { get; set; }
-
-        /// <summary>
-        ///   il tipo di uscita ossia la tipologica dell'intervento da mandare al gac
-        /// </summary>
-        [JsonProperty(PropertyName = "tipoUscita")]
-        public TipoUscita TipoUscita { get; set; }
     }
 }
