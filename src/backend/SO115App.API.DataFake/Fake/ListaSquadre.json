@@ -2,7 +2,7 @@
     {
         "CodiceSquadra": "1",
         "NomeSquadra": "RM1", 
-        "Sede": "RM.1000",
+        "Sede": "RM.1007",
         "Stato": "2",
         "ListaCodiciFiscaliComponentiSquadra": [
             "CHRNZE58M17A132V",
@@ -55,7 +55,7 @@
     {
         "CodiceSquadra": "5",
         "NomeSquadra": "RM5",
-        "Sede": "RM.3101",
+        "Sede": "RM.1000",
         "Stato": "0",
         "ListaCodiciFiscaliComponentiSquadra": [
             "BGNLSN66D04H501P",
@@ -68,7 +68,7 @@
     {
         "CodiceSquadra": "6",
         "NomeSquadra": "RM6",
-        "Sede": "RM.3101",
+        "Sede": "RM.1000",
         "Stato": "0",
         "ListaCodiciFiscaliComponentiSquadra": [
             "DLLCST68R21G587C",
@@ -81,7 +81,7 @@
     {
         "CodiceSquadra": "7",
         "NomeSquadra": "RM7",
-        "Sede": "RM.3101",
+        "Sede": "RM.1000",
         "Stato": "0",
         "ListaCodiciFiscaliComponentiSquadra": [
 

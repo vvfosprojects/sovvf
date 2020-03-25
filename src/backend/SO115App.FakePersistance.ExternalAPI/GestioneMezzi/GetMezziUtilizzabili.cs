@@ -14,6 +14,8 @@ using SO115App.ExternalAPI.Fake.Classi.DTOFake;
 using SO115App.ExternalAPI.Fake.Classi.Gac;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.GeoFleet;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
+using SO115App.API.Models.Classi.Organigramma;
 
 namespace SO115App.ExternalAPI.Fake.GestioneMezzi
 {
@@ -25,23 +27,34 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
         private readonly IGetStatoMezzi _getStatoMezzi;
         private readonly IGetDistaccamentoByCodiceSedeUC _getDistaccamentoByCodiceSedeUC;
         private readonly IGetPosizioneByCodiceMezzo _getPosizioneByCodiceMezzo;
+        private readonly IGetAlberaturaUnitaOperative _getAlberaturaUnitaOperative;
 
         public GetMezziUtilizzabili(HttpClient client, IConfiguration configuration, IGetStatoMezzi GetStatoMezzi,
-            IGetDistaccamentoByCodiceSedeUC GetDistaccamentoByCodiceSedeUC, IGetPosizioneByCodiceMezzo getPosizioneByCodiceMezzo)
+            IGetDistaccamentoByCodiceSedeUC GetDistaccamentoByCodiceSedeUC, IGetPosizioneByCodiceMezzo getPosizioneByCodiceMezzo, IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative)
         {
             _client = client;
             _configuration = configuration;
             _getStatoMezzi = GetStatoMezzi;
             _getDistaccamentoByCodiceSedeUC = GetDistaccamentoByCodiceSedeUC;
             _getPosizioneByCodiceMezzo = getPosizioneByCodiceMezzo;
+            _getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
         }
 
         public async Task<List<Mezzo>> Get(List<string> sedi, string genereMezzo = null, string codiceMezzo = null)
         {
             var ListaCodiciSedi = new List<string>();
-            foreach (string sede in sedi)
+
+            var listaSediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
+            var pinNodi = new List<PinNodo>();
+
+            foreach (var sede in sedi)
             {
-                var codice = sede.Substring(0, 2);
+                pinNodi.Add(new PinNodo(sede, true));
+            }
+
+            foreach (var figlio in listaSediAlberate.GetSottoAlbero(pinNodi))
+            {
+                var codice = figlio.Codice;
                 string codiceE = "";
                 codiceE = ListaCodiciSedi.Find(x => x.Equals(codice));
                 if (string.IsNullOrEmpty(codiceE))

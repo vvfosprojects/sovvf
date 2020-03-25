@@ -1,11 +1,11 @@
 [
     {
-        "Targa": "19609",
-        "TipoMezzo": "O", 
-        "Stato": "O",
-        "Sede": "RM.1000",
-        "CodDestinazione": "CORP",
-        "DescDestinazione": "ASSEGNATO AL COMANDO"
+      "Targa": "19609",
+      "TipoMezzo": "O",
+      "Stato": "O",
+      "Sede": "RM.1007",
+      "CodDestinazione": "CORP",
+      "DescDestinazione": "ASSEGNATO AL COMANDO"
     },
     {
         "Targa": "28148",
@@ -24,18 +24,18 @@
         "DescDestinazione": "ASSEGNATO AL COMANDO"
     },
     {
-        "Targa": "28551",
-        "TipoMezzo": "O",
-        "Stato": "D",
-        "Sede": "RM.3101",
-        "CodDestinazione": "CMOB",
-        "DescDestinazione": "COLONNA MOBILE"
+      "Targa": "28551",
+      "TipoMezzo": "O",
+      "Stato": "D",
+      "Sede": "RM.1007",
+      "CodDestinazione": "CMOB",
+      "DescDestinazione": "COLONNA MOBILE"
     },
     {
         "Targa": "19610",
         "TipoMezzo": "O",
         "Stato": "O",
-        "Sede": "RM.3101",
+        "Sede": "RM.1008",
         "CodDestinazione": "CORP",
         "DescDestinazione": "ASSEGNATO AL COMANDO"
     },
@@ -43,7 +43,7 @@
         "Targa": "19611",
         "TipoMezzo": "O",
         "Stato": "D",
-        "Sede": "RM.3101",
+        "Sede": "RM.1009",
         "CodDestinazione": "CMOB",
         "DescDestinazione": "COLONNA MOBILE"
     },
@@ -51,7 +51,7 @@
         "Targa": "19612",
         "TipoMezzo": "O",
         "Stato": "D",
-        "Sede": "RM.3101",
+        "Sede": "RM.1003",
         "CodDestinazione": "CORP",
         "DescDestinazione": "ASSEGNATO AL COMANDO"
     },
@@ -59,23 +59,23 @@
         "Targa": "19613",
         "TipoMezzo": "O",
         "Stato": "D",
-        "Sede": "RM.3101",
+        "Sede": "RM.1002",
         "CodDestinazione": "CMOB",
         "DescDestinazione": "COLONNA MOBILE"
     },
-    {
-        "Targa": "30014",
-        "TipoMezzo": "O",
-        "Stato": "D",
-        "Sede": "RM.3101",
-        "CodDestinazione": "CMOB",
-        "DescDestinazione": "COLONNA MOBILE"
-    },
+  {
+    "Targa": "30014",
+    "TipoMezzo": "O",
+    "Stato": "D",
+    "Sede": "RM.1004",
+    "CodDestinazione": "CMOB",
+    "DescDestinazione": "COLONNA MOBILE"
+  },
     {
         "Targa": "02981",
         "TipoMezzo": "R",
         "Stato": "D",
-        "Sede": "RM.3101",
+        "Sede": "RM.1004",
         "CodDestinazione": "CORP",
         "DescDestinazione": "ASSEGNATO AL COMANDO"
     },
@@ -83,7 +83,7 @@
         "Targa": "21151",
         "TipoMezzo": "O",
         "Stato": "D",
-        "Sede": "RM.3101",
+        "Sede": "RM.2001",
         "CodDestinazione": "CORP",
         "DescDestinazione": "ASSEGNATO AL COMANDO"
     },

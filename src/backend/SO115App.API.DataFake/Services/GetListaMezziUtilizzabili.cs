@@ -23,7 +23,7 @@ namespace SO115App.API.DataFake.Services
 
             var listaMezzi = JsonConvert.DeserializeObject<List<ListaMezziUtilizzabili>>(json);
 
-            return listaMezzi.FindAll(x => x.Sede.Split('.')[0].Equals(CodComando)).ToList();
+            return listaMezzi.FindAll(x => x.Sede.Equals(CodComando)).ToList();
 
         }
 

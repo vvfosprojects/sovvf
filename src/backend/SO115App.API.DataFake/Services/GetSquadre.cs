@@ -20,7 +20,7 @@ namespace SO115App.API.DataFake.Services
             }
 
             var listaSquadre = JsonConvert.DeserializeObject<List<ListaSquadre>>(json);
-            return listaSquadre.FindAll(x => x.Sede.Split('.')[0].Equals(CodComando)).ToList();
+            return listaSquadre.FindAll(x => x.Sede.Equals(CodComando)).ToList();
         }
     }
 }
