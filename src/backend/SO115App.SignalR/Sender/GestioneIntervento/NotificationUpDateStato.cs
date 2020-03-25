@@ -21,10 +21,8 @@
 using CQRS.Queries;
 using DomainModel.CQRS.Commands.UpDateStatoRichiesta;
 using Microsoft.AspNetCore.SignalR;
-using SO115App.API.Models.Classi.Boxes;
 using SO115App.API.Models.Classi.Marker;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes;
-using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza;
 using SO115App.API.Models.Servizi.CQRS.Queries.Marker.SintesiRichiesteAssistenzaMarker;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
