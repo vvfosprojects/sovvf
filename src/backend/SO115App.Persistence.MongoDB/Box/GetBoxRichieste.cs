@@ -59,6 +59,7 @@ namespace SO115App.Persistence.MongoDB
                 interventi.TotTurnoCorrente = listaSintesi.Count(x => x.IstanteRicezioneRichiesta.Year == DateTime.Now.Year);
                 interventi.TotTurnoPrecedente = 0;
                 interventi.Totale = listaSintesi.Count;
+                interventi.AnnoCorrente = DateTime.Now.Year;
             }
 
             return interventi;
