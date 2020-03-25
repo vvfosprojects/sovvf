@@ -45,8 +45,8 @@ namespace SO115App.ExternalAPI.Fake.Servizi.DistaccamentoUtentiComuni
             response.EnsureSuccessStatusCode();
             using HttpContent content = response.Content;
             string data = await content.ReadAsStringAsync().ConfigureAwait(false);
-            var personaleUC = JsonConvert.DeserializeObject<DistaccamentoUC>(data);
-            return _mapper.Map(personaleUC);
+            var distaccametoUC = JsonConvert.DeserializeObject<DistaccamentoUC>(data);
+            return _mapper.Map(distaccametoUC);
         }
 
         Sede IGetDistaccamentoByCodiceSede.Get(string codiceSede)
