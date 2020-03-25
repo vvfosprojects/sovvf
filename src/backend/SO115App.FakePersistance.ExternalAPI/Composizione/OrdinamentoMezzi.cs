@@ -55,7 +55,6 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             var destination = $"destinations={ richiesta.Localita.Coordinate.Latitudine.ToString().Replace(",", ".")},{ richiesta.Localita.Coordinate.Longitudine.ToString().Replace(",", ".")}";
             var mode = "mode=Driving";
             var sensor = "sensor=false";
-            var key = "key=AIzaSyAqr7bgViJbF0ckCnNzg9f64P1drVXVqa8";
 
             StringContent queryString = new StringContent("");
 
@@ -68,8 +67,9 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
             if (distanza.Rows[0].Elements[0].Distance != null)
             {
-                composizione.Km = distanza.Rows[0].Elements[0].Distance.Text.Substring(0, distanza.Rows[0].Elements[0].Distance.Text.Length - 2);
-                composizione.TempoPercorrenza = distanza.Rows[0].Elements[0].Duration.Text.Substring(0, distanza.Rows[0].Elements[0].Duration.Text.Length - 4);
+                //LE Value sono espresse in SECONDI
+                composizione.Km = distanza.Rows[0].Elements[0].Distance.Value.ToString();
+                composizione.TempoPercorrenza = distanza.Rows[0].Elements[0].Duration.Value.ToString();
             }
             else
             {
