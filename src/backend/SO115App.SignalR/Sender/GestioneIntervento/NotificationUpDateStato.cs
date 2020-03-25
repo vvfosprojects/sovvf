@@ -70,9 +70,6 @@ namespace SO115App.SignalR.Sender.GestioneIntervento
                 },
                 CodiciSede = new string[] { richiesta.CodiceSede }
             };
-            var listaSintesi = (List<SintesiRichiesta>)this._sintesiRichiesteAssistenzaHandler.Handle(sintesiRichiesteAssistenzaQuery).SintesiRichiesta;
-            richiesta.Chiamata = listaSintesi.LastOrDefault(sintesi => sintesi.Id == richiesta.IdRichiesta);
-
             var boxRichiesteQuery = new BoxRichiesteQuery()
             {
                 CodiciSede = new string[] { richiesta.CodiceSede }
