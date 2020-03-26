@@ -25,12 +25,11 @@ import { RichiesteEspanseState } from '../store/states/richieste/richieste-espan
 import { SetRichiestaGestione } from '../store/actions/richieste/richiesta-gestione.actions';
 import { RichiestaGestioneState } from '../store/states/richieste/richiesta-gestione.state';
 import { MezzoActionInterface } from '../../../shared/interface/mezzo-action.interface';
-import { ActionMezzo, ActionRichiesta, GetListaRichieste, SetNeedRefresh } from '../store/actions/richieste/richieste.actions';
+import { ActionMezzo, ActionRichiesta, GetListaRichieste } from '../store/actions/richieste/richieste.actions';
 import { ReducerRichiesteEspanse } from '../store/actions/richieste/richieste-espanse.actions';
 import { RichiestaActionInterface } from '../../../shared/interface/richiesta-action.interface';
 import { PermissionFeatures } from '../../../shared/enum/permission-features.enum';
 import { PaginationState } from '../../../shared/store/states/pagination/pagination.state';
-import { LoadingState } from '../../../shared/store/states/loading/loading.state';
 
 @Component({
     selector: 'app-richieste',

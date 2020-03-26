@@ -36,8 +36,6 @@ import { RichiestaAttivitaUtenteState } from './richiesta-attivita-utente.state'
 import { ListaSquadrePartenzaComponent } from '../../../../../shared';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { RicercaRichiesteState } from '../filterbar/ricerca-richieste.state';
-import { StartLoading, StopLoading } from '../../../../../shared/store/actions/loading/loading.actions';
-import { PaginationState } from '../../../../../shared/store/states/pagination/pagination.state';
 import { FiltriRichiesteState } from '../filterbar/filtri-richieste.state';
 import { PatchPagination } from '../../../../../shared/store/actions/pagination/pagination.actions';
 import { ResponseInterface } from '../../../../../shared/interface/response.interface';
