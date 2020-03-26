@@ -32,6 +32,8 @@ using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Personale;
 using SO115App.Models.Classi.Utenti.Autenticazione;
 using SO115App.API.Models.Classi.Organigramma;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
+using Microsoft.Extensions.Caching.Memory;
+using System;
 
 namespace SO115App.ExternalAPI.Fake.Servizi.Personale
 {
@@ -42,13 +44,18 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
         private readonly IGetDistaccamentoByCodiceSedeUC _getDistaccamentoByCodiceSedeUC;
         private readonly IGetPersonaleByCF _getPersonaleByCF;
         private readonly IGetAlberaturaUnitaOperative _getAlberaturaUnitaOperative;
+        private readonly IMemoryCache _memoryCache;
 
-        public GetListaSquadre(HttpClient client, IConfiguration configuration, IGetDistaccamentoByCodiceSedeUC GetDistaccamentoByCodiceSedeUC, IGetPersonaleByCF GetPersonaleByCF,
-             IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative)
+        public GetListaSquadre(HttpClient client, IConfiguration configuration, 
+             IGetDistaccamentoByCodiceSedeUC GetDistaccamentoByCodiceSedeUC, 
+             IGetPersonaleByCF GetPersonaleByCF,
+             IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative,
+             IMemoryCache memoryCache)
         {
             _getDistaccamentoByCodiceSedeUC = GetDistaccamentoByCodiceSedeUC;
             _getPersonaleByCF = GetPersonaleByCF;
             _getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
+            _memoryCache = memoryCache;
             _client = client;
             _configuration = configuration;
         }
@@ -78,20 +85,36 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
             }
 
             var ListaMezzi = new List<Mezzo>();
+
             foreach (string CodSede in ListaCodiciSedi)
             {
-                _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("test");
-                var response = await _client.GetAsync($"{_configuration.GetSection("DataFakeImplementation").GetSection("UrlAPISquadre").Value}/GetListaSquadreByCodComando?CodComando={CodSede}").ConfigureAwait(false);
-                response.EnsureSuccessStatusCode();
-                using HttpContent content = response.Content;
-
-                string data = await content.ReadAsStringAsync().ConfigureAwait(false);
-                List<SquadraFake> ListaSquadreSede = JsonConvert.DeserializeObject<List<SquadraFake>>(data);
-
-                foreach (SquadraFake squadraFake in ListaSquadreSede)
+                List<Squadra> listaSquadraBySede = new List<Squadra>();
+                if (!_memoryCache.TryGetValue("listaSquadre-" + CodSede, out listaSquadraBySede))
                 {
-                    var squadra = MapSqaudra(squadraFake, CodSede);
-                    listaSquadre.Add(squadra);
+
+                    _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("test");
+                    var response = await _client.GetAsync($"{_configuration.GetSection("DataFakeImplementation").GetSection("UrlAPISquadre").Value}/GetListaSquadreByCodComando?CodComando={CodSede}").ConfigureAwait(false);
+                    response.EnsureSuccessStatusCode();
+                    using HttpContent content = response.Content;
+
+                    string data = await content.ReadAsStringAsync().ConfigureAwait(false);
+                    List<SquadraFake> ListaSquadreSede = JsonConvert.DeserializeObject<List<SquadraFake>>(data);
+                    List<Squadra> listaSquadraBySedeAppo = new List<Squadra>();
+
+                    foreach (SquadraFake squadraFake in ListaSquadreSede)
+                    {
+                        var squadra = MapSqaudra(squadraFake, CodSede);
+                        listaSquadraBySedeAppo.Add(squadra);
+                        listaSquadre.Add(squadra);
+                    }
+
+                    var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromHours(4));
+                    _memoryCache.Set("listaSquadre-" + CodSede, listaSquadraBySedeAppo, cacheEntryOptions);
+
+                }
+                else 
+                {
+                    listaSquadre.AddRange(listaSquadraBySede);
                 }
             }
 

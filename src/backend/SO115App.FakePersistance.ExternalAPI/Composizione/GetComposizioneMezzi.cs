@@ -43,7 +43,6 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             List<Mezzo> ListaMezzi = _getMezziUtilizzabili.Get(ListaSedi).Result;
 
             var composizioneMezzi = GeneraListaComposizioneMezzi(ListaMezzi);
-            var ListaSquadre = _getSquadre.Get(ListaSedi).Result;
             string[] generiMezzi;
             string[] statiMezzi;
             string codiceDistaccamento;
@@ -55,6 +54,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             {
                 if (query.Filtro.CodiceSquadra?.Length > 0 && !string.IsNullOrEmpty(query.Filtro.CodiceSquadra[0]))
                 {
+                    var ListaSquadre = _getSquadre.Get(ListaSedi).Result;
                     var composizioneSquadre = new List<ComposizioneSquadre>();
                     foreach (Squadra s in ListaSquadre)
                     {
