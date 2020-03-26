@@ -9,7 +9,7 @@ import {
     SetIdChiamataInviaPartenza, SetRichiestaById,
     AddRichieste,
     StartInviaPartenzaFromChiamata,
-    UpdateRichiesta, VisualizzaListaSquadrePartenza
+    UpdateRichiesta, VisualizzaListaSquadrePartenza, SetNeedRefresh, StartLoadingRichieste, StopLoadingRichieste
 } from '../../actions/richieste/richieste.actions';
 import { SintesiRichiesteService } from 'src/app/core/service/lista-richieste-service/lista-richieste.service';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
@@ -41,29 +41,38 @@ import { PaginationState } from '../../../../../shared/store/states/pagination/p
 import { FiltriRichiesteState } from '../filterbar/filtri-richieste.state';
 import { PatchPagination } from '../../../../../shared/store/actions/pagination/pagination.actions';
 import { ResponseInterface } from '../../../../../shared/interface/response.interface';
+import { ClearRichiestaSelezionata } from '../../actions/richieste/richiesta-selezionata.actions';
+import { ClearRichiestaGestione } from '../../actions/richieste/richiesta-gestione.actions';
+import { ClearRichiestaHover } from '../../actions/richieste/richiesta-hover.actions';
 
 export interface RichiesteStateModel {
     richieste: SintesiRichiesta[];
     richiestaById: SintesiRichiesta;
     chiamataInviaPartenza: string;
+    needRefresh: boolean;
+    loadingRichieste: boolean;
 }
 
 export const RichiesteStateDefaults: RichiesteStateModel = {
     richieste: [],
     richiestaById: null,
-    chiamataInviaPartenza: null
+    chiamataInviaPartenza: null,
+    needRefresh: false,
+    loadingRichieste: false
 };
 
 @State<RichiesteStateModel>({
     name: 'richieste',
     defaults: RichiesteStateDefaults,
-    children: [RichiestaFissataState,
+    children: [
+        RichiestaFissataState,
         RichiestaHoverState,
         RichiestaSelezionataState,
         RichiestaModificaState,
         RichiesteEspanseState,
         RichiestaGestioneState,
-        RichiestaAttivitaUtenteState]
+        RichiestaAttivitaUtenteState
+    ]
 })
 export class RichiesteState {
 
@@ -82,6 +91,16 @@ export class RichiesteState {
         return (id: string) => state.richieste.find(x => x.id === id);
     }
 
+    @Selector()
+    static needRefresh(state: RichiesteStateModel) {
+        return state.needRefresh;
+    }
+
+    @Selector()
+    static loadingRichieste(state: RichiesteStateModel) {
+        return state.loadingRichieste;
+    }
+
     constructor(private richiesteService: SintesiRichiesteService,
                 private modalService: NgbModal,
                 private store: Store) {
@@ -89,7 +108,7 @@ export class RichiesteState {
 
     @Action(GetListaRichieste, { cancelUncompleted: true })
     getRichieste({ getState, dispatch }: StateContext<RichiesteStateModel>, action: GetListaRichieste) {
-        dispatch(new StartLoading());
+        dispatch(new StartLoadingRichieste());
         const filters = {
             search: this.store.selectSnapshot(RicercaRichiesteState.ricerca),
             others: this.store.selectSnapshot(FiltriRichiesteState.filtriRichiesteSelezionati)
@@ -101,11 +120,20 @@ export class RichiesteState {
         this.richiesteService.getRichieste(filters, pagination).subscribe((response: ResponseInterface) => {
             dispatch(new AddRichieste(response.sintesiRichiesta));
             dispatch(new PatchPagination(response.pagination));
-            dispatch(new StopLoading());
+            dispatch(new StopLoadingRichieste());
         }, () => {
             dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5));
-            dispatch(new StopLoading());
+            dispatch(new StopLoadingRichieste());
         });
+
+        // Clear dei dati presenti nella pagina che si sta lasciando
+        dispatch(new ClearRichiestaSelezionata());
+        dispatch(new ClearRichiestaHover());
+        dispatch(new ClearRichiesteEspanse());
+        const richiestaGestione = this.store.selectSnapshot(RichiestaGestioneState.richiestaGestione);
+        if (richiestaGestione) {
+            dispatch(new ClearRichiestaGestione(richiestaGestione.id));
+        }
     }
 
     @Action(PatchRichiesta)
@@ -126,6 +154,15 @@ export class RichiesteState {
     clearRichieste({ patchState, dispatch }: StateContext<RichiesteStateModel>) {
         dispatch(new ClearRichiesteEspanse());
         patchState(RichiesteStateDefaults);
+    }
+
+
+    @Action(SetNeedRefresh)
+    setNeedRefresh({ patchState }: StateContext<RichiesteStateModel>, action: SetNeedRefresh) {
+        const needRefreshVaue = action.value;
+        patchState({
+            needRefresh: needRefreshVaue
+        });
     }
 
     @Action(UpdateRichiesta)
@@ -249,6 +286,20 @@ export class RichiesteState {
         modal.componentInstance.listaSquadre = action.listaSquadre;
         modal.result.then(() => console.log('Lista Squadre Partenza Aperta'),
             () => console.log('Lista Squadre Partenza Chiusa'));
+    }
+
+    @Action(StartLoadingRichieste)
+    startLoadingRichieste({ patchState }: StateContext<RichiesteStateModel>) {
+        patchState({
+            loadingRichieste: true
+        });
+    }
+
+    @Action(StopLoadingRichieste)
+    stopLoadingRichieste({ patchState }: StateContext<RichiesteStateModel>) {
+        patchState({
+            loadingRichieste: false
+        });
     }
 
 }

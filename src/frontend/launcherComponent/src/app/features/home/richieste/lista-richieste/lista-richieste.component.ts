@@ -4,8 +4,6 @@ import { HelperSintesiRichiesta } from '../helper/_helper-sintesi-richiesta';
 import { CdkVirtualScrollViewport, ScrollDispatcher } from '@angular/cdk/scrolling';
 import { MezzoActionInterface } from '../../../../shared/interface/mezzo-action.interface';
 import { RichiestaActionInterface } from '../../../../shared/interface/richiesta-action.interface';
-import { StopLoading } from '../../../../shared/store/actions/loading/loading.actions';
-import { Store } from '@ngxs/store';
 
 @Component({
     selector: 'app-lista-richieste',
@@ -57,56 +55,11 @@ export class ListaRichiesteComponent implements OnInit {
 
     @ViewChild(CdkVirtualScrollViewport) virtualScroll: CdkVirtualScrollViewport;
 
-    constructor(private scrollDispatcher: ScrollDispatcher,
-                private store: Store) {
+    constructor() {
     }
 
     ngOnInit() {
-        // this.scrollDispatcher.scrolled().pipe().subscribe(event => {
-        //         this.scrolling = true;
-        //         if (!this.loading) {
-        //             if (Math.floor(this.virtualScroll.measureScrollOffset('bottom')) <= 0) {
-        //                 this.onNuoveRichieste('bottom');
-        //             }
-        //             if (this.virtualScroll.measureScrollOffset('top') === 0) {
-        //                 if (this.page > 1) {
-        //                     this.onNuoveRichieste('top');
-        //                     this.virtualScroll.scrollToIndex(this.pageSize, 'auto');
-        //                 }
-        //             }
-        //         }
-        //     }
-        // );
     }
-
-    // onPageOne() {
-    //     this.onNuoveRichieste('top', 1);
-    //     if (!this.loading) {
-    //         this.virtualScroll.scrollToIndex(0, 'smooth');
-    //     }
-    // }
-    //
-    // onTop() {
-    //     if (!this.loading) {
-    //         this.virtualScroll.scrollToIndex(0, 'smooth');
-    //     }
-    // }
-    //
-    // onBottom() {
-    //     if (!this.loading) {
-    //         this.virtualScroll.scrollToIndex(this.richieste.length, 'smooth');
-    //     }
-    // }
-
-
-    /* Permette di caricare nuove richieste */
-    // onNuoveRichieste(position: string, page?: number) {
-    //     if (!page) {
-    //         this.nuoveRichieste.emit({ page: position === 'bottom' ? this.page + 1 : this.page - 1, position: position });
-    //     } else {
-    //         this.nuoveRichieste.emit({ page: page, position: position });
-    //     }
-    // }
 
     /* Gestisce il singolo click sulla richiesta */
     richiestaClick(richiesta: SintesiRichiesta) {

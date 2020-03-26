@@ -29,6 +29,13 @@ export class ClearRichieste {
     static readonly type = '[Richieste] Clear Lista Richieste';
 }
 
+export class SetNeedRefresh {
+    static readonly type = '[Richieste] Set Need Refresh';
+
+    constructor(public value: boolean) {
+    }
+}
+
 export class UpdateRichiesta {
     static readonly type = '[Richieste] Modifica Richiesta';
 
@@ -99,4 +106,12 @@ export class VisualizzaListaSquadrePartenza {
 
     constructor(public listaSquadre: ListaSquadre) {
     }
+}
+
+export class StartLoadingRichieste {
+    static readonly type = '[Richieste] Start Loading Richieste';
+}
+
+export class StopLoadingRichieste {
+    static readonly type = '[Richieste] Stop Loading Richieste';
 }

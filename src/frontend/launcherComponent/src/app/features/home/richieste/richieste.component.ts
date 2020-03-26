@@ -63,14 +63,14 @@ export class RichiesteComponent implements OnInit, OnDestroy {
 
     @Select(RichiesteEspanseState.richiesteEspanse) idRichiesteEspanse$: Observable<string[]>;
 
-    @Select(LoadingState.loading) loading$: Observable<boolean>;
+    @Select(RichiesteState.loadingRichieste) loadingRichieste$: Observable<boolean>;
 
     @Select(PaginationState.page) page$: Observable<number>;
     @Select(PaginationState.pageSize) pageSize$: Observable<number>;
     @Select(PaginationState.totalItems) totalItems$: Observable<number>;
 
     loaderRichieste = true;
-    listHeightClass = 'm-h-750';
+    listHeightClass = 'm-h-695';
     permessiFeature = PermissionFeatures;
 
     subscription = new Subscription();
@@ -117,11 +117,11 @@ export class RichiesteComponent implements OnInit, OnDestroy {
                 if (idRichiestaFissata) {
                     const richiestaFissataArray = this.richieste.filter(r => r.id === idRichiestaFissata);
                     this.richiestaFissata = richiestaFissataArray[0];
-                    this.listHeightClass = 'm-h-600';
+                    this.listHeightClass = 'm-h-590';
                 } else {
                     setTimeout(() => {
                         this.richiestaFissata = null;
-                        this.listHeightClass = 'm-h-750';
+                        this.listHeightClass = 'm-h-695';
                     }, 300);
                 }
             })
@@ -133,9 +133,9 @@ export class RichiesteComponent implements OnInit, OnDestroy {
             this.richiestaFissataEspanso$.subscribe((richiestaEspanso: boolean) => {
                 // console.log(richiestaEspanso);
                 if (richiestaEspanso === true) {
-                    this.listHeightClass = 'm-h-400';
+                    // this.listHeightClass = 'm-h-400';
                 } else {
-                    this.listHeightClass = 'm-h-600';
+                    this.listHeightClass = 'm-h-590';
                 }
             })
         );
