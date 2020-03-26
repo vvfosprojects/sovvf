@@ -119,6 +119,7 @@ export class SchedaTelefonataState {
         if (!this.store.selectSnapshot(RichiestaSelezionataState.idRichiestaSelezionata)) {
             const currentPage = this.store.selectSnapshot(PaginationState.page);
             dispatch(new GetListaRichieste({ page: currentPage }));
+            dispatch(new SetNeedRefresh(false));
         } else {
             dispatch(new SetNeedRefresh(true));
         }

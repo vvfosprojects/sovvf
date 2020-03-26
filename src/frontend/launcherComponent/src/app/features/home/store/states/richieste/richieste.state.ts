@@ -30,7 +30,7 @@ import { SetMarkerRichiestaSelezionato } from '../../actions/maps/marker.actions
 import { ComposizionePartenzaState } from '../composizione-partenza/composizione-partenza.state';
 import { ClearRichiesteEspanse } from '../../actions/richieste/richieste-espanse.actions';
 import { RichiesteEspanseState } from './richieste-espanse.state';
-import { calcolaActionSuggeritaMezzo } from '../../../../../shared/helper/function';
+import { calcolaActionSuggeritaMezzo, makeCopy } from '../../../../../shared/helper/function';
 import { RichiestaGestioneState } from './richiesta-gestione.state';
 import { RichiestaAttivitaUtenteState } from './richiesta-attivita-utente.state';
 import { ListaSquadrePartenzaComponent } from '../../../../../shared';
@@ -49,16 +49,18 @@ export interface RichiesteStateModel {
     richieste: SintesiRichiesta[];
     richiestaById: SintesiRichiesta;
     chiamataInviaPartenza: string;
-    needRefresh: boolean;
     loadingRichieste: boolean;
+    needRefresh: boolean;
+    refreshCount: number;
 }
 
 export const RichiesteStateDefaults: RichiesteStateModel = {
     richieste: [],
     richiestaById: null,
     chiamataInviaPartenza: null,
+    loadingRichieste: false,
     needRefresh: false,
-    loadingRichieste: false
+    refreshCount: 0
 };
 
 @State<RichiesteStateModel>({
@@ -97,6 +99,11 @@ export class RichiesteState {
     }
 
     @Selector()
+    static refreshCount(state: RichiesteStateModel) {
+        return state.refreshCount;
+    }
+
+    @Selector()
     static loadingRichieste(state: RichiesteStateModel) {
         return state.loadingRichieste;
     }
@@ -108,6 +115,7 @@ export class RichiesteState {
 
     @Action(GetListaRichieste, { cancelUncompleted: true })
     getRichieste({ getState, dispatch }: StateContext<RichiesteStateModel>, action: GetListaRichieste) {
+        const state = getState();
         dispatch(new StartLoadingRichieste());
         const filters = {
             search: this.store.selectSnapshot(RicercaRichiesteState.ricerca),
@@ -115,12 +123,15 @@ export class RichiesteState {
         };
         const pagination = {
             page: action.options && action.options.page ? action.options.page : 1,
-            pageSize: this.store.selectSnapshot(PaginationState.pageSize)
+            pageSize: 7
         };
         this.richiesteService.getRichieste(filters, pagination).subscribe((response: ResponseInterface) => {
             dispatch(new AddRichieste(response.sintesiRichiesta));
             dispatch(new PatchPagination(response.pagination));
             dispatch(new StopLoadingRichieste());
+            if (state.needRefresh) {
+                dispatch(new SetNeedRefresh(false));
+            }
         }, () => {
             dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5));
             dispatch(new StopLoadingRichieste());
@@ -158,11 +169,22 @@ export class RichiesteState {
 
 
     @Action(SetNeedRefresh)
-    setNeedRefresh({ patchState }: StateContext<RichiesteStateModel>, action: SetNeedRefresh) {
-        const needRefreshVaue = action.value;
-        patchState({
-            needRefresh: needRefreshVaue
-        });
+    setNeedRefresh({ getState, patchState }: StateContext<RichiesteStateModel>, action: SetNeedRefresh) {
+        const needRefreshValue = action.value;
+        if (needRefreshValue === true) {
+            const state = getState();
+            let count = makeCopy(state.refreshCount);
+            count += 1;
+            patchState({
+                needRefresh: needRefreshValue,
+                refreshCount: count
+            });
+        } else if (needRefreshValue === false) {
+            patchState({
+                needRefresh: needRefreshValue,
+                refreshCount: 0
+            });
+        }
     }
 
     @Action(UpdateRichiesta)

@@ -25,7 +25,7 @@ import { RichiesteEspanseState } from '../store/states/richieste/richieste-espan
 import { SetRichiestaGestione } from '../store/actions/richieste/richiesta-gestione.actions';
 import { RichiestaGestioneState } from '../store/states/richieste/richiesta-gestione.state';
 import { MezzoActionInterface } from '../../../shared/interface/mezzo-action.interface';
-import { ActionMezzo, ActionRichiesta, GetListaRichieste } from '../store/actions/richieste/richieste.actions';
+import { ActionMezzo, ActionRichiesta, GetListaRichieste, SetNeedRefresh } from '../store/actions/richieste/richieste.actions';
 import { ReducerRichiesteEspanse } from '../store/actions/richieste/richieste-espanse.actions';
 import { RichiestaActionInterface } from '../../../shared/interface/richiesta-action.interface';
 import { PermissionFeatures } from '../../../shared/enum/permission-features.enum';
@@ -64,6 +64,8 @@ export class RichiesteComponent implements OnInit, OnDestroy {
     @Select(RichiesteEspanseState.richiesteEspanse) idRichiesteEspanse$: Observable<string[]>;
 
     @Select(RichiesteState.loadingRichieste) loadingRichieste$: Observable<boolean>;
+    @Select(RichiesteState.needRefresh) needRefresh$: Observable<boolean>;
+    @Select(RichiesteState.refreshCount) refreshCount$: Observable<number>;
 
     @Select(PaginationState.page) page$: Observable<number>;
     @Select(PaginationState.pageSize) pageSize$: Observable<number>;
@@ -105,9 +107,12 @@ export class RichiesteComponent implements OnInit, OnDestroy {
         );
     }
 
-    // Carica nuove richieste attraverso lo scroll
     onNuoveRichieste(page: number) {
         this.store.dispatch(new GetListaRichieste({ page: page }));
+    }
+
+    onRefreshRichieste() {
+        this.store.dispatch(new GetListaRichieste());
     }
 
     // Restituisce la Richiesta Fissata

@@ -1,10 +1,4 @@
 <div class="row mt-2">
-    <!-- Loader (!richieste) -->
-    <div *ngIf="loaderRichieste" class="col-12 position-relative m-h-750">
-        <div class="loader-centrato">
-            <img src="assets/img/pink_loader_resized.gif">
-        </div>
-    </div>
     <!-- Lista di singole Richieste -->
     <div *ngIf="richieste && richieste.length > 0" class="col-12 py-1 px-0 overflow-auto" [ngClass]="heightControl()">
         <div *ngIf="loading"
@@ -41,9 +35,34 @@
             </div>
         </div>
     </div>
-    <div class="col-12 text-center mt-3">
-        <pagination-controls class="mb-0" [previousLabel]="'Precedente'" [nextLabel]="'Successiva'"
-                             (pageChange)="pageChange.emit($event)">
-        </pagination-controls>
+    <div class="col-12 mt-3">
+        <div class="row">
+            <div class="col-3">
+                <button class="btn btn-block"
+                        [ngClass]="{'btn-outline-primary': !needRefresh, 'btn-primary': needRefresh}"
+                        [disabled]="!needRefresh || loading" (click)="refresh.emit(true)">
+                    <ng-template [ngIf]="needRefresh && !loading">
+                        <i class="fa fa-refresh mr-1"></i>
+                        <span class="font-weight-bold">
+                            Nuove Richieste
+                            <span class="badge badge-danger ml-1">{{refreshCount}}</span>
+                        </span>
+                    </ng-template>
+                    <ng-template [ngIf]="!needRefresh && !loading">
+                        <i class="fa fa-check mr-1"></i>
+                        La lista è aggiornata
+                    </ng-template>
+                    <ng-template [ngIf]="loading">
+                        <i class="fa fa-refresh fa-spin mr-1"></i>
+                        Caricamento...
+                    </ng-template>
+                </button>
+            </div>
+            <div class="col-9 text-center pt-1">
+                <pagination-controls class="mb-0" [previousLabel]="'Precedente'" [nextLabel]="'Successiva'"
+                                     (pageChange)="pageChange.emit($event)">
+                </pagination-controls>
+            </div>
+        </div>
     </div>
 </div>

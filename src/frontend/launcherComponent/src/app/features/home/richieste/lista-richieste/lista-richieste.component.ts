@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.model';
 import { HelperSintesiRichiesta } from '../helper/_helper-sintesi-richiesta';
-import { CdkVirtualScrollViewport, ScrollDispatcher } from '@angular/cdk/scrolling';
+import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { MezzoActionInterface } from '../../../../shared/interface/mezzo-action.interface';
 import { RichiestaActionInterface } from '../../../../shared/interface/richiesta-action.interface';
 
@@ -18,12 +18,13 @@ export class ListaRichiesteComponent implements OnInit {
     @Input() richiestaSelezionata: SintesiRichiesta;
     @Input() richiestaFissata: SintesiRichiesta;
     @Input() richiestaGestione: SintesiRichiesta;
-    @Input() loaderRichieste = true;
     @Input() itemSize = 98;
     @Input() listHeightClass: string;
     @Input() idRichiesteEspanse: string[] = [];
 
     @Input() loading: boolean;
+    @Input() needRefresh: boolean;
+    @Input() refreshCount: number;
 
     // Paginazione
     @Input() page: number;
@@ -38,6 +39,7 @@ export class ListaRichiesteComponent implements OnInit {
     @Output() statoPartenza = new EventEmitter<boolean>();
     @Output() composizionePartenza = new EventEmitter<SintesiRichiesta>();
     @Output() pageChange = new EventEmitter<number>();
+    @Output() refresh = new EventEmitter<boolean>();
     @Output() fissaInAlto = new EventEmitter<string>();
     @Output() hoverIn = new EventEmitter<string>();
     @Output() hoverOut = new EventEmitter<boolean>();

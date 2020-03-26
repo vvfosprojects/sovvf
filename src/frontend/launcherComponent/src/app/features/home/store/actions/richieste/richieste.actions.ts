@@ -7,7 +7,7 @@ import { ListaSquadre } from '../../../../../shared/interface/lista-squadre';
 export class GetListaRichieste {
     static readonly type = '[Richieste] Get Lista Richieste API';
 
-    constructor(public options?: { page: number}) {
+    constructor(public options?: { page?: number}) {
     }
 }
 
