@@ -17,9 +17,8 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using Newtonsoft.Json;
-using SO115App.API.Models.Classi.Composizione;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
+using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AggiornaStatoMezzo;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
@@ -27,9 +26,6 @@ using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi;
 using SO115App.Models.Servizi.Infrastruttura.GestioneStatoOperativoSquadra;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 
 namespace SO115App.ExternalAPI.Fake.Composizione
 {
