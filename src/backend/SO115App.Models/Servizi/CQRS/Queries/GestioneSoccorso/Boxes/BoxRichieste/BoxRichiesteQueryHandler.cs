@@ -21,6 +21,7 @@ using CQRS.Queries;
 using SO115App.API.Models.Classi.Organigramma;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes;
 using SO115App.Models.Servizi.Infrastruttura.Box;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -32,10 +33,12 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Disponibilit
     public class BoxRichiesteQueryHandler : IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult>
     {
         private readonly IGetBoxRichieste _iGetBox;
+        private readonly IGetAlberaturaUnitaOperative _getAlberaturaUnitaOperative;
 
-        public BoxRichiesteQueryHandler(IGetBoxRichieste iGetBox)
+        public BoxRichiesteQueryHandler(IGetBoxRichieste iGetBox, IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative)
         {
             this._iGetBox = iGetBox;
+            this._getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
         }
 
         /// <summary>
@@ -45,15 +48,21 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Disponibilit
         /// <returns>Elenco dei mezzi disponibili</returns>
         public BoxRichiesteResult Handle(BoxRichiesteQuery query)
         {
-            var listaPin = new List<PinNodo>();
-            foreach(var sede in query.CodiciSede) 
+            var listaSediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
+            var pinNodi = new List<PinNodo>();
+
+            foreach (var sede in query.CodiciSede)
             {
-                var pinnodo = new PinNodo(sede, true);
-                listaPin.Add(pinnodo);
-            };
+                pinNodi.Add(new PinNodo(sede, true));
+            }
+
+            foreach (var figlio in listaSediAlberate.GetSottoAlbero(pinNodi))
+            {
+                pinNodi.Add(new PinNodo(figlio.Codice, true));
+            }
 
             // preparazione del DTO
-            var boxes = _iGetBox.Get(listaPin.ToHashSet());
+            var boxes = _iGetBox.Get(pinNodi.ToHashSet());
 
             return new BoxRichiesteResult()
             {

@@ -24,7 +24,6 @@ using SO115App.API.Models.Classi.Condivise;
 using SO115App.Models.Servizi.Infrastruttura.Box;
 using System.Collections.Generic;
 using System.Linq;
-using SO115App.FakePersistence.JSon.Utility;
 using SO115App.Models.Servizi.Infrastruttura.GetComposizioneSquadre;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneSquadre;
 using SO115App.API.Models.Classi.Composizione;
@@ -39,8 +38,6 @@ namespace SO115App.ExternalAPI.Fake.Box
         {
             _getComposizioneSquadre = GetComposizioneSquadre;
         }
-
-        private readonly string _filepath = CostantiJson.SquadreComposizione;
 
         public BoxPersonale Get(string[] codiciSede)
         {

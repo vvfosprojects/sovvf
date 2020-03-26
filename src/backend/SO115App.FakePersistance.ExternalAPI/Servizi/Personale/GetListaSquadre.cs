@@ -24,13 +24,14 @@ using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Squadre;
-using SO115App.FakePersistence.JSon.Utility;
 using System.IO;
 using SO115App.ExternalAPI.Fake.Classi.DTOFake;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
 using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Personale;
 using SO115App.Models.Classi.Utenti.Autenticazione;
+using SO115App.API.Models.Classi.Organigramma;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
 
 namespace SO115App.ExternalAPI.Fake.Servizi.Personale
 {
@@ -40,11 +41,14 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
         private readonly IConfiguration _configuration;
         private readonly IGetDistaccamentoByCodiceSedeUC _getDistaccamentoByCodiceSedeUC;
         private readonly IGetPersonaleByCF _getPersonaleByCF;
+        private readonly IGetAlberaturaUnitaOperative _getAlberaturaUnitaOperative;
 
-        public GetListaSquadre(HttpClient client, IConfiguration configuration, IGetDistaccamentoByCodiceSedeUC GetDistaccamentoByCodiceSedeUC, IGetPersonaleByCF GetPersonaleByCF)
+        public GetListaSquadre(HttpClient client, IConfiguration configuration, IGetDistaccamentoByCodiceSedeUC GetDistaccamentoByCodiceSedeUC, IGetPersonaleByCF GetPersonaleByCF,
+             IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative)
         {
             _getDistaccamentoByCodiceSedeUC = GetDistaccamentoByCodiceSedeUC;
             _getPersonaleByCF = GetPersonaleByCF;
+            _getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
             _client = client;
             _configuration = configuration;
         }
@@ -54,9 +58,17 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
             List<Squadra> listaSquadre = new List<Squadra>();
             List<string> ListaCodiciSedi = new List<string>();
 
-            foreach (string sede in sedi)
+            var listaSediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
+            var pinNodi = new List<PinNodo>();
+
+            foreach (var sede in sedi)
             {
-                var codice = sede.Substring(0, 2);
+                pinNodi.Add(new PinNodo(sede, true));
+            }
+
+            foreach (var figlio in listaSediAlberate.GetSottoAlbero(pinNodi))
+            {
+                var codice = figlio.Codice;
                 string codiceE = "";
                 codiceE = ListaCodiciSedi.Find(x => x.Equals(codice));
                 if (string.IsNullOrEmpty(codiceE))
@@ -104,14 +116,20 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
 
             List<string> ListaCodiciFiscaliComponentiSquadra = new List<string>();
             List<Componente> ComponentiSquadra = new List<Componente>();
-            foreach (string cf in squadraFake.ListaCodiciFiscaliComponentiSquadra)
+            foreach (ComponenteSquadraFake componenteFake in squadraFake.ComponentiSquadra)
             {
-                PersonaleVVF pVVf = _getPersonaleByCF.Get(cf).Result;
+                PersonaleVVF pVVf = _getPersonaleByCF.Get(componenteFake.CodiceFiscale).Result;
 
-                bool capoPartenza = false; bool autista = false;
-                Componente componente = new Componente("", pVVf.Nominativo, pVVf.Nominativo, capoPartenza, autista, false)
+                Componente componente = new Componente(componenteFake.DescrizioneQualificaLunga,
+                pVVf.Nominativo, componenteFake.Tooltip, componenteFake.CapoPartenza, componenteFake.Autista, componenteFake.Rimpiazzo)
                 {
                     CodiceFiscale = pVVf.CodFiscale,
+                    OrarioFine = componenteFake.OrarioFine,
+                    OrarioInizio = componenteFake.OrarioInizio,
+                    Telefono = componenteFake.Telefono,
+                    TecnicoGuardia1 = componenteFake.TecnicoGuardia1,
+                    TecnicoGuardia2 = componenteFake.TecnicoGuardia2,
+                    CapoTurno = componenteFake.CapoTurno
                 };
                 ComponentiSquadra.Add(componente);
                 ListaCodiciFiscaliComponentiSquadra.Add(pVVf.CodFiscale);
