@@ -1,11 +1,9 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using System.Net.Http;
 using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Composizione;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.PreAccoppiati;
 using SO115App.ExternalAPI.Fake.Classi.DTOFake;
-using SO115App.FakePersistence.JSon.Utility;
 using SO115App.Models.Servizi.Infrastruttura.GetPreAccoppiati;
 using Microsoft.Extensions.Caching.Memory;
 using System.Threading.Tasks;
@@ -41,7 +39,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
             if (!_memoryCache.TryGetValue("ListaPreAccoppiati", out ListaPreAccoppiati))
             {
                 _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("test");
-                var response = await _client.GetAsync($"{_configuration.GetSection("DataFakeImplementation").GetSection("UrlAPIPreAccoppiati").Value}/GetListaPreaccoppiatiByCodComando={CodSede}").ConfigureAwait(false);
+                var response = await _client.GetAsync($"{_configuration.GetSection("DataFakeImplementation").GetSection("UrlAPIPreAccoppiati").Value}/GetListaPreaccoppiatiByCodComando?CodComando={CodSede}").ConfigureAwait(false);
                 response.EnsureSuccessStatusCode();
                 using HttpContent content = response.Content;
                 string data = await content.ReadAsStringAsync().ConfigureAwait(false);

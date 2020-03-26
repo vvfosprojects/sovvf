@@ -56,7 +56,8 @@ namespace DomainModel.CQRS.Commands.PresaInCarico
             {
                 new InizioPresaInCarico(richiesta, DateTime.UtcNow, richiesta.CodOperatore);
 
-                richiesta.UtPresaInCarico.Add(nominativoPresaInCarico);
+                if(!richiesta.UtPresaInCarico.Contains(nominativoPresaInCarico))
+                    richiesta.UtPresaInCarico.Add(nominativoPresaInCarico);
             }
             else
             {

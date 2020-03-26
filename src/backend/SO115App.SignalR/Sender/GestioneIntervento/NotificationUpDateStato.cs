@@ -21,10 +21,8 @@
 using CQRS.Queries;
 using DomainModel.CQRS.Commands.UpDateStatoRichiesta;
 using Microsoft.AspNetCore.SignalR;
-using SO115App.API.Models.Classi.Boxes;
 using SO115App.API.Models.Classi.Marker;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes;
-using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza;
 using SO115App.API.Models.Servizi.CQRS.Queries.Marker.SintesiRichiesteAssistenzaMarker;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
@@ -70,8 +68,6 @@ namespace SO115App.SignalR.Sender.GestioneIntervento
                 },
                 CodiciSede = new string[] { richiesta.CodiceSede }
             };
-            var listaSintesi = (List<SintesiRichiesta>)this._sintesiRichiesteAssistenzaHandler.Handle(sintesiRichiesteAssistenzaQuery).SintesiRichiesta;
-
             var boxRichiesteQuery = new BoxRichiesteQuery()
             {
                 CodiciSede = new string[] { richiesta.CodiceSede }
@@ -96,15 +92,14 @@ namespace SO115App.SignalR.Sender.GestioneIntervento
             };
 
             var listaSintesiMarker = (List<SintesiRichiestaMarker>)_sintesiRichiesteAssistenzaMarkerHandler.Handle(sintesiRichiesteAssistenzaMarkerQuery).SintesiRichiestaMarker;
-
-            richiesta.Chiamata = listaSintesi.LastOrDefault(sintesi => sintesi.Id == richiesta.IdRichiesta);
+            var ChamataUpd = listaSintesiMarker.LastOrDefault(sintesi => sintesi.Id == richiesta.IdRichiesta);
 
             await _notificationHubContext.Clients.Group(richiesta.CodiceSede).SendAsync("ModifyAndNotifySuccess", richiesta);
             await _notificationHubContext.Clients.Group(richiesta.CodiceSede).SendAsync("ChangeStateSuccess", notificaChangeState);
             await _notificationHubContext.Clients.Group(richiesta.CodiceSede).SendAsync("NotifyGetBoxInterventi", boxInterventi);
             await _notificationHubContext.Clients.Group(richiesta.CodiceSede).SendAsync("NotifyGetBoxMezzi", boxMezzi);
             await _notificationHubContext.Clients.Group(richiesta.CodiceSede).SendAsync("NotifyGetBoxPersonale", boxPersonale);
-            await _notificationHubContext.Clients.Group(richiesta.CodiceSede).SendAsync("NotifyGetRichiestaUpDateMarker", listaSintesiMarker.LastOrDefault(marker => marker.Codice == richiesta.Chiamata.Codice));
+            await _notificationHubContext.Clients.Group(richiesta.CodiceSede).SendAsync("NotifyGetRichiestaUpDateMarker", ChamataUpd);
         }
     }
 }

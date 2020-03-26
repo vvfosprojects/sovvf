@@ -34,7 +34,7 @@ namespace SO115App.Models.Servizi.CustomMapper
                         .ForMember(x => x.ListaEntiIntervenuti, y => y.MapFrom(z => z.CodEntiIntervenuti))
                         .ForMember(x => x.Tipologie, y => y.MapFrom(_ => _getTipologieByCodice.Get(richiesta.Tipologie)))
                         .ForMember(x => x.Operatore, y => y.MapFrom(_ => _getUtenteById.GetUtenteByCodice(richiesta.CodOperatore)))
-                        .ForMember(x => x.TurnoInserimentoChiamata, y => y.Ignore())
+                        //.ForMember(x => x.TurnoInserimentoChiamata, y => y.Ignore())
                         .ForMember(x => x.ListaUtentiInLavorazione, y => y.MapFrom(_ => MapUtenteAttivita(richiesta, "L")))
                         .ForMember(x => x.ListaUtentiPresaInCarico, y => y.MapFrom(_ => MapUtenteAttivita(richiesta, "P")))
                         );

@@ -25,7 +25,7 @@ namespace SO115App.FakePersistenceJSon.Navbar
 {
     public class GetNavbar : IGetNavbar
     {
-        public API.Models.Classi.Navbar.Navbar Get()
+        public API.Models.Classi.NavBar.Navbar Get()
         {
             string filepath = "Fake/Navbar.json";
             string json;
@@ -34,7 +34,7 @@ namespace SO115App.FakePersistenceJSon.Navbar
                 json = r.ReadToEnd();
             }
 
-            API.Models.Classi.Navbar.Navbar navbars = JsonConvert.DeserializeObject<API.Models.Classi.Navbar.Navbar>(json);
+            API.Models.Classi.NavBar.Navbar navbars = JsonConvert.DeserializeObject<API.Models.Classi.NavBar.Navbar>(json);
 
             return navbars;
         }

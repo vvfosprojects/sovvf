@@ -146,11 +146,20 @@ namespace Persistence.MongoDB
                 return database.GetCollection<Utente>("utente");
             }
         }
+
         public IMongoCollection<ListaSedi> SediCollection
         {
             get
             {
                 return database.GetCollection<ListaSedi>("listasedi");
+            }
+        }
+
+        public IMongoCollection<StatoOperativoSquadra> StatoSquadraCollection
+        {
+            get
+            {
+                return database.GetCollection<StatoOperativoSquadra>("statoSquadra");
             }
         }
     }

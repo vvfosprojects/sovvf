@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="InAttesa.cs" company="CNVVF">
+// <copyright file="StatoOperativoSquadra.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,24 +17,34 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-namespace SO115App.API.Models.Classi.Soccorso.StatiRichiesta
+using MongoDB.Bson.Serialization.Attributes;
+
+namespace SO115App.Models.Classi.Condivise
 {
     /// <summary>
-    ///   Richiesta in attesa di essere evasa
+    ///   DTO dello stato operativo di una squadra
     /// </summary>
-    public class InAttesa : IStatoRichiesta
+    [BsonIgnoreExtraElements]
+    public class StatoOperativoSquadra
     {
         /// <summary>
-        ///   Indica se la Richiesta è evasa
+        ///   l'id della richiesta a cui è associata la squadra
         /// </summary>
-        public bool Evasa
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public string IdRichiesta { get; set; }
 
-        public static string SelettoreDB => "C";
+        /// <summary>
+        ///   l'id della squadra in uno stato operativo
+        /// </summary>
+        public string IdSquadra { get; set; }
+
+        /// <summary>
+        ///   lo stato operativo della squadra
+        /// </summary>
+        public string StatoSquadra { get; set; }
+
+        /// <summary>
+        ///   il codice sede della squadra
+        /// </summary>
+        public string CodiceSede { get; set; }
     }
 }

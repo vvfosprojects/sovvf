@@ -10,6 +10,8 @@ namespace SO115App.ExternalAPI.Fake.Classi.DTOFake
         public string NomeSquadra { get; set; }
         public string Sede { get; set; }
         public string Stato { get; set; }
-        public List<string> ListaCodiciFiscaliComponentiSquadra { get; set; }
+
+        // public List<string> ListaCodiciFiscaliComponentiSquadra { get; set; }
+        public List<ComponenteSquadraFake> ComponentiSquadra { get; set; }
     }
 }

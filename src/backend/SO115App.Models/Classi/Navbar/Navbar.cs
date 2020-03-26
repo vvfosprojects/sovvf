@@ -19,7 +19,7 @@
 //-----------------------------------------------------------------------
 using SO115App.API.Models.Classi.Organigramma;
 
-namespace SO115App.API.Models.Classi.Navbar
+namespace SO115App.API.Models.Classi.NavBar
 {
     public class Navbar
     {

@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="InAttesa.cs" company="CNVVF">
+// <copyright file="ISetStatoSquadra.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,24 +17,19 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-namespace SO115App.API.Models.Classi.Soccorso.StatiRichiesta
+namespace SO115App.Models.Servizi.Infrastruttura.GestioneStatoOperativoSquadra
 {
     /// <summary>
-    ///   Richiesta in attesa di essere evasa
+    ///   servizio per il set dello stato operativo di una squadra
     /// </summary>
-    public class InAttesa : IStatoRichiesta
+    public interface ISetStatoSquadra
     {
         /// <summary>
-        ///   Indica se la Richiesta è evasa
+        ///   metodo del servizio che setta lo stato operativo della squadra su base dati
         /// </summary>
-        public bool Evasa
-        {
-            get
-            {
-                return false;
-            }
-        }
-
-        public static string SelettoreDB => "C";
+        /// <param name="idSquadra">l'identificativo della squadra</param>
+        /// <param name="idRichiesta">l'identificativo della richiesta</param>
+        /// <param name="statoSquadra">lo stato operativo da trascrivere</param>
+        void SetStato(string idSquadra, string idRichiesta, string statoSquadra, string codiceSede);
     }
 }

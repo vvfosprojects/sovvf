@@ -97,29 +97,23 @@ namespace SO115App.CompositionRoot
             #region Gac
 
             container.Register<IGetMezziByICCID, GetMezziByICCID>();
-            //container.Register<IGetMezziByCodiceMezzo, GetMezziByCodiceMezzo>();
             container.Register<IGetMezziByCodiceMezzo, SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper.GetMezziByCodiceMezzo>();
             container.Register<IGetMezziBySelettiva, GetMezziBySelettiva>();
             container.Register<IGetMezziFuoriServizio, GetMezziFuoriServizio>();
-            //container.Register<IGetMezziUtilizzabili, GetMezziUtilizzabili>();
-            //container.Register<IGetMezziUtilizzabili, SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper.GetMezziUtilizzabili>();
             container.Register<ISetMovimentazione, SetMovimentazione>();
             container.Register<
                 SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi.IGetListaMezzi,
-                ExternalAPI.Fake.GestioneMezzi.GetListaMezziExt>(); //TODO gestione composition Root per l'externalAPI
+                ExternalAPI.Fake.GestioneMezzi.GetListaMezziExt>();
 
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.Composizione.IUpdateConfermaPartenze,
-                ExternalAPI.Fake.Composizione.UpdateConfermaPartenzeExt>(); //TODO gestione composition Root per l'externalAPI
+                ExternalAPI.Fake.Composizione.UpdateConfermaPartenzeExt>();
             container.Register<
                  SO115App.Models.Servizi.Infrastruttura.Composizione.IUpdateStatoPartenze,
-                ExternalAPI.Fake.Composizione.UpdateStatoPartenzaExt>(); //TODO gestione composition Root per l'externalAPI
+                ExternalAPI.Fake.Composizione.UpdateStatoPartenzaExt>();
             container.Register<
                SO115App.Models.Servizi.Infrastruttura.GetComposizioneMezzi.IGetComposizioneMezzi,
-               SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper.GetComposizioneMezzi>();
-            //container.Register<
-            //    SO115App.Models.Servizi.Infrastruttura.GetComposizioneMezzi.IGetComposizioneMezzi,
-            //    ExternalAPI.Fake.Composizione.GetComposizioneMezziExt>();//TODO gestione composition Root per l'externalAPI
+               SO115App.ExternalAPI.Fake.Composizione.GetComposizioneMezzi>();
 
             #endregion Gac
 
@@ -129,19 +123,21 @@ namespace SO115App.CompositionRoot
 
             #endregion Sedi
 
+            #region Box
+
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.Box.IGetBoxMezzi,
-                ExternalAPI.Fake.Box.GetBoxMezziExt>();//TODO gestione composition Root per l'externalAPI
-                                                       //container.Register<
-                                                       //    SO115App.Models.Servizi.Infrastruttura.Box.IGetBoxPersonale,
-                                                       //    ExternalAPI.Fake.Box.GetBoxPersonaleExt>();//TODO gestione composition Root per l'externalAPI
+                ExternalAPI.Fake.Box.GetBoxMezziExt>();
+
             container.Register<
                SO115App.Models.Servizi.Infrastruttura.Box.IGetBoxPersonale,
-               ExternalAPI.Fake.Box.GetBoxPersonale>();//TODO gestione composition Root per l'externalAPI
+               ExternalAPI.Fake.Box.GetBoxPersonale>();
 
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.Marker.IGetMezziMarker,
                 ExternalAPI.Fake.Marker.GetMezziMarkerExt>();
+
+            #endregion Box
 
             #region Mezzi
 
@@ -160,15 +156,15 @@ namespace SO115App.CompositionRoot
 
             #region Squadre
 
-            //container.Register<
-            //    SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Squadre.IGetListaSquadre,
-            //    SO115App.ExternalAPI.Fake.ImportOracle.SquadreMapper.GetListaSquadre>();
             container.Register<
               SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Squadre.IGetListaSquadre,
               SO115App.ExternalAPI.Fake.Servizi.Personale.GetListaSquadre>();
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Squadre.IGetSquadraById,
                 SO115App.ExternalAPI.Fake.ImportOracle.SquadreMapper.GetSquadraById>();
+            container.Register<
+                SO115App.Models.Servizi.Infrastruttura.GetComposizioneSquadre.IGetComposizioneSquadre,
+                SO115App.ExternalAPI.Fake.Composizione.GetComposizioneSquadre>();
 
             #endregion Squadre
 
@@ -182,8 +178,8 @@ namespace SO115App.CompositionRoot
             //  SO115App.Models.Servizi.Infrastruttura.GetPreAccoppiati.IGetPreAccoppiati,
             //SO115App.ExternalAPI.Fake.ImportOracle.GesPreaccoppiatiMapper.GetPreAccoppiati>();
             container.Register<
-            SO115App.Models.Servizi.Infrastruttura.GetPreAccoppiati.IGetPreAccoppiati,
-          SO115App.ExternalAPI.Fake.ImportOracle.GesPreaccoppiatiMapper.GetPreAccoppiati>();
+                SO115App.Models.Servizi.Infrastruttura.GetPreAccoppiati.IGetPreAccoppiati,
+                SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati.GetPreAccoppiati>();
 
             #endregion GesPreaccoppiati
 
@@ -202,10 +198,18 @@ namespace SO115App.CompositionRoot
             #region Distaccamenti
 
             container.Register<
+                Models.Servizi.Infrastruttura.SistemiEsterni.IdentityManagement.IGetDistaccamentoByCodiceSede,
+                SO115App.ExternalAPI.Fake.Servizi.DistaccamentoUtentiComuni.GetDistaccamentoByCodiceSede>();
+
+            container.Register<
                 SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti.IGetListaDistaccamentiByCodiceSede,
                 SO115App.ExternalAPI.Fake.ImportOracle.DistaccamentiMapper.GetDistaccamentiByCodSede>();
-            container.Register<Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti.IGetDistaccamentoByCodiceSedeUC, GetDistaccamentoByCodiceSede>();
-            container.Register<Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti.CoordinateTask.IGetCoordinateDistaccamento, ExternalAPI.Fake.Servizi.DistaccamentoCoordinate.GetCoordinateDistaccamento>();
+            container.Register<
+                Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti.IGetDistaccamentoByCodiceSedeUC,
+                GetDistaccamentoByCodiceSede>();
+            container.Register<
+                Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti.CoordinateTask.IGetCoordinateDistaccamento,
+                ExternalAPI.Fake.Servizi.DistaccamentoCoordinate.GetCoordinateDistaccamento>();
 
             #endregion Distaccamenti
 

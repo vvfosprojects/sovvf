@@ -7,10 +7,11 @@ using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Composizione;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneMezzi;
-using SO115App.FakePersistence.JSon.Utility;
+using SO115App.ExternalAPI.Fake.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.GetComposizioneMezzi;
+using SO115App.Models.Servizi.Infrastruttura.GetFiltri;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Squadre;
 using SO115App.Persistence.MongoDB.GestioneMezzi;
@@ -23,11 +24,13 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper
         private readonly OrdinamentoMezzi _ordinamentoMezzi;
         private readonly IGetMezziUtilizzabili _getMezziUtilizzabili;
         private readonly IGetListaSquadre _getSquadre;
+        private readonly IGetFiltri _getFiltri;
 
-        public GetComposizioneMezzi(IGetStatoMezzi getMezziPrenotati, OrdinamentoMezzi ordinamentoMezzi, IGetMezziUtilizzabili getMezziUtilizzabili, IGetListaSquadre getSquadre)
+        public GetComposizioneMezzi(IGetStatoMezzi getMezziPrenotati, OrdinamentoMezzi ordinamentoMezzi, IGetMezziUtilizzabili getMezziUtilizzabili, IGetListaSquadre getSquadre, IGetFiltri getFiltri)
         {
             _getMezziUtilizzabili = getMezziUtilizzabili;
             _getSquadre = getSquadre;
+            _getFiltri = getFiltri;
             _getMezziPrenotati = getMezziPrenotati;
             _ordinamentoMezzi = ordinamentoMezzi;
         }
@@ -67,14 +70,7 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper
                     }
                 }
 
-                var pathFiltri = CostantiJson.Filtri;
-                string jsonFiltri;
-                using (var r = new StreamReader(pathFiltri))
-                {
-                    jsonFiltri = r.ReadToEnd();
-                }
-                var filtri = JsonConvert.DeserializeObject<API.Models.Classi.Filtri.Filtri>(jsonFiltri);
-
+                var filtri = _getFiltri.Get();
                 if (query.Filtro.CodiceDistaccamento?.Length > 0
                     && !string.IsNullOrEmpty(query.Filtro.CodiceDistaccamento[0]))
                 {

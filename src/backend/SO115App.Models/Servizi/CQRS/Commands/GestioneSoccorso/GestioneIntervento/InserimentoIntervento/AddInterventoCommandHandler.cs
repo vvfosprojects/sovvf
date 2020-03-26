@@ -101,7 +101,8 @@ namespace DomainModel.CQRS.Commands.AddIntervento
             string[] CodUOCompetenzaAppo = {
                 command.CodiceSede.Split('.')[0] + "." + Competenza.CodDistaccamento,
                 command.CodiceSede.Split('.')[0] + "." + Competenza.CodDistaccamento2,
-                command.CodiceSede.Split('.')[0] + "." + Competenza.CodDistaccamento3
+                command.CodiceSede.Split('.')[0] + "." + Competenza.CodDistaccamento3,
+                command.CodiceSede.Split('.')[0] + ".1000"
             };
 
             var richiesta = new RichiestaAssistenza()
