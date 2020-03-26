@@ -116,14 +116,20 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
 
             List<string> ListaCodiciFiscaliComponentiSquadra = new List<string>();
             List<Componente> ComponentiSquadra = new List<Componente>();
-            foreach (string cf in squadraFake.ListaCodiciFiscaliComponentiSquadra)
+            foreach (ComponenteSquadraFake componenteFake in squadraFake.ComponentiSquadra)
             {
-                PersonaleVVF pVVf = _getPersonaleByCF.Get(cf).Result;
+                PersonaleVVF pVVf = _getPersonaleByCF.Get(componenteFake.CodiceFiscale).Result;
 
-                bool capoPartenza = false; bool autista = false;
-                Componente componente = new Componente("", pVVf.Nominativo, pVVf.Nominativo, capoPartenza, autista, false)
+                Componente componente = new Componente(componenteFake.DescrizioneQualificaLunga,
+                pVVf.Nominativo, componenteFake.Tooltip, componenteFake.CapoPartenza, componenteFake.Autista, componenteFake.Rimpiazzo)
                 {
                     CodiceFiscale = pVVf.CodFiscale,
+                    OrarioFine = componenteFake.OrarioFine,
+                    OrarioInizio = componenteFake.OrarioInizio,
+                    Telefono = componenteFake.Telefono,
+                    TecnicoGuardia1 = componenteFake.TecnicoGuardia1,
+                    TecnicoGuardia2 = componenteFake.TecnicoGuardia2,
+                    CapoTurno = componenteFake.CapoTurno
                 };
                 ComponentiSquadra.Add(componente);
                 ListaCodiciFiscaliComponentiSquadra.Add(pVVf.CodFiscale);
