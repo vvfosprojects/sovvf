@@ -16,6 +16,8 @@ using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.GeoFleet;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
 using SO115App.API.Models.Classi.Organigramma;
+using Microsoft.Extensions.Caching.Memory;
+using System;
 
 namespace SO115App.ExternalAPI.Fake.GestioneMezzi
 {
@@ -28,9 +30,12 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
         private readonly IGetDistaccamentoByCodiceSedeUC _getDistaccamentoByCodiceSedeUC;
         private readonly IGetPosizioneByCodiceMezzo _getPosizioneByCodiceMezzo;
         private readonly IGetAlberaturaUnitaOperative _getAlberaturaUnitaOperative;
+        private readonly IMemoryCache _memoryCache;
 
         public GetMezziUtilizzabili(HttpClient client, IConfiguration configuration, IGetStatoMezzi GetStatoMezzi,
-            IGetDistaccamentoByCodiceSedeUC GetDistaccamentoByCodiceSedeUC, IGetPosizioneByCodiceMezzo getPosizioneByCodiceMezzo, IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative)
+            IGetDistaccamentoByCodiceSedeUC GetDistaccamentoByCodiceSedeUC, IGetPosizioneByCodiceMezzo getPosizioneByCodiceMezzo, 
+            IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative,
+            IMemoryCache memoryCache)
         {
             _client = client;
             _configuration = configuration;
@@ -38,6 +43,7 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
             _getDistaccamentoByCodiceSedeUC = GetDistaccamentoByCodiceSedeUC;
             _getPosizioneByCodiceMezzo = getPosizioneByCodiceMezzo;
             _getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
+            _memoryCache = memoryCache;
         }
 
         public async Task<List<Mezzo>> Get(List<string> sedi, string genereMezzo = null, string codiceMezzo = null)
@@ -65,22 +71,40 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
 
             var ListAnagraficaMezzo = new List<AnagraficaMezzo>();
             var ListaMezzi = new List<Mezzo>();
+
             foreach (string CodSede in ListaCodiciSedi)
             {
-                _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("test");
-                var response = await _client.GetAsync($"{_configuration.GetSection("DataFakeImplementation").GetSection("UrlAPIMezzi").Value}/GetListaMezziByCodComando?CodComando={CodSede}").ConfigureAwait(false);
-                response.EnsureSuccessStatusCode();
-                using HttpContent content = response.Content;
-                var data = await content.ReadAsStringAsync().ConfigureAwait(false);
-                var ListaMezziSede = JsonConvert.DeserializeObject<List<MezzoFake>>(data);
 
-                foreach (MezzoFake mezzoFake in ListaMezziSede)
+                List<Mezzo> listaMezziBySede = new List<Mezzo>();
+                string nomeCache = "M_" + CodSede.Replace(".","");
+                if (!_memoryCache.TryGetValue(nomeCache, out listaMezziBySede))
                 {
-                    var anagraficaMezzo = GetAnagraficaMezzoByTarga(mezzoFake.Targa).Result;
+                    
+                    _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("test");
+                    var response = await _client.GetAsync($"{_configuration.GetSection("DataFakeImplementation").GetSection("UrlAPIMezzi").Value}/GetListaMezziByCodComando?CodComando={CodSede}").ConfigureAwait(false);
+                    response.EnsureSuccessStatusCode();
+                    using HttpContent content = response.Content;
+                    var data = await content.ReadAsStringAsync().ConfigureAwait(false);
+                    var ListaMezziSede = JsonConvert.DeserializeObject<List<MezzoFake>>(data);
+                    List<Mezzo> listaMezziBySedeAppo = new List<Mezzo>();
+                    foreach (MezzoFake mezzoFake in ListaMezziSede)
+                    {
+                        var anagraficaMezzo = GetAnagraficaMezzoByTarga(mezzoFake.Targa).Result;
 
-                    var mezzo = MapMezzo(anagraficaMezzo, mezzoFake);
-                    ListaMezzi.Add(mezzo);
+                        var mezzo = MapMezzo(anagraficaMezzo, mezzoFake);
+                        listaMezziBySedeAppo.Add(mezzo);
+                        ListaMezzi.Add(mezzo);
+                    }
+
+                    var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromHours(8));
+                    _memoryCache.Set(nomeCache, listaMezziBySedeAppo, cacheEntryOptions);
+
                 }
+                else 
+                {
+                    ListaMezzi.AddRange(listaMezziBySede);
+                }
+
             }
 
             return ListaMezzi;

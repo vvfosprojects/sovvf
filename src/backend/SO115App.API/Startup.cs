@@ -32,6 +32,8 @@ using SimpleInjector;
 using SimpleInjector.Integration.AspNetCore.Mvc;
 using SimpleInjector.Lifestyles;
 using SO115App.CompositionRoot;
+using SO115App.ExternalAPI.Fake.GestioneMezzi;
+using SO115App.ExternalAPI.Fake.Servizi.Personale;
 using SO115App.Logging;
 using SO115App.Models.Servizi.CustomMapper;
 using SO115App.SignalR;
@@ -55,10 +57,13 @@ namespace SO115App.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            HttpClient httpClient = new HttpClient();
+            HttpClient httpClient = new HttpClient();            
             services.AddSingleton(httpClient);
             services.AddControllers();
             services.AddHttpContextAccessor();
+            services.AddMemoryCache();
+            services.AddSingleton<GetMezziUtilizzabili>();
+            services.AddSingleton<GetListaSquadre>();
             services.AddMvcCore().AddApiExplorer().AddNewtonsoftJson();
             services.AddSwaggerGen(c =>
             {

@@ -54,8 +54,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             var listaSedi = new List<string>
             {
                 query.CodiceSede
-            };
-            var listaMezzi = _getMezziUtilizzabili.Get(listaSedi).Result;
+            };            
             var listaSquadre = _getSquadre.Get(listaSedi).Result;
             var statiOperativi = _getStatoSquadre.Get(listaSedi);
 
@@ -88,36 +87,31 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                 {
                     if (!string.IsNullOrEmpty(query.Filtro.CodiceMezzo) && !string.IsNullOrEmpty(query.Filtro.CodiceMezzo))
                     {
+                        var listaMezzi = _getMezziUtilizzabili.Get(listaSedi).Result;
                         var mezzo = listaMezzi.Find(x => x.Codice == query.Filtro.CodiceMezzo);
 
                         if (mezzo != null)
                         {
                             if (query.Filtro.CodiceDistaccamento.Count() > 0 && !string.IsNullOrEmpty(query.Filtro.CodiceDistaccamento[0]))
                             {
-                                if (mezzo != null && !query.Filtro.CodiceDistaccamento.Any(mezzo.Distaccamento.Codice.Equals))
+                                if (query.Filtro.CodiceDistaccamento.Any(mezzo.Distaccamento.Codice.Equals))
                                 {
-                                    mezzo = null;
-                                    composizioneSquadre = null;
-                                }
-                            }
+                                    codiceDistaccamento = mezzo.Distaccamento.Codice;
 
-                            if (mezzo != null)
-                            {
-                                codiceDistaccamento = mezzo.Distaccamento.Codice;
-
-                                if (mezzo.IdRichiesta != null)
-                                {
-                                    var richiesta = _getRichiestaById.GetByCodice(mezzo.IdRichiesta);
-                                    var listaPartenzeSquadre = richiesta.Partenze
-                                        .Where(x => x.Partenza.Mezzo.Codice.Equals(mezzo.Codice))
-                                        .Select(x => x.Partenza.Squadre);
-                                    composizioneSquadre = composizioneSquadre.Where(x => listaPartenzeSquadre.Any(x.Squadra.Equals))
-                                        .ToList();
-                                }
-                                else
-                                {
-                                    composizioneSquadre = composizioneSquadre
-                                       .Where(x => x.Squadra.Distaccamento.Codice == codiceDistaccamento).ToList();
+                                    if (mezzo.IdRichiesta != null)
+                                    {
+                                        var richiesta = _getRichiestaById.GetByCodice(mezzo.IdRichiesta);
+                                        var listaPartenzeSquadre = richiesta.Partenze
+                                            .Where(x => x.Partenza.Mezzo.Codice.Equals(mezzo.Codice))
+                                            .Select(x => x.Partenza.Squadre);
+                                        composizioneSquadre = composizioneSquadre.Where(x => listaPartenzeSquadre.Any(x.Squadra.Equals))
+                                            .ToList();
+                                    }
+                                    else
+                                    {
+                                        composizioneSquadre = composizioneSquadre
+                                           .Where(x => x.Squadra.Distaccamento.Codice == codiceDistaccamento).ToList();
+                                    }
                                 }
                             }
                         }
