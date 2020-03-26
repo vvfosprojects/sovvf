@@ -66,14 +66,14 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             _upDateRichiestaAssistenza.UpDate(command.Richiesta);
             var tipologia = _getTipologieByCodice.Get(command.Richiesta.Tipologie)[0];
 
-            if (command.StatoMezzo.Equals(Costanti.MezzoSulPosto) || command.StatoMezzo.Equals(Costanti.MezzoInViaggio))
-            {
-                _setMezzoOccupato.Set(command.IdMezzo, DateTime.UtcNow, command.Richiesta.Id, tipologia.Codice, tipologia.Descrizione);
-            }
-            else
-            {
-                _setMezzoLibero.Set(command.IdMezzo, DateTime.UtcNow, command.Richiesta.Id);
-            }
+            //if (command.StatoMezzo.Equals(Costanti.MezzoSulPosto) || command.StatoMezzo.Equals(Costanti.MezzoInViaggio))
+            //{
+            //    _setMezzoOccupato.Set(command.IdMezzo, DateTime.UtcNow, command.Richiesta.Id, tipologia.Codice, tipologia.Descrizione);
+            //}
+            //else
+            //{
+            //    _setMezzoLibero.Set(command.IdMezzo, DateTime.UtcNow, command.Richiesta.Id);
+            //}
             _setStatoOperativoMezzo.Set(command.CodiceSede, command.IdMezzo, command.StatoMezzo, command.Richiesta.Codice);
 
             foreach (var partenza in command.Richiesta.Partenze)
