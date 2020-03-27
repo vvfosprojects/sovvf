@@ -1,12 +1,7 @@
 <div class="row mt-2">
+    <app-partial-loader *ngIf="loading"></app-partial-loader>
     <!-- Lista di singole Richieste -->
     <div *ngIf="richieste && richieste.length > 0" class="col-12 py-1 px-0 overflow-auto" [ngClass]="heightControl()">
-        <div *ngIf="loading"
-             style="width:100%; height:100%; background-color: rgba(255,255,255,.7); position: absolute; top:0; left: 0; z-index:999">
-            <div style="width:20px; height:20px; position: absolute; top:calc(50% - 10px); left:calc(50% - 10px)">
-                <i class="fa fa-spinner fa-spin fa-2x fa-fw"></i>
-            </div>
-        </div>
         <div *ngFor="let r of richieste | paginate: { itemsPerPage: pageSize, currentPage: page, totalItems: totalItems }"
              [ngClass]="{'col-double': !_split, 'col-12': _split}">
             <div id="richiesta" *ngIf="r !== richiestaFissata" class="w-100 rounded card-shadow"
