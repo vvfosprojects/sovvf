@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { Ruolo, Utente } from 'src/app/shared/model/utente.model';
 import { Observable } from 'rxjs';
 import { Select, Store } from '@ngxs/store';
-import { SetRicercaUtenti } from './store/actions/ricerca-utenti/ricerca-utenti.actons';
+import { ClearRicercaUtenti, SetRicercaUtenti } from './store/actions/ricerca-utenti/ricerca-utenti.actons';
 import { UtenteState } from '../navbar/store/states/operatore/utente.state';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { GetUtentiGestione, AddRuoloUtenteGestione, ClearDataModalAddUtenteModal, RemoveRuoloUtente, AddUtenteGestione, RemoveUtente } from './store/actions/gestione-utenti/gestione-utenti.actions';
@@ -20,7 +20,7 @@ import { wipeStringUppercase } from '../../shared/helper/function';
     templateUrl: './gestione-utenti.component.html',
     styleUrls: ['./gestione-utenti.component.css']
 })
-export class GestioneUtentiComponent {
+export class GestioneUtentiComponent implements OnDestroy {
 
     @Select(UtenteState.utente) utente$: Observable<Utente>;
     utente: Utente;
@@ -40,6 +40,10 @@ export class GestioneUtentiComponent {
         this.getUtentiGestione();
         this.getRicerca();
         this.getPageSize();
+    }
+
+    ngOnDestroy(): void {
+        this.store.dispatch(new ClearRicercaUtenti());
     }
 
     onRicercaUtenti(ricerca: any) {

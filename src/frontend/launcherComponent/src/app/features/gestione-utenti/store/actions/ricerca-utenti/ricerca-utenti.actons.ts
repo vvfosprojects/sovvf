@@ -3,3 +3,7 @@ export class SetRicercaUtenti {
 
     constructor(public ricerca: any) {}
 }
+
+export class ClearRicercaUtenti {
+    static readonly type = '[RicercaUtenti] Clear Ricerca';
+}

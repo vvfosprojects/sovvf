@@ -1,5 +1,5 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
-import { SetRicercaUtenti } from '../../actions/ricerca-utenti/ricerca-utenti.actons';
+import { ClearRicercaUtenti, SetRicercaUtenti } from '../../actions/ricerca-utenti/ricerca-utenti.actons';
 
 export interface RicercaUtentiStateModel {
     ricerca: string;
@@ -27,6 +27,13 @@ export class RicercaUtentiState {
     setRicercaUtenti({ getState, patchState }: StateContext<RicercaUtentiStateModel>, action: SetRicercaUtenti) {
         patchState({
             ricerca: action.ricerca
+        });
+    }
+
+    @Action(ClearRicercaUtenti)
+    clearRicercaUtenti({ patchState }: StateContext<RicercaUtentiStateModel>) {
+        patchState({
+            ricerca: ''
         });
     }
 }
