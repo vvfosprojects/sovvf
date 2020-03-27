@@ -68,8 +68,8 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             if (distanza.Rows[0].Elements[0].Distance != null)
             {
                 //LE Value sono espresse in SECONDI
-                composizione.Km = distanza.Rows[0].Elements[0].Distance.Value.ToString();
-                composizione.TempoPercorrenza = distanza.Rows[0].Elements[0].Duration.Value.ToString();
+                composizione.Km = distanza.Rows[0].Elements[0].Distance.Text.ToString().Substring(0, distanza.Rows[0].Elements[0].Distance.Text.ToString().Length -2);
+                composizione.TempoPercorrenza = (distanza.Rows[0].Elements[0].Duration.Value / 60).ToString();
             }
             else
             {
