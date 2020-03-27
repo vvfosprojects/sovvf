@@ -22,7 +22,7 @@ namespace SO115App.SignalR.Sender.GestioneUtenti
         {
             await _notificationHubContext.Clients.Group(command.CodiceSede).SendAsync("NotifyRefreshUtenti", true);
             await _notificationHubContext.Clients.Group(command.UtenteRimosso.Sede.Codice).SendAsync("NotifyRefreshUtenti", true);
-            await _notificationHubContext.Clients.Group(command.UtenteRimosso.Sede.Codice).SendAsync("NotifyDeleteUtente", "Eliminata utenza: " + command.UtenteRimosso.Id);
+            await _notificationHubContext.Clients.Group(command.UtenteRimosso.Sede.Codice).SendAsync("NotifyDeleteUtente", command.UtenteRimosso.Id);
         }
     }
 }
