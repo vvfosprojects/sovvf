@@ -1,18 +1,7 @@
 <div class="row mt-2">
-    <!-- Loader (!richieste) -->
-    <div *ngIf="loaderRichieste" class="col-12 position-relative m-h-750">
-        <div class="loader-centrato">
-            <img src="assets/img/pink_loader_resized.gif">
-        </div>
-    </div>
+    <app-partial-loader *ngIf="loading"></app-partial-loader>
     <!-- Lista di singole Richieste -->
-    <div *ngIf="richieste && richieste.length > 0" class="col-12 px-0" [ngClass]="heightControl()">
-        <div *ngIf="loading"
-             style="width:100%; height:100%; background-color: rgba(255,255,255,.7); position: absolute; top:0; left: 0; z-index:999">
-            <div style="width:20px; height:20px; position: absolute; top:calc(50% - 10px); left:calc(50% - 10px)">
-                <i class="fa fa-spinner fa-spin fa-2x fa-fw"></i>
-            </div>
-        </div>
+    <div *ngIf="richieste && richieste.length > 0" class="col-12 py-1 px-0 overflow-auto" [ngClass]="heightControl()">
         <div *ngFor="let r of richieste | paginate: { itemsPerPage: pageSize, currentPage: page, totalItems: totalItems }"
              [ngClass]="{'col-double': !_split, 'col-12': _split}">
             <div id="richiesta" *ngIf="r !== richiestaFissata" class="w-100 rounded card-shadow"
@@ -40,10 +29,35 @@
                 </app-sintesi-richiesta>
             </div>
         </div>
-        <div class="mt-5 text-center">
-            <pagination-controls class="mb-0" [previousLabel]="'Precedente'" [nextLabel]="'Successiva'"
-                                 (pageChange)="pageChange.emit($event)">
-            </pagination-controls>
+    </div>
+    <div class="col-12 mt-3">
+        <div class="row">
+            <div class="col-3">
+                <button class="btn btn-block"
+                        [ngClass]="{'btn-outline-primary': !needRefresh, 'btn-primary': needRefresh}"
+                        [disabled]="!needRefresh || loading" (click)="refresh.emit(true)">
+                    <ng-template [ngIf]="needRefresh && !loading">
+                        <i class="fa fa-refresh mr-1"></i>
+                        <span class="font-weight-bold">
+                            Nuove Richieste
+                            <span class="badge badge-danger ml-1">{{refreshCount}}</span>
+                        </span>
+                    </ng-template>
+                    <ng-template [ngIf]="!needRefresh && !loading">
+                        <i class="fa fa-check mr-1"></i>
+                        La lista è aggiornata
+                    </ng-template>
+                    <ng-template [ngIf]="loading">
+                        <i class="fa fa-refresh fa-spin mr-1"></i>
+                        Caricamento...
+                    </ng-template>
+                </button>
+            </div>
+            <div class="col-9 text-center pt-1">
+                <pagination-controls class="mb-0" [previousLabel]="'Precedente'" [nextLabel]="'Successiva'"
+                                     (pageChange)="pageChange.emit($event)">
+                </pagination-controls>
+            </div>
         </div>
     </div>
 </div>

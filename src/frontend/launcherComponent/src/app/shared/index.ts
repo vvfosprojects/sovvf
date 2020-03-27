@@ -16,3 +16,4 @@ export * from './components/mezzo/mezzo-actions/mezzo-actions.component';
 export * from './components/sintesi-richiesta-actions/sintesi-richiesta-actions.component';
 export * from './components/checkbox/checkbox.component';
 export * from './components/lista-partenze/lista-partenze.component';
+export * from './components/partial-loader/partial-loader.component';

@@ -9,7 +9,7 @@ import {
     SetIdChiamataInviaPartenza, SetRichiestaById,
     AddRichieste,
     StartInviaPartenzaFromChiamata,
-    UpdateRichiesta, VisualizzaListaSquadrePartenza
+    UpdateRichiesta, VisualizzaListaSquadrePartenza, SetNeedRefresh, StartLoadingRichieste, StopLoadingRichieste
 } from '../../actions/richieste/richieste.actions';
 import { SintesiRichiesteService } from 'src/app/core/service/lista-richieste-service/lista-richieste.service';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
@@ -30,40 +30,49 @@ import { SetMarkerRichiestaSelezionato } from '../../actions/maps/marker.actions
 import { ComposizionePartenzaState } from '../composizione-partenza/composizione-partenza.state';
 import { ClearRichiesteEspanse } from '../../actions/richieste/richieste-espanse.actions';
 import { RichiesteEspanseState } from './richieste-espanse.state';
-import { calcolaActionSuggeritaMezzo } from '../../../../../shared/helper/function';
+import { calcolaActionSuggeritaMezzo, makeCopy } from '../../../../../shared/helper/function';
 import { RichiestaGestioneState } from './richiesta-gestione.state';
 import { RichiestaAttivitaUtenteState } from './richiesta-attivita-utente.state';
 import { ListaSquadrePartenzaComponent } from '../../../../../shared';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { RicercaRichiesteState } from '../filterbar/ricerca-richieste.state';
-import { StartLoading, StopLoading } from '../../../../../shared/store/actions/loading/loading.actions';
-import { PaginationState } from '../../../../../shared/store/states/pagination/pagination.state';
 import { FiltriRichiesteState } from '../filterbar/filtri-richieste.state';
 import { PatchPagination } from '../../../../../shared/store/actions/pagination/pagination.actions';
 import { ResponseInterface } from '../../../../../shared/interface/response.interface';
+import { ClearRichiestaSelezionata } from '../../actions/richieste/richiesta-selezionata.actions';
+import { ClearRichiestaGestione } from '../../actions/richieste/richiesta-gestione.actions';
+import { ClearRichiestaHover } from '../../actions/richieste/richiesta-hover.actions';
 
 export interface RichiesteStateModel {
     richieste: SintesiRichiesta[];
     richiestaById: SintesiRichiesta;
     chiamataInviaPartenza: string;
+    loadingRichieste: boolean;
+    needRefresh: boolean;
+    refreshCount: number;
 }
 
 export const RichiesteStateDefaults: RichiesteStateModel = {
     richieste: [],
     richiestaById: null,
-    chiamataInviaPartenza: null
+    chiamataInviaPartenza: null,
+    loadingRichieste: false,
+    needRefresh: false,
+    refreshCount: 0
 };
 
 @State<RichiesteStateModel>({
     name: 'richieste',
     defaults: RichiesteStateDefaults,
-    children: [RichiestaFissataState,
+    children: [
+        RichiestaFissataState,
         RichiestaHoverState,
         RichiestaSelezionataState,
         RichiestaModificaState,
         RichiesteEspanseState,
         RichiestaGestioneState,
-        RichiestaAttivitaUtenteState]
+        RichiestaAttivitaUtenteState
+    ]
 })
 export class RichiesteState {
 
@@ -82,6 +91,21 @@ export class RichiesteState {
         return (id: string) => state.richieste.find(x => x.id === id);
     }
 
+    @Selector()
+    static needRefresh(state: RichiesteStateModel) {
+        return state.needRefresh;
+    }
+
+    @Selector()
+    static refreshCount(state: RichiesteStateModel) {
+        return state.refreshCount;
+    }
+
+    @Selector()
+    static loadingRichieste(state: RichiesteStateModel) {
+        return state.loadingRichieste;
+    }
+
     constructor(private richiesteService: SintesiRichiesteService,
                 private modalService: NgbModal,
                 private store: Store) {
@@ -89,23 +113,36 @@ export class RichiesteState {
 
     @Action(GetListaRichieste, { cancelUncompleted: true })
     getRichieste({ getState, dispatch }: StateContext<RichiesteStateModel>, action: GetListaRichieste) {
-        dispatch(new StartLoading());
+        const state = getState();
+        dispatch(new StartLoadingRichieste());
         const filters = {
             search: this.store.selectSnapshot(RicercaRichiesteState.ricerca),
             others: this.store.selectSnapshot(FiltriRichiesteState.filtriRichiesteSelezionati)
         };
         const pagination = {
             page: action.options && action.options.page ? action.options.page : 1,
-            pageSize: this.store.selectSnapshot(PaginationState.pageSize)
+            pageSize: 7
         };
         this.richiesteService.getRichieste(filters, pagination).subscribe((response: ResponseInterface) => {
             dispatch(new AddRichieste(response.sintesiRichiesta));
             dispatch(new PatchPagination(response.pagination));
-            dispatch(new StopLoading());
+            dispatch(new StopLoadingRichieste());
+            if (state.needRefresh) {
+                dispatch(new SetNeedRefresh(false));
+            }
         }, () => {
             dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5));
-            dispatch(new StopLoading());
+            dispatch(new StopLoadingRichieste());
         });
+
+        // Clear dei dati presenti nella pagina che si sta lasciando
+        dispatch(new ClearRichiestaSelezionata());
+        dispatch(new ClearRichiestaHover());
+        dispatch(new ClearRichiesteEspanse());
+        const richiestaGestione = this.store.selectSnapshot(RichiestaGestioneState.richiestaGestione);
+        if (richiestaGestione) {
+            dispatch(new ClearRichiestaGestione(richiestaGestione.id));
+        }
     }
 
     @Action(PatchRichiesta)
@@ -126,6 +163,26 @@ export class RichiesteState {
     clearRichieste({ patchState, dispatch }: StateContext<RichiesteStateModel>) {
         dispatch(new ClearRichiesteEspanse());
         patchState(RichiesteStateDefaults);
+    }
+
+
+    @Action(SetNeedRefresh)
+    setNeedRefresh({ getState, patchState }: StateContext<RichiesteStateModel>, action: SetNeedRefresh) {
+        const needRefreshValue = action.value;
+        if (needRefreshValue === true) {
+            const state = getState();
+            let count = makeCopy(state.refreshCount);
+            count += 1;
+            patchState({
+                needRefresh: needRefreshValue,
+                refreshCount: count
+            });
+        } else if (needRefreshValue === false) {
+            patchState({
+                needRefresh: needRefreshValue,
+                refreshCount: 0
+            });
+        }
     }
 
     @Action(UpdateRichiesta)
@@ -249,6 +306,20 @@ export class RichiesteState {
         modal.componentInstance.listaSquadre = action.listaSquadre;
         modal.result.then(() => console.log('Lista Squadre Partenza Aperta'),
             () => console.log('Lista Squadre Partenza Chiusa'));
+    }
+
+    @Action(StartLoadingRichieste)
+    startLoadingRichieste({ patchState }: StateContext<RichiesteStateModel>) {
+        patchState({
+            loadingRichieste: true
+        });
+    }
+
+    @Action(StopLoadingRichieste)
+    stopLoadingRichieste({ patchState }: StateContext<RichiesteStateModel>) {
+        patchState({
+            loadingRichieste: false
+        });
     }
 
 }

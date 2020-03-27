@@ -1,11 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.model';
 import { HelperSintesiRichiesta } from '../helper/_helper-sintesi-richiesta';
-import { CdkVirtualScrollViewport, ScrollDispatcher } from '@angular/cdk/scrolling';
+import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { MezzoActionInterface } from '../../../../shared/interface/mezzo-action.interface';
 import { RichiestaActionInterface } from '../../../../shared/interface/richiesta-action.interface';
-import { StopLoading } from '../../../../shared/store/actions/loading/loading.actions';
-import { Store } from '@ngxs/store';
 
 @Component({
     selector: 'app-lista-richieste',
@@ -20,12 +18,13 @@ export class ListaRichiesteComponent implements OnInit {
     @Input() richiestaSelezionata: SintesiRichiesta;
     @Input() richiestaFissata: SintesiRichiesta;
     @Input() richiestaGestione: SintesiRichiesta;
-    @Input() loaderRichieste = true;
     @Input() itemSize = 98;
     @Input() listHeightClass: string;
     @Input() idRichiesteEspanse: string[] = [];
 
     @Input() loading: boolean;
+    @Input() needRefresh: boolean;
+    @Input() refreshCount: number;
 
     // Paginazione
     @Input() page: number;
@@ -40,6 +39,7 @@ export class ListaRichiesteComponent implements OnInit {
     @Output() statoPartenza = new EventEmitter<boolean>();
     @Output() composizionePartenza = new EventEmitter<SintesiRichiesta>();
     @Output() pageChange = new EventEmitter<number>();
+    @Output() refresh = new EventEmitter<boolean>();
     @Output() fissaInAlto = new EventEmitter<string>();
     @Output() hoverIn = new EventEmitter<string>();
     @Output() hoverOut = new EventEmitter<boolean>();
@@ -57,56 +57,11 @@ export class ListaRichiesteComponent implements OnInit {
 
     @ViewChild(CdkVirtualScrollViewport) virtualScroll: CdkVirtualScrollViewport;
 
-    constructor(private scrollDispatcher: ScrollDispatcher,
-                private store: Store) {
+    constructor() {
     }
 
     ngOnInit() {
-        // this.scrollDispatcher.scrolled().pipe().subscribe(event => {
-        //         this.scrolling = true;
-        //         if (!this.loading) {
-        //             if (Math.floor(this.virtualScroll.measureScrollOffset('bottom')) <= 0) {
-        //                 this.onNuoveRichieste('bottom');
-        //             }
-        //             if (this.virtualScroll.measureScrollOffset('top') === 0) {
-        //                 if (this.page > 1) {
-        //                     this.onNuoveRichieste('top');
-        //                     this.virtualScroll.scrollToIndex(this.pageSize, 'auto');
-        //                 }
-        //             }
-        //         }
-        //     }
-        // );
     }
-
-    // onPageOne() {
-    //     this.onNuoveRichieste('top', 1);
-    //     if (!this.loading) {
-    //         this.virtualScroll.scrollToIndex(0, 'smooth');
-    //     }
-    // }
-    //
-    // onTop() {
-    //     if (!this.loading) {
-    //         this.virtualScroll.scrollToIndex(0, 'smooth');
-    //     }
-    // }
-    //
-    // onBottom() {
-    //     if (!this.loading) {
-    //         this.virtualScroll.scrollToIndex(this.richieste.length, 'smooth');
-    //     }
-    // }
-
-
-    /* Permette di caricare nuove richieste */
-    // onNuoveRichieste(position: string, page?: number) {
-    //     if (!page) {
-    //         this.nuoveRichieste.emit({ page: position === 'bottom' ? this.page + 1 : this.page - 1, position: position });
-    //     } else {
-    //         this.nuoveRichieste.emit({ page: page, position: position });
-    //     }
-    // }
 
     /* Gestisce il singolo click sulla richiesta */
     richiestaClick(richiesta: SintesiRichiesta) {

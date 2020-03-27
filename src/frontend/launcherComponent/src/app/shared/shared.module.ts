@@ -4,8 +4,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { PipeModule } from './pipes/pipe.module';
 import { TreeviewI18n, TreeviewModule } from 'ngx-treeview';
 import { DefaultTreeviewI18n } from './store/states/sedi-treeview/default-treeview-i18n';
-import * as Shared from './index';
 import { ReactiveFormsModule } from '@angular/forms';
+import * as Shared from './index';
 
 const COMPONENTS = [
     Shared.DebounceClickDirective,
@@ -25,7 +25,8 @@ const COMPONENTS = [
     Shared.SintesiRichiestaActionsComponent,
     Shared.ActionRichiestaModalComponent,
     Shared.ListaPartenzeComponent,
-    Shared.CheckboxComponent
+    Shared.CheckboxComponent,
+    Shared.PartialLoaderComponent
 ];
 
 @NgModule({

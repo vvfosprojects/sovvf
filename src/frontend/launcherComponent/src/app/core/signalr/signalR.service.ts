@@ -214,8 +214,7 @@ export class SignalRService {
          */
         this.hubNotification.on('SaveAndNotifySuccessChiamata', (data: any) => {
             console.log('SaveAndNotifySuccessChiamata', data);
-            this.store.dispatch(new GetListaRichieste());
-            // this.store.dispatch(new InsertChiamataSuccess(data));
+            this.store.dispatch(new InsertChiamataSuccess(data));
         });
 
         /**
