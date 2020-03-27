@@ -29,6 +29,7 @@ import { Navigate } from '@ngxs/router-plugin';
 import { ActivatedRoute } from '@angular/router';
 import { _isAdministrator } from '../../../../../shared/helper/function';
 import { UtenteState } from '../../../../navbar/store/states/operatore/utente.state';
+import { LoadingState } from '../../../../../shared/store/states/loading/loading.state';
 
 export interface GestioneUtentiStateModel {
     listaUtentiVVF: UtenteVvfInterface[];
@@ -121,8 +122,8 @@ export class GestioneUtentiState {
     @Action(GetUtentiGestione)
     getGestioneUtenti({ dispatch }: StateContext<GestioneUtentiStateModel>, action: GetUtentiGestione) {
         const route = this.router.children[0].snapshot.url[0].path;
-        console.log('route', route);
-        if (route === 'gestione-utenti') {
+        const loading = this.store.selectSnapshot(LoadingState.loading);
+        if (route === 'gestione-utenti' && !loading) {
             dispatch(new StartLoading());
             const filters = {
                 search: this.store.selectSnapshot(RicercaUtentiState.ricerca),
