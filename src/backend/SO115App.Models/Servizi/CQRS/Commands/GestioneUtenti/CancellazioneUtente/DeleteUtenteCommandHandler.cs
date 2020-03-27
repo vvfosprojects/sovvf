@@ -19,6 +19,7 @@
 //-----------------------------------------------------------------------
 using CQRS.Commands;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti;
+using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.GetUtenti;
 
 namespace SO115App.Models.Servizi.CQRS.Commands.GestioneUtenti.CancellazioneUtente
 {
@@ -28,10 +29,12 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneUtenti.CancellazioneUten
     public class DeleteUtenteCommandHandler : ICommandHandler<DeleteUtenteCommand>
     {
         private readonly IDeleteUtente _deleteUtente;
+        private readonly IGetUtenteByCF _getUtenteByCF;
 
-        public DeleteUtenteCommandHandler(IDeleteUtente deleteUtente)
+        public DeleteUtenteCommandHandler(IDeleteUtente deleteUtente, IGetUtenteByCF getUtenteByCF)
         {
             _deleteUtente = deleteUtente;
+            _getUtenteByCF = getUtenteByCF;
         }
 
         /// <summary>
@@ -40,6 +43,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneUtenti.CancellazioneUten
         /// <param name="command">i parametri di ingresso</param>
         public void Handle(DeleteUtenteCommand command)
         {
+            command.UtenteRimosso = _getUtenteByCF.Get(command.CodFiscale);
             _deleteUtente.Delete(command.CodFiscale);
         }
     }

@@ -20,10 +20,9 @@ namespace SO115App.SignalR.Sender.GestioneUtenti
 
         public async Task Notify(DeleteUtenteCommand command)
         {
-            var utente = _getUtenteByCF.Get(command.CodFiscale);
             await _notificationHubContext.Clients.Group(command.CodiceSede).SendAsync("NotifyRefreshUtenti", true);
-            await _notificationHubContext.Clients.Group(utente.Sede.Codice).SendAsync("NotifyRefreshUtenti", true);
-            await _notificationHubContext.Clients.Group(utente.Sede.Codice).SendAsync("NotifyDeleteUtente", "Eliminata utenza: " + utente.Id);
+            await _notificationHubContext.Clients.Group(command.UtenteRimosso.Sede.Codice).SendAsync("NotifyRefreshUtenti", true);
+            await _notificationHubContext.Clients.Group(command.UtenteRimosso.Sede.Codice).SendAsync("NotifyDeleteUtente", "Eliminata utenza: " + command.UtenteRimosso.Id);
         }
     }
 }

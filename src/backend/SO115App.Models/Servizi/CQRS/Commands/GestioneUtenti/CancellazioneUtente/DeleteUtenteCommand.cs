@@ -17,6 +17,8 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using SO115App.API.Models.Classi.Autenticazione;
+
 namespace SO115App.Models.Servizi.CQRS.Commands.GestioneUtenti.CancellazioneUtente
 {
     /// <summary>
@@ -29,6 +31,14 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneUtenti.CancellazioneUten
         /// </summary>
         public string CodFiscale { get; set; }
 
+        /// <summary>
+        ///   il codice sede dell'utente che ha effetuato l'eliminazione
+        /// </summary>
         public string CodiceSede { get; set; }
+
+        /// <summary>
+        ///   l'utente rimosso. Serve per la notifica.
+        /// </summary>
+        public Utente UtenteRimosso { get; set; }
     }
 }
