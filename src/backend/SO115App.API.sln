@@ -57,10 +57,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SO115App.API.Oracle", "SO11
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SO115App.Persistence.Oracle", "SO115App.Persistence.Oracle\SO115App.Persistence.Oracle.csproj", "{844070FF-EF4D-4C1A-A818-2B04061E786F}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C455172A-880E-4D03-B68A-30F72B4DE605}"
-	ProjectSection(SolutionItems) = preProject
-		.editorconfig = .editorconfig
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SO115App.API.DataFake", "SO115App.API.DataFake\SO115App.API.DataFake.csproj", "{936BE157-7B38-4E49-B6F7-D397FB8E253B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -152,6 +149,10 @@ Global
 		{844070FF-EF4D-4C1A-A818-2B04061E786F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{844070FF-EF4D-4C1A-A818-2B04061E786F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{844070FF-EF4D-4C1A-A818-2B04061E786F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{936BE157-7B38-4E49-B6F7-D397FB8E253B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{936BE157-7B38-4E49-B6F7-D397FB8E253B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{936BE157-7B38-4E49-B6F7-D397FB8E253B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{936BE157-7B38-4E49-B6F7-D397FB8E253B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

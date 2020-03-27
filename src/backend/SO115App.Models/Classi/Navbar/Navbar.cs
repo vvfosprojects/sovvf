@@ -21,7 +21,7 @@ using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.API.Models.Classi.Organigramma;
 using System.Collections.Generic;
 
-namespace SO115App.API.Models.Classi.Navbar
+namespace SO115App.API.Models.Classi.NavBar
 {
     public class Navbar
     {

@@ -23,10 +23,11 @@ using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Composizione;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
-using SO115App.FakePersistence.JSon.Utility;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
+using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi;
+using SO115App.Models.Servizi.Infrastruttura.GestioneStatoOperativoSquadra;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
 using System;
 using System.Collections.Generic;
@@ -40,18 +41,22 @@ namespace SO115App.ExternalAPI.Fake.Composizione
     /// </summary>
     public class UpdateConfermaPartenzeExt : IUpdateConfermaPartenze
     {
-        private readonly ISetMovimentazione _setMovimentazione;
+        private readonly ISetMezzoOccupato _setMovimentazione;
         private readonly IUpDateRichiestaAssistenza _updateRichiesta;
         private readonly ISetStatoOperativoMezzo _setStatoOperativoMezzo;
+        private readonly ISetStatoSquadra _setStatoSquadra;
+        private readonly IGetTipologieByCodice _getTipologieByCodice;
 
         /// <summary>
         ///   Costruttore della classe
         /// </summary>
-        public UpdateConfermaPartenzeExt(ISetMovimentazione setMovimentazione, IUpDateRichiestaAssistenza updateRichiesta, ISetStatoOperativoMezzo setStatoOperativoMezzo)
+        public UpdateConfermaPartenzeExt(ISetMezzoOccupato setMovimentazione, IUpDateRichiestaAssistenza updateRichiesta, ISetStatoOperativoMezzo setStatoOperativoMezzo, ISetStatoSquadra setStatoSquadra, IGetTipologieByCodice getTipologieByCodice)
         {
             _setMovimentazione = setMovimentazione;
             _updateRichiesta = updateRichiesta;
             _setStatoOperativoMezzo = setStatoOperativoMezzo;
+            _setStatoSquadra = setStatoSquadra;
+            _getTipologieByCodice = getTipologieByCodice;
         }
 
         /// <summary>
@@ -61,32 +66,23 @@ namespace SO115App.ExternalAPI.Fake.Composizione
         /// <returns>ConfermaPartenze</returns>
         public ConfermaPartenze Update(ConfermaPartenzeCommand command)
         {
-            //var filePathSquadre = CostantiJson.SquadreComposizione;
-            //string jsonSquadre;
-            //using (var r = new StreamReader(filePathSquadre))
-            //{
-            //    jsonSquadre = r.ReadToEnd();
-            //}
-
             var conferma = new ConfermaPartenze();
-            //var listaSquadre = JsonConvert.DeserializeObject<List<ComposizioneSquadre>>(jsonSquadre);
 
             _updateRichiesta.UpDate(command.ConfermaPartenze.richiesta);
+            var tipologia = _getTipologieByCodice.Get(command.ConfermaPartenze.richiesta.Tipologie)[0];
 
             foreach (var partenza in command.ConfermaPartenze.Partenze)
             {
                 var dataMovintazione = DateTime.UtcNow;
 
-                _setMovimentazione.Set(partenza.Mezzo.Codice, command.ConfermaPartenze.IdRichiesta, Costanti.MezzoInViaggio, dataMovintazione); //TODO IMPLEMENTARE CON GAC (PER SPER SCRIVERE DIRETTAMENTE SU DB)
-                _setStatoOperativoMezzo.Set(command.ConfermaPartenze.CodiceSede, partenza.Mezzo.Codice, Costanti.MezzoInViaggio, command.ConfermaPartenze.IdRichiesta); //TODO CANCELLARE NON PIU' NECESSARIO
+                //_setMovimentazione.Set(partenza.Mezzo.Codice, DateTime.UtcNow, command.ConfermaPartenze.IdRichiesta, tipologia.Codice, tipologia.Descrizione); //TODO IMPLEMENTARE CON GAC
+                _setStatoOperativoMezzo.Set(command.ConfermaPartenze.CodiceSede, partenza.Mezzo.Codice, Costanti.MezzoInViaggio, command.ConfermaPartenze.IdRichiesta);
 
-                // foreach (var composizioneSquadra in listaSquadre) { foreach (var squadra in
-                // partenza.Squadre) { if (composizioneSquadra.Squadra.Id == squadra.Id) {
-                // composizioneSquadra.Squadra.Stato = Squadra.StatoSquadra.InViaggio; } } }
+                foreach (var squadra in partenza.Squadre)
+                {
+                    _setStatoSquadra.SetStato(squadra.Codice, command.ConfermaPartenze.IdRichiesta, Costanti.MezzoInViaggio, command.ConfermaPartenze.CodiceSede);
+                }
             }
-
-            //var jsonListaSquadre = JsonConvert.SerializeObject(listaSquadre);
-            //File.WriteAllText(CostantiJson.SquadreComposizione, jsonListaSquadre);
 
             conferma.CodiceSede = command.ConfermaPartenze.CodiceSede;
             conferma.IdRichiesta = command.ConfermaPartenze.IdRichiesta;

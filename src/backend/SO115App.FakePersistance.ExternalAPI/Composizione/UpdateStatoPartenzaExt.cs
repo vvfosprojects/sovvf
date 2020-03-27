@@ -17,18 +17,15 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using Newtonsoft.Json;
-using SO115App.API.Models.Classi.Composizione;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
-using SO115App.FakePersistence.JSon.Utility;
+using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AggiornaStatoMezzo;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
+using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi;
+using SO115App.Models.Servizi.Infrastruttura.GestioneStatoOperativoSquadra;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 
 namespace SO115App.ExternalAPI.Fake.Composizione
 {
@@ -39,17 +36,23 @@ namespace SO115App.ExternalAPI.Fake.Composizione
     public class UpdateStatoPartenzaExt : IUpdateStatoPartenze
     {
         private readonly ISetStatoOperativoMezzo _setStatoOperativoMezzo;
-        private readonly ISetMovimentazione _setMovimentazione;
+        private readonly ISetMezzoOccupato _setMezzoOccupato;
+        private readonly ISetMezzoLibero _setMezzoLibero;
         private readonly IUpDateRichiestaAssistenza _upDateRichiestaAssistenza;
+        private readonly ISetStatoSquadra _setStatoSquadra;
+        private readonly IGetTipologieByCodice _getTipologieByCodice;
 
         /// <summary>
         ///   Costruttore della classe
         /// </summary>
-        public UpdateStatoPartenzaExt(ISetMovimentazione setMovimentazione, ISetStatoOperativoMezzo setStatoOperativoMezzo, IUpDateRichiestaAssistenza upDateRichiestaAssistenza)
+        public UpdateStatoPartenzaExt(ISetStatoOperativoMezzo setStatoOperativoMezzo, IUpDateRichiestaAssistenza upDateRichiestaAssistenza, ISetStatoSquadra setStatoSquadra, IGetTipologieByCodice getTipologieByCodice, ISetMezzoOccupato setMezzoOccupato, ISetMezzoLibero setMezzoLibero)
         {
-            _setMovimentazione = setMovimentazione;
             _setStatoOperativoMezzo = setStatoOperativoMezzo;
             _upDateRichiestaAssistenza = upDateRichiestaAssistenza;
+            _setStatoSquadra = setStatoSquadra;
+            _getTipologieByCodice = getTipologieByCodice;
+            _setMezzoOccupato = setMezzoOccupato;
+            this._setMezzoLibero = setMezzoLibero;
         }
 
         /// <summary>
@@ -60,40 +63,26 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
         public void Update(AggiornaStatoMezzoCommand command)
         {
-            var filePathSquadre = CostantiJson.SquadreComposizione;
-            string jsonSquadre;
-
-            using (var r = new StreamReader(filePathSquadre))
-            {
-                jsonSquadre = r.ReadToEnd();
-            }
-
-            var conferma = new ConfermaPartenze();
-            var listaCodiceSede = new List<string>
-            {
-                command.CodiceSede
-            };
-            var listaSquadre = JsonConvert.DeserializeObject<List<ComposizioneSquadre>>(jsonSquadre);
-
             _upDateRichiestaAssistenza.UpDate(command.Richiesta);
+            var tipologia = _getTipologieByCodice.Get(command.Richiesta.Tipologie)[0];
 
-            var dataMovimentazione = DateTime.UtcNow;
-            _setMovimentazione.Set(command.IdMezzo, command.Richiesta.Codice, command.StatoMezzo, dataMovimentazione);
+            //if (command.StatoMezzo.Equals(Costanti.MezzoSulPosto) || command.StatoMezzo.Equals(Costanti.MezzoInViaggio))
+            //{
+            //    _setMezzoOccupato.Set(command.IdMezzo, DateTime.UtcNow, command.Richiesta.Id, tipologia.Codice, tipologia.Descrizione);
+            //}
+            //else
+            //{
+            //    _setMezzoLibero.Set(command.IdMezzo, DateTime.UtcNow, command.Richiesta.Id);
+            //}
             _setStatoOperativoMezzo.Set(command.CodiceSede, command.IdMezzo, command.StatoMezzo, command.Richiesta.Codice);
 
             foreach (var partenza in command.Richiesta.Partenze)
             {
-                foreach (var composizioneSquadra in listaSquadre)
+                foreach (var squadra in partenza.Partenza.Squadre)
                 {
-                    foreach (var squadra in partenza.Partenza.Squadre.Where(squadra => composizioneSquadra.Squadra.Id == squadra.Id))
-                    {
-                        composizioneSquadra.Squadra.Stato = squadra.Stato;
-                    }
+                    _setStatoSquadra.SetStato(squadra.Codice, command.Richiesta.Id, command.StatoMezzo, command.CodiceSede);
                 }
             }
-
-            var jsonListaSquadre = JsonConvert.SerializeObject(listaSquadre);
-            File.WriteAllText(CostantiJson.SquadreComposizione, jsonListaSquadre);
         }
     }
 }

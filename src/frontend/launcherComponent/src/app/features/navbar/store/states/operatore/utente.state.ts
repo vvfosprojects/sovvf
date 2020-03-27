@@ -1,7 +1,16 @@
 import { Utente } from '../../../../../shared/model/utente.model';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
-import { ClearUtenteLocalStorage, SetUtente, SetUtenteLocalStorage, UpdateUtente, ClearUtente } from '../../actions/operatore/utente.actions';
-import { ClearUtenteSignalR, SetUtenteSignalR } from '../../../../../core/signalr/store/signalR.actions';
+import {
+    ClearUtente, ClearUtenteLocalStorage,
+    SetUtente,
+    SetUtenteLocalStorage,
+    UpdateUtente
+} from '../../actions/operatore/utente.actions';
+import {
+    ClearIdUtente,
+    LogoffUtenteSignalR,
+} from '../../../../../core/signalr/store/signalR.actions';
+import { ClearVistaSedi, SetVistaSedi } from '../../../../../shared/store/actions/app/app.actions';
 import { makeCopy } from '../../../../../shared/helper/function';
 import { ClearRuoliUtenteLoggato } from '../../../../../shared/store/actions/ruoli/ruoli.actions';
 
@@ -12,7 +21,7 @@ export interface UtenteStateModel {
 
 export const UtenteStateDefaults: UtenteStateModel = {
     localName: 'userSO115',
-    utente: null
+    utente: null,
 };
 
 @State<UtenteStateModel>({
@@ -33,14 +42,13 @@ export class UtenteState {
 
     @Action(SetUtente)
     setUtente({ patchState, dispatch }: StateContext<UtenteStateModel>, action: SetUtente) {
-        // Set SignalR Data
-        dispatch(new SetUtenteSignalR(action.utente));
-        // Local Storage
-        dispatch(new SetUtenteLocalStorage(action.utente));
-        // Store User Data
         patchState({
-            utente: action.utente
+            utente: action.utente,
         });
+        dispatch([
+            new SetVistaSedi([action.utente.sede.codice]),
+            new SetUtenteLocalStorage(action.utente)
+        ]);
     }
 
     @Action(SetUtenteLocalStorage)
@@ -74,7 +82,11 @@ export class UtenteState {
         const state = getState();
         if (state.utente) {
             // Clear SignalR Data
-            dispatch(new ClearUtenteSignalR(state.utente));
+            dispatch([
+                new LogoffUtenteSignalR(state.utente),
+                new ClearVistaSedi(),
+                new ClearIdUtente()
+            ]);
         }
         // Local Storage
         dispatch(new ClearUtenteLocalStorage());
@@ -85,4 +97,5 @@ export class UtenteState {
             utente: null
         });
     }
+
 }

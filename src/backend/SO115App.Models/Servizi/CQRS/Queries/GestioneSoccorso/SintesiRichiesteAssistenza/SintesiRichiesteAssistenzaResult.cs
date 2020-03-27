@@ -37,6 +37,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichi
         /// <summary>
         ///   Il modello della paginazione che restituisce i dati utili per la paginazione lato FE
         /// </summary>
-        public Paginazione Paginazione { get; set; }
+        public Paginazione Pagination { get; set; }
     }
 }

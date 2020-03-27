@@ -1,17 +1,21 @@
-import { Action, Selector, State, StateContext } from '@ngxs/store';
-import { SetCodiceSede, SetConnectionId, SetIdUtente, SetUtenteSignalR, ClearUtenteSignalR, SignalRHubConnesso, SignalRHubDisconnesso } from './signalR.actions';
+import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
+import { SetCodiceSede, SetConnectionId, SetIdUtente, SetUtenteSignalR, ClearUtenteSignalR,
+    SignalRHubConnesso,
+    SignalRHubDisconnesso, ClearIdUtente, ClearCodiceSede, LogoffUtenteSignalR
+} from './signalR.actions';
 import { ShowToastr } from '../../../shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from '../../../shared/enum/toastr';
 import { SignalRNotification } from '../model/signalr-notification.model';
-import { UtenteStateModel } from '../../../features/navbar/store/states/operatore/utente.state';
 import { SignalRService } from '../signalR.service';
+import { UtenteState } from '../../../features/navbar/store/states/operatore/utente.state';
+import { difference } from 'lodash';
 
 export interface SignalRStateModel {
     connected: boolean;
     reconnected: boolean;
     disconnected: boolean;
     connectionId: string;
-    codiceSede: string;
+    codiciSede: string[];
     idUtente: string;
 }
 
@@ -20,7 +24,7 @@ export const SignalRStateDefaults: SignalRStateModel = {
     reconnected: null,
     disconnected: null,
     connectionId: null,
-    codiceSede: null,
+    codiciSede: null,
     idUtente: null
 };
 
@@ -43,7 +47,7 @@ export class SignalRState {
 
     @Selector()
     static codiceSedeSignalR(state: SignalRStateModel): string {
-        return state.codiceSede;
+        return state.codiciSede ? state.codiciSede.join() : '';
     }
 
     @Selector()
@@ -51,7 +55,7 @@ export class SignalRState {
         return state.idUtente;
     }
 
-    constructor(private signalR: SignalRService) {
+    constructor(private signalR: SignalRService, private store: Store) {
     }
 
     @Action(SignalRHubConnesso)
@@ -86,43 +90,72 @@ export class SignalRState {
 
     @Action(SetConnectionId)
     setConnectionId({ patchState }: StateContext<SignalRStateModel>, action: SetConnectionId) {
-        patchState({
-            connectionId: action.connectionId
-        });
-    }
-
-    @Action(SetUtenteSignalR)
-    setUtenteSignalR({ dispatch }: StateContext<UtenteStateModel>, action: SetUtenteSignalR) {
-        this.signalR.addToGroup(new SignalRNotification(
-            action.utente.sede.codice,
-            action.utente.id,
-            `${action.utente.nome} ${action.utente.cognome}`
-        ));
-        dispatch(new SetCodiceSede(action.utente.sede.codice));
-        dispatch(new SetIdUtente(action.utente.id));
-    }
-
-    @Action(ClearUtenteSignalR)
-    ClearUtenteSignalR({ getState }: StateContext<UtenteStateModel>, action: ClearUtenteSignalR) {
-        this.signalR.removeToGroup(new SignalRNotification(
-            action.utente.sede.codice,
-            action.utente.id,
-            `${action.utente.nome} ${action.utente.cognome}`
-            )
-        );
+        patchState({ connectionId: action.connectionId });
     }
 
     @Action(SetCodiceSede)
-    setCodiceSede({ patchState }: StateContext<SignalRStateModel>, action: SetCodiceSede) {
-        patchState({
-            codiceSede: action.codiceSede
-        });
+    setCodiceSede({ getState, patchState, dispatch }: StateContext<SignalRStateModel>, { codiciSede }: SetCodiceSede) {
+        const codiciSedeAttuali = getState().codiciSede;
+        const codiciSedeAdd = difference(codiciSede, codiciSedeAttuali);
+        const codiciSedeRemove = difference(codiciSedeAttuali, codiciSede);
+        console.log('SetCodiceSede', JSON.stringify({
+            codiciSede, codiciSedeAttuali, codiciSedeAdd, codiciSedeRemove
+        }));
+        patchState({ codiciSede });
+        dispatch([ new ClearUtenteSignalR(codiciSedeRemove), new SetUtenteSignalR(codiciSedeAdd) ]);
+    }
+
+    @Action(ClearCodiceSede)
+    clearCodiceSede({ patchState }: StateContext<SignalRStateModel>) {
+        patchState({ codiciSede: SignalRStateDefaults.codiciSede });
+    }
+
+    @Action(SetUtenteSignalR)
+    setUtenteSignalR({ dispatch }: StateContext<SignalRStateModel>, { codiciSede }: SetUtenteSignalR) {
+        const utente = this.store.selectSnapshot(UtenteState.utente);
+        dispatch(new SetIdUtente(utente.id));
+        if (codiciSede && codiciSede.length > 0) {
+            this.signalR.addToGroup(new SignalRNotification(
+                codiciSede,
+                utente.id,
+                `${utente.nome} ${utente.cognome}`
+            ));
+        }
+    }
+
+    @Action(ClearUtenteSignalR)
+    clearUtenteSignalR({}: StateContext<SignalRStateModel>, { codiciSede }: ClearUtenteSignalR) {
+        if (codiciSede && codiciSede.length > 0) {
+            const utente = this.store.selectSnapshot(UtenteState.utente);
+            this.signalR.removeToGroup(new SignalRNotification(
+                codiciSede,
+                utente.id,
+                `${utente.nome} ${utente.cognome}`
+                )
+            );
+        }
+    }
+
+    @Action(LogoffUtenteSignalR)
+    logoffUtenteSignalR({ getState, dispatch }: StateContext<SignalRStateModel>, { utente }: LogoffUtenteSignalR) {
+        const codiciSede = getState().codiciSede;
+        this.signalR.removeToGroup(new SignalRNotification(
+            codiciSede,
+            utente.id,
+            `${utente.nome} ${utente.cognome}`
+            )
+        );
+        dispatch(new ClearCodiceSede());
     }
 
     @Action(SetIdUtente)
     setIdUtente({ patchState }: StateContext<SignalRStateModel>, action: SetIdUtente) {
-        patchState({
-            idUtente: action.idUtente
-        });
+        patchState({ idUtente: action.idUtente });
     }
+
+    @Action(ClearIdUtente)
+    clearIdUtente({ patchState }: StateContext<SignalRStateModel>) {
+        patchState({ idUtente: SignalRStateDefaults.idUtente });
+    }
+
 }

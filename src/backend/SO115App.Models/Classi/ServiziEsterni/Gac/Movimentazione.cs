@@ -41,5 +41,10 @@ namespace SO115App.Models.Classi.ServiziEsterni.Gac
         ///   la data di inizio movimentazione del mezzo
         /// </summary>
         public DateTime? DataMovimentazione { get; set; }
+
+        /// <summary>
+        ///   la
+        /// </summary>
+        public string CodiceMezzo { get; set; }
     }
 }

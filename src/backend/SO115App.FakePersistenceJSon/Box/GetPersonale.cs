@@ -34,7 +34,7 @@ namespace SO115App.FakePersistenceJSon.Box
     {
         private readonly string _filepath = CostantiJson.SquadreComposizione;
 
-        public BoxPersonale Get(string codiceSede)
+        public BoxPersonale Get(string[] codiceSede)
         {
             var personale = new BoxPersonale();
             var numeroComponenti = 0;

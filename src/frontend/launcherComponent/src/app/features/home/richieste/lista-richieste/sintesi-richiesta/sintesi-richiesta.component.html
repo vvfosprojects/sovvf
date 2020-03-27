@@ -83,7 +83,7 @@
                             <div class="h6 mt-1 mb-2 nowrap default-cursor">
                                 <i class="guida fa fa-clock-o fa-fw mr-1" ngbTooltip="Ricezione richiesta"
                                    placement="right" container="body"></i>
-                                <a ngbTooltip="{{ richiesta.istanteRicezioneRichiesta | friendlyDateTooltip }}">
+                                <a ngbTooltip="{{ (richiesta.istanteRicezioneRichiesta | friendlyDateTooltip) || '' }}">
                                     <span timeago
                                           [date]="methods._dateNumber(richiesta.istanteRicezioneRichiesta)"
                                           [live]="live"></span>

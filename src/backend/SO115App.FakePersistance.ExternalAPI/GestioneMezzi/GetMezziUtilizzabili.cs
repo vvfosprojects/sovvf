@@ -9,10 +9,15 @@ using System.Threading.Tasks;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using Newtonsoft.Json;
-using SO115App.FakePersistence.JSon.Utility;
 using System.IO;
 using SO115App.ExternalAPI.Fake.Classi.DTOFake;
 using SO115App.ExternalAPI.Fake.Classi.Gac;
+using SO115App.Models.Classi.Utility;
+using SO115App.Models.Servizi.Infrastruttura.GeoFleet;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
+using SO115App.API.Models.Classi.Organigramma;
+using Microsoft.Extensions.Caching.Memory;
+using System;
 
 namespace SO115App.ExternalAPI.Fake.GestioneMezzi
 {
@@ -22,29 +27,40 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
         private readonly HttpClient _client;
         private readonly IConfiguration _configuration;
         private readonly IGetStatoMezzi _getStatoMezzi;
+        private readonly IGetDistaccamentoByCodiceSedeUC _getDistaccamentoByCodiceSedeUC;
+        private readonly IGetPosizioneByCodiceMezzo _getPosizioneByCodiceMezzo;
+        private readonly IGetAlberaturaUnitaOperative _getAlberaturaUnitaOperative;
+        private readonly IMemoryCache _memoryCache;
 
-        public GetMezziUtilizzabili(HttpClient client, IConfiguration configuration, IGetStatoMezzi GetStatoMezzi)
+        public GetMezziUtilizzabili(HttpClient client, IConfiguration configuration, IGetStatoMezzi GetStatoMezzi,
+            IGetDistaccamentoByCodiceSedeUC GetDistaccamentoByCodiceSedeUC, IGetPosizioneByCodiceMezzo getPosizioneByCodiceMezzo, 
+            IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative,
+            IMemoryCache memoryCache)
         {
             _client = client;
             _configuration = configuration;
             _getStatoMezzi = GetStatoMezzi;
+            _getDistaccamentoByCodiceSedeUC = GetDistaccamentoByCodiceSedeUC;
+            _getPosizioneByCodiceMezzo = getPosizioneByCodiceMezzo;
+            _getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
+            _memoryCache = memoryCache;
         }
 
         public async Task<List<Mezzo>> Get(List<string> sedi, string genereMezzo = null, string codiceMezzo = null)
         {
-            var filepath = CostantiJson.ListaMezzi;
-            string json;
-            using (var r = new StreamReader(filepath))
+            var ListaCodiciSedi = new List<string>();
+
+            var listaSediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
+            var pinNodi = new List<PinNodo>();
+
+            foreach (var sede in sedi)
             {
-                json = r.ReadToEnd();
+                pinNodi.Add(new PinNodo(sede, true));
             }
 
-            var listaMezziFake = JsonConvert.DeserializeObject<List<MezzoFake>>(json);
-
-            var ListaCodiciSedi = new List<string>();
-            foreach (string sede in sedi)
+            foreach (var figlio in listaSediAlberate.GetSottoAlbero(pinNodi))
             {
-                var codice = sede.Substring(0, 2);
+                var codice = figlio.Codice;
                 string codiceE = "";
                 codiceE = ListaCodiciSedi.Find(x => x.Equals(codice));
                 if (string.IsNullOrEmpty(codiceE))
@@ -55,45 +71,87 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
 
             var ListAnagraficaMezzo = new List<AnagraficaMezzo>();
             var ListaMezzi = new List<Mezzo>();
+
             foreach (string CodSede in ListaCodiciSedi)
             {
-                var ListaMezziSede = listaMezziFake.FindAll(x => x.Sede.Contains(CodSede));
-                foreach (MezzoFake m in ListaMezziSede)
+
+                List<Mezzo> listaMezziBySede = new List<Mezzo>();
+                string nomeCache = "M_" + CodSede.Replace(".","");
+                if (!_memoryCache.TryGetValue(nomeCache, out listaMezziBySede))
                 {
+                    
                     _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("test");
-                    var response = await _client.GetAsync($"{_configuration.GetSection("UrlExternalApi").GetSection("MezziApidipvvf").Value}?searchKey={m.Targa}").ConfigureAwait(false);
+                    var response = await _client.GetAsync($"{_configuration.GetSection("DataFakeImplementation").GetSection("UrlAPIMezzi").Value}/GetListaMezziByCodComando?CodComando={CodSede}").ConfigureAwait(false);
                     response.EnsureSuccessStatusCode();
                     using HttpContent content = response.Content;
                     var data = await content.ReadAsStringAsync().ConfigureAwait(false);
-                    var aM = JsonConvert.DeserializeObject<AnagraficaMezzo>(data);
-                    var mezzo = MapMezzo(aM, m);
-                    ListaMezzi.Add(mezzo);
+                    var ListaMezziSede = JsonConvert.DeserializeObject<List<MezzoFake>>(data);
+                    List<Mezzo> listaMezziBySedeAppo = new List<Mezzo>();
+                    foreach (MezzoFake mezzoFake in ListaMezziSede)
+                    {
+                        var anagraficaMezzo = GetAnagraficaMezzoByTarga(mezzoFake.Targa).Result;
+
+                        var mezzo = MapMezzo(anagraficaMezzo, mezzoFake);
+                        listaMezziBySedeAppo.Add(mezzo);
+                        ListaMezzi.Add(mezzo);
+                    }
+
+                    var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromHours(8));
+                    _memoryCache.Set(nomeCache, listaMezziBySedeAppo, cacheEntryOptions);
+
                 }
+                else 
+                {
+                    ListaMezzi.AddRange(listaMezziBySede);
+                }
+
             }
 
             return ListaMezzi;
         }
 
-        private Mezzo MapMezzo(AnagraficaMezzo Am, MezzoFake Mf)
+        private Mezzo MapMezzo(AnagraficaMezzo anagraficaMezzo, MezzoFake mezzoFake)
         {
-            //List<Distaccamento> distaccamenti = _getListaDistaccamentiByCodiceSede.GetListaDistaccamenti(Am.Sede.Codice);
-            //// ToDo _getListaDistaccamentiByCodiceSede.GetListaDistaccamenti da sostituire con la
-            //// chiamata del servizio Igor
-            //var d = distaccamenti.Find(x => x.CodDistaccamento.Equals(Am.Sede.Codice));
-            //var sede = new Sede(Am.Sede.Codice, d.DescDistaccamento, d.Indirizzo, d.Coordinate, "", "", "", "", "");
+            var distaccamento = new Distaccamento();
+            var coordinate = new Coordinate(0, 0);
 
-            //ToDo inseire la chiamata al servizio per i dati del distaccamento
-            var sede = new Sede("xxx", "xxxx", "", new Coordinate(1, 1), "", "", "", "", "");
-            Mezzo mezzo = new Mezzo(Am.GenereMezzo.CodiceTipo + "." + Am.Targa,
-                Am.Targa,
-                Am.GenereMezzo.Codice,
-                GetStatoOperativoMezzo(Am.Sede.Id, Am.GenereMezzo.CodiceTipo + "." + Am.Targa, Mf.Stato),
-               Mf.CodDestinazione, sede, new Coordinate(1, 1))
+            distaccamento = _getDistaccamentoByCodiceSedeUC.Get(mezzoFake.Sede).Result;
+            var sede = new Sede(mezzoFake.Sede, distaccamento.DescDistaccamento, distaccamento.Indirizzo, distaccamento.Coordinate, "", "", "", "", "");
+
+            var coordinateMezzo = _getPosizioneByCodiceMezzo.Get(anagraficaMezzo.GenereMezzo.CodiceTipo + "." + anagraficaMezzo.Targa).Result;
+            if (coordinateMezzo != null)
             {
-                DescrizioneAppartenenza = Mf.DescDestinazione,
+                coordinate = new Coordinate(coordinateMezzo.Localizzazione.Lat, coordinateMezzo.Localizzazione.Lon);
+            }
+            else
+            {
+                coordinate = new Coordinate(sede.Coordinate.Latitudine, sede.Coordinate.Longitudine);
+            }
+
+            Mezzo mezzo = new Mezzo(anagraficaMezzo.GenereMezzo.CodiceTipo + "." + anagraficaMezzo.Targa,
+                anagraficaMezzo.Targa,
+                anagraficaMezzo.GenereMezzo.Codice,
+                GetStatoOperativoMezzo(anagraficaMezzo.Sede.Id, anagraficaMezzo.GenereMezzo.CodiceTipo + "." + anagraficaMezzo.Targa, mezzoFake.Stato),
+               mezzoFake.CodDestinazione, sede, coordinate)
+            {
+                DescrizioneAppartenenza = mezzoFake.DescDestinazione,
             };
 
             return mezzo;
+        }
+
+        private async Task<AnagraficaMezzo> GetAnagraficaMezzoByTarga(string targaMezzo)
+        {
+            _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("test");
+            var response = await _client.GetAsync($"{_configuration.GetSection("UrlExternalApi").GetSection("MezziApidipvvf").Value}?searchKey={targaMezzo}").ConfigureAwait(false);
+            response.EnsureSuccessStatusCode();
+            using HttpContent contentMezzo = response.Content;
+            var data = await contentMezzo.ReadAsStringAsync().ConfigureAwait(false);
+
+            var listaAnagraficaMezzo = new List<AnagraficaMezzo>();
+            listaAnagraficaMezzo = JsonConvert.DeserializeObject<List<AnagraficaMezzo>>(data);
+            var anagraficaMezzo = listaAnagraficaMezzo.Find(x => x.Targa.Equals(targaMezzo));
+            return anagraficaMezzo;
         }
 
         private string GetStatoOperativoMezzo(string codiceSedeDistaccamento, string codiceMezzo, string StatoMezzoOra)
@@ -101,7 +159,7 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
             string stato;
             if (StatoMezzoOra.Equals("I"))
             {
-                stato = "Sul Posto";
+                stato = Costanti.MezzoSulPosto;
             }
             else
             {
@@ -110,9 +168,11 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
                 {
                     switch (StatoMezzoOra)
                     {
-                        case "D": stato = "In Sede"; break;
-                        case "R": stato = "In Rientro"; break;
-                        default: stato = "Sconosciuto"; break;
+                        case "D": stato = Costanti.MezzoInSede; break;
+                        case "R": stato = Costanti.MezzoInRientro; break;
+                        case "O": stato = Costanti.MezzoOperativoPreaccoppiato; break;
+                        case "A": stato = Costanti.MezzoAssegnatoPreaccoppiato; break;
+                        default: stato = Costanti.MezzoStatoSconosciuto; break;
                     }
                 }
                 else

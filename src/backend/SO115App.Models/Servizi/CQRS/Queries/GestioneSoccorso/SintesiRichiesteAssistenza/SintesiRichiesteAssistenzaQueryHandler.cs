@@ -25,6 +25,7 @@ using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
 using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -65,6 +66,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichi
         private readonly IGetListaSintesi _iGetListaSintesi;
         private readonly IMapper _mapper;
         private readonly IGetUtenteById _getUtenteById;
+        private readonly IGetAlberaturaUnitaOperative _getAlberaturaUnitaOperative;
 
         /// <summary>
         ///   Costruttore della classe
@@ -74,12 +76,14 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichi
         ///   Interfaccia che restituisce l'elenco delle Sintesi delle Richieste
         /// </param>
 
-        public SintesiRichiesteAssistenzaQueryHandler(ICercaRichiesteAssistenza cercaRichiesteAssistenza, IGetListaSintesi iGetListaSintesi, IMapper mapper, IGetUtenteById getUtenteById)
+        public SintesiRichiesteAssistenzaQueryHandler(ICercaRichiesteAssistenza cercaRichiesteAssistenza, IGetListaSintesi iGetListaSintesi, 
+            IMapper mapper, IGetUtenteById getUtenteById, IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative)
         {
-            this._cercaRichiesteAssistenza = cercaRichiesteAssistenza;
-            this._iGetListaSintesi = iGetListaSintesi;
+            _cercaRichiesteAssistenza = cercaRichiesteAssistenza;
+            _iGetListaSintesi = iGetListaSintesi;
             _mapper = mapper;
             _getUtenteById = getUtenteById;
+            _getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
         }
 
         /// <summary>
@@ -90,11 +94,19 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichi
         public SintesiRichiesteAssistenzaResult Handle(SintesiRichiesteAssistenzaQuery query)
         {
             var listaSediUtenteAbilitate = _getUtenteById.GetUtenteByCodice(query.Filtro.idOperatore).ListaUnitaOperativeAbilitate.ToHashSet();
+            var listaSediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
             var pinNodi = new List<PinNodo>();
-            foreach (var sede in listaSediUtenteAbilitate)
+
+            foreach (var sede in query.CodiciSede)
             {
                 pinNodi.Add(new PinNodo(sede, true));
             }
+
+            foreach (var figlio in listaSediAlberate.GetSottoAlbero(pinNodi))
+            {
+                pinNodi.Add(new PinNodo(figlio.Codice, true));
+            }
+
             query.Filtro.UnitaOperative = pinNodi.ToHashSet();
 
             var listaSintesi = _iGetListaSintesi.GetListaSintesiRichieste(query.Filtro);
@@ -107,7 +119,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichi
             return new SintesiRichiesteAssistenzaResult()
             {
                 SintesiRichiesta = (query.Filtro.Page > 0 && query.Filtro.PageSize > 0) ? listaSintesiPaginata : listaSintesi,
-                Paginazione = new Paginazione
+                Pagination = new Paginazione
                 {
                     Page = query.Filtro.Page,
                     PageSize = query.Filtro.PageSize,

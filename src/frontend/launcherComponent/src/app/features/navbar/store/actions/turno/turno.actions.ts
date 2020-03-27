@@ -17,7 +17,4 @@ export class ClearTurnoExtra {
 
 export class SetTurnoCalendario {
     static readonly type = '[Turni] Set Turno Calendario';
-
-    constructor() {
-    }
 }

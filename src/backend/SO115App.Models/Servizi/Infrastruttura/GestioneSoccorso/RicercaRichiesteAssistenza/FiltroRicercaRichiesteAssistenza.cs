@@ -37,12 +37,12 @@ namespace SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRic
         /// <summary>
         ///   Indica il numero di pagina che si vuole ricevere (la prima pagina ha indice 1)
         /// </summary>
-        public int Page { get; set; }
+        public int Page { get; set; } = 1;
 
         /// <summary>
         ///   Indica la dimensione di una pagina
         /// </summary>
-        public int PageSize { get; set; }
+        public int PageSize { get; set; } = 7;
 
         /// <summary>
         ///   Le unità operative per cui vengono selezionate le richieste. Se questo riferimento è
@@ -53,7 +53,7 @@ namespace SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRic
         /// <summary>
         ///   Indica se si vogliono includere le richieste aperte
         /// </summary>
-        public bool IncludiRichiesteAperte { get; set; }
+        public bool IncludiRichiesteAperte { get; set; } = true;
 
         /// <summary>
         ///   Indica se si vogliono includere le richieste chiuse

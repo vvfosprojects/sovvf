@@ -760,9 +760,40 @@ namespace SO115App.API.Models.Classi.Soccorso
         ///   (chiamata), A (assegnata), S (sospesa), P (presidiata). Gli stati sono mutuamente
         ///   esclusivi e sono utilizzati esclusivamente a scopo di filtraggio efficiente sul database.
         /// </summary>
-        public char TestoStatoRichiesta
+        public string TestoStatoRichiesta
         {
-            get { throw new NotImplementedException(); }
+            get 
+            {
+                var eventoChiusura = this._eventi
+                    .LastOrDefault() is ChiusuraRichiesta;
+                var eventoSospesa = this._eventi
+                    .LastOrDefault() is RichiestaSospesa;
+                var eventoPresidiata = this._eventi
+                    .LastOrDefault() is RichiestaPresidiata;
+                var eventoAssegnata = this._eventi
+                    .LastOrDefault() is AssegnataRichiesta;
+                var eventoRiaperta = this._eventi
+                    .LastOrDefault() is RiaperturaRichiesta;
+                var eventoRientrata = _eventi
+                    .LastOrDefault() is PartenzaRientrata;
+                var eventoInRientro = _eventi
+                    .LastOrDefault() is PartenzaInRientro;
+
+                if (eventoChiusura)
+                    return "X";
+
+                else if (eventoPresidiata)
+                    return "P";
+
+                else if (eventoAssegnata)
+                    return "A";
+
+                else if (eventoSospesa)
+                    return "S";
+                else
+                    return "C";
+
+            }
             protected set { }
         }
     }

@@ -26,6 +26,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.Marker.ListaChiamateInCorsoMa
     /// </summary>
     public class ListaChiamateInCorsoMarkerQuery : IQuery<ListaChiamateInCorsoMarkerResult>
     {
-        public string CodiceSede { get; set; }
+        public string[] CodiceSede { get; set; }
     }
 }

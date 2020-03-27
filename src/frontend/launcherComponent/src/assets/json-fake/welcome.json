@@ -250,6 +250,2022 @@
       "presidiata": false,
       "stato": "Chiamata",
       "motivazione": null
+    },
+    {
+      "id": "5e2706f42d04f71b3c012761",
+      "codice": "RM2112000002",
+      "codiceRichiesta": null,
+      "operatore": null,
+      "istanteRicezioneRichiesta": "2020-01-21T14:13:08.489Z",
+      "istanteChiusura": null,
+      "sospesa": false,
+      "chiusa": false,
+      "aperta": true,
+      "prioritaRichiesta": 3,
+      "tipologie": [
+        {
+          "codice": "5",
+          "descrizione": "Incendio aeromobile",
+          "tipoLuogoEvento": null,
+          "icona": null,
+          "categoria": "Aeroporti",
+          "star": false,
+          "boschivo": false,
+          "adeguatezzaMezzo": {
+            "aps": "100",
+            "as": "80",
+            "ab": "0",
+            "av": "0",
+            "ag": "0",
+            "default": "0"
+          },
+          "oppSganc": -50
+        }
+      ],
+      "descrizione": "Probabile incendio in appartamento",
+      "richiedente": {
+        "telefono": "333 1234567",
+        "nominativo": "Mario Rossi"
+      },
+      "localita": {
+        "coordinate": {
+          "latitudine": 41.900572,
+          "longitudine": 12.499366
+        },
+        "indirizzo": "Via Cavour, 5, 00184 Roma RM, Italia",
+        "note": null,
+        "piano": null
+      },
+      "turnoInserimentoChiamata": null,
+      "turnoIntervento": null,
+      "tipoTerreno": [],
+      "listaEntiIntervenuti": [],
+      "obiettivoSensibile": null,
+      "competenze": [],
+      "complessita": {
+        "indice": "2",
+        "descrizione": "Basso"
+      },
+      "istantePresaInCarico": null,
+      "listaUtentiInLavorazione": [
+        {
+          "idUtente": "5",
+          "nominativo": "Mario Rossi",
+          "dataInizioAttivita": "2020-01-23T13:53:18.1572405Z"
+        }
+      ],
+      "listaUtentiPresaInCarico": [
+        {
+          "idUtente": "5",
+          "nominativo": "Mario Rossi",
+          "dataInizioAttivita": "2020-01-23T13:53:18.1572405Z"
+        }
+      ],
+      "istantePrimaAssegnazione": null,
+      "rilevanteGrave": false,
+      "rilevanteStArCu": false,
+      "codiceSchedaNue": null,
+      "zoneEmergenza": [],
+      "fonogramma": {
+        "codice": "0",
+        "descrizione": "Non necessario"
+      },
+      "partenze": [],
+      "partenzeRichiesta": null,
+      "tags": [],
+      "notePubbliche": null,
+      "notePrivate": null,
+      "eventi": [
+        {
+          "codiceOrigine": "333 1234567",
+          "nominativoChiamante": "Mario Rossi",
+          "numeroTelefono": "333 1234567",
+          "codiceSchedaContatto": null,
+          "codice": "333 1234567",
+          "motivazione": null,
+          "notePubbliche": null,
+          "notePrivate": null,
+          "esito": "MettiInCoda",
+          "istante": "2020-01-21T14:13:08.489Z",
+          "codiceFonte": "3",
+          "codiceRichiesta": "RM2112000002",
+          "tipoEvento": "Telefonata"
+        },
+        {
+          "priorita": 3,
+          "istante": "2020-01-21T14:13:08.491Z",
+          "codiceFonte": "3",
+          "codiceRichiesta": "RM2112000002",
+          "tipoEvento": "AssegnataPriorita"
+        }
+      ],
+      "presidiata": false,
+      "stato": "Chiamata",
+      "motivazione": null
+    },
+    {
+      "id": "5e270b6f2d04f71b3c012762",
+      "codice": "RM2112000002",
+      "codiceRichiesta": null,
+      "operatore": null,
+      "istanteRicezioneRichiesta": "2020-01-21T14:32:15.294Z",
+      "istanteChiusura": null,
+      "sospesa": false,
+      "chiusa": false,
+      "aperta": true,
+      "prioritaRichiesta": 3,
+      "tipologie": [
+        {
+          "codice": "5",
+          "descrizione": "Incendio aeromobile",
+          "tipoLuogoEvento": null,
+          "icona": null,
+          "categoria": "Aeroporti",
+          "star": false,
+          "boschivo": false,
+          "adeguatezzaMezzo": {
+            "aps": "100",
+            "as": "80",
+            "ab": "0",
+            "av": "0",
+            "ag": "0",
+            "default": "0"
+          },
+          "oppSganc": -50
+        }
+      ],
+      "descrizione": "Incendio normale (generico)",
+      "richiedente": {
+        "telefono": "333 1234567",
+        "nominativo": "Luigi Bianchi"
+      },
+      "localita": {
+        "coordinate": {
+          "latitudine": 41.891726,
+          "longitudine": 12.529151
+        },
+        "indirizzo": "Via Prenestina, Roma RM, Italia",
+        "note": null,
+        "piano": null
+      },
+      "turnoInserimentoChiamata": null,
+      "turnoIntervento": null,
+      "tipoTerreno": [],
+      "listaEntiIntervenuti": [],
+      "obiettivoSensibile": null,
+      "competenze": [],
+      "complessita": {
+        "indice": "2",
+        "descrizione": "Basso"
+      },
+      "istantePresaInCarico": null,
+      "listaUtentiInLavorazione": [
+        {
+          "idUtente": "5",
+          "nominativo": "Mario Rossi",
+          "dataInizioAttivita": "2020-01-23T13:53:18.1572405Z"
+        }
+      ],
+      "listaUtentiPresaInCarico": [
+        {
+          "idUtente": "5",
+          "nominativo": "Mario Rossi",
+          "dataInizioAttivita": "2020-01-23T13:53:18.1572405Z"
+        }
+      ],
+      "istantePrimaAssegnazione": null,
+      "rilevanteGrave": false,
+      "rilevanteStArCu": false,
+      "codiceSchedaNue": null,
+      "zoneEmergenza": [],
+      "fonogramma": {
+        "codice": "0",
+        "descrizione": "Non necessario"
+      },
+      "partenze": [],
+      "partenzeRichiesta": null,
+      "tags": [],
+      "notePubbliche": null,
+      "notePrivate": null,
+      "eventi": [
+        {
+          "codiceOrigine": "333 1234567",
+          "nominativoChiamante": "Luigi Bianchi",
+          "numeroTelefono": "333 1234567",
+          "codiceSchedaContatto": null,
+          "codice": "333 1234567",
+          "motivazione": null,
+          "notePubbliche": null,
+          "notePrivate": null,
+          "esito": "MettiInCoda",
+          "istante": "2020-01-21T14:32:15.294Z",
+          "codiceFonte": "3",
+          "codiceRichiesta": "RM2112000002",
+          "tipoEvento": "Telefonata"
+        },
+        {
+          "priorita": 3,
+          "istante": "2020-01-21T14:32:15.296Z",
+          "codiceFonte": "3",
+          "codiceRichiesta": "RM2112000002",
+          "tipoEvento": "AssegnataPriorita"
+        }
+      ],
+      "presidiata": false,
+      "stato": "Chiamata",
+      "motivazione": null
+    },
+    {
+      "id": "5e2706f42d04f71b3c012761",
+      "codice": "RM2112000002",
+      "codiceRichiesta": null,
+      "operatore": null,
+      "istanteRicezioneRichiesta": "2020-01-21T14:13:08.489Z",
+      "istanteChiusura": null,
+      "sospesa": false,
+      "chiusa": false,
+      "aperta": true,
+      "prioritaRichiesta": 3,
+      "tipologie": [
+        {
+          "codice": "5",
+          "descrizione": "Incendio aeromobile",
+          "tipoLuogoEvento": null,
+          "icona": null,
+          "categoria": "Aeroporti",
+          "star": false,
+          "boschivo": false,
+          "adeguatezzaMezzo": {
+            "aps": "100",
+            "as": "80",
+            "ab": "0",
+            "av": "0",
+            "ag": "0",
+            "default": "0"
+          },
+          "oppSganc": -50
+        }
+      ],
+      "descrizione": "Probabile incendio in appartamento",
+      "richiedente": {
+        "telefono": "333 1234567",
+        "nominativo": "Mario Rossi"
+      },
+      "localita": {
+        "coordinate": {
+          "latitudine": 41.900572,
+          "longitudine": 12.499366
+        },
+        "indirizzo": "Via Cavour, 5, 00184 Roma RM, Italia",
+        "note": null,
+        "piano": null
+      },
+      "turnoInserimentoChiamata": null,
+      "turnoIntervento": null,
+      "tipoTerreno": [],
+      "listaEntiIntervenuti": [],
+      "obiettivoSensibile": null,
+      "competenze": [],
+      "complessita": {
+        "indice": "2",
+        "descrizione": "Basso"
+      },
+      "istantePresaInCarico": null,
+      "listaUtentiInLavorazione": [
+        {
+          "idUtente": "5",
+          "nominativo": "Mario Rossi",
+          "dataInizioAttivita": "2020-01-23T13:53:18.1572405Z"
+        }
+      ],
+      "listaUtentiPresaInCarico": [
+        {
+          "idUtente": "5",
+          "nominativo": "Mario Rossi",
+          "dataInizioAttivita": "2020-01-23T13:53:18.1572405Z"
+        }
+      ],
+      "istantePrimaAssegnazione": null,
+      "rilevanteGrave": false,
+      "rilevanteStArCu": false,
+      "codiceSchedaNue": null,
+      "zoneEmergenza": [],
+      "fonogramma": {
+        "codice": "0",
+        "descrizione": "Non necessario"
+      },
+      "partenze": [],
+      "partenzeRichiesta": null,
+      "tags": [],
+      "notePubbliche": null,
+      "notePrivate": null,
+      "eventi": [
+        {
+          "codiceOrigine": "333 1234567",
+          "nominativoChiamante": "Mario Rossi",
+          "numeroTelefono": "333 1234567",
+          "codiceSchedaContatto": null,
+          "codice": "333 1234567",
+          "motivazione": null,
+          "notePubbliche": null,
+          "notePrivate": null,
+          "esito": "MettiInCoda",
+          "istante": "2020-01-21T14:13:08.489Z",
+          "codiceFonte": "3",
+          "codiceRichiesta": "RM2112000002",
+          "tipoEvento": "Telefonata"
+        },
+        {
+          "priorita": 3,
+          "istante": "2020-01-21T14:13:08.491Z",
+          "codiceFonte": "3",
+          "codiceRichiesta": "RM2112000002",
+          "tipoEvento": "AssegnataPriorita"
+        }
+      ],
+      "presidiata": false,
+      "stato": "Chiamata",
+      "motivazione": null
+    },
+    {
+      "id": "5e270b6f2d04f71b3c012762",
+      "codice": "RM2112000002",
+      "codiceRichiesta": null,
+      "operatore": null,
+      "istanteRicezioneRichiesta": "2020-01-21T14:32:15.294Z",
+      "istanteChiusura": null,
+      "sospesa": false,
+      "chiusa": false,
+      "aperta": true,
+      "prioritaRichiesta": 3,
+      "tipologie": [
+        {
+          "codice": "5",
+          "descrizione": "Incendio aeromobile",
+          "tipoLuogoEvento": null,
+          "icona": null,
+          "categoria": "Aeroporti",
+          "star": false,
+          "boschivo": false,
+          "adeguatezzaMezzo": {
+            "aps": "100",
+            "as": "80",
+            "ab": "0",
+            "av": "0",
+            "ag": "0",
+            "default": "0"
+          },
+          "oppSganc": -50
+        }
+      ],
+      "descrizione": "Incendio normale (generico)",
+      "richiedente": {
+        "telefono": "333 1234567",
+        "nominativo": "Luigi Bianchi"
+      },
+      "localita": {
+        "coordinate": {
+          "latitudine": 41.891726,
+          "longitudine": 12.529151
+        },
+        "indirizzo": "Via Prenestina, Roma RM, Italia",
+        "note": null,
+        "piano": null
+      },
+      "turnoInserimentoChiamata": null,
+      "turnoIntervento": null,
+      "tipoTerreno": [],
+      "listaEntiIntervenuti": [],
+      "obiettivoSensibile": null,
+      "competenze": [],
+      "complessita": {
+        "indice": "2",
+        "descrizione": "Basso"
+      },
+      "istantePresaInCarico": null,
+      "listaUtentiInLavorazione": [
+        {
+          "idUtente": "5",
+          "nominativo": "Mario Rossi",
+          "dataInizioAttivita": "2020-01-23T13:53:18.1572405Z"
+        }
+      ],
+      "listaUtentiPresaInCarico": [
+        {
+          "idUtente": "5",
+          "nominativo": "Mario Rossi",
+          "dataInizioAttivita": "2020-01-23T13:53:18.1572405Z"
+        }
+      ],
+      "istantePrimaAssegnazione": null,
+      "rilevanteGrave": false,
+      "rilevanteStArCu": false,
+      "codiceSchedaNue": null,
+      "zoneEmergenza": [],
+      "fonogramma": {
+        "codice": "0",
+        "descrizione": "Non necessario"
+      },
+      "partenze": [],
+      "partenzeRichiesta": null,
+      "tags": [],
+      "notePubbliche": null,
+      "notePrivate": null,
+      "eventi": [
+        {
+          "codiceOrigine": "333 1234567",
+          "nominativoChiamante": "Luigi Bianchi",
+          "numeroTelefono": "333 1234567",
+          "codiceSchedaContatto": null,
+          "codice": "333 1234567",
+          "motivazione": null,
+          "notePubbliche": null,
+          "notePrivate": null,
+          "esito": "MettiInCoda",
+          "istante": "2020-01-21T14:32:15.294Z",
+          "codiceFonte": "3",
+          "codiceRichiesta": "RM2112000002",
+          "tipoEvento": "Telefonata"
+        },
+        {
+          "priorita": 3,
+          "istante": "2020-01-21T14:32:15.296Z",
+          "codiceFonte": "3",
+          "codiceRichiesta": "RM2112000002",
+          "tipoEvento": "AssegnataPriorita"
+        }
+      ],
+      "presidiata": false,
+      "stato": "Chiamata",
+      "motivazione": null
+    },
+    {
+      "id": "5e2706f42d04f71b3c012761",
+      "codice": "RM2112000002",
+      "codiceRichiesta": null,
+      "operatore": null,
+      "istanteRicezioneRichiesta": "2020-01-21T14:13:08.489Z",
+      "istanteChiusura": null,
+      "sospesa": false,
+      "chiusa": false,
+      "aperta": true,
+      "prioritaRichiesta": 3,
+      "tipologie": [
+        {
+          "codice": "5",
+          "descrizione": "Incendio aeromobile",
+          "tipoLuogoEvento": null,
+          "icona": null,
+          "categoria": "Aeroporti",
+          "star": false,
+          "boschivo": false,
+          "adeguatezzaMezzo": {
+            "aps": "100",
+            "as": "80",
+            "ab": "0",
+            "av": "0",
+            "ag": "0",
+            "default": "0"
+          },
+          "oppSganc": -50
+        }
+      ],
+      "descrizione": "Probabile incendio in appartamento",
+      "richiedente": {
+        "telefono": "333 1234567",
+        "nominativo": "Mario Rossi"
+      },
+      "localita": {
+        "coordinate": {
+          "latitudine": 41.900572,
+          "longitudine": 12.499366
+        },
+        "indirizzo": "Via Cavour, 5, 00184 Roma RM, Italia",
+        "note": null,
+        "piano": null
+      },
+      "turnoInserimentoChiamata": null,
+      "turnoIntervento": null,
+      "tipoTerreno": [],
+      "listaEntiIntervenuti": [],
+      "obiettivoSensibile": null,
+      "competenze": [],
+      "complessita": {
+        "indice": "2",
+        "descrizione": "Basso"
+      },
+      "istantePresaInCarico": null,
+      "listaUtentiInLavorazione": [
+        {
+          "idUtente": "5",
+          "nominativo": "Mario Rossi",
+          "dataInizioAttivita": "2020-01-23T13:53:18.1572405Z"
+        }
+      ],
+      "listaUtentiPresaInCarico": [
+        {
+          "idUtente": "5",
+          "nominativo": "Mario Rossi",
+          "dataInizioAttivita": "2020-01-23T13:53:18.1572405Z"
+        }
+      ],
+      "istantePrimaAssegnazione": null,
+      "rilevanteGrave": false,
+      "rilevanteStArCu": false,
+      "codiceSchedaNue": null,
+      "zoneEmergenza": [],
+      "fonogramma": {
+        "codice": "0",
+        "descrizione": "Non necessario"
+      },
+      "partenze": [],
+      "partenzeRichiesta": null,
+      "tags": [],
+      "notePubbliche": null,
+      "notePrivate": null,
+      "eventi": [
+        {
+          "codiceOrigine": "333 1234567",
+          "nominativoChiamante": "Mario Rossi",
+          "numeroTelefono": "333 1234567",
+          "codiceSchedaContatto": null,
+          "codice": "333 1234567",
+          "motivazione": null,
+          "notePubbliche": null,
+          "notePrivate": null,
+          "esito": "MettiInCoda",
+          "istante": "2020-01-21T14:13:08.489Z",
+          "codiceFonte": "3",
+          "codiceRichiesta": "RM2112000002",
+          "tipoEvento": "Telefonata"
+        },
+        {
+          "priorita": 3,
+          "istante": "2020-01-21T14:13:08.491Z",
+          "codiceFonte": "3",
+          "codiceRichiesta": "RM2112000002",
+          "tipoEvento": "AssegnataPriorita"
+        }
+      ],
+      "presidiata": false,
+      "stato": "Chiamata",
+      "motivazione": null
+    },
+    {
+      "id": "5e270b6f2d04f71b3c012762",
+      "codice": "RM2112000002",
+      "codiceRichiesta": null,
+      "operatore": null,
+      "istanteRicezioneRichiesta": "2020-01-21T14:32:15.294Z",
+      "istanteChiusura": null,
+      "sospesa": false,
+      "chiusa": false,
+      "aperta": true,
+      "prioritaRichiesta": 3,
+      "tipologie": [
+        {
+          "codice": "5",
+          "descrizione": "Incendio aeromobile",
+          "tipoLuogoEvento": null,
+          "icona": null,
+          "categoria": "Aeroporti",
+          "star": false,
+          "boschivo": false,
+          "adeguatezzaMezzo": {
+            "aps": "100",
+            "as": "80",
+            "ab": "0",
+            "av": "0",
+            "ag": "0",
+            "default": "0"
+          },
+          "oppSganc": -50
+        }
+      ],
+      "descrizione": "Incendio normale (generico)",
+      "richiedente": {
+        "telefono": "333 1234567",
+        "nominativo": "Luigi Bianchi"
+      },
+      "localita": {
+        "coordinate": {
+          "latitudine": 41.891726,
+          "longitudine": 12.529151
+        },
+        "indirizzo": "Via Prenestina, Roma RM, Italia",
+        "note": null,
+        "piano": null
+      },
+      "turnoInserimentoChiamata": null,
+      "turnoIntervento": null,
+      "tipoTerreno": [],
+      "listaEntiIntervenuti": [],
+      "obiettivoSensibile": null,
+      "competenze": [],
+      "complessita": {
+        "indice": "2",
+        "descrizione": "Basso"
+      },
+      "istantePresaInCarico": null,
+      "listaUtentiInLavorazione": [
+        {
+          "idUtente": "5",
+          "nominativo": "Mario Rossi",
+          "dataInizioAttivita": "2020-01-23T13:53:18.1572405Z"
+        }
+      ],
+      "listaUtentiPresaInCarico": [
+        {
+          "idUtente": "5",
+          "nominativo": "Mario Rossi",
+          "dataInizioAttivita": "2020-01-23T13:53:18.1572405Z"
+        }
+      ],
+      "istantePrimaAssegnazione": null,
+      "rilevanteGrave": false,
+      "rilevanteStArCu": false,
+      "codiceSchedaNue": null,
+      "zoneEmergenza": [],
+      "fonogramma": {
+        "codice": "0",
+        "descrizione": "Non necessario"
+      },
+      "partenze": [],
+      "partenzeRichiesta": null,
+      "tags": [],
+      "notePubbliche": null,
+      "notePrivate": null,
+      "eventi": [
+        {
+          "codiceOrigine": "333 1234567",
+          "nominativoChiamante": "Luigi Bianchi",
+          "numeroTelefono": "333 1234567",
+          "codiceSchedaContatto": null,
+          "codice": "333 1234567",
+          "motivazione": null,
+          "notePubbliche": null,
+          "notePrivate": null,
+          "esito": "MettiInCoda",
+          "istante": "2020-01-21T14:32:15.294Z",
+          "codiceFonte": "3",
+          "codiceRichiesta": "RM2112000002",
+          "tipoEvento": "Telefonata"
+        },
+        {
+          "priorita": 3,
+          "istante": "2020-01-21T14:32:15.296Z",
+          "codiceFonte": "3",
+          "codiceRichiesta": "RM2112000002",
+          "tipoEvento": "AssegnataPriorita"
+        }
+      ],
+      "presidiata": false,
+      "stato": "Chiamata",
+      "motivazione": null
+    },
+    {
+      "id": "5e2706f42d04f71b3c012761",
+      "codice": "RM2112000002",
+      "codiceRichiesta": null,
+      "operatore": null,
+      "istanteRicezioneRichiesta": "2020-01-21T14:13:08.489Z",
+      "istanteChiusura": null,
+      "sospesa": false,
+      "chiusa": false,
+      "aperta": true,
+      "prioritaRichiesta": 3,
+      "tipologie": [
+        {
+          "codice": "5",
+          "descrizione": "Incendio aeromobile",
+          "tipoLuogoEvento": null,
+          "icona": null,
+          "categoria": "Aeroporti",
+          "star": false,
+          "boschivo": false,
+          "adeguatezzaMezzo": {
+            "aps": "100",
+            "as": "80",
+            "ab": "0",
+            "av": "0",
+            "ag": "0",
+            "default": "0"
+          },
+          "oppSganc": -50
+        }
+      ],
+      "descrizione": "Probabile incendio in appartamento",
+      "richiedente": {
+        "telefono": "333 1234567",
+        "nominativo": "Mario Rossi"
+      },
+      "localita": {
+        "coordinate": {
+          "latitudine": 41.900572,
+          "longitudine": 12.499366
+        },
+        "indirizzo": "Via Cavour, 5, 00184 Roma RM, Italia",
+        "note": null,
+        "piano": null
+      },
+      "turnoInserimentoChiamata": null,
+      "turnoIntervento": null,
+      "tipoTerreno": [],
+      "listaEntiIntervenuti": [],
+      "obiettivoSensibile": null,
+      "competenze": [],
+      "complessita": {
+        "indice": "2",
+        "descrizione": "Basso"
+      },
+      "istantePresaInCarico": null,
+      "listaUtentiInLavorazione": [
+        {
+          "idUtente": "5",
+          "nominativo": "Mario Rossi",
+          "dataInizioAttivita": "2020-01-23T13:53:18.1572405Z"
+        }
+      ],
+      "listaUtentiPresaInCarico": [
+        {
+          "idUtente": "5",
+          "nominativo": "Mario Rossi",
+          "dataInizioAttivita": "2020-01-23T13:53:18.1572405Z"
+        }
+      ],
+      "istantePrimaAssegnazione": null,
+      "rilevanteGrave": false,
+      "rilevanteStArCu": false,
+      "codiceSchedaNue": null,
+      "zoneEmergenza": [],
+      "fonogramma": {
+        "codice": "0",
+        "descrizione": "Non necessario"
+      },
+      "partenze": [],
+      "partenzeRichiesta": null,
+      "tags": [],
+      "notePubbliche": null,
+      "notePrivate": null,
+      "eventi": [
+        {
+          "codiceOrigine": "333 1234567",
+          "nominativoChiamante": "Mario Rossi",
+          "numeroTelefono": "333 1234567",
+          "codiceSchedaContatto": null,
+          "codice": "333 1234567",
+          "motivazione": null,
+          "notePubbliche": null,
+          "notePrivate": null,
+          "esito": "MettiInCoda",
+          "istante": "2020-01-21T14:13:08.489Z",
+          "codiceFonte": "3",
+          "codiceRichiesta": "RM2112000002",
+          "tipoEvento": "Telefonata"
+        },
+        {
+          "priorita": 3,
+          "istante": "2020-01-21T14:13:08.491Z",
+          "codiceFonte": "3",
+          "codiceRichiesta": "RM2112000002",
+          "tipoEvento": "AssegnataPriorita"
+        }
+      ],
+      "presidiata": false,
+      "stato": "Chiamata",
+      "motivazione": null
+    },
+    {
+      "id": "5e270b6f2d04f71b3c012762",
+      "codice": "RM2112000002",
+      "codiceRichiesta": null,
+      "operatore": null,
+      "istanteRicezioneRichiesta": "2020-01-21T14:32:15.294Z",
+      "istanteChiusura": null,
+      "sospesa": false,
+      "chiusa": false,
+      "aperta": true,
+      "prioritaRichiesta": 3,
+      "tipologie": [
+        {
+          "codice": "5",
+          "descrizione": "Incendio aeromobile",
+          "tipoLuogoEvento": null,
+          "icona": null,
+          "categoria": "Aeroporti",
+          "star": false,
+          "boschivo": false,
+          "adeguatezzaMezzo": {
+            "aps": "100",
+            "as": "80",
+            "ab": "0",
+            "av": "0",
+            "ag": "0",
+            "default": "0"
+          },
+          "oppSganc": -50
+        }
+      ],
+      "descrizione": "Incendio normale (generico)",
+      "richiedente": {
+        "telefono": "333 1234567",
+        "nominativo": "Luigi Bianchi"
+      },
+      "localita": {
+        "coordinate": {
+          "latitudine": 41.891726,
+          "longitudine": 12.529151
+        },
+        "indirizzo": "Via Prenestina, Roma RM, Italia",
+        "note": null,
+        "piano": null
+      },
+      "turnoInserimentoChiamata": null,
+      "turnoIntervento": null,
+      "tipoTerreno": [],
+      "listaEntiIntervenuti": [],
+      "obiettivoSensibile": null,
+      "competenze": [],
+      "complessita": {
+        "indice": "2",
+        "descrizione": "Basso"
+      },
+      "istantePresaInCarico": null,
+      "listaUtentiInLavorazione": [
+        {
+          "idUtente": "5",
+          "nominativo": "Mario Rossi",
+          "dataInizioAttivita": "2020-01-23T13:53:18.1572405Z"
+        }
+      ],
+      "listaUtentiPresaInCarico": [
+        {
+          "idUtente": "5",
+          "nominativo": "Mario Rossi",
+          "dataInizioAttivita": "2020-01-23T13:53:18.1572405Z"
+        }
+      ],
+      "istantePrimaAssegnazione": null,
+      "rilevanteGrave": false,
+      "rilevanteStArCu": false,
+      "codiceSchedaNue": null,
+      "zoneEmergenza": [],
+      "fonogramma": {
+        "codice": "0",
+        "descrizione": "Non necessario"
+      },
+      "partenze": [],
+      "partenzeRichiesta": null,
+      "tags": [],
+      "notePubbliche": null,
+      "notePrivate": null,
+      "eventi": [
+        {
+          "codiceOrigine": "333 1234567",
+          "nominativoChiamante": "Luigi Bianchi",
+          "numeroTelefono": "333 1234567",
+          "codiceSchedaContatto": null,
+          "codice": "333 1234567",
+          "motivazione": null,
+          "notePubbliche": null,
+          "notePrivate": null,
+          "esito": "MettiInCoda",
+          "istante": "2020-01-21T14:32:15.294Z",
+          "codiceFonte": "3",
+          "codiceRichiesta": "RM2112000002",
+          "tipoEvento": "Telefonata"
+        },
+        {
+          "priorita": 3,
+          "istante": "2020-01-21T14:32:15.296Z",
+          "codiceFonte": "3",
+          "codiceRichiesta": "RM2112000002",
+          "tipoEvento": "AssegnataPriorita"
+        }
+      ],
+      "presidiata": false,
+      "stato": "Chiamata",
+      "motivazione": null
+    },
+    {
+      "id": "5e2706f42d04f71b3c012761",
+      "codice": "RM2112000002",
+      "codiceRichiesta": null,
+      "operatore": null,
+      "istanteRicezioneRichiesta": "2020-01-21T14:13:08.489Z",
+      "istanteChiusura": null,
+      "sospesa": false,
+      "chiusa": false,
+      "aperta": true,
+      "prioritaRichiesta": 3,
+      "tipologie": [
+        {
+          "codice": "5",
+          "descrizione": "Incendio aeromobile",
+          "tipoLuogoEvento": null,
+          "icona": null,
+          "categoria": "Aeroporti",
+          "star": false,
+          "boschivo": false,
+          "adeguatezzaMezzo": {
+            "aps": "100",
+            "as": "80",
+            "ab": "0",
+            "av": "0",
+            "ag": "0",
+            "default": "0"
+          },
+          "oppSganc": -50
+        }
+      ],
+      "descrizione": "Probabile incendio in appartamento",
+      "richiedente": {
+        "telefono": "333 1234567",
+        "nominativo": "Mario Rossi"
+      },
+      "localita": {
+        "coordinate": {
+          "latitudine": 41.900572,
+          "longitudine": 12.499366
+        },
+        "indirizzo": "Via Cavour, 5, 00184 Roma RM, Italia",
+        "note": null,
+        "piano": null
+      },
+      "turnoInserimentoChiamata": null,
+      "turnoIntervento": null,
+      "tipoTerreno": [],
+      "listaEntiIntervenuti": [],
+      "obiettivoSensibile": null,
+      "competenze": [],
+      "complessita": {
+        "indice": "2",
+        "descrizione": "Basso"
+      },
+      "istantePresaInCarico": null,
+      "listaUtentiInLavorazione": [
+        {
+          "idUtente": "5",
+          "nominativo": "Mario Rossi",
+          "dataInizioAttivita": "2020-01-23T13:53:18.1572405Z"
+        }
+      ],
+      "listaUtentiPresaInCarico": [
+        {
+          "idUtente": "5",
+          "nominativo": "Mario Rossi",
+          "dataInizioAttivita": "2020-01-23T13:53:18.1572405Z"
+        }
+      ],
+      "istantePrimaAssegnazione": null,
+      "rilevanteGrave": false,
+      "rilevanteStArCu": false,
+      "codiceSchedaNue": null,
+      "zoneEmergenza": [],
+      "fonogramma": {
+        "codice": "0",
+        "descrizione": "Non necessario"
+      },
+      "partenze": [],
+      "partenzeRichiesta": null,
+      "tags": [],
+      "notePubbliche": null,
+      "notePrivate": null,
+      "eventi": [
+        {
+          "codiceOrigine": "333 1234567",
+          "nominativoChiamante": "Mario Rossi",
+          "numeroTelefono": "333 1234567",
+          "codiceSchedaContatto": null,
+          "codice": "333 1234567",
+          "motivazione": null,
+          "notePubbliche": null,
+          "notePrivate": null,
+          "esito": "MettiInCoda",
+          "istante": "2020-01-21T14:13:08.489Z",
+          "codiceFonte": "3",
+          "codiceRichiesta": "RM2112000002",
+          "tipoEvento": "Telefonata"
+        },
+        {
+          "priorita": 3,
+          "istante": "2020-01-21T14:13:08.491Z",
+          "codiceFonte": "3",
+          "codiceRichiesta": "RM2112000002",
+          "tipoEvento": "AssegnataPriorita"
+        }
+      ],
+      "presidiata": false,
+      "stato": "Chiamata",
+      "motivazione": null
+    },
+    {
+      "id": "5e270b6f2d04f71b3c012762",
+      "codice": "RM2112000002",
+      "codiceRichiesta": null,
+      "operatore": null,
+      "istanteRicezioneRichiesta": "2020-01-21T14:32:15.294Z",
+      "istanteChiusura": null,
+      "sospesa": false,
+      "chiusa": false,
+      "aperta": true,
+      "prioritaRichiesta": 3,
+      "tipologie": [
+        {
+          "codice": "5",
+          "descrizione": "Incendio aeromobile",
+          "tipoLuogoEvento": null,
+          "icona": null,
+          "categoria": "Aeroporti",
+          "star": false,
+          "boschivo": false,
+          "adeguatezzaMezzo": {
+            "aps": "100",
+            "as": "80",
+            "ab": "0",
+            "av": "0",
+            "ag": "0",
+            "default": "0"
+          },
+          "oppSganc": -50
+        }
+      ],
+      "descrizione": "Incendio normale (generico)",
+      "richiedente": {
+        "telefono": "333 1234567",
+        "nominativo": "Luigi Bianchi"
+      },
+      "localita": {
+        "coordinate": {
+          "latitudine": 41.891726,
+          "longitudine": 12.529151
+        },
+        "indirizzo": "Via Prenestina, Roma RM, Italia",
+        "note": null,
+        "piano": null
+      },
+      "turnoInserimentoChiamata": null,
+      "turnoIntervento": null,
+      "tipoTerreno": [],
+      "listaEntiIntervenuti": [],
+      "obiettivoSensibile": null,
+      "competenze": [],
+      "complessita": {
+        "indice": "2",
+        "descrizione": "Basso"
+      },
+      "istantePresaInCarico": null,
+      "listaUtentiInLavorazione": [
+        {
+          "idUtente": "5",
+          "nominativo": "Mario Rossi",
+          "dataInizioAttivita": "2020-01-23T13:53:18.1572405Z"
+        }
+      ],
+      "listaUtentiPresaInCarico": [
+        {
+          "idUtente": "5",
+          "nominativo": "Mario Rossi",
+          "dataInizioAttivita": "2020-01-23T13:53:18.1572405Z"
+        }
+      ],
+      "istantePrimaAssegnazione": null,
+      "rilevanteGrave": false,
+      "rilevanteStArCu": false,
+      "codiceSchedaNue": null,
+      "zoneEmergenza": [],
+      "fonogramma": {
+        "codice": "0",
+        "descrizione": "Non necessario"
+      },
+      "partenze": [],
+      "partenzeRichiesta": null,
+      "tags": [],
+      "notePubbliche": null,
+      "notePrivate": null,
+      "eventi": [
+        {
+          "codiceOrigine": "333 1234567",
+          "nominativoChiamante": "Luigi Bianchi",
+          "numeroTelefono": "333 1234567",
+          "codiceSchedaContatto": null,
+          "codice": "333 1234567",
+          "motivazione": null,
+          "notePubbliche": null,
+          "notePrivate": null,
+          "esito": "MettiInCoda",
+          "istante": "2020-01-21T14:32:15.294Z",
+          "codiceFonte": "3",
+          "codiceRichiesta": "RM2112000002",
+          "tipoEvento": "Telefonata"
+        },
+        {
+          "priorita": 3,
+          "istante": "2020-01-21T14:32:15.296Z",
+          "codiceFonte": "3",
+          "codiceRichiesta": "RM2112000002",
+          "tipoEvento": "AssegnataPriorita"
+        }
+      ],
+      "presidiata": false,
+      "stato": "Chiamata",
+      "motivazione": null
+    },
+    {
+      "id": "5e2706f42d04f71b3c012761",
+      "codice": "RM2112000002",
+      "codiceRichiesta": null,
+      "operatore": null,
+      "istanteRicezioneRichiesta": "2020-01-21T14:13:08.489Z",
+      "istanteChiusura": null,
+      "sospesa": false,
+      "chiusa": false,
+      "aperta": true,
+      "prioritaRichiesta": 3,
+      "tipologie": [
+        {
+          "codice": "5",
+          "descrizione": "Incendio aeromobile",
+          "tipoLuogoEvento": null,
+          "icona": null,
+          "categoria": "Aeroporti",
+          "star": false,
+          "boschivo": false,
+          "adeguatezzaMezzo": {
+            "aps": "100",
+            "as": "80",
+            "ab": "0",
+            "av": "0",
+            "ag": "0",
+            "default": "0"
+          },
+          "oppSganc": -50
+        }
+      ],
+      "descrizione": "Probabile incendio in appartamento",
+      "richiedente": {
+        "telefono": "333 1234567",
+        "nominativo": "Mario Rossi"
+      },
+      "localita": {
+        "coordinate": {
+          "latitudine": 41.900572,
+          "longitudine": 12.499366
+        },
+        "indirizzo": "Via Cavour, 5, 00184 Roma RM, Italia",
+        "note": null,
+        "piano": null
+      },
+      "turnoInserimentoChiamata": null,
+      "turnoIntervento": null,
+      "tipoTerreno": [],
+      "listaEntiIntervenuti": [],
+      "obiettivoSensibile": null,
+      "competenze": [],
+      "complessita": {
+        "indice": "2",
+        "descrizione": "Basso"
+      },
+      "istantePresaInCarico": null,
+      "listaUtentiInLavorazione": [
+        {
+          "idUtente": "5",
+          "nominativo": "Mario Rossi",
+          "dataInizioAttivita": "2020-01-23T13:53:18.1572405Z"
+        }
+      ],
+      "listaUtentiPresaInCarico": [
+        {
+          "idUtente": "5",
+          "nominativo": "Mario Rossi",
+          "dataInizioAttivita": "2020-01-23T13:53:18.1572405Z"
+        }
+      ],
+      "istantePrimaAssegnazione": null,
+      "rilevanteGrave": false,
+      "rilevanteStArCu": false,
+      "codiceSchedaNue": null,
+      "zoneEmergenza": [],
+      "fonogramma": {
+        "codice": "0",
+        "descrizione": "Non necessario"
+      },
+      "partenze": [],
+      "partenzeRichiesta": null,
+      "tags": [],
+      "notePubbliche": null,
+      "notePrivate": null,
+      "eventi": [
+        {
+          "codiceOrigine": "333 1234567",
+          "nominativoChiamante": "Mario Rossi",
+          "numeroTelefono": "333 1234567",
+          "codiceSchedaContatto": null,
+          "codice": "333 1234567",
+          "motivazione": null,
+          "notePubbliche": null,
+          "notePrivate": null,
+          "esito": "MettiInCoda",
+          "istante": "2020-01-21T14:13:08.489Z",
+          "codiceFonte": "3",
+          "codiceRichiesta": "RM2112000002",
+          "tipoEvento": "Telefonata"
+        },
+        {
+          "priorita": 3,
+          "istante": "2020-01-21T14:13:08.491Z",
+          "codiceFonte": "3",
+          "codiceRichiesta": "RM2112000002",
+          "tipoEvento": "AssegnataPriorita"
+        }
+      ],
+      "presidiata": false,
+      "stato": "Chiamata",
+      "motivazione": null
+    },
+    {
+      "id": "5e270b6f2d04f71b3c012762",
+      "codice": "RM2112000002",
+      "codiceRichiesta": null,
+      "operatore": null,
+      "istanteRicezioneRichiesta": "2020-01-21T14:32:15.294Z",
+      "istanteChiusura": null,
+      "sospesa": false,
+      "chiusa": false,
+      "aperta": true,
+      "prioritaRichiesta": 3,
+      "tipologie": [
+        {
+          "codice": "5",
+          "descrizione": "Incendio aeromobile",
+          "tipoLuogoEvento": null,
+          "icona": null,
+          "categoria": "Aeroporti",
+          "star": false,
+          "boschivo": false,
+          "adeguatezzaMezzo": {
+            "aps": "100",
+            "as": "80",
+            "ab": "0",
+            "av": "0",
+            "ag": "0",
+            "default": "0"
+          },
+          "oppSganc": -50
+        }
+      ],
+      "descrizione": "Incendio normale (generico)",
+      "richiedente": {
+        "telefono": "333 1234567",
+        "nominativo": "Luigi Bianchi"
+      },
+      "localita": {
+        "coordinate": {
+          "latitudine": 41.891726,
+          "longitudine": 12.529151
+        },
+        "indirizzo": "Via Prenestina, Roma RM, Italia",
+        "note": null,
+        "piano": null
+      },
+      "turnoInserimentoChiamata": null,
+      "turnoIntervento": null,
+      "tipoTerreno": [],
+      "listaEntiIntervenuti": [],
+      "obiettivoSensibile": null,
+      "competenze": [],
+      "complessita": {
+        "indice": "2",
+        "descrizione": "Basso"
+      },
+      "istantePresaInCarico": null,
+      "listaUtentiInLavorazione": [
+        {
+          "idUtente": "5",
+          "nominativo": "Mario Rossi",
+          "dataInizioAttivita": "2020-01-23T13:53:18.1572405Z"
+        }
+      ],
+      "listaUtentiPresaInCarico": [
+        {
+          "idUtente": "5",
+          "nominativo": "Mario Rossi",
+          "dataInizioAttivita": "2020-01-23T13:53:18.1572405Z"
+        }
+      ],
+      "istantePrimaAssegnazione": null,
+      "rilevanteGrave": false,
+      "rilevanteStArCu": false,
+      "codiceSchedaNue": null,
+      "zoneEmergenza": [],
+      "fonogramma": {
+        "codice": "0",
+        "descrizione": "Non necessario"
+      },
+      "partenze": [],
+      "partenzeRichiesta": null,
+      "tags": [],
+      "notePubbliche": null,
+      "notePrivate": null,
+      "eventi": [
+        {
+          "codiceOrigine": "333 1234567",
+          "nominativoChiamante": "Luigi Bianchi",
+          "numeroTelefono": "333 1234567",
+          "codiceSchedaContatto": null,
+          "codice": "333 1234567",
+          "motivazione": null,
+          "notePubbliche": null,
+          "notePrivate": null,
+          "esito": "MettiInCoda",
+          "istante": "2020-01-21T14:32:15.294Z",
+          "codiceFonte": "3",
+          "codiceRichiesta": "RM2112000002",
+          "tipoEvento": "Telefonata"
+        },
+        {
+          "priorita": 3,
+          "istante": "2020-01-21T14:32:15.296Z",
+          "codiceFonte": "3",
+          "codiceRichiesta": "RM2112000002",
+          "tipoEvento": "AssegnataPriorita"
+        }
+      ],
+      "presidiata": false,
+      "stato": "Chiamata",
+      "motivazione": null
+    },
+    {
+      "id": "5e2706f42d04f71b3c012761",
+      "codice": "RM2112000002",
+      "codiceRichiesta": null,
+      "operatore": null,
+      "istanteRicezioneRichiesta": "2020-01-21T14:13:08.489Z",
+      "istanteChiusura": null,
+      "sospesa": false,
+      "chiusa": false,
+      "aperta": true,
+      "prioritaRichiesta": 3,
+      "tipologie": [
+        {
+          "codice": "5",
+          "descrizione": "Incendio aeromobile",
+          "tipoLuogoEvento": null,
+          "icona": null,
+          "categoria": "Aeroporti",
+          "star": false,
+          "boschivo": false,
+          "adeguatezzaMezzo": {
+            "aps": "100",
+            "as": "80",
+            "ab": "0",
+            "av": "0",
+            "ag": "0",
+            "default": "0"
+          },
+          "oppSganc": -50
+        }
+      ],
+      "descrizione": "Probabile incendio in appartamento",
+      "richiedente": {
+        "telefono": "333 1234567",
+        "nominativo": "Mario Rossi"
+      },
+      "localita": {
+        "coordinate": {
+          "latitudine": 41.900572,
+          "longitudine": 12.499366
+        },
+        "indirizzo": "Via Cavour, 5, 00184 Roma RM, Italia",
+        "note": null,
+        "piano": null
+      },
+      "turnoInserimentoChiamata": null,
+      "turnoIntervento": null,
+      "tipoTerreno": [],
+      "listaEntiIntervenuti": [],
+      "obiettivoSensibile": null,
+      "competenze": [],
+      "complessita": {
+        "indice": "2",
+        "descrizione": "Basso"
+      },
+      "istantePresaInCarico": null,
+      "listaUtentiInLavorazione": [
+        {
+          "idUtente": "5",
+          "nominativo": "Mario Rossi",
+          "dataInizioAttivita": "2020-01-23T13:53:18.1572405Z"
+        }
+      ],
+      "listaUtentiPresaInCarico": [
+        {
+          "idUtente": "5",
+          "nominativo": "Mario Rossi",
+          "dataInizioAttivita": "2020-01-23T13:53:18.1572405Z"
+        }
+      ],
+      "istantePrimaAssegnazione": null,
+      "rilevanteGrave": false,
+      "rilevanteStArCu": false,
+      "codiceSchedaNue": null,
+      "zoneEmergenza": [],
+      "fonogramma": {
+        "codice": "0",
+        "descrizione": "Non necessario"
+      },
+      "partenze": [],
+      "partenzeRichiesta": null,
+      "tags": [],
+      "notePubbliche": null,
+      "notePrivate": null,
+      "eventi": [
+        {
+          "codiceOrigine": "333 1234567",
+          "nominativoChiamante": "Mario Rossi",
+          "numeroTelefono": "333 1234567",
+          "codiceSchedaContatto": null,
+          "codice": "333 1234567",
+          "motivazione": null,
+          "notePubbliche": null,
+          "notePrivate": null,
+          "esito": "MettiInCoda",
+          "istante": "2020-01-21T14:13:08.489Z",
+          "codiceFonte": "3",
+          "codiceRichiesta": "RM2112000002",
+          "tipoEvento": "Telefonata"
+        },
+        {
+          "priorita": 3,
+          "istante": "2020-01-21T14:13:08.491Z",
+          "codiceFonte": "3",
+          "codiceRichiesta": "RM2112000002",
+          "tipoEvento": "AssegnataPriorita"
+        }
+      ],
+      "presidiata": false,
+      "stato": "Chiamata",
+      "motivazione": null
+    },
+    {
+      "id": "5e270b6f2d04f71b3c012762",
+      "codice": "RM2112000002",
+      "codiceRichiesta": null,
+      "operatore": null,
+      "istanteRicezioneRichiesta": "2020-01-21T14:32:15.294Z",
+      "istanteChiusura": null,
+      "sospesa": false,
+      "chiusa": false,
+      "aperta": true,
+      "prioritaRichiesta": 3,
+      "tipologie": [
+        {
+          "codice": "5",
+          "descrizione": "Incendio aeromobile",
+          "tipoLuogoEvento": null,
+          "icona": null,
+          "categoria": "Aeroporti",
+          "star": false,
+          "boschivo": false,
+          "adeguatezzaMezzo": {
+            "aps": "100",
+            "as": "80",
+            "ab": "0",
+            "av": "0",
+            "ag": "0",
+            "default": "0"
+          },
+          "oppSganc": -50
+        }
+      ],
+      "descrizione": "Incendio normale (generico)",
+      "richiedente": {
+        "telefono": "333 1234567",
+        "nominativo": "Luigi Bianchi"
+      },
+      "localita": {
+        "coordinate": {
+          "latitudine": 41.891726,
+          "longitudine": 12.529151
+        },
+        "indirizzo": "Via Prenestina, Roma RM, Italia",
+        "note": null,
+        "piano": null
+      },
+      "turnoInserimentoChiamata": null,
+      "turnoIntervento": null,
+      "tipoTerreno": [],
+      "listaEntiIntervenuti": [],
+      "obiettivoSensibile": null,
+      "competenze": [],
+      "complessita": {
+        "indice": "2",
+        "descrizione": "Basso"
+      },
+      "istantePresaInCarico": null,
+      "listaUtentiInLavorazione": [
+        {
+          "idUtente": "5",
+          "nominativo": "Mario Rossi",
+          "dataInizioAttivita": "2020-01-23T13:53:18.1572405Z"
+        }
+      ],
+      "listaUtentiPresaInCarico": [
+        {
+          "idUtente": "5",
+          "nominativo": "Mario Rossi",
+          "dataInizioAttivita": "2020-01-23T13:53:18.1572405Z"
+        }
+      ],
+      "istantePrimaAssegnazione": null,
+      "rilevanteGrave": false,
+      "rilevanteStArCu": false,
+      "codiceSchedaNue": null,
+      "zoneEmergenza": [],
+      "fonogramma": {
+        "codice": "0",
+        "descrizione": "Non necessario"
+      },
+      "partenze": [],
+      "partenzeRichiesta": null,
+      "tags": [],
+      "notePubbliche": null,
+      "notePrivate": null,
+      "eventi": [
+        {
+          "codiceOrigine": "333 1234567",
+          "nominativoChiamante": "Luigi Bianchi",
+          "numeroTelefono": "333 1234567",
+          "codiceSchedaContatto": null,
+          "codice": "333 1234567",
+          "motivazione": null,
+          "notePubbliche": null,
+          "notePrivate": null,
+          "esito": "MettiInCoda",
+          "istante": "2020-01-21T14:32:15.294Z",
+          "codiceFonte": "3",
+          "codiceRichiesta": "RM2112000002",
+          "tipoEvento": "Telefonata"
+        },
+        {
+          "priorita": 3,
+          "istante": "2020-01-21T14:32:15.296Z",
+          "codiceFonte": "3",
+          "codiceRichiesta": "RM2112000002",
+          "tipoEvento": "AssegnataPriorita"
+        }
+      ],
+      "presidiata": false,
+      "stato": "Chiamata",
+      "motivazione": null
+    },
+    {
+      "id": "5e2706f42d04f71b3c012761",
+      "codice": "RM2112000002",
+      "codiceRichiesta": null,
+      "operatore": null,
+      "istanteRicezioneRichiesta": "2020-01-21T14:13:08.489Z",
+      "istanteChiusura": null,
+      "sospesa": false,
+      "chiusa": false,
+      "aperta": true,
+      "prioritaRichiesta": 3,
+      "tipologie": [
+        {
+          "codice": "5",
+          "descrizione": "Incendio aeromobile",
+          "tipoLuogoEvento": null,
+          "icona": null,
+          "categoria": "Aeroporti",
+          "star": false,
+          "boschivo": false,
+          "adeguatezzaMezzo": {
+            "aps": "100",
+            "as": "80",
+            "ab": "0",
+            "av": "0",
+            "ag": "0",
+            "default": "0"
+          },
+          "oppSganc": -50
+        }
+      ],
+      "descrizione": "Probabile incendio in appartamento",
+      "richiedente": {
+        "telefono": "333 1234567",
+        "nominativo": "Mario Rossi"
+      },
+      "localita": {
+        "coordinate": {
+          "latitudine": 41.900572,
+          "longitudine": 12.499366
+        },
+        "indirizzo": "Via Cavour, 5, 00184 Roma RM, Italia",
+        "note": null,
+        "piano": null
+      },
+      "turnoInserimentoChiamata": null,
+      "turnoIntervento": null,
+      "tipoTerreno": [],
+      "listaEntiIntervenuti": [],
+      "obiettivoSensibile": null,
+      "competenze": [],
+      "complessita": {
+        "indice": "2",
+        "descrizione": "Basso"
+      },
+      "istantePresaInCarico": null,
+      "listaUtentiInLavorazione": [
+        {
+          "idUtente": "5",
+          "nominativo": "Mario Rossi",
+          "dataInizioAttivita": "2020-01-23T13:53:18.1572405Z"
+        }
+      ],
+      "listaUtentiPresaInCarico": [
+        {
+          "idUtente": "5",
+          "nominativo": "Mario Rossi",
+          "dataInizioAttivita": "2020-01-23T13:53:18.1572405Z"
+        }
+      ],
+      "istantePrimaAssegnazione": null,
+      "rilevanteGrave": false,
+      "rilevanteStArCu": false,
+      "codiceSchedaNue": null,
+      "zoneEmergenza": [],
+      "fonogramma": {
+        "codice": "0",
+        "descrizione": "Non necessario"
+      },
+      "partenze": [],
+      "partenzeRichiesta": null,
+      "tags": [],
+      "notePubbliche": null,
+      "notePrivate": null,
+      "eventi": [
+        {
+          "codiceOrigine": "333 1234567",
+          "nominativoChiamante": "Mario Rossi",
+          "numeroTelefono": "333 1234567",
+          "codiceSchedaContatto": null,
+          "codice": "333 1234567",
+          "motivazione": null,
+          "notePubbliche": null,
+          "notePrivate": null,
+          "esito": "MettiInCoda",
+          "istante": "2020-01-21T14:13:08.489Z",
+          "codiceFonte": "3",
+          "codiceRichiesta": "RM2112000002",
+          "tipoEvento": "Telefonata"
+        },
+        {
+          "priorita": 3,
+          "istante": "2020-01-21T14:13:08.491Z",
+          "codiceFonte": "3",
+          "codiceRichiesta": "RM2112000002",
+          "tipoEvento": "AssegnataPriorita"
+        }
+      ],
+      "presidiata": false,
+      "stato": "Chiamata",
+      "motivazione": null
+    },
+    {
+      "id": "5e270b6f2d04f71b3c012762",
+      "codice": "RM2112000002",
+      "codiceRichiesta": null,
+      "operatore": null,
+      "istanteRicezioneRichiesta": "2020-01-21T14:32:15.294Z",
+      "istanteChiusura": null,
+      "sospesa": false,
+      "chiusa": false,
+      "aperta": true,
+      "prioritaRichiesta": 3,
+      "tipologie": [
+        {
+          "codice": "5",
+          "descrizione": "Incendio aeromobile",
+          "tipoLuogoEvento": null,
+          "icona": null,
+          "categoria": "Aeroporti",
+          "star": false,
+          "boschivo": false,
+          "adeguatezzaMezzo": {
+            "aps": "100",
+            "as": "80",
+            "ab": "0",
+            "av": "0",
+            "ag": "0",
+            "default": "0"
+          },
+          "oppSganc": -50
+        }
+      ],
+      "descrizione": "Incendio normale (generico)",
+      "richiedente": {
+        "telefono": "333 1234567",
+        "nominativo": "Luigi Bianchi"
+      },
+      "localita": {
+        "coordinate": {
+          "latitudine": 41.891726,
+          "longitudine": 12.529151
+        },
+        "indirizzo": "Via Prenestina, Roma RM, Italia",
+        "note": null,
+        "piano": null
+      },
+      "turnoInserimentoChiamata": null,
+      "turnoIntervento": null,
+      "tipoTerreno": [],
+      "listaEntiIntervenuti": [],
+      "obiettivoSensibile": null,
+      "competenze": [],
+      "complessita": {
+        "indice": "2",
+        "descrizione": "Basso"
+      },
+      "istantePresaInCarico": null,
+      "listaUtentiInLavorazione": [
+        {
+          "idUtente": "5",
+          "nominativo": "Mario Rossi",
+          "dataInizioAttivita": "2020-01-23T13:53:18.1572405Z"
+        }
+      ],
+      "listaUtentiPresaInCarico": [
+        {
+          "idUtente": "5",
+          "nominativo": "Mario Rossi",
+          "dataInizioAttivita": "2020-01-23T13:53:18.1572405Z"
+        }
+      ],
+      "istantePrimaAssegnazione": null,
+      "rilevanteGrave": false,
+      "rilevanteStArCu": false,
+      "codiceSchedaNue": null,
+      "zoneEmergenza": [],
+      "fonogramma": {
+        "codice": "0",
+        "descrizione": "Non necessario"
+      },
+      "partenze": [],
+      "partenzeRichiesta": null,
+      "tags": [],
+      "notePubbliche": null,
+      "notePrivate": null,
+      "eventi": [
+        {
+          "codiceOrigine": "333 1234567",
+          "nominativoChiamante": "Luigi Bianchi",
+          "numeroTelefono": "333 1234567",
+          "codiceSchedaContatto": null,
+          "codice": "333 1234567",
+          "motivazione": null,
+          "notePubbliche": null,
+          "notePrivate": null,
+          "esito": "MettiInCoda",
+          "istante": "2020-01-21T14:32:15.294Z",
+          "codiceFonte": "3",
+          "codiceRichiesta": "RM2112000002",
+          "tipoEvento": "Telefonata"
+        },
+        {
+          "priorita": 3,
+          "istante": "2020-01-21T14:32:15.296Z",
+          "codiceFonte": "3",
+          "codiceRichiesta": "RM2112000002",
+          "tipoEvento": "AssegnataPriorita"
+        }
+      ],
+      "presidiata": false,
+      "stato": "Chiamata",
+      "motivazione": null
+    },
+    {
+      "id": "5e2706f42d04f71b3c012761",
+      "codice": "RM2112000002",
+      "codiceRichiesta": null,
+      "operatore": null,
+      "istanteRicezioneRichiesta": "2020-01-21T14:13:08.489Z",
+      "istanteChiusura": null,
+      "sospesa": false,
+      "chiusa": false,
+      "aperta": true,
+      "prioritaRichiesta": 3,
+      "tipologie": [
+        {
+          "codice": "5",
+          "descrizione": "Incendio aeromobile",
+          "tipoLuogoEvento": null,
+          "icona": null,
+          "categoria": "Aeroporti",
+          "star": false,
+          "boschivo": false,
+          "adeguatezzaMezzo": {
+            "aps": "100",
+            "as": "80",
+            "ab": "0",
+            "av": "0",
+            "ag": "0",
+            "default": "0"
+          },
+          "oppSganc": -50
+        }
+      ],
+      "descrizione": "Probabile incendio in appartamento",
+      "richiedente": {
+        "telefono": "333 1234567",
+        "nominativo": "Mario Rossi"
+      },
+      "localita": {
+        "coordinate": {
+          "latitudine": 41.900572,
+          "longitudine": 12.499366
+        },
+        "indirizzo": "Via Cavour, 5, 00184 Roma RM, Italia",
+        "note": null,
+        "piano": null
+      },
+      "turnoInserimentoChiamata": null,
+      "turnoIntervento": null,
+      "tipoTerreno": [],
+      "listaEntiIntervenuti": [],
+      "obiettivoSensibile": null,
+      "competenze": [],
+      "complessita": {
+        "indice": "2",
+        "descrizione": "Basso"
+      },
+      "istantePresaInCarico": null,
+      "listaUtentiInLavorazione": [
+        {
+          "idUtente": "5",
+          "nominativo": "Mario Rossi",
+          "dataInizioAttivita": "2020-01-23T13:53:18.1572405Z"
+        }
+      ],
+      "listaUtentiPresaInCarico": [
+        {
+          "idUtente": "5",
+          "nominativo": "Mario Rossi",
+          "dataInizioAttivita": "2020-01-23T13:53:18.1572405Z"
+        }
+      ],
+      "istantePrimaAssegnazione": null,
+      "rilevanteGrave": false,
+      "rilevanteStArCu": false,
+      "codiceSchedaNue": null,
+      "zoneEmergenza": [],
+      "fonogramma": {
+        "codice": "0",
+        "descrizione": "Non necessario"
+      },
+      "partenze": [],
+      "partenzeRichiesta": null,
+      "tags": [],
+      "notePubbliche": null,
+      "notePrivate": null,
+      "eventi": [
+        {
+          "codiceOrigine": "333 1234567",
+          "nominativoChiamante": "Mario Rossi",
+          "numeroTelefono": "333 1234567",
+          "codiceSchedaContatto": null,
+          "codice": "333 1234567",
+          "motivazione": null,
+          "notePubbliche": null,
+          "notePrivate": null,
+          "esito": "MettiInCoda",
+          "istante": "2020-01-21T14:13:08.489Z",
+          "codiceFonte": "3",
+          "codiceRichiesta": "RM2112000002",
+          "tipoEvento": "Telefonata"
+        },
+        {
+          "priorita": 3,
+          "istante": "2020-01-21T14:13:08.491Z",
+          "codiceFonte": "3",
+          "codiceRichiesta": "RM2112000002",
+          "tipoEvento": "AssegnataPriorita"
+        }
+      ],
+      "presidiata": false,
+      "stato": "Chiamata",
+      "motivazione": null
+    },
+    {
+      "id": "5e270b6f2d04f71b3c012762",
+      "codice": "RM2112000002",
+      "codiceRichiesta": null,
+      "operatore": null,
+      "istanteRicezioneRichiesta": "2020-01-21T14:32:15.294Z",
+      "istanteChiusura": null,
+      "sospesa": false,
+      "chiusa": false,
+      "aperta": true,
+      "prioritaRichiesta": 3,
+      "tipologie": [
+        {
+          "codice": "5",
+          "descrizione": "Incendio aeromobile",
+          "tipoLuogoEvento": null,
+          "icona": null,
+          "categoria": "Aeroporti",
+          "star": false,
+          "boschivo": false,
+          "adeguatezzaMezzo": {
+            "aps": "100",
+            "as": "80",
+            "ab": "0",
+            "av": "0",
+            "ag": "0",
+            "default": "0"
+          },
+          "oppSganc": -50
+        }
+      ],
+      "descrizione": "Incendio normale (generico)",
+      "richiedente": {
+        "telefono": "333 1234567",
+        "nominativo": "Luigi Bianchi"
+      },
+      "localita": {
+        "coordinate": {
+          "latitudine": 41.891726,
+          "longitudine": 12.529151
+        },
+        "indirizzo": "Via Prenestina, Roma RM, Italia",
+        "note": null,
+        "piano": null
+      },
+      "turnoInserimentoChiamata": null,
+      "turnoIntervento": null,
+      "tipoTerreno": [],
+      "listaEntiIntervenuti": [],
+      "obiettivoSensibile": null,
+      "competenze": [],
+      "complessita": {
+        "indice": "2",
+        "descrizione": "Basso"
+      },
+      "istantePresaInCarico": null,
+      "listaUtentiInLavorazione": [
+        {
+          "idUtente": "5",
+          "nominativo": "Mario Rossi",
+          "dataInizioAttivita": "2020-01-23T13:53:18.1572405Z"
+        }
+      ],
+      "listaUtentiPresaInCarico": [
+        {
+          "idUtente": "5",
+          "nominativo": "Mario Rossi",
+          "dataInizioAttivita": "2020-01-23T13:53:18.1572405Z"
+        }
+      ],
+      "istantePrimaAssegnazione": null,
+      "rilevanteGrave": false,
+      "rilevanteStArCu": false,
+      "codiceSchedaNue": null,
+      "zoneEmergenza": [],
+      "fonogramma": {
+        "codice": "0",
+        "descrizione": "Non necessario"
+      },
+      "partenze": [],
+      "partenzeRichiesta": null,
+      "tags": [],
+      "notePubbliche": null,
+      "notePrivate": null,
+      "eventi": [
+        {
+          "codiceOrigine": "333 1234567",
+          "nominativoChiamante": "Luigi Bianchi",
+          "numeroTelefono": "333 1234567",
+          "codiceSchedaContatto": null,
+          "codice": "333 1234567",
+          "motivazione": null,
+          "notePubbliche": null,
+          "notePrivate": null,
+          "esito": "MettiInCoda",
+          "istante": "2020-01-21T14:32:15.294Z",
+          "codiceFonte": "3",
+          "codiceRichiesta": "RM2112000002",
+          "tipoEvento": "Telefonata"
+        },
+        {
+          "priorita": 3,
+          "istante": "2020-01-21T14:32:15.296Z",
+          "codiceFonte": "3",
+          "codiceRichiesta": "RM2112000002",
+          "tipoEvento": "AssegnataPriorita"
+        }
+      ],
+      "presidiata": false,
+      "stato": "Chiamata",
+      "motivazione": null
     }
   ],
   "listaChiamateInCorso": [],

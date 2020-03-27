@@ -82,11 +82,15 @@ namespace SO115App.API.Controllers
         [HttpPost("GetRichieste")]
         public async Task<IActionResult> GetRichieste([FromBody]AreaMappa filtroCentroMappa)
         {
+
+            var codiciSedi = Request.Headers["codiceSede"].ToString().Split(',');
+
             try
             {
                 var query = new SintesiRichiesteAssistenzaMarkerQuery()
                 {
-                    FiltroCentroMappa = filtroCentroMappa
+                    FiltroCentroMappa = filtroCentroMappa,
+                    CodiciSedi = codiciSedi
                 };
 
                 return Ok(this._sintesiRichiesteAssistenzaMarkerHandler.Handle(query).SintesiRichiestaMarker);

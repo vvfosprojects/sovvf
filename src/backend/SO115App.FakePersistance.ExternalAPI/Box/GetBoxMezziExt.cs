@@ -19,6 +19,7 @@
 //-----------------------------------------------------------------------
 
 using SO115App.API.Models.Classi.Boxes;
+using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Box;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
@@ -49,16 +50,19 @@ namespace SO115App.ExternalAPI.Fake.Box
         /// </summary>
         /// <param name="codiceSede">il codice sede</param>
         /// <returns>BoxMezzi</returns>
-        public BoxMezzi Get(string codiceSede)
+        public BoxMezzi Get(string[] codiciSede)
         {
             var mezzi = new BoxMezzi();
-            var listaCodici = new List<string>
+            var listaCodici = new List<string>();
+            var listaStatiOperativi = new List<StatoOperativoMezzo>();
+
+            foreach (var sede in codiciSede )
             {
-                codiceSede
+                listaCodici.Add(sede);
+                listaStatiOperativi.AddRange(_getStatoMezzi.Get(sede));
             };
 
             var listaMezzi = _getMezziUtilizzabili.Get(listaCodici).Result;
-            var listaStatiOperativi = _getStatoMezzi.Get(codiceSede);
 
             mezzi.InSede = listaMezzi.Where(x => x.Stato == Costanti.MezzoInSede || x.Stato == Costanti.MezzoRientrato)
                 .Select(x => x.Stato)

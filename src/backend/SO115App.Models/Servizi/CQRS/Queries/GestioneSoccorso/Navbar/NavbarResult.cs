@@ -28,7 +28,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Navbar
         /// <summary>
         ///   Json Navbar Richieste
         /// </summary>
-        public Classi.Navbar.Navbar Navbar
+        public Classi.NavBar.Navbar Navbar
         { get; set; }
     }
 }

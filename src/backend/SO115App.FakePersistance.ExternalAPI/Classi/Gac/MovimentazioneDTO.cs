@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 
 namespace SO115App.ExternalAPI.Fake.Classi.Gac
 {
@@ -12,16 +13,25 @@ namespace SO115App.ExternalAPI.Fake.Classi.Gac
         /// <summary>
         ///   Id della richiesta a cui è stato associato il mezzo
         /// </summary>
+        [JsonProperty(PropertyName = "idRichiesta")]
         public string IdRichiesta { get; set; }
 
         /// <summary>
-        ///   identifica lo stato del mezzo
+        ///   identificativo del mezzo
         /// </summary>
-        public string StatoOperativo { get; set; }
+        [JsonProperty(PropertyName = "codiceMezzo")]
+        public string CodiceMezzo { get; set; }
 
         /// <summary>
         ///   indica la data in cui è stata associato il mezzo e il suo stato alla richiesta
         /// </summary>
+        [JsonProperty(PropertyName = "dataMovimentazione")]
         public DateTime? DataMovimentazione { get; set; }
+
+        /// <summary>
+        ///   il tipo di uscita ossia la tipologica dell'intervento da mandare al gac
+        /// </summary>
+        [JsonProperty(PropertyName = "tipoUscita")]
+        public TipoUscita TipoUscita { get; set; }
     }
 }

@@ -25,9 +25,13 @@ namespace SO115App.API.Models.Classi.Filtri
     [BsonIgnoreExtraElements]
     public class Filtri
     {
-        public List<Distaccamenti> Distaccamenti { get; set; }
+        [BsonElement]
+        public string Id { get; set; }
+
+        [BsonElement]
         public List<GeneriMezzi> GeneriMezzi { get; set; }
 
+        [BsonElement]
         public List<Stati> Stati { get; set; }
     }
 }

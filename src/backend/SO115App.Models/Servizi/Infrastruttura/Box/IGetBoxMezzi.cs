@@ -27,6 +27,6 @@ namespace SO115App.Models.Servizi.Infrastruttura.Box
         ///   Restituisce i dati riguardanti i Mezzi, da posizionare nel Box in Home Page
         /// </summary>
         /// <returns>Il numero totale dei Squadre</returns>
-        BoxMezzi Get(string codiceSede);
+        BoxMezzi Get(string[] codiceSede);
     }
 }

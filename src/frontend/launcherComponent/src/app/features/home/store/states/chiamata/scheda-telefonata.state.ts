@@ -1,4 +1,4 @@
-import { Action, Selector, State, StateContext } from '@ngxs/store';
+import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { Coordinate } from '../../../../../shared/model/coordinate.model';
 import {
     CestinaChiamata,
@@ -22,7 +22,9 @@ import { AzioneChiamataEnum } from '../../../../../shared/enum/azione-chiamata.e
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from '../../../../../shared/enum/toastr';
 import { ChiamataService } from '../../../../../core/service/chiamata-service/chiamata.service';
-import { AddRichiesta, SetIdChiamataInviaPartenza, StartInviaPartenzaFromChiamata } from '../../actions/richieste/richieste.actions';
+import { AddRichiesta, GetListaRichieste, SetIdChiamataInviaPartenza, SetNeedRefresh, StartInviaPartenzaFromChiamata } from '../../actions/richieste/richieste.actions';
+import { RichiestaSelezionataState } from '../richieste/richiesta-selezionata.state';
+import { PaginationState } from '../../../../../shared/store/states/pagination/pagination.state';
 
 export interface SchedaTelefonataStateModel {
     coordinate: Coordinate;
@@ -48,7 +50,7 @@ export const SchedaTelefonataStateDefaults: SchedaTelefonataStateModel = {
 
 export class SchedaTelefonataState {
 
-    constructor(private chiamataService: ChiamataService) {
+    constructor(private chiamataService: ChiamataService, private store: Store) {
     }
 
     @Selector()
@@ -114,7 +116,13 @@ export class SchedaTelefonataState {
     @Action(InsertChiamataSuccess)
     insertChiamataSuccess({ dispatch }: StateContext<SchedaTelefonataStateModel>, action: InsertChiamataSuccess) {
         console.log('InsertChiamataSuccess', action.nuovaRichiesta.id);
-        dispatch(new AddRichiesta(action.nuovaRichiesta));
+        if (!this.store.selectSnapshot(RichiestaSelezionataState.idRichiestaSelezionata)) {
+            const currentPage = this.store.selectSnapshot(PaginationState.page);
+            dispatch(new GetListaRichieste({ page: currentPage }));
+            dispatch(new SetNeedRefresh(false));
+        } else {
+            dispatch(new SetNeedRefresh(true));
+        }
         dispatch(new ShowToastr(ToastrType.Success, 'Inserimento della chiamata effettuato', action.nuovaRichiesta.descrizione, 5));
     }
 

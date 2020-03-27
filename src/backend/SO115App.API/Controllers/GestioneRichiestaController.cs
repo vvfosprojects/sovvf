@@ -104,9 +104,10 @@ namespace SO115App.API.Controllers
         [HttpPost("GetRichieste")]
         public async Task<IActionResult> GetRichieste(FiltroRicercaRichiesteAssistenza filtro)
         {
+            filtro.idOperatore = Request.Headers["idUtente"];
             var sintesiRichiesteAssistenzaQuery = new SintesiRichiesteAssistenzaQuery
             {
-                CodiceSede = Request.Headers["codiceSede"],
+                CodiciSede = Request.Headers["codiceSede"].ToString().Split(','),
                 Filtro = filtro
             };
 

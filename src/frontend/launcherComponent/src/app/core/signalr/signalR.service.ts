@@ -13,7 +13,11 @@ import { SetBoxRichieste } from '../../features/home/store/actions/boxes/box-ric
 import { environment } from '../../../environments/environment';
 import { ToastrType } from '../../shared/enum/toastr';
 import { InsertChiamataSuccess } from '../../features/home/store/actions/chiamata/scheda-telefonata.actions';
-import { InsertChiamataMarker, RemoveChiamataMarker, UpdateItemChiamataMarker } from '../../features/home/store/actions/maps/chiamate-markers.actions';
+import {
+    InsertChiamataMarker,
+    RemoveChiamataMarker,
+    UpdateItemChiamataMarker
+} from '../../features/home/store/actions/maps/chiamate-markers.actions';
 import {
     AddBookMezzoComposizione,
     RemoveBookingMezzoComposizione,
@@ -342,7 +346,7 @@ export class SignalRService {
                 .then((data: any) => {
                     this.store.dispatch(new SetTimeSync(data));
                 })
-                .catch(() => console.log('GetTime Error'));
+                .catch(() => console.error('GetTime Error'));
         }
     }
 
@@ -360,6 +364,7 @@ export class SignalRService {
 
     removeToGroup(notification: SignalRNotification) {
         if (!SIGNALR_BYPASS) {
+            console.log('removeToGroup', notification);
             this.hubNotification.invoke('RemoveToGroup', notification).then(
                 () => this.store.dispatch(new ShowToastr(ToastrType.Info, 'Disconnessione al gruppo effettuata con successo', null, 3))
             ).catch(

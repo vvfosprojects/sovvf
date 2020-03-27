@@ -122,11 +122,12 @@ export class RichiesteMarkersState {
                     dispatch(new AddRichiesteMarkers(richiesteMarkerAdd));
                 }
             }
-            this.mapIsLoaded$.subscribe(isLoaded => {
-                if (isLoaded) {
-                    dispatch(new ToggleAnimation());
-                }
-            });
+            // Todo logica ToggleAnimation da rivedere
+            // this.mapIsLoaded$.subscribe(isLoaded => {
+            //     if (isLoaded) {
+            //         dispatch(new ToggleAnimation());
+            //     }
+            // });
             if (state.statoOpacita) {
                 dispatch(new OpacizzaRichiesteMarkers());
             }

@@ -132,12 +132,13 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         /// <summary>
         ///   Il turno nel quale viene presa la chiamata
         /// </summary>
-        public Turno TurnoInserimentoChiamata { get; set; }
+        public string trnInsChiamata { get; set; }
+        //public Turno TurnoInserimentoChiamata { get; set; }
 
         /// <summary>
         ///   Il turno nel quale viene lavorato l'intervento
         /// </summary>
-        public Turno TurnoIntervento { get; set; }
+        //public Turno TurnoIntervento { get; set; }
 
         /// <summary>
         ///   Indica se il terreno è uno tra Boschi/Campi/Sterpaglie e ne indica i mq.

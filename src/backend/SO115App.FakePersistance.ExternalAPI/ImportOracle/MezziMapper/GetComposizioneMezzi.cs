@@ -7,10 +7,11 @@ using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Composizione;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneMezzi;
-using SO115App.FakePersistence.JSon.Utility;
+using SO115App.ExternalAPI.Fake.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.GetComposizioneMezzi;
+using SO115App.Models.Servizi.Infrastruttura.GetFiltri;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Squadre;
 using SO115App.Persistence.MongoDB.GestioneMezzi;
@@ -23,11 +24,13 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper
         private readonly OrdinamentoMezzi _ordinamentoMezzi;
         private readonly IGetMezziUtilizzabili _getMezziUtilizzabili;
         private readonly IGetListaSquadre _getSquadre;
+        private readonly IGetFiltri _getFiltri;
 
-        public GetComposizioneMezzi(IGetStatoMezzi getMezziPrenotati, OrdinamentoMezzi ordinamentoMezzi, IGetMezziUtilizzabili getMezziUtilizzabili, IGetListaSquadre getSquadre)
+        public GetComposizioneMezzi(IGetStatoMezzi getMezziPrenotati, OrdinamentoMezzi ordinamentoMezzi, IGetMezziUtilizzabili getMezziUtilizzabili, IGetListaSquadre getSquadre, IGetFiltri getFiltri)
         {
             _getMezziUtilizzabili = getMezziUtilizzabili;
             _getSquadre = getSquadre;
+            _getFiltri = getFiltri;
             _getMezziPrenotati = getMezziPrenotati;
             _ordinamentoMezzi = ordinamentoMezzi;
         }
@@ -67,14 +70,7 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper
                     }
                 }
 
-                var pathFiltri = CostantiJson.Filtri;
-                string jsonFiltri;
-                using (var r = new StreamReader(pathFiltri))
-                {
-                    jsonFiltri = r.ReadToEnd();
-                }
-                var filtri = JsonConvert.DeserializeObject<API.Models.Classi.Filtri.Filtri>(jsonFiltri);
-
+                var filtri = _getFiltri.Get();
                 if (query.Filtro.CodiceDistaccamento?.Length > 0
                     && !string.IsNullOrEmpty(query.Filtro.CodiceDistaccamento[0]))
                 {
@@ -83,13 +79,13 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper
 
                 if (query.Filtro.CodiceStatoMezzo?.Length > 0 && !string.IsNullOrEmpty(query.Filtro.CodiceStatoMezzo[0]))
                 {
-                    statiMezzi = filtri.Stati.Where(x => query.Filtro.CodiceStatoMezzo.Any(x.Id.Equals)).Select(x => x.Descrizione).ToArray();
+                    statiMezzi = filtri.Stati.Where(x => query.Filtro.CodiceStatoMezzo.Any(x.codice.Equals)).Select(x => x.Descrizione).ToArray();
                     composizioneMezzi = composizioneMezzi.Where(x => statiMezzi.Any(x.Mezzo.Stato.Equals)).ToList();
                 }
 
                 if (query.Filtro.CodiceTipoMezzo?.Length > 0 && !string.IsNullOrEmpty(query.Filtro.CodiceTipoMezzo[0]))
                 {
-                    generiMezzi = filtri.GeneriMezzi.Where(x => query.Filtro.CodiceTipoMezzo.Any(x.Id.Equals)).Select(x => x.Descrizione).ToArray();
+                    generiMezzi = filtri.GeneriMezzi.Where(x => query.Filtro.CodiceTipoMezzo.Any(x.codice.Equals)).Select(x => x.Descrizione).ToArray();
                     composizioneMezzi = composizioneMezzi.Where(x => generiMezzi.Any(x.Mezzo.Genere.Equals)).ToList();
                 }
 
@@ -142,7 +138,15 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper
             foreach (var composizione in composizioneMezzi)
             {
                 if (mezziPrenotati.Find(x => x.CodiceMezzo.Equals(composizione.Mezzo.Codice)) != null)
+                {
                     composizione.IstanteScadenzaSelezione = mezziPrenotati.Find(x => x.CodiceMezzo.Equals(composizione.Mezzo.Codice)).IstanteScadenzaSelezione;
+
+                    if(composizione.Mezzo.Stato.Equals("In Sede"))
+                    {
+                        composizione.Mezzo.Stato = mezziPrenotati.Find(x => x.CodiceMezzo.Equals(composizione.Mezzo.Codice)).StatoOperativo;
+                    }
+
+                }
             }
             return composizioneMezzi;
         }

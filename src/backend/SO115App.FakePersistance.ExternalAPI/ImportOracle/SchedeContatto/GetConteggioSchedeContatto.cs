@@ -1,4 +1,5 @@
-﻿using SO115App.Models.Classi.ServiziEsterni.NUE;
+﻿using SO115App.Models.Classi.NUE;
+using SO115App.Models.Classi.ServiziEsterni.NUE;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
 using System;
 using System.Collections.Generic;
@@ -18,9 +19,16 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.SchedeContatto
             _getSchedeContatto = getSchedeContatto;
         }
 
-        public InfoNue GetConteggio(string codiceSede)
+        public InfoNue GetConteggio(string[] codiciSede)
         {
-            var listaSchede = _getSchedeContatto.ListaSchedeContatto(codiceSede);
+
+            var listaSchede = new List<SchedaContatto>();
+
+            foreach (var sede in codiciSede)
+            {
+                listaSchede.AddRange(_getSchedeContatto.ListaSchedeContatto(sede));
+            }
+
             var listaSchedeCompetenza = listaSchede.FindAll(x => x.Classificazione.Equals(Competenza) && x.Collegata == false);
             var listaSchedeConoscenza = listaSchede.FindAll(x => x.Classificazione.Equals(Conoscenza));
             var listaSchedeDifferibile = listaSchede.FindAll(x => x.Classificazione.Equals(Differibile));

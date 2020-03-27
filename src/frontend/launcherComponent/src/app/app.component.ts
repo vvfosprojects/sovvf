@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { AuthenticationService } from './core/auth/_services';
 import { RoutesPath } from './shared/enum/routes-path.enum';
@@ -19,9 +19,9 @@ import { RuoliUtenteLoggatoState } from './shared/store/states/ruoli-utente-logg
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
-    styleUrls: ['./app.component.css']
+    styleUrls: [ './app.component.css' ]
 })
-export class AppComponent implements OnInit, OnDestroy {
+export class AppComponent implements OnDestroy {
 
     subscription = new Subscription();
 
@@ -35,6 +35,7 @@ export class AppComponent implements OnInit, OnDestroy {
     listeSediLoaded: boolean;
 
     @Select(AppState.offsetTimeSync) offsetTime$: Observable<number>;
+    @Select(AppState.vistaSedi) vistaSedi$: Observable<string[]>;
 
     @Select(RuoliUtenteLoggatoState.ruoli) ruoliUtenteLoggato$: Observable<Ruolo[]>;
     @Select(UtenteState.utente) user$: Observable<Utente>;
@@ -47,7 +48,7 @@ export class AppComponent implements OnInit, OnDestroy {
     _opened = false;
     _toggle = false;
     RoutesPath = RoutesPath;
-    private deniedPath = [RoutesPath.NotFound.toString(), RoutesPath.Login.toString()];
+    private deniedPath = [ RoutesPath.NotFound.toString(), RoutesPath.Login.toString() ];
 
     constructor(private router: Router,
                 private authService: AuthenticationService,
@@ -70,23 +71,17 @@ export class AppComponent implements OnInit, OnDestroy {
         this.subscription.add(this.offsetTime$.subscribe((serverTime: number) => OFFSET_SYNC_TIME.unshift(serverTime)));
         this.subscription.add(this.user$.subscribe((user: Utente) => {
             this.user = user;
-            if (this.listeSediLoaded) {
-                if (this.user) {
-                    this.store.dispatch(new PatchListaSediNavbar([this.user.sede.codice]));
-                } else {
-                    this.store.dispatch(new ClearListaSediNavbar());
-                }
+            if (user) {
+                this.listeSediLoaded && this.store.dispatch(new PatchListaSediNavbar([ user.sede.codice ]));
+            } else {
+                this.store.dispatch(new ClearListaSediNavbar());
             }
         }));
         this.subscription.add(this.listeSediLoaded$.subscribe((r: boolean) => {
             this.listeSediLoaded = r;
-            if (r) {
-                this.store.dispatch(new PatchListaSediNavbar([this.user.sede.codice]));
-            }
+            r && this.store.dispatch(new PatchListaSediNavbar([ this.user.sede.codice ]));
         }));
-    }
-
-    ngOnInit(): void {
+        this.subscription.add(this.vistaSedi$.subscribe(r => r && this.store.dispatch(new PatchListaSediNavbar([ ...r ]))));
     }
 
     ngOnDestroy(): void {

@@ -21,10 +21,8 @@
 using CQRS.Queries;
 using DomainModel.CQRS.Commands.UpDateStatoRichiesta;
 using Microsoft.AspNetCore.SignalR;
-using SO115App.API.Models.Classi.Boxes;
 using SO115App.API.Models.Classi.Marker;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes;
-using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza;
 using SO115App.API.Models.Servizi.CQRS.Queries.Marker.SintesiRichiesteAssistenzaMarker;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
@@ -67,33 +65,41 @@ namespace SO115App.SignalR.Sender.GestioneIntervento
                 Filtro = new FiltroRicercaRichiesteAssistenza
                 {
                     idOperatore = richiesta.IdOperatore
-                }
+                },
+                CodiciSede = new string[] { richiesta.CodiceSede }
             };
-            var listaSintesi = (List<SintesiRichiesta>)this._sintesiRichiesteAssistenzaHandler.Handle(sintesiRichiesteAssistenzaQuery).SintesiRichiesta;
-
-            var boxRichiesteQuery = new BoxRichiesteQuery();
+            var boxRichiesteQuery = new BoxRichiesteQuery()
+            {
+                CodiciSede = new string[] { richiesta.CodiceSede }
+            };
             var boxInterventi = _boxRichiesteHandler.Handle(boxRichiesteQuery).BoxRichieste;
 
             var boxMezziQuery = new BoxMezziQuery()
             {
-                CodiceSede = richiesta.CodiceSede
+                CodiciSede = new string[] { richiesta.CodiceSede }
             };
             var boxMezzi = _boxMezziHandler.Handle(boxMezziQuery).BoxMezzi;
 
-            var boxPersonaleQuery = new BoxPersonaleQuery();
+            var boxPersonaleQuery = new BoxPersonaleQuery()
+            {
+                CodiciSede = new string[] { richiesta.CodiceSede }
+            };
             var boxPersonale = _boxPersonaleHandler.Handle(boxPersonaleQuery).BoxPersonale;
 
-            var sintesiRichiesteAssistenzaMarkerQuery = new SintesiRichiesteAssistenzaMarkerQuery();
-            var listaSintesiMarker = (List<SintesiRichiestaMarker>)_sintesiRichiesteAssistenzaMarkerHandler.Handle(sintesiRichiesteAssistenzaMarkerQuery).SintesiRichiestaMarker;
+            var sintesiRichiesteAssistenzaMarkerQuery = new SintesiRichiesteAssistenzaMarkerQuery()
+            {
+                CodiciSedi = new string[] { richiesta.CodiceSede }
+            };
 
-            richiesta.Chiamata = listaSintesi.LastOrDefault(sintesi => sintesi.Id == richiesta.IdRichiesta);
+            var listaSintesiMarker = (List<SintesiRichiestaMarker>)_sintesiRichiesteAssistenzaMarkerHandler.Handle(sintesiRichiesteAssistenzaMarkerQuery).SintesiRichiestaMarker;
+            var ChamataUpd = listaSintesiMarker.LastOrDefault(sintesi => sintesi.Id == richiesta.IdRichiesta);
 
             await _notificationHubContext.Clients.Group(richiesta.CodiceSede).SendAsync("ModifyAndNotifySuccess", richiesta);
             await _notificationHubContext.Clients.Group(richiesta.CodiceSede).SendAsync("ChangeStateSuccess", notificaChangeState);
             await _notificationHubContext.Clients.Group(richiesta.CodiceSede).SendAsync("NotifyGetBoxInterventi", boxInterventi);
             await _notificationHubContext.Clients.Group(richiesta.CodiceSede).SendAsync("NotifyGetBoxMezzi", boxMezzi);
             await _notificationHubContext.Clients.Group(richiesta.CodiceSede).SendAsync("NotifyGetBoxPersonale", boxPersonale);
-            await _notificationHubContext.Clients.Group(richiesta.CodiceSede).SendAsync("NotifyGetRichiestaUpDateMarker", listaSintesiMarker.LastOrDefault(marker => marker.Codice == richiesta.Chiamata.Codice));
+            await _notificationHubContext.Clients.Group(richiesta.CodiceSede).SendAsync("NotifyGetRichiestaUpDateMarker", ChamataUpd);
         }
     }
 }

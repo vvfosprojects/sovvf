@@ -7,7 +7,8 @@ import { ListaSquadre } from '../../../../../shared/interface/lista-squadre';
 export class GetListaRichieste {
     static readonly type = '[Richieste] Get Lista Richieste API';
 
-    constructor(public page?: number) { }
+    constructor(public options?: { page?: number}) {
+    }
 }
 
 export class PatchRichiesta {
@@ -26,6 +27,13 @@ export class AddRichieste {
 
 export class ClearRichieste {
     static readonly type = '[Richieste] Clear Lista Richieste';
+}
+
+export class SetNeedRefresh {
+    static readonly type = '[Richieste] Set Need Refresh';
+
+    constructor(public value: boolean) {
+    }
 }
 
 export class UpdateRichiesta {
@@ -98,4 +106,12 @@ export class VisualizzaListaSquadrePartenza {
 
     constructor(public listaSquadre: ListaSquadre) {
     }
+}
+
+export class StartLoadingRichieste {
+    static readonly type = '[Richieste] Start Loading Richieste';
+}
+
+export class StopLoadingRichieste {
+    static readonly type = '[Richieste] Stop Loading Richieste';
 }

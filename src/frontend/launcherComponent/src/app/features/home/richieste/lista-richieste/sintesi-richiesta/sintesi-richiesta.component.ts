@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, OnChanges, SimpleChanges } from '@angular/core';
 import { NgbModal, NgbPopoverConfig, NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
 import { TimeagoIntl } from 'ngx-timeago';
 import { strings as italianStrings } from 'ngx-timeago/language-strings/it';
@@ -21,7 +21,7 @@ import { HelperSintesiRichiesta } from '../../helper/_helper-sintesi-richiesta';
     ],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SintesiRichiestaComponent {
+export class SintesiRichiestaComponent implements OnChanges {
     @Input() richiesta: SintesiRichiesta;
     @Input() fissata: boolean;
     @Input() fissabile: boolean;
@@ -33,6 +33,7 @@ export class SintesiRichiestaComponent {
     @Input() composizionePartenza = true;
     @Input() modificabile = true;
     @Input() gestibile = true;
+    @Input() disableTooltips = false;
 
     // Permessi
     @Input() disabledModificaRichiesta = false;
@@ -62,9 +63,9 @@ export class SintesiRichiestaComponent {
     StatoRichiesta = StatoRichiesta;
 
     constructor(private modalService: NgbModal,
-                popoverConfig: NgbPopoverConfig,
-                tooltipConfig: NgbTooltipConfig,
-                intl: TimeagoIntl) {
+                private popoverConfig: NgbPopoverConfig,
+                private tooltipConfig: NgbTooltipConfig,
+                private intl: TimeagoIntl) {
 
         intl.strings = italianStrings;
         intl.changes.next();
@@ -73,6 +74,18 @@ export class SintesiRichiestaComponent {
         popoverConfig.placement = 'bottom';
         tooltipConfig.container = 'body';
         tooltipConfig.placement = 'bottom';
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes && changes.disableTooltips && changes.disableTooltips.currentValue) {
+            if (changes.disableTooltips.currentValue) {
+                console.log('test 1');
+                this.tooltipConfig.disableTooltip = true;
+            } else if (!changes.disableTooltips.currentValue) {
+                console.log('test 2');
+                this.tooltipConfig.disableTooltip = false;
+            }
+        }
     }
 
     /* Eventi */

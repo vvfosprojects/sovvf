@@ -22,6 +22,7 @@ using MongoDB.Driver;
 using Persistence.MongoDB;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Soccorso;
+using SO115App.API.Models.Classi.Soccorso.StatiRichiesta;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
@@ -31,6 +32,7 @@ using SO115App.Models.Servizi.CustomMapper;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti.CoordinateTask;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
 using System;
 using System.Collections.Generic;
@@ -46,8 +48,12 @@ namespace SO115App.Persistence.MongoDB
         private readonly IGetListaDistaccamentiByCodiceSede _getAnagraficaDistaccamento;
         private readonly MapperRichiestaAssistenzaSuSintesi _mapperSintesi;
         private readonly IGetAlberaturaUnitaOperative _getAlberaturaUnitaOperative;
+        private readonly IGetDistaccamentoByCodiceSedeUC _getDistaccamentoUC;
+        private readonly IGetCoordinateDistaccamento _getCooDistaccamento; //TODO chiedere ad Igor di implementare le coordinate
 
-        public GetRichiesta(DbContext dbContext, IMapper mapper, IGetTipologieByCodice getTipologiaByCodice, IGetListaDistaccamentiByCodiceSede getAnagraficaDistaccamento, MapperRichiestaAssistenzaSuSintesi mapperSintesi, IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative)
+        public GetRichiesta(DbContext dbContext, IMapper mapper, IGetTipologieByCodice getTipologiaByCodice, IGetListaDistaccamentiByCodiceSede getAnagraficaDistaccamento,
+            MapperRichiestaAssistenzaSuSintesi mapperSintesi, IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative,
+            IGetCoordinateDistaccamento getCooDistaccamento, IGetDistaccamentoByCodiceSedeUC getDistaccamentoUC)
         {
             _dbContext = dbContext;
             _mapper = mapper;
@@ -55,6 +61,8 @@ namespace SO115App.Persistence.MongoDB
             _getAnagraficaDistaccamento = getAnagraficaDistaccamento;
             _mapperSintesi = mapperSintesi;
             _getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
+            _getCooDistaccamento = getCooDistaccamento;
+            _getDistaccamentoUC = getDistaccamentoUC;
         }
 
         public RichiestaAssistenza GetByCodice(string codiceRichiesta)
@@ -71,16 +79,82 @@ namespace SO115App.Persistence.MongoDB
 
         public List<SintesiRichiesta> GetListaSintesiRichieste(FiltroRicercaRichiesteAssistenza filtro)
         {
-            var listaRichiesteAssistenza = new List<RichiestaAssistenza>();
-            var listaSediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
-            foreach (var figlio in listaSediAlberate.GetSottoAlbero(filtro.UnitaOperative))
+            var filtroSediCompetenti = Builders<RichiestaAssistenza>.Filter
+                .In(richiesta => richiesta.CodSOCompetente, filtro.UnitaOperative.Select(uo => uo.Codice));
+
+            var filtriSediAllertate = filtro.UnitaOperative.Select(uo =>
+                Builders<RichiestaAssistenza>.Filter
+                    .ElemMatch(richiesta => richiesta.CodSOAllertate, x => x == uo.Codice)
+            );
+
+            FilterDefinition<RichiestaAssistenza> orFiltroSediAllertate = Builders<RichiestaAssistenza>.Filter.Empty;
+            foreach (var f in filtriSediAllertate)
+                orFiltroSediAllertate |= f;
+
+            List<RichiestaAssistenza> result = new List<RichiestaAssistenza>();
+            //Iniziamo col restituire le richieste aperte.
+            if (filtro.IncludiRichiesteAperte)
             {
-                listaRichiesteAssistenza.AddRange(_dbContext.RichiestaAssistenzaCollection.Find(Builders<RichiestaAssistenza>.Filter.Eq(x => x.CodSOCompetente, figlio.Codice)).ToList());
+                var filtroRichiesteAperte = Builders<RichiestaAssistenza>.Filter.Ne(r => r.TestoStatoRichiesta, "X");
+                var filtroComplessivo = filtroSediCompetenti & filtroRichiesteAperte;
+
+                var richiesteAperte = _dbContext.RichiestaAssistenzaCollection.Find(filtroComplessivo)
+                    .ToList();
+
+                // qui l'ordinamento
+                var richiestePerStato = richiesteAperte.GroupBy(r => r.TestoStatoRichiesta == InAttesa.SelettoreDB)
+                    .ToDictionary(g => g.Key, g => g);
+
+                /*
+                 * true -> c1, c2, c3
+                 * false -> r5, r8, r19, r34
+                 */
+
+                if (richiestePerStato.ContainsKey(false))
+                    result.AddRange(
+                        richiestePerStato[false]
+                        .OrderBy(r => r.PrioritaRichiesta)
+                        .ThenBy(r => r.IstanteRicezioneRichiesta));
+
+                if (richiestePerStato.ContainsKey(true))
+                    result.AddRange(
+                        richiestePerStato[true]
+                        .OrderBy(r => r.PrioritaRichiesta)
+                        .ThenBy(r => r.IstanteRicezioneRichiesta));
+
+                // qui la paginazione var resultPaginato = result.Skip().Take();
+
+                // se abbiamo già raggiunto il numero di richieste desiderate, restituiamo e finisce
+                // qua return resultPaginato;
+
+                result.ToList();
             }
 
+            if (filtro.IncludiRichiesteChiuse)
+            {
+                var filtroRichiesteChiuse = Builders<RichiestaAssistenza>.Filter.Eq(r => r.TestoStatoRichiesta, "X");
+                var filtroComplessivo = (filtroSediCompetenti | orFiltroSediAllertate) & filtroRichiesteChiuse;
+
+                var numeroRichiesteDaRecuperare = filtro.PageSize - result.Count;
+
+                if (numeroRichiesteDaRecuperare > 0)
+                {
+                    var closedToSkip = (filtro.Page - 1) * filtro.PageSize - result.Count;
+                    if (closedToSkip < 0)
+                        closedToSkip = 0;
+                    var richiesteChiuse = _dbContext.RichiestaAssistenzaCollection.Find(filtroComplessivo)
+                        .SortByDescending(r => r.IstanteRicezioneRichiesta)
+                        .Skip(closedToSkip)
+                        .Limit(numeroRichiesteDaRecuperare)
+                        .ToList();
+
+                    result.AddRange(richiesteChiuse);
+                }
+            }
+       
             var listaSistesiRichieste = new List<SintesiRichiesta>();
 
-            foreach (RichiestaAssistenza richiesta in listaRichiesteAssistenza)
+            foreach (RichiestaAssistenza richiesta in result)
             {
                 SintesiRichiesta sintesi = new SintesiRichiesta();
 
@@ -96,21 +170,27 @@ namespace SO115App.Persistence.MongoDB
                     .ThenByDescending(x => x.PrioritaRichiesta)
                     .ThenBy(x => x.IstanteRicezioneRichiesta)
                     .ToList();
+
         }
 
         private List<Sede> MapCompetenze(string[] codUOCompetenza)
         {
-            var ListaDistaccamenti = _getAnagraficaDistaccamento.GetListaDistaccamenti(codUOCompetenza[0].Split('.')[0]);
-            List<Sede> ListaSedi = new List<Sede>();
-
+            var listaSedi = new List<Sede>();
+            int i = 1;
             foreach (var codCompetenza in codUOCompetenza)
             {
-                var Distaccamento = ListaDistaccamenti.Find(x => x.CodDistaccamento == Convert.ToInt32(codCompetenza.Split('.')[1]));
-                Sede sede = Distaccamento == null ? null : new Sede(codCompetenza, Distaccamento.DescDistaccamento, Distaccamento.Indirizzo, Distaccamento.Coordinate, "", "", "", "", "");
-                ListaSedi.Add(sede);
+                if (i <= 3)
+                {
+                    var Distaccamento = _getDistaccamentoUC.Get(codCompetenza).Result;
+                    Sede sede = Distaccamento == null ? null : new Sede(codCompetenza, Distaccamento.DescDistaccamento, Distaccamento.Indirizzo, Distaccamento.Coordinate, "", "", "", "", "");
+                    listaSedi.Add(sede);
+                }
+
+                i++;
+
             }
 
-            return ListaSedi;
+            return listaSedi;
         }
 
         public SintesiRichiesta GetSintesi(string codiceRichiesta)

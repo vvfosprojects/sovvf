@@ -77,17 +77,17 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
         {
             var boxMezziQuery = new BoxMezziQuery()
             {
-                CodiceSede = query.CodiceSede
+                CodiciSede = query.CodiceSede
             };
 
             var boxPersonaleQuery = new BoxPersonaleQuery()
             {
-                CodiceSede = query.CodiceSede
+                CodiciSede = query.CodiceSede
             };
 
             var boxRichiesteQuery = new BoxRichiesteQuery()
             {
-                CodiceSede = query.CodiceSede
+                CodiciSede = query.CodiceSede
             };
 
             FiltroRicercaRichiesteAssistenza filtro = new FiltroRicercaRichiesteAssistenza
@@ -98,7 +98,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
 
             var sintesiRichiesteAssistenzaQuery = new SintesiRichiesteAssistenzaQuery()
             {
-                CodiceSede = query.CodiceSede,
+                CodiciSede = query.CodiceSede,
                 Filtro = filtro
             };
 
@@ -116,12 +116,12 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
 
             var getConteggioSchede = new GetConteggioSchedeQuery()
             {
-                CodiceSede = query.CodiceSede
+                CodiciSede = query.CodiceSede
             };
 
             var tipologie = new TipologieQuery()
             {
-                CodSede = query.CodiceSede.Split('.')[0]
+                CodSede = query.CodiceSede[0].Split('.')[0]
             };
 
             try
@@ -130,9 +130,9 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
                 {
                     BoxListaInterventi = _boxRichiesteHandler.Handle(boxRichiesteQuery).BoxRichieste,
                     BoxListaMezzi = _boxMezziHandler.Handle(boxMezziQuery).BoxMezzi,
-                    //BoxListaPersonale = _boxPersonaleHandler.Handle(boxPersonaleQuery).BoxPersonale,
+                    BoxListaPersonale = _boxPersonaleHandler.Handle(boxPersonaleQuery).BoxPersonale,
                     ListaChiamateInCorso = (List<ChiamateInCorso>)_listaChiamateInCorsoMarkerHandler.Handle(listaQuery).ListaChiamateInCorsoMarker,
-                    ListaSintesi = (List<SintesiRichiesta>)_sintesiRichiesteAssistenzaHandler.Handle(sintesiRichiesteAssistenzaQuery).SintesiRichiesta,
+                    ListaSintesi = _sintesiRichiesteAssistenzaHandler.Handle(sintesiRichiesteAssistenzaQuery),
                     CentroMappaMarker = _centroMappaMarkerHandler.Handle(centroMappaQuery).CentroMappaMarker,
                     ListaFiltri = _filtriHandler.Handle(listaFiltriQuery).Filtri,
                     InfoNue = _getConteggioSchedeHandler.Handle(getConteggioSchede).InfoNue,

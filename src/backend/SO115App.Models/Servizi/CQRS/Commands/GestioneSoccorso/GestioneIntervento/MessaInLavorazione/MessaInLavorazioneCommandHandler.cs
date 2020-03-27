@@ -50,7 +50,10 @@ namespace DomainModel.CQRS.Commands.MessaInLavorazione
             var nominativoInLavorazione = utente.Nome + "." + utente.Cognome;
 
             if (richiesta.UtInLavorazione != null)
-                richiesta.UtInLavorazione.Add(nominativoInLavorazione);
+            {
+                if(!richiesta.UtInLavorazione.Contains(nominativoInLavorazione))
+                    richiesta.UtInLavorazione.Add(nominativoInLavorazione);
+            }
             else
             {
                 richiesta.UtInLavorazione = new List<string>();
