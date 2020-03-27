@@ -150,6 +150,9 @@ namespace SO115App.CompositionRoot
             container.Register<
                 Models.Servizi.Infrastruttura.Autenticazione.IGetAutorizzazioni,
                 Persistence.MongoDB.GestioneUtenti.GestioneRuoli.GetAutorizzazioni>();
+            container.Register<
+                Models.Servizi.Infrastruttura.GestioneUtenti.GestioneRuolo.IGetRuoliById, 
+                Persistence.MongoDB.GestioneUtenti.GestioneRuoli.GetRuoliById>();
 
             #endregion Gestione Utenti e Ruoli
 

@@ -19,6 +19,7 @@
 //-----------------------------------------------------------------------
 using CQRS.Queries;
 using SO115App.API.Models.Classi.NavBar;
+using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.GestioneRuolo;
 using SO115App.Models.Servizi.Infrastruttura.NavBar;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
 
@@ -30,10 +31,12 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Navbar
     public class NavbarQueryHandler : IQueryHandler<NavbarQuery, NavbarResult>
     {
         private readonly IGetAlberaturaUnitaOperative _alberaturaUO;
+        private readonly IGetRuoliById _getRuoliById;
 
-        public NavbarQueryHandler(IGetAlberaturaUnitaOperative alberaturaUO)
+        public NavbarQueryHandler(IGetAlberaturaUnitaOperative alberaturaUO, IGetRuoliById getRuoliById)
         {
             this._alberaturaUO = alberaturaUO;
+            _getRuoliById = getRuoliById;
         }
 
         /// <summary>
@@ -43,11 +46,14 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Navbar
         /// <returns>Elenco dei mezzi disponibili</returns>
         public NavbarResult Handle(NavbarQuery query)
         {
-            var navbars = new SO115App.API.Models.Classi.NavBar.Navbar();
-            navbars.ListaSedi = _alberaturaUO.ListaSediAlberata();
+            var navbars = new SO115App.API.Models.Classi.NavBar.Navbar
+            {
+                ListaSedi = _alberaturaUO.ListaSediAlberata(),
+                RuoliUtLoggato = _getRuoliById.Get(query.IdUtente)
+            };
 
             return new NavbarResult()
-            {              
+            {
                 Navbar = navbars
             };
         }
