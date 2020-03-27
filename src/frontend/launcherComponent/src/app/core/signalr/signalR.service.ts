@@ -47,7 +47,7 @@ import { ContatoriSchedeContatto } from '../../shared/interface/contatori-schede
 import { SchedaContatto } from '../../shared/interface/scheda-contatto.interface';
 import { GetUtentiGestione } from '../../features/gestione-utenti/store/actions/gestione-utenti/gestione-utenti.actions';
 import { Utente } from '../../shared/model/utente.model';
-import { UpdateUtente } from '../../features/navbar/store/actions/operatore/utente.actions';
+import { ClearUtente, UpdateUtente } from '../../features/navbar/store/actions/operatore/utente.actions';
 import { UtenteState } from '../../features/navbar/store/states/operatore/utente.state';
 import { UpdateRuoliUtenteLoggato } from '../../shared/store/actions/ruoli/ruoli.actions';
 import { Navigate } from '@ngxs/router-plugin';
@@ -308,10 +308,18 @@ export class SignalRService {
                 }
             }
         });
-
         this.hubNotification.on('NotifyRefreshUtenti', (success: boolean) => {
+            console.log('NotifyRefreshUtenti', success);
             if (success) {
                 this.store.dispatch(new GetUtentiGestione());
+            }
+        });
+        this.hubNotification.on('NotifyDeleteUtente', (idUtente: string) => {
+            console.log('NotifyDeleteUtente', idUtente);
+            const utenteAttuale = this.store.selectSnapshot(UtenteState.utente);
+            if (idUtente && idUtente === utenteAttuale.id) {
+                this.store.dispatch(new ClearUtente());
+                this.store.dispatch(new Navigate(['/login']));
             }
         });
 
