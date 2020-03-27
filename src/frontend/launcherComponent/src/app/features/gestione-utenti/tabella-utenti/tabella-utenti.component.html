@@ -9,7 +9,7 @@
     <tr *ngFor="let utente of listaUtenti | paginate: { itemsPerPage: pageSize, currentPage: page, totalItems: totalItems }">
         <td width="40%" class="pb-1">
             <button class="btn btn-sm btn-danger font-weight-bold float-left mt-3 mr-2" ngbTooltip="Rimuovi utente"
-                    placement="bottom"
+                    placement="bottom" [disabled]="utente.id === idUtenteLoggato"
                     (click)="onRemoveUtente(utente.codiceFiscale, utente.cognome + ' ' + utente.nome)">
                 <i class="fa fa-trash"></i>
             </button>

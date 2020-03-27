@@ -17,6 +17,7 @@ export class TabellaUtentiComponent {
     @Input() pageSizes: number[];
     @Input() totalItems: number;
     @Input() loading: boolean;
+    @Input() idUtenteLoggato: string;
 
     @Output() removeUser: EventEmitter<{ codFiscale: string, nominativoUtente: string }> = new EventEmitter<{ codFiscale: string, nominativoUtente: string }>();
     @Output() removeRoleUser: EventEmitter<{ codFiscale: string, ruolo: Ruolo, nominativoUtente: string }> = new EventEmitter<{ codFiscale: string, ruolo: Ruolo, nominativoUtente: string }>();
