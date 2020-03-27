@@ -49,6 +49,7 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy {
     @Input() tipologie: Tipologia[];
     @Input() operatore: Utente;
     @Input() disabledInviaPartenza = false;
+    @Input() loading: boolean;
 
     nuovaRichiesta: SintesiRichiesta;
     isCollapsed = true;
