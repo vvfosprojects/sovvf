@@ -53,5 +53,12 @@ export class ResetChiamata {
 
 export class StartChiamata {
     static readonly type = '[SchedaTelefonata] Start Chiamata';
+}
 
+export class StartLoadingNuovaChiamata {
+    static readonly type = '[SchedaTelefonata] Start Loading Nuova Chiamata';
+}
+
+export class StopLoadingNuovaChiamata {
+    static readonly type = '[SchedaTelefonata] Stop Loading Nuova Chiamata';
 }

@@ -9,7 +9,7 @@ import {
     MarkerChiamata,
     ReducerSchedaTelefonata,
     ResetChiamata,
-    StartChiamata
+    StartChiamata, StartLoadingNuovaChiamata, StopLoadingNuovaChiamata
 } from '../../actions/chiamata/scheda-telefonata.actions';
 import { CopyToClipboard } from '../../actions/chiamata/clipboard.actions';
 import { ToggleChiamata } from '../../actions/view/view.actions';
@@ -22,7 +22,7 @@ import { AzioneChiamataEnum } from '../../../../../shared/enum/azione-chiamata.e
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from '../../../../../shared/enum/toastr';
 import { ChiamataService } from '../../../../../core/service/chiamata-service/chiamata.service';
-import { AddRichiesta, GetListaRichieste, SetIdChiamataInviaPartenza, SetNeedRefresh, StartInviaPartenzaFromChiamata } from '../../actions/richieste/richieste.actions';
+import { GetListaRichieste, SetIdChiamataInviaPartenza, SetNeedRefresh } from '../../actions/richieste/richieste.actions';
 import { RichiestaSelezionataState } from '../richieste/richiesta-selezionata.state';
 import { PaginationState } from '../../../../../shared/store/states/pagination/pagination.state';
 
@@ -32,6 +32,7 @@ export interface SchedaTelefonataStateModel {
     azioneChiamata: AzioneChiamataEnum;
     idChiamataMarker: string;
     resetChiamata: boolean;
+    loadingNuovaChiamata: boolean;
 }
 
 export const SchedaTelefonataStateDefaults: SchedaTelefonataStateModel = {
@@ -39,7 +40,8 @@ export const SchedaTelefonataStateDefaults: SchedaTelefonataStateModel = {
     nuovaRichiesta: null,
     azioneChiamata: null,
     idChiamataMarker: null,
-    resetChiamata: true
+    resetChiamata: true,
+    loadingNuovaChiamata: false
 };
 
 @State<SchedaTelefonataStateModel>({
@@ -61,6 +63,11 @@ export class SchedaTelefonataState {
     @Selector()
     static myChiamataMarker(state: SchedaTelefonataStateModel) {
         return state.idChiamataMarker;
+    }
+
+    @Selector()
+    static loadingNuovaChiamata(state: SchedaTelefonataStateModel) {
+        return state.loadingNuovaChiamata;
     }
 
     @Action(ReducerSchedaTelefonata)
@@ -92,6 +99,7 @@ export class SchedaTelefonataState {
         patchState({
             azioneChiamata: action.azioneChiamata
         });
+        dispatch(new StartLoadingNuovaChiamata());
 
         this.chiamataService.insertChiamata(action.nuovaRichiesta).subscribe((data: SintesiRichiesta) => {
             if (data && action.azioneChiamata === AzioneChiamataEnum.InviaPartenza) {
@@ -123,6 +131,7 @@ export class SchedaTelefonataState {
         } else {
             dispatch(new SetNeedRefresh(true));
         }
+        dispatch(new StopLoadingNuovaChiamata());
         dispatch(new ShowToastr(ToastrType.Success, 'Inserimento della chiamata effettuato', action.nuovaRichiesta.descrizione, 5));
     }
 
@@ -180,6 +189,20 @@ export class SchedaTelefonataState {
     startChiamata({ patchState }: StateContext<SchedaTelefonataStateModel>) {
         patchState({
             resetChiamata: false
+        });
+    }
+
+    @Action(StartLoadingNuovaChiamata)
+    startLoadingNuovaChiamata({ patchState }: StateContext<SchedaTelefonataStateModel>) {
+        patchState({
+            loadingNuovaChiamata: true
+        });
+    }
+
+    @Action(StopLoadingNuovaChiamata)
+    stopLoadingNuovaChiamata({ patchState }: StateContext<SchedaTelefonataStateModel>) {
+        patchState({
+            loadingNuovaChiamata: false
         });
     }
 

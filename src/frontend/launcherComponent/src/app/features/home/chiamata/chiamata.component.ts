@@ -6,7 +6,7 @@ import { UtenteState } from '../../navbar/store/states/operatore/utente.state';
 import { Tipologia } from '../../../shared/model/tipologia.model';
 import { HomeState } from '../store/states/home.state';
 import { PermissionFeatures } from '../../../shared/enum/permission-features.enum';
-import { LoadingState } from '../../../shared/store/states/loading/loading.state';
+import { SchedaTelefonataState } from '../store/states/chiamata/scheda-telefonata.state';
 
 
 @Component({
@@ -16,7 +16,7 @@ import { LoadingState } from '../../../shared/store/states/loading/loading.state
 })
 export class ChiamataComponent implements OnInit, OnDestroy {
 
-    @Select(LoadingState.loading) loading$: Observable<boolean>;
+    @Select(SchedaTelefonataState.loadingNuovaChiamata) loadingNuovaChiamata$: Observable<boolean>;
     @Select(UtenteState.utente) utente$: Observable<Utente>;
     @Select(HomeState.tipologie) tipologie$: Observable<Tipologia[]>;
     permessiFeature = PermissionFeatures;
