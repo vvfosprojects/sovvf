@@ -25,14 +25,12 @@ import {
 import {
     ClearListaMezziComposizione,
     ClearMezzoComposizione,
-    ClearSelectedMezziComposizione,
-    UnselectMezzoComposizione
+    ClearSelectedMezziComposizione
 } from '../../actions/composizione-partenza/mezzi-composizione.actions';
 import {
     ClearListaSquadreComposizione,
     ClearSquadraComposizione,
-    ClearSelectedSquadreComposizione,
-    UnselectSquadraComposizione
+    ClearSelectedSquadreComposizione
 } from '../../actions/composizione-partenza/squadre-composizione.actions';
 import { CompPartenzaService } from '../../../../../core/service/comp-partenza-service/comp-partenza.service';
 import { AddInLavorazione, DeleteInLavorazione } from '../../actions/richieste/richiesta-attivita-utente.actions';
@@ -118,7 +116,7 @@ export class ComposizionePartenzaState {
 
 
     constructor(private store: Store,
-        private compPartenzaService: CompPartenzaService) {
+                private compPartenzaService: CompPartenzaService) {
     }
 
     @Action(GetFiltriComposizione)
@@ -154,22 +152,29 @@ export class ComposizionePartenzaState {
         const filtriDistaccamento = [] as DescrizioneTipologicaMezzo[];
         const filtriStato = [] as DescrizioneTipologicaMezzo[];
         const generiMezzi = [] as DescrizioneTipologicaMezzo[];
+        console.log('TEST', filtri);
         if (listaMezziSquadre.composizioneMezzi && listaMezziSquadre.composizioneSquadre) {
-            filtri.distaccamenti.forEach((distaccamento: DescrizioneTipologicaMezzo) => {
-                if (checkDistaccamento(distaccamento)) {
-                    filtriDistaccamento.push(distaccamento);
-                }
-            });
-            filtri.stati.forEach((stato: DescrizioneTipologicaMezzo) => {
-                if (checkStato(stato)) {
-                    filtriStato.push(stato);
-                }
-            });
-            filtri.generiMezzi.forEach((genereMezzi: DescrizioneTipologicaMezzo) => {
-                if (checkGenereMezzo(genereMezzi)) {
-                    generiMezzi.push(genereMezzi);
-                }
-            });
+            if (filtri.distaccamenti) {
+                filtri.distaccamenti.forEach((distaccamento: DescrizioneTipologicaMezzo) => {
+                    if (checkDistaccamento(distaccamento)) {
+                        filtriDistaccamento.push(distaccamento);
+                    }
+                });
+            }
+            if (filtri.stati) {
+                filtri.stati.forEach((stato: DescrizioneTipologicaMezzo) => {
+                    if (checkStato(stato)) {
+                        filtriStato.push(stato);
+                    }
+                });
+            }
+            if (filtri.generiMezzi) {
+                filtri.generiMezzi.forEach((genereMezzi: DescrizioneTipologicaMezzo) => {
+                    if (checkGenereMezzo(genereMezzi)) {
+                        generiMezzi.push(genereMezzi);
+                    }
+                });
+            }
         }
 
         function checkDistaccamento(distaccamento: DescrizioneTipologicaMezzo) {
