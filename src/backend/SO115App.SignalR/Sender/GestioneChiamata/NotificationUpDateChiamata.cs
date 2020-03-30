@@ -31,6 +31,7 @@ using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichieste
 using SO115App.API.Models.Servizi.CQRS.Queries.Marker.SintesiRichiesteAssistenzaMarker;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
 using SO115App.Models.Servizi.CustomMapper;
+using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneChiamata;
 using System;
 using System.Collections.Generic;
@@ -45,31 +46,23 @@ namespace SO115App.SignalR.Sender.GestioneChiamata
         private readonly IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> _boxRichiesteHandler;
         private readonly IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> _sintesiRichiesteAssistenzaMarkerHandler;
         private readonly IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> _sintesiRichiesteAssistenzaHandler;
+        private readonly IGetRichiestaById _getRichiestaById;
 
         public NotificationUpDateChiamata(IHubContext<NotificationHub> notificationHubContext,
                                           IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> boxRichiesteHandler,
                                           IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> sintesiRichiesteAssistenzaMarkerHandler,
-                                          IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> sintesiRichiesteAssistenzaHandler
-        )
+                                          IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> sintesiRichiesteAssistenzaHandler,
+                                          IGetRichiestaById getRichiestaById)
         {
             _notificationHubContext = notificationHubContext;
             _boxRichiesteHandler = boxRichiesteHandler;
             _sintesiRichiesteAssistenzaMarkerHandler = sintesiRichiesteAssistenzaMarkerHandler;
             _sintesiRichiesteAssistenzaHandler = sintesiRichiesteAssistenzaHandler;
+            _getRichiestaById = getRichiestaById;
         }
 
         public async Task SendNotification(UpDateInterventoCommand intervento)
         {
-            var sintesiRichiesteAssistenzaQuery = new SintesiRichiesteAssistenzaQuery
-            {
-                Filtro = new FiltroRicercaRichiesteAssistenza
-                {
-                    idOperatore = intervento.CodUtente
-                },
-                CodiciSede = new string[] { intervento.CodiceSede }
-            };
-            var listaSintesi = (List<SintesiRichiesta>)this._sintesiRichiesteAssistenzaHandler.Handle(sintesiRichiesteAssistenzaQuery).SintesiRichiesta;
-
             var boxRichiesteQuery = new BoxRichiesteQuery()
             {
                 CodiciSede = new string[] { intervento.CodiceSede }
@@ -84,8 +77,9 @@ namespace SO115App.SignalR.Sender.GestioneChiamata
 
             var listaSintesiMarker = (List<SintesiRichiestaMarker>)this._sintesiRichiesteAssistenzaMarkerHandler.Handle(sintesiRichiesteAssistenzaMarkerQuery).SintesiRichiestaMarker;
 
-            intervento.Chiamata = listaSintesi.LastOrDefault(richiesta => richiesta.Codice == intervento.Chiamata.Codice);
-            await _notificationHubContext.Clients.Group(intervento.CodiceSede).SendAsync("ModifyAndNotifySuccess", intervento);
+            var interventoUpdated = _getRichiestaById.GetById(intervento.Chiamata.Id);
+
+            await _notificationHubContext.Clients.Group(intervento.CodiceSede).SendAsync("ModifyAndNotifySuccess", interventoUpdated);
             await _notificationHubContext.Clients.Group(intervento.CodiceSede).SendAsync("NotifyGetBoxInterventi", boxInterventi);
             await _notificationHubContext.Clients.Group(intervento.CodiceSede).SendAsync("NotifyGetRichiestaUpDateMarker", listaSintesiMarker.LastOrDefault(marker => marker.Codice == intervento.Chiamata.Codice)).ConfigureAwait(false);
         }
