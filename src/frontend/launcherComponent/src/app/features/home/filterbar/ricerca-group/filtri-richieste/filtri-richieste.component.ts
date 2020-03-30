@@ -56,6 +56,6 @@ export class FiltriRichiesteComponent implements OnChanges {
     }
 
     _isSelezionato(filtro: VoceFiltro) {
-        return this.filtriSelezionati.indexOf(filtro) !== -1;
+        return this.filtriSelezionati && this.filtriSelezionati.indexOf(filtro) !== -1;
     }
 }

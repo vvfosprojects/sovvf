@@ -24,10 +24,12 @@ export class SintesiRichiesteService {
     public getRichieste(filters: FiltersInterface, pagination: PaginationInterface): Observable<any> {
         const obj = {
             'page': pagination.page,
-            'pageSize': pagination.pageSize || 30
+            'pageSize': pagination.pageSize || 30,
+            // 'includiRichiesteAperte': filters.others.filter((f: VoceFiltro) => f.descrizione === 'Aperte')[0] ? true : false,
+            // 'includiRichiesteChiuse': filters.others.filter((f: VoceFiltro) => f.descrizione === 'Chiuse')[0] ? true : false
         };
         filters.others.forEach((f: VoceFiltro) => {
-            obj[f.descrizione.toLocaleLowerCase()] = true;
+            obj[f.name] = true;
         });
         console.log('obj getRichieste', obj);
         return this.http.post(API_URL_RICHIESTE, obj).pipe(

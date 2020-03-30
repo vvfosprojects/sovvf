@@ -4,6 +4,8 @@ export class VoceFiltro {
         public categoria: string,
         public descrizione: string,
         public star: boolean,
-        public selezionato?: boolean
+        public selezionato?: boolean,
+        // server name
+        public name?: string
     ) { }
 }
