@@ -122,8 +122,7 @@ export class GestioneUtentiState {
     @Action(GetUtentiGestione)
     getGestioneUtenti({ dispatch }: StateContext<GestioneUtentiStateModel>, action: GetUtentiGestione) {
         const route = this.router.children[0].snapshot.url[0].path;
-        const loading = this.store.selectSnapshot(LoadingState.loading);
-        if (route === 'gestione-utenti' && !loading) {
+        if (route === 'gestione-utenti') {
             dispatch(new StartLoading());
             const filters = {
                 search: this.store.selectSnapshot(RicercaUtentiState.ricerca),

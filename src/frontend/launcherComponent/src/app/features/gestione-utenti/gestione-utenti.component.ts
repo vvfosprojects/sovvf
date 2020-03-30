@@ -1,6 +1,6 @@
 import { Component, OnDestroy } from '@angular/core';
 import { Ruolo, Utente } from 'src/app/shared/model/utente.model';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { Select, Store } from '@ngxs/store';
 import { ClearRicercaUtenti, SetRicercaUtenti } from './store/actions/ricerca-utenti/ricerca-utenti.actons';
 import { UtenteState } from '../navbar/store/states/operatore/utente.state';
@@ -29,10 +29,13 @@ export class GestioneUtentiComponent implements OnDestroy {
     @Select(RicercaUtentiState.ricerca) ricerca$: Observable<string>;
     ricerca: string;
     @Select(PaginationState.pageSize) pageSize$: Observable<number>;
+    pageSize: number;
     @Select(PaginationState.pageSizes) pageSizes$: Observable<number[]>;
     @Select(PaginationState.totalItems) totalItems$: Observable<number>;
     @Select(PaginationState.page) page$: Observable<number>;
     @Select(LoadingState.loading) loading$: Observable<boolean>;
+
+    subscriptions: Subscription = new Subscription();
 
     constructor(public modalService: NgbModal,
                 private store: Store) {
@@ -44,6 +47,7 @@ export class GestioneUtentiComponent implements OnDestroy {
 
     ngOnDestroy(): void {
         this.store.dispatch(new ClearRicercaUtenti());
+        this.subscriptions.unsubscribe();
     }
 
     onRicercaUtenti(ricerca: any) {
@@ -155,21 +159,34 @@ export class GestioneUtentiComponent implements OnDestroy {
     }
 
     getUtente() {
-        this.utente$.subscribe((utente: Utente) => {
-            this.utente = utente;
-        });
+        this.subscriptions.add(
+            this.utente$.subscribe((utente: Utente) => {
+                this.utente = utente;
+            })
+        );
     }
 
     getRicerca() {
-        this.ricerca$.subscribe((ricerca: string) => {
-            this.ricerca = ricerca;
-            this.store.dispatch(new GetUtentiGestione());
-        });
+        this.subscriptions.add(
+            this.ricerca$.subscribe((ricerca: string) => {
+                if (ricerca !== null) {
+                    this.ricerca = ricerca;
+                    this.store.dispatch(new GetUtentiGestione());
+                }
+            })
+        );
     }
 
     getPageSize() {
-        this.pageSize$.subscribe(() => {
-            this.store.dispatch(new GetUtentiGestione());
-        });
+        this.subscriptions.add(
+            this.pageSize$.subscribe((pageSize: number) => {
+                if (pageSize) {
+                    if (this.pageSize && pageSize !== this.pageSize) {
+                        this.store.dispatch(new GetUtentiGestione());
+                    }
+                    this.pageSize = pageSize;
+                }
+            })
+        );
     }
 }

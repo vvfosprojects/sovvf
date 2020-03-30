@@ -6,7 +6,7 @@ export interface RicercaUtentiStateModel {
 }
 
 export const RicercaUtentiStateDefaults: RicercaUtentiStateModel = {
-    ricerca: ''
+    ricerca: null
 };
 
 @State<RicercaUtentiStateModel>({
@@ -33,7 +33,7 @@ export class RicercaUtentiState {
     @Action(ClearRicercaUtenti)
     clearRicercaUtenti({ patchState }: StateContext<RicercaUtentiStateModel>) {
         patchState({
-            ricerca: ''
+            ricerca: null
         });
     }
 }
