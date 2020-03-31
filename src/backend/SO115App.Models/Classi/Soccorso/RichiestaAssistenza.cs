@@ -248,7 +248,8 @@ namespace SO115App.API.Models.Classi.Soccorso
         {
             get
             {
-                return this.StatoRichiesta is Sospesa;
+                return this._eventi
+                    .LastOrDefault() is RichiestaSospesa;
             }
         }
 
