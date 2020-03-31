@@ -135,7 +135,7 @@ namespace SO115App.Persistence.MongoDB
                 var filtroRichiesteChiuse = Builders<RichiestaAssistenza>.Filter.Eq(r => r.TestoStatoRichiesta, "X");
                 var filtroComplessivo = filtroSediCompetenti & filtroRichiesteChiuse;
 
-                var numeroRichiesteDaRecuperare = filtro.PageSize - result.Count;
+                var numeroRichiesteDaRecuperare = filtro.PageSize - (result.Count - filtro.PageSize);
 
                 if (numeroRichiesteDaRecuperare > 0)
                 {
