@@ -8,6 +8,8 @@ import { RoutesPath } from '../../shared/enum/routes-path.enum';
 import { Store } from '@ngxs/store';
 import { ShowToastr } from '../../shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from '../../shared/enum/toastr';
+import { ClearUtente } from '../../features/navbar/store/actions/operatore/utente.actions';
+import { Navigate } from '@ngxs/router-plugin';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
@@ -30,9 +32,9 @@ export class ErrorInterceptor implements HttpInterceptor {
         return next.handle(request).pipe(catchError(err => {
             console.error('err', err);
             if ([401].indexOf(err.status) !== -1) {
-                this.authenticationService.logout();
+                this.store.dispatch(new ClearUtente());
                 if (!this.skipRedirect) {
-                    window.location.reload();
+                    this.store.dispatch(new Navigate(['/login']));
                 }
             }
 
