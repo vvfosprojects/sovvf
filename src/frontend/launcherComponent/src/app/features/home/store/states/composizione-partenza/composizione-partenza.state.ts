@@ -118,7 +118,7 @@ export class ComposizionePartenzaState {
 
 
     constructor(private store: Store,
-        private compPartenzaService: CompPartenzaService) {
+                private compPartenzaService: CompPartenzaService) {
     }
 
     @Action(GetFiltriComposizione)
@@ -155,16 +155,19 @@ export class ComposizionePartenzaState {
         const filtriStato = [] as DescrizioneTipologicaMezzo[];
         const generiMezzi = [] as DescrizioneTipologicaMezzo[];
         if (listaMezziSquadre.composizioneMezzi && listaMezziSquadre.composizioneSquadre) {
+            console.log('FILTRI DISTAMCCAMENTI', filtri.distaccamenti);
             filtri.distaccamenti.forEach((distaccamento: DescrizioneTipologicaMezzo) => {
                 if (checkDistaccamento(distaccamento)) {
                     filtriDistaccamento.push(distaccamento);
                 }
             });
+            console.log('FILTRI STATI', filtri.stati);
             filtri.stati.forEach((stato: DescrizioneTipologicaMezzo) => {
                 if (checkStato(stato)) {
                     filtriStato.push(stato);
                 }
             });
+            console.log('FILTRI GENERI MEZZI', filtri.generiMezzi);
             filtri.generiMezzi.forEach((genereMezzi: DescrizioneTipologicaMezzo) => {
                 if (checkGenereMezzo(genereMezzi)) {
                     generiMezzi.push(genereMezzi);
