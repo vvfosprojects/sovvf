@@ -65,11 +65,11 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi
         /// <summary>
         ///   Indica che la rilevanza è per gravità
         /// </summary>
-        public bool PerGravita { get; }
+        public bool PerGravita { get; private set; }
 
         /// <summary>
         ///   Indica che la rilevanza è per edificio Storico/Artistico/Culturale
         /// </summary>
-        public bool PerEdificioStArCu { get; }
+        public bool PerEdificioStArCu { get; private set; }
     }
 }

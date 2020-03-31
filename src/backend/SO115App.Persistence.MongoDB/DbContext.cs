@@ -90,6 +90,8 @@ namespace Persistence.MongoDB
             BsonClassMap.RegisterClassMap<GeneriMezzi>();
             BsonClassMap.RegisterClassMap<Stati>();
             BsonClassMap.RegisterClassMap<SchedaContatto>();
+            BsonClassMap.RegisterClassMap<MarcaRilevante>();
+            
         }
 
         public IMongoCollection<RichiestaAssistenza> RichiestaAssistenzaCollection
