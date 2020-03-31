@@ -112,6 +112,11 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
                 Filtro = filtro
             };
 
+            var listaFiltriQuery = new FiltriQuery()
+            {
+                Filtro = filtro
+            };
+
             var listaQuery = new ListaChiamateInCorsoMarkerQuery()
             {
                 CodiceSede = query.CodiceSede
@@ -121,8 +126,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
             {
                 CodiceSede = query.CodiceSede
             };
-
-            var listaFiltriQuery = new FiltriQuery();
 
             var getConteggioSchede = new GetConteggioSchedeQuery()
             {

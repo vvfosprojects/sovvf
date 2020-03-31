@@ -29,10 +29,13 @@ namespace SO115App.Persistence.MongoDB.GestioneSedi
             var listaSedi = _getSediAlberate.ListaSediAlberata();
             var listaSottoSedi = listaSedi.GetSottoAlbero(listaPin);
 
-            var filtroSedi = Builders<ListaSedi>.Filter
-            .In(sede => sede.codSede_TC + "." + sede.codFiglio_TC.ToString(), listaSottoSedi.Select(uo => uo.Codice));
+            var filtroSede = Builders<ListaSedi>.Filter
+            .In(sede => sede.codSede_TC, listaSottoSedi.Select(uo => uo.Codice.Split('.')[0]));
 
-            List<ListaSedi> DistaccamentiResult = _dbContext.SediCollection.Find(filtroSedi).ToList();
+            var filtroCodice = Builders<ListaSedi>.Filter
+            .In(sede => sede.codFiglio_TC, listaSottoSedi.Select(uo => Convert.ToInt32(uo.Codice.Split('.')[1])));
+
+            List<ListaSedi> DistaccamentiResult = _dbContext.SediCollection.Find(filtroSede & filtroCodice).ToList();
 
             return MapSediMongoSuDistaccamenti.Map(DistaccamentiResult);
 
