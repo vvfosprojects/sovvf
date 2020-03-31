@@ -133,7 +133,7 @@ namespace SO115App.Persistence.MongoDB
             if (filtro.IncludiRichiesteChiuse)
             {
                 var filtroRichiesteChiuse = Builders<RichiestaAssistenza>.Filter.Eq(r => r.TestoStatoRichiesta, "X");
-                var filtroComplessivo = (filtroSediCompetenti | orFiltroSediAllertate) & filtroRichiesteChiuse;
+                var filtroComplessivo = filtroSediCompetenti & filtroRichiesteChiuse;
 
                 var numeroRichiesteDaRecuperare = filtro.PageSize - result.Count;
 
@@ -142,8 +142,7 @@ namespace SO115App.Persistence.MongoDB
                     var closedToSkip = (filtro.Page - 1) * filtro.PageSize - result.Count;
                     if (closedToSkip < 0)
                         closedToSkip = 0;
-                    var richiesteChiuse = _dbContext.RichiestaAssistenzaCollection.Find(filtroComplessivo)
-                        .SortByDescending(r => r.IstanteRicezioneRichiesta)
+                    var richiesteChiuse = _dbContext.RichiestaAssistenzaCollection.Find(filtroComplessivo)                        
                         .Skip(closedToSkip)
                         .Limit(numeroRichiesteDaRecuperare)
                         .ToList();
