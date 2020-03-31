@@ -19,6 +19,8 @@
 //-----------------------------------------------------------------------
 using CQRS.Queries;
 using SO115App.Models.Servizi.Infrastruttura.GetFiltri;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
+using System.Linq;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.Filtri
 {
@@ -50,13 +52,15 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.Filtri
     public class FiltriQueryHandler : IQueryHandler<FiltriQuery, FiltriResult>
     {
         private readonly IGetFiltri _ifiltri;
+        private readonly IGetListaDistaccamentiByPinListaSedi _getDistaccamenti;
 
         /// <summary>
         ///   Costruttore della classe
         /// </summary>
-        public FiltriQueryHandler(IGetFiltri ifiltri)
+        public FiltriQueryHandler(IGetFiltri ifiltri, IGetListaDistaccamentiByPinListaSedi getDistaccamenti)
         {
-            this._ifiltri = ifiltri;
+            _ifiltri = ifiltri;
+            _getDistaccamenti = getDistaccamenti;
         }
 
         /// <summary>
@@ -67,6 +71,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.Filtri
         public FiltriResult Handle(FiltriQuery query)
         {
             Classi.Filtri.Filtri filtri = _ifiltri.Get();
+
+            filtri.Distaccamenti = _getDistaccamenti.GetListaDistaccamenti(query.Filtro.UnitaOperative.ToList());
 
             return new FiltriResult()
             {

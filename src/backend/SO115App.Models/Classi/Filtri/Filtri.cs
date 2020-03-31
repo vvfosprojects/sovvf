@@ -18,6 +18,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using MongoDB.Bson.Serialization.Attributes;
+using SO115App.Models.Classi.Condivise;
 using System.Collections.Generic;
 
 namespace SO115App.API.Models.Classi.Filtri
@@ -33,5 +34,9 @@ namespace SO115App.API.Models.Classi.Filtri
 
         [BsonElement]
         public List<Stati> Stati { get; set; }
+
+        [BsonElement]
+        public List<Distaccamento> Distaccamenti { get; set; }
+
     }
 }
