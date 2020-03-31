@@ -16,7 +16,7 @@
                         <app-filtro *ngIf="f.star === true"
                                     [filtro]="f"
                                     [useCheckbox]="true"
-                                    [selezionato]="_isSelezionato(f)"
+                                    [selezionato]="f | selectedFilterRichieste"
                                     (filtroSelezionato)="onSelezioneFiltro($event)"
                                     (filtroDeselezionato)="onDeselezioneFiltro($event)"></app-filtro>
                     </div>
@@ -64,7 +64,7 @@
                                     <app-filtro *ngIf="f.categoria === categoriaSelezionata"
                                                 [filtro]="f"
                                                 [useCheckbox]="true"
-                                                [selezionato]="_isSelezionato(f)"
+                                                [selezionato]="f | selectedFilterRichieste"
                                                 (filtroSelezionato)="onSelezioneFiltro($event)"
                                                 (filtroDeselezionato)="onDeselezioneFiltro($event)">
                                     </app-filtro>
@@ -111,7 +111,8 @@
             </div>
         </div>
     </div>
-    <button *ngIf="filtriSelezionati && filtriSelezionati.length > 0" class="btn btn-outline-secondary p-1" (click)="eliminaFiltriAttivi()">
+    <button *ngIf="filtriSelezionati && filtriSelezionati.length > 0" class="btn btn-outline-secondary p-1"
+            (click)="eliminaFiltriAttivi()">
         <i class="fa fa-times text-dark px-1"></i>
     </button>
 </div>

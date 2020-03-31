@@ -54,8 +54,4 @@ export class FiltriRichiesteComponent implements OnChanges {
     eliminaFiltriAttivi() {
         this.filtriReset.emit();
     }
-
-    _isSelezionato(filtro: VoceFiltro) {
-        return this.filtriSelezionati && this.filtriSelezionati.indexOf(filtro) !== -1;
-    }
 }

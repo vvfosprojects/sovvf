@@ -23,7 +23,10 @@ export const filtriRichiesteStateDefaults: FiltriRichiesteStateModel = {
     ],
     filtriRichieste: [],
     categoriaFiltriRichieste: [],
-    filtriRichiesteSelezionati: null
+    filtriRichiesteSelezionati: [
+        { codice: '1', categoria: 'Aperte', descrizione: 'Aperte', name: 'includiRichiesteAperte', star: true },
+        { codice: '2', categoria: 'Chiuse', descrizione: 'Chiuse', name: 'includiRichiesteChiuse', star: true }
+    ]
 };
 
 @State<FiltriRichiesteStateModel>({
@@ -60,7 +63,7 @@ export class FiltriRichiesteState {
 
         if (tipologie && tipologie.length > 0) {
             tipologie.forEach(tipologia => {
-                filtriRichieste.push(new VoceFiltro('' + tipologia.codice, tipologia.categoria, tipologia.descrizione, tipologia.star));
+                filtriRichieste.push(new VoceFiltro(tipologia.codice + filtriStatici.length, tipologia.categoria, tipologia.descrizione, tipologia.star));
             });
         }
 
