@@ -80,9 +80,13 @@ namespace DomainModel.CQRS.Commands.UpDateIntervento
                 }
             }
 
-            richiesta.SincronizzaRilevanza(command.Chiamata.RilevanteGrave, command.Chiamata.RilevanteStArCu, command.CodUtente, command.Chiamata.Descrizione, DateTime.UtcNow);
+            //richiesta.SincronizzaRilevanza(command.Chiamata.RilevanteGrave, command.Chiamata.RilevanteStArCu, command.CodUtente, command.Chiamata.Descrizione, DateTime.UtcNow);
 
             richiesta.SincronizzaStatoRichiesta(command.Chiamata.Stato, richiesta.StatoRichiesta, command.CodUtente, command.Chiamata.Motivazione);
+
+            if (command.Chiamata.RilevanteGrave || command.Chiamata.RilevanteStArCu)
+                new MarcaRilevante(richiesta, DateTime.UtcNow.AddMilliseconds(1.5), command.CodUtente, "", command.Chiamata.RilevanteGrave,
+            command.Chiamata.RilevanteStArCu);
 
             if (richiesta.PrioritaRichiesta != command.Chiamata.PrioritaRichiesta)
             {
