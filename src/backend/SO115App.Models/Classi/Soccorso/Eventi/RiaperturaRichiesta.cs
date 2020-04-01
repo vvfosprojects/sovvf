@@ -30,15 +30,17 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi
         /// <summary>
         ///   Costruttore della classe. A seguito della chiamata, la richiesta risulta aperta.
         /// </summary>
+        /// <param name="motivazione">E' la motivazione della riapertura</param>
         /// <param name="richiesta">La richiesta alla quale l'evento deve essere aggiunto</param>
         /// <param name="istante">E' l'istante in cui si verifica l'evento</param>
         /// <param name="codiceFonte">E' la fonte informativa dell'evento</param>
-        public RiaperturaRichiesta(
+        public RiaperturaRichiesta(string motivazione,
             RichiestaAssistenza richiesta,
             DateTime istante,
             string codiceFonte) : base(richiesta, istante, codiceFonte, "RiaperturaRichiesta")
         {
             richiesta.IstanteChiusura = null;
+            this.Motivazione = motivazione;
         }
 
         [JsonConstructor]
@@ -57,5 +59,10 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi
         {
             return false;
         }
+
+        /// <summary>
+        ///   Indica la motivazione della riapertura
+        /// </summary>
+        public string Motivazione { get; set; }
     }
 }

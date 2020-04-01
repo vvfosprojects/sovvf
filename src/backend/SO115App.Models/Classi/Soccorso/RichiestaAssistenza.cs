@@ -109,7 +109,7 @@ namespace SO115App.API.Models.Classi.Soccorso
             }
             else if (stato.Equals(Costanti.RichiestaRiaperta) && !(statoRichiesta is Riaperta))
             {
-                new RiaperturaRichiesta(this, DateTime.UtcNow, id);
+                new RiaperturaRichiesta(motivazione, this, DateTime.UtcNow, id);
             }
             else if (stato.Equals(Costanti.RichiestaAssegnata) && !(statoRichiesta is Assegnata))
             {
@@ -121,7 +121,7 @@ namespace SO115App.API.Models.Classi.Soccorso
             }
             else if (stato.Equals(Costanti.RichiestaSospesa) && !(statoRichiesta is Sospesa))
             {
-                new RichiestaSospesa(this, DateTime.UtcNow, id);
+                new RichiestaSospesa(motivazione, this, DateTime.UtcNow, id);
             }
         }
 
@@ -763,7 +763,7 @@ namespace SO115App.API.Models.Classi.Soccorso
         /// </summary>
         public string TestoStatoRichiesta
         {
-            get 
+            get
             {
                 var eventoChiusura = this._eventi
                     .LastOrDefault() is ChiusuraRichiesta;
@@ -782,20 +782,18 @@ namespace SO115App.API.Models.Classi.Soccorso
 
                 if (eventoChiusura)
                     return "X";
-
                 else if (eventoPresidiata)
                     return "P";
-
                 else if (eventoAssegnata)
                     return "A";
-
                 else if (eventoSospesa)
                     return "S";
                 else
                     return "C";
-
             }
-            protected set { }
+            protected set
+            {
+            }
         }
     }
 }

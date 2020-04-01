@@ -117,7 +117,7 @@ namespace SO115App.FakePersistenceJSon.Utility
                     if (((Newtonsoft.Json.Linq.JObject)evento).ToString().Contains(Costanti.RiaperturaRichiesta))
                     {
                         var riapertura = (((Newtonsoft.Json.Linq.JObject)evento).ToObject<RiaperturaRichiesta>());
-                        new RiaperturaRichiesta(richiestaMap, riapertura.Istante, richiesta.CodSOCompetente);
+                        new RiaperturaRichiesta(riapertura.Motivazione, richiestaMap, riapertura.Istante, richiesta.CodSOCompetente);
                     }
                     if (((Newtonsoft.Json.Linq.JObject)evento).ToString().Contains(Costanti.AssegnataRichiesta))
                     {
@@ -132,7 +132,7 @@ namespace SO115App.FakePersistenceJSon.Utility
                     if (((Newtonsoft.Json.Linq.JObject)evento).ToString().Contains(Costanti.EventoRichiestaSospesa))
                     {
                         var presidiata = (((Newtonsoft.Json.Linq.JObject)evento).ToObject<RichiestaSospesa>());
-                        new RichiestaSospesa(richiestaMap, presidiata.Istante, richiesta.CodSOCompetente);
+                        new RichiestaSospesa(presidiata.Motivazione, richiestaMap, presidiata.Istante, richiesta.CodSOCompetente);
                     }
 
                     if (((Newtonsoft.Json.Linq.JObject)evento).ToString().Contains(Costanti.AssegnataPriorita))

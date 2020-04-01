@@ -54,7 +54,7 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi
         /// <summary>
         ///   Indica la motivazione della chiusura
         /// </summary>
-        public string Motivazione { get; }
+        public string Motivazione { get; set; }
 
         /// <summary>
         ///   Indica che questo evento chiude la richiesta

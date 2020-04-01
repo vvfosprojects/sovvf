@@ -30,15 +30,17 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi
         /// <summary>
         ///   Costruttore della classe. A seguito della chiamata, la richiesta risulta sospesa.
         /// </summary>
+        ///<param name="motivazione">E' la motivazione della sospensione</param>
         /// <param name="richiesta">La richiesta alla quale l'evento deve essere aggiunto</param>
         /// <param name="istante">E' l'istante in cui si verifica l'evento</param>
         /// <param name="codiceFonte">E' la fonte informativa dell'evento</param>
-        public RichiestaSospesa(
+        public RichiestaSospesa(string motivazione,
             RichiestaAssistenza richiesta,
             DateTime istante,
             string codiceFonte) : base(richiesta, istante, codiceFonte, "RichiestaSospesa")
         {
             richiesta.IstanteChiusura = null;
+            this.Motivazione = motivazione;
         }
 
         [JsonConstructor]
@@ -48,5 +50,10 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi
             string codiceFonte) : base(istante, codiceFonte, codice, "RichiestaSospesa")
         {
         }
+
+        /// <summary>
+        ///   Indica la motivazione della sospensione
+        /// </summary>
+        public string Motivazione { get; set; }
     }
 }

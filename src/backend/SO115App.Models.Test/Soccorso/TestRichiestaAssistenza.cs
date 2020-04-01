@@ -320,7 +320,7 @@ namespace Modello.Test.Classi.Soccorso
             var richiesta = new RichiestaAssistenza();
             var now = DateTime.Now;
             new ChiusuraRichiesta("test", richiesta, now, "fonte");
-            new RiaperturaRichiesta(richiesta, now.AddSeconds(10), "fonte");
+            new RiaperturaRichiesta("test", richiesta, now.AddSeconds(10), "fonte");
 
             var aperta = !richiesta.Chiusa;
 
@@ -333,7 +333,7 @@ namespace Modello.Test.Classi.Soccorso
             var richiesta = new RichiestaAssistenza();
             var now = DateTime.Now;
             new ChiusuraRichiesta("test", richiesta, now, "fonte");
-            new RiaperturaRichiesta(richiesta, now.AddSeconds(10), "fonte");
+            new RiaperturaRichiesta("test", richiesta, now.AddSeconds(10), "fonte");
             new ChiusuraRichiesta("test", richiesta, now.AddSeconds(20), "fonte");
 
             var chiusa = richiesta.Chiusa;
