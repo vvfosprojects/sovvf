@@ -152,7 +152,6 @@ export class ComposizionePartenzaState {
         const filtriDistaccamento = [] as DescrizioneTipologicaMezzo[];
         const filtriStato = [] as DescrizioneTipologicaMezzo[];
         const generiMezzi = [] as DescrizioneTipologicaMezzo[];
-        console.log('TEST', filtri);
         if (listaMezziSquadre.composizioneMezzi && listaMezziSquadre.composizioneSquadre) {
             if (filtri.distaccamenti) {
                 filtri.distaccamenti.forEach((distaccamento: DescrizioneTipologicaMezzo) => {

@@ -29,6 +29,8 @@ using System.Collections.Generic;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneSchedeNue.GetContatoreSchede;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.Tipologie;
+using SO115App.API.Models.Classi.Organigramma;
+using System.Linq;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
 {
@@ -90,15 +92,28 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
                 CodiciSede = query.CodiceSede
             };
 
+            var pinNodi = new List<PinNodo>();
+
+            foreach (var sede in query.CodiceSede)
+            {
+                pinNodi.Add(new PinNodo(sede, true));
+            }
+
             FiltroRicercaRichiesteAssistenza filtro = new FiltroRicercaRichiesteAssistenza
             {
                 SearchKey = "0",
-                idOperatore = query.idOperatore
+                idOperatore = query.idOperatore,
+                UnitaOperative = pinNodi.ToHashSet()
             };
 
             var sintesiRichiesteAssistenzaQuery = new SintesiRichiesteAssistenzaQuery()
             {
                 CodiciSede = query.CodiceSede,
+                Filtro = filtro
+            };
+
+            var listaFiltriQuery = new FiltriQuery()
+            {
                 Filtro = filtro
             };
 
@@ -111,8 +126,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
             {
                 CodiceSede = query.CodiceSede
             };
-
-            var listaFiltriQuery = new FiltriQuery();
 
             var getConteggioSchede = new GetConteggioSchedeQuery()
             {

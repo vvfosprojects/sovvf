@@ -22,7 +22,7 @@
       </ng-select>
     </div>
     <div class="col-3 py-1">
-      <ng-select [items]="filtri.distaccamenti" bindLabel="descrizione" [multiple]="true" [closeOnSelect]="false"
+      <ng-select [items]="filtri.distaccamenti" bindLabel="descDistaccamento" [multiple]="true" [closeOnSelect]="false"
         [hideSelected]="true" (add)="addFiltro($event, 'codiceDistaccamento')"
         (remove)="removeFiltro($event, 'codiceDistaccamento')" (clear)="clearFiltri('codiceDistaccamento')"
         placeholder="Distaccamento: Tutti">

@@ -67,6 +67,10 @@ namespace SO115App.CompositionRoot
             container.Register<Models.Servizi.Infrastruttura.SistemiEsterni.Competenze.IGetCompetenzeByCoordinateIntervento,
                                Persistence.MongoDB.GestioneSedi.GetcompetenzeByCoordinateIntervento>();
 
+            container.Register<Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti.IGetListaDistaccamentiByPinListaSedi,
+                               Persistence.MongoDB.GestioneSedi.GetDistaccamentiByCodiciSede>();
+
+
             #endregion Gestione Sedi
 
             #region GestioneChiamataInCorso
