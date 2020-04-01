@@ -25,8 +25,8 @@ export class SintesiRichiesteService {
         const obj = {
             'page': pagination.page,
             'pageSize': pagination.pageSize || 30,
-            'includiRichiesteAperte': !!filters.others.filter((f: VoceFiltro) => f.descrizione === 'Aperte')[0],
-            'includiRichiesteChiuse': !!filters.others.filter((f: VoceFiltro) => f.descrizione === 'Chiuse')[0]
+            'includiRichiesteAperte': !!(filters.others && filters.others.filter((f: VoceFiltro) => f.descrizione === 'Aperte')[0]),
+            'includiRichiesteChiuse': !!(filters.others && filters.others.filter((f: VoceFiltro) => f.descrizione === 'Chiuse')[0])
         };
         // todo: da implementare con i filtri delle tipologie
         // filters.others.forEach((f: VoceFiltro) => {
