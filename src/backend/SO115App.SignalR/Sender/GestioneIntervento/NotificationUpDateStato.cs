@@ -25,6 +25,7 @@ using SO115App.API.Models.Classi.Marker;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza;
 using SO115App.API.Models.Servizi.CQRS.Queries.Marker.SintesiRichiesteAssistenzaMarker;
+using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneIntervento;
 using System.Collections.Generic;
@@ -39,6 +40,7 @@ namespace SO115App.SignalR.Sender.GestioneIntervento
         private readonly IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> _boxRichiesteHandler;
         private readonly IQueryHandler<BoxMezziQuery, BoxMezziResult> _boxMezziHandler;
         private readonly IQueryHandler<BoxPersonaleQuery, BoxPersonaleResult> _boxPersonaleHandler;
+        private readonly IGetSintesiRichiestaAssistenzaByCodice _getSintesiById;
         private readonly IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> _sintesiRichiesteAssistenzaMarkerHandler;
         private readonly IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> _sintesiRichiesteAssistenzaHandler;
 
@@ -47,7 +49,8 @@ namespace SO115App.SignalR.Sender.GestioneIntervento
                                           IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> sintesiRichiesteAssistenzaMarkerHandler,
                                           IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> sintesiRichiesteAssistenzaHandler,
                                           IQueryHandler<BoxMezziQuery, BoxMezziResult> boxMezziHandler,
-                                          IQueryHandler<BoxPersonaleQuery, BoxPersonaleResult> boxPersonaleHandler)
+                                          IQueryHandler<BoxPersonaleQuery, BoxPersonaleResult> boxPersonaleHandler,
+                                          IGetSintesiRichiestaAssistenzaByCodice getSintesiById)
         {
             _notificationHubContext = notificationHubContext;
             _boxRichiesteHandler = boxRichiesteHandler;
@@ -55,6 +58,7 @@ namespace SO115App.SignalR.Sender.GestioneIntervento
             _sintesiRichiesteAssistenzaHandler = sintesiRichiesteAssistenzaHandler;
             _boxMezziHandler = boxMezziHandler;
             _boxPersonaleHandler = boxPersonaleHandler;
+            _getSintesiById = getSintesiById;
         }
 
         public async Task SendNotification(UpDateStatoRichiestaCommand richiesta)
@@ -93,6 +97,9 @@ namespace SO115App.SignalR.Sender.GestioneIntervento
 
             var listaSintesiMarker = (List<SintesiRichiestaMarker>)_sintesiRichiesteAssistenzaMarkerHandler.Handle(sintesiRichiesteAssistenzaMarkerQuery).SintesiRichiestaMarker;
             var ChamataUpd = listaSintesiMarker.LastOrDefault(sintesi => sintesi.Id == richiesta.IdRichiesta);
+            
+            var SintesiRichiesta = _getSintesiById.GetSintesi(ChamataUpd.Codice);
+            richiesta.Chiamata = SintesiRichiesta;
 
             await _notificationHubContext.Clients.Group(richiesta.CodiceSede).SendAsync("ModifyAndNotifySuccess", richiesta);
             await _notificationHubContext.Clients.Group(richiesta.CodiceSede).SendAsync("ChangeStateSuccess", notificaChangeState);
