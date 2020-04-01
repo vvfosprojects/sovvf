@@ -58,7 +58,7 @@ namespace SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRic
         /// <summary>
         ///   Indica se si vogliono includere le richieste chiuse
         /// </summary>
-        public bool IncludiRichiesteChiuse { get; set; }
+        public bool IncludiRichiesteChiuse { get; set; } = true;
 
         /// <summary>
         ///   Indica quali richieste si vogliono includere nel risultato.
