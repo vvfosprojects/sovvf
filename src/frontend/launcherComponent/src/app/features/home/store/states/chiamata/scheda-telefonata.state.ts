@@ -25,6 +25,7 @@ import { ChiamataService } from '../../../../../core/service/chiamata-service/ch
 import { GetListaRichieste, SetIdChiamataInviaPartenza, SetNeedRefresh } from '../../actions/richieste/richieste.actions';
 import { RichiestaSelezionataState } from '../richieste/richiesta-selezionata.state';
 import { PaginationState } from '../../../../../shared/store/states/pagination/pagination.state';
+import { RichiestaGestioneState } from '../richieste/richiesta-gestione.state';
 
 export interface SchedaTelefonataStateModel {
     coordinate: Coordinate;
@@ -123,8 +124,9 @@ export class SchedaTelefonataState {
 
     @Action(InsertChiamataSuccess)
     insertChiamataSuccess({ dispatch }: StateContext<SchedaTelefonataStateModel>, action: InsertChiamataSuccess) {
-        console.log('InsertChiamataSuccess', action.nuovaRichiesta.id);
-        if (!this.store.selectSnapshot(RichiestaSelezionataState.idRichiestaSelezionata)) {
+        const idRichiestaSelezionata = this.store.selectSnapshot(RichiestaSelezionataState.idRichiestaSelezionata);
+        const idRichiestaGestione = this.store.selectSnapshot(RichiestaGestioneState.idRichiestaGestione);
+        if (!idRichiestaSelezionata && !idRichiestaGestione) {
             const currentPage = this.store.selectSnapshot(PaginationState.page);
             dispatch(new GetListaRichieste({ page: currentPage }));
             dispatch(new SetNeedRefresh(false));

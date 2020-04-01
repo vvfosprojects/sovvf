@@ -23,7 +23,7 @@
                      [disabledComposizionePartenza]="permessiFeature.ComposizionePartenzaRichiesta | checkPermission"
                      [page]="page$ | async" [pageSize]="pageSize$ | async" [totalItems]="totalItems$ | async"
                      [loading]="loadingRichieste$ | async" [needRefresh]="needRefresh$ | async"
-                     [refreshCount]="refreshCount$ | async" (statoPartenza)="toggleComposizione()"
+                     (statoPartenza)="toggleComposizione()"
                      (composizionePartenza)="nuovaPartenza($event)" (fissaInAlto)="onFissaInAlto($event)"
                      (eventiRichiesta)="onVisualizzaEventiRichiesta($event)" (hoverIn)="onHoverIn($event)"
                      (hoverOut)="onHoverOut()" (selezione)="onSelezione($event)" (deselezione)="onDeselezione()"

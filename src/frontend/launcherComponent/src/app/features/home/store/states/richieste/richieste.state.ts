@@ -30,7 +30,7 @@ import { SetMarkerRichiestaSelezionato } from '../../actions/maps/marker.actions
 import { ComposizionePartenzaState } from '../composizione-partenza/composizione-partenza.state';
 import { ClearRichiesteEspanse } from '../../actions/richieste/richieste-espanse.actions';
 import { RichiesteEspanseState } from './richieste-espanse.state';
-import { calcolaActionSuggeritaMezzo, makeCopy } from '../../../../../shared/helper/function';
+import { calcolaActionSuggeritaMezzo } from '../../../../../shared/helper/function';
 import { RichiestaGestioneState } from './richiesta-gestione.state';
 import { RichiestaAttivitaUtenteState } from './richiesta-attivita-utente.state';
 import { ListaSquadrePartenzaComponent } from '../../../../../shared';
@@ -42,6 +42,7 @@ import { ResponseInterface } from '../../../../../shared/interface/response.inte
 import { ClearRichiestaSelezionata } from '../../actions/richieste/richiesta-selezionata.actions';
 import { ClearRichiestaGestione } from '../../actions/richieste/richiesta-gestione.actions';
 import { ClearRichiestaHover } from '../../actions/richieste/richiesta-hover.actions';
+import { PaginationState } from '../../../../../shared/store/states/pagination/pagination.state';
 
 export interface RichiesteStateModel {
     richieste: SintesiRichiesta[];
@@ -49,7 +50,6 @@ export interface RichiesteStateModel {
     chiamataInviaPartenza: string;
     loadingRichieste: boolean;
     needRefresh: boolean;
-    refreshCount: number;
 }
 
 export const RichiesteStateDefaults: RichiesteStateModel = {
@@ -57,8 +57,7 @@ export const RichiesteStateDefaults: RichiesteStateModel = {
     richiestaById: null,
     chiamataInviaPartenza: null,
     loadingRichieste: false,
-    needRefresh: false,
-    refreshCount: 0
+    needRefresh: false
 };
 
 @State<RichiesteStateModel>({
@@ -94,11 +93,6 @@ export class RichiesteState {
     @Selector()
     static needRefresh(state: RichiesteStateModel) {
         return state.needRefresh;
-    }
-
-    @Selector()
-    static refreshCount(state: RichiesteStateModel) {
-        return state.refreshCount;
     }
 
     @Selector()
@@ -170,37 +164,39 @@ export class RichiesteState {
     setNeedRefresh({ getState, patchState }: StateContext<RichiesteStateModel>, action: SetNeedRefresh) {
         const needRefreshValue = action.value;
         if (needRefreshValue === true) {
-            const state = getState();
-            let count = makeCopy(state.refreshCount);
-            count += 1;
             patchState({
-                needRefresh: needRefreshValue,
-                refreshCount: count
+                needRefresh: needRefreshValue
             });
         } else if (needRefreshValue === false) {
             patchState({
-                needRefresh: needRefreshValue,
-                refreshCount: 0
+                needRefresh: needRefreshValue
             });
         }
     }
 
     @Action(UpdateRichiesta)
-    updateRichiesta({ setState, dispatch }: StateContext<RichiesteStateModel>, { richiesta }: UpdateRichiesta) {
-        // Controllo se la richiesta aggiornata è anche la richiesta attualmente in composzione
-        const richiestaComposizione = this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione);
-        if (richiestaComposizione && richiestaComposizione.id === richiesta.id) {
-            // console.log('richiesta', richiesta);
-            dispatch(new UpdateRichiestaComposizione(richiesta));
-            // dispatch(new ClearBoxPartenze());
-            // dispatch(new AddBoxPartenza());
-        }
-        if (richiesta) {
+    updateRichiesta({ setState, dispatch }: StateContext<RichiesteStateModel>, action: UpdateRichiesta) {
+        if (action.richiesta) {
+            // Controllo se la richiesta aggiornata è anche la richiesta attualmente in composzione
+            const richiestaComposizione = this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione);
+            if (richiestaComposizione && richiestaComposizione.id === action.richiesta.id) {
+                dispatch(new UpdateRichiestaComposizione(action.richiesta));
+            }
             setState(
                 patch({
-                    richieste: updateItem<SintesiRichiesta>(r => r.id === richiesta.id, richiesta)
+                    richieste: updateItem<SintesiRichiesta>(r => r.id === action.richiesta.id, action.richiesta)
                 })
             );
+
+            const idRichiestaSelezionata = this.store.selectSnapshot(RichiestaSelezionataState.idRichiestaSelezionata);
+            const idRichiestaGestione = this.store.selectSnapshot(RichiestaGestioneState.idRichiestaGestione);
+            if (!idRichiestaSelezionata && !idRichiestaGestione) {
+                const currentPage = this.store.selectSnapshot(PaginationState.page);
+                dispatch(new GetListaRichieste({ page: currentPage }));
+                dispatch(new SetNeedRefresh(false));
+            } else {
+                dispatch(new SetNeedRefresh(true));
+            }
         }
     }
 

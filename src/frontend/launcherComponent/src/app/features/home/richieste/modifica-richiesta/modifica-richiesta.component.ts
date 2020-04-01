@@ -17,6 +17,7 @@ import { HelperSintesiRichiesta } from '../helper/_helper-sintesi-richiesta';
 import { TipoTerreno } from '../../../../shared/model/tipo-terreno';
 import { ToggleModifica } from '../../store/actions/view/view.actions';
 import { HomeState } from '../../store/states/home.state';
+import { LoadingState } from '../../../../shared/store/states/loading/loading.state';
 
 @Component({
     selector: 'app-modifica-richiesta',
@@ -25,6 +26,8 @@ import { HomeState } from '../../store/states/home.state';
     encapsulation: ViewEncapsulation.None
 })
 export class ModificaRichiestaComponent implements OnInit, OnDestroy {
+
+    @Select(LoadingState.loading) loading$: Observable<boolean>;
 
     options = GOOGLEPLACESOPTIONS;
 
@@ -47,7 +50,7 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
     coordinate: Coordinate;
 
     constructor(private formBuilder: FormBuilder,
-        private store: Store) {
+                private store: Store) {
         this.initForm();
         this.subscription.add(this.richiestaModifica$.subscribe((richiesta: SintesiRichiesta) => {
             if (richiesta) {
@@ -312,6 +315,7 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
             }
             return _return;
         }
+
         function checkTipologieModificate(arr1: Tipologia[], arr2: Tipologia[]) {
             let _return = false;
             let count = 0;

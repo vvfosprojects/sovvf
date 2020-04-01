@@ -24,7 +24,6 @@ export class ListaRichiesteComponent implements OnInit {
 
     @Input() loading: boolean;
     @Input() needRefresh: boolean;
-    @Input() refreshCount: number;
 
     // Paginazione
     @Input() page: number;

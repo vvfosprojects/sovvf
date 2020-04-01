@@ -33,6 +33,11 @@ export class RichiestaGestioneState {
         return state.richiestaGestione;
     }
 
+    @Selector()
+    static idRichiestaGestione(state: RichiestaGestioneStateModel) {
+        return state.richiestaGestione ? state.richiestaGestione.id : null;
+    }
+
     @Action(SetRichiestaGestione)
     setRichiestaGestione({ getState, patchState, dispatch }: StateContext<RichiestaGestioneStateModel>, action: SetRichiestaGestione) {
         const state = getState();
