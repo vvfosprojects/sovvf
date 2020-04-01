@@ -16,11 +16,11 @@
                 "CapoPartenza": false,
                 "Autista": true,
                 "Rimpiazzo": false,
-                "FunGuardia": true,
-                "TecnicoGuardia1": true,
+                "FunGuardia": false,
+                "TecnicoGuardia1": false,
                 "TecnicoGuardia2": false,
                 "CapoTurno": true,
-                "Telefono": "340123456789"
+                "Telefono": "344666444"
             },
             {
                 "CodiceFiscale": "BSLGLC74L18H501V",
@@ -34,10 +34,10 @@
                 "Autista": false,
                 "Rimpiazzo": false,
                 "FunGuardia": false,
-                "TecnicoGuardia1": false,
+                "TecnicoGuardia1": true,
                 "TecnicoGuardia2": false,
                 "CapoTurno": false,
-                "Telefono": "3404444455"
+                "Telefono": "3994444499"
             },
             {
                 "CodiceFiscale": "CLFRSO63R48F880Y",
@@ -50,11 +50,11 @@
                 "CapoPartenza": true,
                 "Autista": false,
                 "Rimpiazzo": false,
-                "FunGuardia": false,
+                "FunGuardia": true,
                 "TecnicoGuardia1": false,
                 "TecnicoGuardia2": false,
                 "CapoTurno": false,
-                "Telefono": "3404444455"
+                "Telefono": "3266611666"
             },
             {
                 "CodiceFiscale": "CRBGNN63S24C351M",

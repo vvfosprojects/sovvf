@@ -30,7 +30,7 @@ namespace SO115App.Models.Servizi.CustomMapper
                 var mapConfing = new MapperConfiguration(
                     cfg => cfg.CreateMap<RichiestaAssistenza, SintesiRichiesta>()
                         .ForMember(x => x.CodiceSchedaNue, y => y.MapFrom(z => z.CodNue))
-
+                        .ForMember(x => x.ZoneEmergenza, y => y.MapFrom(z => z.CodZoneEmergenza))
                         .ForMember(x => x.ListaEntiIntervenuti, y => y.MapFrom(z => z.CodEntiIntervenuti))
                         .ForMember(x => x.Tipologie, y => y.MapFrom(_ => _getTipologieByCodice.Get(richiesta.Tipologie)))
                         .ForMember(x => x.Operatore, y => y.MapFrom(_ => _getUtenteById.GetUtenteByCodice(richiesta.CodOperatore)))
