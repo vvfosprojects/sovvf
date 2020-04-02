@@ -86,7 +86,7 @@ namespace Persistence.MongoDB
             BsonClassMap.RegisterClassMap<AdeguatezzaMezzo>();
             BsonClassMap.RegisterClassMap<Localita>();
             BsonClassMap.RegisterClassMap<Coordinate>();
-            BsonClassMap.RegisterClassMap<Distaccamenti>();
+            BsonClassMap.RegisterClassMap<Distaccamento>();
             BsonClassMap.RegisterClassMap<GeneriMezzi>();
             BsonClassMap.RegisterClassMap<Stati>();
             BsonClassMap.RegisterClassMap<SchedaContatto>();
