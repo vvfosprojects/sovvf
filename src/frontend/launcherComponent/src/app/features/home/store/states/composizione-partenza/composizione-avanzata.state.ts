@@ -2,7 +2,8 @@ import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { CompPartenzaService } from 'src/app/core/service/comp-partenza-service/comp-partenza.service';
 import {
     ClearComposizioneAvanzata,
-    GetListeComposizioneAvanzata, SetListeComposizioneAvanzata,
+    GetListeComposizioneAvanzata,
+    SetListeComposizioneAvanzata,
     UnselectMezziAndSquadreComposizioneAvanzata
 } from '../../actions/composizione-partenza/composizione-avanzata.actions';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
@@ -10,25 +11,19 @@ import { ToastrType } from '../../../../../shared/enum/toastr';
 import { MezziComposizioneState } from './mezzi-composizione.state';
 import { SquadreComposizioneState } from './squadre-composizione.state';
 import { ComposizionePartenzaState } from './composizione-partenza.state';
-import {
-    ClearSelectedMezziComposizione,
-    SetListaMezziComposizione
-} from '../../actions/composizione-partenza/mezzi-composizione.actions';
-import {
-    ClearSelectedSquadreComposizione,
-    SetListaSquadreComposizione
-} from '../../actions/composizione-partenza/squadre-composizione.actions';
+import { ClearSelectedMezziComposizione, SetListaMezziComposizione } from '../../actions/composizione-partenza/mezzi-composizione.actions';
+import { ClearSelectedSquadreComposizione, SetListaSquadreComposizione } from '../../actions/composizione-partenza/squadre-composizione.actions';
 import { ListaComposizioneAvanzata } from '../../../composizione-partenza/interface/lista-composizione-avanzata-interface';
 import { BoxPartenzaState } from './box-partenza.state';
-import {
-    mezzoComposizioneBusy
-} from '../../../composizione-partenza/shared/functions/composizione-functions';
+import { mezzoComposizioneBusy } from '../../../composizione-partenza/shared/functions/composizione-functions';
 import { RemoveBoxPartenza } from '../../actions/composizione-partenza/box-partenza.actions';
 import { FiltriComposizione } from '../../../composizione-partenza/interface/filtri/filtri-composizione-interface';
 import { ViewComponentState } from '../view/view.state';
 import { Composizione } from '../../../../../shared/enum/composizione.enum';
 import { GetPreAccoppiati } from '../../actions/composizione-partenza/composizione-veloce.actions';
 import { SetListaFiltriAffini, StartListaComposizioneLoading, StopListaComposizioneLoading } from '../../actions/composizione-partenza/composizione-partenza.actions';
+import { MezzoComposizione } from '../../../composizione-partenza/interface/mezzo-composizione-interface';
+import { StatoMezzo } from '../../../../../shared/enum/stato-mezzo.enum';
 
 export interface ComposizioneAvanzataStateModel {
     listaMezziSquadre: ListaComposizioneAvanzata;
@@ -94,13 +89,18 @@ export class ComposizioneAvanzataState {
             if (listeCompAvanzata) {
                 const listaBoxPartenza = this.store.selectSnapshot(BoxPartenzaState.boxPartenzaList);
                 if (listeCompAvanzata.composizioneMezzi) {
+                    listeCompAvanzata.composizioneMezzi.map((mezzo: MezzoComposizione) => {
+                        if (mezzo.mezzo.stato === StatoMezzo.OperativoPreaccoppiato) {
+                            mezzo.mezzo.stato = StatoMezzo.InSede;
+                        }
+                    });
                     this.store.dispatch(new SetListaMezziComposizione(listeCompAvanzata.composizioneMezzi));
                 }
                 if (listeCompAvanzata.composizioneSquadre) {
-                    console.error('TEST', action.onlyMezziComposizione);
                     this.store.dispatch(new SetListaSquadreComposizione(listeCompAvanzata.composizioneSquadre));
                 }
                 this.store.dispatch(new SetListeComposizioneAvanzata(listeCompAvanzata));
+
                 if (listaBoxPartenza.length > 0) {
                     const listaBoxMezzi = listaBoxPartenza.filter(box => box.mezzoComposizione !== null);
                     if (listaBoxMezzi.length > 0) {
