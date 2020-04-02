@@ -81,3 +81,10 @@ export class HoverOutSquadraComposizione {
 export class ClearSquadraComposizione {
     static readonly type = '[SquadreComposizione] Clear Squadra Composizione';
 }
+
+export class FilterListaSquadreComposizione {
+    static readonly type = '[SquadreComposizione] Filter Lista Squadre Composizione';
+
+    constructor(public codDistaccamentoMezzo: string) {
+    }
+}

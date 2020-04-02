@@ -57,3 +57,7 @@ export function iconaStatiClass(stato: string): string {
     }
     return returnClass;
 }
+
+export function codDistaccamentoIsEqual(codDistaccamentoSquadra: string, codDistaccamentoMezzo: string) {
+    return codDistaccamentoSquadra === codDistaccamentoMezzo;
+}

@@ -51,7 +51,7 @@ export class ComposizioneAvanzataState {
     }
 
     constructor(private squadreService: CompPartenzaService,
-        private store: Store) {
+                private store: Store) {
     }
 
     @Action(GetListeComposizioneAvanzata)
@@ -97,6 +97,7 @@ export class ComposizioneAvanzataState {
                     this.store.dispatch(new SetListaMezziComposizione(listeCompAvanzata.composizioneMezzi));
                 }
                 if (listeCompAvanzata.composizioneSquadre) {
+                    console.error('TEST', action.onlyMezziComposizione);
                     this.store.dispatch(new SetListaSquadreComposizione(listeCompAvanzata.composizioneSquadre));
                 }
                 this.store.dispatch(new SetListeComposizioneAvanzata(listeCompAvanzata));

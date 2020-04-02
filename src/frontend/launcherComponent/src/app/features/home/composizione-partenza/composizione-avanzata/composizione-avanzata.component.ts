@@ -107,8 +107,8 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
     @Output() sganciamento = new EventEmitter<SganciamentoInterface>();
 
     constructor(private popoverConfig: NgbPopoverConfig,
-        private tooltipConfig: NgbTooltipConfig,
-        private store: Store) {
+                private tooltipConfig: NgbTooltipConfig,
+                private store: Store) {
 
         // Popover options
         this.popoverConfig.container = 'body';

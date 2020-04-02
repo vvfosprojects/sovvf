@@ -135,7 +135,7 @@ export class SignalRService {
             console.log('ChangeStateSuccess:', data);
             const composizioneMode = this.store.selectSnapshot(ViewComponentState.composizioneStatus);
             if (composizioneMode) {
-                this.store.dispatch(new GetListeComposizioneAvanzata());
+                // this.store.dispatch(new GetListeComposizioneAvanzata());
             }
             this.store.dispatch(new ShowToastr(ToastrType.Info, 'Modifica Stato Squadra/Mezzi Richiesta', null, 3));
         });
@@ -249,7 +249,7 @@ export class SignalRService {
         });
         this.hubNotification.on('NotifyGetComposizioneSquadre', (data: any) => {
             console.log('NotifyGetComposizioneSquadre', data);
-            this.store.dispatch(new SetListaSquadreComposizione(data));
+            // this.store.dispatch(new SetListaSquadreComposizione(data));
             this.store.dispatch(new ShowToastr(ToastrType.Info, 'Squadre Composizione ricevute da signalR', null, 5));
         });
         // TodoBackEnd: da finire con la gestione/inserimento Preaccoppiati

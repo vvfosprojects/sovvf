@@ -85,7 +85,7 @@ export class BoxPartenzaState {
                 } else if (boxPartenzaSelezionato) {
                     dispatch(new AddBoxPartenza());
                 }
-                dispatch(new GetListeComposizioneAvanzata());
+                // dispatch(new GetListeComposizioneAvanzata());
             }
         } else {
             // se il box partenza attualmente selezionato non è valido mostro un messaggio di errore
@@ -240,7 +240,7 @@ export class BoxPartenzaState {
                 }
             }
         });
-        dispatch(new GetListeComposizioneAvanzata());
+        // dispatch(new GetListeComposizioneAvanzata());
     }
 
     @Action(AddSquadraBoxPartenza)

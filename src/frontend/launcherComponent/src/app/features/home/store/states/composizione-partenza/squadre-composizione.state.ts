@@ -4,7 +4,7 @@ import {
     AddSquadraComposizione,
     ClearListaSquadreComposizione,
     ClearSelectedSquadreComposizione,
-    ClearSquadraComposizione,
+    ClearSquadraComposizione, FilterListaSquadreComposizione,
     HoverInSquadraComposizione,
     HoverOutSquadraComposizione,
     RemoveSquadraComposizione,
@@ -16,8 +16,11 @@ import {
     UpdateSquadraComposizione
 } from '../../actions/composizione-partenza/squadre-composizione.actions';
 import { append, patch, removeItem } from '@ngxs/store/operators';
+import { codDistaccamentoIsEqual } from '../../../composizione-partenza/shared/functions/composizione-functions';
+import { makeCopy } from '../../../../../shared/helper/function';
 
 export interface SquadreComposizioneStateStateModel {
+    allSquadreComposione: SquadraComposizione[];
     squadreComposizione: SquadraComposizione[];
     idSquadreComposizioneSelezionate: Array<string>;
     idSquadreSelezionate: Array<string>;
@@ -25,6 +28,7 @@ export interface SquadreComposizioneStateStateModel {
 }
 
 export const SquadreComposizioneStateDefaults: SquadreComposizioneStateStateModel = {
+    allSquadreComposione: null,
     squadreComposizione: null,
     idSquadreComposizioneSelezionate: [],
     idSquadreSelezionate: [],
@@ -43,6 +47,11 @@ export class SquadreComposizioneState {
     }
 
     @Selector()
+    static allSquadreComposione(state: SquadreComposizioneStateStateModel) {
+        return state.allSquadreComposione;
+    }
+
+    @Selector()
     static idSquadreSelezionate(state: SquadreComposizioneStateStateModel) {
         return state.idSquadreComposizioneSelezionate;
     }
@@ -58,14 +67,16 @@ export class SquadreComposizioneState {
     @Action(SetListaSquadreComposizione)
     setListaSquadreComposizione({ patchState }: StateContext<SquadreComposizioneStateStateModel>, action: SetListaSquadreComposizione) {
         patchState({
-            squadreComposizione: action.squadreComp
+            squadreComposizione: action.squadreComp,
+            allSquadreComposione: action.squadreComp
         });
     }
 
     @Action(ClearListaSquadreComposizione)
     clearListaSquadreComposizione({ patchState }: StateContext<SquadreComposizioneStateStateModel>) {
         patchState({
-            squadreComposizione: null
+            squadreComposizione: null,
+            allSquadreComposione: null
         });
     }
 
@@ -162,4 +173,14 @@ export class SquadreComposizioneState {
         patchState(SquadreComposizioneStateDefaults);
     }
 
+    @Action(FilterListaSquadreComposizione)
+    filterListaSquadreComposizione({ getState, setState, patchState, dispatch }: StateContext<SquadreComposizioneStateStateModel>, action: FilterListaSquadreComposizione) {
+        const state = getState();
+        let squadre = makeCopy(state.squadreComposizione);
+        squadre = squadre.filter((s: SquadraComposizione) => s.squadra.distaccamento.codice === action.codDistaccamentoMezzo);
+        console.log('squadre', squadre);
+        patchState({
+            squadreComposizione: squadre
+        });
+    }
 }
