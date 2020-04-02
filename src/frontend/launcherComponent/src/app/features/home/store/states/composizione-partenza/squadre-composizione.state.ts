@@ -177,8 +177,9 @@ export class SquadreComposizioneState {
     filterListaSquadreComposizione({ getState, setState, patchState, dispatch }: StateContext<SquadreComposizioneStateStateModel>, action: FilterListaSquadreComposizione) {
         const state = getState();
         let squadre = makeCopy(state.squadreComposizione);
-        squadre = squadre.filter((s: SquadraComposizione) => s.squadra.distaccamento.codice === action.codDistaccamentoMezzo);
-        console.log('squadre', squadre);
+        if (action.codDistaccamentoMezzo) {
+            squadre = squadre.filter((s: SquadraComposizione) => s.squadra.distaccamento.codice === action.codDistaccamentoMezzo);
+        }
         patchState({
             squadreComposizione: squadre
         });

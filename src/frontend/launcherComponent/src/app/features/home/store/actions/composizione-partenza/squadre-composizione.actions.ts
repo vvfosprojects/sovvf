@@ -85,6 +85,6 @@ export class ClearSquadraComposizione {
 export class FilterListaSquadreComposizione {
     static readonly type = '[SquadreComposizione] Filter Lista Squadre Composizione';
 
-    constructor(public codDistaccamentoMezzo: string) {
+    constructor(public codDistaccamentoMezzo?: string) {
     }
 }

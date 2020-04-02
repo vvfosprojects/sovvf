@@ -253,17 +253,17 @@ export class MezziComposizioneState {
         const boxPartenzaList = this.store.selectSnapshot(BoxPartenzaState.boxPartenzaList);
         const boxPartenzaSelezionato = boxPartenzaList.filter(x => x.id === idBoxPartenzaSelezionato)[0];
         if (boxPartenzaSelezionato && (!boxPartenzaSelezionato.squadraComposizione || boxPartenzaSelezionato.squadraComposizione.length <= 0)) {
-            // todo: logica per filtrare le squadre
-            console.log('Mezzo Selezionato', action.mezzoComp);
             const allSquadreComposione = this.store.selectSnapshot(SquadreComposizioneState.allSquadreComposione);
             dispatch(new SetListaSquadreComposizione(allSquadreComposione));
             dispatch(new FilterListaSquadreComposizione(action.mezzoComp.mezzo.distaccamento.codice));
-            // dispatch(new GetListeComposizioneAvanzata(null, null, true));
         }
     }
 
     @Action(UnselectMezzoComposizione)
-    unselectMezzoComposizione({ patchState }: StateContext<MezziComposizioneStateStateModel>) {
+    unselectMezzoComposizione({ patchState, dispatch }: StateContext<MezziComposizioneStateStateModel>, action: UnselectMezzoComposizione) {
+        const allSquadreComposione = this.store.selectSnapshot(SquadreComposizioneState.allSquadreComposione);
+        dispatch(new SetListaSquadreComposizione(allSquadreComposione));
+        dispatch(new FilterListaSquadreComposizione());
         patchState({
             idMezzoComposizioneSelezionato: null,
             idMezzoSelezionato: null

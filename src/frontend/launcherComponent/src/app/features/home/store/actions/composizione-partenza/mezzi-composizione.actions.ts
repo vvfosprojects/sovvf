@@ -64,6 +64,9 @@ export class SelectMezzoComposizione {
 
 export class UnselectMezzoComposizione {
     static readonly type = '[MezziComposizione] Unselect Mezzo Composizione';
+
+    constructor(public mezzoComp: MezzoComposizione) {
+    }
 }
 
 export class ClearSelectedMezziComposizione {

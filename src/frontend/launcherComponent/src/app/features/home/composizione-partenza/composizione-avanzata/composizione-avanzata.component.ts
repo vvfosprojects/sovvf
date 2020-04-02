@@ -224,13 +224,15 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
         // console.log('Mezzo selezionato', mezzoComposizione);
     }
 
-    mezzoDeselezionato() {
-        this.store.dispatch(new UnselectMezzoComposizione());
-        const boxPartenzaSelezionato = this.boxPartenzaList.filter(x => x.id === this.idBoxPartenzaSelezionato)[0];
+    mezzoDeselezionato(mezzoComposizione: MezzoComposizione) {
+        this.store.dispatch(new UnselectMezzoComposizione(mezzoComposizione));
+
+        // const boxPartenzaSelezionato = this.boxPartenzaList.filter(x => x.id === this.idBoxPartenzaSelezionato)[0];
         // TODO: testare
-        if (boxPartenzaSelezionato && (!boxPartenzaSelezionato.squadraComposizione || boxPartenzaSelezionato.squadraComposizione.length <= 0)) {
-            this.store.dispatch(new GetListeComposizioneAvanzata(null, null, true));
-        }
+        // if (boxPartenzaSelezionato && (!boxPartenzaSelezionato.squadraComposizione || boxPartenzaSelezionato.squadraComposizione.length <= 0)) {
+        //     this.store.dispatch(new GetListeComposizioneAvanzata(null, null, true));
+        // }
+
         this.store.dispatch([
             new RemoveMezzoBoxPartenzaSelezionato(),
         ]);

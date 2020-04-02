@@ -36,7 +36,7 @@
                                             [itemBloccato]="idMezziBloccati.indexOf(mC.id) !== -1"
                                             [richiesta]="richiesta"
                                             (selezionato)="mezzoSelezionato($event)"
-                                            (deselezionato)="mezzoDeselezionato()"
+                                            (deselezionato)="mezzoDeselezionato($event)"
                                             (hoverIn)="mezzoHoverIn($event)" (hoverOut)="mezzoHoverOut()"
                                             (mezzoCoordinate)="mezzoCoordinate($event)"
                                             (sganciamento)="sganciamento.emit($event)">
