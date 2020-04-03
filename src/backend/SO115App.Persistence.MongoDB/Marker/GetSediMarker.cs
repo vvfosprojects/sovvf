@@ -25,9 +25,8 @@ namespace SO115App.Persistence.MongoDB.Marker
             List<SedeMarker> listaSediMarker = new List<SedeMarker>();
 
             var filterAttive = Builders<ListaSedi>.Filter.Eq(x => x.attiva, 1);
-            var filterSpeciali = Builders<ListaSedi>.Filter.Eq(x => x.specialista, 0);
-
-            var listaSedi = _context.SediCollection.Find(filterAttive & filterSpeciali).ToList();
+           
+            var listaSedi = _context.SediCollection.Find(filterAttive).ToList();
 
             foreach(var sede in listaSedi) 
             {
