@@ -14,12 +14,12 @@ import { append, patch, removeItem } from '@ngxs/store/operators';
 import { makeID } from '../../../../../shared/helper/function';
 import produce from 'immer';
 import {
-    ClearSelectedMezziComposizione,
+    ClearSelectedMezziComposizione, FilterListaMezziComposizione,
     RequestBookMezzoComposizione, RequestRemoveBookMezzoComposizione, SelectMezzoComposizione, UnselectMezzoComposizione
 } from '../../actions/composizione-partenza/mezzi-composizione.actions';
 import { SquadraComposizione } from '../../../composizione-partenza/interface/squadra-composizione-interface';
 import {
-    ClearSelectedSquadreComposizione,
+    ClearSelectedSquadreComposizione, FilterListaSquadreComposizione,
     SelectSquadraComposizione,
     UnselectSquadraComposizione
 } from '../../actions/composizione-partenza/squadre-composizione.actions';
@@ -171,7 +171,10 @@ export class BoxPartenzaState {
 
         // ricarico la lista se necessario
         if (action.refreshLista) {
-            dispatch(new GetListeComposizioneAvanzata());
+            dispatch([
+                new FilterListaMezziComposizione(),
+                new FilterListaSquadreComposizione()
+            ]);
         }
     }
 
