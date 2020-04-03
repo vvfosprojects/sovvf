@@ -173,6 +173,6 @@ export class SganciamentoMezzoComposizione {
 export class FilterListaMezziComposizione {
     static readonly type = '[MezziComposizione] Filter Lista Mezzi Composizione';
 
-    constructor(public codDistaccamentoSquadra?: string) {
+    constructor(public codDistaccamento?: string) {
     }
 }

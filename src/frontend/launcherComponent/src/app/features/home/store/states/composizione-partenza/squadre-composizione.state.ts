@@ -16,13 +16,10 @@ import {
     UpdateSquadraComposizione
 } from '../../actions/composizione-partenza/squadre-composizione.actions';
 import { append, patch, removeItem } from '@ngxs/store/operators';
-import { calcolaTimeout, codDistaccamentoIsEqual } from '../../../composizione-partenza/shared/functions/composizione-functions';
 import { makeCopy } from '../../../../../shared/helper/function';
-import { AddBoxPartenza, AddMezzoBoxPartenzaSelezionato, AddSquadraBoxPartenza } from '../../actions/composizione-partenza/box-partenza.actions';
+import { AddSquadraBoxPartenza } from '../../actions/composizione-partenza/box-partenza.actions';
 import { BoxPartenzaState } from './box-partenza.state';
-import { FilterListaMezziComposizione, SelectMezzoComposizione, SetListaMezziComposizione } from '../../actions/composizione-partenza/mezzi-composizione.actions';
-import { SetMarkerMezzoSelezionato } from '../../actions/maps/marker.actions';
-import { MezziComposizioneState } from './mezzi-composizione.state';
+import { FilterListaMezziComposizione } from '../../actions/composizione-partenza/mezzi-composizione.actions';
 
 export interface SquadreComposizioneStateStateModel {
     allSquadreComposione: SquadraComposizione[];
@@ -102,16 +99,18 @@ export class SquadreComposizioneState {
     }
 
     @Action(SelectSquadraComposizione)
-    selectSquadraComposizione({ setState, dispatch }: StateContext<SquadreComposizioneStateStateModel>, action: SelectSquadraComposizione) {
+    selectSquadraComposizione({ getState, setState, dispatch }: StateContext<SquadreComposizioneStateStateModel>, action: SelectSquadraComposizione) {
         const boxPartenzaList = this.store.selectSnapshot(BoxPartenzaState.boxPartenzaList);
         // se non c'è già un mezzo selezionato (nell'attuale "box partenza"), filtro la lista dei mezzi
         const idBoxPartenzaSelezionato = this.store.selectSnapshot(BoxPartenzaState.idBoxPartenzaSelezionato);
         const boxPartenzaSelezionato = boxPartenzaList.filter(x => x.id === idBoxPartenzaSelezionato)[0];
         if (boxPartenzaSelezionato && !boxPartenzaSelezionato.mezzoComposizione) {
             dispatch(new FilterListaMezziComposizione(action.squadraComp.squadra.distaccamento.codice));
-            dispatch(new FilterListaSquadreComposizione(action.squadraComp.squadra.distaccamento.codice));
+            const idRichiesteSelezionate = getState().idSquadreSelezionate;
+            if (idRichiesteSelezionate && idRichiesteSelezionate.length <= 1) {
+                dispatch(new FilterListaSquadreComposizione(action.squadraComp.squadra.distaccamento.codice));
+            }
         }
-
         // Aggiorno lo store
         setState(
             patch({
@@ -120,7 +119,6 @@ export class SquadreComposizioneState {
             })
         );
         this.store.dispatch(new AddSquadraBoxPartenza(action.squadraComp));
-        // console.log('Squadra Composizione selezionata', action.idSquadra);
     }
 
     @Action(UnselectSquadraComposizione)
@@ -128,11 +126,15 @@ export class SquadreComposizioneState {
         const state = getState();
         const idSquadreSelezionate = state.idSquadreSelezionate;
         if (idSquadreSelezionate && idSquadreSelezionate.length <= 1) {
-            dispatch([
-                new SetListaMezziComposizione(),
-                new FilterListaMezziComposizione(),
-                new FilterListaSquadreComposizione()
-            ]);
+            const boxPartenzaList = this.store.selectSnapshot(BoxPartenzaState.boxPartenzaList);
+            const idBoxPartenzaSelezionato = this.store.selectSnapshot(BoxPartenzaState.idBoxPartenzaSelezionato);
+            const boxPartenzaSelezionato = boxPartenzaList.filter(b => b.id === idBoxPartenzaSelezionato)[0];
+            if (!boxPartenzaSelezionato.mezzoComposizione) {
+                dispatch([
+                    new FilterListaSquadreComposizione(),
+                    new FilterListaMezziComposizione()
+                ]);
+            }
         }
         setState(
             patch({
@@ -149,7 +151,6 @@ export class SquadreComposizioneState {
                 idSquadreSelezionate: append([action.idSquadra])
             })
         );
-        // console.log('Squadra selezionata', action.idSquadra);
     }
 
     @Action(UnselectSquadra)
@@ -159,7 +160,6 @@ export class SquadreComposizioneState {
                 idSquadreSelezionate: removeItem(id => id === action.idSquadra)
             })
         );
-        // console.log('Squadra deselezionata', action.idSquadra);
     }
 
     @Action(ClearSelectedSquadreComposizione)
@@ -178,7 +178,6 @@ export class SquadreComposizioneState {
             ...state,
             idSquadraHover: action.idSquadraComp
         });
-        // console.log('Hover in Squadra Composizione', action.idMezzo);
     }
 
     @Action(HoverOutSquadraComposizione)
@@ -188,7 +187,6 @@ export class SquadreComposizioneState {
             ...state,
             idSquadraHover: null
         });
-        // console.log('Hover out Squadra Composizione', action.mezzoComp);
     }
 
     @Action(ClearSquadraComposizione)
@@ -199,12 +197,15 @@ export class SquadreComposizioneState {
     @Action(FilterListaSquadreComposizione)
     filterListaSquadreComposizione({ getState, setState, patchState, dispatch }: StateContext<SquadreComposizioneStateStateModel>, action: FilterListaSquadreComposizione) {
         const state = getState();
-        let squadre = makeCopy(state.allSquadreComposione);
-        if (action.codDistaccamentoMezzo) {
-            squadre = squadre.filter((sC: SquadraComposizione) => sC.squadra.distaccamento.codice === action.codDistaccamentoMezzo);
+        const idSquadreSelezionate = state.idSquadreSelezionate;
+        if (idSquadreSelezionate && idSquadreSelezionate.length <= 1) {
+            let squadre = makeCopy(state.allSquadreComposione);
+            if (action.codDistaccamento) {
+                squadre = squadre.filter((sC: SquadraComposizione) => sC.squadra.distaccamento.codice === action.codDistaccamento);
+            }
+            patchState({
+                squadreComposizione: squadre
+            });
         }
-        patchState({
-            squadreComposizione: squadre
-        });
     }
 }
