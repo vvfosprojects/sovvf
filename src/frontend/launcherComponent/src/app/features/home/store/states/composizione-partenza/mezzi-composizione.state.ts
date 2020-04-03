@@ -22,7 +22,7 @@ import {
     UnlockMezzoComposizione,
     UnselectMezzoComposizione,
     UpdateMezzoComposizione,
-    ReducerSelectMezzoComposizione, SelectMezzoComposizioneFromMappa, SganciamentoMezzoComposizione, UpdateMezzoComposizioneScadenzaByCodiceMezzo
+    ReducerSelectMezzoComposizione, SelectMezzoComposizioneFromMappa, SganciamentoMezzoComposizione, UpdateMezzoComposizioneScadenzaByCodiceMezzo, FilterListaMezziComposizione
 } from '../../actions/composizione-partenza/mezzi-composizione.actions';
 import { insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
@@ -36,7 +36,7 @@ import {
 } from '../../actions/composizione-partenza/box-partenza.actions';
 import { BoxPartenzaState } from './box-partenza.state';
 import { GetListeComposizioneAvanzata } from '../../actions/composizione-partenza/composizione-avanzata.actions';
-import { mezzoComposizioneBusy } from '../../../composizione-partenza/shared/functions/composizione-functions';
+import { calcolaTimeout, mezzoComposizioneBusy } from '../../../composizione-partenza/shared/functions/composizione-functions';
 import {
     ClearMarkerMezzoHover,
     SetMarkerMezzoHover,
@@ -53,10 +53,12 @@ import { ComposizionePartenzaState } from './composizione-partenza.state';
 import { TurnoState } from 'src/app/features/navbar/store/states/turno/turno.state';
 import { ConfirmPartenze } from '../../actions/composizione-partenza/composizione-partenza.actions';
 import { makeCopy } from '../../../../../shared/helper/function';
-import { SquadreComposizioneState } from './squadre-composizione.state';
+import { SquadreComposizioneState, SquadreComposizioneStateStateModel } from './squadre-composizione.state';
 import { FilterListaSquadreComposizione, SetListaSquadreComposizione } from '../../actions/composizione-partenza/squadre-composizione.actions';
+import { SquadraComposizione } from '../../../composizione-partenza/interface/squadra-composizione-interface';
 
 export interface MezziComposizioneStateStateModel {
+    allMezziComposizione: MezzoComposizione[];
     mezziComposizione: MezzoComposizione[];
     idMezzoComposizioneSelezionato: string;
     idMezzoComposizioneHover: string;
@@ -67,6 +69,7 @@ export interface MezziComposizioneStateStateModel {
 }
 
 export const MezziComposizioneStateDefaults: MezziComposizioneStateStateModel = {
+    allMezziComposizione: null,
     mezziComposizione: null,
     idMezzoComposizioneSelezionato: null,
     idMezzoComposizioneHover: null,
@@ -85,6 +88,11 @@ export class MezziComposizioneState {
     @Selector()
     static mezziComposizione(state: MezziComposizioneStateStateModel) {
         return state.mezziComposizione;
+    }
+
+    @Selector()
+    static allMezziComposizione(state: MezziComposizioneStateStateModel) {
+        return state.allMezziComposizione;
     }
 
     @Selector()
@@ -125,10 +133,12 @@ export class MezziComposizioneState {
     @Action(SetListaMezziComposizione)
     setListaMezziComposizione({ getState, patchState, dispatch }: StateContext<MezziComposizioneStateStateModel>, action: SetListaMezziComposizione) {
         const state = getState();
+        const allMezziComposione = action.mezziComp ? action.mezziComp : this.store.selectSnapshot(MezziComposizioneState.allMezziComposizione);
         patchState({
-            mezziComposizione: action.mezziComp
+            mezziComposizione: allMezziComposione,
+            allMezziComposizione: allMezziComposione
         });
-        action.mezziComp.forEach((mezzoComp: MezzoComposizione) => {
+        allMezziComposione.forEach((mezzoComp: MezzoComposizione) => {
             if (mezzoComp.istanteScadenzaSelezione) {
                 dispatch(new AddBookMezzoComposizione(mezzoComp.mezzo.codice));
             } else if (state.idMezziPrenotati.indexOf(mezzoComp.mezzo.codice) >= 0 && !mezzoComp.istanteScadenzaSelezione) {
@@ -140,7 +150,8 @@ export class MezziComposizioneState {
     @Action(ClearListaMezziComposizione)
     clearListaMezziComposizione({ patchState }: StateContext<MezziComposizioneStateStateModel>) {
         patchState({
-            mezziComposizione: null
+            mezziComposizione: null,
+            allMezziComposizione: null
         });
     }
 
@@ -209,16 +220,6 @@ export class MezziComposizioneState {
         } else {
             dispatch(new ShowToastr(ToastrType.Warning, 'Impossibile assegnare il mezzo', 'Il mezzo è ' + action.mezzoComp.mezzo.stato + ' ed è impegnato in un\'altra richiesta'));
         }
-
-        function calcolaTimeout(addBoxPartenza: boolean) {
-            let _timeout = 0;
-            if (!addBoxPartenza) {
-                _timeout = 0;
-            } else {
-                _timeout = 10;
-            }
-            return _timeout;
-        }
     }
 
     @Action(SelectMezzoComposizioneFromMappa)
@@ -260,9 +261,8 @@ export class MezziComposizioneState {
     }
 
     @Action(UnselectMezzoComposizione)
-    unselectMezzoComposizione({ patchState, dispatch }: StateContext<MezziComposizioneStateStateModel>, action: UnselectMezzoComposizione) {
-        const allSquadreComposione = this.store.selectSnapshot(SquadreComposizioneState.allSquadreComposione);
-        dispatch(new SetListaSquadreComposizione(allSquadreComposione));
+    unselectMezzoComposizione({ patchState, dispatch }: StateContext<MezziComposizioneStateStateModel>) {
+        dispatch(new SetListaSquadreComposizione());
         dispatch(new FilterListaSquadreComposizione());
         patchState({
             idMezzoComposizioneSelezionato: null,
@@ -464,4 +464,15 @@ export class MezziComposizioneState {
         }
     }
 
+    @Action(FilterListaMezziComposizione)
+    filterListaMezziComposizione({ getState, setState, patchState, dispatch }: StateContext<MezziComposizioneStateStateModel>, action: FilterListaMezziComposizione) {
+        const state = getState();
+        let mezzi = makeCopy(state.allMezziComposizione);
+        if (action.codDistaccamentoSquadra) {
+            mezzi = mezzi.filter((mC: MezzoComposizione) => mC.mezzo.distaccamento.codice === action.codDistaccamentoSquadra);
+        }
+        patchState({
+            mezziComposizione: mezzi
+        });
+    }
 }

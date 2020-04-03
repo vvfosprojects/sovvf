@@ -3,7 +3,7 @@ import { SquadraComposizione } from '../../../composizione-partenza/interface/sq
 export class SetListaSquadreComposizione {
     static readonly type = '[SquadreComposizione] Set Lista Squadre Composizione';
 
-    constructor(public squadreComp: SquadraComposizione[]) {
+    constructor(public squadreComp?: SquadraComposizione[]) {
     }
 }
 

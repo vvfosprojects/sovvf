@@ -61,3 +61,14 @@ export function iconaStatiClass(stato: string): string {
 export function codDistaccamentoIsEqual(codDistaccamentoSquadra: string, codDistaccamentoMezzo: string) {
     return codDistaccamentoSquadra === codDistaccamentoMezzo;
 }
+
+export function calcolaTimeout(addBoxPartenza: boolean) {
+    let _timeout = 0;
+    if (!addBoxPartenza) {
+        _timeout = 0;
+    } else {
+        _timeout = 10;
+    }
+    return _timeout;
+}
+

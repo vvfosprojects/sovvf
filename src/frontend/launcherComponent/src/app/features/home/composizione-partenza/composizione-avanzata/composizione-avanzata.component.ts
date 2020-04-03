@@ -16,7 +16,7 @@ import {
     HoverOutMezzoComposizione,
     RequestRemoveBookMezzoComposizione,
     UnselectMezzoComposizione,
-    ReducerSelectMezzoComposizione
+    ReducerSelectMezzoComposizione, FilterListaMezziComposizione
 } from '../../store/actions/composizione-partenza/mezzi-composizione.actions';
 import { BoxPartenzaState } from '../../store/states/composizione-partenza/box-partenza.state';
 import { BoxPartenza } from '../interface/box-partenza-interface';
@@ -225,7 +225,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
     }
 
     mezzoDeselezionato(mezzoComposizione: MezzoComposizione) {
-        this.store.dispatch(new UnselectMezzoComposizione(mezzoComposizione));
+        this.store.dispatch(new UnselectMezzoComposizione());
 
         // const boxPartenzaSelezionato = this.boxPartenzaList.filter(x => x.id === this.idBoxPartenzaSelezionato)[0];
         // TODO: testare
@@ -233,11 +233,8 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
         //     this.store.dispatch(new GetListeComposizioneAvanzata(null, null, true));
         // }
 
-        this.store.dispatch([
-            new RemoveMezzoBoxPartenzaSelezionato(),
-        ]);
+        this.store.dispatch(new RemoveMezzoBoxPartenzaSelezionato());
         this.onClearDirection();
-        console.log('Mezzo deselezionato');
     }
 
     mezzoHoverIn(mezzoComposizione: MezzoComposizione) {
@@ -258,25 +255,20 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
                 this.store.dispatch(new AddBoxPartenza());
             }
             this.store.dispatch(new SelectSquadraComposizione(squadraComposizione));
-            const boxPartenzaSelezionato = this.boxPartenzaList.filter(x => x.id === this.idBoxPartenzaSelezionato)[0];
-            // TODO: testare
-            if (boxPartenzaSelezionato && !boxPartenzaSelezionato.mezzoComposizione) {
-                this.store.dispatch(new GetListeComposizioneAvanzata(null, true, null));
-            }
-            this.store.dispatch(new AddSquadraBoxPartenza(squadraComposizione));
             // console.log('Squadra selezionata', squadraComposizione);
         }
     }
 
     squadraDeselezionata(squadraComposizione: SquadraComposizione) {
         this.store.dispatch(new UnselectSquadraComposizione(squadraComposizione));
-        const boxPartenzaSelezionato = this.boxPartenzaList.filter(x => x.id === this.idBoxPartenzaSelezionato)[0];
+
+        // const boxPartenzaSelezionato = this.boxPartenzaList.filter(x => x.id === this.idBoxPartenzaSelezionato)[0];
         // TODO: testare
-        if (boxPartenzaSelezionato && !boxPartenzaSelezionato.mezzoComposizione) {
-            this.store.dispatch(new GetListeComposizioneAvanzata(null, true, null));
-        }
+        // if (boxPartenzaSelezionato && !boxPartenzaSelezionato.mezzoComposizione) {
+        //    this.store.dispatch(new GetListeComposizioneAvanzata(null, true, null));
+        // }
+
         this.store.dispatch(new RemoveSquadraBoxPartenza(squadraComposizione.id));
-        // console.log('Squadra deselezionata', squadraComposizione);
     }
 
     squadraHoverIn(squadraComposizione: SquadraComposizione) {

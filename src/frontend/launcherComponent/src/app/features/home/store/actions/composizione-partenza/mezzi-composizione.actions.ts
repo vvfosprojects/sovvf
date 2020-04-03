@@ -5,7 +5,7 @@ import { SganciamentoInterface } from 'src/app/shared/interface/sganciamento.int
 export class SetListaMezziComposizione {
     static readonly type = '[MezziComposizione] Set Lista Mezzi Composizione';
 
-    constructor(public mezziComp: MezzoComposizione[]) {
+    constructor(public mezziComp?: MezzoComposizione[]) {
     }
 }
 
@@ -64,9 +64,6 @@ export class SelectMezzoComposizione {
 
 export class UnselectMezzoComposizione {
     static readonly type = '[MezziComposizione] Unselect Mezzo Composizione';
-
-    constructor(public mezzoComp: MezzoComposizione) {
-    }
 }
 
 export class ClearSelectedMezziComposizione {
@@ -170,5 +167,12 @@ export class SganciamentoMezzoComposizione {
     static readonly type = '[MezziComposizione] Sganciamento Mezzo Composizione';
 
     constructor(public sganciamentoObj: SganciamentoInterface) {
+    }
+}
+
+export class FilterListaMezziComposizione {
+    static readonly type = '[MezziComposizione] Filter Lista Mezzi Composizione';
+
+    constructor(public codDistaccamentoSquadra?: string) {
     }
 }
