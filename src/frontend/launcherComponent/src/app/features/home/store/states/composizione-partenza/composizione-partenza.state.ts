@@ -1,13 +1,22 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { insertItem, patch, removeItem } from '@ngxs/store/operators';
 import {
-    AddFiltroSelezionatoComposizione, ClearPartenza, ConfirmPartenze,
+    AddFiltroSelezionatoComposizione,
+    ClearPartenza,
+    ConfirmPartenze,
     GetFiltriComposizione,
     RemoveFiltriSelezionatiComposizione,
-    RemoveFiltroSelezionatoComposizione, RichiestaComposizione, SetComposizioneMode,
-    SetFiltriComposizione, TerminaComposizione,
+    RemoveFiltroSelezionatoComposizione,
+    RichiestaComposizione,
+    SetComposizioneMode,
+    SetFiltriComposizione,
+    TerminaComposizione,
     ToggleComposizioneMode,
-    UpdateListe, UpdateRichiestaComposizione, SetListaFiltriAffini, StartListaComposizioneLoading, StopListaComposizioneLoading
+    UpdateListeComposizione,
+    UpdateRichiestaComposizione,
+    SetListaFiltriAffini,
+    StartListaComposizioneLoading,
+    StopListaComposizioneLoading
 } from '../../actions/composizione-partenza/composizione-partenza.actions';
 import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.model';
 import { ComposizioneMarker } from '../../../maps/maps-model/composizione-marker.model';
@@ -135,7 +144,6 @@ export class ComposizionePartenzaState {
             CodiceTipoMezzo: state.codiceTipoMezzo,
             CodiceStatoMezzo: state.codiceStatoMezzo
         };
-        // console.log('objFiltriSelezionati', objFiltriSelezionati);
         dispatch(new GetListeComposizioneAvanzata(objFiltriSelezionati));
         if (composizioneMode === Composizione.Veloce) {
             dispatch([
@@ -219,15 +227,15 @@ export class ComposizionePartenzaState {
         // console.log('generiMezzi', generiMezzi);
     }
 
-    @Action(UpdateListe)
-    updateListe({ dispatch }: StateContext<ComposizionePartenzaStateModel>, action: UpdateListe) {
+    @Action(UpdateListeComposizione)
+    updateListe({ dispatch }: StateContext<ComposizionePartenzaStateModel>, action: UpdateListeComposizione) {
+        console.warn('UpdateListeComposizione');
         dispatch(new GetListeComposizioneAvanzata(action.filtri));
     }
 
     @Action(AddFiltroSelezionatoComposizione)
     addFiltroSelezionatoComposizione(ctx: StateContext<ComposizionePartenzaStateModel>, action: AddFiltroSelezionatoComposizione) {
-        console.log('Filtro selezionato', action.id);
-        // const state = ctx.getState();
+        console.log('Filtro selezionato => #ID = ' + action.id + ' - TIPO = ' + action.tipo);
         switch (action.tipo) {
             case 'codiceDistaccamento':
                 ctx.setState(
@@ -255,7 +263,7 @@ export class ComposizionePartenzaState {
 
     @Action(RemoveFiltroSelezionatoComposizione)
     removeFiltroSelezionatoComposizione(ctx: StateContext<ComposizionePartenzaStateModel>, action: RemoveFiltroSelezionatoComposizione) {
-        console.log('Filtro deselezionato', action.id);
+        console.log('Filtro deselezionato => #ID = ' + action.id + ' - TIPO = ' + action.tipo);
         switch (action.tipo) {
             case 'codiceDistaccamento':
                 ctx.setState(
@@ -283,7 +291,6 @@ export class ComposizionePartenzaState {
 
     @Action(RemoveFiltriSelezionatiComposizione)
     removeFiltriSelezionatiComposizione(ctx: StateContext<ComposizionePartenzaStateModel>, action: RemoveFiltriSelezionatiComposizione) {
-        console.log('Filtri deselezionati', action.tipo);
         switch (action.tipo) {
             case 'codiceDistaccamento':
                 ctx.setState(

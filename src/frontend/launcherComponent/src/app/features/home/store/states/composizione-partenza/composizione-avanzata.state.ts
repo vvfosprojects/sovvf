@@ -1,21 +1,21 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { CompPartenzaService } from 'src/app/core/service/comp-partenza-service/comp-partenza.service';
 import {
-    ClearComposizioneAvanzata,
+    ClearComposizioneAvanzata, FilterListeComposizioneAvanzata,
     GetListeComposizioneAvanzata,
     SetListeComposizioneAvanzata,
     UnselectMezziAndSquadreComposizioneAvanzata
 } from '../../actions/composizione-partenza/composizione-avanzata.actions';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from '../../../../../shared/enum/toastr';
-import { MezziComposizioneState } from './mezzi-composizione.state';
+import { MezziComposizioneState, MezziComposizioneStateStateModel } from './mezzi-composizione.state';
 import { SquadreComposizioneState } from './squadre-composizione.state';
-import { ComposizionePartenzaState } from './composizione-partenza.state';
+import { ComposizionePartenzaState, ComposizionePartenzaStateModel } from './composizione-partenza.state';
 import { ClearSelectedMezziComposizione, SetListaMezziComposizione } from '../../actions/composizione-partenza/mezzi-composizione.actions';
 import { ClearSelectedSquadreComposizione, SetListaSquadreComposizione } from '../../actions/composizione-partenza/squadre-composizione.actions';
 import { ListaComposizioneAvanzata } from '../../../composizione-partenza/interface/lista-composizione-avanzata-interface';
 import { BoxPartenzaState } from './box-partenza.state';
-import { mezzoComposizioneBusy } from '../../../composizione-partenza/shared/functions/composizione-functions';
+import { codDistaccamentoIsEqual, mezzoComposizioneBusy } from '../../../composizione-partenza/shared/functions/composizione-functions';
 import { RemoveBoxPartenza } from '../../actions/composizione-partenza/box-partenza.actions';
 import { FiltriComposizione } from '../../../composizione-partenza/interface/filtri/filtri-composizione-interface';
 import { ViewComponentState } from '../view/view.state';
@@ -24,6 +24,7 @@ import { GetPreAccoppiati } from '../../actions/composizione-partenza/composizio
 import { SetListaFiltriAffini, StartListaComposizioneLoading, StopListaComposizioneLoading } from '../../actions/composizione-partenza/composizione-partenza.actions';
 import { MezzoComposizione } from '../../../composizione-partenza/interface/mezzo-composizione-interface';
 import { StatoMezzo } from '../../../../../shared/enum/stato-mezzo.enum';
+import produce from 'immer';
 
 export interface ComposizioneAvanzataStateModel {
     listaMezziSquadre: ListaComposizioneAvanzata;
@@ -50,40 +51,10 @@ export class ComposizioneAvanzataState {
     }
 
     @Action(GetListeComposizioneAvanzata)
-    getListeComposizioneAvanzata({ getState, dispatch }: StateContext<ComposizioneAvanzataStateModel>, action: GetListeComposizioneAvanzata) {
+    getListeComposizioneAvanzata({ dispatch }: StateContext<ComposizioneAvanzataStateModel>) {
         this.store.dispatch(new StartListaComposizioneLoading());
         const filtri = {} as FiltriComposizione;
-        if (action.filtri) {
-            filtri.CodiceDistaccamento = action.filtri.CodiceDistaccamento.length > 0 ? action.filtri.CodiceDistaccamento : [''];
-            filtri.CodiceStatoMezzo = action.filtri.CodiceStatoMezzo.length > 0 ? action.filtri.CodiceStatoMezzo : [''];
-            filtri.CodiceTipoMezzo = action.filtri.CodiceTipoMezzo.length > 0 ? action.filtri.CodiceTipoMezzo : [''];
-        } else {
-            filtri.CodiceDistaccamento = this.store.selectSnapshot(ComposizionePartenzaState.filtriSelezionati).CodiceDistaccamento.length > 0 ?
-                this.store.selectSnapshot(ComposizionePartenzaState.filtriSelezionati).CodiceTipoMezzo : [''];
-            filtri.CodiceStatoMezzo = this.store.selectSnapshot(ComposizionePartenzaState.filtriSelezionati).CodiceStatoMezzo.length > 0 ?
-                this.store.selectSnapshot(ComposizionePartenzaState.filtriSelezionati).CodiceTipoMezzo : [''];
-            filtri.CodiceTipoMezzo = this.store.selectSnapshot(ComposizionePartenzaState.filtriSelezionati).CodiceTipoMezzo.length > 0 ?
-                this.store.selectSnapshot(ComposizionePartenzaState.filtriSelezionati).CodiceTipoMezzo : [''];
-        }
         filtri.idRichiesta = this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione) ? this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione).id : '';
-
-        // imposto il codice del mezzo selezionato se presente
-        const codiceMezzo = this.store.selectSnapshot(MezziComposizioneState.idMezzoComposizioneSelezionato);
-
-        if (action.onlyMezziComposizione && codiceMezzo && codiceMezzo.length > 0) {
-            filtri.CodiceMezzo = codiceMezzo;
-        } else {
-            filtri.CodiceMezzo = '';
-        }
-
-        // imposto il codice delle squadre selezionate se presenti
-        const codiceSquadre = this.store.selectSnapshot(SquadreComposizioneState.idSquadreSelezionate);
-
-        if (action.onlySquadreComposizione && codiceSquadre && codiceSquadre.length > 0) {
-            filtri.CodiceSquadra = codiceSquadre;
-        } else {
-            filtri.CodiceSquadra = [''];
-        }
 
         this.squadreService.getListeComposizioneAvanzata(filtri).subscribe((listeCompAvanzata: ListaComposizioneAvanzata) => {
             if (listeCompAvanzata) {
@@ -121,8 +92,6 @@ export class ComposizioneAvanzataState {
                 }
                 this.store.dispatch(new StopListaComposizioneLoading());
             }
-            console.log('Filtri Composizione Avanzata', filtri);
-            console.log('listeCompAvanzata', listeCompAvanzata);
         }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5)));
     }
 
@@ -138,12 +107,25 @@ export class ComposizioneAvanzataState {
         dispatch(new SetListaFiltriAffini());
     }
 
+    @Action(FilterListeComposizioneAvanzata)
+    filterListeComposizioneAvanzata({ getState, setState, patchState }: StateContext<ComposizionePartenzaStateModel>, action: FilterListeComposizioneAvanzata) {
+        /* const state = getState();
+        setState(
+            produce(state, (draft: MezziComposizioneStateStateModel) => {
+                if (action.filtri.CodiceDistaccamento) {
+                    action.filtri.CodiceDistaccamento.forEach((codDistaccamento: string) => {
+                        draft.mezziComposizione.filter(m => codDistaccamentoIsEqual(m.mezzo.distaccamento.codice, codDistaccamento));
+                    });
+                }
+            }),
+        ); */
+    }
+
     @Action(UnselectMezziAndSquadreComposizioneAvanzata)
     unselectMezziAndSquadreComposizioneAvanzata({ dispatch }: StateContext<ComposizioneAvanzataStateModel>) {
         dispatch(new ClearSelectedMezziComposizione());
         dispatch(new ClearSelectedSquadreComposizione());
     }
-
 
     @Action(ClearComposizioneAvanzata)
     clearComposizioneAvanzata({ patchState }: StateContext<ComposizioneAvanzataStateModel>) {

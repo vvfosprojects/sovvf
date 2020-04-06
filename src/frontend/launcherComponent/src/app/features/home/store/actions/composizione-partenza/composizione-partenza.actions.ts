@@ -5,6 +5,7 @@ import {
     FiltriComposizione
 } from '../../../composizione-partenza/interface/filtri/filtri-composizione-interface';
 import { ConfermaPartenze } from '../../../composizione-partenza/interface/conferma-partenze-interface';
+import { ComposizioneFilterbar } from '../../../composizione-partenza/interface/composizione/composizione-filterbar-interface';
 
 export class GetFiltriComposizione {
     static readonly type = '[FiltriComposizione] Get Lista Filtri';
@@ -21,8 +22,8 @@ export class SetListaFiltriAffini {
     static readonly type = '[FiltriComposizione] Set Lista Filtri Affini';
 }
 
-export class UpdateListe {
-    static readonly type = '[FiltriComposizione] Update Filtri Selezionati';
+export class UpdateListeComposizione {
+    static readonly type = '[FiltriComposizione] Update Liste Composizione';
 
     constructor(public filtri: FiltriComposizione) {
     }

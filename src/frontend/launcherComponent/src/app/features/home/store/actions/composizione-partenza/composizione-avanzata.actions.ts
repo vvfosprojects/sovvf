@@ -17,6 +17,13 @@ export class SetListeComposizioneAvanzata {
     }
 }
 
+export class FilterListeComposizioneAvanzata {
+    static readonly type = '[ComposizioneAvanzata] Filter Lista Composizione Avanzata';
+
+    constructor(public filtri?: ComposizioneFilterbar) {
+    }
+}
+
 export class UnselectMezziAndSquadreComposizioneAvanzata {
     static readonly type = '[ComposizioneAvanzata] Unselect Mezzi and Squadre Composizione Avanzata';
 }

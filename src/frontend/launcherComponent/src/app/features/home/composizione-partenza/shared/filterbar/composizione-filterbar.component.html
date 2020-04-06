@@ -15,21 +15,21 @@
           </div>
       </div>
     <div class="col-3 py-1 pl-1">
-      <ng-select [items]="filtri.generiMezzi" bindLabel="descrizione" bindValue="id" [multiple]="true"
+      <ng-select [items]="filtri.generiMezzi" bindLabel="descrizione" bindValue="codice" [multiple]="true"
         [closeOnSelect]="false" [hideSelected]="true" (add)="addFiltro($event, 'codiceTipoMezzo')"
         (remove)="removeFiltro($event, 'codiceTipoMezzo')" (clear)="clearFiltri('codiceTipoMezzo')"
         placeholder="Genere Mezzo: Tutti">
       </ng-select>
     </div>
     <div class="col-3 py-1">
-      <ng-select [items]="filtri.distaccamenti" bindLabel="descDistaccamento" [multiple]="true" [closeOnSelect]="false"
+      <ng-select [items]="filtri.distaccamenti" bindLabel="descDistaccamento" bindValue="id" [multiple]="true" [closeOnSelect]="false"
         [hideSelected]="true" (add)="addFiltro($event, 'codiceDistaccamento')"
         (remove)="removeFiltro($event, 'codiceDistaccamento')" (clear)="clearFiltri('codiceDistaccamento')"
         placeholder="Distaccamento: Tutti">
       </ng-select>
     </div>
     <div class="col-3 py-1 pr-4">
-      <ng-select [items]="filtri.stati" bindLabel="descrizione" [multiple]="true" [closeOnSelect]="false"
+      <ng-select [items]="filtri.stati" bindLabel="descrizione" bindValue="codice" [multiple]="true" [closeOnSelect]="false"
         [hideSelected]="true" (add)="addFiltro($event, 'codiceStatoMezzo')"
         (remove)="removeFiltro($event, 'codiceStatoMezzo')" (clear)="clearFiltri('codiceStatoMezzo')"
         placeholder="Stato: Tutti">

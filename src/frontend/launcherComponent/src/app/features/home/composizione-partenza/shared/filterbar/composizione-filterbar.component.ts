@@ -3,7 +3,7 @@ import { Store, Select } from '@ngxs/store';
 import {
     AddFiltroSelezionatoComposizione,
     RemoveFiltriSelezionatiComposizione,
-    RemoveFiltroSelezionatoComposizione, UpdateListe
+    RemoveFiltroSelezionatoComposizione
 } from '../../../store/actions/composizione-partenza/composizione-partenza.actions';
 import { ComposizionePartenzaState } from '../../../store/states/composizione-partenza/composizione-partenza.state';
 import { MezziComposizioneState } from '../../../store/states/composizione-partenza/mezzi-composizione.state';
@@ -14,6 +14,7 @@ import { ViewComponentState } from '../../../store/states/view/view.state';
 import { Observable } from 'rxjs';
 import { FiltriComposizione } from '../../interface/filtri/filtri-composizione-interface';
 import { iconaStatiClass } from '../functions/composizione-functions';
+import { FilterListeComposizioneAvanzata } from '../../../store/actions/composizione-partenza/composizione-avanzata.actions';
 
 @Component({
     selector: 'app-composizione-filterbar',
@@ -30,13 +31,13 @@ export class ComposizioneFilterbarComponent {
     }
 
     addFiltro(event: any, tipo: string) {
-        this.store.dispatch(new AddFiltroSelezionatoComposizione(event.id, tipo));
+        this.store.dispatch(new AddFiltroSelezionatoComposizione(event.codice || event.id, tipo));
         this.update();
         // console.log('Filtro deselezionato', event);
     }
 
     removeFiltro(event: any, tipo: string) {
-        this.store.dispatch(new RemoveFiltroSelezionatoComposizione(event.value.id, tipo));
+        this.store.dispatch(new RemoveFiltroSelezionatoComposizione(event.value.codice || event.value.id, tipo));
         this.update();
         // console.log('Filtro deselezionato', event);
     }
@@ -59,7 +60,8 @@ export class ComposizioneFilterbarComponent {
             CodiceSquadra: codiceSquadra ? codiceSquadra : [],
             idRichiesta: this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione).id
         };
-        this.store.dispatch(new UpdateListe(filtri));
+
+        this.store.dispatch(new FilterListeComposizioneAvanzata(filtri));
     }
 
     turnOffComposizione() {
