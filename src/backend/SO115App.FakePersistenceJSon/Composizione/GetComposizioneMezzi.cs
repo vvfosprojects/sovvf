@@ -67,91 +67,22 @@ namespace SO115App.FakePersistenceJSon.Composizione
             string[] generiMezzi;
             string[] statiMezzi;
             string codiceDistaccamento;
-            if ((query.Filtro.CodiceDistaccamento?.Length > 0 && !string.IsNullOrEmpty(query.Filtro.CodiceDistaccamento[0]))
-                || (query.Filtro.CodiceMezzo?.Length > 0 && !string.IsNullOrEmpty(query.Filtro.CodiceMezzo))
-                || ((query.Filtro.CodiceSquadra?.Length > 0) && !string.IsNullOrEmpty(query.Filtro.CodiceSquadra[0]))
-                || (query.Filtro.CodiceStatoMezzo?.Length > 0 && !string.IsNullOrEmpty(query.Filtro.CodiceStatoMezzo[0]))
-                || (query.Filtro.CodiceTipoMezzo?.Length > 0 && !string.IsNullOrEmpty(query.Filtro.CodiceTipoMezzo[0])))
+
+            foreach (var composizione in composizioneMezzi)
             {
-                if (query.Filtro.CodiceSquadra?.Length > 0 && !string.IsNullOrEmpty(query.Filtro.CodiceSquadra[0]))
+                composizione.IndiceOrdinamento = _ordinamentoMezzi.GetIndiceOrdinamento(query.Filtro.IdRichiesta, composizione, composizione.Mezzo.IdRichiesta);
+                composizione.Id = composizione.Mezzo.Codice;
+
+                if (composizione.IstanteScadenzaSelezione < DateTime.Now)
                 {
-                    var path = CostantiJson.SquadreComposizione;
-                    string jsonSquadre;
-                    using (var r = new StreamReader(path))
-                    {
-                        jsonSquadre = r.ReadToEnd();
-                    }
-
-                    var composizioneSquadre = JsonConvert.DeserializeObject<List<ComposizioneSquadre>>(jsonSquadre);
-                    var squadra = composizioneSquadre.Find(x => query.Filtro.CodiceSquadra.Any(x.Squadra.Id.Equals));
-                    if (squadra != null)
-                    {
-                        codiceDistaccamento = squadra.Squadra.Distaccamento.Codice;
-                        composizioneMezzi = composizioneMezzi.Where(x => (x.Mezzo.Distaccamento.Codice == codiceDistaccamento)).ToList();
-                    }
+                    composizione.IstanteScadenzaSelezione = null;
                 }
-
-                var pathFiltri = CostantiJson.Filtri;
-                string jsonFiltri;
-                using (var r = new StreamReader(pathFiltri))
-                {
-                    jsonFiltri = r.ReadToEnd();
-                }
-                var filtri = JsonConvert.DeserializeObject<API.Models.Classi.Filtri.Filtri>(jsonFiltri);
-
-                if (query.Filtro.CodiceDistaccamento?.Length > 0
-                    && !string.IsNullOrEmpty(query.Filtro.CodiceDistaccamento[0]))
-                {
-                    composizioneMezzi = composizioneMezzi.Where(x => query.Filtro.CodiceDistaccamento.Any(x.Mezzo.Distaccamento.Codice.Equals)).ToList();
-                }
-
-                if (query.Filtro.CodiceStatoMezzo?.Length > 0 && !string.IsNullOrEmpty(query.Filtro.CodiceStatoMezzo[0]))
-                {
-                    statiMezzi = filtri.Stati.Where(x => query.Filtro.CodiceStatoMezzo.Any(x.codice.Equals)).Select(x => x.Descrizione).ToArray();
-                    composizioneMezzi = composizioneMezzi.Where(x => statiMezzi.Any(x.Mezzo.Stato.Equals)).ToList();
-                }
-
-                if (query.Filtro.CodiceTipoMezzo?.Length > 0 && !string.IsNullOrEmpty(query.Filtro.CodiceTipoMezzo[0]))
-                {
-                    generiMezzi = filtri.GeneriMezzi.Where(x => query.Filtro.CodiceTipoMezzo.Any(x.codice.Equals)).Select(x => x.Descrizione).ToArray();
-                    composizioneMezzi = composizioneMezzi.Where(x => generiMezzi.Any(x.Mezzo.Genere.Equals)).ToList();
-                }
-
-                if (!string.IsNullOrEmpty(query.Filtro.CodiceMezzo))
-                    composizioneMezzi = composizioneMezzi.Where(x => x.Mezzo.Codice == query.Filtro.CodiceMezzo).ToList();
-
-                foreach (var composizione in composizioneMezzi)
-                {
-                    composizione.IndiceOrdinamento = _ordinamentoMezzi.GetIndiceOrdinamento(query.Filtro.IdRichiesta, composizione, composizione.Mezzo.IdRichiesta);
-                    composizione.Id = composizione.Mezzo.Codice;
-
-                    if (composizione.IstanteScadenzaSelezione < DateTime.Now)
-                    {
-                        composizione.IstanteScadenzaSelezione = null;
-                    }
-                }
-
-                var composizioneMezziPrenotati = GetComposizioneMezziPrenotati(composizioneMezzi, query.CodiceSede);
-
-                return composizioneMezziPrenotati.OrderByDescending(x => x.IndiceOrdinamento).ToList();
             }
-            else
-            {
-                foreach (var composizione in composizioneMezzi)
-                {
-                    composizione.IndiceOrdinamento = _ordinamentoMezzi.GetIndiceOrdinamento(query.Filtro.IdRichiesta, composizione, composizione.Mezzo.IdRichiesta);
-                    composizione.Id = composizione.Mezzo.Codice;
 
-                    if (composizione.IstanteScadenzaSelezione < DateTime.Now)
-                    {
-                        composizione.IstanteScadenzaSelezione = null;
-                    }
-                }
+            var composizioneMezziPrenotati = GetComposizioneMezziPrenotati(composizioneMezzi, query.CodiceSede);
 
-                var composizioneMezziPrenotati = GetComposizioneMezziPrenotati(composizioneMezzi, query.CodiceSede);
+            return composizioneMezziPrenotati.OrderByDescending(x => x.IndiceOrdinamento).ToList();
 
-                return composizioneMezziPrenotati.OrderByDescending(x => x.IndiceOrdinamento).ToList();
-            }
         }
 
         private List<ComposizioneMezzi> GetComposizioneMezziPrenotati(List<ComposizioneMezzi> composizioneMezzi, string codiceSede)

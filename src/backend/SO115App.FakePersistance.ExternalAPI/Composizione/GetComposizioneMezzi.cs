@@ -46,92 +46,22 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             string[] generiMezzi;
             string[] statiMezzi;
             string codiceDistaccamento;
-            if (query.Filtro.CodiceDistaccamento?.Length > 0 && !string.IsNullOrEmpty(query.Filtro.CodiceDistaccamento[0])
-                || query.Filtro.CodiceMezzo?.Length > 0 && !string.IsNullOrEmpty(query.Filtro.CodiceMezzo)
-                || query.Filtro.CodiceSquadra?.Length > 0 && !string.IsNullOrEmpty(query.Filtro.CodiceSquadra[0])
-                || query.Filtro.CodiceStatoMezzo?.Length > 0 && !string.IsNullOrEmpty(query.Filtro.CodiceStatoMezzo[0])
-                || query.Filtro.CodiceTipoMezzo?.Length > 0 && !string.IsNullOrEmpty(query.Filtro.CodiceTipoMezzo[0]))
+
+            foreach (var composizione in composizioneMezzi)
             {
-                if (query.Filtro.CodiceSquadra?.Length > 0 && !string.IsNullOrEmpty(query.Filtro.CodiceSquadra[0]))
+                composizione.IndiceOrdinamento = _ordinamentoMezzi.GetIndiceOrdinamento(query.Filtro.IdRichiesta, composizione, composizione.Mezzo.IdRichiesta);
+                composizione.Id = composizione.Mezzo.Codice;
+
+                if (composizione.IstanteScadenzaSelezione < DateTime.Now)
                 {
-                    var ListaSquadre = _getSquadre.Get(ListaSedi).Result;
-                    var composizioneSquadre = new List<ComposizioneSquadre>();
-                    foreach (Squadra s in ListaSquadre)
-                    {
-                        ComposizioneSquadre c = new ComposizioneSquadre();
-                        c.Squadra = s;
-                        c.Id = s.Id;
-                        composizioneSquadre.Add(c);
-                    }
-                    var squadra = composizioneSquadre.Find(x => query.Filtro.CodiceSquadra.Any(x.Squadra.Id.Equals));
-                    if (squadra != null)
-                    {
-                        codiceDistaccamento = squadra.Squadra.Distaccamento.Codice;
-                        composizioneMezzi = composizioneMezzi.Where(x => x.Mezzo.Distaccamento.Codice == codiceDistaccamento).ToList();
-                    }
+                    composizione.IstanteScadenzaSelezione = null;
                 }
-
-                var filtri = _getFiltri.Get();
-
-                if (query.Filtro.CodiceDistaccamento?.Length > 0
-                    && !string.IsNullOrEmpty(query.Filtro.CodiceDistaccamento[0]))
-                {
-                    composizioneMezzi = composizioneMezzi.Where(x => query.Filtro.CodiceDistaccamento.Any(x.Mezzo.Distaccamento.Codice.Equals)).ToList();
-                }
-
-                if (query.Filtro.CodiceStatoMezzo?.Length > 0 && !string.IsNullOrEmpty(query.Filtro.CodiceStatoMezzo[0]))
-                {
-                    statiMezzi = filtri.Stati.Where(x => query.Filtro.CodiceStatoMezzo.Any(x.codice.Equals)).Select(x => x.Descrizione).ToArray();
-                    composizioneMezzi = composizioneMezzi.Where(x => statiMezzi.Any(x.Mezzo.Stato.Equals)).ToList();
-                }
-
-                if (query.Filtro.CodiceTipoMezzo?.Length > 0 && !string.IsNullOrEmpty(query.Filtro.CodiceTipoMezzo[0]))
-                {
-                    generiMezzi = filtri.GeneriMezzi.Where(x => query.Filtro.CodiceTipoMezzo.Any(x.codice.Equals)).Select(x => x.Descrizione).ToArray();
-                    composizioneMezzi = composizioneMezzi.Where(x => generiMezzi.Any(x.Mezzo.Genere.Equals)).ToList();
-                }
-
-                if (!string.IsNullOrEmpty(query.Filtro.CodiceMezzo))
-                    composizioneMezzi = composizioneMezzi.Where(x => x.Mezzo.Codice == query.Filtro.CodiceMezzo).ToList();
-
-                for (int i = 0; i < composizioneMezzi.Count; i++)
-                {
-                    if (query.Filtro.IdRichiesta.Length > 0 && !string.IsNullOrEmpty(query.Filtro.IdRichiesta))
-                    {
-                        ComposizioneMezzi composizione = composizioneMezzi[i];
-                        composizione.IndiceOrdinamento =
-                        _ordinamentoMezzi.GetIndiceOrdinamento(query.Filtro.IdRichiesta,
-                        composizione, composizione.Mezzo.IdRichiesta);
-                        composizione.Id = composizione.Mezzo.Codice;
-
-                        if (composizione.IstanteScadenzaSelezione < DateTime.Now)
-                        {
-                            composizione.IstanteScadenzaSelezione = null;
-                        }
-                    }
-                }
-
-                var composizioneMezziPrenotati = GetComposizioneMezziPrenotati(composizioneMezzi, query.CodiceSede);
-
-                return composizioneMezziPrenotati.OrderByDescending(x => x.IndiceOrdinamento).ToList();
             }
-            else
-            {
-                foreach (var composizione in composizioneMezzi)
-                {
-                    composizione.IndiceOrdinamento = _ordinamentoMezzi.GetIndiceOrdinamento(query.Filtro.IdRichiesta, composizione, composizione.Mezzo.IdRichiesta);
-                    composizione.Id = composizione.Mezzo.Codice;
 
-                    if (composizione.IstanteScadenzaSelezione < DateTime.Now)
-                    {
-                        composizione.IstanteScadenzaSelezione = null;
-                    }
-                }
+            var composizioneMezziPrenotati = GetComposizioneMezziPrenotati(composizioneMezzi, query.CodiceSede);
 
-                var composizioneMezziPrenotati = GetComposizioneMezziPrenotati(composizioneMezzi, query.CodiceSede);
-
-                return composizioneMezziPrenotati.OrderByDescending(x => x.IndiceOrdinamento).ToList();
-            }
+            return composizioneMezziPrenotati.OrderByDescending(x => x.IndiceOrdinamento).ToList();
+            
         }
 
         private List<ComposizioneMezzi> GetComposizioneMezziPrenotati(List<ComposizioneMezzi> composizioneMezzi, string codiceSede)
