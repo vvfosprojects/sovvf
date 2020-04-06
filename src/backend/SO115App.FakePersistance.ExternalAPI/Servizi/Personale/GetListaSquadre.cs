@@ -46,8 +46,8 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
         private readonly IGetAlberaturaUnitaOperative _getAlberaturaUnitaOperative;
         private readonly IMemoryCache _memoryCache;
 
-        public GetListaSquadre(HttpClient client, IConfiguration configuration, 
-             IGetDistaccamentoByCodiceSedeUC GetDistaccamentoByCodiceSedeUC, 
+        public GetListaSquadre(HttpClient client, IConfiguration configuration,
+             IGetDistaccamentoByCodiceSedeUC GetDistaccamentoByCodiceSedeUC,
              IGetPersonaleByCF GetPersonaleByCF,
              IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative,
              IMemoryCache memoryCache)
@@ -91,7 +91,6 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
                 List<Squadra> listaSquadraBySede = new List<Squadra>();
                 if (!_memoryCache.TryGetValue("listaSquadre-" + CodSede, out listaSquadraBySede))
                 {
-
                     _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("test");
                     var response = await _client.GetAsync($"{_configuration.GetSection("DataFakeImplementation").GetSection("UrlAPISquadre").Value}/GetListaSquadreByCodComando?CodComando={CodSede}").ConfigureAwait(false);
                     response.EnsureSuccessStatusCode();
@@ -110,9 +109,8 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
 
                     var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromHours(4));
                     _memoryCache.Set("listaSquadre-" + CodSede, listaSquadraBySedeAppo, cacheEntryOptions);
-
                 }
-                else 
+                else
                 {
                     listaSquadre.AddRange(listaSquadraBySede);
                 }
@@ -152,6 +150,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
                     Telefono = componenteFake.Telefono,
                     TecnicoGuardia1 = componenteFake.TecnicoGuardia1,
                     TecnicoGuardia2 = componenteFake.TecnicoGuardia2,
+                    FunGuardia = componenteFake.FunGuardia,
                     CapoTurno = componenteFake.CapoTurno
                 };
                 ComponentiSquadra.Add(componente);

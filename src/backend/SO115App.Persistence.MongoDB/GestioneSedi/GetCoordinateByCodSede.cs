@@ -26,14 +26,16 @@ namespace SO115App.Persistence.MongoDB.GestioneSedi
         public Coordinate Get(string codiceSede)
         {
             var builder = Builders<ListaSedi>.Filter;
-            var filter = builder.Eq(x => x.codSede_TC, codiceSede.Split('.')[0]) & builder.Eq(x => x.codFiglio_TC, Convert.ToDouble(codiceSede.Split('.')[1]));
+            var filter = builder.Eq(x => x.codProv, codiceSede.Split('.')[0]) & builder.Eq(x => x.codFiglio_TC, Convert.ToDouble(codiceSede.Split('.')[1]));
 
             var CodSede = codiceSede.Split('.')[0];
             var CodFiglio = Convert.ToInt32(codiceSede.Split('.')[1]);
+            var filterAttive = Builders<ListaSedi>.Filter.Eq(x => x.attiva, 1);
+           
 
-            List<ListaSedi> listaSedi = _dbContext.SediCollection.Find(Builders<ListaSedi>.Filter.Empty).ToList();
+            List<ListaSedi> listaSedi = _dbContext.SediCollection.Find(filterAttive).ToList();
 
-            var sede = listaSedi.Find(x => x.codFiglio_TC.Equals(CodFiglio) && x.codSede_TC.Equals(CodSede));
+            var sede = listaSedi.Find(x => x.codFiglio_TC.Equals(CodFiglio) && x.codProv.Equals(CodSede));
 
             var coordinate = new Coordinate(41.89996, 12.49104);
 

@@ -24,7 +24,9 @@ namespace SO115App.Persistence.MongoDB.Marker
 
             List<SedeMarker> listaSediMarker = new List<SedeMarker>();
 
-            var listaSedi = _context.SediCollection.Find(Builders<ListaSedi>.Filter.Empty).ToList();
+            var filterAttive = Builders<ListaSedi>.Filter.Eq(x => x.attiva, 1);
+           
+            var listaSedi = _context.SediCollection.Find(filterAttive).ToList();
 
             foreach(var sede in listaSedi) 
             {
@@ -40,7 +42,7 @@ namespace SO115App.Persistence.MongoDB.Marker
                       )
                 {
 
-                    sedeMarker.Codice = sede.codSede_TC + "." + sede.codFiglio_TC;
+                    sedeMarker.Codice = sede.codProv + "." + sede.codFiglio_TC;
                     sedeMarker.Coordinate = new API.Models.Classi.Condivise.Coordinate(sede.latitudine, sede.longitudine);
                     sedeMarker.Descrizione = sede.sede;
                     sedeMarker.Provincia = sede.codProv;

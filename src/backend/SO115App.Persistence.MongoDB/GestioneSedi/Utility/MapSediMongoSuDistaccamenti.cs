@@ -16,9 +16,9 @@ namespace SO115App.Persistence.MongoDB.GestioneSedi.Utility
             {
                 Distaccamento distaccamento = new Distaccamento()
                 {
-                    Id = sede.codSede_TC + "." + sede.codFiglio_TC.ToString(),
+                    Id = sede.codProv + "." + sede.codFiglio_TC.ToString(),
                     CodDistaccamento = sede.codFiglio_TC,
-                    CodSede = sede.codSede_TC,
+                    CodSede = sede.codProv,
                     Coordinate = new API.Models.Classi.Condivise.Coordinate(sede.latitudine, sede.longitudine),
                     DescDistaccamento = sede.sede              
                 };

@@ -36,14 +36,14 @@ namespace SO115App.Models.Classi.MongoDTO
         [BsonElement("LONGITUDINE")]
         public double longitudine { get; set; }
 
-        [BsonElement("CODSEDE_TC")]
-        public string codSede_TC { get; set; }
-
         [BsonElement("CODFIGLIO_TC")]
         public int codFiglio_TC { get; set; }
 
-        [BsonElement("CODPADRE_TC")]
-        public string codPadre_TC { get; set; }
+        [BsonElement("ATTIVA")]
+        public int attiva { get; set; }
+
+        [BsonElement("SPECIALISTI")]
+        public int specialista { get; set; }
 
         [BsonElement("LOC")]
         public double[] loc { get; set; }
