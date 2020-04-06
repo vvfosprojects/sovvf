@@ -18,8 +18,6 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using Newtonsoft.Json;
-using SO115App.API.Models.Classi.Composizione;
-using System.Collections.Generic;
 
 namespace SO115App.Models.Classi.Composizione
 {

@@ -1,20 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using Newtonsoft.Json;
-using SO115App.API.Models.Classi.Composizione;
+﻿using SO115App.API.Models.Classi.Composizione;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneMezzi;
 using SO115App.ExternalAPI.Fake.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
-using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.GetComposizioneMezzi;
-using SO115App.Models.Servizi.Infrastruttura.GetFiltri;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Squadre;
-using SO115App.Persistence.MongoDB.GestioneMezzi;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 
 namespace SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper
 {
@@ -24,13 +19,11 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper
         private readonly OrdinamentoMezzi _ordinamentoMezzi;
         private readonly IGetMezziUtilizzabili _getMezziUtilizzabili;
         private readonly IGetListaSquadre _getSquadre;
-        private readonly IGetFiltri _getFiltri;
 
-        public GetComposizioneMezzi(IGetStatoMezzi getMezziPrenotati, OrdinamentoMezzi ordinamentoMezzi, IGetMezziUtilizzabili getMezziUtilizzabili, IGetListaSquadre getSquadre, IGetFiltri getFiltri)
+        public GetComposizioneMezzi(IGetStatoMezzi getMezziPrenotati, OrdinamentoMezzi ordinamentoMezzi, IGetMezziUtilizzabili getMezziUtilizzabili, IGetListaSquadre getSquadre)
         {
             _getMezziUtilizzabili = getMezziUtilizzabili;
             _getSquadre = getSquadre;
-            _getFiltri = getFiltri;
             _getMezziPrenotati = getMezziPrenotati;
             _ordinamentoMezzi = ordinamentoMezzi;
         }
@@ -61,7 +54,6 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper
             var composizioneMezziPrenotati = GetComposizioneMezziPrenotati(composizioneMezzi, query.CodiceSede);
 
             return composizioneMezziPrenotati.OrderByDescending(x => x.IndiceOrdinamento).ToList();
-            
         }
 
         private List<ComposizioneMezzi> GetComposizioneMezziPrenotati(List<ComposizioneMezzi> composizioneMezzi, string codiceSede)
@@ -73,11 +65,10 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper
                 {
                     composizione.IstanteScadenzaSelezione = mezziPrenotati.Find(x => x.CodiceMezzo.Equals(composizione.Mezzo.Codice)).IstanteScadenzaSelezione;
 
-                    if(composizione.Mezzo.Stato.Equals("In Sede"))
+                    if (composizione.Mezzo.Stato.Equals("In Sede"))
                     {
                         composizione.Mezzo.Stato = mezziPrenotati.Find(x => x.CodiceMezzo.Equals(composizione.Mezzo.Codice)).StatoOperativo;
                     }
-
                 }
             }
             return composizioneMezzi;
