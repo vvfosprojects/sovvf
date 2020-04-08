@@ -32,7 +32,7 @@ namespace SO115App.ExternalAPI.Fake.Classi.Utility
                 CodSede = distaccamentoUC.Id,
                 DescDistaccamento = distaccamentoUC.Descrizione,
                 Indirizzo = distaccamentoUC.Indirizzo,
-                Coordinate = _getCoordinateDistaccamento.Get(distaccamentoUC.Id).Result
+                Coordinate = _getCoordinateDistaccamento.Get(distaccamentoUC.Id)
             };
         }
     }
