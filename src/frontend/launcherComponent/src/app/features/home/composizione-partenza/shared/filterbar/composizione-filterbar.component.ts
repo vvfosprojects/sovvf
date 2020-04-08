@@ -2,8 +2,7 @@ import { Component, Input } from '@angular/core';
 import { Store, Select } from '@ngxs/store';
 import {
     AddFiltroSelezionatoComposizione,
-    RemoveFiltriSelezionatiComposizione,
-    RemoveFiltroSelezionatoComposizione
+    RemoveFiltriSelezionatiComposizione
 } from '../../../store/actions/composizione-partenza/composizione-partenza.actions';
 import { ComposizionePartenzaState } from '../../../store/states/composizione-partenza/composizione-partenza.state';
 import { MezziComposizioneState } from '../../../store/states/composizione-partenza/mezzi-composizione.state';
@@ -57,7 +56,7 @@ export class ComposizioneFilterbarComponent {
         const filtri: FiltriComposizione = {
             CodiceDistaccamento: filtriSelezionati ? filtriSelezionati.CodiceDistaccamento : [],
             TipoMezzo: filtriSelezionati ? filtriSelezionati.TipoMezzo : [],
-            CodiceStatoMezzo: filtriSelezionati ? filtriSelezionati.CodiceStatoMezzo : [],
+            StatoMezzo: filtriSelezionati ? filtriSelezionati.StatoMezzo : [],
             CodiceMezzo: codiceMezzo ? codiceMezzo : '',
             CodiceSquadra: codiceSquadra ? codiceSquadra : [],
             idRichiesta: this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione).id

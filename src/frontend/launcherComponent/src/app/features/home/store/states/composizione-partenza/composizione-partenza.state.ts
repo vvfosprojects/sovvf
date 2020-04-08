@@ -52,6 +52,7 @@ import { ListaComposizioneAvanzata } from '../../../composizione-partenza/interf
 import { MezzoComposizione } from '../../../composizione-partenza/interface/mezzo-composizione-interface';
 import { DescrizioneTipologicaMezzo } from '../../../composizione-partenza/interface/filtri/descrizione-filtro-composizione-interface';
 import { ClearBoxPartenze } from '../../actions/composizione-partenza/box-partenza.actions';
+import { MezziComposizioneState } from './mezzi-composizione.state';
 
 export interface ComposizionePartenzaStateModel {
     filtriAffini: ListaTipologicheMezzi;
@@ -95,7 +96,7 @@ export class ComposizionePartenzaState {
         return {
             CodiceDistaccamento: state.codiceDistaccamento,
             TipoMezzo: state.codiceTipoMezzo,
-            CodiceStatoMezzo: state.codiceStatoMezzo
+            StatoMezzo: state.codiceStatoMezzo
         };
     }
 
@@ -142,7 +143,7 @@ export class ComposizionePartenzaState {
         const objFiltriSelezionati: ComposizioneFilterbar = {
             CodiceDistaccamento: state.codiceDistaccamento,
             TipoMezzo: state.codiceTipoMezzo,
-            CodiceStatoMezzo: state.codiceStatoMezzo
+            StatoMezzo: state.codiceStatoMezzo
         };
         dispatch(new GetListeComposizioneAvanzata(objFiltriSelezionati));
         if (composizioneMode === Composizione.Veloce) {
@@ -155,12 +156,12 @@ export class ComposizionePartenzaState {
     @Action(SetListaFiltriAffini)
     setListaFiltriAffini({ patchState }: StateContext<ComposizionePartenzaStateModel>) {
         const filtri = this.store.selectSnapshot(state => state.tipologicheMezzi.tipologiche);
-        let listaMezziSquadre = {} as ListaComposizioneAvanzata;
-        listaMezziSquadre = this.store.selectSnapshot(state => state.composizioneAvanzata.listaMezziSquadre);
+        let composizioneMezzi = null as MezzoComposizione[];
+        composizioneMezzi = this.store.selectSnapshot(MezziComposizioneState.mezziComposizione);
         const filtriDistaccamento = [] as DescrizioneTipologicaMezzo[];
         const filtriStato = [] as DescrizioneTipologicaMezzo[];
         const generiMezzi = [] as DescrizioneTipologicaMezzo[];
-        if (listaMezziSquadre.composizioneMezzi && listaMezziSquadre.composizioneSquadre) {
+        if (composizioneMezzi) {
             if (filtri.distaccamenti) {
                 filtri.distaccamenti.forEach((distaccamento: DescrizioneTipologicaMezzo) => {
                     if (checkDistaccamento(distaccamento)) {
@@ -186,7 +187,7 @@ export class ComposizionePartenzaState {
 
         function checkDistaccamento(distaccamento: DescrizioneTipologicaMezzo) {
             let _return = false;
-            listaMezziSquadre.composizioneMezzi.forEach((mezzoComp: MezzoComposizione) => {
+            composizioneMezzi.forEach((mezzoComp: MezzoComposizione) => {
                 if (mezzoComp.mezzo.distaccamento.codice === distaccamento.id) {
                     _return = true;
                 }
@@ -196,7 +197,7 @@ export class ComposizionePartenzaState {
 
         function checkStato(stato: DescrizioneTipologicaMezzo) {
             let _return = false;
-            listaMezziSquadre.composizioneMezzi.forEach((mezzoComp: MezzoComposizione) => {
+            composizioneMezzi.forEach((mezzoComp: MezzoComposizione) => {
                 if (mezzoComp.mezzo.stato === stato.descrizione) {
                     _return = true;
                 }
@@ -206,7 +207,7 @@ export class ComposizionePartenzaState {
 
         function checkGenereMezzo(genereMezzo: DescrizioneTipologicaMezzo) {
             let _return = false;
-            listaMezziSquadre.composizioneMezzi.forEach((mezzoComp: MezzoComposizione) => {
+            composizioneMezzi.forEach((mezzoComp: MezzoComposizione) => {
                 if (mezzoComp.mezzo.genere === genereMezzo.descrizione) {
                     _return = true;
                 }

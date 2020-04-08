@@ -56,7 +56,7 @@ import { SganciamentoMezzoModalComponent } from '../../../composizione-partenza/
 import { ConfermaPartenze } from '../../../composizione-partenza/interface/conferma-partenze-interface';
 import { ComposizionePartenzaState } from './composizione-partenza.state';
 import { TurnoState } from 'src/app/features/navbar/store/states/turno/turno.state';
-import { ConfirmPartenze, RemoveFiltriSelezionatiComposizione } from '../../actions/composizione-partenza/composizione-partenza.actions';
+import { ConfirmPartenze, RemoveFiltriSelezionatiComposizione, SetListaFiltriAffini } from '../../actions/composizione-partenza/composizione-partenza.actions';
 import { makeCopy } from '../../../../../shared/helper/function';
 import { SquadreComposizioneState } from './squadre-composizione.state';
 import { FilterListaSquadreComposizione, SetListaSquadreComposizione } from '../../actions/composizione-partenza/squadre-composizione.actions';
@@ -499,11 +499,12 @@ export class MezziComposizioneState {
                         draft.mezziComposizione = draft.mezziComposizione.filter((m: MezzoComposizione) => m.mezzo.genere === action.filtri.TipoMezzo[0]);
                     }
                     // CODICE STATO MEZZO
-                    if (action.filtri.CodiceStatoMezzo && action.filtri.CodiceStatoMezzo.length > 0) {
-                        draft.mezziComposizione = draft.mezziComposizione.filter((m: MezzoComposizione) => m.mezzo.stato === action.filtri.CodiceStatoMezzo[0]);
+                    if (action.filtri.StatoMezzo && action.filtri.StatoMezzo.length > 0) {
+                        draft.mezziComposizione = draft.mezziComposizione.filter((m: MezzoComposizione) => m.mezzo.stato === action.filtri.StatoMezzo[0]);
                     }
-                }),
+                })
             );
+            dispatch(new SetListaFiltriAffini());
         }
     }
 
