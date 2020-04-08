@@ -4,7 +4,7 @@ import {
     AddSquadraComposizione,
     ClearListaSquadreComposizione,
     ClearSelectedSquadreComposizione,
-    ClearSquadraComposizione, FilterListaSquadreComposizione,
+    ClearSquadraComposizione, FilterListaSquadreComposizione, FilterListaSquadreComposizioneByFilters,
     HoverInSquadraComposizione,
     HoverOutSquadraComposizione,
     RemoveSquadraComposizione,
@@ -20,6 +20,9 @@ import { makeCopy } from '../../../../../shared/helper/function';
 import { AddSquadraBoxPartenza } from '../../actions/composizione-partenza/box-partenza.actions';
 import { BoxPartenzaState } from './box-partenza.state';
 import { FilterListaMezziComposizione } from '../../actions/composizione-partenza/mezzi-composizione.actions';
+import produce from 'immer';
+import { codDistaccamentoIsEqual } from '../../../composizione-partenza/shared/functions/composizione-functions';
+import { MezziComposizioneStateStateModel } from './mezzi-composizione.state';
 
 export interface SquadreComposizioneStateStateModel {
     allSquadreComposione: SquadraComposizione[];
@@ -206,6 +209,22 @@ export class SquadreComposizioneState {
             patchState({
                 squadreComposizione: squadre
             });
+        }
+    }
+
+    @Action(FilterListaSquadreComposizioneByFilters)
+    filterListaSquadreComposizioneByFilters({ getState, setState, patchState, dispatch }: StateContext<MezziComposizioneStateStateModel>, action: FilterListaSquadreComposizioneByFilters) {
+        const state = getState();
+        if (action.filtri) {
+            setState(
+                produce(state, (draft: SquadreComposizioneStateStateModel) => {
+                    draft.squadreComposizione = draft.allSquadreComposione;
+                    // CODICE DISTACCAMENTO
+                    if (action.filtri.CodiceDistaccamento && action.filtri.CodiceDistaccamento.length > 0) {
+                        draft.squadreComposizione = draft.squadreComposizione.filter((s: SquadraComposizione) => codDistaccamentoIsEqual(s.squadra.distaccamento.codice, action.filtri.CodiceDistaccamento[0]));
+                    }
+                })
+            );
         }
     }
 }

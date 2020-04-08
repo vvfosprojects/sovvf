@@ -16,7 +16,7 @@ import {
     FilterListaMezziComposizioneByFilters,
     SetListaMezziComposizione
 } from '../../actions/composizione-partenza/mezzi-composizione.actions';
-import { ClearSelectedSquadreComposizione, SetListaSquadreComposizione } from '../../actions/composizione-partenza/squadre-composizione.actions';
+import { ClearSelectedSquadreComposizione, FilterListaSquadreComposizioneByFilters, SetListaSquadreComposizione } from '../../actions/composizione-partenza/squadre-composizione.actions';
 import { ListaComposizioneAvanzata } from '../../../composizione-partenza/interface/lista-composizione-avanzata-interface';
 import { BoxPartenzaState } from './box-partenza.state';
 import { mezzoComposizioneBusy } from '../../../composizione-partenza/shared/functions/composizione-functions';
@@ -113,6 +113,7 @@ export class ComposizioneAvanzataState {
     @Action(FilterListeComposizioneAvanzata)
     filterListeComposizioneAvanzata({ dispatch }: StateContext<ComposizionePartenzaStateModel>, action: FilterListeComposizioneAvanzata) {
         dispatch(new FilterListaMezziComposizioneByFilters(action.filtri));
+        dispatch(new FilterListaSquadreComposizioneByFilters(action.filtri));
     }
 
     @Action(UnselectMezziAndSquadreComposizioneAvanzata)
