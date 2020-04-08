@@ -1,0 +1,177 @@
+<div *ngIf="tipologie" [@hideShowAnimator]="hideShowAnimator" (@hideShowAnimator.done)="captureDoneEvent($event)" class="row mt-3">
+  <div class="col-11 pt-5 px-5 mx-auto rounded status_chiamata card-shadow-danger" style="height: 740px">
+    <form [formGroup]="chiamataForm" (ngSubmit)="onSubmit()" autocomplete="off">
+      <div class="form-group mb-1">
+        <label>Tipologia intervento</label>
+        <ng-select class="border" [items]="tipologie" [multiple]="true" [closeOnSelect]="true" [hideSelected]="true"
+          bindLabel="descrizione" (add)="onAddTipologia($event)" (remove)="onRemoveTipologia($event)" placeholder="Seleziona Tipologia Intervento">
+        </ng-select>
+      </div>
+      <!--<div class="form-group">-->
+        <!--<input type="text" formControlName="dettaglioTipologia" class="form-control" placeholder="Dettaglio tipologia">-->
+      <!--</div>-->
+      <div class="row">
+        <!-- Divisione in due colonne: cognome -->
+        <div class="col">
+          <div class="form-group">
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fa fa-address-card"></i></span>
+              </div>
+              <input type="text" formControlName="cognome" class="form-control" [(ngModel)]="chiamataCorrente.cognome"
+                [ngClass]="{ 'is-invalid': f.cognome.errors }" placeholder="Cognome" autocomplete="new-password">
+              <div *ngIf="submitted && f['cognome'].errors" class="invalid-feedback">
+                <div *ngIf="f['cognome'].errors.required">Il Cognome è obbligatorio</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Divisione in due colonne: nome -->
+        <div class="col">
+          <div class="form-group">
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fa fa-address-card-o"></i></span>
+              </div>
+              <input type="text" formControlName="nome" class="form-control" [(ngModel)]="chiamataCorrente.nome"
+                [ngClass]="{ 'is-invalid': f.nome.errors }" placeholder="Nome" autocomplete="new-password">
+              <div *ngIf="submitted && f['nome'].errors" class="invalid-feedback">
+                <div *ngIf="f['nome'].errors">Il Nome è obbligatorio</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="input-group mb-1">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fa fa-industry"></i></span>
+          </div>
+          <input type="text" formControlName="ragioneSociale" class="form-control" [(ngModel)]="chiamataCorrente.ragioneSociale"
+            [ngClass]="{ 'is-invalid': f.ragioneSociale.errors }" placeholder="Ragione Sociale" autocomplete="new-password">
+          <div *ngIf="submitted && f['ragioneSociale'].errors" class="invalid-feedback">
+            <div *ngIf="f['ragioneSociale'].errors">La Ragione Sociale è obbligatoria</div>
+          </div>
+        </div>
+        <!-- Tasti veloci per ragione sociale -->
+        <div class="row">
+          <div class="col">
+            <button class="btn btn-block btn-outline-secondary py-1" (click)="insertRagioneSociale('112')">112</button>
+          </div>
+          <div class="col">
+            <button class="btn btn-block btn-outline-secondary py-1" (click)="insertRagioneSociale('113')">113</button>
+          </div>
+          <div class="col">
+            <button class="btn btn-block btn-outline-secondary py-1" (click)="insertRagioneSociale('118')">118</button>
+          </div>
+          <div class="col">
+            <button class="btn btn-block btn-outline-secondary py-1" (click)="insertRagioneSociale('VV.UU.')">VV.UU.</button>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fa fa-phone"></i></span>
+          </div>
+          <input type="text" formControlName="telefono" class="form-control" [ngClass]="{ 'is-invalid': f.telefono.errors }"
+            placeholder="Telefono" autocomplete="new-password">
+          <div *ngIf="submitted && f['telefono'].errors" class="invalid-feedback">
+            <div *ngIf="f['telefono'].errors">Il telefono è obbligatorio</div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-11">
+          <div class="form-group">
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fa fa-map"></i></span>
+              </div>
+              <input ngx-google-places-autocomplete type="text" formControlName="indirizzo" class="form-control"
+                [ngClass]="{ 'is-invalid': f.indirizzo.errors }" placeholder="Ricerca indirizzo" [options]='options' (onAddressChange)="handleAddressChange($event)" autocomplete="new-password">
+                <div *ngIf="submitted && f['indirizzo'].errors" class="invalid-feedback">
+                  <div *ngIf="f['indirizzo'].errors">L' indirizzo è obbligatorio</div>
+                </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-1 pl-0 text-center">
+          <button class="btn btn-secondary" [ngbTooltip]="coordsTooltip" placement="bottom" (click)="copy(coords.coordinate.latitudine, coords.coordinate.longitudine)"
+            [disabled]="!coords"><i class="fa fa-clipboard"></i></button>
+
+          <ng-template #coordsTooltip>
+            Copia: {{coords.coordinate.latitudine}} - {{coords.coordinate.longitudine}}
+          </ng-template>
+        </div>
+      </div>
+      <!-- Divisione in due colonne: colonna sinistra -->
+      <div class="row">
+        <div class="col-6">
+          <div class="form-group">
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fa fa-map-pin"></i></span>
+              </div>
+              <input type="text" id="zonaEmergenza" class="form-control" placeholder="Zona Emergenza" autocomplete="new-password">
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fa fa-commenting"></i></span>
+              </div>
+              <textarea class="form-control no-resize" placeholder="Motivazione" autocomplete="new-password"></textarea>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fa fa-bullhorn"></i></span>
+              </div>
+              <textarea class="form-control no-resize" placeholder="Note pubbliche" autocomplete="new-password"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- Divisione in due colonne: colonna destra -->
+        <div class="col-6">
+          <div class="form-group">
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fa fa-tag"></i></span>
+              </div>
+              <input type="text" id="tag" class="form-control" placeholder="Tag" autocomplete="new-password">
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fa fa-comments"></i></span>
+              </div>
+              <textarea class="form-control no-resize" placeholder="Note indirizzo" autocomplete="new-password"></textarea>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fa fa-headphones"></i></span>
+              </div>
+              <textarea class="form-control no-resize" placeholder="Note private" autocomplete="new-password"></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <h5 class="py-3 text-danger"><i class="fa fa-fw fa-hashtag mr-1"></i>RM-004</h5>
+        </div>
+        <div class="col text-right">
+          <button class="btn btn-lg btn-secondary mr-2"><i class="fa fa-check mr-1"></i>Conferma</button>
+          <button class="btn btn-lg btn-danger" (click)="_annullaChiamata()"><i class="fa fa-trash"></i></button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<span *ngIf="chiamataCorrente.nome">{{chiamataCorrente.nome}}</span>

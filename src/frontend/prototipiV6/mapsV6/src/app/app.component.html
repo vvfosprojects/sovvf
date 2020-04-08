@@ -1,0 +1,15 @@
+<div class="container-fluid">
+    <div *ngIf="fakeCambioSede.preLoader">
+        <app-maps [viewStateMappa]="viewStateMappa"></app-maps>
+        <div class="row">
+            <div class="col-12 mx-auto">
+                <app-nav></app-nav>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="!fakeCambioSede.preLoader">
+        <div class="w-75 mx-auto text-center my-3">
+            <img class="img-fluid" src="../../assets/img/wallpaper_on_loading.gif">
+        </div>
+    </div>
+</div>

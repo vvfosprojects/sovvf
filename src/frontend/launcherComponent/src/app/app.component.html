@@ -1,0 +1,71 @@
+<ng-progress [spinner]="false"></ng-progress>
+<ng-sidebar-container style="height:100vh;">
+    <ng-sidebar [(opened)]="_opened" [mode]="'over'" [dock]="false" [sidebarClass]="'sidebar bg-grey'" [animate]="true"
+                [closeOnClickOutside]="true">
+        <div class="container-fluid py-2">
+            <div class="row">
+                <div class="col-2 px-4">
+                    <button class="btn btn-block btn-secondary" [routerLink]="['/'+ RoutesPath.Home]"
+                            [routerLinkActive]="['btn-dark']"
+                            (click)="_toggleOpened()"><i class="fa fa-home fa-lg"></i> Home
+                    </button>
+                </div>
+                <div class="col-2 px-4">
+                    <button class="btn btn-block btn-secondary" [routerLink]="['/'+ RoutesPath.Autorimessa]"
+                            [routerLinkActive]="['btn-dark']"
+                            [disabled]="permissionFeatures.Autorimessa | checkPermission"
+                            [ngClass]="{'cursor-not-allowed': permissionFeatures.Autorimessa | checkPermission}"
+                            (click)="_toggleOpened()">
+                        <i class="fa fa-truck fa-lg mr-1"></i>
+                        Autorimessa
+                    </button>
+                </div>
+                <div class="col-2 px-4">
+                    <button class="btn btn-block btn-secondary" [routerLink]="['/'+ RoutesPath.Servizi]"
+                            [routerLinkActive]="['btn-dark']"
+                            [disabled]="permissionFeatures.Servizi | checkPermission"
+                            [ngClass]="{'cursor-not-allowed': permissionFeatures.Servizi | checkPermission}"
+                            (click)="_toggleOpened()">
+                        <i class="fa fa-users fa-lg mr-1"></i>
+                        Servizi
+                    </button>
+                </div>
+                <div class="col-2 px-4">
+                    <button class="btn btn-block btn-secondary" [routerLink]="['/'+ RoutesPath.Statistiche]"
+                            [routerLinkActive]="['btn-dark']"
+                            [disabled]="permissionFeatures.Statistiche | checkPermission"
+                            [ngClass]="{'cursor-not-allowed': permissionFeatures.Statistiche | checkPermission}"
+                            (click)="_toggleOpened()">
+                        <i class="fa fa-line-chart fa-lg mr-1"></i>
+                        Statistiche
+                    </button>
+                </div>
+                <div class="col-2 px-5">
+                    <button class="btn btn-block btn-secondary" [routerLink]="['/'+ RoutesPath.GestioneUtenti]"
+                            [routerLinkActive]="['btn-dark']"
+                            [disabled]="permissionFeatures.GestioneUtenti | checkPermission"
+                            [ngClass]="{'cursor-not-allowed': permissionFeatures.GestioneUtenti | checkPermission}"
+                            (click)="_toggleOpened()">
+                        <i class="fa fa-user fa-lg mr-1"></i>
+                        Gestione Utenti
+                    </button>
+                </div>
+                <div class="col-2 text-center px-4">
+                    <button class="btn btn-block btn-danger" (click)="_toggleOpened()"><i class="fa fa-times"></i>
+                        Chiudi
+                    </button>
+                </div>
+            </div>
+        </div>
+    </ng-sidebar>
+    <div ng-sidebar-content>
+        <app-navbar *ngIf="_toggle && isReady" (openedSidebar)="_toggleOpened()" [user]="user"
+                    [ruoliUtenteLoggato]="ruoliUtenteLoggato$ | async"></app-navbar>
+        <div *ngIf="!isReady">
+            <app-loader></app-loader>
+        </div>
+        <div *ngIf="isReady">
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+</ng-sidebar-container>

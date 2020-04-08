@@ -1,0 +1,63 @@
+[
+  {
+    "Codicefiscale": "RM123443424",
+    "DescrizioneQualifica": "Capo Partenza",
+    "CodiceTurno": "D",
+    "Nominativo": "Mario Rossi"
+  },
+  {
+    "Codicefiscale": "RM54564657676",
+    "DescrizioneQualifica": "Autista",
+    "CodiceTurno": "D",
+    "Nominativo": "Pippo Bianchi"
+  },
+  {
+    "Codicefiscale": "RM09433439948",
+    "DescrizioneQualifica": "Tecnico Guardia",
+    "CodiceTurno": "D",
+    "Nominativo": "Pluto Verdi"
+  },
+  {
+    "Codicefiscale": "RM3443565766",
+    "DescrizioneQualifica": "Tecnico Guardia 2",
+    "CodiceTurno": "D",
+    "Nominativo": "Andrea Pippus"
+  },
+  {
+    "Codicefiscale": "RM8775645242",
+    "DescrizioneQualifica": "Funzionario di Guardia",
+    "CodiceTurno": "D",
+    "Nominativo": "Davide Lupus"
+  },
+  {
+    "Codicefiscale": "RM43243445435",
+    "DescrizioneQualifica": "Capo Partenza",
+    "CodiceTurno": "D",
+    "Nominativo": "Mike Dudu"
+  },
+  {
+    "Codicefiscale": "RM6576574545",
+    "DescrizioneQualifica": "Autista",
+    "CodiceTurno": "D",
+    "Nominativo": "Rombo Immancabile"
+  },
+  {
+    "Codicefiscale": "RM45949433242",
+    "DescrizioneQualifica": "Tecnico Guardia",
+    "CodiceTurno": "D",
+    "Nominativo": "Vingarium Leviosa"
+  },
+  {
+    "Codicefiscale": "RM656454354232",
+    "DescrizioneQualifica": "Tecnico Guardia 2",
+    "CodiceTurno": "D",
+    "Nominativo": "Accio Lupus"
+  },
+  {
+    "Codicefiscale": "RM6324324556",
+    "DescrizioneQualifica": "Funzionario di Guardia",
+    "CodiceTurno": "D",
+    "Nominativo": "Immobilus Harry"
+  }
+
+]

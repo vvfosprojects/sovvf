@@ -1,0 +1,10 @@
+<app-lista-mezzi (inviaApp)="riceviStato($event)"></app-lista-mezzi>
+
+<p-growl  [(value)]="msgs" [life]=10000 [immutable]="false" [sticky]="false" [style]="{'background-color': '#8BC34A', 'color': '#fff', 'width':'400px' ,'margin-top':'0px', 'margin-right':'40em'}" (onClick)="annullare($event)"></p-growl>
+
+<p-growl  [(value)]="annulla" [life]=1000 [immutable]="false" [style]="{'background-color': '#8BC34A', 'color': '#fff', 'width':'400px' ,'margin-top':'0px', 'margin-right':'10em'}"></p-growl>
+
+
+
+
+

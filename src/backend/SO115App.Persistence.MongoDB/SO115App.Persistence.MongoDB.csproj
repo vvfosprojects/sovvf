@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\SO115.licenseheader" Link="SO115.licenseheader" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="mongodb.Driver" Version="2.10.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SO115App.Models\SO115App.Models.csproj" />
+  </ItemGroup>
+</Project>

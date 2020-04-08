@@ -1,0 +1,1500 @@
+{
+  "tipologie": [
+    {
+      "codice": 5,
+      "categoria": "Incendi ed Esplosioni",
+      "descrizione": "Incendio normale (generico)",
+      "star": true,
+      "OpportunitaSganciamento": "-100",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "80",
+        "AB": "50",
+        "AV": "10",
+        "AG": "0",
+        "DEFAULT": "10"
+      }
+    },
+    {
+      "codice": 6,
+      "categoria": "Incendi ed Esplosioni",
+      "descrizione": "Incendio ed esplosione",
+      "star": false,
+      "OpportunitaSganciamento": "-100",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "80",
+        "AB": "50",
+        "AV": "10",
+        "AG": "0",
+        "DEFAULT": "10"
+      }
+    },
+    {
+      "codice": 7,
+      "categoria": "Incendi ed Esplosioni",
+      "descrizione": "Esplosione da sostanza esplodente",
+      "star": true,
+      "OpportunitaSganciamento": "-100",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "80",
+        "AB": "50",
+        "AV": "10",
+        "AG": "0",
+        "DEFAULT": "10"
+      }
+    },
+    {
+      "codice": 8,
+      "categoria": "Incendi ed Esplosioni",
+      "descrizione": "Esplosione (escluso esplosione da sostanza esplodente)",
+      "star": false,
+      "OpportunitaSganciamento": "-100",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "80",
+        "AB": "50",
+        "AV": "10",
+        "AG": "0",
+        "DEFAULT": "10"
+      }
+    },
+    {
+      "codice": 9,
+      "categoria": "Incendi ed Esplosioni",
+      "descrizione": "Incendio bosco, sterpaglie, colture",
+      "star": false,
+      "OpportunitaSganciamento": "-100",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "80",
+        "AB": "50",
+        "AV": "10",
+        "AG": "0",
+        "DEFAULT": "10"
+      }
+    },
+    {
+      "codice": 10,
+      "categoria": "Incendi ed Esplosioni",
+      "descrizione": "Incidente seguito da incendio di mezzo trasportante merci pericolose",
+      "star": false,
+      "OpportunitaSganciamento": "-100",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "80",
+        "AB": "50",
+        "AV": "10",
+        "AG": "0",
+        "DEFAULT": "10"
+      }
+    },
+    {
+      "codice": 11,
+      "categoria": "Aeroporti",
+      "descrizione": "Incendio aeromobile",
+      "star": false,
+      "OpportunitaSganciamento": "-100",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "80",
+        "AB": "50",
+        "AV": "10",
+        "AG": "0",
+        "DEFAULT": "10"
+      }
+    },
+    {
+      "codice": 12,
+      "categoria": "Aeroporti",
+      "descrizione": "Emergenza carrello aeromobile bloccato",
+      "star": false,
+      "OpportunitaSganciamento": "-50"
+    },
+    {
+      "codice": 13,
+      "categoria": "Aeroporti",
+      "descrizione": "Emergenza carrello aeromobile bloccato",
+      "star": false,
+      "OpportunitaSganciamento": "-50"
+    },
+    {
+      "codice": 14,
+      "categoria": "Aeroporti",
+      "descrizione": "Recupero aeromobile",
+      "star": false,
+      "OpportunitaSganciamento": "-50"
+    },
+    {
+      "codice": 15,
+      "categoria": "Aeroporti",
+      "descrizione": "Ricerca aeromobile",
+      "star": false,
+      "OpportunitaSganciamento": "-50"
+    },
+    {
+      "codice": 16,
+      "categoria": "Aeroporti",
+      "descrizione": "Incendio in sedime aeroportuale",
+      "star": false,
+      "OpportunitaSganciamento": "-50",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "80",
+        "AB": "50",
+        "AV": "10",
+        "AG": "0",
+        "DEFAULT": "10"
+      }
+    },
+    {
+      "codice": 17,
+      "categoria": "Aeroporti",
+      "descrizione": "Emergenza aeroportuale di altro genere",
+      "star": false,
+      "OpportunitaSganciamento": "-50",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "0",
+        "AB": "0",
+        "AV": "0",
+        "AG": "0",
+        "DEFAULT": "0"
+      }
+    },
+    {
+      "codice": 18,
+      "categoria": "Aeroporti",
+      "descrizione": "Incidente aeromobile di altro genere",
+      "star": false,
+      "OpportunitaSganciamento": "-50",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "0",
+        "AB": "0",
+        "AV": "0",
+        "AG": "0",
+        "DEFAULT": "0"
+      }
+    },
+    {
+      "codice": 19,
+      "categoria": "Porti",
+      "descrizione": "Incendio nave o traghetto",
+      "star": false,
+      "OpportunitaSganciamento": "-50",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "0",
+        "AB": "0",
+        "AV": "0",
+        "AG": "0",
+        "DEFAULT": "0"
+      }
+    },
+    {
+      "codice": 20,
+      "categoria": "Porti",
+      "descrizione": "Incendi natanti diversi da navi e traghetti",
+      "star": false,
+      "OpportunitaSganciamento": "-50",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "0",
+        "AB": "0",
+        "AV": "0",
+        "AG": "0",
+        "DEFAULT": "0"
+      }
+    },
+    {
+      "codice": 21,
+      "categoria": "Porti",
+      "descrizione": "Recupero di piccoli natanti",
+      "star": false,
+      "OpportunitaSganciamento": "-50",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "0",
+        "AB": "0",
+        "AV": "0",
+        "AG": "0",
+        "DEFAULT": "0"
+      }
+    },
+    {
+      "codice": 22,
+      "categoria": "Porti",
+      "descrizione": "Soccorso a imbarcazione senza governo",
+      "star": false,
+      "OpportunitaSganciamento": "-50",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "0",
+        "AB": "0",
+        "AV": "0",
+        "AG": "0",
+        "DEFAULT": "0"
+      }
+    },
+    {
+      "codice": 23,
+      "categoria": "Porti",
+      "descrizione": "Ricerca e/o soccorso in ambiente acquatico di imbarcazioni o natanti",
+      "star": false,
+      "OpportunitaSganciamento": "-50",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "0",
+        "AB": "0",
+        "AV": "0",
+        "AG": "0",
+        "DEFAULT": "0"
+      }
+    },
+    {
+      "codice": 24,
+      "categoria": "Porti",
+      "descrizione": "Operazioni antinquinamento",
+      "star": false,
+      "OpportunitaSganciamento": "-50",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "0",
+        "AB": "0",
+        "AV": "0",
+        "AG": "0",
+        "DEFAULT": "0"
+      }
+    },
+    {
+      "codice": 25,
+      "categoria": "Porti",
+      "descrizione": "Ricerca e/o soccorso a persona in mare (SAR)",
+      "star": false,
+      "OpportunitaSganciamento": "-50",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "0",
+        "AB": "0",
+        "AV": "0",
+        "AG": "0",
+        "DEFAULT": "0"
+      }
+    },
+    {
+      "codice": 26,
+      "categoria": "Porti",
+      "descrizione": "Recupero di ostacoli alla navigazione",
+      "star": false,
+      "OpportunitaSganciamento": "-50",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "0",
+        "AB": "0",
+        "AV": "0",
+        "AG": "0",
+        "DEFAULT": "0"
+      }
+    },
+    {
+      "codice": 27,
+      "categoria": "Porti",
+      "descrizione": "Supporto nautico per operazioni a terra",
+      "star": false,
+      "OpportunitaSganciamento": "-50",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "0",
+        "AB": "0",
+        "AV": "0",
+        "AG": "0",
+        "DEFAULT": "0"
+      }
+    },
+    {
+      "codice": 28,
+      "categoria": "Porti",
+      "descrizione": "Incidente nautico",
+      "star": false,
+      "OpportunitaSganciamento": "-50",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "0",
+        "AB": "0",
+        "AV": "0",
+        "AG": "0",
+        "DEFAULT": "0"
+      }
+    },
+    {
+      "codice": 29,
+      "categoria": "Incidenti Stradali",
+      "descrizione": "Incidente stradale generico",
+      "star": false,
+      "OpportunitaSganciamento": "-50",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "0",
+        "AB": "0",
+        "AV": "0",
+        "AG": "0",
+        "DEFAULT": "0"
+      }
+    },
+    {
+      "codice": 30,
+      "categoria": "Incidenti Stradali",
+      "descrizione": "Incidente stradale con mezzo trasportante merci pericolose",
+      "star": false,
+      "OpportunitaSganciamento": "-50",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "0",
+        "AB": "0",
+        "AV": "0",
+        "AG": "0",
+        "DEFAULT": "0"
+      }
+    },
+    {
+      "codice": 31,
+      "categoria": "Incidenti Stradali",
+      "descrizione": "Ribaltamento di mezzo trasportante merci pericolose",
+      "star": false,
+      "OpportunitaSganciamento": "-50",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "0",
+        "AB": "0",
+        "AV": "0",
+        "AG": "0",
+        "DEFAULT": "0"
+      }
+    },
+    {
+      "codice": 32,
+      "categoria": "Incidenti Stradali",
+      "descrizione": "Rimozione ostacoli non dovuti al traffico",
+      "star": false,
+      "OpportunitaSganciamento": "-50",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "0",
+        "AB": "0",
+        "AV": "0",
+        "AG": "0",
+        "DEFAULT": "0"
+      }
+    },
+    {
+      "codice": 33,
+      "categoria": "Incidenti Stradali",
+      "descrizione": "Incidente stradale in galleria",
+      "star": false,
+      "OpportunitaSganciamento": "-50",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "0",
+        "AB": "0",
+        "AV": "0",
+        "AG": "0",
+        "DEFAULT": "0"
+      }
+    },
+    {
+      "codice": 34,
+      "categoria": "Recuperi",
+      "descrizione": "Recupero merci e beni",
+      "star": false,
+      "OpportunitaSganciamento": "-50",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "0",
+        "AB": "0",
+        "AV": "0",
+        "AG": "0",
+        "DEFAULT": "0"
+      }
+    },
+    {
+      "codice": 35,
+      "categoria": "Recuperi",
+      "descrizione": "Recupero sostanze radioattive",
+      "star": false,
+      "OpportunitaSganciamento": "-50",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "0",
+        "AB": "0",
+        "AV": "0",
+        "AG": "0",
+        "DEFAULT": "0"
+      }
+    },
+    {
+      "codice": 36,
+      "categoria": "Recuperi",
+      "descrizione": "Recupero parafulmini radioattivi",
+      "star": false,
+      "OpportunitaSganciamento": "-50",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "0",
+        "AB": "0",
+        "AV": "0",
+        "AG": "0",
+        "DEFAULT": "0"
+      }
+    },
+    {
+      "codice": 37,
+      "categoria": "Recuperi",
+      "descrizione": "Recupero sostanza pericolosa",
+      "star": false,
+      "OpportunitaSganciamento": "-50",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "0",
+        "AB": "0",
+        "AV": "0",
+        "AG": "0",
+        "DEFAULT": "0"
+      }
+    },
+    {
+      "codice": 38,
+      "categoria": "Recuperi",
+      "descrizione": "Recupero autovetture e veicoli",
+      "star": false,
+      "OpportunitaSganciamento": "-50",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "0",
+        "AB": "0",
+        "AV": "0",
+        "AG": "0",
+        "DEFAULT": "0"
+      }
+    },
+    {
+      "codice": 39,
+      "categoria": "Recuperi",
+      "descrizione": "Recupero merci avariate",
+      "star": false,
+      "OpportunitaSganciamento": "-50",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "0",
+        "AB": "0",
+        "AV": "0",
+        "AG": "0",
+        "DEFAULT": "0"
+      }
+    },
+    {
+      "codice": 40,
+      "categoria": "Statica",
+      "descrizione": "Valanghe",
+      "star": false,
+      "OpportunitaSganciamento": "-50",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "0",
+        "AB": "0",
+        "AV": "0",
+        "AG": "0",
+        "DEFAULT": "0"
+      }
+    },
+    {
+      "codice": 41,
+      "categoria": "Statica",
+      "descrizione": "Frane",
+      "star": false,
+      "OpportunitaSganciamento": "-50",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "0",
+        "AB": "0",
+        "AV": "0",
+        "AG": "0",
+        "DEFAULT": "0"
+      }
+    },
+    {
+      "codice": 42,
+      "categoria": "Statica",
+      "descrizione": "Cedimento terreno, voragine",
+      "star": false,
+      "OpportunitaSganciamento": "-50",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "0",
+        "AB": "0",
+        "AV": "0",
+        "AG": "0",
+        "DEFAULT": "0"
+      }
+    },
+    {
+      "codice": 44,
+      "categoria": "Statica",
+      "descrizione": "Cedimento sede stradale",
+      "star": false,
+      "OpportunitaSganciamento": "-50",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "0",
+        "AB": "0",
+        "AV": "0",
+        "AG": "0",
+        "DEFAULT": "0"
+      }
+    },
+    {
+      "codice": 45,
+      "categoria": "Statica",
+      "descrizione": "Dissesto statico di elementi costruttivi",
+      "star": false,
+      "OpportunitaSganciamento": "-50",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "0",
+        "AB": "0",
+        "AV": "0",
+        "AG": "0",
+        "DEFAULT": "0"
+      }
+    },
+    {
+      "codice": 46,
+      "categoria": "Statica",
+      "descrizione": "Valanghe, slavine",
+      "star": false,
+      "OpportunitaSganciamento": "-50",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "0",
+        "AB": "0",
+        "AV": "0",
+        "AG": "0",
+        "DEFAULT": "0"
+      }
+    },
+    {
+      "codice": 47,
+      "categoria": "Statica",
+      "descrizione": "Crollo parziale di elementi strutturali",
+      "star": false,
+      "OpportunitaSganciamento": "-50",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "0",
+        "AB": "0",
+        "AV": "0",
+        "AG": "0",
+        "DEFAULT": "0"
+      }
+    },
+    {
+      "codice": 48,
+      "categoria": "Statica",
+      "descrizione": "Crollo generalizzato di opere e costruzioni",
+      "star": false,
+      "OpportunitaSganciamento": "-50",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "0",
+        "AB": "0",
+        "AV": "0",
+        "AG": "0",
+        "DEFAULT": "0"
+      }
+    },
+    {
+      "codice": 49,
+      "categoria": "Statica",
+      "descrizione": "Smontaggio controllato di elementi costruttivi",
+      "star": false,
+      "OpportunitaSganciamento": "-50",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "0",
+        "AB": "0",
+        "AV": "0",
+        "AG": "0",
+        "DEFAULT": "0"
+      }
+    },
+    {
+      "codice": 50,
+      "categoria": "Statica",
+      "descrizione": "Demolizioni",
+      "star": false,
+      "OpportunitaSganciamento": "-50",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "0",
+        "AB": "0",
+        "AV": "0",
+        "AG": "0",
+        "DEFAULT": "0"
+      }
+    },
+    {
+      "codice": 51,
+      "categoria": "Statica",
+      "descrizione": "Rimozione macerie",
+      "star": false,
+      "OpportunitaSganciamento": "-50",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "0",
+        "AB": "0",
+        "AV": "0",
+        "AG": "0",
+        "DEFAULT": "0"
+      }
+    },
+    {
+      "codice": 52,
+      "categoria": "Statica",
+      "descrizione": "Sopralluoghi e verifiche di stabilita' su edifici, manufatti, cedimenti, frane, voragini",
+      "star": false,
+      "OpportunitaSganciamento": "-50",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "0",
+        "AB": "0",
+        "AV": "0",
+        "AG": "0",
+        "DEFAULT": "0"
+      }
+    },
+    {
+      "codice": 53,
+      "categoria": "Statica",
+      "descrizione": "Verifiche statiche per compilazione schede AEDES",
+      "star": false,
+      "OpportunitaSganciamento": "-50",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "0",
+        "AB": "0",
+        "AV": "0",
+        "AG": "0",
+        "DEFAULT": "0"
+      }
+    },
+    {
+      "codice": 54,
+      "categoria": "Statica",
+      "descrizione": "Verifiche statiche speditive (TRIAGE)",
+      "star": false,
+      "OpportunitaSganciamento": "-50",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "0",
+        "AB": "0",
+        "AV": "0",
+        "AG": "0",
+        "DEFAULT": "0"
+      }
+    },
+    {
+      "codice": 55,
+      "categoria": "Acqua",
+      "descrizione": "Danni d'acqua in genere",
+      "star": false,
+      "OpportunitaSganciamento": "-50",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "0",
+        "AB": "0",
+        "AV": "0",
+        "AG": "0",
+        "DEFAULT": "0"
+      }
+    },
+    {
+      "codice": 56,
+      "categoria": "Acqua",
+      "descrizione": "Straripamenti, inondazioni, mareggiate",
+      "star": false,
+      "OpportunitaSganciamento": "-50",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "0",
+        "AB": "0",
+        "AV": "0",
+        "AG": "0",
+        "DEFAULT": "0"
+      }
+    },
+    {
+      "codice": 57,
+      "categoria": "Acqua",
+      "descrizione": "Rifornimento idrico",
+      "star": false,
+      "OpportunitaSganciamento": "-50",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "0",
+        "AB": "0",
+        "AV": "0",
+        "AG": "0",
+        "DEFAULT": "0"
+      }
+    },
+    {
+      "codice": 58,
+      "categoria": "Acqua",
+      "descrizione": "Prosciugamento in genere",
+      "star": false,
+      "OpportunitaSganciamento": "-50",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "0",
+        "AB": "0",
+        "AV": "0",
+        "AG": "0",
+        "DEFAULT": "0"
+      }
+    },
+    {
+      "codice": 59,
+      "categoria": "Acqua",
+      "descrizione": "Danni d'acqua per rottura o fuoriuscita da tubazioni, canali e simili",
+      "star": false,
+      "OpportunitaSganciamento": "-50",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "0",
+        "AB": "0",
+        "AV": "0",
+        "AG": "0",
+        "DEFAULT": "0"
+      }
+    },
+    {
+      "codice": 60,
+      "categoria": "Soccorsi e Salvataggi",
+      "descrizione": "Soccorso a persone",
+      "star": true,
+      "OpportunitaSganciamento": "-100",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "80",
+        "AB": "0",
+        "AV": "10",
+        "AG": "10",
+        "DEFAULT": "10"
+      }
+    },
+    {
+      "codice": 61,
+      "categoria": "Soccorsi e Salvataggi",
+      "descrizione": "Salvataggio persone",
+      "star": false,
+      "OpportunitaSganciamento": "-100",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "80",
+        "AB": "0",
+        "AV": "10",
+        "AG": "10",
+        "DEFAULT": "10"
+      }
+    },
+    {
+      "codice": 62,
+      "categoria": "Soccorsi e Salvataggi",
+      "descrizione": "Salvataggio animali",
+      "star": false,
+      "OpportunitaSganciamento": "-10",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "80",
+        "AB": "0",
+        "AV": "0",
+        "AG": "0",
+        "DEFAULT": "0"
+      }
+    },
+    {
+      "codice": 63,
+      "categoria": "Soccorsi e Salvataggi",
+      "descrizione": "Trasporto ammalati o infortunati",
+      "star": false,
+      "OpportunitaSganciamento": "-100",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "80",
+        "AB": "0",
+        "AV": "10",
+        "AG": "10",
+        "DEFAULT": "10"
+      }
+    },
+    {
+      "codice": 64,
+      "categoria": "Soccorsi e Salvataggi",
+      "descrizione": "Ascensori bloccati",
+      "star": false,
+      "OpportunitaSganciamento": "-10",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "50",
+        "AB": "0",
+        "AV": "0",
+        "AG": "0",
+        "DEFAULT": "0"
+      }
+    },
+    {
+      "codice": 65,
+      "categoria": "Soccorsi e Salvataggi",
+      "descrizione": "Ricerca persona (SAR)",
+      "star": false,
+      "OpportunitaSganciamento": "-50",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "0",
+        "AB": "0",
+        "AV": "0",
+        "AG": "0",
+        "DEFAULT": "0"
+      }
+    },
+    {
+      "codice": 66,
+      "categoria": "Soccorsi e Salvataggi",
+      "descrizione": "Recupero animali",
+      "star": false,
+      "OpportunitaSganciamento": "-10",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "80",
+        "AB": "0",
+        "AV": "0",
+        "AG": "0",
+        "DEFAULT": "0"
+      }
+    },
+    {
+      "codice": 67,
+      "categoria": "Soccorsi e Salvataggi",
+      "descrizione": "Assistenza Trattamento Sanitario Obbl. (TSO)",
+      "star": false,
+      "OpportunitaSganciamento": "-50",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "0",
+        "AB": "0",
+        "AV": "0",
+        "AG": "0",
+        "DEFAULT": "0"
+      }
+    },
+    {
+      "codice": 68,
+      "categoria": "Soccorsi e Salvataggi",
+      "descrizione": "Bonifica da insetti",
+      "star": false,
+      "OpportunitaSganciamento": "-30",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "0",
+        "AB": "0",
+        "AV": "0",
+        "AG": "0",
+        "DEFAULT": "0"
+      }
+    },
+    {
+      "codice": 69,
+      "categoria": "Soccorsi e Salvataggi",
+      "descrizione": "Assistenza per abbandono locali e/o ambienti",
+      "star": false,
+      "OpportunitaSganciamento": "-50",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "0",
+        "AB": "0",
+        "AV": "0",
+        "AG": "0",
+        "DEFAULT": "0"
+      }
+    },
+    {
+      "codice": 70,
+      "categoria": "Soccorsi e Salvataggi",
+      "descrizione": "Recupero con verricello elicottero",
+      "star": false,
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "0",
+        "AB": "0",
+        "AV": "0",
+        "AG": "0",
+        "DEFAULT": "0"
+      }
+    },
+    {
+      "codice": 71,
+      "categoria": "Soccorsi e Salvataggi",
+      "descrizione": "Ricerca e ricognizione aerea",
+      "star": false,
+      "OpportunitaSganciamento": "-50",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "0",
+        "AB": "0",
+        "AV": "0",
+        "AG": "0",
+        "DEFAULT": "0"
+      }
+    },
+    {
+      "codice": 72,
+      "categoria": "Soccorsi e Salvataggi",
+      "descrizione": "Ricerca da allarme COSPAS e simili",
+      "star": false,
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "0",
+        "AB": "0",
+        "AV": "0",
+        "AG": "0",
+        "DEFAULT": "0"
+      }
+    },
+    {
+      "codice": 73,
+      "categoria": "Soccorsi e Salvataggi",
+      "descrizione": "Trasporto al gancio baricentrico elicottero",
+      "star": false,
+      "OpportunitaSganciamento": "-50",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "0",
+        "AB": "0",
+        "AV": "0",
+        "AG": "0",
+        "DEFAULT": "0"
+      }
+    },
+    {
+      "codice": 74,
+      "categoria": "Soccorsi e Salvataggi",
+      "descrizione": "Mancata adozione di dispositivi di protezione individuale",
+      "star": false,
+      "OpportunitaSganciamento": "-50",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "0",
+        "AB": "0",
+        "AV": "0",
+        "AG": "0",
+        "DEFAULT": "0"
+      }
+    },
+    {
+      "codice": 75,
+      "categoria": "Soccorsi e Salvataggi",
+      "descrizione": "Messa in sicurezza di imbarcazioni, natanti e/o galleggianti",
+      "star": false,
+      "OpportunitaSganciamento": "-50",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "0",
+        "AB": "0",
+        "AV": "0",
+        "AG": "0",
+        "DEFAULT": "0"
+      }
+    },
+    {
+      "codice": 76,
+      "categoria": "Vari",
+      "descrizione": "Recupero salme",
+      "star": false,
+      "OpportunitaSganciamento": "-50",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "0",
+        "AB": "0",
+        "AV": "0",
+        "AG": "0",
+        "DEFAULT": "0"
+      }
+    },
+    {
+      "codice": 77,
+      "categoria": "Vari",
+      "descrizione": "Recupero animali morti",
+      "star": false,
+      "OpportunitaSganciamento": "-50",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "0",
+        "AB": "0",
+        "AV": "0",
+        "AG": "0",
+        "DEFAULT": "0"
+      }
+    },
+    {
+      "codice": 78,
+      "categoria": "Vari",
+      "descrizione": "Apertura porte e finestre",
+      "star": false,
+      "OpportunitaSganciamento": "-10",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "50",
+        "AB": "0",
+        "AV": "0",
+        "AG": "0",
+        "DEFAULT": "0"
+      }
+    },
+    {
+      "codice": 79,
+      "categoria": "Vari",
+      "descrizione": "Incidenti sul lavoro",
+      "star": false,
+      "OpportunitaSganciamento": "-50",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "0",
+        "AB": "0",
+        "AV": "0",
+        "AG": "0",
+        "DEFAULT": "0"
+      }
+    },
+    {
+      "codice": 80,
+      "categoria": "Vari",
+      "descrizione": "Servizio di assistenza (generico)",
+      "star": false,
+      "OpportunitaSganciamento": "-50",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "0",
+        "AB": "0",
+        "AV": "0",
+        "AG": "0",
+        "DEFAULT": "0"
+      }
+    },
+    {
+      "codice": 81,
+      "categoria": "Vari",
+      "descrizione": "Fuga gas",
+      "star": false,
+      "OpportunitaSganciamento": "-50",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "0",
+        "AB": "0",
+        "AV": "0",
+        "AG": "0",
+        "DEFAULT": "0"
+      }
+    },
+    {
+      "codice": 82,
+      "categoria": "Vari",
+      "descrizione": "Lavaggio strada",
+      "star": false,
+      "OpportunitaSganciamento": "-50",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "0",
+        "AB": "0",
+        "AV": "0",
+        "AG": "0",
+        "DEFAULT": "0"
+      }
+    },
+    {
+      "codice": 83,
+      "categoria": "Vari",
+      "descrizione": "Incidente ferroviario",
+      "star": false,
+      "OpportunitaSganciamento": "-50",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "0",
+        "AB": "0",
+        "AV": "0",
+        "AG": "0",
+        "DEFAULT": "0"
+      }
+    },
+    {
+      "codice": 84,
+      "categoria": "Vari",
+      "descrizione": "Scoppio (cedimento meccanico)",
+      "star": false,
+      "OpportunitaSganciamento": "-50",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "0",
+        "AB": "0",
+        "AV": "0",
+        "AG": "0",
+        "DEFAULT": "0"
+      }
+    },
+    {
+      "codice": 85,
+      "categoria": "Vari",
+      "descrizione": "Alberi pericolanti",
+      "star": false,
+      "OpportunitaSganciamento": "-50",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "0",
+        "AB": "0",
+        "AV": "0",
+        "AG": "0",
+        "DEFAULT": "0"
+      }
+    },
+    {
+      "codice": 86,
+      "categoria": "Vari",
+      "descrizione": "Rimozione neve dai tetti",
+      "star": false,
+      "OpportunitaSganciamento": "-50",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "0",
+        "AB": "0",
+        "AV": "0",
+        "AG": "0",
+        "DEFAULT": "0"
+      }
+    },
+    {
+      "codice": 87,
+      "categoria": "Vari",
+      "descrizione": "Coperture tetti",
+      "star": false,
+      "OpportunitaSganciamento": "-50",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "0",
+        "AB": "0",
+        "AV": "0",
+        "AG": "0",
+        "DEFAULT": "0"
+      }
+    },
+    {
+      "codice": 88,
+      "categoria": "Vari",
+      "descrizione": "Progettazione opere provvisionali",
+      "star": false,
+      "OpportunitaSganciamento": "-50",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "0",
+        "AB": "0",
+        "AV": "0",
+        "AG": "0",
+        "DEFAULT": "0"
+      }
+    },
+    {
+      "codice": 89,
+      "categoria": "Vari",
+      "descrizione": "Opere provvisionali senza progettazione",
+      "star": false,
+      "OpportunitaSganciamento": "-50",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "0",
+        "AB": "0",
+        "AV": "0",
+        "AG": "0",
+        "DEFAULT": "0"
+      }
+    },
+    {
+      "codice": 90,
+      "categoria": "Vari",
+      "descrizione": "Opere provvisionali con progettazione",
+      "star": false,
+      "OpportunitaSganciamento": "-50",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "0",
+        "AB": "0",
+        "AV": "0",
+        "AG": "0",
+        "DEFAULT": "0"
+      }
+    },
+    {
+      "codice": 91,
+      "categoria": "Vari",
+      "descrizione": "Messa in sicurezza serbatoi GPL",
+      "star": false,
+      "OpportunitaSganciamento": "-50",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "0",
+        "AB": "0",
+        "AV": "0",
+        "AG": "0",
+        "DEFAULT": "0"
+      }
+    },
+    {
+      "codice": 92,
+      "categoria": "Vari",
+      "descrizione": "Messa in sicurezza impianti tecnologici di servizio (acqua, energia elettrica, gas)",
+      "star": false,
+      "OpportunitaSganciamento": "-50",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "0",
+        "AB": "0",
+        "AV": "0",
+        "AG": "0",
+        "DEFAULT": "0"
+      }
+    },
+    {
+      "codice": 93,
+      "categoria": "Vari",
+      "descrizione": "Altri tipi",
+      "star": false,
+      "OpportunitaSganciamento": "-50",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "0",
+        "AB": "0",
+        "AV": "0",
+        "AG": "0",
+        "DEFAULT": "0"
+      }
+    },
+    {
+      "codice": 94,
+      "categoria": "Fuoriuscite, Dispersioni, Emissioni, Inquinamenti",
+      "descrizione": "Di sostanza infiammabile/combustibile",
+      "star": false,
+      "OpportunitaSganciamento": "-50",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "0",
+        "AB": "0",
+        "AV": "0",
+        "AG": "0",
+        "DEFAULT": "0"
+      }
+    },
+    {
+      "codice": 95,
+      "categoria": "Fuoriuscite, Dispersioni, Emissioni, Inquinamenti",
+      "descrizione": "Di sostanza comburente",
+      "star": false,
+      "OpportunitaSganciamento": "-50",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "0",
+        "AB": "0",
+        "AV": "0",
+        "AG": "0",
+        "DEFAULT": "0"
+      }
+    },
+    {
+      "codice": 96,
+      "categoria": "Fuoriuscite, Dispersioni, Emissioni, Inquinamenti",
+      "descrizione": "Di sostanza tossica",
+      "star": false,
+      "OpportunitaSganciamento": "-50",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "0",
+        "AB": "0",
+        "AV": "0",
+        "AG": "0",
+        "DEFAULT": "0"
+      }
+    },
+    {
+      "codice": 97,
+      "categoria": "Fuoriuscite, Dispersioni, Emissioni, Inquinamenti",
+      "descrizione": "Di sostanza asfissiante",
+      "star": false,
+      "OpportunitaSganciamento": "-50",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "0",
+        "AB": "0",
+        "AV": "0",
+        "AG": "0",
+        "DEFAULT": "0"
+      }
+    },
+    {
+      "codice": 98,
+      "categoria": "Fuoriuscite, Dispersioni, Emissioni, Inquinamenti",
+      "descrizione": "Di sostanza radioattiva",
+      "star": false,
+      "OpportunitaSganciamento": "-50",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "0",
+        "AB": "0",
+        "AV": "0",
+        "AG": "0",
+        "DEFAULT": "0"
+      }
+    },
+    {
+      "codice": 99,
+      "categoria": "Fuoriuscite, Dispersioni, Emissioni, Inquinamenti",
+      "descrizione": "Di sostanza biologica",
+      "star": false,
+      "OpportunitaSganciamento": "-50",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "0",
+        "AB": "0",
+        "AV": "0",
+        "AG": "0",
+        "DEFAULT": "0"
+      }
+    },
+    {
+      "codice": 100,
+      "categoria": "Fuoriuscite, Dispersioni, Emissioni, Inquinamenti",
+      "descrizione": "Di sostanza combustibile in polvere",
+      "star": false,
+      "OpportunitaSganciamento": "-50",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "0",
+        "AB": "0",
+        "AV": "0",
+        "AG": "0",
+        "DEFAULT": "0"
+      }
+    },
+    {
+      "codice": 101,
+      "categoria": "Fuoriuscite, Dispersioni, Emissioni, Inquinamenti",
+      "descrizione": "Di sostanza infiammabile seguita da incendio",
+      "star": false,
+      "OpportunitaSganciamento": "-50",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "0",
+        "AB": "0",
+        "AV": "0",
+        "AG": "0",
+        "DEFAULT": "0"
+      }
+    },
+    {
+      "codice": 102,
+      "categoria": "Fuoriuscite, Dispersioni, Emissioni, Inquinamenti",
+      "descrizione": "Di altro tipo di sostanza",
+      "star": false,
+      "OpportunitaSganciamento": "-50",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "0",
+        "AB": "0",
+        "AV": "0",
+        "AG": "0",
+        "DEFAULT": "0"
+      }
+    },
+    {
+      "codice": 103,
+      "categoria": "Fuoriuscite, Dispersioni, Emissioni, Inquinamenti",
+      "descrizione": "Inquinamento acque superficiali o di falda",
+      "star": false,
+      "OpportunitaSganciamento": "-50",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "0",
+        "AB": "0",
+        "AV": "0",
+        "AG": "0",
+        "DEFAULT": "0"
+      }
+    },
+    {
+      "codice": 104,
+      "categoria": "Fuoriuscite, Dispersioni, Emissioni, Inquinamenti",
+      "descrizione": "Inquinamento di aria",
+      "star": false,
+      "OpportunitaSganciamento": "-50",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "0",
+        "AB": "0",
+        "AV": "0",
+        "AG": "0",
+        "DEFAULT": "0"
+      }
+    },
+    {
+      "codice": 105,
+      "categoria": "Fuoriuscite, Dispersioni, Emissioni, Inquinamenti",
+      "descrizione": "Monitoraggio strumentale presenza di sostanze pericolose",
+      "star": false,
+      "OpportunitaSganciamento": "-50",
+      "AdeguatezzaMezzo": {
+        "APS": "100",
+        "AS": "0",
+        "AB": "0",
+        "AV": "0",
+        "AG": "0",
+        "DEFAULT": "0"
+      }
+    },
+    {
+      "codice": 106,
+      "categoria": "Intervento non più necessario",
+      "descrizione": "Intervento non più necessario",
+      "star": false,
+      "OpportunitaSganciamento": "-50",
+      "AdeguatezzaMezzo": {
+        "APS": "0",
+        "AS": "0",
+        "AB": "0",
+        "AV": "0",
+        "AG": "0",
+        "DEFAULT": "0"
+      }
+    },
+    {
+      "codice": 107,
+      "categoria": "Falso allarme",
+      "descrizione": "Falso allarme",
+      "star": false,
+      "OpportunitaSganciamento": "-50",
+      "AdeguatezzaMezzo": {
+        "APS": "0",
+        "AS": "0",
+        "AB": "0",
+        "AV": "0",
+        "AG": "0",
+        "DEFAULT": "0"
+      }
+    }
+  ]
+}

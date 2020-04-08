@@ -1,0 +1,583 @@
+[
+  {
+    "ListaEventi": [
+      {
+        "CodiceOrigine": "113",
+        "NominativoChiamante": "Polizia",
+        "NumeroTelefono": "113",
+        "CodiceSchedaContatto": null,
+        "Codice": "113",
+        "Motivazione": null,
+        "NotePubbliche": null,
+        "NotePrivate": null,
+        "Esito": "MettiInCoda",
+        "Istante": "2020-01-23T13:56:33.766Z",
+        "CodiceFonte": "3",
+        "CodiceRichiesta": "RM2312000000",
+        "TipoEvento": "Telefonata"
+      },
+      {
+        "Priorita": 3,
+        "Istante": "2020-01-23T13:56:33.78Z",
+        "CodiceFonte": "3",
+        "CodiceRichiesta": "RM2312000000",
+        "TipoEvento": "AssegnataPriorita"
+      },
+      {
+        "Istante": "2020-01-24T14:10:14.7435259Z",
+        "CodiceFonte": "3",
+        "CodiceRichiesta": "RM2312000000",
+        "TipoEvento": "InizioPresaInCarico"
+      },
+      {
+        "CodiceFiscaleCapopartenza": null,
+        "CodiciFiscaliComponenti": [
+        ],
+        "Partenza": {
+          "Squadre": [
+            {
+              "Id": "1",
+              "Codice": null,
+              "Nome": "Rossa",
+              "Stato": 2,
+              "Componenti": [
+                {
+                  "CodiceFiscale": "RSSMRA80A01C707K",
+                  "DescrizioneQualifica": "CP",
+                  "DescrizioneQualificaLunga": null,
+                  "Ruolo": null,
+                  "CodiceTurno": null,
+                  "Nominativo": "Mario Verdi",
+                  "OrarioInizio": "0001-01-01T00:00:00",
+                  "OrarioFine": "0001-01-01T00:00:00",
+                  "Tooltip": "",
+                  "CapoPartenza": true,
+                  "Autista": false,
+                  "Rimpiazzo": false,
+                  "FunGuardia": false,
+                  "TecnicoGuardia1": false,
+                  "TecnicoGuardia2": false,
+                  "CapoTurno": true,
+                  "Telefono": "3404444455"
+                },
+                {
+                  "CodiceFiscale": null,
+                  "DescrizioneQualifica": "CRE",
+                  "DescrizioneQualificaLunga": null,
+                  "Ruolo": null,
+                  "CodiceTurno": null,
+                  "Nominativo": "Francesco Rossi",
+                  "OrarioInizio": "0001-01-01T00:00:00",
+                  "OrarioFine": "0001-01-01T00:00:00",
+                  "Tooltip": "",
+                  "CapoPartenza": false,
+                  "Autista": true,
+                  "Rimpiazzo": false,
+                  "FunGuardia": false,
+                  "TecnicoGuardia1": false,
+                  "TecnicoGuardia2": false,
+                  "CapoTurno": true,
+                  "Telefono": "3404444455"
+                },
+                {
+                  "CodiceFiscale": null,
+                  "DescrizioneQualifica": "VCSC",
+                  "DescrizioneQualificaLunga": null,
+                  "Ruolo": null,
+                  "CodiceTurno": null,
+                  "Nominativo": "Mario Verna",
+                  "OrarioInizio": "0001-01-01T00:00:00",
+                  "OrarioFine": "0001-01-01T00:00:00",
+                  "Tooltip": "",
+                  "CapoPartenza": false,
+                  "Autista": false,
+                  "Rimpiazzo": true,
+                  "FunGuardia": false,
+                  "TecnicoGuardia1": false,
+                  "TecnicoGuardia2": false,
+                  "CapoTurno": true,
+                  "Telefono": "3404444455"
+                }
+              ],
+              "Distaccamento": {
+                "Codice": "RM.1000",
+                "Descrizione": "Tuscolana",
+                "Coordinate": {
+                  "Latitudine": 1.0,
+                  "Longitudine": 1.0
+                },
+                "Indirizzo": "Via Prova, 1",
+                "Tipo": "Distaccamento",
+                "Regione": "Lazio",
+                "Provincia": "Roma",
+                "Label": null,
+                "Icona": null
+              },
+              "IstanteTermineImpegno": null,
+              "ListaCodiciFiscaliComponentiSquadra": null
+            }
+          ],
+          "Mezzo": {
+            "Codice": "O.21826",
+            "IdRichiesta": "RM2000000",
+            "Descrizione": "21826",
+            "Genere": "APS",
+            "Stato": "In Viaggio",
+            "Appartenenza": "CORP",
+            "Distaccamento": {
+              "Codice": "RM.1000",
+              "Descrizione": "Comando di Roma",
+              "Coordinate": {
+                "Latitudine": 41.89994,
+                "Longitudine": 12.49127
+              },
+              "Indirizzo": "Via Genova, 1, 00184 Roma RM",
+              "Tipo": "Comando",
+              "Regione": "Lazio",
+              "Provincia": "Roma",
+              "Label": null,
+              "Icona": null
+            },
+            "DescrizioneAppartenenza": null,
+            "DescrizioneStato": null,
+            "StatoEfficenza": 0,
+            "DescrizioneStatoEfficenza": null,
+            "LivelloCarburante": 0,
+            "DescrizioneLivelloCarburante": null,
+            "LivelloEstinguente": 0,
+            "DescrizioneLivelloEstinguente": null,
+            "Notifiche": null,
+            "Coordinate": {
+              "Latitudine": 41.89994,
+              "Longitudine": 12.49127
+            },
+            "IstanteAcquisizione": null,
+            "IstantePrenotazione": null,
+            "IstanteMovimentazione": null
+          },
+          "Sganciata": false
+        },
+        "Componenti": [
+        ],
+        "FuoriSede": false,
+        "NumeroComponenti": 0,
+        "Istante": "2020-01-24T14:10:17.4836277Z",
+        "CodiceFonte": "3",
+        "CodiceRichiesta": "RM2312000000",
+        "TipoEvento": "ComposizionePartenza"
+      },
+      {
+        "Istante": "2020-01-24T14:10:19.2950851Z",
+        "CodiceFonte": "3",
+        "CodiceRichiesta": "RM2312000000",
+        "TipoEvento": "AssegnataRichiesta"
+      }
+    ],
+    "Codice": "RM2312000000",
+    "CodRichiesta": "RM2000000",
+    "CodOperatore": null,
+    "CodSOCompetente": null,
+    "CodSOAllertate": null,
+    "Eventi": [
+      {
+        "CodiceOrigine": "113",
+        "NominativoChiamante": "Polizia",
+        "NumeroTelefono": "113",
+        "CodiceSchedaContatto": null,
+        "Codice": "113",
+        "Motivazione": null,
+        "NotePubbliche": null,
+        "NotePrivate": null,
+        "Esito": "MettiInCoda",
+        "Istante": "2020-01-23T13:56:33.766Z",
+        "CodiceFonte": "3",
+        "CodiceRichiesta": "RM2312000000",
+        "TipoEvento": "Telefonata"
+      },
+      {
+        "Priorita": 3,
+        "Istante": "2020-01-23T13:56:33.78Z",
+        "CodiceFonte": "3",
+        "CodiceRichiesta": "RM2312000000",
+        "TipoEvento": "AssegnataPriorita"
+      },
+      {
+        "Istante": "2020-01-24T14:10:14.7435259Z",
+        "CodiceFonte": "3",
+        "CodiceRichiesta": "RM2312000000",
+        "TipoEvento": "InizioPresaInCarico"
+      },
+      {
+        "CodiceFiscaleCapopartenza": null,
+        "CodiciFiscaliComponenti": [
+        ],
+        "Partenza": {
+          "Squadre": [
+            {
+              "Id": "1",
+              "Codice": null,
+              "Nome": "Rossa",
+              "Stato": 2,
+              "Componenti": [
+                {
+                  "CodiceFiscale": "RSSMRA80A01C707K",
+                  "DescrizioneQualifica": "CP",
+                  "DescrizioneQualificaLunga": null,
+                  "Ruolo": null,
+                  "CodiceTurno": null,
+                  "Nominativo": "Mario Verdi",
+                  "OrarioInizio": "0001-01-01T00:00:00",
+                  "OrarioFine": "0001-01-01T00:00:00",
+                  "Tooltip": "",
+                  "CapoPartenza": true,
+                  "Autista": false,
+                  "Rimpiazzo": false,
+                  "FunGuardia": false,
+                  "TecnicoGuardia1": false,
+                  "TecnicoGuardia2": false,
+                  "CapoTurno": true,
+                  "Telefono": "3404444455"
+                },
+                {
+                  "CodiceFiscale": null,
+                  "DescrizioneQualifica": "CRE",
+                  "DescrizioneQualificaLunga": null,
+                  "Ruolo": null,
+                  "CodiceTurno": null,
+                  "Nominativo": "Francesco Rossi",
+                  "OrarioInizio": "0001-01-01T00:00:00",
+                  "OrarioFine": "0001-01-01T00:00:00",
+                  "Tooltip": "",
+                  "CapoPartenza": false,
+                  "Autista": true,
+                  "Rimpiazzo": false,
+                  "FunGuardia": false,
+                  "TecnicoGuardia1": false,
+                  "TecnicoGuardia2": false,
+                  "CapoTurno": true,
+                  "Telefono": "3404444455"
+                },
+                {
+                  "CodiceFiscale": null,
+                  "DescrizioneQualifica": "VCSC",
+                  "DescrizioneQualificaLunga": null,
+                  "Ruolo": null,
+                  "CodiceTurno": null,
+                  "Nominativo": "Mario Verna",
+                  "OrarioInizio": "0001-01-01T00:00:00",
+                  "OrarioFine": "0001-01-01T00:00:00",
+                  "Tooltip": "",
+                  "CapoPartenza": false,
+                  "Autista": false,
+                  "Rimpiazzo": true,
+                  "FunGuardia": false,
+                  "TecnicoGuardia1": false,
+                  "TecnicoGuardia2": false,
+                  "CapoTurno": true,
+                  "Telefono": "3404444455"
+                }
+              ],
+              "Distaccamento": {
+                "Codice": "RM.1000",
+                "Descrizione": "Tuscolana",
+                "Coordinate": {
+                  "Latitudine": 1.0,
+                  "Longitudine": 1.0
+                },
+                "Indirizzo": "Via Prova, 1",
+                "Tipo": "Distaccamento",
+                "Regione": "Lazio",
+                "Provincia": "Roma",
+                "Label": null,
+                "Icona": null
+              },
+              "IstanteTermineImpegno": null,
+              "ListaCodiciFiscaliComponentiSquadra": null
+            }
+          ],
+          "Mezzo": {
+            "Codice": "O.21826",
+            "IdRichiesta": "RM2000000",
+            "Descrizione": "21826",
+            "Genere": "APS",
+            "Stato": "In Viaggio",
+            "Appartenenza": "CORP",
+            "Distaccamento": {
+              "Codice": "RM.1000",
+              "Descrizione": "Comando di Roma",
+              "Coordinate": {
+                "Latitudine": 41.89994,
+                "Longitudine": 12.49127
+              },
+              "Indirizzo": "Via Genova, 1, 00184 Roma RM",
+              "Tipo": "Comando",
+              "Regione": "Lazio",
+              "Provincia": "Roma",
+              "Label": null,
+              "Icona": null
+            },
+            "DescrizioneAppartenenza": null,
+            "DescrizioneStato": null,
+            "StatoEfficenza": 0,
+            "DescrizioneStatoEfficenza": null,
+            "LivelloCarburante": 0,
+            "DescrizioneLivelloCarburante": null,
+            "LivelloEstinguente": 0,
+            "DescrizioneLivelloEstinguente": null,
+            "Notifiche": null,
+            "Coordinate": {
+              "Latitudine": 41.89994,
+              "Longitudine": 12.49127
+            },
+            "IstanteAcquisizione": null,
+            "IstantePrenotazione": null,
+            "IstanteMovimentazione": null
+          },
+          "Sganciata": false
+        },
+        "Componenti": [
+        ],
+        "FuoriSede": false,
+        "NumeroComponenti": 0,
+        "Istante": "2020-01-24T14:10:17.4836277Z",
+        "CodiceFonte": "3",
+        "CodiceRichiesta": "RM2312000000",
+        "TipoEvento": "ComposizionePartenza"
+      },
+      {
+        "Istante": "2020-01-24T14:10:19.2950851Z",
+        "CodiceFonte": "3",
+        "CodiceRichiesta": "RM2312000000",
+        "TipoEvento": "AssegnataRichiesta"
+      }
+    ],
+    "Sospesa": false,
+    "InAttesa": false,
+    "MezziCoinvolti": {
+    },
+    "SquadreCoinvolte": null,
+    "IstanteChiusura": null,
+    "Tipologie": [
+      "1"
+    ],
+    "Localita": {
+      "Coordinate": {
+        "Latitudine": 41.8895595,
+        "Longitudine": 12.5465594
+      },
+      "Indirizzo": "Via Teano, 00177 Roma RM, Italia",
+      "Note": null,
+      "Piano": null
+    },
+    "TrnInsChiamata": "Turno D",
+    "TipoTerreno": null,
+    "CodEntiIntervenuti": null,
+    "CodEntiPresaInCarico": null,
+    "ObiettivoSensibile": null,
+    "Descrizione": "Incendio normale (generico)",
+    "CodZoneEmergenza": null,
+    "Tags": [
+    ],
+    "Chiusa": false,
+    "Aperta": true,
+    "Presidiata": false,
+    "PrioritaRichiesta": 3,
+    "IstanteRicezioneRichiesta": "2020-01-23T13:56:33.766Z",
+    "IstantePresaInCarico": "2020-01-24T14:10:14.7435259Z",
+    "UtInLavorazione": [
+      "Mario.Rossi",
+      "Mario.Rossi",
+      "Mario.Rossi",
+      "Mario.Rossi",
+      "Mario.Rossi",
+      "Mario.Rossi",
+      "Mario.Rossi"
+    ],
+    "UtPresaInCarico": [
+      "Mario.Rossi"
+    ],
+    "IstantePrimaAssegnazione": "2020-01-24T14:10:17.4836277Z",
+    "Rilevante": false,
+    "RilevanteGrave": false,
+    "RilevanteStArCu": false,
+    "StatoRichiesta": {
+      "Evasa": true
+    },
+    "Telefonate": [
+      {
+        "CodiceOrigine": "113",
+        "NominativoChiamante": "Polizia",
+        "NumeroTelefono": "113",
+        "CodiceSchedaContatto": null,
+        "Codice": "113",
+        "Motivazione": null,
+        "NotePubbliche": null,
+        "NotePrivate": null,
+        "Esito": "MettiInCoda",
+        "Istante": "2020-01-23T13:56:33.766Z",
+        "CodiceFonte": "3",
+        "CodiceRichiesta": "RM2312000000",
+        "TipoEvento": "Telefonata"
+      }
+    ],
+    "Partenze": [
+      {
+        "CodiceFiscaleCapopartenza": null,
+        "CodiciFiscaliComponenti": [
+        ],
+        "Partenza": {
+          "Squadre": [
+            {
+              "Id": "1",
+              "Codice": null,
+              "Nome": "Rossa",
+              "Stato": 2,
+              "Componenti": [
+                {
+                  "CodiceFiscale": "RSSMRA80A01C707K",
+                  "DescrizioneQualifica": "CP",
+                  "DescrizioneQualificaLunga": null,
+                  "Ruolo": null,
+                  "CodiceTurno": null,
+                  "Nominativo": "Mario Verdi",
+                  "OrarioInizio": "0001-01-01T00:00:00",
+                  "OrarioFine": "0001-01-01T00:00:00",
+                  "Tooltip": "",
+                  "CapoPartenza": true,
+                  "Autista": false,
+                  "Rimpiazzo": false,
+                  "FunGuardia": false,
+                  "TecnicoGuardia1": false,
+                  "TecnicoGuardia2": false,
+                  "CapoTurno": true,
+                  "Telefono": "3404444455"
+                },
+                {
+                  "CodiceFiscale": null,
+                  "DescrizioneQualifica": "CRE",
+                  "DescrizioneQualificaLunga": null,
+                  "Ruolo": null,
+                  "CodiceTurno": null,
+                  "Nominativo": "Francesco Rossi",
+                  "OrarioInizio": "0001-01-01T00:00:00",
+                  "OrarioFine": "0001-01-01T00:00:00",
+                  "Tooltip": "",
+                  "CapoPartenza": false,
+                  "Autista": true,
+                  "Rimpiazzo": false,
+                  "FunGuardia": false,
+                  "TecnicoGuardia1": false,
+                  "TecnicoGuardia2": false,
+                  "CapoTurno": true,
+                  "Telefono": "3404444455"
+                },
+                {
+                  "CodiceFiscale": null,
+                  "DescrizioneQualifica": "VCSC",
+                  "DescrizioneQualificaLunga": null,
+                  "Ruolo": null,
+                  "CodiceTurno": null,
+                  "Nominativo": "Mario Verna",
+                  "OrarioInizio": "0001-01-01T00:00:00",
+                  "OrarioFine": "0001-01-01T00:00:00",
+                  "Tooltip": "",
+                  "CapoPartenza": false,
+                  "Autista": false,
+                  "Rimpiazzo": true,
+                  "FunGuardia": false,
+                  "TecnicoGuardia1": false,
+                  "TecnicoGuardia2": false,
+                  "CapoTurno": true,
+                  "Telefono": "3404444455"
+                }
+              ],
+              "Distaccamento": {
+                "Codice": "RM.1000",
+                "Descrizione": "Tuscolana",
+                "Coordinate": {
+                  "Latitudine": 1.0,
+                  "Longitudine": 1.0
+                },
+                "Indirizzo": "Via Prova, 1",
+                "Tipo": "Distaccamento",
+                "Regione": "Lazio",
+                "Provincia": "Roma",
+                "Label": null,
+                "Icona": null
+              },
+              "IstanteTermineImpegno": null,
+              "ListaCodiciFiscaliComponentiSquadra": null
+            }
+          ],
+          "Mezzo": {
+            "Codice": "O.21826",
+            "IdRichiesta": "RM2000000",
+            "Descrizione": "21826",
+            "Genere": "APS",
+            "Stato": "In Viaggio",
+            "Appartenenza": "CORP",
+            "Distaccamento": {
+              "Codice": "RM.1000",
+              "Descrizione": "Comando di Roma",
+              "Coordinate": {
+                "Latitudine": 41.89994,
+                "Longitudine": 12.49127
+              },
+              "Indirizzo": "Via Genova, 1, 00184 Roma RM",
+              "Tipo": "Comando",
+              "Regione": "Lazio",
+              "Provincia": "Roma",
+              "Label": null,
+              "Icona": null
+            },
+            "DescrizioneAppartenenza": null,
+            "DescrizioneStato": null,
+            "StatoEfficenza": 0,
+            "DescrizioneStatoEfficenza": null,
+            "LivelloCarburante": 0,
+            "DescrizioneLivelloCarburante": null,
+            "LivelloEstinguente": 0,
+            "DescrizioneLivelloEstinguente": null,
+            "Notifiche": null,
+            "Coordinate": {
+              "Latitudine": 41.89994,
+              "Longitudine": 12.49127
+            },
+            "IstanteAcquisizione": null,
+            "IstantePrenotazione": null,
+            "IstanteMovimentazione": null
+          },
+          "Sganciata": false
+        },
+        "Componenti": [
+        ],
+        "FuoriSede": false,
+        "NumeroComponenti": 0,
+        "Istante": "2020-01-24T14:10:17.4836277Z",
+        "CodiceFonte": "3",
+        "CodiceRichiesta": "RM2312000000",
+        "TipoEvento": "ComposizionePartenza"
+      }
+    ],
+    "Richiedente": {
+      "Telefono": "113",
+      "Nominativo": "Polizia"
+    },
+    "CodUOCompetenza": [
+      "RM.1000"
+    ],
+    "Competenze": null,
+    "CodNue": null,
+    "StatoInvioFonogramma": {
+      "Codice": "0",
+      "Descrizione": "Non necessario"
+    },
+    "Complessita": {
+      "Codice": "2",
+      "Descrizione": "Bassa"
+    },
+    "NotePubbliche": null,
+    "NotePrivate": null,
+    "Id": "5e29a611bb8ad832d0bb270c"
+  }
+]

@@ -1,0 +1,32 @@
+<div class="col-12 mt-1 mb-2">
+  <div class="row">
+    <div class="col-10">
+      <div class="row h-100">
+        <!-- box interventi -->
+        <div class="col-4 pr-0">
+          <div class="card app-shadow">
+            <app-box-interventi [interventi]="interventi"></app-box-interventi>
+          </div>
+        </div>
+        <!-- box interventi -->
+        <div class="col-4 pr-0">
+          <div class="card app-shadow">
+            <app-box-mezzi [mezzi]="mezzi"></app-box-mezzi>
+          </div>
+        </div>
+        <!-- box interventi -->
+        <div class="col-4 pr-0">
+          <div class="card app-shadow">
+            <app-box-personale [personale]="personale"></app-box-personale>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- box interventi -->
+    <div class="col-2">
+      <div class="card app-shadow">
+        <app-box-meteo></app-box-meteo>
+      </div>
+    </div>
+  </div>
+</div>

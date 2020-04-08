@@ -1,0 +1,15 @@
+.buttons-control {
+    background-color: white !important;
+    color: gray !important;
+    border-radius: 1px !important;
+    padding: 7px 11px;
+    margin-right: 1.8px;
+}
+
+.buttons-control:not([disabled]):focus {
+    box-shadow: none !important;
+}
+
+.buttons-control:not([disabled]):hover {
+    color: black !important;
+}

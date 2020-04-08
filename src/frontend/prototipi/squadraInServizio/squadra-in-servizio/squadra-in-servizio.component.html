@@ -1,0 +1,85 @@
+<html>
+
+<head>
+</head>
+
+<body>
+  <p></p>
+  <div class="section">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-1">
+        </div>
+        <div class="col-md-1">
+          <h5>
+            <div class="badge badge-info">{{fs.SiglaSquadra}} </div>
+          </h5>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-1 h5">
+          <div class="badge badge-info" style="align-items: right">{{fs.Tipo}}</div>
+          <div class="card-text">{{fs.Tipo}}</div>
+        </div>
+        <div class="col-md-1 p-0">
+          <span class="fa-stack fa-2x">
+         
+            <i class="fa fa-truck fa-stack-1x"></i>
+            <i class="fa fa-circle-o fa-stack-2x text-success"></i>
+        
+           <i class="text-success"></i>
+            
+        </span>
+        </div>
+        <div class="col-md-3 h5">
+          <div class="badge" [ngClass]="{'badge-success' : fs.CodiceStato == 'InSede', 
+                     'badge-danger'  : fs.CodiceStato == 'InViaggio' || fs.CodiceStato == 'SulPosto',
+                     'badge-primary' : fs.CodiceStato == 'InRientro'}">{{getDescrizioneStato(fs.CodiceStato)}}
+          </div>
+          <!--<span> {{fs.DataServizio | friendlyDate}}</span>
+          <span> {{fs.DataServizio | friendlyHour}}</span>-->
+          <div *ngIf="(fs.CodiceStato == 'InViaggio' || fs.CodiceStato == 'SulPosto')">
+            <button type="button" class="btn btn-primary btn-sm">Rich. Ass.</button>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-1">
+        </div>
+        <div class="col-md-1">
+          <h5>
+            <div class="badge badge-info">{{fs.CodiceUnitaOperativa}} </div>
+          </h5>
+        </div>
+        <div class="col-md-3" *ngIf="numeroPersone() > 0">
+          <h5>
+            <span class="fa fa-users" aria-hidden="true"></span>
+            <span class="badge badge-info">{{numeroPersone()}} </span>
+            <span class="fa fa-level-down" (click)="fs.hideMostraPersone()"></span>
+            <div *ngIf="fs.mostraPersone">
+              <div class="card">
+              <div class="card-header">{{fs.SiglaSquadra}}
+               <div class="card-text" *ngFor="let p of fs.personeSulMezzo">
+                {{p.descrizione}}
+                <span *ngIf="p.capoPartenza"> Capo Partenza </span>
+                <span *ngIf="p.autista"> Autista </span> 
+               </div>
+              </div>
+              </div>
+             </div>
+          </h5>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button type="button" (click)="setCodiceStato('InSede')">In Sede</button>
+  <button type="button" (click)="setCodiceStato('InViaggio')">In Viaggio</button>
+  <button type="button" (click)="setCodiceStato('SulPosto')">Sul Posto</button>
+  <button type="button" (click)="setCodiceStato('InRientro')">In Rientro</button>
+  <button type="button" (click)="setCodiceStato('Istituto')">Istituto</button>
+
+
+</body>
+
+</html>

@@ -1,0 +1,32 @@
+Bootstrap
+===============
+npm install bootstrap@4.0.0-beta
+npm install --save @ng-bootstrap/ng-bootstrap
+
+npm -g uninstall --save @ng-bootstrap/ng-bootstrap
+
+
+aggiungere questa riga in styles.scss
+	@import '../node_modules/bootstrap/scss/bootstrap';
+	
+	se non funziona, provare con questa
+		@import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
+
+
+FontAwesome
+==========================
+npm install font-awesome --save
+
+aggiungere/integrare in angular-cli.json
+
+
+{
+  "apps": [
+    {
+      "styles": [
+        "../node_modules/font-awesome/css/font-awesome.css"
+      ]
+    }
+  ],
+
+}

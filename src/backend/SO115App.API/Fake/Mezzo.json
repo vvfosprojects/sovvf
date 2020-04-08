@@ -1,0 +1,496 @@
+[
+  {
+    "Codice": "O.13362",
+    "IdRichiesta": null,
+    "Descrizione": "13362",
+    "Genere": "ACT/OP",
+    "Stato": "Fuori Servizio",
+    "Appartenenza": "0",
+    "Distaccamento": {
+      "Codice": "RM.1000",
+      "Descrizione": "Comando di Roma",
+      "Coordinate": {
+        "Latitudine": 41.89994,
+        "Longitudine": 12.49127
+      },
+      "Indirizzo": "Via Genova, 1, 00184 Roma RM",
+      "Tipo": "Comando",
+      "Regione": "Lazio",
+      "Provincia": "Roma",
+      "Label": null,
+      "Icona": null
+    },
+    "DescrizioneAppartenenza": null,
+    "DescrizioneStato": null,
+    "StatoEfficenza": 0,
+    "DescrizioneStatoEfficenza": null,
+    "LivelloCarburante": 0,
+    "DescrizioneLivelloCarburante": null,
+    "LivelloEstinguente": 0,
+    "DescrizioneLivelloEstinguente": null,
+    "Notifiche": null,
+    "Coordinate": {
+      "Latitudine": 41.89994,
+      "Longitudine": 12.49127
+    },
+    "IstanteAcquisizione": "0001-01-01T00:00:00",
+    "IstantePrenotazione": null,
+    "IstanteMovimentazione": null
+  },
+  {
+    "Codice": "O.14512",
+    "IdRichiesta": null,
+    "Descrizione": "14512",
+    "Genere": "AA",
+    "Stato": "Fuori Servizio",
+    "Appartenenza": "0",
+    "Distaccamento": {
+      "Codice": "RM.1000",
+      "Descrizione": "Comando di Roma",
+      "Coordinate": {
+        "Latitudine": 41.89994,
+        "Longitudine": 12.49127
+      },
+      "Indirizzo": "Via Genova, 1, 00184 Roma RM",
+      "Tipo": "Comando",
+      "Regione": "Lazio",
+      "Provincia": "Roma",
+      "Label": null,
+      "Icona": null
+    },
+    "DescrizioneAppartenenza": null,
+    "DescrizioneStato": null,
+    "StatoEfficenza": 0,
+    "DescrizioneStatoEfficenza": null,
+    "LivelloCarburante": 0,
+    "DescrizioneLivelloCarburante": null,
+    "LivelloEstinguente": 0,
+    "DescrizioneLivelloEstinguente": null,
+    "Notifiche": null,
+    "Coordinate": {
+      "Latitudine": 41.89994,
+      "Longitudine": 12.49127
+    },
+    "IstanteAcquisizione": "0001-01-01T00:00:00",
+    "IstantePrenotazione": null,
+    "IstanteMovimentazione": null
+  },
+  {
+    "Codice": "O.18195",
+    "IdRichiesta": null,
+    "Descrizione": "18195",
+    "Genere": "APS",
+    "Stato": "In Sede",
+    "Appartenenza": "0",
+    "Distaccamento": {
+      "Codice": "RM.1000",
+      "Descrizione": "Comando di Roma",
+      "Coordinate": {
+        "Latitudine": 41.89994,
+        "Longitudine": 12.49127
+      },
+      "Indirizzo": "Via Genova, 1, 00184 Roma RM",
+      "Tipo": "Comando",
+      "Regione": "Lazio",
+      "Provincia": "Roma",
+      "Label": null,
+      "Icona": null
+    },
+    "DescrizioneAppartenenza": null,
+    "DescrizioneStato": null,
+    "StatoEfficenza": 0,
+    "DescrizioneStatoEfficenza": null,
+    "LivelloCarburante": 0,
+    "DescrizioneLivelloCarburante": null,
+    "LivelloEstinguente": 0,
+    "DescrizioneLivelloEstinguente": null,
+    "Notifiche": null,
+    "Coordinate": {
+      "Latitudine": 41.8975193,
+      "Longitudine": 12.576130004882812
+    },
+    "IstanteAcquisizione": "0001-01-01T00:00:00",
+    "IstantePrenotazione": null,
+    "IstanteMovimentazione": null
+  },
+  {
+    "Codice": "O.29319",
+    "IdRichiesta": null,
+    "Descrizione": "16022",
+    "Genere": "AF/OP",
+    "Stato": "In Sede",
+    "Appartenenza": "0",
+    "Distaccamento": {
+      "Codice": "RM.1000",
+      "Descrizione": "Comando di Roma",
+      "Coordinate": {
+        "Latitudine": 41.89994,
+        "Longitudine": 12.49127
+      },
+      "Indirizzo": "Via Genova, 1, 00184 Roma RM",
+      "Tipo": "Comando",
+      "Regione": "Lazio",
+      "Provincia": "Roma",
+      "Label": null,
+      "Icona": null
+    },
+    "DescrizioneAppartenenza": null,
+    "DescrizioneStato": null,
+    "StatoEfficenza": 0,
+    "DescrizioneStatoEfficenza": null,
+    "LivelloCarburante": 0,
+    "DescrizioneLivelloCarburante": null,
+    "LivelloEstinguente": 0,
+    "DescrizioneLivelloEstinguente": null,
+    "Notifiche": null,
+    "Coordinate": {
+      "Latitudine": 41.83294677734375,
+      "Longitudine": 12.46554183959961
+    },
+    "IstanteAcquisizione": "0001-01-01T00:00:00",
+    "IstantePrenotazione": null,
+    "IstanteMovimentazione": null
+  },
+  {
+    "Codice": "O.29729",
+    "IdRichiesta": null,
+    "Descrizione": "16023",
+    "Genere": "AF/OP",
+    "Stato": "In Sede",
+    "Appartenenza": "0",
+    "Distaccamento": {
+      "Codice": "RM.1000",
+      "Descrizione": "Comando di Roma",
+      "Coordinate": {
+        "Latitudine": 41.89994,
+        "Longitudine": 12.49127
+      },
+      "Indirizzo": "Via Genova, 1, 00184 Roma RM",
+      "Tipo": "Comando",
+      "Regione": "Lazio",
+      "Provincia": "Roma",
+      "Label": null,
+      "Icona": null
+    },
+    "DescrizioneAppartenenza": null,
+    "DescrizioneStato": null,
+    "StatoEfficenza": 0,
+    "DescrizioneStatoEfficenza": null,
+    "LivelloCarburante": 0,
+    "DescrizioneLivelloCarburante": null,
+    "LivelloEstinguente": 0,
+    "DescrizioneLivelloEstinguente": null,
+    "Notifiche": null,
+    "Coordinate": {
+      "Latitudine": 41.87828063964844,
+      "Longitudine": 12.478638648986816
+    },
+    "IstanteAcquisizione": "0001-01-01T00:00:00",
+    "IstantePrenotazione": null,
+    "IstanteMovimentazione": null
+  },
+  {
+    "Codice": "O.29730",
+    "IdRichiesta": null,
+    "Descrizione": "16204",
+    "Genere": "AF/COMBI",
+    "Stato": "In Sede",
+    "Appartenenza": "0",
+    "Distaccamento": {
+      "Codice": "RM.1000",
+      "Descrizione": "Comando di Roma",
+      "Coordinate": {
+        "Latitudine": 41.89994,
+        "Longitudine": 12.49127
+      },
+      "Indirizzo": "Via Genova, 1, 00184 Roma RM",
+      "Tipo": "Comando",
+      "Regione": "Lazio",
+      "Provincia": "Roma",
+      "Label": null,
+      "Icona": null
+    },
+    "DescrizioneAppartenenza": null,
+    "DescrizioneStato": null,
+    "StatoEfficenza": 0,
+    "DescrizioneStatoEfficenza": null,
+    "LivelloCarburante": 0,
+    "DescrizioneLivelloCarburante": null,
+    "LivelloEstinguente": 0,
+    "DescrizioneLivelloEstinguente": null,
+    "Notifiche": null,
+    "Coordinate": {
+      "Latitudine": 42.09697723388672,
+      "Longitudine": 11.788607597351074
+    },
+    "IstanteAcquisizione": "0001-01-01T00:00:00",
+    "IstantePrenotazione": null,
+    "IstanteMovimentazione": null
+  },
+  {
+    "Codice": "O.21826",
+    "IdRichiesta": null,
+    "Descrizione": "16216",
+    "Genere": "AF/COMBI",
+    "Stato": "In Sede",
+    "Appartenenza": "0",
+    "Distaccamento": {
+      "Codice": "RM.1000",
+      "Descrizione": "Comando di Roma",
+      "Coordinate": {
+        "Latitudine": 41.89994,
+        "Longitudine": 12.49127
+      },
+      "Indirizzo": "Via Genova, 1, 00184 Roma RM",
+      "Tipo": "Comando",
+      "Regione": "Lazio",
+      "Provincia": "Roma",
+      "Label": null,
+      "Icona": null
+    },
+    "DescrizioneAppartenenza": null,
+    "DescrizioneStato": null,
+    "StatoEfficenza": 0,
+    "DescrizioneStatoEfficenza": null,
+    "LivelloCarburante": 0,
+    "DescrizioneLivelloCarburante": null,
+    "LivelloEstinguente": 0,
+    "DescrizioneLivelloEstinguente": null,
+    "Notifiche": null,
+    "Coordinate": {
+      "Latitudine": 41.94144821166992,
+      "Longitudine": 12.546906471252441
+    },
+    "IstanteAcquisizione": "0001-01-01T00:00:00",
+    "IstantePrenotazione": null,
+    "IstanteMovimentazione": null
+  },
+  {
+    "Codice": "O.16225",
+    "IdRichiesta": null,
+    "Descrizione": "16225",
+    "Genere": "AF/OP",
+    "Stato": "In Sede",
+    "Appartenenza": "0",
+    "Distaccamento": {
+      "Codice": "RM.1000",
+      "Descrizione": "Comando di Roma",
+      "Coordinate": {
+        "Latitudine": 41.89994,
+        "Longitudine": 12.49127
+      },
+      "Indirizzo": "Via Genova, 1, 00184 Roma RM",
+      "Tipo": "Comando",
+      "Regione": "Lazio",
+      "Provincia": "Roma",
+      "Label": null,
+      "Icona": null
+    },
+    "DescrizioneAppartenenza": null,
+    "DescrizioneStato": null,
+    "StatoEfficenza": 0,
+    "DescrizioneStatoEfficenza": null,
+    "LivelloCarburante": 0,
+    "DescrizioneLivelloCarburante": null,
+    "LivelloEstinguente": 0,
+    "DescrizioneLivelloEstinguente": null,
+    "Notifiche": null,
+    "Coordinate": {
+      "Latitudine": 41.909366607666016,
+      "Longitudine": 12.614013671875
+    },
+    "IstanteAcquisizione": "0001-01-01T00:00:00",
+    "IstantePrenotazione": null,
+    "IstanteMovimentazione": null
+  },
+  {
+    "Codice": "O.19610",
+    "IdRichiesta": null,
+    "Descrizione": "19610",
+    "Genere": "CA",
+    "Stato": "In Sede",
+    "Appartenenza": "0",
+    "Distaccamento": {
+      "Codice": "RM.1000",
+      "Descrizione": "Comando di Roma",
+      "Coordinate": {
+        "Latitudine": 41.89994,
+        "Longitudine": 12.49127
+      },
+      "Indirizzo": "Via Genova, 1, 00184 Roma RM",
+      "Tipo": "Comando",
+      "Regione": "Lazio",
+      "Provincia": "Roma",
+      "Label": null,
+      "Icona": null
+    },
+    "DescrizioneAppartenenza": null,
+    "DescrizioneStato": null,
+    "StatoEfficenza": 0,
+    "DescrizioneStatoEfficenza": null,
+    "LivelloCarburante": 0,
+    "DescrizioneLivelloCarburante": null,
+    "LivelloEstinguente": 0,
+    "DescrizioneLivelloEstinguente": null,
+    "Notifiche": null,
+    "Coordinate": {
+      "Latitudine": 41.665157318115234,
+      "Longitudine": 12.520912170410156
+    },
+    "IstanteAcquisizione": "0001-01-01T00:00:00",
+    "IstantePrenotazione": null,
+    "IstanteMovimentazione": null
+  },
+  {
+    "Codice": "O.19611",
+    "IdRichiesta": null,
+    "Descrizione": "19611",
+    "Genere": "CA",
+    "Stato": "In Sede",
+    "Appartenenza": "0",
+    "Distaccamento": {
+      "Codice": "RM.1000",
+      "Descrizione": "Distaccamento Cittadino Roma Tuscolano I",
+      "Coordinate": {
+        "Latitudine": 41.8815193,
+        "Longitudine": 12.5164942
+      },
+      "Indirizzo": "Via Tuscolana, 126 00182 Roma RM",
+      "Tipo": "Comando",
+      "Regione": "Lazio",
+      "Provincia": "Roma",
+      "Label": null,
+      "Icona": null
+    },
+    "DescrizioneAppartenenza": null,
+    "DescrizioneStato": null,
+    "StatoEfficenza": 0,
+    "DescrizioneStatoEfficenza": null,
+    "LivelloCarburante": 0,
+    "DescrizioneLivelloCarburante": null,
+    "LivelloEstinguente": 0,
+    "DescrizioneLivelloEstinguente": null,
+    "Notifiche": null,
+    "Coordinate": {
+      "Latitudine": 41.836116790771484,
+      "Longitudine": 12.563673973083496
+    },
+    "IstanteAcquisizione": "0001-01-01T00:00:00",
+    "IstantePrenotazione": null,
+    "IstanteMovimentazione": null
+  },
+  {
+    "Codice": "O.26679",
+    "IdRichiesta": null,
+    "Descrizione": "26679",
+    "Genere": "ACT/TRI",
+    "Stato": "In Sede",
+    "Appartenenza": "0",
+    "Distaccamento": {
+      "Codice": "RM.1000",
+      "Descrizione": "Distaccamento Cittadino Roma Tuscolano I",
+      "Coordinate": {
+        "Latitudine": 41.8815193,
+        "Longitudine": 12.5164942
+      },
+      "Indirizzo": "Via Tuscolana, 126 00182 Roma RM",
+      "Tipo": "Comando",
+      "Regione": "Lazio",
+      "Provincia": "Roma",
+      "Label": null,
+      "Icona": null
+    },
+    "DescrizioneAppartenenza": null,
+    "DescrizioneStato": null,
+    "StatoEfficenza": 0,
+    "DescrizioneStatoEfficenza": null,
+    "LivelloCarburante": 0,
+    "DescrizioneLivelloCarburante": null,
+    "LivelloEstinguente": 0,
+    "DescrizioneLivelloEstinguente": null,
+    "Notifiche": null,
+    "Coordinate": {
+      "Latitudine": 41.8638801574707,
+      "Longitudine": 12.555130004882812
+    },
+    "IstanteAcquisizione": "0001-01-01T00:00:00",
+    "IstantePrenotazione": null,
+    "IstanteMovimentazione": null
+  },
+  {
+    "Codice": "O.27790",
+    "IdRichiesta": null,
+    "Descrizione": "27790",
+    "Genere": "AV",
+    "Stato": "In Sede",
+    "Appartenenza": "0",
+    "Distaccamento": {
+      "Codice": "TO.1000",
+      "Descrizione": "Distaccamento Cittadino Torino I",
+      "Coordinate": {
+        "Latitudine": 41.8815193,
+        "Longitudine": 12.5164942
+      },
+      "Indirizzo": "Via Torino, 123 00000 Torino TO",
+      "Tipo": "Comando",
+      "Regione": "Piemonte",
+      "Provincia": "Torino",
+      "Label": null,
+      "Icona": null
+    },
+    "DescrizioneAppartenenza": null,
+    "DescrizioneStato": null,
+    "StatoEfficenza": 0,
+    "DescrizioneStatoEfficenza": null,
+    "LivelloCarburante": 0,
+    "DescrizioneLivelloCarburante": null,
+    "LivelloEstinguente": 0,
+    "DescrizioneLivelloEstinguente": null,
+    "Notifiche": null,
+    "Coordinate": {
+      "Latitudine": 41.89994,
+      "Longitudine": 12.49127
+    },
+    "IstanteAcquisizione": "0001-01-01T00:00:00",
+    "IstantePrenotazione": null,
+    "IstanteMovimentazione": null
+  },
+  {
+    "Codice": "O.27791",
+    "IdRichiesta": null,
+    "Descrizione": "27791",
+    "Genere": "AV",
+    "Stato": "In Sede",
+    "Appartenenza": "0",
+    "Distaccamento": {
+      "Codice": "TO.1000",
+      "Descrizione": "Distaccamento Cittadino Torino I",
+      "Coordinate": {
+        "Latitudine": 41.8815193,
+        "Longitudine": 12.5164942
+      },
+      "Indirizzo": "Via Torino, 123 00000 Torino TO",
+      "Tipo": "Comando",
+      "Regione": "Piemonte",
+      "Provincia": "Torino",
+      "Label": null,
+      "Icona": null
+    },
+    "DescrizioneAppartenenza": null,
+    "DescrizioneStato": null,
+    "StatoEfficenza": 0,
+    "DescrizioneStatoEfficenza": null,
+    "LivelloCarburante": 0,
+    "DescrizioneLivelloCarburante": null,
+    "LivelloEstinguente": 0,
+    "DescrizioneLivelloEstinguente": null,
+    "Notifiche": null,
+    "Coordinate": {
+      "Latitudine": 41.89994,
+      "Longitudine": 12.49127
+    },
+    "IstanteAcquisizione": "0001-01-01T00:00:00",
+    "IstantePrenotazione": null,
+    "IstanteMovimentazione": null
+  }
+]

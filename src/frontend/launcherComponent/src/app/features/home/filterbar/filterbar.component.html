@@ -1,0 +1,73 @@
+<div class="row">
+    <div [ngClass]="(filterBarCol$ | async)">
+        <div class="row">
+            <div class="col-3 text-left">
+                <app-tasto-chiamata-group>
+                    <app-tasto-chiamata [colorButtonChiamata]="colorButton.chiamata"
+                                        [disabled]="permessiFeature.SchedaTelefonata | checkPermission"
+                                        (startChiamata)="toggleChiamata()">
+                    </app-tasto-chiamata>
+                    <app-tasto-schede-contatto [active]="schedeContattoStatus$ | async"
+                                               [disabled]="(chiamataStatus$ | async) || (permessiFeature.SchedeContatto | checkPermission)"></app-tasto-schede-contatto>
+                </app-tasto-chiamata-group>
+            </div>
+            <div class="col-2 pl-0 text-left">
+                <app-filtri-richieste *ngIf="richiesteStatus$ | async"
+                                      [filtri]="filtriRichieste$ | async"
+                                      [filtriSelezionati]="filtriRichiesteSelezionati$ | async"
+                                      [categorie]="categoriaFiltriRichieste$| async"
+                                      (filtroSelezionato)="onSelezioneFiltroRichieste($event)"
+                                      (filtroDeselezionato)="onDeselezioneFiltroRichieste($event)"
+                                      (filtriReset)="eliminaFiltriAttiviRichieste()">
+                </app-filtri-richieste>
+                <app-filtri-schede-contatto *ngIf="schedeContattoStatus$ | async"
+                                            [filtri]="filtriSchedeContatto$ | async"
+                                            [filtriSelezionati]="filtriSelezionatiSchedeContatto$ | async"
+                                            (filtroSelezionato)="onSelezioneFiltroSchedeContatto($event)"
+                                            (filtriReset)="eliminaFiltriAttiviSchedeContatto()">
+                </app-filtri-schede-contatto>
+                <app-filtri-mezzi-servizio *ngIf="mezziInServizioStatus$ | async"
+                                           [filtri]="filtriMezziInServizio$ | async"
+                                           [filtriSelezionati]="filtriSelezionatiMezziInServizio$ | async"
+                                           (filtroSelezionato)="onSelezioneFiltroMezziInServizio($event)"
+                                           (filtriReset)="eliminaFiltriAttiviMezziInServizio()">
+                </app-filtri-mezzi-servizio>
+            </div>
+            <div class="col-7 pl-0">
+                <app-ricerca *ngIf="!(chiamataStatus$ | async) && !(composizioneStatus$ | async)"
+                             [ricerca]="ricercaRichieste$ | async"
+                             [disabled]="mezziInServizioStatus$ | async"
+                             (search)="onSearchRichieste($event)">
+                </app-ricerca>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="!(composizioneStatus$ | async) && !(chiamataStatus$ | async)"
+         class="col-2">
+        <div class="row">
+            <div class="col-12">
+                <app-view-mode [colorButtonView]="colorButton.buttonView"
+                               [disabledMezziInServizio]="permessiFeature.MezziInServizio | checkPermission"
+                               [mezziInServizioActive]="viewState?.mezziInServizio.active"
+                               (buttonView)="switchView($event)"
+                               (optionRichieste)="onOptionsRichieste($event)"
+                               [stateSwitch]="(stateSwitch$ | async)"
+                               [mapStatus]="(mapsStatus$ | async)"
+                               (toggleMeteo)="onMeteoSwitch($event)">
+                </app-view-mode>
+            </div>
+        </div>
+    </div>
+    <div [ngClass]="(filterBarCol$ | async)">
+        <div class="row">
+            <div class="col-5">
+            </div>
+            <div *ngIf="(mapsStatus$ | async)" class="col-2 text-right pr-0">
+                <app-loader-marker [markerOnLoading]="markerOnLoading$ | async"></app-loader-marker>
+            </div>
+            <div *ngIf="(mapsStatus$ | async)" class="col-5 pl-0">
+                <app-filtri-mappa></app-filtri-mappa>
+            </div>
+        </div>
+    </div>
+</div>

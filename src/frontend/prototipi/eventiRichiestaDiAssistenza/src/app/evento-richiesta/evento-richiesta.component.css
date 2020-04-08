@@ -1,0 +1,27 @@
+.creazione_richiesta {
+    color: #FF1F00;
+}
+
+.assegnazione_partenza {
+    color: #FF1F00;
+}
+
+.uscita_partenza {
+	color: #878713;
+}
+
+.arrivo_partenza_sul_posto {
+	color: #087BC4;
+}
+
+.fine_intervento_della_partenza {
+	color: #0AC70A;
+}
+
+.rientro_in_sede_della_partenza {
+	color: #bbbbbb;
+}
+
+.chiusura_richiesta {
+    color: #bbbbbb;
+}

@@ -1,0 +1,38 @@
+<!--<div class="card card-inverse row_text p-1" style="background-color:lightblue" >
+  <div class="row align-items-center">
+    <div class="col-md-12">-->
+<td>
+  <div>
+    <!--<i class="fa {{iconeClasseEventoCorrente}} fa-fw" aria-hidden="true" title="{{eventoRichiesta.tipo}}"></i>-->
+    <i *ngFor="let ii of iconeClasseEventoCorrente" class="fa {{ii}} fa-fw" aria-hidden="true" title="{{eventoRichiesta.nomeClasseEvento}}">
+    </i>
+  </div>
+</td>
+<td>
+  <!--<div class="h5">{{eventoRichiesta.istanteEvento.toLocaleDateString()}} {{eventoRichiesta.istanteEvento.toLocaleTimeString()}}</div>-->
+  <span class="h6 text-muted">{{eventoRichiesta.istanteEvento | friendlyDate}} {{eventoRichiesta.istanteEvento | friendlyHour : true}}</span>
+  <!--<div class="h5">{{eventoRichiesta.istanteEvento.toLocaleDateString()}} {{eventoRichiesta.istanteEvento.toLocaleTimeString()}}</div>-->
+  <!--<div class="h5">{{eventoRichiesta.istanteEvento | distanzaTemporale : istanteEventoPrecedente }}</div>-->
+  <!--<span>(+26s) {{istanteEventoPrecedente}} </span>-->
+  <span>{{eventoRichiesta.istanteEvento | distanzaTemporale : istanteEventoPrecedente }} </span>
+  <span>{{eventoRichiesta.istanteEvento | distanzaTemporale : istantePrimoEvento : "N" }}</span>
+</td>
+<td>
+  <span *ngIf="eventoRichiesta.targa">
+    <i class="fa fa-hashtag" aria-hidden="true"></i>
+    {{eventoRichiesta.targa}}
+  </span>
+</td>
+<td>
+  <span *ngIf="eventoRichiesta.note">
+    <i class="fa fa-sticky-note-o" aria-hidden="true" title="Descrizione"> </i>
+    <!--
+    <a href="{{eventoRichiesta.HTMLLinkElement}}" title="Descrizione">
+      {{eventoRichiesta.note}}
+    </a>
+    -->
+    {{eventoRichiesta.note}} 
+  </span>
+  <!--<i class="fa fa-arrow-circle-o-right" aria-hidden="true" title="Vedi dettaglio" (click)="clickDettaglio($event)"></i>-->
+</td>
+

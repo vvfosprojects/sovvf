@@ -1,0 +1,49 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Servizi\Identity\Mock\Json\Anagrafica.json" />
+    <None Remove="Servizi\Personale\Mock\Json\Componenti.json" />
+    <None Remove="Servizi\Personale\Mock\Json\SquadreNelTurno.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Servizi\Identity\Mock\Json\Anagrafica.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="Servizi\Personale\Mock\Json\Componenti.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="Servizi\Personale\Mock\Json\SquadreNelTurno.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="GeoCoordinate.NetCore" Version="1.0.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SO115App.API.SOVVF.FakeImplementations\SO115App.API.SOVVF.FakeImplementations.csproj" />
+    <ProjectReference Include="..\SO115App.Models\SO115App.Models.csproj" />
+    <ProjectReference Include="..\SO115App.Persistence.MongoDB\SO115App.Persistence.MongoDB.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Servizi\Gac\Mock\Json\Mezzo.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Servizi\Nue\Mock\Json\SchedeContatto.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+</Project>

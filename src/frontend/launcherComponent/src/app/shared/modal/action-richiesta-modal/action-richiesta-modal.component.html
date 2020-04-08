@@ -1,0 +1,25 @@
+<div>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title"><i
+        class="fa fa-fw fa-{{icona.descrizione}} text-{{icona.colore}}"></i> {{titolo}}</h4>
+    <button type="button" class="btn btn-light close" style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px"
+      (click)="modal.dismiss('cross')">
+      <span class="text-danger"><i class="fa fa-times"></i></span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <h5>{{messaggio}}</h5>
+    <label *ngIf="messaggioAttenzione" class="text-danger font-weight-bold">{{messaggioAttenzione}}</label>
+    <div>
+      <form [formGroup]="actionRichiestaForm">
+        <div class="form-group">
+          <textarea type="text" formControlName="note" class="form-control" placeholder="Note (opzionale)"></textarea>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button *ngFor="let bottone of bottoni" type="button" class="btn btn-outline-{{bottone.colore}}"
+      (click)="close(bottone.type)">{{bottone.descrizione}}</button>
+  </div>
+</div>

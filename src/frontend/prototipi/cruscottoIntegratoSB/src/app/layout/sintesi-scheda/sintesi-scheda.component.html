@@ -1,0 +1,59 @@
+<div class="card row_text p-3">
+  <div class="row align-items-center">
+    <div class="col-md-11">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="row">
+            <!-- data e ora ricezione scheda -->
+            <div class="col-md-3">
+              <div class="nowrap">
+                <i class="guida fa fa-clock-o fa-fw" aria-hidden="true" title="Ricezione scheda"></i> {{ scheda.dataOrainserimento
+                | friendlyDate }} - {{ scheda.dataOrainserimento | friendlyHour }}
+              </div>
+            </div>
+            <!-- priorità scheda -->
+            <div class="col-md-2">
+              <div class="nowrap">
+                <i class="guida fa fa-thermometer-half fa-fw" aria-hidden="true" title="Priorità della scheda"></i>
+                <span [ngClass]="{'text-success':scheda.priorita <= 2, 'text-warning':scheda.priorita > 2 && scheda.priorita <= 4, 'text-danger': scheda.priorita == 5}">
+                  <i *ngFor="let n of vettorePallini()" class="fa fa-circle" aria-hidden="true"></i><i *ngFor="let n of vettoreBuchini()" class="fa fa-circle-o" aria-hidden="true"></i>  
+                </span>
+              </div>
+            </div>
+            <!-- tipo di evento -->
+            <div class="col-md-3">
+              <div class="nowrap">
+                <i class="fa fa-list" aria-hidden="true" title="Classificazione NUE"></i>
+                <a class="h5">
+									  {{ scheda.classificazioneNUE }}
+								</a>
+              </div>
+            </div>
+            <!-- nominativo utente -->
+            <div class="col-md-2">
+              <div class="nowrap">
+                <i class="fa fa-user" aria-hidden="true" title="Nominativo utente"></i>
+								  {{ scheda.nomeUtente }}
+              </div>
+            </div>
+            <!-- telefono utente -->
+            <div class="col-md-2">
+              <div class="nowrap">
+                <i class="fa fa-phone" aria-hidden="true" title="Telefono utente"></i>
+                 {{ scheda.numTelefono }}
+						  </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+   <i class="" aria-hidden="true"></i>
+    <div class="col-md-1">
+      <div class="ml-4 mr-0 pr-0 h2">
+        <a class='freccia-link' (click)="mostraDettaglio()">
+          <i class="tasto-dettaglio fa fa-arrow-circle-o-right" aria-hidden="true" title="Vai alla pagina di dettaglio"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,250 @@
+[
+  {
+    "CodiceScheda": "1",
+    "DataInserimento": "2019-09-05T12:24:00",
+    "Richiedente": {
+      "Telefono": "113",
+      "Nominativo": "Polizia"
+    },
+    "Localita": {
+      "Coordinate": {
+        "Latitudine": 41.9081011,
+        "Longitudine": 12.5475947
+      },
+      "Indirizzo": "Via Yambo, 00159 Roma RM, Italia",
+      "Note": null,
+      "Piano": null
+    },
+    "ClassificazioneEvento": "Incendio Albero",
+    "Categoria": "",
+    "EnteCompetenza": "VVF",
+    "Dettaglio": "",
+    "Priorita": 1,
+    "NumeroPersoneCoinvolte": "2",
+    "OperatoreChiamata": {
+      "CodiceSede": "RM.1000",
+      "CodicePostazioneOperatore": "10",
+      "CodiceFiscale": "ABCD10"
+    },
+    "Classificazione": "Conoscenza",
+    "Letta": false,
+    "Gestita": false
+  },
+  {
+    "CodiceScheda": "2",
+    "DataInserimento": "2019-09-25T13:34:22",
+    "Richiedente": {
+      "Telefono": "113",
+      "Nominativo": "Polizia"
+    },
+    "Localita": {
+      "Coordinate": {
+        "Latitudine": 41.8895595,
+        "Longitudine": 12.5465594
+      },
+      "Indirizzo": "Via Teano, 00177 Roma RM, Italia",
+      "Note": null,
+      "Piano": null
+    },
+    "ClassificazioneEvento": "Incendio palazzina",
+    "Categoria": "",
+    "EnteCompetenza": "VVF",
+    "Dettaglio": "",
+    "Priorita": 5,
+    "NumeroPersoneCoinvolte": "3",
+    "OperatoreChiamata": {
+      "CodiceSede": "RM.1000",
+      "CodicePostazioneOperatore": "20",
+      "CodiceFiscale": "ABCD20"
+    },
+    "Classificazione": "Competenza",
+    "Letta": false,
+    "Gestita": false
+  },
+  {
+    "CodiceScheda": "3",
+    "DataInserimento": "2019-09-26T08:01:23",
+    "Richiedente": {
+      "Telefono": "113",
+      "Nominativo": "Polizia"
+    },
+    "Localita": {
+      "Coordinate": {
+        "Latitudine": 41.8747102,
+        "Longitudine": 12.4515538
+      },
+      "Indirizzo": "Via Fiorino Fiorini, 00152 Roma RM, Italia",
+      "Note": null,
+      "Piano": null
+    },
+    "ClassificazioneEvento": "Esplosione",
+    "Categoria": "",
+    "EnteCompetenza": "PS",
+    "Dettaglio": "",
+    "Priorita": 5,
+    "NumeroPersoneCoinvolte": "2",
+    "OperatoreChiamata": {
+      "CodiceSede": "RM.1000",
+      "CodicePostazioneOperatore": "30",
+      "CodiceFiscale": "ABCD30"
+    },
+    "Classificazione": "Conoscenza",
+    "Letta": true,
+    "Gestita": true
+  },
+  {
+    "CodiceScheda": "4",
+    "DataInserimento": "2019-09-26T22:12:00",
+    "Richiedente": {
+      "Telefono": "31434234234",
+      "Nominativo": "Tommaso Torricelli"
+    },
+    "Localita": {
+      "Coordinate": {
+        "Latitudine": 41.8334333,
+        "Longitudine": 12.4761931
+      },
+      "Indirizzo": "Viale Della Musica, 00144 Roma RM, Italia",
+      "Note": null,
+      "Piano": null
+    },
+    "ClassificazioneEvento": "Incendio Sterpaglie",
+    "Categoria": "",
+    "EnteCompetenza": "VVF",
+    "Dettaglio": "",
+    "Priorita": 1,
+    "NumeroPersoneCoinvolte": "2",
+    "OperatoreChiamata": {
+      "CodiceSede": "RM.1000",
+      "CodicePostazioneOperatore": "40",
+      "CodiceFiscale": "ABCD40"
+    },
+    "Classificazione": "Competenza",
+    "Letta": false,
+    "Gestita": false
+  },
+  {
+    "CodiceScheda": "5",
+    "DataInserimento": "2019-09-22T08:24:00",
+    "Richiedente": {
+      "Telefono": "35252352",
+      "Nominativo": "Elettro Sandonato"
+    },
+    "Localita": {
+      "Coordinate": {
+        "Latitudine": 41.8475056,
+        "Longitudine": 12.5260264
+      },
+      "Indirizzo": "Via Cinquetorri, 00159 Roma RM, Italia",
+      "Note": null,
+      "Piano": null
+    },
+    "ClassificazioneEvento": "Incendio automobile",
+    "Categoria": "",
+    "EnteCompetenza": "VVF",
+    "Dettaglio": "",
+    "Priorita": 1,
+    "NumeroPersoneCoinvolte": "2",
+    "OperatoreChiamata": {
+      "CodiceSede": "RM.1000",
+      "CodicePostazioneOperatore": "11",
+      "CodiceFiscale": "ABCD11"
+    },
+    "Classificazione": "Competenza",
+    "Letta": false,
+    "Gestita": false
+  },
+  {
+    "CodiceScheda": "6",
+    "DataInserimento": "2019-09-21T08:00:00",
+    "Richiedente": {
+      "Telefono": "112",
+      "Nominativo": "Carabinieri"
+    },
+    "Localita": {
+      "Coordinate": {
+        "Latitudine": 41.8759294,
+        "Longitudine": 12.5214947
+      },
+      "Indirizzo": "Via Niso, 00181 Roma RM, Italia",
+      "Note": null,
+      "Piano": null
+    },
+    "ClassificazioneEvento": "Tentativo di suicidio",
+    "Categoria": "",
+    "EnteCompetenza": "CC",
+    "Dettaglio": "",
+    "Priorita": 1,
+    "NumeroPersoneCoinvolte": "1",
+    "OperatoreChiamata": {
+      "CodiceSede": "RM.1000",
+      "CodicePostazioneOperatore": "60",
+      "CodiceFiscale": "ABCD60"
+    },
+    "Classificazione": "Differibile",
+    "Letta": false,
+    "Gestita": false
+  },
+  {
+    "CodiceScheda": "7",
+    "DataInserimento": "2019-09-27T18:04:00",
+    "Richiedente": {
+      "Telefono": "45345354",
+      "Nominativo": "Ermenegildo Zegna"
+    },
+    "Localita": {
+      "Coordinate": {
+        "Latitudine": 41.8962503,
+        "Longitudine": 12.4902201
+      },
+      "Indirizzo": "Via Cimarra, 00184 Roma RM, Italia",
+      "Note": null,
+      "Piano": null
+    },
+    "ClassificazioneEvento": "Soccorso Imenotteri",
+    "Categoria": "",
+    "EnteCompetenza": "VVF",
+    "Dettaglio": "",
+    "Priorita": 1,
+    "NumeroPersoneCoinvolte": "2",
+    "OperatoreChiamata": {
+      "CodiceSede": "RM.1000",
+      "CodicePostazioneOperatore": "70",
+      "CodiceFiscale": "ABCD70"
+    },
+    "Classificazione": "Differibile",
+    "Letta": true,
+    "Gestita": false
+  },
+  {
+    "CodiceScheda": "8",
+    "DataInserimento": "2019-12-12T18:04:00",
+    "Richiedente": {
+      "Telefono": "562921",
+      "Nominativo": "Asdrubale Zompafossi"
+    },
+    "Localita": {
+      "Coordinate": {
+        "Latitudine": 41.8886824,
+        "Longitudine": 12.5383099
+      },
+      "Indirizzo": "Via Luchino dal Verme, 00184 Roma RM, Italia",
+      "Note": null,
+      "Piano": null
+    },
+    "ClassificazioneEvento": "Scoppio petardo",
+    "Categoria": "",
+    "EnteCompetenza": "VVF",
+    "Dettaglio": "",
+    "Priorita": 1,
+    "NumeroPersoneCoinvolte": "2",
+    "OperatoreChiamata": {
+      "CodiceSede": "RM.1000",
+      "CodicePostazioneOperatore": "3",
+      "CodiceFiscale": "ABCD70"
+    },
+    "Classificazione": "Differibile",
+    "Letta": true,
+    "Gestita": false
+  }
+]

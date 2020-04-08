@@ -1,0 +1,13 @@
+<div class="card card-inverse row_text p-1">
+  <table class="table table-striped h6">
+    <thead>
+      <th scope="col">Evento</th>
+      <th scope="col">Quando</th>
+      <th scope="col">Targa</th>
+      <th scope="col">Note</th>
+    </thead>
+    <tbody>
+        <tr app-evento-richiesta *ngFor="let r of elencoEventi; let i = index" [eventoRichiesta]="r" [nomeClasseEvento]="r.nomeClasseEvento" [istantePrimoEvento]="istantePrimoEvento" [istanteEventoPrecedente]="setIstanteEventoPrecedente(i)"></tr>
+      </tbody>
+  </table>
+</div>

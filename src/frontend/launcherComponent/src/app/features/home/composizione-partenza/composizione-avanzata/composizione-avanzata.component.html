@@ -1,0 +1,82 @@
+<div class="row">
+    <div class="col-3 pr-0">
+        <div class="card card-shadow mx-auto" style="min-height:392px">
+            <app-partial-loader *ngIf="loading || !squadreComposizione"></app-partial-loader>
+            <div class="card-header">
+                <i class="fa fa-group mr-2"></i>
+                <span class="h6">Squadre</span>
+            </div>
+            <ul class="list-group list-group-flush border-bottom scroll-y" style="max-height:345px; min-height:345px">
+                <ng-template [ngIf]="squadreComposizione && squadreComposizione.length > 0">
+                    <app-squadra-composizione *ngFor="let sC of squadreComposizione" [squadraComp]="sC"
+                                              [itemSelezionato]="checkSquadraSelezione(sC.id)"
+                                              [itemHover]="sC.id === idSquadraHover"
+                                              [richiesta]="richiesta" (selezionata)="squadraSelezionata($event)"
+                                              (deselezionata)="squadraDeselezionata($event)"
+                                              (hoverIn)="squadraHoverIn($event)"
+                                              (hoverOut)="squadraHoverOut($event)"></app-squadra-composizione>
+                </ng-template>
+            </ul>
+        </div>
+    </div>
+    <div class="col-5 pr-0">
+        <div class="card card-shadow mx-auto" style="min-height:392px">
+            <app-partial-loader *ngIf="loading || !mezziComposizione"></app-partial-loader>
+            <div class="card-header">
+                <i class="fa fa-truck mr-2"></i>
+                <span class="h6">Mezzi</span>
+            </div>
+            <ul class="list-group list-group-flush border-bottom scroll-y" style="max-height:345px; min-height:345px">
+                <ng-template [ngIf]="mezziComposizione && mezziComposizione.length > 0">
+                    <app-mezzo-composizione *ngFor="let mC of mezziComposizione" [mezzoComp]="mC"
+                                            [itemSelezionato]="mC.id === idMezzoSelezionato"
+                                            [itemHover]="mC.id === idMezzoHover"
+                                            [itemInPrenotazione]="idMezziInPrenotazione.indexOf(mC.id) !== -1"
+                                            [itemPrenotato]="idMezziPrenotati.indexOf(mC.id) !== -1"
+                                            [itemBloccato]="idMezziBloccati.indexOf(mC.id) !== -1"
+                                            [richiesta]="richiesta"
+                                            (selezionato)="mezzoSelezionato($event)"
+                                            (deselezionato)="mezzoDeselezionato($event)"
+                                            (hoverIn)="mezzoHoverIn($event)" (hoverOut)="mezzoHoverOut()"
+                                            (mezzoCoordinate)="mezzoCoordinate($event)"
+                                            (sganciamento)="sganciamento.emit($event)">
+                    </app-mezzo-composizione>
+                </ng-template>
+            </ul>
+        </div>
+    </div>
+    <div *ngIf="mezziComposizione && squadreComposizione" class="col-4">
+        <div class="w-100 py-2 px-1 scroll-y" style="max-height:350px; min-height:350px">
+            <!-- nessuna partenza -->
+            <div *ngIf="boxPartenzaList.length <= 0" class="text-center mt-3">
+                <h6 class="font-weight-normal">Seleziona un mezzo o una squadra.</h6>
+                <button class="btn btn-primary mt-2" (click)="nuovaPartenza()"
+                        [disabled]="(disableNuovaPartenza$ | async)"><i
+                        class="fa fa-plus mr-2"></i>Aggiungi
+                </button>
+            </div>
+            <!-- bottone nuova partenza -->
+            <div *ngIf="boxPartenzaList.length > 0" class="text-center mb-2">
+                <button class="btn btn-primary" (click)="nuovaPartenza()"
+                        [disabled]="(disableNuovaPartenza$ | async) || boxPartenzaList.length > 2"><i
+                        class="fa fa-plus mr-2"></i>Aggiungi
+                </button>
+            </div>
+            <!-- lista box partenze -->
+            <div *ngIf="boxPartenzaList.length > 0">
+                <div *ngFor="let p of boxPartenzaList.slice().reverse()">
+                    <app-box-nuova-partenza [partenza]="p" [richiesta]="richiesta" [elimina]="true"
+                                            [itemSelezionato]="p.id === idBoxPartenzaSelezionato"
+                                            [compPartenzaMode]="Composizione.Avanzata"
+                                            [alert]="true" (selezionato)="boxPartenzaSelezionato($event)"
+                                            (eliminato)="eliminaBoxPartenza($event)"
+                                            (deselezionato)="onClearDirection()"></app-box-nuova-partenza>
+                </div>
+            </div>
+        </div>
+        <app-composizione-buttons (confirmPartenza)="confermaPartenze()" [boxPartenzaLenght]="boxPartenzaList.length"
+                                  [disableConfirmPrenota]="disablePrenota" (confirmPrenota)="prenota.emit($event)"
+                                  [prenotato]="prenotato"
+                                  [disableConfirmPartenza]="(disableConfirmPartenza$ | async)"></app-composizione-buttons>
+    </div>
+</div>

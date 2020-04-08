@@ -1,0 +1,155 @@
+/* Altezza iniziale della cartografia google*/
+.sebm-google-map-container {
+  height: 730px;
+}
+
+/* dropdown multiselect (campo TAG)*/
+:host /deep/ ul.dropdown-menu.pull-right.dropdown-menu-right{
+	width: 100%;
+}
+
+/* colore della selezione */
+/*:host /deep/ .ui-state-highlight{
+	background-color: #a5a8aa;
+	color: #292b2c; 
+}*/
+
+/* Colore del messaggio di conferma */
+/*:host /deep/ .ui-growl-item {
+	position: relative;
+	display: block;
+	padding: .5em 1em;
+	color: white;
+	background-color: green;
+}*/
+
+/* colore della lista tipologia intervento quando viene evidenziata*/
+/*:host /deep/ li.ui-autocomplete-list-item.ui-corner-all.ui-state-highlight{
+	background-color: #a5a8aa!important;
+	color: #292b2c!important;    
+}*/
+
+/* stile del dropdown multiselect (TAG) */
+:host /deep/ button.dropdown-toggle.btn.btn-default.btn-secondary.btn-block{
+	border-top-left-radius: 0; /* angoli (sx) del componente dritti in modo che siano identici a quelli degli altri campi. */
+	border-bottom-left-radius: 0;
+}
+
+/* Colore dell'elemento multiplo selezionato*/
+:host /deep/ li.ui-autocomplete-token {
+	background-color: #a5a8aa;
+	color: #292b2c;    
+}
+
+:host /deep/ .ui-chips-token{
+	background-color: #a5a8aa;
+	color: #292b2c;    
+	vertical-align: middle;
+}
+
+/* spaziatura dell'elemento multiplo*/
+:host /deep/ li.ui-autocomplete-input-token{
+	padding: 0 .25em .25em 0;
+}
+
+/**
+* stile del campo di ricerca multipla.
+*/
+:host /deep/ ul.ui-autocomplete-multiple-container.ui-widget.ui-inputtext.ui-state-default.ui-corner-all{
+	width: calc(100% - 2em); /* valore per impostato per risolvere bug di visualizzazione del bottone dropdown del componente autocomplete che altrimente andrebbe a capo */
+	max-height: 40px;
+	vertical-align: middle;
+	border-top-left-radius: 0; /* angoli del componente dritti in modo che siano identici a quelli degli altri campi. */
+	border-bottom-left-radius: 0;
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
+}
+
+/* Stile e colore del bottone dropdown del componente autocomplete (tipologia) */
+:host /deep/ .ui-button{
+	color: #464a4c;
+	background-color: #eceeef;
+	border: 1px solid #c9cbcb;
+	padding: 0.2em;
+	font-size: 1em;
+	transition: background-color 0.3s;
+	max-height: 40px;
+}
+
+
+/*-----------------------------------------*/
+
+:host /deep/ span.ui-autocomplete.ui-widget{
+	width: 100%;
+}
+
+:host /deep/ input.ui-inputtext.ui-widget.ui-state-default.ui-corner-all{
+	width: 100%;
+}
+
+/* per rendere il componente p-autocomplete largo il 100% della colonna*/
+:host /deep/ p-autocomplete.ng-untouched.ng-pristine.ng-valid,
+		     p-autocomplete.ng-valid.ui-inputwrapper-filled.ng-dirty.ng-touched,
+			 p-autocomplete.ng-valid.ng-dirty.ng-touched,
+			 p-autocomplete.ng-pristine.ng-valid.ng-touched,
+			 p-autocomplete.ng-untouched.ng-valid.ui-inputwrapper-focus.ui-inputwrapper-filled.ng-dirty
+{
+	width: 100%;
+}
+
+/* per rendere il componente p-chips largo il 100% della colonna*/
+:host /deep/ p-chips.ng-untouched.ng-pristine.ng-valid,
+		     p-chips.ng-valid.ui-inputwrapper-filled.ng-dirty.ng-touched,
+			 p-chips.ng-valid.ng-dirty.ng-touched,
+			 p-chips.ng-pristine.ng-valid.ng-touched,
+			 p-chips.ng-untouched.ng-valid.ui-inputwrapper-focus.ui-inputwrapper-filled.ng-dirty,
+			 p-chips.ng-untouched.ng-valid.ng-dirty
+
+{
+	width: 100%;
+}
+
+:host /deep/ ul.ui-inputtext.ui-state-default.ui-corner-all{
+	border-top-left-radius: 0; /* angoli del componente dritti in modo che siano identici a quelli degli altri campi. */
+	border-bottom-left-radius: 0;
+}
+
+
+:host /deep/ .ui-chips > ul.ui-inputtext {
+	clear: left;
+	cursor: text;
+	list-style-type: none;
+	margin: 0;
+	overflow: hidden;
+	padding: 0 .25em;
+	min-height: 34px;
+	vertical-align: middle;	
+}
+
+:host /deep/ .ui-chips-input-token input{
+	vertical-align: middle;	
+}
+
+/*:host /deep/ p-autocomplete.ng-untouched.ng-pristine.ng-valid{
+	width: 100%;
+}
+
+:host /deep/ p-autocomplete.ng-valid.ui-inputwrapper-filled.ng-dirty.ng-touched{
+	width: 100%;
+}
+
+:host /deep/ p-autocomplete.ng-valid.ng-dirty.ng-touched{
+	width: 100%;
+}
+
+:host /deep/ p-autocomplete.ng-valid.ui-inputwrapper-filled.ng-dirty.ng-touched{
+	width: 100%;
+}
+
+:host /deep/ p-autocomplete.ng-pristine.ng-valid.ng-touched{
+	width: 100%;
+}
+
+:host /deep/ p-autocomplete.ng-untouched.ng-valid.ui-inputwrapper-focus.ui-inputwrapper-filled.ng-dirty{
+	width: 100%;
+}*/

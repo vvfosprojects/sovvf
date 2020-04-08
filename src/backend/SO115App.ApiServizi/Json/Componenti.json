@@ -1,0 +1,63 @@
+[
+  {
+    "Codicefiscale": "BDNLCU73R14E472S",
+    "Ruolo": "Capo Partenza",
+    "OrarioInizio": "2019-09-23T08:00:00Z",
+    "OrarioFine": "2019-09-23T20:00:00Z"
+  },
+  {
+    "Codicefiscale": "BDNLNZ68S08H647U",
+    "Ruolo": "Autista",
+    "OrarioInizio": "2019-09-23T08:00:00Z",
+    "OrarioFine": "2019-09-23T20:00:00Z"
+  },
+  {
+    "Codicefiscale": "BDNLRT64E17I480D",
+    "Ruolo": "Tecnico Guardia",
+    "OrarioInizio": "2019-09-23T08:00:00Z",
+    "OrarioFine": "2019-09-23T20:00:00Z"
+  },
+  {
+    "Codicefiscale": "BDNMHL72M04G224B",
+    "Ruolo": "Tecnico Guardia 2",
+    "OrarioInizio": "2019-09-23T08:00:00Z",
+    "OrarioFine": "2019-09-23T20:00:00Z"
+  },
+  {
+    "Codicefiscale": "BDNMRA57P17I480G",
+    "Ruolo": "Funzionario di Guardia",
+    "OrarioInizio": "2019-09-23T08:00:00Z",
+    "OrarioFine": "2019-09-23T20:00:00Z"
+  },
+  {
+    "Codicefiscale": "BDNMRA59A16I608U",
+    "Ruolo": "Capo Partenza",
+    "OrarioInizio": "2019-09-23T08:00:00Z",
+    "OrarioFine": "2019-09-23T20:00:00Z"
+  },
+  {
+    "Codicefiscale": "BDNMRC63P10C085O",
+    "Ruolo": "Autista",
+    "OrarioInizio": "2019-09-23T08:00:00Z",
+    "OrarioFine": "2019-09-23T20:00:00Z"
+  },
+  {
+    "Codicefiscale": "BDNMRC67C19C383O",
+    "Ruolo": "Tecnico Guardia",
+    "OrarioInizio": "2019-09-23T08:00:00Z",
+    "OrarioFine": "2019-09-23T20:00:00Z"
+  },
+  {
+    "Codicefiscale": "BDNMRC75B04A145P",
+    "Ruolo": "Tecnico Guardia 2",
+    "OrarioInizio": "2019-09-23T08:00:00Z",
+    "OrarioFine": "2019-09-23T20:00:00Z"
+  },
+  {
+    "Codicefiscale": "BDNNCD51C42D594C",
+    "Ruolo": "Funzionario di Guardia",
+    "OrarioInizio": "2019-09-23T08:00:00Z",
+    "OrarioFine": "2019-09-23T20:00:00Z"
+  }
+
+]

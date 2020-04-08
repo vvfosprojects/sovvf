@@ -1,0 +1,16 @@
+<div class="btn-group btn-group-sm w-100 mr-3" (click)="$event.stopPropagation()">
+  <button type="button" class="btn btn-sm btn-{{statoRichiestaColor(richiesta)}} px-2 py-0"
+    (click)="onClick(calcolaActionSuggeritaRichiesta(richiesta))"
+    ngbTooltip="{{calcolaActionSuggeritaRichiesta(richiesta)}}">
+    {{calcolaActionSuggeritaRichiesta(richiesta)}}
+  </button>
+  <div class="btn-group" ngbDropdown role="group" aria-label="Button group with nested dropdown">
+    <button class="btn btn-sm btn-{{statoRichiestaColor(richiesta)}} text-light p-1 dropdown-toggle-split" ngbTooltip="Altro"
+      ngbDropdownToggle>
+      <small><i class="fa fa-fw fa-arrow-up"></i></small>
+    </button>
+    <div class="dropdown-menu" ngbDropdownMenu>
+      <button *ngFor="let stato of statoRichiestaString" ngbDropdownItem (click)="onClick(stato)">{{stato}}</button>
+    </div>
+  </div>
+</div>

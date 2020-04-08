@@ -1,0 +1,40 @@
+.badge {font-size: 10.025px;}
+ul { list-style-type:none; padding-bottom:0px; margin-bottom:0; margin-right: 2px;}
+a  {padding:0px; margin:0;  border-width:5px; border-style: ridge;border-radius:15px;box-shadow: 3px 3px 5px #999; }
+
+.shadow-ic-verde  {
+    color:#5cb85c; text-shadow:4px -2px 3px #8ed38e; margin-left:15px; margin-top:15px; margin-bottom:15px; border-color:transparent; border-radius:15px;
+}
+.shadow-ic-giallo  {
+    color:#d38c46; text-shadow:  4px -2px 3px #f5cd9f; margin-left:15px; margin-top:15px; margin-bottom:15px; border-color:transparent; border-radius:15px;
+}
+.shadow-ic-celeste  {
+    color:#33b5e5; text-shadow:  4px -2px 3px #9bdbf5; margin-left:15px; margin-top:15px; margin-bottom:15px; border-color:transparent; border-radius:15px;
+} 
+.shadow-text-verde0  {
+    color:#5cb85c; padding-top:5px; font-size:14px; font-weight: bold; text-shadow:  4px -2px 3px #acd6ac;
+}
+.shadow-text-giallo0  {
+    color:#d38c46; padding-top:5px; font-size:14px; font-weight: bold; text-shadow:  4px -2px 3px #f5cd9f;
+}
+.shadow-text-celeste0  {
+    color:#33b5e5; padding-top:5px; font-size:14px; font-weight: bold; text-shadow:  4px -2px 3px #aee1f5;
+}
+.shadow-text-verde1  {
+    color:#5cb85c; padding-top:5px; font-size:12px; font-weight: bold;
+}
+.shadow-text-giallo1  {
+    color:#d38c46; padding-top:5px; font-size:12px; font-weight: bold;
+}
+.shadow-text-celeste1  {
+    color:#33b5e5; padding-top:5px; font-size:12px; font-weight: bold;
+}
+.shadow-text-verde2  {
+    color:#5cb85c; padding-top:5px; padding-bottom:8px; font-size:12px; font-weight: bold;
+}
+.shadow-text-giallo2  {
+    color:#d38c46; padding-top:5px; padding-bottom:8px; font-size:12px; font-weight: bold;
+}
+.shadow-text-celeste2  {
+    color:#33b5e5; padding-top:5px; padding-bottom:8px; font-size:12px; font-weight: bold;
+}

@@ -1,0 +1,156 @@
+@import '../node_modules/bootstrap/dist/css/bootstrap.css';
+@import '../node_modules/font-awesome/css/font-awesome.css';
+@import '../node_modules/primeng/resources/themes/bootstrap/theme.css';
+@import '../node_modules/primeng/resources/primeng.min.css';
+@import '../node_modules/primeicons/primeicons.css';
+@import '~ngx-toastr/toastr.css';
+
+.app-shadow{
+  -webkit-box-shadow: 1px 1px 2px 1px rgba(224,224,224,1);
+  -moz-box-shadow: 1px 1px 2px 1px rgba(224,224,224,1);
+  box-shadow: 1px 1px 2px 1px rgba(224,224,224,1);
+}
+
+a {
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: none !important;
+    /* font-weight: bold !important; */
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+/* icone di guida */
+.guida {
+    color: #bbbbbb;
+}
+
+.cod-int {
+    color: rgb(99, 99, 99) !important;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.descrizione-int {
+    color: rgb(221, 132, 68) !important;
+}
+
+.nowrap {
+    white-space: nowrap;
+}
+
+/* Shadow */
+.card-shadow{
+    -webkit-box-shadow: 1px 1px 2px 1px rgba(224,224,224,1);
+    -moz-box-shadow: 1px 1px 2px 1px rgba(224,224,224,1);
+    box-shadow: 1px 1px 2px 1px rgba(224,224,224,1);
+}
+.card-shadow-primary{
+    -webkit-box-shadow: 2px 0px 2px .5px #007bff;
+    -moz-box-shadow: 2px 0px 2px .5px #007bff;
+    box-shadow: 2px 0px 2px .5px #007bff;
+}
+.card-shadow-info{
+    -webkit-box-shadow: 2px 0px 2px .5px #17a2b8;
+    -moz-box-shadow: 2px 0px 2px .5px #17a2b8;
+    box-shadow: 2px 0px 2px .5px #17a2b8;
+}
+.card-shadow-success{
+    -webkit-box-shadow: 2px 0px 2px .5px #28a745;
+    -moz-box-shadow: 2px 0px 2px .5px #28a745;
+    box-shadow: 2px 0px 2px .5px #28a745;
+}
+.card-shadow-danger{
+    -webkit-box-shadow: 2px 0px 2px .5px #dc3545;
+    -moz-box-shadow: 2px 0px 2px .5px #dc3545;
+    box-shadow: 2px 0px 2px .5px #dc3545;
+}
+.card-shadow-warning{
+    -webkit-box-shadow: 2px 0px 2px .5px #ffc107;
+    -moz-box-shadow: 2px 0px 2px .5px #ffc107;
+    box-shadow: 2px 0px 2px .5px #ffc107;
+}
+.card-shadow-secondary{
+    -webkit-box-shadow: 2px 0px 2px .5px #868e96;
+    -moz-box-shadow: 2px 0px 2px .5px #868e96;
+    box-shadow: 2px 0px 2px .5px #868e96;
+}
+
+/* Shadow soft */
+.card-shadow-primary-soft{
+    -webkit-box-shadow: 0px 0px 4px 2px #007bffa2;
+    -moz-box-shadow: 0px 0px 4px 2px #007bffa2;
+    box-shadow: 0px 0px 4px 2px #007bffa2;
+}
+.card-shadow-info-soft{
+    -webkit-box-shadow: 0px 0px 4px 2px #17a2b8;
+    -moz-box-shadow: 0px 0px 4px 2px #17a2b8;
+    box-shadow: 0px 0px 4px 2px #17a2b8;
+}
+.card-shadow-success-soft{
+    -webkit-box-shadow: 0px 0px 4px 2px #28a745;
+    -moz-box-shadow: 0px 0px 4px 2px #28a745;
+    box-shadow: 0px 0px 4px 2px #28a745;
+}
+.card-shadow-danger-soft{
+    -webkit-box-shadow: 0px 0px 4px 2px #dc3545;
+    -moz-box-shadow: 0px 0px 4px 2px #dc3545;
+    box-shadow: 0px 0px 4px 2px #dc3545;
+}
+.card-shadow-warning-soft{
+    -webkit-box-shadow: 0px 0px 4px 2px #ffc107;
+    -moz-box-shadow: 0px 0px 4px 2px #ffc107;
+    box-shadow: 0px 0px 4px 2px #ffc107;
+}
+.card-shadow-secondary-soft{
+    -webkit-box-shadow: 0px 0px 4px 2px #868e96;
+    -moz-box-shadow: 0px 0px 4px 2px #868e96;
+    box-shadow: 0px 0px 4px 2px #868e96;
+}
+
+/* Status richieste */
+.status_presidiato {
+    border-left: 10px solid #28a745;
+}
+
+.status_chiamata {
+    border-left: 10px solid #dc3545;
+}
+
+.status_sospeso {
+    border-left: 10px solid #ffc107;
+}
+
+.status_assegnato{
+    border-left: 10px solid #17a2b8;
+}
+
+.status_chiuso{
+    border-left: 10px solid #868e96;
+}
+
+/* Status Mezzo */
+.status_inSede{
+    border-top: 5px solid #868e96;
+}
+.status_inRientro{
+    border-top: 5px solid #007bff;
+}
+.status_inViaggio{
+    border-top: 5px solid #17a2b8;
+}
+.status_sulPosto{
+    border-top: 5px solid #28a745;
+}
+
+.bg-pattern-chiuso{
+    background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAYAAACp8Z5+AAAAKklEQVQYV2N8+/btfwYo+Pz5MwMjTADE4eXlhQjAOCCFjA8ePPgPkoEBAMNhF/YhgGY5AAAAAElFTkSuQmCC);
+}
+
+.fa-rotate-45 {
+    -webkit-transform: rotate(45deg);
+    transform: rotate(45deg);
+}

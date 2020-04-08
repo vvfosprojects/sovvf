@@ -1,0 +1,31 @@
+<div class="container-fluid " *ngIf="(navbarLoaded | async)">
+    <div class="row">
+        <div class="col-12 px-0">
+            <app-info-aggregate></app-info-aggregate>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <app-filterbar [colorButton]="(colorButton$ | async)" [viewState]="viewState"></app-filterbar>
+        </div>
+    </div>
+    <div class="row">
+        <div class="" [ngClass]="columnState.sinistra">
+            <app-richieste [ngClass]="{'d-none' : !viewState.richieste.active}" [split]="viewState.richieste.split">
+            </app-richieste>
+            <app-chiamata *ngIf="viewState.chiamata.active"></app-chiamata>
+            <app-composizione-partenza *ngIf="viewState.composizione.active"
+                                       [compPartenzaMode]="(composizioneMode$ | async)">
+            </app-composizione-partenza>
+            <app-modifica-richiesta *ngIf="viewState.modifica.active"></app-modifica-richiesta>
+            <app-mezzi-in-servizio *ngIf="viewState.mezziInServizio.active"></app-mezzi-in-servizio>
+            <app-schede-contatto *ngIf="viewState.schedeContatto.active"></app-schede-contatto>
+        </div>
+        <div class="mt-2" [ngClass]="columnState.destra || {'d-none' : !viewState.mappa.active}">
+            <app-maps [viewStateMappa]="(viewStateMappa$ | async)" (mapFullLoaded)="onMapFullLoaded()"></app-maps>
+        </div>
+    </div>
+</div>
+<div *ngIf="loading">
+    <app-loader></app-loader>
+</div>

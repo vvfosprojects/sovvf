@@ -1,0 +1,23 @@
+<div *ngIf="!!state">
+  <div>
+    Connessione:
+    <span *ngIf="state.connesso" class="badge badge-success">OK</span>
+    <span *ngIf="!state.connesso"><i class="fa fa-exclamation-triangle fa-lg text-warning"></i></span>
+  </div>
+
+  <div>
+    Istante iniziale connessione: {{ state.istanteInizialeConnessione }}
+  </div>
+
+  <div>
+    Ultimo contatto con il server: {{ state.istanteUltimaConversazioneRiuscita }}
+  </div>
+
+  <div>
+    Istante ultimo errore: {{ state.istanteUltimoErrore }} ({{ state.descrizioneUltimoErrore }})
+  </div>
+
+  <div>
+    Latenza media: {{ state.latenzaMedia_msec }} msec (&#177; {{ state.latenzaDeviazioneStandard_msec }})
+  </div>
+</div>

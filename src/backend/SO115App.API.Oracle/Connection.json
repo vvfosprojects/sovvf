@@ -1,0 +1,14 @@
+{
+  "OracleImplementation": [
+    {
+      "CodSede": "VT",
+      "ConnectionString": "Data Source = (DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = SVIL92)(PORT = 1521))(CONNECT_DATA = (SERVICE_NAME = VVF)(SERVER = dedicated))); private User ID = SOVVFVIEW; Password=SOVVFVIEW;",
+      "Abilitato": true
+    },
+    {
+      "CodSede": "RM",
+      "ConnectionString": "",
+      "Abilitato": false
+    }
+  ]
+}

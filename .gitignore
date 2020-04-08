@@ -1,0 +1,9 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs
+/.idea/
+/src/.idea/
+/src/backendCore/SO115Core
+*.cmd

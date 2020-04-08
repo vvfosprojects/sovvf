@@ -1,0 +1,23 @@
+@import '../node_modules/bootstrap/dist/css/bootstrap.css';
+@import '../node_modules/font-awesome/css/font-awesome.css';
+
+.app-shadow{
+  -webkit-box-shadow: 1px 1px 2px 1px rgba(224,224,224,1);
+  -moz-box-shadow: 1px 1px 2px 1px rgba(224,224,224,1);
+  box-shadow: 1px 1px 2px 1px rgba(224,224,224,1);
+}
+
+.min-height-boxes{
+  height: 160px;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.border-click {
+  border: 2px solid #6c757d;
+  border-bottom: 4px solid #6c757d;
+  border-right: 4px solid #6c757d;
+  border-radius: 5px;
+}

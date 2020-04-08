@@ -1,0 +1,10 @@
+C:\Users\luigi.frasca\Progetti\chat\SignalRSimpleChat-asp-net-core-angular\AngularAspNetCoreSignalR\obj\BPC\Debug\netcoreapp2.0\AngularAspNetCoreSignalR.csproj.CoreCompileInputs.cache
+C:\Users\luigi.frasca\Progetti\chat\SignalRSimpleChat-asp-net-core-angular\AngularAspNetCoreSignalR\obj\BPC\Debug\netcoreapp2.0\AngularAspNetCoreSignalR.AssemblyInfoInputs.cache
+C:\Users\luigi.frasca\Progetti\chat\SignalRSimpleChat-asp-net-core-angular\AngularAspNetCoreSignalR\obj\BPC\Debug\netcoreapp2.0\AngularAspNetCoreSignalR.AssemblyInfo.cs
+C:\Users\luigi.frasca\Progetti\chat\SignalRSimpleChat-asp-net-core-angular\AngularAspNetCoreSignalR\bin\BPC\Debug\netcoreapp2.0\AngularAspNetCoreSignalR.deps.json
+C:\Users\luigi.frasca\Progetti\chat\SignalRSimpleChat-asp-net-core-angular\AngularAspNetCoreSignalR\bin\BPC\Debug\netcoreapp2.0\AngularAspNetCoreSignalR.runtimeconfig.json
+C:\Users\luigi.frasca\Progetti\chat\SignalRSimpleChat-asp-net-core-angular\AngularAspNetCoreSignalR\bin\BPC\Debug\netcoreapp2.0\AngularAspNetCoreSignalR.runtimeconfig.dev.json
+C:\Users\luigi.frasca\Progetti\chat\SignalRSimpleChat-asp-net-core-angular\AngularAspNetCoreSignalR\bin\BPC\Debug\netcoreapp2.0\AngularAspNetCoreSignalR.dll
+C:\Users\luigi.frasca\Progetti\chat\SignalRSimpleChat-asp-net-core-angular\AngularAspNetCoreSignalR\bin\BPC\Debug\netcoreapp2.0\AngularAspNetCoreSignalR.pdb
+C:\Users\luigi.frasca\Progetti\chat\SignalRSimpleChat-asp-net-core-angular\AngularAspNetCoreSignalR\obj\BPC\Debug\netcoreapp2.0\AngularAspNetCoreSignalR.dll
+C:\Users\luigi.frasca\Progetti\chat\SignalRSimpleChat-asp-net-core-angular\AngularAspNetCoreSignalR\obj\BPC\Debug\netcoreapp2.0\AngularAspNetCoreSignalR.pdb

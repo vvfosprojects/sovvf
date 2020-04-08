@@ -1,0 +1,25 @@
+<a class="card danger">
+  <div class="row">
+    <span class="col col-md-4">
+      <i class="fa fa-tags fa-4x" style="color:#d43f3a; margin-left:15px; margin-top:15px; margin-bottom:15px; border-color:transparent; border-radius:15px; text-shadow:  4px -2px 3px #f8b3b3;"></i>
+    </span>
+    <span class="col col-md-8">
+      <ul class="card-text" style="color:#d43f3a; font-size:13px; padding-left:0px; padding-top:5px; font-weight: bold;">Chiamate      
+        <span class="badge badge-pill badge-danger pull-right">{{interventi.numChiamate}}</span>
+       
+        <li class="card-text" style="color:#d43f3a; font-size:13px; padding-left:0px; padding-top:5px; font-weight: bold;">Interventi aperti
+        <span class="badge badge-pill badge-primary pull-right">{{interventi.numIntAperti}}</span>
+
+        <li class="card-text" style="color:#d43f3a; font-size:12px; padding-left:15px; padding-top:5px; font-weight: bold;">Non Presidiati
+          <span class="badge badge-pill badge-warning pull-right" style="color: #ffffff;">{{interventi.numIntNonPresidiati}}</span>
+        </li>
+        <li class="card-text" style="color:#d43f3a; font-size:12px; padding-left:16px; padding-top:5px; font-weight: bold;">Presidiati
+          <span class="badge badge-pill badge-success pull-right">{{interventi.numIntPresidiati}}</span>
+        </li>
+        <li class="card-text" style="color:#d43f3a; font-size:12px; padding-left:16px; padding-top:5px; padding-bottom:8px; font-weight: bold; padding-bottom:7px;">Sospesi
+          <span class="badge badge-pill badge-warning pull-right" style="color: #ffffff;">{{interventi.numIntSospesi}}</span>
+        </li>
+      </ul>
+    </span>
+  </div>
+</a>

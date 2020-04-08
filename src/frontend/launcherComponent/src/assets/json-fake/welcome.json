@@ -1,0 +1,4871 @@
+{
+  "boxListaMezzi": {
+    "inSede": 0,
+    "inViaggio": 0,
+    "sulPosto": 0,
+    "inRientro": 0,
+    "istituto": 0,
+    "inServizio": 0
+  },
+  "boxListaPersonale": {
+    "personaleTotale": 15,
+    "funzionari": [],
+    "squadreServizio": 3,
+    "squadreAssegnate": 0
+  },
+  "boxListaInterventi": {
+    "chiamate": 2,
+    "assegnati": 0,
+    "presidiati": 0,
+    "sospesi": 0,
+    "totale": 2,
+    "totTurnoCorrente": 2,
+    "totTurnoPrecedente": 0,
+    "nomeTurnoCorrente": null,
+    "nomeTurnoPrecedente": null,
+    "annoCorrente": 0,
+    "totAnnoCorrente": 2
+  },
+  "listaSintesi": [
+    {
+      "id": "5e2706f42d04f71b3c012761",
+      "codice": "RM2112000002",
+      "codiceRichiesta": null,
+      "operatore": null,
+      "istanteRicezioneRichiesta": "2020-01-21T14:13:08.489Z",
+      "istanteChiusura": null,
+      "sospesa": false,
+      "chiusa": false,
+      "aperta": true,
+      "prioritaRichiesta": 3,
+      "tipologie": [
+        {
+          "codice": "5",
+          "descrizione": "Incendio aeromobile",
+          "tipoLuogoEvento": null,
+          "icona": null,
+          "categoria": "Aeroporti",
+          "star": false,
+          "boschivo": false,
+          "adeguatezzaMezzo": {
+            "aps": "100",
+            "as": "80",
+            "ab": "0",
+            "av": "0",
+            "ag": "0",
+            "default": "0"
+          },
+          "oppSganc": -50
+        }
+      ],
+      "descrizione": "Probabile incendio in appartamento",
+      "richiedente": {
+        "telefono": "333 1234567",
+        "nominativo": "Mario Rossi"
+      },
+      "localita": {
+        "coordinate": {
+          "latitudine": 41.900572,
+          "longitudine": 12.499366
+        },
+        "indirizzo": "Via Cavour, 5, 00184 Roma RM, Italia",
+        "note": null,
+        "piano": null
+      },
+      "turnoInserimentoChiamata": null,
+      "turnoIntervento": null,
+      "tipoTerreno": [],
+      "listaEntiIntervenuti": [],
+      "obiettivoSensibile": null,
+      "competenze": [],
+      "complessita": {
+        "indice": "2",
+        "descrizione": "Basso"
+      },
+      "istantePresaInCarico": null,
+      "listaUtentiInLavorazione": [
+        {
+          "idUtente": "5",
+          "nominativo": "Mario Rossi",
+          "dataInizioAttivita": "2020-01-23T13:53:18.1572405Z"
+        }
+      ],
+      "listaUtentiPresaInCarico": [
+        {
+          "idUtente": "5",
+          "nominativo": "Mario Rossi",
+          "dataInizioAttivita": "2020-01-23T13:53:18.1572405Z"
+        }
+      ],
+      "istantePrimaAssegnazione": null,
+      "rilevanteGrave": false,
+      "rilevanteStArCu": false,
+      "codiceSchedaNue": null,
+      "zoneEmergenza": [],
+      "fonogramma": {
+        "codice": "0",
+        "descrizione": "Non necessario"
+      },
+      "partenze": [],
+      "partenzeRichiesta": null,
+      "tags": [],
+      "notePubbliche": null,
+      "notePrivate": null,
+      "eventi": [
+        {
+          "codiceOrigine": "333 1234567",
+          "nominativoChiamante": "Mario Rossi",
+          "numeroTelefono": "333 1234567",
+          "codiceSchedaContatto": null,
+          "codice": "333 1234567",
+          "motivazione": null,
+          "notePubbliche": null,
+          "notePrivate": null,
+          "esito": "MettiInCoda",
+          "istante": "2020-01-21T14:13:08.489Z",
+          "codiceFonte": "3",
+          "codiceRichiesta": "RM2112000002",
+          "tipoEvento": "Telefonata"
+        },
+        {
+          "priorita": 3,
+          "istante": "2020-01-21T14:13:08.491Z",
+          "codiceFonte": "3",
+          "codiceRichiesta": "RM2112000002",
+          "tipoEvento": "AssegnataPriorita"
+        }
+      ],
+      "presidiata": false,
+      "stato": "Chiamata",
+      "motivazione": null
+    },
+    {
+      "id": "5e270b6f2d04f71b3c012762",
+      "codice": "RM2112000002",
+      "codiceRichiesta": null,
+      "operatore": null,
+      "istanteRicezioneRichiesta": "2020-01-21T14:32:15.294Z",
+      "istanteChiusura": null,
+      "sospesa": false,
+      "chiusa": false,
+      "aperta": true,
+      "prioritaRichiesta": 3,
+      "tipologie": [
+        {
+          "codice": "5",
+          "descrizione": "Incendio aeromobile",
+          "tipoLuogoEvento": null,
+          "icona": null,
+          "categoria": "Aeroporti",
+          "star": false,
+          "boschivo": false,
+          "adeguatezzaMezzo": {
+            "aps": "100",
+            "as": "80",
+            "ab": "0",
+            "av": "0",
+            "ag": "0",
+            "default": "0"
+          },
+          "oppSganc": -50
+        }
+      ],
+      "descrizione": "Incendio normale (generico)",
+      "richiedente": {
+        "telefono": "333 1234567",
+        "nominativo": "Luigi Bianchi"
+      },
+      "localita": {
+        "coordinate": {
+          "latitudine": 41.891726,
+          "longitudine": 12.529151
+        },
+        "indirizzo": "Via Prenestina, Roma RM, Italia",
+        "note": null,
+        "piano": null
+      },
+      "turnoInserimentoChiamata": null,
+      "turnoIntervento": null,
+      "tipoTerreno": [],
+      "listaEntiIntervenuti": [],
+      "obiettivoSensibile": null,
+      "competenze": [],
+      "complessita": {
+        "indice": "2",
+        "descrizione": "Basso"
+      },
+      "istantePresaInCarico": null,
+      "listaUtentiInLavorazione": [
+        {
+          "idUtente": "5",
+          "nominativo": "Mario Rossi",
+          "dataInizioAttivita": "2020-01-23T13:53:18.1572405Z"
+        }
+      ],
+      "listaUtentiPresaInCarico": [
+        {
+          "idUtente": "5",
+          "nominativo": "Mario Rossi",
+          "dataInizioAttivita": "2020-01-23T13:53:18.1572405Z"
+        }
+      ],
+      "istantePrimaAssegnazione": null,
+      "rilevanteGrave": false,
+      "rilevanteStArCu": false,
+      "codiceSchedaNue": null,
+      "zoneEmergenza": [],
+      "fonogramma": {
+        "codice": "0",
+        "descrizione": "Non necessario"
+      },
+      "partenze": [],
+      "partenzeRichiesta": null,
+      "tags": [],
+      "notePubbliche": null,
+      "notePrivate": null,
+      "eventi": [
+        {
+          "codiceOrigine": "333 1234567",
+          "nominativoChiamante": "Luigi Bianchi",
+          "numeroTelefono": "333 1234567",
+          "codiceSchedaContatto": null,
+          "codice": "333 1234567",
+          "motivazione": null,
+          "notePubbliche": null,
+          "notePrivate": null,
+          "esito": "MettiInCoda",
+          "istante": "2020-01-21T14:32:15.294Z",
+          "codiceFonte": "3",
+          "codiceRichiesta": "RM2112000002",
+          "tipoEvento": "Telefonata"
+        },
+        {
+          "priorita": 3,
+          "istante": "2020-01-21T14:32:15.296Z",
+          "codiceFonte": "3",
+          "codiceRichiesta": "RM2112000002",
+          "tipoEvento": "AssegnataPriorita"
+        }
+      ],
+      "presidiata": false,
+      "stato": "Chiamata",
+      "motivazione": null
+    },
+    {
+      "id": "5e2706f42d04f71b3c012761",
+      "codice": "RM2112000002",
+      "codiceRichiesta": null,
+      "operatore": null,
+      "istanteRicezioneRichiesta": "2020-01-21T14:13:08.489Z",
+      "istanteChiusura": null,
+      "sospesa": false,
+      "chiusa": false,
+      "aperta": true,
+      "prioritaRichiesta": 3,
+      "tipologie": [
+        {
+          "codice": "5",
+          "descrizione": "Incendio aeromobile",
+          "tipoLuogoEvento": null,
+          "icona": null,
+          "categoria": "Aeroporti",
+          "star": false,
+          "boschivo": false,
+          "adeguatezzaMezzo": {
+            "aps": "100",
+            "as": "80",
+            "ab": "0",
+            "av": "0",
+            "ag": "0",
+            "default": "0"
+          },
+          "oppSganc": -50
+        }
+      ],
+      "descrizione": "Probabile incendio in appartamento",
+      "richiedente": {
+        "telefono": "333 1234567",
+        "nominativo": "Mario Rossi"
+      },
+      "localita": {
+        "coordinate": {
+          "latitudine": 41.900572,
+          "longitudine": 12.499366
+        },
+        "indirizzo": "Via Cavour, 5, 00184 Roma RM, Italia",
+        "note": null,
+        "piano": null
+      },
+      "turnoInserimentoChiamata": null,
+      "turnoIntervento": null,
+      "tipoTerreno": [],
+      "listaEntiIntervenuti": [],
+      "obiettivoSensibile": null,
+      "competenze": [],
+      "complessita": {
+        "indice": "2",
+        "descrizione": "Basso"
+      },
+      "istantePresaInCarico": null,
+      "listaUtentiInLavorazione": [
+        {
+          "idUtente": "5",
+          "nominativo": "Mario Rossi",
+          "dataInizioAttivita": "2020-01-23T13:53:18.1572405Z"
+        }
+      ],
+      "listaUtentiPresaInCarico": [
+        {
+          "idUtente": "5",
+          "nominativo": "Mario Rossi",
+          "dataInizioAttivita": "2020-01-23T13:53:18.1572405Z"
+        }
+      ],
+      "istantePrimaAssegnazione": null,
+      "rilevanteGrave": false,
+      "rilevanteStArCu": false,
+      "codiceSchedaNue": null,
+      "zoneEmergenza": [],
+      "fonogramma": {
+        "codice": "0",
+        "descrizione": "Non necessario"
+      },
+      "partenze": [],
+      "partenzeRichiesta": null,
+      "tags": [],
+      "notePubbliche": null,
+      "notePrivate": null,
+      "eventi": [
+        {
+          "codiceOrigine": "333 1234567",
+          "nominativoChiamante": "Mario Rossi",
+          "numeroTelefono": "333 1234567",
+          "codiceSchedaContatto": null,
+          "codice": "333 1234567",
+          "motivazione": null,
+          "notePubbliche": null,
+          "notePrivate": null,
+          "esito": "MettiInCoda",
+          "istante": "2020-01-21T14:13:08.489Z",
+          "codiceFonte": "3",
+          "codiceRichiesta": "RM2112000002",
+          "tipoEvento": "Telefonata"
+        },
+        {
+          "priorita": 3,
+          "istante": "2020-01-21T14:13:08.491Z",
+          "codiceFonte": "3",
+          "codiceRichiesta": "RM2112000002",
+          "tipoEvento": "AssegnataPriorita"
+        }
+      ],
+      "presidiata": false,
+      "stato": "Chiamata",
+      "motivazione": null
+    },
+    {
+      "id": "5e270b6f2d04f71b3c012762",
+      "codice": "RM2112000002",
+      "codiceRichiesta": null,
+      "operatore": null,
+      "istanteRicezioneRichiesta": "2020-01-21T14:32:15.294Z",
+      "istanteChiusura": null,
+      "sospesa": false,
+      "chiusa": false,
+      "aperta": true,
+      "prioritaRichiesta": 3,
+      "tipologie": [
+        {
+          "codice": "5",
+          "descrizione": "Incendio aeromobile",
+          "tipoLuogoEvento": null,
+          "icona": null,
+          "categoria": "Aeroporti",
+          "star": false,
+          "boschivo": false,
+          "adeguatezzaMezzo": {
+            "aps": "100",
+            "as": "80",
+            "ab": "0",
+            "av": "0",
+            "ag": "0",
+            "default": "0"
+          },
+          "oppSganc": -50
+        }
+      ],
+      "descrizione": "Incendio normale (generico)",
+      "richiedente": {
+        "telefono": "333 1234567",
+        "nominativo": "Luigi Bianchi"
+      },
+      "localita": {
+        "coordinate": {
+          "latitudine": 41.891726,
+          "longitudine": 12.529151
+        },
+        "indirizzo": "Via Prenestina, Roma RM, Italia",
+        "note": null,
+        "piano": null
+      },
+      "turnoInserimentoChiamata": null,
+      "turnoIntervento": null,
+      "tipoTerreno": [],
+      "listaEntiIntervenuti": [],
+      "obiettivoSensibile": null,
+      "competenze": [],
+      "complessita": {
+        "indice": "2",
+        "descrizione": "Basso"
+      },
+      "istantePresaInCarico": null,
+      "listaUtentiInLavorazione": [
+        {
+          "idUtente": "5",
+          "nominativo": "Mario Rossi",
+          "dataInizioAttivita": "2020-01-23T13:53:18.1572405Z"
+        }
+      ],
+      "listaUtentiPresaInCarico": [
+        {
+          "idUtente": "5",
+          "nominativo": "Mario Rossi",
+          "dataInizioAttivita": "2020-01-23T13:53:18.1572405Z"
+        }
+      ],
+      "istantePrimaAssegnazione": null,
+      "rilevanteGrave": false,
+      "rilevanteStArCu": false,
+      "codiceSchedaNue": null,
+      "zoneEmergenza": [],
+      "fonogramma": {
+        "codice": "0",
+        "descrizione": "Non necessario"
+      },
+      "partenze": [],
+      "partenzeRichiesta": null,
+      "tags": [],
+      "notePubbliche": null,
+      "notePrivate": null,
+      "eventi": [
+        {
+          "codiceOrigine": "333 1234567",
+          "nominativoChiamante": "Luigi Bianchi",
+          "numeroTelefono": "333 1234567",
+          "codiceSchedaContatto": null,
+          "codice": "333 1234567",
+          "motivazione": null,
+          "notePubbliche": null,
+          "notePrivate": null,
+          "esito": "MettiInCoda",
+          "istante": "2020-01-21T14:32:15.294Z",
+          "codiceFonte": "3",
+          "codiceRichiesta": "RM2112000002",
+          "tipoEvento": "Telefonata"
+        },
+        {
+          "priorita": 3,
+          "istante": "2020-01-21T14:32:15.296Z",
+          "codiceFonte": "3",
+          "codiceRichiesta": "RM2112000002",
+          "tipoEvento": "AssegnataPriorita"
+        }
+      ],
+      "presidiata": false,
+      "stato": "Chiamata",
+      "motivazione": null
+    },
+    {
+      "id": "5e2706f42d04f71b3c012761",
+      "codice": "RM2112000002",
+      "codiceRichiesta": null,
+      "operatore": null,
+      "istanteRicezioneRichiesta": "2020-01-21T14:13:08.489Z",
+      "istanteChiusura": null,
+      "sospesa": false,
+      "chiusa": false,
+      "aperta": true,
+      "prioritaRichiesta": 3,
+      "tipologie": [
+        {
+          "codice": "5",
+          "descrizione": "Incendio aeromobile",
+          "tipoLuogoEvento": null,
+          "icona": null,
+          "categoria": "Aeroporti",
+          "star": false,
+          "boschivo": false,
+          "adeguatezzaMezzo": {
+            "aps": "100",
+            "as": "80",
+            "ab": "0",
+            "av": "0",
+            "ag": "0",
+            "default": "0"
+          },
+          "oppSganc": -50
+        }
+      ],
+      "descrizione": "Probabile incendio in appartamento",
+      "richiedente": {
+        "telefono": "333 1234567",
+        "nominativo": "Mario Rossi"
+      },
+      "localita": {
+        "coordinate": {
+          "latitudine": 41.900572,
+          "longitudine": 12.499366
+        },
+        "indirizzo": "Via Cavour, 5, 00184 Roma RM, Italia",
+        "note": null,
+        "piano": null
+      },
+      "turnoInserimentoChiamata": null,
+      "turnoIntervento": null,
+      "tipoTerreno": [],
+      "listaEntiIntervenuti": [],
+      "obiettivoSensibile": null,
+      "competenze": [],
+      "complessita": {
+        "indice": "2",
+        "descrizione": "Basso"
+      },
+      "istantePresaInCarico": null,
+      "listaUtentiInLavorazione": [
+        {
+          "idUtente": "5",
+          "nominativo": "Mario Rossi",
+          "dataInizioAttivita": "2020-01-23T13:53:18.1572405Z"
+        }
+      ],
+      "listaUtentiPresaInCarico": [
+        {
+          "idUtente": "5",
+          "nominativo": "Mario Rossi",
+          "dataInizioAttivita": "2020-01-23T13:53:18.1572405Z"
+        }
+      ],
+      "istantePrimaAssegnazione": null,
+      "rilevanteGrave": false,
+      "rilevanteStArCu": false,
+      "codiceSchedaNue": null,
+      "zoneEmergenza": [],
+      "fonogramma": {
+        "codice": "0",
+        "descrizione": "Non necessario"
+      },
+      "partenze": [],
+      "partenzeRichiesta": null,
+      "tags": [],
+      "notePubbliche": null,
+      "notePrivate": null,
+      "eventi": [
+        {
+          "codiceOrigine": "333 1234567",
+          "nominativoChiamante": "Mario Rossi",
+          "numeroTelefono": "333 1234567",
+          "codiceSchedaContatto": null,
+          "codice": "333 1234567",
+          "motivazione": null,
+          "notePubbliche": null,
+          "notePrivate": null,
+          "esito": "MettiInCoda",
+          "istante": "2020-01-21T14:13:08.489Z",
+          "codiceFonte": "3",
+          "codiceRichiesta": "RM2112000002",
+          "tipoEvento": "Telefonata"
+        },
+        {
+          "priorita": 3,
+          "istante": "2020-01-21T14:13:08.491Z",
+          "codiceFonte": "3",
+          "codiceRichiesta": "RM2112000002",
+          "tipoEvento": "AssegnataPriorita"
+        }
+      ],
+      "presidiata": false,
+      "stato": "Chiamata",
+      "motivazione": null
+    },
+    {
+      "id": "5e270b6f2d04f71b3c012762",
+      "codice": "RM2112000002",
+      "codiceRichiesta": null,
+      "operatore": null,
+      "istanteRicezioneRichiesta": "2020-01-21T14:32:15.294Z",
+      "istanteChiusura": null,
+      "sospesa": false,
+      "chiusa": false,
+      "aperta": true,
+      "prioritaRichiesta": 3,
+      "tipologie": [
+        {
+          "codice": "5",
+          "descrizione": "Incendio aeromobile",
+          "tipoLuogoEvento": null,
+          "icona": null,
+          "categoria": "Aeroporti",
+          "star": false,
+          "boschivo": false,
+          "adeguatezzaMezzo": {
+            "aps": "100",
+            "as": "80",
+            "ab": "0",
+            "av": "0",
+            "ag": "0",
+            "default": "0"
+          },
+          "oppSganc": -50
+        }
+      ],
+      "descrizione": "Incendio normale (generico)",
+      "richiedente": {
+        "telefono": "333 1234567",
+        "nominativo": "Luigi Bianchi"
+      },
+      "localita": {
+        "coordinate": {
+          "latitudine": 41.891726,
+          "longitudine": 12.529151
+        },
+        "indirizzo": "Via Prenestina, Roma RM, Italia",
+        "note": null,
+        "piano": null
+      },
+      "turnoInserimentoChiamata": null,
+      "turnoIntervento": null,
+      "tipoTerreno": [],
+      "listaEntiIntervenuti": [],
+      "obiettivoSensibile": null,
+      "competenze": [],
+      "complessita": {
+        "indice": "2",
+        "descrizione": "Basso"
+      },
+      "istantePresaInCarico": null,
+      "listaUtentiInLavorazione": [
+        {
+          "idUtente": "5",
+          "nominativo": "Mario Rossi",
+          "dataInizioAttivita": "2020-01-23T13:53:18.1572405Z"
+        }
+      ],
+      "listaUtentiPresaInCarico": [
+        {
+          "idUtente": "5",
+          "nominativo": "Mario Rossi",
+          "dataInizioAttivita": "2020-01-23T13:53:18.1572405Z"
+        }
+      ],
+      "istantePrimaAssegnazione": null,
+      "rilevanteGrave": false,
+      "rilevanteStArCu": false,
+      "codiceSchedaNue": null,
+      "zoneEmergenza": [],
+      "fonogramma": {
+        "codice": "0",
+        "descrizione": "Non necessario"
+      },
+      "partenze": [],
+      "partenzeRichiesta": null,
+      "tags": [],
+      "notePubbliche": null,
+      "notePrivate": null,
+      "eventi": [
+        {
+          "codiceOrigine": "333 1234567",
+          "nominativoChiamante": "Luigi Bianchi",
+          "numeroTelefono": "333 1234567",
+          "codiceSchedaContatto": null,
+          "codice": "333 1234567",
+          "motivazione": null,
+          "notePubbliche": null,
+          "notePrivate": null,
+          "esito": "MettiInCoda",
+          "istante": "2020-01-21T14:32:15.294Z",
+          "codiceFonte": "3",
+          "codiceRichiesta": "RM2112000002",
+          "tipoEvento": "Telefonata"
+        },
+        {
+          "priorita": 3,
+          "istante": "2020-01-21T14:32:15.296Z",
+          "codiceFonte": "3",
+          "codiceRichiesta": "RM2112000002",
+          "tipoEvento": "AssegnataPriorita"
+        }
+      ],
+      "presidiata": false,
+      "stato": "Chiamata",
+      "motivazione": null
+    },
+    {
+      "id": "5e2706f42d04f71b3c012761",
+      "codice": "RM2112000002",
+      "codiceRichiesta": null,
+      "operatore": null,
+      "istanteRicezioneRichiesta": "2020-01-21T14:13:08.489Z",
+      "istanteChiusura": null,
+      "sospesa": false,
+      "chiusa": false,
+      "aperta": true,
+      "prioritaRichiesta": 3,
+      "tipologie": [
+        {
+          "codice": "5",
+          "descrizione": "Incendio aeromobile",
+          "tipoLuogoEvento": null,
+          "icona": null,
+          "categoria": "Aeroporti",
+          "star": false,
+          "boschivo": false,
+          "adeguatezzaMezzo": {
+            "aps": "100",
+            "as": "80",
+            "ab": "0",
+            "av": "0",
+            "ag": "0",
+            "default": "0"
+          },
+          "oppSganc": -50
+        }
+      ],
+      "descrizione": "Probabile incendio in appartamento",
+      "richiedente": {
+        "telefono": "333 1234567",
+        "nominativo": "Mario Rossi"
+      },
+      "localita": {
+        "coordinate": {
+          "latitudine": 41.900572,
+          "longitudine": 12.499366
+        },
+        "indirizzo": "Via Cavour, 5, 00184 Roma RM, Italia",
+        "note": null,
+        "piano": null
+      },
+      "turnoInserimentoChiamata": null,
+      "turnoIntervento": null,
+      "tipoTerreno": [],
+      "listaEntiIntervenuti": [],
+      "obiettivoSensibile": null,
+      "competenze": [],
+      "complessita": {
+        "indice": "2",
+        "descrizione": "Basso"
+      },
+      "istantePresaInCarico": null,
+      "listaUtentiInLavorazione": [
+        {
+          "idUtente": "5",
+          "nominativo": "Mario Rossi",
+          "dataInizioAttivita": "2020-01-23T13:53:18.1572405Z"
+        }
+      ],
+      "listaUtentiPresaInCarico": [
+        {
+          "idUtente": "5",
+          "nominativo": "Mario Rossi",
+          "dataInizioAttivita": "2020-01-23T13:53:18.1572405Z"
+        }
+      ],
+      "istantePrimaAssegnazione": null,
+      "rilevanteGrave": false,
+      "rilevanteStArCu": false,
+      "codiceSchedaNue": null,
+      "zoneEmergenza": [],
+      "fonogramma": {
+        "codice": "0",
+        "descrizione": "Non necessario"
+      },
+      "partenze": [],
+      "partenzeRichiesta": null,
+      "tags": [],
+      "notePubbliche": null,
+      "notePrivate": null,
+      "eventi": [
+        {
+          "codiceOrigine": "333 1234567",
+          "nominativoChiamante": "Mario Rossi",
+          "numeroTelefono": "333 1234567",
+          "codiceSchedaContatto": null,
+          "codice": "333 1234567",
+          "motivazione": null,
+          "notePubbliche": null,
+          "notePrivate": null,
+          "esito": "MettiInCoda",
+          "istante": "2020-01-21T14:13:08.489Z",
+          "codiceFonte": "3",
+          "codiceRichiesta": "RM2112000002",
+          "tipoEvento": "Telefonata"
+        },
+        {
+          "priorita": 3,
+          "istante": "2020-01-21T14:13:08.491Z",
+          "codiceFonte": "3",
+          "codiceRichiesta": "RM2112000002",
+          "tipoEvento": "AssegnataPriorita"
+        }
+      ],
+      "presidiata": false,
+      "stato": "Chiamata",
+      "motivazione": null
+    },
+    {
+      "id": "5e270b6f2d04f71b3c012762",
+      "codice": "RM2112000002",
+      "codiceRichiesta": null,
+      "operatore": null,
+      "istanteRicezioneRichiesta": "2020-01-21T14:32:15.294Z",
+      "istanteChiusura": null,
+      "sospesa": false,
+      "chiusa": false,
+      "aperta": true,
+      "prioritaRichiesta": 3,
+      "tipologie": [
+        {
+          "codice": "5",
+          "descrizione": "Incendio aeromobile",
+          "tipoLuogoEvento": null,
+          "icona": null,
+          "categoria": "Aeroporti",
+          "star": false,
+          "boschivo": false,
+          "adeguatezzaMezzo": {
+            "aps": "100",
+            "as": "80",
+            "ab": "0",
+            "av": "0",
+            "ag": "0",
+            "default": "0"
+          },
+          "oppSganc": -50
+        }
+      ],
+      "descrizione": "Incendio normale (generico)",
+      "richiedente": {
+        "telefono": "333 1234567",
+        "nominativo": "Luigi Bianchi"
+      },
+      "localita": {
+        "coordinate": {
+          "latitudine": 41.891726,
+          "longitudine": 12.529151
+        },
+        "indirizzo": "Via Prenestina, Roma RM, Italia",
+        "note": null,
+        "piano": null
+      },
+      "turnoInserimentoChiamata": null,
+      "turnoIntervento": null,
+      "tipoTerreno": [],
+      "listaEntiIntervenuti": [],
+      "obiettivoSensibile": null,
+      "competenze": [],
+      "complessita": {
+        "indice": "2",
+        "descrizione": "Basso"
+      },
+      "istantePresaInCarico": null,
+      "listaUtentiInLavorazione": [
+        {
+          "idUtente": "5",
+          "nominativo": "Mario Rossi",
+          "dataInizioAttivita": "2020-01-23T13:53:18.1572405Z"
+        }
+      ],
+      "listaUtentiPresaInCarico": [
+        {
+          "idUtente": "5",
+          "nominativo": "Mario Rossi",
+          "dataInizioAttivita": "2020-01-23T13:53:18.1572405Z"
+        }
+      ],
+      "istantePrimaAssegnazione": null,
+      "rilevanteGrave": false,
+      "rilevanteStArCu": false,
+      "codiceSchedaNue": null,
+      "zoneEmergenza": [],
+      "fonogramma": {
+        "codice": "0",
+        "descrizione": "Non necessario"
+      },
+      "partenze": [],
+      "partenzeRichiesta": null,
+      "tags": [],
+      "notePubbliche": null,
+      "notePrivate": null,
+      "eventi": [
+        {
+          "codiceOrigine": "333 1234567",
+          "nominativoChiamante": "Luigi Bianchi",
+          "numeroTelefono": "333 1234567",
+          "codiceSchedaContatto": null,
+          "codice": "333 1234567",
+          "motivazione": null,
+          "notePubbliche": null,
+          "notePrivate": null,
+          "esito": "MettiInCoda",
+          "istante": "2020-01-21T14:32:15.294Z",
+          "codiceFonte": "3",
+          "codiceRichiesta": "RM2112000002",
+          "tipoEvento": "Telefonata"
+        },
+        {
+          "priorita": 3,
+          "istante": "2020-01-21T14:32:15.296Z",
+          "codiceFonte": "3",
+          "codiceRichiesta": "RM2112000002",
+          "tipoEvento": "AssegnataPriorita"
+        }
+      ],
+      "presidiata": false,
+      "stato": "Chiamata",
+      "motivazione": null
+    },
+    {
+      "id": "5e2706f42d04f71b3c012761",
+      "codice": "RM2112000002",
+      "codiceRichiesta": null,
+      "operatore": null,
+      "istanteRicezioneRichiesta": "2020-01-21T14:13:08.489Z",
+      "istanteChiusura": null,
+      "sospesa": false,
+      "chiusa": false,
+      "aperta": true,
+      "prioritaRichiesta": 3,
+      "tipologie": [
+        {
+          "codice": "5",
+          "descrizione": "Incendio aeromobile",
+          "tipoLuogoEvento": null,
+          "icona": null,
+          "categoria": "Aeroporti",
+          "star": false,
+          "boschivo": false,
+          "adeguatezzaMezzo": {
+            "aps": "100",
+            "as": "80",
+            "ab": "0",
+            "av": "0",
+            "ag": "0",
+            "default": "0"
+          },
+          "oppSganc": -50
+        }
+      ],
+      "descrizione": "Probabile incendio in appartamento",
+      "richiedente": {
+        "telefono": "333 1234567",
+        "nominativo": "Mario Rossi"
+      },
+      "localita": {
+        "coordinate": {
+          "latitudine": 41.900572,
+          "longitudine": 12.499366
+        },
+        "indirizzo": "Via Cavour, 5, 00184 Roma RM, Italia",
+        "note": null,
+        "piano": null
+      },
+      "turnoInserimentoChiamata": null,
+      "turnoIntervento": null,
+      "tipoTerreno": [],
+      "listaEntiIntervenuti": [],
+      "obiettivoSensibile": null,
+      "competenze": [],
+      "complessita": {
+        "indice": "2",
+        "descrizione": "Basso"
+      },
+      "istantePresaInCarico": null,
+      "listaUtentiInLavorazione": [
+        {
+          "idUtente": "5",
+          "nominativo": "Mario Rossi",
+          "dataInizioAttivita": "2020-01-23T13:53:18.1572405Z"
+        }
+      ],
+      "listaUtentiPresaInCarico": [
+        {
+          "idUtente": "5",
+          "nominativo": "Mario Rossi",
+          "dataInizioAttivita": "2020-01-23T13:53:18.1572405Z"
+        }
+      ],
+      "istantePrimaAssegnazione": null,
+      "rilevanteGrave": false,
+      "rilevanteStArCu": false,
+      "codiceSchedaNue": null,
+      "zoneEmergenza": [],
+      "fonogramma": {
+        "codice": "0",
+        "descrizione": "Non necessario"
+      },
+      "partenze": [],
+      "partenzeRichiesta": null,
+      "tags": [],
+      "notePubbliche": null,
+      "notePrivate": null,
+      "eventi": [
+        {
+          "codiceOrigine": "333 1234567",
+          "nominativoChiamante": "Mario Rossi",
+          "numeroTelefono": "333 1234567",
+          "codiceSchedaContatto": null,
+          "codice": "333 1234567",
+          "motivazione": null,
+          "notePubbliche": null,
+          "notePrivate": null,
+          "esito": "MettiInCoda",
+          "istante": "2020-01-21T14:13:08.489Z",
+          "codiceFonte": "3",
+          "codiceRichiesta": "RM2112000002",
+          "tipoEvento": "Telefonata"
+        },
+        {
+          "priorita": 3,
+          "istante": "2020-01-21T14:13:08.491Z",
+          "codiceFonte": "3",
+          "codiceRichiesta": "RM2112000002",
+          "tipoEvento": "AssegnataPriorita"
+        }
+      ],
+      "presidiata": false,
+      "stato": "Chiamata",
+      "motivazione": null
+    },
+    {
+      "id": "5e270b6f2d04f71b3c012762",
+      "codice": "RM2112000002",
+      "codiceRichiesta": null,
+      "operatore": null,
+      "istanteRicezioneRichiesta": "2020-01-21T14:32:15.294Z",
+      "istanteChiusura": null,
+      "sospesa": false,
+      "chiusa": false,
+      "aperta": true,
+      "prioritaRichiesta": 3,
+      "tipologie": [
+        {
+          "codice": "5",
+          "descrizione": "Incendio aeromobile",
+          "tipoLuogoEvento": null,
+          "icona": null,
+          "categoria": "Aeroporti",
+          "star": false,
+          "boschivo": false,
+          "adeguatezzaMezzo": {
+            "aps": "100",
+            "as": "80",
+            "ab": "0",
+            "av": "0",
+            "ag": "0",
+            "default": "0"
+          },
+          "oppSganc": -50
+        }
+      ],
+      "descrizione": "Incendio normale (generico)",
+      "richiedente": {
+        "telefono": "333 1234567",
+        "nominativo": "Luigi Bianchi"
+      },
+      "localita": {
+        "coordinate": {
+          "latitudine": 41.891726,
+          "longitudine": 12.529151
+        },
+        "indirizzo": "Via Prenestina, Roma RM, Italia",
+        "note": null,
+        "piano": null
+      },
+      "turnoInserimentoChiamata": null,
+      "turnoIntervento": null,
+      "tipoTerreno": [],
+      "listaEntiIntervenuti": [],
+      "obiettivoSensibile": null,
+      "competenze": [],
+      "complessita": {
+        "indice": "2",
+        "descrizione": "Basso"
+      },
+      "istantePresaInCarico": null,
+      "listaUtentiInLavorazione": [
+        {
+          "idUtente": "5",
+          "nominativo": "Mario Rossi",
+          "dataInizioAttivita": "2020-01-23T13:53:18.1572405Z"
+        }
+      ],
+      "listaUtentiPresaInCarico": [
+        {
+          "idUtente": "5",
+          "nominativo": "Mario Rossi",
+          "dataInizioAttivita": "2020-01-23T13:53:18.1572405Z"
+        }
+      ],
+      "istantePrimaAssegnazione": null,
+      "rilevanteGrave": false,
+      "rilevanteStArCu": false,
+      "codiceSchedaNue": null,
+      "zoneEmergenza": [],
+      "fonogramma": {
+        "codice": "0",
+        "descrizione": "Non necessario"
+      },
+      "partenze": [],
+      "partenzeRichiesta": null,
+      "tags": [],
+      "notePubbliche": null,
+      "notePrivate": null,
+      "eventi": [
+        {
+          "codiceOrigine": "333 1234567",
+          "nominativoChiamante": "Luigi Bianchi",
+          "numeroTelefono": "333 1234567",
+          "codiceSchedaContatto": null,
+          "codice": "333 1234567",
+          "motivazione": null,
+          "notePubbliche": null,
+          "notePrivate": null,
+          "esito": "MettiInCoda",
+          "istante": "2020-01-21T14:32:15.294Z",
+          "codiceFonte": "3",
+          "codiceRichiesta": "RM2112000002",
+          "tipoEvento": "Telefonata"
+        },
+        {
+          "priorita": 3,
+          "istante": "2020-01-21T14:32:15.296Z",
+          "codiceFonte": "3",
+          "codiceRichiesta": "RM2112000002",
+          "tipoEvento": "AssegnataPriorita"
+        }
+      ],
+      "presidiata": false,
+      "stato": "Chiamata",
+      "motivazione": null
+    },
+    {
+      "id": "5e2706f42d04f71b3c012761",
+      "codice": "RM2112000002",
+      "codiceRichiesta": null,
+      "operatore": null,
+      "istanteRicezioneRichiesta": "2020-01-21T14:13:08.489Z",
+      "istanteChiusura": null,
+      "sospesa": false,
+      "chiusa": false,
+      "aperta": true,
+      "prioritaRichiesta": 3,
+      "tipologie": [
+        {
+          "codice": "5",
+          "descrizione": "Incendio aeromobile",
+          "tipoLuogoEvento": null,
+          "icona": null,
+          "categoria": "Aeroporti",
+          "star": false,
+          "boschivo": false,
+          "adeguatezzaMezzo": {
+            "aps": "100",
+            "as": "80",
+            "ab": "0",
+            "av": "0",
+            "ag": "0",
+            "default": "0"
+          },
+          "oppSganc": -50
+        }
+      ],
+      "descrizione": "Probabile incendio in appartamento",
+      "richiedente": {
+        "telefono": "333 1234567",
+        "nominativo": "Mario Rossi"
+      },
+      "localita": {
+        "coordinate": {
+          "latitudine": 41.900572,
+          "longitudine": 12.499366
+        },
+        "indirizzo": "Via Cavour, 5, 00184 Roma RM, Italia",
+        "note": null,
+        "piano": null
+      },
+      "turnoInserimentoChiamata": null,
+      "turnoIntervento": null,
+      "tipoTerreno": [],
+      "listaEntiIntervenuti": [],
+      "obiettivoSensibile": null,
+      "competenze": [],
+      "complessita": {
+        "indice": "2",
+        "descrizione": "Basso"
+      },
+      "istantePresaInCarico": null,
+      "listaUtentiInLavorazione": [
+        {
+          "idUtente": "5",
+          "nominativo": "Mario Rossi",
+          "dataInizioAttivita": "2020-01-23T13:53:18.1572405Z"
+        }
+      ],
+      "listaUtentiPresaInCarico": [
+        {
+          "idUtente": "5",
+          "nominativo": "Mario Rossi",
+          "dataInizioAttivita": "2020-01-23T13:53:18.1572405Z"
+        }
+      ],
+      "istantePrimaAssegnazione": null,
+      "rilevanteGrave": false,
+      "rilevanteStArCu": false,
+      "codiceSchedaNue": null,
+      "zoneEmergenza": [],
+      "fonogramma": {
+        "codice": "0",
+        "descrizione": "Non necessario"
+      },
+      "partenze": [],
+      "partenzeRichiesta": null,
+      "tags": [],
+      "notePubbliche": null,
+      "notePrivate": null,
+      "eventi": [
+        {
+          "codiceOrigine": "333 1234567",
+          "nominativoChiamante": "Mario Rossi",
+          "numeroTelefono": "333 1234567",
+          "codiceSchedaContatto": null,
+          "codice": "333 1234567",
+          "motivazione": null,
+          "notePubbliche": null,
+          "notePrivate": null,
+          "esito": "MettiInCoda",
+          "istante": "2020-01-21T14:13:08.489Z",
+          "codiceFonte": "3",
+          "codiceRichiesta": "RM2112000002",
+          "tipoEvento": "Telefonata"
+        },
+        {
+          "priorita": 3,
+          "istante": "2020-01-21T14:13:08.491Z",
+          "codiceFonte": "3",
+          "codiceRichiesta": "RM2112000002",
+          "tipoEvento": "AssegnataPriorita"
+        }
+      ],
+      "presidiata": false,
+      "stato": "Chiamata",
+      "motivazione": null
+    },
+    {
+      "id": "5e270b6f2d04f71b3c012762",
+      "codice": "RM2112000002",
+      "codiceRichiesta": null,
+      "operatore": null,
+      "istanteRicezioneRichiesta": "2020-01-21T14:32:15.294Z",
+      "istanteChiusura": null,
+      "sospesa": false,
+      "chiusa": false,
+      "aperta": true,
+      "prioritaRichiesta": 3,
+      "tipologie": [
+        {
+          "codice": "5",
+          "descrizione": "Incendio aeromobile",
+          "tipoLuogoEvento": null,
+          "icona": null,
+          "categoria": "Aeroporti",
+          "star": false,
+          "boschivo": false,
+          "adeguatezzaMezzo": {
+            "aps": "100",
+            "as": "80",
+            "ab": "0",
+            "av": "0",
+            "ag": "0",
+            "default": "0"
+          },
+          "oppSganc": -50
+        }
+      ],
+      "descrizione": "Incendio normale (generico)",
+      "richiedente": {
+        "telefono": "333 1234567",
+        "nominativo": "Luigi Bianchi"
+      },
+      "localita": {
+        "coordinate": {
+          "latitudine": 41.891726,
+          "longitudine": 12.529151
+        },
+        "indirizzo": "Via Prenestina, Roma RM, Italia",
+        "note": null,
+        "piano": null
+      },
+      "turnoInserimentoChiamata": null,
+      "turnoIntervento": null,
+      "tipoTerreno": [],
+      "listaEntiIntervenuti": [],
+      "obiettivoSensibile": null,
+      "competenze": [],
+      "complessita": {
+        "indice": "2",
+        "descrizione": "Basso"
+      },
+      "istantePresaInCarico": null,
+      "listaUtentiInLavorazione": [
+        {
+          "idUtente": "5",
+          "nominativo": "Mario Rossi",
+          "dataInizioAttivita": "2020-01-23T13:53:18.1572405Z"
+        }
+      ],
+      "listaUtentiPresaInCarico": [
+        {
+          "idUtente": "5",
+          "nominativo": "Mario Rossi",
+          "dataInizioAttivita": "2020-01-23T13:53:18.1572405Z"
+        }
+      ],
+      "istantePrimaAssegnazione": null,
+      "rilevanteGrave": false,
+      "rilevanteStArCu": false,
+      "codiceSchedaNue": null,
+      "zoneEmergenza": [],
+      "fonogramma": {
+        "codice": "0",
+        "descrizione": "Non necessario"
+      },
+      "partenze": [],
+      "partenzeRichiesta": null,
+      "tags": [],
+      "notePubbliche": null,
+      "notePrivate": null,
+      "eventi": [
+        {
+          "codiceOrigine": "333 1234567",
+          "nominativoChiamante": "Luigi Bianchi",
+          "numeroTelefono": "333 1234567",
+          "codiceSchedaContatto": null,
+          "codice": "333 1234567",
+          "motivazione": null,
+          "notePubbliche": null,
+          "notePrivate": null,
+          "esito": "MettiInCoda",
+          "istante": "2020-01-21T14:32:15.294Z",
+          "codiceFonte": "3",
+          "codiceRichiesta": "RM2112000002",
+          "tipoEvento": "Telefonata"
+        },
+        {
+          "priorita": 3,
+          "istante": "2020-01-21T14:32:15.296Z",
+          "codiceFonte": "3",
+          "codiceRichiesta": "RM2112000002",
+          "tipoEvento": "AssegnataPriorita"
+        }
+      ],
+      "presidiata": false,
+      "stato": "Chiamata",
+      "motivazione": null
+    },
+    {
+      "id": "5e2706f42d04f71b3c012761",
+      "codice": "RM2112000002",
+      "codiceRichiesta": null,
+      "operatore": null,
+      "istanteRicezioneRichiesta": "2020-01-21T14:13:08.489Z",
+      "istanteChiusura": null,
+      "sospesa": false,
+      "chiusa": false,
+      "aperta": true,
+      "prioritaRichiesta": 3,
+      "tipologie": [
+        {
+          "codice": "5",
+          "descrizione": "Incendio aeromobile",
+          "tipoLuogoEvento": null,
+          "icona": null,
+          "categoria": "Aeroporti",
+          "star": false,
+          "boschivo": false,
+          "adeguatezzaMezzo": {
+            "aps": "100",
+            "as": "80",
+            "ab": "0",
+            "av": "0",
+            "ag": "0",
+            "default": "0"
+          },
+          "oppSganc": -50
+        }
+      ],
+      "descrizione": "Probabile incendio in appartamento",
+      "richiedente": {
+        "telefono": "333 1234567",
+        "nominativo": "Mario Rossi"
+      },
+      "localita": {
+        "coordinate": {
+          "latitudine": 41.900572,
+          "longitudine": 12.499366
+        },
+        "indirizzo": "Via Cavour, 5, 00184 Roma RM, Italia",
+        "note": null,
+        "piano": null
+      },
+      "turnoInserimentoChiamata": null,
+      "turnoIntervento": null,
+      "tipoTerreno": [],
+      "listaEntiIntervenuti": [],
+      "obiettivoSensibile": null,
+      "competenze": [],
+      "complessita": {
+        "indice": "2",
+        "descrizione": "Basso"
+      },
+      "istantePresaInCarico": null,
+      "listaUtentiInLavorazione": [
+        {
+          "idUtente": "5",
+          "nominativo": "Mario Rossi",
+          "dataInizioAttivita": "2020-01-23T13:53:18.1572405Z"
+        }
+      ],
+      "listaUtentiPresaInCarico": [
+        {
+          "idUtente": "5",
+          "nominativo": "Mario Rossi",
+          "dataInizioAttivita": "2020-01-23T13:53:18.1572405Z"
+        }
+      ],
+      "istantePrimaAssegnazione": null,
+      "rilevanteGrave": false,
+      "rilevanteStArCu": false,
+      "codiceSchedaNue": null,
+      "zoneEmergenza": [],
+      "fonogramma": {
+        "codice": "0",
+        "descrizione": "Non necessario"
+      },
+      "partenze": [],
+      "partenzeRichiesta": null,
+      "tags": [],
+      "notePubbliche": null,
+      "notePrivate": null,
+      "eventi": [
+        {
+          "codiceOrigine": "333 1234567",
+          "nominativoChiamante": "Mario Rossi",
+          "numeroTelefono": "333 1234567",
+          "codiceSchedaContatto": null,
+          "codice": "333 1234567",
+          "motivazione": null,
+          "notePubbliche": null,
+          "notePrivate": null,
+          "esito": "MettiInCoda",
+          "istante": "2020-01-21T14:13:08.489Z",
+          "codiceFonte": "3",
+          "codiceRichiesta": "RM2112000002",
+          "tipoEvento": "Telefonata"
+        },
+        {
+          "priorita": 3,
+          "istante": "2020-01-21T14:13:08.491Z",
+          "codiceFonte": "3",
+          "codiceRichiesta": "RM2112000002",
+          "tipoEvento": "AssegnataPriorita"
+        }
+      ],
+      "presidiata": false,
+      "stato": "Chiamata",
+      "motivazione": null
+    },
+    {
+      "id": "5e270b6f2d04f71b3c012762",
+      "codice": "RM2112000002",
+      "codiceRichiesta": null,
+      "operatore": null,
+      "istanteRicezioneRichiesta": "2020-01-21T14:32:15.294Z",
+      "istanteChiusura": null,
+      "sospesa": false,
+      "chiusa": false,
+      "aperta": true,
+      "prioritaRichiesta": 3,
+      "tipologie": [
+        {
+          "codice": "5",
+          "descrizione": "Incendio aeromobile",
+          "tipoLuogoEvento": null,
+          "icona": null,
+          "categoria": "Aeroporti",
+          "star": false,
+          "boschivo": false,
+          "adeguatezzaMezzo": {
+            "aps": "100",
+            "as": "80",
+            "ab": "0",
+            "av": "0",
+            "ag": "0",
+            "default": "0"
+          },
+          "oppSganc": -50
+        }
+      ],
+      "descrizione": "Incendio normale (generico)",
+      "richiedente": {
+        "telefono": "333 1234567",
+        "nominativo": "Luigi Bianchi"
+      },
+      "localita": {
+        "coordinate": {
+          "latitudine": 41.891726,
+          "longitudine": 12.529151
+        },
+        "indirizzo": "Via Prenestina, Roma RM, Italia",
+        "note": null,
+        "piano": null
+      },
+      "turnoInserimentoChiamata": null,
+      "turnoIntervento": null,
+      "tipoTerreno": [],
+      "listaEntiIntervenuti": [],
+      "obiettivoSensibile": null,
+      "competenze": [],
+      "complessita": {
+        "indice": "2",
+        "descrizione": "Basso"
+      },
+      "istantePresaInCarico": null,
+      "listaUtentiInLavorazione": [
+        {
+          "idUtente": "5",
+          "nominativo": "Mario Rossi",
+          "dataInizioAttivita": "2020-01-23T13:53:18.1572405Z"
+        }
+      ],
+      "listaUtentiPresaInCarico": [
+        {
+          "idUtente": "5",
+          "nominativo": "Mario Rossi",
+          "dataInizioAttivita": "2020-01-23T13:53:18.1572405Z"
+        }
+      ],
+      "istantePrimaAssegnazione": null,
+      "rilevanteGrave": false,
+      "rilevanteStArCu": false,
+      "codiceSchedaNue": null,
+      "zoneEmergenza": [],
+      "fonogramma": {
+        "codice": "0",
+        "descrizione": "Non necessario"
+      },
+      "partenze": [],
+      "partenzeRichiesta": null,
+      "tags": [],
+      "notePubbliche": null,
+      "notePrivate": null,
+      "eventi": [
+        {
+          "codiceOrigine": "333 1234567",
+          "nominativoChiamante": "Luigi Bianchi",
+          "numeroTelefono": "333 1234567",
+          "codiceSchedaContatto": null,
+          "codice": "333 1234567",
+          "motivazione": null,
+          "notePubbliche": null,
+          "notePrivate": null,
+          "esito": "MettiInCoda",
+          "istante": "2020-01-21T14:32:15.294Z",
+          "codiceFonte": "3",
+          "codiceRichiesta": "RM2112000002",
+          "tipoEvento": "Telefonata"
+        },
+        {
+          "priorita": 3,
+          "istante": "2020-01-21T14:32:15.296Z",
+          "codiceFonte": "3",
+          "codiceRichiesta": "RM2112000002",
+          "tipoEvento": "AssegnataPriorita"
+        }
+      ],
+      "presidiata": false,
+      "stato": "Chiamata",
+      "motivazione": null
+    },
+    {
+      "id": "5e2706f42d04f71b3c012761",
+      "codice": "RM2112000002",
+      "codiceRichiesta": null,
+      "operatore": null,
+      "istanteRicezioneRichiesta": "2020-01-21T14:13:08.489Z",
+      "istanteChiusura": null,
+      "sospesa": false,
+      "chiusa": false,
+      "aperta": true,
+      "prioritaRichiesta": 3,
+      "tipologie": [
+        {
+          "codice": "5",
+          "descrizione": "Incendio aeromobile",
+          "tipoLuogoEvento": null,
+          "icona": null,
+          "categoria": "Aeroporti",
+          "star": false,
+          "boschivo": false,
+          "adeguatezzaMezzo": {
+            "aps": "100",
+            "as": "80",
+            "ab": "0",
+            "av": "0",
+            "ag": "0",
+            "default": "0"
+          },
+          "oppSganc": -50
+        }
+      ],
+      "descrizione": "Probabile incendio in appartamento",
+      "richiedente": {
+        "telefono": "333 1234567",
+        "nominativo": "Mario Rossi"
+      },
+      "localita": {
+        "coordinate": {
+          "latitudine": 41.900572,
+          "longitudine": 12.499366
+        },
+        "indirizzo": "Via Cavour, 5, 00184 Roma RM, Italia",
+        "note": null,
+        "piano": null
+      },
+      "turnoInserimentoChiamata": null,
+      "turnoIntervento": null,
+      "tipoTerreno": [],
+      "listaEntiIntervenuti": [],
+      "obiettivoSensibile": null,
+      "competenze": [],
+      "complessita": {
+        "indice": "2",
+        "descrizione": "Basso"
+      },
+      "istantePresaInCarico": null,
+      "listaUtentiInLavorazione": [
+        {
+          "idUtente": "5",
+          "nominativo": "Mario Rossi",
+          "dataInizioAttivita": "2020-01-23T13:53:18.1572405Z"
+        }
+      ],
+      "listaUtentiPresaInCarico": [
+        {
+          "idUtente": "5",
+          "nominativo": "Mario Rossi",
+          "dataInizioAttivita": "2020-01-23T13:53:18.1572405Z"
+        }
+      ],
+      "istantePrimaAssegnazione": null,
+      "rilevanteGrave": false,
+      "rilevanteStArCu": false,
+      "codiceSchedaNue": null,
+      "zoneEmergenza": [],
+      "fonogramma": {
+        "codice": "0",
+        "descrizione": "Non necessario"
+      },
+      "partenze": [],
+      "partenzeRichiesta": null,
+      "tags": [],
+      "notePubbliche": null,
+      "notePrivate": null,
+      "eventi": [
+        {
+          "codiceOrigine": "333 1234567",
+          "nominativoChiamante": "Mario Rossi",
+          "numeroTelefono": "333 1234567",
+          "codiceSchedaContatto": null,
+          "codice": "333 1234567",
+          "motivazione": null,
+          "notePubbliche": null,
+          "notePrivate": null,
+          "esito": "MettiInCoda",
+          "istante": "2020-01-21T14:13:08.489Z",
+          "codiceFonte": "3",
+          "codiceRichiesta": "RM2112000002",
+          "tipoEvento": "Telefonata"
+        },
+        {
+          "priorita": 3,
+          "istante": "2020-01-21T14:13:08.491Z",
+          "codiceFonte": "3",
+          "codiceRichiesta": "RM2112000002",
+          "tipoEvento": "AssegnataPriorita"
+        }
+      ],
+      "presidiata": false,
+      "stato": "Chiamata",
+      "motivazione": null
+    },
+    {
+      "id": "5e270b6f2d04f71b3c012762",
+      "codice": "RM2112000002",
+      "codiceRichiesta": null,
+      "operatore": null,
+      "istanteRicezioneRichiesta": "2020-01-21T14:32:15.294Z",
+      "istanteChiusura": null,
+      "sospesa": false,
+      "chiusa": false,
+      "aperta": true,
+      "prioritaRichiesta": 3,
+      "tipologie": [
+        {
+          "codice": "5",
+          "descrizione": "Incendio aeromobile",
+          "tipoLuogoEvento": null,
+          "icona": null,
+          "categoria": "Aeroporti",
+          "star": false,
+          "boschivo": false,
+          "adeguatezzaMezzo": {
+            "aps": "100",
+            "as": "80",
+            "ab": "0",
+            "av": "0",
+            "ag": "0",
+            "default": "0"
+          },
+          "oppSganc": -50
+        }
+      ],
+      "descrizione": "Incendio normale (generico)",
+      "richiedente": {
+        "telefono": "333 1234567",
+        "nominativo": "Luigi Bianchi"
+      },
+      "localita": {
+        "coordinate": {
+          "latitudine": 41.891726,
+          "longitudine": 12.529151
+        },
+        "indirizzo": "Via Prenestina, Roma RM, Italia",
+        "note": null,
+        "piano": null
+      },
+      "turnoInserimentoChiamata": null,
+      "turnoIntervento": null,
+      "tipoTerreno": [],
+      "listaEntiIntervenuti": [],
+      "obiettivoSensibile": null,
+      "competenze": [],
+      "complessita": {
+        "indice": "2",
+        "descrizione": "Basso"
+      },
+      "istantePresaInCarico": null,
+      "listaUtentiInLavorazione": [
+        {
+          "idUtente": "5",
+          "nominativo": "Mario Rossi",
+          "dataInizioAttivita": "2020-01-23T13:53:18.1572405Z"
+        }
+      ],
+      "listaUtentiPresaInCarico": [
+        {
+          "idUtente": "5",
+          "nominativo": "Mario Rossi",
+          "dataInizioAttivita": "2020-01-23T13:53:18.1572405Z"
+        }
+      ],
+      "istantePrimaAssegnazione": null,
+      "rilevanteGrave": false,
+      "rilevanteStArCu": false,
+      "codiceSchedaNue": null,
+      "zoneEmergenza": [],
+      "fonogramma": {
+        "codice": "0",
+        "descrizione": "Non necessario"
+      },
+      "partenze": [],
+      "partenzeRichiesta": null,
+      "tags": [],
+      "notePubbliche": null,
+      "notePrivate": null,
+      "eventi": [
+        {
+          "codiceOrigine": "333 1234567",
+          "nominativoChiamante": "Luigi Bianchi",
+          "numeroTelefono": "333 1234567",
+          "codiceSchedaContatto": null,
+          "codice": "333 1234567",
+          "motivazione": null,
+          "notePubbliche": null,
+          "notePrivate": null,
+          "esito": "MettiInCoda",
+          "istante": "2020-01-21T14:32:15.294Z",
+          "codiceFonte": "3",
+          "codiceRichiesta": "RM2112000002",
+          "tipoEvento": "Telefonata"
+        },
+        {
+          "priorita": 3,
+          "istante": "2020-01-21T14:32:15.296Z",
+          "codiceFonte": "3",
+          "codiceRichiesta": "RM2112000002",
+          "tipoEvento": "AssegnataPriorita"
+        }
+      ],
+      "presidiata": false,
+      "stato": "Chiamata",
+      "motivazione": null
+    },
+    {
+      "id": "5e2706f42d04f71b3c012761",
+      "codice": "RM2112000002",
+      "codiceRichiesta": null,
+      "operatore": null,
+      "istanteRicezioneRichiesta": "2020-01-21T14:13:08.489Z",
+      "istanteChiusura": null,
+      "sospesa": false,
+      "chiusa": false,
+      "aperta": true,
+      "prioritaRichiesta": 3,
+      "tipologie": [
+        {
+          "codice": "5",
+          "descrizione": "Incendio aeromobile",
+          "tipoLuogoEvento": null,
+          "icona": null,
+          "categoria": "Aeroporti",
+          "star": false,
+          "boschivo": false,
+          "adeguatezzaMezzo": {
+            "aps": "100",
+            "as": "80",
+            "ab": "0",
+            "av": "0",
+            "ag": "0",
+            "default": "0"
+          },
+          "oppSganc": -50
+        }
+      ],
+      "descrizione": "Probabile incendio in appartamento",
+      "richiedente": {
+        "telefono": "333 1234567",
+        "nominativo": "Mario Rossi"
+      },
+      "localita": {
+        "coordinate": {
+          "latitudine": 41.900572,
+          "longitudine": 12.499366
+        },
+        "indirizzo": "Via Cavour, 5, 00184 Roma RM, Italia",
+        "note": null,
+        "piano": null
+      },
+      "turnoInserimentoChiamata": null,
+      "turnoIntervento": null,
+      "tipoTerreno": [],
+      "listaEntiIntervenuti": [],
+      "obiettivoSensibile": null,
+      "competenze": [],
+      "complessita": {
+        "indice": "2",
+        "descrizione": "Basso"
+      },
+      "istantePresaInCarico": null,
+      "listaUtentiInLavorazione": [
+        {
+          "idUtente": "5",
+          "nominativo": "Mario Rossi",
+          "dataInizioAttivita": "2020-01-23T13:53:18.1572405Z"
+        }
+      ],
+      "listaUtentiPresaInCarico": [
+        {
+          "idUtente": "5",
+          "nominativo": "Mario Rossi",
+          "dataInizioAttivita": "2020-01-23T13:53:18.1572405Z"
+        }
+      ],
+      "istantePrimaAssegnazione": null,
+      "rilevanteGrave": false,
+      "rilevanteStArCu": false,
+      "codiceSchedaNue": null,
+      "zoneEmergenza": [],
+      "fonogramma": {
+        "codice": "0",
+        "descrizione": "Non necessario"
+      },
+      "partenze": [],
+      "partenzeRichiesta": null,
+      "tags": [],
+      "notePubbliche": null,
+      "notePrivate": null,
+      "eventi": [
+        {
+          "codiceOrigine": "333 1234567",
+          "nominativoChiamante": "Mario Rossi",
+          "numeroTelefono": "333 1234567",
+          "codiceSchedaContatto": null,
+          "codice": "333 1234567",
+          "motivazione": null,
+          "notePubbliche": null,
+          "notePrivate": null,
+          "esito": "MettiInCoda",
+          "istante": "2020-01-21T14:13:08.489Z",
+          "codiceFonte": "3",
+          "codiceRichiesta": "RM2112000002",
+          "tipoEvento": "Telefonata"
+        },
+        {
+          "priorita": 3,
+          "istante": "2020-01-21T14:13:08.491Z",
+          "codiceFonte": "3",
+          "codiceRichiesta": "RM2112000002",
+          "tipoEvento": "AssegnataPriorita"
+        }
+      ],
+      "presidiata": false,
+      "stato": "Chiamata",
+      "motivazione": null
+    },
+    {
+      "id": "5e270b6f2d04f71b3c012762",
+      "codice": "RM2112000002",
+      "codiceRichiesta": null,
+      "operatore": null,
+      "istanteRicezioneRichiesta": "2020-01-21T14:32:15.294Z",
+      "istanteChiusura": null,
+      "sospesa": false,
+      "chiusa": false,
+      "aperta": true,
+      "prioritaRichiesta": 3,
+      "tipologie": [
+        {
+          "codice": "5",
+          "descrizione": "Incendio aeromobile",
+          "tipoLuogoEvento": null,
+          "icona": null,
+          "categoria": "Aeroporti",
+          "star": false,
+          "boschivo": false,
+          "adeguatezzaMezzo": {
+            "aps": "100",
+            "as": "80",
+            "ab": "0",
+            "av": "0",
+            "ag": "0",
+            "default": "0"
+          },
+          "oppSganc": -50
+        }
+      ],
+      "descrizione": "Incendio normale (generico)",
+      "richiedente": {
+        "telefono": "333 1234567",
+        "nominativo": "Luigi Bianchi"
+      },
+      "localita": {
+        "coordinate": {
+          "latitudine": 41.891726,
+          "longitudine": 12.529151
+        },
+        "indirizzo": "Via Prenestina, Roma RM, Italia",
+        "note": null,
+        "piano": null
+      },
+      "turnoInserimentoChiamata": null,
+      "turnoIntervento": null,
+      "tipoTerreno": [],
+      "listaEntiIntervenuti": [],
+      "obiettivoSensibile": null,
+      "competenze": [],
+      "complessita": {
+        "indice": "2",
+        "descrizione": "Basso"
+      },
+      "istantePresaInCarico": null,
+      "listaUtentiInLavorazione": [
+        {
+          "idUtente": "5",
+          "nominativo": "Mario Rossi",
+          "dataInizioAttivita": "2020-01-23T13:53:18.1572405Z"
+        }
+      ],
+      "listaUtentiPresaInCarico": [
+        {
+          "idUtente": "5",
+          "nominativo": "Mario Rossi",
+          "dataInizioAttivita": "2020-01-23T13:53:18.1572405Z"
+        }
+      ],
+      "istantePrimaAssegnazione": null,
+      "rilevanteGrave": false,
+      "rilevanteStArCu": false,
+      "codiceSchedaNue": null,
+      "zoneEmergenza": [],
+      "fonogramma": {
+        "codice": "0",
+        "descrizione": "Non necessario"
+      },
+      "partenze": [],
+      "partenzeRichiesta": null,
+      "tags": [],
+      "notePubbliche": null,
+      "notePrivate": null,
+      "eventi": [
+        {
+          "codiceOrigine": "333 1234567",
+          "nominativoChiamante": "Luigi Bianchi",
+          "numeroTelefono": "333 1234567",
+          "codiceSchedaContatto": null,
+          "codice": "333 1234567",
+          "motivazione": null,
+          "notePubbliche": null,
+          "notePrivate": null,
+          "esito": "MettiInCoda",
+          "istante": "2020-01-21T14:32:15.294Z",
+          "codiceFonte": "3",
+          "codiceRichiesta": "RM2112000002",
+          "tipoEvento": "Telefonata"
+        },
+        {
+          "priorita": 3,
+          "istante": "2020-01-21T14:32:15.296Z",
+          "codiceFonte": "3",
+          "codiceRichiesta": "RM2112000002",
+          "tipoEvento": "AssegnataPriorita"
+        }
+      ],
+      "presidiata": false,
+      "stato": "Chiamata",
+      "motivazione": null
+    },
+    {
+      "id": "5e2706f42d04f71b3c012761",
+      "codice": "RM2112000002",
+      "codiceRichiesta": null,
+      "operatore": null,
+      "istanteRicezioneRichiesta": "2020-01-21T14:13:08.489Z",
+      "istanteChiusura": null,
+      "sospesa": false,
+      "chiusa": false,
+      "aperta": true,
+      "prioritaRichiesta": 3,
+      "tipologie": [
+        {
+          "codice": "5",
+          "descrizione": "Incendio aeromobile",
+          "tipoLuogoEvento": null,
+          "icona": null,
+          "categoria": "Aeroporti",
+          "star": false,
+          "boschivo": false,
+          "adeguatezzaMezzo": {
+            "aps": "100",
+            "as": "80",
+            "ab": "0",
+            "av": "0",
+            "ag": "0",
+            "default": "0"
+          },
+          "oppSganc": -50
+        }
+      ],
+      "descrizione": "Probabile incendio in appartamento",
+      "richiedente": {
+        "telefono": "333 1234567",
+        "nominativo": "Mario Rossi"
+      },
+      "localita": {
+        "coordinate": {
+          "latitudine": 41.900572,
+          "longitudine": 12.499366
+        },
+        "indirizzo": "Via Cavour, 5, 00184 Roma RM, Italia",
+        "note": null,
+        "piano": null
+      },
+      "turnoInserimentoChiamata": null,
+      "turnoIntervento": null,
+      "tipoTerreno": [],
+      "listaEntiIntervenuti": [],
+      "obiettivoSensibile": null,
+      "competenze": [],
+      "complessita": {
+        "indice": "2",
+        "descrizione": "Basso"
+      },
+      "istantePresaInCarico": null,
+      "listaUtentiInLavorazione": [
+        {
+          "idUtente": "5",
+          "nominativo": "Mario Rossi",
+          "dataInizioAttivita": "2020-01-23T13:53:18.1572405Z"
+        }
+      ],
+      "listaUtentiPresaInCarico": [
+        {
+          "idUtente": "5",
+          "nominativo": "Mario Rossi",
+          "dataInizioAttivita": "2020-01-23T13:53:18.1572405Z"
+        }
+      ],
+      "istantePrimaAssegnazione": null,
+      "rilevanteGrave": false,
+      "rilevanteStArCu": false,
+      "codiceSchedaNue": null,
+      "zoneEmergenza": [],
+      "fonogramma": {
+        "codice": "0",
+        "descrizione": "Non necessario"
+      },
+      "partenze": [],
+      "partenzeRichiesta": null,
+      "tags": [],
+      "notePubbliche": null,
+      "notePrivate": null,
+      "eventi": [
+        {
+          "codiceOrigine": "333 1234567",
+          "nominativoChiamante": "Mario Rossi",
+          "numeroTelefono": "333 1234567",
+          "codiceSchedaContatto": null,
+          "codice": "333 1234567",
+          "motivazione": null,
+          "notePubbliche": null,
+          "notePrivate": null,
+          "esito": "MettiInCoda",
+          "istante": "2020-01-21T14:13:08.489Z",
+          "codiceFonte": "3",
+          "codiceRichiesta": "RM2112000002",
+          "tipoEvento": "Telefonata"
+        },
+        {
+          "priorita": 3,
+          "istante": "2020-01-21T14:13:08.491Z",
+          "codiceFonte": "3",
+          "codiceRichiesta": "RM2112000002",
+          "tipoEvento": "AssegnataPriorita"
+        }
+      ],
+      "presidiata": false,
+      "stato": "Chiamata",
+      "motivazione": null
+    },
+    {
+      "id": "5e270b6f2d04f71b3c012762",
+      "codice": "RM2112000002",
+      "codiceRichiesta": null,
+      "operatore": null,
+      "istanteRicezioneRichiesta": "2020-01-21T14:32:15.294Z",
+      "istanteChiusura": null,
+      "sospesa": false,
+      "chiusa": false,
+      "aperta": true,
+      "prioritaRichiesta": 3,
+      "tipologie": [
+        {
+          "codice": "5",
+          "descrizione": "Incendio aeromobile",
+          "tipoLuogoEvento": null,
+          "icona": null,
+          "categoria": "Aeroporti",
+          "star": false,
+          "boschivo": false,
+          "adeguatezzaMezzo": {
+            "aps": "100",
+            "as": "80",
+            "ab": "0",
+            "av": "0",
+            "ag": "0",
+            "default": "0"
+          },
+          "oppSganc": -50
+        }
+      ],
+      "descrizione": "Incendio normale (generico)",
+      "richiedente": {
+        "telefono": "333 1234567",
+        "nominativo": "Luigi Bianchi"
+      },
+      "localita": {
+        "coordinate": {
+          "latitudine": 41.891726,
+          "longitudine": 12.529151
+        },
+        "indirizzo": "Via Prenestina, Roma RM, Italia",
+        "note": null,
+        "piano": null
+      },
+      "turnoInserimentoChiamata": null,
+      "turnoIntervento": null,
+      "tipoTerreno": [],
+      "listaEntiIntervenuti": [],
+      "obiettivoSensibile": null,
+      "competenze": [],
+      "complessita": {
+        "indice": "2",
+        "descrizione": "Basso"
+      },
+      "istantePresaInCarico": null,
+      "listaUtentiInLavorazione": [
+        {
+          "idUtente": "5",
+          "nominativo": "Mario Rossi",
+          "dataInizioAttivita": "2020-01-23T13:53:18.1572405Z"
+        }
+      ],
+      "listaUtentiPresaInCarico": [
+        {
+          "idUtente": "5",
+          "nominativo": "Mario Rossi",
+          "dataInizioAttivita": "2020-01-23T13:53:18.1572405Z"
+        }
+      ],
+      "istantePrimaAssegnazione": null,
+      "rilevanteGrave": false,
+      "rilevanteStArCu": false,
+      "codiceSchedaNue": null,
+      "zoneEmergenza": [],
+      "fonogramma": {
+        "codice": "0",
+        "descrizione": "Non necessario"
+      },
+      "partenze": [],
+      "partenzeRichiesta": null,
+      "tags": [],
+      "notePubbliche": null,
+      "notePrivate": null,
+      "eventi": [
+        {
+          "codiceOrigine": "333 1234567",
+          "nominativoChiamante": "Luigi Bianchi",
+          "numeroTelefono": "333 1234567",
+          "codiceSchedaContatto": null,
+          "codice": "333 1234567",
+          "motivazione": null,
+          "notePubbliche": null,
+          "notePrivate": null,
+          "esito": "MettiInCoda",
+          "istante": "2020-01-21T14:32:15.294Z",
+          "codiceFonte": "3",
+          "codiceRichiesta": "RM2112000002",
+          "tipoEvento": "Telefonata"
+        },
+        {
+          "priorita": 3,
+          "istante": "2020-01-21T14:32:15.296Z",
+          "codiceFonte": "3",
+          "codiceRichiesta": "RM2112000002",
+          "tipoEvento": "AssegnataPriorita"
+        }
+      ],
+      "presidiata": false,
+      "stato": "Chiamata",
+      "motivazione": null
+    }
+  ],
+  "listaChiamateInCorso": [],
+  "centroMappaMarker": {
+    "coordinateCentro": {
+      "latitudine": 41.89994,
+      "longitudine": 12.49127
+    },
+    "zoom": 10
+  },
+  "listaFiltri": {
+    "distaccamenti": [
+      {
+        "id": "RM.1000",
+        "descrizione": "Comando di Roma"
+      },
+      {
+        "id": "RM.1001",
+        "descrizione": "Distaccamento Cittadino Roma Tuscolano I"
+      },
+      {
+        "id": "RM.1002",
+        "descrizione": "Ostiense"
+      },
+      {
+        "id": "RM.1003",
+        "descrizione": "La Rustica"
+      }
+    ],
+    "generiMezzi": [
+      {
+        "id": "1",
+        "descrizione": "APS"
+      },
+      {
+        "id": "2",
+        "descrizione": "AF/UCL"
+      },
+      {
+        "id": "3",
+        "descrizione": "AF/OP"
+      },
+      {
+        "id": "4",
+        "descrizione": "ACT/TRI"
+      },
+      {
+        "id": "5",
+        "descrizione": "AF/COMBI"
+      },
+      {
+        "id": "6",
+        "descrizione": "AF/COMBI"
+      }
+    ],
+    "stati": [
+      {
+        "id": "1",
+        "descrizione": "In Sede"
+      },
+      {
+        "id": "2",
+        "descrizione": "In Rientro"
+      },
+      {
+        "id": "3",
+        "descrizione": "In Viaggio"
+      },
+      {
+        "id": "4",
+        "descrizione": "Sul Posto"
+      }
+    ]
+  },
+  "infoNue": {
+    "totaleSchede": {
+      "contatoreTutte": 8,
+      "contatoreDaGestire": 3
+    },
+    "competenzaSchede": {
+      "contatoreTutte": 3,
+      "contatoreDaGestire": null
+    },
+    "conoscenzaSchede": {
+      "contatoreTutte": 2,
+      "contatoreDaGestire": null
+    },
+    "differibileSchede": {
+      "contatoreTutte": 3,
+      "contatoreDaGestire": 3
+    }
+  },
+  "tipologie": [
+    {
+      "codice": "1",
+      "descrizione": "Incendio normale (generico)",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Incendi ed esplosioni",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Incendio normale (generico) (1)"
+    },
+    {
+      "codice": "2",
+      "descrizione": "Incendio ed esplosione",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Incendi ed esplosioni",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Incendio ed esplosione (2)"
+    },
+    {
+      "codice": "3",
+      "descrizione": "Esplosione da sostanza esplodente",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Incendi ed esplosioni",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Esplosione da sostanza esplodente (3)"
+    },
+    {
+      "codice": "4",
+      "descrizione": "Esplosione (escluso esplosione da sostanza esplodente)",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Incendi ed esplosioni",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Esplosione (escluso esplosione da sostanza esplodente) (4)"
+    },
+    {
+      "codice": "5",
+      "descrizione": "Incendio aeromobile",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Aeroporti",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Incendio aeromobile (5)"
+    },
+    {
+      "codice": "6",
+      "descrizione": "Incendio nave o traghetto",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Porti",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Incendio nave o traghetto (6)"
+    },
+    {
+      "codice": "7",
+      "descrizione": "Emergenza carrello aeromobile bloccato",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Aeroporti",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Emergenza carrello aeromobile bloccato (7)"
+    },
+    {
+      "codice": "8",
+      "descrizione": "Recupero aeromobile",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Aeroporti",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Recupero aeromobile (8)"
+    },
+    {
+      "codice": "9",
+      "descrizione": "Ricerca aeromobile",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Aeroporti",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Ricerca aeromobile (9)"
+    },
+    {
+      "codice": "10",
+      "descrizione": "Incidente stradale generico",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Incidenti stradali",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Incidente stradale generico (10)"
+    },
+    {
+      "codice": "11",
+      "descrizione": "Incidente stradale con mezzo trasportante merci pericolose",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Incidenti stradali",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Incidente stradale con mezzo trasportante merci pericolose (11)"
+    },
+    {
+      "codice": "12",
+      "descrizione": "Ribaltamento di mezzo trasportante merci pericolose",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Incidenti stradali",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Ribaltamento di mezzo trasportante merci pericolose (12)"
+    },
+    {
+      "codice": "13",
+      "descrizione": "Rimozione ostacoli non dovuti al traffico",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Incidenti stradali",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Rimozione ostacoli non dovuti al traffico (13)"
+    },
+    {
+      "codice": "14",
+      "descrizione": "Recupero merci e beni",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Recuperi",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Recupero merci e beni (14)"
+    },
+    {
+      "codice": "15",
+      "descrizione": "Recupero sostanze radioattive",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Recuperi",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Recupero sostanze radioattive (15)"
+    },
+    {
+      "codice": "16",
+      "descrizione": "Recupero parafulmini radioattivi",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Recuperi",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Recupero parafulmini radioattivi (16)"
+    },
+    {
+      "codice": "17",
+      "descrizione": "Recupero rilevatori vari",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Recuperi",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Recupero rilevatori vari (17)"
+    },
+    {
+      "codice": "18",
+      "descrizione": "Valanghe",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Statica",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Valanghe (18)"
+    },
+    {
+      "codice": "19",
+      "descrizione": "Cedimento terreno, voragine",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Statica",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Cedimento terreno, voragine (19)"
+    },
+    {
+      "codice": "20",
+      "descrizione": "Cedimento sede stradale",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Statica",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Cedimento sede stradale (20)"
+    },
+    {
+      "codice": "21",
+      "descrizione": "Dissesto statico di elementi costruttivi",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Statica",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Dissesto statico di elementi costruttivi (21)"
+    },
+    {
+      "codice": "22",
+      "descrizione": "Danni d'acqua in genere",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Acqua",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Danni d'acqua in genere (22)"
+    },
+    {
+      "codice": "23",
+      "descrizione": "Straripamenti, mareggiate, inondazioni",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Acqua",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Straripamenti, mareggiate, inondazioni (23)"
+    },
+    {
+      "codice": "24",
+      "descrizione": "Rifornimento idrico",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Acqua",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Rifornimento idrico (24)"
+    },
+    {
+      "codice": "25",
+      "descrizione": "Prosciugamento in genere",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Acqua",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Prosciugamento in genere (25)"
+    },
+    {
+      "codice": "26",
+      "descrizione": "Soccorso a persone",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Soccorsi e salvataggi",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Soccorso a persone (26)"
+    },
+    {
+      "codice": "27",
+      "descrizione": "Salvataggio persone",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Soccorsi e salvataggi",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Salvataggio persone (27)"
+    },
+    {
+      "codice": "28",
+      "descrizione": "Salvataggio animali",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Soccorsi e salvataggi",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Salvataggio animali (28)"
+    },
+    {
+      "codice": "29",
+      "descrizione": "Recupero salme",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Vari",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Recupero salme (29)"
+    },
+    {
+      "codice": "30",
+      "descrizione": "Recupero animali morti",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Vari",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Recupero animali morti (30)"
+    },
+    {
+      "codice": "31",
+      "descrizione": "Trasporto ammalati o infortunati",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Soccorsi e salvataggi",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Trasporto ammalati o infortunati (31)"
+    },
+    {
+      "codice": "32",
+      "descrizione": "Cattura folli o alienati",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Vari",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Cattura folli o alienati (32)"
+    },
+    {
+      "codice": "33",
+      "descrizione": "Ascensori bloccati",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Soccorsi e salvataggi",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Ascensori bloccati (33)"
+    },
+    {
+      "codice": "34",
+      "descrizione": "Apertura porte e finestre",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Vari",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Apertura porte e finestre (34)"
+    },
+    {
+      "codice": "35",
+      "descrizione": "Incidenti sul lavoro",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Vari",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Incidenti sul lavoro (35)"
+    },
+    {
+      "codice": "36",
+      "descrizione": "Servizio di assistenza (generico)",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Vari",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Servizio di assistenza (generico) (36)"
+    },
+    {
+      "codice": "37",
+      "descrizione": "Fuga gas",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Vari",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Fuga gas (37)"
+    },
+    {
+      "codice": "38",
+      "descrizione": "Lavaggio strada",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Vari",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Lavaggio strada (38)"
+    },
+    {
+      "codice": "39",
+      "descrizione": "Altri tipi",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Vari",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Altri tipi (39)"
+    },
+    {
+      "codice": "0",
+      "descrizione": "Falso allarme",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Falso allarme",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Falso allarme (0)"
+    },
+    {
+      "codice": "99",
+      "descrizione": "Intervento non più necessario",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Intervento non più necessario",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Intervento non più necessario (99)"
+    },
+    {
+      "codice": "90",
+      "descrizione": "Emergenza protezione civile",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Emergenza protezione civile",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Emergenza protezione civile (90)"
+    },
+    {
+      "codice": "301",
+      "descrizione": "Incendio bosco, sterpaglie, colture",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Incendi ed esplosioni",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Incendio bosco, sterpaglie, colture (301)"
+    },
+    {
+      "codice": "302",
+      "descrizione": "Incidente con incendio di mezzo trasport. merci pericolose",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Incendi ed esplosioni",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Incidente con incendio di mezzo trasport. merci pericolose (302)"
+    },
+    {
+      "codice": "303",
+      "descrizione": "Incendio in sedime aeroportuale",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Aeroporti",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Incendio in sedime aeroportuale (303)"
+    },
+    {
+      "codice": "304",
+      "descrizione": "Emergenza aeroportuale di altro genere",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Aeroporti",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Emergenza aeroportuale di altro genere (304)"
+    },
+    {
+      "codice": "305",
+      "descrizione": "Incidente aeromobile di altro genere",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Aeroporti",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Incidente aeromobile di altro genere (305)"
+    },
+    {
+      "codice": "306",
+      "descrizione": "Incendi natanti diversi da navi e traghetti",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Porti",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Incendi natanti diversi da navi e traghetti (306)"
+    },
+    {
+      "codice": "307",
+      "descrizione": "Recupero di piccoli natanti",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Porti",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Recupero di piccoli natanti (307)"
+    },
+    {
+      "codice": "308",
+      "descrizione": "Soccorso a imbarcazione senza governo",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Porti",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Soccorso a imbarcazione senza governo (308)"
+    },
+    {
+      "codice": "309",
+      "descrizione": "Ricerca/soccorso in amb. acquatico di imbarcazioni o natanti",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Porti",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Ricerca/soccorso in amb. acquatico di imbarcazioni o natanti (309)"
+    },
+    {
+      "codice": "310",
+      "descrizione": "Operazioni antinquinamento",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Porti",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Operazioni antinquinamento (310)"
+    },
+    {
+      "codice": "311",
+      "descrizione": "Ricerca e/o soccorso a persona in mare (SAR)",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Porti",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Ricerca e/o soccorso a persona in mare (SAR) (311)"
+    },
+    {
+      "codice": "312",
+      "descrizione": "Recupero di ostacoli alla navigazione",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Porti",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Recupero di ostacoli alla navigazione (312)"
+    },
+    {
+      "codice": "313",
+      "descrizione": "Supporto nautico per operazioni a terra",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Porti",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Supporto nautico per operazioni a terra (313)"
+    },
+    {
+      "codice": "314",
+      "descrizione": "Incidente stradale in galleria",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Incidenti stradali",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Incidente stradale in galleria (314)"
+    },
+    {
+      "codice": "315",
+      "descrizione": "Recupero sostanza pericolosa",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Recuperi",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Recupero sostanza pericolosa (315)"
+    },
+    {
+      "codice": "316",
+      "descrizione": "Frane",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Statica",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Frane (316)"
+    },
+    {
+      "codice": "317",
+      "descrizione": "Valanghe, slavine",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Statica",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Valanghe, slavine (317)"
+    },
+    {
+      "codice": "318",
+      "descrizione": "Crollo parziale di elementi strutturali",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Statica",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Crollo parziale di elementi strutturali (318)"
+    },
+    {
+      "codice": "319",
+      "descrizione": "Crollo generalizzato di opere e costruzioni",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Statica",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Crollo generalizzato di opere e costruzioni (319)"
+    },
+    {
+      "codice": "320",
+      "descrizione": "Danni d'acqua per rott./fuoriusc. da tubaz., canali e simili",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Acqua",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Danni d'acqua per rott./fuoriusc. da tubaz., canali e simili (320)"
+    },
+    {
+      "codice": "321",
+      "descrizione": "Incidente ferroviario",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Vari",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Incidente ferroviario (321)"
+    },
+    {
+      "codice": "322",
+      "descrizione": "Scoppio (cedimento meccanico)",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Vari",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Scoppio (cedimento meccanico) (322)"
+    },
+    {
+      "codice": "324",
+      "descrizione": "Ricerca persona (SAR)",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Soccorsi e salvataggi",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Ricerca persona (SAR) (324)"
+    },
+    {
+      "codice": "325",
+      "descrizione": "Recupero animali",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Soccorsi e salvataggi",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Recupero animali (325)"
+    },
+    {
+      "codice": "327",
+      "descrizione": "Assistenza Trattamento Sanitario Obbl. (TSO)",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Soccorsi e salvataggi",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Assistenza Trattamento Sanitario Obbl. (TSO) (327)"
+    },
+    {
+      "codice": "328",
+      "descrizione": "Bonifica da insetti",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Soccorsi e salvataggi",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Bonifica da insetti (328)"
+    },
+    {
+      "codice": "329",
+      "descrizione": "Assistenza per abbandono locali e/o ambienti",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Soccorsi e salvataggi",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Assistenza per abbandono locali e/o ambienti (329)"
+    },
+    {
+      "codice": "330",
+      "descrizione": "Recupero con verricello elicottero",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Soccorsi e salvataggi",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Recupero con verricello elicottero (330)"
+    },
+    {
+      "codice": "331",
+      "descrizione": "Ricerca e ricognizione aerea",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Soccorsi e salvataggi",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Ricerca e ricognizione aerea (331)"
+    },
+    {
+      "codice": "332",
+      "descrizione": "Ricerca da allarme COSPAS e simili",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Soccorsi e salvataggi",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Ricerca da allarme COSPAS e simili (332)"
+    },
+    {
+      "codice": "333",
+      "descrizione": "Trasporto al gancio baricentrico elicottero",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Soccorsi e salvataggi",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Trasporto al gancio baricentrico elicottero (333)"
+    },
+    {
+      "codice": "334",
+      "descrizione": "Mancata adozione di dispositivi di protezione individuale",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Soccorsi e salvataggi",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Mancata adozione di dispositivi di protezione individuale (334)"
+    },
+    {
+      "codice": "335",
+      "descrizione": "Fuoriuscita di sostanza infiammabile/combustibile",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Fuoriuscite - dispersioni - emissioni - inquinamenti",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Fuoriuscita di sostanza infiammabile/combustibile (335)"
+    },
+    {
+      "codice": "336",
+      "descrizione": "Fuoriuscita di sostanza comburente",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Fuoriuscite - dispersioni - emissioni - inquinamenti",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Fuoriuscita di sostanza comburente (336)"
+    },
+    {
+      "codice": "337",
+      "descrizione": "Fuoriuscita di sostanza tossica",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Fuoriuscite - dispersioni - emissioni - inquinamenti",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Fuoriuscita di sostanza tossica (337)"
+    },
+    {
+      "codice": "338",
+      "descrizione": "Fuoriuscita di sostanza asfissiante",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Fuoriuscite - dispersioni - emissioni - inquinamenti",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Fuoriuscita di sostanza asfissiante (338)"
+    },
+    {
+      "codice": "339",
+      "descrizione": "Fuoriuscita di sostanza radioattiva",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Fuoriuscite - dispersioni - emissioni - inquinamenti",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Fuoriuscita di sostanza radioattiva (339)"
+    },
+    {
+      "codice": "340",
+      "descrizione": "Fuoriuscita di sostanza biologica",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Fuoriuscite - dispersioni - emissioni - inquinamenti",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Fuoriuscita di sostanza biologica (340)"
+    },
+    {
+      "codice": "341",
+      "descrizione": "Fuoriuscita di sostanza combustibile in polvere",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Fuoriuscite - dispersioni - emissioni - inquinamenti",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Fuoriuscita di sostanza combustibile in polvere (341)"
+    },
+    {
+      "codice": "342",
+      "descrizione": "Fuoriuscita di sostanza infiammabile seguita da incendio",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Fuoriuscite - dispersioni - emissioni - inquinamenti",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Fuoriuscita di sostanza infiammabile seguita da incendio (342)"
+    },
+    {
+      "codice": "343",
+      "descrizione": "Fuoriuscita di altro tipo di sostanza",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Fuoriuscite - dispersioni - emissioni - inquinamenti",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Fuoriuscita di altro tipo di sostanza (343)"
+    },
+    {
+      "codice": "344",
+      "descrizione": "Inquinamento acque superficiali o di falda",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Fuoriuscite - dispersioni - emissioni - inquinamenti",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Inquinamento acque superficiali o di falda (344)"
+    },
+    {
+      "codice": "345",
+      "descrizione": "Inquinamento di aria",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Fuoriuscite - dispersioni - emissioni - inquinamenti",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Inquinamento di aria (345)"
+    },
+    {
+      "codice": "346",
+      "descrizione": "Alberi pericolanti",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Vari",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Alberi pericolanti (346)"
+    },
+    {
+      "codice": "347",
+      "descrizione": "Messa in sicurezza di imbarcazioni, natanti e/o galleggianti",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Soccorsi e salvataggi",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Messa in sicurezza di imbarcazioni, natanti e/o galleggianti (347)"
+    },
+    {
+      "codice": "362",
+      "descrizione": "Incidente nautico",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Porti",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Incidente nautico (362)"
+    },
+    {
+      "codice": "363",
+      "descrizione": "Verifiche statiche per compilazione schede AEDES",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Statica",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Verifiche statiche per compilazione schede AEDES (363)"
+    },
+    {
+      "codice": "364",
+      "descrizione": "Verifiche statiche speditive (TRIAGE)",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Statica",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Verifiche statiche speditive (TRIAGE) (364)"
+    },
+    {
+      "codice": "366",
+      "descrizione": "Attivita' di polizia giudiziaria",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Vari",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Attivita' di polizia giudiziaria (366)"
+    },
+    {
+      "codice": "400",
+      "descrizione": "Soccorsi, salvataggi persone (anche recupero vittime)",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Sisma",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Soccorsi, salvataggi persone (anche recupero vittime) (400)"
+    },
+    {
+      "codice": "401",
+      "descrizione": "Soccorsi, salvataggi animali (anche recupero animali morti)",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Sisma",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Soccorsi, salvataggi animali (anche recupero animali morti) (401)"
+    },
+    {
+      "codice": "402",
+      "descrizione": "Recupero beni privati e pubblici",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Sisma",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Recupero beni privati e pubblici (402)"
+    },
+    {
+      "codice": "403",
+      "descrizione": "Recupero autovetture e veicoli",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Sisma",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Recupero autovetture e veicoli (403)"
+    },
+    {
+      "codice": "404",
+      "descrizione": "Rimozione alberi",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Sisma",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Rimozione alberi (404)"
+    },
+    {
+      "codice": "405",
+      "descrizione": "Assist. popolazione, trasporti viveri, accesso aree peric.",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Sisma",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Assist. popolazione, trasporti viveri, accesso aree peric. (405)"
+    },
+    {
+      "codice": "406",
+      "descrizione": "Rimozione parti pericolanti, tegole, camini ecc.",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Sisma",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Rimozione parti pericolanti, tegole, camini ecc. (406)"
+    },
+    {
+      "codice": "407",
+      "descrizione": "Rimozione neve dai tetti",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Sisma",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Rimozione neve dai tetti (407)"
+    },
+    {
+      "codice": "408",
+      "descrizione": "Coperture tetti",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Sisma",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Coperture tetti (408)"
+    },
+    {
+      "codice": "409",
+      "descrizione": "Smontaggio controllato di elementi costruttivi",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Sisma",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Smontaggio controllato di elementi costruttivi (409)"
+    },
+    {
+      "codice": "410",
+      "descrizione": "Demolizioni",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Sisma",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Demolizioni (410)"
+    },
+    {
+      "codice": "411",
+      "descrizione": "Rimozione macerie",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Sisma",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Rimozione macerie (411)"
+    },
+    {
+      "codice": "412",
+      "descrizione": "Verifiche stabilità edifici manufatti frane voragini",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Sisma",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Verifiche stabilità edifici manufatti frane voragini (412)"
+    },
+    {
+      "codice": "413",
+      "descrizione": "Ripristino viabilità, interventi frane, cedimenti, voragini ",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Sisma",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Ripristino viabilità, interventi frane, cedimenti, voragini  (413)"
+    },
+    {
+      "codice": "414",
+      "descrizione": "Progettazione opere provvisionali",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Sisma",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Progettazione opere provvisionali (414)"
+    },
+    {
+      "codice": "415",
+      "descrizione": "Opere provvisionali senza progettazione",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Sisma",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Opere provvisionali senza progettazione (415)"
+    },
+    {
+      "codice": "416",
+      "descrizione": "Opere provvisionali con progettazione",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Sisma",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Opere provvisionali con progettazione (416)"
+    },
+    {
+      "codice": "417",
+      "descrizione": "Recupero merci avariate",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Sisma",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Recupero merci avariate (417)"
+    },
+    {
+      "codice": "418",
+      "descrizione": "Messa in sicurezza serbatoi  GPL",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Sisma",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Messa in sicurezza serbatoi  GPL (418)"
+    },
+    {
+      "codice": "419",
+      "descrizione": "Recupero e messa in sicurezza di  materiali pericolosi",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Sisma",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Recupero e messa in sicurezza di  materiali pericolosi (419)"
+    },
+    {
+      "codice": "420",
+      "descrizione": "Interventi impianti di servizio acqua, energia elettr. gas",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Sisma",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Interventi impianti di servizio acqua, energia elettr. gas (420)"
+    },
+    {
+      "codice": "421",
+      "descrizione": "Monitoraggio strumentale presenza di sostanze pericolose",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Sisma",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Monitoraggio strumentale presenza di sostanze pericolose (421)"
+    },
+    {
+      "codice": "422",
+      "descrizione": "Assistenza tecnica in genere",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Sisma",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Assistenza tecnica in genere (422)"
+    },
+    {
+      "codice": "423",
+      "descrizione": "Supporto sistemazione logistica della popolazione",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Sisma",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Supporto sistemazione logistica della popolazione (423)"
+    },
+    {
+      "codice": "424",
+      "descrizione": "Spegnimento incendio",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Sisma",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Spegnimento incendio (424)"
+    },
+    {
+      "codice": "425",
+      "descrizione": "Svuotamento aree allagate, danni d'acqua, maltempo",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Sisma",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Svuotamento aree allagate, danni d'acqua, maltempo (425)"
+    },
+    {
+      "codice": "426",
+      "descrizione": "Altri tipi",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Sisma",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Altri tipi (426)"
+    },
+    {
+      "codice": "348",
+      "descrizione": "Recupero autovetture e veicoli",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Recuperi",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Recupero autovetture e veicoli (348)"
+    },
+    {
+      "codice": "349",
+      "descrizione": "Rimozione neve dai tetti",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Vari",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Rimozione neve dai tetti (349)"
+    },
+    {
+      "codice": "350",
+      "descrizione": "Coperture tetti",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Vari",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Coperture tetti (350)"
+    },
+    {
+      "codice": "351",
+      "descrizione": "Smontaggio controllato di elementi costruttivi",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Statica",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Smontaggio controllato di elementi costruttivi (351)"
+    },
+    {
+      "codice": "352",
+      "descrizione": "Demolizioni",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Statica",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Demolizioni (352)"
+    },
+    {
+      "codice": "353",
+      "descrizione": "Rimozione macerie",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Statica",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Rimozione macerie (353)"
+    },
+    {
+      "codice": "354",
+      "descrizione": "Verifiche stabilità edifici manufatti frane voragini",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Statica",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Verifiche stabilità edifici manufatti frane voragini (354)"
+    },
+    {
+      "codice": "355",
+      "descrizione": "Progettazione opere provvisionali",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Vari",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Progettazione opere provvisionali (355)"
+    },
+    {
+      "codice": "356",
+      "descrizione": "Opere provvisionali senza progettazione",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Vari",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Opere provvisionali senza progettazione (356)"
+    },
+    {
+      "codice": "357",
+      "descrizione": "Opere provvisionali con progettazione",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Vari",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Opere provvisionali con progettazione (357)"
+    },
+    {
+      "codice": "358",
+      "descrizione": "Recupero merci avariate",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Recuperi",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Recupero merci avariate (358)"
+    },
+    {
+      "codice": "359",
+      "descrizione": "Messa in sicurezza serbatoi  GPL",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Vari",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Messa in sicurezza serbatoi  GPL (359)"
+    },
+    {
+      "codice": "360",
+      "descrizione": "Interventi impianti di servizio acqua, energia elettr. gas",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Vari",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Interventi impianti di servizio acqua, energia elettr. gas (360)"
+    },
+    {
+      "codice": "361",
+      "descrizione": "Monitoraggio strumentale presenza di sostanze pericolose",
+      "tipoLuogoEvento": null,
+      "icona": null,
+      "categoria": "Fuoriuscite - dispersioni - emissioni - inquinamenti",
+      "star": false,
+      "boschivo": false,
+      "adeguatezzaMezzo": {
+        "aps": "100",
+        "as": "80",
+        "ab": "0",
+        "av": "0",
+        "ag": "0",
+        "default": "0"
+      },
+      "oppSganc": -50,
+      "codiceDescrizione": "Monitoraggio strumentale presenza di sostanze pericolose (361)"
+    }
+  ]
+}

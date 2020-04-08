@@ -1,0 +1,68 @@
+<div class="row border rounded shadow-sm p-2 h-100"
+     [ngClass]="cardClasses(mezzoInServizio.mezzo.mezzo.stato, mezzoInServizio.mezzo.mezzo.codice)"
+     (mouseenter)="hoverIn.emit(mezzoInServizio.mezzo.mezzo.codice)" (mouseleave)="hoverOut.emit()"
+     (click)="selezionato.emit(mezzoInServizio.mezzo.mezzo.codice)">
+    <!-- Prima riga -->
+    <div class="col-12" style="height: 30px">
+        <div class="row">
+            <!-- Prima Colonna (Prima riga) -->
+            <div class="col-8">
+                <app-mezzo [mezzo]="mezzoInServizio.mezzo.mezzo" [mostraIndicatori]="true" [mostraNotifiche]="true"
+                           [inGestione]="mezzoInServizio.mezzo.mezzo.stato !== StatoMezzo.InSede"
+                           (actionMezzo)="actionMezzo.emit({'a': mezzoInServizio.mezzo.mezzo, 'b': $event})">
+                </app-mezzo>
+            </div>
+            <!-- Seconda Colonna (Prima riga) -->
+            <div class="col-4 text-right">
+                <div class="badge badge-secondary" [ngbTooltip]="mezzoInServizio.mezzo.mezzo.distaccamento.descrizione"
+                     [disableTooltip]="mezzoInServizio.mezzo.mezzo.distaccamento.descrizione.length <= 13">{{mezzoInServizio.mezzo.mezzo.distaccamento.descrizione | slice: 0:15}}</div>
+            </div>
+        </div>
+    </div>
+    <!-- Seconda riga -->
+    <div class="col-12 py-1">
+        <i class="fa fa-map-marker ml-1 mr-2 guida"></i>
+        <span *ngIf="mezzoInServizio.mezzo.infoRichiesta?.indirizzo">{{mezzoInServizio.mezzo.infoRichiesta.indirizzo | slice: 0:15}}</span>
+        <!--  <span *ngIf="!mezzoInServizio.mezzo.infoRichiesta?.indirizzo">Indirizzzo non presente</span>  -->
+    </div>
+    <!-- Terza riga -->
+    <div class="col-12">
+        <div class="row">
+            <!-- Prima Colonna (Seconda riga) -->
+            <div class="col-4 py-1">
+                <button *ngIf="mezzoInServizio.mezzo.infoRichiesta?.codiceRichiesta"
+                        class="btn btn-block btn-light btn-sm"
+                        (click)="dettaglioRichiesta.emit(mezzoInServizio.mezzo.mezzo.idRichiesta)">
+                    <i class="fa fa-hashtag guida mr-1"></i>
+                    {{mezzoInServizio.mezzo.infoRichiesta.codiceRichiesta}}
+                </button>
+                <div *ngIf="!mezzoInServizio.mezzo.infoRichiesta?.codiceRichiesta">
+                    <i class="fa fa-check-circle guida mx-1"></i>
+                    <!--  <small>Non assegnato</small>  -->
+                </div>
+            </div>
+            <div class="col-3 py-1">
+                <button *ngIf="mezzoInServizio.mezzo.mezzo.idRichiesta" class="btn btn-block btn-light btn-sm"
+                        (click)="visualizzaEventiRichiesta.emit(mezzoInServizio.mezzo.mezzo)">
+                    <i class="fa fa-list mr-1"></i>
+                    Eventi
+                </button>
+            </div>
+            <!-- Seconda Colonna (Seconda riga) -->
+            <div class="col-5 text-right py-1">
+                <i class="fa fa-group mr-2 guida"></i>
+                <div *ngIf="mezzoInServizio.squadre && mezzoInServizio.squadre.length > 0"
+                     class="h6 text-right mb-0 font-weight-bold">
+                    <span ngbTooltip="{{mezzoInServizio.squadre[0].nome}}"
+                          [disableTooltip]="mezzoInServizio.squadre[0].nome.length <= 6">{{mezzoInServizio.squadre[0].nome | slice: 0:8}}</span>
+                    <button class="btn btn-sm btn-light border ml-2 p-1" ngbTooltip="Elenco squadre"
+                            (click)="onListaSquadrePartenza(); $event.stopPropagation()">
+                        <span *ngIf="mezzoInServizio.squadre.length === 1"><i class="fa fa-search"></i></span>
+                        <span *ngIf="mezzoInServizio.squadre.length > 1">+{{mezzoInServizio.squadre.length - 1}}</span>
+                    </button>
+                </div>
+                <!--  <span *ngIf="!mezzoInServizio.squadre || mezzoInServizio.squadre.length === 0" class="p-2">Nessun squadra</span>  -->
+            </div>
+        </div>
+    </div>
+</div>

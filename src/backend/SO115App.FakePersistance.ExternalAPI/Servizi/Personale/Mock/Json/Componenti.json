@@ -1,0 +1,63 @@
+[
+  {
+    "Codicefiscale": "NTLMRN67L03F520A",
+    "Ruolo": "Capo Partenza",
+    "OrarioInizio": "2019-09-23T08:00:00Z",
+    "OrarioFine": "2019-09-23T20:00:00Z"
+  },
+  {
+    "Codicefiscale": "NTNMNL86M12A662V",
+    "Ruolo": "Autista",
+    "OrarioInizio": "2019-09-23T08:00:00Z",
+    "OrarioFine": "2019-09-23T20:00:00Z"
+  },
+  {
+    "Codicefiscale": "NTNGCR70L19F051L",
+    "Ruolo": "Tecnico Guardia",
+    "OrarioInizio": "2019-09-23T08:00:00Z",
+    "OrarioFine": "2019-09-23T20:00:00Z"
+  },
+  {
+    "Codicefiscale": "NTNLGU58S02I315Q",
+    "Ruolo": "Tecnico Guardia 2",
+    "OrarioInizio": "2019-09-23T08:00:00Z",
+    "OrarioFine": "2019-09-23T20:00:00Z"
+  },
+  {
+    "Codicefiscale": "NTNNTN84R24F839H",
+    "Ruolo": "Funzionario di Guardia",
+    "OrarioInizio": "2019-09-23T08:00:00Z",
+    "OrarioFine": "2019-09-23T20:00:00Z"
+  },
+  {
+    "Codicefiscale": "NTNDNL88H28A462W",
+    "Ruolo": "Capo Partenza",
+    "OrarioInizio": "2019-09-23T08:00:00Z",
+    "OrarioFine": "2019-09-23T20:00:00Z"
+  },
+  {
+    "Codicefiscale": "NTNMTT63H03A892X",
+    "Ruolo": "Autista",
+    "OrarioInizio": "2019-09-23T08:00:00Z",
+    "OrarioFine": "2019-09-23T20:00:00Z"
+  },
+  {
+    "Codicefiscale": "NSTGPP81R07L245Y",
+    "Ruolo": "Tecnico Guardia",
+    "OrarioInizio": "2019-09-23T08:00:00Z",
+    "OrarioFine": "2019-09-23T20:00:00Z"
+  },
+  {
+    "Codicefiscale": "NTLMRC86M04D542M",
+    "Ruolo": "Tecnico Guardia 2",
+    "OrarioInizio": "2019-09-23T08:00:00Z",
+    "OrarioFine": "2019-09-23T20:00:00Z"
+  },
+  {
+    "Codicefiscale": "NTLSDR61T23F257A",
+    "Ruolo": "Funzionario di Guardia",
+    "OrarioInizio": "2019-09-23T08:00:00Z",
+    "OrarioFine": "2019-09-23T20:00:00Z"
+  }
+
+]
