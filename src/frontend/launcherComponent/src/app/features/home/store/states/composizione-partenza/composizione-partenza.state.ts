@@ -94,7 +94,7 @@ export class ComposizionePartenzaState {
     static filtriSelezionati(state: ComposizionePartenzaStateModel): ComposizioneFilterbar {
         return {
             CodiceDistaccamento: state.codiceDistaccamento,
-            CodiceTipoMezzo: state.codiceTipoMezzo,
+            TipoMezzo: state.codiceTipoMezzo,
             CodiceStatoMezzo: state.codiceStatoMezzo
         };
     }
@@ -141,7 +141,7 @@ export class ComposizionePartenzaState {
         const composizioneMode = state.composizioneMode;
         const objFiltriSelezionati: ComposizioneFilterbar = {
             CodiceDistaccamento: state.codiceDistaccamento,
-            CodiceTipoMezzo: state.codiceTipoMezzo,
+            TipoMezzo: state.codiceTipoMezzo,
             CodiceStatoMezzo: state.codiceStatoMezzo
         };
         dispatch(new GetListeComposizioneAvanzata(objFiltriSelezionati));

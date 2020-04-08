@@ -8,10 +8,14 @@ import {
 } from '../../actions/composizione-partenza/composizione-avanzata.actions';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from '../../../../../shared/enum/toastr';
-import { MezziComposizioneState, MezziComposizioneStateStateModel } from './mezzi-composizione.state';
+import { MezziComposizioneState } from './mezzi-composizione.state';
 import { SquadreComposizioneState } from './squadre-composizione.state';
 import { ComposizionePartenzaState, ComposizionePartenzaStateModel } from './composizione-partenza.state';
-import { ClearSelectedMezziComposizione, SetListaMezziComposizione } from '../../actions/composizione-partenza/mezzi-composizione.actions';
+import {
+    ClearSelectedMezziComposizione,
+    FilterListaMezziComposizioneByFilters,
+    SetListaMezziComposizione
+} from '../../actions/composizione-partenza/mezzi-composizione.actions';
 import { ClearSelectedSquadreComposizione, SetListaSquadreComposizione } from '../../actions/composizione-partenza/squadre-composizione.actions';
 import { ListaComposizioneAvanzata } from '../../../composizione-partenza/interface/lista-composizione-avanzata-interface';
 import { BoxPartenzaState } from './box-partenza.state';
@@ -24,7 +28,6 @@ import { GetPreAccoppiati } from '../../actions/composizione-partenza/composizio
 import { SetListaFiltriAffini, StartListaComposizioneLoading, StopListaComposizioneLoading } from '../../actions/composizione-partenza/composizione-partenza.actions';
 import { MezzoComposizione } from '../../../composizione-partenza/interface/mezzo-composizione-interface';
 import { StatoMezzo } from '../../../../../shared/enum/stato-mezzo.enum';
-import produce from 'immer';
 
 export interface ComposizioneAvanzataStateModel {
     listaMezziSquadre: ListaComposizioneAvanzata;
@@ -108,17 +111,8 @@ export class ComposizioneAvanzataState {
     }
 
     @Action(FilterListeComposizioneAvanzata)
-    filterListeComposizioneAvanzata({ getState, setState, patchState }: StateContext<ComposizionePartenzaStateModel>, action: FilterListeComposizioneAvanzata) {
-        /* const state = getState();
-        setState(
-            produce(state, (draft: MezziComposizioneStateStateModel) => {
-                if (action.filtri.CodiceDistaccamento) {
-                    action.filtri.CodiceDistaccamento.forEach((codDistaccamento: string) => {
-                        draft.mezziComposizione.filter(m => codDistaccamentoIsEqual(m.mezzo.distaccamento.codice, codDistaccamento));
-                    });
-                }
-            }),
-        ); */
+    filterListeComposizioneAvanzata({ dispatch }: StateContext<ComposizionePartenzaStateModel>, action: FilterListeComposizioneAvanzata) {
+        dispatch(new FilterListaMezziComposizioneByFilters(action.filtri));
     }
 
     @Action(UnselectMezziAndSquadreComposizioneAvanzata)

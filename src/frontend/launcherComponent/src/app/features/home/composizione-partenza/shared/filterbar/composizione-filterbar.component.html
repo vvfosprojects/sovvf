@@ -1,43 +1,61 @@
 <div *ngIf="filtri" class="border card-shadow bg-light rounded mt-1 mb-2">
-  <div class="row">
-      <div class="col-3 py-1 pl-4">
-          <div class="row">
-              <div class="col-3">
-                  <button class="btn btn-block btn-primary px-1" (click)="turnOffComposizione()">
-                      <i class="fa fa-arrow-left"></i>
-                  </button>
-              </div>
-              <div class="col-9 pl-1">
-                  <app-tasto-comp-partenza (cambioModalita)="compPartenzaSwitch($event)"
-                                           [compPartenzaMode]="(composizioneMode$ | async)">
-                  </app-tasto-comp-partenza>
-              </div>
-          </div>
-      </div>
-    <div class="col-3 py-1 pl-1">
-      <ng-select [items]="filtri.generiMezzi" bindLabel="descrizione" bindValue="codice" [multiple]="true"
-        [closeOnSelect]="false" [hideSelected]="true" (add)="addFiltro($event, 'codiceTipoMezzo')"
-        (remove)="removeFiltro($event, 'codiceTipoMezzo')" (clear)="clearFiltri('codiceTipoMezzo')"
-        placeholder="Genere Mezzo: Tutti">
-      </ng-select>
+    <div class="row">
+        <div class="col-3 py-1 pl-4">
+            <div class="row">
+                <div class="col-3">
+                    <button class="btn btn-block btn-primary px-1" (click)="turnOffComposizione()">
+                        <i class="fa fa-arrow-left"></i>
+                    </button>
+                </div>
+                <div class="col-9 pl-1">
+                    <app-tasto-comp-partenza (cambioModalita)="compPartenzaSwitch($event)"
+                                             [compPartenzaMode]="(composizioneMode$ | async)">
+                    </app-tasto-comp-partenza>
+                </div>
+            </div>
+        </div>
+        <div class="col-3 py-1 pl-1">
+            <ng-select [items]="filtri.distaccamenti"
+                       bindLabel="descDistaccamento"
+                       bindValue="id"
+                       [multiple]="false"
+                       [closeOnSelect]="false"
+                       [hideSelected]="true"
+                       (change)="addFiltro($event, 'codiceDistaccamento')"
+                       (remove)="removeFiltro($event, 'codiceDistaccamento')"
+                       (clear)="clearFiltri('codiceDistaccamento')"
+                       placeholder="Distaccamento: Tutti">
+            </ng-select>
+        </div>
+        <div class="col-3 py-1">
+            <ng-select [items]="filtri.generiMezzi"
+                       bindLabel="descrizione"
+                       bindValue="descrizione"
+                       [multiple]="false"
+                       [closeOnSelect]="false"
+                       [hideSelected]="true"
+                       (change)="addFiltro($event, 'codiceTipoMezzo')"
+                       (remove)="removeFiltro($event, 'codiceTipoMezzo')"
+                       (clear)="clearFiltri('codiceTipoMezzo')"
+                       placeholder="Genere Mezzo: Tutti">
+            </ng-select>
+        </div>
+        <div class="col-3 py-1 pr-4">
+            <ng-select [items]="filtri.stati"
+                       bindLabel="descrizione"
+                       bindValue="codice"
+                       [multiple]="false"
+                       [closeOnSelect]="false"
+                       [hideSelected]="true"
+                       (change)="addFiltro($event, 'codiceStatoMezzo')"
+                       (remove)="removeFiltro($event, 'codiceStatoMezzo')"
+                       (clear)="clearFiltri('codiceStatoMezzo')"
+                       placeholder="Stato: Tutti">
+                <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
+                    <div><span class="fa fa-eercast mr-2"
+                               [ngClass]="_iconaStatiClass(item.descrizione)"></span>{{item.descrizione}}</div>
+                </ng-template>
+            </ng-select>
+        </div>
     </div>
-    <div class="col-3 py-1">
-      <ng-select [items]="filtri.distaccamenti" bindLabel="descDistaccamento" bindValue="id" [multiple]="true" [closeOnSelect]="false"
-        [hideSelected]="true" (add)="addFiltro($event, 'codiceDistaccamento')"
-        (remove)="removeFiltro($event, 'codiceDistaccamento')" (clear)="clearFiltri('codiceDistaccamento')"
-        placeholder="Distaccamento: Tutti">
-      </ng-select>
-    </div>
-    <div class="col-3 py-1 pr-4">
-      <ng-select [items]="filtri.stati" bindLabel="descrizione" bindValue="codice" [multiple]="true" [closeOnSelect]="false"
-        [hideSelected]="true" (add)="addFiltro($event, 'codiceStatoMezzo')"
-        (remove)="removeFiltro($event, 'codiceStatoMezzo')" (clear)="clearFiltri('codiceStatoMezzo')"
-        placeholder="Stato: Tutti">
-        <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
-          <div><span class="fa fa-eercast mr-2"
-              [ngClass]="_iconaStatiClass(item.descrizione)"></span>{{item.descrizione}}</div>
-        </ng-template>
-      </ng-select>
-    </div>
-  </div>
 </div>

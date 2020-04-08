@@ -31,21 +31,23 @@ export class ComposizioneFilterbarComponent {
     }
 
     addFiltro(event: any, tipo: string) {
-        this.store.dispatch(new AddFiltroSelezionatoComposizione(event.codice || event.id, tipo));
-        this.update();
-        // console.log('Filtro deselezionato', event);
+        if (event) {
+            this.store.dispatch(new AddFiltroSelezionatoComposizione(event.id || event.descrizione, tipo));
+            this.update();
+            console.log('Filtro selezionato', event);
+        }
     }
 
-    removeFiltro(event: any, tipo: string) {
+    /* removeFiltro(event: any, tipo: string) {
         this.store.dispatch(new RemoveFiltroSelezionatoComposizione(event.value.codice || event.value.id, tipo));
         this.update();
-        // console.log('Filtro deselezionato', event);
-    }
+        console.log('Filtro deselezionato', event);
+    } */
 
     clearFiltri(tipo: string) {
         this.store.dispatch(new RemoveFiltriSelezionatiComposizione(tipo));
         this.update();
-        // console.log('Filtri deselezionati', tipo);
+        console.log('Filtri deselezionati', tipo);
     }
 
     update() {
@@ -54,7 +56,7 @@ export class ComposizioneFilterbarComponent {
         const codiceSquadra = this.store.selectSnapshot(SquadreComposizioneState.idSquadreSelezionate);
         const filtri: FiltriComposizione = {
             CodiceDistaccamento: filtriSelezionati ? filtriSelezionati.CodiceDistaccamento : [],
-            CodiceTipoMezzo: filtriSelezionati ? filtriSelezionati.CodiceTipoMezzo : [],
+            TipoMezzo: filtriSelezionati ? filtriSelezionati.TipoMezzo : [],
             CodiceStatoMezzo: filtriSelezionati ? filtriSelezionati.CodiceStatoMezzo : [],
             CodiceMezzo: codiceMezzo ? codiceMezzo : '',
             CodiceSquadra: codiceSquadra ? codiceSquadra : [],
