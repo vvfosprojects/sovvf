@@ -1,0 +1,36 @@
+<div class="card text-center" canDrop [target]="mezzo">
+  <h4 class="card-header">
+    <i class="fa fa-truck"></i> {{ mezzo.mezzo.nome }}
+    <button type="button" (click)="rimuoviMezzoInPartenza()" class="close" aria-label="Close" title="Elimina questo mezzo">
+      <span aria-hidden="true">
+        <i class="fa fa-window-close"></i>
+      </span>
+    </button>
+  </h4>
+  <div class="card-block row">
+    <div class="col-md-3">
+      <div class="card">
+        <app-tag-autista *ngIf="!esisteAutista"></app-tag-autista>
+        <div *ngIf="mezzo.esisteAutista">
+          <div>
+            <i class="fa fa-2x fa-user"></i>
+            <app-tag-autista></app-tag-autista>
+          </div>
+          <h6 title="{{ nominativoEstesoAutista }}">{{ nominativoAutista | truncate:18 }}</h6>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-9">
+      <div class="row">
+        <div class="col-md-3" *ngFor="let c of componenti">
+          <div>
+            <i class="fa fa-lg fa-user"></i>
+            <app-tag-capopartenza *ngIf="c.capoPartenza"></app-tag-capopartenza>
+            <app-tag-autista *ngIf="c.autista"></app-tag-autista>
+          </div>
+          <h6 title="{{ c.componente.nominativoEsteso }}">{{ c.nominativo | truncate:18 }}</h6>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

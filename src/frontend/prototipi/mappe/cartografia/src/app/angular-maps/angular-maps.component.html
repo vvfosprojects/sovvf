@@ -1,0 +1,83 @@
+<div class="row justify-content-center align-items-center">
+  
+    <div class="col-lg-4">  
+
+<!-- INVIO LOCALIZZAZIONE -->
+      <div class="card card-block card-outline-danger mb-3">
+            <h5 class="card-title text-center"><b>INVIO INTERVENTO LOCALIZZATO</b></h5>
+            <div class="row">
+                    <div class="input-group input-group-sm">
+                        <span class="input-group-addon">Intervento</span>
+                        <input class="card-text" placeholder="Codice" style="width:50px;font-size:8pt" [(ngModel)]="punto.codice"/>
+                        <input class="card-text" placeholder="Tipologia"  style="width:250px;font-size:8pt"  [(ngModel)]="punto.tipologia"/>
+                    </div>
+            </div> <!-- end row -->
+            <div class="row">
+                    <div class="input-group input-group-sm">
+                        <span class="input-group-addon">Descrizione</span>
+                        <input class="card-text" placeholder="Descrizione dell'intervento" style="width:292px;font-size:8pt"  [(ngModel)]="punto.descrizione"/>
+                    </div>
+            </div> <!-- end row -->
+            <div class="row">
+                <div class="input-group input-group-sm">
+                    <span class="input-group-addon">Lat</span><input class="card-text" placeholder="Latitudine"  style="width:152px;font-size:8pt" [(ngModel)]="punto.latitudine"/>
+                    <span class="input-group-addon">Lon</span><input class="card-text" placeholder="Longitudine" style="width:152px;font-size:8pt" [(ngModel)]="punto.longitudine"/>
+                </div>
+            </div> <!-- end row -->    
+            <div class="row">
+                    <div class="input-group input-group-sm">
+                        <span class="input-group-addon">Indirizzo</span><input class="card-text" placeholder="Indirizzo"  style="width:310px;font-size:8pt" [(ngModel)]="punto.indirizzo"/>
+                    </div>
+                </div> <!-- end row -->    
+            <div class="row">
+                <div class="card-block">
+                    <button class="btn btn-primary btn-sm btn-block" (click)="marcaIntervento()">Invia Intervento</button>
+                </div>
+            </div> <!-- end row -->
+        </div> <!-- card card-block card-outline-danger mb-3 -->
+       
+<!-- RICEZIONE COORDINATE -->
+        <div class="card card-block card-outline-primary mb-3">
+            <h5 class="card-title text-center"><b>RICEZIONE COORDINATE</b></h5>
+            <h6 class="card-title text-center"><b>dopo click sulla mappa</b></h6>            
+           
+            <div class="row">
+                <div class="input-group input-group-sm">
+                    <span class="input-group-addon">Lat</span><input class="card-text" placeholder="Latitudine"  style="width:152px;font-size:8pt" [(ngModel)]="puntoOutput.latitudine"/>
+                    <span class="input-group-addon">Lon</span><input class="card-text" placeholder="Longitudine" style="width:152px;font-size:8pt" [(ngModel)]="puntoOutput.longitudine"/>
+                </div>
+            </div> <!-- end row -->    
+
+        </div> <!-- card card-block card-outline-primary mb-3 -->
+  
+    </div><!-- col-lg-4 -->
+    
+  <!-- MAPPA -->  
+    <div class="col-sm-6">
+      <nav class="navbar navbar-default">
+          <div class="container">
+              <div class="navbar-header">
+                  <a class="navbar-brand" href="#">Mappa degli Interventi</a>
+              </div>
+          </div>
+      </nav>
+  
+      <google-map (click)="getPuntoFromMap()" 
+                  [center]="center"
+                  [zoom]="zoom"
+                  [disableDefaultUI]="disableDefaultUI"
+                  [disableDoubleClickZoom]="disableDoubleClickZoom" 
+                  [mapTypeId]="mapTypeId"
+                  [maxZoom]="maxZoom"
+                  [minZoom]="minZoom"
+                  [styles]="styles"
+                  
+                  [puntoOutput]="puntoOutput">
+
+                  <!--<div google-map-marker [punto]="punto"></div>-->
+                  <div *ngFor="let i of puntiMappaInput" google-map-marker [punto]="i"></div>                                    
+                <!--<google-map-marker [punto]="punto"></google-map-marker>-->
+      </google-map> 
+    </div>
+  
+  </div>

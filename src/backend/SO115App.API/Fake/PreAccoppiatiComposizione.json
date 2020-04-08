@@ -1,0 +1,37 @@
+[
+  {
+    "Id": "3",
+    "CodiceSede": "RM.1000",
+    "Mezzo": "O.29319",
+    "Squadre": [
+      "1",
+      "2"
+    ]
+  },
+  {
+    "Id": "9",
+    "CodiceSede": "RM.1000",
+    "Mezzo": "O.29729",
+    "Squadre": [
+      "1"
+    ]
+  },
+  {
+    "Id": "2",
+    "CodiceSede": "RM.1000",
+    "Mezzo": "O.29730",
+    "Squadre": [
+      "3",
+      "2"
+    ]
+  },
+  {
+    "Id": "5",
+    "CodiceSede": "RM.1000",
+    "Mezzo": "O.21826",
+    "Squadre": [
+      "2"
+    ]
+  }
+
+]

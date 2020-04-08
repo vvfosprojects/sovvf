@@ -1,0 +1,110 @@
+[
+  {
+    "codice": "RM.1000",
+    "descrizione": "Comando di Roma",
+    "coordinate": {
+      "latitudine": 41.89994,
+      "longitudine": 12.49127
+    },
+    "indirizzo": "Via Genova, 1, 00184 Roma RM",
+    "tipo": "Comando",
+    "regione": "Lazio",
+    "provincia": "Roma"
+  },
+  {
+    "codice": "RM.1001",
+    "descrizione": "Comando di Latina",
+    "coordinate": {
+      "latitudine": 41.474258,
+      "longitudine": 12.90325
+    },
+    "indirizzo": "Piazzale G. Carturan, 1, 04100 Latina LT",
+    "tipo": "Comando",
+    "regione": "Lazio",
+    "provincia": "Latina"
+  },
+  {
+    "codice": "RM.1002",
+    "descrizione": "Comando di Frosinone",
+    "coordinate": {
+      "latitudine": 41.61632,
+      "longitudine": 13.31005
+    },
+    "indirizzo": "Via Dei Monti Lepini, 03100 Frosinone FR",
+    "tipo": "Comando",
+    "regione": "Lazio",
+    "provincia": "Frosinone"
+  },
+  {
+    "codice": "RM.1003",
+    "descrizione": "Comando di Rieti",
+    "coordinate": {
+      "latitudine": 42.397678,
+      "longitudine": 12.85802
+    },
+    "indirizzo": "Via Sacchetti Sassetti, 1, 02100 Rieti RI",
+    "tipo": "Comando",
+    "regione": "Lazio",
+    "provincia": "Rieti"
+  },
+  {
+    "codice": "RM.1004",
+    "descrizione": "Comando di Viterbo",
+    "coordinate": {
+      "latitudine": 42.3736121,
+      "longitudine": 12.1129142
+    },
+    "indirizzo": "Str. Cassia Nord, km 84, 01100 Viterbo VT",
+    "tipo": "Comando",
+    "regione": "Lazio",
+    "provincia": "Viterbo"
+  },
+  {
+    "codice": "RM.1005",
+    "descrizione": "Distaccamento Cittadino La Rustica",
+    "coordinate": {
+      "latitudine": 41.9095454,
+      "longitudine": 12.6119425
+    },
+    "indirizzo": "Via Achille Vertunni, 98 00155 Roma",
+    "tipo": "Distaccamento",
+    "regione": "Lazio",
+    "provincia": "Roma"
+  },
+  {
+    "codice": "MI.1000",
+    "descrizione": "Comando di Milano",
+    "coordinate": {
+      "latitudine": 45.535297,
+      "longitudine": 9.224535
+    },
+    "indirizzo": "Via Milano, 98 000000 Milano",
+    "tipo": "Comando",
+    "regione": "Milano",
+    "provincia": "Milano"
+  },
+  {
+    "codice": "TO.1000",
+    "descrizione": "Comando di Torino",
+    "coordinate": {
+      "latitudine": 45.136555,
+      "longitudine": 7.043792
+    },
+    "indirizzo": "Via Torino, 98 000000 Torino",
+    "tipo": "Comando",
+    "regione": "Torino",
+    "provincia": "Torino"
+  },
+  {
+    "codice": "NA.1000",
+    "descrizione": "Comando di Napoli",
+    "coordinate": {
+      "latitudine": 40.933318,
+      "longitudine": 14.524047
+    },
+    "indirizzo": "Via Napoli, 98 000000 Napoli",
+    "tipo": "Comando",
+    "regione": "Napoli",
+    "provincia": "Napoli"
+  }
+]

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<title>Prova Bootstrap Riga Semplificata</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ"
+	 crossorigin="anonymous">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n"
+	 crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb"
+	 crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn"
+	 crossorigin="anonymous"></script>
+	<style>
+		.status_red {
+			border-left: 10px solid red;
+		}
+		
+		.row_text {
+			color: #666666;
+		}
+		
+		.fa {
+			color: #bbbbbb!important;
+		}
+		
+		.big_numbers {
+			color: #a72920;
+			font-weight: bold;
+		}
+		
+		.bg_diagonal_grey {
+			background: repeating-linear-gradient( 135deg, white, white 1em, #F0F0F0 1em, #E9EEFB 2em);
+		}
+	</style>
+	<meta charset="utf-8">
+</head>
+
+<body>
+
+	<div class="container">
+		<h1>&nbsp;</h1>
+		<div class="card status_red row_text p-3">
+
+			<div class="row align-items-center">
+				<div class="col-md-11">
+
+					<div class="row">
+						<div class="col-md-12">
+							<div class="row">
+								<div class="col-md-3">
+									<div class="h5">
+										<i class="fa fa-hashtag fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Identificativo richiesta assistenza"></i>
+										<span class="h4">
+											<a data-toggle="collapse" style="color:#444444!important; font-weight: bold" href="#collapse1">
+										123.456.789	</a>
+										</span>
+										<span>
+										<i class="fa fa-exclamation-circle fa-fw" style="color:red!important;" aria-hidden="true" data-toggle="tooltip" data-placement="top"
+										 title="Intervento Rilevante"></i>
+										 </span>
+									</div>
+
+									<div class="h5">
+										<i class="fa fa-calendar fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Data e Ora ricezione richiesta"></i>
+										<span class="badge badge-info">oggi</span> - 15.12
+									</div>
+									<div class="h5">
+										<i class="fa fa-bolt fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Orario Prima assegnazione"></i>15.20
+										<!--<span class="badge badge-success">presidiato</span> -->
+										<span class="badge badge-warning">non presidiato</span>
+									</div>
+									<div class="h5">
+										<i class="fa fa-thermometer-half fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Priorità della richiesta"></i>
+										<span class="h5" style="font-family: FontAwesome; font-style: normal; color:#006633">&#xf111;&#xf111;&#xf111;&#xf10c;&#xf10c;</span>
+									</div>
+
+								</div>
+								<div class="col-md-8">
+									<div class="h5">
+										<i class="fa fa-tag fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Tipologia Evento"></i>
+										<span class="h4" style="color:chocolate">Incendio Normale</span>
+
+										<h5 style="color:#bbbbbb">
+											<i class="fa fa-fw" aria-hidden="true"></i>
+											<span data-toggle="tooltip" title="Incendio zona rotonda prima del centro abitato, cassonetto incendiato che ha coinvolto anche un albero in prossimità">
+												Incendio zona rotonda prima del centro abitato [...]
+											</span>
+										</h5>
+									</div>
+									<div class="h5">
+										<i class="fa fa-address-book-o fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Riferimento Chiamante"></i>										Carabinieri
+									</div>
+									<div class="h5">
+										<i class="fa fa-phone fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Numero Chiamante"></i>										065193943
+									</div>
+
+								</div>
+								<div class="col-md-1 p-2">
+									<div class="h5">
+										<i class="fa fa-users fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Numero Squadre"></i>
+										<span class="h3 big_numbers">2</span>
+									</div>
+									<div class="h5">
+										<i class="fa fa-truck fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Numero Mezzi"></i>
+										<span class="h3 big_numbers">2</span>
+									</div>
+									<div class="h5">
+										<i class="fa fa-user fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Persone Impiegate"></i>
+										<span class="h3 big_numbers">10</span>
+									</div>
+
+								</div>
+							</div>
+						</div>
+						<div class="col-md-12">
+							<div class="row align-items-center card m-0" style="background-color: gainsboro;">
+								<div class="col-md-12">
+									<div class="h3">
+										<i class="fa fa-map-marker fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Localizzazione"></i>
+										<span class="h5">Via le Mani dal naso, 15 - Roma (RM)</span>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div id="collapse1" class="col-md-12 panel-collapse collapse">
+							<div class="col-md-12">
+								<div class="row card bt-0" style="background-color: white">
+									<div class="col-md-12 bg_diagonal_grey">
+										<div class="h3">
+											<!--<i class="fa fa-info-circle fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Informazioni aggiuntive sulla localizzazione"></i>-->
+											<div class="h6 p-2">
+												200 mt prima della rotonda, segnalato dal paracarro Km 1202
+											</div>
+											<div class="h5 pull-right">
+												<span class="badge badge-danger pull-right m-1">Zona ABC</span>
+												<span class="badge badge-danger pull-right m-1">Zona DEF</span>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="card-block mt-3 p-2">
+								<h4 class="card-title p-1" style="background-color: #a3d8ad;">Dettaglio Richiesta</h4>
+								<div class="card-text row">
+									<div class="col-md-12 h5 pull-right">
+										<span class="badge badge-default pull-right m-1">Incendi</span>
+										<span class="badge badge-default pull-right m-1">Fuori Città</span>
+									</div>
+								</div>
+								<div class="col-md-12 h5">
+									<i class="fa fa-paper-plane-o fa-fw" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Stato Fonogramma"></i>
+									<span class="h4 badge badge-success">inviato</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-1 container-fluid">
+					<div class="ml-4 mr-0 pr-0 h2">
+						<a href="#">
+							<i class="fa fa-arrow-circle-o-right" style="color:lightblue!important;" aria-hidden="true" data-toggle="tooltip" data-placement="top"
+							 title="Vai alla pagina di dettaglio"></i>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</body>
+
+</html>

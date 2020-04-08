@@ -1,0 +1,50 @@
+.button-menu {
+    background-color: white !important;
+    color: gray !important;
+    border-radius: 1px !important;
+    padding: 7px 11px;
+    margin-right: 1.8px;
+}
+
+.button-menu:focus {
+    box-shadow: none !important;
+}
+
+.button-menu:hover {
+    color: black !important;
+}
+
+.filtro-attivo {
+  color: #fff !important;
+  background-color: #0069d9 !important;
+  border-color: #0062cc !important;
+}
+
+.filtro-attivo:hover {
+  color: #fff !important;
+  background-color: #0062cc !important;
+  border-color: #005cbf !important;
+}
+
+.voce-green {
+    background-color: green !important;
+    color: white !important;
+}
+
+.voce-green:hover {
+    background-color: #004800 !important;
+    color: white !important;
+}
+
+.dropdown-toggle::after {
+    display: none;
+}
+
+.filtro-hover:hover {
+    background-color: blue !important;
+    color: white !important;
+}
+
+.dropdown-menu {
+    min-width: 270px !important;
+}

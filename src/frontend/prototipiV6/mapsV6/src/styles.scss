@@ -1,0 +1,86 @@
+@import '../node_modules/bootstrap/dist/css/bootstrap.css';
+@import '../node_modules/font-awesome/css/font-awesome.css';
+@import '../node_modules/snazzy-info-window/dist/snazzy-info-window.css';
+@import "~@ng-select/ng-select/themes/default.theme.css";
+@import '~ngx-ui-switch/ui-switch.component.scss';
+
+@font-face {
+  font-family: 'icon-marker';
+  src:  url('./assets/fonts/icon-marker.eot?lo2034');
+  src:  url('./assets/fonts/icon-marker.eot?lo2034#iefix') format('embedded-opentype'),
+  url('./assets/fonts/icon-marker.ttf?lo2034') format('truetype'),
+  url('./assets/fonts/icon-marker.woff?lo2034') format('woff'),
+  url('./assets/fonts/icon-marker.svg?lo2034#icon-marker') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.app-shadow{
+  -webkit-box-shadow: 1px 1px 2px 1px rgba(224,224,224,1);
+  -moz-box-shadow: 1px 1px 2px 1px rgba(224,224,224,1);
+  box-shadow: 1px 1px 2px 1px rgba(224,224,224,1);
+}
+.card-shadow{
+  -webkit-box-shadow: 1px 1px 2px 1px rgba(224,224,224,1);
+  -moz-box-shadow: 1px 1px 2px 1px rgba(224,224,224,1);
+  box-shadow: 1px 1px 2px 1px rgba(224,224,224,1);
+}
+.card-shadow-primary{
+  -webkit-box-shadow: 2px 0px 2px .5px #007bff;
+  -moz-box-shadow: 2px 0px 2px .5px #007bff;
+  box-shadow: 2px 0px 2px .5px #007bff;
+}
+.card-shadow-info{
+  -webkit-box-shadow: 2px 0px 2px .5px #17a2b8;
+  -moz-box-shadow: 2px 0px 2px .5px #17a2b8;
+  box-shadow: 2px 0px 2px .5px #17a2b8;
+}
+.card-shadow-success{
+  -webkit-box-shadow: 2px 0px 2px .5px #28a745;
+  -moz-box-shadow: 2px 0px 2px .5px #28a745;
+  box-shadow: 2px 0px 2px .5px #28a745;
+}
+.card-shadow-danger{
+  -webkit-box-shadow: 2px 0px 2px .5px #dc3545;
+  -moz-box-shadow: 2px 0px 2px .5px #dc3545;
+  box-shadow: 2px 0px 2px .5px #dc3545;
+}
+.card-shadow-warning{
+  -webkit-box-shadow: 2px 0px 2px .5px #ffc107;
+  -moz-box-shadow: 2px 0px 2px .5px #ffc107;
+  box-shadow: 2px 0px 2px .5px #ffc107;
+}
+.card-shadow-secondary{
+  -webkit-box-shadow: 2px 0px 2px .5px #868e96;
+  -moz-box-shadow: 2px 0px 2px .5px #868e96;
+  box-shadow: 2px 0px 2px .5px #868e96;
+}
+
+
+[class^="icon-"], [class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'icon-marker' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-truck-fire-q:before {
+  content: "\e900";
+}
+.icon-fa-sedi:before {
+  content: "\e901";
+}
+.icon-fa-richieste:before {
+  content: "\e902";
+}
+.icon-truck-fire:before {
+  content: "\e903";
+}

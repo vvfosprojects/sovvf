@@ -1,0 +1,283 @@
+<div class="card row_text p-3" [ngClass]="{'status_presidiato': richiesta.presidiato, 'status_non_presidiato': !richiesta.presidiato}">
+  <div class="row align-items-center">
+    <div class="col-md-11">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="row">
+            <div class="col-md-3">
+              <div class="h5 nowrap">
+                <i class="guida fa fa-hashtag fa-fw" aria-hidden="true" title="Identificativo richiesta assistenza"></i>
+                <a class="h4 num-int" (click)="toggleEspanso()">
+									  {{ richiesta.codice }}
+								</a>
+                <span *ngIf="richiesta.rilevante">
+                  <i class="guida fa fa-exclamation-circle fa-fw" style="color:red!important;" aria-hidden="true"
+                  title="Intervento Rilevante"></i>
+                </span>
+              </div>
+
+              <div class="h5 nowrap">
+                <i class="guida fa fa-clock-o fa-fw" aria-hidden="true" title="Ricezione richiesta"></i> {{ richiesta.istanteRicezioneRichiesta
+                | friendlyDate }} - {{ richiesta.istanteRicezioneRichiesta | friendlyHour }}
+              </div>
+              <div class="h5 nowrap">
+                <i class="guida fa fa-bolt fa-fw" aria-hidden="true" title="Prima assegnazione"></i> {{ richiesta.istantePrimaAssegnazione
+                | friendlyHour }}
+
+                <!-- presidiato / non presidiato -->
+                <span *ngIf="richiesta.presidiato;else nonPresidiato">
+                  <span class="badge badge-success">presidiato</span>
+                </span>
+                <ng-template #nonPresidiato>
+                  <span class="badge badge-warning">non presidiato</span>
+                </ng-template>
+
+              </div>
+
+              <!-- priorità richiesta -->
+              <div class="h5 nowrap">
+                <i class="guida fa fa-thermometer-half fa-fw" aria-hidden="true" title="Priorità della richiesta"></i>
+                <span class="h5" [ngClass]="{'text-success':richiesta.prioritaRichiesta <= 2, 'text-warning':richiesta.prioritaRichiesta > 2 && richiesta.prioritaRichiesta <= 4, 'text-danger': richiesta.prioritaRichiesta == 5}">
+                  <i *ngFor="let n of vettorePallini()" class="fa fa-circle" aria-hidden="true"></i><i *ngFor="let n of vettoreBuchini()" class="fa fa-circle-o" aria-hidden="true"></i>  
+                </span>
+              </div>
+
+            </div>
+
+            <!-- II colonna primo livello di dettaglio -->
+            <div class="col-md-8">
+
+              <!-- Tipologie -->
+              <div class="h5 nowrap">
+                <i class="guida fa fa-exclamation-triangle fa-fw" aria-hidden="true" title="Tipologia Eventi"></i>
+                <span *ngIf="!!richiesta.tipologie && richiesta.tipologie.length > 0" class="h4 tipologia">{{ richiesta.tipologie[0] }}</span>
+                <a *ngIf="richiesta.tipologie.length > 1" [popover]="popAltreTip" placement="bottom" popoverTitle="Altre tipologie" triggers="mouseenter:mouseleave">
+                  [più altre {{ richiesta.tipologie.length - 1 }}]
+                </a>
+
+                <!-- popover altre tipologie -->
+                <ng-template #popAltreTip>
+                  <div class="h4" *ngFor="let t of richiesta.tipologie; let i = index">
+                    <div *ngIf="i > 0">
+                      {{ i + 1 }}.
+                      <span class="tipologia">{{ t }}</span>
+                    </div>
+                  </div>
+                </ng-template>
+
+                <h5>
+                  <i class="guida fa fa-fw" aria-hidden="true"></i>
+                  <span tooltip="{{ richiesta.descrizione }}" placement="bottom">{{ richiesta.descrizione | truncate:33 }}</span>
+                </h5>
+              </div>
+
+              <!-- richiedente -->
+              <div class="h5 nowrap">
+                <i class="guida fa fa-address-book-o fa-fw" aria-hidden="true" title="Richiedente"></i>
+                <span tooltip="{{ richiesta.richiedente }}" placement="bottom">{{ richiesta.richiedente | truncate:33 }}</span>
+              </div>
+
+              <!-- numero richiedente -->
+              <div class="h5 pt-1 nowrap">
+                <i class="guida fa fa-phone fa-fw mr-1" aria-hidden="true" title="Numero richiedente"></i> {{ richiesta.numeroRichiedente
+                }}
+              </div>
+
+            </div>
+
+            <!-- indicatori stato richiesta -->
+            <div class="col-md-1 p-2">
+
+              <!-- squadre -->
+              <div class="h5 nowrap">
+                <i class="guida fa fa-users fa-fw" aria-hidden="true" title="Numero Squadre"></i>
+                <a class="h3 big_numbers" [popover]="popSquadre" placement="bottom" popoverTitle="Squadre" triggers="focus" tabindex="0">
+                  {{ numeroSquadre() }}
+                </a>
+
+                <!-- popover squadre -->
+                <ng-template #popSquadre>
+                  <div class="h4" *ngFor="let s of nomiSquadre()">{{ s }}</div>
+                </ng-template>
+
+              </div>
+
+              <!-- mezzi -->
+              <div class="h5 nowrap">
+                <i class="guida fa fa-truck fa-fw" aria-hidden="true" title="Numero Mezzi"></i>
+                <a class="h3 big_numbers" [popover]="popMezzi" placement="bottom" popoverTitle="Mezzi" triggers="focus" tabindex="0">
+                  {{ numeroMezzi() }}
+                </a>
+
+                <!-- popover mezzi -->
+                <ng-template #popMezzi>
+                  <div *ngFor="let m of richiesta.mezzi" class="h4 nowrap">
+                    <span>{{ m.descrizione }}</span>
+                    <span class='badge badge-default m-0'>{{ m.genereMezzo }}</span>
+                  </div>
+                </ng-template>
+
+              </div>
+
+              <!-- componenti -->
+              <div class="h5 nowrap">
+                <i class="guida fa fa-user fa-fw" aria-hidden="true" title="Componenti ora impegnati"></i>
+                <a class="h3 big_numbers" [popover]="popComponenti" placement="bottom" popoverTitle="Componenti ora impegnati" triggers="focus"
+                  tabindex="0">
+                    {{ richiesta.tuttiIComponenti().length }}
+                </a>
+
+                <!-- popover persone -->
+                <ng-template #popComponenti>
+                  <div class="h5">
+                    <div *ngFor="let c of richiesta.tuttiIComponenti()">
+                      <componente [componente]="c"></componente>
+                    </div>
+                  </div>
+                </ng-template>
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- I livello seconda riga: località -->
+        <div class="col-md-12">
+          <div class="card">
+            <div class="row m-0 localita">
+              <div class="col-md-10 h3">
+                <i class="guida fa fa-map-marker fa-fw" aria-hidden="true" title="Localizzazione"></i>
+                <span class="h5">
+                  {{ richiesta.descrizioneLocalita }}
+                  <a href="#">
+                    <i class="guida fa fa-globe fa-fw globo-loc" aria-hidden="true" title="Localizzazione Richiesta Intervento"></i>	
+                  </a>
+								</span>
+              </div>
+              <div class="col-md-2 h6 pt-2 text-right">
+                <span *ngIf="richiesta.descrizioneCompetenze.length > 0" class="badge badge-primary">{{ richiesta.descrizioneCompetenze[0] }}</span>
+                <span *ngIf="richiesta.descrizioneCompetenze.length > 1" class="badge badge-info">{{ richiesta.descrizioneCompetenze[1] }}</span>
+                <span *ngIf="richiesta.descrizioneCompetenze.length > 2" class="badge badge-default">{{ richiesta.descrizioneCompetenze[2] }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- box note localita e zone emergenza -->
+        <div *ngIf="espanso" class="col-md-12">
+          <div class="col-md-12">
+            <div class="row card bt-0 note-localita">
+              <div class="col-md-12 bg_diagonal_grey">
+                <div class="h3">
+                  <div class="h6 p-2">
+                    {{ richiesta.noteLocalita }}
+                  </div>
+                  <div class="h5 pull-right">
+                    <span *ngFor="let ze of richiesta.zoneEmergenza" class="badge badge-danger pull-right m-1">{{ ze }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- prima colonna II livello di dettaglio -->
+          <div class="row mt-3">
+            <div class="col-md-3">
+
+              <!-- presa in carico -->
+              <div class="h5">
+                <i class="guida fa fa-calendar-check-o fa-fw" aria-hidden="true" title="Presa in carico"></i> {{ richiesta.istantePresaInCarico
+                | friendlyDate }} - {{ richiesta.istantePresaInCarico | friendlyHour }}
+              </div>
+
+              <!-- scheda nue -->
+              <div class="h5">
+                <i class="guida fa fa-id-card-o fa-fw" aria-hidden="true" title="Codice scheda NUE"></i>
+                <a href="#" class="sch-cont">{{ richiesta.codiceSchedaNue }}</a>
+              </div>
+
+              <!-- fonogramma -->
+              <div class="h5">
+                <i class="guida fa fa-paper-plane-o fa-fw" aria-hidden="true" title="Stato Fonogramma"></i>
+                <span class="h4 badge" [ngClass]="{'badge-success':richiesta.statoFonogrammaRichiesta == 2, 'badge-default':richiesta.statoFonogrammaRichiesta == 0, 'badge-warning':richiesta.statoFonogrammaRichiesta == 1}">
+                  {{ richiesta.descrizioneStatoFonogramma }}
+                </span>
+              </div>
+
+              <!-- complessità -->
+              <div class="h5">
+                <i class="guida fa fa-gears fa-fw" aria-hidden="true" title="Complessità"></i>
+                <b>{{ richiesta.indiceComplessita }}</b>
+                <span class="h4 badge" [ngClass]="{'badge-success':richiesta.complessitaRichiesta == 2, 'badge-warning':richiesta.complessitaRichiesta == 1, 'badge-danger':richiesta.complessitaRichiesta == 0}">{{ richiesta.descrizioneComplessita }}</span>
+              </div>
+
+            </div>
+
+            <!-- II livello di dettaglio: squadre -->
+            <div class="col-md-4">
+              <div class="card">
+                <div class="card-block bg_card_title">
+                  <i class="guida fa fa-users fa-2x fa-fw" aria-hidden="true" title="Squadre coinvolte"></i>
+                  <span class="h4 card-title">Squadre coinvolte</span>
+                </div>
+                <ul class="list-group list-group-flush">
+                  <li *ngFor="let s of richiesta.squadre" class="list-group-item pl-2 pr-2">
+                    <div class="col-md-10">
+                      <i class="guida fa fa-fire-extinguisher fa-fw mr-2" style="font-size: 1.5em" aria-hidden="true" title="Squadra"></i>
+                      <span style="font-weight: bold">{{ s.nome }}</span>
+                    </div>
+                    <div class="col-md-2">
+                      <a title="Componenti squadra" [popover]="popComponenti" placement="bottom" popoverTitle="Componenti" triggers="focus" tabindex="0">
+													<i class="guida fa fa-tags fa-fw" style="color:cadetblue!important;font-size: 1.5em" aria-hidden="true" title="Componenti squadra"></i>	
+											</a>
+
+                      <ng-template #popComponenti>
+                        <div class="h5">
+                          <div *ngFor="let c of s.componenti">
+                            <componente [componente]="c"></componente>
+                          </div>
+                        </div>
+                      </ng-template>
+
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- II livello di dettaglio: mezzi -->
+            <div class="col-md-5">
+              <div class="card">
+                <div class="card-block bg_card_title">
+                  <i class="guida fa fa-truck fa-2x fa-fw" aria-hidden="true" title="Mezzi coinvolti"></i>
+                  <span class="h4 card-title">Mezzi coinvolti</span>
+                </div>
+                <ul class="list-group list-group-flush">
+                  <mezzo *ngFor="let m of richiesta.mezzi" [mezzo]="m"></mezzo>
+                </ul>
+              </div>
+            </div>
+            
+            <!-- TAGS-->
+            <div class="card-text col-md-12">
+              <div class="card mt-3" style="background-color: lavender">
+                <div class="col-md-12 h5 pull-right mt-2">
+                  <span class="badge badge-default pull-right m-1">Incendi Estivi</span>
+                  <span class="badge badge-default pull-right m-1">Fuori Città</span>
+                  <i class="guida fa fa-tags fa-fw" aria-hidden="true" title="Etichette"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-1">
+      <div class="ml-4 mr-0 pr-0 h2">
+        <a href="#">
+							<i class="tasto-dettaglio fa fa-arrow-circle-o-right" aria-hidden="true" title="Vai alla pagina di dettaglio" (click)="clickDettagli()"></i>
+						</a>
+      </div>
+    </div>
+  </div>
+</div>

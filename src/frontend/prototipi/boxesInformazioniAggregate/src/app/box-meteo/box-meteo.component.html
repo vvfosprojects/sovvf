@@ -1,0 +1,31 @@
+<a class="card">
+  <div class="row">
+    <span class="col col-md-3">
+     <span *ngIf="previsioni.descStato == 'Nuvoloso'">
+        <i class="fa fa-cloud fa-4x shadow-ic-celeste" data-toggle="tooltip" data-placement="top" title={{getDescrizioneMeteo(previsioni.descStato)}}></i>
+     </span>
+     <span *ngIf="previsioni.descStato == 'Sereno'">
+        <i class="fa fa-sun-o fa-4x shadow-ic-giallo" data-toggle="tooltip" data-placement="top" title={{getDescrizioneMeteo(previsioni.descStato)}}></i>
+     </span>
+     <span *ngIf="previsioni.descStato == 'Pioggia'">
+        <i class="fa fa-tint fa-4x shadow-ic-celeste" data-toggle="tooltip" data-placement="top" title={{getDescrizioneMeteo(previsioni.descStato)}}></i>
+     </span>
+     <span *ngIf="previsioni.descStato == 'Temporali'">
+        <i class="fa fa-bolt fa-4x shadow-ic-celeste" data-toggle="tooltip" data-placement="top" title={{getDescrizioneMeteo(previsioni.descStato)}}></i>
+     </span>
+     <span *ngIf="previsioni.descStato == 'Neve'">
+        <i class="fa fa-snowflake-o fa-4x shadow-ic-celeste" data-toggle="tooltip" data-placement="top" title={{getDescrizioneMeteo(previsioni.descStato)}}></i>
+     </span>
+    </span>
+    <span class="col col-md-9">
+      <ul [ngClass]="{'shadow-text-celeste'  : previsioni.descStato == 'Nuvoloso' || previsioni.descStato == 'Pioggia' || previsioni.descStato == 'Temporali' || previsioni.descStato == 'Neve', 'shadow-text-giallo'   : previsioni.descStato == 'Sereno',
+                      'shadow-text-giallo'  : previsioni.descStato == 'Sereno'}">
+        <li class="card-text"><i class="fa fa-thermometer-half" aria-hidden="true" style="font-size:14px; font-weight: bold; margin-top:12px; padding-left:4px;" data-toggle="tooltip" data-placement="top" title="Temperatura"></i><span class="card-text" style="font-size:14px; font-weight: bold; padding-left:10px;" data-toggle="tooltip" data-placement="top" title="Temperatura">{{previsioni.temperatura}}°</span></li>
+        <li class="card-text"><i class="fa fa-tint" style="font-size:14px; font-weight: bold; padding-left:4px;"  aria-hidden="true"  data-toggle="tooltip" data-placement="bottom" title="Umidità" ></i><span class="card-text" style="font-size:14px; font-weight:bold; padding-left:10px;" data-toggle="tooltip" data-placement="bottom" title="Umidità">{{previsioni.umidita}}%</span></li>
+        <li class="card-text"><i class="fa fa-umbrella" style="font-size:14px; font-weight: bold; padding-left:3px;" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Probabilità precipitazioni"></i><span class="card-text" style="font-size:14px; font-weight: bold; padding-left:6px;" data-toggle="tooltip" data-placement="top" title="Probabilità precipitazioni">{{previsioni.probPrecipitazione}}%</span></li>
+        <li class="card-text"><i class="fa fa-snowflake-o" style="font-size:14px; font-weight: bold; margin-bottom:5px; padding-left:2px;" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Rischio neve"></i><span class="card-text" style="font-size:14px; font-weight: bold; padding-left:7px;" data-toggle="tooltip" data-placement="top" title="Rischio neve">{{previsioni.prevNeve}}</span></li>
+      </ul>
+    </span>
+   </div>
+</a>
+

@@ -1,0 +1,13 @@
+<div class="input-group">
+  <p-autoComplete [(ngModel)]="nominativo" [suggestions]="filteredNames" (completeMethod)="filterNameSingle($event)" [size]="20"
+    placeholder="Cerca nominativo..." [minLength]="1" (onSelect)="selezionaNominativo($event)"></p-autoComplete>
+    <button (click)="clearSearchText()">
+      <i class="fa fa-times" aria-hidden="true"></i>
+    </button>
+</div>
+<br/>
+<div class="row">
+  <div class="col-md-5">
+    <p-checkbox label="cerca solo nel nodo selezionato" (onChange)="nodochecked(e)" binary="true"></p-checkbox>
+  </div>
+</div>

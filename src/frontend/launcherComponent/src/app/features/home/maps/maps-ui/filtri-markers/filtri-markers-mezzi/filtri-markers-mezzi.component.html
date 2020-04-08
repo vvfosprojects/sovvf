@@ -1,0 +1,17 @@
+<h6>Mezzi</h6>
+<div class="mt-1">
+    <label>Stato</label>
+    <div>
+        <ng-select [items]="statiMezzo" [multiple]="true" placeholder="Nessuno stato selezionato"
+                   (change)="onChangeStati($event)" [(ngModel)]="statiSelezionati"></ng-select>
+    </div>
+</div>
+<div class="mt-2">
+    <label>Genere</label>
+    <div>
+        <ng-select [items]="genereMezzo" [multiple]="true" bindLabel="descrizione"
+                   bindValue="descrizione"
+                   placeholder="Nessun genere selezionato"
+                   (change)="onChangeGenere($event)" [(ngModel)]="generiSelezionati"></ng-select>
+    </div>
+</div>

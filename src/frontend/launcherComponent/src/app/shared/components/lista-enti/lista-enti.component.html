@@ -1,0 +1,38 @@
+<div class="container-fluid">
+    <div class="row p-2 pb-0">
+        <div class="col px-0">
+            <table class="table">
+                <thead class="thead-light">
+                <tr>
+                    <th scope="col">Enti Intervenuti</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let enteIntervenuto of listaEntiIntervenuti">
+                    <td>{{enteIntervenuto.descrizione}}</td>
+                </tr>
+                <tr *ngIf="!listaEntiIntervenuti">
+                    <td>nessuno</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col px-0">
+            <table class="table">
+                <thead class="thead-light">
+                <tr>
+                    <th scope="col">Enti Presa In Carico</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let entePresaInCarico of listaEntiPresaInCarico">
+                    <td>{{entePresaInCarico.descrizione}}</td>
+                </tr>
+                <tr *ngIf="!listaEntiPresaInCarico">
+                    <td>nessuno</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

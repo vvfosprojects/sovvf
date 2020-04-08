@@ -1,0 +1,41 @@
+{
+    "data": 
+    [
+        {
+            "label": "CON",
+            "data": "CON Folder",
+            "expandedIcon": "fa-folder-open",
+            "collapsedIcon": "fa-folder",
+            "children": [{
+                    "label": "COA",
+                    "data": "COA Folder",
+                    "expandedIcon": "fa-folder-open",
+                    "collapsedIcon": "fa-folder",
+                    "children": [{
+                        "label": "UCL1", 
+                        "icon": "fa fa-home", 
+                        "data": "UCL 1"}, 
+                       {"label": "UCL2",
+                        "icon": "fa fa-home",
+                        "data": "UCL 2"}]
+                },
+                {
+                    "label": "LOMBARDIA",
+                    "data": "LOM Folder",
+                    "expandedIcon": "fa-folder-open",
+                    "collapsedIcon": "fa-folder",
+                    "children": [{
+                        "label": "BERGAMO",
+                         "icon": "fa fa-home",
+                         "data": "Bergamo"},
+                        {"label": "LODI",
+                        "icon":"fga fa-home",
+                        "data": "Lodi"},
+                        {"label": "MILANO",
+                        "icon": "fa fa-home",
+                        "data": "Milano"}
+                         ]
+                }]
+        }        
+    ]
+}

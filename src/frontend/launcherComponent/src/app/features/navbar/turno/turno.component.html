@@ -1,0 +1,15 @@
+<div *ngIf="!turnoExtra" class="py-2">
+    Turno:&nbsp;
+    <small class="text-muted">{{turno?.precedente}}</small>
+    &nbsp;{{turno?.corrente}}&nbsp;
+    <small class="text-muted">{{turno?.successivo}}</small>
+</div>
+<div *ngIf="turnoExtra" class="py-2">
+    Turno&nbsp;{{turnoExtra.descTurno}}:&nbsp;
+    <small>{{turnoExtra.dataOraInizio | date:'HH:mm - dd/MM/yy'}}
+        <i class="fa fa-refresh mx-2"></i>
+        {{turnoExtra.dataOraFine | date:'HH:mm - dd/MM/yy'}}
+        ({{turnoExtra.prefissoTurno}})
+    </small>
+</div>
+

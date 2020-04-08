@@ -1,0 +1,28 @@
+<div ngbDropdown class="mt-2 mr-2">
+    <ng-container *ngIf="!filtriAttivi then filtriNonAttiviTp else filtriAttiviTp">
+    </ng-container>
+    <ng-template #filtriNonAttiviTp>
+        <button class="btn button-menu" ngbDropdownToggle>
+            <i class="fa fa-bars"></i>
+        </button>
+    </ng-template>
+    <ng-template #filtriAttiviTp>
+        <button class="btn button-menu filtro-attivo" ngbDropdownToggle>
+            <i class="fa fa-filter"></i>
+        </button>
+    </ng-template>
+    <div id="menu-mappa" ngbDropdownMenu class="px-2">
+        <app-filtri-markers-richieste [filtroRichieste]="filtroRichieste$ | async"
+                                      (changePriorita)="changePriorita($event)"
+                                      (changeStati)="changeStatiRichiesta($event)"></app-filtri-markers-richieste>
+        <hr class="my-2">
+        <app-filtri-markers-mezzi [filtroMezziAttivi]="filtroMezzi$ | async"
+                                  [genereMezzo]="generiMezzi$ | async"
+                                  (changeStati)="changeStatiMezzi($event)"
+                                  (changeGenere)="changeGenere($event)"></app-filtri-markers-mezzi>
+        <ng-container *ngIf="scStatus$ | async">
+            <hr class="my-2">
+            <app-filtri-sc [statoFiltro]="(filtroSC$ | async).mostraGestite" (toggleSC)="toggleGestitaSC()"></app-filtri-sc>
+        </ng-container>
+    </div>
+</div>

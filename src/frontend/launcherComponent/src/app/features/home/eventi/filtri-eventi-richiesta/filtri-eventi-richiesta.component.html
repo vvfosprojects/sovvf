@@ -1,0 +1,32 @@
+<div class="clearfix">
+    <div class="float-left">
+      <span class="h5 font-weight-bold d-inline-block float-left mt-2">
+        <i class="fa fa-hashtag"></i>
+        {{codiceRichiesta ? codiceRichiesta : idRichiesta}}
+      </span>
+        <button class="btn btn-secondary ml-3" [disabled]="elencoEventi?.length <= 0"
+                (click)="toggleIconeNomeClasseEvento.emit()">
+            <i class="fa mr-2" [ngClass]="getIconaBottone()"></i>
+            <span *ngIf="iconeNomeClasseEvento">Visualizza testo</span>
+            <span *ngIf="!iconeNomeClasseEvento">Visualizza icone</span>
+        </button>
+    </div>
+    <div class="float-right">
+        <form [formGroup]="form">
+            <ng-select [items]="listaTargaMezzo"
+                       bindLabel="targa"
+                       bindValue="targa"
+                       placeholder="{{mostraTesto()}}"
+                       formControlName="targheSelezionate"
+                       clearAllText="Pulisci"
+                       notFoundText="Mezzo non trovato"
+                       [virtualScroll]="true"
+                       [multiple]="true"
+                       [loading]="!listaTargaMezzo"
+                       [loadingText]="'Caricamento...'"
+                       (change)="onChange()"
+                       style="min-width: 250px">
+            </ng-select>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,5 @@
+<h6>Schede Contatto</h6>
+<app-checkbox  typeName="toggleSC"
+               [checkboxState]="{id: 'toggleSC', status: statoFiltro, label: 'Mostra anche gestite'}"
+               (checkbox)="toggleSC.emit()"
+               tooltipMessage="Abilita sulla mappa la visibilità delle schede contatto già gestite"></app-checkbox>

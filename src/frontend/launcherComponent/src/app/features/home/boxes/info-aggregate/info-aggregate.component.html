@@ -1,0 +1,42 @@
+<div class="col-12 mt-1 mb-2">
+  <div class="row">
+    <div class="col-10">
+      <div class="row h-100">
+        <!-- box interventi -->
+        <div class="col-4 pr-0">
+          <div class="card app-shadow">
+            <ng-container>
+              <app-box-interventi [interventi]="(richieste$ | async)" [boxClick]="(boxClick$ | async)"
+                (clickRichieste)="clickBox('richieste', $event)" [turno]="(turnoCalendario$ | async)">
+              </app-box-interventi>
+            </ng-container>
+          </div>
+        </div>
+        <!-- box interventi -->
+        <div class="col-4 pr-0">
+          <div class="card app-shadow">
+            <ng-container>
+              <app-box-mezzi [mezzi]="(mezzi$ | async)" [boxClick]="(boxClick$ | async)"
+                (clickMezzi)="clickBox('mezzi', $event)"></app-box-mezzi>
+            </ng-container>
+          </div>
+        </div>
+        <!-- box interventi -->
+        <div class="col-4 pr-0">
+          <div class="card app-shadow">
+            <ng-container>
+              <app-box-personale [personaleQty]="(personaleQty$ | async)" [personalePresenze]="(presenze$ | async)"
+                (clickServizi)="clickServizi($event)"></app-box-personale>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- box interventi -->
+    <div class="col-2">
+      <div class="card app-shadow">
+        <app-box-meteo [datimeteo]="datimeteo"></app-box-meteo>
+      </div>
+    </div>
+  </div>
+</div>

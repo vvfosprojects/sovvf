@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="..\shared\SO115.licenseheader" Link="SO115.licenseheader" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Bogus" Version="27.0.1" />
+    <PackageReference Include="SimpleInjector" Version="4.5.2" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SO115App.Models\SO115App.Models.csproj" />
+  </ItemGroup>
+</Project>

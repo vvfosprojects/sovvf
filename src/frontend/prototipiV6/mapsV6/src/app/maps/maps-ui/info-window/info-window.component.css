@@ -1,0 +1,13 @@
+.h-info-window {
+    min-width: 240px;
+}
+
+.s-info-window {
+    font-size: small !important;
+    font-weight: normal !important;
+}
+
+.guida {
+    color: #bbbbbb;
+}
+

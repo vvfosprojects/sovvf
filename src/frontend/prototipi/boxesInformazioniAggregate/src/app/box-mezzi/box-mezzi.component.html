@@ -1,0 +1,29 @@
+  <a class="card" [ngClass]="{'text-success'  : mezzi.genereMezzo == 'APS',
+  'text-warning'  : mezzi.genereMezzo == 'AS', 'text-info'  : mezzi.genereMezzo == 'ABP' }">
+      <div class="row">
+        <span class="col col-md-3">
+        <i class="fa fa-truck fa-4x" [ngClass]="{'shadow-ic-verde'  : mezzi.genereMezzo == 'APS',
+        'shadow-ic-giallo'  : mezzi.genereMezzo == 'AS', 'shadow-ic-celeste'  : mezzi.genereMezzo == 'ABP' }"></i> 
+       </span>
+        <span class="col col-md-9">
+          <ul>
+            <li class="card-text" [ngClass]="{'shadow-text-verde0'  : mezzi.genereMezzo == 'APS',
+            'shadow-text-giallo0'  : mezzi.genereMezzo == 'AS', 'shadow-text-celeste0'  : mezzi.genereMezzo == 'ABP' }">{{mezzi.genereMezzo}}</li>
+         
+            <li class="card-text" [ngClass]="{'shadow-text-verde1'  : mezzi.genereMezzo == 'APS',
+            'shadow-text-giallo1'  : mezzi.genereMezzo == 'AS', 'shadow-text-celeste1'  : mezzi.genereMezzo == 'ABP' }">In Sede<span class="badge badge-pill badge-secondary pull-right">{{mezzi.mezziInSede}}</span>
+            </li>
+            <li class="card-text" [ngClass]="{'shadow-text-verde1'  : mezzi.genereMezzo == 'APS',
+            'shadow-text-giallo1'  : mezzi.genereMezzo == 'AS', 'shadow-text-celeste1'  : mezzi.genereMezzo == 'ABP' }">In Viaggio<span class="badge badge-pill badge-success pull-right">{{mezzi.mezziInViaggio}}</span>
+            </li>
+            <li class="card-text" [ngClass]="{'shadow-text-verde1'  : mezzi.genereMezzo == 'APS',
+            'shadow-text-giallo1'  : mezzi.genereMezzo == 'AS', 'shadow-text-celeste1'  : mezzi.genereMezzo == 'ABP' }">Sul posto<span class="badge badge-pill badge-success pull-right">{{mezzi.mezziSulPosto}}</span>
+            </li>
+            <li class="card-text" [ngClass]="{'shadow-text-verde2'  : mezzi.genereMezzo == 'APS',
+            'shadow-text-giallo2'  : mezzi.genereMezzo == 'AS', 'shadow-text-celeste2'  : mezzi.genereMezzo == 'ABP' }">In Rientro<span class="badge badge-pill badge-primary pull-right">{{mezzi.mezziInRientro}}</span>
+            </li>
+          </ul>
+          </span>
+        </div>
+    </a>
+  

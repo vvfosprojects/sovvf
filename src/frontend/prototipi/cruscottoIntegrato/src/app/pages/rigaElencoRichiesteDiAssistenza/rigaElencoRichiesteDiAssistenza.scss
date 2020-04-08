@@ -1,0 +1,25 @@
+.status_non_presidiato {
+	border-left: 10px solid darkorange;
+}
+.status_presidiato {
+	border-left: 10px solid green;
+}
+.row_text {
+	color: #666666;
+}
+.fa {
+	color: #bbbbbb!important;
+}
+.big_numbers {
+	color: #a72920;
+	font-weight: bold;
+}
+.bg_diagonal_grey {
+	background: repeating-linear-gradient( 135deg, white, white 0.1em, #F0F0F0 0.4em, #E9EEFB 0.1em);
+}
+.bg_diagonal_grey_big {
+	background: repeating-linear-gradient( 135deg, white, white 0.5em, #F0F0F0 1em, #E9EEFB 0.5em);
+}
+.bg_card_title {
+	background-color: beige;
+}

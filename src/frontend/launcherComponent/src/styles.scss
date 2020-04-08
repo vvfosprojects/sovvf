@@ -1,0 +1,476 @@
+@import "../node_modules/bootstrap/dist/css/bootstrap.css";
+@import "../node_modules/font-awesome/css/font-awesome.css";
+@import "../node_modules/snazzy-info-window/dist/snazzy-info-window.css";
+@import "~@ng-select/ng-select/themes/default.theme.css";
+@import "~ngx-ui-switch/ui-switch.component.scss";
+// if you'd like to use it without importing all of bootstrap it requires
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/mixins";
+@import "~ngx-toastr/toastr-bs4-alert";
+
+@font-face {
+  font-family: "icon-marker";
+  src: url("./assets/fonts/icon-marker.eot?lo2034");
+  src: url("./assets/fonts/icon-marker.eot?lo2034#iefix") format("embedded-opentype"),
+    url("./assets/fonts/icon-marker.ttf?lo2034") format("truetype"),
+    url("./assets/fonts/icon-marker.woff?lo2034") format("woff"),
+    url("./assets/fonts/icon-marker.svg?lo2034#icon-marker") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+
+body,
+html {
+  height: 100vh;
+}
+
+// Dropdown Google Places
+.pac-container {
+  z-index: 99999 !important;
+}
+
+// End Dropdown Google Places
+
+.xlModal>.modal-dialog {
+  max-width: 1490px !important;
+  min-width: 650px !important;
+  width: 65% !important;
+}
+
+.squadrePartenza>.modal-dialog {
+  max-width: 590px !important;
+  min-width: 100px !important;
+  width: 45% !important;
+}
+
+.enti>.modal-dialog {
+  max-width: 590px !important;
+  min-width: 100px !important;
+  width: 45% !important;
+}
+
+.modalModificaRichiesta>.modal-dialog {
+  max-width: 1490px !important;
+  min-width: 650px !important;
+  width: 50% !important;
+}
+
+.app-shadow {
+  -webkit-box-shadow: 1px 1px 2px 1px rgba(224, 224, 224, 1);
+  -moz-box-shadow: 1px 1px 2px 1px rgba(224, 224, 224, 1);
+  box-shadow: 1px 1px 2px 1px rgba(224, 224, 224, 1);
+}
+
+.app-shadow-danger {
+  -webkit-box-shadow: 1px 1px 2px 1px #dc3545;
+  -moz-box-shadow: 1px 1px 2px 1px #dc3545;
+  box-shadow: 1px 1px 2px 1px #dc3545;
+}
+
+.app-shadow-primary {
+  -webkit-box-shadow: 1px 1px 2px 1px #007bff;
+  -moz-box-shadow: 1px 1px 2px 1px #007bff;
+  box-shadow: 1px 1px 2px 1px #007bff;
+}
+
+a {
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: none !important;
+  /* font-weight: bold !important; */
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.cursor-not-allowed {
+  cursor: not-allowed;
+}
+
+.status_preaccoppiato_nonselezionato {
+  border-top: 5px solid #dc3545;
+}
+
+.status_preaccoppiato_selezionato {
+  border-top: 5px solid #007bff;
+}
+
+/* icone di guida */
+.guida {
+  color: #bbbbbb;
+}
+
+.cod-int {
+  color: rgb(99, 99, 99) !important;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.descrizione-int {
+  color: rgb(221, 132, 68) !important;
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+.m-h-695 {
+  height: 695px;
+  max-height: 695px;
+}
+
+.m-h-590 {
+  height: 590px;
+  max-height: 590px;
+}
+
+.m-h-400 {
+  height: 449px;
+  max-height: 449px;
+}
+
+.m-h-300 {
+  height: 284px;
+  max-height: 284px;
+}
+
+/* Shadow richieste */
+.card-shadow {
+  -webkit-box-shadow: 1px 1px 2px 1px rgba(224, 224, 224, 1);
+  -moz-box-shadow: 1px 1px 2px 1px rgba(224, 224, 224, 1);
+  box-shadow: 1px 1px 2px 1px rgba(224, 224, 224, 1);
+}
+
+.card-shadow-primary {
+  -webkit-box-shadow: 2px 0 2px 0.5px #007bff;
+  -moz-box-shadow: 2px 0 2px 0.5px #007bff;
+  box-shadow: 2px 0 2px 0.5px #007bff;
+}
+
+.card-shadow-info {
+  -webkit-box-shadow: 2px 0 2px 0.5px #17a2b8;
+  -moz-box-shadow: 2px 0 2px 0.5px #17a2b8;
+  box-shadow: 2px 0 2px 0.5px #17a2b8;
+}
+
+.card-shadow-success {
+  -webkit-box-shadow: 2px 0 2px 0.5px #28a745;
+  -moz-box-shadow: 2px 0 2px 0.5px #28a745;
+  box-shadow: 2px 0 2px 0.5px #28a745;
+}
+
+.card-shadow-danger {
+  -webkit-box-shadow: 2px 0 2px 0.5px #dc3545;
+  -moz-box-shadow: 2px 0 2px 0.5px #dc3545;
+  box-shadow: 2px 0 2px 0.5px #dc3545;
+}
+
+.card-shadow-warning {
+  -webkit-box-shadow: 2px 0 2px 0.5px #ffc107;
+  -moz-box-shadow: 2px 0 2px 0.5px #ffc107;
+  box-shadow: 2px 0 2px 0.5px #ffc107;
+}
+
+.card-shadow-secondary {
+  -webkit-box-shadow: 2px 0 2px 0.5px #868e96;
+  -moz-box-shadow: 2px 0 2px 0.5px #868e96;
+  box-shadow: 2px 0 2px 0.5px #868e96;
+}
+
+.card-shadow-orange {
+  -webkit-box-shadow: 2px 0 2px 0.5px #ff8800;
+  -moz-box-shadow: 2px 0 2px 0.5px #ff8800;
+  box-shadow: 2px 0 2px 0.5px #ff8800;
+}
+
+/* Shadow soft */
+.card-shadow-primary-soft {
+  -webkit-box-shadow: 0 0 4px 2px #007bffa2;
+  -moz-box-shadow: 0 0 4px 2px #007bffa2;
+  box-shadow: 0 0 4px 2px #007bffa2;
+}
+
+.card-shadow-info-soft {
+  -webkit-box-shadow: 0 0 4px 2px #17a2b8;
+  -moz-box-shadow: 0 0 4px 2px #17a2b8;
+  box-shadow: 0 0 4px 2px #17a2b8;
+}
+
+.card-shadow-success-soft {
+  -webkit-box-shadow: 0 0 4px 2px #28a745;
+  -moz-box-shadow: 0 0 4px 2px #28a745;
+  box-shadow: 0 0 4px 2px #28a745;
+}
+
+.card-shadow-danger-soft {
+  -webkit-box-shadow: 0 0 4px 2px #dc3545;
+  -moz-box-shadow: 0 0 4px 2px #dc3545;
+  box-shadow: 0 0 4px 2px #dc3545;
+}
+
+.card-shadow-warning-soft {
+  -webkit-box-shadow: 0 0 4px 2px #ffc107;
+  -moz-box-shadow: 0 0 4px 2px #ffc107;
+  box-shadow: 0 0 4px 2px #ffc107;
+}
+
+.card-shadow-secondary-soft {
+  -webkit-box-shadow: 0 0 4px 2px #868e96;
+  -moz-box-shadow: 0 0 4px 2px #868e96;
+  box-shadow: 0 0 4px 2px #868e96;
+}
+
+/* Status richieste */
+.status_presidiato {
+  border-left: 10px solid #28a745;
+}
+
+.status_chiamata {
+  border-left: 10px solid #dc3545;
+}
+
+.status_sospeso {
+  border-left: 10px solid #ff8800;
+}
+
+.status_assegnato {
+  border-left: 10px solid #ffc107;
+}
+
+.status_chiuso {
+  border-left: 10px solid #868e96;
+}
+
+.status_in_lavorazione {
+  border-width: 0 0 0 10px;
+  border-style: solid;
+  border-image: linear-gradient(to bottom, rgb(220, 53, 69), rgb(255, 193, 7)) 1 100%;
+}
+
+/* Status Mezzo */
+.status_inSede {
+  border-top: 5px solid #28a745;
+}
+
+.status_inRientro {
+  border-top: 5px solid #92b565;
+}
+
+.status_inViaggio {
+  border-top: 5px solid #ffc107;
+}
+
+.status_sulPosto {
+  border-top: 5px solid #dc3545;
+}
+
+.status_istituto {
+  border-top: 5px solid #868e96;
+}
+
+/* Status Border Mezzo */
+.status_border_inSede {
+  border-left: 10px solid #28a745 !important;
+}
+
+.status_border_inRientro {
+  border-left: 10px solid #92b565 !important;
+}
+
+.status_border_inViaggio {
+  border-left: 10px solid #ffc107 !important;
+}
+
+.status_border_sulPosto {
+  border-left: 10px solid #dc3545 !important;
+}
+
+.status_border_istituto {
+  border-left: 10px solid #868e96 !important;
+}
+
+.text-verdemela {
+  color: #92b565 !important;
+}
+
+.badge-verdemela {
+  background-color: #92b565 !important;
+  color: #fff !important;
+}
+
+.badge-rosso-des {
+  background-color: rgba(204, 64, 78, 0.45) !important;
+  color: #fff !important;
+}
+
+.btn-verdemela {
+  background-color: #92b565 !important;
+  color: #fff !important;
+}
+
+.btn-verdemela:hover {
+  background-color: #809e59 !important;
+}
+
+.bg-pattern-chiuso {
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAYAAACp8Z5+AAAAKklEQVQYV2N8+/btfwYo+Pz5MwMjTADE4eXlhQjAOCCFjA8ePPgPkoEBAMNhF/YhgGY5AAAAAElFTkSuQmCC);
+}
+
+.fa-rotate-45 {
+  -webkit-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+.scroll-y {
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.sidebar {
+  width: 100%;
+  height: 55px;
+}
+
+.diagonal-stripes {
+  background-color: gray;
+  background-image: repeating-linear-gradient(45deg,
+      transparent,
+      transparent 35px,
+      rgba(255, 255, 255, 0.5) 35px,
+      rgba(255, 255, 255, 0.5) 70px);
+}
+
+.bg-grey {
+  background-color: rgba(206, 206, 206, 1);
+}
+
+.bg-lightgrey {
+  background-color: #d3d3d3 !important;
+}
+
+.bg-lightsuccess {
+  background-color: #b8dfc1 !important;
+}
+
+.bg-lightinfo {
+  background-color: #b8e0e7 !important;
+}
+
+.bg-lightdanger {
+  background-color: rgba(231, 113, 110, 0.2) !important;
+}
+
+.bg-orange {
+  background-color: #ff8800 !important;
+}
+
+.no-resize {
+  resize: none;
+}
+
+[class^="icon-"],
+[class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: "icon-marker" !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-truck-fire-q:before {
+  content: "\e900";
+}
+
+.icon-fa-sedi:before {
+  content: "\e901";
+}
+
+.icon-fa-richieste:before {
+  content: "\e902";
+}
+
+.icon-truck-fire:before {
+  content: "\e903";
+}
+
+.loader-centrato {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-left: -125px;
+  margin-top: -70px;
+}
+
+.loader-centrato img {
+  width: 250px;
+  height: 140px;
+}
+
+.border-info-aggregate:hover {
+  -webkit-box-shadow: 0 0 1px 3px rgba(90, 94, 107, 0.55);
+  -moz-box-shadow: 0 0 1px 3px rgba(90, 94, 107, 0.55);
+  box-shadow: 0 0 1px 3px rgba(90, 94, 107, 0.55);
+}
+
+.border-click-checked {
+  -webkit-box-shadow: 0 0 1px 3px rgba(90, 94, 107, 1);
+  -moz-box-shadow: 0 0 1px 3px rgba(90, 94, 107, 1);
+  box-shadow: 0 0 1px 3px rgba(90, 94, 107, 1);
+}
+
+.blink-aggregate span {
+  animation: blink 0.8s linear infinite;
+}
+
+.blink-i-aggregate {
+  font-size: 12px;
+  position: absolute;
+  left: 10px;
+  top: 4px;
+  animation: blink 0.8s linear infinite;
+}
+
+@keyframes blink {
+  0% {
+    opacity: 0.2;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+.snazzy-margin-priorita-1 {
+  margin-top: -34px !important;
+}
+
+.snazzy-margin-priorita-2 {
+  margin-top: -42px !important;
+}
+
+.snazzy-margin-priorita-3 {
+  margin-top: -50px !important;
+}
+
+.snazzy-margin-priorita-4 {
+  margin-top: -58px !important;
+}
+
+.snazzy-margin-priorita-5 {
+  margin-top: -66px !important;
+}

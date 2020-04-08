@@ -1,0 +1,177 @@
+<!--
+<div class="container">
+  <div class="row">
+    <div class="col-md-3">
+      3 colonne
+      <button type="button" class="btn btn-warning">Attento!</button>
+    </div>
+    <div class="col-md-9">
+      9 colonne
+    </div>
+  </div>
+</div>
+-->
+<div class="container">
+  <div class="row">
+    <div class="col">
+     <p-autoComplete  [(ngModel)]="risultatiMultipli" 
+	 			placeholder="Scrivi cosa cerchi..." 
+				[suggestions]="risultati" 
+				(completeMethod)="searchFake($event)" 
+				field="testo" 
+				[style]="{'width':'100%'}" 
+				[inputStyle]="{'width':'100%','font-size': '16px'}"
+				[multiple]='true' 
+				[minLength]="1">
+				
+		   <ng-template  let-brand pTemplate="itemdddd">
+						<div class="ui-helper-clearfix" style="border-bottom:1px solid #D5D5D5">
+								<div title="{{ brand.tooltip }}"><span style="font-size:10px" >{{ brand.id }}:</span> {{ brand.testo }}</div>
+						</div>
+				</ng-template>	
+		</p-autoComplete>
+    </div>
+    <div class="col">
+      1 of 2
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      1 of 3
+    </div>
+    <div class="col">
+      1 of 3
+    </div>
+    <div class="col">
+      1 of 3
+    </div>
+  </div>
+</div>
+<h3 class="first">Basic PrimeNG</h3>
+<p-autoComplete [(ngModel)]="voce" placeholder="Scrivi cosa cerchi..." [autoHighlight]="true" [suggestions]="risultati" (completeMethod)="searchFake($event)" field="testo" [size]="30"
+    [minLength]="1">
+	<ng-template let-brand pTemplate="itemdddd">
+        <div class="ui-helper-clearfix" style="border-bottom:1px solid #D5D5D5">
+            <div title="{{ brand.tooltip }}"><span class="h6">{{ brand.id }}:</span> {{ brand.testo }}</div>
+        </div>
+    </ng-template>	
+</p-autoComplete>
+<span>Hai selezionato: {{ !!voce ? voce.id||voce : "Niente" }}</span>
+<br>
+<h3 class="first">Multiple PrimeNG</h3>
+<p-autoComplete [(ngModel)]="risultatiMultipli" 
+                placeholder="Scrivi cosa cerchi..." 
+				[suggestions]="risultati" 
+				(completeMethod)="searchFake($event)" 
+				field="testo" 
+				[style]="{'width':'100%'}" 
+				[inputStyle]="{'width':'100%','font-size': '16px'}"
+				[multiple]='true' 
+				[minLength]="1">
+	<ng-template  let-brand pTemplate="itemdddd">
+        <div class="ui-helper-clearfix" style="border-bottom:1px solid #D5D5D5">
+            <div title="{{ brand.tooltip }}"><span  class="h6">{{ brand.id }}:</span> {{ brand.testo }}</div>
+        </div>
+    </ng-template>	
+</p-autoComplete>
+
+Hai selezionato: <span *ngFor="let risultatom of risultatiMultipli"> {{ !!risultatom ? risultatom.id||risultatom : "Niente" }}</span>
+
+
+	  <!--<b>Angular 2 Component Using Observables!</b>
+	 
+	  <h6 style="margin-bottom: 0">VALUES:</h6>
+	  <div *ngFor="let ris of risultati">- {{ ris.testo }} - {{ ris.tooltip }} </div>
+	  
+	  <h6 style="margin-bottom: 0">ERRORs:</h6>
+	  <div>Errors: {{anyErrors}}</div>
+	  
+	  <h6 style="margin-bottom: 0">FINISHED:</h6>
+	  <div>Finished: {{ finished }}</div>-->
+	
+	  
+<!--	  <button style="margin-top: 2rem;" (click)="init()">Init</button> -->
+<!--<h1>NG2-completer test</h1>
+    <h2>Search color</h2>
+    <ng2-completer [(ngModel)]="searchStr" [datasource]="dataService" [minSearchLength]="0"></ng2-completer>
+    <h2>Search captain</h2>
+    <ng2-completer [(ngModel)]="captain" (change)="chiamaRicercaService()" [datasource]="captains" overrideSuggested=true placeholder="Cerca"  textNoResults="Nessun dato trovato." disableInput=false autoHighlight=true matchClass="completer-title" textSearching="Ricerca..." [minSearchLength]="0"></ng2-completer>
+    <br>
+    <h3>Dati in locale con immagine</h3>
+<p>Local data with countries - using <code>image</code>,
+	<code>matchClass</code>,
+	<code>maxLength</code>, <code>autofocus</code> and limit of the dropdown length in CSS</p>-->
+
+<!--<div class="card">
+	<div class="card-block">
+		<div class="form-group row">
+			<div class="col-5">
+				<ng2-completer class="completer-limit"
+											 [(ngModel)]="countryName"
+											 [datasource]="dataService2"
+											 [minSearchLength]="0"
+											 [maxChars]="4"
+											 [inputClass]="'form-control'"
+											 [placeholder]="'Search country'"
+											 [matchClass]="'match'"
+											 [autofocus]="true">
+				</ng2-completer>
+			</div>
+			<div class="col-6">
+				<p class="form-control-static"><b>{{countryName || ''}}</b></p>
+			</div>
+		</div>
+	</div>
+</div>-->
+<!--<br>
+    <h3>Dati remoti</h3>
+<p>Dati remoti provenienti da https://raw.githubusercontent.com/oferh/ng2-completer/master/demo/res/data/countries.json? with <code>minSearchLength</code>, <code>textSearching</code>
+	and <code>clearSelected</code>
+</p>
+
+
+<div class="card">
+	<div class="card-block">
+		<div class="form-group row">
+			<div class="col-5">
+				<ng2-completer [dataService]="dataRemote" [minSearchLength]="3"
+											 [placeholder]="'Ricerca nazione'"
+											 [clearSelected]="true" 
+											 (selected)="onCountrySelected($event)"
+											 [inputClass]="'form-control form-control-success'"
+											 [textSearching]="'Attendere...'"
+                       [textNoResults]="'Nessun dato trovato.'">
+                       
+				</ng2-completer>
+			</div>
+			<div class="col-6">
+				<p class="form-control-static"><b> {{countryName2}}</b></p>
+			</div>
+		</div>
+	</div>
+</div>-->
+
+<!--<h3>Remote data with URL Formater and Headers</h3>
+<p>Remote data from <a href="http://www.omdbapi.com">The Open Movie Database</a> with
+	<code>urlFormater</code> and <code>dataField</code></p>
+
+<div class="card">
+	<div class="card-block">
+		<div class="form-group row">
+			<div class="col-5">
+				<ng2-completer [(ngModel)]="countryName5"
+											 [datasource]="dataRemote2"
+											 [minSearchLength]="3"
+											 [placeholder]="'Search movie title'"
+											 [textSearching]="'Please wait...'"
+											 [inputClass]="'form-control'">
+				</ng2-completer>
+			</div>
+			<div class="col-6">
+				<p class="form-control-static"><b>{{countryName5}}</b></p>
+			</div>
+		</div>
+	</div>
+</div>-->
+
+

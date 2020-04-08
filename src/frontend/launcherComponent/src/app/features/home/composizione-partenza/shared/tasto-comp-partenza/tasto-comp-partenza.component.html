@@ -1,0 +1,5 @@
+<button class="btn btn-block btn-outline-secondary app-shadow px-2" (click)="changeMode()">
+  <!-- <span class="mr-2">Passa a:</span> -->
+  <span *ngIf="compPartenzaMode === Composizione.Veloce">Modalità Avanzata</span>
+  <span *ngIf="compPartenzaMode === Composizione.Avanzata">Modalità Rapida</span>
+</button>

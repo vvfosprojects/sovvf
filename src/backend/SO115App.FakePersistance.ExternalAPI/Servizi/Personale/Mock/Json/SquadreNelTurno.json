@@ -1,0 +1,51 @@
+[
+  {
+    "Codice": "D",
+    "Descrizione": "D",
+    "CodiceSede": "RM.1000",
+    "ListaSquadre": [
+      {
+        "Codice": "A1",
+        "Nome": "A1.Rossa",
+        "Stato": 0,
+        "ListaCodiciFiscaliComponentiSquadra": [ "NTLMRN67L03F520A", "NTNMNL86M12A662V", "NTNGCR70L19F051L", "NTNLGU58S02I315Q", "NTNNTN84R24F839H" ],
+        "CodiceSede": "RM.1000"
+      },
+      {
+        "Codice": "A2",
+        "Nome": "A2.Bianca",
+        "Stato": 0,
+        "ListaCodiciFiscaliComponentiSquadra": [ "NTNNTN84R24F839H", "NTNDNL88H28A462W", "NTNMTT63H03A892X", "NTLMRC86M04D542M", "NTLSDR61T23F257A" ],
+        "CodiceSede": "RM.1000"
+      }
+    ]
+  },
+  {
+    "Codice": "B",
+    "Descrizione": "B",
+    "CodiceSede": "RM.1000",
+    "ListaSquadre": [
+      {
+        "Codice": "A3",
+        "Nome": "A1.Verde",
+        "Stato": 0,
+        "ListaCodiciFiscaliComponentiSquadra": [ "NTNMTT63H03A892X", "NTNNTN84R24F839H", "NTNGCR70L19F051L", "NTNDNL88H28A462W", "NSTGPP81R07L245Y" ],
+        "CodiceSede": "RM.1000"
+      }
+    ]
+  },
+  {
+    "Codice": "B",
+    "Descrizione": "B",
+    "CodiceSede": "MI.2000",
+    "ListaSquadre": [
+      {
+        "Codice": "A1",
+        "Nome": "A1.Rossa",
+        "Stato": 0,
+        "ListaCodiciFiscaliComponentiSquadra": [ "NTNDNL88H28A462W", "NTNNTN84R24F839H", "NTNLGU58S02I315Q", "NSTGPP81R07L245Y", "NTNMTT63H03A892X" ],
+        "CodiceSede": "MI.2000"
+      }
+    ]
+  }
+]

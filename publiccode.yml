@@ -1,0 +1,82 @@
+publiccodeYmlVersion: '0.2'
+name: Sala Operativa VVF
+releaseDate: '2018-05-17'
+url: 'https://github.com/vvfosprojects/sovvf'
+developmentStatus: development 
+softwareType: standalone/web
+platforms:
+  - web
+usedBy:
+  - Corpo Nazionale dei Vigili del Fuoco
+categories:
+  - fleet-management
+  - data-collection
+  - data-analytics
+  - data-visualization
+maintenance:
+  type: internal
+  contacts:
+    - name: Marcello Esposito
+      email: "marcello.esposito@vigilfuoco.it"
+      affiliation: Corpo Nazionale dei Vigili del Fuoco
+legal:
+  license: AGPL-3.0-or-later
+  mainCopyrightOwner: 2018 Corpo Nazionale dei Vigili del Fuoco
+  repoOwner: Corpo Nazionale dei Vigili del Fuoco
+intendedAudience:
+  scope:
+    - emergency-services
+    - defence
+    - security
+    - transportation
+  countries:
+    - it
+localisation:
+  localisationReady: false
+  availableLanguages:
+    - it
+it:
+  countryExtensionVersion: '0.2'
+  conforme:
+    misureMinimeSicurezza: true
+    gdpr: true
+  riuso:
+    codiceIPA: m_it
+description:
+  it:
+    localisedName: Sala Operativa VVF
+    genericName: sovvf
+    shortDescription: Software di Sala Operativa (in fase di reingegnerizzazione) del Corpo Nazionale dei Vigili del Fuoco.
+    longDescription: >
+      SOVVF è il progetto di reingegnerizzazione del software applicativo per
+      le sale operative del Corpo Nazionale dei Vigili del Fuoco. Il software
+      consente l'acquisizione delle chiamate di soccorso, la gestione delle
+      code, il dispiegamento delle risorse per il contrasto all'emergenza, la
+      pianificazione anticipata del dispositivo di soccorso. Il sistema
+      è costituito da un moduilo di backend sviluppato in tecnologia .NET Core
+      WebApi e un frontend sviluppato in tecnologia Angular7, oltre ad altri
+      moduli a corredo per la gestione di processi collaterali. Il software
+      è al momento in piena fase di sviluppo e non è acquisibile per scenari di
+      esercizio.
+    documentation: 'https://github.com/vvfosprojects/sovvf/blob/master/README.md'
+    features:
+       - Web based frontend for operators.
+       - RESTful backend.
+       - Call management.
+       - Emergency Teams dispatch.
+       - GIS based emergency management.
+    screenshots:
+      - doc/images/dashboard.jpg
+      - doc/images/composizione-rapida.jpg
+      - doc/images/dettaglio-richiesta.jpg
+      - doc/images/chiamata.jpg
+      - doc/images/dettaglio-richiesta-mappa.jpg
+      - doc/images/composizione.jpg
+      - doc/images/meteo-marker.jpg
+      - doc/images/boxes.jpg
+      - doc/images/dettaglio-marker.jpg
+      - doc/images/dashboard-solo-mappa.jpg
+inputTypes:
+  - text/plain
+outputTypes:
+  - text/plain

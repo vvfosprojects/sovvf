@@ -1,0 +1,11 @@
+[
+  {
+    "CodiceSede": "RM.1000",
+    "CodiceMezzo": "O.29729",
+    "IstantePrenotazione": null,
+    "IstanteScadenzaSelezione": null,
+    "CodiceRichiesta": "RM2312000000",
+    "SbloccaMezzo": false,
+    "StatoOperativo": "In Viaggio"
+  }
+]

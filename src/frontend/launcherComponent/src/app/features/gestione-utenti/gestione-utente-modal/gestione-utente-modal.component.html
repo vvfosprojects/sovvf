@@ -1,0 +1,62 @@
+<div class="modal-header">
+    <h4 *ngIf="!codFiscaleUtenteVVF" class="modal-title">Aggiungi un nuovo utente</h4>
+    <h4 *ngIf="codFiscaleUtenteVVF" class="modal-title">Aggiungi ruolo a <b>{{nominativoUtenteVVF}}</b></h4>
+    <button type="button" class="close" aria-label="Close" (click)="closeModal('Cross click')">
+        <span aria-hidden="true"><i class="fa fa-lg fa-window-close"></i></span>
+    </button>
+</div>
+<div class="modal-body height">
+    <form [formGroup]="addUtenteRuoloForm" ngxsForm="gestioneUtenti.addUtenteRuoloForm">
+        <div *ngIf="!codFiscaleUtenteVVF" class="mb-3">
+            <label for="utente">Nominativo</label>
+            <ng-select id="utente" [items]="listaUtentiVVF$ | async" bindLabel="nominativo" bindValue="codFiscale"
+                       formControlName="utente"
+                       placeholder="Nessun Nominativo trovato"
+                       typeToSearchText="Inserisci almeno tre caratteri per iniziare la ricerca"
+                       loadingText="Ricerca nominativi in corso..."
+                       [hideSelected]="true" [typeahead]="typeahead" [notFoundText]="'Nessun risultato'"
+                       [loading]="loading$ | async" [ngClass]="{ 'is-invalid': submitted && f.utente.errors }">
+                <ng-template ng-option-tmp let-item="item">
+                    <div class="pb-1">
+                        <div class="font-weight-bold">{{item.nominativo.replace('.', ' ')}}</div>
+                        <div class="small">{{item.codFiscale}}</div>
+                    </div>
+                </ng-template>
+            </ng-select>
+            <div *ngIf="submitted && f.utente.errors" class="text-danger mt-1">
+                <div *ngIf="f.utente.errors.required">Campo Obbligatorio</div>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="sede">Sede</label>
+            <div class="border rounded">
+                <app-shared-treeview id="sede" class="height-test" [items]="listeSediNavbar"
+                                     [testoSedeSelezionata]="sediSelezionate" [placement]="'bottom-left'"
+                                     [visualizzaTasti]="false"
+                                     [disabled]="treeviewState.disabled" (confermaSelezione)="onPatchSedi($event)">
+                </app-shared-treeview>
+            </div>
+            <div *ngIf="submitted && f.sedi.errors" class="text-danger mt-1">
+                <div *ngIf="f.sedi.errors.required">Campo Obbligatorio</div>
+            </div>
+        </div>
+        <div class="mb-3">
+            <app-checkbox appClickStopPropagation [typeName]="'test'" [checkboxState]="checkboxState"
+                          (checkbox)="setRicorsivoValue($event)"></app-checkbox>
+        </div>
+        <div class="mb-3">
+            <label for="ruoli">Ruolo</label>
+            <ng-select id="ruoli" [items]="ruoli" formControlName="ruolo" placeholder="Seleziona un ruolo"
+                       [notFoundText]="'Nessun ruolo disponibile'"
+                       [ngClass]="{ 'is-invalid': submitted && f.ruolo.errors }">
+            </ng-select>
+            <div *ngIf="submitted && f.ruolo.errors" class="text-danger mt-1">
+                <div *ngIf="f.ruolo.errors.required">Campo Obbligatorio</div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-outline-danger" (click)="closeModal('ko')">Annulla</button>
+    <button type="button" class="btn btn-success" [disabled]="!formValid" (click)="onConferma()">Conferma</button>
+</div>

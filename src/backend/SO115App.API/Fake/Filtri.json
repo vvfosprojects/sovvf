@@ -1,0 +1,46 @@
+{
+  "generiMezzi": [
+    {
+      "id": "1",
+      "descrizione": "APS"
+    },
+    {
+      "id": "2",
+      "descrizione": "AF/UCL"
+    },
+    {
+      "id": "3",
+      "descrizione": "AF/OP"
+    },
+    {
+      "id": "4",
+      "descrizione": "ACT/TRI"
+    },
+    {
+      "id": "5",
+      "descrizione": "AF/COMBI"
+    },
+    {
+      "id": "6",
+      "descrizione": "AF/COMBI"
+    }
+  ],
+  "stati": [
+    {
+      "id": "1",
+      "descrizione": "In Sede"
+    },
+    {
+      "id": "2",
+      "descrizione": "In Rientro"
+    },
+    {
+      "id": "3",
+      "descrizione": "In Viaggio"
+    },
+    {
+      "id": "4",
+      "descrizione": "Sul Posto"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+ hr { 
+       margin-top: 0em;
+       margin-bottom: 0.2em;
+       margin-left: auto;
+       margin-right: auto;
+       border-bottom: 1px solid;
+       color: lightgray;
+ }
+.titolo
+{
+font-style: italic;
+color: gray;
+}
+

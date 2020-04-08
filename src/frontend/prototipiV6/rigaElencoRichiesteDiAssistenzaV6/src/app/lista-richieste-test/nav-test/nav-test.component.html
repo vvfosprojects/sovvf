@@ -1,0 +1,12 @@
+<span>
+  <select class="custom-select w-25" (change)="hover($event.target.value)">
+    <option value="null" selected>Nessuno</option>
+    <option *ngFor="let r of richieste" value="{{r.id}}">{{r.id}}</option>
+  </select>
+  <button class="btn btn-secondary ml-2">Seleziona</button>
+  <span *ngIf="id_richiestaScelta">
+    <button class="btn btn-info mx-2" (click)="fissa()">Fissa</button>
+    <button *ngIf="fissata" class="btn btn-danger mx-2" (click)="defissa()"><i class="fa fa-minus"></i> Fissa</button>
+  </span>
+  <button class="btn btn-danger">Deseleziona</button>
+</span>

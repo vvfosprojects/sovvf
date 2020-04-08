@@ -1,0 +1,76 @@
+<div class="btn-group app-shadow">
+  <div ngbDropdown autoClose="outside" class="btn-group">
+    <button ngbDropdownToggle class="btn" [ngClass]="{'btn-outline-primary': filtriS.filtriSelezionati.length==0, 'btn-primary': filtriS.filtriSelezionati.length>0}"
+      type="button" id="dropdownMenuButton" data-toggle="dropdown">
+      <i class="fa fa-filter"></i> Filtri <span *ngIf="filtriS.filtriSelezionati.length>0" class="badge badge-success text-light">{{
+        filtriS.filtriSelezionati.length
+        }}</span>
+    </button>
+    <div ngbDropdownMenu class="bg-light px-3">
+      <div class="card-block pt-1 pb-0">
+        <h6 class="font-weight-bold">Principali</h6>
+        <div *ngFor="let f of filtri" class="mb-2">
+          <app-filtro *ngIf="f.star === true" [filtro]="f" (filtroSelezionato)="selezione($event)"></app-filtro>
+        </div>
+      </div>
+      <div class="text-center">
+        <button class="btn btn-block btn-secondary mt-1" (click)="openFiltersModal(content)">Visualizza categorie</button>
+        <!-- FILTRI MODAL -->
+        <ng-template #content let-modal>
+          <div class="modal-header">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Cerca filtri nella categoria '{{ categoriaSelezionata }}'"
+                [(ngModel)]="filtersSearch.descrizione">
+              <div class="input-group-append">
+                <span class="input-group-text"><i class="fa fa-search"></i></span>
+              </div>
+            </div>
+            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body my-1">
+            <div class="row">
+              <div class="col-6 text-center">
+                <div class="row">
+                  <span class="col-6 pr-1" *ngFor="let c of categorie">
+                    <button class="btn btn-secondary w-100 mb-1" (click)="setCategoriaSelezionata(c)" ngbTooltip="{{ c }}"
+                      placement="bottom" [disableTooltip]="c.length <= 20">{{ c | truncate: 20 }}</button>
+                  </span>
+                </div>
+              </div>
+              <div class="col-6 text-center" style="height:290px; overflow-y:auto;">
+                <span *ngFor="let f of filtri | filterBy: filtersSearch">
+                  <app-filtro *ngIf="f.categoria === categoriaSelezionata" [filtro]="f" (filtroSelezionato)="selezione($event)"></app-filtro>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer px-0">
+            <div class="row w-100">
+              <div class="col-12">
+                <div class="mb-2">
+                  <span class="h5 mb-0 mr-2">Filtri attivi</span>
+                  <span *ngIf="filtriS.filtriSelezionati.length > 0" class="text-danger cursor-pointer" (click)="eliminaFiltriAttivi()">Elimina tutti</span>
+                </div>
+                <span class="w-25 mx-1 text-center" *ngFor="let f of filtriS.filtriSelezionati | paginate: { id: 'filtri', itemsPerPage: 4, currentPage: p}">
+                  <button class="btn btn-success" ngbTooltip="{{ f.descrizione }}" placement="bottom"
+                    [disableTooltip]="f.descrizione.length <= 20">{{ f.descrizione | truncate: 20 }}</button>
+                </span>
+                <button *ngIf="filtriS.filtriSelezionati.length <= 0" class="btn btn-outline-secondary disabled">Seleziona un filtro per migliorare la ricerca!</button>
+              </div>
+              <div class="col-12 text-center mt-2">
+                <pagination-controls id="filtri" (pageChange)="p = $event" maxSize="9" directionLinks="true" autoHide="true"
+                  responsive="true" previousLabel="" nextLabel="" screenReaderPaginationLabel="Pagination"
+                  screenReaderPageLabel="page" screenReaderCurrentLabel="You're on page">
+                </pagination-controls>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+  <button *ngIf="filtriS.filtriSelezionati.length>0" class="btn btn-outline-secondary p-1" (click)="eliminaFiltriAttivi()"><i
+      class="fa fa-times text-dark px-1"></i></button>
+</div>

@@ -1,0 +1,13 @@
+<div class="row">
+    <div *ngIf="centroMappa" class="col-12">
+        <app-agm [viewStateMappa]="viewStateMappa"
+                 [centroMappa]="centroMappa"
+                 [richiesteMarkers]="(richiesteMarkers$ | async)"
+                 [sediMarkers]="(sediMarkers$ | async)"
+                 [mezziMarkers]="(mezziMarkers$ | async)"
+                 [chiamateMarkers]="(chiamataMarkers$ | async)"
+                 [composizioneMarkers]="(composizioneMarkers$ | async)"
+                 [schedeContattoMarkers]="(schedeContattoMarkers$ | async)"
+                 (mapFullyLoaded)="mapIsLoaded($event)"></app-agm>
+    </div>
+</div>

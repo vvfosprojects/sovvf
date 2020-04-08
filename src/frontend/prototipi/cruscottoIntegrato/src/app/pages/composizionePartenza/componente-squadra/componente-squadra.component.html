@@ -1,0 +1,12 @@
+<div class="text-left" >
+  <div class="float-right">
+    <app-tag-capopartenza *ngIf="componente.capoPartenza" ></app-tag-capopartenza>
+    <app-tag-autista *ngIf="componente.autista" ></app-tag-autista>
+    <span *ngIf="componente.impegnato" title="{{ componente.descrizioneImpegno }}" class="badge badge-warning">IMP</span>
+    <span *ngIf="componente.inPartenza" title="In partenza..." class="badge badge-primary">PAR</span>
+  </div>
+  <div>
+    <i class="fa fa-user" aria-hidden="true"></i>
+    <span title="{{ componente.nominativoEsteso }}">{{ componente.nominativo | truncate:18 }}</span>
+  </div>
+</div>

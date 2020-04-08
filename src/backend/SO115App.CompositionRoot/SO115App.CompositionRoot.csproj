@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\shared\SO115.licenseheader" Link="SO115.licenseheader" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MongoDB.Driver" Version="2.10.0" />
+    <PackageReference Include="SimpleInjector" Version="4.5.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SO115App.API.SOVVF.FakeImplementations\SO115App.API.SOVVF.FakeImplementations.csproj" />
+    <ProjectReference Include="..\SO115App.CQRS\SO115App.CQRS.csproj" />
+    <ProjectReference Include="..\SO115App.FakePersistance.ExternalAPI\SO115App.ExternalAPI.Fake.csproj" />
+    <ProjectReference Include="..\SO115App.FakePersistence.InMemory\SO115App.FakePersistence.InMemory.csproj" />
+    <ProjectReference Include="..\SO115App.FakePersistenceJSon\SO115App.FakePersistence.JSon.csproj" />
+    <ProjectReference Include="..\SO115App.GeneratoreFakeRichieste\SO115App.GeneratoreFakeRichieste.csproj" />
+    <ProjectReference Include="..\SO115App.Logging\SO115App.Logging.csproj" />
+    <ProjectReference Include="..\SO115App.Persistence.MongoDB\SO115App.Persistence.MongoDB.csproj" />
+    <ProjectReference Include="..\SO115App.SignalR\SO115App.SignalR.csproj" />
+  </ItemGroup>
+</Project>
