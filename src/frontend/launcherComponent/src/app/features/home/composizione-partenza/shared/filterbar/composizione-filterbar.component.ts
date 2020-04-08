@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { Store, Select } from '@ngxs/store';
 import {
-    AddFiltroSelezionatoComposizione,
+    AddFiltroSelezionatoComposizione, ReducerFilterListeComposizione,
     RemoveFiltriSelezionatiComposizione
 } from '../../../store/actions/composizione-partenza/composizione-partenza.actions';
 import { ComposizionePartenzaState } from '../../../store/states/composizione-partenza/composizione-partenza.state';
@@ -13,7 +13,6 @@ import { ViewComponentState } from '../../../store/states/view/view.state';
 import { Observable } from 'rxjs';
 import { FiltriComposizione } from '../../interface/filtri/filtri-composizione-interface';
 import { iconaStatiClass } from '../functions/composizione-functions';
-import { FilterListeComposizioneAvanzata } from '../../../store/actions/composizione-partenza/composizione-avanzata.actions';
 
 @Component({
     selector: 'app-composizione-filterbar',
@@ -26,6 +25,8 @@ export class ComposizioneFilterbarComponent {
 
     @Select(ViewComponentState.composizioneMode) composizioneMode$: Observable<Composizione>;
 
+    notFoundText = 'Nessun Filtro Trovato';
+
     constructor(private store: Store) {
     }
 
@@ -36,12 +37,6 @@ export class ComposizioneFilterbarComponent {
             console.log('Filtro selezionato', event);
         }
     }
-
-    /* removeFiltro(event: any, tipo: string) {
-        this.store.dispatch(new RemoveFiltroSelezionatoComposizione(event.value.codice || event.value.id, tipo));
-        this.update();
-        console.log('Filtro deselezionato', event);
-    } */
 
     clearFiltri(tipo: string) {
         this.store.dispatch(new RemoveFiltriSelezionatiComposizione(tipo));
@@ -62,7 +57,7 @@ export class ComposizioneFilterbarComponent {
             idRichiesta: this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione).id
         };
 
-        this.store.dispatch(new FilterListeComposizioneAvanzata(filtri));
+        this.store.dispatch(new ReducerFilterListeComposizione(filtri));
     }
 
     turnOffComposizione() {

@@ -19,8 +19,9 @@
                        bindLabel="descDistaccamento"
                        bindValue="id"
                        [multiple]="false"
-                       [closeOnSelect]="false"
+                       [closeOnSelect]="true"
                        [hideSelected]="true"
+                       [notFoundText]="notFoundText"
                        (change)="addFiltro($event, 'codiceDistaccamento')"
                        (clear)="clearFiltri('codiceDistaccamento')"
                        placeholder="Distaccamento: Tutti">
@@ -31,8 +32,9 @@
                        bindLabel="descrizione"
                        bindValue="descrizione"
                        [multiple]="false"
-                       [closeOnSelect]="false"
+                       [closeOnSelect]="true"
                        [hideSelected]="true"
+                       [notFoundText]="notFoundText"
                        (change)="addFiltro($event, 'codiceTipoMezzo')"
                        (clear)="clearFiltri('codiceTipoMezzo')"
                        placeholder="Genere Mezzo: Tutti">
@@ -43,8 +45,9 @@
                        bindLabel="descrizione"
                        bindValue="codice"
                        [multiple]="false"
-                       [closeOnSelect]="false"
+                       [closeOnSelect]="true"
                        [hideSelected]="true"
+                       [notFoundText]="notFoundText"
                        (change)="addFiltro($event, 'codiceStatoMezzo')"
                        (clear)="clearFiltri('codiceStatoMezzo')"
                        placeholder="Stato: Tutti">

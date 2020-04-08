@@ -19,7 +19,7 @@ import {
 import { ClearSelectedSquadreComposizione, SetListaSquadreComposizione } from '../../actions/composizione-partenza/squadre-composizione.actions';
 import { ListaComposizioneAvanzata } from '../../../composizione-partenza/interface/lista-composizione-avanzata-interface';
 import { BoxPartenzaState } from './box-partenza.state';
-import { codDistaccamentoIsEqual, mezzoComposizioneBusy } from '../../../composizione-partenza/shared/functions/composizione-functions';
+import { mezzoComposizioneBusy } from '../../../composizione-partenza/shared/functions/composizione-functions';
 import { RemoveBoxPartenza } from '../../actions/composizione-partenza/box-partenza.actions';
 import { FiltriComposizione } from '../../../composizione-partenza/interface/filtri/filtri-composizione-interface';
 import { ViewComponentState } from '../view/view.state';

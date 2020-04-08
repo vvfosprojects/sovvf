@@ -484,8 +484,7 @@ export class MezziComposizioneState {
 
     @Action(FilterListaMezziComposizioneByFilters)
     filterListaMezziComposizioneByFilters({ getState, setState, patchState, dispatch }: StateContext<MezziComposizioneStateStateModel>, action: FilterListaMezziComposizioneByFilters) {
-        console.warn('FilterListaMezziComposizioneByFilters', action.filtri);
-        const state = getState();
+        let state = getState();
         if (action.filtri) {
             setState(
                 produce(state, (draft: MezziComposizioneStateStateModel) => {
@@ -504,7 +503,8 @@ export class MezziComposizioneState {
                     }
                 })
             );
-            dispatch(new SetListaFiltriAffini());
+            state = getState();
+            dispatch(new SetListaFiltriAffini(state.mezziComposizione));
         }
     }
 
