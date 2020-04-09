@@ -6,8 +6,8 @@ import { handleError } from '../../../shared/helper/handleError';
 import { environment } from '../../../../environments/environment';
 import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
 
-const API_URL = environment.apiUrl.attivitaUtente;
-
+const BASE_URL = environment.baseUrl;
+const API_URL = BASE_URL + environment.apiUrl.attivitaUtente;
 
 @Injectable()
 export class AttivitaUtenteService {

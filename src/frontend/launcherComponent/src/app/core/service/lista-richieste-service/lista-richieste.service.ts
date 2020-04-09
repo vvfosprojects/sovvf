@@ -9,10 +9,11 @@ import { FiltersInterface } from '../../../shared/interface/filters.interface';
 import { PaginationInterface } from '../../../shared/interface/pagination.interface';
 import { VoceFiltro } from '../../../features/home/filterbar/ricerca-group/filtri-richieste/voce-filtro.model';
 
-const API_URL_RICHIESTE = environment.apiUrl.rigaElencoRichieste;
-const API_CHIAMATA = environment.apiUrl.chiamata;
-const API_GESTIONE_RICHIESTA = environment.apiUrl.gestioneRichiesta;
-const API_GESTIONE_PARTENZA = environment.apiUrl.gestionePartenza;
+const BASE_URL = environment.baseUrl;
+const API_URL_RICHIESTE = BASE_URL + environment.apiUrl.rigaElencoRichieste;
+const API_CHIAMATA = BASE_URL + environment.apiUrl.chiamata;
+const API_GESTIONE_RICHIESTA = BASE_URL + environment.apiUrl.gestioneRichiesta;
+const API_GESTIONE_PARTENZA = BASE_URL + environment.apiUrl.gestionePartenza;
 
 @Injectable()
 export class SintesiRichiesteService {

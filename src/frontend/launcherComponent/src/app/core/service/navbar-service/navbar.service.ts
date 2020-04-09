@@ -6,8 +6,8 @@ import { handleError } from '../../../shared/helper/handleError';
 import { AppSettings, AppSettingsAPI } from '../../../shared/interface/app-settings.interface';
 import { Observable } from 'rxjs';
 
-const API_URL_NAVBAR = environment.apiUrl.navbar;
-
+const BASE_URL = environment.baseUrl;
+const API_URL_NAVBAR = BASE_URL + environment.apiUrl.navbar;
 
 @Injectable()
 export class NavbarService {

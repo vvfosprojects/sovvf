@@ -9,7 +9,11 @@ import { ListaComposizioneAvanzata } from '../../../features/home/composizione-p
 import { ConfermaPartenze } from '../../../features/home/composizione-partenza/interface/conferma-partenze-interface';
 import { IdPreaccoppiati } from '../../../features/home/composizione-partenza/interface/id-preaccoppiati-interface';
 
-const API_URL_COMPOSIZIONE = environment.apiUrl.composizione;
+const BASE_URL = environment.baseUrl;
+const API_URL_PREACCOPPIATI = BASE_URL + environment.apiUrl.composizione.preaccoppiati;
+const API_URL_AVANZATA = BASE_URL + environment.apiUrl.composizione.avanzata;
+const API_URL_PRENOTAZIONE = BASE_URL + environment.apiUrl.composizione.prenotazione;
+const API_URL_CONFERMA_PARTENZA = BASE_URL + environment.apiUrl.composizione.confermaPartenze;
 
 @Injectable()
 export class CompPartenzaService {
@@ -18,7 +22,7 @@ export class CompPartenzaService {
     }
 
     getPreAccoppiati(): Observable<IdPreaccoppiati[]> {
-        return this.http.get<IdPreaccoppiati[]>(API_URL_COMPOSIZIONE.preaccoppiati).pipe(
+        return this.http.get<IdPreaccoppiati[]>(API_URL_PREACCOPPIATI).pipe(
             retry(3),
             catchError(handleError)
         );
@@ -26,28 +30,28 @@ export class CompPartenzaService {
 
     // Todo: modificare nome in getListeComposizione ?
     getListeComposizioneAvanzata(filtri: FiltriComposizione): Observable<ListaComposizioneAvanzata> {
-        return this.http.post<ListaComposizioneAvanzata>(API_URL_COMPOSIZIONE.avanzata, filtri).pipe(
+        return this.http.post<ListaComposizioneAvanzata>(API_URL_AVANZATA, filtri).pipe(
             retry(3),
             catchError(handleError)
         );
     }
 
     setMezzoPrenotato(mezzoPrenotatoObj: any) {
-        return this.http.post(`${API_URL_COMPOSIZIONE.prenotazione}/PrenotaMezzo`, mezzoPrenotatoObj).pipe(
+        return this.http.post(`${API_URL_PRENOTAZIONE}/PrenotaMezzo`, mezzoPrenotatoObj).pipe(
             retry(3),
             catchError(handleError)
         );
     }
 
     removeMezzoPrenotato(mezzoPrenotatoObj: any) {
-        return this.http.post(`${API_URL_COMPOSIZIONE.prenotazione}/SbloccaMezzo`, mezzoPrenotatoObj).pipe(
+        return this.http.post(`${API_URL_PRENOTAZIONE}/SbloccaMezzo`, mezzoPrenotatoObj).pipe(
             // retry(3),
             catchError(handleError)
         );
     }
 
     confermaPartenze(partenze: ConfermaPartenze) {
-        return this.http.post(API_URL_COMPOSIZIONE.confermaPartenze, partenze).pipe(
+        return this.http.post(API_URL_CONFERMA_PARTENZA, partenze).pipe(
             // retry(3),
             catchError(handleError)
         );
