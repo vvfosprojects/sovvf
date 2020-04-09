@@ -4,7 +4,8 @@ import {
     AddSquadraComposizione,
     ClearListaSquadreComposizione,
     ClearSelectedSquadreComposizione,
-    ClearSquadraComposizione, FilterListaSquadreComposizione,
+    ClearSquadraComposizione,
+    FilterListaSquadreComposizione,
     HoverInSquadraComposizione,
     HoverOutSquadraComposizione,
     RemoveSquadraComposizione,
@@ -16,10 +17,14 @@ import {
     UpdateSquadraComposizione
 } from '../../actions/composizione-partenza/squadre-composizione.actions';
 import { append, patch, removeItem } from '@ngxs/store/operators';
-import { makeCopy } from '../../../../../shared/helper/function';
 import { AddSquadraBoxPartenza } from '../../actions/composizione-partenza/box-partenza.actions';
 import { BoxPartenzaState } from './box-partenza.state';
 import { FilterListaMezziComposizione } from '../../actions/composizione-partenza/mezzi-composizione.actions';
+import produce from 'immer';
+import { codDistaccamentoIsEqual } from '../../../composizione-partenza/shared/functions/composizione-functions';
+import { SetListaFiltriAffini } from '../../actions/composizione-partenza/composizione-partenza.actions';
+import { ComposizionePartenzaState } from './composizione-partenza.state';
+import { MezzoComposizione } from '../../../composizione-partenza/interface/mezzo-composizione-interface';
 
 export interface SquadreComposizioneStateStateModel {
     allSquadreComposione: SquadraComposizione[];
@@ -105,10 +110,11 @@ export class SquadreComposizioneState {
         const idBoxPartenzaSelezionato = this.store.selectSnapshot(BoxPartenzaState.idBoxPartenzaSelezionato);
         const boxPartenzaSelezionato = boxPartenzaList.filter(x => x.id === idBoxPartenzaSelezionato)[0];
         if (boxPartenzaSelezionato && !boxPartenzaSelezionato.mezzoComposizione) {
-            dispatch(new FilterListaMezziComposizione(action.squadraComp.squadra.distaccamento.codice));
+            const filtriSelezionati = this.store.selectSnapshot(ComposizionePartenzaState.filtriSelezionati);
+            dispatch(new FilterListaMezziComposizione(action.squadraComp.squadra.distaccamento.codice, filtriSelezionati));
             const idRichiesteSelezionate = getState().idSquadreSelezionate;
             if (idRichiesteSelezionate && idRichiesteSelezionate.length <= 1) {
-                dispatch(new FilterListaSquadreComposizione(action.squadraComp.squadra.distaccamento.codice));
+                dispatch(new FilterListaSquadreComposizione(action.squadraComp.squadra.distaccamento.codice, filtriSelezionati));
             }
         }
         // Aggiorno lo store
@@ -129,10 +135,12 @@ export class SquadreComposizioneState {
             const boxPartenzaList = this.store.selectSnapshot(BoxPartenzaState.boxPartenzaList);
             const idBoxPartenzaSelezionato = this.store.selectSnapshot(BoxPartenzaState.idBoxPartenzaSelezionato);
             const boxPartenzaSelezionato = boxPartenzaList.filter(b => b.id === idBoxPartenzaSelezionato)[0];
-            if (!boxPartenzaSelezionato.mezzoComposizione) {
+            if (!boxPartenzaSelezionato || !boxPartenzaSelezionato.mezzoComposizione) {
+                const filtriSelezionati = this.store.selectSnapshot(ComposizionePartenzaState.filtriSelezionati);
                 dispatch([
-                    new FilterListaSquadreComposizione(),
-                    new FilterListaMezziComposizione()
+                    new FilterListaSquadreComposizione(null, filtriSelezionati),
+                    new FilterListaMezziComposizione(null, filtriSelezionati),
+                    new SetListaFiltriAffini()
                 ]);
             }
         }
@@ -199,13 +207,31 @@ export class SquadreComposizioneState {
         const state = getState();
         const idSquadreSelezionate = state.idSquadreSelezionate;
         if (idSquadreSelezionate && idSquadreSelezionate.length <= 1) {
-            let squadre = makeCopy(state.allSquadreComposione);
-            if (action.codDistaccamento) {
-                squadre = squadre.filter((sC: SquadraComposizione) => sC.squadra.distaccamento.codice === action.codDistaccamento);
-            }
-            patchState({
-                squadreComposizione: squadre
-            });
+            setState(
+                produce(state, (draft: SquadreComposizioneStateStateModel) => {
+                    draft.squadreComposizione = draft.allSquadreComposione;
+                    if (action.codDistaccamento) {
+                        draft.squadreComposizione = draft.squadreComposizione.filter((sC: SquadraComposizione) => sC.squadra.distaccamento.codice === action.codDistaccamento);
+                    }
+
+                    if (action.filtri) {
+                        // CODICE DISTACCAMENTO
+                        if (action.filtri.CodiceDistaccamento && action.filtri.CodiceDistaccamento.length > 0) {
+                            draft.squadreComposizione = draft.squadreComposizione.filter((s: SquadraComposizione) => codDistaccamentoIsEqual(s.squadra.distaccamento.codice, action.filtri.CodiceDistaccamento[0]));
+                        }
+                        // CODICE SQUADRE SELEZIONATE O MEZZO SELEZIONATO
+                        if (action.filtri.CodiceMezzo || (action.filtri.CodiceSquadre && action.filtri.CodiceSquadre.length > 0)) {
+                            let codDistaccamentoSelezionato = null;
+                            if (action.filtri.CodiceSquadre && action.filtri.CodiceSquadre.length > 0) {
+                                codDistaccamentoSelezionato = state.squadreComposizione.filter((sC: SquadraComposizione) => sC.squadra.id === action.filtri.CodiceSquadre[0])[0].squadra.distaccamento.codice;
+                            } else if (action.filtri.CodiceMezzo) {
+                                codDistaccamentoSelezionato = action.mezziComposizione.filter((mC: MezzoComposizione) => mC.mezzo.codice === action.filtri.CodiceMezzo)[0].mezzo.distaccamento.codice;
+                            }
+                            draft.squadreComposizione = draft.squadreComposizione.filter((sC: SquadraComposizione) => sC.squadra.distaccamento.codice === codDistaccamentoSelezionato);
+                        }
+                    }
+                })
+            );
         }
     }
 }

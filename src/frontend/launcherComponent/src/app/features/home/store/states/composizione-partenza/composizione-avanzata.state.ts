@@ -1,30 +1,38 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { CompPartenzaService } from 'src/app/core/service/comp-partenza-service/comp-partenza.service';
 import {
-    ClearComposizioneAvanzata, FilterListeComposizioneAvanzata,
+    ClearComposizioneAvanzata,
+    FilterListeComposizioneAvanzata,
     GetListeComposizioneAvanzata,
     SetListeComposizioneAvanzata,
     UnselectMezziAndSquadreComposizioneAvanzata
 } from '../../actions/composizione-partenza/composizione-avanzata.actions';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from '../../../../../shared/enum/toastr';
-import { MezziComposizioneState, MezziComposizioneStateStateModel } from './mezzi-composizione.state';
+import { MezziComposizioneState } from './mezzi-composizione.state';
 import { SquadreComposizioneState } from './squadre-composizione.state';
 import { ComposizionePartenzaState, ComposizionePartenzaStateModel } from './composizione-partenza.state';
-import { ClearSelectedMezziComposizione, SetListaMezziComposizione } from '../../actions/composizione-partenza/mezzi-composizione.actions';
-import { ClearSelectedSquadreComposizione, SetListaSquadreComposizione } from '../../actions/composizione-partenza/squadre-composizione.actions';
+import {
+    ClearSelectedMezziComposizione,
+    FilterListaMezziComposizione,
+    SetListaMezziComposizione
+} from '../../actions/composizione-partenza/mezzi-composizione.actions';
+import {
+    ClearSelectedSquadreComposizione,
+    FilterListaSquadreComposizione,
+    SetListaSquadreComposizione
+} from '../../actions/composizione-partenza/squadre-composizione.actions';
 import { ListaComposizioneAvanzata } from '../../../composizione-partenza/interface/lista-composizione-avanzata-interface';
 import { BoxPartenzaState } from './box-partenza.state';
-import { codDistaccamentoIsEqual, mezzoComposizioneBusy } from '../../../composizione-partenza/shared/functions/composizione-functions';
+import { mezzoComposizioneBusy } from '../../../composizione-partenza/shared/functions/composizione-functions';
 import { RemoveBoxPartenza } from '../../actions/composizione-partenza/box-partenza.actions';
 import { FiltriComposizione } from '../../../composizione-partenza/interface/filtri/filtri-composizione-interface';
 import { ViewComponentState } from '../view/view.state';
 import { Composizione } from '../../../../../shared/enum/composizione.enum';
 import { GetPreAccoppiati } from '../../actions/composizione-partenza/composizione-veloce.actions';
-import { SetListaFiltriAffini, StartListaComposizioneLoading, StopListaComposizioneLoading } from '../../actions/composizione-partenza/composizione-partenza.actions';
+import { StartListaComposizioneLoading, StopListaComposizioneLoading } from '../../actions/composizione-partenza/composizione-partenza.actions';
 import { MezzoComposizione } from '../../../composizione-partenza/interface/mezzo-composizione-interface';
 import { StatoMezzo } from '../../../../../shared/enum/stato-mezzo.enum';
-import produce from 'immer';
 
 export interface ComposizioneAvanzataStateModel {
     listaMezziSquadre: ListaComposizioneAvanzata;
@@ -104,21 +112,16 @@ export class ComposizioneAvanzataState {
         if (compMode === Composizione.Veloce) {
             dispatch(new GetPreAccoppiati());
         }
-        dispatch(new SetListaFiltriAffini());
+        const filtriSelezionati = this.store.selectSnapshot(ComposizionePartenzaState.filtriSelezionati);
+        dispatch(new FilterListeComposizioneAvanzata(filtriSelezionati));
     }
 
     @Action(FilterListeComposizioneAvanzata)
-    filterListeComposizioneAvanzata({ getState, setState, patchState }: StateContext<ComposizionePartenzaStateModel>, action: FilterListeComposizioneAvanzata) {
-        /* const state = getState();
-        setState(
-            produce(state, (draft: MezziComposizioneStateStateModel) => {
-                if (action.filtri.CodiceDistaccamento) {
-                    action.filtri.CodiceDistaccamento.forEach((codDistaccamento: string) => {
-                        draft.mezziComposizione.filter(m => codDistaccamentoIsEqual(m.mezzo.distaccamento.codice, codDistaccamento));
-                    });
-                }
-            }),
-        ); */
+    filterListeComposizioneAvanzata({ dispatch }: StateContext<ComposizionePartenzaStateModel>, action: FilterListeComposizioneAvanzata) {
+        const squadreComposizione = this.store.selectSnapshot(SquadreComposizioneState.allSquadreComposione);
+        const mezziComposizione = this.store.selectSnapshot(MezziComposizioneState.mezziComposizione);
+        dispatch(new FilterListaMezziComposizione(null, action.filtri, squadreComposizione));
+        dispatch(new FilterListaSquadreComposizione(null, action.filtri, mezziComposizione));
     }
 
     @Action(UnselectMezziAndSquadreComposizioneAvanzata)

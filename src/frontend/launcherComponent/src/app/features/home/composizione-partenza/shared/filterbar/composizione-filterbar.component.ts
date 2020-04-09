@@ -2,8 +2,8 @@ import { Component, Input } from '@angular/core';
 import { Store, Select } from '@ngxs/store';
 import {
     AddFiltroSelezionatoComposizione,
-    RemoveFiltriSelezionatiComposizione,
-    RemoveFiltroSelezionatoComposizione
+    ReducerFilterListeComposizione,
+    RemoveFiltriSelezionatiComposizione
 } from '../../../store/actions/composizione-partenza/composizione-partenza.actions';
 import { ComposizionePartenzaState } from '../../../store/states/composizione-partenza/composizione-partenza.state';
 import { MezziComposizioneState } from '../../../store/states/composizione-partenza/mezzi-composizione.state';
@@ -14,7 +14,6 @@ import { ViewComponentState } from '../../../store/states/view/view.state';
 import { Observable } from 'rxjs';
 import { FiltriComposizione } from '../../interface/filtri/filtri-composizione-interface';
 import { iconaStatiClass } from '../functions/composizione-functions';
-import { FilterListeComposizioneAvanzata } from '../../../store/actions/composizione-partenza/composizione-avanzata.actions';
 
 @Component({
     selector: 'app-composizione-filterbar',
@@ -27,25 +26,21 @@ export class ComposizioneFilterbarComponent {
 
     @Select(ViewComponentState.composizioneMode) composizioneMode$: Observable<Composizione>;
 
+    notFoundText = 'Nessun Filtro Trovato';
+
     constructor(private store: Store) {
     }
 
     addFiltro(event: any, tipo: string) {
-        this.store.dispatch(new AddFiltroSelezionatoComposizione(event.codice || event.id, tipo));
-        this.update();
-        // console.log('Filtro deselezionato', event);
-    }
-
-    removeFiltro(event: any, tipo: string) {
-        this.store.dispatch(new RemoveFiltroSelezionatoComposizione(event.value.codice || event.value.id, tipo));
-        this.update();
-        // console.log('Filtro deselezionato', event);
+        if (event) {
+            this.store.dispatch(new AddFiltroSelezionatoComposizione(event.id || event.descrizione, tipo));
+            this.update();
+        }
     }
 
     clearFiltri(tipo: string) {
         this.store.dispatch(new RemoveFiltriSelezionatiComposizione(tipo));
         this.update();
-        // console.log('Filtri deselezionati', tipo);
     }
 
     update() {
@@ -54,14 +49,14 @@ export class ComposizioneFilterbarComponent {
         const codiceSquadra = this.store.selectSnapshot(SquadreComposizioneState.idSquadreSelezionate);
         const filtri: FiltriComposizione = {
             CodiceDistaccamento: filtriSelezionati ? filtriSelezionati.CodiceDistaccamento : [],
-            CodiceTipoMezzo: filtriSelezionati ? filtriSelezionati.CodiceTipoMezzo : [],
-            CodiceStatoMezzo: filtriSelezionati ? filtriSelezionati.CodiceStatoMezzo : [],
+            TipoMezzo: filtriSelezionati ? filtriSelezionati.TipoMezzo : [],
+            StatoMezzo: filtriSelezionati ? filtriSelezionati.StatoMezzo : [],
             CodiceMezzo: codiceMezzo ? codiceMezzo : '',
-            CodiceSquadra: codiceSquadra ? codiceSquadra : [],
+            CodiceSquadre: codiceSquadra ? codiceSquadra : [],
             idRichiesta: this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione).id
         };
 
-        this.store.dispatch(new FilterListeComposizioneAvanzata(filtri));
+        this.store.dispatch(new ReducerFilterListeComposizione(filtri));
     }
 
     turnOffComposizione() {
