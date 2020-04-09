@@ -1,7 +1,8 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { CompPartenzaService } from 'src/app/core/service/comp-partenza-service/comp-partenza.service';
 import {
-    ClearComposizioneAvanzata, FilterListeComposizioneAvanzata,
+    ClearComposizioneAvanzata,
+    FilterListeComposizioneAvanzata,
     GetListeComposizioneAvanzata,
     SetListeComposizioneAvanzata,
     UnselectMezziAndSquadreComposizioneAvanzata

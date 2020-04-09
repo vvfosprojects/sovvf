@@ -471,7 +471,7 @@ export class MezziComposizioneState {
     }
 
     @Action(FilterListaMezziComposizione)
-    filterListaMezziComposizione({ getState, setState, patchState, dispatch }: StateContext<MezziComposizioneStateStateModel>, action: FilterListaMezziComposizione) {
+    filterListaMezziComposizione({ getState, setState, dispatch }: StateContext<MezziComposizioneStateStateModel>, action: FilterListaMezziComposizione) {
         let state = getState();
         setState(
             produce(state, (draft: MezziComposizioneStateStateModel) => {

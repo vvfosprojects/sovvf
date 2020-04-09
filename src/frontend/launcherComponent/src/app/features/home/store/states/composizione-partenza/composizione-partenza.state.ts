@@ -21,7 +21,13 @@ import {
 } from '../../actions/composizione-partenza/composizione-partenza.actions';
 import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.model';
 import { ComposizioneMarker } from '../../../maps/maps-model/composizione-marker.model';
-import { ClearComposizioneVeloce, ClearPreaccoppiati, ClearPreAccoppiatiSelezionatiComposizione, GetListaIdPreAccoppiati } from '../../actions/composizione-partenza/composizione-veloce.actions';
+import {
+    ClearComposizioneVeloce,
+    ClearPreaccoppiati,
+    ClearPreAccoppiatiSelezionatiComposizione,
+    FilterListaPreAccoppiati,
+    GetListaIdPreAccoppiati
+} from '../../actions/composizione-partenza/composizione-veloce.actions';
 import { Composizione } from '../../../../../shared/enum/composizione.enum';
 import {
     ClearComposizioneAvanzata,
@@ -41,7 +47,6 @@ import { ComposizioneFilterbar } from '../../../composizione-partenza/interface/
 import { MezzoComposizione } from '../../../composizione-partenza/interface/mezzo-composizione-interface';
 import { DescrizioneTipologicaMezzo } from '../../../composizione-partenza/interface/filtri/descrizione-filtro-composizione-interface';
 import { ClearBoxPartenze } from '../../actions/composizione-partenza/box-partenza.actions';
-import { MezziComposizioneState } from './mezzi-composizione.state';
 
 export interface ComposizionePartenzaStateModel {
     filtriAffini: ListaTipologicheMezzi;
@@ -313,7 +318,7 @@ export class ComposizionePartenzaState {
         if (compMode === Composizione.Avanzata) {
             dispatch(new FilterListeComposizioneAvanzata(action.filtri));
         } else if (compMode === Composizione.Veloce) {
-            // TODO: fare action FilterListaComposizioneVeloce()
+            dispatch(new FilterListaPreAccoppiati(action.filtri));
         }
     }
 

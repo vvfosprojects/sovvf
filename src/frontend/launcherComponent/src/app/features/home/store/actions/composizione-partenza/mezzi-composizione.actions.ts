@@ -3,7 +3,6 @@ import { BoxPartenza } from '../../../composizione-partenza/interface/box-parten
 import { SganciamentoInterface } from 'src/app/shared/interface/sganciamento.interface';
 import { ComposizioneFilterbar } from '../../../composizione-partenza/interface/composizione/composizione-filterbar-interface';
 import { SquadraComposizione } from '../../../composizione-partenza/interface/squadra-composizione-interface';
-import { FiltriComposizione } from '../../../composizione-partenza/interface/filtri/filtri-composizione-interface';
 
 export class SetListaMezziComposizione {
     static readonly type = '[MezziComposizione] Set Lista Mezzi Composizione';
