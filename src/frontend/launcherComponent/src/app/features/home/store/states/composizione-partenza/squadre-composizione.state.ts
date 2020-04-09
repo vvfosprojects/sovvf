@@ -19,10 +19,11 @@ import { append, patch, removeItem } from '@ngxs/store/operators';
 import { makeCopy } from '../../../../../shared/helper/function';
 import { AddSquadraBoxPartenza } from '../../actions/composizione-partenza/box-partenza.actions';
 import { BoxPartenzaState } from './box-partenza.state';
-import { FilterListaMezziComposizione } from '../../actions/composizione-partenza/mezzi-composizione.actions';
+import { FilterListaMezziComposizione, FilterListaMezziComposizioneByFilters } from '../../actions/composizione-partenza/mezzi-composizione.actions';
 import produce from 'immer';
 import { codDistaccamentoIsEqual } from '../../../composizione-partenza/shared/functions/composizione-functions';
 import { MezziComposizioneStateStateModel } from './mezzi-composizione.state';
+import { SetListaFiltriAffini } from '../../actions/composizione-partenza/composizione-partenza.actions';
 
 export interface SquadreComposizioneStateStateModel {
     allSquadreComposione: SquadraComposizione[];
@@ -133,9 +134,11 @@ export class SquadreComposizioneState {
             const idBoxPartenzaSelezionato = this.store.selectSnapshot(BoxPartenzaState.idBoxPartenzaSelezionato);
             const boxPartenzaSelezionato = boxPartenzaList.filter(b => b.id === idBoxPartenzaSelezionato)[0];
             if (!boxPartenzaSelezionato.mezzoComposizione) {
+                const filtriSelezionati = this.store.selectSnapshot(s => s.composizionePartenza.filtriSelezionati);
                 dispatch([
-                    new FilterListaSquadreComposizione(),
-                    new FilterListaMezziComposizione()
+                    new FilterListaSquadreComposizioneByFilters(filtriSelezionati),
+                    new FilterListaMezziComposizioneByFilters(filtriSelezionati),
+                    new SetListaFiltriAffini()
                 ]);
             }
         }
