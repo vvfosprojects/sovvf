@@ -7,7 +7,8 @@ import { Store } from '@ngxs/store';
 import { UtenteState } from '../../../features/navbar/store/states/operatore/utente.state';
 import { StartLoading, StopLoading } from '../../../shared/store/actions/loading/loading.actions';
 
-const API_AUTH = environment.apiUrl.auth;
+const BASE_URL = environment.baseUrl;
+const API_AUTH = BASE_URL + environment.apiUrl.auth;
 
 
 @Injectable({ providedIn: 'root' })

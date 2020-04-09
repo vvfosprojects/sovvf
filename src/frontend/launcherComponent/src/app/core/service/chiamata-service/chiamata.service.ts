@@ -6,8 +6,8 @@ import { environment } from '../../../../environments/environment';
 import { handleError } from '../../../shared/helper/handleError';
 import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
 
-const API_CHIAMATA = environment.apiUrl.chiamata;
-
+const BASE_URL = environment.baseUrl;
+const API_CHIAMATA = BASE_URL + environment.apiUrl.chiamata;
 
 @Injectable()
 export class ChiamataService {

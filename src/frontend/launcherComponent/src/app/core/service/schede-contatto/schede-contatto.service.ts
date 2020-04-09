@@ -7,7 +7,8 @@ import { handleError } from 'src/app/shared/helper/handleError';
 import { environment } from 'src/environments/environment.prod';
 import { FiltriSchedeContatto } from '../../../shared/interface/filtri-schede-contatto.interface';
 
-const API_SCHEDE_CONTATTO = environment.apiUrl.schedeContatto;
+const BASE_URL = environment.baseUrl;
+const API_SCHEDE_CONTATTO = BASE_URL + environment.apiUrl.schedeContatto;
 
 @Injectable({
     providedIn: 'root'

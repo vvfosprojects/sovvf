@@ -6,7 +6,8 @@ import { EventoRichiesta } from '../../../shared/model/evento-richiesta.model';
 import { environment } from '../../../../environments/environment';
 import { handleError } from '../../../shared/helper/handleError';
 
-const API_URL = environment.apiUrl.eventiRichieste;
+const BASE_URL = environment.baseUrl;
+const API_URL = BASE_URL + environment.apiUrl.eventiRichieste;
 
 @Injectable()
 export class EventiRichiestaService {

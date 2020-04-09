@@ -6,7 +6,8 @@ import { environment } from '../../../../../environments/environment';
 import { handleError } from '../../../../shared/helper/handleError';
 import { ChiamataMarker } from '../../../../features/home/maps/maps-model/chiamata-marker.model';
 
-const API_MARKER_CHIAMATE = environment.apiUrl.markerChiamataInCorso;
+const BASE_URL = environment.baseUrl;
+const API_MARKER_CHIAMATE = BASE_URL + environment.apiUrl.markerChiamataInCorso;
 
 @Injectable()
 export class ChiamateMarkerService {
