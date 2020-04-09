@@ -1,3 +1,3 @@
 export interface ComposizioneCodiceSquadra {
-    CodiceSquadra: string[];
+    CodiceSquadre: string[];
 }

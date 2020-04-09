@@ -5,7 +5,7 @@ import {
     FiltriComposizione
 } from '../../../composizione-partenza/interface/filtri/filtri-composizione-interface';
 import { ConfermaPartenze } from '../../../composizione-partenza/interface/conferma-partenze-interface';
-import { ComposizioneFilterbar } from '../../../composizione-partenza/interface/composizione/composizione-filterbar-interface';
+import { MezzoComposizione } from '../../../composizione-partenza/interface/mezzo-composizione-interface';
 
 export class GetFiltriComposizione {
     static readonly type = '[FiltriComposizione] Get Lista Filtri';
@@ -20,6 +20,9 @@ export class SetFiltriComposizione {
 
 export class SetListaFiltriAffini {
     static readonly type = '[FiltriComposizione] Set Lista Filtri Affini';
+
+    constructor(public composizioneMezzi?: MezzoComposizione[]) {
+    }
 }
 
 export class UpdateListeComposizione {
@@ -47,6 +50,13 @@ export class RemoveFiltriSelezionatiComposizione {
     static readonly type = '[FiltriComposizione] Remove Filtri Selezionati';
 
     constructor(public tipo: string) {
+    }
+}
+
+export class ReducerFilterListeComposizione {
+    static readonly type = '[FiltriComposizione] Reducer Filter Liste Composizione';
+
+    constructor(public filtri: FiltriComposizione) {
     }
 }
 

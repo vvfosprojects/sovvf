@@ -4,7 +4,8 @@ import {
     AddBookingMezzoComposizione,
     AddBookMezzoComposizione,
     AddMezzoComposizione,
-    ClearListaMezziComposizione, ClearMezzoComposizione,
+    ClearListaMezziComposizione,
+    ClearMezzoComposizione,
     ClearSelectedMezziComposizione,
     HoverInMezzoComposizione,
     HoverOutMezzoComposizione,
@@ -22,7 +23,11 @@ import {
     UnlockMezzoComposizione,
     UnselectMezzoComposizione,
     UpdateMezzoComposizione,
-    ReducerSelectMezzoComposizione, SelectMezzoComposizioneFromMappa, SganciamentoMezzoComposizione, UpdateMezzoComposizioneScadenzaByCodiceMezzo, FilterListaMezziComposizione
+    ReducerSelectMezzoComposizione,
+    SelectMezzoComposizioneFromMappa,
+    SganciamentoMezzoComposizione,
+    UpdateMezzoComposizioneScadenzaByCodiceMezzo,
+    FilterListaMezziComposizione
 } from '../../actions/composizione-partenza/mezzi-composizione.actions';
 import { insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
@@ -35,7 +40,7 @@ import {
     AddMezzoBoxPartenzaSelezionato
 } from '../../actions/composizione-partenza/box-partenza.actions';
 import { BoxPartenzaState } from './box-partenza.state';
-import { calcolaTimeout, mezzoComposizioneBusy } from '../../../composizione-partenza/shared/functions/composizione-functions';
+import { calcolaTimeout, codDistaccamentoIsEqual, mezzoComposizioneBusy } from '../../../composizione-partenza/shared/functions/composizione-functions';
 import {
     ClearMarkerMezzoHover,
     SetMarkerMezzoHover,
@@ -50,10 +55,12 @@ import { SganciamentoMezzoModalComponent } from '../../../composizione-partenza/
 import { ConfermaPartenze } from '../../../composizione-partenza/interface/conferma-partenze-interface';
 import { ComposizionePartenzaState } from './composizione-partenza.state';
 import { TurnoState } from 'src/app/features/navbar/store/states/turno/turno.state';
-import { ConfirmPartenze } from '../../actions/composizione-partenza/composizione-partenza.actions';
+import { ConfirmPartenze, SetListaFiltriAffini } from '../../actions/composizione-partenza/composizione-partenza.actions';
 import { makeCopy } from '../../../../../shared/helper/function';
 import { SquadreComposizioneState } from './squadre-composizione.state';
 import { FilterListaSquadreComposizione, SetListaSquadreComposizione } from '../../actions/composizione-partenza/squadre-composizione.actions';
+import produce from 'immer';
+import { SquadraComposizione } from '../../../composizione-partenza/interface/squadra-composizione-interface';
 
 export interface MezziComposizioneStateStateModel {
     allMezziComposizione: MezzoComposizione[];
@@ -249,21 +256,23 @@ export class MezziComposizioneState {
         const boxPartenzaSelezionato = boxPartenzaList.filter(x => x.id === idBoxPartenzaSelezionato)[0];
         if (boxPartenzaSelezionato && (!boxPartenzaSelezionato.squadraComposizione || boxPartenzaSelezionato.squadraComposizione.length <= 0)) {
             const allSquadreComposione = this.store.selectSnapshot(SquadreComposizioneState.allSquadreComposione);
+            const filtriSelezionati = this.store.selectSnapshot(ComposizionePartenzaState.filtriSelezionati);
             dispatch([
                 new SetListaSquadreComposizione(allSquadreComposione),
-                new FilterListaSquadreComposizione(action.mezzoComp.mezzo.distaccamento.codice),
-                new FilterListaMezziComposizione(action.mezzoComp.mezzo.distaccamento.codice)
+                new FilterListaSquadreComposizione(action.mezzoComp.mezzo.distaccamento.codice, filtriSelezionati),
+                new FilterListaMezziComposizione(action.mezzoComp.mezzo.distaccamento.codice, filtriSelezionati)
             ]);
         }
     }
 
     @Action(UnselectMezzoComposizione)
-    unselectMezzoComposizione({ patchState, dispatch }: StateContext<MezziComposizioneStateStateModel>) {
+    unselectMezzoComposizione({ getState, patchState, dispatch }: StateContext<MezziComposizioneStateStateModel>) {
         const idSquadreSelezionate = this.store.selectSnapshot(SquadreComposizioneState.idSquadreSelezionate);
         if (idSquadreSelezionate && idSquadreSelezionate.length <= 0) {
+            const filtriSelezionati = this.store.selectSnapshot(ComposizionePartenzaState.filtriSelezionati);
             dispatch([
-                new FilterListaSquadreComposizione(),
-                new FilterListaMezziComposizione()
+                new FilterListaSquadreComposizione(null, filtriSelezionati),
+                new FilterListaMezziComposizione(null, filtriSelezionati)
             ]);
         }
         patchState({
@@ -462,14 +471,42 @@ export class MezziComposizioneState {
     }
 
     @Action(FilterListaMezziComposizione)
-    filterListaMezziComposizione({ getState, patchState, dispatch }: StateContext<MezziComposizioneStateStateModel>, action: FilterListaMezziComposizione) {
-        const state = getState();
-        let mezzi = makeCopy(state.allMezziComposizione);
-        if (action.codDistaccamento) {
-            mezzi = mezzi.filter((mC: MezzoComposizione) => mC.mezzo.distaccamento.codice === action.codDistaccamento);
-        }
-        patchState({
-            mezziComposizione: mezzi
-        });
+    filterListaMezziComposizione({ getState, setState, dispatch }: StateContext<MezziComposizioneStateStateModel>, action: FilterListaMezziComposizione) {
+        let state = getState();
+        setState(
+            produce(state, (draft: MezziComposizioneStateStateModel) => {
+                draft.mezziComposizione = draft.allMezziComposizione;
+                if (action.codDistaccamento) {
+                    draft.mezziComposizione = draft.mezziComposizione.filter((mC: MezzoComposizione) => mC.mezzo.distaccamento.codice === action.codDistaccamento);
+                }
+
+                if (action.filtri) {
+                    // CODICE DISTACCAMENTO
+                    if (action.filtri.CodiceDistaccamento && action.filtri.CodiceDistaccamento.length > 0) {
+                        draft.mezziComposizione = draft.mezziComposizione.filter((m: MezzoComposizione) => codDistaccamentoIsEqual(m.mezzo.distaccamento.codice, action.filtri.CodiceDistaccamento[0]));
+                    }
+                    // CODICE TIPO MEZZO
+                    if (action.filtri.TipoMezzo && action.filtri.TipoMezzo.length > 0) {
+                        draft.mezziComposizione = draft.mezziComposizione.filter((m: MezzoComposizione) => m.mezzo.genere === action.filtri.TipoMezzo[0]);
+                    }
+                    // CODICE STATO MEZZO
+                    if (action.filtri.StatoMezzo && action.filtri.StatoMezzo.length > 0) {
+                        draft.mezziComposizione = draft.mezziComposizione.filter((m: MezzoComposizione) => m.mezzo.stato === action.filtri.StatoMezzo[0]);
+                    }
+                    // CODICE MEZZO SELEZIONATO O SQUADRE SELEZIONATE
+                    if (action.filtri.CodiceMezzo || (action.filtri.CodiceSquadre && action.filtri.CodiceSquadre.length > 0)) {
+                        let codDistaccamentoSelezionato = null;
+                        if (action.filtri.CodiceMezzo) {
+                            codDistaccamentoSelezionato = state.mezziComposizione.filter((mC: MezzoComposizione) => mC.mezzo.codice === action.filtri.CodiceMezzo)[0].mezzo.distaccamento.codice;
+                        } else if (action.filtri.CodiceSquadre && action.filtri.CodiceSquadre.length > 0) {
+                            codDistaccamentoSelezionato = action.squadreComposizione.filter((sC: SquadraComposizione) => sC.squadra.id === action.filtri.CodiceSquadre[0])[0].squadra.distaccamento.codice;
+                        }
+                        draft.mezziComposizione = draft.mezziComposizione.filter((mC: MezzoComposizione) => mC.mezzo.distaccamento.codice === codDistaccamentoSelezionato);
+                    }
+                }
+            })
+        );
+        state = getState();
+        dispatch(new SetListaFiltriAffini(state.mezziComposizione));
     }
 }

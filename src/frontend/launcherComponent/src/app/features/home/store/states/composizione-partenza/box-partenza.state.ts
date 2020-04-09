@@ -28,6 +28,7 @@ import { ToastrType } from '../../../../../shared/enum/toastr';
 import { GetListeComposizioneAvanzata } from '../../actions/composizione-partenza/composizione-avanzata.actions';
 import { ClearDirection } from '../../actions/maps/maps-direction.actions';
 import { ClearMarkerMezzoSelezionato } from '../../actions/maps/marker.actions';
+import { ComposizionePartenzaState } from './composizione-partenza.state';
 
 
 export interface BoxPartenzaStateModel {
@@ -171,9 +172,10 @@ export class BoxPartenzaState {
 
         // ricarico la lista se necessario
         if (action.refreshLista) {
+            const filtriSelezionati = this.store.selectSnapshot(ComposizionePartenzaState.filtriSelezionati);
             dispatch([
-                new FilterListaMezziComposizione(),
-                new FilterListaSquadreComposizione()
+                new FilterListaMezziComposizione(null, filtriSelezionati),
+                new FilterListaSquadreComposizione(null, filtriSelezionati)
             ]);
         }
     }

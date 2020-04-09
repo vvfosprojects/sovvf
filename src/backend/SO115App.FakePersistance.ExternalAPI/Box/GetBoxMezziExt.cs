@@ -56,7 +56,7 @@ namespace SO115App.ExternalAPI.Fake.Box
             var listaCodici = new List<string>();
             var listaStatiOperativi = new List<StatoOperativoMezzo>();
 
-            foreach (var sede in codiciSede )
+            foreach (var sede in codiciSede)
             {
                 listaCodici.Add(sede);
                 listaStatiOperativi.AddRange(_getStatoMezzi.Get(sede));
@@ -64,7 +64,7 @@ namespace SO115App.ExternalAPI.Fake.Box
 
             var listaMezzi = _getMezziUtilizzabili.Get(listaCodici).Result;
 
-            mezzi.InSede = listaMezzi.Where(x => x.Stato == Costanti.MezzoInSede || x.Stato == Costanti.MezzoRientrato)
+            mezzi.InSede = listaMezzi.Where(x => x.Stato == Costanti.MezzoInSede || x.Stato == Costanti.MezzoRientrato || x.Stato == Costanti.MezzoOperativoPreaccoppiato)
                 .Select(x => x.Stato)
                 .Count();
             mezzi.InViaggio = listaStatiOperativi.Where(x => x.StatoOperativo == Costanti.MezzoInViaggio)
