@@ -1,7 +1,8 @@
 import { Component, Input } from '@angular/core';
 import { Store, Select } from '@ngxs/store';
 import {
-    AddFiltroSelezionatoComposizione, ReducerFilterListeComposizione,
+    AddFiltroSelezionatoComposizione,
+    ReducerFilterListeComposizione,
     RemoveFiltriSelezionatiComposizione
 } from '../../../store/actions/composizione-partenza/composizione-partenza.actions';
 import { ComposizionePartenzaState } from '../../../store/states/composizione-partenza/composizione-partenza.state';
@@ -34,14 +35,12 @@ export class ComposizioneFilterbarComponent {
         if (event) {
             this.store.dispatch(new AddFiltroSelezionatoComposizione(event.id || event.descrizione, tipo));
             this.update();
-            console.log('Filtro selezionato', event);
         }
     }
 
     clearFiltri(tipo: string) {
         this.store.dispatch(new RemoveFiltriSelezionatiComposizione(tipo));
         this.update();
-        console.log('Filtri deselezionati', tipo);
     }
 
     update() {

@@ -30,7 +30,7 @@ import { FiltriComposizione } from '../../../composizione-partenza/interface/fil
 import { ViewComponentState } from '../view/view.state';
 import { Composizione } from '../../../../../shared/enum/composizione.enum';
 import { GetPreAccoppiati } from '../../actions/composizione-partenza/composizione-veloce.actions';
-import { SetListaFiltriAffini, StartListaComposizioneLoading, StopListaComposizioneLoading } from '../../actions/composizione-partenza/composizione-partenza.actions';
+import { StartListaComposizioneLoading, StopListaComposizioneLoading } from '../../actions/composizione-partenza/composizione-partenza.actions';
 import { MezzoComposizione } from '../../../composizione-partenza/interface/mezzo-composizione-interface';
 import { StatoMezzo } from '../../../../../shared/enum/stato-mezzo.enum';
 
@@ -112,7 +112,8 @@ export class ComposizioneAvanzataState {
         if (compMode === Composizione.Veloce) {
             dispatch(new GetPreAccoppiati());
         }
-        dispatch(new SetListaFiltriAffini());
+        const filtriSelezionati = this.store.selectSnapshot(ComposizionePartenzaState.filtriSelezionati);
+        dispatch(new FilterListeComposizioneAvanzata(filtriSelezionati));
     }
 
     @Action(FilterListeComposizioneAvanzata)

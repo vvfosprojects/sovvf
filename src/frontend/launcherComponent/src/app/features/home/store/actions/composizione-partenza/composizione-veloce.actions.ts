@@ -1,7 +1,7 @@
 import { BoxPartenza } from '../../../composizione-partenza/interface/box-partenza-interface';
 import { IdPreaccoppiati } from '../../../composizione-partenza/interface/id-preaccoppiati-interface';
 import { BoxPartenzaHover } from '../../../composizione-partenza/interface/composizione/box-partenza-hover-interface';
-import { FiltriComposizione } from '../../../composizione-partenza/interface/filtri/filtri-composizione-interface';
+import { ComposizioneFilterbar } from '../../../composizione-partenza/interface/composizione/composizione-filterbar-interface';
 
 export class GetPreAccoppiati {
     static readonly type = '[ComposizioneVeloce] Get PreAccoppiati';
@@ -79,6 +79,6 @@ export class HoverOutPreAccoppiatoComposizione {
 export class FilterListaPreAccoppiati {
     static readonly type = '[PreAccoppiati] Filter Lista PreAccoppiati';
 
-    constructor(public filtri: FiltriComposizione) {
+    constructor(public filtri: ComposizioneFilterbar) {
     }
 }

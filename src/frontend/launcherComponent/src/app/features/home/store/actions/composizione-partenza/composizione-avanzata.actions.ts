@@ -21,7 +21,7 @@ export class SetListeComposizioneAvanzata {
 export class FilterListeComposizioneAvanzata {
     static readonly type = '[ComposizioneAvanzata] Filter Lista Composizione Avanzata';
 
-    constructor(public filtri?: FiltriComposizione) {
+    constructor(public filtri?: ComposizioneFilterbar) {
     }
 }
 

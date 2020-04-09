@@ -32,6 +32,7 @@ import {
 } from '../../../composizione-partenza/shared/functions/composizione-functions';
 import produce from 'immer';
 import { SetListaFiltriAffini } from '../../actions/composizione-partenza/composizione-partenza.actions';
+import { ComposizionePartenzaState } from './composizione-partenza.state';
 
 export interface PreAccoppiatiStateModel {
     allPreAccoppiati: BoxPartenza[];
@@ -130,8 +131,8 @@ export class ComposizioneVeloceState {
                 allPreAccoppiati: action.boxPartenza
             });
         }
-        const state = getState();
-        dispatch(new SetListaFiltriAffini(state.preAccoppiati.map((p: BoxPartenza) => p.mezzoComposizione)));
+        const filtriSelezionati = this.store.selectSnapshot(ComposizionePartenzaState.filtriSelezionati);
+        dispatch(new FilterListaPreAccoppiati(filtriSelezionati));
     }
 
     @Action(ClearPreaccoppiati)
