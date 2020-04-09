@@ -13,6 +13,6 @@ namespace SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti.Co
         /// </summary>
         /// <param name="codSede">il codice sede del distaccamennto</param>
         /// <returns>un sistema di coordinate</returns>
-        Task<Coordinate> Get(string codSede);
+        Coordinate Get(string codSede);
     }
 }

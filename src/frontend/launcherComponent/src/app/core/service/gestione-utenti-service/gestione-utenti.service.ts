@@ -11,9 +11,10 @@ import { AddRuoloUtenteInterface } from '../../../shared/interface/add-ruolo-ute
 import { PaginationInterface } from 'src/app/shared/interface/pagination.interface';
 import { FiltersInterface } from 'src/app/shared/interface/filters.interface';
 
-const API_URL = environment.apiUrl.gestioneUtenti;
-const API_URL_RUOLO = environment.apiUrl.gestioneRuolo;
-const API_URL_PERSONALE_VVF = environment.apiUrl.personaleVVF;
+const BASE_URL = environment.baseUrl;
+const API_URL = BASE_URL + environment.apiUrl.gestioneUtenti;
+const API_URL_RUOLO = BASE_URL + environment.apiUrl.gestioneRuolo;
+const API_URL_PERSONALE_VVF = BASE_URL + environment.apiUrl.personaleVVF;
 
 @Injectable({
     providedIn: 'root'

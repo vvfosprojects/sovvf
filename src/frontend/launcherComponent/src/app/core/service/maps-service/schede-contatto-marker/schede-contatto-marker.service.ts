@@ -8,7 +8,8 @@ import { environment } from '../../../../../environments/environment';
 import { AreaMappaFiltrata } from '../../../../shared/helper/query-helper';
 import { FiltroSchedeContatto } from '../../../../features/home/maps/maps-model/filtro-schede-contatto';
 
-const API_MARKER = environment.apiUrl.markers;
+const BASE_URL = environment.baseUrl;
+const API_MARKER = BASE_URL + environment.apiUrl.markers;
 
 @Injectable()
 export class SchedeContattoMarkerService {

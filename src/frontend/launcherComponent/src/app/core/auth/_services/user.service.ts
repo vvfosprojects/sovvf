@@ -4,7 +4,8 @@ import { environment } from '../../../../environments/environment';
 import { Utente } from '../../../shared/model/utente.model';
 import { Observable } from 'rxjs';
 
-const API_URL_USERS = environment.apiUrl.utenti;
+const BASE_URL = environment.baseUrl;
+const API_URL_USERS = BASE_URL + environment.apiUrl.utenti;
 
 
 @Injectable({ providedIn: 'root' })

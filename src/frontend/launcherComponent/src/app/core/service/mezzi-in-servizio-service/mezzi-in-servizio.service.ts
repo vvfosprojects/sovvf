@@ -5,7 +5,8 @@ import { Observable } from 'rxjs';
 import { retry, catchError } from 'rxjs/operators';
 import { handleError } from 'src/app/shared/helper/handleError';
 
-const API_MEZZI_IN_SERVIZIO = environment.apiUrl.mezziInServizio;
+const BASE_URL = environment.baseUrl;
+const API_MEZZI_IN_SERVIZIO = BASE_URL + environment.apiUrl.mezziInServizio;
 
 @Injectable({
   providedIn: 'root'
