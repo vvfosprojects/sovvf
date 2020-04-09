@@ -116,12 +116,6 @@
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\SO115App.Persistence.Oracle\SO115App.Persistence.Oracle.csproj">
-      <Project>{844070FF-EF4D-4C1A-A818-2B04061E786F}</Project>
-      <Name>SO115App.Persistence.Oracle</Name>
-    </ProjectReference>
-  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
