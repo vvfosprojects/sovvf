@@ -2,6 +2,8 @@ import { MezzoComposizione } from '../../../composizione-partenza/interface/mezz
 import { BoxPartenza } from '../../../composizione-partenza/interface/box-partenza-interface';
 import { SganciamentoInterface } from 'src/app/shared/interface/sganciamento.interface';
 import { ComposizioneFilterbar } from '../../../composizione-partenza/interface/composizione/composizione-filterbar-interface';
+import { SquadraComposizione } from '../../../composizione-partenza/interface/squadra-composizione-interface';
+import { FiltriComposizione } from '../../../composizione-partenza/interface/filtri/filtri-composizione-interface';
 
 export class SetListaMezziComposizione {
     static readonly type = '[MezziComposizione] Set Lista Mezzi Composizione';
@@ -174,13 +176,6 @@ export class SganciamentoMezzoComposizione {
 export class FilterListaMezziComposizione {
     static readonly type = '[MezziComposizione] Filter Lista Mezzi Composizione';
 
-    constructor(public codDistaccamento?: string) {
-    }
-}
-
-export class FilterListaMezziComposizioneByFilters {
-    static readonly type = '[MezziComposizione] Filter Lista Mezzi Composizione By Filters';
-
-    constructor(public filtri: ComposizioneFilterbar) {
+    constructor(public codDistaccamento?: string, public filtri?: ComposizioneFilterbar, public squadreComposizione?: SquadraComposizione[]) {
     }
 }

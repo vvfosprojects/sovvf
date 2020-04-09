@@ -3,5 +3,5 @@ import { ComposizioneCodiceSquadra } from '../composizione/composizione-codice-s
 import { ComposizioneIdRichiesta } from '../composizione/composizione-id-richiesta-interface';
 import { ComposizioneFilterbar } from '../composizione/composizione-filterbar-interface';
 
-export interface FiltriComposizione extends ComposizioneFilterbar, ComposizioneCodiceMezzo, ComposizioneCodiceSquadra, ComposizioneIdRichiesta {
+export interface FiltriComposizione extends ComposizioneFilterbar, ComposizioneIdRichiesta {
 }

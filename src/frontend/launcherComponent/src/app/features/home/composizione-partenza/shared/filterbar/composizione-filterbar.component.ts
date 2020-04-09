@@ -53,7 +53,7 @@ export class ComposizioneFilterbarComponent {
             TipoMezzo: filtriSelezionati ? filtriSelezionati.TipoMezzo : [],
             StatoMezzo: filtriSelezionati ? filtriSelezionati.StatoMezzo : [],
             CodiceMezzo: codiceMezzo ? codiceMezzo : '',
-            CodiceSquadra: codiceSquadra ? codiceSquadra : [],
+            CodiceSquadre: codiceSquadra ? codiceSquadra : [],
             idRichiesta: this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione).id
         };
 

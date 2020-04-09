@@ -13,10 +13,14 @@ import { SquadreComposizioneState } from './squadre-composizione.state';
 import { ComposizionePartenzaState, ComposizionePartenzaStateModel } from './composizione-partenza.state';
 import {
     ClearSelectedMezziComposizione,
-    FilterListaMezziComposizioneByFilters,
+    FilterListaMezziComposizione,
     SetListaMezziComposizione
 } from '../../actions/composizione-partenza/mezzi-composizione.actions';
-import { ClearSelectedSquadreComposizione, FilterListaSquadreComposizioneByFilters, SetListaSquadreComposizione } from '../../actions/composizione-partenza/squadre-composizione.actions';
+import {
+    ClearSelectedSquadreComposizione,
+    FilterListaSquadreComposizione,
+    SetListaSquadreComposizione
+} from '../../actions/composizione-partenza/squadre-composizione.actions';
 import { ListaComposizioneAvanzata } from '../../../composizione-partenza/interface/lista-composizione-avanzata-interface';
 import { BoxPartenzaState } from './box-partenza.state';
 import { mezzoComposizioneBusy } from '../../../composizione-partenza/shared/functions/composizione-functions';
@@ -112,8 +116,10 @@ export class ComposizioneAvanzataState {
 
     @Action(FilterListeComposizioneAvanzata)
     filterListeComposizioneAvanzata({ dispatch }: StateContext<ComposizionePartenzaStateModel>, action: FilterListeComposizioneAvanzata) {
-        dispatch(new FilterListaMezziComposizioneByFilters(action.filtri));
-        dispatch(new FilterListaSquadreComposizioneByFilters(action.filtri));
+        const squadreComposizione = this.store.selectSnapshot(SquadreComposizioneState.allSquadreComposione);
+        const mezziComposizione = this.store.selectSnapshot(MezziComposizioneState.mezziComposizione);
+        dispatch(new FilterListaMezziComposizione(null, action.filtri, squadreComposizione));
+        dispatch(new FilterListaSquadreComposizione(null, action.filtri, mezziComposizione));
     }
 
     @Action(UnselectMezziAndSquadreComposizioneAvanzata)

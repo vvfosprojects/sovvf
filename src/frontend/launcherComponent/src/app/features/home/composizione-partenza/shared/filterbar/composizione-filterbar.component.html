@@ -22,6 +22,7 @@
                        [closeOnSelect]="true"
                        [hideSelected]="true"
                        [notFoundText]="notFoundText"
+                       [loading]="!filtri.distaccamenti || filtri.distaccamenti.length <= 0"
                        (change)="addFiltro($event, 'codiceDistaccamento')"
                        (clear)="clearFiltri('codiceDistaccamento')"
                        placeholder="Distaccamento: Tutti">
@@ -35,6 +36,7 @@
                        [closeOnSelect]="true"
                        [hideSelected]="true"
                        [notFoundText]="notFoundText"
+                       [loading]="!filtri.generiMezzi || filtri.generiMezzi.length <= 0"
                        (change)="addFiltro($event, 'codiceTipoMezzo')"
                        (clear)="clearFiltri('codiceTipoMezzo')"
                        placeholder="Genere Mezzo: Tutti">
@@ -48,6 +50,7 @@
                        [closeOnSelect]="true"
                        [hideSelected]="true"
                        [notFoundText]="notFoundText"
+                       [loading]="!filtri.stati || filtri.stati.length <= 0"
                        (change)="addFiltro($event, 'codiceStatoMezzo')"
                        (clear)="clearFiltri('codiceStatoMezzo')"
                        placeholder="Stato: Tutti">
