@@ -33,7 +33,7 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
         private readonly IMemoryCache _memoryCache;
 
         public GetMezziUtilizzabili(HttpClient client, IConfiguration configuration, IGetStatoMezzi GetStatoMezzi,
-            IGetDistaccamentoByCodiceSedeUC GetDistaccamentoByCodiceSedeUC, IGetPosizioneByCodiceMezzo getPosizioneByCodiceMezzo, 
+            IGetDistaccamentoByCodiceSedeUC GetDistaccamentoByCodiceSedeUC, IGetPosizioneByCodiceMezzo getPosizioneByCodiceMezzo,
             IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative,
             IMemoryCache memoryCache)
         {
@@ -74,12 +74,10 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
 
             foreach (string CodSede in ListaCodiciSedi)
             {
-
                 List<Mezzo> listaMezziBySede = new List<Mezzo>();
-                string nomeCache = "M_" + CodSede.Replace(".","");
+                string nomeCache = "M_" + CodSede.Replace(".", "");
                 if (!_memoryCache.TryGetValue(nomeCache, out listaMezziBySede))
                 {
-                    
                     _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("test");
                     var response = await _client.GetAsync($"{_configuration.GetSection("DataFakeImplementation").GetSection("UrlAPIMezzi").Value}/GetListaMezziByCodComando?CodComando={CodSede}").ConfigureAwait(false);
                     response.EnsureSuccessStatusCode();
@@ -89,25 +87,40 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
                     List<Mezzo> listaMezziBySedeAppo = new List<Mezzo>();
                     foreach (MezzoFake mezzoFake in ListaMezziSede)
                     {
-                        var anagraficaMezzo = GetAnagraficaMezzoByTarga(mezzoFake.Targa).Result;
+                        if (!mezzoFake.CodDestinazione.Equals("CMOB"))
+                        {
+                            var anagraficaMezzo = GetAnagraficaMezzoByTarga(mezzoFake.Targa).Result;
 
-                        var mezzo = MapMezzo(anagraficaMezzo, mezzoFake);
-                        listaMezziBySedeAppo.Add(mezzo);
-                        ListaMezzi.Add(mezzo);
+                            var mezzo = MapMezzo(anagraficaMezzo, mezzoFake);
+                            listaMezziBySedeAppo.Add(mezzo);
+                            ListaMezzi.Add(mezzo);
+                        }
                     }
 
                     var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromHours(8));
                     _memoryCache.Set(nomeCache, listaMezziBySedeAppo, cacheEntryOptions);
-
                 }
-                else 
+                else
                 {
                     ListaMezzi.AddRange(listaMezziBySede);
                 }
-
             }
 
-            return ListaMezzi;
+            return GetListaMezziConStatoAggiornat(ListaMezzi);
+        }
+
+        private List<Mezzo> GetListaMezziConStatoAggiornat(List<Mezzo> listaMezzi)
+        {
+            foreach (Mezzo mezzo in listaMezzi)
+            {
+                var ListaStatoOperativoMezzo = _getStatoMezzi.Get(mezzo.Distaccamento.Codice, mezzo.Codice);
+                if (ListaStatoOperativoMezzo.Count > 0)
+                {
+                    mezzo.Stato = ListaStatoOperativoMezzo.Find(x => x.CodiceMezzo.Equals(mezzo.Codice)).StatoOperativo;
+                }
+            }
+
+            return listaMezzi;
         }
 
         private Mezzo MapMezzo(AnagraficaMezzo anagraficaMezzo, MezzoFake mezzoFake)

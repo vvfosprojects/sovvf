@@ -20,6 +20,8 @@
 using CQRS.Commands;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Classi.Utility;
+using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AggiornaStatoMezzo;
+using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 
 namespace DomainModel.CQRS.Commands.UpDateStatoRichiesta
@@ -28,13 +30,16 @@ namespace DomainModel.CQRS.Commands.UpDateStatoRichiesta
     {
         private readonly IUpDateRichiestaAssistenza _updateRichiestaAssistenza;
         private readonly IGetRichiestaById _getRichiestaById;
+        private readonly IUpdateStatoPartenze _upDatePartenza;
 
         public UpDateStatoRichiestaCommandHandler(
             IUpDateRichiestaAssistenza updateRichiestaAssistenza,
-            IGetRichiestaById getRichiestaById)
+            IGetRichiestaById getRichiestaById,
+            IUpdateStatoPartenze upDatePartenza)
         {
             _updateRichiestaAssistenza = updateRichiestaAssistenza;
             _getRichiestaById = getRichiestaById;
+            _upDatePartenza = upDatePartenza;
         }
 
         public void Handle(UpDateStatoRichiestaCommand command)
@@ -49,6 +54,13 @@ namespace DomainModel.CQRS.Commands.UpDateStatoRichiesta
                     {
                         composizione.Partenza.Mezzo.Stato = Costanti.MezzoInRientro;
                         composizione.Partenza.Mezzo.IdRichiesta = null;
+
+                        AggiornaStatoMezzoCommand statoMezzo = new AggiornaStatoMezzoCommand();
+                        statoMezzo.CodiceSede = command.CodiceSede;
+                        statoMezzo.IdMezzo = composizione.Partenza.Mezzo.Codice;
+                        statoMezzo.Richiesta = richiesta;
+                        statoMezzo.StatoMezzo = Costanti.MezzoInSede;
+                        _upDatePartenza.Update(statoMezzo);
                     }
                 }
             }

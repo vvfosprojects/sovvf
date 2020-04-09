@@ -17,15 +17,10 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
-using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AggiornaStatoMezzo;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
-using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi;
 using SO115App.Models.Servizi.Infrastruttura.GestioneStatoOperativoSquadra;
-using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
-using System;
 
 namespace SO115App.ExternalAPI.Fake.Composizione
 {
@@ -36,23 +31,16 @@ namespace SO115App.ExternalAPI.Fake.Composizione
     public class UpdateStatoPartenzaExt : IUpdateStatoPartenze
     {
         private readonly ISetStatoOperativoMezzo _setStatoOperativoMezzo;
-        private readonly ISetMezzoOccupato _setMezzoOccupato;
-        private readonly ISetMezzoLibero _setMezzoLibero;
-        private readonly IUpDateRichiestaAssistenza _upDateRichiestaAssistenza;
         private readonly ISetStatoSquadra _setStatoSquadra;
-        private readonly IGetTipologieByCodice _getTipologieByCodice;
 
         /// <summary>
         ///   Costruttore della classe
         /// </summary>
-        public UpdateStatoPartenzaExt(ISetStatoOperativoMezzo setStatoOperativoMezzo, IUpDateRichiestaAssistenza upDateRichiestaAssistenza, ISetStatoSquadra setStatoSquadra, IGetTipologieByCodice getTipologieByCodice, ISetMezzoOccupato setMezzoOccupato, ISetMezzoLibero setMezzoLibero)
+        public UpdateStatoPartenzaExt(ISetStatoOperativoMezzo setStatoOperativoMezzo,
+            ISetStatoSquadra setStatoSquadra)
         {
             _setStatoOperativoMezzo = setStatoOperativoMezzo;
-            _upDateRichiestaAssistenza = upDateRichiestaAssistenza;
             _setStatoSquadra = setStatoSquadra;
-            _getTipologieByCodice = getTipologieByCodice;
-            _setMezzoOccupato = setMezzoOccupato;
-            this._setMezzoLibero = setMezzoLibero;
         }
 
         /// <summary>
@@ -63,17 +51,6 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
         public void Update(AggiornaStatoMezzoCommand command)
         {
-            _upDateRichiestaAssistenza.UpDate(command.Richiesta);
-            var tipologia = _getTipologieByCodice.Get(command.Richiesta.Tipologie)[0];
-
-            //if (command.StatoMezzo.Equals(Costanti.MezzoSulPosto) || command.StatoMezzo.Equals(Costanti.MezzoInViaggio))
-            //{
-            //    _setMezzoOccupato.Set(command.IdMezzo, DateTime.UtcNow, command.Richiesta.Id, tipologia.Codice, tipologia.Descrizione);
-            //}
-            //else
-            //{
-            //    _setMezzoLibero.Set(command.IdMezzo, DateTime.UtcNow, command.Richiesta.Id);
-            //}
             _setStatoOperativoMezzo.Set(command.CodiceSede, command.IdMezzo, command.StatoMezzo, command.Richiesta.Codice);
 
             foreach (var partenza in command.Richiesta.Partenze)
