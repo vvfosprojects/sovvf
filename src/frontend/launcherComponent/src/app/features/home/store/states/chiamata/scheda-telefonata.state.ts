@@ -102,6 +102,7 @@ export class SchedaTelefonataState {
         });
         dispatch(new StartLoadingNuovaChiamata());
 
+        action.nuovaRichiesta.richiedente.telefono = action.nuovaRichiesta.richiedente.telefono.toString();
         this.chiamataService.insertChiamata(action.nuovaRichiesta).subscribe((data: SintesiRichiesta) => {
             if (data && action.azioneChiamata === AzioneChiamataEnum.InviaPartenza) {
                 console.log(`Invia partenza idRichiesta:`, data);
