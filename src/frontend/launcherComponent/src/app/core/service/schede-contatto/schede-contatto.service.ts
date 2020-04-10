@@ -4,7 +4,7 @@ import { SchedaContatto } from 'src/app/shared/interface/scheda-contatto.interfa
 import { HttpClient } from '@angular/common/http';
 import { retry, catchError } from 'rxjs/operators';
 import { handleError } from 'src/app/shared/helper/handleError';
-import { environment } from 'src/environments/environment.prod';
+import { environment } from 'src/environments/environment';
 import { FiltriSchedeContatto } from '../../../shared/interface/filtri-schede-contatto.interface';
 
 const BASE_URL = environment.baseUrl;
