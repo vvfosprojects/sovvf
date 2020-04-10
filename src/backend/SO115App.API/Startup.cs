@@ -46,6 +46,7 @@ namespace SO115App.API
     public class Startup
     {
         private readonly Container container = new Container();
+        private readonly string MyAllowSpecificOrigins = "CorsSo115";
 
         public Startup(IConfiguration configuration)
         {
@@ -57,6 +58,21 @@ namespace SO115App.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            ///<summary>
+            ///Registrazione dei servizi Cors
+            /// </summary>
+            services.AddCors(options =>
+            {
+                options.AddPolicy(MyAllowSpecificOrigins,
+                builder =>
+                {
+                    builder
+                        .AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader();
+                });
+            });
+
             HttpClient httpClient = new HttpClient();
             services.AddSingleton(httpClient);
             services.AddControllers();
@@ -76,21 +92,6 @@ namespace SO115App.API
             services.AddAutoMapper(typeof(Startup));
             var config = new MapperConfigure().Configure();
             services.AddSingleton<IMapper>(sp => config.CreateMapper());
-
-            ///<summary>
-            ///Registrazione dei servizi Cors
-            /// </summary>
-            services.AddCors(options =>
-            {
-                options.AddPolicy("CorsSo115",
-                builder =>
-                {
-                    builder
-                        .AllowAnyOrigin()
-                        .AllowAnyMethod()
-                        .AllowAnyHeader();
-                });
-            });
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(option =>
@@ -140,9 +141,9 @@ namespace SO115App.API
                 app.UseHsts();
             }
 
-            app.UseCors("CorsSo115");
-            app.UseAuthentication();
+            app.UseCors(MyAllowSpecificOrigins);
             app.UseRouting();
+            app.UseAuthentication();
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
