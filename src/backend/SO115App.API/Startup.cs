@@ -140,7 +140,6 @@ namespace SO115App.API
                 // scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-
             app.UseCors(MyAllowSpecificOrigins);
             app.UseRouting();
             app.UseAuthentication();
