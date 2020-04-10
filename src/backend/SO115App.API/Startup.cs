@@ -57,7 +57,7 @@ namespace SO115App.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            HttpClient httpClient = new HttpClient();            
+            HttpClient httpClient = new HttpClient();
             services.AddSingleton(httpClient);
             services.AddControllers();
             services.AddHttpContextAccessor();
@@ -126,6 +126,7 @@ namespace SO115App.API
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseSimpleInjector(container);
             LogConfigurator.Configure();
 
             if (env.IsDevelopment())
