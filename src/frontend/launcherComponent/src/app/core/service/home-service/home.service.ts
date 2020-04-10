@@ -7,7 +7,8 @@ import { environment } from '../../../../environments/environment';
 import { Welcome } from '../../../shared/interface/welcome.interface';
 import { Tipologia } from '../../../shared/model/tipologia.model';
 
-const API_WELCOME = environment.apiUrl.welcome;
+const BASE_URL = environment.baseUrl;
+const API_WELCOME = BASE_URL + environment.apiUrl.welcome;
 
 @Injectable()
 export class HomeService {

@@ -1,5 +1,7 @@
 export interface ComposizioneFilterbar {
     CodiceDistaccamento?: string[];
-    CodiceStatoMezzo?: string[];
-    CodiceTipoMezzo?: string[];
+    StatoMezzo?: string[];
+    TipoMezzo?: string[];
+    CodiceSquadre?: string[];
+    CodiceMezzo?: string;
 }

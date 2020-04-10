@@ -37,7 +37,8 @@ namespace SO115App.ExternalAPI.Fake.GestioneIntervento
         private readonly ISetMovimentazione _setMovimentazione;
         private readonly IUpDateRichiestaAssistenza _upDateRichiestaAssistenza;
 
-        public UpDateRichiestaExt(ISetMovimentazione setMovimentazione, IUpDateRichiestaAssistenza upDateRichiestaAssistenza)
+        public UpDateRichiestaExt(ISetMovimentazione setMovimentazione,
+                                  IUpDateRichiestaAssistenza upDateRichiestaAssistenza)
         {
             _setMovimentazione = setMovimentazione;
             _upDateRichiestaAssistenza = upDateRichiestaAssistenza;
@@ -49,7 +50,7 @@ namespace SO115App.ExternalAPI.Fake.GestioneIntervento
         /// </summary>
         /// <param name="richiestaAssistenza">la richiesta assistenza</param>
         public void UpDate(RichiestaAssistenza richiestaAssistenza)
-        {            
+        {
             _upDateRichiestaAssistenza.UpDate(richiestaAssistenza);
         }
     }

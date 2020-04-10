@@ -1,9 +1,5 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
-
-// Interface
 import { BoxPartenza } from '../../../composizione-partenza/interface/box-partenza-interface';
-
-// Action
 import {
     ClearComposizioneVeloce,
     ClearPreaccoppiati,
@@ -16,10 +12,10 @@ import {
     UpdateMezzoPreAccoppiatoComposizione,
     ClearPreAccoppiatiSelezionatiComposizione,
     HoverInPreAccoppiatoComposizione,
-    HoverOutPreAccoppiatoComposizione, SetIdPreAccoppiatiOccupati
+    HoverOutPreAccoppiatoComposizione,
+    SetIdPreAccoppiatiOccupati,
+    FilterListaPreAccoppiati
 } from '../../actions/composizione-partenza/composizione-veloce.actions';
-
-// Service
 import { CompPartenzaService } from 'src/app/core/service/comp-partenza-service/comp-partenza.service';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from '../../../../../shared/enum/toastr';
@@ -31,10 +27,15 @@ import { ListaComposizioneAvanzata } from '../../../composizione-partenza/interf
 import { ClearMarkerMezzoHover, SetMarkerMezzoHover } from '../../actions/maps/marker.actions';
 import {
     checkSquadraOccupata,
+    codDistaccamentoIsEqual,
     mezzoComposizioneBusy
 } from '../../../composizione-partenza/shared/functions/composizione-functions';
+import produce from 'immer';
+import { SetListaFiltriAffini } from '../../actions/composizione-partenza/composizione-partenza.actions';
+import { ComposizionePartenzaState } from './composizione-partenza.state';
 
 export interface PreAccoppiatiStateModel {
+    allPreAccoppiati: BoxPartenza[];
     preAccoppiati: BoxPartenza[];
     idPreAccoppiati: IdPreaccoppiati[];
     idPreAccoppiatoSelezionato: string;
@@ -44,6 +45,7 @@ export interface PreAccoppiatiStateModel {
 }
 
 export const PreAccoppiatiStateModelStateDefaults: PreAccoppiatiStateModel = {
+    allPreAccoppiati: null,
     preAccoppiati: null,
     idPreAccoppiati: null,
     idPreAccoppiatoSelezionato: null,
@@ -91,15 +93,12 @@ export class ComposizioneVeloceState {
     getPreAccoppiati({ getState, dispatch }: StateContext<PreAccoppiatiStateModel>) {
         const listaMezziSquadre: ListaComposizioneAvanzata = this.store.selectSnapshot(ComposizioneAvanzataState.listaMezziSquadre);
         const state = getState();
-        console.log('Lista Mezzi Squadre', listaMezziSquadre);
         const preaccoppiati: BoxPartenza[] = [];
         if (listaMezziSquadre.composizioneSquadre.length > 0 && listaMezziSquadre.composizioneMezzi.length > 0) {
             state.idPreAccoppiati.forEach((idPreaccopiati: IdPreaccoppiati) => {
                 const preaccoppiato = {} as BoxPartenza;
                 preaccoppiato.id = idPreaccopiati.id;
-                console.log('idPreaccopiati.mezzo', idPreaccopiati.mezzo);
                 const mezzoComposizione = listaMezziSquadre.composizioneMezzi.filter(value => value.mezzo.codice === idPreaccopiati.mezzo);
-                console.log('test mezzo comp', mezzoComposizione);
                 if (mezzoComposizione && mezzoComposizione.length > 0) {
                     preaccoppiato.mezzoComposizione = mezzoComposizione[0];
                 }
@@ -112,7 +111,6 @@ export class ComposizioneVeloceState {
                 }
             });
         }
-        console.log('Preaccoppiati disponibili', preaccoppiati);
         const preaccoppiatiOccupati = [];
         preaccoppiati.forEach(preaccoppiato => {
             if (mezzoComposizioneBusy(preaccoppiato.mezzoComposizione.mezzo.stato) || checkSquadraOccupata(preaccoppiato.squadraComposizione)) {
@@ -126,18 +124,22 @@ export class ComposizioneVeloceState {
     }
 
     @Action(SetPreaccoppiati)
-    setPreaccoppiati({ patchState }: StateContext<PreAccoppiatiStateModel>, action: SetPreaccoppiati) {
+    setPreaccoppiati({ getState, patchState, dispatch }: StateContext<PreAccoppiatiStateModel>, action: SetPreaccoppiati) {
         if (action.boxPartenza) {
             patchState({
-                preAccoppiati: action.boxPartenza
+                preAccoppiati: action.boxPartenza,
+                allPreAccoppiati: action.boxPartenza
             });
         }
+        const filtriSelezionati = this.store.selectSnapshot(ComposizionePartenzaState.filtriSelezionati);
+        dispatch(new FilterListaPreAccoppiati(filtriSelezionati));
     }
 
     @Action(ClearPreaccoppiati)
     clearPreaccoppiati({ patchState }: StateContext<PreAccoppiatiStateModel>) {
         patchState({
-            preAccoppiati: null
+            preAccoppiati: null,
+            allPreAccoppiati: null
         });
     }
 
@@ -155,7 +157,6 @@ export class ComposizioneVeloceState {
         } else {
             dispatch(new ShowToastr(ToastrType.Warning, 'Impossibile selezionare il Pre-Accoppiato', 'Il mezzo è già presente in un\'altra partenza'));
         }
-        // console.log(action.preAcc);
     }
 
     @Action(UnselectPreAccoppiatoComposizione)
@@ -166,7 +167,6 @@ export class ComposizioneVeloceState {
                 idPreAccoppiatoSelezionato: null
             })
         );
-        // console.log(action.preAcc);
     }
 
     @Action(ClearPreAccoppiatiSelezionatiComposizione)
@@ -193,7 +193,6 @@ export class ComposizioneVeloceState {
                 preAccoppiati: updateItem((preAcc: BoxPartenza) => preAcc.mezzoComposizione.mezzo.codice === action.codiceMezzo, preAccoppiato)
             })
         );
-        // console.log(action.preAcc);
     }
 
     @Action(ClearComposizioneVeloce)
@@ -204,7 +203,6 @@ export class ComposizioneVeloceState {
     @Action(GetListaIdPreAccoppiati)
     getListaIdPreAccoppiati({ dispatch }: StateContext<PreAccoppiatiStateModel>) {
         this.preAccoppiatiService.getPreAccoppiati().subscribe((data) => {
-            console.log('Richiesta id Preaccoppiati effettuata');
             this.store.dispatch(new SetListaIdPreAccoppiati(data));
         }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5)));
     }
@@ -247,4 +245,30 @@ export class ComposizioneVeloceState {
         dispatch(new ClearMarkerMezzoHover());
     }
 
+    @Action(FilterListaPreAccoppiati)
+    filterListaPreAccoppiati({ getState, setState, dispatch }: StateContext<PreAccoppiatiStateModel>, action: FilterListaPreAccoppiati) {
+        let state = getState();
+        setState(
+            produce(state, (draft: PreAccoppiatiStateModel) => {
+                draft.preAccoppiati = draft.allPreAccoppiati;
+
+                if (action.filtri) {
+                    // CODICE DISTACCAMENTO
+                    if (action.filtri.CodiceDistaccamento && action.filtri.CodiceDistaccamento.length > 0) {
+                        draft.preAccoppiati = draft.preAccoppiati.filter((p: BoxPartenza) => codDistaccamentoIsEqual(p.mezzoComposizione.mezzo.distaccamento.codice, action.filtri.CodiceDistaccamento[0]));
+                    }
+                    // CODICE TIPO MEZZO
+                    if (action.filtri.TipoMezzo && action.filtri.TipoMezzo.length > 0) {
+                        draft.preAccoppiati = draft.preAccoppiati.filter((p: BoxPartenza) => p.mezzoComposizione.mezzo.genere === action.filtri.TipoMezzo[0]);
+                    }
+                    // CODICE STATO MEZZO
+                    if (action.filtri.StatoMezzo && action.filtri.StatoMezzo.length > 0) {
+                        draft.preAccoppiati = draft.preAccoppiati.filter((p: BoxPartenza) => p.mezzoComposizione.mezzo.stato === action.filtri.StatoMezzo[0]);
+                    }
+                }
+            })
+        );
+        state = getState();
+        dispatch(new SetListaFiltriAffini(state.preAccoppiati.map((p: BoxPartenza) => p.mezzoComposizione)));
+    }
 }
