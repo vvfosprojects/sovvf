@@ -10,13 +10,14 @@
                             Culturale
                         </div>
                     </ng-template>
-                    <h3 class="mb-0">Chiamata in corso...
+                    <h3 class="mb-0">
+                        Chiamata in corso...
                         <span *ngIf="f.rilevanzaGrave?.value || f.rilevanzaStArCu?.value"
                               class="d-inline-block mr-1 text-danger"
-                              [ngbTooltip]="rilevante" placement="bottom"><i *ngIf="f.rilevanzaGrave?.value"
-                                                                             class="fa fa-exclamation mr-2"></i><i
-                                *ngIf="f.rilevanzaStArCu?.value"
-                                class="fa fa-university"></i></span>
+                              [ngbTooltip]="rilevante" placement="bottom">
+                            <i *ngIf="f.rilevanzaGrave?.value" class="fa fa-exclamation mr-2"></i>
+                            <i *ngIf="f.rilevanzaStArCu?.value" class="fa fa-university"></i>
+                        </span>
                     </h3>
                 </div>
                 <div class="col-4">
@@ -64,7 +65,8 @@
                 <div class="col pl-0">
                     <div class="form-group mb-1">
                         <label for="telefono">Telefono</label>
-                        <input id="telefono" type="number" placeholder="Inserisci il Telefono" formControlName="telefono"
+                        <input id="telefono" type="number" placeholder="Inserisci il Telefono"
+                               formControlName="telefono"
                                class="form-control" [ngClass]="{ 'is-invalid': submitted && f.telefono.errors }"/>
                         <div *ngIf="submitted && f.telefono.errors" class="invalid-feedback">
                             <div *ngIf="f.telefono.errors.required">Il Telefono è richiesto</div>
