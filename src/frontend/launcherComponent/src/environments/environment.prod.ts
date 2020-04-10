@@ -2,7 +2,7 @@ export const environment = {
     production: true,
     fakeProvider: false,
     signalRHub: '/NotificationHub',
-    baseUrl: '$ServerBckend',
+    baseUrl: '$Serverbckend',
     signalR: true,
     apiUrl: {
         welcome: '/api/Welcome',
