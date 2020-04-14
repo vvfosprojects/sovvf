@@ -104,9 +104,7 @@ export class SchedaTelefonataState {
 
         action.nuovaRichiesta.richiedente.telefono = action.nuovaRichiesta.richiedente.telefono.toString();
         this.chiamataService.insertChiamata(action.nuovaRichiesta).subscribe((richiesta: SintesiRichiesta) => {
-            console.warn('NUOVA RICHIESTA', richiesta);
             if (richiesta && action.azioneChiamata === AzioneChiamataEnum.InviaPartenza) {
-                console.log(`Invia partenza idRichiesta:`, richiesta.codice);
                 dispatch([
                     new CestinaChiamata(),
                     new SetIdChiamataInviaPartenza(richiesta)
@@ -115,7 +113,6 @@ export class SchedaTelefonataState {
                 dispatch(new CestinaChiamata());
             }
         }, () => {
-            // dispatch(new ShowToastr(ToastrType.Error, 'Inserimento della chiamata fallito', 'Si è verificato un errore, riprova.', 5));
             patchState({
                 nuovaRichiesta: null,
                 azioneChiamata: null
