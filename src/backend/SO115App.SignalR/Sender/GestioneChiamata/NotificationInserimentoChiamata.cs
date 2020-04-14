@@ -42,17 +42,17 @@ namespace SO115App.SignalR.Sender.GestioneChiamata
         private readonly IHubContext<NotificationHub> _notificationHubContext;
         private readonly IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> _boxRichiesteHandler;
         private readonly IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> _sintesiRichiesteAssistenzaMarkerHandler;
-        private readonly IGetSintesiRichiestaAssistenzaByCodice _getSintesiRichiestaById;
+        private readonly IGetSintesiRichiestaAssistenzaByCodice _getSintesiRichiestaByCodice;
 
         public NotificationInserimentoChiamata(IHubContext<NotificationHub> notificationHubContext,
                                                IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> boxRichiesteHandler,
                                                IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> sintesiRichiesteAssistenzaMarkerHandler,
-                                               IGetSintesiRichiestaAssistenzaByCodice getSintesiRichiestaById)
+                                               IGetSintesiRichiestaAssistenzaByCodice getSintesiRichiestaByCodice)
         {
             _notificationHubContext = notificationHubContext;
             _boxRichiesteHandler = boxRichiesteHandler;
             _sintesiRichiesteAssistenzaMarkerHandler = sintesiRichiesteAssistenzaMarkerHandler;
-            _getSintesiRichiestaById = getSintesiRichiestaById;
+            _getSintesiRichiestaByCodice = getSintesiRichiestaByCodice;
         }
 
         public async Task SendNotification(AddInterventoCommand intervento)
@@ -69,7 +69,7 @@ namespace SO115App.SignalR.Sender.GestioneChiamata
             };
             var listaSintesiMarker = (List<SintesiRichiestaMarker>)this._sintesiRichiesteAssistenzaMarkerHandler.Handle(sintesiRichiesteAssistenzaMarkerQuery).SintesiRichiestaMarker;
 
-            var sintesi = _getSintesiRichiestaById.GetSintesi(intervento.Chiamata.Codice);
+            var sintesi = _getSintesiRichiestaByCodice.GetSintesi(intervento.Chiamata.Codice);
 
             await _notificationHubContext.Clients.Group(intervento.CodiceSede).SendAsync("SaveAndNotifySuccessChiamata", sintesi);
             await _notificationHubContext.Clients.Group(intervento.CodiceSede).SendAsync("NotifyGetBoxInterventi", boxInterventi);

@@ -26,6 +26,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SO115App.API.Models.Servizi.CQRS.Command.GestioneSoccorso.Shared;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
+using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Classi.Utility;
 
 namespace SO115App.API.Controllers
@@ -41,6 +42,7 @@ namespace SO115App.API.Controllers
         private readonly ICommandHandler<AddInterventoCommand> _Addhandler;
 
         private readonly ICommandHandler<UpDateInterventoCommand> _Updatehandler;
+        private readonly IGetSintesiRichiestaAssistenzaByCodice _getSintesiRichiestaByCodice;
 
         /// <summary>
         ///   Costruttore della classe
@@ -48,10 +50,12 @@ namespace SO115App.API.Controllers
         /// <param name="handler">L'handler iniettato del servizio</param>
         public ChiamataController(
             ICommandHandler<AddInterventoCommand> Addhandler,
-            ICommandHandler<UpDateInterventoCommand> Updatehandler)
+            ICommandHandler<UpDateInterventoCommand> Updatehandler,
+            IGetSintesiRichiestaAssistenzaByCodice getSintesiRichiestaByCodice)
         {
             _Addhandler = Addhandler;
             _Updatehandler = Updatehandler;
+            _getSintesiRichiestaByCodice = getSintesiRichiestaByCodice;
         }
 
         [HttpPost("Add")]
@@ -70,7 +74,7 @@ namespace SO115App.API.Controllers
             try
             {
                 this._Addhandler.Handle(command);
-                return Ok(command.Chiamata);
+                return Ok(_getSintesiRichiestaByCodice.GetSintesi(command.Chiamata.Codice));
             }
             catch (Exception ex)
             {
