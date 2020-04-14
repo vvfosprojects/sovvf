@@ -4,52 +4,56 @@
         <div class="row">
             <div class="col-7">
                 <i class="fa fa-users mb-2 mr-1"></i>
-                <span class="font-weight-bold" ngbTooltip="Personale attualmente in servizio">Personale in servizio: </span>
-                <a class="font-weight-bold" href="javascript:void(0)" (click)="clickServizi.emit('openModal')">{{personaleQty?.totale}}</a>
+                <span class="font-weight-bold"
+                      ngbTooltip="Personale attualmente in servizio">Personale in servizio: </span>
+                <a class="font-weight-bold" href="javascript:void(0)"
+                   (click)="clickServizi.emit('openModal')">{{personaleQty?.totale}}</a>
             </div>
             <div class="col-5 ml-auto text-right text-secondary">
                 <ng-template #funzionariGuardia>
                     <!-- Funzionario Guardia -->
-                    <div *ngIf="personalePresenze.funzGuardia">
+                    <div *ngIf="personalePresenze.funGuardia">
                         <div class="h6">Funz. Guardia</div>
-                        <div class="px-0 h6">
-                            <div>
-                                <small title="Qualifica"
-                                       class="text-secondary">{{personalePresenze.funzGuardia?.qualifica}}</small>
-                                <span class="ml-1">{{personalePresenze.funzGuardia?.descrizione}}</span>
-                                <div *ngIf="personalePresenze.funzGuardia.telefono">
-                                    <i class="fa fa-mobile pr-2"></i>
-                                    <span title="Telefono"
-                                           class="text-secondary">{{personalePresenze.funzGuardia?.telefono}}</span>
-                                </div>
-                            </div>
+                        <div *ngIf="personalePresenze.funGuardia.descrizione" title="Nominativo" class="h6 mb-2">
+                            <i class="fa fa-user mr-1"></i>
+                            {{personalePresenze.funGuardia?.descrizione}}
+                        </div>
+                        <div *ngIf="personalePresenze.funGuardia.qualifica" title="Qualifica" class="h6 text-secondary">
+                            <i class="fa fa-cog mr-1 text-secondary"></i>
+                            {{personalePresenze.funGuardia?.qualifica}}
+                        </div>
+                        <div *ngIf="personalePresenze.funGuardia.telefono" title="Telefono" class="h6 text-secondary">
+                            <i class="fa fa-mobile mr-1"></i>
+                            {{personalePresenze.funGuardia?.telefono}}
                         </div>
                     </div>
-                    <div *ngIf="!personalePresenze.funzGuardia">
-                        <span><b>Nessun Funzionario</b></span>
+                    <div *ngIf="!personalePresenze.funGuardia">
+                        <div class="h6 font-weight-bold">Nessun Funzionario</div>
                     </div>
+
                     <hr class="m-0 mb-2">
 
                     <!-- Capo Turno -->
                     <div *ngIf="personalePresenze.capoTurno">
                         <div class="h6">Capo Turno</div>
-                        <div class="px-0 h6">
-                            <div>
-                                <small title="Qualifica"
-                                       class="text-secondary">{{personalePresenze.capoTurno?.qualifica}}</small>
-                                <span class="ml-1">{{personalePresenze.capoTurno?.descrizione}}</span>
-                                <div *ngIf="personalePresenze.capoTurno.telefono">
-                                    <i class="fa fa-mobile pr-2"></i>
-                                    <span title="Telefono"
-                                          class="text-secondary">{{personalePresenze.capoTurno?.telefono}}</span>
-                                </div>
-                            </div>
+                        <div *ngIf="personalePresenze.capoTurno.descrizione" title="Nominativo" class="h6 mb-2">
+                            <i class="fa fa-user mr-1"></i>
+                            {{personalePresenze.capoTurno?.descrizione}}
+                        </div>
+                        <div *ngIf="personalePresenze.capoTurno.qualifica" title="Qualifica" class="h6 text-secondary">
+                            <i class="fa fa-cog mr-1 text-secondary"></i>
+                            {{personalePresenze.capoTurno?.qualifica}}
+                        </div>
+                        <div *ngIf="personalePresenze.capoTurno.telefono" title="Telefono" class="h6 text-secondary">
+                            <i class="fa fa-mobile mr-1"></i>
+                            {{personalePresenze.capoTurno?.telefono}}
                         </div>
                     </div>
                     <div *ngIf="!personalePresenze.capoTurno">
-                        <span><b>Nessun Capo Turno</b></span>
+                        <div class="h6 font-weight-bold">Nessun Capo Turno</div>
                     </div>
                 </ng-template>
+
                 <ng-template #tecniciGuardia>
                     <!-- Tecnico Guardia1 -->
                     <div *ngIf="personalePresenze.tecnicoGuardia1 || personalePresenze.tecnicoGuardia2">
@@ -91,8 +95,10 @@
                 <div class="row">
                     <div class="col-7 pr-0 text-secondary">
                         <ul class="list-unstyled m-0">
-                            <li><span class="d-inline-block h6" ngbTooltip="Squadre attualmente in servizio">Squadre in servizio</span></li>
-                            <li><span class="d-inline-block h6" ngbTooltip="Squadre impegnate sugli interventi">di cui impegnate</span></li>
+                            <li><span class="d-inline-block h6" ngbTooltip="Squadre attualmente in servizio">Squadre in servizio</span>
+                            </li>
+                            <li><span class="d-inline-block h6" ngbTooltip="Squadre impegnate sugli interventi">di cui impegnate</span>
+                            </li>
                         </ul>
                     </div>
                     <div class="col-5 px-0 text-secondary text-center">
@@ -121,9 +127,11 @@
                     <div class="col pr-0 text-secondary">
                         <ul class="list-unstyled m-0">
                             <li><span
-                                    class="d-inline-block h6" ngbTooltip="Funzionari di guardia">{{personaleQty?.funzionari | personale:'funzionari'}}</span>
+                                    class="d-inline-block h6"
+                                    ngbTooltip="Funzionari di guardia">{{personaleQty?.funzionari | personale:'funzionari'}}</span>
                             </li>
-                            <li><span class="d-inline-block h6" ngbTooltip="Tecnici di guardia">{{personaleQty?.tecnici | personale:'tecnici'}}</span>
+                            <li><span class="d-inline-block h6"
+                                      ngbTooltip="Tecnici di guardia">{{personaleQty?.tecnici | personale:'tecnici'}}</span>
                             </li>
                         </ul>
                     </div>

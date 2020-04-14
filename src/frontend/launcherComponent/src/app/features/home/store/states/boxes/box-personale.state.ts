@@ -75,7 +75,7 @@ export function countPersonale(state: BoxPersonale): BoxPersonaleQty {
         personaleQty.funzionari = 0;
         personaleQty.tecnici = 0;
         state.funzionari.forEach((result: BoxFunzionariSo) => {
-            if (result.funzGuardia || result.capoTurno) {
+            if (result.funGuardia || result.capoTurno) {
                 personaleQty.funzionari++;
             }
             if (result.tecnicoGuardia1 || result.tecnicoGuardia2) {
@@ -93,8 +93,8 @@ export function getPresenze(state: BoxPersonale): BoxPersonalePresenze {
     const personalePresenze = {} as BoxPersonalePresenze;
     if (state) {
         state.funzionari.forEach((result: BoxFunzionariSo) => {
-            if (result.funzGuardia) {
-                personalePresenze.funzGuardia = makeBoxPersonalePersona(result);
+            if (result.funGuardia) {
+                personalePresenze.funGuardia = makeBoxPersonalePersona(result);
             } else if (result.capoTurno) {
                 personalePresenze.capoTurno = makeBoxPersonalePersona(result);
             } else if (result.tecnicoGuardia1) {
@@ -110,8 +110,8 @@ export function getPresenze(state: BoxPersonale): BoxPersonalePresenze {
 export function makeBoxPersonalePersona(boxFunzionarioSo: BoxFunzionariSo): BoxPersonalePersona {
     if (boxFunzionarioSo) {
         return {
-            descrizione: boxFunzionarioSo.descrizione,
-            qualifica: boxFunzionarioSo.qualifica,
+            descrizione: boxFunzionarioSo.nominativo,
+            qualifica: boxFunzionarioSo.descrizioneQualifica,
             telefono: boxFunzionarioSo.telefono
         } as BoxPersonalePersona;
     }

@@ -7,7 +7,7 @@ export interface BoxPersonaleQty {
 }
 
 export interface BoxPersonalePresenze {
-    funzGuardia: BoxPersonalePersona;
+    funGuardia: BoxPersonalePersona;
     capoTurno: BoxPersonalePersona;
     tecnicoGuardia1: BoxPersonalePersona;
     tecnicoGuardia2: BoxPersonalePersona;
