@@ -103,12 +103,13 @@ export class SchedaTelefonataState {
         dispatch(new StartLoadingNuovaChiamata());
 
         action.nuovaRichiesta.richiedente.telefono = action.nuovaRichiesta.richiedente.telefono.toString();
-        this.chiamataService.insertChiamata(action.nuovaRichiesta).subscribe((data: SintesiRichiesta) => {
-            if (data && action.azioneChiamata === AzioneChiamataEnum.InviaPartenza) {
-                console.log(`Invia partenza idRichiesta:`, data);
+        this.chiamataService.insertChiamata(action.nuovaRichiesta).subscribe((richiesta: SintesiRichiesta) => {
+            console.warn('NUOVA RICHIESTA', richiesta);
+            if (richiesta && action.azioneChiamata === AzioneChiamataEnum.InviaPartenza) {
+                console.log(`Invia partenza idRichiesta:`, richiesta.codice);
                 dispatch([
                     new CestinaChiamata(),
-                    new SetIdChiamataInviaPartenza(data.codice)
+                    new SetIdChiamataInviaPartenza(richiesta)
                 ]);
             } else {
                 dispatch(new CestinaChiamata());

@@ -233,13 +233,14 @@ export class RichiesteState {
     @Action(SetIdChiamataInviaPartenza)
     setIdChiamataInviaPartenza({ getState, patchState, dispatch }: StateContext<RichiesteStateModel>, action: SetIdChiamataInviaPartenza) {
         const state = getState();
+        console.warn('SetIdChiamataInviaPartenza', action.richiesta.codice);
         patchState({
-            chiamataInviaPartenza: action.chiamataInviaPartenza
+            chiamataInviaPartenza: action.richiesta.codice
         });
-        const chiamataInviaPartenza = state.richieste.filter(value => value.codice === action.chiamataInviaPartenza);
-        if (chiamataInviaPartenza.length === 1) {
-            dispatch(new StartInviaPartenzaFromChiamata(chiamataInviaPartenza[0]));
-        }
+        // const chiamataInviaPartenza = state.richieste.filter(value => value.codice === action.chiamataInviaPartenza);
+        // if (chiamataInviaPartenza.length === 1) {
+        dispatch(new StartInviaPartenzaFromChiamata(action.richiesta));
+        // }
     }
 
     @Action(ClearIdChiamataInviaPartenza)
