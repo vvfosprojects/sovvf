@@ -141,6 +141,7 @@ export class RichiesteState {
 
     @Action(PatchRichiesta)
     patchRichiesta({ dispatch }: StateContext<RichiesteStateModel>, action: PatchRichiesta) {
+        action.richiesta.richiedente.telefono = action.richiesta.richiedente.telefono.toString();
         this.richiesteService.patchRichiesta(action.richiesta).subscribe(() => {
             dispatch(new SuccessRichiestaModifica);
         }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5)));
