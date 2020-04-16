@@ -1,5 +1,6 @@
 <div class="row mt-1">
     <div class="col-12 pt-1 px-0">
+        <app-partial-loader *ngIf="loadingInvioPartenza$ | async"></app-partial-loader>
         <div *ngIf="richiesta" class="px-3 mb-2">
             <div class="w-100 rounded card-shadow" [ngClass]="cardClasses(richiesta)">
                 <app-sintesi-richiesta [richiesta]="richiesta" [fissata]="false" [espanso]="true" [partenza]="true"

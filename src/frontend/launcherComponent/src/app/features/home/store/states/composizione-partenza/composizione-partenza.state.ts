@@ -11,8 +11,8 @@ import {
     RichiestaComposizione,
     SetComposizioneMode,
     SetFiltriComposizione,
-    SetListaFiltriAffini,
-    StartListaComposizioneLoading,
+    SetListaFiltriAffini, StartInvioPartenzaLoading,
+    StartListaComposizioneLoading, StopInvioPartenzaLoading,
     StopListaComposizioneLoading,
     TerminaComposizione,
     ToggleComposizioneMode,
@@ -55,7 +55,8 @@ export interface ComposizionePartenzaStateModel {
     codiceStatoMezzo: any[];
     richiesta: SintesiRichiesta;
     composizioneMode: Composizione;
-    loading: boolean;
+    loadingListe: boolean;
+    loadingInvioPartenza: boolean;
 }
 
 export const ComposizioneStateDefaults: ComposizionePartenzaStateModel = {
@@ -69,7 +70,8 @@ export const ComposizioneStateDefaults: ComposizionePartenzaStateModel = {
     codiceStatoMezzo: [],
     richiesta: null,
     composizioneMode: Composizione.Avanzata,
-    loading: false
+    loadingListe: false,
+    loadingInvioPartenza: false
 };
 
 
@@ -114,10 +116,14 @@ export class ComposizionePartenzaState {
     }
 
     @Selector()
-    static loading(state: ComposizionePartenzaStateModel) {
-        return state.loading;
+    static loadingListe(state: ComposizionePartenzaStateModel) {
+        return state.loadingListe;
     }
 
+    @Selector()
+    static loadingInvioPartenza(state: ComposizionePartenzaStateModel) {
+        return state.loadingInvioPartenza;
+    }
 
     constructor(private store: Store,
                 private compPartenzaService: CompPartenzaService) {
@@ -216,10 +222,6 @@ export class ComposizionePartenzaState {
                 stati: filtriStato
             }
         });
-
-        // console.log('filtriDistaccamento', filtriDistaccamento);
-        // console.log('filtriStato', filtriStato);
-        // console.log('generiMezzi', generiMezzi);
     }
 
     @Action(UpdateListeComposizione)
@@ -258,7 +260,6 @@ export class ComposizionePartenzaState {
 
     @Action(RemoveFiltroSelezionatoComposizione)
     removeFiltroSelezionatoComposizione(ctx: StateContext<ComposizionePartenzaStateModel>, action: RemoveFiltroSelezionatoComposizione) {
-        console.log('Filtro deselezionato => #ID = ' + action.id + ' - TIPO = ' + action.tipo);
         switch (action.tipo) {
             case 'codiceDistaccamento':
                 ctx.setState(
@@ -364,20 +365,30 @@ export class ComposizionePartenzaState {
 
     @Action(ConfirmPartenze)
     confirmPartenze({ getState, patchState, dispatch }: StateContext<ComposizionePartenzaStateModel>, action: ConfirmPartenze) {
+        dispatch(new StartInvioPartenzaLoading());
         this.compPartenzaService.confermaPartenze(action.partenze).subscribe(() => {
-            console.log('Richiesta aggiornata con le partenze', action.partenze);
+            const state = getState();
+            if (state.composizioneMode === Composizione.Avanzata) {
+                dispatch([
+                    new ClearBoxPartenze(),
+                    new ClearSelectedMezziComposizione(),
+                    new ClearSelectedSquadreComposizione(),
+                    new UnselectMezziAndSquadreComposizioneAvanzata(),
+                    new ClearListaMezziComposizione(),
+                    new ClearListaSquadreComposizione()
+                ]);
+            } else if (state.composizioneMode === Composizione.Veloce) {
+                dispatch([
+                    new ClearPreAccoppiatiSelezionatiComposizione(),
+                    new ClearPreaccoppiati()
+                ]);
+            }
             dispatch([
                 new ClearMarkerMezzoSelezionato(),
                 new ClearDirection(),
-                new ClearBoxPartenze(),
-                new ClearSelectedMezziComposizione(),
-                new ClearSelectedSquadreComposizione(),
-                new UnselectMezziAndSquadreComposizioneAvanzata()
+                new StopInvioPartenzaLoading(),
+                new GetListeComposizioneAvanzata()
             ]);
-            const state = getState();
-            if (state.composizioneMode === Composizione.Veloce) {
-                dispatch(new ClearPreAccoppiatiSelezionatiComposizione());
-            }
         }, () => {
             console.error('Conferma Partenza: qualcosa è andato storto');
         });
@@ -407,14 +418,28 @@ export class ComposizionePartenzaState {
     @Action(StartListaComposizioneLoading)
     startListaComposizioneLoading({ patchState }: StateContext<ComposizionePartenzaStateModel>) {
         patchState({
-            loading: true
+            loadingListe: true
         });
     }
 
     @Action(StopListaComposizioneLoading)
     stopListaComposizioneLoading({ patchState }: StateContext<ComposizionePartenzaStateModel>) {
         patchState({
-            loading: false
+            loadingListe: false
+        });
+    }
+
+    @Action(StartInvioPartenzaLoading)
+    startInvioPartenzaLoading({ patchState }: StateContext<ComposizionePartenzaStateModel>) {
+        patchState({
+            loadingInvioPartenza: true
+        });
+    }
+
+    @Action(StopInvioPartenzaLoading)
+    stopInvioPartenzaLoading({ patchState }: StateContext<ComposizionePartenzaStateModel>) {
+        patchState({
+            loadingInvioPartenza: false
         });
     }
 }

@@ -107,3 +107,11 @@ export class StartListaComposizioneLoading {
 export class StopListaComposizioneLoading {
     static readonly type = '[ComposizionePartenza] Stop Lista Composizione Loading';
 }
+
+export class StartInvioPartenzaLoading {
+    static readonly type = '[ComposizionePartenza] Start Invio Partenza Loading';
+}
+
+export class StopInvioPartenzaLoading {
+    static readonly type = '[ComposizionePartenza] Stop Invio Partenza Loading';
+}
