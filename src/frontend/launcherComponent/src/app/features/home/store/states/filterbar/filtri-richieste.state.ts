@@ -119,6 +119,9 @@ export class FiltriRichiesteState {
     @Action(ResetFiltriSelezionatiRichieste)
     resetFiltriSelezionati({ setState, dispatch }: StateContext<FiltriRichiesteStateModel>) {
         setState(filtriRichiesteStateDefaults);
-        dispatch(new GetListaRichieste());
+        dispatch([
+            new GetFiltriRichieste(),
+            new GetListaRichieste()
+        ]);
     }
 }

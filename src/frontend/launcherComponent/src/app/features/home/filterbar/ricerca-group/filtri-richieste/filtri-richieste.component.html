@@ -113,7 +113,7 @@
         </div>
     </div>
     <button *ngIf="filtriSelezionati && filtriSelezionati.length > 0" class="btn btn-outline-secondary p-1"
-            (click)="resetFiltri()">
+            (click)="resetFiltri()" [disabled]="disableFilters">
         <i class="fa fa-undo text-dark px-1"></i>
     </button>
 </div>
