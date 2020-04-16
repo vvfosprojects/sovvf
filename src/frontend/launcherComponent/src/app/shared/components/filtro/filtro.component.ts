@@ -10,6 +10,7 @@ export class FiltroComponent implements OnInit {
     @Input() filtro: VoceFiltro;
     @Input() selezionato: boolean;
     @Input() useCheckbox: boolean;
+    @Input() disabled: boolean;
 
     @Output() filtroSelezionato: EventEmitter<VoceFiltro> = new EventEmitter();
     @Output() filtroDeselezionato: EventEmitter<VoceFiltro> = new EventEmitter();
@@ -22,9 +23,13 @@ export class FiltroComponent implements OnInit {
 
     onSelezione(filtro: VoceFiltro) {
         if (!this.selezionato) {
-            this.filtroSelezionato.emit(filtro);
+            if (!this.disabled) {
+                this.filtroSelezionato.emit(filtro);
+            }
         } else {
-            this.filtroDeselezionato.emit(filtro);
+            if (!this.disabled) {
+                this.filtroDeselezionato.emit(filtro);
+            }
         }
     }
 

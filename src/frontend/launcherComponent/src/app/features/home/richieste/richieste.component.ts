@@ -30,6 +30,7 @@ import { ReducerRichiesteEspanse } from '../store/actions/richieste/richieste-es
 import { RichiestaActionInterface } from '../../../shared/interface/richiesta-action.interface';
 import { PermissionFeatures } from '../../../shared/enum/permission-features.enum';
 import { PaginationState } from '../../../shared/store/states/pagination/pagination.state';
+import { ResetFiltriSelezionatiRichieste } from '../store/actions/filterbar/filtri-richieste.actions';
 
 @Component({
     selector: 'app-richieste',
@@ -93,6 +94,7 @@ export class RichiesteComponent implements OnInit, OnDestroy {
 
     ngOnDestroy() {
         this.subscription.unsubscribe();
+        this.store.dispatch(new ResetFiltriSelezionatiRichieste());
         isDevMode() && console.log('Componente Richieste distrutto');
     }
 

@@ -1,6 +1,6 @@
-<div style="margin-right: -10px" (click)="container.emit()" [ngbTooltip]="tooltipMessage" [disableTooltip]="!tooltipMessage">
-    <input type="checkbox" id="{{typeName}}{{checkboxState.id}}"
-           [checked]="checkboxState.status"
-           (click)="onCheck()" [disabled]="checkboxState?.disabled"/>
+<div style="margin-right: -10px" (click)="container.emit()" [ngbTooltip]="tooltipMessage"
+     [disableTooltip]="!tooltipMessage">
+    <input type="checkbox" id="{{typeName}}{{checkboxState.id}}" [checked]="checkboxState.status" (click)="onCheck()"
+           [disabled]="checkboxState?.disabled"/>
     <label for="{{typeName}}{{checkboxState.id}}" [innerHTML]="labelFormat()"></label>
 </div>

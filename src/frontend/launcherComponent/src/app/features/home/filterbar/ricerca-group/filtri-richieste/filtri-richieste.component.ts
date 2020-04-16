@@ -14,6 +14,7 @@ export class FiltriRichiesteComponent implements OnChanges {
     @Input() filtri: VoceFiltro[];
     @Input() filtriSelezionati: VoceFiltro[];
     @Input() categorie: string[];
+    @Input() disableFilters: boolean;
 
     @Output() filtroSelezionato: EventEmitter<VoceFiltro> = new EventEmitter();
     @Output() filtroDeselezionato: EventEmitter<VoceFiltro> = new EventEmitter();
@@ -51,7 +52,7 @@ export class FiltriRichiesteComponent implements OnChanges {
         this.filtroDeselezionato.emit(filtro);
     }
 
-    eliminaFiltriAttivi() {
+    resetFiltri() {
         this.filtriReset.emit();
     }
 }
