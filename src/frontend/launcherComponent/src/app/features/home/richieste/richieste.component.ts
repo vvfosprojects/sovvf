@@ -31,6 +31,7 @@ import { RichiestaActionInterface } from '../../../shared/interface/richiesta-ac
 import { PermissionFeatures } from '../../../shared/enum/permission-features.enum';
 import { PaginationState } from '../../../shared/store/states/pagination/pagination.state';
 import { ResetFiltriSelezionatiRichieste } from '../store/actions/filterbar/filtri-richieste.actions';
+import { StatoRichiesta } from '../../../shared/enum/stato-richiesta.enum';
 
 @Component({
     selector: 'app-richieste',
@@ -73,6 +74,7 @@ export class RichiesteComponent implements OnInit, OnDestroy {
     loaderRichieste = true;
     listHeightClass = 'm-h-695';
     permessiFeature = PermissionFeatures;
+    statoRichiesta = StatoRichiesta;
 
     subscription = new Subscription();
 

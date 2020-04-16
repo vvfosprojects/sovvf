@@ -3,7 +3,7 @@
                        [richiestaGestione]="richiestaGestione" [idRichiesteEspanse]="(idRichiesteEspanse$ | async)"
                        [disabledModificaRichiesta]="permessiFeature.ModificaRichiesta | checkPermission"
                        [disabledGestisciRichiesta]="permessiFeature.GestisciRichiesta | checkPermission"
-                       [disabledComposizionePartenza]="permessiFeature.ComposizionePartenzaRichiesta | checkPermission"
+                       [disabledComposizionePartenza]="(permessiFeature.ComposizionePartenzaRichiesta | checkPermission) || richiestaFissata.stato === statoRichiesta.Chiusa"
                        (statoPartenza)="toggleComposizione()" (composizionePartenza)="nuovaPartenza($event)"
                        (defissa)="onDefissa()" (modificaRichiesta)="onModificaRichiesta($event)"
                        (gestioneRichiesta)="onGestioneRichiesta($event)"
