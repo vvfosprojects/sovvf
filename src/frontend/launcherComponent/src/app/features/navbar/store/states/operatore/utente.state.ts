@@ -13,6 +13,9 @@ import {
 import { ClearVistaSedi, SetVistaSedi } from '../../../../../shared/store/actions/app/app.actions';
 import { makeCopy } from '../../../../../shared/helper/function';
 import { ClearRuoliUtenteLoggato } from '../../../../../shared/store/actions/ruoli/ruoli.actions';
+import { StateReset } from 'ngxs-reset-plugin';
+import { RichiesteState } from '../../../../home/store/states/richieste/richieste.state';
+import { ViewComponentState } from '../../../../home/store/states/view/view.state';
 
 export interface UtenteStateModel {
     localName: string;
@@ -88,10 +91,14 @@ export class UtenteState {
                 new ClearIdUtente()
             ]);
         }
-        // Local Storage
-        dispatch(new ClearUtenteLocalStorage());
-        // Current Roles Session Storage
-        dispatch(new ClearRuoliUtenteLoggato());
+        dispatch([
+            // Local Storage
+            new ClearUtenteLocalStorage(),
+            // Current Roles Session Storage
+            new ClearRuoliUtenteLoggato()
+        ]);
+        // Reset states
+        dispatch(new StateReset(RichiesteState, ViewComponentState));
         // Clear User Data
         patchState({
             utente: null
