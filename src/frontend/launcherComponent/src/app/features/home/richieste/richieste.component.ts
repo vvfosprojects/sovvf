@@ -201,14 +201,16 @@ export class RichiesteComponent implements OnInit, OnDestroy {
 
     opacizzaRichieste(ricerca: any): void {
         const result = this.filter.transform(this.richieste, ricerca);
-        if (!(this.richieste.length === result.length) && result.length > 0) {
-            const string = [];
-            result.forEach((c: any) => {
-                string.push(c.id);
-            });
-            this.store.dispatch(new SetMarkerOpachiRichieste(string));
-        } else {
-            this.store.dispatch(new ClearMarkerOpachiRichieste());
+        if (result) {
+            if (!(this.richieste.length === result.length) && result.length > 0) {
+                const string = [];
+                result.forEach((c: any) => {
+                    string.push(c.id);
+                });
+                this.store.dispatch(new SetMarkerOpachiRichieste(string));
+            } else {
+                this.store.dispatch(new ClearMarkerOpachiRichieste());
+            }
         }
     }
 

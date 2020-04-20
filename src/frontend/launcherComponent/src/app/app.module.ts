@@ -62,6 +62,7 @@ import { NgxsFormPluginModule } from '@ngxs/form-plugin';
 import { UserService } from './core/auth/_services';
 import { UserServiceFake } from './core/auth/_services/user.service.fake';
 import { PermessiState } from './shared/store/states/permessi/permessi.state';
+import { NgxsResetPluginModule } from 'ngxs-reset-plugin';
 import { RuoliUtenteLoggatoState } from './shared/store/states/ruoli-utente-loggato/ruoli-utente-loggato.state';
 
 
@@ -102,6 +103,7 @@ import { RuoliUtenteLoggatoState } from './shared/store/states/ruoli-utente-logg
             disabled: environment.production,
         }),
         NgxsFormPluginModule.forRoot(),
+        NgxsResetPluginModule.forRoot()
     ],
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
