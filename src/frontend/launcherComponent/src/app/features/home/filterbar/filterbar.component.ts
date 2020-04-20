@@ -26,6 +26,7 @@ import { ClearFiltriSchedeContatto, ReducerSetFiltroSchedeContatto, SetFiltroKey
 import { MezziInServizioState } from '../store/states/mezzi-in-servizio/mezzi-in-servizio.state';
 import { ClearFiltriMezziInServizio, SetFiltroMezziInServizio } from '../store/actions/mezzi-in-servizio/mezzi-in-servizio.actions';
 import { PermissionFeatures } from '../../../shared/enum/permission-features.enum';
+import { RichiesteState } from '../store/states/richieste/richieste.state';
 
 @Component({
     selector: 'app-filterbar',
@@ -47,9 +48,13 @@ export class FilterbarComponent {
     // Ricerca Richieste
     @Select(RicercaRichiesteState.ricerca) ricercaRichieste$: Observable<string>;
 
+    // Loading LIsta Richieste
+    @Select(RichiesteState.loadingRichieste) loadingRichieste$: Observable<boolean>;
+
     // Filtri Schede Contatto
     @Select(SchedeContattoState.filtriSchedeContatto) filtriSchedeContatto$: Observable<VoceFiltro[]>;
     @Select(SchedeContattoState.filtriSelezionati) filtriSelezionatiSchedeContatto$: Observable<VoceFiltro[]>;
+
     // Ricerca Schede Contatto
     @Select(SchedeContattoState.ricerca) ricercaSchedeContatto$: Observable<string>;
 

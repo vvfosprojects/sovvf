@@ -60,7 +60,7 @@ export class CambiaStatoRichiesta {
 export class SetIdChiamataInviaPartenza {
     static readonly type = '[Richieste] Set ID Chiamata Invia Partenza';
 
-    constructor(public chiamataInviaPartenza: string) {
+    constructor(public richiesta: SintesiRichiesta) {
     }
 }
 

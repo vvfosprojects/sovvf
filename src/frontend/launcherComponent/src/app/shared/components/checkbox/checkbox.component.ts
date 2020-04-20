@@ -4,7 +4,7 @@ import { CheckboxInterface } from '../../interface/checkbox.interface';
 @Component({
     selector: 'app-checkbox',
     templateUrl: './checkbox.component.html',
-    styleUrls: [ './checkbox.component.css' ]
+    styleUrls: ['./checkbox.component.css']
 })
 export class CheckboxComponent {
 

@@ -16,6 +16,7 @@
                                       [filtri]="filtriRichieste$ | async"
                                       [filtriSelezionati]="filtriRichiesteSelezionati$ | async"
                                       [categorie]="categoriaFiltriRichieste$| async"
+                                      [disableFilters]="loadingRichieste$ | async"
                                       (filtroSelezionato)="onSelezioneFiltroRichieste($event)"
                                       (filtroDeselezionato)="onDeselezioneFiltroRichieste($event)"
                                       (filtriReset)="eliminaFiltriAttiviRichieste()">

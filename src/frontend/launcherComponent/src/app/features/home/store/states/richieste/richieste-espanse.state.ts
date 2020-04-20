@@ -31,13 +31,15 @@ export class RichiesteEspanseState {
         const state = getState();
         const idRichiestaGestione = this.store.selectSnapshot(RichiestaGestioneState.richiestaGestione) ? this.store.selectSnapshot(RichiestaGestioneState.richiestaGestione).id : null;
 
-        // cotrollo se ci sono richieste in gestione, se si la richiesta diventa "non in gestione"
-        state.richiesteEspanse.forEach((idRichiesta: string) => {
-            if (idRichiesta === idRichiestaGestione) {
-                dispatch(new ClearRichiestaGestione(idRichiesta));
-            }
-        });
-        patchState(RichiesteEspanseStateDefaults);
+        if (state && state.richiesteEspanse) {
+            // cotrollo se ci sono richieste in gestione, se si la richiesta diventa "non in gestione"
+            state.richiesteEspanse.forEach((idRichiesta: string) => {
+                if (idRichiesta === idRichiestaGestione) {
+                    dispatch(new ClearRichiestaGestione(idRichiesta));
+                }
+            });
+            patchState(RichiesteEspanseStateDefaults);
+        }
     }
 
     @Action(ReducerRichiesteEspanse)

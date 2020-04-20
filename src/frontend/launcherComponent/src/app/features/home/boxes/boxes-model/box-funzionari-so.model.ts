@@ -7,15 +7,15 @@ export class BoxFunzionariSo {
         /**
          * Qualifica della persona, visibile in interfaccia (per es. 'VCTI')
          */
-        public qualifica: string,
+        public descrizioneQualifica: string,
         /**
          * Nominativo della persona, visibile in interfaccia (per es. 'Daniela Fares')
          */
-        public descrizione: string,
+        public nominativo: string,
         /**
          * Indica se la persona ha il ruolo di funzionario di Guardia (UDS)
          */
-        public funzGuardia: boolean,
+        public funGuardia: boolean,
         /**
          * Indica se la persona ha il ruolo di 1° tecnico di guardia (UTS1)
          */

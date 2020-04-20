@@ -103,18 +103,16 @@ export class SchedaTelefonataState {
         dispatch(new StartLoadingNuovaChiamata());
 
         action.nuovaRichiesta.richiedente.telefono = action.nuovaRichiesta.richiedente.telefono.toString();
-        this.chiamataService.insertChiamata(action.nuovaRichiesta).subscribe((data: SintesiRichiesta) => {
-            if (data && action.azioneChiamata === AzioneChiamataEnum.InviaPartenza) {
-                console.log(`Invia partenza idRichiesta:`, data);
+        this.chiamataService.insertChiamata(action.nuovaRichiesta).subscribe((richiesta: SintesiRichiesta) => {
+            if (richiesta && action.azioneChiamata === AzioneChiamataEnum.InviaPartenza) {
                 dispatch([
                     new CestinaChiamata(),
-                    new SetIdChiamataInviaPartenza(data.codice)
+                    new SetIdChiamataInviaPartenza(richiesta)
                 ]);
             } else {
                 dispatch(new CestinaChiamata());
             }
         }, () => {
-            // dispatch(new ShowToastr(ToastrType.Error, 'Inserimento della chiamata fallito', 'Si è verificato un errore, riprova.', 5));
             patchState({
                 nuovaRichiesta: null,
                 azioneChiamata: null

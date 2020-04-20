@@ -1,7 +1,7 @@
 <div class="row">
     <div class="col-3 pr-0">
         <div class="card card-shadow mx-auto" style="min-height:392px">
-            <app-partial-loader *ngIf="loading || !squadreComposizione"></app-partial-loader>
+            <app-partial-loader *ngIf="loadingListe || !squadreComposizione"></app-partial-loader>
             <div class="card-header">
                 <i class="fa fa-group mr-2"></i>
                 <span class="h6">Squadre</span>
@@ -21,7 +21,7 @@
     </div>
     <div class="col-5 pr-0">
         <div class="card card-shadow mx-auto" style="min-height:392px">
-            <app-partial-loader *ngIf="loading || !mezziComposizione"></app-partial-loader>
+            <app-partial-loader *ngIf="loadingListe || !mezziComposizione"></app-partial-loader>
             <div class="card-header">
                 <i class="fa fa-truck mr-2"></i>
                 <span class="h6">Mezzi</span>

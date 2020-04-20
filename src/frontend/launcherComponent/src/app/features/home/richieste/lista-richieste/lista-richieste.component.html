@@ -12,7 +12,7 @@
                                        [inGestione]="richiestaGestione?.id === r.id"
                                        [disabledModificaRichiesta]="disabledModificaRichiesta"
                                        [disabledGestisciRichiesta]="disabledGestisciRichiesta"
-                                       [disabledComposizionePartenza]="disabledComposizionePartenza"
+                                       [disabledComposizionePartenza]="disabledComposizionePartenza || r.stato === statoRichiesta.Chiusa"
                                        [disableTooltips]="scrolling"
                                        (hoverIn)="richiestaHoverIn($event)"
                                        (hoverOut)="richiestaHoverOut($event)"

@@ -38,7 +38,7 @@ namespace DomainModel.CQRS.Commands.AddIntervento
         private readonly IGetTurno _getTurno;
         private readonly IGetCompetenzeByCoordinateIntervento _getCompetenze;
 
-        public AddInterventoCommandHandler(ISaveRichiestaAssistenza saveRichiestaAssistenza, IGeneraCodiceRichiesta generaCodiceRichiesta, 
+        public AddInterventoCommandHandler(ISaveRichiestaAssistenza saveRichiestaAssistenza, IGeneraCodiceRichiesta generaCodiceRichiesta,
             IGetTurno getTurno, IGetCompetenzeByCoordinateIntervento getCompetenze)
         {
             this._saveRichiestaAssistenza = saveRichiestaAssistenza;
@@ -49,6 +49,15 @@ namespace DomainModel.CQRS.Commands.AddIntervento
 
         public void Handle(AddInterventoCommand command)
         {
+            var Competenza = _getCompetenze.GetCompetenzeByCoordinateIntervento(command.Chiamata.Localita.Coordinate);
+
+            string[] CodUOCompetenzaAppo = {
+                command.CodiceSede.Split('.')[0] + "." + Competenza.CodDistaccamento,
+                command.CodiceSede.Split('.')[0] + "." + Competenza.CodDistaccamento2,
+                command.CodiceSede.Split('.')[0] + "." + Competenza.CodDistaccamento3,
+                command.CodiceSede.Split('.')[0] + ".1000"
+            };
+
             var sedeRichiesta = command.CodiceSede;
             var prioritaRichiesta = (RichiestaAssistenza.Priorita)command.Chiamata.PrioritaRichiesta;
             var codiceChiamata = _generaCodiceRichiesta.GeneraCodiceChiamata(sedeRichiesta, DateTime.UtcNow.Year);
@@ -74,36 +83,6 @@ namespace DomainModel.CQRS.Commands.AddIntervento
                     utentiPresaInCarico.Add(utente.Nominativo);
                 }
             }
-
-            string Indirizzo = "";
-            string Civico = "";
-            int provaCap;
-            string Citta = "";
-            //Se è presente il civico è lungo 4, altrimenti è lungo 3
-            if (command.Chiamata.Localita.Indirizzo.Split(',').Length == 4)
-            {
-                Indirizzo = command.Chiamata.Localita.Indirizzo.Split(',')[0];
-                Civico = command.Chiamata.Localita.Indirizzo.Split(',')[1];
-                Citta = int.TryParse(command.Chiamata.Localita.Indirizzo.Split(',')[2].TrimStart().Split(' ')[0], out provaCap) ? command.Chiamata.Localita.Indirizzo.Split(',')[2].Split(' ')[2] : command.Chiamata.Localita.Indirizzo.Split(',')[2][0..^2];
-            }
-            else
-            {
-                Indirizzo = command.Chiamata.Localita.Indirizzo.Split(',')[0];
-                var isCap = int.TryParse(command.Chiamata.Localita.Indirizzo.Split(',')[1].TrimStart().Split(' ')[0], out provaCap);
-                Citta = isCap ? command.Chiamata.Localita.Indirizzo.Split(',')[1].Split(' ')[2] : command.Chiamata.Localita.Indirizzo.Split(',')[1][0..^2];
-                Civico = "1";
-            }
-
-            //var Competenza = _getCompetenze.GetCompetenzeRichiesta(command.CodiceSede.Split('.')[0], Indirizzo, Civico, Citta); -- PER ORACLE
-            
-            var Competenza = _getCompetenze.GetCompetenzeByCoordinateIntervento(command.Chiamata.Localita.Coordinate);
-
-            string[] CodUOCompetenzaAppo = {
-                command.CodiceSede.Split('.')[0] + "." + Competenza.CodDistaccamento,
-                command.CodiceSede.Split('.')[0] + "." + Competenza.CodDistaccamento2,
-                command.CodiceSede.Split('.')[0] + "." + Competenza.CodDistaccamento3,
-                command.CodiceSede.Split('.')[0] + ".1000"
-            };
 
             var richiesta = new RichiestaAssistenza()
             {

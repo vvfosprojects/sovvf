@@ -67,9 +67,16 @@ namespace SO115App.Persistence.MongoDB
 
         public RichiestaAssistenza GetByCodice(string codiceRichiesta)
         {
-            return _dbContext.RichiestaAssistenzaCollection
-                .Find(s => s.Codice == codiceRichiesta)
-                .Single();
+            try
+            {
+                return _dbContext.RichiestaAssistenzaCollection
+                    .Find(s => s.Codice == codiceRichiesta)
+                    .Single();
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
         }
 
         public RichiestaAssistenza GetById(string idRichiesta)
@@ -142,7 +149,7 @@ namespace SO115App.Persistence.MongoDB
                     var closedToSkip = (filtro.Page - 1) * filtro.PageSize - result.Count;
                     if (closedToSkip < 0)
                         closedToSkip = 0;
-                    var richiesteChiuse = _dbContext.RichiestaAssistenzaCollection.Find(filtroComplessivo)                        
+                    var richiesteChiuse = _dbContext.RichiestaAssistenzaCollection.Find(filtroComplessivo)
                         .Skip(closedToSkip)
                         .Limit(numeroRichiesteDaRecuperare)
                         .ToList();
@@ -150,7 +157,7 @@ namespace SO115App.Persistence.MongoDB
                     result.AddRange(richiesteChiuse);
                 }
             }
-       
+
             var listaSistesiRichieste = new List<SintesiRichiesta>();
 
             foreach (RichiestaAssistenza richiesta in result)
@@ -165,11 +172,12 @@ namespace SO115App.Persistence.MongoDB
                 }
             }
 
-            return listaSistesiRichieste.OrderByDescending(x => x.Stato == Costanti.Chiamata)
+            return listaSistesiRichieste
+                    .OrderByDescending(x => x.Stato == Costanti.Chiamata)
+                    .ThenByDescending(x => x.Chiusa == false)
                     .ThenByDescending(x => x.PrioritaRichiesta)
                     .ThenBy(x => x.IstanteRicezioneRichiesta)
                     .ToList();
-
         }
 
         private List<Sede> MapCompetenze(string[] codUOCompetenza)
@@ -186,7 +194,6 @@ namespace SO115App.Persistence.MongoDB
                 }
 
                 i++;
-
             }
 
             return listaSedi;
