@@ -4,6 +4,7 @@ import { HelperSintesiRichiesta } from '../helper/_helper-sintesi-richiesta';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { MezzoActionInterface } from '../../../../shared/interface/mezzo-action.interface';
 import { RichiestaActionInterface } from '../../../../shared/interface/richiesta-action.interface';
+import { StatoRichiesta } from '../../../../shared/enum/stato-richiesta.enum';
 
 @Component({
     selector: 'app-lista-richieste',
@@ -53,6 +54,7 @@ export class ListaRichiesteComponent implements OnInit {
 
     methods = new HelperSintesiRichiesta;
     scrolling = false;
+    statoRichiesta = StatoRichiesta;
 
     @ViewChild(CdkVirtualScrollViewport) virtualScroll: CdkVirtualScrollViewport;
 

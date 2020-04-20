@@ -40,6 +40,7 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
     @Select(ComposizioneVeloceState.preAccoppiati) preAccoppiati$: Observable<BoxPartenza[]>;
     @Select(ComposizionePartenzaState.filtriAffini) filtriAffini$: Observable<any>;
     @Select(ComposizionePartenzaState.richiestaComposizione) richiestaComposizione$: Observable<SintesiRichiesta>;
+    @Select(ComposizionePartenzaState.loadingInvioPartenza) loadingInvioPartenza$: Observable<boolean>;
     private subscription = new Subscription();
     richiesta: SintesiRichiesta;
     prevStateBoxClick: BoxClickStateModel;

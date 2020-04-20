@@ -17,9 +17,7 @@ export interface FiltriRichiesteStateModel {
 export const filtriRichiesteStateDefaults: FiltriRichiesteStateModel = {
     filtriStaticiRichieste: [
         { codice: '1', categoria: 'Aperte', descrizione: 'Aperte', name: 'includiRichiesteAperte', star: true },
-        { codice: '2', categoria: 'Chiuse', descrizione: 'Chiuse', name: 'includiRichiesteChiuse', star: true },
-        // { codice: '3', categoria: 'Chiamate/Interventi', descrizione: 'Chiamate', star: true },
-        // { codice: '4', categoria: 'Chiamate/Interventi', descrizione: 'Interventi', star: true },
+        { codice: '2', categoria: 'Chiuse', descrizione: 'Chiuse', name: 'includiRichiesteChiuse', star: true }
     ],
     filtriRichieste: [],
     categoriaFiltriRichieste: [],
@@ -119,12 +117,11 @@ export class FiltriRichiesteState {
     }
 
     @Action(ResetFiltriSelezionatiRichieste)
-    resetFiltriSelezionati({ getState, patchState, dispatch }: StateContext<FiltriRichiesteStateModel>) {
-        const state = getState();
-        patchState({
-            ...state,
-            filtriRichiesteSelezionati: null
-        });
-        dispatch(new GetListaRichieste());
+    resetFiltriSelezionati({ setState, dispatch }: StateContext<FiltriRichiesteStateModel>) {
+        setState(filtriRichiesteStateDefaults);
+        dispatch([
+            new GetFiltriRichieste(),
+            new GetListaRichieste()
+        ]);
     }
 }

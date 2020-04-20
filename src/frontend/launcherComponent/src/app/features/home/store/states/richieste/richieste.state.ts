@@ -141,6 +141,7 @@ export class RichiesteState {
 
     @Action(PatchRichiesta)
     patchRichiesta({ dispatch }: StateContext<RichiesteStateModel>, action: PatchRichiesta) {
+        action.richiesta.richiedente.telefono = action.richiesta.richiedente.telefono.toString();
         this.richiesteService.patchRichiesta(action.richiesta).subscribe(() => {
             dispatch(new SuccessRichiestaModifica);
         }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5)));
@@ -231,15 +232,11 @@ export class RichiesteState {
     }
 
     @Action(SetIdChiamataInviaPartenza)
-    setIdChiamataInviaPartenza({ getState, patchState, dispatch }: StateContext<RichiesteStateModel>, action: SetIdChiamataInviaPartenza) {
-        const state = getState();
+    setIdChiamataInviaPartenza({ patchState, dispatch }: StateContext<RichiesteStateModel>, action: SetIdChiamataInviaPartenza) {
         patchState({
-            chiamataInviaPartenza: action.chiamataInviaPartenza
+            chiamataInviaPartenza: action.richiesta.codice
         });
-        const chiamataInviaPartenza = state.richieste.filter(value => value.codice === action.chiamataInviaPartenza);
-        if (chiamataInviaPartenza.length === 1) {
-            dispatch(new StartInviaPartenzaFromChiamata(chiamataInviaPartenza[0]));
-        }
+        dispatch(new StartInviaPartenzaFromChiamata(action.richiesta));
     }
 
     @Action(ClearIdChiamataInviaPartenza)

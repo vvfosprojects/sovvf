@@ -354,7 +354,7 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy {
 
     impostaAzioneChiamata($event: AzioneChiamataEnum) {
         if ($event === AzioneChiamataEnum.InviaPartenza || $event === AzioneChiamataEnum.MettiInCoda) {
-            this.nuovaRichiesta.azione = AzioneChiamataEnum.MettiInCoda;
+            this.nuovaRichiesta.azione = $event;
         } else {
             this.nuovaRichiesta.azione = $event;
             this.nuovaRichiesta.stato = StatoRichiesta.Chiusa;

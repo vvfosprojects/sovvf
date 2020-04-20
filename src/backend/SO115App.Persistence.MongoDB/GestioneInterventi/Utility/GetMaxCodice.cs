@@ -35,15 +35,16 @@ namespace SO115App.Persistence.MongoDB.GestioneInterventi.Utility
             return MaxIdSintesi;
         }
 
-        public int GetMaxCodiceChiamata()
+        public int GetMaxCodiceChiamata(string codiceSede)
         {
             int MaxIdSintesi;
 
-            var ListaRichieste = _dbContext.RichiestaAssistenzaCollection.Find(Builders<RichiestaAssistenza>.Filter.Empty).ToList();
+            var codiceProvincia = codiceSede.Split('.')[0];
+            var ListaRichieste = _dbContext.RichiestaAssistenzaCollection.Find(Builders<RichiestaAssistenza>.Filter.Empty).ToList().Where(x => x.Codice.IndexOf(codiceProvincia) != -1);
 
             if (ListaRichieste.Any())
             {
-                string codice = ListaRichieste.OrderByDescending(x => x.Codice).FirstOrDefault().Codice;
+                string codice = ListaRichieste.OrderByDescending(x => x.IstanteRicezioneRichiesta).FirstOrDefault().Codice;
                 MaxIdSintesi = Convert.ToInt16(codice.Substring(codice.Length - 5)) + 1;
             }
             else

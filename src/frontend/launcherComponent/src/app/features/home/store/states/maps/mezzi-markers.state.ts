@@ -15,6 +15,7 @@ import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.ac
 import { ToastrType } from '../../../../../shared/enum/toastr';
 import { SetMarkerLoading } from '../../actions/home.actions';
 import { append, insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
+import { StatoMezzo } from '../../../../../shared/enum/stato-mezzo.enum';
 
 
 export interface MezziMarkersStateModel {
@@ -64,6 +65,11 @@ export class MezziMarkersState {
         dispatch(new SetMarkerLoading(true));
         console.log('filtroMezzi', action.filtri);
         this._mezzi.getMezziMarkers(action.areaMappa, action.filtri).subscribe((data: MezzoMarker[]) => {
+                data.map((mezzo: MezzoMarker) => {
+                    if (mezzo.mezzo.stato === StatoMezzo.OperativoPreaccoppiato) {
+                        mezzo.mezzo.stato = StatoMezzo.InSede;
+                    }
+                });
                 dispatch([
                     new SetMezziMarkers(data),
                     new SetMarkerLoading(false)

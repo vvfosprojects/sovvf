@@ -49,41 +49,45 @@ export class MapsButtonsState {
     toggleAnimationButton({ getState, patchState, dispatch }: StateContext<MapsButtonsStateModel>, action: ToggleAnimationButton) {
         let richiesteIsOn = true;
         this.filtroMarkerAttivo$.subscribe((result: string[]) => {
-            if (!result.includes('richiesta') && result.length > 0) {
-                richiesteIsOn = false;
+            if (result) {
+                if (!result.includes('richiesta') && result.length > 0) {
+                    richiesteIsOn = false;
+                }
             }
         });
         const state = getState();
-        if (richiesteIsOn && !action.fix) {
-            if (!state.controlAnimation.toggleStatus) {
+        if (state) {
+            if (richiesteIsOn && !action.fix) {
+                if (!state.controlAnimation.toggleStatus) {
+                    patchState({
+                        controlAnimation: {
+                            toggleStatus: true,
+                            toggleMsg: 'Ripristina animazione',
+                            faIcon: 'fa-play-circle'
+                        },
+                        prevState: true
+                    });
+                } else {
+                    patchState({
+                        controlAnimation: mapsButtonsStateDefaults.controlAnimation,
+                        prevState: mapsButtonsStateDefaults.prevState
+                    });
+                    // dispatch(new ToggleAnimation());
+                }
+            } else if (!richiesteIsOn && !state.prevState) {
                 patchState({
                     controlAnimation: {
                         toggleStatus: true,
-                        toggleMsg: 'Ripristina animazione',
-                        faIcon: 'fa-play-circle'
-                    },
-                    prevState: true
+                        toggleMsg: mapsButtonsStateDefaults.controlAnimation.toggleMsg,
+                        faIcon: mapsButtonsStateDefaults.controlAnimation.faIcon,
+                        disabled: true
+                    }
                 });
-            } else {
+            } else if (!state.prevState) {
                 patchState({
-                    controlAnimation: mapsButtonsStateDefaults.controlAnimation,
-                    prevState: mapsButtonsStateDefaults.prevState
+                    controlAnimation: mapsButtonsStateDefaults.controlAnimation
                 });
-                // dispatch(new ToggleAnimation());
             }
-        } else if (!richiesteIsOn && !state.prevState) {
-            patchState({
-                controlAnimation: {
-                    toggleStatus: true,
-                    toggleMsg: mapsButtonsStateDefaults.controlAnimation.toggleMsg,
-                    faIcon: mapsButtonsStateDefaults.controlAnimation.faIcon,
-                    disabled: true
-                }
-            });
-        } else if (!state.prevState) {
-            patchState({
-                controlAnimation: mapsButtonsStateDefaults.controlAnimation
-            });
         }
     }
 

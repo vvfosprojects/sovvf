@@ -30,6 +30,8 @@ import { ReducerRichiesteEspanse } from '../store/actions/richieste/richieste-es
 import { RichiestaActionInterface } from '../../../shared/interface/richiesta-action.interface';
 import { PermissionFeatures } from '../../../shared/enum/permission-features.enum';
 import { PaginationState } from '../../../shared/store/states/pagination/pagination.state';
+import { ResetFiltriSelezionatiRichieste } from '../store/actions/filterbar/filtri-richieste.actions';
+import { StatoRichiesta } from '../../../shared/enum/stato-richiesta.enum';
 
 @Component({
     selector: 'app-richieste',
@@ -72,6 +74,7 @@ export class RichiesteComponent implements OnInit, OnDestroy {
     loaderRichieste = true;
     listHeightClass = 'm-h-695';
     permessiFeature = PermissionFeatures;
+    statoRichiesta = StatoRichiesta;
 
     subscription = new Subscription();
 
@@ -93,6 +96,7 @@ export class RichiesteComponent implements OnInit, OnDestroy {
 
     ngOnDestroy() {
         this.subscription.unsubscribe();
+        this.store.dispatch(new ResetFiltriSelezionatiRichieste());
         isDevMode() && console.log('Componente Richieste distrutto');
     }
 
@@ -197,14 +201,16 @@ export class RichiesteComponent implements OnInit, OnDestroy {
 
     opacizzaRichieste(ricerca: any): void {
         const result = this.filter.transform(this.richieste, ricerca);
-        if (!(this.richieste.length === result.length) && result.length > 0) {
-            const string = [];
-            result.forEach((c: any) => {
-                string.push(c.id);
-            });
-            this.store.dispatch(new SetMarkerOpachiRichieste(string));
-        } else {
-            this.store.dispatch(new ClearMarkerOpachiRichieste());
+        if (result) {
+            if (!(this.richieste.length === result.length) && result.length > 0) {
+                const string = [];
+                result.forEach((c: any) => {
+                    string.push(c.id);
+                });
+                this.store.dispatch(new SetMarkerOpachiRichieste(string));
+            } else {
+                this.store.dispatch(new ClearMarkerOpachiRichieste());
+            }
         }
     }
 
