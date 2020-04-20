@@ -118,7 +118,7 @@
                 <div class="col-3">
                     <div class="form-group d-inline-block mb-2" style="width:48%; margin-right: 2%">
                         <label for="latitudine">Latitudine</label>
-                        <input id="latitudine" type="text" placeholder="Latitudine" formControlName="latitudine"
+                        <input id="latitudine" type="number" placeholder="Latitudine" formControlName="latitudine"
                                class="form-control" [ngClass]="{ 'is-invalid': submitted && f.latitudine.errors }"/>
                         <div *ngIf="submitted && f.latitudine.errors" class="invalid-feedback">
                             <div *ngIf="f.latitudine.errors.required">La latitudine è richiesta</div>
@@ -126,7 +126,7 @@
                     </div>
                     <div class="form-group d-inline-block mb-2" style="width:48%">
                         <label for="longitudine">Longitudine</label>
-                        <input id="longitudine" type="text" placeholder="Longitudine" formControlName="longitudine"
+                        <input id="longitudine" type="number" placeholder="Longitudine" formControlName="longitudine"
                                class="form-control" [ngClass]="{ 'is-invalid': submitted && f.longitudine.errors }"/>
                         <div *ngIf="submitted && f.longitudine.errors" class="invalid-feedback">
                             <div *ngIf="f.longitudine.errors.required">La longitudine è richiesta</div>
