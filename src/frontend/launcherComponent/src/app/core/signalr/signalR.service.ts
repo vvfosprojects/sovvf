@@ -25,7 +25,6 @@ import {
     SetListaMezziComposizione,
     UpdateMezzoComposizioneScadenzaByCodiceMezzo
 } from '../../features/home/store/actions/composizione-partenza/mezzi-composizione.actions';
-import { SetListaSquadreComposizione } from '../../features/home/store/actions/composizione-partenza/squadre-composizione.actions';
 import { RemoveBoxPartenzaByMezzoId } from '../../features/home/store/actions/composizione-partenza/box-partenza.actions';
 import { InsertRichiestaMarker, UpdateRichiestaMarker } from '../../features/home/store/actions/maps/richieste-markers.actions';
 import { ComposizionePartenzaState } from '../../features/home/store/states/composizione-partenza/composizione-partenza.state';
@@ -33,7 +32,6 @@ import { Composizione } from '../../shared/enum/composizione.enum';
 import { SetListaIdPreAccoppiati, UpdateMezzoPreAccoppiatoComposizione } from '../../features/home/store/actions/composizione-partenza/composizione-veloce.actions';
 import { SetMezziInServizio } from 'src/app/features/home/store/actions/mezzi-in-servizio/mezzi-in-servizio.actions';
 import { ViewComponentState } from '../../features/home/store/states/view/view.state';
-import { GetListeComposizioneAvanzata } from '../../features/home/store/actions/composizione-partenza/composizione-avanzata.actions';
 import { IdPreaccoppiati } from '../../features/home/composizione-partenza/interface/id-preaccoppiati-interface';
 import { UpdateMezzoMarker } from '../../features/home/store/actions/maps/mezzi-markers.actions';
 import {
@@ -53,7 +51,7 @@ import { UpdateRuoliUtenteLoggato } from '../../shared/store/actions/ruoli/ruoli
 import { Navigate } from '@ngxs/router-plugin';
 import { _isAdministrator } from '../../shared/helper/function';
 
-const HUB_URL = environment.signalRHub;
+const HUB_URL = environment.baseUrl + environment.signalRHub;
 const SIGNALR_BYPASS = !environment.signalR;
 
 @Injectable({
