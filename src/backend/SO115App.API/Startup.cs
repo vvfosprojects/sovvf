@@ -46,7 +46,7 @@ namespace SO115App.API
     public class Startup
     {
         private readonly Container container = new Container();
-        private readonly string MyAllowSpecificOrigins = "SO115Web";
+        private readonly string MyAllowSpecificOrigins = "AllowSpecificOrigin";
 
         public Startup(IConfiguration configuration)
         {
