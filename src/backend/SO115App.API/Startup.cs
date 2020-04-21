@@ -46,7 +46,7 @@ namespace SO115App.API
     public class Startup
     {
         private readonly Container container = new Container();
-        private readonly string MyAllowSpecificOrigins = "https://sovvf-test.dipvvf.it";
+        private readonly string MyAllowSpecificOrigins = "SO115Web";
 
         public Startup(IConfiguration configuration)
         {
@@ -66,7 +66,8 @@ namespace SO115App.API
                 options.AddPolicy(MyAllowSpecificOrigins,
                 builder =>
                 {
-                    builder
+                    builder.WithOrigins("https://sovvf-test.dipvvf.it")
+                        .SetIsOriginAllowed((host) => true)
                         .AllowAnyOrigin()
                         .AllowAnyMethod()
                         .AllowAnyHeader();
