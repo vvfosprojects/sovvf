@@ -46,7 +46,7 @@ namespace SO115App.API
     public class Startup
     {
         private readonly Container container = new Container();
-        private readonly string MyAllowSpecificOrigins = "https://sovvf-test.dipvvf.it/";
+        private readonly string MyAllowSpecificOrigins = "https://sovvf-test.dipvvf.it";
 
         public Startup(IConfiguration configuration)
         {
