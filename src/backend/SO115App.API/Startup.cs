@@ -79,7 +79,7 @@ namespace SO115App.API
             services.AddMemoryCache();
             services.AddSingleton<GetMezziUtilizzabili>();
             services.AddSingleton<GetListaSquadre>();
-            services.AddMvcCore().AddApiExplorer().AddNewtonsoftJson();
+            //services.AddMvcCore().AddApiExplorer().AddNewtonsoftJson();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("SO115", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "SO115", Version = "v1.0" });
