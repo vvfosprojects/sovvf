@@ -66,9 +66,7 @@ namespace SO115App.API
                 options.AddPolicy(MyAllowSpecificOrigins,
                 builder =>
                 {
-                    builder.WithOrigins("https://sovvf-test.dipvvf.it")
-                        .SetIsOriginAllowed((host) => true)
-                        .AllowAnyOrigin()
+                    builder.AllowAnyOrigin()
                         .AllowAnyMethod()
                         .AllowAnyHeader();
                 });
