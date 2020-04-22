@@ -3,7 +3,7 @@ export const environment = {
     fakeProvider: false,
     signalRHub: '/NotificationHub',
     baseUrl: 'http://localhost:4200',
-    signalR: true,
+    signalR: false,
     apiUrl: {
         welcome: '/api/Welcome',
         markers: '/api/Marker',
