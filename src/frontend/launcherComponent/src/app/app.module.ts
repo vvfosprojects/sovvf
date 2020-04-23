@@ -64,6 +64,7 @@ import { UserServiceFake } from './core/auth/_services/user.service.fake';
 import { PermessiState } from './shared/store/states/permessi/permessi.state';
 import { NgxsResetPluginModule } from 'ngxs-reset-plugin';
 import { RuoliUtenteLoggatoState } from './shared/store/states/ruoli-utente-loggato/ruoli-utente-loggato.state';
+import { NewVersionState } from './shared/store/states/nuova-versione/nuova-versione.state';
 
 
 @NgModule({
@@ -94,7 +95,7 @@ import { RuoliUtenteLoggatoState } from './shared/store/states/ruoli-utente-logg
             preventDuplicates: true,
         }),
         NgxsModule.forRoot(
-            [AppState, UtenteState, SignalRState, RuoliUtenteLoggatoState, PermessiState, ToastrState, SediTreeviewState, PaginationState, LoadingState],
+            [AppState, NewVersionState, UtenteState, SignalRState, RuoliUtenteLoggatoState, PermessiState, ToastrState, SediTreeviewState, PaginationState, LoadingState],
             { developmentMode: !environment.production }
         ),
         NgxsRouterPluginModule.forRoot(),

@@ -11,6 +11,7 @@ import { TurnoCalendario } from './turno/turno-calendario.model';
 import { calcolaTurnoCalendario } from 'src/app/shared/helper/calcola-turno';
 import { SetTurnoCalendario } from './store/actions/turno/turno.actions';
 import { AuthenticationService } from '../../core/auth/_services';
+import { NewVersionState } from '../../shared/store/states/nuova-versione/nuova-versione.state';
 
 @Component({
     selector: 'app-navbar',
@@ -33,6 +34,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
     turnoCalendario: TurnoCalendario;
     @Select(TurnoState.turnoExtra) turnoExtra$: Observable<TurnoExtra>;
     turnoExtra: TurnoExtra;
+    @Select(NewVersionState.newVersion) newVersion$: Observable<boolean>;
+    newVersion: boolean;
 
     @Select(SediTreeviewState.listeSediNavbarLoaded) listeSediNavbarLoaded$: Observable<boolean>;
 
@@ -51,6 +54,9 @@ export class NavbarComponent implements OnInit, OnDestroy {
             if (turnoExtra) {
                 this.colorButton = 'btn-danger';
             }
+        }));
+        this.subscription.add(this.newVersion$.subscribe((newVersion: boolean) => {
+            this.newVersion = newVersion;
         }));
     }
 

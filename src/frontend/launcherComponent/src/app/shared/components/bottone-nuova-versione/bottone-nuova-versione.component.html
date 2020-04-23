@@ -1,4 +1,4 @@
-<button class="btn btn-outline-primary" (click)="onGetNewVersion()">
-  <i class="fa fa-info-circle mr-1"></i>
-  Nuova versione disponibile
+<button class="btn button-nuova-versione" [ngClass]="{'btn-block': btnBlock}" (click)="onGetNewVersion()">
+    <i class="fa fa-refresh mr-2"></i>
+    <span class="font-weight-bold">Nuova versione disponibile</span>
 </button>
