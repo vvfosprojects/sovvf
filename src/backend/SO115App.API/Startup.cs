@@ -66,8 +66,7 @@ namespace SO115App.API
                 options.AddPolicy(MyAllowSpecificOrigins,
                 builder =>
                 {
-                    builder.AllowAnyOrigin()
-                        .AllowAnyMethod()
+                    builder.AllowAnyMethod()
                         .AllowAnyHeader();
                 });
             });
