@@ -6,8 +6,8 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "build-prod": "ng build --prod --configuration=production --aot --base-href='./'",
-    "build-prod-test": "ng build --prod --configuration=production-test --aot --base-href='./'",
+    "build-prod": "ng build --configuration=production --base-href='./'",
+    "build-prod-test": "ng build --configuration=production-test --base-href='./'",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
@@ -17,7 +17,7 @@
     "avvia4": "ng serve --proxy-config proxy.conf4.js --host 0.0.0.0 --disable-host-check",
     "avvia5": "ng serve --proxy-config proxy.conf5.js --host 0.0.0.0 --disable-host-check",
     "lite-server": "lite-server --baseDir=\"./dist/SO115\"",
-    "watch-serve": "ng build --aot --watch --prod"
+    "watch-serve": "ng build --watch --configuration=production-watch"
   },
   "private": true,
   "dependencies": {
