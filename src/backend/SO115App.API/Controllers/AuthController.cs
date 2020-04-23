@@ -20,7 +20,6 @@
 using System;
 using System.Threading.Tasks;
 using CQRS.Queries;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneUtente.LogIn;
@@ -30,7 +29,6 @@ namespace SO115App.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [EnableCors("AllowSpecificOrigin")]
     public class AuthController : ControllerBase
     {
         private readonly IQueryHandler<LogInQuery, LogInResult> _handler;
