@@ -37,6 +37,9 @@ export class NewVersionState {
 
     @Action(GetNewVersion)
     getNewVersion({ patchState }: StateContext<NewVersionStateModel>) {
-        // TODO: logica per prendere la nuova versione disponibile
+        patchState({
+            newVersion: false
+        });
+        window.location.reload();
     }
 }

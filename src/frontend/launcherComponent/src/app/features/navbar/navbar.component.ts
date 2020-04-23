@@ -12,6 +12,7 @@ import { calcolaTurnoCalendario } from 'src/app/shared/helper/calcola-turno';
 import { SetTurnoCalendario } from './store/actions/turno/turno.actions';
 import { AuthenticationService } from '../../core/auth/_services';
 import { NewVersionState } from '../../shared/store/states/nuova-versione/nuova-versione.state';
+import { GetNewVersion } from '../../shared/store/actions/nuova-versione/nuova-versione.actions';
 
 @Component({
     selector: 'app-navbar',
@@ -40,8 +41,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
     @Select(SediTreeviewState.listeSediNavbarLoaded) listeSediNavbarLoaded$: Observable<boolean>;
 
     constructor(private store: Store,
-        private authenticationService: AuthenticationService,
-        private _clock: ClockService) {
+                private authenticationService: AuthenticationService,
+                private _clock: ClockService) {
         this.time = new Date();
         this.clock$ = this._clock.getClock();
         this.subscription.add(this.clock$.subscribe((tick: Date) => {
@@ -88,6 +89,10 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
     setTurno() {
         this.store.dispatch(new SetTurnoCalendario());
+    }
+
+    getNewVersion() {
+        this.store.dispatch(new GetNewVersion());
     }
 
     logout() {
