@@ -16,6 +16,8 @@ using System.Threading.Tasks;
 using static SO115App.API.Models.Classi.Condivise.Squadra;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Personale;
+using SO115App.Models.Classi.Utility;
+using System.IO;
 
 namespace SO115App.ExternalAPI.Fake.ImportOracle.SquadreMapper
 {
@@ -54,6 +56,8 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.SquadreMapper
 
             foreach (string CodSede in ListaCodiciSedi)
             {
+                #region LEGGO DA API ESTERNA
+
                 _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("test");
                 var response = await _client.GetAsync($"{_configuration.GetSection("OracleImplementation").GetSection(CodSede).GetSection("UrlAPISquadre").Value}/GetListaSquadre?CodSede={CodSede}").ConfigureAwait(false);
                 response.EnsureSuccessStatusCode();
@@ -61,6 +65,8 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.SquadreMapper
 
                 string data = await content.ReadAsStringAsync().ConfigureAwait(false);
                 List<ORASquadre> ListaSquadreOracle = JsonConvert.DeserializeObject<List<ORASquadre>>(data);
+
+                #endregion LEGGO DA API ESTERNA
 
                 var GetListaPersonaleSquadre = new GetListaPersonaleSquadre(_client, _configuration);
                 var ListaPersonaleSquadre = await GetListaPersonaleSquadre.Get(CodSede);
