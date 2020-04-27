@@ -39,11 +39,6 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.Tipologie
         {
             Log.Debug("Inizio elaborazione Tipologie Handler");
 
-            List<string> listaSedi = new List<string>()
-            {
-                query.CodSede
-            };
-
             var ListaTipologie = _getTipologie.Get();
 
             Log.Debug("Fine elaborazione Tipologie Handler");

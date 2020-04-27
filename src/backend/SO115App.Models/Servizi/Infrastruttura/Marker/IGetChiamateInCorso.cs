@@ -18,12 +18,13 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using System.Collections.Generic;
+using SO115App.API.Models.Classi.Organigramma;
 using SO115App.Models.Classi.Marker;
 
 namespace SO115App.Models.Servizi.Infrastruttura.Marker
 {
     public interface IGetChiamateInCorso
     {
-        List<ChiamateInCorso> Get();
+        List<ChiamateInCorso> Get(List<PinNodo> pinNodi);
     }
 }
