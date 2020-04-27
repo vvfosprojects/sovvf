@@ -22,6 +22,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Connections;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.ViewComponents;
 using Microsoft.Extensions.Configuration;
@@ -102,7 +103,10 @@ namespace SO115App.API
                         ValidateAudience = false
                     };
                 });
-            services.AddSignalR();
+            services.AddSignalR().AddHubOptions<NotificationHub>(options =>
+            {
+                options.EnableDetailedErrors = true;
+            });
             IntegrateSimpleInjector(services);
         }
 
@@ -144,7 +148,12 @@ namespace SO115App.API
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapHub<NotificationHub>("/NotificationHub");
+                endpoints.MapHub<NotificationHub>("/NotificationHub", options =>
+                {
+                    options.Transports =
+                        HttpTransportType.WebSockets |
+                        HttpTransportType.LongPolling;
+                });
                 endpoints.MapControllers();
             });
 
