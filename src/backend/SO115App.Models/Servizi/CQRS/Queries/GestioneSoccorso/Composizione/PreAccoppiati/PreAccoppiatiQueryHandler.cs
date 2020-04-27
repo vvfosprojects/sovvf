@@ -19,6 +19,7 @@
 //-----------------------------------------------------------------------
 using System.Collections.Generic;
 using CQRS.Queries;
+using Serilog;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneMezzi;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneSquadre;
 using SO115App.Models.Servizi.Infrastruttura.GetComposizioneSquadre;
@@ -45,7 +46,11 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
         /// <returns>Elenco dei mezzi disponibili</returns>
         public PreAccoppiatiResult Handle(PreAccoppiatiQuery query)
         {
+            Log.Debug("Inizio elaborazione Lista Preaccoppiati Composizione Handler");
+
             var ListapreAccoppiati = _iGetPreAccoppiati.Get(query);
+
+            Log.Debug("Fine elaborazione Lista Preaccoppiati Composizione Handler");
 
             return new PreAccoppiatiResult()
             {

@@ -18,6 +18,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Queries;
+using Serilog;
 using SO115App.API.Models.Classi.Organigramma;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes;
 using SO115App.Models.Servizi.Infrastruttura.Box;
@@ -48,6 +49,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Disponibilit
         /// <returns>Elenco dei mezzi disponibili</returns>
         public BoxRichiesteResult Handle(BoxRichiesteQuery query)
         {
+            Log.Debug("Inizio elaborazione Box Richieste Handler");
+
             var listaSediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
             var pinNodi = new List<PinNodo>();
 
@@ -63,6 +66,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Disponibilit
 
             // preparazione del DTO
             var boxes = _iGetBox.Get(pinNodi.ToHashSet());
+
+            Log.Debug("Fine elaborazione Box Richieste Handler");
 
             return new BoxRichiesteResult()
             {

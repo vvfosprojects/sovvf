@@ -18,6 +18,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Queries;
+using Serilog;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneMezzi;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneSquadre;
 using SO115App.Models.Classi.Composizione;
@@ -47,6 +48,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
         /// <returns>Elenco dei mezzi disponibili</returns>
         public ComposizionePartenzaAvanzataResult Handle(ComposizionePartenzaAvanzataQuery query)
         {
+            Log.Debug("Inizio elaborazione Composizione partenza avanzata Handler");
+
             var composizioneMezziquery = new ComposizioneMezziQuery
             {
                 Filtro = query.Filtro,
@@ -64,6 +67,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                 ComposizioneMezzi = this._composizioneMezzihandler.Handle(composizioneMezziquery).ComposizioneMezzi,
                 ComposizioneSquadre = this._composizioneSquadrehandler.Handle(composizioneSquadreQuery).ComposizioneSquadre,
             };
+
+            Log.Debug("Fine elaborazione Composizione partenza avanzata Handler");
 
             return new ComposizionePartenzaAvanzataResult()
             {

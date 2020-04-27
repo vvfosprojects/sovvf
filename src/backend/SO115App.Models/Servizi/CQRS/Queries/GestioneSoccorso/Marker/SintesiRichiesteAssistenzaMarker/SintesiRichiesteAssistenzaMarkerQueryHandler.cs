@@ -18,6 +18,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Queries;
+using Serilog;
 using SO115App.Models.Servizi.Infrastruttura.Marker;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.Marker.SintesiRichiesteAssistenzaMarker
@@ -41,7 +42,11 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.Marker.SintesiRichiesteAssist
         /// <returns>Il DTO di uscita della query</returns>
         public SintesiRichiesteAssistenzaMarkerResult Handle(SintesiRichiesteAssistenzaMarkerQuery query)
         {
+            Log.Debug("Inizio elaborazione Lista Sintesi Richieste Marker Handler");
+
             var sintesiRichiestaMarker = _iGetListaRichieste.GetListaRichiesteMarker(query);
+
+            Log.Debug("Fine elaborazione Lista Sintesi Richieste Marker Handler");
 
             return new SintesiRichiesteAssistenzaMarkerResult()
             {

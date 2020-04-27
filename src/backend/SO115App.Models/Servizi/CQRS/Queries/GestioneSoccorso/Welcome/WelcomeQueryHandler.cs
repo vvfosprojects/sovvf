@@ -31,6 +31,7 @@ using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichies
 using SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.Tipologie;
 using SO115App.API.Models.Classi.Organigramma;
 using System.Linq;
+using Serilog;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
 {
@@ -77,6 +78,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
         /// <returns>Tutti i parametri iniziali della Home Page</returns>
         public WelcomeResult Handle(WelcomeQuery query)
         {
+            Log.Debug("Inizio elaborazione Welcome Handler");
+
             var boxMezziQuery = new BoxMezziQuery()
             {
                 CodiciSede = query.CodiceSede
@@ -151,6 +154,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
                     InfoNue = _getConteggioSchedeHandler.Handle(getConteggioSchede).InfoNue,
                     Tipologie = _tipologieQueryHandler.Handle(tipologie).Tipologie
                 };
+
+                Log.Debug("Fine elaborazione Welcome Handler");
 
                 return new WelcomeResult()
                 {
