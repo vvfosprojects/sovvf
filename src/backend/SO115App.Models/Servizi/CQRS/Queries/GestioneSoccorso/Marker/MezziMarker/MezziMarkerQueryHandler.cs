@@ -19,6 +19,7 @@
 //-----------------------------------------------------------------------
 using System.Collections.Generic;
 using CQRS.Queries;
+using Serilog;
 using SO115App.API.Models.Classi.Marker;
 using SO115App.Models.Servizi.Infrastruttura.Marker;
 
@@ -43,7 +44,11 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.Marker.MezziMarker
         /// <returns>Il DTO di uscita della query</returns>
         public MezziMarkerResult Handle(MezziMarkerQuery query)
         {
+            Log.Debug("Inizio elaborazione Lista Mezzi Marker Handler");
+
             var mezziMarker = _iGetMezziMarker.GetListaMezziMarker(query.Filtro);
+
+            Log.Debug("Fine elaborazione Lista Mezzi Marker Handler");
 
             return new MezziMarkerResult()
             {

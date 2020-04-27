@@ -18,6 +18,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Queries;
+using Serilog;
 using SO115App.API.Models.Classi.Soccorso.Eventi;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
@@ -72,6 +73,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
         /// <returns>Il DTO di uscita della query</returns>
         public ListaEventiResult Handle(ListaEventiQuery query)
         {
+            Log.Debug("Inizio elaborazione Lista Eventi Handler");
+
             var eventi = _iEventi.Get(query);
             var eventiMapper = new List<MapperEventoSuEventoGui>();
             foreach (var evento in eventi)
@@ -86,6 +89,9 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
                 };
                 eventiMapper.Add(eventoMapper);
             }
+
+            Log.Debug("Fine elaborazione Lista Eventi Handler");
+
             return new ListaEventiResult()
             {
                 Eventi = eventiMapper

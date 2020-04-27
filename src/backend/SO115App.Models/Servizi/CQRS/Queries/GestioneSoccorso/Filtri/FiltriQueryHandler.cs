@@ -18,6 +18,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Queries;
+using Serilog;
 using SO115App.Models.Servizi.Infrastruttura.GetFiltri;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
 using System.Linq;
@@ -70,9 +71,13 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.Filtri
         /// <returns>Il DTO di uscita della query</returns>
         public FiltriResult Handle(FiltriQuery query)
         {
+            Log.Debug("Inizio elaborazione Lista Filtri Handler");
+
             Classi.Filtri.Filtri filtri = _ifiltri.Get();
 
             filtri.Distaccamenti = _getDistaccamenti.GetListaDistaccamenti(query.Filtro.UnitaOperative.ToList());
+
+            Log.Debug("Fine elaborazione Lista Filtri Handler");
 
             return new FiltriResult()
             {
