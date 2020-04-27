@@ -1,18 +1,14 @@
 ﻿using Newtonsoft.Json;
 using SO115App.API.DataFake.Classi;
-using SO115App.Models.Classi.MongoDTO;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace SO115App.API.DataFake.Services
 {
     public class GetListaMezziUtilizzabili
     {
-
-        public List<ListaMezziUtilizzabili> Get(string CodComando) 
+        public List<ListaMezziUtilizzabili> Get(string CodComando)
         {
             var filepath = Costanti.ListaMezzi;
             string json;
@@ -24,8 +20,6 @@ namespace SO115App.API.DataFake.Services
             var listaMezzi = JsonConvert.DeserializeObject<List<ListaMezziUtilizzabili>>(json);
 
             return listaMezzi.FindAll(x => x.Sede.Equals(CodComando)).ToList();
-
         }
-
     }
 }
