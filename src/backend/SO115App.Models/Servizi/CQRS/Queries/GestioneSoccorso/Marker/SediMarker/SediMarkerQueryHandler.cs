@@ -19,6 +19,7 @@
 //-----------------------------------------------------------------------
 using System.Collections.Generic;
 using CQRS.Queries;
+using Serilog;
 using SO115App.API.Models.Classi.Marker;
 using SO115App.Models.Servizi.Infrastruttura.Marker;
 
@@ -43,7 +44,11 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.Marker.SediMarker
         /// <returns>Il DTO di uscita della query</returns>
         public SediMarkerResult Handle(SediMarkerQuery query)
         {
+            Log.Debug("Inizio elaborazione Lista Sedi Marker Handler");
+
             var sintesiSediMarker = _iGetSediMarker.GetListaSediMarker(query.Filtro);
+
+            Log.Debug("Fine elaborazione Lista Sedi Marker Handler");
 
             return new SediMarkerResult()
             {

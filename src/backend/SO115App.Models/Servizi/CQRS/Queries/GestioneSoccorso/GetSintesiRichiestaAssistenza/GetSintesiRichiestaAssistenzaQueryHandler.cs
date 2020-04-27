@@ -18,6 +18,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Queries;
+using Serilog;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
@@ -51,8 +52,12 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GetSintesiRichie
         /// <returns>Il DTO di uscita della query</returns>
         public GetSintesiRichiestaAssistenzaResult Handle(GetSintesiRichiestaAssistenzaQuery query)
         {
+            Log.Debug("Inizio elaborazione Sintesi Richiesta by Codice Richiesta Handler");
+
             // estrae la richieste di assistenza indicata
             var sintesiAssistenza = _getRichiestaAssistenzaById.GetSintesi(query.CodiceRichiesta);
+
+            Log.Debug("Fine elaborazione Sintesi Richiesta by Codice Richiesta Handler");
 
             return new GetSintesiRichiestaAssistenzaResult()
             {

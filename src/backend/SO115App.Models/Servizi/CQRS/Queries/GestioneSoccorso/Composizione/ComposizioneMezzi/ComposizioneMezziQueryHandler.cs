@@ -21,6 +21,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using CQRS.Queries;
+using Serilog;
 using SO115App.Models.Servizi.Infrastruttura.GetComposizioneMezzi;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneMezzi
@@ -44,8 +45,11 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
         /// <returns>Elenco dei mezzi disponibili</returns>
         public ComposizioneMezziResult Handle(ComposizioneMezziQuery query)
         {
+            Log.Debug("Inizio elaborazione Lista Mezzi per Composizione Handler");
             // preparazione del DTO
             var composizioneMezzi = _iGetComposizioneMezzi.Get(query);
+
+            Log.Debug("Fine elaborazione Lista Mezzi per Composizione Handler");
 
             return new ComposizioneMezziResult()
             {

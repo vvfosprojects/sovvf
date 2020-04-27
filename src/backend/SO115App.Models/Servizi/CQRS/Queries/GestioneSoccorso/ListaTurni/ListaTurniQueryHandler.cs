@@ -1,4 +1,5 @@
 ﻿using CQRS.Queries;
+using Serilog;
 using SO115App.Models.Servizi.Infrastruttura.Turni;
 
 namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.ListaTurni
@@ -22,7 +23,11 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.ListaTurni
         /// <returns>Il DTO di uscita della query</returns>
         public ListaTurniResult Handle(ListaTurniQuery query)
         {
+            Log.Debug("Inizio elaborazione Lista Turni Handler");
+
             var listaTurni = _getTurno.Get();
+
+            Log.Debug("Fine elaborazione Lista Turni Handler");
 
             return new ListaTurniResult()
             {

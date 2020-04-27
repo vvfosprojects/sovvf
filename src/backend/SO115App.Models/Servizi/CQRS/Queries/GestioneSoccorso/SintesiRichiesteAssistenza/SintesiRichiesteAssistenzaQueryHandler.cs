@@ -19,6 +19,7 @@
 //-----------------------------------------------------------------------
 using AutoMapper;
 using CQRS.Queries;
+using Serilog;
 using SO115App.API.Models.Classi.Organigramma;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
@@ -76,7 +77,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichi
         ///   Interfaccia che restituisce l'elenco delle Sintesi delle Richieste
         /// </param>
 
-        public SintesiRichiesteAssistenzaQueryHandler(ICercaRichiesteAssistenza cercaRichiesteAssistenza, IGetListaSintesi iGetListaSintesi, 
+        public SintesiRichiesteAssistenzaQueryHandler(ICercaRichiesteAssistenza cercaRichiesteAssistenza, IGetListaSintesi iGetListaSintesi,
             IMapper mapper, IGetUtenteById getUtenteById, IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative)
         {
             _cercaRichiesteAssistenza = cercaRichiesteAssistenza;
@@ -93,6 +94,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichi
         /// <returns>Il DTO di uscita della query</returns>
         public SintesiRichiesteAssistenzaResult Handle(SintesiRichiesteAssistenzaQuery query)
         {
+            Log.Debug("Inizio elaborazione Lista Sintesi Richieste Assistenza Handler");
+
             var listaSediUtenteAbilitate = _getUtenteById.GetUtenteByCodice(query.Filtro.idOperatore).ListaUnitaOperativeAbilitate.ToHashSet();
             var listaSediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
             var pinNodi = new List<PinNodo>();
@@ -115,6 +118,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichi
             {
                 listaSintesiPaginata = listaSintesi.Skip((query.Filtro.Page - 1) * query.Filtro.PageSize).Take(query.Filtro.PageSize).ToList();
             }
+
+            Log.Debug("Fine elaborazione Lista Sintesi Richieste Assistenza Handler");
 
             return new SintesiRichiesteAssistenzaResult()
             {
