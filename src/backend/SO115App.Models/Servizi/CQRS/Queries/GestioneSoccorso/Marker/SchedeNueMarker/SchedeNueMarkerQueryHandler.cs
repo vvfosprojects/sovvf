@@ -18,6 +18,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Queries;
+using Serilog;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
 
 namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.Marker.SchedeNueMarker
@@ -41,7 +42,11 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.Marker.SchedeNue
         /// <returns>Il DTO di uscita della query</returns>
         public SchedeNueMarkerResult Handle(SchedeNueMarkerQuery query)
         {
+            Log.Debug("Inizio elaborazione Lista Schede Nue Marker Handler");
+
             var listaSchedeMarker = _iGetSchedeMarker.Get(query.Filtro, query.Filtro.CodiceSede[0]);
+
+            Log.Debug("Inizio elaborazione Lista Schede Nue Marker Handler");
 
             return new SchedeNueMarkerResult()
             {

@@ -78,12 +78,31 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
                 string nomeCache = "M_" + CodSede.Replace(".", "");
                 if (!_memoryCache.TryGetValue(nomeCache, out listaMezziBySede))
                 {
-                    _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("test");
-                    var response = await _client.GetAsync($"{_configuration.GetSection("DataFakeImplementation").GetSection("UrlAPIMezzi").Value}/GetListaMezziByCodComando?CodComando={CodSede}").ConfigureAwait(false);
-                    response.EnsureSuccessStatusCode();
-                    using HttpContent content = response.Content;
-                    var data = await content.ReadAsStringAsync().ConfigureAwait(false);
-                    var ListaMezziSede = JsonConvert.DeserializeObject<List<MezzoFake>>(data);
+                    #region LEGGO DA API ESTERNA
+
+                    //_client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("test");
+                    //var response = await _client.GetAsync($"{_configuration.GetSection("DataFakeImplementation").GetSection("UrlAPIMezzi").Value}/GetListaMezziByCodComando?CodComando={CodSede}").ConfigureAwait(false);
+                    //response.EnsureSuccessStatusCode();
+                    //using HttpContent content = response.Content;
+                    //var data = await content.ReadAsStringAsync().ConfigureAwait(false);
+                    //var ListaMezziSede = JsonConvert.DeserializeObject<List<MezzoFake>>(data);
+
+                    #endregion LEGGO DA API ESTERNA
+
+                    #region LEGGO DA JSON FAKE
+
+                    var filepath = Costanti.ListaMezzi;
+                    string json;
+                    using (var r = new StreamReader(filepath))
+                    {
+                        json = r.ReadToEnd();
+                    }
+                    var listaMezzi = JsonConvert.DeserializeObject<List<MezzoFake>>(json);
+                    listaMezzi.FindAll(x => x.Sede.Equals(CodSede)).ToList();
+                    var ListaMezziSede = listaMezzi.FindAll(x => x.Sede.Equals(CodSede)).ToList();
+
+                    #endregion LEGGO DA JSON FAKE
+
                     List<Mezzo> listaMezziBySedeAppo = new List<Mezzo>();
                     foreach (MezzoFake mezzoFake in ListaMezziSede)
                     {

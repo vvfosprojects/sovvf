@@ -18,6 +18,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Queries;
+using Serilog;
 using SO115App.API.Models.Classi.NavBar;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.GestioneRuolo;
 using SO115App.Models.Servizi.Infrastruttura.NavBar;
@@ -46,11 +47,15 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Navbar
         /// <returns>Elenco dei mezzi disponibili</returns>
         public NavbarResult Handle(NavbarQuery query)
         {
+            Log.Debug("Inizio elaborazione Informazioni Navbar Handler");
+
             var navbars = new SO115App.API.Models.Classi.NavBar.Navbar
             {
                 ListaSedi = _alberaturaUO.ListaSediAlberata(),
                 RuoliUtLoggato = _getRuoliById.Get(query.IdUtente)
             };
+
+            Log.Debug("Fine elaborazione Informazioni Navbar Handler");
 
             return new NavbarResult()
             {

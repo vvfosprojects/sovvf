@@ -18,6 +18,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Queries;
+using Serilog;
 using SO115App.Models.Servizi.Infrastruttura.Box;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes
@@ -41,8 +42,12 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes
         /// <returns>Elenco dei mezzi disponibili</returns>
         public BoxMezziResult Handle(BoxMezziQuery query)
         {
+            Log.Debug("Inizio elaborazione Box Mezzi Handler");
+
             // preparazione del DTO
             var boxes = _iGetbox.Get(query.CodiciSede);
+
+            Log.Debug("Fine elaborazione Box Mezzi Handler");
 
             return new BoxMezziResult()
             {
