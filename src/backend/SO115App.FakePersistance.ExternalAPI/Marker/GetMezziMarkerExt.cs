@@ -66,7 +66,7 @@ namespace SO115App.ExternalAPI.Fake.Marker
                 listaMezziMarker.Add(mezzoMarker);
             }
 
-            if (filtroAreaMappa == null) return listaMezziMarker;
+            if (filtroAreaMappa.BottomLeft == null) return listaMezziMarker;
 
             listaMezziFilter.AddRange(listaMezziMarker.Where(mezzo => mezzo.Mezzo.Coordinate.Latitudine >= filtroAreaMappa.BottomLeft.Latitudine && mezzo.Mezzo.Coordinate.Latitudine <= filtroAreaMappa.TopRight.Latitudine && mezzo.Mezzo.Coordinate.Longitudine >= filtroAreaMappa.BottomLeft.Longitudine && mezzo.Mezzo.Coordinate.Longitudine <= filtroAreaMappa.TopRight.Longitudine));
 

@@ -19,6 +19,7 @@
 //-----------------------------------------------------------------------
 using System.Collections.Generic;
 using CQRS.Queries;
+using Serilog;
 using SO115App.Models.Servizi.Infrastruttura.GetComposizioneSquadre;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneSquadre
@@ -42,9 +43,11 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
         /// <returns>Elenco dei mezzi disponibili</returns>
         public ComposizioneSquadreResult Handle(ComposizioneSquadreQuery query)
         {
+            Log.Debug("Inizio elaborazione Lista Squadre Composizione Handler");
+
             List<Classi.Composizione.ComposizioneSquadre> composizioneSquadre = _iGetComposizioneSquadre.Get(query);
-            // preparazione del DTO
-            //composizioneSquadre = CaricaComposizioneSquadre(query);
+
+            Log.Debug("Fine elaborazione Lista Squadre Composizione Handler");
 
             return new ComposizioneSquadreResult()
             {

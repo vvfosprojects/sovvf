@@ -29,6 +29,6 @@ export const environment = {
         personaleVVF: '/api/PersonaleVVF',
         auth: '/api/Auth',
         navbar: '/api/Navbar',
-        meteo: 'http://api.openweathermap.org/data/2.5/weather?'
+        meteo: 'https://api.openweathermap.org/data/2.5/weather?'
     }
 };

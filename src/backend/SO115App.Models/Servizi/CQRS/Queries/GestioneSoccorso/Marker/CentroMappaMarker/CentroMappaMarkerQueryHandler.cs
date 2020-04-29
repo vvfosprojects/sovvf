@@ -19,6 +19,7 @@
 //-----------------------------------------------------------------------
 using System.Collections.Generic;
 using CQRS.Queries;
+using Serilog;
 using SO115App.API.Models.Classi.Geo;
 using SO115App.API.Models.Classi.Marker;
 using SO115App.Models.Servizi.Infrastruttura.Marker;
@@ -44,7 +45,11 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.Marker.CentroMappaMarker
         /// <returns>Il DTO di uscita della query</returns>
         public CentroMappaMarkerResult Handle(CentroMappaMarkerQuery query)
         {
+            Log.Debug("Inizio elaborazione Centro Mappa Handler");
+
             CentroMappa centroMappaMarker = _iGetCentroMappaMarker.GetCentroMappaMarker(query.CodiceSede[0]);
+
+            Log.Debug("Fine elaborazione Centro Mappa Handler");
 
             return new CentroMappaMarkerResult()
             {

@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="IGetChiamateInCorso.cs" company="CNVVF">
+// <copyright file="ListaEventiResult.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -18,13 +18,20 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using System.Collections.Generic;
-using SO115App.API.Models.Classi.Organigramma;
-using SO115App.Models.Classi.Marker;
+using SO115App.API.Models.Classi.Condivise;
+using SO115App.Models.Classi.ListaMezziInServizio;
+using SO115App.Models.Servizi.CustomMapper;
 
-namespace SO115App.Models.Servizi.Infrastruttura.Marker
+namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneDB
 {
-    public interface IGetChiamateInCorso
+    /// <summary>
+    ///   DTO di output
+    /// </summary>
+    public class ResetDBResult
     {
-        List<ChiamateInCorso> Get(List<PinNodo> pinNodi);
+        /// <summary>
+        ///   La sintesi delle richieste di assistenza
+        /// </summary>
+        public bool risultato { get; set; }
     }
 }

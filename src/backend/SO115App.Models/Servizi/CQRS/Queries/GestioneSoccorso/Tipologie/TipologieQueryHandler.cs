@@ -18,6 +18,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Queries;
+using Serilog;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Tipologie;
 using System;
@@ -36,15 +37,15 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.Tipologie
 
         public TipologieResult Handle(TipologieQuery query)
         {
+            Log.Debug("Inizio elaborazione Tipologie Handler");
 
-            List<string> listaSedi = new List<string>()
-            {
-                query.CodSede
-            };
+            var ListaTipologie = _getTipologie.Get();
+
+            Log.Debug("Fine elaborazione Tipologie Handler");
 
             return new TipologieResult
             {
-                Tipologie = _getTipologie.Get()
+                Tipologie = ListaTipologie
             };
         }
     }

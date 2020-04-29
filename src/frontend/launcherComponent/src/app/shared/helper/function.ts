@@ -161,7 +161,7 @@ export function calcolaActionSuggeritaMezzo(stato: StatoMezzo) {
         case StatoMezzo.InRientro:
             actionSuggerita = StatoMezzoActions.Rientrato;
             break;
-        case StatoMezzo.InSede:
+        case StatoMezzo.InSede || StatoMezzo.Rientrato:
             actionSuggerita = StatoMezzoActions.InViaggio;
             break;
     }
@@ -188,6 +188,9 @@ export function statoMezzoColor(stato: StatoMezzo) {
     let _returnColor = '';
     switch (stato) {
         case StatoMezzo.InSede:
+            _returnColor = 'success';
+            break;
+        case StatoMezzo.Rientrato:
             _returnColor = 'success';
             break;
         case StatoMezzo.InViaggio:
@@ -229,6 +232,9 @@ export function statoMezzoBorderClass(stato: StatoMezzo) {
     let _returnClass = '';
     switch (stato) {
         case StatoMezzo.InSede:
+            _returnClass = 'status_border_inSede';
+            break;
+        case StatoMezzo.Rientrato:
             _returnClass = 'status_border_inSede';
             break;
         case StatoMezzo.InViaggio:

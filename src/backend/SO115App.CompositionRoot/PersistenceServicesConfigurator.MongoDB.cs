@@ -3,9 +3,11 @@ using Persistence.MongoDB;
 using SimpleInjector;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.Box;
+using SO115App.Models.Servizi.Infrastruttura.GestioneDB;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.GestioneStatoOperativoSquadra;
 using SO115App.Persistence.MongoDB;
+using SO115App.Persistence.MongoDB.GestioneDB;
 using SO115App.Persistence.MongoDB.GestioneInterventi;
 using SO115App.Persistence.MongoDB.GestioneMezzi;
 
@@ -20,6 +22,8 @@ namespace SO115App.CompositionRoot
 
             container.Register<DbContext>(() =>
                 new DbContext(connectionString, databaseName), Lifestyle.Singleton);
+
+            container.Register<IResetDB, ResetDB>();
 
             #region Gestione richiesta di assistenza
 
@@ -69,7 +73,6 @@ namespace SO115App.CompositionRoot
 
             container.Register<Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti.IGetListaDistaccamentiByPinListaSedi,
                                Persistence.MongoDB.GestioneSedi.GetDistaccamentiByCodiciSede>();
-
 
             #endregion Gestione Sedi
 
@@ -155,7 +158,7 @@ namespace SO115App.CompositionRoot
                 Models.Servizi.Infrastruttura.Autenticazione.IGetAutorizzazioni,
                 Persistence.MongoDB.GestioneUtenti.GestioneRuoli.GetAutorizzazioni>();
             container.Register<
-                Models.Servizi.Infrastruttura.GestioneUtenti.GestioneRuolo.IGetRuoliById, 
+                Models.Servizi.Infrastruttura.GestioneUtenti.GestioneRuolo.IGetRuoliById,
                 Persistence.MongoDB.GestioneUtenti.GestioneRuoli.GetRuoliById>();
 
             #endregion Gestione Utenti e Ruoli

@@ -20,6 +20,7 @@
 using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
+using SO115App.API.Models.Classi.Organigramma;
 using SO115App.Models.Classi.Marker;
 using SO115App.Models.Servizi.Infrastruttura.Marker;
 
@@ -27,7 +28,7 @@ namespace SO115App.FakePersistenceJSon.Marker
 {
     public class GetChiamateInCorso : IGetChiamateInCorso
     {
-        public List<ChiamateInCorso> Get()
+        public List<ChiamateInCorso> Get(List<PinNodo> pin)
         {
             string filepath = "Fake/ListaChiamateInCorso.json";
             string json;

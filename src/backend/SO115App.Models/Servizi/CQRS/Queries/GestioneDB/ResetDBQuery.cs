@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="IGetChiamateInCorso.cs" company="CNVVF">
+// <copyright file="ListaMezziInServizioQuery.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,14 +17,19 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System.Collections.Generic;
-using SO115App.API.Models.Classi.Organigramma;
-using SO115App.Models.Classi.Marker;
+using CQRS.Queries;
+using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
 
-namespace SO115App.Models.Servizi.Infrastruttura.Marker
+namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneDB
 {
-    public interface IGetChiamateInCorso
+    /// <summary>
+    ///   DTO di input
+    /// </summary>
+    public class ResetDBQuery : IQuery<ResetDBResult>
     {
-        List<ChiamateInCorso> Get(List<PinNodo> pinNodi);
+        /// <summary>
+        ///   Il filtro utilizzato per la ricerca delle richieste di assistenza
+        /// </summary>
+        public bool esegui { get; set; }
     }
 }

@@ -31,6 +31,14 @@ using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichies
 using SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.Tipologie;
 using SO115App.API.Models.Classi.Organigramma;
 using System.Linq;
+using Serilog;
+using SO115App.Models.Servizi.Infrastruttura.Box;
+using SO115App.Models.Servizi.Infrastruttura.Marker;
+using SO115App.Models.Servizi.Infrastruttura.GetFiltri;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
+using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
 {
@@ -39,25 +47,29 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
     /// </summary>
     public class WelcomeQueryHandler : IQueryHandler<WelcomeQuery, WelcomeResult>
     {
-        private readonly IQueryHandler<BoxMezziQuery, BoxMezziResult> _boxMezziHandler;
-        private readonly IQueryHandler<BoxPersonaleQuery, BoxPersonaleResult> _boxPersonaleHandler;
-        private readonly IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> _boxRichiesteHandler;
+        private readonly IGetBoxMezzi _boxMezziHandler;
+        private readonly IGetBoxPersonale _boxPersonaleHandler;
+        private readonly IGetBoxRichieste _boxRichiesteHandler;
         private readonly IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> _sintesiRichiesteAssistenzaHandler;
-        private readonly IQueryHandler<ListaChiamateInCorsoMarkerQuery, ListaChiamateInCorsoMarkerResult> _listaChiamateInCorsoMarkerHandler;
-        private readonly IQueryHandler<CentroMappaMarkerQuery, CentroMappaMarkerResult> _centroMappaMarkerHandler;
-        private readonly IQueryHandler<FiltriQuery, FiltriResult> _filtriHandler;
-        private readonly IQueryHandler<GetConteggioSchedeQuery, GetConteggioSchedeResult> _getConteggioSchedeHandler;
-        private readonly IQueryHandler<TipologieQuery, TipologieResult> _tipologieQueryHandler;
+        private readonly IGetChiamateInCorso _listaChiamateInCorsoMarkerHandler;
+        private readonly IGetCentroMappaMarker _centroMappaMarkerHandler;
+        private readonly IGetFiltri _filtriHandler;
+        private readonly IGetListaDistaccamentiByPinListaSedi _getDistaccamenti;
+        private readonly IGetConteggioSchede _getConteggioSchedeHandler;
+        private readonly IGetTipologieByCodice _tipologieQueryHandler;
+        private readonly IGetAlberaturaUnitaOperative _getAlberaturaUnitaOperative;
 
-        public WelcomeQueryHandler(IQueryHandler<BoxMezziQuery, BoxMezziResult> boxMezziHandler,
-            IQueryHandler<BoxPersonaleQuery, BoxPersonaleResult> boxPersonaleHandler,
-            IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> boxRichiesteHandler,
+        public WelcomeQueryHandler(IGetBoxMezzi boxMezziHandler,
+            IGetBoxPersonale boxPersonaleHandler,
+            IGetBoxRichieste boxRichiesteHandler,
             IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> sintesiRichiesteAssistenzaHandler,
-            IQueryHandler<ListaChiamateInCorsoMarkerQuery, ListaChiamateInCorsoMarkerResult> listaChiamateInCorsoMarkerHandler,
-            IQueryHandler<CentroMappaMarkerQuery, CentroMappaMarkerResult> centroMappaMarkerHandler,
-            IQueryHandler<FiltriQuery, FiltriResult> filtriHandler,
-            IQueryHandler<GetConteggioSchedeQuery, GetConteggioSchedeResult> getConteggioSchedeHandler,
-            IQueryHandler<TipologieQuery, TipologieResult> tipologieQueryHandler)
+            IGetChiamateInCorso listaChiamateInCorsoMarkerHandler,
+            IGetCentroMappaMarker centroMappaMarkerHandler,
+            IGetFiltri filtriHandler,
+            IGetListaDistaccamentiByPinListaSedi getDistaccamenti,
+            IGetConteggioSchede getConteggioSchedeHandler,
+            IGetTipologieByCodice tipologieQueryHandler,
+            IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative)
         {
             this._boxMezziHandler = boxMezziHandler;
             this._boxPersonaleHandler = boxPersonaleHandler;
@@ -66,8 +78,10 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
             this._listaChiamateInCorsoMarkerHandler = listaChiamateInCorsoMarkerHandler;
             this._centroMappaMarkerHandler = centroMappaMarkerHandler;
             this._filtriHandler = filtriHandler;
+            this._getDistaccamenti = getDistaccamenti;
             this._getConteggioSchedeHandler = getConteggioSchedeHandler;
             this._tipologieQueryHandler = tipologieQueryHandler;
+            this._getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
         }
 
         /// <summary>
@@ -77,26 +91,22 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
         /// <returns>Tutti i parametri iniziali della Home Page</returns>
         public WelcomeResult Handle(WelcomeQuery query)
         {
-            var boxMezziQuery = new BoxMezziQuery()
-            {
-                CodiciSede = query.CodiceSede
-            };
+            Log.Debug("Inizio elaborazione Welcome Handler");
 
-            var boxPersonaleQuery = new BoxPersonaleQuery()
-            {
-                CodiciSede = query.CodiceSede
-            };
-
-            var boxRichiesteQuery = new BoxRichiesteQuery()
-            {
-                CodiciSede = query.CodiceSede
-            };
+            var listaSediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
 
             var pinNodi = new List<PinNodo>();
+            var pinNodiNoDistaccamenti = new List<PinNodo>();
 
             foreach (var sede in query.CodiceSede)
             {
                 pinNodi.Add(new PinNodo(sede, true));
+                pinNodiNoDistaccamenti.Add(new PinNodo(sede, true));
+            }
+
+            foreach (var figlio in listaSediAlberate.GetSottoAlbero(pinNodi))
+            {
+                pinNodi.Add(new PinNodo(figlio.Codice, true));
             }
 
             FiltroRicercaRichiesteAssistenza filtro = new FiltroRicercaRichiesteAssistenza
@@ -112,45 +122,25 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
                 Filtro = filtro
             };
 
-            var listaFiltriQuery = new FiltriQuery()
-            {
-                Filtro = filtro
-            };
-
-            var listaQuery = new ListaChiamateInCorsoMarkerQuery()
-            {
-                CodiceSede = query.CodiceSede
-            };
-
-            var centroMappaQuery = new CentroMappaMarkerQuery()
-            {
-                CodiceSede = query.CodiceSede
-            };
-
-            var getConteggioSchede = new GetConteggioSchedeQuery()
-            {
-                CodiciSede = query.CodiceSede
-            };
-
-            var tipologie = new TipologieQuery()
-            {
-                CodSede = query.CodiceSede[0].Split('.')[0]
-            };
+            var filtri = _filtriHandler.Get();
+            filtri.Distaccamenti = _getDistaccamenti.GetListaDistaccamenti(pinNodiNoDistaccamenti);
 
             try
             {
                 var welcome = new SO115App.Models.Classi.Condivise.Welcome()
                 {
-                    BoxListaInterventi = _boxRichiesteHandler.Handle(boxRichiesteQuery).BoxRichieste,
-                    BoxListaMezzi = _boxMezziHandler.Handle(boxMezziQuery).BoxMezzi,
-                    BoxListaPersonale = _boxPersonaleHandler.Handle(boxPersonaleQuery).BoxPersonale,
-                    ListaChiamateInCorso = (List<ChiamateInCorso>)_listaChiamateInCorsoMarkerHandler.Handle(listaQuery).ListaChiamateInCorsoMarker,
+                    BoxListaInterventi = _boxRichiesteHandler.Get(pinNodi.ToHashSet()),
+                    BoxListaMezzi = _boxMezziHandler.Get(query.CodiceSede),
+                    BoxListaPersonale = _boxPersonaleHandler.Get(query.CodiceSede),
+                    ListaChiamateInCorso = _listaChiamateInCorsoMarkerHandler.Get(pinNodi),
                     ListaSintesi = _sintesiRichiesteAssistenzaHandler.Handle(sintesiRichiesteAssistenzaQuery),
-                    CentroMappaMarker = _centroMappaMarkerHandler.Handle(centroMappaQuery).CentroMappaMarker,
-                    ListaFiltri = _filtriHandler.Handle(listaFiltriQuery).Filtri,
-                    InfoNue = _getConteggioSchedeHandler.Handle(getConteggioSchede).InfoNue,
-                    Tipologie = _tipologieQueryHandler.Handle(tipologie).Tipologie
+                    CentroMappaMarker = _centroMappaMarkerHandler.GetCentroMappaMarker(query.CodiceSede[0]),
+                    ListaFiltri = filtri,
+                    InfoNue = _getConteggioSchedeHandler.GetConteggio(query.CodiceSede),
+                    Tipologie = _tipologieQueryHandler.Get()
                 };
+
+                Log.Debug("Fine elaborazione Welcome Handler");
 
                 return new WelcomeResult()
                 {

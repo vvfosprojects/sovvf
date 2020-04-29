@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Partenza } from '../../model/partenza.model';
 import { ListaSquadre } from '../../interface/lista-squadre';
-import { Mezzo } from '../../model/mezzo.model';
 import { MezzoActionInterface } from '../../interface/mezzo-action.interface';
 
 @Component({

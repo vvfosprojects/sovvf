@@ -19,6 +19,8 @@
 //-----------------------------------------------------------------------
 using System.Collections.Generic;
 using CQRS.Queries;
+using Serilog;
+using SO115App.API.Models.Classi.Organigramma;
 using SO115App.Models.Classi.Marker;
 using SO115App.Models.Servizi.Infrastruttura.Marker;
 
@@ -43,7 +45,18 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.Marker.ListaChiamateInCorsoMa
         /// <returns>Il DTO di uscita della query</returns>
         public ListaChiamateInCorsoMarkerResult Handle(ListaChiamateInCorsoMarkerQuery query)
         {
-            var listaMarker = _iGetChiamateInCorso.Get();
+            Log.Debug("Inizio elaborazione Chiamate in Corso Marker Handler");
+
+            var pinNodi = new List<PinNodo>();
+
+            foreach (var sede in query.CodiceSede)
+            {
+                pinNodi.Add(new PinNodo(sede, true));
+            }
+
+            var listaMarker = _iGetChiamateInCorso.Get(pinNodi);
+
+            Log.Debug("Fine elaborazione Chiamate in Corso Marker Handler");
 
             return new ListaChiamateInCorsoMarkerResult()
             {

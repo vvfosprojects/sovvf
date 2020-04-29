@@ -9,6 +9,8 @@ using Microsoft.Extensions.Caching.Memory;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using System;
+using System.IO;
+using SO115App.Models.Classi.Utility;
 
 namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
 
@@ -38,12 +40,32 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
             string CodSede = query.CodiceSede.Substring(0, 2);
             if (!_memoryCache.TryGetValue("ListaPreAccoppiati", out ListaPreAccoppiati))
             {
-                _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("test");
-                var response = await _client.GetAsync($"{_configuration.GetSection("DataFakeImplementation").GetSection("UrlAPIPreAccoppiati").Value}/GetListaPreaccoppiatiByCodComando?CodComando={CodSede}").ConfigureAwait(false);
-                response.EnsureSuccessStatusCode();
-                using HttpContent content = response.Content;
-                string data = await content.ReadAsStringAsync().ConfigureAwait(false);
-                var ListaPreAccoppiatiFake = JsonConvert.DeserializeObject<List<PreAccoppiatiFake>>(data);
+                #region LEGGO DA API ESTERNA
+
+                //_client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("test");
+                //var response = await _client.GetAsync($"{_configuration.GetSection("DataFakeImplementation").GetSection("UrlAPIPreAccoppiati").Value}/GetListaPreaccoppiatiByCodComando?CodComando={CodSede}").ConfigureAwait(false);
+                //response.EnsureSuccessStatusCode();
+                //using HttpContent content = response.Content;
+                //string data = await content.ReadAsStringAsync().ConfigureAwait(false);
+                //var ListaPreAccoppiatiFake = JsonConvert.DeserializeObject<List<PreAccoppiatiFake>>(data);
+
+                #endregion LEGGO DA API ESTERNA
+
+                #region LEGGO DA JSON FAKE
+
+                var filepath = Costanti.ListaPreAccoppiati;
+                string json;
+                using (var r = new StreamReader(filepath))
+                {
+                    json = r.ReadToEnd();
+                }
+
+                var listaPreaccoppiati = JsonConvert.DeserializeObject<List<PreAccoppiatiFake>>(json);
+
+                var ListaPreAccoppiatiFake = listaPreaccoppiati.FindAll(x => x.Sede.Split('.')[0].Equals(CodSede));
+
+                #endregion LEGGO DA JSON FAKE
+
                 ListaPreAccoppiati = MapPreAccoppiati(ListaPreAccoppiatiFake);
                 var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromHours(2));
                 _memoryCache.Set("ListaPreAccoppiati", ListaPreAccoppiati, cacheEntryOptions);

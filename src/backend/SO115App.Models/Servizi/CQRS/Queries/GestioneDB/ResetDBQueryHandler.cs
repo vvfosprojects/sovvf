@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="SintesiSediMarkerQueryHandler.cs" company="CNVVF">
+// <copyright file="ListaMezziInServizioQueryHandler.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,24 +17,22 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System.Collections.Generic;
 using CQRS.Queries;
-using Serilog;
-using SO115App.API.Models.Classi.Marker;
-using SO115App.Models.Servizi.Infrastruttura.Marker;
+using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi;
+using SO115App.Models.Servizi.Infrastruttura.GestioneDB;
 
-namespace SO115App.API.Models.Servizi.CQRS.Queries.Marker.SediMarker
+namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneDB
 {
-    public class SediMarkerQueryHandler : IQueryHandler<SediMarkerQuery, SediMarkerResult>
+    public class ResetDBQueryHandler : IQueryHandler<ResetDBQuery, ResetDBResult>
     {
-        private readonly IGetSediMarker _iGetSediMarker;
+        private readonly IResetDB _getReset;
 
         /// <summary>
         ///   Costruttore della classe
         /// </summary>
-        public SediMarkerQueryHandler(IGetSediMarker iGetSediMarker)
+        public ResetDBQueryHandler(IResetDB getReset)
         {
-            this._iGetSediMarker = iGetSediMarker;
+            this._getReset = getReset;
         }
 
         /// <summary>
@@ -42,17 +40,11 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.Marker.SediMarker
         /// </summary>
         /// <param name="query">Il DTO di ingresso della query</param>
         /// <returns>Il DTO di uscita della query</returns>
-        public SediMarkerResult Handle(SediMarkerQuery query)
+        public ResetDBResult Handle(ResetDBQuery query)
         {
-            Log.Debug("Inizio elaborazione Lista Sedi Marker Handler");
-
-            var sintesiSediMarker = _iGetSediMarker.GetListaSediMarker(query.Filtro);
-
-            Log.Debug("Fine elaborazione Lista Sedi Marker Handler");
-
-            return new SediMarkerResult()
+            return new ResetDBResult()
             {
-                ListaSediMarker = sintesiSediMarker
+                risultato = _getReset.Reset()
             };
         }
     }

@@ -102,5 +102,13 @@ namespace SO115App.Models.Classi.Utility
         public static string Amministratore = "Amministratore";
 
         #endregion Ruoli Utenti
+
+        #region FAKE
+
+        public static string ListaMezzi = "Fake/ListaMezzi.json";
+        public static string ListaSquadre = "Fake/ListaSquadre.json";
+        public static string ListaPreAccoppiati = "Fake/ListaPreAccoppiati.json";
+
+        #endregion FAKE
     }
 }
