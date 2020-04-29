@@ -30,6 +30,8 @@ using SO115App.API.Models.Servizi.CQRS.Queries.GestioneMezziInServizio.ListaMezz
 using SO115App.API.Models.Servizi.CQRS.Queries.Marker.MezziMarker;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AggiornaStatoMezzo;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
+using SO115App.API.Models.Classi.Geo;
+using System.Collections.Generic;
 
 namespace SO115App.SignalR.Sender.GestionePartenza
 {
@@ -70,7 +72,8 @@ namespace SO115App.SignalR.Sender.GestionePartenza
             {
                 Filtro = new FiltroRicercaRichiesteAssistenza
                 {
-                    idOperatore = intervento.IdUtente
+                    idOperatore = intervento.IdUtente,
+                    PageSize = 99
                 },
                 CodiciSede = new string[] { intervento.CodiceSede }
             };
@@ -117,7 +120,13 @@ namespace SO115App.SignalR.Sender.GestionePartenza
             await _notificationHubContext.Clients.Group(intervento.CodiceSede).SendAsync("NotifyGetListaMezziInServizio", listaMezziInServizio);
             await _notificationHubContext.Clients.Group(intervento.CodiceSede).SendAsync("NotifyGetRichiestaUpDateMarker", listaSintesiMarker.LastOrDefault(marker => marker.Codice == intervento.Chiamata.Codice));
 
-            var queryListaMezzi = new MezziMarkerQuery();
+            AreaMappa areaMappa = new AreaMappa();
+            areaMappa.CodiceSede = new List<string>() { intervento.CodiceSede };
+            var queryListaMezzi = new MezziMarkerQuery()
+            {
+                Filtro = areaMappa
+            };
+
             var listaMezziMarker = _listaMezziMarkerHandler.Handle(queryListaMezzi).ListaMezziMarker;
             await _notificationHubContext.Clients.Group(intervento.CodiceSede).SendAsync("NotifyGetMezzoUpDateMarker", listaMezziMarker.LastOrDefault(marker => marker.Mezzo.IdRichiesta == intervento.Chiamata.Codice));
         }
