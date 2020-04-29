@@ -91,7 +91,6 @@ namespace Persistence.MongoDB
             BsonClassMap.RegisterClassMap<Stati>();
             BsonClassMap.RegisterClassMap<SchedaContatto>();
             BsonClassMap.RegisterClassMap<MarcaRilevante>();
-            
         }
 
         public IMongoCollection<RichiestaAssistenza> RichiestaAssistenzaCollection
@@ -163,6 +162,19 @@ namespace Persistence.MongoDB
             get
             {
                 return database.GetCollection<StatoOperativoSquadra>("statoSquadra");
+            }
+        }
+
+        public bool DeleteDB(string nomeCollection)
+        {
+            try
+            {
+                database.DropCollection(nomeCollection);
+                return true;
+            }
+            catch
+            {
+                return false;
             }
         }
     }
