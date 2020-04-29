@@ -94,7 +94,7 @@ export const SchedeContattoStateDefaults: SchedeContattoStateModel = {
 @State<SchedeContattoStateModel>({
     name: 'schedeContatto',
     defaults: SchedeContattoStateDefaults,
-    children: [ MergeSchedeContattoState ]
+    children: [MergeSchedeContattoState]
 })
 export class SchedeContattoState {
 
@@ -304,7 +304,7 @@ export class SchedeContattoState {
             });
         } else {
             patchState({
-                idVisualizzati: [ ...state.idSchedeContattoCompetenza, ...state.idSchedeContattoConoscenza, ...state.idSchedeContattoDifferibili ]
+                idVisualizzati: [...state.idSchedeContattoCompetenza, ...state.idSchedeContattoConoscenza, ...state.idSchedeContattoDifferibili]
             });
         }
     }
@@ -330,7 +330,6 @@ export class SchedeContattoState {
     @Action(SetSchedaContattoGestita)
     setSchedaContattoGestita({ patchState }: StateContext<SchedeContattoStateModel>, action: SetSchedaContattoGestita) {
         this.schedeContattoService.setSchedaContattoGestita(action.codiceScheda, action.gestita).subscribe(() => {
-            console.log('setSchedaContattoGestita api response');
         });
     }
 
@@ -412,7 +411,7 @@ export class SchedeContattoState {
                 gestita: null
             }
         });
-        dispatch([ new GetListaSchedeContatto(), new ResetFiltriSelezionatiSchedeContatto() ]);
+        dispatch([new GetListaSchedeContatto(), new ResetFiltriSelezionatiSchedeContatto()]);
     }
 
     // SET FILTRO SELEZIONATO (SELEZIONATO, NON-SELEZIONATO)
@@ -467,12 +466,12 @@ export class SchedeContattoState {
                 (a.priorita === b.priorita) ? ((new Date(a.dataInserimento).getTime() > new Date(b.dataInserimento).getTime()) ? 1 : -1) : -1);
         const mergeSchedeContatto: SchedaContatto = {
             ...schedeSelezionate[0],
-            collegate: [ ...schedeSelezionate.slice(1).map(value => {
+            collegate: [...schedeSelezionate.slice(1).map(value => {
                 return {
                     ...value,
                     collegata: true
                 };
-            }) ]
+            })]
         };
         this.schedeContattoService.mergeSchedeContatto(mergeSchedeContatto).subscribe(() => {
             console.log('Unione schede completata', mergeSchedeContatto);
@@ -509,10 +508,11 @@ export class SchedeContattoState {
         this.ngZone.run(() => {
             const modal = this.modal.open(DettaglioSchedaModalComponent,
                 { windowClass: 'xlModal', backdropClass: 'light-blue-backdrop', centered: true }
-                );
+            );
             modal.componentInstance.schedaContatto = schedaContattoDetail;
             modal.result.then(
-                () => {},
+                () => {
+                },
                 () => dispatch(new ClearMarkerSCSelezionato())
             );
         });

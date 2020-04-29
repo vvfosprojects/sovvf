@@ -61,6 +61,19 @@ export class HelperSintesiRichiesta {
         return nomiMezzi;
     }
 
+    /* Restituisce la descrizione dei mezzi */
+    descscrizioneMezzi(richiesta: SintesiRichiesta): string[] {
+        const nomiMezzi = [];
+        if (richiesta.partenzeRichiesta) {
+            richiesta.partenzeRichiesta.forEach((partenza: Partenza) => {
+                if (partenza.mezzo && !partenza.sganciata) {
+                    nomiMezzi.push(partenza.mezzo.descrizione);
+                }
+            });
+        }
+        return nomiMezzi;
+    }
+
     /* Restituisce il numero dei mezzi */
     numeroMezzi(richiesta: SintesiRichiesta): number {
         let numeroMezzi = 0;

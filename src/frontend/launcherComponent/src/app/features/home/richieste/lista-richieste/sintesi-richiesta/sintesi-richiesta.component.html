@@ -145,7 +145,7 @@
                                     </button>
 
                                     <ng-template #popMezzi>
-                                        <div class="h6 nowrap" *ngFor="let m of methods.nomiMezzi(richiesta)">
+                                        <div class="h6 nowrap" *ngFor="let m of methods.descscrizioneMezzi(richiesta)">
                                             <span>{{ m }}</span>
                                         </div>
                                         <h6 class="mb-0" *ngIf="methods.numeroMezzi(richiesta) === 0">Nessun mezzo</h6>
@@ -472,10 +472,10 @@
 
                             <!-- complessità -->
                             <div class="h6 text-right">
-                                <i class="guida fa fa-gears fa-fw mr-1" ngbTooltip="Complessità" placement="right"></i>
                                 <a><b>{{ richiesta.complessita?.indice }}</b></a>
                                 <span class="h6 badge m-0 ml-1" [ngClass]="complessitaClass(richiesta)">{{
                                     richiesta.complessita?.descrizione }}</span>
+                                <i class="guida fa fa-gears fa-fw ml-1" ngbTooltip="Complessità" placement="right"></i>
                             </div>
 
                             <!-- Cambio Stato Richiesta (Gestione) -->
