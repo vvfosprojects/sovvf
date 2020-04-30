@@ -25,7 +25,7 @@ const PROXY_CONFIG = [{
         '/api/GestioneRuolo',
         '/api/PersonaleVVF'
     ],
-    target: "http://localhost:5000/",
+    target: "http://localhost:5220/",
     secure: false,
     "changeOrigin": true,
     ws: true
