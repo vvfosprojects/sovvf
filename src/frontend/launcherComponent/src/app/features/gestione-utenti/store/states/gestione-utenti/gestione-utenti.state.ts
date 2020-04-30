@@ -8,7 +8,8 @@ import {
     RemoveUtente,
     SetUtentiGestione,
     SetUtentiVVF,
-    ClearDataModalAddUtenteModal, AddUtenteGestione
+    ClearDataModalAddUtenteModal,
+    AddUtenteGestione
 } from '../../actions/gestione-utenti/gestione-utenti.actions';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { RicercaUtentiState } from '../ricerca-utenti/ricerca-utenti.state';
@@ -29,7 +30,6 @@ import { Navigate } from '@ngxs/router-plugin';
 import { ActivatedRoute } from '@angular/router';
 import { _isAdministrator } from '../../../../../shared/helper/function';
 import { UtenteState } from '../../../../navbar/store/states/operatore/utente.state';
-import { LoadingState } from '../../../../../shared/store/states/loading/loading.state';
 
 export interface GestioneUtentiStateModel {
     listaUtentiVVF: UtenteVvfInterface[];

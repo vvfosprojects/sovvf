@@ -70,6 +70,7 @@ namespace Persistence.MongoDB
             UtenteMap.Map();
             SediMap.Map();
             FiltriMap.Map();
+            SchedeNueMap.Map();
             BsonClassMap.RegisterClassMap<Telefonata>();
             BsonClassMap.RegisterClassMap<AssegnazionePriorita>();
             BsonClassMap.RegisterClassMap<InizioPresaInCarico>();
@@ -89,7 +90,6 @@ namespace Persistence.MongoDB
             BsonClassMap.RegisterClassMap<Distaccamento>();
             BsonClassMap.RegisterClassMap<GeneriMezzi>();
             BsonClassMap.RegisterClassMap<Stati>();
-            BsonClassMap.RegisterClassMap<SchedaContatto>();
             BsonClassMap.RegisterClassMap<MarcaRilevante>();
         }
 

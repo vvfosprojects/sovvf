@@ -27,7 +27,7 @@
             </h6>
         </div>
         <div class="col-12 mx-auto">
-            <app-tabella-utenti [listaUtenti]="listaUtenti$ | async" [idUtenteLoggato]="utente.id"
+            <app-tabella-utenti [listaUtenti]="listaUtenti$ | async" [idUtenteLoggato]="utente?.id"
                                 [totalItems]="totalItems$ | async" [pageSize]="pageSize" [page]="page$ | async"
                                 [loading]="loading$ | async" [pageSizes]="pageSizes$ | async"
                                 (removeUser)="onRemoveUtente($event)" (removeRoleUser)="onRemoveRuoloUtente($event)"

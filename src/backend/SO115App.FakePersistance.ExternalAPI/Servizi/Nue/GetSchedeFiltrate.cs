@@ -1,4 +1,6 @@
-﻿using SO115App.ExternalAPI.Fake.Servizi.Nue.Mock;
+﻿using MongoDB.Driver;
+using Persistence.MongoDB;
+using SO115App.ExternalAPI.Fake.Servizi.Nue.Mock;
 using SO115App.Models.Classi.NUE;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
 using System;
@@ -13,10 +15,12 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue
     public class GetSchedeFiltrate : IGetSchedeFiltrate
     {
         private readonly GetSchedeMethods _getSchedeMethods;
+        private readonly DbContext _context;
 
-        public GetSchedeFiltrate(GetSchedeMethods getSchedeMethods)
+        public GetSchedeFiltrate(GetSchedeMethods getSchedeMethods, DbContext context)
         {
             _getSchedeMethods = getSchedeMethods;
+            this._context = context;
         }
 
         /// <summary>
@@ -31,7 +35,26 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue
         {
             //---------------TODO Implementazione con il servizio esterno reale che sostituirà i json
 
-            return _getSchedeMethods.GetFiltered(text, gestita, codiceFiscale, rangeOre);
+            var ListaSchede = _getSchedeMethods.GetFiltered(text, gestita, codiceFiscale, rangeOre);
+            var ListaSchedeRaggruppate = _context.SchedeContattoCollection.Find(Builders<SchedaContatto>.Filter.Empty).ToList();
+
+            List<SchedaContatto> ListaSchedefiltrata = new List<SchedaContatto>();
+
+            foreach (SchedaContatto scheda in ListaSchede)
+            {
+                if (!ListaSchedeRaggruppate.Exists(x => x.CodiceScheda.Equals(scheda.CodiceScheda)))
+                {
+                    ListaSchedefiltrata.Add(scheda);
+                }
+                else
+                {
+                    var schedaRaggruppata = ListaSchedeRaggruppate.Find(x => x.CodiceScheda.Equals(scheda.CodiceScheda));
+                    if (!schedaRaggruppata.Collegata)
+                        ListaSchedefiltrata.Add(schedaRaggruppata);
+                }
+            }
+
+            return ListaSchedefiltrata;
 
             //---------------------------------------------------------------------------------------
         }
