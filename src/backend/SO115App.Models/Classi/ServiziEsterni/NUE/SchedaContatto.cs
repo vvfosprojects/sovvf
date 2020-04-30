@@ -29,6 +29,8 @@ namespace SO115App.Models.Classi.NUE
     /// </summary>
     public class SchedaContatto
     {
+        public string id { get; set; }
+
         /// <summary>
         ///   E' il codice della scheda contatto, proveniente dal NUE.
         /// </summary>

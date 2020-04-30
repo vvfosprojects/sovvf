@@ -376,7 +376,7 @@ export function _disableConfirmPartenza(boxPartenzaList: BoxPartenza[], nuovaPar
     if (boxPartenzaList && boxPartenzaList.length > 0) {
         let boxValidiCount = 0;
         for (const boxPartenza of boxPartenzaList) {
-            if (boxPartenza.squadraComposizione && boxPartenza.squadraComposizione.length > 0) {
+            if (boxPartenza.mezzoComposizione && boxPartenza.squadraComposizione && boxPartenza.squadraComposizione.length > 0) {
                 boxValidiCount++;
             }
         }
