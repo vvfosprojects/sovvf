@@ -74,9 +74,9 @@
                 </div>
             </div>
         </div>
-        <app-composizione-buttons (confirmPartenza)="confermaPartenze()" [boxPartenzaLenght]="boxPartenzaList.length"
-                                  [disableConfirmPrenota]="disablePrenota" (confirmPrenota)="prenota.emit($event)"
-                                  [prenotato]="prenotato"
-                                  [disableConfirmPartenza]="(disableConfirmPartenza$ | async)"></app-composizione-buttons>
+        <app-composizione-buttons [boxPartenzaLenght]="boxPartenzaList.length" [disableConfirmPrenota]="disablePrenota"
+                                  [prenotato]="prenotato" [disableConfirmPartenza]="(disableConfirmPartenza$ | async)"
+                                  (confirmPartenza)="confermaPartenze()" (confirmPrenota)="prenota.emit($event)"
+        ></app-composizione-buttons>
     </div>
 </div>
