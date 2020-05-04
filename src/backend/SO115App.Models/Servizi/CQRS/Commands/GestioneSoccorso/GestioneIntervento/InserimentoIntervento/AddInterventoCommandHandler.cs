@@ -22,6 +22,7 @@ using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.Eventi;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
+using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GenerazioneCodiciRichiesta;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Competenze;
@@ -52,10 +53,10 @@ namespace DomainModel.CQRS.Commands.AddIntervento
             var Competenza = _getCompetenze.GetCompetenzeByCoordinateIntervento(command.Chiamata.Localita.Coordinate);
 
             string[] CodUOCompetenzaAppo = {
-                command.CodiceSede.Split('.')[0] + "." + Competenza.CodDistaccamento,
-                command.CodiceSede.Split('.')[0] + "." + Competenza.CodDistaccamento2,
-                command.CodiceSede.Split('.')[0] + "." + Competenza.CodDistaccamento3,
-                command.CodiceSede.Split('.')[0] + ".1000"
+                Competenza.CodProvincia + "." + Competenza.CodDistaccamento,
+                Competenza.CodProvincia + "." + Competenza.CodDistaccamento2,
+                Competenza.CodProvincia + "." + Competenza.CodDistaccamento3,
+                Competenza.CodProvincia + ".1000"
             };
 
             var sedeRichiesta = command.CodiceSede;
@@ -134,6 +135,11 @@ namespace DomainModel.CQRS.Commands.AddIntervento
             command.Chiamata.RilevanteStArCu);
 
             this._saveRichiestaAssistenza.Save(richiesta);
+        }
+
+        private bool ControllaAutorizzazioneUtenteSuCompetenze(CompetenzeRichiesta competenza, string codUtente)
+        {
+            throw new NotImplementedException();
         }
     }
 }
