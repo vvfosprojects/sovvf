@@ -6,6 +6,7 @@ namespace SO115App.Models.Classi.Condivise
 {
     public class CompetenzeRichiesta
     {
+        public string CodProvincia { get; set; }
         public int CodDistaccamento { get; set; }
         public string DescDistaccamento { get; set; }
         public int CodDistaccamento2 { get; set; }
