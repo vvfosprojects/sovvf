@@ -45,6 +45,7 @@ namespace SO115App.API.Controllers
         private readonly ICommandHandler<CancellazioneChiamataInCorsoMarkerCommand> _Delhandler;
         private readonly ICommandHandler<UpDateChiamataInCorsoMarkerCommand> _upDatehandler;
         private readonly IQueryHandler<ListaChiamateInCorsoMarkerQuery, ListaChiamateInCorsoMarkerResult> _listaChiamateInCorsoMarkerhandler;
+        private readonly ICommandHandler<CancellazioneChiamataInCorsoByIdUtenteMarkerCommand> _delhandlerByIdUtente;
 
         /// <summary>
         ///   Costruttore della classe
@@ -54,13 +55,15 @@ namespace SO115App.API.Controllers
             ICommandHandler<ChiamataInCorsoMarkerCommand> Addhandler,
             ICommandHandler<CancellazioneChiamataInCorsoMarkerCommand> Delhandler,
             ICommandHandler<UpDateChiamataInCorsoMarkerCommand> UpDatehandler,
-            IQueryHandler<ListaChiamateInCorsoMarkerQuery, ListaChiamateInCorsoMarkerResult> ListaChiamateInCorsoMarkerhandler
+            IQueryHandler<ListaChiamateInCorsoMarkerQuery, ListaChiamateInCorsoMarkerResult> ListaChiamateInCorsoMarkerhandler,
+            ICommandHandler<CancellazioneChiamataInCorsoByIdUtenteMarkerCommand> DelhandlerByIdUtente
             )
         {
             _Addhandler = Addhandler;
             _Delhandler = Delhandler;
             _upDatehandler = UpDatehandler;
             _listaChiamateInCorsoMarkerhandler = ListaChiamateInCorsoMarkerhandler;
+            _delhandlerByIdUtente = DelhandlerByIdUtente;
         }
 
         [HttpGet]
@@ -111,6 +114,29 @@ namespace SO115App.API.Controllers
             try
             {
                 this._Delhandler.Handle(command);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                    return StatusCode(403, Costanti.UtenteNonAutorizzato);
+                return BadRequest(); ;
+            }
+        }
+
+        [HttpGet("DeleteAll")]
+        public async Task<IActionResult> DeleteAll()
+        {
+            var command = new CancellazioneChiamataInCorsoByIdUtenteMarkerCommand()
+            {
+                IdUtente = Request.Headers["IdUtente"],
+                CodiceSede = Request.Headers["codicesede"]
+            };
+
+            try
+            {
+                this._delhandlerByIdUtente.Handle(command);
+
                 return Ok();
             }
             catch (Exception ex)

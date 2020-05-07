@@ -2,13 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { AuthenticationService } from '../auth/_services';
 import { Router } from '@angular/router';
 import { Store } from '@ngxs/store';
 import { ShowToastr } from '../../shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from '../../shared/enum/toastr';
 import { ClearUtente } from '../../features/navbar/store/actions/operatore/utente.actions';
 import { Navigate } from '@ngxs/router-plugin';
+import { AuthenticationService } from '../auth/_services/authentication.service';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
