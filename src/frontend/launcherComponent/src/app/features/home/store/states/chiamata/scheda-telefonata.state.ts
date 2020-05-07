@@ -113,6 +113,7 @@ export class SchedaTelefonataState {
                 dispatch(new CestinaChiamata());
             }
         }, () => {
+            dispatch(new StopLoadingNuovaChiamata());
             patchState({
                 nuovaRichiesta: null,
                 azioneChiamata: null
