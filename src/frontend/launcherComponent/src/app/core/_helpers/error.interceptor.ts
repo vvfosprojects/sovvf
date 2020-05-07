@@ -9,6 +9,7 @@ import { ToastrType } from '../../shared/enum/toastr';
 import { ClearUtente } from '../../features/navbar/store/actions/operatore/utente.actions';
 import { Navigate } from '@ngxs/router-plugin';
 import { AuthenticationService } from '../auth/_services/authentication.service';
+import { UtenteState } from '../../features/navbar/store/states/operatore/utente.state';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
@@ -22,7 +23,9 @@ export class ErrorInterceptor implements HttpInterceptor {
         return next.handle(request).pipe(catchError(err => {
             console.error('err', err);
             if ([401].indexOf(err.status) !== -1) {
-                this.store.dispatch(new ClearUtente());
+                if (this.store.selectSnapshot(UtenteState.utente)) {
+                    this.store.dispatch(new ClearUtente());
+                }
                 this.store.dispatch(new Navigate(['/login']));
             }
 
@@ -34,7 +37,12 @@ export class ErrorInterceptor implements HttpInterceptor {
                 this.store.dispatch(new ShowToastr(ToastrType.Error, 'Bad Request', err.error));
             }
 
-            const error = err.error.message || err.statusText;
+            let error = '';
+            if (err && err.error) {
+                error = err.error.message;
+            } else {
+                error = err.statusText;
+            }
             return throwError(error);
         }));
     }
