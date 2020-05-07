@@ -22,7 +22,7 @@ namespace SO115App.Persistence.MongoDB.Marker
             var utente = _getUtente.GetUtenteByCodice(idUtente);
             var nominativo = utente.Nome + " " + utente.Cognome;
 
-            _dbContext.ChiamateInCorsoCollection.DeleteOne(Builders<ChiamateInCorso>.Filter.Eq(x => x.DescrizioneOperatore, nominativo));
+            _dbContext.ChiamateInCorsoCollection.DeleteMany(Builders<ChiamateInCorso>.Filter.Eq(x => x.DescrizioneOperatore, nominativo));
         }
     }
 }
