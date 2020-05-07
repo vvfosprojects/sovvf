@@ -87,6 +87,8 @@ namespace SO115App.CompositionRoot
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.Marker.IGetChiamateInCorso,
                 SO115App.Persistence.MongoDB.Marker.GetChiamateInCorso>();
+            container.Register<Models.Servizi.Infrastruttura.Marker.IDeleteChiamataInCorsoByIdUtente,
+                SO115App.Persistence.MongoDB.Marker.DeleteChiamataInCorsoByIdUtente>();
 
             #endregion GestioneChiamataInCorso
 
