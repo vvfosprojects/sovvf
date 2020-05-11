@@ -71,6 +71,15 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         public string CodiceRichiesta { get; set; }
 
         /// <summary>
+        ///   E' il codice dell'unità operativa competente per l'intervento
+        /// </summary>
+        /// <remarks>
+        ///   La competenza di un intervento può cambiare durante la vita della richiesta. Il cambio
+        ///   è documentato da un apposito evento della richiesta.
+        /// </remarks>
+        public string CodSOCompetente { get; set; }
+
+        /// <summary>
         ///   Utente che ha generato la segnalazione
         /// </summary>
         public Utente Operatore { get; set; }
@@ -133,6 +142,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         ///   Il turno nel quale viene presa la chiamata
         /// </summary>
         public string trnInsChiamata { get; set; }
+
         //public Turno TurnoInserimentoChiamata { get; set; }
 
         /// <summary>
