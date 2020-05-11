@@ -80,6 +80,12 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         public string CodSOCompetente { get; set; }
 
         /// <summary>
+        ///   E' il codice delle unità operative di prima, seconda, terza... competenza, in ordine
+        ///   di preferenza.
+        /// </summary>
+        public virtual string[] CodUOCompetenza { get; set; }
+
+        /// <summary>
         ///   Utente che ha generato la segnalazione
         /// </summary>
         public Utente Operatore { get; set; }
