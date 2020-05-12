@@ -68,7 +68,8 @@ namespace SO115App.API
                 builder =>
                 {
                     builder.AllowAnyMethod()
-                        .AllowAnyHeader();
+                        .AllowAnyHeader()
+                        .WithExposedHeaders("idUtente", "codicesede", "HubConnectionId", "LocalIp");
                 });
             });
 
