@@ -74,7 +74,7 @@ namespace SO115App.API
                         .AllowAnyHeader()
                         .AllowCredentials()
                         .WithOrigins(Configuration.GetSection("AllowedOriginLocal").Value, Configuration.GetSection("AllowedOriginProd").Value)
-                        .WithExposedHeaders("idUtente", "codicesede", "HubConnectionId", "LocalIp");
+                        .WithExposedHeaders("authorization, codicesede, hubconnectionid, idUtente, localip, DNT, User - Agent, x - requested - with, If - Modified - Since, Cache - Control, content - type, Range");
                 });
             });
 
