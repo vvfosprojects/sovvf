@@ -22,6 +22,7 @@ using CQRS.Commands.Authorizers;
 using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Autenticazione;
+using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.VerificaUtente;
 using System.Collections.Generic;
 using System.Security.Principal;
@@ -33,16 +34,21 @@ namespace DomainModel.CQRS.Commands.UpDateStatoRichiesta
         private readonly IPrincipal _currentUser;
         private readonly IFindUserByUsername _findUserByUsername;
         private readonly IGetAutorizzazioni _getAutorizzazioni;
+        private readonly IGetRichiestaById _getRichiestaById;
 
-        public UpDateStatoRichiestaAuthorization(IPrincipal currentUser, IFindUserByUsername findUserByUsername, IGetAutorizzazioni getAutorizzazioni)
+        public UpDateStatoRichiestaAuthorization(IPrincipal currentUser, IFindUserByUsername findUserByUsername,
+            IGetAutorizzazioni getAutorizzazioni,
+            IGetRichiestaById getRichiestaById)
         {
-            this._currentUser = currentUser;
+            _currentUser = currentUser;
             _findUserByUsername = findUserByUsername;
             _getAutorizzazioni = getAutorizzazioni;
+            _getRichiestaById = getRichiestaById;
         }
 
         public IEnumerable<AuthorizationResult> Authorize(UpDateStatoRichiestaCommand command)
         {
+            var richiesta = _getRichiestaById.GetById(command.IdRichiesta);
             var username = this._currentUser.Identity.Name;
             var user = _findUserByUsername.FindUserByUs(username);
 
@@ -54,7 +60,7 @@ namespace DomainModel.CQRS.Commands.UpDateStatoRichiesta
                 {
                     foreach (var ruolo in user.Ruoli)
                     {
-                        if (!_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, command.CodiceSede, Costanti.GestoreChiamate))
+                        if (!_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, richiesta.CodSOCompetente, Costanti.GestoreChiamate))
                             yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
                     }
                 }
