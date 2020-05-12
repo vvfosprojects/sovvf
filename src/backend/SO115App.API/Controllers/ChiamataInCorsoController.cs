@@ -83,8 +83,8 @@ namespace SO115App.API.Controllers
             };
         }
 
-        [EnableCors]
         [HttpPost("Add")]
+        [EnableCors()]
         public async Task<IActionResult> Add([FromBody]ChiamateInCorso chiamata)
         {
             var command = new ChiamataInCorsoMarkerCommand()
