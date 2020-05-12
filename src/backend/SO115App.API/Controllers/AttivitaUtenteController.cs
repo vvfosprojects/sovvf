@@ -57,7 +57,7 @@ namespace SO115App.API.Controllers
             catch (Exception ex)
             {
                 if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
-                    return StatusCode(403, Costanti.UtenteNonAutorizzato).;
+                    return StatusCode(403, Costanti.UtenteNonAutorizzato);
                 return BadRequest();
             }
         }
