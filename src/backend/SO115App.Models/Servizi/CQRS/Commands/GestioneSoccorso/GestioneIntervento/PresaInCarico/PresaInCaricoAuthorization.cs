@@ -24,6 +24,7 @@ using CQRS.Commands.Authorizers;
 using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Autenticazione;
+using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.VerificaUtente;
 
 namespace DomainModel.CQRS.Commands.PresaInCarico
@@ -33,16 +34,22 @@ namespace DomainModel.CQRS.Commands.PresaInCarico
         private readonly IPrincipal _currentUser;
         private readonly IFindUserByUsername _findUserByUsername;
         private readonly IGetAutorizzazioni _getAutorizzazioni;
+        private readonly IGetRichiestaById _getRichiestaById;
 
-        public PresaInCaricoAuthorization(IPrincipal currentUser, IFindUserByUsername findUserByUsername, IGetAutorizzazioni getAutorizzazioni)
+        public PresaInCaricoAuthorization(IPrincipal currentUser, IFindUserByUsername findUserByUsername,
+            IGetAutorizzazioni getAutorizzazioni,
+            IGetRichiestaById getRichiestaById)
         {
-            this._currentUser = currentUser;
+            _currentUser = currentUser;
             _findUserByUsername = findUserByUsername;
             _getAutorizzazioni = getAutorizzazioni;
+            _getRichiestaById = getRichiestaById;
         }
 
         public IEnumerable<AuthorizationResult> Authorize(PresaInCaricoCommand command)
         {
+            var richiesta = _getRichiestaById.GetById(command.IdRichiesta);
+
             var username = this._currentUser.Identity.Name;
             var user = _findUserByUsername.FindUserByUs(username);
 
@@ -54,7 +61,7 @@ namespace DomainModel.CQRS.Commands.PresaInCarico
                 {
                     foreach (var ruolo in user.Ruoli)
                     {
-                        if (!_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, command.CodSede, Costanti.GestoreRichieste))
+                        if (!_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, richiesta.CodSOCompetente, Costanti.GestoreRichieste))
                             yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
                     }
                 }

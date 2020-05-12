@@ -48,7 +48,7 @@ namespace SO115App.SignalR.Sender.GestioneSchedeContatto
 
             var infoNue = _getConteggioSchedeHandler.Handle(getConteggioSchedeQuery).InfoNue;
             await _notificationHubContext.Clients.Group(command.CodiceSede).SendAsync("NotifyGetContatoriSchedeContatto", infoNue);
-            await _notificationHubContext.Clients.Groups(command.CodiceSede).SendAsync("NotifyUpdateSchedaContatto", command.SchedaNue);
+            await _notificationHubContext.Clients.Group(command.CodiceSede).SendAsync("NotifyUpdateSchedaContatto", command.SchedaNue);
 
             var codiciSchedecollegate = new string[command.SchedaNue.Collegate.Count];
             int i = 0;
@@ -59,7 +59,7 @@ namespace SO115App.SignalR.Sender.GestioneSchedeContatto
                 i++;
             }
 
-            await _notificationHubContext.Clients.Groups(command.CodiceSede).SendAsync("NotifyRemoveSchedeContatto", codiciSchedecollegate);
+            await _notificationHubContext.Clients.Group(command.CodiceSede).SendAsync("NotifyRemoveSchedeContatto", codiciSchedecollegate);
         }
     }
 }

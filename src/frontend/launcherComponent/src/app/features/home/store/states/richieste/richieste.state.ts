@@ -108,34 +108,37 @@ export class RichiesteState {
     @Action(GetListaRichieste, { cancelUncompleted: true })
     getRichieste({ getState, dispatch }: StateContext<RichiesteStateModel>, action: GetListaRichieste) {
         const state = getState();
-        dispatch(new StartLoadingRichieste());
-        const filters = {
-            search: this.store.selectSnapshot(RicercaRichiesteState.ricerca),
-            others: this.store.selectSnapshot(FiltriRichiesteState.filtriRichiesteSelezionati)
-        };
-        const pagination = {
-            page: action.options && action.options.page ? action.options.page : 1,
-            pageSize: 7
-        };
-        this.richiesteService.getRichieste(filters, pagination).subscribe((response: ResponseInterface) => {
-            dispatch(new AddRichieste(response.sintesiRichiesta));
-            dispatch(new PatchPagination(response.pagination));
-            dispatch(new StopLoadingRichieste());
-            if (state.needRefresh) {
-                dispatch(new SetNeedRefresh(false));
-            }
-        }, () => {
-            dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5));
-            dispatch(new StopLoadingRichieste());
-        });
+        const utente = this.store.selectSnapshot(x => x.utente.utente);
+        if (utente) {
+            dispatch(new StartLoadingRichieste());
+            const filters = {
+                search: this.store.selectSnapshot(RicercaRichiesteState.ricerca),
+                others: this.store.selectSnapshot(FiltriRichiesteState.filtriRichiesteSelezionati)
+            };
+            const pagination = {
+                page: action.options && action.options.page ? action.options.page : 1,
+                pageSize: 7
+            };
+            this.richiesteService.getRichieste(filters, pagination).subscribe((response: ResponseInterface) => {
+                dispatch(new AddRichieste(response.sintesiRichiesta));
+                dispatch(new PatchPagination(response.pagination));
+                dispatch(new StopLoadingRichieste());
+                if (state.needRefresh) {
+                    dispatch(new SetNeedRefresh(false));
+                }
+            }, () => {
+                dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5));
+                dispatch(new StopLoadingRichieste());
+            });
 
-        // Clear dei dati presenti nella pagina che si sta lasciando
-        dispatch(new ClearRichiestaSelezionata());
-        dispatch(new ClearRichiestaHover());
-        dispatch(new ClearRichiesteEspanse());
-        const richiestaGestione = this.store.selectSnapshot(RichiestaGestioneState.richiestaGestione);
-        if (richiestaGestione) {
-            dispatch(new ClearRichiestaGestione(richiestaGestione.id));
+            // Clear dei dati presenti nella pagina che si sta lasciando
+            dispatch(new ClearRichiestaSelezionata());
+            dispatch(new ClearRichiestaHover());
+            dispatch(new ClearRichiesteEspanse());
+            const richiestaGestione = this.store.selectSnapshot(RichiestaGestioneState.richiestaGestione);
+            if (richiestaGestione) {
+                dispatch(new ClearRichiestaGestione(richiestaGestione.id));
+            }
         }
     }
 
