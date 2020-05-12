@@ -38,7 +38,9 @@ using SO115App.ExternalAPI.Fake.Servizi.Personale;
 using SO115App.Logging;
 using SO115App.Models.Servizi.CustomMapper;
 using SO115App.SignalR;
+using System;
 using System.Net.Http;
+using System.Net.WebSockets;
 using System.Security.Principal;
 using System.Text;
 
@@ -62,6 +64,7 @@ namespace SO115App.API
             ///<summary>
             ///Registrazione dei servizi Cors
             /// </summary>
+            ///
             services.AddCors(options =>
             {
                 options.AddPolicy(MyAllowSpecificOrigins,
@@ -69,6 +72,8 @@ namespace SO115App.API
                 {
                     builder.AllowAnyMethod()
                         .AllowAnyHeader()
+                        .AllowCredentials()
+                        .WithOrigins(Configuration.GetSection("AllowedOriginLocal").Value, Configuration.GetSection("AllowedOriginProd").Value)
                         .WithExposedHeaders("idUtente", "codicesede", "HubConnectionId", "LocalIp");
                 });
             });
@@ -147,6 +152,7 @@ namespace SO115App.API
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapHub<NotificationHub>("/NotificationHub", options =>
@@ -166,7 +172,6 @@ namespace SO115App.API
             {
                 c.SwaggerEndpoint("/swagger/SO115/swagger.json", "SO115");
             });
-
             //SIMPLE INJECTION INIZIALIZE COMPONENT
             InitializeContainer(app);
             container.RegisterSingleton<IPrincipal, HttpContextPrincipal>();
