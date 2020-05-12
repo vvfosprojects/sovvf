@@ -61,4 +61,46 @@ export class PermessiService {
             return index;
         }
     }
+
+    checkUserPermissionRichiesta(feature: PermissionFeatures, codUOCompetenza: string[]) {
+        const featureIndex = searchFeatureIndex(this.permessi, feature);
+        if (this.ruoli && this.ruoli && this.ruoli.length > 0 && this.permessi && featureIndex !== null) {
+            if (checkRuoliUtente(this.ruoli, this.permessi, featureIndex)) {
+                return true;
+            }
+        }
+        return false;
+
+        function checkRuoliUtente(ruoli, permessi, index) {
+            let count = 0;
+            ruoli.forEach((ruolo: Ruolo) => {
+                if (checkSede(ruolo, codUOCompetenza) && permessi[index].roles.indexOf(ruolo.descrizione) !== -1) {
+                    count++;
+                }
+            });
+            return count > 0;
+        }
+
+        function searchFeatureIndex(permessi: PermessiFeatureInterface[], permissionFeature: PermissionFeatures) {
+            let index = null;
+            permessi.forEach((permesso: PermessiFeatureInterface, i: number) => {
+                if (permesso.feature === permissionFeature) {
+                    index = i;
+                }
+            });
+            return index;
+        }
+
+        function checkSede(ruolo, codUOCompetenzaRef) {
+            let count = 0;
+            if (codUOCompetenzaRef) {
+                codUOCompetenzaRef.forEach((codUo) => {
+                    if (ruolo.codSede === codUo) {
+                        count++;
+                    }
+                });
+            }
+            return count > 0;
+        }
+    }
 }
