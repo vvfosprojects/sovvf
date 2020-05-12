@@ -25,6 +25,7 @@ using CQRS.Commands;
 using CQRS.Queries;
 using DomainModel.CQRS.Commands.ChiamataInCorsoMarker;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using SO115App.API.Models.Servizi.CQRS.Queries.Marker.ListaChiamateInCorsoMarker;
 using SO115App.Models.Classi.Marker;
@@ -82,6 +83,7 @@ namespace SO115App.API.Controllers
             };
         }
 
+        [EnableCors]
         [HttpPost("Add")]
         public async Task<IActionResult> Add([FromBody]ChiamateInCorso chiamata)
         {
