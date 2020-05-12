@@ -50,14 +50,6 @@ namespace DomainModel.CQRS.Commands.ChiamataInCorsoMarker
             {
                 if (user == null)
                     yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
-                else
-                {
-                    foreach (var ruolo in user.Ruoli)
-                    {
-                        if (!_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, command.CodiceSede, Costanti.GestoreChiamate))
-                            yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
-                    }
-                }
             }
             else
                 yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
