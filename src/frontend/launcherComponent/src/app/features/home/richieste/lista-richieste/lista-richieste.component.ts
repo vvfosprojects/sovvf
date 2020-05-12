@@ -5,6 +5,7 @@ import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { MezzoActionInterface } from '../../../../shared/interface/mezzo-action.interface';
 import { RichiestaActionInterface } from '../../../../shared/interface/richiesta-action.interface';
 import { StatoRichiesta } from '../../../../shared/enum/stato-richiesta.enum';
+import { PermissionFeatures } from '../../../../shared/enum/permission-features.enum';
 
 @Component({
     selector: 'app-lista-richieste',
@@ -32,9 +33,7 @@ export class ListaRichiesteComponent implements OnInit {
     @Input() totalItems: number;
 
     // Permessi
-    @Input() disabledModificaRichiesta = false;
-    @Input() disabledGestisciRichiesta = false;
-    @Input() disabledComposizionePartenza = false;
+    permessiFeature = PermissionFeatures;
 
     @Output() statoPartenza = new EventEmitter<boolean>();
     @Output() composizionePartenza = new EventEmitter<SintesiRichiesta>();
