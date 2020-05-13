@@ -17,8 +17,10 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Marker;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi;
+using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.ListaMezziInServizio;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
@@ -26,6 +28,7 @@ using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.InfoRichiesta;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SO115App.ExternalAPI.Fake.GestioneMezzi
 {
@@ -54,22 +57,24 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
         /// </summary>
         /// <param name="codiceSede">il codice sede</param>
         /// <returns>Lista di MezziInServizio</returns>
-        public List<MezzoInServizio> Get(string codiceSede)
+        public List<MezzoInServizio> Get(string[] CodiciSede)
         {
             var listaMezzoInServizio = new List<MezzoInServizio>();
 
-            var listaCodiciSede = new List<string>
+            var listaCodiciSede = CodiciSede.ToList();
+
+            var codiceSedeIniziali = listaCodiciSede[0];
+
+            var mezzi = _getMezziUtilizzabili.Get(listaCodiciSede.ToHashSet().ToList()).Result;
+
+            var statoMezzi = new List<StatoOperativoMezzo>();
+
+            foreach (var codsede in listaCodiciSede)
             {
-                codiceSede
-            };
-            var codiceSedeIniziali = codiceSede.Substring(0, 2);
+                statoMezzi.AddRange(_getStatoMezzi.Get(codsede));
+            }
 
-            var mezzi = _getMezziUtilizzabili.Get(listaCodiciSede).Result;
-            var statoMezzi = _getStatoMezzi.Get(codiceSede);
-
-            foreach (var mezzo in mezzi
-                .FindAll(x => x.Distaccamento.Codice
-                .StartsWith(codiceSedeIniziali)))
+            foreach (var mezzo in mezzi)
             {
                 var statoOperativoMezzi = statoMezzi.Find(x => x.CodiceMezzo.Equals(mezzo.Codice));
                 mezzo.Stato = statoOperativoMezzi != null ? statoOperativoMezzi.StatoOperativo : Costanti.MezzoInSede;

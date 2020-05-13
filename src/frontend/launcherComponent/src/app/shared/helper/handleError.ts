@@ -3,12 +3,12 @@ import { throwError } from 'rxjs';
 
 export function handleError(error: HttpErrorResponse) {
 
-    if (error.error instanceof ErrorEvent) {
+    if (error && error.error instanceof ErrorEvent) {
         console.error('Si è verificato un errore:', error.message);
-    } else {
+    } else if (error && (error.status || error.message)) {
         console.error(
-            `Errore response: ${error.status}, ` +
-            `Messaggio body: ${error.message}`);
+            `Errore response: ${error && error.status}, ` +
+            `Messaggio body: ${error && error.message}`);
     }
     return throwError('Qualcosa è andato storto, per favore riprova più tardi.');
 }

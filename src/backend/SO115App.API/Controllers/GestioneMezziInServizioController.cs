@@ -25,12 +25,13 @@ namespace SO115App.API.Controllers
         [HttpGet("GetListaMezzi")]
         public async Task<IActionResult> GetListaMezzi()
         {
-            var headerValues = Request.Headers["IdUtente"];
-            var codiceSede = Request.Headers["CodiceSede"];
+            var idOperatore = Request.Headers["IdUtente"];
+            var codiceSede = Request.Headers["CodiceSede"].ToString().Split(',');
 
             var query = new ListaMezziInServizioQuery()
             {
-                IdSede = codiceSede
+                IdSede = codiceSede,
+                IdOperatore = idOperatore
             };
 
             try
