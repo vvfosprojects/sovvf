@@ -21,7 +21,7 @@ export class TurnoExtraService {
             map((data: any) => {
                 return data;
             }),
-            retry(3),
+            // retry(3),
             catchError(handleError)
         );
     }

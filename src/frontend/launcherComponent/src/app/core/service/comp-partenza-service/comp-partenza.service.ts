@@ -24,7 +24,7 @@ export class CompPartenzaService {
 
     getPreAccoppiati(): Observable<IdPreaccoppiati[]> {
         return this.http.get<IdPreaccoppiati[]>(API_URL_PREACCOPPIATI).pipe(
-            retry(3),
+            // retry(3),
             catchError(handleError)
         );
     }
@@ -32,14 +32,14 @@ export class CompPartenzaService {
     // Todo: modificare nome in getListeComposizione ?
     getListeComposizioneAvanzata(filtri: ComposizioneFilterbar): Observable<ListaComposizioneAvanzata> {
         return this.http.post<ListaComposizioneAvanzata>(API_URL_AVANZATA, filtri).pipe(
-            retry(3),
+            // retry(3),
             catchError(handleError)
         );
     }
 
     setMezzoPrenotato(mezzoPrenotatoObj: any) {
         return this.http.post(`${API_URL_PRENOTAZIONE}/PrenotaMezzo`, mezzoPrenotatoObj).pipe(
-            retry(3),
+            // retry(3),
             catchError(handleError)
         );
     }

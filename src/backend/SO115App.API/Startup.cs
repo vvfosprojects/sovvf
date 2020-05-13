@@ -72,11 +72,13 @@ namespace SO115App.API
                 options.AddPolicy(MyAllowSpecificOrigins,
                 builder =>
                 {
-                    builder.AllowAnyMethod()
+                    builder
+                        .AllowAnyMethod()
                         .AllowAnyHeader()
                         .AllowCredentials()
                         .WithOrigins(Configuration.GetSection("AllowedOriginLocal").Value, Configuration.GetSection("AllowedOriginProd").Value)
-                        .WithExposedHeaders("codicesede", "hubconnectionid", "idUtente", "localip");
+                        .SetIsOriginAllowedToAllowWildcardSubdomains()
+                        .WithExposedHeaders("codicesede", "hubconnectionid", "idUtente", "localip", "Access-Control-Allow-Origin");
                 });
             });
 

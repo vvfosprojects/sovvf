@@ -20,7 +20,7 @@ export class RichiesteMarkerService {
 
     public getRichiesteMarkers(areaMappa: AreaMappa, filtroRichieste?: FiltroRichieste): Observable<any> {
         return this.http.post(`${API_MARKER}/GetRichieste`, AreaMappaFiltrata(areaMappa, { filtroRichieste })).pipe(
-            retry(3),
+            // retry(3),
             catchError(handleError));
     }
 
