@@ -16,6 +16,9 @@ import { ChiamateMarkerService } from '../../../../../core/service/maps-service'
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from '../../../../../shared/enum/toastr';
 import { SchedaTelefonataState } from '../chiamata/scheda-telefonata.state';
+import { ClearIndirizzo } from '../../actions/chiamata/scheda-telefonata.actions';
+import { GetMarkerDatiMeteo } from '../../actions/maps/marker-info-window.actions';
+import { ClearCentroMappa, GetInitCentroMappa, SetCentroMappa, SetCoordCentroMappa, SetZoomCentroMappa } from '../../actions/maps/centro-mappa.actions';
 
 export interface ChiamateMarkersStateModel {
     chiamateMarkers: ChiamataMarker[];
@@ -37,7 +40,8 @@ export class ChiamateMarkersState {
         return state.chiamateMarkers;
     }
 
-    constructor(private chiamateMarkerService: ChiamateMarkerService, private store: Store) {
+    constructor(private chiamateMarkerService: ChiamateMarkerService,
+                private store: Store) {
     }
 
     @Action(GetChiamateMarkers)
@@ -54,8 +58,8 @@ export class ChiamateMarkersState {
     setChiamataMarker({ dispatch }: StateContext<ChiamateMarkersStateModel>, action: SetChiamataMarker) {
         this.chiamateMarkerService.setChiamataInCorso(action.chiamataMarker).subscribe(() => {
         }, error => {
-            console.error(error);
-            // dispatch(new ShowToastr(ToastrType.Error, 'Inserimento della chiamata in corso fallito', 'Si è verificato un errore, riprova.', 5));
+            dispatch(new ClearIndirizzo());
+            dispatch(new GetInitCentroMappa());
         });
     }
 
@@ -63,8 +67,8 @@ export class ChiamateMarkersState {
     updateChiamataMarker({ dispatch }: StateContext<ChiamateMarkersStateModel>, action: UpdateChiamataMarker) {
         this.chiamateMarkerService.updateChiamataInCorso(action.chiamataMarker).subscribe(() => {
         }, error => {
-            console.error(error);
-            // dispatch(new ShowToastr(ToastrType.Error, 'Inserimento della chiamata in corso fallito', 'Si è verificato un errore, riprova.', 5));
+            dispatch(new ClearIndirizzo());
+            dispatch(new GetInitCentroMappa());
         });
     }
 
