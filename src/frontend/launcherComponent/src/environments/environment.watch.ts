@@ -20,7 +20,7 @@ export const environment = {
             preaccoppiati: '/api/PreAccoppiati',
             avanzata: '/api/ComposizionePartenzaAvanzata',
             confermaPartenze: '/api/ConfermaPartenze',
-            prenotazione: 'api/PrenotazioneMezzo'
+            prenotazione: '/api/PrenotazioneMezzo'
         },
         chiamata: '/api/Chiamata',
         utenti: '/api/Utenti',

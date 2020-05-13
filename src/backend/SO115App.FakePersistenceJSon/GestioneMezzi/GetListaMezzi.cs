@@ -40,7 +40,7 @@ namespace SO115App.FakePersistenceJSon.GestioneMezzi
             _getInfoRichiesta = getInfoRichiesta;
         }
 
-        public List<MezzoInServizio> Get(string codiceSede)
+        public List<MezzoInServizio> Get(string[] codiceSede)
         {
             var filepath = CostantiJson.Mezzo;
             var getRichiestaById = new GetRichiestaById();
@@ -50,9 +50,9 @@ namespace SO115App.FakePersistenceJSon.GestioneMezzi
                 json = r.ReadToEnd();
             }
 
-            var codiceSedeIniziali = codiceSede.Substring(0, 2);
+            var codiceSedeIniziali = codiceSede[0];
 
-            var mezzi = JsonConvert.DeserializeObject<List<Mezzo>>(json).FindAll(x=>x.Stato != Costanti.MezzoFuoriServizio);
+            var mezzi = JsonConvert.DeserializeObject<List<Mezzo>>(json).FindAll(x => x.Stato != Costanti.MezzoFuoriServizio);
 
             var listaMezzoInServizio = new List<MezzoInServizio>();
 
