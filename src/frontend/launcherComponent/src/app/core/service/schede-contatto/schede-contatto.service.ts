@@ -20,21 +20,21 @@ export class SchedeContattoService {
 
     getSchedeContatto(filtri: FiltriSchedeContatto): Observable<SchedaContatto[]> {
         return this.http.post<SchedaContatto[]>(`${API_SCHEDE_CONTATTO}/GetSchede`, filtri).pipe(
-            retry(3),
+            // retry(3),
             catchError(handleError)
         );
     }
 
     mergeSchedeContatto(schedaUnita: SchedaContatto) {
         return this.http.post<SchedaContatto[]>(`${API_SCHEDE_CONTATTO}/MergeSchede`, schedaUnita).pipe(
-            retry(3),
+            // retry(3),
             catchError(handleError)
         );
     }
 
     undoMergeSchedeContatto(schedaUnita: SchedaContatto) {
         return this.http.post<SchedaContatto[]>(`${API_SCHEDE_CONTATTO}/UndoMergeSchede`, schedaUnita).pipe(
-            retry(3),
+            // retry(3),
             catchError(handleError)
         );
     }
@@ -42,7 +42,7 @@ export class SchedeContattoService {
     setSchedaContattoLetta(codiceScheda: string, letta: boolean) {
         const obj = { codiceScheda, letta };
         return this.http.put<any>(`${API_SCHEDE_CONTATTO}/SetLetta`, obj).pipe(
-            retry(3),
+            // retry(3),
             catchError(handleError)
         );
     }
@@ -50,7 +50,7 @@ export class SchedeContattoService {
     setSchedaContattoGestita(codiceScheda: string, gestita: boolean) {
         const obj = { codiceScheda, gestita };
         return this.http.put<any>(`${API_SCHEDE_CONTATTO}/SetGestita`, obj).pipe(
-            retry(3),
+            // retry(3),
             catchError(handleError)
         );
     }

@@ -17,7 +17,7 @@ export class HomeServiceFake {
     getHome() {
         return this.http.get<Welcome>(API_WELCOME).pipe(
             map((data: Welcome) => mapAppSettings(data)),
-            retry(3),
+            // retry(3),
             catchError(handleError)
         );
 

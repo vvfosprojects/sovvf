@@ -58,7 +58,7 @@ namespace SO115App.SignalR.Sender.GestioneSchedeContatto
 
             var infoNue = _getConteggioSchedeHandler.Handle(getConteggioSchedeQuery).InfoNue;
             await _notificationHubContext.Clients.Group(command.CodiceSede).SendAsync("NotifyGetContatoriSchedeContatto", infoNue);
-            await _notificationHubContext.Clients.Groups(command.CodiceSede).SendAsync("NotifyGetUpdateSchedaContatto", schedaContattoUpdated);
+            await _notificationHubContext.Clients.Groups(command.CodiceSede).SendAsync("NotifyUpdateSchedaContatto", schedaContattoUpdated);
         }
     }
 }

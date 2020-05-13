@@ -34,7 +34,11 @@ export class ErrorInterceptor implements HttpInterceptor {
             }
 
             if ([400].indexOf(err.status) !== -1) {
-                this.store.dispatch(new ShowToastr(ToastrType.Error, 'Bad Request', err.error));
+                this.store.dispatch(new ShowToastr(ToastrType.Error, 'Errore', err.error));
+            }
+
+            if ([503].indexOf(err.status) !== -1) {
+                this.store.dispatch(new ShowToastr(ToastrType.Error, 'Servizio non disponibile', err.error));
             }
 
             let error = '';

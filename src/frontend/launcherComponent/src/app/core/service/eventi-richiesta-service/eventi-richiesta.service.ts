@@ -19,7 +19,7 @@ export class EventiRichiestaService {
         const url = `${API_URL}?id=${idRichiesta}`;
         console.log(url);
         return this.http.get<any>(url).pipe(
-            retry(3),
+            // retry(3),
             catchError(handleError)
         );
     }

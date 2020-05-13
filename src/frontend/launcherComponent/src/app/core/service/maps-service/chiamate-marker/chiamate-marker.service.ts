@@ -17,7 +17,7 @@ export class ChiamateMarkerService {
 
     getChiamateMarkers(): Observable<any> {
         return this.http.get(API_MARKER_CHIAMATE).pipe(
-            retry(3),
+            // retry(3),
             catchError(handleError)
         );
     }

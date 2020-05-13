@@ -228,7 +228,7 @@ export class SignalRService {
             console.log('NotifyGetListaSchedeContatto', data);
             this.store.dispatch(new InsertSchedeContatto(data));
         });
-        this.hubNotification.on('NotifyGetUpdateSchedaContatto', (data: SchedaContatto) => {
+        this.hubNotification.on('NotifyUpdateSchedaContatto', (data: SchedaContatto) => {
             console.log('NotifyUpdateSchedaContatto', data);
             this.store.dispatch(new UpdateSchedaContatto(data));
         });
