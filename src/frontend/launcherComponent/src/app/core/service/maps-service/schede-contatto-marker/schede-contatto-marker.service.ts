@@ -19,7 +19,7 @@ export class SchedeContattoMarkerService {
 
     getSchedeContattoMarkers(areaMappa: AreaMappa, filtroSchedeContatto?: FiltroSchedeContatto): Observable<any> {
         return this.http.post(`${API_MARKER}/GetSchedeContatto`, AreaMappaFiltrata(areaMappa, { filtroSchedeContatto })).pipe(
-            retry(3),
+            // retry(3),
             catchError(handleError));
     }
 

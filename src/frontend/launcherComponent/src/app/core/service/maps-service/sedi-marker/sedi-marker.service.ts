@@ -17,7 +17,7 @@ export class SediMarkerService {
 
     getSediMarkers(areaMappa: AreaMappa): Observable<any> {
         return this.http.post(`${API_MARKER}/GetSedi`, areaMappa).pipe(
-            retry(3),
+            // retry(3),
             catchError(handleError));
     }
 

@@ -35,31 +35,31 @@ export class SintesiRichiesteService {
         // });
         // console.log('obj getRichieste', obj);
         return this.http.post(API_URL_RICHIESTE, obj).pipe(
-            retry(3),
+            // retry(3),
             catchError(handleError));
     }
 
     public getRichiestaById(id: string): Observable<SintesiRichiesta> {
         return this.http.get<SintesiRichiesta>(`${API_GESTIONE_RICHIESTA}/GetRichiesta?idRichiesta=${id}`).pipe(
-            retry(3),
+            // retry(3),
             catchError(handleError));
     }
 
     public patchRichiesta(richiesta: SintesiRichiesta): Observable<any> {
         return this.http.post<any>(`${API_CHIAMATA}/UpdateIntervento`, richiesta).pipe(
-            retry(3),
+            // retry(3),
             catchError(handleError));
     }
 
     public aggiornaStatoRichiesta(obj: any): Observable<any> {
         return this.http.post<any>(`${API_GESTIONE_RICHIESTA}/AggiornaStato`, obj).pipe(
-            retry(3),
+            // retry(3),
             catchError(handleError));
     }
 
     public aggiornaStatoMezzo(obj: any): Observable<any> {
         return this.http.post<any>(`${API_GESTIONE_PARTENZA}/AggiornaPartenza`, obj).pipe(
-            retry(3),
+            // retry(3),
             catchError(handleError));
     }
 }

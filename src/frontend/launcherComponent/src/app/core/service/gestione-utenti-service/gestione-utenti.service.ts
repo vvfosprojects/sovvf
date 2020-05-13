@@ -27,7 +27,7 @@ export class GestioneUtentiService {
     getUtentiVVF(text: string): Observable<UtenteVvfInterface[]> {
         const url = !text ? API_URL_PERSONALE_VVF : API_URL_PERSONALE_VVF + '?text=' + text;
         return this.http.get<UtenteVvfInterface[]>(url).pipe(
-            retry(3),
+            // retry(3),
             catchError(handleError)
         );
     }
@@ -38,14 +38,14 @@ export class GestioneUtentiService {
             pagination
         };
         return this.http.post<ResponseInterface>(API_URL + '/GetUtenti', obj).pipe(
-            retry(3),
+            // retry(3),
             catchError(handleError)
         );
     }
 
     addUtente(addUtente: AddRuoloUtenteInterface): Observable<Utente> {
         return this.http.post<Utente>(API_URL + '/AddUtente', addUtente).pipe(
-            retry(3),
+            // retry(3),
             catchError(handleError)
         );
     }
@@ -55,14 +55,14 @@ export class GestioneUtentiService {
             codFiscale
         };
         return this.http.post<any>(API_URL + '/DeleteUtente', obj).pipe(
-            retry(3),
+            // retry(3),
             catchError(handleError)
         );
     }
 
     addRuoloUtente(addRuolo: AddRuoloUtenteInterface): Observable<Utente> {
         return this.http.post<Utente>(API_URL_RUOLO + '/AddRuolo', addRuolo).pipe(
-            retry(3),
+            // retry(3),
             catchError(handleError)
         );
     }
@@ -73,7 +73,7 @@ export class GestioneUtentiService {
             ruolo
         };
         return this.http.post<Utente>(API_URL_RUOLO + '/DeleteRuolo', obj).pipe(
-            retry(3),
+            // retry(3),
             catchError(handleError)
         );
     }
