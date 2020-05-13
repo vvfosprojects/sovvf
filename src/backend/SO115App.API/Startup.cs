@@ -78,7 +78,7 @@ namespace SO115App.API
                         .AllowCredentials()
                         .WithOrigins(Configuration.GetSection("AllowedOriginLocal").Value, Configuration.GetSection("AllowedOriginProd").Value)
                         .SetIsOriginAllowedToAllowWildcardSubdomains()
-                        .WithExposedHeaders("codicesede", "hubconnectionid", "idUtente", "localip", "Access-Control-Allow-Origin");
+                        .WithExposedHeaders("codicesede", "hubconnectionid", "idUtente", "localip", "DNT", "User - Agent", "x - requested - with", "If - Modified - Since", "Cache - Control", "content - type", "Range");
                 });
             });
 
