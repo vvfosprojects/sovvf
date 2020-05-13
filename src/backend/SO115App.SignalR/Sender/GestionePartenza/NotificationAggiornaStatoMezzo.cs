@@ -99,7 +99,7 @@ namespace SO115App.SignalR.Sender.GestionePartenza
 
             var listaMezziInServizioQuery = new ListaMezziInServizioQuery
             {
-                IdSede = intervento.CodiceSede
+                IdSede = new string[] { intervento.CodiceSede }
             };
             var listaMezziInServizio = _listaMezziInServizioHandler.Handle(listaMezziInServizioQuery).ListaMezzi;
 

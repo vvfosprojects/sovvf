@@ -24,8 +24,8 @@ using SO115App.Models.Classi.ListaMezziInServizio;
 namespace SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi
 {
     /// <summary>
-    ///   Servizio di risoluzione di un <see cref="Mezzo" /> mediante interrogazione di un'anagrafica
-    ///   dei mezzi.
+    ///   Servizio di risoluzione di un <see cref="Mezzo" /> mediante interrogazione di
+    ///   un'anagrafica dei mezzi.
     /// </summary>
     public interface IGetListaMezzi
     {
@@ -34,6 +34,6 @@ namespace SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi
         /// </summary>
         /// <param name="codiceSede">Codice della sede di appartenenza</param>
         /// <returns>L'anagrafica del mezzo</returns>
-        List<MezzoInServizio> Get(string codiceSede);
+        List<MezzoInServizio> Get(string[] codiceSede);
     }
 }
