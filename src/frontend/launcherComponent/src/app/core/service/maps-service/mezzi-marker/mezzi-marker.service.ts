@@ -19,7 +19,7 @@ export class MezziMarkerService {
 
     public getMezziMarkers(areaMappa: AreaMappa, filtroMezzi?: FiltroMezzi): Observable<any> {
         return this.http.post(`${API_MARKER}/GetMezzi`, AreaMappaFiltrata(areaMappa, { filtroMezzi })).pipe(
-            retry(3),
+            // retry(3),
             catchError(handleError));
     }
 
