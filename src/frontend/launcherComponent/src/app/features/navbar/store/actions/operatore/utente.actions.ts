@@ -28,4 +28,7 @@ export class UpdateUtente {
 
 export class ClearUtente {
     static readonly type = '[Utente] Clear utente';
+
+    constructor(public skipDeleteAll?: boolean) {
+    }
 }
