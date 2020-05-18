@@ -91,7 +91,7 @@
                 <div class="col">
                     <div class="form-group mb-2">
                         <label for="telefono">Telefono</label>
-                        <input id="telefono" type="number" placeholder="telefono" formControlName="telefono"
+                        <input id="telefono" type="tel" placeholder="telefono" formControlName="telefono"
                                class="form-control"
                                [ngClass]="{ 'is-invalid': submitted && f.telefono.errors }"/>
                         <div *ngIf="submitted && f.telefono.errors" class="invalid-feedback">
