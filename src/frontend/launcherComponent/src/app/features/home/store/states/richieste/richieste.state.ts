@@ -1,15 +1,24 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
 import {
-    ActionMezzo, ActionRichiesta,
-    AddRichiesta, CambiaStatoRichiesta, ClearIdChiamataInviaPartenza, ClearRichiestaById,
+    ActionMezzo,
+    ActionRichiesta,
+    AddRichiesta,
+    CambiaStatoRichiesta,
+    ClearIdChiamataInviaPartenza,
+    ClearRichiestaById,
     ClearRichieste,
     GetListaRichieste,
     PatchRichiesta,
-    SetIdChiamataInviaPartenza, SetRichiestaById,
+    SetIdChiamataInviaPartenza,
+    SetRichiestaById,
     AddRichieste,
     StartInviaPartenzaFromChiamata,
-    UpdateRichiesta, VisualizzaListaSquadrePartenza, SetNeedRefresh, StartLoadingRichieste, StopLoadingRichieste
+    UpdateRichiesta,
+    VisualizzaListaSquadrePartenza,
+    SetNeedRefresh,
+    StartLoadingRichieste,
+    StopLoadingRichieste
 } from '../../actions/richieste/richieste.actions';
 import { SintesiRichiesteService } from 'src/app/core/service/lista-richieste-service/lista-richieste.service';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
@@ -20,10 +29,7 @@ import { RichiestaSelezionataState } from './richiesta-selezionata.state';
 import { RichiestaModificaState } from './richiesta-modifica.state';
 import { ToastrType } from '../../../../../shared/enum/toastr';
 import { ClearIndirizzo, SuccessRichiestaModifica } from '../../actions/richieste/richiesta-modifica.actions';
-import {
-    RichiestaComposizione,
-    UpdateRichiestaComposizione
-} from '../../actions/composizione-partenza/composizione-partenza.actions';
+import { RichiestaComposizione, UpdateRichiestaComposizione } from '../../actions/composizione-partenza/composizione-partenza.actions';
 import { ToggleComposizione } from '../../actions/view/view.actions';
 import { Composizione } from '../../../../../shared/enum/composizione.enum';
 import { SetMarkerRichiestaSelezionato } from '../../actions/maps/marker.actions';
@@ -43,6 +49,8 @@ import { ClearRichiestaSelezionata } from '../../actions/richieste/richiesta-sel
 import { ClearRichiestaGestione } from '../../actions/richieste/richiesta-gestione.actions';
 import { ClearRichiestaHover } from '../../actions/richieste/richiesta-hover.actions';
 import { PaginationState } from '../../../../../shared/store/states/pagination/pagination.state';
+import { GetInitCentroMappa } from '../../actions/maps/centro-mappa.actions';
+import { ClearRichiestaMarkerModifica } from '../../actions/maps/richieste-markers.actions';
 
 export interface RichiesteStateModel {
     richieste: SintesiRichiesta[];
@@ -149,6 +157,8 @@ export class RichiesteState {
             dispatch(new SuccessRichiestaModifica);
         }, () => {
             dispatch(new ClearIndirizzo());
+            dispatch(new ClearRichiestaMarkerModifica());
+            dispatch(new GetInitCentroMappa());
         });
     }
 

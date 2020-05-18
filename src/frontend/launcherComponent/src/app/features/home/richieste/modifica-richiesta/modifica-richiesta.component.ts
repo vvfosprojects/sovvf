@@ -18,6 +18,8 @@ import { TipoTerreno } from '../../../../shared/model/tipo-terreno';
 import { ToggleModifica } from '../../store/actions/view/view.actions';
 import { HomeState } from '../../store/states/home.state';
 import { LoadingState } from '../../../../shared/store/states/loading/loading.state';
+import { ClearRichiestaMarkerModifica } from '../../store/actions/maps/richieste-markers.actions';
+import { UpdateFormValue } from '@ngxs/form-plugin';
 
 @Component({
     selector: 'app-modifica-richiesta',
@@ -69,6 +71,7 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(): void {
         this.subscription.unsubscribe();
+        this.store.dispatch(new ClearRichiestaMarkerModifica());
         isDevMode() && console.log('Componente Modifica Richiesta Distrutto');
     }
 
@@ -118,7 +121,10 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
             zoneEmergenza: [zoneEmergenza],
             prioritaRichiesta: [this.richiestaModifica.prioritaRichiesta]
         });
-
+        this.store.dispatch(new UpdateFormValue({
+            path: 'richiestaModifica.modificaRichiestaForm',
+            value: this.modificaRichiestaForm
+        }));
     }
 
     cambiaTipologiaRichiedente(tipologia: string) {
