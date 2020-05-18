@@ -19,7 +19,7 @@ import { RichiestaHoverState } from './richiesta-hover.state';
 import { RichiestaSelezionataState } from './richiesta-selezionata.state';
 import { RichiestaModificaState } from './richiesta-modifica.state';
 import { ToastrType } from '../../../../../shared/enum/toastr';
-import { SuccessRichiestaModifica } from '../../actions/richieste/richiesta-modifica.actions';
+import { ClearIndirizzo, SuccessRichiestaModifica } from '../../actions/richieste/richiesta-modifica.actions';
 import {
     RichiestaComposizione,
     UpdateRichiestaComposizione
@@ -147,7 +147,9 @@ export class RichiesteState {
         action.richiesta.richiedente.telefono = action.richiesta.richiedente.telefono.toString();
         this.richiesteService.patchRichiesta(action.richiesta).subscribe(() => {
             dispatch(new SuccessRichiestaModifica);
-        }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5)));
+        }, () => {
+            dispatch(new ClearIndirizzo());
+        });
     }
 
     @Action(AddRichieste)

@@ -55,6 +55,10 @@ export class StartChiamata {
     static readonly type = '[SchedaTelefonata] Start Chiamata';
 }
 
+export class ClearIndirizzo {
+    static readonly type = '[SchedaTelefonata] Clear Indirizzo';
+}
+
 export class StartLoadingNuovaChiamata {
     static readonly type = '[SchedaTelefonata] Start Loading Nuova Chiamata';
 }

@@ -24,7 +24,7 @@ export class ErrorInterceptor implements HttpInterceptor {
             console.error('err', err);
             if ([401].indexOf(err.status) !== -1) {
                 if (this.store.selectSnapshot(UtenteState.utente)) {
-                    this.store.dispatch(new ClearUtente());
+                    this.store.dispatch(new ClearUtente(true));
                 }
                 this.store.dispatch(new Navigate(['/login']));
             }
@@ -37,7 +37,7 @@ export class ErrorInterceptor implements HttpInterceptor {
                 this.store.dispatch(new ShowToastr(ToastrType.Error, 'Errore', err.error));
             }
 
-            if ([503].indexOf(err.status) !== -1) {
+            if ([404].indexOf(err.status) !== -1) {
                 this.store.dispatch(new ShowToastr(ToastrType.Error, 'Servizio non disponibile', err.error));
             }
 

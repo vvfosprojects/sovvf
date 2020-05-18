@@ -13,10 +13,11 @@ import { ChiamataServiceFake } from '../../../core/service/chiamata-service/chia
 import { NgxsModule } from '@ngxs/store';
 import { SchedaTelefonataState } from '../store/states/chiamata/scheda-telefonata.state';
 import { ClipboardState } from '../store/states/chiamata/clipboard.state';
-import { ConfirmModalComponent } from '../../../shared/modal/confirm-modal/confirm-modal.component';
+import { ConfirmModalComponent } from '../../../shared';
 import { UiSwitchModule } from 'ngx-ui-switch';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { environment } from '../../../../environments/environment';
+import { NgxsFormPluginModule } from '@ngxs/form-plugin';
 
 @NgModule({
     imports: [
@@ -32,7 +33,8 @@ import { environment } from '../../../../environments/environment';
         NgxsModule.forFeature([
             SchedaTelefonataState,
             ClipboardState
-        ])
+        ]),
+        NgxsFormPluginModule
     ],
     declarations: [
         ChiamataComponent,

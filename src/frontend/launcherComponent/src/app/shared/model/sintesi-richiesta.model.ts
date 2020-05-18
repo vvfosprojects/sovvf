@@ -160,7 +160,8 @@ export class SintesiRichiesta {
         /**
          * lista di prese in carico utente
          */
-        public listaUtentiPresaInCarico?: AttivitaUtente[]
+        public listaUtentiPresaInCarico?: AttivitaUtente[],
+        public codUOCompetenza?: string[]
     ) {
     }
 }

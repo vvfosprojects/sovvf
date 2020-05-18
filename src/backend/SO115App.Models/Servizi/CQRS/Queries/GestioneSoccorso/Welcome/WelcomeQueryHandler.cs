@@ -127,17 +127,27 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
 
             try
             {
+                var boxListaInterventi = _boxRichiesteHandler.Get(pinNodi.ToHashSet());
+                var boxListaMezzi = _boxMezziHandler.Get(query.CodiceSede);
+                var boxListaPersonale = _boxPersonaleHandler.Get(query.CodiceSede);
+                var listaChiamateInCorso = _listaChiamateInCorsoMarkerHandler.Get(pinNodi);
+                var listaSintesi = _sintesiRichiesteAssistenzaHandler.Handle(sintesiRichiesteAssistenzaQuery);
+                var centroMappaMarker = _centroMappaMarkerHandler.GetCentroMappaMarker(query.CodiceSede[0]);
+                var listaFiltri = filtri;
+                var infoNue = _getConteggioSchedeHandler.GetConteggio(query.CodiceSede);
+                var tipologie = _tipologieQueryHandler.Get();
+
                 var welcome = new SO115App.Models.Classi.Condivise.Welcome()
                 {
-                    BoxListaInterventi = _boxRichiesteHandler.Get(pinNodi.ToHashSet()),
-                    BoxListaMezzi = _boxMezziHandler.Get(query.CodiceSede),
-                    BoxListaPersonale = _boxPersonaleHandler.Get(query.CodiceSede),
-                    ListaChiamateInCorso = _listaChiamateInCorsoMarkerHandler.Get(pinNodi),
-                    ListaSintesi = _sintesiRichiesteAssistenzaHandler.Handle(sintesiRichiesteAssistenzaQuery),
-                    CentroMappaMarker = _centroMappaMarkerHandler.GetCentroMappaMarker(query.CodiceSede[0]),
-                    ListaFiltri = filtri,
-                    InfoNue = _getConteggioSchedeHandler.GetConteggio(query.CodiceSede),
-                    Tipologie = _tipologieQueryHandler.Get()
+                    BoxListaInterventi = boxListaInterventi,
+                    BoxListaMezzi = boxListaMezzi,
+                    BoxListaPersonale = boxListaPersonale,
+                    ListaChiamateInCorso = listaChiamateInCorso,
+                    ListaSintesi = listaSintesi,
+                    CentroMappaMarker = centroMappaMarker,
+                    ListaFiltri = listaFiltri,
+                    InfoNue = infoNue,
+                    Tipologie = tipologie
                 };
 
                 Log.Debug("Fine elaborazione Welcome Handler");

@@ -86,9 +86,9 @@ export class UtenteState {
     }
 
     @Action(ClearUtente)
-    clearUtente({ getState, patchState, dispatch }: StateContext<UtenteStateModel>) {
-        const state = getState();
-        this.clearUserDataService.clearUserData().subscribe((res: any) => {
+    clearUtente({ getState, patchState, dispatch }: StateContext<UtenteStateModel>, action: ClearUtente) {
+        let state = getState();
+        if (action.skipDeleteAll) {
             if (state.utente) {
                 // Clear SignalR Data
                 dispatch([
@@ -110,7 +110,33 @@ export class UtenteState {
             patchState({
                 utente: null
             });
-        });
+            state = getState();
+        } else {
+            this.clearUserDataService.clearUserData().subscribe((res: any) => {
+                if (state.utente) {
+                    // Clear SignalR Data
+                    dispatch([
+                        new LogoffUtenteSignalR(state.utente),
+                        new ClearVistaSedi(),
+                        new ClearIdUtente()
+                    ]);
+                }
+                dispatch([
+                    // Local Storage
+                    new ClearUtenteLocalStorage(),
+                    // Current Roles Session Storage
+                    new ClearRuoliUtenteLoggato()
+                ]);
+                // Reset states
+                dispatch(new StateReset(RichiesteState, ViewComponentState));
+                dispatch(new Navigate(['/login']));
+                // Clear User Data
+                patchState({
+                    utente: null
+                });
+                state = getState();
+            });
+        }
     }
 
 }
