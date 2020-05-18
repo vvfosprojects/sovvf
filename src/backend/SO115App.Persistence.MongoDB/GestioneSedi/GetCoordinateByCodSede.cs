@@ -9,7 +9,7 @@ using System.Text;
 
 namespace SO115App.Persistence.MongoDB.GestioneSedi
 {
-    public class GetCoordinateByCodSede: IGetCoordinateByCodSede
+    public class GetCoordinateByCodSede : IGetCoordinateByCodSede
     {
         private readonly DbContext _dbContext;
 
@@ -25,23 +25,42 @@ namespace SO115App.Persistence.MongoDB.GestioneSedi
         /// <returns>L'utente cercato</returns>
         public Coordinate Get(string codiceSede)
         {
-            var builder = Builders<ListaSedi>.Filter;
-            var filter = builder.Eq(x => x.codProv, codiceSede.Split('.')[0]) & builder.Eq(x => x.codFiglio_TC, Convert.ToDouble(codiceSede.Split('.')[1]));
-
-            var CodSede = codiceSede.Split('.')[0];
-            var CodFiglio = Convert.ToInt32(codiceSede.Split('.')[1]);
-            var filterAttive = Builders<ListaSedi>.Filter.Eq(x => x.attiva, 1);
-           
-
-            List<ListaSedi> listaSedi = _dbContext.SediCollection.Find(filterAttive).ToList();
-
-            var sede = listaSedi.Find(x => x.codFiglio_TC.Equals(CodFiglio) && x.codProv.Equals(CodSede));
-
             var coordinate = new Coordinate(41.89996, 12.49104);
 
-            if (sede != null)
+            if (codiceSede.Length > 2)
             {
-                 coordinate = new Coordinate(sede.latitudine, sede.longitudine);
+                var builder = Builders<ListaSedi>.Filter;
+                var filter = builder.Eq(x => x.codProv, codiceSede.Split('.')[0]) & builder.Eq(x => x.codFiglio_TC, Convert.ToDouble(codiceSede.Split('.')[1]));
+
+                var CodSede = codiceSede.Split('.')[0];
+                var CodFiglio = Convert.ToInt32(codiceSede.Split('.')[1]);
+                var filterAttive = Builders<ListaSedi>.Filter.Eq(x => x.attiva, 1);
+
+                List<ListaSedi> listaSedi = _dbContext.SediCollection.Find(filterAttive).ToList();
+
+                var sede = listaSedi.Find(x => x.codFiglio_TC.Equals(CodFiglio) && x.codProv.Equals(CodSede));
+
+                if (sede != null)
+                {
+                    coordinate = new Coordinate(sede.latitudine, sede.longitudine);
+                }
+            }
+            else
+            {
+                var builder = Builders<ListaSedi>.Filter;
+                var filter = builder.Eq(x => x.codFiglio_TC, Convert.ToDouble(codiceSede));
+
+                var CodFiglio = Convert.ToInt32(codiceSede);
+                var filterAttive = Builders<ListaSedi>.Filter.Eq(x => x.attiva, 1);
+
+                List<ListaSedi> listaSedi = _dbContext.SediCollection.Find(filterAttive).ToList();
+
+                var sede = listaSedi.Find(x => x.codFiglio_TC.Equals(CodFiglio));
+
+                if (sede != null)
+                {
+                    coordinate = new Coordinate(sede.latitudine, sede.longitudine);
+                }
             }
 
             return coordinate;

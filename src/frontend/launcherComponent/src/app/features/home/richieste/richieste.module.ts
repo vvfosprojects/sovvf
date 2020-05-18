@@ -41,6 +41,7 @@ import { ListaSquadrePartenzaComponent } from '../../../shared/components/lista-
 import { RichiesteEspanseState } from '../store/states/richieste/richieste-espanse.state';
 import { RichiestaGestioneState } from '../store/states/richieste/richiesta-gestione.state';
 import { RichiestaAttivitaUtenteState } from '../store/states/richieste/richiesta-attivita-utente.state';
+import { NgxsFormPluginModule } from '@ngxs/form-plugin';
 
 @NgModule({
     imports: [
@@ -68,7 +69,8 @@ import { RichiestaAttivitaUtenteState } from '../store/states/richieste/richiest
             RichiesteEspanseState,
             RichiestaGestioneState,
             RichiestaAttivitaUtenteState
-        ])
+        ]),
+        NgxsFormPluginModule
     ],
     declarations: [
         RichiesteComponent,

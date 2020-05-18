@@ -13,7 +13,7 @@ using System.Text;
 
 namespace SO115App.Persistence.MongoDB.GestioneSedi
 {
-    public class GetDistaccamentiByCodiciSede: IGetListaDistaccamentiByPinListaSedi
+    public class GetDistaccamentiByCodiciSede : IGetListaDistaccamentiByPinListaSedi
     {
         private readonly DbContext _dbContext;
         private readonly IGetAlberaturaUnitaOperative _getSediAlberate;
@@ -27,7 +27,7 @@ namespace SO115App.Persistence.MongoDB.GestioneSedi
         public List<Distaccamento> GetListaDistaccamenti(List<PinNodo> listaPin)
         {
             var listaSedi = _getSediAlberate.ListaSediAlberata();
-            var listaSottoSedi = listaSedi.GetSottoAlbero(listaPin);
+            var listaSottoSedi = listaSedi.GetSottoAlbero(listaPin).Where(x => x.Codice.Length > 2);
 
             var filtroSede = Builders<ListaSedi>.Filter
             .In(sede => sede.codProv, listaSottoSedi.Select(uo => uo.Codice.Split('.')[0]));
@@ -36,12 +36,10 @@ namespace SO115App.Persistence.MongoDB.GestioneSedi
             .In(sede => sede.codFiglio_TC, listaSottoSedi.Select(uo => Convert.ToInt32(uo.Codice.Split('.')[1])));
 
             var filterAttive = Builders<ListaSedi>.Filter.Eq(x => x.attiva, 1);
-            
 
             List<ListaSedi> DistaccamentiResult = _dbContext.SediCollection.Find(filtroSede & filtroCodice & filterAttive).ToList();
 
             return MapSediMongoSuDistaccamenti.Map(DistaccamentiResult);
-
         }
     }
 }
