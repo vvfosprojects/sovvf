@@ -15,7 +15,7 @@ import { makeCopy } from '../../../../../shared/helper/function';
 import { ToggleModifica } from '../../actions/view/view.actions';
 import { RichiestaMarker } from '../../../maps/maps-model/richiesta-marker.model';
 import { RichiesteMarkersState } from '../maps/richieste-markers.state';
-import { UpdateRichiestaMarker } from '../../actions/maps/richieste-markers.actions';
+import { UpdateRichiestaMarker, UpdateRichiestaMarkerModifica } from '../../actions/maps/richieste-markers.actions';
 import { SetCoordCentroMappa, SetZoomCentroMappa } from '../../actions/maps/centro-mappa.actions';
 import { Observable } from 'rxjs';
 import { UpdateFormValue } from '@ngxs/form-plugin';
@@ -140,7 +140,7 @@ export class RichiestaModificaState {
             });
             const temporaryMarker: RichiestaMarker = makeCopy(getState().richiestaMarker);
             temporaryMarker.localita = action.nuovoIndirizzo;
-            dispatch(new UpdateRichiestaMarker(temporaryMarker));
+            dispatch(new UpdateRichiestaMarkerModifica(temporaryMarker));
             dispatch(new SetCoordCentroMappa(action.nuovoIndirizzo.coordinate));
             dispatch(new SetZoomCentroMappa(18));
         }
