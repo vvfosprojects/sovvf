@@ -3,24 +3,25 @@ import { RichiesteMarkerService } from '../../../../../core/service/maps-service
 import { RichiestaMarker } from '../../../maps/maps-model/richiesta-marker.model';
 import {
     AddRichiesteMarkers,
+    ClearRichiestaMarkerModifica,
     ClearRichiesteMarkers,
     GetRichiesteMarkers,
     InsertRichiestaMarker,
-    OpacizzaRichiesteMarkers, PatchRichiesteMarkers,
+    OpacizzaRichiesteMarkers,
+    PatchRichiesteMarkers,
     RemoveRichiestaMarker,
     SetRichiestaMarkerById,
-    SetRichiesteMarkers, SetTipoOpacitaRichiesteMarkers, ToggleOpacitaRichiesteMarkers,
-    UpdateRichiestaMarker
+    SetRichiesteMarkers,
+    SetTipoOpacitaRichiesteMarkers,
+    ToggleOpacitaRichiesteMarkers,
+    UpdateRichiestaMarker,
+    UpdateRichiestaMarkerModifica
 } from '../../actions/maps/richieste-markers.actions';
 import { wipeStatoRichiesta } from '../../../../../shared/helper/function';
-import {
-    ClearMarkerOpachiRichieste,
-    SetMarkerOpachiRichieste
-} from '../../actions/maps/marker-opachi.actions';
+import { ClearMarkerOpachiRichieste, SetMarkerOpachiRichieste } from '../../actions/maps/marker-opachi.actions';
 import { append, insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
 import { Observable } from 'rxjs';
 import { HomeState } from '../home.state';
-import { ToggleAnimation } from '../../actions/maps/maps-buttons.actions';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
 import { RichiesteMarkerAdapterService } from '../../../../../core/service/maps-service/richieste-marker/adapters/richieste-marker-adapter.service';
 import { ToastrType } from '../../../../../shared/enum/toastr';
@@ -28,6 +29,7 @@ import { SetMarkerLoading } from '../../actions/home.actions';
 
 export interface RichiesteMarkersStateModel {
     richiesteMarkers: RichiestaMarker[];
+    richiestaMarkerModifica: RichiestaMarker;
     richiesteMarkersId: string[];
     richiestaMarkerById: RichiestaMarker;
     statoOpacita: boolean;
@@ -36,6 +38,7 @@ export interface RichiesteMarkersStateModel {
 
 export const RichiesteMarkersStateDefaults: RichiesteMarkersStateModel = {
     richiesteMarkers: [],
+    richiestaMarkerModifica: null,
     richiesteMarkersId: [],
     richiestaMarkerById: null,
     statoOpacita: false,
@@ -53,7 +56,13 @@ export class RichiesteMarkersState {
 
     @Selector()
     static richiesteMarkers(state: RichiesteMarkersStateModel) {
-        return state.richiesteMarkers;
+        let markers = [];
+        markers = state.richiesteMarkers;
+        if (state.richiestaMarkerModifica) {
+            markers = state.richiesteMarkers.filter((m: RichiestaMarker) => m.codice !== state.richiestaMarkerModifica.codice);
+            markers.push(state.richiestaMarkerModifica);
+        }
+        return markers;
     }
 
     @Selector()
@@ -179,6 +188,20 @@ export class RichiesteMarkersState {
                 richiesteMarkersId: removeItem<string>(id => id === payload)
             })
         );
+    }
+
+    @Action(UpdateRichiestaMarkerModifica)
+    updateRichiestaMarkerModifica({ patchState }: StateContext<RichiesteMarkersStateModel>, { payload }: UpdateRichiestaMarkerModifica) {
+        patchState({
+            richiestaMarkerModifica: payload
+        });
+    }
+
+    @Action(ClearRichiestaMarkerModifica)
+    clearRichiestaMarkerModifica({ patchState }: StateContext<RichiesteMarkersStateModel>) {
+        patchState({
+            richiestaMarkerModifica: null
+        });
     }
 
     @Action(SetRichiestaMarkerById)

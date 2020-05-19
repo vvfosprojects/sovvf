@@ -65,7 +65,7 @@
                 <div class="col pl-0">
                     <div class="form-group mb-1">
                         <label for="telefono">Telefono</label>
-                        <input id="telefono" type="number" placeholder="Inserisci il Telefono"
+                        <input id="telefono" type="tel" placeholder="Inserisci il Telefono"
                                formControlName="telefono"
                                class="form-control" [ngClass]="{ 'is-invalid': submitted && f.telefono.errors }"/>
                         <div *ngIf="submitted && f.telefono.errors" class="invalid-feedback">
