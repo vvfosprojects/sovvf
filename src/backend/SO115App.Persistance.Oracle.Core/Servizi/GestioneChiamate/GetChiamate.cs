@@ -1,18 +1,26 @@
 ﻿using Oracle.ManagedDataAccess.Client;
-using SO115App.Persistence.Oracle.Classi;
+using SO115App.Persistance.Oracle.Core.Interfacce;
+using SO115App.Persistance.Oracle.Core.Interfacce.GestioneChiamate;
+using SO115App.Persistence.Oracle.Core.Classi;
 using System.Collections.Generic;
 using System.Data;
 
-namespace SO115App.Persistence.Oracle.Servizi.Richieste
+namespace SO115App.Persistence.Oracle.Core.Servizi.GestioneChiamate
 {
-    public class GetChiamate
+    public class GetChiamate: IGetChiamate
     {
+        private readonly IDBContext _dbContext;
+
+        public GetChiamate(IDBContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
+
         public List<ORAChiamate> GetListaChiamate(string CodSede)
         {
             List<ORAChiamate> ListaChiamate = new List<ORAChiamate>();
 
-            DBContext context = new DBContext();
-            Connessione InfoCon = context.GetConnectionFromCodiceSede(CodSede);
+            Connessione InfoCon = _dbContext.GetConnectionFromCodiceSede(CodSede);
 
             OracleConnection conn = new OracleConnection(InfoCon.ConnectionString);
             conn.Open();

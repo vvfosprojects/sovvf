@@ -39,7 +39,7 @@ namespace SO115App.API.Controllers
         }
 
         [HttpPost("Login")]
-        public async Task<IActionResult> Login([FromBody]AuthLogIn credenziali)
+        public async Task<IActionResult> Login([FromBody] AuthLogIn credenziali)
         {
             var query = new LogInQuery()
             {
@@ -60,6 +60,8 @@ namespace SO115App.API.Controllers
             }
             catch (Exception ex)
             {
+                if (ex.Message.Contains("no element"))
+                    return StatusCode(404, "Credenziali errate");
                 return BadRequest(ex.Message);
             }
         }
