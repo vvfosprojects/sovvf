@@ -1,26 +1,49 @@
 import { Action, Select, Selector, State, StateContext } from '@ngxs/store';
-// Model
 import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.model';
-
-// Action
 import {
     ChiudiRichiestaModifica,
     ClearRichiestaModifica,
     ModificaIndirizzo,
-    ModificaRilevanza, ModificaRilevanzaStArCu,
+    ModificaRilevanza,
+    ModificaRilevanzaStArCu,
     SetRichiestaModifica,
-    SuccessRichiestaModifica
+    SuccessRichiestaModifica,
+    ClearIndirizzo
 } from '../../actions/richieste/richiesta-modifica.actions';
 import produce from 'immer';
 import { makeCopy } from '../../../../../shared/helper/function';
 import { ToggleModifica } from '../../actions/view/view.actions';
 import { RichiestaMarker } from '../../../maps/maps-model/richiesta-marker.model';
 import { RichiesteMarkersState } from '../maps/richieste-markers.state';
-import { UpdateRichiestaMarker } from '../../actions/maps/richieste-markers.actions';
+import { UpdateRichiestaMarker, UpdateRichiestaMarkerModifica } from '../../actions/maps/richieste-markers.actions';
 import { SetCoordCentroMappa, SetZoomCentroMappa } from '../../actions/maps/centro-mappa.actions';
 import { Observable } from 'rxjs';
+import { UpdateFormValue } from '@ngxs/form-plugin';
 
 export interface RichiestaModificaStateModel {
+    modificaRichiestaForm: {
+        model: {
+            selectedTipologie: string[],
+            nominativo: string,
+            telefono: string,
+            indirizzo: string,
+            latitudine: string,
+            longitudine: string,
+            piano: string,
+            etichette: string,
+            noteIndirizzo: string,
+            rilevanzaGrave: boolean,
+            rilevanzaStArCu: boolean,
+            notePrivate: string,
+            notePubbliche: string,
+            descrizione: string,
+            zoneEmergenza: string,
+            prioritaRichiesta: number
+        },
+        dirty: boolean,
+        status: string,
+        errors: any
+    };
     richiestaModifica: SintesiRichiesta;
     richiestaMarker: RichiestaMarker;
     successModifica: boolean;
@@ -28,6 +51,12 @@ export interface RichiestaModificaStateModel {
 }
 
 export const RichiestaModificaStateDefaults: RichiestaModificaStateModel = {
+    modificaRichiestaForm: {
+        model: undefined,
+        dirty: false,
+        status: '',
+        errors: {}
+    },
     richiestaModifica: null,
     richiestaMarker: null,
     successModifica: false,
@@ -111,7 +140,7 @@ export class RichiestaModificaState {
             });
             const temporaryMarker: RichiestaMarker = makeCopy(getState().richiestaMarker);
             temporaryMarker.localita = action.nuovoIndirizzo;
-            dispatch(new UpdateRichiestaMarker(temporaryMarker));
+            dispatch(new UpdateRichiestaMarkerModifica(temporaryMarker));
             dispatch(new SetCoordCentroMappa(action.nuovoIndirizzo.coordinate));
             dispatch(new SetZoomCentroMappa(18));
         }
@@ -140,4 +169,15 @@ export class RichiestaModificaState {
         patchState(RichiestaModificaStateDefaults);
     }
 
+    @Action(ClearIndirizzo)
+    ClearIndirizzo({ dispatch }: StateContext<RichiestaModificaStateModel>) {
+        dispatch(new UpdateFormValue({
+            path: 'richiestaModifica.modificaRichiestaForm',
+            value: {
+                indirizzo: '',
+                latitudine: '',
+                longitudine: ''
+            }
+        }));
+    }
 }

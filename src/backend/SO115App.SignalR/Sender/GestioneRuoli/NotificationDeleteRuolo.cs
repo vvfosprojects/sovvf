@@ -20,8 +20,6 @@ namespace SO115App.SignalR.Sender.GestioneRuoli
         public async Task Notify(DeleteRuoliUtenteCommand command)
         {
             var utente = _getUtenteByCF.Get(command.CodFiscale);
-            await _notificationHubContext.Clients.Group(command.CodiceSede).SendAsync("NotifyRefreshUtenti", true).ConfigureAwait(false);
-            await _notificationHubContext.Clients.Group(command.CodiceSede).SendAsync("NotifyModificatoRuoloUtente", utente).ConfigureAwait(false);
             await _notificationHubContext.Clients.Group(utente.Sede.Codice).SendAsync("NotifyRefreshUtenti", true).ConfigureAwait(false);
             await _notificationHubContext.Clients.Group(utente.Sede.Codice).SendAsync("NotifyModificatoRuoloUtente", utente).ConfigureAwait(false);
         }

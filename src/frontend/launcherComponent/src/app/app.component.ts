@@ -1,6 +1,5 @@
 import { Component, OnDestroy } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
-import { AuthenticationService } from './core/auth/_services';
 import { RoutesPath } from './shared/enum/routes-path.enum';
 import { Select, Store } from '@ngxs/store';
 import { Observable, Subscription } from 'rxjs';
@@ -15,6 +14,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PermissionFeatures } from './shared/enum/permission-features.enum';
 import { PermessiService } from './core/service/permessi-service/permessi.service';
 import { RuoliUtenteLoggatoState } from './shared/store/states/ruoli-utente-loggato/ruoli-utente-loggato.state';
+import { AuthenticationService } from './core/auth/_services/authentication.service';
 
 @Component({
     selector: 'app-root',

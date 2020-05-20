@@ -1,5 +1,5 @@
-//-----------------------------------------------------------------------
-// <copyright file="ListaMezziInServizioAuthorizationQueryHandlerDecorator.cs" company="CNVVF">
+﻿//-----------------------------------------------------------------------
+// <copyright file="CancellazioneChiamataInCorsoMarkerAuthorization.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -20,33 +20,33 @@
 using System.Collections.Generic;
 using System.Security.Principal;
 using CQRS.Authorization;
-using CQRS.Queries.Authorizers;
+using CQRS.Commands.Authorizers;
 using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Autenticazione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.VerificaUtente;
 
-namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneMezziInServizio.ListaMezziInSerivizio
+namespace DomainModel.CQRS.Commands.ChiamataInCorsoMarker
 {
-    public class ListaMezziInServizioAuthorizationQueryHandlerDecorator : IQueryAuthorizer<ListaMezziInServizioQuery, ListaMezziInServizioResult>
+    public class CancellazioneChiamataInCorsoByIdUtenteMarkerAuthorization : ICommandAuthorizer<CancellazioneChiamataInCorsoByIdUtenteMarkerCommand>
     {
         private readonly IPrincipal _currentUser;
         private readonly IFindUserByUsername _findUserByUsername;
         private readonly IGetAutorizzazioni _getAutorizzazioni;
 
-        public ListaMezziInServizioAuthorizationQueryHandlerDecorator(IPrincipal currentUser, IFindUserByUsername findUserByUsername, IGetAutorizzazioni getAutorizzazioni)
+        public CancellazioneChiamataInCorsoByIdUtenteMarkerAuthorization(IPrincipal currentUser, IFindUserByUsername findUserByUsername, IGetAutorizzazioni getAutorizzazioni)
         {
             this._currentUser = currentUser;
             _findUserByUsername = findUserByUsername;
             _getAutorizzazioni = getAutorizzazioni;
         }
 
-        public IEnumerable<AuthorizationResult> Authorize(ListaMezziInServizioQuery query)
+        public IEnumerable<AuthorizationResult> Authorize(CancellazioneChiamataInCorsoByIdUtenteMarkerCommand command)
         {
-            string username = this._currentUser.Identity.Name;
-            Utente user = _findUserByUsername.FindUserByUs(username);
+            var username = _currentUser.Identity.Name;
+            var user = _findUserByUsername.FindUserByUs(username);
 
-            if (this._currentUser.Identity.IsAuthenticated)
+            if (_currentUser.Identity.IsAuthenticated)
             {
                 if (user == null)
                     yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);

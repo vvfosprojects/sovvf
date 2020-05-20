@@ -51,6 +51,17 @@ export class RemoveRichiestaMarker {
     }
 }
 
+export class UpdateRichiestaMarkerModifica {
+    static readonly type = '[Richieste Marker] Update Richiesta Marker Modifica';
+
+    constructor(public payload: RichiestaMarker) {
+    }
+}
+
+export class ClearRichiestaMarkerModifica {
+    static readonly type = '[Richieste Marker] Clear Richiesta Marker Modifica';
+}
+
 export class SetRichiestaMarkerById {
     static readonly type = '[Richieste Marker] Set Richiesta Marker by ID';
 

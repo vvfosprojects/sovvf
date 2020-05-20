@@ -2,7 +2,7 @@ export const environment = {
     production: false,
     fakeProvider: false,
     signalRHub: '/NotificationHub',
-    baseUrl: 'http://localhost:4200',
+    baseUrl: 'http://localhost:5220',
     signalR: true,
     apiUrl: {
         welcome: '/api/Welcome',
@@ -20,7 +20,7 @@ export const environment = {
             preaccoppiati: '/api/PreAccoppiati',
             avanzata: '/api/ComposizionePartenzaAvanzata',
             confermaPartenze: '/api/ConfermaPartenze',
-            prenotazione: 'api/PrenotazioneMezzo'
+            prenotazione: '/api/PrenotazioneMezzo'
         },
         chiamata: '/api/Chiamata',
         utenti: '/api/Utenti',

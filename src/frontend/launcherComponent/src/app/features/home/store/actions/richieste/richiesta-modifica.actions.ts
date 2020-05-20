@@ -37,3 +37,7 @@ export class ChiudiRichiestaModifica {
     constructor(public mantieniModificaIndirizzo?: boolean) {
     }
 }
+
+export class ClearIndirizzo {
+    static readonly type = '[RichiestaModifica] Clear Indirizzo';
+}

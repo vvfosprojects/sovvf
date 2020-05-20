@@ -21,6 +21,7 @@ using CQRS.Authorization;
 using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Autenticazione;
+using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.VerificaUtente;
 using System.Collections.Generic;
 using System.Security.Principal;
@@ -32,18 +33,21 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSchedeNue.MergeSchedeNue
         private readonly IPrincipal _currentUser;
         private readonly IFindUserByUsername _findUserByUsername;
         private readonly IGetAutorizzazioni _getAutorizzazioni;
+        private readonly IGetUtenteById _getUtenteById;
 
-        public MergeSchedeNueAuthorization(IPrincipal currentUser, IFindUserByUsername findUserByUsername, IGetAutorizzazioni getAutorizzazioni)
+        public MergeSchedeNueAuthorization(IPrincipal currentUser, IFindUserByUsername findUserByUsername,
+            IGetAutorizzazioni getAutorizzazioni,
+            IGetUtenteById getUtenteById)
         {
-            this._currentUser = currentUser;
+            _currentUser = currentUser;
             _findUserByUsername = findUserByUsername;
             _getAutorizzazioni = getAutorizzazioni;
+            _getUtenteById = getUtenteById;
         }
 
         public IEnumerable<AuthorizationResult> Authorize(MergeSchedeNueCommand command)
         {
-            var username = _currentUser.Identity.Name;
-            var user = _findUserByUsername.FindUserByUs(username);
+            var user = _getUtenteById.GetUtenteByCodice(command.IdUtente);
 
             if (_currentUser.Identity.IsAuthenticated)
             {

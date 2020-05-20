@@ -8,7 +8,7 @@ import {
 } from '../../actions/operatore/utente.actions';
 import {
     ClearIdUtente,
-    LogoffUtenteSignalR,
+    LogoffUtenteSignalR
 } from '../../../../../core/signalr/store/signalR.actions';
 import { ClearVistaSedi, SetVistaSedi } from '../../../../../shared/store/actions/app/app.actions';
 import { makeCopy } from '../../../../../shared/helper/function';
@@ -16,6 +16,8 @@ import { ClearRuoliUtenteLoggato } from '../../../../../shared/store/actions/ruo
 import { StateReset } from 'ngxs-reset-plugin';
 import { RichiesteState } from '../../../../home/store/states/richieste/richieste.state';
 import { ViewComponentState } from '../../../../home/store/states/view/view.state';
+import { Navigate } from '@ngxs/router-plugin';
+import { ClearUserDataService } from '../../../../../core/auth/_services/clearUserData.service';
 
 export interface UtenteStateModel {
     localName: string;
@@ -41,6 +43,9 @@ export class UtenteState {
     @Selector()
     static localName(state: UtenteStateModel) {
         return state.localName;
+    }
+
+    constructor(private clearUserDataService: ClearUserDataService) {
     }
 
     @Action(SetUtente)
@@ -81,28 +86,57 @@ export class UtenteState {
     }
 
     @Action(ClearUtente)
-    clearUtente({ getState, patchState, dispatch }: StateContext<UtenteStateModel>) {
-        const state = getState();
-        if (state.utente) {
-            // Clear SignalR Data
+    clearUtente({ getState, patchState, dispatch }: StateContext<UtenteStateModel>, action: ClearUtente) {
+        let state = getState();
+        if (action.skipDeleteAll) {
+            if (state.utente) {
+                // Clear SignalR Data
+                dispatch([
+                    new LogoffUtenteSignalR(state.utente),
+                    new ClearVistaSedi(),
+                    new ClearIdUtente()
+                ]);
+            }
             dispatch([
-                new LogoffUtenteSignalR(state.utente),
-                new ClearVistaSedi(),
-                new ClearIdUtente()
+                // Local Storage
+                new ClearUtenteLocalStorage(),
+                // Current Roles Session Storage
+                new ClearRuoliUtenteLoggato()
             ]);
+            // Reset states
+            dispatch(new StateReset(RichiesteState, ViewComponentState));
+            dispatch(new Navigate(['/login']));
+            // Clear User Data
+            patchState({
+                utente: null
+            });
+            state = getState();
+        } else {
+            this.clearUserDataService.clearUserData().subscribe((res: any) => {
+                if (state.utente) {
+                    // Clear SignalR Data
+                    dispatch([
+                        new LogoffUtenteSignalR(state.utente),
+                        new ClearVistaSedi(),
+                        new ClearIdUtente()
+                    ]);
+                }
+                dispatch([
+                    // Local Storage
+                    new ClearUtenteLocalStorage(),
+                    // Current Roles Session Storage
+                    new ClearRuoliUtenteLoggato()
+                ]);
+                // Reset states
+                dispatch(new StateReset(RichiesteState, ViewComponentState));
+                dispatch(new Navigate(['/login']));
+                // Clear User Data
+                patchState({
+                    utente: null
+                });
+                state = getState();
+            });
         }
-        dispatch([
-            // Local Storage
-            new ClearUtenteLocalStorage(),
-            // Current Roles Session Storage
-            new ClearRuoliUtenteLoggato()
-        ]);
-        // Reset states
-        dispatch(new StateReset(RichiesteState, ViewComponentState));
-        // Clear User Data
-        patchState({
-            utente: null
-        });
     }
 
 }

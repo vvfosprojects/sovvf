@@ -2,7 +2,7 @@ import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { Coordinate } from '../../../../../shared/model/coordinate.model';
 import {
     CestinaChiamata,
-    ClearChiamata,
+    ClearChiamata, ClearIndirizzo,
     ClearMarkerChiamata,
     InsertChiamata,
     InsertChiamataSuccess,
@@ -26,8 +26,33 @@ import { GetListaRichieste, SetIdChiamataInviaPartenza, SetNeedRefresh } from '.
 import { RichiestaSelezionataState } from '../richieste/richiesta-selezionata.state';
 import { PaginationState } from '../../../../../shared/store/states/pagination/pagination.state';
 import { RichiestaGestioneState } from '../richieste/richiesta-gestione.state';
+import { Validators } from '@angular/forms';
+import { UpdateFormValue } from '@ngxs/form-plugin';
 
 export interface SchedaTelefonataStateModel {
+    nuovaRichiestaForm: {
+        model: {
+            selectedTipologie: string[],
+            nominativo: string,
+            telefono: string,
+            indirizzo: string,
+            latitudine: string,
+            longitudine: string,
+            piano: string,
+            etichette: string,
+            noteIndirizzo: string,
+            rilevanzaGrave: boolean,
+            rilevanzaStArCu: boolean,
+            notePrivate: string,
+            notePubbliche: string,
+            descrizione: string,
+            zoneEmergenza: string,
+            prioritaRichiesta: number
+        },
+        dirty: boolean,
+        status: string,
+        errors: any
+    };
     coordinate: Coordinate;
     nuovaRichiesta: SintesiRichiesta;
     azioneChiamata: AzioneChiamataEnum;
@@ -37,6 +62,12 @@ export interface SchedaTelefonataStateModel {
 }
 
 export const SchedaTelefonataStateDefaults: SchedaTelefonataStateModel = {
+    nuovaRichiestaForm: {
+        model: undefined,
+        dirty: false,
+        status: '',
+        errors: {}
+    },
     coordinate: null,
     nuovaRichiesta: null,
     azioneChiamata: null,
@@ -113,6 +144,7 @@ export class SchedaTelefonataState {
                 dispatch(new CestinaChiamata());
             }
         }, () => {
+            dispatch(new StopLoadingNuovaChiamata());
             patchState({
                 nuovaRichiesta: null,
                 azioneChiamata: null
@@ -191,6 +223,18 @@ export class SchedaTelefonataState {
         patchState({
             resetChiamata: false
         });
+    }
+
+    @Action(ClearIndirizzo)
+    ClearIndirizzo({ dispatch }: StateContext<SchedaTelefonataStateModel>) {
+        dispatch(new UpdateFormValue({
+            path: 'schedaTelefonata.nuovaRichiestaForm',
+            value: {
+                indirizzo: '',
+                latitudine: '',
+                longitudine: ''
+            }
+        }));
     }
 
     @Action(StartLoadingNuovaChiamata)

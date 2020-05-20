@@ -1,7 +1,7 @@
 <div *ngIf="richiestaModifica" class="row mt-2 pl-3" style="height: 750px">
     <app-partial-loader *ngIf="loading$ | async"></app-partial-loader>
     <div class="col-12 p-3 rounded" [ngClass]="methods.cardFissataClasses(richiestaModifica)">
-        <form [formGroup]="modificaRichiestaForm">
+        <form [formGroup]="modificaRichiestaForm" ngxsForm="richiestaModifica.modificaRichiestaForm">
             <div class="row">
                 <div class="col-5">
                     <ng-template #rilevante>
@@ -91,7 +91,7 @@
                 <div class="col">
                     <div class="form-group mb-2">
                         <label for="telefono">Telefono</label>
-                        <input id="telefono" type="number" placeholder="telefono" formControlName="telefono"
+                        <input id="telefono" type="tel" placeholder="telefono" formControlName="telefono"
                                class="form-control"
                                [ngClass]="{ 'is-invalid': submitted && f.telefono.errors }"/>
                         <div *ngIf="submitted && f.telefono.errors" class="invalid-feedback">

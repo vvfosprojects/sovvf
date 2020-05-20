@@ -25,10 +25,12 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Connections;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.ViewComponents;
+using Microsoft.CodeAnalysis.Options;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.Net.Http.Headers;
 using SimpleInjector;
 using SimpleInjector.Integration.AspNetCore.Mvc;
 using SimpleInjector.Lifestyles;
@@ -38,7 +40,9 @@ using SO115App.ExternalAPI.Fake.Servizi.Personale;
 using SO115App.Logging;
 using SO115App.Models.Servizi.CustomMapper;
 using SO115App.SignalR;
+using System;
 using System.Net.Http;
+using System.Net.WebSockets;
 using System.Security.Principal;
 using System.Text;
 
@@ -62,13 +66,19 @@ namespace SO115App.API
             ///<summary>
             ///Registrazione dei servizi Cors
             /// </summary>
+            ///
             services.AddCors(options =>
             {
                 options.AddPolicy(MyAllowSpecificOrigins,
                 builder =>
                 {
-                    builder.AllowAnyMethod()
-                        .AllowAnyHeader();
+                    builder
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .AllowCredentials()
+                        .WithOrigins(Configuration.GetSection("AllowedOriginLocal").Value, Configuration.GetSection("AllowedOriginProd").Value)
+                        .SetIsOriginAllowedToAllowWildcardSubdomains()
+                        .WithExposedHeaders("codicesede", "hubconnectionid", "idUtente", "localip", "DNT", "User - Agent", "x - requested - with", "If - Modified - Since", "Cache - Control", "content - type", "Range");
                 });
             });
 
@@ -142,10 +152,11 @@ namespace SO115App.API
                 // scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-            app.UseCors(MyAllowSpecificOrigins);
             app.UseRouting();
+            app.UseCors(MyAllowSpecificOrigins);
             app.UseAuthentication();
             app.UseAuthorization();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapHub<NotificationHub>("/NotificationHub", options =>
@@ -165,7 +176,6 @@ namespace SO115App.API
             {
                 c.SwaggerEndpoint("/swagger/SO115/swagger.json", "SO115");
             });
-
             //SIMPLE INJECTION INIZIALIZE COMPONENT
             InitializeContainer(app);
             container.RegisterSingleton<IPrincipal, HttpContextPrincipal>();

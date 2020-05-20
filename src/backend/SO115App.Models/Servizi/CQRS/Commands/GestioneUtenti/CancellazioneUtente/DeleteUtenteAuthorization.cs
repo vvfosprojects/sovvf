@@ -54,7 +54,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneUtenti.CancellazioneUten
                 {
                     foreach (var ruolo in user.Ruoli)
                     {
-                        if (!_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, command.CodiceSede, Costanti.Amministratore))
+                        if (!_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, ruolo.CodSede, Costanti.Amministratore))
                             yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
                     }
                 }

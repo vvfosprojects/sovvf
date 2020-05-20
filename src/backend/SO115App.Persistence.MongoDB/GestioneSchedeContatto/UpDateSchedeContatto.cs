@@ -40,12 +40,12 @@ namespace SO115App.Persistence.MongoDB
             var replaceOption = new ReplaceOptions();
             replaceOption.IsUpsert = true;
 
-            _dbContext.SchedeContattoCollection.ReplaceOne(filter, scheda, replaceOption);
+            _dbContext.SchedeContattoCollection.InsertOne(scheda);
 
             foreach (var schedaMergiata in scheda.Collegate)
             {
                 var filterMerged = Builders<SchedaContatto>.Filter.Eq(s => s.CodiceScheda, schedaMergiata.CodiceScheda);
-                _dbContext.SchedeContattoCollection.ReplaceOne(filterMerged, schedaMergiata, replaceOption);
+                _dbContext.SchedeContattoCollection.InsertOne(schedaMergiata);
             }
         }
     }

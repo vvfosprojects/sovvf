@@ -17,14 +17,17 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using System;
 using System.Collections.Generic;
 using System.Security.Principal;
 using CQRS.Authorization;
 using CQRS.Commands.Authorizers;
 using SO115App.API.Models.Classi.Autenticazione;
+using SO115App.API.Models.Classi.Utenti;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Autenticazione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.VerificaUtente;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Competenze;
 
 namespace DomainModel.CQRS.Commands.AddIntervento
 {
@@ -33,16 +36,28 @@ namespace DomainModel.CQRS.Commands.AddIntervento
         private readonly IPrincipal _currentUser;
         private readonly IFindUserByUsername _findUserByUsername;
         private readonly IGetAutorizzazioni _getAutorizzazioni;
+        private readonly IGetCompetenzeByCoordinateIntervento _getCompetenze;
 
-        public AddInterventoAuthorization(IPrincipal currentUser, IFindUserByUsername findUserByUsername, IGetAutorizzazioni getAutorizzazioni)
+        public AddInterventoAuthorization(IPrincipal currentUser,
+            IFindUserByUsername findUserByUsername,
+            IGetAutorizzazioni getAutorizzazioni,
+            IGetCompetenzeByCoordinateIntervento getCompetenze)
         {
             _currentUser = currentUser;
             _findUserByUsername = findUserByUsername;
             _getAutorizzazioni = getAutorizzazioni;
+            _getCompetenze = getCompetenze;
         }
 
         public IEnumerable<AuthorizationResult> Authorize(AddInterventoCommand command)
         {
+            var Competenza = _getCompetenze.GetCompetenzeByCoordinateIntervento(command.Chiamata.Localita.Coordinate);
+            string[] CodUOCompetenzaAppo = {
+                Competenza.CodProvincia + "." + Competenza.CodDistaccamento,
+                Competenza.CodProvincia + "." + Competenza.CodDistaccamento2,
+                Competenza.CodProvincia + "." + Competenza.CodDistaccamento3,
+                Competenza.CodProvincia + ".1000"
+            };
             var username = _currentUser.Identity.Name;
             var user = _findUserByUsername.FindUserByUs(username);
 
@@ -52,11 +67,18 @@ namespace DomainModel.CQRS.Commands.AddIntervento
                     yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
                 else
                 {
+                    Boolean abilitato = false;
                     foreach (var ruolo in user.Ruoli)
                     {
-                        if (!_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, command.CodiceSede, Costanti.GestoreChiamate))
-                            yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
+                        foreach (var competenza in CodUOCompetenzaAppo)
+                        {
+                            if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, competenza, Costanti.GestoreChiamate))
+                                abilitato = true;
+                        }
                     }
+
+                    if (!abilitato)
+                        yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
                 }
             }
             else

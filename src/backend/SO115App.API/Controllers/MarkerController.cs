@@ -82,7 +82,6 @@ namespace SO115App.API.Controllers
         [HttpPost("GetRichieste")]
         public async Task<IActionResult> GetRichieste([FromBody]AreaMappa filtroCentroMappa)
         {
-
             var codiciSedi = Request.Headers["codiceSede"].ToString().Split(',');
 
             try
@@ -126,7 +125,10 @@ namespace SO115App.API.Controllers
             {
                 if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
                     return StatusCode(403, Costanti.UtenteNonAutorizzato);
-                return BadRequest();
+                else if (ex.Message.Contains("404"))
+                    return StatusCode(404, "Servizio non raggiungibile. Riprovare più tardi");
+                else
+                    return BadRequest();
             }
         }
 

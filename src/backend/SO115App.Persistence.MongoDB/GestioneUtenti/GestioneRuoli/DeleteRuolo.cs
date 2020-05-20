@@ -21,22 +21,35 @@ using MongoDB.Driver;
 using Persistence.MongoDB;
 using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.GestioneRuolo;
+using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.GetUtenti;
 
 namespace SO115App.Persistence.MongoDB.GestioneUtenti.GestioneRuoli
 {
     public class DeleteRuolo : IDeleteRuolo
     {
         private readonly DbContext _dbcontext;
+        private readonly IGetUtenteByCF _getUtenteByCF;
 
-        public DeleteRuolo(DbContext dbcontext)
+        public DeleteRuolo(DbContext dbcontext, IGetUtenteByCF getUtenteByCF)
         {
             _dbcontext = dbcontext;
+            _getUtenteByCF = getUtenteByCF;
         }
 
         public void Delete(string codiceFiscale, Role ruolo)
         {
-            var filter = Builders<Utente>.Filter.Eq(x => x.CodiceFiscale, codiceFiscale);
-            _dbcontext.UtenteCollection.UpdateOne(filter, Builders<Utente>.Update.Pull(x => x.Ruoli, ruolo));
+            var utente = _getUtenteByCF.Get(codiceFiscale);
+
+            ///Se un utente ha solamente  un ruolo associato, cancello direttamente l'utente dalla base dati
+            if (utente.Ruoli.Count > 1)
+            {
+                var filter = Builders<Utente>.Filter.Eq(x => x.CodiceFiscale, codiceFiscale);
+                _dbcontext.UtenteCollection.UpdateOne(filter, Builders<Utente>.Update.Pull(x => x.Ruoli, ruolo));
+            }
+            else
+            {
+                _dbcontext.UtenteCollection.DeleteOne(x => x.CodiceFiscale.Equals(codiceFiscale));
+            }
         }
     }
 }

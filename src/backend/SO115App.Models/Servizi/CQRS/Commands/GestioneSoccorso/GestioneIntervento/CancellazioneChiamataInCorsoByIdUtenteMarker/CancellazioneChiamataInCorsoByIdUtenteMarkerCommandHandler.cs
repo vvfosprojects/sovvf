@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="ListaMezziInServizioQuery.cs" company="CNVVF">
+// <copyright file="CancellazioneChiamataInCorsoMarkerCommandHandler.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,27 +17,23 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using CQRS.Queries;
-using MongoDB.Bson.Serialization.IdGenerators;
-using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
+using CQRS.Commands;
+using SO115App.Models.Servizi.Infrastruttura.Marker;
 
-namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneMezziInServizio.ListaMezziInSerivizio
+namespace DomainModel.CQRS.Commands.ChiamataInCorsoMarker
 {
-    /// <summary>
-    ///   DTO di input
-    /// </summary>
-    public class ListaMezziInServizioQuery : IQuery<ListaMezziInServizioResult>
+    public class CancellazioneChiamataInCorsoByIdUtenteMarkerCommandHandler : ICommandHandler<CancellazioneChiamataInCorsoByIdUtenteMarkerCommand>
     {
-        /// <summary>
-        ///   Il filtro utilizzato per la ricerca dei mezzi in servizio
-        /// </summary>
-        public string[] IdSede { get; set; }
+        private readonly IDeleteChiamataInCorsoByIdUtente _iDelChiamataInCorso;
 
-        /// <summary>
-        ///   L'id dell'operatore che ha fatto la richiesta di visualizzazione mezzi in servizio
-        /// </summary>
-        public string IdOperatore { get; set; }
+        public CancellazioneChiamataInCorsoByIdUtenteMarkerCommandHandler(IDeleteChiamataInCorsoByIdUtente iDelChiamataInCorso)
+        {
+            _iDelChiamataInCorso = iDelChiamataInCorso;
+        }
 
-        public FiltroRicercaRichiesteAssistenza Filtro { get; set; }
+        public void Handle(CancellazioneChiamataInCorsoByIdUtenteMarkerCommand command)
+        {
+            _iDelChiamataInCorso.Delete(command.IdUtente);
+        }
     }
 }

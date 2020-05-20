@@ -59,11 +59,11 @@ import { LoaderInterceptor } from './core/_helpers/loader.interceptor';
 import { LoadingState } from './shared/store/states/loading/loading.state';
 import { PaginationState } from './shared/store/states/pagination/pagination.state';
 import { NgxsFormPluginModule } from '@ngxs/form-plugin';
-import { UserService } from './core/auth/_services';
 import { UserServiceFake } from './core/auth/_services/user.service.fake';
 import { PermessiState } from './shared/store/states/permessi/permessi.state';
 import { NgxsResetPluginModule } from 'ngxs-reset-plugin';
 import { RuoliUtenteLoggatoState } from './shared/store/states/ruoli-utente-loggato/ruoli-utente-loggato.state';
+import { UserService } from './core/auth/_services/user.service';
 import { NewVersionState } from './shared/store/states/nuova-versione/nuova-versione.state';
 
 

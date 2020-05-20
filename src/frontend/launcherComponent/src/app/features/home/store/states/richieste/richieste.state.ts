@@ -1,15 +1,24 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
 import {
-    ActionMezzo, ActionRichiesta,
-    AddRichiesta, CambiaStatoRichiesta, ClearIdChiamataInviaPartenza, ClearRichiestaById,
+    ActionMezzo,
+    ActionRichiesta,
+    AddRichiesta,
+    CambiaStatoRichiesta,
+    ClearIdChiamataInviaPartenza,
+    ClearRichiestaById,
     ClearRichieste,
     GetListaRichieste,
     PatchRichiesta,
-    SetIdChiamataInviaPartenza, SetRichiestaById,
+    SetIdChiamataInviaPartenza,
+    SetRichiestaById,
     AddRichieste,
     StartInviaPartenzaFromChiamata,
-    UpdateRichiesta, VisualizzaListaSquadrePartenza, SetNeedRefresh, StartLoadingRichieste, StopLoadingRichieste
+    UpdateRichiesta,
+    VisualizzaListaSquadrePartenza,
+    SetNeedRefresh,
+    StartLoadingRichieste,
+    StopLoadingRichieste
 } from '../../actions/richieste/richieste.actions';
 import { SintesiRichiesteService } from 'src/app/core/service/lista-richieste-service/lista-richieste.service';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
@@ -19,11 +28,8 @@ import { RichiestaHoverState } from './richiesta-hover.state';
 import { RichiestaSelezionataState } from './richiesta-selezionata.state';
 import { RichiestaModificaState } from './richiesta-modifica.state';
 import { ToastrType } from '../../../../../shared/enum/toastr';
-import { SuccessRichiestaModifica } from '../../actions/richieste/richiesta-modifica.actions';
-import {
-    RichiestaComposizione,
-    UpdateRichiestaComposizione
-} from '../../actions/composizione-partenza/composizione-partenza.actions';
+import { ClearIndirizzo, SuccessRichiestaModifica } from '../../actions/richieste/richiesta-modifica.actions';
+import { RichiestaComposizione, UpdateRichiestaComposizione } from '../../actions/composizione-partenza/composizione-partenza.actions';
 import { ToggleComposizione } from '../../actions/view/view.actions';
 import { Composizione } from '../../../../../shared/enum/composizione.enum';
 import { SetMarkerRichiestaSelezionato } from '../../actions/maps/marker.actions';
@@ -43,6 +49,8 @@ import { ClearRichiestaSelezionata } from '../../actions/richieste/richiesta-sel
 import { ClearRichiestaGestione } from '../../actions/richieste/richiesta-gestione.actions';
 import { ClearRichiestaHover } from '../../actions/richieste/richiesta-hover.actions';
 import { PaginationState } from '../../../../../shared/store/states/pagination/pagination.state';
+import { GetInitCentroMappa } from '../../actions/maps/centro-mappa.actions';
+import { ClearRichiestaMarkerModifica } from '../../actions/maps/richieste-markers.actions';
 
 export interface RichiesteStateModel {
     richieste: SintesiRichiesta[];
@@ -108,34 +116,37 @@ export class RichiesteState {
     @Action(GetListaRichieste, { cancelUncompleted: true })
     getRichieste({ getState, dispatch }: StateContext<RichiesteStateModel>, action: GetListaRichieste) {
         const state = getState();
-        dispatch(new StartLoadingRichieste());
-        const filters = {
-            search: this.store.selectSnapshot(RicercaRichiesteState.ricerca),
-            others: this.store.selectSnapshot(FiltriRichiesteState.filtriRichiesteSelezionati)
-        };
-        const pagination = {
-            page: action.options && action.options.page ? action.options.page : 1,
-            pageSize: 7
-        };
-        this.richiesteService.getRichieste(filters, pagination).subscribe((response: ResponseInterface) => {
-            dispatch(new AddRichieste(response.sintesiRichiesta));
-            dispatch(new PatchPagination(response.pagination));
-            dispatch(new StopLoadingRichieste());
-            if (state.needRefresh) {
-                dispatch(new SetNeedRefresh(false));
-            }
-        }, () => {
-            dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5));
-            dispatch(new StopLoadingRichieste());
-        });
+        const utente = this.store.selectSnapshot(x => x.utente.utente);
+        if (utente) {
+            dispatch(new StartLoadingRichieste());
+            const filters = {
+                search: this.store.selectSnapshot(RicercaRichiesteState.ricerca),
+                others: this.store.selectSnapshot(FiltriRichiesteState.filtriRichiesteSelezionati)
+            };
+            const pagination = {
+                page: action.options && action.options.page ? action.options.page : 1,
+                pageSize: 7
+            };
+            this.richiesteService.getRichieste(filters, pagination).subscribe((response: ResponseInterface) => {
+                dispatch(new AddRichieste(response.sintesiRichiesta));
+                dispatch(new PatchPagination(response.pagination));
+                dispatch(new StopLoadingRichieste());
+                if (state.needRefresh) {
+                    dispatch(new SetNeedRefresh(false));
+                }
+            }, () => {
+                dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5));
+                dispatch(new StopLoadingRichieste());
+            });
 
-        // Clear dei dati presenti nella pagina che si sta lasciando
-        dispatch(new ClearRichiestaSelezionata());
-        dispatch(new ClearRichiestaHover());
-        dispatch(new ClearRichiesteEspanse());
-        const richiestaGestione = this.store.selectSnapshot(RichiestaGestioneState.richiestaGestione);
-        if (richiestaGestione) {
-            dispatch(new ClearRichiestaGestione(richiestaGestione.id));
+            // Clear dei dati presenti nella pagina che si sta lasciando
+            dispatch(new ClearRichiestaSelezionata());
+            dispatch(new ClearRichiestaHover());
+            dispatch(new ClearRichiesteEspanse());
+            const richiestaGestione = this.store.selectSnapshot(RichiestaGestioneState.richiestaGestione);
+            if (richiestaGestione) {
+                dispatch(new ClearRichiestaGestione(richiestaGestione.id));
+            }
         }
     }
 
@@ -144,7 +155,11 @@ export class RichiesteState {
         action.richiesta.richiedente.telefono = action.richiesta.richiedente.telefono.toString();
         this.richiesteService.patchRichiesta(action.richiesta).subscribe(() => {
             dispatch(new SuccessRichiestaModifica);
-        }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5)));
+        }, () => {
+            dispatch(new ClearIndirizzo());
+            dispatch(new ClearRichiestaMarkerModifica());
+            dispatch(new GetInitCentroMappa());
+        });
     }
 
     @Action(AddRichieste)

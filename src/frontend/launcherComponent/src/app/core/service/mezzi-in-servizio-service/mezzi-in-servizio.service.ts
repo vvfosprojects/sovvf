@@ -18,7 +18,7 @@ export class MezziInServizioService {
 
   public getMezziInServizio(): Observable<any> {
     return this.http.get(`${API_MEZZI_IN_SERVIZIO}/GetListaMezzi`, { 'headers': this.headers }).pipe(
-      retry(3),
+      // retry(3),
       catchError(handleError));
   }
 }

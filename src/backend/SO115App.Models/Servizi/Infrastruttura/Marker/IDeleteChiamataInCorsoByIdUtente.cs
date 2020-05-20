@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="ListaMezziInServizioQuery.cs" company="CNVVF">
+// <copyright file="IDeleteChiamataInCorso.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,27 +17,11 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using CQRS.Queries;
-using MongoDB.Bson.Serialization.IdGenerators;
-using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
 
-namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneMezziInServizio.ListaMezziInSerivizio
+namespace SO115App.Models.Servizi.Infrastruttura.Marker
 {
-    /// <summary>
-    ///   DTO di input
-    /// </summary>
-    public class ListaMezziInServizioQuery : IQuery<ListaMezziInServizioResult>
+    public interface IDeleteChiamataInCorsoByIdUtente
     {
-        /// <summary>
-        ///   Il filtro utilizzato per la ricerca dei mezzi in servizio
-        /// </summary>
-        public string[] IdSede { get; set; }
-
-        /// <summary>
-        ///   L'id dell'operatore che ha fatto la richiesta di visualizzazione mezzi in servizio
-        /// </summary>
-        public string IdOperatore { get; set; }
-
-        public FiltroRicercaRichiesteAssistenza Filtro { get; set; }
+        void Delete(string IdChiamataInCorso);
     }
 }
