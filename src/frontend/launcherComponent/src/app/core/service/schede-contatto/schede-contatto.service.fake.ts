@@ -19,6 +19,7 @@ export class SchedeContattoServiceFake {
     this.listaSchede = [
       {
         'codiceScheda': '1',
+        'codiceSede': 'RM.1000',
         'dataInserimento': new Date('2019-09-05T08:00:00'),
         'richiedente': {
           'telefono': '113',
@@ -49,6 +50,7 @@ export class SchedeContattoServiceFake {
       },
       {
         'codiceScheda': '2',
+        'codiceSede': 'RM.1000',
         'dataInserimento': new Date('2019-09-05T08:00:00'),
         'richiedente': {
           'telefono': '113',
@@ -79,6 +81,7 @@ export class SchedeContattoServiceFake {
       },
       {
         'codiceScheda': '3',
+        'codiceSede': 'RM.1000',
         'dataInserimento': new Date('2019-09-05T08:00:00'),
         'richiedente': {
           'telefono': '113',

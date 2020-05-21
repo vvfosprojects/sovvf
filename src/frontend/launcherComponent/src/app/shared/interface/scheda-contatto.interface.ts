@@ -5,6 +5,7 @@ import { ClassificazioneSchedaContatto } from '../enum/classificazione-scheda-co
 
 export interface SchedaContatto {
     codiceScheda: string;
+    codiceSede: string;
     dataInserimento: Date;
     richiedente: Richiedente;
     localita: Localita;

@@ -35,11 +35,12 @@ import { ClassificazioneSchedaContatto } from '../../../shared/enum/classificazi
 import { LoadingState } from '../../../shared/store/states/loading/loading.state';
 import { ConfirmModalComponent } from '../../../shared';
 import { AreaMappaState } from '../store/states/maps/area-mappa.state';
+import { PermissionFeatures } from '../../../shared/enum/permission-features.enum';
 
 @Component({
     selector: 'app-schede-contatto',
     templateUrl: './schede-contatto.component.html',
-    styleUrls: [ './schede-contatto.component.css' ]
+    styleUrls: ['./schede-contatto.component.css']
 })
 export class SchedeContattoComponent implements OnInit, OnDestroy {
 
@@ -74,6 +75,7 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
     private subscription: Subscription = new Subscription();
 
     ClassificazioneEnum = ClassificazioneSchedaContatto;
+    permessiFeature = PermissionFeatures;
 
     constructor(private store: Store,
                 private modal: NgbModal) {
@@ -107,7 +109,7 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         isDevMode() && console.log('Componente Schede Contatto creato');
         const areaMappa = this.store.selectSnapshot(AreaMappaState.areaMappa);
-        this.store.dispatch([ new GetListaSchedeContatto(), new GetSchedeContattoMarkers(areaMappa) ]);
+        this.store.dispatch([new GetListaSchedeContatto(), new GetSchedeContattoMarkers(areaMappa)]);
     }
 
     ngOnDestroy(): void {
