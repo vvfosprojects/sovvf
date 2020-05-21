@@ -4,22 +4,22 @@ import { findItem } from '../store/states/sedi-treeview/sedi-treeview.helper';
 
 export function getRuoliRicorsivo(ruoloRicorsivo: Ruolo, listaSedi: ListaSedi): Ruolo[] {
     const ruoliNonRicorsivi: Ruolo[] = [];
-    const codSedeRicorsivi: string[] = [];
     const sediFiglie: ListaSedi = findItem(listaSedi, ruoloRicorsivo.codSede);
     if (sediFiglie) {
         const flattenedCollection = {};
         if (sediFiglie.children && sediFiglie.children.length > 0) {
             treeToList(sediFiglie, flattenedCollection);
-            codSedeRicorsivi.push(...Object.keys(flattenedCollection));
         }
-        codSedeRicorsivi.forEach(codSede => {
-            ruoliNonRicorsivi.push({
-                descrizione: ruoloRicorsivo.descrizione,
-                codSede,
-                descSede: flattenedCollection[codSede].text,
-                ricorsivo: false
-            });
-        });
+        for (const prop in flattenedCollection) {
+            if (flattenedCollection.hasOwnProperty(prop)) {
+                ruoliNonRicorsivi.push({
+                    descrizione: ruoloRicorsivo.descrizione,
+                    codSede: prop,
+                    descSede: flattenedCollection[prop].text,
+                    ricorsivo: false
+                });
+            }
+        }
     }
     return [ ...ruoliNonRicorsivi, ruoloRicorsivo ];
 }
