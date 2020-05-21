@@ -8,5 +8,9 @@ export enum PermissionFeatures {
     GestioneUtenti,
     Autorimessa,
     Servizi,
-    Statistiche
+    Statistiche,
+    GestisciSchedaContatto,
+    CreaRichiestaSchedaContatto,
+    RaggruppamentoSchedeContatto,
+    EliminazioneRaggruppamentoSchedeContatto
 }

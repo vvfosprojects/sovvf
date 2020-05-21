@@ -16,7 +16,8 @@ export function getRuoliRicorsivo(ruoloRicorsivo: Ruolo, listaSedi: ListaSedi): 
                     descrizione: ruoloRicorsivo.descrizione,
                     codSede: prop,
                     descSede: flattenedCollection[prop].text,
-                    ricorsivo: false
+                    ricorsivo: false,
+                    hidden: true
                 });
             }
         }

@@ -11,6 +11,7 @@ import { ContattoPrioritaPipe } from './contatto-priorita.pipe';
 import { SelectedFilterRichiestePipe } from './selected-filter-richieste.pipe';
 import { CheckPermissionRichiestaPipe } from './check-permission-richiesta.pipe';
 import { CheckPermissionPipe } from './check-permission.pipe';
+import { CheckPermissionSchedaContattoPipe } from './check-permission-scheda-contatto.pipe';
 
 const COMPONENTS = [
     TruncatePipe,
@@ -24,6 +25,7 @@ const COMPONENTS = [
     ContattoPrioritaPipe,
     CheckPermissionPipe,
     CheckPermissionRichiestaPipe,
+    CheckPermissionSchedaContattoPipe,
     SelectedFilterRichiestePipe
 ];
 

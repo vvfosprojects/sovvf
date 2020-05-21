@@ -63,6 +63,7 @@ export interface Ruolo {
     codSede: string;
     descSede?: string;
     ricorsivo?: boolean;
+    hidden?: boolean;
 }
 
 export enum Role {
