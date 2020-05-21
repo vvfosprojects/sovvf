@@ -4,6 +4,7 @@ export const environment = {
     signalRHub: '/NotificationHub',
     baseUrl: '$Serverbckend',
     signalR: true,
+    versionCheckURL: 'version.json',
     apiUrl: {
         welcome: '/api/Welcome',
         markers: '/api/Marker',
