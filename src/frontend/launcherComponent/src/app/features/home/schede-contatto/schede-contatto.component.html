@@ -84,6 +84,10 @@
                                  [editSchedaContatto]="statoModalita"
                                  [schedeContattoSelezionate]="idSelezionatiMerge"
                                  [classificazione]="classificazioneMerge"
+                                 [disableCreaRichiesta]="permessiFeature.CreaRichiestaSchedaContatto | checkPermissionSchedaContatto: scheda.codiceSede"
+                                 [disableGestisci]="permessiFeature.GestisciSchedaContatto | checkPermissionSchedaContatto: scheda.codiceSede"
+                                 [disableRaggruppamento]="permessiFeature.RaggruppamentoSchedeContatto | checkPermissionSchedaContatto: scheda.codiceSede"
+                                 [disableEliminaRaggruppamento]="permessiFeature.EliminazioneRaggruppamentoSchedeContatto | checkPermissionSchedaContatto: scheda.codiceSede"
                                  (hoverOut)="hoverOut()" (hoverIn)="hoverIn($event)"
                                  (collapsed)="onCollapsed($event)"
                                  (undoRaggruppamento)="onUndoMergeSchedaContatto($event)"
@@ -101,9 +105,17 @@
             Torna Indietro
         </button>
         <div class="d-inline-block float-right" ngbDropdown #myDrop="ngbDropdown" placement="top">
-            <button *ngIf="statoModalita" class="btn btn-outline-danger mr-2" (click)="onToggleModalitaMerge()" [disabled]="loading$ | async"><i class="fa fa-undo mr-2"></i>Annulla</button>
-            <button *ngIf="statoModalita" class="btn btn-outline-success mr-2" (click)="onSaveMerge()" [disabled]="idSelezionatiMerge.length <= 1 || (loading$ | async)"><i class="fa fa-save mr-2"></i>Raggruppa selezionate</button>
-            <button *ngIf="!statoModalita" class="btn btn-outline-primary mr-2" (click)="onToggleModalitaMerge()"><i class="fa fa-object-group mr-2"></i>Raggruppa</button>
+            <button *ngIf="statoModalita" class="btn btn-outline-danger mr-2" (click)="onToggleModalitaMerge()"
+                    [disabled]="loading$ | async"><i class="fa fa-undo mr-2"></i>Annulla
+            </button>
+            <button *ngIf="statoModalita" class="btn btn-outline-success mr-2" (click)="onSaveMerge()"
+                    [disabled]="idSelezionatiMerge.length <= 1 || (loading$ | async)"><i class="fa fa-save mr-2"></i>Raggruppa
+                selezionate
+            </button>
+            <button *ngIf="!statoModalita" class="btn btn-outline-primary mr-2" (click)="onToggleModalitaMerge()">
+                <i class="fa fa-object-group mr-2"></i>
+                Raggruppa
+            </button>
             <button class="btn mr-2"
                     [ngClass]="{'btn-primary': rangeVisualizzazione !== RangeVisualizzazione.DaSempre, ' btn-outline-primary': rangeVisualizzazione === RangeVisualizzazione.DaSempre}"
                     id="dropdownManual" ngbDropdownAnchor (focus)="myDrop.open()">

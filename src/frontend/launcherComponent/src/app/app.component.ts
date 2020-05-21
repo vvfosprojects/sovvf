@@ -37,7 +37,7 @@ export class AppComponent implements OnDestroy {
     @Select(AppState.offsetTimeSync) offsetTime$: Observable<number>;
     @Select(AppState.vistaSedi) vistaSedi$: Observable<string[]>;
 
-    @Select(RuoliUtenteLoggatoState.ruoli) ruoliUtenteLoggato$: Observable<Ruolo[]>;
+    @Select(RuoliUtenteLoggatoState.ruoliFiltrati) ruoliUtenteLoggato$: Observable<Ruolo[]>;
     @Select(UtenteState.utente) user$: Observable<Utente>;
     user: Utente;
 

@@ -30,6 +30,11 @@ export class RuoliUtenteLoggatoState {
     }
 
     @Selector()
+    static ruoliFiltrati(state: RuoliUtenteLoggatoStateModel) {
+        return state.ruoli.filter((r: Ruolo) => !r.hidden);
+    }
+
+    @Selector()
     static localName(state: RuoliUtenteLoggatoStateModel) {
         return state.localName;
     }
