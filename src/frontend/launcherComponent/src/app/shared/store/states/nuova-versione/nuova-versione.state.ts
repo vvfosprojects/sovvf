@@ -1,14 +1,16 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
-import { GetNewVersion, SetNewVersion } from '../../actions/nuova-versione/nuova-versione.actions';
+import { GetNewVersion, SetCurrentVersion, SetNewVersion } from '../../actions/nuova-versione/nuova-versione.actions';
 import { ShowToastr } from '../../actions/toastr/toastr.actions';
 import { ToastrType } from '../../../enum/toastr';
 
 export interface NewVersionStateModel {
-    newVersion: boolean;
+    currentVersion: string;
+    newVersion: string;
 }
 
 export const NewVersionStateModelDefaults: NewVersionStateModel = {
-    newVersion: false
+    currentVersion: null,
+    newVersion: null
 };
 
 @State<NewVersionStateModel>({
@@ -19,27 +21,26 @@ export class NewVersionState {
 
     @Selector()
     static newVersion(state: NewVersionStateModel) {
-        return state.newVersion;
+        return state.newVersion && (state.newVersion !== state.currentVersion);
     }
 
     @Action(SetNewVersion)
-    setNewVersion({ patchState, dispatch }: StateContext<NewVersionStateModel>, action: SetNewVersion) {
-        if (action.value) {
+    setNewVersion({ getState, patchState, dispatch }: StateContext<NewVersionStateModel>, { newVersion }: SetNewVersion) {
+        const state = getState();
+        if (state.newVersion !== newVersion) {
             // TODO: se c'è una nuova versione dispatch actions
             dispatch(new ShowToastr(ToastrType.Info, 'Nuova versione disponibile!', 'Premi sul bottone in alto per aggiornare l\'applicazione'));
-        } else if (!action.value) {
-            // TODO: se c'è una nuova versione dispatch actions
+            patchState({ newVersion });
         }
-        patchState({
-            newVersion: action.value
-        });
+    }
+
+    @Action(SetCurrentVersion)
+    setCurrentVersion({ getState, patchState, dispatch }: StateContext<NewVersionStateModel>, { currentVersion }: SetCurrentVersion) {
+        patchState({ currentVersion });
     }
 
     @Action(GetNewVersion)
-    getNewVersion({ patchState }: StateContext<NewVersionStateModel>) {
-        patchState({
-            newVersion: false
-        });
+    getNewVersion() {
         window.location.reload();
     }
 }

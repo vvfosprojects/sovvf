@@ -14,7 +14,7 @@
     "e2e": "ng e2e",
     "avvia": "ng serve --host 0.0.0.0 --disable-host-check",
     "lite-server": "lite-server --baseDir=\"./dist/SO115\"",
-    "watch-serve": "ng build --watch --configuration=production-watch && npm run post-build"
+    "watch-serve": "ng build --watch --configuration=production-watch"
   },
   "private": true,
   "dependencies": {
