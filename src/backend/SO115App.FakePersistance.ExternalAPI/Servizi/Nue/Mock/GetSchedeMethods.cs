@@ -18,11 +18,14 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using GeoCoordinatePortable;
+using MongoDB.Driver;
 using Newtonsoft.Json;
+using Persistence.MongoDB;
 using SO115App.API.Models.Classi.Geo;
 using SO115App.ExternalAPI.Fake.Classi;
 using SO115App.Models.Classi.NUE;
 using SO115App.Models.Classi.ServiziEsterni.NUE;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -40,20 +43,45 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
         private readonly string Competenza = "Competenza";
         private readonly string Conoscenza = "Conoscenza";
         private readonly string Differibile = "Differibile";
+        private readonly DbContext _context;
+
+        public GetSchedeMethods(DbContext context)
+        {
+            _context = context;
+        }
 
         /// <summary>
         ///   Metodo che recupera tutti le schede contatto dal json SchedeContatto.
         /// </summary>
         public List<SchedaContatto> GetList()
         {
+            var ListaSchedeRaggruppate = _context.SchedeContattoCollection.Find(Builders<SchedaContatto>.Filter.Empty).ToList();
+
             string json;
 
             using (var r = new StreamReader(SchedeContattoJson))
             {
                 json = r.ReadToEnd();
             }
+            var ListaSchede = JsonConvert.DeserializeObject<List<SchedaContatto>>(json);
 
-            return JsonConvert.DeserializeObject<List<SchedaContatto>>(json);
+            List<SchedaContatto> ListaSchedefiltrata = new List<SchedaContatto>();
+
+            foreach (SchedaContatto scheda in ListaSchede)
+            {
+                if (!ListaSchedeRaggruppate.Exists(x => x.CodiceScheda.Equals(scheda.CodiceScheda)))
+                {
+                    ListaSchedefiltrata.Add(scheda);
+                }
+                else
+                {
+                    var schedaRaggruppata = ListaSchedeRaggruppate.Find(x => x.CodiceScheda.Equals(scheda.CodiceScheda));
+                    if (!schedaRaggruppata.Collegata)
+                        ListaSchedefiltrata.Add(schedaRaggruppata);
+                }
+            }
+
+            return ListaSchedefiltrata;
         }
 
         /// <summary>
@@ -81,7 +109,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
         /// <returns>Una lista di SchedaContatto</returns>
         public List<SchedaContatto> GetSchede(string codiceSede)
         {
-            return GetList().FindAll(x => x.OperatoreChiamata.CodiceSede.Equals(codiceSede));
+            return GetList().FindAll(x => x.CodiceSede.Equals(codiceSede));
         }
 
         /// <summary>
@@ -249,11 +277,11 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue.Mock
         {
             var listaSchede = new List<SchedaContatto>();
 
-            foreach(var sede in codiciSede) 
+            foreach (var sede in codiciSede)
             {
                 listaSchede.AddRange(GetSchede(sede));
             }
-           
+
             var listaSchedeCompetenza = listaSchede.FindAll(x => x.Classificazione.Equals(Competenza) && x.Collegata == false);
             var listaSchedeConoscenza = listaSchede.FindAll(x => x.Classificazione.Equals(Conoscenza));
             var listaSchedeDifferibile = listaSchede.FindAll(x => x.Classificazione.Equals(Differibile));
