@@ -90,7 +90,7 @@ export class AppComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        !isDevMode() && this.versionCheckService.initVersionCheck();
+        !isDevMode() && this.versionCheckService.initVersionCheck(3);
     }
 
     ngOnDestroy(): void {
