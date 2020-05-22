@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, isDevMode, OnDestroy, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { RoutesPath } from './shared/enum/routes-path.enum';
 import { Select, Store } from '@ngxs/store';
@@ -15,13 +15,15 @@ import { PermissionFeatures } from './shared/enum/permission-features.enum';
 import { PermessiService } from './core/service/permessi-service/permessi.service';
 import { RuoliUtenteLoggatoState } from './shared/store/states/ruoli-utente-loggato/ruoli-utente-loggato.state';
 import { AuthenticationService } from './core/auth/_services/authentication.service';
+import { VersionCheckService } from './core/service/version-check/version-check.service';
+import { NewVersionState } from './shared/store/states/nuova-versione/nuova-versione.state';
 
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
     styleUrls: [ './app.component.css' ]
 })
-export class AppComponent implements OnDestroy {
+export class AppComponent implements OnInit, OnDestroy {
 
     subscription = new Subscription();
 
@@ -37,7 +39,9 @@ export class AppComponent implements OnDestroy {
     @Select(AppState.offsetTimeSync) offsetTime$: Observable<number>;
     @Select(AppState.vistaSedi) vistaSedi$: Observable<string[]>;
 
-    @Select(RuoliUtenteLoggatoState.ruoli) ruoliUtenteLoggato$: Observable<Ruolo[]>;
+    @Select(NewVersionState.version) version$: Observable<string>;
+
+    @Select(RuoliUtenteLoggatoState.ruoliFiltrati) ruoliUtenteLoggato$: Observable<Ruolo[]>;
     @Select(UtenteState.utente) user$: Observable<Utente>;
     user: Utente;
 
@@ -54,6 +58,7 @@ export class AppComponent implements OnDestroy {
                 private authService: AuthenticationService,
                 private store: Store,
                 private _permessiService: PermessiService,
+                private versionCheckService: VersionCheckService,
                 private modals: NgbModal) {
         router.events.subscribe((val) => {
             if (val instanceof NavigationEnd) {
@@ -82,6 +87,10 @@ export class AppComponent implements OnDestroy {
             r && this.store.dispatch(new PatchListaSediNavbar([ this.user.sede.codice ]));
         }));
         this.subscription.add(this.vistaSedi$.subscribe(r => r && this.store.dispatch(new PatchListaSediNavbar([ ...r ]))));
+    }
+
+    ngOnInit() {
+        !isDevMode() && this.versionCheckService.initVersionCheck(3);
     }
 
     ngOnDestroy(): void {
