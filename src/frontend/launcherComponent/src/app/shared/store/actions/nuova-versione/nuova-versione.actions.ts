@@ -1,14 +1,16 @@
+import { VersionResponseInterface } from '../../../interface/version-response.interface';
+
 export class SetNewVersion {
     static readonly type = '[NewVersion] Set New Version Value';
 
-    constructor(public newVersion: string) {
+    constructor(public newVersion: VersionResponseInterface) {
     }
 }
 
 export class SetCurrentVersion {
     static readonly type = '[NewVersion] Set Current Version Value';
 
-    constructor(public currentVersion: string) {
+    constructor(public currentVersion: VersionResponseInterface) {
     }
 }
 

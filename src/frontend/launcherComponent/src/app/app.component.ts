@@ -16,6 +16,7 @@ import { PermessiService } from './core/service/permessi-service/permessi.servic
 import { RuoliUtenteLoggatoState } from './shared/store/states/ruoli-utente-loggato/ruoli-utente-loggato.state';
 import { AuthenticationService } from './core/auth/_services/authentication.service';
 import { VersionCheckService } from './core/service/version-check/version-check.service';
+import { NewVersionState } from './shared/store/states/nuova-versione/nuova-versione.state';
 
 @Component({
     selector: 'app-root',
@@ -37,6 +38,8 @@ export class AppComponent implements OnInit, OnDestroy {
 
     @Select(AppState.offsetTimeSync) offsetTime$: Observable<number>;
     @Select(AppState.vistaSedi) vistaSedi$: Observable<string[]>;
+
+    @Select(NewVersionState.version) version$: Observable<string>;
 
     @Select(RuoliUtenteLoggatoState.ruoliFiltrati) ruoliUtenteLoggato$: Observable<Ruolo[]>;
     @Select(UtenteState.utente) user$: Observable<Utente>;
@@ -87,7 +90,7 @@ export class AppComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        !isDevMode() && this.versionCheckService.initVersionCheck();
+        !isDevMode() && this.versionCheckService.initVersionCheck(3);
     }
 
     ngOnDestroy(): void {

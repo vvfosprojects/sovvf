@@ -1,5 +1,6 @@
 export const environment = {
-    production: false,
+    production: true,
+    productionTest: true,
     fakeProvider: false,
     signalRHub: '/NotificationHub',
     baseUrl: 'http://localhost:5220',

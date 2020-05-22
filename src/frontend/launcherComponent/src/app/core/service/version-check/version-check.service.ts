@@ -40,24 +40,24 @@ export class VersionCheckService {
             .subscribe(
                 (response: VersionResponseInterface) => {
                     if (response) {
-                        first ? this.currentVersion(response.hash) : this.newVersion(response.hash);
+                        first ? this.currentVersion(response) : this.newVersion(response);
                     }
                 },
                 () => {
                     if (first) {
-                        this.currentVersion('current version');
+                        this.currentVersion({ version: 'current version', hash: 'hash'});
                     }
                 }
             );
 
     }
 
-    newVersion(hash: string) {
-        this.store.dispatch(new SetNewVersion(hash));
+    newVersion(version: VersionResponseInterface) {
+        this.store.dispatch(new SetNewVersion(version));
     }
 
-    currentVersion(hash: string) {
-        this.store.dispatch(new SetCurrentVersion(hash));
+    currentVersion(version: VersionResponseInterface) {
+        this.store.dispatch(new SetCurrentVersion(version));
     }
 
 }

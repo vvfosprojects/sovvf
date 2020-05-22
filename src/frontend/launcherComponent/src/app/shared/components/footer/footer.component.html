@@ -1,0 +1,4 @@
+<div class="text-center py-0 mt-2"
+     [ngClass]="{'footer-bg': !isTest, 'footer-bg-test': isTest,'text-white': !isTest, 'text-black': isTest}">{{isTest}}
+    <i class="mr-1"></i>Sala Operativa 115 Web <span *ngIf="version">(vers. {{version}})</span> {{isTest}}
+</div>
