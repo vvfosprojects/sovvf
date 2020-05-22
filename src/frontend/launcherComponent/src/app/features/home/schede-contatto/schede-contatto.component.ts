@@ -118,8 +118,8 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
         isDevMode() && console.log('Componente Schede Contatto distrutto');
     }
 
-    setSchedaContattoGestita(codiceScheda: string, gestita: boolean) {
-        this.store.dispatch(new SetSchedaContattoGestita(codiceScheda, gestita));
+    setSchedaContattoGestita(schedaContatto: SchedaContatto, gestita: boolean) {
+        this.store.dispatch(new SetSchedaContattoGestita(schedaContatto, gestita));
     }
 
     setSchedaContattoTelefonata(schedaContatto: SchedaContatto) {

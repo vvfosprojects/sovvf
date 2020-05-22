@@ -54,7 +54,7 @@ export class RemoveSchedeContatto {
 export class SetSchedaContattoGestita {
     static readonly type = '[Schede Contatto] Set Scheda Contatto Gestita';
 
-    constructor(public codiceScheda: string, public gestita: boolean) {
+    constructor(public schedaContatto: SchedaContatto, public gestita: boolean) {
     }
 }
 
