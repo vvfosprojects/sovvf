@@ -17,6 +17,7 @@ import { RuoliUtenteLoggatoState } from './shared/store/states/ruoli-utente-logg
 import { AuthenticationService } from './core/auth/_services/authentication.service';
 import { VersionCheckService } from './core/service/version-check/version-check.service';
 import { NewVersionState } from './shared/store/states/nuova-versione/nuova-versione.state';
+import { VersionInterface } from './shared/interface/version.interface';
 
 @Component({
     selector: 'app-root',
@@ -39,7 +40,7 @@ export class AppComponent implements OnInit, OnDestroy {
     @Select(AppState.offsetTimeSync) offsetTime$: Observable<number>;
     @Select(AppState.vistaSedi) vistaSedi$: Observable<string[]>;
 
-    @Select(NewVersionState.version) version$: Observable<string>;
+    @Select(NewVersionState.version) version$: Observable<VersionInterface>;
 
     @Select(RuoliUtenteLoggatoState.ruoliFiltrati) ruoliUtenteLoggato$: Observable<Ruolo[]>;
     @Select(UtenteState.utente) user$: Observable<Utente>;
@@ -90,7 +91,7 @@ export class AppComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        !isDevMode() && this.versionCheckService.initVersionCheck();
+        !isDevMode() && this.versionCheckService.initVersionCheck(3);
     }
 
     ngOnDestroy(): void {

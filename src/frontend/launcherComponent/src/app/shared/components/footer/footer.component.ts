@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { environment } from '../../../../environments/environment';
+import { VersionInterface } from '../../interface/version.interface';
 
 @Component({
     selector: 'app-footer',
@@ -8,7 +9,7 @@ import { environment } from '../../../../environments/environment';
 })
 export class FooterComponent {
 
-    @Input() version: string;
+    @Input() version: VersionInterface;
     isTest: string;
 
     constructor() {

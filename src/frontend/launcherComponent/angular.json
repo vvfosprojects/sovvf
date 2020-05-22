@@ -70,7 +70,7 @@
                   "with": "src/environments/environment.watch.ts"
                 }
               ],
-              "optimization": true,
+              "optimization": false,
               "outputHashing": "all",
               "sourceMap": false,
               "extractCss": true,
