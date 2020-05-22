@@ -6,7 +6,7 @@ import { environment } from './environments/environment';
 
 if (environment.production) {
     enableProdMode();
-    if (window) {
+    if (window && !environment.consoleLog) {
         window.console.log = function () {
         };
     }
