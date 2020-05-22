@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { VersionResponseInterface } from '../../../shared/interface/version-response.interface';
+import { VersionInterface } from '../../../shared/interface/version.interface';
 import { environment } from '../../../../environments/environment';
 import { Store } from '@ngxs/store';
 import { SetCurrentVersion, SetNewVersion } from '../../../shared/store/actions/nuova-versione/nuova-versione.actions';
@@ -34,29 +34,29 @@ export class VersionCheckService {
      * @param first is used for first check
      */
     private checkVersion(url: string, first?: boolean): void {
-        this.http.get<VersionResponseInterface>(url + '?t=' + new Date().getTime()).pipe(
+        this.http.get<VersionInterface>(url + '?t=' + new Date().getTime()).pipe(
             catchError(handleError)
             )
             .subscribe(
-                (response: VersionResponseInterface) => {
+                (response: VersionInterface) => {
                     if (response) {
                         first ? this.currentVersion(response) : this.newVersion(response);
                     }
                 },
                 () => {
                     if (first) {
-                        this.currentVersion({ version: 'current version', hash: 'hash'});
+                        this.currentVersion({ number: 'err', hash: 'hash', date: null});
                     }
                 }
             );
 
     }
 
-    newVersion(version: VersionResponseInterface) {
+    newVersion(version: VersionInterface) {
         this.store.dispatch(new SetNewVersion(version));
     }
 
-    currentVersion(version: VersionResponseInterface) {
+    currentVersion(version: VersionInterface) {
         this.store.dispatch(new SetCurrentVersion(version));
     }
 

@@ -2,11 +2,11 @@ import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { GetNewVersion, SetCurrentVersion, SetNewVersion } from '../../actions/nuova-versione/nuova-versione.actions';
 import { ShowToastr } from '../../actions/toastr/toastr.actions';
 import { ToastrType } from '../../../enum/toastr';
-import { VersionResponseInterface } from '../../../interface/version-response.interface';
+import { VersionInterface } from '../../../interface/version.interface';
 
 export interface NewVersionStateModel {
-    currentVersion: VersionResponseInterface;
-    newVersion: VersionResponseInterface;
+    currentVersion: VersionInterface;
+    newVersion: VersionInterface;
 }
 
 export const NewVersionStateModelDefaults: NewVersionStateModel = {
@@ -27,7 +27,7 @@ export class NewVersionState {
 
     @Selector()
     static version(state: NewVersionStateModel) {
-        return state.currentVersion && state.currentVersion.version;
+        return state.currentVersion;
     }
 
     @Action(SetNewVersion)

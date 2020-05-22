@@ -28,7 +28,9 @@ readDir(path.join(__dirname, './../dist/SO115'))
         }
         console.log(`Writing version and hash to ${versionFilePath}`);
 // write current version and hash into the version.json file
-        const src = `{"version": "${appVersion}", "hash": "${mainHash}"}`;
+        const currentDate = new Date().toISOString();
+        console.log(currentDate);
+        const src = `{"number": "${appVersion}", "hash": "${mainHash}", "date": "${currentDate}"}`;
         return writeFile(versionFilePath, src);
     }).then(() => {
     // main bundle file not found, dev build?
