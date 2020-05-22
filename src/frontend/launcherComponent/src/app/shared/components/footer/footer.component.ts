@@ -8,7 +8,7 @@ import { environment } from '../../../../environments/environment';
 })
 export class FooterComponent {
 
-    @Input() version = 'devel';
+    @Input() version: string;
     isTest: string;
 
     constructor() {
