@@ -17,6 +17,8 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using SO115App.Models.Classi.NUE;
+
 namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSchedeNue.SetSchedaGestita
 {
     public class SetSchedaGestitaCommand
@@ -24,7 +26,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSchedeNue.SetSchedaGesti
         public string IdUtente { get; set; }
         public bool Gestita { get; set; }
 
-        public string CodiceScheda { get; set; }
+        public SchedaContatto SchedaContatto { get; set; }
 
         public string CodiceSede { get; set; }
     }
