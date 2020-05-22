@@ -33,10 +33,10 @@ export class NewVersionState {
     @Action(SetNewVersion)
     setNewVersion({ getState, patchState, dispatch }: StateContext<NewVersionStateModel>, { newVersion }: SetNewVersion) {
         const state = getState();
-        if (state.newVersion.hash !== newVersion.hash) {
+        if (state.newVersion && state.newVersion.hash !== newVersion.hash) {
             dispatch(new ShowToastr(ToastrType.Info, 'Nuova versione disponibile!', 'Premi sul bottone in alto per aggiornare l\'applicazione'));
-            patchState({ newVersion });
         }
+        patchState({ newVersion });
     }
 
     @Action(SetCurrentVersion)
