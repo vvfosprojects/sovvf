@@ -9,6 +9,7 @@
     "post-build": "node ./build/post-build.js",
     "build-prod": "ng build --configuration=production --base-href='./' && npm run post-build",
     "build-prod-test": "ng build --configuration=production-test --base-href='./' && npm run post-build",
+    "build-prod-watch": "ng build --configuration=production-watch && npm run post-build",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
