@@ -18,3 +18,4 @@ export * from './components/checkbox/checkbox.component';
 export * from './components/lista-partenze/lista-partenze.component';
 export * from './components/partial-loader/partial-loader.component';
 export * from './components/bottone-nuova-versione/bottone-nuova-versione.component';
+export * from './components/footer/footer.component';

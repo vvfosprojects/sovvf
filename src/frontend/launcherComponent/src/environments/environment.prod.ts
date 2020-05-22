@@ -1,5 +1,6 @@
 export const environment = {
     production: true,
+    productionTest: false,
     fakeProvider: false,
     signalRHub: '/NotificationHub',
     baseUrl: '$Serverbckend',
