@@ -103,4 +103,34 @@ export class PermessiService {
             return count > 0;
         }
     }
+
+    checkUserPermissionSchedaContatto(feature: PermissionFeatures, codSede: string) {
+        const featureIndex = searchFeatureIndex(this.permessi, feature);
+        if (this.ruoli && this.ruoli && this.ruoli.length > 0 && this.permessi && featureIndex !== null) {
+            if (checkRuoliUtente(this.ruoli, this.permessi, featureIndex)) {
+                return true;
+            }
+        }
+        return false;
+
+        function checkRuoliUtente(ruoli, permessi, index) {
+            let count = 0;
+            ruoli.forEach((ruolo: Ruolo) => {
+                if (ruolo.codSede === codSede && permessi[index].roles.indexOf(ruolo.descrizione) !== -1) {
+                    count++;
+                }
+            });
+            return count > 0;
+        }
+
+        function searchFeatureIndex(permessi: PermessiFeatureInterface[], permissionFeature: PermissionFeatures) {
+            let index = null;
+            permessi.forEach((permesso: PermessiFeatureInterface, i: number) => {
+                if (permesso.feature === permissionFeature) {
+                    index = i;
+                }
+            });
+            return index;
+        }
+    }
 }

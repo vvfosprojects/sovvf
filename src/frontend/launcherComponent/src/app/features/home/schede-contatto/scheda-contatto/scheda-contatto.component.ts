@@ -7,7 +7,7 @@ import { CheckboxInterface } from '../../../../shared/interface/checkbox.interfa
 @Component({
     selector: 'app-scheda-contatto',
     templateUrl: './scheda-contatto.component.html',
-    styleUrls: [ './scheda-contatto.component.css' ]
+    styleUrls: ['./scheda-contatto.component.css']
 })
 export class SchedaContattoComponent implements OnChanges {
 
@@ -18,6 +18,10 @@ export class SchedaContattoComponent implements OnChanges {
     @Input() classificazione: ClassificazioneSchedaContatto;
     @Input() idVisualizzati: string[];
     @Input() idCollapsed: string[];
+    @Input() disableCreaRichiesta: boolean;
+    @Input() disableGestisci: boolean;
+    @Input() disableRaggruppamento: boolean;
+    @Input() disableEliminaRaggruppamento: boolean;
     @Output() hoverIn = new EventEmitter<string>();
     @Output() hoverOut = new EventEmitter();
     @Output() dettaglioScheda = new EventEmitter<string>();
@@ -74,6 +78,10 @@ export class SchedaContattoComponent implements OnChanges {
     }
 
     checkDisabled() {
+        if (this.disableRaggruppamento) {
+            return false;
+        }
+
         if (this.scheda) {
             if (!this.classificazione) {
                 return false;

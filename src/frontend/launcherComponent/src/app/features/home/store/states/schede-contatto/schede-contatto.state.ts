@@ -329,7 +329,7 @@ export class SchedeContattoState {
 
     @Action(SetSchedaContattoGestita)
     setSchedaContattoGestita({ patchState }: StateContext<SchedeContattoStateModel>, action: SetSchedaContattoGestita) {
-        this.schedeContattoService.setSchedaContattoGestita(action.codiceScheda, action.gestita).subscribe(() => {
+        this.schedeContattoService.setSchedaContattoGestita(action.schedaContatto, action.gestita).subscribe(() => {
         });
     }
 

@@ -18,7 +18,6 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Authorization;
-using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Autenticazione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.VerificaUtente;
@@ -33,9 +32,11 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSchedeNue.SetSchedaGesti
         private readonly IFindUserByUsername _findUserByUsername;
         private readonly IGetAutorizzazioni _getAutorizzazioni;
 
-        public SetSchedaGestitaAuthorization(IPrincipal currentUser, IFindUserByUsername findUserByUsername, IGetAutorizzazioni getAutorizzazioni)
+        public SetSchedaGestitaAuthorization(IPrincipal currentUser, IFindUserByUsername findUserByUsername,
+            IGetAutorizzazioni getAutorizzazioni
+            )
         {
-            this._currentUser = currentUser;
+            _currentUser = currentUser;
             _findUserByUsername = findUserByUsername;
             _getAutorizzazioni = getAutorizzazioni;
         }
@@ -53,7 +54,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSchedeNue.SetSchedaGesti
                 {
                     foreach (var ruolo in user.Ruoli)
                     {
-                        if (!_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, command.CodiceSede, Costanti.GestoreChiamate))
+                        if (!_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, command.SchedaContatto.CodiceSede, Costanti.GestoreChiamate))
                             yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
                     }
                 }

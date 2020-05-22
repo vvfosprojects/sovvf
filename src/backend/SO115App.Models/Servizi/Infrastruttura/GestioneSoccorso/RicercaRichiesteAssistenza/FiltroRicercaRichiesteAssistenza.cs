@@ -61,6 +61,11 @@ namespace SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRic
         public bool IncludiRichiesteChiuse { get; set; } = true;
 
         /// <summary>
+        ///   Contiene eventuali filtri delle tipologie
+        /// </summary>
+        public string[] FiltriTipologie { get; set; }
+
+        /// <summary>
         ///   Indica quali richieste si vogliono includere nel risultato.
         /// </summary>
         public StatoRichiesta StatoRichieste { get; set; }

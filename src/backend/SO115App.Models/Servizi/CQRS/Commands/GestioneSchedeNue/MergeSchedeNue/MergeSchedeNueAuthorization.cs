@@ -57,7 +57,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSchedeNue.MergeSchedeNue
                 {
                     foreach (var ruolo in user.Ruoli)
                     {
-                        if (!_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, command.CodiceSede, Costanti.GestoreChiamate))
+                        if (!_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, command.SchedaNue.CodiceSede, Costanti.GestoreChiamate))
                             yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
                     }
                 }

@@ -67,5 +67,6 @@
         <div *ngIf="isReady">
             <router-outlet></router-outlet>
         </div>
+        <app-footer *ngIf="isReady" [version]="(version$ | async)!"></app-footer>
     </div>
 </ng-sidebar-container>
