@@ -20,7 +20,7 @@ export class VersionCheckService {
      * @param {number} frequency - in milliseconds
      */
     public initVersionCheck(frequency = 30): void {
-        const url = environment.versionCheckURL + '?t=' + new Date().getTime();
+        const url = environment.versionCheckURL;
         const frequencyRate = 1000 * 60 * frequency;
         setInterval(() => {
             this.checkVersion(url);
@@ -34,7 +34,7 @@ export class VersionCheckService {
      * @param first is used for first check
      */
     private checkVersion(url: string, first?: boolean): void {
-        this.http.get<VersionResponseInterface>(url).pipe(
+        this.http.get<VersionResponseInterface>(url + '?t=' + new Date().getTime()).pipe(
             catchError(handleError)
             )
             .subscribe(
