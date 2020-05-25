@@ -10,6 +10,7 @@ import { UtenteVvfInterface } from '../../../shared/interface/utente-vvf.interfa
 import { AddRuoloUtenteInterface } from '../../../shared/interface/add-ruolo-utente.interface';
 import { PaginationInterface } from 'src/app/shared/interface/pagination.interface';
 import { FiltersInterface } from 'src/app/shared/interface/filters.interface';
+import { GestioneUtentiObjInterface } from '../../../shared/interface/gestione-utenti-obj.interface';
 
 const BASE_URL = environment.baseUrl;
 const API_URL = BASE_URL + environment.apiUrl.gestioneUtenti;
@@ -32,10 +33,20 @@ export class GestioneUtentiService {
         );
     }
 
+    getUtente(id: string): Observable<Utente> {
+        return this.http.get<Utente>(API_URL + '/GetUtente?id=' + id).pipe(
+            // retry(3),
+            catchError(handleError)
+        );
+    }
+
     getListaUtentiGestione(filters: FiltersInterface, pagination: PaginationInterface): Observable<ResponseInterface> {
-        const obj = {
-            filters,
-            pagination
+        const obj: GestioneUtentiObjInterface = {
+            filters: {
+                search: filters.search
+            },
+            pagination,
+            codiciSede: filters.codiciSede.join()
         };
         return this.http.post<ResponseInterface>(API_URL + '/GetUtenti', obj).pipe(
             // retry(3),

@@ -6,7 +6,7 @@ import {
     PatchListaSediNavbar,
     PatchSediNavbarSelezionate,
     SetListaSediTreeview,
-    SetSediNavbarSelezionate
+    SetSediNavbarSelezionate, SetSediNavbarVisible
 } from '../../actions/sedi-treeview/sedi-treeview.actions';
 import { arraysEqual, makeCopy } from '../../../helper/function';
 import { ShowToastr } from '../../actions/toastr/toastr.actions';
@@ -21,6 +21,7 @@ export interface SediTreeviewStateModel {
     listaSediNavbar: ListaSedi;
     sediNavbarTesto: TreeViewStateSelezione;
     sediNavbarSelezionate: TreeViewStateSelezioneArr;
+    sediNavbarVisible: boolean;
 }
 
 export const SediTreeviewStateDefaults: SediTreeviewStateModel = {
@@ -31,7 +32,8 @@ export const SediTreeviewStateDefaults: SediTreeviewStateModel = {
     },
     sediNavbarSelezionate: {
         iniziali: null,
-    }
+    },
+    sediNavbarVisible: true
 };
 
 @State<SediTreeviewStateModel>({
@@ -58,6 +60,11 @@ export class SediTreeviewState {
     @Selector()
     static sediNavbarTesto(state: SediTreeviewStateModel) {
         return state.sediNavbarTesto.iniziale;
+    }
+
+    @Selector()
+    static sediNavbarVisible(state: SediTreeviewStateModel) {
+        return state.sediNavbarVisible;
     }
 
     @Selector()
@@ -172,6 +179,11 @@ export class SediTreeviewState {
             new SetTurnoCalendario(),
             new SetAppLoaded()
         ]);
+    }
+
+    @Action(SetSediNavbarVisible)
+    setSediNavbarVisible({ patchState }: StateContext<SediTreeviewStateModel>, { sediNavbarVisible }: SetSediNavbarVisible) {
+        patchState({ sediNavbarVisible });
     }
 
 }
