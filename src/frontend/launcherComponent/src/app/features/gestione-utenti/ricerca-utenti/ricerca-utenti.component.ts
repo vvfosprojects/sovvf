@@ -8,6 +8,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 export class RicercaUtentiComponent {
 
     @Input() loading: boolean;
+    @Input() sediFiltro: string[];
     ricerca: string;
 
     @Output() ricercaChange = new EventEmitter<any>();

@@ -1,12 +1,14 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
-import { ClearRicercaUtenti, SetRicercaUtenti } from '../../actions/ricerca-utenti/ricerca-utenti.actons';
+import { ClearRicercaUtenti, ClearSediFiltro, SetRicercaUtenti, SetSediFiltro } from '../../actions/ricerca-utenti/ricerca-utenti.actons';
 
 export interface RicercaUtentiStateModel {
     ricerca: string;
+    sediFiltro: string[];
 }
 
 export const RicercaUtentiStateDefaults: RicercaUtentiStateModel = {
-    ricerca: null
+    ricerca: null,
+    sediFiltro: []
 };
 
 @State<RicercaUtentiStateModel>({
@@ -23,6 +25,11 @@ export class RicercaUtentiState {
         return state.ricerca;
     }
 
+    @Selector()
+    static sediFiltro(state: RicercaUtentiStateModel) {
+        return state.sediFiltro;
+    }
+
     @Action(SetRicercaUtenti)
     setRicercaUtenti({ getState, patchState }: StateContext<RicercaUtentiStateModel>, action: SetRicercaUtenti) {
         patchState({
@@ -34,6 +41,20 @@ export class RicercaUtentiState {
     clearRicercaUtenti({ patchState }: StateContext<RicercaUtentiStateModel>) {
         patchState({
             ricerca: null
+        });
+    }
+
+    @Action(SetSediFiltro)
+    setSediFiltro({ getState, patchState }: StateContext<RicercaUtentiStateModel>, action: SetSediFiltro) {
+        patchState({
+            sediFiltro: action.sedi
+        });
+    }
+
+    @Action(ClearSediFiltro)
+    clearSediFiltro({ patchState }: StateContext<RicercaUtentiStateModel>) {
+        patchState({
+            sediFiltro: []
         });
     }
 }

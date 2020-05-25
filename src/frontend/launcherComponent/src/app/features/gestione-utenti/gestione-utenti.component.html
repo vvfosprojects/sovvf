@@ -3,7 +3,7 @@
         <div class="col-12 mb-2">
             <h2>
                 Gestione Utenti
-<!--                <small *ngIf="utente?.sede.descrizione">({{utente?.sede.descrizione}})</small>-->
+                <!--<small *ngIf="utente?.sede.descrizione">({{utente?.sede.descrizione}})</small>-->
             </h2>
         </div>
         <div class="col-12">
@@ -15,7 +15,7 @@
                     </button>
                 </div>
                 <div class="col text-right">
-                    <app-ricerca-utenti [loading]="loading$ | async"
+                    <app-ricerca-utenti [loading]="loading$ | async" [sediFiltro]="sediFiltro$ | async"
                                         (ricercaChange)="onRicercaUtenti($event)"></app-ricerca-utenti>
                 </div>
             </div>
