@@ -45,6 +45,8 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneUtente.ListaOperatori
             var username = _currentUser.Identity.Name;
             var user = _findUserByUsername.FindUserByUs(username);
 
+            var codiciSedi = query.CodiciSede.Split(',');
+
             if (_currentUser.Identity.IsAuthenticated)
             {
                 if (user == null)
@@ -53,8 +55,11 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneUtente.ListaOperatori
                 {
                     foreach (var ruolo in user.Ruoli)
                     {
-                        if (!_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, query.CodiceSede, Costanti.Amministratore))
-                            yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
+                        foreach (var sede in codiciSedi)
+                        {
+                            if (!_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, sede, Costanti.Amministratore))
+                                yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
+                        }
                     }
                 }
             }
