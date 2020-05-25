@@ -1,11 +1,11 @@
-import { Action, Selector, State, StateContext } from '@ngxs/store';
+import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { append, insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
 import {
     AddSchedeContattoMarkers,
     ClearSchedeContattoMarkers, GetSchedeContattoMarkers,
     InsertSchedaContattoMarker,
     OpacizzaSchedeContattoMarkers,
-    PatchSchedeContattoMarkers,
+    PatchSchedeContattoMarkers, RefreshSchedeContattoMarkers,
     RemoveSchedaContattoMarker,
     SetSchedaContattoMarkerById,
     SetSchedeContattoMarkers, SetTipoOpacitaSchedeContattoMarkers, ToggleOpacitaSchedeContattoMarkers,
@@ -18,6 +18,8 @@ import { ToastrType } from '../../../../../shared/enum/toastr';
 import { SchedeContattoMarkerService } from '../../../../../core/service/maps-service/schede-contatto-marker/schede-contatto-marker.service';
 import { ClassificazioneSchedaContatto } from '../../../../../shared/enum/classificazione-scheda-contatto.enum';
 import { ClearMarkerOpachiSC, SetMarkerOpachiSC } from '../../actions/maps/marker-opachi.actions';
+import { FiltriMarkersState } from './filtri-markers.state';
+import { AreaMappaState } from './area-mappa.state';
 
 export interface SchedeContattoMarkersStateModel {
     schedeContattoMarkers: SchedaContattoMarker[];
@@ -57,7 +59,7 @@ export class SchedeContattoMarkersState {
         return state.schedaContattoMarker;
     }
 
-    constructor(private _schedeContatto: SchedeContattoMarkerService) {
+    constructor(private _schedeContatto: SchedeContattoMarkerService, private store: Store) {
     }
 
     @Action(GetSchedeContattoMarkers)
@@ -221,6 +223,13 @@ export class SchedeContattoMarkersState {
     clearSchedeContattoMarkers({ patchState, dispatch }: StateContext<SchedeContattoMarkersStateModel>) {
         patchState(SchedeContattoMarkersStateDefaults);
         dispatch(new ClearMarkerOpachiSC());
+    }
+
+    @Action(RefreshSchedeContattoMarkers)
+    refreshSchedeContattoMarkers({ dispatch }: StateContext<SchedeContattoMarkersStateModel>) {
+        const filtroSC = this.store.selectSnapshot(FiltriMarkersState.filtroSC);
+        const areaMappa = this.store.selectSnapshot(AreaMappaState.areaMappa);
+        dispatch(new GetSchedeContattoMarkers(areaMappa, filtroSC));
     }
 
 }
