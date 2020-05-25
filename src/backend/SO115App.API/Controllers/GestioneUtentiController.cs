@@ -47,7 +47,7 @@ namespace SO115App.API.Controllers
         }
 
         [HttpPost("AddUtente")]
-        public IActionResult AddUtente([FromBody]AddUtenteCommand command)
+        public IActionResult AddUtente([FromBody] AddUtenteCommand command)
         {
             command.CodiceSede = Request.Headers["codiceSede"];
             try
@@ -64,7 +64,7 @@ namespace SO115App.API.Controllers
         }
 
         [HttpPost("DeleteUtente")]
-        public IActionResult DeleteUtente([FromBody]DeleteUtenteCommand command)
+        public IActionResult DeleteUtente([FromBody] DeleteUtenteCommand command)
         {
             command.CodiceSede = Request.Headers["codiceSede"];
             try
@@ -81,9 +81,8 @@ namespace SO115App.API.Controllers
         }
 
         [HttpPost("GetUtenti")]
-        public IActionResult GetUtenti([FromBody]ListaOperatoriQuery query)
+        public IActionResult GetUtenti([FromBody] ListaOperatoriQuery query)
         {
-            query.CodiceSede = Request.Headers["codiceSede"];
             query.IdUtente = Request.Headers["IdUtente"];
 
             try
