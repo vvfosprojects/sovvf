@@ -1,11 +1,11 @@
 <button *ngIf="!useCheckbox" class="btn btn-block mb-1"
         [ngClass]="{'btn-outline-primary': !selezionato, 'btn-success': selezionato}"
-        [disabled]="disabled" [debounceTime]="700" appDebounceClick (debounceClick)="onSelezione(filtro)">
+        [disabled]="disabled" [debounceTime]="1" appDebounceClick (debounceClick)="onSelezione(filtro)">
     {{ filtro.descrizione | truncate:70 }}
 </button>
 
 <div *ngIf="useCheckbox">
     <app-checkbox
             [checkboxState]="{id: filtro.codice, status: selezionato, label: filtro.descrizione | truncate:70, disabled: disabled}"
-            [debounceTime]="700" appDebounceClick (debounceClick)="onSelezione(filtro)"></app-checkbox>
+            [debounceTime]="1" appDebounceClick (debounceClick)="onSelezione(filtro)"></app-checkbox>
 </div>

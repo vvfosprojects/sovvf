@@ -23,17 +23,14 @@ export class SintesiRichiesteService {
 
     // TODO: implementare
     public getRichieste(filters: FiltersInterface, pagination: PaginationInterface): Observable<any> {
+        const filtriTipologie = filters.others.filter((f: VoceFiltro) => f.descrizione !== 'Chiuse' && f.descrizione !== 'Aperte');
         const obj = {
             'page': pagination.page,
             'pageSize': pagination.pageSize || 30,
             'includiRichiesteAperte': !!(filters.others && filters.others.filter((f: VoceFiltro) => f.descrizione === 'Aperte')[0]),
-            'includiRichiesteChiuse': !!(filters.others && filters.others.filter((f: VoceFiltro) => f.descrizione === 'Chiuse')[0])
+            'includiRichiesteChiuse': !!(filters.others && filters.others.filter((f: VoceFiltro) => f.descrizione === 'Chiuse')[0]),
+            'filtriTipologie': filtriTipologie && filtriTipologie.length > 0 ? filtriTipologie.map(f => f.codice) : null
         };
-        // todo: da implementare con i filtri delle tipologie
-        // filters.others.forEach((f: VoceFiltro) => {
-        //     obj[f.name] = true;
-        // });
-        // console.log('obj getRichieste', obj);
         return this.http.post(API_URL_RICHIESTE, obj).pipe(
             // retry(3),
             catchError(handleError));
