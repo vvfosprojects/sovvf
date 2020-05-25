@@ -33,6 +33,7 @@ export class UnitaOperativaComponent implements OnDestroy, OnInit {
     sediNavbarVisible: boolean;
 
     constructor(private store: Store) {
+        this.subscription.add(this.sediNavbarVisible$.pipe(delay(0)).subscribe(r => this.sediNavbarVisible = r));
     }
 
     ngOnInit(): void {
@@ -44,7 +45,6 @@ export class UnitaOperativaComponent implements OnDestroy, OnInit {
                 }
             })
         );
-        this.subscription.add(this.sediNavbarVisible$.pipe(delay(100)).subscribe(r => this.sediNavbarVisible = r));
     }
 
     ngOnDestroy() {
