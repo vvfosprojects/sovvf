@@ -16,7 +16,9 @@
                 </div>
                 <div class="col text-right">
                     <app-ricerca-utenti [loading]="loading$ | async" [sediFiltro]="sediFiltro$ | async"
-                                        (ricercaChange)="onRicercaUtenti($event)"></app-ricerca-utenti>
+                                        [sediFiltroSelezionate]="sediFiltroSelezionate$ | async"
+                                        (ricercaChange)="onRicercaUtenti($event)"
+                                        (filtroChange)="onFiltroSediChange($event)"></app-ricerca-utenti>
                 </div>
             </div>
         </div>

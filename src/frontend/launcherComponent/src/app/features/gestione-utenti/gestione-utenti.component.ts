@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Ruolo, Utente } from 'src/app/shared/model/utente.model';
 import { Observable, Subscription } from 'rxjs';
 import { Select, Store } from '@ngxs/store';
-import { ClearRicercaUtenti, SetRicercaUtenti, SetSediFiltro } from './store/actions/ricerca-utenti/ricerca-utenti.actons';
+import { ClearRicercaUtenti, ReducerSelezioneFiltroSede, SetRicercaUtenti, SetSediFiltro } from './store/actions/ricerca-utenti/ricerca-utenti.actons';
 import { UtenteState } from '../navbar/store/states/operatore/utente.state';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import {
@@ -45,6 +45,7 @@ export class GestioneUtentiComponent implements OnInit, OnDestroy {
     @Select(LoadingState.loading) loading$: Observable<boolean>;
     @Select(RuoliUtenteLoggatoState.ruoliPrincipali) ruoliUtenteLoggato$: Observable<Ruolo[]>;
     @Select(RicercaUtentiState.sediFiltro) sediFiltro$: Observable<string[]>;
+    @Select(RicercaUtentiState.sediFiltroSelezionate) sediFiltroSelezionate$: Observable<string[]>;
 
     subscriptions: Subscription = new Subscription();
 
@@ -69,6 +70,10 @@ export class GestioneUtentiComponent implements OnInit, OnDestroy {
 
     onRicercaUtenti(ricerca: any) {
         this.store.dispatch(new SetRicercaUtenti(ricerca));
+    }
+
+    onFiltroSediChange(filtroSede: string) {
+        this.store.dispatch(new ReducerSelezioneFiltroSede(filtroSede));
     }
 
     onAddUtente() {
@@ -227,7 +232,7 @@ export class GestioneUtentiComponent implements OnInit, OnDestroy {
                 console.log('ruoli', ruoli);
                 if (ruoli && ruoli.length > 0) {
                     const ruoliUtente = ruoli;
-                    const sediFiltro = ruoliUtente.filter((r: Ruolo) => r.descrizione === 'Amministratore').map((r: Ruolo) => r.descSede);
+                    const sediFiltro = ruoliUtente.filter((r: Ruolo) => r.descrizione === 'Amministratore');
                     this.store.dispatch(new SetSediFiltro(sediFiltro));
                 }
             })

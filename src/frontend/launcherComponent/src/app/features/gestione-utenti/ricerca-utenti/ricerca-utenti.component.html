@@ -9,7 +9,8 @@
                         <h6>Filtra per sede</h6>
                         <div class="mt-3">
                             <app-checkbox *ngFor="let f of sediFiltro"
-                                    [checkboxState]="{id: f, status: false, label: f | truncate:70, disabled: false}"></app-checkbox>
+                                          [checkboxState]="{id: f.codSede, status: _isSelected(f), label: f.descSede | truncate:70}"
+                                          (checkbox)="filtroChange.emit(f.codSede)"></app-checkbox>
                         </div>
                     </div>
                 </div>
