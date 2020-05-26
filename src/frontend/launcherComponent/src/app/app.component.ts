@@ -85,6 +85,7 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
             }
         });
         this.subscription.add(this.isLoaded$.subscribe((r: boolean) => {
+            console.log('isLoaded$', r);
             this._isReady(r);
         }));
         this.subscription.add(this.offsetTime$.subscribe((serverTime: number) => OFFSET_SYNC_TIME.unshift(serverTime)));
