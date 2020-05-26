@@ -36,11 +36,6 @@ export const SignalRStateDefaults: SignalRStateModel = {
 export class SignalRState {
 
     @Selector()
-    static statusSignalR(state: SignalRStateModel): boolean {
-        return state.connected && !!state.connectionId;
-    }
-
-    @Selector()
     static connectionIdSignalR(state: SignalRStateModel): string {
         return state.connectionId;
     }
