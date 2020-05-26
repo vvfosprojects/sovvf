@@ -26,7 +26,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSchedeNue.SetSchedaGesti
         public string IdUtente { get; set; }
         public bool Gestita { get; set; }
 
-        public SchedaContatto SchedaContatto { get; set; }
+        public SchedaContatto Scheda { get; set; }
 
         public string CodiceSede { get; set; }
     }
