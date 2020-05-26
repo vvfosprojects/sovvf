@@ -126,6 +126,7 @@ export class GestioneUtentiState {
             dispatch(new StartLoading());
             const filters = {
                 search: this.store.selectSnapshot(RicercaUtentiState.ricerca),
+                codiciSede: [] // Todo prende i codiciSede selezionati
             };
             const pagination = {
                 page: action.page ? action.page : 1,

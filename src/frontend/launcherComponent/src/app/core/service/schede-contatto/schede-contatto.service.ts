@@ -47,8 +47,8 @@ export class SchedeContattoService {
         );
     }
 
-    setSchedaContattoGestita(codiceScheda: string, gestita: boolean) {
-        const obj = { codiceScheda, gestita };
+    setSchedaContattoGestita(scheda: SchedaContatto, gestita: boolean) {
+        const obj = { scheda, gestita };
         return this.http.put<any>(`${API_SCHEDE_CONTATTO}/SetGestita`, obj).pipe(
             // retry(3),
             catchError(handleError)

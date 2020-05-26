@@ -30,12 +30,13 @@
             <div class="col-2 pr-4">
                 <ng-container *ngIf="!editSchedaContatto">
                     <button class="btn btn-success float-right px-2 py-1" ngbTooltip="Crea richiesta di assistenza"
+                            [disabled]="disableCreaRichiesta"
                             (click)="setSchedaContattoTelefonata.emit(scheda); $event.stopPropagation()">
                         <i class="fa fa-arrow-right"></i>
                     </button>
                     <button *ngIf="scheda.classificazione === classificazioneSchedaContatto.Differibile"
                             class="btn float-right px-2 py-1 mr-1" [ngClass]="btnGestita.type"
-                            ngbTooltip="{{btnGestita.tooltip}}"
+                            ngbTooltip="{{btnGestita.tooltip}}" [disabled]="disableGestisci"
                             (click)="setSchedaContattoGestita.emit(!scheda.gestita); $event.stopPropagation()">
                         <i class="fa fa-cog"></i>
                     </button>
@@ -43,12 +44,13 @@
                 <div *ngIf="editSchedaContatto && !this.scheda.gestita && this.scheda.collegate?.length <= 0"
                      class="float-right py-1">
                     <app-checkbox appClickStopPropagation [typeName]="'nue' + scheda.classificazione"
-                                  [checkboxState]="{id: scheda.codiceScheda, status: schedeContattoSelezionate.includes(scheda.codiceScheda), disabled: checkDisabled()}"
+                                  [checkboxState]="disableRaggruppamento ? { disabled: true} : {id: scheda.codiceScheda, status: schedeContattoSelezionate.includes(scheda.codiceScheda), disabled: checkDisabled()}"
                                   (checkbox)="onEditSchedaSelezionata($event)" [tooltipMessage]="checkMessage()"
                                   (container)="onCheckBoxClick()"></app-checkbox>
                 </div>
                 <ng-container *ngIf="editSchedaContatto && !this.scheda.gestita && this.scheda.collegate?.length > 0">
-                    <button class="btn btn-danger float-right px-2 py-1" (click)="onUndoRaggruppamento(); $event.stopPropagation()"
+                    <button class="btn btn-danger float-right px-2 py-1" [disabled]="disableEliminaRaggruppamento"
+                            (click)="onUndoRaggruppamento(); $event.stopPropagation()"
                             ngbTooltip="Elimina raggruppamento">
                         <i class="fa fa-remove"></i>
                     </button>

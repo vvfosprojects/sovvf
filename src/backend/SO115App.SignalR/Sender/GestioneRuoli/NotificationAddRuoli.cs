@@ -22,7 +22,7 @@ namespace SO115App.SignalR.Sender.GestioneRuoli
         {
             var utente = _getUtenteByCF.Get(command.CodFiscale);
             await _notificationHubContext.Clients.Group(utente.Sede.Codice).SendAsync("NotifyRefreshUtenti", true).ConfigureAwait(false);
-            await _notificationHubContext.Clients.Group(utente.Sede.Codice).SendAsync("NotifyModificatoRuoloUtente", utente).ConfigureAwait(false);
+            await _notificationHubContext.Clients.All.SendAsync("NotifyModificatoRuoloUtente", utente).ConfigureAwait(false);
         }
     }
 }

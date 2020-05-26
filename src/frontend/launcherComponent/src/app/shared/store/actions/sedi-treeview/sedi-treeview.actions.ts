@@ -32,3 +32,9 @@ export class ClearSediNavbarSelezionate {
 export class SetSediNavbarSelezionate {
     static readonly type = '[Sedi Treeview Navbar] Set Sedi selezionate';
 }
+
+export class SetSediNavbarVisible {
+    static readonly type = '[Sedi Treeview Navbar] Set Visible';
+    constructor(public sediNavbarVisible: boolean = true) {
+    }
+}

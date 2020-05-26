@@ -1,0 +1,22 @@
+.button-nuova-versione {
+  background-color: #4285f4;
+  color: #ffffff;
+  animation-name: color;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+}
+
+@keyframes color {
+  0% {
+    background-color: #4285f4;
+    color: #ffffff;
+  }
+  50% {
+    background-color: rgba(0, 123, 255, 0.8);
+    color: rgba(255, 255, 255, 0.8);
+  }
+  100% {
+    background-color: #4285f4;
+    color: #ffffff;
+  }
+}
