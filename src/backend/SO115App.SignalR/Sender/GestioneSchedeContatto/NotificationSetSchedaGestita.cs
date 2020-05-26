@@ -54,11 +54,11 @@ namespace SO115App.SignalR.Sender.GestioneSchedeContatto
                 CodiceSede = command.CodiceSede
             };
 
-            var schedaContattoUpdated = _getSchedeContattoHandler.Handle(getSchedeContatto).SchedeContatto.Find(x => x.CodiceScheda.Equals(command.SchedaContatto.CodiceScheda));
+            var schedaContattoUpdated = _getSchedeContattoHandler.Handle(getSchedeContatto).SchedeContatto.Find(x => x.CodiceScheda.Equals(command.Scheda.CodiceScheda));
 
             var infoNue = _getConteggioSchedeHandler.Handle(getConteggioSchedeQuery).InfoNue;
-            await _notificationHubContext.Clients.Group(schedaContattoUpdated.CodiceSede).SendAsync("NotifyGetContatoriSchedeContatto", infoNue);
-            await _notificationHubContext.Clients.Groups(schedaContattoUpdated.CodiceSede).SendAsync("NotifyUpdateSchedaContatto", schedaContattoUpdated);
+            await _notificationHubContext.Clients.All.SendAsync("NotifyGetContatoriSchedeContatto", infoNue);
+            await _notificationHubContext.Clients.All.SendAsync("NotifyUpdateSchedaContatto", schedaContattoUpdated);
         }
     }
 }

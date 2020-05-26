@@ -19,9 +19,11 @@
 //-----------------------------------------------------------------------
 using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.Net;
 using System.Security.Claims;
 using System.Text;
 using CQRS.Queries;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using SO115App.API.Models.Classi.Autenticazione;
@@ -39,7 +41,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneUtente.LogIn
 
         public LogInQueryHandler(IConfiguration config, IVerificaLogIn verificaLogIn)
         {
-            this._config = config;
+            _config = config;
             _verificaLogIn = verificaLogIn;
         }
 
@@ -50,6 +52,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneUtente.LogIn
         /// <returns>Elenco dei mezzi disponibili</returns>
         public LogInResult Handle(LogInQuery query)
         {
+            var Server = Dns.GetHostEntry(Dns.GetHostName());
+
             // preparazione del DTO
             var utente = _verificaLogIn.Verifica(query.Username, query.Password);
 
@@ -75,6 +79,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneUtente.LogIn
             var token = tokenHandler.CreateToken(tokenDescriptor);
 
             utente.Token = tokenHandler.WriteToken(token);
+            utente.Machine = Server.HostName;
 
             return new LogInResult()
             {
