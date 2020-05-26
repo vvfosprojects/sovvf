@@ -11,10 +11,9 @@ import {
 import { arraysEqual, makeCopy } from '../../../helper/function';
 import { ShowToastr } from '../../actions/toastr/toastr.actions';
 import { allFalseTreeItem, checkTreeItem, findItem } from './sedi-treeview.helper';
-import { SetAppLoaded, SetVistaSedi } from '../../actions/app/app.actions';
+import { ReloadApp, SetVistaSedi } from '../../actions/app/app.actions';
 import { ToastrType } from '../../../enum/toastr';
 import { SetTurnoCalendario } from 'src/app/features/navbar/store/actions/turno/turno.actions';
-import { ClearUtenteSignalR, SetCodiceSede, SetUtenteSignalR } from '../../../../core/signalr/store/signalR.actions';
 
 export interface SediTreeviewStateModel {
     listeSedi: ListaSedi;
@@ -177,7 +176,7 @@ export class SediTreeviewState {
         dispatch([
             new SetVistaSedi(state.sediNavbarSelezionate.correnti),
             new SetTurnoCalendario(),
-            new SetAppLoaded()
+            new ReloadApp()
         ]);
     }
 

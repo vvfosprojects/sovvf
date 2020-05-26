@@ -10,7 +10,7 @@ import { NavbarState } from '../navbar/store/states/navbar.state';
 @Component({ templateUrl: 'home.component.html' })
 export class HomeComponent implements OnInit, OnDestroy {
 
-    subscription = new Subscription();
+    private subscription = new Subscription();
     viewState: ViewLayouts;
     columnState: Grids;
     loading = true;
