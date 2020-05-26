@@ -87,7 +87,7 @@ namespace SO115App.API.Controllers
         [HttpGet("GetUtente")]
         public IActionResult GetUtente([FromBody] DettaglioUtenteQuery query)
         {
-            query.IdUtente = Request.Headers["IdUtente"];
+            query.IdUtente = query.IdUtente;
 
             try
             {
