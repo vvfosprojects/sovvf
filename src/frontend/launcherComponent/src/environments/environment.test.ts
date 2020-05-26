@@ -1,9 +1,12 @@
 export const environment = {
     production: true,
+    productionTest: true,
+    consoleLog: false,
     fakeProvider: false,
     signalRHub: '/NotificationHub',
     baseUrl: '$Serverbckend',
     signalR: true,
+    versionCheckURL: 'version.json',
     apiUrl: {
         welcome: '/api/Welcome',
         markers: '/api/Marker',

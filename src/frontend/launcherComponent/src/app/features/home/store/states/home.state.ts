@@ -23,14 +23,12 @@ import { GetFiltriRichieste } from '../actions/filterbar/filtri-richieste.action
 import { PatchPagination } from '../../../../shared/store/actions/pagination/pagination.actions';
 
 export interface HomeStateModel {
-    loaded: boolean;
     mapIsLoaded: boolean;
     markerLoading: boolean;
     tipologie: Tipologia[];
 }
 
 export const HomeStateDefaults: HomeStateModel = {
-    loaded: false,
     mapIsLoaded: false,
     markerLoading: false,
     tipologie: null
@@ -77,7 +75,7 @@ export class HomeState {
     }
 
     @Action(GetDataHome)
-    getDataHome({ patchState, dispatch }: StateContext<HomeStateModel>) {
+    getDataHome({ dispatch }: StateContext<HomeStateModel>) {
         this.homeService.getHome().subscribe((data: Welcome) => {
             console.log('Welcome', data);
             dispatch([
@@ -93,10 +91,6 @@ export class HomeState {
                 new SetDataTipologie(data.tipologie)
             ]);
         }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5)));
-        patchState({
-            loaded: true
-        });
-
     }
 
     @Action(SetMapLoaded)

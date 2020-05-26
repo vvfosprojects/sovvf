@@ -3,4 +3,5 @@ import { VoceFiltro } from '../../features/home/filterbar/ricerca-group/filtri-r
 export interface FiltersInterface {
     search: string;
     others?: VoceFiltro[];
+    codiciSede?: string[];
 }

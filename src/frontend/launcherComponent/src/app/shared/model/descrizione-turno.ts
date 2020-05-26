@@ -15,11 +15,11 @@ export class DescrizioneTurno {
         /**
          * data e ora inizio turno,
          */
-        public dataOraInizio: string, // Todo: mettere Date
+        public dataOraInizio: string,
         /**
          * data e ora fine turno
          */
-        public dataOraFine: string, // Todo: mettere Date
+        public dataOraFine: string,
     ) {
     }
 }

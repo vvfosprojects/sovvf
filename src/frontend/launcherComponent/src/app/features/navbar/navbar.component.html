@@ -1,35 +1,41 @@
 <nav class="navbar navbar-expand-lg text-light"
-  [ngClass]="{'navbar-dark bg-dark': !turnoExtra, 'navbar-danger bg-danger': turnoExtra}">
-  <div class="row py-0 w-100">
-    <div class="col-5 mr-auto">
-      <div class="row">
-        <div class="col-2 text-left">
-          <button class="btn btn-block btn-light ml-2 mr-2" (click)="openSidebar()">
-            <i class="fa fa-bars"></i>
-          </button>
+     [ngClass]="{'navbar-dark bg-dark': !turnoExtra, 'navbar-danger bg-danger': turnoExtra}">
+    <div class="row py-0 w-100">
+        <div class="col-5 mr-auto">
+            <div class="row">
+                <div class="col-2 text-left">
+                    <button class="btn btn-block btn-light ml-2 mr-2" (click)="openSidebar()">
+                        <i class="fa fa-bars"></i>
+                    </button>
+                </div>
+                <div class="col-6 text-left">
+                    <app-unita-operativa *ngIf="listeSediNavbarLoaded$ | async" [colorButton]="colorButton">
+                    </app-unita-operativa>
+                </div>
+                <div class="col-4 px-0 text-center">
+                    <app-clock [time]="time"></app-clock>
+                </div>
+            </div>
         </div>
-        <div class="col-6 text-left">
-          <app-unita-operativa *ngIf="(listeSediNavbarLoaded$ | async)" [colorButton]="colorButton">
-          </app-unita-operativa>
+        <div class="col-2 mr-auto">
+            <div class="row">
+                <div class="col-12">
+                    <app-turno [turno]="turnoCalendario" [turnoExtra]="turnoExtra"></app-turno>
+                </div>
+            </div>
         </div>
-        <div class="col-4 px-0 text-center">
-          <app-clock [time]="time"></app-clock>
+        <div class="col-2">
+            <ng-template [ngIf]="newVersion">
+                <app-bottone-nuova-versione [btnBlock]="true" (getNewVersion)="getNewVersion()"></app-bottone-nuova-versione>
+            </ng-template>
         </div>
-      </div>
+        <div class="col-3 ml-auto text-right pr-0">
+            <div class="row">
+                <div class="col-12">
+                    <app-operatore [user]="user" [ruoliUtenteLoggato]="ruoliUtenteLoggato"
+                                   (_logout)="logout()"></app-operatore>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="col-3 mr-auto">
-      <div class="row">
-        <div class="col-12">
-          <app-turno [turno]="turnoCalendario" [turnoExtra]="turnoExtra"></app-turno>
-        </div>
-      </div>
-    </div>
-    <div class="col-4 ml-auto text-right pr-0">
-      <div class="row">
-        <div class="col-12">
-          <app-operatore [user]="user" [ruoliUtenteLoggato]="ruoliUtenteLoggato" (_logout)="logout()"></app-operatore>
-        </div>
-      </div>
-    </div>
-  </div>
 </nav>

@@ -42,6 +42,11 @@ namespace SO115App.Models.Classi.NUE
         public DateTime DataInserimento { get; set; }
 
         /// <summary>
+        ///   Indica il codice del comando al quale è stata associata la Scheda Contatto
+        /// </summary>
+        public string CodiceSede { get; set; }
+
+        /// <summary>
         ///   E' il richiedente della scheda contatto, proveniente dal NUE.
         /// </summary>
         public Richiedente Richiedente { get; set; }

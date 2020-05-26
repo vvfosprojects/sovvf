@@ -2,7 +2,6 @@
 using SO115App.Persistence.Oracle.Classi;
 using System.Collections.Generic;
 using System.Data;
-using SO115App.Persistence.Oracle.Utility;
 
 namespace SO115App.Persistence.Oracle.Servizi.Richieste
 {

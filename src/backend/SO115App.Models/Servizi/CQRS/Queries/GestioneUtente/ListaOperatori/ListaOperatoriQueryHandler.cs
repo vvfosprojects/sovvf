@@ -63,6 +63,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneUtente.ListaOperatori
         /// <returns>ListaOperatoriResult</returns>
         public ListaOperatoriResult Handle(ListaOperatoriQuery query)
         {
+            var codiciSede = query.CodiciSede.Split(',');
             var utente = _getUtenteById.GetUtenteByCodice(query.IdUtente);
             var listaCodiciSedeRuoloAdmin = new List<string>();
             var sediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
@@ -70,13 +71,16 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneUtente.ListaOperatori
 
             foreach (var ruolo in utente.Ruoli.FindAll(x => x.Descrizione.Equals("Amministratore")))
             {
-                listaCodiciSedeRuoloAdmin.Add(ruolo.CodSede);
-                if (ruolo.Ricorsivo)
+                if (codiciSede.Contains(ruolo.CodSede))
                 {
-                    listaPin.Add(new PinNodo(ruolo.CodSede, ruolo.Ricorsivo));
-                    foreach (var figli in sediAlberate.GetSottoAlbero(listaPin))
+                    listaCodiciSedeRuoloAdmin.Add(ruolo.CodSede);
+                    if (ruolo.Ricorsivo)
                     {
-                        listaCodiciSedeRuoloAdmin.Add(figli.Codice);
+                        listaPin.Add(new PinNodo(ruolo.CodSede, ruolo.Ricorsivo));
+                        foreach (var figli in sediAlberate.GetSottoAlbero(listaPin))
+                        {
+                            listaCodiciSedeRuoloAdmin.Add(figli.Codice);
+                        }
                     }
                 }
             }
