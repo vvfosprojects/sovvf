@@ -1,5 +1,5 @@
-export class SetAppLoaded {
-    static readonly type = '[App] Caricamento...';
+export class ReloadApp {
+    static readonly type = '[App] Reload';
 }
 
 export class SetVistaSedi {

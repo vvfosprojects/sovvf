@@ -3,7 +3,6 @@ import { NavigationEnd, Router } from '@angular/router';
 import { RoutesPath } from './shared/enum/routes-path.enum';
 import { Select, Store } from '@ngxs/store';
 import { Observable, Subscription } from 'rxjs';
-import { SignalRState } from './core/signalr/store/signalR.state';
 import { AppState } from './shared/store/states/app/app.state';
 import { OFFSET_SYNC_TIME } from './core/settings/referral-time';
 import { Ruolo, Utente } from './shared/model/utente.model';
@@ -26,16 +25,12 @@ import { VersionInterface } from './shared/interface/version.interface';
 })
 export class AppComponent implements OnInit, OnDestroy {
 
-    subscription = new Subscription();
+    private subscription = new Subscription();
 
-    @Select(SignalRState.statusSignalR) _signalR$: Observable<boolean>;
-    _signalR = false;
-
-    @Select(AppState.appIsLoaded) _isLoaded$: Observable<boolean>;
-    _isLoaded: boolean;
+    @Select(AppState.appIsLoaded) isLoaded$: Observable<boolean>;
 
     @Select(SediTreeviewState.listeSediLoaded) listeSediLoaded$: Observable<boolean>;
-    listeSediLoaded: boolean;
+    private listeSediLoaded: boolean;
 
     @Select(AppState.offsetTimeSync) offsetTime$: Observable<number>;
     @Select(AppState.vistaSedi) vistaSedi$: Observable<string[]>;
@@ -66,13 +61,8 @@ export class AppComponent implements OnInit, OnDestroy {
                 !this.deniedPath.includes(val.urlAfterRedirects.slice(1)) && authService._isLogged() ? this._toggle = true : this._toggle = false;
             }
         });
-        this.subscription.add(this._signalR$.subscribe((r: boolean) => {
-            this._signalR = r;
-            this._isReady();
-        }));
-        this.subscription.add(this._isLoaded$.subscribe((r: boolean) => {
-            this._isLoaded = r;
-            this._isReady();
+        this.subscription.add(this.isLoaded$.subscribe((r: boolean) => {
+            this._isReady(r);
         }));
         this.subscription.add(this.offsetTime$.subscribe((serverTime: number) => OFFSET_SYNC_TIME.unshift(serverTime)));
         this.subscription.add(this.user$.subscribe((user: Utente) => {
@@ -98,9 +88,9 @@ export class AppComponent implements OnInit, OnDestroy {
         this.subscription.unsubscribe();
     }
 
-    _isReady() {
-        this.isReady = !!this._signalR && !!this._isLoaded;
-        if (!this.isReady) {
+    _isReady(status: boolean) {
+        this.isReady = status;
+        if (!status) {
             this.modals.dismissAll();
         }
     }
