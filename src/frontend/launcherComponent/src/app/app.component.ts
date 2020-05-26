@@ -1,4 +1,13 @@
-import { Component, isDevMode, OnDestroy, OnInit } from '@angular/core';
+import {
+    AfterViewChecked,
+    Component,
+    ElementRef,
+    HostListener,
+    isDevMode,
+    OnDestroy,
+    OnInit,
+    ViewChild
+} from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { RoutesPath } from './shared/enum/routes-path.enum';
 import { Select, Store } from '@ngxs/store';
@@ -17,13 +26,15 @@ import { AuthenticationService } from './core/auth/_services/authentication.serv
 import { VersionCheckService } from './core/service/version-check/version-check.service';
 import { NewVersionState } from './shared/store/states/nuova-versione/nuova-versione.state';
 import { VersionInterface } from './shared/interface/version.interface';
+import { SetAvailHeight, SetContentHeight } from './shared/store/actions/viewport/viewport.actions';
+import { ViewportState } from './shared/store/states/viewport/viewport.state';
 
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
     styleUrls: [ './app.component.css' ]
 })
-export class AppComponent implements OnInit, OnDestroy {
+export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
 
     private subscription = new Subscription();
 
@@ -34,6 +45,8 @@ export class AppComponent implements OnInit, OnDestroy {
 
     @Select(AppState.offsetTimeSync) offsetTime$: Observable<number>;
     @Select(AppState.vistaSedi) vistaSedi$: Observable<string[]>;
+
+    @Select(ViewportState.footerFixed) footerFixed$: Observable<boolean>;
 
     @Select(NewVersionState.version) version$: Observable<VersionInterface>;
 
@@ -49,6 +62,16 @@ export class AppComponent implements OnInit, OnDestroy {
     _toggle = false;
     RoutesPath = RoutesPath;
     private deniedPath = [ RoutesPath.NotFound.toString(), RoutesPath.Login.toString() ];
+
+    private height;
+    private availHeight;
+
+    @ViewChild('contentElement', { read: ElementRef }) contentElement: ElementRef;
+
+    @HostListener('window:resize')
+    onResize() {
+        this.getHeight();
+    }
 
     constructor(private router: Router,
                 private authService: AuthenticationService,
@@ -84,6 +107,10 @@ export class AppComponent implements OnInit, OnDestroy {
         !isDevMode() && this.versionCheckService.initVersionCheck(3);
     }
 
+    ngAfterViewChecked() {
+        this.getHeight();
+    }
+
     ngOnDestroy(): void {
         this.subscription.unsubscribe();
     }
@@ -97,6 +124,23 @@ export class AppComponent implements OnInit, OnDestroy {
 
     _toggleOpened() {
         this._opened = !this._opened;
+    }
+
+    getHeight(): void {
+        const availHeight = window.innerHeight;
+        const height = this.contentElement.nativeElement.offsetHeight;
+        if (height) {
+            if (this.height !== height) {
+                this.height = height;
+                this.store.dispatch(new SetContentHeight(height));
+            }
+        }
+        if (availHeight) {
+            if (this.availHeight !== availHeight) {
+                this.availHeight = availHeight;
+                this.store.dispatch(new SetAvailHeight(availHeight));
+            }
+        }
     }
 
 }

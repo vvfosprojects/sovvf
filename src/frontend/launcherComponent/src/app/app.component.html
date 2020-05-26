@@ -58,15 +58,15 @@
             </div>
         </div>
     </ng-sidebar>
-    <div ng-sidebar-content>
+    <div ng-sidebar-content #contentElement>
         <app-navbar *ngIf="_toggle && isReady" (openedSidebar)="_toggleOpened()" [user]="user"
                     [ruoliUtenteLoggato]="ruoliUtenteLoggato$ | async"></app-navbar>
-        <div *ngIf="!isReady">
-            <app-loader></app-loader>
-        </div>
-        <div *ngIf="isReady">
+        <ng-container *ngIf="isReady">
             <router-outlet></router-outlet>
-        </div>
-        <app-footer *ngIf="isReady" [version]="(version$ | async)!"></app-footer>
+        </ng-container>
+        <app-footer *ngIf="isReady" [version]="(version$ | async)!" [fixed]="(footerFixed$ | async)!"></app-footer>
     </div>
 </ng-sidebar-container>
+<ng-container *ngIf="!isReady">
+    <app-loader></app-loader>
+</ng-container>
