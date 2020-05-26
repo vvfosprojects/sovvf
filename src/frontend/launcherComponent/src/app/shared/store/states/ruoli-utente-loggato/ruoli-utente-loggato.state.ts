@@ -9,11 +9,13 @@ import { NavbarState } from '../../../../features/navbar/store/states/navbar.sta
 import { getRuoliRicorsivo } from '../../../helper/get-ruoli-ricorsivo';
 
 export interface RuoliUtenteLoggatoStateModel {
+    ruoliPrincipali: Ruolo[];
     ruoli: Ruolo[];
     localName: string;
 }
 
 export const ruoliStateModelDefaults: RuoliUtenteLoggatoStateModel = {
+    ruoliPrincipali: [],
     ruoli: [],
     localName: 'ruoliUtenteSO115'
 };
@@ -23,6 +25,11 @@ export const ruoliStateModelDefaults: RuoliUtenteLoggatoStateModel = {
     defaults: ruoliStateModelDefaults
 })
 export class RuoliUtenteLoggatoState {
+
+    @Selector()
+    static ruoliPrincipali(state: RuoliUtenteLoggatoStateModel) {
+        return state.ruoliPrincipali;
+    }
 
     @Selector()
     static ruoli(state: RuoliUtenteLoggatoStateModel) {
@@ -46,6 +53,7 @@ export class RuoliUtenteLoggatoState {
     setRuoliUtenteLoggato({ getState, patchState }: StateContext<RuoliUtenteLoggatoStateModel>, action: SetRuoliUtenteLoggato) {
         const localName = getState().localName;
         patchState({
+            ruoliPrincipali: action.ruoliUtenteLoggato,
             ruoli: this.getRuoliFullList(action.ruoliUtenteLoggato)
         });
         sessionStorage.setItem(localName, JSON.stringify(action.ruoliUtenteLoggato));
@@ -55,6 +63,7 @@ export class RuoliUtenteLoggatoState {
     updateRuoliUtenteLoggato({ getState, patchState }: StateContext<RuoliUtenteLoggatoStateModel>, action: UpdateRuoliUtenteLoggato) {
         const localName = getState().localName;
         patchState({
+            ruoliPrincipali: action.ruoliUtenteLoggato,
             ruoli: this.getRuoliFullList(action.ruoliUtenteLoggato)
         });
         sessionStorage.setItem(localName, JSON.stringify(action.ruoliUtenteLoggato));

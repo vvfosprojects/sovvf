@@ -81,3 +81,7 @@ export class OpacizzaSchedeContattoMarkers {
 export class ClearSchedeContattoMarkers {
     static readonly type = '[Schede Contatto Marker] Clear Schede Contatto Marker';
 }
+
+export class RefreshSchedeContattoMarkers {
+    static readonly type = '[Schede Contatto Marker] Refresh Schede Contatto Marker';
+}

@@ -42,7 +42,10 @@ import { ToastrType } from '../../../../../shared/enum/toastr';
 import {
     ClearMergeSchedeContatto
 } from '../../actions/schede-contatto/merge-schede-contatto.actions';
-import { ToggleOpacitaSchedeContattoMarkers } from '../../actions/maps/schede-contatto-markers.actions';
+import {
+    RefreshSchedeContattoMarkers,
+    ToggleOpacitaSchedeContattoMarkers
+} from '../../actions/maps/schede-contatto-markers.actions';
 import { DettaglioSchedaModalComponent } from '../../../schede-contatto/dettaglio-scheda-modal/dettaglio-scheda-modal.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgZone } from '@angular/core';
@@ -477,6 +480,7 @@ export class SchedeContattoState {
             console.log('Unione schede completata', mergeSchedeContatto);
             dispatch([
                 new ClearMergeSchedeContatto(),
+                new RefreshSchedeContattoMarkers(),
                 new ShowToastr(ToastrType.Success, 'Unione schede contatto', 'Unione completata con successo')
             ]);
         }, () => {
@@ -493,6 +497,7 @@ export class SchedeContattoState {
             console.log('Undo Merge Schede completata', undoMergeSchedaContatto);
             dispatch([
                 new ClearMergeSchedeContatto(),
+                new RefreshSchedeContattoMarkers(),
                 new ShowToastr(ToastrType.Success, 'Undo schede contatto', 'Undo Merge completata con successo')
             ]);
         }, () => {

@@ -1,6 +1,7 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
-import { SetAppLoaded, SetVistaSedi, SetTimeSync, ClearVistaSedi } from '../../actions/app/app.actions';
+import { ReloadApp, SetVistaSedi, SetTimeSync, ClearVistaSedi } from '../../actions/app/app.actions';
 import { SetCodiceSede } from '../../../../core/signalr/store/signalR.actions';
+import { SignalRState } from '../../../../core/signalr/store/signalR.state';
 
 export interface AppStateModel {
     appIsLoaded: boolean;
@@ -20,9 +21,9 @@ export const appStateDefaults: AppStateModel = {
 })
 export class AppState {
 
-    @Selector()
+    @Selector([SignalRState])
     static appIsLoaded(state: AppStateModel) {
-        return state.appIsLoaded;
+        return state.appIsLoaded && SignalRState.statusSignalR;
     }
 
     @Selector()
@@ -35,14 +36,14 @@ export class AppState {
         return state.vistaSedi;
     }
 
-    @Action(SetAppLoaded)
-    setAppLoaded({ getState, patchState }: StateContext<AppStateModel>) {
+    @Action(ReloadApp)
+    reloadApp({ getState, patchState }: StateContext<AppStateModel>) {
         const appLoaded = getState().appIsLoaded;
         if (appLoaded) {
             reload();
             setTimeout(() => {
                 reload();
-            }, 1);
+            }, 0);
         }
 
         function reload() {

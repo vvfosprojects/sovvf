@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Ruolo, Utente } from 'src/app/shared/model/utente.model';
 import { Observable, Subscription } from 'rxjs';
 import { Select, Store } from '@ngxs/store';
-import { ClearRicercaUtenti, SetRicercaUtenti } from './store/actions/ricerca-utenti/ricerca-utenti.actons';
+import { ClearRicercaUtenti, SetRicercaUtenti, SetSediFiltro } from './store/actions/ricerca-utenti/ricerca-utenti.actons';
 import { UtenteState } from '../navbar/store/states/operatore/utente.state';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import {
@@ -22,11 +22,12 @@ import { ConfirmModalComponent } from 'src/app/shared';
 import { SetPageSize } from '../../shared/store/actions/pagination/pagination.actions';
 import { wipeStringUppercase } from '../../shared/helper/function';
 import { SetSediNavbarVisible } from '../../shared/store/actions/sedi-treeview/sedi-treeview.actions';
+import { RuoliUtenteLoggatoState } from '../../shared/store/states/ruoli-utente-loggato/ruoli-utente-loggato.state';
 
 @Component({
     selector: 'app-gestione-utenti',
     templateUrl: './gestione-utenti.component.html',
-    styleUrls: [ './gestione-utenti.component.css' ]
+    styleUrls: ['./gestione-utenti.component.css']
 })
 export class GestioneUtentiComponent implements OnInit, OnDestroy {
 
@@ -42,6 +43,8 @@ export class GestioneUtentiComponent implements OnInit, OnDestroy {
     @Select(PaginationState.totalItems) totalItems$: Observable<number>;
     @Select(PaginationState.page) page$: Observable<number>;
     @Select(LoadingState.loading) loading$: Observable<boolean>;
+    @Select(RuoliUtenteLoggatoState.ruoliPrincipali) ruoliUtenteLoggato$: Observable<Ruolo[]>;
+    @Select(RicercaUtentiState.sediFiltro) sediFiltro$: Observable<string[]>;
 
     subscriptions: Subscription = new Subscription();
 
@@ -51,6 +54,8 @@ export class GestioneUtentiComponent implements OnInit, OnDestroy {
         this.getUtentiGestione();
         this.getRicerca();
         this.getPageSize();
+        this.getPageSize();
+        this.getSediFiltro();
     }
 
     ngOnInit() {
@@ -58,7 +63,7 @@ export class GestioneUtentiComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-        this.store.dispatch([ new ClearRicercaUtenti(), new SetSediNavbarVisible() ]);
+        this.store.dispatch([new ClearRicercaUtenti(), new SetSediNavbarVisible()]);
         this.subscriptions.unsubscribe();
     }
 
@@ -211,6 +216,19 @@ export class GestioneUtentiComponent implements OnInit, OnDestroy {
                         this.store.dispatch(new GetUtentiGestione());
                     }
                     this.pageSize = pageSize;
+                }
+            })
+        );
+    }
+
+    getSediFiltro() {
+        this.subscriptions.add(
+            this.ruoliUtenteLoggato$.subscribe((ruoli: Ruolo[]) => {
+                console.log('ruoli', ruoli);
+                if (ruoli && ruoli.length > 0) {
+                    const ruoliUtente = ruoli;
+                    const sediFiltro = ruoliUtente.filter((r: Ruolo) => r.descrizione === 'Amministratore').map((r: Ruolo) => r.descSede);
+                    this.store.dispatch(new SetSediFiltro(sediFiltro));
                 }
             })
         );
