@@ -19,3 +19,8 @@ export class SetTimeSync {
     constructor(public time: number) {
     }
 }
+
+export class SetMapLoaded {
+    static readonly type = '[App] Map is fully loaded';
+}
+

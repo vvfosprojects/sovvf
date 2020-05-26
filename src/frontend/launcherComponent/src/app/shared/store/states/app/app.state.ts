@@ -1,5 +1,5 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
-import { ReloadApp, SetVistaSedi, SetTimeSync, ClearVistaSedi } from '../../actions/app/app.actions';
+import { ReloadApp, SetVistaSedi, SetTimeSync, ClearVistaSedi, SetMapLoaded } from '../../actions/app/app.actions';
 import { SetCodiceSede } from '../../../../core/signalr/store/signalR.actions';
 import { SignalRState } from '../../../../core/signalr/store/signalR.state';
 
@@ -7,12 +7,14 @@ export interface AppStateModel {
     appIsLoaded: boolean;
     vistaSedi: string[];
     offsetTimeSync: number;
+    mapIsLoaded: boolean;
 }
 
 export const appStateDefaults: AppStateModel = {
     appIsLoaded: true,
     vistaSedi: null,
-    offsetTimeSync: 0
+    offsetTimeSync: 0,
+    mapIsLoaded: null
 };
 
 @State<AppStateModel>({
@@ -68,6 +70,13 @@ export class AppState {
     setTimeSync({ patchState }: StateContext<AppStateModel>, action: SetTimeSync) {
         patchState({
             offsetTimeSync: new Date(action.time).getTime() - new Date().getTime()
+        });
+    }
+
+    @Action(SetMapLoaded)
+    setMapLoaded({ patchState }: StateContext<AppStateModel>) {
+        patchState({
+            mapIsLoaded: true
         });
     }
 }
