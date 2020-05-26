@@ -21,8 +21,8 @@ namespace SO115App.SignalR.Sender.GestioneUtenti
         public async Task Notify(AddUtenteCommand command)
         {
             var utente = _getUtenteByCF.Get(command.CodFiscale);
-            await _notificationHubContext.Clients.Group(command.CodiceSede).SendAsync("NotifyRefreshUtenti", utente.Id);
-            await _notificationHubContext.Clients.Group(utente.Sede.Codice).SendAsync("NotifyRefreshUtenti", utente.Id);
+
+            await _notificationHubContext.Clients.All.SendAsync("NotifyAddUtente", utente.Ruoli[0].CodSede);
         }
     }
 }
