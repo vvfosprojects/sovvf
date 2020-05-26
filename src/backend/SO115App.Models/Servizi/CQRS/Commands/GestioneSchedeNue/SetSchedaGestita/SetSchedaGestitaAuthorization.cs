@@ -52,7 +52,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSchedeNue.SetSchedaGesti
                     yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
                 else
                 {
-                    if (!_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, command.SchedaContatto.CodiceSede, Costanti.GestoreChiamate))
+                    if (!_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, command.Scheda.CodiceSede, Costanti.GestoreChiamate))
                         yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
                 }
             }
