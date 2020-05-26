@@ -37,6 +37,7 @@ using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 
 namespace SO115App.Persistence.MongoDB
 {
@@ -105,8 +106,9 @@ namespace SO115App.Persistence.MongoDB
                 var filtroRichiesteAperte = Builders<RichiestaAssistenza>.Filter.Ne(r => r.TestoStatoRichiesta, "X");
                 var filtroComplessivo = filtroSediCompetenti & filtroRichiesteAperte;
 
-                var richiesteAperte = _dbContext.RichiestaAssistenzaCollection.Find(filtroComplessivo)
-                    .ToList();
+                var richiesteAperte = _dbContext.RichiestaAssistenzaCollection
+                                        .Find(filtroComplessivo)
+                                        .ToList();
 
                 // qui l'ordinamento
                 var richiestePerStato = richiesteAperte.GroupBy(r => r.TestoStatoRichiesta == InAttesa.SelettoreDB)
@@ -158,9 +160,20 @@ namespace SO115App.Persistence.MongoDB
                 }
             }
 
+            var listaFiltrataPerTipologie = new List<RichiestaAssistenza>();
+
+            if (filtro.FiltriTipologie != null)
+            {
+                listaFiltrataPerTipologie = result.Where(o => filtro.FiltriTipologie.Any(s => o.Tipologie.Contains(s))).ToList();
+            }
+            else
+            {
+                listaFiltrataPerTipologie = result;
+            }
+
             var listaSistesiRichieste = new List<SintesiRichiesta>();
 
-            foreach (RichiestaAssistenza richiesta in result)
+            foreach (RichiestaAssistenza richiesta in listaFiltrataPerTipologie)
             {
                 SintesiRichiesta sintesi = new SintesiRichiesta();
 
