@@ -1,4 +1,5 @@
 import { Sede } from '../../../../../shared/model/sede.model';
+import { Ruolo } from '../../../../../shared/model/utente.model';
 
 export class SetRicercaUtenti {
     static readonly type = '[RicercaUtenti] Set Ricerca';
@@ -14,7 +15,7 @@ export class ClearRicercaUtenti {
 export class SetSediFiltro {
     static readonly type = '[RicercaUtenti] Set Sedi Filtro';
 
-    constructor(public sedi: any[]) {
+    constructor(public sedi: Ruolo[]) {
     }
 }
 
@@ -40,4 +41,8 @@ export class SetSedeFiltroDeselezionato {
 
     constructor(public sedeFiltro: string) {
     }
+}
+
+export class SetAllSediFiltroSelezionate {
+    static readonly type = '[RicercaUtenti] Set All Sedi Filtro Selezionate';
 }

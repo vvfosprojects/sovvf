@@ -33,8 +33,8 @@ export class GestioneUtentiService {
         );
     }
 
-    getUtente(id: string): Observable<Utente> {
-        return this.http.get<Utente>(API_URL + '/GetUtente?id=' + id).pipe(
+    getUtente(id: string): Observable<{detUtente: Utente}> {
+        return this.http.get<{detUtente: Utente}>(API_URL + '/GetUtente?id=' + id).pipe(
             // retry(3),
             catchError(handleError)
         );

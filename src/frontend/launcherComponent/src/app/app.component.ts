@@ -91,7 +91,7 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
         this.subscription.add(this.offsetTime$.subscribe((serverTime: number) => OFFSET_SYNC_TIME.unshift(serverTime)));
         this.subscription.add(this.user$.subscribe((user: Utente) => {
             this.user = user;
-            if (user) {
+            if (user && user.sede) {
                 this.listeSediLoaded && this.store.dispatch(new PatchListaSediNavbar([ user.sede.codice ]));
             } else {
                 this.store.dispatch(new ClearListaSediNavbar());

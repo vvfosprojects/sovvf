@@ -124,9 +124,11 @@ export class GestioneUtentiState {
         const route = this.router.children[0].snapshot.url[0].path;
         if (route === 'gestione-utenti') {
             dispatch(new StartLoading());
+            const ricerca = this.store.selectSnapshot(RicercaUtentiState.ricerca);
+            const codiciSede = this.store.selectSnapshot(RicercaUtentiState.sediFiltroSelezionate);
             const filters = {
-                search: this.store.selectSnapshot(RicercaUtentiState.ricerca),
-                codiciSede: [] // Todo prende i codiciSede selezionati
+                search: ricerca,
+                codiciSede: codiciSede && codiciSede.length > 0 ? codiciSede : this.store.selectSnapshot(RicercaUtentiState.sediFiltro).map(s => s.codSede)
             };
             const pagination = {
                 page: action.page ? action.page : 1,
