@@ -140,7 +140,7 @@ namespace SO115App.API
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseSimpleInjector(container);
-            LogConfigurator.Configure();
+            LogConfigurator.Configure(Configuration);
 
             if (env.IsDevelopment())
             {

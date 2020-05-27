@@ -52,7 +52,6 @@ export class GestioneUtentiComponent implements OnInit, OnDestroy {
     constructor(public modalService: NgbModal,
                 private store: Store) {
         this.getUtente();
-        this.getUtentiGestione();
         this.getRicerca();
         this.getPageSize();
         this.getPageSize();
@@ -229,11 +228,11 @@ export class GestioneUtentiComponent implements OnInit, OnDestroy {
     getSediFiltro() {
         this.subscriptions.add(
             this.ruoliUtenteLoggato$.subscribe((ruoli: Ruolo[]) => {
-                console.log('ruoli', ruoli);
                 if (ruoli && ruoli.length > 0) {
                     const ruoliUtente = ruoli;
                     const sediFiltro = ruoliUtente.filter((r: Ruolo) => r.descrizione === 'Amministratore');
                     this.store.dispatch(new SetSediFiltro(sediFiltro));
+                    this.getUtentiGestione();
                 }
             })
         );

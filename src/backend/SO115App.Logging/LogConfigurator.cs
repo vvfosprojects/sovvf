@@ -17,17 +17,20 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using Microsoft.Extensions.Configuration;
 using Serilog;
 
 namespace SO115App.Logging
 {
     public static class LogConfigurator
     {
-        public static void Configure()
+        public static void Configure(IConfiguration configuration)
         {
             var log = new LoggerConfiguration()
-                .MinimumLevel.Debug()
-                .WriteTo.Trace()
+                //.WriteTo.File("log.txt", rollingInterval: RollingInterval.Day, rollOnFileSizeLimit: true)
+                //.WriteTo.Trace()
+                //.MinimumLevel.Debug()
+                .ReadFrom.Configuration(configuration)
                 .CreateLogger();
 
             Log.Logger = log;
