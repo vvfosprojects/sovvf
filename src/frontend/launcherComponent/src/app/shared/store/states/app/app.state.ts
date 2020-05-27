@@ -1,7 +1,7 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { ReloadApp, SetVistaSedi, SetTimeSync, ClearVistaSedi, SetMapLoaded } from '../../actions/app/app.actions';
 import { SetCodiceSede } from '../../../../core/signalr/store/signalR.actions';
-import { SignalRState } from '../../../../core/signalr/store/signalR.state';
+import { SignalRState, SignalRStateModel } from '../../../../core/signalr/store/signalR.state';
 
 export interface AppStateModel {
     appIsLoaded: boolean;
@@ -24,8 +24,8 @@ export const appStateDefaults: AppStateModel = {
 export class AppState {
 
     @Selector([SignalRState])
-    static appIsLoaded(state: AppStateModel) {
-        return state.appIsLoaded && SignalRState.statusSignalR;
+    static appIsLoaded(state: AppStateModel, signalRState: SignalRStateModel) {
+        return state.appIsLoaded && signalRState.connected && !!signalRState.connectionId;
     }
 
     @Selector()
