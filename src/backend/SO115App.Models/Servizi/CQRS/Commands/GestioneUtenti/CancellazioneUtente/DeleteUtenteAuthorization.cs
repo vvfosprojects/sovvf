@@ -22,6 +22,7 @@ using CQRS.Commands.Authorizers;
 using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Autenticazione;
+using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.GetUtenti;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.VerificaUtente;
 using System.Collections.Generic;
 using System.Security.Principal;
@@ -31,20 +32,21 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneUtenti.CancellazioneUten
     public class DeleteUtenteAuthorization : ICommandAuthorizer<DeleteUtenteCommand>
     {
         private readonly IPrincipal currentUser;
-        private readonly IFindUserByUsername _findUserByUsername;
+        private readonly IGetUtenteByCF _findUserByCF;
         private readonly IGetAutorizzazioni _getAutorizzazioni;
 
-        public DeleteUtenteAuthorization(IPrincipal principal, IFindUserByUsername findUserByUsername, IGetAutorizzazioni getAutorizzazioni)
+        public DeleteUtenteAuthorization(IPrincipal principal, IGetUtenteByCF findUserByCF, IGetAutorizzazioni getAutorizzazioni)
         {
             currentUser = principal;
-            _findUserByUsername = findUserByUsername;
+            _findUserByCF = findUserByCF;
             _getAutorizzazioni = getAutorizzazioni;
         }
 
         public IEnumerable<AuthorizationResult> Authorize(DeleteUtenteCommand command)
         {
-            var username = currentUser.Identity.Name;
-            var user = _findUserByUsername.FindUserByUs(username);
+            var CFuser = command.CodFiscale;
+            var user = _findUserByCF.Get(CFuser);
+            var utenteDelete = command.UtenteRimosso;
 
             if (currentUser.Identity.IsAuthenticated)
             {
@@ -54,7 +56,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneUtenti.CancellazioneUten
                 {
                     foreach (var ruolo in user.Ruoli)
                     {
-                        if (!_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, ruolo.CodSede, Costanti.Amministratore))
+                        if (!_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, utenteDelete.Sede.Codice, Costanti.Amministratore))
                             yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
                     }
                 }
