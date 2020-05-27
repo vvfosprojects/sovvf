@@ -9,7 +9,9 @@ import {
     SetUtentiGestione,
     SetUtentiVVF,
     ClearDataModalAddUtenteModal,
-    AddUtenteGestione
+    AddUtenteGestione,
+    UpdateUtenteGestioneInLista,
+    UpdateRuoliPersonali
 } from '../../actions/gestione-utenti/gestione-utenti.actions';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { RicercaUtentiState } from '../ricerca-utenti/ricerca-utenti.state';
@@ -17,7 +19,7 @@ import { PatchPagination } from '../../../../../shared/store/actions/pagination/
 import { ResponseInterface } from '../../../../../shared/interface/response.interface';
 import { TreeviewSelezione } from '../../../../../shared/model/treeview-selezione.model';
 import { Utente } from '../../../../../shared/model/utente.model';
-import { insertItem, patch, removeItem } from '@ngxs/store/operators';
+import { insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from '../../../../../shared/enum/toastr';
 import { GestioneUtentiService } from '../../../../../core/service/gestione-utenti-service/gestione-utenti.service';
@@ -30,6 +32,8 @@ import { Navigate } from '@ngxs/router-plugin';
 import { ActivatedRoute } from '@angular/router';
 import { _isAdministrator } from '../../../../../shared/helper/function';
 import { UtenteState } from '../../../../navbar/store/states/operatore/utente.state';
+import { UpdateUtente } from '../../../../navbar/store/actions/operatore/utente.actions';
+import { UpdateRuoliUtenteLoggato } from '../../../../../shared/store/actions/ruoli/ruoli.actions';
 
 export interface GestioneUtentiStateModel {
     listaUtentiVVF: UtenteVvfInterface[];
@@ -206,6 +210,36 @@ export class GestioneUtentiState {
 
         // Clear data
         dispatch(new ClearDataModalAddUtenteModal());
+    }
+
+    @Action(UpdateRuoliPersonali)
+    updateRuoloUtenteGestione({ getState, dispatch }: StateContext<GestioneUtentiStateModel>, action: UpdateRuoliPersonali) {
+        this._gestioneUtenti.getUtente(action.idUtente).subscribe(objUtente => {
+                const utente = objUtente.detUtente ? objUtente.detUtente : null;
+                if (utente && utente.ruoli) {
+                    this.store.dispatch(new UpdateUtente(utente, { localStorage: true }));
+                    this.store.dispatch(new UpdateRuoliUtenteLoggato(utente.ruoli));
+                    if (!_isAdministrator(utente)) {
+                        this.store.dispatch(new Navigate(['/home']));
+                    }
+                }
+            }
+        );
+    }
+
+    @Action(UpdateUtenteGestioneInLista)
+    updateUtenteGestione({ getState, setState, dispatch }: StateContext<GestioneUtentiStateModel>, action: UpdateUtenteGestioneInLista) {
+        const listaUtentiGestione = getState().listaUtenti;
+        const utentePresente = listaUtentiGestione.filter((u: Utente) => u.id === action.idUtente).length > 0;
+        if (utentePresente) {
+            this._gestioneUtenti.getUtente(action.idUtente).subscribe((utenteObj: { detUtente: Utente }) => {
+                setState(
+                    patch({
+                        listaUtenti: updateItem<Utente>(u => u.id === action.idUtente, utenteObj.detUtente)
+                    })
+                );
+            });
+        }
     }
 
     @Action(RemoveUtente)

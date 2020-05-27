@@ -49,14 +49,10 @@ import {
 } from 'src/app/features/home/store/actions/schede-contatto/schede-contatto.actions';
 import { ContatoriSchedeContatto } from '../../shared/interface/contatori-schede-contatto.interface';
 import { SchedaContatto } from '../../shared/interface/scheda-contatto.interface';
-import { GetUtentiGestione } from '../../features/gestione-utenti/store/actions/gestione-utenti/gestione-utenti.actions';
-import { Utente } from '../../shared/model/utente.model';
-import { ClearUtente, UpdateUtente } from '../../features/navbar/store/actions/operatore/utente.actions';
+import { UpdateRuoliPersonali, UpdateUtenteGestioneInLista } from '../../features/gestione-utenti/store/actions/gestione-utenti/gestione-utenti.actions';
+import { ClearUtente } from '../../features/navbar/store/actions/operatore/utente.actions';
 import { UtenteState } from '../../features/navbar/store/states/operatore/utente.state';
-import { UpdateRuoliUtenteLoggato } from '../../shared/store/actions/ruoli/ruoli.actions';
 import { Navigate } from '@ngxs/router-plugin';
-import { _isAdministrator } from '../../shared/helper/function';
-import { GestioneUtentiService } from '../service/gestione-utenti-service/gestione-utenti.service';
 
 const HUB_URL = environment.baseUrl + environment.signalRHub;
 const SIGNALR_BYPASS = !environment.signalR;
@@ -68,7 +64,7 @@ export class SignalRService {
     connectionEstablished = new Subject<boolean>();
     private hubNotification: HubConnection;
 
-    constructor(private store: Store, private gestioneUtentiService: GestioneUtentiService) {
+    constructor(private store: Store) {
     }
 
     initSubscription(): void {
@@ -304,23 +300,15 @@ export class SignalRService {
         this.hubNotification.on('NotifyAddUtente', (codSede: string) => {
             console.log('NotifyAddUtente', codSede);
         });
+
         this.hubNotification.on('NotifyModificatoRuoloUtente', (idUtente: string) => {
             console.log('NotifyModificatoRuoloUtente', idUtente);
             if (idUtente) {
                 const utenteAttuale = this.store.selectSnapshot(UtenteState.utente);
                 if (idUtente === utenteAttuale.id) {
-                    // Todo aggiungere un action che fa la get di utente e il dispatch di queste action
-                    this.gestioneUtentiService.getUtente(idUtente).subscribe(objUtente => {
-                            const utente = objUtente.detUtente ? objUtente.detUtente : null;
-                            if (utente && utente.ruoli) {
-                                this.store.dispatch(new UpdateUtente(utente, { localStorage: true }));
-                                this.store.dispatch(new UpdateRuoliUtenteLoggato(utente.ruoli));
-                                if (!_isAdministrator(utente)) {
-                                    this.store.dispatch(new Navigate(['/home']));
-                                }
-                            }
-                        }
-                    );
+                    this.store.dispatch(new UpdateRuoliPersonali(idUtente));
+                } else {
+                    this.store.dispatch(new UpdateUtenteGestioneInLista(idUtente));
                 }
             }
         });
@@ -328,10 +316,10 @@ export class SignalRService {
         this.hubNotification.on('NotifyRefreshUtenti', (idUtente: string) => {
             console.log('NotifyRefreshUtenti', idUtente);
             if (idUtente) {
-                // Todo: si fa l'update dell'elemento se presente nella lista GestioneUtenti
-                // this.store.dispatch(new GetUtentiGestione());
+                this.store.dispatch(new UpdateUtenteGestioneInLista(idUtente));
             }
         });
+
         this.hubNotification.on('NotifyDeleteUtente', (idUtente: string) => {
             console.log('NotifyDeleteUtente', idUtente);
             const utenteAttuale = this.store.selectSnapshot(UtenteState.utente);
