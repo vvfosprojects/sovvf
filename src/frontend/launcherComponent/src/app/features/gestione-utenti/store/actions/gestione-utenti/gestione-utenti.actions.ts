@@ -37,13 +37,13 @@ export class AddRuoloUtenteGestione {
     static readonly type = '[GestioneUtenti] Add Ruolo Utente Gestione';
 }
 
-export class UpdateRuoloUtenteGestione {
+export class UpdateRuoliPersonali {
     static readonly type = '[GestioneUtenti] Update Ruolo Utente Gestione';
 
     constructor(public idUtente: string) { }
 }
 
-export class UpdateUtenteGestione {
+export class UpdateUtenteGestioneInLista {
     static readonly type = '[GestioneUtenti] Update Utente Gestione';
 
     constructor(public idUtente: string) { }

@@ -9,7 +9,9 @@ import {
     SetUtentiGestione,
     SetUtentiVVF,
     ClearDataModalAddUtenteModal,
-    AddUtenteGestione, UpdateUtenteGestione, UpdateRuoloUtenteGestione
+    AddUtenteGestione,
+    UpdateUtenteGestioneInLista,
+    UpdateRuoliPersonali
 } from '../../actions/gestione-utenti/gestione-utenti.actions';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { RicercaUtentiState } from '../ricerca-utenti/ricerca-utenti.state';
@@ -210,8 +212,8 @@ export class GestioneUtentiState {
         dispatch(new ClearDataModalAddUtenteModal());
     }
 
-    @Action(UpdateRuoloUtenteGestione)
-    updateRuoloUtenteGestione({ getState, dispatch }: StateContext<GestioneUtentiStateModel>, action: UpdateRuoloUtenteGestione) {
+    @Action(UpdateRuoliPersonali)
+    updateRuoloUtenteGestione({ getState, dispatch }: StateContext<GestioneUtentiStateModel>, action: UpdateRuoliPersonali) {
         this._gestioneUtenti.getUtente(action.idUtente).subscribe(objUtente => {
                 const utente = objUtente.detUtente ? objUtente.detUtente : null;
                 if (utente && utente.ruoli) {
@@ -225,8 +227,8 @@ export class GestioneUtentiState {
         );
     }
 
-    @Action(UpdateUtenteGestione)
-    updateUtenteGestione({ getState, setState, dispatch }: StateContext<GestioneUtentiStateModel>, action: UpdateUtenteGestione) {
+    @Action(UpdateUtenteGestioneInLista)
+    updateUtenteGestione({ getState, setState, dispatch }: StateContext<GestioneUtentiStateModel>, action: UpdateUtenteGestioneInLista) {
         const listaUtentiGestione = getState().listaUtenti;
         const utentePresente = listaUtentiGestione.filter((u: Utente) => u.id === action.idUtente).length > 0;
         if (utentePresente) {

@@ -49,7 +49,7 @@ import {
 } from 'src/app/features/home/store/actions/schede-contatto/schede-contatto.actions';
 import { ContatoriSchedeContatto } from '../../shared/interface/contatori-schede-contatto.interface';
 import { SchedaContatto } from '../../shared/interface/scheda-contatto.interface';
-import { UpdateRuoloUtenteGestione, UpdateUtenteGestione } from '../../features/gestione-utenti/store/actions/gestione-utenti/gestione-utenti.actions';
+import { UpdateRuoliPersonali, UpdateUtenteGestioneInLista } from '../../features/gestione-utenti/store/actions/gestione-utenti/gestione-utenti.actions';
 import { ClearUtente } from '../../features/navbar/store/actions/operatore/utente.actions';
 import { UtenteState } from '../../features/navbar/store/states/operatore/utente.state';
 import { Navigate } from '@ngxs/router-plugin';
@@ -306,7 +306,9 @@ export class SignalRService {
             if (idUtente) {
                 const utenteAttuale = this.store.selectSnapshot(UtenteState.utente);
                 if (idUtente === utenteAttuale.id) {
-                    this.store.dispatch(new UpdateRuoloUtenteGestione(idUtente));
+                    this.store.dispatch(new UpdateRuoliPersonali(idUtente));
+                } else {
+                    this.store.dispatch(new UpdateUtenteGestioneInLista(idUtente));
                 }
             }
         });
@@ -314,9 +316,10 @@ export class SignalRService {
         this.hubNotification.on('NotifyRefreshUtenti', (idUtente: string) => {
             console.log('NotifyRefreshUtenti', idUtente);
             if (idUtente) {
-                this.store.dispatch(new UpdateUtenteGestione(idUtente));
+                this.store.dispatch(new UpdateUtenteGestioneInLista(idUtente));
             }
         });
+
         this.hubNotification.on('NotifyDeleteUtente', (idUtente: string) => {
             console.log('NotifyDeleteUtente', idUtente);
             const utenteAttuale = this.store.selectSnapshot(UtenteState.utente);
