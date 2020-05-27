@@ -23,7 +23,7 @@
     <div class="py-1">
         <small class="d-block font-weight-bold">Ruoli Assegnati:</small>
         <div *ngFor="let ruolo of ruoliUtenteLoggato" class="d-block badge badge-primary mt-2 p-2">
-            {{ruolo.descrizione}}
+            {{ruolo.descrizione}} ({{ruolo.codSede}})
         </div>
         <div *ngIf="ruoliUtenteLoggato?.length === 0" class="badge badge-secondary mt-2 p-2">
             Solo Visualizzazione
