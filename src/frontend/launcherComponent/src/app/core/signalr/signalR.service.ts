@@ -301,16 +301,23 @@ export class SignalRService {
         /**
          * Gestione Utenti
          */
+        this.hubNotification.on('NotifyAddUtente', (codSede: string) => {
+            console.log('NotifyAddUtente', codSede);
+        });
         this.hubNotification.on('NotifyModificatoRuoloUtente', (idUtente: string) => {
+            console.log('NotifyModificatoRuoloUtente', idUtente);
             if (idUtente) {
                 const utenteAttuale = this.store.selectSnapshot(UtenteState.utente);
                 if (idUtente === utenteAttuale.id) {
                     // Todo aggiungere un action che fa la get di utente e il dispatch di queste action
-                    this.gestioneUtentiService.getUtente(idUtente).subscribe(utente => {
-                            this.store.dispatch(new UpdateUtente(utente, { localStorage: true }));
-                            this.store.dispatch(new UpdateRuoliUtenteLoggato(utente.ruoli));
-                            if (!_isAdministrator(utente)) {
-                                this.store.dispatch(new Navigate([ '/home' ]));
+                    this.gestioneUtentiService.getUtente(idUtente).subscribe(objUtente => {
+                            const utente = objUtente.detUtente ? objUtente.detUtente : null;
+                            if (utente && utente.ruoli) {
+                                this.store.dispatch(new UpdateUtente(utente, { localStorage: true }));
+                                this.store.dispatch(new UpdateRuoliUtenteLoggato(utente.ruoli));
+                                if (!_isAdministrator(utente)) {
+                                    this.store.dispatch(new Navigate(['/home']));
+                                }
                             }
                         }
                     );
@@ -330,7 +337,7 @@ export class SignalRService {
             const utenteAttuale = this.store.selectSnapshot(UtenteState.utente);
             if (idUtente && idUtente === utenteAttuale.id) {
                 this.store.dispatch(new ClearUtente());
-                this.store.dispatch(new Navigate([ '/login' ]));
+                this.store.dispatch(new Navigate(['/login']));
             }
         });
 
