@@ -28,7 +28,6 @@ import { SetPageSize } from '../../shared/store/actions/pagination/pagination.ac
 import { wipeStringUppercase } from '../../shared/helper/function';
 import { SetSediNavbarVisible } from '../../shared/store/actions/sedi-treeview/sedi-treeview.actions';
 import { RuoliUtenteLoggatoState } from '../../shared/store/states/ruoli-utente-loggato/ruoli-utente-loggato.state';
-import { SetGestioneUtentiLoaded } from '../../shared/store/actions/app/app.actions';
 
 @Component({
     selector: 'app-gestione-utenti',
@@ -65,17 +64,13 @@ export class GestioneUtentiComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.store.dispatch([
-            new SetSediNavbarVisible(false),
-            new SetGestioneUtentiLoaded(true)
-        ]);
+        this.store.dispatch(new SetSediNavbarVisible(false));
     }
 
     ngOnDestroy(): void {
         this.store.dispatch([
             new ClearRicercaUtenti(),
-            new SetSediNavbarVisible(),
-            new SetGestioneUtentiLoaded(false)
+            new SetSediNavbarVisible()
         ]);
         this.subscriptions.unsubscribe();
     }

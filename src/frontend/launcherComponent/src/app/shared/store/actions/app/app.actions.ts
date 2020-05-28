@@ -26,11 +26,3 @@ export class SetMapLoaded {
     constructor(public mapIsLoaded: boolean) {
     }
 }
-
-export class SetGestioneUtentiLoaded {
-    static readonly type = '[App] Gestione Utenti is fully loaded';
-
-    constructor(public gestioneUtentiIsLoaded: boolean) {
-    }
-}
-

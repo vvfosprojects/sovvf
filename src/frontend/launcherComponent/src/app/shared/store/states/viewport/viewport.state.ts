@@ -1,6 +1,8 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { Injectable } from '@angular/core';
 import { SetContentHeight, SetAvailHeight } from '../../actions/viewport/viewport.actions';
+import { RouterState } from '@ngxs/router-plugin';
+import { RouterStateModel } from '@ngxs/router-plugin/src/router.state';
 
 export interface ViewportStateModel {
     availHeight: number;
@@ -19,9 +21,10 @@ export const ViewportStateDefaults: ViewportStateModel = {
 })
 export class ViewportState {
 
-    @Selector()
-    static footerFixed(state: ViewportStateModel) {
-        return state.availHeight > state.contentHeight;
+    @Selector([ RouterState ])
+    static footerFixed(state: ViewportStateModel, routerState: RouterStateModel) {
+        const currentUrl = routerState.state.url;
+        return state.availHeight > state.contentHeight && currentUrl === '/home';
     }
 
     @Action(SetAvailHeight)

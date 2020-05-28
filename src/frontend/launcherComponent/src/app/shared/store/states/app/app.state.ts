@@ -4,8 +4,7 @@ import {
     SetVistaSedi,
     SetTimeSync,
     ClearVistaSedi,
-    SetMapLoaded,
-    SetGestioneUtentiLoaded
+    SetMapLoaded
 } from '../../actions/app/app.actions';
 import { SetCodiceSede } from '../../../../core/signalr/store/signalR.actions';
 import { SignalRState, SignalRStateModel } from '../../../../core/signalr/store/signalR.state';
@@ -17,15 +16,13 @@ export interface AppStateModel {
     vistaSedi: string[];
     offsetTimeSync: number;
     mapIsLoaded: boolean;
-    gestioneUtentiIsLoaded: boolean;
 }
 
 export const appStateDefaults: AppStateModel = {
     appIsLoaded: true,
     vistaSedi: null,
     offsetTimeSync: 0,
-    mapIsLoaded: null,
-    gestioneUtentiIsLoaded: true,
+    mapIsLoaded: null
 };
 
 @State<AppStateModel>({
@@ -40,8 +37,6 @@ export class AppState {
         let currentPage = true;
         if (currentUrl === '/home') {
             currentPage = state.mapIsLoaded;
-        } else if (currentUrl === '/gestione-utenti') {
-            currentPage = state.gestioneUtentiIsLoaded;
         }
         let signalR = true;
         if (signalRState.reconnected === null) {
@@ -100,8 +95,4 @@ export class AppState {
         patchState({ mapIsLoaded });
     }
 
-    @Action(SetGestioneUtentiLoaded)
-    setGestioneUtentiLoaded({ patchState }: StateContext<AppStateModel>, { gestioneUtentiIsLoaded }: SetGestioneUtentiLoaded) {
-        patchState({ gestioneUtentiIsLoaded });
-    }
 }
