@@ -1,5 +1,12 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
-import { ReloadApp, SetVistaSedi, SetTimeSync, ClearVistaSedi, SetMapLoaded } from '../../actions/app/app.actions';
+import {
+    ReloadApp,
+    SetVistaSedi,
+    SetTimeSync,
+    ClearVistaSedi,
+    SetMapLoaded,
+    SetGestioneUtentiLoaded
+} from '../../actions/app/app.actions';
 import { SetCodiceSede } from '../../../../core/signalr/store/signalR.actions';
 import { SignalRState, SignalRStateModel } from '../../../../core/signalr/store/signalR.state';
 import { RouterState } from '@ngxs/router-plugin';
@@ -10,13 +17,15 @@ export interface AppStateModel {
     vistaSedi: string[];
     offsetTimeSync: number;
     mapIsLoaded: boolean;
+    gestioneUtentiIsLoaded: boolean;
 }
 
 export const appStateDefaults: AppStateModel = {
     appIsLoaded: true,
     vistaSedi: null,
     offsetTimeSync: 0,
-    mapIsLoaded: null
+    mapIsLoaded: null,
+    gestioneUtentiIsLoaded: true,
 };
 
 @State<AppStateModel>({
@@ -25,14 +34,16 @@ export const appStateDefaults: AppStateModel = {
 })
 export class AppState {
 
-    @Selector([SignalRState, RouterState])
+    @Selector([ SignalRState, RouterState ])
     static appIsLoaded(state: AppStateModel, signalRState: SignalRStateModel, routerState: RouterStateModel) {
-        const home = routerState.state.url;
-        let mapIsLoaded = true;
-        if (home === '/home') {
-            mapIsLoaded = state.mapIsLoaded;
+        const currentUrl = routerState.state.url;
+        let currentPage = true;
+        if (currentUrl === '/home') {
+            currentPage = state.mapIsLoaded;
+        } else if (currentUrl === '/gestione-utenti') {
+            currentPage = state.gestioneUtentiIsLoaded;
         }
-        return state.appIsLoaded && signalRState.connected && !!signalRState.connectionId && !signalRState.disconnected && mapIsLoaded;
+        return state.appIsLoaded && signalRState.connected && !!signalRState.connectionId && !signalRState.disconnected && currentPage;
     }
 
     @Selector()
@@ -81,9 +92,12 @@ export class AppState {
     }
 
     @Action(SetMapLoaded)
-    setMapLoaded({ patchState }: StateContext<AppStateModel>) {
-        patchState({
-            mapIsLoaded: true
-        });
+    setMapLoaded({ patchState }: StateContext<AppStateModel>, { mapIsLoaded }: SetMapLoaded) {
+        patchState({ mapIsLoaded });
+    }
+
+    @Action(SetGestioneUtentiLoaded)
+    setGestioneUtentiLoaded({ patchState }: StateContext<AppStateModel>, { gestioneUtentiIsLoaded }: SetGestioneUtentiLoaded) {
+        patchState({ gestioneUtentiIsLoaded });
     }
 }

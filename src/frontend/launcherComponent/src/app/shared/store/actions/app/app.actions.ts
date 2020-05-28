@@ -22,5 +22,15 @@ export class SetTimeSync {
 
 export class SetMapLoaded {
     static readonly type = '[App] Map is fully loaded';
+
+    constructor(public mapIsLoaded: boolean) {
+    }
+}
+
+export class SetGestioneUtentiLoaded {
+    static readonly type = '[App] Gestione Utenti is fully loaded';
+
+    constructor(public gestioneUtentiIsLoaded: boolean) {
+    }
 }
 

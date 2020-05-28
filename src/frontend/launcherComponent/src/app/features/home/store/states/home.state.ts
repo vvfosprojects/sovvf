@@ -21,6 +21,7 @@ import { SetContatoriSchedeContatto } from '../actions/schede-contatto/schede-co
 import { Tipologia } from '../../../../shared/model/tipologia.model';
 import { GetFiltriRichieste } from '../actions/filterbar/filtri-richieste.actions';
 import { PatchPagination } from '../../../../shared/store/actions/pagination/pagination.actions';
+import { SetMapLoaded } from '../../../../shared/store/actions/app/app.actions';
 
 export interface HomeStateModel {
     markerLoading: boolean;
@@ -62,7 +63,8 @@ export class HomeState {
             new ClearBoxRichieste(),
             new ClearBoxMezzi(),
             new ClearBoxPersonale(),
-            new ClearRichieste()
+            new ClearRichieste(),
+            new SetMapLoaded(false)
         ]);
         patchState(HomeStateDefaults);
     }
