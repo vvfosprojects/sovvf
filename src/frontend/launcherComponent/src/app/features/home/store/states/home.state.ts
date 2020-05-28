@@ -1,5 +1,5 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
-import { ClearDataHome, GetDataHome, SetDataTipologie, SetMapLoaded, SetMarkerLoading } from '../actions/home.actions';
+import { ClearDataHome, GetDataHome, SetDataTipologie, SetMarkerLoading } from '../actions/home.actions';
 import { ClearRichieste, AddRichieste } from '../actions/richieste/richieste.actions';
 import { ClearSediMarkers } from '../actions/maps/sedi-markers.actions';
 import {
@@ -21,17 +21,14 @@ import { SetContatoriSchedeContatto } from '../actions/schede-contatto/schede-co
 import { Tipologia } from '../../../../shared/model/tipologia.model';
 import { GetFiltriRichieste } from '../actions/filterbar/filtri-richieste.actions';
 import { PatchPagination } from '../../../../shared/store/actions/pagination/pagination.actions';
+import { SetMapLoaded } from '../../../../shared/store/actions/app/app.actions';
 
 export interface HomeStateModel {
-    loaded: boolean;
-    mapIsLoaded: boolean;
     markerLoading: boolean;
     tipologie: Tipologia[];
 }
 
 export const HomeStateDefaults: HomeStateModel = {
-    loaded: false,
-    mapIsLoaded: false,
     markerLoading: false,
     tipologie: null
 };
@@ -41,11 +38,6 @@ export const HomeStateDefaults: HomeStateModel = {
     defaults: HomeStateDefaults
 })
 export class HomeState {
-
-    @Selector()
-    static mapIsLoaded(state: HomeStateModel) {
-        return state.mapIsLoaded;
-    }
 
     @Selector()
     static markerOnLoading(state: HomeStateModel) {
@@ -71,13 +63,14 @@ export class HomeState {
             new ClearBoxRichieste(),
             new ClearBoxMezzi(),
             new ClearBoxPersonale(),
-            new ClearRichieste()
+            new ClearRichieste(),
+            new SetMapLoaded(false)
         ]);
         patchState(HomeStateDefaults);
     }
 
     @Action(GetDataHome)
-    getDataHome({ patchState, dispatch }: StateContext<HomeStateModel>) {
+    getDataHome({ dispatch }: StateContext<HomeStateModel>) {
         this.homeService.getHome().subscribe((data: Welcome) => {
             console.log('Welcome', data);
             dispatch([
@@ -93,17 +86,6 @@ export class HomeState {
                 new SetDataTipologie(data.tipologie)
             ]);
         }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5)));
-        patchState({
-            loaded: true
-        });
-
-    }
-
-    @Action(SetMapLoaded)
-    setMapLoaded({ patchState }: StateContext<HomeStateModel>) {
-        patchState({
-            mapIsLoaded: true
-        });
     }
 
     @Action(SetMarkerLoading)

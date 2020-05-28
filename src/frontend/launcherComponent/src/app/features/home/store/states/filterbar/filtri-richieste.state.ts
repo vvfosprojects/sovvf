@@ -16,14 +16,14 @@ export interface FiltriRichiesteStateModel {
 
 export const filtriRichiesteStateDefaults: FiltriRichiesteStateModel = {
     filtriStaticiRichieste: [
-        { codice: '1', categoria: 'Aperte', descrizione: 'Aperte', name: 'includiRichiesteAperte', star: true },
-        { codice: '2', categoria: 'Chiuse', descrizione: 'Chiuse', name: 'includiRichiesteChiuse', star: true }
+        { codice: '99999999', categoria: 'Aperte', descrizione: 'Aperte', name: 'includiRichiesteAperte', star: true },
+        { codice: '999999999', categoria: 'Chiuse', descrizione: 'Chiuse', name: 'includiRichiesteChiuse', star: true }
     ],
     filtriRichieste: [],
     categoriaFiltriRichieste: [],
     filtriRichiesteSelezionati: [
-        { codice: '1', categoria: 'Aperte', descrizione: 'Aperte', name: 'includiRichiesteAperte', star: true },
-        { codice: '2', categoria: 'Chiuse', descrizione: 'Chiuse', name: 'includiRichiesteChiuse', star: true }
+        { codice: '99999999', categoria: 'Aperte', descrizione: 'Aperte', name: 'includiRichiesteAperte', star: true },
+        { codice: '999999999', categoria: 'Chiuse', descrizione: 'Chiuse', name: 'includiRichiesteChiuse', star: true }
     ]
 };
 
@@ -61,7 +61,7 @@ export class FiltriRichiesteState {
 
         if (tipologie && tipologie.length > 0) {
             tipologie.forEach(tipologia => {
-                filtriRichieste.push(new VoceFiltro(tipologia.codice + filtriStatici.length, tipologia.categoria, tipologia.descrizione, tipologia.star));
+                filtriRichieste.push(new VoceFiltro(tipologia.codice, tipologia.categoria, tipologia.descrizione, tipologia.star));
             });
         }
 

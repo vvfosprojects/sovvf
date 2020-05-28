@@ -37,7 +37,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSchedeNue.SetSchedaGesti
         public void Handle(SetSchedaGestitaCommand command)
         {
             var codiceFiscaleOperatore = _getUtenteById.GetUtenteByCodice(command.IdUtente).CodiceFiscale;
-            _setGestita.Gestita(command.SchedaContatto.CodiceScheda, command.CodiceSede, codiceFiscaleOperatore, command.Gestita);
+            _setGestita.Gestita(command.Scheda.CodiceScheda, command.CodiceSede, codiceFiscaleOperatore, command.Gestita);
         }
     }
 }

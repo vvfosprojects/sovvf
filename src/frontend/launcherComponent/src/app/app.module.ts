@@ -65,11 +65,14 @@ import { NgxsResetPluginModule } from 'ngxs-reset-plugin';
 import { RuoliUtenteLoggatoState } from './shared/store/states/ruoli-utente-loggato/ruoli-utente-loggato.state';
 import { UserService } from './core/auth/_services/user.service';
 import { NewVersionState } from './shared/store/states/nuova-versione/nuova-versione.state';
+import { ViewportState } from './shared/store/states/viewport/viewport.state';
+import { SignalROfflineComponent } from './core/signalr/signal-r-offline/signal-r-offline.component';
 
 
 @NgModule({
     declarations: [
-        AppComponent
+        AppComponent,
+        SignalROfflineComponent
     ],
     imports: [
         BrowserModule,
@@ -95,7 +98,9 @@ import { NewVersionState } from './shared/store/states/nuova-versione/nuova-vers
             preventDuplicates: true,
         }),
         NgxsModule.forRoot(
-            [AppState, NewVersionState, UtenteState, SignalRState, RuoliUtenteLoggatoState, PermessiState, ToastrState, SediTreeviewState, PaginationState, LoadingState],
+            [ AppState, NewVersionState, UtenteState, SignalRState,
+                RuoliUtenteLoggatoState, PermessiState, ToastrState, SediTreeviewState,
+                PaginationState, LoadingState, ViewportState ],
             { developmentMode: !environment.production }
         ),
         NgxsRouterPluginModule.forRoot(),
@@ -117,7 +122,8 @@ import { NewVersionState } from './shared/store/states/nuova-versione/nuova-vers
         { provide: NavbarService, useClass: environment.fakeProvider ? NavbarServiceFake : NavbarService },
         { provide: UserService, useClass: UserServiceFake }
     ],
-    bootstrap: [AppComponent]
+    bootstrap: [ AppComponent ],
+    entryComponents: [SignalROfflineComponent]
 })
 
 export class AppModule {

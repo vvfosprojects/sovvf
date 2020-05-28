@@ -33,14 +33,38 @@ export class AddUtenteGestione {
     static readonly type = '[GestioneUtenti] Add Utente Gestione';
 }
 
+export class SuccessAddUtenteGestione {
+    static readonly type = '[GestioneUtenti] Success Add Utente Gestione';
+
+    constructor(public codSede: string) { }
+}
+
 export class AddRuoloUtenteGestione {
     static readonly type = '[GestioneUtenti] Add Ruolo Utente Gestione';
+}
+
+export class UpdateRuoliPersonali {
+    static readonly type = '[GestioneUtenti] Update Ruolo Utente Gestione';
+
+    constructor(public idUtente: string) { }
+}
+
+export class UpdateUtenteGestioneInLista {
+    static readonly type = '[GestioneUtenti] Update Utente Gestione';
+
+    constructor(public idUtente: string) { }
 }
 
 export class RemoveUtente {
     static readonly type = '[GestioneUtenti] Remove Utente';
 
     constructor(public id: string) { }
+}
+
+export class SuccessRemoveUtente {
+    static readonly type = '[GestioneUtenti] Success Remove Utente';
+
+    constructor(public idUtente: string) { }
 }
 
 export class RemoveRuoloUtente {

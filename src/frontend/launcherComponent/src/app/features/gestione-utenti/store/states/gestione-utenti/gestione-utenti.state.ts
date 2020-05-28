@@ -9,15 +9,17 @@ import {
     SetUtentiGestione,
     SetUtentiVVF,
     ClearDataModalAddUtenteModal,
-    AddUtenteGestione
+    AddUtenteGestione,
+    UpdateUtenteGestioneInLista,
+    UpdateRuoliPersonali, SuccessAddUtenteGestione, SuccessRemoveUtente
 } from '../../actions/gestione-utenti/gestione-utenti.actions';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { RicercaUtentiState } from '../ricerca-utenti/ricerca-utenti.state';
 import { PatchPagination } from '../../../../../shared/store/actions/pagination/pagination.actions';
 import { ResponseInterface } from '../../../../../shared/interface/response.interface';
 import { TreeviewSelezione } from '../../../../../shared/model/treeview-selezione.model';
-import { Utente } from '../../../../../shared/model/utente.model';
-import { insertItem, patch, removeItem } from '@ngxs/store/operators';
+import { Ruolo, Utente } from '../../../../../shared/model/utente.model';
+import { insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from '../../../../../shared/enum/toastr';
 import { GestioneUtentiService } from '../../../../../core/service/gestione-utenti-service/gestione-utenti.service';
@@ -30,6 +32,9 @@ import { Navigate } from '@ngxs/router-plugin';
 import { ActivatedRoute } from '@angular/router';
 import { _isAdministrator } from '../../../../../shared/helper/function';
 import { UtenteState } from '../../../../navbar/store/states/operatore/utente.state';
+import { UpdateUtente } from '../../../../navbar/store/actions/operatore/utente.actions';
+import { UpdateRuoliUtenteLoggato } from '../../../../../shared/store/actions/ruoli/ruoli.actions';
+import { SetGestioneUtentiLoaded } from '../../../../../shared/store/actions/app/app.actions';
 
 export interface GestioneUtentiStateModel {
     listaUtentiVVF: UtenteVvfInterface[];
@@ -124,8 +129,11 @@ export class GestioneUtentiState {
         const route = this.router.children[0].snapshot.url[0].path;
         if (route === 'gestione-utenti') {
             dispatch(new StartLoading());
+            const ricerca = this.store.selectSnapshot(RicercaUtentiState.ricerca);
+            const codiciSede = this.store.selectSnapshot(RicercaUtentiState.sediFiltroSelezionate);
             const filters = {
-                search: this.store.selectSnapshot(RicercaUtentiState.ricerca),
+                search: ricerca,
+                codiciSede: codiciSede && codiciSede.length > 0 ? codiciSede : this.store.selectSnapshot(RicercaUtentiState.sediFiltro).map(s => s.codSede)
             };
             const pagination = {
                 page: action.page ? action.page : 1,
@@ -134,6 +142,7 @@ export class GestioneUtentiState {
             this._gestioneUtenti.getListaUtentiGestione(filters, pagination).subscribe((response: ResponseInterface) => {
                     dispatch(new SetUtentiGestione(response.dataArray));
                     dispatch(new PatchPagination(response.pagination));
+                    dispatch(new SetGestioneUtentiLoaded(true));
                     dispatch(new StopLoading());
                 },
                 error => {
@@ -182,6 +191,18 @@ export class GestioneUtentiState {
         dispatch(new ClearDataModalAddUtenteModal());
     }
 
+    @Action(SuccessAddUtenteGestione)
+    successAddUtenteGestione({ getState, dispatch }: StateContext<GestioneUtentiStateModel>, action: SuccessAddUtenteGestione) {
+        const sediFiltro = this.store.selectSnapshot(RicercaUtentiState.sediFiltro);
+        const sedePresente = sediFiltro.filter((s: Ruolo) => s.codSede === action.codSede).length > 0;
+        if (sedePresente) {
+            const pagina = this.store.selectSnapshot(PaginationState.page);
+            if (pagina === 1) {
+                dispatch(new GetUtentiGestione());
+            }
+        }
+    }
+
     @Action(AddRuoloUtenteGestione)
     addRuoloUtenteGestione({ getState, dispatch }: StateContext<GestioneUtentiStateModel>) {
         const form = getState().addUtenteRuoloForm.model;
@@ -205,16 +226,49 @@ export class GestioneUtentiState {
         dispatch(new ClearDataModalAddUtenteModal());
     }
 
+    @Action(UpdateRuoliPersonali)
+    updateRuoloUtenteGestione({ getState, dispatch }: StateContext<GestioneUtentiStateModel>, action: UpdateRuoliPersonali) {
+        this._gestioneUtenti.getUtente(action.idUtente).subscribe(objUtente => {
+                const utente = objUtente.detUtente ? objUtente.detUtente : null;
+                if (utente && utente.ruoli) {
+                    this.store.dispatch(new UpdateUtente(utente, { localStorage: true }));
+                    this.store.dispatch(new UpdateRuoliUtenteLoggato(utente.ruoli));
+                    if (!_isAdministrator(utente)) {
+                        this.store.dispatch(new Navigate(['/home']));
+                    }
+                }
+            }
+        );
+    }
+
+    @Action(UpdateUtenteGestioneInLista)
+    updateUtenteGestione({ getState, setState, dispatch }: StateContext<GestioneUtentiStateModel>, action: UpdateUtenteGestioneInLista) {
+        const listaUtentiGestione = getState().listaUtenti;
+        const utentePresente = listaUtentiGestione.filter((u: Utente) => u.id === action.idUtente).length > 0;
+        if (utentePresente) {
+            this._gestioneUtenti.getUtente(action.idUtente).subscribe((utenteObj: { detUtente: Utente }) => {
+                setState(
+                    patch({
+                        listaUtenti: updateItem<Utente>(u => u.id === action.idUtente, utenteObj.detUtente)
+                    })
+                );
+            });
+        }
+    }
+
     @Action(RemoveUtente)
     removeUtente({ setState, dispatch }: StateContext<GestioneUtentiStateModel>, action: RemoveUtente) {
-        this._gestioneUtenti.removeUtente(action.id).subscribe(() => {
-            setState(
-                patch({
-                    listaUtenti: removeItem<Utente>(u => u.id === action.id)
-                })
-            );
-            dispatch(new ShowToastr(ToastrType.Info, 'Utente Rimosso', 'Utente rimosso con successo.', 3));
-        });
+        this._gestioneUtenti.removeUtente(action.id).subscribe();
+    }
+
+    @Action(SuccessRemoveUtente)
+    successRemoveUtente({ setState, dispatch }: StateContext<GestioneUtentiStateModel>, action: SuccessRemoveUtente) {
+        setState(
+            patch({
+                listaUtenti: removeItem<Utente>(u => u.id === action.idUtente)
+            })
+        );
+        dispatch(new ShowToastr(ToastrType.Info, 'Utente Rimosso', 'Utente rimosso con successo.', 3));
     }
 
     @Action(RemoveRuoloUtente)

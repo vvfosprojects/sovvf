@@ -55,8 +55,8 @@ namespace SO115App.SignalR.Sender.GestioneSchedeContatto
             }
             command.SchedaNue.Collegate = null;
 
-            await _notificationHubContext.Clients.Groups(command.CodiceSede).SendAsync("NotifyInsertSchedeContatto", listaSchedeNueNonMergiate);
-            await _notificationHubContext.Clients.Groups(command.CodiceSede).SendAsync("NotifyUpdateSchedaContatto", command.SchedaNue);
+            await _notificationHubContext.Clients.All.SendAsync("NotifyInsertSchedeContatto", listaSchedeNueNonMergiate);
+            await _notificationHubContext.Clients.All.SendAsync("NotifyUpdateSchedaContatto", command.SchedaNue);
         }
     }
 }

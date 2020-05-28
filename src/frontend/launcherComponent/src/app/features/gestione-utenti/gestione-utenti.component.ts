@@ -1,11 +1,18 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Ruolo, Utente } from 'src/app/shared/model/utente.model';
 import { Observable, Subscription } from 'rxjs';
 import { Select, Store } from '@ngxs/store';
-import { ClearRicercaUtenti, SetRicercaUtenti } from './store/actions/ricerca-utenti/ricerca-utenti.actons';
+import { ClearRicercaUtenti, ReducerSelezioneFiltroSede, SetRicercaUtenti, SetSediFiltro } from './store/actions/ricerca-utenti/ricerca-utenti.actons';
 import { UtenteState } from '../navbar/store/states/operatore/utente.state';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { GetUtentiGestione, AddRuoloUtenteGestione, ClearDataModalAddUtenteModal, RemoveRuoloUtente, AddUtenteGestione, RemoveUtente } from './store/actions/gestione-utenti/gestione-utenti.actions';
+import {
+    GetUtentiGestione,
+    AddRuoloUtenteGestione,
+    ClearDataModalAddUtenteModal,
+    RemoveRuoloUtente,
+    AddUtenteGestione,
+    RemoveUtente
+} from './store/actions/gestione-utenti/gestione-utenti.actions';
 import { GestioneUtentiState } from './store/states/gestione-utenti/gestione-utenti.state';
 import { RicercaUtentiState } from './store/states/ricerca-utenti/ricerca-utenti.state';
 import { PaginationState } from '../../shared/store/states/pagination/pagination.state';
@@ -14,13 +21,15 @@ import { GestioneUtenteModalComponent } from './gestione-utente-modal/gestione-u
 import { ConfirmModalComponent } from 'src/app/shared';
 import { SetPageSize } from '../../shared/store/actions/pagination/pagination.actions';
 import { wipeStringUppercase } from '../../shared/helper/function';
+import { SetSediNavbarVisible } from '../../shared/store/actions/sedi-treeview/sedi-treeview.actions';
+import { RuoliUtenteLoggatoState } from '../../shared/store/states/ruoli-utente-loggato/ruoli-utente-loggato.state';
 
 @Component({
     selector: 'app-gestione-utenti',
     templateUrl: './gestione-utenti.component.html',
     styleUrls: ['./gestione-utenti.component.css']
 })
-export class GestioneUtentiComponent implements OnDestroy {
+export class GestioneUtentiComponent implements OnInit, OnDestroy {
 
     @Select(UtenteState.utente) utente$: Observable<Utente>;
     utente: Utente;
@@ -34,19 +43,27 @@ export class GestioneUtentiComponent implements OnDestroy {
     @Select(PaginationState.totalItems) totalItems$: Observable<number>;
     @Select(PaginationState.page) page$: Observable<number>;
     @Select(LoadingState.loading) loading$: Observable<boolean>;
+    @Select(RuoliUtenteLoggatoState.ruoliPrincipali) ruoliUtenteLoggato$: Observable<Ruolo[]>;
+    @Select(RicercaUtentiState.sediFiltro) sediFiltro$: Observable<Ruolo[]>;
+    @Select(RicercaUtentiState.sediFiltroSelezionate) sediFiltroSelezionate$: Observable<string[]>;
 
     subscriptions: Subscription = new Subscription();
 
     constructor(public modalService: NgbModal,
                 private store: Store) {
         this.getUtente();
-        this.getUtentiGestione();
         this.getRicerca();
         this.getPageSize();
+        this.getPageSize();
+        this.getSediFiltro();
+    }
+
+    ngOnInit() {
+        this.store.dispatch(new SetSediNavbarVisible(false));
     }
 
     ngOnDestroy(): void {
-        this.store.dispatch(new ClearRicercaUtenti());
+        this.store.dispatch([new ClearRicercaUtenti(), new SetSediNavbarVisible()]);
         this.subscriptions.unsubscribe();
     }
 
@@ -54,8 +71,16 @@ export class GestioneUtentiComponent implements OnDestroy {
         this.store.dispatch(new SetRicercaUtenti(ricerca));
     }
 
+    onFiltroSediChange(filtroSede: string) {
+        this.store.dispatch(new ReducerSelezioneFiltroSede(filtroSede));
+    }
+
     onAddUtente() {
-        const aggiungiUtenteModal = this.modalService.open(GestioneUtenteModalComponent, { backdropClass: 'light-blue-backdrop', centered: true, size: 'lg' });
+        const aggiungiUtenteModal = this.modalService.open(GestioneUtenteModalComponent, {
+            backdropClass: 'light-blue-backdrop',
+            centered: true,
+            size: 'lg'
+        });
         aggiungiUtenteModal.result.then(
             (result: { success: boolean }) => {
                 if (result.success) {
@@ -73,7 +98,11 @@ export class GestioneUtentiComponent implements OnDestroy {
     }
 
     onAddRuoloUtente(event: { codFiscale: string, fullName: string, ruoliAttuali: Ruolo[] }) {
-        const aggiungiRuoloUtenteModal = this.modalService.open(GestioneUtenteModalComponent, { backdropClass: 'light-blue-backdrop', centered: true, size: 'lg' });
+        const aggiungiRuoloUtenteModal = this.modalService.open(GestioneUtenteModalComponent, {
+            backdropClass: 'light-blue-backdrop',
+            centered: true,
+            size: 'lg'
+        });
         const codFiscaleUtenteVVF = event.codFiscale;
         const nominativoUtenteVVF = event.fullName;
         const ruoliAttuali = event.ruoliAttuali;
@@ -97,7 +126,10 @@ export class GestioneUtentiComponent implements OnDestroy {
     }
 
     onRemoveRuoloUtente(payload: { codFiscale: string, ruolo: Ruolo, nominativoUtente: string }) {
-        const modalConfermaAnnulla = this.modalService.open(ConfirmModalComponent, { backdropClass: 'light-blue-backdrop', centered: true });
+        const modalConfermaAnnulla = this.modalService.open(ConfirmModalComponent, {
+            backdropClass: 'light-blue-backdrop',
+            centered: true
+        });
         modalConfermaAnnulla.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
         modalConfermaAnnulla.componentInstance.titolo = 'Elimina ruolo a ' + payload.nominativoUtente;
         modalConfermaAnnulla.componentInstance.messaggioAttenzione = 'Sei sicuro di voler rimuovere il ruolo "' + wipeStringUppercase(payload.ruolo.descrizione) + '" su "' + payload.ruolo.descSede + '"?';
@@ -122,7 +154,10 @@ export class GestioneUtentiComponent implements OnDestroy {
     }
 
     onRemoveUtente(payload: { codFiscale: string, nominativoUtente: string }) {
-        const modalConfermaAnnulla = this.modalService.open(ConfirmModalComponent, { backdropClass: 'light-blue-backdrop', centered: true });
+        const modalConfermaAnnulla = this.modalService.open(ConfirmModalComponent, {
+            backdropClass: 'light-blue-backdrop',
+            centered: true
+        });
         modalConfermaAnnulla.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
         modalConfermaAnnulla.componentInstance.titolo = 'Elimina ' + payload.nominativoUtente;
         modalConfermaAnnulla.componentInstance.messaggioAttenzione = 'Sei sicuro di voler rimuovere l\'utente?';
@@ -185,6 +220,19 @@ export class GestioneUtentiComponent implements OnDestroy {
                         this.store.dispatch(new GetUtentiGestione());
                     }
                     this.pageSize = pageSize;
+                }
+            })
+        );
+    }
+
+    getSediFiltro() {
+        this.subscriptions.add(
+            this.ruoliUtenteLoggato$.subscribe((ruoli: Ruolo[]) => {
+                if (ruoli && ruoli.length > 0) {
+                    const ruoliUtente = ruoli;
+                    const sediFiltro = ruoliUtente.filter((r: Ruolo) => r.descrizione === 'Amministratore');
+                    this.store.dispatch(new SetSediFiltro(sediFiltro));
+                    this.getUtentiGestione();
                 }
             })
         );

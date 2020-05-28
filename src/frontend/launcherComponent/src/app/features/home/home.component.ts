@@ -4,16 +4,16 @@ import { Grids, ViewInterfaceButton, ViewInterfaceMaps, ViewLayouts } from '../.
 import { Select, Store } from '@ngxs/store';
 import { ViewComponentState } from './store/states/view/view.state';
 import { Composizione } from '../../shared/enum/composizione.enum';
-import { ClearDataHome, GetDataHome, SetMapLoaded } from './store/actions/home.actions';
+import { ClearDataHome, GetDataHome } from './store/actions/home.actions';
 import { NavbarState } from '../navbar/store/states/navbar.state';
+import { SetMapLoaded } from '../../shared/store/actions/app/app.actions';
 
 @Component({ templateUrl: 'home.component.html' })
 export class HomeComponent implements OnInit, OnDestroy {
 
-    subscription = new Subscription();
+    private subscription = new Subscription();
     viewState: ViewLayouts;
     columnState: Grids;
-    loading = true;
 
     @Select(NavbarState.navbarIsLoaded) navbarLoaded: Observable<boolean>;
 
@@ -40,8 +40,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
 
     onMapFullLoaded() {
-        this.loading = false;
-        this.store.dispatch(new SetMapLoaded());
+        this.store.dispatch(new SetMapLoaded(true));
     }
 
 }
