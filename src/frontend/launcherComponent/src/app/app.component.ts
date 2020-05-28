@@ -120,8 +120,8 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
     }
 
     private _isReady(status: boolean) {
-        this.isReady = status;
         if (!status) {
+            // Todo verificare se necessario
             this.modals.dismissAll();
         }
     }

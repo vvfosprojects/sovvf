@@ -64,9 +64,7 @@
         <ng-container>
             <router-outlet></router-outlet>
         </ng-container>
-        <app-footer *ngIf="isReady" [version]="(version$ | async)!" [fixed]="(footerFixed$ | async)!"></app-footer>
+        <app-footer [version]="(version$ | async)!" [fixed]="(footerFixed$ | async)!"></app-footer>
     </div>
 </ng-sidebar-container>
-<ng-container *ngIf="!isReady">
-    <app-loader></app-loader>
-</ng-container>
+<app-loader></app-loader>
