@@ -4,17 +4,17 @@ import { FiltriRichiesteState } from '../../features/home/store/states/filterbar
 import { VoceFiltro } from '../../features/home/filterbar/filtri-richieste/voce-filtro.model';
 
 @Pipe({
-    name: 'selectedFilterRichieste',
+    name: 'selectedFilterTipologiaRichieste',
     pure: false
 })
-export class SelectedFilterRichiestePipe implements PipeTransform {
+export class SelectedFilterTipologiaRichiestePipe implements PipeTransform {
 
     constructor(private store: Store) {
     }
 
     transform(filtro: VoceFiltro, args?: any): any {
-        const filtriSelezionati = this.store.selectSnapshot(FiltriRichiesteState.filtriRichiesteSelezionati);
-        return filtriSelezionati && !!filtriSelezionati.filter(f => f.codice === filtro.codice)[0];
+        const filtriTipologiaSelezionati = this.store.selectSnapshot(FiltriRichiesteState.filtriTipologiaSelezionati);
+        return filtriTipologiaSelezionati && !!filtriTipologiaSelezionati.filter(f => f.codice === filtro.codice)[0];
     }
 
 }

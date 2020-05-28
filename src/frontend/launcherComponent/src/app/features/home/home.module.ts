@@ -8,7 +8,7 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FilterPipeModule } from 'ngx-filter-pipe';
 import { SharedModule } from '../../shared/shared.module';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { TimeagoCustomFormatter, TimeagoFormatter, TimeagoIntl, TimeagoModule } from 'ngx-timeago';
 import { NgxsModule } from '@ngxs/store';
 import { FiltriRichiesteState } from './store/states/filterbar/filtri-richieste.state';
@@ -80,8 +80,8 @@ import { MapsFiltroState } from './store/states/maps/maps-filtro.state';
     ],
     exports: [],
     providers: [
-        { provide: HomeService, useClass: environment.fakeProvider ? HomeServiceFake : HomeService }
-
+        { provide: HomeService, useClass: environment.fakeProvider ? HomeServiceFake : HomeService },
+        NgbActiveModal
     ]
 })
 export class HomeModule {

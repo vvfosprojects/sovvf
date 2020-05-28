@@ -1,5 +1,5 @@
 import { SchedaContatto } from 'src/app/shared/interface/scheda-contatto.interface';
-import { VoceFiltro } from '../../../filterbar/ricerca-group/filtri-richieste/voce-filtro.model';
+import { VoceFiltro } from '../../../filterbar/filtri-richieste/voce-filtro.model';
 import { ContatoriSchedeContatto } from '../../../../../shared/interface/contatori-schede-contatto.interface';
 import { RangeSchedeContattoEnum } from '../../../../../shared/enum/range-schede-contatto';
 import { ClassificazioneSchedaContatto } from '../../../../../shared/enum/classificazione-scheda-contatto.enum';

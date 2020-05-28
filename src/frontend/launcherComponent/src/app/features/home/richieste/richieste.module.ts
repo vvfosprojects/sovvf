@@ -42,6 +42,7 @@ import { RichiesteEspanseState } from '../store/states/richieste/richieste-espan
 import { RichiestaGestioneState } from '../store/states/richieste/richiesta-gestione.state';
 import { RichiestaAttivitaUtenteState } from '../store/states/richieste/richiesta-attivita-utente.state';
 import { NgxsFormPluginModule } from '@ngxs/form-plugin';
+import { ModalFiltriTipologiaComponent } from '../filterbar/filtri-richieste/modal-filtri-tipologia/modal-filtri-tipologia.component';
 
 @NgModule({
     imports: [
@@ -86,7 +87,8 @@ import { NgxsFormPluginModule } from '@ngxs/form-plugin';
     entryComponents: [
         ListaEntiComponent,
         ListaSquadrePartenzaComponent,
-        ActionRichiestaModalComponent
+        ActionRichiestaModalComponent,
+        ModalFiltriTipologiaComponent
     ],
     providers: [
         { provide: SintesiRichiesteService, useClass: environment.fakeProvider ? SintesiRichiesteServiceFake : SintesiRichiesteService }

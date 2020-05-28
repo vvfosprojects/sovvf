@@ -25,7 +25,7 @@ import {
 import { ClassificazioneSchedaContatto } from '../../../../../shared/enum/classificazione-scheda-contatto.enum';
 import { SchedeContattoService } from '../../../../../core/service/schede-contatto/schede-contatto.service';
 import { FiltriSchedeContatto } from '../../../../../shared/interface/filtri-schede-contatto.interface';
-import { VoceFiltro } from '../../../filterbar/ricerca-group/filtri-richieste/voce-filtro.model';
+import { VoceFiltro } from '../../../filterbar/filtri-richieste/voce-filtro.model';
 import { makeCopy } from '../../../../../shared/helper/function';
 import {
     resetFiltriSelezionati as _resetFiltriSelezionati,

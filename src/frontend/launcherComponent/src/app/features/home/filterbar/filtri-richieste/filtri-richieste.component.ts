@@ -1,47 +1,45 @@
-import { Component, Input, Output, EventEmitter, HostBinding, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, Output, EventEmitter, HostBinding } from '@angular/core';
 import { VoceFiltro } from './voce-filtro.model';
-import { NgbDropdownConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbDropdownConfig, NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
+import { ModalFiltriTipologiaComponent } from './modal-filtri-tipologia/modal-filtri-tipologia.component';
 
 @Component({
     selector: 'app-filtri-richieste',
     templateUrl: './filtri-richieste.component.html',
     styleUrls: ['./filtri-richieste.component.css']
 })
-export class FiltriRichiesteComponent implements OnChanges {
+export class FiltriRichiesteComponent {
 
     @HostBinding('class') classes = 'input-group-append';
 
     @Input() filtri: VoceFiltro[];
     @Input() filtriSelezionati: VoceFiltro[];
-    @Input() categorie: string[];
     @Input() disableFilters: boolean;
 
     @Output() filtroSelezionato: EventEmitter<VoceFiltro> = new EventEmitter();
     @Output() filtroDeselezionato: EventEmitter<VoceFiltro> = new EventEmitter();
     @Output() filtriReset: EventEmitter<any> = new EventEmitter();
 
-    categoriaSelezionata: string;
-    filtersSearch = { descrizione: '' };
-    p: number;
-
     constructor(private modalService: NgbModal,
+                private modal: NgbActiveModal,
                 dropdownOpts: NgbDropdownConfig) {
         dropdownOpts.placement = 'bottom-left';
     }
 
-    ngOnChanges(changes: SimpleChanges): void {
-        if (changes && changes.categorie && changes.categorie.currentValue) {
-            this.categoriaSelezionata = changes.categorie.currentValue[0];
-        }
-    }
-
-    onSelezioneCategoria(categoria: any) {
-        this.categoriaSelezionata = categoria;
-    }
-
-    openFiltersModal(content: any) {
-        this.filtersSearch = { descrizione: '' };
-        this.modalService.open(content, { windowClass: 'xlModal', backdropClass: 'light-blue-backdrop', centered: true });
+    openFiltersModal() {
+        const modalOptions = { windowClass: 'xlModal', backdrop: 'static', backdropClass: 'light-blue-backdrop', centered: true, keyboard: false } as NgbModalOptions;
+        const modal = this.modalService.open(ModalFiltriTipologiaComponent, modalOptions);
+        modal.result.then((res: string) => {
+            console.log('res modal', res);
+            switch (res) {
+                case 'ok':
+                    console.log('Filtri Applicati');
+                    break;
+                case 'ko':
+                    console.log('Filtri Non Applicati');
+                    break;
+            }
+        });
     }
 
     onSelezioneFiltro(filtro: VoceFiltro) {

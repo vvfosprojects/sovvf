@@ -1,6 +1,6 @@
 import { Component, EventEmitter, HostBinding, Input, Output } from '@angular/core';
 import { VoceFiltro } from '../filtri-richieste/voce-filtro.model';
-import { StatoMezzo } from '../../../../../shared/enum/stato-mezzo.enum';
+import { StatoMezzo } from '../../../../shared/enum/stato-mezzo.enum';
 
 @Component({
   selector: 'app-filtri-mezzi-servizio',

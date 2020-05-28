@@ -2,9 +2,15 @@ import { Component, Input } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { ViewInterfaceButton, ViewLayouts } from '../../../shared/interface/view.interface';
-import { ClearFiltroSelezionatoRichieste, ResetFiltriSelezionatiRichieste, SetFiltroSelezionatoRichieste } from '../store/actions/filterbar/filtri-richieste.actions';
+import {
+    ClearFiltroSelezionatoRichieste,
+    ClearFiltroTipologiaSelezionatoRichieste,
+    ResetFiltriSelezionatiRichieste,
+    SetFiltroSelezionatoRichieste,
+    SetFiltroTipologiaSelezionatoRichieste
+} from '../store/actions/filterbar/filtri-richieste.actions';
 import { FiltriRichiesteState } from '../store/states/filterbar/filtri-richieste.state';
-import { VoceFiltro } from './ricerca-group/filtri-richieste/voce-filtro.model';
+import { VoceFiltro } from './filtri-richieste/voce-filtro.model';
 import { RicercaRichiesteState } from '../store/states/filterbar/ricerca-richieste.state';
 import { MarkerMeteoState } from '../store/states/filterbar/marker-meteo-switch.state';
 import { SetMarkerMeteoSwitch } from '../store/actions/filterbar/marker-meteo-switch.actions';
@@ -39,7 +45,6 @@ export class FilterbarComponent {
     // Filtri Richieste
     @Select(FiltriRichiesteState.filtriTipologie) filtriRichieste$: Observable<VoceFiltro[]>;
     @Select(FiltriRichiesteState.filtriRichiesteSelezionati) filtriRichiesteSelezionati$: Observable<VoceFiltro[]>;
-    @Select(FiltriRichiesteState.categoriaFiltriTipologie) categoriaFiltriRichieste$: Observable<string[]>;
 
     // Ricerca Richieste
     @Select(RicercaRichiesteState.ricerca) ricercaRichieste$: Observable<string>;

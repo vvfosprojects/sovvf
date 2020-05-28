@@ -13,11 +13,12 @@ import { LoaderMarkerComponent } from './loader-marker/loader-marker.component';
 import { TastiTelefonataGroupComponent } from './tasti-telefonata-group/tasti-telefonata-group.component';
 import { TastoChiamataComponent } from './tasti-telefonata-group/tasto-chiamata/tasto-chiamata.component';
 import { TastoSchedeContattoComponent } from './tasti-telefonata-group/tasto-schede-contatto/tasto-schede-contatto.component';
-import { RicercaComponent } from './ricerca-group/ricerca/ricerca.component';
-import { FiltriRichiesteComponent } from './ricerca-group/filtri-richieste/filtri-richieste.component';
+import { RicercaComponent } from './ricerca/ricerca.component';
+import { FiltriRichiesteComponent } from './filtri-richieste/filtri-richieste.component';
 import { FiltroComponent } from '../../../shared/components/filtro/filtro.component';
-import { FiltriSchedeContattoComponent } from './ricerca-group/filtri-schede-contatto/filtri-schede-contatto.component';
-import { FiltriMezziServizioComponent } from './ricerca-group/filtri-mezzi-servizio/filtri-mezzi-servizio.component';
+import { FiltriSchedeContattoComponent } from './filtri-schede-contatto/filtri-schede-contatto.component';
+import { FiltriMezziServizioComponent } from './filtri-mezzi-servizio/filtri-mezzi-servizio.component';
+import { ModalFiltriTipologiaComponent } from './filtri-richieste/modal-filtri-tipologia/modal-filtri-tipologia.component';
 
 @NgModule({
     imports: [
@@ -41,7 +42,8 @@ import { FiltriMezziServizioComponent } from './ricerca-group/filtri-mezzi-servi
         TastoSchedeContattoComponent,
         TastiTelefonataGroupComponent,
         FiltriSchedeContattoComponent,
-        FiltriMezziServizioComponent
+        FiltriMezziServizioComponent,
+        ModalFiltriTipologiaComponent
     ],
     exports: [
         FilterbarComponent
