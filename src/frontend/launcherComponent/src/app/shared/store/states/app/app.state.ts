@@ -43,7 +43,11 @@ export class AppState {
         } else if (currentUrl === '/gestione-utenti') {
             currentPage = state.gestioneUtentiIsLoaded;
         }
-        return state.appIsLoaded && signalRState.connected && !!signalRState.connectionId && !signalRState.disconnected && currentPage;
+        let signalR = true;
+        if (signalRState.reconnected === null) {
+            signalR = signalRState.connected && !!signalRState.connectionId && !signalRState.disconnected;
+        }
+        return state.appIsLoaded && signalR && currentPage;
     }
 
     @Selector()

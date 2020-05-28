@@ -66,11 +66,13 @@ import { RuoliUtenteLoggatoState } from './shared/store/states/ruoli-utente-logg
 import { UserService } from './core/auth/_services/user.service';
 import { NewVersionState } from './shared/store/states/nuova-versione/nuova-versione.state';
 import { ViewportState } from './shared/store/states/viewport/viewport.state';
+import { SignalROfflineComponent } from './core/signalr/signal-r-offline/signal-r-offline.component';
 
 
 @NgModule({
     declarations: [
-        AppComponent
+        AppComponent,
+        SignalROfflineComponent
     ],
     imports: [
         BrowserModule,
@@ -120,7 +122,8 @@ import { ViewportState } from './shared/store/states/viewport/viewport.state';
         { provide: NavbarService, useClass: environment.fakeProvider ? NavbarServiceFake : NavbarService },
         { provide: UserService, useClass: UserServiceFake }
     ],
-    bootstrap: [ AppComponent ]
+    bootstrap: [ AppComponent ],
+    entryComponents: [SignalROfflineComponent]
 })
 
 export class AppModule {
