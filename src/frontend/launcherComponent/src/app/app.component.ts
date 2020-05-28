@@ -28,6 +28,7 @@ import { NewVersionState } from './shared/store/states/nuova-versione/nuova-vers
 import { VersionInterface } from './shared/interface/version.interface';
 import { SetAvailHeight, SetContentHeight } from './shared/store/actions/viewport/viewport.actions';
 import { ViewportState } from './shared/store/states/viewport/viewport.state';
+import { Images } from './shared/enum/images.enum';
 
 @Component({
     selector: 'app-root',
@@ -37,6 +38,7 @@ import { ViewportState } from './shared/store/states/viewport/viewport.state';
 export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
 
     private subscription = new Subscription();
+    private imgs = [];
 
     @Select(AppState.appIsLoaded) isLoaded$: Observable<boolean>;
 
@@ -103,8 +105,10 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
         this.subscription.add(this.vistaSedi$.subscribe(r => r && this.store.dispatch(new PatchListaSediNavbar([ ...r ]))));
     }
 
+
     ngOnInit() {
         !isDevMode() && this.versionCheckService.initVersionCheck(3);
+        this.preloadImage(Images.Disconnected);
     }
 
     ngAfterViewChecked() {
@@ -115,7 +119,7 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
         this.subscription.unsubscribe();
     }
 
-    _isReady(status: boolean) {
+    private _isReady(status: boolean) {
         this.isReady = status;
         if (!status) {
             this.modals.dismissAll();
@@ -126,7 +130,7 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
         this._opened = !this._opened;
     }
 
-    getHeight(): void {
+    private getHeight(): void {
         const availHeight = window.innerHeight;
         const height = this.contentElement.nativeElement.offsetHeight;
         if (height) {
@@ -140,6 +144,13 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
                 this.availHeight = availHeight;
                 this.store.dispatch(new SetAvailHeight(availHeight));
             }
+        }
+    }
+
+    private preloadImage(...args: string[]): void {
+        for (let i = 0; i < args.length; i++) {
+            this.imgs[i] = new Image();
+            this.imgs[i].src = args[i];
         }
     }
 
