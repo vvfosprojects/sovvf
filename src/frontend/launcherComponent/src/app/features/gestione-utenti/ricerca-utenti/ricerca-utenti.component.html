@@ -4,7 +4,7 @@
         <div *ngIf="sediFiltro && sediFiltro.length > 1" class="input-group-prepend">
             <div ngbDropdown class="d-inline-block">
                 <button class="btn btn-primary" id="filtroSediDropdown" ngbDropdownToggle>
-                    Sedi
+                    <span class="badge badge-success mr-2">{{sediFiltroSelezionate.length}}</span>Sedi
                 </button>
                 <div ngbDropdownMenu style="width:200px">
                     <div class="p-2">
@@ -12,7 +12,7 @@
                         <div class="mt-3 px-1">
                             <span *ngFor="let f of sediFiltro" id="{{f.codSede}}">
                                 <button class="btn btn-block mb-1"
-                                        [ngClass]="{'btn-primary': _isSelected(f.codSede), 'btn-outline-primary': !_isSelected(f.codSede)}"
+                                        [ngClass]="{'btn-primary': _isSelected(f.codSede), 'btn-outline-secondary': !_isSelected(f.codSede)}"
                                         (click)="filtroChange.emit(f.codSede)">
                                     {{f.descSede}}
                                 </button>

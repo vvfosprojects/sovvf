@@ -34,6 +34,7 @@ import { _isAdministrator } from '../../../../../shared/helper/function';
 import { UtenteState } from '../../../../navbar/store/states/operatore/utente.state';
 import { UpdateUtente } from '../../../../navbar/store/actions/operatore/utente.actions';
 import { UpdateRuoliUtenteLoggato } from '../../../../../shared/store/actions/ruoli/ruoli.actions';
+import { SetGestioneUtentiLoaded } from '../../../../../shared/store/actions/app/app.actions';
 
 export interface GestioneUtentiStateModel {
     listaUtentiVVF: UtenteVvfInterface[];
@@ -141,6 +142,7 @@ export class GestioneUtentiState {
             this._gestioneUtenti.getListaUtentiGestione(filters, pagination).subscribe((response: ResponseInterface) => {
                     dispatch(new SetUtentiGestione(response.dataArray));
                     dispatch(new PatchPagination(response.pagination));
+                    dispatch(new SetGestioneUtentiLoaded(true));
                     dispatch(new StopLoading());
                 },
                 error => {
