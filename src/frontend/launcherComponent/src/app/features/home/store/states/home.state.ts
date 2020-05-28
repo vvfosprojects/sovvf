@@ -21,7 +21,8 @@ import { SetContatoriSchedeContatto } from '../actions/schede-contatto/schede-co
 import { Tipologia } from '../../../../shared/model/tipologia.model';
 import { GetFiltriRichieste } from '../actions/filterbar/filtri-richieste.actions';
 import { PatchPagination } from '../../../../shared/store/actions/pagination/pagination.actions';
-import { SetMapLoaded } from '../../../../shared/store/actions/app/app.actions';
+import { SetCurrentUrl, SetMapLoaded } from '../../../../shared/store/actions/app/app.actions';
+import { RoutesPath } from '../../../../shared/enum/routes-path.enum';
 
 export interface HomeStateModel {
     markerLoading: boolean;
@@ -74,6 +75,7 @@ export class HomeState {
         this.homeService.getHome().subscribe((data: Welcome) => {
             console.log('Welcome', data);
             dispatch([
+                new SetCurrentUrl(RoutesPath.Home),
                 new AddRichieste(data.listaSintesi.sintesiRichiesta),
                 new PatchPagination(data.listaSintesi.pagination),
                 new SetBoxRichieste(data.boxListaInterventi),
