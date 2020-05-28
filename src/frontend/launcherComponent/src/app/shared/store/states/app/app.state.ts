@@ -4,14 +4,17 @@ import {
     SetVistaSedi,
     SetTimeSync,
     ClearVistaSedi,
-    SetMapLoaded
+    SetMapLoaded, SetCurrentUrl
 } from '../../actions/app/app.actions';
 import { SetCodiceSede } from '../../../../core/signalr/store/signalR.actions';
 import { SignalRState, SignalRStateModel } from '../../../../core/signalr/store/signalR.state';
 import { RouterState } from '@ngxs/router-plugin';
 import { RouterStateModel } from '@ngxs/router-plugin/src/router.state';
+import { RoutesPath } from '../../../enum/routes-path.enum';
+import { UtenteState, UtenteStateModel } from '../../../../features/navbar/store/states/operatore/utente.state';
 
 export interface AppStateModel {
+    previusUrl: string;
     appIsLoaded: boolean;
     vistaSedi: string[];
     offsetTimeSync: number;
@@ -19,6 +22,7 @@ export interface AppStateModel {
 }
 
 export const appStateDefaults: AppStateModel = {
+    previusUrl: RoutesPath.Home,
     appIsLoaded: true,
     vistaSedi: null,
     offsetTimeSync: 0,
@@ -53,6 +57,12 @@ export class AppState {
     @Selector()
     static vistaSedi(state: AppStateModel) {
         return state.vistaSedi;
+    }
+
+    @Selector([UtenteState])
+    static previusUrl(state: AppStateModel, utenteState: UtenteStateModel) {
+        const userLogged = utenteState.utente;
+        return userLogged ? state.previusUrl : RoutesPath.Login;
     }
 
     @Action(ReloadApp)
@@ -93,6 +103,11 @@ export class AppState {
     @Action(SetMapLoaded)
     setMapLoaded({ patchState }: StateContext<AppStateModel>, { mapIsLoaded }: SetMapLoaded) {
         patchState({ mapIsLoaded });
+    }
+
+    @Action(SetCurrentUrl)
+    setCurrentUrl({ patchState }: StateContext<AppStateModel>, { previusUrl }: SetCurrentUrl) {
+        patchState({ previusUrl });
     }
 
 }

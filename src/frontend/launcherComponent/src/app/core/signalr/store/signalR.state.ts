@@ -13,6 +13,8 @@ import { difference } from 'lodash';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SignalROfflineComponent } from '../signal-r-offline/signal-r-offline.component';
 import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap/modal/modal-ref';
+import { Navigate } from '@ngxs/router-plugin';
+import { RoutesPath } from '../../../shared/enum/routes-path.enum';
 
 export interface SignalRStateModel {
     connected: boolean;
@@ -65,6 +67,7 @@ export class SignalRState implements NgxsOnChanges {
         const previousValue = change.previousValue;
         if (!currentValue.disconnected && currentValue.reconnected && previousValue.reconnected) {
             this.modalInstance.close();
+            this.store.dispatch(new Navigate([`/${RoutesPath.Logged}`]));
         } else if (currentValue.disconnected) {
             this.openModal();
         }
