@@ -26,8 +26,7 @@ const COMPONENTS = [
     Shared.ListaPartenzeComponent,
     Shared.CheckboxComponent,
     Shared.PartialLoaderComponent,
-    Shared.BottoneNuovaVersioneComponent,
-    Shared.FooterComponent
+    Shared.BottoneNuovaVersioneComponent
 ];
 
 @NgModule({

@@ -61,10 +61,8 @@
     <div ng-sidebar-content #contentElement>
         <app-navbar *ngIf="_toggle" (openedSidebar)="_toggleOpened()" [user]="user"
                     [ruoliUtenteLoggato]="ruoliUtenteLoggato$ | async"></app-navbar>
-        <ng-container>
-            <router-outlet></router-outlet>
-        </ng-container>
-        <app-footer [version]="(version$ | async)!" [fixed]="(footerFixed$ | async)!"></app-footer>
+        <router-outlet></router-outlet>
+        <app-footer></app-footer>
     </div>
 </ng-sidebar-container>
 <app-loader></app-loader>

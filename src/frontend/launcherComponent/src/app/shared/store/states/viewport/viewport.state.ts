@@ -21,7 +21,7 @@ export class ViewportState {
 
     @Selector()
     static footerFixed(state: ViewportStateModel) {
-        return (state.availHeight - state.contentHeight) > 30;
+        return state.availHeight > state.contentHeight;
     }
 
     @Action(SetAvailHeight)

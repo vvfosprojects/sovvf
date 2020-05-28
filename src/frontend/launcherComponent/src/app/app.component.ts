@@ -24,10 +24,7 @@ import { PermessiService } from './core/service/permessi-service/permessi.servic
 import { RuoliUtenteLoggatoState } from './shared/store/states/ruoli-utente-loggato/ruoli-utente-loggato.state';
 import { AuthenticationService } from './core/auth/_services/authentication.service';
 import { VersionCheckService } from './core/service/version-check/version-check.service';
-import { NewVersionState } from './shared/store/states/nuova-versione/nuova-versione.state';
-import { VersionInterface } from './shared/interface/version.interface';
 import { SetAvailHeight, SetContentHeight } from './shared/store/actions/viewport/viewport.actions';
-import { ViewportState } from './shared/store/states/viewport/viewport.state';
 import { Images } from './shared/enum/images.enum';
 
 @Component({
@@ -39,34 +36,26 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
 
     private subscription = new Subscription();
     private imgs = [];
-
-    @Select(AppState.appIsLoaded) isLoaded$: Observable<boolean>;
+    private deniedPath = [ RoutesPath.NotFound.toString(), RoutesPath.Login.toString() ];
+    private height;
+    private availHeight;
 
     @Select(SediTreeviewState.listeSediLoaded) listeSediLoaded$: Observable<boolean>;
     private listeSediLoaded: boolean;
 
     @Select(AppState.offsetTimeSync) offsetTime$: Observable<number>;
     @Select(AppState.vistaSedi) vistaSedi$: Observable<string[]>;
-
-    @Select(ViewportState.footerFixed) footerFixed$: Observable<boolean>;
-
-    @Select(NewVersionState.version) version$: Observable<VersionInterface>;
+    @Select(AppState.appIsLoaded) isLoaded$: Observable<boolean>;
 
     @Select(RuoliUtenteLoggatoState.ruoliFiltrati) ruoliUtenteLoggato$: Observable<Ruolo[]>;
     @Select(UtenteState.utente) user$: Observable<Utente>;
     user: Utente;
 
     permissionFeatures = PermissionFeatures;
-
-    isReady = false;
+    RoutesPath = RoutesPath;
 
     _opened = false;
     _toggle = false;
-    RoutesPath = RoutesPath;
-    private deniedPath = [ RoutesPath.NotFound.toString(), RoutesPath.Login.toString() ];
-
-    private height;
-    private availHeight;
 
     @ViewChild('contentElement', { read: ElementRef }) contentElement: ElementRef;
 

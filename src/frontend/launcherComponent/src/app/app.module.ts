@@ -68,13 +68,15 @@ import { NewVersionState } from './shared/store/states/nuova-versione/nuova-vers
 import { ViewportState } from './shared/store/states/viewport/viewport.state';
 import { SignalROfflineComponent } from './core/signalr/signal-r-offline/signal-r-offline.component';
 import { LoaderComponent } from './shared/components/loader/loader.component';
+import { FooterComponent } from './shared/components/footer/footer.component';
 
 
 @NgModule({
     declarations: [
         AppComponent,
         SignalROfflineComponent,
-        LoaderComponent
+        LoaderComponent,
+        FooterComponent
     ],
     imports: [
         BrowserModule,
