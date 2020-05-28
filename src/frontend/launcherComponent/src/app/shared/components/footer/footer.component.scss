@@ -5,3 +5,9 @@
 .footer-bg-test {
   background-color: rgba(199, 206, 3, 0.9);
 }
+
+.footer-fixed {
+  bottom:0;
+  left:0;
+  position: fixed !important;
+}

@@ -11,11 +11,11 @@
 
 @font-face {
   font-family: "icon-marker";
-  src: url("./assets/fonts/icon-marker.eot?lo2034");
-  src: url("./assets/fonts/icon-marker.eot?lo2034#iefix") format("embedded-opentype"),
-    url("./assets/fonts/icon-marker.ttf?lo2034") format("truetype"),
-    url("./assets/fonts/icon-marker.woff?lo2034") format("woff"),
-    url("./assets/fonts/icon-marker.svg?lo2034#icon-marker") format("svg");
+  src: url("./assets/fonts/icon-marker.eot?tiygmj");
+  src: url("./assets/fonts/icon-marker.eot?tiygmj#iefix") format("embedded-opentype"),
+    url("./assets/fonts/icon-marker.ttf?tiygmj") format("truetype"),
+    url("./assets/fonts/icon-marker.woff?tiygmj") format("woff"),
+    url("./assets/fonts/icon-marker.svg?tiygmj#icon-marker") format("svg");
   font-weight: normal;
   font-style: normal;
 }
@@ -389,20 +389,21 @@ a:hover {
 }
 
 .icon-truck-fire-q:before {
+  content: "\e901";
+}
+.icon-fa-sedi:before {
+  content: "\e902";
+}
+.icon-fa-richieste:before {
+  content: "\e903";
+}
+.icon-truck-fire:before {
+  content: "\e904";
+}
+.icon-humidity:before {
   content: "\e900";
 }
 
-.icon-fa-sedi:before {
-  content: "\e901";
-}
-
-.icon-fa-richieste:before {
-  content: "\e902";
-}
-
-.icon-truck-fire:before {
-  content: "\e903";
-}
 
 .loader-centrato {
   position: absolute;

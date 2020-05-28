@@ -1,4 +1,4 @@
-import { Action, Select, Selector, State, StateContext } from '@ngxs/store';
+import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { RichiesteMarkerService } from '../../../../../core/service/maps-service';
 import { RichiestaMarker } from '../../../maps/maps-model/richiesta-marker.model';
 import {
@@ -20,8 +20,6 @@ import {
 import { wipeStatoRichiesta } from '../../../../../shared/helper/function';
 import { ClearMarkerOpachiRichieste, SetMarkerOpachiRichieste } from '../../actions/maps/marker-opachi.actions';
 import { append, insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
-import { Observable } from 'rxjs';
-import { HomeState } from '../home.state';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
 import { RichiesteMarkerAdapterService } from '../../../../../core/service/maps-service/richieste-marker/adapters/richieste-marker-adapter.service';
 import { ToastrType } from '../../../../../shared/enum/toastr';
@@ -51,8 +49,6 @@ export const RichiesteMarkersStateDefaults: RichiesteMarkersStateModel = {
 })
 
 export class RichiesteMarkersState {
-
-    @Select(HomeState.mapIsLoaded) mapIsLoaded$: Observable<boolean>;
 
     @Selector()
     static richiesteMarkers(state: RichiesteMarkersStateModel) {

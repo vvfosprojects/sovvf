@@ -1,5 +1,5 @@
-export class SetAppLoaded {
-    static readonly type = '[App] Caricamento...';
+export class ReloadApp {
+    static readonly type = '[App] Reload';
 }
 
 export class SetVistaSedi {
@@ -19,3 +19,18 @@ export class SetTimeSync {
     constructor(public time: number) {
     }
 }
+
+export class SetMapLoaded {
+    static readonly type = '[App] Map is fully loaded';
+
+    constructor(public mapIsLoaded: boolean) {
+    }
+}
+
+export class SetGestioneUtentiLoaded {
+    static readonly type = '[App] Gestione Utenti is fully loaded';
+
+    constructor(public gestioneUtentiIsLoaded: boolean) {
+    }
+}
+

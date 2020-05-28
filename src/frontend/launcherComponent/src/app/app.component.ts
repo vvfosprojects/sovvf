@@ -1,9 +1,17 @@
-import { Component, isDevMode, OnDestroy, OnInit } from '@angular/core';
+import {
+    AfterViewChecked,
+    Component,
+    ElementRef,
+    HostListener,
+    isDevMode,
+    OnDestroy,
+    OnInit,
+    ViewChild
+} from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { RoutesPath } from './shared/enum/routes-path.enum';
 import { Select, Store } from '@ngxs/store';
 import { Observable, Subscription } from 'rxjs';
-import { SignalRState } from './core/signalr/store/signalR.state';
 import { AppState } from './shared/store/states/app/app.state';
 import { OFFSET_SYNC_TIME } from './core/settings/referral-time';
 import { Ruolo, Utente } from './shared/model/utente.model';
@@ -18,27 +26,29 @@ import { AuthenticationService } from './core/auth/_services/authentication.serv
 import { VersionCheckService } from './core/service/version-check/version-check.service';
 import { NewVersionState } from './shared/store/states/nuova-versione/nuova-versione.state';
 import { VersionInterface } from './shared/interface/version.interface';
+import { SetAvailHeight, SetContentHeight } from './shared/store/actions/viewport/viewport.actions';
+import { ViewportState } from './shared/store/states/viewport/viewport.state';
+import { Images } from './shared/enum/images.enum';
 
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
     styleUrls: [ './app.component.css' ]
 })
-export class AppComponent implements OnInit, OnDestroy {
+export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
 
-    subscription = new Subscription();
+    private subscription = new Subscription();
+    private imgs = [];
 
-    @Select(SignalRState.statusSignalR) _signalR$: Observable<boolean>;
-    _signalR = false;
-
-    @Select(AppState.appIsLoaded) _isLoaded$: Observable<boolean>;
-    _isLoaded: boolean;
+    @Select(AppState.appIsLoaded) isLoaded$: Observable<boolean>;
 
     @Select(SediTreeviewState.listeSediLoaded) listeSediLoaded$: Observable<boolean>;
-    listeSediLoaded: boolean;
+    private listeSediLoaded: boolean;
 
     @Select(AppState.offsetTimeSync) offsetTime$: Observable<number>;
     @Select(AppState.vistaSedi) vistaSedi$: Observable<string[]>;
+
+    @Select(ViewportState.footerFixed) footerFixed$: Observable<boolean>;
 
     @Select(NewVersionState.version) version$: Observable<VersionInterface>;
 
@@ -55,6 +65,16 @@ export class AppComponent implements OnInit, OnDestroy {
     RoutesPath = RoutesPath;
     private deniedPath = [ RoutesPath.NotFound.toString(), RoutesPath.Login.toString() ];
 
+    private height;
+    private availHeight;
+
+    @ViewChild('contentElement', { read: ElementRef }) contentElement: ElementRef;
+
+    @HostListener('window:resize')
+    onResize() {
+        this.getHeight();
+    }
+
     constructor(private router: Router,
                 private authService: AuthenticationService,
                 private store: Store,
@@ -66,18 +86,13 @@ export class AppComponent implements OnInit, OnDestroy {
                 !this.deniedPath.includes(val.urlAfterRedirects.slice(1)) && authService._isLogged() ? this._toggle = true : this._toggle = false;
             }
         });
-        this.subscription.add(this._signalR$.subscribe((r: boolean) => {
-            this._signalR = r;
-            this._isReady();
-        }));
-        this.subscription.add(this._isLoaded$.subscribe((r: boolean) => {
-            this._isLoaded = r;
-            this._isReady();
+        this.subscription.add(this.isLoaded$.subscribe((r: boolean) => {
+            this._isReady(r);
         }));
         this.subscription.add(this.offsetTime$.subscribe((serverTime: number) => OFFSET_SYNC_TIME.unshift(serverTime)));
         this.subscription.add(this.user$.subscribe((user: Utente) => {
             this.user = user;
-            if (user) {
+            if (user && user.sede) {
                 this.listeSediLoaded && this.store.dispatch(new PatchListaSediNavbar([ user.sede.codice ]));
             } else {
                 this.store.dispatch(new ClearListaSediNavbar());
@@ -90,23 +105,53 @@ export class AppComponent implements OnInit, OnDestroy {
         this.subscription.add(this.vistaSedi$.subscribe(r => r && this.store.dispatch(new PatchListaSediNavbar([ ...r ]))));
     }
 
+
     ngOnInit() {
         !isDevMode() && this.versionCheckService.initVersionCheck(3);
+        this.preloadImage(Images.Disconnected);
+    }
+
+    ngAfterViewChecked() {
+        this.getHeight();
     }
 
     ngOnDestroy(): void {
         this.subscription.unsubscribe();
     }
 
-    _isReady() {
-        this.isReady = !!this._signalR && !!this._isLoaded;
-        if (!this.isReady) {
+    private _isReady(status: boolean) {
+        this.isReady = status;
+        if (!status) {
             this.modals.dismissAll();
         }
     }
 
     _toggleOpened() {
         this._opened = !this._opened;
+    }
+
+    private getHeight(): void {
+        const availHeight = window.innerHeight;
+        const height = this.contentElement.nativeElement.offsetHeight;
+        if (height) {
+            if (this.height !== height) {
+                this.height = height;
+                this.store.dispatch(new SetContentHeight(height));
+            }
+        }
+        if (availHeight) {
+            if (this.availHeight !== availHeight) {
+                this.availHeight = availHeight;
+                this.store.dispatch(new SetAvailHeight(availHeight));
+            }
+        }
+    }
+
+    private preloadImage(...args: string[]): void {
+        for (let i = 0; i < args.length; i++) {
+            this.imgs[i] = new Image();
+            this.imgs[i].src = args[i];
+        }
     }
 
 }

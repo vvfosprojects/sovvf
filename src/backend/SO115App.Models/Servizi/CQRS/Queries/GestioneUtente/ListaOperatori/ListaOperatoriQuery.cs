@@ -31,7 +31,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneUtente.ListaOperatori
         /// <summary>
         ///   il codice sede nell'header
         /// </summary>
-        public string CodiceSede { get; set; }
+        public string CodiciSede { get; set; }
 
         /// <summary>
         ///   l'id utente che richiede la lista degli operatori di sala

@@ -10,6 +10,7 @@ import { VersionInterface } from '../../interface/version.interface';
 export class FooterComponent {
 
     @Input() version: VersionInterface;
+    @Input() fixed: boolean;
     isTest: string;
 
     constructor() {

@@ -1,15 +1,11 @@
 import { Component, Input } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
-// View
 import { ViewInterfaceButton, ViewLayouts } from '../../../shared/interface/view.interface';
-// Filtri Richieste
 import { ClearFiltroSelezionatoRichieste, ResetFiltriSelezionatiRichieste, SetFiltroSelezionatoRichieste } from '../store/actions/filterbar/filtri-richieste.actions';
 import { FiltriRichiesteState } from '../store/states/filterbar/filtri-richieste.state';
 import { VoceFiltro } from './ricerca-group/filtri-richieste/voce-filtro.model';
-// Ricerca Richieste
 import { RicercaRichiesteState } from '../store/states/filterbar/ricerca-richieste.state';
-// Marker Meteo Switch
 import { MarkerMeteoState } from '../store/states/filterbar/marker-meteo-switch.state';
 import { SetMarkerMeteoSwitch } from '../store/actions/filterbar/marker-meteo-switch.actions';
 import { SetRicercaRichieste } from '../store/actions/filterbar/ricerca-richieste.actions';
@@ -79,14 +75,9 @@ export class FilterbarComponent {
      */
     @Select(ViewComponentState.mapsIsActive) mapsStatus$: Observable<boolean>;
     @Select(ViewComponentState.richiesteIsActive) richiesteStatus$: Observable<boolean>;
-
     @Select(HomeState.markerOnLoading) markerOnLoading$: Observable<boolean>;
-    markerOnLoading: boolean;
 
     constructor(private store: Store) {
-        this.markerOnLoading$.subscribe((loading: boolean) => {
-            this.markerOnLoading = loading;
-        });
     }
 
     /**

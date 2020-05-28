@@ -26,10 +26,16 @@ import {
     UpdateMezzoComposizioneScadenzaByCodiceMezzo
 } from '../../features/home/store/actions/composizione-partenza/mezzi-composizione.actions';
 import { RemoveBoxPartenzaByMezzoId } from '../../features/home/store/actions/composizione-partenza/box-partenza.actions';
-import { InsertRichiestaMarker, UpdateRichiestaMarker } from '../../features/home/store/actions/maps/richieste-markers.actions';
+import {
+    InsertRichiestaMarker,
+    UpdateRichiestaMarker
+} from '../../features/home/store/actions/maps/richieste-markers.actions';
 import { ComposizionePartenzaState } from '../../features/home/store/states/composizione-partenza/composizione-partenza.state';
 import { Composizione } from '../../shared/enum/composizione.enum';
-import { SetListaIdPreAccoppiati, UpdateMezzoPreAccoppiatoComposizione } from '../../features/home/store/actions/composizione-partenza/composizione-veloce.actions';
+import {
+    SetListaIdPreAccoppiati,
+    UpdateMezzoPreAccoppiatoComposizione
+} from '../../features/home/store/actions/composizione-partenza/composizione-veloce.actions';
 import { SetMezziInServizio } from 'src/app/features/home/store/actions/mezzi-in-servizio/mezzi-in-servizio.actions';
 import { ViewComponentState } from '../../features/home/store/states/view/view.state';
 import { IdPreaccoppiati } from '../../features/home/composizione-partenza/interface/id-preaccoppiati-interface';
@@ -43,13 +49,10 @@ import {
 } from 'src/app/features/home/store/actions/schede-contatto/schede-contatto.actions';
 import { ContatoriSchedeContatto } from '../../shared/interface/contatori-schede-contatto.interface';
 import { SchedaContatto } from '../../shared/interface/scheda-contatto.interface';
-import { GetUtentiGestione } from '../../features/gestione-utenti/store/actions/gestione-utenti/gestione-utenti.actions';
-import { Utente } from '../../shared/model/utente.model';
-import { ClearUtente, UpdateUtente } from '../../features/navbar/store/actions/operatore/utente.actions';
+import { SuccessAddUtenteGestione, SuccessRemoveUtente, UpdateRuoliPersonali, UpdateUtenteGestioneInLista } from '../../features/gestione-utenti/store/actions/gestione-utenti/gestione-utenti.actions';
+import { ClearUtente } from '../../features/navbar/store/actions/operatore/utente.actions';
 import { UtenteState } from '../../features/navbar/store/states/operatore/utente.state';
-import { UpdateRuoliUtenteLoggato } from '../../shared/store/actions/ruoli/ruoli.actions';
 import { Navigate } from '@ngxs/router-plugin';
-import { _isAdministrator } from '../../shared/helper/function';
 
 const HUB_URL = environment.baseUrl + environment.signalRHub;
 const SIGNALR_BYPASS = !environment.signalR;
@@ -294,24 +297,30 @@ export class SignalRService {
         /**
          * Gestione Utenti
          */
-        this.hubNotification.on('NotifyModificatoRuoloUtente', (utente: Utente) => {
-            if (utente) {
+        this.hubNotification.on('NotifyAddUtente', (codSede: string) => {
+            console.log('NotifyAddUtente', codSede);
+            this.store.dispatch(new SuccessAddUtenteGestione(codSede));
+        });
+
+        this.hubNotification.on('NotifyModificatoRuoloUtente', (idUtente: string) => {
+            console.log('NotifyModificatoRuoloUtente', idUtente);
+            if (idUtente) {
                 const utenteAttuale = this.store.selectSnapshot(UtenteState.utente);
-                if (utente.id === utenteAttuale.id) {
-                    this.store.dispatch(new UpdateUtente(utente, { localStorage: true }));
-                    this.store.dispatch(new UpdateRuoliUtenteLoggato(utente.ruoli));
-                    if (!_isAdministrator(utente)) {
-                        this.store.dispatch(new Navigate(['/home']));
-                    }
+                if (idUtente === utenteAttuale.id) {
+                    this.store.dispatch(new UpdateRuoliPersonali(idUtente));
+                } else {
+                    this.store.dispatch(new UpdateUtenteGestioneInLista(idUtente));
                 }
             }
         });
-        this.hubNotification.on('NotifyRefreshUtenti', (success: boolean) => {
-            console.log('NotifyRefreshUtenti', success);
-            if (success) {
-                this.store.dispatch(new GetUtentiGestione());
+
+        /*this.hubNotification.on('NotifyRefreshUtenti', (idUtente: string) => {
+            console.log('NotifyRefreshUtenti', idUtente);
+            if (idUtente) {
+                this.store.dispatch(new UpdateUtenteGestioneInLista(idUtente));
             }
-        });
+        });*/
+
         this.hubNotification.on('NotifyDeleteUtente', (idUtente: string) => {
             console.log('NotifyDeleteUtente', idUtente);
             const utenteAttuale = this.store.selectSnapshot(UtenteState.utente);
@@ -319,6 +328,7 @@ export class SignalRService {
                 this.store.dispatch(new ClearUtente());
                 this.store.dispatch(new Navigate(['/login']));
             }
+            this.store.dispatch(new SuccessRemoveUtente(idUtente));
         });
 
         /**
