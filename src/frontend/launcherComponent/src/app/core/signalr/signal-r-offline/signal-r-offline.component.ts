@@ -1,15 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { Images } from '../../../shared/enum/images.enum';
 
 @Component({
-  selector: 'app-signal-r-offline',
   templateUrl: './signal-r-offline.component.html',
-  styleUrls: ['./signal-r-offline.component.css']
 })
-export class SignalROfflineComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit() {
-  }
-
+export class SignalROfflineComponent {
+    images = Images;
 }
