@@ -107,7 +107,6 @@ export class RicercaUtentiState {
         );
         const sediSelezionateCount = getState().sediFiltroSelezionate.length;
         if (sediSelezionateCount <= 0) {
-            console.log('test');
             dispatch(new SetAllSediFiltroSelezionate());
         } else {
             dispatch(new GetUtentiGestione());
