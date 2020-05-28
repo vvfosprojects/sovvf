@@ -34,7 +34,6 @@ import { _isAdministrator } from '../../../../../shared/helper/function';
 import { UtenteState } from '../../../../navbar/store/states/operatore/utente.state';
 import { UpdateUtente } from '../../../../navbar/store/actions/operatore/utente.actions';
 import { UpdateRuoliUtenteLoggato } from '../../../../../shared/store/actions/ruoli/ruoli.actions';
-import { SetGestioneUtentiLoaded } from '../../../../../shared/store/actions/app/app.actions';
 
 export interface GestioneUtentiStateModel {
     listaUtentiVVF: UtenteVvfInterface[];
@@ -105,8 +104,10 @@ export class GestioneUtentiState {
     @Action(GetUtentiVVF)
     getUtentiVVF({ dispatch }: StateContext<GestioneUtentiStateModel>, action: GetUtentiVVF) {
         this._gestioneUtenti.getUtentiVVF(action.text).subscribe((data: UtenteVvfInterface[]) => {
-            dispatch(new SetUtentiVVF(data));
-            dispatch(new StopLoading());
+            dispatch([
+                new SetUtentiVVF(data),
+                new StopLoading()
+            ]);
         });
     }
 
@@ -140,15 +141,16 @@ export class GestioneUtentiState {
                 pageSize: this.store.selectSnapshot(PaginationState.pageSize)
             };
             this._gestioneUtenti.getListaUtentiGestione(filters, pagination).subscribe((response: ResponseInterface) => {
-                    dispatch(new SetUtentiGestione(response.dataArray));
-                    dispatch(new PatchPagination(response.pagination));
-                    dispatch(new SetGestioneUtentiLoaded(true));
-                    dispatch(new StopLoading());
+                    dispatch([
+                        new SetUtentiGestione(response.dataArray),
+                        new PatchPagination(response.pagination),
+                        new StopLoading()
+                    ]);
                 },
                 error => {
                     const utente = this.store.selectSnapshot(UtenteState.utente);
                     if (!_isAdministrator(utente, { sede: utente.sede })) {
-                        this.store.dispatch(new Navigate(['/home']));
+                        dispatch(new Navigate([ '/home' ]));
                     }
                 });
         }
@@ -231,10 +233,12 @@ export class GestioneUtentiState {
         this._gestioneUtenti.getUtente(action.idUtente).subscribe(objUtente => {
                 const utente = objUtente.detUtente ? objUtente.detUtente : null;
                 if (utente && utente.ruoli) {
-                    this.store.dispatch(new UpdateUtente(utente, { localStorage: true }));
-                    this.store.dispatch(new UpdateRuoliUtenteLoggato(utente.ruoli));
+                    dispatch([
+                        new UpdateUtente(utente, { localStorage: true }),
+                        new UpdateRuoliUtenteLoggato(utente.ruoli)
+                    ]);
                     if (!_isAdministrator(utente)) {
-                        this.store.dispatch(new Navigate(['/home']));
+                        dispatch(new Navigate([ '/home' ]));
                     }
                 }
             }
@@ -280,11 +284,13 @@ export class GestioneUtentiState {
 
     @Action(ClearDataModalAddUtenteModal)
     clearDataModalAddUtenteModal({ dispatch }: StateContext<GestioneUtentiStateModel>) {
-        dispatch(new UpdateFormValue({
-            value: null,
-            path: 'gestioneUtenti.addUtenteRuoloForm'
-        }));
-        dispatch(new SetFormEnabled('gestioneUtenti.addUtenteRuoloForm'));
-        dispatch(new ClearUtentiVVF());
+        dispatch([
+            new UpdateFormValue({
+                value: null,
+                path: 'gestioneUtenti.addUtenteRuoloForm'
+            }),
+            new SetFormEnabled('gestioneUtenti.addUtenteRuoloForm'),
+            new ClearUtentiVVF()
+        ]);
     }
 }
