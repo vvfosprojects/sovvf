@@ -39,6 +39,7 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
     private deniedPath = [ RoutesPath.NotFound.toString(), RoutesPath.Login.toString() ];
     private height;
     private availHeight;
+    private currentUrl: string;
 
     @Select(SediTreeviewState.listeSediLoaded) listeSediLoaded$: Observable<boolean>;
     private listeSediLoaded: boolean;
@@ -72,6 +73,7 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
                 private modals: NgbModal) {
         router.events.subscribe((val) => {
             if (val instanceof NavigationEnd) {
+                this.currentUrl = val.urlAfterRedirects.slice(1);
                 !this.deniedPath.includes(val.urlAfterRedirects.slice(1)) && authService._isLogged() ? this._toggle = true : this._toggle = false;
             }
         });
@@ -120,18 +122,20 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
     }
 
     private getHeight(): void {
-        const availHeight = window.innerHeight;
-        const height = this.contentElement.nativeElement.offsetHeight;
-        if (height) {
-            if (this.height !== height) {
-                this.height = height;
-                this.store.dispatch(new SetContentHeight(height));
+        if (this.currentUrl === RoutesPath.Home) {
+            const availHeight = window.innerHeight;
+            const height = this.contentElement.nativeElement.offsetHeight;
+            if (height) {
+                if (this.height !== height) {
+                    this.height = height;
+                    this.store.dispatch(new SetContentHeight(height));
+                }
             }
-        }
-        if (availHeight) {
-            if (this.availHeight !== availHeight) {
-                this.availHeight = availHeight;
-                this.store.dispatch(new SetAvailHeight(availHeight));
+            if (availHeight) {
+                if (this.availHeight !== availHeight) {
+                    this.availHeight = availHeight;
+                    this.store.dispatch(new SetAvailHeight(availHeight));
+                }
             }
         }
     }
