@@ -28,6 +28,14 @@ export class ClearFiltroTipologiaSelezionatoRichieste {
     constructor(public filtro: VoceFiltro) {}
 }
 
+export class ApplyFiltriTipologiaSelezionatiRichieste {
+    static readonly type = '[FiltriRichieste] Apply Filtri Tipologia Richieste Selezionati';
+}
+
+export class ClearAllFiltriTipologiaSelezionatiRichieste {
+    static readonly type = '[FiltriRichieste] Clear All Filtri Tipologia Richieste Selezionati';
+}
+
 export class ResetFiltriSelezionatiRichieste {
     static readonly type = '[FiltriRichieste] Reset Filtri Richieste Selezionati';
 }

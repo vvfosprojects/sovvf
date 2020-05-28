@@ -3,7 +3,11 @@ import { VoceFiltro } from '../voce-filtro.model';
 import { Select, Store } from '@ngxs/store';
 import { FiltriRichiesteState } from '../../../store/states/filterbar/filtri-richieste.state';
 import { Observable, Subscription } from 'rxjs';
-import { ClearFiltroTipologiaSelezionatoRichieste, SetFiltroTipologiaSelezionatoRichieste } from '../../../store/actions/filterbar/filtri-richieste.actions';
+import {
+    ClearAllFiltriTipologiaSelezionatiRichieste,
+    ClearFiltroTipologiaSelezionatoRichieste,
+    SetFiltroTipologiaSelezionatoRichieste
+} from '../../../store/actions/filterbar/filtri-richieste.actions';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
@@ -86,6 +90,6 @@ export class ModalFiltriTipologiaComponent implements OnInit, OnDestroy {
     }
 
     resetFiltri() {
-        // todo: creare logica per reset
+        this.store.dispatch(new ClearAllFiltriTipologiaSelezionatiRichieste());
     }
 }

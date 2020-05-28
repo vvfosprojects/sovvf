@@ -5,13 +5,17 @@ import {
     SetFiltroSelezionatoRichieste,
     ResetFiltriSelezionatiRichieste,
     ClearFiltroSelezionatoRichieste,
-    SetFiltroTipologiaSelezionatoRichieste, ClearFiltroTipologiaSelezionatoRichieste
+    SetFiltroTipologiaSelezionatoRichieste,
+    ClearFiltroTipologiaSelezionatoRichieste,
+    ClearAllFiltriTipologiaSelezionatiRichieste,
+    ApplyFiltriTipologiaSelezionatiRichieste
 } from '../../actions/filterbar/filtri-richieste.actions';
 import { Tipologia } from '../../../../../shared/model/tipologia.model';
 import { HomeState } from '../home.state';
 import { _isStatico } from '../../../../../shared/helper/function-filtro';
 import { insertItem, patch, removeItem } from '@ngxs/store/operators';
 import { GetListaRichieste } from '../../actions/richieste/richieste.actions';
+import produce from 'immer';
 
 export interface FiltriRichiesteStateModel {
     filtriStaticiRichieste: VoceFiltro[];
@@ -23,13 +27,13 @@ export interface FiltriRichiesteStateModel {
 
 export const filtriRichiesteStateDefaults: FiltriRichiesteStateModel = {
     filtriStaticiRichieste: [
-        { codice: '99999999', categoria: 'Aperte', descrizione: 'Aperte', name: 'includiRichiesteAperte', star: true },
-        { codice: '999999999', categoria: 'Chiuse', descrizione: 'Chiuse', name: 'includiRichiesteChiuse', star: true }
+        { codice: '99999999', categoria: 'Aperte', descrizione: 'Aperte', name: 'includiRichiesteAperte', star: true, statico: true },
+        { codice: '999999999', categoria: 'Chiuse', descrizione: 'Chiuse', name: 'includiRichiesteChiuse', star: true, statico: true }
     ],
     filtriRichieste: [],
     filtriRichiesteSelezionati: [
-        { codice: '99999999', categoria: 'Aperte', descrizione: 'Aperte', name: 'includiRichiesteAperte', star: true },
-        { codice: '999999999', categoria: 'Chiuse', descrizione: 'Chiuse', name: 'includiRichiesteChiuse', star: true }
+        { codice: '99999999', categoria: 'Aperte', descrizione: 'Aperte', name: 'includiRichiesteAperte', star: true, statico: true },
+        { codice: '999999999', categoria: 'Chiuse', descrizione: 'Chiuse', name: 'includiRichiesteChiuse', star: true, statico: true }
     ],
     categoriaFiltriRichieste: [],
     filtriTipologiaSelezionati: []
@@ -145,6 +149,27 @@ export class FiltriRichiesteState {
                 filtriTipologiaSelezionati: removeItem<VoceFiltro>(filtro => filtro.codice === action.filtro.codice)
             })
         );
+    }
+
+    @Action(ApplyFiltriTipologiaSelezionatiRichieste)
+    applyFiltriTipologiaSelezionatiRichieste({ getState, setState, dispatch }: StateContext<FiltriRichiesteStateModel>) {
+        const filtriTipologiaSelezionati = getState().filtriTipologiaSelezionati;
+        setState(
+            produce(getState(), draft => {
+                draft.filtriRichiesteSelezionati = draft.filtriRichiesteSelezionati.filter((f: VoceFiltro) => f.statico);
+                for (const filtroTipologia of filtriTipologiaSelezionati) {
+                    draft.filtriRichiesteSelezionati.push(filtroTipologia);
+                }
+            })
+        );
+        dispatch(new GetListaRichieste());
+    }
+
+    @Action(ClearAllFiltriTipologiaSelezionatiRichieste)
+    clearAllFiltriTipologiaSelezionatiRichieste({ patchState }: StateContext<FiltriRichiesteStateModel>) {
+        patchState({
+            filtriTipologiaSelezionati: []
+        });
     }
 
     @Action(ResetFiltriSelezionatiRichieste)
