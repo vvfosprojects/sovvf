@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, Input, OnDestroy } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 import { VersionInterface } from '../../interface/version.interface';
 import { Observable, Subscription } from 'rxjs';
@@ -24,6 +24,8 @@ export class FooterComponent implements OnDestroy {
 
     @Select(AppState.appIsLoaded) isLoaded$: Observable<boolean>;
     isReady: boolean;
+
+    @Input() userLogged: boolean;
 
     isTest: string;
 
