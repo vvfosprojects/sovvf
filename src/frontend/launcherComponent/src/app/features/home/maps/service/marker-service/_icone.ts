@@ -94,7 +94,8 @@ export class IconMappe {
         this.iconeSedi = [
             ['comando', 'sede5.png'],
             ['distaccamento', 'sede5.png'],
-            ['direzioni', 'sede5.png']
+            ['direzioni', 'sede5.png'],
+            ['default', 'sede5.png']
         ];
         this.mapIconeSedi = new Map(this.iconeSedi);
 
@@ -187,7 +188,10 @@ export class IconMappe {
         const path = this.pathUrl + pathModello;
         const check = !(selezionato);
         const dir = check ? path + 'ns/' : path + 's/';
-        const sede = this.mapIconeSedi.get(tipo.toLowerCase());
+        let sede = this.mapIconeSedi.get(tipo.toLowerCase());
+        if (!sede) {
+            sede = this.mapIconeSedi.get('default');
+        }
         this.iconaStatoCorrenteUrl = dir + sede;
         if (!this.iconaStatoCorrenteUrl || !sede) {
             return undefined;

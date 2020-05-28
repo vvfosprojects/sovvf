@@ -2,6 +2,8 @@ import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { ReloadApp, SetVistaSedi, SetTimeSync, ClearVistaSedi, SetMapLoaded } from '../../actions/app/app.actions';
 import { SetCodiceSede } from '../../../../core/signalr/store/signalR.actions';
 import { SignalRState, SignalRStateModel } from '../../../../core/signalr/store/signalR.state';
+import { RouterState } from '@ngxs/router-plugin';
+import { RouterStateModel } from '@ngxs/router-plugin/src/router.state';
 
 export interface AppStateModel {
     appIsLoaded: boolean;
@@ -23,9 +25,14 @@ export const appStateDefaults: AppStateModel = {
 })
 export class AppState {
 
-    @Selector([SignalRState])
-    static appIsLoaded(state: AppStateModel, signalRState: SignalRStateModel) {
-        return state.appIsLoaded && signalRState.connected && !!signalRState.connectionId;
+    @Selector([SignalRState, RouterState])
+    static appIsLoaded(state: AppStateModel, signalRState: SignalRStateModel, routerState: RouterStateModel) {
+        const home = routerState.state.url;
+        let mapIsLoaded = true;
+        if (home === '/home') {
+            mapIsLoaded = state.mapIsLoaded;
+        }
+        return state.appIsLoaded && signalRState.connected && !!signalRState.connectionId && !signalRState.disconnected && mapIsLoaded;
     }
 
     @Selector()

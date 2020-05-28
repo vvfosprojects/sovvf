@@ -14,7 +14,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     private subscription = new Subscription();
     viewState: ViewLayouts;
     columnState: Grids;
-    loading = true;
 
     @Select(NavbarState.navbarIsLoaded) navbarLoaded: Observable<boolean>;
 
@@ -41,7 +40,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
 
     onMapFullLoaded() {
-        this.loading = false;
         this.store.dispatch(new SetMapLoaded());
     }
 

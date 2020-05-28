@@ -44,7 +44,7 @@ export class GestioneUtentiComponent implements OnInit, OnDestroy {
     @Select(PaginationState.page) page$: Observable<number>;
     @Select(LoadingState.loading) loading$: Observable<boolean>;
     @Select(RuoliUtenteLoggatoState.ruoliPrincipali) ruoliUtenteLoggato$: Observable<Ruolo[]>;
-    @Select(RicercaUtentiState.sediFiltro) sediFiltro$: Observable<string[]>;
+    @Select(RicercaUtentiState.sediFiltro) sediFiltro$: Observable<Ruolo[]>;
     @Select(RicercaUtentiState.sediFiltroSelezionate) sediFiltroSelezionate$: Observable<string[]>;
 
     subscriptions: Subscription = new Subscription();
