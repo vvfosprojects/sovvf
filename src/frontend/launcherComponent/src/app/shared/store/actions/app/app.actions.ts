@@ -26,3 +26,10 @@ export class SetMapLoaded {
     constructor(public mapIsLoaded: boolean) {
     }
 }
+
+export class SetCurrentUrl {
+    static readonly type = '[App] Set Current Url';
+
+    constructor(public previusUrl: string) {
+    }
+}
