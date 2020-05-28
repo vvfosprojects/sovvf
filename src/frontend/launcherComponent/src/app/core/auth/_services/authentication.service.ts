@@ -6,6 +6,7 @@ import { ClearUtente, SetUtente } from '../../../features/navbar/store/actions/o
 import { Store } from '@ngxs/store';
 import { UtenteState } from '../../../features/navbar/store/states/operatore/utente.state';
 import { StartLoading, StopLoading } from '../../../shared/store/actions/loading/loading.actions';
+import { RouterState } from '@ngxs/router-plugin';
 
 const BASE_URL = environment.baseUrl;
 const API_AUTH = BASE_URL + environment.apiUrl.auth;
@@ -44,8 +45,9 @@ export class AuthenticationService {
 
     logout() {
         const utente = this.store.selectSnapshot(UtenteState.utente);
+        const homeUrl = this.store.selectSnapshot(RouterState.url);
         if (utente) {
-            this.store.dispatch(new ClearUtente());
+            this.store.dispatch(new ClearUtente(homeUrl !== '/home'));
         }
     }
 }
