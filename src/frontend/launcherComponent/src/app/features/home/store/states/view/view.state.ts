@@ -12,7 +12,7 @@ import {
     ToggleModifica,
     TurnOffComposizione,
     ToggleMezziInServizio,
-    ToggleSchedeContatto
+    ToggleSchedeContatto, ClearViewState
 } from '../../actions/view/view.actions';
 import { BackupViewComponentState } from './save-view.state';
 import {
@@ -314,5 +314,10 @@ export class ViewComponentState {
             dispatch(new ClearListaSchedeContatto());
             patchState(ViewComponentStateDefault);
         }
+    }
+
+    @Action(ClearViewState)
+    clearViewState({ patchState }: StateContext<ViewComponentStateModel>) {
+        patchState(ViewComponentStateDefault);
     }
 }

@@ -55,3 +55,7 @@ export class ToggleMezziInServizio {
 export class ToggleSchedeContatto {
     static readonly type = '[SchedeContatto] Toggle schede contatto';
 }
+
+export class ClearViewState {
+    static readonly type = '[ViewState] Clear view state';
+}

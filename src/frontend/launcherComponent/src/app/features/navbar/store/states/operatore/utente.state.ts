@@ -13,11 +13,10 @@ import {
 import { ClearVistaSedi, SetVistaSedi } from '../../../../../shared/store/actions/app/app.actions';
 import { makeCopy } from '../../../../../shared/helper/function';
 import { ClearRuoliUtenteLoggato } from '../../../../../shared/store/actions/ruoli/ruoli.actions';
-import { StateReset } from 'ngxs-reset-plugin';
-import { RichiesteState } from '../../../../home/store/states/richieste/richieste.state';
-import { ViewComponentState } from '../../../../home/store/states/view/view.state';
 import { Navigate } from '@ngxs/router-plugin';
 import { ClearUserDataService } from '../../../../../core/auth/_services/clearUserData.service';
+import { ClearViewState } from '../../../../home/store/actions/view/view.actions';
+import { ClearRichieste } from '../../../../home/store/actions/richieste/richieste.actions';
 
 export interface UtenteStateModel {
     localName: string;
@@ -101,11 +100,11 @@ export class UtenteState {
                 // Local Storage
                 new ClearUtenteLocalStorage(),
                 // Current Roles Session Storage
-                new ClearRuoliUtenteLoggato()
+                new ClearRuoliUtenteLoggato(),
+                new ClearViewState(),
+                new ClearRichieste(),
+                new Navigate(['/login'])
             ]);
-            // Reset states
-            dispatch(new StateReset(RichiesteState, ViewComponentState));
-            dispatch(new Navigate(['/login']));
             // Clear User Data
             patchState({
                 utente: null
@@ -125,11 +124,11 @@ export class UtenteState {
                     // Local Storage
                     new ClearUtenteLocalStorage(),
                     // Current Roles Session Storage
-                    new ClearRuoliUtenteLoggato()
+                    new ClearRuoliUtenteLoggato(),
+                    new ClearViewState(),
+                    new ClearRichieste(),
+                    new Navigate(['/login'])
                 ]);
-                // Reset states
-                dispatch(new StateReset(RichiesteState, ViewComponentState));
-                dispatch(new Navigate(['/login']));
                 // Clear User Data
                 patchState({
                     utente: null

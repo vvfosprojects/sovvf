@@ -61,7 +61,6 @@ import { PaginationState } from './shared/store/states/pagination/pagination.sta
 import { NgxsFormPluginModule } from '@ngxs/form-plugin';
 import { UserServiceFake } from './core/auth/_services/user.service.fake';
 import { PermessiState } from './shared/store/states/permessi/permessi.state';
-import { NgxsResetPluginModule } from 'ngxs-reset-plugin';
 import { RuoliUtenteLoggatoState } from './shared/store/states/ruoli-utente-loggato/ruoli-utente-loggato.state';
 import { UserService } from './core/auth/_services/user.service';
 import { NewVersionState } from './shared/store/states/nuova-versione/nuova-versione.state';
@@ -112,8 +111,7 @@ import { FooterComponent } from './shared/components/footer/footer.component';
             name: 'SO115 - NGXS',
             disabled: environment.production,
         }),
-        NgxsFormPluginModule.forRoot(),
-        NgxsResetPluginModule.forRoot()
+        NgxsFormPluginModule.forRoot()
     ],
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
