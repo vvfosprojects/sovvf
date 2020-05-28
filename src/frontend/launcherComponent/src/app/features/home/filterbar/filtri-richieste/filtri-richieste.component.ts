@@ -2,6 +2,8 @@ import { Component, Input, Output, EventEmitter, HostBinding } from '@angular/co
 import { VoceFiltro } from './voce-filtro.model';
 import { NgbActiveModal, NgbDropdownConfig, NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { ModalFiltriTipologiaComponent } from './modal-filtri-tipologia/modal-filtri-tipologia.component';
+import { ApplyFiltriTipologiaSelezionatiRichieste } from '../../store/actions/filterbar/filtri-richieste.actions';
+import { Store } from '@ngxs/store';
 
 @Component({
     selector: 'app-filtri-richieste',
@@ -20,7 +22,8 @@ export class FiltriRichiesteComponent {
     @Output() filtroDeselezionato: EventEmitter<VoceFiltro> = new EventEmitter();
     @Output() filtriReset: EventEmitter<any> = new EventEmitter();
 
-    constructor(private modalService: NgbModal,
+    constructor(private store: Store,
+                private modalService: NgbModal,
                 private modal: NgbActiveModal,
                 dropdownOpts: NgbDropdownConfig) {
         dropdownOpts.placement = 'bottom-left';
@@ -30,13 +33,11 @@ export class FiltriRichiesteComponent {
         const modalOptions = { windowClass: 'xlModal', backdrop: 'static', backdropClass: 'light-blue-backdrop', centered: true, keyboard: false } as NgbModalOptions;
         const modal = this.modalService.open(ModalFiltriTipologiaComponent, modalOptions);
         modal.result.then((res: string) => {
-            console.log('res modal', res);
             switch (res) {
                 case 'ok':
-                    console.log('Filtri Applicati');
+                    this.store.dispatch(new ApplyFiltriTipologiaSelezionatiRichieste());
                     break;
                 case 'ko':
-                    console.log('Filtri Non Applicati');
                     break;
             }
         });
