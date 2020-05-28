@@ -40,7 +40,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
 
     onMapFullLoaded() {
-        this.store.dispatch(new SetMapLoaded());
+        this.store.dispatch(new SetMapLoaded(true));
     }
 
 }
