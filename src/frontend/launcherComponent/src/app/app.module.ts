@@ -67,12 +67,14 @@ import { UserService } from './core/auth/_services/user.service';
 import { NewVersionState } from './shared/store/states/nuova-versione/nuova-versione.state';
 import { ViewportState } from './shared/store/states/viewport/viewport.state';
 import { SignalROfflineComponent } from './core/signalr/signal-r-offline/signal-r-offline.component';
+import { LoaderComponent } from './shared/components/loader/loader.component';
 
 
 @NgModule({
     declarations: [
         AppComponent,
-        SignalROfflineComponent
+        SignalROfflineComponent,
+        LoaderComponent
     ],
     imports: [
         BrowserModule,

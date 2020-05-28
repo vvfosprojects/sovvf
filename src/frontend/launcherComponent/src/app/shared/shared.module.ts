@@ -14,7 +14,6 @@ const COMPONENTS = [
     Shared.ComponenteComponent,
     Shared.CompetenzaComponent,
     Shared.MezzoComponent,
-    Shared.LoaderComponent,
     Shared.TreeviewComponent,
     Shared.ListaEntiComponent,
     Shared.ListaSquadrePartenzaComponent,
