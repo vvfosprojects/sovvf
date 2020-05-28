@@ -1,5 +1,6 @@
-import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
-import { SetCodiceSede, SetConnectionId, SetIdUtente, SetUtenteSignalR, ClearUtenteSignalR,
+import { Action, NgxsOnChanges, NgxsSimpleChange, Selector, State, StateContext, Store } from '@ngxs/store';
+import {
+    SetCodiceSede, SetConnectionId, SetIdUtente, SetUtenteSignalR, ClearUtenteSignalR,
     SignalRHubConnesso,
     SignalRHubDisconnesso, ClearIdUtente, ClearCodiceSede, LogoffUtenteSignalR
 } from './signalR.actions';
@@ -9,6 +10,9 @@ import { SignalRNotification } from '../model/signalr-notification.model';
 import { SignalRService } from '../signalR.service';
 import { UtenteState } from '../../../features/navbar/store/states/operatore/utente.state';
 import { difference } from 'lodash';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { SignalROfflineComponent } from '../signal-r-offline/signal-r-offline.component';
+import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap/modal/modal-ref';
 
 export interface SignalRStateModel {
     connected: boolean;
@@ -33,7 +37,9 @@ export const SignalRStateDefaults: SignalRStateModel = {
     defaults: SignalRStateDefaults
 })
 
-export class SignalRState {
+export class SignalRState implements NgxsOnChanges {
+
+    private modalInstance: NgbModalRef;
 
     @Selector()
     static connectionIdSignalR(state: SignalRStateModel): string {
@@ -50,7 +56,18 @@ export class SignalRState {
         return state.idUtente;
     }
 
-    constructor(private signalR: SignalRService, private store: Store) {
+    constructor(private signalR: SignalRService, private store: Store,
+                private modalService: NgbModal) {
+    }
+
+    ngxsOnChanges(change: NgxsSimpleChange) {
+        const currentValue = change.currentValue;
+        const previousValue = change.previousValue;
+        if (!currentValue.disconnected && currentValue.reconnected && previousValue.reconnected) {
+            this.modalInstance.close();
+        } else if (currentValue.disconnected) {
+            this.openModal();
+        }
     }
 
     @Action(SignalRHubConnesso)
@@ -77,7 +94,7 @@ export class SignalRState {
         }
         patchState({
             connected: SignalRStateDefaults.connected,
-            reconnected: SignalRStateDefaults.reconnected,
+            reconnected: false,
             disconnected: disconnected,
             connectionId: null,
         });
@@ -152,5 +169,18 @@ export class SignalRState {
     clearIdUtente({ patchState }: StateContext<SignalRStateModel>) {
         patchState({ idUtente: SignalRStateDefaults.idUtente });
     }
+
+    openModal(): void {
+        this.modalService.hasOpenModals() && this.modalService.dismissAll();
+        this.modalInstance = this.modalService.open(SignalROfflineComponent, {
+            centered: true,
+            size: 'lg',
+            backdropClass: 'backdrop-custom-black',
+            backdrop: 'static',
+            keyboard: false
+        });
+        this.modalInstance.result.then();
+    }
+
 
 }
