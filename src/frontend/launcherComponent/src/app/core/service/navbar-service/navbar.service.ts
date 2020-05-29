@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
-import { catchError, map, retry, tap } from 'rxjs/operators';
+import { catchError, map, tap } from 'rxjs/operators';
 import { handleError } from '../../../shared/helper/handleError';
 import { AppSettings, AppSettingsAPI } from '../../../shared/interface/app-settings.interface';
 import { Observable } from 'rxjs';

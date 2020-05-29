@@ -23,6 +23,13 @@ export class ClearSediFiltro {
     static readonly type = '[RicercaUtenti] Clear Sedi Filtro';
 }
 
+export class SetSediFiltroConFigli {
+    static readonly type = '[RicercaUtenti] Set Sedi Filtro Con Distaccamenti';
+
+    constructor(public sediConDistaccamenti: Ruolo[]) {
+    }
+}
+
 export class ReducerSelezioneFiltroSede {
     static readonly type = '[RicercaUtenti] Reducer Selezione Filtro Sede';
 

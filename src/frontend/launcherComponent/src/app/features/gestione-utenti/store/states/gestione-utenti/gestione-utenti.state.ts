@@ -195,7 +195,7 @@ export class GestioneUtentiState {
 
     @Action(SuccessAddUtenteGestione)
     successAddUtenteGestione({ getState, dispatch }: StateContext<GestioneUtentiStateModel>, action: SuccessAddUtenteGestione) {
-        const sediFiltro = this.store.selectSnapshot(RicercaUtentiState.sediFiltro);
+        const sediFiltro = this.store.selectSnapshot(RicercaUtentiState.sediFiltroConFigli);
         const sedePresente = sediFiltro.filter((s: Ruolo) => s.codSede === action.codSede).length > 0;
         if (sedePresente) {
             const pagina = this.store.selectSnapshot(PaginationState.page);

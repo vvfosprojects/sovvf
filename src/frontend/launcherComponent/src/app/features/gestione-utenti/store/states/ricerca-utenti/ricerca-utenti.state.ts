@@ -6,7 +6,7 @@ import {
     ReducerSelezioneFiltroSede,
     SetRicercaUtenti,
     SetSedeFiltroSelezionato,
-    SetSediFiltro, SetAllSediFiltroSelezionate
+    SetSediFiltro, SetAllSediFiltroSelezionate, SetSediFiltroConFigli
 } from '../../actions/ricerca-utenti/ricerca-utenti.actons';
 import { append, patch, removeItem } from '@ngxs/store/operators';
 import { GetUtentiGestione } from '../../actions/gestione-utenti/gestione-utenti.actions';
@@ -15,12 +15,14 @@ import { Ruolo } from '../../../../../shared/model/utente.model';
 export interface RicercaUtentiStateModel {
     ricerca: string;
     sediFiltro: Ruolo[];
+    sediFiltroConFigli: Ruolo[];
     sediFiltroSelezionate: string[];
 }
 
 export const RicercaUtentiStateDefaults: RicercaUtentiStateModel = {
     ricerca: null,
     sediFiltro: [],
+    sediFiltroConFigli: [],
     sediFiltroSelezionate: []
 };
 
@@ -41,6 +43,11 @@ export class RicercaUtentiState {
     @Selector()
     static sediFiltro(state: RicercaUtentiStateModel) {
         return state.sediFiltro;
+    }
+
+    @Selector()
+    static sediFiltroConFigli(state: RicercaUtentiStateModel) {
+        return state.sediFiltroConFigli;
     }
 
     @Selector()
@@ -74,6 +81,13 @@ export class RicercaUtentiState {
     clearSediFiltro({ patchState }: StateContext<RicercaUtentiStateModel>) {
         patchState({
             sediFiltro: []
+        });
+    }
+
+    @Action(SetSediFiltroConFigli)
+    setSediFiltroConDistaccamenti({ getState, patchState }: StateContext<RicercaUtentiStateModel>, action: SetSediFiltroConFigli) {
+        patchState({
+            sediFiltroConFigli: action.sediConDistaccamenti
         });
     }
 
