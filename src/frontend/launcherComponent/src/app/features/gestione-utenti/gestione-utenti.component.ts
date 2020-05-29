@@ -6,7 +6,7 @@ import {
     ClearRicercaUtenti,
     ReducerSelezioneFiltroSede,
     SetRicercaUtenti,
-    SetSediFiltro
+    SetSediFiltro, SetSediFiltroConFigli
 } from './store/actions/ricerca-utenti/ricerca-utenti.actons';
 import { UtenteState } from '../navbar/store/states/operatore/utente.state';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -51,6 +51,7 @@ export class GestioneUtentiComponent implements OnInit, OnDestroy {
     @Select(PaginationState.page) page$: Observable<number>;
     @Select(LoadingState.loading) loading$: Observable<boolean>;
     @Select(RuoliUtenteLoggatoState.ruoliPrincipali) ruoliUtenteLoggato$: Observable<Ruolo[]>;
+    @Select(RuoliUtenteLoggatoState.ruoli) ruoliUtenteLoggatoConDistaccamenti$: Observable<Ruolo[]>;
     @Select(RicercaUtentiState.sediFiltro) sediFiltro$: Observable<Ruolo[]>;
     @Select(RicercaUtentiState.sediFiltroSelezionate) sediFiltroSelezionate$: Observable<string[]>;
 
@@ -242,6 +243,14 @@ export class GestioneUtentiComponent implements OnInit, OnDestroy {
                     const sediFiltro = ruoli.filter((r: Ruolo) => r.descrizione === 'Amministratore');
                     this.store.dispatch(new SetSediFiltro(sediFiltro));
                     this.getUtentiGestione();
+                }
+            })
+        );
+        this.subscriptions.add(
+            this.ruoliUtenteLoggatoConDistaccamenti$.subscribe((ruoli: Ruolo[]) => {
+                if (ruoli && ruoli.length > 0) {
+                    const sediFiltroConDistaccamenti = ruoli.filter((r: Ruolo) => r.descrizione === 'Amministratore');
+                    this.store.dispatch(new SetSediFiltroConFigli(sediFiltroConDistaccamenti));
                 }
             })
         );
