@@ -172,7 +172,7 @@ export class IconMappe {
         const path = this.pathUrl + pathModello;
         const check = !(selezionato);
         const dir = check ? path + 'ns/' : path + 's/';
-        const statoMezzo = stato.split(' ').join('');
+        const statoMezzo = stato.replace(/ /g, '');
         const tipoMezzo = this.mapIconeMezzi.get(statoMezzo.substring(0, 5).toLowerCase());
         this.iconaStatoCorrenteUrl = dir + tipoMezzo;
         if (!this.iconaStatoCorrenteUrl || !tipoMezzo) {
