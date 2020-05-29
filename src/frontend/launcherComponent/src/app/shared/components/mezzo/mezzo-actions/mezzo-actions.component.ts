@@ -19,7 +19,7 @@ export class MezzoActionsComponent implements OnInit {
     @Output() actionMezzo: EventEmitter<StatoMezzoActions> = new EventEmitter();
 
     constructor(dropdownConfig: NgbDropdownConfig,
-        tooltipConfig: NgbTooltipConfig) {
+                tooltipConfig: NgbTooltipConfig) {
         dropdownConfig.container = 'body';
         dropdownConfig.placement = 'top';
         tooltipConfig.container = 'body';
