@@ -1,25 +1,34 @@
 import { Component, isDevMode, OnDestroy, OnInit } from '@angular/core';
 import { Store, Select } from '@ngxs/store';
 import { ToggleMezziInServizio } from '../store/actions/view/view.actions';
-import { ClearMezzoInServizioHover, GetMezziInServizio, SetMezzoInServizioHover, SetMezzoInServizioSelezionato } from '../store/actions/mezzi-in-servizio/mezzi-in-servizio.actions';
+import {
+    ClearMezzoInServizioHover,
+    GetMezziInServizio,
+    SetMezzoInServizioHover,
+    SetMezzoInServizioSelezionato
+} from '../store/actions/mezzi-in-servizio/mezzi-in-servizio.actions';
+import {
+    SetIdRichiestaEventi,
+    ClearEventiRichiesta,
+    SetFiltroTargaMezzo
+} from '../store/actions/eventi/eventi-richiesta.actions';
+import {
+    AllTrueBoxMezzi,
+    AllTrueBoxMezziPresenti,
+    UndoAllBoxes
+} from '../store/actions/boxes/box-click.actions';
 import { MezziInServizioState } from '../store/states/mezzi-in-servizio/mezzi-in-servizio.state';
 import { Observable, Subscription } from 'rxjs';
 import { MezzoActionInterface } from 'src/app/shared/interface/mezzo-action.interface';
 import { ActionMezzo, SetRichiestaById } from '../store/actions/richieste/richieste.actions';
 import { RichiesteState } from '../store/states/richieste/richieste.state';
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
-import {
-    SetIdRichiestaEventi,
-    ClearEventiRichiesta,
-    SetFiltroTargaMezzo
-} from '../store/actions/eventi/eventi-richiesta.actions';
 import { EventiRichiestaComponent } from '../eventi/eventi-richiesta.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SintesiRichiestaModalComponent } from '../maps/maps-ui/info-window/sintesi-richiesta-modal/sintesi-richiesta-modal.component';
 import { MezzoInServizio } from '../../../shared/interface/mezzo-in-servizio.interface';
 import { Mezzo } from '../../../shared/model/mezzo.model';
 import { BoxClickState, BoxClickStateModel } from '../store/states/boxes/box-click.state';
-import { AllTrueBoxMezzi, AllTrueBoxMezziPresenti, UndoAllBoxes } from '../store/actions/boxes/box-click.actions';
 import { ReducerFiltroMarker } from '../store/actions/maps/maps-filtro.actions';
 import { onlyUnique } from '../../../shared/helper/function';
 import { StatoMezzo } from '../../../shared/enum/stato-mezzo.enum';
@@ -52,8 +61,6 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
         this.subscription.add(
             this.mezziInServizio$.subscribe((mezzi: MezzoInServizio[]) => {
                 this.mezziInServizio = mezzi;
-                // console.log('Mezzi In Servizio', mezzi);
-
                 // Stati mezzi in servizio DISTINCT
                 if (this.mezziInServizio && this.mezziInServizio.length > 0) {
                     this.statiMezziInServizio = this.mezziInServizio.map(data => data.mezzo.mezzo.stato).filter(onlyUnique);
