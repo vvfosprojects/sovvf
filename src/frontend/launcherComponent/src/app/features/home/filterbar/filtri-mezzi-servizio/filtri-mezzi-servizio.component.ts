@@ -23,7 +23,6 @@ export class FiltriMezziServizioComponent {
   }
 
   onSelezioneFiltro(filtro: VoceFiltro) {
-    console.log('filtriSelezionati', this.filtriSelezionati);
     this.filtroSelezionato.emit(filtro);
   }
 
