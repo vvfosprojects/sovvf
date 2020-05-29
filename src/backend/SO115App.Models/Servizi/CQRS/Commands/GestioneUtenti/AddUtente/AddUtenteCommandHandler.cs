@@ -49,7 +49,8 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneUtenti.AddUtente
             IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative, IGetListaDistaccamentiByCodiceSede getListaDistaccamentiByCodiceSede,
             IGetDistaccamentoByCodiceSedeUC getDistaccamentoByCodiceSede,
             IGetUtenteByCF getUtenteByCF,
-            IAddRuoli addRuoli)
+            IAddRuoli addRuoli,
+            ICheckEsistenzaRuolo checkEsistenzaRuolo)
         {
             _addUtente = addUtente;
             _personaleByCF = personaleByCF;

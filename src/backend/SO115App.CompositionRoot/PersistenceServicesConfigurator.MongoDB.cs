@@ -162,6 +162,9 @@ namespace SO115App.CompositionRoot
             container.Register<
                 Models.Servizi.Infrastruttura.GestioneUtenti.GestioneRuolo.IGetRuoliById,
                 Persistence.MongoDB.GestioneUtenti.GestioneRuoli.GetRuoliById>();
+            container.Register<
+                Models.Servizi.Infrastruttura.GestioneUtenti.GestioneRuolo.ICheckEsistenzaRuolo,
+                Persistence.MongoDB.GestioneUtenti.GestioneRuoli.CheckEsistenzaRuolo>();
 
             #endregion Gestione Utenti e Ruoli
 

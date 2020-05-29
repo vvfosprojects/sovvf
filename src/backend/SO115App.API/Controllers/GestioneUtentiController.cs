@@ -63,6 +63,9 @@ namespace SO115App.API.Controllers
             {
                 if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
                     return StatusCode(403, Costanti.UtenteNonAutorizzato);
+                if (ex.Message.Contains(Costanti.RuoloUtentePresente))
+                    return StatusCode(403, Costanti.RuoloUtentePresente);
+
                 return BadRequest();
             }
         }

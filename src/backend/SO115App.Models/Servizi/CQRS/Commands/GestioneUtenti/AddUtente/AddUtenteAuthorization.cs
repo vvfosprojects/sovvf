@@ -22,6 +22,7 @@ using CQRS.Commands.Authorizers;
 using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Autenticazione;
+using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.GestioneRuolo;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.VerificaUtente;
 using System.Collections.Generic;
 using System.Security.Principal;
@@ -33,12 +34,15 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneUtenti.AddUtente
         private readonly IPrincipal currentUser;
         private readonly IFindUserByUsername _findUserByUsername;
         private readonly IGetAutorizzazioni _getAutorizzazioni;
+        private readonly ICheckEsistenzaRuolo _checkEsistenzaRuolo;
 
-        public AddUtenteAuthorization(IPrincipal currentUser, IFindUserByUsername findUserByUsername, IGetAutorizzazioni getAutorizzazioni)
+        public AddUtenteAuthorization(IPrincipal currentUser, IFindUserByUsername findUserByUsername, IGetAutorizzazioni getAutorizzazioni,
+            ICheckEsistenzaRuolo checkEsistenzaRuolo)
         {
             this.currentUser = currentUser;
             _findUserByUsername = findUserByUsername;
             _getAutorizzazioni = getAutorizzazioni;
+            _checkEsistenzaRuolo = checkEsistenzaRuolo;
         }
 
         public IEnumerable<AuthorizationResult> Authorize(AddUtenteCommand command)
@@ -57,6 +61,9 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneUtenti.AddUtente
                         if (!_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, ruolo.CodSede, Costanti.Amministratore))
                             yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
                     }
+
+                    if (!_checkEsistenzaRuolo.Check(command.Ruoli, command.CodFiscale))
+                        yield return new AuthorizationResult(Costanti.RuoloUtentePresente);
                 }
             }
             else

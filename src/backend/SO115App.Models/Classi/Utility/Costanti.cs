@@ -24,6 +24,7 @@ namespace SO115App.Models.Classi.Utility
         #region CondivisaAuthorization
 
         public static string UtenteNonAutorizzato = "Utente non autorizzato";
+        public static string RuoloUtentePresente = "Ruolo già presente nella sele selezionata. Oppure in una sede gerarchicamente superiore";
 
         #endregion CondivisaAuthorization
 
