@@ -61,16 +61,21 @@ import { PaginationState } from './shared/store/states/pagination/pagination.sta
 import { NgxsFormPluginModule } from '@ngxs/form-plugin';
 import { UserServiceFake } from './core/auth/_services/user.service.fake';
 import { PermessiState } from './shared/store/states/permessi/permessi.state';
-import { NgxsResetPluginModule } from 'ngxs-reset-plugin';
 import { RuoliUtenteLoggatoState } from './shared/store/states/ruoli-utente-loggato/ruoli-utente-loggato.state';
 import { UserService } from './core/auth/_services/user.service';
 import { NewVersionState } from './shared/store/states/nuova-versione/nuova-versione.state';
 import { ViewportState } from './shared/store/states/viewport/viewport.state';
+import { SignalROfflineComponent } from './core/signalr/signal-r-offline/signal-r-offline.component';
+import { LoaderComponent } from './shared/components/loader/loader.component';
+import { FooterComponent } from './shared/components/footer/footer.component';
 
 
 @NgModule({
     declarations: [
-        AppComponent
+        AppComponent,
+        SignalROfflineComponent,
+        LoaderComponent,
+        FooterComponent
     ],
     imports: [
         BrowserModule,
@@ -106,8 +111,7 @@ import { ViewportState } from './shared/store/states/viewport/viewport.state';
             name: 'SO115 - NGXS',
             disabled: environment.production,
         }),
-        NgxsFormPluginModule.forRoot(),
-        NgxsResetPluginModule.forRoot()
+        NgxsFormPluginModule.forRoot()
     ],
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
@@ -120,7 +124,8 @@ import { ViewportState } from './shared/store/states/viewport/viewport.state';
         { provide: NavbarService, useClass: environment.fakeProvider ? NavbarServiceFake : NavbarService },
         { provide: UserService, useClass: UserServiceFake }
     ],
-    bootstrap: [ AppComponent ]
+    bootstrap: [ AppComponent ],
+    entryComponents: [SignalROfflineComponent]
 })
 
 export class AppModule {

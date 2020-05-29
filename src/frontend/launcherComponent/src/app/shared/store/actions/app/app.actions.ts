@@ -22,5 +22,14 @@ export class SetTimeSync {
 
 export class SetMapLoaded {
     static readonly type = '[App] Map is fully loaded';
+
+    constructor(public mapIsLoaded: boolean) {
+    }
 }
 
+export class SetCurrentUrl {
+    static readonly type = '[App] Set Current Url';
+
+    constructor(public previusUrl: string) {
+    }
+}

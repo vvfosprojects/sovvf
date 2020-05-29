@@ -37,7 +37,7 @@ export class SetSedeFiltroSelezionato {
 }
 
 export class SetSedeFiltroDeselezionato {
-    static readonly type = '[RicercaUtenti] Clear Sede Filtro Selezionato';
+    static readonly type = '[RicercaUtenti] Set Sede Filtro Deselezionato';
 
     constructor(public sedeFiltro: string) {
     }

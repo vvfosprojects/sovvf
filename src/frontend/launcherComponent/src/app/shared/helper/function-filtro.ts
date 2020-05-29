@@ -1,4 +1,4 @@
-import { VoceFiltro } from '../../features/home/filterbar/ricerca-group/filtri-richieste/voce-filtro.model';
+import { VoceFiltro } from '../../features/home/filterbar/filtri-richieste/voce-filtro.model';
 
 export function setFiltroSelezionato(filtriRichieste: VoceFiltro[], filtro: VoceFiltro) {
     filtriRichieste.forEach((fR: VoceFiltro, index: any) => {

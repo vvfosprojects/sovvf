@@ -11,14 +11,14 @@ import {
     ClearDataModalAddUtenteModal,
     AddUtenteGestione,
     UpdateUtenteGestioneInLista,
-    UpdateRuoliPersonali
+    UpdateRuoliPersonali, SuccessAddUtenteGestione, SuccessRemoveUtente
 } from '../../actions/gestione-utenti/gestione-utenti.actions';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { RicercaUtentiState } from '../ricerca-utenti/ricerca-utenti.state';
 import { PatchPagination } from '../../../../../shared/store/actions/pagination/pagination.actions';
 import { ResponseInterface } from '../../../../../shared/interface/response.interface';
 import { TreeviewSelezione } from '../../../../../shared/model/treeview-selezione.model';
-import { Utente } from '../../../../../shared/model/utente.model';
+import { Ruolo, Utente } from '../../../../../shared/model/utente.model';
 import { insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from '../../../../../shared/enum/toastr';
@@ -104,8 +104,10 @@ export class GestioneUtentiState {
     @Action(GetUtentiVVF)
     getUtentiVVF({ dispatch }: StateContext<GestioneUtentiStateModel>, action: GetUtentiVVF) {
         this._gestioneUtenti.getUtentiVVF(action.text).subscribe((data: UtenteVvfInterface[]) => {
-            dispatch(new SetUtentiVVF(data));
-            dispatch(new StopLoading());
+            dispatch([
+                new SetUtentiVVF(data),
+                new StopLoading()
+            ]);
         });
     }
 
@@ -139,14 +141,16 @@ export class GestioneUtentiState {
                 pageSize: this.store.selectSnapshot(PaginationState.pageSize)
             };
             this._gestioneUtenti.getListaUtentiGestione(filters, pagination).subscribe((response: ResponseInterface) => {
-                    dispatch(new SetUtentiGestione(response.dataArray));
-                    dispatch(new PatchPagination(response.pagination));
-                    dispatch(new StopLoading());
+                    dispatch([
+                        new SetUtentiGestione(response.dataArray),
+                        new PatchPagination(response.pagination),
+                        new StopLoading()
+                    ]);
                 },
                 error => {
                     const utente = this.store.selectSnapshot(UtenteState.utente);
                     if (!_isAdministrator(utente, { sede: utente.sede })) {
-                        this.store.dispatch(new Navigate(['/home']));
+                        dispatch(new Navigate([ '/home' ]));
                     }
                 });
         }
@@ -189,6 +193,18 @@ export class GestioneUtentiState {
         dispatch(new ClearDataModalAddUtenteModal());
     }
 
+    @Action(SuccessAddUtenteGestione)
+    successAddUtenteGestione({ getState, dispatch }: StateContext<GestioneUtentiStateModel>, action: SuccessAddUtenteGestione) {
+        const sediFiltro = this.store.selectSnapshot(RicercaUtentiState.sediFiltro);
+        const sedePresente = sediFiltro.filter((s: Ruolo) => s.codSede === action.codSede).length > 0;
+        if (sedePresente) {
+            const pagina = this.store.selectSnapshot(PaginationState.page);
+            if (pagina === 1) {
+                dispatch(new GetUtentiGestione());
+            }
+        }
+    }
+
     @Action(AddRuoloUtenteGestione)
     addRuoloUtenteGestione({ getState, dispatch }: StateContext<GestioneUtentiStateModel>) {
         const form = getState().addUtenteRuoloForm.model;
@@ -217,10 +233,12 @@ export class GestioneUtentiState {
         this._gestioneUtenti.getUtente(action.idUtente).subscribe(objUtente => {
                 const utente = objUtente.detUtente ? objUtente.detUtente : null;
                 if (utente && utente.ruoli) {
-                    this.store.dispatch(new UpdateUtente(utente, { localStorage: true }));
-                    this.store.dispatch(new UpdateRuoliUtenteLoggato(utente.ruoli));
+                    dispatch([
+                        new UpdateUtente(utente, { localStorage: true }),
+                        new UpdateRuoliUtenteLoggato(utente.ruoli)
+                    ]);
                     if (!_isAdministrator(utente)) {
-                        this.store.dispatch(new Navigate(['/home']));
+                        dispatch(new Navigate([ '/home' ]));
                     }
                 }
             }
@@ -244,14 +262,17 @@ export class GestioneUtentiState {
 
     @Action(RemoveUtente)
     removeUtente({ setState, dispatch }: StateContext<GestioneUtentiStateModel>, action: RemoveUtente) {
-        this._gestioneUtenti.removeUtente(action.id).subscribe(() => {
-            setState(
-                patch({
-                    listaUtenti: removeItem<Utente>(u => u.id === action.id)
-                })
-            );
-            dispatch(new ShowToastr(ToastrType.Info, 'Utente Rimosso', 'Utente rimosso con successo.', 3));
-        });
+        this._gestioneUtenti.removeUtente(action.id).subscribe();
+    }
+
+    @Action(SuccessRemoveUtente)
+    successRemoveUtente({ setState, dispatch }: StateContext<GestioneUtentiStateModel>, action: SuccessRemoveUtente) {
+        setState(
+            patch({
+                listaUtenti: removeItem<Utente>(u => u.id === action.idUtente)
+            })
+        );
+        dispatch(new ShowToastr(ToastrType.Info, 'Utente Rimosso', 'Utente rimosso con successo.', 3));
     }
 
     @Action(RemoveRuoloUtente)
@@ -263,11 +284,13 @@ export class GestioneUtentiState {
 
     @Action(ClearDataModalAddUtenteModal)
     clearDataModalAddUtenteModal({ dispatch }: StateContext<GestioneUtentiStateModel>) {
-        dispatch(new UpdateFormValue({
-            value: null,
-            path: 'gestioneUtenti.addUtenteRuoloForm'
-        }));
-        dispatch(new SetFormEnabled('gestioneUtenti.addUtenteRuoloForm'));
-        dispatch(new ClearUtentiVVF());
+        dispatch([
+            new UpdateFormValue({
+                value: null,
+                path: 'gestioneUtenti.addUtenteRuoloForm'
+            }),
+            new SetFormEnabled('gestioneUtenti.addUtenteRuoloForm'),
+            new ClearUtentiVVF()
+        ]);
     }
 }

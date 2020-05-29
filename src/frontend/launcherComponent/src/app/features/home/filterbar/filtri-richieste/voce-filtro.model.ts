@@ -5,6 +5,7 @@ export class VoceFiltro {
         public descrizione: string,
         public star: boolean,
         public selezionato?: boolean,
+        public statico?: boolean,
         // server name
         public name?: string
     ) { }

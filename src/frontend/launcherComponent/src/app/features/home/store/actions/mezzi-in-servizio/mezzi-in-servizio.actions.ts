@@ -1,6 +1,6 @@
 import { Mezzo } from 'src/app/shared/model/mezzo.model';
 import { MezzoInServizio } from '../../../../../shared/interface/mezzo-in-servizio.interface';
-import { VoceFiltro } from '../../../filterbar/ricerca-group/filtri-richieste/voce-filtro.model';
+import { VoceFiltro } from '../../../filterbar/filtri-richieste/voce-filtro.model';
 
 export class GetMezziInServizio {
     static readonly type = '[MezziInServizio] Get Mezzi In Servizio';

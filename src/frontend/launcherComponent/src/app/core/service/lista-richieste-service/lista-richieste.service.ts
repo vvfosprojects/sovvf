@@ -7,7 +7,7 @@ import { handleError } from '../../../shared/helper/handleError';
 import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
 import { FiltersInterface } from '../../../shared/interface/filters.interface';
 import { PaginationInterface } from '../../../shared/interface/pagination.interface';
-import { VoceFiltro } from '../../../features/home/filterbar/ricerca-group/filtri-richieste/voce-filtro.model';
+import { VoceFiltro } from '../../../features/home/filterbar/filtri-richieste/voce-filtro.model';
 
 const BASE_URL = environment.baseUrl;
 const API_URL_RICHIESTE = BASE_URL + environment.apiUrl.rigaElencoRichieste;

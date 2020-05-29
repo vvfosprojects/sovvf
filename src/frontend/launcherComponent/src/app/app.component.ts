@@ -24,10 +24,8 @@ import { PermessiService } from './core/service/permessi-service/permessi.servic
 import { RuoliUtenteLoggatoState } from './shared/store/states/ruoli-utente-loggato/ruoli-utente-loggato.state';
 import { AuthenticationService } from './core/auth/_services/authentication.service';
 import { VersionCheckService } from './core/service/version-check/version-check.service';
-import { NewVersionState } from './shared/store/states/nuova-versione/nuova-versione.state';
-import { VersionInterface } from './shared/interface/version.interface';
 import { SetAvailHeight, SetContentHeight } from './shared/store/actions/viewport/viewport.actions';
-import { ViewportState } from './shared/store/states/viewport/viewport.state';
+import { Images } from './shared/enum/images.enum';
 
 @Component({
     selector: 'app-root',
@@ -37,34 +35,28 @@ import { ViewportState } from './shared/store/states/viewport/viewport.state';
 export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
 
     private subscription = new Subscription();
-
-    @Select(AppState.appIsLoaded) isLoaded$: Observable<boolean>;
+    private imgs = [];
+    private deniedPath = [ RoutesPath.NotFound.toString(), RoutesPath.Login.toString() ];
+    private height;
+    private availHeight;
+    private currentUrl: string;
 
     @Select(SediTreeviewState.listeSediLoaded) listeSediLoaded$: Observable<boolean>;
     private listeSediLoaded: boolean;
 
     @Select(AppState.offsetTimeSync) offsetTime$: Observable<number>;
     @Select(AppState.vistaSedi) vistaSedi$: Observable<string[]>;
-
-    @Select(ViewportState.footerFixed) footerFixed$: Observable<boolean>;
-
-    @Select(NewVersionState.version) version$: Observable<VersionInterface>;
+    @Select(AppState.appIsLoaded) isLoaded$: Observable<boolean>;
 
     @Select(RuoliUtenteLoggatoState.ruoliFiltrati) ruoliUtenteLoggato$: Observable<Ruolo[]>;
     @Select(UtenteState.utente) user$: Observable<Utente>;
     user: Utente;
 
     permissionFeatures = PermissionFeatures;
-
-    isReady = false;
+    RoutesPath = RoutesPath;
 
     _opened = false;
     _toggle = false;
-    RoutesPath = RoutesPath;
-    private deniedPath = [ RoutesPath.NotFound.toString(), RoutesPath.Login.toString() ];
-
-    private height;
-    private availHeight;
 
     @ViewChild('contentElement', { read: ElementRef }) contentElement: ElementRef;
 
@@ -81,11 +73,11 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
                 private modals: NgbModal) {
         router.events.subscribe((val) => {
             if (val instanceof NavigationEnd) {
+                this.currentUrl = val.urlAfterRedirects.slice(1);
                 !this.deniedPath.includes(val.urlAfterRedirects.slice(1)) && authService._isLogged() ? this._toggle = true : this._toggle = false;
             }
         });
         this.subscription.add(this.isLoaded$.subscribe((r: boolean) => {
-            console.log('isLoaded$', r);
             this._isReady(r);
         }));
         this.subscription.add(this.offsetTime$.subscribe((serverTime: number) => OFFSET_SYNC_TIME.unshift(serverTime)));
@@ -104,8 +96,10 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
         this.subscription.add(this.vistaSedi$.subscribe(r => r && this.store.dispatch(new PatchListaSediNavbar([ ...r ]))));
     }
 
+
     ngOnInit() {
         !isDevMode() && this.versionCheckService.initVersionCheck(3);
+        this.preloadImage(Images.Disconnected);
     }
 
     ngAfterViewChecked() {
@@ -116,9 +110,10 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
         this.subscription.unsubscribe();
     }
 
-    _isReady(status: boolean) {
-        this.isReady = status;
+    private _isReady(status: boolean) {
+        console.log('_isReady', status);
         if (!status) {
+            // Todo verificare se necessario
             this.modals.dismissAll();
         }
     }
@@ -127,20 +122,29 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
         this._opened = !this._opened;
     }
 
-    getHeight(): void {
-        const availHeight = window.innerHeight;
-        const height = this.contentElement.nativeElement.offsetHeight;
-        if (height) {
-            if (this.height !== height) {
-                this.height = height;
-                this.store.dispatch(new SetContentHeight(height));
+    private getHeight(): void {
+        if (this.currentUrl === RoutesPath.Home) {
+            const availHeight = window.innerHeight;
+            const height = this.contentElement.nativeElement.offsetHeight;
+            if (height) {
+                if (this.height !== height) {
+                    this.height = height;
+                    this.store.dispatch(new SetContentHeight(height));
+                }
+            }
+            if (availHeight) {
+                if (this.availHeight !== availHeight) {
+                    this.availHeight = availHeight;
+                    this.store.dispatch(new SetAvailHeight(availHeight));
+                }
             }
         }
-        if (availHeight) {
-            if (this.availHeight !== availHeight) {
-                this.availHeight = availHeight;
-                this.store.dispatch(new SetAvailHeight(availHeight));
-            }
+    }
+
+    private preloadImage(...args: string[]): void {
+        for (let i = 0; i < args.length; i++) {
+            this.imgs[i] = new Image();
+            this.imgs[i].src = args[i];
         }
     }
 

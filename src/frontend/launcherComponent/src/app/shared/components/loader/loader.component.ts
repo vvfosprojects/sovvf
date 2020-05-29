@@ -1,15 +1,26 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
+import { Select } from '@ngxs/store';
+import { AppState } from '../../store/states/app/app.state';
+import { Observable, Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-loader',
-  templateUrl: './loader.component.html',
-  styleUrls: ['./loader.component.css']
+    selector: 'app-loader',
+    templateUrl: './loader.component.html',
+    styleUrls: [ './loader.component.css' ]
 })
-export class LoaderComponent implements OnInit {
+export class LoaderComponent implements OnDestroy {
 
-  constructor() { }
+    private subscription = new Subscription();
+    isReady: boolean;
 
-  ngOnInit() {
-  }
+    @Select(AppState.appIsLoaded) isLoaded$: Observable<boolean>;
+
+    constructor() {
+        this.subscription.add(this.isLoaded$.subscribe((r: boolean) => this.isReady = r));
+    }
+
+    ngOnDestroy() {
+        this.subscription.unsubscribe();
+    }
 
 }

@@ -1,9 +1,20 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
-import { ReloadApp, SetVistaSedi, SetTimeSync, ClearVistaSedi, SetMapLoaded } from '../../actions/app/app.actions';
+import {
+    ReloadApp,
+    SetVistaSedi,
+    SetTimeSync,
+    ClearVistaSedi,
+    SetMapLoaded, SetCurrentUrl
+} from '../../actions/app/app.actions';
 import { SetCodiceSede } from '../../../../core/signalr/store/signalR.actions';
 import { SignalRState, SignalRStateModel } from '../../../../core/signalr/store/signalR.state';
+import { Navigate, RouterState } from '@ngxs/router-plugin';
+import { RouterStateModel } from '@ngxs/router-plugin/src/router.state';
+import { RoutesPath } from '../../../enum/routes-path.enum';
+import { UtenteState, UtenteStateModel } from '../../../../features/navbar/store/states/operatore/utente.state';
 
 export interface AppStateModel {
+    previusUrl: string;
     appIsLoaded: boolean;
     vistaSedi: string[];
     offsetTimeSync: number;
@@ -11,6 +22,7 @@ export interface AppStateModel {
 }
 
 export const appStateDefaults: AppStateModel = {
+    previusUrl: RoutesPath.Home,
     appIsLoaded: true,
     vistaSedi: null,
     offsetTimeSync: 0,
@@ -23,9 +35,18 @@ export const appStateDefaults: AppStateModel = {
 })
 export class AppState {
 
-    @Selector([SignalRState])
-    static appIsLoaded(state: AppStateModel, signalRState: SignalRStateModel) {
-        return state.appIsLoaded && signalRState.connected && !!signalRState.connectionId;
+    @Selector([ SignalRState, RouterState ])
+    static appIsLoaded(state: AppStateModel, signalRState: SignalRStateModel, routerState: RouterStateModel) {
+        const currentUrl = routerState.state.url;
+        let currentPage = true;
+        if (currentUrl === '/home') {
+            currentPage = state.mapIsLoaded;
+        }
+        let signalR = true;
+        if (signalRState.reconnected === null) {
+            signalR = signalRState.connected && !!signalRState.connectionId && !signalRState.disconnected;
+        }
+        return state.appIsLoaded && signalR && currentPage;
     }
 
     @Selector()
@@ -38,21 +59,15 @@ export class AppState {
         return state.vistaSedi;
     }
 
-    @Action(ReloadApp)
-    reloadApp({ getState, patchState }: StateContext<AppStateModel>) {
-        const appLoaded = getState().appIsLoaded;
-        if (appLoaded) {
-            reload();
-            setTimeout(() => {
-                reload();
-            }, 0);
-        }
+    @Selector([ UtenteState ])
+    static previusUrl(state: AppStateModel, utenteState: UtenteStateModel) {
+        const userLogged = utenteState.utente;
+        return userLogged ? state.previusUrl : RoutesPath.Login;
+    }
 
-        function reload() {
-            patchState({
-                appIsLoaded: !getState().appIsLoaded
-            });
-        }
+    @Action(ReloadApp)
+    reloadApp({ dispatch }: StateContext<AppStateModel>) {
+        dispatch(new Navigate([ `/${RoutesPath.Logged}` ]));
     }
 
     @Action(SetVistaSedi)
@@ -74,9 +89,13 @@ export class AppState {
     }
 
     @Action(SetMapLoaded)
-    setMapLoaded({ patchState }: StateContext<AppStateModel>) {
-        patchState({
-            mapIsLoaded: true
-        });
+    setMapLoaded({ patchState }: StateContext<AppStateModel>, { mapIsLoaded }: SetMapLoaded) {
+        patchState({ mapIsLoaded });
     }
+
+    @Action(SetCurrentUrl)
+    setCurrentUrl({ patchState }: StateContext<AppStateModel>, { previusUrl }: SetCurrentUrl) {
+        patchState({ previusUrl });
+    }
+
 }

@@ -1,0 +1,84 @@
+  <div class="modal-body my-1">
+    <div class="row">
+      <div class="col-12 pt-2 pb-4">
+        <div class="input-group">
+          <input type="text" class="form-control"
+                 placeholder="Cerca filtri nella categoria '{{ categoriaSelezionata }}'"
+                 [(ngModel)]="filtersSearch.descrizione">
+          <div class="input-group-append">
+            <button class="btn btn-primary">
+              <i class="fa fa-search text-light"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="col-6" style="height:400px; overflow-y:auto">
+        <div class="row">
+          <div class="col-12">
+            <ul class="list-unstyled">
+              <li *ngFor="let c of categorie"
+                  class="pl-2 pt-2 pb-1 border-bottom cursor-pointer"
+                  ngbTooltip="{{ c }}" placement="bottom"
+                  [disableTooltip]="c.length <= 60"
+                  [ngClass]="{'bg-primary text-light': c === categoriaSelezionata}"
+                  (click)="onSelezioneCategoria(c)">
+                {{ c | truncate: 60 }}
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="col-6 pl-4" style="height:400px; overflow-y:auto">
+        <div *ngFor="let f of filtri | filterBy: filtersSearch"
+             class="cursor-pointer pointer mb-2">
+          <app-filtro *ngIf="f.categoria === categoriaSelezionata"
+                      [filtro]="f"
+                      [useCheckbox]="true"
+                      [selezionato]="f | selectedFilterTipologiaRichieste"
+                      (filtroSelezionato)="onSelezioneFiltroTipologia($event)"
+                      (filtroDeselezionato)="onDeselezioneFiltroTipologia($event)">
+          </app-filtro>
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="mt-4 mb-2">
+          <span class="h5 mb-0 mr-2">Filtri attivi</span>
+          <span *ngIf="filtriSelezionati.length > 0" class="text-danger cursor-pointer"
+                (click)="resetFiltri()">Elimina tutti</span>
+        </div>
+        <span class="w-25 mx-1 text-center"
+              *ngFor="let f of filtriSelezionati | paginate: { id: 'filtri', itemsPerPage: 4, currentPage: p}">
+                                  <button class="btn btn-success" ngbTooltip="{{ f.descrizione }}" placement="bottom"
+                                          [disableTooltip]="f.descrizione.length <= 20">{{ f.descrizione | truncate: 30 }}</button>
+                                </span>
+        <button *ngIf="filtriSelezionati.length <= 0"
+                class="btn btn-outline-secondary disabled">Seleziona un
+          filtro per migliorare la ricerca!
+        </button>
+      </div>
+      <div class="col-12 text-center mt-2">
+        <pagination-controls id="filtri" (pageChange)="p = $event"
+                             maxSize="9"
+                             directionLinks="true"
+                             autoHide="true"
+                             responsive="true"
+                             previousLabel=""
+                             nextLabel="">
+        </pagination-controls>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="row w-100">
+      <div class="col-12 text-right">
+        <button type="button" class="btn btn-lg btn-danger mr-2" aria-label="Close"
+                (click)="chiudiModalFiltriTipologia('ko')">
+          Annulla
+        </button>
+        <button type="button" class="btn btn-lg btn-success" aria-label="Close"
+                (click)="chiudiModalFiltriTipologia('ok')">
+          Applica Filtri
+        </button>
+      </div>
+    </div>
+  </div>

@@ -12,6 +12,7 @@ import { SelectedFilterRichiestePipe } from './selected-filter-richieste.pipe';
 import { CheckPermissionRichiestaPipe } from './check-permission-richiesta.pipe';
 import { CheckPermissionPipe } from './check-permission.pipe';
 import { CheckPermissionSchedaContattoPipe } from './check-permission-scheda-contatto.pipe';
+import { SelectedFilterTipologiaRichiestePipe } from './selected-filter-tipologia-richieste.pipe';
 
 const COMPONENTS = [
     TruncatePipe,
@@ -26,7 +27,8 @@ const COMPONENTS = [
     CheckPermissionPipe,
     CheckPermissionRichiestaPipe,
     CheckPermissionSchedaContattoPipe,
-    SelectedFilterRichiestePipe
+    SelectedFilterRichiestePipe,
+    SelectedFilterTipologiaRichiestePipe
 ];
 
 @NgModule({

@@ -1,5 +1,5 @@
 import { Component, Output, EventEmitter, Input } from '@angular/core';
-import { makeCopy } from '../../../../../shared/helper/function';
+import { makeCopy } from '../../../../shared/helper/function';
 
 @Component({
     selector: 'app-ricerca',
