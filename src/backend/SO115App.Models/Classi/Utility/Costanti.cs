@@ -72,6 +72,7 @@ namespace SO115App.Models.Classi.Utility
         public static string MezzoDisponibile = "DISPONIBILE";
         public static string MezzoOperativoPreaccoppiato = "Operativo Preaccoppiato";
         public static string MezzoAssegnatoPreaccoppiato = "Assegnato Preaccoppiato";
+        public static string MezzoErroreCambioStatoRichiestaChiusa = "Lo stato del mezzo non può essere cambiato in una richiesta chiusa.";
 
         #endregion StatiMezzi
 

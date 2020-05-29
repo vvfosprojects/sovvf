@@ -58,6 +58,9 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                     yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
                 else
                 {
+                    if (richiesta.Chiusa)
+                        yield return new AuthorizationResult(Costanti.MezzoErroreCambioStatoRichiestaChiusa);
+
                     foreach (var ruolo in user.Ruoli)
                     {
                         if (!_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, richiesta.CodSOCompetente, Costanti.GestoreRichieste))
