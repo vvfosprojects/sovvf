@@ -28,7 +28,9 @@ namespace SO115App.Persistence.MongoDB.GestioneUtenti.GestioneUtente
         /// <returns>L'utente cercato</returns>
         public Utente Get(string codiceFiscale)
         {
-            return _dbContext.UtenteCollection.Find(Builders<Utente>.Filter.Eq(x => x.CodiceFiscale, codiceFiscale)).Single();
+            var utente = _dbContext.UtenteCollection.Find(Builders<Utente>.Filter.Eq(x => x.CodiceFiscale, codiceFiscale)).SingleOrDefault();
+
+            return utente;
         }
     }
 }

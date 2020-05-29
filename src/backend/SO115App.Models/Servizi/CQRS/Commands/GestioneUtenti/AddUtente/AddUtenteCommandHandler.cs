@@ -22,6 +22,8 @@ using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Organigramma;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti;
+using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.GestioneRuolo;
+using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.GetUtenti;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Personale;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
@@ -40,14 +42,22 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneUtenti.AddUtente
         private readonly IGetAlberaturaUnitaOperative _getAlberaturaUnitaOperative;
         private readonly IGetListaDistaccamentiByCodiceSede _getListaDistaccamentiByCodiceSede;
         private readonly IGetDistaccamentoByCodiceSedeUC _getDistaccamentoByCodiceSede;
+        private readonly IGetUtenteByCF _getUtenteByCF;
+        private readonly IAddRuoli _addRuoli;
 
-        public AddUtenteCommandHandler(IAddUtente addUtente, IGetPersonaleByCF personaleByCF, IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative, IGetListaDistaccamentiByCodiceSede getListaDistaccamentiByCodiceSede, IGetDistaccamentoByCodiceSedeUC getDistaccamentoByCodiceSede)
+        public AddUtenteCommandHandler(IAddUtente addUtente, IGetPersonaleByCF personaleByCF,
+            IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative, IGetListaDistaccamentiByCodiceSede getListaDistaccamentiByCodiceSede,
+            IGetDistaccamentoByCodiceSedeUC getDistaccamentoByCodiceSede,
+            IGetUtenteByCF getUtenteByCF,
+            IAddRuoli addRuoli)
         {
             _addUtente = addUtente;
             _personaleByCF = personaleByCF;
             _getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
             _getListaDistaccamentiByCodiceSede = getListaDistaccamentiByCodiceSede;
             _getDistaccamentoByCodiceSede = getDistaccamentoByCodiceSede;
+            _getUtenteByCF = getUtenteByCF;
+            _addRuoli = addRuoli;
         }
 
         /// <summary>
@@ -56,6 +66,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneUtenti.AddUtente
         /// <param name="command">il command con i parametri di ingresso</param>
         public void Handle(AddUtenteCommand command)
         {
+            var utenteSO = _getUtenteByCF.Get(command.CodFiscale);
             var personale = _personaleByCF.Get(command.CodFiscale).Result;
             var listaPin = new List<PinNodo>();
             var sediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
@@ -79,7 +90,10 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneUtenti.AddUtente
                 Sede = new Sede($"{distaccamento.CodSede}", distaccamento.DescDistaccamento, distaccamento.Indirizzo, distaccamento.Coordinate, "", "", "", "", "")
             };
 
-            _addUtente.Add(utenteVVF);
+            if (utenteSO != null)
+                _addRuoli.Add(command.CodFiscale, command.Ruoli);
+            else
+                _addUtente.Add(utenteVVF);
         }
     }
 }
