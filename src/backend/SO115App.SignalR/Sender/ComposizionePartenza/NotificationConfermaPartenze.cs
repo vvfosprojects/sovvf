@@ -31,6 +31,7 @@ using System.Threading.Tasks;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
+using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 
 namespace SO115App.SignalR.Sender.ComposizionePartenza
 {
@@ -45,6 +46,7 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
         private readonly IMapper _mapper;
         private readonly IGetTipologieByCodice _getTipologieByCodice;
         private readonly MapperRichiestaAssistenzaSuSintesi _mapperSintesi;
+        private readonly IGetRichiestaById _getRichiestaById;
 
         public NotificationConfermaPartenze(IHubContext<NotificationHub> notificationHubContext,
             IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> boxRichiestehandler,
@@ -52,7 +54,9 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
             IQueryHandler<BoxPersonaleQuery, BoxPersonaleResult> boxPersonalehandler,
             IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> sintesiRichiesteAssistenzaMarkerhandler,
             IMapper mapper,
-            IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> sintesiRichiesteHandler, IGetTipologieByCodice getTipologieByCodice, MapperRichiestaAssistenzaSuSintesi mapperSintesi)
+            IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> sintesiRichiesteHandler,
+            IGetTipologieByCodice getTipologieByCodice, MapperRichiestaAssistenzaSuSintesi mapperSintesi,
+            IGetRichiestaById getRichiestaById)
         {
             _notificationHubContext = notificationHubContext;
             _boxRichiestehandler = boxRichiestehandler;
@@ -63,13 +67,14 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
             _sintesiRichiesteHandler = sintesiRichiesteHandler;
             _getTipologieByCodice = getTipologieByCodice;
             _mapperSintesi = mapperSintesi;
+            _getRichiestaById = getRichiestaById;
         }
 
         public async Task SendNotification(ConfermaPartenzeCommand conferma)
         {
             const bool notificaChangeState = true;
 
-            var richiesta = conferma.ConfermaPartenze.richiesta;
+            var richiesta = _getRichiestaById.GetByCodice(conferma.ConfermaPartenze.IdRichiesta);
             var sintesi = _mapperSintesi.Map(richiesta);
 
             sintesi.Motivazione = sintesi.Descrizione;
