@@ -66,7 +66,7 @@ export class AppState {
     }
 
     @Action(ReloadApp)
-    reloadApp({ getState, dispatch }: StateContext<AppStateModel>) {
+    reloadApp({ dispatch }: StateContext<AppStateModel>) {
         dispatch(new Navigate([ `/${RoutesPath.Logged}` ]));
     }
 

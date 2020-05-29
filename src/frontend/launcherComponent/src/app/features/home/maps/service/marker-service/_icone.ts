@@ -7,17 +7,17 @@ export class IconMappe {
      * proprietà per definire lo status dell'oggetto icona marker della mappa
      */
     private pathUrl: string;
-    private iconeModello: [string, string][];
+    private iconeModello: [ string, string ][];
     private mapIconeModelloPath: Map<string, string>;
-    private iconeStati: [string, string][];
+    private iconeStati: [ string, string ][];
     private mapIconeUrl: Map<string, string>;
-    private iconeSedi: [string, string][];
+    private iconeSedi: [ string, string ][];
     private mapIconeSedi: Map<string, string>;
-    private iconeTipoSedi: [string, string][];
+    private iconeTipoSedi: [ string, string ][];
     private mapIconeTipoSedi: Map<string, string>;
-    private iconeMezzi: [string, string][];
+    private iconeMezzi: [ string, string ][];
     private mapIconeMezzi: Map<string, string>;
-    private iconeSpeciali: [string, string][];
+    private iconeSpeciali: [ string, string ][];
     private mapIconeSpeciali: Map<string, string>;
 
     /**
@@ -39,75 +39,76 @@ export class IconMappe {
         this.pathUrl = 'assets/img/icone-markers/';
 
         this.iconeModello = [
-            ['richiesta', 'richieste/'],
-            ['mezzo', 'mezzi/'],
-            ['sede', 'sedi/'],
-            ['tipo-sede', 'tipo-sedi/']
+            [ 'richiesta', 'richieste/' ],
+            [ 'mezzo', 'mezzi/' ],
+            [ 'sede', 'sedi/' ],
+            [ 'tipo-sede', 'tipo-sedi/' ]
         ];
         this.mapIconeModelloPath = new Map(this.iconeModello);
 
         this.iconeStati = [
-            ['chiam', 'chiamata.png'],
-            ['asseg', 'assegnata.png'],
-            ['presi', 'presidiata.png'],
-            ['sospe', 'sospesa.png'],
-            ['chius', 'chiusa.png']
+            [ 'chiam', 'chiamata.png' ],
+            [ 'asseg', 'assegnata.png' ],
+            [ 'presi', 'presidiata.png' ],
+            [ 'sospe', 'sospesa.png' ],
+            [ 'chius', 'chiusa.png' ]
         ];
         this.mapIconeUrl = new Map(this.iconeStati);
 
         this.iconeTipoSedi = [
-            ['aeroportuale', 'aeroportuale.gif'],
-            ['afmp', 'afmp.jpg'],
-            ['centri_polifunzionali', 'centri_polifunzionali.gif'],
-            ['cinofili', 'cinofili.gif'],
-            ['comando', 'comando.gif'],
-            ['direzioni', 'direzioni.gif'],
-            ['elicotteristi', 'elicotteristi.gif'],
-            ['nbcr', 'nbcr.gif'],
-            ['nbcr_avanzato', 'nbcr_avanzato.gif'],
-            ['nbcr_ordinari', 'nbcr_ordinari.gif'],
-            ['poli_didattici', 'poli_didattici.gif'],
-            ['portuale', 'portuale.gif'],
-            ['presidi_acquatici', 'presidi_acquatici.gif'],
-            ['saf', 'saf.gif'],
-            ['distaccamento', 'sedi.gif'],
-            ['sedi_varie', 'sedi_varie.gif'],
-            ['sommozzatori', 'sommozzatori.gif'],
-            ['telecomunicazioni', 'telecomunicazioni.gif'],
-            ['tlc', 'tlc.gif'],
-            ['uas', 'uas.gif'],
-            ['volontari', 'volontari.gif'],
-            ['volontari_stag', 'volontari_stag.gif']
+            [ 'aeroportuale', 'aeroportuale.gif' ],
+            [ 'afmp', 'afmp.jpg' ],
+            [ 'centro_polifunzionali', 'centri_polifunzionali.gif' ],
+            [ 'cinofili', 'cinofili.gif' ],
+            [ 'comando', 'comando.gif' ],
+            [ 'direzione', 'direzioni.gif' ],
+            [ 'elicotteristi', 'elicotteristi.gif' ],
+            [ 'nbcr', 'nbcr.gif' ],
+            [ 'nbcr_avanzato', 'nbcr_avanzato.gif' ],
+            [ 'nbcr_ordinari', 'nbcr_ordinari.gif' ],
+            [ 'poli_didattici', 'poli_didattici.gif' ],
+            [ 'portuale', 'portuale.gif' ],
+            [ 'presidi_acquatici', 'presidi_acquatici.gif' ],
+            [ 'saf', 'saf.gif' ],
+            [ 'distaccamento', 'sedi.gif' ],
+            [ 'sedi_varie', 'sedi_varie.gif' ],
+            [ 'sommozzatori', 'sommozzatori.gif' ],
+            [ 'telecomunicazioni', 'telecomunicazioni.gif' ],
+            [ 'tlc', 'tlc.gif' ],
+            [ 'uas', 'uas.gif' ],
+            [ 'volontari', 'volontari.gif' ],
+            [ 'volontari_stag', 'volontari_stag.gif' ],
+            [ 'default', 'sedi_varie.gif' ]
         ];
         this.mapIconeTipoSedi = new Map(this.iconeTipoSedi);
 
         this.iconeMezzi = [
-            ['insed', 'insede.png'],
-            ['invia', 'inviaggio.png'],
-            ['inrie', 'inrientro.png'],
-            ['sulpo', 'sulposto.png'],
-            ['istit', 'istituto.png']
+            [ 'insed', 'insede.png' ],
+            [ 'invia', 'inviaggio.png' ],
+            [ 'inrie', 'inrientro.png' ],
+            [ 'sulpo', 'sulposto.png' ],
+            [ 'istit', 'istituto.png' ]
         ];
 
         this.mapIconeMezzi = new Map(this.iconeMezzi);
 
         this.iconeSedi = [
-            ['comando', 'sede5.png'],
-            ['distaccamento', 'sede5.png'],
-            ['direzioni', 'sede5.png'],
-            ['default', 'sede5.png']
+            [ 'comando', 'sede5.png' ],
+            [ 'distaccamento', 'sede5.png' ],
+            [ 'direzioni', 'sede5.png' ],
+            [ 'default', 'sede5.png' ]
         ];
         this.mapIconeSedi = new Map(this.iconeSedi);
 
         this.iconeSpeciali = [
-            ['meteo', 'speciali/marker-meteo-32.png'],
-            ['chiamata', 'speciali/chiamata-marker-rosso.png'],
-            ['Competenza', 'speciali/scheda-contatto-marker.png'],
-            ['Conoscenza', 'speciali/scheda-contatto-marker-conoscenza.png'],
-            ['Differibile', 'speciali/scheda-contatto-marker-differibile.png'],
-            ['Competenza-g', 'speciali/scheda-contatto-marker-g.png'],
-            ['Conoscenza-g', 'speciali/scheda-contatto-marker-conoscenza-g.png'],
-            ['Differibile-g', 'speciali/scheda-contatto-marker-differibile-g.png'],
+            [ 'meteo', 'speciali/marker-meteo-32.png' ],
+            [ 'chiamata', 'speciali/chiamata-marker-rosso.png' ],
+            [ 'Competenza', 'speciali/scheda-contatto-marker.png' ],
+            [ 'Conoscenza', 'speciali/scheda-contatto-marker-conoscenza.png' ],
+            [ 'Differibile', 'speciali/scheda-contatto-marker-differibile.png' ],
+            [ 'Competenza-g', 'speciali/scheda-contatto-marker-g.png' ],
+            [ 'Conoscenza-g', 'speciali/scheda-contatto-marker-conoscenza-g.png' ],
+            [ 'Differibile-g', 'speciali/scheda-contatto-marker-differibile-g.png' ],
         ];
         this.mapIconeSpeciali = new Map(this.iconeSpeciali);
     }
@@ -126,9 +127,9 @@ export class IconMappe {
         /**
          * tipi di icone da cachare
          */
-        const cache = ['richiesta', 'mezzo', 'sede'];
+        const cache = [ 'richiesta', 'mezzo', 'sede' ];
         const path = this.pathUrl;
-        const selezionato = ['ns/', 's/'];
+        const selezionato = [ 'ns/', 's/' ];
         cache.forEach(c => {
             const pathComune = path + this.mapIconeModelloPath.get(c);
             selezionato.forEach(tipo => {
@@ -212,7 +213,11 @@ export class IconMappe {
          */
         const pathModello = this.mapIconeModelloPath.get('tipo-sede');
         const path = this.pathUrl + pathModello;
-        const tipoSede = this.mapIconeTipoSedi.get(tipo.toLowerCase());
+        const tipoReplaced = tipo.replace(/ /g, '_');
+        let tipoSede = this.mapIconeTipoSedi.get(tipoReplaced.toLowerCase());
+        if (!tipoSede) {
+            tipoSede = this.mapIconeSedi.get('default');
+        }
         this.iconaStatoCorrenteUrl = path + tipoSede;
         if (!this.iconaStatoCorrenteUrl || !tipoSede) {
             return undefined;
