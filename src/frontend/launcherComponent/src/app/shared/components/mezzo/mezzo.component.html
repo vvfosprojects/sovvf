@@ -60,7 +60,7 @@
     </ng-template>
   </span>
 
-  <app-mezzo-actions *ngIf="inGestione" [mezzo]="mezzo" (actionMezzo)="onActionMezzo($event)"></app-mezzo-actions>
+  <app-mezzo-actions *ngIf="actionsAttive" [mezzo]="mezzo" (actionMezzo)="onActionMezzo($event)"></app-mezzo-actions>
 
   <span *ngIf="mostraRichiestaAssociata" class="d-inline-block text-right">Richiesta
       {{mezzo.idRichiesta}}</span>

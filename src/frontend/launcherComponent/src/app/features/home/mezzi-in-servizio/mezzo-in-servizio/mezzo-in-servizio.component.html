@@ -8,7 +8,7 @@
             <!-- Prima Colonna (Prima riga) -->
             <div class="col-9">
                 <app-mezzo [mezzo]="mezzoInServizio.mezzo.mezzo" [mostraIndicatori]="true" [mostraNotifiche]="true"
-                           [inGestione]="mezzoInServizio.mezzo.mezzo.stato !== StatoMezzo.InSede"
+                           [actionsAttive]="mezzoInServizio.mezzo.mezzo.stato !== StatoMezzo.InSede"
                            (actionMezzo)="actionMezzo.emit({'a': mezzoInServizio.mezzo.mezzo, 'b': $event})">
                 </app-mezzo>
             </div>

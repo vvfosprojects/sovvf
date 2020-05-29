@@ -19,7 +19,7 @@ export class MezzoComponent implements OnInit {
     @Input() mostraIndicatori: boolean;
     @Input() mostraNotifiche: boolean;
     @Input() mostraRichiestaAssociata: boolean;
-    @Input() inGestione: boolean;
+    @Input() actionsAttive: boolean;
 
     @Output() actionMezzo: EventEmitter<MezzoActionInterface> = new EventEmitter();
     stato = new ColoriStatoMezzo();
