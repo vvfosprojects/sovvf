@@ -126,6 +126,7 @@ namespace DomainModel.CQRS.Commands.AddIntervento
                 NotePubbliche = command.Chiamata.NotePubbliche,
                 NumeroTelefono = command.Chiamata.Richiedente.Telefono,
                 Esito = command.Chiamata.Azione.ToString(),
+                CodiceSchedaContatto = command.Chiamata.CodiceSchedaNue
             };
 
             new AssegnazionePriorita(richiesta, prioritaRichiesta, DateTime.UtcNow.AddMilliseconds(1.0), command.CodUtente);
