@@ -8,6 +8,10 @@ import { ShowToastr } from '../../../../../../shared/store/actions/toastr/toastr
 import { SedeMarker } from '../../../maps-model/sede-marker.model';
 import { SediMarkersState } from '../../../../store/states/maps/sedi-markers.state';
 import { ToastrType } from '../../../../../../shared/enum/toastr';
+import {
+    PatchSediNavbarSelezionate,
+    SetSediNavbarSelezionate
+} from '../../../../../../shared/store/actions/sedi-treeview/sedi-treeview.actions';
 
 @Component({
     selector: 'app-cambio-sede-modal',
@@ -31,8 +35,11 @@ export class CambioSedeModalComponent implements OnDestroy {
     }
 
     cambioSede() {
-        // this.unitaAttualeS.sendUnitaOperativaAttuale([this.sede]);
-        this.store.dispatch(new ClearMarkerSedeSelezionato());
+        this.store.dispatch([
+            new ClearMarkerSedeSelezionato(),
+            new PatchSediNavbarSelezionate([this.sede.codice], false),
+            new SetSediNavbarSelezionate()
+        ]);
     }
 
     annullaCambioSede() {
