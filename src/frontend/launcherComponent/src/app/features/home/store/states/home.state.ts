@@ -23,6 +23,7 @@ import { GetFiltriRichieste } from '../actions/filterbar/filtri-richieste.action
 import { PatchPagination } from '../../../../shared/store/actions/pagination/pagination.actions';
 import { SetCurrentUrl, SetMapLoaded } from '../../../../shared/store/actions/app/app.actions';
 import { RoutesPath } from '../../../../shared/enum/routes-path.enum';
+import { ClearViewState } from '../actions/view/view.actions';
 
 export interface HomeStateModel {
     markerLoading: boolean;
@@ -65,7 +66,8 @@ export class HomeState {
             new ClearBoxMezzi(),
             new ClearBoxPersonale(),
             new ClearRichieste(),
-            new SetMapLoaded(false)
+            new SetMapLoaded(false),
+            new ClearViewState()
         ]);
         patchState(HomeStateDefaults);
     }
