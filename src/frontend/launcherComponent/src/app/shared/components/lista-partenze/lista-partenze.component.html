@@ -1,11 +1,12 @@
 <div *ngIf="checkNumeroPartenze(partenze) <= 0">
-  <h6 class="mt-1">Non ci sono mezzi su questa richiesta di intervento</h6>
+    <h6 class="mt-1">Non ci sono mezzi su questa richiesta di intervento</h6>
 </div>
 <ul *ngIf="partenze" class="list-unstyled">
   <span *ngFor="let p of partenze">
     <li *ngIf="!p.sganciata" class="border-bottom">
-      <app-partenza [partenza]="p" [inGestione]="inGestione" (listaSquadre)="onListaSquadrePartenza($event)"
-        (actionMezzo)="onActionMezzo($event)"></app-partenza>
+      <app-partenza [partenza]="p" [inGestione]="inGestione" [statoRichiesta]="statoRichiesta"
+                    (listaSquadre)="onListaSquadrePartenza($event)"
+                    (actionMezzo)="onActionMezzo($event)"></app-partenza>
     </li>
   </span>
 </ul>
