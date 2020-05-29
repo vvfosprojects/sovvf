@@ -23,7 +23,7 @@ namespace SO115App.API.Controllers
         }
 
         [HttpPost("AggiornaPartenza")]
-        public async Task<IActionResult> AggiornaPartenza([FromBody]AggiornaStatoMezzoCommand intervento)
+        public async Task<IActionResult> AggiornaPartenza([FromBody] AggiornaStatoMezzoCommand intervento)
         {
             var headerValues = Request.Headers["IdUtente"];
             var codiceSede = Request.Headers["CodiceSede"];
@@ -48,6 +48,8 @@ namespace SO115App.API.Controllers
             {
                 if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
                     return StatusCode(403, Costanti.UtenteNonAutorizzato);
+                if (ex.Message.Contains(Costanti.MezzoErroreCambioStatoRichiestaChiusa))
+                    return StatusCode(403, Costanti.MezzoErroreCambioStatoRichiestaChiusa);
                 return BadRequest();
             }
         }
