@@ -82,7 +82,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneUtente.LogIn
             var token = tokenHandler.CreateToken(tokenDescriptor);
 
             utente.Token = tokenHandler.WriteToken(token);
-            utente.Machine = GetLocalIpAddress();
+            //utente.Machine = GetLocalIpAddress();
 
             return new LogInResult()
             {
