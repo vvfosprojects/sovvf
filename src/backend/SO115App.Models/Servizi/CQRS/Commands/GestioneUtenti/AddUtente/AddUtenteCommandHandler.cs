@@ -83,6 +83,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneUtenti.AddUtente
                     }
                 }
             }
+            //Test di refresh chain
             var utenteVVF = new Utente(command.CodFiscale, personale.Nominativo.Split(".")[0], personale.Nominativo.Split(".")[1])
             {
                 Ruoli = command.Ruoli,
