@@ -11,11 +11,11 @@
 
 @font-face {
   font-family: "icon-marker";
-  src: url("./assets/fonts/icon-marker.eot?tiygmj");
-  src: url("./assets/fonts/icon-marker.eot?tiygmj#iefix") format("embedded-opentype"),
-    url("./assets/fonts/icon-marker.ttf?tiygmj") format("truetype"),
-    url("./assets/fonts/icon-marker.woff?tiygmj") format("woff"),
-    url("./assets/fonts/icon-marker.svg?tiygmj#icon-marker") format("svg");
+  src: url("./assets/fonts/icon-marker.eot?dx1djn");
+  src: url("./assets/fonts/icon-marker.eot?dx1djn#iefix") format("embedded-opentype"),
+    url("./assets/fonts/icon-marker.ttf?dx1djn") format("truetype"),
+    url("./assets/fonts/icon-marker.woff?dx1djn") format("woff"),
+    url("./assets/fonts/icon-marker.svg?dx1djn#icon-marker") format("svg");
   font-weight: normal;
   font-style: normal;
 }
@@ -388,6 +388,12 @@ a:hover {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-not-recursive .path1:before {
+  content: "\e904";
+}
+.icon-recursive:before {
+  content: "\e912";
+}
 .icon-truck-fire-q:before {
   content: "\e901";
 }
@@ -396,9 +402,6 @@ a:hover {
 }
 .icon-fa-richieste:before {
   content: "\e903";
-}
-.icon-truck-fire:before {
-  content: "\e904";
 }
 .icon-humidity:before {
   content: "\e900";
