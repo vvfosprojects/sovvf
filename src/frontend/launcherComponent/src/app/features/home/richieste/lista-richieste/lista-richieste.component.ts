@@ -6,11 +6,13 @@ import { MezzoActionInterface } from '../../../../shared/interface/mezzo-action.
 import { RichiestaActionInterface } from '../../../../shared/interface/richiesta-action.interface';
 import { StatoRichiesta } from '../../../../shared/enum/stato-richiesta.enum';
 import { PermissionFeatures } from '../../../../shared/enum/permission-features.enum';
+import { VoceFiltro } from '../../filterbar/filtri-richieste/voce-filtro.model';
+import { VociFiltroDefault } from '../../../../shared/enum/voci-filtro-default.enum';
 
 @Component({
     selector: 'app-lista-richieste',
     templateUrl: './lista-richieste.component.html',
-    styleUrls: ['./lista-richieste.component.scss']
+    styleUrls: [ './lista-richieste.component.scss' ]
 })
 export class ListaRichiesteComponent implements OnInit {
     @Input() ricerca: any;
@@ -31,6 +33,8 @@ export class ListaRichiesteComponent implements OnInit {
     @Input() page: number;
     @Input() pageSize: number;
     @Input() totalItems: number;
+
+    @Input() codiciFiltriSelezionati: string[];
 
     // Permessi
     permessiFeature = PermissionFeatures;
@@ -54,6 +58,7 @@ export class ListaRichiesteComponent implements OnInit {
     methods = new HelperSintesiRichiesta;
     scrolling = false;
     statoRichiesta = StatoRichiesta;
+    vociFiltroDefault = VociFiltroDefault;
 
     @ViewChild(CdkVirtualScrollViewport) virtualScroll: CdkVirtualScrollViewport;
 

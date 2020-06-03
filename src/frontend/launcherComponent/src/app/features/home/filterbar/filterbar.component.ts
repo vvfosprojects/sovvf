@@ -2,7 +2,11 @@ import { Component, Input } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { ViewInterfaceButton, ViewLayouts } from '../../../shared/interface/view.interface';
-import { ClearFiltroSelezionatoRichieste, ResetFiltriSelezionatiRichieste, SetFiltroSelezionatoRichieste } from '../store/actions/filterbar/filtri-richieste.actions';
+import {
+    ClearFiltroSelezionatoRichieste,
+    ResetFiltriSelezionatiRichieste,
+    SetFiltroSelezionatoRichieste
+} from '../store/actions/filterbar/filtri-richieste.actions';
 import { FiltriRichiesteState } from '../store/states/filterbar/filtri-richieste.state';
 import { VoceFiltro } from './filtri-richieste/voce-filtro.model';
 import { RicercaRichiesteState } from '../store/states/filterbar/ricerca-richieste.state';
@@ -18,9 +22,17 @@ import { OptionsRichieste } from '../../../shared/enum/options-richieste';
 import { ClearRichiesteEspanse } from '../store/actions/richieste/richieste-espanse.actions';
 import { HomeState } from '../store/states/home.state';
 import { SchedeContattoState } from '../store/states/schede-contatto/schede-contatto.state';
-import { ClearFiltriSchedeContatto, ReducerSetFiltroSchedeContatto, SetFiltroKeySchedeContatto } from '../store/actions/schede-contatto/schede-contatto.actions';
+import {
+    ClearFiltriSchedeContatto,
+    ReducerSetFiltroSchedeContatto,
+    SetFiltroKeySchedeContatto
+} from '../store/actions/schede-contatto/schede-contatto.actions';
 import { MezziInServizioState } from '../store/states/mezzi-in-servizio/mezzi-in-servizio.state';
-import { ClearFiltriMezziInServizio, SetFiltroMezziInServizio, SetRicercaMezziInServizio } from '../store/actions/mezzi-in-servizio/mezzi-in-servizio.actions';
+import {
+    ClearFiltriMezziInServizio,
+    SetFiltroMezziInServizio,
+    SetRicercaMezziInServizio
+} from '../store/actions/mezzi-in-servizio/mezzi-in-servizio.actions';
 import { PermissionFeatures } from '../../../shared/enum/permission-features.enum';
 import { RichiesteState } from '../store/states/richieste/richieste.state';
 
@@ -107,8 +119,7 @@ export class FilterbarComponent {
     }
 
     getRicercaPlaceholder() {
-        const placeholderDefault = 'Cosa vuoi cercare?';
-        let placeholder = placeholderDefault;
+        let placeholder = 'Cosa vuoi cercare?';
         const mezziInServizioActive = this.store.selectSnapshot(ViewComponentState.mezziInServizio);
         if (mezziInServizioActive) {
             placeholder = 'Che targa vuoi cercare?';

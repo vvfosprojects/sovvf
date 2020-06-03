@@ -6,17 +6,29 @@ import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model'
 import { EventiRichiestaComponent } from '../eventi/eventi-richiesta.component';
 import { Select, Store } from '@ngxs/store';
 import { RicercaRichiesteState } from '../store/states/filterbar/ricerca-richieste.state';
-import { ClearRichiestaFissata, SetEspanso, SetRichiestaFissata } from '../store/actions/richieste/richiesta-fissata.actions';
+import {
+    ClearRichiestaFissata,
+    SetEspanso,
+    SetRichiestaFissata
+} from '../store/actions/richieste/richiesta-fissata.actions';
 import { RichiestaFissataState } from '../store/states/richieste/richiesta-fissata.state';
 import { ClearRichiestaHover, SetRichiestaHover } from '../store/actions/richieste/richiesta-hover.actions';
-import { ClearRichiestaSelezionata, SetRichiestaSelezionata } from '../store/actions/richieste/richiesta-selezionata.actions';
+import {
+    ClearRichiestaSelezionata,
+    SetRichiestaSelezionata
+} from '../store/actions/richieste/richiesta-selezionata.actions';
 import { RichiesteState } from '../store/states/richieste/richieste.state';
 import { RichiestaSelezionataState } from '../store/states/richieste/richiesta-selezionata.state';
 import { RichiestaHoverState } from '../store/states/richieste/richiesta-hover.state';
 import { ClearEventiRichiesta, SetIdRichiestaEventi } from '../store/actions/eventi/eventi-richiesta.actions';
 import { ToggleComposizione, ToggleModifica } from '../store/actions/view/view.actions';
 import { Composizione } from '../../../shared/enum/composizione.enum';
-import { ClearMarkerRichiestaHover, ClearMarkerRichiestaSelezionato, SetMarkerRichiestaHover, SetMarkerRichiestaSelezionato } from '../store/actions/maps/marker.actions';
+import {
+    ClearMarkerRichiestaHover,
+    ClearMarkerRichiestaSelezionato,
+    SetMarkerRichiestaHover,
+    SetMarkerRichiestaSelezionato
+} from '../store/actions/maps/marker.actions';
 import { GetInitZoomCentroMappa } from '../store/actions/maps/centro-mappa.actions';
 import { ClearMarkerOpachiRichieste, SetMarkerOpachiRichieste } from '../store/actions/maps/marker-opachi.actions';
 import { SetRichiestaModifica } from '../store/actions/richieste/richiesta-modifica.actions';
@@ -32,11 +44,13 @@ import { PermissionFeatures } from '../../../shared/enum/permission-features.enu
 import { PaginationState } from '../../../shared/store/states/pagination/pagination.state';
 import { ResetFiltriSelezionatiRichieste } from '../store/actions/filterbar/filtri-richieste.actions';
 import { StatoRichiesta } from '../../../shared/enum/stato-richiesta.enum';
+import { FiltriRichiesteState } from '../store/states/filterbar/filtri-richieste.state';
+import { VoceFiltro } from '../filterbar/filtri-richieste/voce-filtro.model';
 
 @Component({
     selector: 'app-richieste',
     templateUrl: './richieste.component.html',
-    styleUrls: ['./richieste.component.css']
+    styleUrls: [ './richieste.component.css' ]
 })
 export class RichiesteComponent implements OnInit, OnDestroy {
 
@@ -71,6 +85,9 @@ export class RichiesteComponent implements OnInit, OnDestroy {
     @Select(PaginationState.pageSize) pageSize$: Observable<number>;
     @Select(PaginationState.totalItems) totalItems$: Observable<number>;
 
+    @Select(FiltriRichiesteState.filtriRichiesteSelezionati) filtriRichiesteSelezionati$: Observable<VoceFiltro[]>;
+    codiciFiltriSelezionati: string[] = [];
+
     loaderRichieste = true;
     listHeightClass = 'm-h-695';
     permessiFeature = PermissionFeatures;
@@ -91,6 +108,7 @@ export class RichiesteComponent implements OnInit, OnDestroy {
         this.getRichiestaSelezionata();
         this.getRichiestaGestione();
         this.getRicerca();
+        this.getFiltriSelezionati();
         isDevMode() && console.log('Componente Richieste creato');
     }
 
@@ -199,6 +217,14 @@ export class RichiesteComponent implements OnInit, OnDestroy {
         );
     }
 
+    getFiltriSelezionati() {
+        this.subscription.add(
+            this.filtriRichiesteSelezionati$.subscribe((filtri: VoceFiltro[]) => {
+                this.codiciFiltriSelezionati = filtri.map(filtro => filtro.codice);
+            })
+        );
+    }
+
     opacizzaRichieste(ricerca: any): void {
         const result = this.filter.transform(this.richieste, ricerca);
         if (result) {
@@ -249,7 +275,11 @@ export class RichiesteComponent implements OnInit, OnDestroy {
     /* Apre il modal per visualizzare gli eventi relativi alla richiesta cliccata */
     onVisualizzaEventiRichiesta(idRichiesta: string) {
         this.store.dispatch(new SetIdRichiestaEventi(idRichiesta));
-        const modal = this.modalService.open(EventiRichiestaComponent, { windowClass: 'xlModal', backdropClass: 'light-blue-backdrop', centered: true });
+        const modal = this.modalService.open(EventiRichiestaComponent, {
+            windowClass: 'xlModal',
+            backdropClass: 'light-blue-backdrop',
+            centered: true
+        });
         modal.result.then(() => {
             },
             () => this.store.dispatch(new ClearEventiRichiesta()));
