@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Composizione;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneMezzi;
+using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.SetMezzoPrenotato;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.GetComposizioneMezzi;
@@ -24,9 +25,12 @@ namespace SO115App.ExternalAPI.Fake.Composizione
         private readonly IGetMezziUtilizzabili _getMezziUtilizzabili;
         private readonly IGetListaSquadre _getSquadre;
         private readonly IGetFiltri _getFiltri;
+        private readonly ISetMezzoPrenotato _setMezzoPrenotato;
 
-        public GetComposizioneMezzi(IGetStatoMezzi getMezziPrenotati, OrdinamentoMezzi ordinamentoMezzi, IGetMezziUtilizzabili getMezziUtilizzabili,
-            IGetListaSquadre getSquadre, IGetFiltri getFiltri)
+        public GetComposizioneMezzi(IGetStatoMezzi getMezziPrenotati, OrdinamentoMezzi ordinamentoMezzi,
+            IGetMezziUtilizzabili getMezziUtilizzabili,
+            IGetListaSquadre getSquadre, IGetFiltri getFiltri,
+            ISetMezzoPrenotato setMezzoPrenotato)
 
         {
             _getMezziUtilizzabili = getMezziUtilizzabili;
@@ -34,6 +38,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             _getMezziPrenotati = getMezziPrenotati;
             _ordinamentoMezzi = ordinamentoMezzi;
             _getFiltri = getFiltri;
+            _setMezzoPrenotato = setMezzoPrenotato;
         }
 
         public List<ComposizioneMezzi> Get(ComposizioneMezziQuery query)
@@ -61,12 +66,31 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             var composizioneMezziPrenotati = GetComposizioneMezziPrenotati(composizioneMezzi, query.CodiceSede);
 
             return composizioneMezziPrenotati.OrderByDescending(x => x.IndiceOrdinamento).ToList();
-            
         }
 
         private List<ComposizioneMezzi> GetComposizioneMezziPrenotati(List<ComposizioneMezzi> composizioneMezzi, string codiceSede)
         {
+            SetMezzoPrenotatoCommand command = new SetMezzoPrenotatoCommand();
             var mezziPrenotati = _getMezziPrenotati.Get(codiceSede);
+            bool AggiornaListaMezziPrenotati = false;
+            foreach (var mezzo in mezziPrenotati)
+            {
+                if (mezzo.IstantePrenotazione != null)
+                {
+                    var differenza = DateTime.Now - mezzo.IstantePrenotazione;
+                    if (differenza.Value.TotalSeconds > 15)
+                    {
+                        command.MezzoPrenotato = mezzo;
+                        command.MezzoPrenotato.SbloccaMezzo = true;
+                        _setMezzoPrenotato.Set(command);
+                        AggiornaListaMezziPrenotati = true;
+                    }
+                }
+            }
+
+            if (AggiornaListaMezziPrenotati)
+                mezziPrenotati = _getMezziPrenotati.Get(codiceSede);
+
             foreach (var composizione in composizioneMezzi)
             {
                 if (mezziPrenotati.Find(x => x.CodiceMezzo.Equals(composizione.Mezzo.Codice)) != null)
