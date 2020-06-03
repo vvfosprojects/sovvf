@@ -28,6 +28,7 @@ using SO115App.API.Models.Servizi.CQRS.Queries.Marker.SintesiRichiesteAssistenza
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneIntervento;
+using SO115App.SignalR.Utility;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -41,6 +42,7 @@ namespace SO115App.SignalR.Sender.GestioneIntervento
         private readonly IQueryHandler<BoxMezziQuery, BoxMezziResult> _boxMezziHandler;
         private readonly IQueryHandler<BoxPersonaleQuery, BoxPersonaleResult> _boxPersonaleHandler;
         private readonly IGetSintesiRichiestaAssistenzaByCodice _getSintesiById;
+        private readonly GetGerarchiaToSend _getGerarchiaToSend;
         private readonly IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> _sintesiRichiesteAssistenzaMarkerHandler;
         private readonly IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> _sintesiRichiesteAssistenzaHandler;
 
@@ -50,7 +52,8 @@ namespace SO115App.SignalR.Sender.GestioneIntervento
                                           IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> sintesiRichiesteAssistenzaHandler,
                                           IQueryHandler<BoxMezziQuery, BoxMezziResult> boxMezziHandler,
                                           IQueryHandler<BoxPersonaleQuery, BoxPersonaleResult> boxPersonaleHandler,
-                                          IGetSintesiRichiestaAssistenzaByCodice getSintesiById)
+                                          IGetSintesiRichiestaAssistenzaByCodice getSintesiById,
+                                          GetGerarchiaToSend getGerarchiaToSend)
         {
             _notificationHubContext = notificationHubContext;
             _boxRichiesteHandler = boxRichiesteHandler;
@@ -59,54 +62,61 @@ namespace SO115App.SignalR.Sender.GestioneIntervento
             _boxMezziHandler = boxMezziHandler;
             _boxPersonaleHandler = boxPersonaleHandler;
             _getSintesiById = getSintesiById;
+            _getGerarchiaToSend = getGerarchiaToSend;
         }
 
         public async Task SendNotification(UpDateStatoRichiestaCommand richiesta)
         {
+            var SediDaNotificare = _getGerarchiaToSend.Get(richiesta.CodiceSede);
+
             const bool notificaChangeState = true;
-            var sintesiRichiesteAssistenzaQuery = new SintesiRichiesteAssistenzaQuery
+
+            foreach (var sede in SediDaNotificare)
             {
-                Filtro = new FiltroRicercaRichiesteAssistenza
+                var sintesiRichiesteAssistenzaQuery = new SintesiRichiesteAssistenzaQuery
                 {
-                    idOperatore = richiesta.IdOperatore
-                },
-                CodiciSede = new string[] { richiesta.CodiceSede }
-            };
-            var boxRichiesteQuery = new BoxRichiesteQuery()
-            {
-                CodiciSede = new string[] { richiesta.CodiceSede }
-            };
-            var boxInterventi = _boxRichiesteHandler.Handle(boxRichiesteQuery).BoxRichieste;
+                    Filtro = new FiltroRicercaRichiesteAssistenza
+                    {
+                        idOperatore = richiesta.IdOperatore
+                    },
+                    CodiciSede = new string[] { sede }
+                };
+                var boxRichiesteQuery = new BoxRichiesteQuery()
+                {
+                    CodiciSede = new string[] { sede }
+                };
+                var boxInterventi = _boxRichiesteHandler.Handle(boxRichiesteQuery).BoxRichieste;
 
-            var boxMezziQuery = new BoxMezziQuery()
-            {
-                CodiciSede = new string[] { richiesta.CodiceSede }
-            };
-            var boxMezzi = _boxMezziHandler.Handle(boxMezziQuery).BoxMezzi;
+                var boxMezziQuery = new BoxMezziQuery()
+                {
+                    CodiciSede = new string[] { sede }
+                };
+                var boxMezzi = _boxMezziHandler.Handle(boxMezziQuery).BoxMezzi;
 
-            var boxPersonaleQuery = new BoxPersonaleQuery()
-            {
-                CodiciSede = new string[] { richiesta.CodiceSede }
-            };
-            var boxPersonale = _boxPersonaleHandler.Handle(boxPersonaleQuery).BoxPersonale;
+                var boxPersonaleQuery = new BoxPersonaleQuery()
+                {
+                    CodiciSede = new string[] { sede }
+                };
+                var boxPersonale = _boxPersonaleHandler.Handle(boxPersonaleQuery).BoxPersonale;
 
-            var sintesiRichiesteAssistenzaMarkerQuery = new SintesiRichiesteAssistenzaMarkerQuery()
-            {
-                CodiciSedi = new string[] { richiesta.CodiceSede }
-            };
+                var sintesiRichiesteAssistenzaMarkerQuery = new SintesiRichiesteAssistenzaMarkerQuery()
+                {
+                    CodiciSedi = new string[] { sede }
+                };
 
-            var listaSintesiMarker = (List<SintesiRichiestaMarker>)_sintesiRichiesteAssistenzaMarkerHandler.Handle(sintesiRichiesteAssistenzaMarkerQuery).SintesiRichiestaMarker;
-            var ChamataUpd = listaSintesiMarker.LastOrDefault(sintesi => sintesi.Id == richiesta.IdRichiesta);
-            
-            var SintesiRichiesta = _getSintesiById.GetSintesi(ChamataUpd.Codice);
-            richiesta.Chiamata = SintesiRichiesta;
+                var listaSintesiMarker = (List<SintesiRichiestaMarker>)_sintesiRichiesteAssistenzaMarkerHandler.Handle(sintesiRichiesteAssistenzaMarkerQuery).SintesiRichiestaMarker;
+                var ChamataUpd = listaSintesiMarker.LastOrDefault(sintesi => sintesi.Id == richiesta.IdRichiesta);
 
-            await _notificationHubContext.Clients.Group(richiesta.CodiceSede).SendAsync("ModifyAndNotifySuccess", richiesta);
-            await _notificationHubContext.Clients.Group(richiesta.CodiceSede).SendAsync("ChangeStateSuccess", notificaChangeState);
-            await _notificationHubContext.Clients.Group(richiesta.CodiceSede).SendAsync("NotifyGetBoxInterventi", boxInterventi);
-            await _notificationHubContext.Clients.Group(richiesta.CodiceSede).SendAsync("NotifyGetBoxMezzi", boxMezzi);
-            await _notificationHubContext.Clients.Group(richiesta.CodiceSede).SendAsync("NotifyGetBoxPersonale", boxPersonale);
-            await _notificationHubContext.Clients.Group(richiesta.CodiceSede).SendAsync("NotifyGetRichiestaUpDateMarker", ChamataUpd);
+                var SintesiRichiesta = _getSintesiById.GetSintesi(ChamataUpd.Codice);
+                richiesta.Chiamata = SintesiRichiesta;
+
+                await _notificationHubContext.Clients.Group(sede).SendAsync("ModifyAndNotifySuccess", richiesta);
+                await _notificationHubContext.Clients.Group(sede).SendAsync("ChangeStateSuccess", notificaChangeState);
+                await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxInterventi", boxInterventi);
+                await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxMezzi", boxMezzi);
+                await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxPersonale", boxPersonale);
+                await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetRichiestaUpDateMarker", ChamataUpd);
+            }
         }
     }
 }
