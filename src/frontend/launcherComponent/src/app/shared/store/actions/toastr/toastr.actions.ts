@@ -1,12 +1,15 @@
 import { ToastrType } from '../../../enum/toastr';
+import { environment } from '../../../../../environments/environment';
 
 export class ShowToastr {
     static readonly type = '[Toastr] Show Toast';
 
     constructor(public type: ToastrType,
-                public title?: string, public message?: string,
+                public title?: string,
+                public message?: string,
                 public duration?: number,
-                public tapToDismiss?: boolean) {
+                public tapToDismiss?: boolean,
+                public alwaysVisible = environment.toastr) {
     }
 }
 

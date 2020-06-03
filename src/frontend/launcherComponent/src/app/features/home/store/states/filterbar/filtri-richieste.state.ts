@@ -32,8 +32,7 @@ export const filtriRichiesteStateDefaults: FiltriRichiesteStateModel = {
     ],
     filtriRichieste: [],
     filtriRichiesteSelezionati: [
-        { codice: '99999999', categoria: 'Aperte', descrizione: 'Aperte', name: 'includiRichiesteAperte', star: true, statico: true },
-        { codice: '999999999', categoria: 'Chiuse', descrizione: 'Chiuse', name: 'includiRichiesteChiuse', star: true, statico: true }
+        { codice: '99999999', categoria: 'Aperte', descrizione: 'Aperte', name: 'includiRichiesteAperte', star: true, statico: true }
     ],
     categoriaFiltriRichieste: [],
     filtriTipologiaSelezionati: []

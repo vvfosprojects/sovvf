@@ -8,42 +8,45 @@
     <tbody>
     <tr *ngFor="let utente of listaUtenti | paginate: { itemsPerPage: pageSize, currentPage: page, totalItems: totalItems }">
         <td width="40%" class="pb-1">
-            <button class="btn btn-sm btn-danger font-weight-bold float-left mt-4 mr-2" ngbTooltip="Rimuovi utente"
+            <button class="btn btn-sm btn-danger font-weight-bold float-left mt-1 mr-3" ngbTooltip="Rimuovi utente"
                     placement="bottom" [disabled]="utente.id === idUtenteLoggato"
                     (click)="onRemoveUtente(utente.codiceFiscale, utente.cognome + ' ' + utente.nome)">
                 <i class="fa fa-trash"></i>
             </button>
-            <div class="h5 font-weight-bold mt-4 pt-1">
+            <div class="h5 font-weight-bold mt-1 pt-1">
                 {{utente.cognome | uppercase}} {{utente.nome | uppercase}}
             </div>
         </td>
-        <td width="60%" class="pb-1">
-            <button class="btn btn-primary btn-sm font-weight-bold mt-4 mr-3 float-left"
-                    (click)="onAddRuoloUtente(utente.codiceFiscale, utente.cognome + ' ' + utente.nome, utente.ruoli)">
-                <i class="fa fa-plus"></i>
-            </button>
-            <div *ngFor="let ruolo of utente.ruoli, let i=index" class="d-inline-block h6 font-weight-normal">
-                <div class="badge badge-warning font-weight-bold clearfix cursor-pointer shadow-sm py-3 px-2 mr-2"
-                     [ngbTooltip]="'Codice sede: ' + ruolo.codSede"
-                     placement="top">
-                    <div class="d-inline-block float-left">
-                        <div>
-                            {{ruolo.descSede ? ruolo.descSede : ruolo.codSede}}
-                        </div>
-                        <ng-template [ngIf]="ruolo.ricorsivo">
-                            <div class="mt-1">(Ricorsivo)</div>
-                        </ng-template>
-                        <ng-template [ngIf]="!ruolo.ricorsivo">
-                            <div class="mt-1">(Non Ricorsivo)</div>
-                        </ng-template>
-                        <div class="mt-2">
-                            {{wipeRoleString(ruolo.descrizione)}}
-                        </div>
-                    </div>
-                    <button class="btn btn-danger btn-sm float-right mt-2 ml-3" placement="bottom"
-                            (click)="onRemoveRuoloUtente(utente.codiceFiscale, ruolo, utente.cognome + ' ' + utente.nome)">
-                        <i class="fa fa-sm fa-sm fa-trash"></i>
+        <td width="60%">
+            <div class="row">
+                <div class="col-1" style="display: flex; align-items: center;">
+                    <button class="btn btn-primary btn-sm font-weight-bold"
+                            (click)="onAddRuoloUtente(utente.codiceFiscale, utente.cognome + ' ' + utente.nome, utente.ruoli)">
+                        <i class="fa fa-plus"></i>
                     </button>
+                </div>
+                <div class="col-11">
+                    <ul class="list-unstyled p-2 mb-0">
+                        <li *ngFor="let ruolo of utente.ruoli, let i=index" class="border-bottom p-2">
+                            <div class="clearfix">
+                                <div class="float-left mt-1">
+                                    <span class="mr-3 font-weight-bold" style="font-size:1.3rem"
+                                          [ngClass]="{'icon-recursive': ruolo.ricorsivo, 'icon-not-recursive-single': !ruolo.ricorsivo}"
+                                          [ngbTooltip]="ruolo.ricorsivo ? 'In profondità' : 'Non in profondità'"
+                                          placement="top"></span>
+                                    <span class="font-weight-bolder mr-1">{{wipeRoleString(ruolo.descrizione)}}</span>
+                                    di
+                                    <span class="font-weight-bolder ml-1">{{ruolo.descSede ? ruolo.descSede : ruolo.codSede}}</span>
+                                </div>
+                                <div class="float-right">
+                                    <button class="btn btn-danger btn-sm float-right ml-3" placement="bottom"
+                                            (click)="onRemoveRuoloUtente(utente.codiceFiscale, ruolo, utente.cognome + ' ' + utente.nome)">
+                                        <i class="fa fa-sm fa-sm fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
                 </div>
             </div>
             <div *ngIf="utente?.ruoli.length <= 0 && !loading" class="d-inline-block h6 font-weight-normal">
