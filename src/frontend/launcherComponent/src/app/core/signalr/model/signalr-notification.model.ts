@@ -1,15 +1,15 @@
 import { SignalRNotificationInterface } from '../interface/signalr-notification.interface';
 
 export class SignalRNotification implements SignalRNotificationInterface {
-    CodiciSede: string[];
+    codiciSede: string[];
     idUtente: string;
-    NominativoUtente?: string;
-    ActionObj?: any;
+    nominativoUtente?: string;
+    actionObj?: any;
 
     constructor(codiciSede: string[], idUtente: string, nominativoUtente?: string, actionObj?: object) {
-        this.CodiciSede = codiciSede;
-        this.ActionObj = JSON.stringify(actionObj);
-        this.NominativoUtente = nominativoUtente;
+        this.codiciSede = codiciSede;
+        this.actionObj = JSON.stringify(actionObj);
+        this.nominativoUtente = nominativoUtente;
         this.idUtente = idUtente;
     }
 }

@@ -1,6 +1,6 @@
 export interface SignalRNotificationInterface {
-    CodiciSede: string[];
+    codiciSede: string[];
     idUtente: string;
-    NominativoUtente?: string;
-    ActionObj?: any;
+    nominativoUtente?: string;
+    actionObj?: any;
 }
