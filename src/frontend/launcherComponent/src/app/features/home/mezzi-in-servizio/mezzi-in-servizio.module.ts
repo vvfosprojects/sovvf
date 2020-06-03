@@ -12,6 +12,7 @@ import { NgxsModule } from '@ngxs/store';
 import { MezziInServizioState } from '../store/states/mezzi-in-servizio/mezzi-in-servizio.state';
 import { EventiRichiestaState } from '../store/states/eventi/eventi-richiesta.state';
 import { MezzoInServizioComponent } from './mezzo-in-servizio/mezzo-in-servizio.component';
+import { FilterPipeModule } from 'ngx-filter-pipe';
 
 @NgModule({
     imports: [
@@ -26,6 +27,7 @@ import { MezzoInServizioComponent } from './mezzo-in-servizio/mezzo-in-servizio.
                 EventiRichiestaState
             ]
         ),
+        FilterPipeModule,
     ],
     declarations: [
         MezziInServizioComponent,

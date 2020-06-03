@@ -8,9 +8,15 @@ import { makeCopy } from '../../../../shared/helper/function';
 })
 export class RicercaComponent {
 
-    @Input() ricerca = '';
-    @Input() disabled = false;
-    @Output() search: EventEmitter<string> = new EventEmitter();
+    @Input() placeholder: string;
+    @Input() ricerca: string;
+    @Input() disabled: boolean;
+    @Input() debounce: boolean;
+
+    @Output() search: EventEmitter<string> = new EventEmitter<string>();
+
+    constructor() {
+    }
 
     onSearch() {
         this.search.emit(makeCopy(this.ricerca));

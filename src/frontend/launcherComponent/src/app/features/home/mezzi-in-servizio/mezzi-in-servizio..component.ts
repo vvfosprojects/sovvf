@@ -1,22 +1,8 @@
 import { Component, isDevMode, OnDestroy, OnInit } from '@angular/core';
 import { Store, Select } from '@ngxs/store';
 import { ToggleMezziInServizio } from '../store/actions/view/view.actions';
-import {
-    ClearMezzoInServizioHover,
-    GetMezziInServizio,
-    SetMezzoInServizioHover,
-    SetMezzoInServizioSelezionato
-} from '../store/actions/mezzi-in-servizio/mezzi-in-servizio.actions';
-import {
-    SetIdRichiestaEventi,
-    ClearEventiRichiesta,
-    SetFiltroTargaMezzo
-} from '../store/actions/eventi/eventi-richiesta.actions';
-import {
-    AllTrueBoxMezzi,
-    AllTrueBoxMezziPresenti,
-    UndoAllBoxes
-} from '../store/actions/boxes/box-click.actions';
+import { SetIdRichiestaEventi, ClearEventiRichiesta, SetFiltroTargaMezzo } from '../store/actions/eventi/eventi-richiesta.actions';
+import { AllTrueBoxMezzi, AllTrueBoxMezziPresenti, UndoAllBoxes } from '../store/actions/boxes/box-click.actions';
 import { MezziInServizioState } from '../store/states/mezzi-in-servizio/mezzi-in-servizio.state';
 import { Observable, Subscription } from 'rxjs';
 import { MezzoActionInterface } from 'src/app/shared/interface/mezzo-action.interface';
@@ -28,10 +14,11 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SintesiRichiestaModalComponent } from '../maps/maps-ui/info-window/sintesi-richiesta-modal/sintesi-richiesta-modal.component';
 import { MezzoInServizio } from '../../../shared/interface/mezzo-in-servizio.interface';
 import { Mezzo } from '../../../shared/model/mezzo.model';
-import { BoxClickState, BoxClickStateModel } from '../store/states/boxes/box-click.state';
-import { ReducerFiltroMarker } from '../store/actions/maps/maps-filtro.actions';
 import { onlyUnique } from '../../../shared/helper/function';
 import { StatoMezzo } from '../../../shared/enum/stato-mezzo.enum';
+import { BoxClickState, BoxClickStateModel } from '../store/states/boxes/box-click.state';
+import { ReducerFiltroMarker } from '../store/actions/maps/maps-filtro.actions';
+import { ClearMezzoInServizioHover, GetMezziInServizio, SetMezzoInServizioHover, SetMezzoInServizioSelezionato } from '../store/actions/mezzi-in-servizio/mezzi-in-servizio.actions';
 
 @Component({
     selector: 'app-mezzi-in-servizio',
@@ -46,6 +33,8 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
     idMezzoInServizioHover: string;
     @Select(MezziInServizioState.idMezzoInServizioSelezionato) idMezzoInServizioSelezionato$: Observable<string>;
     idMezzoInServizioSelezionato: string;
+    @Select(MezziInServizioState.ricercaMezziInServizio) ricercaMezziInServizio$: Observable<{ mezzo: { mezzo: { descrizione: string } } }>;
+    ricercaMezziInServizio: { mezzo: { mezzo: { descrizione: string } } };
 
     @Select(RichiesteState.richieste) richieste$: Observable<SintesiRichiesta[]>;
     richieste: SintesiRichiesta[];
@@ -83,6 +72,11 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
         this.subscription.add(
             this.idMezzoInServizioSelezionato$.subscribe((idMezzo: string) => {
                 this.idMezzoInServizioSelezionato = idMezzo;
+            })
+        );
+        this.subscription.add(
+            this.ricercaMezziInServizio$.subscribe((ricerca: { mezzo: { mezzo: { descrizione: string } } }) => {
+                this.ricercaMezziInServizio = ricerca;
             })
         );
     }
