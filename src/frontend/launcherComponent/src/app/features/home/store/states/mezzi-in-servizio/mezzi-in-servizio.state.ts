@@ -2,11 +2,11 @@ import { State, Selector, Action, StateContext, Select } from '@ngxs/store';
 import {
     ClearFiltriMezziInServizio,
     ClearMezzoInServizioHover,
-    ClearMezzoInServizioSelezionato, FilterMezziInServizio,
+    ClearMezzoInServizioSelezionato, ClearRicercaMezziInServizio, FilterMezziInServizio,
     GetMezziInServizio, SetFiltroMezziInServizio,
     SetMezziInServizio,
     SetMezzoInServizioHover,
-    SetMezzoInServizioSelezionato
+    SetMezzoInServizioSelezionato, SetRicercaMezziInServizio
 } from '../../actions/mezzi-in-servizio/mezzi-in-servizio.actions';
 import { ClearMarkerMezzoHover, ClearMarkerMezzoSelezionato, SetMarkerMezzoHover, SetMarkerMezzoSelezionato } from '../../actions/maps/marker.actions';
 import { MezzoInServizio } from '../../../../../shared/interface/mezzo-in-servizio.interface';
@@ -27,6 +27,7 @@ export interface MezziInServizioStateModel {
     idMezzoInServizioHover: string;
     idMezzoInServizioSelezionato: string;
     filtriMezziInServizio: VoceFiltro[];
+    ricerca: { mezzo: { mezzo: { descrizione: string } } };
 }
 
 export const MezziInServizioStateDefaults: MezziInServizioStateModel = {
@@ -41,7 +42,8 @@ export const MezziInServizioStateDefaults: MezziInServizioStateModel = {
         new VoceFiltro('6', Categoria.SulPosto, 'Sul Posto', false),
         new VoceFiltro('1', Categoria.FuoriServizio, 'Fuori Servizio', false),
         new VoceFiltro('5', Categoria.Istituto, 'Istituto', false),
-    ]
+    ],
+    ricerca: { mezzo: { mezzo: { descrizione: '' } } }
 };
 
 @State<MezziInServizioStateModel>({
@@ -84,6 +86,12 @@ export class MezziInServizioState {
     @Selector()
     static filtriSelezionati(state: MezziInServizioStateModel) {
         return state.filtriMezziInServizio.filter(f => f.selezionato === true);
+    }
+
+
+    @Selector()
+    static ricercaMezziInServizio(state: MezziInServizioStateModel) {
+        return state.ricerca;
     }
 
     @Action(GetMezziInServizio)
@@ -185,5 +193,19 @@ export class MezziInServizioState {
             'idMezzoInServizioSelezionato': null
         });
         dispatch(new ClearMarkerMezzoSelezionato());
+    }
+
+    @Action(SetRicercaMezziInServizio)
+    setRicercaMezziInServizio({ patchState }: StateContext<MezziInServizioStateModel>, action: SetRicercaMezziInServizio) {
+        patchState({
+            ricerca: { mezzo: { mezzo: { descrizione: action.ricerca } } }
+        });
+    }
+
+    @Action(ClearRicercaMezziInServizio)
+    clearRicercaMezziInServizio({ patchState }: StateContext<MezziInServizioStateModel>) {
+        patchState({
+            ricerca: { mezzo: { mezzo: { descrizione: '' } } }
+        });
     }
 }

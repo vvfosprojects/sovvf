@@ -5,7 +5,7 @@ import { FilterPipe } from 'ngx-filter-pipe';
 import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
 import { EventiRichiestaComponent } from '../eventi/eventi-richiesta.component';
 import { Select, Store } from '@ngxs/store';
-import { RicercaRichiesteState } from '../store/states/filterbar/ricerca-richieste.state';
+import { RicercaFilterbarState } from '../store/states/filterbar/ricerca-filterbar.state';
 import { ClearRichiestaFissata, SetEspanso, SetRichiestaFissata } from '../store/actions/richieste/richiesta-fissata.actions';
 import { RichiestaFissataState } from '../store/states/richieste/richiesta-fissata.state';
 import { ClearRichiestaHover, SetRichiestaHover } from '../store/actions/richieste/richiesta-hover.actions';
@@ -32,6 +32,7 @@ import { PermissionFeatures } from '../../../shared/enum/permission-features.enu
 import { PaginationState } from '../../../shared/store/states/pagination/pagination.state';
 import { ResetFiltriSelezionatiRichieste } from '../store/actions/filterbar/filtri-richieste.actions';
 import { StatoRichiesta } from '../../../shared/enum/stato-richiesta.enum';
+import { ClearRicercaFilterbar } from '../store/actions/filterbar/ricerca-richieste.actions';
 
 @Component({
     selector: 'app-richieste',
@@ -42,7 +43,7 @@ export class RichiesteComponent implements OnInit, OnDestroy {
 
     @Input() split: boolean;
 
-    @Select(RicercaRichiesteState.ricerca) ricerca$: Observable<string>;
+    @Select(RicercaFilterbarState.ricerca) ricerca$: Observable<string>;
     ricerca: { descrizione: '' };
 
     @Select(RichiesteState.richieste) richieste$: Observable<SintesiRichiesta[]>;
@@ -90,7 +91,7 @@ export class RichiesteComponent implements OnInit, OnDestroy {
         this.getRichiestaHover();
         this.getRichiestaSelezionata();
         this.getRichiestaGestione();
-        this.getRicerca();
+        this.getRicercaRichieste();
         isDevMode() && console.log('Componente Richieste creato');
     }
 
@@ -189,7 +190,7 @@ export class RichiesteComponent implements OnInit, OnDestroy {
         );
     }
 
-    getRicerca() {
+    getRicercaRichieste() {
         // Restituisce la stringa di ricerca
         this.subscription.add(
             this.ricerca$.subscribe((ricerca: any) => {

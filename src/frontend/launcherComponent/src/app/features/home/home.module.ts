@@ -12,7 +12,7 @@ import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { TimeagoCustomFormatter, TimeagoFormatter, TimeagoIntl, TimeagoModule } from 'ngx-timeago';
 import { NgxsModule } from '@ngxs/store';
 import { FiltriRichiesteState } from './store/states/filterbar/filtri-richieste.state';
-import { RicercaRichiesteState } from './store/states/filterbar/ricerca-richieste.state';
+import { RicercaFilterbarState } from './store/states/filterbar/ricerca-filterbar.state';
 import { MarkerMeteoState } from './store/states/filterbar/marker-meteo-switch.state';
 import { BoxesModule } from './boxes/boxes.module';
 import { ChiamataModule } from './chiamata/chiamata.module';
@@ -69,7 +69,7 @@ import { MapsFiltroState } from './store/states/maps/maps-filtro.state';
                 ViewComponentState,
                 BackupViewComponentState,
                 FiltriRichiesteState,
-                RicercaRichiesteState,
+                RicercaFilterbarState,
                 MarkerMeteoState,
                 RichiestaModificaState,
                 TipologicheMezziState,
