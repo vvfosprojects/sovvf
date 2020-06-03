@@ -1,10 +1,9 @@
-// SET
-export class SetRicercaRichieste {
-    static readonly type = '[RicercaRichieste] Set Ricerca';
+export class SetRicercaFilterbar {
+    static readonly type = '[RicercaFilterbar] Set Ricerca';
 
     constructor(public ricerca: any) {}
 }
 
-export class ClearRicercaRichieste {
-    static readonly type = '[RicercaRichieste] Clear Ricerca';
+export class ClearRicercaFilterbar {
+    static readonly type = '[RicercaFilterbar] Clear Ricerca';
 }
