@@ -41,7 +41,7 @@ import { RichiestaGestioneState } from './richiesta-gestione.state';
 import { RichiestaAttivitaUtenteState } from './richiesta-attivita-utente.state';
 import { ListaSquadrePartenzaComponent } from '../../../../../shared';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { RicercaRichiesteState } from '../filterbar/ricerca-richieste.state';
+import { RicercaFilterbarState } from '../filterbar/ricerca-filterbar.state';
 import { FiltriRichiesteState } from '../filterbar/filtri-richieste.state';
 import { PatchPagination } from '../../../../../shared/store/actions/pagination/pagination.actions';
 import { ResponseInterface } from '../../../../../shared/interface/response.interface';
@@ -120,7 +120,7 @@ export class RichiesteState {
         if (utente) {
             dispatch(new StartLoadingRichieste());
             const filters = {
-                search: this.store.selectSnapshot(RicercaRichiesteState.ricerca),
+                search: this.store.selectSnapshot(RicercaFilterbarState.ricerca),
                 others: this.store.selectSnapshot(FiltriRichiesteState.filtriRichiesteSelezionati)
             };
             const pagination = {

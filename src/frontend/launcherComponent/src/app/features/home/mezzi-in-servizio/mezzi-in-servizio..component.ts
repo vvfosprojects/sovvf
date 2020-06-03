@@ -19,6 +19,8 @@ import { StatoMezzo } from '../../../shared/enum/stato-mezzo.enum';
 import { BoxClickState, BoxClickStateModel } from '../store/states/boxes/box-click.state';
 import { ReducerFiltroMarker } from '../store/actions/maps/maps-filtro.actions';
 import { ClearMezzoInServizioHover, GetMezziInServizio, SetMezzoInServizioHover, SetMezzoInServizioSelezionato } from '../store/actions/mezzi-in-servizio/mezzi-in-servizio.actions';
+import { RicercaFilterbarState } from '../store/states/filterbar/ricerca-filterbar.state';
+import { ClearRicercaFilterbar } from '../store/actions/filterbar/ricerca-richieste.actions';
 
 @Component({
     selector: 'app-mezzi-in-servizio',
@@ -33,7 +35,7 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
     idMezzoInServizioHover: string;
     @Select(MezziInServizioState.idMezzoInServizioSelezionato) idMezzoInServizioSelezionato$: Observable<string>;
     idMezzoInServizioSelezionato: string;
-    @Select(MezziInServizioState.ricercaMezziInServizio) ricercaMezziInServizio$: Observable<{ mezzo: { mezzo: { descrizione: string } } }>;
+    @Select(RicercaFilterbarState.ricerca) ricercaMezziInServizio$: Observable<string>;
     ricercaMezziInServizio: { mezzo: { mezzo: { descrizione: string } } };
 
     @Select(RichiesteState.richieste) richieste$: Observable<SintesiRichiesta[]>;
@@ -74,9 +76,10 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
                 this.idMezzoInServizioSelezionato = idMezzo;
             })
         );
+        this.store.dispatch(new ClearRicercaFilterbar());
         this.subscription.add(
-            this.ricercaMezziInServizio$.subscribe((ricerca: { mezzo: { mezzo: { descrizione: string } } }) => {
-                this.ricercaMezziInServizio = ricerca;
+            this.ricercaMezziInServizio$.subscribe((ricerca: string) => {
+                this.ricercaMezziInServizio = { mezzo: { mezzo: { descrizione: ricerca } } };
             })
         );
     }

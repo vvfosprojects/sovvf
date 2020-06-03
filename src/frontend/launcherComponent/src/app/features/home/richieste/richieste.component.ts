@@ -5,7 +5,7 @@ import { FilterPipe } from 'ngx-filter-pipe';
 import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
 import { EventiRichiestaComponent } from '../eventi/eventi-richiesta.component';
 import { Select, Store } from '@ngxs/store';
-import { RicercaRichiesteState } from '../store/states/filterbar/ricerca-richieste.state';
+import { RicercaFilterbarState } from '../store/states/filterbar/ricerca-filterbar.state';
 import { ClearRichiestaFissata, SetEspanso, SetRichiestaFissata } from '../store/actions/richieste/richiesta-fissata.actions';
 import { RichiestaFissataState } from '../store/states/richieste/richiesta-fissata.state';
 import { ClearRichiestaHover, SetRichiestaHover } from '../store/actions/richieste/richiesta-hover.actions';
@@ -42,7 +42,7 @@ export class RichiesteComponent implements OnInit, OnDestroy {
 
     @Input() split: boolean;
 
-    @Select(RicercaRichiesteState.ricerca) ricerca$: Observable<string>;
+    @Select(RicercaFilterbarState.ricerca) ricerca$: Observable<string>;
     ricerca: { descrizione: '' };
 
     @Select(RichiesteState.richieste) richieste$: Observable<SintesiRichiesta[]>;

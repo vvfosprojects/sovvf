@@ -5,10 +5,10 @@ import { ViewInterfaceButton, ViewLayouts } from '../../../shared/interface/view
 import { ClearFiltroSelezionatoRichieste, ResetFiltriSelezionatiRichieste, SetFiltroSelezionatoRichieste } from '../store/actions/filterbar/filtri-richieste.actions';
 import { FiltriRichiesteState } from '../store/states/filterbar/filtri-richieste.state';
 import { VoceFiltro } from './filtri-richieste/voce-filtro.model';
-import { RicercaRichiesteState } from '../store/states/filterbar/ricerca-richieste.state';
+import { RicercaFilterbarState } from '../store/states/filterbar/ricerca-filterbar.state';
 import { MarkerMeteoState } from '../store/states/filterbar/marker-meteo-switch.state';
 import { SetMarkerMeteoSwitch } from '../store/actions/filterbar/marker-meteo-switch.actions';
-import { SetRicercaRichieste } from '../store/actions/filterbar/ricerca-richieste.actions';
+import { SetRicercaFilterbar } from '../store/actions/filterbar/ricerca-richieste.actions';
 import { AppFeatures } from '../../../shared/enum/app-features.enum';
 import { ChangeView, ToggleChiamata, ToggleMezziInServizio } from '../store/actions/view/view.actions';
 import { ViewComponentState } from '../store/states/view/view.state';
@@ -41,7 +41,7 @@ export class FilterbarComponent {
     @Select(FiltriRichiesteState.filtriRichiesteSelezionati) filtriRichiesteSelezionati$: Observable<VoceFiltro[]>;
 
     // Ricerca Richieste
-    @Select(RicercaRichiesteState.ricerca) ricercaRichieste$: Observable<string>;
+    @Select(RicercaFilterbarState.ricerca) ricercaRichieste$: Observable<string>;
 
     // Loading LIsta Richieste
     @Select(RichiesteState.loadingRichieste) loadingRichieste$: Observable<boolean>;
@@ -98,12 +98,7 @@ export class FilterbarComponent {
      * Ricerca Richieste Events
      */
     onSearch(ricerca: string) {
-        const mezziInServizioActive = this.store.selectSnapshot(ViewComponentState.mezziInServizio);
-        if (!mezziInServizioActive) {
-            this.store.dispatch(new SetRicercaRichieste(ricerca));
-        } else {
-            this.store.dispatch(new SetRicercaMezziInServizio(ricerca));
-        }
+        this.store.dispatch(new SetRicercaFilterbar(ricerca));
     }
 
     getRicercaPlaceholder() {
