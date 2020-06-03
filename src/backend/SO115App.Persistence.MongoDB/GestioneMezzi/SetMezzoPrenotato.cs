@@ -27,7 +27,6 @@ namespace SO115App.Persistence.MongoDB.GestioneMezzi
             var mezzi = _getStatoMezzi.Get(command.MezzoPrenotato.CodiceSede, command.MezzoPrenotato.CodiceMezzo);
             //var mezzoFromOra = _getMezziByCodice.Get(new List<string> { command.MezzoPrenotato.CodiceMezzo }, command.MezzoPrenotato.CodiceSede).Result.Find(x => x.Codice.Equals(command.MezzoPrenotato.CodiceMezzo));
             //command.MezzoPrenotato.CodiceSede = mezzoFromOra.Distaccamento.Codice;
-
             if (mezzi != null
                 && command.MezzoPrenotato.SbloccaMezzo)
             {
@@ -35,6 +34,7 @@ namespace SO115App.Persistence.MongoDB.GestioneMezzi
             }
             else if (!command.MezzoPrenotato.SbloccaMezzo)
             {
+                command.MezzoPrenotato.StatoOperativo = "In Sede";
                 _dbContext.StatoMezzoCollection.InsertOne(command.MezzoPrenotato);
             }
         }
