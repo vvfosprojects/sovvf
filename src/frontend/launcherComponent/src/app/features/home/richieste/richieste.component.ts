@@ -32,6 +32,7 @@ import { PermissionFeatures } from '../../../shared/enum/permission-features.enu
 import { PaginationState } from '../../../shared/store/states/pagination/pagination.state';
 import { ResetFiltriSelezionatiRichieste } from '../store/actions/filterbar/filtri-richieste.actions';
 import { StatoRichiesta } from '../../../shared/enum/stato-richiesta.enum';
+import { ClearRicercaFilterbar } from '../store/actions/filterbar/ricerca-richieste.actions';
 
 @Component({
     selector: 'app-richieste',
@@ -90,7 +91,7 @@ export class RichiesteComponent implements OnInit, OnDestroy {
         this.getRichiestaHover();
         this.getRichiestaSelezionata();
         this.getRichiestaGestione();
-        this.getRicerca();
+        this.getRicercaRichieste();
         isDevMode() && console.log('Componente Richieste creato');
     }
 
@@ -189,7 +190,7 @@ export class RichiesteComponent implements OnInit, OnDestroy {
         );
     }
 
-    getRicerca() {
+    getRicercaRichieste() {
         // Restituisce la stringa di ricerca
         this.subscription.add(
             this.ricerca$.subscribe((ricerca: any) => {

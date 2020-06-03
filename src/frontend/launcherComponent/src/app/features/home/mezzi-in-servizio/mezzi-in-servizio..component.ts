@@ -47,12 +47,32 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
 
     constructor(private store: Store,
                 private modalService: NgbModal) {
+        this.getMezziInServizio();
+        this.getRichieste();
+        this.getMezzoInServizioHover();
+        this.getMezzoInServizioSelezionato();
+        this.getRicercaMezziInServizio();
+    }
+
+    ngOnInit() {
+        this.store.dispatch(new ClearRicercaFilterbar());
+        this.store.dispatch(new ReducerFiltroMarker('mezzo'));
+        isDevMode() && console.log('Componente Mezzo in Servizio creato');
+    }
+
+    ngOnDestroy(): void {
+        this.store.dispatch(new ClearRicercaFilterbar());
+        this.store.dispatch(new UndoAllBoxes(this.prevStateBoxClick));
+        this.subscription.unsubscribe();
+        isDevMode() && console.log('Componente Mezzo in Servizio distrutto');
+    }
+
+    getMezziInServizio() {
         this.prevStateBoxClick = this.store.selectSnapshot(BoxClickState);
         this.store.dispatch(new GetMezziInServizio());
         this.subscription.add(
             this.mezziInServizio$.subscribe((mezzi: MezzoInServizio[]) => {
                 this.mezziInServizio = mezzi;
-                // Stati mezzi in servizio DISTINCT
                 if (this.mezziInServizio && this.mezziInServizio.length > 0) {
                     this.statiMezziInServizio = this.mezziInServizio.map(data => data.mezzo.mezzo.stato).filter(onlyUnique);
                     this.store.dispatch(new AllTrueBoxMezziPresenti(this.statiMezziInServizio));
@@ -61,38 +81,38 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
                 }
             })
         );
+    }
+
+    getRichieste() {
         this.subscription.add(
             this.richieste$.subscribe((richieste: any) => {
                 this.richieste = richieste;
             })
         );
+    }
+
+    getMezzoInServizioHover() {
         this.subscription.add(
             this.idMezzoInServizioHover$.subscribe((idMezzo: string) => {
                 this.idMezzoInServizioHover = idMezzo;
             })
         );
+    }
+
+    getMezzoInServizioSelezionato() {
         this.subscription.add(
             this.idMezzoInServizioSelezionato$.subscribe((idMezzo: string) => {
                 this.idMezzoInServizioSelezionato = idMezzo;
             })
         );
-        this.store.dispatch(new ClearRicercaFilterbar());
+    }
+
+    getRicercaMezziInServizio() {
         this.subscription.add(
             this.ricercaMezziInServizio$.subscribe((ricerca: string) => {
                 this.ricercaMezziInServizio = { mezzo: { mezzo: { descrizione: ricerca } } };
             })
         );
-    }
-
-    ngOnInit() {
-        this.store.dispatch(new ReducerFiltroMarker('mezzo'));
-        isDevMode() && console.log('Componente Mezzo in Servizio creato');
-    }
-
-    ngOnDestroy(): void {
-        this.store.dispatch(new UndoAllBoxes(this.prevStateBoxClick));
-        this.subscription.unsubscribe();
-        isDevMode() && console.log('Componente Mezzo in Servizio distrutto');
     }
 
     onActionMezzo(mezzoInServizio: Mezzo, mezzoAction: MezzoActionInterface) {
