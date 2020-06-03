@@ -44,7 +44,6 @@ import { PermissionFeatures } from '../../../shared/enum/permission-features.enu
 import { PaginationState } from '../../../shared/store/states/pagination/pagination.state';
 import { ResetFiltriSelezionatiRichieste } from '../store/actions/filterbar/filtri-richieste.actions';
 import { StatoRichiesta } from '../../../shared/enum/stato-richiesta.enum';
-import { ClearRicercaFilterbar } from '../store/actions/filterbar/ricerca-richieste.actions';
 import { FiltriRichiesteState } from '../store/states/filterbar/filtri-richieste.state';
 import { VoceFiltro } from '../filterbar/filtri-richieste/voce-filtro.model';
 
