@@ -1,5 +1,5 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
-import { SetRicercaRichieste } from '../../actions/filterbar/ricerca-richieste.actions';
+import { ClearRicercaRichieste, SetRicercaRichieste } from '../../actions/filterbar/ricerca-richieste.actions';
 import { FiltriRichiesteState } from './filtri-richieste.state';
 
 export interface RicercaRichiesteStateModel {
@@ -32,12 +32,16 @@ export class RicercaRichiesteState {
     }
 
     @Action(SetRicercaRichieste)
-    setRicerca({ getState, patchState }: StateContext<RicercaRichiesteStateModel>, action: SetRicercaRichieste) {
-        const state = getState();
-
+    setRicerca({ patchState }: StateContext<RicercaRichiesteStateModel>, action: SetRicercaRichieste) {
         patchState({
-            ...state,
             ricerca: action.ricerca
+        });
+    }
+
+    @Action(ClearRicercaRichieste)
+    clearRicercaRichieste({ patchState }: StateContext<RicercaRichiesteStateModel>) {
+        patchState({
+            ricerca: ''
         });
     }
 }

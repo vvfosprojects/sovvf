@@ -35,9 +35,8 @@
             </div>
             <div class="col-7 pl-0">
                 <app-ricerca *ngIf="!(chiamataStatus$ | async) && !(composizioneStatus$ | async)"
-                             [ricerca]="ricercaRichieste$ | async"
-                             [disabled]="mezziInServizioStatus$ | async"
-                             (search)="onSearchRichieste($event)">
+                             [ricerca]="ricercaRichieste$ | async" [placeholder]="getRicercaPlaceholder()"
+                             [debounce]="!(mezziInServizioStatus$ | async)" (search)="onSearch($event)">
                 </app-ricerca>
             </div>
         </div>
