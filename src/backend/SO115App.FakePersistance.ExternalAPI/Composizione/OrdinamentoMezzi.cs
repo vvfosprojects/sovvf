@@ -37,7 +37,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
             if (IdRichiestaOrigine != null)
             {
-                var richiestaOrigine = _getRichiestaById.GetById(IdRichiestaOrigine);
+                var richiestaOrigine = _getRichiestaById.GetByCodice(IdRichiestaOrigine);
                 ValoreIntOriginePerSganciamento = GeneraValoreSganciamento(richiestaOrigine.Tipologie);
             }
 
@@ -50,14 +50,12 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
         private async Task<ComposizioneMezzi> GetDistanceByGoogle(ComposizioneMezzi composizione, RichiestaAssistenza richiesta)
         {
-
             var origine = $"origins={ composizione.Mezzo.Coordinate.Latitudine.ToString().Replace(",", ".")},{ composizione.Mezzo.Coordinate.Longitudine.ToString().Replace(",", ".")}";
             var destination = $"destinations={ richiesta.Localita.Coordinate.Latitudine.ToString().Replace(",", ".")},{ richiesta.Localita.Coordinate.Longitudine.ToString().Replace(",", ".")}";
             var mode = "mode=Driving";
             var sensor = "sensor=false";
 
             StringContent queryString = new StringContent("");
-
 
             var response = await _client.PostAsync(_configuration.GetSection("UrlExternalApi").GetSection("DistanceMatrix").Value + $"&{origine}&{destination}&{mode}&{sensor}", queryString).ConfigureAwait(false);
             response.EnsureSuccessStatusCode();
@@ -68,7 +66,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             if (distanza.Rows[0].Elements[0].Distance != null)
             {
                 //LE Value sono espresse in SECONDI
-                composizione.Km = distanza.Rows[0].Elements[0].Distance.Text.ToString().Substring(0, distanza.Rows[0].Elements[0].Distance.Text.ToString().Length -2);
+                composizione.Km = distanza.Rows[0].Elements[0].Distance.Text.ToString().Substring(0, distanza.Rows[0].Elements[0].Distance.Text.ToString().Length - 2);
                 composizione.TempoPercorrenza = (distanza.Rows[0].Elements[0].Duration.Value / 60).ToString();
             }
             else
