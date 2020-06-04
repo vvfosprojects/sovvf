@@ -18,7 +18,13 @@ import { onlyUnique } from '../../../shared/helper/function';
 import { StatoMezzo } from '../../../shared/enum/stato-mezzo.enum';
 import { BoxClickState, BoxClickStateModel } from '../store/states/boxes/box-click.state';
 import { ReducerFiltroMarker } from '../store/actions/maps/maps-filtro.actions';
-import { ClearMezzoInServizioHover, GetMezziInServizio, SetMezzoInServizioHover, SetMezzoInServizioSelezionato } from '../store/actions/mezzi-in-servizio/mezzi-in-servizio.actions';
+import {
+    ClearFiltriMezziInServizio,
+    ClearMezzoInServizioHover,
+    GetMezziInServizio,
+    SetMezzoInServizioHover,
+    SetMezzoInServizioSelezionato
+} from '../store/actions/mezzi-in-servizio/mezzi-in-servizio.actions';
 import { RicercaFilterbarState } from '../store/states/filterbar/ricerca-filterbar.state';
 import { ClearRicercaFilterbar } from '../store/actions/filterbar/ricerca-richieste.actions';
 
@@ -61,6 +67,7 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
+        this.store.dispatch(new ClearFiltriMezziInServizio());
         this.store.dispatch(new ClearRicercaFilterbar());
         this.store.dispatch(new UndoAllBoxes(this.prevStateBoxClick));
         this.subscription.unsubscribe();

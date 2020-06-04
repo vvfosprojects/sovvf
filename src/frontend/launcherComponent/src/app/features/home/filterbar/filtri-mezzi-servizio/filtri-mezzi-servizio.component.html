@@ -1,22 +1,30 @@
 <div class="btn-group w-100">
-    <div ngbDropdown autoClose="outside" placement="bottom-right" class="btn-group w-100">
+    <div ngbDropdown autoClose="outside" class="btn-group w-100" placement="bottom">
         <button ngbDropdownToggle class="btn btn-block app-shadow"
-                [ngClass]="{'btn-outline-primary': filtriSelezionati.length <= 0, 'btn-primary': filtriSelezionati.length > 0}"
+                [ngClass]="{'btn-outline-primary': !filtriSelezionati || filtriSelezionati.length <= 0, 'btn-primary': filtriSelezionati &&filtriSelezionati.length > 0}"
                 type="button" id="dropdownMenuButton" data-toggle="dropdown">
-            <i class="fa fa-filter"></i> Filtri
-            <span *ngIf="filtriSelezionati.length > 0"
-                  class="badge badge-success text-light">{{filtriSelezionati.length}}</span>
+            <i class="fa fa-filter mr-1"></i>Filtri
+            <span *ngIf="filtriSelezionati && filtriSelezionati.length > 0" class="badge badge-success text-light">
+              {{filtriSelezionati.length}}
+            </span>
         </button>
         <div ngbDropdownMenu class="bg-light px-3">
             <div class="card-block pt-1 pb-0">
-                <h6 class="font-weight-bold">Stato Mezzo</h6>
-                <div *ngFor="let f of filtri" class="mb-2">
-                    <app-filtro [filtro]="f" (filtroSelezionato)="onSelezioneFiltro($event)"></app-filtro>
+                <h6 class="font-weight-bold">Filtra per Stato Mezzo:</h6>
+                <div class="py-1">
+                    <div *ngFor="let f of filtri" class="cursor-pointer mb-2">
+                        <app-filtro [filtro]="f"
+                                    [useCheckbox]="true"
+                                    [selezionato]="_isSelezionato(f)"
+                                    (filtroSelezionato)="onSelezioneFiltro($event)"
+                                    (filtroDeselezionato)="onSelezioneFiltro($event)"></app-filtro>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <button *ngIf="filtriSelezionati.length > 0" class="btn btn-outline-secondary p-1" (click)="eliminaFiltriAttivi()">
-        <i class="fa fa-times text-dark px-1"></i>
+    <button *ngIf="filtriSelezionati && filtriSelezionati.length > 0" class="btn btn-outline-secondary p-1"
+            (click)="resetFiltri()">
+        <i class="fa fa-undo text-dark px-1"></i>
     </button>
 </div>

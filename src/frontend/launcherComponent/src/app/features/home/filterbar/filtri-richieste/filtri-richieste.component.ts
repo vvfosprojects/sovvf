@@ -26,7 +26,7 @@ export class FiltriRichiesteComponent {
                 private modalService: NgbModal,
                 private modal: NgbActiveModal,
                 dropdownOpts: NgbDropdownConfig) {
-        dropdownOpts.placement = 'bottom-left';
+        dropdownOpts.placement = 'bottom';
     }
 
     openFiltersModal() {
