@@ -7,6 +7,8 @@ using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 
 namespace SO115App.Models.Servizi.CustomMapper
 {
@@ -36,8 +38,8 @@ namespace SO115App.Models.Servizi.CustomMapper
                         .ForMember(x => x.Tipologie, y => y.MapFrom(_ => _getTipologieByCodice.Get(richiesta.Tipologie)))
                         .ForMember(x => x.Operatore, y => y.MapFrom(_ => _getUtenteById.GetUtenteByCodice(richiesta.CodOperatore)))
                         //.ForMember(x => x.TurnoInserimentoChiamata, y => y.Ignore())
-                        .ForMember(x => x.ListaUtentiInLavorazione, y => y.MapFrom(_ => MapUtenteAttivita(richiesta, "L")))
-                        .ForMember(x => x.ListaUtentiPresaInCarico, y => y.MapFrom(_ => MapUtenteAttivita(richiesta, "P")))
+                        .ForMember(x => x.ListaUtentiInLavorazione, y => y.MapFrom(_ => MapUtenteAttivita(richiesta, "L").ToHashSet()))
+                        .ForMember(x => x.ListaUtentiPresaInCarico, y => y.MapFrom(_ => MapUtenteAttivita(richiesta, "P").ToHashSet()))
                         );
                 _mapper = mapConfing.CreateMapper();
                 return _mapper.Map<SintesiRichiesta>(richiesta);
@@ -53,14 +55,27 @@ namespace SO115App.Models.Servizi.CustomMapper
             List<AttivitaUtente> ListaAttivita = new List<AttivitaUtente>();
             if (Tipo.Equals("P"))
             {
-                foreach (var presaInCarico in richiesta.UtPresaInCarico)
+                foreach (var eventi in richiesta.Eventi)
                 {
+                    var utente = _getUtenteById.GetUtenteByCodice(eventi.CodiceFonte);
+
                     AttivitaUtente attivita = new AttivitaUtente()
                     {
-                        Nominativo = presaInCarico.Replace(".", " ")
+                        Nominativo = utente.Nome + " " + utente.Cognome,
+                        DataInizioAttivita = eventi.Istante,
+                        IdUtente = eventi.CodiceFonte
                     };
-                    ListaAttivita.Add(attivita);
-                };
+
+                    if (ListaAttivita.Where(x => x.Nominativo.Equals(attivita.Nominativo) && x.DataInizioAttivita <= attivita.DataInizioAttivita).ToList().Count > 0)
+                    {
+                        var attivitaToDelete = ListaAttivita.Where(x => x.Nominativo.Equals(attivita.Nominativo) && x.DataInizioAttivita <= attivita.DataInizioAttivita).ToList();
+                        ListaAttivita.Remove(attivitaToDelete[0]);
+                        ListaAttivita.Add(attivita);
+                    }
+                    else 
+                    { 
+                    ListaAttivita.Add(attivita);}
+                }
             }
             else
             {
