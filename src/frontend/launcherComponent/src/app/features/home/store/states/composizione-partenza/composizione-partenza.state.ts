@@ -137,7 +137,6 @@ export class ComposizionePartenzaState {
 
     @Action(SetFiltriComposizione)
     setFiltriComposizione({ getState, patchState, dispatch }: StateContext<ComposizionePartenzaStateModel>, action: SetFiltriComposizione) {
-        console.log('setFiltriComposizione', action);
         const state = getState();
         const composizioneMode = state.composizioneMode;
         const objFiltriSelezionati: ComposizioneFilterbar = {
@@ -384,12 +383,13 @@ export class ComposizionePartenzaState {
                 ]);
             }
             dispatch([
+                new StopInvioPartenzaLoading(),
                 new ClearMarkerMezzoSelezionato(),
                 new ClearDirection(),
-                new StopInvioPartenzaLoading(),
                 new GetListeComposizioneAvanzata()
             ]);
         }, () => {
+            dispatch(new StopInvioPartenzaLoading());
             console.error('Conferma Partenza: qualcosa è andato storto');
         });
     }
