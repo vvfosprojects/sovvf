@@ -89,7 +89,7 @@ export class HomeState {
                 new SetContatoriSchedeContatto(data.infoNue),
                 new SetDataTipologie(data.tipologie)
             ]);
-        }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5)));
+        });
     }
 
     @Action(SetMarkerLoading)

@@ -3,13 +3,19 @@ import { environment } from '../../../../../environments/environment';
 
 export class ShowToastr {
     static readonly type = '[Toastr] Show Toast';
+    alwaysVisible: boolean;
 
     constructor(public type: ToastrType,
                 public title?: string,
                 public message?: string,
                 public duration?: number,
                 public tapToDismiss?: boolean,
-                public alwaysVisible = environment.toastr) {
+                _alwaysVisible = environment.toastr) {
+        if (type === ToastrType.Clear) {
+            this.alwaysVisible = true;
+        } else {
+            this.alwaysVisible = _alwaysVisible;
+        }
     }
 }
 

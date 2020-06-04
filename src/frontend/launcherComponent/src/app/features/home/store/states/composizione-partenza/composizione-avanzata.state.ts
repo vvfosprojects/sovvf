@@ -100,7 +100,7 @@ export class ComposizioneAvanzataState {
                 }
                 this.store.dispatch(new StopListaComposizioneLoading());
             }
-        }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5)));
+        });
     }
 
     @Action(SetListeComposizioneAvanzata)

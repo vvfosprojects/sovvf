@@ -21,25 +21,6 @@ export class ErrorInterceptor implements HttpInterceptor {
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         return next.handle(request).pipe(catchError(err => {
-            console.error('err', err);
-            if ([401].indexOf(err.status) !== -1) {
-                if (this.store.selectSnapshot(UtenteState.utente)) {
-                    this.store.dispatch(new ClearUtente(true));
-                }
-                this.store.dispatch(new Navigate(['/login']));
-            }
-
-            if ([403].indexOf(err.status) !== -1) {
-                this.store.dispatch(new ShowToastr(ToastrType.Error, 'Risorsa non accessibile', err.error));
-            }
-
-            if ([400].indexOf(err.status) !== -1) {
-                this.store.dispatch(new ShowToastr(ToastrType.Error, 'Errore', err.error));
-            }
-
-            if ([404].indexOf(err.status) !== -1) {
-                this.store.dispatch(new ShowToastr(ToastrType.Error, 'Servizio non disponibile', err.error));
-            }
 
             let error = '';
             if (err && err.error) {
@@ -47,6 +28,22 @@ export class ErrorInterceptor implements HttpInterceptor {
             } else {
                 error = err.statusText;
             }
+
+            if ([ 401 ].indexOf(err.status) !== -1) {
+                if (this.store.selectSnapshot(UtenteState.utente)) {
+                    this.store.dispatch(new ClearUtente(true));
+                }
+                this.store.dispatch(new Navigate([ '/login' ]));
+            } else if ([ 403 ].indexOf(err.status) !== -1) {
+                this.store.dispatch(new ShowToastr(ToastrType.Error, 'Risorsa non accessibile', err.error, null, null, true));
+            } else if ([ 400 ].indexOf(err.status) !== -1) {
+                this.store.dispatch(new ShowToastr(ToastrType.Error, 'Errore', err.error, null, null, true));
+            } else if ([ 404 ].indexOf(err.status) !== -1) {
+                this.store.dispatch(new ShowToastr(ToastrType.Error, 'Servizio non disponibile', err.error, null, null, true));
+            } else {
+                this.store.dispatch(new ShowToastr(ToastrType.Error, 'Errore del server', err.error, null, null, true));
+            }
+
             return throwError(error);
         }));
     }

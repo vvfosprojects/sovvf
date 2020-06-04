@@ -56,7 +56,6 @@ export class SediMarkersState {
                     new SetMarkerLoading(false)
                 ]);
             }, () => dispatch([
-                new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5),
                 new SetMarkerLoading(false)
             ])
         );

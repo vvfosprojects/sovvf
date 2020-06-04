@@ -79,7 +79,7 @@ export class SignalRState implements NgxsOnChanges {
         const reconnected = state.disconnected ? true : null;
         if (reconnected) {
             dispatch(new ShowToastr(ToastrType.Clear));
-            dispatch(new ShowToastr(ToastrType.Success, 'signalR', 'Sei di nuovo online!', 5));
+            dispatch(new ShowToastr(ToastrType.Success, 'signalR', 'Sei di nuovo online!', 5, null, true));
         }
         patchState({
             connected: true,
@@ -93,7 +93,7 @@ export class SignalRState implements NgxsOnChanges {
         const state = getState();
         const disconnected = state.connected ? true : null;
         if (disconnected) {
-            dispatch(new ShowToastr(ToastrType.Error, 'signalR', 'Sei disconnesso!', 0, false));
+            dispatch(new ShowToastr(ToastrType.Error, 'signalR', 'Sei disconnesso!', 0, false, true));
         }
         patchState({
             connected: SignalRStateDefaults.connected,

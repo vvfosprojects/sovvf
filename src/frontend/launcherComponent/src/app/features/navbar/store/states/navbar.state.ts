@@ -47,7 +47,7 @@ export class NavbarState {
     getDataNavbar({ dispatch }: StateContext<NavbarStateModel>) {
         this.navbarService.getNavbar().subscribe((data: AppSettings) => {
             dispatch(new SetDataNavbar(data));
-        }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5)));
+        });
     }
 
     @Action(SetDataNavbar)
