@@ -26,7 +26,7 @@
                     </button>
                 </div>
                 <div class="col-11">
-                    <ul class="list-unstyled p-2 mb-0">
+                    <ul class="list-unstyled p-2 mb-0" style="max-height: 210px; overflow-y: auto">
                         <li *ngFor="let ruolo of utente.ruoli, let i=index" class="border-bottom p-2">
                             <div class="clearfix">
                                 <div class="float-left mt-1">
@@ -67,9 +67,9 @@
     </tbody>
 </table>
 <div *ngIf="listaUtenti?.length > 0" class="d-flex justify-content-between p-2">
+    <app-utenti-per-pagina [pageSize]="pageSize" [pageSizes]="pageSizes"
+                           (pageSizeChange)="pageSizeChange.emit($event)"></app-utenti-per-pagina>
     <pagination-controls class="mt-1 mb-0" [previousLabel]="'Precedente'" [nextLabel]="'Successiva'"
                          (pageChange)="pageChange.emit($event)">
     </pagination-controls>
-    <app-utenti-per-pagina [pageSize]="pageSize" [pageSizes]="pageSizes"
-                           (pageSizeChange)="pageSizeChange.emit($event)"></app-utenti-per-pagina>
 </div>
