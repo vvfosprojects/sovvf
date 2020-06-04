@@ -30,7 +30,7 @@ export class FooterComponent implements OnDestroy {
     isTest: string;
 
     constructor() {
-        this.isTest = environment.productionTest ? ' (ATTENZIONE QUESTA E\' UNA VERSIONE DI TEST) ' : '';
+        this.isTest = environment.productionTest ? ' (ATTENZIONE, E\' UNA VERSIONE DI TEST!) ' : '';
         this.subscription.add(this.version$.subscribe((r: VersionInterface) => this.version = r));
         this.subscription.add(this.footerFixed$.subscribe((r: boolean) => this.fixed = r));
         this.subscription.add(this.isLoaded$.subscribe((r: boolean) => this.isReady = r));
