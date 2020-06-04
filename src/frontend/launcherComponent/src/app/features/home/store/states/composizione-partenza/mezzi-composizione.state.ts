@@ -216,12 +216,12 @@ export class MezziComposizioneState {
                     dispatch(new AddMezzoBoxPartenzaSelezionato(action.mezzoComp));
                 }, calcolaTimeout(addBoxPartenza));
             } else if (state.idMezziPrenotati.indexOf(action.mezzoComp.id) !== -1) {
-                dispatch(new ShowToastr(ToastrType.Warning, 'Impossibile assegnare il mezzo', 'Il mezzo è già presente in un\'altra partenza'));
+                dispatch(new ShowToastr(ToastrType.Warning, 'Impossibile assegnare il mezzo', 'Il mezzo è già presente in un\'altra partenza', null, null, true));
             } else if (state.idMezziInPrenotazione.indexOf(action.mezzoComp.id) !== -1) {
-                dispatch(new ShowToastr(ToastrType.Warning, 'Impossibile assegnare il mezzo', 'Il mezzo è in prenotazione da un altro utente'));
+                dispatch(new ShowToastr(ToastrType.Warning, 'Impossibile assegnare il mezzo', 'Il mezzo è in prenotazione da un altro utente', null, null, true));
             }
         } else {
-            dispatch(new ShowToastr(ToastrType.Warning, 'Impossibile assegnare il mezzo', 'Il mezzo è ' + action.mezzoComp.mezzo.stato + ' ed è impegnato in un\'altra richiesta'));
+            dispatch(new ShowToastr(ToastrType.Warning, 'Impossibile assegnare il mezzo', 'Il mezzo è ' + action.mezzoComp.mezzo.stato + ' ed è impegnato in un\'altra richiesta', null, null, true));
         }
     }
 
@@ -318,7 +318,7 @@ export class MezziComposizioneState {
             } else if (action.selectBoxPartenza) {
                 dispatch(new SelectBoxPartenza(action.selectBoxPartenza));
             }
-        }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore Prenotazione Mezzo', 'Il server web non risponde', 5)));
+        });
     }
 
     @Action(AddBookMezzoComposizione)
@@ -353,7 +353,7 @@ export class MezziComposizioneState {
             'codiceRichiesta': this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione).id
         };
         this._compPartenzaService.removeMezzoPrenotato(mezzoPrenotatoObj).subscribe(() => {
-        }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore Rimozione Prenotazione Mezzo', 'Il server web non risponde', 5)));
+        });
     }
 
     @Action(RemoveBookMezzoComposizione)
@@ -385,7 +385,7 @@ export class MezziComposizioneState {
             'mezzoComposizione': action.mezzoComp
         };
         this._compPartenzaService.setMezzoPrenotato(mezzoPrenotatoObj).subscribe(() => {
-        }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore Reset Prenotazione Mezzo', 'Il server web non risponde', 5)));
+        });
     }
 
     @Action(ResetBookMezzoComposizione)
@@ -431,6 +431,7 @@ export class MezziComposizioneState {
 
         richiestaById$.subscribe(r => {
             richiestaDa = r;
+            // tslint:disable-next-line:max-line-length
             partenzaDaSganciare = richiestaDa.partenzeRichiesta && richiestaDa.partenzeRichiesta.length > 0 ? richiestaDa.partenzeRichiesta.filter(x => x.mezzo.codice === action.sganciamentoObj.idMezzoDaSganciare)[0] : null;
         });
 
@@ -499,6 +500,7 @@ export class MezziComposizioneState {
                         if (action.filtri.CodiceMezzo) {
                             codDistaccamentoSelezionato = state.mezziComposizione.filter((mC: MezzoComposizione) => mC.mezzo.codice === action.filtri.CodiceMezzo)[0].mezzo.distaccamento.codice;
                         } else if (action.filtri.CodiceSquadre && action.filtri.CodiceSquadre.length > 0) {
+                            // tslint:disable-next-line:max-line-length
                             codDistaccamentoSelezionato = action.squadreComposizione.filter((sC: SquadraComposizione) => sC.squadra.id === action.filtri.CodiceSquadre[0])[0].squadra.distaccamento.codice;
                         }
                         draft.mezziComposizione = draft.mezziComposizione.filter((mC: MezzoComposizione) => mC.mezzo.distaccamento.codice === codDistaccamentoSelezionato);

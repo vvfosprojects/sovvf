@@ -128,21 +128,24 @@ export class RichiesteState {
                 pageSize: 7
             };
             this.richiesteService.getRichieste(filters, pagination).subscribe((response: ResponseInterface) => {
-                dispatch(new AddRichieste(response.sintesiRichiesta));
-                dispatch(new PatchPagination(response.pagination));
-                dispatch(new StopLoadingRichieste());
+                dispatch([
+                    new AddRichieste(response.sintesiRichiesta),
+                    new PatchPagination(response.pagination),
+                    new StopLoadingRichieste()
+                ]);
                 if (state.needRefresh) {
                     dispatch(new SetNeedRefresh(false));
                 }
             }, () => {
-                dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5));
                 dispatch(new StopLoadingRichieste());
             });
 
             // Clear dei dati presenti nella pagina che si sta lasciando
-            dispatch(new ClearRichiestaSelezionata());
-            dispatch(new ClearRichiestaHover());
-            dispatch(new ClearRichiesteEspanse());
+            dispatch([
+                new ClearRichiestaSelezionata(),
+                new ClearRichiestaHover(),
+                new ClearRichiesteEspanse()
+            ]);
             const richiestaGestione = this.store.selectSnapshot(RichiestaGestioneState.richiestaGestione);
             if (richiestaGestione) {
                 dispatch(new ClearRichiestaGestione(richiestaGestione.id));
@@ -156,9 +159,11 @@ export class RichiesteState {
         this.richiesteService.patchRichiesta(action.richiesta).subscribe(() => {
             dispatch(new SuccessRichiestaModifica);
         }, () => {
-            dispatch(new ClearIndirizzo());
-            dispatch(new ClearRichiestaMarkerModifica());
-            dispatch(new GetInitCentroMappa());
+            dispatch([
+                new ClearIndirizzo(),
+                new ClearRichiestaMarkerModifica(),
+                new GetInitCentroMappa()
+            ]);
         });
     }
 
@@ -208,8 +213,10 @@ export class RichiesteState {
             const idRichiestaGestione = this.store.selectSnapshot(RichiestaGestioneState.idRichiestaGestione);
             if (!idRichiestaSelezionata && !idRichiestaGestione) {
                 const currentPage = this.store.selectSnapshot(PaginationState.page);
-                dispatch(new GetListaRichieste({ page: currentPage }));
-                dispatch(new SetNeedRefresh(false));
+                dispatch([
+                    new GetListaRichieste({ page: currentPage }),
+                    new SetNeedRefresh(false)
+                ]);
             } else {
                 dispatch(new SetNeedRefresh(true));
             }
@@ -243,7 +250,7 @@ export class RichiesteState {
             'stato': action.stato
         };
         this.richiesteService.aggiornaStatoRichiesta(obj).subscribe(() => {
-        }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore Aggiornamento Stato Richiesta', 'Il server web non risponde', 5)));
+        });
     }
 
     @Action(SetIdChiamataInviaPartenza)
@@ -281,7 +288,7 @@ export class RichiesteState {
         };
         console.log('Obj', obj);
         this.richiesteService.aggiornaStatoMezzo(obj).subscribe(() => {
-        }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5)));
+        });
     }
 
     @Action(ActionRichiesta)
@@ -289,7 +296,7 @@ export class RichiesteState {
         const obj = action.richiestaAction;
         console.log('Obj', obj);
         this.richiesteService.aggiornaStatoRichiesta(obj).subscribe(() => {
-        }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5)));
+        });
     }
 
     @Action(SetRichiestaById)
@@ -298,7 +305,7 @@ export class RichiesteState {
             patchState({
                 richiestaById: data
             });
-        }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5)));
+        });
     }
 
     @Action(ClearRichiestaById)

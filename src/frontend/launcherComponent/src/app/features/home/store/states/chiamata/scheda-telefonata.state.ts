@@ -165,7 +165,7 @@ export class SchedaTelefonataState {
             dispatch(new SetNeedRefresh(true));
         }
         dispatch(new StopLoadingNuovaChiamata());
-        dispatch(new ShowToastr(ToastrType.Success, 'Inserimento della chiamata effettuato', action.nuovaRichiesta.descrizione, 5));
+        dispatch(new ShowToastr(ToastrType.Success, 'Inserimento della chiamata effettuato', action.nuovaRichiesta.descrizione, 5, null, true));
     }
 
     @Action(ResetChiamata)

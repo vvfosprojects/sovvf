@@ -39,16 +39,19 @@ export function iconaStatiClass(stato: string): string {
     let returnClass = '';
 
     switch (stato) {
-        case 'In Sede':
+        case StatoMezzo.InSede:
+            returnClass = 'text-success';
+            break;
+        case StatoMezzo.Rientrato:
             returnClass = 'text-success';
             break;
         case StatoMezzo.InViaggio:
             returnClass = 'text-warning';
             break;
-        case 'In Rientro':
+        case StatoMezzo.InRientro:
             returnClass = 'text-verdemela';
             break;
-        case 'Sul Posto':
+        case StatoMezzo.SulPosto:
             returnClass = 'text-danger';
             break;
 

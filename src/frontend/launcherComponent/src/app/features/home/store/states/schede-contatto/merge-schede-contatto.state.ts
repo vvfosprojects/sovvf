@@ -101,7 +101,8 @@ export class MergeSchedeContattoState {
     @Action(CheckboxError)
     checkboxError({ getState, dispatch }: StateContext<MergeSchedeContattoStateModel>) {
         const plural = getState().schedeSelezionateId.length > 1 ? 'e' : 'a';
-        dispatch(new ShowToastr(ToastrType.Warning, 'Selezione scheda contatto', `Impossibile unire una scheda con una classificazione differente da quell${plural} già selezionat${plural}`));
+        // tslint:disable-next-line:max-line-length
+        dispatch(new ShowToastr(ToastrType.Warning, 'Selezione scheda contatto', `Impossibile unire una scheda con una classificazione differente da quell${plural} già selezionat${plural}`, null, null, true));
     }
 
     @Action(InitSaveMergeSchedeContatto)

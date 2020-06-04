@@ -93,7 +93,7 @@ export class EventiRichiestaState {
       // console.log(`Get Eventi Richiesta: ${idRichiesta}`);
       dispatch(new SetEventiRichiesta(data));
       dispatch(new StopLoading());
-    }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5)));
+    });
 
   }
 

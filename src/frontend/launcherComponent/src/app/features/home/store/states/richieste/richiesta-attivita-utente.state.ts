@@ -15,25 +15,25 @@ export class RichiestaAttivitaUtenteState {
     @Action(AddInLavorazione)
     addInLavorazione({ dispatch }, action: AddInLavorazione) {
         this.attivitaUtenteService.addInLavorazione(action.sintesiRichiesta).subscribe(() => {
-        }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5)));
+        });
     }
 
     @Action(DeleteInLavorazione)
     deleteInLavorazione({ dispatch }, action: DeleteInLavorazione) {
         this.attivitaUtenteService.deleteInLavorazione(action.sintesiRichiesta).subscribe(() => {
-        }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5)));
+        });
     }
 
     @Action(AddPresaInCarico)
     addPresaInCarico({ dispatch }, action: AddPresaInCarico) {
         this.attivitaUtenteService.addPresaInCarico(action.sintesiRichiesta).subscribe(() => {
-        }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5)));
+        });
     }
 
     @Action(DeletePresaInCarico)
     deletePresaInCarico({ dispatch }, action: DeletePresaInCarico) {
         this.attivitaUtenteService.deletePresaInCarico(action.sintesiRichiesta).subscribe(() => {
-        }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5)));
+        });
     }
 
 }

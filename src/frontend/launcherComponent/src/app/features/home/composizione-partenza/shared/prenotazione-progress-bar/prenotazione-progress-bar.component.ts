@@ -76,7 +76,7 @@ export class PrenotazioneProgressBarComponent implements OnInit, OnChanges, OnDe
                         this.store.dispatch(new ShowToastr(
                             ToastrType.Warning, 'Prenotazione in scadenza',
                             'La prenotazione del mezzo ' + this.mezzoComp.mezzo.codice + ' sta per scadere.',
-                            this.option.alertTimeAgo));
+                            this.option.alertTimeAgo, null, true));
                     }
                 }
 

@@ -155,7 +155,7 @@ export class ComposizioneVeloceState {
                 })
             );
         } else {
-            dispatch(new ShowToastr(ToastrType.Warning, 'Impossibile selezionare il Pre-Accoppiato', 'Il mezzo è già presente in un\'altra partenza'));
+            dispatch(new ShowToastr(ToastrType.Warning, 'Impossibile selezionare il Pre-Accoppiato', 'Il mezzo è già presente in un\'altra partenza', null, null, true));
         }
     }
 
@@ -204,7 +204,7 @@ export class ComposizioneVeloceState {
     getListaIdPreAccoppiati({ dispatch }: StateContext<PreAccoppiatiStateModel>) {
         this.preAccoppiatiService.getPreAccoppiati().subscribe((data) => {
             this.store.dispatch(new SetListaIdPreAccoppiati(data));
-        }, () => dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Il server web non risponde', 5)));
+        });
     }
 
     @Action(SetListaIdPreAccoppiati)
