@@ -23,6 +23,7 @@ using SO115App.API.Models.Classi.Soccorso.Eventi;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Classi.Soccorso;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
+using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,34 +34,24 @@ namespace DomainModel.CQRS.Commands.RimozionePresaInCarico
     {
         private readonly IGetRichiestaById _getRichiestaById;
         private readonly IUpDateRichiestaAssistenza _updateRichiestaAssistenza;
+        private readonly IGetUtenteById _getUtenteById;
 
         public RimozionePresaInCaricoCommandHandler(
             IGetRichiestaById getRichiestaById,
-            IUpDateRichiestaAssistenza updateRichiestaAssistenza
+            IUpDateRichiestaAssistenza updateRichiestaAssistenza,
+            IGetUtenteById getUtenteById
             )
         {
             _getRichiestaById = getRichiestaById;
             _updateRichiestaAssistenza = updateRichiestaAssistenza;
+            _getUtenteById = getUtenteById;
         }
 
         public void Handle(RimozionePresaInCaricoCommand command)
         {
-            var richiesta = _getRichiestaById.GetByCodice(command.IdRichiesta);
+            var richiesta = _getRichiestaById.GetById(command.IdRichiesta);
 
-            richiesta.Id = richiesta.Codice;
-
-            richiesta.UtPresaInCarico.RemoveAll(x => x == command.IdUtente);
-
-            //if (command.Chiamata.ListaUtentiPresaInCarico != null)
-            //    command.Chiamata.ListaUtentiPresaInCarico = richiesta.UtPresaInCarico;
-            //else
-            //{
-            //    if (richiesta.UtPresaInCarico.Count > 0)
-            //    {
-            //        command.Chiamata.ListaUtentiPresaInCarico = new List<AttivitaUtente>();
-            //        command.Chiamata.ListaUtentiPresaInCarico = richiesta.UtPresaInCarico;
-            //    }
-            //}
+            new AnnullamentoPresaInCarico(richiesta, DateTime.UtcNow, richiesta.CodOperatore);
 
             _updateRichiestaAssistenza.UpDate(richiesta);
         }

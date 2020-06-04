@@ -74,6 +74,7 @@ namespace Persistence.MongoDB
             BsonClassMap.RegisterClassMap<Telefonata>();
             BsonClassMap.RegisterClassMap<AssegnazionePriorita>();
             BsonClassMap.RegisterClassMap<InizioPresaInCarico>();
+            BsonClassMap.RegisterClassMap<AnnullamentoPresaInCarico>();
             BsonClassMap.RegisterClassMap<ComposizionePartenze>();
             BsonClassMap.RegisterClassMap<AssegnataRichiesta>();
             BsonClassMap.RegisterClassMap<ArrivoSulPosto>();
