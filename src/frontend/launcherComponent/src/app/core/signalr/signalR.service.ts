@@ -49,10 +49,25 @@ import {
 } from 'src/app/features/home/store/actions/schede-contatto/schede-contatto.actions';
 import { ContatoriSchedeContatto } from '../../shared/interface/contatori-schede-contatto.interface';
 import { SchedaContatto } from '../../shared/interface/scheda-contatto.interface';
-import { SuccessAddUtenteGestione, SuccessRemoveUtente, UpdateRuoliPersonali, UpdateUtenteGestioneInLista } from '../../features/gestione-utenti/store/actions/gestione-utenti/gestione-utenti.actions';
+import {
+    SuccessAddUtenteGestione,
+    SuccessRemoveUtente,
+    UpdateRuoliPersonali,
+    UpdateUtenteGestioneInLista
+} from '../../features/gestione-utenti/store/actions/gestione-utenti/gestione-utenti.actions';
 import { ClearUtente } from '../../features/navbar/store/actions/operatore/utente.actions';
 import { UtenteState } from '../../features/navbar/store/states/operatore/utente.state';
 import { Navigate } from '@ngxs/router-plugin';
+import { InterventoInterface } from './interface/intervento.interface';
+import { MezzoInServizio } from '../../shared/interface/mezzo-in-servizio.interface';
+import { RichiestaMarker } from '../../features/home/maps/maps-model/richiesta-marker.model';
+import { MezzoMarker } from '../../features/home/maps/maps-model/mezzo-marker.model';
+import { BoxPersonale } from '../../features/home/boxes/boxes-model/box-personale.model';
+import { BoxMezzi } from '../../features/home/boxes/boxes-model/box-mezzi.model';
+import { BoxInterventi } from '../../features/home/boxes/boxes-model/box-interventi.model';
+import { ChiamataMarker } from '../../features/home/maps/maps-model/chiamata-marker.model';
+import { SintesiRichiesta } from '../../shared/model/sintesi-richiesta.model';
+import { MezzoComposizione } from '../../features/home/composizione-partenza/interface/mezzo-composizione-interface';
 
 const HUB_URL = environment.baseUrl + environment.signalRHub;
 const SIGNALR_BYPASS = !environment.signalR;
@@ -100,30 +115,21 @@ export class SignalRService {
         /**
          * Login
          */
-        this.hubNotification.on('NotifyLogIn', (data: any) => {
+        this.hubNotification.on('NotifyLogIn', (data: string) => {
             console.log('NotifyLogIn', data);
             // avvisa gli altri client che un utente si è collegato alla sua stessa sede
-            this.store.dispatch(new ShowToastr(ToastrType.Info, 'Utente collegato:', data, 3));
+            this.store.dispatch(new ShowToastr(ToastrType.Info, 'Utente collegato:', data, 3, null, true));
         });
-        this.hubNotification.on('NotifyLogOut', (data: any) => {
+        this.hubNotification.on('NotifyLogOut', (data: string) => {
             console.log('NotifyLogOut', data);
             // avvisa gli altri client che un utente si è scollegato alla sua stessa sede
-            this.store.dispatch(new ShowToastr(ToastrType.Info, 'Utente disconnesso:', data, 3));
-        });
-
-        /**
-         * Message
-         */
-        this.hubNotification.on('ReceiveMessage', (data: string) => {
-            console.log('ReceiveMessage', data);
-            // avvisa gli altri client che un utente si è collegato alla sua stessa sede
-            this.store.dispatch(new ShowToastr(ToastrType.Info, 'Notifica importante:', data, 3));
+            this.store.dispatch(new ShowToastr(ToastrType.Info, 'Utente disconnesso:', data, 3, null, true));
         });
 
         /**
          * Modifica Richiesta
          */
-        this.hubNotification.on('ModifyAndNotifySuccess', (data: any) => {
+        this.hubNotification.on('ModifyAndNotifySuccess', (data: InterventoInterface) => {
             console.log('ModifyAndNotifySuccess:', data);
             this.store.dispatch(new UpdateRichiesta(data.chiamata));
             this.store.dispatch(new ShowToastr(ToastrType.Info, 'Modifica Sintesi Richiesta', null, 3));
@@ -132,20 +138,15 @@ export class SignalRService {
         /**
          * Cambiamento Stato Squadra/Mezzi Richiesta
          */
-        this.hubNotification.on('ChangeStateSuccess', (data: any) => {
+        this.hubNotification.on('ChangeStateSuccess', (data: boolean) => {
             console.log('ChangeStateSuccess:', data);
-            const composizioneMode = this.store.selectSnapshot(ViewComponentState.composizioneStatus);
-            if (composizioneMode) {
-                // this.store.dispatch(new GetListeComposizioneAvanzata());
-            }
             this.store.dispatch(new ShowToastr(ToastrType.Info, 'Modifica Stato Squadra/Mezzi Richiesta', null, 3));
         });
 
         /**
          * Mezzi In Servizio
          */
-        // TodoBackEnd: da finire
-        this.hubNotification.on('NotifyGetListaMezziInServizio', (data: any) => {
+        this.hubNotification.on('NotifyGetListaMezziInServizio', (data: MezzoInServizio[]) => {
             console.log('NotifyGetListaMezziInServizio', data);
             this.store.dispatch(new SetMezziInServizio(data));
         });
@@ -153,17 +154,17 @@ export class SignalRService {
         /**
          * Markers Mappa --------------
          */
-        this.hubNotification.on('NotifyGetRichiestaMarker', (data: any) => {
+        this.hubNotification.on('NotifyGetRichiestaMarker', (data: RichiestaMarker) => {
             console.log('NotifyGetRichiestaMarker', data);
             this.store.dispatch(new InsertRichiestaMarker(data));
             this.store.dispatch(new ShowToastr(ToastrType.Info, 'Richiesta Marker ricevute da signalR', null, 5));
         });
-        this.hubNotification.on('NotifyGetRichiestaUpdateMarker', (data: any) => {
+        this.hubNotification.on('NotifyGetRichiestaUpdateMarker', (data: RichiestaMarker) => {
             console.log('NotifyGetRichiestaUpdateMarker', data);
             this.store.dispatch(new UpdateRichiestaMarker(data));
             this.store.dispatch(new ShowToastr(ToastrType.Info, 'Richiesta Marker ricevute da signalR', null, 5));
         });
-        this.hubNotification.on('NotifyGetMezzoUpdateMarker', (data: any) => {
+        this.hubNotification.on('NotifyGetMezzoUpdateMarker', (data: MezzoMarker) => {
             console.log('NotifyGetMezzoUpdateMarker', data);
             this.store.dispatch(new UpdateMezzoMarker(data));
             this.store.dispatch(new ShowToastr(ToastrType.Info, 'Richiesta Marker ricevute da signalR', null, 5));
@@ -172,17 +173,17 @@ export class SignalRService {
         /**
          * Box
          */
-        this.hubNotification.on('NotifyGetBoxPersonale', (data: any) => {
+        this.hubNotification.on('NotifyGetBoxPersonale', (data: BoxPersonale) => {
             console.log('NotifyGetBoxPersonale', data);
             this.store.dispatch(new SetBoxPersonale(data));
             this.store.dispatch(new ShowToastr(ToastrType.Info, 'Box Personale ricevute da signalR', null, 5));
         });
-        this.hubNotification.on('NotifyGetBoxMezzi', (data: any) => {
+        this.hubNotification.on('NotifyGetBoxMezzi', (data: BoxMezzi) => {
             console.log('NotifyGetBoxMezzi', data);
             this.store.dispatch(new SetBoxMezzi(data));
             this.store.dispatch(new ShowToastr(ToastrType.Info, 'Box Mezzi ricevute da signalR', null, 5));
         });
-        this.hubNotification.on('NotifyGetBoxInterventi', (data: any) => {
+        this.hubNotification.on('NotifyGetBoxInterventi', (data: BoxInterventi) => {
             console.log('NotifyGetBoxInterventi', data);
 
             this.store.dispatch(new SetBoxRichieste(data));
@@ -192,12 +193,12 @@ export class SignalRService {
         /**
          * Chiamata in Corso
          */
-        this.hubNotification.on('NotifyChiamataInCorsoMarkerAdd', (data: any) => {
+        this.hubNotification.on('NotifyChiamataInCorsoMarkerAdd', (data: { addChiamataInCorso: ChiamataMarker }) => {
             console.log('NotifyChiamataInCorsoMarkerAdd', data);
             this.store.dispatch(new InsertChiamataMarker(data.addChiamataInCorso));
             this.store.dispatch(new ShowToastr(ToastrType.Info, 'Nuova chiamata in corso sulla mappa', null, 3));
         });
-        this.hubNotification.on('NotifyChiamataInCorsoMarkerUpdate', (data: any) => {
+        this.hubNotification.on('NotifyChiamataInCorsoMarkerUpdate', (data: { chiamataInCorso: ChiamataMarker }) => {
             console.log('NotifyChiamataInCorsoMarkerUpdate', data);
             this.store.dispatch(new UpdateItemChiamataMarker(data.chiamataInCorso));
             this.store.dispatch(new ShowToastr(ToastrType.Info, 'Chiamata in corso sulla mappa aggiornata', null, 3));
@@ -211,7 +212,7 @@ export class SignalRService {
         /**
          * Inserimento Chiamata
          */
-        this.hubNotification.on('SaveAndNotifySuccessChiamata', (data: any) => {
+        this.hubNotification.on('SaveAndNotifySuccessChiamata', (data: SintesiRichiesta) => {
             console.log('SaveAndNotifySuccessChiamata', data);
             this.store.dispatch(new InsertChiamataSuccess(data));
         });
@@ -243,21 +244,24 @@ export class SignalRService {
         /**
          * Composizione Partenza
          */
-        this.hubNotification.on('NotifyGetComposizioneMezzi', (data: any) => {
+        this.hubNotification.on('NotifyGetComposizioneMezzi', (data: MezzoComposizione[]) => {
             console.log('NotifyGetComposizioneMezzi', data);
             this.store.dispatch(new SetListaMezziComposizione(data));
             this.store.dispatch(new ShowToastr(ToastrType.Info, 'Mezzi Composizione ricevute da signalR', null, 5));
         });
+
+        // Todo: è ancora utilizzato?
         this.hubNotification.on('NotifyGetComposizioneSquadre', (data: any) => {
             console.log('NotifyGetComposizioneSquadre', data);
             // this.store.dispatch(new SetListaSquadreComposizione(data));
             this.store.dispatch(new ShowToastr(ToastrType.Info, 'Squadre Composizione ricevute da signalR', null, 5));
         });
-        // TodoBackEnd: da finire con la gestione/inserimento Preaccoppiati
         this.hubNotification.on('NotifyGetPreaccoppiati', (data: IdPreaccoppiati[]) => {
             this.store.dispatch(new SetListaIdPreAccoppiati(data));
             this.store.dispatch(new ShowToastr(ToastrType.Info, 'Preaccoppiati Composizione ricevute da signalR', null, 5));
         });
+
+        // Todo: tipicizzare
         this.hubNotification.on('NotifyAddPrenotazioneMezzo', (data: any) => {
             if (!data.sbloccaMezzo) {
                 const compMode = this.store.selectSnapshot(ComposizionePartenzaState).composizioneMode;
@@ -268,7 +272,8 @@ export class SignalRService {
                 } else if (compMode === Composizione.Veloce) {
                     this.store.dispatch(new UpdateMezzoPreAccoppiatoComposizione(data.codiceMezzo));
                 }
-                // Todo: manca la data del server
+
+                // Todo: manca la data del server, da sistemare!!!
                 let dataScadenzaSelezione = new Date(data.istanteScadenzaSelezione).getHours() + ':';
                 dataScadenzaSelezione += new Date(data.istanteScadenzaSelezione).getMinutes() + ':';
                 dataScadenzaSelezione += new Date(data.istanteScadenzaSelezione).getSeconds();
@@ -314,6 +319,7 @@ export class SignalRService {
             }
         });
 
+        // Todo: è ancora utilizzato?
         /*this.hubNotification.on('NotifyRefreshUtenti', (idUtente: string) => {
             console.log('NotifyRefreshUtenti', idUtente);
             if (idUtente) {
@@ -326,7 +332,7 @@ export class SignalRService {
             const utenteAttuale = this.store.selectSnapshot(UtenteState.utente);
             if (idUtente && idUtente === utenteAttuale.id) {
                 this.store.dispatch(new ClearUtente());
-                this.store.dispatch(new Navigate(['/login']));
+                this.store.dispatch(new Navigate([ '/login' ]));
             }
             this.store.dispatch(new SuccessRemoveUtente(idUtente));
         });
