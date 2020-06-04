@@ -23,7 +23,7 @@ export const PermessiStateDefaults: PermessiStateModel = {
         },
         {
             feature: PermissionFeatures.ModificaRichiesta,
-            roles: [Role.GestoreRichieste]
+            roles: [Role.GestoreRichieste, Role.GestoreChiamate]
         },
         {
             feature: PermissionFeatures.GestisciRichiesta,
