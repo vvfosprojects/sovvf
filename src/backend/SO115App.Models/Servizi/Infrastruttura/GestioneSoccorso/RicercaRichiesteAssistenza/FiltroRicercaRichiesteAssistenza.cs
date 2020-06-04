@@ -18,6 +18,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using System.Collections.Generic;
+using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Geo;
 using SO115App.API.Models.Classi.Organigramma;
 
@@ -84,5 +85,7 @@ namespace SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRic
         ///   L'id dell'operatore che sta facendo la richiesta
         /// </summary>
         public string idOperatore { get; set; }
+
+        public Localita IndirizzoIntervento { get; set; }
     }
 }

@@ -160,20 +160,19 @@ namespace SO115App.Persistence.MongoDB
                 }
             }
 
-            var listaFiltrataPerTipologie = new List<RichiestaAssistenza>();
-
             if (filtro.FiltriTipologie != null)
             {
-                listaFiltrataPerTipologie = result.Where(o => filtro.FiltriTipologie.Any(s => o.Tipologie.Contains(s))).ToList();
+                result = result.Where(o => filtro.FiltriTipologie.Any(s => o.Tipologie.Contains(s))).ToList();
             }
-            else
+
+            if (filtro.IndirizzoIntervento != null)
             {
-                listaFiltrataPerTipologie = result;
+                result = result.FindAll(o => o.Localita.Coordinate.Latitudine.Equals(filtro.IndirizzoIntervento.Coordinate.Latitudine) && o.Localita.Coordinate.Longitudine.Equals(filtro.IndirizzoIntervento.Coordinate.Longitudine));
             }
 
             var listaSistesiRichieste = new List<SintesiRichiesta>();
 
-            foreach (RichiestaAssistenza richiesta in listaFiltrataPerTipologie)
+            foreach (RichiestaAssistenza richiesta in result)
             {
                 SintesiRichiesta sintesi = new SintesiRichiesta();
 

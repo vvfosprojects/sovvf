@@ -5,8 +5,8 @@ namespace SO115App.CompositionRoot
     internal static class NotificationServicesConfigurator
     {
         internal static void Configure(Container container)
-        {           
-            Configure_NotificationServices(container, false);           
+        {
+            Configure_NotificationServices(container, false);
         }
 
         private static void Configure_NotificationServices(Container container, bool v)
@@ -27,6 +27,9 @@ namespace SO115App.CompositionRoot
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.Notification.GestioneChiamateInCorso.INotificationAddChiamataInCorso,
                 SO115App.SignalR.Sender.GestioneChiamateInCorso.NotificationAddChiamataInCorso>();
+            container.Register<
+                SO115App.Models.Servizi.Infrastruttura.Notification.GestioneChiamateInCorso.INotificationDoubleChiamataInCorso,
+                SO115App.SignalR.Sender.GestioneChiamateInCorso.NotificationDoubleChiamata>();
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.Notification.GestioneChiamateInCorso.INotificationDeleteChiamataInCorso,
                 SO115App.SignalR.Sender.GestioneChiamateInCorso.NotificationDeleteChiamataInCorso>();
@@ -60,21 +63,19 @@ namespace SO115App.CompositionRoot
             container.Register<SO115App.Models.Servizi.Infrastruttura.Notification.GestioneSchedeContatto.INotificationSetSchedaGestita,
                 SO115App.SignalR.Sender.GestioneSchedeContatto.NotificationSetSchedaGestita>();
             container.Register<
-                Models.Servizi.Infrastruttura.Notification.GestioneUtenti.INotifyAddUtente, 
+                Models.Servizi.Infrastruttura.Notification.GestioneUtenti.INotifyAddUtente,
                 SignalR.Sender.GestioneUtenti.NotificationAddUtente>();
             container.Register<
-                Models.Servizi.Infrastruttura.Notification.GestioneUtenti.INotifyDeleteUtente, 
+                Models.Servizi.Infrastruttura.Notification.GestioneUtenti.INotifyDeleteUtente,
                 SignalR.Sender.GestioneUtenti.NotificationDeleteUtente>();
             container.Register<
-                Models.Servizi.Infrastruttura.Notification.GestioneUtenti.GestioneRuoli.INotifyAddRuoli, 
+                Models.Servizi.Infrastruttura.Notification.GestioneUtenti.GestioneRuoli.INotifyAddRuoli,
                 SignalR.Sender.GestioneRuoli.NotificationAddRuoli>();
             container.Register<
-                Models.Servizi.Infrastruttura.Notification.GestioneUtenti.GestioneRuoli.INotifyDeleteRuolo, 
+                Models.Servizi.Infrastruttura.Notification.GestioneUtenti.GestioneRuoli.INotifyDeleteRuolo,
                 SignalR.Sender.GestioneRuoli.NotificationDeleteRuolo>();
 
-
-            #endregion
-
+            #endregion Notifiche
         }
     }
 }

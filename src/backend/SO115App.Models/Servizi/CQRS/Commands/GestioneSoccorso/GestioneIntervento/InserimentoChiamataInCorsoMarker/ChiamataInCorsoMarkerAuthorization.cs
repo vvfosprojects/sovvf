@@ -19,13 +19,18 @@
 //-----------------------------------------------------------------------
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Principal;
 using CQRS.Authorization;
 using CQRS.Commands.Authorizers;
 using SO115App.API.Models.Classi.Autenticazione;
+using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
+using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
 using SO115App.Models.Classi.Utility;
+using SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Autenticazione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.VerificaUtente;
+using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneChiamateInCorso;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Competenze;
 
 namespace DomainModel.CQRS.Commands.ChiamataInCorsoMarker
@@ -36,27 +41,53 @@ namespace DomainModel.CQRS.Commands.ChiamataInCorsoMarker
         private readonly IFindUserByUsername _findUserByUsername;
         private readonly IGetAutorizzazioni _getAutorizzazioni;
         private readonly IGetCompetenzeByCoordinateIntervento _getCompetenze;
+        private readonly IGetListaSintesi _getListaSintesi;
+        private readonly GetPinNodoByCodSede _getPinNodoByCodSede;
+        private readonly INotificationDoubleChiamataInCorso _notificationDoubleChiamataInCorso;
 
         public ChiamataInCorsoMarkerAuthorization(IPrincipal currentUser, IFindUserByUsername findUserByUsername,
             IGetAutorizzazioni getAutorizzazioni,
-            IGetCompetenzeByCoordinateIntervento getCompetenze)
+            IGetCompetenzeByCoordinateIntervento getCompetenze,
+            IGetListaSintesi getListaSintesi,
+            GetPinNodoByCodSede getPinNodoByCodSede,
+            INotificationDoubleChiamataInCorso notificationDoubleChiamataInCorso)
         {
             _currentUser = currentUser;
             _findUserByUsername = findUserByUsername;
             _getAutorizzazioni = getAutorizzazioni;
             _getCompetenze = getCompetenze;
+            _getListaSintesi = getListaSintesi;
+            _getPinNodoByCodSede = getPinNodoByCodSede;
+            _notificationDoubleChiamataInCorso = notificationDoubleChiamataInCorso;
         }
 
         public IEnumerable<AuthorizationResult> Authorize(ChiamataInCorsoMarkerCommand command)
         {
             var username = _currentUser.Identity.Name;
             var user = _findUserByUsername.FindUserByUs(username);
-
+            var Competenza = _getCompetenze.GetCompetenzeByCoordinateIntervento(command.AddChiamataInCorso.Localita.Coordinate);
+            string[] CodUOCompetenzaAppo = {
+                Competenza.CodProvincia + "." + Competenza.CodDistaccamento,
+                Competenza.CodProvincia + "." + Competenza.CodDistaccamento2,
+                Competenza.CodProvincia + "." + Competenza.CodDistaccamento3
+            };
             if (_currentUser.Identity.IsAuthenticated)
             {
                 if (user == null)
                     yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
 
+                var listaPin = _getPinNodoByCodSede.GetListaPin(CodUOCompetenzaAppo);
+                FiltroRicercaRichiesteAssistenza filtro = new FiltroRicercaRichiesteAssistenza()
+                {
+                    IndirizzoIntervento = command.AddChiamataInCorso.Localita,
+                    SearchKey = "0",
+                    UnitaOperative = listaPin.ToHashSet()
+                };
+
+                var richiesteEsistenti = _getListaSintesi.GetListaSintesiRichieste(filtro);
+
+                if (richiesteEsistenti.Count > 0)
+                    _notificationDoubleChiamataInCorso.SendNotification(command);
             }
             else
                 yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
