@@ -312,14 +312,8 @@
                                 <i class="guida fa fa-eye fa-fw mr-1" ngbTooltip="In Lavorazione"
                                    placement="right"></i>
                                 <span *ngIf="methods._primoUtente(richiesta.listaUtentiInLavorazione) as utentiInLavorazioneValue; else nonInLavorazione"
-                                      class="h6 m-0" [ngbTooltip]="utenteInLavorazione">
+                                      class="h6 m-0">
                                     {{ utentiInLavorazioneValue.nominativo }}
-                                    <ng-template #utenteInLavorazione>
-                                        <span>
-                                            {{utentiInLavorazioneValue.dataInizioAttivita | friendlyDate}}
-                                            {{utentiInLavorazioneValue.dataInizioAttivita | friendlyHour: true}}
-                                        </span>
-                                    </ng-template>
                                 </span>
                                 <button *ngIf="richiesta.listaUtentiInLavorazione && richiesta.listaUtentiInLavorazione.length > 1"
                                         class="btn btn-light border big_font py-0 px-1"
@@ -330,7 +324,6 @@
                                     <div *ngIf="methods._altriUtenti(richiesta.listaUtentiInLavorazione) as utentiTooltip">
                                         <div *ngFor="let utente of utentiTooltip">
                                             {{utente.nominativo}}
-                                            - {{utente.dataInizioAttivita | friendlyDate}} {{utente.dataInizioAttivita | friendlyHour: true}}
                                         </div>
                                     </div>
                                 </ng-template>
