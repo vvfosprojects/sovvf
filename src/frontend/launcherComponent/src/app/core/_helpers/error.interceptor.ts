@@ -32,6 +32,7 @@ export class ErrorInterceptor implements HttpInterceptor {
             if ([ 401 ].indexOf(err.status) !== -1) {
                 if (this.store.selectSnapshot(UtenteState.utente)) {
                     this.store.dispatch(new ClearUtente(true));
+                    this.store.dispatch(new ShowToastr(ToastrType.Error, 'Utente non autorizzato', err.error, null, null, true));
                 }
                 this.store.dispatch(new Navigate([ '/login' ]));
             } else if ([ 403 ].indexOf(err.status) !== -1) {
