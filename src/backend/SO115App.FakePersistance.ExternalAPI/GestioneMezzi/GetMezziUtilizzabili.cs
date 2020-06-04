@@ -75,40 +75,53 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
             foreach (string CodSede in ListaCodiciSedi)
             {
                 List<Mezzo> listaMezziBySede = new List<Mezzo>();
-
-                #region LEGGO DA API ESTERNA
-
-                //_client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("test");
-                //var response = await _client.GetAsync($"{_configuration.GetSection("DataFakeImplementation").GetSection("UrlAPIMezzi").Value}/GetListaMezziByCodComando?CodComando={CodSede}").ConfigureAwait(false);
-                //response.EnsureSuccessStatusCode();
-                //using HttpContent content = response.Content;
-                //var data = await content.ReadAsStringAsync().ConfigureAwait(false);
-                //var ListaMezziSede = JsonConvert.DeserializeObject<List<MezzoFake>>(data);
-
-                #endregion LEGGO DA API ESTERNA
-
-                #region LEGGO DA JSON FAKE
-
-                var filepath = Costanti.ListaMezzi;
-                string json;
-                using (var r = new StreamReader(filepath))
+                string nomeCache = "M_" + CodSede.Replace(".", "");
+                if (!_memoryCache.TryGetValue(nomeCache, out listaMezziBySede))
                 {
-                    json = r.ReadToEnd();
-                }
-                var listaMezzi = JsonConvert.DeserializeObject<List<MezzoFake>>(json);
-                listaMezzi.FindAll(x => x.Sede.Equals(CodSede)).ToList();
-                var ListaMezziSede = listaMezzi.FindAll(x => x.Sede.Equals(CodSede)).ToList();
+                    #region LEGGO DA API ESTERNA
 
-                #endregion LEGGO DA JSON FAKE
+                    //_client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("test");
+                    //var response = await _client.GetAsync($"{_configuration.GetSection("DataFakeImplementation").GetSection("UrlAPIMezzi").Value}/GetListaMezziByCodComando?CodComando={CodSede}").ConfigureAwait(false);
+                    //response.EnsureSuccessStatusCode();
+                    //using HttpContent content = response.Content;
+                    //var data = await content.ReadAsStringAsync().ConfigureAwait(false);
+                    //var ListaMezziSede = JsonConvert.DeserializeObject<List<MezzoFake>>(data);
 
-                foreach (MezzoFake mezzoFake in ListaMezziSede)
-                {
-                    if (!mezzoFake.CodDestinazione.Equals("CMOB"))
+                    #endregion LEGGO DA API ESTERNA
+
+                    #region LEGGO DA JSON FAKE
+
+                    var filepath = Costanti.ListaMezzi;
+                    string json;
+                    using (var r = new StreamReader(filepath))
                     {
-                        var anagraficaMezzo = GetAnagraficaMezzoByTarga(mezzoFake.Targa).Result;
-                        var mezzo = MapMezzo(anagraficaMezzo, mezzoFake);
-                        ListaMezzi.Add(mezzo);
+                        json = r.ReadToEnd();
                     }
+                    var listaMezzi = JsonConvert.DeserializeObject<List<MezzoFake>>(json);
+                    listaMezzi.FindAll(x => x.Sede.Equals(CodSede)).ToList();
+                    var ListaMezziSede = listaMezzi.FindAll(x => x.Sede.Equals(CodSede)).ToList();
+
+                    #endregion LEGGO DA JSON FAKE
+
+                    List<Mezzo> listaMezziBySedeAppo = new List<Mezzo>();
+                    foreach (MezzoFake mezzoFake in ListaMezziSede)
+                    {
+                        if (!mezzoFake.CodDestinazione.Equals("CMOB"))
+                        {
+                            var anagraficaMezzo = GetAnagraficaMezzoByTarga(mezzoFake.Targa).Result;
+
+                            var mezzo = MapMezzo(anagraficaMezzo, mezzoFake);
+                            listaMezziBySedeAppo.Add(mezzo);
+                            ListaMezzi.Add(mezzo);
+                        }
+                    }
+
+                    var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromHours(8));
+                    _memoryCache.Set(nomeCache, listaMezziBySedeAppo, cacheEntryOptions);
+                }
+                else
+                {
+                    ListaMezzi.AddRange(listaMezziBySede);
                 }
             }
 
