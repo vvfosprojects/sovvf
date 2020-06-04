@@ -168,6 +168,7 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy {
         this.nuovaRichiesta.notePubbliche = f.notePubbliche.value;
         this.nuovaRichiesta.prioritaRichiesta = f.prioritaRichiesta.value;
         this.nuovaRichiesta.localita.piano = f.piano.value;
+        this.nuovaRichiesta.codiceSchedaNue = this.idSchedaContatto ? this.idSchedaContatto : null;
 
         this.setDescrizione();
         console.log('Nuova Richiesta', this.nuovaRichiesta);
