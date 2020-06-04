@@ -74,6 +74,8 @@ namespace DomainModel.CQRS.Commands.UpDateIntervento
                         {
                             if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, competenza, Costanti.GestoreChiamate))
                                 abilitato = true;
+                            if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, competenza, Costanti.GestoreRichieste))
+                                abilitato = true;
                         }
                     }
 
