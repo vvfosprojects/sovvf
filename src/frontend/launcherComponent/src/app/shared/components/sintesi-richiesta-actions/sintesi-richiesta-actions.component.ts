@@ -1,5 +1,5 @@
-import { Component, EventEmitter, OnInit, Output, Input } from '@angular/core';
-import { NgbDropdownConfig, NgbTooltipConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { NgbDropdownConfig, NgbModal, NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
 import { SintesiRichiesta } from '../../model/sintesi-richiesta.model';
 import { calcolaActionSuggeritaRichiesta, statoRichiestaActionsEnumToStringArray, statoRichiestaColor } from '../../helper/function';
 import { StatoRichiestaActions } from '../../enum/stato-richiesta-actions.enum';
@@ -14,14 +14,13 @@ import { RichiestaActionInterface } from '../../interface/richiesta-action.inter
 export class SintesiRichiestaActionsComponent implements OnInit {
 
     @Input() richiesta: SintesiRichiesta;
-    statoRichiestaActions: StatoRichiestaActions;
-    statoRichiestaString: Array<string>;
+    statoRichiestaString: Array<StatoRichiestaActions>;
 
     @Output() actionRichiesta: EventEmitter<RichiestaActionInterface> = new EventEmitter();
 
     constructor(dropdownConfig: NgbDropdownConfig,
-        tooltipConfig: NgbTooltipConfig,
-        private modalService: NgbModal) {
+                tooltipConfig: NgbTooltipConfig,
+                private modalService: NgbModal) {
         dropdownConfig.container = 'body';
         dropdownConfig.placement = 'top';
         tooltipConfig.container = 'body';
@@ -29,7 +28,8 @@ export class SintesiRichiestaActionsComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.statoRichiestaString = statoRichiestaActionsEnumToStringArray([this.richiesta.stato, calcolaActionSuggeritaRichiesta(this.richiesta)]);
+        const exceptStati = [this.richiesta.stato, StatoRichiestaActions.Riaperta, calcolaActionSuggeritaRichiesta(this.richiesta)];
+        this.statoRichiestaString = statoRichiestaActionsEnumToStringArray(exceptStati);
     }
 
     onClick(stato: StatoRichiestaActions) {
@@ -73,15 +73,10 @@ export class SintesiRichiestaActionsComponent implements OnInit {
                     case 'ok':
                         richiestaAction.note = val.note;
                         this.actionRichiesta.emit(richiestaAction);
-                        // console.log('Azione confermata', richiestaAction);
                         break;
                     case 'ko':
-                        // console.log('Azione annullata');
                         break;
                 }
-            },
-            (err) => {
-                // console.error('Modal chiusa senza bottoni. Err ->', err);
             }
         );
     }
