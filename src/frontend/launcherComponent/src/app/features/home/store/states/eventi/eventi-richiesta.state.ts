@@ -90,7 +90,6 @@ export class EventiRichiestaState {
     const idRichiesta = getState().idRichiesta;
     dispatch(new StartLoading());
     this._eventiRichiesta.getEventiRichiesta(idRichiesta).subscribe((data: EventoRichiesta[]) => {
-      // console.log(`Get Eventi Richiesta: ${idRichiesta}`);
       dispatch(new SetEventiRichiesta(data));
       dispatch(new StopLoading());
     });

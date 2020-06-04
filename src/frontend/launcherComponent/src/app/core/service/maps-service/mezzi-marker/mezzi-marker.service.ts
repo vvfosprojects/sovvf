@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { catchError, retry } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../../environments/environment';
-import { handleError } from '../../../../shared/helper/handleError';
 import { AreaMappa } from '../../../../features/home/maps/maps-model/area-mappa-model';
 import { FiltroMezzi } from '../../../../features/home/maps/maps-model/filtro-mezzi.interface';
 import { AreaMappaFiltrata } from '../../../../shared/helper/query-helper';
@@ -18,9 +16,7 @@ export class MezziMarkerService {
     }
 
     public getMezziMarkers(areaMappa: AreaMappa, filtroMezzi?: FiltroMezzi): Observable<any> {
-        return this.http.post(`${API_MARKER}/GetMezzi`, AreaMappaFiltrata(areaMappa, { filtroMezzi })).pipe(
-            // retry(3),
-            catchError(handleError));
+        return this.http.post(`${API_MARKER}/GetMezzi`, AreaMappaFiltrata(areaMappa, { filtroMezzi }));
     }
 
 }

@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { catchError, retry } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
-import { handleError } from '../../../shared/helper/handleError';
 import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
 import { FiltersInterface } from '../../../shared/interface/filters.interface';
 import { PaginationInterface } from '../../../shared/interface/pagination.interface';
@@ -31,32 +29,22 @@ export class SintesiRichiesteService {
             'includiRichiesteChiuse': !!(filters.others && filters.others.filter((f: VoceFiltro) => f.descrizione === 'Chiuse')[0]),
             'filtriTipologie': filtriTipologie && filtriTipologie.length > 0 ? filtriTipologie.map(f => f.codice) : null
         };
-        return this.http.post(API_URL_RICHIESTE, obj).pipe(
-            // retry(3),
-            catchError(handleError));
+        return this.http.post(API_URL_RICHIESTE, obj);
     }
 
     public getRichiestaById(id: string): Observable<SintesiRichiesta> {
-        return this.http.get<SintesiRichiesta>(`${API_GESTIONE_RICHIESTA}/GetRichiesta?idRichiesta=${id}`).pipe(
-            // retry(3),
-            catchError(handleError));
+        return this.http.get<SintesiRichiesta>(`${API_GESTIONE_RICHIESTA}/GetRichiesta?idRichiesta=${id}`);
     }
 
     public patchRichiesta(richiesta: SintesiRichiesta): Observable<any> {
-        return this.http.post<any>(`${API_CHIAMATA}/UpdateIntervento`, richiesta).pipe(
-            // retry(3),
-            catchError(handleError));
+        return this.http.post<any>(`${API_CHIAMATA}/UpdateIntervento`, richiesta);
     }
 
     public aggiornaStatoRichiesta(obj: any): Observable<any> {
-        return this.http.post<any>(`${API_GESTIONE_RICHIESTA}/AggiornaStato`, obj).pipe(
-            // retry(3),
-            catchError(handleError));
+        return this.http.post<any>(`${API_GESTIONE_RICHIESTA}/AggiornaStato`, obj);
     }
 
     public aggiornaStatoMezzo(obj: any): Observable<any> {
-        return this.http.post<any>(`${API_GESTIONE_PARTENZA}/AggiornaPartenza`, obj).pipe(
-            // retry(3),
-            catchError(handleError));
+        return this.http.post<any>(`${API_GESTIONE_PARTENZA}/AggiornaPartenza`, obj);
     }
 }

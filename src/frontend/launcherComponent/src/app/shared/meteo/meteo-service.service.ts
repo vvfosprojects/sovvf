@@ -1,13 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { catchError, retry } from 'rxjs/operators';
 import { HttpBackend, HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { map } from 'rxjs/internal/operators';
 import { Meteo } from '../model/meteo.model';
 import { Coordinate } from '../model/coordinate.model';
 import { degToCompass, wipeCoordinate } from '../helper/function';
-import { handleError } from '../helper/handleError';
 
 const API_METEO = environment.apiUrl.meteo;
 const CFG = {
@@ -42,9 +40,7 @@ export class MeteoService {
                         cardinali: degToCompass(Math.floor(data.wind['deg']))
                     }
                 );
-            }),
-            // retry(3),
-            catchError(handleError)
+            })
         );
     }
 
