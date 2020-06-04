@@ -2,8 +2,6 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { SchedaContatto } from 'src/app/shared/interface/scheda-contatto.interface';
 import { HttpClient } from '@angular/common/http';
-import { retry, catchError } from 'rxjs/operators';
-import { handleError } from 'src/app/shared/helper/handleError';
 import { environment } from 'src/environments/environment';
 import { FiltriSchedeContatto } from '../../../shared/interface/filtri-schede-contatto.interface';
 
@@ -19,39 +17,24 @@ export class SchedeContattoService {
     }
 
     getSchedeContatto(filtri: FiltriSchedeContatto): Observable<SchedaContatto[]> {
-        return this.http.post<SchedaContatto[]>(`${API_SCHEDE_CONTATTO}/GetSchede`, filtri).pipe(
-            // retry(3),
-            catchError(handleError)
-        );
+        return this.http.post<SchedaContatto[]>(`${API_SCHEDE_CONTATTO}/GetSchede`, filtri);
     }
 
     mergeSchedeContatto(schedaUnita: SchedaContatto) {
-        return this.http.post<SchedaContatto[]>(`${API_SCHEDE_CONTATTO}/MergeSchede`, schedaUnita).pipe(
-            // retry(3),
-            catchError(handleError)
-        );
+        return this.http.post<SchedaContatto[]>(`${API_SCHEDE_CONTATTO}/MergeSchede`, schedaUnita);
     }
 
     undoMergeSchedeContatto(schedaUnita: SchedaContatto) {
-        return this.http.post<SchedaContatto[]>(`${API_SCHEDE_CONTATTO}/UndoMergeSchede`, schedaUnita).pipe(
-            // retry(3),
-            catchError(handleError)
-        );
+        return this.http.post<SchedaContatto[]>(`${API_SCHEDE_CONTATTO}/UndoMergeSchede`, schedaUnita);
     }
 
     setSchedaContattoLetta(codiceScheda: string, letta: boolean) {
         const obj = { codiceScheda, letta };
-        return this.http.put<any>(`${API_SCHEDE_CONTATTO}/SetLetta`, obj).pipe(
-            // retry(3),
-            catchError(handleError)
-        );
+        return this.http.put<any>(`${API_SCHEDE_CONTATTO}/SetLetta`, obj);
     }
 
     setSchedaContattoGestita(scheda: SchedaContatto, gestita: boolean) {
         const obj = { scheda, gestita };
-        return this.http.put<any>(`${API_SCHEDE_CONTATTO}/SetGestita`, obj).pipe(
-            // retry(3),
-            catchError(handleError)
-        );
+        return this.http.put<any>(`${API_SCHEDE_CONTATTO}/SetGestita`, obj);
     }
 }

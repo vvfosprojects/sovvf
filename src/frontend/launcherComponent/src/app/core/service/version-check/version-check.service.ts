@@ -4,8 +4,6 @@ import { VersionInterface } from '../../../shared/interface/version.interface';
 import { environment } from '../../../../environments/environment';
 import { Store } from '@ngxs/store';
 import { SetCurrentVersion, SetNewVersion } from '../../../shared/store/actions/nuova-versione/nuova-versione.actions';
-import { catchError } from 'rxjs/operators';
-import { handleError } from '../../../shared/helper/handleError';
 
 @Injectable({
     providedIn: 'root'
@@ -34,9 +32,7 @@ export class VersionCheckService {
      * @param first is used for first check
      */
     private checkVersion(url: string, first?: boolean): void {
-        this.http.get<VersionInterface>(url + '?t=' + new Date().getTime()).pipe(
-            catchError(handleError)
-            )
+        this.http.get<VersionInterface>(url + '?t=' + new Date().getTime())
             .subscribe(
                 (response: VersionInterface) => {
                     if (response) {

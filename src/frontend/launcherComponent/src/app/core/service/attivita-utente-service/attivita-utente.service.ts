@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { catchError, retry } from 'rxjs/operators';
-import { handleError } from '../../../shared/helper/handleError';
 import { environment } from '../../../../environments/environment';
 import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
 
@@ -17,31 +15,19 @@ export class AttivitaUtenteService {
     }
 
     public addInLavorazione(sintesiRichiesta: SintesiRichiesta): Observable<SintesiRichiesta> {
-        return this.http.post<SintesiRichiesta>(API_URL + '/AddInLavorazione', sintesiRichiesta).pipe(
-            // retry(3),
-            catchError(handleError)
-        );
+        return this.http.post<SintesiRichiesta>(API_URL + '/AddInLavorazione', sintesiRichiesta);
     }
 
     public deleteInLavorazione(sintesiRichiesta: SintesiRichiesta): Observable<SintesiRichiesta> {
-        return this.http.post<SintesiRichiesta>(API_URL + '/DeleteInLavorazione', sintesiRichiesta).pipe(
-            // retry(3),
-            catchError(handleError)
-        );
+        return this.http.post<SintesiRichiesta>(API_URL + '/DeleteInLavorazione', sintesiRichiesta);
     }
 
     public addPresaInCarico(sintesiRichiesta: SintesiRichiesta): Observable<SintesiRichiesta> {
-        return this.http.post<SintesiRichiesta>(API_URL + '/AddPresaInCarico', sintesiRichiesta).pipe(
-            // retry(3),
-            catchError(handleError)
-        );
+        return this.http.post<SintesiRichiesta>(API_URL + '/AddPresaInCarico', sintesiRichiesta);
     }
 
     public deletePresaInCarico(sintesiRichiesta: SintesiRichiesta): Observable<SintesiRichiesta> {
-        return this.http.post<SintesiRichiesta>(API_URL + '/DeletePresaInCarico', sintesiRichiesta).pipe(
-            // retry(3),
-            catchError(handleError)
-        );
+        return this.http.post<SintesiRichiesta>(API_URL + '/DeletePresaInCarico', sintesiRichiesta);
     }
 
 }

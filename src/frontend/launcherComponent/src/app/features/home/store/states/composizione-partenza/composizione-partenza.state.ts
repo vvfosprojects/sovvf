@@ -390,7 +390,6 @@ export class ComposizionePartenzaState {
             ]);
         }, () => {
             dispatch(new StopInvioPartenzaLoading());
-            console.error('Conferma Partenza: qualcosa è andato storto');
         });
     }
 

@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { catchError, map, retry, tap } from 'rxjs/operators';
-import { handleError } from '../../../shared/helper/handleError';
+import { map } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { Welcome } from '../../../shared/interface/welcome.interface';
@@ -18,9 +17,7 @@ export class HomeService {
 
     getHome(): Observable<Welcome> {
         return this.http.get<Welcome>(API_WELCOME).pipe(
-            map((data: Welcome) => mapAppSettings(data)),
-            // retry(3),
-            catchError(handleError)
+            map((data: Welcome) => mapAppSettings(data))
         );
 
         function mapAppSettings(data: Welcome): Welcome {

@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { catchError, retry } from 'rxjs/operators';
-import { handleError } from '../../../shared/helper/handleError';
 import { environment } from '../../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { ResponseInterface } from '../../../shared/interface/response.interface';
@@ -27,17 +25,11 @@ export class GestioneUtentiService {
 
     getUtentiVVF(text: string): Observable<UtenteVvfInterface[]> {
         const url = !text ? API_URL_PERSONALE_VVF : API_URL_PERSONALE_VVF + '?text=' + text;
-        return this.http.get<UtenteVvfInterface[]>(url).pipe(
-            // retry(3),
-            catchError(handleError)
-        );
+        return this.http.get<UtenteVvfInterface[]>(url);
     }
 
     getUtente(id: string): Observable<{detUtente: Utente}> {
-        return this.http.get<{detUtente: Utente}>(API_URL + '/GetUtente?id=' + id).pipe(
-            // retry(3),
-            catchError(handleError)
-        );
+        return this.http.get<{detUtente: Utente}>(API_URL + '/GetUtente?id=' + id);
     }
 
     getListaUtentiGestione(filters: FiltersInterface, pagination: PaginationInterface): Observable<ResponseInterface> {
@@ -48,34 +40,22 @@ export class GestioneUtentiService {
             pagination,
             codiciSede: filters.codiciSede.join()
         };
-        return this.http.post<ResponseInterface>(API_URL + '/GetUtenti', obj).pipe(
-            // retry(3),
-            catchError(handleError)
-        );
+        return this.http.post<ResponseInterface>(API_URL + '/GetUtenti', obj);
     }
 
     addUtente(addUtente: AddRuoloUtenteInterface): Observable<Utente> {
-        return this.http.post<Utente>(API_URL + '/AddUtente', addUtente).pipe(
-            // retry(3),
-            catchError(handleError)
-        );
+        return this.http.post<Utente>(API_URL + '/AddUtente', addUtente);
     }
 
     removeUtente(codFiscale: string) {
         const obj = {
             codFiscale
         };
-        return this.http.post<any>(API_URL + '/DeleteUtente', obj).pipe(
-            // retry(3),
-            catchError(handleError)
-        );
+        return this.http.post<any>(API_URL + '/DeleteUtente', obj);
     }
 
     addRuoloUtente(addRuolo: AddRuoloUtenteInterface): Observable<Utente> {
-        return this.http.post<Utente>(API_URL_RUOLO + '/AddRuolo', addRuolo).pipe(
-            // retry(3),
-            catchError(handleError)
-        );
+        return this.http.post<Utente>(API_URL_RUOLO + '/AddRuolo', addRuolo);
     }
 
     removeRuoloUtente(codFiscale: string, ruolo: Ruolo) {
@@ -83,9 +63,6 @@ export class GestioneUtentiService {
             codFiscale,
             ruolo
         };
-        return this.http.post<Utente>(API_URL_RUOLO + '/DeleteRuolo', obj).pipe(
-            // retry(3),
-            catchError(handleError)
-        );
+        return this.http.post<Utente>(API_URL_RUOLO + '/DeleteRuolo', obj);
     }
 }

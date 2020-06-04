@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
-import { catchError, map, tap } from 'rxjs/operators';
-import { handleError } from '../../../shared/helper/handleError';
+import { map, tap } from 'rxjs/operators';
 import { AppSettings, AppSettingsAPI } from '../../../shared/interface/app-settings.interface';
 import { Observable } from 'rxjs';
 
@@ -18,9 +17,7 @@ export class NavbarService {
     getNavbar(): Observable<AppSettings> {
         return this.http.get<AppSettingsAPI>(API_URL_NAVBAR).pipe(
             map((data: AppSettingsAPI) => mapAppSettings(data)),
-            tap(data => console.log('AppSettings from Api:', data)),
-            // retry(3),
-            catchError(handleError)
+            tap(data => console.log('AppSettings from Api:', data))
         );
 
         function mapAppSettings(data: AppSettingsAPI): AppSettings {
