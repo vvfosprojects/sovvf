@@ -49,14 +49,6 @@ namespace DomainModel.CQRS.Commands.ChiamataInCorsoMarker
 
         public IEnumerable<AuthorizationResult> Authorize(ChiamataInCorsoMarkerCommand command)
         {
-            var Competenza = _getCompetenze.GetCompetenzeByCoordinateIntervento(command.AddChiamataInCorso.Localita.Coordinate);
-            string[] CodUOCompetenzaAppo = {
-                Competenza.CodProvincia + "." + Competenza.CodDistaccamento,
-                Competenza.CodProvincia + "." + Competenza.CodDistaccamento2,
-                Competenza.CodProvincia + "." + Competenza.CodDistaccamento3,
-                Competenza.CodProvincia + ".1000"
-            };
-
             var username = _currentUser.Identity.Name;
             var user = _findUserByUsername.FindUserByUs(username);
 
@@ -64,21 +56,7 @@ namespace DomainModel.CQRS.Commands.ChiamataInCorsoMarker
             {
                 if (user == null)
                     yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
-                else
-                {
-                    Boolean abilitato = false;
-                    foreach (var ruolo in user.Ruoli)
-                    {
-                        foreach (var competenza in CodUOCompetenzaAppo)
-                        {
-                            if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, competenza, Costanti.GestoreChiamate))
-                                abilitato = true;
-                        }
-                    }
 
-                    if (!abilitato)
-                        yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
-                }
             }
             else
                 yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
