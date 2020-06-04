@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Soccorso;
+using SO115App.API.Models.Classi.Soccorso.Eventi;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
 using SO115App.Models.Classi.Soccorso;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
@@ -55,26 +56,32 @@ namespace SO115App.Models.Servizi.CustomMapper
             List<AttivitaUtente> ListaAttivita = new List<AttivitaUtente>();
             if (Tipo.Equals("P"))
             {
-                foreach (var eventi in richiesta.Eventi)
+                foreach (var evento in richiesta.Eventi)
                 {
-                    var utente = _getUtenteById.GetUtenteByCodice(eventi.CodiceFonte);
+                    var utente = _getUtenteById.GetUtenteByCodice(evento.CodiceFonte);
 
                     AttivitaUtente attivita = new AttivitaUtente()
                     {
                         Nominativo = utente.Nome + " " + utente.Cognome,
-                        DataInizioAttivita = eventi.Istante,
-                        IdUtente = eventi.CodiceFonte
+                        DataInizioAttivita = evento.Istante,
+                        IdUtente = evento.CodiceFonte
                     };
 
-                    if (ListaAttivita.Where(x => x.Nominativo.Equals(attivita.Nominativo) && x.DataInizioAttivita <= attivita.DataInizioAttivita).ToList().Count > 0)
+                    if (evento is AnnullamentoPresaInCarico)
+                    {
+                        var attivitaToDelete = ListaAttivita.Where(x => x.Nominativo.Equals(attivita.Nominativo)).ToList();
+                        ListaAttivita.Remove(attivitaToDelete[0]);
+                    }
+                    else if (ListaAttivita.Where(x => x.Nominativo.Equals(attivita.Nominativo) && x.DataInizioAttivita <= attivita.DataInizioAttivita).ToList().Count > 0)
                     {
                         var attivitaToDelete = ListaAttivita.Where(x => x.Nominativo.Equals(attivita.Nominativo) && x.DataInizioAttivita <= attivita.DataInizioAttivita).ToList();
                         ListaAttivita.Remove(attivitaToDelete[0]);
                         ListaAttivita.Add(attivita);
                     }
-                    else 
-                    { 
-                    ListaAttivita.Add(attivita);}
+                    else
+                    {
+                        ListaAttivita.Add(attivita);
+                    }
                 }
             }
             else

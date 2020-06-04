@@ -48,24 +48,24 @@ namespace DomainModel.CQRS.Commands.PresaInCarico
         public void Handle(PresaInCaricoCommand command)
         {
             var richiesta = _getRichiestaById.GetById(command.IdRichiesta);
-            var utente = _getUtenteById.GetUtenteByCodice(command.IdUtente);
+            //var utente = _getUtenteById.GetUtenteByCodice(command.IdUtente);
 
-            var nominativoPresaInCarico = utente.Nome + "." + utente.Cognome;
+            //var nominativoPresaInCarico = utente.Nome + "." + utente.Cognome;
 
-            if (richiesta.UtPresaInCarico != null)
-            {
-                new InizioPresaInCarico(richiesta, DateTime.UtcNow, richiesta.CodOperatore);
+            //if (richiesta.UtPresaInCarico != null)
+            //{
+            new InizioPresaInCarico(richiesta, DateTime.UtcNow, richiesta.CodOperatore);
 
-                if(!richiesta.UtPresaInCarico.Contains(nominativoPresaInCarico))
-                    richiesta.UtPresaInCarico.Add(nominativoPresaInCarico);
-            }
-            else
-            {
-                richiesta.UtPresaInCarico = new List<string>
-                {
-                    nominativoPresaInCarico
-                };
-            }
+            //if(!richiesta.UtPresaInCarico.Contains(nominativoPresaInCarico))
+            //    richiesta.UtPresaInCarico.Add(nominativoPresaInCarico);
+            //}
+            //else
+            //{
+            //    //richiesta.UtPresaInCarico = new List<string>
+            //    //{
+            //    //    nominativoPresaInCarico
+            //    //};
+            //}
 
             _updateRichiestaAssistenza.UpDate(richiesta);
         }
