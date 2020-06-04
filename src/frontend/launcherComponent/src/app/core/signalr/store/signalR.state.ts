@@ -78,8 +78,18 @@ export class SignalRState implements NgxsOnChanges {
         const state = getState();
         const reconnected = state.disconnected ? true : null;
         if (reconnected) {
-            dispatch(new ShowToastr(ToastrType.Clear));
-            dispatch(new ShowToastr(ToastrType.Success, 'signalR', 'Sei di nuovo online!', 5, null, true));
+            dispatch([
+                new ShowToastr(ToastrType.Clear),
+                new ShowToastr(ToastrType.Success, 'signalR', 'Sei di nuovo online!', 5, null, true)
+            ]);
+            if (state.codiciSede && state.codiciSede.length > 0) {
+                const utente = this.store.selectSnapshot(UtenteState.utente);
+                this.signalR.addToGroup(new SignalRNotification(
+                    state.codiciSede,
+                    utente.id,
+                    `${utente.nome} ${utente.cognome}`
+                ));
+            }
         }
         patchState({
             connected: true,
