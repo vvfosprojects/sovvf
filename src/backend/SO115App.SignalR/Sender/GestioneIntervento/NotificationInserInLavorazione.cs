@@ -20,17 +20,14 @@
 
 using CQRS.Queries;
 using DomainModel.CQRS.Commands.MessaInLavorazione;
-using DomainModel.CQRS.Commands.UpDateIntervento;
 using Microsoft.AspNetCore.SignalR;
-using SO115App.API.Models.Classi.Boxes;
-using SO115App.API.Models.Classi.Marker;
-using SO115App.API.Models.Servizi.CQRS.Command.GestioneSoccorso.Shared;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza;
 using SO115App.API.Models.Servizi.CQRS.Queries.Marker.SintesiRichiesteAssistenzaMarker;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneIntervento;
+using SO115App.SignalR.Utility;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -43,34 +40,41 @@ namespace SO115App.SignalR.Sender.GestioneIntervento
         private readonly IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> _BoxRichiestehandler;
         private readonly IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> _SintesiRichiesteAssistenzaMarkerhandler;
         private readonly IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> sintesiRichiesteAssistenzahandler;
+        private readonly GetGerarchiaToSend _getGerarchiaToSend;
 
         public NotificationInserInLavorazione(IHubContext<NotificationHub> NotificationHubContext,
                                           IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> BoxRichiestehandler,
                                           IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> SintesiRichiesteAssistenzaMarkerhandler,
-                                          IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> SintesiRichiesteAssistenzahandler
-            )
+                                          IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> SintesiRichiesteAssistenzahandler,
+                                          GetGerarchiaToSend getGerarchiaToSend)
         {
             _notificationHubContext = NotificationHubContext;
             _BoxRichiestehandler = BoxRichiestehandler;
             _SintesiRichiesteAssistenzaMarkerhandler = SintesiRichiesteAssistenzaMarkerhandler;
             sintesiRichiesteAssistenzahandler = SintesiRichiesteAssistenzahandler;
+            _getGerarchiaToSend = getGerarchiaToSend;
         }
 
         public async Task SendNotification(MessaInLavorazioneCommand intervento)
         {
-            var sintesiRichiesteAssistenzaQuery = new SintesiRichiesteAssistenzaQuery
+            var SediDaNotificare = _getGerarchiaToSend.Get(intervento.CodSede);
+
+            foreach (var sede in SediDaNotificare)
             {
-                Filtro = new FiltroRicercaRichiesteAssistenza
+                var sintesiRichiesteAssistenzaQuery = new SintesiRichiesteAssistenzaQuery
                 {
-                    idOperatore = intervento.IdUtente
-                },
-                CodiciSede = new string[] {intervento.CodSede}
-            };
-            var listaSintesi = (List<SintesiRichiesta>)this.sintesiRichiesteAssistenzahandler.Handle(sintesiRichiesteAssistenzaQuery).SintesiRichiesta;
+                    Filtro = new FiltroRicercaRichiesteAssistenza
+                    {
+                        idOperatore = intervento.IdUtente
+                    },
+                    CodiciSede = new string[] { sede }
+                };
 
-            intervento.Chiamata = listaSintesi.LastOrDefault(richiesta => richiesta.Id == intervento.Chiamata.Id);
+                var listaSintesi = (List<SintesiRichiesta>)this.sintesiRichiesteAssistenzahandler.Handle(sintesiRichiesteAssistenzaQuery).SintesiRichiesta;
+                intervento.Chiamata = listaSintesi.LastOrDefault(richiesta => richiesta.Id == intervento.Chiamata.Id);
 
-            await _notificationHubContext.Clients.Group(intervento.Chiamata.Operatore.Sede.Codice).SendAsync("ModifyAndNotifySuccess", intervento);
+                await _notificationHubContext.Clients.Group(sede).SendAsync("ModifyAndNotifySuccess", intervento);
+            }
         }
     }
 }

@@ -21,6 +21,7 @@ using CQRS.Commands;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Classi.Soccorso;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
+using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti;
 
 namespace DomainModel.CQRS.Commands.RimozioneInLavorazione
 {
@@ -28,33 +29,28 @@ namespace DomainModel.CQRS.Commands.RimozioneInLavorazione
     {
         private readonly IGetRichiestaById _getRichiestaById;
         private readonly IUpDateRichiestaAssistenza _updateRichiestaAssistenza;
+        private readonly IGetUtenteById _getUtenteById;
 
         public RimozioneInLavorazioneCommandHandler(
             IGetRichiestaById getRichiestaById,
-            IUpDateRichiestaAssistenza updateRichiestaAssistenza
+            IUpDateRichiestaAssistenza updateRichiestaAssistenza,
+            IGetUtenteById getUtenteById
             )
         {
             _getRichiestaById = getRichiestaById;
             _updateRichiestaAssistenza = updateRichiestaAssistenza;
+            _getUtenteById = getUtenteById;
         }
 
         public void Handle(RimozioneInLavorazioneCommand command)
         {
             var richiesta = _getRichiestaById.GetById(command.IdRichiesta);
+            var utente = _getUtenteById.GetUtenteByCodice(command.IdUtente);
             var attivita = new AttivitaUtente();
 
-            richiesta.UtInLavorazione.RemoveAll(x => x == command.IdUtente);
+            var nominativo = utente.Nome + "." + utente.Cognome;
 
-            //if (command.Chiamata.ListaUtentiInLavorazione != null)
-            //    command.Chiamata.ListaUtentiInLavorazione = richiesta.UtInLavorazione;
-            //else
-            //{
-            //    if (richiesta.UtInLavorazione.Count > 0)
-            //    {
-            //        command.Chiamata.ListaUtentiInLavorazione = new List<AttivitaUtente>();
-            //        command.Chiamata.ListaUtentiInLavorazione = richiesta.UtInLavorazione;
-            //    }
-            //}
+            richiesta.UtInLavorazione.RemoveAll(x => x == nominativo);
 
             _updateRichiestaAssistenza.UpDate(richiesta);
         }

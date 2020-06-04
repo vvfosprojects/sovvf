@@ -24,6 +24,7 @@ using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.SetMezzoPrenotato;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GestioneMezzoPrenotato;
 using SO115App.Models.Servizi.Infrastruttura.Notification.ComposizionePartenza.MezzoPrenotato;
+using SO115App.SignalR.Utility;
 using System.Threading.Tasks;
 
 namespace SO115App.SignalR.Sender.ComposizionePartenza.GestioneMezzoPrenotato
@@ -32,15 +33,21 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza.GestioneMezzoPrenotato
     {
         private readonly IHubContext<NotificationHub> _notificationHubContext;
         private readonly IQueryHandler<GetMezziPrenotatiQuery, GetMezzoPrenotatoResult> _mezzoPrenotatoHandler;
+        private readonly GetGerarchiaToSend _getGerarchiaToSend;
 
-        public NotificationAddPrenotazioneMezzo(IHubContext<NotificationHub> NotificationHubContext, IQueryHandler<GetMezziPrenotatiQuery, GetMezzoPrenotatoResult> mezzoPrenotatoHandler)
+        public NotificationAddPrenotazioneMezzo(IHubContext<NotificationHub> NotificationHubContext,
+            IQueryHandler<GetMezziPrenotatiQuery, GetMezzoPrenotatoResult> mezzoPrenotatoHandler,
+            GetGerarchiaToSend getGerarchiaToSend)
         {
             _notificationHubContext = NotificationHubContext;
             _mezzoPrenotatoHandler = mezzoPrenotatoHandler;
+            _getGerarchiaToSend = getGerarchiaToSend;
         }
 
         public async Task SendNotification(SetMezzoPrenotatoCommand command)
         {
+            var SediDaNotificare = _getGerarchiaToSend.Get(command.MezzoPrenotato.CodiceSede);
+
             var mezziPrenotatiQuery = new GetMezziPrenotatiQuery
             {
                 CodiceSede = command.MezzoPrenotato.CodiceSede
@@ -55,11 +62,18 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza.GestioneMezzoPrenotato
                     CodiceMezzo = command.MezzoPrenotato.CodiceMezzo,
                     SbloccaMezzo = true
                 };
-                await _notificationHubContext.Clients.Group(command.MezzoPrenotato.CodiceSede).SendAsync("NotifyAddPrenotazioneMezzo", mezzoLibero).ConfigureAwait(false);
+
+                foreach (var sede in SediDaNotificare)
+                {
+                    await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyAddPrenotazioneMezzo", mezzoLibero).ConfigureAwait(false);
+                }
             }
             else
             {
-                await _notificationHubContext.Clients.Group(command.MezzoPrenotato.CodiceSede).SendAsync("NotifyAddPrenotazioneMezzo", mezzoPrenotato).ConfigureAwait(false);
+                foreach (var sede in SediDaNotificare)
+                {
+                    await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyAddPrenotazioneMezzo", mezzoPrenotato).ConfigureAwait(false);
+                }
             }
         }
     }

@@ -62,7 +62,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneUtente.LogIn
 
             var claim = new[]
                 {
-                    new Claim(ClaimTypes.NameIdentifier, utente.Id.ToString()),
+                    new Claim(ClaimTypes.NameIdentifier, utente.CodiceFiscale.ToString()),
                     new Claim(ClaimTypes.Name,utente.Username)
                 };
 
