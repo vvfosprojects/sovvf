@@ -64,38 +64,6 @@
     "Gestita": false
   },
   {
-    "CodiceScheda": "3",
-    "DataInserimento": "2019-09-26T08:01:23",
-    "CodiceSede": "RM.1000",
-    "Richiedente": {
-      "Telefono": "113",
-      "Nominativo": "Polizia"
-    },
-    "Localita": {
-      "Coordinate": {
-        "Latitudine": 41.8747102,
-        "Longitudine": 12.4515538
-      },
-      "Indirizzo": "Via Fiorino Fiorini, 00152 Roma RM, Italia",
-      "Note": null,
-      "Piano": null
-    },
-    "ClassificazioneEvento": "Esplosione",
-    "Categoria": "",
-    "EnteCompetenza": "PS",
-    "Dettaglio": "",
-    "Priorita": 5,
-    "NumeroPersoneCoinvolte": "2",
-    "OperatoreChiamata": {
-      "CodiceSede": "RM.1000",
-      "CodicePostazioneOperatore": "30",
-      "CodiceFiscale": "ABCD30"
-    },
-    "Classificazione": "Conoscenza",
-    "Letta": true,
-    "Gestita": true
-  },
-  {
     "CodiceScheda": "4",
     "DataInserimento": "2019-09-26T22:12:00",
     "CodiceSede": "RM.1000",
