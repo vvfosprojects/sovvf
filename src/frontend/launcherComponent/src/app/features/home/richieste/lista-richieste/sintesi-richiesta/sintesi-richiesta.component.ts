@@ -3,22 +3,17 @@ import { NgbModal, NgbPopoverConfig, NgbTooltipConfig } from '@ng-bootstrap/ng-b
 import { TimeagoIntl } from 'ngx-timeago';
 import { strings as italianStrings } from 'ngx-timeago/language-strings/it';
 import { ListaEntiComponent } from '../../../../../shared';
-// Model
 import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.model';
 import { StatoRichiesta } from 'src/app/shared/enum/stato-richiesta.enum';
 import { MezzoActionInterface } from '../../../../../shared/interface/mezzo-action.interface';
 import { RichiestaActionInterface } from '../../../../../shared/interface/richiesta-action.interface';
-// Helper Methods
 import { HelperSintesiRichiesta } from '../../helper/_helper-sintesi-richiesta';
 
 @Component({
     selector: 'app-sintesi-richiesta',
     templateUrl: './sintesi-richiesta.component.html',
     styleUrls: ['./sintesi-richiesta.component.css'],
-    providers: [
-        NgbPopoverConfig,
-        NgbTooltipConfig
-    ],
+    providers: [NgbPopoverConfig, NgbTooltipConfig],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SintesiRichiestaComponent implements OnChanges {
@@ -79,10 +74,8 @@ export class SintesiRichiestaComponent implements OnChanges {
     ngOnChanges(changes: SimpleChanges): void {
         if (changes && changes.disableTooltips && changes.disableTooltips.currentValue) {
             if (changes.disableTooltips.currentValue) {
-                console.log('test 1');
                 this.tooltipConfig.disableTooltip = true;
             } else if (!changes.disableTooltips.currentValue) {
-                console.log('test 2');
                 this.tooltipConfig.disableTooltip = false;
             }
         }
