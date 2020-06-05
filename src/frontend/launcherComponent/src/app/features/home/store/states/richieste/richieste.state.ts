@@ -18,16 +18,14 @@ import {
     VisualizzaListaSquadrePartenza,
     SetNeedRefresh,
     StartLoadingRichieste,
-    StopLoadingRichieste
+    StopLoadingRichieste, EliminaPartenzaRichiesta
 } from '../../actions/richieste/richieste.actions';
 import { SintesiRichiesteService } from 'src/app/core/service/lista-richieste-service/lista-richieste.service';
-import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
 import { insertItem, patch, updateItem } from '@ngxs/store/operators';
 import { RichiestaFissataState } from './richiesta-fissata.state';
 import { RichiestaHoverState } from './richiesta-hover.state';
 import { RichiestaSelezionataState } from './richiesta-selezionata.state';
 import { RichiestaModificaState } from './richiesta-modifica.state';
-import { ToastrType } from '../../../../../shared/enum/toastr';
 import { ClearIndirizzo, SuccessRichiestaModifica } from '../../actions/richieste/richiesta-modifica.actions';
 import { RichiestaComposizione, UpdateRichiestaComposizione } from '../../actions/composizione-partenza/composizione-partenza.actions';
 import { ToggleComposizione } from '../../actions/view/view.actions';
@@ -288,6 +286,19 @@ export class RichiesteState {
         };
         console.log('Obj', obj);
         this.richiesteService.aggiornaStatoMezzo(obj).subscribe(() => {
+        });
+    }
+
+    @Action(EliminaPartenzaRichiesta)
+    eliminaPartenzaRichiesta({ dispatch }: StateContext<RichiesteStateModel>, action: EliminaPartenzaRichiesta) {
+        const obj = {
+            'idRichiesta': action.idRichiesta,
+            'targaMezzo': action.targaMezzo,
+            'codMotivazione': action.motivazione.codMotivazione,
+            'testoMotivazione': action.motivazione.testoMotivazione ? action.motivazione.testoMotivazione : null,
+            'codRichiestaSubentrata': action.motivazione.codRichiestaSubentrata ? action.motivazione.codRichiestaSubentrata : null
+        };
+        this.richiesteService.eliminaPartenzaRichiesta(obj).subscribe(() => {
         });
     }
 

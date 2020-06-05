@@ -43,6 +43,7 @@ import { RichiestaGestioneState } from '../store/states/richieste/richiesta-gest
 import { RichiestaAttivitaUtenteState } from '../store/states/richieste/richiesta-attivita-utente.state';
 import { NgxsFormPluginModule } from '@ngxs/form-plugin';
 import { ModalFiltriTipologiaComponent } from '../filterbar/filtri-richieste/modal-filtri-tipologia/modal-filtri-tipologia.component';
+import { EliminaPartenzaModalComponent } from '../../../shared/modal/elimina-partenza-modal/elimina-partenza-modal.component';
 
 @NgModule({
     imports: [
@@ -88,7 +89,8 @@ import { ModalFiltriTipologiaComponent } from '../filterbar/filtri-richieste/mod
         ListaEntiComponent,
         ListaSquadrePartenzaComponent,
         ActionRichiestaModalComponent,
-        ModalFiltriTipologiaComponent
+        ModalFiltriTipologiaComponent,
+        EliminaPartenzaModalComponent
     ],
     providers: [
         { provide: SintesiRichiesteService, useClass: environment.fakeProvider ? SintesiRichiesteServiceFake : SintesiRichiesteService }

@@ -47,4 +47,8 @@ export class SintesiRichiesteService {
     public aggiornaStatoMezzo(obj: any): Observable<any> {
         return this.http.post<any>(`${API_GESTIONE_PARTENZA}/AggiornaPartenza`, obj);
     }
+
+    public eliminaPartenzaRichiesta(obj: any): Observable<any> {
+        return this.http.post<any>(`${API_GESTIONE_PARTENZA}/AnnullaPartenza`, obj);
+    }
 }

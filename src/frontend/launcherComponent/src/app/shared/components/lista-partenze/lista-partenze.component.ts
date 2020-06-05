@@ -18,6 +18,7 @@ export class ListaPartenzeComponent {
     @Input() inGestione: boolean;
 
     @Output() actionMezzo: EventEmitter<MezzoActionInterface> = new EventEmitter<MezzoActionInterface>();
+    @Output() eliminaPartenza: EventEmitter<string> = new EventEmitter();
 
     constructor(private store: Store) {
     }

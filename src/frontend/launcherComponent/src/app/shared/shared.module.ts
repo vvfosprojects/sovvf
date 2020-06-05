@@ -6,6 +6,7 @@ import { TreeviewI18n, TreeviewModule } from 'ngx-treeview';
 import { DefaultTreeviewI18n } from './store/states/sedi-treeview/default-treeview-i18n';
 import { ReactiveFormsModule } from '@angular/forms';
 import * as Shared from './index';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 const COMPONENTS = [
     Shared.DebounceClickDirective,
@@ -26,7 +27,8 @@ const COMPONENTS = [
     Shared.ListaPartenzeComponent,
     Shared.CheckboxComponent,
     Shared.PartialLoaderComponent,
-    Shared.BottoneNuovaVersioneComponent
+    Shared.BottoneNuovaVersioneComponent,
+    Shared.EliminaPartenzaModalComponent
 ];
 
 @NgModule({
@@ -35,7 +37,8 @@ const COMPONENTS = [
         ReactiveFormsModule,
         NgbModule,
         PipeModule,
-        TreeviewModule.forRoot()
+        TreeviewModule.forRoot(),
+        NgSelectModule
     ],
     declarations: [
         ...COMPONENTS

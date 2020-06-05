@@ -7,16 +7,31 @@
         <span *ngIf="!partenza.mezzo" class="p-2"> Nessun mezzo</span>
     </div>
     <div class="col-4 my-1">
-        <div *ngIf="partenza.squadre && partenza.squadre.length > 0" class="h6 text-right mb-0 font-weight-bold">
-            <i class="fa fa-group mr-2"></i>
-            <span ngbTooltip="{{partenza.squadre[0].nome}}"
-                  [disableTooltip]="partenza.squadre[0].nome.length <= 6">{{partenza.squadre[0].nome | truncate: 6}}</span>
-            <button class="btn btn-sm btn-light border ml-2 p-1" ngbTooltip="Elenco squadre"
-                    (click)="onListaSquadrePartenza(); $event.stopPropagation()">
-                <span *ngIf="partenza.squadre.length === 1"><i class="fa fa-search"></i></span>
-                <span *ngIf="partenza.squadre.length > 1">+{{partenza.squadre.length - 1}}</span>
-            </button>
+        <div class="clearfix">
+            <div class="float-left">
+                <div *ngIf="partenza.squadre && partenza.squadre.length > 0"
+                     class="h6 text-right mb-0 font-weight-bold">
+                    <i class="fa fa-group mr-2"></i>
+                    <span ngbTooltip="{{partenza.squadre[0].nome}}"
+                          [disableTooltip]="partenza.squadre[0].nome.length <= 6">{{partenza.squadre[0].nome | truncate: 6}}</span>
+                    <button class="btn btn-sm btn-light border ml-2 p-1" ngbTooltip="Elenco squadre"
+                            (click)="onListaSquadrePartenza(); $event.stopPropagation()">
+                        <span *ngIf="partenza.squadre.length === 1"><i class="fa fa-search"></i></span>
+                        <span *ngIf="partenza.squadre.length > 1">+{{partenza.squadre.length - 1}}</span>
+                    </button>
+                </div>
+                <span *ngIf="!partenza.squadre || partenza.squadre.length === 0" class="p-2">Nessun squadra</span>
+            </div>
+            <div class="float-right">
+                <button class="btn btn-sm btn-block btn-danger" (click)="eliminaPartenza.emit(partenza.mezzo.codice)">
+                    <i class="fa fa-trash"></i>
+                </button>
+            </div>
         </div>
-        <span *ngIf="!partenza.squadre || partenza.squadre.length === 0" class="p-2">Nessun squadra</span>
     </div>
+    <!--<div class="col-2">
+        <button class="btn btn-sm btn-block btn-danger mt-1">
+            <i class="fa fa-trash"></i>
+        </button>
+    </div>-->
 </div>

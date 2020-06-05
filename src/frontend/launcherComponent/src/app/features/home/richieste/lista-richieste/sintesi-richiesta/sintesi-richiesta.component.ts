@@ -8,6 +8,7 @@ import { StatoRichiesta } from 'src/app/shared/enum/stato-richiesta.enum';
 import { MezzoActionInterface } from '../../../../../shared/interface/mezzo-action.interface';
 import { RichiestaActionInterface } from '../../../../../shared/interface/richiesta-action.interface';
 import { HelperSintesiRichiesta } from '../../helper/_helper-sintesi-richiesta';
+import { EliminaPartenzaModalComponent } from '../../../../../shared/modal/elimina-partenza-modal/elimina-partenza-modal.component';
 
 @Component({
     selector: 'app-sintesi-richiesta',
@@ -160,6 +161,20 @@ export class SintesiRichiestaComponent implements OnChanges {
         const _mezzoAction = mezzoAction;
         _mezzoAction.richiesta = this.richiesta;
         this.actionMezzo.emit(_mezzoAction);
+    }
+
+    onEliminaPartenza(targaMezzo: string) {
+        const modal = this.modalService.open(EliminaPartenzaModalComponent, { backdropClass: 'light-blue-backdrop', centered: true });
+        modal.componentInstance.targaMezzo = targaMezzo;
+        modal.componentInstance.idRichiesta = this.richiesta.id;
+        modal.result.then((result: string) => {
+            switch (result) {
+                case 'ok' :
+                    break;
+                case 'ko':
+                    break;
+            }
+        });
     }
 
     onActionRichiesta(richiestaAction: RichiestaActionInterface) {

@@ -8,6 +8,7 @@ export class Partenza {
         public squadre: Squadra[],
         public mezzo?: Mezzo,
         public turno?: TurnoPartenza,
-        public sganciata?: boolean
+        public sganciata?: boolean,
+        public partenzaAnnullata?: boolean
     ) { }
 }

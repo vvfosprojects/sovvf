@@ -6,7 +6,7 @@
     <li *ngIf="!p.sganciata" class="border-bottom">
       <app-partenza [partenza]="p" [inGestione]="inGestione" [statoRichiesta]="statoRichiesta"
                     (listaSquadre)="onListaSquadrePartenza($event)"
-                    (actionMezzo)="onActionMezzo($event)"></app-partenza>
+                    (actionMezzo)="onActionMezzo($event)" (eliminaPartenza)="eliminaPartenza.emit($event)"></app-partenza>
     </li>
   </span>
 </ul>

@@ -363,7 +363,8 @@
                             <div class="scroll-y" style="max-height: 135px">
                                 <app-lista-partenze [partenze]="richiesta.partenzeRichiesta"
                                                     [statoRichiesta]="richiesta.stato" [inGestione]="inGestione"
-                                                    (actionMezzo)="onActionMezzo($event)"></app-lista-partenze>
+                                                    (actionMezzo)="onActionMezzo($event)"
+                                                    (eliminaPartenza)="onEliminaPartenza($event)"></app-lista-partenze>
                             </div>
                         </div>
 

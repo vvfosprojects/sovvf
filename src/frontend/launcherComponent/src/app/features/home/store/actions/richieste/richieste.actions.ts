@@ -7,7 +7,7 @@ import { ListaSquadre } from '../../../../../shared/interface/lista-squadre';
 export class GetListaRichieste {
     static readonly type = '[Richieste] Get Lista Richieste API';
 
-    constructor(public options?: { page?: number}) {
+    constructor(public options?: { page?: number }) {
     }
 }
 
@@ -80,6 +80,15 @@ export class ActionMezzo {
     static readonly type = '[Richieste] Action Mezzo';
 
     constructor(public mezzoAction: MezzoActionInterface) {
+    }
+}
+
+export class EliminaPartenzaRichiesta {
+    static readonly type = '[Richieste] Elimina Partenza';
+
+    constructor(public targaMezzo: string,
+                public idRichiesta: string,
+                public motivazione: { codMotivazione: string, testoMotivazione?: string, codRichiestaSubentrata?: string }) {
     }
 }
 
