@@ -145,6 +145,11 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi.Partenze
             }
         }
 
+        public bool PartenzaAnnullata
+        {
+            get; set;
+        } = false;
+
         /// <summary>
         ///   Metodo di visita
         /// </summary>

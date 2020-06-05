@@ -76,6 +76,10 @@ namespace Persistence.MongoDB
             BsonClassMap.RegisterClassMap<InizioPresaInCarico>();
             BsonClassMap.RegisterClassMap<AnnullamentoPresaInCarico>();
             BsonClassMap.RegisterClassMap<ComposizionePartenze>();
+            BsonClassMap.RegisterClassMap<RevocaPerAltraMotivazione>();
+            BsonClassMap.RegisterClassMap<RevocaPerFuoriServizio>();
+            BsonClassMap.RegisterClassMap<RevocaPerInterventoNonPiuNecessario>();
+            BsonClassMap.RegisterClassMap<RevocaPerRiassegnazione>();
             BsonClassMap.RegisterClassMap<AssegnataRichiesta>();
             BsonClassMap.RegisterClassMap<ArrivoSulPosto>();
             BsonClassMap.RegisterClassMap<UscitaPartenza>();

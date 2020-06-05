@@ -42,6 +42,11 @@ namespace SO115App.CompositionRoot
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.Notification.ComposizionePartenza.INotificationConfermaPartenze,
                 SO115App.SignalR.Sender.ComposizionePartenza.NotificationConfermaPartenze>();
+
+            container.Register<
+                SO115App.Models.Servizi.Infrastruttura.Notification.GestionePartenza.INotifyAnnullaPartenza,
+                SO115App.SignalR.Sender.GestionePartenza.NotificationAnnullaPartenza>();
+
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.Notification.GestioneIntervento.INotifyMessaInLavorazioneRichiesta,
                 SO115App.SignalR.Sender.GestioneIntervento.NotificationInserInLavorazione>();

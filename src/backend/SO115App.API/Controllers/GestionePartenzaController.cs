@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AggiornaStatoMezzo;
+using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AnnullaPartenza;
 
 namespace SO115App.API.Controllers
 {
@@ -15,11 +16,13 @@ namespace SO115App.API.Controllers
     public class GestionePartenzaController : ControllerBase
     {
         private readonly ICommandHandler<AggiornaStatoMezzoCommand> _addhandler;
+        private readonly ICommandHandler<AnnullaPartenzaCommand> _annullaPartenzahandler;
 
         public GestionePartenzaController(
-            ICommandHandler<AggiornaStatoMezzoCommand> Addhandler)
+            ICommandHandler<AggiornaStatoMezzoCommand> Addhandler, ICommandHandler<AnnullaPartenzaCommand> AnnullaPartenzahandler)
         {
             _addhandler = Addhandler;
+            _annullaPartenzahandler = AnnullaPartenzahandler;
         }
 
         [HttpPost("AggiornaPartenza")]
@@ -42,6 +45,35 @@ namespace SO115App.API.Controllers
             try
             {
                 _addhandler.Handle(command);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                    return StatusCode(403, Costanti.UtenteNonAutorizzato);
+                if (ex.Message.Contains(Costanti.MezzoErroreCambioStatoRichiestaChiusa))
+                    return StatusCode(403, Costanti.MezzoErroreCambioStatoRichiestaChiusa);
+                return BadRequest();
+            }
+        }
+
+        [HttpPost("AnnullaPartenza")]
+        public async Task<IActionResult> AnnullaPartenzaCommand([FromBody] AnnullaPartenzaCommand partenza)
+        {
+            var command = new AnnullaPartenzaCommand()
+            {
+                IdRichiesta = partenza.IdRichiesta,
+                TargaMezzo = partenza.TargaMezzo,
+                IdOperatore = Request.Headers["IdUtente"],
+                CodMotivazione = partenza.CodMotivazione,
+                TestoMotivazione = partenza.TestoMotivazione,
+                CodRichiestaSubentrata = partenza.CodRichiestaSubentrata
+            };
+
+            try
+            {
+                _annullaPartenzahandler.Handle(command);
+
                 return Ok();
             }
             catch (Exception ex)

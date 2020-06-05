@@ -652,6 +652,55 @@ namespace SO115App.API.Models.Classi.Soccorso
                     .OfType<ComposizionePartenze>()
                     .ToList();
 
+                var listaPartenzeAnnullatePerNPN = this.Eventi
+                    .OfType<RevocaPerInterventoNonPiuNecessario>()
+                    .ToList();
+                var listaPartenzeAnnullatePerAltraMotivazione = this.Eventi
+                    .OfType<RevocaPerAltraMotivazione>()
+                    .ToList();
+                var listaPartenzeAnnullatePerFuoriServizio = this.Eventi
+                    .OfType<RevocaPerFuoriServizio>()
+                    .ToList();
+                var listaPartenzeAnnullatePerRiassegnazione = this.Eventi
+                    .OfType<RevocaPerRiassegnazione>()
+                    .ToList();
+
+                foreach (var evento in listaComposizioni)
+                {
+                    if (listaPartenzeAnnullatePerNPN.FindAll(x => x.CodiceMezzo.Equals(evento.Partenza.Mezzo.Codice)).ToList().Count > 0)
+                    {
+                        foreach (var annullamento in listaPartenzeAnnullatePerNPN.FindAll(x => x.CodiceMezzo.Equals(evento.Partenza.Mezzo.Codice)).ToList())
+                        {
+                            if (evento.Istante < annullamento.Istante)
+                                evento.PartenzaAnnullata = true;
+                        }
+                    }
+                    if (listaPartenzeAnnullatePerAltraMotivazione.FindAll(x => x.CodiceMezzo.Equals(evento.Partenza.Mezzo.Codice)).ToList().Count > 0)
+                    {
+                        foreach (var annullamento in listaPartenzeAnnullatePerAltraMotivazione.FindAll(x => x.CodiceMezzo.Equals(evento.Partenza.Mezzo.Codice)).ToList())
+                        {
+                            if (evento.Istante < annullamento.Istante)
+                                evento.PartenzaAnnullata = true;
+                        }
+                    }
+                    if (listaPartenzeAnnullatePerFuoriServizio.FindAll(x => x.CodiceMezzo.Equals(evento.Partenza.Mezzo.Codice)).ToList().Count > 0)
+                    {
+                        foreach (var annullamento in listaPartenzeAnnullatePerFuoriServizio.FindAll(x => x.CodiceMezzo.Equals(evento.Partenza.Mezzo.Codice)).ToList())
+                        {
+                            if (evento.Istante < annullamento.Istante)
+                                evento.PartenzaAnnullata = true;
+                        }
+                    }
+                    if (listaPartenzeAnnullatePerRiassegnazione.FindAll(x => x.CodiceMezzo.Equals(evento.Partenza.Mezzo.Codice)).ToList().Count > 0)
+                    {
+                        foreach (var annullamento in listaPartenzeAnnullatePerRiassegnazione.FindAll(x => x.CodiceMezzo.Equals(evento.Partenza.Mezzo.Codice)).ToList())
+                        {
+                            if (evento.Istante < annullamento.Istante)
+                                evento.PartenzaAnnullata = true;
+                        }
+                    }
+                }
+
                 return listaComposizioni;
             }
         }
