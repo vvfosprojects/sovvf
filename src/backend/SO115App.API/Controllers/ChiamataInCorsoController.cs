@@ -85,11 +85,14 @@ namespace SO115App.API.Controllers
 
         [HttpPost("Add")]
         [EnableCors()]
-        public async Task<IActionResult> Add([FromBody]ChiamateInCorso chiamata)
+        public async Task<IActionResult> Add([FromBody] ChiamateInCorso chiamata)
         {
+            var HubConId = Request.Headers["HubConnectionId"];
+
             var command = new ChiamataInCorsoMarkerCommand()
             {
-                AddChiamataInCorso = chiamata
+                AddChiamataInCorso = chiamata,
+                HubConId = HubConId
             };
 
             try
@@ -106,7 +109,7 @@ namespace SO115App.API.Controllers
         }
 
         [HttpPost("Delete")]
-        public async Task<IActionResult> Delete([FromBody]ChiamateInCorso chiamata)
+        public async Task<IActionResult> Delete([FromBody] ChiamateInCorso chiamata)
         {
             var command = new CancellazioneChiamataInCorsoMarkerCommand()
             {
@@ -150,7 +153,7 @@ namespace SO115App.API.Controllers
         }
 
         [HttpPost("UpDate")]
-        public async Task<IActionResult> UpDate([FromBody]ChiamateInCorso chiamata)
+        public async Task<IActionResult> UpDate([FromBody] ChiamateInCorso chiamata)
         {
             var command = new UpDateChiamataInCorsoMarkerCommand()
             {
