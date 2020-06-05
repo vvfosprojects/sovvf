@@ -110,7 +110,12 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichi
                 pinNodi.Add(new PinNodo(figlio.Codice, true));
             }
 
-            query.Filtro.UnitaOperative = pinNodi.ToHashSet();
+            query.Filtro.UnitaOperative = pinNodi.ToHashSet();																											 
+			 if (query.Filtro.IncludiRichiesteAperte == false && query.Filtro.IncludiRichiesteChiuse == false)
+            {
+                query.Filtro.IncludiRichiesteAperte = true;
+                query.Filtro.IncludiRichiesteChiuse = true;
+            }
 
             var listaSintesi = _iGetListaSintesi.GetListaSintesiRichieste(query.Filtro);
             var listaSintesiPaginata = new List<SintesiRichiesta>();
