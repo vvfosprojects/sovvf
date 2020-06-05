@@ -37,7 +37,6 @@ import {
     UpdateMezzoPreAccoppiatoComposizione
 } from '../../features/home/store/actions/composizione-partenza/composizione-veloce.actions';
 import { SetMezziInServizio } from 'src/app/features/home/store/actions/mezzi-in-servizio/mezzi-in-servizio.actions';
-import { ViewComponentState } from '../../features/home/store/states/view/view.state';
 import { IdPreaccoppiati } from '../../features/home/composizione-partenza/interface/id-preaccoppiati-interface';
 import { UpdateMezzoMarker } from '../../features/home/store/actions/maps/mezzi-markers.actions';
 import {
@@ -212,6 +211,9 @@ export class SignalRService {
         /**
          * Inserimento Chiamata
          */
+        this.hubNotification.on('NotifyDoppioneChiamataInCorso', (message: string) => {
+            console.log('NotifyDoppioneChiamataInCorso', message);
+        });
         this.hubNotification.on('SaveAndNotifySuccessChiamata', (data: SintesiRichiesta) => {
             console.log('SaveAndNotifySuccessChiamata', data);
             this.store.dispatch(new InsertChiamataSuccess(data));
