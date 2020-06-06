@@ -1,15 +1,13 @@
-import { Selector, State, Action, StateContext, Store, Select } from '@ngxs/store';
+import { Selector, State, Action, StateContext } from '@ngxs/store';
 import { makeCopy } from '../../../../../shared/helper/function';
 import {
+    CheckBoxClick,
     ClearCopiaFiltroAttivo,
     CopiaFiltroAttivo, ReducerFiltroMarker,
     SetFiltriMarker,
     SetFiltroMarker
 } from '../../actions/maps/maps-filtro.actions';
 import { MarkerFiltro } from '../../../../../shared/interface/marker-filtro.interface';
-import { BoxClickInterface } from '../../../boxes/box-interface/box-click-interface';
-import { Observable, Subscription } from 'rxjs';
-import { BoxClickState } from '../boxes/box-click.state';
 import { ToggleOpacitaMezziMarkers } from '../../actions/maps/mezzi-markers.actions';
 import { ToggleOpacitaRichiesteMarkers } from '../../actions/maps/richieste-markers.actions';
 
@@ -43,7 +41,7 @@ export const MapsFiltroStateDefaults: MapsFiltroStateModel = {
             name: 'Mezzi'
         }
     ],
-    filtroMarkerAttivo: ['richiesta'],
+    filtroMarkerAttivo: [ 'richiesta' ],
     filtroMarkerAttivoCopy: null,
 };
 
@@ -52,18 +50,6 @@ export const MapsFiltroStateDefaults: MapsFiltroStateModel = {
     defaults: MapsFiltroStateDefaults
 })
 export class MapsFiltroState {
-
-    private subscription = new Subscription();
-    @Select(BoxClickState.boxClick) boxClick$: Observable<BoxClickInterface>;
-
-    constructor(private store: Store) {
-        this.subscription.add(
-            this.boxClick$.subscribe((boxClick: BoxClickInterface) => {
-                if (boxClick) {
-                    this.checkBoxClick(boxClick);
-                }
-            }));
-    }
 
     @Selector()
     static filtroMarker(state: MapsFiltroStateModel): MarkerFiltro[] {
@@ -140,8 +126,9 @@ export class MapsFiltroState {
         });
     }
 
-    checkBoxClick(boxClick: BoxClickInterface) {
-        const filtroAttivoCopy: string[] = this.store.selectSnapshot(MapsFiltroState.filtroMarkerAttivoCopy);
+    @Action(CheckBoxClick)
+    checkBoxClick({ getState, dispatch }: StateContext<MapsFiltroStateModel>, { boxClick }: CheckBoxClick) {
+        const filtroAttivoCopy: string[] = getState().filtroMarkerAttivoCopy;
         if (boxClick) {
             const filtroCheckBox = [];
             if (Object.values(boxClick.mezzi).indexOf(true) >= 0) {
@@ -149,9 +136,9 @@ export class MapsFiltroState {
                 const mezziState = Object.keys(boxClick.mezzi).filter(key => {
                     return boxClick.mezzi[key];
                 });
-                this.store.dispatch(new ToggleOpacitaMezziMarkers(true, mezziState));
+                dispatch(new ToggleOpacitaMezziMarkers(true, mezziState));
             } else {
-                this.store.dispatch(new ToggleOpacitaMezziMarkers(false));
+                dispatch(new ToggleOpacitaMezziMarkers(false));
             }
 
             if (Object.values(boxClick.richieste).indexOf(true) >= 0) {
@@ -159,20 +146,22 @@ export class MapsFiltroState {
                 const richiesteState = Object.keys(boxClick.richieste).filter(key => {
                     return boxClick.richieste[key];
                 });
-                this.store.dispatch(new ToggleOpacitaRichiesteMarkers(true, richiesteState));
+                dispatch(new ToggleOpacitaRichiesteMarkers(true, richiesteState));
             } else {
-                this.store.dispatch(new ToggleOpacitaRichiesteMarkers(false));
+                dispatch(new ToggleOpacitaRichiesteMarkers(false));
             }
 
             if (filtroCheckBox.length !== 0) {
                 if (!filtroAttivoCopy) {
-                    this.store.dispatch(new CopiaFiltroAttivo());
+                    dispatch(new CopiaFiltroAttivo());
                 }
-                this.store.dispatch(new SetFiltriMarker(filtroCheckBox));
+                dispatch(new SetFiltriMarker(filtroCheckBox));
             } else {
                 if (filtroAttivoCopy) {
-                    this.store.dispatch(new SetFiltriMarker(filtroAttivoCopy));
-                    this.store.dispatch(new ClearCopiaFiltroAttivo());
+                    dispatch([
+                        new SetFiltriMarker(filtroAttivoCopy),
+                        new ClearCopiaFiltroAttivo()
+                    ]);
                 }
             }
         }

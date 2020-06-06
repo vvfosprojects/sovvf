@@ -1,10 +1,19 @@
-import { Action, Selector, State, StateContext } from '@ngxs/store';
+import { Action, NgxsOnChanges, NgxsSimpleChange, Selector, State, StateContext, Store } from '@ngxs/store';
 import { BoxClickInterface } from '../../../boxes/box-interface/box-click-interface';
 import {
-    UpdateBoxRichieste, AllFalseBoxRichieste, UpdateBoxMezzi,
-    AllFalseBoxMezzi, ReducerBoxClick, ResetAllBoxes, AllTrueBoxRichieste, AllTrueBoxMezzi, UndoAllBoxes, AllTrueBoxMezziPresenti
+    UpdateBoxRichieste,
+    AllFalseBoxRichieste,
+    UpdateBoxMezzi,
+    AllFalseBoxMezzi,
+    ReducerBoxClick,
+    ResetAllBoxes,
+    AllTrueBoxRichieste,
+    AllTrueBoxMezzi,
+    UndoAllBoxes,
+    AllTrueBoxMezziPresenti
 } from '../../actions/boxes/box-click.actions';
 import { StatoMezzo } from '../../../../../shared/enum/stato-mezzo.enum';
+import { CheckBoxClick } from '../../actions/maps/maps-filtro.actions';
 
 export interface BoxClickStateModel {
     boxClick: BoxClickInterface;
@@ -33,18 +42,24 @@ export const boxClickStateDefaults: BoxClickStateModel = {
     name: 'boxClick',
     defaults: boxClickStateDefaults
 })
-export class BoxClickState {
+export class BoxClickState implements NgxsOnChanges {
 
-    constructor() {
+    constructor(private store: Store) {
     }
 
-    // SELECTORS
     @Selector()
     static boxClick(state: BoxClickStateModel) {
         return state.boxClick;
     }
 
-    // REDUCER
+    ngxsOnChanges(change: NgxsSimpleChange) {
+        const currentValue = change.currentValue.boxClick;
+        const previousValue = change.previousValue.boxClick;
+        if (previousValue) {
+            this.store.dispatch(new CheckBoxClick(currentValue));
+        }
+    }
+
     @Action(ReducerBoxClick)
     reducer({ dispatch }: StateContext<BoxClickStateModel>, action: ReducerBoxClick) {
         switch (action.cat) {
@@ -65,7 +80,6 @@ export class BoxClickState {
         }
     }
 
-    // RICHIESTE
     @Action(UpdateBoxRichieste)
     updateBoxRichieste({ getState, patchState }: StateContext<BoxClickStateModel>, action: UpdateBoxRichieste) {
         const state = getState();
@@ -117,7 +131,6 @@ export class BoxClickState {
         });
     }
 
-    // MEZZI
     @Action(UpdateBoxMezzi)
     updateBoxMezzi({ getState, patchState }: StateContext<BoxClickStateModel>, action: UpdateBoxMezzi) {
         const state = getState();
