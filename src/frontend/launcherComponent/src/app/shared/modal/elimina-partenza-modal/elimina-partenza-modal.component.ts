@@ -1,6 +1,7 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { SintesiRichiesteService } from '../../../core/service/lista-richieste-service/lista-richieste.service';
 
 @Component({
     selector: 'app-elimina-partenza-modal',
@@ -15,6 +16,7 @@ export class EliminaPartenzaModalComponent implements OnInit {
     eliminaPartenzaForm: FormGroup;
     submitted: boolean;
 
+    codiciRichieste: string[] = [];
     testoMotivazioneVisible: boolean;
     codRichiestaSubentrataVisible: boolean;
 
@@ -38,12 +40,16 @@ export class EliminaPartenzaModalComponent implements OnInit {
     ];
 
     constructor(private modal: NgbActiveModal,
-                private fb: FormBuilder) {
+                private fb: FormBuilder,
+                private sintesiRichiesteService: SintesiRichiesteService) {
         this.initForm();
     }
 
     ngOnInit() {
         this.f.codMotivazione.patchValue(this.motivazioni[0].codice);
+        this.sintesiRichiesteService.getCodiciRichieste(this.idRichiesta).subscribe((res: { listaCodiciRichiesta: string[] }) => {
+            this.codiciRichieste = res.listaCodiciRichiesta;
+        });
     }
 
     initForm() {
@@ -74,6 +80,7 @@ export class EliminaPartenzaModalComponent implements OnInit {
             switch (newMotivazione.codice) {
                 case '2':
                     this.codRichiestaSubentrataVisible = true;
+                    this.f.codRichiestaSubentrata.patchValue(this.codiciRichieste[0]);
                     this.f.codRichiestaSubentrata.setValidators(Validators.required);
                     break;
                 case '4':

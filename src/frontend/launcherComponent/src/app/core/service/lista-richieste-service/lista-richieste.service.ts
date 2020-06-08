@@ -44,6 +44,11 @@ export class SintesiRichiesteService {
         return this.http.post<any>(`${API_GESTIONE_RICHIESTA}/AggiornaStato`, obj);
     }
 
+    public getCodiciRichieste(idRichiesta: string): Observable<{ listaCodiciRichiesta: string[] }> {
+        console.log('getCodiciRichieste', idRichiesta);
+        return this.http.get<{ listaCodiciRichiesta: string[] }>(`${API_GESTIONE_RICHIESTA}/GetCodiciRichieste?idRichiesta=` + idRichiesta);
+    }
+
     public aggiornaStatoMezzo(obj: any): Observable<any> {
         return this.http.post<any>(`${API_GESTIONE_PARTENZA}/AggiornaPartenza`, obj);
     }

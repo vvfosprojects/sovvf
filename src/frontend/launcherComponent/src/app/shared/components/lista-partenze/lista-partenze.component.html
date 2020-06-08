@@ -5,8 +5,7 @@
   <span *ngFor="let p of partenze">
     <li *ngIf="!p.sganciata && !p.partenzaAnnullata" class="border-bottom">
         <app-partenza [partenza]="p" [inGestione]="inGestione" [statoRichiesta]="statoRichiesta"
-                      (listaSquadre)="onListaSquadrePartenza($event)"
-                      (actionMezzo)="onActionMezzo($event)"
+                      (listaSquadre)="onListaSquadrePartenza($event)" (actionMezzo)="onActionMezzo($event)"
                       (eliminaPartenza)="eliminaPartenza.emit($event)"></app-partenza>
     </li>
   </span>

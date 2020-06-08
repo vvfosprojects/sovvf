@@ -11,7 +11,8 @@
         <div class="form-group">
             <label for="codMotivazione">Motivazione</label>
             <ng-select id="codMotivazione" [items]="motivazioni" [multiple]="false" [searchable]="false"
-                       [clearable]="false" formControlName="codMotivazione" bindLabel="descrizione" bindValue="codice"
+                       [clearable]="false" notFoundText="Nessuna motivazione presente, riprova!"
+                       formControlName="codMotivazione" bindLabel="descrizione" bindValue="codice"
                        placeholder="Seleziona una motivazione" (change)="onSelezioneMotivazione($event)"></ng-select>
         </div>
         <div *ngIf="testoMotivazioneVisible" class="form-group">
@@ -23,8 +24,10 @@
         </div>
         <div *ngIf="codRichiestaSubentrataVisible" class="form-group">
             <label for="codRichiestaSubentrata">Codice Richiesta Subentrata</label>
-            <input type="text" class="form-control" id="codRichiestaSubentrata"
-                   placeholder="Inserisci il codice della richiesta" formControlName="codRichiestaSubentrata">
+            <ng-select id="codRichiestaSubentrata" [items]="codiciRichieste" [multiple]="false" [searchable]="false"
+                       [clearable]="false" [virtualScroll]="true" formControlName="codRichiestaSubentrata"
+                       placeholder="Seleziona una richiesta"
+                       notFoundText="Nessun codice richiesta presente, riprova!"></ng-select>
             <small *ngIf="submitted && f.codRichiestaSubentrataVisible.errors.required" id="codRichiestaSubentrataAlert"
                    class="form-text text-danger">Campo obbligatorio</small>
         </div>
