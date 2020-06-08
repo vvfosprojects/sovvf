@@ -58,6 +58,9 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 
                 case 2:
                     var richiestaSubentrata = _getRichiestaById.GetByCodice(command.CodRichiestaSubentrata);
+                    if (richiestaSubentrata == null)
+                        richiestaSubentrata = _getRichiestaById.GetByCodiceRichiesta(command.CodRichiestaSubentrata);
+
                     new RevocaPerRiassegnazione(richiesta, richiestaSubentrata, command.TargaMezzo, DateTime.Now, command.IdOperatore);
                     break;
 

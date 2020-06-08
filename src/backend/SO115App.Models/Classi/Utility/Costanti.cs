@@ -96,6 +96,11 @@ namespace SO115App.Models.Classi.Utility
         public static string EventoMezzoInRientro = "MezzoInRientro";
         public static string EventoMezzoRientrato = "MezzoRientrato";
 
+        public static string RevocaPerAltraMotivazione = "RevocaPerAltraMotivazione";
+        public static string RevocaPerFuoriServizio = "RevocaPerFuoriServizio";
+        public static string RevocaPerInterventoNonPiuNecessario = "RevocaPerInterventoNonPiuNecessario";
+        public static string RevocaPerRiassegnazione = "RevocaPerRiassegnazione";
+
         #endregion Eventi
 
         #region Ruoli Utenti

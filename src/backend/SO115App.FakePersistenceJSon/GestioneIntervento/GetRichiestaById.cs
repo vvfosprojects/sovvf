@@ -67,5 +67,15 @@ namespace SO115App.FakePersistenceJSon.GestioneIntervento
 
             return richiestaReturn;
         }
+
+        public RichiestaAssistenza GetByCodiceRichiesta(string codiceRichiesta)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public List<string> GetListaCodiciSintesiRichiesta(string[] CodUoCompetenti)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

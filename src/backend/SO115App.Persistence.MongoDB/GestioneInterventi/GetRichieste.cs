@@ -85,6 +85,33 @@ namespace SO115App.Persistence.MongoDB
             return _dbContext.RichiestaAssistenzaCollection.Find(s => s.Id == idRichiesta).Single();
         }
 
+        public RichiestaAssistenza GetByCodiceRichiesta(string CodRichiesta)
+        {
+            return _dbContext.RichiestaAssistenzaCollection.Find(s => s.CodRichiesta == CodRichiesta).Single();
+        }
+
+        public List<string> GetListaCodiciSintesiRichiesta(string[] CodSoCompetente)
+        {
+            var filtroRichiesteAperte = Builders<RichiestaAssistenza>.Filter.Ne(r => r.TestoStatoRichiesta, "X");
+
+            var filtroSediCompetenti = Builders<RichiestaAssistenza>.Filter
+                .In(richiesta => richiesta.CodSOCompetente, CodSoCompetente.Select(uo => uo));
+
+            var listaRichieste = _dbContext.RichiestaAssistenzaCollection.Find(filtroSediCompetenti & filtroRichiesteAperte).ToList();
+
+            List<string> listaCodiciRichieste = new List<string>();
+
+            foreach (var richiesta in listaRichieste)
+            {
+                if (richiesta.CodRichiesta != null)
+                    listaCodiciRichieste.Add(richiesta.CodRichiesta);
+                else
+                    listaCodiciRichieste.Add(richiesta.Codice);
+            }
+
+            return listaCodiciRichieste;
+        }
+
         public List<SintesiRichiesta> GetListaSintesiRichieste(FiltroRicercaRichiesteAssistenza filtro)
         {
             var filtroSediCompetenti = Builders<RichiestaAssistenza>.Filter

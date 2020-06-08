@@ -25,6 +25,7 @@ using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.CustomMapper;
 using SO115App.Models.Servizi.Infrastruttura.GetListaEventi;
+using System;
 using System.Collections.Generic;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
@@ -84,8 +85,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
                     NomeClasseEvento = MapEvento(evento),
                     IstanteEvento = evento.Istante,
                     Targa = MapTarghe(evento),
-                    Note = "",
-                    HTMLLinkElement = ""
+                    Note = MapNote(evento)
                 };
                 eventiMapper.Add(eventoMapper);
             }
@@ -98,6 +98,21 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
             };
         }
 
+        private string MapNote(Evento evento)
+        {
+            switch (evento)
+            {
+                case RevocaPerAltraMotivazione _:
+                    return ((RevocaPerAltraMotivazione)evento).Motivazione;
+
+                case RevocaPerRiassegnazione _:
+                    return ((RevocaPerRiassegnazione)evento).RichiestaSubentrata.Codice;
+
+                default:
+                    return "";
+            }
+        }
+
         private string MapTarghe(Evento evento)
         {
             var targa = "";
@@ -105,6 +120,23 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
             if (evento is ComposizionePartenze)
             {
                 targa = ((ComposizionePartenze)evento).Partenza.Mezzo.Descrizione;
+            }
+
+            if (evento is RevocaPerAltraMotivazione)
+            {
+                targa = ((RevocaPerAltraMotivazione)evento).CodiceMezzo;
+            }
+            if (evento is RevocaPerFuoriServizio)
+            {
+                targa = ((RevocaPerFuoriServizio)evento).CodiceMezzo;
+            }
+            if (evento is RevocaPerInterventoNonPiuNecessario)
+            {
+                targa = ((RevocaPerInterventoNonPiuNecessario)evento).CodiceMezzo;
+            }
+            if (evento is RevocaPerRiassegnazione)
+            {
+                targa = ((RevocaPerRiassegnazione)evento).CodiceMezzo;
             }
 
             return targa;
@@ -152,6 +184,18 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
 
                 case MarcaRilevante _:
                     return Costanti.MarcaRilevante;
+
+                case RevocaPerAltraMotivazione _:
+                    return Costanti.RevocaPerAltraMotivazione;
+
+                case RevocaPerFuoriServizio _:
+                    return Costanti.RevocaPerFuoriServizio;
+
+                case RevocaPerInterventoNonPiuNecessario _:
+                    return Costanti.RevocaPerInterventoNonPiuNecessario;
+
+                case RevocaPerRiassegnazione _:
+                    return Costanti.RevocaPerRiassegnazione;
 
                 default:
                     return Costanti.EventoGenerico;

@@ -25,6 +25,7 @@ using Microsoft.AspNetCore.Mvc;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
 using SO115App.Models.Classi.Utility;
+using SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GetCodiciRichiesteAssistenza;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GetSintesiRichiestaAssistenza;
 using System;
 using System.Linq;
@@ -43,17 +44,23 @@ namespace SO115App.API.Controllers
             _sintesiRichiesteQuery;
 
         private readonly IQueryHandler<GetSintesiRichiestaAssistenzaQuery, GetSintesiRichiestaAssistenzaResult> _getSingolaRichiesta;
+        private readonly IQueryHandler<GetCodiciRichiesteAssistenzaQuery, GetCodiciRichiesteAssistenzaResult> _getCodiciRichiesta;
 
         public GestioneRichiestaController(
-            ICommandHandler<UpDateStatoRichiestaCommand> addhandler, IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> sintesiRichiesteQuery, IQueryHandler<GetSintesiRichiestaAssistenzaQuery, GetSintesiRichiestaAssistenzaResult> getSingolaRichiesta)
+            ICommandHandler<UpDateStatoRichiestaCommand> addhandler,
+            IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> sintesiRichiesteQuery,
+            IQueryHandler<GetSintesiRichiestaAssistenzaQuery, GetSintesiRichiestaAssistenzaResult> getSingolaRichiesta,
+            IQueryHandler<GetCodiciRichiesteAssistenzaQuery, GetCodiciRichiesteAssistenzaResult> getCodiciRichiesta
+            )
         {
             _addhandler = addhandler;
             _sintesiRichiesteQuery = sintesiRichiesteQuery;
             _getSingolaRichiesta = getSingolaRichiesta;
+            _getCodiciRichiesta = getCodiciRichiesta;
         }
 
         [HttpPost("AggiornaStato")]
-        public async Task<IActionResult> AggiornaStato([FromBody]UpDateStatoRichiestaCommand richiesta)
+        public async Task<IActionResult> AggiornaStato([FromBody] UpDateStatoRichiestaCommand richiesta)
         {
             var codiceSede = Request.Headers["codicesede"];
             var headerValues = Request.Headers["IdUtente"];
@@ -114,6 +121,26 @@ namespace SO115App.API.Controllers
             try
             {
                 return Ok(_sintesiRichiesteQuery.Handle(sintesiRichiesteAssistenzaQuery));
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                    return StatusCode(403, Costanti.UtenteNonAutorizzato);
+                return BadRequest();
+            }
+        }
+
+        [HttpGet("GetCodiciRichieste")]
+        public async Task<IActionResult> GetCodiciRichieste(string idRichiesta)
+        {
+            var sintesiRichiesteAssistenzaQuery = new GetCodiciRichiesteAssistenzaQuery
+            {
+                idRichiesta = idRichiesta
+            };
+
+            try
+            {
+                return Ok(_getCodiciRichiesta.Handle(sintesiRichiesteAssistenzaQuery));
             }
             catch (Exception ex)
             {

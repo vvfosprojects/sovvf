@@ -1,5 +1,5 @@
-﻿//-----------------------------------------------------------------------
-// <copyright file="IGetRichiestaById.cs" company="CNVVF">
+//-----------------------------------------------------------------------
+// <copyright file="SintesiRichiestaAssistenzaResult.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,27 +17,18 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using SO115App.API.Models.Classi.Soccorso;
 using System.Collections.Generic;
 
-namespace SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso
+namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GetCodiciRichiesteAssistenza
 {
     /// <summary>
-    ///   Servizio di erogazione del contenuto di una Richiesta di Assistenza
+    ///   DTO di output
     /// </summary>
-    public interface IGetRichiestaById
+    public class GetCodiciRichiesteAssistenzaResult
     {
         /// <summary>
-        ///   Restituisce una Richiesta di Assistenza
+        ///   La lista dei codici delle richieste
         /// </summary>
-        /// <param name="idRichiestaAssistenza">Identificativo della Richiesta di Assistenza</param>
-        /// <returns>La Richiesta di Assistenza</returns>
-        RichiestaAssistenza GetByCodice(string codiceRichiesta);
-
-        RichiestaAssistenza GetByCodiceRichiesta(string codiceRichiesta);
-
-        RichiestaAssistenza GetById(string idRichiesta);
-
-        List<string> GetListaCodiciSintesiRichiesta(string[] CodUoCompetenti);
+        public List<string> ListaCodiciRichiesta { get; set; }
     }
 }
