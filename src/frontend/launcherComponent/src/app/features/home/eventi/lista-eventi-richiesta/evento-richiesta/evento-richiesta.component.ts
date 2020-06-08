@@ -47,6 +47,10 @@ export class EventoRichiestaComponent implements OnInit {
       ['AssegnataPriorita', ['fa-thermometer-half']],
       ['MarcaRilevante', ['fa-warning', 'fa-check']],
       ['Sospesa', ['fa-pause']],
+      ['RevocaPerRiassegnazione', ['fa-truck', 'fa-refresh']],
+      ['RevocaPerInterventoNonPiuNecessario', ['fa-truck', 'fa-times']],
+      ['RevocaPerAltraMotivazione', ['fa-truck', 'fa-times']],
+      ['RevocaPerFuoriServizio', ['fa-truck', 'fa-times']],
 
       // Default per gli eventi non gestiti
       ['EventoGenerico', ['fa-question-circle']],
