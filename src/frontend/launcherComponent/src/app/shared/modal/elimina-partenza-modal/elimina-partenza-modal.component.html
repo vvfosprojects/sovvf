@@ -1,10 +1,18 @@
-<div class="p-2">
+<div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title"><i
+            class="fa fa-fw fa-trash text-danger mr-1"></i>Elimina Partenza</h4>
+    <button type="button" class="btn btn-light close" style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px"
+            (click)="modal.dismiss('cross')">
+        <span class="text-danger"><i class="fa fa-times"></i></span>
+    </button>
+</div>
+<div class="modal-body">
     <form [formGroup]="eliminaPartenzaForm">
         <div class="form-group">
             <label for="codMotivazione">Motivazione</label>
-            <ng-select id="codMotivazione" [items]="motivazioni" formControlName="codMotivazione"
-                       bindLabel="descrizione" bindValue="codice" placeholder="Seleziona una motivazione"
-                       (change)="onSelezioneMotivazione($event)"></ng-select>
+            <ng-select id="codMotivazione" [items]="motivazioni" [multiple]="false" [searchable]="false"
+                       [clearable]="false" formControlName="codMotivazione" bindLabel="descrizione" bindValue="codice"
+                       placeholder="Seleziona una motivazione" (change)="onSelezioneMotivazione($event)"></ng-select>
         </div>
         <div *ngIf="testoMotivazioneVisible" class="form-group">
             <label for="testoMotivazione">Testo Motivazione</label>
@@ -20,8 +28,10 @@
             <small *ngIf="submitted && f.codRichiestaSubentrataVisible.errors.required" id="codRichiestaSubentrataAlert"
                    class="form-text text-danger">Campo obbligatorio</small>
         </div>
-        <button class="btn btn-success text-right" [disabled]="!eliminaPartenzaForm.valid" (click)="onSubmit()">
-            Conferma
-        </button>
     </form>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-success text-right" [disabled]="!eliminaPartenzaForm.valid" (click)="onSubmit()">
+        Conferma
+    </button>
 </div>

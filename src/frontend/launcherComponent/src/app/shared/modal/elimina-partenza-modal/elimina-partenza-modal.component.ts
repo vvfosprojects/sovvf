@@ -43,6 +43,7 @@ export class EliminaPartenzaModalComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.f.codMotivazione.patchValue(this.motivazioni[0].codice);
     }
 
     initForm() {
