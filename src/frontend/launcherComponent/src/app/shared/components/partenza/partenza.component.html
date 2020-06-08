@@ -8,7 +8,7 @@
     </div>
     <div class="col-4 my-1">
         <div class="clearfix">
-            <div class="float-left">
+            <div [ngClass]="{'float-left': inGestione}">
                 <div *ngIf="partenza.squadre && partenza.squadre.length > 0"
                      class="h6 text-right mb-0 font-weight-bold">
                     <i class="fa fa-group mr-2"></i>
@@ -22,7 +22,7 @@
                 </div>
                 <span *ngIf="!partenza.squadre || partenza.squadre.length === 0" class="p-2">Nessun squadra</span>
             </div>
-            <div class="float-right">
+            <div *ngIf="inGestione" class="float-right">
                 <button class="btn btn-sm btn-block btn-danger"
                         (click)="eliminaPartenza.emit(partenza.mezzo.codice); $event.stopPropagation()">
                     <i class="fa fa-trash"></i>
