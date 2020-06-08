@@ -27,5 +27,6 @@
                      (pageChange)="onNuoveRichieste($event)" (refresh)="onRefreshRichieste()"
                      (modificaRichiesta)="onModificaRichiesta($event)" (gestioneRichiesta)="onGestioneRichiesta($event)"
                      (actionMezzo)="onActionMezzo($event)" (actionRichiesta)="onActionRichiesta($event)"
-                     (outEspansoId)="toggleEspanso($event)" [codiciFiltriSelezionati]="codiciFiltriSelezionati">
+                     (outEspansoId)="toggleEspanso($event)" [codiciFiltriSelezionati]="codiciFiltriSelezionati"
+                     (eliminaPartenza)="onEliminaPartenza($event)">
 </app-lista-richieste>

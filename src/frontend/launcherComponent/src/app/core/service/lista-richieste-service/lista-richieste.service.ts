@@ -49,6 +49,7 @@ export class SintesiRichiesteService {
     }
 
     public eliminaPartenzaRichiesta(obj: any): Observable<any> {
+        console.log('eliminaPartenzaRichiesta', obj);
         return this.http.post<any>(`${API_GESTIONE_PARTENZA}/AnnullaPartenza`, obj);
     }
 }

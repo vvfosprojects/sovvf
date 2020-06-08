@@ -41,6 +41,7 @@ export class SintesiRichiestaComponent implements OnChanges {
     @Output() fissaInAlto = new EventEmitter<any>();
     @Output() eventiRichiesta = new EventEmitter<string>();
     @Output() nuovaPartenza = new EventEmitter<any>();
+    @Output() eliminaPartenza = new EventEmitter<{ targaMezzo: string, idRichiesta: string, modalResult: any }>();
     @Output() modificaRichiesta = new EventEmitter<SintesiRichiesta>();
     @Output() gestioneRichiesta = new EventEmitter<SintesiRichiesta>();
     // tslint:disable-next-line:no-output-on-prefix
@@ -167,9 +168,10 @@ export class SintesiRichiestaComponent implements OnChanges {
         const modal = this.modalService.open(EliminaPartenzaModalComponent, { backdropClass: 'light-blue-backdrop', centered: true });
         modal.componentInstance.targaMezzo = targaMezzo;
         modal.componentInstance.idRichiesta = this.richiesta.id;
-        modal.result.then((result: string) => {
-            switch (result) {
+        modal.result.then((res: { status: string, result: any }) => {
+            switch (res.status) {
                 case 'ok' :
+                    this.eliminaPartenza.emit({ targaMezzo, idRichiesta: this.richiesta.id, modalResult: res.result });
                     break;
                 case 'ko':
                     break;

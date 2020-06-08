@@ -54,6 +54,7 @@ export class ListaRichiesteComponent implements OnInit {
     @Output() actionMezzo = new EventEmitter<MezzoActionInterface>();
     @Output() actionRichiesta = new EventEmitter<RichiestaActionInterface>();
     @Output() outEspansoId = new EventEmitter<string>();
+    @Output() eliminaPartenza = new EventEmitter<{ targaMezzo: string, idRichiesta: string, modalResult: any }>();
 
     methods = new HelperSintesiRichiesta;
     scrolling = false;

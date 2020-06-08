@@ -23,7 +23,8 @@
                 <span *ngIf="!partenza.squadre || partenza.squadre.length === 0" class="p-2">Nessun squadra</span>
             </div>
             <div class="float-right">
-                <button class="btn btn-sm btn-block btn-danger" (click)="eliminaPartenza.emit(partenza.mezzo.codice)">
+                <button class="btn btn-sm btn-block btn-danger"
+                        (click)="eliminaPartenza.emit(partenza.mezzo.codice); $event.stopPropagation()">
                     <i class="fa fa-trash"></i>
                 </button>
             </div>

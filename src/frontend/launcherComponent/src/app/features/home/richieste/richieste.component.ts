@@ -37,7 +37,7 @@ import { RichiesteEspanseState } from '../store/states/richieste/richieste-espan
 import { SetRichiestaGestione } from '../store/actions/richieste/richiesta-gestione.actions';
 import { RichiestaGestioneState } from '../store/states/richieste/richiesta-gestione.state';
 import { MezzoActionInterface } from '../../../shared/interface/mezzo-action.interface';
-import { ActionMezzo, ActionRichiesta, GetListaRichieste } from '../store/actions/richieste/richieste.actions';
+import { ActionMezzo, ActionRichiesta, EliminaPartenzaRichiesta, GetListaRichieste } from '../store/actions/richieste/richieste.actions';
 import { ReducerRichiesteEspanse } from '../store/actions/richieste/richieste-espanse.actions';
 import { RichiestaActionInterface } from '../../../shared/interface/richiesta-action.interface';
 import { PermissionFeatures } from '../../../shared/enum/permission-features.enum';
@@ -50,7 +50,7 @@ import { VoceFiltro } from '../filterbar/filtri-richieste/voce-filtro.model';
 @Component({
     selector: 'app-richieste',
     templateUrl: './richieste.component.html',
-    styleUrls: [ './richieste.component.css' ]
+    styleUrls: ['./richieste.component.css']
 })
 export class RichiesteComponent implements OnInit, OnDestroy {
 
@@ -321,5 +321,9 @@ export class RichiesteComponent implements OnInit, OnDestroy {
 
     onSetEspanso(result?: boolean): void {
         this.store.dispatch(new SetEspanso(result));
+    }
+
+    onEliminaPartenza(event: { targaMezzo: string, idRichiesta: string, modalResult: any }) {
+        this.store.dispatch(new EliminaPartenzaRichiesta(event.targaMezzo, event.idRichiesta, event.modalResult));
     }
 }
