@@ -273,14 +273,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
 
         public IList<ComposizionePartenze> Partenze
         {
-            get
-            {
-                var listaComposizioni = this.Eventi
-                    .OfType<ComposizionePartenze>()
-                    .ToList();
-
-                return listaComposizioni;
-            }
+            get; set;
         }
 
         /// <summary>

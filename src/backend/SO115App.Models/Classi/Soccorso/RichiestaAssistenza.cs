@@ -672,7 +672,7 @@ namespace SO115App.API.Models.Classi.Soccorso
                         foreach (var annullamento in listaPartenzeAnnullatePerNPN.FindAll(x => x.CodiceMezzo.Equals(evento.Partenza.Mezzo.Codice)).ToList())
                         {
                             if (evento.Istante < annullamento.Istante)
-                                evento.PartenzaAnnullata = true;
+                                evento.Partenza.PartenzaAnnullata = true;
                         }
                     }
                     if (listaPartenzeAnnullatePerAltraMotivazione.FindAll(x => x.CodiceMezzo.Equals(evento.Partenza.Mezzo.Codice)).ToList().Count > 0)
@@ -680,7 +680,7 @@ namespace SO115App.API.Models.Classi.Soccorso
                         foreach (var annullamento in listaPartenzeAnnullatePerAltraMotivazione.FindAll(x => x.CodiceMezzo.Equals(evento.Partenza.Mezzo.Codice)).ToList())
                         {
                             if (evento.Istante < annullamento.Istante)
-                                evento.PartenzaAnnullata = true;
+                                evento.Partenza.PartenzaAnnullata = true;
                         }
                     }
                     if (listaPartenzeAnnullatePerFuoriServizio.FindAll(x => x.CodiceMezzo.Equals(evento.Partenza.Mezzo.Codice)).ToList().Count > 0)
@@ -688,7 +688,7 @@ namespace SO115App.API.Models.Classi.Soccorso
                         foreach (var annullamento in listaPartenzeAnnullatePerFuoriServizio.FindAll(x => x.CodiceMezzo.Equals(evento.Partenza.Mezzo.Codice)).ToList())
                         {
                             if (evento.Istante < annullamento.Istante)
-                                evento.PartenzaAnnullata = true;
+                                evento.Partenza.PartenzaAnnullata = true;
                         }
                     }
                     if (listaPartenzeAnnullatePerRiassegnazione.FindAll(x => x.CodiceMezzo.Equals(evento.Partenza.Mezzo.Codice)).ToList().Count > 0)
@@ -696,7 +696,7 @@ namespace SO115App.API.Models.Classi.Soccorso
                         foreach (var annullamento in listaPartenzeAnnullatePerRiassegnazione.FindAll(x => x.CodiceMezzo.Equals(evento.Partenza.Mezzo.Codice)).ToList())
                         {
                             if (evento.Istante < annullamento.Istante)
-                                evento.PartenzaAnnullata = true;
+                                evento.Partenza.PartenzaAnnullata = true;
                         }
                     }
                 }

@@ -37,5 +37,10 @@ namespace SO115App.API.Models.Classi.Condivise
         ///   Mezzo usato nella partenza
         /// </summary>
         public bool Sganciata { get; set; }
+
+        public bool PartenzaAnnullata
+        {
+            get; set;
+        } = false;
     }
 }
