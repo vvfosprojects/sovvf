@@ -106,7 +106,11 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
                     return ((RevocaPerAltraMotivazione)evento).Motivazione;
 
                 case RevocaPerRiassegnazione _:
-                    return ((RevocaPerRiassegnazione)evento).RichiestaSubentrata.Codice;
+                    string codRichiesta;
+                    if (((RevocaPerRiassegnazione)evento).RichiestaSubentrata.CodRichiesta.Trim().Length > 0)
+                        return ((RevocaPerRiassegnazione)evento).RichiestaSubentrata.CodRichiesta;
+                    else
+                        return ((RevocaPerRiassegnazione)evento).RichiestaSubentrata.Codice;
 
                 default:
                     return "";
