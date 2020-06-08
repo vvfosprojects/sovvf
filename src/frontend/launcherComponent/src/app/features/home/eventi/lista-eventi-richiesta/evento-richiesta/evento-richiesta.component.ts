@@ -56,14 +56,9 @@ export class EventoRichiestaComponent implements OnInit {
       ['EventoGenerico', ['fa-question-circle']],
 
       // Per adesso non utilizzqti
-      // ['AssegnazionePriorita', ['fa-sort-numeric-asc']],
       // ['MarcaNonRilevante', ['fa-warning', 'fa-close']],
       // ['InviareFonogramma', ['fa-fax']],
       // ['UscitaPartenza', ['fa-truck', 'fa-hand-o-right']],
-      // ['RevocaPerRiassegnazione', ['fa-truck', 'fa-close', 'fa-share-square-o']],
-      // ['RevocaPerInterventoNonPiuNecessario', ['fa-truck', 'fa-close', 'fa-flag-checkered']],
-      // ['RevocaPerFuoriServizio', ['fa-truck', 'fa-close', 'fa-wrench']],
-      // ['RevocaPerAltraMotivazione', ['fa-truck', 'fa-close', 'fa-question-circle-o']],
       // ['VaInFuoriServizio', ['fa-truck', 'fa-wrench']],
     ];
   }
