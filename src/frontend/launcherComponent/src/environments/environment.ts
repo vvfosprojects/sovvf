@@ -34,5 +34,10 @@ export const environment = {
         auth: '/api/Auth',
         navbar: '/api/Navbar',
         meteo: 'https://api.openweathermap.org/data/2.5/weather?'
+    },
+    casUrl: {
+        linkLogin: 'http://sso.vigilfuoco.it/cas-test/login?service=',
+        linkLogout: 'http://sso.vigilfuoco.it/cas-test/logout?service=',
+        serviceName: 'http://sovvf-test.dipvvf.it/',
     }
 };
