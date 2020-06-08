@@ -7,15 +7,16 @@ const appVersion = require('../package.json').version;
 const readDir = util.promisify(fs.readdir);
 const writeFile = util.promisify(fs.writeFile);
 const readFile = util.promisify(fs.readFile);
+const currentPath = './../dist/SO115';
 console.log('\nRunning post-build tasks');
 // our version.json will be in the dist folder
-const versionFilePath = path.join(__dirname + './../dist/SO115/version.json');
+const versionFilePath = path.join(__dirname, `${currentPath}/version.json`);
 let mainHash = '';
 let mainBundleFile = '';
 // RegExp to find main.bundle.js, even if it doesn't include a hash in it's name (dev build)
 let mainBundleRegexp = /^main.?([a-z0-9]*)?.js$/;
 // read the dist folder files and find the one we're looking for
-readDir(path.join(__dirname, './../dist/SO115'))
+readDir(path.join(__dirname, currentPath))
     .then(files => {
         mainBundleFile = files.find(f => mainBundleRegexp.test(f));
 
@@ -39,7 +40,7 @@ readDir(path.join(__dirname, './../dist/SO115'))
     }
     console.log(`Replacing hash in the ${mainBundleFile}`);
 // replace hash placeholder in our main.js file so the code knows it's current hash
-    const mainFilepath = path.join(__dirname, './../dist/SO115/', mainBundleFile);
+    const mainFilepath = path.join(__dirname, currentPath, mainBundleFile);
     return readFile(mainFilepath, 'utf8')
         .then(mainFileData => {
             const replacedFile = mainFileData.replace('{{POST_BUILD_ENTERS_HASH_HERE}}', mainHash);
