@@ -1,12 +1,9 @@
 import { Component, OnInit, Output, EventEmitter, ViewChild, ElementRef, Input, OnDestroy, isDevMode } from '@angular/core';
 import { animate, style, AnimationBuilder, AnimationPlayer } from '@angular/animations';
-// Model
 import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.model';
-// Helper Methods
 import { HelperSintesiRichiesta } from '../helper/_helper-sintesi-richiesta';
 import { MezzoActionInterface } from '../../../../shared/interface/mezzo-action.interface';
 import { RichiestaActionInterface } from '../../../../shared/interface/richiesta-action.interface';
-
 
 @Component({
     selector: 'app-richiesta-fissata',
@@ -34,6 +31,7 @@ export class RichiestaFissataComponent implements OnInit, OnDestroy {
     @Output() outEspanso = new EventEmitter<boolean>();
     @Output() actionMezzo = new EventEmitter<MezzoActionInterface>();
     @Output() actionRichiesta = new EventEmitter<RichiestaActionInterface>();
+    @Output() eliminaPartenza = new EventEmitter<{ targaMezzo: string, idRichiesta: string, modalResult: any }>();
 
     @ViewChild('richiestaContainer') private richiestaContainer: ElementRef;
     @ViewChild('richiesta') private richiesta: ElementRef;

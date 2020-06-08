@@ -37,6 +37,8 @@ export class InfoAggregateComponent implements OnInit, OnDestroy {
 
     subscription = new Subscription();
 
+    timerMeteo: NodeJS.Timer;
+
     constructor(private store: Store,
         private modalService: NgbModal,
         private meteoService: MeteoService) {
@@ -50,6 +52,7 @@ export class InfoAggregateComponent implements OnInit, OnDestroy {
     ngOnDestroy(): void {
         this.subscription.unsubscribe();
         isDevMode() && console.log('Componente Info Aggregate Distrutto');
+        clearInterval(this.timerMeteo);
     }
 
     clickBox(cat: string, tipo: string): void {
@@ -66,7 +69,7 @@ export class InfoAggregateComponent implements OnInit, OnDestroy {
         const coordinateUtente = this.store.selectSnapshot(UtenteState.utente).sede.coordinate;
         const coordinate = new Coordinate(coordinateUtente.latitudine, coordinateUtente.longitudine);
         this._getMeteoData(coordinate);
-        setInterval(() => {
+        this.timerMeteo = setInterval(() => {
             this.datimeteo = undefined;
             this._getMeteoData(coordinate);
         }, 300000);

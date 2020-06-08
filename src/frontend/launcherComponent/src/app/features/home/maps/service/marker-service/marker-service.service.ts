@@ -128,7 +128,7 @@ export class MarkerService implements OnDestroy {
     constructor(private store: Store) {
         this.subscription.add(this.filtroMarkerAttivo$.subscribe((filtroAttivo: string[]) => {
             this.filtroMarkerAttivo = filtroAttivo;
-            this.store.dispatch(new ToggleAnimationButton(true));
+            // this.store.dispatch(new ToggleAnimationButton(true));
         }));
         this.subscription.add(this.stateSwitch$.subscribe((state: boolean) => this.switchMeteo = state));
         this.subscription.add(this.markerOpachi$.subscribe((state: MarkerOpachiStateModel) => this.markerOpachi = state));

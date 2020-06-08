@@ -1,8 +1,10 @@
-export class ReducerFiltroMarker {
-  static readonly type = '[MapsFiltro] Reducer Filtro Marker';
+import { BoxClickInterface } from '../../../boxes/box-interface/box-click-interface';
 
-  constructor(public selected: string) {
-  }
+export class ReducerFiltroMarker {
+    static readonly type = '[MapsFiltro] Reducer Filtro Marker';
+
+    constructor(public selected: string) {
+    }
 }
 
 export class SetFiltroMarker {
@@ -25,4 +27,12 @@ export class CopiaFiltroAttivo {
 
 export class ClearCopiaFiltroAttivo {
     static readonly type = '[MapsFiltro] Clear Filtro Attivo';
+}
+
+export class CheckBoxClick {
+    static readonly type = '[MapsFiltro] Check Box Click';
+
+    constructor(public boxClick: BoxClickInterface) {
+        console.log(boxClick.mezzi);
+    }
 }
