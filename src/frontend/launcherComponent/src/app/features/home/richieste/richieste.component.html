@@ -7,11 +7,9 @@
                        (statoPartenza)="toggleComposizione()" (composizionePartenza)="nuovaPartenza($event)"
                        (defissa)="onDefissa()" (modificaRichiesta)="onModificaRichiesta($event)"
                        (gestioneRichiesta)="onGestioneRichiesta($event)"
-                       (eventiRichiesta)="onVisualizzaEventiRichiesta($event)"
-                       (outEspanso)="onSetEspanso($event)"
-                       (outEspansoId)="toggleEspanso($event)"
-                       (actionMezzo)="onActionMezzo($event)"
-                       (actionRichiesta)="onActionRichiesta($event)">
+                       (eventiRichiesta)="onVisualizzaEventiRichiesta($event)" (outEspanso)="onSetEspanso($event)"
+                       (outEspansoId)="toggleEspanso($event)" (actionMezzo)="onActionMezzo($event)"
+                       (actionRichiesta)="onActionRichiesta($event)" (eliminaPartenza)="onEliminaPartenza($event)">
 </app-richiesta-fissata>
 
 <app-lista-richieste [_split]="split" [richieste]="richieste" [ricerca]="ricerca" [richiestaFissata]="richiestaFissata"

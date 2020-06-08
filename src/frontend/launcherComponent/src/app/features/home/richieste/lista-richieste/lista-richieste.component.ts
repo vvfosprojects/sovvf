@@ -6,7 +6,6 @@ import { MezzoActionInterface } from '../../../../shared/interface/mezzo-action.
 import { RichiestaActionInterface } from '../../../../shared/interface/richiesta-action.interface';
 import { StatoRichiesta } from '../../../../shared/enum/stato-richiesta.enum';
 import { PermissionFeatures } from '../../../../shared/enum/permission-features.enum';
-import { VoceFiltro } from '../../filterbar/filtri-richieste/voce-filtro.model';
 import { VociFiltroDefault } from '../../../../shared/enum/voci-filtro-default.enum';
 
 @Component({
