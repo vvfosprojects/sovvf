@@ -35,6 +35,7 @@ export class EventoRichiestaComponent implements OnInit {
     this.iconeClassiEvento = [
       ['Telefonata', ['fa-phone-square']],
       ['InizioPresaInCarico', ['fa-user', 'fa-wrench']],
+      ['AnnullamentoPresaInCarico', ['fa-user', 'fa-times']],
       ['RiaperturaRichiesta', ['fa-refresh']],
       ['Composizione', ['fa-truck', 'fa-pencil-square-o']],
       ['ChiusuraRichiesta', ['fa-flag-checkered']],
