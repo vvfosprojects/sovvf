@@ -22,8 +22,10 @@ using System.Threading.Tasks;
 using CQRS.Queries;
 using Microsoft.AspNetCore.Mvc;
 using SO115App.API.Models.Classi.Autenticazione;
+using SO115App.API.Models.Servizi.CQRS.Queries.GestioneUtente.CasLogin;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneUtente.LogIn;
 using SO115App.Models.Classi.Utenti.Autenticazione;
+using SO115App.Models.Classi.Utility;
 
 namespace SO115App.API.Controllers
 {
@@ -32,10 +34,13 @@ namespace SO115App.API.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IQueryHandler<LogInQuery, LogInResult> _handler;
+        private readonly IQueryHandler<CasLoginQuery, CasLoginResult> _cashandler;
 
-        public AuthController(IQueryHandler<LogInQuery, LogInResult> handler)
+        public AuthController(IQueryHandler<LogInQuery, LogInResult> handler,
+                              IQueryHandler<CasLoginQuery, CasLoginResult> Cashandler)
         {
             _handler = handler;
+            _cashandler = Cashandler;
         }
 
         [HttpPost("Login")]
@@ -53,7 +58,35 @@ namespace SO115App.API.Controllers
 
                 if (utente == null)
                 {
-                    return Unauthorized();
+                    return StatusCode(403, Costanti.UtenteNonAutorizzato);
+                }
+
+                return Ok(utente);
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains("no element"))
+                    return StatusCode(404, "Credenziali errate");
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost("TicketLogin")]
+        public async Task<IActionResult> TicketLogin([FromBody] CasLogin credenziali)
+        {
+            var query = new CasLoginQuery()
+            {
+                Ticket = credenziali.Ticket,
+                Service = credenziali.Service
+            };
+
+            try
+            {
+                var utente = (Utente)this._cashandler.Handle(query).User;
+
+                if (utente == null)
+                {
+                    return StatusCode(403, Costanti.UtenteNonAutorizzato);
                 }
 
                 return Ok(utente);

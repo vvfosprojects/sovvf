@@ -55,8 +55,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneUtente.LogIn
         /// <returns>Elenco dei mezzi disponibili</returns>
         public LogInResult Handle(LogInQuery query)
         {
-            var Server = Dns.GetHostEntry(Dns.GetHostName());
-
             // preparazione del DTO
             var utente = _verificaLogIn.Verifica(query.Username, query.Password);
 
@@ -82,55 +80,10 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneUtente.LogIn
             var token = tokenHandler.CreateToken(tokenDescriptor);
 
             utente.Token = tokenHandler.WriteToken(token);
-            //utente.Machine = GetLocalIpAddress();
-
             return new LogInResult()
             {
                 User = utente
             };
-        }
-
-        public static string GetLocalIpAddress()
-        {
-            UnicastIPAddressInformation mostSuitableIp = null;
-            var networkInterfaces = NetworkInterface.GetAllNetworkInterfaces();
-            foreach (var network in networkInterfaces)
-            {
-                if (network.OperationalStatus != OperationalStatus.Up)
-                    continue;
-
-                var properties = network.GetIPProperties();
-                if (properties.GatewayAddresses.Count == 0)
-                    continue;
-
-                foreach (var address in properties.UnicastAddresses)
-                {
-                    if (address.Address.AddressFamily != AddressFamily.InterNetwork)
-                        continue;
-
-                    if (IPAddress.IsLoopback(address.Address))
-                        continue;
-
-                    if (!address.IsDnsEligible)
-                    {
-                        if (mostSuitableIp == null)
-                            mostSuitableIp = address;
-                        continue;
-                    }
-
-                    // The best IP is the IP got from DHCP server
-                    if (address.PrefixOrigin != PrefixOrigin.Dhcp)
-                    {
-                        if (mostSuitableIp == null || !mostSuitableIp.IsDnsEligible)
-                            mostSuitableIp = address;
-                        continue;
-                    }
-                    return address.Address.ToString();
-                }
-            }
-            return mostSuitableIp != null
-                ? mostSuitableIp.Address.ToString()
-                : "";
         }
     }
 }

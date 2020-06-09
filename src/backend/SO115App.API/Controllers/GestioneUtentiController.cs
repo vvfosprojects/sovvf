@@ -66,7 +66,7 @@ namespace SO115App.API.Controllers
                 if (ex.Message.Contains(Costanti.RuoloUtentePresente))
                     return StatusCode(403, Costanti.RuoloUtentePresente);
 
-                return BadRequest();
+                return BadRequest(ex.Message);
             }
         }
 
@@ -83,7 +83,7 @@ namespace SO115App.API.Controllers
             {
                 if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
                     return StatusCode(403, Costanti.UtenteNonAutorizzato);
-                return BadRequest();
+                return BadRequest(ex.Message);
             }
         }
 
@@ -105,7 +105,7 @@ namespace SO115App.API.Controllers
                 else if (ex.Message.Contains("404"))
                     return StatusCode(404, "Servizio non raggiungibile. Riprovare più tardi");
                 else
-                    return BadRequest();
+                    return BadRequest(ex.Message);
             }
         }
 
@@ -125,7 +125,7 @@ namespace SO115App.API.Controllers
                 else if (ex.Message.Contains("404"))
                     return StatusCode(404, "Servizio non raggiungibile. Riprovare più tardi");
                 else
-                    return BadRequest();
+                    return BadRequest(ex.Message);
             }
         }
     }
