@@ -24,7 +24,7 @@ namespace SO115App.Models.Classi.Utility
         #region CondivisaAuthorization
 
         public static string UtenteNonAutorizzato = "Utente non autorizzato";
-        public static string RuoloUtentePresente = "Ruolo già presente nella sele selezionata. Oppure in una sede gerarchicamente superiore";
+        public static string RuoloUtentePresente = "Ruolo già presente nella sede selezionata. Oppure in una sede gerarchicamente superiore";
         public static string RichiestaEsistente = "Risulta già presente una richiesta nelle vicinanze di quella che si sta inserendo. Si vuole procedere ugualmente con l'inserimento?";
 
         #endregion CondivisaAuthorization
@@ -100,6 +100,7 @@ namespace SO115App.Models.Classi.Utility
         public static string RevocaPerFuoriServizio = "RevocaPerFuoriServizio";
         public static string RevocaPerInterventoNonPiuNecessario = "RevocaPerInterventoNonPiuNecessario";
         public static string RevocaPerRiassegnazione = "RevocaPerRiassegnazione";
+        public static string AnnullamentoPresaInCarico = "AnnullamentoPresaInCarico";
 
         #endregion Eventi
 
