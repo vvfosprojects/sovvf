@@ -201,6 +201,9 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
                 case RevocaPerRiassegnazione _:
                     return Costanti.RevocaPerRiassegnazione;
 
+                case AnnullamentoPresaInCarico _:
+                    return Costanti.AnnullamentoPresaInCarico;
+
                 default:
                     return Costanti.EventoGenerico;
             }
