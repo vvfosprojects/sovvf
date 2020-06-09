@@ -16,10 +16,6 @@
 </td>
 <td>
   <span *ngIf="eventoRichiesta.istanteEvento"
-        ngbTooltip="Data Evento Precedente">{{eventoRichiesta.istanteEvento | distanzaTemporale : istanteEventoPrecedente : 'N' }}</span>
-</td>
-<td>
-  <span *ngIf="eventoRichiesta.istanteEvento"
         ngbTooltip="Data Primo Evento">{{eventoRichiesta.istanteEvento | distanzaTemporale : istantePrimoEvento : 'N' }}</span>
 </td>
 <td>
