@@ -1,21 +1,15 @@
 import { Component, Input, EventEmitter, Output, OnInit, OnDestroy } from '@angular/core';
-
-// Model
 import { BoxPartenza } from '../interface/box-partenza-interface';
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
-
-// Service
 import { Observable, Subscription } from 'rxjs';
 import { DirectionInterface } from '../../maps/maps-interface/direction-interface';
 import { Composizione } from '../../../../shared/enum/composizione.enum';
 import { Select, Store } from '@ngxs/store';
-import {
-    ConfirmPartenze,
-    GetFiltriComposizione
-} from '../../store/actions/composizione-partenza/composizione-partenza.actions';
+import { ConfirmPartenze, GetFiltriComposizione } from '../../store/actions/composizione-partenza/composizione-partenza.actions';
 import { ComposizioneVeloceState } from '../../store/states/composizione-partenza/composizione-veloce.state';
 import {
-    HoverInPreAccoppiatoComposizione, HoverOutPreAccoppiatoComposizione,
+    HoverInPreAccoppiatoComposizione,
+    HoverOutPreAccoppiatoComposizione,
     SelectPreAccoppiatoComposizione,
     UnselectPreAccoppiatoComposizione
 } from '../../store/actions/composizione-partenza/composizione-veloce.actions';

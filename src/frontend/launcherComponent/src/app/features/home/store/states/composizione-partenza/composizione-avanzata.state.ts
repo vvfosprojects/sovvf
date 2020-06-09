@@ -7,8 +7,6 @@ import {
     SetListeComposizioneAvanzata,
     UnselectMezziAndSquadreComposizioneAvanzata
 } from '../../actions/composizione-partenza/composizione-avanzata.actions';
-import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
-import { ToastrType } from '../../../../../shared/enum/toastr';
 import { MezziComposizioneState } from './mezzi-composizione.state';
 import { SquadreComposizioneState } from './squadre-composizione.state';
 import { ComposizionePartenzaState, ComposizionePartenzaStateModel } from './composizione-partenza.state';
@@ -68,11 +66,6 @@ export class ComposizioneAvanzataState {
             if (listeCompAvanzata) {
                 const listaBoxPartenza = this.store.selectSnapshot(BoxPartenzaState.boxPartenzaList);
                 if (listeCompAvanzata.composizioneMezzi) {
-                    listeCompAvanzata.composizioneMezzi.map((mezzo: MezzoComposizione) => {
-                        if (mezzo.mezzo.stato === StatoMezzo.OperativoPreaccoppiato) {
-                            mezzo.mezzo.stato = StatoMezzo.InSede;
-                        }
-                    });
                     this.store.dispatch(new SetListaMezziComposizione(listeCompAvanzata.composizioneMezzi));
                 }
                 if (listeCompAvanzata.composizioneSquadre) {
