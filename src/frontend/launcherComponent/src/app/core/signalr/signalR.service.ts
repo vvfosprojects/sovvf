@@ -12,7 +12,7 @@ import { SetBoxMezzi } from '../../features/home/store/actions/boxes/box-mezzi.a
 import { SetBoxRichieste } from '../../features/home/store/actions/boxes/box-richieste.actions';
 import { environment } from '../../../environments/environment';
 import { ToastrType } from '../../shared/enum/toastr';
-import { InsertChiamataSuccess } from '../../features/home/store/actions/chiamata/scheda-telefonata.actions';
+import { ApriModaleRichiestaDuplicata, InsertChiamataSuccess } from '../../features/home/store/actions/chiamata/scheda-telefonata.actions';
 import {
     InsertChiamataMarker,
     RemoveChiamataMarker,
@@ -213,6 +213,7 @@ export class SignalRService {
          */
         this.hubNotification.on('NotifyDoppioneChiamataInCorso', (message: string) => {
             console.log('NotifyDoppioneChiamataInCorso', message);
+            this.store.dispatch(new ApriModaleRichiestaDuplicata(message));
         });
         this.hubNotification.on('SaveAndNotifySuccessChiamata', (data: SintesiRichiesta) => {
             console.log('SaveAndNotifySuccessChiamata', data);

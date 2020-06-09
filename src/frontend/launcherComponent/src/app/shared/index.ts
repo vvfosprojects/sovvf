@@ -18,3 +18,4 @@ export * from './components/lista-partenze/lista-partenze.component';
 export * from './components/partial-loader/partial-loader.component';
 export * from './components/bottone-nuova-versione/bottone-nuova-versione.component';
 export * from './modal/elimina-partenza-modal/elimina-partenza-modal.component';
+export * from './modal/richiesta-duplicata-modal/richiesta-duplicata-modal.component';
