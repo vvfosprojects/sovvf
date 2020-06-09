@@ -28,19 +28,23 @@
             </div>
             <ul class="list-group list-group-flush border-bottom scroll-y" style="max-height:345px; min-height:345px">
                 <ng-template [ngIf]="mezziComposizione && mezziComposizione.length > 0">
-                    <app-mezzo-composizione *ngFor="let mC of mezziComposizione" [mezzoComp]="mC"
-                                            [itemSelezionato]="mC.id === idMezzoSelezionato"
-                                            [itemHover]="mC.id === idMezzoHover"
-                                            [itemInPrenotazione]="idMezziInPrenotazione.indexOf(mC.id) !== -1"
-                                            [itemPrenotato]="idMezziPrenotati.indexOf(mC.id) !== -1"
-                                            [itemBloccato]="idMezziBloccati.indexOf(mC.id) !== -1"
-                                            [richiesta]="richiesta"
-                                            (selezionato)="mezzoSelezionato($event)"
-                                            (deselezionato)="mezzoDeselezionato($event)"
-                                            (hoverIn)="mezzoHoverIn($event)" (hoverOut)="mezzoHoverOut()"
-                                            (mezzoCoordinate)="mezzoCoordinate($event)"
-                                            (sganciamento)="sganciamento.emit($event)">
-                    </app-mezzo-composizione>
+                    <div *ngFor="let mC of mezziComposizione">
+                        <ng-template [ngIf]="mC.mezzo.stato !== statoMezzo.OperativoPreaccoppiato">
+                            <app-mezzo-composizione [mezzoComp]="mC"
+                                                    [itemSelezionato]="mC.id === idMezzoSelezionato"
+                                                    [itemHover]="mC.id === idMezzoHover"
+                                                    [itemInPrenotazione]="idMezziInPrenotazione.indexOf(mC.id) !== -1"
+                                                    [itemPrenotato]="idMezziPrenotati.indexOf(mC.id) !== -1"
+                                                    [itemBloccato]="idMezziBloccati.indexOf(mC.id) !== -1"
+                                                    [richiesta]="richiesta"
+                                                    (selezionato)="mezzoSelezionato($event)"
+                                                    (deselezionato)="mezzoDeselezionato($event)"
+                                                    (hoverIn)="mezzoHoverIn($event)" (hoverOut)="mezzoHoverOut()"
+                                                    (mezzoCoordinate)="mezzoCoordinate($event)"
+                                                    (sganciamento)="sganciamento.emit($event)">
+                            </app-mezzo-composizione>
+                        </ng-template>
+                    </div>
                 </ng-template>
             </ul>
         </div>

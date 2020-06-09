@@ -105,6 +105,8 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
     @Output() prenota = new EventEmitter<boolean>();
     @Output() sganciamento = new EventEmitter<SganciamentoInterface>();
 
+    statoMezzo = StatoMezzo;
+
     constructor(private popoverConfig: NgbPopoverConfig,
                 private tooltipConfig: NgbTooltipConfig,
                 private store: Store) {
