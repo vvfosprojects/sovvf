@@ -137,10 +137,5 @@ namespace DomainModel.CQRS.Commands.AddIntervento
 
             this._saveRichiestaAssistenza.Save(richiesta);
         }
-
-        private bool ControllaAutorizzazioneUtenteSuCompetenze(CompetenzeRichiesta competenza, string codUtente)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
