@@ -31,7 +31,7 @@ export class ListaPartenzeComponent {
         let count = 0;
         if (partenze && partenze.length > 0) {
             partenze.forEach((p: Partenza) => {
-                if (!p.sganciata) {
+                if (!p.sganciata && !p.partenzaAnnullata) {
                     count++;
                 }
             });
