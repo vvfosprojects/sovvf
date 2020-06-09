@@ -51,8 +51,16 @@ namespace SO115App.Persistence.MongoDB.GestioneStatoSquadra
                 StatoSquadra = statoSquadra,
                 CodiceSede = codiceSede
             };
-            var findAndReplaceOptions = new FindOneAndReplaceOptions<StatoOperativoSquadra> { IsUpsert = true };
-            _dbContext.StatoSquadraCollection.FindOneAndReplace(Builders<StatoOperativoSquadra>.Filter.Eq(x => x.IdSquadra, idSquadra), statoOperativoSquadra, findAndReplaceOptions);
+
+            if (statoOperativoSquadra.StatoSquadra.Equals("In Sede"))
+            {
+                _dbContext.StatoSquadraCollection.DeleteOne(Builders<StatoOperativoSquadra>.Filter.Eq(x => x.IdSquadra, idSquadra));
+            }
+            else
+            {
+                var findAndReplaceOptions = new FindOneAndReplaceOptions<StatoOperativoSquadra> { IsUpsert = true };
+                _dbContext.StatoSquadraCollection.FindOneAndReplace(Builders<StatoOperativoSquadra>.Filter.Eq(x => x.IdSquadra, idSquadra), statoOperativoSquadra, findAndReplaceOptions);
+            }
         }
     }
 }
