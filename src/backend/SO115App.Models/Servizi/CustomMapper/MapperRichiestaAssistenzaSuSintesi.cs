@@ -59,7 +59,7 @@ namespace SO115App.Models.Servizi.CustomMapper
             {
                 foreach (var evento in richiesta.Eventi)
                 {
-                    if (evento! is Telefonata || evento! is AssegnazionePriorita)
+                    if (!(evento is Telefonata) && !(evento is AssegnazionePriorita))
                     {
                         var utente = _getUtenteById.GetUtenteByCodice(evento.CodiceFonte);
 
