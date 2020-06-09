@@ -23,6 +23,7 @@ namespace DomainModel.CQRS.Commands.ChiamataInCorsoMarker
 {
     public class UpDateChiamataInCorsoMarkerCommand
     {
+        public string HubConId { get; set; }
         public ChiamateInCorso ChiamataInCorso { get; set; }
     }
 }

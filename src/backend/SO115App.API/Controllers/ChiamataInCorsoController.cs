@@ -155,9 +155,12 @@ namespace SO115App.API.Controllers
         [HttpPost("UpDate")]
         public async Task<IActionResult> UpDate([FromBody] ChiamateInCorso chiamata)
         {
+            var HubConId = Request.Headers["HubConnectionId"];
+
             var command = new UpDateChiamataInCorsoMarkerCommand()
             {
-                ChiamataInCorso = chiamata
+                ChiamataInCorso = chiamata,
+                HubConId = HubConId
             };
 
             try
