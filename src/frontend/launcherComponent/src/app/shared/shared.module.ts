@@ -28,7 +28,8 @@ const COMPONENTS = [
     Shared.CheckboxComponent,
     Shared.PartialLoaderComponent,
     Shared.BottoneNuovaVersioneComponent,
-    Shared.EliminaPartenzaModalComponent
+    Shared.EliminaPartenzaModalComponent,
+    Shared.RichiestaDuplicataModalComponent
 ];
 
 @NgModule({

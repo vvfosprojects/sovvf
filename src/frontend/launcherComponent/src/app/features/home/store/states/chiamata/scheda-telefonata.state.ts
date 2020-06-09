@@ -1,6 +1,7 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { Coordinate } from '../../../../../shared/model/coordinate.model';
 import {
+    ApriModaleRichiestaDuplicata,
     CestinaChiamata,
     ClearChiamata, ClearIndirizzo,
     ClearMarkerChiamata,
@@ -9,7 +10,9 @@ import {
     MarkerChiamata,
     ReducerSchedaTelefonata,
     ResetChiamata,
-    StartChiamata, StartLoadingNuovaChiamata, StopLoadingNuovaChiamata
+    StartChiamata,
+    StartLoadingNuovaChiamata,
+    StopLoadingNuovaChiamata
 } from '../../actions/chiamata/scheda-telefonata.actions';
 import { CopyToClipboard } from '../../actions/chiamata/clipboard.actions';
 import { ToggleChiamata } from '../../actions/view/view.actions';
@@ -26,8 +29,11 @@ import { GetListaRichieste, SetIdChiamataInviaPartenza, SetNeedRefresh } from '.
 import { RichiestaSelezionataState } from '../richieste/richiesta-selezionata.state';
 import { PaginationState } from '../../../../../shared/store/states/pagination/pagination.state';
 import { RichiestaGestioneState } from '../richieste/richiesta-gestione.state';
-import { Validators } from '@angular/forms';
 import { UpdateFormValue } from '@ngxs/form-plugin';
+import { NgZone } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { RichiestaDuplicataModalComponent } from '../../../../../shared/modal/richiesta-duplicata-modal/richiesta-duplicata-modal.component';
+import { ModalServiziComponent } from '../../../boxes/info-aggregate/modal-servizi/modal-servizi.component';
 
 export interface SchedaTelefonataStateModel {
     nuovaRichiestaForm: {
@@ -84,7 +90,10 @@ export const SchedaTelefonataStateDefaults: SchedaTelefonataStateModel = {
 
 export class SchedaTelefonataState {
 
-    constructor(private chiamataService: ChiamataService, private store: Store) {
+    constructor(private chiamataService: ChiamataService,
+                private store: Store,
+                private ngZone: NgZone,
+                private modalService: NgbModal) {
     }
 
     @Selector()
@@ -235,6 +244,14 @@ export class SchedaTelefonataState {
                 longitudine: ''
             }
         }));
+    }
+
+    @Action(ApriModaleRichiestaDuplicata)
+    apriModaleRichiestaDuplicata({ dispatch }: StateContext<SchedaTelefonataStateModel>, action: ApriModaleRichiestaDuplicata) {
+        this.ngZone.run(() => {
+            const richiestaDuplicataModal = this.modalService.open(RichiestaDuplicataModalComponent, { size: 'lg', centered: true });
+            richiestaDuplicataModal.componentInstance.messaggio = action.messaggio;
+        });
     }
 
     @Action(StartLoadingNuovaChiamata)

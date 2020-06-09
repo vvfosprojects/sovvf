@@ -47,19 +47,18 @@ export class EventoRichiestaComponent implements OnInit {
       ['AssegnataPriorita', ['fa-thermometer-half']],
       ['MarcaRilevante', ['fa-warning', 'fa-check']],
       ['Sospesa', ['fa-pause']],
+      ['RevocaPerRiassegnazione', ['fa-truck', 'fa-refresh']],
+      ['RevocaPerInterventoNonPiuNecessario', ['fa-truck', 'fa-times']],
+      ['RevocaPerAltraMotivazione', ['fa-truck', 'fa-times']],
+      ['RevocaPerFuoriServizio', ['fa-truck', 'fa-times']],
 
       // Default per gli eventi non gestiti
       ['EventoGenerico', ['fa-question-circle']],
 
       // Per adesso non utilizzqti
-      // ['AssegnazionePriorita', ['fa-sort-numeric-asc']],
       // ['MarcaNonRilevante', ['fa-warning', 'fa-close']],
       // ['InviareFonogramma', ['fa-fax']],
       // ['UscitaPartenza', ['fa-truck', 'fa-hand-o-right']],
-      // ['RevocaPerRiassegnazione', ['fa-truck', 'fa-close', 'fa-share-square-o']],
-      // ['RevocaPerInterventoNonPiuNecessario', ['fa-truck', 'fa-close', 'fa-flag-checkered']],
-      // ['RevocaPerFuoriServizio', ['fa-truck', 'fa-close', 'fa-wrench']],
-      // ['RevocaPerAltraMotivazione', ['fa-truck', 'fa-close', 'fa-question-circle-o']],
       // ['VaInFuoriServizio', ['fa-truck', 'fa-wrench']],
     ];
   }
