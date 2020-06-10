@@ -27,14 +27,23 @@ namespace SO115App.SignalR.Utility
 
         public async Task<ChatRoom> GetChatRoomID(string codSede)
         {
-            //_client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("test");
-            var response = await _client.GetAsync($"{_config.GetSection("UrlMatrix").Value}/directory/room/%23comando.{codSede.ToLower()}:vvf-test.cloud").ConfigureAwait(false);
-            response.EnsureSuccessStatusCode();
-            using HttpContent content = response.Content;
-            var data = await content.ReadAsStringAsync().ConfigureAwait(false);
-            var RispostaCas = JsonConvert.DeserializeObject<ChatRoom>(data);
+            try
+            {
+                //_client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("test");
+                var response = await _client.GetAsync($"{_config.GetSection("UrlMatrix").Value}/directory/room/%23comando.{codSede.ToLower()}:vvf-test.cloud").ConfigureAwait(false);
+                response.EnsureSuccessStatusCode();
+                using HttpContent content = response.Content;
+                var data = await content.ReadAsStringAsync().ConfigureAwait(false);
+                var RispostaCas = JsonConvert.DeserializeObject<ChatRoom>(data);
 
-            return RispostaCas;
+                return RispostaCas;
+            }
+            catch (HttpRequestException e)
+            {
+                ChatRoom RispostaCas = new ChatRoom();
+                RispostaCas.Error = e.Message;
+                return RispostaCas;
+            }
         }
 
         public async Task<bool> PostBotInChatRoom(string room_id)
