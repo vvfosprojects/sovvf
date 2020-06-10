@@ -21,7 +21,7 @@ namespace SO115App.Persistence.MongoDB.GestioneInterventi
 
         public List<Evento> Get(ListaEventiQuery query)
         {
-            return (List<Evento>)_dbContext.RichiestaAssistenzaCollection.Find(Builders<RichiestaAssistenza>.Filter.Eq(x => x.Id, query.IdRichiesta)).Single().Eventi;
+            return (List<Evento>)_dbContext.RichiestaAssistenzaCollection.Find(Builders<RichiestaAssistenza>.Filter.Eq(x => x.Codice, query.IdRichiesta)).Single().Eventi;
         }
     }
 }
