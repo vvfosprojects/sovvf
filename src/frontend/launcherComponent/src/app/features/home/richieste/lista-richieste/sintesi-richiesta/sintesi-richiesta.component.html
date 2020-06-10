@@ -279,29 +279,34 @@
                             <div class="h6">
                                 <i class="guida fa fa-calendar-check-o fa-fw mr-1" ngbTooltip="Presa in carico"
                                    placement="right"></i>
-                                <span *ngIf="methods._primoUtente(richiesta.listaUtentiPresaInCarico) as utentiPresaInCaricoValue; else nonPresaInCarico"
-                                      class="h6 m-0" [ngbTooltip]="utentePresaInCarico">
-                                    {{ utentiPresaInCaricoValue.nominativo }}
+                                <div *ngIf="methods._primoUtente(richiesta.listaUtentiPresaInCarico) as utentiPresaInCaricoValue; else nonPresaInCarico"
+                                     class="d-inline-block h6 m-0 mr-1" [ngbTooltip]="utentePresaInCarico">
+                                    {{ utentiPresaInCaricoValue.nominativo | truncate: 15 }}
                                     <ng-template #utentePresaInCarico>
-                                        <span>
-                                            {{utentiPresaInCaricoValue.dataInizioAttivita | friendlyDate}}
-                                            {{utentiPresaInCaricoValue.dataInizioAttivita | friendlyHour: true}}
-                                        </span>
+                                        <div>
+                                            {{getPresaInCaricoTooltip(utentiPresaInCaricoValue).nominativo}}
+                                        </div>
+                                        <div>
+                                            {{getPresaInCaricoTooltip(utentiPresaInCaricoValue).dataInizioAttivita | friendlyDate}}
+                                            {{getPresaInCaricoTooltip(utentiPresaInCaricoValue).dataInizioAttivita | friendlyHour: true}}
+                                        </div>
                                     </ng-template>
-                                </span>
-                                <button *ngIf="richiesta.listaUtentiPresaInCarico && richiesta.listaUtentiPresaInCarico.length > 1"
-                                        class="btn btn-light border big_font py-0 px-1"
-                                        [ngbTooltip]="utentiPresaInCarico"
-                                        (click)="$event.stopPropagation()">
-                                    +{{ richiesta.listaUtentiPresaInCarico.length - 1 }}</button>
-                                <ng-template #utentiPresaInCarico>
-                                    <div *ngIf="methods._altriUtenti(richiesta.listaUtentiPresaInCarico) as utentiTooltip">
-                                        <div *ngFor="let utente of utentiTooltip">
-                                            {{utente.nominativo}}
-                                            - {{utente.dataInizioAttivita | friendlyDate}} {{utente.dataInizioAttivita | friendlyHour: true}}
+                                </div>
+                                <div *ngIf="richiesta.listaUtentiPresaInCarico && richiesta.listaUtentiPresaInCarico.length > 1"
+                                     ngbDropdown class="d-inline-block" placement="bottom">
+                                    <button ngbDropdownToggle class="btn btn-light border py-0 px-1"
+                                            (click)="$event.stopPropagation()">
+                                        +{{ richiesta.listaUtentiPresaInCarico.length - 1 }}
+                                    </button>
+                                    <div ngbDropdownMenu class="p-2 text-center">
+                                        <div *ngIf="methods._altriUtenti(richiesta.listaUtentiPresaInCarico) as utentiTooltip">
+                                            <div *ngFor="let utente of utentiTooltip">
+                                                {{utente.nominativo}}
+                                                - {{utente.dataInizioAttivita | friendlyDate}} {{utente.dataInizioAttivita | friendlyHour: true}}
+                                            </div>
                                         </div>
                                     </div>
-                                </ng-template>
+                                </div>
                                 <ng-template #nonPresaInCarico>
                                     <a class="badge badge-secondary text-light">Non presa in carico</a>
                                 </ng-template>
@@ -311,22 +316,26 @@
                             <div class="h6">
                                 <i class="guida fa fa-eye fa-fw mr-1" ngbTooltip="In Lavorazione"
                                    placement="right"></i>
-                                <span *ngIf="methods._primoUtente(richiesta.listaUtentiInLavorazione) as utentiInLavorazioneValue; else nonInLavorazione"
-                                      class="h6 m-0">
-                                    {{ utentiInLavorazioneValue.nominativo }}
-                                </span>
-                                <button *ngIf="richiesta.listaUtentiInLavorazione && richiesta.listaUtentiInLavorazione.length > 1"
-                                        class="btn btn-light border big_font py-0 px-1"
-                                        [ngbTooltip]="utentiInLavorazione"
-                                        (click)="$event.stopPropagation()">
-                                    +{{ richiesta.listaUtentiInLavorazione.length - 1 }}</button>
-                                <ng-template #utentiInLavorazione>
-                                    <div *ngIf="methods._altriUtenti(richiesta.listaUtentiInLavorazione) as utentiTooltip">
-                                        <div *ngFor="let utente of utentiTooltip">
-                                            {{utente.nominativo}}
+                                <div *ngIf="methods._primoUtente(richiesta.listaUtentiInLavorazione) as utentiInLavorazioneValue; else nonInLavorazione"
+                                     class="d-inline-block m-0 mr-1"
+                                     [ngbTooltip]="getInLavorazioneTooltip(utentiInLavorazioneValue)"
+                                     [disableTooltip]="_inLavorazioneTooltipDisabled(utentiInLavorazioneValue)">
+                                    {{ utentiInLavorazioneValue.nominativo | truncate: 15 }}
+                                </div>
+                                <div *ngIf="richiesta.listaUtentiInLavorazione && richiesta.listaUtentiInLavorazione.length > 1"
+                                     ngbDropdown class="d-inline-block" placement="bottom">
+                                    <button ngbDropdownToggle class="btn btn-light border py-0 px-1"
+                                            (click)="$event.stopPropagation()">
+                                        +{{ richiesta.listaUtentiInLavorazione.length - 1 }}
+                                    </button>
+                                    <div ngbDropdownMenu class="p-2 text-center">
+                                        <div *ngIf="methods._altriUtenti(richiesta.listaUtentiInLavorazione) as utentiTooltip">
+                                            <div *ngFor="let utente of utentiTooltip">
+                                                {{utente.nominativo}}
+                                            </div>
                                         </div>
                                     </div>
-                                </ng-template>
+                                </div>
                                 <ng-template #nonInLavorazione>
                                     <a class="badge badge-secondary text-light">Non in lavorazione</a>
                                 </ng-template>
