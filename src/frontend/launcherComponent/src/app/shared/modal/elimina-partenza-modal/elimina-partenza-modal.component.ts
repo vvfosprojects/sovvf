@@ -39,7 +39,7 @@ export class EliminaPartenzaModalComponent implements OnInit {
         },
     ];
 
-    constructor(private modal: NgbActiveModal,
+    constructor(public modal: NgbActiveModal,
                 private fb: FormBuilder,
                 private sintesiRichiesteService: SintesiRichiesteService) {
         this.initForm();
