@@ -123,8 +123,7 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
     }
 
     onActionMezzo(mezzoInServizio: Mezzo, mezzoAction: MezzoActionInterface) {
-        const richiesta = this.richieste.filter(x => x.codice === mezzoInServizio.idRichiesta)[0];
-        mezzoAction.richiesta = richiesta ? richiesta : null;
+        mezzoAction.codRichiesta = mezzoInServizio.idRichiesta;
         mezzoAction.listaMezzi = true;
         this.store.dispatch(new ActionMezzo(mezzoAction));
     }

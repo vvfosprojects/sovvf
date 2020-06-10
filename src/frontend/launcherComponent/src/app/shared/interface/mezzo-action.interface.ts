@@ -4,6 +4,6 @@ import { SintesiRichiesta } from '../model/sintesi-richiesta.model';
 export interface MezzoActionInterface {
     mezzo: Mezzo;
     action?: string;
-    richiesta?: SintesiRichiesta;
+    codRichiesta?: string;
     listaMezzi?: boolean;
 }

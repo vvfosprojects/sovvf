@@ -279,7 +279,7 @@ export class RichiesteState {
     @Action(ActionMezzo)
     actionMezzo({ dispatch }: StateContext<RichiesteStateModel>, action: ActionMezzo) {
         const obj = {
-            'chiamata': action.mezzoAction.richiesta,
+            'codRichiesta': action.mezzoAction.codRichiesta,
             'idMezzo': action.mezzoAction.mezzo.codice,
             'statoMezzo': action.mezzoAction.action ? action.mezzoAction.action : calcolaActionSuggeritaMezzo(action.mezzoAction.mezzo.stato),
             // 'listaMezzi': action.mezzoAction.listaMezzi ? true : false

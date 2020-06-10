@@ -175,7 +175,7 @@ export class SintesiRichiestaComponent implements OnChanges {
 
     onActionMezzo(mezzoAction: MezzoActionInterface) {
         const _mezzoAction = mezzoAction;
-        _mezzoAction.richiesta = this.richiesta;
+        _mezzoAction.codRichiesta = this.richiesta.codice;
         this.actionMezzo.emit(_mezzoAction);
     }
 
