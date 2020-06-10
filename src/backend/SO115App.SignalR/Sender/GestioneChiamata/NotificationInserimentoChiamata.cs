@@ -93,14 +93,10 @@ namespace SO115App.SignalR.Sender.GestioneChiamata
             }
 
             var CodSedePerMatrix = sintesi.CodSOCompetente.Split('.')[0];
-            await _notificationHubContext.Clients.Group("RM.1000").SendAsync("NotifyDoppioneChiamataInCorso", $"Il CodSede è {CodSedePerMatrix}");
 
             var GetRoomId = _callMatrix.GetChatRoomID(CodSedePerMatrix).Result;
             if (GetRoomId.Error == null)
             {
-                await _notificationHubContext.Clients.Group("RM.1000").SendAsync("NotifyDoppioneChiamataInCorso", $"ChatRoomId {GetRoomId.room_id}");
-                await _notificationHubContext.Clients.Group("RM.1000").SendAsync("NotifyDoppioneChiamataInCorso", $" l'indirizzo BOT è { _config.GetSection("UrlMatrix").Value}/ rooms /{ GetRoomId.room_id.Replace("!", "%21")}/ join ? access_token = MDAxY2xvY2F0aW9uIHZ2Zi10ZXN0LmNsb3VkCjAwMTNpZGVudGlmaWVyIGtleQowMDEwY2lkIGdlbiA9IDEKMDAyNmNpZCB1c2VyX2lkID0gQGJvdDp2dmYtdGVzdC5jbG91ZAowMDE2Y2lkIHR5cGUgPSBhY2Nlc3MKMDAyMWNpZCBub25jZSA9IG5DO0BHOF5tN2FUOkBVXj0KMDAyZnNpZ25hdHVyZSC0LHxje1QcxZu6AytsGKUkL3 - KOfagMBKQq3aCxHXiIQo");
-
                 var GenerateBOT = _callMatrix.PostBotInChatRoom(GetRoomId.room_id).Result;
                 await _notificationHubContext.Clients.Group("RM.1000").SendAsync("NotifyDoppioneChiamataInCorso", $"BOTCHIAMATO con esito {GenerateBOT}");
 
