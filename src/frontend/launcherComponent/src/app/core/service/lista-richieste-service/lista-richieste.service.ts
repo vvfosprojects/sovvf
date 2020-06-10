@@ -19,7 +19,6 @@ export class SintesiRichiesteService {
     constructor(private http: HttpClient) {
     }
 
-    // TODO: implementare
     public getRichieste(filters: FiltersInterface, pagination: PaginationInterface): Observable<any> {
         const filtriTipologie = filters.others.filter((f: VoceFiltro) => f.descrizione !== 'Chiuse' && f.descrizione !== 'Aperte');
         const obj = {

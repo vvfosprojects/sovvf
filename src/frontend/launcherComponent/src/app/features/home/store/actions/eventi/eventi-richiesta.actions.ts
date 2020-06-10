@@ -1,9 +1,9 @@
 import { EventoRichiesta } from '../../../../../shared/model/evento-richiesta.model';
 
 export class SetIdRichiestaEventi {
-    static readonly type = '[EventiRichiesta] Set Id Richiesta';
+    static readonly type = '[EventiRichiesta] Set Codice Richiesta';
 
-    constructor(public idRichiesta: string) {
+    constructor(public codice: string) {
     }
 }
 

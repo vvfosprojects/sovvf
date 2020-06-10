@@ -13,8 +13,8 @@ export class EventiRichiestaService {
     constructor(private http: HttpClient) {
     }
 
-    getEventiRichiesta(idRichiesta: string): Observable<EventoRichiesta[]> {
-        return this.http.get<EventoRichiesta[]>(`${API_URL}?id=${idRichiesta}`);
+    getEventiRichiesta(codice: string): Observable<EventoRichiesta[]> {
+        return this.http.get<EventoRichiesta[]>(`${API_URL}?id=${codice}`);
     }
 
 }
