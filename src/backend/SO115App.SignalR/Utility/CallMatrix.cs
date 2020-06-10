@@ -83,7 +83,7 @@ namespace SO115App.SignalR.Utility
             {
                 return false;
             }
-            catch (Exception e)
+            catch
             {
                 return false;
             }
