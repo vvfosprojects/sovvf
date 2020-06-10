@@ -6,17 +6,10 @@ import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model'
 import { EventiRichiestaComponent } from '../eventi/eventi-richiesta.component';
 import { Select, Store } from '@ngxs/store';
 import { RicercaFilterbarState } from '../store/states/filterbar/ricerca-filterbar.state';
-import {
-    ClearRichiestaFissata,
-    SetEspanso,
-    SetRichiestaFissata
-} from '../store/actions/richieste/richiesta-fissata.actions';
+import { ClearRichiestaFissata, SetEspanso, SetRichiestaFissata } from '../store/actions/richieste/richiesta-fissata.actions';
 import { RichiestaFissataState } from '../store/states/richieste/richiesta-fissata.state';
 import { ClearRichiestaHover, SetRichiestaHover } from '../store/actions/richieste/richiesta-hover.actions';
-import {
-    ClearRichiestaSelezionata,
-    SetRichiestaSelezionata
-} from '../store/actions/richieste/richiesta-selezionata.actions';
+import { ClearRichiestaSelezionata, SetRichiestaSelezionata } from '../store/actions/richieste/richiesta-selezionata.actions';
 import { RichiesteState } from '../store/states/richieste/richieste.state';
 import { RichiestaSelezionataState } from '../store/states/richieste/richiesta-selezionata.state';
 import { RichiestaHoverState } from '../store/states/richieste/richiesta-hover.state';
@@ -273,8 +266,8 @@ export class RichiesteComponent implements OnInit, OnDestroy {
     }
 
     /* Apre il modal per visualizzare gli eventi relativi alla richiesta cliccata */
-    onVisualizzaEventiRichiesta(idRichiesta: string) {
-        this.store.dispatch(new SetIdRichiestaEventi(idRichiesta));
+    onVisualizzaEventiRichiesta(codice: string) {
+        this.store.dispatch(new SetIdRichiestaEventi(codice));
         const modal = this.modalService.open(EventiRichiestaComponent, {
             windowClass: 'xlModal',
             backdropClass: 'light-blue-backdrop',

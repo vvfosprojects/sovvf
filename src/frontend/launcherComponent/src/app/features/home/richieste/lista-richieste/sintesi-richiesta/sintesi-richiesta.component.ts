@@ -8,7 +8,7 @@ import { StatoRichiesta } from 'src/app/shared/enum/stato-richiesta.enum';
 import { MezzoActionInterface } from '../../../../../shared/interface/mezzo-action.interface';
 import { RichiestaActionInterface } from '../../../../../shared/interface/richiesta-action.interface';
 import { HelperSintesiRichiesta } from '../../helper/_helper-sintesi-richiesta';
-import { EliminaPartenzaModalComponent } from '../../../../../shared/modal/elimina-partenza-modal/elimina-partenza-modal.component';
+import { EliminaPartenzaModalComponent } from '../../../../../shared';
 
 @Component({
     selector: 'app-sintesi-richiesta',
@@ -121,8 +121,8 @@ export class SintesiRichiestaComponent implements OnChanges {
         }
     }
 
-    visualizzaEventiRichiesta(idRichiesta: string) {
-        this.eventiRichiesta.emit(idRichiesta);
+    visualizzaEventiRichiesta(codice: string) {
+        this.eventiRichiesta.emit(codice);
     }
 
     invioPartenza(richiesta: SintesiRichiesta) {

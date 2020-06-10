@@ -114,8 +114,8 @@ export class ListaRichiesteComponent implements OnInit {
     }
 
     /* Apre il modal per visualizzare gli eventi relativi alla richiesta cliccata */
-    visualizzaEventiRichiesta(idRichiesta: string) {
-        this.eventiRichiesta.emit(idRichiesta);
+    visualizzaEventiRichiesta(codice: string) {
+        this.eventiRichiesta.emit(codice);
     }
 
     onModificaRichiesta(richiesta: SintesiRichiesta) {

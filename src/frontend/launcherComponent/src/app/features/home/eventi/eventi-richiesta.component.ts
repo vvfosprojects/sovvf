@@ -16,7 +16,6 @@ export class EventiRichiestaComponent implements OnInit, OnDestroy {
 
   @Select(EventiRichiestaState.listaEventiFiltrata) eventiRichiesta$: Observable<EventoRichiesta[]>;
   @Select(EventiRichiestaState.listaTargaMezzo) listaTargaMezzo$: Observable<FiltroTargaMezzo[]>;
-  @Select(EventiRichiestaState.idRichiesta) idRichiesta$: Observable<string>;
   @Select(EventiRichiestaState.codiceRichiesta) codiceRichiesta$: Observable<string>;
   @Select(EventiRichiestaState.targheSelezionate) targheSelezionate$: Observable<string[]>;
   @Select(EventiRichiestaState.visualizzazioneIconeNomeClasseEvento) visualizzazioneIconeNomeClasseEvento$: Observable<boolean>;
