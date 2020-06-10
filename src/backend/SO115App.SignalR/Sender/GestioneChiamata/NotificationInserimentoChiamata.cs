@@ -21,6 +21,7 @@
 using CQRS.Queries;
 using DomainModel.CQRS.Commands.AddIntervento;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.Configuration;
 using SO115App.API.Models.Classi.Boxes;
 using SO115App.API.Models.Classi.Marker;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes;
@@ -47,13 +48,15 @@ namespace SO115App.SignalR.Sender.GestioneChiamata
         private readonly IGetSintesiRichiestaAssistenzaByCodice _getSintesiRichiestaByCodice;
         private readonly GetGerarchiaToSend _getGerarchiaToSend;
         private readonly CallMatrix _callMatrix;
+        private readonly IConfiguration _config;
 
         public NotificationInserimentoChiamata(IHubContext<NotificationHub> notificationHubContext,
                                                IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> boxRichiesteHandler,
                                                IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> sintesiRichiesteAssistenzaMarkerHandler,
                                                IGetSintesiRichiestaAssistenzaByCodice getSintesiRichiestaByCodice,
                                                GetGerarchiaToSend getGerarchiaToSend,
-                                               CallMatrix callMatrix)
+                                               CallMatrix callMatrix,
+                                               IConfiguration config)
         {
             _notificationHubContext = notificationHubContext;
             _boxRichiesteHandler = boxRichiesteHandler;
@@ -61,6 +64,7 @@ namespace SO115App.SignalR.Sender.GestioneChiamata
             _getSintesiRichiestaByCodice = getSintesiRichiestaByCodice;
             _getGerarchiaToSend = getGerarchiaToSend;
             _callMatrix = callMatrix;
+            _config = config;
         }
 
         public async Task SendNotification(AddInterventoCommand intervento)
@@ -95,6 +99,7 @@ namespace SO115App.SignalR.Sender.GestioneChiamata
             if (GetRoomId.Error == null)
             {
                 await _notificationHubContext.Clients.Group("RM.1000").SendAsync("NotifyDoppioneChiamataInCorso", $"ChatRoomId {GetRoomId.room_id}");
+                await _notificationHubContext.Clients.Group("RM.1000").SendAsync("NotifyDoppioneChiamataInCorso", $" l'indirizzo BOT è { _config.GetSection("UrlMatrix").Value}/ rooms /{ GetRoomId.room_id.Replace("!", "%21")}/ join ? access_token = MDAxY2xvY2F0aW9uIHZ2Zi10ZXN0LmNsb3VkCjAwMTNpZGVudGlmaWVyIGtleQowMDEwY2lkIGdlbiA9IDEKMDAyNmNpZCB1c2VyX2lkID0gQGJvdDp2dmYtdGVzdC5jbG91ZAowMDE2Y2lkIHR5cGUgPSBhY2Nlc3MKMDAyMWNpZCBub25jZSA9IG5DO0BHOF5tN2FUOkBVXj0KMDAyZnNpZ25hdHVyZSC0LHxje1QcxZu6AytsGKUkL3 - KOfagMBKQq3aCxHXiIQo");
 
                 var GenerateBOT = _callMatrix.PostBotInChatRoom(GetRoomId.room_id).Result;
                 await _notificationHubContext.Clients.Group("RM.1000").SendAsync("NotifyDoppioneChiamataInCorso", $"BOTCHIAMATO con esito {GenerateBOT}");
