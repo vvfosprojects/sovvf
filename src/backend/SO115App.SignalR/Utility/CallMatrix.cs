@@ -44,6 +44,12 @@ namespace SO115App.SignalR.Utility
                 RispostaCas.Error = e.Message;
                 return RispostaCas;
             }
+            catch (Exception e)
+            {
+                ChatRoom RispostaCas = new ChatRoom();
+                RispostaCas.Error = e.Message;
+                return RispostaCas;
+            }
         }
 
         public async Task<bool> PostBotInChatRoom(string room_id)
@@ -64,9 +70,13 @@ namespace SO115App.SignalR.Utility
             {
                 return esito = false;
             }
+            catch (Exception e)
+            {
+                return esito = false;
+            }
         }
 
-        public async Task PutMessage(string room_id, string message)
+        public async Task<string> PutMessage(string room_id, string message)
         {
             var randomId = RandomString(10);
 
@@ -90,10 +100,16 @@ namespace SO115App.SignalR.Utility
 
                 var response = await _client.PutAsync($"{_config.GetSection("UrlMatrix").Value}/rooms/{room_id}/send/m.room.message/{randomId}?access_token=MDAxY2xvY2F0aW9uIHZ2Zi10ZXN0LmNsb3VkCjAwMTNpZGVudGlmaWVyIGtleQowMDEwY2lkIGdlbiA9IDEKMDAyNmNpZCB1c2VyX2lkID0gQGJvdDp2dmYtdGVzdC5jbG91ZAowMDE2Y2lkIHR5cGUgPSBhY2Nlc3MKMDAyMWNpZCBub25jZSA9IG5DO0BHOF5tN2FUOkBVXj0KMDAyZnNpZ25hdHVyZSC0LHxje1QcxZu6AytsGKUkL3-KOfagMBKQq3aCxHXiIQo", content).ConfigureAwait(false);
                 response.EnsureSuccessStatusCode();
+
+                return "Invio effettuato con successo";
             }
             catch (HttpRequestException e)
             {
-                Console.WriteLine(e.Message);
+                return e.Message;
+            }
+            catch (Exception e)
+            {
+                return e.Message;
             }
         }
 
