@@ -61,31 +61,30 @@ namespace SO115App.SignalR.Utility
             }
         }
 
-        public async Task<bool> PostBotInChatRoom(string room_id)
+        public async Task<string> PostBotInChatRoom(string room_id)
         {
             try
             {
-                StreamReader sr = new StreamReader(room_id);
-                StringContent content = new StringContent(sr.ReadToEnd(), Encoding.UTF8, "application/json");
+                StringContent content = new StringContent("", Encoding.UTF8, "application/json");
 
                 //_client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("test");
                 var response = await _client.PostAsync($"{_config.GetSection("UrlMatrix").Value}/rooms/{room_id}/join?access_token=MDAxY2xvY2F0aW9uIHZ2Zi10ZXN0LmNsb3VkCjAwMTNpZGVudGlmaWVyIGtleQowMDEwY2lkIGdlbiA9IDEKMDAyNmNpZCB1c2VyX2lkID0gQGJvdDp2dmYtdGVzdC5jbG91ZAowMDE2Y2lkIHR5cGUgPSBhY2Nlc3MKMDAyMWNpZCBub25jZSA9IG5DO0BHOF5tN2FUOkBVXj0KMDAyZnNpZ25hdHVyZSC0LHxje1QcxZu6AytsGKUkL3-KOfagMBKQq3aCxHXiIQo", content).ConfigureAwait(false);
                 if (response.IsSuccessStatusCode)
                 {
-                    return true;
+                    return " Bot inviato con successo";
                 }
                 else
                 {
-                    return false;
+                    return response.ReasonPhrase;
                 }
             }
             catch (HttpRequestException e)
             {
-                return false;
+                return e.Message;
             }
-            catch
+            catch (Exception e)
             {
-                return false;
+                return e.Message;
             }
         }
 
