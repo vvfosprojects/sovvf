@@ -43,6 +43,7 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
     idMezzoInServizioSelezionato: string;
     @Select(RicercaFilterbarState.ricerca) ricercaMezziInServizio$: Observable<string>;
     ricercaMezziInServizio: { mezzo: { mezzo: { descrizione: string } } };
+    @Select(RichiesteState.loadingActionMezzo) loadingActionMezzo$: Observable<string>;
 
     @Select(RichiesteState.richieste) richieste$: Observable<SintesiRichiesta[]>;
     richieste: SintesiRichiesta[];

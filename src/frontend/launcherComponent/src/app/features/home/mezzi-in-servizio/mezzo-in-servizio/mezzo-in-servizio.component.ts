@@ -15,6 +15,7 @@ export class MezzoInServizioComponent implements OnInit {
     @Input() mezzoInServizio: MezzoInServizio;
     @Input() idMezzoInServizioHover: string;
     @Input() idMezzoInServizioSelezionato: string;
+    @Input() loading: boolean;
 
     @Output() hoverIn: EventEmitter<any> = new EventEmitter<any>();
     @Output() hoverOut: EventEmitter<any> = new EventEmitter<any>();

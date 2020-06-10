@@ -18,7 +18,8 @@ import {
     VisualizzaListaSquadrePartenza,
     SetNeedRefresh,
     StartLoadingRichieste,
-    StopLoadingRichieste, EliminaPartenzaRichiesta
+    StopLoadingRichieste,
+    EliminaPartenzaRichiesta, StartLoadingActionMezzo, StopLoadingActionMezzo
 } from '../../actions/richieste/richieste.actions';
 import { SintesiRichiesteService } from 'src/app/core/service/lista-richieste-service/lista-richieste.service';
 import { insertItem, patch, updateItem } from '@ngxs/store/operators';
@@ -55,6 +56,7 @@ export interface RichiesteStateModel {
     richiestaById: SintesiRichiesta;
     chiamataInviaPartenza: string;
     loadingRichieste: boolean;
+    loadingActionMezzo: string;
     needRefresh: boolean;
 }
 
@@ -63,6 +65,7 @@ export const RichiesteStateDefaults: RichiesteStateModel = {
     richiestaById: null,
     chiamataInviaPartenza: null,
     loadingRichieste: false,
+    loadingActionMezzo: null,
     needRefresh: false
 };
 
@@ -104,6 +107,11 @@ export class RichiesteState {
     @Selector()
     static loadingRichieste(state: RichiesteStateModel) {
         return state.loadingRichieste;
+    }
+
+    @Selector()
+    static loadingActionMezzo(state: RichiesteStateModel) {
+        return state.loadingActionMezzo;
     }
 
     constructor(private richiesteService: SintesiRichiesteService,
@@ -278,13 +286,12 @@ export class RichiesteState {
 
     @Action(ActionMezzo)
     actionMezzo({ dispatch }: StateContext<RichiesteStateModel>, action: ActionMezzo) {
+        dispatch(new StartLoadingActionMezzo(action.mezzoAction.mezzo.codice));
         const obj = {
             'codRichiesta': action.mezzoAction.codRichiesta,
             'idMezzo': action.mezzoAction.mezzo.codice,
             'statoMezzo': action.mezzoAction.action ? action.mezzoAction.action : calcolaActionSuggeritaMezzo(action.mezzoAction.mezzo.stato),
-            // 'listaMezzi': action.mezzoAction.listaMezzi ? true : false
         };
-        console.log('Obj', obj);
         this.richiesteService.aggiornaStatoMezzo(obj).subscribe(() => {
         });
     }
@@ -345,6 +352,20 @@ export class RichiesteState {
     stopLoadingRichieste({ patchState }: StateContext<RichiesteStateModel>) {
         patchState({
             loadingRichieste: false
+        });
+    }
+
+    @Action(StartLoadingActionMezzo)
+    startLoadingActionMezzo({ patchState }: StateContext<RichiesteStateModel>, action: StartLoadingActionMezzo) {
+        patchState({
+            loadingActionMezzo: action.idMezzo
+        });
+    }
+
+    @Action(StopLoadingActionMezzo)
+    stopLoadingActionMezzo({ patchState }: StateContext<RichiesteStateModel>) {
+        patchState({
+            loadingActionMezzo: null
         });
     }
 

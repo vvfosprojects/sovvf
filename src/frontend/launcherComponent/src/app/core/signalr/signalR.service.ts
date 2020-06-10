@@ -4,7 +4,7 @@ import { Subject } from 'rxjs';
 import { Store } from '@ngxs/store';
 import { SetConnectionId, SignalRHubConnesso, SignalRHubDisconnesso } from './store/signalR.actions';
 import { ShowToastr } from '../../shared/store/actions/toastr/toastr.actions';
-import { UpdateRichiesta } from '../../features/home/store/actions/richieste/richieste.actions';
+import { StopLoadingActionMezzo, UpdateRichiesta } from '../../features/home/store/actions/richieste/richieste.actions';
 import { SignalRNotification } from './model/signalr-notification.model';
 import { SetTimeSync } from '../../shared/store/actions/app/app.actions';
 import { SetBoxPersonale } from '../../features/home/store/actions/boxes/box-personale.actions';
@@ -148,6 +148,7 @@ export class SignalRService {
         this.hubNotification.on('NotifyGetListaMezziInServizio', (data: MezzoInServizio[]) => {
             console.log('NotifyGetListaMezziInServizio', data);
             this.store.dispatch(new SetMezziInServizio(data));
+            this.store.dispatch(new StopLoadingActionMezzo());
         });
 
         /**

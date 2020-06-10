@@ -3,8 +3,10 @@ import { ListaSquadre } from '../../interface/lista-squadre';
 import { Partenza } from '../../model/partenza.model';
 import { MezzoActionInterface } from '../../interface/mezzo-action.interface';
 import { StatoRichiesta } from '../../enum/stato-richiesta.enum';
-import { Store } from '@ngxs/store';
+import { Select, Store } from '@ngxs/store';
 import { VisualizzaListaSquadrePartenza } from '../../../features/home/store/actions/richieste/richieste.actions';
+import { RichiesteState } from '../../../features/home/store/states/richieste/richieste.state';
+import { Observable } from 'rxjs';
 
 @Component({
     selector: 'app-lista-partenze',
@@ -19,6 +21,8 @@ export class ListaPartenzeComponent {
 
     @Output() actionMezzo: EventEmitter<MezzoActionInterface> = new EventEmitter<MezzoActionInterface>();
     @Output() eliminaPartenza: EventEmitter<string> = new EventEmitter();
+
+    @Select(RichiesteState.loadingActionMezzo) loadingActionMezzo$: Observable<string>;
 
     constructor(private store: Store) {
     }

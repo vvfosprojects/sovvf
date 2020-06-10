@@ -2,6 +2,9 @@
      [ngClass]="cardClasses(mezzoInServizio.mezzo.mezzo.stato, mezzoInServizio.mezzo.mezzo.codice)"
      (mouseenter)="hoverIn.emit(mezzoInServizio.mezzo.mezzo.codice)" (mouseleave)="hoverOut.emit()"
      (click)="selezionato.emit(mezzoInServizio.mezzo.mezzo.codice)">
+    <ng-template [ngIf]="loading">
+        <app-partial-loader></app-partial-loader>
+    </ng-template>
     <!-- Prima riga -->
     <div class="col-12" style="height: 30px">
         <div class="row">

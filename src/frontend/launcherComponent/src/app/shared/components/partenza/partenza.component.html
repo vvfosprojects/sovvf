@@ -1,6 +1,5 @@
 <div class="row">
     <div class="col-8 my-1 pr-1">
-        <!-- <span class="ml-1 mr-2 mb-0 d-inline-block font-weight-bold h6">#{{partenza.id}}</span> -->
         <app-mezzo [mezzo]="partenza.mezzo" [mostraIndicatori]="true" [mostraNotifiche]="true"
                    [actionsAttive]="inGestione && statoRichiesta !== statoRichiestaEnum.Chiusa"
                    (actionMezzo)="onActionMezzo($event)"></app-mezzo>
@@ -30,9 +29,3 @@
             </div>
         </div>
     </div>
-    <!--<div class="col-2">
-        <button class="btn btn-sm btn-block btn-danger mt-1">
-            <i class="fa fa-trash"></i>
-        </button>
-    </div>-->
-</div>
