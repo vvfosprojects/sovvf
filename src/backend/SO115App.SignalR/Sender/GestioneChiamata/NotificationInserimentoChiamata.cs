@@ -98,16 +98,7 @@ namespace SO115App.SignalR.Sender.GestioneChiamata
             if (GetRoomId.Error == null)
             {
                 var GenerateBOT = _callMatrix.PostBotInChatRoom(GetRoomId.room_id).Result;
-                await _notificationHubContext.Clients.Group("RM.1000").SendAsync("NotifyDoppioneChiamataInCorso", $"BOTCHIAMATO con esito {GenerateBOT}");
-
                 var call = _callMatrix.PutMessage(GetRoomId.room_id, $"E' stato richiesto un intervento in via {sintesi.Localita.Indirizzo}. Codice Intervento: {sintesi.Codice}").Result;
-                if (call.Equals("Invio effettuato con successo"))
-                    await _notificationHubContext.Clients.Group("RM.1000").SendAsync("NotifyDoppioneChiamataInCorso", $"Messaggio inviato");
-                else
-                    await _notificationHubContext.Clients.Group("RM.1000").SendAsync("NotifyDoppioneChiamataInCorso", call);
             }
-            else
-                await _notificationHubContext.Clients.Group("RM.1000").SendAsync("NotifyDoppioneChiamataInCorso", $"Errore: {GetRoomId.Error}");
         }
     }
-}
