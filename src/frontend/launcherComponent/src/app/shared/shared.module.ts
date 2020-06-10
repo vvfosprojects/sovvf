@@ -7,6 +7,7 @@ import { DefaultTreeviewI18n } from './store/states/sedi-treeview/default-treevi
 import { ReactiveFormsModule } from '@angular/forms';
 import * as Shared from './index';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { ListaPartenzeComponent } from './components/lista-partenze/lista-partenze.component';
 
 const COMPONENTS = [
     Shared.DebounceClickDirective,
@@ -24,12 +25,12 @@ const COMPONENTS = [
     Shared.MezzoActionsComponent,
     Shared.SintesiRichiestaActionsComponent,
     Shared.ActionRichiestaModalComponent,
-    Shared.ListaPartenzeComponent,
     Shared.CheckboxComponent,
     Shared.PartialLoaderComponent,
     Shared.BottoneNuovaVersioneComponent,
     Shared.EliminaPartenzaModalComponent,
-    Shared.RichiestaDuplicataModalComponent
+    Shared.RichiestaDuplicataModalComponent,
+    ListaPartenzeComponent
 ];
 
 @NgModule({

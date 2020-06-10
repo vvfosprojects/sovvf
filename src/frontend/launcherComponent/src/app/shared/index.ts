@@ -14,7 +14,6 @@ export * from './components/partenza/partenza.component';
 export * from './components/mezzo/mezzo-actions/mezzo-actions.component';
 export * from './components/sintesi-richiesta-actions/sintesi-richiesta-actions.component';
 export * from './components/checkbox/checkbox.component';
-export * from './components/lista-partenze/lista-partenze.component';
 export * from './components/partial-loader/partial-loader.component';
 export * from './components/bottone-nuova-versione/bottone-nuova-versione.component';
 export * from './modal/elimina-partenza-modal/elimina-partenza-modal.component';
