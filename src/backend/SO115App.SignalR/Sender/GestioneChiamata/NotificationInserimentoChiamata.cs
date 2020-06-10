@@ -102,3 +102,4 @@ namespace SO115App.SignalR.Sender.GestioneChiamata
             }
         }
     }
+}
