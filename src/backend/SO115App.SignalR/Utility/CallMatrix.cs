@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Threading.Tasks;
@@ -31,12 +32,20 @@ namespace SO115App.SignalR.Utility
             {
                 //_client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("test");
                 var response = await _client.GetAsync($"{_config.GetSection("UrlMatrix").Value}/directory/room/%23comando.{codSede.ToLower()}:vvf-test.cloud").ConfigureAwait(false);
-                response.EnsureSuccessStatusCode();
-                using HttpContent content = response.Content;
-                var data = await content.ReadAsStringAsync().ConfigureAwait(false);
-                var RispostaCas = JsonConvert.DeserializeObject<ChatRoom>(data);
+                if (response.IsSuccessStatusCode)
+                {
+                    using HttpContent content = response.Content;
+                    var data = await content.ReadAsStringAsync().ConfigureAwait(false);
+                    var RispostaCas = JsonConvert.DeserializeObject<ChatRoom>(data);
 
-                return RispostaCas;
+                    return RispostaCas;
+                }
+                else
+                {
+                    ChatRoom RispostaCas = new ChatRoom();
+                    RispostaCas.Error = response.ReasonPhrase;
+                    return RispostaCas;
+                }
             }
             catch (HttpRequestException e)
             {
@@ -54,7 +63,6 @@ namespace SO115App.SignalR.Utility
 
         public async Task<bool> PostBotInChatRoom(string room_id)
         {
-            bool esito = true;
             try
             {
                 StreamReader sr = new StreamReader(room_id);
@@ -62,17 +70,22 @@ namespace SO115App.SignalR.Utility
 
                 //_client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("test");
                 var response = await _client.PostAsync($"{_config.GetSection("UrlMatrix").Value}/rooms/{room_id}/join?access_token=MDAxY2xvY2F0aW9uIHZ2Zi10ZXN0LmNsb3VkCjAwMTNpZGVudGlmaWVyIGtleQowMDEwY2lkIGdlbiA9IDEKMDAyNmNpZCB1c2VyX2lkID0gQGJvdDp2dmYtdGVzdC5jbG91ZAowMDE2Y2lkIHR5cGUgPSBhY2Nlc3MKMDAyMWNpZCBub25jZSA9IG5DO0BHOF5tN2FUOkBVXj0KMDAyZnNpZ25hdHVyZSC0LHxje1QcxZu6AytsGKUkL3-KOfagMBKQq3aCxHXiIQo", content).ConfigureAwait(false);
-                response.EnsureSuccessStatusCode();
-
-                return esito;
+                if (response.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
             catch (HttpRequestException e)
             {
-                return esito = false;
+                return false;
             }
             catch (Exception e)
             {
-                return esito = false;
+                return false;
             }
         }
 
@@ -99,9 +112,14 @@ namespace SO115App.SignalR.Utility
                 StringContent content = new StringContent(sr.ReadToEnd(), Encoding.UTF8, "application/json");
 
                 var response = await _client.PutAsync($"{_config.GetSection("UrlMatrix").Value}/rooms/{room_id}/send/m.room.message/{randomId}?access_token=MDAxY2xvY2F0aW9uIHZ2Zi10ZXN0LmNsb3VkCjAwMTNpZGVudGlmaWVyIGtleQowMDEwY2lkIGdlbiA9IDEKMDAyNmNpZCB1c2VyX2lkID0gQGJvdDp2dmYtdGVzdC5jbG91ZAowMDE2Y2lkIHR5cGUgPSBhY2Nlc3MKMDAyMWNpZCBub25jZSA9IG5DO0BHOF5tN2FUOkBVXj0KMDAyZnNpZ25hdHVyZSC0LHxje1QcxZu6AytsGKUkL3-KOfagMBKQq3aCxHXiIQo", content).ConfigureAwait(false);
-                response.EnsureSuccessStatusCode();
-
-                return "Invio effettuato con successo";
+                if (response.IsSuccessStatusCode)
+                {
+                    return "Invio effettuato con successo";
+                }
+                else
+                {
+                    return response.ReasonPhrase;
+                }
             }
             catch (HttpRequestException e)
             {
