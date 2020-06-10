@@ -92,7 +92,7 @@ namespace SO115App.SignalR.Sender.GestioneChiamata
             await _notificationHubContext.Clients.Group("RM.1000").SendAsync("NotifyDoppioneChiamataInCorso", $"Il CodSede è {CodSedePerMatrix}");
 
             var GetRoomId = _callMatrix.GetChatRoomID(CodSedePerMatrix).Result;
-            if (GetRoomId.Error.Trim().Length == 0)
+            if (GetRoomId.Error != null)
             {
                 await _notificationHubContext.Clients.Group("RM.1000").SendAsync("NotifyDoppioneChiamataInCorso", $"ChatRoomId {GetRoomId.room_id}");
 
