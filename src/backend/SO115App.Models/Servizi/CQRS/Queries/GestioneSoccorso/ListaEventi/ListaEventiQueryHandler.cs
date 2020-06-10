@@ -19,6 +19,7 @@
 //-----------------------------------------------------------------------
 using CQRS.Queries;
 using Serilog;
+using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Soccorso.Eventi;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
@@ -124,6 +125,21 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
             if (evento is ComposizionePartenze)
             {
                 targa = ((ComposizionePartenze)evento).Partenza.Mezzo.Descrizione;
+            }
+
+            if (evento is ArrivoSulPosto)
+            {
+                targa = ((ArrivoSulPosto)evento).CodiceMezzo;
+            }
+
+            if (evento is PartenzaInRientro)
+            {
+                targa = ((PartenzaInRientro)evento).CodiceMezzo;
+            }
+
+            if (evento is PartenzaRientrata)
+            {
+                targa = ((PartenzaRientrata)evento).CodiceMezzo;
             }
 
             if (evento is RevocaPerAltraMotivazione)
