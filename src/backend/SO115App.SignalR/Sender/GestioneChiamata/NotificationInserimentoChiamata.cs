@@ -29,6 +29,7 @@ using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichieste
 using SO115App.API.Models.Servizi.CQRS.Queries.Marker.SintesiRichiesteAssistenzaMarker;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
+using SO115App.Models.Classi.Matrix;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneChiamata;
 using SO115App.SignalR.Utility;
@@ -45,17 +46,21 @@ namespace SO115App.SignalR.Sender.GestioneChiamata
         private readonly IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> _sintesiRichiesteAssistenzaMarkerHandler;
         private readonly IGetSintesiRichiestaAssistenzaByCodice _getSintesiRichiestaByCodice;
         private readonly GetGerarchiaToSend _getGerarchiaToSend;
+        private readonly CallMatrix _callMatrix;
 
         public NotificationInserimentoChiamata(IHubContext<NotificationHub> notificationHubContext,
                                                IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> boxRichiesteHandler,
                                                IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> sintesiRichiesteAssistenzaMarkerHandler,
-                                               IGetSintesiRichiestaAssistenzaByCodice getSintesiRichiestaByCodice, GetGerarchiaToSend getGerarchiaToSend)
+                                               IGetSintesiRichiestaAssistenzaByCodice getSintesiRichiestaByCodice,
+                                               GetGerarchiaToSend getGerarchiaToSend,
+                                               CallMatrix callMatrix)
         {
             _notificationHubContext = notificationHubContext;
             _boxRichiesteHandler = boxRichiesteHandler;
             _sintesiRichiesteAssistenzaMarkerHandler = sintesiRichiesteAssistenzaMarkerHandler;
             _getSintesiRichiestaByCodice = getSintesiRichiestaByCodice;
             _getGerarchiaToSend = getGerarchiaToSend;
+            _callMatrix = callMatrix;
         }
 
         public async Task SendNotification(AddInterventoCommand intervento)
@@ -82,6 +87,11 @@ namespace SO115App.SignalR.Sender.GestioneChiamata
                 await _notificationHubContext.Clients.Group(sede).SendAsync("SaveAndNotifySuccessChiamata", sintesi);
                 await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetRichiestaMarker", listaSintesiMarker.LastOrDefault(marker => marker.Codice == intervento.Chiamata.Codice));
             }
+
+            var CodSedePerMatrix = sintesi.CodSOCompetente.Split('.')[0];
+            var GetRoomId = _callMatrix.GetChatRoomID(CodSedePerMatrix).Result;
+            var GenerateBOT = _callMatrix.PostBotInChatRoom(GetRoomId.room_id);
+            await _callMatrix.PutMessage(GetRoomId.room_id, $"E' stato richiesto un intervento in via {sintesi.Localita.Indirizzo}. Codice Intervento: {sintesi.Codice}");
         }
     }
 }
