@@ -43,7 +43,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 
         public void Handle(AggiornaStatoMezzoCommand command)
         {
-            var richiesta = _getRichiestaById.GetById(command.Chiamata.Id);
+            var richiesta = _getRichiestaById.GetByCodice(command.CodRichiesta);
 
             if (command.StatoMezzo == Costanti.MezzoSulPosto)
             {

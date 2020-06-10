@@ -26,6 +26,8 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
     {
         public string IdUtente { get; set; }
 
+        public string CodRichiesta { get; set; }
+
         public string IdMezzo { get; set; }
         public string StatoMezzo { get; set; }
 
