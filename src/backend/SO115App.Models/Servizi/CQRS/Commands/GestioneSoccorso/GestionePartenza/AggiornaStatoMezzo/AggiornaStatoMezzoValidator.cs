@@ -29,7 +29,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
         public IEnumerable<ValidationResult> Validate(AggiornaStatoMezzoCommand command)
         {
             // Controlli sul richiedente
-            if (command.Chiamata.Id.Length == 0)
+            if (command.CodRichiesta.Trim().Length == 0)
             {
                 yield return new ValidationResult(Costanti.IdRichiestaNonValida);
             }

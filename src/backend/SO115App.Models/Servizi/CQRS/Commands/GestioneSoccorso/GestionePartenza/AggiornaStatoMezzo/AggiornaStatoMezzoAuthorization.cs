@@ -48,7 +48,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 
         public IEnumerable<AuthorizationResult> Authorize(AggiornaStatoMezzoCommand command)
         {
-            var richiesta = _getRichiestaById.GetById(command.Chiamata.Id);
+            var richiesta = _getRichiestaById.GetByCodice(command.CodRichiesta);
             var username = _currentUser.Identity.Name;
             var user = _findUserByUsername.FindUserByUs(username);
 

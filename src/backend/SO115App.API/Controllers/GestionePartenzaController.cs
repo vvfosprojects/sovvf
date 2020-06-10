@@ -40,6 +40,7 @@ namespace SO115App.API.Controllers
                 IdMezzo = intervento.IdMezzo,
                 StatoMezzo = intervento.StatoMezzo,
                 CodiceSede = codiceSede,
+                CodRichiesta = intervento.CodRichiesta
             };
 
             try

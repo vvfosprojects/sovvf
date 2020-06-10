@@ -119,7 +119,7 @@ namespace SO115App.SignalR.Sender.GestionePartenza
 
                 var listaSintesiMarker = _sintesiRichiesteAssistenzaMarkerhandler.Handle(sintesiRichiesteAssistenzaMarkerQuery).SintesiRichiestaMarker;
 
-                intervento.Chiamata = listaSintesi.LastOrDefault(richiesta => richiesta.Id == intervento.Chiamata.Id);
+                intervento.Chiamata = listaSintesi.LastOrDefault(richiesta => richiesta.Codice == intervento.CodRichiesta);
 
                 await _notificationHubContext.Clients.Group(sede).SendAsync("ModifyAndNotifySuccess", intervento);
                 await _notificationHubContext.Clients.Group(sede).SendAsync("ChangeStateSuccess", notificaChangeState);

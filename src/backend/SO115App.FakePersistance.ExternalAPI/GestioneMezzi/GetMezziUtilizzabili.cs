@@ -155,10 +155,6 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
             {
                 coordinate = new Coordinate(coordinateMezzo.Localizzazione.Lat, coordinateMezzo.Localizzazione.Lon);
             }
-            else
-            {
-                coordinate = new Coordinate(sede.Coordinate.Latitudine, sede.Coordinate.Longitudine);
-            }
 
             Mezzo mezzo = new Mezzo(anagraficaMezzo.GenereMezzo.CodiceTipo + "." + anagraficaMezzo.Targa,
                 anagraficaMezzo.Targa,
