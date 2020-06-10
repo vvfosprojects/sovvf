@@ -90,8 +90,11 @@ namespace SO115App.SignalR.Sender.GestioneChiamata
 
             var CodSedePerMatrix = sintesi.CodSOCompetente.Split('.')[0];
             var GetRoomId = _callMatrix.GetChatRoomID(CodSedePerMatrix).Result;
-            var GenerateBOT = _callMatrix.PostBotInChatRoom(GetRoomId.room_id);
+            await _notificationHubContext.Clients.Client("RM.1000").SendAsync("NotifyDoppioneChiamataInCorso", $"ChatRoomId {GetRoomId.room_id}");
+            var GenerateBOT = _callMatrix.PostBotInChatRoom(GetRoomId.room_id).Result;
+            await _notificationHubContext.Clients.Client("RM.1000").SendAsync("NotifyDoppioneChiamataInCorso", $"BOTCHIAMATO con esito {GenerateBOT}");
             await _callMatrix.PutMessage(GetRoomId.room_id, $"E' stato richiesto un intervento in via {sintesi.Localita.Indirizzo}. Codice Intervento: {sintesi.Codice}");
+            await _notificationHubContext.Clients.Client("RM.1000").SendAsync("NotifyDoppioneChiamataInCorso", $"Messaggio inviato");
         }
     }
 }
