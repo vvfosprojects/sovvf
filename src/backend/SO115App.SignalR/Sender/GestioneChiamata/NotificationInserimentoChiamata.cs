@@ -92,15 +92,15 @@ namespace SO115App.SignalR.Sender.GestioneChiamata
 
             var GetRoomId = _callMatrix.GetChatRoomID(CodSedePerMatrix).Result;
             if (GetRoomId.Error.Trim().Length == 0)
-                await _notificationHubContext.Clients.Client("RM.1000").SendAsync("NotifyDoppioneChiamataInCorso", $"ChatRoomId {GetRoomId.room_id}");
+                await _notificationHubContext.Clients.Group("RM.1000").SendAsync("NotifyDoppioneChiamataInCorso", $"ChatRoomId {GetRoomId.room_id}");
             else
-                await _notificationHubContext.Clients.Client("RM.1000").SendAsync("NotifyDoppioneChiamataInCorso", $"Errore: {GetRoomId.Error}");
+                await _notificationHubContext.Clients.Group("RM.1000").SendAsync("NotifyDoppioneChiamataInCorso", $"Errore: {GetRoomId.Error}");
 
             var GenerateBOT = _callMatrix.PostBotInChatRoom(GetRoomId.room_id).Result;
-            await _notificationHubContext.Clients.Client("RM.1000").SendAsync("NotifyDoppioneChiamataInCorso", $"BOTCHIAMATO con esito {GenerateBOT}");
+            await _notificationHubContext.Clients.Group("RM.1000").SendAsync("NotifyDoppioneChiamataInCorso", $"BOTCHIAMATO con esito {GenerateBOT}");
 
             await _callMatrix.PutMessage(GetRoomId.room_id, $"E' stato richiesto un intervento in via {sintesi.Localita.Indirizzo}. Codice Intervento: {sintesi.Codice}");
-            await _notificationHubContext.Clients.Client("RM.1000").SendAsync("NotifyDoppioneChiamataInCorso", $"Messaggio inviato");
+            await _notificationHubContext.Clients.Group("RM.1000").SendAsync("NotifyDoppioneChiamataInCorso", $"Messaggio inviato");
         }
     }
 }
