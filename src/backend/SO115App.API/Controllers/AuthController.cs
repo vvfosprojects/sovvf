@@ -21,6 +21,7 @@ using System;
 using System.Threading.Tasks;
 using CQRS.Queries;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneUtente.CasLogin;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneUtente.LogIn;
@@ -35,12 +36,15 @@ namespace SO115App.API.Controllers
     {
         private readonly IQueryHandler<LogInQuery, LogInResult> _handler;
         private readonly IQueryHandler<CasLoginQuery, CasLoginResult> _cashandler;
+        private readonly IConfiguration _config;
 
         public AuthController(IQueryHandler<LogInQuery, LogInResult> handler,
-                              IQueryHandler<CasLoginQuery, CasLoginResult> Cashandler)
+                              IQueryHandler<CasLoginQuery, CasLoginResult> Cashandler,
+                              IConfiguration config)
         {
             _handler = handler;
             _cashandler = Cashandler;
+            _config = config;
         }
 
         [HttpPost("Login")]
@@ -54,14 +58,23 @@ namespace SO115App.API.Controllers
 
             try
             {
-                var utente = (Utente)this._handler.Handle(query).User;
+                var CasAbilitato = _config.GetSection("CasTest").Value;
 
-                if (utente == null)
+                if (CasAbilitato.Equals("true"))
+                {
+                    var utente = (Utente)this._handler.Handle(query).User;
+
+                    if (utente == null)
+                    {
+                        return StatusCode(403, Costanti.UtenteNonAutorizzato);
+                    }
+
+                    return Ok(utente);
+                }
+                else
                 {
                     return StatusCode(403, Costanti.UtenteNonAutorizzato);
                 }
-
-                return Ok(utente);
             }
             catch (Exception ex)
             {
