@@ -46,14 +46,14 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi.Partenze
         {
         }
 
-        [JsonConstructor]
-        public UscitaPartenza(
-            string codiceMezzo,
-            string codice,
-            DateTime istante,
-            string codiceFonte) : base(istante, codiceFonte, codice, codiceMezzo, "UscitaPartenza")
-        {
-        }
+        //[JsonConstructor]
+        //public UscitaPartenza(
+        //    string codiceMezzo,
+        //    string codice,
+        //    DateTime istante,
+        //    string codiceFonte) : base(istante, codiceFonte, codice, codiceMezzo, "UscitaPartenza")
+        //{
+        //}
 
         /// <summary>
         ///   Metodo di visita

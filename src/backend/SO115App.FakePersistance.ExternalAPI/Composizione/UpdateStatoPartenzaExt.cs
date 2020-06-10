@@ -17,6 +17,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AggiornaStatoMezzo;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi;
@@ -32,15 +33,17 @@ namespace SO115App.ExternalAPI.Fake.Composizione
     {
         private readonly ISetStatoOperativoMezzo _setStatoOperativoMezzo;
         private readonly ISetStatoSquadra _setStatoSquadra;
+        private readonly IUpDateRichiestaAssistenza _upDateRichiesta;
 
         /// <summary>
         ///   Costruttore della classe
         /// </summary>
         public UpdateStatoPartenzaExt(ISetStatoOperativoMezzo setStatoOperativoMezzo,
-            ISetStatoSquadra setStatoSquadra)
+            ISetStatoSquadra setStatoSquadra, IUpDateRichiestaAssistenza upDateRichiesta)
         {
             _setStatoOperativoMezzo = setStatoOperativoMezzo;
             _setStatoSquadra = setStatoSquadra;
+            _upDateRichiesta = upDateRichiesta;
         }
 
         /// <summary>
@@ -51,6 +54,8 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
         public void Update(AggiornaStatoMezzoCommand command)
         {
+            _upDateRichiesta.UpDate(command.Richiesta);
+
             _setStatoOperativoMezzo.Set(command.CodiceSede, command.IdMezzo, command.StatoMezzo, command.Richiesta.Codice);
 
             foreach (var partenza in command.Richiesta.Partenze)

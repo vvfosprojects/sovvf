@@ -47,14 +47,14 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi.Partenze
         {
         }
 
-        [JsonConstructor]
-        public ArrivoSulPosto(
-            string codiceMezzo,
-            string codice,
-            DateTime istante,
-            string codiceFonte) : base(istante, codiceFonte, codice, codiceMezzo, "ArrivoSulPosto")
-        {
-        }
+        //[JsonConstructor]
+        //public ArrivoSulPosto(
+        //    string codiceMezzo,
+        //    string codice,
+        //    DateTime istante,
+        //    string codiceFonte) : base(istante, codiceFonte, codice, codiceMezzo, "ArrivoSulPosto")
+        //{
+        //}
 
         /// <summary>
         ///   Metodo di visita

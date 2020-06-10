@@ -30,16 +30,16 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi.Partenze
     /// </summary>
     public abstract class AbstractPartenza : Evento, IPartenza
     {
-        [JsonConstructor]
-        public AbstractPartenza(
-            DateTime istante,
-            string codiceFonte,
-            string codice,
-            string codiceMezzo,
-            string TipoEvento) : base(istante, codiceFonte, codice, TipoEvento)
-        {
-            this.CodiceMezzo = codiceMezzo;
-        }
+        //[JsonConstructor]
+        //public AbstractPartenza(
+        //    DateTime istante,
+        //    string codiceFonte,
+        //    string codice,
+        //    string codiceMezzo,
+        //    string TipoEvento) : base(istante, codiceFonte, codice, TipoEvento)
+        //{
+        //    this.CodiceMezzo = codiceMezzo;
+        //}
 
         /// <summary>
         ///   Costruttore della classe
