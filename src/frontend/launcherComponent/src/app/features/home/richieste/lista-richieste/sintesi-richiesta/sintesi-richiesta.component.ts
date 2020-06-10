@@ -150,6 +150,21 @@ export class SintesiRichiestaComponent implements OnChanges {
         this.gestioneRichiesta.emit(this.richiesta);
     }
 
+    getPresaInCaricoTooltip(utentiPresaInCaricoValue: any) {
+        return {
+            nominativo: utentiPresaInCaricoValue.nominativo.length <= 15 ? '' : utentiPresaInCaricoValue.nominativo,
+            dataInizioAttivita: utentiPresaInCaricoValue.dataInizioAttivita
+        };
+    }
+
+    getInLavorazioneTooltip(utentiInLavorazioneValue: any) {
+        return utentiInLavorazioneValue.nominativo;
+    }
+
+    _inLavorazioneTooltipDisabled(utentiInLavorazioneValue: any) {
+        return utentiInLavorazioneValue.nominativo.length <= 15;
+    }
+
     onListaEnti() {
         const modal = this.modalService.open(ListaEntiComponent, { windowClass: 'enti', backdropClass: 'light-blue-backdrop', centered: true });
         modal.componentInstance.listaEntiIntervenuti = this.richiesta.listaEntiIntervenuti ? this.richiesta.listaEntiIntervenuti : null;
