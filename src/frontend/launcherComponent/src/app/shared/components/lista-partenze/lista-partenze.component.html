@@ -2,13 +2,13 @@
     <h6 class="mt-1">Non ci sono mezzi su questa richiesta di intervento</h6>
 </div>
 <ul *ngIf="partenze" class="list-unstyled">
-  <div *ngFor="let p of partenze">
-    <li *ngIf="!p.sganciata && !p.partenzaAnnullata" class="border-bottom">
-    <app-partial-loader
-            *ngIf="(loadingActionMezzo$ | async) && (loadingActionMezzo$ | async) === p.mezzo.codice"></app-partial-loader>
-        <app-partenza [partenza]="p" [inGestione]="inGestione" [statoRichiesta]="statoRichiesta"
-                      (listaSquadre)="onListaSquadrePartenza($event)" (actionMezzo)="onActionMezzo($event)"
-                      (eliminaPartenza)="eliminaPartenza.emit($event)"></app-partenza>
-    </li>
-  </div>
+    <div *ngFor="let p of partenze">
+        <li *ngIf="!p.sganciata && !p.partenzaAnnullata" class="border-bottom">
+            <app-partial-loader
+                    *ngIf="(loadingActionMezzo$ | async) && (loadingActionMezzo$ | async) === p.mezzo.codice"></app-partial-loader>
+            <app-partenza [partenza]="p" [inGestione]="inGestione" [statoRichiesta]="statoRichiesta"
+                          (listaSquadre)="onListaSquadrePartenza($event)" (actionMezzo)="onActionMezzo($event)"
+                          (eliminaPartenza)="eliminaPartenza.emit($event)"></app-partenza>
+        </li>
+    </div>
 </ul>
