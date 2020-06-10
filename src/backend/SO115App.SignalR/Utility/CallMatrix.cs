@@ -65,10 +65,10 @@ namespace SO115App.SignalR.Utility
         {
             try
             {
-                StringContent content = new StringContent("", Encoding.UTF8, "application/json");
+                StringContent content = new StringContent(room_id.Replace("!", "%21"));
 
                 //_client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("test");
-                var response = await _client.PostAsync($"{_config.GetSection("UrlMatrix").Value}/rooms/{room_id}/join?access_token=MDAxY2xvY2F0aW9uIHZ2Zi10ZXN0LmNsb3VkCjAwMTNpZGVudGlmaWVyIGtleQowMDEwY2lkIGdlbiA9IDEKMDAyNmNpZCB1c2VyX2lkID0gQGJvdDp2dmYtdGVzdC5jbG91ZAowMDE2Y2lkIHR5cGUgPSBhY2Nlc3MKMDAyMWNpZCBub25jZSA9IG5DO0BHOF5tN2FUOkBVXj0KMDAyZnNpZ25hdHVyZSC0LHxje1QcxZu6AytsGKUkL3-KOfagMBKQq3aCxHXiIQo", content).ConfigureAwait(false);
+                var response = await _client.PostAsync($"{_config.GetSection("UrlMatrix").Value}/rooms/{room_id.Replace("!", "%21")}/join?access_token=MDAxY2xvY2F0aW9uIHZ2Zi10ZXN0LmNsb3VkCjAwMTNpZGVudGlmaWVyIGtleQowMDEwY2lkIGdlbiA9IDEKMDAyNmNpZCB1c2VyX2lkID0gQGJvdDp2dmYtdGVzdC5jbG91ZAowMDE2Y2lkIHR5cGUgPSBhY2Nlc3MKMDAyMWNpZCBub25jZSA9IG5DO0BHOF5tN2FUOkBVXj0KMDAyZnNpZ25hdHVyZSC0LHxje1QcxZu6AytsGKUkL3-KOfagMBKQq3aCxHXiIQo", content).ConfigureAwait(false);
                 if (response.IsSuccessStatusCode)
                 {
                     return " Bot inviato con successo";
