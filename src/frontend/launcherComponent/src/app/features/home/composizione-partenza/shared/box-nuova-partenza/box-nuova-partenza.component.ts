@@ -7,7 +7,8 @@ import { Store } from '@ngxs/store';
 import { ShowToastr } from 'src/app/shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from 'src/app/shared/enum/toastr';
 import {
-    checkSquadraOccupata, iconaStatiClass,
+    checkSquadraOccupata,
+    iconaStatiClass,
     mezzoComposizioneBusy
 } from '../functions/composizione-functions';
 import { SquadraComposizione } from '../../interface/squadra-composizione-interface';
@@ -51,9 +52,9 @@ export class BoxNuovaPartenzaComponent {
             }
         } else if (mezzoComposizioneBusy(this.partenza.mezzoComposizione.mezzo.stato)) {
             // tslint:disable-next-line:max-line-length
-            this.store.dispatch(new ShowToastr(ToastrType.Warning, 'Impossibile assegnare il mezzo', 'Il mezzo è ' + this.partenza.mezzoComposizione.mezzo.stato + ' ed è impegnato in un\'altra richiesta', null, null, true));
+            this.store.dispatch(new ShowToastr(ToastrType.Warning, 'Impossibile assegnare il Preaccopiato', 'Il mezzo è ' + this.partenza.mezzoComposizione.mezzo.stato + ' ed è impegnato in un\'altra richiesta', null, null, true));
         } else if (this._checkSquadraOccupata(this.partenza.squadraComposizione)) {
-            this.store.dispatch(new ShowToastr(ToastrType.Warning, 'Impossibile assegnare la squadra', 'La squadra è impegnata in un\'altra richiesta', null, null, true));
+            this.store.dispatch(new ShowToastr(ToastrType.Warning, 'Impossibile assegnare il Preaccopiato', 'Una o più squadre del Preaccopiato risultano impegnate in un\'altra richiesta', null, null, true));
         }
     }
 

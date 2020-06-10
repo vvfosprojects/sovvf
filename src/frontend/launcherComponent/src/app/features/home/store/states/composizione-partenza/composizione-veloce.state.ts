@@ -155,7 +155,7 @@ export class ComposizioneVeloceState {
                 })
             );
         } else {
-            dispatch(new ShowToastr(ToastrType.Warning, 'Impossibile selezionare il Pre-Accoppiato', 'Il mezzo è già presente in un\'altra partenza', null, null, true));
+            dispatch(new ShowToastr(ToastrType.Warning, 'Impossibile selezionare il PreAccoppiato', 'Il mezzo è già presente in un\'altra partenza', null, null, true));
         }
     }
 

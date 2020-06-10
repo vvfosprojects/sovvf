@@ -53,8 +53,8 @@ export class BoxClickState implements NgxsOnChanges {
     }
 
     ngxsOnChanges(change: NgxsSimpleChange) {
-        const currentValue = change.currentValue.boxClick;
-        const previousValue = change.previousValue.boxClick;
+        const currentValue = change.currentValue && change.currentValue.boxClick;
+        const previousValue = change.previousValue && change.previousValue.boxClick;
         if (previousValue) {
             this.store.dispatch(new CheckBoxClick(currentValue));
         }
