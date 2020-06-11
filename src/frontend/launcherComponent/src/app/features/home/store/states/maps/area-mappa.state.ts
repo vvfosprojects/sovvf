@@ -1,6 +1,6 @@
 import { AreaMappa } from '../../../maps/maps-model/area-mappa-model';
 import { Action, Select, Selector, State, StateContext, Store } from '@ngxs/store';
-import { GetMarkersMappa, SetAreaMappa } from '../../actions/maps/area-mappa.actions';
+import { GetMarkersMappa, SetAreaMappa, StartLoadingAreaMappa, StopLoadingAreaMappa } from '../../actions/maps/area-mappa.actions';
 import { ClearRichiesteMarkers, GetRichiesteMarkers } from '../../actions/maps/richieste-markers.actions';
 import { ClearMezziMarkers, GetMezziMarkers } from '../../actions/maps/mezzi-markers.actions';
 import { ClearSediMarkers, GetSediMarkers } from '../../actions/maps/sedi-markers.actions';
@@ -11,18 +11,18 @@ import { FiltroRichieste } from '../../../maps/maps-model/filtro-richieste.inter
 import { FiltroMezzi } from '../../../maps/maps-model/filtro-mezzi.interface';
 import { ReducerFiltroMarker } from '../../actions/maps/maps-filtro.actions';
 import { ViewComponentState } from '../view/view.state';
-import {
-    ClearSchedeContattoMarkers,
-    GetSchedeContattoMarkers
-} from '../../actions/maps/schede-contatto-markers.actions';
+import { ClearSchedeContattoMarkers, GetSchedeContattoMarkers } from '../../actions/maps/schede-contatto-markers.actions';
 import { FiltroSchedeContatto } from '../../../maps/maps-model/filtro-schede-contatto';
+import { makeCopy } from '../../../../../shared/helper/function';
 
 export interface AreaMappaStateModel {
     areaMappa: AreaMappa;
+    areaMappaLoading: number;
 }
 
 export const AreaMappaStateDefaults: AreaMappaStateModel = {
-    areaMappa: null
+    areaMappa: null,
+    areaMappaLoading: 0
 };
 
 @State<AreaMappaStateModel>({
@@ -40,6 +40,11 @@ export class AreaMappaState {
     @Selector()
     static areaMappa(state: AreaMappaStateModel) {
         return state.areaMappa;
+    }
+
+    @Selector()
+    static areaMappaLoading(state: AreaMappaStateModel) {
+        return state.areaMappaLoading;
     }
 
     constructor(private store: Store) {
@@ -91,26 +96,52 @@ export class AreaMappaState {
             const schedaContattoModeOn = this.store.selectSnapshot(ViewComponentState.schedeContattoStatus);
 
             if (filtriAttivi.includes('richiesta')) {
-                dispatch(new GetRichiesteMarkers(state.areaMappa, filtroRichieste));
+                dispatch([
+                    new GetRichiesteMarkers(state.areaMappa, filtroRichieste)
+                ]);
             } else {
                 dispatch(new ClearRichiesteMarkers());
             }
             if (filtriAttivi.includes('sede')) {
-                dispatch(new GetSediMarkers(state.areaMappa));
+                dispatch([
+                    new GetSediMarkers(state.areaMappa)
+                ]);
             } else {
                 dispatch(new ClearSediMarkers());
             }
             if (filtriAttivi.includes('mezzo')) {
-                dispatch(new GetMezziMarkers(state.areaMappa, filtroMezzi));
+                dispatch([
+                    new GetMezziMarkers(state.areaMappa, filtroMezzi)
+                ]);
             } else {
                 dispatch(new ClearMezziMarkers());
             }
             if (schedaContattoModeOn) {
-                dispatch(new GetSchedeContattoMarkers(state.areaMappa, filtroSC));
+                dispatch([
+                    new GetSchedeContattoMarkers(state.areaMappa, filtroSC)
+                ]);
             } else {
                 dispatch(new ClearSchedeContattoMarkers());
             }
         }
+    }
+
+    @Action(StartLoadingAreaMappa)
+    startLoadingAreaMappa({ getState, patchState }: StateContext<AreaMappaStateModel>) {
+        const valoreAttuale = makeCopy(getState().areaMappaLoading);
+        const nuovoValore = valoreAttuale + 1;
+        patchState({
+            areaMappaLoading: nuovoValore
+        });
+    }
+
+    @Action(StopLoadingAreaMappa)
+    stopLoadingAreaMappa({ getState, patchState }: StateContext<AreaMappaStateModel>) {
+        const valoreAttuale = makeCopy(getState().areaMappaLoading);
+        const nuovoValore = valoreAttuale - 1;
+        patchState({
+            areaMappaLoading: nuovoValore
+        });
     }
 
 }

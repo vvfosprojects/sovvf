@@ -11,11 +11,9 @@ import {
     SetMezzoMarkerById, SetTipoOpacitaMezziMarkers, ToggleOpacitaMezziMarkers, UpdateMezzoMarker
 } from '../../actions/maps/mezzi-markers.actions';
 import { ClearMarkerOpachiMezzi, SetMarkerOpachiMezzi } from '../../actions/maps/marker-opachi.actions';
-import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
-import { ToastrType } from '../../../../../shared/enum/toastr';
-import { SetMarkerLoading } from '../../actions/home.actions';
 import { append, insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
 import { StatoMezzo } from '../../../../../shared/enum/stato-mezzo.enum';
+import { StartLoadingAreaMappa, StopLoadingAreaMappa } from '../../actions/maps/area-mappa.actions';
 
 
 export interface MezziMarkersStateModel {
@@ -62,7 +60,9 @@ export class MezziMarkersState {
 
     @Action(GetMezziMarkers)
     getMezziMarkers({ dispatch }: StateContext<MezziMarkersStateModel>, action: GetMezziMarkers) {
-        dispatch(new SetMarkerLoading(true));
+        dispatch([
+            new StartLoadingAreaMappa()
+        ]);
         console.log('filtroMezzi', action.filtri);
         this._mezzi.getMezziMarkers(action.areaMappa, action.filtri).subscribe((data: MezzoMarker[]) => {
                 data.map((mezzo: MezzoMarker) => {
@@ -72,10 +72,10 @@ export class MezziMarkersState {
                 });
                 dispatch([
                     new SetMezziMarkers(data),
-                    new SetMarkerLoading(false)
+                    new StopLoadingAreaMappa()
                 ]);
             }, () => dispatch([
-                new SetMarkerLoading(false)
+                new StopLoadingAreaMappa()
             ])
         );
     }

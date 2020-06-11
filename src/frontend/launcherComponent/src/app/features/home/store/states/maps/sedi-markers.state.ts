@@ -4,15 +4,16 @@ import { SediMarkerService } from '../../../../../core/service/maps-service';
 import {
     AddSediMarkers,
     ClearSediMarkers,
-    GetSediMarkers, InsertSedeMarker,
-    PatchSediMarkers, RemoveSedeMarker,
+    GetSediMarkers,
+    InsertSedeMarker,
+    PatchSediMarkers,
+    RemoveSedeMarker,
     SetSedeMarkerById,
-    SetSediMarkers, UpdateSedeMarker
+    SetSediMarkers,
+    UpdateSedeMarker
 } from '../../actions/maps/sedi-markers.actions';
-import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
-import { ToastrType } from '../../../../../shared/enum/toastr';
-import { SetMarkerLoading } from '../../actions/home.actions';
 import { append, insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
+import { StartLoadingAreaMappa, StopLoadingAreaMappa } from '../../actions/maps/area-mappa.actions';
 
 export interface SediMarkersStateModel {
     sediMarkers: SedeMarker[];
@@ -49,14 +50,16 @@ export class SediMarkersState {
 
     @Action(GetSediMarkers)
     getSediMarkers({ dispatch }: StateContext<SediMarkersStateModel>, action: GetSediMarkers) {
-        dispatch(new SetMarkerLoading(true));
+        dispatch([
+            new StartLoadingAreaMappa()
+        ]);
         this._sedi.getSediMarkers(action.areaMappa).subscribe((data: SedeMarker[]) => {
                 dispatch([
                     new SetSediMarkers(data),
-                    new SetMarkerLoading(false)
+                    new StopLoadingAreaMappa()
                 ]);
             }, () => dispatch([
-                new SetMarkerLoading(false)
+                new StopLoadingAreaMappa()
             ])
         );
     }
