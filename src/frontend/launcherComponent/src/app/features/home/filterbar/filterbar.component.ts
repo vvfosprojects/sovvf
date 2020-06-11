@@ -20,7 +20,6 @@ import { Composizione } from '../../../shared/enum/composizione.enum';
 import { Grid } from '../../../shared/enum/layout.enum';
 import { OptionsRichieste } from '../../../shared/enum/options-richieste';
 import { ClearRichiesteEspanse } from '../store/actions/richieste/richieste-espanse.actions';
-import { HomeState } from '../store/states/home.state';
 import { SchedeContattoState } from '../store/states/schede-contatto/schede-contatto.state';
 import {
     ClearFiltriSchedeContatto,
@@ -28,11 +27,7 @@ import {
     SetFiltroKeySchedeContatto
 } from '../store/actions/schede-contatto/schede-contatto.actions';
 import { MezziInServizioState } from '../store/states/mezzi-in-servizio/mezzi-in-servizio.state';
-import {
-    ClearFiltriMezziInServizio,
-    SetFiltroMezziInServizio,
-    SetRicercaMezziInServizio
-} from '../store/actions/mezzi-in-servizio/mezzi-in-servizio.actions';
+import { ClearFiltriMezziInServizio, SetFiltroMezziInServizio } from '../store/actions/mezzi-in-servizio/mezzi-in-servizio.actions';
 import { PermissionFeatures } from '../../../shared/enum/permission-features.enum';
 import { RichiesteState } from '../store/states/richieste/richieste.state';
 
@@ -86,7 +81,6 @@ export class FilterbarComponent {
      */
     @Select(ViewComponentState.mapsIsActive) mapsStatus$: Observable<boolean>;
     @Select(ViewComponentState.richiesteIsActive) richiesteStatus$: Observable<boolean>;
-    @Select(HomeState.markerOnLoading) markerOnLoading$: Observable<boolean>;
 
     constructor(private store: Store) {
     }

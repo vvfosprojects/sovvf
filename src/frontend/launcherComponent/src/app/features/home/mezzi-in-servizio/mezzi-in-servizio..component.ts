@@ -8,7 +8,6 @@ import { Observable, Subscription } from 'rxjs';
 import { MezzoActionInterface } from 'src/app/shared/interface/mezzo-action.interface';
 import { ActionMezzo, SetRichiestaById } from '../store/actions/richieste/richieste.actions';
 import { RichiesteState } from '../store/states/richieste/richieste.state';
-import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
 import { EventiRichiestaComponent } from '../eventi/eventi-richiesta.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SintesiRichiestaModalComponent } from '../maps/maps-ui/info-window/sintesi-richiesta-modal/sintesi-richiesta-modal.component';
@@ -45,9 +44,6 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
     ricercaMezziInServizio: { mezzo: { mezzo: { descrizione: string } } };
     @Select(RichiesteState.loadingActionMezzo) loadingActionMezzo$: Observable<string>;
 
-    @Select(RichiesteState.richieste) richieste$: Observable<SintesiRichiesta[]>;
-    richieste: SintesiRichiesta[];
-
     statiMezziInServizio: StatoMezzo[];
     prevStateBoxClick: BoxClickStateModel;
     subscription: Subscription = new Subscription();
@@ -55,7 +51,6 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
     constructor(private store: Store,
                 private modalService: NgbModal) {
         this.getMezziInServizio();
-        this.getRichieste();
         this.getMezzoInServizioHover();
         this.getMezzoInServizioSelezionato();
         this.getRicercaMezziInServizio();
@@ -87,14 +82,6 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
                 } else {
                     this.store.dispatch(new AllTrueBoxMezzi());
                 }
-            })
-        );
-    }
-
-    getRichieste() {
-        this.subscription.add(
-            this.richieste$.subscribe((richieste: any) => {
-                this.richieste = richieste;
             })
         );
     }

@@ -18,6 +18,7 @@ import { ChiamateMarkersState } from '../store/states/maps/chiamate-markers.stat
 import { ComposizionePartenzaState } from '../store/states/composizione-partenza/composizione-partenza.state';
 import { SchedeContattoMarkersState } from '../store/states/maps/schede-contatto-markers.state';
 import { SchedaContattoMarker } from './maps-model/scheda-contatto-marker.model';
+import { AreaMappaState } from '../store/states/maps/area-mappa.state';
 
 @Component({
     selector: 'app-maps',
@@ -37,6 +38,7 @@ export class MapsComponent implements OnInit, OnDestroy {
     @Select(MezziMarkersState.mezziMarkers) mezziMarkers$: Observable<MezzoMarker[]>;
     @Select(SediMarkersState.sediMarkers) sediMarkers$: Observable<SedeMarker[]>;
     @Select(SchedeContattoMarkersState.schedeContattoMarkers) schedeContattoMarkers$: Observable<SchedaContattoMarker[]>;
+    @Select(AreaMappaState.areaMappaLoading) areaMappaLoading$: Observable<number>;
 
     mapsFullyLoaded = false;
     @Output() mapFullLoaded = new EventEmitter<boolean>();

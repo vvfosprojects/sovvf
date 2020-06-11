@@ -20,10 +20,8 @@ import {
 import { wipeStatoRichiesta } from '../../../../../shared/helper/function';
 import { ClearMarkerOpachiRichieste, SetMarkerOpachiRichieste } from '../../actions/maps/marker-opachi.actions';
 import { append, insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
-import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
 import { RichiesteMarkerAdapterService } from '../../../../../core/service/maps-service/richieste-marker/adapters/richieste-marker-adapter.service';
-import { ToastrType } from '../../../../../shared/enum/toastr';
-import { SetMarkerLoading } from '../../actions/home.actions';
+import { StartLoadingAreaMappa, StopLoadingAreaMappa } from '../../actions/maps/area-mappa.actions';
 
 export interface RichiesteMarkersStateModel {
     richiesteMarkers: RichiestaMarker[];
@@ -71,15 +69,17 @@ export class RichiesteMarkersState {
 
     @Action(GetRichiesteMarkers)
     getRichiesteMarkers({ dispatch }: StateContext<RichiesteMarkersStateModel>, action: GetRichiesteMarkers) {
-        dispatch(new SetMarkerLoading(true));
+        dispatch([
+            new StartLoadingAreaMappa()
+        ]);
         console.log('FiltroRichieste', action.filtri);
         this._richieste.getRichiesteMarkers(action.areaMappa, action.filtri).subscribe((data: RichiestaMarker[]) => {
                 dispatch([
                     new SetRichiesteMarkers(data),
-                    new SetMarkerLoading(false)
+                    new StopLoadingAreaMappa()
                 ]);
             }, () => dispatch([
-                new SetMarkerLoading(false)
+                new StopLoadingAreaMappa()
             ])
         );
     }

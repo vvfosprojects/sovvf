@@ -10,3 +10,11 @@ export class SetAreaMappa {
 export class GetMarkersMappa {
     static readonly type = '[Area Mappa] Get Markers Mappa';
 }
+
+export class StartLoadingAreaMappa {
+    static readonly type = '[Area Mappa] Start Loading Area Mappa';
+}
+
+export class StopLoadingAreaMappa {
+    static readonly type = '[Area Mappa] Stop Loading Area Mappa';
+}

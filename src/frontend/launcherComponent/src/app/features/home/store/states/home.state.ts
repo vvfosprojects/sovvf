@@ -1,5 +1,5 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
-import { ClearDataHome, GetDataHome, SetDataTipologie, SetMarkerLoading } from '../actions/home.actions';
+import { ClearDataHome, GetDataHome, SetDataTipologie } from '../actions/home.actions';
 import { ClearRichieste, AddRichieste } from '../actions/richieste/richieste.actions';
 import { ClearSediMarkers } from '../actions/maps/sedi-markers.actions';
 import {
@@ -89,13 +89,6 @@ export class HomeState {
                 new SetContatoriSchedeContatto(data.infoNue),
                 new SetDataTipologie(data.tipologie)
             ]);
-        });
-    }
-
-    @Action(SetMarkerLoading)
-    setMarkerLoading({ patchState }: StateContext<HomeStateModel>, action: SetMarkerLoading) {
-        patchState({
-            markerLoading: action.loading
         });
     }
 

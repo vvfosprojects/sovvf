@@ -2,24 +2,26 @@ import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { append, insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
 import {
     AddSchedeContattoMarkers,
-    ClearSchedeContattoMarkers, GetSchedeContattoMarkers,
+    ClearSchedeContattoMarkers,
+    GetSchedeContattoMarkers,
     InsertSchedaContattoMarker,
     OpacizzaSchedeContattoMarkers,
-    PatchSchedeContattoMarkers, RefreshSchedeContattoMarkers,
+    PatchSchedeContattoMarkers,
+    RefreshSchedeContattoMarkers,
     RemoveSchedaContattoMarker,
     SetSchedaContattoMarkerById,
-    SetSchedeContattoMarkers, SetTipoOpacitaSchedeContattoMarkers, ToggleOpacitaSchedeContattoMarkers,
+    SetSchedeContattoMarkers,
+    SetTipoOpacitaSchedeContattoMarkers,
+    ToggleOpacitaSchedeContattoMarkers,
     UpdateSchedaContattoMarker
 } from '../../actions/maps/schede-contatto-markers.actions';
 import { SchedaContattoMarker } from '../../../maps/maps-model/scheda-contatto-marker.model';
-import { SetMarkerLoading } from '../../actions/home.actions';
-import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
-import { ToastrType } from '../../../../../shared/enum/toastr';
 import { SchedeContattoMarkerService } from '../../../../../core/service/maps-service/schede-contatto-marker/schede-contatto-marker.service';
 import { ClassificazioneSchedaContatto } from '../../../../../shared/enum/classificazione-scheda-contatto.enum';
 import { ClearMarkerOpachiSC, SetMarkerOpachiSC } from '../../actions/maps/marker-opachi.actions';
 import { FiltriMarkersState } from './filtri-markers.state';
 import { AreaMappaState } from './area-mappa.state';
+import { StartLoadingAreaMappa, StopLoadingAreaMappa } from '../../actions/maps/area-mappa.actions';
 
 export interface SchedeContattoMarkersStateModel {
     schedeContattoMarkers: SchedaContattoMarker[];
@@ -64,14 +66,16 @@ export class SchedeContattoMarkersState {
 
     @Action(GetSchedeContattoMarkers)
     getSchedeContattoMarkers({ dispatch }: StateContext<SchedeContattoMarkersStateModel>, action: GetSchedeContattoMarkers) {
-        dispatch(new SetMarkerLoading(true));
+        dispatch([
+            new StartLoadingAreaMappa()
+        ]);
         this._schedeContatto.getSchedeContattoMarkers(action.areaMappa, action.filtri).subscribe((data: any) => {
                 dispatch([
                     new SetSchedeContattoMarkers(data.listaSchedeMarker),
-                    new SetMarkerLoading(false)
+                    new StopLoadingAreaMappa()
                 ]);
             }, () => dispatch([
-                new SetMarkerLoading(false)
+                new StopLoadingAreaMappa()
             ])
         );
     }
