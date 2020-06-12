@@ -207,8 +207,8 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy {
             modalConfermaAnnulla.componentInstance.messaggio = 'Sei sicuro di voler annullare la chiamata?';
             modalConfermaAnnulla.componentInstance.messaggioAttenzione = 'Tutti i dati inseriti saranno eliminati.';
             modalConfermaAnnulla.componentInstance.bottoni = [
-                { type: 'ko', descrizione: 'Annulla', colore: 'danger' },
-                { type: 'ok', descrizione: 'Conferma', colore: 'dark' },
+                { type: 'ko', descrizione: 'Annulla', colore: 'secondary' },
+                { type: 'ok', descrizione: 'Conferma', colore: 'danger' },
             ];
 
             modalConfermaAnnulla.result.then(
@@ -256,8 +256,8 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy {
         modalConfermaReset.componentInstance.messaggio = 'Sei sicuro di voler effettuare il reset della chiamata?';
         modalConfermaReset.componentInstance.messaggioAttenzione = 'Tutti i dati inseriti verranno eliminati.';
         modalConfermaReset.componentInstance.bottoni = [
-            { type: 'ko', descrizione: 'Annulla', colore: 'danger' },
-            { type: 'ok', descrizione: 'Conferma', colore: 'dark' },
+            { type: 'ko', descrizione: 'Annulla', colore: 'secondary' },
+            { type: 'ok', descrizione: 'Conferma', colore: 'danger' },
         ];
 
         modalConfermaReset.result.then(

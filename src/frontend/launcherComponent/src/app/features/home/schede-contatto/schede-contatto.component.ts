@@ -185,8 +185,8 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
         modalConfermaAnnulla.componentInstance.messaggio = 'Sei sicuro di voler annullare il raggruppamento delle schede contatto selezionate?';
         modalConfermaAnnulla.componentInstance.messaggioAttenzione = 'Il raggruppamento sarà eliminato.';
         modalConfermaAnnulla.componentInstance.bottoni = [
-            { type: 'ko', descrizione: 'Annulla', colore: 'danger' },
-            { type: 'ok', descrizione: 'Conferma', colore: 'dark' },
+            { type: 'ko', descrizione: 'Annulla', colore: 'secondary' },
+            { type: 'ok', descrizione: 'Conferma', colore: 'danger' },
         ];
 
         modalConfermaAnnulla.result.then(

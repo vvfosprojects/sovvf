@@ -66,7 +66,7 @@
     </ng-container>
     <div *ngIf="richieste && richieste.length > 0" class="col-12 mt-3">
         <div class="row">
-            <div class="col-3">
+            <div class="col-4">
                 <button class="btn btn-block"
                         [ngClass]="{'btn-outline-primary': !needRefresh, 'btn-primary': needRefresh}"
                         [disabled]="!needRefresh || loading" (click)="refresh.emit(true)">
@@ -86,7 +86,7 @@
                     </ng-template>
                 </button>
             </div>
-            <div class="col-9 text-right pt-1">
+            <div class="col-8 text-right pt-1">
                 <pagination-controls class="mb-0" [previousLabel]="'Precedente'" [nextLabel]="'Successiva'"
                                      (pageChange)="pageChange.emit($event)">
                 </pagination-controls>
