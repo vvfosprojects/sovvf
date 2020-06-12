@@ -1,22 +1,24 @@
 <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title"><i
-            class="fa fa-fw fa-map-marker text-danger mr-1"></i>C'è già un'altra richiesta</h4>
+    <h4 class="modal-title" style="font-weight: 700">
+        <!-- <i class="fa fa-fw fa-map-marker text-danger mr-1"></i> -->
+        {{ 'C\'è già un\'altra richiesta' | uppercase }}
+    </h4>
     <button type="button" class="btn btn-light close" style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px"
             (click)="modal.dismiss('cross')">
-        <span class="text-danger"><i class="fa fa-times"></i></span>
+        <i class="fa fa-times text-danger"></i>
     </button>
 </div>
 <div class="modal-body">
     <h5>{{messaggio}}</h5>
 </div>
 <div class="modal-footer pt-2">
-    <button class="btn btn-lg btn-block btn-outline-danger mt-2" (click)="onAction('annullaChiamata')">
+    <button class="btn btn-lg btn-block btn-secondary mt-2" (click)="onAction('annullaChiamata')">
         Annulla Chiamata
     </button>
-    <button class="btn btn-lg btn-block btn-warning" (click)="onAction('cambiaIndirizzo')">
-        Cambia Indirizzo
-    </button>
-    <button class="btn btn-lg btn-block btn-success" (click)="onAction('continuaChiamata')">
+    <button class="btn btn-lg btn-block btn-danger" (click)="onAction('continuaChiamata')">
         Continua Chiamata
+    </button>
+    <button class="btn btn-lg btn-block btn-success" (click)="onAction('cambiaIndirizzo')">
+        Cambia Indirizzo
     </button>
 </div>

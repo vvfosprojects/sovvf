@@ -102,4 +102,8 @@ export class EliminaPartenzaModalComponent implements OnInit {
 
         this.modal.close({ status: 'ok', result: this.eliminaPartenzaForm.value });
     }
+
+    onCancel() {
+        this.modal.close({ status: 'ko', result: null });
+    }
 }

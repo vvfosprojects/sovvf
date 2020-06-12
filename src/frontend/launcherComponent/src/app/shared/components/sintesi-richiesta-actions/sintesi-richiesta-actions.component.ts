@@ -57,8 +57,8 @@ export class SintesiRichiestaActionsComponent implements OnInit {
                 break;
         }
         modalConferma.componentInstance.bottoni = [
-            { type: 'ko', descrizione: 'Annulla', colore: 'danger' },
-            { type: 'ok', descrizione: 'Conferma', colore: 'dark' },
+            { type: 'ko', descrizione: 'Annulla', colore: 'secondary' },
+            { type: 'ok', descrizione: 'Conferma', colore: 'danger' },
         ];
 
         const richiestaAction = {
