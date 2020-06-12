@@ -44,15 +44,13 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneUtenti.AddUtente
         private readonly IGetDistaccamentoByCodiceSedeUC _getDistaccamentoByCodiceSede;
         private readonly IGetUtenteByCF _getUtenteByCF;
         private readonly IAddRuoli _addRuoli;
-        private readonly IDeleteUtente _deleteUtente;
 
         public AddUtenteCommandHandler(IAddUtente addUtente, IGetPersonaleByCF personaleByCF,
             IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative, IGetListaDistaccamentiByCodiceSede getListaDistaccamentiByCodiceSede,
             IGetDistaccamentoByCodiceSedeUC getDistaccamentoByCodiceSede,
             IGetUtenteByCF getUtenteByCF,
             IAddRuoli addRuoli,
-            ICheckEsistenzaRuolo checkEsistenzaRuolo,
-                        IDeleteUtente deleteUtente)
+            ICheckEsistenzaRuolo checkEsistenzaRuolo)
 
         {
             _addUtente = addUtente;
@@ -62,7 +60,6 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneUtenti.AddUtente
             _getDistaccamentoByCodiceSede = getDistaccamentoByCodiceSede;
             _getUtenteByCF = getUtenteByCF;
             _addRuoli = addRuoli;
-            _deleteUtente = deleteUtente;
         }
 
         /// <summary>
@@ -97,19 +94,10 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneUtenti.AddUtente
                 Sede = new Sede($"{distaccamento.CodSede}", distaccamento.DescDistaccamento, distaccamento.Indirizzo, distaccamento.Coordinate, "", "", "", "", "")
             };
 
-            utenteVVF.CodiceFiscale = "TRNRCR78H25H501L";
-            utenteVVF.Cognome = "Trionfera";
-            utenteVVF.Nome = "Riccardo";
-            utenteVVF.Username = "Trionfera.Riccardo";
-
-            command.CodFiscale = "TRNRCR78H25H501L";
-
             if (utenteSO != null)
                 _addRuoli.Add(command.CodFiscale, command.Ruoli);
             else
             {
-                _deleteUtente.Delete("TRNRCR78H25H501L");
-
                 _addUtente.Add(utenteVVF);
             }
         }
