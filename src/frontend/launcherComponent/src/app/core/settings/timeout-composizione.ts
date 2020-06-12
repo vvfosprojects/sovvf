@@ -1,4 +1,4 @@
-export const COMPOSIZONEOPTIONS = {
+export const COMPOSIZIONEOPTIONS = {
     timeout: 15,
     alertTimeAgo: 8
 };

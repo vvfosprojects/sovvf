@@ -1,7 +1,7 @@
 import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { MezzoComposizione } from '../../interface/mezzo-composizione-interface';
 import { makeCopy } from '../../../../../shared/helper/function';
-import { COMPOSIZONEOPTIONS } from '../../../../../core/settings/timeout-composizione';
+import { COMPOSIZIONEOPTIONS } from '../../../../../core/settings/timeout-composizione';
 import { OFFSET_SYNC_TIME } from '../../../../../core/settings/referral-time';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from '../../../../../shared/enum/toastr';
@@ -19,7 +19,7 @@ export class PrenotazioneProgressBarComponent implements OnInit, OnChanges, OnDe
     @Input() mezzoComp: MezzoComposizione;
     @Input() itemPrenotato: boolean;
     @Input() graphic: boolean;
-    option = COMPOSIZONEOPTIONS;
+    option = COMPOSIZIONEOPTIONS;
     currentTimeout: number;
     _interval: any;
     scadenza: any;

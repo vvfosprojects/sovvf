@@ -1,19 +1,8 @@
-<div class="modal-body my-1">
+<div class="modal-body pb-0">
     <div class="row">
-        <div class="col-12 pt-2 pb-4">
-            <div class="input-group">
-                <input type="text" class="form-control"
-                       placeholder="Cerca filtri nella categoria '{{ categoriaSelezionata }}'"
-                       [(ngModel)]="filtersSearch.descrizione">
-                <div class="input-group-append">
-                    <button class="btn btn-primary">
-                        <i class="fa fa-search text-light"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-        <div class="col-6" style="height:400px; overflow-y:auto">
-            <div class="row">
+        <div class="col-6">
+            <span class="h4 d-inline-block mb-3" style="font-weight: 700">Categorie</span>
+            <div class="row" style="height:400px; overflow-y:auto">
                 <div class="col-12">
                     <ul class="list-unstyled">
                         <li *ngFor="let c of categorie"
@@ -28,16 +17,26 @@
                 </div>
             </div>
         </div>
-        <div class="col-6 pl-4" style="height:400px; overflow-y:auto">
-            <div *ngFor="let f of filtri | filterBy: filtersSearch"
-                 class="cursor-pointer pointer mb-2">
-                <app-filtro *ngIf="f.categoria === categoriaSelezionata"
-                            [filtro]="f"
-                            [useCheckbox]="true"
-                            [selezionato]="f | selectedFilterTipologiaRichieste"
-                            (filtroSelezionato)="onSelezioneFiltroTipologia($event)"
-                            (filtroDeselezionato)="onDeselezioneFiltroTipologia($event)">
-                </app-filtro>
+        <div class="col-6">
+            <span class="h4 d-inline-block mb-2">
+                Filtri di
+                <span class="font-italic" style="font-weight: 700">{{ categoriaSelezionata }}</span>
+            </span>
+            <div class="p-2 pt-0" style="height:400px; overflow-y:auto; overflow-x: hidden">
+                <div class="mb-3 shadow-sm">
+                    <input type="text" class="form-control"
+                           placeholder="Cerca nella categoria {{ categoriaSelezionata }}"
+                           [(ngModel)]="filtersSearch.descrizione">
+                </div>
+                <div *ngFor="let f of filtri | filterBy: filtersSearch" class="cursor-pointer pointer mb-2">
+                    <app-filtro *ngIf="f.categoria === categoriaSelezionata"
+                                [filtro]="f"
+                                [useCheckbox]="true"
+                                [selezionato]="f | selectedFilterTipologiaRichieste"
+                                (filtroSelezionato)="onSelezioneFiltroTipologia($event)"
+                                (filtroDeselezionato)="onDeselezioneFiltroTipologia($event)">
+                    </app-filtro>
+                </div>
             </div>
         </div>
         <div class="col-12">
@@ -56,7 +55,7 @@
                 filtro per migliorare la ricerca!
             </button>
         </div>
-        <div class="col-12 text-center mt-2">
+        <div class="col-12 text-center mt-3">
             <pagination-controls id="filtri" (pageChange)="p = $event"
                                  maxSize="9"
                                  directionLinks="true"
@@ -71,7 +70,7 @@
 <div class="modal-footer">
     <div class="row w-100">
         <div class="col-12 text-right">
-            <button type="button" class="btn btn-lg btn-danger mr-2" aria-label="Close"
+            <button type="button" class="btn btn-lg btn-secondary mr-2" aria-label="Close"
                     (click)="chiudiModalFiltriTipologia('ko')">
                 Annulla
             </button>
