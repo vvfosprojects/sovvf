@@ -53,6 +53,7 @@ export class ModalFiltriTipologiaComponent implements OnInit, OnDestroy {
         this.subscription.add(
             this.categoriaFiltriRichieste$.subscribe((categorie: string[]) => {
                 this.categorie = categorie;
+                this.categoriaSelezionata = this.categorie[0];
             })
         );
     }
