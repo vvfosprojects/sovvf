@@ -102,7 +102,7 @@ namespace SO115App.SignalR.Utility
                 else
                 {
                     Log.Information($"MATRIX - ESITO CHIAMATA POST KO - " + response.ReasonPhrase);
-                    Log.Information($"MATRIX - RISULTATO CHIAMATA POST CONTENT - " + response.Content.ToString());
+                    Log.Information($"MATRIX - RISULTATO CHIAMATA POST Headers - " + response.Headers.ToString());
                     Log.Information($"MATRIX - FINE CHIAMATA POST ");
                     return response.ReasonPhrase;
                 }
@@ -155,7 +155,7 @@ namespace SO115App.SignalR.Utility
                 else
                 {
                     Log.Information($"MATRIX - ESITO CHIAMATA PUT KO - " + response.ReasonPhrase);
-                    Log.Information($"MATRIX - RISULTATO CHIAMATA PUT CONTENT - " + response.Content.ToString());
+                    Log.Information($"MATRIX - RISULTATO CHIAMATA POST Headers - " + response.Headers.ToString());
                     Log.Information($"MATRIX - FINE CHIAMATA PUT ");
 
                     return response.ReasonPhrase;
