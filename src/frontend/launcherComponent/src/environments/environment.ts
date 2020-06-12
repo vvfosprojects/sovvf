@@ -4,6 +4,7 @@ export const environment = {
     consoleLog: true,
     toastr: true,
     fakeProvider: false,
+    onlyCas: false,
     signalRHub: '/NotificationHub',
     baseUrl: 'http://localhost:5220',
     signalR: true,
