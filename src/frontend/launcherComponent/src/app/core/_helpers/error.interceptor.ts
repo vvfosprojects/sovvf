@@ -8,14 +8,12 @@ import { ShowToastr } from '../../shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from '../../shared/enum/toastr';
 import { ClearUtente } from '../../features/navbar/store/actions/operatore/utente.actions';
 import { Navigate } from '@ngxs/router-plugin';
-import { AuthenticationService } from '../auth/authentication.service';
 import { UtenteState } from '../../features/navbar/store/states/operatore/utente.state';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
 
     constructor(private router: Router,
-                private authenticationService: AuthenticationService,
                 private store: Store) {
     }
 

@@ -64,7 +64,7 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
 
     @HostListener('window:resize')
     onResize() {
-        this.getHeight();
+        // this.getHeight();
     }
 
     constructor(private router: Router,
@@ -91,7 +91,7 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
     }
 
     ngAfterViewChecked() {
-        this.getHeight();
+        // this.getHeight();
     }
 
     ngOnDestroy(): void {

@@ -36,7 +36,7 @@ const appRoutes: Routes = [
         data: { roles: [ Role.Amministratore ] }
     },
     { path: RoutesPath.NotFound, loadChildren: './features/not-found/not-found.module#NotFoundModule' },
-    { path: '', pathMatch: 'full', redirectTo: RoutesPath.Login },
+    { path: '', pathMatch: 'full', redirectTo: RoutesPath.Home },
     { path: '**', redirectTo: RoutesPath.NotFound }
 ];
 

@@ -10,6 +10,7 @@ import { RouterState } from '@ngxs/router-plugin';
 import { LSNAME } from '../settings/config';
 import { Observable } from 'rxjs';
 import { Utente } from '../../shared/model/utente.model';
+import { SetCurrentJwt, SetCurrentUser } from '../../features/auth/store/auth.actions';
 
 const BASE_URL = environment.baseUrl;
 const API_AUTH = BASE_URL + environment.apiUrl.auth;
@@ -19,9 +20,12 @@ export class AuthenticationService {
 
     constructor(private http: HttpClient,
                 private store: Store) {
+        // Todo fare merge con getSessionData di app.component
         const userLocalStorage = JSON.parse(sessionStorage.getItem(LSNAME.currentUser));
         if (userLocalStorage) {
-            this.store.dispatch(new SetUtente(userLocalStorage));
+            this.store.dispatch([
+                new SetUtente(userLocalStorage)
+            ]);
         }
     }
 
@@ -30,7 +34,11 @@ export class AuthenticationService {
         return this.http.post<Utente>(`${API_AUTH}/Login`, { username, password }).pipe(
             map(response => {
                 if (response && response.token) {
-                    this.store.dispatch(new SetUtente(response));
+                    this.store.dispatch([
+                        new SetCurrentJwt(response.token),
+                        new SetCurrentUser(response),
+                        new SetUtente(response)
+                    ]);
                 }
                 if (response) {
                     return response;

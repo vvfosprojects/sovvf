@@ -95,6 +95,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
         this.store.dispatch(new GetNewVersion());
     }
 
+    // Todo centralizzare nello store.
     logout() {
         this.authenticationService.logout();
     }
