@@ -51,7 +51,7 @@ namespace SO115App.SignalR.Utility
                     RispostaCas.Error = response.ReasonPhrase;
 
                     Log.Information($"MATRIX - RISULTATO CHIAMATA GET KO - " + response.ReasonPhrase);
-
+                    Log.Information($"MATRIX - RISULTATO CHIAMATA GET CONTENT - " + response.Content.ToString());
                     Log.Information($"MATRIX - FINE CHIAMATA GET");
 
                     return RispostaCas;
@@ -62,7 +62,7 @@ namespace SO115App.SignalR.Utility
                 ChatRoom RispostaCas = new ChatRoom();
                 RispostaCas.Error = e.Message;
 
-                Log.Information($"MATRIX - RISULTATO CHIAMATA GET KO - " + e.Message);
+                Log.Information($"MATRIX - RISULTATO CHIAMATA GET KO Message 1 - " + e.InnerException);
 
                 Log.Information($"MATRIX - FINE CHIAMATA GET");
 
@@ -73,7 +73,7 @@ namespace SO115App.SignalR.Utility
                 ChatRoom RispostaCas = new ChatRoom();
                 RispostaCas.Error = e.Message;
 
-                Log.Information($"MATRIX - RISULTATO CHIAMATA GET KO - " + e.Message);
+                Log.Information($"MATRIX - RISULTATO CHIAMATA GET KO Message 2 - " + e.Message);
 
                 Log.Information($"MATRIX - FINE CHIAMATA GET");
 
@@ -102,19 +102,20 @@ namespace SO115App.SignalR.Utility
                 else
                 {
                     Log.Information($"MATRIX - ESITO CHIAMATA POST KO - " + response.ReasonPhrase);
+                    Log.Information($"MATRIX - RISULTATO CHIAMATA POST CONTENT - " + response.Content.ToString());
                     Log.Information($"MATRIX - FINE CHIAMATA POST ");
                     return response.ReasonPhrase;
                 }
             }
             catch (HttpRequestException e)
             {
-                Log.Information($"MATRIX - ESITO CHIAMATA POST KO - " + e.Message);
+                Log.Information($"MATRIX - ESITO CHIAMATA POST KO Message 3 - " + e.InnerException);
                 Log.Information($"MATRIX - FINE CHIAMATA POST ");
                 return e.Message;
             }
             catch (Exception e)
             {
-                Log.Information($"MATRIX - ESITO CHIAMATA POST KO - " + e.Message);
+                Log.Information($"MATRIX - ESITO CHIAMATA POST KO  Message 4 - " + e.Message);
                 Log.Information($"MATRIX - FINE CHIAMATA POST ");
 
                 return e.Message;
@@ -154,6 +155,7 @@ namespace SO115App.SignalR.Utility
                 else
                 {
                     Log.Information($"MATRIX - ESITO CHIAMATA PUT KO - " + response.ReasonPhrase);
+                    Log.Information($"MATRIX - RISULTATO CHIAMATA PUT CONTENT - " + response.Content.ToString());
                     Log.Information($"MATRIX - FINE CHIAMATA PUT ");
 
                     return response.ReasonPhrase;
@@ -161,14 +163,15 @@ namespace SO115App.SignalR.Utility
             }
             catch (HttpRequestException e)
             {
-                Log.Information($"MATRIX - ESITO CHIAMATA PUT KO - " + e.Message);
+                Log.Information($"MATRIX - ESITO CHIAMATA PUT KO -  Message 5 " + e.InnerException);
+
                 Log.Information($"MATRIX - FINE CHIAMATA PUT ");
 
                 return e.Message;
             }
             catch (Exception e)
             {
-                Log.Information($"MATRIX - ESITO CHIAMATA PUT KO - " + e.Message);
+                Log.Information($"MATRIX - ESITO CHIAMATA PUT KO - Message 6 " + e.Message);
                 Log.Information($"MATRIX - FINE CHIAMATA PUT ");
 
                 return e.Message;
