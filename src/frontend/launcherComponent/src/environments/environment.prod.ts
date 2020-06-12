@@ -4,6 +4,7 @@ export const environment = {
     consoleLog: false,
     toastr: false,
     fakeProvider: false,
+    onlyCas: true,
     signalRHub: '/NotificationHub',
     baseUrl: '$Serverbckend',
     signalR: true,
