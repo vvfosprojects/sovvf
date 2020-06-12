@@ -102,6 +102,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                         composizione.Mezzo.Stato = mezziPrenotati.Find(x => x.CodiceMezzo.Equals(composizione.Mezzo.Codice)).StatoOperativo;
                     }
                 }
+                composizione.Mezzo.IdRichiesta = mezziPrenotati.Find(x => x.CodiceMezzo.Equals(composizione.Mezzo.Codice)).CodiceRichiesta;
             }
             return composizioneMezzi;
         }
