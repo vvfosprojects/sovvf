@@ -26,6 +26,8 @@ import { AuthenticationService } from './core/auth/_services/authentication.serv
 import { VersionCheckService } from './core/service/version-check/version-check.service';
 import { SetAvailHeight, SetContentHeight } from './shared/store/actions/viewport/viewport.actions';
 import { Images } from './shared/enum/images.enum';
+import { LSNAME } from './core/settings/config';
+import { SetCurrentJwt, SetCurrentUser } from './features/auth/store/auth.actions';
 
 @Component({
     selector: 'app-root',
@@ -74,9 +76,33 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
         router.events.subscribe((val) => {
             if (val instanceof NavigationEnd) {
                 this.currentUrl = val.urlAfterRedirects.slice(1);
+                // Todo controllare
                 !this.deniedPath.includes(val.urlAfterRedirects.slice(1)) && authService._isLogged() ? this._toggle = true : this._toggle = false;
             }
         });
+        this.getSessionData();
+        this.initSubscription();
+    }
+
+
+    ngOnInit() {
+        !isDevMode() && this.versionCheckService.initVersionCheck(3);
+        this.preloadImage(Images.Disconnected);
+    }
+
+    ngAfterViewChecked() {
+        this.getHeight();
+    }
+
+    ngOnDestroy(): void {
+        this.subscription.unsubscribe();
+    }
+
+    _toggleOpened() {
+        this._opened = !this._opened;
+    }
+
+    private initSubscription(): void {
         this.subscription.add(this.isLoaded$.subscribe((r: boolean) => {
             this._isReady(r);
         }));
@@ -96,30 +122,12 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
         this.subscription.add(this.vistaSedi$.subscribe(r => r && this.store.dispatch(new PatchListaSediNavbar([ ...r ]))));
     }
 
-
-    ngOnInit() {
-        !isDevMode() && this.versionCheckService.initVersionCheck(3);
-        this.preloadImage(Images.Disconnected);
-    }
-
-    ngAfterViewChecked() {
-        this.getHeight();
-    }
-
-    ngOnDestroy(): void {
-        this.subscription.unsubscribe();
-    }
-
-    private _isReady(status: boolean) {
+    private _isReady(status: boolean): void {
         console.log('_isReady', status);
         if (!status) {
             // Todo verificare se necessario
             this.modals.dismissAll();
         }
-    }
-
-    _toggleOpened() {
-        this._opened = !this._opened;
     }
 
     private getHeight(): void {
@@ -146,6 +154,13 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
             this.imgs[i] = new Image();
             this.imgs[i].src = args[i];
         }
+    }
+
+    private getSessionData(): void {
+        const sessionToken = JSON.parse(sessionStorage.getItem(LSNAME.token));
+        const sessionCurrentUser = JSON.parse(sessionStorage.getItem(LSNAME.currentUser));
+        sessionToken && this.store.dispatch(new SetCurrentJwt(sessionToken));
+        sessionCurrentUser && this.store.dispatch(new SetCurrentUser(sessionCurrentUser));
     }
 
 }

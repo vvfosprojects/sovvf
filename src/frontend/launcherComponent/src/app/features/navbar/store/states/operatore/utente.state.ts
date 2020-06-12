@@ -17,14 +17,13 @@ import { Navigate } from '@ngxs/router-plugin';
 import { ClearUserDataService } from '../../../../../core/auth/_services/clearUserData.service';
 import { ClearViewState } from '../../../../home/store/actions/view/view.actions';
 import { ClearRichieste } from '../../../../home/store/actions/richieste/richieste.actions';
+import { LSNAME } from '../../../../../core/settings/config';
 
 export interface UtenteStateModel {
-    localName: string;
     utente: Utente;
 }
 
 export const UtenteStateDefaults: UtenteStateModel = {
-    localName: 'userSO115',
     utente: null,
 };
 
@@ -37,11 +36,6 @@ export class UtenteState {
     @Selector()
     static utente(state: UtenteStateModel) {
         return state.utente;
-    }
-
-    @Selector()
-    static localName(state: UtenteStateModel) {
-        return state.localName;
     }
 
     constructor(private clearUserDataService: ClearUserDataService) {
@@ -60,20 +54,17 @@ export class UtenteState {
 
     @Action(SetUtenteLocalStorage)
     setUtenteLocalStorage({ getState }: StateContext<UtenteStateModel>, action: SetUtenteLocalStorage) {
-        const state = getState();
-        localStorage.setItem(state.localName, JSON.stringify(action.utente));
+        sessionStorage.setItem(LSNAME.currentUser, JSON.stringify(action.utente));
     }
 
     @Action(ClearUtenteLocalStorage)
-    clearUtenteLocalStorage({ getState }: StateContext<UtenteStateModel>) {
-        const state = getState();
-        localStorage.removeItem(state.localName);
+    clearUtenteLocalStorage() {
+        sessionStorage.removeItem(LSNAME.currentUser);
     }
 
     @Action(UpdateUtente)
-    updateUtente({ getState, patchState, dispatch }: StateContext<UtenteStateModel>, action: UpdateUtente) {
-        const state = getState();
-        const token = JSON.parse(localStorage.getItem(state.localName)).token;
+    updateUtente({ patchState, dispatch }: StateContext<UtenteStateModel>, action: UpdateUtente) {
+        const token = JSON.parse(sessionStorage.getItem(LSNAME.currentUser)).token;
         const utenteToSet = makeCopy(action.utente);
         utenteToSet.token = token;
         patchState({

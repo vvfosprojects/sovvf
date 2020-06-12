@@ -7,6 +7,7 @@ import { Store } from '@ngxs/store';
 import { UtenteState } from '../../../features/navbar/store/states/operatore/utente.state';
 import { StartLoading, StopLoading } from '../../../shared/store/actions/loading/loading.actions';
 import { RouterState } from '@ngxs/router-plugin';
+import { LSNAME } from '../../settings/config';
 
 const BASE_URL = environment.baseUrl;
 const API_AUTH = BASE_URL + environment.apiUrl.auth;
@@ -15,12 +16,10 @@ const API_AUTH = BASE_URL + environment.apiUrl.auth;
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
     private isLogged: boolean;
-    localName: string;
 
     constructor(private http: HttpClient,
                 private store: Store) {
-        this.localName = this.store.selectSnapshot(UtenteState.localName);
-        const userLocalStorage = JSON.parse(localStorage.getItem(this.localName));
+        const userLocalStorage = JSON.parse(sessionStorage.getItem(LSNAME.currentUser));
         if (userLocalStorage) {
             this.store.dispatch(new SetUtente(userLocalStorage));
         }
@@ -40,7 +39,7 @@ export class AuthenticationService {
     }
 
     _isLogged() {
-        return this.isLogged = !!localStorage.getItem(this.localName);
+        return this.isLogged = !!sessionStorage.getItem(LSNAME.currentUser);
     }
 
     logout() {

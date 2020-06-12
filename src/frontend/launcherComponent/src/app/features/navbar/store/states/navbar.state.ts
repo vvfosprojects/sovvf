@@ -24,7 +24,6 @@ export const NavbarStateDefaults: NavbarStateModel = {
 })
 export class NavbarState {
 
-
     @Selector()
     static listaSedi(state: NavbarStateModel) {
         return state.listaSedi;
@@ -56,8 +55,10 @@ export class NavbarState {
             listaSedi: action.settings.listaSedi,
             loaded: true
         });
-        dispatch(new SetRuoliUtenteLoggato(action.settings.ruoliUtLoggato));
-        dispatch(new SetListaSediTreeview(action.settings.listaSedi));
+        dispatch([
+            new SetRuoliUtenteLoggato(action.settings.ruoliUtLoggato),
+            new SetListaSediTreeview(action.settings.listaSedi)
+        ]);
     }
 
 }

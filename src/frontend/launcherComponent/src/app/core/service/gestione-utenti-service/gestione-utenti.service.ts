@@ -28,6 +28,7 @@ export class GestioneUtentiService {
         return this.http.get<UtenteVvfInterface[]>(url);
     }
 
+    // Todo aggiungere un map e tornare Utente
     getUtente(id: string): Observable<{detUtente: Utente}> {
         return this.http.get<{detUtente: Utente}>(API_URL + '/GetUtente?id=' + id);
     }
@@ -44,6 +45,7 @@ export class GestioneUtentiService {
     }
 
     addUtente(addUtente: AddRuoloUtenteInterface): Observable<Utente> {
+        console.log(JSON.stringify(addUtente));
         return this.http.post<Utente>(API_URL + '/AddUtente', addUtente);
     }
 

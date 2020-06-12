@@ -37,8 +37,8 @@ export const environment = {
         meteo: 'https://api.openweathermap.org/data/2.5/weather?'
     },
     casUrl: {
-        linkLogin: 'http://sso.vigilfuoco.it/cas-test/login?service=',
-        linkLogout: 'http://sso.vigilfuoco.it/cas-test/logout?service=',
-        serviceName: 'http://sovvf-test.dipvvf.it/',
+        linkLogin: 'http://localhost:4000/?service=',
+        linkLogout: 'http://localhost:4000/logout.html?service=',
+        serviceName: 'http://localhost:4200/',
     }
 };

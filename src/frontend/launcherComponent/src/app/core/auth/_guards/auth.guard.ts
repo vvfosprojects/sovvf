@@ -5,6 +5,7 @@ import { Store } from '@ngxs/store';
 import { ShowToastr } from '../../../shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from '../../../shared/enum/toastr';
 import { Ruolo } from '../../../shared/model/utente.model';
+import { LSNAME } from '../../settings/config';
 
 @Injectable({ providedIn: 'root' })
 export class AuthGuard implements CanActivate {
@@ -16,7 +17,7 @@ export class AuthGuard implements CanActivate {
     }
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-        const ruoliUtenteLoggato = JSON.parse(sessionStorage.getItem('ruoliUtenteSO115'));
+        const ruoliUtenteLoggato = JSON.parse(sessionStorage.getItem(LSNAME.role));
 
         if (!route.data.roles || route.data.roles.length <= 0) {
             return true;

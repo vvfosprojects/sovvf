@@ -6,5 +6,6 @@ export enum RoutesPath {
     Statistiche = 'statistiche',
     GestioneUtenti = 'gestione-utenti',
     Logged = 'logged',
-    NotFound = '404'
+    NotFound = '404',
+    Auth = 'auth'
 }

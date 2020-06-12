@@ -7,17 +7,16 @@ import {
 import { Ruolo } from '../../../model/utente.model';
 import { NavbarState } from '../../../../features/navbar/store/states/navbar.state';
 import { getRuoliRicorsivo } from '../../../helper/get-ruoli-ricorsivo';
+import { LSNAME } from '../../../../core/settings/config';
 
 export interface RuoliUtenteLoggatoStateModel {
     ruoliPrincipali: Ruolo[];
     ruoli: Ruolo[];
-    localName: string;
 }
 
 export const ruoliStateModelDefaults: RuoliUtenteLoggatoStateModel = {
     ruoliPrincipali: [],
-    ruoli: [],
-    localName: 'ruoliUtenteSO115'
+    ruoli: []
 };
 
 @State<RuoliUtenteLoggatoStateModel>({
@@ -41,41 +40,33 @@ export class RuoliUtenteLoggatoState {
         return state.ruoli.filter((r: Ruolo) => !r.hidden);
     }
 
-    @Selector()
-    static localName(state: RuoliUtenteLoggatoStateModel) {
-        return state.localName;
-    }
-
     constructor(private store: Store) {
     }
 
     @Action(SetRuoliUtenteLoggato)
-    setRuoliUtenteLoggato({ getState, patchState }: StateContext<RuoliUtenteLoggatoStateModel>, action: SetRuoliUtenteLoggato) {
-        const localName = getState().localName;
+    setRuoliUtenteLoggato({ patchState }: StateContext<RuoliUtenteLoggatoStateModel>, action: SetRuoliUtenteLoggato) {
         patchState({
             ruoliPrincipali: action.ruoliUtenteLoggato,
             ruoli: this.getRuoliFullList(action.ruoliUtenteLoggato)
         });
-        sessionStorage.setItem(localName, JSON.stringify(action.ruoliUtenteLoggato));
+        sessionStorage.setItem(LSNAME.role, JSON.stringify(action.ruoliUtenteLoggato));
     }
 
     @Action(UpdateRuoliUtenteLoggato)
-    updateRuoliUtenteLoggato({ getState, patchState }: StateContext<RuoliUtenteLoggatoStateModel>, action: UpdateRuoliUtenteLoggato) {
-        const localName = getState().localName;
+    updateRuoliUtenteLoggato({ patchState }: StateContext<RuoliUtenteLoggatoStateModel>, action: UpdateRuoliUtenteLoggato) {
         patchState({
             ruoliPrincipali: action.ruoliUtenteLoggato,
             ruoli: this.getRuoliFullList(action.ruoliUtenteLoggato)
         });
-        sessionStorage.setItem(localName, JSON.stringify(action.ruoliUtenteLoggato));
+        sessionStorage.setItem(LSNAME.role, JSON.stringify(action.ruoliUtenteLoggato));
     }
 
     @Action(ClearRuoliUtenteLoggato)
-    clearRuoliUtenteLoggato({ getState, patchState }: StateContext<RuoliUtenteLoggatoStateModel>) {
-        const localName = getState().localName;
+    clearRuoliUtenteLoggato({ patchState }: StateContext<RuoliUtenteLoggatoStateModel>) {
         patchState({
             ruoli: ruoliStateModelDefaults.ruoli
         });
-        sessionStorage.removeItem(localName);
+        sessionStorage.removeItem(LSNAME.role);
     }
 
     getRuoliFullList(ruoliRicorsivi: Ruolo[]): Ruolo[] {
