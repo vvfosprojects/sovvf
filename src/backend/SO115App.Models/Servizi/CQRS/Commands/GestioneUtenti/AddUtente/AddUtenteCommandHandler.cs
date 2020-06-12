@@ -51,6 +51,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneUtenti.AddUtente
             IGetUtenteByCF getUtenteByCF,
             IAddRuoli addRuoli,
             ICheckEsistenzaRuolo checkEsistenzaRuolo)
+
         {
             _addUtente = addUtente;
             _personaleByCF = personaleByCF;
@@ -72,6 +73,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneUtenti.AddUtente
             var listaPin = new List<PinNodo>();
             var sediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
             var distaccamento = _getDistaccamentoByCodiceSede.Get(personale.CodSede).Result;
+
             foreach (var ruolo in command.Ruoli)
             {
                 listaPin.Add(new PinNodo(ruolo.CodSede, ruolo.Ricorsivo));
@@ -95,7 +97,9 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneUtenti.AddUtente
             if (utenteSO != null)
                 _addRuoli.Add(command.CodFiscale, command.Ruoli);
             else
+            {
                 _addUtente.Add(utenteVVF);
+            }
         }
     }
 }
