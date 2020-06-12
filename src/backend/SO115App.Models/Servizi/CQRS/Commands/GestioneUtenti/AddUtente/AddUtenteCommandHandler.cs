@@ -71,7 +71,6 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneUtenti.AddUtente
         /// <param name="command">il command con i parametri di ingresso</param>
         public void Handle(AddUtenteCommand command)
         {
-            _deleteUtente.Delete("TRNRCR78H25H501L");
             var utenteSO = _getUtenteByCF.Get(command.CodFiscale);
             var personale = _personaleByCF.Get(command.CodFiscale).Result;
             var listaPin = new List<PinNodo>();
@@ -108,7 +107,11 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneUtenti.AddUtente
             if (utenteSO != null)
                 _addRuoli.Add(command.CodFiscale, command.Ruoli);
             else
+            {
+                _deleteUtente.Delete("TRNRCR78H25H501L");
+
                 _addUtente.Add(utenteVVF);
+            }
         }
     }
 }

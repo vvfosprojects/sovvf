@@ -35,7 +35,7 @@ namespace SO115App.Persistence.MongoDB.GestioneUtenti.GestioneUtente
 
         public void Delete(string codFisc)
         {
-            _dBContext.UtenteCollection.FindOneAndDelete(Builders<Utente>.Filter.Eq(x => x.CodiceFiscale, codFisc));
+            _dBContext.UtenteCollection.DeleteMany(Builders<Utente>.Filter.Eq(x => x.CodiceFiscale, codFisc));
         }
     }
 }
