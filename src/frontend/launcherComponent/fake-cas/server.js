@@ -42,9 +42,14 @@ server.get('/serviceValidate', (req, res) => {
             }
         }
     }
-    jsonFakeResponse.serviceResponse.authenticationSuccess.attributes.sAMAccountName[0] = req.query.ticket;
+    if (req.query.ticket) {
+        jsonFakeResponse.serviceResponse.authenticationSuccess.attributes.sAMAccountName[0] = req.query.ticket;
+        res.json(jsonFakeResponse);
+    } else {
+        res.sendStatus(401)
+    }
     console.log(jsonFakeResponse);
-    res.json(jsonFakeResponse);
+
 });
 
 server.listen(port, () => {
