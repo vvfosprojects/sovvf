@@ -8,7 +8,9 @@ import { Observable } from 'rxjs';
 const BASE_URL = environment.baseUrl;
 const API_URL_NAVBAR = BASE_URL + environment.apiUrl.navbar;
 
-@Injectable()
+@Injectable({
+    providedIn: 'root'
+})
 export class NavbarService {
 
     constructor(private http: HttpClient) {

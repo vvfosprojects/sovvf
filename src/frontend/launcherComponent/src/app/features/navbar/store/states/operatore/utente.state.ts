@@ -14,7 +14,7 @@ import { ClearVistaSedi, SetVistaSedi } from '../../../../../shared/store/action
 import { makeCopy } from '../../../../../shared/helper/function';
 import { ClearRuoliUtenteLoggato } from '../../../../../shared/store/actions/ruoli/ruoli.actions';
 import { Navigate } from '@ngxs/router-plugin';
-import { ClearUserDataService } from '../../../../../core/auth/_services/clearUserData.service';
+import { ClearUserDataService } from '../../../../../core/auth/clear-user-data.service';
 import { ClearViewState } from '../../../../home/store/actions/view/view.actions';
 import { ClearRichieste } from '../../../../home/store/actions/richieste/richieste.actions';
 import { LSNAME } from '../../../../../core/settings/config';

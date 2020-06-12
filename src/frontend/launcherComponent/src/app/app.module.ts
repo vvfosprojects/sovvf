@@ -35,18 +35,13 @@ import { SignalRState } from './core/signalr/store/signalR.state';
 import { ToastrState } from './shared/store/states/toastr/toastr.state';
 import { SediTreeviewState } from './shared/store/states/sedi-treeview/sedi-treeview.state';
 /**
- * Service
- */
-import { NavbarService } from './core/service/navbar-service/navbar.service';
-import { NavbarServiceFake } from './core/service/navbar-service/navbar.service.fake';
-/**
  * Route
  */
 import { APP_ROUTING } from './app.routing';
 /**
  * Interceptor
  */
-import { JwtInterceptor, ErrorInterceptor, FakeBackendInterceptor } from './core/_helpers';
+import { JwtInterceptor, ErrorInterceptor } from './core/_helpers';
 import { SignalRInterceptor } from './core/signalr/signalR.interceptor';
 /**
  * Module Components
@@ -59,15 +54,14 @@ import { LoaderInterceptor } from './core/_helpers/loader.interceptor';
 import { LoadingState } from './shared/store/states/loading/loading.state';
 import { PaginationState } from './shared/store/states/pagination/pagination.state';
 import { NgxsFormPluginModule } from '@ngxs/form-plugin';
-import { UserServiceFake } from './core/auth/_services/user.service.fake';
 import { PermessiState } from './shared/store/states/permessi/permessi.state';
 import { RuoliUtenteLoggatoState } from './shared/store/states/ruoli-utente-loggato/ruoli-utente-loggato.state';
-import { UserService } from './core/auth/_services/user.service';
 import { NewVersionState } from './shared/store/states/nuova-versione/nuova-versione.state';
 import { ViewportState } from './shared/store/states/viewport/viewport.state';
 import { SignalROfflineComponent } from './core/signalr/signal-r-offline/signal-r-offline.component';
 import { LoaderComponent } from './shared/components/loader/loader.component';
 import { FooterComponent } from './shared/components/footer/footer.component';
+import { AuthState } from './features/auth/store/auth.state';
 
 
 @NgModule({
@@ -101,7 +95,7 @@ import { FooterComponent } from './shared/components/footer/footer.component';
             preventDuplicates: true,
         }),
         NgxsModule.forRoot(
-            [ AppState, NewVersionState, UtenteState, SignalRState,
+            [ AuthState, AppState, NewVersionState, UtenteState, SignalRState,
                 RuoliUtenteLoggatoState, PermessiState, ToastrState, SediTreeviewState,
                 PaginationState, LoadingState, ViewportState ],
             { developmentMode: !environment.production }
@@ -119,10 +113,7 @@ import { FooterComponent } from './shared/components/footer/footer.component';
         { provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true },
         { provide: HTTP_INTERCEPTORS, useClass: SignalRInterceptor, multi: true },
         { provide: HTTP_INTERCEPTORS, useClass: RpcInterceptor, multi: true },
-        environment.fakeProvider ? { provide: HTTP_INTERCEPTORS, useClass: FakeBackendInterceptor, multi: true } : [],
         I18n,
-        { provide: NavbarService, useClass: environment.fakeProvider ? NavbarServiceFake : NavbarService },
-        { provide: UserService, useClass: UserServiceFake }
     ],
     bootstrap: [ AppComponent ],
     entryComponents: [SignalROfflineComponent]

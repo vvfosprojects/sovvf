@@ -25,6 +25,14 @@ export class SetCurrentUser {
     }
 }
 
+export class SetLogged {
+    static readonly type = '[Auth] Signed In';
+}
+
+export class RecoveryUrl {
+    static readonly type = '[Auth] Recovery Url';
+}
+
 export class CasLogin {
     static readonly type = '[Auth] Cas Login';
 }

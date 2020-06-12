@@ -3,28 +3,30 @@ import {
     CasLogin,
     CasLogout,
     CasResponse,
-    ClearAuth, GetAuth,
+    ClearAuth, GetAuth, RecoveryUrl,
     SetCurrentJwt,
     SetCurrentTicket,
-    SetCurrentUser
+    SetCurrentUser, SetLogged
 } from './auth.actions';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment';
-import { ClearLogin, SetLogged, SetReturnUrl } from './login.actions';
 import { LSNAME } from '../../../core/settings/config';
-import { AuthService } from '../../../core/service/auth-service/auth.service';
 import { Utente } from '../../../shared/model/utente.model';
+import { Navigate } from '@ngxs/router-plugin';
+import { AuthenticationService } from '../../../core/auth/authentication.service';
 
 export interface AuthStateModel {
     currentJwt: string;
     currentTicket: string;
     currentUser: Utente;
+    logged: boolean;
 }
 
 export const AuthStateDefaults: AuthStateModel = {
     currentJwt: null,
     currentTicket: null,
-    currentUser: null
+    currentUser: null,
+    logged: false
 };
 
 @Injectable()
@@ -34,7 +36,7 @@ export const AuthStateDefaults: AuthStateModel = {
 })
 export class AuthState {
 
-    constructor(private authService: AuthService) {
+    constructor(private authService: AuthenticationService) {
     }
 
     @Selector()
@@ -45,6 +47,11 @@ export class AuthState {
     @Selector()
     static currentUser(state: AuthStateModel) {
         return state.currentUser;
+    }
+
+    @Selector()
+    static logged(state: AuthStateModel) {
+        return state.logged;
     }
 
     @Action(SetCurrentTicket)
@@ -81,7 +88,7 @@ export class AuthState {
                 currentJwt: action.currentJwt,
                 currentTicket: null
             });
-            dispatch([ new SetReturnUrl(currentUrl), new SetLogged() ]);
+            dispatch([ new SetLogged() ]);
         }
     }
 
@@ -89,6 +96,23 @@ export class AuthState {
     setCurrentUser({ patchState }: StateContext<AuthStateModel>, { currentUser }: SetCurrentUser) {
         sessionStorage.setItem(LSNAME.currentUser, JSON.stringify(currentUser));
         patchState({ currentUser });
+    }
+
+    @Action(SetLogged)
+    setLogged({ patchState }: StateContext<AuthStateModel>) {
+        patchState({
+            logged: true
+        });
+    }
+
+    @Action(RecoveryUrl)
+    recoveryUrl({ dispatch }: StateContext<AuthStateModel>) {
+        const currentUrl = JSON.parse(localStorage.getItem(LSNAME.redirectUrl));
+        console.log('RecoveryUrl', currentUrl);
+        if (currentUrl) {
+            localStorage.removeItem(LSNAME.redirectUrl);
+            dispatch(new Navigate([ currentUrl ]));
+        }
     }
 
     @Action(CasLogin)
@@ -116,8 +140,15 @@ export class AuthState {
 
     @Action(ClearAuth)
     clearAuth({ dispatch, patchState }: StateContext<AuthStateModel>) {
-        dispatch(new ClearLogin());
+        // dispatch(new ClearLogin());
+        this.removeStorage();
         patchState(AuthStateDefaults);
+    }
+
+    removeStorage(): void {
+        sessionStorage.removeItem(LSNAME.token);
+        sessionStorage.removeItem(LSNAME.currentUser);
+        localStorage.removeItem(LSNAME.redirectUrl);
     }
 
 }

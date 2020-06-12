@@ -22,7 +22,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PermissionFeatures } from './shared/enum/permission-features.enum';
 import { PermessiService } from './core/service/permessi-service/permessi.service';
 import { RuoliUtenteLoggatoState } from './shared/store/states/ruoli-utente-loggato/ruoli-utente-loggato.state';
-import { AuthenticationService } from './core/auth/_services/authentication.service';
+import { AuthenticationService } from './core/auth/authentication.service';
 import { VersionCheckService } from './core/service/version-check/version-check.service';
 import { SetAvailHeight, SetContentHeight } from './shared/store/actions/viewport/viewport.actions';
 import { Images } from './shared/enum/images.enum';
@@ -77,7 +77,7 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
             if (val instanceof NavigationEnd) {
                 this.currentUrl = val.urlAfterRedirects.slice(1);
                 // Todo controllare
-                !this.deniedPath.includes(val.urlAfterRedirects.slice(1)) && authService._isLogged() ? this._toggle = true : this._toggle = false;
+                // !this.deniedPath.includes(val.urlAfterRedirects.slice(1)) && authService._isLogged() ? this._toggle = true : this._toggle = false;
             }
         });
         this.getSessionData();

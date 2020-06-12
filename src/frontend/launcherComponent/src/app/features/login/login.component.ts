@@ -1,41 +1,43 @@
-import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
-import { Select } from '@ngxs/store';
+import { Select, Store } from '@ngxs/store';
 import { LoadingState } from '../../shared/store/states/loading/loading.state';
-import { Observable } from 'rxjs';
-import { AuthenticationService } from '../../core/auth/_services/authentication.service';
+import { Observable, Subscription } from 'rxjs';
+import { AuthenticationService } from '../../core/auth/authentication.service';
+import { RecoveryUrl } from '../auth/store/auth.actions';
 
 
 @Component({ templateUrl: 'login.component.html' })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
+
+    private subscription = new Subscription();
 
     @Select(LoadingState.loading) loading$: Observable<boolean>;
     loading: boolean;
 
     loginForm: FormGroup;
     submitted = false;
-    returnUrl: string;
     error = '';
 
     constructor(
         private formBuilder: FormBuilder,
-        private route: ActivatedRoute,
-        private router: Router,
-        private authenticationService: AuthenticationService) {
-        this.loading$.subscribe((loading: boolean) => this.loading = loading);
+        private authenticationService: AuthenticationService,
+        private store: Store) {
+        this.subscription.add(
+            this.loading$.subscribe((loading: boolean) => this.loading = loading)
+        );
     }
 
     ngOnInit() {
         this.loginForm = this.formBuilder.group({
-            username: ['', Validators.required],
-            password: ['', Validators.required]
+            username: [ '', Validators.required ],
+            password: [ '', Validators.required ]
         });
+    }
 
-        this.authenticationService.logout();
-
-        this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+    ngOnDestroy() {
+        this.subscription.unsubscribe();
     }
 
     get f() {
@@ -53,7 +55,7 @@ export class LoginComponent implements OnInit {
             .pipe(first())
             .subscribe(
                 () => {
-                    this.router.navigate([this.returnUrl]);
+                    this.store.dispatch(new RecoveryUrl());
                 },
                 error => {
                     this.error = error;

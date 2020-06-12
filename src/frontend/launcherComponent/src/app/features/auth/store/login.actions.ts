@@ -5,17 +5,6 @@ export class SetErrorMessage {
     }
 }
 
-export class SetLogged {
-    static readonly type = '[Login] Signed In';
-}
-
-export class SetReturnUrl {
-    static readonly type = '[Login] Set Return Url';
-
-    constructor(public returnUrl: string) {
-    }
-}
-
 export class ClearLogin {
     static readonly type = '[Login] Clear Login';
 }

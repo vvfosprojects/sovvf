@@ -1,7 +1,7 @@
 import { Routes, RouterModule } from '@angular/router';
-import { AuthGuard } from './core/auth/_guards';
 import { RoutesPath } from './shared/enum/routes-path.enum';
 import { Role } from './shared/model/utente.model';
+import { AuthGuard } from './core/auth/auth.guard';
 
 const appRoutes: Routes = [
     { path: RoutesPath.Login, loadChildren: './features/login/login.module#LoginModule' },

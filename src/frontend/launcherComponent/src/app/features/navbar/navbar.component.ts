@@ -10,7 +10,7 @@ import { SediTreeviewState } from '../../shared/store/states/sedi-treeview/sedi-
 import { TurnoCalendario } from './turno/turno-calendario.model';
 import { calcolaTurnoCalendario } from 'src/app/shared/helper/calcola-turno';
 import { SetTurnoCalendario } from './store/actions/turno/turno.actions';
-import { AuthenticationService } from '../../core/auth/_services/authentication.service';
+import { AuthenticationService } from '../../core/auth/authentication.service';
 import { NewVersionState } from '../../shared/store/states/nuova-versione/nuova-versione.state';
 import { GetNewVersion } from '../../shared/store/actions/nuova-versione/nuova-versione.actions';
 
