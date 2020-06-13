@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 import { SetContentHeight, SetAvailHeight } from '../../actions/viewport/viewport.actions';
 import { RouterState } from '@ngxs/router-plugin';
 import { RouterStateModel } from '@ngxs/router-plugin/src/router.state';
+import { AuthState, AuthStateModel } from '../../../../features/auth/store/auth.state';
+import { AppState, AppStateModel } from '../app/app.state';
 
 export interface ViewportStateModel {
     availHeight: number;
@@ -23,8 +25,16 @@ export class ViewportState {
 
     @Selector([ RouterState ])
     static footerFixed(state: ViewportStateModel, routerState: RouterStateModel) {
-        const currentUrl = routerState.state.url;
-        return state.availHeight > state.contentHeight && currentUrl === '/home';
+        const grantUrl = routerState.state.url.includes('/home');
+        return state.availHeight > state.contentHeight && grantUrl;
+    }
+
+    @Selector([ RouterState, AuthState, AppState ])
+    static footerVisible(state: ViewportStateModel, routerState: RouterStateModel, authState: AuthStateModel, appState: AppStateModel) {
+        const grantUrl = !routerState.state.url.includes('/auth');
+        const logged = authState.logged;
+        const appReady = appState.appIsLoaded;
+        return grantUrl && logged && appReady;
     }
 
     @Action(SetAvailHeight)
