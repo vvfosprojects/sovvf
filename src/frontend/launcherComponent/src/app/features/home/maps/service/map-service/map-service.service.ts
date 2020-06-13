@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { debounceTime } from 'rxjs/operators';
+import { debounceTime, first, map, take, tap } from 'rxjs/operators';
 import { CentroMappa } from '../../maps-model/centro-mappa.model';
 import { Coordinate } from '../../../../../shared/model/coordinate.model';
 import { Observable, Subject } from 'rxjs';
@@ -8,8 +8,7 @@ import { SetCentroMappa } from '../../../store/actions/maps/centro-mappa.actions
 import { AreaMappa } from '../../maps-model/area-mappa-model';
 import { SetAreaMappa } from '../../../store/actions/maps/area-mappa.actions';
 import { MAPSOPTIONS } from '../../../../../core/settings/maps-options';
-import { diffCoordinate } from '../../../../../shared/helper/function';
-
+import { diffCoordinate, makeCoordinate } from '../../../../../shared/helper/function';
 
 @Injectable()
 export class MapService {
@@ -17,6 +16,8 @@ export class MapService {
     private centro$ = new Subject<CentroMappa>();
     private area$ = new Subject<AreaMappa>();
     private centro: Coordinate;
+
+    private wipeBottomLeft: Coordinate;
 
     constructor(private store: Store) {
         /**
@@ -51,7 +52,13 @@ export class MapService {
     }
 
     setArea(area: AreaMappa): void {
-        this.area$.next(area);
+        if (!this.wipeBottomLeft || (diffCoordinate(
+                makeCoordinate(this.wipeBottomLeft.latitudine, this.wipeBottomLeft.longitudine, 6),
+                makeCoordinate(area.bottomLeft.latitudine, area.bottomLeft.longitudine, 6))
+        )) {
+            this.area$.next(area);
+        }
+        this.wipeBottomLeft = area.bottomLeft;
     }
 
     private getArea(): Observable<AreaMappa> {
