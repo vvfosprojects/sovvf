@@ -85,6 +85,9 @@ export class AuthState {
                         patchState({ loggedCas: true });
                         dispatch([ new SetCurrentJwt(result.token), new SetCurrentUser(result) ]);
                     }
+                }, () => {
+                    console.error('Qualcosa è andato storto');
+                    dispatch(new CasLogout());
                 }
             );
         }
@@ -198,7 +201,7 @@ export class AuthState {
                 new ClearRuoliUtenteLoggato(),
                 new ClearViewState(),
                 new ClearRichieste(),
-                new Navigate(['/login'])
+                new Navigate([ '/login' ])
             ]);
             // Clear User Data
             patchState({
@@ -220,7 +223,7 @@ export class AuthState {
                     new ClearRuoliUtenteLoggato(),
                     new ClearViewState(),
                     new ClearRichieste(),
-                    new Navigate(['/login'])
+                    new Navigate([ '/login' ])
                 ]);
                 // Clear User Data
                 patchState({

@@ -37,6 +37,11 @@ const appRoutes: Routes = [
     },
     { path: RoutesPath.NotFound, loadChildren: './features/not-found/not-found.module#NotFoundModule' },
     { path: '', pathMatch: 'full', redirectTo: RoutesPath.Home },
+    {
+        path: 'caslogout',
+        redirectTo: 'auth/caslogout',
+        pathMatch: 'full'
+    },
     { path: '**', redirectTo: RoutesPath.NotFound }
 ];
 
