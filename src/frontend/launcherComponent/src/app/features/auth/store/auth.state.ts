@@ -16,7 +16,7 @@ import { environment } from '../../../../environments/environment';
 import { LSNAME } from '../../../core/settings/config';
 import { Utente } from '../../../shared/model/utente.model';
 import { Navigate } from '@ngxs/router-plugin';
-import { AuthenticationService } from '../../../core/auth/authentication.service';
+import { AuthService } from '../../../core/auth/auth.service';
 import { RoutesPath } from '../../../shared/enum/routes-path.enum';
 import { ClearVistaSedi, SetVistaSedi } from '../../../shared/store/actions/app/app.actions';
 import { ClearIdUtente, LogoffUtenteSignalR } from '../../../core/signalr/store/signalR.actions';
@@ -47,7 +47,7 @@ export const AuthStateDefaults: AuthStateModel = {
 })
 export class AuthState {
 
-    constructor(private authService: AuthenticationService) {
+    constructor(private authService: AuthService) {
     }
 
     @Selector()

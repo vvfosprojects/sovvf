@@ -4,7 +4,7 @@ import { first } from 'rxjs/operators';
 import { Select, Store } from '@ngxs/store';
 import { LoadingState } from '../../shared/store/states/loading/loading.state';
 import { Observable, Subscription } from 'rxjs';
-import { AuthenticationService } from '../../core/auth/authentication.service';
+import { AuthService } from '../../core/auth/auth.service';
 import { RecoveryUrl } from '../auth/store/auth.actions';
 
 
@@ -22,7 +22,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
     constructor(
         private formBuilder: FormBuilder,
-        private authenticationService: AuthenticationService,
+        private authenticationService: AuthService,
         private store: Store) {
         this.subscription.add(
             this.loading$.subscribe((loading: boolean) => this.loading = loading)

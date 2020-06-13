@@ -14,7 +14,7 @@ const API_AUTH = BASE_URL + environment.apiUrl.auth;
 const API_URL_CHIAMATA = BASE_URL + environment.apiUrl.markerChiamataInCorso;
 
 @Injectable({ providedIn: 'root' })
-export class AuthenticationService {
+export class AuthService {
 
     constructor(private http: HttpClient,
                 private store: Store) {
