@@ -1,9 +1,9 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
-import { TurnoCalendario } from '../../../turno/turno-calendario.model';
-import { ClearTurnoExtra, GetTurnoExtra, SetTurnoExtra, SetTurnoCalendario } from '../../actions/turno/turno.actions';
-import { TurnoExtraService } from '../../../../../core/service/turno-service/turno-extra.service';
-import { TurnoExtra } from '../../../turno/turno-extra.model';
-import { calcolaTurnoCalendario } from '../../../../../shared/helper/calcola-turno';
+import { TurnoCalendario } from '../../turno/turno-calendario.model';
+import { ClearTurnoExtra, GetTurnoExtra, SetTurnoExtra, SetTurnoCalendario } from '../actions/turno.actions';
+import { TurnoExtraService } from '../../../../core/service/turno-service/turno-extra.service';
+import { TurnoExtra } from '../../turno/turno-extra.model';
+import { calcolaTurnoCalendario } from '../../../../shared/helper/calcola-turno';
 
 export interface TurniStateModel {
     turnoCalendario: TurnoCalendario;

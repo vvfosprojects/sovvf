@@ -22,9 +22,7 @@ import { ComposizioneFilterbarComponent } from './shared/filterbar/composizione-
     Provider
  */
 import { CompPartenzaService } from '../../../core/service/comp-partenza-service/comp-partenza.service';
-import { CompPartenzaServiceFake } from '../../../core/service/comp-partenza-service/comp-partenza.service.fake';
 import { AttivitaUtenteService } from '../../../core/service/attivita-utente-service/attivita-utente.service';
-import { AttivitaUtenteServiceFake } from '../../../core/service/attivita-utente-service/attivita-utente-fake.service';
 /**
  * Ngxs
  */
@@ -85,8 +83,8 @@ import { TastoCompPartenzaComponent } from './shared/tasto-comp-partenza/tasto-c
         ComposizionePartenzaComponent
     ],
     providers: [
-        { provide: AttivitaUtenteService, useClass: environment.fakeProvider ? AttivitaUtenteServiceFake : AttivitaUtenteService },
-        { provide: CompPartenzaService, useClass: environment.fakeProvider ? CompPartenzaServiceFake : CompPartenzaService }
+        AttivitaUtenteService,
+        CompPartenzaService
     ]
 })
 export class ComposizionePartenzaModule {

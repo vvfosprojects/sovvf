@@ -56,7 +56,7 @@ export class NavbarState {
             loaded: true
         });
         dispatch([
-            new SetRuoliUtenteLoggato(action.settings.ruoliUtLoggato),
+            new SetRuoliUtenteLoggato(action.settings.utente.ruoli),
             new SetListaSediTreeview(action.settings.listaSedi)
         ]);
     }

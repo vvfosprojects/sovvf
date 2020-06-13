@@ -11,7 +11,7 @@ import { SignalRState, SignalRStateModel } from '../../../../core/signalr/store/
 import { Navigate, RouterState } from '@ngxs/router-plugin';
 import { RouterStateModel } from '@ngxs/router-plugin/src/router.state';
 import { RoutesPath } from '../../../enum/routes-path.enum';
-import { UtenteState, UtenteStateModel } from '../../../../features/navbar/store/states/operatore/utente.state';
+import { AuthState, AuthStateModel } from '../../../../features/auth/store/auth.state';
 
 export interface AppStateModel {
     previusUrl: string;
@@ -59,9 +59,9 @@ export class AppState {
         return state.vistaSedi;
     }
 
-    @Selector([ UtenteState ])
-    static previusUrl(state: AppStateModel, utenteState: UtenteStateModel) {
-        const userLogged = utenteState.utente;
+    @Selector([ AuthState ])
+    static previusUrl(state: AppStateModel, authState: AuthStateModel) {
+        const userLogged = authState.currentUser;
         return userLogged ? state.previusUrl : RoutesPath.Login;
     }
 

@@ -31,9 +31,9 @@ import { StartLoading, StopLoading } from '../../../../../shared/store/actions/l
 import { Navigate } from '@ngxs/router-plugin';
 import { ActivatedRoute } from '@angular/router';
 import { _isAdministrator } from '../../../../../shared/helper/function';
-import { UtenteState } from '../../../../navbar/store/states/operatore/utente.state';
-import { UpdateUtente } from '../../../../navbar/store/actions/operatore/utente.actions';
 import { UpdateRuoliUtenteLoggato } from '../../../../../shared/store/actions/ruoli/ruoli.actions';
+import { AuthState } from '../../../../auth/store/auth.state';
+import { UpdateCurrentUser } from '../../../../auth/store/auth.actions';
 
 export interface GestioneUtentiStateModel {
     listaUtentiVVF: UtenteVvfInterface[];
@@ -148,7 +148,7 @@ export class GestioneUtentiState {
                     ]);
                 },
                 error => {
-                    const utente = this.store.selectSnapshot(UtenteState.utente);
+                    const utente = this.store.selectSnapshot(AuthState.currentUser);
                     if (!_isAdministrator(utente, { sede: utente.sede })) {
                         dispatch(new Navigate([ '/home' ]));
                     }
@@ -234,7 +234,7 @@ export class GestioneUtentiState {
                 const utente = objUtente.detUtente ? objUtente.detUtente : null;
                 if (utente && utente.ruoli) {
                     dispatch([
-                        new UpdateUtente(utente, { localStorage: true }),
+                        new UpdateCurrentUser(utente, { localStorage: true }),
                         new UpdateRuoliUtenteLoggato(utente.ruoli)
                     ]);
                     if (!_isAdministrator(utente)) {

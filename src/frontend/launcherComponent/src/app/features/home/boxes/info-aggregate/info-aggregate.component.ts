@@ -14,10 +14,10 @@ import { BoxRichiesteState } from '../../store/states/boxes/box-richieste.state'
 import { BoxMezziState } from '../../store/states/boxes/box-mezzi.state';
 import { BoxPersonaleState } from '../../store/states/boxes/box-personale.state';
 import { ReducerBoxClick } from '../../store/actions/boxes/box-click.actions';
-import { UtenteState } from '../../../navbar/store/states/operatore/utente.state';
 import { BoxPersonalePresenze, BoxPersonaleQty } from '../../../../shared/interface/box-personale.interface';
-import { TurnoState } from '../../../navbar/store/states/turno/turno.state';
+import { TurnoState } from '../../../navbar/store/states/turno.state';
 import { TurnoCalendario } from '../../../navbar/turno/turno-calendario.model';
+import { AuthState } from '../../../auth/store/auth.state';
 
 @Component({
     selector: 'app-info-aggregate',
@@ -66,7 +66,7 @@ export class InfoAggregateComponent implements OnInit, OnDestroy {
     }
 
     startMeteo() {
-        const coordinateUtente = this.store.selectSnapshot(UtenteState.utente).sede.coordinate;
+        const coordinateUtente = this.store.selectSnapshot(AuthState.currentUser).sede.coordinate;
         const coordinate = new Coordinate(coordinateUtente.latitudine, coordinateUtente.longitudine);
         this._getMeteoData(coordinate);
         this.timerMeteo = setInterval(() => {

@@ -39,7 +39,7 @@ import {
     ConfirmPartenze,
     GetFiltriComposizione
 } from '../../store/actions/composizione-partenza/composizione-partenza.actions';
-import { TurnoState } from '../../../navbar/store/states/turno/turno.state';
+import { TurnoState } from '../../../navbar/store/states/turno.state';
 import { SganciamentoInterface } from 'src/app/shared/interface/sganciamento.interface';
 import { MezzoDirection } from '../../../../shared/interface/mezzo-direction';
 import { squadraComposizioneBusy } from '../shared/functions/composizione-functions';

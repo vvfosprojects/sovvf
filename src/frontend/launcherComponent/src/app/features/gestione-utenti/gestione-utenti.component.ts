@@ -8,7 +8,6 @@ import {
     SetRicercaUtenti,
     SetSediFiltro, SetSediFiltroConFigli
 } from './store/actions/ricerca-utenti/ricerca-utenti.actons';
-import { UtenteState } from '../navbar/store/states/operatore/utente.state';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import {
     AddRuoloUtenteGestione,
@@ -30,6 +29,7 @@ import { SetSediNavbarVisible } from '../../shared/store/actions/sedi-treeview/s
 import { RuoliUtenteLoggatoState } from '../../shared/store/states/ruoli-utente-loggato/ruoli-utente-loggato.state';
 import { SetCurrentUrl } from '../../shared/store/actions/app/app.actions';
 import { RoutesPath } from '../../shared/enum/routes-path.enum';
+import { AuthState } from '../auth/store/auth.state';
 
 @Component({
     selector: 'app-gestione-utenti',
@@ -38,7 +38,7 @@ import { RoutesPath } from '../../shared/enum/routes-path.enum';
 })
 export class GestioneUtentiComponent implements OnInit, OnDestroy {
 
-    @Select(UtenteState.utente) utente$: Observable<Utente>;
+    @Select(AuthState.currentUser) utente$: Observable<Utente>;
     utente: Utente;
     @Select(GestioneUtentiState.listaUtenti) listaUtenti$: Observable<Utente[]>;
     @Select(GestioneUtentiState.utenteDetail) utenteGestioneDetail$: Observable<Utente>;

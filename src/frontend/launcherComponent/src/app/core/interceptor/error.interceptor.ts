@@ -6,9 +6,9 @@ import { Router } from '@angular/router';
 import { Store } from '@ngxs/store';
 import { ShowToastr } from '../../shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from '../../shared/enum/toastr';
-import { ClearUtente } from '../../features/navbar/store/actions/operatore/utente.actions';
 import { Navigate } from '@ngxs/router-plugin';
-import { UtenteState } from '../../features/navbar/store/states/operatore/utente.state';
+import { AuthState } from '../../features/auth/store/auth.state';
+import { ClearCurrentUser } from '../../features/auth/store/auth.actions';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
@@ -21,8 +21,8 @@ export class ErrorInterceptor implements HttpInterceptor {
         return next.handle(request).pipe(catchError(err => {
 
             if ([ 401 ].indexOf(err.status) !== -1) {
-                if (this.store.selectSnapshot(UtenteState.utente)) {
-                    this.store.dispatch(new ClearUtente(true));
+                if (this.store.selectSnapshot(AuthState.currentUser)) {
+                    this.store.dispatch(new ClearCurrentUser(true));
                     this.store.dispatch(new ShowToastr(ToastrType.Error, err.statusText, err.message, null, null, true));
                 }
                 this.store.dispatch(new Navigate([ '/login' ]));

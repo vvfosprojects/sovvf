@@ -29,7 +29,7 @@ import { NgxsModule } from '@ngxs/store';
 /**
  * Ngxs State
  */
-import { TurnoState } from './store/states/turno/turno.state';
+import { TurnoState } from './store/states/turno.state';
 import { NavbarState } from './store/states/navbar.state';
 
 @NgModule({

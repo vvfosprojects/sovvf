@@ -23,19 +23,19 @@ export class NavbarService {
         );
 
         function mapAppSettings(data: AppSettingsAPI): AppSettings {
-            const result = {} as AppSettings;
             const mapper = e => ({
                 text: e.nome,
                 value: e.codice,
                 children: e.figli.map(mapper)
             });
-            result.listaSedi = {
-                text: data.listaSedi.nome,
-                value: data.listaSedi.codice,
-                children: data.listaSedi.figli.map(mapper)
+            return {
+                ...data,
+                listaSedi: {
+                    text: data.listaSedi.nome,
+                    value: data.listaSedi.codice,
+                    children: data.listaSedi.figli.map(mapper)
+                }
             };
-            result.ruoliUtLoggato = data.ruoliUtLoggato;
-            return result;
         }
     }
 }

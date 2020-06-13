@@ -2,31 +2,22 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
-import { ClearUtente, SetUtente } from '../../features/navbar/store/actions/operatore/utente.actions';
 import { Store } from '@ngxs/store';
-import { UtenteState } from '../../features/navbar/store/states/operatore/utente.state';
 import { StartLoading, StopLoading } from '../../shared/store/actions/loading/loading.actions';
 import { RouterState } from '@ngxs/router-plugin';
-import { LSNAME } from '../settings/config';
 import { Observable } from 'rxjs';
 import { Utente } from '../../shared/model/utente.model';
-import { SetCurrentJwt, SetCurrentUser } from '../../features/auth/store/auth.actions';
+import { Logout, SetCurrentJwt, SetCurrentUser } from '../../features/auth/store/auth.actions';
 
 const BASE_URL = environment.baseUrl;
 const API_AUTH = BASE_URL + environment.apiUrl.auth;
+const API_URL_CHIAMATA = BASE_URL + environment.apiUrl.markerChiamataInCorso;
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
 
     constructor(private http: HttpClient,
                 private store: Store) {
-        // Todo fare merge con getSessionData di app.component
-        const userLocalStorage = JSON.parse(sessionStorage.getItem(LSNAME.currentUser));
-        if (userLocalStorage) {
-            this.store.dispatch([
-                new SetUtente(userLocalStorage)
-            ]);
-        }
     }
 
     login(username: string, password: string): Observable<Utente> {
@@ -37,7 +28,6 @@ export class AuthenticationService {
                     this.store.dispatch([
                         new SetCurrentJwt(response.token),
                         new SetCurrentUser(response),
-                        new SetUtente(response)
                     ]);
                 }
                 if (response) {
@@ -51,11 +41,12 @@ export class AuthenticationService {
         return this.http.post<Utente>(`${API_AUTH}/TicketLogin`, { ticket, service });
     }
 
+    clearUserData(): Observable<any> {
+        return this.http.get<any>(`${API_URL_CHIAMATA}/DeleteAll`);
+    }
+
     logout() {
-        const utente = this.store.selectSnapshot(UtenteState.utente);
         const homeUrl = this.store.selectSnapshot(RouterState.url);
-        if (utente) {
-            this.store.dispatch(new ClearUtente(homeUrl !== '/home'));
-        }
+        this.store.dispatch(new Logout(homeUrl));
     }
 }

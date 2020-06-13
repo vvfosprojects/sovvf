@@ -54,7 +54,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SganciamentoMezzoModalComponent } from '../../../composizione-partenza/shared/sganciamento-mezzo-modal/sganciamento-mezzo-modal.component';
 import { ConfermaPartenze } from '../../../composizione-partenza/interface/conferma-partenze-interface';
 import { ComposizionePartenzaState } from './composizione-partenza.state';
-import { TurnoState } from 'src/app/features/navbar/store/states/turno/turno.state';
+import { TurnoState } from 'src/app/features/navbar/store/states/turno.state';
 import { ConfirmPartenze, SetListaFiltriAffini } from '../../actions/composizione-partenza/composizione-partenza.actions';
 import { makeCopy } from '../../../../../shared/helper/function';
 import { SquadreComposizioneState } from './squadre-composizione.state';

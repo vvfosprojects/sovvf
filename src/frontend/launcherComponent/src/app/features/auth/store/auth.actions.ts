@@ -25,8 +25,23 @@ export class SetCurrentUser {
     }
 }
 
+export class UpdateCurrentUser {
+    static readonly type = '[Auth] Update current User';
+
+    constructor(public utente: Utente,
+                public options?: { localStorage: boolean }) {
+    }
+}
+
 export class SetLogged {
     static readonly type = '[Auth] Signed In';
+}
+
+export class Logout {
+    static readonly type = '[Auth] Sign Out';
+
+    constructor(public url = '/home') {
+    }
 }
 
 export class RecoveryUrl {
@@ -50,4 +65,11 @@ export class CasLogout {
 
 export class ClearAuth {
     static readonly type = '[Auth] Clear auth';
+}
+
+export class ClearCurrentUser {
+    static readonly type = '[Auth] Clear current user';
+
+    constructor(public skipDeleteAll?: boolean) {
+    }
 }

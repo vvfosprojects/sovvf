@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Store } from '@ngxs/store';
-import { UtenteState } from '../../features/navbar/store/states/operatore/utente.state';
+import { AuthState } from '../../features/auth/store/auth.state';
+import { SignalRState } from '../signalr/store/signalR.state';
 
 @Injectable()
 export class JwtInterceptor implements HttpInterceptor {
@@ -12,12 +13,18 @@ export class JwtInterceptor implements HttpInterceptor {
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
-        const currentUser = this.store.selectSnapshot(UtenteState.utente);
+        const jwt = this.store.selectSnapshot(AuthState.currentJwt);
+        const idUtente = this.store.selectSnapshot(SignalRState.idUtenteSignalR);
+        const connectionId = this.store.selectSnapshot(SignalRState.connectionIdSignalR);
+        const codiceSede = this.store.selectSnapshot(SignalRState.codiceSedeSignalR);
 
-        if (currentUser && currentUser.token) {
+        if (jwt) {
             request = request.clone({
                 setHeaders: {
-                    Authorization: `Bearer ${currentUser.token}`
+                    Authorization: `Bearer ${jwt}`,
+                    HubConnectionId: `${connectionId}`,
+                    CodiceSede: `${codiceSede}`,
+                    IdUtente: `${idUtente}`
                 }
             });
         }

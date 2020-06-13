@@ -15,7 +15,6 @@ import { Observable, Subscription } from 'rxjs';
 import { AppState } from './shared/store/states/app/app.state';
 import { OFFSET_SYNC_TIME } from './core/settings/referral-time';
 import { Ruolo, Utente } from './shared/model/utente.model';
-import { UtenteState } from './features/navbar/store/states/operatore/utente.state';
 import { ClearListaSediNavbar, PatchListaSediNavbar } from './shared/store/actions/sedi-treeview/sedi-treeview.actions';
 import { SediTreeviewState } from './shared/store/states/sedi-treeview/sedi-treeview.state';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -26,6 +25,7 @@ import { AuthenticationService } from './core/auth/authentication.service';
 import { VersionCheckService } from './core/service/version-check/version-check.service';
 import { SetAvailHeight, SetContentHeight } from './shared/store/actions/viewport/viewport.actions';
 import { Images } from './shared/enum/images.enum';
+import { AuthState } from './features/auth/store/auth.state';
 import { LSNAME } from './core/settings/config';
 import { SetCurrentJwt, SetCurrentUser } from './features/auth/store/auth.actions';
 
@@ -51,7 +51,7 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
     @Select(AppState.appIsLoaded) isLoaded$: Observable<boolean>;
 
     @Select(RuoliUtenteLoggatoState.ruoliFiltrati) ruoliUtenteLoggato$: Observable<Ruolo[]>;
-    @Select(UtenteState.utente) user$: Observable<Utente>;
+    @Select(AuthState.currentUser) user$: Observable<Utente>;
     user: Utente;
 
     permissionFeatures = PermissionFeatures;
@@ -64,7 +64,7 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
 
     @HostListener('window:resize')
     onResize() {
-        // this.getHeight();
+        this.getHeight();
     }
 
     constructor(private router: Router,
@@ -73,14 +73,14 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
                 private _permessiService: PermessiService,
                 private versionCheckService: VersionCheckService,
                 private modals: NgbModal) {
+        this.getSessionData();
         router.events.subscribe((val) => {
             if (val instanceof NavigationEnd) {
                 this.currentUrl = val.urlAfterRedirects.slice(1);
-                // Todo controllare
-                // !this.deniedPath.includes(val.urlAfterRedirects.slice(1)) && authService._isLogged() ? this._toggle = true : this._toggle = false;
+                const isLogged = this.store.selectSnapshot(AuthState.logged);
+                !this.deniedPath.includes(val.urlAfterRedirects.slice(1)) && isLogged ? this._toggle = true : this._toggle = false;
             }
         });
-        this.getSessionData();
         this.initSubscription();
     }
 
@@ -91,7 +91,7 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
     }
 
     ngAfterViewChecked() {
-        // this.getHeight();
+        this.getHeight();
     }
 
     ngOnDestroy(): void {

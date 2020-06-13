@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngxs/store';
-import { Login } from './store/login.actions';
+import { CasLogin } from './store/auth.actions';
 
 @Component({
     selector: 'app-login',
@@ -8,6 +8,6 @@ import { Login } from './store/login.actions';
 })
 export class LoginComponent {
     constructor(private store: Store) {
-        this.store.dispatch(new Login());
+        this.store.dispatch(new CasLogin());
     }
 }

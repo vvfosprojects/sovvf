@@ -2,14 +2,14 @@ import { Component, OnInit, EventEmitter, Output, isDevMode, OnDestroy, Input } 
 import { Observable, Subscription } from 'rxjs';
 import { ClockService } from './clock/clock-service/clock.service';
 import { Store, Select } from '@ngxs/store';
-import { TurnoState } from './store/states/turno/turno.state';
+import { TurnoState } from './store/states/turno.state';
 import { Ruolo, Utente } from '../../shared/model/utente.model';
 import { TurnoExtra } from './turno/turno-extra.model';
 import { ClearDataNavbar, GetDataNavbar } from './store/actions/navbar.actions';
 import { SediTreeviewState } from '../../shared/store/states/sedi-treeview/sedi-treeview.state';
 import { TurnoCalendario } from './turno/turno-calendario.model';
 import { calcolaTurnoCalendario } from 'src/app/shared/helper/calcola-turno';
-import { SetTurnoCalendario } from './store/actions/turno/turno.actions';
+import { SetTurnoCalendario } from './store/actions/turno.actions';
 import { AuthenticationService } from '../../core/auth/authentication.service';
 import { NewVersionState } from '../../shared/store/states/nuova-versione/nuova-versione.state';
 import { GetNewVersion } from '../../shared/store/actions/nuova-versione/nuova-versione.actions';

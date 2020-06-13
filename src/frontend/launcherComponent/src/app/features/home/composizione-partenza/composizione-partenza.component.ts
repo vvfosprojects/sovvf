@@ -17,7 +17,6 @@ import { ClearEventiRichiesta, SetIdRichiestaEventi } from '../store/actions/eve
 import { EventiRichiestaComponent } from '../eventi/eventi-richiesta.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { HelperSintesiRichiesta } from '../richieste/helper/_helper-sintesi-richiesta';
-import { UtenteState } from '../../navbar/store/states/operatore/utente.state';
 import { AttivitaUtente } from '../../../shared/model/attivita-utente.model';
 import { AddPresaInCarico, DeletePresaInCarico } from '../store/actions/richieste/richiesta-attivita-utente.actions';
 import { MezzoActionInterface } from '../../../shared/interface/mezzo-action.interface';
@@ -25,6 +24,7 @@ import { ActionMezzo } from '../store/actions/richieste/richieste.actions';
 import { SganciamentoInterface } from 'src/app/shared/interface/sganciamento.interface';
 import { ClearMarkerMezzoSelezionato } from '../store/actions/maps/marker.actions';
 import { SganciamentoMezzoComposizione } from '../store/actions/composizione-partenza/mezzi-composizione.actions';
+import { AuthState } from '../../auth/store/auth.state';
 
 @Component({
     selector: 'app-composizione-partenza',
@@ -103,7 +103,7 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
     _checkPrenotato(sintesi: SintesiRichiesta): boolean {
         if (sintesi) {
             if (sintesi.listaUtentiPresaInCarico && sintesi.listaUtentiPresaInCarico.length > 0) {
-                const currentUserId = this.store.selectSnapshot(UtenteState.utente).id;
+                const currentUserId = this.store.selectSnapshot(AuthState.currentUser).id;
                 return (sintesi.listaUtentiPresaInCarico.filter((attivita: AttivitaUtente) => attivita.idUtente === currentUserId).length > 0);
             } else {
                 return false;

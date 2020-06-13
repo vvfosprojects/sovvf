@@ -8,13 +8,13 @@ import { ShowToastr } from '../../../shared/store/actions/toastr/toastr.actions'
 import { ToastrType } from '../../../shared/enum/toastr';
 import { SignalRNotification } from '../model/signalr-notification.model';
 import { SignalRService } from '../signalR.service';
-import { UtenteState } from '../../../features/navbar/store/states/operatore/utente.state';
 import { difference } from 'lodash';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SignalROfflineComponent } from '../signal-r-offline/signal-r-offline.component';
 import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap/modal/modal-ref';
 import { Navigate } from '@ngxs/router-plugin';
 import { RoutesPath } from '../../../shared/enum/routes-path.enum';
+import { AuthState } from '../../../features/auth/store/auth.state';
 
 export interface SignalRStateModel {
     connected: boolean;
@@ -67,7 +67,7 @@ export class SignalRState implements NgxsOnChanges {
         const previousValue = change.previousValue;
         if (!currentValue.disconnected && currentValue.reconnected && previousValue.reconnected) {
             this.modalInstance.close();
-            this.store.dispatch(new Navigate([`/${RoutesPath.Logged}`]));
+            this.store.dispatch(new Navigate([ `/${RoutesPath.Logged}` ]));
         } else if (currentValue.disconnected) {
             this.openModal();
         }
@@ -83,7 +83,7 @@ export class SignalRState implements NgxsOnChanges {
                 new ShowToastr(ToastrType.Success, 'signalR', 'Sei di nuovo online!', 5, null, true)
             ]);
             if (state.codiciSede && state.codiciSede.length > 0) {
-                const utente = this.store.selectSnapshot(UtenteState.utente);
+                const utente = this.store.selectSnapshot(AuthState.currentUser);
                 this.signalR.addToGroup(new SignalRNotification(
                     state.codiciSede,
                     utente.id,
@@ -137,7 +137,7 @@ export class SignalRState implements NgxsOnChanges {
 
     @Action(SetUtenteSignalR)
     setUtenteSignalR({ dispatch }: StateContext<SignalRStateModel>, { codiciSede }: SetUtenteSignalR) {
-        const utente = this.store.selectSnapshot(UtenteState.utente);
+        const utente = this.store.selectSnapshot(AuthState.currentUser);
         dispatch(new SetIdUtente(utente.id));
         if (codiciSede && codiciSede.length > 0) {
             this.signalR.addToGroup(new SignalRNotification(
@@ -151,7 +151,7 @@ export class SignalRState implements NgxsOnChanges {
     @Action(ClearUtenteSignalR)
     clearUtenteSignalR({}: StateContext<SignalRStateModel>, { codiciSede }: ClearUtenteSignalR) {
         if (codiciSede && codiciSede.length > 0) {
-            const utente = this.store.selectSnapshot(UtenteState.utente);
+            const utente = this.store.selectSnapshot(AuthState.currentUser);
             this.signalR.removeToGroup(new SignalRNotification(
                 codiciSede,
                 utente.id,
@@ -194,6 +194,5 @@ export class SignalRState implements NgxsOnChanges {
         });
         this.modalInstance.result.then();
     }
-
 
 }

@@ -50,6 +50,7 @@ import { ClearRichiestaHover } from '../../actions/richieste/richiesta-hover.act
 import { PaginationState } from '../../../../../shared/store/states/pagination/pagination.state';
 import { GetInitCentroMappa } from '../../actions/maps/centro-mappa.actions';
 import { ClearRichiestaMarkerModifica } from '../../actions/maps/richieste-markers.actions';
+import { AuthState } from '../../../../auth/store/auth.state';
 
 export interface RichiesteStateModel {
     richieste: SintesiRichiesta[];
@@ -122,7 +123,7 @@ export class RichiesteState {
     @Action(GetListaRichieste, { cancelUncompleted: true })
     getRichieste({ getState, dispatch }: StateContext<RichiesteStateModel>, action: GetListaRichieste) {
         const state = getState();
-        const utente = this.store.selectSnapshot(x => x.utente.utente);
+        const utente = this.store.selectSnapshot(AuthState.currentUser);
         if (utente) {
             dispatch(new StartLoadingRichieste());
             const filters = {

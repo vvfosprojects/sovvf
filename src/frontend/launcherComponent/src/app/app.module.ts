@@ -29,7 +29,6 @@ import { NgxsRouterPluginModule } from '@ngxs/router-plugin';
 /**
  * State
  */
-import { UtenteState } from './features/navbar/store/states/operatore/utente.state';
 import { AppState } from './shared/store/states/app/app.state';
 import { SignalRState } from './core/signalr/store/signalR.state';
 import { ToastrState } from './shared/store/states/toastr/toastr.state';
@@ -42,7 +41,6 @@ import { APP_ROUTING } from './app.routing';
  * Interceptor
  */
 import { JwtInterceptor, ErrorInterceptor, LoaderInterceptor } from './core/interceptor';
-import { SignalRInterceptor } from './core/signalr/signalR.interceptor';
 /**
  * Module Components
  */
@@ -94,7 +92,7 @@ import { AuthState } from './features/auth/store/auth.state';
             preventDuplicates: true,
         }),
         NgxsModule.forRoot(
-            [ AuthState, AppState, NewVersionState, UtenteState, SignalRState,
+            [ AuthState, AppState, NewVersionState, SignalRState,
                 RuoliUtenteLoggatoState, PermessiState, ToastrState, SediTreeviewState,
                 PaginationState, LoadingState, ViewportState ],
             { developmentMode: !environment.production }
@@ -110,7 +108,6 @@ import { AuthState } from './features/auth/store/auth.state';
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
         { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
         { provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true },
-        { provide: HTTP_INTERCEPTORS, useClass: SignalRInterceptor, multi: true },
         { provide: HTTP_INTERCEPTORS, useClass: RpcInterceptor, multi: true },
         I18n,
     ],

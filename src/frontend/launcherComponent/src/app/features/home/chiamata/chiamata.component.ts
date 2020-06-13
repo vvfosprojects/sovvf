@@ -2,11 +2,11 @@ import { Component, isDevMode, OnDestroy, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Select } from '@ngxs/store';
 import { Utente } from '../../../shared/model/utente.model';
-import { UtenteState } from '../../navbar/store/states/operatore/utente.state';
 import { Tipologia } from '../../../shared/model/tipologia.model';
 import { HomeState } from '../store/states/home.state';
 import { PermissionFeatures } from '../../../shared/enum/permission-features.enum';
 import { SchedaTelefonataState } from '../store/states/chiamata/scheda-telefonata.state';
+import { AuthState } from '../../auth/store/auth.state';
 
 
 @Component({
@@ -17,7 +17,7 @@ import { SchedaTelefonataState } from '../store/states/chiamata/scheda-telefonat
 export class ChiamataComponent implements OnInit, OnDestroy {
 
     @Select(SchedaTelefonataState.loadingNuovaChiamata) loadingNuovaChiamata$: Observable<boolean>;
-    @Select(UtenteState.utente) utente$: Observable<Utente>;
+    @Select(AuthState.currentUser) utente$: Observable<Utente>;
     @Select(HomeState.tipologie) tipologie$: Observable<Tipologia[]>;
     permessiFeature = PermissionFeatures;
 

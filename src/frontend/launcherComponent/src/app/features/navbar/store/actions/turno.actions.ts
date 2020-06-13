@@ -1,4 +1,4 @@
-import { TurnoExtra } from '../../../turno/turno-extra.model';
+import { TurnoExtra } from '../../turno/turno-extra.model';
 
 export class GetTurnoExtra {
     static readonly type = '[Turni] Get TurnoExtra';

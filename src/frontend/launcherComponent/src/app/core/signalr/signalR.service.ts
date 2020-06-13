@@ -54,8 +54,6 @@ import {
     UpdateRuoliPersonali,
     UpdateUtenteGestioneInLista
 } from '../../features/gestione-utenti/store/actions/gestione-utenti/gestione-utenti.actions';
-import { ClearUtente } from '../../features/navbar/store/actions/operatore/utente.actions';
-import { UtenteState } from '../../features/navbar/store/states/operatore/utente.state';
 import { Navigate } from '@ngxs/router-plugin';
 import { InterventoInterface } from './interface/intervento.interface';
 import { MezzoInServizio } from '../../shared/interface/mezzo-in-servizio.interface';
@@ -67,6 +65,8 @@ import { BoxInterventi } from '../../features/home/boxes/boxes-model/box-interve
 import { ChiamataMarker } from '../../features/home/maps/maps-model/chiamata-marker.model';
 import { SintesiRichiesta } from '../../shared/model/sintesi-richiesta.model';
 import { MezzoComposizione } from '../../features/home/composizione-partenza/interface/mezzo-composizione-interface';
+import { AuthState } from '../../features/auth/store/auth.state';
+import { ClearCurrentUser } from '../../features/auth/store/auth.actions';
 
 const HUB_URL = environment.baseUrl + environment.signalRHub;
 const SIGNALR_BYPASS = !environment.signalR;
@@ -314,7 +314,7 @@ export class SignalRService {
         this.hubNotification.on('NotifyModificatoRuoloUtente', (idUtente: string) => {
             console.log('NotifyModificatoRuoloUtente', idUtente);
             if (idUtente) {
-                const utenteAttuale = this.store.selectSnapshot(UtenteState.utente);
+                const utenteAttuale = this.store.selectSnapshot(AuthState.currentUser);
                 if (idUtente === utenteAttuale.id) {
                     this.store.dispatch(new UpdateRuoliPersonali(idUtente));
                 } else {
@@ -333,9 +333,9 @@ export class SignalRService {
 
         this.hubNotification.on('NotifyDeleteUtente', (idUtente: string) => {
             console.log('NotifyDeleteUtente', idUtente);
-            const utenteAttuale = this.store.selectSnapshot(UtenteState.utente);
+            const utenteAttuale = this.store.selectSnapshot(AuthState.currentUser);
             if (idUtente && idUtente === utenteAttuale.id) {
-                this.store.dispatch(new ClearUtente());
+                this.store.dispatch(new ClearCurrentUser());
                 this.store.dispatch(new Navigate([ '/login' ]));
             }
             this.store.dispatch(new SuccessRemoveUtente(idUtente));

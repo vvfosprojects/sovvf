@@ -17,7 +17,7 @@ import { makeCopy } from '../../../../shared/helper/function';
 import { SquadraComposizione } from '../interface/squadra-composizione-interface';
 import { ConfermaPartenze } from '../interface/conferma-partenze-interface';
 import { ComposizionePartenzaState } from '../../store/states/composizione-partenza/composizione-partenza.state';
-import { TurnoState } from '../../../navbar/store/states/turno/turno.state';
+import { TurnoState } from '../../../navbar/store/states/turno.state';
 import { Coordinate } from '../../../../shared/model/coordinate.model';
 import { BoxPartenzaHover } from '../interface/composizione/box-partenza-hover-interface';
 import { StatoMezzo } from '../../../../shared/enum/stato-mezzo.enum';

@@ -13,7 +13,7 @@ import { ShowToastr } from '../../actions/toastr/toastr.actions';
 import { allFalseTreeItem, checkTreeItem, findItem } from './sedi-treeview.helper';
 import { ReloadApp, SetVistaSedi } from '../../actions/app/app.actions';
 import { ToastrType } from '../../../enum/toastr';
-import { SetTurnoCalendario } from 'src/app/features/navbar/store/actions/turno/turno.actions';
+import { SetTurnoCalendario } from 'src/app/features/navbar/store/actions/turno.actions';
 
 export interface SediTreeviewStateModel {
     listeSedi: ListaSedi;
