@@ -20,7 +20,6 @@
 using CQRS.Queries;
 using Serilog;
 using SO115App.API.Models.Classi.NavBar;
-using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.GestioneRuolo;
 using SO115App.Models.Servizi.Infrastruttura.NavBar;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
@@ -34,13 +33,11 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Navbar
     {
         private readonly IGetAlberaturaUnitaOperative _alberaturaUO;
         private readonly IGetRuoliById _getRuoliById;
-        private readonly IGetUtenteById _getUtenteById;
 
-        public NavbarQueryHandler(IGetAlberaturaUnitaOperative alberaturaUO, IGetRuoliById getRuoliById, IGetUtenteById getUtenteById)
+        public NavbarQueryHandler(IGetAlberaturaUnitaOperative alberaturaUO, IGetRuoliById getRuoliById)
         {
             this._alberaturaUO = alberaturaUO;
             _getRuoliById = getRuoliById;
-            _getUtenteById = getUtenteById;
         }
 
         /// <summary>
@@ -55,7 +52,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Navbar
             var navbars = new SO115App.API.Models.Classi.NavBar.Navbar
             {
                 ListaSedi = _alberaturaUO.ListaSediAlberata(),
-                Utente = _getUtenteById.GetUtenteByCodice(query.IdUtente)
+                RuoliUtLoggato = _getRuoliById.Get(query.IdUtente)
             };
 
             Log.Debug("Fine elaborazione Informazioni Navbar Handler");

@@ -27,8 +27,6 @@ namespace SO115App.API.Models.Classi.NavBar
     {
         public UnitaOperativa ListaSedi { get; set; }
 
-        public Utente Utente { get; set; }
-
         public IEnumerable<Role> RuoliUtLoggato { get; set; }
     }
 }
