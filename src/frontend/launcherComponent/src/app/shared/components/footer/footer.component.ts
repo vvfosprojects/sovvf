@@ -1,11 +1,11 @@
-import { Component, Input, OnDestroy } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 import { VersionInterface } from '../../interface/version.interface';
 import { Observable, Subscription } from 'rxjs';
 import { Select } from '@ngxs/store';
 import { NewVersionState } from '../../store/states/nuova-versione/nuova-versione.state';
 import { ViewportState } from '../../store/states/viewport/viewport.state';
-import { AppState } from '../../store/states/app/app.state';
+import { delay } from 'rxjs/operators';
 
 @Component({
     selector: 'app-footer',
@@ -22,18 +22,16 @@ export class FooterComponent implements OnDestroy {
     @Select(ViewportState.footerFixed) footerFixed$: Observable<boolean>;
     fixed: boolean;
 
-    @Select(AppState.appIsLoaded) isLoaded$: Observable<boolean>;
-    isReady: boolean;
-
-    @Input() userLogged: boolean;
+    @Select(ViewportState.footerVisible) isVisible$: Observable<boolean>;
+    isVisible: boolean;
 
     isTest: string;
 
     constructor() {
         this.isTest = environment.productionTest ? ' (ATTENZIONE, E\' UNA VERSIONE DI TEST!) ' : '';
-        this.subscription.add(this.version$.subscribe((r: VersionInterface) => this.version = r));
-        this.subscription.add(this.footerFixed$.subscribe((r: boolean) => this.fixed = r));
-        this.subscription.add(this.isLoaded$.subscribe((r: boolean) => this.isReady = r));
+        this.subscription.add(this.version$.pipe(delay(100)).subscribe((r: VersionInterface) => this.version = r));
+        this.subscription.add(this.footerFixed$.pipe(delay(100)).subscribe((r: boolean) => this.fixed = r));
+        this.subscription.add(this.isVisible$.pipe(delay(100)).subscribe((r: boolean) => this.isVisible = r));
     }
 
     ngOnDestroy() {
