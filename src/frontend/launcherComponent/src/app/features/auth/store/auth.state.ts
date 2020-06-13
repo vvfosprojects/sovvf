@@ -153,10 +153,12 @@ export class AuthState {
     }
 
     @Action(CasLogin)
-    casLogin({ getState }: StateContext<AuthStateModel>) {
+    casLogin({ getState, dispatch }: StateContext<AuthStateModel>) {
         const state = getState();
         if (!state.logged && !state.currentUser) {
             window.location.href = `${environment.casUrl.linkLogin}${environment.casUrl.serviceName}auth`;
+        } else {
+            dispatch(new Navigate([ '/' ]));
         }
     }
 

@@ -5,7 +5,8 @@ import { Select, Store } from '@ngxs/store';
 import { LoadingState } from '../../shared/store/states/loading/loading.state';
 import { Observable, Subscription } from 'rxjs';
 import { AuthService } from '../../core/auth/auth.service';
-import { RecoveryUrl } from '../auth/store/auth.actions';
+import { CasLogin, RecoveryUrl } from '../auth/store/auth.actions';
+import { environment } from '../../../environments/environment';
 
 
 @Component({ templateUrl: 'login.component.html' })
@@ -24,9 +25,13 @@ export class LoginComponent implements OnInit, OnDestroy {
         private formBuilder: FormBuilder,
         private authenticationService: AuthService,
         private store: Store) {
-        this.subscription.add(
-            this.loading$.subscribe((loading: boolean) => this.loading = loading)
-        );
+        if (environment.onlyCas) {
+            this.onCasLogin();
+        } else {
+            this.subscription.add(
+                this.loading$.subscribe((loading: boolean) => this.loading = loading)
+            );
+        }
     }
 
     ngOnInit() {
@@ -60,5 +65,9 @@ export class LoginComponent implements OnInit, OnDestroy {
                 error => {
                     this.error = error;
                 });
+    }
+
+    onCasLogin() {
+        this.store.dispatch(new CasLogin());
     }
 }
