@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngxs/store';
-import { ClearAuth } from './store/auth.actions';
-import { Navigate } from '@ngxs/router-plugin';
+import { ClearCurrentUser } from './store/auth.actions';
 
 @Component({
     selector: 'app-cas-logout',
@@ -10,7 +9,7 @@ import { Navigate } from '@ngxs/router-plugin';
 export class CasLogoutComponent {
 
     constructor(private store: Store) {
-        this.store.dispatch([ new ClearAuth(), new Navigate([ '/' ]) ]);
+        this.store.dispatch([ new ClearCurrentUser() ]);
     }
 
 }
