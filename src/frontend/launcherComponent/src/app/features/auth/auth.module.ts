@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { SharedModule } from '../../shared/shared.module';
 import { CasLoggedComponent } from './cas-logged.component';
-import { LoginComponent } from './login.component';
+import { CasLoginComponent } from './cas-login.component';
 import { LogoutComponent } from './logout.component';
 import { CasLogoutComponent } from './cas-logout.component';
 
@@ -18,7 +18,7 @@ const routes: Routes = [
     },
     {
         path: 'login',
-        component: LoginComponent
+        component: CasLoginComponent
     },
     {
         path: 'logout',
@@ -27,7 +27,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [ CasLoggedComponent, LoginComponent, LogoutComponent, CasLogoutComponent ],
+    declarations: [ CasLoggedComponent, CasLoginComponent, LogoutComponent, CasLogoutComponent ],
     imports: [
         CommonModule,
         SharedModule,
