@@ -41,7 +41,7 @@ import { APP_ROUTING } from './app.routing';
 /**
  * Interceptor
  */
-import { JwtInterceptor, ErrorInterceptor } from './core/_helpers';
+import { JwtInterceptor, ErrorInterceptor, LoaderInterceptor } from './core/interceptor';
 import { SignalRInterceptor } from './core/signalr/signalR.interceptor';
 /**
  * Module Components
@@ -50,7 +50,6 @@ import { NavbarModule } from './features/navbar/navbar.module';
 import { SharedModule } from './shared/shared.module';
 import { AppLoadModule } from './core/app-load/app-load.module';
 import { RpcInterceptor } from './core/rpc/rpc-interceptor.service';
-import { LoaderInterceptor } from './core/_helpers/loader.interceptor';
 import { LoadingState } from './shared/store/states/loading/loading.state';
 import { PaginationState } from './shared/store/states/pagination/pagination.state';
 import { NgxsFormPluginModule } from '@ngxs/form-plugin';
