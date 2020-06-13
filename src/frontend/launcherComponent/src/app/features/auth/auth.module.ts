@@ -4,7 +4,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { SharedModule } from '../../shared/shared.module';
 import { CasLoggedComponent } from './cas-logged.component';
 import { CasLoginComponent } from './cas-login.component';
-import { LogoutComponent } from './logout.component';
 import { CasLogoutComponent } from './cas-logout.component';
 
 const routes: Routes = [
@@ -19,15 +18,11 @@ const routes: Routes = [
     {
         path: 'login',
         component: CasLoginComponent
-    },
-    {
-        path: 'logout',
-        component: LogoutComponent
     }
 ];
 
 @NgModule({
-    declarations: [ CasLoggedComponent, CasLoginComponent, LogoutComponent, CasLogoutComponent ],
+    declarations: [ CasLoggedComponent, CasLoginComponent, CasLogoutComponent ],
     imports: [
         CommonModule,
         SharedModule,
