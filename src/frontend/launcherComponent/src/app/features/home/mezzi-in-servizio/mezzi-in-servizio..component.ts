@@ -16,7 +16,6 @@ import { Mezzo } from '../../../shared/model/mezzo.model';
 import { onlyUnique } from '../../../shared/helper/function';
 import { StatoMezzo } from '../../../shared/enum/stato-mezzo.enum';
 import { BoxClickState, BoxClickStateModel } from '../store/states/boxes/box-click.state';
-import { ReducerFiltroMarker } from '../store/actions/maps/maps-filtro.actions';
 import {
     ClearFiltriMezziInServizio,
     ClearMezzoInServizioHover,
@@ -30,7 +29,7 @@ import { ClearRicercaFilterbar } from '../store/actions/filterbar/ricerca-richie
 @Component({
     selector: 'app-mezzi-in-servizio',
     templateUrl: './mezzi-in-servizio.component.html',
-    styleUrls: ['./mezzi-in-servizio.component.css']
+    styleUrls: [ './mezzi-in-servizio.component.css' ]
 })
 export class MezziInServizioComponent implements OnInit, OnDestroy {
 
@@ -58,15 +57,14 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.store.dispatch(new ClearRicercaFilterbar());
-        this.store.dispatch(new ReducerFiltroMarker('mezzo'));
         isDevMode() && console.log('Componente Mezzo in Servizio creato');
     }
 
     ngOnDestroy(): void {
+        this.subscription.unsubscribe();
         this.store.dispatch(new ClearFiltriMezziInServizio());
         this.store.dispatch(new ClearRicercaFilterbar());
         this.store.dispatch(new UndoAllBoxes(this.prevStateBoxClick));
-        this.subscription.unsubscribe();
         isDevMode() && console.log('Componente Mezzo in Servizio distrutto');
     }
 
@@ -127,7 +125,7 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
 
     /* Apre il modal per visualizzare gli eventi relativi alla richiesta cliccata */
     onVisualizzaEventiRichiesta(mezzo: Mezzo) {
-        this.store.dispatch(new SetFiltroTargaMezzo([mezzo.descrizione]));
+        this.store.dispatch(new SetFiltroTargaMezzo([ mezzo.descrizione ]));
         this.store.dispatch(new SetIdRichiestaEventi(mezzo.idRichiesta));
         const modal = this.modalService.open(EventiRichiestaComponent, {
             windowClass: 'xlModal',
