@@ -27,7 +27,7 @@ import { SetAvailHeight, SetContentHeight } from './shared/store/actions/viewpor
 import { Images } from './shared/enum/images.enum';
 import { AuthState } from './features/auth/store/auth.state';
 import { LSNAME } from './core/settings/config';
-import { SetCurrentJwt, SetCurrentUser } from './features/auth/store/auth.actions';
+import { SetCurrentJwt, SetCurrentUser, SetLoggedCas } from './features/auth/store/auth.actions';
 
 @Component({
     selector: 'app-root',
@@ -159,8 +159,10 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
     private getSessionData(): void {
         const sessionToken = JSON.parse(sessionStorage.getItem(LSNAME.token));
         const sessionCurrentUser = JSON.parse(sessionStorage.getItem(LSNAME.currentUser));
+        const casLogin = JSON.parse(sessionStorage.getItem(LSNAME.casLogin));
         sessionToken && this.store.dispatch(new SetCurrentJwt(sessionToken));
         sessionCurrentUser && this.store.dispatch(new SetCurrentUser(sessionCurrentUser));
+        casLogin && this.store.dispatch(new SetLoggedCas());
     }
 
 }

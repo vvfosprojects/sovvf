@@ -9,7 +9,7 @@ import {
     SetCurrentJwt,
     SetCurrentTicket,
     SetCurrentUser,
-    SetLogged, UpdateCurrentUser
+    SetLogged, SetLoggedCas, UpdateCurrentUser
 } from './auth.actions';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment';
@@ -76,14 +76,18 @@ export class AuthState {
     }
 
     @Action(GetAuth)
-    getAuth({ getState, dispatch, patchState }: StateContext<AuthStateModel>) {
+    getAuth({ getState, dispatch }: StateContext<AuthStateModel>) {
         const state = getState();
         if (state.currentTicket) {
             console.log('getAuth');
             this.authService.ticketLogin(state.currentTicket, environment.casUrl.serviceName).subscribe(result => {
                     if (result.token) {
-                        patchState({ loggedCas: true });
-                        dispatch([ new SetCurrentJwt(result.token), new SetCurrentUser(result), new RecoveryUrl() ]);
+                        dispatch([
+                            new SetLoggedCas(),
+                            new SetCurrentJwt(result.token),
+                            new SetCurrentUser(result),
+                            new RecoveryUrl()
+                        ]);
                     }
                 }, () => {
                     console.error('Qualcosa è andato storto');
@@ -124,8 +128,16 @@ export class AuthState {
 
     @Action(SetLogged)
     setLogged({ patchState }: StateContext<AuthStateModel>) {
+        sessionStorage.setItem(LSNAME.casLogin, JSON.stringify(true));
         patchState({
             logged: true
+        });
+    }
+
+    @Action(SetLoggedCas)
+    setLoggedCas({ patchState }: StateContext<AuthStateModel>) {
+        patchState({
+            loggedCas: true
         });
     }
 
@@ -242,6 +254,7 @@ export class AuthState {
     removeStorage(): void {
         sessionStorage.removeItem(LSNAME.token);
         sessionStorage.removeItem(LSNAME.currentUser);
+        sessionStorage.removeItem(LSNAME.casLogin);
         localStorage.removeItem(LSNAME.redirectUrl);
     }
 

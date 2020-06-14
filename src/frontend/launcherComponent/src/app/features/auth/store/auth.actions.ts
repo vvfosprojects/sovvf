@@ -37,6 +37,10 @@ export class SetLogged {
     static readonly type = '[Auth] Signed In';
 }
 
+export class SetLoggedCas {
+    static readonly type = '[Auth] Logged SSO';
+}
+
 export class Logout {
     static readonly type = '[Auth] Sign Out';
 

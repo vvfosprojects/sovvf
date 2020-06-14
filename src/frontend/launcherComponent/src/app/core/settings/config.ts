@@ -3,5 +3,6 @@ export const LSNAME = {
     currentUser: 'currentUser-sovvf',
     redirectUrl: 'url-sovvf',
     cookieLaw: 'cookie-sovvf',
-    role: 'roleUser-sovvf'
+    role: 'roleUser-sovvf',
+    casLogin: 'sso-sovvf'
 };
