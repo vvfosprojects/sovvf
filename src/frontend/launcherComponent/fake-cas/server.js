@@ -43,7 +43,7 @@ server.get('/serviceValidate', (req, res) => {
         }
     }
     if (req.query.ticket) {
-        jsonFakeResponse.serviceResponse.authenticationSuccess.attributes.sAMAccountName[0] = req.query.ticket;
+        jsonFakeResponse.serviceResponse.authenticationSuccess.attributes.sAMAccountName[0] = req.query.ticket.toUpperCase();
         res.json(jsonFakeResponse);
     } else {
         res.sendStatus(401)
