@@ -1,4 +1,4 @@
-<ng-container *ngIf="isVisible">
+<ng-container *ngIf="isReady && userLogged">
     <div class="text-center w-100 py-0 mt-2"
          [ngClass]="{'footer-bg': !isTest, 'footer-bg-test': isTest,'text-white': !isTest, 'text-black': isTest, 'footer-fixed': fixed}">{{isTest}}
         <i class="mr-1"></i>Sala Operativa VV.F. Web - Direzione Centrale per le Risorse Logistiche e Strumentali <span
