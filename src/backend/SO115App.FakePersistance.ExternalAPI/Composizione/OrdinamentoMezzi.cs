@@ -38,7 +38,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             if (IdRichiestaOrigine != null)
             {
                 var richiestaOrigine = _getRichiestaById.GetByCodice(IdRichiestaOrigine);
-                ValoreIntOriginePerSganciamento = GeneraValoreSganciamento(richiestaOrigine.Tipologie);
+                ValoreIntOriginePerSganciamento = -200; // Hard Coded perchè le tipologie verranno prese da un servizio Esterno e questo valore è sempre uguale
             }
 
             ValoreAdeguatezzaMezzo = GeneraValoreAdeguatezzaMezzo(richiestaDestinazione.Tipologie, composizione.Mezzo.Genere);
@@ -96,20 +96,6 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                 }
             }
             return 10;
-        }
-
-        private int GeneraValoreSganciamento(List<string> codiciTipologie)
-        {
-            var tipologie = _getTipologieByCodice.Get(codiciTipologie);
-
-            int IndiceSganciamento = 0;
-
-            foreach (var tipologia in tipologie)
-            {
-                IndiceSganciamento += tipologia.OppSganc;
-            }
-
-            return IndiceSganciamento;
         }
     }
 }

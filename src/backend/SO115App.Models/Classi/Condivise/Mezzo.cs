@@ -137,5 +137,11 @@ namespace SO115App.API.Models.Classi.Condivise
         ///   identifica l'istante della movimentazione del mezzo
         /// </summary>
         public DateTime? IstanteMovimentazione { get; set; }
+
+        /// <summary>
+        ///   Se non ho le coordinate di un mezzo su GeoFleet metto le coordinate e metto a true
+        ///   questa proprietà
+        /// </summary>
+        public bool CoordinateFake { get; set; }
     }
 }

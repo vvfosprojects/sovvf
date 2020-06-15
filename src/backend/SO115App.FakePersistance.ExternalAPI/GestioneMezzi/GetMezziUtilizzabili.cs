@@ -139,21 +139,28 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
                 }
             }
 
+            int i = listaMezzi.RemoveAll(x => x.Coordinate.Latitudine == 0 && x.Coordinate.Longitudine == 0);
+
             return listaMezzi;
         }
 
         private Mezzo MapMezzo(AnagraficaMezzo anagraficaMezzo, MezzoFake mezzoFake)
         {
-            var distaccamento = new Distaccamento();
             var coordinate = new Coordinate(0, 0);
+            bool CoordinateFake = false;
 
-            distaccamento = _getDistaccamentoByCodiceSedeUC.Get(mezzoFake.Sede).Result;
+            var distaccamento = _getDistaccamentoByCodiceSedeUC.Get(mezzoFake.Sede).Result;
             var sede = new Sede(mezzoFake.Sede, distaccamento.DescDistaccamento, distaccamento.Indirizzo, distaccamento.Coordinate, "", "", "", "", "");
 
             var coordinateMezzo = _getPosizioneByCodiceMezzo.Get(anagraficaMezzo.GenereMezzo.CodiceTipo + "." + anagraficaMezzo.Targa).Result;
             if (coordinateMezzo != null)
             {
                 coordinate = new Coordinate(coordinateMezzo.Localizzazione.Lat, coordinateMezzo.Localizzazione.Lon);
+            }
+            else
+            {
+                coordinate = distaccamento.Coordinate;
+                CoordinateFake = true;
             }
 
             Mezzo mezzo = new Mezzo(anagraficaMezzo.GenereMezzo.CodiceTipo + "." + anagraficaMezzo.Targa,
@@ -164,6 +171,9 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
             {
                 DescrizioneAppartenenza = mezzoFake.DescDestinazione,
             };
+
+            if (CoordinateFake)
+                mezzo.CoordinateFake = true;
 
             return mezzo;
         }

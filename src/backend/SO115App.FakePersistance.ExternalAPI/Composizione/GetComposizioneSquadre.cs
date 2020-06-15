@@ -64,6 +64,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                 if (statiOperativi.Exists(x => x.IdSquadra.Equals(s.Id)))
                 {
                     s.Stato = MappaStatoSquadraDaStatoMezzo.MappaStato(statiOperativi.Find(x => x.IdSquadra.Equals(s.Id)).StatoSquadra);
+                    s.IndiceOrdinamento = -200;
                 }
                 var c = new ComposizioneSquadre
                 {
@@ -73,7 +74,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                 composizioneSquadre.Add(c);
             }
 
-            return composizioneSquadre;
+            return composizioneSquadre.OrderByDescending(x=> x.Squadra.IndiceOrdinamento).ToList();
         }
     }
 }
