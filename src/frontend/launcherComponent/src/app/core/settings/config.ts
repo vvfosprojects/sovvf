@@ -5,6 +5,6 @@ export const LSNAME = {
     cookieLaw: 'cookie-sovvf',
     role: 'roleUser-sovvf',
     casLogin: 'sso-sovvf',
-    emailError: 'assisteza.sovvf@vigilfuoco.it',
+    emailError: 'assistenza.sovvf@vigilfuoco.it',
     defaultErrorMsg: 'Errore applicativo. Si prega di riprovare più tardi. Se l\'errore persiste si prega di segnalare a'
 };

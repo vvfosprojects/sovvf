@@ -6,11 +6,12 @@ import { Select } from '@ngxs/store';
 import { NewVersionState } from '../../store/states/nuova-versione/nuova-versione.state';
 import { ViewportState } from '../../store/states/viewport/viewport.state';
 import { delay } from 'rxjs/operators';
+import { LSNAME } from '../../../core/settings/config';
 
 @Component({
     selector: 'app-footer',
     templateUrl: './footer.component.html',
-    styleUrls: [ './footer.component.scss' ]
+    styleUrls: ['./footer.component.scss']
 })
 export class FooterComponent implements OnDestroy {
 
@@ -26,6 +27,7 @@ export class FooterComponent implements OnDestroy {
     isVisible: boolean;
 
     isTest: string;
+    emailProblemi = LSNAME.emailError;
 
     constructor() {
         this.isTest = environment.productionTest ? ' (ATTENZIONE, E\' UNA VERSIONE DI TEST!) ' : '';

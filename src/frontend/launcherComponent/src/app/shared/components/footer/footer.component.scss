@@ -1,25 +1,29 @@
 .footer-bg {
-  background-color:rgba(206,43,55,0.9);
+  background-color: rgba(206, 43, 55, 0.9);
 }
 
 .footer-bg-test {
-  background-color: rgba(199, 206, 3, 0.9);
+  background-color: rgb(52, 58, 64);
 }
 
 .footer-fixed {
-  bottom:0;
-  left:0;
+  bottom: 0;
+  left: 0;
   position: fixed !important;
-}
-
-.footer-problemi {
-  position: absolute !important;
-  padding-top: 5px;
-  right: 3px;
-  color: rgba(255, 255, 255, 0.74) !important;
-  font-size: x-small !important;
+  width: 100%;
 }
 
 .footer-problemi a {
   color: #ffffff !important;
+}
+
+.footer {
+  transition: opacity 300ms;
+  opacity: .86;
+  cursor: pointer;
+}
+
+.footer:hover {
+  opacity: 1;
+  cursor: pointer;
 }

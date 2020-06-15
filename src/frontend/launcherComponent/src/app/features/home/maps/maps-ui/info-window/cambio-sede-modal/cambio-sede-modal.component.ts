@@ -4,14 +4,9 @@ import { Select, Store } from '@ngxs/store';
 import { MarkerState } from '../../../../store/states/maps/marker.state';
 import { Observable, Subscription } from 'rxjs';
 import { ClearMarkerSedeSelezionato } from '../../../../store/actions/maps/marker.actions';
-import { ShowToastr } from '../../../../../../shared/store/actions/toastr/toastr.actions';
 import { SedeMarker } from '../../../maps-model/sede-marker.model';
 import { SediMarkersState } from '../../../../store/states/maps/sedi-markers.state';
-import { ToastrType } from '../../../../../../shared/enum/toastr';
-import {
-    PatchSediNavbarSelezionate,
-    SetSediNavbarSelezionate
-} from '../../../../../../shared/store/actions/sedi-treeview/sedi-treeview.actions';
+import { PatchSediNavbarSelezionate, SetSediNavbarSelezionate } from '../../../../../../shared/store/actions/sedi-treeview/sedi-treeview.actions';
 
 @Component({
     selector: 'app-cambio-sede-modal',
@@ -25,7 +20,7 @@ export class CambioSedeModalComponent implements OnDestroy {
     sede: SedeMarker;
     subscription = new Subscription();
 
-    constructor(public modal: NgbActiveModal,
+    constructor(private modal: NgbActiveModal,
                 private store: Store) {
         this.subscription.add(this.sedeMarkerById$.subscribe(s => this.sede = s));
     }
@@ -42,8 +37,8 @@ export class CambioSedeModalComponent implements OnDestroy {
         ]);
     }
 
-    annullaCambioSede() {
-        this.store.dispatch(new ShowToastr(ToastrType.Warning, 'Attenzione', 'Azione annullata'));
+    dismissModale() {
+        this.modal.dismiss('ko');
     }
 
 }
