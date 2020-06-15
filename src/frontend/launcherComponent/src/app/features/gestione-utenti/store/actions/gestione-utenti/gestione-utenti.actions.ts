@@ -18,7 +18,7 @@ export class ClearUtentiVVF {
 }
 
 export class GetUtentiGestione {
-    static readonly type = '[GestioneUtenti] Get List Utenti';
+    static readonly type = '[GestioneUtenti] Get List Utenti Gestione';
 
     constructor(public page?: number) { }
 }
@@ -43,14 +43,8 @@ export class AddRuoloUtenteGestione {
     static readonly type = '[GestioneUtenti] Add Ruolo Utente Gestione';
 }
 
-export class UpdateRuoliPersonali {
-    static readonly type = '[GestioneUtenti] Update Ruolo Utente Gestione';
-
-    constructor(public idUtente: string) { }
-}
-
 export class UpdateUtenteGestioneInLista {
-    static readonly type = '[GestioneUtenti] Update Utente Gestione';
+    static readonly type = '[GestioneUtenti] Update Utente Gestione In Lista';
 
     constructor(public idUtente: string) { }
 }

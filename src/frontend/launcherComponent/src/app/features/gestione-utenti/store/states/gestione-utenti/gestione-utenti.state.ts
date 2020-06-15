@@ -11,7 +11,8 @@ import {
     ClearDataModalAddUtenteModal,
     AddUtenteGestione,
     UpdateUtenteGestioneInLista,
-    UpdateRuoliPersonali, SuccessAddUtenteGestione, SuccessRemoveUtente
+    SuccessAddUtenteGestione,
+    SuccessRemoveUtente
 } from '../../actions/gestione-utenti/gestione-utenti.actions';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { RicercaUtentiState } from '../ricerca-utenti/ricerca-utenti.state';
@@ -126,7 +127,7 @@ export class GestioneUtentiState {
     }
 
     @Action(GetUtentiGestione)
-    getGestioneUtenti({ dispatch }: StateContext<GestioneUtentiStateModel>, action: GetUtentiGestione) {
+    getUtentiGestione({ dispatch }: StateContext<GestioneUtentiStateModel>, action: GetUtentiGestione) {
         const route = this.router.children[0].snapshot.url[0].path;
         if (route === 'gestione-utenti') {
             dispatch(new StartLoading());
@@ -228,25 +229,8 @@ export class GestioneUtentiState {
         dispatch(new ClearDataModalAddUtenteModal());
     }
 
-    @Action(UpdateRuoliPersonali)
-    updateRuoloUtenteGestione({ getState, dispatch }: StateContext<GestioneUtentiStateModel>, action: UpdateRuoliPersonali) {
-        this._gestioneUtenti.getUtente(action.idUtente).subscribe(objUtente => {
-                const utente = objUtente.detUtente ? objUtente.detUtente : null;
-                if (utente && utente.ruoli) {
-                    dispatch([
-                        new UpdateCurrentUser(utente, { localStorage: true }),
-                        new UpdateRuoliUtenteLoggato(utente.ruoli)
-                    ]);
-                    if (!_isAdministrator(utente)) {
-                        dispatch(new Navigate([ '/home' ]));
-                    }
-                }
-            }
-        );
-    }
-
     @Action(UpdateUtenteGestioneInLista)
-    updateUtenteGestione({ getState, setState, dispatch }: StateContext<GestioneUtentiStateModel>, action: UpdateUtenteGestioneInLista) {
+    updateUtenteGestioneInLista({ getState, setState, dispatch }: StateContext<GestioneUtentiStateModel>, action: UpdateUtenteGestioneInLista) {
         const listaUtentiGestione = getState().listaUtenti;
         const utentePresente = listaUtentiGestione.filter((u: Utente) => u.id === action.idUtente).length > 0;
         if (utentePresente) {

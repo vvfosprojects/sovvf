@@ -33,6 +33,12 @@ export class UpdateCurrentUser {
     }
 }
 
+export class UpdateRuoliPersonali {
+    static readonly type = '[GestioneUtenti] Update Ruoli Personali';
+
+    constructor(public idUtente: string) { }
+}
+
 export class SetLogged {
     static readonly type = '[Auth] Signed In';
 }

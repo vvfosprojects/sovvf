@@ -13,11 +13,7 @@ import { SetBoxRichieste } from '../../features/home/store/actions/boxes/box-ric
 import { environment } from '../../../environments/environment';
 import { ToastrType } from '../../shared/enum/toastr';
 import { ApriModaleRichiestaDuplicata, InsertChiamataSuccess } from '../../features/home/store/actions/chiamata/scheda-telefonata.actions';
-import {
-    InsertChiamataMarker,
-    RemoveChiamataMarker,
-    UpdateItemChiamataMarker
-} from '../../features/home/store/actions/maps/chiamate-markers.actions';
+import { InsertChiamataMarker, RemoveChiamataMarker, UpdateItemChiamataMarker } from '../../features/home/store/actions/maps/chiamate-markers.actions';
 import {
     AddBookMezzoComposizione,
     RemoveBookingMezzoComposizione,
@@ -26,16 +22,10 @@ import {
     UpdateMezzoComposizioneScadenzaByCodiceMezzo
 } from '../../features/home/store/actions/composizione-partenza/mezzi-composizione.actions';
 import { RemoveBoxPartenzaByMezzoId } from '../../features/home/store/actions/composizione-partenza/box-partenza.actions';
-import {
-    InsertRichiestaMarker,
-    UpdateRichiestaMarker
-} from '../../features/home/store/actions/maps/richieste-markers.actions';
+import { InsertRichiestaMarker, UpdateRichiestaMarker } from '../../features/home/store/actions/maps/richieste-markers.actions';
 import { ComposizionePartenzaState } from '../../features/home/store/states/composizione-partenza/composizione-partenza.state';
 import { Composizione } from '../../shared/enum/composizione.enum';
-import {
-    SetListaIdPreAccoppiati,
-    UpdateMezzoPreAccoppiatoComposizione
-} from '../../features/home/store/actions/composizione-partenza/composizione-veloce.actions';
+import { SetListaIdPreAccoppiati, UpdateMezzoPreAccoppiatoComposizione } from '../../features/home/store/actions/composizione-partenza/composizione-veloce.actions';
 import { SetMezziInServizio } from 'src/app/features/home/store/actions/mezzi-in-servizio/mezzi-in-servizio.actions';
 import { IdPreaccoppiati } from '../../features/home/composizione-partenza/interface/id-preaccoppiati-interface';
 import { UpdateMezzoMarker } from '../../features/home/store/actions/maps/mezzi-markers.actions';
@@ -48,12 +38,7 @@ import {
 } from 'src/app/features/home/store/actions/schede-contatto/schede-contatto.actions';
 import { ContatoriSchedeContatto } from '../../shared/interface/contatori-schede-contatto.interface';
 import { SchedaContatto } from '../../shared/interface/scheda-contatto.interface';
-import {
-    SuccessAddUtenteGestione,
-    SuccessRemoveUtente,
-    UpdateRuoliPersonali,
-    UpdateUtenteGestioneInLista
-} from '../../features/gestione-utenti/store/actions/gestione-utenti/gestione-utenti.actions';
+import { SuccessAddUtenteGestione, SuccessRemoveUtente, UpdateUtenteGestioneInLista } from '../../features/gestione-utenti/store/actions/gestione-utenti/gestione-utenti.actions';
 import { Navigate } from '@ngxs/router-plugin';
 import { InterventoInterface } from './interface/intervento.interface';
 import { MezzoInServizio } from '../../shared/interface/mezzo-in-servizio.interface';
@@ -66,7 +51,7 @@ import { ChiamataMarker } from '../../features/home/maps/maps-model/chiamata-mar
 import { SintesiRichiesta } from '../../shared/model/sintesi-richiesta.model';
 import { MezzoComposizione } from '../../features/home/composizione-partenza/interface/mezzo-composizione-interface';
 import { AuthState } from '../../features/auth/store/auth.state';
-import { ClearCurrentUser } from '../../features/auth/store/auth.actions';
+import { ClearCurrentUser, UpdateRuoliPersonali } from '../../features/auth/store/auth.actions';
 
 const HUB_URL = environment.baseUrl + environment.signalRHub;
 const SIGNALR_BYPASS = !environment.signalR;
@@ -336,7 +321,7 @@ export class SignalRService {
             const utenteAttuale = this.store.selectSnapshot(AuthState.currentUser);
             if (idUtente && idUtente === utenteAttuale.id) {
                 this.store.dispatch(new ClearCurrentUser());
-                this.store.dispatch(new Navigate([ '/login' ]));
+                this.store.dispatch(new Navigate(['/login']));
             }
             this.store.dispatch(new SuccessRemoveUtente(idUtente));
         });

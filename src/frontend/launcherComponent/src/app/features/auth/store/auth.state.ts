@@ -3,13 +3,18 @@ import {
     CasLogin,
     CasLogout,
     CasResponse,
-    ClearAuth, ClearCurrentUser,
-    GetAuth, Logout,
+    ClearAuth,
+    ClearCurrentUser,
+    GetAuth,
+    Logout,
     RecoveryUrl,
     SetCurrentJwt,
     SetCurrentTicket,
     SetCurrentUser,
-    SetLogged, SetLoggedCas, UpdateCurrentUser
+    SetLogged,
+    SetLoggedCas,
+    UpdateCurrentUser,
+    UpdateRuoliPersonali
 } from './auth.actions';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment';
@@ -20,9 +25,12 @@ import { AuthService } from '../../../core/auth/auth.service';
 import { RoutesPath } from '../../../shared/enum/routes-path.enum';
 import { ClearVistaSedi, SetVistaSedi } from '../../../shared/store/actions/app/app.actions';
 import { ClearIdUtente, LogoffUtenteSignalR } from '../../../core/signalr/store/signalR.actions';
-import { ClearRuoliUtenteLoggato } from '../../../shared/store/actions/ruoli/ruoli.actions';
+import { ClearRuoliUtenteLoggato, UpdateRuoliUtenteLoggato } from '../../../shared/store/actions/ruoli/ruoli.actions';
 import { ClearViewState } from '../../home/store/actions/view/view.actions';
 import { ClearRichieste } from '../../home/store/actions/richieste/richieste.actions';
+import { _isAdministrator } from '../../../shared/helper/function';
+import { GestioneUtentiStateModel } from '../../gestione-utenti/store/states/gestione-utenti/gestione-utenti.state';
+import { GestioneUtentiService } from '../../../core/service/gestione-utenti-service/gestione-utenti.service';
 
 export interface AuthStateModel {
     currentJwt: string;
@@ -47,7 +55,8 @@ export const AuthStateDefaults: AuthStateModel = {
 })
 export class AuthState {
 
-    constructor(private authService: AuthService) {
+    constructor(private authService: AuthService,
+                private _gestioneUtenti: GestioneUtentiService) {
     }
 
     @Selector()
@@ -105,7 +114,7 @@ export class AuthState {
                 currentJwt: action.currentJwt,
                 currentTicket: null
             });
-            dispatch([ new SetLogged() ]);
+            dispatch([new SetLogged()]);
         }
     }
 
@@ -113,7 +122,7 @@ export class AuthState {
     setCurrentUser({ patchState, dispatch }: StateContext<AuthStateModel>, { currentUser }: SetCurrentUser) {
         sessionStorage.setItem(LSNAME.currentUser, JSON.stringify(currentUser));
         patchState({ currentUser });
-        dispatch(new SetVistaSedi([ currentUser.sede.codice ]));
+        dispatch(new SetVistaSedi([currentUser.sede.codice]));
     }
 
     @Action(UpdateCurrentUser)
@@ -124,6 +133,23 @@ export class AuthState {
         if (action.options.localStorage) {
             sessionStorage.setItem(LSNAME.currentUser, JSON.stringify(action.utente));
         }
+    }
+
+    @Action(UpdateRuoliPersonali)
+    updateRuoliPersonali({ getState, dispatch }: StateContext<GestioneUtentiStateModel>, action: UpdateRuoliPersonali) {
+        this._gestioneUtenti.getUtente(action.idUtente).subscribe(objUtente => {
+                const utente = objUtente.detUtente ? objUtente.detUtente : null;
+                if (utente && utente.ruoli) {
+                    dispatch([
+                        new UpdateCurrentUser(utente, { localStorage: true }),
+                        new UpdateRuoliUtenteLoggato(utente.ruoli)
+                    ]);
+                    if (!_isAdministrator(utente)) {
+                        dispatch(new Navigate(['/home']));
+                    }
+                }
+            }
+        );
     }
 
     @Action(SetLogged)
@@ -158,9 +184,9 @@ export class AuthState {
         console.log('RecoveryUrl', currentUrl);
         if (currentUrl) {
             localStorage.removeItem(LSNAME.redirectUrl);
-            dispatch(new Navigate([ currentUrl ]));
+            dispatch(new Navigate([currentUrl]));
         } else {
-            dispatch(new Navigate([ '/' + RoutesPath.Home ]));
+            dispatch(new Navigate(['/' + RoutesPath.Home]));
         }
     }
 
@@ -180,7 +206,7 @@ export class AuthState {
         if (!action.ticket) {
             dispatch(new CasLogin());
         } else {
-            dispatch([ new SetCurrentTicket(action.ticket) ]);
+            dispatch([new SetCurrentTicket(action.ticket)]);
         }
     }
 
@@ -214,7 +240,7 @@ export class AuthState {
                     new ClearRuoliUtenteLoggato(),
                     new ClearViewState(),
                     new ClearRichieste(),
-                    new Navigate([ '/login' ])
+                    new Navigate(['/login'])
                 ]);
                 // Clear User Data
                 patchState({
@@ -236,7 +262,7 @@ export class AuthState {
                         new ClearRuoliUtenteLoggato(),
                         new ClearViewState(),
                         new ClearRichieste(),
-                        new Navigate([ '/login' ])
+                        new Navigate(['/login'])
                     ]);
                     // Clear User Data
                     patchState({
@@ -246,7 +272,7 @@ export class AuthState {
             }
             dispatch(new ClearAuth());
         } else {
-            dispatch(new Navigate([ '/login' ]));
+            dispatch(new Navigate(['/login']));
         }
 
     }
