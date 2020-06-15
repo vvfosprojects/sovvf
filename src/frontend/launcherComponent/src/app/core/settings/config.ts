@@ -4,5 +4,7 @@ export const LSNAME = {
     redirectUrl: 'url-sovvf',
     cookieLaw: 'cookie-sovvf',
     role: 'roleUser-sovvf',
-    casLogin: 'sso-sovvf'
+    casLogin: 'sso-sovvf',
+    emailError: 'assisteza.sovvf@vigilfuoco.it',
+    defaultErrorMsg: 'Errore applicativo. Si prega di riprovare più tardi. Se l\'errore persiste si prega di segnalare a'
 };
