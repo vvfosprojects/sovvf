@@ -66,5 +66,12 @@ namespace SO115App.SignalR
         {
             return DateTimeOffset.Now.ToUnixTimeMilliseconds();
         }
+
+        public override async Task OnDisconnectedAsync(Exception exception)
+        {
+            var id = Context.ConnectionId;
+
+            await base.OnDisconnectedAsync(exception);
+        }
     }
 }
