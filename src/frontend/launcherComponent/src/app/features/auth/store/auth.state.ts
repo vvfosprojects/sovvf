@@ -89,7 +89,7 @@ export class AuthState {
         const state = getState();
         if (state.currentTicket) {
             console.log('getAuth');
-            this.authService.ticketLogin(state.currentTicket, environment.casUrl.serviceName).subscribe(result => {
+            this.authService.ticketLogin(state.currentTicket, `${environment.casUrl.serviceName}auth`).subscribe(result => {
                     if (result.token) {
                         dispatch([
                             new SetLoggedCas(),
