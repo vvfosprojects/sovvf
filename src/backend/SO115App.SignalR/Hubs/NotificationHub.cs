@@ -21,6 +21,7 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
 using SO115App.API.Models.Classi.Autenticazione;
+using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti;
 using SO115App.SignalR.Notifications;
 
 namespace SO115App.SignalR

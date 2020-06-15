@@ -198,6 +198,8 @@ namespace SO115App.API.Models.Classi.Autenticazione
             }
         }
 
+        public string HubConId { get; set; }
+
         //public static Utente FindUserByUsername(string username)
         //{
         //    Utente userFind = new Utente(username);
