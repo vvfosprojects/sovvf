@@ -22,7 +22,7 @@ namespace SO115App.API.Controllers
         }
 
         [HttpPost("PrenotaMezzo")]
-        public async Task<IActionResult> PrenotaMezzo([FromBody]StatoOperativoMezzo mezzoPrenotato)
+        public async Task<IActionResult> PrenotaMezzo([FromBody] StatoOperativoMezzo mezzoPrenotato)
         {
             mezzoPrenotato.CodiceSede = Request.Headers["codicesede"];
             mezzoPrenotato.SbloccaMezzo = false;
@@ -44,8 +44,8 @@ namespace SO115App.API.Controllers
             catch (Exception ex)
             {
                 if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
-                    return StatusCode(403, Costanti.UtenteNonAutorizzato);
-                return BadRequest();
+                    return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
+                return BadRequest(new { ex.Message });
             }
         }
 
@@ -69,8 +69,8 @@ namespace SO115App.API.Controllers
             catch (Exception ex)
             {
                 if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
-                    return StatusCode(403, Costanti.UtenteNonAutorizzato);
-                return BadRequest();
+                    return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
+                return BadRequest(new { ex.Message });
             }
         }
     }

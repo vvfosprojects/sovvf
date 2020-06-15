@@ -54,7 +54,7 @@ namespace SO115App.API.Controllers
         }
 
         [HttpPost("GetSchede")]
-        public async Task<IActionResult> Get([FromBody]FiltriSchede filtri)
+        public async Task<IActionResult> Get([FromBody] FiltriSchede filtri)
         {
             filtri.IdUtente = Request.Headers["IdUtente"];
 
@@ -71,8 +71,8 @@ namespace SO115App.API.Controllers
             catch (Exception ex)
             {
                 if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
-                    return StatusCode(403, Costanti.UtenteNonAutorizzato);
-                return BadRequest();
+                    return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
+                return BadRequest(new { message = ex.Message });
             }
         }
 
@@ -90,13 +90,13 @@ namespace SO115App.API.Controllers
             catch (Exception ex)
             {
                 if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
-                    return StatusCode(403, Costanti.UtenteNonAutorizzato);
-                return BadRequest();
+                    return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
+                return BadRequest(new { message = ex.Message });
             }
         }
 
         [HttpPost("MergeSchede")]
-        public async Task<IActionResult> MergeSchede([FromBody]SchedaContatto scheda)
+        public async Task<IActionResult> MergeSchede([FromBody] SchedaContatto scheda)
         {
             string idUtente = Request.Headers["IdUtente"];
 
@@ -115,13 +115,13 @@ namespace SO115App.API.Controllers
             catch (Exception ex)
             {
                 if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
-                    return StatusCode(403, Costanti.UtenteNonAutorizzato);
-                return BadRequest();
+                    return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
+                return BadRequest(new { message = ex.Message });
             }
         }
 
         [HttpPost("UndoMergeSchede")]
-        public async Task<IActionResult> UndoMerge([FromBody]SchedaContatto scheda)
+        public async Task<IActionResult> UndoMerge([FromBody] SchedaContatto scheda)
         {
             var idUtente = Request.Headers["IdUtente"];
             string codiceSede = Request.Headers["codiceSede"];
@@ -140,8 +140,8 @@ namespace SO115App.API.Controllers
             catch (Exception ex)
             {
                 if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
-                    return StatusCode(403, Costanti.UtenteNonAutorizzato);
-                return BadRequest();
+                    return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
+                return BadRequest(new { message = ex.Message });
             }
         }
     }

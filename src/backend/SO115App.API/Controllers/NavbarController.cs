@@ -61,7 +61,7 @@ namespace SO115App.API.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest();
+                return BadRequest(new { ex.Message });
             }
         }
     }
