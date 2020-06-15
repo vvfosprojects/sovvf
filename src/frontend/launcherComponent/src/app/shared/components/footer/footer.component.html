@@ -1,8 +1,33 @@
 <ng-container *ngIf="isVisible">
-    <div class="text-center w-100 py-0 mt-2"
-         [ngClass]="{'footer-bg': !isTest, 'footer-bg-test': isTest,'text-white': !isTest, 'text-black': isTest, 'footer-fixed': fixed}">{{isTest}}
-        <i class="mr-1"></i>Sala Operativa VV.F. Web - Direzione Centrale per le Risorse Logistiche e Strumentali <span
-                *ngIf="version && version.number && version.date">(vers. {{version.number}}
-            - {{version.date | date :'dd/MM/yyyy HH:mm'}})</span> {{isTest}}<span class="footer-problemi">Problemi? Scrivi a <a href="mailto://assistenza.sovvf@vigilfuoco.it">assistenza.sovvf@vigilfuoco.it</a></span>
+    <div class="footer position-relative footer-bg text-white" [ngClass]="{'footer-fixed': fixed}">
+        <div *ngIf="isTest" class="footer-bg-test text-center text-white font-weight-bolder">
+            <i class="fa fa-exclamation-triangle mr-1"></i>
+            ATTENZIONE, E' UNA VERSIONE DI TEST!
+        </div>
+        <div class="clearfix">
+            <div class="float-left py-2">
+                <div class="border-right border-light px-4">
+                    <img class="img-fluid" src="../../../../assets/img/logo_vvf_200x.png" width="50">
+                </div>
+            </div>
+            <div class="float-left px-4" style="padding-top:13px">
+                <span class="font-weight-bolder">Sala Operativa VV.F. Web</span>
+                - Direzione Centrale per le Risorse Logistiche e Strumentali
+                <small *ngIf="version && version.number && version.date" class="d-block">
+                    vers. {{version.number}}
+                    <span class="d-inline-block ml-1" style="opacity: .75">
+                        - {{version.date | date :'dd/MM/yyyy'}} alle
+                        {{version.date | date :'HH:mm'}}
+                    </span>
+                </small>
+            </div>
+            <div class="float-right pr-4 footer-problemi" style="padding-top:20px">
+                <span class="font-weight-bolder">Problemi?</span>
+                Scrivi a
+                <div class="d-inline-block">
+                    <a href="{{'mailto://' + emailProblemi}}">{{emailProblemi}}</a>
+                </div>
+            </div>
+        </div>
     </div>
 </ng-container>
