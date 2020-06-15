@@ -1,16 +1,9 @@
-<div class="row">
-    <div class="col-2 text center pr-0">
-        <img alt="comando-avatar" src="assets/img/comando-avatar.svg">
-    </div>
-    <div class="col-10 pl-0">
-        <ng-container *ngIf="sediNavbarVisible">
-            <app-shared-treeview [items]="items" [testoSedeSelezionata$]="testoSedeSelezionata$"
-                                 [tastoConferma$]="tastoConferma$"
-                                 [placement]="'bottom-left'"
-                                 (annullaSelezione)="onAnnulla()" (confermaSelezione)="onConferma()"
-                                 (patchSelezione)="onPatch($event)" [colorButton]="colorButton"
-                                 [visualizzaTasti]="true">
-            </app-shared-treeview>
-        </ng-container>
-    </div>
-</div>
+<ng-container *ngIf="sediNavbarVisible">
+    <app-shared-treeview [items]="items" [testoSedeSelezionata$]="testoSedeSelezionata$"
+                         [tastoConferma$]="tastoConferma$"
+                         [placement]="'bottom-left'"
+                         (annullaSelezione)="onAnnulla()" (confermaSelezione)="onConferma()"
+                         (patchSelezione)="onPatch($event)" [colorButton]="colorButton"
+                         [visualizzaTasti]="true">
+    </app-shared-treeview>
+</ng-container>
