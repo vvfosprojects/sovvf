@@ -29,9 +29,9 @@ export class FooterComponent implements OnDestroy {
 
     constructor() {
         this.isTest = environment.productionTest ? ' (ATTENZIONE, E\' UNA VERSIONE DI TEST!) ' : '';
-        this.subscription.add(this.version$.pipe(delay(100)).subscribe((r: VersionInterface) => this.version = r));
-        this.subscription.add(this.footerFixed$.pipe(delay(100)).subscribe((r: boolean) => this.fixed = r));
-        this.subscription.add(this.isVisible$.pipe(delay(100)).subscribe((r: boolean) => this.isVisible = r));
+        this.subscription.add(this.version$.pipe(delay(0)).subscribe((r: VersionInterface) => this.version = r));
+        this.subscription.add(this.footerFixed$.pipe(delay(0)).subscribe((r: boolean) => this.fixed = r));
+        this.subscription.add(this.isVisible$.pipe(delay(0)).subscribe((r: boolean) => this.isVisible = r));
     }
 
     ngOnDestroy() {
