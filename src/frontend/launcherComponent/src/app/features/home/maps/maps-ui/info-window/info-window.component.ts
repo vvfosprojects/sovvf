@@ -39,9 +39,9 @@ export class InfoWindowComponent implements OnInit {
     methods = new HelperSintesiRichiesta;
 
     constructor(private store: Store,
-        private _modalService: NgbModal,
-        popoverConfig: NgbPopoverConfig,
-        tooltipConfig: NgbTooltipConfig) {
+                private _modalService: NgbModal,
+                popoverConfig: NgbPopoverConfig,
+                tooltipConfig: NgbTooltipConfig) {
         popoverConfig.container = 'body';
         popoverConfig.placement = 'bottom';
         tooltipConfig.container = 'body';
@@ -51,7 +51,7 @@ export class InfoWindowComponent implements OnInit {
     openModal(mode: string, id_richiesta?: string) {
         switch (mode) {
             case 'cambioSede':
-                this._modalService.open(CambioSedeModalComponent);
+                this._modalService.open(CambioSedeModalComponent, { centered: true });
                 break;
             case 'visualizzaRichiesta':
                 this.store.dispatch(new SetRichiestaById(id_richiesta));

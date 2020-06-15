@@ -227,13 +227,15 @@
             <tr *ngIf="sedeMarker.tipo && !compact">
                 <th scope="row" class="s-info-window row py-1 px-0 mx-0 w-100">
                     <div class="col">
-                        <button class="btn btn-outline-dark px-1 py-1 my-3" (click)="openModal('cambioSede')"> Portami
-                            lì
+                        <button class="btn btn-block btn-outline-dark px-1 py-1 my-3" (click)="openModal('cambioSede')">
+                            Portami lì
                             <i class="fa fa-sign-out"></i>
                         </button>
                     </div>
                     <div class="col" ngbTooltip="{{ sedeMarker.tipo }}" placement="bottom">
-                        <img class="w-50" [src]="tipoSedeIcona" alt="sede icona">
+                        <div class="text-center pt-1">
+                            <img width="55" [src]="tipoSedeIcona" alt="sede icona">
+                        </div>
                     </div>
                 </th>
             </tr>
@@ -310,7 +312,8 @@
     <div *ngIf="schedaContattoMarker">
         <div class="p-2">
             <div class="clearfix">
-                <h6 class="mb-1 float-left">Scheda contatto<span *ngIf="schedaContattoMarker.gestita" class="text-info font-weight-bold"> GESTITA</span></h6>
+                <h6 class="mb-1 float-left">Scheda contatto<span *ngIf="schedaContattoMarker.gestita"
+                                                                 class="text-info font-weight-bold"> GESTITA</span></h6>
                 <h6 class="mb-1 float-right">
                     <i class="fa fa-desktop mr-1"></i>
                     {{schedaContattoMarker.codiceOperatore}}
