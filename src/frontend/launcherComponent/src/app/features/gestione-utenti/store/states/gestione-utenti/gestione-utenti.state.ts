@@ -32,9 +32,7 @@ import { StartLoading, StopLoading } from '../../../../../shared/store/actions/l
 import { Navigate } from '@ngxs/router-plugin';
 import { ActivatedRoute } from '@angular/router';
 import { _isAdministrator } from '../../../../../shared/helper/function';
-import { UpdateRuoliUtenteLoggato } from '../../../../../shared/store/actions/ruoli/ruoli.actions';
 import { AuthState } from '../../../../auth/store/auth.state';
-import { UpdateCurrentUser } from '../../../../auth/store/auth.actions';
 
 export interface GestioneUtentiStateModel {
     listaUtentiVVF: UtenteVvfInterface[];
