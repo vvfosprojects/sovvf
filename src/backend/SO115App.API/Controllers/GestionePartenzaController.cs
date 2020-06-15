@@ -51,10 +51,11 @@ namespace SO115App.API.Controllers
             catch (Exception ex)
             {
                 if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
-                    return StatusCode(403, Costanti.UtenteNonAutorizzato);
-                if (ex.Message.Contains(Costanti.MezzoErroreCambioStatoRichiestaChiusa))
-                    return StatusCode(403, Costanti.MezzoErroreCambioStatoRichiestaChiusa);
-                return BadRequest();
+                    return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
+                else if (ex.Message.Contains(Costanti.MezzoErroreCambioStatoRichiestaChiusa))
+                    return StatusCode(403, new { message = Costanti.MezzoErroreCambioStatoRichiestaChiusa });
+                else
+                    return BadRequest(new { message = ex.Message });
             }
         }
 
@@ -80,10 +81,11 @@ namespace SO115App.API.Controllers
             catch (Exception ex)
             {
                 if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
-                    return StatusCode(403, Costanti.UtenteNonAutorizzato);
-                if (ex.Message.Contains(Costanti.MezzoErroreCambioStatoRichiestaChiusa))
-                    return StatusCode(403, Costanti.MezzoErroreCambioStatoRichiestaChiusa);
-                return BadRequest();
+                    return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
+                else if (ex.Message.Contains(Costanti.MezzoErroreCambioStatoRichiestaChiusa))
+                    return StatusCode(403, new { message = Costanti.MezzoErroreCambioStatoRichiestaChiusa });
+                else
+                    return BadRequest(new { message = ex.Message });
             }
         }
     }

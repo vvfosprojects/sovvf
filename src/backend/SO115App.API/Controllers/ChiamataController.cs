@@ -59,7 +59,7 @@ namespace SO115App.API.Controllers
         }
 
         [HttpPost("Add")]
-        public async Task<IActionResult> Add([FromBody]Intervento chiamata)
+        public async Task<IActionResult> Add([FromBody] Intervento chiamata)
         {
             var codiceSede = Request.Headers["codicesede"];
             var idUtente = Request.Headers["IdUtente"];
@@ -79,13 +79,13 @@ namespace SO115App.API.Controllers
             catch (Exception ex)
             {
                 if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
-                    return StatusCode(403, Costanti.UtenteNonAutorizzato);
-                return BadRequest();
+                    return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
+                return BadRequest(new { message = ex.Message });
             }
         }
 
         [HttpPost("UpdateIntervento")]
-        public async Task<IActionResult> UpdateIntervento([FromBody]SintesiRichiesta chiamata)
+        public async Task<IActionResult> UpdateIntervento([FromBody] SintesiRichiesta chiamata)
         {
             var codiceSede = Request.Headers["codicesede"];
             var idUtente = Request.Headers["IdUtente"];
@@ -105,8 +105,8 @@ namespace SO115App.API.Controllers
             catch (Exception ex)
             {
                 if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
-                    return StatusCode(403, Costanti.UtenteNonAutorizzato);
-                return BadRequest();
+                    return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
+                return BadRequest(new { message = ex.Message });
             }
         }
     }

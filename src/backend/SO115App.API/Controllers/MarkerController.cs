@@ -57,7 +57,7 @@ namespace SO115App.API.Controllers
         ///   Metodo che restituisce i marker di tutte le sedi in un quadrante
         /// </summary>
         [HttpPost("GetSedi")]
-        public async Task<IActionResult> GetSedi([FromBody]AreaMappa filtroCentroMappa)
+        public async Task<IActionResult> GetSedi([FromBody] AreaMappa filtroCentroMappa)
         {
             try
             {
@@ -71,8 +71,8 @@ namespace SO115App.API.Controllers
             catch (Exception ex)
             {
                 if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
-                    return StatusCode(403, Costanti.UtenteNonAutorizzato);
-                return BadRequest();
+                    return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
+                return BadRequest(new { message = ex.Message });
             }
         }
 
@@ -80,7 +80,7 @@ namespace SO115App.API.Controllers
         ///   Metodo che restituisce i marker di tutte le richieste in un quadrante
         /// </summary>
         [HttpPost("GetRichieste")]
-        public async Task<IActionResult> GetRichieste([FromBody]AreaMappa filtroCentroMappa)
+        public async Task<IActionResult> GetRichieste([FromBody] AreaMappa filtroCentroMappa)
         {
             var codiciSedi = Request.Headers["codiceSede"].ToString().Split(',');
 
@@ -97,8 +97,8 @@ namespace SO115App.API.Controllers
             catch (Exception ex)
             {
                 if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
-                    return StatusCode(403, Costanti.UtenteNonAutorizzato);
-                return BadRequest();
+                    return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
+                return BadRequest(new { message = ex.Message });
             }
         }
 
@@ -124,11 +124,11 @@ namespace SO115App.API.Controllers
             catch (Exception ex)
             {
                 if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
-                    return StatusCode(403, Costanti.UtenteNonAutorizzato);
+                    return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
                 else if (ex.Message.Contains("404"))
-                    return StatusCode(404, "Servizio non raggiungibile. Riprovare più tardi");
+                    return StatusCode(404, new { message = "Servizio non raggiungibile. Riprovare più tardi" });
                 else
-                    return BadRequest();
+                    return BadRequest(new { message = ex.Message });
             }
         }
 
@@ -154,8 +154,8 @@ namespace SO115App.API.Controllers
             catch (Exception ex)
             {
                 if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
-                    return StatusCode(403, Costanti.UtenteNonAutorizzato);
-                return BadRequest();
+                    return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
+                return BadRequest(new { message = ex.Message });
             }
         }
     }

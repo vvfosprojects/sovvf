@@ -36,7 +36,7 @@ namespace SO115App.API.Controllers
         }
 
         [HttpPost("AddInLavorazione")]
-        public async Task<IActionResult> AddInLavorazione([FromBody]SintesiRichiesta intervento)
+        public async Task<IActionResult> AddInLavorazione([FromBody] SintesiRichiesta intervento)
         {
             var IdUtente = Request.Headers["IdUtente"];
             var codiceSede = Request.Headers["codicesede"];
@@ -57,13 +57,13 @@ namespace SO115App.API.Controllers
             catch (Exception ex)
             {
                 if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
-                    return StatusCode(403, Costanti.UtenteNonAutorizzato);
-                return BadRequest();
+                    return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
+                return BadRequest(new { message = ex.Message });
             }
         }
 
         [HttpPost("DeleteInLavorazione")]
-        public async Task<IActionResult> DeleteInLavorazione([FromBody]SintesiRichiesta intervento)
+        public async Task<IActionResult> DeleteInLavorazione([FromBody] SintesiRichiesta intervento)
         {
             var IdUtente = Request.Headers["IdUtente"];
             var codiceSede = Request.Headers["codicesede"];
@@ -84,13 +84,13 @@ namespace SO115App.API.Controllers
             catch (Exception ex)
             {
                 if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
-                    return StatusCode(403, Costanti.UtenteNonAutorizzato);
-                return BadRequest();
+                    return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
+                return BadRequest(new { message = ex.Message });
             }
         }
 
         [HttpPost("AddPresaInCarico")]
-        public async Task<IActionResult> AddPresaInCarico([FromBody]SintesiRichiesta intervento)
+        public async Task<IActionResult> AddPresaInCarico([FromBody] SintesiRichiesta intervento)
         {
             var headerValues = Request.Headers["IdUtente"];
             var codiceSede = Request.Headers["codicesede"];
@@ -112,13 +112,13 @@ namespace SO115App.API.Controllers
             catch (Exception ex)
             {
                 if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
-                    return StatusCode(403, Costanti.UtenteNonAutorizzato);
-                return BadRequest();
+                    return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
+                return BadRequest(new { message = ex.Message });
             }
         }
 
         [HttpPost("DeletePresaInCarico")]
-        public async Task<IActionResult> DeletePresaInCarico([FromBody]SintesiRichiesta intervento)
+        public async Task<IActionResult> DeletePresaInCarico([FromBody] SintesiRichiesta intervento)
         {
             var headerValues = Request.Headers["IdUtente"];
             var codiceSede = Request.Headers["codicesede"];
@@ -140,8 +140,8 @@ namespace SO115App.API.Controllers
             catch (Exception ex)
             {
                 if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
-                    return StatusCode(403, Costanti.UtenteNonAutorizzato);
-                return BadRequest();
+                    return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
+                return BadRequest(new { message = ex.Message });
             }
         }
     }

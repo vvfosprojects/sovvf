@@ -52,11 +52,11 @@ namespace SO115App.API.Controllers
             catch (System.Exception ex)
             {
                 if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
-                    return StatusCode(403, Costanti.UtenteNonAutorizzato);
+                    return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
                 else if (ex.Message.Contains("404"))
-                    return StatusCode(404, "Servizio non raggiungibile. Riprovare più tardi");
+                    return StatusCode(404, new { message = "Servizio non raggiungibile. Riprovare più tardi" });
                 else
-                    return BadRequest();
+                    return BadRequest(new { ex.Message });
             }
         }
     }
