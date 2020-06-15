@@ -66,21 +66,21 @@ namespace SO115App.API.Controllers
 
                     if (utente == null)
                     {
-                        return StatusCode(403, Costanti.UtenteNonAutorizzato);
+                        return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
                     }
 
                     return Ok(utente);
                 }
                 else
                 {
-                    return StatusCode(403, Costanti.UtenteNonAutorizzato);
+                    return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
                 }
             }
             catch (Exception ex)
             {
                 if (ex.Message.Contains("no element"))
-                    return StatusCode(404, "Credenziali errate");
-                return BadRequest(ex.Message);
+                    return StatusCode(404, new { message = "Credenziali errate" });
+                return BadRequest(new { message = ex.Message });
             }
         }
 
@@ -99,7 +99,7 @@ namespace SO115App.API.Controllers
 
                 if (utente == null)
                 {
-                    return StatusCode(403, Costanti.UtenteNonAutorizzato);
+                    return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
                 }
 
                 return Ok(utente);
@@ -107,8 +107,8 @@ namespace SO115App.API.Controllers
             catch (Exception ex)
             {
                 if (ex.Message.Contains("no element"))
-                    return StatusCode(404, "Credenziali errate");
-                return BadRequest(ex.Message);
+                    return StatusCode(404, new { message = "Credenziali errate" });
+                return BadRequest(new { message = ex.Message });
             }
         }
     }
