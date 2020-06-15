@@ -18,7 +18,7 @@ import { LoadingState } from '../../../shared/store/states/loading/loading.state
 @Component({
     selector: 'app-gestione-utente-modal',
     templateUrl: './gestione-utente-modal.component.html',
-    styleUrls: ['./gestione-utente-modal.component.css']
+    styleUrls: [ './gestione-utente-modal.component.css' ]
 })
 export class GestioneUtenteModalComponent implements OnInit, OnDestroy {
 
@@ -66,10 +66,10 @@ export class GestioneUtenteModalComponent implements OnInit, OnDestroy {
             ruolo: new FormControl()
         });
         this.addUtenteRuoloForm = this.fb.group({
-            utente: [null, Validators.required],
-            sedi: [null, Validators.required],
-            ricorsivo: [true],
-            ruolo: [null, Validators.required]
+            utente: [ null, Validators.required ],
+            sedi: [ null, Validators.required ],
+            ricorsivo: [ true ],
+            ruolo: [ null, Validators.required ]
         });
         // Init disabled input
         this.checkboxState = { id: 'ricorsivo', status: this.f.ricorsivo.value, label: 'Ricorsivo', disabled: true };
@@ -201,6 +201,10 @@ export class GestioneUtenteModalComponent implements OnInit, OnDestroy {
         }
 
         this.modal.close({ success: true });
+    }
+
+    onDismiss(): void {
+        this.modal.dismiss('cross');
     }
 
     closeModal(type: string) {
