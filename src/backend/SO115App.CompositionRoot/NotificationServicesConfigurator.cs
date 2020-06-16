@@ -80,6 +80,10 @@ namespace SO115App.CompositionRoot
                 Models.Servizi.Infrastruttura.Notification.GestioneUtenti.GestioneRuoli.INotifyDeleteRuolo,
                 SignalR.Sender.GestioneRuoli.NotificationDeleteRuolo>();
 
+            container.Register<
+                Models.Servizi.Infrastruttura.Notification.CallMatrix.ICallMatrix,
+                SignalR.Utility.CallMatrix>();
+
             #endregion Notifiche
         }
     }

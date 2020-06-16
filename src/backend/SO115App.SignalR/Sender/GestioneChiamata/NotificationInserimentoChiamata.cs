@@ -47,24 +47,18 @@ namespace SO115App.SignalR.Sender.GestioneChiamata
         private readonly IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> _sintesiRichiesteAssistenzaMarkerHandler;
         private readonly IGetSintesiRichiestaAssistenzaByCodice _getSintesiRichiestaByCodice;
         private readonly GetGerarchiaToSend _getGerarchiaToSend;
-        private readonly CallMatrix _callMatrix;
-        private readonly IConfiguration _config;
 
         public NotificationInserimentoChiamata(IHubContext<NotificationHub> notificationHubContext,
                                                IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> boxRichiesteHandler,
                                                IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> sintesiRichiesteAssistenzaMarkerHandler,
                                                IGetSintesiRichiestaAssistenzaByCodice getSintesiRichiestaByCodice,
-                                               GetGerarchiaToSend getGerarchiaToSend,
-                                               CallMatrix callMatrix,
-                                               IConfiguration config)
+                                               GetGerarchiaToSend getGerarchiaToSend)
         {
             _notificationHubContext = notificationHubContext;
             _boxRichiesteHandler = boxRichiesteHandler;
             _sintesiRichiesteAssistenzaMarkerHandler = sintesiRichiesteAssistenzaMarkerHandler;
             _getSintesiRichiestaByCodice = getSintesiRichiestaByCodice;
             _getGerarchiaToSend = getGerarchiaToSend;
-            _callMatrix = callMatrix;
-            _config = config;
         }
 
         public async Task SendNotification(AddInterventoCommand intervento)
@@ -90,15 +84,6 @@ namespace SO115App.SignalR.Sender.GestioneChiamata
                 await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxInterventi", boxInterventi);
                 await _notificationHubContext.Clients.Group(sede).SendAsync("SaveAndNotifySuccessChiamata", sintesi);
                 await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetRichiestaMarker", listaSintesiMarker.LastOrDefault(marker => marker.Codice == intervento.Chiamata.Codice));
-            }
-
-            var CodSedePerMatrix = sintesi.CodSOCompetente.Split('.')[0];
-
-            var GetRoomId = _callMatrix.GetChatRoomID(CodSedePerMatrix).Result;
-            if (GetRoomId.Error == null)
-            {
-                var GenerateBOT = _callMatrix.PostBotInChatRoom(GetRoomId.room_id).Result;
-                var call = _callMatrix.PutMessage(GetRoomId.room_id, $"E' stato richiesto un intervento in via {sintesi.Localita.Indirizzo}. Codice Intervento: {sintesi.Codice}").Result;
             }
         }
     }

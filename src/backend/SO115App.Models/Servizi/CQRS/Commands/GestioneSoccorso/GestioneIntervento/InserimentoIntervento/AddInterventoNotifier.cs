@@ -18,6 +18,8 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Commands.Notifiers;
+using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
+using SO115App.Models.Servizi.Infrastruttura.Notification.CallMatrix;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneChiamata;
 
 namespace DomainModel.CQRS.Commands.AddIntervento
@@ -25,15 +27,23 @@ namespace DomainModel.CQRS.Commands.AddIntervento
     public class AddInterventoNotifier : ICommandNotifier<AddInterventoCommand>
     {
         private readonly INotifyInserimentoChiamata _sender;
+        private readonly ICallMatrix _callMatrix;
+        private readonly IGetSintesiRichiestaAssistenzaByCodice _getSintesiRichiestaByCodice;
 
-        public AddInterventoNotifier(INotifyInserimentoChiamata sender)
+        public AddInterventoNotifier(INotifyInserimentoChiamata sender, ICallMatrix callMatrix,
+            IGetSintesiRichiestaAssistenzaByCodice getSintesiRichiestaByCodice)
         {
             _sender = sender;
+            _callMatrix = callMatrix;
+            _getSintesiRichiestaByCodice = getSintesiRichiestaByCodice;
         }
 
         public void Notify(AddInterventoCommand command)
         {
+            var sintesi = _getSintesiRichiestaByCodice.GetSintesi(command.Chiamata.Codice);
+
             _sender.SendNotification(command);
+            _callMatrix.SendMessage(sintesi);
         }
     }
 }
