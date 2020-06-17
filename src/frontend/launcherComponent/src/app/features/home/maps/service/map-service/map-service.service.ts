@@ -17,7 +17,7 @@ export class MapService {
     private area$ = new Subject<AreaMappa>();
     private centro: Coordinate;
 
-    private wipeBottomLeft: Coordinate;
+    private wipeTopRight: Coordinate;
 
     constructor(private store: Store) {
         /**
@@ -52,13 +52,13 @@ export class MapService {
     }
 
     setArea(area: AreaMappa): void {
-        if (!this.wipeBottomLeft || (diffCoordinate(
-                makeCoordinate(this.wipeBottomLeft.latitudine, this.wipeBottomLeft.longitudine, 6),
-                makeCoordinate(area.bottomLeft.latitudine, area.bottomLeft.longitudine, 6))
+        if (!this.wipeTopRight || (diffCoordinate(
+                makeCoordinate(this.wipeTopRight.latitudine, this.wipeTopRight.longitudine, 6),
+                makeCoordinate(area.topRight.latitudine, area.topRight.longitudine, 6))
         )) {
             this.area$.next(area);
         }
-        this.wipeBottomLeft = area.bottomLeft;
+        this.wipeTopRight = area.topRight;
     }
 
     private getArea(): Observable<AreaMappa> {
