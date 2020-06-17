@@ -1,45 +1,54 @@
 <div class="container-fluid bg-dark" style="height:100vh">
     <div class="row">
-        <div class="col-3 mx-auto my-5 px-3 bg-white rounded">
+        <div class="col-3 mx-auto my-4 px-3 bg-white rounded">
             <div class="w-50 mx-auto text-center my-3">
                 <img class="img-fluid" src="assets/img/logo_vvf_600x.jpg">
             </div>
             <ng-container *ngIf="!onlyCas">
-                <form [formGroup]="loginForm">
-                    <div class="form-group">
-                        <label id="username">Username <small class="text-muted">(test)</small></label>
-                        <input type="text" formControlName="username" class="form-control"
-                               [ngClass]="{ 'is-invalid': submitted && f.username.errors }"/>
-                        <div *ngIf="submitted && f['username'].errors" class="invalid-feedback">
-                            <div *ngIf="f['username'].errors">Inserisci un username</div>
-                        </div>
+                <div class="row">
+                    <div class="col-11 mx-auto p-3 card shadow-sm bg-light">
+                        <form [formGroup]="loginForm">
+                            <div class="form-group">
+                                <label id="username">Username <small class="text-muted">(test)</small></label>
+                                <input type="text" formControlName="username" class="form-control"
+                                       [ngClass]="{ 'is-invalid': submitted && f.username.errors }"/>
+                                <div *ngIf="submitted && f['username'].errors" class="invalid-feedback">
+                                    <div *ngIf="f['username'].errors">Inserisci un username</div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label id="password">Password <small class="text-muted">(test)</small></label>
+                                <input type="password" formControlName="password" class="form-control"
+                                       [ngClass]="{ 'is-invalid': submitted && f.password.errors }"/>
+                                <div *ngIf="submitted && f['password'].errors" class="invalid-feedback">
+                                    <div *ngIf="f['password'].errors">Inserisci una password</div>
+                                </div>
+                            </div>
+                            <div *ngIf="error" class="alert alert-danger">
+                                <span class="font-weight-bold">Le credenziali inserite non sono corrette</span>
+                            </div>
+                            <div class="form-group text-center">
+                                <button [disabled]="loading" class="btn btn-lg btn-block btn-utentepsw mt-3"
+                                        (click)="onSubmit()">
+                                    <ng-template [ngIf]="!loading">Accedi</ng-template>
+                                    <ng-template [ngIf]="loading">
+                                        <i class="fa fa-spinner fa-spin mr-1"></i>
+                                        Accesso in corso
+                                    </ng-template>
+                                </button>
+                            </div>
+                        </form>
                     </div>
-                    <div class="form-group">
-                        <label id="password">Password <small class="text-muted">(test)</small></label>
-                        <input type="password" formControlName="password" class="form-control"
-                               [ngClass]="{ 'is-invalid': submitted && f.password.errors }"/>
-                        <div *ngIf="submitted && f['password'].errors" class="invalid-feedback">
-                            <div *ngIf="f['password'].errors">Inserisci una password</div>
-                        </div>
-                    </div>
-                    <div *ngIf="error" class="alert alert-danger">
-                        <span class="font-weight-bold">Le credenziali inserite non sono corrette</span>
-                    </div>
-                    <div class="form-group text-center">
-                        <button [disabled]="loading" class="btn btn-lg btn-block btn-primary mt-3" (click)="onSubmit()">
-                            <span *ngIf="!loading">Accedi</span>
-                            <span *ngIf="loading">
-                            <i class="fa fa-spinner fa-spin mr-1"></i>
-                            Accesso in corso
-                        </span>
-                        </button>
-                    </div>
-                </form>
-                <hr class="my-5">
+                </div>
+                <div class="text-center font-weight-bolder my-3">
+                    oppure
+                </div>
             </ng-container>
-            <div class="w-100 mx-auto text-center my-3">
-                <img class="w-25 img-fluid" src="assets/img/cas.png">
-                <button class="btn btn-lg btn-block btn-primary mt-3" (click)="onCasLogin()">
+            <div class="w-100 mx-auto text-center mb-3 p-3 card shadow-sm bg-light">
+                <div class="text-center">
+                    <img class="w-25 img-fluid" src="assets/img/cas.png">
+                </div>
+                <button class="btn btn-lg btn-block btn-sso mt-3" (click)="onCasLogin()">
                     Accedi con SSO
                 </button>
             </div>

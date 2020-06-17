@@ -8,8 +8,10 @@ import { AuthService } from '../../core/auth/auth.service';
 import { CasLogin, RecoveryUrl } from '../auth/store/auth.actions';
 import { environment } from '../../../environments/environment';
 
-
-@Component({ templateUrl: 'login.component.html' })
+@Component({
+    templateUrl: 'login.component.html',
+    styleUrls: ['login.component.css']
+})
 export class LoginComponent implements OnInit, OnDestroy {
 
     private subscription = new Subscription();
@@ -33,8 +35,8 @@ export class LoginComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.loginForm = this.formBuilder.group({
-            username: [ '', Validators.required ],
-            password: [ '', Validators.required ]
+            username: ['', Validators.required],
+            password: ['', Validators.required]
         });
     }
 
