@@ -91,6 +91,7 @@ namespace SO115App.CompositionRoot
             container.Register<IGetInRettangolo, GetInRettangolo>();
             container.Register<IGetProssimita, GetProssimita>();
             container.Register<IGetPosizioneByCodiceMezzo, GetPosizioneByCodiceMezzo>();
+            container.Register<IGetPosizioneFlotta, GetPosizioneFlotta>();
 
             #endregion GeoFleet
 

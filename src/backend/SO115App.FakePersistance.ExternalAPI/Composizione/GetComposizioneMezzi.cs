@@ -54,7 +54,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
             foreach (var composizione in composizioneMezzi)
             {
-                composizione.IndiceOrdinamento = _ordinamentoMezzi.GetIndiceOrdinamento(query.Filtro.IdRichiesta, composizione, composizione.Mezzo.IdRichiesta);
+                composizione.IndiceOrdinamento = _ordinamentoMezzi.GetIndiceOrdinamento(query.Filtro.IdRichiesta, composizione, composizione.Mezzo.CoordinateFake, composizione.Mezzo.IdRichiesta);
                 composizione.Id = composizione.Mezzo.Codice;
 
                 if (composizione.IstanteScadenzaSelezione < DateTime.Now)

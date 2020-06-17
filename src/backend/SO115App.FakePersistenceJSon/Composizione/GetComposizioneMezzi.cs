@@ -70,7 +70,7 @@ namespace SO115App.FakePersistenceJSon.Composizione
 
             foreach (var composizione in composizioneMezzi)
             {
-                composizione.IndiceOrdinamento = _ordinamentoMezzi.GetIndiceOrdinamento(query.Filtro.IdRichiesta, composizione, composizione.Mezzo.IdRichiesta);
+                composizione.IndiceOrdinamento = _ordinamentoMezzi.GetIndiceOrdinamento(query.Filtro.IdRichiesta, composizione, composizione.Mezzo.CoordinateFake, composizione.Mezzo.IdRichiesta);
                 composizione.Id = composizione.Mezzo.Codice;
 
                 if (composizione.IstanteScadenzaSelezione < DateTime.Now)
@@ -82,7 +82,6 @@ namespace SO115App.FakePersistenceJSon.Composizione
             var composizioneMezziPrenotati = GetComposizioneMezziPrenotati(composizioneMezzi, query.CodiceSede);
 
             return composizioneMezziPrenotati.OrderByDescending(x => x.IndiceOrdinamento).ToList();
-
         }
 
         private List<ComposizioneMezzi> GetComposizioneMezziPrenotati(List<ComposizioneMezzi> composizioneMezzi, string codiceSede)

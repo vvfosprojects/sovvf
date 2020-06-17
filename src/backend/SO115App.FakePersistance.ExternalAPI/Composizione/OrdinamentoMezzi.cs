@@ -28,7 +28,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             this._configuration = configuration;
         }
 
-        public decimal GetIndiceOrdinamento(string IdRichiesta, ComposizioneMezzi composizione, string IdRichiestaOrigine = null)
+        public decimal GetIndiceOrdinamento(string IdRichiesta, ComposizioneMezzi composizione, bool CoordinateFake, string IdRichiestaOrigine = null)
         {
             int ValoreIntOriginePerSganciamento = 0;
             decimal ValoreAdeguatezzaMezzo;
@@ -43,7 +43,8 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
             ValoreAdeguatezzaMezzo = GeneraValoreAdeguatezzaMezzo(richiestaDestinazione.Tipologie, composizione.Mezzo.Genere);
 
-            composizione = GetDistanceByGoogle(composizione, richiestaDestinazione).Result;
+            if (!CoordinateFake)
+                composizione = GetDistanceByGoogle(composizione, richiestaDestinazione).Result;
 
             return 100 / (1 + Convert.ToDecimal(composizione.TempoPercorrenza.Replace(".", ",")) / 5400) + ValoreIntOriginePerSganciamento + ValoreAdeguatezzaMezzo;
         }

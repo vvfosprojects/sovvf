@@ -31,11 +31,12 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
         private readonly IGetPosizioneByCodiceMezzo _getPosizioneByCodiceMezzo;
         private readonly IGetAlberaturaUnitaOperative _getAlberaturaUnitaOperative;
         private readonly IMemoryCache _memoryCache;
+        private readonly IGetPosizioneFlotta _getPosizioneFlotta;
 
         public GetMezziUtilizzabili(HttpClient client, IConfiguration configuration, IGetStatoMezzi GetStatoMezzi,
             IGetDistaccamentoByCodiceSedeUC GetDistaccamentoByCodiceSedeUC, IGetPosizioneByCodiceMezzo getPosizioneByCodiceMezzo,
             IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative,
-            IMemoryCache memoryCache)
+            IMemoryCache memoryCache, IGetPosizioneFlotta getPosizioneFlotta)
         {
             _client = client;
             _configuration = configuration;
@@ -44,11 +45,13 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
             _getPosizioneByCodiceMezzo = getPosizioneByCodiceMezzo;
             _getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
             _memoryCache = memoryCache;
+            _getPosizioneFlotta = getPosizioneFlotta;
         }
 
         public async Task<List<Mezzo>> Get(List<string> sedi, string genereMezzo = null, string codiceMezzo = null)
         {
             var ListaCodiciSedi = new List<string>();
+            var ListaCodiciComandi = new List<string>();
 
             var listaSediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
             var pinNodi = new List<PinNodo>();
@@ -65,12 +68,29 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
                 codiceE = ListaCodiciSedi.Find(x => x.Equals(codice));
                 if (string.IsNullOrEmpty(codiceE))
                 {
+                    if (!ListaCodiciComandi.Contains(codice.Split('.')[0]))
+                        ListaCodiciComandi.Add(codice.Split('.')[0]);
                     ListaCodiciSedi.Add(codice);
                 }
             }
 
-            var ListAnagraficaMezzo = new List<AnagraficaMezzo>();
+            var ListaAnagraficaMezzo = new List<AnagraficaMezzo>();
             var ListaMezzi = new List<Mezzo>();
+            var ListaPosizioneFlotta = _getPosizioneFlotta.Get(0).Result;
+
+            ListaAnagraficaMezzo = GetAnagraficaMezziByCodComando(ListaCodiciComandi).Result;
+
+            #region LEGGO DA JSON FAKE
+
+            var filepath = Costanti.ListaMezzi;
+            string json;
+            using (var r = new StreamReader(filepath))
+            {
+                json = r.ReadToEnd();
+            }
+            var listaMezzi = JsonConvert.DeserializeObject<List<MezzoFake>>(json);
+
+            #endregion LEGGO DA JSON FAKE
 
             foreach (string CodSede in ListaCodiciSedi)
             {
@@ -89,28 +109,17 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
 
                     #endregion LEGGO DA API ESTERNA
 
-                    #region LEGGO DA JSON FAKE
-
-                    var filepath = Costanti.ListaMezzi;
-                    string json;
-                    using (var r = new StreamReader(filepath))
-                    {
-                        json = r.ReadToEnd();
-                    }
-                    var listaMezzi = JsonConvert.DeserializeObject<List<MezzoFake>>(json);
-                    listaMezzi.FindAll(x => x.Sede.Equals(CodSede)).ToList();
                     var ListaMezziSede = listaMezzi.FindAll(x => x.Sede.Equals(CodSede)).ToList();
-
-                    #endregion LEGGO DA JSON FAKE
 
                     List<Mezzo> listaMezziBySedeAppo = new List<Mezzo>();
                     foreach (MezzoFake mezzoFake in ListaMezziSede)
                     {
                         if (!mezzoFake.CodDestinazione.Equals("CMOB"))
                         {
-                            var anagraficaMezzo = GetAnagraficaMezzoByTarga(mezzoFake.Targa).Result;
+                            var anagraficaMezzo = ListaAnagraficaMezzo.Find(x => x.Targa.Equals(mezzoFake.Targa)); //GetAnagraficaMezzoByTarga(mezzoFake.Targa).Result;
 
                             var mezzo = MapMezzo(anagraficaMezzo, mezzoFake);
+
                             listaMezziBySedeAppo.Add(mezzo);
                             ListaMezzi.Add(mezzo);
                         }
@@ -122,6 +131,22 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
                 else
                 {
                     ListaMezzi.AddRange(listaMezziBySede);
+                }
+            }
+
+            foreach (var mezzo in ListaMezzi)
+            {
+                var CoordinateMezzoGeoFleet = ListaPosizioneFlotta.Find(x => x.CodiceMezzo.Equals(mezzo.Codice));
+
+                if (CoordinateMezzoGeoFleet == null)
+                {
+                    mezzo.Coordinate = mezzo.Distaccamento.Coordinate;
+                    mezzo.CoordinateFake = true;
+                }
+                else
+                {
+                    mezzo.Coordinate = new Coordinate(CoordinateMezzoGeoFleet.Localizzazione.Lat, CoordinateMezzoGeoFleet.Localizzazione.Lon);
+                    mezzo.CoordinateFake = false;
                 }
             }
 
@@ -147,21 +172,10 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
         private Mezzo MapMezzo(AnagraficaMezzo anagraficaMezzo, MezzoFake mezzoFake)
         {
             var coordinate = new Coordinate(0, 0);
-            bool CoordinateFake = false;
+            //bool CoordinateFake = false;
 
             var distaccamento = _getDistaccamentoByCodiceSedeUC.Get(mezzoFake.Sede).Result;
             var sede = new Sede(mezzoFake.Sede, distaccamento.DescDistaccamento, distaccamento.Indirizzo, distaccamento.Coordinate, "", "", "", "", "");
-
-            var coordinateMezzo = _getPosizioneByCodiceMezzo.Get(anagraficaMezzo.GenereMezzo.CodiceTipo + "." + anagraficaMezzo.Targa).Result;
-            if (coordinateMezzo != null)
-            {
-                coordinate = new Coordinate(coordinateMezzo.Localizzazione.Lat, coordinateMezzo.Localizzazione.Lon);
-            }
-            else
-            {
-                coordinate = distaccamento.Coordinate;
-                CoordinateFake = true;
-            }
 
             Mezzo mezzo = new Mezzo(anagraficaMezzo.GenereMezzo.CodiceTipo + "." + anagraficaMezzo.Targa,
                 anagraficaMezzo.Targa,
@@ -172,24 +186,21 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
                 DescrizioneAppartenenza = mezzoFake.DescDestinazione,
             };
 
-            if (CoordinateFake)
-                mezzo.CoordinateFake = true;
-
             return mezzo;
         }
 
-        private async Task<AnagraficaMezzo> GetAnagraficaMezzoByTarga(string targaMezzo)
+        private async Task<List<AnagraficaMezzo>> GetAnagraficaMezziByCodComando(List<string> ListCodComando)
         {
+            string combindedString = string.Join(",", ListCodComando);
             _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("test");
-            var response = await _client.GetAsync($"{_configuration.GetSection("UrlExternalApi").GetSection("MezziApidipvvf").Value}?searchKey={targaMezzo}").ConfigureAwait(false);
+            var response = await _client.GetAsync($"{_configuration.GetSection("UrlExternalApi").GetSection("MezziApidipvvf").Value}?codiciSede={combindedString}").ConfigureAwait(false);
             response.EnsureSuccessStatusCode();
             using HttpContent contentMezzo = response.Content;
             var data = await contentMezzo.ReadAsStringAsync().ConfigureAwait(false);
 
             var listaAnagraficaMezzo = new List<AnagraficaMezzo>();
             listaAnagraficaMezzo = JsonConvert.DeserializeObject<List<AnagraficaMezzo>>(data);
-            var anagraficaMezzo = listaAnagraficaMezzo.Find(x => x.Targa.Equals(targaMezzo));
-            return anagraficaMezzo;
+            return listaAnagraficaMezzo;
         }
 
         private string GetStatoOperativoMezzo(string codiceSedeDistaccamento, string codiceMezzo, string StatoMezzoOra)
