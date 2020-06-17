@@ -4,7 +4,7 @@ import {
     CasLogout,
     CasResponse,
     ClearAuth,
-    ClearCurrentUser,
+    ClearCurrentUser, ClearDataUser,
     GetAuth,
     Logout,
     RecoveryUrl,
@@ -114,7 +114,7 @@ export class AuthState {
                 currentJwt: action.currentJwt,
                 currentTicket: null
             });
-            dispatch([new SetLogged()]);
+            dispatch([ new SetLogged() ]);
         }
     }
 
@@ -122,7 +122,7 @@ export class AuthState {
     setCurrentUser({ patchState, dispatch }: StateContext<AuthStateModel>, { currentUser }: SetCurrentUser) {
         sessionStorage.setItem(LSNAME.currentUser, JSON.stringify(currentUser));
         patchState({ currentUser });
-        dispatch(new SetVistaSedi([currentUser.sede.codice]));
+        dispatch(new SetVistaSedi([ currentUser.sede.codice ]));
     }
 
     @Action(UpdateCurrentUser)
@@ -145,7 +145,7 @@ export class AuthState {
                         new UpdateRuoliUtenteLoggato(utente.ruoli)
                     ]);
                     if (!_isAdministrator(utente)) {
-                        dispatch(new Navigate(['/home']));
+                        dispatch(new Navigate([ '/home' ]));
                     }
                 }
             }
@@ -170,11 +170,10 @@ export class AuthState {
     @Action(Logout)
     logout({ getState, dispatch }: StateContext<AuthStateModel>, { url }: Logout) {
         const state = getState();
-        if (state.currentUser) {
-            dispatch(new ClearCurrentUser(url !== '/home'));
-        }
         if (state.loggedCas) {
             dispatch(new CasLogout());
+        } else {
+            dispatch(new ClearCurrentUser(url !== '/home'));
         }
     }
 
@@ -184,9 +183,9 @@ export class AuthState {
         console.log('RecoveryUrl', currentUrl);
         if (currentUrl) {
             localStorage.removeItem(LSNAME.redirectUrl);
-            dispatch(new Navigate([currentUrl]));
+            dispatch(new Navigate([ currentUrl ]));
         } else {
-            dispatch(new Navigate(['/' + RoutesPath.Home]));
+            dispatch(new Navigate([ '/' + RoutesPath.Home ]));
         }
     }
 
@@ -206,7 +205,7 @@ export class AuthState {
         if (!action.ticket) {
             dispatch(new CasLogin());
         } else {
-            dispatch([new SetCurrentTicket(action.ticket)]);
+            dispatch([ new SetCurrentTicket(action.ticket) ]);
         }
     }
 
@@ -216,65 +215,43 @@ export class AuthState {
     }
 
     @Action(ClearAuth)
-    clearAuth({ patchState }: StateContext<AuthStateModel>) {
+    clearAuth({ dispatch, patchState }: StateContext<AuthStateModel>) {
         patchState(AuthStateDefaults);
+        this.removeStorage();
+        dispatch(new Navigate([ '/login' ]));
     }
 
-    // Todo rivedere.
+    @Action(ClearDataUser)
+    clearDataUser({ getState, patchState, dispatch }: StateContext<AuthStateModel>) {
+        const state = getState();
+        if (state.currentUser) {
+            dispatch([
+                new LogoffUtenteSignalR(state.currentUser),
+                new ClearVistaSedi(),
+                new ClearIdUtente()
+            ]);
+        }
+        dispatch([
+            new ClearRuoliUtenteLoggato(),
+            new ClearViewState(),
+            new ClearRichieste()
+        ]);
+        patchState({
+            currentUser: null
+        });
+    }
+
     @Action(ClearCurrentUser)
     clearCurrentUser({ getState, patchState, dispatch }: StateContext<AuthStateModel>, action: ClearCurrentUser) {
         const state = getState();
         if (state.logged) {
             if (action.skipDeleteAll) {
-                if (state.currentUser) {
-                    // Clear SignalR Data
-                    dispatch([
-                        new LogoffUtenteSignalR(state.currentUser),
-                        new ClearVistaSedi(),
-                        new ClearIdUtente()
-                    ]);
-                }
-                this.removeStorage();
-                dispatch([
-                    // Current Roles Session Storage
-                    new ClearRuoliUtenteLoggato(),
-                    new ClearViewState(),
-                    new ClearRichieste(),
-                    new Navigate(['/login'])
-                ]);
-                // Clear User Data
-                patchState({
-                    currentUser: null
-                });
+                dispatch(new ClearDataUser());
             } else {
-                this.authService.clearUserData().subscribe((res: any) => {
-                    if (state.currentUser) {
-                        // Clear SignalR Data
-                        dispatch([
-                            new LogoffUtenteSignalR(state.currentUser),
-                            new ClearVistaSedi(),
-                            new ClearIdUtente()
-                        ]);
-                    }
-                    this.removeStorage();
-                    dispatch([
-                        // Current Roles Session Storage
-                        new ClearRuoliUtenteLoggato(),
-                        new ClearViewState(),
-                        new ClearRichieste(),
-                        new Navigate(['/login'])
-                    ]);
-                    // Clear User Data
-                    patchState({
-                        currentUser: null
-                    });
-                });
+                this.authService.clearUserData().subscribe(() => dispatch(new ClearDataUser()));
             }
-            dispatch(new ClearAuth());
-        } else {
-            dispatch(new Navigate(['/login']));
         }
-
+        dispatch(new ClearAuth());
     }
 
     removeStorage(): void {
