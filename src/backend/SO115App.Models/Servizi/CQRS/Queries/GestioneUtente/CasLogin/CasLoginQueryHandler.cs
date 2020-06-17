@@ -22,6 +22,7 @@ using CQRS.Queries;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
+using Serilog;
 using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.Models.Classi.Utenti.Autenticazione;
 using SO115App.Models.Classi.Utility;
@@ -69,6 +70,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneUtente.CasLogin
 
             if (Cas.serviceResponse.AuthenticationSuccess.Attributes != null)
             {
+                Log.Information($"Attributi Login= {Cas.serviceResponse.AuthenticationSuccess}");
                 string CodFiscale = null;
 
                 if (Cas.serviceResponse.AuthenticationSuccess.Attributes.fiscalNumber != null)
