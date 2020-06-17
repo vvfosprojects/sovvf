@@ -99,8 +99,7 @@ export class AuthState {
                         ]);
                     }
                 }, () => {
-                    console.error('Qualcosa è andato storto');
-                    dispatch(new CasLogout());
+                    dispatch(new Navigate([`/${RoutesPath.UtenteNonAbilitato}`]));
                 }
             );
         }
