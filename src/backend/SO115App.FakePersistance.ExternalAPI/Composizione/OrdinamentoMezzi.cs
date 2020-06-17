@@ -46,7 +46,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             if (!CoordinateFake)
                 composizione = GetDistanceByGoogle(composizione, richiestaDestinazione).Result;
             else
-                composizione.TempoPercorrenza = "0";
+                composizione.TempoPercorrenza = "30";
 
             return 100 / (1 + Convert.ToDecimal(composizione.TempoPercorrenza.Replace(".", ",")) / 5400) + ValoreIntOriginePerSganciamento + ValoreAdeguatezzaMezzo;
         }
