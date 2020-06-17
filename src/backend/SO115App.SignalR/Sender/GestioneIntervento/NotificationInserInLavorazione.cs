@@ -37,20 +37,14 @@ namespace SO115App.SignalR.Sender.GestioneIntervento
     public class NotificationInserInLavorazione : INotifyMessaInLavorazioneRichiesta
     {
         private readonly IHubContext<NotificationHub> _notificationHubContext;
-        private readonly IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> _BoxRichiestehandler;
-        private readonly IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> _SintesiRichiesteAssistenzaMarkerhandler;
         private readonly IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> sintesiRichiesteAssistenzahandler;
         private readonly GetGerarchiaToSend _getGerarchiaToSend;
 
         public NotificationInserInLavorazione(IHubContext<NotificationHub> NotificationHubContext,
-                                          IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> BoxRichiestehandler,
-                                          IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> SintesiRichiesteAssistenzaMarkerhandler,
                                           IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> SintesiRichiesteAssistenzahandler,
                                           GetGerarchiaToSend getGerarchiaToSend)
         {
             _notificationHubContext = NotificationHubContext;
-            _BoxRichiestehandler = BoxRichiestehandler;
-            _SintesiRichiesteAssistenzaMarkerhandler = SintesiRichiesteAssistenzaMarkerhandler;
             sintesiRichiesteAssistenzahandler = SintesiRichiesteAssistenzahandler;
             _getGerarchiaToSend = getGerarchiaToSend;
         }

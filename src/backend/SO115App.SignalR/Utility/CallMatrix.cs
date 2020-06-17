@@ -45,10 +45,10 @@ namespace SO115App.SignalR.Utility
 
                 Log.Information($"MATRIX - URL CHIAMATA GET - {_config.GetSection("UrlMatrix").Value}/directory/room/%23comando.{codSede.ToLower()}:vvf-test.cloud");
 
-                //var httpClientHandler = new HttpClientHandler();
-                //httpClientHandler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => { return true; };
-                //var client = new HttpClient(httpClientHandler);
-                var response = await _client.GetAsync($"{_config.GetSection("UrlMatrix").Value}/directory/room/%23comando.{codSede.ToLower()}:vvf-test.cloud").ConfigureAwait(false);
+                var httpclienthandler = new HttpClientHandler();
+                httpclienthandler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => { return true; };
+                var client = new HttpClient(httpclienthandler);
+                var response = await client.GetAsync($"{_config.GetSection("UrlMatrix").Value}/directory/room/%23comando.{codSede.ToLower()}:vvf-test.cloud").ConfigureAwait(false);
 
                 // Make your request...
 
@@ -113,11 +113,11 @@ namespace SO115App.SignalR.Utility
                 room_id = "!HrAuaSBFXenBvMSdgT:vvf-test.cloud";
                 Log.Information($"MATRIX - URL CHIAMATA POST - {_config.GetSection("UrlMatrix").Value}/rooms/{room_id.Replace("!", "%21")}/join?access_token=MDAxY2xvY2F0aW9uIHZ2Zi10ZXN0LmNsb3VkCjAwMTNpZGVudGlmaWVyIGtleQowMDEwY2lkIGdlbiA9IDEKMDAyNmNpZCB1c2VyX2lkID0gQGJvdDp2dmYtdGVzdC5jbG91ZAowMDE2Y2lkIHR5cGUgPSBhY2Nlc3MKMDAyMWNpZCBub25jZSA9IG5DO0BHOF5tN2FUOkBVXj0KMDAyZnNpZ25hdHVyZSC0LHxje1QcxZu6AytsGKUkL3-KOfagMBKQq3aCxHXiIQo");
 
-                //var httpClientHandler = new HttpClientHandler();
-                //httpClientHandler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => { return true; };
-                //var client = new HttpClient(httpClientHandler);
+                var httpClientHandler = new HttpClientHandler();
+                httpClientHandler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => { return true; };
+                var client = new HttpClient(httpClientHandler);
 
-                var response = await _client.PostAsync($"{_config.GetSection("UrlMatrix").Value}/rooms/{room_id.Replace("!", "%21")}/join?access_token=MDAxY2xvY2F0aW9uIHZ2Zi10ZXN0LmNsb3VkCjAwMTNpZGVudGlmaWVyIGtleQowMDEwY2lkIGdlbiA9IDEKMDAyNmNpZCB1c2VyX2lkID0gQGJvdDp2dmYtdGVzdC5jbG91ZAowMDE2Y2lkIHR5cGUgPSBhY2Nlc3MKMDAyMWNpZCBub25jZSA9IG5DO0BHOF5tN2FUOkBVXj0KMDAyZnNpZ25hdHVyZSC0LHxje1QcxZu6AytsGKUkL3-KOfagMBKQq3aCxHXiIQo", null).ConfigureAwait(false);
+                var response = await client.PostAsync($"{_config.GetSection("UrlMatrix").Value}/rooms/{room_id.Replace("!", "%21")}/join?access_token=MDAxY2xvY2F0aW9uIHZ2Zi10ZXN0LmNsb3VkCjAwMTNpZGVudGlmaWVyIGtleQowMDEwY2lkIGdlbiA9IDEKMDAyNmNpZCB1c2VyX2lkID0gQGJvdDp2dmYtdGVzdC5jbG91ZAowMDE2Y2lkIHR5cGUgPSBhY2Nlc3MKMDAyMWNpZCBub25jZSA9IG5DO0BHOF5tN2FUOkBVXj0KMDAyZnNpZ25hdHVyZSC0LHxje1QcxZu6AytsGKUkL3-KOfagMBKQq3aCxHXiIQo", null).ConfigureAwait(false);
 
                 if (response.IsSuccessStatusCode)
                 {
