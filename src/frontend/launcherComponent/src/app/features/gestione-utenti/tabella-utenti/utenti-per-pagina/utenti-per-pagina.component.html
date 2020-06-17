@@ -1,4 +1,5 @@
-<ng-select [items]="pageSizes" [(ngModel)]="pageSize" [clearable]="false" [hideSelected]="true" (ngModelChange)="onChangePageSize($event)">
+<ng-select [items]="pageSizes" [(ngModel)]="pageSize" [searchable]="false" [clearable]="false" [hideSelected]="true"
+           (ngModelChange)="onChangePageSize($event)">
     <ng-template ng-label-tmp let-item="item">
         <span class="font-weight-bold">{{item}}</span> utenti per pagina
     </ng-template>
