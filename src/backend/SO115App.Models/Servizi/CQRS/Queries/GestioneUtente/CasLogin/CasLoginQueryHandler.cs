@@ -60,6 +60,9 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneUtente.CasLogin
         public CasLoginResult Handle(CasLoginQuery query)
         {
             var Cas = CheckCasTicket(query).Result;
+
+            Log.Information($"Risposta = {Cas.serviceResponse.AuthenticationSuccess}");
+
             if (Cas.serviceResponse.AuthenticationFailure != null)
             {
                 return new CasLoginResult()
@@ -68,10 +71,12 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneUtente.CasLogin
                 };
             }
 
-            if (Cas.serviceResponse.AuthenticationSuccess.Attributes != null)
+            Log.Information($"Attributi = {Cas.serviceResponse.AuthenticationSuccess}");
+
+            if (Cas.serviceResponse.AuthenticationSuccess != null)
             {
                 Log.Information($"Attributi Login= {Cas.serviceResponse.AuthenticationSuccess}");
-                string CodFiscale = null;
+                string CodFiscale;
 
                 if (Cas.serviceResponse.AuthenticationSuccess.Attributes.sAMAccountName != null)
                     CodFiscale = Cas.serviceResponse.AuthenticationSuccess.Attributes.sAMAccountName[0];
@@ -163,6 +168,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneUtente.CasLogin
             Log.Information($"CAS - Risposta = {data}");
 
             var RispostaCas = JsonConvert.DeserializeObject<CasResponse>(data);
+
+            Log.Information($"CAS - JSON = {data}");
 
             return RispostaCas;
         }
