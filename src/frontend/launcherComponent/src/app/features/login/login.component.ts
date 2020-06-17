@@ -20,18 +20,15 @@ export class LoginComponent implements OnInit, OnDestroy {
     loginForm: FormGroup;
     submitted = false;
     error = '';
+    onlyCas = environment.onlyCas;
 
     constructor(
         private formBuilder: FormBuilder,
         private authenticationService: AuthService,
         private store: Store) {
-        if (environment.onlyCas) {
-            this.onCasLogin();
-        } else {
-            this.subscription.add(
-                this.loading$.subscribe((loading: boolean) => this.loading = loading)
-            );
-        }
+        this.subscription.add(
+            this.loading$.subscribe((loading: boolean) => this.loading = loading)
+        );
     }
 
     ngOnInit() {

@@ -4,37 +4,39 @@
             <div class="w-50 mx-auto text-center my-3">
                 <img class="img-fluid" src="assets/img/logo_vvf_600x.jpg">
             </div>
-            <form [formGroup]="loginForm">
-                <div class="form-group">
-                    <label id="username">Username <small class="text-muted">(test)</small></label>
-                    <input type="text" formControlName="username" class="form-control"
-                           [ngClass]="{ 'is-invalid': submitted && f.username.errors }"/>
-                    <div *ngIf="submitted && f['username'].errors" class="invalid-feedback">
-                        <div *ngIf="f['username'].errors">Inserisci un username</div>
+            <ng-container *ngIf="!onlyCas">
+                <form [formGroup]="loginForm">
+                    <div class="form-group">
+                        <label id="username">Username <small class="text-muted">(test)</small></label>
+                        <input type="text" formControlName="username" class="form-control"
+                               [ngClass]="{ 'is-invalid': submitted && f.username.errors }"/>
+                        <div *ngIf="submitted && f['username'].errors" class="invalid-feedback">
+                            <div *ngIf="f['username'].errors">Inserisci un username</div>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label id="password">Password <small class="text-muted">(test)</small></label>
-                    <input type="password" formControlName="password" class="form-control"
-                           [ngClass]="{ 'is-invalid': submitted && f.password.errors }"/>
-                    <div *ngIf="submitted && f['password'].errors" class="invalid-feedback">
-                        <div *ngIf="f['password'].errors">Inserisci una password</div>
+                    <div class="form-group">
+                        <label id="password">Password <small class="text-muted">(test)</small></label>
+                        <input type="password" formControlName="password" class="form-control"
+                               [ngClass]="{ 'is-invalid': submitted && f.password.errors }"/>
+                        <div *ngIf="submitted && f['password'].errors" class="invalid-feedback">
+                            <div *ngIf="f['password'].errors">Inserisci una password</div>
+                        </div>
                     </div>
-                </div>
-                <div *ngIf="error" class="alert alert-danger">
-                    <span class="font-weight-bold">Le credenziali inserite non sono corrette</span>
-                </div>
-                <div class="form-group text-center">
-                    <button [disabled]="loading" class="btn btn-lg btn-block btn-primary mt-3" (click)="onSubmit()">
-                        <span *ngIf="!loading">Accedi</span>
-                        <span *ngIf="loading">
+                    <div *ngIf="error" class="alert alert-danger">
+                        <span class="font-weight-bold">Le credenziali inserite non sono corrette</span>
+                    </div>
+                    <div class="form-group text-center">
+                        <button [disabled]="loading" class="btn btn-lg btn-block btn-primary mt-3" (click)="onSubmit()">
+                            <span *ngIf="!loading">Accedi</span>
+                            <span *ngIf="loading">
                             <i class="fa fa-spinner fa-spin mr-1"></i>
                             Accesso in corso
                         </span>
-                    </button>
-                </div>
-            </form>
-            <hr class="my-5">
+                        </button>
+                    </div>
+                </form>
+                <hr class="my-5">
+            </ng-container>
             <div class="w-100 mx-auto text-center my-3">
                 <img class="w-25 img-fluid" src="assets/img/cas.png">
                 <button class="btn btn-lg btn-block btn-primary mt-3" (click)="onCasLogin()">
