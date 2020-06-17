@@ -119,9 +119,11 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
                             var anagraficaMezzo = ListaAnagraficaMezzo.Find(x => x.Targa.Equals(mezzoFake.Targa)); //GetAnagraficaMezzoByTarga(mezzoFake.Targa).Result;
 
                             var mezzo = MapMezzo(anagraficaMezzo, mezzoFake);
-
-                            listaMezziBySedeAppo.Add(mezzo);
-                            ListaMezzi.Add(mezzo);
+                            if (mezzo != null)
+                            {
+                                listaMezziBySedeAppo.Add(mezzo);
+                                ListaMezzi.Add(mezzo);
+                            }
                         }
                     }
 
@@ -177,16 +179,23 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
             var distaccamento = _getDistaccamentoByCodiceSedeUC.Get(mezzoFake.Sede).Result;
             var sede = new Sede(mezzoFake.Sede, distaccamento.DescDistaccamento, distaccamento.Indirizzo, distaccamento.Coordinate, "", "", "", "", "");
 
-            Mezzo mezzo = new Mezzo(anagraficaMezzo.GenereMezzo.CodiceTipo + "." + anagraficaMezzo.Targa,
-                anagraficaMezzo.Targa,
-                anagraficaMezzo.GenereMezzo.Codice,
-                GetStatoOperativoMezzo(anagraficaMezzo.Sede.Id, anagraficaMezzo.GenereMezzo.CodiceTipo + "." + anagraficaMezzo.Targa, mezzoFake.Stato),
-               mezzoFake.CodDestinazione, sede, coordinate)
+            if (anagraficaMezzo != null)
             {
-                DescrizioneAppartenenza = mezzoFake.DescDestinazione,
-            };
-
-            return mezzo;
+                Mezzo mezzo = new Mezzo(anagraficaMezzo.GenereMezzo.CodiceTipo + "." + anagraficaMezzo.Targa,
+                    anagraficaMezzo.Targa,
+                    anagraficaMezzo.GenereMezzo.Codice,
+                    GetStatoOperativoMezzo(anagraficaMezzo.Sede.Id, anagraficaMezzo.GenereMezzo.CodiceTipo + "." + anagraficaMezzo.Targa, mezzoFake.Stato),
+                   mezzoFake.CodDestinazione, sede, coordinate)
+                {
+                    DescrizioneAppartenenza = mezzoFake.DescDestinazione,
+                };
+                return mezzo;
+            }
+            else
+            {
+                Mezzo mezzo = null;
+                return mezzo;
+            }
         }
 
         private async Task<List<AnagraficaMezzo>> GetAnagraficaMezziByCodComando(List<string> ListCodComando)
