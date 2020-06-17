@@ -42,7 +42,7 @@ export class CasLogoutComponent implements OnInit, OnDestroy {
         }, this.delayTime);
         const source = timer(1000, 1000);
         this.delayTime = this.delayTime / 1000 - 1;
-        this.subscription = source.subscribe(val => this.tick = (this.delayTime - val));
+        this.subscription.add(source.subscribe(val => this.tick = (this.delayTime - val)));
     }
 
     ngOnDestroy(): void {

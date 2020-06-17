@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { debounceTime, first, map, take, tap } from 'rxjs/operators';
+import { debounceTime } from 'rxjs/operators';
 import { CentroMappa } from '../../maps-model/centro-mappa.model';
 import { Coordinate } from '../../../../../shared/model/coordinate.model';
 import { Observable, Subject } from 'rxjs';
