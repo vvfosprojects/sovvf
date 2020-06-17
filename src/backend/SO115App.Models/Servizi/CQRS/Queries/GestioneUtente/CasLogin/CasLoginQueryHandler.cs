@@ -67,9 +67,17 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneUtente.CasLogin
                 };
             }
 
-            if (Cas.serviceResponse.AuthenticationSuccess.Attributes.sAMAccountName != null)
+            if (Cas.serviceResponse.AuthenticationSuccess.Attributes != null)
             {
-                var utente = _getUtenteByCF.Get(Cas.serviceResponse.AuthenticationSuccess.Attributes.sAMAccountName[0]);
+                string CodFiscale = null;
+
+                if (Cas.serviceResponse.AuthenticationSuccess.Attributes.fiscalNumber != null)
+                    CodFiscale = Cas.serviceResponse.AuthenticationSuccess.Attributes.fiscalNumber;
+
+                if (Cas.serviceResponse.AuthenticationSuccess.Attributes.sAMAccountName != null)
+                    CodFiscale = Cas.serviceResponse.AuthenticationSuccess.Attributes.sAMAccountName[0];
+
+                var utente = _getUtenteByCF.Get(CodFiscale);
                 if (utente == null)
                     return new CasLoginResult()
                     {
