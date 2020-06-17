@@ -73,11 +73,10 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneUtente.CasLogin
                 Log.Information($"Attributi Login= {Cas.serviceResponse.AuthenticationSuccess}");
                 string CodFiscale = null;
 
-                if (Cas.serviceResponse.AuthenticationSuccess.Attributes.fiscalNumber != null)
-                    CodFiscale = Cas.serviceResponse.AuthenticationSuccess.Attributes.fiscalNumber;
-
                 if (Cas.serviceResponse.AuthenticationSuccess.Attributes.sAMAccountName != null)
                     CodFiscale = Cas.serviceResponse.AuthenticationSuccess.Attributes.sAMAccountName[0];
+                else
+                    CodFiscale = Cas.serviceResponse.AuthenticationSuccess.User;
 
                 var utente = _getUtenteByCF.Get(CodFiscale);
                 if (utente == null)
