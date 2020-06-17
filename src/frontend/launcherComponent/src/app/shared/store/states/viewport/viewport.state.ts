@@ -5,6 +5,7 @@ import { RouterState } from '@ngxs/router-plugin';
 import { RouterStateModel } from '@ngxs/router-plugin/src/router.state';
 import { AuthState, AuthStateModel } from '../../../../features/auth/store/auth.state';
 import { AppState, AppStateModel } from '../app/app.state';
+import { RoutesPath } from '../../../enum/routes-path.enum';
 
 export interface ViewportStateModel {
     availHeight: number;
@@ -25,16 +26,17 @@ export class ViewportState {
 
     @Selector([ RouterState ])
     static footerFixed(state: ViewportStateModel, routerState: RouterStateModel) {
-        const grantUrl = routerState.state.url.includes('/home');
+        const grantUrl = routerState.state.url.includes(`/${RoutesPath.Home}`);
         return state.availHeight > state.contentHeight && grantUrl;
     }
 
     @Selector([ RouterState, AuthState, AppState ])
     static footerVisible(state: ViewportStateModel, routerState: RouterStateModel, authState: AuthStateModel, appState: AppStateModel) {
-        const grantUrl = !routerState.state.url.includes('/auth');
+        const grantUrl = [`/${RoutesPath.Home}`, `/${RoutesPath.GestioneUtenti}`];
+        const granted = grantUrl.includes(routerState.state.url);
         const logged = authState.logged;
         const appReady = appState.appIsLoaded;
-        return grantUrl && logged && appReady;
+        return granted && logged && appReady;
     }
 
     @Action(SetAvailHeight)
