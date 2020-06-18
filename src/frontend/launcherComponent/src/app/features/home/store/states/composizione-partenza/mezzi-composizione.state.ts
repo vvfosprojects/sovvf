@@ -211,7 +211,7 @@ export class MezziComposizioneState {
                     dispatch(new AddBoxPartenza());
                 }
                 setTimeout(() => {
-                    dispatch(new SetMarkerMezzoSelezionato(action.mezzoComp.mezzo.codice, true));
+                    !action.mezzoComp.mezzo.coordinateFake && dispatch(new SetMarkerMezzoSelezionato(action.mezzoComp.mezzo.codice, true));
                     dispatch(new SelectMezzoComposizione(action.mezzoComp));
                     dispatch(new AddMezzoBoxPartenzaSelezionato(action.mezzoComp));
                 }, calcolaTimeout(addBoxPartenza));
@@ -290,11 +290,13 @@ export class MezziComposizioneState {
     }
 
     @Action(HoverInMezzoComposizione)
-    hoverInMezzoComposizione({ patchState, dispatch }: StateContext<MezziComposizioneStateStateModel>, action: HoverInMezzoComposizione) {
+    hoverInMezzoComposizione({ getState, patchState, dispatch }: StateContext<MezziComposizioneStateStateModel>, action: HoverInMezzoComposizione) {
         patchState({
             idMezzoComposizioneHover: action.idMezzoComp
         });
-        dispatch(new SetMarkerMezzoHover(action.idMezzoComp));
+        if (!action.coordinateFake) {
+            dispatch(new SetMarkerMezzoHover(action.idMezzoComp));
+        }
     }
 
     @Action(HoverOutMezzoComposizione)

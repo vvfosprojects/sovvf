@@ -223,7 +223,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
 
     mezzoHoverIn(mezzoComposizione: MezzoComposizione) {
         this.store.dispatch([
-            new HoverInMezzoComposizione(mezzoComposizione.id),
+            new HoverInMezzoComposizione(mezzoComposizione.id, mezzoComposizione.mezzo.coordinateFake),
         ]);
     }
 
