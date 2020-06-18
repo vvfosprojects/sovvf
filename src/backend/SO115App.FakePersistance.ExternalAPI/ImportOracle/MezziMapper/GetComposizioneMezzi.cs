@@ -56,7 +56,7 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper
             decimal totaleKM = 0;
             decimal totaleTempoPercorrenza = 0;
 
-            foreach (var composizione in composizioneMezzi)
+            foreach (var composizione in composizioneMezziPrenotati)
             {
                 totaleKM = totaleKM + Convert.ToDecimal(composizione.Km.Replace(".", ","));
                 totaleTempoPercorrenza = totaleTempoPercorrenza + Convert.ToDecimal(composizione.TempoPercorrenza.Replace(".", ","));
