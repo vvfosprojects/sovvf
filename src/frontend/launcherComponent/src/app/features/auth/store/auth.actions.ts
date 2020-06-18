@@ -74,11 +74,15 @@ export class CasLogout {
 }
 
 export class ClearAuth {
-    static readonly type = '[Auth] Clear auth';
+    static readonly type = '[Auth] Clear Auth';
+}
+
+export class ClearDataUser {
+    static readonly type = '[Auth] Clear Data User';
 }
 
 export class ClearCurrentUser {
-    static readonly type = '[Auth] Clear current user';
+    static readonly type = '[Auth] Clear Current User';
 
     constructor(public skipDeleteAll?: boolean) {
     }

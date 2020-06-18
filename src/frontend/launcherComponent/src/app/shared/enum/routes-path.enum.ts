@@ -7,5 +7,7 @@ export enum RoutesPath {
     GestioneUtenti = 'gestione-utenti',
     Logged = 'logged',
     NotFound = '404',
-    Auth = 'auth'
+    Auth = 'auth',
+    CasLogout = 'caslogout',
+    UtenteNonAbilitato = 'utente-non-abilitato'
 }

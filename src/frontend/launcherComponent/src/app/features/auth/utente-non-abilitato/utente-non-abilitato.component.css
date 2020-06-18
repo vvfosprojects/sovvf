@@ -1,0 +1,9 @@
+.btn-accedi {
+    background-color: rgba(214, 36, 48, 0.9);
+    font-weight: 600;
+    color: #fff;
+}
+
+.btn-accedi:hover {
+    background-color: rgba(214, 36, 48, 1);
+}

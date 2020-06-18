@@ -2,10 +2,7 @@ import { Component } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { ClearCurrentUser } from './store/auth.actions';
 
-@Component({
-    selector: 'app-cas-logout',
-    template: ``
-})
+@Component({ template: `` })
 export class CasLogoutComponent {
 
     constructor(private store: Store) {
