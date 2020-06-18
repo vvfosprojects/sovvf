@@ -40,20 +40,28 @@
     </div>
     <div class="row">
         <!-- Km da percorrere -->
-        <div *ngIf="partenza.mezzoComposizione?.km" class="col nowrap">
+        <div *ngIf="partenza.mezzoComposizione?.km && !partenza.mezzoComposizione?.mezzo?.coordinateFake" class="col nowrap">
             <i class="guida fa fa-road mr-1"></i>
             <span>{{partenza.mezzoComposizione.km}} km</span>
         </div>
-        <div *ngIf="!partenza.mezzoComposizione?.km" class="col nowrap text-danger">
+        <div *ngIf="partenza.mezzoComposizione?.mezzo?.coordinateFake" class="col nowrap">
+            <i class="icon-wifi text-warning mr-1"></i>
+            <span ngbTooltip="GPS ASSENTE">-</span>
+        </div>
+        <div *ngIf="!partenza.mezzoComposizione?.km && !partenza.mezzoComposizione?.mezzo?.coordinateFake" class="col nowrap text-danger">
             <i class="fa fa-road mr-1 text-danger"></i>
             <span ngbTooltip="Nessun mezzo selezionato"><b>-</b></span>
         </div>
         <!-- Tempo di percorrenza -->
-        <div *ngIf="partenza.mezzoComposizione?.tempoPercorrenza" class="col">
+        <div *ngIf="partenza.mezzoComposizione?.tempoPercorrenza && !partenza.mezzoComposizione?.mezzo?.coordinateFake" class="col">
             <i class="guida fa fa-clock-o mr-1"></i>
             <span>{{partenza.mezzoComposizione.tempoPercorrenza}} min</span>
         </div>
-        <div *ngIf="!partenza.mezzoComposizione?.tempoPercorrenza" class="col text-danger">
+        <div *ngIf="partenza.mezzoComposizione?.mezzo?.coordinateFake" class="col text-danger">
+            <i class="fa fa-clock-o mr-1 text-warning"></i>
+            <span ngbTooltip="GPS ASSENTE"><b>-</b></span>
+        </div>
+        <div *ngIf="!partenza.mezzoComposizione?.tempoPercorrenza && !partenza.mezzoComposizione?.mezzo?.coordinateFake" class="col text-danger">
             <i class="fa fa-clock-o mr-1 text-danger"></i>
             <span ngbTooltip="Nessun mezzo selezionato"><b>-</b></span>
         </div>
