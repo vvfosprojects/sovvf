@@ -52,7 +52,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.Marker.MezziMarker
 
             return new MezziMarkerResult()
             {
-                // ListaMezziMarker = mezziMarker
                 ListaMezziMarker = mezziMarker.FindAll(x => x.Mezzo.CoordinateFake == false)
             };
         }
