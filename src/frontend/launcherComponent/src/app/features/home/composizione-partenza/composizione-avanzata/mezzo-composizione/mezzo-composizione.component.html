@@ -10,11 +10,15 @@
             <span [ngbTooltip]="mezzoComp.mezzo.descrizione" [disableTooltip]="mezzoComp.mezzo.descrizione.length <= 7"
                   class="d-inline-block font-weight-bold mr-1">{{mezzoComp.mezzo.descrizione | slice: 0:7}}</span>
             <span class="d-inline-block mr-2">{{mezzoComp.mezzo.genere}}</span>
-            <small>
+            <small *ngIf="!mezzoComp.mezzo.coordinateFake">
                 <i class="fa fa-road guida mr-1" ngbTooltip="Distanza dall'intervento"></i>
                 <span class="d-inline-block mr-2">{{mezzoComp.km}} km</span>
                 <i class="fa fa-clock-o guida mr-1" ngbTooltip="Tempo di percorrenza"></i>
                 <span class="d-inline-block mr-2">{{mezzoComp.tempoPercorrenza}} min</span>
+            </small>
+            <small *ngIf="mezzoComp.mezzo.coordinateFake">
+                <i class="icon-wifi text-warning ml-3 mr-1" ngbTooltip="GPS ASSENTE"></i>
+                <span class="d-inline-block">no GPS</span>
             </small>
         </div>
         <div class="col-1 pl-0 text-right">

@@ -54,7 +54,7 @@ export class MezzoComposizioneComponent implements OnInit {
 
             // mappa
             if (!mezzoComposizioneBusy(this.mezzoComp.mezzo.stato)) {
-                this.mezzoDirection(this.mezzoComp);
+                !this.mezzoComp.mezzo.coordinateFake && this.mezzoDirection(this.mezzoComp);
             }
         } else if (this.selezionato) {
             this.deselezionato.emit(this.mezzoComp);

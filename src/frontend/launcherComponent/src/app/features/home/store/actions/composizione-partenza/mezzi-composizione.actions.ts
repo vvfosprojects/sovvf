@@ -75,7 +75,7 @@ export class ClearSelectedMezziComposizione {
 export class HoverInMezzoComposizione {
     static readonly type = '[MezziComposizione] Hover In Mezzo Composizione';
 
-    constructor(public idMezzoComp: string) {
+    constructor(public idMezzoComp: string, public coordinateFake?: boolean) {
     }
 }
 

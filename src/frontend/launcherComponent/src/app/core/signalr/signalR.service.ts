@@ -332,7 +332,9 @@ export class SignalRService {
         this.hubNotification.onclose(() => {
             console.log('Hub Subscription Disconnesso');
             this.connectionEstablished.next(false);
-            this.store.dispatch(new SignalRHubDisconnesso());
+            setTimeout( () => {
+                this.store.dispatch(new SignalRHubDisconnesso());
+            }, 100);
             this.startSubscriptionConnection();
         });
     }
