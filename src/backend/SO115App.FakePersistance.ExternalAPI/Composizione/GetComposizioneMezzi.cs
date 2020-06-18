@@ -64,7 +64,28 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             }
 
             var composizioneMezziPrenotati = GetComposizioneMezziPrenotati(composizioneMezzi, query.CodiceSede);
+            //Per i mezzi con coordinate Fake nella property  i Km  e la TempoPercorrenza vengono impostati i  valori medi della collection
+            decimal totaleKM = 0;
+            decimal totaleTempoPercorrenza = 0;
 
+            foreach (var composizione in composizioneMezzi)
+            {
+                totaleKM = totaleKM + Convert.ToDecimal(composizione.Km.Replace(".", ","));
+                totaleTempoPercorrenza = totaleTempoPercorrenza + Convert.ToDecimal(composizione.TempoPercorrenza.Replace(".", ","));
+            }
+
+            string mediaDistanza = Math.Round((totaleKM / composizioneMezzi.Count), 2).ToString(CultureInfo.InvariantCulture);
+            string mediaTempoPercorrenza = Math.Round((totaleTempoPercorrenza / composizioneMezzi.Count), 2).ToString(CultureInfo.InvariantCulture);
+
+            foreach (var composizione in composizioneMezziPrenotati)
+            {
+                if (composizione.Mezzo.CoordinateFake)
+                {
+                    composizione.Km = mediaDistanza;
+                    composizione.TempoPercorrenza = mediaTempoPercorrenza;
+                    composizione.IndiceOrdinamento = _ordinamentoMezzi.GetIndiceOrdinamento(query.Filtro.IdRichiesta, composizione, composizione.Mezzo.CoordinateFake, composizione.Mezzo.IdRichiesta);
+                }
+            }
             return composizioneMezziPrenotati.OrderByDescending(x => x.IndiceOrdinamento).ToList();
         }
 
