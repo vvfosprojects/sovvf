@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.ExternalAPI.Fake.Classi.DistaccamentiUtenteComune;
@@ -7,6 +8,7 @@ using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.IdentityManagement;
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -21,18 +23,22 @@ namespace SO115App.ExternalAPI.Fake.Servizi.DistaccamentoUtentiComuni
         private readonly IConfiguration _configuration;
         private readonly MapDistaccamentoSuDistaccamentoUC _mapper;
         private readonly MapSedeSuDistaccamentoUC _mapperSede;
+        private readonly IMemoryCache _memoryCache;
 
         /// <summary>
         ///   il costruttore della classe
         /// </summary>
         /// <param name="client"></param>
         /// <param name="configuration"></param>
-        public GetDistaccamentoByCodiceSede(HttpClient client, IConfiguration configuration, MapDistaccamentoSuDistaccamentoUC mapper, MapSedeSuDistaccamentoUC mapperSede)
+        public GetDistaccamentoByCodiceSede(HttpClient client, IConfiguration configuration,
+            MapDistaccamentoSuDistaccamentoUC mapper, MapSedeSuDistaccamentoUC mapperSede,
+            IMemoryCache memoryCache)
         {
             _client = client;
             _configuration = configuration;
             _mapper = mapper;
             _mapperSede = mapperSede;
+            _memoryCache = memoryCache;
         }
 
         /// <summary>
@@ -42,13 +48,44 @@ namespace SO115App.ExternalAPI.Fake.Servizi.DistaccamentoUtentiComuni
         /// <returns>un task contenente il distaccamento</returns>
         public async Task<Distaccamento> Get(string codiceSede)
         {
-            _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("test");
-            var response = await _client.GetAsync($"{_configuration.GetSection("UrlExternalApi").GetSection("InfoSedeApiUtenteComune").Value}/GetInfoSede?codSede={codiceSede}").ConfigureAwait(false);
-            response.EnsureSuccessStatusCode();
-            using HttpContent content = response.Content;
-            string data = await content.ReadAsStringAsync().ConfigureAwait(false);
-            var distaccametoUC = JsonConvert.DeserializeObject<DistaccamentoUC>(data);
-            return _mapper.Map(distaccametoUC);
+            var listaSedi = GetListaDistaccamentiPerComando(codiceSede.Split('.')[0]).Result;
+
+            return listaSedi.Find(x => x.CodSede.Equals(codiceSede));
+        }
+
+        private async Task<List<Distaccamento>> GetListaDistaccamentiPerComando(string CodComando)
+        {
+            List<Distaccamento> listaDistaccamenti = new List<Distaccamento>();
+
+            if (!_memoryCache.TryGetValue($"Distaccamenti_{CodComando}", out listaDistaccamenti))
+            {
+                _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("test");
+                var response = await _client.GetAsync($"{_configuration.GetSection("UrlExternalApi").GetSection("InfoSedeApiUtenteComune").Value}/GetChildSede?codSede={CodComando}").ConfigureAwait(false);
+                response.EnsureSuccessStatusCode();
+                using HttpContent content = response.Content;
+                string data = await content.ReadAsStringAsync().ConfigureAwait(false);
+                var ListaDistaccametiUC = JsonConvert.DeserializeObject<List<DistaccamentoUC>>(data);
+
+                List<Distaccamento> listaDistaccamentiAppo = new List<Distaccamento>();
+                foreach (var dist in ListaDistaccametiUC)
+                {
+                    Distaccamento distaccamento = new Distaccamento();
+                    distaccamento = _mapper.Map(dist);
+                    listaDistaccamentiAppo.Add(distaccamento);
+                }
+
+                listaDistaccamenti = listaDistaccamentiAppo;
+                var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromHours(8));
+                _memoryCache.Set($"Distaccamenti_{CodComando}", listaDistaccamenti, cacheEntryOptions);
+
+                return listaDistaccamenti;
+            }
+            else
+            {
+                return listaDistaccamenti;
+            }
+
+            throw new NotImplementedException();
         }
 
         Sede IGetDistaccamentoByCodiceSede.Get(string codiceSede)
