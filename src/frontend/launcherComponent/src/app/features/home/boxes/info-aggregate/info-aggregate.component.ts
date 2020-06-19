@@ -61,7 +61,7 @@ export class InfoAggregateComponent implements OnInit, OnDestroy {
 
     clickServizi(tipo: string) {
         if (tipo === 'openModal') {
-            this.modalService.open(ModalServiziComponent, { size: 'lg', centered: true });
+            // this.modalService.open(ModalServiziComponent, { size: 'lg', centered: true });
         }
     }
 
