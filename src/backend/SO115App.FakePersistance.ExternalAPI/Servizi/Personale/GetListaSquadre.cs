@@ -159,7 +159,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
             List<Componente> ComponentiSquadra = new List<Componente>();
             foreach (ComponenteSquadraFake componenteFake in squadraFake.ComponentiSquadra)
             {
-                PersonaleVVF pVVf = _getPersonaleByCF.Get(componenteFake.CodiceFiscale).Result;
+                PersonaleVVF pVVf = _getPersonaleByCF.Get(componenteFake.CodiceFiscale, CodSede).Result;
 
                 Componente componente = new Componente(componenteFake.DescrizioneQualificaLunga,
                 pVVf.Nominativo, componenteFake.Tooltip, componenteFake.CapoPartenza, componenteFake.Autista, componenteFake.Rimpiazzo)
