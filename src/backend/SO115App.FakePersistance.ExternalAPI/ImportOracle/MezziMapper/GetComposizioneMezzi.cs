@@ -72,6 +72,8 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper
                     composizione.Km = mediaDistanza;
                     composizione.TempoPercorrenza = mediaTempoPercorrenza;
                     composizione.IndiceOrdinamento = _ordinamentoMezzi.GetIndiceOrdinamento(query.Filtro.IdRichiesta, composizione, composizione.Mezzo.CoordinateFake, composizione.Mezzo.IdRichiesta);
+                    composizione.Km = null;
+                    composizione.TempoPercorrenza = null;
                 }
             }
             return composizioneMezziPrenotati.OrderByDescending(x => x.IndiceOrdinamento).ToList();
