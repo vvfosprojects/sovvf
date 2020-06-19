@@ -3,7 +3,6 @@ export const environment = {
     productionTest: false,
     consoleLog: true,
     toastr: true,
-    fakeProvider: false,
     onlyCas: false,
     signalRHub: '/NotificationHub',
     baseUrl: 'http://localhost:5220',
@@ -37,8 +36,8 @@ export const environment = {
         meteo: 'https://api.openweathermap.org/data/2.5/weather?'
     },
     casUrl: {
-        linkLogin: 'http://localhost:4000/?service=',
-        linkLogout: 'http://localhost:4000/logout.html?service=',
+        linkLogin: 'http://localhost:4001/?service=',
+        linkLogout: 'http://localhost:4001/logout.html?service=',
         serviceName: 'http://localhost:4200/',
     }
 };
