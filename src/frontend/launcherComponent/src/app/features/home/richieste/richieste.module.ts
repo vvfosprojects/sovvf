@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from '../../../shared/shared.module';
-import { environment } from '../../../../environments/environment';
 /**
  Modules
  */
@@ -27,7 +26,6 @@ import { ModificaRichiestaComponent } from './modifica-richiesta/modifica-richie
  Service Provider
  */
 import { SintesiRichiesteService } from '../../../core/service/lista-richieste-service/lista-richieste.service';
-import { SintesiRichiesteServiceFake } from '../../../core/service/lista-richieste-service/lista-richieste.service.fake';
 /**
  * Ngxs
  */
@@ -93,7 +91,7 @@ import { EliminaPartenzaModalComponent } from '../../../shared/modal/elimina-par
         EliminaPartenzaModalComponent
     ],
     providers: [
-        { provide: SintesiRichiesteService, useClass: environment.fakeProvider ? SintesiRichiesteServiceFake : SintesiRichiesteService }
+        SintesiRichiesteService
     ]
 })
 export class RichiesteModule {

@@ -25,9 +25,7 @@ import { ViewComponentState } from './store/states/view/view.state';
 import { BackupViewComponentState } from './store/states/view/save-view.state';
 import { HomeState } from './store/states/home.state';
 import { RichiestaModificaState } from './store/states/richieste/richiesta-modifica.state';
-import { environment } from '../../../environments/environment';
 import { HomeService } from '../../core/service/home-service/home.service';
-import { HomeServiceFake } from '../../core/service/home-service/home.service.fake';
 import { MezziInServizioModule } from './mezzi-in-servizio/mezzi-in-servizio.module';
 import { TipologicheMezziState } from './store/states/composizione-partenza/tipologiche-mezzi.state';
 import { SchedeContattoModule } from './schede-contatto/schede-contatto.module';
@@ -80,7 +78,7 @@ import { MapsFiltroState } from './store/states/maps/maps-filtro.state';
     ],
     exports: [],
     providers: [
-        { provide: HomeService, useClass: environment.fakeProvider ? HomeServiceFake : HomeService },
+        HomeService,
         NgbActiveModal
     ]
 })

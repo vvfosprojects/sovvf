@@ -25,13 +25,6 @@ import { GestioneUtentiRouting } from './gestione-utenti.routing';
 import { SharedModule } from '../../shared/shared.module';
 import { UiSwitchModule } from 'ngx-ui-switch';
 /**
- * Service
- */
-import { GestioneUtentiService } from '../../core/service/gestione-utenti-service/gestione-utenti.service';
-import { GestioneUtentiServiceFake } from '../../core/service/gestione-utenti-service/gestione-utenti.service.fake';
-import { RuoliService } from '../../core/service/ruoli-service/ruoli-service.service';
-import { RuoliServiceFake } from '../../core/service/ruoli-service/ruoli.service.fake';
-/**
  * Ngxs
  */
 import { NgxsModule } from '@ngxs/store';
@@ -66,8 +59,6 @@ import { NgxsFormPluginModule } from '@ngxs/form-plugin';
     ],
     entryComponents: [GestioneUtenteModalComponent, ConfirmModalComponent],
     providers: [
-        // { provide: GestioneUtentiService, useClass: GestioneUtentiServiceFake },
-        { provide: RuoliService, useClass: RuoliServiceFake }
     ]
 })
 export class GestioneUtentiModule {

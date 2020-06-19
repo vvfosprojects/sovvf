@@ -29,7 +29,7 @@ import { FiltriMarkersMezziComponent } from './maps-ui/filtri-markers/filtri-mar
  */
 import {
     MezziMarkerService, SediMarkerService, RichiesteMarkerService,
-    MezziMarkerServiceFake, SediMarkerServiceFake, RichiesteMarkerServiceFake, ChiamateMarkerService, ChiamateMarkerServiceFake
+    ChiamateMarkerService
 } from '../../../core/service/maps-service';
 import { RichiesteMarkerAdapterService } from '../../../core/service/maps-service/richieste-marker/adapters/richieste-marker-adapter.service';
 
@@ -52,7 +52,6 @@ import { MarkerOpachiState } from '../store/states/maps/marker-opachi.state';
 import { ChiamateMarkersState } from '../store/states/maps/chiamate-markers.state';
 import { MapsButtonComponent } from './maps-ui/buttons/maps-button.component';
 import { MapsButtonsState } from '../store/states/maps/maps-buttons.state';
-import { environment } from '../../../../environments/environment';
 import { AreaMappaState } from '../store/states/maps/area-mappa.state';
 import { FiltriMarkersState } from '../store/states/maps/filtri-markers.state';
 import { NgSelectModule } from '@ng-select/ng-select';
@@ -113,10 +112,10 @@ import { FormsModule } from '@angular/forms';
     providers: [
         RichiesteMarkerAdapterService,
         SchedeContattoMarkerService,
-        { provide: RichiesteMarkerService, useClass: environment.fakeProvider ? RichiesteMarkerServiceFake : RichiesteMarkerService },
-        { provide: MezziMarkerService, useClass: environment.fakeProvider ? MezziMarkerServiceFake : MezziMarkerService},
-        { provide: SediMarkerService, useClass: environment.fakeProvider ? SediMarkerServiceFake : SediMarkerService},
-        { provide: ChiamateMarkerService, useClass: environment.fakeProvider ? ChiamateMarkerServiceFake : ChiamateMarkerService}
+        RichiesteMarkerService,
+        MezziMarkerService,
+        SediMarkerService,
+        ChiamateMarkerService
     ]
 })
 export class MapsModule {

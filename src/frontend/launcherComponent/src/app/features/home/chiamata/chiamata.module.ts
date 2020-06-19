@@ -9,14 +9,12 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ChiamataComponent } from './chiamata.component';
 import { SchedaTelefonataComponent } from './scheda-telefonata/scheda-telefonata.component';
 import { ChiamataService } from '../../../core/service/chiamata-service/chiamata.service';
-import { ChiamataServiceFake } from '../../../core/service/chiamata-service/chiamata.service.fake';
 import { NgxsModule } from '@ngxs/store';
 import { SchedaTelefonataState } from '../store/states/chiamata/scheda-telefonata.state';
 import { ClipboardState } from '../store/states/chiamata/clipboard.state';
 import { ConfirmModalComponent, RichiestaDuplicataModalComponent } from '../../../shared';
 import { UiSwitchModule } from 'ngx-ui-switch';
 import { SharedModule } from 'src/app/shared/shared.module';
-import { environment } from '../../../../environments/environment';
 import { NgxsFormPluginModule } from '@ngxs/form-plugin';
 
 @NgModule({
@@ -45,7 +43,7 @@ import { NgxsFormPluginModule } from '@ngxs/form-plugin';
     ],
     entryComponents: [ConfirmModalComponent, RichiestaDuplicataModalComponent],
     providers: [
-        environment.fakeProvider ? { provide: ChiamataService, useClass: ChiamataServiceFake } : ChiamataService
+        ChiamataService
     ]
 })
 export class ChiamataModule {
