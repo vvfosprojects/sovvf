@@ -1,8 +1,15 @@
 import { Action, NgxsOnChanges, NgxsSimpleChange, Selector, State, StateContext, Store } from '@ngxs/store';
 import {
-    SetCodiceSede, SetConnectionId, SetIdUtente, SetUtenteSignalR, ClearUtenteSignalR,
+    SetCodiceSede,
+    SetConnectionId,
+    SetIdUtente,
+    SetUtenteSignalR,
+    ClearUtenteSignalR,
     SignalRHubConnesso,
-    SignalRHubDisconnesso, ClearIdUtente, ClearCodiceSede, LogoffUtenteSignalR
+    SignalRHubDisconnesso,
+    ClearIdUtente,
+    ClearCodiceSede,
+    LogoffUtenteSignalR
 } from './signalR.actions';
 import { ShowToastr } from '../../../shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from '../../../shared/enum/toastr';
@@ -67,7 +74,7 @@ export class SignalRState implements NgxsOnChanges {
         const previousValue = change.previousValue;
         if (!currentValue.disconnected && currentValue.reconnected && previousValue.reconnected) {
             this.modalInstance.close();
-            this.store.dispatch(new Navigate([ `/${RoutesPath.Logged}` ]));
+            this.store.dispatch(new Navigate([`/${RoutesPath.Logged}`]));
         } else if (currentValue.disconnected) {
             this.openModal();
         }
@@ -127,7 +134,7 @@ export class SignalRState implements NgxsOnChanges {
             codiciSede, codiciSedeAttuali, codiciSedeAdd, codiciSedeRemove
         }));
         patchState({ codiciSede });
-        dispatch([ new ClearUtenteSignalR(codiciSedeRemove), new SetUtenteSignalR(codiciSedeAdd) ]);
+        dispatch([new ClearUtenteSignalR(codiciSedeRemove), new SetUtenteSignalR(codiciSedeAdd)]);
     }
 
     @Action(ClearCodiceSede)

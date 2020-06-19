@@ -25,10 +25,10 @@ export class EliminaPartenzaModalComponent implements OnInit {
             codice: '1',
             descrizione: 'Intervento non più necessario'
         },
-        {
-            codice: '2',
-            descrizione: 'Riassegnazione'
-        },
+        // {
+        //     codice: '2',
+        //     descrizione: 'Riassegnazione'
+        // },
         {
             codice: '3',
             descrizione: 'Fuori Servizio'
