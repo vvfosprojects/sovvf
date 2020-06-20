@@ -161,20 +161,23 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
             {
                 PersonaleVVF pVVf = _getPersonaleByCF.Get(componenteFake.CodiceFiscale, CodSede).Result;
 
-                Componente componente = new Componente(componenteFake.DescrizioneQualificaLunga,
-                pVVf.Nominativo, componenteFake.Tooltip, componenteFake.CapoPartenza, componenteFake.Autista, componenteFake.Rimpiazzo)
+                if (pVVf != null)
                 {
-                    CodiceFiscale = pVVf.CodFiscale,
-                    OrarioFine = componenteFake.OrarioFine,
-                    OrarioInizio = componenteFake.OrarioInizio,
-                    Telefono = componenteFake.Telefono,
-                    TecnicoGuardia1 = componenteFake.TecnicoGuardia1,
-                    TecnicoGuardia2 = componenteFake.TecnicoGuardia2,
-                    FunGuardia = componenteFake.FunGuardia,
-                    CapoTurno = componenteFake.CapoTurno
-                };
-                ComponentiSquadra.Add(componente);
-                ListaCodiciFiscaliComponentiSquadra.Add(pVVf.CodFiscale);
+                    Componente componente = new Componente(componenteFake.DescrizioneQualificaLunga,
+                    pVVf.Nominativo, componenteFake.Tooltip, componenteFake.CapoPartenza, componenteFake.Autista, componenteFake.Rimpiazzo)
+                    {
+                        CodiceFiscale = pVVf.CodFiscale,
+                        OrarioFine = componenteFake.OrarioFine,
+                        OrarioInizio = componenteFake.OrarioInizio,
+                        Telefono = componenteFake.Telefono,
+                        TecnicoGuardia1 = componenteFake.TecnicoGuardia1,
+                        TecnicoGuardia2 = componenteFake.TecnicoGuardia2,
+                        FunGuardia = componenteFake.FunGuardia,
+                        CapoTurno = componenteFake.CapoTurno
+                    };
+                    ComponentiSquadra.Add(componente);
+                    ListaCodiciFiscaliComponentiSquadra.Add(pVVf.CodFiscale);
+                }
             }
 
             Squadra s = new Squadra(squadraFake.NomeSquadra, Stato, ComponentiSquadra, sedeDistaccamento);
