@@ -59,3 +59,11 @@ export class SetRicercaMezziInServizio {
 export class ClearRicercaMezziInServizio {
     static readonly type = '[MezziInServizio] Clear Ricerca Mezzo In Servizio';
 }
+
+export class StartLoadingMezziInServizio {
+    static readonly type = '[MezziInServizio] Start Loading Mezzi In Servizio';
+}
+
+export class StopLoadingMezziInServizio {
+    static readonly type = '[MezziInServizio] Stop Loading Mezzi In Servizio';
+}

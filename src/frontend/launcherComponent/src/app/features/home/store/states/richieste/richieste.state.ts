@@ -295,7 +295,9 @@ export class RichiesteState {
             'statoMezzo': action.mezzoAction.action ? action.mezzoAction.action : calcolaActionSuggeritaMezzo(action.mezzoAction.mezzo.stato),
         };
         this.richiesteService.aggiornaStatoMezzo(obj).subscribe(() => {
-        });
+            },
+            error => dispatch(new StopLoadingActionMezzo())
+        );
     }
 
     @Action(EliminaPartenzaRichiesta)
