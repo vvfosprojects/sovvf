@@ -35,8 +35,9 @@ namespace SO115App.SignalR.Utility
                 var GenerateBOT = PostBotInChatRoom(GetRoomId.room_id).Result;
                 if (GenerateBOT.Equals("Bot inviato con successo"))
                 {
-                    var call = PutMessage(GetRoomId.room_id, $"E' stato richiesto un intervento in via {sintesi.Localita.Indirizzo}. Codice Intervento: {sintesi.Codice}").Result;
-                    Log.Information($"MATRIX - Messaggio inviato");
+                    var call = PutMessage(GetRoomId.room_id, $"E' stato richiesto un intervento in {sintesi.Localita.Indirizzo}. Codice Intervento: {sintesi.Codice}").Result;
+
+                    Log.Information($"MATRIX - " + call);
                 }
             }
         }
@@ -187,7 +188,7 @@ namespace SO115App.SignalR.Utility
                 else
                 {
                     Log.Information($"MATRIX - ESITO CHIAMATA PUT KO - " + response.ReasonPhrase);
-                    Log.Information($"MATRIX - RISULTATO CHIAMATA POST Headers - " + response.Headers.ToString());
+                    Log.Information($"MATRIX - RISULTATO CHIAMATA PUT Headers - " + response.Headers.ToString());
                     Log.Information($"MATRIX - FINE CHIAMATA PUT ");
 
                     return response.ReasonPhrase;
