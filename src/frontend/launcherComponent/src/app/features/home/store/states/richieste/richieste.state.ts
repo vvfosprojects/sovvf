@@ -203,7 +203,7 @@ export class RichiesteState {
     }
 
     @Action(UpdateRichiesta)
-    updateRichiesta({ setState, dispatch }: StateContext<RichiesteStateModel>, action: UpdateRichiesta) {
+    updateRichiesta({ getState, setState, dispatch }: StateContext<RichiesteStateModel>, action: UpdateRichiesta) {
         if (action.richiesta) {
             // Controllo se la richiesta aggiornata è anche la richiesta attualmente in composzione
             const richiestaComposizione = this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione);
@@ -218,7 +218,8 @@ export class RichiesteState {
 
             const idRichiestaSelezionata = this.store.selectSnapshot(RichiestaSelezionataState.idRichiestaSelezionata);
             const idRichiestaGestione = this.store.selectSnapshot(RichiestaGestioneState.idRichiestaGestione);
-            if (!idRichiestaSelezionata && !idRichiestaGestione) {
+            const loaderRichieste = getState().loadingRichieste;
+            if (!idRichiestaSelezionata && !idRichiestaGestione && !loaderRichieste) {
                 const currentPage = this.store.selectSnapshot(PaginationState.page);
                 dispatch([
                     new GetListaRichieste({ page: currentPage }),
