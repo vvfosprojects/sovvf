@@ -171,20 +171,20 @@ namespace SO115App.Persistence.MongoDB
                 var filtroRichiesteChiuse = Builders<RichiestaAssistenza>.Filter.Eq(r => r.TestoStatoRichiesta, "X");
                 var filtroComplessivo = filtroSediCompetenti & filtroRichiesteChiuse;
 
-                var numeroRichiesteDaRecuperare = filtro.PageSize - (result.Count - filtro.PageSize);
+                var numeroRichiesteDaRecuperare = 20; //filtro.PageSize - (result.Count - filtro.PageSize);
 
-                if (numeroRichiesteDaRecuperare > 0)
-                {
-                    var closedToSkip = (filtro.Page - 1) * filtro.PageSize - result.Count;
-                    if (closedToSkip < 0)
-                        closedToSkip = 0;
-                    var richiesteChiuse = _dbContext.RichiestaAssistenzaCollection.Find(filtroComplessivo)
-                        .Skip(closedToSkip)
-                        .Limit(numeroRichiesteDaRecuperare)
-                        .ToList();
+                //if (numeroRichiesteDaRecuperare > 0)
+                //{
+                var closedToSkip = (filtro.Page - 1) * filtro.PageSize - result.Count;
+                if (closedToSkip < 0)
+                    closedToSkip = 0;
+                var richiesteChiuse = _dbContext.RichiestaAssistenzaCollection.Find(filtroComplessivo)
+                    .Skip(closedToSkip)
+                    .Limit(numeroRichiesteDaRecuperare)
+                    .ToList();
 
-                    result.AddRange(richiesteChiuse);
-                }
+                result.AddRange(richiesteChiuse);
+                //}
             }
 
             if (filtro.FiltriTipologie != null)
