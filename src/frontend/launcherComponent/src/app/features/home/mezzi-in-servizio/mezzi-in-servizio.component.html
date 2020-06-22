@@ -1,5 +1,6 @@
 <div class="row mt-2 px-0">
     <div class="col-12 scroll-y" style="height:705px">
+        <app-partial-loader *ngIf="loadingMezziInServizio$ | async"></app-partial-loader>
         <div *ngIf="mezziInServizio" class="row">
             <div *ngFor="let m of mezziInServizio | filterBy: ricercaMezziInServizio" class="col-6 pl-4 mb-1">
                 <app-mezzo-in-servizio [mezzoInServizio]="m" [idMezzoInServizioHover]="idMezzoInServizioHover"

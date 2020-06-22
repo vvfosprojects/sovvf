@@ -2,11 +2,15 @@ import { State, Selector, Action, StateContext, Select } from '@ngxs/store';
 import {
     ClearFiltriMezziInServizio,
     ClearMezzoInServizioHover,
-    ClearMezzoInServizioSelezionato, ClearRicercaMezziInServizio, FilterMezziInServizio,
-    GetMezziInServizio, SetFiltroMezziInServizio,
+    ClearMezzoInServizioSelezionato,
+    ClearRicercaMezziInServizio,
+    FilterMezziInServizio,
+    GetMezziInServizio,
+    SetFiltroMezziInServizio,
     SetMezziInServizio,
     SetMezzoInServizioHover,
-    SetMezzoInServizioSelezionato, SetRicercaMezziInServizio
+    SetMezzoInServizioSelezionato,
+    SetRicercaMezziInServizio, StartLoadingMezziInServizio, StopLoadingMezziInServizio
 } from '../../actions/mezzi-in-servizio/mezzi-in-servizio.actions';
 import { ClearMarkerMezzoHover, ClearMarkerMezzoSelezionato, SetMarkerMezzoHover, SetMarkerMezzoSelezionato } from '../../actions/maps/marker.actions';
 import { MezzoInServizio } from '../../../../../shared/interface/mezzo-in-servizio.interface';
@@ -20,6 +24,7 @@ import { VoceFiltro } from '../../../filterbar/filtri-richieste/voce-filtro.mode
 import { StatoMezzo as Categoria } from '../../../../../shared/enum/stato-mezzo.enum';
 import { makeCopy } from '../../../../../shared/helper/function';
 import { resetFiltriSelezionati as _resetFiltriSelezionati, setFiltroSelezionato as _setFiltroSelezionato } from '../../../../../shared/helper/function-filtro';
+import { StopLoadingActionMezzo } from '../../actions/richieste/richieste.actions';
 
 export interface MezziInServizioStateModel {
     mezziInServizio: MezzoInServizio[];
@@ -28,6 +33,7 @@ export interface MezziInServizioStateModel {
     idMezzoInServizioSelezionato: string;
     filtriMezziInServizio: VoceFiltro[];
     ricerca: { mezzo: { mezzo: { descrizione: string } } };
+    loadingMezziInServizio: boolean;
 }
 
 export const MezziInServizioStateDefaults: MezziInServizioStateModel = {
@@ -43,7 +49,8 @@ export const MezziInServizioStateDefaults: MezziInServizioStateModel = {
         new VoceFiltro('1', Categoria.FuoriServizio, 'Fuori Servizio', false),
         new VoceFiltro('5', Categoria.Istituto, 'Istituto', false),
     ],
-    ricerca: { mezzo: { mezzo: { descrizione: '' } } }
+    ricerca: { mezzo: { mezzo: { descrizione: '' } } },
+    loadingMezziInServizio: false
 };
 
 @State<MezziInServizioStateModel>({
@@ -88,18 +95,26 @@ export class MezziInServizioState {
         return state.filtriMezziInServizio.filter(f => f.selezionato === true);
     }
 
-
     @Selector()
     static ricercaMezziInServizio(state: MezziInServizioStateModel) {
         return state.ricerca;
     }
 
+    @Selector()
+    static loadingMezziInServizio(state: MezziInServizioStateModel) {
+        return state.loadingMezziInServizio;
+    }
+
     @Action(GetMezziInServizio)
     getMezziInServizio({ dispatch }: StateContext<MezziInServizioStateModel>) {
+        dispatch(new StartLoadingMezziInServizio());
         this.mezziInServizioService.getMezziInServizio().subscribe(data => {
-            console.log('Mezzi In Servizio Controller', data);
-            dispatch(new SetMezziInServizio(data.listaMezzi));
-        });
+                console.log('Mezzi In Servizio Controller', data);
+                dispatch(new SetMezziInServizio(data.listaMezzi));
+                dispatch(new StopLoadingMezziInServizio());
+            },
+            error => dispatch(new StopLoadingActionMezzo())
+        );
     }
 
     @Action(SetMezziInServizio)
@@ -206,6 +221,20 @@ export class MezziInServizioState {
     clearRicercaMezziInServizio({ patchState }: StateContext<MezziInServizioStateModel>) {
         patchState({
             ricerca: { mezzo: { mezzo: { descrizione: '' } } }
+        });
+    }
+
+    @Action(StartLoadingMezziInServizio)
+    startLoadingMezziInServizio({ patchState }: StateContext<MezziInServizioStateModel>) {
+        patchState({
+            loadingMezziInServizio: true
+        });
+    }
+
+    @Action(StopLoadingMezziInServizio)
+    stopLoadingMezziInServizio({ patchState }: StateContext<MezziInServizioStateModel>) {
+        patchState({
+            loadingMezziInServizio: false
         });
     }
 }

@@ -29,7 +29,7 @@ import { ClearRicercaFilterbar } from '../store/actions/filterbar/ricerca-richie
 @Component({
     selector: 'app-mezzi-in-servizio',
     templateUrl: './mezzi-in-servizio.component.html',
-    styleUrls: [ './mezzi-in-servizio.component.css' ]
+    styleUrls: ['./mezzi-in-servizio.component.css']
 })
 export class MezziInServizioComponent implements OnInit, OnDestroy {
 
@@ -42,6 +42,7 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
     @Select(RicercaFilterbarState.ricerca) ricercaMezziInServizio$: Observable<string>;
     ricercaMezziInServizio: { mezzo: { mezzo: { descrizione: string } } };
     @Select(RichiesteState.loadingActionMezzo) loadingActionMezzo$: Observable<string>;
+    @Select(MezziInServizioState.loadingMezziInServizio) loadingMezziInServizio$: Observable<boolean>;
 
     statiMezziInServizio: StatoMezzo[];
     prevStateBoxClick: BoxClickStateModel;
@@ -125,7 +126,7 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
 
     /* Apre il modal per visualizzare gli eventi relativi alla richiesta cliccata */
     onVisualizzaEventiRichiesta(mezzo: Mezzo) {
-        this.store.dispatch(new SetFiltroTargaMezzo([ mezzo.descrizione ]));
+        this.store.dispatch(new SetFiltroTargaMezzo([mezzo.descrizione]));
         this.store.dispatch(new SetIdRichiestaEventi(mezzo.idRichiesta));
         const modal = this.modalService.open(EventiRichiestaComponent, {
             windowClass: 'xlModal',
