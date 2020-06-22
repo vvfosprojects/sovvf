@@ -9,6 +9,8 @@ export class Partenza {
         public mezzo?: Mezzo,
         public turno?: TurnoPartenza,
         public sganciata?: boolean,
-        public partenzaAnnullata?: boolean
-    ) { }
+        public partenzaAnnullata?: boolean,
+        public terminata?: boolean
+    ) {
+    }
 }
