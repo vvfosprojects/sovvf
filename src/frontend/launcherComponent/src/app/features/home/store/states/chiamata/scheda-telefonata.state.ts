@@ -249,7 +249,7 @@ export class SchedaTelefonataState {
     @Action(ApriModaleRichiestaDuplicata)
     apriModaleRichiestaDuplicata({ dispatch }: StateContext<SchedaTelefonataStateModel>, action: ApriModaleRichiestaDuplicata) {
         this.ngZone.run(() => {
-            const richiestaDuplicataModal = this.modalService.open(RichiestaDuplicataModalComponent, { size: 'lg', centered: true });
+            const richiestaDuplicataModal = this.modalService.open(RichiestaDuplicataModalComponent, { size: 'lg', centered: true, backdrop: 'static' });
             richiestaDuplicataModal.componentInstance.messaggio = action.messaggio;
         });
     }
