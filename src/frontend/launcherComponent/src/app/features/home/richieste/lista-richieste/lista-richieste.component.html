@@ -4,8 +4,9 @@
     <div *ngIf="richieste && richieste.length > 0" class="col-12 py-1 px-0 overflow-auto" [ngClass]="heightControl()">
         <div *ngFor="let r of richieste | paginate: { itemsPerPage: pageSize, currentPage: page, totalItems: totalItems }"
              [ngClass]="{'col-double': !_split, 'col-12': _split}">
-            <div id="richiesta" *ngIf="r !== richiestaFissata" class="w-100 rounded card-shadow"
+            <div id="richiesta" *ngIf="!richiestaFissata || (r.id !== richiestaFissata.id)" class="w-100 rounded card-shadow"
                  [ngClass]="cardClasses(r)">
+                <app-partial-loader *ngIf="loadingActionRichiesta === r.id"></app-partial-loader>
                 <app-sintesi-richiesta class="non-fissata" [richiesta]="r" [fissata]="false" [fissabile]="true"
                                        [espanso]="isEspanso(r.id)"
                                        [espandibile]="true" [listaEventi]="true"

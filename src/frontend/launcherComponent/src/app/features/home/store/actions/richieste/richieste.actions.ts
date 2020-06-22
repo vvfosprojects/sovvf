@@ -135,3 +135,15 @@ export class StartLoadingActionMezzo {
 export class StopLoadingActionMezzo {
     static readonly type = '[Richieste] Stop Loading Action Mezzo';
 }
+
+export class StartLoadingActionRichiesta {
+    static readonly type = '[Richieste] Start Loading Action Richiesta';
+
+    constructor(public idRichiesta: string) {
+    }
+}
+
+export class StopLoadingActionRichiesta {
+    static readonly type = '[Richieste] Stop Loading Action Richiesta';
+}
+
