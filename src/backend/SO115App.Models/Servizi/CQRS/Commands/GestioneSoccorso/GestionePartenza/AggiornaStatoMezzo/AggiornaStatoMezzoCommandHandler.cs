@@ -88,10 +88,11 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
             {
                 foreach (var composizione in richiesta.Partenze)
                 {
-                    if (composizione.Partenza.Mezzo.Codice == command.IdMezzo)
+                    if (composizione.Partenza.Mezzo.Codice == command.IdMezzo && !composizione.Partenza.Terminata)
                     {
                         composizione.Partenza.Mezzo.Stato = Costanti.MezzoInSede;
                         composizione.Partenza.Mezzo.IdRichiesta = null;
+                        composizione.Partenza.Terminata = true;
                     }
                 }
 

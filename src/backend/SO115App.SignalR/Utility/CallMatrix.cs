@@ -25,9 +25,9 @@ namespace SO115App.SignalR.Utility
             _config = config;
         }
 
-        public void SendMessage(SintesiRichiesta sintesi)
+        public void SendMessage(MessageMatrix info)
         {
-            var CodSedePerMatrix = sintesi.CodSOCompetente.Split('.')[0];
+            var CodSedePerMatrix = info.CodSede;
 
             var GetRoomId = GetChatRoomID(CodSedePerMatrix).Result;
             if (GetRoomId.Error == null)
@@ -35,9 +35,10 @@ namespace SO115App.SignalR.Utility
                 var GenerateBOT = PostBotInChatRoom(GetRoomId.room_id).Result;
                 if (GenerateBOT.Equals("Bot inviato con successo"))
                 {
-                    var call = PutMessage(GetRoomId.room_id, $"E' stato richiesto un intervento in {sintesi.Localita.Indirizzo}. Codice Intervento: {sintesi.Codice}").Result;
+                    var call = PutMessage(GetRoomId.room_id, info.Messaggio).Result;
 
                     Log.Information($"MATRIX - " + call);
+                    Log.Information($"MATRIX - FINE CHIAMATA PUT ");
                 }
             }
         }
@@ -176,12 +177,15 @@ namespace SO115App.SignalR.Utility
 
                 var httpContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
 
-                var response = await _client.PutAsync($"{_config.GetSection("UrlMatrix").Value}/rooms/{room_id.Replace("!", "%21")}/send/m.room.message/{randomId}?access_token=MDAxY2xvY2F0aW9uIHZ2Zi10ZXN0LmNsb3VkCjAwMTNpZGVudGlmaWVyIGtleQowMDEwY2lkIGdlbiA9IDEKMDAyNmNpZCB1c2VyX2lkID0gQGJvdDp2dmYtdGVzdC5jbG91ZAowMDE2Y2lkIHR5cGUgPSBhY2Nlc3MKMDAyMWNpZCBub25jZSA9IG5DO0BHOF5tN2FUOkBVXj0KMDAyZnNpZ25hdHVyZSC0LHxje1QcxZu6AytsGKUkL3-KOfagMBKQq3aCxHXiIQo", httpContent).ConfigureAwait(false);
+                var httpClientHandler = new HttpClientHandler();
+                httpClientHandler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => { return true; };
+                var client = new HttpClient(httpClientHandler);
+
+                var response = await client.PutAsync($"{_config.GetSection("UrlMatrix").Value}/rooms/{room_id.Replace("!", "%21")}/send/m.room.message/{randomId}?access_token=MDAxY2xvY2F0aW9uIHZ2Zi10ZXN0LmNsb3VkCjAwMTNpZGVudGlmaWVyIGtleQowMDEwY2lkIGdlbiA9IDEKMDAyNmNpZCB1c2VyX2lkID0gQGJvdDp2dmYtdGVzdC5jbG91ZAowMDE2Y2lkIHR5cGUgPSBhY2Nlc3MKMDAyMWNpZCBub25jZSA9IG5DO0BHOF5tN2FUOkBVXj0KMDAyZnNpZ25hdHVyZSC0LHxje1QcxZu6AytsGKUkL3-KOfagMBKQq3aCxHXiIQo", httpContent).ConfigureAwait(false);
 
                 if (response.IsSuccessStatusCode)
                 {
                     Log.Information($"MATRIX - ESITO CHIAMATA PUT OK ");
-                    Log.Information($"MATRIX - FINE CHIAMATA PUT ");
 
                     return "Invio effettuato con successo";
                 }
@@ -189,7 +193,6 @@ namespace SO115App.SignalR.Utility
                 {
                     Log.Information($"MATRIX - ESITO CHIAMATA PUT KO - " + response.ReasonPhrase);
                     Log.Information($"MATRIX - RISULTATO CHIAMATA PUT Headers - " + response.Headers.ToString());
-                    Log.Information($"MATRIX - FINE CHIAMATA PUT ");
 
                     return response.ReasonPhrase;
                 }
@@ -197,9 +200,6 @@ namespace SO115App.SignalR.Utility
             catch (HttpRequestException e)
             {
                 Log.Information($"MATRIX - ESITO CHIAMATA PUT KO -  Message 5 " + e.InnerException);
-
-                Log.Information($"MATRIX - FINE CHIAMATA PUT ");
-
                 return e.Message;
             }
             catch (Exception e)
