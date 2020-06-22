@@ -33,7 +33,11 @@ namespace SO115App.SignalR.Utility
             if (GetRoomId.Error == null)
             {
                 var GenerateBOT = PostBotInChatRoom(GetRoomId.room_id).Result;
-                var call = PutMessage(GetRoomId.room_id, $"E' stato richiesto un intervento in via {sintesi.Localita.Indirizzo}. Codice Intervento: {sintesi.Codice}").Result;
+                if (GenerateBOT.Equals("Bot inviato con successo"))
+                {
+                    var call = PutMessage(GetRoomId.room_id, $"E' stato richiesto un intervento in via {sintesi.Localita.Indirizzo}. Codice Intervento: {sintesi.Codice}").Result;
+                    Log.Information($"MATRIX - Messaggio inviato");
+                }
             }
         }
 
@@ -122,7 +126,7 @@ namespace SO115App.SignalR.Utility
                 {
                     Log.Information($"MATRIX - ESITO CHIAMATA POST OK ");
                     Log.Information($"MATRIX - FINE CHIAMATA POST ");
-                    return " Bot inviato con successo";
+                    return "Bot inviato con successo";
                 }
                 else
                 {
@@ -166,6 +170,9 @@ namespace SO115App.SignalR.Utility
                 };
 
                 var jsonString = "{\"msgtype\":\"" + send.Msgtype + "\",\"body\":\"" + send.Body + "\"}";
+
+                Log.Information($"MATRIX - STRINGA Messaggio:" + jsonString);
+
                 var httpContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
 
                 var response = await _client.PutAsync($"{_config.GetSection("UrlMatrix").Value}/rooms/{room_id.Replace("!", "%21")}/send/m.room.message/{randomId}?access_token=MDAxY2xvY2F0aW9uIHZ2Zi10ZXN0LmNsb3VkCjAwMTNpZGVudGlmaWVyIGtleQowMDEwY2lkIGdlbiA9IDEKMDAyNmNpZCB1c2VyX2lkID0gQGJvdDp2dmYtdGVzdC5jbG91ZAowMDE2Y2lkIHR5cGUgPSBhY2Nlc3MKMDAyMWNpZCBub25jZSA9IG5DO0BHOF5tN2FUOkBVXj0KMDAyZnNpZ25hdHVyZSC0LHxje1QcxZu6AytsGKUkL3-KOfagMBKQq3aCxHXiIQo", httpContent).ConfigureAwait(false);
