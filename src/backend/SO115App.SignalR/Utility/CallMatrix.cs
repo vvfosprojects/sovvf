@@ -110,7 +110,6 @@ namespace SO115App.SignalR.Utility
                 //_client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("test");
 
                 Log.Information($"MATRIX - INIZIO CHIAMATA POST");
-                room_id = "!HrAuaSBFXenBvMSdgT:vvf-test.cloud";
                 Log.Information($"MATRIX - URL CHIAMATA POST - {_config.GetSection("UrlMatrix").Value}/rooms/{room_id.Replace("!", "%21")}/join?access_token=MDAxY2xvY2F0aW9uIHZ2Zi10ZXN0LmNsb3VkCjAwMTNpZGVudGlmaWVyIGtleQowMDEwY2lkIGdlbiA9IDEKMDAyNmNpZCB1c2VyX2lkID0gQGJvdDp2dmYtdGVzdC5jbG91ZAowMDE2Y2lkIHR5cGUgPSBhY2Nlc3MKMDAyMWNpZCBub25jZSA9IG5DO0BHOF5tN2FUOkBVXj0KMDAyZnNpZ25hdHVyZSC0LHxje1QcxZu6AytsGKUkL3-KOfagMBKQq3aCxHXiIQo");
 
                 var httpClientHandler = new HttpClientHandler();
