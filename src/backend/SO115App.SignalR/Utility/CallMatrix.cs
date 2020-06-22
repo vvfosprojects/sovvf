@@ -25,9 +25,9 @@ namespace SO115App.SignalR.Utility
             _config = config;
         }
 
-        public void SendMessage(SintesiRichiesta sintesi)
+        public void SendMessage(MessageMatrix info)
         {
-            var CodSedePerMatrix = sintesi.CodSOCompetente.Split('.')[0];
+            var CodSedePerMatrix = info.CodSede;
 
             var GetRoomId = GetChatRoomID(CodSedePerMatrix).Result;
             if (GetRoomId.Error == null)
@@ -35,7 +35,7 @@ namespace SO115App.SignalR.Utility
                 var GenerateBOT = PostBotInChatRoom(GetRoomId.room_id).Result;
                 if (GenerateBOT.Equals("Bot inviato con successo"))
                 {
-                    var call = PutMessage(GetRoomId.room_id, $"E' stato richiesto un intervento in {sintesi.Localita.Indirizzo}. Codice Intervento: {sintesi.Codice}").Result;
+                    var call = PutMessage(GetRoomId.room_id, info.Messaggio).Result;
 
                     Log.Information($"MATRIX - " + call);
                     Log.Information($"MATRIX - FINE CHIAMATA PUT ");

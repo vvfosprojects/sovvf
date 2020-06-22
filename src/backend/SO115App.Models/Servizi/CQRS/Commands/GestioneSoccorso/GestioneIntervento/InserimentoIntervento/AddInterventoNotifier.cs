@@ -19,6 +19,7 @@
 //-----------------------------------------------------------------------
 using CQRS.Commands.Notifiers;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
+using SO115App.Models.Classi.Matrix;
 using SO115App.Models.Servizi.Infrastruttura.Notification.CallMatrix;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneChiamata;
 
@@ -41,9 +42,15 @@ namespace DomainModel.CQRS.Commands.AddIntervento
         public void Notify(AddInterventoCommand command)
         {
             var sintesi = _getSintesiRichiestaByCodice.GetSintesi(command.Chiamata.Codice);
-
             _sender.SendNotification(command);
-            _callMatrix.SendMessage(sintesi);
+
+            var messaggio = $"E' stato richiesto un intervento in {sintesi.Localita.Indirizzo}. Codice Intervento: {sintesi.Codice}";
+            var infoMatrix = new MessageMatrix()
+            {
+                Messaggio = messaggio,
+                CodSede = sintesi.CodSOCompetente.Split('.')[0]
+            };
+            _callMatrix.SendMessage(infoMatrix);
         }
     }
 }
