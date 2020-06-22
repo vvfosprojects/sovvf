@@ -42,5 +42,7 @@ namespace SO115App.API.Models.Classi.Condivise
         {
             get; set;
         } = false;
+
+        public bool Terminata { get; set; } = false;
     }
 }
