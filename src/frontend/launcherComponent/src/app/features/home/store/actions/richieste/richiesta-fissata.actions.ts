@@ -1,7 +1,7 @@
 export class SetRichiestaFissata {
     static readonly type = '[RichiestaFissata] Set Richiesta Fissata';
 
-    constructor(public idRichiesta: string) {
+    constructor(public idRichiesta: string, public codiceRichiesta: string) {
     }
 }
 
