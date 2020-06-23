@@ -1,9 +1,8 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
-
-// Action
-import { SetRichiestaFissata, ClearRichiestaFissata, SetEspanso } from '../../actions/richieste/richiesta-fissata.actions';
+import { SetRichiestaFissata, ClearRichiestaFissata, SetEspanso, UpdateRichiestaFissata } from '../../actions/richieste/richiesta-fissata.actions';
 import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.model';
 import { SintesiRichiesteService } from '../../../../../core/service/lista-richieste-service/lista-richieste.service';
+import { patch, updateItem } from '@ngxs/store/operators';
 
 export interface RichiestaFissataStateModel {
     idRichiestaFissata: string;
@@ -48,6 +47,13 @@ export class RichiestaFissataState {
                 idRichiestaFissata: action.idRichiesta,
                 richiestaFissata: r
             });
+        });
+    }
+
+    @Action(UpdateRichiestaFissata)
+    updateRichiestaFissata({ patchState }: StateContext<RichiestaFissataStateModel>, action: UpdateRichiestaFissata) {
+        patchState({
+            richiestaFissata: action.richiesa
         });
     }
 

@@ -51,6 +51,7 @@ import { PaginationState } from '../../../../../shared/store/states/pagination/p
 import { GetInitCentroMappa } from '../../actions/maps/centro-mappa.actions';
 import { ClearRichiestaMarkerModifica } from '../../actions/maps/richieste-markers.actions';
 import { AuthState } from '../../../../auth/store/auth.state';
+import { UpdateRichiestaFissata } from '../../actions/richieste/richiesta-fissata.actions';
 
 export interface RichiesteStateModel {
     richieste: SintesiRichiesta[];
@@ -226,9 +227,9 @@ export class RichiesteState {
             const state = getState();
             const idRichiestaFissata = this.store.selectSnapshot(RichiestaFissataState.idRichiestaFissata);
 
-            /*if (idRichiestaFissata && (idRichiestaFissata === action.richiesta.id)) {
-                dispatch(new Update)
-            }*/
+            if (idRichiestaFissata && (idRichiestaFissata === action.richiesta.id)) {
+                dispatch(new UpdateRichiestaFissata(action.richiesta));
+            }
 
             if (state.loadingActionRichiesta && (action.richiesta.id === state.loadingActionRichiesta)) {
                 dispatch(new StopLoadingActionRichiesta());
