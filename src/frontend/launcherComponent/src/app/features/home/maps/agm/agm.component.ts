@@ -264,11 +264,11 @@ export class AgmComponent implements OnDestroy {
         return this.markerService.iconaSchedaContattoMarker(schedaContatto.classificazione + checkGestita);
     }
 
-    actionRichiestaMarker(id: string, event: MouseE): void {
+    actionRichiestaMarker(id: string, codice: string, event: MouseE): void {
         /**
          * scateno l'azione relativa all'evento del mouse ricevuto
          */
-        this.markerService.actionRichiestaMarker(id, event);
+        this.markerService.actionRichiestaMarker(id, codice, event);
     }
 
     actionMezzoMarker(id: string, event: MouseE): void {

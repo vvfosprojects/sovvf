@@ -55,7 +55,7 @@ export class RichiesteComponent implements OnInit, OnDestroy {
     @Select(RichiesteState.richieste) richieste$: Observable<SintesiRichiesta[]>;
     richieste: SintesiRichiesta[] = [];
 
-    @Select(RichiestaFissataState.idRichiestaFissata) idRichiestaFissata$: Observable<string>;
+    @Select(RichiestaFissataState.richiestaFissata) richiestaFissata$: Observable<SintesiRichiesta>;
     richiestaFissata: SintesiRichiesta;
 
     @Select(RichiestaGestioneState.richiestaGestione) richiestaGestione$: Observable<SintesiRichiesta>;
@@ -73,6 +73,7 @@ export class RichiesteComponent implements OnInit, OnDestroy {
 
     @Select(RichiesteState.loadingRichieste) loadingRichieste$: Observable<boolean>;
     @Select(RichiesteState.needRefresh) needRefresh$: Observable<boolean>;
+    @Select(RichiesteState.loadingActionRichiesta) loadingActionRichiesta$: Observable<string>;
 
     @Select(PaginationState.page) page$: Observable<number>;
     @Select(PaginationState.pageSize) pageSize$: Observable<number>;
@@ -131,10 +132,9 @@ export class RichiesteComponent implements OnInit, OnDestroy {
     // Restituisce la Richiesta Fissata
     getRichiestaFissata() {
         this.subscription.add(
-            this.idRichiestaFissata$.subscribe((idRichiestaFissata: string) => {
-                if (idRichiestaFissata) {
-                    const richiestaFissataArray = this.richieste.filter(r => r.id === idRichiestaFissata);
-                    this.richiestaFissata = richiestaFissataArray[0];
+            this.richiestaFissata$.subscribe((richiestaFissata: SintesiRichiesta) => {
+                if (richiestaFissata) {
+                    this.richiestaFissata = richiestaFissata;
                     this.listHeightClass = 'm-h-590';
                 } else {
                     setTimeout(() => {
@@ -254,9 +254,9 @@ export class RichiesteComponent implements OnInit, OnDestroy {
         this.store.dispatch(new ClearRichiestaSelezionata());
     }
 
-    onFissaInAlto(idRichiesta: string) {
-        this.store.dispatch(new SetMarkerRichiestaSelezionato(idRichiesta));
-        this.store.dispatch(new SetRichiestaFissata(idRichiesta));
+    onFissaInAlto(richiesta: SintesiRichiesta) {
+        this.store.dispatch(new SetMarkerRichiestaSelezionato(richiesta.id));
+        this.store.dispatch(new SetRichiestaFissata(richiesta.id, richiesta.codice));
     }
 
     onDefissa() {

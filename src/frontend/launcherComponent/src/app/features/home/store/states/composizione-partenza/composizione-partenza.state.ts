@@ -2,6 +2,7 @@ import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { insertItem, patch, removeItem } from '@ngxs/store/operators';
 import {
     AddFiltroSelezionatoComposizione,
+    ClearFiltriAffini,
     ClearPartenza,
     ConfirmPartenze,
     GetFiltriComposizione,
@@ -11,8 +12,10 @@ import {
     RichiestaComposizione,
     SetComposizioneMode,
     SetFiltriComposizione,
-    SetListaFiltriAffini, StartInvioPartenzaLoading,
-    StartListaComposizioneLoading, StopInvioPartenzaLoading,
+    SetListaFiltriAffini,
+    StartInvioPartenzaLoading,
+    StartListaComposizioneLoading,
+    StopInvioPartenzaLoading,
     StopListaComposizioneLoading,
     TerminaComposizione,
     ToggleComposizioneMode,
@@ -136,7 +139,7 @@ export class ComposizionePartenzaState {
     }
 
     @Action(SetFiltriComposizione)
-    setFiltriComposizione({ getState, patchState, dispatch }: StateContext<ComposizionePartenzaStateModel>, action: SetFiltriComposizione) {
+    setFiltriComposizione({ getState, dispatch }: StateContext<ComposizionePartenzaStateModel>) {
         const state = getState();
         const composizioneMode = state.composizioneMode;
         const objFiltriSelezionati: ComposizioneFilterbar = {
@@ -220,6 +223,13 @@ export class ComposizionePartenzaState {
                 generiMezzi: generiMezzi,
                 stati: filtriStato
             }
+        });
+    }
+
+    @Action(ClearFiltriAffini)
+    clearFiltriAffini({ patchState }: StateContext<ComposizionePartenzaStateModel>) {
+        patchState({
+            filtriAffini: ComposizioneStateDefaults.filtriAffini
         });
     }
 

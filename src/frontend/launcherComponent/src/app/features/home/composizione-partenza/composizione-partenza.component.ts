@@ -23,13 +23,16 @@ import { MezzoActionInterface } from '../../../shared/interface/mezzo-action.int
 import { ActionMezzo } from '../store/actions/richieste/richieste.actions';
 import { SganciamentoInterface } from 'src/app/shared/interface/sganciamento.interface';
 import { ClearMarkerMezzoSelezionato } from '../store/actions/maps/marker.actions';
-import { SganciamentoMezzoComposizione } from '../store/actions/composizione-partenza/mezzi-composizione.actions';
+import { ClearListaMezziComposizione, SganciamentoMezzoComposizione } from '../store/actions/composizione-partenza/mezzi-composizione.actions';
 import { AuthState } from '../../auth/store/auth.state';
+import { ClearListaSquadreComposizione } from '../store/actions/composizione-partenza/squadre-composizione.actions';
+import { ClearPreaccoppiati } from '../store/actions/composizione-partenza/composizione-veloce.actions';
+import { ClearFiltriAffini } from '../store/actions/composizione-partenza/composizione-partenza.actions';
 
 @Component({
     selector: 'app-composizione-partenza',
     templateUrl: './composizione-partenza.component.html',
-    styleUrls: [ './composizione-partenza.component.css' ]
+    styleUrls: ['./composizione-partenza.component.css']
 })
 export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
 
@@ -71,7 +74,13 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        this.store.dispatch(new UndoAllBoxes(this.prevStateBoxClick));
+        this.store.dispatch([
+            new UndoAllBoxes(this.prevStateBoxClick),
+            new ClearListaMezziComposizione(),
+            new ClearListaSquadreComposizione(),
+            new ClearPreaccoppiati(),
+            new ClearFiltriAffini()
+        ]);
         this.subscription.unsubscribe();
         isDevMode() && console.log('Componente Composizione distrutto');
     }
@@ -96,7 +105,7 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
         this.store.dispatch(new SetIdRichiestaEventi(idRichiesta));
         const modal = this.modalService.open(EventiRichiestaComponent, { windowClass: 'xlModal', backdropClass: 'light-blue-backdrop', centered: true });
         modal.result.then(() => {
-        },
+            },
             () => this.store.dispatch(new ClearEventiRichiesta()));
     }
 

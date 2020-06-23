@@ -19,7 +19,7 @@ import {
     SetNeedRefresh,
     StartLoadingRichieste,
     StopLoadingRichieste,
-    EliminaPartenzaRichiesta, StartLoadingActionMezzo, StopLoadingActionMezzo
+    EliminaPartenzaRichiesta, StartLoadingActionMezzo, StopLoadingActionMezzo, StartLoadingActionRichiesta, StopLoadingActionRichiesta
 } from '../../actions/richieste/richieste.actions';
 import { SintesiRichiesteService } from 'src/app/core/service/lista-richieste-service/lista-richieste.service';
 import { insertItem, patch, updateItem } from '@ngxs/store/operators';
@@ -51,6 +51,7 @@ import { PaginationState } from '../../../../../shared/store/states/pagination/p
 import { GetInitCentroMappa } from '../../actions/maps/centro-mappa.actions';
 import { ClearRichiestaMarkerModifica } from '../../actions/maps/richieste-markers.actions';
 import { AuthState } from '../../../../auth/store/auth.state';
+import { UpdateRichiestaFissata } from '../../actions/richieste/richiesta-fissata.actions';
 
 export interface RichiesteStateModel {
     richieste: SintesiRichiesta[];
@@ -58,6 +59,7 @@ export interface RichiesteStateModel {
     chiamataInviaPartenza: string;
     loadingRichieste: boolean;
     loadingActionMezzo: string;
+    loadingActionRichiesta: string;
     needRefresh: boolean;
 }
 
@@ -67,6 +69,7 @@ export const RichiesteStateDefaults: RichiesteStateModel = {
     chiamataInviaPartenza: null,
     loadingRichieste: false,
     loadingActionMezzo: null,
+    loadingActionRichiesta: null,
     needRefresh: false
 };
 
@@ -113,6 +116,11 @@ export class RichiesteState {
     @Selector()
     static loadingActionMezzo(state: RichiesteStateModel) {
         return state.loadingActionMezzo;
+    }
+
+    @Selector()
+    static loadingActionRichiesta(state: RichiesteStateModel) {
+        return state.loadingActionRichiesta;
     }
 
     constructor(private richiesteService: SintesiRichiesteService,
@@ -175,7 +183,7 @@ export class RichiesteState {
     }
 
     @Action(AddRichieste)
-    setRichieste({ patchState }: StateContext<RichiesteStateModel>, action: AddRichieste) {
+    setRichieste({ getState, patchState }: StateContext<RichiesteStateModel>, action: AddRichieste) {
         patchState({
             richieste: action.richieste
         });
@@ -216,9 +224,20 @@ export class RichiesteState {
                 })
             );
 
+            const state = getState();
+            const idRichiestaFissata = this.store.selectSnapshot(RichiestaFissataState.idRichiestaFissata);
+
+            if (idRichiestaFissata && (idRichiestaFissata === action.richiesta.id)) {
+                dispatch(new UpdateRichiestaFissata(action.richiesta));
+            }
+
+            if (state.loadingActionRichiesta && (action.richiesta.id === state.loadingActionRichiesta)) {
+                dispatch(new StopLoadingActionRichiesta());
+            }
+
             const idRichiestaSelezionata = this.store.selectSnapshot(RichiestaSelezionataState.idRichiestaSelezionata);
             const idRichiestaGestione = this.store.selectSnapshot(RichiestaGestioneState.idRichiestaGestione);
-            const loaderRichieste = getState().loadingRichieste;
+            const loaderRichieste = state.loadingRichieste;
             if (!idRichiestaSelezionata && !idRichiestaGestione && !loaderRichieste) {
                 const currentPage = this.store.selectSnapshot(PaginationState.page);
                 dispatch([
@@ -315,6 +334,7 @@ export class RichiesteState {
 
     @Action(ActionRichiesta)
     actionRichiesta({ dispatch }: StateContext<RichiesteStateModel>, action: ActionRichiesta) {
+        dispatch(new StartLoadingActionRichiesta(action.richiestaAction.idRichiesta));
         const obj = action.richiestaAction;
         console.log('Obj', obj);
         this.richiesteService.aggiornaStatoRichiesta(obj).subscribe(() => {
@@ -370,6 +390,20 @@ export class RichiesteState {
     stopLoadingActionMezzo({ patchState }: StateContext<RichiesteStateModel>) {
         patchState({
             loadingActionMezzo: null
+        });
+    }
+
+    @Action(StartLoadingActionRichiesta)
+    startLoadingActionRichiesta({ patchState }: StateContext<RichiesteStateModel>, action: StartLoadingActionRichiesta) {
+        patchState({
+            loadingActionRichiesta: action.idRichiesta
+        });
+    }
+
+    @Action(StopLoadingActionRichiesta)
+    stopLoadingActionRichiesta({ patchState }: StateContext<RichiesteStateModel>) {
+        patchState({
+            loadingActionRichiesta: null
         });
     }
 

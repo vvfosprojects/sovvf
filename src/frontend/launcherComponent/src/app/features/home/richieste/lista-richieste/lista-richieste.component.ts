@@ -27,6 +27,7 @@ export class ListaRichiesteComponent implements OnInit {
 
     @Input() loading: boolean;
     @Input() needRefresh: boolean;
+    @Input() loadingActionRichiesta: string;
 
     // Paginazione
     @Input() page: number;
@@ -42,7 +43,7 @@ export class ListaRichiesteComponent implements OnInit {
     @Output() composizionePartenza = new EventEmitter<SintesiRichiesta>();
     @Output() pageChange = new EventEmitter<number>();
     @Output() refresh = new EventEmitter<boolean>();
-    @Output() fissaInAlto = new EventEmitter<string>();
+    @Output() fissaInAlto = new EventEmitter<SintesiRichiesta>();
     @Output() hoverIn = new EventEmitter<string>();
     @Output() hoverOut = new EventEmitter<boolean>();
     @Output() selezione = new EventEmitter<string>();
@@ -89,7 +90,7 @@ export class ListaRichiesteComponent implements OnInit {
     /* Fissa in alto la richiesta */
     onFissaInAlto(richiesta: SintesiRichiesta) {
         if (richiesta) {
-            this.fissaInAlto.emit(richiesta.id);
+            this.fissaInAlto.emit(richiesta);
         }
     }
 

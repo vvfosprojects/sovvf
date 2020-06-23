@@ -406,7 +406,7 @@ export class MarkerService implements OnDestroy {
         return this.icone.iconaSedeTipoWindow(tipo);
     }
 
-    actionRichiestaMarker(id: string, mouse: MouseE) {
+    actionRichiestaMarker(id: string, codice: string, mouse: MouseE) {
         switch (mouse) {
             case MouseE.HoverIn: {
                 this.store.dispatch([
@@ -428,7 +428,7 @@ export class MarkerService implements OnDestroy {
                 if (this.markerRichiestaSelezionato !== id) {
                     this.store.dispatch([
                         new SetMarkerRichiestaSelezionato(id),
-                        new SetRichiestaFissata(id)
+                        new SetRichiestaFissata(id, codice)
                     ]);
                 }
                 this.selfClickedMarker = `richiesta-${id}`;

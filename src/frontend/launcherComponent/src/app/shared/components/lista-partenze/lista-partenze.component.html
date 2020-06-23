@@ -3,7 +3,7 @@
 </div>
 <ul *ngIf="partenze" class="list-unstyled">
     <div *ngFor="let p of partenze">
-        <li *ngIf="!p.sganciata && !p.partenzaAnnullata" class="border-bottom">
+        <li *ngIf="!p.sganciata && !p.partenzaAnnullata && !p.terminata" class="border-bottom">
             <app-partial-loader
                     *ngIf="(loadingActionMezzo$ | async) && (loadingActionMezzo$ | async) === p.mezzo.codice"></app-partial-loader>
             <app-partenza [partenza]="p" [inGestione]="inGestione" [statoRichiesta]="statoRichiesta"
