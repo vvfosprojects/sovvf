@@ -38,27 +38,19 @@ using SO115App.Models.Classi.Utility;
 
 namespace SO115App.ExternalAPI.Fake.Servizi.Personale
 {
-    public class GetListaSquadre : IGetListaSquadre
+    public class GetListaSquadrePerBox : IGetListaSquadrePerBox
     {
-        private readonly HttpClient _client;
-        private readonly IConfiguration _configuration;
         private readonly IGetDistaccamentoByCodiceSedeUC _getDistaccamentoByCodiceSedeUC;
-        private readonly IGetPersonaleByCF _getPersonaleByCF;
         private readonly IGetAlberaturaUnitaOperative _getAlberaturaUnitaOperative;
         private readonly IMemoryCache _memoryCache;
 
-        public GetListaSquadre(HttpClient client, IConfiguration configuration,
-             IGetDistaccamentoByCodiceSedeUC GetDistaccamentoByCodiceSedeUC,
-             IGetPersonaleByCF GetPersonaleByCF,
-             IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative,
-             IMemoryCache memoryCache)
+        public GetListaSquadrePerBox(IGetDistaccamentoByCodiceSedeUC GetDistaccamentoByCodiceSedeUC,
+                                     IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative,
+                                     IMemoryCache memoryCache)
         {
             _getDistaccamentoByCodiceSedeUC = GetDistaccamentoByCodiceSedeUC;
-            _getPersonaleByCF = GetPersonaleByCF;
             _getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
             _memoryCache = memoryCache;
-            _client = client;
-            _configuration = configuration;
         }
 
         public async Task<List<Squadra>> Get(List<string> sedi)
@@ -92,7 +84,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
                 foreach (string CodSede in ListaCodiciSedi)
                 {
                     List<Squadra> listaSquadraBySede = new List<Squadra>();
-                    if (!_memoryCache.TryGetValue("listaSquadre-" + CodSede, out listaSquadraBySede))
+                    if (!_memoryCache.TryGetValue("listaSquadreBox-" + CodSede, out listaSquadraBySede))
                     {
                         #region LEGGO DA API ESTERNA
 
@@ -166,25 +158,22 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
             List<Componente> ComponentiSquadra = new List<Componente>();
             foreach (ComponenteSquadraFake componenteFake in squadraFake.ComponentiSquadra)
             {
-                PersonaleVVF pVVf = _getPersonaleByCF.Get(componenteFake.CodiceFiscale, CodSede).Result;
+                //PersonaleVVF pVVf = _getPersonaleByCF.Get(componenteFake.CodiceFiscale, CodSede).Result;
 
-                if (pVVf != null)
+                Componente componente = new Componente(componenteFake.DescrizioneQualificaLunga,
+                                                        "", componenteFake.Tooltip, componenteFake.CapoPartenza, componenteFake.Autista, componenteFake.Rimpiazzo)
                 {
-                    Componente componente = new Componente(componenteFake.DescrizioneQualificaLunga,
-                    pVVf.Nominativo, componenteFake.Tooltip, componenteFake.CapoPartenza, componenteFake.Autista, componenteFake.Rimpiazzo)
-                    {
-                        CodiceFiscale = pVVf.CodFiscale,
-                        OrarioFine = componenteFake.OrarioFine,
-                        OrarioInizio = componenteFake.OrarioInizio,
-                        Telefono = componenteFake.Telefono,
-                        TecnicoGuardia1 = componenteFake.TecnicoGuardia1,
-                        TecnicoGuardia2 = componenteFake.TecnicoGuardia2,
-                        FunGuardia = componenteFake.FunGuardia,
-                        CapoTurno = componenteFake.CapoTurno
-                    };
-                    ComponentiSquadra.Add(componente);
-                    ListaCodiciFiscaliComponentiSquadra.Add(pVVf.CodFiscale);
-                }
+                    CodiceFiscale = componenteFake.CodiceFiscale,
+                    OrarioFine = componenteFake.OrarioFine,
+                    OrarioInizio = componenteFake.OrarioInizio,
+                    Telefono = componenteFake.Telefono,
+                    TecnicoGuardia1 = componenteFake.TecnicoGuardia1,
+                    TecnicoGuardia2 = componenteFake.TecnicoGuardia2,
+                    FunGuardia = componenteFake.FunGuardia,
+                    CapoTurno = componenteFake.CapoTurno
+                };
+                ComponentiSquadra.Add(componente);
+                ListaCodiciFiscaliComponentiSquadra.Add(componenteFake.CodiceFiscale);
             }
 
             Squadra s = new Squadra(squadraFake.NomeSquadra, Stato, ComponentiSquadra, sedeDistaccamento);

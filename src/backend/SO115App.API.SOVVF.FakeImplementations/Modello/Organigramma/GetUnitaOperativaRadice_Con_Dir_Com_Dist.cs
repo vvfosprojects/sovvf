@@ -325,8 +325,8 @@ namespace SO115App.API.SOVVF.FakeImplementations.Modello.Organigramma
             comProAN.AddFiglio(dstAN2501);
             var dstAN3500 = new UnitaOperativa("AN.3500", "Arcevia");
             comProAN.AddFiglio(dstAN3500);
-            var dstAP2000 = new UnitaOperativa("AP.2000", "Fermo");
-            comProAP.AddFiglio(dstAP2000);
+            //var dstAP2000 = new UnitaOperativa("AP.2000", "Fermo");
+            //comProAP.AddFiglio(dstAP2000);
             var dstAP2001 = new UnitaOperativa("AP.2001", "S.Benedetto del Tronto");
             comProAP.AddFiglio(dstAP2001);
             var dstAP4000 = new UnitaOperativa("AP.4000", "Amandola");

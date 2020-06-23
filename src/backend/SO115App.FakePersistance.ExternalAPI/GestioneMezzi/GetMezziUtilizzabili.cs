@@ -177,7 +177,12 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
             //bool CoordinateFake = false;
 
             var distaccamento = _getDistaccamentoByCodiceSedeUC.Get(mezzoFake.Sede).Result;
-            var sede = new Sede(mezzoFake.Sede, distaccamento.DescDistaccamento, distaccamento.Indirizzo, distaccamento.Coordinate, "", "", "", "", "");
+
+            var sede = new Sede(mezzoFake.Sede,
+                                distaccamento != null ? distaccamento.DescDistaccamento : "",
+                                distaccamento != null ? distaccamento.Indirizzo : "",
+                                distaccamento != null ? distaccamento.Coordinate : null,
+                                "", "", "", "", "");
 
             if (anagraficaMezzo != null)
             {
@@ -209,6 +214,7 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
 
             var listaAnagraficaMezzo = new List<AnagraficaMezzo>();
             listaAnagraficaMezzo = JsonConvert.DeserializeObject<List<AnagraficaMezzo>>(data);
+
             return listaAnagraficaMezzo;
         }
 
