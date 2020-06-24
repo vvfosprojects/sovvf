@@ -24,8 +24,11 @@ namespace SO115App.Persistence.MongoDB.GestioneInterventi.Utility
 
             if (ListaRichieste.Any())
             {
-                var idPRov = ListaRichieste.OrderByDescending(x => x.CodRichiesta).FirstOrDefault().CodRichiesta;
-                MaxIdSintesi = Convert.ToInt16(idPRov.Substring(idPRov.Length - 5)) + 1;
+                var codiceRichiesta = ListaRichieste.OrderByDescending(x => x.CodRichiesta).FirstOrDefault().CodRichiesta;
+                if (codiceRichiesta != null)
+                    MaxIdSintesi = Convert.ToInt16(codiceRichiesta.Substring(codiceRichiesta.Length - 5)) + 1;
+                else
+                    MaxIdSintesi = 0;
             }
             else
                 MaxIdSintesi = 0;
