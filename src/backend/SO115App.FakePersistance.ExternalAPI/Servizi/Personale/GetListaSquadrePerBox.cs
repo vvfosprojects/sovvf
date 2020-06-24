@@ -79,6 +79,18 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
                     }
                 }
 
+                #region ListaSquadre da Fake
+                var filepath = Costanti.ListaSquadre;
+                string json;
+                using (var r = new StreamReader(filepath))
+                {
+                    json = r.ReadToEnd();
+                }
+
+                var listaSquadreJson = JsonConvert.DeserializeObject<List<SquadraFake>>(json);
+                #endregion
+
+
                 var ListaMezzi = new List<Mezzo>();
 
                 foreach (string CodSede in ListaCodiciSedi)
@@ -100,14 +112,6 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
 
                         #region LEGGO DA JSON FAKE
 
-                        var filepath = Costanti.ListaSquadre;
-                        string json;
-                        using (var r = new StreamReader(filepath))
-                        {
-                            json = r.ReadToEnd();
-                        }
-
-                        var listaSquadreJson = JsonConvert.DeserializeObject<List<SquadraFake>>(json);
                         List<SquadraFake> ListaSquadreSede = listaSquadreJson.FindAll(x => x.Sede.Equals(CodSede));
 
                         #endregion LEGGO DA JSON FAKE
@@ -116,13 +120,13 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
 
                         foreach (SquadraFake squadraFake in ListaSquadreSede)
                         {
-                            var squadra = MapSqaudra(squadraFake, CodSede);
+                            var squadra = MapSquadra(squadraFake, CodSede);
                             listaSquadraBySedeAppo.Add(squadra);
                             listaSquadre.Add(squadra);
                         }
 
                         var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromHours(4));
-                        _memoryCache.Set("listaSquadre-" + CodSede, listaSquadraBySedeAppo, cacheEntryOptions);
+                        _memoryCache.Set("listaSquadreBox-" + CodSede, listaSquadraBySedeAppo, cacheEntryOptions);
                     }
                     else
                     {
@@ -138,7 +142,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
             }
         }
 
-        private Squadra MapSqaudra(SquadraFake squadraFake, string CodSede)
+        private Squadra MapSquadra(SquadraFake squadraFake, string CodSede)
         {
             Squadra.StatoSquadra Stato;
 
@@ -150,9 +154,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
                 default: Stato = Squadra.StatoSquadra.InSede; break;
             }
 
-            var distaccamento = new Distaccamento();
-            distaccamento = _getDistaccamentoByCodiceSedeUC.Get(squadraFake.Sede).Result;
-            var sedeDistaccamento = new Sede(squadraFake.Sede, distaccamento.DescDistaccamento, distaccamento.Indirizzo, distaccamento.Coordinate, "", "", "", "", "");
+            var sedeDistaccamento = new Sede(squadraFake.Sede, null, null, null, "", "", "", "", "");
 
             List<string> ListaCodiciFiscaliComponentiSquadra = new List<string>();
             List<Componente> ComponentiSquadra = new List<Componente>();
