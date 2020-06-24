@@ -42,21 +42,15 @@ namespace SO115App.SignalR.Sender.GestioneIntervento
     {
         private readonly IHubContext<NotificationHub> _notificationHubContext;
         private readonly IGetRichiesteMarker _iGetListaRichieste;
-        private readonly IGetRichiestaAssistenzaById _getRichiestaAssistenzaById;
-        private readonly IGetSintesiRichiestaAssistenzaByCodice _getSintesiRichiestaAssistenzaByCodice;
         private readonly GetGerarchiaToSend _getGerarchiaToSend;
 
         public NotificationDeleteInLavorazione(IHubContext<NotificationHub> notificationHubContext,
                                           IGetRichiesteMarker iGetListaRichieste,
-                                          IGetRichiestaAssistenzaById getRichiestaAssistenzaById,
-                                          IGetSintesiRichiestaAssistenzaByCodice getSintesiRichiestaAssistenzaByCodice,
                                           GetGerarchiaToSend getGerarchiaToSend
             )
         {
             _notificationHubContext = notificationHubContext;
             _iGetListaRichieste = iGetListaRichieste;
-            _getRichiestaAssistenzaById = getRichiestaAssistenzaById;
-            _getSintesiRichiestaAssistenzaByCodice = getSintesiRichiestaAssistenzaByCodice;
             _getGerarchiaToSend = getGerarchiaToSend;
         }
 
@@ -74,9 +68,6 @@ namespace SO115App.SignalR.Sender.GestioneIntervento
                     },
                     CodiciSede = new string[] { sede }
                 };
-
-                var richiesta = _getRichiestaAssistenzaById.Get(intervento.IdRichiesta);
-                intervento.Chiamata = _getSintesiRichiestaAssistenzaByCodice.GetSintesi(richiesta.Codice);
 
                 var sintesiRichiesteAssistenzaMarkerQuery = new SintesiRichiesteAssistenzaMarkerQuery()
                 {
