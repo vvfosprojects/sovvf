@@ -21,6 +21,7 @@
 using DomainModel.CQRS.Commands.ChiamataInCorsoMarker;
 using Microsoft.AspNetCore.SignalR;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneChiamateInCorso;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Competenze;
 using SO115App.SignalR.Utility;
 using System;
 using System.Threading.Tasks;
@@ -31,17 +32,29 @@ namespace SO115App.SignalR.Sender.GestioneChiamateInCorso
     {
         private readonly IHubContext<NotificationHub> _notificationHubContext;
         private readonly GetGerarchiaToSend _getGerarchiaToSend;
+        private readonly IGetCompetenzeByCoordinateIntervento _getCompetenze;
 
         public NotificationAddChiamataInCorso(IHubContext<NotificationHub> NotificationHubContext,
-            GetGerarchiaToSend getGerarchiaToSend)
+            GetGerarchiaToSend getGerarchiaToSend,
+            IGetCompetenzeByCoordinateIntervento getCompetenze)
         {
             _getGerarchiaToSend = getGerarchiaToSend;
+            _getCompetenze = getCompetenze;
             _notificationHubContext = NotificationHubContext;
         }
 
         public async Task SendNotification(ChiamataInCorsoMarkerCommand chiamata)
         {
-            var SediDaNotificare = _getGerarchiaToSend.Get(chiamata.AddChiamataInCorso.CodiceSedeOperatore);
+            var Competenza = _getCompetenze.GetCompetenzeByCoordinateIntervento(chiamata.AddChiamataInCorso.Localita.Coordinate);
+
+            string[] CodUOCompetenzaAppo = {
+                Competenza.CodProvincia + "." + Competenza.CodDistaccamento,
+                Competenza.CodProvincia + "." + Competenza.CodDistaccamento2,
+                Competenza.CodProvincia + "." + Competenza.CodDistaccamento3,
+                Competenza.CodProvincia + ".1000"
+            };
+
+            var SediDaNotificare = _getGerarchiaToSend.Get(CodUOCompetenzaAppo[0]);
 
             foreach (var sede in SediDaNotificare)
                 await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyChiamataInCorsoMarkerAdd", chiamata);

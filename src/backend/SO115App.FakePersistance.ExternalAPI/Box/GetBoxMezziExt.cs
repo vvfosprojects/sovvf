@@ -35,10 +35,10 @@ namespace SO115App.ExternalAPI.Fake.Box
     /// </summary>
     public class GetBoxMezziExt : IGetBoxMezzi
     {
-        private readonly IGetMezziUtilizzabili _getMezziUtilizzabili;
+        private readonly IGetMezziUtilizzabiliPerBox _getMezziUtilizzabili;
         private readonly IGetStatoMezzi _getStatoMezzi;
 
-        public GetBoxMezziExt(IGetMezziUtilizzabili getMezziUtilizzabili, IGetStatoMezzi getStatoMezzi)
+        public GetBoxMezziExt(IGetMezziUtilizzabiliPerBox getMezziUtilizzabili, IGetStatoMezzi getStatoMezzi)
         {
             _getMezziUtilizzabili = getMezziUtilizzabili;
             _getStatoMezzi = getStatoMezzi;
@@ -54,12 +54,10 @@ namespace SO115App.ExternalAPI.Fake.Box
         {
             var mezzi = new BoxMezzi();
             var listaCodici = new List<string>();
-            var listaStatiOperativi = new List<StatoOperativoMezzo>();
 
             foreach (var sede in codiciSede)
             {
                 listaCodici.Add(sede);
-                listaStatiOperativi.AddRange(_getStatoMezzi.Get(sede));
             };
 
             var listaMezzi = _getMezziUtilizzabili.Get(listaCodici).Result;
@@ -67,14 +65,14 @@ namespace SO115App.ExternalAPI.Fake.Box
             mezzi.InSede = listaMezzi.Where(x => x.Stato == Costanti.MezzoInSede || x.Stato == Costanti.MezzoRientrato || x.Stato == Costanti.MezzoOperativoPreaccoppiato)
                 .Select(x => x.Stato)
                 .Count();
-            mezzi.InViaggio = listaStatiOperativi.Where(x => x.StatoOperativo == Costanti.MezzoInViaggio)
-                .Select(x => x.StatoOperativo)
+            mezzi.InViaggio = listaMezzi.Where(x => x.Stato == Costanti.MezzoInViaggio)
+                .Select(x => x.Stato)
                 .Count();
-            mezzi.InRientro = listaStatiOperativi.Where(x => x.StatoOperativo == Costanti.MezzoInRientro)
-                .Select(x => x.StatoOperativo)
+            mezzi.InRientro = listaMezzi.Where(x => x.Stato == Costanti.MezzoInRientro)
+                .Select(x => x.Stato)
                 .Count();
-            mezzi.SulPosto = listaStatiOperativi.Where(x => x.StatoOperativo == Costanti.MezzoSulPosto)
-                .Select(x => x.StatoOperativo)
+            mezzi.SulPosto = listaMezzi.Where(x => x.Stato == Costanti.MezzoSulPosto)
+                .Select(x => x.Stato)
                 .Count();
             mezzi.Istituto = listaMezzi.Where(x => x.Stato == Costanti.MezzoIstituto)
                 .Select(x => x.Stato)
