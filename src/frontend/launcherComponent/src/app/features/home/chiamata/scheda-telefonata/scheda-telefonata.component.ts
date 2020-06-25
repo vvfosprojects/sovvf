@@ -10,7 +10,6 @@ import { AzioneChiamataEnum } from '../../../../shared/enum/azione-chiamata.enum
 import { Select, Store } from '@ngxs/store';
 import { ShowToastr } from '../../../../shared/store/actions/toastr/toastr.actions';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ConfirmModalComponent } from '../../../../shared/modal/confirm-modal/confirm-modal.component';
 import { Utente } from '../../../../shared/model/utente.model';
 import { ClearClipboard } from '../../store/actions/chiamata/clipboard.actions';
 import { ReducerSchedaTelefonata, StartChiamata } from '../../store/actions/chiamata/scheda-telefonata.actions';
@@ -26,16 +25,20 @@ import { Tipologia } from '../../../../shared/model/tipologia.model';
 import { GOOGLEPLACESOPTIONS } from '../../../../core/settings/google-places-options';
 import { SchedeContattoState } from '../../store/states/schede-contatto/schede-contatto.state';
 import { SchedaContatto } from 'src/app/shared/interface/scheda-contatto.interface';
+import { ConfirmModalComponent } from '../../../../shared';
+import { HomeState } from '../../store/states/home.state';
+import { Options } from 'ngx-google-places-autocomplete/objects/options/options';
+import { ComponentRestrictions } from 'ngx-google-places-autocomplete/objects/options/componentRestrictions';
 
 @Component({
     selector: 'app-scheda-telefonata',
     templateUrl: './scheda-telefonata.component.html',
-    styleUrls: ['./scheda-telefonata.component.scss'],
+    styleUrls: [ './scheda-telefonata.component.scss' ],
     encapsulation: ViewEncapsulation.None
 })
 export class SchedaTelefonataComponent implements OnInit, OnDestroy {
 
-    options = GOOGLEPLACESOPTIONS;
+    options: Options;
 
     chiamataMarker: ChiamataMarker;
     chiamataForm: FormGroup;
@@ -65,6 +68,11 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy {
                 private store: Store,
                 private modalService: NgbModal) {
         this.store.dispatch(new StartChiamata());
+        this.options = new Options({
+            bounds: this.store.selectSnapshot(HomeState.bounds),
+            // componentRestrictions: GOOGLEPLACESOPTIONS.componentRestrictions as unknown as ComponentRestrictions
+        });
+
     }
 
     ngOnInit() {
@@ -94,22 +102,22 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy {
 
     createForm(): FormGroup {
         return this.formBuilder.group({
-            selectedTipologie: [null, Validators.required],
-            nominativo: [null, Validators.required],
-            telefono: [null, Validators.required],
-            indirizzo: [null, Validators.required],
-            latitudine: [null, Validators.required],
-            longitudine: [null, Validators.required],
-            piano: [null],
-            etichette: [null],
-            noteIndirizzo: [null],
-            rilevanzaGrave: [false],
-            rilevanzaStArCu: [false],
-            notePrivate: [null],
-            notePubbliche: [null],
-            descrizione: [null],
-            zoneEmergenza: [null],
-            prioritaRichiesta: [3, Validators.required]
+            selectedTipologie: [ null, Validators.required ],
+            nominativo: [ null, Validators.required ],
+            telefono: [ null, Validators.required ],
+            indirizzo: [ null, Validators.required ],
+            latitudine: [ null, Validators.required ],
+            longitudine: [ null, Validators.required ],
+            piano: [ null ],
+            etichette: [ null ],
+            noteIndirizzo: [ null ],
+            rilevanzaGrave: [ false ],
+            rilevanzaStArCu: [ false ],
+            notePrivate: [ null ],
+            notePubbliche: [ null ],
+            descrizione: [ null ],
+            zoneEmergenza: [ null ],
+            prioritaRichiesta: [ 3, Validators.required ]
         });
     }
 

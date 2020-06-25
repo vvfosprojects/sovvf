@@ -216,6 +216,8 @@ export class AgmComponent implements OnDestroy {
     }
 
     areaCambiata(bounds: LatLngBounds): void {
+        console.log(bounds.toJSON());
+        this.mapService.setBounds(bounds);
         this.mapService.setArea(makeAreaMappa(bounds));
     }
 

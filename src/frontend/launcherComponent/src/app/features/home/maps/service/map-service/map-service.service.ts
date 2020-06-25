@@ -9,6 +9,8 @@ import { AreaMappa } from '../../maps-model/area-mappa-model';
 import { SetAreaMappa } from '../../../store/actions/maps/area-mappa.actions';
 import { MAPSOPTIONS } from '../../../../../core/settings/maps-options';
 import { diffCoordinate, makeCoordinate } from '../../../../../shared/helper/function';
+import { SetBoundsIniziale } from '../../../store/actions/home.actions';
+import { LatLngBounds } from 'ngx-google-places-autocomplete/objects/latLngBounds';
 
 @Injectable()
 export class MapService {
@@ -63,6 +65,12 @@ export class MapService {
 
     private getArea(): Observable<AreaMappa> {
         return this.area$.asObservable().pipe(debounceTime(MAPSOPTIONS.panMarkerRefresh));
+    }
+
+    setBounds(bounds: any) {
+        this.store.dispatch([
+            new SetBoundsIniziale(bounds)
+        ]);
     }
 
 }

@@ -82,7 +82,9 @@ export class AreaMappaState {
         patchState({
             areaMappa: action.areaMappa
         });
-        dispatch(new GetMarkersMappa);
+        dispatch([
+            new GetMarkersMappa
+        ]);
     }
 
     @Action(GetMarkersMappa)

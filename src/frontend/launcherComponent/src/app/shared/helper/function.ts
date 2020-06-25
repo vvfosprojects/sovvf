@@ -10,6 +10,7 @@ import { LatLngBounds } from '@agm/core';
 import { AreaMappa } from '../../features/home/maps/maps-model/area-mappa-model';
 import { Role, Utente } from '../model/utente.model';
 import { Sede } from '../model/sede.model';
+import { LatLngBoundsLiteral } from 'ngx-google-places-autocomplete/objects/latLng';
 
 export function makeCopy(value): any {
     return (JSON.parse(JSON.stringify(value)));
@@ -48,6 +49,15 @@ export function makeAreaMappa(bounds: LatLngBounds): AreaMappa {
         new Coordinate(bounds.getNorthEast().lat(), bounds.getNorthEast().lng()),
         new Coordinate(bounds.getSouthWest().lat(), bounds.getSouthWest().lng())
     );
+}
+
+export function makeLatLngBounds(areaMappa: AreaMappa): LatLngBoundsLiteral {
+    return {
+        north: areaMappa.topRight.longitudine,
+        east: areaMappa.topRight.latitudine,
+        south: areaMappa.bottomLeft.longitudine,
+        west: areaMappa.bottomLeft.latitudine
+    } as LatLngBoundsLiteral;
 }
 
 export function degToCompass(num: number) {
