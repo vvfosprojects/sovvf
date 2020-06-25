@@ -22,13 +22,12 @@ import { Observable, Subscription } from 'rxjs';
 import { SchedaTelefonataState } from '../../store/states/chiamata/scheda-telefonata.state';
 import { DelChiamataMarker } from '../../store/actions/maps/chiamate-markers.actions';
 import { Tipologia } from '../../../../shared/model/tipologia.model';
-import { GOOGLEPLACESOPTIONS } from '../../../../core/settings/google-places-options';
 import { SchedeContattoState } from '../../store/states/schede-contatto/schede-contatto.state';
 import { SchedaContatto } from 'src/app/shared/interface/scheda-contatto.interface';
 import { ConfirmModalComponent } from '../../../../shared';
 import { HomeState } from '../../store/states/home.state';
 import { Options } from 'ngx-google-places-autocomplete/objects/options/options';
-import { ComponentRestrictions } from 'ngx-google-places-autocomplete/objects/options/componentRestrictions';
+import { LatLngBounds } from 'ngx-google-places-autocomplete/objects/latLngBounds';
 
 @Component({
     selector: 'app-scheda-telefonata',
@@ -38,7 +37,7 @@ import { ComponentRestrictions } from 'ngx-google-places-autocomplete/objects/op
 })
 export class SchedaTelefonataComponent implements OnInit, OnDestroy {
 
-    options: Options;
+    ngxGooglePlacesOptions: Options;
 
     chiamataMarker: ChiamataMarker;
     chiamataForm: FormGroup;
@@ -68,8 +67,10 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy {
                 private store: Store,
                 private modalService: NgbModal) {
         this.store.dispatch(new StartChiamata());
-        this.options = new Options({
-            bounds: this.store.selectSnapshot(HomeState.bounds),
+        this.ngxGooglePlacesOptions = new Options({
+            bounds: this.store.selectSnapshot(HomeState.bounds) as unknown as LatLngBounds,
+            // tolto si possono inserire fino a un massimo di 5 paesi, i paesi confinanti sono 6
+            // ['IT', 'FR', 'AT', 'CH', 'SI', 'VA']
             // componentRestrictions: GOOGLEPLACESOPTIONS.componentRestrictions as unknown as ComponentRestrictions
         });
 

@@ -22,12 +22,12 @@ import { PatchPagination } from '../../../../shared/store/actions/pagination/pag
 import { SetCurrentUrl, SetMapLoaded } from '../../../../shared/store/actions/app/app.actions';
 import { RoutesPath } from '../../../../shared/enum/routes-path.enum';
 import { ClearViewState } from '../actions/view/view.actions';
-import { LatLngBounds } from 'ngx-google-places-autocomplete/objects/latLngBounds';
+import { LatLngBoundsLiteral } from 'ngx-google-places-autocomplete/objects/latLng';
 
 export interface HomeStateModel {
     markerLoading: boolean;
     tipologie: Tipologia[];
-    bounds: LatLngBounds;
+    bounds: LatLngBoundsLiteral;
 }
 
 export const HomeStateDefaults: HomeStateModel = {

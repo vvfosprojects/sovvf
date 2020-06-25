@@ -53,10 +53,10 @@ export function makeAreaMappa(bounds: LatLngBounds): AreaMappa {
 
 export function makeLatLngBounds(areaMappa: AreaMappa): LatLngBoundsLiteral {
     return {
-        north: areaMappa.topRight.longitudine,
-        east: areaMappa.topRight.latitudine,
-        south: areaMappa.bottomLeft.longitudine,
-        west: areaMappa.bottomLeft.latitudine
+        east: areaMappa.topRight.longitudine,
+        north: areaMappa.topRight.latitudine,
+        west: areaMappa.bottomLeft.longitudine,
+        south: areaMappa.bottomLeft.latitudine
     } as LatLngBoundsLiteral;
 }
 

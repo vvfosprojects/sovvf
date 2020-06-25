@@ -81,7 +81,7 @@
                         <input id="indirizzo" ngx-google-places-autocomplete type="text" formControlName="indirizzo"
                                class="form-control"
                                [ngClass]="{ 'is-invalid': submitted && (f.indirizzo.errors || !coordinate) }"
-                               placeholder="Ricerca indirizzo" [options]="options"
+                               placeholder="Ricerca indirizzo" [options]="ngxGooglePlacesOptions"
                                (onAddressChange)="onCercaIndirizzo($event)"
                                autocomplete="new-password">
                         <div *ngIf="submitted && (f.indirizzo.errors || !coordinate)" class="invalid-feedback">

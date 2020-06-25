@@ -14,6 +14,7 @@ import { ViewComponentState } from '../view/view.state';
 import { ClearSchedeContattoMarkers, GetSchedeContattoMarkers } from '../../actions/maps/schede-contatto-markers.actions';
 import { FiltroSchedeContatto } from '../../../maps/maps-model/filtro-schede-contatto';
 import { makeCopy } from '../../../../../shared/helper/function';
+import { SetBoundsIniziale } from '../../actions/home.actions';
 
 export interface AreaMappaStateModel {
     areaMappa: AreaMappa;
@@ -83,7 +84,8 @@ export class AreaMappaState {
             areaMappa: action.areaMappa
         });
         dispatch([
-            new GetMarkersMappa
+            new GetMarkersMappa,
+            new SetBoundsIniziale(action.areaMappa)
         ]);
     }
 
