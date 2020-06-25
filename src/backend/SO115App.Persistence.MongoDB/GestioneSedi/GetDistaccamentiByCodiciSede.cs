@@ -29,15 +29,21 @@ namespace SO115App.Persistence.MongoDB.GestioneSedi
             var listaSedi = _getSediAlberate.ListaSediAlberata();
             var listaSottoSedi = listaSedi.GetSottoAlbero(listaPin).Where(x => x.Codice.Length > 2);
 
-            var filtroSede = Builders<ListaSedi>.Filter
-            .In(sede => sede.codProv, listaSottoSedi.Select(uo => uo.Codice.Split('.')[0]));
+            List<ListaSedi> DistaccamentiResult = new List<ListaSedi>();
 
-            var filtroCodice = Builders<ListaSedi>.Filter
-            .In(sede => sede.codFiglio_TC, listaSottoSedi.Select(uo => Convert.ToInt32(uo.Codice.Split('.')[1])));
+            if (listaPin[0].Codice.Equals("CON"))
+                DistaccamentiResult = _dbContext.SediCollection.Find(Builders<ListaSedi>.Filter.Empty).ToList();
+            else
+            {
+                var filtroSede = Builders<ListaSedi>.Filter
+                    .In(sede => sede.codProv, listaSottoSedi.Select(uo => uo.Codice.Split('.')[0]));
 
-            var filterAttive = Builders<ListaSedi>.Filter.Eq(x => x.attiva, 1);
+                var filtroCodice = Builders<ListaSedi>.Filter
+                    .In(sede => sede.codFiglio_TC, listaSottoSedi.Select(uo => Convert.ToInt32(uo.Codice.Split('.')[1])));
 
-            List<ListaSedi> DistaccamentiResult = _dbContext.SediCollection.Find(filtroSede & filtroCodice & filterAttive).ToList();
+                var filterAttive = Builders<ListaSedi>.Filter.Eq(x => x.attiva, 1);
+                DistaccamentiResult = _dbContext.SediCollection.Find(filtroSede & filtroCodice & filterAttive).ToList();
+            }
 
             return MapSediMongoSuDistaccamenti.Map(DistaccamentiResult);
         }

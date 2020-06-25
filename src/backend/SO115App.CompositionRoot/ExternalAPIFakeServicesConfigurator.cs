@@ -133,6 +133,18 @@ namespace SO115App.CompositionRoot
                 ExternalAPI.Fake.Box.GetBoxMezziExt>();
 
             container.Register<
+                SO115App.Models.Servizi.Infrastruttura.GetComposizioneSquadre.IGetComposizioneSquadrePerBox,
+                ExternalAPI.Fake.Composizione.GetComposizioneSquadrePerBox>();
+
+            container.Register<
+                SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac.IGetMezziUtilizzabiliPerBox,
+                ExternalAPI.Fake.GestioneMezzi.GetMezziUtilizzabiliPerBox>();
+
+            container.Register<
+                SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Squadre.IGetListaSquadrePerBox,
+                ExternalAPI.Fake.Servizi.Personale.GetListaSquadrePerBox>();
+
+            container.Register<
                SO115App.Models.Servizi.Infrastruttura.Box.IGetBoxPersonale,
                ExternalAPI.Fake.Box.GetBoxPersonale>();
 

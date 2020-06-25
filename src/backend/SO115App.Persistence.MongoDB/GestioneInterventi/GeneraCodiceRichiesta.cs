@@ -18,7 +18,7 @@ namespace SO115App.Persistence.MongoDB.GestioneInterventi
         public string Genera(string codiceProvincia, int anno)
         {
             int ultimeDueCifreAnno = anno % 100;
-            int maxNumero = _getMaxCodice.GetMax();
+            int maxNumero = _getMaxCodice.GetMax(codiceProvincia);
             string returnFormatString = string.Format("{0}{1}{2:D5}", codiceProvincia.Split('.')[0], ultimeDueCifreAnno, maxNumero);
             return returnFormatString;
         }

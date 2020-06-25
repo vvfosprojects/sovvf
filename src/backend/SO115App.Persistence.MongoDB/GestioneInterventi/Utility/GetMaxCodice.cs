@@ -2,9 +2,7 @@
 using Persistence.MongoDB;
 using SO115App.API.Models.Classi.Soccorso;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace SO115App.Persistence.MongoDB.GestioneInterventi.Utility
 {
@@ -17,17 +15,20 @@ namespace SO115App.Persistence.MongoDB.GestioneInterventi.Utility
             _dbContext = dbContext;
         }
 
-        public int GetMax()
+        public int GetMax(string codiceSede)
         {
             int MaxIdSintesi;
+            var codiceProvincia = codiceSede.Split('.')[0];
 
-            var ListaRichieste = _dbContext.RichiestaAssistenzaCollection.Find(Builders<RichiestaAssistenza>.Filter.Empty).ToList();
+            var ListaRichieste = _dbContext.RichiestaAssistenzaCollection.Find(Builders<RichiestaAssistenza>.Filter.Empty).ToList().Where(x => x.Codice.IndexOf(codiceProvincia) != -1);
 
-            if (ListaRichieste.FindAll(x => x.CodRichiesta != null).Count > 0)
+            if (ListaRichieste.Any())
             {
-                var idPRov = ListaRichieste.FindAll(x => x.CodRichiesta != null).OrderByDescending(x => x.CodRichiesta).FirstOrDefault().CodRichiesta;
-
-                MaxIdSintesi = Convert.ToInt16(idPRov.Substring(idPRov.Length - 5)) + 1;
+                var codiceRichiesta = ListaRichieste.OrderByDescending(x => x.CodRichiesta).FirstOrDefault().CodRichiesta;
+                if (codiceRichiesta != null)
+                    MaxIdSintesi = Convert.ToInt16(codiceRichiesta.Substring(codiceRichiesta.Length - 5)) + 1;
+                else
+                    MaxIdSintesi = 0;
             }
             else
                 MaxIdSintesi = 0;

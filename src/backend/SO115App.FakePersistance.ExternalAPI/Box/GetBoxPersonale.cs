@@ -32,9 +32,9 @@ namespace SO115App.ExternalAPI.Fake.Box
 {
     public class GetBoxPersonale : IGetBoxPersonale
     {
-        private readonly IGetComposizioneSquadre _getComposizioneSquadre;
+        private readonly IGetComposizioneSquadrePerBox _getComposizioneSquadre;
 
-        public GetBoxPersonale(IGetComposizioneSquadre GetComposizioneSquadre)
+        public GetBoxPersonale(IGetComposizioneSquadrePerBox GetComposizioneSquadre)
         {
             _getComposizioneSquadre = GetComposizioneSquadre;
         }
@@ -45,16 +45,14 @@ namespace SO115App.ExternalAPI.Fake.Box
             var numeroComponenti = 0;
             var listaFunzionari = new List<Componente>();
 
-
             var listaSquadreComposizione = new List<ComposizioneSquadre>();
 
-            foreach(var Codsede in codiciSede)
+            foreach (var Codsede in codiciSede)
             {
                 ComposizioneSquadreQuery query = new ComposizioneSquadreQuery();
                 query.CodiceSede = Codsede;
 
                 listaSquadreComposizione.AddRange(_getComposizioneSquadre.Get(query));
-
             }
 
             personale.SquadreAssegnate =

@@ -18,25 +18,42 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Commands.Notifiers;
+using Microsoft.AspNetCore.Mvc.Diagnostics;
 using Microsoft.AspNetCore.SignalR;
+using SO115App.Models.Classi.Matrix;
+using SO115App.Models.Servizi.Infrastruttura.Notification.CallMatrix;
 using SO115App.Models.Servizi.Infrastruttura.Notification.ComposizionePartenza;
 using SO115App.Models.Servizi.Infrastruttura.Notification.ComposizionePartenza.MezzoPrenotato;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneChiamateInCorso;
+using System;
 
 namespace DomainModel.CQRS.Commands.ConfermaPartenze
 {
     public class ConfermaPartenzeNotification : ICommandNotifier<ConfermaPartenzeCommand>
     {
         private readonly INotificationConfermaPartenze _sender;
+        private readonly ICallMatrix _callMatrix;
 
-        public ConfermaPartenzeNotification(INotificationConfermaPartenze sender)
+        public ConfermaPartenzeNotification(INotificationConfermaPartenze sender, ICallMatrix callMatrix)
         {
             _sender = sender;
+            _callMatrix = callMatrix;
         }
 
         public void Notify(ConfermaPartenzeCommand command)
         {
             _sender.SendNotification(command);
+
+            foreach (var partenza in command.ConfermaPartenze.Partenze)
+            {
+                var messaggio = $"La squadra {partenza.Squadre[0].Nome} è partita alle ore {DateTime.Now.Hour}:{DateTime.Now.Minute} dalla sede {partenza.Mezzo.Distaccamento.Descrizione} con il mezzo targato {partenza.Mezzo.Codice} per dirigersi a {command.ConfermaPartenze.richiesta.Localita.Indirizzo}. Codice Intervento: {command.ConfermaPartenze.richiesta.CodRichiesta}";
+                var infoMatrix = new MessageMatrix()
+                {
+                    Messaggio = messaggio,
+                    CodSede = command.ConfermaPartenze.CodiceSede.Split('.')[0]
+                };
+                _callMatrix.SendMessage(infoMatrix);
+            }
         }
     }
 }

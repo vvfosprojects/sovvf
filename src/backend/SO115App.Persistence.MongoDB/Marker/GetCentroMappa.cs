@@ -1,4 +1,5 @@
 ﻿using Persistence.MongoDB;
+using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Geo;
 using SO115App.Models.Servizi.Infrastruttura.Marker;
 using SO115App.Persistence.MongoDB.GestioneSedi;
@@ -17,18 +18,32 @@ namespace SO115App.Persistence.MongoDB.Marker
 
         public CentroMappa GetCentroMappaMarker(string codiceSede)
         {
-            GetCoordinateByCodSede getCoordinate = new GetCoordinateByCodSede(_context);
-
-            var coordinate = getCoordinate.Get(codiceSede);
-
-            CentroMappa centroMappa = new CentroMappa()
+            if (!codiceSede.Equals("CON"))
             {
-                CoordinateCentro = coordinate,
-                Zoom = 10
-            };
+                GetCoordinateByCodSede getCoordinate = new GetCoordinateByCodSede(_context);
 
-            return centroMappa;
-           
+                var coordinate = getCoordinate.Get(codiceSede);
+
+                CentroMappa centroMappa = new CentroMappa()
+                {
+                    CoordinateCentro = coordinate,
+                    Zoom = 10
+                };
+
+                return centroMappa;
+            }
+            else
+            {
+                Coordinate coordinate = new Coordinate(41.87194, 12.56738);
+
+                CentroMappa centroMappa = new CentroMappa()
+                {
+                    CoordinateCentro = coordinate,
+                    Zoom = 6
+                };
+
+                return centroMappa;
+            }
         }
     }
 }

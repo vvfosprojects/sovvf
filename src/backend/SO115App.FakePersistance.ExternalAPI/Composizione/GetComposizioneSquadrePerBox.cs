@@ -21,23 +21,20 @@ using SO115App.API.Models.Classi.Composizione;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneSquadre;
 using SO115App.Models.Classi.Utility;
-using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.GestioneStatoOperativoSquadra;
 using SO115App.Models.Servizi.Infrastruttura.GetComposizioneSquadre;
-using SO115App.Models.Servizi.Infrastruttura.GetFiltri;
-using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Squadre;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace SO115App.ExternalAPI.Fake.Composizione
 {
-    public class GetComposizioneSquadre : IGetComposizioneSquadre
+    public class GetComposizioneSquadrePerBox : IGetComposizioneSquadrePerBox
     {
-        private readonly IGetListaSquadre _getSquadre;
+        private readonly IGetListaSquadrePerBox _getSquadre;
         private readonly IGetStatoSquadra _getStatoSquadre;
 
-        public GetComposizioneSquadre(IGetListaSquadre getSquadre,
+        public GetComposizioneSquadrePerBox(IGetListaSquadrePerBox getSquadre,
                                       IGetStatoSquadra getStatoSquadre)
         {
             _getSquadre = getSquadre;

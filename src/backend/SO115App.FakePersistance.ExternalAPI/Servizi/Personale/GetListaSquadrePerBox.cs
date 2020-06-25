@@ -38,27 +38,19 @@ using SO115App.Models.Classi.Utility;
 
 namespace SO115App.ExternalAPI.Fake.Servizi.Personale
 {
-    public class GetListaSquadre : IGetListaSquadre
+    public class GetListaSquadrePerBox : IGetListaSquadrePerBox
     {
-        private readonly HttpClient _client;
-        private readonly IConfiguration _configuration;
         private readonly IGetDistaccamentoByCodiceSedeUC _getDistaccamentoByCodiceSedeUC;
-        private readonly IGetPersonaleByCF _getPersonaleByCF;
         private readonly IGetAlberaturaUnitaOperative _getAlberaturaUnitaOperative;
         private readonly IMemoryCache _memoryCache;
 
-        public GetListaSquadre(HttpClient client, IConfiguration configuration,
-             IGetDistaccamentoByCodiceSedeUC GetDistaccamentoByCodiceSedeUC,
-             IGetPersonaleByCF GetPersonaleByCF,
-             IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative,
-             IMemoryCache memoryCache)
+        public GetListaSquadrePerBox(IGetDistaccamentoByCodiceSedeUC GetDistaccamentoByCodiceSedeUC,
+                                     IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative,
+                                     IMemoryCache memoryCache)
         {
             _getDistaccamentoByCodiceSedeUC = GetDistaccamentoByCodiceSedeUC;
-            _getPersonaleByCF = GetPersonaleByCF;
             _getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
             _memoryCache = memoryCache;
-            _client = client;
-            _configuration = configuration;
         }
 
         public async Task<List<Squadra>> Get(List<string> sedi)
@@ -87,12 +79,24 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
                     }
                 }
 
+                #region ListaSquadre da Fake
+                var filepath = Costanti.ListaSquadre;
+                string json;
+                using (var r = new StreamReader(filepath))
+                {
+                    json = r.ReadToEnd();
+                }
+
+                var listaSquadreJson = JsonConvert.DeserializeObject<List<SquadraFake>>(json);
+                #endregion
+
+
                 var ListaMezzi = new List<Mezzo>();
 
                 foreach (string CodSede in ListaCodiciSedi)
                 {
                     List<Squadra> listaSquadraBySede = new List<Squadra>();
-                    if (!_memoryCache.TryGetValue("listaSquadre-" + CodSede, out listaSquadraBySede))
+                    if (!_memoryCache.TryGetValue("listaSquadreBox-" + CodSede, out listaSquadraBySede))
                     {
                         #region LEGGO DA API ESTERNA
 
@@ -108,14 +112,6 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
 
                         #region LEGGO DA JSON FAKE
 
-                        var filepath = Costanti.ListaSquadre;
-                        string json;
-                        using (var r = new StreamReader(filepath))
-                        {
-                            json = r.ReadToEnd();
-                        }
-
-                        var listaSquadreJson = JsonConvert.DeserializeObject<List<SquadraFake>>(json);
                         List<SquadraFake> ListaSquadreSede = listaSquadreJson.FindAll(x => x.Sede.Equals(CodSede));
 
                         #endregion LEGGO DA JSON FAKE
@@ -124,13 +120,13 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
 
                         foreach (SquadraFake squadraFake in ListaSquadreSede)
                         {
-                            var squadra = MapSqaudra(squadraFake, CodSede);
+                            var squadra = MapSquadra(squadraFake, CodSede);
                             listaSquadraBySedeAppo.Add(squadra);
                             listaSquadre.Add(squadra);
                         }
 
                         var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromHours(4));
-                        _memoryCache.Set("listaSquadre-" + CodSede, listaSquadraBySedeAppo, cacheEntryOptions);
+                        _memoryCache.Set("listaSquadreBox-" + CodSede, listaSquadraBySedeAppo, cacheEntryOptions);
                     }
                     else
                     {
@@ -146,7 +142,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
             }
         }
 
-        private Squadra MapSqaudra(SquadraFake squadraFake, string CodSede)
+        private Squadra MapSquadra(SquadraFake squadraFake, string CodSede)
         {
             Squadra.StatoSquadra Stato;
 
@@ -158,33 +154,28 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
                 default: Stato = Squadra.StatoSquadra.InSede; break;
             }
 
-            var distaccamento = new Distaccamento();
-            distaccamento = _getDistaccamentoByCodiceSedeUC.Get(squadraFake.Sede).Result;
-            var sedeDistaccamento = new Sede(squadraFake.Sede, distaccamento.DescDistaccamento, distaccamento.Indirizzo, distaccamento.Coordinate, "", "", "", "", "");
+            var sedeDistaccamento = new Sede(squadraFake.Sede, null, null, null, "", "", "", "", "");
 
             List<string> ListaCodiciFiscaliComponentiSquadra = new List<string>();
             List<Componente> ComponentiSquadra = new List<Componente>();
             foreach (ComponenteSquadraFake componenteFake in squadraFake.ComponentiSquadra)
             {
-                PersonaleVVF pVVf = _getPersonaleByCF.Get(componenteFake.CodiceFiscale, CodSede).Result;
+                //PersonaleVVF pVVf = _getPersonaleByCF.Get(componenteFake.CodiceFiscale, CodSede).Result;
 
-                if (pVVf != null)
+                Componente componente = new Componente(componenteFake.DescrizioneQualificaLunga,
+                                                        "", componenteFake.Tooltip, componenteFake.CapoPartenza, componenteFake.Autista, componenteFake.Rimpiazzo)
                 {
-                    Componente componente = new Componente(componenteFake.DescrizioneQualificaLunga,
-                    pVVf.Nominativo, componenteFake.Tooltip, componenteFake.CapoPartenza, componenteFake.Autista, componenteFake.Rimpiazzo)
-                    {
-                        CodiceFiscale = pVVf.CodFiscale,
-                        OrarioFine = componenteFake.OrarioFine,
-                        OrarioInizio = componenteFake.OrarioInizio,
-                        Telefono = componenteFake.Telefono,
-                        TecnicoGuardia1 = componenteFake.TecnicoGuardia1,
-                        TecnicoGuardia2 = componenteFake.TecnicoGuardia2,
-                        FunGuardia = componenteFake.FunGuardia,
-                        CapoTurno = componenteFake.CapoTurno
-                    };
-                    ComponentiSquadra.Add(componente);
-                    ListaCodiciFiscaliComponentiSquadra.Add(pVVf.CodFiscale);
-                }
+                    CodiceFiscale = componenteFake.CodiceFiscale,
+                    OrarioFine = componenteFake.OrarioFine,
+                    OrarioInizio = componenteFake.OrarioInizio,
+                    Telefono = componenteFake.Telefono,
+                    TecnicoGuardia1 = componenteFake.TecnicoGuardia1,
+                    TecnicoGuardia2 = componenteFake.TecnicoGuardia2,
+                    FunGuardia = componenteFake.FunGuardia,
+                    CapoTurno = componenteFake.CapoTurno
+                };
+                ComponentiSquadra.Add(componente);
+                ListaCodiciFiscaliComponentiSquadra.Add(componenteFake.CodiceFiscale);
             }
 
             Squadra s = new Squadra(squadraFake.NomeSquadra, Stato, ComponentiSquadra, sedeDistaccamento);
