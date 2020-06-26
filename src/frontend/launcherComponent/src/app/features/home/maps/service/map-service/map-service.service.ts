@@ -55,8 +55,8 @@ export class MapService {
     setArea(latLngBounds: LatLngBounds): void {
         const area = makeAreaMappa(latLngBounds);
         if (!this.wipeTopRight || (diffCoordinate(
-                makeCoordinate(this.wipeTopRight.latitudine, this.wipeTopRight.longitudine, 6),
-                makeCoordinate(area.topRight.latitudine, area.topRight.longitudine, 6))
+                makeCoordinate(this.wipeTopRight.latitudine, this.wipeTopRight.longitudine),
+                makeCoordinate(area.topRight.latitudine, area.topRight.longitudine))
         )) {
             this.area$.next(area);
         }

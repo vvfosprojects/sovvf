@@ -1,6 +1,11 @@
 import { AreaMappa } from '../../../maps/maps-model/area-mappa-model';
 import { Action, Select, Selector, State, StateContext, Store } from '@ngxs/store';
-import { GetMarkersMappa, SetAreaMappa, StartLoadingAreaMappa, StopLoadingAreaMappa } from '../../actions/maps/area-mappa.actions';
+import {
+    GetMarkersMappa,
+    SetAreaMappa,
+    StartLoadingAreaMappa,
+    StopLoadingAreaMappa
+} from '../../actions/maps/area-mappa.actions';
 import { ClearRichiesteMarkers, GetRichiesteMarkers } from '../../actions/maps/richieste-markers.actions';
 import { ClearMezziMarkers, GetMezziMarkers } from '../../actions/maps/mezzi-markers.actions';
 import { ClearSediMarkers, GetSediMarkers } from '../../actions/maps/sedi-markers.actions';
@@ -11,10 +16,14 @@ import { FiltroRichieste } from '../../../maps/maps-model/filtro-richieste.inter
 import { FiltroMezzi } from '../../../maps/maps-model/filtro-mezzi.interface';
 import { ReducerFiltroMarker } from '../../actions/maps/maps-filtro.actions';
 import { ViewComponentState } from '../view/view.state';
-import { ClearSchedeContattoMarkers, GetSchedeContattoMarkers } from '../../actions/maps/schede-contatto-markers.actions';
+import {
+    ClearSchedeContattoMarkers,
+    GetSchedeContattoMarkers
+} from '../../actions/maps/schede-contatto-markers.actions';
 import { FiltroSchedeContatto } from '../../../maps/maps-model/filtro-schede-contatto';
 import { makeCopy } from '../../../../../shared/helper/function';
 import { SetBoundsIniziale } from '../../actions/home.actions';
+import { ComposizionePartenzaState } from '../composizione-partenza/composizione-partenza.state';
 
 export interface AreaMappaStateModel {
     areaMappa: AreaMappa;
@@ -45,7 +54,7 @@ export class AreaMappaState {
 
     @Selector()
     static areaMappaLoading(state: AreaMappaStateModel) {
-        return state.areaMappaLoading;
+        return state.areaMappaLoading !== 0;
     }
 
     constructor(private store: Store) {
@@ -80,6 +89,7 @@ export class AreaMappaState {
 
     @Action(SetAreaMappa)
     setAreaMappa({ patchState, dispatch }: StateContext<AreaMappaStateModel>, action: SetAreaMappa) {
+        console.log('@Action(SetAreaMappa)', action.areaMappa);
         patchState({
             areaMappa: action.areaMappa
         });
@@ -98,7 +108,13 @@ export class AreaMappaState {
             const filtroMezzi = this.store.selectSnapshot(FiltriMarkersState.filtroMezzi);
             const filtroSC = this.store.selectSnapshot(FiltriMarkersState.filtroSC);
             const schedaContattoModeOn = this.store.selectSnapshot(ViewComponentState.schedeContattoStatus);
-
+            const composizioneModeOn = this.store.selectSnapshot(ViewComponentState.composizioneStatus);
+            if (composizioneModeOn) {
+                const composizioneLoaded = this.store.selectSnapshot(ComposizionePartenzaState.loaded);
+                if (!composizioneLoaded) {
+                    return;
+                }
+            }
             if (filtriAttivi.includes('richiesta')) {
                 dispatch([
                     new GetRichiesteMarkers(state.areaMappa, filtroRichieste)

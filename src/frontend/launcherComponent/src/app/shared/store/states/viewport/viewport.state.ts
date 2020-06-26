@@ -26,8 +26,9 @@ export class ViewportState {
 
     @Selector([ RouterState ])
     static footerFixed(state: ViewportStateModel, routerState: RouterStateModel) {
-        const grantUrl = routerState.state.url.includes(`/${RoutesPath.Home}`);
-        return state.availHeight > state.contentHeight && grantUrl;
+        const grantUrl = [`/${RoutesPath.Home}`, `/${RoutesPath.GestioneUtenti}`];
+        const granted = grantUrl.includes(routerState.state.url);
+        return state.availHeight > state.contentHeight && granted;
     }
 
     @Selector([ RouterState, AuthState, AppState ])

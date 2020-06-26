@@ -11,6 +11,7 @@ import { AreaMappa } from '../../features/home/maps/maps-model/area-mappa-model'
 import { Role, Utente } from '../model/utente.model';
 import { Sede } from '../model/sede.model';
 import { LatLngBoundsLiteral } from 'ngx-google-places-autocomplete/objects/latLng';
+import { MAPSOPTIONS } from '../../core/settings/maps-options';
 
 export function makeCopy(value): any {
     return (JSON.parse(JSON.stringify(value)));
@@ -40,14 +41,14 @@ export function diffCoordinate(coordinate1: Coordinate, coordinate2: Coordinate)
     return false;
 }
 
-export function makeCoordinate(lat: number, long: number, expRound?: number): Coordinate {
+export function makeCoordinate(lat: number, long: number, expRound = MAPSOPTIONS.expRoundCoord): Coordinate {
     return new Coordinate(roundTodecimal(lat, expRound), roundTodecimal(long, expRound));
 }
 
 export function makeAreaMappa(bounds: LatLngBounds): AreaMappa {
     return new AreaMappa(
-        new Coordinate(bounds.getNorthEast().lat(), bounds.getNorthEast().lng()),
-        new Coordinate(bounds.getSouthWest().lat(), bounds.getSouthWest().lng())
+        makeCoordinate(bounds.getNorthEast().lat(), bounds.getNorthEast().lng()),
+        makeCoordinate(bounds.getSouthWest().lat(), bounds.getSouthWest().lng())
     );
 }
 
