@@ -50,13 +50,7 @@ namespace DomainModel.CQRS.Commands.UpDateIntervento
 
         public IEnumerable<AuthorizationResult> Authorize(UpDateInterventoCommand command)
         {
-            var Competenza = _getCompetenze.GetCompetenzeByCoordinateIntervento(command.Chiamata.Localita.Coordinate);
-            string[] CodUOCompetenzaAppo = {
-                Competenza.CodProvincia + "." + Competenza.CodDistaccamento,
-                Competenza.CodProvincia + "." + Competenza.CodDistaccamento2,
-                Competenza.CodProvincia + "." + Competenza.CodDistaccamento3,
-                Competenza.CodProvincia + ".1000"
-            };
+            var Competenze = _getCompetenze.GetCompetenzeByCoordinateIntervento(command.Chiamata.Localita.Coordinate);
 
             var username = this._currentUser.Identity.Name;
             var user = _findUserByUsername.FindUserByUs(username);
@@ -70,7 +64,7 @@ namespace DomainModel.CQRS.Commands.UpDateIntervento
                     Boolean abilitato = false;
                     foreach (var ruolo in user.Ruoli)
                     {
-                        foreach (var competenza in CodUOCompetenzaAppo)
+                        foreach (var competenza in Competenze)
                         {
                             if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, competenza, Costanti.GestoreChiamate))
                                 abilitato = true;

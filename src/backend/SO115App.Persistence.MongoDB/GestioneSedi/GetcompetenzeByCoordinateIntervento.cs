@@ -20,27 +20,46 @@ namespace SO115App.Persistence.MongoDB.GestioneSedi
             this._dbContext = dbcontext;
         }
 
-        public CompetenzeRichiesta GetCompetenzeByCoordinateIntervento(Coordinate coordinate)
+        public string[] GetCompetenzeByCoordinateIntervento(Coordinate coordinate)
         {
-            double maxDistanceInKm = 20;
-            var point = GeoJson.Point(GeoJson.Geographic(coordinate.Longitudine, coordinate.Latitudine));
-            var filter = Builders<ListaSedi>.Filter.Near(x => x.loc, point, maxDistanceInKm * 1000);
-            var filterAttive = Builders<ListaSedi>.Filter.Eq(x => x.attiva, 1);
-            var filterSpeciali = Builders<ListaSedi>.Filter.Eq(x => x.specialista, 0);
-
-            List<ListaSedi> CompetenzeVicine = _dbContext.SediCollection.Find(filter & filterAttive & filterSpeciali).ToList();
-
-            CompetenzeVicine = CompetenzeVicine.FindAll(x => !x.sede.Contains("Direzione"));
-
-            CompetenzeRichiesta competenze = new CompetenzeRichiesta()
+            try
             {
-                CodProvincia = CompetenzeVicine[0].codProv,
-                CodDistaccamento = CompetenzeVicine[0].codFiglio_TC,
-                CodDistaccamento2 = CompetenzeVicine[1].codFiglio_TC,
-                CodDistaccamento3 = CompetenzeVicine[2].codFiglio_TC,
-            };
+                double maxDistanceInKm = 20;
+                var point = GeoJson.Point(GeoJson.Geographic(coordinate.Longitudine, coordinate.Latitudine));
+                var filter = Builders<ListaSedi>.Filter.Near(x => x.loc, point, maxDistanceInKm * 1000);
+                var filterAttive = Builders<ListaSedi>.Filter.Eq(x => x.attiva, 1);
+                var filterSpeciali = Builders<ListaSedi>.Filter.Eq(x => x.specialista, 0);
 
-            return competenze;
+                List<ListaSedi> CompetenzeVicine = _dbContext.SediCollection.Find(filter & filterAttive & filterSpeciali).ToList();
+
+                CompetenzeVicine = CompetenzeVicine.FindAll(x => !x.sede.Contains("Direzione"));
+
+                string[] CodUOCompetenzaAppo = new string[CompetenzeVicine.Count + 1];
+
+                int contatore = 0;
+                if (CompetenzeVicine.Count > 0)
+                {
+                    CodUOCompetenzaAppo[0] = CompetenzeVicine[0].codProv + "." + CompetenzeVicine[0].codFiglio_TC;
+
+                    if (CompetenzeVicine.Count > 1)
+                    {
+                        CodUOCompetenzaAppo[1] = CompetenzeVicine[0].codProv + "." + CompetenzeVicine[1].codFiglio_TC;
+                        contatore = contatore + 1;
+                    }
+                    if (CompetenzeVicine.Count > 2)
+                    {
+                        CodUOCompetenzaAppo[2] = CompetenzeVicine[0].codProv + "." + CompetenzeVicine[2].codFiglio_TC;
+                        contatore = contatore + 1;
+                    }
+                    CodUOCompetenzaAppo[contatore + 1] = CompetenzeVicine[0].codProv + ".1000";
+                }
+
+                return CodUOCompetenzaAppo;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
         }
     }
 }

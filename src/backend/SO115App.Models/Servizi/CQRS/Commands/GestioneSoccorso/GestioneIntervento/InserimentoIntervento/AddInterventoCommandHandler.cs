@@ -50,14 +50,7 @@ namespace DomainModel.CQRS.Commands.AddIntervento
 
         public void Handle(AddInterventoCommand command)
         {
-            var Competenza = _getCompetenze.GetCompetenzeByCoordinateIntervento(command.Chiamata.Localita.Coordinate);
-
-            string[] CodUOCompetenzaAppo = {
-                Competenza.CodProvincia + "." + Competenza.CodDistaccamento,
-                Competenza.CodProvincia + "." + Competenza.CodDistaccamento2,
-                Competenza.CodProvincia + "." + Competenza.CodDistaccamento3,
-                Competenza.CodProvincia + ".1000"
-            };
+            var Competenze = _getCompetenze.GetCompetenzeByCoordinateIntervento(command.Chiamata.Localita.Coordinate);
 
             var sedeRichiesta = command.CodiceSede;
             var prioritaRichiesta = (RichiestaAssistenza.Priorita)command.Chiamata.PrioritaRichiesta;
@@ -100,9 +93,9 @@ namespace DomainModel.CQRS.Commands.AddIntervento
                 UtPresaInCarico = utentiPresaInCarico,
                 NotePubbliche = command.Chiamata.NotePubbliche,
                 NotePrivate = command.Chiamata.NotePrivate,
-                CodUOCompetenza = CodUOCompetenzaAppo,
+                CodUOCompetenza = Competenze,
                 CodOperatore = command.CodUtente,
-                CodSOCompetente = CodUOCompetenzaAppo[0]
+                CodSOCompetente = Competenze[0]
             };
 
             if (command.Chiamata.Stato == Costanti.RichiestaChiusa)
