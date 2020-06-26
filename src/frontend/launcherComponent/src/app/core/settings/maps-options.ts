@@ -31,9 +31,10 @@ export let MAPSOPTIONS: MapsOptionsInterface = {
         mezzo: 15
     },
     minZoom: 6,
+    maxZoom: 18,
     panDelay: 500,
     panMarkerRefresh: 500,
-    expRoundCoord: 3
+    expRoundCoord: 1
 };
 
 export interface MapsOptionsInterface {
@@ -42,6 +43,7 @@ export interface MapsOptionsInterface {
     animationTimeoutMs: number;
     zoomSelezionato: ZoomSelezionatoInterface;
     minZoom: number;
+    maxZoom: number;
     panDelay: number;
     panMarkerRefresh: number;
     expRoundCoord: number;
