@@ -21,7 +21,7 @@ import { MouseE } from '../../../../shared/enum/mouse-e.enum';
 import { MapsDirectionState } from '../../store/states/maps/maps-direction.state';
 import { markerColor, markerColorRichiesta, markerColorSC } from '../../../../shared/helper/function-colori';
 import { StatoRichiesta } from '../../../../shared/enum/stato-richiesta.enum';
-import { makeAreaMappa, makeCentroMappa, makeCoordinate, wipeStatoRichiesta } from '../../../../shared/helper/function';
+import { makeCentroMappa, makeCoordinate, wipeStatoRichiesta } from '../../../../shared/helper/function';
 import { MapsButtonsState } from '../../store/states/maps/maps-buttons.state';
 import { ButtonControlAnimation, CustomButtonsMaps } from '../maps-interface/maps-custom-buttons';
 import { MapsOptionsInterface } from '../../../../core/settings/maps-options';
@@ -29,7 +29,6 @@ import { SchedaContattoMarker } from '../maps-model/scheda-contatto-marker.model
 import { ClassificazioneSchedaContatto } from '../../../../shared/enum/classificazione-scheda-contatto.enum';
 
 declare var google: any;
-
 
 @Component({
     selector: 'app-agm',
@@ -216,7 +215,8 @@ export class AgmComponent implements OnDestroy {
     }
 
     areaCambiata(bounds: LatLngBounds): void {
-        this.mapService.setArea(makeAreaMappa(bounds));
+        console.log(bounds.toJSON());
+        this.mapService.setArea(bounds);
     }
 
     mapClick(event: any) {

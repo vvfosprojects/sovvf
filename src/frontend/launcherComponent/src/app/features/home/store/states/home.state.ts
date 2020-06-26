@@ -1,5 +1,5 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
-import { ClearDataHome, GetDataHome, SetDataTipologie } from '../actions/home.actions';
+import { ClearDataHome, GetDataHome, SetBoundsIniziale, SetDataTipologie } from '../actions/home.actions';
 import { ClearRichieste, AddRichieste } from '../actions/richieste/richieste.actions';
 import { ClearSediMarkers } from '../actions/maps/sedi-markers.actions';
 import {
@@ -13,8 +13,6 @@ import { ClearBoxMezzi, SetBoxMezzi } from '../actions/boxes/box-mezzi.actions';
 import { ClearBoxPersonale, SetBoxPersonale } from '../actions/boxes/box-personale.actions';
 import { ClearChiamateMarkers, SetChiamateMarkers } from '../actions/maps/chiamate-markers.actions';
 import { HomeService } from '../../../../core/service/home-service/home.service';
-import { ShowToastr } from '../../../../shared/store/actions/toastr/toastr.actions';
-import { ToastrType } from '../../../../shared/enum/toastr';
 import { Welcome } from '../../../../shared/interface/welcome.interface';
 import { SetTipologicheMezzi } from '../actions/composizione-partenza/tipologiche-mezzi.actions';
 import { SetContatoriSchedeContatto } from '../actions/schede-contatto/schede-contatto.actions';
@@ -24,15 +22,18 @@ import { PatchPagination } from '../../../../shared/store/actions/pagination/pag
 import { SetCurrentUrl, SetMapLoaded } from '../../../../shared/store/actions/app/app.actions';
 import { RoutesPath } from '../../../../shared/enum/routes-path.enum';
 import { ClearViewState } from '../actions/view/view.actions';
+import { LatLngBoundsLiteral } from 'ngx-google-places-autocomplete/objects/latLng';
 
 export interface HomeStateModel {
     markerLoading: boolean;
     tipologie: Tipologia[];
+    bounds: LatLngBoundsLiteral;
 }
 
 export const HomeStateDefaults: HomeStateModel = {
     markerLoading: false,
-    tipologie: null
+    tipologie: null,
+    bounds: null
 };
 
 @State<HomeStateModel>({
@@ -49,6 +50,11 @@ export class HomeState {
     @Selector()
     static tipologie(state: HomeStateModel) {
         return state.tipologie;
+    }
+
+    @Selector()
+    static bounds(state: HomeStateModel) {
+        return state.bounds;
     }
 
     constructor(private homeService: HomeService) {
@@ -98,5 +104,14 @@ export class HomeState {
             tipologie: action.tipologie
         });
         dispatch(new GetFiltriRichieste());
+    }
+
+    @Action(SetBoundsIniziale)
+    setBoundsIniziale({ getState, patchState }: StateContext<HomeStateModel>, { bounds }: SetBoundsIniziale) {
+        if (!getState().bounds) {
+            patchState({
+                bounds
+            });
+        }
     }
 }
