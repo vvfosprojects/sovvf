@@ -32,9 +32,16 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
 
         public async Task<PersonaleVVF> Get(string codiceFiscale, string codSede = null)
         {
-            var ListaPersonaleVVF = GetPersonaleVVFExternalAPI(codSede).Result;
-
-            return ListaPersonaleVVF.Find(x => x.CodFiscale.Equals(codiceFiscale));
+            if (codSede != null)
+            {
+                var ListaPersonaleVVF = GetPersonaleVVFExternalAPI(codSede).Result;
+                return ListaPersonaleVVF.Find(x => x.CodFiscale.Equals(codiceFiscale));
+            }
+            else
+            {
+                var Persona = GetPersonaleVVFExternalAPIByCF(codiceFiscale).Result;
+                return Persona;
+            }
         }
 
         private async Task<List<PersonaleVVF>> GetPersonaleVVFExternalAPI(string codSede)
@@ -61,6 +68,22 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
             {
                 return listaPersonale;
             }
+        }
+
+        private async Task<PersonaleVVF> GetPersonaleVVFExternalAPIByCF(string CodFiscale)
+        {
+            PersonaleVVF Persona = new PersonaleVVF();
+
+            _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("test");
+            var response = await _client.GetAsync($"{_configuration.GetSection("UrlExternalApi").GetSection("PersonaleApiUtenteComuni").Value}?codiciFiscali={CodFiscale}").ConfigureAwait(false);
+            response.EnsureSuccessStatusCode();
+            using HttpContent content = response.Content;
+            string data = await content.ReadAsStringAsync().ConfigureAwait(false);
+            var personaleUC = JsonConvert.DeserializeObject<List<PersonaleUC>>(data);
+
+            Persona = MapPersonaleVVFsuPersonaleUC.Map(personaleUC).Find(x => x.CodFiscale.Equals(CodFiscale));
+
+            return Persona;
         }
     }
 }
