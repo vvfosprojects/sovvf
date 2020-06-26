@@ -8,7 +8,8 @@ import { SetCentroMappa } from '../../../store/actions/maps/centro-mappa.actions
 import { AreaMappa } from '../../maps-model/area-mappa-model';
 import { SetAreaMappa } from '../../../store/actions/maps/area-mappa.actions';
 import { MAPSOPTIONS } from '../../../../../core/settings/maps-options';
-import { diffCoordinate, makeCoordinate } from '../../../../../shared/helper/function';
+import { diffCoordinate, makeAreaMappa, makeCoordinate } from '../../../../../shared/helper/function';
+import { LatLngBounds } from '@agm/core/services/google-maps-types';
 
 @Injectable()
 export class MapService {
@@ -51,7 +52,8 @@ export class MapService {
         return this.centro$.asObservable().pipe(debounceTime(MAPSOPTIONS.panDelay));
     }
 
-    setArea(area: AreaMappa): void {
+    setArea(latLngBounds: LatLngBounds): void {
+        const area = makeAreaMappa(latLngBounds);
         if (!this.wipeTopRight || (diffCoordinate(
                 makeCoordinate(this.wipeTopRight.latitudine, this.wipeTopRight.longitudine, 6),
                 makeCoordinate(area.topRight.latitudine, area.topRight.longitudine, 6))
