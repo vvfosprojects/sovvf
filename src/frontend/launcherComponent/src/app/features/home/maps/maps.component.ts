@@ -38,7 +38,7 @@ export class MapsComponent implements OnInit, OnDestroy {
     @Select(MezziMarkersState.mezziMarkers) mezziMarkers$: Observable<MezzoMarker[]>;
     @Select(SediMarkersState.sediMarkers) sediMarkers$: Observable<SedeMarker[]>;
     @Select(SchedeContattoMarkersState.schedeContattoMarkers) schedeContattoMarkers$: Observable<SchedaContattoMarker[]>;
-    @Select(AreaMappaState.areaMappaLoading) areaMappaLoading$: Observable<number>;
+    @Select(AreaMappaState.areaMappaLoading) areaMappaLoading$: Observable<boolean>;
 
     mapsFullyLoaded = false;
     @Output() mapFullLoaded = new EventEmitter<boolean>();

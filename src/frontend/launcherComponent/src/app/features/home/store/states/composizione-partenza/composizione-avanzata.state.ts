@@ -29,8 +29,6 @@ import { ViewComponentState } from '../view/view.state';
 import { Composizione } from '../../../../../shared/enum/composizione.enum';
 import { GetPreAccoppiati } from '../../actions/composizione-partenza/composizione-veloce.actions';
 import { StartListaComposizioneLoading, StopListaComposizioneLoading } from '../../actions/composizione-partenza/composizione-partenza.actions';
-import { MezzoComposizione } from '../../../composizione-partenza/interface/mezzo-composizione-interface';
-import { StatoMezzo } from '../../../../../shared/enum/stato-mezzo.enum';
 
 export interface ComposizioneAvanzataStateModel {
     listaMezziSquadre: ListaComposizioneAvanzata;
@@ -58,7 +56,7 @@ export class ComposizioneAvanzataState {
 
     @Action(GetListeComposizioneAvanzata)
     getListeComposizioneAvanzata({ dispatch }: StateContext<ComposizioneAvanzataStateModel>) {
-        this.store.dispatch(new StartListaComposizioneLoading());
+        dispatch(new StartListaComposizioneLoading());
         const filtri = {} as FiltriComposizione;
         filtri.idRichiesta = this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione) ? this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione).id : '';
 
@@ -66,12 +64,12 @@ export class ComposizioneAvanzataState {
             if (listeCompAvanzata) {
                 const listaBoxPartenza = this.store.selectSnapshot(BoxPartenzaState.boxPartenzaList);
                 if (listeCompAvanzata.composizioneMezzi) {
-                    this.store.dispatch(new SetListaMezziComposizione(listeCompAvanzata.composizioneMezzi));
+                    dispatch(new SetListaMezziComposizione(listeCompAvanzata.composizioneMezzi));
                 }
                 if (listeCompAvanzata.composizioneSquadre) {
-                    this.store.dispatch(new SetListaSquadreComposizione(listeCompAvanzata.composizioneSquadre));
+                    dispatch(new SetListaSquadreComposizione(listeCompAvanzata.composizioneSquadre));
                 }
-                this.store.dispatch(new SetListeComposizioneAvanzata(listeCompAvanzata));
+                dispatch(new SetListeComposizioneAvanzata(listeCompAvanzata));
 
                 if (listaBoxPartenza.length > 0) {
                     const listaBoxMezzi = listaBoxPartenza.filter(box => box.mezzoComposizione !== null);
@@ -85,14 +83,16 @@ export class ComposizioneAvanzataState {
                         if (mezziOccupati.length > 0) {
                             listaBoxPartenza.forEach(box => {
                                 if (box.mezzoComposizione && mezziOccupati.includes(box.mezzoComposizione.id)) {
-                                    this.store.dispatch(new RemoveBoxPartenza(box));
+                                    dispatch(new RemoveBoxPartenza(box));
                                 }
                             });
                         }
                     }
                 }
-                this.store.dispatch(new StopListaComposizioneLoading());
+                dispatch(new StopListaComposizioneLoading());
             }
+        }, () => {
+            dispatch(new StopListaComposizioneLoading());
         });
     }
 

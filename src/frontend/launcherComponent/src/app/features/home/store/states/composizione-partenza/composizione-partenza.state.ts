@@ -50,6 +50,7 @@ import { ComposizioneFilterbar } from '../../../composizione-partenza/interface/
 import { MezzoComposizione } from '../../../composizione-partenza/interface/mezzo-composizione-interface';
 import { DescrizioneTipologicaMezzo } from '../../../composizione-partenza/interface/filtri/descrizione-filtro-composizione-interface';
 import { ClearBoxPartenze } from '../../actions/composizione-partenza/box-partenza.actions';
+import { GetMarkersMappa, StartLoadingAreaMappa, StopLoadingAreaMappa } from '../../actions/maps/area-mappa.actions';
 
 export interface ComposizionePartenzaStateModel {
     filtriAffini: ListaTipologicheMezzi;
@@ -60,6 +61,7 @@ export interface ComposizionePartenzaStateModel {
     composizioneMode: Composizione;
     loadingListe: boolean;
     loadingInvioPartenza: boolean;
+    loaded: boolean;
 }
 
 export const ComposizioneStateDefaults: ComposizionePartenzaStateModel = {
@@ -74,7 +76,8 @@ export const ComposizioneStateDefaults: ComposizionePartenzaStateModel = {
     richiesta: null,
     composizioneMode: Composizione.Avanzata,
     loadingListe: false,
-    loadingInvioPartenza: false
+    loadingInvioPartenza: false,
+    loaded: null
 };
 
 
@@ -126,6 +129,11 @@ export class ComposizionePartenzaState {
     @Selector()
     static loadingInvioPartenza(state: ComposizionePartenzaStateModel) {
         return state.loadingInvioPartenza;
+    }
+
+    @Selector()
+    static loaded(state: ComposizionePartenzaStateModel) {
+        return state.loaded;
     }
 
     constructor(private store: Store,
@@ -425,17 +433,21 @@ export class ComposizionePartenzaState {
     }
 
     @Action(StartListaComposizioneLoading)
-    startListaComposizioneLoading({ patchState }: StateContext<ComposizionePartenzaStateModel>) {
+    startListaComposizioneLoading({ dispatch, patchState }: StateContext<ComposizionePartenzaStateModel>) {
         patchState({
-            loadingListe: true
+            loadingListe: true,
+            loaded: false
         });
+        dispatch(new StartLoadingAreaMappa());
     }
 
     @Action(StopListaComposizioneLoading)
-    stopListaComposizioneLoading({ patchState }: StateContext<ComposizionePartenzaStateModel>) {
+    stopListaComposizioneLoading({ dispatch, patchState }: StateContext<ComposizionePartenzaStateModel>) {
         patchState({
-            loadingListe: false
+            loadingListe: false,
+            loaded: true
         });
+        dispatch([new StopLoadingAreaMappa(), new GetMarkersMappa()]);
     }
 
     @Action(StartInvioPartenzaLoading)
