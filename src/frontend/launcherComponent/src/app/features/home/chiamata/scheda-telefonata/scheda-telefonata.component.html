@@ -53,10 +53,10 @@
             <div class="row mb-2">
                 <div class="col-8">
                     <div class="form-group mb-1">
-                        <label for="nominativo">Nominativo</label>
-                        <input id="nominativo" type="text" placeholder="Inserisci il Nominativo"
-                               formControlName="nominativo"
-                               class="form-control" [ngClass]="{ 'is-invalid': submitted && f.nominativo.errors }"/>
+                        <label for="nominativo">Richiedente</label>
+                        <input id="nominativo" type="text" placeholder="Descrivi chi ha richiesto l'intervento"
+                               formControlName="nominativo" class="form-control"
+                               [ngClass]="{ 'is-invalid': submitted && f.nominativo.errors }"/>
                         <div *ngIf="submitted && f.nominativo.errors" class="invalid-feedback">
                             <div *ngIf="f.nominativo.errors.required">Il Nominativo è richiesto</div>
                         </div>
@@ -81,7 +81,7 @@
                         <input id="indirizzo" ngx-google-places-autocomplete type="text" formControlName="indirizzo"
                                class="form-control"
                                [ngClass]="{ 'is-invalid': submitted && (f.indirizzo.errors || !coordinate) }"
-                               placeholder="Ricerca indirizzo" [options]="options"
+                               placeholder="Ricerca indirizzo" [options]="ngxGooglePlacesOptions"
                                (onAddressChange)="onCercaIndirizzo($event)"
                                autocomplete="new-password">
                         <div *ngIf="submitted && (f.indirizzo.errors || !coordinate)" class="invalid-feedback">
