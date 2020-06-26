@@ -1,71 +1,73 @@
-<table class="table table-striped app-shadow mt-2">
-    <thead>
-    <tr>
-        <th scope="col" width="25%">Nominativo</th>
-        <th scope="col" width="40%">Ruoli Assegnati</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr *ngFor="let utente of listaUtenti | paginate: { itemsPerPage: pageSize, currentPage: page, totalItems: totalItems }">
-        <td width="40%" class="pb-1">
-            <button class="btn btn-sm btn-danger font-weight-bold float-left mt-1 mr-3" ngbTooltip="Rimuovi utente"
-                    placement="bottom" [disabled]="utente.id === idUtenteLoggato"
-                    (click)="onRemoveUtente(utente.codiceFiscale, utente.cognome + ' ' + utente.nome)">
-                <i class="fa fa-trash"></i>
-            </button>
-            <div class="h5 font-weight-bold mt-1 pt-1">
-                {{utente.cognome | uppercase}} {{utente.nome | uppercase}}
-            </div>
-        </td>
-        <td width="60%">
-            <div class="row">
-                <div class="col-1" style="display: flex; align-items: center;">
-                    <button class="btn btn-primary btn-sm font-weight-bold"
-                            (click)="onAddRuoloUtente(utente.codiceFiscale, utente.cognome + ' ' + utente.nome, utente.ruoli)">
-                        <i class="fa fa-plus"></i>
-                    </button>
+<div style="height: 780px; max-height: 780px; overflow-y: scroll; overflow-x: hidden">
+    <table class="table table-striped app-shadow mt-2">
+        <thead>
+        <tr>
+            <th scope="col" width="25%">Nominativo</th>
+            <th scope="col" width="40%">Ruoli Assegnati</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let utente of listaUtenti | paginate: { itemsPerPage: pageSize, currentPage: page, totalItems: totalItems }">
+            <td width="40%" class="pb-1">
+                <button class="btn btn-sm btn-danger font-weight-bold float-left mt-1 mr-3" ngbTooltip="Rimuovi utente"
+                        placement="bottom" [disabled]="utente.id === idUtenteLoggato"
+                        (click)="onRemoveUtente(utente.codiceFiscale, utente.cognome + ' ' + utente.nome)">
+                    <i class="fa fa-trash"></i>
+                </button>
+                <div class="h5 font-weight-bold mt-1 pt-1">
+                    {{utente.cognome | uppercase}} {{utente.nome | uppercase}}
                 </div>
-                <div class="col-11">
-                    <ul class="list-unstyled p-2 mb-0" style="max-height: 210px; overflow-y: auto">
-                        <li *ngFor="let ruolo of utente.ruoli, let i=index" class="border-bottom p-2">
-                            <div class="clearfix">
-                                <div class="float-left mt-1">
+            </td>
+            <td width="60%">
+                <div class="row">
+                    <div class="col-1" style="display: flex; align-items: center;">
+                        <button class="btn btn-primary btn-sm font-weight-bold"
+                                (click)="onAddRuoloUtente(utente.codiceFiscale, utente.cognome + ' ' + utente.nome, utente.ruoli)">
+                            <i class="fa fa-plus"></i>
+                        </button>
+                    </div>
+                    <div class="col-11">
+                        <ul class="list-unstyled p-2 mb-0" style="max-height: 210px; overflow-y: auto">
+                            <li *ngFor="let ruolo of utente.ruoli, let i=index" class="border-bottom p-2">
+                                <div class="clearfix">
+                                    <div class="float-left mt-1">
                                     <span class="mr-3 font-weight-bold" style="font-size:1.3rem"
                                           [ngClass]="{'icon-recursive': ruolo.ricorsivo, 'icon-not-recursive-single': !ruolo.ricorsivo}"
                                           [ngbTooltip]="ruolo.ricorsivo ? 'In profondità' : 'Non in profondità'"
                                           placement="top"></span>
-                                    <span class="font-weight-bolder mr-1">{{wipeRoleString(ruolo.descrizione)}}</span>
-                                    di
-                                    <span class="font-weight-bolder ml-1">{{ruolo.descSede ? ruolo.descSede : ruolo.codSede}}</span>
+                                        <span class="font-weight-bolder mr-1">{{wipeRoleString(ruolo.descrizione)}}</span>
+                                        di
+                                        <span class="font-weight-bolder ml-1">{{ruolo.descSede ? ruolo.descSede : ruolo.codSede}}</span>
+                                    </div>
+                                    <div class="float-right">
+                                        <button class="btn btn-danger btn-sm float-right ml-3" placement="bottom"
+                                                (click)="onRemoveRuoloUtente(utente.codiceFiscale, ruolo, utente.cognome + ' ' + utente.nome)">
+                                            <i class="fa fa-sm fa-sm fa-trash"></i>
+                                        </button>
+                                    </div>
                                 </div>
-                                <div class="float-right">
-                                    <button class="btn btn-danger btn-sm float-right ml-3" placement="bottom"
-                                            (click)="onRemoveRuoloUtente(utente.codiceFiscale, ruolo, utente.cognome + ' ' + utente.nome)">
-                                        <i class="fa fa-sm fa-sm fa-trash"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
-            <div *ngIf="utente?.ruoli.length <= 0 && !loading" class="d-inline-block h6 font-weight-normal">
-                <div class="badge badge-secondary d-flex align-items-center justify-content-center cursor-pointer shadow-sm py-3 px-2"
-                     style="opacity:.6; min-height:67px">
-                    <span class="d-block">Solo Visualizzazione</span>
+                <div *ngIf="utente?.ruoli.length <= 0 && !loading" class="d-inline-block h6 font-weight-normal">
+                    <div class="badge badge-secondary d-flex align-items-center justify-content-center cursor-pointer shadow-sm py-3 px-2"
+                         style="opacity:.6; min-height:67px">
+                        <span class="d-block">Solo Visualizzazione</span>
+                    </div>
                 </div>
-            </div>
-        </td>
-    </tr>
-    <tr *ngIf="listaUtenti?.length <= 0">
-        <td>
-            <ng-template [ngIf]="!loading">Nessun Utente trovato</ng-template>
-            <ng-template [ngIf]="loading">Caricamento risultati in corso...</ng-template>
-        </td>
-        <td></td>
-    </tr>
-    </tbody>
-</table>
+            </td>
+        </tr>
+        <tr *ngIf="listaUtenti?.length <= 0">
+            <td>
+                <ng-template [ngIf]="!loading">Nessun Utente trovato</ng-template>
+                <ng-template [ngIf]="loading">Caricamento risultati in corso...</ng-template>
+            </td>
+            <td></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 <div *ngIf="listaUtenti?.length > 0" class="d-flex justify-content-between p-2">
     <app-utenti-per-pagina [pageSize]="pageSize" [pageSizes]="pageSizes"
                            (pageSizeChange)="pageSizeChange.emit($event)"></app-utenti-per-pagina>

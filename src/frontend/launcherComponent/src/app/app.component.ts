@@ -131,7 +131,7 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
     }
 
     private getHeight(): void {
-        if (this.currentUrl === RoutesPath.Home) {
+        if (this.currentUrl === RoutesPath.Home || this.currentUrl === RoutesPath.GestioneUtenti) {
             const availHeight = window.innerHeight;
             const height = this.contentElement.nativeElement.offsetHeight;
             if (height) {
