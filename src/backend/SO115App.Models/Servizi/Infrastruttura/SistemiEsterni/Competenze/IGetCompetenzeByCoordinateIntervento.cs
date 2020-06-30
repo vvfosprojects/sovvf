@@ -8,6 +8,6 @@ namespace SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Competenze
 {
     public interface IGetCompetenzeByCoordinateIntervento
     {
-        public CompetenzeRichiesta GetCompetenzeByCoordinateIntervento(Coordinate coordinate);
+        public string[] GetCompetenzeByCoordinateIntervento(Coordinate coordinate);
     }
 }

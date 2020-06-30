@@ -29,6 +29,7 @@ using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Competenze;
 using SO115App.Models.Servizi.Infrastruttura.Turni;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace DomainModel.CQRS.Commands.AddIntervento
 {
@@ -39,8 +40,10 @@ namespace DomainModel.CQRS.Commands.AddIntervento
         private readonly IGetTurno _getTurno;
         private readonly IGetCompetenzeByCoordinateIntervento _getCompetenze;
 
-        public AddInterventoCommandHandler(ISaveRichiestaAssistenza saveRichiestaAssistenza, IGeneraCodiceRichiesta generaCodiceRichiesta,
-            IGetTurno getTurno, IGetCompetenzeByCoordinateIntervento getCompetenze)
+        public AddInterventoCommandHandler(ISaveRichiestaAssistenza saveRichiestaAssistenza,
+                                           IGeneraCodiceRichiesta generaCodiceRichiesta,
+                                           IGetTurno getTurno,
+                                           IGetCompetenzeByCoordinateIntervento getCompetenze)
         {
             this._saveRichiestaAssistenza = saveRichiestaAssistenza;
             _generaCodiceRichiesta = generaCodiceRichiesta;
@@ -50,14 +53,7 @@ namespace DomainModel.CQRS.Commands.AddIntervento
 
         public void Handle(AddInterventoCommand command)
         {
-            var Competenza = _getCompetenze.GetCompetenzeByCoordinateIntervento(command.Chiamata.Localita.Coordinate);
-
-            string[] CodUOCompetenzaAppo = {
-                Competenza.CodProvincia + "." + Competenza.CodDistaccamento,
-                Competenza.CodProvincia + "." + Competenza.CodDistaccamento2,
-                Competenza.CodProvincia + "." + Competenza.CodDistaccamento3,
-                Competenza.CodProvincia + ".1000"
-            };
+            var Competenze = _getCompetenze.GetCompetenzeByCoordinateIntervento(command.Chiamata.Localita.Coordinate).ToHashSet();
 
             var sedeRichiesta = command.CodiceSede;
             var prioritaRichiesta = (RichiestaAssistenza.Priorita)command.Chiamata.PrioritaRichiesta;
@@ -100,9 +96,9 @@ namespace DomainModel.CQRS.Commands.AddIntervento
                 UtPresaInCarico = utentiPresaInCarico,
                 NotePubbliche = command.Chiamata.NotePubbliche,
                 NotePrivate = command.Chiamata.NotePrivate,
-                CodUOCompetenza = CodUOCompetenzaAppo,
+                CodUOCompetenza = Competenze.ToArray(),
                 CodOperatore = command.CodUtente,
-                CodSOCompetente = CodUOCompetenzaAppo[0]
+                CodSOCompetente = Competenze.ToArray()[0]
             };
 
             if (command.Chiamata.Stato == Costanti.RichiestaChiusa)

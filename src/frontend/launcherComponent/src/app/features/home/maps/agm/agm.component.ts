@@ -8,7 +8,14 @@ import { CentroMappa } from '../maps-model/centro-mappa.model';
 import { MarkerService } from '../service/marker-service/marker-service.service';
 import { Observable, Subscription } from 'rxjs';
 import { MapService } from '../service/map-service/map-service.service';
-import { ControlPosition, FullscreenControlOptions, GoogleMap, LatLngBounds, LatLngLiteral, ZoomControlOptions } from '@agm/core/services/google-maps-types';
+import {
+    ControlPosition,
+    FullscreenControlOptions,
+    GoogleMap,
+    LatLngBounds,
+    LatLngLiteral,
+    ZoomControlOptions
+} from '@agm/core/services/google-maps-types';
 import { MeteoMarker } from '../maps-model/meteo-marker.model';
 import { DirectionInterface } from '../maps-interface/direction-interface';
 import { CachedMarker } from '../maps-model/cached-marker.model';
@@ -33,7 +40,7 @@ declare var google: any;
 @Component({
     selector: 'app-agm',
     templateUrl: './agm.component.html',
-    styleUrls: ['./agm.component.css']
+    styleUrls: [ './agm.component.css' ]
 })
 
 export class AgmComponent implements OnDestroy {
@@ -69,6 +76,8 @@ export class AgmComponent implements OnDestroy {
     fullscreenControlOptions: FullscreenControlOptions = {
         position: ControlPosition.TOP_LEFT
     };
+
+    private mapZoom: Map<number, number>;
 
     @Select(MapsDirectionState.direction) direction$: Observable<DirectionInterface>;
     direction: DirectionInterface = {
@@ -134,6 +143,11 @@ export class AgmComponent implements OnDestroy {
         this.subscription.add(
             this.bounceAnimationStatus$.subscribe((status: boolean) => this.bounceAnimationStatus = status)
         );
+        /**
+         * creo una mappa zoom corrente -> round exp da utilizzare per arrotondare le coordinate
+         * @type {Map<number, number>}
+         */
+        this.mapZoom = this.mapZoomToRound();
     }
 
     ngOnDestroy() {
@@ -215,8 +229,7 @@ export class AgmComponent implements OnDestroy {
     }
 
     areaCambiata(bounds: LatLngBounds): void {
-        // console.log(bounds.toJSON());
-        this.mapService.setArea(bounds);
+        this.mapService.setArea(bounds, this.mapZoom.get(this.mapWrapper.getZoom()));
     }
 
     mapClick(event: any) {
@@ -321,6 +334,19 @@ export class AgmComponent implements OnDestroy {
 
     onAddMezzoComposizione(idMezzo: string): void {
         this.markerService.onAddMezzoComposizione(idMezzo);
+    }
+
+    /**
+     * zoom agm - roundExp
+     * @returns {Map<number, number>}
+     */
+    mapZoomToRound(): Map<number, number> {
+        return new Map([
+            [ 6, 0 ],
+            [ 7, 1 ], [ 8, 1 ], [ 9, 1 ],
+            [ 10, 2 ], [ 11, 2 ], [ 12, 2 ], [ 13, 2 ],
+            [ 14, 3 ], [ 15, 3 ], [ 16, 3 ], [ 17, 3 ], [ 18, 3 ]
+        ]);
     }
 
 }

@@ -11,19 +11,18 @@ import { AreaMappa } from '../../features/home/maps/maps-model/area-mappa-model'
 import { Role, Utente } from '../model/utente.model';
 import { Sede } from '../model/sede.model';
 import { LatLngBoundsLiteral } from 'ngx-google-places-autocomplete/objects/latLng';
-import { MAPSOPTIONS } from '../../core/settings/maps-options';
 
 export function makeCopy(value): any {
     return (JSON.parse(JSON.stringify(value)));
 }
 
 export function wipeStatoRichiesta(stato: StatoRichiesta): string {
-    const stati: [StatoRichiesta, string][] = [
-        [StatoRichiesta.Chiamata, 'chiamate'],
-        [StatoRichiesta.Sospesa, 'sospesi'],
-        [StatoRichiesta.Assegnata, 'assegnati'],
-        [StatoRichiesta.Presidiata, 'presidiati'],
-        [StatoRichiesta.Chiusa, 'chiusi']
+    const stati: [ StatoRichiesta, string ][] = [
+        [ StatoRichiesta.Chiamata, 'chiamate' ],
+        [ StatoRichiesta.Sospesa, 'sospesi' ],
+        [ StatoRichiesta.Assegnata, 'assegnati' ],
+        [ StatoRichiesta.Presidiata, 'presidiati' ],
+        [ StatoRichiesta.Chiusa, 'chiusi' ]
     ];
     const mapTipoStato: Map<StatoRichiesta, string> = new Map(stati);
 
@@ -41,14 +40,14 @@ export function diffCoordinate(coordinate1: Coordinate, coordinate2: Coordinate)
     return false;
 }
 
-export function makeCoordinate(lat: number, long: number, expRound = MAPSOPTIONS.expRoundCoord): Coordinate {
+export function makeCoordinate(lat: number, long: number, expRound?: number): Coordinate {
     return new Coordinate(roundTodecimal(lat, expRound), roundTodecimal(long, expRound));
 }
 
-export function makeAreaMappa(bounds: LatLngBounds): AreaMappa {
+export function makeAreaMappa(bounds: LatLngBounds, expRound?: number): AreaMappa {
     return new AreaMappa(
-        makeCoordinate(bounds.getNorthEast().lat(), bounds.getNorthEast().lng()),
-        makeCoordinate(bounds.getSouthWest().lat(), bounds.getSouthWest().lng())
+        makeCoordinate(bounds.getNorthEast().lat(), bounds.getNorthEast().lng(), expRound),
+        makeCoordinate(bounds.getSouthWest().lat(), bounds.getSouthWest().lng(), expRound)
     );
 }
 
@@ -63,7 +62,7 @@ export function makeLatLngBounds(areaMappa: AreaMappa): LatLngBoundsLiteral {
 
 export function degToCompass(num: number) {
     const val = Math.floor((num / 22.5) + 0.5);
-    const arr = ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW'];
+    const arr = [ 'N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW' ];
     return arr[(val % 16)];
 }
 
@@ -156,7 +155,7 @@ export function round1decimal(value: number) {
 }
 
 export function roundTodecimal(value: number, exp?: number) {
-    const number = exp ? Math.pow(10, exp) : 10;
+    const number = exp > 0 ? Math.pow(10, exp) : 1;
     return Math.round(value * number) / number;
 }
 

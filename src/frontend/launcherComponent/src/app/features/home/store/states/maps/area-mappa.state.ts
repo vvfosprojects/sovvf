@@ -89,7 +89,7 @@ export class AreaMappaState {
 
     @Action(SetAreaMappa)
     setAreaMappa({ patchState, dispatch }: StateContext<AreaMappaStateModel>, action: SetAreaMappa) {
-        console.log('@Action(SetAreaMappa)', action.areaMappa);
+        console.log('@Action(SetAreaMappa)', JSON.stringify(action.areaMappa));
         patchState({
             areaMappa: action.areaMappa
         });

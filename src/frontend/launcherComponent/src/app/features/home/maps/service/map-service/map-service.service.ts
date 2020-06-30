@@ -52,11 +52,11 @@ export class MapService {
         return this.centro$.asObservable().pipe(debounceTime(MAPSOPTIONS.panDelay));
     }
 
-    setArea(latLngBounds: LatLngBounds): void {
-        const area = makeAreaMappa(latLngBounds);
+    setArea(latLngBounds: LatLngBounds, expRound?: number): void {
+        const area = makeAreaMappa(latLngBounds, expRound);
         if (!this.wipeTopRight || (diffCoordinate(
-                makeCoordinate(this.wipeTopRight.latitudine, this.wipeTopRight.longitudine),
-                makeCoordinate(area.topRight.latitudine, area.topRight.longitudine))
+                makeCoordinate(this.wipeTopRight.latitudine, this.wipeTopRight.longitudine, expRound),
+                makeCoordinate(area.topRight.latitudine, area.topRight.longitudine, expRound))
         )) {
             this.area$.next(area);
         }

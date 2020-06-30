@@ -21,6 +21,7 @@
 using DomainModel.CQRS.Commands.ChiamataInCorsoMarker;
 using Microsoft.AspNetCore.SignalR;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneChiamateInCorso;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Competenze;
 using SO115App.SignalR.Utility;
 using System;
 using System.Threading.Tasks;
@@ -31,17 +32,22 @@ namespace SO115App.SignalR.Sender.GestioneChiamateInCorso
     {
         private readonly IHubContext<NotificationHub> _notificationHubContext;
         private readonly GetGerarchiaToSend _getGerarchiaToSend;
+        private readonly IGetCompetenzeByCoordinateIntervento _getCompetenze;
 
         public NotificationUpDateChiamataInCorso(IHubContext<NotificationHub> NotificationHubContext,
-            GetGerarchiaToSend getGerarchiaToSend)
+            GetGerarchiaToSend getGerarchiaToSend,
+            IGetCompetenzeByCoordinateIntervento getCompetenze)
         {
             _notificationHubContext = NotificationHubContext;
             _getGerarchiaToSend = getGerarchiaToSend;
+            _getCompetenze = getCompetenze;
         }
 
         public async Task SendNotification(UpDateChiamataInCorsoMarkerCommand chiamata)
         {
-            var SediDaNotificare = _getGerarchiaToSend.Get(chiamata.ChiamataInCorso.CodiceSedeOperatore);
+            var Competenze = _getCompetenze.GetCompetenzeByCoordinateIntervento(chiamata.ChiamataInCorso.Localita.Coordinate);
+
+            var SediDaNotificare = _getGerarchiaToSend.Get(Competenze[0]);
 
             foreach (var sede in SediDaNotificare)
                 await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyChiamataInCorsoMarkerUpdate", chiamata);
