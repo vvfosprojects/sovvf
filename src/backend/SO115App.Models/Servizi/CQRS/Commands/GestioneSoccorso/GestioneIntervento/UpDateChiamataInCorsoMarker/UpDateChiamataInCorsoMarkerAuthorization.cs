@@ -64,14 +64,14 @@ namespace DomainModel.CQRS.Commands.ChiamataInCorsoMarker
         {
             var username = this._currentUser.Identity.Name;
             var user = _findUserByUsername.FindUserByUs(username);
-            var Competenze = _getCompetenze.GetCompetenzeByCoordinateIntervento(command.ChiamataInCorso.Localita.Coordinate);
+            var Competenze = _getCompetenze.GetCompetenzeByCoordinateIntervento(command.ChiamataInCorso.Localita.Coordinate).ToHashSet();
 
             if (_currentUser.Identity.IsAuthenticated)
             {
                 if (user == null)
                     yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
 
-                var listaPin = _getPinNodoByCodSede.GetListaPin(Competenze);
+                var listaPin = _getPinNodoByCodSede.GetListaPin(Competenze.ToArray());
                 FiltroRicercaRichiesteAssistenza filtro = new FiltroRicercaRichiesteAssistenza()
                 {
                     IndirizzoIntervento = command.ChiamataInCorso.Localita,

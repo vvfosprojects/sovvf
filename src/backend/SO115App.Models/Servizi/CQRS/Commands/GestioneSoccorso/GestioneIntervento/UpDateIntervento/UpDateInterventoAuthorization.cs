@@ -19,6 +19,7 @@
 //-----------------------------------------------------------------------
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Principal;
 using CQRS.Authorization;
 using CQRS.Commands.Authorizers;
@@ -50,7 +51,7 @@ namespace DomainModel.CQRS.Commands.UpDateIntervento
 
         public IEnumerable<AuthorizationResult> Authorize(UpDateInterventoCommand command)
         {
-            var Competenze = _getCompetenze.GetCompetenzeByCoordinateIntervento(command.Chiamata.Localita.Coordinate);
+            var Competenze = _getCompetenze.GetCompetenzeByCoordinateIntervento(command.Chiamata.Localita.Coordinate).ToHashSet();
 
             var username = this._currentUser.Identity.Name;
             var user = _findUserByUsername.FindUserByUs(username);
