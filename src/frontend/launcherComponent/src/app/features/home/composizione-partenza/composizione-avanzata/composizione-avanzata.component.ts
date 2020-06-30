@@ -56,6 +56,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
     @Input() richiesta: SintesiRichiesta;
     @Input() disablePrenota: boolean;
     @Input() prenotato: boolean;
+    @Input() loadingInvioPartenza: boolean;
 
     // Mezzi Composizione
     @Select(MezziComposizioneState.mezziComposizione) mezziComposizione$: Observable<MezzoComposizione[]>;

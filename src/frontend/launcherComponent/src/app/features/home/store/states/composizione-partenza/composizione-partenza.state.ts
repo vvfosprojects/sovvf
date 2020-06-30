@@ -403,9 +403,12 @@ export class ComposizionePartenzaState {
             dispatch([
                 new StopInvioPartenzaLoading(),
                 new ClearMarkerMezzoSelezionato(),
-                new ClearDirection(),
-                new GetListeComposizioneAvanzata()
+                new ClearDirection()
             ]);
+            const composizioneActive = !!(getState().richiesta);
+            if (composizioneActive) {
+                dispatch(new GetListeComposizioneAvanzata());
+            }
         }, () => {
             dispatch(new StopInvioPartenzaLoading());
         });
