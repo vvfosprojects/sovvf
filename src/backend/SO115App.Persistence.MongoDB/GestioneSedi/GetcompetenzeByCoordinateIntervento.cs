@@ -7,6 +7,7 @@ using SO115App.Models.Classi.MongoDTO;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Competenze;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace SO115App.Persistence.MongoDB.GestioneSedi
@@ -33,6 +34,9 @@ namespace SO115App.Persistence.MongoDB.GestioneSedi
                 List<ListaSedi> CompetenzeVicine = _dbContext.SediCollection.Find(filter & filterAttive & filterSpeciali).ToList();
 
                 CompetenzeVicine = CompetenzeVicine.FindAll(x => !x.sede.Contains("Direzione"));
+
+                if (CompetenzeVicine.Count > 3)
+                    CompetenzeVicine = CompetenzeVicine.Take(3).ToList();
 
                 string[] CodUOCompetenzaAppo = new string[CompetenzeVicine.Count + 1];
 
