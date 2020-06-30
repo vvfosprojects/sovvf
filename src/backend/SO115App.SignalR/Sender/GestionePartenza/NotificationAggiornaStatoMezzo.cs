@@ -71,7 +71,7 @@ namespace SO115App.SignalR.Sender.GestionePartenza
 
         public async Task SendNotification(AggiornaStatoMezzoCommand intervento)
         {
-            var SediDaNotificare = _getGerarchiaToSend.Get(intervento.CodiceSede);
+            var SediDaNotificare = _getGerarchiaToSend.Get(intervento.Richiesta.CodSOCompetente);
             const bool notificaChangeState = true;
 
             foreach (var sede in SediDaNotificare)

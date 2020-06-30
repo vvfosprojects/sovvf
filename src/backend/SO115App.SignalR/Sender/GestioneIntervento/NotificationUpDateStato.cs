@@ -27,6 +27,7 @@ using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichieste
 using SO115App.API.Models.Servizi.CQRS.Queries.Marker.SintesiRichiesteAssistenzaMarker;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
+using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneIntervento;
 using SO115App.SignalR.Utility;
 using System.Collections.Generic;
@@ -43,6 +44,7 @@ namespace SO115App.SignalR.Sender.GestioneIntervento
         private readonly IQueryHandler<BoxPersonaleQuery, BoxPersonaleResult> _boxPersonaleHandler;
         private readonly IGetSintesiRichiestaAssistenzaByCodice _getSintesiById;
         private readonly GetGerarchiaToSend _getGerarchiaToSend;
+        private readonly IGetRichiestaById _getRichiestaAssistenzaById;
         private readonly IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> _sintesiRichiesteAssistenzaMarkerHandler;
         private readonly IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> _sintesiRichiesteAssistenzaHandler;
 
@@ -53,7 +55,8 @@ namespace SO115App.SignalR.Sender.GestioneIntervento
                                           IQueryHandler<BoxMezziQuery, BoxMezziResult> boxMezziHandler,
                                           IQueryHandler<BoxPersonaleQuery, BoxPersonaleResult> boxPersonaleHandler,
                                           IGetSintesiRichiestaAssistenzaByCodice getSintesiById,
-                                          GetGerarchiaToSend getGerarchiaToSend)
+                                          GetGerarchiaToSend getGerarchiaToSend,
+                                          IGetRichiestaById getRichiestaAssistenzaById)
         {
             _notificationHubContext = notificationHubContext;
             _boxRichiesteHandler = boxRichiesteHandler;
@@ -63,11 +66,13 @@ namespace SO115App.SignalR.Sender.GestioneIntervento
             _boxPersonaleHandler = boxPersonaleHandler;
             _getSintesiById = getSintesiById;
             _getGerarchiaToSend = getGerarchiaToSend;
+            _getRichiestaAssistenzaById = getRichiestaAssistenzaById;
         }
 
         public async Task SendNotification(UpDateStatoRichiestaCommand richiesta)
         {
-            var SediDaNotificare = _getGerarchiaToSend.Get(richiesta.CodiceSede);
+            var Richiesta = _getRichiestaAssistenzaById.GetById(richiesta.IdRichiesta);
+            var SediDaNotificare = _getGerarchiaToSend.Get(Richiesta.CodSOCompetente);
 
             const bool notificaChangeState = true;
 

@@ -52,11 +52,8 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                     yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
                 else
                 {
-                    foreach (var ruolo in user.Ruoli)
-                    {
-                        if (!_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, command.MezzoPrenotato.CodiceSede, Costanti.GestoreRichieste))
-                            yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
-                    }
+                    if (!_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, command.MezzoPrenotato.CodiceSede, Costanti.GestoreRichieste))
+                        yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
                 }
             }
             else
