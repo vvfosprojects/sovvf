@@ -24,6 +24,7 @@ using CQRS.Commands.Authorizers;
 using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Autenticazione;
+using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.VerificaUtente;
 
 namespace DomainModel.CQRS.Commands.MessaInLavorazione
@@ -33,17 +34,21 @@ namespace DomainModel.CQRS.Commands.MessaInLavorazione
         private readonly IPrincipal currentUser;
         private readonly IFindUserByUsername _findUserByUsername;
         private readonly IGetAutorizzazioni _getAutorizzazioni;
+        private readonly IGetRichiestaById _getRichiestaAssistenzaById;
 
-        public MessaInLavorazioneAuthorization(IPrincipal currentUser, IFindUserByUsername findUserByUsername, IGetAutorizzazioni getAutorizzazioni)
+        public MessaInLavorazioneAuthorization(IPrincipal currentUser, IFindUserByUsername findUserByUsername, IGetAutorizzazioni getAutorizzazioni,
+            IGetRichiestaById getRichiestaAssistenzaById)
         {
             this.currentUser = currentUser;
             _findUserByUsername = findUserByUsername;
             _getAutorizzazioni = getAutorizzazioni;
+            _getRichiestaAssistenzaById = getRichiestaAssistenzaById;
         }
 
         public IEnumerable<AuthorizationResult> Authorize(MessaInLavorazioneCommand command)
         {
             string username = this.currentUser.Identity.Name;
+            var richiesta = _getRichiestaAssistenzaById.GetByCodice(command.IdRichiesta);
 
             if (this.currentUser.Identity.IsAuthenticated)
             {
@@ -52,11 +57,8 @@ namespace DomainModel.CQRS.Commands.MessaInLavorazione
                     yield return new AuthorizationResult("Utente non autorizzato");
                 else
                 {
-                    foreach (var ruolo in user.Ruoli)
-                    {
-                        if (!_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, command.CodSede, Costanti.GestoreRichieste))
-                            yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
-                    }
+                    if (!_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, richiesta.CodSOCompetente, Costanti.GestoreRichieste))
+                        yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
                 }
             }
             else
