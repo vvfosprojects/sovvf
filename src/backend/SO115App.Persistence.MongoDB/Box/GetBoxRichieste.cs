@@ -46,7 +46,7 @@ namespace SO115App.Persistence.MongoDB
         {
             var interventi = new BoxInterventi();
 
-            var filtro = new FiltroRicercaRichiesteAssistenza { UnitaOperative = listaPin, IncludiRichiesteAperte = false };
+            var filtro = new FiltroRicercaRichiesteAssistenza { UnitaOperative = listaPin, IncludiRichiesteChiuse = true };
             var listaSintesi = _getListaSintesi.GetListaSintesiRichieste(filtro);
 
             if (listaSintesi.Count > 0)
