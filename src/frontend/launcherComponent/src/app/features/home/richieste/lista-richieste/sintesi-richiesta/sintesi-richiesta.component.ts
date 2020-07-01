@@ -30,6 +30,7 @@ export class SintesiRichiestaComponent implements OnChanges {
     @Input() modificabile = true;
     @Input() gestibile = true;
     @Input() disableTooltips = false;
+    @Input() disableFissaInAltro = false;
 
     // Permessi
     @Input() disabledModificaRichiesta = false;

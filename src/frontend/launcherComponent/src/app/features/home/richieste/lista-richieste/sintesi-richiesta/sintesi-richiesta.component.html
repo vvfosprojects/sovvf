@@ -11,8 +11,8 @@
                         <div class="col-3">
                             <ng-template #rilevante>
                                 <div *ngIf="richiesta?.rilevanteGrave">Intervento Rilevante</div>
-                                <div *ngIf="richiesta?.rilevanteStArCu">Intervento Rilevante Storico Artistico
-                                    Culturale
+                                <div *ngIf="richiesta?.rilevanteStArCu">
+                                    Intervento Rilevante Storico Artistico Culturale
                                 </div>
                             </ng-template>
                             <div class="h6 mb-1 nowrap">
@@ -186,7 +186,7 @@
                         <div class="col-4 pr-3 text-right" [ngClass]="{'mb-1': espanso}">
                             <div class="h6 m-0 nowrap">
                                 <button *ngIf="!fissata && fissabile" class="btn btn-light border py-0 px-0 mr-1"
-                                        ngbTooltip="Fissa in alto"
+                                        ngbTooltip="Fissa in alto" [disabled]="disableFissaInAltro"
                                         (click)="fissaClick(richiesta); $event.stopPropagation()">
                                     <i class="fa fa-fw fa-thumb-tack text-secondary fa-rotate-45"></i>
                                 </button>
