@@ -74,6 +74,7 @@ export class RichiesteComponent implements OnInit, OnDestroy {
     @Select(RichiesteState.loadingRichieste) loadingRichieste$: Observable<boolean>;
     @Select(RichiesteState.needRefresh) needRefresh$: Observable<boolean>;
     @Select(RichiesteState.loadingActionRichiesta) loadingActionRichiesta$: Observable<string>;
+    @Select(RichiesteState.loadingEliminaPartenza) loadingEliminaPartenza$: Observable<boolean>;
 
     @Select(PaginationState.page) page$: Observable<number>;
     @Select(PaginationState.pageSize) pageSize$: Observable<number>;
