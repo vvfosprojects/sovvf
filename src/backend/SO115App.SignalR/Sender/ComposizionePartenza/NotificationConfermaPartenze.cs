@@ -81,7 +81,15 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
             var richiesta = _getRichiestaById.GetByCodice(conferma.ConfermaPartenze.IdRichiesta);
             var sintesi = _mapperSintesi.Map(richiesta);
             conferma.ConfermaPartenze.Chiamata = sintesi;
+
+            //Sedi gerarchicamente superiori alla richiesta che dovanno ricevere la notifica
             var SediDaNotificare = _getGerarchiaToSend.Get(richiesta.CodSOCompetente);
+
+            //Sedi dei mezzi in partenza che dovranno ricevere la notifica
+            foreach (var partenza in conferma.ConfermaPartenze.Partenze)
+            {
+                SediDaNotificare.Add(partenza.Mezzo.Distaccamento.Codice);
+            }
 
             sintesi.Motivazione = sintesi.Descrizione;
 
