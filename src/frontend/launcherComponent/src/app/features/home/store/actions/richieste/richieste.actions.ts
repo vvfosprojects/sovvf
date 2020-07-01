@@ -136,6 +136,14 @@ export class StopLoadingActionMezzo {
     static readonly type = '[Richieste] Stop Loading Action Mezzo';
 }
 
+export class StartLoadingEliminaPartenza {
+    static readonly type = '[Richieste] Start Loading Elimina Partenza';
+}
+
+export class StopLoadingEliminaPartenza {
+    static readonly type = '[Richieste] Stop Loading Elimina Partenza';
+}
+
 export class StartLoadingActionRichiesta {
     static readonly type = '[Richieste] Start Loading Action Richiesta';
 

@@ -370,6 +370,7 @@
                         <div class="col-md-6 bg-red border p-2"
                              [ngClass]="{'shadow border-info rounded': inGestione, 'border-light': !inGestione}">
                             <div class="scroll-y" style="max-height: 135px">
+                                <app-partial-loader *ngIf="loadingEliminaPartenza"></app-partial-loader>
                                 <app-lista-partenze [partenze]="richiesta.partenzeRichiesta"
                                                     [statoRichiesta]="richiesta.stato" [inGestione]="inGestione"
                                                     (actionMezzo)="onActionMezzo($event)"

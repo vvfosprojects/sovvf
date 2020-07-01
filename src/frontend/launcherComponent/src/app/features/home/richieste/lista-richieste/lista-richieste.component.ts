@@ -28,6 +28,7 @@ export class ListaRichiesteComponent implements OnInit {
     @Input() loading: boolean;
     @Input() needRefresh: boolean;
     @Input() loadingActionRichiesta: string;
+    @Input() loadingEliminaPartenza: boolean;
 
     // Paginazione
     @Input() page: number;

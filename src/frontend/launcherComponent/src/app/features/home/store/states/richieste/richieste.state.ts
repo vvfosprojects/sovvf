@@ -19,7 +19,13 @@ import {
     SetNeedRefresh,
     StartLoadingRichieste,
     StopLoadingRichieste,
-    EliminaPartenzaRichiesta, StartLoadingActionMezzo, StopLoadingActionMezzo, StartLoadingActionRichiesta, StopLoadingActionRichiesta
+    EliminaPartenzaRichiesta,
+    StartLoadingActionMezzo,
+    StopLoadingActionMezzo,
+    StartLoadingActionRichiesta,
+    StopLoadingActionRichiesta,
+    StartLoadingEliminaPartenza,
+    StopLoadingEliminaPartenza
 } from '../../actions/richieste/richieste.actions';
 import { SintesiRichiesteService } from 'src/app/core/service/lista-richieste-service/lista-richieste.service';
 import { insertItem, patch, updateItem } from '@ngxs/store/operators';
@@ -59,6 +65,7 @@ export interface RichiesteStateModel {
     chiamataInviaPartenza: string;
     loadingRichieste: boolean;
     loadingActionMezzo: string;
+    loadingEliminaPartenza: boolean;
     loadingActionRichiesta: string;
     needRefresh: boolean;
 }
@@ -68,6 +75,7 @@ export const RichiesteStateDefaults: RichiesteStateModel = {
     richiestaById: null,
     chiamataInviaPartenza: null,
     loadingRichieste: false,
+    loadingEliminaPartenza: false,
     loadingActionMezzo: null,
     loadingActionRichiesta: null,
     needRefresh: false
@@ -121,6 +129,11 @@ export class RichiesteState {
     @Selector()
     static loadingActionRichiesta(state: RichiesteStateModel) {
         return state.loadingActionRichiesta;
+    }
+
+    @Selector()
+    static loadingEliminaPartenza(state: RichiesteStateModel) {
+        return state.loadingEliminaPartenza;
     }
 
     constructor(private richiesteService: SintesiRichiesteService,
@@ -321,6 +334,7 @@ export class RichiesteState {
 
     @Action(EliminaPartenzaRichiesta)
     eliminaPartenzaRichiesta({ dispatch }: StateContext<RichiesteStateModel>, action: EliminaPartenzaRichiesta) {
+        dispatch(new StartLoadingEliminaPartenza());
         const obj = {
             'idRichiesta': action.idRichiesta,
             'targaMezzo': action.targaMezzo,
@@ -329,7 +343,8 @@ export class RichiesteState {
             'codRichiestaSubentrata': action.motivazione.codRichiestaSubentrata ? action.motivazione.codRichiestaSubentrata : null
         };
         this.richiesteService.eliminaPartenzaRichiesta(obj).subscribe(() => {
-        });
+            dispatch(new StopLoadingEliminaPartenza());
+        }, error => dispatch(new StopLoadingEliminaPartenza()));
     }
 
     @Action(ActionRichiesta)
@@ -390,6 +405,21 @@ export class RichiesteState {
     stopLoadingActionMezzo({ patchState }: StateContext<RichiesteStateModel>) {
         patchState({
             loadingActionMezzo: null
+        });
+    }
+
+
+    @Action(StartLoadingEliminaPartenza)
+    startLoadingEliminaPartenza({ patchState }: StateContext<RichiesteStateModel>) {
+        patchState({
+            loadingEliminaPartenza: true
+        });
+    }
+
+    @Action(StopLoadingEliminaPartenza)
+    stopLoadingEliminaPartenza({ patchState }: StateContext<RichiesteStateModel>) {
+        patchState({
+            loadingEliminaPartenza: false
         });
     }
 

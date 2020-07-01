@@ -5,8 +5,7 @@
         <div *ngFor="let r of richieste | paginate: { itemsPerPage: pageSize, currentPage: page, totalItems: totalItems }"
              [ngClass]="{'col-double': !_split, 'col-12': _split}">
             <div id="richiesta" *ngIf="!richiestaFissata || (r.id !== richiestaFissata.id)"
-                 class="w-100 rounded card-shadow"
-                 [ngClass]="cardClasses(r)">
+                 class="w-100 rounded card-shadow" [ngClass]="cardClasses(r)">
                 <app-partial-loader *ngIf="loadingActionRichiesta === r.id"></app-partial-loader>
                 <app-sintesi-richiesta class="non-fissata"
                                        [richiesta]="r"
@@ -20,6 +19,7 @@
                                        [disabledComposizionePartenza]="(permessiFeature.ComposizionePartenzaRichiesta | checkPermissionRichiesta: r.codUOCompetenza) || r.stato === statoRichiesta.Chiusa"
                                        [disableTooltips]="scrolling"
                                        [disableFissaInAltro]="richieste.length === 1"
+                                       [loadingEliminaPartenza]="loadingEliminaPartenza"
                                        (hoverIn)="richiestaHoverIn($event)"
                                        (hoverOut)="richiestaHoverOut($event)"
                                        (fissaInAlto)="onFissaInAlto($event)"
