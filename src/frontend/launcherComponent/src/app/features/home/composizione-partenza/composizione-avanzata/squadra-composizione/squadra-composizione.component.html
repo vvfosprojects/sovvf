@@ -1,22 +1,24 @@
 <li class="list-group-item cursor-pointer border" (mouseenter)="onHoverIn()" (mouseleave)="onHoverOut()"
-  (click)="onClick()" [ngClass]="liClass()">
-  <div class="row" ngbTooltip="Squadra già impegnata" placement="bottom" [disableTooltip]="!squadraComposizioneBusy()">
-    <div class="col-10 pl-0">
-      <span class="badge badge-info mr-2 py-1" [ngbPopover]="componenti" triggers="mouseenter:mouseleave">
+    (click)="onClick()" [ngClass]="liClass()">
+    <div class="row" ngbTooltip="Squadra già impegnata" placement="bottom"
+         [disableTooltip]="!squadraComposizioneBusy()">
+        <div class="col-10 pl-0">
+      <span class="badge badge-info mr-2 py-1" [ngbPopover]="componenti" placement="right"
+            triggers="mouseenter:mouseleave">
         <i class="fa fa-user mr-1"></i><span *ngIf="componenti">{{squadraComp.squadra.componenti.length}}</span>
       </span>
-      <ng-template #componenti>
-        <div *ngFor="let c of squadraComp.squadra.componenti">
-          <span class="d-inline-block mr-2">{{c.nominativo}}</span><span
-            class="badge badge-secondary">{{c.descrizioneQualifica}}</span>
+            <ng-template #componenti>
+                <div *ngFor="let c of squadraComp.squadra.componenti">
+                    <span class="badge badge-secondary mr-1">{{c.descrizioneQualifica | truncate: 12}}</span>
+                    <span class="d-inline-block mr-2">{{c.nominativo | replace: '.': ' ' | truncate: 15}}</span>
+                </div>
+            </ng-template>
+            <span>{{squadraComp.squadra.nome}}</span>
         </div>
-      </ng-template>
-      <span>{{squadraComp.squadra.nome}}</span>
-    </div>
-    <div class="col-2 pl-0">
+        <div class="col-2 pl-0">
       <span class="badge" [ngClass]="badgeDistaccamentoClass()"
-        [ngbTooltip]="squadraComp.squadra.distaccamento.descrizione">{{squadraComp.squadra.distaccamento.descrizione
-        | slice:0:3}}</span>
+            [ngbTooltip]="squadraComp.squadra.distaccamento.descrizione">{{squadraComp.squadra.distaccamento.descrizione
+          | slice:0:3}}</span>
+        </div>
     </div>
-  </div>
 </li>

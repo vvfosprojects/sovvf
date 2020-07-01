@@ -1,20 +1,25 @@
 <table class="table table-striped table-bordered mb-0">
-  <thead class="thead-light">
+    <thead class="thead-light">
     <tr>
-      <th scope="col">Nome</th>
-      <th scope="col">Componenti</th>
+        <th scope="col">Nome</th>
+        <th scope="col">Componenti</th>
     </tr>
-  </thead>
-  <tbody>
+    </thead>
+    <tbody>
     <tr *ngFor="let s of listaSquadre.squadre">
-      <td>{{s.nome}}</td>
-      <td>
-        <div *ngFor="let c of s.componenti">
-          <span class="badge badge-secondary mr-2">{{c.descrizioneQualifica}}</span>
-          <span ngbTooltip="{{c.codiceFiscale}}"
-            [disableTooltip]="!c.codiceFiscale || c.codiceFiscale.length <= 0">{{c.nominativo}}</span>
-        </div>
-      </td>
+        <td>{{s.nome}}</td>
+        <td>
+            <div *ngFor="let c of s.componenti">
+                <div class="badge badge-secondary mr-2 cursor-pointer" [ngbTooltip]="c.descrizioneQualifica"
+                     [disableTooltip]="c.descrizioneQualifica.length < 30">
+                    {{c.descrizioneQualifica | truncate: 30}}
+                </div>
+                <div class="d-inline-block cursor-pointer" ngbTooltip="{{c.codiceFiscale}}"
+                     [disableTooltip]="!c.codiceFiscale || c.codiceFiscale.length <= 0">
+                    {{c.nominativo | replace: '.' : ' ' | truncate: 25}}
+                </div>
+            </div>
+        </td>
     </tr>
-  </tbody>
+    </tbody>
 </table>
