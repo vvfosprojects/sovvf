@@ -21,6 +21,7 @@ using CQRS.Commands;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.Eventi;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
+using SO115App.API.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestrioneIntervento.Shared.AddIntervento;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.Utility;
@@ -130,6 +131,13 @@ namespace DomainModel.CQRS.Commands.AddIntervento
             if (command.Chiamata.RilevanteGrave || command.Chiamata.RilevanteStArCu)
                 new MarcaRilevante(richiesta, DateTime.UtcNow.AddMilliseconds(1.5), command.CodUtente, "", command.Chiamata.RilevanteGrave,
             command.Chiamata.RilevanteStArCu);
+
+            if (command.Chiamata.Azione.Equals(Azione.FalsoAllarme) || command.Chiamata.Azione.Equals(Azione.ChiusuraForzata) ||
+                command.Chiamata.Azione.Equals(Azione.InterventoDuplicato) || command.Chiamata.Azione.Equals(Azione.InterventoNonPiuNecessario))
+            {
+                command.Chiamata.Stato = Costanti.RichiestaChiusa;
+                new ChiusuraRichiesta("", richiesta, DateTime.UtcNow.AddMilliseconds(1.0), command.CodUtente);
+            }
 
             this._saveRichiestaAssistenza.Save(richiesta);
         }
