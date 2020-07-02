@@ -109,8 +109,8 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy {
             nominativo: [ null, Validators.required ],
             telefono: [ null, Validators.required, Validators.pattern('^(\\+?)[0-9]+$')],
             indirizzo: [ null, Validators.required ],
-            latitudine: [ null, [Validators.required, Validators.pattern('^(\\-?)([0-9]+)(\\,|\\.)([0-9]+)$')]],
-            longitudine: [ null, [Validators.required, Validators.pattern('^(\\-?)([0-9]+)(\\,|\\.)([0-9]+)$')]],
+            latitudine: [ null, [Validators.required, Validators.pattern('^(\\-?)([0-9]+)(\\.)([0-9]+)$')]],
+            longitudine: [ null, [Validators.required, Validators.pattern('^(\\-?)([0-9]+)(\\.)([0-9]+)$')]],
             piano: [ null ],
             etichette: [ null ],
             noteIndirizzo: [ null ],
@@ -385,7 +385,7 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy {
           regexp = /^[0-9\+]*$/;
           break;
         case 'LAT_LON':
-          regexp = /^[0-9\,\-]$/;
+          regexp = /^[0-9\.\-]$/;
           break;
       }
 
