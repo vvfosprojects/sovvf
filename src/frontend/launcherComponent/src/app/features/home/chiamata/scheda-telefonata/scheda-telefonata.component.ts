@@ -105,7 +105,7 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy {
         return this.formBuilder.group({
             selectedTipologie: [ null, Validators.required ],
             nominativo: [ null, Validators.required ],
-            telefono: [ null, Validators.required, Validators.pattern('^(\\+?)[0-9]+$')],
+            telefono: [ null, [Validators.required, Validators.pattern('^(\\+?)[0-9]+$')]],
             indirizzo: [ null, Validators.required ],
             latitudine: [ null, [Validators.required, Validators.pattern('^(\\-?)([0-9]+)(\\.)([0-9]+)$')]],
             longitudine: [ null, [Validators.required, Validators.pattern('^(\\-?)([0-9]+)(\\.)([0-9]+)$')]],
