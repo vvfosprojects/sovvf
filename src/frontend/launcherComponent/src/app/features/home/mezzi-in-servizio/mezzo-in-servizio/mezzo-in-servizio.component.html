@@ -10,7 +10,7 @@
         <div class="row">
             <!-- Prima Colonna (Prima riga) -->
             <div class="col-9">
-                <app-mezzo [mezzo]="mezzoInServizio.mezzo.mezzo" [mostraIndicatori]="true" [mostraNotifiche]="true"
+                <app-mezzo [mezzo]="mezzoInServizio.mezzo.mezzo" [mostraIndicatori]="mostraIndicatori" [mostraNotifiche]="true"
                            [actionsAttive]="mezzoInServizio.mezzo.mezzo.stato !== StatoMezzo.InSede"
                            (actionMezzo)="actionMezzo.emit({'a': mezzoInServizio.mezzo.mezzo, 'b': $event})">
                 </app-mezzo>
