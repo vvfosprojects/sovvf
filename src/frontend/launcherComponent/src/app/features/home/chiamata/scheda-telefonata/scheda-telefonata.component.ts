@@ -60,8 +60,6 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy {
 
     subscription = new Subscription();
 
-    oldPhoneValue;
-
     @Select(SchedaTelefonataState.resetChiamata) resetChiamata$: Observable<boolean>;
     @Select(SchedeContattoState.schedaContattoTelefonata) schedaContattoTelefonata$: Observable<SchedaContatto>;
 
