@@ -4,10 +4,13 @@
     <div *ngIf="richieste && richieste.length > 0" class="col-12 py-1 px-0 overflow-auto" [ngClass]="heightControl()">
         <div *ngFor="let r of richieste | paginate: { itemsPerPage: pageSize, currentPage: page, totalItems: totalItems }"
              [ngClass]="{'col-double': !_split, 'col-12': _split}">
-            <div id="richiesta" *ngIf="!richiestaFissata || (r.id !== richiestaFissata.id)" class="w-100 rounded card-shadow"
-                 [ngClass]="cardClasses(r)">
+            <div id="richiesta" *ngIf="!richiestaFissata || (r.id !== richiestaFissata.id)"
+                 class="w-100 rounded card-shadow" [ngClass]="cardClasses(r)">
                 <app-partial-loader *ngIf="loadingActionRichiesta === r.id"></app-partial-loader>
-                <app-sintesi-richiesta class="non-fissata" [richiesta]="r" [fissata]="false" [fissabile]="true"
+                <app-sintesi-richiesta class="non-fissata"
+                                       [richiesta]="r"
+                                       [fissata]="false"
+                                       [fissabile]="true"
                                        [espanso]="isEspanso(r.id)"
                                        [espandibile]="true" [listaEventi]="true"
                                        [inGestione]="richiestaGestione?.id === r.id"
@@ -15,6 +18,8 @@
                                        [disabledGestisciRichiesta]="permessiFeature.GestisciRichiesta | checkPermissionRichiesta: r.codUOCompetenza"
                                        [disabledComposizionePartenza]="(permessiFeature.ComposizionePartenzaRichiesta | checkPermissionRichiesta: r.codUOCompetenza) || r.stato === statoRichiesta.Chiusa"
                                        [disableTooltips]="scrolling"
+                                       [disableFissaInAltro]="richieste.length === 1"
+                                       [loadingEliminaPartenza]="loadingEliminaPartenza"
                                        (hoverIn)="richiestaHoverIn($event)"
                                        (hoverOut)="richiestaHoverOut($event)"
                                        (fissaInAlto)="onFissaInAlto($event)"
@@ -89,7 +94,7 @@
             </div>
             <div class="col-8 text-right pt-1">
                 <pagination-controls class="mb-0" [previousLabel]="'Precedente'" [nextLabel]="'Successiva'"
-                                     (pageChange)="pageChange.emit($event)">
+                                     [autoHide]="true" (pageChange)="pageChange.emit($event)">
                 </pagination-controls>
             </div>
         </div>

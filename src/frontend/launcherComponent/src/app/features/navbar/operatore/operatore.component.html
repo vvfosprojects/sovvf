@@ -1,8 +1,8 @@
-<button class="btn btn-light mr-2" ngbTooltip="Notifiche" [ngbPopover]="notifiche" placement="bottom"><i
+<!-- <button class="btn btn-light mr-2 hide" ngbTooltip="Notifiche" [ngbPopover]="notifiche" placement="bottom"><i
         class="fa fa-bell"></i></button>
 <button class="btn btn-light mr-2" ngbTooltip="Impostazioni" [ngbPopover]="impostazioni" placement="bottom"><i
         class="fa fa-cogs"></i>
-</button>
+</button> -->
 <div *ngIf="user" class="btn-group" role="group">
     <button class="btn btn-light mr-2" [ngbPopover]="ruoli" placement="bottom">
         <i class="fa fa-user"></i>
@@ -13,12 +13,12 @@
         class="fa fa-sign-out"></i>
     Esci
 </button>
-<ng-template #notifiche>
+<!-- <ng-template #notifiche>
     <h6 class="mb-2">Notifiche</h6>
 </ng-template>
 <ng-template #impostazioni>
     <h6 class="mb-2">Impostazioni</h6>
-</ng-template>
+</ng-template> -->
 <ng-template #ruoli>
     <div class="py-1">
         <small class="d-block font-weight-bold">Ruoli Assegnati:</small>

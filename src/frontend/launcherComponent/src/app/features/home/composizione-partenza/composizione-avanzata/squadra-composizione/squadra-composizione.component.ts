@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-// Model
 import { SquadraComposizione } from '../../interface/squadra-composizione-interface';
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
 import { squadraComposizioneBusy } from '../../shared/functions/composizione-functions';
+import { Sede } from '../../../../../shared/model/sede.model';
 
 @Component({
     selector: 'app-squadra-composizione',
@@ -81,14 +81,17 @@ export class SquadraComposizioneComponent implements OnInit {
         let result = 'badge-secondary';
 
         if (this.richiesta && this.squadraComp) {
-            const distaccamentoMezzo = this.squadraComp.squadra.distaccamento.descrizione;
+            const distaccamentoSquadra = this.squadraComp.squadra.distaccamento.descrizione;
 
             if (this.richiesta.competenze && this.richiesta.competenze.length > 0) {
-                if (this.richiesta.competenze[0].descrizione === distaccamentoMezzo) {
-                    result = 'badge-primary';
-                } else if (this.richiesta.competenze[1].descrizione === distaccamentoMezzo) {
-                    result = 'badge-info';
-                }
+                this.richiesta.competenze.forEach((competenza: Sede, index: number) => {
+                    if (competenza.descrizione === distaccamentoSquadra && index === 0) {
+                        result = 'badge-primary';
+                    }
+                    if (competenza.descrizione === distaccamentoSquadra && index === 1) {
+                        result = 'badge-info';
+                    }
+                });
             }
         }
 
