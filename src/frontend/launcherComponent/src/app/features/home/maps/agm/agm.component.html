@@ -227,7 +227,7 @@
                                         [showCloseButton]="false"
                                         wrapperClass="snazzy-margin-priorita-4">
                                     <ng-template>
-                                        <app-info-window [mezzoMarker]="mezzoMarker"
+                                        <app-info-window [mezzoMarker]="mezzoMarker"  [disabilitaIndicatoriMezzo]="disabilitaIndicatoriMezzo"
                                                          [datiMeteo]="findDatiMeteo('mezzo-'+mezzoMarker.mezzo.codice)"
                                                          [inComposizione]="viewStateMappa.active === AppFeatures.ComposizionePartenza"
                                                          (addMezzoComposizione)="onAddMezzoComposizione($event)">

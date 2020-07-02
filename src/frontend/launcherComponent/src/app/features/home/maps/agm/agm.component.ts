@@ -68,6 +68,7 @@ export class AgmComponent implements OnDestroy {
     richiestaMarkerIconUrl: string;
     meteoMarkerIconUrl: string;
     schedaContattoMarkerIconUrl: string;
+    disabilitaIndicatoriMezzo = true;
 
     zoomControlOptions: ZoomControlOptions = {
         position: ControlPosition.BOTTOM_RIGHT
