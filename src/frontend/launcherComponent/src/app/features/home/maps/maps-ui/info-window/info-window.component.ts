@@ -23,6 +23,7 @@ import { SchedaContattoMarker } from '../../maps-model/scheda-contatto-marker.mo
 })
 export class InfoWindowComponent implements OnInit {
 
+    @Input() disabilitaIndicatoriMezzo = false;
     @Input() datiMeteo: Meteo;
     @Input() compact = false;
     @Input() richiestaMarker: RichiestaMarker;
