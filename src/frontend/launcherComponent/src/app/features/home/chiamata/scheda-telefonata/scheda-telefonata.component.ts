@@ -60,6 +60,8 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy {
 
     subscription = new Subscription();
 
+    oldPhoneValue;
+
     @Select(SchedaTelefonataState.resetChiamata) resetChiamata$: Observable<boolean>;
     @Select(SchedeContattoState.schedaContattoTelefonata) schedaContattoTelefonata$: Observable<SchedaContatto>;
 
@@ -105,10 +107,10 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy {
         return this.formBuilder.group({
             selectedTipologie: [ null, Validators.required ],
             nominativo: [ null, Validators.required ],
-            telefono: [ null, Validators.required ],
+            telefono: [ null, Validators.required, Validators.pattern('^(\\+?)[0-9]+$')],
             indirizzo: [ null, Validators.required ],
-            latitudine: [ null, Validators.required ],
-            longitudine: [ null, Validators.required ],
+            latitudine: [ null, [Validators.required, Validators.pattern('^(\\-?)([0-9]+)(\\,|\\.)([0-9]+)$')]],
+            longitudine: [ null, [Validators.required, Validators.pattern('^(\\-?)([0-9]+)(\\,|\\.)([0-9]+)$')]],
             piano: [ null ],
             etichette: [ null ],
             noteIndirizzo: [ null ],
@@ -376,16 +378,26 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy {
         return (!this.formIsValid() && !!this.coordinate);
     }
 
-    checkPatternTelefono(event: any): void {
-      const pattern = /^(\+?)[0-9]*$/;
+    checkInputPattern(event: any, type: string): void {
+      let regexp;
+      switch (type) {
+        case 'PHONE':
+          regexp = /^[0-9\+]*$/;
+          break;
+        case 'LAT_LON':
+          regexp = /^[0-9\,\-]$/;
+          break;
+      }
+
       let inputValue;
       if (event instanceof ClipboardEvent) {
         inputValue = event.clipboardData.getData('Text');
       } else {
         inputValue = event.key;
       }
-      if (!pattern.test(event.target.value + inputValue)) {
-        event.preventDefault();
+
+      if (!regexp.test(inputValue)) {
+       event.preventDefault();
       }
     }
 
