@@ -376,6 +376,19 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy {
         return (!this.formIsValid() && !!this.coordinate);
     }
 
+    checkPatternTelefono(event: any): void {
+      const pattern = /^(\+?)[0-9]*$/;
+      let inputValue;
+      if (event instanceof ClipboardEvent) {
+        inputValue = event.clipboardData.getData('Text');
+      } else {
+        inputValue = event.key;
+      }
+      if (!pattern.test(event.target.value + inputValue)) {
+        event.preventDefault();
+      }
+    }
+
     setDescrizione(): void {
         const form = this.f;
         if (!form.descrizione.value) {
