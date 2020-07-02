@@ -49,20 +49,20 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
         {
             string username = this._currentUser.Identity.Name;
             Utente user = _findUserByUsername.FindUserByUs(username);
-            var richiesta = _getRichiestaAssistenzaById.GetById(query.Filtro.IdRichiesta);
+            //var richiesta = _getRichiestaAssistenzaById.GetById(query.Filtro.IdRichiesta);
 
             if (this._currentUser.Identity.IsAuthenticated)
             {
                 if (user == null)
                     yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
-                else
-                {
-                    foreach (var ruolo in user.Ruoli)
-                    {
-                        if (!_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, richiesta.CodSOCompetente, Costanti.GestoreRichieste))
-                            yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
-                    }
-                }
+                //else
+                //{
+                //    foreach (var ruolo in user.Ruoli)
+                //    {
+                //        if (!_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, richiesta.CodSOCompetente, Costanti.GestoreRichieste))
+                //            yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
+                //    }
+                //}
             }
             else
                 yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
