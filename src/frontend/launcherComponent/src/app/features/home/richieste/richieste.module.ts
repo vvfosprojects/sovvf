@@ -41,53 +41,55 @@ import {RichiestaAttivitaUtenteState} from '../store/states/richieste/richiesta-
 import {NgxsFormPluginModule} from '@ngxs/form-plugin';
 import {ModalFiltriTipologiaComponent} from '../filterbar/filtri-richieste/modal-filtri-tipologia/modal-filtri-tipologia.component';
 import {EliminaPartenzaModalComponent} from '../../../shared/modal/elimina-partenza-modal/elimina-partenza-modal.component';
+import {TagInputModule} from 'ngx-chips';
 
 @NgModule({
-    imports: [
-        CommonModule,
-        FormsModule,
-        ReactiveFormsModule,
-        NgxPaginationModule,
-        FilterPipeModule,
-        NgbModule,
-        UiSwitchModule.forRoot(null),
-        NgSelectModule,
-        SharedModule.forRoot(),
-        ScrollingModule,
-        SintesiRichiestaModule,
-        GooglePlaceModule,
-        NgxsModule.forFeature([
-            RichiesteState,
-            RichiestaFissataState,
-            RichiestaHoverState,
-            RichiestaSelezionataState,
-            RichiesteEspanseState,
-            RichiestaGestioneState,
-            RichiestaAttivitaUtenteState
-        ]),
-        NgxsFormPluginModule
-    ],
-    declarations: [
-        RichiesteComponent,
-        ListaRichiesteComponent,
-        RichiestaFissataComponent,
-        SintesiRichiestaSmComponent,
-        ModificaRichiestaComponent,
-    ],
-    exports: [
-        RichiesteComponent,
-        ModificaRichiestaComponent,
-    ],
-    entryComponents: [
-        ListaEntiComponent,
-        ListaSquadrePartenzaComponent,
-        ActionRichiestaModalComponent,
-        ModalFiltriTipologiaComponent,
-        EliminaPartenzaModalComponent
-    ],
-    providers: [
-        SintesiRichiesteService
-    ]
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    NgxPaginationModule,
+    FilterPipeModule,
+    NgbModule,
+    UiSwitchModule.forRoot(null),
+    NgSelectModule,
+    SharedModule.forRoot(),
+    ScrollingModule,
+    SintesiRichiestaModule,
+    GooglePlaceModule,
+    TagInputModule,
+    NgxsModule.forFeature([
+      RichiesteState,
+      RichiestaFissataState,
+      RichiestaHoverState,
+      RichiestaSelezionataState,
+      RichiesteEspanseState,
+      RichiestaGestioneState,
+      RichiestaAttivitaUtenteState
+    ]),
+    NgxsFormPluginModule
+  ],
+  declarations: [
+    RichiesteComponent,
+    ListaRichiesteComponent,
+    RichiestaFissataComponent,
+    SintesiRichiestaSmComponent,
+    ModificaRichiestaComponent,
+  ],
+  exports: [
+    RichiesteComponent,
+    ModificaRichiestaComponent,
+  ],
+  entryComponents: [
+    ListaEntiComponent,
+    ListaSquadrePartenzaComponent,
+    ActionRichiestaModalComponent,
+    ModalFiltriTipologiaComponent,
+    EliminaPartenzaModalComponent
+  ],
+  providers: [
+    SintesiRichiesteService
+  ]
 })
 export class RichiesteModule {
 }

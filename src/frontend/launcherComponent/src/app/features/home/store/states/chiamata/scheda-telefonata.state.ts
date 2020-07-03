@@ -1,5 +1,5 @@
-import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
-import { Coordinate } from '../../../../../shared/model/coordinate.model';
+import {Action, Selector, State, StateContext, Store} from '@ngxs/store';
+import {Coordinate} from '../../../../../shared/model/coordinate.model';
 import {
     ApriModaleRichiestaDuplicata,
     CestinaChiamata,
@@ -14,26 +14,26 @@ import {
     StartLoadingNuovaChiamata,
     StopLoadingNuovaChiamata
 } from '../../actions/chiamata/scheda-telefonata.actions';
-import { CopyToClipboard } from '../../actions/chiamata/clipboard.actions';
-import { ToggleChiamata } from '../../actions/view/view.actions';
-import { GetInitCentroMappa, SetCoordCentroMappa, SetZoomCentroMappa } from '../../actions/maps/centro-mappa.actions';
-import { GetMarkerDatiMeteo } from '../../actions/maps/marker-info-window.actions';
-import { DelChiamataMarker, SetChiamataMarker, UpdateChiamataMarker } from '../../actions/maps/chiamate-markers.actions';
-import { ClipboardState } from './clipboard.state';
-import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.model';
-import { AzioneChiamataEnum } from '../../../../../shared/enum/azione-chiamata.enum';
-import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
-import { ToastrType } from '../../../../../shared/enum/toastr';
-import { ChiamataService } from '../../../../../core/service/chiamata-service/chiamata.service';
-import { GetListaRichieste, SetIdChiamataInviaPartenza, SetNeedRefresh } from '../../actions/richieste/richieste.actions';
-import { RichiestaSelezionataState } from '../richieste/richiesta-selezionata.state';
-import { PaginationState } from '../../../../../shared/store/states/pagination/pagination.state';
-import { RichiestaGestioneState } from '../richieste/richiesta-gestione.state';
-import { UpdateFormValue } from '@ngxs/form-plugin';
-import { NgZone } from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { RichiestaDuplicataModalComponent } from '../../../../../shared/modal/richiesta-duplicata-modal/richiesta-duplicata-modal.component';
-import { ModalServiziComponent } from '../../../boxes/info-aggregate/modal-servizi/modal-servizi.component';
+import {CopyToClipboard} from '../../actions/chiamata/clipboard.actions';
+import {ToggleChiamata} from '../../actions/view/view.actions';
+import {GetInitCentroMappa, SetCoordCentroMappa, SetZoomCentroMappa} from '../../actions/maps/centro-mappa.actions';
+import {GetMarkerDatiMeteo} from '../../actions/maps/marker-info-window.actions';
+import {DelChiamataMarker, SetChiamataMarker, UpdateChiamataMarker} from '../../actions/maps/chiamate-markers.actions';
+import {ClipboardState} from './clipboard.state';
+import {SintesiRichiesta} from '../../../../../shared/model/sintesi-richiesta.model';
+import {AzioneChiamataEnum} from '../../../../../shared/enum/azione-chiamata.enum';
+import {ShowToastr} from '../../../../../shared/store/actions/toastr/toastr.actions';
+import {ToastrType} from '../../../../../shared/enum/toastr';
+import {ChiamataService} from '../../../../../core/service/chiamata-service/chiamata.service';
+import {GetListaRichieste, SetIdChiamataInviaPartenza, SetNeedRefresh} from '../../actions/richieste/richieste.actions';
+import {RichiestaSelezionataState} from '../richieste/richiesta-selezionata.state';
+import {PaginationState} from '../../../../../shared/store/states/pagination/pagination.state';
+import {RichiestaGestioneState} from '../richieste/richiesta-gestione.state';
+import {UpdateFormValue} from '@ngxs/form-plugin';
+import {NgZone} from '@angular/core';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {RichiestaDuplicataModalComponent} from '../../../../../shared/modal/richiesta-duplicata-modal/richiesta-duplicata-modal.component';
+import {ModalServiziComponent} from '../../../boxes/info-aggregate/modal-servizi/modal-servizi.component';
 
 export interface SchedaTelefonataStateModel {
     nuovaRichiestaForm: {
@@ -112,7 +112,7 @@ export class SchedaTelefonataState {
     }
 
     @Action(ReducerSchedaTelefonata)
-    reducer({ getState, dispatch }: StateContext<SchedaTelefonataStateModel>, action: ReducerSchedaTelefonata) {
+    reducer({getState, dispatch}: StateContext<SchedaTelefonataStateModel>, action: ReducerSchedaTelefonata) {
         switch (action.schedaTelefonata.tipo) {
             case 'copiaIndirizzo':
                 dispatch(new CopyToClipboard(getState().coordinate));
@@ -135,7 +135,7 @@ export class SchedaTelefonataState {
     }
 
     @Action(InsertChiamata)
-    insertChiamata({ patchState, dispatch }: StateContext<SchedaTelefonataStateModel>, action: InsertChiamata) {
+    insertChiamata({patchState, dispatch}: StateContext<SchedaTelefonataStateModel>, action: InsertChiamata) {
 
         patchState({
             azioneChiamata: action.azioneChiamata
@@ -163,12 +163,12 @@ export class SchedaTelefonataState {
     }
 
     @Action(InsertChiamataSuccess)
-    insertChiamataSuccess({ dispatch }: StateContext<SchedaTelefonataStateModel>, action: InsertChiamataSuccess) {
+    insertChiamataSuccess({dispatch}: StateContext<SchedaTelefonataStateModel>, action: InsertChiamataSuccess) {
         const idRichiestaSelezionata = this.store.selectSnapshot(RichiestaSelezionataState.idRichiestaSelezionata);
         const idRichiestaGestione = this.store.selectSnapshot(RichiestaGestioneState.idRichiestaGestione);
         if (!idRichiestaSelezionata && !idRichiestaGestione) {
             const currentPage = this.store.selectSnapshot(PaginationState.page);
-            dispatch(new GetListaRichieste({ page: currentPage }));
+            dispatch(new GetListaRichieste({page: currentPage}));
             dispatch(new SetNeedRefresh(false));
         } else {
             dispatch(new SetNeedRefresh(true));
@@ -178,12 +178,20 @@ export class SchedaTelefonataState {
     }
 
     @Action(ResetChiamata)
-    resetChiamata({ patchState }: StateContext<SchedaTelefonataStateModel>) {
+    resetChiamata({patchState, dispatch}: StateContext<SchedaTelefonataStateModel>) {
         patchState(SchedaTelefonataStateDefaults);
+        dispatch(
+            new UpdateFormValue({
+                path: 'schedaTelefonata.nuovaRichiestaForm',
+                value: {
+                    prioritaRichiesta: 3
+                }
+            })
+        );
     }
 
     @Action(CestinaChiamata)
-    cestinaChiamata({ dispatch }: StateContext<SchedaTelefonataStateModel>) {
+    cestinaChiamata({dispatch}: StateContext<SchedaTelefonataStateModel>) {
         dispatch(new ClearMarkerChiamata());
         dispatch(new ResetChiamata());
         dispatch(new ToggleChiamata());
@@ -192,7 +200,7 @@ export class SchedaTelefonataState {
     }
 
     @Action(MarkerChiamata)
-    markerChiamata({ getState, patchState, dispatch }: StateContext<SchedaTelefonataStateModel>, action: MarkerChiamata) {
+    markerChiamata({getState, patchState, dispatch}: StateContext<SchedaTelefonataStateModel>, action: MarkerChiamata) {
         const state = getState();
 
         if (state.idChiamataMarker) {
@@ -215,7 +223,7 @@ export class SchedaTelefonataState {
     }
 
     @Action(ClearMarkerChiamata)
-    clearMarkerChiamata({ getState, dispatch }: StateContext<SchedaTelefonataStateModel>) {
+    clearMarkerChiamata({getState, dispatch}: StateContext<SchedaTelefonataStateModel>) {
         const state = getState();
         if (state.idChiamataMarker) {
             dispatch(new DelChiamataMarker(state.idChiamataMarker));
@@ -223,19 +231,19 @@ export class SchedaTelefonataState {
     }
 
     @Action(ClearChiamata)
-    clearChiamata({ patchState }: StateContext<SchedaTelefonataStateModel>) {
+    clearChiamata({patchState}: StateContext<SchedaTelefonataStateModel>) {
         patchState(SchedaTelefonataStateDefaults);
     }
 
     @Action(StartChiamata)
-    startChiamata({ patchState }: StateContext<SchedaTelefonataStateModel>) {
+    startChiamata({patchState}: StateContext<SchedaTelefonataStateModel>) {
         patchState({
             resetChiamata: false
         });
     }
 
     @Action(ClearIndirizzo)
-    ClearIndirizzo({ dispatch }: StateContext<SchedaTelefonataStateModel>) {
+    ClearIndirizzo({dispatch}: StateContext<SchedaTelefonataStateModel>) {
         dispatch(new UpdateFormValue({
             path: 'schedaTelefonata.nuovaRichiestaForm',
             value: {
@@ -247,22 +255,26 @@ export class SchedaTelefonataState {
     }
 
     @Action(ApriModaleRichiestaDuplicata)
-    apriModaleRichiestaDuplicata({ dispatch }: StateContext<SchedaTelefonataStateModel>, action: ApriModaleRichiestaDuplicata) {
+    apriModaleRichiestaDuplicata({dispatch}: StateContext<SchedaTelefonataStateModel>, action: ApriModaleRichiestaDuplicata) {
         this.ngZone.run(() => {
-            const richiestaDuplicataModal = this.modalService.open(RichiestaDuplicataModalComponent, { size: 'lg', centered: true, backdrop: 'static' });
+            const richiestaDuplicataModal = this.modalService.open(RichiestaDuplicataModalComponent, {
+                size: 'lg',
+                centered: true,
+                backdrop: 'static'
+            });
             richiestaDuplicataModal.componentInstance.messaggio = action.messaggio;
         });
     }
 
     @Action(StartLoadingNuovaChiamata)
-    startLoadingNuovaChiamata({ patchState }: StateContext<SchedaTelefonataStateModel>) {
+    startLoadingNuovaChiamata({patchState}: StateContext<SchedaTelefonataStateModel>) {
         patchState({
             loadingNuovaChiamata: true
         });
     }
 
     @Action(StopLoadingNuovaChiamata)
-    stopLoadingNuovaChiamata({ patchState }: StateContext<SchedaTelefonataStateModel>) {
+    stopLoadingNuovaChiamata({patchState}: StateContext<SchedaTelefonataStateModel>) {
         patchState({
             loadingNuovaChiamata: false
         });
