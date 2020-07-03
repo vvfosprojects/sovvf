@@ -1,9 +1,9 @@
-import { NgModule } from '@angular/core';
-import { TimeagoModule, TimeagoIntl, TimeagoFormatter, TimeagoCustomFormatter } from 'ngx-timeago';
-import { SintesiRichiestaComponent } from './sintesi-richiesta.component';
-import { CommonModule } from '@angular/common';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { SharedModule } from 'src/app/shared/shared.module';
+import {NgModule} from '@angular/core';
+import {TimeagoCustomFormatter, TimeagoFormatter, TimeagoIntl, TimeagoModule} from 'ngx-timeago';
+import {SintesiRichiestaComponent} from './sintesi-richiesta.component';
+import {CommonModule} from '@angular/common';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {SharedModule} from 'src/app/shared/shared.module';
 
 @NgModule({
     imports: [
