@@ -94,7 +94,7 @@ export class ComposizioneVeloceState {
         const listaMezziSquadre: ListaComposizioneAvanzata = this.store.selectSnapshot(ComposizioneAvanzataState.listaMezziSquadre);
         const state = getState();
         const preaccoppiati: BoxPartenza[] = [];
-        if (listaMezziSquadre.composizioneSquadre.length > 0 && listaMezziSquadre.composizioneMezzi.length > 0) {
+        if (listaMezziSquadre.composizioneSquadre.length > 0 && listaMezziSquadre.composizioneMezzi.length > 0 && state.idPreAccoppiati) {
             state.idPreAccoppiati.forEach((idPreaccopiati: IdPreaccoppiati) => {
                 const preaccoppiato = {} as BoxPartenza;
                 preaccoppiato.id = idPreaccopiati.id;

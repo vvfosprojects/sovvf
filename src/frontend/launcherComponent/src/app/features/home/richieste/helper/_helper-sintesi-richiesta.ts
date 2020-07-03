@@ -24,7 +24,6 @@ export class HelperSintesiRichiesta {
             id: string;
             nome: string;
         }
-
         const nomiSquadre: string[] = [];
         const squadre: SquadraPartenza[] = [];
 

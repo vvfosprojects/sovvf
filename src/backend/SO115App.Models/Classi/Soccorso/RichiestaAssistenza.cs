@@ -620,11 +620,15 @@ namespace SO115App.API.Models.Classi.Soccorso
                 if (eventoSospesa)
                     return new Sospesa();
 
-                if (!eventoRiaperta && !eventoRientrata && !eventoInRientro) return new InAttesa();
+                if (!eventoRientrata && !eventoInRientro) return new InAttesa();
                 if (composizionePartenza.Any(x => x.Partenza.Mezzo.Stato == Costanti.MezzoInViaggio))
                     return new Assegnata();
-                if (composizionePartenza.All(x => x.Partenza.Mezzo.Stato == Costanti.MezzoRientrato || x.Partenza.Mezzo.Stato == Costanti.MezzoInRientro || x.Partenza.Mezzo.Stato == Costanti.MezzoInSede))
-                    return new Sospesa();
+
+                if (composizionePartenza.Count > 0)
+                {
+                    if (composizionePartenza.All(x => x.Partenza.Mezzo.Stato == Costanti.MezzoRientrato || x.Partenza.Mezzo.Stato == Costanti.MezzoInRientro || x.Partenza.Mezzo.Stato == Costanti.MezzoInSede))
+                        return new Sospesa();
+                }
 
                 return new InAttesa();
             }
