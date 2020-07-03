@@ -12,7 +12,7 @@ export const PaginationStateModelDefaults: PaginationStateModel = {
         page: 1,
         pageSize: 10
     },
-    pageSizes: [ 10, 20, 30 ]
+    pageSizes: [10, 20, 30]
 };
 
 @State<PaginationStateModel>({
@@ -55,14 +55,14 @@ export class PaginationState {
     }
 
     @Action(PatchPagination)
-    patchPagination({patchState}: StateContext<PatchPagination>, action: PatchPagination) {
+    patchPagination({ patchState }: StateContext<PatchPagination>, action: PatchPagination) {
         patchState({
             pagination: action.pagination
         });
     }
 
     @Action(SetPageSize)
-    setPageSize({getState, patchState}: StateContext<PatchPagination>, action: SetPageSize) {
+    setPageSize({ getState, patchState }: StateContext<PatchPagination>, action: SetPageSize) {
         const state = getState();
         patchState({
             pagination: {
