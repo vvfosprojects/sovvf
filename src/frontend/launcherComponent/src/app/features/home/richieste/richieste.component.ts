@@ -109,7 +109,7 @@ export class RichiesteComponent implements OnInit, OnDestroy {
 
     ngOnDestroy() {
         this.subscription.unsubscribe();
-        this.store.dispatch(new ResetFiltriSelezionatiRichieste());
+        this.store.dispatch(new ResetFiltriSelezionatiRichieste({ preventGetList: true }));
         isDevMode() && console.log('Componente Richieste distrutto');
     }
 

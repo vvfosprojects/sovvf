@@ -149,7 +149,7 @@ export class GestioneUtentiState {
                 error => {
                     const utente = this.store.selectSnapshot(AuthState.currentUser);
                     if (!_isAdministrator(utente, { sede: utente.sede })) {
-                        dispatch(new Navigate([ '/home' ]));
+                        dispatch(new Navigate(['/home']));
                     }
                 });
         }
