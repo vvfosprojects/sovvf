@@ -145,8 +145,9 @@
                                     </button>
 
                                     <ng-template #popMezzi>
-                                        <div class="h6 nowrap" *ngFor="let m of methods.descscrizioneMezzi(richiesta)">
-                                            <span>{{ m }}</span>
+                                        <div class="h6 nowrap" *ngFor="let m of methods.mezziRichiesta(richiesta)">
+                                            <span><span class="badge badge-secondary">{{ m.stato }}</span><span class="font-weight-bold mx-1">{{ m.descrizione }}</span><small
+                                            >{{ m.genere }}</small></span>
                                         </div>
                                         <h6 class="mb-0" *ngIf="methods.numeroMezzi(richiesta) === 0">Nessun mezzo</h6>
                                     </ng-template>
