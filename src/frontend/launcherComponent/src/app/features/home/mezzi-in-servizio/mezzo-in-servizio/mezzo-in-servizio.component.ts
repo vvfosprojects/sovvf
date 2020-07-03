@@ -25,6 +25,7 @@ export class MezzoInServizioComponent implements OnInit {
     @Output() actionMezzo: EventEmitter<any> = new EventEmitter<any>();
 
     StatoMezzo = StatoMezzo;
+    mostraIndicatori = false;
 
     constructor(private store: Store) {
     }

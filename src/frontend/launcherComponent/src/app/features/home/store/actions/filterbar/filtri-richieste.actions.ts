@@ -7,25 +7,29 @@ export class GetFiltriRichieste {
 export class SetFiltroSelezionatoRichieste {
     static readonly type = '[FiltriRichieste] Set Filtro Richieste Selezionato';
 
-    constructor(public filtro: VoceFiltro) {}
+    constructor(public filtro: VoceFiltro) {
+    }
 }
 
 export class ClearFiltroSelezionatoRichieste {
     static readonly type = '[FiltriRichieste] Clear Filtro Richieste Selezionato';
 
-    constructor(public filtro: VoceFiltro) {}
+    constructor(public filtro: VoceFiltro) {
+    }
 }
 
 export class SetFiltroTipologiaSelezionatoRichieste {
     static readonly type = '[FiltriRichieste] Set Filtro Tipologia Richieste Selezionato';
 
-    constructor(public filtro: VoceFiltro) {}
+    constructor(public filtro: VoceFiltro) {
+    }
 }
 
 export class ClearFiltroTipologiaSelezionatoRichieste {
     static readonly type = '[FiltriRichieste] Clear Filtro Tipologia Richieste Selezionato';
 
-    constructor(public filtro: VoceFiltro) {}
+    constructor(public filtro: VoceFiltro) {
+    }
 }
 
 export class ApplyFiltriTipologiaSelezionatiRichieste {
@@ -38,4 +42,7 @@ export class ClearAllFiltriTipologiaSelezionatiRichieste {
 
 export class ResetFiltriSelezionatiRichieste {
     static readonly type = '[FiltriRichieste] Reset Filtri Richieste Selezionati';
+
+    constructor(public options?: { preventGetList: boolean }) {
+    }
 }

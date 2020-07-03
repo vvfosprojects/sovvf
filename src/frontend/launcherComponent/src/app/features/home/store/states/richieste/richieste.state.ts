@@ -58,6 +58,8 @@ import { GetInitCentroMappa } from '../../actions/maps/centro-mappa.actions';
 import { ClearRichiestaMarkerModifica } from '../../actions/maps/richieste-markers.actions';
 import { AuthState } from '../../../../auth/store/auth.state';
 import { UpdateRichiestaFissata } from '../../actions/richieste/richiesta-fissata.actions';
+import { OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
 
 export interface RichiesteStateModel {
     richieste: SintesiRichiesta[];
