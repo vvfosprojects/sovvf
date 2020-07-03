@@ -32,6 +32,9 @@ export abstract class TimeagoFormatter {
   abstract format(then: number): string;
 }
 
+/*
+* Custom formatter per la lib Timeago.Al momento viene mostrata la label "Ora" su una segnalazione se è stata creata da meno di un minuto
+* */
 @Injectable()
 export class TimeagoVVFFormatter extends TimeagoFormatter {
 

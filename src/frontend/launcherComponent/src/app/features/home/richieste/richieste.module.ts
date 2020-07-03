@@ -10,7 +10,6 @@ import {NgSelectModule} from '@ng-select/ng-select';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {NgxPaginationModule} from 'ngx-pagination';
 import {ScrollingModule} from '@angular/cdk/scrolling';
-import {TimeagoCustomFormatter, TimeagoFormatter, TimeagoIntl, TimeagoModule} from 'ngx-timeago';
 import {SintesiRichiestaModule} from './lista-richieste/sintesi-richiesta/sintesi-richiesta.module';
 import {UiSwitchModule} from 'ngx-ui-switch';
 import {GooglePlaceModule} from 'ngx-google-places-autocomplete';
@@ -42,7 +41,6 @@ import {RichiestaAttivitaUtenteState} from '../store/states/richieste/richiesta-
 import {NgxsFormPluginModule} from '@ngxs/form-plugin';
 import {ModalFiltriTipologiaComponent} from '../filterbar/filtri-richieste/modal-filtri-tipologia/modal-filtri-tipologia.component';
 import {EliminaPartenzaModalComponent} from '../../../shared/modal/elimina-partenza-modal/elimina-partenza-modal.component';
-import {TimeagoVVFFormatter} from "./helper/timeago-custom-formatter/timago-custom-formatter";
 
 @NgModule({
     imports: [
@@ -58,10 +56,6 @@ import {TimeagoVVFFormatter} from "./helper/timeago-custom-formatter/timago-cust
         ScrollingModule,
         SintesiRichiestaModule,
         GooglePlaceModule,
-        TimeagoModule.forRoot({
-            intl: TimeagoIntl,
-            formatter: { provide: TimeagoFormatter, useClass: TimeagoCustomFormatter }
-        }),
         NgxsModule.forFeature([
             RichiesteState,
             RichiestaFissataState,

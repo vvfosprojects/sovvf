@@ -5,7 +5,6 @@ import {CommonModule} from '@angular/common';
  */
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {SharedModule} from '../../../shared/shared.module';
-import {TimeagoCustomFormatter, TimeagoFormatter, TimeagoIntl, TimeagoModule} from 'ngx-timeago';
 import {NgSelectModule} from '@ng-select/ng-select';
 import {SintesiRichiestaModule} from '../richieste/lista-richieste/sintesi-richiesta/sintesi-richiesta.module';
 /*
@@ -57,10 +56,6 @@ import {TastoCompPartenzaComponent} from './shared/tasto-comp-partenza/tasto-com
         NgbModule,
         SintesiRichiestaModule,
         SharedModule.forRoot(),
-        TimeagoModule.forRoot({
-            intl: TimeagoIntl,
-            formatter: { provide: TimeagoFormatter, useClass: TimeagoCustomFormatter }
-        }),
         NgSelectModule,
         NgxsModule.forFeature(
             [

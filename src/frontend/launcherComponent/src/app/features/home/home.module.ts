@@ -9,7 +9,6 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {FilterPipeModule} from 'ngx-filter-pipe';
 import {SharedModule} from '../../shared/shared.module';
 import {NgbActiveModal, NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import {TimeagoFormatter, TimeagoIntl, TimeagoModule} from 'ngx-timeago';
 import {NgxsModule} from '@ngxs/store';
 import {FiltriRichiesteState} from './store/states/filterbar/filtri-richieste.state';
 import {RicercaFilterbarState} from './store/states/filterbar/ricerca-filterbar.state';
@@ -31,7 +30,6 @@ import {TipologicheMezziState} from './store/states/composizione-partenza/tipolo
 import {SchedeContattoModule} from './schede-contatto/schede-contatto.module';
 import {BoxClickState} from './store/states/boxes/box-click.state';
 import {MapsFiltroState} from './store/states/maps/maps-filtro.state';
-import {TimeagoVVFFormatter} from './richieste/helper/timeago-custom-formatter/timago-custom-formatter';
 
 @NgModule({
   declarations: [
@@ -58,10 +56,6 @@ import {TimeagoVVFFormatter} from './richieste/helper/timeago-custom-formatter/t
     FilterPipeModule,
     SharedModule,
     NgbModule,
-    TimeagoModule.forRoot({
-      intl: TimeagoIntl,
-      formatter: {provide: TimeagoFormatter, useClass: TimeagoVVFFormatter},
-    }),
     NgxsModule.forFeature(
       [
         HomeState,

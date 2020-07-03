@@ -14,7 +14,6 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {SidebarModule} from 'ng-sidebar';
 import {FilterPipeModule} from 'ngx-filter-pipe';
-import {TimeagoCustomFormatter, TimeagoFormatter, TimeagoIntl, TimeagoModule} from 'ngx-timeago';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {NgProgressModule} from '@ngx-progressbar/core';
 import {NgProgressHttpModule} from '@ngx-progressbar/http';
@@ -82,10 +81,6 @@ import {AuthState} from './features/auth/store/auth.state';
         SharedModule,
         NavbarModule,
         SidebarModule.forRoot(),
-        TimeagoModule.forRoot({
-            intl: TimeagoIntl,
-            formatter: { provide: TimeagoFormatter, useClass: TimeagoCustomFormatter },
-        }),
         ToastrModule.forRoot({
             positionClass: 'toast-bottom-center',
             preventDuplicates: true,
