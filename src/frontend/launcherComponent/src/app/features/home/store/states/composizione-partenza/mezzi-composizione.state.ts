@@ -48,8 +48,6 @@ import {
 } from '../../actions/maps/marker.actions';
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
 import { Partenza } from 'src/app/shared/model/partenza.model';
-import { RichiesteState } from '../richieste/richieste.state';
-import { map } from 'rxjs/operators';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SganciamentoMezzoModalComponent } from '../../../composizione-partenza/shared/sganciamento-mezzo-modal/sganciamento-mezzo-modal.component';
 import { ConfermaPartenze } from '../../../composizione-partenza/interface/conferma-partenze-interface';
@@ -61,6 +59,7 @@ import { SquadreComposizioneState } from './squadre-composizione.state';
 import { FilterListaSquadreComposizione, SetListaSquadreComposizione } from '../../actions/composizione-partenza/squadre-composizione.actions';
 import produce from 'immer';
 import { SquadraComposizione } from '../../../composizione-partenza/interface/squadra-composizione-interface';
+import { SintesiRichiesteService } from '../../../../../core/service/lista-richieste-service/lista-richieste.service';
 
 export interface MezziComposizioneStateStateModel {
     allMezziComposizione: MezzoComposizione[];
@@ -132,6 +131,7 @@ export class MezziComposizioneState {
 
     constructor(private store: Store,
                 private _compPartenzaService: CompPartenzaService,
+                private _richiesteService: SintesiRichiesteService,
                 private modalService: NgbModal) {
     }
 
@@ -426,29 +426,21 @@ export class MezziComposizioneState {
     }
 
     @Action(SganciamentoMezzoComposizione)
-    sganciamentoMezzoComposizione({ patchState }: StateContext<MezziComposizioneStateStateModel>, action: SganciamentoMezzoComposizione) {
-        let richiestaDa = {} as SintesiRichiesta;
+    sganciamentoMezzoComposizione({ patchState, dispatch }: StateContext<MezziComposizioneStateStateModel>, action: SganciamentoMezzoComposizione) {
         let partenzaDaSganciare = {} as Partenza;
-        const richiestaById$ = this.store.select(RichiesteState.richiestaById).pipe(map(fn => fn(action.sganciamentoObj.idRichiestaDaSganciare)));
-
-        richiestaById$.subscribe(r => {
-            richiestaDa = r;
-            // tslint:disable-next-line:max-line-length
+        this._richiesteService.getRichiestaById(action.sganciamentoObj.idRichiestaDaSganciare).subscribe((richiestaDa: SintesiRichiesta) => {
             partenzaDaSganciare = richiestaDa.partenzeRichiesta && richiestaDa.partenzeRichiesta.length > 0 ? richiestaDa.partenzeRichiesta.filter(x => x.mezzo.codice === action.sganciamentoObj.idMezzoDaSganciare)[0] : null;
-        });
+            if (richiestaDa && partenzaDaSganciare) {
+                const modalSganciamento = this.modalService.open(SganciamentoMezzoModalComponent, { windowClass: 'xlModal', backdropClass: 'light-blue-backdrop', centered: true });
+                modalSganciamento.componentInstance.icona = { descrizione: 'truck', colore: 'secondary' };
+                modalSganciamento.componentInstance.titolo = 'Sganciamento Mezzo';
+                modalSganciamento.componentInstance.richiestaDa = richiestaDa;
+                modalSganciamento.componentInstance.bottoni = [
+                    { type: 'ko', descrizione: 'Annulla', colore: 'danger' },
+                    { type: 'ok', descrizione: 'Sgancia', colore: 'success' },
+                ];
 
-        if (richiestaDa && partenzaDaSganciare) {
-            const modalSganciamento = this.modalService.open(SganciamentoMezzoModalComponent, { windowClass: 'xlModal', backdropClass: 'light-blue-backdrop', centered: true });
-            modalSganciamento.componentInstance.icona = { descrizione: 'truck', colore: 'secondary' };
-            modalSganciamento.componentInstance.titolo = 'Sganciamento Mezzo';
-            modalSganciamento.componentInstance.richiestaDa = richiestaDa;
-            modalSganciamento.componentInstance.bottoni = [
-                { type: 'ko', descrizione: 'Annulla', colore: 'danger' },
-                { type: 'ok', descrizione: 'Sgancia', colore: 'success' },
-            ];
-
-            modalSganciamento.result.then(
-                (val) => {
+                modalSganciamento.result.then((val) => {
                     switch (val) {
                         case 'ok':
                             const partenzaObj: ConfermaPartenze = {
@@ -461,16 +453,11 @@ export class MezziComposizioneState {
                             this.store.dispatch(new ConfirmPartenze(partenzaObj));
                             break;
                         case 'ko':
-                            console.warn('Sganciamento Annullato');
-                            break;
+                            return;
                     }
-                },
-                (err) => console.error('Modal Sganciamento chiusa senza bottoni. Err ->', err)
-            );
-            console.log('Sganciamento Object', action.sganciamentoObj);
-        } else {
-            console.error('[SganciamentoMezzo] Errore! richiestaDa / partenzaDaSganciare non presente');
-        }
+                });
+            }
+        });
     }
 
     @Action(FilterListaMezziComposizione)
