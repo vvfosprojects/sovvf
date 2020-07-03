@@ -74,7 +74,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             bool PartenzaEsistente = false;
             foreach (var partenza in command.ConfermaPartenze.Partenze)
             {
-                PartenzaEsistente = richiesta.Partenze.Select(x => x.Partenza.Mezzo.Codice.Equals(partenza.Mezzo.Codice) && !x.Partenza.Terminata && !x.Partenza.PartenzaAnnullata).FirstOrDefault();
+                PartenzaEsistente = richiesta.Partenze.Select(x => x.Partenza.Mezzo.Codice.Equals(partenza.Mezzo.Codice) && !x.Partenza.Terminata && !x.Partenza.PartenzaAnnullata && !x.Partenza.Sganciata).FirstOrDefault();
 
                 if (PartenzaEsistente)
                     break;
@@ -113,6 +113,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
 
                 foreach (var partenza in command.ConfermaPartenze.Partenze)
                 {
+                    partenza.Mezzo.Stato = Costanti.MezzoInViaggio;
+                    partenza.Sganciata = false;
                     new ComposizionePartenze(richiesta, DateTime.UtcNow, utente.Id, false)
                     {
                         Partenza = partenza
@@ -125,7 +127,9 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                 command.ConfermaPartenze.richiesta = richiesta;
 
                 var sedeRichiesta = command.ConfermaPartenze.CodiceSede;
-                richiesta.CodRichiesta = _generaCodiceRichiesta.Genera(sedeRichiesta, DateTime.UtcNow.Year);
+
+                if (richiesta.CodRichiesta == null)
+                    richiesta.CodRichiesta = _generaCodiceRichiesta.Genera(sedeRichiesta, DateTime.UtcNow.Year);
 
                 foreach (var partenza in command.ConfermaPartenze.Partenze)
                 {
