@@ -7,3 +7,4 @@
 /src/.idea/
 /src/backendCore/SO115Core
 *.cmd
+/src/backendCore/SO115Core/*.txt
