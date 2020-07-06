@@ -3,8 +3,6 @@ import { MezzoComposizione } from '../../interface/mezzo-composizione-interface'
 import { makeCopy } from '../../../../../shared/helper/function';
 import { COMPOSIZIONEOPTIONS } from '../../../../../core/settings/timeout-composizione';
 import { OFFSET_SYNC_TIME } from '../../../../../core/settings/referral-time';
-import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
-import { ToastrType } from '../../../../../shared/enum/toastr';
 import { RequestRemoveBookMezzoComposizione } from '../../../store/actions/composizione-partenza/mezzi-composizione.actions';
 import { Store } from '@ngxs/store';
 import { ComposizionePartenzaState } from '../../../store/states/composizione-partenza/composizione-partenza.state';
@@ -71,12 +69,8 @@ export class PrenotazioneProgressBarComponent implements OnInit, OnChanges, OnDe
 
                 if (this.currentTimeout < this.option.alertTimeAgo) {
                     if (!alert) {
-                        // console.log('Prenotazione in scadenza');
                         alert = true;
-                        this.store.dispatch(new ShowToastr(
-                            ToastrType.Warning, 'Prenotazione in scadenza',
-                            'La prenotazione del mezzo ' + this.mezzoComp.mezzo.codice + ' sta per scadere.',
-                            this.option.alertTimeAgo, null, true));
+                        // console.log('Prenotazione in scadenza');
                     }
                 }
 

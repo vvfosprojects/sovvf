@@ -267,7 +267,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
     }
 
     boxPartenzaSelezionato(boxPartenza: BoxPartenza) {
-        this.store.dispatch(new RequestSelectBoxPartenza(boxPartenza.id));
+        // this.store.dispatch(new RequestSelectBoxPartenza(boxPartenza.id));
     }
 
     nuovaPartenza() {
