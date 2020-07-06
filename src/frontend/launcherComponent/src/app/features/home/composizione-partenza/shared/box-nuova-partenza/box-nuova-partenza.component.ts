@@ -121,7 +121,7 @@ export class BoxNuovaPartenzaComponent {
             if (this.richiesta.competenze && this.richiesta.competenze.length > 0) {
                 if (this.richiesta.competenze[0].descrizione === distaccamentoMezzo) {
                     result = 'badge-primary';
-                } else if (this.richiesta.competenze[1].descrizione === distaccamentoMezzo) {
+                } else if ( this.richiesta.competenze.length > 0 && this.richiesta.competenze[1] && this.richiesta.competenze[1].descrizione === distaccamentoMezzo) {
                     result = 'badge-info';
                 }
             }
