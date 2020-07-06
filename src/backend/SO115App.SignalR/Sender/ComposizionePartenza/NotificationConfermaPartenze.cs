@@ -131,7 +131,7 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
 
                 if (conferma.ConfermaPartenze.IdRichiestaDaSganciare != null)
                 {
-                    conferma.ConfermaPartenze.Chiamata = sintesiRichieste.LastOrDefault(x => x.Codice == conferma.ConfermaPartenze.IdRichiestaDaSganciare);
+                    conferma.ConfermaPartenze.Chiamata = sintesiRichieste.LastOrDefault(x => x.Codice == conferma.ConfermaPartenze.IdRichiesta);
                     await _notificationHubContext.Clients.Group(sede).SendAsync("ModifyAndNotifySuccess", conferma.ConfermaPartenze);
                 }
 
