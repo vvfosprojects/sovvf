@@ -10,12 +10,12 @@
   <div *ngIf="richiestaDa" class="modal-body">
     <app-sintesi-richiesta [richiesta]="richiestaDa" [fissata]="false" [fissabile]="false" [espanso]="true"
       [gestibile]="false" [modificabile]="false" [espandibile]="false" [listaEventi]="false"
-      [composizionePartenza]="false"></app-sintesi-richiesta>
+      [composizionePartenza]="false" [idDaSganciare]="idDaSganciare" ></app-sintesi-richiesta>
   </div>
   <div class="modal-footer">
-    <button style="min-width:200px" type="button" class="btn btn-outline-{{bottoni[0].colore}}"
+    <button style="min-width:200px" type="button" class="btn btn-outline-{{bottoni[1].colore}}"
       (click)="modal.close(bottoni[0].type)">{{bottoni[0].descrizione}}</button>
-    <button style="min-width:200px" type="button" class="btn btn-{{bottoni[1].colore}}"
+    <button style="min-width:200px" type="button" class="btn btn-{{bottoni[0].colore}}"
       (click)="modal.close(bottoni[1].type)">{{bottoni[1].descrizione}}</button>
   </div>
 </div>
