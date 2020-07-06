@@ -18,29 +18,36 @@ ngb-accordion {
 
 .dropdownAnnulla {
   border-color: #dc3545 !important;
+
+  button {
+    &:hover {
+      background-color: #dc3545 !important;
+      color: white;
+    }
+  }
 }
 
-.dropdownAnnulla button:hover {
-  background-color: #dc3545 !important;
-  color: white;
-}
 
 .dropdownConferma {
   border-color: #28a745 !important;
-}
 
-.dropdownConferma button:hover {
-  background-color: #28a745 !important;
-  color: white;
+  button {
+    &:hover {
+      background-color: #28a745 !important;
+      color: white;
+    }
+  }
 }
 
 .dropdownTipologiaRichiedente {
   border-color: #007bff !important;
-}
 
-.dropdownTipologiaRichiedente button:hover {
-  background-color: #007bff !important;
-  color: white;
+  button {
+    &:hover {
+      background-color: #007bff !important;
+      color: white;
+    }
+  }
 }
 
 .dropdown-menu {
@@ -64,4 +71,48 @@ ngb-accordion {
 
 .bad {
   color: #c23535;
+}
+
+
+/*
+  ngx-chips
+*/
+tag-input {
+
+  .ng2-tag-input {
+    border: 1px solid #ced4da !important;
+    border-radius: 0.25rem;
+    max-height: 110px;
+    width: 100%;
+    overflow: hidden;
+    padding: 0 !important;
+
+    &.ng2-tag-input--focused {
+      border-color: #80bdff !important;
+      outline: 0;
+      box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    }
+
+    & > div {
+      overflow: auto;
+      box-sizing: content-box;
+      height: 99%;
+      max-height: 100px;
+      padding-right: 17px;
+      padding-left: 10px;
+      width: 100%;
+
+      tag {
+        margin: .2rem .3rem .1rem 0 !important;
+      }
+    }
+
+    tag-input-form {
+      form {
+        input {
+          color: #495057;
+        }
+      }
+    }
+  }
 }
