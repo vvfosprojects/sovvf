@@ -7,3 +7,5 @@
 /src/.idea/
 /src/backendCore/SO115Core
 *.cmd
+/backend/SO115App.API/*.txt
+/src/backend/SO115App.API/*.txt
