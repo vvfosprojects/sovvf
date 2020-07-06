@@ -15,6 +15,7 @@ import { Observable } from 'rxjs';
 })
 export class ListaPartenzeComponent {
 
+    @Input() idDaSganciare: '';
     @Input() partenze: Partenza[];
     @Input() statoRichiesta: StatoRichiesta;
     @Input() inGestione: boolean;

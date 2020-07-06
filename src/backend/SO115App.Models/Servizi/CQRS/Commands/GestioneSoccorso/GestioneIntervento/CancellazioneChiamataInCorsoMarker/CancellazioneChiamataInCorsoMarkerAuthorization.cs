@@ -34,33 +34,22 @@ namespace DomainModel.CQRS.Commands.ChiamataInCorsoMarker
     {
         private readonly IPrincipal _currentUser;
         private readonly IFindUserByUsername _findUserByUsername;
-        private readonly IGetAutorizzazioni _getAutorizzazioni;
-        private readonly IGetCompetenzeByCoordinateIntervento _getCompetenze;
 
-        public CancellazioneChiamataInCorsoMarkerAuthorization(IPrincipal currentUser, IFindUserByUsername findUserByUsername,
-            IGetAutorizzazioni getAutorizzazioni, IGetCompetenzeByCoordinateIntervento getCompetenze)
+        public CancellazioneChiamataInCorsoMarkerAuthorization(IPrincipal currentUser, IFindUserByUsername findUserByUsername)
         {
             _currentUser = currentUser;
             _findUserByUsername = findUserByUsername;
-            _getAutorizzazioni = getAutorizzazioni;
-            _getCompetenze = getCompetenze;
         }
 
         public IEnumerable<AuthorizationResult> Authorize(CancellazioneChiamataInCorsoMarkerCommand command)
         {
             var username = _currentUser.Identity.Name;
             var user = _findUserByUsername.FindUserByUs(username);
-            var Competenze = _getCompetenze.GetCompetenzeByCoordinateIntervento(command.ChiamataInCorso.Localita.Coordinate).ToHashSet().ToList();
 
             if (_currentUser.Identity.IsAuthenticated)
             {
                 if (user == null)
                     yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
-                else
-                {
-                    if (!_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, Competenze[0], Costanti.GestoreChiamate))
-                        yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
-                }
             }
             else
                 yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);

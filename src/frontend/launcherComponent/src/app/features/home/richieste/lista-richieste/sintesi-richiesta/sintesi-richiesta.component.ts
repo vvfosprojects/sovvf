@@ -18,6 +18,7 @@ import { EliminaPartenzaModalComponent } from '../../../../../shared';
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SintesiRichiestaComponent implements OnChanges {
+    @Input() idDaSganciare = '';
     @Input() richiesta: SintesiRichiesta;
     @Input() fissata: boolean;
     @Input() fissabile: boolean;
