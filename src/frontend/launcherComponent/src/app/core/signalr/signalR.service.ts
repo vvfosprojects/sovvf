@@ -261,29 +261,15 @@ export class SignalRService {
                 } else if (compMode === Composizione.Veloce) {
                     this.store.dispatch(new UpdateMezzoPreAccoppiatoComposizione(data.codiceMezzo));
                 }
-
-                // Todo: manca la data del server, da sistemare!!!
-                let dataScadenzaSelezione = new Date(data.istanteScadenzaSelezione).getHours() + ':';
-                dataScadenzaSelezione += new Date(data.istanteScadenzaSelezione).getMinutes() + ':';
-                dataScadenzaSelezione += new Date(data.istanteScadenzaSelezione).getSeconds();
-                const idRichiesta = data.codiceRichiesta;
-                this.store.dispatch(new ShowToastr(
-                    ToastrType.Info,
-                    'Mezzo Prenotato',
-                    'Mezzo ' + data.codiceMezzo + ' prenotato fino alle ' + dataScadenzaSelezione + ' sulla richiesta ' + idRichiesta,
-                    5)
-                );
                 console.log('Mezzo prenotato signalr', data);
             } else if (data.sbloccaMezzo) {
                 const compMode = this.store.selectSnapshot(ComposizionePartenzaState).composizioneMode;
                 if (compMode === Composizione.Avanzata) {
                     this.store.dispatch(new RemoveBookMezzoComposizione(data.codiceMezzo));
                     this.store.dispatch(new UpdateMezzoComposizioneScadenzaByCodiceMezzo(data.codiceMezzo, null));
-                    this.store.dispatch(new RemoveBoxPartenzaByMezzoId(data.codiceMezzo));
                 } else if (compMode === Composizione.Veloce) {
                     this.store.dispatch(new UpdateMezzoPreAccoppiatoComposizione(data.codiceMezzo));
                 }
-                this.store.dispatch(new ShowToastr(ToastrType.Info, 'Prenotazione Scaduta', 'La prenotazione del mezzo ' + data.codiceMezzo + ' è scaduta.', 5));
                 console.log('Mezzo remove prenotato signalr', data);
             }
         });
@@ -332,7 +318,7 @@ export class SignalRService {
         this.hubNotification.onclose(() => {
             console.log('Hub Subscription Disconnesso');
             this.connectionEstablished.next(false);
-            setTimeout( () => {
+            setTimeout(() => {
                 this.store.dispatch(new SignalRHubDisconnesso());
             }, 100);
             this.startSubscriptionConnection();

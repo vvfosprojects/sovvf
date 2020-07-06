@@ -140,9 +140,14 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
             foreach (Mezzo mezzo in listaMezzi)
             {
                 var ListaStatoOperativoMezzo = _getStatoMezzi.Get(mezzo.Distaccamento.Codice, mezzo.Codice);
+                //vince mongo
                 if (ListaStatoOperativoMezzo.Count > 0)
                 {
                     mezzo.Stato = ListaStatoOperativoMezzo.Find(x => x.CodiceMezzo.Equals(mezzo.Codice)).StatoOperativo;
+                }
+                else
+                {
+                    mezzo.Stato = Costanti.MezzoInSede;
                 }
             }
 

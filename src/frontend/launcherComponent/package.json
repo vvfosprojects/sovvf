@@ -17,7 +17,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "avvia": "concurrently \"npm:devel-*\"",
+    "avvia": "concurrently \"npm:devel-fake-cas\" \"npm:devel-start\"",
     "avvia-no-livereload": "concurrently \"npm:devel-fake-cas\" \"npm:devel-start-no-livereload\"",
     "lite-server": "lite-server --baseDir=\"./dist/SO115\"",
     "watch-serve": "ng build --watch --configuration=production-watch"
@@ -61,7 +61,7 @@
     "lodash": "^4.17.14",
     "moment": "^2.24.0",
     "ng-sidebar": "^8.0.0",
-    "ngx-chips": "^2.1.0",
+    "ngx-chips": "1.9.8",
     "ngx-clipboard": "^12.0.0",
     "ngx-filter-pipe": "^2.1.2",
     "ngx-google-places-autocomplete": "^2.0.4",
