@@ -16,12 +16,15 @@ import { ConfirmModalComponent, RichiestaDuplicataModalComponent } from '../../.
 import { UiSwitchModule } from 'ngx-ui-switch';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { NgxsFormPluginModule } from '@ngxs/form-plugin';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {TagInputModule} from 'ngx-chips';
 
 @NgModule({
     imports: [
         CommonModule,
         NgSelectModule,
         FormsModule,
+        TagInputModule,
         GooglePlaceModule,
         NgbModule,
         ClipboardModule,

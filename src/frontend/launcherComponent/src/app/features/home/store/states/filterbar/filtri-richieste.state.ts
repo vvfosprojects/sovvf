@@ -173,11 +173,15 @@ export class FiltriRichiesteState {
     }
 
     @Action(ResetFiltriSelezionatiRichieste)
-    resetFiltriSelezionati({ setState, dispatch }: StateContext<FiltriRichiesteStateModel>) {
+    resetFiltriSelezionati({ setState, dispatch }: StateContext<FiltriRichiesteStateModel>, action: ResetFiltriSelezionatiRichieste) {
         setState(filtriRichiesteStateDefaults);
         dispatch([
-            new GetFiltriRichieste(),
-            new GetListaRichieste()
+            new GetFiltriRichieste()
         ]);
+        if (!action.options || !action.options.preventGetList) {
+            dispatch([
+                new GetListaRichieste()
+            ]);
+        }
     }
 }

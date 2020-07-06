@@ -8,6 +8,7 @@ import { TipoTerreno } from '../../../../shared/model/tipo-terreno';
 import { TipoTerrenoMqHa } from '../../../../shared/interface/tipo-terreno-mq-ha';
 import { AttivitaUtente } from '../../../../shared/model/attivita-utente.model';
 import { round1decimal } from '../../../../shared/helper/function';
+import { Mezzo } from 'src/app/shared/model/mezzo.model';
 
 export class HelperSintesiRichiesta {
 
@@ -23,7 +24,6 @@ export class HelperSintesiRichiesta {
             id: string;
             nome: string;
         }
-
         const nomiSquadre: string[] = [];
         const squadre: SquadraPartenza[] = [];
 
@@ -46,6 +46,19 @@ export class HelperSintesiRichiesta {
         nomiSquadre.push(...getUnique(squadre, 'id').map((squadra: SquadraPartenza) => squadra.nome));
 
         return nomiSquadre;
+    }
+    
+    /* Restituisce il mezzo */
+    mezziRichiesta(richiesta: SintesiRichiesta): Mezzo[] {
+        const mezzi = [];
+        if (richiesta.partenzeRichiesta) {
+            richiesta.partenzeRichiesta.forEach((partenza: Partenza) => {
+                if (partenza.mezzo && !partenza.sganciata && !partenza.partenzaAnnullata && !partenza.terminata) {
+                    mezzi.push(partenza.mezzo);
+                }
+            });
+        }
+        return mezzi;
     }
 
     /* Restituisce i nomi dei mezzi  */

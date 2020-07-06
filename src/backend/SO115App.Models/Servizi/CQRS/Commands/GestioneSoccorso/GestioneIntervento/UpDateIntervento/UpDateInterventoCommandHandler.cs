@@ -71,6 +71,7 @@ namespace DomainModel.CQRS.Commands.UpDateIntervento
             richiesta.UtPresaInCarico = utentiPresaInCarico;
             richiesta.NotePrivate = command.Chiamata.NotePrivate;
             richiesta.NotePubbliche = command.Chiamata.NotePubbliche;
+            richiesta.Tags = command.Chiamata.Tags;
 
             if (command.Chiamata.Tags != null)
             {

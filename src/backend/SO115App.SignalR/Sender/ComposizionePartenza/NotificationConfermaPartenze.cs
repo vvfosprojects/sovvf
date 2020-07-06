@@ -34,6 +34,9 @@ using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.SignalR.Utility;
 using System.Data;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
+using System.Collections.Generic;
+using SO115App.API.Models.Classi.Condivise;
 
 namespace SO115App.SignalR.Sender.ComposizionePartenza
 {
@@ -50,6 +53,7 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
         private readonly MapperRichiestaAssistenzaSuSintesi _mapperSintesi;
         private readonly IGetRichiestaById _getRichiestaById;
         private readonly GetGerarchiaToSend _getGerarchiaToSend;
+        private readonly IGetDistaccamentoByCodiceSedeUC _getDistaccamentoUC;
 
         public NotificationConfermaPartenze(IHubContext<NotificationHub> notificationHubContext,
             IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> boxRichiestehandler,
@@ -59,9 +63,10 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
             IMapper mapper,
             IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> sintesiRichiesteHandler,
             IGetTipologieByCodice getTipologieByCodice, MapperRichiestaAssistenzaSuSintesi mapperSintesi,
-            IGetRichiestaById getRichiestaById, GetGerarchiaToSend getGerarchiaToSend)
+            IGetRichiestaById getRichiestaById, GetGerarchiaToSend getGerarchiaToSend, IGetDistaccamentoByCodiceSedeUC getDistaccamentoUC)
         {
             _getGerarchiaToSend = getGerarchiaToSend;
+            _getDistaccamentoUC = getDistaccamentoUC;
             _notificationHubContext = notificationHubContext;
             _boxRichiestehandler = boxRichiestehandler;
             _boxMezzihandler = boxMezzihandler;
@@ -72,6 +77,7 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
             _getTipologieByCodice = getTipologieByCodice;
             _mapperSintesi = mapperSintesi;
             _getRichiestaById = getRichiestaById;
+            _getDistaccamentoUC = getDistaccamentoUC;
         }
 
         public async Task SendNotification(ConfermaPartenzeCommand conferma)
@@ -80,6 +86,7 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
 
             var richiesta = _getRichiestaById.GetByCodice(conferma.ConfermaPartenze.IdRichiesta);
             var sintesi = _mapperSintesi.Map(richiesta);
+            sintesi.Competenze = MapCompetenze(richiesta.CodUOCompetenza);
             conferma.ConfermaPartenze.Chiamata = sintesi;
 
             //Sedi gerarchicamente superiori alla richiesta che dovanno ricevere la notifica
@@ -131,7 +138,10 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
 
                 if (conferma.ConfermaPartenze.IdRichiestaDaSganciare != null)
                 {
-                    conferma.ConfermaPartenze.Chiamata = sintesiRichieste.LastOrDefault(x => x.Codice == conferma.ConfermaPartenze.IdRichiestaDaSganciare);
+                    var richiestaSganciata = _getRichiestaById.GetByCodice(conferma.ConfermaPartenze.IdRichiestaDaSganciare);
+                    var sintesiSganciata = _mapperSintesi.Map(richiesta);
+                    sintesiSganciata.Competenze = MapCompetenze(richiesta.CodUOCompetenza);
+                    conferma.ConfermaPartenze.Chiamata = sintesi;
                     await _notificationHubContext.Clients.Group(sede).SendAsync("ModifyAndNotifySuccess", conferma.ConfermaPartenze);
                 }
 
@@ -141,6 +151,25 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
                 await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxPersonale", boxPersonale);
                 await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetRichiestaMarker", listaSintesiMarker.LastOrDefault(marker => marker.CodiceRichiesta == sintesi.CodiceRichiesta));
             }
+        }
+
+        private List<Sede> MapCompetenze(string[] codUOCompetenza)
+        {
+            var listaSedi = new List<Sede>();
+            int i = 1;
+            foreach (var codCompetenza in codUOCompetenza)
+            {
+                if (i <= 3)
+                {
+                    var Distaccamento = _getDistaccamentoUC.Get(codCompetenza).Result;
+                    Sede sede = Distaccamento == null ? null : new Sede(codCompetenza, Distaccamento.DescDistaccamento, Distaccamento.Indirizzo, Distaccamento.Coordinate, "", "", "", "", "");
+                    listaSedi.Add(sede);
+                }
+
+                i++;
+            }
+
+            return listaSedi;
         }
     }
 }
