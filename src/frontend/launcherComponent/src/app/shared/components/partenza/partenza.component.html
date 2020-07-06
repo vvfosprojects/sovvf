@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-8 my-1 pr-1">
-        <app-mezzo [mezzo]="partenza.mezzo" [mostraIndicatori]="true" [mostraNotifiche]="true"
+        <app-mezzo [mezzo]="partenza.mezzo" [mostraIndicatori]="false" [mostraNotifiche]="false"
                    [actionsAttive]="inGestione && statoRichiesta !== statoRichiestaEnum.Chiusa"
                    (actionMezzo)="onActionMezzo($event)"></app-mezzo>
         <span *ngIf="!partenza.mezzo" class="p-2"> Nessun mezzo</span>
