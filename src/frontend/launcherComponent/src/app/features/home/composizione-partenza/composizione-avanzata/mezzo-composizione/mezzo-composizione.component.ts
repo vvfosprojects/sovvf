@@ -75,6 +75,7 @@ export class MezzoComposizioneComponent implements OnInit {
             const sganciamentoObj = {} as SganciamentoInterface;
             sganciamentoObj.idMezzoDaSganciare = this.mezzoComp.mezzo.codice;
             sganciamentoObj.idRichiestaDaSganciare = this.mezzoComp.mezzo.idRichiesta;
+            sganciamentoObj.descrizione = this.mezzoComp.mezzo.descrizione;
             this.sganciamento.emit(sganciamentoObj);
             // console.log('mezzoComp', this.mezzoComp);
         } else {

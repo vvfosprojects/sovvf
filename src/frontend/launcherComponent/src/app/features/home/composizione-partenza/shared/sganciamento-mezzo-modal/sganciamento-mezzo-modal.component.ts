@@ -13,6 +13,7 @@ export class SganciamentoMezzoModalComponent implements OnInit {
   @Input() titolo: string;
   @Input() bottoni: any[];
   @Input() richiestaDa: SintesiRichiesta;
+  @Input() idDaSganciare = '';
 
   constructor(public modal: NgbActiveModal) {
   }

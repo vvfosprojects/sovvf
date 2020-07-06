@@ -124,7 +124,9 @@ export class SquadreComposizioneState {
                 idSquadreSelezionate: append([action.squadraComp.squadra.id])
             })
         );
-        this.store.dispatch(new AddSquadraBoxPartenza(action.squadraComp));
+        if (!boxPartenzaSelezionato.squadraComposizione.includes(action.squadraComp)) {
+            this.store.dispatch(new AddSquadraBoxPartenza(action.squadraComp));
+        }
     }
 
     @Action(UnselectSquadraComposizione)
