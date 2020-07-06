@@ -1,3 +1,5 @@
 .sganciare-mezzo-color {
     border: 2px solid red;
+    background-image: repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255, 255, 255, 0.5) 35px, rgba(255, 255, 255, 0.5) 70px);
+    background-color: rgba(231, 113, 110, 0.2) !important;
 }
