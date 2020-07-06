@@ -17,7 +17,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "avvia": "concurrently \"npm:devel-*\"",
+    "avvia": "concurrently \"npm:devel-fake-cas\" \"npm:devel-start\"",
     "avvia-no-livereload": "concurrently \"npm:devel-fake-cas\" \"npm:devel-start-no-livereload\"",
     "lite-server": "lite-server --baseDir=\"./dist/SO115\"",
     "watch-serve": "ng build --watch --configuration=production-watch"
