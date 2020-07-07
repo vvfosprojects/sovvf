@@ -97,7 +97,7 @@
     "@types/node": "6.0.60",
     "angular-2-dropdown-multiselect": "1.0.7",
     "codelyzer": "2.0.0",
-    "electron": "1.6.2",
+    "electron": "7.2.4",
     "gh-pages": "0.12.0",
     "jasmine-core": "2.5.2",
     "jasmine-spec-reporter": "3.2.0",
