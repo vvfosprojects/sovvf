@@ -1,6 +1,6 @@
 <div>
   <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title"><i
+    <h4 class="modal-title font-weight-bolder text-uppercase" id="modal-basic-title"><i
         class="fa fa-fw fa-{{icona.descrizione}} text-{{icona.colore}}"></i> {{titolo}}</h4>
     <button type="button" class="btn btn-light close" style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px"
       (click)="modal.dismiss('cross')">
@@ -13,9 +13,9 @@
       [composizionePartenza]="false" [idDaSganciare]="idDaSganciare" ></app-sintesi-richiesta>
   </div>
   <div class="modal-footer">
-    <button style="min-width:200px" type="button" class="btn btn-outline-{{bottoni[1].colore}}"
+    <button style="min-width:126px; font-weight: 600;" type="button" class="btn btn-lg btn-secondary text-uppercase"
       (click)="modal.close(bottoni[0].type)">{{bottoni[0].descrizione}}</button>
-    <button style="min-width:200px" type="button" class="btn btn-{{bottoni[0].colore}}"
+      <button style="min-width:142px; font-weight: 600;" type="button" class="btn btn-lg btn-danger text-uppercase"
       (click)="modal.close(bottoni[1].type)">{{bottoni[1].descrizione}}</button>
   </div>
 </div>
