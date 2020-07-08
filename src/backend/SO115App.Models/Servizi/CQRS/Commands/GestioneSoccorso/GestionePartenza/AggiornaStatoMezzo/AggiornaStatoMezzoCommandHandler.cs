@@ -18,7 +18,9 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Commands;
+using SO115App.API.Models.Classi.Soccorso.Eventi;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
+using SO115App.API.Models.Classi.Soccorso.StatiRichiesta;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
@@ -107,7 +109,9 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 }
 
                 if (_mezziTuttiInSede)
+                {
                     new PartenzaRientrata(richiesta, command.IdMezzo, DateTime.UtcNow, richiesta.CodOperatore);
+                }
             }
             else if (command.StatoMezzo == Costanti.MezzoInViaggio)
             {
@@ -118,6 +122,14 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                         composizione.Partenza.Mezzo.Stato = Costanti.MezzoInViaggio;
                         composizione.Partenza.Mezzo.IdRichiesta = richiesta.CodRichiesta;
                     }
+                }
+            }
+
+            if (_mezziTuttiInSede)
+            {
+                if (richiesta.StatoRichiesta is Sospesa)
+                {
+                    new ChiusuraRichiesta("", richiesta, DateTime.UtcNow, richiesta.CodOperatore);
                 }
             }
 
