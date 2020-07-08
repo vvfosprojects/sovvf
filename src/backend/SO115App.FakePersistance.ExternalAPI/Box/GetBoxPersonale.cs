@@ -18,7 +18,6 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Boxes;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.Models.Servizi.Infrastruttura.Box;

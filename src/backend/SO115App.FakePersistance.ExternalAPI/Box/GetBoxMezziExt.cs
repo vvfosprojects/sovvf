@@ -19,7 +19,6 @@
 //-----------------------------------------------------------------------
 
 using SO115App.API.Models.Classi.Boxes;
-using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Box;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
