@@ -99,7 +99,8 @@ namespace DomainModel.CQRS.Commands.AddIntervento
                 NotePrivate = command.Chiamata.NotePrivate,
                 CodUOCompetenza = Competenze.ToArray(),
                 CodOperatore = command.CodUtente,
-                CodSOCompetente = Competenze.ToArray()[0]
+                CodSOCompetente = command.CodiceSede,
+                CodSOAllertate = Competenze.ToArray().ToHashSet()
             };
 
             if (command.Chiamata.Stato == Costanti.RichiestaChiusa)
