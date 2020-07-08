@@ -33,6 +33,7 @@ namespace SO115App.Models.Classi.Utility
         public static string RichiestaEsistente = "Risulta già presente una richiesta nelle vicinanze di quella che si sta inserendo. Si vuole procedere ugualmente con l'inserimento?";
 
         public static string PartenzaGiaPresente = "Risulta già una partenza con il mezzo selezionato. Comporre una nuova partenza.";
+        public static string CoordinateErrate = "Le coordinate inserite non risultano corrette. Si prega di reinserirle.";
 
         public static string PresenteNomeNonCognome = "E' presente il nome del richiedente ma non il suo cognome";
         public static string NominativoNonPresente = "Il nominativo del richiedente non è presente";
