@@ -62,7 +62,7 @@ export class PermessiService {
         }
     }
 
-    checkUserPermissionRichiesta(feature: PermissionFeatures, codUOCompetenza: string[]) {
+    checkUserPermissionRichiesta(feature: PermissionFeatures, codUOCompetenza: string[], codSOCompetente: string) {
         const featureIndex = searchFeatureIndex(this.permessi, feature);
         if (this.ruoli && this.ruoli && this.ruoli.length > 0 && this.permessi && featureIndex !== null) {
             if (checkRuoliUtente(this.ruoli, this.permessi, featureIndex)) {
@@ -74,7 +74,7 @@ export class PermessiService {
         function checkRuoliUtente(ruoli, permessi, index) {
             let count = 0;
             ruoli.forEach((ruolo: Ruolo) => {
-                if (checkSede(ruolo, codUOCompetenza) && permessi[index].roles.indexOf(ruolo.descrizione) !== -1) {
+                if (checkSede(ruolo, codUOCompetenza, codSOCompetente) && permessi[index].roles.indexOf(ruolo.descrizione) !== -1) {
                     count++;
                 }
             });
@@ -91,7 +91,7 @@ export class PermessiService {
             return index;
         }
 
-        function checkSede(ruolo, codUOCompetenzaRef) {
+        function checkSede(ruolo, codUOCompetenzaRef, codSOCompetenteRef) {
             let count = 0;
             if (codUOCompetenzaRef) {
                 codUOCompetenzaRef.forEach((codUo) => {
@@ -99,6 +99,9 @@ export class PermessiService {
                         count++;
                     }
                 });
+            }
+            if (count === 0 && ruolo.codSede === codSOCompetenteRef) {
+                count++;
             }
             return count > 0;
         }
