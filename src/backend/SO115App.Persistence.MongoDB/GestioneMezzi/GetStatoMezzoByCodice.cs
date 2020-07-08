@@ -51,7 +51,8 @@ namespace SO115App.Persistence.MongoDB.GestioneMezzi
             }
             else
             {
-                var listaMezziPrenotati = _dbContext.StatoMezzoCollection.Find(Builders<StatoOperativoMezzo>.Filter.And(Builders<StatoOperativoMezzo>.Filter.In(x => x.CodiceSede, pinNodi.Select(y => y.Codice)), Builders<StatoOperativoMezzo>.Filter.Eq(x => x.CodiceMezzo, codiceMezzo))).ToList();
+                var listaMezziPrenotati = _dbContext.StatoMezzoCollection.Find(Builders<StatoOperativoMezzo>.Filter.Eq(x => x.CodiceMezzo, codiceMezzo)).ToList();
+
                 foreach (var mezzo in listaMezziPrenotati)
                 {
                     if (mezzo.IstantePrenotazione != null)
