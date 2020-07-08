@@ -51,11 +51,12 @@ export class MezzoComposizioneComponent implements OnInit {
     }
 
     sganciamentoCheck() {
-    this.sganciamentoDisabilitato = 
-        this.richiesta.partenzeRichiesta.find( e => {
+    if (this.richiesta && this.richiesta.partenzeRichiesta && this.richiesta.partenzeRichiesta.length > 0) {
+        this.sganciamentoDisabilitato = this.richiesta.partenzeRichiesta.find( e => {
             return e.mezzo.descrizione ===  this.mezzoComp.mezzo.descrizione &&
                    !e.sganciata && !e.terminata && !e.partenzaAnnullata;
         }) ? true : false;
+     }    
     }
 
     // Events
