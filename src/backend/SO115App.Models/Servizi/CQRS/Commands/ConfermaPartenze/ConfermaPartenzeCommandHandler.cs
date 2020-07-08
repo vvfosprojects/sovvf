@@ -76,7 +76,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
 
             foreach (var partenza in command.ConfermaPartenze.Partenze)
             {
-                if (_getStatoMezzi.Get(command.ConfermaPartenze.CodiceSede, partenza.Mezzo.Codice).Count > 0)
+                if (_getStatoMezzi.Get(command.ConfermaPartenze.CodiceSede, partenza.Mezzo.Codice).Count > 0 && command.ConfermaPartenze.IdRichiestaDaSganciare == null)
                     throw new Exception(Costanti.MezzoErroreGiaOccupato);
             }
 
