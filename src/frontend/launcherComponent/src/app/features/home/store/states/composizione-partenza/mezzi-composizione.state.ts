@@ -435,6 +435,7 @@ export class MezziComposizioneState {
                 modalSganciamento.componentInstance.icona = { descrizione: 'truck', colore: 'secondary' };
                 modalSganciamento.componentInstance.titolo = 'Sganciamento Mezzo';
                 modalSganciamento.componentInstance.richiestaDa = richiestaDa;
+                modalSganciamento.componentInstance.idDaSganciare = action.sganciamentoObj.descrizione;
                 modalSganciamento.componentInstance.bottoni = [
                     { type: 'ko', descrizione: 'Annulla', colore: 'danger' },
                     { type: 'ok', descrizione: 'Sgancia', colore: 'success' },

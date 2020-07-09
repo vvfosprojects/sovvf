@@ -44,7 +44,11 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
     @Select(ComposizionePartenzaState.filtriAffini) filtriAffini$: Observable<any>;
     @Select(ComposizionePartenzaState.richiestaComposizione) richiestaComposizione$: Observable<SintesiRichiesta>;
     @Select(ComposizionePartenzaState.loadingInvioPartenza) loadingInvioPartenza$: Observable<boolean>;
+    @Select(ComposizionePartenzaState.loadingListe) loadingListe$: Observable<boolean>;
+    loadingListe: boolean;
+
     private subscription = new Subscription();
+
     richiesta: SintesiRichiesta;
     prevStateBoxClick: BoxClickStateModel;
     methods = new HelperSintesiRichiesta;
@@ -57,6 +61,11 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
                 this.richiesta = r;
                 this.disablePrenota = !(r && r.stato !== StatoRichiesta.Chiusa);
                 this.prenotato = this._checkPrenotato(r);
+            })
+        );
+        this.subscription.add(
+            this.loadingListe$.subscribe((loading: boolean) => {
+                this.loadingListe = loading;
             })
         );
     }

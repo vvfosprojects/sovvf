@@ -28,7 +28,7 @@
         </div>
         <div class="col-2 text-right">
             <i *ngIf="itemBloccato" class="fa fa-lg fa-lock" (click)="onSganciamento(); $event.stopPropagation()"
-               ngbTooltip="Sganciamento mezzo"></i>
+               ngbTooltip="Sganciamento mezzo"  [class.sganciamento-disabilitato]="sganciamentoDisabilitato"></i>
         </div>
     </div>
     <app-prenotazione-progress-bar *ngIf="itemPrenotato && mezzoComp.istanteScadenzaSelezione" [mezzoComp]="mezzoComp"

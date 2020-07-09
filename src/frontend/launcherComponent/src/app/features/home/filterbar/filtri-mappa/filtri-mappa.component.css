@@ -21,3 +21,8 @@
 .icon-sedi:before {
     background-image: url('../../../../../assets/img/filtro-markers/sedi.png');
 }
+
+.loading-prevent-click {
+    pointer-events: none;
+    opacity: 0.3;
+}

@@ -11,6 +11,7 @@ import { StatoRichiesta } from '../../enum/stato-richiesta.enum';
 })
 export class PartenzaComponent {
 
+    @Input() idDaSganciare: '';
     @Input() partenza: Partenza;
     @Input() inGestione: boolean;
     @Input() statoRichiesta: StatoRichiesta;

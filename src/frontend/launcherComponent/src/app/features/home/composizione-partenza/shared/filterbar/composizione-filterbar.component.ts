@@ -23,6 +23,7 @@ import { iconaStatiClass } from '../functions/composizione-functions';
 export class ComposizioneFilterbarComponent {
 
     @Input() filtri: any;
+    @Input() disableComposizioneMode: boolean;
 
     @Select(ViewComponentState.composizioneMode) composizioneMode$: Observable<Composizione>;
 

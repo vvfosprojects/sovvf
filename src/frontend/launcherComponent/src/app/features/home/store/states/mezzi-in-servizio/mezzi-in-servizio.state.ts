@@ -129,17 +129,19 @@ export class MezziInServizioState {
     filterMezziInServizio({ getState, patchState }: StateContext<MezziInServizioStateModel>) {
         const state = getState();
         const mezziInServizio = makeCopy(state.mezziInServizio) as MezzoInServizio[];
-        const filtriMezziInServizio = makeCopy(state.filtriMezziInServizio) as VoceFiltro[];
-        const descFiltriMezziInServizio = filtriMezziInServizio.filter(f => f.selezionato).map(f => f.descrizione);
-        const newArrayMezzi = mezziInServizio.filter((m: MezzoInServizio) => descFiltriMezziInServizio.includes(m.mezzo.mezzo.stato));
-        if (filtriMezziInServizio.filter(f => f.selezionato).length > 0) {
-            patchState({
-                mezziInServizioFiltered: newArrayMezzi
-            });
-        } else {
-            patchState({
-                mezziInServizioFiltered: mezziInServizio
-            });
+        if (mezziInServizio && mezziInServizio.length > 0) {
+            const filtriMezziInServizio = makeCopy(state.filtriMezziInServizio) as VoceFiltro[];
+            const descFiltriMezziInServizio = filtriMezziInServizio.filter(f => f.selezionato).map(f => f.descrizione);
+            const newArrayMezzi = mezziInServizio.filter((m: MezzoInServizio) => descFiltriMezziInServizio.includes(m.mezzo.mezzo.stato));
+            if (filtriMezziInServizio.filter(f => f.selezionato).length > 0) {
+                patchState({
+                    mezziInServizioFiltered: newArrayMezzi
+                });
+            } else {
+                patchState({
+                    mezziInServizioFiltered: mezziInServizio
+                });
+            }
         }
     }
 

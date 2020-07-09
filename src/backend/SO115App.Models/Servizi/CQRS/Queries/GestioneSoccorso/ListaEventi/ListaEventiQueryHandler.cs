@@ -28,6 +28,7 @@ using SO115App.Models.Servizi.CustomMapper;
 using SO115App.Models.Servizi.Infrastruttura.GetListaEventi;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
 {
@@ -95,7 +96,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
 
             return new ListaEventiResult()
             {
-                Eventi = eventiMapper
+                Eventi = eventiMapper.OrderByDescending(x => x.IstanteEvento).ToList()
             };
         }
 

@@ -50,19 +50,22 @@ namespace DomainModel.CQRS.Commands.UpDateStatoRichiesta
             {
                 foreach (var composizione in richiesta.Partenze)
                 {
-                    if (!composizione.Partenza.Mezzo.Stato.Equals(Costanti.MezzoInRientro) && !composizione.Partenza.Mezzo.Stato.Equals(Costanti.MezzoInSede))
+                    if (!composizione.Partenza.Sganciata && !composizione.Partenza.PartenzaAnnullata)
                     {
-                        if (!composizione.Partenza.Mezzo.Stato.Equals(Costanti.MezzoInSede) || !composizione.Partenza.Mezzo.Stato.Equals(Costanti.MezzoRientrato))
-                            composizione.Partenza.Mezzo.Stato = Costanti.MezzoInRientro;
+                        if (!composizione.Partenza.Mezzo.Stato.Equals(Costanti.MezzoInRientro) && !composizione.Partenza.Mezzo.Stato.Equals(Costanti.MezzoInSede))
+                        {
+                            if (!composizione.Partenza.Mezzo.Stato.Equals(Costanti.MezzoInSede) || !composizione.Partenza.Mezzo.Stato.Equals(Costanti.MezzoRientrato))
+                                composizione.Partenza.Mezzo.Stato = Costanti.MezzoInRientro;
 
-                        composizione.Partenza.Mezzo.IdRichiesta = null;
+                            composizione.Partenza.Mezzo.IdRichiesta = null;
 
-                        AggiornaStatoMezzoCommand statoMezzo = new AggiornaStatoMezzoCommand();
-                        statoMezzo.CodiceSede = command.CodiceSede;
-                        statoMezzo.IdMezzo = composizione.Partenza.Mezzo.Codice;
-                        statoMezzo.Richiesta = richiesta;
-                        statoMezzo.StatoMezzo = Costanti.MezzoInSede;
-                        _upDatePartenza.Update(statoMezzo);
+                            AggiornaStatoMezzoCommand statoMezzo = new AggiornaStatoMezzoCommand();
+                            statoMezzo.CodiceSede = command.CodiceSede;
+                            statoMezzo.IdMezzo = composizione.Partenza.Mezzo.Codice;
+                            statoMezzo.Richiesta = richiesta;
+                            statoMezzo.StatoMezzo = Costanti.MezzoInRientro;
+                            _upDatePartenza.Update(statoMezzo);
+                        }
                     }
                 }
             }
