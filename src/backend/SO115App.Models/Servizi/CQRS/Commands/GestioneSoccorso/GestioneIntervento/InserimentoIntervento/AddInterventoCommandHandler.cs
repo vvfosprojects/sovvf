@@ -56,6 +56,9 @@ namespace DomainModel.CQRS.Commands.AddIntervento
         {
             var Competenze = _getCompetenze.GetCompetenzeByCoordinateIntervento(command.Chiamata.Localita.Coordinate).ToHashSet();
 
+            if (Competenze.ToList()[0] == null)
+                throw new Exception(Costanti.CoordinateErrate);
+
             var sedeRichiesta = command.CodiceSede;
             var prioritaRichiesta = (RichiestaAssistenza.Priorita)command.Chiamata.PrioritaRichiesta;
             var codiceChiamata = _generaCodiceRichiesta.GeneraCodiceChiamata(sedeRichiesta, DateTime.UtcNow.Year);
@@ -99,7 +102,8 @@ namespace DomainModel.CQRS.Commands.AddIntervento
                 NotePrivate = command.Chiamata.NotePrivate,
                 CodUOCompetenza = Competenze.ToArray(),
                 CodOperatore = command.CodUtente,
-                CodSOCompetente = Competenze.ToArray()[0]
+                CodSOCompetente = command.CodiceSede,
+                CodSOAllertate = Competenze.ToArray().ToHashSet()
             };
 
             if (command.Chiamata.Stato == Costanti.RichiestaChiusa)

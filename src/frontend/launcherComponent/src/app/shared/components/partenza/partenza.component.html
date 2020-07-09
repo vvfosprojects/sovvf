@@ -1,5 +1,5 @@
 <div class="row" [class.sganciare-mezzo-color]="idDaSganciare === partenza.mezzo.descrizione">
-    <div class="col-8 my-1 pr-1">
+    <div class="col-8 my-1 pr-1 align-self-center">
         <app-mezzo [mezzo]="partenza.mezzo" [mostraIndicatori]="false" [mostraNotifiche]="false"
                    [actionsAttive]="inGestione && statoRichiesta !== statoRichiestaEnum.Chiusa"
                    (actionMezzo)="onActionMezzo($event)"></app-mezzo>

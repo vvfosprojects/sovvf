@@ -41,10 +41,22 @@ export class MezzoComposizioneComponent implements OnInit {
     // Sganciamento
     @Output() sganciamento = new EventEmitter<SganciamentoInterface>();
 
+    public sganciamentoDisabilitato: boolean = false;
+
     constructor() {
     }
-
+    
     ngOnInit() {
+        this.sganciamentoCheck()
+    }
+
+    sganciamentoCheck() {
+    if (this.richiesta && this.richiesta.partenzeRichiesta && this.richiesta.partenzeRichiesta.length > 0) {
+        this.sganciamentoDisabilitato = this.richiesta.partenzeRichiesta.find( e => {
+            return e.mezzo.descrizione ===  this.mezzoComp.mezzo.descrizione &&
+                   !e.sganciata && !e.terminata && !e.partenzaAnnullata;
+        }) ? true : false;
+     }    
     }
 
     // Events
@@ -71,6 +83,9 @@ export class MezzoComposizioneComponent implements OnInit {
 
     // Lucchetto
     onSganciamento() {
+        if(this.sganciamentoDisabilitato) {
+            return false;
+        }
         if (this.mezzoComp.mezzo && this.mezzoComp.mezzo.idRichiesta) {
             const sganciamentoObj = {} as SganciamentoInterface;
             sganciamentoObj.idMezzoDaSganciare = this.mezzoComp.mezzo.codice;

@@ -9,6 +9,8 @@ import { Composizione } from 'src/app/shared/enum/composizione.enum';
 export class TastoCompPartenzaComponent {
 
     @Input() compPartenzaMode: Composizione;
+    @Input() disableTasto: boolean;
+
     @Output() cambioModalita = new EventEmitter<Composizione>();
     Composizione = Composizione;
 

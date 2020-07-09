@@ -74,19 +74,20 @@ namespace SO115App.SignalR.Sender.GestionePartenza
             var SediDaNotificare = _getGerarchiaToSend.Get(intervento.Richiesta.CodSOCompetente);
             const bool notificaChangeState = true;
 
+            var sintesiRichiesteAssistenzaQuery = new SintesiRichiesteAssistenzaQuery
+            {
+                Filtro = new FiltroRicercaRichiesteAssistenza
+                {
+                    idOperatore = intervento.IdUtente,
+                    PageSize = 99
+                },
+                CodiciSede = SediDaNotificare.ToArray()
+            };
+            var listaSintesi = _sintesiRichiesteAssistenzahandler.Handle(sintesiRichiesteAssistenzaQuery).SintesiRichiesta;
+            intervento.Chiamata = listaSintesi.LastOrDefault(richiesta => richiesta.Codice == intervento.CodRichiesta);
+
             foreach (var sede in SediDaNotificare)
             {
-                var sintesiRichiesteAssistenzaQuery = new SintesiRichiesteAssistenzaQuery
-                {
-                    Filtro = new FiltroRicercaRichiesteAssistenza
-                    {
-                        idOperatore = intervento.IdUtente,
-                        PageSize = 99
-                    },
-                    CodiciSede = new string[] { sede }
-                };
-                var listaSintesi = _sintesiRichiesteAssistenzahandler.Handle(sintesiRichiesteAssistenzaQuery).SintesiRichiesta;
-
                 var boxRichiesteQuery = new BoxRichiesteQuery()
                 {
                     CodiciSede = new string[] { sede }
@@ -119,25 +120,28 @@ namespace SO115App.SignalR.Sender.GestionePartenza
 
                 var listaSintesiMarker = _sintesiRichiesteAssistenzaMarkerhandler.Handle(sintesiRichiesteAssistenzaMarkerQuery).SintesiRichiestaMarker;
 
-                intervento.Chiamata = listaSintesi.LastOrDefault(richiesta => richiesta.Codice == intervento.CodRichiesta);
-
                 await _notificationHubContext.Clients.Group(sede).SendAsync("ModifyAndNotifySuccess", intervento);
                 await _notificationHubContext.Clients.Group(sede).SendAsync("ChangeStateSuccess", notificaChangeState);
                 await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxInterventi", boxInterventi);
                 await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxMezzi", boxMezzi);
                 await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxPersonale", boxPersonale);
-                await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetListaMezziInServizio", listaMezziInServizio);
-                await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetRichiestaUpDateMarker", listaSintesiMarker.LastOrDefault(marker => marker.Codice == intervento.Chiamata.Codice));
+                //await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetListaMezziInServizio", listaMezziInServizio);
+                await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyUpdateMezzoInServizio", listaMezziInServizio.Find(x=>x.Mezzo.Mezzo.Codice.Equals(intervento.IdMezzo)));
 
-                AreaMappa areaMappa = new AreaMappa();
-                areaMappa.CodiceSede = new List<string>() { sede };
-                var queryListaMezzi = new MezziMarkerQuery()
+                if (intervento.Chiamata != null)
                 {
-                    Filtro = areaMappa
-                };
+                    await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetRichiestaUpDateMarker", listaSintesiMarker.LastOrDefault(marker => marker.Codice == intervento.Chiamata.Codice));
 
-                var listaMezziMarker = _listaMezziMarkerHandler.Handle(queryListaMezzi).ListaMezziMarker;
-                await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetMezzoUpDateMarker", listaMezziMarker.LastOrDefault(marker => marker.Mezzo.IdRichiesta == intervento.Chiamata.Codice));
+                    AreaMappa areaMappa = new AreaMappa();
+                    areaMappa.CodiceSede = new List<string>() { sede };
+                    var queryListaMezzi = new MezziMarkerQuery()
+                    {
+                        Filtro = areaMappa
+                    };
+
+                    var listaMezziMarker = _listaMezziMarkerHandler.Handle(queryListaMezzi).ListaMezziMarker;
+                    await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetMezzoUpDateMarker", listaMezziMarker.LastOrDefault(marker => marker.Mezzo.IdRichiesta == intervento.Chiamata.Codice));
+                }
             }
         }
     }

@@ -48,18 +48,13 @@ namespace DomainModel.CQRS.Commands.MessaInLavorazione
         public IEnumerable<AuthorizationResult> Authorize(MessaInLavorazioneCommand command)
         {
             string username = this.currentUser.Identity.Name;
-            var richiesta = _getRichiestaAssistenzaById.GetByCodice(command.IdRichiesta);
 
             if (this.currentUser.Identity.IsAuthenticated)
             {
                 Utente user = _findUserByUsername.FindUserByUs(username);
                 if (user == null)
                     yield return new AuthorizationResult("Utente non autorizzato");
-                else
-                {
-                    if (!_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, richiesta.CodSOCompetente, Costanti.GestoreRichieste))
-                        yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
-                }
+
             }
             else
                 yield return new AuthorizationResult("Utente non autorizzato");

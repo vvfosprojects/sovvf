@@ -5,6 +5,5 @@
 /.vs
 /.idea/
 /src/.idea/
-/src/backendCore/SO115Core
 *.cmd
-/src/backendCore/SO115Core/*.txt
+/src/backend/SO115App.API/*.txt

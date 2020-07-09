@@ -34,6 +34,7 @@ import {NgZone} from '@angular/core';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {RichiestaDuplicataModalComponent} from '../../../../../shared/modal/richiesta-duplicata-modal/richiesta-duplicata-modal.component';
 import {ModalServiziComponent} from '../../../boxes/info-aggregate/modal-servizi/modal-servizi.component';
+import {AuthState} from '../../../../auth/store/auth.state';
 
 export interface SchedaTelefonataStateModel {
     nuovaRichiestaForm: {
@@ -147,7 +148,8 @@ export class SchedaTelefonataState {
             if (richiesta && action.azioneChiamata === AzioneChiamataEnum.InviaPartenza) {
                 dispatch([
                     new CestinaChiamata(),
-                    new SetIdChiamataInviaPartenza(richiesta)
+                    new SetIdChiamataInviaPartenza(richiesta),
+                    new ShowToastr(ToastrType.Success, 'Inserimento della chiamata effettuato', action.nuovaRichiesta.descrizione, 5, null, true)
                 ]);
             } else {
                 dispatch(new CestinaChiamata());
@@ -166,6 +168,7 @@ export class SchedaTelefonataState {
     insertChiamataSuccess({dispatch}: StateContext<SchedaTelefonataStateModel>, action: InsertChiamataSuccess) {
         const idRichiestaSelezionata = this.store.selectSnapshot(RichiestaSelezionataState.idRichiestaSelezionata);
         const idRichiestaGestione = this.store.selectSnapshot(RichiestaGestioneState.idRichiestaGestione);
+        const idUtenteLoggato = this.store.selectSnapshot(AuthState.currentUser).id;
         if (!idRichiestaSelezionata && !idRichiestaGestione) {
             const currentPage = this.store.selectSnapshot(PaginationState.page);
             dispatch(new GetListaRichieste({page: currentPage}));
@@ -174,7 +177,9 @@ export class SchedaTelefonataState {
             dispatch(new SetNeedRefresh(true));
         }
         dispatch(new StopLoadingNuovaChiamata());
-        dispatch(new ShowToastr(ToastrType.Success, 'Inserimento della chiamata effettuato', action.nuovaRichiesta.descrizione, 5, null, true));
+        if (idUtenteLoggato !== action.nuovaRichiesta.operatore.id) {
+            dispatch(new ShowToastr(ToastrType.Success, 'Nuova chiamata inserita', action.nuovaRichiesta.descrizione, 5, null, true));
+        }
     }
 
     @Action(ResetChiamata)
