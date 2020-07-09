@@ -12,6 +12,13 @@ export class SetMezziInServizio {
     }
 }
 
+export class UpdateMezzoInServizio {
+    static readonly type = '[MezziInServizio] Update Mezzo In Servizio';
+
+    constructor(public mezzo: MezzoInServizio) {
+    }
+}
+
 export class FilterMezziInServizio {
     static readonly type = '[MezziInServizio] Filter Mezzi In Servizio';
 }
