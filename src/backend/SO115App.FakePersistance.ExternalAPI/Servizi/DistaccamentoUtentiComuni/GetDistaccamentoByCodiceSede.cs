@@ -49,8 +49,11 @@ namespace SO115App.ExternalAPI.Fake.Servizi.DistaccamentoUtentiComuni
         public async Task<Distaccamento> Get(string codiceSede)
         {
             var listaSedi = GetListaDistaccamentiPerComando(codiceSede.Split('.')[0]).Result;
-
-            return listaSedi.Find(x => x.CodSede.Equals(codiceSede));
+            int res = 0;
+            if (Int32.TryParse(codiceSede.Split('.')[0], out res))
+                return listaSedi.Find(x => x.CodSede.Equals(codiceSede.Split('.')[0]));
+            else
+                return listaSedi.Find(x => x.CodSede.Equals(codiceSede));
         }
 
         private async Task<List<Distaccamento>> GetListaDistaccamentiPerComando(string CodComando)
@@ -59,6 +62,23 @@ namespace SO115App.ExternalAPI.Fake.Servizi.DistaccamentoUtentiComuni
 
             if (!_memoryCache.TryGetValue($"Distaccamenti_{CodComando}", out listaDistaccamenti))
             {
+                List<Distaccamento> listaDistaccamentiAppo = new List<Distaccamento>();
+                _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("test");
+                var responsePadre = await _client.GetAsync($"{_configuration.GetSection("UrlExternalApi").GetSection("InfoSedeApiUtenteComune").Value}/GetInfoSede?codSede={CodComando}").ConfigureAwait(false);
+                responsePadre.EnsureSuccessStatusCode();
+                using HttpContent contentPadre = responsePadre.Content;
+                string dataPadre = await contentPadre.ReadAsStringAsync().ConfigureAwait(false);
+                var DistaccametoUCPadre = JsonConvert.DeserializeObject<DistaccamentoUC>(dataPadre);
+
+                if (DistaccametoUCPadre != null)
+                {
+                    Distaccamento distaccamento = new Distaccamento();
+                    if (DistaccametoUCPadre.CodDistaccamento.Equals("0"))
+                        DistaccametoUCPadre.CodDistaccamento = "1000";
+                    distaccamento = _mapper.Map(DistaccametoUCPadre);
+                    listaDistaccamentiAppo.Add(distaccamento);
+                }
+
                 _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("test");
                 var response = await _client.GetAsync($"{_configuration.GetSection("UrlExternalApi").GetSection("InfoSedeApiUtenteComune").Value}/GetChildSede?codSede={CodComando}").ConfigureAwait(false);
                 response.EnsureSuccessStatusCode();
@@ -66,10 +86,12 @@ namespace SO115App.ExternalAPI.Fake.Servizi.DistaccamentoUtentiComuni
                 string data = await content.ReadAsStringAsync().ConfigureAwait(false);
                 var ListaDistaccametiUC = JsonConvert.DeserializeObject<List<DistaccamentoUC>>(data);
 
-                List<Distaccamento> listaDistaccamentiAppo = new List<Distaccamento>();
                 foreach (var dist in ListaDistaccametiUC)
                 {
                     Distaccamento distaccamento = new Distaccamento();
+                    if (dist.CodDistaccamento.Equals("0"))
+                        dist.CodDistaccamento = "1000";
+
                     distaccamento = _mapper.Map(dist);
                     listaDistaccamentiAppo.Add(distaccamento);
                 }
