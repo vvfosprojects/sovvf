@@ -122,19 +122,20 @@ export class MezziInServizioState {
     }
 
     @Action(SetMezziInServizio)
-    setMezziInServizio({ patchState }: StateContext<MezziInServizioStateModel>, action: SetMezziInServizio) {
+    setMezziInServizio({ patchState, dispatch }: StateContext<MezziInServizioStateModel>, action: SetMezziInServizio) {
         patchState({
             mezziInServizio: action.mezzi,
             mezziInServizioFiltered: action.mezzi
         });
+        dispatch(new FilterMezziInServizio());
     }
 
     @Action(UpdateMezzoInServizio)
     updateMezzoInServizio({ setState, dispatch }: StateContext<MezziInServizioStateModel>, action: UpdateMezzoInServizio) {
         setState(
             patch({
-                mezziInServizio: updateItem((m: MezzoInServizio) => m.mezzo.mezzo.codice === action.mezzo.mezzo.mezzo.codice, action.mezzo),
-                mezziInServizioFiltered: updateItem((m: MezzoInServizio) => m.mezzo.mezzo.codice === action.mezzo.mezzo.mezzo.codice, action.mezzo)
+                    mezziInServizio: updateItem((m: MezzoInServizio) => m.mezzo.mezzo.codice === action.mezzo.mezzo.mezzo.codice, action.mezzo),
+                    mezziInServizioFiltered: updateItem((m: MezzoInServizio) => m.mezzo.mezzo.codice === action.mezzo.mezzo.mezzo.codice, action.mezzo)
                 }
             )
         );
