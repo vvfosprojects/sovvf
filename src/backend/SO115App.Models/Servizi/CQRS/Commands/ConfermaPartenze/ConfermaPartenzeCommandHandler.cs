@@ -79,7 +79,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                 var listaMezzi = _getStatoMezzi.Get(command.ConfermaPartenze.CodiceSede, partenza.Mezzo.Codice);
                 if (listaMezzi.Count > 0)
                 {
-                    if (!listaMezzi[0].IdOpPrenotazione.Equals(command.ConfermaPartenze.IdOperatore))
+                    if (listaMezzi[0].IdOpPrenotazione != null && !listaMezzi[0].IdOpPrenotazione.Equals(command.ConfermaPartenze.IdOperatore))
                         throw new Exception(Costanti.MezzoErroreGiaOccupato);
                 }
             }
