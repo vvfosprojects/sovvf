@@ -51,17 +51,11 @@ namespace DomainModel.CQRS.Commands.RimozioneInLavorazione
             var username = this._currentUser.Identity.Name;
             var user = _findUserByUsername.FindUserByUs(username);
 
-            var richiesta = _getRichiestaAssistenzaById.GetById(command.IdRichiesta);
-
             if (_currentUser.Identity.IsAuthenticated)
             {
                 if (user == null)
                     yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
-                else
-                {
-                    if (!_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, richiesta.CodSOCompetente, Costanti.GestoreRichieste))
-                        yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
-                }
+
             }
             else
                 yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);

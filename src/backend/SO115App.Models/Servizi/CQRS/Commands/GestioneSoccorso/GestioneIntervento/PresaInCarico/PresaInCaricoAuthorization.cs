@@ -48,8 +48,6 @@ namespace DomainModel.CQRS.Commands.PresaInCarico
 
         public IEnumerable<AuthorizationResult> Authorize(PresaInCaricoCommand command)
         {
-            var richiesta = _getRichiestaById.GetById(command.IdRichiesta);
-
             var username = this._currentUser.Identity.Name;
             var user = _findUserByUsername.FindUserByUs(username);
 
@@ -57,11 +55,6 @@ namespace DomainModel.CQRS.Commands.PresaInCarico
             {
                 if (user == null)
                     yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
-                else
-                {
-                    if (!_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, richiesta.CodSOCompetente, Costanti.GestoreRichieste))
-                        yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
-                }
             }
             else
                 yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
