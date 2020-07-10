@@ -18,7 +18,7 @@ import {
     AddBookMezzoComposizione,
     RemoveBookingMezzoComposizione,
     RemoveBookMezzoComposizione,
-    SetListaMezziComposizione,
+    SetListaMezziComposizione, UpdateMezzoComposizione,
     UpdateMezzoComposizioneScadenzaByCodiceMezzo
 } from '../../features/home/store/actions/composizione-partenza/mezzi-composizione.actions';
 import { InsertRichiestaMarker, UpdateRichiestaMarker } from '../../features/home/store/actions/maps/richieste-markers.actions';
@@ -51,6 +51,7 @@ import { SintesiRichiesta } from '../../shared/model/sintesi-richiesta.model';
 import { MezzoComposizione } from '../../features/home/composizione-partenza/interface/mezzo-composizione-interface';
 import { AuthState } from '../../features/auth/store/auth.state';
 import { ClearCurrentUser, UpdateRuoliPersonali } from '../../features/auth/store/auth.actions';
+import { ViewComponentState } from '../../features/home/store/states/view/view.state';
 
 const HUB_URL = environment.baseUrl + environment.signalRHub;
 const SIGNALR_BYPASS = !environment.signalR;
@@ -136,7 +137,10 @@ export class SignalRService {
         });
         this.hubNotification.on('NotifyUpdateMezzoInServizio', (data: MezzoInServizio) => {
             console.log('NotifyUpdateMezzoInServizio', data);
-            this.store.dispatch(new UpdateMezzoInServizio(data));
+            const mezziInServizioActive = this.store.selectSnapshot(ViewComponentState.mezziInServizio);
+            if (mezziInServizioActive) {
+                this.store.dispatch(new UpdateMezzoInServizio(data));
+            }
             this.store.dispatch(new StopLoadingActionMezzo());
         });
 
