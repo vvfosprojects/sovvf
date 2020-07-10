@@ -59,7 +59,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
             _setStatoOperativoMezzo.Set(command.CodiceSede, command.IdMezzo, command.StatoMezzo, command.Richiesta.Codice);
 
-            foreach (var partenza in command.Richiesta.Partenze.Where(c => c.Partenza.Mezzo.Codice == command.IdMezzo && !c.Partenza.PartenzaAnnullata && !c.Partenza.Terminata))
+            foreach (var partenza in command.Richiesta.Partenze.Where(c => c.Partenza.Mezzo.Codice == command.IdMezzo))
             {
                 foreach (var squadra in partenza.Partenza.Squadre)
                 {
