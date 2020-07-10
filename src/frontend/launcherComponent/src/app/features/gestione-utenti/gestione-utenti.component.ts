@@ -34,7 +34,7 @@ import { AuthState } from '../auth/store/auth.state';
 @Component({
     selector: 'app-gestione-utenti',
     templateUrl: './gestione-utenti.component.html',
-    styleUrls: [ './gestione-utenti.component.css' ]
+    styleUrls: ['./gestione-utenti.component.css']
 })
 export class GestioneUtentiComponent implements OnInit, OnDestroy {
 
@@ -67,7 +67,7 @@ export class GestioneUtentiComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.store.dispatch([ new SetCurrentUrl(RoutesPath.GestioneUtenti), new SetSediNavbarVisible(false) ]);
+        this.store.dispatch([new SetCurrentUrl(RoutesPath.GestioneUtenti), new SetSediNavbarVisible(false)]);
     }
 
     ngOnDestroy(): void {
@@ -200,8 +200,12 @@ export class GestioneUtentiComponent implements OnInit, OnDestroy {
         this.store.dispatch(new SetPageSize(page));
     }
 
-    getUtentiGestione() {
-        this.store.dispatch(new GetUtentiGestione());
+    getUtentiGestione(pageAttuale: boolean) {
+        let page = null;
+        if (pageAttuale) {
+            page = this.store.selectSnapshot(PaginationState.page);
+        }
+        this.store.dispatch(new GetUtentiGestione(page));
     }
 
     getUtente() {
@@ -242,7 +246,7 @@ export class GestioneUtentiComponent implements OnInit, OnDestroy {
                 if (ruoli && ruoli.length > 0) {
                     const sediFiltro = ruoli.filter((r: Ruolo) => r.descrizione === 'Amministratore');
                     this.store.dispatch(new SetSediFiltro(sediFiltro));
-                    this.getUtentiGestione();
+                    this.getUtentiGestione(true);
                 }
             })
         );
