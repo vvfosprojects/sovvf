@@ -171,13 +171,20 @@ export class MezziComposizioneState {
     }
 
     @Action(UpdateMezzoComposizione)
-    updateMezzoComposizione({ setState, dispatch }: StateContext<MezziComposizioneStateStateModel>, action: UpdateMezzoComposizione) {
-        setState(
-            patch({
-                mezziComposizione: updateItem<MezzoComposizione>(mezzoComp => mezzoComp.mezzo.codice === action.mezzoComp.mezzo.codice, action.mezzoComp)
-            })
-        );
-        dispatch(new UpdateMezzoBoxPartenza(action.mezzoComp));
+    updateMezzoComposizione({ getState, setState, dispatch }: StateContext<MezziComposizioneStateStateModel>, action: UpdateMezzoComposizione) {
+        const state = getState();
+        const mezzoComposizione = state.allMezziComposizione && state.allMezziComposizione.length > 0 ? state.allMezziComposizione.filter((mC: MezzoComposizione) => mC.mezzo.codice === action.mezzo.codice)[0] : null;
+        const mezzoComposizioneCopy = mezzoComposizione ? makeCopy(mezzoComposizione) as MezzoComposizione : null;
+        if (mezzoComposizione && mezzoComposizioneCopy) {
+            mezzoComposizioneCopy.mezzo = action.mezzo;
+            setState(
+                patch({
+                    allMezziComposizione: updateItem<MezzoComposizione>(mezzoComp => mezzoComp.mezzo.codice === action.mezzo.codice, mezzoComposizioneCopy),
+                    mezziComposizione: updateItem<MezzoComposizione>(mezzoComp => mezzoComp.mezzo.codice === action.mezzo.codice, mezzoComposizioneCopy)
+                })
+            );
+            dispatch(new UpdateMezzoBoxPartenza(mezzoComposizioneCopy));
+        }
     }
 
     @Action(UpdateMezzoComposizioneScadenzaByCodiceMezzo)
