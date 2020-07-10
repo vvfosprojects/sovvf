@@ -20,6 +20,7 @@
 using MongoDB.Driver;
 using Persistence.MongoDB;
 using SO115App.Models.Classi.Condivise;
+using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.GestioneStatoOperativoSquadra;
 
 namespace SO115App.Persistence.MongoDB.GestioneStatoSquadra
@@ -52,7 +53,7 @@ namespace SO115App.Persistence.MongoDB.GestioneStatoSquadra
                 CodiceSede = codiceSede
             };
 
-            if (statoOperativoSquadra.StatoSquadra.Equals("In Sede"))
+            if (statoOperativoSquadra.StatoSquadra.Equals(Costanti.MezzoInSede) || statoOperativoSquadra.StatoSquadra.Equals(Costanti.MezzoRientrato))
             {
                 _dbContext.StatoSquadraCollection.DeleteOne(Builders<StatoOperativoSquadra>.Filter.Eq(x => x.IdSquadra, idSquadra));
             }
