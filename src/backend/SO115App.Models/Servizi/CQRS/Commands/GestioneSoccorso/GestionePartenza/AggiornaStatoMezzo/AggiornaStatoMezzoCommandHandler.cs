@@ -71,6 +71,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                     {
                         composizione.Partenza.Mezzo.Stato = Costanti.MezzoInRientro;
                         composizione.Partenza.Mezzo.IdRichiesta = null;
+                        composizione.Partenza.Terminata = true;
                     }
                 }
 
