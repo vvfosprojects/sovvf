@@ -3,6 +3,7 @@ import { BoxPartenza } from '../../../composizione-partenza/interface/box-parten
 import { SganciamentoInterface } from 'src/app/shared/interface/sganciamento.interface';
 import { ComposizioneFilterbar } from '../../../composizione-partenza/interface/composizione/composizione-filterbar-interface';
 import { SquadraComposizione } from '../../../composizione-partenza/interface/squadra-composizione-interface';
+import { Mezzo } from '../../../../../shared/model/mezzo.model';
 
 export class SetListaMezziComposizione {
     static readonly type = '[MezziComposizione] Set Lista Mezzi Composizione';
@@ -32,7 +33,7 @@ export class RemoveMezzoComposizione {
 export class UpdateMezzoComposizione {
     static readonly type = '[MezziComposizione] Update Mezzo Composizione';
 
-    constructor(public mezzoComp: MezzoComposizione) {
+    constructor(public mezzo: Mezzo) {
     }
 }
 
