@@ -166,7 +166,10 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
                 }
             }
 
-            int i = listaMezzi.RemoveAll(x => x.Coordinate.Latitudine == 0 && x.Coordinate.Longitudine == 0);
+            int i = listaMezzi.RemoveAll(x =>
+            {
+                return x.Coordinate == null || (x.Coordinate.Latitudine == 0 && x.Coordinate.Longitudine == 0);
+            });
 
             return listaMezzi;
         }

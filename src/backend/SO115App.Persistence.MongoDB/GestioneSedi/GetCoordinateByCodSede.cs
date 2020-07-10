@@ -48,14 +48,13 @@ namespace SO115App.Persistence.MongoDB.GestioneSedi
             else
             {
                 var builder = Builders<ListaSedi>.Filter;
-                var filter = builder.Eq(x => x.codFiglio_TC, Convert.ToDouble(codiceSede));
 
-                var CodFiglio = Convert.ToInt32(codiceSede);
-                var filterAttive = Builders<ListaSedi>.Filter.Eq(x => x.attiva, 1);
+                //var CodFiglio = Convert.ToInt32(codiceSede);
+                //var filterAttive = Builders<ListaSedi>.Filter.Eq(x => x.attiva, 1);
 
-                List<ListaSedi> listaSedi = _dbContext.SediCollection.Find(filterAttive).ToList();
+                ListaSedi sede = _dbContext.SediCollection.Find(x => x.codSede_TC.Equals(codiceSede) && x.attiva.Equals(1)).FirstOrDefault();
 
-                var sede = listaSedi.Find(x => x.codFiglio_TC.Equals(CodFiglio));
+                //var sede = listaSedi.Find(x => x.sede.Equals(codiceSede));
 
                 if (sede != null)
                 {

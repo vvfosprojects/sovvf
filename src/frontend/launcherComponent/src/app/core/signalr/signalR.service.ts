@@ -19,14 +19,14 @@ import {
     RemoveBookingMezzoComposizione,
     RemoveBookMezzoComposizione,
     SetListaMezziComposizione,
+    UpdateMezzoComposizione,
     UpdateMezzoComposizioneScadenzaByCodiceMezzo
 } from '../../features/home/store/actions/composizione-partenza/mezzi-composizione.actions';
-import { RemoveBoxPartenzaByMezzoId } from '../../features/home/store/actions/composizione-partenza/box-partenza.actions';
 import { InsertRichiestaMarker, UpdateRichiestaMarker } from '../../features/home/store/actions/maps/richieste-markers.actions';
 import { ComposizionePartenzaState } from '../../features/home/store/states/composizione-partenza/composizione-partenza.state';
 import { Composizione } from '../../shared/enum/composizione.enum';
 import { SetListaIdPreAccoppiati, UpdateMezzoPreAccoppiatoComposizione } from '../../features/home/store/actions/composizione-partenza/composizione-veloce.actions';
-import { SetMezziInServizio } from 'src/app/features/home/store/actions/mezzi-in-servizio/mezzi-in-servizio.actions';
+import { SetMezziInServizio, UpdateMezzoInServizio } from 'src/app/features/home/store/actions/mezzi-in-servizio/mezzi-in-servizio.actions';
 import { IdPreaccoppiati } from '../../features/home/composizione-partenza/interface/id-preaccoppiati-interface';
 import { UpdateMezzoMarker } from '../../features/home/store/actions/maps/mezzi-markers.actions';
 import {
@@ -52,6 +52,7 @@ import { SintesiRichiesta } from '../../shared/model/sintesi-richiesta.model';
 import { MezzoComposizione } from '../../features/home/composizione-partenza/interface/mezzo-composizione-interface';
 import { AuthState } from '../../features/auth/store/auth.state';
 import { ClearCurrentUser, UpdateRuoliPersonali } from '../../features/auth/store/auth.actions';
+import { ViewComponentState } from '../../features/home/store/states/view/view.state';
 
 const HUB_URL = environment.baseUrl + environment.signalRHub;
 const SIGNALR_BYPASS = !environment.signalR;
@@ -135,9 +136,20 @@ export class SignalRService {
             this.store.dispatch(new SetMezziInServizio(data));
             this.store.dispatch(new StopLoadingActionMezzo());
         });
+        this.hubNotification.on('NotifyUpdateMezzoInServizio', (data: MezzoInServizio) => {
+            console.log('NotifyUpdateMezzoInServizio', data);
+            const mezziInServizioActive = this.store.selectSnapshot(ViewComponentState.mezziInServizio);
+            const composizionePartenzaActive = this.store.selectSnapshot(ViewComponentState.composizioneStatus);
+            if (mezziInServizioActive) {
+                this.store.dispatch(new UpdateMezzoInServizio(data));
+            } else if (composizionePartenzaActive) {
+                this.store.dispatch(new UpdateMezzoComposizione(data.mezzo.mezzo));
+            }
+            this.store.dispatch(new StopLoadingActionMezzo());
+        });
 
         /**
-         * Markers Mappa --------------
+         * Markers Mappa
          */
         this.hubNotification.on('NotifyGetRichiestaMarker', (data: RichiestaMarker) => {
             console.log('NotifyGetRichiestaMarker', data);

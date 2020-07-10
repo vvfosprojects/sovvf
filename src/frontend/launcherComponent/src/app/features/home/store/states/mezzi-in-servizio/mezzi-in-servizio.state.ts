@@ -10,7 +10,10 @@ import {
     SetMezziInServizio,
     SetMezzoInServizioHover,
     SetMezzoInServizioSelezionato,
-    SetRicercaMezziInServizio, StartLoadingMezziInServizio, StopLoadingMezziInServizio
+    SetRicercaMezziInServizio,
+    StartLoadingMezziInServizio,
+    StopLoadingMezziInServizio,
+    UpdateMezzoInServizio
 } from '../../actions/mezzi-in-servizio/mezzi-in-servizio.actions';
 import { ClearMarkerMezzoHover, ClearMarkerMezzoSelezionato, SetMarkerMezzoHover, SetMarkerMezzoSelezionato } from '../../actions/maps/marker.actions';
 import { MezzoInServizio } from '../../../../../shared/interface/mezzo-in-servizio.interface';
@@ -25,6 +28,7 @@ import { StatoMezzo as Categoria } from '../../../../../shared/enum/stato-mezzo.
 import { makeCopy } from '../../../../../shared/helper/function';
 import { resetFiltriSelezionati as _resetFiltriSelezionati, setFiltroSelezionato as _setFiltroSelezionato } from '../../../../../shared/helper/function-filtro';
 import { StopLoadingActionMezzo } from '../../actions/richieste/richieste.actions';
+import { patch, updateItem } from '@ngxs/store/operators';
 
 export interface MezziInServizioStateModel {
     mezziInServizio: MezzoInServizio[];
@@ -118,11 +122,24 @@ export class MezziInServizioState {
     }
 
     @Action(SetMezziInServizio)
-    setMezziInServizio({ patchState }: StateContext<MezziInServizioStateModel>, action: SetMezziInServizio) {
+    setMezziInServizio({ patchState, dispatch }: StateContext<MezziInServizioStateModel>, action: SetMezziInServizio) {
         patchState({
             mezziInServizio: action.mezzi,
             mezziInServizioFiltered: action.mezzi
         });
+        dispatch(new FilterMezziInServizio());
+    }
+
+    @Action(UpdateMezzoInServizio)
+    updateMezzoInServizio({ setState, dispatch }: StateContext<MezziInServizioStateModel>, action: UpdateMezzoInServizio) {
+        setState(
+            patch({
+                    mezziInServizio: updateItem((m: MezzoInServizio) => m.mezzo.mezzo.codice === action.mezzo.mezzo.mezzo.codice, action.mezzo),
+                    mezziInServizioFiltered: updateItem((m: MezzoInServizio) => m.mezzo.mezzo.codice === action.mezzo.mezzo.mezzo.codice, action.mezzo)
+                }
+            )
+        );
+        dispatch(new FilterMezziInServizio());
     }
 
     @Action(FilterMezziInServizio)

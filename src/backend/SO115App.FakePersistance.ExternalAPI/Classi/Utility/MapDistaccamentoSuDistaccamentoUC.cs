@@ -26,13 +26,15 @@ namespace SO115App.ExternalAPI.Fake.Classi.Utility
         /// <returns>i ditaccamenti SO</returns>
         public Distaccamento Map(DistaccamentoUC distaccamentoUC)
         {
+            var CodSedeCompleto = distaccamentoUC.Tipo == "DIR" ? distaccamentoUC.Id : distaccamentoUC.Provincia + "." + distaccamentoUC.CodDistaccamento;
+
             return new Distaccamento
             {
                 Cap = distaccamentoUC.Cap,
-                CodSede = distaccamentoUC.Id,
+                CodSede = CodSedeCompleto,
                 DescDistaccamento = distaccamentoUC.Descrizione,
                 Indirizzo = distaccamentoUC.Indirizzo,
-                Coordinate = _getCoordinateDistaccamento.Get(distaccamentoUC.Id)
+                Coordinate = _getCoordinateDistaccamento.Get(CodSedeCompleto)
             };
         }
     }
