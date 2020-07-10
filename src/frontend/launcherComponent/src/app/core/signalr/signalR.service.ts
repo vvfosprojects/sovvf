@@ -18,7 +18,8 @@ import {
     AddBookMezzoComposizione,
     RemoveBookingMezzoComposizione,
     RemoveBookMezzoComposizione,
-    SetListaMezziComposizione, UpdateMezzoComposizione,
+    SetListaMezziComposizione,
+    UpdateMezzoComposizione,
     UpdateMezzoComposizioneScadenzaByCodiceMezzo
 } from '../../features/home/store/actions/composizione-partenza/mezzi-composizione.actions';
 import { InsertRichiestaMarker, UpdateRichiestaMarker } from '../../features/home/store/actions/maps/richieste-markers.actions';
@@ -138,8 +139,11 @@ export class SignalRService {
         this.hubNotification.on('NotifyUpdateMezzoInServizio', (data: MezzoInServizio) => {
             console.log('NotifyUpdateMezzoInServizio', data);
             const mezziInServizioActive = this.store.selectSnapshot(ViewComponentState.mezziInServizio);
+            const composizionePartenzaActive = this.store.selectSnapshot(ViewComponentState.composizioneStatus);
             if (mezziInServizioActive) {
                 this.store.dispatch(new UpdateMezzoInServizio(data));
+            } else if (composizionePartenzaActive) {
+                this.store.dispatch(new UpdateMezzoComposizione(data.mezzo.mezzo));
             }
             this.store.dispatch(new StopLoadingActionMezzo());
         });

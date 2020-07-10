@@ -1,4 +1,4 @@
-import { Component, Input, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { BoxPartenza } from '../../interface/box-partenza-interface';
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
 import { Composizione } from '../../../../../shared/enum/composizione.enum';
@@ -6,13 +6,10 @@ import { RequestResetBookMezzoComposizione } from '../../../store/actions/compos
 import { Store } from '@ngxs/store';
 import { ShowToastr } from 'src/app/shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from 'src/app/shared/enum/toastr';
-import {
-    checkSquadraOccupata,
-    iconaStatiClass,
-    mezzoComposizioneBusy
-} from '../functions/composizione-functions';
+import { checkSquadraOccupata, iconaStatiClass, mezzoComposizioneBusy } from '../functions/composizione-functions';
 import { SquadraComposizione } from '../../interface/squadra-composizione-interface';
 import { BoxPartenzaHover } from '../../interface/composizione/box-partenza-hover-interface';
+import { StatoMezzo } from '../../../../../shared/enum/stato-mezzo.enum';
 
 @Component({
     selector: 'app-box-nuova-partenza',
@@ -121,7 +118,7 @@ export class BoxNuovaPartenzaComponent {
             if (this.richiesta.competenze && this.richiesta.competenze.length > 0) {
                 if (this.richiesta.competenze[0].descrizione === distaccamentoMezzo) {
                     result = 'badge-primary';
-                } else if ( this.richiesta.competenze.length > 0 && this.richiesta.competenze[1] && this.richiesta.competenze[1].descrizione === distaccamentoMezzo) {
+                } else if (this.richiesta.competenze.length > 0 && this.richiesta.competenze[1] && this.richiesta.competenze[1].descrizione === distaccamentoMezzo) {
                     result = 'badge-info';
                 }
             }
@@ -136,7 +133,7 @@ export class BoxNuovaPartenzaComponent {
         const prefix = 'fa ';
         let icon = 'fa-exclamation-triangle';
         const squadra2 = this.partenza.squadraComposizione.length > 0 ? 'squadra-si' : 'squadra-no';
-        const mezzo2 = this.partenza.mezzoComposizione ? 'mezzo-si' : 'mezzo-no';
+        const mezzo2 = this.partenza.mezzoComposizione && (this.partenza.mezzoComposizione.mezzo.stato === StatoMezzo.InSede || this.partenza.mezzoComposizione.mezzo.stato === StatoMezzo.InRientro) ? 'mezzo-si' : 'mezzo-no';
 
         switch (mezzo2 + '|' + squadra2) {
             case 'mezzo-si|squadra-no':

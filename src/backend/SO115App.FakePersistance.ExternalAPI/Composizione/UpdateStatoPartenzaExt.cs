@@ -17,6 +17,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using System.Linq;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AggiornaStatoMezzo;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
@@ -58,7 +59,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
             _setStatoOperativoMezzo.Set(command.CodiceSede, command.IdMezzo, command.StatoMezzo, command.Richiesta.Codice);
 
-            foreach (var partenza in command.Richiesta.Partenze)
+            foreach (var partenza in command.Richiesta.Partenze.Where(c => c.Partenza.Mezzo.Codice == command.IdMezzo && !c.Partenza.PartenzaAnnullata && !c.Partenza.Terminata))
             {
                 foreach (var squadra in partenza.Partenza.Squadre)
                 {
