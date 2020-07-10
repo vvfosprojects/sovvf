@@ -58,6 +58,11 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                     s.Stato = MappaStatoSquadraDaStatoMezzo.MappaStato(statiOperativi.Find(x => x.IdSquadra.Equals(s.Id)).StatoSquadra);
                     s.IndiceOrdinamento = -200;
                 }
+                else
+                {
+                    s.Stato = Squadra.StatoSquadra.InSede;
+                }
+
                 var c = new ComposizioneSquadre
                 {
                     Squadra = s,
