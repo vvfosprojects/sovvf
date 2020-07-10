@@ -179,9 +179,11 @@ export class MezziComposizioneState {
             mezzoComposizioneCopy.mezzo = action.mezzo;
             setState(
                 patch({
+                    allMezziComposizione: updateItem<MezzoComposizione>(mezzoComp => mezzoComp.mezzo.codice === action.mezzo.codice, mezzoComposizioneCopy),
                     mezziComposizione: updateItem<MezzoComposizione>(mezzoComp => mezzoComp.mezzo.codice === action.mezzo.codice, mezzoComposizioneCopy)
                 })
             );
+            dispatch(new UpdateMezzoBoxPartenza(mezzoComposizioneCopy));
         }
     }
 
