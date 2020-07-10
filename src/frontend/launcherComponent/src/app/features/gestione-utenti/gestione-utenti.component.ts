@@ -59,6 +59,10 @@ export class GestioneUtentiComponent implements OnInit, OnDestroy {
 
     constructor(public modalService: NgbModal,
                 private store: Store) {
+        const pageSizeAttuale = this.store.selectSnapshot(PaginationState.pageSize);
+        if (pageSizeAttuale === 7) {
+            this.store.dispatch(new SetPageSize(10));
+        }
         this.getUtente();
         this.getRicerca();
         this.getPageSize();
