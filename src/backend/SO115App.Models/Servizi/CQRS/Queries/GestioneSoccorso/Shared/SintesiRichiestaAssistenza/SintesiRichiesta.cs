@@ -321,7 +321,14 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         {
             get
             {
-                var eventoAssegnata = this.Partenze.Where(x => x.Partenza.Mezzo.Stato == Costanti.MezzoInViaggio && !x.Partenza.Sganciata).ToList();
+                var eventoAssegnata = this.Partenze.Where(x => x.Partenza.Mezzo.Stato == Costanti.MezzoInViaggio && !x.Partenza.Sganciata && !x.Partenza.PartenzaAnnullata && !x.Partenza.Terminata).ToList();
+                var PartenzeSelect = this.Partenze.Where(x => !x.Partenza.Sganciata && !x.Partenza.PartenzaAnnullata && !x.Partenza.Terminata).ToList();
+
+                foreach (var partenza in PartenzeSelect)
+                {
+                    if (partenza.Partenza.Mezzo.Stato == Costanti.MezzoSulPosto)
+                        return Costanti.RichiestaPresidiata;
+                }
 
                 if (this.Chiusa)
                 {
@@ -335,7 +342,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
                 {
                     return Costanti.RichiestaSospesa;
                 }
-                return Presidiata ? Costanti.RichiestaPresidiata : Costanti.Chiamata;
+                return Costanti.Chiamata;
             }
         }
 
