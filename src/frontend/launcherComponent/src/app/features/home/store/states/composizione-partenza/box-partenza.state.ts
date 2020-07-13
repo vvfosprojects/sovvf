@@ -5,21 +5,32 @@ import { BoxPartenza } from '../../../composizione-partenza/interface/box-parten
 import {
     AddBoxPartenza,
     AddMezzoBoxPartenzaSelezionato,
-    AddSquadraBoxPartenza, ClearBoxPartenze,
-    RemoveBoxPartenza, RemoveBoxPartenzaByMezzoId, RemoveMezzoBoxPartenzaSelezionato,
-    RemoveSquadraBoxPartenza, RequestAddBoxPartenza, RequestSelectBoxPartenza,
-    SelectBoxPartenza, UpdateMezzoBoxPartenza
+    AddSquadraBoxPartenza,
+    ClearBoxPartenze,
+    RemoveBoxPartenza,
+    RemoveBoxPartenzaByMezzoId,
+    RemoveMezzoBoxPartenzaSelezionato,
+    RemoveSquadraBoxPartenza,
+    RequestAddBoxPartenza,
+    RequestSelectBoxPartenza,
+    SelectBoxPartenza,
+    UpdateMezzoBoxPartenza
 } from '../../actions/composizione-partenza/box-partenza.actions';
 import { append, patch, removeItem } from '@ngxs/store/operators';
 import { makeID } from '../../../../../shared/helper/function';
 import produce from 'immer';
 import {
-    ClearSelectedMezziComposizione, FilterListaMezziComposizione,
-    RequestBookMezzoComposizione, RequestRemoveBookMezzoComposizione, SelectMezzoComposizione, UnselectMezzoComposizione
+    ClearSelectedMezziComposizione,
+    FilterListaMezziComposizione,
+    RequestBookMezzoComposizione,
+    RequestRemoveBookMezzoComposizione,
+    SelectMezzoComposizione,
+    UnselectMezzoComposizione
 } from '../../actions/composizione-partenza/mezzi-composizione.actions';
 import { SquadraComposizione } from '../../../composizione-partenza/interface/squadra-composizione-interface';
 import {
-    ClearSelectedSquadreComposizione, FilterListaSquadreComposizione,
+    ClearSelectedSquadreComposizione,
+    FilterListaSquadreComposizione,
     SelectSquadraComposizione,
     UnselectSquadraComposizione
 } from '../../actions/composizione-partenza/squadre-composizione.actions';
@@ -28,6 +39,7 @@ import { ToastrType } from '../../../../../shared/enum/toastr';
 import { ClearDirection } from '../../actions/maps/maps-direction.actions';
 import { ClearMarkerMezzoSelezionato } from '../../actions/maps/marker.actions';
 import { ComposizionePartenzaState } from './composizione-partenza.state';
+import { StatoMezzo } from '../../../../../shared/enum/stato-mezzo.enum';
 
 
 export interface BoxPartenzaStateModel {
@@ -375,7 +387,7 @@ export function _disableConfirmPartenza(boxPartenzaList: BoxPartenza[], nuovaPar
     if (boxPartenzaList && boxPartenzaList.length > 0) {
         let boxValidiCount = 0;
         for (const boxPartenza of boxPartenzaList) {
-            if (boxPartenza.mezzoComposizione && boxPartenza.squadraComposizione && boxPartenza.squadraComposizione.length > 0) {
+            if (boxPartenza.mezzoComposizione && (boxPartenza.mezzoComposizione.mezzo.stato === StatoMezzo.InRientro || boxPartenza.mezzoComposizione.mezzo.stato === StatoMezzo.InSede) && boxPartenza.squadraComposizione && boxPartenza.squadraComposizione.length > 0) {
                 boxValidiCount++;
             }
         }

@@ -71,6 +71,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                     {
                         composizione.Partenza.Mezzo.Stato = Costanti.MezzoInRientro;
                         composizione.Partenza.Mezzo.IdRichiesta = null;
+                        composizione.Partenza.Terminata = true;
                     }
                 }
 
@@ -101,7 +102,6 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 foreach (var composizione in richiesta.Partenze)
                 {
                     if (composizione.Partenza.Mezzo.Stato != Costanti.MezzoInSede
-                        && composizione.Partenza.Mezzo.Stato != Costanti.MezzoInRientro
                         && composizione.Partenza.Mezzo.Stato != Costanti.MezzoRientrato)
                     {
                         _mezziTuttiInSede = false;

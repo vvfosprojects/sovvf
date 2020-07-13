@@ -37,6 +37,8 @@ using System.Data;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
 using System.Collections.Generic;
 using SO115App.API.Models.Classi.Condivise;
+using SO115App.API.Models.Servizi.CQRS.Queries.GestioneMezziInServizio.ListaMezziInSerivizio;
+using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi;
 
 namespace SO115App.SignalR.Sender.ComposizionePartenza
 {
@@ -54,6 +56,7 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
         private readonly IGetRichiestaById _getRichiestaById;
         private readonly GetGerarchiaToSend _getGerarchiaToSend;
         private readonly IGetDistaccamentoByCodiceSedeUC _getDistaccamentoUC;
+        private readonly IGetListaMezzi _getListaMezzi;
 
         public NotificationConfermaPartenze(IHubContext<NotificationHub> notificationHubContext,
             IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> boxRichiestehandler,
@@ -63,10 +66,11 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
             IMapper mapper,
             IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> sintesiRichiesteHandler,
             IGetTipologieByCodice getTipologieByCodice, MapperRichiestaAssistenzaSuSintesi mapperSintesi,
-            IGetRichiestaById getRichiestaById, GetGerarchiaToSend getGerarchiaToSend, IGetDistaccamentoByCodiceSedeUC getDistaccamentoUC)
+            IGetRichiestaById getRichiestaById, GetGerarchiaToSend getGerarchiaToSend, IGetDistaccamentoByCodiceSedeUC getDistaccamentoUC, IGetListaMezzi getListaMezzi)
         {
             _getGerarchiaToSend = getGerarchiaToSend;
             _getDistaccamentoUC = getDistaccamentoUC;
+            _getListaMezzi = getListaMezzi;
             _notificationHubContext = notificationHubContext;
             _boxRichiestehandler = boxRichiestehandler;
             _boxMezzihandler = boxMezzihandler;
@@ -128,6 +132,9 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
                     CodiciSedi = new string[] { sede }
                 };
 
+                var CodSede = new string[] { sede };
+                var listaMezziInServizio = _getListaMezzi.Get(CodSede);
+
                 var boxInterventi = _boxRichiestehandler.Handle(boxRichiesteQuery).BoxRichieste;
                 var boxMezzi = _boxMezzihandler.Handle(boxMezziQuery).BoxMezzi;
                 var boxPersonale = _boxPersonalehandler.Handle(boxPersonaleQuery).BoxPersonale;
@@ -150,6 +157,9 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
                 await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxMezzi", boxMezzi);
                 await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxPersonale", boxPersonale);
                 await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetRichiestaMarker", listaSintesiMarker.LastOrDefault(marker => marker.CodiceRichiesta == sintesi.CodiceRichiesta));
+
+                foreach (var partenze in conferma.ConfermaPartenze.Partenze)
+                    await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyUpdateMezzoInServizio", listaMezziInServizio.Find(x => x.Mezzo.Mezzo.Codice.Equals(partenze.Mezzo.Codice)));
             }
         }
 

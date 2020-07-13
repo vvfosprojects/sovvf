@@ -38,6 +38,8 @@ namespace SO115App.Models.Classi.Condivise
         /// </summary>
         public string CodiceMezzo { get; set; }
 
+        public string IdOpPrenotazione { get; set; }
+
         /// <summary>
         ///   l'istante della prenotazione
         /// </summary>
