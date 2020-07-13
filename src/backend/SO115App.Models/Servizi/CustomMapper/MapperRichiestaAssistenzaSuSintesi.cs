@@ -73,7 +73,8 @@ namespace SO115App.Models.Servizi.CustomMapper
                         if (evento is AnnullamentoPresaInCarico)
                         {
                             var attivitaToDelete = ListaAttivita.Where(x => x.Nominativo.Equals(attivita.Nominativo)).ToList();
-                            ListaAttivita.Remove(attivitaToDelete[0]);
+                            if (attivitaToDelete.Count > 0)
+                                ListaAttivita.Remove(attivitaToDelete[0]);
                         }
                         else if (ListaAttivita.Where(x => x.Nominativo.Equals(attivita.Nominativo) && x.DataInizioAttivita <= attivita.DataInizioAttivita).ToList().Count > 0)
                         {
