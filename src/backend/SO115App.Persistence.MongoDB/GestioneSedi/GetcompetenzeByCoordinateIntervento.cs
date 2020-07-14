@@ -47,12 +47,12 @@ namespace SO115App.Persistence.MongoDB.GestioneSedi
 
                     if (CompetenzeVicine.Count > 1)
                     {
-                        CodUOCompetenzaAppo[1] = CompetenzeVicine[0].codProv + "." + CompetenzeVicine[1].codFiglio_TC;
+                        CodUOCompetenzaAppo[1] = CompetenzeVicine[1].codProv + "." + CompetenzeVicine[1].codFiglio_TC;
                         contatore = contatore + 1;
                     }
                     if (CompetenzeVicine.Count > 2)
                     {
-                        CodUOCompetenzaAppo[2] = CompetenzeVicine[0].codProv + "." + CompetenzeVicine[2].codFiglio_TC;
+                        CodUOCompetenzaAppo[2] = CompetenzeVicine[2].codProv + "." + CompetenzeVicine[2].codFiglio_TC;
                         contatore = contatore + 1;
                     }
                     CodUOCompetenzaAppo[contatore + 1] = CompetenzeVicine[0].codProv + ".1000";
