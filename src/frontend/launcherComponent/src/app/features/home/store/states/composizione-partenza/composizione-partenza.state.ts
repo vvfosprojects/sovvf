@@ -51,6 +51,8 @@ import { MezzoComposizione } from '../../../composizione-partenza/interface/mezz
 import { DescrizioneTipologicaMezzo } from '../../../composizione-partenza/interface/filtri/descrizione-filtro-composizione-interface';
 import { ClearBoxPartenze } from '../../actions/composizione-partenza/box-partenza.actions';
 import { GetMarkersMappa, StartLoadingAreaMappa, StopLoadingAreaMappa } from '../../actions/maps/area-mappa.actions';
+import { ShowToastr } from 'src/app/shared/store/actions/toastr/toastr.actions';
+import { ToastrType } from 'src/app/shared/enum/toastr';
 
 export interface ComposizionePartenzaStateModel {
     filtriAffini: ListaTipologicheMezzi;
@@ -409,6 +411,7 @@ export class ComposizionePartenzaState {
             if (composizioneActive) {
                 dispatch(new GetListeComposizioneAvanzata());
             }
+            dispatch(new ShowToastr(ToastrType.Success, 'Partenza inviata con successo'));
         }, () => {
             dispatch(new StopInvioPartenzaLoading());
         });
