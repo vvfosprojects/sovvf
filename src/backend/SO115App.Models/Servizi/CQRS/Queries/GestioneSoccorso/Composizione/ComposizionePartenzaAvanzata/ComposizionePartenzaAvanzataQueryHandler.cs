@@ -17,8 +17,11 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using CQRS.Queries;
 using Serilog;
+using SO115App.API.Models.Classi.Composizione;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneMezzi;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneSquadre;
 using SO115App.Models.Classi.Composizione;
@@ -61,6 +64,9 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                 Filtro = query.Filtro,
                 CodiceSede = query.CodiceSede
             };
+
+            //Task<List<Classi.Composizione.ComposizioneMezzi>> mezziTask = Task.Factory.StartNew(() => this._composizioneMezzihandler.Handle(composizioneMezziquery).ComposizioneMezzi);
+            //Task<List<Classi.Composizione.ComposizioneSquadre>> squadreTask = Task.Factory.StartNew(() => this._composizioneSquadrehandler.Handle(composizioneSquadreQuery).ComposizioneSquadre);
 
             var composizioneAvanzata = new Classi.Composizione.ComposizionePartenzaAvanzata()
             {

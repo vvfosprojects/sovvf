@@ -79,7 +79,8 @@ namespace SO115App.SignalR.Sender.GestionePartenza
                 Filtro = new FiltroRicercaRichiesteAssistenza
                 {
                     idOperatore = intervento.IdUtente,
-                    PageSize = 99
+                    PageSize = 99,
+                    IncludiRichiesteChiuse = true
                 },
                 CodiciSede = SediDaNotificare.ToArray()
             };
