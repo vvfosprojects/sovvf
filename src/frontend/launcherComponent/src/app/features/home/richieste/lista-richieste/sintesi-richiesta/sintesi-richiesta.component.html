@@ -57,7 +57,7 @@
                                         t.descrizione }}
                                     </div>
                                 </ng-template>
-                                <span><a *ngIf="!!richiesta.tipologie && richiesta?.tipologie.length > 0"
+                                <span><a *ngIf="!!richiesta.tipologie && richiesta?.tipologie?.length > 0"
                                          class="h6 font-weight-bold descrizione-int"
                                          ngbTooltip="{{ richiesta.descrizione }}"
                                          [disableTooltip]="richiesta.descrizione.length <= 45">{{
