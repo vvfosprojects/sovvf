@@ -65,13 +65,13 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                 CodiceSede = query.CodiceSede
             };
 
-            Task<List<Classi.Composizione.ComposizioneMezzi>> mezziTask = Task.Factory.StartNew(() => this._composizioneMezzihandler.Handle(composizioneMezziquery).ComposizioneMezzi);
-            Task<List<Classi.Composizione.ComposizioneSquadre>> squadreTask = Task.Factory.StartNew(() => this._composizioneSquadrehandler.Handle(composizioneSquadreQuery).ComposizioneSquadre);
+            //Task<List<Classi.Composizione.ComposizioneMezzi>> mezziTask = Task.Factory.StartNew(() => this._composizioneMezzihandler.Handle(composizioneMezziquery).ComposizioneMezzi);
+            //Task<List<Classi.Composizione.ComposizioneSquadre>> squadreTask = Task.Factory.StartNew(() => this._composizioneSquadrehandler.Handle(composizioneSquadreQuery).ComposizioneSquadre);
 
             var composizioneAvanzata = new Classi.Composizione.ComposizionePartenzaAvanzata()
             {
-                ComposizioneMezzi = mezziTask.Result,
-                ComposizioneSquadre = squadreTask.Result,
+                ComposizioneMezzi = this._composizioneMezzihandler.Handle(composizioneMezziquery).ComposizioneMezzi,
+                ComposizioneSquadre = this._composizioneSquadrehandler.Handle(composizioneSquadreQuery).ComposizioneSquadre,
             };
 
             Log.Debug("Fine elaborazione Composizione partenza avanzata Handler");
