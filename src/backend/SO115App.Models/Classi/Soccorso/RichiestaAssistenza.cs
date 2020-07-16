@@ -443,7 +443,7 @@ namespace SO115App.API.Models.Classi.Soccorso
                     .OfType<RichiestaPresidiata>()
                     .ToList();
 
-                return elencoPresidiate.Count > 0 && composizionePartenze.Any(x => x.Partenza.Mezzo.Stato == Costanti.MezzoSulPosto && !x.Partenza.PartenzaAnnullata && !x.Partenza.Terminata);
+                return elencoPresidiate.Count > 0 && composizionePartenze.Any(x => x.Partenza.Mezzo.Stato == Costanti.MezzoSulPosto && !x.Partenza.PartenzaAnnullata && !x.Partenza.Terminata && !x.Partenza.Sganciata);
             }
         }
 

@@ -47,11 +47,11 @@ namespace SO115App.Persistence.MongoDB
 
             if (listaSintesi.Count > 0)
             {
-                interventi.Assegnati = listaSintesi.Count(x => x.Partenze.Count > 0 
-                    && !x.Partenze.All(c => c.Partenza.Terminata || c.Partenza.PartenzaAnnullata || c.Partenza.Sganciata) 
+                interventi.Assegnati = listaSintesi.Count(x => x.Partenze.Count > 0
+                    && !x.Partenze.All(c => c.Partenza.Terminata || c.Partenza.PartenzaAnnullata || c.Partenza.Sganciata)
                     && !x.Chiusa && !x.Presidiata && !x.Sospesa && x.Aperta);
-                interventi.Chiamate = listaSintesi.Count(x => 
-                    (x.Partenze.Count == 0 || x.Partenze.All(c => c.Partenza.Terminata || c.Partenza.PartenzaAnnullata || c.Partenza.Sganciata)) 
+                interventi.Chiamate = listaSintesi.Count(x =>
+                    (x.Partenze.Count == 0 || x.Partenze.All(c => c.Partenza.Terminata || c.Partenza.PartenzaAnnullata || c.Partenza.Sganciata))
                     && !x.Chiusa && !x.Sospesa);
                 interventi.Presidiati = listaSintesi.Count(x => x.Presidiata);
                 interventi.Sospesi = listaSintesi.Count(x => x.Sospesa);
