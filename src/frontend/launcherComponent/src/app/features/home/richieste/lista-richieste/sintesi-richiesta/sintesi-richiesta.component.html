@@ -66,7 +66,7 @@
                         </div>
                         <div class="col-3 pr-3 text-right">
                             <div class="h6 mb-1 nowrap default-cursor">
-                                <i class="guida fa fa-thermometer-half fa-fw" ngbTooltip="Priorità della richiesta"></i>
+                                <i class="guida fa fa-thermometer-half fa-fw" [class.high-priority]="richiesta.prioritaRichiesta > 3" ngbTooltip="Priorità della richiesta"></i>
                                 <ngb-rating [(rate)]="richiesta.prioritaRichiesta" [max]="5" [readonly]="true">
                                     <ng-template let-fill="fill" let-index="index">
                                     <span class="circle" [class.filled]="fill === 100"
