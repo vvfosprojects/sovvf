@@ -14,7 +14,7 @@
                 <div class="float-right w-50">
                     <input class="form-control" placeholder="Cerca..." [(ngModel)]="ricercaSquadre"
                            [ngClass]="{'border-danger': ricercaSquadre && ricercaSquadre.length > 0}"
-                           type="text" name="ricercaSquadre" id="ricercaSquadre" (ngModelChange)="onSearchSquadre()">
+                           type="search" name="ricercaSquadre" id="ricercaSquadre" (ngModelChange)="onSearchSquadre()">
                 </div>
             </div>
             <ul class="list-group list-group-flush border-bottom scroll-y" style="max-height:345px; min-height:345px">
@@ -43,7 +43,7 @@
                 <div class="float-right">
                     <input class="form-control" placeholder="Cerca..." [(ngModel)]="ricercaMezzi"
                            [ngClass]="{'border-danger': ricercaMezzi && ricercaMezzi.length > 0}"
-                           type="text" name="ricercaMezzi" id="ricercaMezzi" (ngModelChange)="onSearchMezzi()">
+                           type="search" name="ricercaMezzi" id="ricercaMezzi" (ngModelChange)="onSearchMezzi()">
                 </div>
             </div>
             <ul class="list-group list-group-flush border-bottom scroll-y" style="max-height:345px; min-height:345px">
