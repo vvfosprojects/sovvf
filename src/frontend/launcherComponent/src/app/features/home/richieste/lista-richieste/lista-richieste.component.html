@@ -3,7 +3,7 @@
     <!-- Lista di singole Richieste -->
     <div *ngIf="richieste && richieste.length > 0" class="col-12 py-1 px-0 overflow-auto" [ngClass]="heightControl()">
         <div *ngFor="let r of richieste | paginate: { itemsPerPage: pageSize, currentPage: page, totalItems: totalItems }"
-             [ngClass]="{'col-double': !_split, 'col-12': _split}">
+             [ngClass]="{'col-double': !_split, 'col-12': _split}" class=" test-hover">
             <div id="richiesta" *ngIf="!richiestaFissata || (r.id !== richiestaFissata.id)"
                  class="w-100 rounded card-shadow" [ngClass]="cardClasses(r)">
                 <app-partial-loader *ngIf="loadingActionRichiesta === r.id"></app-partial-loader>

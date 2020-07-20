@@ -84,3 +84,7 @@ cdk-virtual-scroll-viewport {
     background-color: lightgrey;
   }
 }
+
+.test-hover:hover {
+  transform: scale(1.01);
+}
