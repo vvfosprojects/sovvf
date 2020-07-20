@@ -124,7 +124,7 @@ export class SintesiRichiesta {
         /**
          * turno inserimento della chiamata
          */
-        public turnoInserimentoChiamata?: TurnoInserimentoChiamata,
+        public trnInsChiamata?: string,
         /**
          * turno dell'intervento
          */
