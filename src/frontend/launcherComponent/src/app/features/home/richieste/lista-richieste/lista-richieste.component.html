@@ -1,7 +1,7 @@
 <div class="row mt-2">
     <app-partial-loader *ngIf="loading"></app-partial-loader>
     <!-- Lista di singole Richieste -->
-    <div *ngIf="richieste && richieste.length > 0" class="col-12 py-1 px-0 overflow-auto" [ngClass]="heightControl()">
+    <div *ngIf="richieste && richieste.length > 0" class="col-12 py-1 px-0 overflow-auto" [ngClass]="heightControl()" style="scrollbar-width: none;">
         <div *ngFor="let r of richieste | paginate: { itemsPerPage: pageSize, currentPage: page, totalItems: totalItems }"
              [ngClass]="{'col-double': !_split, 'col-12': _split}" class=" test-hover">
             <div id="richiesta" *ngIf="!richiestaFissata || (r.id !== richiestaFissata.id)"
@@ -73,7 +73,7 @@
     <div *ngIf="richieste && richieste.length > 0" class="col-12 mt-3">
         <div class="row">
             <div class="col-4">
-                <button class="btn btn-block"
+                <button class="btn btn-block btn-no-hover"
                         [ngClass]="{'btn-outline-primary': !needRefresh, 'btn-primary': needRefresh}"
                         [disabled]="!needRefresh || loading" (click)="refresh.emit(true)">
                     <ng-template [ngIf]="needRefresh && !loading">

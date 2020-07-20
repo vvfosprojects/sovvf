@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-4 pl-3 pr-1">
-        <button class="btn btn-warning btn-block card-shadow mt-2" [ngClass]="{'btn-danger' : prenotato}"
+        <button class="btn btn-warning btn-block card-shadow mt-2 btn-no-hover" [ngClass]="{'btn-danger' : prenotato}"
                 (click)="_confirmPrenota()" [ngbTooltip]="tooltipPrenota"
                 [disabled]="disableConfirmPrenota">
             <span *ngIf="!prenotato" class="mr-1">Prenota</span>
@@ -12,7 +12,7 @@
         </button>
     </div>
     <div class="col-8 pl-1 pr-3">
-        <button class="btn btn-success btn-block card-shadow mt-2" (click)="_confirmPartenza()"
+        <button class="btn btn-success btn-block card-shadow mt-2 btn-no-hover" (click)="_confirmPartenza()"
                 [disabled]="disableConfirmPartenza">
             <span class="mr-1">Conferma</span>
             <span class="badge badge-light">{{boxPartenzaLenght}}</span>
