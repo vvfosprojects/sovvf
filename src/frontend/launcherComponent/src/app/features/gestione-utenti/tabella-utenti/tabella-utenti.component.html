@@ -10,7 +10,7 @@
         <tr *ngFor="let utente of listaUtenti | paginate: { itemsPerPage: pageSize, currentPage: page, totalItems: totalItems }">
             <td width="40%" class="pb-1">
                 <button class="btn btn-sm btn-danger font-weight-bold float-left mt-1 mr-3" ngbTooltip="Rimuovi utente"
-                        placement="bottom" [disabled]="utente.id === idUtenteLoggato"
+                        placement="bottom" [disabled]="utente.id === idUtenteLoggato" [class.cursor-not-allowed]="utente.id === idUtenteLoggato"
                         (click)="onRemoveUtente(utente.codiceFiscale, utente.cognome + ' ' + utente.nome)">
                     <i class="fa fa-trash"></i>
                 </button>
@@ -53,7 +53,7 @@
                 <div *ngIf="utente?.ruoli.length <= 0 && !loading" class="d-inline-block h6 font-weight-normal">
                     <div class="badge badge-secondary d-flex align-items-center justify-content-center cursor-pointer shadow-sm py-3 px-2"
                          style="opacity:.6; min-height:67px">
-                        <span class="d-block">Solo Visualizzazione</span>
+                        <span class="d-block">Visualizzatore</span>
                     </div>
                 </div>
             </td>

@@ -99,6 +99,19 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(): void {
         this.subscription.unsubscribe();
+        this.clearFormDisconnection();
+    }
+
+
+    clearFormDisconnection() {
+        this.submitted = false;
+        this.chiamataForm.reset();
+        this.clearTipologieSelezionate();
+        this.coordinate = null;
+        this.store.dispatch(new ClearClipboard());
+        this._statoChiamata('reset');
+        this.store.dispatch(new DelChiamataMarker(this.idChiamata));
+        this.isCollapsed = true;
     }
 
     createForm(): FormGroup {

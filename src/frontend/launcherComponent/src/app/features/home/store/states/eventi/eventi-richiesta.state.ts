@@ -14,6 +14,8 @@ import {
 import { FiltroTargaMezzo } from '../../../eventi/filtro-targa-mezzo.interface';
 import { StartLoading, StopLoading } from '../../../../../shared/store/actions/loading/loading.actions';
 import { SintesiRichiesteService } from '../../../../../core/service/lista-richieste-service/lista-richieste.service';
+import { GestioneUtentiService } from '../../../../../core/service/gestione-utenti-service/gestione-utenti.service';
+import { Utente } from '../../../../../shared/model/utente.model';
 
 export interface EventiRichiestaStateModel {
     codiceRichiesta: string;
@@ -41,7 +43,8 @@ export class EventiRichiestaState {
 
     constructor(private store: Store,
                 private richiesteService: SintesiRichiesteService,
-                private _eventiRichiesta: EventiRichiestaService) {
+                private _eventiRichiesta: EventiRichiestaService,
+                private _gestioneUtentiService: GestioneUtentiService) {
     }
 
     @Selector()
@@ -82,6 +85,14 @@ export class EventiRichiestaState {
         const codice = getState().codiceRichiesta;
         dispatch(new StartLoading());
         this._eventiRichiesta.getEventiRichiesta(codice).subscribe((data: EventoRichiesta[]) => {
+            console.log('Risposta Controller Eventi', data);
+            data.forEach((evento: EventoRichiesta) => {
+                if (evento.idOperatore) {
+                    this._gestioneUtentiService.getUtente(evento.idOperatore).subscribe((utenteDet: { detUtente: Utente }) => {
+                        evento.operatore = utenteDet.detUtente;
+                    });
+                }
+            });
             dispatch(new SetEventiRichiesta(data));
             dispatch(new StopLoading());
         });

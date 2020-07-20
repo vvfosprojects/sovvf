@@ -27,7 +27,9 @@
                                        [loadingInvioPartenza]="loadingInvioPartenza$ | async"
                                        (sendDirection)="onSendDirection($event)"
                                        (clearDirection)="onClearDirection()" (centraMappa)="centraMappa()"
-                                       (prenota)="onPrenota($event)" (sganciamento)="onSganciamento($event)">
+                                       (prenota)="onPrenota($event)" (sganciamento)="onSganciamento($event)"
+                                       (changeRicercaSquadre)="changeRicercaSquadre($event)"
+                                       (changeRicercaMezzi)="changeRicercaMezzi($event)">
             </app-composizione-avanzata>
         </div>
     </div>

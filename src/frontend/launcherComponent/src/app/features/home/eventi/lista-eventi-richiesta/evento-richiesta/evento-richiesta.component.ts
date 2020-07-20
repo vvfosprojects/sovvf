@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { EventoRichiesta } from '../../../../../shared/model/evento-richiesta.model';
+import { Utente } from '../../../../../shared/model/utente.model';
 
 @Component({
   selector: '[app-evento-richiesta]',
@@ -14,6 +15,7 @@ export class EventoRichiestaComponent implements OnInit {
   myMap: any;
 
   @Input() eventoRichiesta: EventoRichiesta;
+  @Input() operatore: Utente;
   @Input() istanteEventoPrecedente: Date;
   @Input() istantePrimoEvento: Date;
   @Input() nomeClasseEvento: string;

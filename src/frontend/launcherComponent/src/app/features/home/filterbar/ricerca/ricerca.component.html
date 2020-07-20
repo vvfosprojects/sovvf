@@ -1,16 +1,19 @@
 <div class="input-group app-shadow">
     <!-- DEBOUNCE INPUT -->
-    <input *ngIf="debounce" [(ngModel)]="ricerca" class="form-control" type="text" appDebounceKeyUp
+    <input *ngIf="debounce" [(ngModel)]="ricerca" class="form-control cursor-not-allowed" type="text" appDebounceKeyUp
            (debounceKeyUp)="onSearch()" [debounceTime]="600" [placeholder]="placeholder ? placeholder : ''"
            name="ricercaDebounce" id="ricercaDebounce" disabled>
     <!-- NO DEBOUNCE INPUT -->
     <input *ngIf="!debounce" [(ngModel)]="ricerca" class="form-control" type="text"
            [placeholder]="placeholder ? placeholder : ''" name="ricercaNoDebounce" id="ricercaNoDebounce"
            (ngModelChange)="onSearch()">
-    <div class="input-group-append" ngbTooltip="La ricerca è disabilitata per questa funzione"
+    <div class="input-group-append cursor-not-allowed" ngbTooltip="La ricerca è disabilitata per questa funzione"
          [disableTooltip]="!disabled">
-        <button class="btn btn-primary" (click)="onSearch()" disabled><i
-                class="fa fa-search text-light"></i>
+        <button *ngIf="debounce" class="btn btn-primary cursor-not-allowed" (click)="onSearch()" disabled>
+            <i class="fa fa-search text-light"></i>
+        </button>
+        <button *ngIf="!debounce" class="btn btn-primary btn-no-hover" (click)="onSearch()">
+            <i class="fa fa-search text-light"></i>
         </button>
     </div>
 </div>

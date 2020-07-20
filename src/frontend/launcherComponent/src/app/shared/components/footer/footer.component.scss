@@ -34,7 +34,6 @@
   animation-iteration-count: infinite;
   display: inline-block;
   animation-name: pulse;
-  animation-duration: 1s;
 }
 
 @keyframes pulse {
@@ -43,3 +42,18 @@
   100% {transform: scale(1);}
 }
 
+.animation-test-img:hover {
+  animation-duration: 4s;
+  animation-fill-mode: initial;
+  animation-iteration-count: infinite;
+  display: inline-block;
+  animation-name: flip;
+}
+
+@keyframes flip {
+  0% {transform: perspective(400px) translateZ(0) rotateY(0);animation-timing-function: ease-in;}
+  25% {transform: perspective(400px) translateZ(0) rotateY(90deg);animation-timing-function: ease-in;}
+  50% {transform: perspective(400px) translateZ(0) rotateY(180deg);animation-timing-function: ease-in;}
+  75% {transform: perspective(400px) translateZ(0) rotateY(270deg);animation-timing-function: ease-in;}
+  100% {transform: perspective(400px) translateZ(0) rotateY(360deg);animation-timing-function: ease-in;}
+}
