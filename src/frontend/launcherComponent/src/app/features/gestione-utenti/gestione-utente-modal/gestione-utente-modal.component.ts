@@ -18,7 +18,7 @@ import { LoadingState } from '../../../shared/store/states/loading/loading.state
 @Component({
     selector: 'app-gestione-utente-modal',
     templateUrl: './gestione-utente-modal.component.html',
-    styleUrls: [ './gestione-utente-modal.component.css' ]
+    styleUrls: ['./gestione-utente-modal.component.css']
 })
 export class GestioneUtenteModalComponent implements OnInit, OnDestroy {
 
@@ -66,10 +66,10 @@ export class GestioneUtenteModalComponent implements OnInit, OnDestroy {
             ruolo: new FormControl()
         });
         this.addUtenteRuoloForm = this.fb.group({
-            utente: [ null, Validators.required ],
-            sedi: [ null, Validators.required ],
-            ricorsivo: [ true ],
-            ruolo: [ null, Validators.required ]
+            utente: [null, Validators.required],
+            sedi: [null, Validators.required],
+            ricorsivo: [true],
+            ruolo: [null, Validators.required]
         });
         // Init disabled input
         this.checkboxState = { id: 'ricorsivo', status: this.f.ricorsivo.value, label: 'Ricorsivo', disabled: true };
@@ -78,8 +78,8 @@ export class GestioneUtenteModalComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        this.setRuoli();
         if (this.codFiscaleUtenteVVF) {
+            this.setRuoli({ removeVisualizzatore: true });
             this.f.utente.patchValue(this.codFiscaleUtenteVVF);
             this.f.utente.clearValidators();
             this.store.dispatch(new UpdateFormValue({
@@ -89,6 +89,8 @@ export class GestioneUtenteModalComponent implements OnInit, OnDestroy {
                 },
                 path: 'gestioneUtenti.addUtenteRuoloForm'
             }));
+        } else if (!this.codFiscaleUtenteVVF) {
+            this.setRuoli();
         }
     }
 
@@ -161,8 +163,11 @@ export class GestioneUtenteModalComponent implements OnInit, OnDestroy {
         });
     }
 
-    setRuoli() {
+    setRuoli(opts?: { removeVisualizzatore?: boolean }) {
         Object.values(Role).forEach((role: string) => {
+            if (opts && opts.removeVisualizzatore && role === Role.Visualizzatore) {
+                return;
+            }
             this.ruoli.push(role);
         });
     }
