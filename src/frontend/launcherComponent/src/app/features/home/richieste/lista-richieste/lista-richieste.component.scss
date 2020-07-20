@@ -88,3 +88,8 @@ cdk-virtual-scroll-viewport {
 .test-hover:hover {
   transform: scale(1.01);
 }
+
+::-webkit-scrollbar { 
+  //display: none; /* Chrome Safari */
+  background: transparent;
+}
