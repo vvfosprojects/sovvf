@@ -23,3 +23,7 @@
 .bad {
     color: #c23535;
 }
+
+.high-priority{
+    color: darkred;
+} 
