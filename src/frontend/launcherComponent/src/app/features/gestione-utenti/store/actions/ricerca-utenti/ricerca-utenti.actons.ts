@@ -19,8 +19,8 @@ export class SetSediFiltro {
     }
 }
 
-export class ClearSediFiltro {
-    static readonly type = '[RicercaUtenti] Clear Sedi Filtro';
+export class ResetSediFiltro {
+    static readonly type = '[RicercaUtenti] Reset Sedi Filtro';
 }
 
 export class SetSediFiltroConFigli {

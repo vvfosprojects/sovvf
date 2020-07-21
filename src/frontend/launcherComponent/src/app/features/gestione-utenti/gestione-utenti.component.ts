@@ -5,8 +5,7 @@ import { Select, Store } from '@ngxs/store';
 import {
     ClearRicercaUtenti,
     ReducerSelezioneFiltroSede,
-    SetRicercaUtenti,
-    SetSediFiltro, SetSediFiltroConFigli
+    SetRicercaUtenti
 } from './store/actions/ricerca-utenti/ricerca-utenti.actons';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import {
@@ -30,6 +29,7 @@ import { RuoliUtenteLoggatoState } from '../../shared/store/states/ruoli-utente-
 import { SetCurrentUrl } from '../../shared/store/actions/app/app.actions';
 import { RoutesPath } from '../../shared/enum/routes-path.enum';
 import { AuthState } from '../auth/store/auth.state';
+import { Sede } from '../../shared/model/sede.model';
 
 @Component({
     selector: 'app-gestione-utenti',
@@ -66,8 +66,7 @@ export class GestioneUtentiComponent implements OnInit, OnDestroy {
         this.getUtente();
         this.getRicerca();
         this.getPageSize();
-        this.getPageSize();
-        this.getSediFiltro();
+        this.getUtentiGestione(true);
     }
 
     ngOnInit() {
@@ -239,26 +238,6 @@ export class GestioneUtentiComponent implements OnInit, OnDestroy {
                         this.store.dispatch(new GetUtentiGestione());
                     }
                     this.pageSize = pageSize;
-                }
-            })
-        );
-    }
-
-    getSediFiltro() {
-        this.subscriptions.add(
-            this.ruoliUtenteLoggato$.subscribe((ruoli: Ruolo[]) => {
-                if (ruoli && ruoli.length > 0) {
-                    const sediFiltro = ruoli.filter((r: Ruolo) => r.descrizione === 'Amministratore');
-                    this.store.dispatch(new SetSediFiltro(sediFiltro));
-                    this.getUtentiGestione(true);
-                }
-            })
-        );
-        this.subscriptions.add(
-            this.ruoliUtenteLoggatoConDistaccamenti$.subscribe((ruoli: Ruolo[]) => {
-                if (ruoli && ruoli.length > 0) {
-                    const sediFiltroConDistaccamenti = ruoli.filter((r: Ruolo) => r.descrizione === 'Amministratore');
-                    this.store.dispatch(new SetSediFiltroConFigli(sediFiltroConDistaccamenti));
                 }
             })
         );
