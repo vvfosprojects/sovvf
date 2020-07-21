@@ -64,7 +64,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneUtente.ListaOperatori
         /// <returns>ListaOperatoriResult</returns>
         public ListaOperatoriResult Handle(ListaOperatoriQuery query)
         {
-            var codiciSede = query.CodiciSede.Split(',');
+            //var codiciSede = query.CodiciSede.Split(',');
             var utente = _getUtenteById.GetUtenteByCodice(query.IdUtente);
             var listaCodiciSedeRuoloAdmin = new List<string>();
             var sediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
@@ -72,23 +72,29 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneUtente.ListaOperatori
 
             foreach (var ruolo in utente.Ruoli.FindAll(x => x.Descrizione.Equals("Amministratore")))
             {
-                if (codiciSede.Contains(ruolo.CodSede))
+                listaCodiciSedeRuoloAdmin.Add(ruolo.CodSede);
+                if (ruolo.Ricorsivo)
                 {
-                    listaCodiciSedeRuoloAdmin.Add(ruolo.CodSede);
-                    if (ruolo.Ricorsivo)
+                    listaPin.Add(new PinNodo(ruolo.CodSede, ruolo.Ricorsivo));
+                    foreach (var figli in sediAlberate.GetSottoAlbero(listaPin))
                     {
-                        listaPin.Add(new PinNodo(ruolo.CodSede, ruolo.Ricorsivo));
-                        foreach (var figli in sediAlberate.GetSottoAlbero(listaPin))
-                        {
-                            listaCodiciSedeRuoloAdmin.Add(figli.Codice);
-                        }
+                        listaCodiciSedeRuoloAdmin.Add(figli.Codice);
                     }
                 }
             }
+
             var utentiByCodSede = _getUtenteByCodiciSedi.Get(listaCodiciSedeRuoloAdmin, query.Filters.Search);
 
             if (query.Filters.CodSede != null)
-                utentiByCodSede = utentiByCodSede.FindAll(x => x.Ruoli.Any(y => y.CodSede.Equals(query.Filters.CodSede))).ToList();
+            {
+                List<Utente> listaFiltrata = new List<Utente>();
+                foreach (string sede in query.Filters.CodSede)
+                {
+                    listaFiltrata.AddRange(utentiByCodSede.FindAll(x => x.Ruoli.Any(y => y.CodSede.Equals(sede))).ToList());
+                }
+
+                utentiByCodSede = listaFiltrata;
+            }
 
             utentiByCodSede.Reverse();
             var utentiPaginati = utentiByCodSede.Skip((query.Pagination.Page - 1) * query.Pagination.PageSize).Take(query.Pagination.PageSize).ToList();
