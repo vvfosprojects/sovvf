@@ -15,9 +15,6 @@ import { FiltroTargaMezzo } from '../../../eventi/filtro-targa-mezzo.interface';
 import { StartLoading, StopLoading } from '../../../../../shared/store/actions/loading/loading.actions';
 import { SintesiRichiesteService } from '../../../../../core/service/lista-richieste-service/lista-richieste.service';
 import { GestioneUtentiService } from '../../../../../core/service/gestione-utenti-service/gestione-utenti.service';
-import { Utente } from '../../../../../shared/model/utente.model';
-import { patch, updateItem } from '@ngxs/store/operators';
-import { makeCopy } from '../../../../../shared/helper/function';
 
 export interface EventiRichiestaStateModel {
     codiceRichiesta: string;
@@ -83,29 +80,13 @@ export class EventiRichiestaState {
     }
 
     @Action(GetEventiRichiesta)
-    getEventiRichiesta({ getState, setState, dispatch }: StateContext<EventiRichiestaStateModel>) {
+    getEventiRichiesta({ getState, dispatch }: StateContext<EventiRichiestaStateModel>) {
         const codice = getState().codiceRichiesta;
         dispatch(new StartLoading());
         this._eventiRichiesta.getEventiRichiesta(codice).subscribe((data: EventoRichiesta[]) => {
             console.log('Risposta Controller Eventi', data);
             dispatch(new SetEventiRichiesta(data));
             dispatch(new StopLoading());
-
-            // inserisco il nominativo dell'operatore nell'oggetto "EventoRichiesta"
-            for (const evento of data) {
-                if (evento.idOperatore) {
-                    const eventoCopy = makeCopy(evento);
-                    this._gestioneUtentiService.getUtente(evento.idOperatore).subscribe((utenteDet: { detUtente: Utente }) => {
-                        eventoCopy.operatore = utenteDet.detUtente;
-                        setState(
-                            patch({
-                                eventi: updateItem((e: EventoRichiesta) => e === evento, eventoCopy),
-                                listaEventiFiltrata: updateItem((e: EventoRichiesta) => e === evento, eventoCopy)
-                            })
-                        );
-                    });
-                }
-            }
         });
     }
 
