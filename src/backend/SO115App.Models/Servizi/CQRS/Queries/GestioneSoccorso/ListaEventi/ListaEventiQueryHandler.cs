@@ -25,6 +25,7 @@ using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.CustomMapper;
+using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti;
 using SO115App.Models.Servizi.Infrastruttura.GetListaEventi;
 using System;
 using System.Collections.Generic;
@@ -60,13 +61,15 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
     public class ListaEventiQueryHandler : IQueryHandler<ListaEventiQuery, ListaEventiResult>
     {
         private readonly IGetListaEventi _iEventi;
+        private readonly IGetUtenteById _getUtenteById;
 
         /// <summary>
         ///   Costruttore della classe
         /// </summary>
-        public ListaEventiQueryHandler(IGetListaEventi iEventi)
+        public ListaEventiQueryHandler(IGetListaEventi iEventi, IGetUtenteById getUtenteById)
         {
             this._iEventi = iEventi;
+            this._getUtenteById = getUtenteById;
         }
 
         /// <summary>
@@ -82,12 +85,14 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
             var eventiMapper = new List<MapperEventoSuEventoGui>();
             foreach (var evento in eventi)
             {
+                var operatore = _getUtenteById.GetUtenteByCodice(evento.CodiceFonte);
                 var eventoMapper = new MapperEventoSuEventoGui
                 {
                     NomeClasseEvento = MapEvento(evento),
                     IstanteEvento = evento.Istante,
                     Targa = MapTarghe(evento),
-                    Note = MapNote(evento)
+                    Note = MapNote(evento),
+                    Operatore = operatore.Nome + " " + operatore.Cognome
                 };
                 eventiMapper.Add(eventoMapper);
             }

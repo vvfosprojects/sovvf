@@ -26,8 +26,8 @@
     </small>
 </td>
 <td>
-  <span *ngIf="operatore" class="h6 text-muted" ngbTooltip="Data Evento">
-      {{eventoRichiesta.operatore.nome + ' ' + eventoRichiesta.operatore.cognome | uppercase}}
+  <span *ngIf="operatore" class="h6 text-muted">
+      {{eventoRichiesta.operatore | uppercase}}
   </span>
 </td>
 <td>
