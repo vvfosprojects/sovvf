@@ -1,5 +1,3 @@
-import { Utente } from './utente.model';
-
 export class EventoRichiesta {
     constructor(
         public id: string,
@@ -7,8 +5,7 @@ export class EventoRichiesta {
         public istanteEvento: Date,
         public targa: string,
         public note: string,
-        public idOperatore?: string,
-        public operatore?: Utente
+        public operatore?: string
     ) {
     }
 
