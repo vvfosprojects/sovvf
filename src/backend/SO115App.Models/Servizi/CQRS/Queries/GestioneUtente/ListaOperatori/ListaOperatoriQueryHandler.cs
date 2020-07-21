@@ -18,6 +18,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Queries;
+using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.API.Models.Classi.Organigramma;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.GetUtenti;
@@ -88,10 +89,33 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneUtente.ListaOperatori
             utentiByCodSede.Reverse();
             var utentiPaginati = utentiByCodSede.Skip((query.Pagination.Page - 1) * query.Pagination.PageSize).Take(query.Pagination.PageSize).ToList();
             query.Pagination.TotalItems = utentiByCodSede.Count;
+
+            List<Role> listaSediPresenti = new List<Role>();
+
+            foreach (var UtenteInLista in utentiByCodSede)
+            {
+                foreach (var ruolo in UtenteInLista.Ruoli)
+                {
+                    Role ruoloToAdd = new Role("", ruolo.CodSede)
+                    {
+                        DescSede = ruolo.DescSede
+                    };
+
+                    if (listaSediPresenti.Count > 0)
+                    {
+                        if (listaSediPresenti.Find(x => x.CodSede.Equals(ruoloToAdd.CodSede)) == null)
+                            listaSediPresenti.Add(ruoloToAdd);
+                    }
+                    else
+                        listaSediPresenti.Add(ruoloToAdd);
+                }
+            }
+
             return new ListaOperatoriResult
             {
                 DataArray = utentiPaginati,
-                Pagination = query.Pagination
+                Pagination = query.Pagination,
+                ListaSediPresenti = listaSediPresenti.ToHashSet().ToList()
             };
         }
     }
