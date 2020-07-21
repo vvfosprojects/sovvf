@@ -6,7 +6,7 @@
                 <button class="btn btn-primary" id="filtroSediDropdown" ngbDropdownToggle>
                     <span *ngIf="sediFiltroSelezionate?.length > 0" class="badge badge-success mr-2">{{sediFiltroSelezionate?.length}}</span>Sedi
                 </button>
-                <div ngbDropdownMenu style="width:400px">
+                <div ngbDropdownMenu style="width:400px; max-height:400px; overflow-y:auto; overflow-x:hidden">
                     <div class="p-2">
                         <h5 class="text-center">Filtra per sede</h5>
                         <small class="d-block text-center">
