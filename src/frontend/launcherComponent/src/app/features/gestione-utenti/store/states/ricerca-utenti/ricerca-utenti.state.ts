@@ -2,16 +2,15 @@ import { Action, Selector, State, StateContext } from '@ngxs/store';
 import {
     ClearRicercaUtenti,
     SetSedeFiltroDeselezionato,
-    ResetSediFiltro,
+    ResetSediFiltroSelezionate,
     ReducerSelezioneFiltroSede,
     SetRicercaUtenti,
     SetSedeFiltroSelezionato,
-    SetSediFiltro, SetAllSediFiltroSelezionate, SetSediFiltroConFigli
+    SetSediFiltro
 } from '../../actions/ricerca-utenti/ricerca-utenti.actons';
-import { append, insertItem, patch, removeItem } from '@ngxs/store/operators';
+import { insertItem, patch, removeItem } from '@ngxs/store/operators';
 import { GetUtentiGestione } from '../../actions/gestione-utenti/gestione-utenti.actions';
 import { Ruolo } from '../../../../../shared/model/utente.model';
-import { Sede } from '../../../../../shared/model/sede.model';
 
 export interface RicercaUtentiStateModel {
     ricerca: string;
@@ -101,11 +100,11 @@ export class RicercaUtentiState {
         dispatch(new GetUtentiGestione());
     }
 
-    @Action(ResetSediFiltro)
-    resetSediFiltro({ patchState }: StateContext<RicercaUtentiStateModel>) {
+    @Action(ResetSediFiltroSelezionate)
+    resetSediFiltroSelezionate({ patchState, dispatch }: StateContext<RicercaUtentiStateModel>) {
         patchState({
-            sediFiltro: RicercaUtentiStateDefaults.sediFiltro,
             sediFiltroSelezionate: RicercaUtentiStateDefaults.sediFiltroSelezionate
         });
+        dispatch(new GetUtentiGestione());
     }
 }

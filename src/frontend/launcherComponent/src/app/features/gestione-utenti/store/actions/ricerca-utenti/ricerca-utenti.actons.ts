@@ -1,4 +1,3 @@
-import { Sede } from '../../../../../shared/model/sede.model';
 import { Ruolo } from '../../../../../shared/model/utente.model';
 
 export class SetRicercaUtenti {
@@ -19,15 +18,8 @@ export class SetSediFiltro {
     }
 }
 
-export class ResetSediFiltro {
-    static readonly type = '[RicercaUtenti] Reset Sedi Filtro';
-}
-
-export class SetSediFiltroConFigli {
-    static readonly type = '[RicercaUtenti] Set Sedi Filtro Con Distaccamenti';
-
-    constructor(public sediConDistaccamenti: Ruolo[]) {
-    }
+export class ResetSediFiltroSelezionate {
+    static readonly type = '[RicercaUtenti] Reset Sedi Filtro Selezionate';
 }
 
 export class ReducerSelezioneFiltroSede {

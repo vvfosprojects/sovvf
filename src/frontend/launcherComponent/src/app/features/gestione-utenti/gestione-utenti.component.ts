@@ -4,7 +4,7 @@ import { Observable, Subscription } from 'rxjs';
 import { Select, Store } from '@ngxs/store';
 import {
     ClearRicercaUtenti,
-    ReducerSelezioneFiltroSede,
+    ReducerSelezioneFiltroSede, ResetSediFiltroSelezionate,
     SetRicercaUtenti
 } from './store/actions/ricerca-utenti/ricerca-utenti.actons';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -89,6 +89,10 @@ export class GestioneUtentiComponent implements OnInit, OnDestroy {
         this.store.dispatch(new ReducerSelezioneFiltroSede(filtroSede));
     }
 
+    onFiltriReset() {
+        this.store.dispatch(new ResetSediFiltroSelezionate());
+    }
+
     onAddUtente() {
         const aggiungiUtenteModal = this.modalService.open(GestioneUtenteModalComponent, {
             backdropClass: 'light-blue-backdrop',
@@ -146,6 +150,7 @@ export class GestioneUtentiComponent implements OnInit, OnDestroy {
         });
         modalConfermaAnnulla.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
         modalConfermaAnnulla.componentInstance.titolo = 'Elimina ruolo a ' + payload.nominativoUtente;
+        // tslint:disable-next-line:max-line-length
         modalConfermaAnnulla.componentInstance.messaggioAttenzione = 'Sei sicuro di voler rimuovere il ruolo "' + wipeStringUppercase(payload.ruolo.descrizione) + '" su "' + payload.ruolo.descSede + '"?';
         modalConfermaAnnulla.componentInstance.bottoni = [
             { type: 'ko', descrizione: 'Annulla', colore: 'secondary' },

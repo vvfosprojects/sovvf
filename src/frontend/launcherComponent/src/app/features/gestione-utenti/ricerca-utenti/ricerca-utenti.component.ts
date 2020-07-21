@@ -16,7 +16,9 @@ export class RicercaUtentiComponent {
 
     @Output() ricercaChange = new EventEmitter<any>();
     @Output() filtroChange = new EventEmitter<string>();
+    @Output() filtriReset = new EventEmitter<any>();
 
+    sediFiltroSearch: string;
 
     constructor(config: NgbDropdownConfig) {
         config.placement = 'bottom-right';
@@ -24,5 +26,9 @@ export class RicercaUtentiComponent {
 
     _isSelected(codSede: string): boolean {
         return this.sediFiltroSelezionate && this.sediFiltroSelezionate.filter(s => s === codSede).length > 0;
+    }
+
+    resetFiltriSedi() {
+        this.filtriReset.emit();
     }
 }
