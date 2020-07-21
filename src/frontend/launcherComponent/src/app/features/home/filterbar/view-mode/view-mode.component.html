@@ -3,7 +3,8 @@
         <div class="btn-group" ngbDropdown #dropdownRichieste="ngbDropdown" autoClose="outside" placement="bottom"
              role="group">
             <button class="btn btn-outline-secondary dropdown-toggle-split" ngbDropdownToggle
-                    [disabled]="colorButtonView[2] === 'btn-secondary'">
+                    [disabled]="colorButtonView[2] === 'btn-secondary'"
+                    [class.cursor-not-allowed]="colorButtonView[2] === 'btn-secondary'">
                 <i class="fa fa-caret-down"></i>
             </button>
             <div class="dropdown-menu" ngbDropdownMenu>
@@ -16,7 +17,8 @@
         <button type="button" class="btn" ngbTooltip="Vai ai mezzi in servizio"
                 [disabled]="colorButtonView[2] === 'btn-secondary' || disabledMezziInServizio"
                 (click)="buttonOptionRichieste(OptionsRichieste.MezziInServizio)"
-                [ngClass]="getMezziInServizioBtnClasses()">
+                [ngClass]="getMezziInServizioBtnClasses()"
+                [class.cursor-not-allowed]="colorButtonView[2] === 'btn-secondary'">
             <i class="fa fa-truck"></i>
         </button>
         <button type="button" class="btn" (click)="buttonViewMode(AppFeature.Richieste)" [ngClass]="colorButtonView[0]"
