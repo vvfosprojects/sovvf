@@ -84,7 +84,6 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneUtente.ListaOperatori
             }
 
             var utentiByCodSede = _getUtenteByCodiciSedi.Get(listaCodiciSedeRuoloAdmin, query.Filters.Search);
-
             if (query.Filters.CodSede != null)
             {
                 List<Utente> listaFiltrata = new List<Utente>();
@@ -93,7 +92,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneUtente.ListaOperatori
                     listaFiltrata.AddRange(utentiByCodSede.FindAll(x => x.Ruoli.Any(y => y.CodSede.Equals(sede))).ToList());
                 }
 
-                utentiByCodSede = listaFiltrata;
+                utentiByCodSede = listaFiltrata.ToHashSet().ToList();
             }
 
             utentiByCodSede.Reverse();
@@ -102,7 +101,8 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneUtente.ListaOperatori
 
             List<Role> listaSediPresenti = new List<Role>();
 
-            foreach (var UtenteInLista in utentiByCodSede)
+            query.Filters.Search = null;
+            foreach (var UtenteInLista in _getUtenteByCodiciSedi.Get(listaCodiciSedeRuoloAdmin, query.Filters.Search))
             {
                 foreach (var ruolo in UtenteInLista.Ruoli)
                 {
