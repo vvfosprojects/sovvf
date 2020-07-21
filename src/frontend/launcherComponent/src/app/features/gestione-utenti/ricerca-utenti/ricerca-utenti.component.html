@@ -26,7 +26,7 @@
                class="form-control" type="text" placeholder="Chi stai cercando?" appDebounceKeyUp
                (debounceKeyUp)="ricercaChange.emit(ricerca)" [debounceTime]="600">
         <div class="input-group-append">
-            <button class="btn btn-primary">
+            <button class="btn btn-primary btn-no-hover">
                 <i *ngIf="!loading" class="fa fa-search text-light"></i>
                 <i *ngIf="loading" class="fa fa-spinner fa-spin text-light"></i>
             </button>

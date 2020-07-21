@@ -4,7 +4,7 @@
         class="fa fa-cogs"></i>
 </button> -->
 <div *ngIf="user" class="btn-group" role="group">
-    <button class="btn btn-light mr-2" [ngbPopover]="ruoli" placement="bottom">
+    <button class="btn btn-light mr-2 btn-no-hover" [ngbPopover]="ruoli" placement="bottom">
         <i class="fa fa-user"></i>
         {{user.nome}} {{user.cognome}}
     </button>

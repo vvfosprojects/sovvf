@@ -28,6 +28,7 @@ import { AuthState } from '../../auth/store/auth.state';
 import { ClearListaSquadreComposizione } from '../store/actions/composizione-partenza/squadre-composizione.actions';
 import { ClearPreaccoppiati } from '../store/actions/composizione-partenza/composizione-veloce.actions';
 import { ClearFiltriAffini } from '../store/actions/composizione-partenza/composizione-partenza.actions';
+import { SetRicercaMezziComposizione, SetRicercaSquadreComposizione } from '../store/actions/composizione-partenza/composizione-avanzata.actions';
 
 @Component({
     selector: 'app-composizione-partenza',
@@ -139,6 +140,14 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
 
     onSganciamento(sganciamentoObj: SganciamentoInterface) {
         this.store.dispatch(new SganciamentoMezzoComposizione(sganciamentoObj));
+    }
+
+    changeRicercaSquadre(ricerca: string) {
+        this.store.dispatch(new SetRicercaSquadreComposizione(ricerca));
+    }
+
+    changeRicercaMezzi(ricerca: string) {
+        this.store.dispatch(new SetRicercaMezziComposizione(ricerca));
     }
 }
 

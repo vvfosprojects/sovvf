@@ -57,16 +57,18 @@
                                         t.descrizione }}
                                     </div>
                                 </ng-template>
-                                <span><a *ngIf="!!richiesta.tipologie && richiesta?.tipologie.length > 0"
+                                <span><a *ngIf="!!richiesta.tipologie && richiesta?.tipologie?.length > 0"
                                          class="h6 font-weight-bold descrizione-int"
                                          ngbTooltip="{{ richiesta.descrizione }}"
                                          [disableTooltip]="richiesta.descrizione.length <= 45">{{
-                                            richiesta.tipologie[0].descrizione | truncate:45 }}</a></span>
+                                    richiesta.tipologie[0].descrizione | truncate:45 }}</a></span>
                             </div>
                         </div>
                         <div class="col-3 pr-3 text-right">
                             <div class="h6 mb-1 nowrap default-cursor">
-                                <i class="guida fa fa-thermometer-half fa-fw" ngbTooltip="Priorità della richiesta"></i>
+                                <i class="guida fa fa-thermometer-half fa-fw"
+                                   [class.high-priority]="richiesta.prioritaRichiesta > 3"
+                                   ngbTooltip="Priorità della richiesta"></i>
                                 <ngb-rating [(rate)]="richiesta.prioritaRichiesta" [max]="5" [readonly]="true">
                                     <ng-template let-fill="fill" let-index="index">
                                     <span class="circle" [class.filled]="fill === 100"
@@ -146,7 +148,8 @@
 
                                     <ng-template #popMezzi>
                                         <div class="h6 nowrap" *ngFor="let m of methods.mezziRichiesta(richiesta)">
-                                            <span><span class="badge badge-secondary">{{ m.stato }}</span><span class="font-weight-bold mx-1">{{ m.descrizione }}</span><small
+                                            <span><span class="badge badge-secondary">{{ m.stato }}</span><span
+                                                    class="font-weight-bold mx-1">{{ m.descrizione }}</span><small
                                             >{{ m.genere }}</small></span>
                                         </div>
                                         <h6 class="mb-0" *ngIf="methods.numeroMezzi(richiesta) === 0">Nessun mezzo</h6>
@@ -384,50 +387,54 @@
                         <div class="col-md-3">
                             <!-- turno intervento -->
                             <div class="h6 text-right">
-                                <span *ngIf="richiesta?.turnoInserimentoChiamata || richiesta?.turnoIntervento; else nessunTurno">
-                                    <span *ngIf="richiesta?.turnoInserimentoChiamata && !richiesta?.turnoIntervento">
+                                <!-- <span *ngIf="richiesta?.trnInsChiamata || richiesta?.turnoIntervento; else nessunTurno">
+                                    <span *ngIf="richiesta?.trnInsChiamata && !richiesta?.turnoIntervento">
                                         <a [ngbTooltip]="turnoInserimentoTooltip">Turno
-                                            {{richiesta.turnoInserimentoChiamata.codice}}</a>
+                                            {{richiesta.trnInsChiamata.codice}}</a>
                                         <i class="guida fa fa-fw ml-1" [ngbTooltip]="orarioTurnoInserimento"
                                            placement="right" [ngClass]="{'fa-moon-o':
-                                           richiesta.turnoInserimentoChiamata.diurnoNotturno === 'N', 'fa-sun-o':
-                                           richiesta.turnoInserimentoChiamata.diurnoNotturno === 'D'}"></i>
+                                           richiesta.trnInsChiamata.diurnoNotturno === 'N', 'fa-sun-o':
+                                           richiesta.trnInsChiamata.diurnoNotturno === 'D'}"></i>
                                     </span>
-                                    <span *ngIf="richiesta?.turnoInserimentoChiamata && richiesta?.turnoIntervento">
+                                    <span *ngIf="richiesta?.trnInsChiamata && richiesta?.turnoIntervento">
                                         <a [ngbTooltip]="turnoInterventoTooltip">Turno {{richiesta.turnoIntervento.codice}}</a>
                                         <i class="guida fa fa-fw ml-1" [ngbTooltip]="orarioTurnoIntervento"
                                            placement="right" [ngClass]="{'fa-moon-o':
-                                           richiesta.turnoInserimentoChiamata.diurnoNotturno === 'N', 'fa-sun-o':
-                                           richiesta.turnoInserimentoChiamata.diurnoNotturno === 'D'}"></i>
+                                           richiesta.trnInsChiamata.diurnoNotturno === 'N', 'fa-sun-o':
+                                           richiesta.trnInsChiamata.diurnoNotturno === 'D'}"></i>
                                     </span>
 
                                     <ng-template #turnoInserimentoTooltip>
                                       <div>
-                                          Turno Inserimento {{richiesta.turnoInserimentoChiamata.codice}}
+                                          Turno Inserimento {{richiesta.trnInsChiamata.codice}}
                                           <span
-                                                  *ngIf="richiesta.turnoInserimentoChiamata.diurnoNotturno === 'D'">(Diurno)</span>
+                                                  *ngIf="richiesta.trnInsChiamata.diurnoNotturno === 'D'">(Diurno)</span>
                                           <span
-                                                  *ngIf="richiesta.turnoInserimentoChiamata.diurnoNotturno === 'N'">(Notturno)</span>
+                                                  *ngIf="richiesta.trnInsChiamata.diurnoNotturno === 'N'">(Notturno)</span>
                                     </div>
                                     </ng-template>
                                     <ng-template #turnoInterventoTooltip>
-                                        <div>Turno Inserimento {{richiesta.turnoInserimentoChiamata.codice}}
-                                            ({{richiesta.turnoInserimentoChiamata.diurnoNotturno}})</div>
+                                        <div>Turno Inserimento {{richiesta.trnInsChiamata.codice}}
+                                            ({{richiesta.trnInsChiamata.diurnoNotturno}})</div>
                                         <div>Turno Intervento {{richiesta.turnoIntervento.codice}}
                                             ({{richiesta.turnoIntervento.diurnoNotturno}})</div>
                                     </ng-template>
                                     <ng-template #orarioTurnoInserimento>
-                                        <div>inizio {{ methods._dateTime(richiesta.turnoInserimentoChiamata.dataOraInizio) | friendlyDateTooltip }}</div>
-                                        <div>fine {{ methods._dateTime(richiesta.turnoInserimentoChiamata.dataOraFine) | friendlyDateTooltip }}</div>
+                                        <div>inizio {{ methods._dateTime(richiesta.trnInsChiamata.dataOraInizio) | friendlyDateTooltip }}</div>
+                                        <div>fine {{ methods._dateTime(richiesta.trnInsChiamata.dataOraFine) | friendlyDateTooltip }}</div>
                                     </ng-template>
                                     <ng-template #orarioTurnoIntervento>
                                         <div>Turno Inserimento:</div>
-                                        <div>inizio {{ methods._dateTime(richiesta.turnoInserimentoChiamata.dataOraInizio) | friendlyDateTooltip }}</div>
-                                        <div>fine {{ methods._dateTime(richiesta.turnoInserimentoChiamata.dataOraFine) | friendlyDateTooltip }}</div>
+                                        <div>inizio {{ methods._dateTime(richiesta.trnInsChiamata.dataOraInizio) | friendlyDateTooltip }}</div>
+                                        <div>fine {{ methods._dateTime(richiesta.trnInsChiamata.dataOraFine) | friendlyDateTooltip }}</div>
                                         <div>Turno Intervento:</div>
                                         <div>inizio {{ methods._dateTime(richiesta.turnoIntervento.dataOraInizio) | friendlyDateTooltip }}</div>
                                         <div>fine {{ methods._dateTime(richiesta.turnoIntervento.dataOraFine) | friendlyDateTooltip }}</div>
                                     </ng-template>
+                                </span> -->
+                                <span *ngIf="richiesta?.trnInsChiamata; else nessunTurno">
+                                    {{richiesta.trnInsChiamata}}
+                                    <i class="fa fa-fw fa-calendar-check-o guida ml-1"></i>
                                 </span>
                                 <ng-template #nessunTurno>
                                     <a>-</a>

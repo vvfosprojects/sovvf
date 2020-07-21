@@ -1,11 +1,11 @@
 <div class="btn-group btn-group-sm w-100 mr-3" (click)="$event.stopPropagation()">
-    <button type="button" class="btn btn-sm btn-{{statoRichiestaColor(richiesta)}} px-2 py-0"
+    <button type="button" class="btn btn-sm btn-{{statoRichiestaColor(richiesta)}} px-2 py-0 btn-no-hover"
             (click)="onClick(calcolaActionSuggeritaRichiesta(richiesta))"
             ngbTooltip="{{calcolaActionSuggeritaRichiesta(richiesta)}}">
         {{calcolaActionSuggeritaRichiesta(richiesta)}}
     </button>
     <div class="btn-group" ngbDropdown role="group" aria-label="Button group with nested dropdown">
-        <button class="btn btn-sm btn-{{statoRichiestaColor(richiesta)}} text-light p-1 dropdown-toggle-split"
+        <button class="btn btn-sm btn-{{statoRichiestaColor(richiesta)}} text-light p-1 dropdown-toggle-split btn-no-hover"
                 ngbTooltip="Altro"
                 ngbDropdownToggle>
             <small><i class="fa fa-fw fa-arrow-up"></i></small>

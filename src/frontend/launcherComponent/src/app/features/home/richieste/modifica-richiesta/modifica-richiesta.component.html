@@ -1,7 +1,7 @@
 <div *ngIf="richiestaModifica" class="row mt-2 pl-3" style="height: 750px">
   <app-partial-loader *ngIf="loading$ | async"></app-partial-loader>
   <div class="col-12 p-3 rounded" [ngClass]="methods.cardFissataClasses(richiestaModifica)">
-    <form [formGroup]="modificaRichiestaForm" ngxsForm="richiestaModifica.modificaRichiestaForm" autocomplete="disabled">
+    <form [formGroup]="modificaRichiestaForm" ngxsForm="richiestaModifica.modificaRichiestaForm" autocomplete="off">
       <div class="row">
         <div class="col-5">
           <ng-template #rilevante>
@@ -82,7 +82,8 @@
           <div class="form-group mb-2">
             <label for="nominativo">Nominativo</label>
             <input id="nominativo" type="text" placeholder="Nominativo" formControlName="nominativo"
-                   class="form-control" [ngClass]="{ 'is-invalid': submitted && f.nominativo.errors }" autocomplete="disabled"/>
+                   class="form-control" [ngClass]="{ 'is-invalid': submitted && f.nominativo.errors }" 
+                   role="presentation"/>
             <div *ngIf="submitted && f.nominativo.errors" class="invalid-feedback">
               <div *ngIf="f.nominativo.errors.required">Il Nominativo è richiesto</div>
             </div>
@@ -94,7 +95,7 @@
             <input id="telefono" type="tel" placeholder="telefono" formControlName="telefono"
                    class="form-control" (keypress)="checkInputPattern($event, 'PHONE')"
                    (paste)="checkInputPattern($event, 'PHONE')"
-                   [ngClass]="{ 'is-invalid': submitted && f.telefono.errors }" autocomplete="disabled"/>
+                   [ngClass]="{ 'is-invalid': submitted && f.telefono.errors }" />
             <div *ngIf="submitted && f.telefono.errors" class="invalid-feedback">
               <div *ngIf="f.telefono.errors.required">Il Telefono è richiesto</div>
               <div *ngIf="f.telefono.errors.pattern">Il Telefono è non è corretto</div>
@@ -111,7 +112,8 @@
                    [ngClass]="{ 'is-invalid': submitted && (f.indirizzo.errors || !coordinate) }"
                    placeholder="Ricerca indirizzo" [options]="ngxGooglePlacesOptions"
                    (onAddressChange)="onCercaIndirizzo($event)"
-                   (keyup)="modificaIndirizzo()" autocomplete="disabled">
+                   (keyup)="modificaIndirizzo()" 
+                   role="presentation">
             <div *ngIf="submitted && (f.indirizzo.errors || !coordinate)" class="invalid-feedback">
               <div *ngIf="onMsgIndirizzo() as messaggio">{{messaggio}}</div>
             </div>
@@ -122,7 +124,7 @@
             <label for="latitudine">Latitudine</label>
             <input id="latitudine" type="tel" placeholder="Latitudine" formControlName="latitudine"
                    (keypress)="checkInputPattern($event, 'LAT_LON')" (paste)="checkInputPattern($event, 'LAT_LON')"
-                   class="form-control" [ngClass]="{ 'is-invalid': submitted && f.latitudine.errors }" autocomplete="disabled"/>
+                   class="form-control" [ngClass]="{ 'is-invalid': submitted && f.latitudine.errors }" />
             <div *ngIf="submitted && f.latitudine.errors" class="invalid-feedback">
               <div *ngIf="f.latitudine.errors.required">La latitudine è richiesta</div>
               <div *ngIf="f.latitudine.errors.pattern">La latitudine non è corretta</div>
@@ -132,7 +134,7 @@
             <label for="longitudine">Longitudine</label>
             <input id="longitudine" type="tel" placeholder="Longitudine" formControlName="longitudine"
                    (keypress)="checkInputPattern($event, 'LAT_LON')" (paste)="checkInputPattern($event, 'LAT_LON')"
-                   class="form-control" [ngClass]="{ 'is-invalid': submitted && f.longitudine.errors }" autocomplete="disabled"/>
+                   class="form-control" [ngClass]="{ 'is-invalid': submitted && f.longitudine.errors }" />
             <div *ngIf="submitted && f.longitudine.errors" class="invalid-feedback">
               <div *ngIf="f.longitudine.errors.required">La longitudine è richiesta</div>
               <div *ngIf="f.longitudine.errors.pattern">La longitudine non è corretta</div>
@@ -155,7 +157,7 @@
           <label for="piano">Piano</label>
           <input id="piano" type="text" placeholder="Piano (opzionale)" formControlName="piano"
                  class="form-control"
-                 [ngClass]="{ 'is-invalid': submitted && f.piano.errors }" autocomplete="disabled"/>
+                 [ngClass]="{ 'is-invalid': submitted && f.piano.errors }" />
           <div *ngIf="submitted && f.piano.errors" class="invalid-feedback">
             <div *ngIf="f.piano.errors.required">Il Piano è richiesto</div>
           </div>
@@ -167,7 +169,7 @@
             <label for="motivazione">Motivazione</label>
             <textarea id="motivazione" placeholder="Motivazione" formControlName="motivazione"
                       class="form-control"
-                      [ngClass]="{ 'is-invalid': submitted && f.motivazione.errors }" autocomplete="disabled"></textarea>
+                      [ngClass]="{ 'is-invalid': submitted && f.motivazione.errors }" ></textarea>
           </div>
         </div>
         <div class="col">
@@ -175,7 +177,8 @@
             <label for="noteIndirizzo">Note Indirizzo</label>
             <textarea id="noteIndirizzo" placeholder="Note" formControlName="noteIndirizzo"
                       class="form-control"
-                      [ngClass]="{ 'is-invalid': submitted && f.noteIndirizzo.errors }" autocomplete="disabled"></textarea>
+                      [ngClass]="{ 'is-invalid': submitted && f.noteIndirizzo.errors }" 
+                      role="presentation"></textarea>
           </div>
         </div>
       </div>
@@ -185,7 +188,7 @@
             <label for="notePubbliche">Note Pubbliche</label>
             <textarea id="notePubbliche" placeholder="Note Pubbliche" formControlName="notePubbliche"
                       class="form-control"
-                      [ngClass]="{ 'is-invalid': submitted && f.notePubbliche.errors }" autocomplete="disabled"></textarea>
+                      [ngClass]="{ 'is-invalid': submitted && f.notePubbliche.errors }" ></textarea>
           </div>
         </div>
         <div class="col">
@@ -193,7 +196,7 @@
             <label for="notePrivate">Note Private</label>
             <textarea id="notePrivate" type="text" placeholder="Note Private" formControlName="notePrivate"
                       class="form-control"
-                      [ngClass]="{ 'is-invalid': submitted && f.notePrivate.errors }" autocomplete="disabled"></textarea>
+                      [ngClass]="{ 'is-invalid': submitted && f.notePrivate.errors }" ></textarea>
           </div>
         </div>
       </div>
@@ -203,7 +206,7 @@
             <label for="zoneEmergenza">Codice emergenza</label>
             <input id="zoneEmergenza" type="text" placeholder="Codice Emergenza"
                    formControlName="zoneEmergenza"
-                   class="form-control" [ngClass]="{ 'is-invalid': submitted && f.zoneEmergenza.errors }" autocomplete="disabled"/>
+                   class="form-control" [ngClass]="{ 'is-invalid': submitted && f.zoneEmergenza.errors }" />
           </div>
         </div>
         <div class="col-2 pl-0" style="padding-top: 2rem !important">

@@ -3,23 +3,17 @@ import { CompPartenzaService } from 'src/app/core/service/comp-partenza-service/
 import {
     ClearComposizioneAvanzata,
     FilterListeComposizioneAvanzata,
-    GetListeComposizioneAvanzata,
+    GetListeComposizioneAvanzata, ResetRicercaMezziComposizione, ResetRicercaSquadreComposizione,
     SetListeComposizioneAvanzata,
+    SetRicercaMezziComposizione,
+    SetRicercaSquadreComposizione,
     UnselectMezziAndSquadreComposizioneAvanzata
 } from '../../actions/composizione-partenza/composizione-avanzata.actions';
 import { MezziComposizioneState } from './mezzi-composizione.state';
 import { SquadreComposizioneState } from './squadre-composizione.state';
 import { ComposizionePartenzaState, ComposizionePartenzaStateModel } from './composizione-partenza.state';
-import {
-    ClearSelectedMezziComposizione,
-    FilterListaMezziComposizione,
-    SetListaMezziComposizione
-} from '../../actions/composizione-partenza/mezzi-composizione.actions';
-import {
-    ClearSelectedSquadreComposizione,
-    FilterListaSquadreComposizione,
-    SetListaSquadreComposizione
-} from '../../actions/composizione-partenza/squadre-composizione.actions';
+import { ClearSelectedMezziComposizione, FilterListaMezziComposizione, SetListaMezziComposizione } from '../../actions/composizione-partenza/mezzi-composizione.actions';
+import { ClearSelectedSquadreComposizione, FilterListaSquadreComposizione, SetListaSquadreComposizione } from '../../actions/composizione-partenza/squadre-composizione.actions';
 import { ListaComposizioneAvanzata } from '../../../composizione-partenza/interface/lista-composizione-avanzata-interface';
 import { BoxPartenzaState } from './box-partenza.state';
 import { mezzoComposizioneBusy } from '../../../composizione-partenza/shared/functions/composizione-functions';
@@ -32,10 +26,14 @@ import { StartListaComposizioneLoading, StopListaComposizioneLoading } from '../
 
 export interface ComposizioneAvanzataStateModel {
     listaMezziSquadre: ListaComposizioneAvanzata;
+    ricercaSquadre: string;
+    ricercaMezzi: string;
 }
 
 export const ComposizioneAvanzataStateDefaults: ComposizioneAvanzataStateModel = {
-    listaMezziSquadre: null
+    listaMezziSquadre: null,
+    ricercaSquadre: undefined,
+    ricercaMezzi: undefined
 };
 
 @State<ComposizioneAvanzataStateModel>({
@@ -126,5 +124,33 @@ export class ComposizioneAvanzataState {
     @Action(ClearComposizioneAvanzata)
     clearComposizioneAvanzata({ patchState }: StateContext<ComposizioneAvanzataStateModel>) {
         patchState(ComposizioneAvanzataStateDefaults);
+    }
+
+    @Action(SetRicercaSquadreComposizione)
+    setRicercaSquadreComposizione({ patchState }: StateContext<ComposizioneAvanzataStateModel>, action: SetRicercaSquadreComposizione) {
+        patchState({
+            ricercaSquadre: action.ricerca
+        });
+    }
+
+    @Action(ResetRicercaSquadreComposizione)
+    resetRicercaSquadreComposizione({ patchState }: StateContext<ComposizioneAvanzataStateModel>) {
+        patchState({
+            ricercaSquadre: ComposizioneAvanzataStateDefaults.ricercaSquadre
+        });
+    }
+
+    @Action(SetRicercaMezziComposizione)
+    setRicercaMezziComposizione({ patchState }: StateContext<ComposizioneAvanzataStateModel>, action: SetRicercaMezziComposizione) {
+        patchState({
+            ricercaMezzi: action.ricerca
+        });
+    }
+
+    @Action(ResetRicercaMezziComposizione)
+    resetRicercaMezziComposizione({ patchState }: StateContext<ComposizioneAvanzataStateModel>) {
+        patchState({
+            ricercaMezzi: ComposizioneAvanzataStateDefaults.ricercaMezzi
+        });
     }
 }

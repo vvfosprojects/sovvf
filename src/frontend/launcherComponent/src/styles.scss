@@ -89,6 +89,7 @@ a:hover {
 
 .cursor-not-allowed {
   cursor: not-allowed;
+  transform: scale(1) !important;
 }
 
 .status_preaccoppiato_nonselezionato {
@@ -314,6 +315,14 @@ a:hover {
 
 .btn-verdemela:hover {
   background-color: #809e59 !important;
+}
+
+.btn:hover{
+  transform: scale(1.1);
+}
+
+.btn-no-hover:hover{
+  transform: scale(1) !important;
 }
 
 .bg-pattern-chiuso {

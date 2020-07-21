@@ -36,6 +36,8 @@ import {PrenotazioneProgressBarComponent} from './shared/prenotazione-progress-b
 import {ComposizioneButtonsComponent} from './shared/composizione-buttons/composizione-buttons.component';
 import {SganciamentoMezzoModalComponent} from './shared/sganciamento-mezzo-modal/sganciamento-mezzo-modal.component';
 import {TastoCompPartenzaComponent} from './shared/tasto-comp-partenza/tasto-comp-partenza.component';
+import { FormsModule } from '@angular/forms';
+import { FilterPipeModule } from 'ngx-filter-pipe';
 
 @NgModule({
     declarations: [
@@ -69,6 +71,8 @@ import {TastoCompPartenzaComponent} from './shared/tasto-comp-partenza/tasto-com
                 SquadreComposizioneState
             ]
         ),
+        FormsModule,
+        FilterPipeModule,
     ],
     entryComponents: [
         SganciamentoMezzoModalComponent

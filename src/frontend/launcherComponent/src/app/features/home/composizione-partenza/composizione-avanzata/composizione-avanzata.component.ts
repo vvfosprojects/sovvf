@@ -105,8 +105,13 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
     @Output() clearDirection = new EventEmitter();
     @Output() prenota = new EventEmitter<boolean>();
     @Output() sganciamento = new EventEmitter<SganciamentoInterface>();
+    @Output() changeRicercaSquadre = new EventEmitter<string>();
+    @Output() changeRicercaMezzi = new EventEmitter<string>();
 
     statoMezzo = StatoMezzo;
+
+    ricercaSquadre: string;
+    ricercaMezzi: string;
 
     constructor(private popoverConfig: NgbPopoverConfig,
                 private tooltipConfig: NgbTooltipConfig,
@@ -254,6 +259,14 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
 
     squadraHoverOut(squadraComposizione: SquadraComposizione) {
         this.store.dispatch(new HoverOutSquadraComposizione(squadraComposizione.id));
+    }
+
+    onSearchSquadre() {
+        this.changeRicercaSquadre.emit(makeCopy(this.ricercaSquadre));
+    }
+
+    onSearchMezzi() {
+        this.changeRicercaMezzi.emit(makeCopy(this.ricercaMezzi));
     }
 
     checkSquadraSelezione(idSquadra: string) {

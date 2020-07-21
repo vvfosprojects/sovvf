@@ -1,5 +1,5 @@
 <div ngbDropdown #treeviewSedi="ngbDropdown" (openChange)="openDropDown($event)" [placement]="placement">
-    <button class="btn btn-block" [ngClass]="colorButton" ngbDropdownToggle
+    <button class="btn btn-block btn-no-hover" [ngClass]="colorButton" ngbDropdownToggle
             [disabled]="disabled">{{testoSedeSelezionata}}</button>
     <div ngbDropdownMenu class="px-2" (click)="$event.stopPropagation()">
         <ngx-treeview [config]="config" [items]="items" (selectedChange)="onSelectedChange($event)">

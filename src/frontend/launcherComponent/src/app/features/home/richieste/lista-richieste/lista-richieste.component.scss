@@ -84,3 +84,12 @@ cdk-virtual-scroll-viewport {
     background-color: lightgrey;
   }
 }
+
+.test-hover:hover {
+  transform: scale(1.01);
+}
+
+::-webkit-scrollbar { 
+  //display: none; /* Chrome Safari */
+   width: 0;
+}

@@ -32,3 +32,25 @@ export class UnselectMezziAndSquadreComposizioneAvanzata {
 export class ClearComposizioneAvanzata {
     static readonly type = '[ComposizioneAvanzata] Clear Composizione Partenza Avanzata';
 }
+
+export class SetRicercaSquadreComposizione {
+    static readonly type = '[ComposizioneAvanzata] Set Ricerca Squadre Composizione';
+
+    constructor(public ricerca: string) {
+    }
+}
+
+export class ResetRicercaSquadreComposizione {
+    static readonly type = '[ComposizioneAvanzata] Reset Ricerca Squadre Composizione';
+}
+
+export class SetRicercaMezziComposizione {
+    static readonly type = '[ComposizioneAvanzata] Set Ricerca Mezzi Composizione';
+
+    constructor(public ricerca: string) {
+    }
+}
+
+export class ResetRicercaMezziComposizione {
+    static readonly type = '[ComposizioneAvanzata] Reset Ricerca Mezzi Composizione';
+}
