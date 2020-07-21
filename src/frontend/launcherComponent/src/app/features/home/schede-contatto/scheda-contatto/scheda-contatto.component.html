@@ -1,5 +1,5 @@
 <ng-container *ngIf="idVisualizzati.includes(scheda.codiceScheda)">
-    <li class="cursor-pointer border-top border-bottom py-1"
+    <li class="cursor-pointer border-top border-bottom py-1 test-hover"
         (mouseenter)="hoverIn.emit(scheda.codiceScheda)" (mouseleave)="hoverOut.emit()"
         (click)="dettaglioScheda.emit(scheda.codiceScheda)" [ngClass]="cardClasses(scheda.codiceScheda)">
         <div class="row position-relative">

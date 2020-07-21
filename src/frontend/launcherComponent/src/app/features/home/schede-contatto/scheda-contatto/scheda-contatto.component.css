@@ -41,3 +41,7 @@
 .btn-gestita:not(:hover) {
   background-color: #f8f8f8;
 }
+
+.test-hover:hover {
+  transform: scale(1.01);
+}

@@ -148,13 +148,13 @@
                             <li [ngClass]="checkDiff('funzionari')" [ngbPopover]="funzionariGuardia"
                                 triggers="mouseenter:mouseleave" container="body"
                                 placement="bottom"><span
-                                    class="position-relative badge badge-dark cursor-pointer h6 w-75"><i
+                                    class="position-relative badge badge-dark h6 w-75"><i
                                     *ngIf="personaleDiff" class="blink-i-aggregate fa"
                                     [ngClass]="realDiff('funzionari')"></i>{{personaleQty?.funzionari}}</span></li>
                             <li [ngClass]="checkDiff('tecnici')" [ngbPopover]="tecniciGuardia"
                                 triggers="mouseenter:mouseleave" container="body"
                                 placement="bottom"><span
-                                    class="position-relative badge badge-secondary cursor-pointer h6 w-75"><i
+                                    class="position-relative badge badge-secondary h6 w-75"><i
                                     *ngIf="personaleDiff" class="blink-i-aggregate fa"
                                     [ngClass]="realDiff('tecnici')"></i>{{personaleQty?.tecnici}}</span></li>
                         </ul>

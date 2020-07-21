@@ -3,6 +3,7 @@
         <div class="btn-group" ngbDropdown #dropdownRichieste="ngbDropdown" autoClose="outside" placement="bottom"
              role="group">
             <button class="btn btn-outline-secondary dropdown-toggle-split" ngbDropdownToggle
+                    ngbTooltip="Altri filtri"
                     [disabled]="colorButtonView[2] === 'btn-secondary'"
                     [class.cursor-not-allowed]="colorButtonView[2] === 'btn-secondary'">
                 <i class="fa fa-caret-down"></i>
@@ -34,12 +35,12 @@
         <button type="button" class="btn"
                 [ngClass]="{'btn-secondary': stateSwitch, 'btn-outline-secondary': !stateSwitch}"
                 ngbTooltip="Attiva meteo sulla mappa"
-                [disabled]="!mapStatus" (click)="onChange()">
+                [disabled]="filtriNonImplementati" (click)="onChange()" [class.cursor-not-allowed]="filtriNonImplementati">
             <i class="fa fa-sun-o"></i>
         </button>
         <div class="btn-group" ngbDropdown autoClose="outside" placement="bottom" role="group">
             <button class="btn btn-outline-secondary dropdown-toggle-split cursor-not-allowed" ngbDropdownToggle
-                    [disabled]="true">
+                [disabled]="filtriNonImplementati" [class.cursor-not-allowed]="filtriNonImplementati">
                 <i class="fa fa-caret-down"></i>
             </button>
             <div class="dropdown-menu" ngbDropdownMenu>
