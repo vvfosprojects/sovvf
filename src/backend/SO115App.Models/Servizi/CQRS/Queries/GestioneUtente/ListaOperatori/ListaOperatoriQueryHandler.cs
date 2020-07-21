@@ -86,6 +86,10 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneUtente.ListaOperatori
                 }
             }
             var utentiByCodSede = _getUtenteByCodiciSedi.Get(listaCodiciSedeRuoloAdmin, query.Filters.Search);
+
+            if (query.Filters.CodSede != null)
+                utentiByCodSede = utentiByCodSede.FindAll(x => x.Ruoli.Any(y => y.CodSede.Equals(query.Filters.CodSede))).ToList();
+
             utentiByCodSede.Reverse();
             var utentiPaginati = utentiByCodSede.Skip((query.Pagination.Page - 1) * query.Pagination.PageSize).Take(query.Pagination.PageSize).ToList();
             query.Pagination.TotalItems = utentiByCodSede.Count;
