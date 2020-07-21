@@ -29,5 +29,6 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneUtente.ListaOperatori
     {
         public Paginazione Pagination { get; set; }
         public List<Utente> DataArray { get; set; }
+        public List<string> ListaSediPresenti { get; set; }
     }
 }
