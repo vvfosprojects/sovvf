@@ -12,5 +12,6 @@ namespace SO115App.Models.Servizi.CustomMapper
         public string Targa { get; set; }
         public string Note { get; set; }
         public object HTMLLinkElement { get; set; }
+        public string IdOperatore { get; set; }
     }
 }

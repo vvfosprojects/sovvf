@@ -87,7 +87,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
                     NomeClasseEvento = MapEvento(evento),
                     IstanteEvento = evento.Istante,
                     Targa = MapTarghe(evento),
-                    Note = MapNote(evento)
+                    Note = MapNote(evento),
+                    IdOperatore = evento.CodiceFonte
                 };
                 eventiMapper.Add(eventoMapper);
             }
