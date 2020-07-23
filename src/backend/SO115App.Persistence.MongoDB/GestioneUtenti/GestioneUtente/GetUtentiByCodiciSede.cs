@@ -4,6 +4,7 @@ using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.GetUtenti;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SO115App.Persistence.MongoDB.GestioneUtenti.GestioneUtente
 {
@@ -32,9 +33,15 @@ namespace SO115App.Persistence.MongoDB.GestioneUtenti.GestioneUtente
         /// <returns>una lista di utenti</returns>
         public List<Utente> Get(List<string> codiciSede, string cercaBy = null)
         {
+            string[] lstNomi = new string[6];
+            if (cercaBy != null)
+                lstNomi = cercaBy.ToLower().Split(" ", StringSplitOptions.RemoveEmptyEntries);
+
             return string.IsNullOrEmpty(cercaBy)
                 ? _dbContext.UtenteCollection.Find(Builders<Utente>.Filter.In("ruoli.codSede", codiciSede)).ToList()
-                : _dbContext.UtenteCollection.Find(Builders<Utente>.Filter.In("ruoli.codSede", codiciSede)).ToList().FindAll(x => x.Nome.Contains(cercaBy, StringComparison.InvariantCultureIgnoreCase) || x.Cognome.Contains(cercaBy, StringComparison.InvariantCultureIgnoreCase));
+
+                : _dbContext.UtenteCollection.Find(Builders<Utente>.Filter.In("ruoli.codSede", codiciSede)).ToList()
+                    .FindAll(x => lstNomi.Any(c => x.Nome.ToLower().Contains(c)) || lstNomi.Any(c => x.Cognome.ToLower().Contains(c)));
         }
     }
 }
