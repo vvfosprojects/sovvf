@@ -18,6 +18,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
+using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
 using SO115App.Models.Classi.Fonogramma;
 
 namespace DomainModel.CQRS.Commands.GestioneFonogramma
@@ -25,5 +26,7 @@ namespace DomainModel.CQRS.Commands.GestioneFonogramma
     public class FonogrammaCommand
     {
         public Fonogramma Fonogramma { get; set; }
+
+        public SintesiRichiesta Chiamata { get; set; }
     }
 }
