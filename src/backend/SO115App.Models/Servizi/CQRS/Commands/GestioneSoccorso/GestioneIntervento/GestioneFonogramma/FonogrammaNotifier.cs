@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="ListaOperatoriResult.cs" company="CNVVF">
+// <copyright file="AddInterventoNotifier.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,19 +17,23 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using SO115App.API.Models.Classi.Autenticazione;
-using SO115App.API.Models.Classi.Condivise;
-using SO115App.Models.Classi.Condivise;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using CQRS.Commands.Notifiers;
+using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneFonogramma;
 
-namespace SO115App.Models.Servizi.CQRS.Queries.GestioneUtente.ListaOperatori
+namespace DomainModel.CQRS.Commands.GestioneFonogramma
 {
-    public class ListaOperatoriResult
+    public class FonogrammaNotifier : ICommandNotifier<FonogrammaCommand>
     {
-        public Paginazione Pagination { get; set; }
-        public List<Utente> DataArray { get; set; }
-        public List<Role> ListaSediPresenti { get; set; }
+        private readonly INotifyAddFonogramma _sender;
+
+        public FonogrammaNotifier(INotifyAddFonogramma sender)
+        {
+            _sender = sender;
+        }
+
+        public void Notify(FonogrammaCommand command)
+        {
+            _sender.SendNotification(command);
+        }
     }
 }

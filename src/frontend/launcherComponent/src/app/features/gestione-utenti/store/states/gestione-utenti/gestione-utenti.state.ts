@@ -33,6 +33,7 @@ import { Navigate } from '@ngxs/router-plugin';
 import { ActivatedRoute } from '@angular/router';
 import { _isAdministrator } from '../../../../../shared/helper/function';
 import { AuthState } from '../../../../auth/store/auth.state';
+import { SetSediFiltro } from '../../actions/ricerca-utenti/ricerca-utenti.actons';
 
 export interface GestioneUtentiStateModel {
     listaUtentiVVF: UtenteVvfInterface[];
@@ -130,10 +131,9 @@ export class GestioneUtentiState {
         if (route === 'gestione-utenti') {
             dispatch(new StartLoading());
             const ricerca = this.store.selectSnapshot(RicercaUtentiState.ricerca);
-            const codiciSede = this.store.selectSnapshot(RicercaUtentiState.sediFiltroSelezionate);
             const filters = {
                 search: ricerca,
-                codiciSede: codiciSede && codiciSede.length > 0 ? codiciSede : this.store.selectSnapshot(RicercaUtentiState.sediFiltro).map(s => s.codSede)
+                codSede: this.store.selectSnapshot(RicercaUtentiState.sediFiltroSelezionate)
             };
             const pagination = {
                 page: action.page ? action.page : 1,
@@ -143,6 +143,7 @@ export class GestioneUtentiState {
                     dispatch([
                         new SetUtentiGestione(response.dataArray),
                         new PatchPagination(response.pagination),
+                        new SetSediFiltro(response.listaSediPresenti),
                         new StopLoading()
                     ]);
                 },
@@ -193,14 +194,10 @@ export class GestioneUtentiState {
     }
 
     @Action(SuccessAddUtenteGestione)
-    successAddUtenteGestione({ getState, dispatch }: StateContext<GestioneUtentiStateModel>, action: SuccessAddUtenteGestione) {
-        const sediFiltro = this.store.selectSnapshot(RicercaUtentiState.sediFiltroConFigli);
-        const sedePresente = sediFiltro.filter((s: Ruolo) => s.codSede === action.codSede).length > 0;
-        if (sedePresente) {
-            const pagina = this.store.selectSnapshot(PaginationState.page);
-            if (pagina === 1) {
-                dispatch(new GetUtentiGestione());
-            }
+    successAddUtenteGestione({ dispatch }: StateContext<GestioneUtentiStateModel>, action: SuccessAddUtenteGestione) {
+        const pagina = this.store.selectSnapshot(PaginationState.page);
+        if (pagina === 1) {
+            dispatch(new GetUtentiGestione());
         }
     }
 

@@ -29,17 +29,17 @@ export class GestioneUtentiService {
     }
 
     // Todo aggiungere un map e tornare Utente
-    getUtente(id: string): Observable<{detUtente: Utente}> {
-        return this.http.get<{detUtente: Utente}>(API_URL + '/GetUtente?id=' + id);
+    getUtente(id: string): Observable<{ detUtente: Utente }> {
+        return this.http.get<{ detUtente: Utente }>(API_URL + '/GetUtente?id=' + id);
     }
 
     getListaUtentiGestione(filters: FiltersInterface, pagination: PaginationInterface): Observable<ResponseInterface> {
         const obj: GestioneUtentiObjInterface = {
             filters: {
-                search: filters.search
+                search: filters.search,
+                codSede: filters.codSede && filters.codSede.length > 0 ? filters.codSede : null
             },
-            pagination,
-            codiciSede: filters.codiciSede.join()
+            pagination
         };
         return this.http.post<ResponseInterface>(API_URL + '/GetUtenti', obj);
     }

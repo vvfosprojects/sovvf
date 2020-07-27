@@ -76,11 +76,11 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                 var dataMovintazione = DateTime.UtcNow;
 
                 //_setMovimentazione.Set(partenza.Mezzo.Codice, DateTime.UtcNow, command.ConfermaPartenze.IdRichiesta, tipologia.Codice, tipologia.Descrizione); //TODO IMPLEMENTARE CON GAC
-                _setStatoOperativoMezzo.Set(partenza.Mezzo.Distaccamento.Codice, partenza.Mezzo.Codice, Costanti.MezzoInViaggio, command.ConfermaPartenze.IdRichiesta);
+                _setStatoOperativoMezzo.Set(partenza.Mezzo.Distaccamento.Codice, partenza.Mezzo.Codice, Costanti.MezzoInUscita, command.ConfermaPartenze.IdRichiesta);
 
                 foreach (var squadra in partenza.Squadre)
                 {
-                    _setStatoSquadra.SetStato(squadra.Codice, command.ConfermaPartenze.IdRichiesta, Costanti.MezzoInViaggio, command.ConfermaPartenze.CodiceSede);
+                    _setStatoSquadra.SetStato(squadra.Codice, command.ConfermaPartenze.IdRichiesta, Costanti.MezzoInUscita, command.ConfermaPartenze.CodiceSede);
                 }
             }
 
