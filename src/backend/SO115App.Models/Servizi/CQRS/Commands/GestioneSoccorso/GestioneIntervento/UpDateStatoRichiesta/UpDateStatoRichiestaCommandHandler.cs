@@ -67,6 +67,9 @@ namespace DomainModel.CQRS.Commands.UpDateStatoRichiesta
                             _upDatePartenza.Update(statoMezzo);
                         }
                     }
+
+                    if (command.Stato.Equals(Costanti.RichiestaChiusa) || command.Stato.Equals(Costanti.RichiestaSospesa))
+                        composizione.Partenza.Terminata = true;
                 }
             }
 
