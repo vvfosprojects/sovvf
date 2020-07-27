@@ -39,12 +39,18 @@ namespace SO115App.Persistence.MongoDB.GestioneUtenti.GestioneUtente
 
             return string.IsNullOrEmpty(cercaBy)
                 ? _dbContext.UtenteCollection.Find(Builders<Utente>.Filter.In("ruoli.codSede", codiciSede)).ToList()
+                    .OrderByDescending(x => x.Nome)
+                    .ThenByDescending(x => x.Cognome)
+                    .ToList()
 
                 : _dbContext.UtenteCollection.Find(Builders<Utente>.Filter.In("ruoli.codSede", codiciSede)).ToList()
                     .FindAll(x =>
                         lstSegmenti.Any(c => x.Nome.ToLower().Contains(c)) 
                         || lstSegmenti.Any(c => x.Cognome.ToLower().Contains(c)
-                        || lstSegmenti.Any(c => x.Sede.Codice.Replace(".", "").ToLower().Contains(c))));
+                        || lstSegmenti.Any(c => x.Sede.Codice.Replace(".", "").ToLower().Contains(c))))
+                    .OrderByDescending(x => x.Nome)
+                    .ThenByDescending(x => x.Cognome)
+                    .ToList();
         }
     }
 }
