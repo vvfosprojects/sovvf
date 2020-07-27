@@ -20,6 +20,7 @@
 using CQRS.Commands;
 using SO115App.API.Models.Classi.Soccorso.Eventi;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
+using SO115App.API.Models.Classi.Soccorso.Mezzi.StatiMezzo;
 using SO115App.API.Models.Classi.Soccorso.StatiRichiesta;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
@@ -47,7 +48,23 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
         {
             var richiesta = _getRichiestaById.GetByCodice(command.CodRichiesta);
 
-            if (command.StatoMezzo == Costanti.MezzoSulPosto)
+            if (command.StatoMezzo == Costanti.MezzoInViaggio)
+            {
+                new UscitaPartenza(richiesta, command.IdMezzo, DateTime.UtcNow, richiesta.CodOperatore);
+
+                richiesta.SincronizzaStatoRichiesta(Costanti.RichiestaAssegnata, richiesta.StatoRichiesta,
+                    richiesta.CodOperatore, "");
+
+                foreach (var composizione in richiesta.Partenze)
+                {
+                    if (composizione.Partenza.Mezzo.Codice == command.IdMezzo)
+                    {
+                        composizione.Partenza.Mezzo.Stato = Costanti.MezzoInViaggio;
+                        composizione.Partenza.Mezzo.IdRichiesta = richiesta.CodRichiesta;
+                    }
+                }
+            }
+            else if (command.StatoMezzo == Costanti.MezzoSulPosto)
             {
                 new ArrivoSulPosto(richiesta, command.IdMezzo, DateTime.UtcNow, richiesta.CodOperatore);
 
@@ -101,10 +118,13 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 
                 foreach (var composizione in richiesta.Partenze)
                 {
-                    if (composizione.Partenza.Mezzo.Stato != Costanti.MezzoInSede
-                        && composizione.Partenza.Mezzo.Stato != Costanti.MezzoRientrato)
+                    if (!composizione.Partenza.Terminata && !composizione.Partenza.Sganciata)
                     {
-                        _mezziTuttiInSede = false;
+                        if (composizione.Partenza.Mezzo.Stato != Costanti.MezzoInSede && composizione.Partenza.Mezzo.Stato != Costanti.MezzoInUscita
+                            && composizione.Partenza.Mezzo.Stato != Costanti.MezzoRientrato)
+                        {
+                            _mezziTuttiInSede = false;
+                        }
                     }
                 }
 

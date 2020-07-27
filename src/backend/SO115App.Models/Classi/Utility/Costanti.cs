@@ -70,6 +70,7 @@ namespace SO115App.Models.Classi.Utility
         public static string MezzoInSede = "In Sede";
         public static string MezzoRientrato = "Rientrato";
         public static string MezzoInViaggio = "In Viaggio";
+        public static string MezzoInUscita = "In Uscita";
         public static string MezzoIstituto = "Istituto";
         public static string PosizioneRadioSenzaMezzo = "PosizioneRadioSenzaMezzo";
         public static string MezzoFuoriServizio = "Fuori Servizio";
@@ -94,6 +95,7 @@ namespace SO115App.Models.Classi.Utility
         public static string Composizione = "Composizione";
         public static string ChiusuraPartenza = "ChiusuraPartenza";
         public static string ArrivoSulPosto = "ArrivoSulPosto";
+        public static string UscitaPartenza = "UscitaPartenza";
         public static string AssegnataRichiesta = "AssegnataRichiesta";
         public static string EventoRichiestaPresidiata = "RichiestaPresidiata";
         public static string EventoRichiestaSospesa = "RichiestaSospesa";
@@ -107,6 +109,9 @@ namespace SO115App.Models.Classi.Utility
         public static string RevocaPerInterventoNonPiuNecessario = "RevocaPerInterventoNonPiuNecessario";
         public static string RevocaPerRiassegnazione = "RevocaPerRiassegnazione";
         public static string AnnullamentoPresaInCarico = "AnnullamentoPresaInCarico";
+
+        public static string FonogrammaDaInviare = "FonogrammaDaInviare";
+        public static string FonogrammaInviato = "FonogrammaInviato";
 
         #endregion Eventi
 

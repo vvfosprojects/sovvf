@@ -21,6 +21,7 @@ using CQRS.Queries;
 using Serilog;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Soccorso.Eventi;
+using SO115App.API.Models.Classi.Soccorso.Eventi.Fonogramma;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
 using SO115App.Models.Classi.Utility;
@@ -138,6 +139,11 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
                 targa = ((ArrivoSulPosto)evento).CodiceMezzo;
             }
 
+            if (evento is UscitaPartenza)
+            {
+                targa = ((UscitaPartenza)evento).CodiceMezzo;
+            }
+
             if (evento is PartenzaInRientro)
             {
                 targa = ((PartenzaInRientro)evento).CodiceMezzo;
@@ -190,6 +196,9 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
                 case ArrivoSulPosto _:
                     return Costanti.ArrivoSulPosto;
 
+                case UscitaPartenza _:
+                    return Costanti.UscitaPartenza;
+
                 case RichiestaPresidiata _:
                     return Costanti.RichiestaPresidiata;
 
@@ -225,6 +234,12 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
 
                 case AnnullamentoPresaInCarico _:
                     return Costanti.AnnullamentoPresaInCarico;
+
+                case InviareFonogramma _:
+                    return Costanti.FonogrammaDaInviare;
+
+                case FonogrammaInviato _:
+                    return Costanti.FonogrammaInviato;
 
                 default:
                     return Costanti.EventoGenerico;
