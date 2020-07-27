@@ -41,12 +41,14 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
         {
             _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("test");
 
+            //Gestisco la searchkey
             string[] lstSegmenti = new string[6];
             if (text != null)
-                lstSegmenti = text.Split(" ", StringSplitOptions.RemoveEmptyEntries);
+                lstSegmenti = text.ToLower().Split(" ", StringSplitOptions.RemoveEmptyEntries);
 
             List<PersonaleUC> personaleUC = new List<PersonaleUC>();
 
+            //Reperisco i dati
             Parallel.ForEach(lstSegmenti, segmento =>
             {
                 var response = _client.GetStringAsync($"{_configuration.GetSection("UrlExternalApi").GetSection("PersonaleApiUtenteComuni").Value}?searchKey={segmento}")
@@ -55,7 +57,12 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
                 lock (personaleUC) { personaleUC.AddRange(JsonConvert.DeserializeObject<List<PersonaleUC>>(response)); };
             });
 
-            return MapPersonaleVVFsuPersonaleUC.Map(personaleUC.Distinct().ToList());
+            //Applico i filtri sui dati
+            return MapPersonaleVVFsuPersonaleUC.Map(personaleUC
+                .FindAll(x => lstSegmenti.Contains(x.Cognome.ToLower()) || lstSegmenti.Contains(x.Nome.ToLower()))
+                .OrderByDescending(x => lstSegmenti.Contains(x.Cognome.ToLower()) && lstSegmenti.Contains(x.Nome.ToLower()))
+                .Distinct()
+                .ToList());
         }
     }
 }
