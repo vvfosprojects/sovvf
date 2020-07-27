@@ -30,7 +30,7 @@ namespace SO115App.API.SOVVF.FakeImplementations.Modello.Organigramma
     {
         public UnitaOperativa Get()
         {
-            var con = new UnitaOperativa("CEN", "Centro Operativo Nazionale");
+            var con = new UnitaOperativa("CON", "Centro Operativo Nazionale");
 
             // Direzioni Regionali
             var dirRegLazio = new UnitaOperativa("10", "Direzione Regionale VV.F. Lazio");
