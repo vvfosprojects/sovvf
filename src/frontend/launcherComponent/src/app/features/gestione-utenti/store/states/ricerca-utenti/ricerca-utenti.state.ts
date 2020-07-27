@@ -2,28 +2,26 @@ import { Action, Selector, State, StateContext } from '@ngxs/store';
 import {
     ClearRicercaUtenti,
     SetSedeFiltroDeselezionato,
-    ClearSediFiltro,
+    ResetSediFiltroSelezionate,
     ReducerSelezioneFiltroSede,
     SetRicercaUtenti,
     SetSedeFiltroSelezionato,
-    SetSediFiltro, SetAllSediFiltroSelezionate, SetSediFiltroConFigli
+    SetSediFiltro
 } from '../../actions/ricerca-utenti/ricerca-utenti.actons';
-import { append, patch, removeItem } from '@ngxs/store/operators';
+import { insertItem, patch, removeItem } from '@ngxs/store/operators';
 import { GetUtentiGestione } from '../../actions/gestione-utenti/gestione-utenti.actions';
 import { Ruolo } from '../../../../../shared/model/utente.model';
 
 export interface RicercaUtentiStateModel {
     ricerca: string;
     sediFiltro: Ruolo[];
-    sediFiltroConFigli: Ruolo[];
     sediFiltroSelezionate: string[];
 }
 
 export const RicercaUtentiStateDefaults: RicercaUtentiStateModel = {
     ricerca: null,
-    sediFiltro: [],
-    sediFiltroConFigli: [],
-    sediFiltroSelezionate: []
+    sediFiltro: undefined,
+    sediFiltroSelezionate: undefined
 };
 
 @State<RicercaUtentiStateModel>({
@@ -43,11 +41,6 @@ export class RicercaUtentiState {
     @Selector()
     static sediFiltro(state: RicercaUtentiStateModel) {
         return state.sediFiltro;
-    }
-
-    @Selector()
-    static sediFiltroConFigli(state: RicercaUtentiStateModel) {
-        return state.sediFiltroConFigli;
     }
 
     @Selector()
@@ -72,29 +65,14 @@ export class RicercaUtentiState {
     @Action(SetSediFiltro)
     setSediFiltro({ getState, patchState }: StateContext<RicercaUtentiStateModel>, action: SetSediFiltro) {
         patchState({
-            sediFiltro: action.sedi,
-            sediFiltroSelezionate: action.sedi.map((s: Ruolo) => s.codSede)
-        });
-    }
-
-    @Action(ClearSediFiltro)
-    clearSediFiltro({ patchState }: StateContext<RicercaUtentiStateModel>) {
-        patchState({
-            sediFiltro: []
-        });
-    }
-
-    @Action(SetSediFiltroConFigli)
-    setSediFiltroConDistaccamenti({ getState, patchState }: StateContext<RicercaUtentiStateModel>, action: SetSediFiltroConFigli) {
-        patchState({
-            sediFiltroConFigli: action.sediConDistaccamenti
+            sediFiltro: action.sedi
         });
     }
 
     @Action(ReducerSelezioneFiltroSede)
     reducerSelezioneFiltroSede({ getState, dispatch }: StateContext<RicercaUtentiStateModel>, action: ReducerSelezioneFiltroSede) {
         const filtriSedeSelezionati = getState().sediFiltroSelezionate;
-        const filtroSelezionato = filtriSedeSelezionati.filter(f => f === action.sedeFiltro).length === 1;
+        const filtroSelezionato = filtriSedeSelezionati && filtriSedeSelezionati.filter(f => f === action.sedeFiltro).length === 1;
         if (!filtroSelezionato) {
             dispatch(new SetSedeFiltroSelezionato(action.sedeFiltro));
         } else {
@@ -106,7 +84,7 @@ export class RicercaUtentiState {
     setSedeFiltroSelezionato({ setState, dispatch }: StateContext<RicercaUtentiStateModel>, action: SetSedeFiltroSelezionato) {
         setState(
             patch({
-                sediFiltroSelezionate: append([action.sedeFiltro])
+                sediFiltroSelezionate: insertItem(action.sedeFiltro)
             })
         );
         dispatch(new GetUtentiGestione());
@@ -119,21 +97,14 @@ export class RicercaUtentiState {
                 sediFiltroSelezionate: removeItem(sede => sede === action.sedeFiltro)
             })
         );
-        const sediSelezionateCount = getState().sediFiltroSelezionate.length;
-        if (sediSelezionateCount <= 0) {
-            dispatch(new SetAllSediFiltroSelezionate());
-        } else {
-            dispatch(new GetUtentiGestione());
-        }
+        dispatch(new GetUtentiGestione());
     }
 
-    @Action(SetAllSediFiltroSelezionate)
-    setAllSediFiltroSelezionate({ getState, patchState, dispatch }: StateContext<RicercaUtentiStateModel>) {
-        const sediFiltro = getState().sediFiltro;
+    @Action(ResetSediFiltroSelezionate)
+    resetSediFiltroSelezionate({ patchState, dispatch }: StateContext<RicercaUtentiStateModel>) {
         patchState({
-                sediFiltroSelezionate: sediFiltro.map((s: Ruolo) => s.codSede)
-            }
-        );
+            sediFiltroSelezionate: RicercaUtentiStateDefaults.sediFiltroSelezionate
+        });
         dispatch(new GetUtentiGestione());
     }
 }
