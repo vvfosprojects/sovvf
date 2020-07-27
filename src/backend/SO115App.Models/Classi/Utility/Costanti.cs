@@ -24,6 +24,7 @@ namespace SO115App.Models.Classi.Utility
         #region CondivisaAuthorization
 
         public static string UtenteNonAutorizzato = "Utente non autorizzato";
+        public static string DatiMancanti = "Dati Mancanti";
 
         #endregion CondivisaAuthorization
 
