@@ -18,6 +18,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using SO115App.API.Models.Classi.Autenticazione;
+using SO115App.API.Models.Classi.Condivise;
 using SO115App.Models.Classi.Condivise;
 using System;
 using System.Collections.Generic;
@@ -29,5 +30,6 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneUtente.ListaOperatori
     {
         public Paginazione Pagination { get; set; }
         public List<Utente> DataArray { get; set; }
+        public List<Role> ListaSediPresenti { get; set; }
     }
 }

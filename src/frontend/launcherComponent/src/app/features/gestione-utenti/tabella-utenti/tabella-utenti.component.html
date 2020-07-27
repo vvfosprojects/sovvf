@@ -10,12 +10,13 @@
         <tr *ngFor="let utente of listaUtenti | paginate: { itemsPerPage: pageSize, currentPage: page, totalItems: totalItems }">
             <td width="40%" class="pb-1">
                 <button class="btn btn-sm btn-danger font-weight-bold float-left mt-1 mr-3" ngbTooltip="Rimuovi utente"
-                        placement="bottom" [disabled]="utente.id === idUtenteLoggato" [class.cursor-not-allowed]="utente.id === idUtenteLoggato"
+                        placement="bottom" [disabled]="utente.id === idUtenteLoggato"
+                        [class.cursor-not-allowed]="utente.id === idUtenteLoggato"
                         (click)="onRemoveUtente(utente.codiceFiscale, utente.cognome + ' ' + utente.nome)">
                     <i class="fa fa-trash"></i>
                 </button>
                 <div class="h5 font-weight-bold mt-1 pt-1">
-                    {{utente.cognome | uppercase}} {{utente.nome | uppercase}}
+                    <span [ngbTooltip]="utente?.codiceFiscale">{{utente.cognome | uppercase}} {{utente.nome | uppercase}}</span>
                 </div>
             </td>
             <td width="60%">
