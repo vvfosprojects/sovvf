@@ -4,7 +4,9 @@ using SO115App.ExternalAPI.Fake.Classi.PersonaleUtentiComuni;
 using SO115App.ExternalAPI.Fake.Classi.Utility;
 using SO115App.Models.Classi.Utenti.Autenticazione;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Personale;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -38,12 +40,22 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
         public async Task<List<PersonaleVVF>> Get(string text, string codSede = null)
         {
             _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("test");
-            var response = await _client.GetAsync($"{_configuration.GetSection("UrlExternalApi").GetSection("PersonaleApiUtenteComuni").Value}?searchKey={text}").ConfigureAwait(false);
-            response.EnsureSuccessStatusCode();
-            using HttpContent content = response.Content;
-            string data = await content.ReadAsStringAsync().ConfigureAwait(false);
-            var personaleUC = JsonConvert.DeserializeObject<List<PersonaleUC>>(data);
-            return MapPersonaleVVFsuPersonaleUC.Map(personaleUC);
+
+            string[] lstSegmenti = new string[6];
+            if (text != null)
+                lstSegmenti = text.Split(" ", StringSplitOptions.RemoveEmptyEntries);
+
+            List<PersonaleUC> personaleUC = new List<PersonaleUC>();
+
+            Parallel.ForEach(lstSegmenti, segmento =>
+            {
+                var response = _client.GetStringAsync($"{_configuration.GetSection("UrlExternalApi").GetSection("PersonaleApiUtenteComuni").Value}?searchKey={segmento}")
+                    .ConfigureAwait(true).GetAwaiter().GetResult();
+
+                lock (personaleUC) { personaleUC.AddRange(JsonConvert.DeserializeObject<List<PersonaleUC>>(response)); };
+            });
+
+            return MapPersonaleVVFsuPersonaleUC.Map(personaleUC.Distinct().ToList());
         }
     }
 }
