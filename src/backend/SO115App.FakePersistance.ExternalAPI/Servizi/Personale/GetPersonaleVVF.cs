@@ -60,8 +60,8 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
             //Applico i filtri sui dati
             return MapPersonaleVVFsuPersonaleUC.Map(personaleUC
                 .FindAll(x => lstSegmenti.Contains(x.Cognome.ToLower()) || lstSegmenti.Contains(x.Nome.ToLower()))
-                .OrderByDescending(x => lstSegmenti.Contains(x.Cognome.ToLower()) && lstSegmenti.Contains(x.Nome.ToLower()))
                 .Distinct()
+                .OrderByDescending(x => lstSegmenti.Contains(x.Cognome.ToLower()) && lstSegmenti.Contains(x.Nome.ToLower()))
                 .ToList());
         }
     }
