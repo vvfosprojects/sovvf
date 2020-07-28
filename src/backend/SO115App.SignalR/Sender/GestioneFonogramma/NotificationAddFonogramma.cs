@@ -28,6 +28,7 @@ namespace SO115App.SignalR.Sender.GestioneFonogramma
             var sintesi = _getSintesiRichiestaAssistenzaByCodice.GetSintesi(richiesta.Codice);
             command.Chiamata = sintesi;
 
+            sintesi.InfoFonogramma = command.Fonogramma;
             await _notificationHubContext.Clients.All.SendAsync("ModifyAndNotifySuccess", command);
         }
     }
