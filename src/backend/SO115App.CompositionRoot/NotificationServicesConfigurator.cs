@@ -84,6 +84,10 @@ namespace SO115App.CompositionRoot
                 Models.Servizi.Infrastruttura.Notification.CallMatrix.ICallMatrix,
                 SignalR.Utility.CallMatrix>();
 
+            container.Register<
+                Models.Servizi.Infrastruttura.Notification.GestioneFonogramma.INotifyAddFonogramma,
+                SignalR.Sender.GestioneFonogramma.NotificationAddFonogramma>();
+
             #endregion Notifiche
         }
     }

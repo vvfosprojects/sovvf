@@ -25,6 +25,7 @@ using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Filtri;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.Eventi;
+using SO115App.API.Models.Classi.Soccorso.Eventi.Fonogramma;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
 using SO115App.Models.Classi.Condivise;
@@ -96,6 +97,8 @@ namespace Persistence.MongoDB
             BsonClassMap.RegisterClassMap<GeneriMezzi>();
             BsonClassMap.RegisterClassMap<Stati>();
             BsonClassMap.RegisterClassMap<MarcaRilevante>();
+            BsonClassMap.RegisterClassMap<InviareFonogramma>();
+            BsonClassMap.RegisterClassMap<FonogrammaInviato>();
         }
 
         public IMongoCollection<RichiestaAssistenza> RichiestaAssistenzaCollection

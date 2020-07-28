@@ -3,5 +3,5 @@ import { VoceFiltro } from '../../features/home/filterbar/filtri-richieste/voce-
 export interface FiltersInterface {
     search: string;
     others?: VoceFiltro[];
-    codiciSede?: string[];
+    codSede?: string[];
 }

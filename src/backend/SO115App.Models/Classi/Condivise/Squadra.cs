@@ -52,7 +52,12 @@ namespace SO115App.API.Models.Classi.Condivise
             /// <summary>
             ///   Fuori per ragioni di istituto
             /// </summary>
-            Istituto
+            Istituto,
+
+            /// <summary>
+            ///   La partenza è stata creata ma il mezzo non è ancora uscito dalla sede
+            /// </summary>
+            InUscita,
         }
 
         public Squadra(string Nome, StatoSquadra Stato, List<Componente> Componenti, Sede Distaccamento)

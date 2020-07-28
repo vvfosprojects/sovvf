@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="ListaOperatoriAuthorizationQueryHandlerDecorator.cs" company="CNVVF">
+// <copyright file="AddInterventoAuthorization.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,30 +17,31 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using System;
+using System.Collections.Generic;
+using System.Security.Principal;
 using CQRS.Authorization;
-using CQRS.Queries.Authorizers;
+using CQRS.Commands.Authorizers;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Autenticazione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.VerificaUtente;
-using System.Collections.Generic;
-using System.Security.Principal;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Competenze;
 
-namespace SO115App.Models.Servizi.CQRS.Queries.GestioneUtente.ListaOperatori
+namespace DomainModel.CQRS.Commands.GestioneFonogramma
 {
-    public class ListaOperatoriAuthorizationQueryHandlerDecorator : IQueryAuthorizer<ListaOperatoriQuery, ListaOperatoriResult>
+    public class FonogrammaAuthorization : ICommandAuthorizer<FonogrammaCommand>
     {
         private readonly IPrincipal _currentUser;
         private readonly IFindUserByUsername _findUserByUsername;
-        private readonly IGetAutorizzazioni _getAutorizzazioni;
 
-        public ListaOperatoriAuthorizationQueryHandlerDecorator(IPrincipal currentUser, IFindUserByUsername findUserByUsername, IGetAutorizzazioni getAutorizzazioni)
+        public FonogrammaAuthorization(IPrincipal currentUser,
+            IFindUserByUsername findUserByUsername)
         {
-            this._currentUser = currentUser;
-            this._findUserByUsername = findUserByUsername;
-            this._getAutorizzazioni = getAutorizzazioni;
+            _currentUser = currentUser;
+            _findUserByUsername = findUserByUsername;
         }
 
-        public IEnumerable<AuthorizationResult> Authorize(ListaOperatoriQuery query)
+        public IEnumerable<AuthorizationResult> Authorize(FonogrammaCommand command)
         {
             var username = _currentUser.Identity.Name;
             var user = _findUserByUsername.FindUserByUs(username);

@@ -33,15 +33,24 @@ namespace SO115App.Persistence.MongoDB.GestioneUtenti.GestioneUtente
         /// <returns>una lista di utenti</returns>
         public List<Utente> Get(List<string> codiciSede, string cercaBy = null)
         {
-            string[] lstNomi = new string[6];
+            string[] lstSegmenti = new string[6];
             if (cercaBy != null)
-                lstNomi = cercaBy.ToLower().Split(" ", StringSplitOptions.RemoveEmptyEntries);
+                lstSegmenti = cercaBy.ToLower().Split(" ", StringSplitOptions.RemoveEmptyEntries);
 
             return string.IsNullOrEmpty(cercaBy)
                 ? _dbContext.UtenteCollection.Find(Builders<Utente>.Filter.In("ruoli.codSede", codiciSede)).ToList()
+                    .OrderByDescending(x => x.Nome)
+                    .ThenByDescending(x => x.Cognome)
+                    .ToList()
 
                 : _dbContext.UtenteCollection.Find(Builders<Utente>.Filter.In("ruoli.codSede", codiciSede)).ToList()
-                    .FindAll(x => lstNomi.Any(c => x.Nome.ToLower().Contains(c)) || lstNomi.Any(c => x.Cognome.ToLower().Contains(c)));
+                    .FindAll(x =>
+                        lstSegmenti.Any(c => x.Nome.ToLower().Contains(c)) 
+                        || lstSegmenti.Any(c => x.Cognome.ToLower().Contains(c)
+                        || lstSegmenti.Any(c => x.Sede.Codice.Replace(".", "").ToLower().Contains(c))))
+                    .OrderByDescending(x => x.Nome)
+                    .ThenByDescending(x => x.Cognome)
+                    .ToList();
         }
     }
 }
