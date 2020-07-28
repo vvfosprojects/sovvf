@@ -16,7 +16,8 @@ import {
     HoverOutMezzoComposizione,
     RequestRemoveBookMezzoComposizione,
     UnselectMezzoComposizione,
-    ReducerSelectMezzoComposizione
+    ReducerSelectMezzoComposizione,
+    RequestBookMezzoComposizione
 } from '../../store/actions/composizione-partenza/mezzi-composizione.actions';
 import { BoxPartenzaState } from '../../store/states/composizione-partenza/box-partenza.state';
 import { BoxPartenza } from '../interface/box-partenza-interface';
@@ -27,7 +28,8 @@ import {
     RemoveMezzoBoxPartenzaSelezionato,
     RemoveSquadraBoxPartenza,
     RequestAddBoxPartenza,
-    RequestSelectBoxPartenza
+    RequestSelectBoxPartenza,
+    DeselectBoxPartenza
 } from '../../store/actions/composizione-partenza/box-partenza.actions';
 import {
     HoverInSquadraComposizione,
@@ -285,6 +287,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
 
     nuovaPartenza() {
         this.store.dispatch(new RequestAddBoxPartenza());
+        this.dopoAggiungiBoxPartenza();
     }
 
     eliminaBoxPartenza(boxPartenza: BoxPartenza) {
@@ -295,6 +298,16 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
             this.store.dispatch(new RemoveBoxPartenza(boxPartenza, true));
         }
         this.onClearDirection();
+    }
+
+    dopoAggiungiBoxPartenza() {
+        this.boxPartenzaList.forEach(boxPartenza => {
+            if (boxPartenza.mezzoComposizione) {
+                const mezzoComp = boxPartenza.mezzoComposizione;
+                this.store.dispatch(new DeselectBoxPartenza(boxPartenza, true));
+            }
+            this.onClearDirection();
+        });
     }
 
     // Interazione con Mappa
