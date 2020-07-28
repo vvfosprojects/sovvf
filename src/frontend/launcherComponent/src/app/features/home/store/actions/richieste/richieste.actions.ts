@@ -3,6 +3,7 @@ import { MezzoActionInterface } from '../../../../../shared/interface/mezzo-acti
 import { StatoRichiesta } from '../../../../../shared/enum/stato-richiesta.enum';
 import { RichiestaActionInterface } from '../../../../../shared/interface/richiesta-action.interface';
 import { ListaSquadre } from '../../../../../shared/interface/lista-squadre';
+import { ModificaStatoFonogrammaEmitInterface } from '../../../../../shared/interface/modifica-stato-fonogramma-emit.interface';
 
 export class GetListaRichieste {
     static readonly type = '[Richieste] Get Lista Richieste API';
@@ -99,6 +100,13 @@ export class ActionRichiesta {
     }
 }
 
+export class ModificaStatoFonogramma {
+    static readonly type = '[Richieste] Modifica Stato Fonogramma';
+
+    constructor(public event: ModificaStatoFonogrammaEmitInterface) {
+    }
+}
+
 export class SetRichiestaById {
     static readonly type = '[Richieste] Set Richiesta by Id';
 
@@ -155,3 +163,10 @@ export class StopLoadingActionRichiesta {
     static readonly type = '[Richieste] Stop Loading Action Richiesta';
 }
 
+export class StartLoadingModificaFonogramma {
+    static readonly type = '[Richieste] Start Loading Modifica Fonogramma';
+}
+
+export class StopLoadingModificaFonogramma {
+    static readonly type = '[Richieste] Stop Loading Modifica Fonogramma';
+}

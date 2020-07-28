@@ -4,28 +4,31 @@ import {
     ActionMezzo,
     ActionRichiesta,
     AddRichiesta,
+    AddRichieste,
     CambiaStatoRichiesta,
     ClearIdChiamataInviaPartenza,
     ClearRichiestaById,
     ClearRichieste,
+    EliminaPartenzaRichiesta,
     GetListaRichieste,
+    ModificaStatoFonogramma,
     PatchRichiesta,
     SetIdChiamataInviaPartenza,
-    SetRichiestaById,
-    AddRichieste,
-    StartInviaPartenzaFromChiamata,
-    UpdateRichiesta,
-    VisualizzaListaSquadrePartenza,
     SetNeedRefresh,
-    StartLoadingRichieste,
-    StopLoadingRichieste,
-    EliminaPartenzaRichiesta,
+    SetRichiestaById,
+    StartInviaPartenzaFromChiamata,
     StartLoadingActionMezzo,
-    StopLoadingActionMezzo,
     StartLoadingActionRichiesta,
-    StopLoadingActionRichiesta,
     StartLoadingEliminaPartenza,
-    StopLoadingEliminaPartenza
+    StartLoadingModificaFonogramma,
+    StartLoadingRichieste,
+    StopLoadingActionMezzo,
+    StopLoadingActionRichiesta,
+    StopLoadingEliminaPartenza,
+    StopLoadingModificaFonogramma,
+    StopLoadingRichieste,
+    UpdateRichiesta,
+    VisualizzaListaSquadrePartenza
 } from '../../actions/richieste/richieste.actions';
 import { SintesiRichiesteService } from 'src/app/core/service/lista-richieste-service/lista-richieste.service';
 import { insertItem, patch, updateItem } from '@ngxs/store/operators';
@@ -58,8 +61,7 @@ import { GetInitCentroMappa } from '../../actions/maps/centro-mappa.actions';
 import { ClearRichiestaMarkerModifica } from '../../actions/maps/richieste-markers.actions';
 import { AuthState } from '../../../../auth/store/auth.state';
 import { UpdateRichiestaFissata } from '../../actions/richieste/richiesta-fissata.actions';
-import { OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { StatoFonogramma } from '../../../../../shared/enum/stato-fonogramma.enum';
 
 export interface RichiesteStateModel {
     richieste: SintesiRichiesta[];
@@ -69,6 +71,7 @@ export interface RichiesteStateModel {
     loadingActionMezzo: string;
     loadingEliminaPartenza: boolean;
     loadingActionRichiesta: string;
+    loadingModificaFonogramma: boolean;
     needRefresh: boolean;
 }
 
@@ -80,6 +83,7 @@ export const RichiesteStateDefaults: RichiesteStateModel = {
     loadingEliminaPartenza: false,
     loadingActionMezzo: null,
     loadingActionRichiesta: null,
+    loadingModificaFonogramma: false,
     needRefresh: false
 };
 
@@ -136,6 +140,11 @@ export class RichiesteState {
     @Selector()
     static loadingEliminaPartenza(state: RichiesteStateModel) {
         return state.loadingEliminaPartenza;
+    }
+
+    @Selector()
+    static loadingModificaFonogramma(state: RichiesteStateModel) {
+        return state.loadingModificaFonogramma;
     }
 
     constructor(private richiesteService: SintesiRichiesteService,
@@ -358,6 +367,30 @@ export class RichiesteState {
         });
     }
 
+    @Action(ModificaStatoFonogramma)
+    modificaStatoFonogramma({ dispatch }: StateContext<RichiesteStateModel>, action: ModificaStatoFonogramma) {
+        dispatch(new StartLoadingModificaFonogramma());
+        const obj = {
+            'idRichiesta': action.event.idRichiesta,
+            'numeroFonogramma': action.event.numeroFonogramma,
+            'protocolloFonogramma': action.event.protocolloFonogramma,
+            'destinatari': action.event.destinatari,
+            'stato': getStatoFonogrammaEnumByName(action.event.stato)
+        };
+        this.richiesteService.modificaStatoFonogrammaRichiesta(obj).subscribe(() => {
+            dispatch(new StopLoadingModificaFonogramma());
+        }, error => dispatch(new StopLoadingModificaFonogramma()));
+
+        function getStatoFonogrammaEnumByName(name: string): StatoFonogramma {
+            switch (name) {
+                case 'Inviato':
+                    return StatoFonogramma.Inviato;
+                case 'Da Inviare':
+                    return StatoFonogramma.DaInviare;
+            }
+        }
+    }
+
     @Action(SetRichiestaById)
     setRichiestaById({ patchState, dispatch }: StateContext<RichiesteStateModel>, action: SetRichiestaById) {
         this.richiesteService.getRichiestaById(action.idRichiesta).subscribe((data: SintesiRichiesta) => {
@@ -436,6 +469,20 @@ export class RichiesteState {
     stopLoadingActionRichiesta({ patchState }: StateContext<RichiesteStateModel>) {
         patchState({
             loadingActionRichiesta: null
+        });
+    }
+
+    @Action(StartLoadingModificaFonogramma)
+    startLoadingModificaFonogramma({ patchState }: StateContext<RichiesteStateModel>) {
+        patchState({
+            loadingModificaFonogramma: true
+        });
+    }
+
+    @Action(StopLoadingModificaFonogramma)
+    stopLoadingModificaFonogramma({ patchState }: StateContext<RichiesteStateModel>) {
+        patchState({
+            loadingModificaFonogramma: false
         });
     }
 

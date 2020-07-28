@@ -10,7 +10,8 @@
                        (gestioneRichiesta)="onGestioneRichiesta($event)"
                        (eventiRichiesta)="onVisualizzaEventiRichiesta($event)" (outEspanso)="onSetEspanso($event)"
                        (outEspansoId)="toggleEspanso($event)" (actionMezzo)="onActionMezzo($event)"
-                       (actionRichiesta)="onActionRichiesta($event)" (eliminaPartenza)="onEliminaPartenza($event)">
+                       (actionRichiesta)="onActionRichiesta($event)" (eliminaPartenza)="onEliminaPartenza($event)"
+                       (modificaStatoFonogramma)="onModificaStatoFonogramma($event)">
 </app-richiesta-fissata>
 
 <app-lista-richieste [_split]="split" [richieste]="richieste" [ricerca]="ricerca" [richiestaFissata]="richiestaFissata"
@@ -28,5 +29,6 @@
                      (modificaRichiesta)="onModificaRichiesta($event)" (gestioneRichiesta)="onGestioneRichiesta($event)"
                      (actionMezzo)="onActionMezzo($event)" (actionRichiesta)="onActionRichiesta($event)"
                      (outEspansoId)="toggleEspanso($event)" [codiciFiltriSelezionati]="codiciFiltriSelezionati"
-                     (eliminaPartenza)="onEliminaPartenza($event)">
+                     (eliminaPartenza)="onEliminaPartenza($event)"
+                     (modificaStatoFonogramma)="onModificaStatoFonogramma($event)">
 </app-lista-richieste>

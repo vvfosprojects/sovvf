@@ -17,6 +17,7 @@ export const environment = {
         attivitaUtente: '/api/AttivitaUtente',
         gestioneRichiesta: '/api/GestioneRichiesta',
         gestionePartenza: '/api/GestionePartenza',
+        gestioneFonogramma: '/api/GestioneFonogramma',
         mezziInServizio: '/api/GestioneMezziInServizio',
         schedeContatto: '/api/GestioneSchedeContatto',
         turno: '',  // TodoBackEnd: controller mancante
