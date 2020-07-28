@@ -31,6 +31,7 @@ using SO115App.Models.Classi.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 
 namespace SO115App.API.Models.Classi.Soccorso
 {
@@ -765,6 +766,55 @@ namespace SO115App.API.Models.Classi.Soccorso
                         return new Fonogramma.NonNecessario();
                 }
             }
+        }
+
+        public SO115App.Models.Classi.Fonogramma.Fonogramma Fonogramma
+        {
+            get
+            {
+                var ultimoEventoFonogramma = this._eventi
+                    .LastOrDefault(e => e is IFonogramma);
+
+                switch (ultimoEventoFonogramma)
+                {
+                    case FonogrammaInviato _:
+                        return MappaFonogramma(ultimoEventoFonogramma, "I");
+
+                    case InviareFonogramma _:
+                        return MappaFonogramma(ultimoEventoFonogramma, "D");
+
+                    default:
+                        return null;
+                }
+            }
+        }
+
+        private SO115App.Models.Classi.Fonogramma.Fonogramma MappaFonogramma(Evento infoFonogramma, string tipoFonogramma)
+        {
+            SO115App.Models.Classi.Fonogramma.Fonogramma InfoFonogramma = new SO115App.Models.Classi.Fonogramma.Fonogramma();
+
+            if (tipoFonogramma.Equals("I"))
+            {
+                var info = ((FonogrammaInviato)infoFonogramma);
+                InfoFonogramma.Destinatari = info.Destinatari;
+                InfoFonogramma.IdOperatore = info.CodiceFonte;
+                InfoFonogramma.IdRichiesta = info.CodiceRichiesta;
+                InfoFonogramma.NumeroFonogramma = info.NumeroFonogramma;
+                InfoFonogramma.ProtocolloFonogramma = info.ProtocolloFonogramma;
+                InfoFonogramma.Stato = SO115App.Models.Classi.Fonogramma.StatoFonogramma.Inviato;
+            }
+            else if (tipoFonogramma.Equals("D"))
+            {
+                var info = ((InviareFonogramma)infoFonogramma);
+                InfoFonogramma.Destinatari = info.Destinatari;
+                InfoFonogramma.IdOperatore = info.CodiceFonte;
+                InfoFonogramma.IdRichiesta = info.CodiceRichiesta;
+                InfoFonogramma.NumeroFonogramma = info.NumeroFonogramma;
+                InfoFonogramma.ProtocolloFonogramma = info.ProtocolloFonogramma;
+                InfoFonogramma.Stato = SO115App.Models.Classi.Fonogramma.StatoFonogramma.DaInviare;
+            }
+
+            return InfoFonogramma;
         }
 
         /// <summary>

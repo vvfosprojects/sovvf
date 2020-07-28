@@ -49,7 +49,7 @@ namespace DomainModel.CQRS.Commands.AddIntervento
             }
             else if (command.Fonogramma.Stato.Equals(StatoFonogramma.Inviato))
             {
-                new FonogrammaInviato(richiesta, DateTime.Now, command.Fonogramma.IdOperatore, command.Fonogramma.NumeroFonogramma, command.Fonogramma.ProtocolloFonogramma);
+                new FonogrammaInviato(richiesta, DateTime.Now, command.Fonogramma.IdOperatore, command.Fonogramma.Destinatari, command.Fonogramma.NumeroFonogramma, command.Fonogramma.ProtocolloFonogramma);
                 this._saveRichiestaAssistenza.UpDate(richiesta);
             }
         }
