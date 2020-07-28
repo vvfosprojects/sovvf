@@ -17,6 +17,13 @@ export class RemoveBoxPartenza {
     }
 }
 
+export class DeselectBoxPartenza {
+    static readonly type = '[BoxPartenza] Deselect Box Partenza';
+
+    constructor(public boxPartenza: BoxPartenza, public refreshLista?: boolean) {
+    }
+}
+
 export class RemoveBoxPartenzaByMezzoId {
     static readonly type = '[BoxPartenza] Remove Box Partenza By Mezzo ID';
 
