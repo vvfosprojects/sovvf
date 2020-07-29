@@ -29,12 +29,12 @@ export class ModificaFonogrammaModalComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.f.idRichiesta.patchValue(this.idRichiesta);
-        this.f.codiceRichiesta.patchValue(this.codiceRichiesta);
-        this.f.numeroFonogramma.patchValue(this.fonogramma.numeroFonogramma);
-        this.f.protocolloFonogramma.patchValue(this.fonogramma.protocolloFonogramma);
-        this.f.destinatari.patchValue(this.fonogramma.destinatari);
-        this.f.stato.patchValue(getStatoFonogrammaStringByEnum(this.fonogramma.stato));
+        this.idRichiesta ? this.f.idRichiesta.patchValue(this.idRichiesta) : this.f.idRichiesta.patchValue('');
+        this.codiceRichiesta ? this.f.codiceRichiesta.patchValue(this.codiceRichiesta) : this.f.codiceRichiesta.patchValue('');
+        this.fonogramma && this.fonogramma.numeroFonogramma ? this.f.numeroFonogramma.patchValue(this.fonogramma.numeroFonogramma) : this.f.numeroFonogramma.patchValue('');
+        this.fonogramma && this.fonogramma.protocolloFonogramma ? this.f.protocolloFonogramma.patchValue(this.fonogramma.protocolloFonogramma) : this.f.protocolloFonogramma.patchValue('');
+        this.fonogramma && this.fonogramma.destinatari ? this.f.destinatari.patchValue(this.fonogramma.destinatari) : this.f.destinatari.patchValue('');
+        this.fonogramma && this.fonogramma.stato ? this.f.stato.patchValue(getStatoFonogrammaStringByEnum(this.fonogramma.stato)) : this.f.stato.patchValue(null);
     }
 
     initForm() {
