@@ -17,6 +17,8 @@ export function mezzoComposizioneBusy(stato: StatoMezzo) {
     switch (stato) {
         case StatoMezzo.SulPosto:
             return true;
+        case StatoMezzo.InUscita:
+            return true;
         case StatoMezzo.InViaggio:
             return true;
         case StatoMezzo.Istituto:
@@ -44,6 +46,9 @@ export function iconaStatiClass(stato: string): string {
             break;
         case StatoMezzo.Rientrato:
             returnClass = 'text-success';
+            break;
+        case StatoMezzo.InUscita:
+            returnClass = 'text-secondary';
             break;
         case StatoMezzo.InViaggio:
             returnClass = 'text-warning';

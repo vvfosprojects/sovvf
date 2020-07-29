@@ -1,8 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-// Interface
 import { MezzoComposizione } from '../../interface/mezzo-composizione-interface';
 import { BoxPartenza } from '../../interface/box-partenza-interface';
-// Model
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
 import { MezzoDirection } from '../../../../../shared/interface/mezzo-direction';
 import { SganciamentoInterface } from 'src/app/shared/interface/sganciamento.interface';
@@ -45,18 +43,18 @@ export class MezzoComposizioneComponent implements OnInit {
 
     constructor() {
     }
-    
+
     ngOnInit() {
-        this.sganciamentoCheck()
+        this.sganciamentoCheck();
     }
 
     sganciamentoCheck() {
-    if (this.richiesta && this.richiesta.partenzeRichiesta && this.richiesta.partenzeRichiesta.length > 0) {
-        this.sganciamentoDisabilitato = this.richiesta.partenzeRichiesta.find( e => {
-            return e.mezzo.descrizione ===  this.mezzoComp.mezzo.descrizione &&
-                   !e.sganciata && !e.terminata && !e.partenzaAnnullata;
-        }) ? true : false;
-     }    
+        if (this.richiesta && this.richiesta.partenzeRichiesta && this.richiesta.partenzeRichiesta.length > 0) {
+            this.sganciamentoDisabilitato = !!this.richiesta.partenzeRichiesta.find(e => {
+                return e.mezzo.descrizione === this.mezzoComp.mezzo.descrizione &&
+                    !e.sganciata && !e.terminata && !e.partenzaAnnullata;
+            });
+        }
     }
 
     // Events
@@ -83,7 +81,7 @@ export class MezzoComposizioneComponent implements OnInit {
 
     // Lucchetto
     onSganciamento() {
-        if(this.sganciamentoDisabilitato) {
+        if (this.sganciamentoDisabilitato) {
             return false;
         }
         if (this.mezzoComp.mezzo && this.mezzoComp.mezzo.idRichiesta) {
@@ -130,6 +128,7 @@ export class MezzoComposizioneComponent implements OnInit {
                 break;
         }
 
+        // tslint:disable-next-line:max-line-length
         if (this.mezzoComp.mezzo.stato !== StatoMezzo.InSede && this.mezzoComp.mezzo.stato !== StatoMezzo.InRientro && this.mezzoComp.mezzo.stato !== StatoMezzo.Rientrato && this.mezzoComp.mezzo.stato !== StatoMezzo.FuoriServizio) {
             returnClass += ' diagonal-stripes bg-lightdanger';
             this.itemBloccato = true;

@@ -163,6 +163,9 @@ export function roundTodecimal(value: number, exp?: number) {
 export function calcolaActionSuggeritaMezzo(stato: StatoMezzo) {
     let actionSuggerita: StatoMezzoActions;
     switch (stato) {
+        case StatoMezzo.InUscita:
+            actionSuggerita = StatoMezzoActions.InViaggio;
+            break;
         case StatoMezzo.InViaggio:
             actionSuggerita = StatoMezzoActions.SulPosto;
             break;
@@ -207,6 +210,9 @@ export function statoMezzoColor(stato: StatoMezzo) {
         case StatoMezzo.Rientrato:
             _returnColor = 'success';
             break;
+        case StatoMezzo.InUscita:
+            _returnColor = 'secondary';
+            break;
         case StatoMezzo.InViaggio:
             _returnColor = 'warning';
             break;
@@ -229,6 +235,9 @@ export function statoMezzoActionColor(stato: StatoMezzoActions) {
         case StatoMezzoActions.Rientrato:
             _returnColor = 'success';
             break;
+        case StatoMezzoActions.InUscita:
+            _returnColor = 'secondary';
+            break;
         case StatoMezzoActions.InViaggio:
             _returnColor = 'warning';
             break;
@@ -250,6 +259,9 @@ export function statoMezzoBorderClass(stato: StatoMezzo) {
             break;
         case StatoMezzo.Rientrato:
             _returnClass = 'status_border_inSede';
+            break;
+        case StatoMezzo.InUscita:
+            _returnClass = 'status_border_inUscita';
             break;
         case StatoMezzo.InViaggio:
             _returnClass = 'status_border_inViaggio';
