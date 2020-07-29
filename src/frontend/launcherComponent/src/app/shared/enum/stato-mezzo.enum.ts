@@ -1,5 +1,6 @@
 export enum StatoMezzo {
     InSede = 'In Sede',
+    InUscita = 'In Uscita',
     InViaggio = 'In Viaggio',
     SulPosto = 'Sul Posto',
     InRientro = 'In Rientro',
