@@ -1,5 +1,5 @@
 export enum StatoFonogramma {
+    NonNecessario,
     DaInviare,
-    Inviato,
-    NonNecessario
+    Inviato
 }

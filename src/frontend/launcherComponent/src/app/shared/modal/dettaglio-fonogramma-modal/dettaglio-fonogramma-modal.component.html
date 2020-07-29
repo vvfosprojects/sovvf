@@ -6,11 +6,9 @@
             (click)="modal.dismiss('cross')">
         <i class="fa fa-times text-danger"></i>
     </button>
-    <div class="text-left">
-        <h4>Richiesta {{ codiceRichiesta }}</h4>
-    </div>
 </div>
 <div class="modal-body">
+    <h4 class="mb-3">Richiesta {{ codiceRichiesta }}</h4>
     <pre>
       {{ fonogramma | json }}
     </pre>

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { Fonogramma } from '../../model/fonogramma.model';
 
 @Component({
     selector: 'app-modifica-fonogramma-modal',
@@ -10,8 +11,9 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 export class ModificaFonogrammaModalComponent implements OnInit {
 
     codiceRichiesta: string;
-
     idRichiesta: string;
+    fonogramma: Fonogramma;
+
     modificaStatoFonogrammaForm: FormGroup;
     submitted: boolean;
 
@@ -27,6 +29,10 @@ export class ModificaFonogrammaModalComponent implements OnInit {
 
     ngOnInit() {
         this.f.idRichiesta.patchValue(this.idRichiesta);
+        this.f.numeroFonogramma.patchValue(this.fonogramma.numeroFonogramma);
+        this.f.protocolloFonogramma.patchValue(this.fonogramma.protocolloFonogramma);
+        this.f.destinatari.patchValue(this.fonogramma.destinatari);
+        this.f.stato.patchValue(this.fonogramma.stato);
     }
 
     initForm() {

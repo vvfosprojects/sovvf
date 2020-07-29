@@ -216,6 +216,7 @@ export class SintesiRichiestaComponent implements OnChanges {
         const modalModificaStatoFonogramma = this.modalService.open(ModificaFonogrammaModalComponent, { backdropClass: 'light-blue-backdrop', centered: true });
         modalModificaStatoFonogramma.componentInstance.codiceRichiesta = this.richiesta.codiceRichiesta ? this.richiesta.codiceRichiesta : this.richiesta.codice;
         modalModificaStatoFonogramma.componentInstance.idRichiesta = this.richiesta.id;
+        modalModificaStatoFonogramma.componentInstance.fonogramma = this.richiesta.fonogramma;
         modalModificaStatoFonogramma.result.then((res: { status: string, result: any }) => {
             switch (res.status) {
                 case 'ok' :
