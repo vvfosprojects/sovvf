@@ -30,6 +30,8 @@ const COMPONENTS = [
     Shared.BottoneNuovaVersioneComponent,
     Shared.EliminaPartenzaModalComponent,
     Shared.RichiestaDuplicataModalComponent,
+    Shared.ModificaFonogrammaModalComponent,
+    Shared.DettaglioFonogrammaModalComponent,
     ListaPartenzeComponent
 ];
 
@@ -43,7 +45,7 @@ const COMPONENTS = [
         NgSelectModule
     ],
     declarations: [
-        ...COMPONENTS
+        ...COMPONENTS,
     ],
     exports: [
         ...COMPONENTS,

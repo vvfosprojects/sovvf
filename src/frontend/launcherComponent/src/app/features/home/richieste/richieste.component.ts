@@ -30,7 +30,7 @@ import { RichiesteEspanseState } from '../store/states/richieste/richieste-espan
 import { SetRichiestaGestione } from '../store/actions/richieste/richiesta-gestione.actions';
 import { RichiestaGestioneState } from '../store/states/richieste/richiesta-gestione.state';
 import { MezzoActionInterface } from '../../../shared/interface/mezzo-action.interface';
-import { ActionMezzo, ActionRichiesta, EliminaPartenzaRichiesta, GetListaRichieste } from '../store/actions/richieste/richieste.actions';
+import { ActionMezzo, ActionRichiesta, EliminaPartenzaRichiesta, GetListaRichieste, ModificaStatoFonogramma } from '../store/actions/richieste/richieste.actions';
 import { ReducerRichiesteEspanse } from '../store/actions/richieste/richieste-espanse.actions';
 import { RichiestaActionInterface } from '../../../shared/interface/richiesta-action.interface';
 import { PermissionFeatures } from '../../../shared/enum/permission-features.enum';
@@ -39,6 +39,7 @@ import { ResetFiltriSelezionatiRichieste } from '../store/actions/filterbar/filt
 import { StatoRichiesta } from '../../../shared/enum/stato-richiesta.enum';
 import { FiltriRichiesteState } from '../store/states/filterbar/filtri-richieste.state';
 import { VoceFiltro } from '../filterbar/filtri-richieste/voce-filtro.model';
+import { ModificaStatoFonogrammaEmitInterface } from '../../../shared/interface/modifica-stato-fonogramma-emit.interface';
 
 @Component({
     selector: 'app-richieste',
@@ -319,5 +320,9 @@ export class RichiesteComponent implements OnInit, OnDestroy {
 
     onEliminaPartenza(event: { targaMezzo: string, idRichiesta: string, modalResult: any }) {
         this.store.dispatch(new EliminaPartenzaRichiesta(event.targaMezzo, event.idRichiesta, event.modalResult));
+    }
+
+    onModificaStatoFonogramma(event: ModificaStatoFonogrammaEmitInterface) {
+        this.store.dispatch(new ModificaStatoFonogramma(event));
     }
 }
