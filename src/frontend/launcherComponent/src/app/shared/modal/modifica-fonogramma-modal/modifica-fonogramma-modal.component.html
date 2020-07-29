@@ -8,8 +8,11 @@
     </button>
 </div>
 <div class="modal-body">
-    <h4 class="mb-3">Richiesta {{ codiceRichiesta }}</h4>
     <form [formGroup]="modificaStatoFonogrammaForm">
+        <div class="form-group">
+            <label for="codiceRichiesta">Codice Richiesta</label>
+            <input id="codiceRichiesta" formControlName="codiceRichiesta" class="form-control" placeholder="Richiesta">
+        </div>
         <div class="form-group">
             <label for="numeroFonogramma">
                 Numero Fonogramma

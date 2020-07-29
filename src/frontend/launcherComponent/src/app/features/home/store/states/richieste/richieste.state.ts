@@ -44,7 +44,7 @@ import { SetMarkerRichiestaSelezionato } from '../../actions/maps/marker.actions
 import { ComposizionePartenzaState } from '../composizione-partenza/composizione-partenza.state';
 import { ClearRichiesteEspanse } from '../../actions/richieste/richieste-espanse.actions';
 import { RichiesteEspanseState } from './richieste-espanse.state';
-import { calcolaActionSuggeritaMezzo } from '../../../../../shared/helper/function';
+import { calcolaActionSuggeritaMezzo, getStatoFonogrammaEnumByName } from '../../../../../shared/helper/function';
 import { RichiestaGestioneState } from './richiesta-gestione.state';
 import { RichiestaAttivitaUtenteState } from './richiesta-attivita-utente.state';
 import { ListaSquadrePartenzaComponent } from '../../../../../shared';
@@ -61,7 +61,6 @@ import { GetInitCentroMappa } from '../../actions/maps/centro-mappa.actions';
 import { ClearRichiestaMarkerModifica } from '../../actions/maps/richieste-markers.actions';
 import { AuthState } from '../../../../auth/store/auth.state';
 import { UpdateRichiestaFissata } from '../../actions/richieste/richiesta-fissata.actions';
-import { StatoFonogramma } from '../../../../../shared/enum/stato-fonogramma.enum';
 
 export interface RichiesteStateModel {
     richieste: SintesiRichiesta[];
@@ -380,15 +379,6 @@ export class RichiesteState {
         this.richiesteService.modificaStatoFonogrammaRichiesta(obj).subscribe(() => {
             dispatch(new StopLoadingModificaFonogramma());
         }, error => dispatch(new StopLoadingModificaFonogramma()));
-
-        function getStatoFonogrammaEnumByName(name: string): StatoFonogramma {
-            switch (name) {
-                case 'Inviato':
-                    return StatoFonogramma.Inviato;
-                case 'Da Inviare':
-                    return StatoFonogramma.DaInviare;
-            }
-        }
     }
 
     @Action(SetRichiestaById)

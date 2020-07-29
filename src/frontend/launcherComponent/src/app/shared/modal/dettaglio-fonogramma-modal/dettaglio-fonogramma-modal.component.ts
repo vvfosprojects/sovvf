@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Fonogramma } from '../../model/fonogramma.model';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { getStatoFonogrammaStringByEnum } from '../../helper/function';
 
 @Component({
     selector: 'app-dettaglio-fonogramma-modal',
@@ -18,4 +19,11 @@ export class DettaglioFonogrammaModalComponent implements OnInit {
     ngOnInit() {
     }
 
+    getStatoFonogrammaStringByEnum(statoFonogramma): string {
+        return getStatoFonogrammaStringByEnum(statoFonogramma);
+    }
+
+    onClose() {
+        this.modal.dismiss('ko');
+    }
 }

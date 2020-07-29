@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Fonogramma } from '../../model/fonogramma.model';
+import { getStatoFonogrammaStringByEnum } from '../../helper/function';
 
 @Component({
     selector: 'app-modifica-fonogramma-modal',
@@ -29,20 +30,23 @@ export class ModificaFonogrammaModalComponent implements OnInit {
 
     ngOnInit() {
         this.f.idRichiesta.patchValue(this.idRichiesta);
+        this.f.codiceRichiesta.patchValue(this.codiceRichiesta);
         this.f.numeroFonogramma.patchValue(this.fonogramma.numeroFonogramma);
         this.f.protocolloFonogramma.patchValue(this.fonogramma.protocolloFonogramma);
         this.f.destinatari.patchValue(this.fonogramma.destinatari);
-        this.f.stato.patchValue(this.fonogramma.stato);
+        this.f.stato.patchValue(getStatoFonogrammaStringByEnum(this.fonogramma.stato));
     }
 
     initForm() {
         this.modificaStatoFonogrammaForm = this.fb.group({
             idRichiesta: ['', Validators.required],
+            codiceRichiesta: ['', Validators.required],
             numeroFonogramma: ['', Validators.required],
             protocolloFonogramma: ['', Validators.required],
             destinatari: ['', Validators.required],
-            stato: [this.statiFonogramma[0], Validators.required]
+            stato: ['', Validators.required]
         });
+        this.f.codiceRichiesta.disable();
     }
 
     get f() {
