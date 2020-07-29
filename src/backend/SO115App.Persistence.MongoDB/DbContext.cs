@@ -99,6 +99,8 @@ namespace Persistence.MongoDB
             BsonClassMap.RegisterClassMap<MarcaRilevante>();
             BsonClassMap.RegisterClassMap<InviareFonogramma>();
             BsonClassMap.RegisterClassMap<FonogrammaInviato>();
+            BsonClassMap.RegisterClassMap<EnteIntervenuto>();
+            BsonClassMap.RegisterClassMap<EnteCategoria>();
         }
 
         public IMongoCollection<RichiestaAssistenza> RichiestaAssistenzaCollection
@@ -106,6 +108,14 @@ namespace Persistence.MongoDB
             get
             {
                 return database.GetCollection<RichiestaAssistenza>("richiesteAssistenza");
+            }
+        }
+
+        public IMongoCollection<EnteIntervenuto> Rubrica
+        {
+            get
+            {
+                return database.GetCollection<EnteIntervenuto>("rubrica");
             }
         }
 

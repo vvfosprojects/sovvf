@@ -17,24 +17,43 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using MongoDB.Bson.Serialization.Attributes;
+using System.Collections.Generic;
+
 namespace SO115App.API.Models.Classi.Condivise
 {
-    public class EntiIntervenuti
+    [BsonIgnoreExtraElements]
+    public class EnteIntervenuto
     {
-        public EntiIntervenuti(string Codice, string Descrizione)
-        {
-            this.Codice = Codice;
-            this.Descrizione = Descrizione;
-        }
-
         /// <summary>
         ///   Codice dell'Ente intervenuto
         /// </summary>
-        public string Codice { get; set; }
+        public int Codice { get; set; }
 
         /// <summary>
         ///   Descrizione dell'Ente intervenuto ( Es. ACEA )
         /// </summary>
         public string Descrizione { get; set; }
+        public string CodSede { get; set; }
+        public bool Ricorsivo { get; set; }
+        public int CodCategoria { get; set; }
+        public string Indirizzo { get; set; }
+        public string Cap { get; set; }
+        public int CodComune { get; set; }
+        public string SiglaProvincia { get; set; }
+        public string Zona { get; set; }
+        public string NoteEnte { get; set; }
+        public string Email { get; set; }
+        public List<string> Telefoni { get; set; }
+    }
+
+    /// <summary>
+    /// EntiIntervenuti.Categoria: DTO
+    /// </summary>
+    public class EnteCategoria
+    {
+        public int Codice { get; set; }
+        public string Descrizione { get; set; }
+        public string Cap { get; set; }
     }
 }
