@@ -1,4 +1,4 @@
-import { StatoFonogramma } from '../enum/stato.fonogramma';
+import { StatoFonogramma } from '../enum/stato-fonogramma.enum';
 
 export class Fonogramma {
     constructor(
