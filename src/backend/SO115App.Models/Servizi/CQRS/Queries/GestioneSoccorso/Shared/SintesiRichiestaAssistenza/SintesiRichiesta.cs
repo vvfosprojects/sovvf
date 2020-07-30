@@ -35,6 +35,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using SO115App.Models.Classi.Utility;
 using static SO115App.API.Models.Classi.Soccorso.RichiestaAssistenza;
+using SO115App.Models.Classi.Fonogramma;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza
 {
@@ -250,7 +251,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         ///   Codice dello stato di invio del fonogramma (0 = Non necessario, 1 = Da inviare, 2 =
         ///   Inviato). Utile a calcolare il colore della segnalazione.
         /// </summary>
-        public virtual Classi.Soccorso.Fonogramma.IStatoFonogramma Fonogramma
+        public virtual Classi.Soccorso.Fonogramma.IStatoFonogramma StatoInvioFonogramma
         {
             get
             {
@@ -352,5 +353,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         }
 
         public string Motivazione { get; set; }
+
+        public Fonogramma Fonogramma { get; set; }
     }
 }

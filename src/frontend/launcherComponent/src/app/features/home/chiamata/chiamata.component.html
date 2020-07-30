@@ -2,6 +2,7 @@
     <app-scheda-telefonata [tipologie]="(tipologie$ | async)"
                            [operatore]="(utente$ | async)"
                            [disabledInviaPartenza]="permessiFeature.ComposizionePartenzaRichiesta | checkPermission"
-                           [loading]="loadingNuovaChiamata$ | async">
+                           [loading]="loadingNuovaChiamata$ | async"
+                           [enti]="enti$ | async">
     </app-scheda-telefonata>
 </div>

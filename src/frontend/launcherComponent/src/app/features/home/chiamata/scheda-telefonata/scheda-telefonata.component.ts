@@ -30,6 +30,7 @@ import { Options } from 'ngx-google-places-autocomplete/objects/options/options'
 import { LatLngBounds } from 'ngx-google-places-autocomplete/objects/latLngBounds';
 import { ComponentRestrictions } from 'ngx-google-places-autocomplete/objects/options/componentRestrictions';
 import { GOOGLEPLACESOPTIONS } from '../../../../core/settings/google-places-options';
+import { Enti } from 'src/app/shared/interface/ente.interface';
 
 @Component({
     selector: 'app-scheda-telefonata',
@@ -54,9 +55,11 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy {
     @Input() operatore: Utente;
     @Input() disabledInviaPartenza = false;
     @Input() loading: boolean;
+    @Input() enti: Enti[];
 
     nuovaRichiesta: SintesiRichiesta;
     isCollapsed = true;
+    //showRubrica: boolean = false;
 
     idSchedaContatto: string;
 
@@ -131,7 +134,8 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy {
             notePubbliche: [ null ],
             descrizione: [ null ],
             zoneEmergenza: [ null ],
-            prioritaRichiesta: [ 3, Validators.required ]
+            prioritaRichiesta: [ 3, Validators.required ],
+            listaEnti: [ null ]
         });
     }
 
@@ -468,6 +472,12 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy {
     makeIdChiamata(): string {
         return `${this.operatore.sede.codice}-${this.operatore.id}-${makeID(8)}`;
     }
+
+    /*
+    onShowRubrica()  {
+        this.showRubrica = !this.showRubrica;
+    }
+    */
 
     // onTerreniSelezionati($event: TipoTerreno[]): void {
     //     this.nuovaRichiesta.tipoTerreno = $event;

@@ -231,8 +231,39 @@
                         </div>
                     </div>
                 </div>
-                <!--<div class="row">-->
-                <!--<div class="col-12">-->
+                <!--
+                <div >
+                    <input type="checkbox" id="rubrica" (click)="onShowRubrica()">
+                    <label class="pl-1" for="rubrica">Enti Intervenuti</label> 
+                </div>
+                -->
+                <div class="form-group mb-4">  
+                    <label for="listaEnti">Enti Intervenuti</label>             
+                    <ng-select 
+                        id="listaEnti"
+                        formControlName="listaEnti"
+                        [items]="enti"
+                        bindLabel="descrizione"
+                        bindValue="id"
+                        [multiple]="true"
+                        placeholder="Enti Intervenuti (opzionale)"
+                        [closeOnSelect]="true"
+                        [hideSelected]="true"
+                        [notFoundText]="'Nessun ente trovato con i parametri di ricerca'"
+                        >
+                    </ng-select>
+                </div>
+                
+                
+                <!--                
+                <ng-select class="border"
+                bindLabel="codiceDescrizione"
+                bindValue="codice"
+                clearAllText="Clear">
+                 </ng-select>
+                -->
+                <!--<div class="row"></div>
+                    <div class="col-12">-->
                 <!--<app-selezione-tipi-terreno-->
                 <!--(tipiTerrenoSelezionati)="onTerreniSelezionati($event)"></app-selezione-tipi-terreno>-->
                 <!--</div>-->
