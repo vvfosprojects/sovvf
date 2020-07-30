@@ -56,7 +56,7 @@ namespace SO115App.ExternalAPI.Fake.Marker
 
             List<Mezzo> listaMezzi = new List<Mezzo>();
 
-            if (!filtroAreaMappa.FiltraPerAreaMappa)
+            if (!filtroAreaMappa.FiltroMezzi.FiltraPerAreaMappa)
                 listaMezzi = _getMezziUtilizzabili.Get(filtroAreaMappa.CodiceSede).Result;
             else
                 listaMezzi = _getMezziUtilizzabiliByAreaMappa.Get(filtroAreaMappa).Result;
