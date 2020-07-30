@@ -35,6 +35,11 @@ const appRoutes: Routes = [
         canActivate: [ AuthGuard ],
         data: { roles: [ Role.Amministratore ] }
     },
+    {
+        path: RoutesPath.Rubrica,
+        loadChildren: './features/rubrica/rubrica.module#RubricaModule',
+        canActivate: [ AuthGuard ]
+    },
     { path: RoutesPath.NotFound, loadChildren: './features/not-found/not-found.module#NotFoundModule' },
     { path: '', pathMatch: 'full', redirectTo: RoutesPath.Home },
     {

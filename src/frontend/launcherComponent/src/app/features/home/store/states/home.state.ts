@@ -23,6 +23,7 @@ import { SetCurrentUrl, SetMapLoaded } from '../../../../shared/store/actions/ap
 import { RoutesPath } from '../../../../shared/enum/routes-path.enum';
 import { ClearViewState } from '../actions/view/view.actions';
 import { LatLngBoundsLiteral } from 'ngx-google-places-autocomplete/objects/latLng';
+import { SetEnti } from 'src/app/shared/store/actions/enti/enti.actions';
 
 export interface HomeStateModel {
     markerLoading: boolean;
@@ -51,7 +52,7 @@ export class HomeState {
     static tipologie(state: HomeStateModel) {
         return state.tipologie;
     }
-
+    
     @Selector()
     static bounds(state: HomeStateModel) {
         return state.bounds;
@@ -93,7 +94,8 @@ export class HomeState {
                 new SetInitCentroMappa(data.centroMappaMarker),
                 new SetTipologicheMezzi(data.listaFiltri),
                 new SetContatoriSchedeContatto(data.infoNue),
-                new SetDataTipologie(data.tipologie)
+                new SetDataTipologie(data.tipologie),
+                new SetEnti(data.rubrica)
             ]);
         });
     }
