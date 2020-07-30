@@ -39,5 +39,6 @@ namespace SO115App.Models.Classi.Condivise
         public API.Models.Classi.Filtri.Filtri ListaFiltri { get; set; }
         public InfoNue InfoNue { get; set; }
         public List<Tipologia> Tipologie { get; set; }
+        public List<EnteIntervenuto> Rubrica { get; set; }
     }
 }

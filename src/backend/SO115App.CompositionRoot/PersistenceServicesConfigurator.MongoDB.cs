@@ -195,6 +195,18 @@ namespace SO115App.CompositionRoot
                 SO115App.Persistence.MongoDB.GestioneInterventi.GeneraCodiceRichiesta>();
 
             #endregion Utility
+
+            #region Rubrica
+
+            container.Register<
+                SO115App.Models.Servizi.Infrastruttura.Rubrica.IGetRubrica,
+                SO115App.Persistence.MongoDB.GestioneRubrica.GetRubrica>();
+
+            container.Register<
+                SO115App.Models.Servizi.Infrastruttura.Rubrica.IUpDateRubrica,
+                SO115App.Persistence.MongoDB.GestioneRubrica.UpDateRubrica>();
+
+            #endregion Rubrica
         }
     }
 }

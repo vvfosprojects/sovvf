@@ -39,6 +39,8 @@ using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
+using SO115App.Models.Classi.Condivise;
+using SO115App.Models.Servizi.Infrastruttura.Rubrica;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
 {
@@ -58,6 +60,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
         private readonly IGetConteggioSchede _getConteggioSchedeHandler;
         private readonly IGetTipologieByCodice _tipologieQueryHandler;
         private readonly IGetAlberaturaUnitaOperative _getAlberaturaUnitaOperative;
+        private readonly IGetRubrica _getRubrica;
 
         public WelcomeQueryHandler(IGetBoxMezzi boxMezziHandler,
             IGetBoxPersonale boxPersonaleHandler,
@@ -69,7 +72,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
             IGetListaDistaccamentiByPinListaSedi getDistaccamenti,
             IGetConteggioSchede getConteggioSchedeHandler,
             IGetTipologieByCodice tipologieQueryHandler,
-            IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative)
+            IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative,
+            IGetRubrica getRubrica)
         {
             this._boxMezziHandler = boxMezziHandler;
             this._boxPersonaleHandler = boxPersonaleHandler;
@@ -82,6 +86,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
             this._getConteggioSchedeHandler = getConteggioSchedeHandler;
             this._tipologieQueryHandler = tipologieQueryHandler;
             this._getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
+            this._getRubrica = getRubrica;
         }
 
         /// <summary>
@@ -131,6 +136,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
 
             try
             {
+                var rubrica = _getRubrica.Get(query.CodiceSede, true);
                 var boxListaInterventi = _boxRichiesteHandler.Get(pinNodi.ToHashSet());
                 var boxListaMezzi = _boxMezziHandler.Get(query.CodiceSede);
                 var boxListaPersonale = _boxPersonaleHandler.Get(query.CodiceSede);
@@ -151,7 +157,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
                     CentroMappaMarker = centroMappaMarker,
                     ListaFiltri = listaFiltri,
                     InfoNue = infoNue,
-                    Tipologie = tipologie
+                    Tipologie = tipologie,
+                    Rubrica = rubrica
                 };
 
                 Log.Debug("Fine elaborazione Welcome Handler");

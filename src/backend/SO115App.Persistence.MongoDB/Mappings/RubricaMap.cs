@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="EntiIntervenuti.cs" company="CNVVF">
+// <copyright file="EventiMap.cs" company="CNVVF">
 // Copyright (C) 2017 - CNVVF
 //
 // This file is part of SOVVF.
@@ -17,24 +17,25 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-namespace SO115App.API.Models.Classi.Condivise
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization;
+using MongoDB.Bson.Serialization.IdGenerators;
+using MongoDB.Bson.Serialization.Serializers;
+using SO115App.API.Models.Classi.Condivise;
+
+namespace SO115App.Persistence.MongoDB.Mappings
 {
-    public class EntiIntervenuti
+    internal static class RubricaMap
     {
-        public EntiIntervenuti(string Codice, string Descrizione)
+        public static void Map()
         {
-            this.Codice = Codice;
-            this.Descrizione = Descrizione;
+            BsonClassMap.RegisterClassMap<EnteIntervenuto>(cm =>
+            {
+                cm.AutoMap();
+                cm.MapIdMember(c => c.Id)
+                    .SetIdGenerator(StringObjectIdGenerator.Instance)
+                    .SetSerializer(new StringSerializer(BsonType.ObjectId));
+            });
         }
-
-        /// <summary>
-        ///   Codice dell'Ente intervenuto
-        /// </summary>
-        public string Codice { get; set; }
-
-        /// <summary>
-        ///   Descrizione dell'Ente intervenuto ( Es. ACEA )
-        /// </summary>
-        public string Descrizione { get; set; }
     }
 }

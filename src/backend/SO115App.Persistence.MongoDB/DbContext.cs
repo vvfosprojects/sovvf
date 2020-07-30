@@ -72,6 +72,7 @@ namespace Persistence.MongoDB
             SediMap.Map();
             FiltriMap.Map();
             SchedeNueMap.Map();
+            RubricaMap.Map();
             BsonClassMap.RegisterClassMap<Telefonata>();
             BsonClassMap.RegisterClassMap<AssegnazionePriorita>();
             BsonClassMap.RegisterClassMap<InizioPresaInCarico>();
@@ -99,6 +100,8 @@ namespace Persistence.MongoDB
             BsonClassMap.RegisterClassMap<MarcaRilevante>();
             BsonClassMap.RegisterClassMap<InviareFonogramma>();
             BsonClassMap.RegisterClassMap<FonogrammaInviato>();
+            BsonClassMap.RegisterClassMap<EnteCategoria>();
+            BsonClassMap.RegisterClassMap<EnteTelefoni>();
         }
 
         public IMongoCollection<RichiestaAssistenza> RichiestaAssistenzaCollection
@@ -106,6 +109,14 @@ namespace Persistence.MongoDB
             get
             {
                 return database.GetCollection<RichiestaAssistenza>("richiesteAssistenza");
+            }
+        }
+
+        public IMongoCollection<EnteIntervenuto> RubricaCollection
+        {
+            get
+            {
+                return database.GetCollection<EnteIntervenuto>("rubrica");
             }
         }
 

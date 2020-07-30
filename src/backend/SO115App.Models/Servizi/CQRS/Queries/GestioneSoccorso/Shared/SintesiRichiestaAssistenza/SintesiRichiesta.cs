@@ -165,7 +165,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         /// <summary>
         ///   Lista degli enti intervenuti (Es. ACEA)
         /// </summary>
-        public List<EntiIntervenuti> ListaEntiIntervenuti { get; set; }
+        public List<EnteIntervenuto> ListaEntiIntervenuti { get; set; }
 
         /// <summary>
         ///   Se l'intervento è su un obiettivo ritenuto rilevante (Es. Colosseo) si seleziona da
