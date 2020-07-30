@@ -134,7 +134,8 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy {
             notePubbliche: [ null ],
             descrizione: [ null ],
             zoneEmergenza: [ null ],
-            prioritaRichiesta: [ 3, Validators.required ]
+            prioritaRichiesta: [ 3, Validators.required ],
+            listaEnti: [ null ]
         });
     }
 
