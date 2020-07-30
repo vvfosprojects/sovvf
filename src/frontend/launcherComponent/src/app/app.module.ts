@@ -57,6 +57,7 @@ import {SignalROfflineComponent} from './core/signalr/signal-r-offline/signal-r-
 import {LoaderComponent} from './shared/components/loader/loader.component';
 import {FooterComponent} from './shared/components/footer/footer.component';
 import {AuthState} from './features/auth/store/auth.state';
+import { EntiState } from './shared/store/states/enti/enti.state';
 
 
 @NgModule({
@@ -88,7 +89,7 @@ import {AuthState} from './features/auth/store/auth.state';
         NgxsModule.forRoot(
             [ AuthState, AppState, NewVersionState, SignalRState,
                 RuoliUtenteLoggatoState, PermessiState, ToastrState, SediTreeviewState,
-                PaginationState, LoadingState, ViewportState ],
+                PaginationState, LoadingState, ViewportState, EntiState ],
             { developmentMode: !environment.production }
         ),
         NgxsRouterPluginModule.forRoot(),

@@ -2,7 +2,6 @@ import { Selector, State, Store, Action, StateContext } from '@ngxs/store';
 import { Enti } from 'src/app/shared/interface/ente.interface';
 import { SetEnti, GetEnti } from '../../actions/enti/enti.actions';
 import { RubricaService } from 'src/app/core/service/rubrica/rubrica.service';
-import { ResponseInterface } from 'src/app/shared/interface/response.interface';
 import { StopLoading } from '../../actions/loading/loading.actions';
 
 export interface EntiStateModel {
@@ -35,6 +34,7 @@ export class EntiState {
             enti: action.enti
         })
     }
+
 
     @Action(GetEnti)
     getEnti({ dispatch }: StateContext<EntiStateModel>) {
