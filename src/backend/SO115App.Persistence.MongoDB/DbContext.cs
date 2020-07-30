@@ -104,6 +104,22 @@ namespace Persistence.MongoDB
             BsonClassMap.RegisterClassMap<EnteTelefoni>();
         }
 
+        public IMongoCollection<EnteCategoria> EnteCategoriaCollection
+        {
+            get
+            {
+                return database.GetCollection<EnteCategoria>("enteCategoria");
+            }
+        }
+
+        public IMongoCollection<EnteTelefoni> EnteTelefoniCollection
+        {
+            get
+            {
+                return database.GetCollection<EnteTelefoni>("enteTelefoni");
+            }
+        }
+
         public IMongoCollection<RichiestaAssistenza> RichiestaAssistenzaCollection
         {
             get
