@@ -27,6 +27,8 @@ import { UpdateFormValue } from '@ngxs/form-plugin';
 import { Options } from 'ngx-google-places-autocomplete/objects/options/options';
 import { LatLngBounds } from 'ngx-google-places-autocomplete/objects/latLngBounds';
 import { ComponentRestrictions } from 'ngx-google-places-autocomplete/objects/options/componentRestrictions';
+import { EntiState } from 'src/app/shared/store/states/enti/enti.state';
+import { Enti } from 'src/app/shared/interface/ente.interface';
 
 @Component({
     selector: 'app-modifica-richiesta',
@@ -43,6 +45,9 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
     tipologiaRichiedente: string;
     @Select(HomeState.tipologie) tipologie$: Observable<Tipologia[]>;
     tipologie: Tipologia[];
+
+    @Select(EntiState.enti) enti$: Observable<Enti[]>;
+    enti: Enti[];
 
     @Select(RichiestaModificaState.richiestaModifica) richiestaModifica$: Observable<SintesiRichiesta>;
     richiestaModificaIniziale: SintesiRichiesta;
@@ -69,6 +74,7 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
             }
         }));
         this.subscription.add(this.tipologie$.subscribe((tipologie: Tipologia[]) => this.tipologie = tipologie));
+        this.subscription.add(this.enti$.subscribe((enti: Enti[]) => this.enti = enti));
         this.ngxGooglePlacesOptions = new Options({
             bounds: this.store.selectSnapshot(HomeState.bounds) as unknown as LatLngBounds,
             componentRestrictions: GOOGLEPLACESOPTIONS.componentRestrictions as unknown as ComponentRestrictions
@@ -103,7 +109,8 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
             notePubbliche: new FormControl(),
             motivazione: new FormControl(),
             zoneEmergenza: new FormControl(),
-            prioritaRichiesta: new FormControl()
+            prioritaRichiesta: new FormControl(),
+            listaEnti: new FormControl()
         });
     }
 
@@ -130,7 +137,8 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
             notePubbliche: [ this.richiestaModifica.notePubbliche ],
             motivazione: [ this.richiestaModifica.descrizione ],
             zoneEmergenza: [ zoneEmergenza ],
-            prioritaRichiesta: [ this.richiestaModifica.prioritaRichiesta ]
+            prioritaRichiesta: [ this.richiestaModifica.prioritaRichiesta ],
+            listaEnti: [ this.richiestaModifica.listaEnti ]
         });
         this.store.dispatch(new UpdateFormValue({
             path: 'richiestaModifica.modificaRichiestaForm',

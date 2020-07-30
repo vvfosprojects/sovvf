@@ -231,11 +231,14 @@
                         </div>
                     </div>
                 </div>
+                <!--
                 <div >
                     <input type="checkbox" id="rubrica" (click)="onShowRubrica()">
                     <label class="pl-1" for="rubrica">Enti Intervenuti</label> 
                 </div>
-                <div *ngIf="showRubrica" class="form-group mb-4">               
+                -->
+                <div class="form-group mb-4">  
+                    <label for="listaEnti">Enti Intervenuti</label>             
                     <ng-select 
                         id="listaEnti"
                         formControlName="listaEnti"
@@ -250,6 +253,7 @@
                         >
                     </ng-select>
                 </div>
+                
                 
                 <!--                
                 <ng-select class="border"

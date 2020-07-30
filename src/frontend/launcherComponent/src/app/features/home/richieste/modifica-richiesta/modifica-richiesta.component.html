@@ -237,6 +237,22 @@
                        [placeholder]="'Inserisci i tag (opzionale)'"
                        [secondaryPlaceholder]="'Inserisci i tag (opzionale)'"></tag-input>
           </div>
+          <div class="form-group mb-4">  
+            <label for="listaEnti">Enti Intervenuti</label>             
+            <ng-select 
+                id="listaEnti"
+                formControlName="listaEnti"
+                [items]="enti"
+                bindLabel="descrizione"
+                bindValue="id"
+                [multiple]="true"
+                placeholder="Enti Intervenuti (opzionale)"
+                [closeOnSelect]="true"
+                [hideSelected]="true"
+                [notFoundText]="'Nessun ente trovato con i parametri di ricerca'"
+                >
+            </ng-select>
+        </div>
         </div>
       </div>
       <div *ngIf="visualizzaBoschiSterpaglie(richiestaModifica.tipologie)" class="row">

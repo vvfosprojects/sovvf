@@ -59,7 +59,7 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy {
 
     nuovaRichiesta: SintesiRichiesta;
     isCollapsed = true;
-    showRubrica: boolean = false;
+    //showRubrica: boolean = false;
 
     idSchedaContatto: string;
 
@@ -473,9 +473,12 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy {
         return `${this.operatore.sede.codice}-${this.operatore.id}-${makeID(8)}`;
     }
 
+    /*
     onShowRubrica()  {
         this.showRubrica = !this.showRubrica;
     }
+    */
+
     // onTerreniSelezionati($event: TipoTerreno[]): void {
     //     this.nuovaRichiesta.tipoTerreno = $event;
     // }
