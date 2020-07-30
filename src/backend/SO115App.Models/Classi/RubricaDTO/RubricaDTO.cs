@@ -16,7 +16,6 @@ namespace SO115App.Models.Classi.RubricaDTO
         ///   Descrizione dell'Ente intervenuto ( Es. ACEA )
         /// </summary>
         public string Descrizione { get; set; }
-
         public string CodSede { get; set; }
         public bool Ricorsivo { get; set; }
         public EnteCategoria Categoria { get; set; }
@@ -38,5 +37,14 @@ namespace SO115App.Models.Classi.RubricaDTO
         public int Codice { get; set; }
         public string Descrizione { get; set; }
         public string Cap { get; set; }
+    }
+
+    /// <summary>
+    ///   EntiIntervenuti.Telefoni: DTO
+    /// </summary>
+    public class EnteTelefoni
+    {
+        public string Tipo { get; set; }
+        public string Numero { get; set; }
     }
 }

@@ -17,6 +17,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using SO115App.Models.Classi.RubricaDTO;
 using System.Collections.Generic;
 
 namespace SO115App.API.Models.Classi.Condivise
@@ -34,7 +35,6 @@ namespace SO115App.API.Models.Classi.Condivise
         ///   Descrizione dell'Ente intervenuto ( Es. ACEA )
         /// </summary>
         public string Descrizione { get; set; }
-
         public string CodSede { get; set; }
         public bool Ricorsivo { get; set; }
         public int CodCategoria { get; set; }
@@ -46,15 +46,5 @@ namespace SO115App.API.Models.Classi.Condivise
         public string NoteEnte { get; set; }
         public string Email { get; set; }
         public List<EnteTelefoni> Telefoni { get; set; }
-    }
-
-    /// <summary>
-    ///   EntiIntervenuti.Telefoni: DTO
-    /// </summary>
-    public class EnteTelefoni
-    {
-        public string Codice { get; set; }
-        public string Tipo { get; set; }
-        public string Numero { get; set; }
     }
 }

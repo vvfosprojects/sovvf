@@ -32,6 +32,7 @@ using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.Marker;
 using SO115App.Models.Classi.MongoDTO;
 using SO115App.Models.Classi.NUE;
+using SO115App.Models.Classi.RubricaDTO;
 using SO115App.Persistence.MongoDB.Mappings;
 using System.Runtime.CompilerServices;
 
