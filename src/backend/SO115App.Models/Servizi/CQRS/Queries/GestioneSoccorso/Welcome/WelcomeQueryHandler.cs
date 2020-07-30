@@ -40,7 +40,7 @@ using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
 using SO115App.Models.Classi.Condivise;
-using SO115App.Models.Servizi.Infrastruttura.Rubrica;
+using SO115App.Models.Servizi.Infrastruttura.GestioneRubrica;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
 {

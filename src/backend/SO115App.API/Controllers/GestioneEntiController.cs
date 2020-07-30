@@ -26,5 +26,18 @@ namespace SO115App.API.Controllers
                 return BadRequest(ex);
             }
         }
+
+        [HttpPost("Update")]
+        public async Task<IActionResult> Update()
+        {
+            try
+            {
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
     }
 }

@@ -1,8 +1,7 @@
 ﻿using MongoDB.Driver;
 using Persistence.MongoDB;
 using SO115App.API.Models.Classi.Condivise;
-using SO115App.Models.Classi.Condivise;
-using SO115App.Models.Servizi.Infrastruttura.Rubrica;
+using SO115App.Models.Servizi.Infrastruttura.GestioneRubrica;
 using System.Collections.Generic;
 using System.Linq;
 
