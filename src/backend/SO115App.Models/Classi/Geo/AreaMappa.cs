@@ -54,7 +54,5 @@ namespace SO115App.API.Models.Classi.Geo
         public FiltroMezzi FiltroMezzi { get; set; }
 
         public FiltroSchedeContatto FiltroSchedeContatto { get; set; }
-
-        public bool FiltraPerAreaMappa { get; set; } = false;
     }
 }
