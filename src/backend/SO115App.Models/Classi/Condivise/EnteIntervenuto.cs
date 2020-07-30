@@ -18,13 +18,15 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using MongoDB.Bson.Serialization.Attributes;
+using System;
 using System.Collections.Generic;
 
 namespace SO115App.API.Models.Classi.Condivise
 {
-    [BsonIgnoreExtraElements]
     public class EnteIntervenuto
     {
+        public string Id { get; set; }
+
         /// <summary>
         ///   Codice dell'Ente intervenuto
         /// </summary>
@@ -34,26 +36,36 @@ namespace SO115App.API.Models.Classi.Condivise
         ///   Descrizione dell'Ente intervenuto ( Es. ACEA )
         /// </summary>
         public string Descrizione { get; set; }
+
         public string CodSede { get; set; }
         public bool Ricorsivo { get; set; }
         public int CodCategoria { get; set; }
         public string Indirizzo { get; set; }
         public string Cap { get; set; }
-        public int CodComune { get; set; }
+        public string CodComune { get; set; }
         public string SiglaProvincia { get; set; }
         public string Zona { get; set; }
         public string NoteEnte { get; set; }
         public string Email { get; set; }
-        public List<string> Telefoni { get; set; }
+        public List<EnteTelefoni> Telefoni { get; set; }
     }
 
     /// <summary>
-    /// EntiIntervenuti.Categoria: DTO
+    ///   EntiIntervenuti.Categoria: DTO
     /// </summary>
     public class EnteCategoria
     {
         public int Codice { get; set; }
         public string Descrizione { get; set; }
         public string Cap { get; set; }
+    }
+
+    /// <summary>
+    ///   EntiIntervenuti.Telefoni: DTO
+    /// </summary>
+    public class EnteTelefoni
+    {
+        public string Tipo { get; set; }
+        public string Numero { get; set; }
     }
 }

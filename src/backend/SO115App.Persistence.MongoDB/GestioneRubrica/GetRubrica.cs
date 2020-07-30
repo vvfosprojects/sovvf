@@ -11,6 +11,7 @@ namespace SO115App.Persistence.MongoDB.GestioneRubrica
     public class GetRubrica : IGetRubrica
     {
         private readonly DbContext _dbContext;
+
         public GetRubrica(DbContext dbContext)
         {
             _dbContext = dbContext;
@@ -18,17 +19,17 @@ namespace SO115App.Persistence.MongoDB.GestioneRubrica
 
         public List<EnteIntervenuto> Get()
         {
-            return _dbContext.Rubrica.Find(Builders<EnteIntervenuto>.Filter.Empty).ToList();
+            return _dbContext.RubricaCollection.Find(Builders<EnteIntervenuto>.Filter.Empty).ToList();
         }
 
         public List<EnteIntervenuto> Get(string CodSede, bool Ricorsivo)
         {
-            return _dbContext.Rubrica.Find(x => x.CodSede == CodSede && x.Ricorsivo == Ricorsivo).ToList();
+            return _dbContext.RubricaCollection.Find(x => x.CodSede == CodSede && x.Ricorsivo == Ricorsivo).ToList();
         }
 
         public List<EnteIntervenuto> Get(string[] CodSede, bool Ricorsivo)
         {
-            return _dbContext.Rubrica.Find(x => CodSede.Contains(x.CodSede) && x.Ricorsivo == Ricorsivo).ToList();
+            return _dbContext.RubricaCollection.Find(x => CodSede.Contains(x.CodSede) && x.Ricorsivo == Ricorsivo).ToList();
         }
     }
 }
