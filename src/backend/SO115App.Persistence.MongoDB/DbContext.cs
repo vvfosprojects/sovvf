@@ -100,23 +100,23 @@ namespace Persistence.MongoDB
             BsonClassMap.RegisterClassMap<MarcaRilevante>();
             BsonClassMap.RegisterClassMap<InviareFonogramma>();
             BsonClassMap.RegisterClassMap<FonogrammaInviato>();
-            BsonClassMap.RegisterClassMap<EnteCategoria>();
+            BsonClassMap.RegisterClassMap<CategorieEnti>();
             BsonClassMap.RegisterClassMap<EnteTelefoni>();
         }
 
-        public IMongoCollection<EnteCategoria> EnteCategoriaCollection
+        public IMongoCollection<CategorieEnti> CategorieEntiCollection
         {
             get
             {
-                return database.GetCollection<EnteCategoria>("enteCategoria");
+                return database.GetCollection<CategorieEnti>("categorieEnti");
             }
         }
 
-        public IMongoCollection<EnteTelefoni> EnteTelefoniCollection
+        public IMongoCollection<EnteTelefoni> TelefoniCollection
         {
             get
             {
-                return database.GetCollection<EnteTelefoni>("enteTelefoni");
+                return database.GetCollection<EnteTelefoni>("telefoni");
             }
         }
 

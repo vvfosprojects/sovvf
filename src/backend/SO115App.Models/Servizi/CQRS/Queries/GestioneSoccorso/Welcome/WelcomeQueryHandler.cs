@@ -136,7 +136,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
 
             try
             {
-                var rubrica = _getRubrica.Get(query.CodiceSede, true);
+                var rubrica = _getRubrica.Get(query.CodiceSede, true); //TODO GESTIRE LOGICA BOOL
                 var boxListaInterventi = _boxRichiesteHandler.Get(pinNodi.ToHashSet());
                 var boxListaMezzi = _boxMezziHandler.Get(query.CodiceSede);
                 var boxListaPersonale = _boxPersonaleHandler.Get(query.CodiceSede);

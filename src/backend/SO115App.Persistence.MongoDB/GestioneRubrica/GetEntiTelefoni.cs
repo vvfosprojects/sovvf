@@ -13,7 +13,8 @@ namespace SO115App.Persistence.MongoDB.GestioneRubrica
 
         public List<EnteTelefoni> Get(string[] codici)
         {
-            return _dbContext.EnteTelefoniCollection.Find(c => c ==c).ToList();  //TODO fare la query
+            //return _dbContext.EnteTelefoniCollection.Find(c => c ==c).ToList();  //TODO fare la query
+            return null;
         }
     }
 }

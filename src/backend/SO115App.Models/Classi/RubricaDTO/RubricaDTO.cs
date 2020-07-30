@@ -29,4 +29,14 @@ namespace SO115App.Models.Classi.RubricaDTO
         public string Email { get; set; }
         public List<EnteTelefoni> Telefoni { get; set; }
     }
+
+    /// <summary>
+    ///   EntiIntervenuti.Categoria: DTO
+    /// </summary>
+    public class EnteCategoria
+    {
+        public int Codice { get; set; }
+        public string Descrizione { get; set; }
+        public string Cap { get; set; }
+    }
 }

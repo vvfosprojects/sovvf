@@ -49,20 +49,11 @@ namespace SO115App.API.Models.Classi.Condivise
     }
 
     /// <summary>
-    ///   EntiIntervenuti.Categoria: DTO
-    /// </summary>
-    public class EnteCategoria
-    {
-        public int Codice { get; set; }
-        public string Descrizione { get; set; }
-        public string Cap { get; set; }
-    }
-
-    /// <summary>
     ///   EntiIntervenuti.Telefoni: DTO
     /// </summary>
     public class EnteTelefoni
     {
+        public string Codice { get; set; }
         public string Tipo { get; set; }
         public string Numero { get; set; }
     }
