@@ -20,5 +20,10 @@ namespace SO115App.Persistence.MongoDB.GestioneRubrica.Enti
         {
             return _dbContext.RubricaCollection.Find(x => CodSede.Contains(x.CodSede) && x.Ricorsivo == Ricorsivo).ToList();
         }
+
+        public List<EnteIntervenuto> GetBylstCodici(int[] lstCodici)
+        {
+            return _dbContext.RubricaCollection.Find(c => lstCodici.Contains(c.Codice)).ToList();
+        }
     }
 }

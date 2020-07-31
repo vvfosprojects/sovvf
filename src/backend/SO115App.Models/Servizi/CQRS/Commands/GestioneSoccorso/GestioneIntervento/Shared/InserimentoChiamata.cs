@@ -182,5 +182,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Command.GestioneSoccorso.Shared
         public Azione Azione { get; set; }
 
         public string Motivazione { get; set; }
+
+        public List<int> listaEnti { get; set; }
     }
 }

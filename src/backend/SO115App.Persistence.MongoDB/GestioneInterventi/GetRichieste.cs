@@ -29,6 +29,7 @@ using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichies
 using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.CustomMapper;
+using SO115App.Models.Servizi.Infrastruttura.GestioneRubrica.Enti;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
@@ -51,10 +52,11 @@ namespace SO115App.Persistence.MongoDB
         private readonly IGetAlberaturaUnitaOperative _getAlberaturaUnitaOperative;
         private readonly IGetDistaccamentoByCodiceSedeUC _getDistaccamentoUC;
         private readonly IGetCoordinateDistaccamento _getCooDistaccamento; //TODO chiedere ad Igor di implementare le coordinate
+        private readonly IGetRubrica _getRubrica;
 
         public GetRichiesta(DbContext dbContext, IMapper mapper, IGetTipologieByCodice getTipologiaByCodice, IGetListaDistaccamentiByCodiceSede getAnagraficaDistaccamento,
             MapperRichiestaAssistenzaSuSintesi mapperSintesi, IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative,
-            IGetCoordinateDistaccamento getCooDistaccamento, IGetDistaccamentoByCodiceSedeUC getDistaccamentoUC)
+            IGetCoordinateDistaccamento getCooDistaccamento, IGetDistaccamentoByCodiceSedeUC getDistaccamentoUC, IGetRubrica getRubrica)
         {
             _dbContext = dbContext;
             _mapper = mapper;
@@ -64,15 +66,20 @@ namespace SO115App.Persistence.MongoDB
             _getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
             _getCooDistaccamento = getCooDistaccamento;
             _getDistaccamentoUC = getDistaccamentoUC;
+            _getRubrica = getRubrica;
         }
 
         public RichiestaAssistenza GetByCodice(string codiceRichiesta)
         {
             try
             {
-                return _dbContext.RichiestaAssistenzaCollection
+                var richiesta = _dbContext.RichiestaAssistenzaCollection
                     .Find(s => s.Codice == codiceRichiesta)
                     .Single();
+
+                //richiesta.ent
+
+                return richiesta;
             }
             catch (Exception ex)
             {
@@ -199,6 +206,10 @@ namespace SO115App.Persistence.MongoDB
 
             var listaSistesiRichieste = new List<SintesiRichiesta>();
 
+            var lstCodiciEnti = result.Where(c => c.CodEntiPresaInCarico != null).SelectMany(c => c.CodEntiPresaInCarico).Select(c => int.Parse(c)).ToArray();
+
+            var rubrica = _getRubrica.GetBylstCodici(lstCodiciEnti);
+
             foreach (RichiestaAssistenza richiesta in result)
             {
                 SintesiRichiesta sintesi = new SintesiRichiesta();
@@ -207,6 +218,7 @@ namespace SO115App.Persistence.MongoDB
                 {
                     sintesi = _mapperSintesi.Map(richiesta);
                     sintesi.Competenze = MapCompetenze(richiesta.CodUOCompetenza);
+                    sintesi.ListaEntiIntervenuti = rubrica?.FindAll(c => richiesta.CodEntiIntervenuti.Contains(c.Codice.ToString()));
                     listaSistesiRichieste.Add(sintesi);
                 }
             }

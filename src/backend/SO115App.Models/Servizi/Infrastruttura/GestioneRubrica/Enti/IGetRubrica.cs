@@ -12,5 +12,6 @@ namespace SO115App.Models.Servizi.Infrastruttura.GestioneRubrica.Enti
         /// <param name="Ricorsivo"></param>
         /// <returns>Elenco della rubrica secondo più codici sede e la ricorsività</returns>
         List<EnteIntervenuto> Get(string[] CodSede, bool Ricorsivo);
+        List<EnteIntervenuto> GetBylstCodici(int[] lstCodici);
     }
 }
