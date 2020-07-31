@@ -38,7 +38,8 @@ export interface RichiestaModificaStateModel {
             notePubbliche: string,
             descrizione: string,
             zoneEmergenza: string,
-            prioritaRichiesta: number
+            prioritaRichiesta: number,
+            listaEnti: string[]
         },
         dirty: boolean,
         status: string,

@@ -245,15 +245,17 @@
                         [items]="enti"
                         bindLabel="descrizione"
                         bindValue="codice"
+                        clearAllText="Clear"
                         [multiple]="true"
                         placeholder="Enti Intervenuti (opzionale)"
                         [closeOnSelect]="true"
                         [hideSelected]="true"
                         [notFoundText]="'Nessun ente trovato con i parametri di ricerca'"
+                        (add)="onAddEnti($event)"
+                        (remove)="onRemoveEnti($event)"
                         >
                     </ng-select>
                 </div>
-                
                 
                 <!--                
                 <ng-select class="border"
