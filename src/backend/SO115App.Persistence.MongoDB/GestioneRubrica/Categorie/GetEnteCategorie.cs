@@ -12,9 +12,9 @@ namespace SO115App.Persistence.MongoDB.GestioneRubrica.Categorie
         private readonly DbContext _dbContext;
         public GetEnteCategorie(DbContext dbContext) => _dbContext = dbContext;
 
-        public List<EnteCategoria> Get(int[] codici)
+        public List<EnteCategoria> Get(string[] codici)
         {
-            return _dbContext.CategorieEntiCollection.Find(c => codici.Contains(int.Parse(c.Codice))).ToList();
+            return _dbContext.CategorieEntiCollection.Find(c => codici.Contains(c.Codice)).ToList();
         }
     }
 }

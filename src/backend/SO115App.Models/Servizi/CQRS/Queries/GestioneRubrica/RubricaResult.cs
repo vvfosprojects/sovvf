@@ -6,6 +6,6 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneRubrica
 {
     public class RubricaResult
     {
-        public List<EnteIntervenuto> Rubrica { get; set; }
+        public List<EnteDTO> Rubrica { get; set; }
     }
 }
