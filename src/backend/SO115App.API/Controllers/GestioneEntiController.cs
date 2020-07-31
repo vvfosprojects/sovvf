@@ -1,6 +1,7 @@
 ﻿using CQRS.Commands;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SO115App.API.Models.Classi.Condivise;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneRubrica.AddEnte;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneRubrica.UpdateEnte;
@@ -23,13 +24,13 @@ namespace SO115App.API.Controllers
         }
 
         [HttpPost("AddEnte")]
-        public async Task<IActionResult> AddEnte()
+        public async Task<IActionResult> AddEnte(EnteIntervenuto ente)
         {
             try
             {
                 var command = new AddEnteCommand()
                 {
-                    //
+                    Ente = ente
                 };
 
                 _addEnteHandler.Handle(command);
@@ -46,13 +47,13 @@ namespace SO115App.API.Controllers
         }
 
         [HttpPost("UpdateEnte")]
-        public async Task<IActionResult> UpdateEnte()
+        public async Task<IActionResult> UpdateEnte(EnteIntervenuto ente)
         {
             try
             {
                 var command = new UpdateEnteCommand()
                 {
-                    //
+                    Ente = ente
                 };
 
                 _updateEnteHandler.Handle(command);
