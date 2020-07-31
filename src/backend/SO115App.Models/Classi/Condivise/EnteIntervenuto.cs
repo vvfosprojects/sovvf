@@ -21,6 +21,9 @@ using System.Collections.Generic;
 
 namespace SO115App.API.Models.Classi.Condivise
 {
+    /// <summary>
+    ///   DTO di inserimento sulla Basedati
+    /// </summary>
     public class EnteIntervenuto
     {
         public string Id { get; set; }
@@ -34,6 +37,7 @@ namespace SO115App.API.Models.Classi.Condivise
         ///   Descrizione dell'Ente intervenuto ( Es. ACEA )
         /// </summary>
         public string Descrizione { get; set; }
+
         public string CodSede { get; set; }
         public bool Ricorsivo { get; set; }
         public int CodCategoria { get; set; }

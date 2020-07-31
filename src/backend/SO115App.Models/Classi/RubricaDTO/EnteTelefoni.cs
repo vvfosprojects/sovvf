@@ -22,7 +22,6 @@ namespace SO115App.API.Models.Classi.Condivise
 {
     public class EnteTelefoni
     {
-        public string Codice { get; set; }
         public string Tipo { get; set; }
         public string Numero { get; set; }
     }
