@@ -204,15 +204,16 @@ namespace SO115App.CompositionRoot
 
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.GestioneRubrica.IGetEnteCategorie,
-                SO115App.Persistence.MongoDB.GestioneRubrica.GetEntiCategoria>();
+                SO115App.Persistence.MongoDB.GestioneRubrica.GetEnteCategorie>();
 
             container.Register<
-                SO115App.Models.Servizi.Infrastruttura.GestioneRubrica.IGetEnteTelefoni,
-                SO115App.Persistence.MongoDB.GestioneRubrica.GetEntiTelefoni>();
+                SO115App.Models.Servizi.Infrastruttura.GestioneRubrica.IUpdateEnte,
+                SO115App.Persistence.MongoDB.GestioneRubrica.UpdateEnte>();
 
             container.Register<
-                SO115App.Models.Servizi.Infrastruttura.GestioneRubrica.IUpDateRubrica,
-                SO115App.Persistence.MongoDB.GestioneRubrica.UpDateRubrica>();
+                SO115App.Models.Servizi.Infrastruttura.GestioneRubrica.IAddEnte,
+                SO115App.Persistence.MongoDB.GestioneRubrica.AddEnte>();
+
 
             #endregion Rubrica
         }

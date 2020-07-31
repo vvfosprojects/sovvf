@@ -1,7 +1,5 @@
 ﻿using CQRS.Queries;
-using SO115App.Models.Classi.RubricaDTO;
 using SO115App.Models.Servizi.Infrastruttura.GestioneRubrica;
-using System.Linq;
 
 namespace SO115App.Models.Servizi.CQRS.Queries.GestioneRubrica
 {
@@ -9,12 +7,10 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneRubrica
     {
         private readonly IGetRubrica _getRurbica;
         private readonly IGetEnteCategorie _getCategorieEnte;
-        private readonly IGetEnteTelefoni _getEnteTelefoni;
-        public RubricaQueryHandler(IGetRubrica getRurbica, IGetEnteCategorie getCategorieEnte, IGetEnteTelefoni getEnteTelefoni)
+        public RubricaQueryHandler(IGetRubrica getRurbica, IGetEnteCategorie getCategorieEnte)
         {
             _getRurbica = getRurbica;
             _getCategorieEnte = getCategorieEnte;
-            _getEnteTelefoni = getEnteTelefoni;
         }
 
         public RubricaResult Handle(RubricaQuery query)
@@ -26,7 +22,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneRubrica
 
             //var lstTelefoni = _getEnteTelefoni.Get(lstEnti.Select(c => c.Codice.ToString()).ToArray());
 
-            return new RubricaResult() {  };
+            return new RubricaResult() { };
         }
     }
 }

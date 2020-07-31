@@ -23,8 +23,8 @@ namespace SO115App.API.Controllers
             _addEnteHandler = addEnte;
         }
 
-        [HttpPost("AddEnte")]
-        public async Task<IActionResult> AddEnte(EnteIntervenuto ente)
+        [HttpPost("Add")]
+        public async Task<IActionResult> Add(EnteIntervenuto ente)
         {
             try
             {
@@ -46,8 +46,8 @@ namespace SO115App.API.Controllers
             }
         }
 
-        [HttpPost("UpdateEnte")]
-        public async Task<IActionResult> UpdateEnte(EnteIntervenuto ente)
+        [HttpPost("Update")]
+        public async Task<IActionResult> Update(EnteIntervenuto ente)
         {
             try
             {
@@ -57,6 +57,29 @@ namespace SO115App.API.Controllers
                 };
 
                 _updateEnteHandler.Handle(command);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                    return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
+                else
+                    return BadRequest(ex);
+            }
+        }
+
+        [HttpPost("Delete")]
+        public async Task<IActionResult> Delete(int codice)
+        {
+            try
+            {
+                //var command = new UpdateEnteCommand()
+                //{
+                //    Ente = ente
+                //};
+
+                //_updateEnteHandler.Handle(command);
 
                 return Ok();
             }

@@ -1,6 +1,5 @@
 ﻿using MongoDB.Driver;
 using Persistence.MongoDB;
-using SO115App.API.Models.Classi.Condivise;
 using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Servizi.Infrastruttura.GestioneRubrica;
 using System.Collections.Generic;
@@ -8,12 +7,12 @@ using System.Linq;
 
 namespace SO115App.Persistence.MongoDB.GestioneRubrica
 {
-    public class GetEntiCategoria : IGetEnteCategorie
+    public class GetEnteCategorie : IGetEnteCategorie
     {
         private readonly DbContext _dbContext;
-        public GetEntiCategoria(DbContext dbContext) => _dbContext = dbContext;
+        public GetEnteCategorie(DbContext dbContext) => _dbContext = dbContext;
 
-        public List<CategorieEnti> Get(int[] codici)
+        public List<EnteCategoria> Get(int[] codici)
         {
             return _dbContext.CategorieEntiCollection.Find(c => codici.Contains(int.Parse(c.Codice))).ToList();
         }
