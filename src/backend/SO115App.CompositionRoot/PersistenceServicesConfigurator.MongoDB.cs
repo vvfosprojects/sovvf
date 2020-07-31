@@ -199,20 +199,20 @@ namespace SO115App.CompositionRoot
             #region Rubrica
 
             container.Register<
-                SO115App.Models.Servizi.Infrastruttura.GestioneRubrica.IGetRubrica,
-                SO115App.Persistence.MongoDB.GestioneRubrica.GetRubrica>();
+                SO115App.Models.Servizi.Infrastruttura.GestioneRubrica.Enti.IGetRubrica,
+                SO115App.Persistence.MongoDB.GestioneRubrica.Enti.GetRubrica>();
 
             container.Register<
-                SO115App.Models.Servizi.Infrastruttura.GestioneRubrica.IGetEnteCategorie,
-                SO115App.Persistence.MongoDB.GestioneRubrica.GetEnteCategorie>();
+                SO115App.Models.Servizi.Infrastruttura.GestioneRubrica.Categorie.IGetEnteCategorie,
+                SO115App.Persistence.MongoDB.GestioneRubrica.Categorie.GetEnteCategorie>();
 
             container.Register<
-                SO115App.Models.Servizi.Infrastruttura.GestioneRubrica.IUpdateEnte,
-                SO115App.Persistence.MongoDB.GestioneRubrica.UpdateEnte>();
+                SO115App.Models.Servizi.Infrastruttura.GestioneRubrica.Enti.IUpdateEnte,
+                SO115App.Persistence.MongoDB.GestioneRubrica.Enti.UpdateEnte>();
 
             container.Register<
-                SO115App.Models.Servizi.Infrastruttura.GestioneRubrica.IAddEnte,
-                SO115App.Persistence.MongoDB.GestioneRubrica.AddEnte>();
+                SO115App.Models.Servizi.Infrastruttura.GestioneRubrica.Enti.IAddEnte,
+                SO115App.Persistence.MongoDB.GestioneRubrica.Enti.AddEnte>();
 
 
             #endregion Rubrica

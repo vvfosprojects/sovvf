@@ -1,7 +1,7 @@
 ﻿using SO115App.API.Models.Classi.Condivise;
 using System.Collections.Generic;
 
-namespace SO115App.Models.Servizi.Infrastruttura.GestioneRubrica
+namespace SO115App.Models.Servizi.Infrastruttura.GestioneRubrica.Enti
 {
     /// <summary>
     /// Interfaccia che si occupa ottenere i dati della rubrica da MongoDb

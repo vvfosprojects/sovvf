@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.Models.Classi.Utility;
-using SO115App.Models.Servizi.CQRS.Commands.GestioneRubrica.AddEnte;
-using SO115App.Models.Servizi.CQRS.Commands.GestioneRubrica.UpdateEnte;
+using SO115App.Models.Servizi.CQRS.Commands.GestioneRubrica.Enti.AddEnte;
+using SO115App.Models.Servizi.CQRS.Commands.GestioneRubrica.Enti.UpdateEnte;
 using System;
 using System.Threading.Tasks;
 
@@ -41,7 +41,7 @@ namespace SO115App.API.Controllers
             {
                 if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
                     return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
-                else 
+                else
                     return BadRequest(ex);
             }
         }

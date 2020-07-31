@@ -1,5 +1,6 @@
 ﻿using CQRS.Queries;
-using SO115App.Models.Servizi.Infrastruttura.GestioneRubrica;
+using SO115App.Models.Servizi.Infrastruttura.GestioneRubrica.Categorie;
+using SO115App.Models.Servizi.Infrastruttura.GestioneRubrica.Enti;
 
 namespace SO115App.Models.Servizi.CQRS.Queries.GestioneRubrica
 {

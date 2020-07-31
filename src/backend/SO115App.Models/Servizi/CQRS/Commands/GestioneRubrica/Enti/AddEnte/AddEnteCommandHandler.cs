@@ -1,7 +1,7 @@
 ﻿using CQRS.Commands;
-using SO115App.Models.Servizi.Infrastruttura.GestioneRubrica;
+using SO115App.Models.Servizi.Infrastruttura.GestioneRubrica.Enti;
 
-namespace SO115App.Models.Servizi.CQRS.Commands.GestioneRubrica.AddEnte
+namespace SO115App.Models.Servizi.CQRS.Commands.GestioneRubrica.Enti.AddEnte
 {
     public class AddEnteCommandHandler : ICommandHandler<AddEnteCommand>
     {

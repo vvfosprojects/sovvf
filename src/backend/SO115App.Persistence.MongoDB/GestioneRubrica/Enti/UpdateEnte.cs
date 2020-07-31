@@ -1,9 +1,9 @@
 ﻿using MongoDB.Driver;
 using Persistence.MongoDB;
 using SO115App.API.Models.Classi.Condivise;
-using SO115App.Models.Servizi.Infrastruttura.GestioneRubrica;
+using SO115App.Models.Servizi.Infrastruttura.GestioneRubrica.Enti;
 
-namespace SO115App.Persistence.MongoDB.GestioneRubrica
+namespace SO115App.Persistence.MongoDB.GestioneRubrica.Enti
 {
     public class UpdateEnte : IUpdateEnte
     {
