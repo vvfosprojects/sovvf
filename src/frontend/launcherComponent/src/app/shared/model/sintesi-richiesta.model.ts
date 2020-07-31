@@ -165,7 +165,7 @@ export class SintesiRichiesta {
         public codUOCompetenza?: string[],
         public codSOCompetente?: string,
          /**
-         * lista Enti intervenuti in Chiamata
+         * lista Enti intervenuti
          */
         public listaEnti?: Enti[]
     ) {

@@ -68,13 +68,17 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
         this.initForm();
         this.subscription.add(this.richiestaModifica$.subscribe((richiesta: SintesiRichiesta) => {
             if (richiesta) {
+                console.log('XXXXX ')
+                console.log(richiesta)
                 this.richiestaModifica = makeCopy(richiesta);
                 this.richiestaModificaIniziale = makeCopy(richiesta);
                 this.coordinate = makeCopy(richiesta.localita.coordinate);
             }
         }));
         this.subscription.add(this.tipologie$.subscribe((tipologie: Tipologia[]) => this.tipologie = tipologie));
-        this.subscription.add(this.enti$.subscribe((enti: Enti[]) => this.enti = enti));
+        this.subscription.add(this.enti$.subscribe((enti: Enti[]) => {
+            this.enti = enti
+        }));
         this.ngxGooglePlacesOptions = new Options({
             bounds: this.store.selectSnapshot(HomeState.bounds) as unknown as LatLngBounds,
             componentRestrictions: GOOGLEPLACESOPTIONS.componentRestrictions as unknown as ComponentRestrictions
@@ -121,6 +125,7 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
     creaForm(): void {
         const zoneEmergenza = this.richiestaModifica.zoneEmergenza ? this.richiestaModifica.zoneEmergenza.join(' ') : null;
         const etichette = (this.richiestaModifica.tags && this.richiestaModifica.tags.length) ? this.richiestaModifica.tags : null;
+        const listaEnti = (this.richiestaModifica.listaEnti && this.richiestaModifica.listaEnti.length) ? this.richiestaModifica.tags : null;
         this.modificaRichiestaForm = this.formBuilder.group({
             tipoIntervento: [ this.richiestaModifica.tipologie, Validators.required ],
             nominativo: [ this.richiestaModifica.richiedente.nominativo, Validators.required ],
@@ -138,7 +143,7 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
             motivazione: [ this.richiestaModifica.descrizione ],
             zoneEmergenza: [ zoneEmergenza ],
             prioritaRichiesta: [ this.richiestaModifica.prioritaRichiesta ],
-            listaEnti: [ this.richiestaModifica.listaEnti ]
+            listaEnti: [ listaEnti ]
         });
         this.store.dispatch(new UpdateFormValue({
             path: 'richiestaModifica.modificaRichiestaForm',
@@ -211,9 +216,10 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
         nuovaRichiesta.localita.piano = f.piano.value;
         nuovaRichiesta.descrizione = f.motivazione.value;
         nuovaRichiesta.zoneEmergenza = f.zoneEmergenza.value ? f.zoneEmergenza.value.split(' ') : [];
-        nuovaRichiesta.notePrivate = f.notePrivate.value;
+        nuovaRichiesta.notePrivate = f.notePrivate.value; 
         nuovaRichiesta.notePubbliche = f.notePubbliche.value;
         nuovaRichiesta.prioritaRichiesta = f.prioritaRichiesta.value;
+        nuovaRichiesta.listaEnti = (f.listaEnti.value && f.listaEnti.value.length) ? f.listaEnti.value : [];
         // console.log('Richiesta Modificata', nuovaRichiesta);
         this.setDescrizione();
         return nuovaRichiesta;
@@ -275,7 +281,8 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
             this.store.dispatch(new ClearRichiestaModifica);
         } else {
             this.setCampiModificati(richiesta);
-            this.store.dispatch(new PatchRichiesta(richiesta));
+            this.store.dispatch(new PatchRichiesta(richiesta))
+            console.log('GUARDA QUI ', richiesta); //qui ho il codice dell ente scelto nella modifica
         }
         // console.log('stringRichiesta', stringRichiesta);
         // console.log('stringRichiestaModifica', stringRichiestaModifica);
@@ -338,6 +345,9 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
         if (checkTipologieModificate(richiesta.tipologie, this.richiestaModificaIniziale.tipologie)) {
             this.campiModificati.push('Tipologie');
         }
+       if (richiesta.listaEnti !== this.richiestaModificaIniziale.listaEnti) {
+           this.campiModificati.push('ListaEnti');
+       }
         console.log('campiModificati', this.campiModificati);
 
         function checkArrayModificato(arr1: string[], arr2: string[]) {
@@ -387,5 +397,30 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
             }
             return _return;
         }
+
+       /* function checkEntiModificati (arr1: Enti[], arr2: Enti[]) {
+            let _return = false;
+            let count = 0;
+            const length = arr1.length;
+            const lengthIniziale = arr2.length;
+
+            if (length === lengthIniziale) {
+                arr1.forEach((enti: Enti) => {
+                    arr2.forEach((e: Enti) => {
+                        if (enti.codice === e.codice) {
+                            count++;
+                        }
+                    });
+                });
+
+                if (count !== length) {
+                    _return = true;
+                }
+            } else {
+                _return = true;
+            }
+            return _return;
+        }
+        */
     }
 }

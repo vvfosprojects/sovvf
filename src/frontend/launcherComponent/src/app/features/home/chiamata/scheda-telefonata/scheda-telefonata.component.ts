@@ -210,17 +210,39 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy {
         }
     }
 
+    onAddEnti(ente: any) {
+        if (!this.nuovaRichiesta.listaEnti) {
+            this.nuovaRichiesta.listaEnti = [];
+            this.onAddEnti(ente);
+        } else {
+            this.nuovaRichiesta.listaEnti.push(ente);
+        }
+    }
+
     onRemoveTipologia(tipologia: any) {
         this.nuovaRichiesta.tipologie.splice(this.nuovaRichiesta.tipologie.indexOf(tipologia.codice), 1);
+    }
+
+    onRemoveEnti(ente: any) {
+        this.nuovaRichiesta.listaEnti.splice(this.nuovaRichiesta.listaEnti.indexOf(ente.codice), 1);
     }
 
     checkTipologie(): boolean {
         return !!!(this.nuovaRichiesta.tipologie && (this.nuovaRichiesta.tipologie.length > 0));
     }
 
+    checkEnti(): boolean {
+        return !!!(this.nuovaRichiesta.listaEnti && (this.nuovaRichiesta.listaEnti.length > 0));
+    }
+
     clearTipologieSelezionate() {
         this.f.selectedTipologie.patchValue([]);
         this.nuovaRichiesta.tipologie = [];
+    }
+
+    clearEntiSelezionati() {
+        this.f.listaEnti.patchValue([]);
+        this.nuovaRichiesta.listaEnti = [];
     }
 
     onAnnullaChiamata(): void {
@@ -264,8 +286,8 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy {
         if (!this.f.selectedTipologie.value && !this.f.nominativo.value && !this.f.telefono.value
             && !this.f.indirizzo.value && !this.f.latitudine.value && !this.f.longitudine.value
             && !this.f.piano.value && !this.f.etichette.value && !this.f.noteIndirizzo.value
-            && !this.f.rilevanzaGrave.value && !this.f.rilevanzaStArCu.value
-            && !this.f.notePrivate.value && !this.f.notePubbliche.value
+            && !this.f.rilevanzaGrave.value && !this.f.rilevanzaStArCu.value && !this.f.listaEnti.value
+            && !this.f.notePrivate.value && !this.f.notePubbliche.value 
             && !this.f.descrizione.value && !this.f.zoneEmergenza.value
             && this.f.prioritaRichiesta.value === 3) {
             _return = true;
@@ -294,6 +316,7 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy {
                         this.submitted = false;
                         this.chiamataForm.reset();
                         this.clearTipologieSelezionate();
+                        this.clearEntiSelezionati();
                         this.coordinate = null;
                         this.store.dispatch(new ClearClipboard());
                         this._statoChiamata('reset');
