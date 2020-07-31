@@ -18,29 +18,20 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Queries;
-using SO115App.API.Models.Servizi.CQRS.Queries.Filtri;
-using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes;
-using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
-using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza;
-using SO115App.API.Models.Servizi.CQRS.Queries.Marker.CentroMappaMarker;
-using SO115App.API.Models.Servizi.CQRS.Queries.Marker.ListaChiamateInCorsoMarker;
-using SO115App.Models.Classi.Marker;
-using System.Collections.Generic;
-using SO115App.Models.Servizi.CQRS.Queries.GestioneSchedeNue.GetContatoreSchede;
-using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
-using SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.Tipologie;
-using SO115App.API.Models.Classi.Organigramma;
-using System.Linq;
 using Serilog;
+using SO115App.API.Models.Classi.Organigramma;
+using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza;
+using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
 using SO115App.Models.Servizi.Infrastruttura.Box;
-using SO115App.Models.Servizi.Infrastruttura.Marker;
+using SO115App.Models.Servizi.Infrastruttura.GestioneRubrica.Enti;
+using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
 using SO115App.Models.Servizi.Infrastruttura.GetFiltri;
+using SO115App.Models.Servizi.Infrastruttura.Marker;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
-using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
-using SO115App.Models.Classi.Condivise;
-using SO115App.Models.Servizi.Infrastruttura.GestioneRubrica;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
 {
@@ -136,7 +127,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
 
             try
             {
-                var rubrica = _getRubrica.Get(query.CodiceSede, true);
+                var rubrica = _getRubrica.Get(query.CodiceSede, true); //TODO GESTIRE LOGICA BOOL
                 var boxListaInterventi = _boxRichiesteHandler.Get(pinNodi.ToHashSet());
                 var boxListaMezzi = _boxMezziHandler.Get(query.CodiceSede);
                 var boxListaPersonale = _boxPersonaleHandler.Get(query.CodiceSede);

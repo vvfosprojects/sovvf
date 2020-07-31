@@ -1,6 +1,6 @@
 ﻿using CQRS.Queries;
-using SO115App.Models.Servizi.Infrastruttura.GestioneRubrica;
-using System.Linq;
+using SO115App.Models.Servizi.Infrastruttura.GestioneRubrica.Categorie;
+using SO115App.Models.Servizi.Infrastruttura.GestioneRubrica.Enti;
 
 namespace SO115App.Models.Servizi.CQRS.Queries.GestioneRubrica
 {
@@ -17,13 +17,13 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneRubrica
         public RubricaResult Handle(RubricaQuery query)
         {
             //TODO manca la logica per la ricorsività
-            var rubrica = _getRurbica.Get(query.IdSede, true); 
+            //var lstEnti = _getRurbica.Get(query.IdSede, true); 
 
-            var lstCategorieEnti = _getCategorieEnte.Get(rubrica.Select(c => c.CodCategoria).ToArray());
+            //var lstCategorieEnti = _getCategorieEnte.Get(lstEnti.Select(c => c.CodCategoria).ToArray());
 
-            //var lstTelefoni = 
+            //var lstTelefoni = _getEnteTelefoni.Get(lstEnti.Select(c => c.Codice.ToString()).ToArray());
 
-            return new RubricaResult() { /*Rubrica = rubrica*/ };
+            return new RubricaResult() { };
         }
     }
 }

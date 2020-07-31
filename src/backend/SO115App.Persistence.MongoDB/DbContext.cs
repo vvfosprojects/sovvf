@@ -101,22 +101,13 @@ namespace Persistence.MongoDB
             BsonClassMap.RegisterClassMap<InviareFonogramma>();
             BsonClassMap.RegisterClassMap<FonogrammaInviato>();
             BsonClassMap.RegisterClassMap<EnteCategoria>();
-            BsonClassMap.RegisterClassMap<EnteTelefoni>();
         }
 
-        public IMongoCollection<EnteCategoria> EnteCategoriaCollection
+        public IMongoCollection<EnteCategoria> CategorieEntiCollection
         {
             get
             {
-                return database.GetCollection<EnteCategoria>("enteCategoria");
-            }
-        }
-
-        public IMongoCollection<EnteTelefoni> EnteTelefoniCollection
-        {
-            get
-            {
-                return database.GetCollection<EnteTelefoni>("enteTelefoni");
+                return database.GetCollection<EnteCategoria>("categorieEnti");
             }
         }
 

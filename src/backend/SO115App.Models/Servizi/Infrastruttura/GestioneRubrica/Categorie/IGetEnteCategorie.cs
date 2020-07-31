@@ -1,7 +1,7 @@
-﻿using SO115App.API.Models.Classi.Condivise;
+﻿using SO115App.Models.Classi.Condivise;
 using System.Collections.Generic;
 
-namespace SO115App.Models.Servizi.Infrastruttura.GestioneRubrica
+namespace SO115App.Models.Servizi.Infrastruttura.GestioneRubrica.Categorie
 {
     public interface IGetEnteCategorie
     {

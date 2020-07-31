@@ -1,9 +1,13 @@
 ﻿using SO115App.API.Models.Classi.Condivise;
+using SO115App.Models.Classi.Condivise;
 using System.Collections.Generic;
 
 namespace SO115App.Models.Classi.RubricaDTO
 {
-    public class RubricaDTO
+    /// <summary>
+    ///   DTO di uscita verso il FrontEnd
+    /// </summary>
+    public class EnteDTO
     {
         public string Id { get; set; }
 
