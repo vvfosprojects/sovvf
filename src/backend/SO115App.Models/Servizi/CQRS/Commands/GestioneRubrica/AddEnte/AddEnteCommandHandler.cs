@@ -1,10 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using CQRS.Commands;
+using SO115App.Models.Servizi.Infrastruttura.GestioneRubrica;
+using System;
 
 namespace SO115App.Models.Servizi.CQRS.Commands.GestioneRubrica.AddEnte
 {
-    class AddEnteCommandHandler
+    public class AddEnteCommandHandler : ICommandHandler<AddEnteCommand>
     {
+        private readonly IAddEnte _addEnte;
+        public AddEnteCommandHandler(IAddEnte addEnte) => _addEnte = addEnte;
+
+        public void Handle(AddEnteCommand command)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

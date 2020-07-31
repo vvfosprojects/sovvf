@@ -22,8 +22,8 @@ namespace SO115App.API.Controllers
             _addEnteHandler = addEnte;
         }
 
-        [HttpPost("Add")]
-        public async Task<IActionResult> Add()
+        [HttpPost("AddEnte")]
+        public async Task<IActionResult> AddEnte()
         {
             try
             {
@@ -45,8 +45,8 @@ namespace SO115App.API.Controllers
             }
         }
 
-        [HttpPost("Update")]
-        public async Task<IActionResult> Update()
+        [HttpPost("UpdateEnte")]
+        public async Task<IActionResult> UpdateEnte()
         {
             try
             {
