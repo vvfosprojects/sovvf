@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace SO115App.API.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class GestioneEntiController : ControllerBase
@@ -30,6 +30,8 @@ namespace SO115App.API.Controllers
             {
                 var command = new AddEnteCommand()
                 {
+                    CodiceSede = Request.Headers["codicesede"].ToString().Split(','),
+                    idOperatore = Request.Headers["IdUtente"],
                     Ente = ente
                 };
 
@@ -53,6 +55,8 @@ namespace SO115App.API.Controllers
             {
                 var command = new UpdateEnteCommand()
                 {
+                    CodiceSede = Request.Headers["codicesede"].ToString().Split(','),
+                    idOperatore = Request.Headers["IdUtente"],
                     Ente = ente
                 };
 
