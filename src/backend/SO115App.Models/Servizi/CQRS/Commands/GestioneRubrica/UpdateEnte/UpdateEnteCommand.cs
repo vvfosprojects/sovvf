@@ -4,7 +4,7 @@ using System.Text;
 
 namespace SO115App.Models.Servizi.CQRS.Commands.GestioneRubrica.UpdateEnte
 {
-    class UpdateEnteCommand
+    public class UpdateEnteCommand
     {
     }
 }

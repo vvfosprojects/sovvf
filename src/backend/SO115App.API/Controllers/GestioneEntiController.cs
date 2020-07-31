@@ -1,17 +1,25 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using CQRS.Commands;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using SO115App.Models.Classi.Utility;
+using SO115App.Models.Servizi.CQRS.Commands.GestioneRubrica.AddEnte;
+using SO115App.Models.Servizi.CQRS.Commands.GestioneRubrica.UpdateEnte;
 using System;
 using System.Threading.Tasks;
 
 namespace SO115App.API.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class GestioneEntiController : ControllerBase
     {
-
-        public GestioneEntiController()
+        private readonly ICommandHandler<AddEnteCommand> _addEnteHandler;
+        private readonly ICommandHandler<UpdateEnteCommand> _updateEnteHandler;
+        public GestioneEntiController(ICommandHandler<AddEnteCommand> addEnte, ICommandHandler<UpdateEnteCommand> updateEnte)
         {
-
+            _updateEnteHandler = updateEnte;
+            _addEnteHandler = addEnte;
         }
 
         [HttpPost("Add")]
@@ -19,11 +27,21 @@ namespace SO115App.API.Controllers
         {
             try
             {
+                var command = new AddEnteCommand()
+                {
+                    //
+                };
+
+                _addEnteHandler.Handle(command);
+
                 return Ok();
             }
             catch (Exception ex)
             {
-                return BadRequest(ex);
+                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                    return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
+                else 
+                    return BadRequest(ex);
             }
         }
 
@@ -32,11 +50,21 @@ namespace SO115App.API.Controllers
         {
             try
             {
+                var command = new UpdateEnteCommand()
+                {
+                    //
+                };
+
+                _updateEnteHandler.Handle(command);
+
                 return Ok();
             }
             catch (Exception ex)
             {
-                return BadRequest(ex);
+                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                    return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
+                else
+                    return BadRequest(ex);
             }
         }
     }
