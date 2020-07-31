@@ -27,17 +27,14 @@ namespace SO115App.API.Models.Classi.Condivise
     public class EnteIntervenuto
     {
         public string Id { get; set; }
-
         /// <summary>
         ///   Codice dell'Ente intervenuto
         /// </summary>
         public int Codice { get; set; }
-
         /// <summary>
         ///   Descrizione dell'Ente intervenuto ( Es. ACEA )
         /// </summary>
         public string Descrizione { get; set; }
-
         public string CodSede { get; set; }
         public bool Ricorsivo { get; set; }
         public int CodCategoria { get; set; }
