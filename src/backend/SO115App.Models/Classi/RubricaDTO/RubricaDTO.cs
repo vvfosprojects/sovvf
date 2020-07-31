@@ -18,7 +18,7 @@ namespace SO115App.Models.Classi.RubricaDTO
         public string Descrizione { get; set; }
         public string CodSede { get; set; }
         public bool Ricorsivo { get; set; }
-        public EnteCategoria Categoria { get; set; }
+        public EnteCategoriaDTO Categoria { get; set; }
         public string Indirizzo { get; set; }
         public string Cap { get; set; }
         public string CodComune { get; set; }
@@ -26,13 +26,13 @@ namespace SO115App.Models.Classi.RubricaDTO
         public string Zona { get; set; }
         public string NoteEnte { get; set; }
         public string Email { get; set; }
-        public List<EnteTelefoni> Telefoni { get; set; }
+        public List<EnteTelefoniDTO> Telefoni { get; set; }
     }
 
     /// <summary>
     ///   EntiIntervenuti.Categoria: DTO
     /// </summary>
-    public class EnteCategoria
+    public class EnteCategoriaDTO
     {
         public int Codice { get; set; }
         public string Descrizione { get; set; }
@@ -42,7 +42,7 @@ namespace SO115App.Models.Classi.RubricaDTO
     /// <summary>
     ///   EntiIntervenuti.Telefoni: DTO
     /// </summary>
-    public class EnteTelefoni
+    public class EnteTelefoniDTO
     {
         public string Tipo { get; set; }
         public string Numero { get; set; }

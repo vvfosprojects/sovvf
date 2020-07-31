@@ -1,7 +1,9 @@
-﻿using Persistence.MongoDB;
-using SO115App.Models.Classi.RubricaDTO;
+﻿using MongoDB.Driver;
+using Persistence.MongoDB;
+using SO115App.API.Models.Classi.Condivise;
 using SO115App.Models.Servizi.Infrastruttura.GestioneRubrica;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SO115App.Persistence.MongoDB.GestioneRubrica
 {
@@ -12,8 +14,7 @@ namespace SO115App.Persistence.MongoDB.GestioneRubrica
 
         public List<EnteTelefoni> Get(string[] codici)
         {
-            //return _dbContext.EnteTelefoniCollection.Find(c => c ==c).ToList();  //TODO fare la query
-            return null;
+            return _dbContext.TelefoniCollection.Find(c => codici.Contains(c.Codice)).ToList();
         }
     }
 }
