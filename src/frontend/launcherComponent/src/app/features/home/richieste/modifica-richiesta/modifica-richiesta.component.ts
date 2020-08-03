@@ -70,6 +70,10 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
       if (richiesta) {
         this.richiestaModifica = makeCopy(richiesta);
         this.richiestaModificaIniziale = makeCopy(richiesta);
+        this.richiestaModifica.listaEnti = [];
+        this.richiestaModifica.listaEntiIntervenuti.forEach( e => this.richiestaModifica.listaEnti.push(e));
+        this.richiestaModificaIniziale.listaEnti = [];
+        this.richiestaModificaIniziale.listaEntiIntervenuti.forEach( e => this.richiestaModificaIniziale.listaEnti.push(e));
         this.coordinate = makeCopy(richiesta.localita.coordinate);
       }
     }));
@@ -141,7 +145,7 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
       motivazione: [this.richiestaModifica.descrizione],
       zoneEmergenza: [zoneEmergenza],
       prioritaRichiesta: [this.richiestaModifica.prioritaRichiesta],
-      listaEnti: [listaEnti]
+      listaEnti: [listaEnti.map( e => e.codice)]
     });
     this.store.dispatch(new UpdateFormValue({
       path: 'richiestaModifica.modificaRichiestaForm',
