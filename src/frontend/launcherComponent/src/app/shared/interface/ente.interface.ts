@@ -1,4 +1,4 @@
-export interface EnteCategoria {
+export interface CategoriaEnte {
     codice: string;
     descrizione: string;
     visibile: string;
@@ -20,7 +20,7 @@ export interface Ente {
     descrizione: string;
     codSede: string; 
     ricorsivo: boolean;
-    enteCategoria: EnteCategoria;
+    enteCategoria: CategoriaEnte;
     indirizzo: string;
     cap: string;
     codComune: number;
