@@ -26,26 +26,26 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneRubrica
 
         public RubricaResult Handle(RubricaQuery query)
         {
-            //var listaPin = new List<PinNodo>();
-            //var sediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
-            //var distaccamento = _getDistaccamentoByCodiceSede.Get(personale.CodSede).Result;
+            var listaPin = new List<PinNodo>();
+            var sediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
+            //var distaccamento = _getListaDistaccamentiByCodiceSede.GetListaDistaccamenti(query.IdSede.First());
 
             //foreach (var ruolo in command.Ruoli)
             //{
-            //    listaPin.Add(new PinNodo(ruolo.CodSede, ruolo.Ricorsivo));
-            //    foreach (var figli in sediAlberate.GetSottoAlbero(listaPin))
-            //    {
-            //        if (figli.Codice.Equals(ruolo.CodSede))
-            //        {
-            //            ruolo.DescSede = figli.Nome;
-            //        }
-            //    }
+                //listaPin.Add(new PinNodo(ruolo.CodSede, ruolo.Ricorsivo));
+                //foreach (var figli in sediAlberate.GetSottoAlbero(listaPin))
+                //{
+                //    if (figli.Codice.Equals(ruolo.CodSede))
+                //    {
+                //        ruolo.DescSede = figli.Nome;
+                //    }
+                //}
             //}
 
 
 
 
-            var result = _getRurbica.Get(query.IdSede, true);
+            var result = _getRurbica.Get(query.IdSede, true); //TODO MANCA LOGICA RICORSIVITA'
 
             var lstCodiciCategorie = result.Select(c => c.CodCategoria.ToString()).Distinct().ToArray();
 
@@ -59,7 +59,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneRubrica
                     Id = c.Id,
                     Codice = c.Codice,
                     Cap = c.Cap,
-                    Categoria = lstCategorie.Find(z => c.Codice.ToString() == z.Codice),
+                    Categoria = lstCategorie.Find(z => c.CodCategoria.ToString() == z.Codice),
                     CodComune = c.CodComune,
                     CodSede = c.CodSede,
                     Descrizione = c.Descrizione,
