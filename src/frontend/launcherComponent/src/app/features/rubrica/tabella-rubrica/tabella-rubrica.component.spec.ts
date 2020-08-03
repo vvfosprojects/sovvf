@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TabellaVociRubricaComponent } from './tabella-voci-rubrica.component';
+import { TabellaRubricaComponent } from './tabella-rubrica.component';
 
 describe('TabellaVociRubricaComponent', () => {
-  let component: TabellaVociRubricaComponent;
-  let fixture: ComponentFixture<TabellaVociRubricaComponent>;
+  let component: TabellaRubricaComponent;
+  let fixture: ComponentFixture<TabellaRubricaComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TabellaVociRubricaComponent ]
+      declarations: [ TabellaRubricaComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TabellaVociRubricaComponent);
+    fixture = TestBed.createComponent(TabellaRubricaComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

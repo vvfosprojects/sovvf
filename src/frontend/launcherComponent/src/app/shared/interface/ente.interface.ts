@@ -18,16 +18,16 @@ export interface AddEnteInterface {
 export interface Ente {
     codice: number;
     descrizione: string;
-    codSede: string; 
+    codSede: string;
     ricorsivo: boolean;
     enteCategoria: CategoriaEnte;
     indirizzo: string;
     cap: string;
-    codComune?: number;
-    siglaProvincia?: string;
-    zona?: string; 
-    noteEnte: string; 
-    email: string; 
+    codComune: number;
+    siglaProvincia: string;
+    zona: string;
+    noteEnte: string;
+    email: string;
     telefoni: EnteTelefoni[];
 }
 
