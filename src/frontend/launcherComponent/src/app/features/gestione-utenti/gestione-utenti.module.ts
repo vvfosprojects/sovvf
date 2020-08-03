@@ -51,7 +51,7 @@ import { RubricaState } from '../rubrica/store/states/rubrica/rubrica.state';
         UiSwitchModule.forRoot(null),
         NgxsModule.forFeature(
             [
-                RubricaState,
+                GestioneUtentiState,
                 RicercaUtentiState
             ]
         ),
