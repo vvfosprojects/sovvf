@@ -2,7 +2,7 @@
 {
     public class DeleteEnteCommand
     {
-        public string CodiceEnte { get; set; }
+        public string Id { get; set; }
 
         public string[] CodiceSede { get; set; }
         public string idOperatore { get; set; }

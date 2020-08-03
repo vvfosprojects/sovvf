@@ -6,11 +6,12 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneRubrica.Enti.DeleteEnte
     public class DeleteEnteCommandHandler : ICommandHandler<DeleteEnteCommand>
     {
         private readonly IDeleteEnte _deleteEnte;
+
         public DeleteEnteCommandHandler(IDeleteEnte deleteEnte) => _deleteEnte = deleteEnte;
 
         public void Handle(DeleteEnteCommand command)
         {
-            _deleteEnte.Delete(command.CodiceEnte);
+            _deleteEnte.Delete(command.Id);
         }
     }
 }
