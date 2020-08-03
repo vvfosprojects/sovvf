@@ -23,9 +23,9 @@ export interface Ente {
     enteCategoria: CategoriaEnte;
     indirizzo: string;
     cap: string;
-    codComune: number;
-    siglaProvincia: string;
-    zona: string; 
+    codComune?: number;
+    siglaProvincia?: string;
+    zona?: string; 
     noteEnte: string; 
     email: string; 
     telefoni: EnteTelefoni[];
