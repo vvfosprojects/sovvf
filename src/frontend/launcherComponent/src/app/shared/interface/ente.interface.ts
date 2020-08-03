@@ -7,8 +7,8 @@ export interface CategoriaEnte {
 }
 
 export interface EnteTelefoni {
-    codice: string;
-    numero: number;
+    tipo: string;
+    numero: string;
 }
 
 export interface AddEnteInterface {
@@ -28,6 +28,6 @@ export interface Ente {
     zona: string; 
     noteEnte: string; 
     email: string; 
-    telefoni: string[];
+    telefoni: EnteTelefoni[];
 }
 
