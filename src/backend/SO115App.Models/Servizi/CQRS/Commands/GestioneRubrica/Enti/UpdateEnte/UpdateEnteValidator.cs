@@ -1,5 +1,6 @@
 ﻿using CQRS.Commands.Validators;
 using CQRS.Validation;
+using SO115App.Models.Classi.Utility;
 using System.Collections.Generic;
 
 namespace SO115App.Models.Servizi.CQRS.Commands.GestioneRubrica.Enti.UpdateEnte
@@ -8,12 +9,23 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneRubrica.Enti.UpdateEnte
     {
         public IEnumerable<ValidationResult> Validate(UpdateEnteCommand command)
         {
-            //if (command.CodRichiesta.Trim().Length == 0)
-            //{
-            //    yield return new ValidationResult(Costanti.IdRichiestaNonValida);
-            //}
+            if (command.Ente == null || command.Ente != new API.Models.Classi.Condivise.EnteIntervenuto() { })
+                yield return new ValidationResult("Ente non valido");
 
-            return new List<ValidationResult>();
+            else
+            {
+                if(command.Ente.Id == null || command.Ente.Id == "0" || command.Ente.Id == "")
+                    yield return new ValidationResult(Costanti.IdRichiestaNonValida);
+
+                else
+                {
+                    if (command.Ente.CodCategoria == 0)
+                        yield return new ValidationResult("Nessuna categoria selezionata");
+
+                    if (command.Ente.Telefoni.Count == 0)
+                        yield return new ValidationResult("Nessun telefono selezionato");
+                }
+            }
         }
     }
 }

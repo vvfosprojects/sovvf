@@ -8,13 +8,17 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneRubrica.Enti.AddEnte
     {
         public IEnumerable<ValidationResult> Validate(AddEnteCommand command)
         {
-            // Controlli sul richiedente
-            //if (command.CodRichiesta.Trim().Length == 0)
-            //{
-            //    yield return new ValidationResult(Costanti.IdRichiestaNonValida);
-            //}
+            if (command.Ente == null || command.Ente != new API.Models.Classi.Condivise.EnteIntervenuto() { })
+                yield return new ValidationResult("Ente non valido");
 
-            return new List<ValidationResult>();
+            else
+            {
+                if (command.Ente.CodCategoria == 0)
+                    yield return new ValidationResult("Nessuna categoria selezionata");
+
+                if(command.Ente.Telefoni.Count == 0)
+                    yield return new ValidationResult("Nessun telefono selezionato");
+            }
         }
     }
 }
