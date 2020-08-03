@@ -8,7 +8,7 @@ import { ListaTipologicheMezzi } from '../../features/home/composizione-partenza
 import { ContatoriSchedeContatto } from './contatori-schede-contatto.interface';
 import { Tipologia } from '../model/tipologia.model';
 import { ResponseInterface } from './response.interface';
-import { Ente } from './ente.interface';
+import { VoceRubrica } from './rubrica.interface';
 
 export interface Welcome {
     boxListaMezzi: BoxMezzi;
@@ -20,5 +20,5 @@ export interface Welcome {
     listaFiltri: ListaTipologicheMezzi;
     infoNue: ContatoriSchedeContatto;
     tipologie: Tipologia[];
-    rubrica: Ente[];
+    rubrica: VoceRubrica[];
 }
