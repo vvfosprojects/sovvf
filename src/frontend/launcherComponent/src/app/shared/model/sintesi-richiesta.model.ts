@@ -137,11 +137,11 @@ export class SintesiRichiesta {
         /**
          * lista enti intervenuti
          */
-        public listaEntiIntervenuti?: EnteIntervenuto[],
+        public listaEntiIntervenuti?: Ente[],
         /**
          * lista enti presa in carico
          */
-        public listaEntiPresaInCarico?: EnteIntervenuto[],
+        public listaEntiPresaInCarico?: Ente[],
         /**
          * obiettivo sensibile
          */

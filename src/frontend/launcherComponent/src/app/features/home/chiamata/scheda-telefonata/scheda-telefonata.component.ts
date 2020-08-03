@@ -59,7 +59,7 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy {
 
     nuovaRichiesta: SintesiRichiesta;
     isCollapsed = true;
-    //showRubrica: boolean = false;
+    // showRubrica: boolean = false;
 
     idSchedaContatto: string;
 
@@ -287,7 +287,7 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy {
             && !this.f.indirizzo.value && !this.f.latitudine.value && !this.f.longitudine.value
             && !this.f.piano.value && !this.f.etichette.value && !this.f.noteIndirizzo.value
             && !this.f.rilevanzaGrave.value && !this.f.rilevanzaStArCu.value && !this.f.listaEnti.value
-            && !this.f.notePrivate.value && !this.f.notePubbliche.value 
+            && !this.f.notePrivate.value && !this.f.notePubbliche.value
             && !this.f.descrizione.value && !this.f.zoneEmergenza.value
             && this.f.prioritaRichiesta.value === 3) {
             _return = true;
