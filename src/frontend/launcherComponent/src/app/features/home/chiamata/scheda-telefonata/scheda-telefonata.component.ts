@@ -30,7 +30,7 @@ import { Options } from 'ngx-google-places-autocomplete/objects/options/options'
 import { LatLngBounds } from 'ngx-google-places-autocomplete/objects/latLngBounds';
 import { ComponentRestrictions } from 'ngx-google-places-autocomplete/objects/options/componentRestrictions';
 import { GOOGLEPLACESOPTIONS } from '../../../../core/settings/google-places-options';
-import { Enti } from 'src/app/shared/interface/ente.interface';
+import { Ente } from 'src/app/shared/interface/ente.interface';
 
 @Component({
     selector: 'app-scheda-telefonata',
@@ -55,7 +55,7 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy {
     @Input() operatore: Utente;
     @Input() disabledInviaPartenza = false;
     @Input() loading: boolean;
-    @Input() enti: Enti[];
+    @Input() enti: Ente[];
 
     nuovaRichiesta: SintesiRichiesta;
     isCollapsed = true;
