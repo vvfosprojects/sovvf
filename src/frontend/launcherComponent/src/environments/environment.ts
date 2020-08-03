@@ -1,5 +1,6 @@
 export const environment = {
-    production: false,
+    production: false, 
+    
     productionTest: false,
     consoleLog: true,
     toastr: true,
@@ -33,7 +34,8 @@ export const environment = {
         personaleVVF: '/api/PersonaleVVF',
         auth: '/api/Auth',
         navbar: '/api/Navbar',
-        meteo: 'https://api.openweathermap.org/data/2.5/weather?'
+        meteo: 'https://api.openweathermap.org/data/2.5/weather?',
+        enti: '/api/GestioneEnti'
     },
     casUrl: {
         linkLogin: 'http://localhost:4001/?service=',

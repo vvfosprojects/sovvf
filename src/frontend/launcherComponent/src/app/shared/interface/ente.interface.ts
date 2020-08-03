@@ -8,7 +8,11 @@ export interface EnteTelefoni {
     numero: number;
 }
 
-export interface Enti {
+export interface AddEnteInterface {
+    descrizione: string;
+}
+
+export interface Ente {
     codice: number;
     descrizione: string;
     codSede: string; 

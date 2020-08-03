@@ -28,7 +28,7 @@ import { Options } from 'ngx-google-places-autocomplete/objects/options/options'
 import { LatLngBounds } from 'ngx-google-places-autocomplete/objects/latLngBounds';
 import { ComponentRestrictions } from 'ngx-google-places-autocomplete/objects/options/componentRestrictions';
 import { EntiState } from 'src/app/shared/store/states/enti/enti.state';
-import { Enti } from 'src/app/shared/interface/ente.interface';
+import { Ente } from 'src/app/shared/interface/ente.interface';
 
 @Component({
     selector: 'app-modifica-richiesta',
@@ -46,8 +46,8 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
     @Select(HomeState.tipologie) tipologie$: Observable<Tipologia[]>;
     tipologie: Tipologia[];
 
-    @Select(EntiState.enti) enti$: Observable<Enti[]>;
-    enti: Enti[];
+    @Select(EntiState.enti) enti$: Observable<Ente[]>;
+    enti: Ente[];
 
     @Select(RichiestaModificaState.richiestaModifica) richiestaModifica$: Observable<SintesiRichiesta>;
     richiestaModificaIniziale: SintesiRichiesta;
@@ -68,15 +68,13 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
         this.initForm();
         this.subscription.add(this.richiestaModifica$.subscribe((richiesta: SintesiRichiesta) => {
             if (richiesta) {
-                console.log('XXXXX ')
-                console.log(richiesta)
                 this.richiestaModifica = makeCopy(richiesta);
                 this.richiestaModificaIniziale = makeCopy(richiesta);
                 this.coordinate = makeCopy(richiesta.localita.coordinate);
             }
         }));
         this.subscription.add(this.tipologie$.subscribe((tipologie: Tipologia[]) => this.tipologie = tipologie));
-        this.subscription.add(this.enti$.subscribe((enti: Enti[]) => {
+        this.subscription.add(this.enti$.subscribe((enti: Ente[]) => {
             this.enti = enti
         }));
         this.ngxGooglePlacesOptions = new Options({
@@ -282,7 +280,6 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
         } else {
             this.setCampiModificati(richiesta);
             this.store.dispatch(new PatchRichiesta(richiesta))
-            console.log('GUARDA QUI ', richiesta); //qui ho il codice dell ente scelto nella modifica
         }
         // console.log('stringRichiesta', stringRichiesta);
         // console.log('stringRichiestaModifica', stringRichiestaModifica);

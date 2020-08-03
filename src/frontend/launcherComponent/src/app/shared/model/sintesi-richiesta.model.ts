@@ -14,7 +14,7 @@ import { TurnoInserimentoChiamata } from './turno-inserimento-chiamata';
 import { TurnoIntervento } from './turno-intervento';
 import { ObiettivoSensibile } from './obiettivo-sensibile';
 import { AttivitaUtente } from './attivita-utente.model';
-import { Enti } from '../interface/ente.interface';
+import { Ente } from '../interface/ente.interface';
 
 /**
  * Modella la sintesi della richiesta di assistenza, con tutti i dati necessari
@@ -167,7 +167,7 @@ export class SintesiRichiesta {
          /**
          * lista Enti intervenuti
          */
-        public listaEnti?: Enti[]
+        public listaEnti?: Ente[]
     ) {
     }
 }

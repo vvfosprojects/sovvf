@@ -1,4 +1,4 @@
-import { Enti } from 'src/app/shared/interface/ente.interface';
+import { Ente } from 'src/app/shared/interface/ente.interface';
 
 
 
@@ -12,17 +12,27 @@ export class GetEnti  {
 export class SetEnti  {
     static readonly type = '[Enti] Set Enti';
 
-    constructor(public enti: Enti[]) {
+    constructor(public enti: Ente[]) {
+    }
+}
+ 
+export class AddEnte  {
+    static readonly type = '[Enti] Add Ente';
+
+    constructor(public ente: AddEnte) {
     }
 }
 
-export class UpdateEnti {
-    static readonly type = '[Enti] Update Enti';
+export class UpdateEnte {
+    static readonly type = '[Enti] Update Ente';
 
-    constructor(public enti: Enti[]) {
+    constructor(public ente: UpdateEnte) {
     }
 }
 
-export class DeleteEnti {
-    static readonly type = '[Enti] Delete Enti';
+export class DeleteEnte {
+    static readonly type = '[Enti] Delete Ente';
+    
+    constructor(public idEnte: DeleteEnte) {
+    }
 }

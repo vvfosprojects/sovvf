@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngxs/store';
-import { GetEnti } from 'src/app/shared/store/actions/enti/enti.actions';
+import { GetEnti, UpdateEnte, DeleteEnte, AddEnte } from 'src/app/shared/store/actions/enti/enti.actions';
 
 @Component({
   selector: 'app-rubrica',
@@ -20,4 +20,15 @@ export class RubricaComponent implements OnInit {
     this.store.dispatch(new GetEnti());
   }
 
+  addEnte(ente: AddEnte) {
+    this.store.dispatch(new AddEnte(ente));
+  }
+
+  updateEnte(ente: UpdateEnte) {
+    this.store.dispatch(new UpdateEnte(ente));
+  }
+
+  deleteEnte(idEnte: DeleteEnte) {
+    this.store.dispatch(new DeleteEnte(idEnte));
+  }
 }

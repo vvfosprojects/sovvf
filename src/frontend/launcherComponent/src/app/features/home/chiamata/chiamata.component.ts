@@ -8,7 +8,7 @@ import { PermissionFeatures } from '../../../shared/enum/permission-features.enu
 import { SchedaTelefonataState } from '../store/states/chiamata/scheda-telefonata.state';
 import { AuthState } from '../../auth/store/auth.state';
 import { EntiState } from 'src/app/shared/store/states/enti/enti.state';
-import { Enti } from 'src/app/shared/interface/ente.interface';
+import { Ente } from 'src/app/shared/interface/ente.interface';
 
 
 @Component({
@@ -21,7 +21,7 @@ export class ChiamataComponent implements OnInit, OnDestroy {
     @Select(SchedaTelefonataState.loadingNuovaChiamata) loadingNuovaChiamata$: Observable<boolean>;
     @Select(AuthState.currentUser) utente$: Observable<Utente>;
     @Select(HomeState.tipologie) tipologie$: Observable<Tipologia[]>;
-    @Select(EntiState.enti) enti$: Observable<Enti[]>;
+    @Select(EntiState.enti) enti$: Observable<Ente[]>;
     permessiFeature = PermissionFeatures;
 
     constructor() {
