@@ -222,7 +222,7 @@ namespace SO115App.Persistence.MongoDB
                 {
                     sintesi = _mapperSintesi.Map(richiesta);
                     sintesi.Competenze = MapCompetenze(richiesta.CodUOCompetenza);
-                    sintesi.ListaEntiIntervenuti = rubrica?.FindAll(c => richiesta.CodEntiIntervenuti?.Contains(c.Codice.ToString()) ?? false);
+                    sintesi.ListaEntiIntervenuti = rubrica;
                     listaSistesiRichieste.Add(sintesi);
                 }
             }

@@ -36,6 +36,7 @@ using System.Linq;
 using SO115App.Models.Classi.Utility;
 using static SO115App.API.Models.Classi.Soccorso.RichiestaAssistenza;
 using SO115App.Models.Classi.Fonogramma;
+using SO115App.Models.Classi.RubricaDTO;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza
 {
@@ -165,7 +166,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         /// <summary>
         ///   Lista degli enti intervenuti (Es. ACEA)
         /// </summary>
-        public List<EnteIntervenuto> ListaEntiIntervenuti { get; set; }
+        public List<EnteDTO> ListaEntiIntervenuti { get; set; }
 
         /// <summary>
         ///   Se l'intervento è su un obiettivo ritenuto rilevante (Es. Colosseo) si seleziona da

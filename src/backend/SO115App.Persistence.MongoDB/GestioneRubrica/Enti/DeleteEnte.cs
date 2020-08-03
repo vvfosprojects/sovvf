@@ -8,11 +8,12 @@ namespace SO115App.Persistence.MongoDB.GestioneRubrica.Enti
     public class DeleteEnte : IDeleteEnte
     {
         private readonly DbContext _dbContext;
+
         public DeleteEnte(DbContext dbContext) => _dbContext = dbContext;
 
-        public void Delete(string codice)
+        public void Delete(string id)
         {
-            _dbContext.RubricaCollection.FindOneAndDelete(Builders<EnteIntervenuto>.Filter.Eq(x => x.Codice, int.Parse(codice)));
+            _dbContext.RubricaCollection.FindOneAndDelete(Builders<EnteIntervenuto>.Filter.Eq(x => x.Id, id));
         }
     }
 }

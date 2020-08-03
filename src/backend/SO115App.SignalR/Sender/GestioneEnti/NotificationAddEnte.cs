@@ -2,7 +2,10 @@
 using Microsoft.AspNetCore.SignalR;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneRubrica.Enti.AddEnte;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneRubrica;
+using SO115App.Models.Servizi.Infrastruttura.GestioneRubrica.Enti;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneEnti;
+using SO115App.SignalR.Utility;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -11,20 +14,32 @@ namespace SO115App.SignalR.Sender.GestioneEnti
     public class NotificationAddEnte : INotificationAddEnte
     {
         private readonly IHubContext<NotificationHub> _notificationHubContext;
-        private readonly IQueryHandler<RubricaQuery, RubricaResult> _rubricaQueryHandler;
-        public NotificationAddEnte(IQueryHandler<RubricaQuery, RubricaResult> rubricaQueryHandler,
-            IHubContext<NotificationHub> notificationHubContext)
+        private readonly GetGerarchiaToSend _getGerarchiaToSend;
+        private readonly IGetRubrica _getRurbica;
+
+        public NotificationAddEnte(IGetRubrica getRurbica,
+            IHubContext<NotificationHub> notificationHubContext, GetGerarchiaToSend getGerarchiaToSend)
         {
-            _rubricaQueryHandler = rubricaQueryHandler;
+            _getRurbica = getRurbica;
             _notificationHubContext = notificationHubContext;
+            _getGerarchiaToSend = getGerarchiaToSend;
         }
 
         public async Task SendNotification(AddEnteCommand command)
         {
-            var ente = _rubricaQueryHandler.Handle(new RubricaQuery() { IdOperatore = command.idOperatore, IdSede = command.CodiceSede });
+            var SediDaNotificare = new List<string>();
 
-            foreach (var sede in ente.Rubrica.Select(c => c.CodSede))
-                await _notificationHubContext.Clients.Group(sede).SendAsync("ModifyAndNotifySuccess", ente);
+            if (command.Ente.Ricorsivo)
+                SediDaNotificare = _getGerarchiaToSend.Get(command.CodiceSede[0]);
+            else
+                SediDaNotificare.Add(command.CodiceSede[0]);
+
+            var ListaEnti = _getRurbica.Get(command.CodiceSede);
+
+            var enteDaSpedire = ListaEnti.Find(x => x.Descrizione.Equals(command.Ente.Descrizione));
+
+            foreach (var sede in SediDaNotificare)
+                await _notificationHubContext.Clients.Group(sede).SendAsync("ModifyAndNotifySuccess", enteDaSpedire);
         }
     }
 }
