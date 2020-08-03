@@ -73,6 +73,7 @@ namespace Persistence.MongoDB
             FiltriMap.Map();
             SchedeNueMap.Map();
             RubricaMap.Map();
+            CategorieEntiMap.Map();
             BsonClassMap.RegisterClassMap<Telefonata>();
             BsonClassMap.RegisterClassMap<AssegnazionePriorita>();
             BsonClassMap.RegisterClassMap<InizioPresaInCarico>();
@@ -100,14 +101,13 @@ namespace Persistence.MongoDB
             BsonClassMap.RegisterClassMap<MarcaRilevante>();
             BsonClassMap.RegisterClassMap<InviareFonogramma>();
             BsonClassMap.RegisterClassMap<FonogrammaInviato>();
-            BsonClassMap.RegisterClassMap<EnteCategoria>();
         }
 
-        public IMongoCollection<EnteCategoria> CategorieEntiCollection
+        public IMongoCollection<CategoriaEnte> CategorieEntiCollection
         {
             get
             {
-                return database.GetCollection<EnteCategoria>("categorieEnti");
+                return database.GetCollection<CategoriaEnte>("categorieEnti");
             }
         }
 

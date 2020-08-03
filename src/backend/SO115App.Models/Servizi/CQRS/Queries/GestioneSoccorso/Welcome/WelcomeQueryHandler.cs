@@ -22,6 +22,7 @@ using Serilog;
 using SO115App.API.Models.Classi.Organigramma;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
+using SO115App.Models.Servizi.CQRS.Queries.GestioneRubrica;
 using SO115App.Models.Servizi.Infrastruttura.Box;
 using SO115App.Models.Servizi.Infrastruttura.GestioneRubrica.Enti;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
@@ -51,7 +52,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
         private readonly IGetConteggioSchede _getConteggioSchedeHandler;
         private readonly IGetTipologieByCodice _tipologieQueryHandler;
         private readonly IGetAlberaturaUnitaOperative _getAlberaturaUnitaOperative;
-        private readonly IGetRubrica _getRubrica;
+        private readonly IQueryHandler<RubricaQuery, RubricaResult> _rubricaQueryHandler;
 
         public WelcomeQueryHandler(IGetBoxMezzi boxMezziHandler,
             IGetBoxPersonale boxPersonaleHandler,
@@ -64,7 +65,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
             IGetConteggioSchede getConteggioSchedeHandler,
             IGetTipologieByCodice tipologieQueryHandler,
             IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative,
-            IGetRubrica getRubrica)
+            IQueryHandler<RubricaQuery, RubricaResult> rubricaQueryHandler)
         {
             this._boxMezziHandler = boxMezziHandler;
             this._boxPersonaleHandler = boxPersonaleHandler;
@@ -77,7 +78,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
             this._getConteggioSchedeHandler = getConteggioSchedeHandler;
             this._tipologieQueryHandler = tipologieQueryHandler;
             this._getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
-            this._getRubrica = getRubrica;
+            this._rubricaQueryHandler = rubricaQueryHandler;
         }
 
         /// <summary>
@@ -127,7 +128,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
 
             try
             {
-                var rubrica = _getRubrica.Get(query.CodiceSede, true); //TODO GESTIRE LOGICA BOOL
+                var rubrica = _rubricaQueryHandler.Handle(new RubricaQuery() { IdOperatore = query.idOperatore, IdSede = query.CodiceSede }).Rubrica;
                 var boxListaInterventi = _boxRichiesteHandler.Get(pinNodi.ToHashSet());
                 var boxListaMezzi = _boxMezziHandler.Get(query.CodiceSede);
                 var boxListaPersonale = _boxPersonaleHandler.Get(query.CodiceSede);

@@ -23,7 +23,7 @@ namespace SO115App.Models.Classi.RubricaDTO
 
         public string CodSede { get; set; }
         public bool Ricorsivo { get; set; }
-        public EnteCategoria Categoria { get; set; }
+        public CategoriaEnte Categoria { get; set; }
         public string Indirizzo { get; set; }
         public string Cap { get; set; }
         public string CodComune { get; set; }

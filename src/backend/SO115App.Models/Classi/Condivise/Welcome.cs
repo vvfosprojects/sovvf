@@ -23,6 +23,7 @@ using SO115App.API.Models.Classi.Geo;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza;
 using SO115App.Models.Classi.Marker;
+using SO115App.Models.Classi.RubricaDTO;
 using SO115App.Models.Classi.ServiziEsterni.NUE;
 using System.Collections.Generic;
 
@@ -39,6 +40,6 @@ namespace SO115App.Models.Classi.Condivise
         public API.Models.Classi.Filtri.Filtri ListaFiltri { get; set; }
         public InfoNue InfoNue { get; set; }
         public List<Tipologia> Tipologie { get; set; }
-        public List<EnteIntervenuto> Rubrica { get; set; }
+        public List<EnteDTO> Rubrica { get; set; }
     }
 }
