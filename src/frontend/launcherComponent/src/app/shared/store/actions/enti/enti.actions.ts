@@ -5,7 +5,7 @@ import { Ente } from 'src/app/shared/interface/ente.interface';
 export class GetEnti  {
     static readonly type = '[Enti] Get Enti';
 
-    constructor() {
+    constructor(public page?: number) {
     }
 }
 

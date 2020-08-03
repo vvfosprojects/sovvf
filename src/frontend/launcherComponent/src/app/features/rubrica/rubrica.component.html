@@ -1,3 +1,31 @@
-<p>
-  rubrica works!
-</p>
+<div class="container-fluid pt-4 pb-2">
+    <div class="row">
+        <div class="col-12 col-md-8 mx-auto mb-2">
+            <h2>
+                Rubrica
+            </h2>
+        </div>
+        <div class="col-12 col-md-8 mx-auto">
+            <div class="row">
+                <div class="col">
+                    <button class="btn btn-primary ml-2 mb-2 font-weight-bold" (click)="onAddUtente()">
+                        <i class="fa fa-plus mr-1"></i>
+                        Aggiungi Voce
+                    </button>
+                </div>
+                <div class="col text-right">
+                    <app-ricerca-rubrica></app-ricerca-rubrica>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="ricerca" class="col-12 col-md-8 mx-auto pl-4">
+            <h6 class="d-inline-block mt-3">
+                <i class="fa fa-search mr-1"></i>
+                Risultati ricerca per: <span class="font-weight-bold">{{ricerca}}</span>
+            </h6>
+        </div>
+        <div class="col-12 col-md-8 mx-auto">
+            <app-tabella-rubrica></app-tabella-rubrica>
+        </div>
+    </div>
+</div>

@@ -10,7 +10,7 @@ export interface EntiStateModel {
 }
 
 export const entiStateDefaults: EntiStateModel = {
-        enti: undefined
+    enti: undefined
 };
 
 @State<EntiStateModel>({
@@ -27,37 +27,37 @@ export class EntiState {
 
     constructor(
         private rubricaService: RubricaService
-    ) { }
+    ) {
+    }
 
     @Action(SetEnti)
     setEnti({ patchState }: StateContext<EntiStateModel>, action: SetEnti) {
-        patchState({ 
+        patchState({
             enti: action.enti
-        })
+        });
     }
 
 
     @Action(GetEnti)
-    getEnti({ dispatch }: StateContext<EntiStateModel>) {
-
+    getEnti({ dispatch }: StateContext<EntiStateModel>, action: GetEnti) {
         this.rubricaService.getEnti().subscribe((response: Ente[]) => {
             dispatch([
                 new SetEnti(response),
                 new StopLoading()
             ]);
-        })
+        });
     }
 
-    
+
     @Action(AddEnte)
     addEnte({ setState }: StateContext<EntiStateModel>, action: AddEnte) {
         this.rubricaService.addEnte(action.ente).subscribe((response: Ente) => {
             setState(
                 patch({
-                  enti: insertItem<Ente>(response)
+                    enti: insertItem<Ente>(response)
                 })
-              );
-        })
+            );
+        });
     }
 
 
@@ -70,8 +70,8 @@ export class EntiState {
     deleteEnte({ setState }: StateContext<EntiStateModel>, action: DeleteEnte) {
         setState(
             patch({
-                enti: removeItem(id => id === action.idEnte )
+                enti: removeItem(id => id === action.idEnte)
             })
-          );
-        }
+        );
     }
+}
