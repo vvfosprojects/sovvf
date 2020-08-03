@@ -1,6 +1,9 @@
-export interface EnteCategorie {
+export interface EnteCategoria {
     codice: string;
     descrizione: string;
+    visibile: string;
+    acronimo: string;
+    cap: string;
 }
 
 export interface EnteTelefoni {
@@ -17,7 +20,7 @@ export interface Ente {
     descrizione: string;
     codSede: string; 
     ricorsivo: boolean;
-    codCategoria: number;
+    enteCategoria: EnteCategoria;
     indirizzo: string;
     cap: string;
     codComune: number;
