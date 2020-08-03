@@ -4,25 +4,35 @@ import { CommonModule } from '@angular/common';
  * Component
  */
 import { RubricaComponent } from './rubrica.component';
-import { AddVoceRubricaModalComponent } from './add-voce-rubrica-modal/add-voce-rubrica-modal.component';
-import { TabellaVociRubricaComponent } from './tabella-voci-rubrica/tabella-voci-rubrica.component';
-import { VociRubricaPerPaginaComponent } from './tabella-voci-rubrica/voci-rubrica-per-pagina/voci-rubrica-per-pagina.component';
-import { RisultatiPaginazioneComponent } from './tabella-voci-rubrica/risultati-paginazione/risultati-paginazione.component';
+import { TabellaRubricaComponent } from './tabella-rubrica/tabella-rubrica.component';
+import { VociRubricaPerPaginaComponent } from './tabella-rubrica/voci-rubrica-per-pagina/voci-rubrica-per-pagina.component';
+import { RisultatiPaginazioneComponent } from './tabella-rubrica/risultati-paginazione/risultati-paginazione.component';
+import { RicercaRubricaComponent } from './ricerca-rubrica/ricerca-rubrica.component';
 /**
  * Routing
  */
 import { RubricaRouting } from './rubrica.routing';
-
+import { NgxsModule } from '@ngxs/store';
+import { RicercaRubricaState } from './store/states/ricerca-rubrica/ricerca-rubrica.state';
 
 
 @NgModule({
-  declarations: [RubricaComponent, AddVoceRubricaModalComponent, TabellaVociRubricaComponent, VociRubricaPerPaginaComponent, RisultatiPaginazioneComponent],
-  imports: [
-    CommonModule,
-    RubricaRouting
-  ],
-  entryComponents: [AddVoceRubricaModalComponent],
-  providers: [
-  ]
+    declarations: [
+        RubricaComponent,
+        TabellaRubricaComponent,
+        VociRubricaPerPaginaComponent,
+        RisultatiPaginazioneComponent,
+        RicercaRubricaComponent
+    ],
+    imports: [
+        CommonModule,
+        RubricaRouting,
+        NgxsModule.forFeature([
+            RicercaRubricaState
+        ]),
+    ],
+    entryComponents: [],
+    providers: []
 })
-export class RubricaModule { }
+export class RubricaModule {
+}

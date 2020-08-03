@@ -4,7 +4,8 @@
         <div class="col-5 mr-auto">
             <div class="row">
                 <div class="col-2 text-left">
-                    <button class="btn btn-block btn-light ml-2 mr-2" (click)="openSidebar()" (dblclick)="openSidebar()">
+                    <button class="btn btn-block btn-light ml-2 mr-2" (click)="openSidebar()"
+                            (dblclick)="openSidebar()">
                         <i class="fa fa-bars"></i>
                     </button>
                 </div>
@@ -26,12 +27,16 @@
         </div>
         <div class="col-2">
             <ng-template [ngIf]="newVersion">
-                <app-bottone-nuova-versione [btnBlock]="true" (getNewVersion)="getNewVersion()"></app-bottone-nuova-versione>
+                <app-bottone-nuova-versione [btnBlock]="true"
+                                            (getNewVersion)="getNewVersion()"></app-bottone-nuova-versione>
             </ng-template>
         </div>
         <div class="col-3 ml-auto text-right pr-0">
             <div class="row">
                 <div class="col-12">
+                    <button class="btn btn-outline-light mr-2" [routerLink]="['rubrica']">
+                        <i class="fa fa-address-book"></i>
+                    </button>
                     <app-operatore [user]="user" [ruoliUtenteLoggato]="ruoliUtenteLoggato"
                                    (_logout)="logout()"></app-operatore>
                 </div>

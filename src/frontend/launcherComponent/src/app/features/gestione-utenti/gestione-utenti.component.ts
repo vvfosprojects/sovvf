@@ -29,7 +29,6 @@ import { RuoliUtenteLoggatoState } from '../../shared/store/states/ruoli-utente-
 import { SetCurrentUrl } from '../../shared/store/actions/app/app.actions';
 import { RoutesPath } from '../../shared/enum/routes-path.enum';
 import { AuthState } from '../auth/store/auth.state';
-import { Sede } from '../../shared/model/sede.model';
 
 @Component({
     selector: 'app-gestione-utenti',
