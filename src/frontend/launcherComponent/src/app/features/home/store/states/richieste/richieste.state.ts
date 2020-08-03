@@ -158,9 +158,9 @@ export class RichiesteState {
                 pageSize: 7
             };
             this.richiesteService.getRichieste(filters, pagination).subscribe((response: ResponseInterface) => {
-                /*response.sintesiRichiesta.forEach( e => {
+                /* response.sintesiRichiesta.forEach( e => {
                     e.listaEnti = e.listaEntiIntervenuti;
-                })*/
+                }) */
                 dispatch([
                     new AddRichieste(response.sintesiRichiesta),
                     new PatchPagination(response.pagination),
