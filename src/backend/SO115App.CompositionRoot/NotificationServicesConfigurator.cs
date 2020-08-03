@@ -1,4 +1,6 @@
 ﻿using SimpleInjector;
+using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneEnti;
+using SO115App.SignalR.Sender.GestioneEnti;
 
 namespace SO115App.CompositionRoot
 {
@@ -87,6 +89,10 @@ namespace SO115App.CompositionRoot
             container.Register<
                 Models.Servizi.Infrastruttura.Notification.GestioneFonogramma.INotifyAddFonogramma,
                 SignalR.Sender.GestioneFonogramma.NotificationAddFonogramma>();
+
+            container.Register<INotificationAddEnte, NotificationAddEnte>();
+            container.Register<INotificationUpdateEnte, NotificationUpdateEnte>();
+            container.Register<INotificationDeleteEnte, NotificationDeleteEnte>();
 
             #endregion Notifiche
         }

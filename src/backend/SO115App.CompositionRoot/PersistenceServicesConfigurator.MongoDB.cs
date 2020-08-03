@@ -214,6 +214,10 @@ namespace SO115App.CompositionRoot
                 SO115App.Models.Servizi.Infrastruttura.GestioneRubrica.Enti.IAddEnte,
                 SO115App.Persistence.MongoDB.GestioneRubrica.Enti.AddEnte>();
 
+            container.Register<
+                SO115App.Models.Servizi.Infrastruttura.GestioneRubrica.Enti.IDeleteEnte,
+                SO115App.Persistence.MongoDB.GestioneRubrica.Enti.DeleteEnte>();
+
 
             #endregion Rubrica
         }

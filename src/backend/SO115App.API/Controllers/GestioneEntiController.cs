@@ -1,13 +1,12 @@
 ﻿using CQRS.Commands;
 using CQRS.Queries;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneRubrica.Enti.AddEnte;
+using SO115App.Models.Servizi.CQRS.Commands.GestioneRubrica.Enti.DeleteEnte;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneRubrica.Enti.UpdateEnte;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneRubrica;
-using SO115App.Persistence.MongoDB.GestioneRubrica.Enti;
 using System;
 using System.Threading.Tasks;
 
@@ -20,13 +19,16 @@ namespace SO115App.API.Controllers
     {
         private readonly ICommandHandler<AddEnteCommand> _addEnteHandler;
         private readonly ICommandHandler<UpdateEnteCommand> _updateEnteHandler;
+        private readonly ICommandHandler<DeleteEnteCommand> _deleteEnteHandler;
         private readonly IQueryHandler<RubricaQuery, RubricaResult> _rubricaQueryHandler;
-        public GestioneEntiController(ICommandHandler<AddEnteCommand> addEnte, 
+        public GestioneEntiController(ICommandHandler<AddEnteCommand> addEnte,
             ICommandHandler<UpdateEnteCommand> updateEnte,
+            ICommandHandler<DeleteEnteCommand> deleteEnteHandler,
             IQueryHandler<RubricaQuery, RubricaResult> rubricaQueryHandler)
         {
             _updateEnteHandler = updateEnte;
             _addEnteHandler = addEnte;
+            _deleteEnteHandler = deleteEnteHandler;
             _rubricaQueryHandler = rubricaQueryHandler;
         }
 
@@ -102,17 +104,17 @@ namespace SO115App.API.Controllers
             }
         }
 
-        [HttpPost("Delete")]
-        public async Task<IActionResult> Delete(int codice)
+        [HttpGet("Delete")]
+        public async Task<IActionResult> Delete(string codice)
         {
             try
             {
-                //var command = new UpdateEnteCommand()
-                //{
-                //    Ente = ente
-                //};
+                var command = new DeleteEnteCommand()
+                {
+                    CodiceEnte = codice
+                };
 
-                //_updateEnteHandler.Handle(command);
+                _deleteEnteHandler.Handle(command);
 
                 return Ok();
             }
