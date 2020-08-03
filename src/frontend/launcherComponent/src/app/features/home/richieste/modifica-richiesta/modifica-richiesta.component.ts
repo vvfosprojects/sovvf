@@ -74,9 +74,7 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
             }
         }));
         this.subscription.add(this.tipologie$.subscribe((tipologie: Tipologia[]) => this.tipologie = tipologie));
-        this.subscription.add(this.enti$.subscribe((enti: Ente[]) => {
-            this.enti = enti
-        }));
+        this.subscription.add(this.enti$.subscribe((enti: Ente[]) => { this.enti = enti  }));
         this.ngxGooglePlacesOptions = new Options({
             bounds: this.store.selectSnapshot(HomeState.bounds) as unknown as LatLngBounds,
             componentRestrictions: GOOGLEPLACESOPTIONS.componentRestrictions as unknown as ComponentRestrictions
@@ -218,6 +216,7 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
         nuovaRichiesta.notePubbliche = f.notePubbliche.value;
         nuovaRichiesta.prioritaRichiesta = f.prioritaRichiesta.value;
         nuovaRichiesta.listaEnti = (f.listaEnti.value && f.listaEnti.value.length) ? f.listaEnti.value : [];
+        //nuovaRichiesta.listaEnti = f.listaEnti.value;
         // console.log('Richiesta Modificata', nuovaRichiesta);
         this.setDescrizione();
         return nuovaRichiesta;
@@ -342,9 +341,12 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
         if (checkTipologieModificate(richiesta.tipologie, this.richiestaModificaIniziale.tipologie)) {
             this.campiModificati.push('Tipologie');
         }
-       if (richiesta.listaEnti !== this.richiestaModificaIniziale.listaEnti) {
+        if (richiesta.listaEnti !== this.richiestaModificaIniziale.listaEnti) {
            this.campiModificati.push('ListaEnti');
-       }
+        }
+        //if (checkEntiModificati(richiesta.listaEnti, this.richiestaModificaIniziale.listaEnti)) {
+        //this.campiModificati.push('Enti');
+        //}
         console.log('campiModificati', this.campiModificati);
 
         function checkArrayModificato(arr1: string[], arr2: string[]) {
@@ -395,15 +397,15 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
             return _return;
         }
 
-       /* function checkEntiModificati (arr1: Enti[], arr2: Enti[]) {
+        /*function checkEntiModificati (arr1: Ente[], arr2: Ente[]) {
             let _return = false;
             let count = 0;
             const length = arr1.length;
             const lengthIniziale = arr2.length;
 
             if (length === lengthIniziale) {
-                arr1.forEach((enti: Enti) => {
-                    arr2.forEach((e: Enti) => {
+                arr1.forEach((enti: Ente) => {
+                    arr2.forEach((e: Ente) => {
                         if (enti.codice === e.codice) {
                             count++;
                         }
