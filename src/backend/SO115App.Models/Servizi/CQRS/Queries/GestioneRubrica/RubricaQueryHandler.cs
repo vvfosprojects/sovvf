@@ -1,7 +1,11 @@
 ﻿using CQRS.Queries;
+using SO115App.API.Models.Classi.Organigramma;
 using SO115App.Models.Classi.RubricaDTO;
 using SO115App.Models.Servizi.Infrastruttura.GestioneRubrica.Categorie;
 using SO115App.Models.Servizi.Infrastruttura.GestioneRubrica.Enti;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace SO115App.Models.Servizi.CQRS.Queries.GestioneRubrica
@@ -10,19 +14,40 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneRubrica
     {
         private readonly IGetRubrica _getRurbica;
         private readonly IGetEnteCategorie _getCategorieEnte;
-        public RubricaQueryHandler(IGetRubrica getRurbica, IGetEnteCategorie getCategorieEnte)
+        private readonly IGetAlberaturaUnitaOperative _getAlberaturaUnitaOperative;
+        private readonly IGetListaDistaccamentiByCodiceSede _getListaDistaccamentiByCodiceSede;
+        public RubricaQueryHandler(IGetRubrica getRurbica, IGetEnteCategorie getCategorieEnte, IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative, IGetListaDistaccamentiByCodiceSede getListaDistaccamentiByCodiceSede)
         {
             _getRurbica = getRurbica;
             _getCategorieEnte = getCategorieEnte;
+            _getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
+            _getListaDistaccamentiByCodiceSede = getListaDistaccamentiByCodiceSede;
         }
 
         public RubricaResult Handle(RubricaQuery query)
         {
-            //TODO manca la logica per la ricorsività
+            //var listaPin = new List<PinNodo>();
+            //var sediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
+            //var distaccamento = _getDistaccamentoByCodiceSede.Get(personale.CodSede).Result;
+
+            //foreach (var ruolo in command.Ruoli)
+            //{
+            //    listaPin.Add(new PinNodo(ruolo.CodSede, ruolo.Ricorsivo));
+            //    foreach (var figli in sediAlberate.GetSottoAlbero(listaPin))
+            //    {
+            //        if (figli.Codice.Equals(ruolo.CodSede))
+            //        {
+            //            ruolo.DescSede = figli.Nome;
+            //        }
+            //    }
+            //}
+
+
+
 
             var result = _getRurbica.Get(query.IdSede, true);
 
-            var lstCodiciCategorie = result.Select(c => c.Codice.ToString()).ToArray();
+            var lstCodiciCategorie = result.Select(c => c.CodCategoria.ToString()).Distinct().ToArray();
 
             var lstCategorie = _getCategorieEnte.Get(lstCodiciCategorie);
 

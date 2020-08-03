@@ -5,6 +5,6 @@ namespace SO115App.Models.Servizi.Infrastruttura.GestioneRubrica.Categorie
 {
     public interface IGetEnteCategorie
     {
-        List<EnteCategoria> Get(string[] codici);
+        List<CategoriaEnte> Get(string[] codici);
     }
 }
