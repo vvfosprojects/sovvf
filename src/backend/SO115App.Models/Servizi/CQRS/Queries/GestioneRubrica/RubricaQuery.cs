@@ -1,5 +1,6 @@
 ﻿using CQRS.Queries;
 using SO115App.Models.Classi.Condivise;
+using SO115App.Models.Classi.Filtri;
 
 namespace SO115App.Models.Servizi.CQRS.Queries.GestioneRubrica
 {
@@ -24,6 +25,6 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneRubrica
         ///   Search è un testo libero che l'utente digita per ricercare un determinato record in
         ///   rubrica Ricerca Full-Text sul campo DESCRIZIONE della basedati
         /// </summary>
-        public string Search { get; set; }
+        public FiltriRubrica Filters { get; set; }
     }
 }
