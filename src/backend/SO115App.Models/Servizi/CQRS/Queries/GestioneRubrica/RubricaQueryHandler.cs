@@ -17,6 +17,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneRubrica
         {
             var listaRubrica = _getRurbica.Get(query.IdSede, query.Search);
 
+            //PAGINAZIONE
             listaRubrica.Reverse();
             var RubricaPaginata = listaRubrica.Skip((query.Pagination.Page - 1) * query.Pagination.PageSize).Take(query.Pagination.PageSize).ToList();
             query.Pagination.TotalItems = listaRubrica.Count;

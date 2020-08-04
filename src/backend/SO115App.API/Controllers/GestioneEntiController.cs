@@ -33,8 +33,8 @@ namespace SO115App.API.Controllers
             _rubricaQueryHandler = rubricaQueryHandler;
         }
 
-        [HttpGet("GetRubrica")]
-        public async Task<IActionResult> Get(RubricaQuery rubricaQuery)
+        [HttpPost("")]
+        public async Task<IActionResult> Get([FromBody]RubricaQuery rubricaQuery)
         {
             rubricaQuery.IdOperatore = Request.Headers["IdUtente"];
             rubricaQuery.IdSede = Request.Headers["codicesede"].ToString().Split(',');
