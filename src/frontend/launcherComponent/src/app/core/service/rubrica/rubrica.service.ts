@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-import { UpdateEnte, DeleteEnte, AddEnte } from 'src/app/shared/store/actions/enti/enti.actions';
+import { AddVoceRubricaInterface } from '../../../shared/interface/rubrica.interface';
 
 const BASE_URL = environment.baseUrl;
 const API_ENTE = BASE_URL + environment.apiUrl.enti;
@@ -16,19 +16,19 @@ export class RubricaService {
   constructor(private http: HttpClient) {
   }
 
-  getEnti(): Observable<any> {
+  getRubrica(): Observable<any> {
       return this.http.get(API_ENTE + '/');
   }
 
-  addEnte(addEnte: AddEnte): Observable<any> {
-    return this.http.post<any>(API_ENTE + '/Add', addEnte);
+  addVoceRubrica(voceRubrica: AddVoceRubricaInterface): Observable<any> {
+    return this.http.post<any>(API_ENTE + '/Add', voceRubrica);
   }
 
-  updateEnte(updateEnte: UpdateEnte): Observable<any> {
-    return this.http.post<any>(API_ENTE + '/Update', updateEnte);
+  updateVoceRubrica(voceRubrica: any): Observable<any> {
+    return this.http.post<any>(API_ENTE + '/Update', voceRubrica);
   }
 
-  deleteEnte(deleteEnte: DeleteEnte): Observable<any> {
-    return this.http.post<any>(API_ENTE + '/Delete', deleteEnte);
+  deleteVoceRubrica(idVoceRubrica: any): Observable<any> {
+    return this.http.post<any>(API_ENTE + '/Delete', idVoceRubrica);
   }
 }

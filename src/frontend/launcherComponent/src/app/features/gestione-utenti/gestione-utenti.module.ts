@@ -32,6 +32,7 @@ import { RicercaUtentiState } from './store/states/ricerca-utenti/ricerca-utenti
 import { GestioneUtentiState } from './store/states/gestione-utenti/gestione-utenti.state';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { NgxsFormPluginModule } from '@ngxs/form-plugin';
+import { RubricaState } from '../rubrica/store/states/rubrica/rubrica.state';
 
 
 @NgModule({
@@ -50,16 +51,15 @@ import { NgxsFormPluginModule } from '@ngxs/form-plugin';
         UiSwitchModule.forRoot(null),
         NgxsModule.forFeature(
             [
-                RicercaUtentiState,
-                GestioneUtentiState
+                GestioneUtentiState,
+                RicercaUtentiState
             ]
         ),
         NgxPaginationModule,
         NgxsFormPluginModule,
     ],
     entryComponents: [GestioneUtenteModalComponent, ConfirmModalComponent],
-    providers: [
-    ]
+    providers: []
 })
 export class GestioneUtentiModule {
 }
