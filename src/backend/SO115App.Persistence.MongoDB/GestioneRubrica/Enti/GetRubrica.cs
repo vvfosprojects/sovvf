@@ -37,8 +37,9 @@ namespace SO115App.Persistence.MongoDB.GestioneRubrica.Enti
             {
                 //LOGICA/CONDIZIONI RICORSIVITA'
                 var padre = listaPin.Find(x => x.Codice == c.SiglaProvincia + ".1000");
+                var figli = listaPin.Where(x => x.Codice.Contains(c.SiglaProvincia) && x != padre).ToList();
 
-                return padre.Ricorsivo == true && c.Ricorsivo == true;
+                return (padre.Ricorsivo && c.Ricorsivo) || figli.Any(x => x.Ricorsivo);
             }).ToList();
 
             //RECUPERO LE CATEGORIE
