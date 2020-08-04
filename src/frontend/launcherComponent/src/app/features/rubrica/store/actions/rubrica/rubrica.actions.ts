@@ -1,4 +1,4 @@
-import { AddVoceRubricaInterface, VoceRubrica } from '../../../../../shared/interface/rubrica.interface';
+import { AddVoceRubricaInterface, UpdateVoceRubricaInterface, VoceRubrica } from '../../../../../shared/interface/rubrica.interface';
 
 export class GetRubrica  {
     static readonly type = '[Rubrica] Get Rubrica';
@@ -24,7 +24,7 @@ export class AddVoceRubrica  {
 export class UpdateVoceRubrica {
     static readonly type = '[Rubrica] Update Voce Rubrica';
 
-    constructor(public ente: UpdateVoceRubrica) {
+    constructor(public voceRubrica: UpdateVoceRubricaInterface) {
     }
 }
 

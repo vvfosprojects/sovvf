@@ -10,7 +10,7 @@ import { GetUtentiGestione } from '../gestione-utenti/store/actions/gestione-ute
 import { SetCurrentUrl } from '../../shared/store/actions/app/app.actions';
 import { RoutesPath } from '../../shared/enum/routes-path.enum';
 import { SetSediNavbarVisible } from '../../shared/store/actions/sedi-treeview/sedi-treeview.actions';
-import { ClearRicercaRubrica } from './store/actions/ricerca-rubrica/ricerca-rubrica.actions';
+import { ClearRicercaRubrica, SetRicercaRubrica } from './store/actions/ricerca-rubrica/ricerca-rubrica.actions';
 import { AddVoceRubrica, DeleteVoceRubrica, GetRubrica, UpdateVoceRubrica } from './store/actions/rubrica/rubrica.actions';
 import { AddVoceRubricaInterface } from '../../shared/interface/rubrica.interface';
 
@@ -81,6 +81,10 @@ export class RubricaComponent implements OnInit, OnDestroy {
 
     deleteVoceRubrica(idEnte: any) {
         this.store.dispatch(new DeleteVoceRubrica(idEnte));
+    }
+
+    onRicercaRubrica(ricerca: string) {
+        this.store.dispatch(new SetRicercaRubrica(ricerca));
     }
 
     getRicerca() {
