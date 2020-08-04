@@ -33,12 +33,6 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneRubrica.Enti.UpdateEnte
 
                     if (command.Ente.Descrizione == "" || command.Ente.Descrizione == null)
                         yield return new ValidationResult("Nessuna descrizione selezionata");
-
-                    if (command.Ente.Email == null || command.Ente.Email == "")
-                        yield return new ValidationResult("Nessuna mail selezionata");
-
-                    if (command.Ente.NoteEnte == null || command.Ente.NoteEnte == "")
-                        yield return new ValidationResult("Nessuna nota selezionata");
                 }
             }
         }
