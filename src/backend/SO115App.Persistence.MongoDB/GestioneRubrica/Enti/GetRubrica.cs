@@ -63,7 +63,7 @@ namespace SO115App.Persistence.MongoDB.GestioneRubrica.Enti
         {
             var lstEnti = _dbContext.RubricaCollection.Find(c => lstCodici.Contains(c.Codice)).ToList();
 
-            var listaPin = GetGerarchia(lstEnti.Select(c => c.CodSede).ToArray());
+            var listaPin = GetGerarchia(lstEnti.Select(c => c.CodSede).Distinct().ToArray());
 
             //GESTIONE RICORSIVITA'
             var result = FiltraByRicorsività(listaPin, lstEnti);
