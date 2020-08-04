@@ -6,13 +6,13 @@ import { LoadingState } from 'src/app/shared/store/states/loading/loading.state'
 import { RicercaRubricaState } from './store/states/ricerca-rubrica/ricerca-rubrica.state';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SetPageSize } from '../../shared/store/actions/pagination/pagination.actions';
-import { GetUtentiGestione } from '../gestione-utenti/store/actions/gestione-utenti/gestione-utenti.actions';
 import { SetCurrentUrl } from '../../shared/store/actions/app/app.actions';
 import { RoutesPath } from '../../shared/enum/routes-path.enum';
 import { SetSediNavbarVisible } from '../../shared/store/actions/sedi-treeview/sedi-treeview.actions';
 import { ClearRicercaRubrica, SetRicercaRubrica } from './store/actions/ricerca-rubrica/ricerca-rubrica.actions';
 import { AddVoceRubrica, DeleteVoceRubrica, GetRubrica, UpdateVoceRubrica } from './store/actions/rubrica/rubrica.actions';
-import { AddVoceRubricaInterface, VoceRubrica } from '../../shared/interface/rubrica.interface';
+import { VoceRubrica } from '../../shared/interface/rubrica.interface';
+import { VoceRubricaModalComponent } from '../../shared/modal/voce-rubrica-modal/voce-rubrica-modal.component';
 
 @Component({
     selector: 'app-rubrica',
@@ -46,8 +46,8 @@ export class RubricaComponent implements OnInit, OnDestroy {
             indirizzo: 'via test dei test',
             cap: '00012',
             noteEnte: 'note test e test',
-            email: 'test@test.test',            
-            telefoni: [{                
+            email: 'test@test.test',
+            telefoni: [{
                 tipo: 'cell',
                 numero: '123456789',
             }]
@@ -86,26 +86,44 @@ export class RubricaComponent implements OnInit, OnDestroy {
         this.store.dispatch(new GetRubrica(page));
     }
 
-    onAddUtente() {
-        const voceRubrica = {
-            descrizione: 'test1',
-            codSede: 'codTest',
-            ricorsivo: true,
-            codCategoria: 222,
-            indirizzo: 'via test dei test',
-            cap: '00012',
-            noteEnte: 'note test e test',
-            email: 'test@test.test',            
-            telefoni: [{                
-                tipo: 'cell',
-                numero: '123456789',
-            }]
-        } as AddVoceRubricaInterface;
-        this.addVoceRubrica(voceRubrica);
+    onAddVoceRubrica() {
+        // const voceRubrica = {
+        //     descrizione: 'test1',
+        //     codSede: 'codTest',
+        //     ricorsivo: true,
+        //     codCategoria: 222,
+        //     indirizzo: 'via test dei test',
+        //     cap: '00012',
+        //     noteEnte: 'note test e test',
+        //     email: 'test@test.test',
+        //     telefoni: [{
+        //         tipo: 'cell',
+        //         numero: '123456789',
+        //     }]
+        // } as AddVoceRubricaInterface;
+        const addVoceRubricaModal = this.modalService.open(VoceRubricaModalComponent, {
+            backdropClass: 'light-blue-backdrop',
+            centered: true,
+            size: 'lg'
+        });
+        addVoceRubricaModal.result.then(
+            (result: { success: boolean }) => {
+                if (result.success) {
+                    this.addVoceRubrica();
+                } else if (!result.success) {
+                    // this.store.dispatch(new ClearDataModalAddUtenteModal());
+                    console.log('Modal "addVoceRubrica" chiusa con val ->', result);
+                }
+            },
+            (err) => {
+                // this.store.dispatch(new ClearDataModalAddUtenteModal());
+                console.error('Modal chiusa senza bottoni. Err ->', err);
+            }
+        );
     }
 
-    addVoceRubrica(voceRubrica: AddVoceRubricaInterface) {
-        this.store.dispatch(new AddVoceRubrica(voceRubrica));
+    addVoceRubrica() {
+        this.store.dispatch(new AddVoceRubrica());
     }
 
     updateVoceRubrica(ente: any) {
@@ -125,7 +143,7 @@ export class RubricaComponent implements OnInit, OnDestroy {
             this.ricerca$.subscribe((ricerca: string) => {
                 if (ricerca !== null) {
                     this.ricerca = ricerca;
-                    this.store.dispatch(new GetUtentiGestione());
+                    this.store.dispatch(new GetRubrica());
                 }
             })
         );
@@ -136,7 +154,7 @@ export class RubricaComponent implements OnInit, OnDestroy {
             this.pageSize$.subscribe((pageSize: number) => {
                 if (pageSize) {
                     if (this.pageSize && pageSize !== this.pageSize) {
-                        this.store.dispatch(new GetUtentiGestione());
+                        this.store.dispatch(new GetRubrica());
                     }
                     this.pageSize = pageSize;
                 }

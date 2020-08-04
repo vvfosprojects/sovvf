@@ -17,7 +17,7 @@ export class SetRubrica  {
 export class AddVoceRubrica  {
     static readonly type = '[Rubrica] Add Voce Rubrica';
 
-    constructor(public voceRubrica: AddVoceRubricaInterface) {
+    constructor() {
     }
 }
 
