@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { VoceRubrica } from 'src/app/shared/interface/rubrica.interface';
 
 @Component({
     selector: 'app-tabella-rubrica',
@@ -12,6 +13,7 @@ export class TabellaRubricaComponent implements OnInit {
     @Input() pageSizes: number[];
     @Input() totalItems: number;
     @Input() loading: boolean;
+    @Input() vociRubrica: VoceRubrica[];
 
     @Output() pageChange: EventEmitter<number> = new EventEmitter<number>();
     @Output() pageSizeChange: EventEmitter<number> = new EventEmitter<number>();
