@@ -325,6 +325,20 @@ a:hover {
   transform: scale(1) !important;
 }
 
+.btn-light-nav {
+  color: #212529;
+  background-color: #f8f9fa;
+  border-color: #f8f9fa;
+}
+
+.btn-light-nav:hover {
+  color: #212529;
+  background-color: #e2e6ea;
+  border-color: #dae0e5;
+  cursor: not-allowed;
+  transform: scale(1) !important;
+}
+
 .bg-pattern-chiuso {
   background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAYAAACp8Z5+AAAAKklEQVQYV2N8+/btfwYo+Pz5MwMjTADE4eXlhQjAOCCFjA8ePPgPkoEBAMNhF/YhgGY5AAAAAElFTkSuQmCC);
 }

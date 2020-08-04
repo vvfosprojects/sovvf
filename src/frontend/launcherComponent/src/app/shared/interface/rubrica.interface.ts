@@ -29,6 +29,7 @@ export interface UpdateVoceRubricaInterface {
 }
 
 export interface VoceRubrica {
+    id: string;
     codice: number;
     descrizione: string;
     codSede: string;

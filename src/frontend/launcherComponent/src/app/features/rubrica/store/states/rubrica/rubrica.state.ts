@@ -136,10 +136,12 @@ export class RubricaState {
 
     @Action(DeleteVoceRubrica)
     deleteVoceRubrica({ setState }: StateContext<RubricaStateModel>, action: DeleteVoceRubrica) {
-        setState(
-            patch({
-                vociRubrica: removeItem(id => id === action.idVoceRubrica)
-            })
-        );
+        this.rubricaService.deleteVoceRubrica(action.idVoceRubrica).subscribe(() => {
+            setState(
+                patch({
+                    vociRubrica: removeItem<VoceRubrica>(voceRubrica => voceRubrica.id === action.idVoceRubrica)
+                })
+            );
+        });
     }
 }
