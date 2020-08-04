@@ -8,13 +8,14 @@
         <div class="col-12 col-md-8 mx-auto">
             <div class="row">
                 <div class="col">
-                    <button class="btn btn-primary mb-2 font-weight-bold" (click)="onAddUtente()">
+                    <button class="btn btn-primary mb-2 font-weight-bold">
                         <i class="fa fa-plus mr-1"></i>
                         Aggiungi Voce
                     </button>
                 </div>
                 <div class="col text-right">
-                    <app-ricerca-rubrica></app-ricerca-rubrica>
+                    <app-ricerca-rubrica [loading]="loading$ | async"
+                                         (ricercaChange)="onRicercaRubrica($event)"></app-ricerca-rubrica>
                 </div>
             </div>
         </div>

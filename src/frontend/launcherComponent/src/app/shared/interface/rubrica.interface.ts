@@ -6,7 +6,7 @@ export interface CategoriaVoceRubrica {
     cap: string;
 }
 
-export interface EnteTelefoni {
+export interface VoceRubricaTelefoni {
     tipo: string;
     numero: string;
 }
@@ -20,7 +20,12 @@ export interface AddVoceRubricaInterface {
     cap: string;
     noteEnte?: string;
     email?: string;
-    telefoni: EnteTelefoni[];
+    telefoni: VoceRubricaTelefoni[];
+}
+
+export interface UpdateVoceRubricaInterface {
+    codice: string;
+    descrizione: string;
 }
 
 export interface VoceRubrica {
