@@ -13,7 +13,7 @@ export interface VoceRubricaTelefoni {
 
 export interface AddVoceRubricaInterface {
     descrizione: string;
-    codSede: string;
+    codSede: string[];
     ricorsivo: boolean;
     codCategoria: number;
     indirizzo: string;

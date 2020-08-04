@@ -23,6 +23,8 @@ import { SharedModule } from '../../shared/shared.module';
 import { FormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { VoceRubricaModalComponent } from '../../shared/modal/voce-rubrica-modal/voce-rubrica-modal.component';
+import { TreeviewModule } from 'ngx-treeview';
 
 
 @NgModule({
@@ -36,16 +38,17 @@ import { NgxPaginationModule } from 'ngx-pagination';
     imports: [
         CommonModule,
         RubricaRouting,
+        TreeviewModule.forRoot(),
+        SharedModule.forRoot(),
         NgxsModule.forFeature([
             RubricaState,
             RicercaRubricaState
         ]),
-        SharedModule,
         FormsModule,
         NgSelectModule,
         NgxPaginationModule,
     ],
-    entryComponents: [],
+    entryComponents: [VoceRubricaModalComponent],
     providers: []
 })
 export class RubricaModule {
