@@ -64,6 +64,13 @@ export class RubricaComponent implements OnInit, OnDestroy {
         this.store.dispatch(new GetRubrica(page));
     }
 
+    onAddUtente() {
+        const voceRubrica = {
+            //todo
+        } as AddVoceRubricaInterface;
+        this.addVoceRubrica(voceRubrica);
+    }
+
     addVoceRubrica(voceRubrica: AddVoceRubricaInterface) {
         this.store.dispatch(new AddVoceRubrica(voceRubrica));
     }
@@ -74,10 +81,6 @@ export class RubricaComponent implements OnInit, OnDestroy {
 
     deleteVoceRubrica(idEnte: any) {
         this.store.dispatch(new DeleteVoceRubrica(idEnte));
-    }
-
-    onAddUtente() {
-        return;
     }
 
     getRicerca() {
