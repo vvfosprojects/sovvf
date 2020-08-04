@@ -1,4 +1,5 @@
 ﻿using MongoDB.Driver;
+using MongoDB.Driver.Core.Connections;
 using Persistence.MongoDB;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Organigramma;
@@ -26,26 +27,19 @@ namespace SO115App.Persistence.MongoDB.GestioneRubrica.Enti
 
         public List<EnteDTO> Get(string[] CodSede)
         {
-            var listaPin = new List<PinNodo>();
-            var sediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
-            //var distaccamento = _getListaDistaccamentiByCodiceSede.GetListaDistaccamenti(query.IdSede.First());
+            List<PinNodo> listaPin = GetGerarchia(CodSede);
 
-            foreach (var sede in CodSede)
-            {
-                listaPin.Add(new PinNodo(sede, true));
-                foreach (var figlio in sediAlberate.GetSottoAlbero(listaPin))
-                {
-                    PinNodo fgl = new PinNodo(figlio.Codice, true);
-                    listaPin.Add(fgl);
-                }
-            }
+            var lstCodiciPin = listaPin.Select(c => c.Codice).ToList();
 
-            List<EnteIntervenuto> result = _dbContext.RubricaCollection.Find(x => listaPin.Any(e => e.Codice.Contains(x.CodSede))).ToList();
+            List<EnteIntervenuto> result = _dbContext.RubricaCollection.Find(c => lstCodiciPin.Contains(c.CodSede)).ToList();
+
+            //ricorsività
 
             var lstCodiciCategorie = result.Select(c => c.CodCategoria.ToString()).Distinct().ToArray();
 
             var lstCategorie = _getCategorieEnte.Get(lstCodiciCategorie);
 
+            //MAPPING
             return result.Select(c => new EnteDTO()
             {
                 Id = c.Id,
@@ -106,6 +100,24 @@ namespace SO115App.Persistence.MongoDB.GestioneRubrica.Enti
                 Telefoni = c.Telefoni,
                 Zona = c.Zona
             }).ToList();
+        }
+
+        private List<PinNodo> GetGerarchia(string[] CodSede)
+        {
+            var listaPin = new List<PinNodo>();
+            var sediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
+
+            foreach (var sede in CodSede)
+            {
+                listaPin.Add(new PinNodo(sede, true));
+                foreach (var figlio in sediAlberate.GetSottoAlbero(listaPin))
+                {
+                    PinNodo fgl = new PinNodo(figlio.Codice, true);
+                    listaPin.Add(fgl);
+                }
+            }
+
+            return listaPin;
         }
     }
 }

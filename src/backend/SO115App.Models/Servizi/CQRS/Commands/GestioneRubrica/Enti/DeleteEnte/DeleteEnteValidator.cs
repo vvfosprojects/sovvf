@@ -2,7 +2,6 @@
 using CQRS.Validation;
 using SO115App.Models.Classi.Utility;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace SO115App.Models.Servizi.CQRS.Commands.GestioneRubrica.Enti.DeleteEnte
 {
