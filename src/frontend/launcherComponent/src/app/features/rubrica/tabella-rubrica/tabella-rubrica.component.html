@@ -10,7 +10,7 @@
         </thead>
         <tbody>
         <tr *ngFor="let voce of vociRubrica | paginate: { itemsPerPage: pageSize, currentPage: page, totalItems: totalItems }">
-            <td>
+            <td style="vertical-align: middle;">
                 <button class="btn btn-sm btn-danger font-weight-bold float-left mt-1 mr-2" ngbTooltip="Rimuovi Voce"
                         placement="bottom" (click)="onDeleteVoceRubrica(voce.id, voce.descrizione)">
                     <i class="fa fa-trash"></i>
@@ -20,7 +20,7 @@
                     <i class="fa fa-pencil-square-o"></i>
                 </button>
             </td>
-            <td width="30%" class="pb-1">
+            <td width="30%" class="pb-1" style="vertical-align: middle;">
                 <div class="h5 font-weight-bold mt-1 pt-1">
                     <span>{{voce.descrizione}}</span>
                 </div>
