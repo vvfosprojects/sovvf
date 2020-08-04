@@ -34,14 +34,19 @@
         <div class="col-3 ml-auto text-right pr-0">
             <div class="row">
                 <div class="col-12">
+                    <button class="btn btn-outline-light mr-2" ngbTooltip="Visualizza Gestione Utenti"
+                            [routerLink]="['/' + RoutesPath.GestioneUtenti]" 
+                            [routerLinkActive]="['btn-light-nav', 'text-dark']">
+                            <i class="fa fa-users"></i>
+            </button>
                     <button class="btn btn-outline-light mr-2" ngbTooltip="Vai alla Home"
                             [routerLink]="['/' + RoutesPath.Home]"
-                            [routerLinkActive]="['btn-light', 'text-dark']">
+                            [routerLinkActive]="['btn-light-nav', 'text-dark']">
                         <i class="fa fa-home"></i>
                     </button>
                     <button class="btn btn-outline-light mr-2" ngbTooltip="Visualizza Rubrica"
                             [routerLink]="['/' + RoutesPath.Rubrica]"
-                            [routerLinkActive]="['btn-light', 'text-dark']">
+                            [routerLinkActive]="['btn-light-nav', 'text-dark']">
                         <i class="fa fa-address-book"></i>
                     </button>
                     <app-operatore [user]="user" [ruoliUtenteLoggato]="ruoliUtenteLoggato"
