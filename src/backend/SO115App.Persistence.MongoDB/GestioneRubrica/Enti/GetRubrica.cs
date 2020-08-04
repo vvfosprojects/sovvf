@@ -29,8 +29,11 @@ namespace SO115App.Persistence.MongoDB.GestioneRubrica.Enti
             var listaPin = GetGerarchia(CodSede);
 
             var lstCodiciPin = listaPin.Select(c => c.Codice).ToList();
-            var lstEnti = _dbContext.RubricaCollection
-                .Find(c => lstCodiciPin.Contains(c.CodSede) && c.Descrizione.Contains(TextSearch ?? "")).ToList();
+            var lstEnti = _dbContext.RubricaCollection.Find(c => lstCodiciPin.Contains(c.CodSede) 
+                && (c.Descrizione.Contains(TextSearch ?? "") 
+                    || c.Telefoni.Select(x =>x.Numero).Contains(TextSearch ?? "") 
+                    || c.Email.Contains(TextSearch ?? "") 
+                    || c.Indirizzo.Contains(TextSearch ?? ""))).ToList();
 
             //GESTIONE RICORSIVITA'
             var result = FiltraByRicorsività(listaPin, lstEnti);
