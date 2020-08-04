@@ -27,16 +27,22 @@ namespace SO115App.Persistence.MongoDB.GestioneRubrica.Enti
 
         public List<EnteDTO> Get(string[] CodSede)
         {
-            List<PinNodo> listaPin = GetGerarchia(CodSede);
+            var listaPin = GetGerarchia(CodSede);
 
             var lstCodiciPin = listaPin.Select(c => c.Codice).ToList();
+            var lstEnti = _dbContext.RubricaCollection.Find(c => lstCodiciPin.Contains(c.CodSede)).ToList();
 
-            List<EnteIntervenuto> result = _dbContext.RubricaCollection.Find(c => lstCodiciPin.Contains(c.CodSede)).ToList();
+            //GESTIONE RICORSIVITA'
+            var result = lstEnti.Where(c =>
+            {
+                //LOGICA / CONDIZIONI RICORSIVITA'
 
-            //ricorsività
+                var padre = listaPin.Find(x => x.Codice == c.CodSede);
+
+                return padre.Ricorsivo == true;
+            }).ToList();
 
             var lstCodiciCategorie = result.Select(c => c.CodCategoria.ToString()).Distinct().ToArray();
-
             var lstCategorie = _getCategorieEnte.Get(lstCodiciCategorie);
 
             //MAPPING
