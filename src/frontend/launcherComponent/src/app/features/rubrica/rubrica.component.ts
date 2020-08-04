@@ -66,7 +66,18 @@ export class RubricaComponent implements OnInit, OnDestroy {
 
     onAddUtente() {
         const voceRubrica = {
-            //todo
+            descrizione: 'test1',
+            codSede: 'codTest',
+            ricorsivo: true,
+            codCategoria: 222,
+            indirizzo: 'via test dei test',
+            cap: '00012',
+            noteEnte: 'note test e test',
+            email: 'test@test.test',            
+            telefoni: [{                
+                tipo: 'cell',
+                numero: '123456789',
+            }]
         } as AddVoceRubricaInterface;
         this.addVoceRubrica(voceRubrica);
     }
