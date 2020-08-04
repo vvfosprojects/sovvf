@@ -1,11 +1,5 @@
 ﻿using CQRS.Queries;
-using SO115App.API.Models.Classi.Organigramma;
-using SO115App.Models.Classi.RubricaDTO;
-using SO115App.Models.Servizi.Infrastruttura.GestioneRubrica.Categorie;
 using SO115App.Models.Servizi.Infrastruttura.GestioneRubrica.Enti;
-using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
-using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace SO115App.Models.Servizi.CQRS.Queries.GestioneRubrica
@@ -21,10 +15,16 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneRubrica
 
         public RubricaResult Handle(RubricaQuery query)
         {
+            var listaRubrica = _getRurbica.Get(query.IdSede, query.Search);
+
+            listaRubrica.Reverse();
+            var RubricaPaginata = listaRubrica.Skip((query.Pagination.Page - 1) * query.Pagination.PageSize).Take(query.Pagination.PageSize).ToList();
+            query.Pagination.TotalItems = listaRubrica.Count;
+
             //MAPPING
             return new RubricaResult()
             {
-                Rubrica = _getRurbica.Get(query.IdSede)
+                Rubrica = RubricaPaginata
             };
         }
     }

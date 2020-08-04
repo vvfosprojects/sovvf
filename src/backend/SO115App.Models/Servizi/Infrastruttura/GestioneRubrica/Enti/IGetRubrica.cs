@@ -12,7 +12,7 @@ namespace SO115App.Models.Servizi.Infrastruttura.GestioneRubrica.Enti
         /// <param name="CodSede">I codici della sede per cui vanno ricercati gli enti</param>
         /// <param name="Ricorsivo"></param>
         /// <returns>Elenco della rubrica secondo più codici sede e la ricorsività</returns>
-        List<EnteDTO> Get(string[] CodSede);
+        List<EnteDTO> Get(string[] CodSede, string search = null);
 
         List<EnteDTO> GetBylstCodici(int[] lstCodici);
     }

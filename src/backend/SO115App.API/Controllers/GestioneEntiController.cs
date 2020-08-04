@@ -21,6 +21,7 @@ namespace SO115App.API.Controllers
         private readonly ICommandHandler<UpdateEnteCommand> _updateEnteHandler;
         private readonly ICommandHandler<DeleteEnteCommand> _deleteEnteHandler;
         private readonly IQueryHandler<RubricaQuery, RubricaResult> _rubricaQueryHandler;
+
         public GestioneEntiController(ICommandHandler<AddEnteCommand> addEnte,
             ICommandHandler<UpdateEnteCommand> updateEnte,
             ICommandHandler<DeleteEnteCommand> deleteEnteHandler,
@@ -32,18 +33,14 @@ namespace SO115App.API.Controllers
             _rubricaQueryHandler = rubricaQueryHandler;
         }
 
-        [HttpGet("")]
-        public async Task<IActionResult> Get()
+        [HttpGet("GetRubrica")]
+        public async Task<IActionResult> Get(RubricaQuery rubricaQuery)
         {
+            rubricaQuery.IdOperatore = Request.Headers["IdUtente"];
+            rubricaQuery.IdSede = Request.Headers["codicesede"].ToString().Split(',');
             try
             {
-                var query = new RubricaQuery()
-                {
-                    IdSede = Request.Headers["codicesede"].ToString().Split(','),
-                    IdOperatore = Request.Headers["IdUtente"]
-                };
-
-                return Ok(_rubricaQueryHandler.Handle(query));
+                return Ok(_rubricaQueryHandler.Handle(rubricaQuery));
             }
             catch (Exception ex)
             {

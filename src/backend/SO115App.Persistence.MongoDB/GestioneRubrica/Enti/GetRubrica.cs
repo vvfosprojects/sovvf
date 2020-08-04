@@ -25,7 +25,7 @@ namespace SO115App.Persistence.MongoDB.GestioneRubrica.Enti
             _getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
         }
 
-        public List<EnteDTO> Get(string[] CodSede)
+        public List<EnteDTO> Get(string[] CodSede, string TextSearch)
         {
             var listaPin = GetGerarchia(CodSede);
 
