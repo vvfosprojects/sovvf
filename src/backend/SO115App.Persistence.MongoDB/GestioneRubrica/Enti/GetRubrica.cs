@@ -33,14 +33,7 @@ namespace SO115App.Persistence.MongoDB.GestioneRubrica.Enti
                 .Find(c => lstCodiciPin.Contains(c.CodSede) && c.Descrizione.Contains(TextSearch)).ToList();
 
             //GESTIONE RICORSIVITA'
-            var result = lstEnti.Where(c =>
-            {
-                //LOGICA/CONDIZIONI RICORSIVITA'
-                var padre = listaPin.Find(x => x.Codice == c.SiglaProvincia + ".1000");
-                var figli = listaPin.Where(x => x.Codice.Contains(c.SiglaProvincia) && x != padre).ToList();
-
-                return (padre.Ricorsivo && c.Ricorsivo) || figli.Any(x => x.Ricorsivo);
-            }).ToList();
+            var result = FiltraByRicorsività(listaPin, lstEnti);
 
             //RECUPERO LE CATEGORIE
             var lstCodiciCategorie = result.Select(c => c.CodCategoria.ToString()).Distinct().ToArray();
@@ -68,15 +61,18 @@ namespace SO115App.Persistence.MongoDB.GestioneRubrica.Enti
 
         public List<EnteDTO> GetBylstCodici(int[] lstCodici)
         {
-            var result = _dbContext.RubricaCollection.Find(c => lstCodici.Contains(c.Codice)).ToList();
+            var lstEnti = _dbContext.RubricaCollection.Find(c => lstCodici.Contains(c.Codice)).ToList();
 
-            //var listaPin = GetGerarchia(result.Select(c => c.CodSede).ToArray());
+            var listaPin = GetGerarchia(lstEnti.Select(c => c.CodSede).ToArray());
 
+            //GESTIONE RICORSIVITA'
+            var result = FiltraByRicorsività(listaPin, lstEnti);
 
+            //RECUPERO LE CATEGORIE
             var lstCodiciCategorie = result.Select(c => c.CodCategoria.ToString()).Distinct().ToArray();
-
             var lstCategorie = _getCategorieEnte.Get(lstCodiciCategorie);
 
+            //MAPPING
             return result.Select(c => new EnteDTO()
             {
                 Id = c.Id,
@@ -96,11 +92,27 @@ namespace SO115App.Persistence.MongoDB.GestioneRubrica.Enti
             }).ToList();
         }
 
+        private static List<EnteIntervenuto> FiltraByRicorsività(List<PinNodo> listaPin, List<EnteIntervenuto> lstEnti)
+        {
+            if (listaPin.Count > 0)
+                return lstEnti.Where(c =>
+                {
+                    //LOGICA/CONDIZIONI RICORSIVITA'
+                    var padre = listaPin.Find(x => x.Codice == c.SiglaProvincia + ".1000");
+                    var figli = listaPin.Where(x => x.Codice.Contains(c.SiglaProvincia) && x != padre).ToList();
+
+                    return (padre.Ricorsivo && c.Ricorsivo) || figli.Any(x => x.Ricorsivo);
+                }).ToList();
+            else
+                return lstEnti;
+        }
+
         private List<PinNodo> GetGerarchia(string[] CodSede)
         {
             var listaPin = new List<PinNodo>();
             var sediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
 
+            if(listaPin.Count > 0)
             foreach (var sede in CodSede)
             {
                 listaPin.Add(new PinNodo(sede, true));
