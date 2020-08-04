@@ -1,12 +1,9 @@
-import { Selector, State, Store, Action, StateContext } from '@ngxs/store';
-import { Ente } from 'src/app/shared/interface/ente.interface';
-import { SetEnti, GetEnti, UpdateEnte, DeleteEnte, AddEnte } from '../../actions/enti/enti.actions';
-import { RubricaService } from 'src/app/core/service/rubrica/rubrica.service';
-import { StopLoading } from '../../actions/loading/loading.actions';
-import { patch, insertItem, removeItem } from '@ngxs/store/operators';
+import { Selector, State, Action, StateContext } from '@ngxs/store';
+import { VoceRubrica } from 'src/app/shared/interface/rubrica.interface';
+import { SetEnti } from '../../actions/enti/enti.actions';
 
 export interface EntiStateModel {
-    enti: Array<Ente>;
+    enti: Array<VoceRubrica>;
 }
 
 export const entiStateDefaults: EntiStateModel = {
@@ -25,9 +22,7 @@ export class EntiState {
         return state.enti;
     }
 
-    constructor(
-        private rubricaService: RubricaService
-    ) {
+    constructor() {
     }
 
     @Action(SetEnti)
@@ -35,43 +30,5 @@ export class EntiState {
         patchState({
             enti: action.enti
         });
-    }
-
-
-    @Action(GetEnti)
-    getEnti({ dispatch }: StateContext<EntiStateModel>, action: GetEnti) {
-        this.rubricaService.getEnti().subscribe((response: Ente[]) => {
-            dispatch([
-                new SetEnti(response),
-                new StopLoading()
-            ]);
-        });
-    }
-
-
-    @Action(AddEnte)
-    addEnte({ setState }: StateContext<EntiStateModel>, action: AddEnte) {
-        this.rubricaService.addEnte(action.ente).subscribe((response: Ente) => {
-            setState(
-                patch({
-                    enti: insertItem<Ente>(response)
-                })
-            );
-        });
-    }
-
-
-    @Action(UpdateEnte)
-    updateEnte({ setState }: StateContext<EntiStateModel>, action: UpdateEnte) {
-        //todo
-    }
-
-    @Action(DeleteEnte)
-    deleteEnte({ setState }: StateContext<EntiStateModel>, action: DeleteEnte) {
-        setState(
-            patch({
-                enti: removeItem(id => id === action.idEnte)
-            })
-        );
     }
 }

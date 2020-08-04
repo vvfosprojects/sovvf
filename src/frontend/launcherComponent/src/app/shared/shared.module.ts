@@ -8,6 +8,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import * as Shared from './index';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { ListaPartenzeComponent } from './components/lista-partenze/lista-partenze.component';
+import { AddVoceRubricaModalComponent } from './modal/add-voce-rubrica-modal/add-voce-rubrica-modal.component';
 
 const COMPONENTS = [
     Shared.DebounceClickDirective,
@@ -30,7 +31,8 @@ const COMPONENTS = [
     Shared.BottoneNuovaVersioneComponent,
     Shared.EliminaPartenzaModalComponent,
     Shared.RichiestaDuplicataModalComponent,
-    ListaPartenzeComponent
+    ListaPartenzeComponent,
+    AddVoceRubricaModalComponent
 ];
 
 @NgModule({
@@ -43,7 +45,7 @@ const COMPONENTS = [
         NgSelectModule
     ],
     declarations: [
-        ...COMPONENTS
+        ...COMPONENTS,
     ],
     exports: [
         ...COMPONENTS,

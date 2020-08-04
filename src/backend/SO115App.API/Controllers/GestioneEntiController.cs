@@ -102,13 +102,15 @@ namespace SO115App.API.Controllers
         }
 
         [HttpGet("Delete")]
-        public async Task<IActionResult> Delete(string id)
+        public async Task<IActionResult> Delete(string Id)
         {
             try
             {
                 var command = new DeleteEnteCommand()
                 {
-                    Id = id
+                    CodiceSede = Request.Headers["codicesede"].ToString().Split(','),
+                    idOperatore = Request.Headers["IdUtente"],
+                    Id = Id
                 };
 
                 _deleteEnteHandler.Handle(command);

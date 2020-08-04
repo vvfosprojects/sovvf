@@ -12,8 +12,13 @@ import { RicercaRubricaComponent } from './ricerca-rubrica/ricerca-rubrica.compo
  * Routing
  */
 import { RubricaRouting } from './rubrica.routing';
+
+/**
+ * States
+ */
 import { NgxsModule } from '@ngxs/store';
 import { RicercaRubricaState } from './store/states/ricerca-rubrica/ricerca-rubrica.state';
+import { RubricaState } from './store/states/rubrica/rubrica.state';
 
 
 @NgModule({
@@ -28,6 +33,7 @@ import { RicercaRubricaState } from './store/states/ricerca-rubrica/ricerca-rubr
         CommonModule,
         RubricaRouting,
         NgxsModule.forFeature([
+            RubricaState,
             RicercaRubricaState
         ]),
     ],

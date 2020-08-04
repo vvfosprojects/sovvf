@@ -28,7 +28,7 @@ import {Options} from 'ngx-google-places-autocomplete/objects/options/options';
 import {LatLngBounds} from 'ngx-google-places-autocomplete/objects/latLngBounds';
 import {ComponentRestrictions} from 'ngx-google-places-autocomplete/objects/options/componentRestrictions';
 import {EntiState} from 'src/app/shared/store/states/enti/enti.state';
-import {Ente} from 'src/app/shared/interface/ente.interface';
+import {VoceRubrica} from 'src/app/shared/interface/rubrica.interface';
 
 @Component({
   selector: 'app-modifica-richiesta',
@@ -46,8 +46,8 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
   @Select(HomeState.tipologie) tipologie$: Observable<Tipologia[]>;
   tipologie: Tipologia[];
 
-  @Select(EntiState.enti) enti$: Observable<Ente[]>;
-  enti: Ente[];
+  @Select(EntiState.enti) enti$: Observable<VoceRubrica[]>;
+  enti: VoceRubrica[];
 
   @Select(RichiestaModificaState.richiestaModifica) richiestaModifica$: Observable<SintesiRichiesta>;
   richiestaModificaIniziale: SintesiRichiesta;
@@ -78,7 +78,7 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
       }
     }));
     this.subscription.add(this.tipologie$.subscribe((tipologie: Tipologia[]) => this.tipologie = tipologie));
-    this.subscription.add(this.enti$.subscribe((enti: Ente[]) => {
+    this.subscription.add(this.enti$.subscribe((enti: VoceRubrica[]) => {
       this.enti = enti;
     }));
     this.ngxGooglePlacesOptions = new Options({

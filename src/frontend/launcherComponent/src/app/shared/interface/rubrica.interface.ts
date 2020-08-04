@@ -1,4 +1,4 @@
-export interface CategoriaEnte {
+export interface CategoriaVoceRubrica {
     codice: string;
     descrizione: string;
     visibile: string;
@@ -11,16 +11,16 @@ export interface EnteTelefoni {
     numero: string;
 }
 
-export interface AddEnteInterface {
+export interface AddVoceRubricaInterface {
     descrizione: string;
 }
 
-export interface Ente {
+export interface VoceRubrica {
     codice: number;
     descrizione: string;
     codSede: string;
     ricorsivo: boolean;
-    enteCategoria: CategoriaEnte;
+    enteCategoria: CategoriaVoceRubrica;
     indirizzo: string;
     cap: string;
     codComune: number;
