@@ -36,7 +36,7 @@ export interface VoceRubrica {
     enteCategoria: CategoriaVoceRubrica;
     indirizzo: string;
     cap: string;
-    telefoni: EnteTelefoni[];
+    telefoni: VoceRubricaTelefoni[];
     noteEnte?: string;
     email?: string;
     codComune?: number;
