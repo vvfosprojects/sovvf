@@ -68,23 +68,10 @@ namespace SO115App.Persistence.MongoDB.GestioneRubrica.Enti
 
         public List<EnteDTO> GetBylstCodici(int[] lstCodici)
         {
-            var listaPin = new List<PinNodo>();
-            var sediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
-            //var distaccamento = _getListaDistaccamentiByCodiceSede.GetListaDistaccamenti(query.IdSede.First());
+            var result = _dbContext.RubricaCollection.Find(c => lstCodici.Equals(c.Codice)).ToList();
 
-            //foreach (var ruolo in command.Ruoli)
-            //{
-            //listaPin.Add(new PinNodo(ruolo.CodSede, ruolo.Ricorsivo));
-            //foreach (var figli in sediAlberate.GetSottoAlbero(listaPin))
-            //{
-            //    if (figli.Codice.Equals(ruolo.CodSede))
-            //    {
-            //        ruolo.DescSede = figli.Nome;
-            //    }
-            //}
-            //}
+            //var listaPin = GetGerarchia(result.Select(c => c.CodSede).ToArray());
 
-            List<EnteIntervenuto> result = _dbContext.RubricaCollection.Find(c => lstCodici.Contains(c.Codice)).ToList();
 
             var lstCodiciCategorie = result.Select(c => c.CodCategoria.ToString()).Distinct().ToArray();
 
