@@ -23,5 +23,4 @@ export class TabellaRubricaComponent implements OnInit {
 
     ngOnInit() {
     }
-
 }
