@@ -69,17 +69,12 @@
                 </div>
             </td>
         </tr>
-        <tr>
-            <td></td>
-            <td>
-                <ng-template [ngIf]="!loading && vociRubrica.length <= 0">Nessuna Voce trovata</ng-template>
-                <ng-template [ngIf]="loading">Caricamento risultati in corso...</ng-template>
-            </td>
-            <td></td>
-            <td></td>
-        </tr>
         </tbody>
     </table>
+    <div>
+        <ng-template [ngIf]="!loading && vociRubrica?.length <= 0">Nessuna Voce trovata</ng-template>
+        <ng-template [ngIf]="loading">Caricamento risultati in corso...</ng-template>
+    </div>
 </div>
 <div class="d-flex justify-content-between p-2">
     <app-voci-rubrica-per-pagina [pageSize]="pageSize" [pageSizes]="pageSizes"
