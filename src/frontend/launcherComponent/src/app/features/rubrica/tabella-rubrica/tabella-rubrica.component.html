@@ -3,9 +3,9 @@
       <thead>
       <tr>
           <th scope="col" width="10%">Azioni</th>
-          <th scope="col" width="10%">Nome</th>
+          <th scope="col" width="15%">Nome</th>
           <th scope="col" width="20%">Indirizzo</th>
-          <th scope="col" width="20%">Telefono</th>
+          <th scope="col" width="15%">Telefono</th>
       </tr>
       </thead>
       <tbody>
@@ -22,7 +22,7 @@
            <i class="fa fa-pencil-square-o"></i>
           </button>
           </td>
-          <td width="20%" class="pb-1">
+          <td width="30%" class="pb-1">
               <div class="h5 font-weight-bold mt-1 pt-1">
                   <span>{{voci.descrizione}}</span>
               </div>
@@ -34,6 +34,7 @@
                           <li class="border-bottom p-2">
                               <div class="clearfix">
                                   <div class="float-left mt-1">
+                                    <i class="fa fa-map-marker"></i>
                                   <span class="mr-3 font-weight-bold" style="font-size:1.3rem"
                                         placement="top"></span>
                                       <span class="font-weight-bolder ml-1">{{voci.indirizzo}}</span>
@@ -46,17 +47,17 @@
                   </div>
               </div>
           </td>
-          <td width="30%">
+          <td width="20%">
             <div class="row">
                 <div class="col-11">
                     <ul class="list-unstyled p-2 mb-0" style="max-height: 210px; overflow-y: auto">
                         <li class="border-bottom p-2">
                             <div class="clearfix">
                                 <div class="float-left mt-1">
-                                    <i class="fa fa-list-ul"></i>
+                                    <i class="fa fa-phone"></i>
                                 <span class="mr-3 font-weight-bold" style="font-size:1.3rem"
                                       placement="top"></span>
-                                    <span class="font-weight-bolder mr-1">Telefono</span>
+                                    <span class="font-weight-bolder mr-1"> <a href="{{'tel:+39'+ voci.telefoni[0].numero}}">+39 {{voci.telefoni[0].numero}}</a></span>
                                 </div>
                                 <div class="float-right">
                                 </div>
