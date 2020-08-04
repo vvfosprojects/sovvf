@@ -1,5 +1,4 @@
 ﻿using MongoDB.Driver;
-using MongoDB.Driver.Core.Connections;
 using Persistence.MongoDB;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Organigramma;
@@ -30,18 +29,19 @@ namespace SO115App.Persistence.MongoDB.GestioneRubrica.Enti
             var listaPin = GetGerarchia(CodSede);
 
             var lstCodiciPin = listaPin.Select(c => c.Codice).ToList();
-            var lstEnti = _dbContext.RubricaCollection.Find(c => lstCodiciPin.Contains(c.CodSede)).ToList();
+            var lstEnti = _dbContext.RubricaCollection
+                .Find(c => lstCodiciPin.Contains(c.CodSede) && c.Descrizione.Contains(TextSearch)).ToList();
 
             //GESTIONE RICORSIVITA'
             var result = lstEnti.Where(c =>
             {
-                //LOGICA / CONDIZIONI RICORSIVITA'
+                //LOGICA/CONDIZIONI RICORSIVITA'
+                var padre = listaPin.Find(x => x.Codice == c.SiglaProvincia + ".1000");
 
-                var padre = listaPin.Find(x => x.Codice == c.CodSede);
-
-                return padre.Ricorsivo == true;
+                return padre.Ricorsivo == true && c.Ricorsivo == true;
             }).ToList();
 
+            //RECUPERO LE CATEGORIE
             var lstCodiciCategorie = result.Select(c => c.CodCategoria.ToString()).Distinct().ToArray();
             var lstCategorie = _getCategorieEnte.Get(lstCodiciCategorie);
 
