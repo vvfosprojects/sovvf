@@ -24,7 +24,6 @@ using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichieste
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneRubrica;
 using SO115App.Models.Servizi.Infrastruttura.Box;
-using SO115App.Models.Servizi.Infrastruttura.GestioneRubrica.Enti;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
 using SO115App.Models.Servizi.Infrastruttura.GetFiltri;
 using SO115App.Models.Servizi.Infrastruttura.Marker;
