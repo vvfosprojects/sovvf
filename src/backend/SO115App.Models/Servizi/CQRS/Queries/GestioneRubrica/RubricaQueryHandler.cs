@@ -18,7 +18,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneRubrica
 
         public RubricaResult Handle(RubricaQuery query)
         {
-            var listaRubrica = _getRurbica.Get(query.IdSede, query.Search);
+            var listaRubrica = _getRurbica.Get(query.IdSede, query.Filters.Search);
 
             //PAGINAZIONE
             List<EnteDTO> rubricaPaginata = null;

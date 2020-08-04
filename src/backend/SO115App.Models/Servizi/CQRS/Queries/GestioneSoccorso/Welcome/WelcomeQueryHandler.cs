@@ -22,6 +22,7 @@ using Serilog;
 using SO115App.API.Models.Classi.Organigramma;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
+using SO115App.Models.Classi.Filtri;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneRubrica;
 using SO115App.Models.Servizi.Infrastruttura.Box;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
@@ -127,7 +128,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
 
             try
             {
-                var rubrica = _rubricaQueryHandler.Handle(new RubricaQuery() { IdOperatore = query.idOperatore, IdSede = query.CodiceSede, Search = "", Pagination = default }).DataArray;
+                var rubrica = _rubricaQueryHandler.Handle(new RubricaQuery() { IdOperatore = query.idOperatore, IdSede = query.CodiceSede, Filters = new FiltriRubrica() { Search = "" }, Pagination = default }).DataArray;
                 var boxListaInterventi = _boxRichiesteHandler.Get(pinNodi.ToHashSet());
                 var boxListaMezzi = _boxMezziHandler.Get(query.CodiceSede);
                 var boxListaPersonale = _boxPersonaleHandler.Get(query.CodiceSede);
