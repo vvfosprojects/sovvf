@@ -28,7 +28,8 @@
         <div class="col-12 col-md-8 mx-auto">
             <app-tabella-rubrica [vociRubrica]="vociRubrica$ | async" [totalItems]="totalItems$ | async"
                                  [pageSize]="pageSize" [page]="page$ | async" [loading]="loading$ | async"
-                                 [pageSizes]="pageSizes$ | async"></app-tabella-rubrica>
+                                 [pageSizes]="pageSizes$ | async"
+                                 (deleteVoceRubrica)="onDeleteVoceRubrica($event)"></app-tabella-rubrica>
         </div>
     </div>
 </div>

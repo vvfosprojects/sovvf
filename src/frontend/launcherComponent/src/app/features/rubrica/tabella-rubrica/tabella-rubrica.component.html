@@ -9,22 +9,20 @@
         </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let voci of vociRubrica | paginate: { itemsPerPage: pageSize, currentPage: page, totalItems: totalItems }">
+        <tr *ngFor="let voce of vociRubrica | paginate: { itemsPerPage: pageSize, currentPage: page, totalItems: totalItems }">
             <td>
                 <button class="btn btn-sm btn-danger font-weight-bold float-left mt-1 mr-2" ngbTooltip="Rimuovi Voce"
-                        placement="bottom"
-                >
+                        placement="bottom" (click)="onDeleteVoceRubrica(voce.id, voce.descrizione)">
                     <i class="fa fa-trash"></i>
                 </button>
                 <button class="btn btn-sm btn-warning font-weight-bold float-left mt-1 mr-2" ngbTooltip="Modifica Voce"
-                        placement="bottom" style="color: white;"
-                >
+                        placement="bottom" style="color: white;">
                     <i class="fa fa-pencil-square-o"></i>
                 </button>
             </td>
             <td width="30%" class="pb-1">
                 <div class="h5 font-weight-bold mt-1 pt-1">
-                    <span>{{voci.descrizione}}</span>
+                    <span>{{voce.descrizione}}</span>
                 </div>
             </td>
             <td width="40%">
@@ -37,7 +35,7 @@
                                         <i class="fa fa-map-marker"></i>
                                         <span class="mr-3 font-weight-bold" style="font-size:1.3rem"
                                               placement="top"></span>
-                                        <span class="font-weight-bolder ml-1">{{voci.indirizzo}}</span>
+                                        <span class="font-weight-bolder ml-1">{{voce.indirizzo}}</span>
                                     </div>
                                     <div class="float-right">
                                     </div>
@@ -58,7 +56,7 @@
                                         <span class="mr-3 font-weight-bold" style="font-size:1.3rem"
                                               placement="top"></span>
                                         <span class="font-weight-bolder mr-1"> <a
-                                                href="{{'tel:+39'+ voci.telefoni[0].numero}}">+39 {{voci.telefoni[0].numero}}</a></span>
+                                                href="{{'tel:+39'+ voce.telefoni[0].numero}}">+39 {{voce.telefoni[0].numero}}</a></span>
                                     </div>
                                 </div>
                             </li>

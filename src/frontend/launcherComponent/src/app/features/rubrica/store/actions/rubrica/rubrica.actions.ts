@@ -28,6 +28,6 @@ export class UpdateVoceRubrica {
 export class DeleteVoceRubrica {
     static readonly type = '[Rubrica] Delete Voce Rubrica';
 
-    constructor(public idVoceRubrica: DeleteVoceRubrica) {
+    constructor(public idVoceRubrica: string) {
     }
 }

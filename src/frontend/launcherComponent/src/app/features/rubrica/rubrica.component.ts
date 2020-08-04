@@ -14,6 +14,8 @@ import { AddVoceRubrica, DeleteVoceRubrica, GetRubrica, UpdateVoceRubrica } from
 import { VoceRubrica } from '../../shared/interface/rubrica.interface';
 import { VoceRubricaModalComponent } from '../../shared/modal/voce-rubrica-modal/voce-rubrica-modal.component';
 import { RubricaState } from './store/states/rubrica/rubrica.state';
+import { ConfirmModalComponent } from '../../shared';
+import { RemoveUtente } from '../gestione-utenti/store/actions/gestione-utenti/gestione-utenti.actions';
 
 @Component({
     selector: 'app-rubrica',
@@ -110,8 +112,32 @@ export class RubricaComponent implements OnInit, OnDestroy {
         this.store.dispatch(new UpdateVoceRubrica(ente));
     }
 
-    deleteVoceRubrica(idEnte: any) {
-        this.store.dispatch(new DeleteVoceRubrica(idEnte));
+    onDeleteVoceRubrica(payload: { idVoceRubrica: string, descrizioneVoceRubrica: string }) {
+        const modalConfermaAnnulla = this.modalService.open(ConfirmModalComponent, {
+            backdropClass: 'light-blue-backdrop',
+            centered: true
+        });
+        modalConfermaAnnulla.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
+        modalConfermaAnnulla.componentInstance.titolo = 'Elimina ' + payload.descrizioneVoceRubrica;
+        modalConfermaAnnulla.componentInstance.messaggioAttenzione = 'Sei sicuro di volerlo rimuovere dalla rubrica?';
+        modalConfermaAnnulla.componentInstance.bottoni = [
+            { type: 'ko', descrizione: 'Annulla', colore: 'secondary' },
+            { type: 'ok', descrizione: 'Conferma', colore: 'danger' },
+        ];
+        modalConfermaAnnulla.result.then(
+            (val) => {
+                switch (val) {
+                    case 'ok':
+                        this.store.dispatch(new DeleteVoceRubrica(payload.idVoceRubrica));
+                        break;
+                    case 'ko':
+                        // console.log('Azione annullata');
+                        break;
+                }
+                // console.log('Modal chiusa con val ->', val);
+            },
+            (err) => console.error('Modal chiusa senza bottoni. Err ->', err)
+        );
     }
 
     onRicercaRubrica(ricerca: string) {
