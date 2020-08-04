@@ -68,7 +68,7 @@ namespace SO115App.Persistence.MongoDB.GestioneRubrica.Enti
 
         public List<EnteDTO> GetBylstCodici(int[] lstCodici)
         {
-            var result = _dbContext.RubricaCollection.Find(c => lstCodici.Equals(c.Codice)).ToList();
+            var result = _dbContext.RubricaCollection.Find(c => lstCodici.Contains(c.Codice)).ToList();
 
             //var listaPin = GetGerarchia(result.Select(c => c.CodSede).ToArray());
 
