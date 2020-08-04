@@ -2,13 +2,14 @@
   <table class="table table-striped app-shadow mt-2">
       <thead>
       <tr>
-          <th scope="col" width="15%">Azioni</th>
-          <th scope="col" width="20%">Lista voci rubrica</th>
-          <th scope="col" width="40%">Informazioni</th>
+          <th scope="col" width="10%">Azioni</th>
+          <th scope="col" width="10%">Nome</th>
+          <th scope="col" width="20%">Indirizzo</th>
+          <th scope="col" width="20%">Telefono</th>
       </tr>
       </thead>
       <tbody>
-      <tr>
+      <tr *ngFor="let voci of vociRubrica">
           <td>
            <button class="btn btn-sm btn-danger font-weight-bold float-left mt-1 mr-2" ngbTooltip="Rimuovi Voce"
                    placement="bottom"
@@ -21,19 +22,13 @@
            <i class="fa fa-pencil-square-o"></i>
           </button>
           </td>
-          <td width="40%" class="pb-1">
+          <td width="20%" class="pb-1">
               <div class="h5 font-weight-bold mt-1 pt-1">
-                  <span >Nome Voce</span>
+                  <span>{{voci.descrizione}}</span>
               </div>
           </td>
-          <td width="60%">
+          <td width="40%">
               <div class="row">
-                  <div class="col-1" style="display: flex; align-items: center;">
-                      <button class="btn btn-primary btn-sm font-weight-bold"
-                              >
-                          <i class="fa fa-plus"></i>
-                      </button>
-                  </div>
                   <div class="col-11">
                       <ul class="list-unstyled p-2 mb-0" style="max-height: 210px; overflow-y: auto">
                           <li class="border-bottom p-2">
@@ -41,21 +36,35 @@
                                   <div class="float-left mt-1">
                                   <span class="mr-3 font-weight-bold" style="font-size:1.3rem"
                                         placement="top"></span>
-                                      <span class="font-weight-bolder mr-1">nome proprieta</span>
-                                      :
-                                      <span class="font-weight-bolder ml-1">descrizione proprieta</span>
+                                      <span class="font-weight-bolder ml-1">{{voci.indirizzo}}</span>
                                   </div>
                                   <div class="float-right">
-                                      <button class="btn btn-danger btn-sm float-right ml-2" placement="bottom"
-                                              >
-                                          <i class="fa fa-sm fa-sm fa-trash"></i>
-                                      </button>
                                   </div>
                               </div>
                           </li>
                       </ul>
                   </div>
               </div>
+          </td>
+          <td width="30%">
+            <div class="row">
+                <div class="col-11">
+                    <ul class="list-unstyled p-2 mb-0" style="max-height: 210px; overflow-y: auto">
+                        <li class="border-bottom p-2">
+                            <div class="clearfix">
+                                <div class="float-left mt-1">
+                                    <i class="fa fa-list-ul"></i>
+                                <span class="mr-3 font-weight-bold" style="font-size:1.3rem"
+                                      placement="top"></span>
+                                    <span class="font-weight-bolder mr-1">Telefono</span>
+                                </div>
+                                <div class="float-right">
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
           </td>
       </tr>
       <tr>
@@ -64,6 +73,7 @@
               <ng-template [ngIf]="!loading">Nessuna Voce trovata</ng-template>
               <ng-template [ngIf]="loading">Caricamento risultati in corso...</ng-template>
           </td>
+          <td></td>
           <td></td>
       </tr>
       </tbody>
