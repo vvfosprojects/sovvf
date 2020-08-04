@@ -8,6 +8,6 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneRubrica
     public class RubricaResult
     {
         public List<EnteDTO> Rubrica { get; set; }
-        public Paginazione Pagination { get; set; }
+        public Paginazione DataArray { get; set; }
     }
 }
