@@ -29,7 +29,9 @@
             <app-tabella-rubrica [vociRubrica]="vociRubrica$ | async" [totalItems]="totalItems$ | async"
                                  [pageSize]="pageSize" [page]="page$ | async" [loading]="loading$ | async"
                                  [pageSizes]="pageSizes$ | async"
-                                 (deleteVoceRubrica)="onDeleteVoceRubrica($event)"></app-tabella-rubrica>
+                                 (deleteVoceRubrica)="onDeleteVoceRubrica($event)"
+                                 (pageChange)="onPageChange($event)"
+                                 (pageSizeChange)="onPageSizeChange($event)"></app-tabella-rubrica>
         </div>
     </div>
 </div>

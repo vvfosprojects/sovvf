@@ -15,7 +15,7 @@ import { VoceRubrica } from '../../shared/interface/rubrica.interface';
 import { VoceRubricaModalComponent } from '../../shared/modal/voce-rubrica-modal/voce-rubrica-modal.component';
 import { RubricaState } from './store/states/rubrica/rubrica.state';
 import { ConfirmModalComponent } from '../../shared';
-import { RemoveUtente } from '../gestione-utenti/store/actions/gestione-utenti/gestione-utenti.actions';
+import { GetUtentiGestione } from '../gestione-utenti/store/actions/gestione-utenti/gestione-utenti.actions';
 
 @Component({
     selector: 'app-rubrica',
@@ -69,20 +69,6 @@ export class RubricaComponent implements OnInit, OnDestroy {
     }
 
     onAddVoceRubrica() {
-        // const voceRubrica = {
-        //     descrizione: 'test1',
-        //     codSede: 'codTest',
-        //     ricorsivo: true,
-        //     codCategoria: 222,
-        //     indirizzo: 'via test dei test',
-        //     cap: '00012',
-        //     noteEnte: 'note test e test',
-        //     email: 'test@test.test',
-        //     telefoni: [{
-        //         tipo: 'cell',
-        //         numero: '123456789',
-        //     }]
-        // } as AddVoceRubricaInterface;
         const addVoceRubricaModal = this.modalService.open(VoceRubricaModalComponent, {
             backdropClass: 'light-blue-backdrop',
             centered: true,
@@ -142,6 +128,14 @@ export class RubricaComponent implements OnInit, OnDestroy {
 
     onRicercaRubrica(ricerca: string) {
         this.store.dispatch(new SetRicercaRubrica(ricerca));
+    }
+
+    onPageChange(page: number) {
+        this.store.dispatch(new GetRubrica(page));
+    }
+
+    onPageSizeChange(pageSize: number) {
+        this.store.dispatch(new SetPageSize(pageSize));
     }
 
     getRicerca() {
