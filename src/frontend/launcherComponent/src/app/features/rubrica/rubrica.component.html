@@ -26,7 +26,9 @@
             </h6>
         </div>
         <div class="col-12 col-md-8 mx-auto">
-            <app-tabella-rubrica [vociRubrica]="vociRubrica"></app-tabella-rubrica>
+            <app-tabella-rubrica [vociRubrica]="vociRubrica$ | async" [totalItems]="totalItems$ | async"
+                                 [pageSize]="pageSize" [page]="page$ | async" [loading]="loading$ | async"
+                                 [pageSizes]="pageSizes$ | async"></app-tabella-rubrica>
         </div>
     </div>
 </div>

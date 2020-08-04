@@ -1,4 +1,4 @@
-import { AddVoceRubricaInterface, UpdateVoceRubricaInterface, VoceRubrica } from '../../../../../shared/interface/rubrica.interface';
+import { UpdateVoceRubricaInterface, VoceRubrica } from '../../../../../shared/interface/rubrica.interface';
 
 export class GetRubrica  {
     static readonly type = '[Rubrica] Get Rubrica';
@@ -16,9 +16,6 @@ export class SetRubrica  {
 
 export class AddVoceRubrica  {
     static readonly type = '[Rubrica] Add Voce Rubrica';
-
-    constructor() {
-    }
 }
 
 export class UpdateVoceRubrica {

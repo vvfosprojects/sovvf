@@ -13,6 +13,7 @@ import { SetTurnoCalendario } from './store/actions/turno.actions';
 import { AuthService } from '../../core/auth/auth.service';
 import { NewVersionState } from '../../shared/store/states/nuova-versione/nuova-versione.state';
 import { GetNewVersion } from '../../shared/store/actions/nuova-versione/nuova-versione.actions';
+import { RoutesPath } from '../../shared/enum/routes-path.enum';
 
 @Component({
     selector: 'app-navbar',
@@ -26,6 +27,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     time: Date;
 
     colorButton = 'btn-dark';
+    RoutesPath = RoutesPath;
 
     @Input() user: Utente;
     @Input() ruoliUtenteLoggato: Ruolo[];

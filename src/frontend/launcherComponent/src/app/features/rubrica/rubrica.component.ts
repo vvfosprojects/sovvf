@@ -13,6 +13,7 @@ import { ClearRicercaRubrica, SetRicercaRubrica } from './store/actions/ricerca-
 import { AddVoceRubrica, DeleteVoceRubrica, GetRubrica, UpdateVoceRubrica } from './store/actions/rubrica/rubrica.actions';
 import { VoceRubrica } from '../../shared/interface/rubrica.interface';
 import { VoceRubricaModalComponent } from '../../shared/modal/voce-rubrica-modal/voce-rubrica-modal.component';
+import { RubricaState } from './store/states/rubrica/rubrica.state';
 
 @Component({
     selector: 'app-rubrica',
@@ -21,6 +22,7 @@ import { VoceRubricaModalComponent } from '../../shared/modal/voce-rubrica-modal
 })
 export class RubricaComponent implements OnInit, OnDestroy {
 
+    @Select(RubricaState.vociRubrica) vociRubrica$: Observable<VoceRubrica[]>;
     @Select(RicercaRubricaState.ricerca) ricerca$: Observable<string>;
     ricerca: string;
     @Select(PaginationState.pageSize) pageSize$: Observable<number>;
@@ -31,48 +33,6 @@ export class RubricaComponent implements OnInit, OnDestroy {
     @Select(LoadingState.loading) loading$: Observable<boolean>;
 
     subscriptions: Subscription = new Subscription();
-    vociRubrica = [
-        {
-            descrizione: 'test1',
-            codSede: 'codTest',
-            ricorsivo: true,
-            enteCategoria: {
-                codice: 'test',
-                descrizione: 'testtest',
-                visibile: 'test',
-                acronimo: 'TEST',
-                cap: '00012',
-            },
-            indirizzo: 'via test dei test',
-            cap: '00012',
-            noteEnte: 'note test e test',
-            email: 'test@test.test',
-            telefoni: [{
-                tipo: 'cell',
-                numero: '123456789',
-            }]
-        },
-        {
-            descrizione: 'test2',
-            codSede: 'codTest',
-            ricorsivo: true,
-            enteCategoria: {
-                codice: 'test',
-                descrizione: 'testtest',
-                visibile: 'test',
-                acronimo: 'TEST',
-                cap: '00012',
-            },
-            indirizzo: 'via testopoli',
-            cap: '00012',
-            noteEnte: 'note test e test',
-            email: 'test@test.test',
-            telefoni: [{
-                tipo: 'cell',
-                numero: '987654321',
-            }]
-        }
-    ] as VoceRubrica[];
 
     constructor(public modalService: NgbModal,
                 private store: Store) {

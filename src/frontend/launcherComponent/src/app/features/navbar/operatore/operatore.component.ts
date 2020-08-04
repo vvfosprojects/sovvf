@@ -10,6 +10,6 @@ export class OperatoreComponent {
 
     @Input() user: Utente;
     @Input() ruoliUtenteLoggato: Ruolo[];
-    @Output() _logout = new EventEmitter();
 
+    @Output() _logout = new EventEmitter();
 }

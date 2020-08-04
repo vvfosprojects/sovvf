@@ -1,9 +1,9 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
 import { StartLoading, StopLoading } from '../../../../../shared/store/actions/loading/loading.actions';
-import { VoceRubrica, VoceRubricaTelefoni } from '../../../../../shared/interface/rubrica.interface';
+import { VoceRubrica, VoceRubricaTelefono } from '../../../../../shared/interface/rubrica.interface';
 import { AddVoceRubrica, DeleteVoceRubrica, GetRubrica, SetRubrica, UpdateVoceRubrica } from '../../actions/rubrica/rubrica.actions';
-import { RubricaService } from '../../../../../core/service/rubrica/rubrica.service';
+import { RubricaService } from '../../../../../core/service/rubrica-service/rubrica.service';
 import { RicercaRubricaState } from '../ricerca-rubrica/ricerca-rubrica.state';
 import { ResponseInterface } from '../../../../../shared/interface/response.interface';
 import { PatchPagination } from '../../../../../shared/store/actions/pagination/pagination.actions';
@@ -18,7 +18,13 @@ export interface RubricaStateModel {
             descrizione: string;
             sedi: TreeviewSelezione[];
             ricorsivo: boolean;
-        }; // todo: completare model
+            codCategoria: number,
+            indirizzo: string,
+            cap: string,
+            noteEnte: string,
+            email: string,
+            telefoni: VoceRubricaTelefono[]
+        };
         dirty: boolean;
         status: string;
         errors: any;
@@ -64,10 +70,9 @@ export class RubricaState {
     @Action(GetRubrica)
     getRubrica({ dispatch }: StateContext<RubricaStateModel>, action: GetRubrica) {
         dispatch(new StartLoading());
-        const ricerca = this.store.selectSnapshot(RicercaUtentiState.ricerca);
+        const ricerca = this.store.selectSnapshot(RicercaRubricaState.ricerca);
         const filters = {
-            search: ricerca,
-            codSede: this.store.selectSnapshot(RicercaUtentiState.sediFiltroSelezionate)
+            search: ricerca
         };
         const pagination = {
             page: action.page ? action.page : 1,
@@ -96,12 +101,12 @@ export class RubricaState {
             descrizione: form.descrizione,
             codSede: null,
             ricorsivo: form.ricorsivo,
-            codCategoria: null,
-            indirizzo: null,
-            cap: null,
-            noteEnte: null, // opzionale
-            email: null, // opzionale
-            telefoni: null
+            codCategoria: form.codCategoria,
+            indirizzo: form.indirizzo,
+            cap: form.cap,
+            noteEnte: form.noteEnte,
+            email: form.email,
+            telefoni: form.telefoni
         };
         form.sedi.forEach((value: TreeviewSelezione) => {
             newVoceRubrica.codSede.push({

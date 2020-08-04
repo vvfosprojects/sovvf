@@ -25,7 +25,7 @@ export class RubricaService {
             },
             pagination
         };
-        return this.http.post(API_ENTE + '/', obj);
+        return this.http.post(API_ENTE, obj);
     }
 
     addVoceRubrica(voceRubrica: AddVoceRubricaInterface): Observable<any> {
