@@ -30,7 +30,7 @@ namespace SO115App.Persistence.MongoDB.GestioneRubrica.Enti
 
             var lstCodiciPin = listaPin.Select(c => c.Codice).ToList();
             var lstEnti = _dbContext.RubricaCollection
-                .Find(c => lstCodiciPin.Contains(c.CodSede) && c.Descrizione.Contains(TextSearch)).ToList();
+                .Find(c => lstCodiciPin.Contains(c.CodSede) && c.Descrizione.Contains(TextSearch ?? "")).ToList();
 
             //GESTIONE RICORSIVITA'
             var result = FiltraByRicorsività(listaPin, lstEnti);
@@ -94,7 +94,7 @@ namespace SO115App.Persistence.MongoDB.GestioneRubrica.Enti
 
         private static List<EnteIntervenuto> FiltraByRicorsività(List<PinNodo> listaPin, List<EnteIntervenuto> lstEnti)
         {
-            if (listaPin.Count > 0)
+            if (lstEnti.Count > 0)
                 return lstEnti.Where(c =>
                 {
                     //LOGICA/CONDIZIONI RICORSIVITA'
@@ -112,7 +112,6 @@ namespace SO115App.Persistence.MongoDB.GestioneRubrica.Enti
             var listaPin = new List<PinNodo>();
             var sediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
 
-            if(listaPin.Count > 0)
             foreach (var sede in CodSede)
             {
                 listaPin.Add(new PinNodo(sede, true));
