@@ -3,7 +3,6 @@ import { DecimalPipe } from '@angular/common';
 import { Ruolo, Utente } from '../../../shared/model/utente.model';
 import { wipeStringUppercase } from '../../../shared/helper/function';
 
-
 @Component({
     selector: 'app-tabella-utenti',
     templateUrl: './tabella-utenti.component.html',

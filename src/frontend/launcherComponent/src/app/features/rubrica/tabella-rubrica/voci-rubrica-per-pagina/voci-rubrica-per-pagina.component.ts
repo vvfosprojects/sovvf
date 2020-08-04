@@ -1,15 +1,24 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
-  selector: 'app-voci-rubrica-per-pagina',
-  templateUrl: './voci-rubrica-per-pagina.component.html',
-  styleUrls: ['./voci-rubrica-per-pagina.component.css']
+    selector: 'app-voci-rubrica-per-pagina',
+    templateUrl: './voci-rubrica-per-pagina.component.html',
+    styleUrls: ['./voci-rubrica-per-pagina.component.css']
 })
 export class VociRubricaPerPaginaComponent implements OnInit {
 
-  constructor() { }
+    @Input() pageSize: number;
+    @Input() pageSizes: number[];
 
-  ngOnInit() {
-  }
+    @Output() pageSizeChange: EventEmitter<number> = new EventEmitter<number>();
 
+    constructor() {
+    }
+
+    ngOnInit() {
+    }
+
+    onChangePageSize(pageSize: number) {
+        this.pageSizeChange.emit(pageSize);
+    }
 }

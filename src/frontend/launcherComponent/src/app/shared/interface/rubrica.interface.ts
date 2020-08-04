@@ -6,12 +6,25 @@ export interface CategoriaVoceRubrica {
     cap: string;
 }
 
-export interface EnteTelefoni {
+export interface VoceRubricaTelefoni {
     tipo: string;
     numero: string;
 }
 
 export interface AddVoceRubricaInterface {
+    descrizione: string;
+    codSede: string;
+    ricorsivo: boolean;
+    codCategoria: number;
+    indirizzo: string;
+    cap: string;
+    noteEnte?: string;
+    email?: string;
+    telefoni: VoceRubricaTelefoni[];
+}
+
+export interface UpdateVoceRubricaInterface {
+    codice: string;
     descrizione: string;
 }
 
@@ -23,11 +36,11 @@ export interface VoceRubrica {
     enteCategoria: CategoriaVoceRubrica;
     indirizzo: string;
     cap: string;
-    codComune: number;
-    siglaProvincia: string;
-    zona: string;
-    noteEnte: string;
-    email: string;
-    telefoni: EnteTelefoni[];
+    telefoni: VoceRubricaTelefoni[];
+    noteEnte?: string;
+    email?: string;
+    codComune?: number;
+    siglaProvincia?: string;
+    zona?: string;
 }
 

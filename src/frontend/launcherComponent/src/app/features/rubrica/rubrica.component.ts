@@ -10,9 +10,9 @@ import { GetUtentiGestione } from '../gestione-utenti/store/actions/gestione-ute
 import { SetCurrentUrl } from '../../shared/store/actions/app/app.actions';
 import { RoutesPath } from '../../shared/enum/routes-path.enum';
 import { SetSediNavbarVisible } from '../../shared/store/actions/sedi-treeview/sedi-treeview.actions';
-import { ClearRicercaRubrica } from './store/actions/ricerca-rubrica/ricerca-rubrica.actions';
+import { ClearRicercaRubrica, SetRicercaRubrica } from './store/actions/ricerca-rubrica/ricerca-rubrica.actions';
 import { AddVoceRubrica, DeleteVoceRubrica, GetRubrica, UpdateVoceRubrica } from './store/actions/rubrica/rubrica.actions';
-import { AddVoceRubricaInterface } from '../../shared/interface/rubrica.interface';
+import { AddVoceRubricaInterface, VoceRubrica } from '../../shared/interface/rubrica.interface';
 
 @Component({
     selector: 'app-rubrica',
@@ -31,6 +31,28 @@ export class RubricaComponent implements OnInit, OnDestroy {
     @Select(LoadingState.loading) loading$: Observable<boolean>;
 
     subscriptions: Subscription = new Subscription();
+    vociRubrica = [
+        {
+            descrizione: 'test1',
+            codSede: 'codTest',
+            ricorsivo: true,
+            enteCategoria: {
+                codice: 'test',
+                descrizione: 'testtest',
+                visibile: 'test',
+                acronimo: 'TEST',
+                cap: '00012',
+            },
+            indirizzo: 'via test dei test',
+            cap: '00012',
+            noteEnte: 'note test e test',
+            email: 'test@test.test',            
+            telefoni: [{                
+                tipo: 'cell',
+                numero: '123456789',
+            }]
+        }
+    ] as VoceRubrica[];
 
     constructor(public modalService: NgbModal,
                 private store: Store) {
@@ -64,6 +86,24 @@ export class RubricaComponent implements OnInit, OnDestroy {
         this.store.dispatch(new GetRubrica(page));
     }
 
+    onAddUtente() {
+        const voceRubrica = {
+            descrizione: 'test1',
+            codSede: 'codTest',
+            ricorsivo: true,
+            codCategoria: 222,
+            indirizzo: 'via test dei test',
+            cap: '00012',
+            noteEnte: 'note test e test',
+            email: 'test@test.test',            
+            telefoni: [{                
+                tipo: 'cell',
+                numero: '123456789',
+            }]
+        } as AddVoceRubricaInterface;
+        this.addVoceRubrica(voceRubrica);
+    }
+
     addVoceRubrica(voceRubrica: AddVoceRubricaInterface) {
         this.store.dispatch(new AddVoceRubrica(voceRubrica));
     }
@@ -76,8 +116,8 @@ export class RubricaComponent implements OnInit, OnDestroy {
         this.store.dispatch(new DeleteVoceRubrica(idEnte));
     }
 
-    onAddUtente() {
-        return;
+    onRicercaRubrica(ricerca: string) {
+        this.store.dispatch(new SetRicercaRubrica(ricerca));
     }
 
     getRicerca() {

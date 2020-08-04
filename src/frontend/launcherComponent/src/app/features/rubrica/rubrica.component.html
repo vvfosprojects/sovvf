@@ -14,7 +14,8 @@
                     </button>
                 </div>
                 <div class="col text-right">
-                    <app-ricerca-rubrica></app-ricerca-rubrica>
+                    <app-ricerca-rubrica [loading]="loading$ | async"
+                                         (ricercaChange)="onRicercaRubrica($event)"></app-ricerca-rubrica>
                 </div>
             </div>
         </div>
@@ -25,7 +26,7 @@
             </h6>
         </div>
         <div class="col-12 col-md-8 mx-auto">
-            <app-tabella-rubrica></app-tabella-rubrica>
+            <app-tabella-rubrica [vociRubrica]="vociRubrica"></app-tabella-rubrica>
         </div>
     </div>
 </div>

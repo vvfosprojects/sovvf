@@ -19,6 +19,10 @@ import { RubricaRouting } from './rubrica.routing';
 import { NgxsModule } from '@ngxs/store';
 import { RicercaRubricaState } from './store/states/ricerca-rubrica/ricerca-rubrica.state';
 import { RubricaState } from './store/states/rubrica/rubrica.state';
+import { SharedModule } from '../../shared/shared.module';
+import { FormsModule } from '@angular/forms';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 
 @NgModule({
@@ -36,6 +40,10 @@ import { RubricaState } from './store/states/rubrica/rubrica.state';
             RubricaState,
             RicercaRubricaState
         ]),
+        SharedModule,
+        FormsModule,
+        NgSelectModule,
+        NgxPaginationModule,
     ],
     entryComponents: [],
     providers: []
