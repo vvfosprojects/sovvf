@@ -34,8 +34,8 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneRubrica
             //MAPPING
             return new RubricaResult()
             {
-                Rubrica = rubricaPaginata,
-                DataArray = query.Pagination
+                DataArray = rubricaPaginata,
+                Pagination = query.Pagination
             };
         }
     }
