@@ -51,6 +51,26 @@ export class RubricaComponent implements OnInit, OnDestroy {
                 tipo: 'cell',
                 numero: '123456789',
             }]
+        },
+        {
+            descrizione: 'test2',
+            codSede: 'codTest',
+            ricorsivo: true,
+            enteCategoria: {
+                codice: 'test',
+                descrizione: 'testtest',
+                visibile: 'test',
+                acronimo: 'TEST',
+                cap: '00012',
+            },
+            indirizzo: 'via testopoli',
+            cap: '00012',
+            noteEnte: 'note test e test',
+            email: 'test@test.test',
+            telefoni: [{
+                tipo: 'cell',
+                numero: '987654321',
+            }]
         }
     ] as VoceRubrica[];
 
