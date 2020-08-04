@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-import { AddVoceRubricaInterface } from '../../../shared/interface/rubrica.interface';
+import { AddVoceRubricaInterface, UpdateVoceRubricaInterface, VoceRubrica } from '../../../shared/interface/rubrica.interface';
 import { FiltersInterface } from '../../../shared/interface/filters.interface';
 import { PaginationInterface } from '../../../shared/interface/pagination.interface';
 
@@ -28,15 +28,15 @@ export class RubricaService {
         return this.http.post(API_ENTE, obj);
     }
 
-    addVoceRubrica(voceRubrica: AddVoceRubricaInterface): Observable<any> {
-        return this.http.post<any>(API_ENTE + '/Add', voceRubrica);
+    addVoceRubrica(voceRubrica: AddVoceRubricaInterface): Observable<VoceRubrica> {
+        return this.http.post<VoceRubrica>(API_ENTE + '/Add', voceRubrica);
     }
 
-    updateVoceRubrica(voceRubrica: any): Observable<any> {
-        return this.http.post<any>(API_ENTE + '/Update', voceRubrica);
+    updateVoceRubrica(voceRubrica: UpdateVoceRubricaInterface): Observable<VoceRubrica> {
+        return this.http.post<VoceRubrica>(API_ENTE + '/Update', voceRubrica);
     }
 
-    deleteVoceRubrica(idVoceRubrica: any): Observable<any> {
-        return this.http.post<any>(API_ENTE + '/Delete', idVoceRubrica);
+    deleteVoceRubrica(idVoceRubrica: string): Observable<boolean> {
+        return this.http.get<boolean>(API_ENTE + '/Delete?Id=' + idVoceRubrica);
     }
 }
