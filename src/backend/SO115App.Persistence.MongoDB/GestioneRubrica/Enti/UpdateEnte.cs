@@ -16,7 +16,7 @@ namespace SO115App.Persistence.MongoDB.GestioneRubrica.Enti
 
         public void Update(EnteIntervenuto ente)
         {
-            var filter = Builders<EnteIntervenuto>.Filter.Eq(s => s.Codice, ente.Codice);
+            var filter = Builders<EnteIntervenuto>.Filter.Eq(s => s.Id, ente.Id);
 
             _dbContext.RubricaCollection.ReplaceOne(filter, ente);
         }

@@ -1,5 +1,6 @@
 ﻿using CQRS.Commands;
 using CQRS.Queries;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.Models.Classi.Utility;
@@ -12,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace SO115App.API.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class GestioneEntiController : ControllerBase
