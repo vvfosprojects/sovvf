@@ -132,8 +132,8 @@ namespace SO115App.Persistence.MongoDB.GestioneRubrica.Enti
                 return lstEnti.Where(c =>
                 {
                     //LOGICA/CONDIZIONI RICORSIVITA'
-                    var padre = listaPin.Find(x => x.Codice == c.SiglaProvincia + ".1000");
-                    var figli = listaPin.Where(x => x.Codice.Contains(c.SiglaProvincia) && x != padre).ToList();
+                    var padre = listaPin.Find(x => x.Codice == c.CodSede.Substring(0, 2) + ".1000");
+                    var figli = listaPin.Where(x => x.Codice.Contains(c.CodSede.Substring(0, 2)) && x != padre).ToList();
 
                     return (padre.Ricorsivo && c.Ricorsivo) || figli.Any(x => x.Ricorsivo);
                 }).ToList();

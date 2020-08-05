@@ -132,11 +132,15 @@ namespace SO115App.API.Controllers
             }
         }
 
-        [HttpPost("GetCategorie")]
-        public async Task<IActionResult> GetCategorie([FromBody] CategorieEntiQuery query)
+        [HttpGet("GetCategorie")]
+        public async Task<IActionResult> GetCategorie()
         {
-            query.IdOperatore = Request.Headers["IdUtente"];
-            query.IdSede = Request.Headers["codicesede"].ToString().Split(',');
+            var query = new CategorieEntiQuery()
+            {
+                IdOperatore = Request.Headers["IdUtente"],
+                IdSede = Request.Headers["codicesede"]
+            };
+
             try
             {
                 return Ok(_categorieQueryHandler.Handle(query));
