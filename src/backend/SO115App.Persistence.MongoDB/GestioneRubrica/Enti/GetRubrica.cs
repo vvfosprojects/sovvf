@@ -126,11 +126,6 @@ namespace SO115App.Persistence.MongoDB.GestioneRubrica.Enti
             };
         }
 
-        public int GetTotalItems()
-        {
-            return (int)_dbContext.RubricaCollection.Count(c => true);
-        }
-
         private static List<EnteIntervenuto> FiltraByRicorsività(List<PinNodo> listaPin, List<EnteIntervenuto> lstEnti)
         {
             if (lstEnti.Count > 0)
