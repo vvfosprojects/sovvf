@@ -42,10 +42,11 @@ namespace SO115App.API.Controllers
         [HttpPost("")]
         public async Task<IActionResult> Get([FromBody]RubricaQuery rubricaQuery)
         {
-            rubricaQuery.IdOperatore = Request.Headers["IdUtente"];
-            rubricaQuery.IdSede = Request.Headers["codicesede"].ToString().Split(',');
             try
             {
+                rubricaQuery.IdOperatore = Request.Headers["IdUtente"];
+                rubricaQuery.IdSede = Request.Headers["codicesede"].ToString().Split(',');
+
                 return Ok(_rubricaQueryHandler.Handle(rubricaQuery));
             }
             catch (Exception ex)
@@ -143,7 +144,7 @@ namespace SO115App.API.Controllers
 
             try
             {
-                return Ok(_categorieQueryHandler.Handle(query));
+                return Ok(_categorieQueryHandler.Handle(query).DataArray);
             }
             catch (Exception ex)
             {
