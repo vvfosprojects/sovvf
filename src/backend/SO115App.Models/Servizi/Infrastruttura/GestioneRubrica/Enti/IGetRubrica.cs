@@ -15,5 +15,7 @@ namespace SO115App.Models.Servizi.Infrastruttura.GestioneRubrica.Enti
         List<EnteDTO> Get(string[] CodSede, string search = null);
 
         List<EnteDTO> GetBylstCodici(int[] lstCodici);
+
+        EnteDTO Get(string Id);
     }
 }

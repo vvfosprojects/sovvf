@@ -6,5 +6,6 @@
 
         public string[] CodiceSede { get; set; }
         public string idOperatore { get; set; }
+        public bool Ricorsivo { get; set; }
     }
 }

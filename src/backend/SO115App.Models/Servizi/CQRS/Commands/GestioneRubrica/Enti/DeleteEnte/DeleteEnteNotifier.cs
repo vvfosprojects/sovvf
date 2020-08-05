@@ -10,7 +10,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneRubrica.Enti.DeleteEnte
 
         public void Notify(DeleteEnteCommand command)
         {
-            //_notifier.SendNotification(command);
+            _notifier.SendNotification(command);
         }
     }
 }
