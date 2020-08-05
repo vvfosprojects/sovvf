@@ -323,7 +323,7 @@ export class SignalRService {
          */
         this.hubNotification.on('NotifyAddEnte', (voceRubrica: VoceRubrica) => {
             console.log('NotifyAddEnte', voceRubrica);
-            this.store.dispatch(new AddVoceRubrica(voceRubrica));
+            this.store.dispatch(new AddVoceRubrica());
         });
 
         this.hubNotification.on('NotifyUpdateEnte', (voceRubrica: VoceRubrica) => {
