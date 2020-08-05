@@ -10,6 +10,8 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneRubrica.Enti.AddEnte
 
         public void Handle(AddEnteCommand command)
         {
+            command.Ente.CodSede = command.CodiceSede[0];
+
             _addEnte.Add(command.Ente);
         }
     }

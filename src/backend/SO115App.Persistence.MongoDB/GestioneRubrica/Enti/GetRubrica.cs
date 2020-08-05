@@ -97,14 +97,43 @@ namespace SO115App.Persistence.MongoDB.GestioneRubrica.Enti
             }).ToList();
         }
 
+        /// <summary>
+        /// Il metodo pesca DIRETTAMENTE l'oggetto sul db senza considerare nulla
+        /// </summary>
+        public EnteDTO Get(string Id)
+        {
+            var ente = _dbContext.RubricaCollection.Find(c => c.Id == Id).FirstOrDefault();
+
+            var categoria = _getCategorieEnte.Get(new string[] { ente.CodCategoria.ToString() });
+
+            //MAPPING
+            return new EnteDTO()
+            {
+                Id = ente.Id,
+                Codice = ente.Codice,
+                Cap = ente.Cap,
+                Categoria = categoria.FirstOrDefault(),
+                CodComune = ente.CodComune,
+                CodSede = ente.CodSede,
+                Descrizione = ente.Descrizione,
+                Email = ente.Email,
+                Indirizzo = ente.Indirizzo,
+                NoteEnte = ente.NoteEnte,
+                Ricorsivo = ente.Ricorsivo,
+                SiglaProvincia = ente.SiglaProvincia,
+                Telefoni = ente.Telefoni,
+                Zona = ente.Zona
+            };
+        }
+
         private static List<EnteIntervenuto> FiltraByRicorsività(List<PinNodo> listaPin, List<EnteIntervenuto> lstEnti)
         {
             if (lstEnti.Count > 0)
                 return lstEnti.Where(c =>
                 {
                     //LOGICA/CONDIZIONI RICORSIVITA'
-                    var padre = listaPin.Find(x => x.Codice == c.SiglaProvincia + ".1000");
-                    var figli = listaPin.Where(x => x.Codice.Contains(c.SiglaProvincia) && x != padre).ToList();
+                    var padre = listaPin.Find(x => x.Codice == c.CodSede.Substring(0, 2) + ".1000");
+                    var figli = listaPin.Where(x => x.Codice.Contains(c.CodSede.Substring(0, 2)) && x != padre).ToList();
 
                     return (padre.Ricorsivo && c.Ricorsivo) || figli.Any(x => x.Ricorsivo);
                 }).ToList();

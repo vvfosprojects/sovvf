@@ -34,12 +34,10 @@ namespace SO115App.SignalR.Sender.GestioneEnti
             else
                 SediDaNotificare.Add(command.CodiceSede[0]);
 
-            var ListaEnti = _getRurbica.Get(command.CodiceSede);
-
-            var enteDaSpedire = ListaEnti.Find(x => x.Id.Equals(command.Ente.Id));
+            var enteDaSpedire = _getRurbica.Get(command.Ente.Id);
 
             foreach (var sede in SediDaNotificare)
-                await _notificationHubContext.Clients.Group(sede).SendAsync("ModifyAndNotifySuccess", enteDaSpedire);
+                await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyUpdateEnte", enteDaSpedire);
         }
     }
 }

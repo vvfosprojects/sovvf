@@ -16,5 +16,13 @@ namespace SO115App.Persistence.MongoDB.GestioneRubrica.Categorie
         {
             return _dbContext.CategorieEntiCollection.Find(c => codici.Contains(c.Codice)).ToList();
         }
+
+        /// <summary>
+        /// Il metodo pesca DIRETTAMENTE tutte le categorie dal db senza alcuna considerazione
+        /// </summary>
+        public List<CategoriaEnte> Get()
+        {
+            return _dbContext.CategorieEntiCollection.Find(c => c.Id != null).ToList();
+        }
     }
 }

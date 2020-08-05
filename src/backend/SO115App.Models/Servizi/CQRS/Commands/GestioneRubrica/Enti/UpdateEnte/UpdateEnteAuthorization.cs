@@ -36,9 +36,9 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneRubrica.Enti.UpdateEnte
                     Boolean abilitato = false;
                     foreach (var ruolo in user.Ruoli)
                     {
-                        if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, command.Ente.CodSede, Costanti.GestoreChiamate))
+                        if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, command.CodiceSede[0], Costanti.GestoreChiamate))
                             abilitato = true;
-                        if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, command.Ente.CodSede, Costanti.GestoreRichieste))
+                        if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, command.CodiceSede[0], Costanti.GestoreRichieste))
                             abilitato = true;
                     }
 
