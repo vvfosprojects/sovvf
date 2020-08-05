@@ -136,14 +136,14 @@ namespace SO115App.API.Controllers
         [HttpGet("GetCategorie")]
         public async Task<IActionResult> GetCategorie()
         {
-            var query = new CategorieEntiQuery()
-            {
-                IdOperatore = Request.Headers["IdUtente"],
-                IdSede = Request.Headers["codicesede"]
-            };
-
             try
             {
+                var query = new CategorieEntiQuery()
+                {
+                    IdOperatore = Request.Headers["IdUtente"],
+                    IdSede = Request.Headers["codicesede"]
+                };
+
                 return Ok(_categorieQueryHandler.Handle(query).DataArray);
             }
             catch (Exception ex)
