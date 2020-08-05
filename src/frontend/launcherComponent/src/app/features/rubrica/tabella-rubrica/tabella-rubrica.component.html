@@ -65,14 +65,19 @@
                 </div>
             </td>
         </tr>
+        <tr *ngIf="vociRubrica?.length <= 0">
+            <td></td>
+            <td>    
+                <ng-template [ngIf]="!loading">Nessuna Voce trovata</ng-template>
+                <ng-template [ngIf]="loading">Caricamento risultati in corso...</ng-template></td>
+            <td></td>
+            <td></td>
+        </tr>
+
         </tbody>
     </table>
-    <div>
-        <ng-template [ngIf]="!loading && vociRubrica?.length <= 0">Nessuna Voce trovata</ng-template>
-        <ng-template [ngIf]="loading">Caricamento risultati in corso...</ng-template>
-    </div>
 </div>
-<div class="d-flex justify-content-between p-2">
+<div *ngIf="vociRubrica?.length > 0" class="d-flex justify-content-between p-2">
     <app-voci-rubrica-per-pagina [pageSize]="pageSize" [pageSizes]="pageSizes"
                                  (pageSizeChange)="pageSizeChange.emit($event)"></app-voci-rubrica-per-pagina>
     <pagination-controls class="mt-1 mb-0" [previousLabel]="'Precedente'" [nextLabel]="'Successiva'"
