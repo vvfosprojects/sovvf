@@ -64,6 +64,7 @@ export class VoceRubricaModalComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
+        this.voceRubricaForm.reset();
         this.subscription.unsubscribe();
     }
 

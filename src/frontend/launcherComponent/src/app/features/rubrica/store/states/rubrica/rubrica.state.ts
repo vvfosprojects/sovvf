@@ -1,7 +1,7 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
-import { insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
+import { patch, removeItem, updateItem } from '@ngxs/store/operators';
 import { StartLoading, StopLoading } from '../../../../../shared/store/actions/loading/loading.actions';
-import { CategoriaVoceRubrica, TipoTelefono, VoceRubrica, VoceRubricaTelefono } from '../../../../../shared/interface/rubrica.interface';
+import { CategoriaVoceRubrica, TipoTelefono, VoceRubrica } from '../../../../../shared/interface/rubrica.interface';
 import {
     RequestAddVoceRubrica,
     ClearFormVoceRubrica,
@@ -10,14 +10,15 @@ import {
     GetRubrica,
     SetCategorieVoceRubrica,
     SetRubrica,
-    RequestUpdateVoceRubrica, AddVoceRubrica, UpdateVoceRubrica, DeleteVoceRubrica
+    RequestUpdateVoceRubrica,
+    AddVoceRubrica,
+    UpdateVoceRubrica,
+    DeleteVoceRubrica
 } from '../../actions/rubrica/rubrica.actions';
 import { RubricaService } from '../../../../../core/service/rubrica-service/rubrica.service';
 import { RicercaRubricaState } from '../ricerca-rubrica/ricerca-rubrica.state';
 import { ResponseInterface } from '../../../../../shared/interface/response.interface';
 import { PatchPagination } from '../../../../../shared/store/actions/pagination/pagination.actions';
-import { TreeviewSelezione } from '../../../../../shared/model/treeview-selezione.model';
-import { RicercaUtentiState } from '../../../../gestione-utenti/store/states/ricerca-utenti/ricerca-utenti.state';
 import { PaginationState } from '../../../../../shared/store/states/pagination/pagination.state';
 
 export interface RubricaStateModel {
@@ -149,7 +150,7 @@ export class RubricaState {
         }
 
         this.rubricaService.addVoceRubrica(newVoceRubrica).subscribe((voceRubrica: VoceRubrica) => {
-            dispatch(new AddVoceRubrica(voceRubrica));
+            // dispatch(new AddVoceRubrica());
         });
     }
 
@@ -169,12 +170,11 @@ export class RubricaState {
     }
 
     @Action(AddVoceRubrica)
-    addVoceRubrica({ setState, getState }: StateContext<RubricaStateModel>, action: AddVoceRubrica) {
-        setState(
-            patch({
-                vociRubrica: insertItem<VoceRubrica>(action.voceRubrica)
-            })
-        );
+    addVoceRubrica({ dispatch }: StateContext<RubricaStateModel>) {
+        const pagina = this.store.selectSnapshot(PaginationState.page);
+        if (pagina === 1) {
+            dispatch(new GetRubrica());
+        }
     }
 
 

@@ -34,9 +34,6 @@ export class RequestDeleteVoceRubrica {
 
 export class AddVoceRubrica {
     static readonly type = '[Rubrica] Add Voce Rubrica';
-
-    constructor(public voceRubrica: VoceRubrica) {
-    }
 }
 
 export class UpdateVoceRubrica {
