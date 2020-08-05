@@ -36,8 +36,8 @@ export class RubricaService {
         return this.http.post<VoceRubrica>(API_ENTE + '/Update', voceRubrica);
     }
 
-    deleteVoceRubrica(idVoceRubrica: string): Observable<boolean> {
-        return this.http.get<boolean>(API_ENTE + '/Delete?Id=' + idVoceRubrica);
+    deleteVoceRubrica(idVoceRubrica: string): Observable<string> {
+        return this.http.get<string>(API_ENTE + '/Delete?Id=' + idVoceRubrica);
     }
 
     getCategorieVoceRubrica(): Observable<CategoriaVoceRubrica[]> {

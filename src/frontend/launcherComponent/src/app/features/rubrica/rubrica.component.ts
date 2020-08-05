@@ -15,7 +15,6 @@ import { VoceRubrica } from '../../shared/interface/rubrica.interface';
 import { VoceRubricaModalComponent } from '../../shared/modal/voce-rubrica-modal/voce-rubrica-modal.component';
 import { RubricaState } from './store/states/rubrica/rubrica.state';
 import { ConfirmModalComponent } from '../../shared';
-import { GetUtentiGestione } from '../gestione-utenti/store/actions/gestione-utenti/gestione-utenti.actions';
 
 @Component({
     selector: 'app-rubrica',

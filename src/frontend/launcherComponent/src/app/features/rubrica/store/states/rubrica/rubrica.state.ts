@@ -150,7 +150,7 @@ export class RubricaState {
         }
 
         this.rubricaService.addVoceRubrica(newVoceRubrica).subscribe((voceRubrica: VoceRubrica) => {
-            // dispatch(new AddVoceRubrica());
+            dispatch(new AddVoceRubrica());
         });
     }
 
@@ -164,8 +164,8 @@ export class RubricaState {
 
     @Action(RequestDeleteVoceRubrica)
     requestDeleteVoceRubrica({ setState, dispatch }: StateContext<RubricaStateModel>, action: RequestDeleteVoceRubrica) {
-        this.rubricaService.deleteVoceRubrica(action.idVoceRubrica).subscribe(() => {
-            dispatch(new DeleteVoceRubrica(action.idVoceRubrica));
+        this.rubricaService.deleteVoceRubrica(action.idVoceRubrica).subscribe((idVoceRubrica: string) => {
+            dispatch(new DeleteVoceRubrica(idVoceRubrica));
         });
     }
 
