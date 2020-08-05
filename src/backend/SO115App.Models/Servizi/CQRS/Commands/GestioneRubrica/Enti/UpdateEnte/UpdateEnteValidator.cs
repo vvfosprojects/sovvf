@@ -19,6 +19,9 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneRubrica.Enti.UpdateEnte
 
                 else
                 {
+                    if (command.Ente.Codice == 0)
+                        yield return new ValidationResult("Nessun codice selezionato");
+
                     if (command.Ente.CodCategoria == 0)
                         yield return new ValidationResult("Nessuna categoria selezionata");
 
