@@ -1,3 +1,5 @@
+import { PaginationInterface } from './pagination.interface';
+
 export interface CategoriaVoceRubrica {
     codice: string;
     descrizione: string;
@@ -27,9 +29,28 @@ export interface AddVoceRubricaInterface {
     telefoni: VoceRubricaTelefono[];
 }
 
+export interface ResponseAddVoceRubricaInterface {
+    data: VoceRubrica;
+    pagination: PaginationInterface;
+}
+
 export interface UpdateVoceRubricaInterface {
     codice: string;
     descrizione: string;
+}
+
+export interface ResponseUpdateVoceRubricaInterface {
+    data: VoceRubrica;
+    pagination: PaginationInterface;
+}
+
+export interface DeleteVoceRubricaInterface {
+    idVoceRubrica: string;
+}
+
+export interface ResponseDeleteVoceRubricaInterface {
+    data: string;
+    pagination: PaginationInterface;
 }
 
 export interface VoceRubrica {

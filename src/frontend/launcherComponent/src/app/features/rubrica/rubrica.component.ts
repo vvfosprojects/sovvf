@@ -114,7 +114,7 @@ export class RubricaComponent implements OnInit, OnDestroy {
             (val) => {
                 switch (val) {
                     case 'ok':
-                        this.store.dispatch(new RequestDeleteVoceRubrica(payload.idVoceRubrica));
+                        this.store.dispatch(new RequestDeleteVoceRubrica({ idVoceRubrica: payload.idVoceRubrica }));
                         break;
                     case 'ko':
                         // console.log('Azione annullata');

@@ -55,6 +55,7 @@ import { ClearCurrentUser, UpdateRuoliPersonali } from '../../features/auth/stor
 import { ViewComponentState } from '../../features/home/store/states/view/view.state';
 import { VoceRubrica } from '../../shared/interface/rubrica.interface';
 import { AddVoceRubrica, DeleteVoceRubrica, UpdateVoceRubrica } from '../../features/rubrica/store/actions/rubrica/rubrica.actions';
+import { SetEnti } from '../../shared/store/actions/enti/enti.actions';
 
 const HUB_URL = environment.baseUrl + environment.signalRHub;
 const SIGNALR_BYPASS = !environment.signalR;
@@ -321,6 +322,11 @@ export class SignalRService {
         /**
          * Rubrica
          */
+        this.hubNotification.on('NotifyChangeEnti', (enti: VoceRubrica[]) => {
+            console.log('NotifyChangeEnti', enti);
+            this.store.dispatch(new SetEnti(enti));
+        });
+
         this.hubNotification.on('NotifyAddEnte', (voceRubrica: VoceRubrica) => {
             console.log('NotifyAddEnte', voceRubrica);
             this.store.dispatch(new AddVoceRubrica());
