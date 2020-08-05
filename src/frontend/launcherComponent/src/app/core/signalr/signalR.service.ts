@@ -53,6 +53,8 @@ import { MezzoComposizione } from '../../features/home/composizione-partenza/int
 import { AuthState } from '../../features/auth/store/auth.state';
 import { ClearCurrentUser, UpdateRuoliPersonali } from '../../features/auth/store/auth.actions';
 import { ViewComponentState } from '../../features/home/store/states/view/view.state';
+import { VoceRubrica } from '../../shared/interface/rubrica.interface';
+import { AddVoceRubrica, DeleteVoceRubrica, UpdateVoceRubrica } from '../../features/rubrica/store/actions/rubrica/rubrica.actions';
 
 const HUB_URL = environment.baseUrl + environment.signalRHub;
 const SIGNALR_BYPASS = !environment.signalR;
@@ -306,14 +308,6 @@ export class SignalRService {
             }
         });
 
-        // Todo: è ancora utilizzato?
-        /*this.hubNotification.on('NotifyRefreshUtenti', (idUtente: string) => {
-            console.log('NotifyRefreshUtenti', idUtente);
-            if (idUtente) {
-                this.store.dispatch(new UpdateUtenteGestioneInLista(idUtente));
-            }
-        });*/
-
         this.hubNotification.on('NotifyDeleteUtente', (idUtente: string) => {
             console.log('NotifyDeleteUtente', idUtente);
             const utenteAttuale = this.store.selectSnapshot(AuthState.currentUser);
@@ -322,6 +316,24 @@ export class SignalRService {
                 this.store.dispatch(new Navigate(['/login']));
             }
             this.store.dispatch(new SuccessRemoveUtente(idUtente));
+        });
+
+        /**
+         * Rubrica
+         */
+        this.hubNotification.on('NotifyAddEnte', (voceRubrica: VoceRubrica) => {
+            console.log('NotifyAddEnte', voceRubrica);
+            this.store.dispatch(new AddVoceRubrica(voceRubrica));
+        });
+
+        this.hubNotification.on('NotifyUpdateEnte', (voceRubrica: VoceRubrica) => {
+            console.log('NotifyUpdateEnte', voceRubrica);
+            this.store.dispatch(new UpdateVoceRubrica(voceRubrica));
+        });
+
+        this.hubNotification.on('NotifyDeleteEnte', (idVoceRubrica: string) => {
+            console.log('NotifyDeleteEnte', idVoceRubrica);
+            this.store.dispatch(new DeleteVoceRubrica(idVoceRubrica));
         });
 
         /**

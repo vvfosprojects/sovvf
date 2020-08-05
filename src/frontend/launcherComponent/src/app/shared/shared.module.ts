@@ -9,6 +9,7 @@ import * as Shared from './index';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { ListaPartenzeComponent } from './components/lista-partenze/lista-partenze.component';
 import { VoceRubricaModalComponent } from './modal/voce-rubrica-modal/voce-rubrica-modal.component';
+import { NgxsFormPluginModule } from '@ngxs/form-plugin';
 
 const COMPONENTS = [
     Shared.DebounceClickDirective,
@@ -42,7 +43,8 @@ const COMPONENTS = [
         NgbModule,
         PipeModule,
         TreeviewModule.forRoot(),
-        NgSelectModule
+        NgSelectModule,
+        NgxsFormPluginModule.forRoot()
     ],
     declarations: [
         ...COMPONENTS,

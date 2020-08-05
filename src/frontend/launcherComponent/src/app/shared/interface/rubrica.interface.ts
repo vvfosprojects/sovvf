@@ -6,14 +6,18 @@ export interface CategoriaVoceRubrica {
     cap: string;
 }
 
+export enum TipoTelefono {
+    Telefono = 'Telefono',
+    Fax = 'Fax'
+}
+
 export interface VoceRubricaTelefono {
-    tipo: string;
+    tipo: TipoTelefono;
     numero: string;
 }
 
 export interface AddVoceRubricaInterface {
     descrizione: string;
-    codSede: string[];
     ricorsivo: boolean;
     codCategoria: number;
     indirizzo: string;

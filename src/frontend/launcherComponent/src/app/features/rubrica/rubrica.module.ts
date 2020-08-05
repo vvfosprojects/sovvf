@@ -6,6 +6,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { TreeviewModule } from 'ngx-treeview';
 import { NgxsModule } from '@ngxs/store';
+import { NgxsFormPluginModule } from '@ngxs/form-plugin';
 /**
  * Component
  */
@@ -45,6 +46,7 @@ import { RubricaState } from './store/states/rubrica/rubrica.state';
             RubricaState,
             RicercaRubricaState
         ]),
+        NgxsFormPluginModule.forRoot(),
         FormsModule,
         NgSelectModule,
         NgxPaginationModule,

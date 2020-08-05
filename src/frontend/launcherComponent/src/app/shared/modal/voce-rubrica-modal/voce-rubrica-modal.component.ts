@@ -2,14 +2,12 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import { LoadingState } from '../../store/states/loading/loading.state';
 import { Observable, Subscription } from 'rxjs';
-import { TreeviewSelezione } from '../../model/treeview-selezione.model';
-import { SediTreeviewState } from '../../store/states/sedi-treeview/sedi-treeview.state';
-import { TreeItem, TreeviewItem } from 'ngx-treeview';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { UpdateFormValue } from '@ngxs/form-plugin';
-import { findItem } from '../../store/states/sedi-treeview/sedi-treeview.helper';
 import { RubricaState } from '../../../features/rubrica/store/states/rubrica/rubrica.state';
+import { CategoriaVoceRubrica } from '../../interface/rubrica.interface';
+import { ClearFormVoceRubrica } from '../../../features/rubrica/store/actions/rubrica/rubrica.actions';
 
 @Component({
     selector: 'app-voce-rubrica-modal',
@@ -19,18 +17,12 @@ import { RubricaState } from '../../../features/rubrica/store/states/rubrica/rub
 export class VoceRubricaModalComponent implements OnInit, OnDestroy {
 
     @Select(LoadingState.loading) loading$: Observable<boolean>;
+    @Select(RubricaState.categorieVoceRubrica) categorieVoceRubrica$: Observable<CategoriaVoceRubrica[]>;
     @Select(RubricaState.formValid) formValid$: Observable<boolean>;
     formValid: boolean;
-    @Select(RubricaState.sedeSelezionata) sediSelezionate$: Observable<TreeviewSelezione[]>;
-    sediSelezionate: string;
-    @Select(SediTreeviewState.listeSediNavbar) listeSediNavbar$: Observable<TreeItem>;
-    listeSediNavbar: TreeviewItem[];
-
-    ruoli: string[] = [];
 
     voceRubricaForm: FormGroup;
-    checkboxState: { id: string, status: boolean, label: string, disabled: boolean };
-    treeviewState: { disabled: boolean };
+    checkboxRicorsivoState: { id: string, status: boolean, label: string, disabled: boolean };
     submitted: boolean;
 
     subscription: Subscription = new Subscription();
@@ -40,24 +32,32 @@ export class VoceRubricaModalComponent implements OnInit, OnDestroy {
                 private fb: FormBuilder) {
         this.initForm();
         this.getFormValid();
-        this.inizializzaSediTreeview();
-        this.getSediSelezionate();
     }
 
     initForm() {
         this.voceRubricaForm = new FormGroup({
             descrizione: new FormControl(),
-            sedi: new FormControl(),
-            ricorsivo: new FormControl()
+            ricorsivo: new FormControl(),
+            codCategoria: new FormControl(),
+            indirizzo: new FormControl(),
+            cap: new FormControl(),
+            noteEnte: new FormControl(),
+            email: new FormControl(),
+            telefono: new FormControl(),
+            fax: new FormControl()
         });
         this.voceRubricaForm = this.fb.group({
             descrizione: [null, Validators.required],
-            sedi: [null, Validators.required],
-            ricorsivo: [true, Validators.required]
+            ricorsivo: [null, Validators.required],
+            codCategoria: [null, Validators.required],
+            indirizzo: [null, Validators.required],
+            cap: [null, Validators.required],
+            noteEnte: [null],
+            email: [null],
+            telefono: [null],
+            fax: [null]
         });
-        // Init disabled input
-        this.checkboxState = { id: 'ricorsivo', status: this.f.ricorsivo.value, label: 'Ricorsivo', disabled: false };
-        this.treeviewState = { disabled: false };
+        this.checkboxRicorsivoState = { id: 'ricorsivo', status: this.f.ricorsivo.value, label: 'Visibile ai Distaccamenti', disabled: false };
     }
 
     ngOnInit(): void {
@@ -79,45 +79,8 @@ export class VoceRubricaModalComponent implements OnInit, OnDestroy {
         return this.voceRubricaForm.controls;
     }
 
-    inizializzaSediTreeview() {
-        this.subscription.add(
-            this.listeSediNavbar$.subscribe((listaSedi: TreeItem) => {
-                this.listeSediNavbar = [];
-                this.listeSediNavbar[0] = new TreeviewItem(listaSedi);
-            })
-        );
-    }
-
-    onPatchSedi(event: TreeviewSelezione[]) {
-        this.f.sedi.patchValue(event);
-    }
-
-    getSediSelezionate() {
-        this.subscription.add(
-            this.sediSelezionate$.subscribe((sedi: TreeviewSelezione[]) => {
-                const listaSediNavbar = this.store.selectSnapshot(SediTreeviewState.listeSediNavbar);
-                console.log('sedi selezionate', sedi);
-                if (listaSediNavbar && sedi && sedi.length >= 0) {
-                    switch (sedi.length) {
-                        case 0:
-                            this.sediSelezionate = 'nessuna sede selezionata';
-                            break;
-                        case 1:
-                            this.sediSelezionate = findItem(listaSediNavbar, sedi[0].idSede).text;
-                            break;
-                        default:
-                            this.sediSelezionate = 'più sedi selezionate';
-                            break;
-                    }
-                } else {
-                    this.sediSelezionate = 'Caricamento...';
-                }
-            })
-        );
-    }
-
     setRicorsivoValue(value: { id: string, status: boolean }) {
-        this.checkboxState.status = value.status;
+        this.checkboxRicorsivoState.status = value.status;
         this.f[value.id].patchValue(value.status);
         this.store.dispatch(new UpdateFormValue({
             value: {

@@ -10,7 +10,7 @@ import { SetCurrentUrl } from '../../shared/store/actions/app/app.actions';
 import { RoutesPath } from '../../shared/enum/routes-path.enum';
 import { SetSediNavbarVisible } from '../../shared/store/actions/sedi-treeview/sedi-treeview.actions';
 import { ClearRicercaRubrica, SetRicercaRubrica } from './store/actions/ricerca-rubrica/ricerca-rubrica.actions';
-import { AddVoceRubrica, DeleteVoceRubrica, GetRubrica, UpdateVoceRubrica } from './store/actions/rubrica/rubrica.actions';
+import { RequestAddVoceRubrica, RequestDeleteVoceRubrica, GetCategorieVoceRubrica, GetRubrica, RequestUpdateVoceRubrica, ClearFormVoceRubrica } from './store/actions/rubrica/rubrica.actions';
 import { VoceRubrica } from '../../shared/interface/rubrica.interface';
 import { VoceRubricaModalComponent } from '../../shared/modal/voce-rubrica-modal/voce-rubrica-modal.component';
 import { RubricaState } from './store/states/rubrica/rubrica.state';
@@ -45,6 +45,7 @@ export class RubricaComponent implements OnInit, OnDestroy {
         this.getRicerca();
         this.getPageSize();
         this.getRubrica(true);
+        this.getCategorieVoceRubrica();
     }
 
 
@@ -79,23 +80,23 @@ export class RubricaComponent implements OnInit, OnDestroy {
                 if (result.success) {
                     this.addVoceRubrica();
                 } else if (!result.success) {
-                    // this.store.dispatch(new ClearDataModalAddUtenteModal());
+                    this.store.dispatch(new ClearFormVoceRubrica());
                     console.log('Modal "addVoceRubrica" chiusa con val ->', result);
                 }
             },
             (err) => {
-                // this.store.dispatch(new ClearDataModalAddUtenteModal());
+                this.store.dispatch(new ClearFormVoceRubrica());
                 console.error('Modal chiusa senza bottoni. Err ->', err);
             }
         );
     }
 
     addVoceRubrica() {
-        this.store.dispatch(new AddVoceRubrica());
+        this.store.dispatch(new RequestAddVoceRubrica());
     }
 
     updateVoceRubrica(ente: any) {
-        this.store.dispatch(new UpdateVoceRubrica(ente));
+        this.store.dispatch(new RequestUpdateVoceRubrica(ente));
     }
 
     onDeleteVoceRubrica(payload: { idVoceRubrica: string, descrizioneVoceRubrica: string }) {
@@ -114,7 +115,7 @@ export class RubricaComponent implements OnInit, OnDestroy {
             (val) => {
                 switch (val) {
                     case 'ok':
-                        this.store.dispatch(new DeleteVoceRubrica(payload.idVoceRubrica));
+                        this.store.dispatch(new RequestDeleteVoceRubrica(payload.idVoceRubrica));
                         break;
                     case 'ko':
                         // console.log('Azione annullata');
@@ -160,5 +161,9 @@ export class RubricaComponent implements OnInit, OnDestroy {
                 }
             })
         );
+    }
+
+    getCategorieVoceRubrica() {
+        this.store.dispatch(new GetCategorieVoceRubrica());
     }
 }

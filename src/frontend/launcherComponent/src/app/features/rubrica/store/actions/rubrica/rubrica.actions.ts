@@ -1,27 +1,48 @@
-import { UpdateVoceRubricaInterface, VoceRubrica } from '../../../../../shared/interface/rubrica.interface';
+import { CategoriaVoceRubrica, UpdateVoceRubricaInterface, VoceRubrica } from '../../../../../shared/interface/rubrica.interface';
 
-export class GetRubrica  {
+export class GetRubrica {
     static readonly type = '[Rubrica] Get Rubrica';
 
     constructor(public page?: number) {
     }
 }
 
-export class SetRubrica  {
+export class SetRubrica {
     static readonly type = '[Rubrica] Set Voci Rubrica';
 
     constructor(public vociRubrica: VoceRubrica[]) {
     }
 }
 
-export class AddVoceRubrica  {
+export class RequestAddVoceRubrica {
+    static readonly type = '[Rubrica] Request Add Voce Rubrica';
+}
+
+export class RequestUpdateVoceRubrica {
+    static readonly type = '[Rubrica] Request Update Voce Rubrica';
+
+    constructor(public voceRubrica: UpdateVoceRubricaInterface) {
+    }
+}
+
+export class RequestDeleteVoceRubrica {
+    static readonly type = '[Rubrica] Request Delete Voce Rubrica';
+
+    constructor(public idVoceRubrica: string) {
+    }
+}
+
+export class AddVoceRubrica {
     static readonly type = '[Rubrica] Add Voce Rubrica';
+
+    constructor(public voceRubrica: VoceRubrica) {
+    }
 }
 
 export class UpdateVoceRubrica {
     static readonly type = '[Rubrica] Update Voce Rubrica';
 
-    constructor(public voceRubrica: UpdateVoceRubricaInterface) {
+    constructor(public voceRubrica: VoceRubrica) {
     }
 }
 
@@ -30,4 +51,19 @@ export class DeleteVoceRubrica {
 
     constructor(public idVoceRubrica: string) {
     }
+}
+
+export class GetCategorieVoceRubrica {
+    static readonly type = '[Rubrica] Get Categorie Voce Rubrica';
+}
+
+export class SetCategorieVoceRubrica {
+    static readonly type = '[Rubrica] Set Categorie Voce Rubrica';
+
+    constructor(public categorieVoceRubrica: CategoriaVoceRubrica[]) {
+    }
+}
+
+export class ClearFormVoceRubrica {
+    static readonly type = '[Rubrica] Clear Form Voce Rubrica';
 }

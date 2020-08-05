@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-import { AddVoceRubricaInterface, UpdateVoceRubricaInterface, VoceRubrica } from '../../../shared/interface/rubrica.interface';
+import { AddVoceRubricaInterface, CategoriaVoceRubrica, UpdateVoceRubricaInterface, VoceRubrica } from '../../../shared/interface/rubrica.interface';
 import { FiltersInterface } from '../../../shared/interface/filters.interface';
 import { PaginationInterface } from '../../../shared/interface/pagination.interface';
 
@@ -38,5 +38,9 @@ export class RubricaService {
 
     deleteVoceRubrica(idVoceRubrica: string): Observable<boolean> {
         return this.http.get<boolean>(API_ENTE + '/Delete?Id=' + idVoceRubrica);
+    }
+
+    getCategorieVoceRubrica(): Observable<CategoriaVoceRubrica[]> {
+        return this.http.get<CategoriaVoceRubrica[]>(API_ENTE + '/GetCategorie');
     }
 }

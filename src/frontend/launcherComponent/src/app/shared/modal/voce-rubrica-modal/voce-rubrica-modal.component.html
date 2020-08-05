@@ -7,26 +7,56 @@
 </div>
 <div class="modal-body height">
     <form [formGroup]="voceRubricaForm" ngxsForm="rubrica.voceRubricaForm">
-        <div class="mb-3">
-            <label for="sede">Sede</label>
-            <div class="border rounded">
-                <app-shared-treeview id="sede" class="height-test" [items]="listeSediNavbar"
-                                     [testoSedeSelezionata]="sediSelezionate" [placement]="'bottom-left'"
-                                     [visualizzaTasti]="false" [disabled]="treeviewState.disabled"
-                                     (confermaSelezione)="onPatchSedi($event)">
-                </app-shared-treeview>
-            </div>
-            <div *ngIf="submitted && f.sedi.errors" class="text-danger mt-1">
-                <div *ngIf="f.sedi.errors.required">Campo Obbligatorio</div>
-            </div>
+        <div class="form-group">
+            <label for="descrizione">Nome</label>
+            <input id="descrizione" type="text" formControlName="descrizione" class="form-control"
+                   placeholder="Inserisci il nome">
         </div>
-        <div class="mb-3">
-            <app-checkbox appClickStopPropagation [checkboxState]="checkboxState"
+        <div class="form-group">
+            <label for="categoria">Categoria</label>
+            <ng-select id="categoria"
+                       [items]="categorieVoceRubrica$ | async"
+                       bindLabel="descrizione"
+                       bindValue="codice"
+                       formControlName="codCategoria"
+                       placeholder="Seleziona una categoria"
+                       notFoundText="Nessuna Categoria trovata"
+                       [virtualScroll]="true">
+            </ng-select>
+        </div>
+        <div class="form-group">
+            <label for="indirizzo">Indirizzo</label>
+            <input id="indirizzo" type="text" formControlName="indirizzo" class="form-control"
+                   placeholder="Inserisci un indirizzo">
+        </div>
+        <div class="form-group">
+            <label for="cap">Cap</label>
+            <input id="cap" type="text" formControlName="cap" class="form-control"
+                   placeholder="Inserisci il cap">
+        </div>
+        <div class="form-group">
+            <label for="telefono">Telefono</label>
+            <input id="telefono" type="text" formControlName="telefono" class="form-control"
+                   placeholder="Inserisci il Telefono">
+        </div>
+        <div class="form-group">
+            <label for="fax">Fax</label>
+            <input id="fax" type="text" formControlName="fax" class="form-control"
+                   placeholder="Inserisci il Fax">
+        </div>
+        <div class="mt-2 mb-3">
+            <app-checkbox appClickStopPropagation [checkboxState]="checkboxRicorsivoState"
                           (checkbox)="setRicorsivoValue($event)"></app-checkbox>
         </div>
         <div class="form-group">
-            <label for="descrizione">Nome</label>
-            <input id="descrizione" type="text" class="form-control" placeholder="Inserisci il nome">
+            <label for="email">Email <small>(opzionale)</small></label>
+            <input id="email" type="text" formControlName="email" class="form-control"
+                   placeholder="Inserisci il Email (opzionale)">
+        </div>
+        <div class="form-group">
+            <label for="noteEnte">Note <small>(opzionale)</small></label>
+            <textarea id="noteEnte" type="text" formControlName="noteEnte" class="form-control"
+                      placeholder="Inserisci le Note (opzionale)"></textarea>
         </div>
     </form>
 </div>
