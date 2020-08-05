@@ -16,5 +16,10 @@ namespace SO115App.Persistence.MongoDB.GestioneRubrica.Categorie
         {
             return _dbContext.CategorieEntiCollection.Find(c => codici.Contains(c.Codice)).ToList();
         }
+
+        public List<CategoriaEnte> Get()
+        {
+            return _dbContext.CategorieEntiCollection.Find(c => c.Id != null).ToList();
+        }
     }
 }

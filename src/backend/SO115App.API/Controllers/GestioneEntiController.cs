@@ -3,11 +3,13 @@ using CQRS.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SO115App.API.Models.Classi.Condivise;
+using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneRubrica.Enti.AddEnte;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneRubrica.Enti.DeleteEnte;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneRubrica.Enti.UpdateEnte;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneRubrica;
+using SO115App.Models.Servizi.CQRS.Queries.GestioneRubrica.Categorie;
 using System;
 using System.Threading.Tasks;
 
@@ -22,16 +24,19 @@ namespace SO115App.API.Controllers
         private readonly ICommandHandler<UpdateEnteCommand> _updateEnteHandler;
         private readonly ICommandHandler<DeleteEnteCommand> _deleteEnteHandler;
         private readonly IQueryHandler<RubricaQuery, RubricaResult> _rubricaQueryHandler;
+        private readonly IQueryHandler<CategorieEntiQuery, CategorieEntiResult> _categorieQueryHandler;
 
         public GestioneEntiController(ICommandHandler<AddEnteCommand> addEnte,
             ICommandHandler<UpdateEnteCommand> updateEnte,
             ICommandHandler<DeleteEnteCommand> deleteEnteHandler,
-            IQueryHandler<RubricaQuery, RubricaResult> rubricaQueryHandler)
+            IQueryHandler<RubricaQuery, RubricaResult> rubricaQueryHandler,
+            IQueryHandler<CategorieEntiQuery, CategorieEntiResult> categorieQueryHandler)
         {
             _updateEnteHandler = updateEnte;
             _addEnteHandler = addEnte;
             _deleteEnteHandler = deleteEnteHandler;
             _rubricaQueryHandler = rubricaQueryHandler;
+            _categorieQueryHandler = categorieQueryHandler;
         }
 
         [HttpPost("")]
@@ -117,6 +122,24 @@ namespace SO115App.API.Controllers
                 _deleteEnteHandler.Handle(command);
 
                 return Ok();
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                    return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
+                else
+                    return BadRequest(ex);
+            }
+        }
+
+        [HttpPost("GetCategorie")]
+        public async Task<IActionResult> GetCategorie([FromBody] CategorieEntiQuery query)
+        {
+            query.IdOperatore = Request.Headers["IdUtente"];
+            query.IdSede = Request.Headers["codicesede"].ToString().Split(',');
+            try
+            {
+                return Ok(_categorieQueryHandler.Handle(query));
             }
             catch (Exception ex)
             {
