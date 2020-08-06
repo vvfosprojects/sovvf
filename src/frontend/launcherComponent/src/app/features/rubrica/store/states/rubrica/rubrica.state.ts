@@ -158,10 +158,6 @@ export class RubricaState {
 
         this.rubricaService.addVoceRubrica(newVoceRubrica).subscribe((response: ResponseAddVoceRubricaInterface) => {
                 dispatch(new ClearFormVoceRubrica());
-                dispatch(new AddVoceRubrica());
-                // todo: aspettare implementazione lato BE per togliere i commenti
-                // const pagination = this.store.selectSnapshot(PaginationState.pagination);
-                // dispatch(new PatchPagination({ ...pagination, totalItems: response.pagination.totalItems }));
             }, (error) => dispatch(new ClearFormVoceRubrica())
         );
     }
@@ -171,10 +167,6 @@ export class RubricaState {
     requestUpdateVoceRubrica({ dispatch }: StateContext<RubricaStateModel>, action: RequestUpdateVoceRubrica) {
         this.rubricaService.updateVoceRubrica(action.voceRubrica).subscribe((response: ResponseUpdateVoceRubricaInterface) => {
                 dispatch(new ClearFormVoceRubrica());
-                dispatch(new UpdateVoceRubrica(response.data));
-                // todo: aspettare implementazione lato BE per togliere i commenti
-                // const pagination = this.store.selectSnapshot(PaginationState.pagination);
-                // dispatch(new PatchPagination({ ...pagination, totalItems: response.pagination.totalItems }));
             }, (error) => dispatch(new ClearFormVoceRubrica())
         );
     }
@@ -182,10 +174,6 @@ export class RubricaState {
     @Action(RequestDeleteVoceRubrica)
     requestDeleteVoceRubrica({ setState, dispatch }: StateContext<RubricaStateModel>, action: RequestDeleteVoceRubrica) {
         this.rubricaService.deleteVoceRubrica(action.voceRubrica).subscribe((response: ResponseDeleteVoceRubricaInterface) => {
-            dispatch(new DeleteVoceRubrica(response.data));
-            // todo: aspettare implementazione lato BE per togliere i commenti
-            // const pagination = this.store.selectSnapshot(PaginationState.pagination);
-            // dispatch(new PatchPagination({ ...pagination, totalItems: response.pagination.totalItems }));
         });
     }
 
@@ -208,7 +196,12 @@ export class RubricaState {
     }
 
     @Action(DeleteVoceRubrica)
-    deleteVoceRubrica({ setState }: StateContext<RubricaStateModel>, action: DeleteVoceRubrica) {
+    deleteVoceRubrica({ setState, getState, dispatch }: StateContext<RubricaStateModel>, action: DeleteVoceRubrica) {
+        const state = getState();
+        if (state.vociRubrica && state.vociRubrica.length === 1) {
+            const page = this.store.selectSnapshot(PaginationState.page);
+            dispatch(new GetRubrica(page - 1));
+        }
         setState(
             patch({
                 vociRubrica: removeItem<VoceRubrica>(voceRubrica => voceRubrica.id === action.idVoceRubrica)
