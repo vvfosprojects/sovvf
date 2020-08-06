@@ -1,7 +1,6 @@
-﻿using CQRS.Queries;
-using Microsoft.AspNetCore.SignalR;
+﻿using Microsoft.AspNetCore.SignalR;
+using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneRubrica.Enti.AddEnte;
-using SO115App.Models.Servizi.CQRS.Queries.GestioneRubrica;
 using SO115App.Models.Servizi.Infrastruttura.GestioneRubrica.Enti;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneEnti;
 using SO115App.SignalR.Utility;
@@ -34,12 +33,14 @@ namespace SO115App.SignalR.Sender.GestioneEnti
             else
                 SediDaNotificare.Add(command.CodiceSede[0]);
 
-            //var ListaEnti = _getRurbica.Get(command.CodiceSede);
 
-            //var enteDaSpedire = ListaEnti.Find(x => x.Descrizione.Equals(command.Ente.Descrizione) && x.Indirizzo.Equals(command.Ente.Indirizzo));
+            var count = _getRurbica.CountBylstCodiciSede(SediDaNotificare.ToArray());
 
             foreach (var sede in SediDaNotificare)
-                await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyAddEnte"/*, enteDaSpedire*/);
+                await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyAddEnte", new 
+                { 
+                    Pagination = new Paginazione() { TotalItems = count } 
+                });
         }
     }
 }
