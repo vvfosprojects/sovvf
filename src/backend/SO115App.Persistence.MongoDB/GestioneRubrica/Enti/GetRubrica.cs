@@ -77,7 +77,7 @@ namespace SO115App.Persistence.MongoDB.GestioneRubrica.Enti
             var lstCodiciCategorie = result.Select(c => c.CodCategoria.ToString()).Distinct().ToArray();
             var lstCategorie = _getCategorieEnte.Get(lstCodiciCategorie);
 
-            //MAPPING
+            //MAPPING E ORDINAMENTO
             return result.Select(c => new EnteDTO()
             {
                 Id = c.Id,
@@ -94,7 +94,7 @@ namespace SO115App.Persistence.MongoDB.GestioneRubrica.Enti
                 SiglaProvincia = c.SiglaProvincia,
                 Telefoni = c.Telefoni,
                 Zona = c.Zona
-            }).ToList();
+            }).OrderByDescending(c => c.Descrizione).ToList();
         }
 
         public List<EnteDTO> GetBylstCodici(int[] lstCodici)
@@ -110,7 +110,7 @@ namespace SO115App.Persistence.MongoDB.GestioneRubrica.Enti
             var lstCodiciCategorie = result.Select(c => c.CodCategoria.ToString()).Distinct().ToArray();
             var lstCategorie = _getCategorieEnte.Get(lstCodiciCategorie);
 
-            //MAPPING
+            //MAPPING E ORDINAMENTO
             return result.Select(c => new EnteDTO()
             {
                 Id = c.Id,
@@ -127,7 +127,7 @@ namespace SO115App.Persistence.MongoDB.GestioneRubrica.Enti
                 SiglaProvincia = c.SiglaProvincia,
                 Telefoni = c.Telefoni,
                 Zona = c.Zona
-            }).ToList();
+            }).OrderByDescending(c => c.Descrizione).ToList();
         }
 
         /// <summary>
