@@ -24,6 +24,39 @@ namespace SO115App.Persistence.MongoDB.GestioneRubrica.Enti
             _getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
         }
 
+        private static List<EnteIntervenuto> FiltraByRicorsività(List<PinNodo> listaPin, List<EnteIntervenuto> lstEnti)
+        {
+            if (lstEnti.Count > 0)
+                return lstEnti.Where(c =>
+                {
+                    //LOGICA/CONDIZIONI RICORSIVITA'
+                    var padre = listaPin.Find(x => x.Codice == c.CodSede.Substring(0, 2) + ".1000");
+                    var figli = listaPin.Where(x => x.Codice.Contains(c.CodSede.Substring(0, 2)) && x != padre).ToList();
+
+                    return (padre.Ricorsivo && c.Ricorsivo) || figli.Any(x => x.Ricorsivo);
+                }).ToList();
+            else
+                return lstEnti;
+        }
+
+        private List<PinNodo> GetGerarchia(string[] CodSede)
+        {
+            var listaPin = new List<PinNodo>();
+            var sediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
+
+            foreach (var sede in CodSede)
+            {
+                listaPin.Add(new PinNodo(sede, true));
+                foreach (var figlio in sediAlberate.GetSottoAlbero(listaPin))
+                {
+                    PinNodo fgl = new PinNodo(figlio.Codice, true);
+                    listaPin.Add(fgl);
+                }
+            }
+
+            return listaPin;
+        }
+
         public List<EnteDTO> Get(string[] CodSede, string TextSearch)
         {
             var text = TextSearch?.ToLower();
@@ -98,7 +131,7 @@ namespace SO115App.Persistence.MongoDB.GestioneRubrica.Enti
         }
 
         /// <summary>
-        /// Il metodo pesca DIRETTAMENTE l'oggetto sul db senza considerare nulla
+        /// Il metodo pesca DIRETTAMENTE l'oggetto sul db senza considerazioni
         /// </summary>
         public EnteDTO Get(string Id)
         {
@@ -126,37 +159,33 @@ namespace SO115App.Persistence.MongoDB.GestioneRubrica.Enti
             };
         }
 
-        private static List<EnteIntervenuto> FiltraByRicorsività(List<PinNodo> listaPin, List<EnteIntervenuto> lstEnti)
+        /// <summary>
+        /// Il metodo pesca DIRETTAMENTE l'oggetto sul db senza considerazioni
+        /// </summary>
+        public int CountBylstCodiciSede(string[] CodSede)
         {
-            if (lstEnti.Count > 0)
-                return lstEnti.Where(c =>
-                {
-                    //LOGICA/CONDIZIONI RICORSIVITA'
-                    var padre = listaPin.Find(x => x.Codice == c.CodSede.Substring(0, 2) + ".1000");
-                    var figli = listaPin.Where(x => x.Codice.Contains(c.CodSede.Substring(0, 2)) && x != padre).ToList();
+            var result = _dbContext.RubricaCollection.Find(c => CodSede.Contains(c.CodSede)).ToList();
 
-                    return (padre.Ricorsivo && c.Ricorsivo) || figli.Any(x => x.Ricorsivo);
-                }).ToList();
-            else
-                return lstEnti;
-        }
+            var lstCodiciCategorie = result.Select(c => c.CodCategoria.ToString()).Distinct().ToArray();
+            var lstCategorie = _getCategorieEnte.Get(lstCodiciCategorie);
 
-        private List<PinNodo> GetGerarchia(string[] CodSede)
-        {
-            var listaPin = new List<PinNodo>();
-            var sediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
-
-            foreach (var sede in CodSede)
+            return result.Select(c => new EnteDTO()
             {
-                listaPin.Add(new PinNodo(sede, true));
-                foreach (var figlio in sediAlberate.GetSottoAlbero(listaPin))
-                {
-                    PinNodo fgl = new PinNodo(figlio.Codice, true);
-                    listaPin.Add(fgl);
-                }
-            }
-
-            return listaPin;
+                Id = c.Id,
+                Codice = c.Codice,
+                Cap = c.Cap,
+                Categoria = lstCategorie.Find(z => c.CodCategoria.ToString() == z.Codice),
+                CodComune = c.CodComune,
+                CodSede = c.CodSede,
+                Descrizione = c.Descrizione,
+                Email = c.Email,
+                Indirizzo = c.Indirizzo,
+                NoteEnte = c.NoteEnte,
+                Ricorsivo = c.Ricorsivo,
+                SiglaProvincia = c.SiglaProvincia,
+                Telefoni = c.Telefoni,
+                Zona = c.Zona
+            }).Count();
         }
     }
 }
