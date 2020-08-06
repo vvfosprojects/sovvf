@@ -81,7 +81,9 @@
                         <ul class=" mb-0"
                             style="max-height: 210px; overflow-y: auto; list-style-type: none; padding-left: 0px;">
                             <li>
-                                <span *ngIf="voce?.indirizzo" class="ml-1">{{voce?.indirizzo + ' - ' + voce?.cap}}</span>
+                                <span class="ml-1">{{voce?.indirizzo}}</span> 
+                                <span *ngIf="voce?.indirizzo" class="ml-1"> - </span> 
+                                <span class="ml-1">{{voce?.cap}}</span>
                                 <small *ngIf="!voce?.indirizzo && !voce?.cap" class="ml-1 text-muted">
                                     Non presente
                                 </small>
