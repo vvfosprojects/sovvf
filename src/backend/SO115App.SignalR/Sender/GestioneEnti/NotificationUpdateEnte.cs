@@ -37,12 +37,17 @@ namespace SO115App.SignalR.Sender.GestioneEnti
 
 
             var count = _getRurbica.CountBylstCodiciSede(SediDaNotificare.ToArray());
+            var lstEnti = _getRurbica.Get(command.CodiceSede, null);
 
             foreach (var sede in SediDaNotificare)
-                await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyUpdateEnte", new 
-                { 
-                    Pagination = new Paginazione() { TotalItems = count } 
+            {
+                await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyUpdateEnte", new
+                {
+                    Pagination = new Paginazione() { TotalItems = count }
                 });
+
+                await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyChangeEnti", lstEnti);
+            }
         }
     }
 }
