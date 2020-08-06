@@ -9,7 +9,7 @@ export interface CategoriaVoceRubrica {
 }
 
 export enum TipoTelefono {
-    Telefono = 'Telefono',
+    Telefono = 'Tel.',
     Fax = 'Fax'
 }
 
