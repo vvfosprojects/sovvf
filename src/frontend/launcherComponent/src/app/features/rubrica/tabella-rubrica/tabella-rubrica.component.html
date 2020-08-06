@@ -11,7 +11,7 @@
         </thead>
         <tbody>
         <tr *ngFor="let voce of vociRubrica | paginate: { itemsPerPage: pageSize, currentPage: page, totalItems: totalItems }">
-            <td style="vertical-align: middle;">
+            <td class="align-middle">
                 <button class="btn btn-sm btn-danger font-weight-bold float-left mt-1 mr-2" ngbTooltip="Rimuovi Voce"
                         placement="bottom" (click)="onDeleteVoceRubrica(voce.id, voce.descrizione)">
                     <i class="fa fa-trash"></i>
@@ -21,15 +21,15 @@
                     <i class="fa fa-pencil-square-o"></i>
                 </button>
             </td>
-            <td width="25%" class="pb-1" style="vertical-align: middle;">
+            <td width="25%" class="pb-1 align-middle">
                 <div class="h5 font-weight-bold mt-1 pt-1 text-uppercase text-truncate" style="max-width: 400px;">
                     <span>{{voce.descrizione}}</span>
                 </div>
             </td>
-            <td width="20%" style="vertical-align: middle;">
+            <td width="20%" class="align-middle">
                 <div class="row">
                     <div class="col-11">
-                        <ul class=" mb-0" style="max-height: 210px; overflow-y: auto; list-style-type: none; padding-left: 15px;">
+                        <ul class=" mb-0" style="max-height: 210px; overflow-y: auto; list-style-type: none; padding-left: 0px;">
                             <li>
                                 <span class="font-weight-bolder ml-1">{{voce.indirizzo}}</span>
                             </li>
@@ -56,12 +56,13 @@
                     </div>
                 </div>
             </td>
-            <td width="15%" style="vertical-align: middle;">
+            <td width="15%" class="align-middle">
                 <div class="row">
                     <div class="col-11">
-                        <ul class=" mb-0" style="max-height: 210px; overflow-y: auto; list-style-type: none; padding-left: 15px;">
+                        <ul class=" mb-0" style="max-height: 210px; overflow-y: auto; list-style-type: none; padding-left: 0px;">
                             <li>
-                                <span class="font-weight-bolder ml-1">{{voce.email}}</span>
+                                <span *ngIf="voce.mail" class="font-weight-bolder ml-1">{{voce.email}}</span>
+                                <small *ngIf="!voce.mail" class="font-weight-bolder ml-1 text-muted">Non presente</small>
                             </li>
                         </ul>
                     </div>
