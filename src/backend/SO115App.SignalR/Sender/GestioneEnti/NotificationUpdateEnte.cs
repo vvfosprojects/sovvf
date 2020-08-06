@@ -38,7 +38,7 @@ namespace SO115App.SignalR.Sender.GestioneEnti
 
             var count = _getRurbica.CountBylstCodiciSede(SediDaNotificare.ToArray());
             var lstEnti = _getRurbica.Get(command.CodiceSede, null);
-            var Ente = lstEnti.Find(c => c.Telefoni == command.Ente.Telefoni && c.Descrizione == command.Ente.Descrizione);
+            var Ente = lstEnti.Find(c => c.Id == command.Ente.Id);
 
             foreach (var sede in SediDaNotificare)
             {
