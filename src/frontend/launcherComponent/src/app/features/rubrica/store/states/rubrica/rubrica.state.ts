@@ -1,7 +1,14 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { patch, removeItem, updateItem } from '@ngxs/store/operators';
 import { StartLoading, StopLoading } from '../../../../../shared/store/actions/loading/loading.actions';
-import { CategoriaVoceRubrica, TipoTelefono, VoceRubrica } from '../../../../../shared/interface/rubrica.interface';
+import {
+    CategoriaVoceRubrica,
+    ResponseAddVoceRubricaInterface,
+    ResponseDeleteVoceRubricaInterface,
+    ResponseUpdateVoceRubricaInterface,
+    TipoTelefono,
+    VoceRubrica
+} from '../../../../../shared/interface/rubrica.interface';
 import {
     RequestAddVoceRubrica,
     ClearFormVoceRubrica,
@@ -149,23 +156,36 @@ export class RubricaState {
             );
         }
 
-        this.rubricaService.addVoceRubrica(newVoceRubrica).subscribe((voceRubrica: VoceRubrica) => {
-            // dispatch(new AddVoceRubrica());
-        });
+        this.rubricaService.addVoceRubrica(newVoceRubrica).subscribe((response: ResponseAddVoceRubricaInterface) => {
+                dispatch(new ClearFormVoceRubrica());
+                dispatch(new AddVoceRubrica());
+                // todo: aspettare implementazione lato BE per togliere i commenti
+                // const pagination = this.store.selectSnapshot(PaginationState.pagination);
+                // dispatch(new PatchPagination({ ...pagination, totalItems: response.pagination.totalItems }));
+            }, (error) => dispatch(new ClearFormVoceRubrica())
+        );
     }
 
 
     @Action(RequestUpdateVoceRubrica)
     requestUpdateVoceRubrica({ dispatch }: StateContext<RubricaStateModel>, action: RequestUpdateVoceRubrica) {
-        this.rubricaService.updateVoceRubrica(action.voceRubrica).subscribe((voceRubrica: VoceRubrica) => {
-            dispatch(new UpdateVoceRubrica(voceRubrica));
-        });
+        this.rubricaService.updateVoceRubrica(action.voceRubrica).subscribe((response: ResponseUpdateVoceRubricaInterface) => {
+                dispatch(new ClearFormVoceRubrica());
+                dispatch(new UpdateVoceRubrica(response.data));
+                // todo: aspettare implementazione lato BE per togliere i commenti
+                // const pagination = this.store.selectSnapshot(PaginationState.pagination);
+                // dispatch(new PatchPagination({ ...pagination, totalItems: response.pagination.totalItems }));
+            }, (error) => dispatch(new ClearFormVoceRubrica())
+        );
     }
 
     @Action(RequestDeleteVoceRubrica)
     requestDeleteVoceRubrica({ setState, dispatch }: StateContext<RubricaStateModel>, action: RequestDeleteVoceRubrica) {
-        this.rubricaService.deleteVoceRubrica(action.idVoceRubrica).subscribe(() => {
-            dispatch(new DeleteVoceRubrica(action.idVoceRubrica));
+        this.rubricaService.deleteVoceRubrica(action.voceRubrica).subscribe((response: ResponseDeleteVoceRubricaInterface) => {
+            dispatch(new DeleteVoceRubrica(response.data));
+            // todo: aspettare implementazione lato BE per togliere i commenti
+            // const pagination = this.store.selectSnapshot(PaginationState.pagination);
+            // dispatch(new PatchPagination({ ...pagination, totalItems: response.pagination.totalItems }));
         });
     }
 

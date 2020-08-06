@@ -7,7 +7,6 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { UpdateFormValue } from '@ngxs/form-plugin';
 import { RubricaState } from '../../../features/rubrica/store/states/rubrica/rubrica.state';
 import { CategoriaVoceRubrica } from '../../interface/rubrica.interface';
-import { ClearFormVoceRubrica } from '../../../features/rubrica/store/actions/rubrica/rubrica.actions';
 
 @Component({
     selector: 'app-voce-rubrica-modal',

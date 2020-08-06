@@ -8,12 +8,18 @@
 <div class="modal-body height">
     <form [formGroup]="voceRubricaForm" ngxsForm="rubrica.voceRubricaForm">
         <div class="form-group">
-            <label for="descrizione">Nome</label>
+            <label for="descrizione">
+                Nome
+                <small class="text-danger">*</small>
+            </label>
             <input id="descrizione" type="text" formControlName="descrizione" class="form-control"
                    placeholder="Inserisci il nome">
         </div>
         <div class="form-group">
-            <label for="categoria">Categoria</label>
+            <label for="categoria">
+                Categoria
+                <small class="text-danger">*</small>
+            </label>
             <ng-select id="categoria"
                        [items]="categorieVoceRubrica$ | async"
                        bindLabel="descrizione"
@@ -25,42 +31,63 @@
             </ng-select>
         </div>
         <div class="form-group">
-            <label for="indirizzo">Indirizzo</label>
+            <label for="indirizzo">
+                Indirizzo
+                <small class="text-danger">*</small>
+            </label>
             <input id="indirizzo" type="text" formControlName="indirizzo" class="form-control"
                    placeholder="Inserisci un indirizzo">
         </div>
         <div class="form-group">
-            <label for="cap">Cap</label>
+            <label for="cap">
+                Cap
+                <small class="text-danger">*</small>
+            </label>
             <input id="cap" type="text" formControlName="cap" class="form-control"
                    placeholder="Inserisci il cap">
         </div>
         <div class="form-group">
-            <label for="telefono">Telefono</label>
-            <input id="telefono" type="text" formControlName="telefono" class="form-control"
+            <label for="telefono">
+                Telefono
+                <small *ngIf="!f.fax.value" class="text-danger">*</small>
+                <small *ngIf="f.fax.value" class="text-muted">(opzionale)</small>
+            </label>
+            <input id="telefono" type="tel" formControlName="telefono" class="form-control"
                    placeholder="Inserisci il Telefono">
         </div>
         <div class="form-group">
-            <label for="fax">Fax</label>
-            <input id="fax" type="text" formControlName="fax" class="form-control"
+            <label for="fax">
+                Fax
+                <small *ngIf="!f.telefono.value" class="text-danger">*</small>
+                <small *ngIf="f.telefono.value" class="text-muted">(opzionale)</small>
+            </label>
+            <input id="fax" type="tel" formControlName="fax" class="form-control"
                    placeholder="Inserisci il Fax">
         </div>
-        <div class="mt-2 mb-3">
+        <div class="my-3">
             <app-checkbox appClickStopPropagation [checkboxState]="checkboxRicorsivoState"
                           (checkbox)="setRicorsivoValue($event)"></app-checkbox>
         </div>
         <div class="form-group">
-            <label for="email">Email <small>(opzionale)</small></label>
+            <label for="email">Email
+                <small class="text-muted">(opzionale)</small>
+            </label>
             <input id="email" type="text" formControlName="email" class="form-control"
                    placeholder="Inserisci il Email (opzionale)">
         </div>
         <div class="form-group">
-            <label for="noteEnte">Note <small>(opzionale)</small></label>
+            <label for="noteEnte">Note
+                <small class="text-muted">(opzionale)</small>
+            </label>
             <textarea id="noteEnte" type="text" formControlName="noteEnte" class="form-control"
                       placeholder="Inserisci le Note (opzionale)"></textarea>
         </div>
     </form>
+    <h6 class="text-danger">* Campi Obbligatori</h6>
 </div>
 <div class="modal-footer">
     <button type="button" class="btn btn-lg btn-secondary" (click)="closeModal('ko')">Annulla</button>
-    <button type="button" class="btn btn-lg btn-danger" [disabled]="!formValid" (click)="onConferma()">Conferma</button>
+    <button type="button" class="btn btn-lg btn-danger" ngbTooltip="Riempi tutti i campi obbligatori"
+            [disableTooltip]="formValid" [disabled]="!formValid" (click)="onConferma()">Conferma
+    </button>
 </div>
