@@ -28,9 +28,6 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneRubrica.Enti.UpdateEnte
                     if (command.Ente.Telefoni == null || command.Ente.Telefoni.Count == 0)
                         yield return new ValidationResult("Nessun telefono selezionato");
 
-                    if (command.Ente.Cap == null || command.Ente.Cap == "")
-                        yield return new ValidationResult("Nessun Cap selezionato");
-
                     if (command.Ente.Descrizione == "" || command.Ente.Descrizione == null)
                         yield return new ValidationResult("Nessuna descrizione selezionata");
                 }

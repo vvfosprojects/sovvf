@@ -17,12 +17,17 @@ export class TabellaRubricaComponent implements OnInit {
 
     @Output() pageChange: EventEmitter<number> = new EventEmitter<number>();
     @Output() pageSizeChange: EventEmitter<number> = new EventEmitter<number>();
+    @Output() editVoceRubrica: EventEmitter<VoceRubrica> = new EventEmitter<VoceRubrica>();
     @Output() deleteVoceRubrica: EventEmitter<{ idVoceRubrica: string, descrizioneVoceRubrica: string }> = new EventEmitter<{ idVoceRubrica: string, descrizioneVoceRubrica: string }>();
 
     constructor() {
     }
 
     ngOnInit() {
+    }
+
+    onEditVoceRubrica(voceRubrica: VoceRubrica) {
+        this.editVoceRubrica.emit(voceRubrica);
     }
 
     onDeleteVoceRubrica(idVoceRubrica: string, descrizioneVoceRubrica: string) {
