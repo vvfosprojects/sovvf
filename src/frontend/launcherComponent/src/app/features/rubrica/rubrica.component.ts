@@ -94,8 +94,32 @@ export class RubricaComponent implements OnInit, OnDestroy {
         this.store.dispatch(new RequestAddVoceRubrica());
     }
 
-    updateVoceRubrica(ente: any) {
-        this.store.dispatch(new RequestUpdateVoceRubrica(ente));
+    onEditVoceRubrica(voceRubrica: VoceRubrica) {
+        console.log('onEditVoceRubrica', voceRubrica);
+        const editVoceRubricaModal = this.modalService.open(VoceRubricaModalComponent, {
+            backdropClass: 'light-blue-backdrop',
+            centered: true,
+            size: 'lg'
+        });
+        editVoceRubricaModal.componentInstance.editVoceRubrica = voceRubrica;
+        editVoceRubricaModal.result.then(
+            (result: { success: boolean }) => {
+                if (result.success) {
+                    this.updateVoceRubrica();
+                } else if (!result.success) {
+                    this.store.dispatch(new ClearFormVoceRubrica());
+                    console.log('Modal "addVoceRubrica" chiusa con val ->', result);
+                }
+            },
+            (err) => {
+                this.store.dispatch(new ClearFormVoceRubrica());
+                console.error('Modal chiusa senza bottoni. Err ->', err);
+            }
+        );
+    }
+
+    updateVoceRubrica() {
+        this.store.dispatch(new RequestUpdateVoceRubrica());
     }
 
     onDeleteVoceRubrica(payload: { idVoceRubrica: string, descrizioneVoceRubrica: string }) {
@@ -114,7 +138,7 @@ export class RubricaComponent implements OnInit, OnDestroy {
             (val) => {
                 switch (val) {
                     case 'ok':
-                        this.store.dispatch(new RequestDeleteVoceRubrica({ idVoceRubrica: payload.idVoceRubrica }));
+                        this.deleteVoceRubrica(payload.idVoceRubrica);
                         break;
                     case 'ko':
                         // console.log('Azione annullata');
@@ -124,6 +148,10 @@ export class RubricaComponent implements OnInit, OnDestroy {
             },
             (err) => console.error('Modal chiusa senza bottoni. Err ->', err)
         );
+    }
+
+    deleteVoceRubrica(idVoceRubrica: string) {
+        this.store.dispatch(new RequestDeleteVoceRubrica({ idVoceRubrica }));
     }
 
     onRicercaRubrica(ricerca: string) {
