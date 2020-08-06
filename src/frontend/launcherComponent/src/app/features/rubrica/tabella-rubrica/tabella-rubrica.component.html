@@ -36,7 +36,7 @@
                                         <i *ngIf="voce?.telefoni[0]?.tipo === 'Fax'" class="fa fa-fax pr-2"></i>
                                         <i *ngIf="voce?.telefoni[0]?.tipo.startsWith('Tel')"
                                            class="fa fa-phone pr-2"></i>
-                                        <a>{{voce?.telefoni[0]?.numero}}</a>
+                                        <a href="{{'tel:+39'+ voce?.telefoni[0]?.numero}}">{{voce?.telefoni[0]?.numero}}</a>
                                     </span>
                             </li>
                         </ul>
@@ -47,7 +47,7 @@
                                         <i *ngIf="voce?.telefoni[0]?.tipo === 'Fax'" class="fa fa-fax pr-2"></i>
                                         <i *ngIf="voce?.telefoni[0]?.tipo.startsWith('Tel')"
                                            class="fa fa-phone pr-2"></i>
-                                            <a>{{voce?.telefoni[0]?.numero}}</a>
+                                            <a href="{{'tel:+39'+ voce?.telefoni[0]?.numero}}">{{voce?.telefoni[0]?.numero}}</a>
                                     </span>
                             </li>
                             <li style="display: flex; align-self: center;">
@@ -63,7 +63,7 @@
                                                 <span class="font-weight-bolder ml-1">
                                                     <i *ngIf="tel?.tipo === 'Fax'" class="fa fa-fax pr-2"></i>
                                                     <i *ngIf="tel?.tipo.startsWith('Tel')" class="fa fa-phone pr-2"></i>
-                                                    <a>{{tel?.numero}}</a>
+                                                    <a href="{{'tel:+39'+ tel?.numero}}">{{tel?.numero}}</a>
                                                 </span>
                                         </div>
                                     </div>
@@ -102,6 +102,10 @@
                                 <small *ngIf="!voce?.email" class="ml-1 text-muted">
                                     Non presente
                                 </small>
+                                <span class="mr-3 font-weight-bold" style="font-size:1.3rem; float: right;"
+                                [ngClass]="{'icon-recursive': voce.ricorsivo, 'icon-not-recursive-single': !voce.ricorsivo}"
+                                [ngbTooltip]="voce.ricorsivo ? 'In profondità' : 'Non in profondità'"
+                                placement="top"></span>
                             </li>
                         </ul>
                     </div>
