@@ -3,9 +3,10 @@
         <thead>
         <tr>
             <th scope="col" width="10%"> <i class="fa fa-bolt mr-2"></i>Azioni</th>
-            <th scope="col" width="15%"> <i class="fa fa-university mr-2"></i>Nome</th>
+            <th scope="col" width="20%"> <i class="fa fa-university mr-2"></i>Nome</th>
             <th scope="col" width="20%"> <i class="fa fa-map-marker mr-2"></i>Indirizzo</th>
             <th scope="col" width="15%"> <i class="fa fa-microphone mr-2"></i>Telefono</th>
+            <th scope="col" width="15%"> <i class="fa fa-envelope mr-2"></i>Email</th>
         </tr>
         </thead>
         <tbody>
@@ -20,31 +21,23 @@
                     <i class="fa fa-pencil-square-o"></i>
                 </button>
             </td>
-            <td width="30%" class="pb-1" style="vertical-align: middle;">
+            <td width="25%" class="pb-1" style="vertical-align: middle;">
                 <div class="h5 font-weight-bold mt-1 pt-1 text-uppercase text-truncate" style="max-width: 400px;">
                     <span>{{voce.descrizione}}</span>
                 </div>
             </td>
-            <td width="40%">
+            <td width="20%" style="vertical-align: middle;">
                 <div class="row">
                     <div class="col-11">
-                        <ul class="list-unstyled p-2 mb-0" style="max-height: 210px; overflow-y: auto">
-                            <li class="border-bottom p-2">
-                                <div class="clearfix">
-                                    <div class="float-left mt-1">
-                                        <span class="mr-3 font-weight-bold" style="font-size:1.3rem"
-                                              placement="top"></span>
-                                        <span class="font-weight-bolder ml-1">{{voce.indirizzo}}</span>
-                                    </div>
-                                    <div class="float-right">
-                                    </div>
-                                </div>
+                        <ul class=" mb-0" style="max-height: 210px; overflow-y: auto; list-style-type: none; padding-left: 15px;">
+                            <li>
+                                <span class="font-weight-bolder ml-1">{{voce.indirizzo}}</span>
                             </li>
                         </ul>
                     </div>
                 </div>
             </td>
-            <td width="20%">
+            <td width="15%">
                 <div class="row">
                     <div class="col-11">
                         <ul class="list-unstyled p-2 mb-0" style="max-height: 210px; overflow-y: auto">
@@ -63,12 +56,24 @@
                     </div>
                 </div>
             </td>
+            <td width="15%" style="vertical-align: middle;">
+                <div class="row">
+                    <div class="col-11">
+                        <ul class=" mb-0" style="max-height: 210px; overflow-y: auto; list-style-type: none; padding-left: 15px;">
+                            <li>
+                                <span class="font-weight-bolder ml-1">{{voce.email}}</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </td>
         </tr>
         <tr *ngIf="vociRubrica?.length <= 0">
             <td></td>
             <td>    
                 <ng-template [ngIf]="!loading">Nessuna Voce trovata</ng-template>
                 <ng-template [ngIf]="loading">Caricamento risultati in corso...</ng-template></td>
+            <td></td>
             <td></td>
             <td></td>
         </tr>
