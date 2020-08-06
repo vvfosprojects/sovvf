@@ -30,6 +30,7 @@
             <app-tabella-rubrica [vociRubrica]="vociRubrica$ | async" [totalItems]="totalItems$ | async"
                                  [pageSize]="pageSize" [page]="page$ | async" [loading]="loading$ | async"
                                  [pageSizes]="pageSizes$ | async"
+                                 (editVoceRubrica)="onEditVoceRubrica($event)"
                                  (deleteVoceRubrica)="onDeleteVoceRubrica($event)"
                                  (pageChange)="onPageChange($event)"
                                  (pageSizeChange)="onPageSizeChange($event)"></app-tabella-rubrica>

@@ -35,8 +35,16 @@ export interface ResponseAddVoceRubricaInterface {
 }
 
 export interface UpdateVoceRubricaInterface {
-    codice: string;
+    id: string;
+    codice: number;
     descrizione: string;
+    ricorsivo: boolean;
+    codCategoria: number;
+    indirizzo: string;
+    cap: string;
+    noteEnte?: string;
+    email?: string;
+    telefoni: VoceRubricaTelefono[];
 }
 
 export interface ResponseUpdateVoceRubricaInterface {
@@ -59,7 +67,7 @@ export interface VoceRubrica {
     descrizione: string;
     codSede: string;
     ricorsivo: boolean;
-    enteCategoria: CategoriaVoceRubrica;
+    categoria: CategoriaVoceRubrica;
     indirizzo: string;
     cap: string;
     telefoni: VoceRubricaTelefono[];

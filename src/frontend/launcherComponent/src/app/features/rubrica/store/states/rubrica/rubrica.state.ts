@@ -33,6 +33,8 @@ export interface RubricaStateModel {
     categorieVoceRubrica: CategoriaVoceRubrica[];
     voceRubricaForm: {
         model?: {
+            id: string;
+            codice: number;
             descrizione: string;
             ricorsivo: boolean;
             codCategoria: number,
@@ -54,6 +56,8 @@ export const RubricaStateModelDefaults: RubricaStateModel = {
     categorieVoceRubrica: undefined,
     voceRubricaForm: {
         model: {
+            id: undefined,
+            codice: undefined,
             descrizione: undefined,
             ricorsivo: false,
             codCategoria: undefined,
@@ -164,8 +168,40 @@ export class RubricaState {
 
 
     @Action(RequestUpdateVoceRubrica)
-    requestUpdateVoceRubrica({ dispatch }: StateContext<RubricaStateModel>, action: RequestUpdateVoceRubrica) {
-        this.rubricaService.updateVoceRubrica(action.voceRubrica).subscribe((response: ResponseUpdateVoceRubricaInterface) => {
+    requestUpdateVoceRubrica({ getState, dispatch }: StateContext<RubricaStateModel>, action: RequestUpdateVoceRubrica) {
+        const form = getState().voceRubricaForm.model;
+        const updatedVoceRubrica = {
+            id: form.id,
+            codice: form.codice,
+            descrizione: form.descrizione,
+            ricorsivo: form.ricorsivo,
+            codCategoria: form.codCategoria,
+            indirizzo: form.indirizzo,
+            cap: form.cap,
+            noteEnte: form.noteEnte,
+            email: form.email,
+            telefoni: []
+        };
+
+        // telefono
+        if (form.telefono) {
+            updatedVoceRubrica.telefoni.push(
+                {
+                    tipo: TipoTelefono.Telefono,
+                    numero: form.telefono
+                }
+            );
+        }
+        // fax
+        if (form.fax) {
+            updatedVoceRubrica.telefoni.push(
+                {
+                    tipo: TipoTelefono.Fax,
+                    numero: form.fax
+                }
+            );
+        }
+        this.rubricaService.updateVoceRubrica(updatedVoceRubrica).subscribe((response: ResponseUpdateVoceRubricaInterface) => {
                 dispatch(new ClearFormVoceRubrica());
             }, (error) => dispatch(new ClearFormVoceRubrica())
         );
@@ -180,9 +216,7 @@ export class RubricaState {
     @Action(AddVoceRubrica)
     addVoceRubrica({ dispatch }: StateContext<RubricaStateModel>) {
         const pagina = this.store.selectSnapshot(PaginationState.page);
-        if (pagina === 1) {
-            dispatch(new GetRubrica());
-        }
+        dispatch(new GetRubrica(pagina));
     }
 
 
