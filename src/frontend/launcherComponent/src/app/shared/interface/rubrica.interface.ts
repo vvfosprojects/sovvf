@@ -22,8 +22,8 @@ export interface AddVoceRubricaInterface {
     descrizione: string;
     ricorsivo: boolean;
     codCategoria: number;
-    indirizzo: string;
-    cap: string;
+    indirizzo?: string;
+    cap?: string;
     noteEnte?: string;
     email?: string;
     telefoni: VoceRubricaTelefono[];
@@ -40,8 +40,8 @@ export interface UpdateVoceRubricaInterface {
     descrizione: string;
     ricorsivo: boolean;
     codCategoria: number;
-    indirizzo: string;
-    cap: string;
+    indirizzo?: string;
+    cap?: string;
     noteEnte?: string;
     email?: string;
     telefoni: VoceRubricaTelefono[];
@@ -68,8 +68,8 @@ export interface VoceRubrica {
     codSede: string;
     ricorsivo: boolean;
     categoria: CategoriaVoceRubrica;
-    indirizzo: string;
-    cap: string;
+    indirizzo?: string;
+    cap?: string;
     telefoni: VoceRubricaTelefono[];
     noteEnte?: string;
     email?: string;

@@ -2,18 +2,18 @@
     <table class="table table-striped app-shadow mt-2">
         <thead>
         <tr>
-            <th scope="col" width="10%"> <i class="fa fa-bolt mr-2"></i>Azioni</th>
-            <th scope="col" width="20%"> <i class="fa fa-university mr-2"></i>Nome</th>
-            <th scope="col" width="20%"> <i class="fa fa-map-marker mr-2"></i>Indirizzo</th>
-            <th scope="col" width="15%"> <i class="fa fa-microphone mr-2"></i>Numero</th>
-            <th scope="col" width="15%"> <i class="fa fa-envelope mr-2"></i>Email</th>
+            <th scope="col" width="10%"><i class="fa fa-bolt mr-2"></i>Azioni</th>
+            <th scope="col" width="20%"><i class="fa fa-university mr-2"></i>Nome</th>
+            <th scope="col" width="15%"><i class="fa fa-microphone mr-2"></i>Telefono</th>
+            <th scope="col" width="20%"><i class="fa fa-map-marker mr-2"></i>Indirizzo</th>
+            <th scope="col" width="15%"><i class="fa fa-envelope mr-2"></i>Email</th>
         </tr>
         </thead>
         <tbody>
         <tr *ngFor="let voce of vociRubrica | paginate: { itemsPerPage: pageSize, currentPage: page, totalItems: totalItems }">
             <td class="align-middle">
                 <button class="btn btn-sm btn-danger font-weight-bold float-left mt-1 mr-2" ngbTooltip="Rimuovi Voce"
-                        placement="bottom" (click)="onDeleteVoceRubrica(voce.id, voce.descrizione)">
+                        placement="bottom" (click)="onDeleteVoceRubrica(voce?.id, voce?.descrizione)">
                     <i class="fa fa-trash"></i>
                 </button>
                 <button class="btn btn-sm btn-warning font-weight-bold float-left mt-1 mr-2" ngbTooltip="Modifica Voce"
@@ -23,24 +23,14 @@
             </td>
             <td width="25%" class="align-middle">
                 <div class="h5 font-weight-bold mt-1 pt-1 text-uppercase text-truncate" style="max-width: 400px;">
-                    <span>{{voce.descrizione}}</span>
-                </div>
-            </td>
-            <td width="20%" class="align-middle">
-                <div class="row">
-                    <div class="col-11">
-                        <ul class=" mb-0" style="max-height: 210px; list-style-type: none; padding-left: 0px;">
-                            <li>
-                                <span class="font-weight-bolder ml-1">{{voce.indirizzo}}</span>
-                            </li>
-                        </ul>
-                    </div>
+                    <span>{{voce?.descrizione}}</span>
                 </div>
             </td>
             <td width="20%" class="align-middle" style="padding: 0px;">
                 <div class="row">
                     <div class="col-11">
-                        <ul *ngIf="voce.telefoni.length <= 1" class=" mb-0" style="list-style-type: none; padding-left: 5px;">
+                        <ul *ngIf="voce.telefoni.length <= 1" class=" mb-0"
+                            style="list-style-type: none; padding-left: 5px;">
                             <li>
                                 <span class="font-weight-bolder ml-1">
                                     <i *ngIf="voce.telefoni[0].tipo === 'Fax'" class="fa fa-fax pr-2"></i>
@@ -49,31 +39,47 @@
                                 </span>
                             </li>
                         </ul>
-                        <ul *ngIf="voce.telefoni.length > 1" class=" mb-0 row" style="list-style-type: none; padding-left: 5px;">
+                        <ul *ngIf="voce.telefoni.length > 1" class=" mb-0 row"
+                            style="list-style-type: none; padding-left: 5px;">
                             <li style="padding-right: 5px">
                                 <span class="font-weight-bolder ml-1" style="padding-left: 16px;">
                                     <i *ngIf="voce.telefoni[0].tipo === 'Fax'" class="fa fa-fax pr-2"></i>
                                     <i *ngIf="voce.telefoni[0].tipo.startsWith('Tel')" class="fa fa-phone pr-2"></i>
                                         <a>{{voce.telefoni[0].numero}}</a>
-                                </span>    
+                                </span>
                             </li>
                             <li style="display: flex; align-self: center;">
-                                <button ngbTooltip="Visualizza tutti i numeri" class="badge badge-primary" [ngbPopover]="tel" placement="bottom" style="height: 18px; width: 25px; outline: none; border: none; height:18px; display: flex; align-items: center;">
-                                   <span><i class="fa fa-eye" style="font-size: 15px; padding: 0;"></i></span>
-                            </button>
-                            <ng-template #tel>
-                                <small class="d-block font-weight-bold">Numeri:</small>
-                                <div *ngFor="let tel of voce.telefoni" class="clearfix">
-                                    <div class="float-left mt-1">
-                                <span class="font-weight-bolder ml-1">
-                                    <i *ngIf="tel.tipo === 'Fax'" class="fa fa-fax pr-2"></i>
-                                    <i *ngIf="tel.tipo.startsWith('Tel')" class="fa fa-phone pr-2"></i>
-                                    <a>{{tel.numero}}</a> 
-                                </span>
+                                <button ngbTooltip="Visualizza tutti i numeri" class="badge badge-primary"
+                                        [ngbPopover]="tel" placement="bottom"
+                                        style="height: 18px; width: 25px; outline: none; border: none; height:18px; display: flex; align-items: center;">
+                                    <span><i class="fa fa-eye" style="font-size: 15px; padding: 0;"></i></span>
+                                </button>
+                                <ng-template #tel>
+                                    <small class="d-block font-weight-bold">Numeri:</small>
+                                    <div *ngFor="let tel of voce.telefoni" class="clearfix">
+                                        <div class="float-left mt-1">
+                                            <span class="font-weight-bolder ml-1">
+                                                <i *ngIf="tel.tipo === 'Fax'" class="fa fa-fax pr-2"></i>
+                                                <i *ngIf="tel.tipo.startsWith('Tel')" class="fa fa-phone pr-2"></i>
+                                                <a>{{tel.numero}}</a>
+                                            </span>
+                                        </div>
                                     </div>
-                                </div>
-                            </ng-template>
-                            <span class="badge badge-danger" style="font-size: 10px; position: relative; top: -10px; right: 8px; height: 17px;">{{voce.telefoni.length - 1}}</span>
+                                </ng-template>
+                                <span class="badge badge-danger"
+                                      style="font-size: 10px; position: relative; top: -10px; right: 8px; height: 17px;">{{voce.telefoni.length - 1}}</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </td>
+            <td width="20%" class="align-middle">
+                <div class="row">
+                    <div class="col-11">
+                        <ul class=" mb-0"
+                            style="max-height: 210px; overflow-y: auto; list-style-type: none; padding-left: 0px;">
+                            <li>
+                                <span class="ml-1">{{voce?.indirizzo}}</span>
                             </li>
                         </ul>
                     </div>
@@ -82,10 +88,12 @@
             <td width="15%" class="align-middle">
                 <div class="row">
                     <div class="col-11">
-                        <ul class=" mb-0" style="max-height: 210px; overflow-y: auto; list-style-type: none; padding-left: 0px;">
+                        <ul class=" mb-0"
+                            style="max-height: 210px; overflow-y: auto; list-style-type: none; padding-left: 0px;">
                             <li>
-                                <span *ngIf="voce.mail" class="font-weight-bolder ml-1">{{voce.email}}</span>
-                                <small *ngIf="!voce.mail" class="font-weight-bolder ml-1 text-muted">Non presente</small>
+                                <span *ngIf="voce?.email" class="ml-1">{{voce?.email}}</span>
+                                <small *ngIf="!voce?.email" class="ml-1 text-muted">Non
+                                    presente</small>
                             </li>
                         </ul>
                     </div>
@@ -94,9 +102,10 @@
         </tr>
         <tr *ngIf="vociRubrica?.length <= 0">
             <td></td>
-            <td>    
+            <td>
                 <ng-template [ngIf]="!loading">Nessuna Voce trovata</ng-template>
-                <ng-template [ngIf]="loading">Caricamento risultati in corso...</ng-template></td>
+                <ng-template [ngIf]="loading">Caricamento risultati in corso...</ng-template>
+            </td>
             <td></td>
             <td></td>
             <td></td>
