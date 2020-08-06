@@ -32,21 +32,23 @@
                         <ul *ngIf="voce.telefoni.length <= 1" class=" mb-0"
                             style="list-style-type: none; padding-left: 5px;">
                             <li>
-                                <span class="font-weight-bolder ml-1">
-                                    <i *ngIf="voce.telefoni[0].tipo === 'Fax'" class="fa fa-fax pr-2"></i>
-                                    <i *ngIf="voce.telefoni[0].tipo.startsWith('Tel')" class="fa fa-phone pr-2"></i>
-                                    <a>{{voce.telefoni[0].numero}}</a>
-                                </span>
+                                    <span class="font-weight-bolder ml-1">
+                                        <i *ngIf="voce?.telefoni[0]?.tipo === 'Fax'" class="fa fa-fax pr-2"></i>
+                                        <i *ngIf="voce?.telefoni[0]?.tipo.startsWith('Tel')"
+                                           class="fa fa-phone pr-2"></i>
+                                        <a>{{voce?.telefoni[0]?.numero}}</a>
+                                    </span>
                             </li>
                         </ul>
                         <ul *ngIf="voce.telefoni.length > 1" class=" mb-0 row"
                             style="list-style-type: none; padding-left: 5px;">
                             <li style="padding-right: 5px">
-                                <span class="font-weight-bolder ml-1" style="padding-left: 16px;">
-                                    <i *ngIf="voce.telefoni[0].tipo === 'Fax'" class="fa fa-fax pr-2"></i>
-                                    <i *ngIf="voce.telefoni[0].tipo.startsWith('Tel')" class="fa fa-phone pr-2"></i>
-                                        <a>{{voce.telefoni[0].numero}}</a>
-                                </span>
+                                    <span class="font-weight-bolder ml-1" style="padding-left: 16px;">
+                                        <i *ngIf="voce?.telefoni[0]?.tipo === 'Fax'" class="fa fa-fax pr-2"></i>
+                                        <i *ngIf="voce?.telefoni[0]?.tipo.startsWith('Tel')"
+                                           class="fa fa-phone pr-2"></i>
+                                            <a>{{voce?.telefoni[0]?.numero}}</a>
+                                    </span>
                             </li>
                             <li style="display: flex; align-self: center;">
                                 <button ngbTooltip="Visualizza tutti i numeri" class="badge badge-primary"
@@ -56,13 +58,13 @@
                                 </button>
                                 <ng-template #tel>
                                     <small class="d-block font-weight-bold">Numeri:</small>
-                                    <div *ngFor="let tel of voce.telefoni" class="clearfix">
+                                    <div *ngFor="let tel of voce?.telefoni" class="clearfix">
                                         <div class="float-left mt-1">
-                                            <span class="font-weight-bolder ml-1">
-                                                <i *ngIf="tel.tipo === 'Fax'" class="fa fa-fax pr-2"></i>
-                                                <i *ngIf="tel.tipo.startsWith('Tel')" class="fa fa-phone pr-2"></i>
-                                                <a>{{tel.numero}}</a>
-                                            </span>
+                                                <span class="font-weight-bolder ml-1">
+                                                    <i *ngIf="tel?.tipo === 'Fax'" class="fa fa-fax pr-2"></i>
+                                                    <i *ngIf="tel?.tipo.startsWith('Tel')" class="fa fa-phone pr-2"></i>
+                                                    <a>{{tel?.numero}}</a>
+                                                </span>
                                         </div>
                                     </div>
                                 </ng-template>
@@ -92,8 +94,9 @@
                             style="max-height: 210px; overflow-y: auto; list-style-type: none; padding-left: 0px;">
                             <li>
                                 <span *ngIf="voce?.email" class="ml-1">{{voce?.email}}</span>
-                                <small *ngIf="!voce?.email" class="ml-1 text-muted">Non
-                                    presente</small>
+                                <small *ngIf="!voce?.email" class="ml-1 text-muted">
+                                    Non presente
+                                </small>
                             </li>
                         </ul>
                     </div>
@@ -110,7 +113,6 @@
             <td></td>
             <td></td>
         </tr>
-
         </tbody>
     </table>
 </div>
