@@ -53,7 +53,7 @@ import { MezzoComposizione } from '../../features/home/composizione-partenza/int
 import { AuthState } from '../../features/auth/store/auth.state';
 import { ClearCurrentUser, UpdateRuoliPersonali } from '../../features/auth/store/auth.actions';
 import { ViewComponentState } from '../../features/home/store/states/view/view.state';
-import { ResponseAddVoceRubricaInterface, ResponseDeleteVoceRubricaInterface, ResponseUpdateVoceRubricaInterface, VoceRubrica } from '../../shared/interface/rubrica.interface';
+import { ResponseAddEnteRubricaInterface, ResponseDeleteEnteRubricaInterface, ResponseUpdateEnteRubricaInterface, Ente } from '../../shared/interface/ente.interface';
 import { AddVoceRubrica, DeleteVoceRubrica, UpdateVoceRubrica } from '../../features/rubrica/store/actions/rubrica/rubrica.actions';
 import { SetEnti } from '../../shared/store/actions/enti/enti.actions';
 import { PatchPagination } from '../../shared/store/actions/pagination/pagination.actions';
@@ -324,26 +324,26 @@ export class SignalRService {
         /**
          * Rubrica
          */
-        this.hubNotification.on('NotifyChangeEnti', (enti: VoceRubrica[]) => {
+        this.hubNotification.on('NotifyChangeEnti', (enti: Ente[]) => {
             console.log('NotifyChangeEnti', enti);
             this.store.dispatch(new SetEnti(enti));
         });
 
-        this.hubNotification.on('NotifyAddEnte', (response: ResponseAddVoceRubricaInterface) => {
+        this.hubNotification.on('NotifyAddEnte', (response: ResponseAddEnteRubricaInterface) => {
             console.log('NotifyAddEnte', response);
             this.store.dispatch(new AddVoceRubrica());
             const pagination = this.store.selectSnapshot(PaginationState.pagination);
             this.store.dispatch(new PatchPagination({ ...pagination, totalItems: response.pagination.totalItems }));
         });
 
-        this.hubNotification.on('NotifyUpdateEnte', (response: ResponseUpdateVoceRubricaInterface) => {
+        this.hubNotification.on('NotifyUpdateEnte', (response: ResponseUpdateEnteRubricaInterface) => {
             console.log('NotifyUpdateEnte', response);
             this.store.dispatch(new UpdateVoceRubrica(response.data));
             const pagination = this.store.selectSnapshot(PaginationState.pagination);
             this.store.dispatch(new PatchPagination({ ...pagination, totalItems: response.pagination.totalItems }));
         });
 
-        this.hubNotification.on('NotifyDeleteEnte', (response: ResponseDeleteVoceRubricaInterface) => {
+        this.hubNotification.on('NotifyDeleteEnte', (response: ResponseDeleteEnteRubricaInterface) => {
             console.log('NotifyDeleteEnte', response);
             this.store.dispatch(new DeleteVoceRubrica(response.data));
             const pagination = this.store.selectSnapshot(PaginationState.pagination);

@@ -6,7 +6,7 @@
     </button>
 </div>
 <div class="modal-body height py-4 px-5">
-    <form [formGroup]="voceRubricaForm" ngxsForm="rubrica.voceRubricaForm">
+    <form [formGroup]="enteForm" ngxsForm="enti.enteForm">
         <div class="form-group">
             <label for="descrizione">
                 Nome
@@ -21,7 +21,7 @@
                 <small class="text-danger">*</small>
             </label>
             <ng-select id="categoria"
-                       [items]="categorieVoceRubrica$ | async"
+                       [items]="categorieEnti$ | async"
                        bindLabel="descrizione"
                        bindValue="codice"
                        formControlName="codCategoria"

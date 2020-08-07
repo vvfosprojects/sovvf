@@ -10,11 +10,12 @@ import { SetCurrentUrl } from '../../shared/store/actions/app/app.actions';
 import { RoutesPath } from '../../shared/enum/routes-path.enum';
 import { SetSediNavbarVisible } from '../../shared/store/actions/sedi-treeview/sedi-treeview.actions';
 import { ClearRicercaRubrica, SetRicercaRubrica } from './store/actions/ricerca-rubrica/ricerca-rubrica.actions';
-import { RequestAddVoceRubrica, RequestDeleteVoceRubrica, GetCategorieVoceRubrica, GetRubrica, RequestUpdateVoceRubrica, ClearFormVoceRubrica } from './store/actions/rubrica/rubrica.actions';
-import { VoceRubrica } from '../../shared/interface/rubrica.interface';
-import { VoceRubricaModalComponent } from '../../shared/modal/voce-rubrica-modal/voce-rubrica-modal.component';
+import { Ente } from '../../shared/interface/ente.interface';
+import { EnteModalComponent } from '../../shared/modal/ente-modal/ente-modal.component';
 import { RubricaState } from './store/states/rubrica/rubrica.state';
 import { ConfirmModalComponent } from '../../shared';
+import { GetRubrica } from './store/actions/rubrica/rubrica.actions';
+import { ClearFormEnte, RequestAddEnte, RequestDeleteEnte, RequestUpdateEnte } from '../../shared/store/actions/enti/enti.actions';
 
 @Component({
     selector: 'app-rubrica',
@@ -23,7 +24,7 @@ import { ConfirmModalComponent } from '../../shared';
 })
 export class RubricaComponent implements OnInit, OnDestroy {
 
-    @Select(RubricaState.vociRubrica) vociRubrica$: Observable<VoceRubrica[]>;
+    @Select(RubricaState.vociRubrica) vociRubrica$: Observable<Ente[]>;
     @Select(RicercaRubricaState.ricerca) ricerca$: Observable<string>;
     ricerca: string;
     @Select(PaginationState.pageSize) pageSize$: Observable<number>;
@@ -44,7 +45,6 @@ export class RubricaComponent implements OnInit, OnDestroy {
         this.getRicerca();
         this.getPageSize();
         this.getRubrica(true);
-        this.getCategorieVoceRubrica();
     }
 
 
@@ -69,7 +69,7 @@ export class RubricaComponent implements OnInit, OnDestroy {
     }
 
     onAddVoceRubrica() {
-        const addVoceRubricaModal = this.modalService.open(VoceRubricaModalComponent, {
+        const addVoceRubricaModal = this.modalService.open(EnteModalComponent, {
             backdropClass: 'light-blue-backdrop',
             centered: true,
             size: 'lg'
@@ -79,47 +79,47 @@ export class RubricaComponent implements OnInit, OnDestroy {
                 if (result.success) {
                     this.addVoceRubrica();
                 } else if (!result.success) {
-                    this.store.dispatch(new ClearFormVoceRubrica());
+                    this.store.dispatch(new ClearFormEnte());
                     console.log('Modal "addVoceRubrica" chiusa con val ->', result);
                 }
             },
             (err) => {
-                this.store.dispatch(new ClearFormVoceRubrica());
+                this.store.dispatch(new ClearFormEnte());
                 console.error('Modal chiusa senza bottoni. Err ->', err);
             }
         );
     }
 
     addVoceRubrica() {
-        this.store.dispatch(new RequestAddVoceRubrica());
+        this.store.dispatch(new RequestAddEnte());
     }
 
-    onEditVoceRubrica(voceRubrica: VoceRubrica) {
+    onEditVoceRubrica(voceRubrica: Ente) {
         console.log('onEditVoceRubrica', voceRubrica);
-        const editVoceRubricaModal = this.modalService.open(VoceRubricaModalComponent, {
+        const editVoceRubricaModal = this.modalService.open(EnteModalComponent, {
             backdropClass: 'light-blue-backdrop',
             centered: true,
             size: 'lg'
         });
-        editVoceRubricaModal.componentInstance.editVoceRubrica = voceRubrica;
+        editVoceRubricaModal.componentInstance.editEnte = voceRubrica;
         editVoceRubricaModal.result.then(
             (result: { success: boolean }) => {
                 if (result.success) {
                     this.updateVoceRubrica();
                 } else if (!result.success) {
-                    this.store.dispatch(new ClearFormVoceRubrica());
+                    this.store.dispatch(new ClearFormEnte());
                     console.log('Modal "addVoceRubrica" chiusa con val ->', result);
                 }
             },
             (err) => {
-                this.store.dispatch(new ClearFormVoceRubrica());
+                this.store.dispatch(new ClearFormEnte());
                 console.error('Modal chiusa senza bottoni. Err ->', err);
             }
         );
     }
 
     updateVoceRubrica() {
-        this.store.dispatch(new RequestUpdateVoceRubrica());
+        this.store.dispatch(new RequestUpdateEnte());
     }
 
     onDeleteVoceRubrica(payload: { idVoceRubrica: string, descrizioneVoceRubrica: string }) {
@@ -150,8 +150,8 @@ export class RubricaComponent implements OnInit, OnDestroy {
         );
     }
 
-    deleteVoceRubrica(idVoceRubrica: string) {
-        this.store.dispatch(new RequestDeleteVoceRubrica({ idVoceRubrica }));
+    deleteVoceRubrica(id: string) {
+        this.store.dispatch(new RequestDeleteEnte({ id }));
     }
 
     onRicercaRubrica(ricerca: string) {
@@ -188,9 +188,5 @@ export class RubricaComponent implements OnInit, OnDestroy {
                 }
             })
         );
-    }
-
-    getCategorieVoceRubrica() {
-        this.store.dispatch(new GetCategorieVoceRubrica());
     }
 }
