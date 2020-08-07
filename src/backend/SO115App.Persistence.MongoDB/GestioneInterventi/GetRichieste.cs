@@ -206,16 +206,12 @@ namespace SO115App.Persistence.MongoDB
 
             var listaSistesiRichieste = new List<SintesiRichiesta>();
 
-            var lstCodiciEnti = result
-                .Where(c => c.CodEntiIntervenuti != null)
-                .SelectMany(c => c.CodEntiIntervenuti)
-                .Select(c => int.Parse(c))
-                .ToArray();
-
-            var rubrica = _getRubrica.GetBylstCodici(lstCodiciEnti);
-
             foreach (RichiestaAssistenza richiesta in result)
             {
+                var lstCodiciEnti = richiesta.CodEntiIntervenuti.Select(c => int.Parse(c)).ToArray();
+
+                var rubrica = _getRubrica.GetBylstCodici(lstCodiciEnti);
+
                 SintesiRichiesta sintesi = new SintesiRichiesta();
 
                 if (richiesta.CodUOCompetenza != null)
