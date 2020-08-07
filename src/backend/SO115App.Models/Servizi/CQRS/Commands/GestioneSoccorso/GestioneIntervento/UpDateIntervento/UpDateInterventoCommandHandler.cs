@@ -19,11 +19,13 @@
 //-----------------------------------------------------------------------
 
 using CQRS.Commands;
+using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.Eventi;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace DomainModel.CQRS.Commands.UpDateIntervento
 {
@@ -71,7 +73,7 @@ namespace DomainModel.CQRS.Commands.UpDateIntervento
             richiesta.UtPresaInCarico = utentiPresaInCarico;
             richiesta.NotePrivate = command.Chiamata.NotePrivate;
             richiesta.NotePubbliche = command.Chiamata.NotePubbliche;
-            richiesta.Tags = command.Chiamata.Tags;
+            richiesta.CodEntiIntervenuti = command.Chiamata.listaEnti.Select(c => c.ToString()).ToList();
 
             if (command.Chiamata.Tags != null)
             {
@@ -81,18 +83,16 @@ namespace DomainModel.CQRS.Commands.UpDateIntervento
                 }
             }
 
-            //richiesta.SincronizzaRilevanza(command.Chiamata.RilevanteGrave, command.Chiamata.RilevanteStArCu, command.CodUtente, command.Chiamata.Descrizione, DateTime.UtcNow);
-
             richiesta.SincronizzaStatoRichiesta(command.Chiamata.Stato, richiesta.StatoRichiesta, command.CodUtente, command.Chiamata.Motivazione);
 
-            // if (command.Chiamata.RilevanteGrave || command.Chiamata.RilevanteStArCu)
             if (command.Chiamata.RilevanteGrave != richiesta.RilevanteGrave || command.Chiamata.RilevanteStArCu != richiesta.RilevanteStArCu)
-                new MarcaRilevante(richiesta, DateTime.UtcNow.AddMilliseconds(1.5), command.CodUtente, "", command.Chiamata.RilevanteGrave,
-        command.Chiamata.RilevanteStArCu);
+                new MarcaRilevante(richiesta, DateTime.UtcNow.AddMilliseconds(1.5), command.CodUtente, "", command.Chiamata.RilevanteGrave, command.Chiamata.RilevanteStArCu);
 
-            if (richiesta.PrioritaRichiesta != command.Chiamata.PrioritaRichiesta)
+            var prioritaRichiesta = (RichiestaAssistenza.Priorita)command.Chiamata.PrioritaRichiesta;
+
+            if (richiesta.PrioritaRichiesta != prioritaRichiesta)
             {
-                new AssegnazionePriorita(richiesta, priorita, DateTime.UtcNow, command.CodUtente);
+                new AssegnazionePriorita(richiesta, prioritaRichiesta, DateTime.UtcNow, command.CodUtente);
             }
 
             _updateRichiestaAssistenza.UpDate(richiesta);
