@@ -5,12 +5,13 @@ import { PipeModule } from './pipes/pipe.module';
 import { TreeviewI18n, TreeviewModule } from 'ngx-treeview';
 import { DefaultTreeviewI18n } from './store/states/sedi-treeview/default-treeview-i18n';
 import { ReactiveFormsModule } from '@angular/forms';
-import * as Shared from './index';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { ListaPartenzeComponent } from './components/lista-partenze/lista-partenze.component';
 import { EnteModalComponent } from './modal/ente-modal/ente-modal.component';
 import { NgxsFormPluginModule } from '@ngxs/form-plugin';
 import { NumeriEnteComponent } from './components/numeri-ente/numeri-ente.component';
+import { MezzoActionsModalComponent } from './index';
+import * as Shared from './index';
 
 const COMPONENTS = [
     Shared.DebounceClickDirective,
@@ -33,7 +34,7 @@ const COMPONENTS = [
     Shared.BottoneNuovaVersioneComponent,
     Shared.EliminaPartenzaModalComponent,
     Shared.RichiestaDuplicataModalComponent,
-    Shared.MezzoActionsModalComponent,
+    MezzoActionsModalComponent,
     ListaPartenzeComponent,
     EnteModalComponent,
     NumeriEnteComponent
