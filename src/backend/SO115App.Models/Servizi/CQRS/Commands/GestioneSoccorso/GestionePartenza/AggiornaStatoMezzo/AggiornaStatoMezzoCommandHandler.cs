@@ -48,9 +48,13 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
         {
             var richiesta = _getRichiestaById.GetByCodice(command.CodRichiesta);
 
+            //TODO DA TOGLIERE
+            if (command.DataOraAggiornamento == null)
+                command.DataOraAggiornamento = DateTime.UtcNow;
+
             if (command.StatoMezzo == Costanti.MezzoInViaggio)
             {
-                new UscitaPartenza(richiesta, command.IdMezzo, DateTime.UtcNow, richiesta.CodOperatore);
+                new UscitaPartenza(richiesta, command.IdMezzo, command.DataOraAggiornamento, richiesta.CodOperatore);
 
                 richiesta.SincronizzaStatoRichiesta(Costanti.RichiestaAssegnata, richiesta.StatoRichiesta,
                     richiesta.CodOperatore, "");
@@ -66,7 +70,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
             }
             else if (command.StatoMezzo == Costanti.MezzoSulPosto)
             {
-                new ArrivoSulPosto(richiesta, command.IdMezzo, DateTime.UtcNow, richiesta.CodOperatore);
+                new ArrivoSulPosto(richiesta, command.IdMezzo, command.DataOraAggiornamento, richiesta.CodOperatore);
 
                 richiesta.SincronizzaStatoRichiesta(Costanti.RichiestaPresidiata, richiesta.StatoRichiesta,
                     richiesta.CodOperatore, "");
@@ -102,7 +106,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 }
 
                 if (_mezziTuttiInSede)
-                    new PartenzaInRientro(richiesta, command.IdMezzo, DateTime.UtcNow, richiesta.CodOperatore); //TODO GESTIRE IL CODICE OPERATORE
+                    new PartenzaInRientro(richiesta, command.IdMezzo, command.DataOraAggiornamento, richiesta.CodOperatore); //TODO GESTIRE IL CODICE OPERATORE
             }
             else if (command.StatoMezzo == Costanti.MezzoRientrato)
             {
@@ -130,7 +134,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 
                 if (_mezziTuttiInSede)
                 {
-                    new PartenzaRientrata(richiesta, command.IdMezzo, DateTime.UtcNow, richiesta.CodOperatore);
+                    new PartenzaRientrata(richiesta, command.IdMezzo, command.DataOraAggiornamento, richiesta.CodOperatore);
                 }
             }
             else if (command.StatoMezzo == Costanti.MezzoInViaggio)
@@ -149,7 +153,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
             {
                 if (richiesta.StatoRichiesta is Sospesa)
                 {
-                    new ChiusuraRichiesta("", richiesta, DateTime.UtcNow, richiesta.CodOperatore);
+                    new ChiusuraRichiesta("", richiesta, command.DataOraAggiornamento, richiesta.CodOperatore);
                 }
             }
 
