@@ -17,5 +17,7 @@ namespace SO115App.Models.Servizi.Infrastruttura.GestioneRubrica.Enti
         List<EnteDTO> GetBylstCodici(int[] lstCodici);
 
         EnteDTO Get(string Id);
+
+        int CountBylstCodiciSede(string[] CodSede);
     }
 }

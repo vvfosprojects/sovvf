@@ -9,7 +9,7 @@ export interface CategoriaVoceRubrica {
 }
 
 export enum TipoTelefono {
-    Telefono = 'Telefono',
+    Telefono = 'Tel.',
     Fax = 'Fax'
 }
 
@@ -22,8 +22,8 @@ export interface AddVoceRubricaInterface {
     descrizione: string;
     ricorsivo: boolean;
     codCategoria: number;
-    indirizzo: string;
-    cap: string;
+    indirizzo?: string;
+    cap?: string;
     noteEnte?: string;
     email?: string;
     telefoni: VoceRubricaTelefono[];
@@ -35,8 +35,16 @@ export interface ResponseAddVoceRubricaInterface {
 }
 
 export interface UpdateVoceRubricaInterface {
-    codice: string;
+    id: string;
+    codice: number;
     descrizione: string;
+    ricorsivo: boolean;
+    codCategoria: number;
+    indirizzo?: string;
+    cap?: string;
+    noteEnte?: string;
+    email?: string;
+    telefoni: VoceRubricaTelefono[];
 }
 
 export interface ResponseUpdateVoceRubricaInterface {
@@ -59,9 +67,9 @@ export interface VoceRubrica {
     descrizione: string;
     codSede: string;
     ricorsivo: boolean;
-    enteCategoria: CategoriaVoceRubrica;
-    indirizzo: string;
-    cap: string;
+    categoria: CategoriaVoceRubrica;
+    indirizzo?: string;
+    cap?: string;
     telefoni: VoceRubricaTelefono[];
     noteEnte?: string;
     email?: string;

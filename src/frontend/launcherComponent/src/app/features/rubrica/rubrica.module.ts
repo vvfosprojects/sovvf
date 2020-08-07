@@ -7,6 +7,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { TreeviewModule } from 'ngx-treeview';
 import { NgxsModule } from '@ngxs/store';
 import { NgxsFormPluginModule } from '@ngxs/form-plugin';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 /**
  * Component
  */
@@ -50,6 +51,7 @@ import { RubricaState } from './store/states/rubrica/rubrica.state';
         FormsModule,
         NgSelectModule,
         NgxPaginationModule,
+        NgbModule
     ],
     entryComponents: [VoceRubricaModalComponent, ConfirmModalComponent],
     providers: []

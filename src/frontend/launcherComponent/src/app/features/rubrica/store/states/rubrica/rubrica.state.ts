@@ -33,6 +33,8 @@ export interface RubricaStateModel {
     categorieVoceRubrica: CategoriaVoceRubrica[];
     voceRubricaForm: {
         model?: {
+            id: string;
+            codice: number;
             descrizione: string;
             ricorsivo: boolean;
             codCategoria: number,
@@ -54,6 +56,8 @@ export const RubricaStateModelDefaults: RubricaStateModel = {
     categorieVoceRubrica: undefined,
     voceRubricaForm: {
         model: {
+            id: undefined,
+            codice: undefined,
             descrizione: undefined,
             ricorsivo: false,
             codCategoria: undefined,
@@ -158,23 +162,47 @@ export class RubricaState {
 
         this.rubricaService.addVoceRubrica(newVoceRubrica).subscribe((response: ResponseAddVoceRubricaInterface) => {
                 dispatch(new ClearFormVoceRubrica());
-                dispatch(new AddVoceRubrica());
-                // todo: aspettare implementazione lato BE per togliere i commenti
-                // const pagination = this.store.selectSnapshot(PaginationState.pagination);
-                // dispatch(new PatchPagination({ ...pagination, totalItems: response.pagination.totalItems }));
             }, (error) => dispatch(new ClearFormVoceRubrica())
         );
     }
 
 
     @Action(RequestUpdateVoceRubrica)
-    requestUpdateVoceRubrica({ dispatch }: StateContext<RubricaStateModel>, action: RequestUpdateVoceRubrica) {
-        this.rubricaService.updateVoceRubrica(action.voceRubrica).subscribe((response: ResponseUpdateVoceRubricaInterface) => {
+    requestUpdateVoceRubrica({ getState, dispatch }: StateContext<RubricaStateModel>, action: RequestUpdateVoceRubrica) {
+        const form = getState().voceRubricaForm.model;
+        const updatedVoceRubrica = {
+            id: form.id,
+            codice: form.codice,
+            descrizione: form.descrizione,
+            ricorsivo: form.ricorsivo,
+            codCategoria: form.codCategoria,
+            indirizzo: form.indirizzo,
+            cap: form.cap,
+            noteEnte: form.noteEnte,
+            email: form.email,
+            telefoni: []
+        };
+
+        // telefono
+        if (form.telefono) {
+            updatedVoceRubrica.telefoni.push(
+                {
+                    tipo: TipoTelefono.Telefono,
+                    numero: form.telefono
+                }
+            );
+        }
+        // fax
+        if (form.fax) {
+            updatedVoceRubrica.telefoni.push(
+                {
+                    tipo: TipoTelefono.Fax,
+                    numero: form.fax
+                }
+            );
+        }
+        this.rubricaService.updateVoceRubrica(updatedVoceRubrica).subscribe((response: ResponseUpdateVoceRubricaInterface) => {
                 dispatch(new ClearFormVoceRubrica());
-                dispatch(new UpdateVoceRubrica(response.data));
-                // todo: aspettare implementazione lato BE per togliere i commenti
-                // const pagination = this.store.selectSnapshot(PaginationState.pagination);
-                // dispatch(new PatchPagination({ ...pagination, totalItems: response.pagination.totalItems }));
             }, (error) => dispatch(new ClearFormVoceRubrica())
         );
     }
@@ -182,19 +210,13 @@ export class RubricaState {
     @Action(RequestDeleteVoceRubrica)
     requestDeleteVoceRubrica({ setState, dispatch }: StateContext<RubricaStateModel>, action: RequestDeleteVoceRubrica) {
         this.rubricaService.deleteVoceRubrica(action.voceRubrica).subscribe((response: ResponseDeleteVoceRubricaInterface) => {
-            dispatch(new DeleteVoceRubrica(response.data));
-            // todo: aspettare implementazione lato BE per togliere i commenti
-            // const pagination = this.store.selectSnapshot(PaginationState.pagination);
-            // dispatch(new PatchPagination({ ...pagination, totalItems: response.pagination.totalItems }));
         });
     }
 
     @Action(AddVoceRubrica)
     addVoceRubrica({ dispatch }: StateContext<RubricaStateModel>) {
         const pagina = this.store.selectSnapshot(PaginationState.page);
-        if (pagina === 1) {
-            dispatch(new GetRubrica());
-        }
+        dispatch(new GetRubrica(pagina));
     }
 
 
@@ -208,7 +230,12 @@ export class RubricaState {
     }
 
     @Action(DeleteVoceRubrica)
-    deleteVoceRubrica({ setState }: StateContext<RubricaStateModel>, action: DeleteVoceRubrica) {
+    deleteVoceRubrica({ setState, getState, dispatch }: StateContext<RubricaStateModel>, action: DeleteVoceRubrica) {
+        const state = getState();
+        if (state.vociRubrica && state.vociRubrica.length === 1) {
+            const page = this.store.selectSnapshot(PaginationState.page);
+            dispatch(new GetRubrica(page - 1));
+        }
         setState(
             patch({
                 vociRubrica: removeItem<VoceRubrica>(voceRubrica => voceRubrica.id === action.idVoceRubrica)
