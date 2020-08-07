@@ -10,6 +10,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { ListaPartenzeComponent } from './components/lista-partenze/lista-partenze.component';
 import { VoceRubricaModalComponent } from './modal/voce-rubrica-modal/voce-rubrica-modal.component';
 import { NgxsFormPluginModule } from '@ngxs/form-plugin';
+import { MezzoActionsModalComponent } from './modal/mezzo-actions-modal/mezzo-actions-modal.component';
 
 const COMPONENTS = [
     Shared.DebounceClickDirective,
@@ -32,6 +33,7 @@ const COMPONENTS = [
     Shared.BottoneNuovaVersioneComponent,
     Shared.EliminaPartenzaModalComponent,
     Shared.RichiestaDuplicataModalComponent,
+    Shared.MezzoActionsModalComponent,
     ListaPartenzeComponent,
     VoceRubricaModalComponent
 ];
@@ -51,8 +53,10 @@ const COMPONENTS = [
     ],
     exports: [
         ...COMPONENTS,
-        PipeModule
-    ]
+        PipeModule,
+        MezzoActionsModalComponent
+    ],
+    entryComponents: [MezzoActionsModalComponent]
 })
 export class SharedModule {
 
