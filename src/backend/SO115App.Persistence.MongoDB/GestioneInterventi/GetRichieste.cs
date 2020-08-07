@@ -27,6 +27,7 @@ using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRi
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
 using SO115App.Models.Classi.Condivise;
+using SO115App.Models.Classi.RubricaDTO;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.CustomMapper;
 using SO115App.Models.Servizi.Infrastruttura.GestioneRubrica.Enti;
@@ -208,9 +209,13 @@ namespace SO115App.Persistence.MongoDB
 
             foreach (RichiestaAssistenza richiesta in result)
             {
-                var lstCodiciEnti = richiesta.CodEntiIntervenuti.Select(c => int.Parse(c)).ToArray();
+                List<EnteDTO> rubrica = new List<EnteDTO>();
+                if (richiesta.CodEntiIntervenuti != null)
+                {
+                    var lstCodiciEnti = richiesta.CodEntiIntervenuti.Select(c => int.Parse(c)).ToArray();
 
-                var rubrica = _getRubrica.GetBylstCodici(lstCodiciEnti);
+                    rubrica = _getRubrica.GetBylstCodici(lstCodiciEnti);
+                }
 
                 SintesiRichiesta sintesi = new SintesiRichiesta();
 
@@ -218,7 +223,7 @@ namespace SO115App.Persistence.MongoDB
                 {
                     sintesi = _mapperSintesi.Map(richiesta);
                     sintesi.Competenze = MapCompetenze(richiesta.CodUOCompetenza);
-                    sintesi.ListaEntiIntervenuti = rubrica;
+                    sintesi.ListaEntiIntervenuti = rubrica == null ? null : rubrica;
                     listaSistesiRichieste.Add(sintesi);
                 }
             }
