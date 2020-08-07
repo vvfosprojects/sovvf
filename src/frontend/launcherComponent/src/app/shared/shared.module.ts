@@ -33,6 +33,7 @@ const COMPONENTS = [
     Shared.BottoneNuovaVersioneComponent,
     Shared.EliminaPartenzaModalComponent,
     Shared.RichiestaDuplicataModalComponent,
+    Shared.MezzoActionsModalComponent,
     ListaPartenzeComponent,
     EnteModalComponent,
     NumeriEnteComponent

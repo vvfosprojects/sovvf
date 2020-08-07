@@ -1,9 +1,10 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { NgbDropdownConfig, NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDropdownConfig, NgbTooltipConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Mezzo } from '../../../model/mezzo.model';
 import { calcolaActionSuggeritaMezzo, statoMezzoActionColor, statoMezzoActionsEnumToStringArray } from '../../../helper/function';
 import { StatoMezzoActions } from '../../../enum/stato-mezzo-actions.enum';
 import { StatoMezzo } from 'src/app/shared/enum/stato-mezzo.enum';
+import { MezzoActionsModalComponent } from 'src/app/shared/modal/mezzo-actions-modal/mezzo-actions-modal.component';
 
 @Component({
     selector: 'app-mezzo-actions',
@@ -18,8 +19,11 @@ export class MezzoActionsComponent implements OnInit {
 
     @Output() actionMezzo: EventEmitter<StatoMezzoActions> = new EventEmitter();
 
-    constructor(dropdownConfig: NgbDropdownConfig,
-                tooltipConfig: NgbTooltipConfig) {
+    constructor(
+        dropdownConfig: NgbDropdownConfig,
+        tooltipConfig: NgbTooltipConfig,
+        private modalService: NgbModal
+                ) {
         dropdownConfig.container = 'body';
         dropdownConfig.placement = 'top';
         tooltipConfig.container = 'body';
@@ -31,12 +35,25 @@ export class MezzoActionsComponent implements OnInit {
     }
 
     onClick(action?: string) {
-        if (action) {
-            this.statoMezzoActions = StatoMezzoActions[action.replace(' ', '')];
-            this.actionMezzo.emit(this.statoMezzoActions);
-        } else {
-            this.actionMezzo.emit();
-        }
+        this.modalService.open(MezzoActionsModalComponent, {
+            windowClass: 'smModal',
+            backdropClass: 'light-blue-backdrop',
+            centered: true
+        }).result.then((res: { status: string, result: any }) => {
+            switch (res.status) {
+                case 'ok' :
+                    console.log(res.result.time); // qui ho il dato ORARIO (time) ottenuto da mezzo-actions-modal
+                    if (action) {
+                        this.statoMezzoActions = StatoMezzoActions[action.replace(' ', '')];
+                        this.actionMezzo.emit(this.statoMezzoActions);
+                    } else {
+                        this.actionMezzo.emit();
+                    }
+                    break;
+                case 'ko':
+                    break;
+            }
+        });
     }
 
     calcolaActionSuggeritaMezzo(stato: StatoMezzo) {
