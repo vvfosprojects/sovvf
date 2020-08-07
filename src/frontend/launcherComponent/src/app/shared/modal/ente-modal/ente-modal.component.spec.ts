@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { VoceRubricaModalComponent } from './voce-rubrica-modal.component';
+import { EnteModalComponent } from './ente-modal.component';
 
 describe('AddVoceRubricaModalComponent', () => {
-  let component: VoceRubricaModalComponent;
-  let fixture: ComponentFixture<VoceRubricaModalComponent>;
+  let component: EnteModalComponent;
+  let fixture: ComponentFixture<EnteModalComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ VoceRubricaModalComponent ]
+      declarations: [ EnteModalComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(VoceRubricaModalComponent);
+    fixture = TestBed.createComponent(EnteModalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

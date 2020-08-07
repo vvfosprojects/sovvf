@@ -5,24 +5,25 @@ import { Observable, Subscription } from 'rxjs';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { UpdateFormValue } from '@ngxs/form-plugin';
-import { RubricaState } from '../../../features/rubrica/store/states/rubrica/rubrica.state';
-import { CategoriaVoceRubrica, VoceRubrica } from '../../interface/rubrica.interface';
+import { CategoriaEnte, Ente } from '../../interface/ente.interface';
+import { EntiState } from '../../store/states/enti/enti.state';
+import { GetCategorieEnti } from '../../store/actions/enti/enti.actions';
 
 @Component({
-    selector: 'app-voce-rubrica-modal',
-    templateUrl: './voce-rubrica-modal.component.html',
-    styleUrls: ['./voce-rubrica-modal.component.css']
+    selector: 'app-ente-rubrica-modal',
+    templateUrl: './ente-modal.component.html',
+    styleUrls: ['./ente-modal.component.css']
 })
-export class VoceRubricaModalComponent implements OnInit, OnDestroy {
+export class EnteModalComponent implements OnInit, OnDestroy {
 
     @Select(LoadingState.loading) loading$: Observable<boolean>;
-    @Select(RubricaState.categorieVoceRubrica) categorieVoceRubrica$: Observable<CategoriaVoceRubrica[]>;
-    @Select(RubricaState.formValid) formValid$: Observable<boolean>;
+    @Select(EntiState.categorieEnti) categorieEnti$: Observable<CategoriaEnte[]>;
+    @Select(EntiState.formValid) formValid$: Observable<boolean>;
     formValid: boolean;
 
-    editVoceRubrica: VoceRubrica;
+    editEnte: Ente;
 
-    voceRubricaForm: FormGroup;
+    enteForm: FormGroup;
     checkboxRicorsivoState: { id: string, status: boolean, label: string, disabled: boolean };
     submitted: boolean;
 
@@ -31,12 +32,13 @@ export class VoceRubricaModalComponent implements OnInit, OnDestroy {
     constructor(private store: Store,
                 private modal: NgbActiveModal,
                 private fb: FormBuilder) {
+        this.getCategorieEnte();
         this.initForm();
         this.getFormValid();
     }
 
     initForm() {
-        this.voceRubricaForm = new FormGroup({
+        this.enteForm = new FormGroup({
             id: new FormControl(),
             codice: new FormControl(),
             descrizione: new FormControl(),
@@ -49,7 +51,7 @@ export class VoceRubricaModalComponent implements OnInit, OnDestroy {
             telefono: new FormControl(),
             fax: new FormControl()
         });
-        this.voceRubricaForm = this.fb.group({
+        this.enteForm = this.fb.group({
             id: [null],
             codice: [null],
             descrizione: [null, Validators.required],
@@ -66,13 +68,13 @@ export class VoceRubricaModalComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        if (this.editVoceRubrica) {
-            this.updateVoceRubricaForm(this.editVoceRubrica);
+        if (this.editEnte) {
+            this.updateEnteForm(this.editEnte);
         }
     }
 
     ngOnDestroy(): void {
-        this.voceRubricaForm.reset();
+        this.enteForm.reset();
         this.subscription.unsubscribe();
     }
 
@@ -85,27 +87,28 @@ export class VoceRubricaModalComponent implements OnInit, OnDestroy {
     }
 
     get f() {
-        return this.voceRubricaForm.controls;
+        return this.enteForm.controls;
     }
 
-    updateVoceRubricaForm(editVoceRubrica: VoceRubrica) {
-        console.log('updateVoceRubricaForm', editVoceRubrica);
+    updateEnteForm(editEnte: Ente) {
+        console.log('updateEnteForm', editEnte);
         this.store.dispatch(new UpdateFormValue({
             value: {
-                id: editVoceRubrica.id,
-                codice: editVoceRubrica.codice,
-                descrizione: editVoceRubrica.descrizione,
-                ricorsivo: editVoceRubrica.ricorsivo,
-                codCategoria: editVoceRubrica.categoria.codice,
-                indirizzo: editVoceRubrica.indirizzo,
-                cap: editVoceRubrica.cap,
-                noteEnte: editVoceRubrica.noteEnte,
-                email: editVoceRubrica.email,
-                telefono: editVoceRubrica.telefoni[0] ? editVoceRubrica.telefoni[0].numero : undefined,
-                fax: editVoceRubrica.telefoni[1] ? editVoceRubrica.telefoni[1].numero : undefined
+                id: editEnte.id,
+                codice: editEnte.codice,
+                descrizione: editEnte.descrizione,
+                ricorsivo: editEnte.ricorsivo,
+                codCategoria: editEnte.categoria.codice,
+                indirizzo: editEnte.indirizzo,
+                cap: editEnte.cap,
+                noteEnte: editEnte.noteEnte,
+                email: editEnte.email,
+                telefono: editEnte.telefoni[0] ? editEnte.telefoni[0].numero : undefined,
+                fax: editEnte.telefoni[1] ? editEnte.telefoni[1].numero : undefined
             },
-            path: 'rubrica.voceRubricaForm'
+            path: 'enti.enteForm'
         }));
+        this.checkboxRicorsivoState.status = editEnte.ricorsivo;
     }
 
     setRicorsivoValue(value: { id: string, status: boolean }) {
@@ -113,10 +116,10 @@ export class VoceRubricaModalComponent implements OnInit, OnDestroy {
         this.f[value.id].patchValue(value.status);
         this.store.dispatch(new UpdateFormValue({
             value: {
-                ...this.voceRubricaForm.value,
+                ...this.enteForm.value,
                 ricorsivo: value.status
             },
-            path: 'rubrica.voceRubricaForm'
+            path: 'enti.enteForm'
         }));
     }
 
@@ -138,10 +141,14 @@ export class VoceRubricaModalComponent implements OnInit, OnDestroy {
         this.modal.close(type);
     }
 
+    getCategorieEnte() {
+        this.store.dispatch(new GetCategorieEnti());
+    }
+
     getTitle(): string {
         let title = 'Aggiungi Voce in Rubrica';
-        if (this.editVoceRubrica) {
-            title = 'Modifica ' + this.editVoceRubrica.descrizione;
+        if (this.editEnte) {
+            title = 'Modifica ' + this.editEnte.descrizione;
         }
         return title;
     }

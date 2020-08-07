@@ -356,5 +356,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         public string Motivazione { get; set; }
 
         public Fonogramma Fonogramma { get; set; }
+        public List<int> listaEnti { get; set; }
     }
 }

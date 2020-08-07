@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { Localita } from 'src/app/shared/model/localita.model';
 import { Coordinate } from 'src/app/shared/model/coordinate.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -30,12 +30,12 @@ import { Options } from 'ngx-google-places-autocomplete/objects/options/options'
 import { LatLngBounds } from 'ngx-google-places-autocomplete/objects/latLngBounds';
 import { ComponentRestrictions } from 'ngx-google-places-autocomplete/objects/options/componentRestrictions';
 import { GOOGLEPLACESOPTIONS } from '../../../../core/settings/google-places-options';
-import { VoceRubrica } from 'src/app/shared/interface/rubrica.interface';
+import { Ente } from 'src/app/shared/interface/ente.interface';
 
 @Component({
     selector: 'app-scheda-telefonata',
     templateUrl: './scheda-telefonata.component.html',
-    styleUrls: [ './scheda-telefonata.component.scss' ],
+    styleUrls: ['./scheda-telefonata.component.scss'],
     encapsulation: ViewEncapsulation.None
 })
 export class SchedaTelefonataComponent implements OnInit, OnDestroy {
@@ -55,11 +55,12 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy {
     @Input() operatore: Utente;
     @Input() disabledInviaPartenza = false;
     @Input() loading: boolean;
-    @Input() enti: VoceRubrica[];
+    @Input() enti: Ente[];
+
+    @Output() aggiungiNuovoEnte: EventEmitter<boolean> = new EventEmitter<boolean>();
 
     nuovaRichiesta: SintesiRichiesta;
     isCollapsed = true;
-    // showRubrica: boolean = false;
 
     idSchedaContatto: string;
 
@@ -119,23 +120,23 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy {
 
     createForm(): FormGroup {
         return this.formBuilder.group({
-            selectedTipologie: [ null, Validators.required ],
-            nominativo: [ null, Validators.required ],
-            telefono: [ null, [ Validators.required, Validators.pattern('^(\\+?)[0-9]+$') ] ],
-            indirizzo: [ null, Validators.required ],
-            latitudine: [ null, [ Validators.required, Validators.pattern('^(\\-?)([0-9]+)(\\.)([0-9]+)$') ] ],
-            longitudine: [ null, [ Validators.required, Validators.pattern('^(\\-?)([0-9]+)(\\.)([0-9]+)$') ] ],
-            piano: [ null ],
-            etichette: [ null ],
-            noteIndirizzo: [ null ],
-            rilevanzaGrave: [ false ],
-            rilevanzaStArCu: [ false ],
-            notePrivate: [ null ],
-            notePubbliche: [ null ],
-            descrizione: [ null ],
-            zoneEmergenza: [ null ],
-            prioritaRichiesta: [ 3, Validators.required ],
-            listaEnti: [ null ]
+            selectedTipologie: [null, Validators.required],
+            nominativo: [null, Validators.required],
+            telefono: [null, [Validators.required, Validators.pattern('^(\\+?)[0-9]+$')]],
+            indirizzo: [null, Validators.required],
+            latitudine: [null, [Validators.required, Validators.pattern('^(\\-?)([0-9]+)(\\.)([0-9]+)$')]],
+            longitudine: [null, [Validators.required, Validators.pattern('^(\\-?)([0-9]+)(\\.)([0-9]+)$')]],
+            piano: [null],
+            etichette: [null],
+            noteIndirizzo: [null],
+            rilevanzaGrave: [false],
+            rilevanzaStArCu: [false],
+            notePrivate: [null],
+            notePubbliche: [null],
+            descrizione: [null],
+            zoneEmergenza: [null],
+            prioritaRichiesta: [3, Validators.required],
+            listaEnti: [null]
         });
     }
 
@@ -243,6 +244,10 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy {
     clearEntiSelezionati() {
         this.f.listaEnti.patchValue([]);
         this.nuovaRichiesta.listaEnti = [];
+    }
+
+    onAggiungiNuovoEnte() {
+        this.aggiungiNuovoEnte.emit();
     }
 
     onAnnullaChiamata(): void {

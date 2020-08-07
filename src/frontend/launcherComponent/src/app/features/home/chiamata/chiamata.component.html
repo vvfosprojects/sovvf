@@ -3,6 +3,7 @@
                            [operatore]="(utente$ | async)"
                            [disabledInviaPartenza]="permessiFeature.ComposizionePartenzaRichiesta | checkPermission"
                            [loading]="loadingNuovaChiamata$ | async"
-                           [enti]="enti$ | async">
+                           [enti]="enti$ | async"
+                           (aggiungiNuovoEnte)="aggiungiNuovoEnte()">
     </app-scheda-telefonata>
 </div>

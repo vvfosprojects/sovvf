@@ -1,6 +1,6 @@
 import { PaginationInterface } from './pagination.interface';
 
-export interface CategoriaVoceRubrica {
+export interface CategoriaEnte {
     codice: string;
     descrizione: string;
     visibile: string;
@@ -13,12 +13,12 @@ export enum TipoTelefono {
     Fax = 'Fax'
 }
 
-export interface VoceRubricaTelefono {
+export interface EnteTelefono {
     tipo: TipoTelefono;
     numero: string;
 }
 
-export interface AddVoceRubricaInterface {
+export interface AddEnteInterface {
     descrizione: string;
     ricorsivo: boolean;
     codCategoria: number;
@@ -26,15 +26,15 @@ export interface AddVoceRubricaInterface {
     cap?: string;
     noteEnte?: string;
     email?: string;
-    telefoni: VoceRubricaTelefono[];
+    telefoni: EnteTelefono[];
 }
 
-export interface ResponseAddVoceRubricaInterface {
-    data: VoceRubrica;
+export interface ResponseAddEnteRubricaInterface {
+    data: Ente;
     pagination: PaginationInterface;
 }
 
-export interface UpdateVoceRubricaInterface {
+export interface UpdateEnteRubricaInterface {
     id: string;
     codice: number;
     descrizione: string;
@@ -44,33 +44,33 @@ export interface UpdateVoceRubricaInterface {
     cap?: string;
     noteEnte?: string;
     email?: string;
-    telefoni: VoceRubricaTelefono[];
+    telefoni: EnteTelefono[];
 }
 
-export interface ResponseUpdateVoceRubricaInterface {
-    data: VoceRubrica;
+export interface ResponseUpdateEnteRubricaInterface {
+    data: Ente;
     pagination: PaginationInterface;
 }
 
-export interface DeleteVoceRubricaInterface {
-    idVoceRubrica: string;
+export interface DeleteEnteInterface {
+    id: string;
 }
 
-export interface ResponseDeleteVoceRubricaInterface {
+export interface ResponseDeleteEnteRubricaInterface {
     data: string;
     pagination: PaginationInterface;
 }
 
-export interface VoceRubrica {
+export interface Ente {
     id: string;
     codice: number;
     descrizione: string;
     codSede: string;
     ricorsivo: boolean;
-    categoria: CategoriaVoceRubrica;
+    categoria: CategoriaEnte;
     indirizzo?: string;
     cap?: string;
-    telefoni: VoceRubricaTelefono[];
+    telefoni: EnteTelefono[];
     noteEnte?: string;
     email?: string;
     codComune?: number;

@@ -16,8 +16,8 @@ import { ConfirmModalComponent, RichiestaDuplicataModalComponent } from '../../.
 import { UiSwitchModule } from 'ngx-ui-switch';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { NgxsFormPluginModule } from '@ngxs/form-plugin';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {TagInputModule} from 'ngx-chips';
+import { TagInputModule } from 'ngx-chips';
+import { EnteModalComponent } from '../../../shared/modal/ente-modal/ente-modal.component';
 
 @NgModule({
     imports: [
@@ -44,7 +44,7 @@ import {TagInputModule} from 'ngx-chips';
     exports: [
         ChiamataComponent
     ],
-    entryComponents: [ConfirmModalComponent, RichiestaDuplicataModalComponent],
+    entryComponents: [ConfirmModalComponent, RichiestaDuplicataModalComponent, EnteModalComponent],
     providers: [
         ChiamataService
     ]
