@@ -8,7 +8,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import * as Shared from './index';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { ListaPartenzeComponent } from './components/lista-partenze/lista-partenze.component';
-import { VoceRubricaModalComponent } from './modal/voce-rubrica-modal/voce-rubrica-modal.component';
+import { EnteModalComponent } from './modal/ente-modal/ente-modal.component';
 import { NgxsFormPluginModule } from '@ngxs/form-plugin';
 
 const COMPONENTS = [
@@ -33,7 +33,7 @@ const COMPONENTS = [
     Shared.EliminaPartenzaModalComponent,
     Shared.RichiestaDuplicataModalComponent,
     ListaPartenzeComponent,
-    VoceRubricaModalComponent
+    EnteModalComponent
 ];
 
 @NgModule({

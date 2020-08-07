@@ -1,23 +1,10 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { patch, removeItem, updateItem } from '@ngxs/store/operators';
 import { StartLoading, StopLoading } from '../../../../../shared/store/actions/loading/loading.actions';
+import { Ente } from '../../../../../shared/interface/ente.interface';
 import {
-    CategoriaVoceRubrica,
-    ResponseAddVoceRubricaInterface,
-    ResponseDeleteVoceRubricaInterface,
-    ResponseUpdateVoceRubricaInterface,
-    TipoTelefono,
-    VoceRubrica
-} from '../../../../../shared/interface/rubrica.interface';
-import {
-    RequestAddVoceRubrica,
-    ClearFormVoceRubrica,
-    RequestDeleteVoceRubrica,
-    GetCategorieVoceRubrica,
     GetRubrica,
-    SetCategorieVoceRubrica,
     SetRubrica,
-    RequestUpdateVoceRubrica,
     AddVoceRubrica,
     UpdateVoceRubrica,
     DeleteVoceRubrica
@@ -29,49 +16,11 @@ import { PatchPagination } from '../../../../../shared/store/actions/pagination/
 import { PaginationState } from '../../../../../shared/store/states/pagination/pagination.state';
 
 export interface RubricaStateModel {
-    vociRubrica: VoceRubrica[];
-    categorieVoceRubrica: CategoriaVoceRubrica[];
-    voceRubricaForm: {
-        model?: {
-            id: string;
-            codice: number;
-            descrizione: string;
-            ricorsivo: boolean;
-            codCategoria: number,
-            indirizzo: string,
-            cap: string,
-            noteEnte: string,
-            email: string,
-            telefono: string,
-            fax: string
-        };
-        dirty: boolean;
-        status: string;
-        errors: any;
-    };
+    vociRubrica: Ente[];
 }
 
 export const RubricaStateModelDefaults: RubricaStateModel = {
-    vociRubrica: undefined,
-    categorieVoceRubrica: undefined,
-    voceRubricaForm: {
-        model: {
-            id: undefined,
-            codice: undefined,
-            descrizione: undefined,
-            ricorsivo: false,
-            codCategoria: undefined,
-            indirizzo: undefined,
-            cap: undefined,
-            noteEnte: undefined,
-            email: undefined,
-            telefono: undefined,
-            fax: undefined
-        },
-        dirty: false,
-        status: '',
-        errors: {}
-    }
+    vociRubrica: undefined
 };
 
 @State<RubricaStateModel>({
@@ -88,16 +37,6 @@ export class RubricaState {
     @Selector()
     static vociRubrica(state: RubricaStateModel) {
         return state.vociRubrica;
-    }
-
-    @Selector()
-    static formValid(state: RubricaStateModel) {
-        return state.voceRubricaForm.status !== 'INVALID';
-    }
-
-    @Selector()
-    static categorieVoceRubrica(state: RubricaStateModel) {
-        return state.categorieVoceRubrica;
     }
 
     @Action(GetRubrica)
@@ -127,92 +66,6 @@ export class RubricaState {
         });
     }
 
-    @Action(RequestAddVoceRubrica)
-    requestAddVoceRubrica({ getState, dispatch }: StateContext<RubricaStateModel>) {
-        const form = getState().voceRubricaForm.model;
-        const newVoceRubrica = {
-            descrizione: form.descrizione,
-            ricorsivo: form.ricorsivo,
-            codCategoria: form.codCategoria,
-            indirizzo: form.indirizzo,
-            cap: form.cap,
-            noteEnte: form.noteEnte,
-            email: form.email,
-            telefoni: []
-        };
-
-        // telefono
-        if (form.telefono) {
-            newVoceRubrica.telefoni.push(
-                {
-                    tipo: TipoTelefono.Telefono,
-                    numero: form.telefono
-                }
-            );
-        }
-        // fax
-        if (form.fax) {
-            newVoceRubrica.telefoni.push(
-                {
-                    tipo: TipoTelefono.Fax,
-                    numero: form.fax
-                }
-            );
-        }
-
-        this.rubricaService.addVoceRubrica(newVoceRubrica).subscribe((response: ResponseAddVoceRubricaInterface) => {
-                dispatch(new ClearFormVoceRubrica());
-            }, (error) => dispatch(new ClearFormVoceRubrica())
-        );
-    }
-
-
-    @Action(RequestUpdateVoceRubrica)
-    requestUpdateVoceRubrica({ getState, dispatch }: StateContext<RubricaStateModel>, action: RequestUpdateVoceRubrica) {
-        const form = getState().voceRubricaForm.model;
-        const updatedVoceRubrica = {
-            id: form.id,
-            codice: form.codice,
-            descrizione: form.descrizione,
-            ricorsivo: form.ricorsivo,
-            codCategoria: form.codCategoria,
-            indirizzo: form.indirizzo,
-            cap: form.cap,
-            noteEnte: form.noteEnte,
-            email: form.email,
-            telefoni: []
-        };
-
-        // telefono
-        if (form.telefono) {
-            updatedVoceRubrica.telefoni.push(
-                {
-                    tipo: TipoTelefono.Telefono,
-                    numero: form.telefono
-                }
-            );
-        }
-        // fax
-        if (form.fax) {
-            updatedVoceRubrica.telefoni.push(
-                {
-                    tipo: TipoTelefono.Fax,
-                    numero: form.fax
-                }
-            );
-        }
-        this.rubricaService.updateVoceRubrica(updatedVoceRubrica).subscribe((response: ResponseUpdateVoceRubricaInterface) => {
-                dispatch(new ClearFormVoceRubrica());
-            }, (error) => dispatch(new ClearFormVoceRubrica())
-        );
-    }
-
-    @Action(RequestDeleteVoceRubrica)
-    requestDeleteVoceRubrica({ setState, dispatch }: StateContext<RubricaStateModel>, action: RequestDeleteVoceRubrica) {
-        this.rubricaService.deleteVoceRubrica(action.voceRubrica).subscribe((response: ResponseDeleteVoceRubricaInterface) => {
-        });
-    }
-
     @Action(AddVoceRubrica)
     addVoceRubrica({ dispatch }: StateContext<RubricaStateModel>) {
         const pagina = this.store.selectSnapshot(PaginationState.page);
@@ -224,7 +77,7 @@ export class RubricaState {
     updateVoceRubrica({ setState }: StateContext<RubricaStateModel>, action: UpdateVoceRubrica) {
         setState(
             patch({
-                vociRubrica: updateItem<VoceRubrica>(voce => voce.codice === action.voceRubrica.codice, action.voceRubrica)
+                vociRubrica: updateItem<Ente>(voce => voce.codice === action.voceRubrica.codice, action.voceRubrica)
             })
         );
     }
@@ -238,31 +91,8 @@ export class RubricaState {
         }
         setState(
             patch({
-                vociRubrica: removeItem<VoceRubrica>(voceRubrica => voceRubrica.id === action.idVoceRubrica)
+                vociRubrica: removeItem<Ente>(voceRubrica => voceRubrica.id === action.idVoceRubrica)
             })
         );
-    }
-
-    @Action(GetCategorieVoceRubrica)
-    getCategorieVoceRubrica({ dispatch }: StateContext<RubricaStateModel>) {
-        this.rubricaService.getCategorieVoceRubrica().subscribe((categorie: CategoriaVoceRubrica[]) => {
-            dispatch(new SetCategorieVoceRubrica(categorie));
-        });
-    }
-
-    @Action(SetCategorieVoceRubrica)
-    setCategorieVoceRubrica({ patchState }: StateContext<RubricaStateModel>, action: SetCategorieVoceRubrica) {
-        this.rubricaService.getCategorieVoceRubrica().subscribe(() => {
-            patchState({
-                categorieVoceRubrica: action.categorieVoceRubrica
-            });
-        });
-    }
-
-    @Action(ClearFormVoceRubrica)
-    clearFormVoceRubrica({ patchState }: StateContext<RubricaStateModel>) {
-        patchState({
-            voceRubricaForm: RubricaStateModelDefaults.voceRubricaForm
-        });
     }
 }

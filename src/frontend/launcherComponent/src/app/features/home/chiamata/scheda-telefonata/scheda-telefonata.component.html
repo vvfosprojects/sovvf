@@ -64,7 +64,7 @@
                         <label for="nominativo">Richiedente</label>
                         <input id="nominativo" type="text" placeholder="Descrivi chi ha richiesto l'intervento"
                                formControlName="nominativo" class="form-control"
-                               [ngClass]="{ 'is-invalid': submitted && f.nominativo.errors }" 
+                               [ngClass]="{ 'is-invalid': submitted && f.nominativo.errors }"
                                role="presentation"/>
                         <div *ngIf="submitted && f.nominativo.errors" class="invalid-feedback">
                             <div *ngIf="f.nominativo.errors.required">Il Nominativo è richiesto</div>
@@ -77,7 +77,7 @@
                         <input id="telefono" type="tel" placeholder="Inserisci il Telefono"
                                formControlName="telefono" (keypress)="checkInputPattern($event, 'PHONE')"
                                (paste)="checkInputPattern($event, 'PHONE')"
-                               class="form-control" [ngClass]="{ 'is-invalid': submitted && f.telefono.errors }" />
+                               class="form-control" [ngClass]="{ 'is-invalid': submitted && f.telefono.errors }"/>
                         <div *ngIf="submitted && f.telefono.errors" class="invalid-feedback">
                             <div *ngIf="f.telefono.errors.required">Il Telefono è richiesto</div>
                             <div *ngIf="f.telefono.errors.pattern">Il Telefono è non è corretto</div>
@@ -95,7 +95,7 @@
                                placeholder="Ricerca indirizzo" [options]="ngxGooglePlacesOptions"
                                (onAddressChange)="onCercaIndirizzo($event)"
                                role="presentation"
-                               >
+                        >
                         <div *ngIf="submitted && (f.indirizzo.errors || !coordinate)" class="invalid-feedback">
                             <div *ngIf="onMsgIndirizzo() as messaggio">{{messaggio}}</div>
                         </div>
@@ -107,7 +107,7 @@
                         <input id="latitudine" type="tel" placeholder="Latitudine" formControlName="latitudine"
                                (keypress)="checkInputPattern($event, 'LAT_LON')"
                                (paste)="checkInputPattern($event, 'LAT_LON')"
-                               class="form-control" [ngClass]="{ 'is-invalid': submitted && f.latitudine.errors }" />
+                               class="form-control" [ngClass]="{ 'is-invalid': submitted && f.latitudine.errors }"/>
                         <div *ngIf="submitted && f.latitudine.errors" class="invalid-feedback">
                             <div *ngIf="f.latitudine.errors.required">La latitudine è richiesta</div>
                             <div *ngIf="f.latitudine.errors.pattern">La latitudine non è corretta</div>
@@ -118,7 +118,7 @@
                         <input id="longitudine" type="tel" placeholder="Longitudine" formControlName="longitudine"
                                (keypress)="checkInputPattern($event, 'LAT_LON')"
                                (paste)="checkInputPattern($event, 'LAT_LON')"
-                               class="form-control" [ngClass]="{ 'is-invalid': submitted && f.longitudine.errors }" />
+                               class="form-control" [ngClass]="{ 'is-invalid': submitted && f.longitudine.errors }"/>
                         <div *ngIf="submitted && f.longitudine.errors" class="invalid-feedback">
                             <div *ngIf="f.longitudine.errors.required">La longitudine è richiesta</div>
                             <div *ngIf="f.longitudine.errors.pattern">La longitudine non è corretta</div>
@@ -142,7 +142,7 @@
                     <label for="piano">Piano</label>
                     <input id="piano" type="text" placeholder="Piano (opzionale)" formControlName="piano"
                            class="form-control"
-                           [ngClass]="{ 'is-invalid': submitted && f.piano.errors }" />
+                           [ngClass]="{ 'is-invalid': submitted && f.piano.errors }"/>
                     <div *ngIf="submitted && f.piano.errors" class="invalid-feedback">
                         <div *ngIf="f.piano.errors.required">Il Piano è richiesto</div>
                     </div>
@@ -155,7 +155,7 @@
                         <textarea id="descrizione" placeholder="Inserisci la Motivazione (opzionale)"
                                   formControlName="descrizione"
                                   class="form-control"
-                                  [ngClass]="{ 'is-invalid': submitted && f.descrizione.errors}" ></textarea>
+                                  [ngClass]="{ 'is-invalid': submitted && f.descrizione.errors}"></textarea>
                         <!--                        <div *ngIf="submitted && f.descrizione.errors" class="invalid-feedback">-->
                         <!--                            <div *ngIf="f.descrizione.errors.required">La Motivazione è richiesta</div>-->
                         <!--                        </div>-->
@@ -169,7 +169,7 @@
                                   class="form-control"
                                   [ngClass]="{ 'is-invalid': submitted && f.noteIndirizzo.errors}"
                                   role="presentation"
-                                  ></textarea>
+                        ></textarea>
                     </div>
                 </div>
             </div>
@@ -180,7 +180,7 @@
                             <label for="notePubbliche">Note Pubbliche</label>
                             <textarea id="notePubbliche" placeholder="Inserisci le Note Pubbliche (opzionale)"
                                       formControlName="notePubbliche" class="form-control"
-                                      [ngClass]="{ 'is-invalid': submitted && f.notePubbliche.errors}" ></textarea>
+                                      [ngClass]="{ 'is-invalid': submitted && f.notePubbliche.errors}"></textarea>
                         </div>
                     </div>
                     <div class="col">
@@ -188,7 +188,7 @@
                             <label for="notePrivate">Note Private</label>
                             <textarea id="notePrivate" type="text" placeholder="Inserisci le Note Private (opzionale)"
                                       formControlName="notePrivate" class="form-control"
-                                      [ngClass]="{ 'is-invalid': submitted && f.notePrivate.errors}" ></textarea>
+                                      [ngClass]="{ 'is-invalid': submitted && f.notePrivate.errors}"></textarea>
                         </div>
                     </div>
                 </div>
@@ -199,7 +199,7 @@
                             <input id="zoneEmergenza" type="text"
                                    placeholder="Inserisci il Codice Emergenza (opzionale)"
                                    formControlName="zoneEmergenza" class="form-control"
-                                   [ngClass]="{ 'is-invalid': submitted && f.zoneEmergenza.errors}" />
+                                   [ngClass]="{ 'is-invalid': submitted && f.zoneEmergenza.errors}"/>
                         </div>
                     </div>
                     <div class="col-2 pl-0" style="padding-top: 2rem !important">
@@ -231,32 +231,38 @@
                         </div>
                     </div>
                 </div>
-                <!--
-                <div >
-                    <input type="checkbox" id="rubrica" (click)="onShowRubrica()">
-                    <label class="pl-1" for="rubrica">Enti Intervenuti</label> 
+                <div class="clearfix">
+                    <div class="float-left w-75">
+                        <div class="form-group">
+                            <label for="listaEnti">Enti Intervenuti</label>
+                            <ng-select
+                                    id="listaEnti"
+                                    formControlName="listaEnti"
+                                    [items]="enti"
+                                    bindLabel="descrizione"
+                                    bindValue="codice"
+                                    clearAllText="Clear"
+                                    [multiple]="true"
+                                    placeholder="Enti Intervenuti (opzionale)"
+                                    [closeOnSelect]="true"
+                                    [hideSelected]="true"
+                                    [notFoundText]="'Nessun ente trovato con i parametri di ricerca'"
+                                    (add)="onAddEnti($event)"
+                                    (remove)="onRemoveEnti($event)">
+                            </ng-select>
+                        </div>
+                    </div>
+                    <div class="float-left w-25">
+                        <div class="px-2" style="padding-top:34px">
+                            <button class="btn btn-sm btn-block btn-primary btn-no-hover"
+                                    (click)="onAggiungiNuovoEnte()">
+                                <i class="fa fa-plus mr-1"></i>
+                                Nuovo ente
+                            </button>
+                        </div>
+                    </div>
                 </div>
-                -->
-                <div class="form-group mb-4">  
-                    <label for="listaEnti">Enti Intervenuti</label>             
-                    <ng-select 
-                        id="listaEnti"
-                        formControlName="listaEnti"
-                        [items]="enti"
-                        bindLabel="descrizione"
-                        bindValue="codice"
-                        clearAllText="Clear"
-                        [multiple]="true"
-                        placeholder="Enti Intervenuti (opzionale)"
-                        [closeOnSelect]="true"
-                        [hideSelected]="true"
-                        [notFoundText]="'Nessun ente trovato con i parametri di ricerca'"
-                        (add)="onAddEnti($event)"
-                        (remove)="onRemoveEnti($event)"
-                        >
-                    </ng-select>
-                </div>
-                
+
                 <!--                
                 <ng-select class="border"
                 bindLabel="codiceDescrizione"

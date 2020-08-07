@@ -14,7 +14,7 @@ import { TurnoInserimentoChiamata } from './turno-inserimento-chiamata';
 import { TurnoIntervento } from './turno-intervento';
 import { ObiettivoSensibile } from './obiettivo-sensibile';
 import { AttivitaUtente } from './attivita-utente.model';
-import { VoceRubrica } from '../interface/rubrica.interface';
+import { Ente } from '../interface/ente.interface';
 
 /**
  * Modella la sintesi della richiesta di assistenza, con tutti i dati necessari
@@ -137,11 +137,11 @@ export class SintesiRichiesta {
         /**
          * lista enti intervenuti
          */
-        public listaEntiIntervenuti?: VoceRubrica[],
+        public listaEntiIntervenuti?: Ente[],
         /**
          * lista enti presa in carico
          */
-        public listaEntiPresaInCarico?: VoceRubrica[],
+        public listaEntiPresaInCarico?: Ente[],
         /**
          * obiettivo sensibile
          */
@@ -167,7 +167,7 @@ export class SintesiRichiesta {
          /**
          * lista Enti intervenuti
          */
-        public listaEnti?: VoceRubrica[]
+        public listaEnti?: Ente[]
     ) {
     }
 }

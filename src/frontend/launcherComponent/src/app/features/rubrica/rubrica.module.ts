@@ -16,7 +16,7 @@ import { TabellaRubricaComponent } from './tabella-rubrica/tabella-rubrica.compo
 import { VociRubricaPerPaginaComponent } from './tabella-rubrica/voci-rubrica-per-pagina/voci-rubrica-per-pagina.component';
 import { RisultatiPaginazioneComponent } from './tabella-rubrica/risultati-paginazione/risultati-paginazione.component';
 import { RicercaRubricaComponent } from './ricerca-rubrica/ricerca-rubrica.component';
-import { VoceRubricaModalComponent } from '../../shared/modal/voce-rubrica-modal/voce-rubrica-modal.component';
+import { EnteModalComponent } from '../../shared/modal/ente-modal/ente-modal.component';
 import { ConfirmModalComponent } from '../../shared';
 /**
  * Routing
@@ -53,7 +53,7 @@ import { RubricaState } from './store/states/rubrica/rubrica.state';
         NgxPaginationModule,
         NgbModule
     ],
-    entryComponents: [VoceRubricaModalComponent, ConfirmModalComponent],
+    entryComponents: [EnteModalComponent, ConfirmModalComponent],
     providers: []
 })
 export class RubricaModule {
