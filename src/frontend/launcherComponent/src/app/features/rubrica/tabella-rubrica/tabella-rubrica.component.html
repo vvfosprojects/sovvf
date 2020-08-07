@@ -29,49 +29,7 @@
             <td width="20%" class="align-middle" style="padding: 0px;">
                 <div class="row">
                     <div class="col-11">
-                        <ul *ngIf="voce.telefoni.length <= 1" class=" mb-0"
-                            style="list-style-type: none; padding-left: 5px;">
-                            <li>
-                                    <span class="font-weight-bolder ml-1">
-                                        <i *ngIf="voce?.telefoni[0]?.tipo === 'Fax'" class="fa fa-fax pr-2"></i>
-                                        <i *ngIf="voce?.telefoni[0]?.tipo.startsWith('Tel')"
-                                           class="fa fa-phone pr-2"></i>
-                                        <a href="{{'tel:+39'+ voce?.telefoni[0]?.numero}}">{{voce?.telefoni[0]?.numero}}</a>
-                                    </span>
-                            </li>
-                        </ul>
-                        <ul *ngIf="voce.telefoni.length > 1" class=" mb-0 row"
-                            style="list-style-type: none; padding-left: 5px;">
-                            <li style="padding-right: 5px">
-                                    <span class="font-weight-bolder ml-1" style="padding-left: 16px;">
-                                        <i *ngIf="voce?.telefoni[0]?.tipo === 'Fax'" class="fa fa-fax pr-2"></i>
-                                        <i *ngIf="voce?.telefoni[0]?.tipo.startsWith('Tel')"
-                                           class="fa fa-phone pr-2"></i>
-                                            <a href="{{'tel:+39'+ voce?.telefoni[0]?.numero}}">{{voce?.telefoni[0]?.numero}}</a>
-                                    </span>
-                            </li>
-                            <li style="display: flex; align-self: center;">
-                                <button ngbTooltip="Visualizza tutti i numeri" class="badge badge-primary"
-                                        [ngbPopover]="tel" placement="bottom"
-                                        style="height: 18px; width: 25px; outline: none; border: none; height:18px; display: flex; align-items: center;">
-                                    <span><i class="fa fa-eye" style="font-size: 15px; padding: 0;"></i></span>
-                                </button>
-                                <ng-template #tel>
-                                    <small class="d-block font-weight-bold">Numeri:</small>
-                                    <div *ngFor="let tel of voce?.telefoni" class="clearfix">
-                                        <div class="float-left mt-1">
-                                                <span class="font-weight-bolder ml-1">
-                                                    <i *ngIf="tel?.tipo === 'Fax'" class="fa fa-fax pr-2"></i>
-                                                    <i *ngIf="tel?.tipo.startsWith('Tel')" class="fa fa-phone pr-2"></i>
-                                                    <a href="{{'tel:+39'+ tel?.numero}}">{{tel?.numero}}</a>
-                                                </span>
-                                        </div>
-                                    </div>
-                                </ng-template>
-                                <span class="badge badge-danger"
-                                      style="font-size: 10px; position: relative; top: -10px; right: 8px; height: 17px;">{{voce.telefoni.length - 1}}</span>
-                            </li>
-                        </ul>
+                        <app-numeri-ente [telefoni]="voce?.telefoni"></app-numeri-ente>
                     </div>
                 </div>
             </td>
@@ -81,8 +39,8 @@
                         <ul class=" mb-0"
                             style="max-height: 210px; overflow-y: auto; list-style-type: none; padding-left: 0px;">
                             <li>
-                                <span class="ml-1">{{voce?.indirizzo}}</span> 
-                                <span *ngIf="voce?.indirizzo && voce?.cap" class="ml-1"> - </span> 
+                                <span class="ml-1">{{voce?.indirizzo}}</span>
+                                <span *ngIf="voce?.indirizzo && voce?.cap" class="ml-1"> - </span>
                                 <span class="ml-1">{{voce?.cap}}</span>
                                 <small *ngIf="!voce?.indirizzo && !voce?.cap" class="ml-1 text-muted">
                                     Non presente
@@ -103,9 +61,9 @@
                                     Non presente
                                 </small>
                                 <span class="mr-3 font-weight-bold" style="font-size:1.3rem; float: right;"
-                                [ngClass]="{'icon-recursive': voce.ricorsivo, 'icon-not-recursive-single': !voce.ricorsivo}"
-                                [ngbTooltip]="voce.ricorsivo ? 'In profondità' : 'Non in profondità'"
-                                placement="top"></span>
+                                      [ngClass]="{'icon-recursive': voce.ricorsivo, 'icon-not-recursive-single': !voce.ricorsivo}"
+                                      [ngbTooltip]="voce.ricorsivo ? 'In profondità' : 'Non in profondità'"
+                                      placement="top"></span>
                             </li>
                         </ul>
                     </div>

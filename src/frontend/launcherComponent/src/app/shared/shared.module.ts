@@ -10,6 +10,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { ListaPartenzeComponent } from './components/lista-partenze/lista-partenze.component';
 import { EnteModalComponent } from './modal/ente-modal/ente-modal.component';
 import { NgxsFormPluginModule } from '@ngxs/form-plugin';
+import { NumeriEnteComponent } from './components/numeri-ente/numeri-ente.component';
 
 const COMPONENTS = [
     Shared.DebounceClickDirective,
@@ -33,7 +34,8 @@ const COMPONENTS = [
     Shared.EliminaPartenzaModalComponent,
     Shared.RichiestaDuplicataModalComponent,
     ListaPartenzeComponent,
-    EnteModalComponent
+    EnteModalComponent,
+    NumeriEnteComponent
 ];
 
 @NgModule({
