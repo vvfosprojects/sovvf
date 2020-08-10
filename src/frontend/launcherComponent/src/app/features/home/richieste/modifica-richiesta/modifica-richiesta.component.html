@@ -233,15 +233,9 @@
             </div>
             <div class="row">
                 <div class="col-12">
-                    <div class="form-group">
-                        <label for="etichette">Tag</label>
-                        <tag-input id="etichette" formControlName="etichette" [modelAsStrings]="true"
-                                   [placeholder]="'Inserisci i tag (opzionale)'"
-                                   [secondaryPlaceholder]="'Inserisci i tag (opzionale)'"></tag-input>
-                    </div>
-                    <div class="clearfix">
+                    <div class="clearfix mb-2">
                         <div class="float-left w-75">
-                            <div class="form-group mb-4">
+                            <div class="form-group m-0">
                                 <label for="listaEnti">Enti Intervenuti</label>
                                 <ng-select
                                         id="listaEnti"
@@ -266,6 +260,12 @@
                                 </button>
                             </div>
                         </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="etichette">Tag</label>
+                        <tag-input id="etichette" formControlName="etichette" [modelAsStrings]="true"
+                                   [placeholder]="'Inserisci i tag (opzionale)'"
+                                   [secondaryPlaceholder]="'Inserisci i tag (opzionale)'"></tag-input>
                     </div>
                 </div>
             </div>
