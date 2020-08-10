@@ -98,7 +98,7 @@ export class EnteModalComponent implements OnInit, OnDestroy {
                 codice: editEnte.codice,
                 descrizione: editEnte.descrizione,
                 ricorsivo: editEnte.ricorsivo,
-                codCategoria: editEnte.categoria.codice,
+                codCategoria: editEnte.categoria ? editEnte.categoria.codice : null,
                 indirizzo: editEnte.indirizzo,
                 cap: editEnte.cap,
                 noteEnte: editEnte.noteEnte,

@@ -26,10 +26,13 @@
                     <span>{{voce?.descrizione}}</span>
                 </div>
             </td>
-            <td width="20%" class="align-middle" style="padding: 0px;">
+            <td width="20%" class="align-middle" [ngClass]="{'p-0': voce?.telefoni && voce?.telefoni?.length > 0}">
                 <div class="row">
                     <div class="col-11">
-                        <app-numeri-ente [telefoni]="voce?.telefoni"></app-numeri-ente>
+                        <app-numeri-ente *ngIf="voce?.telefoni && voce?.telefoni?.length > 0" [telefoni]="voce?.telefoni"></app-numeri-ente>
+                        <small *ngIf="!voce?.telefoni || voce?.telefoni?.length <= 0" class="ml-1 text-muted">
+                            Non presente/i
+                        </small>
                     </div>
                 </div>
             </td>

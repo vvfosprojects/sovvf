@@ -12,9 +12,9 @@
     style="list-style-type: none; padding-left: 5px;">
     <li style="padding-right: 5px">
         <span class="font-weight-bolder ml-1" style="padding-left: 16px;">
-            <i *ngIf="telefoni[0]?.tipo === 'Fax'" class="fa fa-fax pr-2"></i>
-            <i *ngIf="telefoni[0]?.tipo.startsWith('Tel')"
-               class="fa fa-phone pr-2"></i>
+            <i *ngIf="telefoni[0]?.tipo === 'Fax'" class="fa fa-fax pr-2" ngbTooltip="Fax"></i>
+            <i *ngIf="telefoni[0]?.tipo?.toLowerCase().startsWith('tel')"
+               class="fa fa-phone pr-2" ngbTooltip="Telefono"></i>
             <a href="{{'tel:+39'+ telefoni[0]?.numero}}">{{telefoni[0]?.numero}}</a>
         </span>
     </li>
@@ -29,8 +29,9 @@
             <div *ngFor="let tel of telefoni" class="clearfix">
                 <div class="float-left mt-1">
                     <span class="font-weight-bolder ml-1">
-                        <i *ngIf="tel?.tipo === 'Fax'" class="fa fa-fax pr-2"></i>
-                        <i *ngIf="tel?.tipo.startsWith('Tel')" class="fa fa-phone pr-2"></i>
+                        <i *ngIf="tel?.tipo === 'Fax'" class="fa fa-fax pr-2" ngbTooltip="Fax"></i>
+                        <i *ngIf="tel?.tipo?.toLowerCase().startsWith('tel')" class="fa fa-phone pr-2"
+                           ngbTooltip="Telefono"></i>
                         <a href="{{'tel:+39'+ tel?.numero}}">{{tel?.numero}}</a>
                     </span>
                 </div>
