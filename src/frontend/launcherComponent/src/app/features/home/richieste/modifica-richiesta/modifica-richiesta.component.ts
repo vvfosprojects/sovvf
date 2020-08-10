@@ -75,10 +75,14 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
                 this.richiestaModifica = makeCopy(richiesta);
                 this.richiestaModificaIniziale = makeCopy(richiesta);
                 this.richiestaModifica.listaEnti = [];
-                this.richiestaModifica.listaEntiIntervenuti.forEach(e => this.richiestaModifica.listaEnti.push(e));
                 this.richiestaModificaIniziale.listaEnti = [];
-                this.richiestaModificaIniziale.listaEntiIntervenuti.forEach(e => this.richiestaModificaIniziale.listaEnti.push(e));
                 this.coordinate = makeCopy(richiesta.localita.coordinate);
+                if (this.richiestaModificaIniziale.listaEntiIntervenuti && this.richiestaModificaIniziale.listaEntiIntervenuti.length > 0) {
+                    this.richiestaModificaIniziale.listaEntiIntervenuti.forEach(e => this.richiestaModificaIniziale.listaEnti.push(e));
+                }
+                if (this.richiestaModifica.listaEntiIntervenuti && this.richiestaModifica.listaEntiIntervenuti.length > 0) {
+                    this.richiestaModifica.listaEntiIntervenuti.forEach(e => this.richiestaModifica.listaEnti.push(e));
+                }
             }
         }));
         this.subscription.add(this.tipologie$.subscribe((tipologie: Tipologia[]) => this.tipologie = tipologie));
@@ -149,7 +153,7 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
             motivazione: [this.richiestaModifica.descrizione],
             zoneEmergenza: [zoneEmergenza],
             prioritaRichiesta: [this.richiestaModifica.prioritaRichiesta],
-            listaEnti: [listaEnti.map(e => e.codice)]
+            listaEnti: [listaEnti ? listaEnti.map(e => e.codice) : null]
         });
         this.store.dispatch(new UpdateFormValue({
             path: 'richiestaModifica.modificaRichiestaForm',
