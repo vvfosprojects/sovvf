@@ -16,8 +16,7 @@ import {
     HoverOutMezzoComposizione,
     RequestRemoveBookMezzoComposizione,
     UnselectMezzoComposizione,
-    ReducerSelectMezzoComposizione,
-    RequestBookMezzoComposizione
+    ReducerSelectMezzoComposizione
 } from '../../store/actions/composizione-partenza/mezzi-composizione.actions';
 import { BoxPartenzaState } from '../../store/states/composizione-partenza/box-partenza.state';
 import { BoxPartenza } from '../interface/box-partenza-interface';
@@ -28,7 +27,6 @@ import {
     RemoveMezzoBoxPartenzaSelezionato,
     RemoveSquadraBoxPartenza,
     RequestAddBoxPartenza,
-    RequestSelectBoxPartenza,
     DeselectBoxPartenza
 } from '../../store/actions/composizione-partenza/box-partenza.actions';
 import {
@@ -37,10 +35,7 @@ import {
     SelectSquadraComposizione,
     UnselectSquadraComposizione
 } from '../../store/actions/composizione-partenza/squadre-composizione.actions';
-import {
-    ConfirmPartenze,
-    GetFiltriComposizione
-} from '../../store/actions/composizione-partenza/composizione-partenza.actions';
+import { ConfirmPartenze, GetFiltriComposizione } from '../../store/actions/composizione-partenza/composizione-partenza.actions';
 import { TurnoState } from '../../../navbar/store/states/turno.state';
 import { SganciamentoInterface } from 'src/app/shared/interface/sganciamento.interface';
 import { MezzoDirection } from '../../../../shared/interface/mezzo-direction';

@@ -33,7 +33,7 @@ import { RichiesteState } from '../store/states/richieste/richieste.state';
 import { RichiestaFissataState } from '../store/states/richieste/richiesta-fissata.state';
 import { RichiestaHoverState } from '../store/states/richieste/richiesta-hover.state';
 import { RichiestaSelezionataState } from '../store/states/richieste/richiesta-selezionata.state';
-import { ActionRichiestaModalComponent, ListaEntiComponent, MezzoActionsModalComponent } from '../../../shared';
+import { ActionRichiestaModalComponent, ListaEntiComponent, MezzoActionsModalComponent, ModificaFonogrammaModalComponent, DettaglioFonogrammaModalComponent  } from '../../../shared';
 import { ListaSquadrePartenzaComponent } from '../../../shared/components/lista-squadre-partenza/lista-squadre-partenza.component';
 import { RichiesteEspanseState } from '../store/states/richieste/richieste-espanse.state';
 import { RichiestaGestioneState } from '../store/states/richieste/richiesta-gestione.state';
@@ -86,7 +86,9 @@ import { TagInputModule } from 'ngx-chips';
         ActionRichiestaModalComponent,
         ModalFiltriTipologiaComponent,
         EliminaPartenzaModalComponent,
-        MezzoActionsModalComponent
+        MezzoActionsModalComponent,
+        DettaglioFonogrammaModalComponent,
+        ModificaFonogrammaModalComponent
     ],
     providers: [
         SintesiRichiesteService

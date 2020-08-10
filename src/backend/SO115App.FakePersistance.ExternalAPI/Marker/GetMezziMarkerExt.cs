@@ -36,11 +36,13 @@ namespace SO115App.ExternalAPI.Fake.Marker
     {
         private readonly IGetInfoRichiesta _getInfoRichiesta;
         private readonly IGetMezziUtilizzabili _getMezziUtilizzabili;
+        private readonly IGetMezziUtilizzabiliByAreaMappa _getMezziUtilizzabiliByAreaMappa;
 
-        public GetMezziMarkerExt(IGetInfoRichiesta getInfoRichiesta, IGetMezziUtilizzabili getMezziUtilizzabili)
+        public GetMezziMarkerExt(IGetInfoRichiesta getInfoRichiesta, IGetMezziUtilizzabili getMezziUtilizzabili, IGetMezziUtilizzabiliByAreaMappa getMezziUtilizzabiliByAreaMappa)
         {
             _getInfoRichiesta = getInfoRichiesta;
             _getMezziUtilizzabili = getMezziUtilizzabili;
+            _getMezziUtilizzabiliByAreaMappa = getMezziUtilizzabiliByAreaMappa;
         }
 
         /// <summary>
@@ -52,7 +54,12 @@ namespace SO115App.ExternalAPI.Fake.Marker
         {
             var listaMezziFilter = new List<MezzoMarker>();
 
-            var listaMezzi = _getMezziUtilizzabili.Get(filtroAreaMappa.CodiceSede).Result;
+            List<Mezzo> listaMezzi = new List<Mezzo>();
+
+            if (!filtroAreaMappa.FiltroMezzi.FiltraPerAreaMappa)
+                listaMezzi = _getMezziUtilizzabili.Get(filtroAreaMappa.CodiceSede).Result;
+            else
+                listaMezzi = _getMezziUtilizzabiliByAreaMappa.Get(filtroAreaMappa).Result;
 
             var listaMezziMarker = new List<MezzoMarker>();
 

@@ -2,13 +2,15 @@ import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, OnChan
 import { NgbModal, NgbPopoverConfig, NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
 import { TimeagoIntl } from 'ngx-timeago';
 import { strings as italianStrings } from 'ngx-timeago/language-strings/it';
-import { ListaEntiComponent } from '../../../../../shared';
+import { DettaglioFonogrammaModalComponent, ListaEntiComponent, ModificaFonogrammaModalComponent } from '../../../../../shared';
 import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.model';
 import { StatoRichiesta } from 'src/app/shared/enum/stato-richiesta.enum';
 import { MezzoActionInterface } from '../../../../../shared/interface/mezzo-action.interface';
 import { RichiestaActionInterface } from '../../../../../shared/interface/richiesta-action.interface';
 import { HelperSintesiRichiesta } from '../../helper/_helper-sintesi-richiesta';
 import { EliminaPartenzaModalComponent } from '../../../../../shared';
+import { ModificaStatoFonogrammaEmitInterface } from '../../../../../shared/interface/modifica-stato-fonogramma-emit.interface';
+import { StatoFonogramma } from '../../../../../shared/enum/stato-fonogramma.enum';
 
 @Component({
     selector: 'app-sintesi-richiesta',
@@ -53,6 +55,7 @@ export class SintesiRichiestaComponent implements OnChanges {
     @Output() hoverOut = new EventEmitter<string>();
     @Output() actionMezzo = new EventEmitter<MezzoActionInterface>();
     @Output() actionRichiesta = new EventEmitter<RichiestaActionInterface>();
+    @Output() modificaStatoFonogramma = new EventEmitter<ModificaStatoFonogrammaEmitInterface>();
     @Output() outEspansoId = new EventEmitter<string>();
 
     methods = new HelperSintesiRichiesta;
@@ -61,6 +64,7 @@ export class SintesiRichiestaComponent implements OnChanges {
 
     // Enum
     StatoRichiesta = StatoRichiesta;
+    statoFonogramma = StatoFonogramma;
 
     constructor(private modalService: NgbModal,
                 private popoverConfig: NgbPopoverConfig,
@@ -200,5 +204,38 @@ export class SintesiRichiestaComponent implements OnChanges {
     onActionRichiesta(richiestaAction: RichiestaActionInterface) {
         richiestaAction.idRichiesta = this.richiesta.id;
         this.actionRichiesta.emit(richiestaAction);
+    }
+
+    onDettaglioStatoFonogramma() {
+        const modalDettaglioFonogramma = this.modalService.open(DettaglioFonogrammaModalComponent, { backdropClass: 'light-blue-backdrop', centered: true });
+        modalDettaglioFonogramma.componentInstance.codiceRichiesta = this.richiesta.codiceRichiesta ? this.richiesta.codiceRichiesta : this.richiesta.codice;
+        modalDettaglioFonogramma.componentInstance.fonogramma = this.richiesta.fonogramma;
+    }
+
+    onModificaStatoFonogramma() {
+        const modalModificaStatoFonogramma = this.modalService.open(ModificaFonogrammaModalComponent, { backdropClass: 'light-blue-backdrop', centered: true });
+        modalModificaStatoFonogramma.componentInstance.codiceRichiesta = this.richiesta.codiceRichiesta ? this.richiesta.codiceRichiesta : this.richiesta.codice;
+        modalModificaStatoFonogramma.componentInstance.idRichiesta = this.richiesta.id;
+        modalModificaStatoFonogramma.componentInstance.fonogramma = this.richiesta.fonogramma;
+        modalModificaStatoFonogramma.result.then((res: { status: string, result: any }) => {
+            switch (res.status) {
+                case 'ok' :
+                    this.modificaStatoFonogramma.emit(res.result);
+                    break;
+                case 'ko':
+                    break;
+            }
+        });
+    }
+
+    getStatoFonogrammaStringByEnum(statoFonogramma: StatoFonogramma): string {
+        switch (statoFonogramma) {
+            case StatoFonogramma.DaInviare:
+                return 'Da Inviare';
+            case StatoFonogramma.Inviato:
+                return 'Inviato';
+            case StatoFonogramma.NonNecessario:
+                return 'Non Necessario';
+        }
     }
 }

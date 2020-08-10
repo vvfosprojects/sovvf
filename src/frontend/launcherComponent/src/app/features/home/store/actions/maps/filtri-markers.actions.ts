@@ -16,6 +16,13 @@ export class UpdateStatiRichiesta {
     }
 }
 
+export class UpdateMezziAltriComandi {
+    static readonly type = '[Filtri Markers] Update Mezzi Altri Comandi';
+
+    constructor(public status: boolean) {
+    }
+}
+
 export class UpdateStatiMezzi {
     static readonly type = '[Filtri Markers] Update Stati Mezzi';
 

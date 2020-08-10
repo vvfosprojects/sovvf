@@ -4,28 +4,31 @@ import {
     ActionMezzo,
     ActionRichiesta,
     AddRichiesta,
+    AddRichieste,
     CambiaStatoRichiesta,
     ClearIdChiamataInviaPartenza,
     ClearRichiestaById,
     ClearRichieste,
+    EliminaPartenzaRichiesta,
     GetListaRichieste,
+    ModificaStatoFonogramma,
     PatchRichiesta,
     SetIdChiamataInviaPartenza,
-    SetRichiestaById,
-    AddRichieste,
-    StartInviaPartenzaFromChiamata,
-    UpdateRichiesta,
-    VisualizzaListaSquadrePartenza,
     SetNeedRefresh,
-    StartLoadingRichieste,
-    StopLoadingRichieste,
-    EliminaPartenzaRichiesta,
+    SetRichiestaById,
+    StartInviaPartenzaFromChiamata,
     StartLoadingActionMezzo,
-    StopLoadingActionMezzo,
     StartLoadingActionRichiesta,
-    StopLoadingActionRichiesta,
     StartLoadingEliminaPartenza,
-    StopLoadingEliminaPartenza
+    StartLoadingModificaFonogramma,
+    StartLoadingRichieste,
+    StopLoadingActionMezzo,
+    StopLoadingActionRichiesta,
+    StopLoadingEliminaPartenza,
+    StopLoadingModificaFonogramma,
+    StopLoadingRichieste,
+    UpdateRichiesta,
+    VisualizzaListaSquadrePartenza
 } from '../../actions/richieste/richieste.actions';
 import { SintesiRichiesteService } from 'src/app/core/service/lista-richieste-service/lista-richieste.service';
 import { insertItem, patch, updateItem } from '@ngxs/store/operators';
@@ -41,7 +44,7 @@ import { SetMarkerRichiestaSelezionato } from '../../actions/maps/marker.actions
 import { ComposizionePartenzaState } from '../composizione-partenza/composizione-partenza.state';
 import { ClearRichiesteEspanse } from '../../actions/richieste/richieste-espanse.actions';
 import { RichiesteEspanseState } from './richieste-espanse.state';
-import { calcolaActionSuggeritaMezzo } from '../../../../../shared/helper/function';
+import { calcolaActionSuggeritaMezzo, getStatoFonogrammaEnumByName } from '../../../../../shared/helper/function';
 import { RichiestaGestioneState } from './richiesta-gestione.state';
 import { RichiestaAttivitaUtenteState } from './richiesta-attivita-utente.state';
 import { ListaSquadrePartenzaComponent } from '../../../../../shared';
@@ -58,8 +61,6 @@ import { GetInitCentroMappa } from '../../actions/maps/centro-mappa.actions';
 import { ClearRichiestaMarkerModifica } from '../../actions/maps/richieste-markers.actions';
 import { AuthState } from '../../../../auth/store/auth.state';
 import { UpdateRichiestaFissata } from '../../actions/richieste/richiesta-fissata.actions';
-import { OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs';
 
 export interface RichiesteStateModel {
     richieste: SintesiRichiesta[];
@@ -69,6 +70,7 @@ export interface RichiesteStateModel {
     loadingActionMezzo: string;
     loadingEliminaPartenza: boolean;
     loadingActionRichiesta: string;
+    loadingModificaFonogramma: boolean;
     needRefresh: boolean;
 }
 
@@ -80,6 +82,7 @@ export const RichiesteStateDefaults: RichiesteStateModel = {
     loadingEliminaPartenza: false,
     loadingActionMezzo: null,
     loadingActionRichiesta: null,
+    loadingModificaFonogramma: false,
     needRefresh: false
 };
 
@@ -136,6 +139,11 @@ export class RichiesteState {
     @Selector()
     static loadingEliminaPartenza(state: RichiesteStateModel) {
         return state.loadingEliminaPartenza;
+    }
+
+    @Selector()
+    static loadingModificaFonogramma(state: RichiesteStateModel) {
+        return state.loadingModificaFonogramma;
     }
 
     constructor(private richiesteService: SintesiRichiesteService,
@@ -361,6 +369,21 @@ export class RichiesteState {
         });
     }
 
+    @Action(ModificaStatoFonogramma)
+    modificaStatoFonogramma({ dispatch }: StateContext<RichiesteStateModel>, action: ModificaStatoFonogramma) {
+        dispatch(new StartLoadingModificaFonogramma());
+        const obj = {
+            'idRichiesta': action.event.idRichiesta,
+            'numeroFonogramma': action.event.numeroFonogramma,
+            'protocolloFonogramma': action.event.protocolloFonogramma,
+            'destinatari': action.event.destinatari,
+            'stato': getStatoFonogrammaEnumByName(action.event.stato)
+        };
+        this.richiesteService.modificaStatoFonogrammaRichiesta(obj).subscribe(() => {
+            dispatch(new StopLoadingModificaFonogramma());
+        }, error => dispatch(new StopLoadingModificaFonogramma()));
+    }
+
     @Action(SetRichiestaById)
     setRichiestaById({ patchState, dispatch }: StateContext<RichiesteStateModel>, action: SetRichiestaById) {
         this.richiesteService.getRichiestaById(action.idRichiesta).subscribe((data: SintesiRichiesta) => {
@@ -439,6 +462,20 @@ export class RichiesteState {
     stopLoadingActionRichiesta({ patchState }: StateContext<RichiesteStateModel>) {
         patchState({
             loadingActionRichiesta: null
+        });
+    }
+
+    @Action(StartLoadingModificaFonogramma)
+    startLoadingModificaFonogramma({ patchState }: StateContext<RichiesteStateModel>) {
+        patchState({
+            loadingModificaFonogramma: true
+        });
+    }
+
+    @Action(StopLoadingModificaFonogramma)
+    stopLoadingModificaFonogramma({ patchState }: StateContext<RichiesteStateModel>) {
+        patchState({
+            loadingModificaFonogramma: false
         });
     }
 

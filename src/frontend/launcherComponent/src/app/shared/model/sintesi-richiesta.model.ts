@@ -10,7 +10,6 @@ import { Partenza } from './partenza.model';
 import { AzioneChiamataEnum } from '../enum/azione-chiamata.enum';
 import { TipoTerreno } from './tipo-terreno';
 import { EnteIntervenuto } from './ente-intervenuto';
-import { TurnoInserimentoChiamata } from './turno-inserimento-chiamata';
 import { TurnoIntervento } from './turno-intervento';
 import { ObiettivoSensibile } from './obiettivo-sensibile';
 import { AttivitaUtente } from './attivita-utente.model';

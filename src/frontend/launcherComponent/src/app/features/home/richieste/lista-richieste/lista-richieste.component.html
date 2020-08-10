@@ -1,7 +1,8 @@
 <div class="row mt-2">
     <app-partial-loader *ngIf="loading"></app-partial-loader>
     <!-- Lista di singole Richieste -->
-    <div *ngIf="richieste && richieste.length > 0" class="col-12 py-1 px-0 overflow-auto" [ngClass]="heightControl()" style="scrollbar-width: none;">
+    <div *ngIf="richieste && richieste.length > 0" class="col-12 py-1 px-0 overflow-auto" [ngClass]="heightControl()"
+         style="scrollbar-width: none;">
         <div *ngFor="let r of richieste | paginate: { itemsPerPage: pageSize, currentPage: page, totalItems: totalItems }"
              [ngClass]="{'col-double': !_split, 'col-12': _split}" class=" test-hover">
             <div id="richiesta" *ngIf="!richiestaFissata || (r.id !== richiestaFissata.id)"
@@ -32,7 +33,8 @@
                                        (actionMezzo)="actionMezzo.emit($event)"
                                        (actionRichiesta)="actionRichiesta.emit($event)"
                                        (outEspansoId)="outEspansoId.emit($event)"
-                                       (eliminaPartenza)="eliminaPartenza.emit($event)">
+                                       (eliminaPartenza)="eliminaPartenza.emit($event)"
+                                       (modificaStatoFonogramma)="modificaStatoFonogramma.emit($event)">
                 </app-sintesi-richiesta>
             </div>
         </div>

@@ -159,13 +159,15 @@ namespace SO115App.CompositionRoot
             container.Register<
                SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Mezzi.IGetListaMezzi,
                SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper.GetListaMezzi>();
-            //container.Register<
-            //    SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Mezzi.IGetListaMezzi,
-            //    SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper.GetListaMezzi>();
+
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Mezzi.IGetMezzoById,
                 SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper.GetMezzoById>();
             container.Register<IGetMezziUtilizzabili, SO115App.ExternalAPI.Fake.GestioneMezzi.GetMezziUtilizzabili>();
+
+            container.Register<
+                SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac.IGetMezziUtilizzabiliByAreaMappa,
+                ExternalAPI.Fake.GestioneMezzi.GetMezziUtilizzabiliByAreaMappa>();
 
             #endregion Mezzi
 

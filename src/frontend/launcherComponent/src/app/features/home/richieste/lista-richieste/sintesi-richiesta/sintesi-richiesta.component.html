@@ -349,8 +349,9 @@
                             <div class="h6">
                                 <i class="guida fa fa-id-card-o fa-fw mr-1" ngbTooltip="Codice scheda NUE"
                                    placement="right"></i>
-                                <a *ngIf="richiesta.codiceSchedaNue; else nessunCodiceNue">{{ richiesta.codiceSchedaNue
-                                    }}</a>
+                                <a *ngIf="richiesta.codiceSchedaNue; else nessunCodiceNue">
+                                    {{ richiesta.codiceSchedaNue }}
+                                </a>
                                 <ng-template #nessunCodiceNue>
                                     <span class="badge badge-secondary text-light">Non presente</span>
                                 </ng-template>
@@ -360,13 +361,20 @@
                             <div class="h6">
                                 <i class="guida fa fa-paper-plane-o fa-fw mr-1" ngbTooltip="Stato Fonogramma"
                                    placement="right"></i>
-                                <span *ngIf="richiesta.fonogramma" class="h6 badge m-0"
-                                      [ngClass]="{'badge-success text-light':richiesta.fonogramma.codice === '2', 'badge-secondary text-light':richiesta.fonogramma.codice === '0', 'badge-warning text-light':richiesta.fonogramma.codice === '1'}">
-                                    {{ richiesta.fonogramma.descrizione }}
+                                <span *ngIf="richiesta?.fonogramma" class="h6 badge m-0 cursor-pointer"
+                                      [ngClass]="{'badge-success text-light': richiesta?.fonogramma?.stato === statoFonogramma.Inviato, 'badge-secondary text-light': richiesta?.fonogramma?.stato === statoFonogramma.NonNecessario, 'badge-warning text-light': richiesta?.fonogramma?.stato === statoFonogramma.DaInviare}"
+                                      (click)="onDettaglioStatoFonogramma(); $event.stopPropagation()"
+                                      ngbTooltip="Visualizza Fonogramma">
+                                    {{ getStatoFonogrammaStringByEnum(richiesta?.fonogramma?.stato) }}
                                 </span>
-                                <span *ngIf="!richiesta.fonogramma"
-                                      class="badge badge-secondary text-white">Non
-                                    presente</span>
+                                <span *ngIf="!richiesta.fonogramma" class="badge badge-secondary text-white">
+                                    Non presente
+                                </span>
+                                <button *ngIf="inGestione" class="btn btn-sm btn-info ml-2"
+                                        ngbTooltip="Modifica Fonogramma"
+                                        (click)="onModificaStatoFonogramma(); $event.stopPropagation()">
+                                    <i class="fa fa-edit"></i>
+                                </button>
                             </div>
                         </div>
 

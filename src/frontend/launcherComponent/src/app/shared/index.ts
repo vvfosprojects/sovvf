@@ -18,4 +18,6 @@ export * from './components/partial-loader/partial-loader.component';
 export * from './components/bottone-nuova-versione/bottone-nuova-versione.component';
 export * from './modal/elimina-partenza-modal/elimina-partenza-modal.component';
 export * from './modal/richiesta-duplicata-modal/richiesta-duplicata-modal.component';
+export * from './modal/modifica-fonogramma-modal/modifica-fonogramma-modal.component';
+export * from './modal/dettaglio-fonogramma-modal/dettaglio-fonogramma-modal.component';
 export * from './modal/mezzo-actions-modal/mezzo-actions-modal.component';
