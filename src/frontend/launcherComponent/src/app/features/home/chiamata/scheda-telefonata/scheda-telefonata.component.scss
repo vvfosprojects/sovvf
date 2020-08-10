@@ -73,6 +73,12 @@ ngb-accordion {
   color: #c23535;
 }
 
+/**
+  Textarea height
+ */
+textarea.form-control {
+  height: 50px;
+}
 
 /*
   ngx-chips

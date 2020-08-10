@@ -204,36 +204,26 @@
                     </div>
                     <div class="col-2 pl-0" style="padding-top: 2rem !important">
                         <div class="form-group m-0 float-right">
-              <span class="d-inline-block mt-1 mr-2">
-                <ui-switch size="small" color="#dc3545" [checked]="f.rilevanzaGrave?.value === true"
-                           (change)="setRilevanza()"></ui-switch>
-              </span>
+                            <span class="d-inline-block mt-1 mr-2">
+                              <ui-switch size="small" color="#dc3545" [checked]="f.rilevanzaGrave?.value === true"
+                                         (change)="setRilevanza()"></ui-switch>
+                            </span>
                             <span class="d-inline-block mb-1">Rilevante</span>
                         </div>
                     </div>
                     <div class="col-4 pr-0" style="padding-top: 2rem !important">
                         <div class="form-group m-0">
-              <span class="d-inline-block mt-1 mr-2">
-                <ui-switch size="small" color="#dc3545" [checked]="f.rilevanzaStArCu?.value === true"
-                           (change)="setRilevanzaStArCu()"></ui-switch>
-              </span>
+                            <span class="d-inline-block mt-1 mr-2">
+                                <ui-switch size="small" color="#dc3545" [checked]="f.rilevanzaStArCu?.value === true"
+                                           (change)="setRilevanzaStArCu()"></ui-switch>
+                            </span>
                             <span class="d-inline-block mb-1">Storico Artistico e Culturale</span>
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-12">
-                        <div class="form-group">
-                            <label for="etichette">Tag</label>
-                            <tag-input id="etichette" formControlName="etichette" [modelAsStrings]="true"
-                                       [placeholder]="'Inserisci i tag (opzionale)'"
-                                       [secondaryPlaceholder]="'Inserisci i tag (opzionale)'"></tag-input>
-                        </div>
-                    </div>
-                </div>
-                <div class="clearfix">
+                <div class="clearfix mb-2">
                     <div class="float-left w-75">
-                        <div class="form-group">
+                        <div class="form-group m-0">
                             <label for="listaEnti">Enti Intervenuti</label>
                             <ng-select
                                     id="listaEnti"
@@ -259,6 +249,16 @@
                                 <i class="fa fa-plus mr-1"></i>
                                 Nuovo ente
                             </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label for="etichette">Tag</label>
+                            <tag-input id="etichette" formControlName="etichette" [modelAsStrings]="true"
+                                       [placeholder]="'Inserisci i tag (opzionale)'"
+                                       [secondaryPlaceholder]="'Inserisci i tag (opzionale)'"></tag-input>
                         </div>
                     </div>
                 </div>
