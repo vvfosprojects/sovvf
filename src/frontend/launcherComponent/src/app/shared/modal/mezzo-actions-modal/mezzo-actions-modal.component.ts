@@ -9,7 +9,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 })
 export class MezzoActionsModalComponent implements OnInit {
 
-  public time = '';
+  public time = {hour: 13, minute: 30};
 
   timeActionForm: FormGroup;
   submitted: boolean;
@@ -21,18 +21,16 @@ export class MezzoActionsModalComponent implements OnInit {
   }
 
   initForm() {
+    this.formatTime()
     this.timeActionForm = this.fb.group({
-      time: [ this.formatTime() , Validators.required],
+      time: [ this.time , Validators.required],
     });
 }
 
-formatTime() : string {
-  let r = '';
+formatTime() {
   const d = new Date();
-  r += d.getHours() > 9 ? d.getHours().toString() : '0'+d.getHours();
-  r += ':';
-  r += d.getMinutes() > 9 ? d.getMinutes().toString() : '0'+d.getMinutes();
-  return r;
+  this.time.hour = d.getHours();
+  this.time.minute = d.getMinutes();
 }
 
 onCancel() {
@@ -46,7 +44,15 @@ onSubmit() {
       return;
   }
 
-  this.modal.close({ status: 'ok', result: this.timeActionForm.value });
+  this.modal.close({ status: 'ok', result: this.formatTimeForCallBack() });
+}
+
+formatTimeForCallBack(): any {
+  let s = '';
+  s += this.time.hour < 10 ? '0'+this.time.hour.toString() : this.time.hour.toString();
+  s += ':'
+  s += this.time.minute < 10 ? '0'+this.time.minute.toString() : this.time.minute.toString();
+  return {time: s};
 }
 
 }

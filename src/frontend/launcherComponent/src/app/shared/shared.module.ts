@@ -4,7 +4,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { PipeModule } from './pipes/pipe.module';
 import { TreeviewI18n, TreeviewModule } from 'ngx-treeview';
 import { DefaultTreeviewI18n } from './store/states/sedi-treeview/default-treeview-i18n';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { ListaPartenzeComponent } from './components/lista-partenze/lista-partenze.component';
 import { EnteModalComponent } from './modal/ente-modal/ente-modal.component';
@@ -47,6 +47,7 @@ const COMPONENTS = [
         CommonModule,
         ReactiveFormsModule,
         NgbModule,
+        FormsModule,
         PipeModule,
         TreeviewModule.forRoot(),
         NgSelectModule,

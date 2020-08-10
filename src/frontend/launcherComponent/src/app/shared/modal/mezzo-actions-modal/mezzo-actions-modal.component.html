@@ -13,12 +13,17 @@
       <div class="form-group" style="text-align: center;">
         <label for="default-picker">Seleziona un orario</label>          
         <div class="md-form md-outline" id="default-picker" style="display: flex; justify-content: center;">
-          <input type="time" class="form-control" placeholder="Seleziona ora" 
+          <ngb-timepicker [(ngModel)]="time" [ngModelOptions]="{standalone: true}" style="margin-left: 25px;"></ngb-timepicker>
+          <i class="fa fa-clock-o" style="align-self: center; padding-left: 10px; font-size: 25px;"></i>
+          
+          <!-- 
+           <input type="time" class="form-control" placeholder="Seleziona ora" 
           formControlName="time" style="width: 225px;">
+          -->
+
         </div>
       </div>
-    <small class="text-muted">* Il cambiamento di stato del mezzo risulterà alle {{ timeActionForm.value['time'] }}. </small>
-
+    <small class="text-muted">* Il cambiamento di stato del mezzo risulterà alle {{time.hour <= 9 ? '0' + time.hour : time.hour}}:{{time.minute <= 9 ? '0' + time.minute : time.minute}}. </small>
   </form>
 </div>
 <div class="modal-footer">
