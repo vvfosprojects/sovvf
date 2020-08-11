@@ -454,6 +454,12 @@
 
                             <!-- enti intervenuti -->
                             <div class="h6 text-right">
+                                <button *ngIf="inGestione" 
+                                        class="btn btn-sm btn-info mr-2"
+                                        ngbTooltip="Modifica Enti Intervenuti"
+                                        (click)="onModificaEntiIntervenuti(); $event.stopPropagation()">
+                                            <i class="fa fa-edit" style="display: flex;"></i>
+                                </button>
                                 <button class="btn btn-light border big_font py-0 px-1" ngbTooltip="Elenco Enti"
                                         *ngIf="methods._entiCount(richiesta.listaEntiIntervenuti?.length, richiesta.listaEntiPresaInCarico?.length) as totaleEnti; else nessunEnte"
                                         (click)="onListaEnti(); $event.stopPropagation()">

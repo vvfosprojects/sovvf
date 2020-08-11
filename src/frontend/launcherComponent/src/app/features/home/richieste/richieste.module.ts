@@ -42,6 +42,7 @@ import { NgxsFormPluginModule } from '@ngxs/form-plugin';
 import { ModalFiltriTipologiaComponent } from '../filterbar/filtri-richieste/modal-filtri-tipologia/modal-filtri-tipologia.component';
 import { EliminaPartenzaModalComponent } from '../../../shared/modal/elimina-partenza-modal/elimina-partenza-modal.component';
 import { TagInputModule } from 'ngx-chips';
+import { ModificaEntiModalComponent } from 'src/app/shared/modal/modifica-enti-modal/modifica-enti-modal.component';
 
 @NgModule({
     imports: [
@@ -88,7 +89,8 @@ import { TagInputModule } from 'ngx-chips';
         EliminaPartenzaModalComponent,
         MezzoActionsModalComponent,
         DettaglioFonogrammaModalComponent,
-        ModificaFonogrammaModalComponent
+        ModificaFonogrammaModalComponent,
+        ModificaEntiModalComponent
     ],
     providers: [
         SintesiRichiesteService

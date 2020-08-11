@@ -21,3 +21,4 @@ export * from './modal/richiesta-duplicata-modal/richiesta-duplicata-modal.compo
 export * from './modal/modifica-fonogramma-modal/modifica-fonogramma-modal.component';
 export * from './modal/dettaglio-fonogramma-modal/dettaglio-fonogramma-modal.component';
 export * from './modal/mezzo-actions-modal/mezzo-actions-modal.component';
+export * from './modal/modifica-enti-modal/modifica-enti-modal.component';

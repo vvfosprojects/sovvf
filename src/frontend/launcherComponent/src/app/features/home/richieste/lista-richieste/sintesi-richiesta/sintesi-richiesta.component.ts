@@ -11,6 +11,9 @@ import { HelperSintesiRichiesta } from '../../helper/_helper-sintesi-richiesta';
 import { EliminaPartenzaModalComponent } from '../../../../../shared';
 import { ModificaStatoFonogrammaEmitInterface } from '../../../../../shared/interface/modifica-stato-fonogramma-emit.interface';
 import { StatoFonogramma } from '../../../../../shared/enum/stato-fonogramma.enum';
+import { ModificaEntiModalComponent } from 'src/app/shared/modal/modifica-enti-modal/modifica-enti-modal.component';
+import { Store } from '@ngxs/store';
+import { PatchRichiesta } from '../../../store/actions/richieste/richieste.actions';
 
 @Component({
     selector: 'app-sintesi-richiesta',
@@ -69,7 +72,8 @@ export class SintesiRichiestaComponent implements OnChanges {
     constructor(private modalService: NgbModal,
                 private popoverConfig: NgbPopoverConfig,
                 private tooltipConfig: NgbTooltipConfig,
-                private intl: TimeagoIntl) {
+                private intl: TimeagoIntl,
+                private store: Store) {
 
         intl.strings = italianStrings;
         intl.changes.next();
@@ -237,5 +241,22 @@ export class SintesiRichiestaComponent implements OnChanges {
             case StatoFonogramma.NonNecessario:
                 return 'Non Necessario';
         }
+    }
+
+    onModificaEntiIntervenuti() {
+        const modalModificaEntiIntervenuti = this.modalService.open(ModificaEntiModalComponent, { backdropClass: 'light-blue-backdrop', centered: true });
+        modalModificaEntiIntervenuti.componentInstance.enti =this.richiesta.listaEnti ? this.richiesta.listaEnti : null;
+        modalModificaEntiIntervenuti.componentInstance.listaEntiIntervenuti = this.richiesta.listaEntiIntervenuti ? this.richiesta.listaEntiIntervenuti : null;
+        modalModificaEntiIntervenuti.result.then((res: { status: string, result: any }) => {
+            switch (res.status) {
+                case 'ok' :
+                    const mod = JSON.parse(JSON.stringify(this.richiesta));
+                    mod.listaEnti = res.result.listaEnti;
+                    this.store.dispatch(new PatchRichiesta(mod as SintesiRichiesta));
+                    break;
+                case 'ko':
+                    break;
+            }
+        });
     }
 }

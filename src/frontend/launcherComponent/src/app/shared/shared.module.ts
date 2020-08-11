@@ -12,6 +12,7 @@ import { NumeriEnteComponent } from './components/numeri-ente/numeri-ente.compon
 import * as Shared from './index';
 import { NgxsFormPluginModule } from '@ngxs/form-plugin';
 
+
 const COMPONENTS = [
     Shared.DebounceClickDirective,
     Shared.DebounceKeyUpDirective,
@@ -35,8 +36,9 @@ const COMPONENTS = [
     Shared.RichiestaDuplicataModalComponent,
     Shared.ModificaFonogrammaModalComponent,
     Shared.DettaglioFonogrammaModalComponent,
-    ListaPartenzeComponent,
     Shared.MezzoActionsModalComponent,
+    Shared.ModificaEntiModalComponent,
+
     ListaPartenzeComponent,
     EnteModalComponent,
     NumeriEnteComponent
