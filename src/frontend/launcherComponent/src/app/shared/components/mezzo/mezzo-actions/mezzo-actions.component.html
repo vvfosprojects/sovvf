@@ -1,5 +1,5 @@
 <div class="btn-group btn-group-sm mr-3" (click)="$event.stopPropagation()">
-  <button type="button" class="btn btn-sm btn-{{getBtnColor(mezzo.stato)}} px-2 py-0" (click)="onClick()"
+  <button type="button" class="btn btn-sm btn-{{getBtnColor(mezzo.stato)}} px-2 py-0" (click)="onClick(mezzo.stato)"
     ngbTooltip="{{calcolaActionSuggeritaMezzo(mezzo.stato)}}">
     <small>{{calcolaActionSuggeritaMezzo(mezzo.stato)}}</small>
   </button>
