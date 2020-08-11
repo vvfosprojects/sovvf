@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { NgbDropdownConfig, NgbTooltipConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Mezzo } from '../../../model/mezzo.model';
 import { calcolaActionSuggeritaMezzo, statoMezzoActionColor, statoMezzoActionsEnumToStringArray } from '../../../helper/function';
-import { StatoMezzoActions } from '../../../enum/stato-mezzo-actions.enum';
+import { StatoMezzoActions, StatoMezzoActionsAndTime } from '../../../enum/stato-mezzo-actions.enum';
 import { StatoMezzo } from 'src/app/shared/enum/stato-mezzo.enum';
 import { MezzoActionsModalComponent } from 'src/app/shared/modal/mezzo-actions-modal/mezzo-actions-modal.component';
 
@@ -17,7 +17,7 @@ export class MezzoActionsComponent implements OnInit {
     statoMezzoActions: StatoMezzoActions;
     statoMezzoString: Array<string>;
 
-    @Output() actionMezzo: EventEmitter<StatoMezzoActions> = new EventEmitter();
+    @Output() actionMezzo: EventEmitter<StatoMezzoActionsAndTime> = new EventEmitter();
 
     constructor(
         dropdownConfig: NgbDropdownConfig,
@@ -42,10 +42,10 @@ export class MezzoActionsComponent implements OnInit {
         }).result.then((res: { status: string, result: any }) => {
             switch (res.status) {
                 case 'ok' :
-                    console.log(res.result.time); // qui ho il dato ORARIO (time) ottenuto da mezzo-actions-modal
+                    console.log(action); // qui ho il dato ORARIO (time) ottenuto da mezzo-actions-modal
                     if (action) {
                         this.statoMezzoActions = StatoMezzoActions[action.replace(' ', '')];
-                        this.actionMezzo.emit(this.statoMezzoActions);
+                        this.actionMezzo.emit({statoMezzoActions: this.statoMezzoActions, time: res.result.time});
                     } else {
                         this.actionMezzo.emit();
                     }

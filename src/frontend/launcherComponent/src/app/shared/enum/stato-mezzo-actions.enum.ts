@@ -5,3 +5,9 @@ export enum StatoMezzoActions {
     SulPosto = 'Sul Posto',
     InRientro = 'In Rientro'
 }
+
+export class StatoMezzoActionsAndTime {
+    statoMezzoActions : StatoMezzoActions;
+    time: string;
+}
+
