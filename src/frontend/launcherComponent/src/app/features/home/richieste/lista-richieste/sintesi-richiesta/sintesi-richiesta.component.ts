@@ -14,6 +14,7 @@ import { StatoFonogramma } from '../../../../../shared/enum/stato-fonogramma.enu
 import { ModificaEntiModalComponent } from 'src/app/shared/modal/modifica-enti-modal/modifica-enti-modal.component';
 import { Store } from '@ngxs/store';
 import { PatchRichiesta } from '../../../store/actions/richieste/richieste.actions';
+import { makeCopy } from 'src/app/shared/helper/function';
 
 @Component({
     selector: 'app-sintesi-richiesta',
@@ -250,7 +251,7 @@ export class SintesiRichiestaComponent implements OnChanges {
         modalModificaEntiIntervenuti.result.then((res: { status: string, result: any }) => {
             switch (res.status) {
                 case 'ok' :
-                    const mod = JSON.parse(JSON.stringify(this.richiesta));
+                    const mod = makeCopy(this.richiesta);
                     mod.listaEnti = res.result.listaEnti;
                     this.store.dispatch(new PatchRichiesta(mod as SintesiRichiesta));
                     break;
