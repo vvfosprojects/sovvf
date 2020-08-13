@@ -15,6 +15,8 @@ import { ModificaEntiModalComponent } from 'src/app/shared/modal/modifica-enti-m
 import { Store } from '@ngxs/store';
 import { PatchRichiesta } from '../../../store/actions/richieste/richieste.actions';
 import { makeCopy } from 'src/app/shared/helper/function';
+import { TrasferimentoChiamataModalComponent } from 'src/app/shared/modal/trasferimento-chiamata-modal/trasferimento-chiamata-modal.component';
+import { ClearFormTrasferimentoChiamata, RequestAddTrasferimentoChiamata } from 'src/app/shared/store/actions/trasferimento-chiamata/trasferimento-chiamata.actions';
 
 @Component({
     selector: 'app-sintesi-richiesta',
@@ -260,4 +262,32 @@ export class SintesiRichiestaComponent implements OnChanges {
             }
         });
     }
+
+    onAddTrasferimentoChiamata() {
+        const addTrasferimentoChiamataModal = this.modalService.open(TrasferimentoChiamataModalComponent, {
+            backdropClass: 'light-blue-backdrop',
+            centered: true,
+            size: 'lg'
+        });
+        addTrasferimentoChiamataModal.result.then(
+            (result: { success: boolean }) => {
+                if (result.success) {
+                    this.addTrasferimentoChiamata();
+                } else if (!result.success) {
+                    this.store.dispatch(new ClearFormTrasferimentoChiamata());
+                    console.log('Modal "addVoceTrasferimentoChiamata" chiusa con val ->', result);
+                }
+            },
+            (err) => {
+                this.store.dispatch(new ClearFormTrasferimentoChiamata());
+                console.error('Modal chiusa senza bottoni. Err ->', err);
+            }
+        );
+      }
+
+      
+    addTrasferimentoChiamata() {
+        this.store.dispatch(new RequestAddTrasferimentoChiamata());
+  }
+  
 }

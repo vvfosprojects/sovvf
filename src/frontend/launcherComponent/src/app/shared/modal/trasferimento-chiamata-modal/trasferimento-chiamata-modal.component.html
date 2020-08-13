@@ -1,0 +1,80 @@
+<div class="modal-header">
+  <h4 class="modal-title">{{ getTitle() | uppercase }}</h4>
+  <button type="button" class="btn btn-light close" style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px"
+          (click)="onDismiss()">
+      <i class="fa fa-times text-danger"></i>
+  </button>
+</div>
+<div class="modal-body height py-4 px-5">
+  <div class="modal-body height py-4 px-5">
+    <form [formGroup]="trasferimentoChiamataForm">
+      <div class="form-group">
+        <label for="operatore">Operatore
+          <small class="text-danger">*</small>
+        </label>
+        <input id="operatore" formControlName="operatore" class="form-control" placeholder="Opeatore">
+      </div>
+      <div class="form-group">
+        <label for="codice">
+          Codice Richiesta
+            <small class="text-danger">*</small>
+        </label>
+        <input id="codice" type="text" formControlName="codice" class="form-control"
+               placeholder="Inserisci il Codice della Richiesta">
+      </div>
+      <div class="form-group">
+        <label for="sedeDa">
+          Sede Da
+          <small class="text-danger">*</small>
+        </label>
+        <ng-select
+          id="sedeDa"
+          formControlName="sedeDa"
+          [items]="listeSediNavbar"
+          bindLabel="text"
+          bindValue="value"
+          [multiple]="true"
+          placeholder="Sede Da"
+          [closeOnSelect]="true"
+          [hideSelected]="true"
+          [notFoundText]="'Nessuna sede trovata con i parametri di ricerca'">
+        </ng-select>
+      </div>
+      <div class="form-group">
+        <label for="sedeA">
+          Sede A
+          <small class="text-danger">*</small>
+        </label>
+        <ng-select
+          id="sedeA"
+          formControlName="sedeA"
+          [items]="listeSediNavbar"
+          bindLabel="text"
+          bindValue="value"
+          [multiple]="true"
+          placeholder="Sede A"
+          [closeOnSelect]="true"
+          [hideSelected]="true"
+          [notFoundText]="'Nessuna sede trovata con i parametri di ricerca'">
+        </ng-select>
+      </div>
+      <div class="form-group" style="display: inline-grid;">
+        <label for="data">
+          Data
+            <small class="text-danger">*</small>
+        </label>
+        <input  id="data" placement="right"  formControlName="data" type="text" class="form-control"
+        ngbDatepicker #d="ngbDatepicker" placeholder="aa/mm/gg"/>
+        <button class="btn btn-primary btn-no-hover" (click)="d.toggle()">Seleziona Data</button>
+        </div>
+
+    </form>
+    <h6 class="text-danger">* Campi Obbligatori</h6>
+</div>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-lg btn-secondary" (click)="closeModal('ko')">Annulla</button>
+  <button type="button" class="btn btn-lg btn-danger" ngbTooltip="Riempi tutti i campi obbligatori"
+          [disableTooltip]="formValid" [disabled]="!formValid" (click)="onConferma()">Conferma
+  </button>
+</div>

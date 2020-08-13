@@ -11,6 +11,7 @@ import { EnteModalComponent } from './modal/ente-modal/ente-modal.component';
 import { NumeriEnteComponent } from './components/numeri-ente/numeri-ente.component';
 import * as Shared from './index';
 import { NgxsFormPluginModule } from '@ngxs/form-plugin';
+import { TrasferimentoChiamataModalComponent } from './modal/trasferimento-chiamata-modal/trasferimento-chiamata-modal.component';
 
 
 const COMPONENTS = [
@@ -41,6 +42,7 @@ const COMPONENTS = [
 
     ListaPartenzeComponent,
     EnteModalComponent,
+    TrasferimentoChiamataModalComponent,
     NumeriEnteComponent
 ];
 

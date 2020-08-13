@@ -40,6 +40,11 @@ const appRoutes: Routes = [
         loadChildren: './features/rubrica/rubrica.module#RubricaModule',
         canActivate: [ AuthGuard ]
     },
+    {
+        path: RoutesPath.TrasferimentoChiamata,
+        loadChildren: './features/trasferimento-chiamata/trasferimento-chiamata.module#TrasferimentoChiamataModule',
+        canActivate: [ AuthGuard ]
+    },
     { path: RoutesPath.NotFound, loadChildren: './features/not-found/not-found.module#NotFoundModule' },
     { path: '', pathMatch: 'full', redirectTo: RoutesPath.Home },
     {

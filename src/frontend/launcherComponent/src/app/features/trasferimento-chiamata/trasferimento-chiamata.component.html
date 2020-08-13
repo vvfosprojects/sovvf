@@ -1,0 +1,36 @@
+<div class="container-fluid pt-4 pb-2">
+  <div class="row">
+      <div class="col-12 col-md-8 mx-auto mb-2">
+          <h2>
+              <i class="fa fa-exchange"></i>
+              Trasferimenti Chiamate
+          </h2>
+      </div>
+      <div class="col-12 col-md-8 mx-auto">
+          <div class="row">
+              <div class="col">
+                  <button class="btn btn-primary mb-2 font-weight-bold" (click)="onAddTrasferimentoChiamata()">
+                      <i class="fa fa-plus mr-1"></i>
+                      Aggiungi Trasferimento
+                  </button>
+              </div>
+              <div class="col text-right">
+                  <app-ricerca-trasferimento-chiamata [loading]="loading$ | async"
+                                                      (ricercaChange)="onRicercaTrasferimentoChiamata($event)"></app-ricerca-trasferimento-chiamata>
+              </div>
+          </div>
+      </div>
+      <div *ngIf="ricerca" class="col-12 col-md-8 mx-auto pl-4">
+        <h6 class="d-inline-block mt-3">
+            <i class="fa fa-search mr-1"></i>
+            Risultati ricerca per: <span class="font-weight-bold">{{ricerca}}</span>
+        </h6>
+    </div>
+      <div class="col-12 col-md-8 mx-auto">
+          <app-tabella-trasferimento-chiamata   [vociTrasferimentoChiamata]="vociTrasferimentoChiamata$ | async" [totalItems]="totalItems$ | async"                                         
+                                                [loading]="loading$ | async"  [pageSize]="pageSize" 
+                                                [page]="page$ | async" [pageSizes]="pageSizes$ | async"
+                                                (pageChange)="onPageChange($event)" (pageSizeChange)="onPageSizeChange($event)"></app-tabella-trasferimento-chiamata>
+      </div>
+  </div>
+</div>

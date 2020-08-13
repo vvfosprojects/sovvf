@@ -226,6 +226,12 @@
                                         (click)="visualizzaEventiRichiesta(richiesta.codice); $event.stopPropagation()">
                                     <i class="fa fa-fw fa-list text-secondary"></i>
                                 </button>
+                                <button class="btn btn-light border py-0 px-1 mr-1"
+                                        ngbTooltip="Trasferisci"
+                                        [disabled]="!inGestione"
+                                        (click)="onAddTrasferimentoChiamata(richiesta.codice); $event.stopPropagation()">
+                                <i class="fa fa-fw fa-exchange text-secondary"></i>
+                                </button>
                                 <button *ngIf="!partenza && composizionePartenza" class="btn btn-light border py-0 px-2"
                                         ngbTooltip="Invio partenza"
                                         [disabled]="disabledComposizionePartenza"

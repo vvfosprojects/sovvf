@@ -43,6 +43,7 @@ import { ModalFiltriTipologiaComponent } from '../filterbar/filtri-richieste/mod
 import { EliminaPartenzaModalComponent } from '../../../shared/modal/elimina-partenza-modal/elimina-partenza-modal.component';
 import { TagInputModule } from 'ngx-chips';
 import { ModificaEntiModalComponent } from 'src/app/shared/modal/modifica-enti-modal/modifica-enti-modal.component';
+import { TrasferimentoChiamataModalComponent } from 'src/app/shared/modal/trasferimento-chiamata-modal/trasferimento-chiamata-modal.component';
 
 @NgModule({
     imports: [
@@ -90,7 +91,8 @@ import { ModificaEntiModalComponent } from 'src/app/shared/modal/modifica-enti-m
         MezzoActionsModalComponent,
         DettaglioFonogrammaModalComponent,
         ModificaFonogrammaModalComponent,
-        ModificaEntiModalComponent
+        ModificaEntiModalComponent,
+        TrasferimentoChiamataModalComponent
     ],
     providers: [
         SintesiRichiesteService
