@@ -11,6 +11,9 @@ import { SediTreeviewState } from '../../store/states/sedi-treeview/sedi-treevie
 import { TreeviewSelezione } from '../../model/treeview-selezione.model';
 import { findItem } from '../../store/states/sedi-treeview/sedi-treeview.helper';
 import { makeCopy } from '../../helper/function';
+import { AuthState } from 'src/app/features/auth/store/auth.state';
+import { Utente } from '../../model/utente.model';
+import { PatchListaSediNavbar, ClearListaSediNavbar } from '../../store/actions/sedi-treeview/sedi-treeview.actions';
 
 @Component({
   selector: 'app-trasferimento-chiamata-modal',
@@ -34,6 +37,11 @@ export class TrasferimentoChiamataModalComponent implements OnInit {
   trasferimentoChiamataForm: FormGroup;
   submitted: boolean;
 
+  @Select(SediTreeviewState.listeSediLoaded) listeSediLoaded$: Observable<boolean>;
+  private listeSediLoaded: boolean;
+  @Select(AuthState.currentUser) user$: Observable<Utente>;
+  user: Utente;
+
   subscription: Subscription = new Subscription();
 
   constructor(private store: Store,
@@ -41,11 +49,12 @@ export class TrasferimentoChiamataModalComponent implements OnInit {
               private fb: FormBuilder) { 
                 this.initForm();
                 this.getFormValid();
-                this.inizializzaSediTreeview();               
+                this.inizializzaSediTreeview();  
+                this.inizializzaUser()             
               }
 
   ngOnInit() {
-    this.operatore ? this.f.operatore.patchValue(this.operatore) : this.f.operatore.patchValue('');
+    this.user ? this.f.operatore.patchValue(this.user.nome + ' ' + this.user.cognome) : this.f.operatore.patchValue('');
   }
 
   initForm() {
@@ -138,6 +147,17 @@ getSediSelezionate() {
             }
         })
     );
+ }
+
+ inizializzaUser() {
+  this.subscription.add(this.user$.subscribe((user: Utente) => {
+    this.user = user;
+    if (user && user.sede) {
+        this.listeSediLoaded && this.store.dispatch(new PatchListaSediNavbar([ user.sede.codice ]));
+    } else {
+        this.store.dispatch(new ClearListaSediNavbar());
+    }
+}));
  }
 
 }
