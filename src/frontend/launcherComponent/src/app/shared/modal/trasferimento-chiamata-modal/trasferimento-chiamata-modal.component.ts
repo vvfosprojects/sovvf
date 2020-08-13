@@ -10,6 +10,7 @@ import { TreeviewItem, TreeItem } from 'ngx-treeview';
 import { SediTreeviewState } from '../../store/states/sedi-treeview/sedi-treeview.state';
 import { TreeviewSelezione } from '../../model/treeview-selezione.model';
 import { findItem } from '../../store/states/sedi-treeview/sedi-treeview.helper';
+import { makeCopy } from '../../helper/function';
 
 @Component({
   selector: 'app-trasferimento-chiamata-modal',
@@ -40,8 +41,7 @@ export class TrasferimentoChiamataModalComponent implements OnInit {
               private fb: FormBuilder) { 
                 this.initForm();
                 this.getFormValid();
-                this.inizializzaSediTreeview();
-                
+                this.inizializzaSediTreeview();               
               }
 
   ngOnInit() {
@@ -106,8 +106,9 @@ export class TrasferimentoChiamataModalComponent implements OnInit {
   inizializzaSediTreeview() {
     this.subscription.add(
         this.listeSediNavbar$.subscribe((listaSedi: TreeItem) => {
-            this.listeSediNavbar = [];
-            this.listeSediNavbar[0] = new TreeviewItem(listaSedi);
+          const mod = makeCopy(listaSedi.children);
+          this.listeSediNavbar = mod;
+          this.listeSediNavbar[0] = new TreeviewItem(listaSedi);
         })
     );
   }
