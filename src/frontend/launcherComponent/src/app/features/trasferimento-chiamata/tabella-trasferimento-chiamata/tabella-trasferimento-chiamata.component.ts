@@ -20,15 +20,6 @@ export class TabellaTrasferimentoChiamataComponent implements OnInit {
   @Output() pageSizeChange: EventEmitter<number> = new EventEmitter<number>();
 
 
-  /* vociTrasferimentoChiamata = {
-    id: 'id',
-    codice: 'warzone',
-    sedeDa: 'Comando VV.F. Bravo6',
-    sedeA: 'Comando VV.F. GoingDark',
-    data: 'GG/MM/AA h/m',
-    operatore: 'Test Ghost',
-  }
-  */
   constructor() { }
 
   ngOnInit() {

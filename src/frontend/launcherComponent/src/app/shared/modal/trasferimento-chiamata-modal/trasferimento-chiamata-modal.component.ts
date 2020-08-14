@@ -3,7 +3,7 @@ import { Select, Store } from '@ngxs/store';
 import { Observable, Subscription } from 'rxjs';
 import { LoadingState } from '../../store/states/loading/loading.state';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { TrasferimentoChiamata } from '../../interface/trasferimento-chiamata.interface';
 import { TrasferimentoChiamataState } from '../../store/states/trasferimento-chiamata/trasferimento-chiamata.state';
 import { TreeviewItem, TreeItem } from 'ngx-treeview';
@@ -58,19 +58,27 @@ export class TrasferimentoChiamataModalComponent implements OnInit {
   }
 
   initForm() {
-    this.trasferimentoChiamataForm = this.fb.group({
-        idRichiesta: ['', Validators.required],
-        operatore: ['', Validators.required],
-        codice: ['', Validators.required],
-        sedeDa: ['', Validators.required],
-        sedeA: ['', Validators.required],
-        data: ['', Validators.required],
+    this.trasferimentoChiamataForm = new FormGroup({
+        idRichiesta: new FormControl(),
+        operatore: new FormControl(),
+        codice: new FormControl(),
+        sedeDa: new FormControl(),
+        sedeA: new FormControl(),
+        data: new FormControl(),
     });
-  this.f.operatore.disable();
-  }
+    this.trasferimentoChiamataForm = this.fb.group({
+        idRichiesta: [null, Validators.required],
+        operatore: [null, Validators.required],
+        codice: [null, Validators.required],
+        sedeDa: [null, Validators.required],
+        sedeA: [null, Validators.required],
+        data: [null, Validators.required],
+    });
+    this.f.operatore.disable();
+    }
 
   get f() {
-    return this.trasferimentoChiamataForm.controls;
+      return this.trasferimentoChiamataForm.controls;
   }
 
   ngOnDestroy(): void {
@@ -84,24 +92,6 @@ export class TrasferimentoChiamataModalComponent implements OnInit {
               this.formValid = valid;
           })
       );
-  }
-
-  onConferma() {
-    this.submitted = true;
-
-    if (!this.formValid) {
-        return;
-    }
-
-    this.modal.close({ success: true });
-  }
-
-  onDismiss(): void {
-    this.modal.dismiss('ko');
-  }
-
-  closeModal(type: string) {
-    this.modal.close(type);
   }
 
   getTitle(): string {
@@ -126,7 +116,7 @@ export class TrasferimentoChiamataModalComponent implements OnInit {
     this.f.sedi.patchValue(event);
 }
 
-getSediSelezionate() {
+  getSediSelezionate() {
     this.subscription.add(
         this.sediSelezionate$.subscribe((sedi: TreeviewSelezione[]) => {
             const listaSediNavbar = this.store.selectSnapshot(SediTreeviewState.listeSediNavbar);
@@ -147,7 +137,7 @@ getSediSelezionate() {
             }
         })
     );
- }
+  }
 
  inizializzaUser() {
   this.subscription.add(this.user$.subscribe((user: Utente) => {
@@ -157,7 +147,26 @@ getSediSelezionate() {
     } else {
         this.store.dispatch(new ClearListaSediNavbar());
     }
-}));
- }
+    }));
+  }
+
+  onConferma() {
+    this.submitted = true;
+
+    if (!this.trasferimentoChiamataForm.valid) {
+        return;
+    }
+  
+    this.modal.close({ status: 'ok', result: this.trasferimentoChiamataForm.value });
+  }
+
+  onDismiss(): void {
+    this.modal.dismiss('ko');
+  }
+
+  closeModal(type: string) {
+    this.modal.close(type);
+  }
+
 
 }

@@ -2,18 +2,18 @@
   <table class="table table-striped app-shadow mt-2">
       <thead>
       <tr>
-          <th scope="col" width="12%"><i class="fa fa-hashtag mr-2"></i>Cod.Richiesta</th>
+          <th scope="col" width="10%"><i class="fa fa-hashtag mr-2"></i>Cod.Richiesta</th>
           <th scope="col" width="20%"><i class="fa fa-circle-o" style="margin-right: 2px;"></i><i class="fa fa-ellipsis-h mr-2"></i>Sede da</th>
           <th scope="col" width="20%"><i class="fa fa-ellipsis-h" style="margin-right: 2px;"></i><i class="fa fa-map-marker mr-2"></i>Sede a</th>
-          <th scope="col" width="10%"><i class="fa fa-calendar mr-2"></i>Data</th>
+          <th scope="col" width="7%"><i class="fa fa-calendar mr-2"></i>Data</th>
           <th scope="col" width="15%"><i class="fa fa-user mr-2"></i>Operatore</th>
       </tr>
       </thead>
       <tbody>
       <tr *ngFor="let voce of vociTrasferimentoChiamata | paginate: { itemsPerPage: pageSize, currentPage: page, totalItems: totalItems }">
-        <td width="20%" class="align-middle">
+        <td width="15%" class="align-middle">
         <div class="h5 font-weight-bold mt-1 pt-1 text-uppercase text-truncate" style="max-width: 400px;">
-            <span>{{voce?.codice}}</span>
+            <span>{{voce?.id}}</span>
         </div>
         </td>
         <td width="30%" class="align-middle">
@@ -22,7 +22,7 @@
                 <ul class=" mb-0"
                     style="max-height: 210px; overflow-y: auto; list-style-type: none; padding-left: 0px;">
                     <li>
-                        <span class="ml-1">{{voce?.sedeDa}}</span>
+                        <span ngbTooltip="{{voce?.sedeDa }}" class="ml-1">{{voce?.sedeDa | truncate: 40}}</span>
                     </li>
                 </ul>
             </div>
@@ -34,13 +34,13 @@
                 <ul class=" mb-0"
                     style="max-height: 210px; overflow-y: auto; list-style-type: none; padding-left: 0px;">
                     <li>
-                        <span class="ml-1">{{voce?.sedeA}}</span>
+                        <span ngbTooltip="{{voce?.sedeA }}" class="ml-1">{{voce?.sedeA | truncate: 40}}</span>
                     </li>
                 </ul>
             </div>
           </div>
         </td>
-        <td width="15%" class="align-middle">
+        <td width="12%" class="align-middle">
           <div class="row">
             <div class="col-11">
                 <ul class=" mb-0"
@@ -58,7 +58,7 @@
                 <ul class=" mb-0"
                     style="max-height: 210px; overflow-y: auto; list-style-type: none; padding-left: 0px;">
                     <li>
-                        <span class="ml-1">{{voce?.operatore}}</span>
+                        <span ngbTooltip="{{voce?.operatore}}" class="ml-1">{{voce?.operatore | truncate: 12}}</span>
                     </li>
                 </ul>
             </div>

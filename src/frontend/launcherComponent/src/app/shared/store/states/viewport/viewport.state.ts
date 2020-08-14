@@ -26,14 +26,14 @@ export class ViewportState {
 
     @Selector([ RouterState ])
     static footerFixed(state: ViewportStateModel, routerState: RouterStateModel) {
-        const grantUrl = [`/${RoutesPath.Home}`, `/${RoutesPath.GestioneUtenti}`, `/${RoutesPath.Rubrica}`];
+        const grantUrl = [`/${RoutesPath.Home}`, `/${RoutesPath.GestioneUtenti}`, `/${RoutesPath.Rubrica}`, `/${RoutesPath.TrasferimentoChiamata}`];
         const granted = grantUrl.includes(routerState.state.url);
         return /*state.availHeight > state.contentHeight && granted;*/ granted;
     }
 
     @Selector([ RouterState, AuthState, AppState ])
     static footerVisible(state: ViewportStateModel, routerState: RouterStateModel, authState: AuthStateModel, appState: AppStateModel) {
-        const grantUrl = [`/${RoutesPath.Home}`, `/${RoutesPath.GestioneUtenti}`, `/${RoutesPath.Rubrica}`];
+        const grantUrl = [`/${RoutesPath.Home}`, `/${RoutesPath.GestioneUtenti}`, `/${RoutesPath.Rubrica}`, `/${RoutesPath.TrasferimentoChiamata}`];
         const granted = grantUrl.includes(routerState.state.url);
         const logged = authState.logged;
         const appReady = appState.appIsLoaded;

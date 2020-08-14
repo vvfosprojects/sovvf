@@ -14,7 +14,23 @@ export interface TrasferimentoChiamataStateModel {
 }
 
 export const TrasferimentoChiamataStateModelDefaults: TrasferimentoChiamataStateModel = {
-    vociTrasferimentoChiamata: undefined
+    vociTrasferimentoChiamata: [{
+        id: 'VK1282000000',
+        codice: 111111,
+        sedeDa: 'Direzione Regionale VV.F. Verdanskabcdefghilmn',
+        sedeA: 'Direzione Regionale VV.F. Verdanskabcdefghilmn',
+        data: '10/03/2020',
+        operatore: 'John Price'
+    },
+    {
+        id: 'VK1282000000',
+        codice: 111111,
+        sedeDa: 'Direzione Regionale VV.F. Verdansk',
+        sedeA: 'Direzione Regionale VV.F. Nuketown',
+        data: '10/03/2020',
+        operatore: 'Ghost John Price'
+    },
+    ] //fake for test
 };
 
 @State<TrasferimentoChiamataStateModel>({
@@ -32,14 +48,6 @@ export class TrasferimentoChiamataState {
     @Selector()
     static vociTrasferimentoChiamata(state: TrasferimentoChiamataStateModel) {
        return state.vociTrasferimentoChiamata;
-       /*state.vociTrasferimentoChiamata = [{
-           id: 'aaa',
-           codice: 2222,
-           sedeDa: 'aaa',
-           sedeA: 'aaa',
-           data: 'aaa',
-           operatore: 'aaa'
-       }]*/
     }
 
     @Action(GetTrasferimentoChiamata)

@@ -7,7 +7,7 @@
 </div>
 <div class="modal-body height py-4 px-5">
   <div class="modal-body height py-4 px-5">
-    <form [formGroup]="trasferimentoChiamataForm">
+    <form [formGroup]="trasferimentoChiamataForm" autocomplete="off">
       <div class="form-group">
         <label for="operatore">Operatore
           <small class="text-danger">*</small>
@@ -34,6 +34,7 @@
           bindLabel="text"
           bindValue="value"
           [multiple]="true"
+          maxSelectedItems="1"
           placeholder="Sede Da"
           [closeOnSelect]="true"
           [hideSelected]="true"
@@ -52,6 +53,7 @@
           bindLabel="text"
           bindValue="value"
           [multiple]="true"
+          maxSelectedItems="1"
           placeholder="Sede A"
           [closeOnSelect]="true"
           [hideSelected]="true"
