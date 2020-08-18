@@ -26,7 +26,7 @@ namespace SO115App.API.Controllers
         }
 
         [HttpPost("Add")]
-        public async Task<IActionResult> Add([FromBody] TrasferimentoChiamata trasferimento)
+        public async Task<IActionResult> Add(TrasferimentoChiamata trasferimento)
         {
             var command = new AddTrasferimentoCommand()
             {
@@ -46,12 +46,13 @@ namespace SO115App.API.Controllers
             {
                 if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
                     return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
-                return BadRequest(new { message = ex.Message });
+                else
+                    return BadRequest(ex);
             }
         }
 
         [HttpPost("")]
-        public async Task<IActionResult> Get([FromBody] TrasferimentiChiamateQuery query)
+        public async Task<IActionResult> Get(TrasferimentiChiamateQuery query)
         {
             query.IdOperatore = Request.Headers["IdUtente"];
             query.CodiceSede = Request.Headers["CodiceSede"];
@@ -64,7 +65,8 @@ namespace SO115App.API.Controllers
             {
                 if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
                     return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
-                return BadRequest(new { message = ex.Message });
+                else
+                    return BadRequest(ex);
             }
         }
     }
