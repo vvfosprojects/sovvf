@@ -44,5 +44,6 @@
 
   <ItemGroup>
     <Folder Include="Servizi\CQRS\Commands\GestioneRubrica\Enti\DeleteEnte\" />
+    <Folder Include="Servizi\CQRS\Commands\GestioneSoccorso\GestioneTrasferimentiChiamate\DeleteTrasferimento\" />
   </ItemGroup>
 </Project>

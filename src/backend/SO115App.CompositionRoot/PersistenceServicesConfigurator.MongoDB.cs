@@ -220,6 +220,14 @@ namespace SO115App.CompositionRoot
 
 
             #endregion Rubrica
+
+            #region TrasferimentoChiamata
+
+            container.Register<
+                Models.Servizi.Infrastruttura.GestioneTrasferimentiChiamate.IAddTrasferimento,
+                Persistence.MongoDB.GestioneTrasferimentiChiamate.AddTrasferimento>();
+
+            #endregion
         }
     }
 }
