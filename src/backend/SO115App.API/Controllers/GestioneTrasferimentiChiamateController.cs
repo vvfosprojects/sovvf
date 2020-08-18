@@ -1,9 +1,11 @@
 ﻿using CQRS.Commands;
+using CQRS.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneTrasferimentiChiamate.AddTrasferimento;
+using SO115App.Models.Servizi.CQRS.Queries.GestioneTrasferimentiChiamate;
 using System;
 using System.Threading.Tasks;
 
@@ -14,12 +16,14 @@ namespace SO115App.API.Controllers
     [ApiController]
     public class GestioneTrasferimentiChiamateController : ControllerBase
     {
-        private readonly ICommandHandler<AddTrasferimentoCommand> _handler;
-        public GestioneTrasferimentiChiamateController(ICommandHandler<AddTrasferimentoCommand> handler)
+        private readonly ICommandHandler<AddTrasferimentoCommand> _addCommandHandler;
+        private readonly IQueryHandler<TrasferimentiChiamateQuery, TrasferimentiChiamateResult> _queryHandler;
+        public GestioneTrasferimentiChiamateController(ICommandHandler<AddTrasferimentoCommand> addCommandHandler,
+            IQueryHandler<TrasferimentiChiamateQuery, TrasferimentiChiamateResult> queryHandler)
         {
-            _handler = handler;
+            _addCommandHandler = addCommandHandler;
+            _queryHandler = queryHandler;
         }
-
 
         [HttpPost("Add")]
         public async Task<IActionResult> Add([FromBody] TrasferimentoChiamata trasferimento)
@@ -34,9 +38,27 @@ namespace SO115App.API.Controllers
 
             try
             {
-                _handler.Handle(command);
+                _addCommandHandler.Handle(command);
 
                 return Ok();
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                    return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+        [HttpPost("")]
+        public async Task<IActionResult> Get([FromBody] TrasferimentiChiamateQuery query)
+        {
+            query.IdOperatore = Request.Headers["IdUtente"];
+            query.CodiceSede = Request.Headers["CodiceSede"];
+
+            try
+            {
+                return Ok(_queryHandler.Handle(query));
             }
             catch (Exception ex)
             {
