@@ -13,8 +13,6 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
  */
 import { RubricaComponent } from './rubrica.component';
 import { TabellaRubricaComponent } from './tabella-rubrica/tabella-rubrica.component';
-import { VociRubricaPerPaginaComponent } from './tabella-rubrica/voci-rubrica-per-pagina/voci-rubrica-per-pagina.component';
-import { RisultatiPaginazioneComponent } from './tabella-rubrica/risultati-paginazione/risultati-paginazione.component';
 import { RicercaRubricaComponent } from './ricerca-rubrica/ricerca-rubrica.component';
 import { EnteModalComponent } from '../../shared/modal/ente-modal/ente-modal.component';
 import { ConfirmModalComponent } from '../../shared';
@@ -34,8 +32,6 @@ import { RubricaState } from './store/states/rubrica/rubrica.state';
     declarations: [
         RubricaComponent,
         TabellaRubricaComponent,
-        VociRubricaPerPaginaComponent,
-        RisultatiPaginazioneComponent,
         RicercaRubricaComponent
     ],
     imports: [

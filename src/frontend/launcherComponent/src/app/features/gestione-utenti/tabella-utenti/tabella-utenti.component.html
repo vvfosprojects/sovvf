@@ -2,8 +2,8 @@
     <table class="table table-striped app-shadow mt-2">
         <thead>
         <tr>
-            <th scope="col" width="25%"> <i class="fa fa-user mr-2"></i>Nominativo</th>
-            <th scope="col" width="40%"> <i class="fa fa-wrench mr-2"></i>Ruoli Assegnati</th>
+            <th scope="col" width="25%"><i class="fa fa-user mr-2"></i>Nominativo</th>
+            <th scope="col" width="40%"><i class="fa fa-wrench mr-2"></i>Ruoli Assegnati</th>
         </tr>
         </thead>
         <tbody>
@@ -70,8 +70,8 @@
     </table>
 </div>
 <div *ngIf="listaUtenti?.length > 0" class="d-flex justify-content-between p-2">
-    <app-utenti-per-pagina [pageSize]="pageSize" [pageSizes]="pageSizes"
-                           (pageSizeChange)="pageSizeChange.emit($event)"></app-utenti-per-pagina>
+    <app-select-elementi-per-pagina [pageSize]="pageSize" [pageSizes]="pageSizes" [placeholderElementi]="'utenti'"
+                                    (pageSizeChange)="pageSizeChange.emit($event)"></app-select-elementi-per-pagina>
     <pagination-controls class="mt-1 mb-0" [previousLabel]="'Precedente'" [nextLabel]="'Successiva'"
                          (pageChange)="pageChange.emit($event)">
     </pagination-controls>

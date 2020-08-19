@@ -29,7 +29,8 @@
             <td width="20%" class="align-middle" [ngClass]="{'p-0': voce?.telefoni && voce?.telefoni?.length > 0}">
                 <div class="row">
                     <div class="col-11">
-                        <app-numeri-ente *ngIf="voce?.telefoni && voce?.telefoni?.length > 0" [telefoni]="voce?.telefoni"></app-numeri-ente>
+                        <app-numeri-ente *ngIf="voce?.telefoni && voce?.telefoni?.length > 0"
+                                         [telefoni]="voce?.telefoni"></app-numeri-ente>
                         <small *ngIf="!voce?.telefoni || voce?.telefoni?.length <= 0" class="ml-1 text-muted">
                             Non presente/i
                         </small>
@@ -87,8 +88,8 @@
     </table>
 </div>
 <div *ngIf="vociRubrica?.length > 0" class="d-flex justify-content-between p-2">
-    <app-voci-rubrica-per-pagina [pageSize]="pageSize" [pageSizes]="pageSizes"
-                                 (pageSizeChange)="pageSizeChange.emit($event)"></app-voci-rubrica-per-pagina>
+    <app-select-elementi-per-pagina [pageSize]="pageSize" [pageSizes]="pageSizes" [placeholderElementi]="'voci'"
+                                    (pageSizeChange)="pageSizeChange.emit($event)"></app-select-elementi-per-pagina>
     <pagination-controls class="mt-1 mb-0" [previousLabel]="'Precedente'" [nextLabel]="'Successiva'"
                          (pageChange)="pageChange.emit($event)">
     </pagination-controls>
