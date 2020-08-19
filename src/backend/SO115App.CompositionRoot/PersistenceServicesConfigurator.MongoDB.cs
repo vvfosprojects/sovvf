@@ -235,6 +235,10 @@ namespace SO115App.CompositionRoot
                 Models.Servizi.Infrastruttura.GestioneTrasferimentiChiamate.IDeleteTrasferimento,
                 Persistence.MongoDB.GestioneTrasferimentiChiamate.DeleteTrasferimento>();
 
+            container.Register<
+                Models.Servizi.Infrastruttura.GestioneTrasferimentiChiamate.CodiciChiamate.IGetCodiciChiamate,
+                Persistence.MongoDB.GestioneTrasferimentiChiamate.CodiciChiamate.GetCodiciChiamate>();
+
             #endregion
         }
     }

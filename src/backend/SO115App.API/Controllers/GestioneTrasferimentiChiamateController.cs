@@ -7,6 +7,7 @@ using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneTrasferimentiChiamate.AddTrasferimento;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneTrasferimentiChiamate.DeleteTrasferimento;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneTrasferimentiChiamate;
+using SO115App.Models.Servizi.CQRS.Queries.GestioneTrasferimentiChiamate.CodiciChiamate;
 using System;
 using System.Threading.Tasks;
 
@@ -20,13 +21,16 @@ namespace SO115App.API.Controllers
         private readonly ICommandHandler<AddTrasferimentoCommand> _addCommandHandler;
         private readonly ICommandHandler<DeleteTrasferimentoCommand> _deleteCommandHandler;
         private readonly IQueryHandler<TrasferimentiChiamateQuery, TrasferimentiChiamateResult> _queryHandler;
+        private readonly IQueryHandler<CodiciChiamateQuery, CodiciChiamateResult> _richiesteQueryHandler;
         public GestioneTrasferimentiChiamateController(ICommandHandler<AddTrasferimentoCommand> addCommandHandler,
             ICommandHandler<DeleteTrasferimentoCommand> deleteCommandHandler,
-            IQueryHandler<TrasferimentiChiamateQuery, TrasferimentiChiamateResult> queryHandler)
+            IQueryHandler<TrasferimentiChiamateQuery, TrasferimentiChiamateResult> queryHandler,
+            IQueryHandler<CodiciChiamateQuery, CodiciChiamateResult> richiesteQueryHandler)
         {
             _addCommandHandler = addCommandHandler;
             _queryHandler = queryHandler;
             _deleteCommandHandler = deleteCommandHandler;
+            _richiesteQueryHandler = richiesteQueryHandler;
         }
 
         [HttpPost("Add")]
@@ -64,6 +68,28 @@ namespace SO115App.API.Controllers
             try
             {
                 return Ok(_queryHandler.Handle(query));
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                    return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
+                else
+                    return BadRequest(ex);
+            }
+        }
+
+        [HttpGet("GetCodiciChiamate")]
+        public async Task<IActionResult> GetCodiciChiamate()
+        {
+            var query = new CodiciChiamateQuery()
+            {
+                IdOperatore = Request.Headers["IdUtente"],
+                CodiceSede = Request.Headers["CodiceSede"]
+            };
+
+            try
+            {
+                return Ok(_richiesteQueryHandler.Handle(query));
             }
             catch (Exception ex)
             {
