@@ -74,6 +74,7 @@ namespace Persistence.MongoDB
             SchedeNueMap.Map();
             RubricaMap.Map();
             CategorieEntiMap.Map();
+            TrasferimentoChiamataMap.Map();
             BsonClassMap.RegisterClassMap<Telefonata>();
             BsonClassMap.RegisterClassMap<AssegnazionePriorita>();
             BsonClassMap.RegisterClassMap<InizioPresaInCarico>();
@@ -101,6 +102,14 @@ namespace Persistence.MongoDB
             BsonClassMap.RegisterClassMap<MarcaRilevante>();
             BsonClassMap.RegisterClassMap<InviareFonogramma>();
             BsonClassMap.RegisterClassMap<FonogrammaInviato>();
+        }
+
+        public IMongoCollection<TrasferimentoChiamata> TrasferimentiChiamateCollection
+        {
+            get
+            {
+                return database.GetCollection<TrasferimentoChiamata>("trasferimentiChiamate");
+            }
         }
 
         public IMongoCollection<CategoriaEnte> CategorieEntiCollection
