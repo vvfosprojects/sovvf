@@ -12,8 +12,6 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { TrasferimentoChiamataRouting } from './trasferimento-chiamata.routing';
 import { RicercaTrasferimentoChiamataComponent } from './ricerca-trasferimento-chiamata/ricerca-trasferimento-chiamata.component';
 import { TabellaTrasferimentoChiamataComponent } from './tabella-trasferimento-chiamata/tabella-trasferimento-chiamata.component';
-import { RisultatiPaginazioneComponent } from './tabella-trasferimento-chiamata/risultati-paginazione/risultati-paginazione.component';
-import { VociTrasferimentoChiamataPerPaginaComponent } from './tabella-trasferimento-chiamata/voci-trasferimento-chiamata-per-pagina/voci-trasferimento-chiamata-per-pagina.component';
 import { TrasferimentoChiamataState } from './store/states/trasferimento-chiamata/trasferimento-chiamata.state';
 import { RicercaTrasferimentoChiamataState } from './store/states/ricerca-trasferimento-chiamata/ricerca-trasferimento-chiamata.state';
 import { ConfirmModalComponent } from 'src/app/shared';
@@ -24,9 +22,7 @@ import { TrasferimentoChiamataModalComponent } from 'src/app/shared/modal/trasfe
   declarations: [
       TrasferimentoChiamataComponent,
       RicercaTrasferimentoChiamataComponent,
-      TabellaTrasferimentoChiamataComponent,
-      RisultatiPaginazioneComponent,
-      VociTrasferimentoChiamataPerPaginaComponent
+      TabellaTrasferimentoChiamataComponent
   ],
   imports: [
       CommonModule,

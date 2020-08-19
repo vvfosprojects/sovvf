@@ -1,6 +1,6 @@
 export const environment = {
-    production: false, 
-    
+    production: false,
+
     productionTest: false,
     consoleLog: true,
     toastr: true,
@@ -37,7 +37,7 @@ export const environment = {
         navbar: '/api/Navbar',
         meteo: 'https://api.openweathermap.org/data/2.5/weather?',
         enti: '/api/GestioneEnti',
-        trasferimentoChiamata: '/api/TrasferimentoChiamata'
+        trasferimentoChiamata: '/api/GestioneTrasferimentiChiamate'
     },
     casUrl: {
         linkLogin: 'http://localhost:4001/?service=',

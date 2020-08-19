@@ -1,12 +1,18 @@
 import { Store, State, Selector, Action, StateContext } from '@ngxs/store';
 import { patch, removeItem, updateItem } from '@ngxs/store/operators';
-import { RicercaTrasferimentoChiamataState } from './../ricerca-trasferimento-chiamata/ricerca-trasferimento-chiamata.state';
+import { RicercaTrasferimentoChiamataState } from '../ricerca-trasferimento-chiamata/ricerca-trasferimento-chiamata.state';
 import { TrasferimentoChiamata } from 'src/app/shared/interface/trasferimento-chiamata.interface';
 import { PatchPagination } from 'src/app/shared/store/actions/pagination/pagination.actions';
 import { StopLoading, StartLoading } from 'src/app/shared/store/actions/loading/loading.actions';
 import { ResponseInterface } from 'src/app/shared/interface/response.interface';
 import { PaginationState } from 'src/app/shared/store/states/pagination/pagination.state';
-import { GetTrasferimentoChiamata, SetTrasferimentoChiamata, AddVoceTrasferimentoChiamata, UpdateVoceTrasferimentoChiamata, DeleteVoceTrasferimentoChiamata } from '../../actions/trasferimento-chiamata/trasferimento-chiamata.actions';
+import {
+    GetTrasferimentoChiamata,
+    SetTrasferimentoChiamata,
+    AddVoceTrasferimentoChiamata,
+    UpdateVoceTrasferimentoChiamata,
+    DeleteVoceTrasferimentoChiamata
+} from '../../actions/trasferimento-chiamata/trasferimento-chiamata.actions';
 import { TrasferimentoChiamataService } from 'src/app/core/service/trasferimento-chiamata/trasferimento-chiamata.service';
 
 export interface TrasferimentoChiamataStateModel {
@@ -14,23 +20,7 @@ export interface TrasferimentoChiamataStateModel {
 }
 
 export const TrasferimentoChiamataStateModelDefaults: TrasferimentoChiamataStateModel = {
-    vociTrasferimentoChiamata: [{
-        id: 'VK1282000000',
-        codice: 111111,
-        sedeDa: 'Direzione Regionale VV.F. Verdanskabcdefghilmn',
-        sedeA: 'Direzione Regionale VV.F. Verdanskabcdefghilmn',
-        data: '10/03/2020',
-        operatore: 'John Price'
-    },
-    {
-        id: 'VK1282000000',
-        codice: 111111,
-        sedeDa: 'Direzione Regionale VV.F. Verdansk',
-        sedeA: 'Direzione Regionale VV.F. Nuketown',
-        data: '10/03/2020',
-        operatore: 'Ghost John Price'
-    },
-    ] //fake for test
+    vociTrasferimentoChiamata: undefined
 };
 
 @State<TrasferimentoChiamataStateModel>({
@@ -40,14 +30,14 @@ export const TrasferimentoChiamataStateModelDefaults: TrasferimentoChiamataState
 })
 
 export class TrasferimentoChiamataState {
-    
+
     constructor(private store: Store,
                 private trasferimentoChiamataService: TrasferimentoChiamataService) {
-}
+    }
 
     @Selector()
     static vociTrasferimentoChiamata(state: TrasferimentoChiamataStateModel) {
-       return state.vociTrasferimentoChiamata;
+        return state.vociTrasferimentoChiamata;
     }
 
     @Action(GetTrasferimentoChiamata)
@@ -88,7 +78,7 @@ export class TrasferimentoChiamataState {
     updateVoceRubrica({ setState }: StateContext<TrasferimentoChiamataStateModel>, action: UpdateVoceTrasferimentoChiamata) {
         setState(
             patch({
-                vociTrasferimentoChiamata: updateItem<TrasferimentoChiamata>(voce => voce.codice === action.voceTrasferimentoChiamata.codice, action.voceTrasferimentoChiamata)
+                vociTrasferimentoChiamata: updateItem<TrasferimentoChiamata>(voce => voce.id === action.voceTrasferimentoChiamata.id, action.voceTrasferimentoChiamata)
             })
         );
     }

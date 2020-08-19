@@ -18,92 +18,92 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 
 @Component({
-  selector: 'app-trasferimento-chiamata',
-  templateUrl: './trasferimento-chiamata.component.html',
-  styleUrls: ['./trasferimento-chiamata.component.css']
+    selector: 'app-trasferimento-chiamata',
+    templateUrl: './trasferimento-chiamata.component.html',
+    styleUrls: ['./trasferimento-chiamata.component.css']
 })
 export class TrasferimentoChiamataComponent implements OnInit {
 
-  @Select(TrasferimentoChiamataState.vociTrasferimentoChiamata) vociTrasferimentoChiamata$: Observable<TrasferimentoChiamata[]>;
-  @Select(RicercaTrasferimentoChiamataState.ricerca) ricerca$: Observable<string>;
-  ricerca: string;
-  @Select(PaginationState.pageSize) pageSize$: Observable<number>;
-  pageSize: number;
-  @Select(PaginationState.pageSizes) pageSizes$: Observable<number[]>;
-  @Select(PaginationState.totalItems) totalItems$: Observable<number>;
-  @Select(PaginationState.page) page$: Observable<number>;
-  @Select(LoadingState.loading) loading$: Observable<boolean>;
+    @Select(TrasferimentoChiamataState.vociTrasferimentoChiamata) vociTrasferimentoChiamata$: Observable<TrasferimentoChiamata[]>;
+    @Select(RicercaTrasferimentoChiamataState.ricerca) ricerca$: Observable<string>;
+    ricerca: string;
+    @Select(PaginationState.pageSize) pageSize$: Observable<number>;
+    pageSize: number;
+    @Select(PaginationState.pageSizes) pageSizes$: Observable<number[]>;
+    @Select(PaginationState.totalItems) totalItems$: Observable<number>;
+    @Select(PaginationState.page) page$: Observable<number>;
+    @Select(LoadingState.loading) loading$: Observable<boolean>;
 
-  subscriptions: Subscription = new Subscription();
+    subscriptions: Subscription = new Subscription();
 
-  constructor(private store: Store, public modalService: NgbModal) {
-    const pageSizeAttuale = this.store.selectSnapshot(PaginationState.pageSize);
-    if (pageSizeAttuale === 7) {
-        this.store.dispatch(new SetPageSize(10));
+    constructor(private store: Store, public modalService: NgbModal) {
+        const pageSizeAttuale = this.store.selectSnapshot(PaginationState.pageSize);
+        if (pageSizeAttuale === 7) {
+            this.store.dispatch(new SetPageSize(10));
+        }
+        this.getRicerca();
+        this.getPageSize();
+        this.getTrasferimentoChiamata(true);
     }
-    this.getRicerca();
-    this.getPageSize();
-    this.getTrasferimentoChiamata(true);
-}
 
 
-  ngOnInit() {
-    this.store.dispatch([new SetCurrentUrl(RoutesPath.TrasferimentoChiamata), new SetSediNavbarVisible(false)]);
-  }
-
-  ngOnDestroy(): void {
-    this.store.dispatch([
-        new CleaRicercaTrasferimentoChiamata(),
-        new SetSediNavbarVisible()
-    ]);
-    this.subscriptions.unsubscribe();
-  } 
-
-
-  onRicercaTrasferimentoChiamata(ricerca: string) {
-    this.store.dispatch(new SetRicercaTrasferimentoChiamata(ricerca));  
-  }
-
-  getTrasferimentoChiamata(pageAttuale: boolean) {
-    let page = null;
-    if (pageAttuale) {
-        page = this.store.selectSnapshot(PaginationState.page);
+    ngOnInit() {
+        this.store.dispatch([new SetCurrentUrl(RoutesPath.TrasferimentoChiamata), new SetSediNavbarVisible(false)]);
     }
-    this.store.dispatch(new GetTrasferimentoChiamata(page));
-}
+
+    ngOnDestroy(): void {
+        this.store.dispatch([
+            new CleaRicercaTrasferimentoChiamata(),
+            new SetSediNavbarVisible()
+        ]);
+        this.subscriptions.unsubscribe();
+    }
+
+
+    onRicercaTrasferimentoChiamata(ricerca: string) {
+        this.store.dispatch(new SetRicercaTrasferimentoChiamata(ricerca));
+    }
+
+    getTrasferimentoChiamata(pageAttuale: boolean) {
+        let page = null;
+        if (pageAttuale) {
+            page = this.store.selectSnapshot(PaginationState.page);
+        }
+        this.store.dispatch(new GetTrasferimentoChiamata(page));
+    }
 
     onAddTrasferimentoChiamata() {
-    const addTrasferimentoChiamataModal = this.modalService.open(TrasferimentoChiamataModalComponent, {
-        backdropClass: 'light-blue-backdrop',
-        centered: true,
-        size: 'lg'
-    });
-    addTrasferimentoChiamataModal.result.then(
-        (result: { success: boolean }) => {
-            if (result.success) {
-                this.addTrasferimentoChiamata();
-            } else if (!result.success) {
+        const addTrasferimentoChiamataModal = this.modalService.open(TrasferimentoChiamataModalComponent, {
+            backdropClass: 'light-blue-backdrop',
+            centered: true,
+            size: 'lg'
+        });
+        addTrasferimentoChiamataModal.result.then(
+            (result: { success: boolean }) => {
+                if (result.success) {
+                    this.addTrasferimentoChiamata();
+                } else if (!result.success) {
+                    this.store.dispatch(new ClearFormTrasferimentoChiamata());
+                    console.log('Modal "addVoceTrasferimentoChiamata" chiusa con val ->', result);
+                }
+            },
+            (err) => {
                 this.store.dispatch(new ClearFormTrasferimentoChiamata());
-                console.log('Modal "addVoceTrasferimentoChiamata" chiusa con val ->', result);
+                console.error('Modal chiusa senza bottoni. Err ->', err);
             }
-        },
-        (err) => {
-            this.store.dispatch(new ClearFormTrasferimentoChiamata());
-            console.error('Modal chiusa senza bottoni. Err ->', err);
-        }
-    );
+        );
     }
 
     addTrasferimentoChiamata() {
-    this.store.dispatch(new RequestAddTrasferimentoChiamata());
+        this.store.dispatch(new RequestAddTrasferimentoChiamata());
     }
 
     onPageChange(page: number) {
-    this.store.dispatch(new GetTrasferimentoChiamata(page));
+        this.store.dispatch(new GetTrasferimentoChiamata(page));
     }
 
     onPageSizeChange(pageSize: number) {
-    this.store.dispatch(new SetPageSize(pageSize));
+        this.store.dispatch(new SetPageSize(pageSize));
     }
 
     getRicerca() {

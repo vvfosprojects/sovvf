@@ -1,4 +1,4 @@
-import { TrasferimentoChiamata, DeleteTrasferimentoChiamataInterface } from 'src/app/shared/interface/trasferimento-chiamata.interface';
+import { TrasferimentoChiamata, DeleteTrasferimentoChiamata } from 'src/app/shared/interface/trasferimento-chiamata.interface';
 
 
 export class SetTrasferimentoChiamata {
@@ -23,7 +23,7 @@ export class RequestUpdateTrasferimentoChiamata {
 export class RequestDeleteTrasferimentoChiamata {
     static readonly type = '[TrasferimentoChiamata] Request Delete Trasferimento Chiamata';
 
-    constructor(public ente: DeleteTrasferimentoChiamataInterface) {
+    constructor(public ente: DeleteTrasferimentoChiamata) {
     }
 }
 
