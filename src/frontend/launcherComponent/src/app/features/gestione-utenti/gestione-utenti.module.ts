@@ -11,8 +11,6 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { GestioneUtentiComponent } from './gestione-utenti.component';
 import { RicercaUtentiComponent } from './ricerca-utenti/ricerca-utenti.component';
 import { TabellaUtentiComponent } from './tabella-utenti/tabella-utenti.component';
-import { UtentiPerPaginaComponent } from './tabella-utenti/utenti-per-pagina/utenti-per-pagina.component';
-import { RisultatiPaginazioneComponent } from './tabella-utenti/risultati-paginazione/risultati-paginazione.component';
 import { GestioneUtenteModalComponent } from './gestione-utente-modal/gestione-utente-modal.component';
 import { ConfirmModalComponent } from 'src/app/shared/modal/confirm-modal/confirm-modal.component';
 /**
@@ -36,7 +34,12 @@ import { RubricaState } from '../rubrica/store/states/rubrica/rubrica.state';
 
 
 @NgModule({
-    declarations: [GestioneUtentiComponent, RicercaUtentiComponent, TabellaUtentiComponent, UtentiPerPaginaComponent, RisultatiPaginazioneComponent, GestioneUtenteModalComponent],
+    declarations: [
+        GestioneUtentiComponent,
+        RicercaUtentiComponent,
+        TabellaUtentiComponent,
+        GestioneUtenteModalComponent
+    ],
     imports: [
         CommonModule,
         FormsModule,

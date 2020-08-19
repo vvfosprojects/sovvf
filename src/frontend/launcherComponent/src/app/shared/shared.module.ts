@@ -11,6 +11,8 @@ import { EnteModalComponent } from './modal/ente-modal/ente-modal.component';
 import { NumeriEnteComponent } from './components/numeri-ente/numeri-ente.component';
 import * as Shared from './index';
 import { NgxsFormPluginModule } from '@ngxs/form-plugin';
+import { SelectElementiPerPaginaComponent } from './components/select-elementi-per-pagina/select-elementi-per-pagina.component';
+import { RisultatiRicercaComponent } from './components/risultati-ricerca/risultati-ricerca.component';
 import { TrasferimentoChiamataModalComponent } from './modal/trasferimento-chiamata-modal/trasferimento-chiamata-modal.component';
 
 
@@ -39,11 +41,12 @@ const COMPONENTS = [
     Shared.DettaglioFonogrammaModalComponent,
     Shared.MezzoActionsModalComponent,
     Shared.ModificaEntiModalComponent,
-
     ListaPartenzeComponent,
     EnteModalComponent,
-    TrasferimentoChiamataModalComponent,
-    NumeriEnteComponent
+    NumeriEnteComponent,
+    SelectElementiPerPaginaComponent,
+    RisultatiRicercaComponent,
+    TrasferimentoChiamataModalComponent
 ];
 
 @NgModule({
@@ -58,7 +61,7 @@ const COMPONENTS = [
         NgxsFormPluginModule.forRoot()
     ],
     declarations: [
-        ...COMPONENTS,
+        ...COMPONENTS
     ],
     exports: [
         ...COMPONENTS,

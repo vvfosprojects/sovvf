@@ -19,9 +19,9 @@ export class TrasferimentoChiamataService {
 
   getTrasferimentoChiamata(filters: FiltersInterface, pagination: PaginationInterface): Observable<any> {
     const obj = {
-        filters: {
-            search: filters.search
-        },
+        // filters: {
+        //     search: filters.search
+        // },
         pagination
     };
     return this.http.post(API_ENTE, obj);

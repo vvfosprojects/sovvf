@@ -1,12 +1,23 @@
+import { Utente } from '../model/utente.model';
+
 export interface TrasferimentoChiamata {
     id: string;
-    codice: number;
-    sedeDa: string;
-    sedeA: string;
+    codRichiesta: string;
+    codSedeDa: string;
+    codSedeA: string;
+    idOperatore: string;
     data: string;
-    operatore: string;
+    operatore: Utente;
 }
 
-export interface DeleteTrasferimentoChiamataInterface {
+export interface AddTrasferimentoChiamata {
+    codRichiesta: string;
+    codSedeDa: string;
+    codSedeA: string;
+    idOperatore: string;
+    data: string;
+}
+
+export interface DeleteTrasferimentoChiamata {
     id: string;
 }

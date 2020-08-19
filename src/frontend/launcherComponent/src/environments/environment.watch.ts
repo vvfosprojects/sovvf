@@ -35,7 +35,7 @@ export const environment = {
         navbar: '/api/Navbar',
         meteo: 'https://api.openweathermap.org/data/2.5/weather?',
         enti: '/api/GestioneEnti',
-        trasferimentoChiamata: '/api/TrasferimentoChiamata'
+        trasferimentoChiamata: '/api/GestioneTrasferimentiChiamate'
     },
     casUrl: {
         linkLogin: 'http://sso.vigilfuoco.it/cas-test/login?service=',

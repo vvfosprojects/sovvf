@@ -1,9 +1,0 @@
-<ng-select [items]="pageSizes" [(ngModel)]="pageSize" [searchable]="false" [clearable]="false" [hideSelected]="true"
-           (ngModelChange)="onChangePageSize($event)">
-    <ng-template ng-label-tmp let-item="item">
-        <span class="font-weight-bold">{{item}}</span> trasferimenti per pagina
-    </ng-template>
-    <ng-template ng-option-tmp let-item="item">
-        Visualizza <span class="font-weight-bold">{{item}}</span> trasferimenti
-    </ng-template>
-</ng-select>

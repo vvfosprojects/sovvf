@@ -21,10 +21,7 @@
             </div>
         </div>
         <div *ngIf="ricerca" class="col-12 col-md-8 mx-auto pl-4">
-            <h6 class="d-inline-block mt-3">
-                <i class="fa fa-search mr-1"></i>
-                Risultati ricerca per: <span class="font-weight-bold">{{ricerca}}</span>
-            </h6>
+            <app-risultati-ricerca [ricerca]="ricerca"></app-risultati-ricerca>
         </div>
         <div class="col-12 col-md-8 mx-auto">
             <app-tabella-rubrica [vociRubrica]="vociRubrica$ | async" [totalItems]="totalItems$ | async"
