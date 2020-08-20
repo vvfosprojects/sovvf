@@ -13,4 +13,15 @@ namespace SO115App.Models.Classi.Condivise
         public DateTime Data { get; set; }
         public string IdOperatore { get; set; }
     }
+
+    public class TrasferimentoChiamataFull
+    {
+        public string Id { get; set; }
+
+        public string CodRichiesta { get; set; }
+        public string SedeDa { get; set; }
+        public string SedeA { get; set; }
+        public DateTime Data { get; set; }
+        public Utente Operatore { get; set; }
+    }
 }
