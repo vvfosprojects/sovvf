@@ -6,8 +6,3 @@ export enum StatoMezzoActions {
     InRientro = 'In Rientro'
 }
 
-export class StatoMezzoActionsAndTime {
-    statoMezzoActions : StatoMezzoActions;
-    time: string;
-}
-

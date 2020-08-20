@@ -50,6 +50,7 @@ export class SintesiRichiesteService {
     }
 
     public aggiornaStatoMezzo(obj: any): Observable<any> {
+        console.log('SERVICE AggiornaStatoMezzo', obj);
         return this.http.post<any>(`${API_GESTIONE_PARTENZA}/AggiornaPartenza`, obj);
     }
 

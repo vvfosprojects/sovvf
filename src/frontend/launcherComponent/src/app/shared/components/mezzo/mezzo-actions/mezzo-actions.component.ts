@@ -2,9 +2,10 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { NgbDropdownConfig, NgbTooltipConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Mezzo } from '../../../model/mezzo.model';
 import { calcolaActionSuggeritaMezzo, statoMezzoActionColor, statoMezzoActionsEnumToStringArray } from '../../../helper/function';
-import { StatoMezzoActions, StatoMezzoActionsAndTime } from '../../../enum/stato-mezzo-actions.enum';
+import { StatoMezzoActions } from '../../../enum/stato-mezzo-actions.enum';
 import { StatoMezzo } from 'src/app/shared/enum/stato-mezzo.enum';
 import { MezzoActionsModalComponent } from 'src/app/shared/modal/mezzo-actions-modal/mezzo-actions-modal.component';
+import { MezzoActionEmit } from '../../../interface/mezzo-action-emit.interface';
 
 @Component({
     selector: 'app-mezzo-actions',
@@ -17,13 +18,13 @@ export class MezzoActionsComponent implements OnInit {
     statoMezzoActions: StatoMezzoActions;
     statoMezzoString: Array<string>;
 
-    @Output() actionMezzo: EventEmitter<StatoMezzoActionsAndTime> = new EventEmitter();
+    @Output() actionMezzo: EventEmitter<MezzoActionEmit> = new EventEmitter<MezzoActionEmit>();
 
     constructor(
         dropdownConfig: NgbDropdownConfig,
         tooltipConfig: NgbTooltipConfig,
         private modalService: NgbModal
-                ) {
+    ) {
         dropdownConfig.container = 'body';
         dropdownConfig.placement = 'top';
         tooltipConfig.container = 'body';
@@ -42,10 +43,10 @@ export class MezzoActionsComponent implements OnInit {
         }).result.then((res: { status: string, result: any }) => {
             switch (res.status) {
                 case 'ok' :
-                    console.log(action); // qui ho il dato ORARIO (time) ottenuto da mezzo-actions-modal
                     if (action) {
                         this.statoMezzoActions = StatoMezzoActions[action.replace(' ', '')];
-                        this.actionMezzo.emit({statoMezzoActions: this.statoMezzoActions, time: res.result.time});
+                        const orario = res.result.oraEvento;
+                        this.actionMezzo.emit({ mezzoAction: this.statoMezzoActions, oraEvento: { ora: orario.hour, minuti: orario.minute } });
                     } else {
                         this.actionMezzo.emit();
                     }
