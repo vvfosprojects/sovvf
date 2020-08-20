@@ -7,11 +7,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneTrasfer
     public class AddTrasferimentoCommandHandler : ICommandHandler<AddTrasferimentoCommand>
     {
         private readonly IAddTrasferimento _addTrasferimento;
-        public AddTrasferimentoCommandHandler(IAddTrasferimento addTrasferimento)
-        {
-            _addTrasferimento = addTrasferimento;
-        }
-
+        public AddTrasferimentoCommandHandler(IAddTrasferimento addTrasferimento) => _addTrasferimento = addTrasferimento;
 
         public void Handle(AddTrasferimentoCommand command)
         {
