@@ -1,6 +1,8 @@
 ﻿using SimpleInjector;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneEnti;
+using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneTrasferimentiChiamate;
 using SO115App.SignalR.Sender.GestioneEnti;
+using SO115App.SignalR.Sender.GestioneTrasferimentiChiamate;
 
 namespace SO115App.CompositionRoot
 {
@@ -93,6 +95,9 @@ namespace SO115App.CompositionRoot
             container.Register<INotificationAddEnte, NotificationAddEnte>();
             container.Register<INotificationUpdateEnte, NotificationUpdateEnte>();
             container.Register<INotificationDeleteEnte, NotificationDeleteEnte>();
+
+            container.Register<INotificationAddTrasferimento, NotificationAddTrasferimento>();
+            container.Register<INotificationDeleteTrasferimento, NotificationDeleteTrasferimento>();
 
             #endregion Notifiche
         }
