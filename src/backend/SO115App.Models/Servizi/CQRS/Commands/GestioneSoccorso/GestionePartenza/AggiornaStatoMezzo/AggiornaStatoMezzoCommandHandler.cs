@@ -49,7 +49,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
             var richiesta = _getRichiestaById.GetByCodice(command.CodRichiesta);
 
             //TODO DA TOGLIERE
-            if (command.DataOraAggiornamento == null)
+            if (command.DataOraAggiornamento == null || command.DataOraAggiornamento == DateTime.MinValue)
                 command.DataOraAggiornamento = DateTime.UtcNow;
 
             if (command.StatoMezzo == Costanti.MezzoInViaggio)

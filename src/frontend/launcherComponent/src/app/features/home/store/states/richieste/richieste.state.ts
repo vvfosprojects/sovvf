@@ -338,7 +338,7 @@ export class RichiesteState {
             'codRichiesta': action.mezzoAction.codRichiesta,
             'idMezzo': action.mezzoAction.mezzo.codice,
             'statoMezzo': action.mezzoAction.action ? action.mezzoAction.action : calcolaActionSuggeritaMezzo(action.mezzoAction.mezzo.stato),
-            'time': action.mezzoAction.time
+            'dataOraAggiornamento': action.mezzoAction.data
         };
         this.richiesteService.aggiornaStatoMezzo(obj).subscribe(() => {
             },
