@@ -5,15 +5,16 @@ import { LoadingState } from '../../store/states/loading/loading.state';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { TrasferimentoChiamata } from '../../interface/trasferimento-chiamata.interface';
-import { TrasferimentoChiamataState } from '../../store/states/trasferimento-chiamata/trasferimento-chiamata.state';
+import { TrasferimentoChiamataModalState } from '../../store/states/trasferimento-chiamata-modal/trasferimento-chiamata-modal.state';
 import { TreeItem, TreeviewItem } from 'ngx-treeview';
 import { SediTreeviewState } from '../../store/states/sedi-treeview/sedi-treeview.state';
 import { TreeviewSelezione } from '../../model/treeview-selezione.model';
-import { findItem } from '../../store/states/sedi-treeview/sedi-treeview.helper';
 import { makeCopy } from '../../helper/function';
 import { AuthState } from 'src/app/features/auth/store/auth.state';
 import { Utente } from '../../model/utente.model';
 import { ClearListaSediNavbar, PatchListaSediNavbar } from '../../store/actions/sedi-treeview/sedi-treeview.actions';
+import { GetRichiesteTrasferibili } from '../../store/actions/trasferimento-chiamata-modal/trasferimento-chiamata-modal.actions';
+import { UpdateFormValue } from '@ngxs/form-plugin';
 
 @Component({
     selector: 'app-trasferimento-chiamata-modal',
@@ -23,12 +24,13 @@ import { ClearListaSediNavbar, PatchListaSediNavbar } from '../../store/actions/
 export class TrasferimentoChiamataModalComponent implements OnInit, OnDestroy {
 
     @Select(LoadingState.loading) loading$: Observable<boolean>;
-    @Select(TrasferimentoChiamataState.formValid) formValid$: Observable<boolean>;
+    @Select(TrasferimentoChiamataModalState.codiciRichiesteTrasferibili) codiciRichiesteTrasferibili$: Observable<string[]>;
+    @Select(TrasferimentoChiamataModalState.formValid) formValid$: Observable<boolean>;
     formValid: boolean;
     @Select(SediTreeviewState.listeSediNavbar) listeSediNavbar$: Observable<TreeItem>;
     listeSediNavbar: TreeviewItem[];
-    @Select(TrasferimentoChiamataState.sedeSelezionata) sediSelezionate$: Observable<TreeviewSelezione[]>;
-    sediSelezionate: string;
+    // @Select(TrasferimentoChiamataModalState.sedeSelezionata) sediSelezionate$: Observable<TreeviewSelezione[]>;
+    // sediSelezionate: string;
 
     operatore: string;
     idRichiesta: string;
@@ -47,33 +49,31 @@ export class TrasferimentoChiamataModalComponent implements OnInit, OnDestroy {
     constructor(private store: Store,
                 private modal: NgbActiveModal,
                 private fb: FormBuilder) {
+        this.getCodiciRichiesteTrasferibili();
         this.initForm();
         this.getFormValid();
-        this.inizializzaSediTreeview();
-        this.inizializzaUser();
     }
 
     ngOnInit() {
-        this.user ? this.f.operatore.patchValue(this.user.nome + ' ' + this.user.cognome) : this.f.operatore.patchValue('');
+        this.inizializzaSediTreeview();
+        this.inizializzaUser();
     }
 
     initForm() {
         const sede = this.store.selectSnapshot(SediTreeviewState);
         this.trasferimentoChiamataForm = new FormGroup({
-            idRichiesta: new FormControl(),
+            codiceRichiesta: new FormControl(),
             operatore: new FormControl(),
-            codice: new FormControl(),
             sedeDa: new FormControl(),
             sedeA: new FormControl(),
-            data: new FormControl(),
+            data: new FormControl()
         });
         this.trasferimentoChiamataForm = this.fb.group({
-            idRichiesta: [null, Validators.required],
+            codiceRichiesta: [null, Validators.required],
             operatore: [null, Validators.required],
-            codice: [null, Validators.required],
             sedeDa: [null, Validators.required],
             sedeA: [null, Validators.required],
-            data: [null, Validators.required],
+            data: [null, Validators.required]
         });
         this.f.operatore.disable();
     }
@@ -116,38 +116,54 @@ export class TrasferimentoChiamataModalComponent implements OnInit, OnDestroy {
         this.f.sedi.patchValue(event);
     }
 
-    getSediSelezionate() {
+    // getSediSelezionate() {
+    //     this.subscription.add(
+    //         this.sediSelezionate$.subscribe((sedi: TreeviewSelezione[]) => {
+    //             const listaSediNavbar = this.store.selectSnapshot(SediTreeviewState.listeSediNavbar);
+    //             if (listaSediNavbar && sedi && sedi.length >= 0) {
+    //                 switch (sedi.length) {
+    //                     case 0:
+    //                         this.sediSelezionate = 'nessuna sede selezionata';
+    //                         break;
+    //                     case 1:
+    //                         this.sediSelezionate = findItem(listaSediNavbar, sedi[0].idSede).text;
+    //                         break;
+    //                     default:
+    //                         this.sediSelezionate = 'più sedi selezionate';
+    //                         break;
+    //                 }
+    //             } else {
+    //                 this.sediSelezionate = 'Caricamento...';
+    //             }
+    //         })
+    //     );
+    // }
+
+    inizializzaUser() {
         this.subscription.add(
-            this.sediSelezionate$.subscribe((sedi: TreeviewSelezione[]) => {
-                const listaSediNavbar = this.store.selectSnapshot(SediTreeviewState.listeSediNavbar);
-                if (listaSediNavbar && sedi && sedi.length >= 0) {
-                    switch (sedi.length) {
-                        case 0:
-                            this.sediSelezionate = 'nessuna sede selezionata';
-                            break;
-                        case 1:
-                            this.sediSelezionate = findItem(listaSediNavbar, sedi[0].idSede).text;
-                            break;
-                        default:
-                            this.sediSelezionate = 'più sedi selezionate';
-                            break;
+            this.user$.subscribe((user: Utente) => {
+                if (user) {
+                    console.log('inizializzaUser', user);
+                    this.store.dispatch(
+                        new UpdateFormValue({
+                            path: 'trasferimentoChiamataModal.trasferimentoChiamataForm',
+                            value: {
+                                operatore: user.nome + ' ' + user.cognome
+                            }
+                        })
+                    );
+                    if (user.sede) {
+                        this.listeSediLoaded && this.store.dispatch(new PatchListaSediNavbar([user.sede.codice]));
                     }
                 } else {
-                    this.sediSelezionate = 'Caricamento...';
+                    this.store.dispatch(new ClearListaSediNavbar());
                 }
             })
         );
     }
 
-    inizializzaUser() {
-        this.subscription.add(this.user$.subscribe((user: Utente) => {
-            this.user = user;
-            if (user && user.sede) {
-                this.listeSediLoaded && this.store.dispatch(new PatchListaSediNavbar([user.sede.codice]));
-            } else {
-                this.store.dispatch(new ClearListaSediNavbar());
-            }
-        }));
+    getCodiciRichiesteTrasferibili() {
+        this.store.dispatch(new GetRichiesteTrasferibili());
     }
 
     onConferma() {

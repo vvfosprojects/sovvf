@@ -226,11 +226,11 @@
                                         (click)="visualizzaEventiRichiesta(richiesta.codice); $event.stopPropagation()">
                                     <i class="fa fa-fw fa-list text-secondary"></i>
                                 </button>
-                                <button class="btn btn-light border py-0 px-1 mr-1"
-                                        ngbTooltip="Trasferisci"
+                                <button *ngIf="richiesta?.stato === StatoRichiesta.Chiamata"
+                                        class="btn btn-light border py-0 px-1 mr-1" ngbTooltip="Trasferisci"
                                         [disabled]="!inGestione"
                                         (click)="onAddTrasferimentoChiamata(richiesta.codice); $event.stopPropagation()">
-                                <i class="fa fa-fw fa-exchange text-secondary"></i>
+                                    <i class="fa fa-fw fa-exchange text-secondary"></i>
                                 </button>
                                 <button *ngIf="!partenza && composizionePartenza" class="btn btn-light border py-0 px-2"
                                         ngbTooltip="Invio partenza"
@@ -368,7 +368,7 @@
                                 <i class="guida fa fa-paper-plane-o fa-fw mr-1" ngbTooltip="Stato Fonogramma"
                                    placement="right"></i>
                                 <span *ngIf="richiesta?.fonogramma" class="h6 badge m-0 cursor-pointer"
-                                      [ngClass]="{'badge-success text-light': richiesta?.fonogramma?.stato === statoFonogramma.Inviato, 'badge-secondary text-light': richiesta?.fonogramma?.stato === statoFonogramma.NonNecessario, 'badge-warning text-light': richiesta?.fonogramma?.stato === statoFonogramma.DaInviare}"
+                                      [ngClass]="{'badge-success text-light': richiesta?.fonogramma?.stato === StatoFonogramma.Inviato, 'badge-secondary text-light': richiesta?.fonogramma?.stato === StatoFonogramma.NonNecessario, 'badge-warning text-light': richiesta?.fonogramma?.stato === StatoFonogramma.DaInviare}"
                                       (click)="onDettaglioStatoFonogramma(); $event.stopPropagation()"
                                       ngbTooltip="Visualizza Fonogramma">
                                     {{ getStatoFonogrammaStringByEnum(richiesta?.fonogramma?.stato) }}
@@ -460,11 +460,11 @@
 
                             <!-- enti intervenuti -->
                             <div class="h6 text-right">
-                                <button *ngIf="inGestione" 
+                                <button *ngIf="inGestione"
                                         class="btn btn-sm btn-info mr-2"
                                         ngbTooltip="Modifica Enti Intervenuti"
                                         (click)="onModificaEntiIntervenuti(); $event.stopPropagation()">
-                                            <i class="fa fa-edit"></i>
+                                    <i class="fa fa-edit"></i>
                                 </button>
                                 <button class="btn btn-light border big_font py-0 px-1" ngbTooltip="Elenco Enti"
                                         *ngIf="methods._entiCount(richiesta.listaEntiIntervenuti?.length, richiesta.listaEntiPresaInCarico?.length) as totaleEnti; else nessunEnte"

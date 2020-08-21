@@ -10,7 +10,7 @@ export const RicercaTrasferimentoChiamataStateDefaults: RicercaTrasferimentoChia
 };
 
 @State<RicercaTrasferimentoChiamataStateModel>({
-    name: 'ricercTrasferimentoChiamata',
+    name: 'ricercaTrasferimentoChiamata',
     defaults: RicercaTrasferimentoChiamataStateDefaults
 })
 

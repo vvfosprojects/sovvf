@@ -7,7 +7,8 @@
 </div>
 <div class="modal-body height py-4 px-5">
     <div class="modal-body height py-4 px-5">
-        <form [formGroup]="trasferimentoChiamataForm" autocomplete="off">
+        <form [formGroup]="trasferimentoChiamataForm" ngxsForm="trasferimentoChiamataModal.trasferimentoChiamataForm"
+              autocomplete="off">
             <div class="form-group">
                 <label for="operatore">Operatore
                     <small class="text-danger">*</small>
@@ -15,12 +16,19 @@
                 <input id="operatore" formControlName="operatore" class="form-control" placeholder="Opeatore">
             </div>
             <div class="form-group">
-                <label for="codice">
-                    Codice Richiesta
+                <label for="sedeDa">
+                    Codice Richiesta da Trasferire
                     <small class="text-danger">*</small>
                 </label>
-                <input id="codice" type="text" formControlName="codice" class="form-control"
-                       placeholder="Inserisci il Codice della Richiesta">
+                <ng-select
+                        id="codiceRichesta"
+                        formControlName="codiceRichiesta"
+                        [items]="codiciRichiesteTrasferibili$ | async"
+                        [clearable]="false"
+                        placeholder="Seleziona un Codice Richiesta"
+                        [closeOnSelect]="true"
+                        [notFoundText]="'Nessun codice richiesta trovato con i parametri di ricerca'">
+                </ng-select>
             </div>
             <div class="form-group">
                 <label for="sedeDa">
@@ -33,11 +41,9 @@
                         [items]="listeSediNavbar"
                         bindLabel="text"
                         bindValue="value"
-                        [multiple]="true"
-                        maxSelectedItems="1"
                         placeholder="Sede Da"
+                        [clearable]="false"
                         [closeOnSelect]="true"
-                        [hideSelected]="true"
                         [notFoundText]="'Nessuna sede trovata con i parametri di ricerca'">
                 </ng-select>
             </div>
@@ -52,11 +58,9 @@
                         [items]="listeSediNavbar"
                         bindLabel="text"
                         bindValue="value"
-                        [multiple]="true"
-                        maxSelectedItems="1"
                         placeholder="Sede A"
+                        [clearable]="false"
                         [closeOnSelect]="true"
-                        [hideSelected]="true"
                         [notFoundText]="'Nessuna sede trovata con i parametri di ricerca'">
                 </ng-select>
             </div>

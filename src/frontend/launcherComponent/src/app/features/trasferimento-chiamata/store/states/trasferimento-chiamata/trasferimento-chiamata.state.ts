@@ -1,5 +1,4 @@
 import { Store, State, Selector, Action, StateContext } from '@ngxs/store';
-import { patch, removeItem, updateItem } from '@ngxs/store/operators';
 import { RicercaTrasferimentoChiamataState } from '../ricerca-trasferimento-chiamata/ricerca-trasferimento-chiamata.state';
 import { TrasferimentoChiamata } from 'src/app/shared/interface/trasferimento-chiamata.interface';
 import { PatchPagination } from 'src/app/shared/store/actions/pagination/pagination.actions';
@@ -7,20 +6,18 @@ import { StopLoading, StartLoading } from 'src/app/shared/store/actions/loading/
 import { ResponseInterface } from 'src/app/shared/interface/response.interface';
 import { PaginationState } from 'src/app/shared/store/states/pagination/pagination.state';
 import {
-    GetTrasferimentoChiamata,
-    SetTrasferimentoChiamata,
-    AddVoceTrasferimentoChiamata,
-    UpdateVoceTrasferimentoChiamata,
-    DeleteVoceTrasferimentoChiamata
+    GetListaTrasferimentiChiamate,
+    SetListaTrasferimentiChiamate,
+    AddTrasferimentoChiamata
 } from '../../actions/trasferimento-chiamata/trasferimento-chiamata.actions';
 import { TrasferimentoChiamataService } from 'src/app/core/service/trasferimento-chiamata/trasferimento-chiamata.service';
 
 export interface TrasferimentoChiamataStateModel {
-    vociTrasferimentoChiamata: TrasferimentoChiamata[];
+    listaTrasferimentiChiamate: TrasferimentoChiamata[];
 }
 
 export const TrasferimentoChiamataStateModelDefaults: TrasferimentoChiamataStateModel = {
-    vociTrasferimentoChiamata: undefined
+    listaTrasferimentiChiamate: undefined
 };
 
 @State<TrasferimentoChiamataStateModel>({
@@ -36,12 +33,12 @@ export class TrasferimentoChiamataState {
     }
 
     @Selector()
-    static vociTrasferimentoChiamata(state: TrasferimentoChiamataStateModel) {
-        return state.vociTrasferimentoChiamata;
+    static listaTrasferimentiChiamate(state: TrasferimentoChiamataStateModel) {
+        return state.listaTrasferimentiChiamate;
     }
 
-    @Action(GetTrasferimentoChiamata)
-    getTrasferimentoChiamata({ dispatch }: StateContext<TrasferimentoChiamataStateModel>, action: GetTrasferimentoChiamata) {
+    @Action(GetListaTrasferimentiChiamate)
+    getListaTrasferimentiChiamate({ dispatch }: StateContext<TrasferimentoChiamataStateModel>, action: GetListaTrasferimentiChiamate) {
         dispatch(new StartLoading());
         const ricerca = this.store.selectSnapshot(RicercaTrasferimentoChiamataState.ricerca);
         const filters = {
@@ -51,34 +48,35 @@ export class TrasferimentoChiamataState {
             page: action.page ? action.page : 1,
             pageSize: this.store.selectSnapshot(PaginationState.pageSize)
         };
-        this.trasferimentoChiamataService.getTrasferimentoChiamata(filters, pagination).subscribe((response: ResponseInterface) => {
+        this.trasferimentoChiamataService.getTrasferimentiChiamate(filters, pagination).subscribe((response: ResponseInterface) => {
             dispatch([
                 new PatchPagination(response.pagination),
-                new SetTrasferimentoChiamata(response.dataArray),
+                new SetListaTrasferimentiChiamate(response.dataArray),
                 new StopLoading()
             ]);
         });
     }
 
-    @Action(SetTrasferimentoChiamata)
-    setTrasferimentoChiamata({ patchState }: StateContext<TrasferimentoChiamataStateModel>, action: SetTrasferimentoChiamata) {
+    @Action(SetListaTrasferimentiChiamate)
+    setListaTrasferimentiChiamate({ patchState }: StateContext<TrasferimentoChiamataStateModel>, action: SetListaTrasferimentiChiamate) {
         patchState({
-            vociTrasferimentoChiamata: action.vociTrasferimentoChiamata
+            listaTrasferimentiChiamate: action.vociTrasferimentoChiamata
         });
     }
 
-    @Action(AddVoceTrasferimentoChiamata)
+    @Action(AddTrasferimentoChiamata)
     addTrasferimentoChiamata({ dispatch }: StateContext<TrasferimentoChiamataStateModel>) {
         const pagina = this.store.selectSnapshot(PaginationState.page);
-        dispatch(new GetTrasferimentoChiamata(pagina));
+        dispatch(new GetListaTrasferimentiChiamate(pagina));
     }
 
 
-    @Action(UpdateVoceTrasferimentoChiamata)
+    // todo: servono?
+    /* @Action(UpdateVoceTrasferimentoChiamata)
     updateVoceRubrica({ setState }: StateContext<TrasferimentoChiamataStateModel>, action: UpdateVoceTrasferimentoChiamata) {
         setState(
             patch({
-                vociTrasferimentoChiamata: updateItem<TrasferimentoChiamata>(voce => voce.id === action.voceTrasferimentoChiamata.id, action.voceTrasferimentoChiamata)
+                listaTrasferimentiChiamate: updateItem<TrasferimentoChiamata>(voce => voce.id === action.voceTrasferimentoChiamata.id, action.voceTrasferimentoChiamata)
             })
         );
     }
@@ -86,14 +84,14 @@ export class TrasferimentoChiamataState {
     @Action(DeleteVoceTrasferimentoChiamata)
     deleteVoceRubrica({ setState, getState, dispatch }: StateContext<TrasferimentoChiamataStateModel>, action: DeleteVoceTrasferimentoChiamata) {
         const state = getState();
-        if (state.vociTrasferimentoChiamata && state.vociTrasferimentoChiamata.length === 1) {
+        if (state.listaTrasferimentiChiamate && state.listaTrasferimentiChiamate.length === 1) {
             const page = this.store.selectSnapshot(PaginationState.page);
-            dispatch(new GetTrasferimentoChiamata(page - 1));
+            dispatch(new GetListaTrasferimentiChiamate(page - 1));
         }
         setState(
             patch({
-                vociTrasferimentoChiamata: removeItem<TrasferimentoChiamata>(voceTrasferimentoChiamata => voceTrasferimentoChiamata.id === action.idVoceTrasferimentoChiamata)
+                listaTrasferimentiChiamate: removeItem<TrasferimentoChiamata>(voceTrasferimentoChiamata => voceTrasferimentoChiamata.id === action.idVoceTrasferimentoChiamata)
             })
         );
-    }
+    } */
 }

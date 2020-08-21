@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store, Select } from '@ngxs/store';
 import { RoutesPath } from 'src/app/shared/enum/routes-path.enum';
 import { SetCurrentUrl } from 'src/app/shared/store/actions/app/app.actions';
@@ -11,8 +11,8 @@ import { TrasferimentoChiamataState } from './store/states/trasferimento-chiamat
 import { RicercaTrasferimentoChiamataState } from './store/states/ricerca-trasferimento-chiamata/ricerca-trasferimento-chiamata.state';
 import { TrasferimentoChiamata } from 'src/app/shared/interface/trasferimento-chiamata.interface';
 import { SetPageSize } from 'src/app/shared/store/actions/pagination/pagination.actions';
-import { GetTrasferimentoChiamata } from './store/actions/trasferimento-chiamata/trasferimento-chiamata.actions';
-import { RequestAddTrasferimentoChiamata, ClearFormTrasferimentoChiamata } from 'src/app/shared/store/actions/trasferimento-chiamata/trasferimento-chiamata.actions';
+import { GetListaTrasferimentiChiamate } from './store/actions/trasferimento-chiamata/trasferimento-chiamata.actions';
+import { RequestAddTrasferimentoChiamata, ClearFormTrasferimentoChiamata } from 'src/app/shared/store/actions/trasferimento-chiamata-modal/trasferimento-chiamata-modal.actions';
 import { TrasferimentoChiamataModalComponent } from 'src/app/shared/modal/trasferimento-chiamata-modal/trasferimento-chiamata-modal.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
@@ -22,9 +22,9 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
     templateUrl: './trasferimento-chiamata.component.html',
     styleUrls: ['./trasferimento-chiamata.component.css']
 })
-export class TrasferimentoChiamataComponent implements OnInit {
+export class TrasferimentoChiamataComponent implements OnInit, OnDestroy {
 
-    @Select(TrasferimentoChiamataState.vociTrasferimentoChiamata) vociTrasferimentoChiamata$: Observable<TrasferimentoChiamata[]>;
+    @Select(TrasferimentoChiamataState.listaTrasferimentiChiamate) listaTrasferimentiChiamate$: Observable<TrasferimentoChiamata[]>;
     @Select(RicercaTrasferimentoChiamataState.ricerca) ricerca$: Observable<string>;
     ricerca: string;
     @Select(PaginationState.pageSize) pageSize$: Observable<number>;
@@ -69,7 +69,7 @@ export class TrasferimentoChiamataComponent implements OnInit {
         if (pageAttuale) {
             page = this.store.selectSnapshot(PaginationState.page);
         }
-        this.store.dispatch(new GetTrasferimentoChiamata(page));
+        this.store.dispatch(new GetListaTrasferimentiChiamate(page));
     }
 
     onAddTrasferimentoChiamata() {
@@ -99,7 +99,7 @@ export class TrasferimentoChiamataComponent implements OnInit {
     }
 
     onPageChange(page: number) {
-        this.store.dispatch(new GetTrasferimentoChiamata(page));
+        this.store.dispatch(new GetListaTrasferimentiChiamate(page));
     }
 
     onPageSizeChange(pageSize: number) {
@@ -111,7 +111,7 @@ export class TrasferimentoChiamataComponent implements OnInit {
             this.ricerca$.subscribe((ricerca: string) => {
                 if (ricerca !== null) {
                     this.ricerca = ricerca;
-                    this.store.dispatch(new GetTrasferimentoChiamata());
+                    this.store.dispatch(new GetListaTrasferimentiChiamate());
                 }
             })
         );
@@ -122,7 +122,7 @@ export class TrasferimentoChiamataComponent implements OnInit {
             this.pageSize$.subscribe((pageSize: number) => {
                 if (pageSize) {
                     if (this.pageSize && pageSize !== this.pageSize) {
-                        this.store.dispatch(new GetTrasferimentoChiamata());
+                        this.store.dispatch(new GetListaTrasferimentiChiamate());
                     }
                     this.pageSize = pageSize;
                 }

@@ -13,7 +13,7 @@ export class TabellaTrasferimentoChiamataComponent implements OnInit {
     @Input() pageSizes: number[];
     @Input() totalItems: number;
     @Input() loading: boolean;
-    @Input() vociTrasferimentoChiamata: TrasferimentoChiamata[];
+    @Input() listaTrasferimentiChiamate: TrasferimentoChiamata[];
 
 
     @Output() pageChange: EventEmitter<number> = new EventEmitter<number>();

@@ -16,7 +16,7 @@ import { Store } from '@ngxs/store';
 import { PatchRichiesta } from '../../../store/actions/richieste/richieste.actions';
 import { makeCopy } from 'src/app/shared/helper/function';
 import { TrasferimentoChiamataModalComponent } from 'src/app/shared/modal/trasferimento-chiamata-modal/trasferimento-chiamata-modal.component';
-import { ClearFormTrasferimentoChiamata, RequestAddTrasferimentoChiamata } from 'src/app/shared/store/actions/trasferimento-chiamata/trasferimento-chiamata.actions';
+import { ClearFormTrasferimentoChiamata, RequestAddTrasferimentoChiamata } from 'src/app/shared/store/actions/trasferimento-chiamata-modal/trasferimento-chiamata-modal.actions';
 
 @Component({
     selector: 'app-sintesi-richiesta',
@@ -70,7 +70,7 @@ export class SintesiRichiestaComponent implements OnChanges {
 
     // Enum
     StatoRichiesta = StatoRichiesta;
-    statoFonogramma = StatoFonogramma;
+    StatoFonogramma = StatoFonogramma;
 
     constructor(private modalService: NgbModal,
                 private popoverConfig: NgbPopoverConfig,
@@ -248,7 +248,7 @@ export class SintesiRichiestaComponent implements OnChanges {
 
     onModificaEntiIntervenuti() {
         const modalModificaEntiIntervenuti = this.modalService.open(ModificaEntiModalComponent, { backdropClass: 'light-blue-backdrop', centered: true });
-        modalModificaEntiIntervenuti.componentInstance.enti =this.richiesta.listaEnti ? this.richiesta.listaEnti : null;
+        modalModificaEntiIntervenuti.componentInstance.enti = this.richiesta.listaEnti ? this.richiesta.listaEnti : null;
         modalModificaEntiIntervenuti.componentInstance.listaEntiIntervenuti = this.richiesta.listaEntiIntervenuti ? this.richiesta.listaEntiIntervenuti : null;
         modalModificaEntiIntervenuti.result.then((res: { status: string, result: any }) => {
             switch (res.status) {
@@ -263,7 +263,8 @@ export class SintesiRichiestaComponent implements OnChanges {
         });
     }
 
-    onAddTrasferimentoChiamata() {
+    onAddTrasferimentoChiamata(codiceRichiesta: string) {
+        // todo: rivedere logica
         const addTrasferimentoChiamataModal = this.modalService.open(TrasferimentoChiamataModalComponent, {
             backdropClass: 'light-blue-backdrop',
             centered: true,
@@ -283,11 +284,10 @@ export class SintesiRichiestaComponent implements OnChanges {
                 console.error('Modal chiusa senza bottoni. Err ->', err);
             }
         );
-      }
+    }
 
-      
     addTrasferimentoChiamata() {
         this.store.dispatch(new RequestAddTrasferimentoChiamata());
-  }
-  
+    }
+
 }

@@ -24,7 +24,7 @@
             <app-risultati-ricerca [ricerca]="ricerca"></app-risultati-ricerca>
         </div>
         <div class="col-12 col-md-8 mx-auto">
-            <app-tabella-trasferimento-chiamata [vociTrasferimentoChiamata]="vociTrasferimentoChiamata$ | async"
+            <app-tabella-trasferimento-chiamata [listaTrasferimentiChiamate]="listaTrasferimentiChiamate$ | async"
                                                 [totalItems]="totalItems$ | async"
                                                 [loading]="loading$ | async" [pageSize]="pageSize"
                                                 [page]="page$ | async" [pageSizes]="pageSizes$ | async"

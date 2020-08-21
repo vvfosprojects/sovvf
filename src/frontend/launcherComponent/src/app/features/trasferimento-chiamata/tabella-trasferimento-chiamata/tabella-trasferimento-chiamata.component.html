@@ -2,75 +2,89 @@
     <table class="table table-striped app-shadow mt-2">
         <thead>
         <tr>
-            <th scope="col" width="10%"><i class="fa fa-hashtag mr-2"></i>Cod.Richiesta</th>
-            <th scope="col" width="20%"><i class="fa fa-circle-o" style="margin-right: 2px;"></i><i
-                    class="fa fa-ellipsis-h mr-2"></i>Sede da
+            <th scope="col" style="width: 20%">
+                <i class="fa fa-hashtag mr-2"></i>
+                Cod.Richiesta
             </th>
-            <th scope="col" width="20%"><i class="fa fa-ellipsis-h" style="margin-right: 2px;"></i><i
-                    class="fa fa-map-marker mr-2"></i>Sede a
+            <th scope="col" style="width: 22%">
+                <i class="fa fa-circle-o" style="margin-right: 2px;"></i>
+                <i class="fa fa-ellipsis-h mr-2"></i>
+                Sede da
             </th>
-            <th scope="col" width="7%"><i class="fa fa-calendar mr-2"></i>Data</th>
-            <th scope="col" width="15%"><i class="fa fa-user mr-2"></i>Operatore</th>
+            <th scope="col" style="width: 22%">
+                <i class="fa fa-ellipsis-h" style="margin-right: 2px;"></i>
+                <i class="fa fa-map-marker mr-2"></i>Sede a
+            </th>
+            <th scope="col" style="width: 20%">
+                <i class="fa fa-calendar mr-2"></i>
+                Data
+            </th>
+            <th scope="col" style="width: 16%">
+                <i class="fa fa-user mr-2"></i>
+                Operatore
+            </th>
         </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let voce of vociTrasferimentoChiamata | paginate: { itemsPerPage: pageSize, currentPage: page, totalItems: totalItems }">
-            <td width="15%" class="align-middle">
+        <tr *ngFor="let trasferimento of listaTrasferimentiChiamate | paginate: { itemsPerPage: pageSize, currentPage: page, totalItems: totalItems }">
+            <td class="align-middle" style="width: 20%">
                 <div class="h5 font-weight-bold mt-1 pt-1 text-uppercase text-truncate" style="max-width: 400px;">
-                    <span>{{voce?.id}}</span>
+                    <span>{{trasferimento?.id}}</span>
                 </div>
             </td>
-            <td width="30%" class="align-middle">
+            <td class="align-middle" style="width: 22%">
                 <div class="row">
                     <div class="col-11">
                         <ul class=" mb-0"
                             style="max-height: 210px; overflow-y: auto; list-style-type: none; padding-left: 0px;">
                             <li>
-                                <span ngbTooltip="{{voce?.sedeDa }}" class="ml-1">{{voce?.sedeDa | truncate: 40}}</span>
+                                <span ngbTooltip="{{trasferimento?.sedeDa }}"
+                                      class="ml-1">{{trasferimento?.sedeDa | truncate: 40}}</span>
                             </li>
                         </ul>
                     </div>
                 </div>
             </td>
-            <td width="30%" class="align-middle">
+            <td class="align-middle" style="width: 22%">
                 <div class="row">
                     <div class="col-11">
                         <ul class=" mb-0"
                             style="max-height: 210px; overflow-y: auto; list-style-type: none; padding-left: 0px;">
                             <li>
-                                <span ngbTooltip="{{voce?.sedeA }}" class="ml-1">{{voce?.sedeA | truncate: 40}}</span>
+                                <span ngbTooltip="{{trasferimento?.sedeA }}"
+                                      class="ml-1">{{trasferimento?.sedeA | truncate: 40}}</span>
                             </li>
                         </ul>
                     </div>
                 </div>
             </td>
-            <td width="12%" class="align-middle">
+            <td class="align-middle" style="width: 20%">
                 <div class="row">
                     <div class="col-11">
                         <ul class=" mb-0"
                             style="max-height: 210px; overflow-y: auto; list-style-type: none; padding-left: 0px;">
                             <li>
-                                <span class="ml-1">{{voce?.data}}</span>
+                                <span class="ml-1">{{trasferimento?.data}}</span>
                             </li>
                         </ul>
                     </div>
                 </div>
             </td>
-            <td width="25%" class="align-middle">
+            <td class="align-middle" style="width: 16%">
                 <div class="row">
                     <div class="col-11">
                         <ul class=" mb-0"
                             style="max-height: 210px; overflow-y: auto; list-style-type: none; padding-left: 0px;">
                             <li>
-                                <span ngbTooltip="{{voce?.operatore}}"
-                                      class="ml-1">{{voce?.operatore | truncate: 12}}</span>
+                                <span [ngbTooltip]="trasferimento?.operatore?.nome + ' ' + trasferimento?.operatore?.cognome"
+                                      class="ml-1">{{trasferimento?.operatore?.nome + ' ' + trasferimento?.operatore?.cognome}}</span>
                             </li>
                         </ul>
                     </div>
                 </div>
             </td>
         </tr>
-        <tr *ngIf="vociTrasferimentoChiamata?.length <= 0">
+        <tr *ngIf="listaTrasferimentiChiamate?.length <= 0">
             <td>
                 <ng-template [ngIf]="!loading">Nessun risultato trovato</ng-template>
                 <ng-template [ngIf]="loading">Caricamento risultati in corso...</ng-template>
@@ -83,7 +97,7 @@
         </tbody>
     </table>
 </div>
-<div *ngIf="vociTrasferimentoChiamata?.length > 0" class="d-flex justify-content-between p-2">
+<div *ngIf="listaTrasferimentiChiamate?.length > 0" class="d-flex justify-content-between p-2">
     <app-select-elementi-per-pagina [pageSize]="pageSize" [pageSizes]="pageSizes"
                                     [placeholderElementi]="'trasferimenti'"
                                     (pageSizeChange)="pageSizeChange.emit($event)"></app-select-elementi-per-pagina>
