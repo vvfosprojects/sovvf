@@ -13,12 +13,16 @@ import { SetTurnoCalendario } from './store/actions/turno.actions';
 import { AuthService } from '../../core/auth/auth.service';
 import { NewVersionState } from '../../shared/store/states/nuova-versione/nuova-versione.state';
 import { GetNewVersion } from '../../shared/store/actions/nuova-versione/nuova-versione.actions';
+import { NotificheState } from '../../shared/store/states/notifiche/notifiche.state';
+import { NotificaInterface } from '../../shared/interface/notifica.interface';
+import { AddNotifica, SetNotificheLette } from '../../shared/store/actions/notifiche/notifiche.actions';
+import { makeID } from '../../shared/helper/function';
 import { RoutesPath } from '../../shared/enum/routes-path.enum';
 
 @Component({
     selector: 'app-navbar',
     templateUrl: './navbar.component.html',
-    styleUrls: [ './navbar.component.css' ]
+    styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit, OnDestroy {
 
@@ -100,6 +104,15 @@ export class NavbarComponent implements OnInit, OnDestroy {
     // Todo centralizzare nello store.
     logout() {
         this.authenticationService.logout();
+    }
+
+    // Todo: eliminare
+    addNotifica() {
+        this.store.dispatch(new AddNotifica({ id: makeID(23), titolo: 'Notifica Test', descrizione: 'Descrizione test' }));
+    }
+
+    setNotificheLette() {
+        this.store.dispatch(new SetNotificheLette());
     }
 
 }

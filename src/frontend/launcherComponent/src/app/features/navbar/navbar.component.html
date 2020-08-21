@@ -3,13 +3,36 @@
     <div class="row py-0 w-100">
         <div class="col-5 mr-auto">
             <div class="row">
-                <div class="col-2 text-left">
+                <!-- eliminare insieme al template della sidebar -->
+                <!-- <div class="col-2 text-left">
                     <button class="btn btn-block btn-light ml-2 mr-2" (click)="openSidebar()"
                             (dblclick)="openSidebar()">
                         <i class="fa fa-bars"></i>
                     </button>
+                </div> -->
+                <div class="col-4">
+                    <button class="btn btn-outline-light mr-2" ngbTooltip="Vai alla Home"
+                            [routerLink]="['/' + RoutesPath.Home]"
+                            [routerLinkActive]="['btn-light-nav', 'text-dark']">
+                        <i class="fa fa-home"></i>
+                    </button>
+                    <button class="btn btn-outline-light mr-2" ngbTooltip="Visualizza Gestione Utenti"
+                            [routerLink]="['/' + RoutesPath.GestioneUtenti]"
+                            [routerLinkActive]="['btn-light-nav', 'text-dark']">
+                        <i class="fa fa-users"></i>
+                    </button>
+                    <button class="btn btn-outline-light mr-2" ngbTooltip="Visualizza Trasferimenti Chiamate"
+                            [routerLink]="['/' + RoutesPath.TrasferimentoChiamata]"
+                            [routerLinkActive]="['btn-light-nav', 'text-dark']">
+                        <i class="fa fa-exchange"></i>
+                    </button>
+                    <button class="btn btn-outline-light mr-4" ngbTooltip="Visualizza Rubrica"
+                            [routerLink]="['/' + RoutesPath.Rubrica]"
+                            [routerLinkActive]="['btn-light-nav', 'text-dark']">
+                        <i class="fa fa-address-book"></i>
+                    </button>
                 </div>
-                <div class="col-6 text-left">
+                <div class="col-4 text-left">
                     <app-unita-operativa *ngIf="listeSediNavbarLoaded$ | async" [colorButton]="colorButton">
                     </app-unita-operativa>
                 </div>
@@ -34,28 +57,11 @@
         <div class="col-3 ml-auto text-right pr-0">
             <div class="row">
                 <div class="col-12">
-                    <button class="btn btn-outline-light mr-2" ngbTooltip="Vai alla Home"
-                            [routerLink]="['/' + RoutesPath.Home]"
-                            [routerLinkActive]="['btn-light-nav', 'text-dark']">
-                        <i class="fa fa-home"></i>
-                    </button>
-                    <button class="btn btn-outline-light mr-2" ngbTooltip="Visualizza Gestione Utenti"
-                            [routerLink]="['/' + RoutesPath.GestioneUtenti]" 
-                            [routerLinkActive]="['btn-light-nav', 'text-dark']">
-                            <i class="fa fa-users"></i>
-                    </button>
-                    <button class="btn btn-outline-light mr-2" ngbTooltip="Visualizza Trasferimenti Chiamate"
-                            [routerLink]="['/' + RoutesPath.TrasferimentoChiamata]"
-                            [routerLinkActive]="['btn-light-nav', 'text-dark']">
-                        <i class="fa fa-exchange"></i>
-                    </button>
-                    <button class="btn btn-outline-light mr-2" ngbTooltip="Visualizza Rubrica"
-                            [routerLink]="['/' + RoutesPath.Rubrica]"
-                            [routerLinkActive]="['btn-light-nav', 'text-dark']">
-                        <i class="fa fa-address-book"></i>
+                    <button class="btn btn-primary" (click)="addNotifica()">
+                        <i class="fa fa-plus"></i>
                     </button>
                     <app-operatore [user]="user" [ruoliUtenteLoggato]="ruoliUtenteLoggato"
-                                   (_logout)="logout()"></app-operatore>
+                                   (notificheLette)="setNotificheLette()" (_logout)="logout()"></app-operatore>
                 </div>
             </div>
         </div>

@@ -1,6 +1,7 @@
-<!-- <button class="btn btn-light mr-2 hide" ngbTooltip="Notifiche" [ngbPopover]="notifiche" placement="bottom"><i
-        class="fa fa-bell"></i></button>
-<button class="btn btn-light mr-2" ngbTooltip="Impostazioni" [ngbPopover]="impostazioni" placement="bottom"><i
+<app-notifiche [listaNotifiche]="listaNotifiche$ | async"
+               [nuoveNotifiche]="nuoveNotifiche$ | async"
+               (notificheLette)="setNotificheLette()"></app-notifiche>
+<!-- <button class="btn btn-light mr-2" ngbTooltip="Impostazioni" [ngbPopover]="impostazioni" placement="bottom"><i
         class="fa fa-cogs"></i>
 </button> -->
 <div *ngIf="user" class="btn-group" role="group">

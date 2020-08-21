@@ -1,0 +1,23 @@
+<div class="d-inline-block" ngbDropdown #myDrop="ngbDropdown" (openChange)="onToggleDropdown($event)"
+     placement="bottom-left">
+    <button class="btn mx-2" [ngbTooltip]="getTooltip()" style="position:relative;" [ngClass]="getClasses()"
+            (click)="listaNotifiche?.length > 0 && myDrop.toggle()" ngbDropdownAnchor>
+        <i class="fa fa-bell-o"></i>
+        <div *ngIf="nuoveNotifiche" class="position-absolute badge badge-danger px-1" style="top:2px; right:4px;">
+            {{ nuoveNotifiche }}
+        </div>
+    </button>
+    <div ngbDropdownMenu style="width: 320px; max-height:400px; overflow: auto">
+        <div class="p-3">
+            <div *ngFor="let notifica of listaNotifiche; let i = index" class="position-relative py-2"
+                 [ngClass]="{'border-bottom mb-2': listaNotifiche?.length > 1, 'mb-0 border-bottom-0': (i + 1) === listaNotifiche?.length }">
+                <h5>{{ notifica.titolo }}</h5>
+                <h6>{{ notifica.descrizione }}</h6>
+                <span *ngIf="(i + 1) <= nuoveNotifiche" class="position-absolute text-primary"
+                      style="top:0; right:1px">
+                    <i class="fa fa-dot-circle-o"></i> Nuova
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
