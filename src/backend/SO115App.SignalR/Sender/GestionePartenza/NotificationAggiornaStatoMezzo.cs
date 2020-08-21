@@ -87,7 +87,7 @@ namespace SO115App.SignalR.Sender.GestionePartenza
             var listaSintesi = _sintesiRichiesteAssistenzahandler.Handle(sintesiRichiesteAssistenzaQuery).SintesiRichiesta;
             intervento.Chiamata = listaSintesi.LastOrDefault(richiesta => richiesta.Codice == intervento.CodRichiesta);
 
-            foreach (var sede in SediDaNotificare)
+            foreach (var sede in SediDaNotificare.Where(c => c.Contains(".")).ToList())
             {
                 var boxRichiesteQuery = new BoxRichiesteQuery()
                 {
