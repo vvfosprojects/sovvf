@@ -223,6 +223,7 @@ namespace SO115App.Persistence.MongoDB
                 {
                     sintesi = _mapperSintesi.Map(richiesta);
                     sintesi.Competenze = MapCompetenze(richiesta.CodUOCompetenza);
+                    sintesi.SediAllertate = richiesta.CodSOAllertate!=null ? MapCompetenze(richiesta.CodSOAllertate.ToArray()) : null;
                     sintesi.ListaEntiIntervenuti = rubrica.Count == 0 ? null : rubrica;
                     listaSistesiRichieste.Add(sintesi);
                 }
@@ -271,6 +272,7 @@ namespace SO115App.Persistence.MongoDB
                 sintesi = _mapperSintesi.Map(richiesta);
                 sintesi.ListaEntiIntervenuti = rubrica.Count > 0 ? rubrica?.FindAll(c => richiesta.CodEntiIntervenuti?.Contains(c.Codice.ToString()) ?? false) : null;
                 sintesi.Competenze = MapCompetenze(richiesta.CodUOCompetenza);
+                sintesi.SediAllertate = richiesta.CodSOAllertate != null ? MapCompetenze(richiesta.CodSOAllertate.ToArray()) : null;
             }
 
             return sintesi;

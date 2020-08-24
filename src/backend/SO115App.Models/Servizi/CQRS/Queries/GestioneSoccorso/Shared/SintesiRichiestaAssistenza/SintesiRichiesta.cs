@@ -190,6 +190,11 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         public List<Sede> Competenze { get; set; }
 
         /// <summary>
+        ///   Competenze della richiesta
+        /// </summary>
+        public List<Sede> SediAllertate { get; set; }
+
+        /// <summary>
         ///   Complessità della richiesta
         /// </summary>
         public Complessita Complessita
