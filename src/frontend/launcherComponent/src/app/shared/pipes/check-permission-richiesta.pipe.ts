@@ -11,9 +11,9 @@ export class CheckPermissionRichiestaPipe implements PipeTransform {
     constructor(private _permessiService: PermessiService) {
     }
 
-    transform(feature: PermissionFeatures, codUOCompetenza: string[], codSOCompetente: string): any {
+    transform(feature: PermissionFeatures, codUOCompetenza: string[], codSOCompetente: string, codSOAllertate: string[]): any {
         if (codUOCompetenza) {
-            return !this._permessiService.checkUserPermissionRichiesta(feature, codUOCompetenza, codSOCompetente);
+            return !this._permessiService.checkUserPermissionRichiesta(feature, codUOCompetenza, codSOCompetente, codSOAllertate);
         }
         return false;
     }

@@ -385,7 +385,7 @@
                                 </button>
                             </div>
 
-                            <div *ngIf="inGestione && richiesta?.stato === StatoRichiesta.Chiamata" class="h6">
+                            <div *ngIf="inGestione" class="h6">
                                 <i class="guida fa fa-exclamation-circle fa-fw mr-1" ngbTooltip="Sedi Allertate"
                                    placement="right"></i>
                                 <span *ngIf="!richiesta.codSOAllertate || richiesta.codSOAllertate.length <= 0"
@@ -396,8 +396,8 @@
                                         (click)="onAllertaSede(); $event.stopPropagation()">
                                     <i class="fa fa-exclamation-triangle"></i>
                                 </button>
-                                <button class="btn btn-sm btn-danger"
-                                        ngbTooltip="Trasferisci ad altro comando"
+                                <button *ngIf="richiesta?.stato === StatoRichiesta.Chiamata"
+                                        class="btn btn-sm btn-danger" ngbTooltip="Trasferisci ad altro comando"
                                         (click)="onAddTrasferimentoChiamata(richiesta.codice); $event.stopPropagation()">
                                     <i class="fa fa-send-o"></i>
                                 </button>
