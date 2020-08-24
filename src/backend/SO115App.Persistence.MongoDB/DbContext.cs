@@ -32,6 +32,7 @@ using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.Marker;
 using SO115App.Models.Classi.MongoDTO;
 using SO115App.Models.Classi.NUE;
+using SO115App.Models.Classi.Soccorso.Eventi;
 using SO115App.Persistence.MongoDB.Mappings;
 using System.Runtime.CompilerServices;
 
@@ -102,13 +103,14 @@ namespace Persistence.MongoDB
             BsonClassMap.RegisterClassMap<MarcaRilevante>();
             BsonClassMap.RegisterClassMap<InviareFonogramma>();
             BsonClassMap.RegisterClassMap<FonogrammaInviato>();
+            BsonClassMap.RegisterClassMap<AllertaSedi>();
         }
 
-        public IMongoCollection<TrasferimentoChiamata> TrasferimentiChiamateCollection
+        public IMongoCollection<SO115App.Models.Classi.Condivise.TrasferimentoChiamata> TrasferimentiChiamateCollection
         {
             get
             {
-                return database.GetCollection<TrasferimentoChiamata>("trasferimentiChiamate");
+                return database.GetCollection<SO115App.Models.Classi.Condivise.TrasferimentoChiamata>("trasferimentiChiamate");
             }
         }
 

@@ -18,6 +18,8 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
+using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
+
 namespace DomainModel.CQRS.Commands.AllertaAltreSedi
 {
     public class AllertaAltreSediCommand
@@ -25,5 +27,6 @@ namespace DomainModel.CQRS.Commands.AllertaAltreSedi
         public string[] CodSediAllertate { get; set; }
         public string CodiceRichiesta { get; set; }
         public string CodUtente { get; set; }
+        public SintesiRichiesta Chiamata { get; set; }
     }
 }

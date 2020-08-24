@@ -155,7 +155,7 @@ namespace SO115App.API.Controllers
             }
         }
 
-        [HttpPost("AllertaSedi")]
+        [HttpPost("AllertaAltreSedi")]
         public async Task<IActionResult> AllertaSedi([FromBody] AllertaAltreSediCommand parametri)
         {
             var idOperatore = Request.Headers["IdUtente"];
