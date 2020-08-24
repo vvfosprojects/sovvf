@@ -21,6 +21,7 @@
 using CQRS.Commands;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.Eventi;
+using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneMezzi;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Classi.Soccorso.Eventi;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
@@ -49,7 +50,7 @@ namespace DomainModel.CQRS.Commands.AllertaAltreSedi
 
             richiesta.CodSOAllertate = command.CodSediAllertate.ToHashSet();
 
-            new AllertaSedi(richiesta, DateTime.UtcNow, command.CodUtente, "Allerta");
+            new AllertaSedi(richiesta, DateTime.UtcNow, command.CodUtente, "Allerta", command.CodSediAllertate);
 
             _updateRichiestaAssistenza.UpDate(richiesta);
         }
