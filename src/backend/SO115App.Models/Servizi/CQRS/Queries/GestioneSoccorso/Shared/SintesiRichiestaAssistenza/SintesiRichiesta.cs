@@ -88,6 +88,16 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.Sinte
         public virtual string[] CodUOCompetenza { get; set; }
 
         /// <summary>
+        ///   E' il set dei codici delle unità operative che sono chiamate a supporto.
+        /// </summary>
+        /// <remarks>
+        ///   Le unità allertate possono partecipare alla gestione dell'intervento limitatamente a
+        ///   determinati specifici casi d'uso (per es. composizione partenza, apposizione nota
+        ///   intervento, ecc.)
+        /// </remarks>
+        public ISet<string> CodSOAllertate { get; set; }
+
+        /// <summary>
         ///   Utente che ha generato la segnalazione
         /// </summary>
         public Utente Operatore { get; set; }
