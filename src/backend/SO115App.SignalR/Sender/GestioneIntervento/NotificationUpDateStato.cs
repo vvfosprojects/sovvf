@@ -72,7 +72,7 @@ namespace SO115App.SignalR.Sender.GestioneIntervento
         public async Task SendNotification(UpDateStatoRichiestaCommand richiesta)
         {
             var Richiesta = _getRichiestaAssistenzaById.GetById(richiesta.IdRichiesta);
-            var SediDaNotificare = _getGerarchiaToSend.Get(Richiesta.CodSOCompetente);
+            var SediDaNotificare = _getGerarchiaToSend.Get(Richiesta.CodSOCompetente, Richiesta.CodSOAllertate.ToArray());
 
             const bool notificaChangeState = true;
 

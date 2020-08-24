@@ -56,7 +56,7 @@ namespace SO115App.SignalR.Sender.GestioneIntervento
 
         public async Task SendNotification(RimozioneInLavorazioneCommand intervento)
         {
-            var SediDaNotificare = _getGerarchiaToSend.Get(intervento.Chiamata.CodSOCompetente);
+            var SediDaNotificare = _getGerarchiaToSend.Get(intervento.Chiamata.CodSOCompetente, intervento.Chiamata.CodSOAllertate.ToArray());
 
             foreach (var sede in SediDaNotificare)
             {

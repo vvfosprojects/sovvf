@@ -5,6 +5,7 @@ using SO115App.Models.Servizi.Infrastruttura.Notification.AllertaAltreSedi;
 using SO115App.SignalR.Utility;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -29,18 +30,11 @@ namespace SO115App.SignalR.Sender.GestioneIntervento
         public async Task SendNotification(AllertaAltreSediCommand command)
         {
             var sintesi = _getSintesiById.GetSintesi(command.CodiceRichiesta);
-            var SediDaNotificare = _getGerarchiaToSend.Get(sintesi.CodSOCompetente);
+            var SediDaNotificare = _getGerarchiaToSend.Get(sintesi.CodSOCompetente, sintesi.CodSOAllertate.ToArray());
 
             command.Chiamata = sintesi;
             //Invio la notifica alle competenze principali della richiesta
             foreach (var sede in SediDaNotificare)
-            {
-                await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyAllertaAltreSedi", sintesi);
-                await _notificationHubContext.Clients.Group(sede).SendAsync("ModifyAndNotifySuccess", command);
-            }
-
-            //Invio la notifica alle sedi allertate
-            foreach (var sede in sintesi.CodSOAllertate)
             {
                 await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyAllertaAltreSedi", sintesi);
                 await _notificationHubContext.Clients.Group(sede).SendAsync("ModifyAndNotifySuccess", command);

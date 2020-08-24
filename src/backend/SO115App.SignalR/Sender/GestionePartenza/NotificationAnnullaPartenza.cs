@@ -77,7 +77,7 @@ namespace SO115App.SignalR.Sender.GestionePartenza
         public async Task SendNotification(AnnullaPartenzaCommand partenza)
         {
             var richiesta = _getRichiestaById.GetById(partenza.IdRichiesta);
-            var SediDaNotificare = _getGerarchiaToSend.Get(richiesta.CodSOCompetente);
+            var SediDaNotificare = _getGerarchiaToSend.Get(richiesta.CodSOCompetente, richiesta.CodSOAllertate.ToArray());
 
             const bool notificaChangeState = true;
 

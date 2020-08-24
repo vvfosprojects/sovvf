@@ -1,6 +1,7 @@
 ﻿using CQRS.Queries;
 using Microsoft.AspNetCore.SignalR;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes;
+using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneTrasferimentiChiamate.AddTrasferimento;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GetSintesiRichiestaAssistenza;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneTrasferimentiChiamate;
@@ -44,6 +45,14 @@ namespace SO115App.SignalR.Sender.GestioneTrasferimentiChiamate
                 await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxInterventi", boxInterventi);
                 await _notificationHubContext.Clients.Group(sede).SendAsync("SaveAndNotifySuccessChiamata", richiesta);
                 await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyAddTrasferimento", command.TrasferimentoChiamata);
+
+                //NOTIFICA NAVBAR
+                await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyNavBar", new
+                {
+                    Titolo = "Hai una nuova chiamata",
+                    Descrizione = $"La chiamata {richiesta.Codice} è stata trasferita dal comando {command.CodiceSede} alla tua sede",
+                    Tipo = TipoNotifica.TrasferimentoChiamata
+                });
             }
 
             //GESTIONE SEDI CON DELETE RICHIESTA
@@ -57,7 +66,15 @@ namespace SO115App.SignalR.Sender.GestioneTrasferimentiChiamate
 
                 await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxInterventi", boxInterventi);
                 await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyDeleteChiamata", richiesta.Id);
-                await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyDeleteRichiesta", richiesta.Id); 
+                await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyAddTrasferimento", command.TrasferimentoChiamata);
+
+                //NOTIFICA NAVBAR
+                await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyNavBar", new 
+                {
+                    Titolo = "Hai una nuova chiamata",
+                    Descrizione = $"La chiamata {richiesta.Codice} è stata trasferita dal comando {command.CodiceSede} alla tua sede",
+                    Tipo = TipoNotifica.TrasferimentoChiamata
+                });
             }
         }
     }
