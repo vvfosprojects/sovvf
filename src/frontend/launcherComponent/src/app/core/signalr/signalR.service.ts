@@ -248,6 +248,14 @@ export class SignalRService {
         });
 
         /**
+         * Allerta Sedi
+         */
+        this.hubNotification.on('NotifyAllertaAltreSedi', (data: any) => {
+            console.log('NotifyAllertaAltreSedi', data);
+        });
+
+
+        /**
          * Composizione Partenza
          */
         this.hubNotification.on('NotifyGetComposizioneMezzi', (data: MezzoComposizione[]) => {

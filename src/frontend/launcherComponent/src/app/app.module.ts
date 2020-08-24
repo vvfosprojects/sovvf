@@ -60,6 +60,7 @@ import { AuthState } from './features/auth/store/auth.state';
 import { NotificheState } from './shared/store/states/notifiche/notifiche.state';
 import { TrasferimentoChiamataModalState } from './shared/store/states/trasferimento-chiamata-modal/trasferimento-chiamata-modal.state';
 import { EntiState } from './shared/store/states/enti/enti.state';
+import { AllertaSedeModalState } from './shared/store/states/allerta-sede-modal/allerta-sede-modal.state';
 
 
 @NgModule({
@@ -103,7 +104,8 @@ import { EntiState } from './shared/store/states/enti/enti.state';
                 ViewportState,
                 EntiState,
                 TrasferimentoChiamataModalState,
-                NotificheState
+                NotificheState,
+                AllertaSedeModalState
             ],
             { developmentMode: !environment.production }
         ),
