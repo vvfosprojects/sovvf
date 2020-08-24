@@ -162,8 +162,9 @@ export class SintesiRichiesta {
          */
         public listaUtentiPresaInCarico?: AttivitaUtente[],
         public codUOCompetenza?: string[],
+        public codSOAllertate?: string[],
         public codSOCompetente?: string,
-         /**
+        /**
          * lista Enti intervenuti
          */
         public listaEnti?: Ente[]
