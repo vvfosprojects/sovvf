@@ -187,7 +187,6 @@ export class SignalRService {
         });
         this.hubNotification.on('NotifyGetBoxInterventi', (data: BoxInterventi) => {
             console.log('NotifyGetBoxInterventi', data);
-
             this.store.dispatch(new SetBoxRichieste(data));
             this.store.dispatch(new ShowToastr(ToastrType.Info, 'Box Richieste ricevute da signalR', null, 5));
         });
@@ -250,10 +249,10 @@ export class SignalRService {
         /**
          * Allerta Sedi
          */
-        this.hubNotification.on('NotifyAllertaAltreSedi', (data: any) => {
+        this.hubNotification.on('NotifyAllertaAltreSedi', (data: SintesiRichiesta) => {
             console.log('NotifyAllertaAltreSedi', data);
+            this.store.dispatch(new InsertChiamataSuccess(data));
         });
-
 
         /**
          * Composizione Partenza
