@@ -62,7 +62,7 @@ export class PermessiService {
         }
     }
 
-    checkUserPermissionRichiesta(feature: PermissionFeatures, codUOCompetenza: string[], codSOCompetente: string) {
+    checkUserPermissionRichiesta(feature: PermissionFeatures, codUOCompetenza: string[], codSOCompetente: string, codSOAllertate: string[]) {
         const featureIndex = searchFeatureIndex(this.permessi, feature);
         if (this.ruoli && this.ruoli && this.ruoli.length > 0 && this.permessi && featureIndex !== null) {
             if (checkRuoliUtente(this.ruoli, this.permessi, featureIndex)) {
@@ -74,7 +74,7 @@ export class PermessiService {
         function checkRuoliUtente(ruoli, permessi, index) {
             let count = 0;
             ruoli.forEach((ruolo: Ruolo) => {
-                if (checkSede(ruolo, codUOCompetenza, codSOCompetente) && permessi[index].roles.indexOf(ruolo.descrizione) !== -1) {
+                if (checkSede(ruolo, codUOCompetenza, codSOCompetente, codSOAllertate) && permessi[index].roles.indexOf(ruolo.descrizione) !== -1) {
                     count++;
                 }
             });
@@ -91,10 +91,10 @@ export class PermessiService {
             return index;
         }
 
-        function checkSede(ruolo, codUOCompetenzaRef, codSOCompetenteRef) {
+        function checkSede(ruolo, codUOCompetenzaRef, codSOCompetenteRef, codSOAllertateRef) {
             let count = 0;
             if (codUOCompetenzaRef) {
-                codUOCompetenzaRef.forEach((codUo) => {
+                codUOCompetenzaRef.forEach((codUo: string) => {
                     if (ruolo.codSede === codUo) {
                         count++;
                     }
@@ -102,6 +102,13 @@ export class PermessiService {
             }
             if (count === 0 && ruolo.codSede === codSOCompetenteRef) {
                 count++;
+            }
+            if (codSOAllertate) {
+                codSOAllertate.forEach((codUo: string) => {
+                    if (ruolo.codSede === codUo) {
+                        count++;
+                    }
+                });
             }
             return count > 0;
         }

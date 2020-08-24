@@ -2,6 +2,7 @@
 using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Servizi.Infrastruttura.GestioneTrasferimentiChiamate;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.IdentityManagement;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -11,10 +12,12 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneTrasferimentiChiamate
     {
         private readonly IGetTrasferimenti _getTrasferimenti;
         private readonly IGetUtenteById _getUtenteById;
-        public TrasferimentiChiamateQueryHandler(IGetTrasferimenti getTrasferimenti, IGetUtenteById getUtenteById)
+        private readonly IGetDistaccamentoByCodiceSede _getDistaccamentoByCodiceSede;
+        public TrasferimentiChiamateQueryHandler(IGetTrasferimenti getTrasferimenti, IGetUtenteById getUtenteById, IGetDistaccamentoByCodiceSede getDistaccamentoByCodiceSede)
         {
             _getTrasferimenti = getTrasferimenti;
             _getUtenteById = getUtenteById;
+            _getDistaccamentoByCodiceSede = getDistaccamentoByCodiceSede;
         }
 
         public TrasferimentiChiamateResult Handle(TrasferimentiChiamateQuery query)
@@ -24,8 +27,8 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneTrasferimentiChiamate
             {
                 Id = c.Id,
                 CodRichiesta = c.CodRichiesta,
-                SedeA = "DES SEDE A",
-                SedeDa = "DES SEDE DA",
+                SedeA = _getDistaccamentoByCodiceSede.Get(c.CodSedeA).Descrizione,
+                SedeDa = _getDistaccamentoByCodiceSede.Get(c.CodSedeDa).Descrizione,
                 Data = c.Data,
                 Operatore = _getUtenteById.GetUtenteByCodice(c.IdOperatore)
             }).ToList();
