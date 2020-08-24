@@ -14,6 +14,7 @@ import { NgxsFormPluginModule } from '@ngxs/form-plugin';
 import { SelectElementiPerPaginaComponent } from './components/select-elementi-per-pagina/select-elementi-per-pagina.component';
 import { RisultatiRicercaComponent } from './components/risultati-ricerca/risultati-ricerca.component';
 import { TrasferimentoChiamataModalComponent } from './modal/trasferimento-chiamata-modal/trasferimento-chiamata-modal.component';
+import { AllertaSedeModalComponent } from './modal/allerta-sede-modal/allerta-sede-modal.component';
 import * as Shared from './index';
 
 const COMPONENTS = [
@@ -47,7 +48,8 @@ const COMPONENTS = [
     SelectElementiPerPaginaComponent,
     RisultatiRicercaComponent,
     TrasferimentoChiamataModalComponent,
-    NotificheComponent
+    NotificheComponent,
+    AllertaSedeModalComponent
 ];
 
 @NgModule({
