@@ -18,6 +18,7 @@ import { makeCopy } from 'src/app/shared/helper/function';
 import { TrasferimentoChiamataModalComponent } from 'src/app/shared/modal/trasferimento-chiamata-modal/trasferimento-chiamata-modal.component';
 import { ClearFormTrasferimentoChiamata, RequestAddTrasferimentoChiamata } from 'src/app/shared/store/actions/trasferimento-chiamata-modal/trasferimento-chiamata-modal.actions';
 import { AllertaSedeModalComponent } from '../../../../../shared/modal/allerta-sede-modal/allerta-sede-modal.component';
+import { AllertaSedeEmitInterface } from '../../../../../shared/interface/allerta-sede-emit.interface';
 
 @Component({
     selector: 'app-sintesi-richiesta',
@@ -63,7 +64,7 @@ export class SintesiRichiestaComponent implements OnChanges {
     @Output() actionMezzo = new EventEmitter<MezzoActionInterface>();
     @Output() actionRichiesta = new EventEmitter<RichiestaActionInterface>();
     @Output() modificaStatoFonogramma = new EventEmitter<ModificaStatoFonogrammaEmitInterface>();
-    @Output() allertaSede = new EventEmitter<boolean>();
+    @Output() allertaSede = new EventEmitter<AllertaSedeEmitInterface>();
     @Output() outEspansoId = new EventEmitter<string>();
 
     methods = new HelperSintesiRichiesta;
@@ -239,13 +240,10 @@ export class SintesiRichiestaComponent implements OnChanges {
 
     onAllertaSede() {
         const modalAllertaSede = this.modalService.open(AllertaSedeModalComponent, { backdropClass: 'light-blue-backdrop', centered: true });
-        // modalAllertaSede.componentInstance.codiceRichiesta = this.richiesta.codiceRichiesta ? this.richiesta.codiceRichiesta : this.richiesta.codice;
-        // modalAllertaSede.componentInstance.idRichiesta = this.richiesta.id;
-        // modalAllertaSede.componentInstance.fonogramma = this.richiesta.fonogramma;
+        modalAllertaSede.componentInstance.codRichiesta = this.richiesta.codice;
         modalAllertaSede.result.then((res: { status: string, result: any }) => {
             switch (res.status) {
                 case 'ok' :
-                    console.log('onAllertaSede', res);
                     this.allertaSede.emit(res.result);
                     break;
                 case 'ko':

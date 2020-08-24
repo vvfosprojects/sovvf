@@ -4,7 +4,7 @@ import {
     ActionMezzo,
     ActionRichiesta,
     AddRichiesta,
-    AddRichieste,
+    AddRichieste, AllertaSede,
     CambiaStatoRichiesta,
     ClearIdChiamataInviaPartenza,
     ClearRichiestaById,
@@ -61,6 +61,7 @@ import { GetInitCentroMappa } from '../../actions/maps/centro-mappa.actions';
 import { ClearRichiestaMarkerModifica } from '../../actions/maps/richieste-markers.actions';
 import { AuthState } from '../../../../auth/store/auth.state';
 import { UpdateRichiestaFissata } from '../../actions/richieste/richiesta-fissata.actions';
+import { TreeviewSelezione } from '../../../../../shared/model/treeview-selezione.model';
 
 export interface RichiesteStateModel {
     richieste: SintesiRichiesta[];
@@ -383,6 +384,16 @@ export class RichiesteState {
         this.richiesteService.modificaStatoFonogrammaRichiesta(obj).subscribe(() => {
             dispatch(new StopLoadingModificaFonogramma());
         }, error => dispatch(new StopLoadingModificaFonogramma()));
+    }
+
+    @Action(AllertaSede)
+    allertaSede({ dispatch }: StateContext<RichiesteStateModel>, action: AllertaSede) {
+        const obj = {
+            'codiceRichiesta': action.event.codRichiesta,
+            'codSediAllertate': action.event.sedi.map((s: TreeviewSelezione) => s.idSede)
+        };
+        this.richiesteService.allertaSede(obj).subscribe(() => {
+        });
     }
 
     @Action(SetRichiestaById)

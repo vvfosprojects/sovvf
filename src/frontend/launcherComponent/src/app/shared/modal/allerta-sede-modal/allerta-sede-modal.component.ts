@@ -2,12 +2,13 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { Select } from '@ngxs/store';
+import { Select, Store } from '@ngxs/store';
 import { SediTreeviewState } from '../../store/states/sedi-treeview/sedi-treeview.state';
 import { TreeItem, TreeviewItem } from 'ngx-treeview';
 import { TreeviewSelezione } from '../../model/treeview-selezione.model';
 import { AllertaSedeModalState } from '../../store/states/allerta-sede-modal/allerta-sede-modal.state';
 import { LoadingState } from '../../store/states/loading/loading.state';
+import { findItem } from '../../store/states/sedi-treeview/sedi-treeview.helper';
 
 @Component({
     selector: 'app-allerta-sede-modal',
@@ -27,24 +28,32 @@ export class AllertaSedeModalComponent implements OnInit, OnDestroy {
     allertaSedeForm: FormGroup;
     submitted: boolean;
 
+    codRichiesta: string;
+
     subscription: Subscription = new Subscription();
 
     constructor(private fb: FormBuilder,
-                private modal: NgbActiveModal) {
+                private modal: NgbActiveModal,
+                private store: Store) {
         this.initForm();
         this.getFormValid();
+        this.inizializzaSediTreeview();
+        this.getSediSelezionate();
     }
 
     initForm() {
         this.allertaSedeForm = new FormGroup({
+            codRichiesta: new FormControl(),
             sedi: new FormControl()
         });
         this.allertaSedeForm = this.fb.group({
-            sedi: [null, Validators.required],
+            codRichiesta: [null, Validators.required],
+            sedi: [null, Validators.required]
         });
     }
 
     ngOnInit() {
+        this.f.codRichiesta.patchValue(this.codRichiesta);
     }
 
     ngOnDestroy(): void {
@@ -61,6 +70,42 @@ export class AllertaSedeModalComponent implements OnInit, OnDestroy {
 
     get f() {
         return this.allertaSedeForm.controls;
+    }
+
+    inizializzaSediTreeview() {
+        this.subscription.add(
+            this.listeSediNavbar$.subscribe((listaSedi: TreeItem) => {
+                this.listeSediNavbar = [];
+                this.listeSediNavbar[0] = new TreeviewItem(listaSedi);
+            })
+        );
+    }
+
+    onPatchSedi(event: TreeviewSelezione[]) {
+        this.f.sedi.patchValue(event);
+    }
+
+    getSediSelezionate() {
+        this.subscription.add(
+            this.sediSelezionate$.subscribe((sedi: TreeviewSelezione[]) => {
+                const listaSediNavbar = this.store.selectSnapshot(SediTreeviewState.listeSediNavbar);
+                if (listaSediNavbar && sedi && sedi.length >= 0) {
+                    switch (sedi.length) {
+                        case 0:
+                            this.sediSelezionate = 'nessuna sede selezionata';
+                            break;
+                        case 1:
+                            this.sediSelezionate = findItem(listaSediNavbar, sedi[0].idSede).text;
+                            break;
+                        default:
+                            this.sediSelezionate = 'più sedi selezionate';
+                            break;
+                    }
+                } else {
+                    this.sediSelezionate = 'Caricamento...';
+                }
+            })
+        );
     }
 
     onConferma() {

@@ -30,7 +30,7 @@ import { RichiesteEspanseState } from '../store/states/richieste/richieste-espan
 import { SetRichiestaGestione } from '../store/actions/richieste/richiesta-gestione.actions';
 import { RichiestaGestioneState } from '../store/states/richieste/richiesta-gestione.state';
 import { MezzoActionInterface } from '../../../shared/interface/mezzo-action.interface';
-import { ActionMezzo, ActionRichiesta, EliminaPartenzaRichiesta, GetListaRichieste, ModificaStatoFonogramma } from '../store/actions/richieste/richieste.actions';
+import { ActionMezzo, ActionRichiesta, AllertaSede, EliminaPartenzaRichiesta, GetListaRichieste, ModificaStatoFonogramma } from '../store/actions/richieste/richieste.actions';
 import { ReducerRichiesteEspanse } from '../store/actions/richieste/richieste-espanse.actions';
 import { RichiestaActionInterface } from '../../../shared/interface/richiesta-action.interface';
 import { PermissionFeatures } from '../../../shared/enum/permission-features.enum';
@@ -40,6 +40,7 @@ import { StatoRichiesta } from '../../../shared/enum/stato-richiesta.enum';
 import { FiltriRichiesteState } from '../store/states/filterbar/filtri-richieste.state';
 import { VoceFiltro } from '../filterbar/filtri-richieste/voce-filtro.model';
 import { ModificaStatoFonogrammaEmitInterface } from '../../../shared/interface/modifica-stato-fonogramma-emit.interface';
+import { AllertaSedeEmitInterface } from '../../../shared/interface/allerta-sede-emit.interface';
 
 @Component({
     selector: 'app-richieste',
@@ -324,5 +325,9 @@ export class RichiesteComponent implements OnInit, OnDestroy {
 
     onModificaStatoFonogramma(event: ModificaStatoFonogrammaEmitInterface) {
         this.store.dispatch(new ModificaStatoFonogramma(event));
+    }
+
+    onAllertaSede(event: AllertaSedeEmitInterface) {
+        this.store.dispatch(new AllertaSede(event));
     }
 }
