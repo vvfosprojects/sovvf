@@ -9,6 +9,7 @@ import { TipoTerrenoMqHa } from '../../../../shared/interface/tipo-terreno-mq-ha
 import { AttivitaUtente } from '../../../../shared/model/attivita-utente.model';
 import { round1decimal } from '../../../../shared/helper/function';
 import { Mezzo } from 'src/app/shared/model/mezzo.model';
+import { Sede } from '../../../../shared/model/sede.model';
 
 export class HelperSintesiRichiesta {
 
@@ -24,6 +25,7 @@ export class HelperSintesiRichiesta {
             id: string;
             nome: string;
         }
+
         const nomiSquadre: string[] = [];
         const squadre: SquadraPartenza[] = [];
 
@@ -47,7 +49,7 @@ export class HelperSintesiRichiesta {
 
         return nomiSquadre;
     }
-    
+
     /* Restituisce il mezzo */
     mezziRichiesta(richiesta: SintesiRichiesta): Mezzo[] {
         const mezzi = [];
@@ -319,6 +321,20 @@ export class HelperSintesiRichiesta {
     _altriUtenti(attivita: AttivitaUtente[]): AttivitaUtente[] {
         if (attivita) {
             return attivita.slice(1);
+        }
+        return null;
+    }
+
+    _primaSedeAllertata(sediAllertate: Sede[]): string {
+        if (sediAllertate) {
+            return sediAllertate[0].descrizione.split(' ').pop();
+        }
+        return null;
+    }
+
+    _altreSediAllertate(sediAllertate: Sede[]): string[] {
+        if (sediAllertate) {
+            return sediAllertate.slice(1).map((s: Sede) => s.descrizione.split(' ').pop());
         }
         return null;
     }
