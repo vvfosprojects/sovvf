@@ -101,7 +101,7 @@ namespace SO115App.API.Controllers
         }
 
         [HttpGet("Delete")]
-        public async Task<IActionResult> Delete(string Id)
+        private async Task<IActionResult> Delete(string Id)
         {
             try
             {
