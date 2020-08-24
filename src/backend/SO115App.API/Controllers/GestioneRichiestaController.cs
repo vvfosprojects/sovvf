@@ -19,6 +19,7 @@
 //-----------------------------------------------------------------------
 using CQRS.Commands;
 using CQRS.Queries;
+using DomainModel.CQRS.Commands.AllertaAltreSedi;
 using DomainModel.CQRS.Commands.UpDateStatoRichiesta;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -39,54 +40,24 @@ namespace SO115App.API.Controllers
     public class GestioneRichiestaController : ControllerBase
     {
         private readonly ICommandHandler<UpDateStatoRichiestaCommand> _addhandler;
-
-        private readonly IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult>
-            _sintesiRichiesteQuery;
-
+        private readonly IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> _sintesiRichiesteQuery;
         private readonly IQueryHandler<GetSintesiRichiestaAssistenzaQuery, GetSintesiRichiestaAssistenzaResult> _getSingolaRichiesta;
         private readonly IQueryHandler<GetCodiciRichiesteAssistenzaQuery, GetCodiciRichiesteAssistenzaResult> _getCodiciRichiesta;
+        private readonly ICommandHandler<AllertaAltreSediCommand> _allertaSediHandler;
 
         public GestioneRichiestaController(
             ICommandHandler<UpDateStatoRichiestaCommand> addhandler,
             IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> sintesiRichiesteQuery,
             IQueryHandler<GetSintesiRichiestaAssistenzaQuery, GetSintesiRichiestaAssistenzaResult> getSingolaRichiesta,
-            IQueryHandler<GetCodiciRichiesteAssistenzaQuery, GetCodiciRichiesteAssistenzaResult> getCodiciRichiesta
+            IQueryHandler<GetCodiciRichiesteAssistenzaQuery, GetCodiciRichiesteAssistenzaResult> getCodiciRichiesta,
+            ICommandHandler<AllertaAltreSediCommand> allertaSediHandler
             )
         {
             _addhandler = addhandler;
             _sintesiRichiesteQuery = sintesiRichiesteQuery;
             _getSingolaRichiesta = getSingolaRichiesta;
             _getCodiciRichiesta = getCodiciRichiesta;
-        }
-
-        [HttpPost("AggiornaStato")]
-        public async Task<IActionResult> AggiornaStato([FromBody] UpDateStatoRichiestaCommand richiesta)
-        {
-            var codiceSede = Request.Headers["codicesede"];
-            var headerValues = Request.Headers["IdUtente"];
-            var idOperatore = headerValues.FirstOrDefault();
-
-            var command = new UpDateStatoRichiestaCommand()
-            {
-                IdOperatore = idOperatore,
-                IdRichiesta = richiesta.IdRichiesta,
-                Note = richiesta.Note ?? "",
-                Stato = richiesta.Stato,
-                CodiceSede = codiceSede
-            };
-
-            try
-            {
-                this._addhandler.Handle(command);
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
-                    return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
-                else
-                    return BadRequest(new { message = ex.Message });
-            }
+            _allertaSediHandler = allertaSediHandler;
         }
 
         [HttpGet("GetRichiesta")]
@@ -144,6 +115,56 @@ namespace SO115App.API.Controllers
             try
             {
                 return Ok(_getCodiciRichiesta.Handle(sintesiRichiesteAssistenzaQuery));
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                    return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
+                else
+                    return BadRequest(new { message = ex.Message });
+            }
+        }
+
+        [HttpPost("AggiornaStato")]
+        public async Task<IActionResult> AggiornaStato([FromBody] UpDateStatoRichiestaCommand richiesta)
+        {
+            var codiceSede = Request.Headers["codicesede"];
+            var headerValues = Request.Headers["IdUtente"];
+            var idOperatore = headerValues.FirstOrDefault();
+
+            var command = new UpDateStatoRichiestaCommand()
+            {
+                IdOperatore = idOperatore,
+                IdRichiesta = richiesta.IdRichiesta,
+                Note = richiesta.Note ?? "",
+                Stato = richiesta.Stato,
+                CodiceSede = codiceSede
+            };
+
+            try
+            {
+                this._addhandler.Handle(command);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                    return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
+                else
+                    return BadRequest(new { message = ex.Message });
+            }
+        }
+
+        [HttpPost("AllertaSedi")]
+        public async Task<IActionResult> AllertaSedi([FromBody] AllertaAltreSediCommand parametri)
+        {
+            var idOperatore = Request.Headers["IdUtente"];
+            parametri.CodUtente = idOperatore;
+
+            try
+            {
+                this._allertaSediHandler.Handle(parametri);
+                return Ok();
             }
             catch (Exception ex)
             {
