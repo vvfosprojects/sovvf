@@ -321,7 +321,6 @@ export class SignalRService {
             console.log('NotifyAddUtente', codSede);
             this.store.dispatch(new SuccessAddUtenteGestione(codSede));
         });
-
         this.hubNotification.on('NotifyModificatoRuoloUtente', (idUtente: string) => {
             console.log('NotifyModificatoRuoloUtente', idUtente);
             if (idUtente) {
@@ -333,7 +332,6 @@ export class SignalRService {
                 }
             }
         });
-
         this.hubNotification.on('NotifyDeleteUtente', (idUtente: string) => {
             console.log('NotifyDeleteUtente', idUtente);
             const utenteAttuale = this.store.selectSnapshot(AuthState.currentUser);
@@ -351,21 +349,18 @@ export class SignalRService {
             console.log('NotifyChangeEnti', enti);
             this.store.dispatch(new SetEnti(enti));
         });
-
         this.hubNotification.on('NotifyAddEnte', (response: ResponseAddEnteRubricaInterface) => {
             console.log('NotifyAddEnte', response);
             this.store.dispatch(new AddVoceRubrica());
             const pagination = this.store.selectSnapshot(PaginationState.pagination);
             this.store.dispatch(new PatchPagination({ ...pagination, totalItems: response.pagination.totalItems }));
         });
-
         this.hubNotification.on('NotifyUpdateEnte', (response: ResponseUpdateEnteRubricaInterface) => {
             console.log('NotifyUpdateEnte', response);
             this.store.dispatch(new UpdateVoceRubrica(response.data));
             const pagination = this.store.selectSnapshot(PaginationState.pagination);
             this.store.dispatch(new PatchPagination({ ...pagination, totalItems: response.pagination.totalItems }));
         });
-
         this.hubNotification.on('NotifyDeleteEnte', (response: ResponseDeleteEnteRubricaInterface) => {
             console.log('NotifyDeleteEnte', response);
             this.store.dispatch(new DeleteVoceRubrica(response.data));
@@ -382,7 +377,6 @@ export class SignalRService {
             const pagination = this.store.selectSnapshot(PaginationState.pagination);
             this.store.dispatch(new PatchPagination({ ...pagination, totalItems: response.pagination.totalItems }));
         });
-
 
         /**
          * Disconnessione SignalR
