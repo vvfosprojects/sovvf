@@ -388,10 +388,28 @@
                             <div *ngIf="inGestione" class="h6">
                                 <i class="guida fa fa-exclamation-circle fa-fw mr-1" ngbTooltip="Sedi Allertate"
                                    placement="right"></i>
-                                <span *ngIf="!richiesta.codSOAllertate || richiesta.codSOAllertate.length <= 0"
-                                      class="badge badge-secondary text-white">
+                                <div *ngIf="methods._primaSedeAllertata(richiesta.sediAllertate) as sediAllertate; else nonAllertata"
+                                     class="d-inline-block h6 m-0 mr-1" ngbTooltip="{{ sediAllertate }}"
+                                     [disableTooltip]="sediAllertate.length <= 10" placement="bottom">
+                                    {{ sediAllertate | truncate: 10 }}
+                                </div>
+                                <div *ngIf="richiesta.codSOAllertate && richiesta.codSOAllertate.length > 1"
+                                     ngbDropdown class="d-inline-block" placement="bottom">
+                                    <button ngbDropdownToggle class="btn btn-light border py-0 px-1"
+                                            (click)="$event.stopPropagation()">
+                                        +{{ richiesta.codSOAllertate.length - 1 }}
+                                    </button>
+                                    <div ngbDropdownMenu class="p-2 text-center">
+                                        <div *ngIf="methods._altreSediAllertate(richiesta.sediAllertate) as codSOAllertate">
+                                            <div *ngFor="let sede of codSOAllertate">
+                                                {{ sede }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <ng-template #nonAllertata class="badge badge-secondary text-white">
                                     Nessuna Sede Allertata
-                                </span>
+                                </ng-template>
                                 <button class="btn btn-sm btn-warning ml-2 mr-1" ngbTooltip="Allerta Sede"
                                         (click)="onAllertaSede(); $event.stopPropagation()">
                                     <i class="fa fa-exclamation-triangle"></i>

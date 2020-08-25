@@ -3,6 +3,7 @@ using Persistence.MongoDB;
 using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Servizi.Infrastruttura.GestioneTrasferimentiChiamate;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SO115App.Persistence.MongoDB.GestioneTrasferimentiChiamate
 {
@@ -14,6 +15,11 @@ namespace SO115App.Persistence.MongoDB.GestioneTrasferimentiChiamate
         public List<TrasferimentoChiamata> GetAll(string CodiceSede)
         {
             return _dbContext.TrasferimentiChiamateCollection.Find(c => c.CodSedeA == CodiceSede || c.CodSedeDa == CodiceSede).ToList();
+        }
+
+        public List<TrasferimentoChiamata> GetAll(string[] CodiciSedi)
+        {
+            return _dbContext.TrasferimentiChiamateCollection.Find(c => CodiciSedi.Contains(c.CodSedeA) || CodiciSedi.Contains(c.CodSedeDa)).ToList();
         }
     }
 }

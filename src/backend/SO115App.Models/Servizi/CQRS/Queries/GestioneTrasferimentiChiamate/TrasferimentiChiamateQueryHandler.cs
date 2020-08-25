@@ -1,8 +1,10 @@
 ﻿using CQRS.Queries;
 using SO115App.Models.Classi.Condivise;
+using SO115App.Models.Classi.Organigramma;
 using SO115App.Models.Servizi.Infrastruttura.GestioneTrasferimentiChiamate;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.IdentityManagement;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -13,17 +15,26 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneTrasferimentiChiamate
         private readonly IGetTrasferimenti _getTrasferimenti;
         private readonly IGetUtenteById _getUtenteById;
         private readonly IGetDistaccamentoByCodiceSede _getDistaccamentoByCodiceSede;
-        public TrasferimentiChiamateQueryHandler(IGetTrasferimenti getTrasferimenti, IGetUtenteById getUtenteById, IGetDistaccamentoByCodiceSede getDistaccamentoByCodiceSede)
+        private readonly GerarchiaReader _getGerarchia;
+        public TrasferimentiChiamateQueryHandler(IGetTrasferimenti getTrasferimenti,
+            IGetUtenteById getUtenteById,
+            IGetDistaccamentoByCodiceSede getDistaccamentoByCodiceSede,
+            IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative)
         {
             _getTrasferimenti = getTrasferimenti;
             _getUtenteById = getUtenteById;
             _getDistaccamentoByCodiceSede = getDistaccamentoByCodiceSede;
+            _getGerarchia = new GerarchiaReader(getAlberaturaUnitaOperative);
+
         }
 
         public TrasferimentiChiamateResult Handle(TrasferimentiChiamateQuery query)
         {
+            //GESTIONE RICORSIVITA'
+            var lstPin = _getGerarchia.GetGerarchia(new string[] { query.CodiceSede });
+
             //MAPPING
-            var lstTrasferimenti = _getTrasferimenti.GetAll(query.CodiceSede).Select(c => new TrasferimentoChiamataFull()
+            var lstTrasferimenti = _getTrasferimenti.GetAll(lstPin.Select(c => c.Codice).ToArray()).Select(c => new TrasferimentoChiamataFull()
             {
                 Id = c.Id,
                 CodRichiesta = c.CodRichiesta,
