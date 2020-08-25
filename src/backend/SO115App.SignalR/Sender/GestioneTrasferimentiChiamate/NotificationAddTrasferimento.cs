@@ -2,11 +2,13 @@
 using Microsoft.AspNetCore.SignalR;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes;
 using SO115App.Models.Classi.Condivise;
+using SO115App.Models.Classi.Organigramma;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneTrasferimentiChiamate.AddTrasferimento;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GetSintesiRichiestaAssistenza;
+using SO115App.Models.Servizi.Infrastruttura.GestioneTrasferimentiChiamate;
+using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneTrasferimentiChiamate;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
-using SO115App.SignalR.Utility;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -17,16 +19,22 @@ namespace SO115App.SignalR.Sender.GestioneTrasferimentiChiamate
         private readonly IHubContext<NotificationHub> _notificationHubContext;
         private readonly IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> _boxRichiesteHandler;
         private readonly IQueryHandler<GetSintesiRichiestaAssistenzaQuery, GetSintesiRichiestaAssistenzaResult> _getRichiesta;
-        private readonly GetGerarchiaToSend _getGerarchiaToSend;
+        private readonly IGetTrasferimenti _getTrasferimenti;
+        private readonly IGetUtenteById _getUtenteById;
+        private readonly GerarchiaReader _gerarchiaReader;
         public NotificationAddTrasferimento(IHubContext<NotificationHub> notificationHubContext,
             IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> boxRichiesteHandler,
             IQueryHandler<GetSintesiRichiestaAssistenzaQuery, GetSintesiRichiestaAssistenzaResult> getRichiesta,
-            IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative)
+            IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative,
+            IGetTrasferimenti getTrasferimenti,
+            IGetUtenteById getUtenteById)
         {
             _notificationHubContext = notificationHubContext;
             _boxRichiesteHandler = boxRichiesteHandler;
             _getRichiesta = getRichiesta;
-            _getGerarchiaToSend = new GetGerarchiaToSend(getAlberaturaUnitaOperative);
+            _getTrasferimenti = getTrasferimenti;
+            _getUtenteById = getUtenteById;
+            _gerarchiaReader = new GerarchiaReader(getAlberaturaUnitaOperative);
         }
 
         public async Task SendNotification(AddTrasferimentoCommand command)
@@ -37,9 +45,11 @@ namespace SO115App.SignalR.Sender.GestioneTrasferimentiChiamate
                 CodiceSede = command.TrasferimentoChiamata.CodSedeA[0]
             }).SintesiRichiesta;
 
-            //GESTIONE SEDI CON ADD RICHIESTA
-            var SediDaNotificareAdd = _getGerarchiaToSend.Get(command.TrasferimentoChiamata.CodSedeA[0]);
-            foreach (var sede in SediDaNotificareAdd.Where(c => c.Contains(".")).ToList())
+            //GESTIONE SEDI A
+            var SediDaNotificareAdd = _gerarchiaReader.GetGerarchia(command.TrasferimentoChiamata.CodSedeA)
+                .Select(c => c.Codice)
+                .ToList();
+            foreach (var sede in SediDaNotificareAdd)
             {
                 var boxInterventi = _boxRichiesteHandler.Handle(new BoxRichiesteQuery()
                 {
@@ -48,7 +58,22 @@ namespace SO115App.SignalR.Sender.GestioneTrasferimentiChiamate
 
                 await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxInterventi", boxInterventi);
                 await _notificationHubContext.Clients.Group(sede).SendAsync("SaveAndNotifySuccessChiamata", richiesta);
-                await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyAddTrasferimento", command.TrasferimentoChiamata);
+                await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyAddTrasferimento", new
+                {
+                    Data = new TrasferimentoChiamataFull()
+                    {
+                        Id = command.TrasferimentoChiamata.Id,
+                        CodRichiesta = command.TrasferimentoChiamata.CodRichiesta,
+                        Data = command.TrasferimentoChiamata.Data,
+                        SedeA = command.TrasferimentoChiamata.CodSedeA,
+                        SedeDa = command.TrasferimentoChiamata.CodSedeDa,
+                        Operatore = _getUtenteById.GetUtenteByCodice(command.TrasferimentoChiamata.IdOperatore)
+                    },
+                    Pagination = new Paginazione()
+                    {
+                        TotalItems = _getTrasferimenti.Count(command.TrasferimentoChiamata.CodSedeA)
+                    }
+                });
 
                 //NOTIFICA NAVBAR
                 await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyNavBar", new
@@ -59,9 +84,11 @@ namespace SO115App.SignalR.Sender.GestioneTrasferimentiChiamate
                 });
             }
 
-            //GESTIONE SEDI CON DELETE RICHIESTA
-            var SediDaNotificareDelete = _getGerarchiaToSend.Get(command.TrasferimentoChiamata.CodSedeDa);
-            foreach (var sede in SediDaNotificareDelete.Where(c => c.Contains(".")).ToList())
+            //GESTIONE SEDI DA
+            var SediDaNotificareDelete = _gerarchiaReader.GetGerarchia(command.TrasferimentoChiamata.CodSedeDa)
+                .Select(c => c.Codice)
+                .ToList();
+            foreach (var sede in SediDaNotificareDelete)
             {
                 var boxInterventi = _boxRichiesteHandler.Handle(new BoxRichiesteQuery()
                 {
@@ -70,7 +97,22 @@ namespace SO115App.SignalR.Sender.GestioneTrasferimentiChiamate
 
                 await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxInterventi", boxInterventi);
                 await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyDeleteChiamata", richiesta.Id);
-                await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyAddTrasferimento", command.TrasferimentoChiamata);
+                await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyAddTrasferimento", new
+                {
+                    Data = new TrasferimentoChiamataFull()
+                    {
+                        Id = command.TrasferimentoChiamata.Id,
+                        CodRichiesta = command.TrasferimentoChiamata.CodRichiesta,
+                        Data = command.TrasferimentoChiamata.Data,
+                        SedeA = command.TrasferimentoChiamata.CodSedeA,
+                        SedeDa = command.TrasferimentoChiamata.CodSedeDa,
+                        Operatore = _getUtenteById.GetUtenteByCodice(command.TrasferimentoChiamata.IdOperatore)
+                    },
+                    Pagination = new Paginazione()
+                    {
+                        TotalItems = _getTrasferimenti.Count(new string[] { command.TrasferimentoChiamata.CodSedeDa })
+                    }
+                });
             }
         }
     }
