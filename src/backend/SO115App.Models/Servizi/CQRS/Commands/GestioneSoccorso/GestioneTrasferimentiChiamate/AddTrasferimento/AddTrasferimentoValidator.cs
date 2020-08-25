@@ -2,6 +2,7 @@
 using CQRS.Validation;
 using SO115App.Models.Classi.Utility;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneTrasferimentiChiamate.AddTrasferimento
 {
@@ -16,7 +17,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneTrasfer
                 if (command.TrasferimentoChiamata.CodRichiesta == null || command.TrasferimentoChiamata.CodRichiesta == "")
                     yield return new ValidationResult("Nessun codice richiesta");
 
-                if (command.TrasferimentoChiamata.CodSedeA == null || command.TrasferimentoChiamata.CodSedeA == "")
+                if (command.TrasferimentoChiamata.CodSedeA == null || command.TrasferimentoChiamata.CodSedeA.Count() == 0)
                     yield return new ValidationResult("Nessun codice sede a");
             }
         }
