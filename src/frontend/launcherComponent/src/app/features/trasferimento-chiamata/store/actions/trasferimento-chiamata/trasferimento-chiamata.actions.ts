@@ -18,17 +18,3 @@ export class SetListaTrasferimentiChiamate {
 export class AddTrasferimentoChiamata {
     static readonly type = '[TrasferimentoChiamata] Add Voce Trasferimento Chiamata';
 }
-
-export class UpdateVoceTrasferimentoChiamata {
-    static readonly type = '[TrasferimentoChiamata] Update Voce Trasferimento Chiamata';
-
-    constructor(public voceTrasferimentoChiamata: TrasferimentoChiamata) {
-    }
-}
-
-export class DeleteVoceTrasferimentoChiamata {
-    static readonly type = '[TrasferimentoChiamata] Delete Voce Trasferimento Chiamata';
-
-    constructor(public idVoceTrasferimentoChiamata: string) {
-    }
-}

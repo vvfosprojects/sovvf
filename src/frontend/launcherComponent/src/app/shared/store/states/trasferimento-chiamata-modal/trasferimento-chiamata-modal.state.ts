@@ -1,19 +1,17 @@
-import { TrasferimentoChiamata } from 'src/app/shared/interface/trasferimento-chiamata.interface';
+import { AddTrasferimentoChiamata, TrasferimentoChiamata } from 'src/app/shared/interface/trasferimento-chiamata.interface';
 import { State, Selector, Action, StateContext } from '@ngxs/store';
 import { TrasferimentoChiamataService } from 'src/app/core/service/trasferimento-chiamata/trasferimento-chiamata.service';
 import { TreeviewSelezione } from 'src/app/shared/model/treeview-selezione.model';
-import { GetRichiesteTrasferibili } from '../../actions/trasferimento-chiamata-modal/trasferimento-chiamata-modal.actions';
+import { GetRichiesteTrasferibili, RequestAddTrasferimentoChiamata } from '../../actions/trasferimento-chiamata-modal/trasferimento-chiamata-modal.actions';
 
 export interface TrasferimentoChiamataModalStateModel {
     trasferimentoChiamata: Array<TrasferimentoChiamata>;
     codiciRichiesteTrasferibili: string[];
     trasferimentoChiamataForm: {
         model?: {
-            codiceRichesta: string;
+            codiceRichiesta: string;
             operatore: string;
-            sedeDa: TreeviewSelezione[];
             sedeA: TreeviewSelezione[];
-            data: string;
         };
         dirty: boolean;
         status: string;
@@ -26,11 +24,9 @@ export const TrasferimentoChiamataModalStateDefaults: TrasferimentoChiamataModal
     codiciRichiesteTrasferibili: undefined,
     trasferimentoChiamataForm: {
         model: {
-            codiceRichesta: undefined,
+            codiceRichiesta: undefined,
             operatore: undefined,
-            sedeDa: undefined,
-            sedeA: undefined,
-            data: undefined,
+            sedeA: undefined
         },
         dirty: false,
         status: '',
@@ -54,6 +50,11 @@ export class TrasferimentoChiamataModalState {
     }
 
     @Selector()
+    static sedeSelezionata(state: TrasferimentoChiamataModalStateModel) {
+        return state.trasferimentoChiamataForm.model.sedeA;
+    }
+
+    @Selector()
     static formValid(state: TrasferimentoChiamataModalStateModel) {
         return state.trasferimentoChiamataForm.status !== 'INVALID';
     }
@@ -64,6 +65,18 @@ export class TrasferimentoChiamataModalState {
             patchState({
                 codiciRichiesteTrasferibili: codiciRichieste
             });
+        });
+    }
+
+    @Action(RequestAddTrasferimentoChiamata)
+    requestAddTrasferimentoChiamata({ getState }: StateContext<TrasferimentoChiamataModalStateModel>) {
+        const state = getState();
+        const form = state.trasferimentoChiamataForm.model;
+        const obj = {
+            codRichiesta: form.codiceRichiesta,
+            codSedeA: form.sedeA.map((s: TreeviewSelezione) => s.idSede)
+        } as AddTrasferimentoChiamata;
+        this.trasferimentoChiamataService.addTrasferimentoChiamata(obj).subscribe(() => {
         });
     }
 }

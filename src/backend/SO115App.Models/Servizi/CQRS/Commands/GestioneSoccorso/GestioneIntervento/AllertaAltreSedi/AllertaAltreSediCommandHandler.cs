@@ -48,6 +48,9 @@ namespace DomainModel.CQRS.Commands.AllertaAltreSedi
         {
             var richiesta = _getRichiestaById.GetByCodice(command.CodiceRichiesta);
 
+            if (richiesta.CodSOAllertate != null && richiesta.CodSOAllertate.Count > 0)
+                command.CodSediAllertateOld = richiesta.CodSOAllertate.ToArray();
+
             richiesta.CodSOAllertate = command.CodSediAllertate.ToHashSet();
 
             new AllertaSedi(richiesta, DateTime.UtcNow, command.CodUtente, "Allerta", command.CodSediAllertate);

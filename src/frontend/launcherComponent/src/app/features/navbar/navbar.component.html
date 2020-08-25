@@ -57,9 +57,6 @@
         <div class="col-3 ml-auto text-right pr-0">
             <div class="row">
                 <div class="col-12">
-                    <button class="btn btn-primary" (click)="addNotifica()">
-                        <i class="fa fa-plus"></i>
-                    </button>
                     <app-operatore [user]="user" [ruoliUtenteLoggato]="ruoliUtenteLoggato"
                                    (notificheLette)="setNotificheLette()" (_logout)="logout()"></app-operatore>
                 </div>

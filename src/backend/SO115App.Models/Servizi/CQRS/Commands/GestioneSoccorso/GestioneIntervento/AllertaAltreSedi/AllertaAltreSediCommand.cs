@@ -28,5 +28,6 @@ namespace DomainModel.CQRS.Commands.AllertaAltreSedi
         public string CodiceRichiesta { get; set; }
         public string CodUtente { get; set; }
         public SintesiRichiesta Chiamata { get; set; }
+        public string[] CodSediAllertateOld { get; set; }
     }
 }
