@@ -6,6 +6,6 @@
 
 <div *ngIf="useCheckbox">
     <app-checkbox
-            [checkboxState]="{id: filtro.codice, status: selezionato, label: filtro.descrizione | truncate:70, disabled: disabled}"
+            [checkboxState]="{id: filtro.descrizione, status: selezionato, label: filtro.descrizione | truncate:70, disabled: disabled}"
             [debounceTime]="1" appDebounceClick (debounceClick)="onSelezione(filtro)"></app-checkbox>
 </div>
