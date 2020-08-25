@@ -34,11 +34,11 @@ namespace SO115App.SignalR.Sender.GestioneTrasferimentiChiamate
             var richiesta = _getRichiesta.Handle(new GetSintesiRichiestaAssistenzaQuery()
             {
                 CodiceRichiesta = command.TrasferimentoChiamata.CodRichiesta,
-                CodiceSede = command.TrasferimentoChiamata.CodSedeA
+                CodiceSede = command.TrasferimentoChiamata.CodSedeA[0]
             }).SintesiRichiesta;
 
             //GESTIONE SEDI CON ADD RICHIESTA
-            var SediDaNotificareAdd = _getGerarchiaToSend.Get(command.TrasferimentoChiamata.CodSedeA);
+            var SediDaNotificareAdd = _getGerarchiaToSend.Get(command.TrasferimentoChiamata.CodSedeA[0]);
             foreach (var sede in SediDaNotificareAdd.Where(c => c.Contains(".")).ToList())
             {
                 var boxInterventi = _boxRichiesteHandler.Handle(new BoxRichiesteQuery()
@@ -71,14 +71,6 @@ namespace SO115App.SignalR.Sender.GestioneTrasferimentiChiamate
                 await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxInterventi", boxInterventi);
                 await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyDeleteChiamata", richiesta.Id);
                 await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyAddTrasferimento", command.TrasferimentoChiamata);
-
-                //NOTIFICA NAVBAR
-                await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyNavBar", new
-                {
-                    Titolo = "Hai una nuova chiamata",
-                    Descrizione = $"La chiamata {richiesta.Codice} è stata trasferita dal comando {command.CodiceSede} alla tua sede",
-                    Tipo = TipoNotifica.TrasferimentoChiamata
-                });
             }
         }
     }

@@ -5,6 +5,7 @@ import { FiltersInterface } from 'src/app/shared/interface/filters.interface';
 import { PaginationInterface } from 'src/app/shared/interface/pagination.interface';
 import { Observable } from 'rxjs';
 import { ResponseInterface } from '../../../shared/interface/response.interface';
+import { AddTrasferimentoChiamata } from '../../../shared/interface/trasferimento-chiamata.interface';
 
 const BASE_URL = environment.baseUrl;
 const API_TRASFERIMENTI_CHIAMATE = BASE_URL + environment.apiUrl.trasferimentoChiamata;
@@ -32,4 +33,7 @@ export class TrasferimentoChiamataService {
         return this.http.get<string[]>(API_TRASFERIMENTI_CHIAMATE + '/GetCodiciChiamate');
     }
 
+    addTrasferimentoChiamata(obj: AddTrasferimentoChiamata): Observable<any> {
+        return this.http.post<any>(API_TRASFERIMENTI_CHIAMATE + '/Add', obj);
+    }
 }

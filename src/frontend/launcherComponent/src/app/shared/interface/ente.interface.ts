@@ -1,4 +1,5 @@
 import { PaginationInterface } from './pagination.interface';
+import { TipoTelefono } from '../enum/tipo-telefono.enum';
 
 export interface CategoriaEnte {
     codice: string;
@@ -6,11 +7,6 @@ export interface CategoriaEnte {
     visibile: string;
     acronimo: string;
     cap: string;
-}
-
-export enum TipoTelefono {
-    Telefono = 'Tel.',
-    Fax = 'Fax'
 }
 
 export interface EnteTelefono {
