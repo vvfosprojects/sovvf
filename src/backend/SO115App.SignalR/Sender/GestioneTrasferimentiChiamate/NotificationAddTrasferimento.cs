@@ -5,7 +5,9 @@ using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneTrasferimentiChiamate.AddTrasferimento;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GetSintesiRichiestaAssistenza;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneTrasferimentiChiamate;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
 using SO115App.SignalR.Utility;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace SO115App.SignalR.Sender.GestioneTrasferimentiChiamate
@@ -18,11 +20,13 @@ namespace SO115App.SignalR.Sender.GestioneTrasferimentiChiamate
         private readonly GetGerarchiaToSend _getGerarchiaToSend;
         public NotificationAddTrasferimento(IHubContext<NotificationHub> notificationHubContext,
             IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> boxRichiesteHandler,
-            IQueryHandler<GetSintesiRichiestaAssistenzaQuery, GetSintesiRichiestaAssistenzaResult> getRichiesta)
+            IQueryHandler<GetSintesiRichiestaAssistenzaQuery, GetSintesiRichiestaAssistenzaResult> getRichiesta,
+            IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative)
         {
             _notificationHubContext = notificationHubContext;
             _boxRichiesteHandler = boxRichiesteHandler;
             _getRichiesta = getRichiesta;
+            _getGerarchiaToSend = new GetGerarchiaToSend(getAlberaturaUnitaOperative);
         }
 
         public async Task SendNotification(AddTrasferimentoCommand command)
@@ -35,7 +39,7 @@ namespace SO115App.SignalR.Sender.GestioneTrasferimentiChiamate
 
             //GESTIONE SEDI CON ADD RICHIESTA
             var SediDaNotificareAdd = _getGerarchiaToSend.Get(command.TrasferimentoChiamata.CodSedeA);
-            foreach (var sede in SediDaNotificareAdd)
+            foreach (var sede in SediDaNotificareAdd.Where(c => c.Contains(".")).ToList())
             {
                 var boxInterventi = _boxRichiesteHandler.Handle(new BoxRichiesteQuery()
                 {
@@ -57,7 +61,7 @@ namespace SO115App.SignalR.Sender.GestioneTrasferimentiChiamate
 
             //GESTIONE SEDI CON DELETE RICHIESTA
             var SediDaNotificareDelete = _getGerarchiaToSend.Get(command.TrasferimentoChiamata.CodSedeDa);
-            foreach (var sede in SediDaNotificareDelete)
+            foreach (var sede in SediDaNotificareDelete.Where(c => c.Contains(".")).ToList())
             {
                 var boxInterventi = _boxRichiesteHandler.Handle(new BoxRichiesteQuery()
                 {
@@ -69,7 +73,7 @@ namespace SO115App.SignalR.Sender.GestioneTrasferimentiChiamate
                 await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyAddTrasferimento", command.TrasferimentoChiamata);
 
                 //NOTIFICA NAVBAR
-                await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyNavBar", new 
+                await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyNavBar", new
                 {
                     Titolo = "Hai una nuova chiamata",
                     Descrizione = $"La chiamata {richiesta.Codice} è stata trasferita dal comando {command.CodiceSede} alla tua sede",
