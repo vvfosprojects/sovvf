@@ -4,7 +4,7 @@ import { Subject } from 'rxjs';
 import { Store } from '@ngxs/store';
 import { SetConnectionId, SignalRHubConnesso, SignalRHubDisconnesso } from './store/signalR.actions';
 import { ShowToastr } from '../../shared/store/actions/toastr/toastr.actions';
-import { StopLoadingActionMezzo, UpdateRichiesta } from '../../features/home/store/actions/richieste/richieste.actions';
+import { GetListaRichieste, StopLoadingActionMezzo, UpdateRichiesta } from '../../features/home/store/actions/richieste/richieste.actions';
 import { SignalRNotification } from './model/signalr-notification.model';
 import { SetTimeSync } from '../../shared/store/actions/app/app.actions';
 import { SetBoxPersonale } from '../../features/home/store/actions/boxes/box-personale.actions';
@@ -18,7 +18,6 @@ import {
     AddBookMezzoComposizione,
     RemoveBookingMezzoComposizione,
     RemoveBookMezzoComposizione,
-    SetListaMezziComposizione,
     UpdateMezzoComposizione,
     UpdateMezzoComposizioneScadenzaByCodiceMezzo
 } from '../../features/home/store/actions/composizione-partenza/mezzi-composizione.actions';
@@ -260,31 +259,18 @@ export class SignalRService {
         /**
          * Allerta Sedi
          */
-        this.hubNotification.on('NotifyAllertaAltreSedi', (data: SintesiRichiesta) => {
-            console.log('NotifyAllertaAltreSedi', data);
-            this.store.dispatch(new InsertChiamataSuccess(data));
+        this.hubNotification.on('NotifyAllertaAltreSedi', () => {
+            console.log('NotifyAllertaAltreSedi');
+            this.store.dispatch(new GetListaRichieste());
         });
-        // todo: implementare con BE
-        this.hubNotification.on('NotifyDeleteAllertaAltreSedi', (data: SintesiRichiesta) => {
-            console.log('NotifyDeleteAllertaAltreSedi', data);
-            // this.store.dispatch(new InsertChiamataSuccess(data));
+        this.hubNotification.on('NotifyDeleteAllertaAltreSedi', () => {
+            console.log('NotifyDeleteAllertaAltreSedi');
+            this.store.dispatch(new GetListaRichieste());
         });
 
         /**
          * Composizione Partenza
          */
-        this.hubNotification.on('NotifyGetComposizioneMezzi', (data: MezzoComposizione[]) => {
-            console.log('NotifyGetComposizioneMezzi', data);
-            this.store.dispatch(new SetListaMezziComposizione(data));
-            this.store.dispatch(new ShowToastr(ToastrType.Info, 'Mezzi Composizione ricevute da signalR', null, 5));
-        });
-
-        // Todo: è ancora utilizzato?
-        this.hubNotification.on('NotifyGetComposizioneSquadre', (data: any) => {
-            console.log('NotifyGetComposizioneSquadre', data);
-            // this.store.dispatch(new SetListaSquadreComposizione(data));
-            this.store.dispatch(new ShowToastr(ToastrType.Info, 'Squadre Composizione ricevute da signalR', null, 5));
-        });
         this.hubNotification.on('NotifyGetPreaccoppiati', (data: IdPreaccoppiati[]) => {
             this.store.dispatch(new SetListaIdPreAccoppiati(data));
             this.store.dispatch(new ShowToastr(ToastrType.Info, 'Preaccoppiati Composizione ricevute da signalR', null, 5));
@@ -321,7 +307,6 @@ export class SignalRService {
             console.log('NotifyAddUtente', codSede);
             this.store.dispatch(new SuccessAddUtenteGestione(codSede));
         });
-
         this.hubNotification.on('NotifyModificatoRuoloUtente', (idUtente: string) => {
             console.log('NotifyModificatoRuoloUtente', idUtente);
             if (idUtente) {
@@ -333,7 +318,6 @@ export class SignalRService {
                 }
             }
         });
-
         this.hubNotification.on('NotifyDeleteUtente', (idUtente: string) => {
             console.log('NotifyDeleteUtente', idUtente);
             const utenteAttuale = this.store.selectSnapshot(AuthState.currentUser);
@@ -351,21 +335,18 @@ export class SignalRService {
             console.log('NotifyChangeEnti', enti);
             this.store.dispatch(new SetEnti(enti));
         });
-
         this.hubNotification.on('NotifyAddEnte', (response: ResponseAddEnteRubricaInterface) => {
             console.log('NotifyAddEnte', response);
             this.store.dispatch(new AddVoceRubrica());
             const pagination = this.store.selectSnapshot(PaginationState.pagination);
             this.store.dispatch(new PatchPagination({ ...pagination, totalItems: response.pagination.totalItems }));
         });
-
         this.hubNotification.on('NotifyUpdateEnte', (response: ResponseUpdateEnteRubricaInterface) => {
             console.log('NotifyUpdateEnte', response);
             this.store.dispatch(new UpdateVoceRubrica(response.data));
             const pagination = this.store.selectSnapshot(PaginationState.pagination);
             this.store.dispatch(new PatchPagination({ ...pagination, totalItems: response.pagination.totalItems }));
         });
-
         this.hubNotification.on('NotifyDeleteEnte', (response: ResponseDeleteEnteRubricaInterface) => {
             console.log('NotifyDeleteEnte', response);
             this.store.dispatch(new DeleteVoceRubrica(response.data));
@@ -382,7 +363,6 @@ export class SignalRService {
             const pagination = this.store.selectSnapshot(PaginationState.pagination);
             this.store.dispatch(new PatchPagination({ ...pagination, totalItems: response.pagination.totalItems }));
         });
-
 
         /**
          * Disconnessione SignalR

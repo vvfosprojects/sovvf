@@ -1,6 +1,7 @@
 ﻿using SO115App.API.Models.Classi.Organigramma;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SO115App.Models.Classi.Organigramma
 {
@@ -31,7 +32,12 @@ namespace SO115App.Models.Classi.Organigramma
                 pinNodi.Add(new PinNodo(figlio.Codice, true));
             }
 
-            return pinNodi;
+            return pinNodi.Distinct().ToList();
+        }
+
+        public List<PinNodo> GetGerarchia(string CodiceSede)
+        {
+            return GetGerarchia(new string[] { CodiceSede });
         }
     }
 }
