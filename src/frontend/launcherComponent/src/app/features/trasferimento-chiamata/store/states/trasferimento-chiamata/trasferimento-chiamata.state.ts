@@ -69,29 +69,4 @@ export class TrasferimentoChiamataState {
         const pagina = this.store.selectSnapshot(PaginationState.page);
         dispatch(new GetListaTrasferimentiChiamate(pagina));
     }
-
-
-    // todo: servono?
-    /* @Action(UpdateVoceTrasferimentoChiamata)
-    updateVoceRubrica({ setState }: StateContext<TrasferimentoChiamataStateModel>, action: UpdateVoceTrasferimentoChiamata) {
-        setState(
-            patch({
-                listaTrasferimentiChiamate: updateItem<TrasferimentoChiamata>(voce => voce.id === action.voceTrasferimentoChiamata.id, action.voceTrasferimentoChiamata)
-            })
-        );
-    }
-
-    @Action(DeleteVoceTrasferimentoChiamata)
-    deleteVoceRubrica({ setState, getState, dispatch }: StateContext<TrasferimentoChiamataStateModel>, action: DeleteVoceTrasferimentoChiamata) {
-        const state = getState();
-        if (state.listaTrasferimentiChiamate && state.listaTrasferimentiChiamate.length === 1) {
-            const page = this.store.selectSnapshot(PaginationState.page);
-            dispatch(new GetListaTrasferimentiChiamate(page - 1));
-        }
-        setState(
-            patch({
-                listaTrasferimentiChiamate: removeItem<TrasferimentoChiamata>(voceTrasferimentoChiamata => voceTrasferimentoChiamata.id === action.idVoceTrasferimentoChiamata)
-            })
-        );
-    } */
 }

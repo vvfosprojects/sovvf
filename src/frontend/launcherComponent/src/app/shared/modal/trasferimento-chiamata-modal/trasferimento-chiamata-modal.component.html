@@ -16,7 +16,7 @@
                 <input id="operatore" formControlName="operatore" class="form-control" placeholder="Opeatore">
             </div>
             <div class="form-group">
-                <label for="sedeDa">
+                <label for="codiceRichesta">
                     Codice Richiesta da Trasferire
                     <small class="text-danger">*</small>
                 </label>
@@ -31,49 +31,18 @@
                 </ng-select>
             </div>
             <div class="form-group">
-                <label for="sedeDa">
-                    Sede Da
-                    <small class="text-danger">*</small>
-                </label>
-                <ng-select
-                        id="sedeDa"
-                        formControlName="sedeDa"
-                        [items]="listeSediNavbar"
-                        bindLabel="text"
-                        bindValue="value"
-                        placeholder="Sede Da"
-                        [clearable]="false"
-                        [closeOnSelect]="true"
-                        [notFoundText]="'Nessuna sede trovata con i parametri di ricerca'">
-                </ng-select>
+                <label for="sede">Dove vuoi trasferire la Chiamata?</label>
+                <div class="border rounded">
+                    <app-shared-treeview id="sede" class="height-test" [items]="listeSediNavbar"
+                                         [testoSedeSelezionata]="sediSelezionate" [placement]="'bottom-left'"
+                                         [visualizzaTasti]="false" [disabled]="false"
+                                         (confermaSelezione)="onPatchSedi($event)">
+                    </app-shared-treeview>
+                </div>
+                <div *ngIf="submitted && f.sedi.errors" class="text-danger mt-1">
+                    <div *ngIf="f.sedeA.errors.required">Campo Obbligatorio</div>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="sedeA">
-                    Sede A
-                    <small class="text-danger">*</small>
-                </label>
-                <ng-select
-                        id="sedeA"
-                        formControlName="sedeA"
-                        [items]="listeSediNavbar"
-                        bindLabel="text"
-                        bindValue="value"
-                        placeholder="Sede A"
-                        [clearable]="false"
-                        [closeOnSelect]="true"
-                        [notFoundText]="'Nessuna sede trovata con i parametri di ricerca'">
-                </ng-select>
-            </div>
-            <div class="form-group" style="display: inline-grid;">
-                <label for="data">
-                    Data
-                    <small class="text-danger">*</small>
-                </label>
-                <input id="data" placement="right" formControlName="data" type="text" class="form-control"
-                       ngbDatepicker #d="ngbDatepicker" placeholder="aa/mm/gg"/>
-                <button class="btn btn-primary btn-no-hover" (click)="d.toggle()">Seleziona Data</button>
-            </div>
-
         </form>
         <h6 class="text-danger">* Campi Obbligatori</h6>
     </div>

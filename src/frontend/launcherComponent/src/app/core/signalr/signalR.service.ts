@@ -58,6 +58,10 @@ import { AddVoceRubrica, DeleteVoceRubrica, UpdateVoceRubrica } from '../../feat
 import { SetEnti } from '../../shared/store/actions/enti/enti.actions';
 import { PatchPagination } from '../../shared/store/actions/pagination/pagination.actions';
 import { PaginationState } from '../../shared/store/states/pagination/pagination.state';
+import { AddNotifica } from '../../shared/store/actions/notifiche/notifiche.actions';
+import { NotificaInterface } from '../../shared/interface/notifica.interface';
+import { ResponseAddTrasferimentoInterface, TrasferimentoChiamata } from '../../shared/interface/trasferimento-chiamata.interface';
+import { AddTrasferimentoChiamata } from '../../features/trasferimento-chiamata/store/actions/trasferimento-chiamata/trasferimento-chiamata.actions';
 
 const HUB_URL = environment.baseUrl + environment.signalRHub;
 const SIGNALR_BYPASS = !environment.signalR;
@@ -114,6 +118,13 @@ export class SignalRService {
             console.log('NotifyLogOut', data);
             // avvisa gli altri client che un utente si è scollegato alla sua stessa sede
             this.store.dispatch(new ShowToastr(ToastrType.Info, 'Utente disconnesso:', data, 3, null, true));
+        });
+
+        /**
+         * Notifiche Navbar
+         */
+        this.hubNotification.on('NotifyNavbar', (data: NotificaInterface) => {
+            this.store.dispatch(new AddNotifica(data));
         });
 
         /**
@@ -253,6 +264,11 @@ export class SignalRService {
             console.log('NotifyAllertaAltreSedi', data);
             this.store.dispatch(new InsertChiamataSuccess(data));
         });
+        // todo: implementare con BE
+        this.hubNotification.on('NotifyDeleteAllertaAltreSedi', (data: SintesiRichiesta) => {
+            console.log('NotifyDeleteAllertaAltreSedi', data);
+            // this.store.dispatch(new InsertChiamataSuccess(data));
+        });
 
         /**
          * Composizione Partenza
@@ -356,6 +372,17 @@ export class SignalRService {
             const pagination = this.store.selectSnapshot(PaginationState.pagination);
             this.store.dispatch(new PatchPagination({ ...pagination, totalItems: response.pagination.totalItems }));
         });
+
+        /**
+         * Trasferimenti
+         */
+        this.hubNotification.on('NotifyAddTrasferimento', (response: ResponseAddTrasferimentoInterface) => {
+            console.log('NotifyAddTrasferimento', response);
+            this.store.dispatch(new AddTrasferimentoChiamata());
+            const pagination = this.store.selectSnapshot(PaginationState.pagination);
+            this.store.dispatch(new PatchPagination({ ...pagination, totalItems: response.pagination.totalItems }));
+        });
+
 
         /**
          * Disconnessione SignalR
