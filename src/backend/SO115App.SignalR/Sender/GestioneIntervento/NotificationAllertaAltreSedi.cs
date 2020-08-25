@@ -39,6 +39,14 @@ namespace SO115App.SignalR.Sender.GestioneIntervento
                 await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyAllertaAltreSedi", sintesi);
                 await _notificationHubContext.Clients.Group(sede).SendAsync("ModifyAndNotifySuccess", command);
             }
+
+            if (command.CodSediAllertateOld != null)
+            {
+                foreach (var sede in command.CodSediAllertateOld)
+                {
+                    await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyDeleteAllertaAltreSedi", command.CodiceRichiesta);
+                }
+            }
         }
     }
 }
