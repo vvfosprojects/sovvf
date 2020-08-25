@@ -125,21 +125,24 @@ namespace SO115App.Persistence.MongoDB
             var filtroSediCompetenti = Builders<RichiestaAssistenza>.Filter
                 .In(richiesta => richiesta.CodSOCompetente, filtro.UnitaOperative.Select(uo => uo.Codice));
 
-            var filtriSediAllertate = filtro.UnitaOperative.Select(uo =>
-                Builders<RichiestaAssistenza>.Filter
-                    .ElemMatch(richiesta => richiesta.CodSOAllertate, x => x == uo.Codice)
-            );
+            List<string> listaCodSedi = new List<string>();
+            foreach (var sede in filtro.UnitaOperative)
+            {
+                listaCodSedi.Add(sede.Codice);
+            }
 
-            FilterDefinition<RichiestaAssistenza> orFiltroSediAllertate = Builders<RichiestaAssistenza>.Filter.Empty;
-            foreach (var f in filtriSediAllertate)
-                orFiltroSediAllertate |= f;
+            var filtriSediAllertate = Builders<RichiestaAssistenza>.Filter.AnyIn(x => x.CodSOAllertate, listaCodSedi);
+
+            //FilterDefinition <RichiestaAssistenza> orFiltroSediAllertate = Builders<RichiestaAssistenza>.Filter.Empty;
+            //foreach (var f in filtriSediAllertate)
+            //    orFiltroSediAllertate |= f;
 
             List<RichiestaAssistenza> result = new List<RichiestaAssistenza>();
             //Iniziamo col restituire le richieste aperte.
             if (filtro.IncludiRichiesteAperte)
             {
                 var filtroRichiesteAperte = Builders<RichiestaAssistenza>.Filter.Ne(r => r.TestoStatoRichiesta, "X");
-                var filtroComplessivo = filtroSediCompetenti & filtroRichiesteAperte;
+                var filtroComplessivo = filtroRichiesteAperte & filtroSediCompetenti | filtriSediAllertate;
 
                 var richiesteAperte = _dbContext.RichiestaAssistenzaCollection
                                         .Find(filtroComplessivo)
@@ -223,7 +226,7 @@ namespace SO115App.Persistence.MongoDB
                 {
                     sintesi = _mapperSintesi.Map(richiesta);
                     sintesi.Competenze = MapCompetenze(richiesta.CodUOCompetenza);
-                    sintesi.SediAllertate = richiesta.CodSOAllertate!=null ? MapCompetenze(richiesta.CodSOAllertate.ToArray()) : null;
+                    sintesi.SediAllertate = richiesta.CodSOAllertate != null ? MapCompetenze(richiesta.CodSOAllertate.ToArray()) : null;
                     sintesi.ListaEntiIntervenuti = rubrica.Count == 0 ? null : rubrica;
                     listaSistesiRichieste.Add(sintesi);
                 }
