@@ -71,14 +71,6 @@ namespace SO115App.SignalR.Sender.GestioneTrasferimentiChiamate
                 await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxInterventi", boxInterventi);
                 await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyDeleteChiamata", richiesta.Id);
                 await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyAddTrasferimento", command.TrasferimentoChiamata);
-
-                //NOTIFICA NAVBAR
-                await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyNavBar", new
-                {
-                    Titolo = "Hai una nuova chiamata",
-                    Descrizione = $"La chiamata {richiesta.Codice} è stata trasferita dal comando {command.CodiceSede} alla tua sede",
-                    Tipo = TipoNotifica.TrasferimentoChiamata
-                });
             }
         }
     }
