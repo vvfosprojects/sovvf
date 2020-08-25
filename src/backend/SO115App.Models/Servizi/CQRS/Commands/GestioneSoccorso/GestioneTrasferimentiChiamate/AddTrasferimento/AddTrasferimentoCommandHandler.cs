@@ -25,7 +25,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneTrasfer
             command.TrasferimentoChiamata.CodSedeDa = richiesta.CodSOCompetente;
             richiesta.CodSOCompetente = command.TrasferimentoChiamata.CodSedeA[0];
             command.TrasferimentoChiamata.IdOperatore = command.IdOperatore;
-            command.TrasferimentoChiamata.Data = command.TrasferimentoChiamata.Data == DateTime.MinValue ? DateTime.Now : command.TrasferimentoChiamata.Data;
+            command.TrasferimentoChiamata.Data = DateTime.Now;
             
             new Evento(richiesta, command.TrasferimentoChiamata.Data, command.IdOperatore, "TrasferimentoChiamata");
 
