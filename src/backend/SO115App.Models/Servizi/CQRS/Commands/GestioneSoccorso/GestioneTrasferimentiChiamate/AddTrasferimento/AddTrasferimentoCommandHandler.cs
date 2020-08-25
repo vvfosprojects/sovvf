@@ -23,7 +23,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneTrasfer
             var richiesta = _getRichiestaById.GetByCodice(command.TrasferimentoChiamata.CodRichiesta);
 
             command.TrasferimentoChiamata.CodSedeDa = richiesta.CodSOCompetente;
-            richiesta.CodSOCompetente = command.TrasferimentoChiamata.CodSedeA;
+            richiesta.CodSOCompetente = command.TrasferimentoChiamata.CodSedeA[0];
             command.TrasferimentoChiamata.IdOperatore = command.IdOperatore;
             command.TrasferimentoChiamata.Data = command.TrasferimentoChiamata.Data == DateTime.MinValue ? DateTime.Now : command.TrasferimentoChiamata.Data;
             
