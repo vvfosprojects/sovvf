@@ -33,5 +33,10 @@ namespace SO115App.Models.Classi.Organigramma
 
             return pinNodi;
         }
+
+        public List<PinNodo> GetGerarchia(string CodiceSede)
+        {
+            return GetGerarchia(new string[] { CodiceSede });
+        }
     }
 }

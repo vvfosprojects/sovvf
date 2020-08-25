@@ -12,6 +12,13 @@ namespace SO115App.Persistence.MongoDB.GestioneTrasferimentiChiamate
         private readonly DbContext _dbContext;
         public GetTrasferimenti(DbContext dbContext) => _dbContext = dbContext;
 
+        public int Count(string[] CodiciSedi)
+        {
+            return (int)_dbContext.TrasferimentiChiamateCollection
+                .Find(c => c.CodSedeA.Any(x => CodiciSedi.Contains(x)) || CodiciSedi.Contains(c.CodSedeDa))
+                .Count();
+        }
+
         public List<TrasferimentoChiamata> GetAll(string[] CodiciSedi)
         {
             return _dbContext.TrasferimentiChiamateCollection
