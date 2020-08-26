@@ -19,19 +19,13 @@
 //-----------------------------------------------------------------------
 
 using DomainModel.CQRS.Commands.ConfermaPartenze;
-using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Composizione;
-using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
-using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi;
 using SO115App.Models.Servizi.Infrastruttura.GestioneStatoOperativoSquadra;
-using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
 using System;
-using System.Collections.Generic;
-using System.IO;
 
 namespace SO115App.ExternalAPI.Fake.Composizione
 {
@@ -41,22 +35,18 @@ namespace SO115App.ExternalAPI.Fake.Composizione
     /// </summary>
     public class UpdateConfermaPartenzeExt : IUpdateConfermaPartenze
     {
-        private readonly ISetMezzoOccupato _setMovimentazione;
         private readonly IUpDateRichiestaAssistenza _updateRichiesta;
         private readonly ISetStatoOperativoMezzo _setStatoOperativoMezzo;
         private readonly ISetStatoSquadra _setStatoSquadra;
-        private readonly IGetTipologieByCodice _getTipologieByCodice;
 
         /// <summary>
         ///   Costruttore della classe
         /// </summary>
-        public UpdateConfermaPartenzeExt(ISetMezzoOccupato setMovimentazione, IUpDateRichiestaAssistenza updateRichiesta, ISetStatoOperativoMezzo setStatoOperativoMezzo, ISetStatoSquadra setStatoSquadra, IGetTipologieByCodice getTipologieByCodice)
+        public UpdateConfermaPartenzeExt(IUpDateRichiestaAssistenza updateRichiesta, ISetStatoOperativoMezzo setStatoOperativoMezzo, ISetStatoSquadra setStatoSquadra)
         {
-            _setMovimentazione = setMovimentazione;
             _updateRichiesta = updateRichiesta;
             _setStatoOperativoMezzo = setStatoOperativoMezzo;
             _setStatoSquadra = setStatoSquadra;
-            _getTipologieByCodice = getTipologieByCodice;
         }
 
         /// <summary>
@@ -69,18 +59,15 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             var conferma = new ConfermaPartenze();
 
             _updateRichiesta.UpDate(command.ConfermaPartenze.richiesta);
-            var tipologia = _getTipologieByCodice.Get(command.ConfermaPartenze.richiesta.Tipologie)[0];
-
             foreach (var partenza in command.ConfermaPartenze.Partenze)
             {
                 var dataMovintazione = DateTime.UtcNow;
 
-                //_setMovimentazione.Set(partenza.Mezzo.Codice, DateTime.UtcNow, command.ConfermaPartenze.IdRichiesta, tipologia.Codice, tipologia.Descrizione); //TODO IMPLEMENTARE CON GAC
                 _setStatoOperativoMezzo.Set(partenza.Mezzo.Distaccamento.Codice, partenza.Mezzo.Codice, Costanti.MezzoInUscita, command.ConfermaPartenze.IdRichiesta);
 
                 foreach (var squadra in partenza.Squadre)
                 {
-                    _setStatoSquadra.SetStato(squadra.Codice, command.ConfermaPartenze.IdRichiesta, Costanti.MezzoInUscita, command.ConfermaPartenze.CodiceSede);
+                    _setStatoSquadra.SetStato(squadra.Codice, command.ConfermaPartenze.IdRichiesta, Costanti.MezzoInUscita, squadra.Distaccamento.Codice);
                 }
             }
 
