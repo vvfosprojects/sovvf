@@ -49,10 +49,13 @@ namespace DomainModel.CQRS.Commands.MezzoPrenotato
                             abilitato = true;
                     }
 
-                    foreach (var competenza in richiesta.CodSOAllertate)
+                    if (richiesta.CodSOAllertate != null)
                     {
-                        if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, competenza, Costanti.GestoreRichieste))
-                            abilitato = true;
+                        foreach (var competenza in richiesta.CodSOAllertate)
+                        {
+                            if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, competenza, Costanti.GestoreRichieste))
+                                abilitato = true;
+                        }
                     }
 
                     if (!abilitato)
