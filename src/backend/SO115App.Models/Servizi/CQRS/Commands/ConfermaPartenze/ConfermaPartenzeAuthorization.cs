@@ -31,6 +31,8 @@ namespace DomainModel.CQRS.Commands.MezzoPrenotato
 
         public IEnumerable<AuthorizationResult> Authorize(ConfermaPartenzeCommand command)
         {
+            var richiesta = _getRichiestaById.GetByCodice(command.ConfermaPartenze.IdRichiesta);
+
             var username = _currentUser.Identity.Name;
             var user = _findUserByUsername.FindUserByUs(username);
 
@@ -40,7 +42,20 @@ namespace DomainModel.CQRS.Commands.MezzoPrenotato
                     yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
                 else
                 {
-                    if (!_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, command.ConfermaPartenze.CodiceSede, Costanti.GestoreRichieste))
+                    bool abilitato = false;
+                    foreach (var competenza in richiesta.CodUOCompetenza)
+                    {
+                        if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, competenza, Costanti.GestoreRichieste))
+                            abilitato = true;
+                    }
+
+                    foreach (var competenza in richiesta.CodSOAllertate)
+                    {
+                        if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, competenza, Costanti.GestoreRichieste))
+                            abilitato = true;
+                    }
+
+                    if (!abilitato)
                         yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
                 }
             }

@@ -96,17 +96,18 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                     }
                 }
 
-                foreach (var composizione in richiesta.Partenze)
-                {
-                    if (composizione.Partenza.Mezzo.Stato == Costanti.MezzoSulPosto
-                        || composizione.Partenza.Mezzo.Stato == Costanti.MezzoInViaggio)
-                    {
-                        _mezziTuttiInSede = false;
-                    }
-                }
+                //foreach (var composizione in richiesta.Partenze)
+                //{
+                //    if (composizione.Partenza.Mezzo.Stato == Costanti.MezzoSulPosto
+                //        || composizione.Partenza.Mezzo.Stato == Costanti.MezzoInViaggio)
+                //    {
+                //        _mezziTuttiInSede = false;
+                //    }
+                //}
 
-                if (_mezziTuttiInSede)
-                    new PartenzaInRientro(richiesta, command.IdMezzo, command.DataOraAggiornamento, richiesta.CodOperatore); //TODO GESTIRE IL CODICE OPERATORE
+                //if (_mezziTuttiInSede)
+
+                new PartenzaInRientro(richiesta, command.IdMezzo, command.DataOraAggiornamento, richiesta.CodOperatore); //TODO GESTIRE IL CODICE OPERATORE
             }
             else if (command.StatoMezzo == Costanti.MezzoRientrato)
             {

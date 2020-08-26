@@ -33,10 +33,12 @@ namespace SO115App.SignalR.Sender.GestioneIntervento
             var SediDaNotificare = _getGerarchiaToSend.Get(sintesi.CodSOCompetente, sintesi.CodSOAllertate.ToArray());
 
             command.Chiamata = sintesi;
-            //Invio la notifica alle competenze principali della richiesta
+            //Invio la notifica alle competenze della richiesta
             foreach (var sede in SediDaNotificare)
             {
-                await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyAllertaAltreSedi", sintesi);
+                if (!sede.Equals(sintesi.CodSOCompetente))
+                    await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyAllertaAltreSedi", sintesi);
+
                 await _notificationHubContext.Clients.Group(sede).SendAsync("ModifyAndNotifySuccess", command);
             }
 
