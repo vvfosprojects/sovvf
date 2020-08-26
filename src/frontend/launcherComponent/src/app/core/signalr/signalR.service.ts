@@ -59,7 +59,7 @@ import { PatchPagination } from '../../shared/store/actions/pagination/paginatio
 import { PaginationState } from '../../shared/store/states/pagination/pagination.state';
 import { AddNotifica } from '../../shared/store/actions/notifiche/notifiche.actions';
 import { NotificaInterface } from '../../shared/interface/notifica.interface';
-import { ResponseAddTrasferimentoInterface, TrasferimentoChiamata } from '../../shared/interface/trasferimento-chiamata.interface';
+import { ResponseAddTrasferimentoInterface } from '../../shared/interface/trasferimento-chiamata.interface';
 import { AddTrasferimentoChiamata } from '../../features/trasferimento-chiamata/store/actions/trasferimento-chiamata/trasferimento-chiamata.actions';
 
 const HUB_URL = environment.baseUrl + environment.signalRHub;
@@ -362,6 +362,10 @@ export class SignalRService {
             this.store.dispatch(new AddTrasferimentoChiamata());
             const pagination = this.store.selectSnapshot(PaginationState.pagination);
             this.store.dispatch(new PatchPagination({ ...pagination, totalItems: response.pagination.totalItems }));
+        });
+        this.hubNotification.on('NotifyDeleteChiamata', (idRichiesta: string) => {
+            console.log('NotifyDeleteChiamata', idRichiesta);
+            this.store.dispatch(new GetListaRichieste());
         });
 
         /**
