@@ -58,7 +58,20 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                     yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
                 else
                 {
-                    if (!_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, richiesta.CodSOCompetente, Costanti.GestoreRichieste))
+                    bool abilitato = false;
+                    foreach (var competenza in richiesta.CodUOCompetenza)
+                    {
+                        if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, competenza, Costanti.GestoreRichieste))
+                            abilitato = true;
+                    }
+
+                    foreach (var competenza in richiesta.CodSOAllertate)
+                    {
+                        if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, competenza, Costanti.GestoreRichieste))
+                            abilitato = true;
+                    }
+
+                    if (!abilitato)
                         yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
                 }
             }
