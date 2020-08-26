@@ -48,7 +48,7 @@ export class AllertaSedeModalComponent implements OnInit, OnDestroy {
         });
         this.allertaSedeForm = this.fb.group({
             codRichiesta: [null, Validators.required],
-            sedi: [null, Validators.required]
+            sedi: [null]
         });
     }
 
