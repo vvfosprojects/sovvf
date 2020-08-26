@@ -2,11 +2,12 @@
 using Microsoft.AspNetCore.SignalR;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes;
 using SO115App.Models.Classi.Condivise;
-using SO115App.Models.Classi.Organigramma;
+using SO115App.Models.Classi.NotificheNavbar;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneTrasferimentiChiamate.AddTrasferimento;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GetSintesiRichiestaAssistenza;
 using SO115App.Models.Servizi.Infrastruttura.GestioneTrasferimentiChiamate;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti;
+using SO115App.Models.Servizi.Infrastruttura.Marker;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneTrasferimentiChiamate;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.IdentityManagement;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
@@ -24,6 +25,7 @@ namespace SO115App.SignalR.Sender.GestioneTrasferimentiChiamate
         private readonly IGetTrasferimenti _getTrasferimenti;
         private readonly IGetUtenteById _getUtenteById;
         private readonly IGetDistaccamentoByCodiceSede _getSede;
+        private readonly IGetSediMarker _getSediMarker;
         private readonly GetGerarchiaToSend _getGerarchiaToSend;
         public NotificationAddTrasferimento(IHubContext<NotificationHub> notificationHubContext,
             IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> boxRichiesteHandler,
@@ -31,7 +33,8 @@ namespace SO115App.SignalR.Sender.GestioneTrasferimentiChiamate
             IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative,
             IGetTrasferimenti getTrasferimenti,
             IGetUtenteById getUtenteById,
-            IGetDistaccamentoByCodiceSede getSede)
+            IGetDistaccamentoByCodiceSede getSede,
+            IGetSediMarker getSediMarker)
         {
             _notificationHubContext = notificationHubContext;
             _boxRichiesteHandler = boxRichiesteHandler;
@@ -39,6 +42,7 @@ namespace SO115App.SignalR.Sender.GestioneTrasferimentiChiamate
             _getTrasferimenti = getTrasferimenti;
             _getUtenteById = getUtenteById;
             _getSede = getSede;
+            _getSediMarker = getSediMarker;
             _getGerarchiaToSend = new GetGerarchiaToSend(getAlberaturaUnitaOperative);
         }
 
@@ -63,8 +67,11 @@ namespace SO115App.SignalR.Sender.GestioneTrasferimentiChiamate
                     CodiciSede = new string[] { sede }
                 }).BoxRichieste;
 
+                //var sediMarker = _getSediMarker.GetListaSediMarker(null);
+
                 await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxInterventi", boxInterventi);
                 await _notificationHubContext.Clients.Group(sede).SendAsync("SaveAndNotifySuccessChiamata", richiesta);
+                //await _notificationHubContext.Clients.Group(sede).SendAsync("marker", sediMarker);
                 await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyAddTrasferimento", new
                 {
                     Data = new TrasferimentoChiamataFull()
@@ -83,11 +90,12 @@ namespace SO115App.SignalR.Sender.GestioneTrasferimentiChiamate
                 });
 
                 //NOTIFICA NAVBAR
-                await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyNavBar", new
+                await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyNavBar", new Notifica()
                 {
                     Titolo = "Hai una nuova chiamata",
                     Descrizione = $"La chiamata {richiesta.Codice} è stata trasferita dal {mioComandoDes} alla tua sede",
-                    Tipo = TipoNotifica.TrasferimentoChiamata
+                    Tipo = TipoNotifica.TrasferimentoChiamata,
+                    Data = command.TrasferimentoChiamata.Data
                 });
             }
 
@@ -100,8 +108,11 @@ namespace SO115App.SignalR.Sender.GestioneTrasferimentiChiamate
                     CodiciSede = new string[] { sede }
                 }).BoxRichieste;
 
+                //var sediMarker = _getSediMarker.GetListaSediMarker(null);
+
                 await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxInterventi", boxInterventi);
                 await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyDeleteChiamata", richiesta.Id);
+                //await _notificationHubContext.Clients.Group(sede).SendAsync("marker", sediMarker);
                 await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyAddTrasferimento", new
                 {
                     Data = new TrasferimentoChiamataFull()

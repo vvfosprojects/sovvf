@@ -89,7 +89,7 @@ namespace SO115App.API.Controllers
 
             try
             {
-                return Ok(_richiesteQueryHandler.Handle(query).DataArray);
+                return Ok(_richiesteQueryHandler.Handle(query).Data);
             }
             catch (Exception ex)
             {

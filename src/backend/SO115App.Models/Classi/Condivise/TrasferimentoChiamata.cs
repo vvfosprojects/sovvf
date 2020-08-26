@@ -24,9 +24,4 @@ namespace SO115App.Models.Classi.Condivise
         public DateTime Data { get; set; }
         public Utente Operatore { get; set; }
     }
-
-    public enum TipoNotifica
-    {
-        TrasferimentoChiamata
-    }
 }

@@ -4,6 +4,6 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneTrasferimentiChiamate.Cod
 {
     public class CodiciChiamateResult
     {
-        public List<string> DataArray { get; set; }
+        public List<string> Data { get; set; }
     }
 }
