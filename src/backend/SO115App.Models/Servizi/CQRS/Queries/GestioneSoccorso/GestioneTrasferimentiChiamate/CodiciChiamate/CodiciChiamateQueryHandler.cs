@@ -1,7 +1,7 @@
 ﻿using CQRS.Queries;
 using SO115App.Models.Servizi.Infrastruttura.GestioneTrasferimentiChiamate.CodiciChiamate;
 
-namespace SO115App.Models.Servizi.CQRS.Queries.GestioneTrasferimentiChiamate.CodiciChiamate
+namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GestioneTrasferimentiChiamate.CodiciChiamate
 {
     public class CodiciChiamateQueryHandler : IQueryHandler<CodiciChiamateQuery, CodiciChiamateResult>
     {

@@ -1,7 +1,7 @@
 ﻿using SO115App.Models.Classi.Condivise;
 using System.Collections.Generic;
 
-namespace SO115App.Models.Servizi.CQRS.Queries.GestioneTrasferimentiChiamate
+namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GestioneTrasferimentiChiamate
 {
     public class TrasferimentiChiamateResult
     {
