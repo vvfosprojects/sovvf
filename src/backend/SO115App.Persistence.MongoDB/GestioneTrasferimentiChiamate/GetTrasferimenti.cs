@@ -17,14 +17,14 @@ namespace SO115App.Persistence.MongoDB.GestioneTrasferimentiChiamate
             var text = textSearch?.ToLower() ?? "";
 
             return _dbContext.TrasferimentiChiamateCollection
-                .Find(c => c.CodRichiesta.ToLower().Contains(text) && (c.CodSedeA.Any(x => CodiciSedi.Contains(x)) || CodiciSedi.Contains(c.CodSedeDa)))
+                .Find(c => c.CodRichiesta.ToLower().Contains(text) && (CodiciSedi.Contains(c.CodSedeA) || CodiciSedi.Contains(c.CodSedeDa)))
                 .ToList();
         }
 
-        public int Count(string[] CodiciSedi)
+        public int Count(string CodiceSede)
         {
             return (int)_dbContext.TrasferimentiChiamateCollection
-                .Find(c => c.CodSedeA.Any(x => CodiciSedi.Contains(x)) || CodiciSedi.Contains(c.CodSedeDa))
+                .Find(c => CodiceSede.Equals(c.CodSedeA) || CodiceSede.Equals(c.CodSedeDa))
                 .Count();
         }
     }

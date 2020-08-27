@@ -11,7 +11,6 @@ using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneTrasferimentiC
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.IdentityManagement;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
 using SO115App.SignalR.Utility;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace SO115App.SignalR.Sender.GestioneTrasferimentiChiamate
@@ -47,15 +46,15 @@ namespace SO115App.SignalR.Sender.GestioneTrasferimentiChiamate
             var mioComandoDes = _getSede.Get(command.CodiceSede).Descrizione;
             var mioOperatore = _getUtenteById.GetUtenteByCodice(command.TrasferimentoChiamata.IdOperatore);
             var totalItemsA = _getTrasferimenti.Count(command.TrasferimentoChiamata.CodSedeA);
-            var totalItemsDa = _getTrasferimenti.Count(new string[] { command.TrasferimentoChiamata.CodSedeDa });
+            var totalItemsDa = _getTrasferimenti.Count(command.TrasferimentoChiamata.CodSedeDa);
             var richiesta = _getRichiesta.Handle(new GetSintesiRichiestaAssistenzaQuery()
             {
                 CodiceRichiesta = command.TrasferimentoChiamata.CodRichiesta,
-                CodiceSede = command.TrasferimentoChiamata.CodSedeA[0]
+                CodiceSede = command.TrasferimentoChiamata.CodSedeA
             }).SintesiRichiesta;
 
             //GESTIONE SEDI A
-            var SediDaNotificareAdd = _getGerarchiaToSend.Get(command.TrasferimentoChiamata.CodSedeA[0]);
+            var SediDaNotificareAdd = _getGerarchiaToSend.Get(command.TrasferimentoChiamata.CodSedeA);
             foreach (var sede in SediDaNotificareAdd)
             {
                 var boxInterventi = _boxRichiesteHandler.Handle(new BoxRichiesteQuery()
@@ -72,7 +71,7 @@ namespace SO115App.SignalR.Sender.GestioneTrasferimentiChiamate
                         Id = command.TrasferimentoChiamata.Id,
                         CodRichiesta = command.TrasferimentoChiamata.CodRichiesta,
                         Data = command.TrasferimentoChiamata.Data,
-                        SedeA = command.TrasferimentoChiamata.CodSedeA.Select(c => _getSede.Get(c).Descrizione).ToArray(),
+                        SedeA = _getSede.Get(command.TrasferimentoChiamata.CodSedeA).Descrizione,
                         SedeDa = mioComandoDes,
                         Operatore = mioOperatore
                     },
@@ -110,7 +109,7 @@ namespace SO115App.SignalR.Sender.GestioneTrasferimentiChiamate
                         Id = command.TrasferimentoChiamata.Id,
                         CodRichiesta = command.TrasferimentoChiamata.CodRichiesta,
                         Data = command.TrasferimentoChiamata.Data,
-                        SedeA = command.TrasferimentoChiamata.CodSedeA.Select(c => _getSede.Get(c).Descrizione).ToArray(),
+                        SedeA = _getSede.Get(command.TrasferimentoChiamata.CodSedeA).Descrizione,
                         SedeDa = mioComandoDes,
                         Operatore = mioOperatore
                     },

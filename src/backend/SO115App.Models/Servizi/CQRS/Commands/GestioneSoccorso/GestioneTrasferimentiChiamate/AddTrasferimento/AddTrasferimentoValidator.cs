@@ -17,7 +17,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneTrasfer
                 if (command.TrasferimentoChiamata.CodRichiesta == null || command.TrasferimentoChiamata.CodRichiesta == "")
                     yield return new ValidationResult("Nessun codice richiesta");
 
-                if (command.TrasferimentoChiamata.CodSedeA == null || command.TrasferimentoChiamata.CodSedeA.Count() == 0)
+                if (command.TrasferimentoChiamata.CodSedeA == null || command.TrasferimentoChiamata.CodSedeA == "")
                     yield return new ValidationResult("Nessun codice sede a");
             }
         }

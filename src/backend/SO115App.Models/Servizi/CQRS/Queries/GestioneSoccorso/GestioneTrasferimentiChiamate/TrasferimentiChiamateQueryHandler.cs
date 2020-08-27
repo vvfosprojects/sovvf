@@ -39,7 +39,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GestioneTrasferi
                 {
                     Id = c.Id,
                     CodRichiesta = c.CodRichiesta,
-                    SedeA = c.CodSedeA.Select(x => _getDistaccamentoByCodiceSede.Get(x).Descrizione).ToArray(),
+                    SedeA = _getDistaccamentoByCodiceSede.Get(c.CodSedeA).Descrizione,
                     SedeDa = _getDistaccamentoByCodiceSede.Get(c.CodSedeDa).Descrizione,
                     Data = c.Data,
                     Operatore = _getUtenteById.GetUtenteByCodice(c.IdOperatore)
