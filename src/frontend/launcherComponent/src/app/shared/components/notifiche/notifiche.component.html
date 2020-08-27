@@ -7,7 +7,10 @@
             {{ nuoveNotifiche }}
         </div>
     </button>
-    <div ngbDropdownMenu style="width: 320px; max-height:400px; overflow: auto" class="my-0">
+    <div ngbDropdownMenu style="width: 330px; max-height:400px; overflow: auto" class="my-0">
+        <div class="text-center mt-3 mb-2">
+            <h4 class="font-weight-bold mb-0">Notifiche</h4>
+        </div>
         <div *ngFor="let notifica of listaNotifiche; let i = index" class="position-relative pl-3 pr-2 pt-4 pb-2"
              [ngClass]="{'border-bottom': listaNotifiche?.length > 1 && (i + 1) !== listaNotifiche?.length, 'border-bottom-0': (i + 1) === listaNotifiche?.length, 'cursor-pointer bg-light': this.active === i }"
              (mouseenter)="setActive(i)" (mouseleave)="clearActive()" (click)="onSelezione(notifica)">
@@ -19,7 +22,7 @@
             </div>
             <small class="position-absolute text-muted" style="top:6px; left:14px">
                 <i class="fa fa-clock-o"></i>
-                {{ notifica.data | date }}
+                {{ notifica.data | date: 'dd/MM hh:mm:ss' }}
             </small>
             <small *ngIf="(i + 1) <= nuoveNotifiche" class="position-absolute text-primary"
                    style="top:5px; right:8px">
