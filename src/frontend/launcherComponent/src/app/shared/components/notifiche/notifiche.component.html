@@ -22,7 +22,7 @@
             </div>
             <small class="position-absolute text-muted" style="top:6px; left:14px">
                 <i class="fa fa-clock-o"></i>
-                {{ notifica.data | date: 'dd/MM hh:mm:ss' }}
+                {{ notifica.data | date: 'dd/MM HH:mm:ss' }}
             </small>
             <small *ngIf="(i + 1) <= nuoveNotifiche" class="position-absolute text-primary"
                    style="top:5px; right:8px">
