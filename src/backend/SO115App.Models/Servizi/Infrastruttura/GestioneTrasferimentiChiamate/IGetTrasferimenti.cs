@@ -6,7 +6,7 @@ namespace SO115App.Models.Servizi.Infrastruttura.GestioneTrasferimentiChiamate
 {
     public interface IGetTrasferimenti
     {
-        List<TrasferimentoChiamata> GetAll(string[] CodiciSedi, FiltroTrasferimenti filters);
+        List<TrasferimentoChiamata> GetAll(string[] CodiciSedi, string textSearch);
         int Count(string[] CodiciSedi);
     }
 }

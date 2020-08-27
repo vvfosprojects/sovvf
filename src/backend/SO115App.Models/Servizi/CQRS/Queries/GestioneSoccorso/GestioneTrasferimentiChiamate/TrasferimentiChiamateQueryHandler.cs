@@ -34,7 +34,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GestioneTrasferi
             var lstPin = _getGerarchia.GetGerarchiaSede(query.CodiceSede).ToArray();
 
             //MAPPING
-            var lstTrasferimenti = _getTrasferimenti.GetAll(lstPin, query.Filters)
+            var lstTrasferimenti = _getTrasferimenti.GetAll(lstPin, query.Filters.Search)
                 .Select(c => new TrasferimentoChiamataFull()
                 {
                     Id = c.Id,

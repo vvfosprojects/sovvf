@@ -6,10 +6,6 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GestioneTrasferi
 {
     public class TrasferimentiChiamateQuery : IQuery<TrasferimentiChiamateResult>
     {
-        public TrasferimentiChiamateQuery()
-        {
-            Filters = new FiltroTrasferimenti();
-        }
         public string CodiceSede { get; set; }
         public string IdOperatore { get; set; }
         public Paginazione Pagination { get; set; }
