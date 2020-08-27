@@ -37,7 +37,7 @@ export class MezzoActionsComponent implements OnInit {
 
     onClick(action?: string) {
         this.modalService.open(MezzoActionsModalComponent, {
-            windowClass: 'smModal',
+            windowClass: 'modal-holder',
             backdropClass: 'light-blue-backdrop',
             centered: true
         }).result.then((res: { status: string, result: any }) => {

@@ -197,7 +197,11 @@ export class SintesiRichiestaComponent implements OnChanges {
     }
 
     onEliminaPartenza(targaMezzo: string) {
-        const modal = this.modalService.open(EliminaPartenzaModalComponent, { backdropClass: 'light-blue-backdrop', centered: true });
+        const modal = this.modalService.open(EliminaPartenzaModalComponent, {
+            windowClass: 'modal-holder',
+            backdropClass: 'light-blue-backdrop',
+            centered: true
+        });
         modal.componentInstance.targaMezzo = targaMezzo;
         modal.componentInstance.idRichiesta = this.richiesta.id;
         modal.result.then((res: { status: string, result: any }) => {
@@ -217,13 +221,21 @@ export class SintesiRichiestaComponent implements OnChanges {
     }
 
     onDettaglioStatoFonogramma() {
-        const modalDettaglioFonogramma = this.modalService.open(DettaglioFonogrammaModalComponent, { backdropClass: 'light-blue-backdrop', centered: true });
+        const modalDettaglioFonogramma = this.modalService.open(DettaglioFonogrammaModalComponent, {
+            windowClass: 'modal-holder',
+            backdropClass: 'light-blue-backdrop',
+            centered: true
+        });
         modalDettaglioFonogramma.componentInstance.codiceRichiesta = this.richiesta.codiceRichiesta ? this.richiesta.codiceRichiesta : this.richiesta.codice;
         modalDettaglioFonogramma.componentInstance.fonogramma = this.richiesta.fonogramma;
     }
 
     onModificaStatoFonogramma() {
-        const modalModificaStatoFonogramma = this.modalService.open(ModificaFonogrammaModalComponent, { backdropClass: 'light-blue-backdrop', centered: true });
+        const modalModificaStatoFonogramma = this.modalService.open(ModificaFonogrammaModalComponent, {
+            windowClass: 'modal-holder',
+            backdropClass: 'light-blue-backdrop',
+            centered: true
+        });
         modalModificaStatoFonogramma.componentInstance.codiceRichiesta = this.richiesta.codiceRichiesta ? this.richiesta.codiceRichiesta : this.richiesta.codice;
         modalModificaStatoFonogramma.componentInstance.idRichiesta = this.richiesta.id;
         modalModificaStatoFonogramma.componentInstance.fonogramma = this.richiesta.fonogramma;
@@ -239,7 +251,11 @@ export class SintesiRichiestaComponent implements OnChanges {
     }
 
     onAllertaSede() {
-        const modalAllertaSede = this.modalService.open(AllertaSedeModalComponent, { backdropClass: 'light-blue-backdrop', centered: true });
+        const modalAllertaSede = this.modalService.open(AllertaSedeModalComponent, {
+            windowClass: 'modal-holder',
+            backdropClass: 'light-blue-backdrop',
+            centered: true
+        });
         modalAllertaSede.componentInstance.codRichiesta = this.richiesta.codice;
         modalAllertaSede.result.then((res: { status: string, result: any }) => {
             switch (res.status) {
@@ -264,7 +280,11 @@ export class SintesiRichiestaComponent implements OnChanges {
     }
 
     onModificaEntiIntervenuti() {
-        const modalModificaEntiIntervenuti = this.modalService.open(ModificaEntiModalComponent, { backdropClass: 'light-blue-backdrop', centered: true });
+        const modalModificaEntiIntervenuti = this.modalService.open(ModificaEntiModalComponent, {
+            windowClass: 'modal-holder',
+            backdropClass: 'light-blue-backdrop',
+            centered: true
+        });
         modalModificaEntiIntervenuti.componentInstance.enti = this.richiesta.listaEnti ? this.richiesta.listaEnti : null;
         modalModificaEntiIntervenuti.componentInstance.listaEntiIntervenuti = this.richiesta.listaEntiIntervenuti ? this.richiesta.listaEntiIntervenuti : null;
         modalModificaEntiIntervenuti.result.then((res: { status: string, result: any }) => {
@@ -282,6 +302,7 @@ export class SintesiRichiestaComponent implements OnChanges {
 
     onAddTrasferimentoChiamata(codiceRichiesta: string) {
         const addTrasferimentoChiamataModal = this.modalService.open(TrasferimentoChiamataModalComponent, {
+            windowClass: 'modal-holder',
             backdropClass: 'light-blue-backdrop',
             centered: true,
             size: 'lg'
