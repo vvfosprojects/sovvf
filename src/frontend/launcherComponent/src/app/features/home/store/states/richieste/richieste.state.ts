@@ -297,16 +297,6 @@ export class RichiesteState {
         }
     }
 
-    @Action(CambiaStatoRichiesta)
-    cambiaStatoRichiesta({ patchState, dispatch }: StateContext<RichiesteStateModel>, action: CambiaStatoRichiesta) {
-        const obj = {
-            'idRichiesta': action.idRichiesta,
-            'stato': action.stato
-        };
-        this.richiesteService.aggiornaStatoRichiesta(obj).subscribe(() => {
-        });
-    }
-
     @Action(SetIdChiamataInviaPartenza)
     setIdChiamataInviaPartenza({ patchState, dispatch }: StateContext<RichiesteStateModel>, action: SetIdChiamataInviaPartenza) {
         patchState({
@@ -368,7 +358,7 @@ export class RichiesteState {
         const obj = action.richiestaAction;
         console.log('Obj', obj);
         this.richiesteService.aggiornaStatoRichiesta(obj).subscribe(() => {
-        });
+        }, error => dispatch(new StopLoadingActionRichiesta()));
     }
 
     @Action(ModificaStatoFonogramma)
