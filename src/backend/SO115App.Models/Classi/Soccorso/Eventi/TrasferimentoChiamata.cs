@@ -6,8 +6,8 @@ namespace SO115App.Models.Classi.Soccorso.Eventi
 {
     public class TrasferimentoChiamata : Evento
     {
-        public TrasferimentoChiamata(RichiestaAssistenza richiesta, DateTime istante, string codiceFonte, string DesSedeDa, string DesSedeA, string CodSedeUtente, string tipoEvento = "TrasferimentoChiamata")
-            : base(richiesta, istante, codiceFonte, tipoEvento, CodSedeUtente) 
+        public TrasferimentoChiamata(RichiestaAssistenza richiesta, DateTime istante, string codiceFonte, string DesSedeDa, string DesSedeA, string SedeOperatore, string tipoEvento = "TrasferimentoChiamata")
+            : base(richiesta, istante, codiceFonte, tipoEvento, SedeOperatore) 
         {
             Note = $"Trasferita da {DesSedeDa} a {DesSedeA}";
         }
