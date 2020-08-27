@@ -8,7 +8,7 @@
 <div class="modal-body height py-4 px-5">
     <form [formGroup]="allertaSedeForm" ngxsForm="allertaSede.allertaSedeForm">
         <div class="form-group">
-            <label for="sede">Sede</label>
+            <label for="sede">Quale sede vuoi allertare?</label>
             <div class="border rounded">
                 <app-shared-treeview id="sede" class="height-test" [items]="listeSediNavbar"
                                      [testoSedeSelezionata]="sediSelezionate" [placement]="'bottom-left'"
@@ -16,14 +16,17 @@
                                      (confermaSelezione)="onPatchSedi($event)">
                 </app-shared-treeview>
             </div>
-            <div *ngIf="submitted && f.sedi.errors" class="text-danger mt-1">
+            <div *ngIf="f.sedi.errors" class="text-danger mt-1">
                 <div *ngIf="f.sedi.errors.required">Campo Obbligatorio</div>
             </div>
         </div>
     </form>
 </div>
 <div class="modal-footer">
-    <button type="button" class="btn btn-lg btn-secondary" (click)="closeModal('ko')">Annulla</button>
-    <button type="button" class="btn btn-lg btn-danger" [disabled]="!formValid" (click)="onConferma()">Conferma
+    <button type="button" class="btn btn-lg btn-secondary" (click)="closeModal('ko')">
+        {{ 'Annulla' | uppercase }}
+    </button>
+    <button type="button" class="btn btn-lg btn-danger" [disabled]="!formValid" (click)="onConferma()">
+        {{ 'Conferma Allerta' | uppercase }}
     </button>
 </div>
