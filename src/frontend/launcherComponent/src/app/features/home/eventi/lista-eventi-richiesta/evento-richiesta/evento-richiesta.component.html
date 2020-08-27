@@ -26,7 +26,8 @@
     </small>
 </td>
 <td>
-  <span *ngIf="operatore" class="h6 text-muted">
+  <span *ngIf="operatore" class="h6 text-muted"
+        [ngbTooltip]="eventoRichiesta?.sedeOperatore ? eventoRichiesta?.sedeOperatore : 'Sede operatore non disponibile'">
       {{eventoRichiesta.operatore | uppercase}}
   </span>
 </td>
