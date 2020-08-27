@@ -2,6 +2,7 @@
 using SO115App.Models.Classi.Soccorso.Eventi;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.GestioneTrasferimentiChiamate;
+using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.IdentityManagement;
 using System;
 
@@ -12,13 +13,16 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneTrasfer
         private readonly IAddTrasferimento _addTrasferimento;
         private readonly IGetRichiestaById _getRichiestaById;
         private readonly IGetDistaccamentoByCodiceSede _getSede;
+        private readonly IGetUtenteById _getUtenteById;
         public AddTrasferimentoCommandHandler(IAddTrasferimento addTrasferimento,
             IGetRichiestaById getRichiestaById,
-            IGetDistaccamentoByCodiceSede getSede)
+            IGetDistaccamentoByCodiceSede getSede,
+            IGetUtenteById getUtenteById)
         {
             _addTrasferimento = addTrasferimento;
             _getRichiestaById = getRichiestaById;
             _getSede = getSede;
+            _getUtenteById = getUtenteById;
         }
 
         public void Handle(AddTrasferimentoCommand command)
@@ -34,7 +38,9 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneTrasfer
             var sedeDa = _getSede.Get(command.TrasferimentoChiamata.CodSedeDa).Descrizione;
             var sedeA = _getSede.Get(command.TrasferimentoChiamata.CodSedeA).Descrizione;
 
-            new TrasferimentoChiamata(richiesta, command.TrasferimentoChiamata.Data, command.IdOperatore, sedeDa, sedeA);
+            var codSedeUtente = _getUtenteById.GetUtenteByCodice(command.TrasferimentoChiamata.IdOperatore).Sede.Descrizione;
+
+            new TrasferimentoChiamata(richiesta, command.TrasferimentoChiamata.Data, command.IdOperatore, sedeDa, sedeA, codSedeUtente);
 
             //DB SYNC
             _addTrasferimento.Add(command.TrasferimentoChiamata, richiesta);

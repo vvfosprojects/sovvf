@@ -32,13 +32,14 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi
     public class Evento : IEvento
     {
         [JsonConstructor]
-        public Evento(DateTime Istante, string CodiceFonte, string Codice, string TipoEvento)
+        public Evento(DateTime Istante, string CodiceFonte, string Codice, string TipoEvento, string CodSedeUtente = "")
         {
             this.Istante = Istante;
             this.CodiceFonte = CodiceFonte;
             this.IstanteCreazione = DateTime.UtcNow;
             this.CodiceRichiesta = Codice;
             this.TipoEvento = TipoEvento;
+            this.CodSedeUtente = CodSedeUtente;
         }
 
         /// <summary>
@@ -96,5 +97,10 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi
         ///   caso in cui la registrazione di un evento avvenga posticipata.
         /// </summary>
         private DateTime IstanteCreazione { get; set; }
+
+        /// <summary>
+        /// E' la sede originaria/principale dell'utente (quella che risiede nella collection dell'utente).
+        /// </summary>
+        public string CodSedeUtente { get; set; }
     }
 }
