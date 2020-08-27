@@ -3,7 +3,6 @@ import { NotificaInterface } from '../../../interface/notifica.interface';
 import { AddNotifica, GetListaNotifiche, SetListaNotifiche, SetNotificheLette } from '../../actions/notifiche/notifiche.actions';
 import { insertItem, patch } from '@ngxs/store/operators';
 import { makeCopy } from '../../../helper/function';
-import { TipoNotifica } from '../../../enum/tipo-notifica.enum';
 
 export interface NotificheStateModel {
     listaNotifiche: NotificaInterface[];
@@ -11,26 +10,7 @@ export interface NotificheStateModel {
 }
 
 export const NotificheStateModelDefaults: NotificheStateModel = {
-    listaNotifiche: [
-        {
-            tipo: TipoNotifica.TrasferimentoChiamata,
-            titolo: 'Titolo più lungo perchè sii',
-            descrizione: 'Descrizione notifica notifica notifica notifica notifica',
-            data: new Date().toISOString()
-        },
-        {
-            tipo: TipoNotifica.TrasferimentoChiamata,
-            titolo: 'Titolo',
-            descrizione: 'Descrizione notifica',
-            data: new Date().toISOString()
-        },
-        {
-            tipo: TipoNotifica.TrasferimentoChiamata,
-            titolo: 'Titolo',
-            descrizione: 'Descrizione notifica',
-            data: new Date().toISOString()
-        },
-    ],
+    listaNotifiche: undefined,
     nuoveNotifiche: undefined
 };
 
