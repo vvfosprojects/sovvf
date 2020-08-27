@@ -5,7 +5,8 @@ export class EventoRichiesta {
         public istanteEvento: Date,
         public targa: string,
         public note: string,
-        public operatore?: string
+        public operatore?: string,
+        public sedeOperatore?: string
     ) {
     }
 
