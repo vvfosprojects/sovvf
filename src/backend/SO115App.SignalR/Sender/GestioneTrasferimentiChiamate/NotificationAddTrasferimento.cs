@@ -7,7 +7,6 @@ using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneTrasferimen
 using SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GetSintesiRichiestaAssistenza;
 using SO115App.Models.Servizi.Infrastruttura.GestioneTrasferimentiChiamate;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti;
-using SO115App.Models.Servizi.Infrastruttura.Marker;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestioneTrasferimentiChiamate;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.IdentityManagement;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
@@ -25,7 +24,6 @@ namespace SO115App.SignalR.Sender.GestioneTrasferimentiChiamate
         private readonly IGetTrasferimenti _getTrasferimenti;
         private readonly IGetUtenteById _getUtenteById;
         private readonly IGetDistaccamentoByCodiceSede _getSede;
-        private readonly IGetSediMarker _getSediMarker;
         private readonly GetGerarchiaToSend _getGerarchiaToSend;
         public NotificationAddTrasferimento(IHubContext<NotificationHub> notificationHubContext,
             IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> boxRichiesteHandler,
@@ -33,8 +31,7 @@ namespace SO115App.SignalR.Sender.GestioneTrasferimentiChiamate
             IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative,
             IGetTrasferimenti getTrasferimenti,
             IGetUtenteById getUtenteById,
-            IGetDistaccamentoByCodiceSede getSede,
-            IGetSediMarker getSediMarker)
+            IGetDistaccamentoByCodiceSede getSede)
         {
             _notificationHubContext = notificationHubContext;
             _boxRichiesteHandler = boxRichiesteHandler;
@@ -42,7 +39,6 @@ namespace SO115App.SignalR.Sender.GestioneTrasferimentiChiamate
             _getTrasferimenti = getTrasferimenti;
             _getUtenteById = getUtenteById;
             _getSede = getSede;
-            _getSediMarker = getSediMarker;
             _getGerarchiaToSend = new GetGerarchiaToSend(getAlberaturaUnitaOperative);
         }
 
@@ -67,11 +63,8 @@ namespace SO115App.SignalR.Sender.GestioneTrasferimentiChiamate
                     CodiciSede = new string[] { sede }
                 }).BoxRichieste;
 
-                //var sediMarker = _getSediMarker.GetListaSediMarker(null);
-
                 await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxInterventi", boxInterventi);
                 await _notificationHubContext.Clients.Group(sede).SendAsync("SaveAndNotifySuccessChiamata", richiesta);
-                //await _notificationHubContext.Clients.Group(sede).SendAsync("marker", sediMarker);
                 await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyAddTrasferimento", new
                 {
                     Data = new TrasferimentoChiamataFull()
@@ -108,11 +101,8 @@ namespace SO115App.SignalR.Sender.GestioneTrasferimentiChiamate
                     CodiciSede = new string[] { sede }
                 }).BoxRichieste;
 
-                //var sediMarker = _getSediMarker.GetListaSediMarker(null);
-
                 await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxInterventi", boxInterventi);
                 await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyDeleteChiamata", richiesta.Id);
-                //await _notificationHubContext.Clients.Group(sede).SendAsync("marker", sediMarker);
                 await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyAddTrasferimento", new
                 {
                     Data = new TrasferimentoChiamataFull()

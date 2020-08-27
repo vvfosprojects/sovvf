@@ -31,18 +31,19 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneTrasferimentiChiamate
         public TrasferimentiChiamateResult Handle(TrasferimentiChiamateQuery query)
         {
             //GESTIONE RICORSIVITA'
-            var lstPin = _getGerarchia.GetGerarchia(new string[] { query.CodiceSede });
+            var lstPin = _getGerarchia.GetGerarchiaSede(query.CodiceSede).ToArray();
 
             //MAPPING
-            var lstTrasferimenti = _getTrasferimenti.GetAll(lstPin.Select(c => c.Codice).ToArray()).Select(c => new TrasferimentoChiamataFull()
-            {
-                Id = c.Id,
-                CodRichiesta = c.CodRichiesta,
-                SedeA = c.CodSedeA.Select(x => _getDistaccamentoByCodiceSede.Get(x).Descrizione).ToArray(),
-                SedeDa = _getDistaccamentoByCodiceSede.Get(c.CodSedeDa).Descrizione,
-                Data = c.Data,
-                Operatore = _getUtenteById.GetUtenteByCodice(c.IdOperatore)
-            }).ToList();
+            var lstTrasferimenti = _getTrasferimenti.GetAll(lstPin, query.Filters)
+                .Select(c => new TrasferimentoChiamataFull()
+                {
+                    Id = c.Id,
+                    CodRichiesta = c.CodRichiesta,
+                    SedeA = c.CodSedeA.Select(x => _getDistaccamentoByCodiceSede.Get(x).Descrizione).ToArray(),
+                    SedeDa = _getDistaccamentoByCodiceSede.Get(c.CodSedeDa).Descrizione,
+                    Data = c.Data,
+                    Operatore = _getUtenteById.GetUtenteByCodice(c.IdOperatore)
+                }).ToList();
 
             //PAGINAZIONE
             List<TrasferimentoChiamataFull> trasferimentiPaginati = null;
