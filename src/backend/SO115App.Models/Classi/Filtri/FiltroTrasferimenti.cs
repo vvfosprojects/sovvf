@@ -2,10 +2,6 @@
 {
     public class FiltroTrasferimenti
     {
-        public FiltroTrasferimenti()
-        {
-            Search = "";
-        }
         public string Search { get; set; }
     }
 }
