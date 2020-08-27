@@ -5,14 +5,14 @@ export interface TrasferimentoChiamata {
     id: string;
     codRichiesta: string;
     codSedeDa: string;
-    codSedeA: string[];
+    codSedeA: string;
     operatore: Utente;
     data: string;
 }
 
 export interface AddTrasferimentoChiamata {
     codRichiesta: string;
-    codSedeA: string[];
+    codSedeA: string;
 }
 
 export interface ResponseAddTrasferimentoInterface {

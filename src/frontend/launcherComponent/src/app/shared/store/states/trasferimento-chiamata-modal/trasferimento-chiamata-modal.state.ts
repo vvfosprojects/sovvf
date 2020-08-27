@@ -74,7 +74,7 @@ export class TrasferimentoChiamataModalState {
         const form = state.trasferimentoChiamataForm.model;
         const obj = {
             codRichiesta: form.codiceRichiesta,
-            codSedeA: form.sedeA.map((s: TreeviewSelezione) => s.idSede)
+            codSedeA: form.sedeA[0].idSede
         } as AddTrasferimentoChiamata;
         this.trasferimentoChiamataService.addTrasferimentoChiamata(obj).subscribe(() => {
         });
