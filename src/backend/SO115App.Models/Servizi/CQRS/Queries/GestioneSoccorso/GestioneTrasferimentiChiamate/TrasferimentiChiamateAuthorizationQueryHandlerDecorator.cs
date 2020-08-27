@@ -2,13 +2,14 @@
 using CQRS.Queries.Authorizers;
 using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.Models.Classi.Utility;
+using SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GestioneTrasferimentiChiamate.CodiciChiamate;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.VerificaUtente;
 using System.Collections.Generic;
 using System.Security.Principal;
 
-namespace SO115App.Models.Servizi.CQRS.Queries.GestioneTrasferimentiChiamate.CodiciChiamate
+namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GestioneTrasferimentiChiamate
 {
-    public class TrasferimentiChiamateAuthorizationQueryHandlerDecorator : IQueryAuthorizer<TrasferimentiChiamateQuery, TrasferimentiChiamateResult>
+    public class TrasferimentiChiamateAuthorizationQueryHandlerDecorator : IQueryAuthorizer<CodiciChiamateQuery, CodiciChiamateResult>
     {
         private readonly IPrincipal _currentUser;
         private readonly IFindUserByUsername _findUserByUsername;
@@ -19,7 +20,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneTrasferimentiChiamate.Cod
             _findUserByUsername = findUserByUsername;
         }
 
-        public IEnumerable<AuthorizationResult> Authorize(TrasferimentiChiamateQuery query)
+        public IEnumerable<AuthorizationResult> Authorize(CodiciChiamateQuery query)
         {
             string username = this._currentUser.Identity.Name;
             Utente user = _findUserByUsername.FindUserByUs(username);

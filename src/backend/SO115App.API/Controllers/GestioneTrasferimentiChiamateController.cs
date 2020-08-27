@@ -6,8 +6,8 @@ using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneTrasferimentiChiamate.AddTrasferimento;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneTrasferimentiChiamate.DeleteTrasferimento;
-using SO115App.Models.Servizi.CQRS.Queries.GestioneTrasferimentiChiamate;
-using SO115App.Models.Servizi.CQRS.Queries.GestioneTrasferimentiChiamate.CodiciChiamate;
+using SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GestioneTrasferimentiChiamate;
+using SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GestioneTrasferimentiChiamate.CodiciChiamate;
 using System;
 using System.Threading.Tasks;
 
@@ -89,7 +89,7 @@ namespace SO115App.API.Controllers
 
             try
             {
-                return Ok(_richiesteQueryHandler.Handle(query).DataArray);
+                return Ok(_richiesteQueryHandler.Handle(query).Data);
             }
             catch (Exception ex)
             {

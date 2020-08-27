@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.SignalR;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes;
 using SO115App.Models.Classi.Condivise;
-using SO115App.Models.Classi.Organigramma;
+using SO115App.Models.Classi.NotificheNavbar;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneTrasferimentiChiamate.AddTrasferimento;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GetSintesiRichiestaAssistenza;
 using SO115App.Models.Servizi.Infrastruttura.GestioneTrasferimentiChiamate;
@@ -83,11 +83,12 @@ namespace SO115App.SignalR.Sender.GestioneTrasferimentiChiamate
                 });
 
                 //NOTIFICA NAVBAR
-                await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyNavBar", new
+                await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyNavBar", new Notifica()
                 {
                     Titolo = "Hai una nuova chiamata",
                     Descrizione = $"La chiamata {richiesta.Codice} è stata trasferita dal {mioComandoDes} alla tua sede",
-                    Tipo = TipoNotifica.TrasferimentoChiamata
+                    Tipo = TipoNotifica.TrasferimentoChiamata,
+                    Data = command.TrasferimentoChiamata.Data
                 });
             }
 

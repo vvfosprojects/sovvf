@@ -14,7 +14,7 @@ namespace SO115App.Models.Classi.Organigramma
             _getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
         }
 
-        public List<PinNodo> GetGerarchia(string[] CodiciSedi)
+        public List<PinNodo> GetGerarchiaFull(string[] CodiciSedi)
         {
             var listaSediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
 
@@ -35,9 +35,58 @@ namespace SO115App.Models.Classi.Organigramma
             return pinNodi.Distinct().ToList();
         }
 
-        public List<PinNodo> GetGerarchia(string CodiceSede)
+        public List<PinNodo> GetGerarchiaFull(string CodiceSede)
         {
-            return GetGerarchia(new string[] { CodiceSede });
+            return GetGerarchiaFull(new string[] { CodiceSede });
+        }
+
+        public List<string> GetGerarchiaSede(string codSedeDiPartenza, string[] CodSediAllertate = null)
+        {
+            var listaSediAlberata = _getAlberaturaUnitaOperative.ListaSediAlberata();
+
+            var pin = new PinNodo(codSedeDiPartenza);
+            var pinNodi = new List<PinNodo>();
+            pinNodi.Add(pin);
+
+            var UnitaOperativaAnagrafica = listaSediAlberata.GetSottoAlbero(pinNodi);
+
+            List<string> ListaCodiciSediInteressate = new List<string>();
+
+            UnitaOperativa unitaperativa = new UnitaOperativa(codSedeDiPartenza, UnitaOperativaAnagrafica.ToList()[0].Nome)
+            {
+                Figli = UnitaOperativaAnagrafica.ToList()[0].Figli
+            };
+
+            foreach (var direzioneRegionale in listaSediAlberata.Figli)
+            {
+                if (direzioneRegionale.Figli.ToList().Contains(unitaperativa))
+                {
+                    ListaCodiciSediInteressate.Add(direzioneRegionale.Codice);
+                    ListaCodiciSediInteressate.Add(unitaperativa.Codice);
+                }
+                else
+                {
+                    foreach (var comune in direzioneRegionale.Figli)
+                    {
+                        if (comune.Figli.ToList().Contains(unitaperativa))
+                        {
+                            ListaCodiciSediInteressate.Add(direzioneRegionale.Codice);
+                            ListaCodiciSediInteressate.Add(comune.Codice);
+                            ListaCodiciSediInteressate.Add(unitaperativa.Codice);
+                        }
+                    }
+                }
+            }
+
+            if (CodSediAllertate != null)
+            {
+                foreach (var sede in CodSediAllertate)
+                {
+                    ListaCodiciSediInteressate.Add(sede);
+                }
+            }
+
+            return ListaCodiciSediInteressate;
         }
     }
 }
