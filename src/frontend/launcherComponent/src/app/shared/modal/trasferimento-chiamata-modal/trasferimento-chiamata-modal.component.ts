@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import { Observable, Subscription } from 'rxjs';
 import { LoadingState } from '../../store/states/loading/loading.state';
@@ -34,8 +34,7 @@ export class TrasferimentoChiamataModalComponent implements OnInit, OnDestroy {
     listeSediNavbar: TreeviewItem[];
 
     operatore: string;
-    idRichiesta: string;
-    editTrasferimentoChiamata: TrasferimentoChiamata;
+    codRichiesta: string;
 
     trasferimentoChiamataForm: FormGroup;
     submitted: boolean;
@@ -49,11 +48,16 @@ export class TrasferimentoChiamataModalComponent implements OnInit, OnDestroy {
         this.getFormValid();
         this.inizializzaSediTreeview();
         this.getSediSelezionate();
-        this.getCodiciRichiesteTrasferibili();
         this.inizializzaUser();
     }
 
     ngOnInit() {
+        if (!this.codRichiesta) {
+            this.getCodiciRichiesteTrasferibili();
+        } else {
+            this.f.codiceRichiesta.patchValue(this.codRichiesta);
+            this.f.codiceRichiesta.disable();
+        }
     }
 
     initForm() {
@@ -88,9 +92,9 @@ export class TrasferimentoChiamataModalComponent implements OnInit, OnDestroy {
     }
 
     getTitle(): string {
-        let title = 'Aggiungi Trasferimento Chiamata';
-        if (this.editTrasferimentoChiamata) {
-            title = 'Modifica ' + this.editTrasferimentoChiamata.codRichiesta;
+        let title = 'Trasferimento Chiamata';
+        if (this.codRichiesta) {
+            title = 'Trasferisci la Chiamata ' + this.codRichiesta;
         }
         return title;
     }
@@ -125,7 +129,7 @@ export class TrasferimentoChiamataModalComponent implements OnInit, OnDestroy {
                             break;
                     }
                 } else {
-                    this.sediSelezionate = 'Caricamento...';
+                    this.sediSelezionate = 'Seleziona una o più sedi';
                 }
             })
         );
