@@ -48,7 +48,7 @@ import { BoxMezzi } from '../../features/home/boxes/boxes-model/box-mezzi.model'
 import { BoxInterventi } from '../../features/home/boxes/boxes-model/box-interventi.model';
 import { ChiamataMarker } from '../../features/home/maps/maps-model/chiamata-marker.model';
 import { SintesiRichiesta } from '../../shared/model/sintesi-richiesta.model';
-import { MezzoComposizione } from '../../features/home/composizione-partenza/interface/mezzo-composizione-interface';
+
 import { AuthState } from '../../features/auth/store/auth.state';
 import { ClearCurrentUser, UpdateRuoliPersonali } from '../../features/auth/store/auth.actions';
 import { ViewComponentState } from '../../features/home/store/states/view/view.state';

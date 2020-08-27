@@ -15,6 +15,7 @@ import { CheckPermissionSchedaContattoPipe } from './check-permission-scheda-con
 import { SelectedFilterTipologiaRichiestePipe } from './selected-filter-tipologia-richieste.pipe';
 import { ReplacePipe } from './replace.pipe';
 import { CompetenzaFormatPipe } from './competenza-format.pipe';
+import { TipoNotificaPipe } from './tipo-notifica.pipe';
 
 const COMPONENTS = [
     TruncatePipe,
@@ -32,7 +33,8 @@ const COMPONENTS = [
     SelectedFilterRichiestePipe,
     SelectedFilterTipologiaRichiestePipe,
     ReplacePipe,
-    CompetenzaFormatPipe
+    CompetenzaFormatPipe,
+    TipoNotificaPipe
 ];
 
 @NgModule({

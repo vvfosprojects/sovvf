@@ -7,17 +7,25 @@
             {{ nuoveNotifiche }}
         </div>
     </button>
-    <div ngbDropdownMenu style="width: 320px; max-height:400px; overflow: auto">
-        <div class="p-3">
-            <div *ngFor="let notifica of listaNotifiche; let i = index" class="position-relative py-2"
-                 [ngClass]="{'border-bottom mb-2': listaNotifiche?.length > 1, 'mb-0 border-bottom-0': (i + 1) === listaNotifiche?.length }">
-                <h5>{{ notifica.titolo }}</h5>
-                <h6>{{ notifica.descrizione }}</h6>
-                <span *ngIf="(i + 1) <= nuoveNotifiche" class="position-absolute text-primary"
-                      style="top:0; right:1px">
-                    <i class="fa fa-dot-circle-o"></i> Nuova
-                </span>
+    <div ngbDropdownMenu style="width: 320px; max-height:400px; overflow: auto" class="my-0">
+        <div *ngFor="let notifica of listaNotifiche; let i = index" class="position-relative pl-3 pr-2 pt-4 pb-2"
+             [ngClass]="{'border-bottom': listaNotifiche?.length > 1 && (i + 1) !== listaNotifiche?.length, 'border-bottom-0': (i + 1) === listaNotifiche?.length, 'cursor-pointer bg-light': this.active === i }"
+             (mouseenter)="setActive(i)" (mouseleave)="clearActive()" (click)="onSelezione(notifica)">
+            <h5 class="font-weight-bolder my-1">{{ notifica.titolo }}</h5>
+            <h6 class="mb-1">{{ notifica.descrizione }}</h6>
+            <div class="text-center">
+                <i class="fa fa-info-circle mr-2"></i>
+                <small class="text-muted">{{ notifica.tipo | tipoNotifica }}</small>
             </div>
+            <small class="position-absolute text-muted" style="top:6px; left:14px">
+                <i class="fa fa-clock-o"></i>
+                {{ notifica.data | date }}
+            </small>
+            <small *ngIf="(i + 1) <= nuoveNotifiche" class="position-absolute text-primary"
+                   style="top:5px; right:8px">
+                <i class="fa fa-dot-circle-o"></i>
+                Nuova
+            </small>
         </div>
     </div>
 </div>
