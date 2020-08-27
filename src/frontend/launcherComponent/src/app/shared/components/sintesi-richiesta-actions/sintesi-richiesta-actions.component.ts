@@ -33,7 +33,11 @@ export class SintesiRichiestaActionsComponent implements OnInit {
     }
 
     onClick(stato: StatoRichiestaActions) {
-        const modalConferma = this.modalService.open(ActionRichiestaModalComponent, { backdropClass: 'light-blue-backdrop', centered: true });
+        const modalConferma = this.modalService.open(ActionRichiestaModalComponent, {
+            windowClass: 'modal-holder',
+            backdropClass: 'light-blue-backdrop',
+            centered: true
+        });
         modalConferma.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
         switch (stato) {
             case StatoRichiestaActions.Chiusa:

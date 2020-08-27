@@ -297,16 +297,6 @@ export class RichiesteState {
         }
     }
 
-    @Action(CambiaStatoRichiesta)
-    cambiaStatoRichiesta({ patchState, dispatch }: StateContext<RichiesteStateModel>, action: CambiaStatoRichiesta) {
-        const obj = {
-            'idRichiesta': action.idRichiesta,
-            'stato': action.stato
-        };
-        this.richiesteService.aggiornaStatoRichiesta(obj).subscribe(() => {
-        });
-    }
-
     @Action(SetIdChiamataInviaPartenza)
     setIdChiamataInviaPartenza({ patchState, dispatch }: StateContext<RichiesteStateModel>, action: SetIdChiamataInviaPartenza) {
         patchState({
@@ -368,7 +358,7 @@ export class RichiesteState {
         const obj = action.richiestaAction;
         console.log('Obj', obj);
         this.richiesteService.aggiornaStatoRichiesta(obj).subscribe(() => {
-        });
+        }, error => dispatch(new StopLoadingActionRichiesta()));
     }
 
     @Action(ModificaStatoFonogramma)
@@ -414,7 +404,11 @@ export class RichiesteState {
 
     @Action(VisualizzaListaSquadrePartenza)
     visualizzaListaSquadrePartenza({ patchState }: StateContext<RichiesteStateModel>, action: VisualizzaListaSquadrePartenza) {
-        const modal = this.modalService.open(ListaSquadrePartenzaComponent, { windowClass: 'squadrePartenza', backdropClass: 'light-blue-backdrop', centered: true });
+        const modal = this.modalService.open(ListaSquadrePartenzaComponent, {
+            windowClass: 'modal-holder',
+            backdropClass: 'light-blue-backdrop',
+            centered: true
+        });
         modal.componentInstance.listaSquadre = action.listaSquadre;
         modal.result.then(() => console.log('Lista Squadre Partenza Aperta'),
             () => console.log('Lista Squadre Partenza Chiusa'));

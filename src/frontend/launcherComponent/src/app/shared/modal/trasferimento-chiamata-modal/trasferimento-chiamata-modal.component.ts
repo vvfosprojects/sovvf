@@ -1,10 +1,9 @@
-import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import { Observable, Subscription } from 'rxjs';
 import { LoadingState } from '../../store/states/loading/loading.state';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { TrasferimentoChiamata } from '../../interface/trasferimento-chiamata.interface';
 import { TrasferimentoChiamataModalState } from '../../store/states/trasferimento-chiamata-modal/trasferimento-chiamata-modal.state';
 import { TreeItem, TreeviewItem } from 'ngx-treeview';
 import { SediTreeviewState } from '../../store/states/sedi-treeview/sedi-treeview.state';
@@ -14,6 +13,7 @@ import { Utente } from '../../model/utente.model';
 import { GetRichiesteTrasferibili } from '../../store/actions/trasferimento-chiamata-modal/trasferimento-chiamata-modal.actions';
 import { UpdateFormValue } from '@ngxs/form-plugin';
 import { findItem } from '../../store/states/sedi-treeview/sedi-treeview.helper';
+import { oneElementLengthArray } from '../../helper/validators-custom';
 
 @Component({
     selector: 'app-trasferimento-chiamata-modal',
@@ -69,7 +69,7 @@ export class TrasferimentoChiamataModalComponent implements OnInit, OnDestroy {
         this.trasferimentoChiamataForm = this.fb.group({
             codiceRichiesta: [null, Validators.required],
             operatore: [null, Validators.required],
-            sedeA: [null, Validators.required]
+            sedeA: [null, oneElementLengthArray(1)]
         });
         this.f.operatore.disable();
     }
