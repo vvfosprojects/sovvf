@@ -102,7 +102,7 @@ export class AllertaSedeModalComponent implements OnInit, OnDestroy {
                             break;
                     }
                 } else {
-                    this.sediSelezionate = 'Caricamento...';
+                    this.sediSelezionate = 'Seleziona una o più sedi';
                 }
             })
         );

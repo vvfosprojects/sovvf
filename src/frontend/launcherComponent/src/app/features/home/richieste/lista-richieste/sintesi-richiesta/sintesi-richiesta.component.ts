@@ -281,12 +281,12 @@ export class SintesiRichiestaComponent implements OnChanges {
     }
 
     onAddTrasferimentoChiamata(codiceRichiesta: string) {
-        // todo: rivedere logica
         const addTrasferimentoChiamataModal = this.modalService.open(TrasferimentoChiamataModalComponent, {
             backdropClass: 'light-blue-backdrop',
             centered: true,
             size: 'lg'
         });
+        addTrasferimentoChiamataModal.componentInstance.codRichiesta = codiceRichiesta;
         addTrasferimentoChiamataModal.result.then(
             (result: { success: boolean }) => {
                 if (result.success) {

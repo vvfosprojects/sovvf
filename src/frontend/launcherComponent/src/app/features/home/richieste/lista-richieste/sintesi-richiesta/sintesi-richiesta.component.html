@@ -386,11 +386,11 @@
                             </div>
 
                             <div *ngIf="inGestione" class="h6">
-                                <i class="guida fa fa-exclamation-circle fa-fw mr-1" ngbTooltip="Sedi Allertate"
-                                   placement="right"></i>
                                 <div *ngIf="methods._primaSedeAllertata(richiesta.sediAllertate) as sediAllertate; else nonAllertata"
                                      class="d-inline-block h6 m-0 mr-1" ngbTooltip="{{ sediAllertate }}"
                                      [disableTooltip]="sediAllertate.length <= 10" placement="bottom">
+                                    <i class="guida fa fa-exclamation-circle fa-fw mr-1" ngbTooltip="Sedi Allertate"
+                                       placement="right"></i>
                                     {{ sediAllertate | truncate: 10 }}
                                 </div>
                                 <div *ngIf="richiesta.codSOAllertate && richiesta.codSOAllertate.length > 1"
@@ -408,7 +408,7 @@
                                     </div>
                                 </div>
                                 <ng-template #nonAllertata class="badge badge-secondary text-white">
-                                    Nessuna Sede Allertata
+                                    <!-- Nessuna Sede Allertata -->
                                 </ng-template>
                                 <button class="btn btn-sm btn-warning ml-2 mr-1" ngbTooltip="Allerta Sede"
                                         (click)="onAllertaSede(); $event.stopPropagation()">

@@ -4,4 +4,5 @@ export interface NotificaInterface {
     titolo: string;
     descrizione: string;
     tipo: TipoNotifica;
+    data: string;
 }

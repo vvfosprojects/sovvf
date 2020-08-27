@@ -326,15 +326,15 @@ export class HelperSintesiRichiesta {
     }
 
     _primaSedeAllertata(sediAllertate: Sede[]): string {
-        if (sediAllertate) {
-            return sediAllertate[0].descrizione.split(' ').pop();
+        if (sediAllertate && sediAllertate[0]) {
+            return sediAllertate[0].descrizione;
         }
         return null;
     }
 
     _altreSediAllertate(sediAllertate: Sede[]): string[] {
         if (sediAllertate) {
-            return sediAllertate.slice(1).map((s: Sede) => s.descrizione.split(' ').pop());
+            return sediAllertate.slice(1).map((s: Sede) => s.descrizione);
         }
         return null;
     }

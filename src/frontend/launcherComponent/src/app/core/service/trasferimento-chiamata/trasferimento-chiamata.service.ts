@@ -21,9 +21,9 @@ export class TrasferimentoChiamataService {
 
     getTrasferimentiChiamate(filters: FiltersInterface, pagination: PaginationInterface): Observable<ResponseInterface> {
         const obj = {
-            // filters: {
-            //     search: filters.search
-            // },
+            filters: {
+                search: filters.search
+            },
             pagination
         };
         return this.http.post<ResponseInterface>(API_TRASFERIMENTI_CHIAMATE, obj);
