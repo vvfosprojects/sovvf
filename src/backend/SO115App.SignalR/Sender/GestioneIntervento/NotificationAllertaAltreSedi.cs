@@ -30,7 +30,12 @@ namespace SO115App.SignalR.Sender.GestioneIntervento
         public async Task SendNotification(AllertaAltreSediCommand command)
         {
             var sintesi = _getSintesiById.GetSintesi(command.CodiceRichiesta);
-            var SediDaNotificare = _getGerarchiaToSend.Get(sintesi.CodSOCompetente, sintesi.CodSOAllertate.ToArray());
+
+            var SediDaNotificare = new List<string>();
+            if (sintesi.CodSOAllertate != null)
+                SediDaNotificare = _getGerarchiaToSend.Get(sintesi.CodSOCompetente, sintesi.CodSOAllertate.ToArray());
+            else
+                SediDaNotificare = _getGerarchiaToSend.Get(sintesi.CodSOCompetente);
 
             command.Chiamata = sintesi;
             //Invio la notifica alle competenze della richiesta
