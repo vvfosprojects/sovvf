@@ -134,7 +134,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
 
             if (evento is ComposizionePartenze)
             {
-                targa = ((ComposizionePartenze)evento).Partenza.Mezzo.Descrizione;
+                targa = ((ComposizionePartenze)evento).Partenza.Mezzo.Codice;
             }
 
             if (evento is ArrivoSulPosto)
