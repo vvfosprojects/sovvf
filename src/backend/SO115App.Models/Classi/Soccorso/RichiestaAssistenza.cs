@@ -102,27 +102,27 @@ namespace SO115App.API.Models.Classi.Soccorso
             Altissima
         }
 
-        internal void SincronizzaStatoRichiesta(string stato, IStatoRichiesta statoRichiesta, string id, string motivazione)
+        internal void SincronizzaStatoRichiesta(string stato, IStatoRichiesta statoRichiesta, string id, string motivazione, DateTime dataEvento)
         {
             if (stato == Costanti.RichiestaChiusa && !(statoRichiesta is Chiusa))
             {
-                new ChiusuraRichiesta(motivazione, this, DateTime.UtcNow, id);
+                new ChiusuraRichiesta(motivazione, this, dataEvento, id);
             }
             else if (stato.Equals(Costanti.RichiestaRiaperta) && !(statoRichiesta is Riaperta))
             {
-                new RiaperturaRichiesta(motivazione, this, DateTime.UtcNow, id);
+                new RiaperturaRichiesta(motivazione, this, dataEvento, id);
             }
             else if (stato.Equals(Costanti.RichiestaAssegnata) && !(statoRichiesta is Assegnata))
             {
-                new AssegnataRichiesta(this, DateTime.UtcNow, id);
+                new AssegnataRichiesta(this, dataEvento, id);
             }
             else if (stato.Equals(Costanti.RichiestaPresidiata) && !(statoRichiesta is Presidiata))
             {
-                new RichiestaPresidiata(this, DateTime.UtcNow, id);
+                new RichiestaPresidiata(this, dataEvento, id);
             }
             else if (stato.Equals(Costanti.RichiestaSospesa) && !(statoRichiesta is Sospesa))
             {
-                new RichiestaSospesa(motivazione, this, DateTime.UtcNow, id);
+                new RichiestaSospesa(motivazione, this, dataEvento, id);
             }
         }
 

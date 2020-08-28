@@ -57,7 +57,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 new UscitaPartenza(richiesta, command.IdMezzo, command.DataOraAggiornamento, richiesta.CodOperatore);
 
                 richiesta.SincronizzaStatoRichiesta(Costanti.RichiestaAssegnata, richiesta.StatoRichiesta,
-                    richiesta.CodOperatore, "");
+                    richiesta.CodOperatore, "", command.DataOraAggiornamento);
 
                 foreach (var composizione in richiesta.Partenze)
                 {
@@ -73,7 +73,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 new ArrivoSulPosto(richiesta, command.IdMezzo, command.DataOraAggiornamento, richiesta.CodOperatore);
 
                 richiesta.SincronizzaStatoRichiesta(Costanti.RichiestaPresidiata, richiesta.StatoRichiesta,
-                    richiesta.CodOperatore, "");
+                    richiesta.CodOperatore, "", command.DataOraAggiornamento);
 
                 foreach (var composizione in richiesta.Partenze)
                 {

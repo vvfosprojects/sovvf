@@ -130,13 +130,13 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                 }
 
                 if (idComposizioneDaSganciare == 1)
-                    richiestaDaSganciare.SincronizzaStatoRichiesta(Costanti.RichiestaSospesa, richiestaDaSganciare.StatoRichiesta, richiestaDaSganciare.CodOperatore, "");
+                    richiestaDaSganciare.SincronizzaStatoRichiesta(Costanti.RichiestaSospesa, richiestaDaSganciare.StatoRichiesta, richiestaDaSganciare.CodOperatore, "", DateTime.UtcNow);
                 else
                 {
                     if (StatoSulPosto > 0)
-                        richiestaDaSganciare.SincronizzaStatoRichiesta(Costanti.RichiestaPresidiata, richiestaDaSganciare.StatoRichiesta, richiestaDaSganciare.CodOperatore, "");
+                        richiestaDaSganciare.SincronizzaStatoRichiesta(Costanti.RichiestaPresidiata, richiestaDaSganciare.StatoRichiesta, richiestaDaSganciare.CodOperatore, "", DateTime.UtcNow);
                     else if (StatoInViaggio > 0)
-                        richiestaDaSganciare.SincronizzaStatoRichiesta(Costanti.RichiestaAssegnata, richiestaDaSganciare.StatoRichiesta, richiestaDaSganciare.CodOperatore, "");
+                        richiestaDaSganciare.SincronizzaStatoRichiesta(Costanti.RichiestaAssegnata, richiestaDaSganciare.StatoRichiesta, richiestaDaSganciare.CodOperatore, "", DateTime.UtcNow);
                 }
 
                 //new RevocaPerRiassegnazione(richiesta, richiestaDaSganciare, command.ConfermaPartenze.IdMezzoDaSganciare, DateTime.UtcNow, richiesta.CodOperatore);
@@ -158,7 +158,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                 };
             }
 
-            richiesta.SincronizzaStatoRichiesta(Costanti.RichiestaAssegnata, richiesta.StatoRichiesta, utente.Id, "");
+            richiesta.SincronizzaStatoRichiesta(Costanti.RichiestaAssegnata, richiesta.StatoRichiesta, utente.Id, "", DateTime.UtcNow);
 
             //richiesta.Id = command.ConfermaPartenze.IdRichiesta;
             command.ConfermaPartenze.richiesta = richiesta;

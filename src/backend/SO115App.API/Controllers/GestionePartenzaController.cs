@@ -41,7 +41,7 @@ namespace SO115App.API.Controllers
                 StatoMezzo = intervento.StatoMezzo,
                 CodiceSede = codiceSede,
                 CodRichiesta = intervento.CodRichiesta,
-                DataOraAggiornamento = intervento.DataOraAggiornamento
+                DataOraAggiornamento = intervento.DataOraAggiornamento.ToLocalTime()
             };
 
             try

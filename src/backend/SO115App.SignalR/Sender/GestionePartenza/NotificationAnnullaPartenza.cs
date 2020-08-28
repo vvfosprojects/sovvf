@@ -28,7 +28,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneMezziInServizio.ListaMezziInSerivizio;
 using SO115App.API.Models.Servizi.CQRS.Queries.Marker.MezziMarker;
-using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AggiornaStatoMezzo;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
 using SO115App.API.Models.Classi.Geo;
 using System.Collections.Generic;
@@ -143,9 +142,11 @@ namespace SO115App.SignalR.Sender.GestionePartenza
 
                 AreaMappa areaMappa = new AreaMappa();
                 areaMappa.CodiceSede = new List<string>() { sede };
+                areaMappa.FiltroMezzi = new Models.Classi.Filtri.FiltroMezzi();
+                areaMappa.FiltroMezzi.FiltraPerAreaMappa = false;
                 var queryListaMezzi = new MezziMarkerQuery()
                 {
-                    Filtro = areaMappa
+                    Filtro = areaMappa,
                 };
 
                 var listaMezziMarker = _listaMezziMarkerHandler.Handle(queryListaMezzi).ListaMezziMarker;
