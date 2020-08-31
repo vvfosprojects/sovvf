@@ -23,10 +23,10 @@
     </form>
 </div>
 <div class="modal-footer">
-    <button type="button" class="btn btn-lg btn-secondary" (click)="closeModal('ko')">
+    <button type="button" class="btn btn-lg btn-secondary btn-no-hover" (click)="closeModal('ko')">
         {{ 'Annulla' | uppercase }}
     </button>
-    <button type="button" class="btn btn-lg btn-danger" [disabled]="!formValid" (click)="onConferma()">
+    <button type="button" class="btn btn-lg btn-danger btn-no-hover" [disabled]="!formValid" (click)="onConferma()">
         {{ 'Conferma Allerta' | uppercase }}
     </button>
 </div>

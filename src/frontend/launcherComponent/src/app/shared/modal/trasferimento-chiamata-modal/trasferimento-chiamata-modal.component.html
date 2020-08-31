@@ -48,10 +48,10 @@
     </div>
 </div>
 <div class="modal-footer">
-    <button type="button" class="btn btn-lg btn-secondary" (click)="closeModal('ko')">
+    <button type="button" class="btn btn-lg btn-secondary btn-no-hover" (click)="closeModal('ko')">
         {{ 'Annulla' | uppercase }}
     </button>
-    <button type="button" class="btn btn-lg btn-danger" ngbTooltip="Riempi tutti i campi obbligatori"
+    <button type="button" class="btn btn-lg btn-danger btn-no-hover" ngbTooltip="Riempi tutti i campi obbligatori"
             [disableTooltip]="formValid" [disabled]="!formValid" (click)="onConferma()">
         {{ 'Conferma Trasferimento' | uppercase }}
     </button>
