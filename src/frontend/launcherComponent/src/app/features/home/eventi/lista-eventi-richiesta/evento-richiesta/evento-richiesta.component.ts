@@ -57,13 +57,13 @@ export class EventoRichiestaComponent implements OnInit {
             ['FonogrammaInviato', ['fa-file-text-o', 'fa-send']],
             ['FonogrammaDaInviare', ['fa-file-text-o', 'fa-exclamation-triangle']],
             ['TrasferimentoChiamata', ['fa-exchange']],
+            ['UscitaPartenza', ['fa-truck', 'fa-hand-o-right']],
 
             // Default per gli eventi non gestiti
             ['EventoGenerico', ['fa-question-circle']],
 
             // Per adesso non utilizzqti
             // ['MarcaNonRilevante', ['fa-warning', 'fa-close']],
-            // ['UscitaPartenza', ['fa-truck', 'fa-hand-o-right']],
             // ['VaInFuoriServizio', ['fa-truck', 'fa-wrench']],
         ];
     }
