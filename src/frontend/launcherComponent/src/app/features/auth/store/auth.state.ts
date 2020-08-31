@@ -31,6 +31,7 @@ import { ClearRichieste } from '../../home/store/actions/richieste/richieste.act
 import { _isAdministrator } from '../../../shared/helper/function';
 import { GestioneUtentiStateModel } from '../../gestione-utenti/store/states/gestione-utenti/gestione-utenti.state';
 import { GestioneUtentiService } from '../../../core/service/gestione-utenti-service/gestione-utenti.service';
+import { KEY_CACHE_SEDI_TREE_SELECTED } from 'src/app/shared/store/states/sedi-treeview/sedi-treeview.state';
 
 export interface AuthStateModel {
     currentJwt: string;
@@ -121,8 +122,13 @@ export class AuthState {
     setCurrentUser({ patchState, dispatch }: StateContext<AuthStateModel>, { currentUser }: SetCurrentUser) {
         sessionStorage.setItem(LSNAME.currentUser, JSON.stringify(currentUser));
         patchState({ currentUser });
-        dispatch(new SetVistaSedi([ currentUser.sede.codice ]));
-    }
+        const cS: any = sessionStorage.getItem(KEY_CACHE_SEDI_TREE_SELECTED);
+        let codice = currentUser.sede.codice;
+        if (cS)  {
+            codice = cS;
+        }
+        dispatch(new SetVistaSedi([ codice ]));
+    } //QUI
 
     @Action(UpdateCurrentUser)
     updateCurrentUser({ patchState, dispatch }: StateContext<AuthStateModel>, action: UpdateCurrentUser) {
