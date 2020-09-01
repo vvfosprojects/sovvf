@@ -150,6 +150,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
 
             foreach (var partenza in command.ConfermaPartenze.Partenze)
             {
+                //partenza.Mezzo.Stato = Costanti.MezzoInUscita;
                 partenza.Sganciata = false;
                 new ComposizionePartenze(richiesta, DateTime.UtcNow, utente.Id, false)
                 {
