@@ -11,6 +11,17 @@
             </ng-template>
         </button>
     </div>
+    <div class="btn-group col-8 pl-1 pr-3" ngbDropdown role="group" placement='top' aria-label="Button group with nested dropdown">
+        <button class="btn btn-success btn-block card-shadow mt-2 btn-no-hover" [disabled]="disableConfirmPartenza" ngbDropdownToggle>
+            <span class="mr-1">Conferma</span>
+            <span class="badge badge-light">{{boxPartenzaLenght}}</span>
+        </button>
+        <div class="dropdown-menu" ngbDropdownMenu>
+          <button ngbDropdownItem (click)="_confirmPartenzaInViaggio()">Conferma come In Viaggio</button>
+          <button ngbDropdownItem (click)="_confirmPartenzaInUscita()">Conferma come In Uscita</button>
+        </div>
+      </div>
+    <!--
     <div class="col-8 pl-1 pr-3">
         <button class="btn btn-success btn-block card-shadow mt-2 btn-no-hover" (click)="_confirmPartenza()"
                 [disabled]="disableConfirmPartenza">
@@ -18,4 +29,5 @@
             <span class="badge badge-light">{{boxPartenzaLenght}}</span>
         </button>
     </div>
+    -->
 </div>
