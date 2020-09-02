@@ -18,15 +18,22 @@
                         <span *ngIf="partenza.squadre.length === 1"><i class="fa fa-search"></i></span>
                         <span *ngIf="partenza.squadre.length > 1">+{{partenza.squadre.length - 1}}</span>
                     </button>
-                    <div *ngIf="inGestione && statoRichiesta !== statoRichiestaEnum.Chiusa" class="float-right">
-                        <button class="btn btn-sm btn-block btn-danger"
-                                (click)="eliminaPartenza.emit(partenza.mezzo.codice); $event.stopPropagation()">
+                    <div  *ngIf="inGestione && statoRichiesta !== statoRichiestaEnum.Chiusa" class="float-right" style="display: flex;">
+                        <div class="mr-1">
+                            <button class="btn btn-sm btn-block btn-info"  ngbTooltip="Modifica partenza"
+                                    (click)="modificaPartenza.emit(); $event.stopPropagation()">
+                            <i class="fa fa-cog"></i>
+                            </button>
+                        </div>
+                        <div>
+                            <button class="btn btn-sm btn-block btn-danger" ngbTooltip="Elimina partenza"
+                                   (click)="eliminaPartenza.emit(partenza.mezzo.codice); $event.stopPropagation()">
                             <i class="fa fa-trash"></i>
-                        </button>
+                            </button>
+                        </div>
                     </div>
-                </div>
                 <span *ngIf="!partenza.squadre || partenza.squadre.length === 0" class="p-2">Nessun squadra</span>
             </div>
-        </div>
+        </div>       
     </div>
 </div>

@@ -19,6 +19,7 @@ export class PartenzaComponent {
     @Output() listaSquadre = new EventEmitter<ListaSquadre>();
     @Output() actionMezzo: EventEmitter<MezzoActionInterface> = new EventEmitter();
     @Output() eliminaPartenza: EventEmitter<string> = new EventEmitter();
+    @Output() modificaPartenza: EventEmitter<string> = new EventEmitter();
 
     statoRichiestaEnum = StatoRichiesta;
 

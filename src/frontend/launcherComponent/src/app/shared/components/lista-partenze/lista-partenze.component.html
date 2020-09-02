@@ -8,7 +8,7 @@
                     *ngIf="(loadingActionMezzo$ | async) && (loadingActionMezzo$ | async) === p.mezzo.codice"></app-partial-loader>
             <app-partenza [partenza]="p" [inGestione]="inGestione" [statoRichiesta]="statoRichiesta" [idDaSganciare]="idDaSganciare"
                           (listaSquadre)="onListaSquadrePartenza($event)" (actionMezzo)="onActionMezzo($event)"
-                          (eliminaPartenza)="eliminaPartenza.emit($event)"></app-partenza>
+                          (eliminaPartenza)="eliminaPartenza.emit($event)" (modificaPartenza)="modificaPartenza.emit($event)"></app-partenza>
         </li>
     </div>
 </ul>
