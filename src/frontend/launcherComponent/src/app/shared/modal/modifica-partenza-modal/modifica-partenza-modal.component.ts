@@ -24,8 +24,13 @@ export class ModificaPartenzaModalComponent implements OnInit {
   formValid: boolean;
 
   operatore: string;
+  sede: string;
   partenza: Partenza;
   public time = { hour: 13, minute: 30 };
+  public mezzoIsCollapsed = true;
+  public squadraIsCollapsed = true;
+  public orarioIsCollapsed = true;
+  public motivazioneIsCollapsed = true;
 
   modificaPartenzaForm: FormGroup;
   submitted: boolean;
@@ -47,12 +52,17 @@ export class ModificaPartenzaModalComponent implements OnInit {
     this.modificaPartenzaForm = new FormGroup({
       nuovoMezzo: new FormControl(),
       operatore: new FormControl(),
+      sede: new FormControl(),
+      motivazione: new FormControl(),
     });
     this.modificaPartenzaForm = this.fb.group({
       nuovoMezzo: [null, Validators.required],
       operatore: [null, Validators.required],
+      sede: [null, Validators.required],
+      motivazione: [null, Validators.required],
     });
     this.f.operatore.disable();
+    this.f.sede.disable();
   }
 
   get f() {
@@ -87,7 +97,8 @@ export class ModificaPartenzaModalComponent implements OnInit {
                 new UpdateFormValue({
                     path: 'modificaPartenzaModal.modificaPartenzaForm',
                     value: {
-                        operatore: user.nome + ' ' + user.cognome
+                        operatore: user.nome + ' ' + user.cognome,
+                        sede: user.sede.descrizione
                     }
                 })
             );

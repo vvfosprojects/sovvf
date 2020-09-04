@@ -9,12 +9,21 @@
   <div class="modal-body height py-4 px-5">
     <form [formGroup]="modificaPartenzaForm" ngxsForm="modificaPartenzaModal.modificaPartenzaForm"
           autocomplete="off">
+        <!-- operatore -->
         <div class="form-group">
             <label for="operatore">Operatore
                 <small class="text-danger">*</small>
             </label>
             <input id="operatore" formControlName="operatore" class="form-control" placeholder="Opeatore">
         </div>
+        <!-- sede -->
+        <div class="form-group">
+          <label for="sede">Sede
+              <small class="text-danger">*</small>
+          </label>
+          <input id="sede" formControlName="sede" class="form-control" placeholder="Sede">
+        </div>
+        <!-- mezzo e squadra da sostituire -->
         <div class="row mb-3">
           <div class="col">
             <label>Mezzo da sostituire
@@ -45,30 +54,99 @@
             </div>
           </div>
         </div>
-        <div class="form-group">
-          <label for="nuovoMezzo">
-              Seleziona Nuovo Mezzo
-              <small class="text-danger">*</small>
-          </label>
-          <ng-select
-                  id="nuovoMezzo"
-                  formControlName="nuovoMezzo"
-                  [items]=""
-                  [clearable]="false"
-                  placeholder=""
-                  [closeOnSelect]="true"
-                  [notFoundText]="''">
-          </ng-select>
-        </div>
-        <div class="form-group mb-3">
-          <label for="default-picker">Seleziona un orario
-            <small class="text-danger">*</small>
-          </label>          
-          <div class="md-form md-outline" id="default-picker" style="display: flex;">
-            <ngb-timepicker [(ngModel)]="time" [ngModelOptions]="{standalone: true}" style="margin-left: 25px;"></ngb-timepicker>
-            <i class="fa fa-clock-o" style="align-self: center; padding-left: 10px; font-size: 25px;"></i>
+        <!-- toggle nuovo mezzo e squadra -->
+        <div class="row mt-4 mb-2">
+          <div class="col">
+            <button type="button" class="btn btn-outline-primary btn-sm btn-no-hover" (click)="mezzoIsCollapsed = !mezzoIsCollapsed"
+                    [attr.aria-expanded]="!mezzoIsCollapsed" aria-controls="nuovoMezzoShow">
+                    Seleziona mezzo 
+            </button>
+            <small class="text-danger required-collapse">*</small>
           </div>
-          <small class="text-muted">* La modifica partenza risulterà alle {{time.hour <= 9 ? '0' + time.hour : time.hour}}:{{time.minute <= 9 ? '0' + time.minute : time.minute}}. </small>
+          <div class="col">
+            <button type="button" class="btn btn-outline-primary btn-sm btn-no-hover" (click)="squadraIsCollapsed = !squadraIsCollapsed"
+                    [attr.aria-expanded]="!squadraIsCollapsed" aria-controls="nuovaSquadraShow">
+                    Seleziona squadra
+            </button>
+            <small class="text-danger required-collapse">*</small>
+          </div>
+        </div>
+        <!-- lista nuovo mezzo e squadra -->
+        <div class="row">
+          <div class="col">
+            <div class="form-group"  id="nuovoMezzoShow" [ngbCollapse]="mezzoIsCollapsed">
+              <label for="nuovoMezzo">
+                  Lista Mezzi
+              </label>
+              <ng-select
+                      id="nuovoMezzo"
+                      formControlName="nuovoMezzo"
+                      [items]=""
+                      [clearable]="false"
+                      placeholder=""
+                      [closeOnSelect]="true"
+                      [notFoundText]="''">
+              </ng-select>
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-group"  id="nuovaSquadraShow" [ngbCollapse]="squadraIsCollapsed">
+              <label for="nuovoMezzo">
+                  Lista Squadre
+              </label>
+                <ng-select
+                      id="nuovoMezzo"
+                      formControlName="nuovoMezzo"
+                      [items]=""
+                      [clearable]="false"
+                      placeholder=""
+                      [closeOnSelect]="true"
+                      [notFoundText]="''">
+                </ng-select>
+              </div>
+            </div>
+        </div>
+        <!-- toggle orario -->
+        <div class="row mt-3 mb-3">
+          <div class="col">
+            <button type="button" class="btn btn-outline-primary btn-sm btn-no-hover" (click)="orarioIsCollapsed = !orarioIsCollapsed"
+                    [attr.aria-expanded]="!orarioIsCollapsed" aria-controls="orarioShow">
+                    Seleziona un orario
+            </button>
+            <small class="text-danger required-collapse">*</small>
+          </div>
+          <div class="col"></div>
+        </div>
+        <!-- orario -->
+        <div class="row mb-3"  id="orarioShow" [ngbCollapse]="orarioIsCollapsed">
+          <div class="col">
+            <div class="md-form md-outline" id="default-picker" style="display: flex;">
+              <ngb-timepicker [(ngModel)]="time" [ngModelOptions]="{standalone: true}" style="margin-left: 25px;"></ngb-timepicker>
+              <i class="fa fa-clock-o" style="align-self: center; padding-left: 10px; font-size: 25px;"></i>
+            </div>
+            <small class="text-muted">* La modifica partenza risulterà alle {{time.hour <= 9 ? '0' + time.hour : time.hour}}:{{time.minute <= 9 ? '0' + time.minute : time.minute}}. </small>
+          </div>
+          <div class="col"></div>
+        </div>
+        <!-- toggle motivazione -->
+        <div class="row mt-4 mb-3">
+          <div class="col">
+            <button type="button" class="btn btn-outline-primary btn-sm btn-no-hover" (click)="motivazioneIsCollapsed = !motivazioneIsCollapsed"
+                    [attr.aria-expanded]="!motivazioneIsCollapsed" aria-controls="motivazioneShow">
+                    Scrivi una motivazione
+            </button>
+            <small class="text-danger required-collapse">*</small>
+          </div>
+          <div class="col"></div>
+        </div>
+        <!-- motivazione -->
+        <div class="row mb-3" id="motivazioneShow" [ngbCollapse]="motivazioneIsCollapsed">
+          <div class="col">
+            <textarea rows="4" cols="50" maxlength="4000" id="motivazione" placeholder="Inserisci la Motivazione"
+                      formControlName="motivazione"
+                      class="form-control"
+                      [ngClass]="{ 'is-invalid': submitted && f.motivazione.errors}" style="max-height: 100px;"></textarea>
+          </div>
         </div>
     </form>
       <h6 class="text-danger">* Campi Obbligatori</h6>

@@ -7,6 +7,8 @@ export interface ModificaPartenzaModalStateModel {
         model?: {
             nuovoMezzo: string;
             operatore: string;
+            sede: string;
+            motivazione: string;
         };
         dirty: boolean;
         status: string;
@@ -20,6 +22,8 @@ export const ModificaPartenzaModalStateDefaults: ModificaPartenzaModalStateModel
         model: {
             nuovoMezzo: undefined,
             operatore: undefined,
+            sede: undefined,
+            motivazione: undefined,
         },
         dirty: false,
         status: '',
