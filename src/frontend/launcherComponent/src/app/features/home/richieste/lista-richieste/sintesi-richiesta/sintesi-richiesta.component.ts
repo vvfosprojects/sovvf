@@ -19,6 +19,7 @@ import { TrasferimentoChiamataModalComponent } from 'src/app/shared/modal/trasfe
 import { ClearFormTrasferimentoChiamata, RequestAddTrasferimentoChiamata } from 'src/app/shared/store/actions/trasferimento-chiamata-modal/trasferimento-chiamata-modal.actions';
 import { AllertaSedeModalComponent } from '../../../../../shared/modal/allerta-sede-modal/allerta-sede-modal.component';
 import { AllertaSedeEmitInterface } from '../../../../../shared/interface/allerta-sede-emit.interface';
+import { ModificaPartenzaModalComponent } from 'src/app/shared/modal/modifica-partenza-modal/modifica-partenza-modal.component';
 
 @Component({
     selector: 'app-sintesi-richiesta',
@@ -213,6 +214,16 @@ export class SintesiRichiestaComponent implements OnChanges {
                     break;
             }
         });
+    }
+
+    onModificaPartenza(index: string) {
+        const modalModificaPartenza = this.modalService.open(ModificaPartenzaModalComponent, {
+            windowClass: 'modal-holder',
+            backdropClass: 'light-blue-backdrop',
+            centered: true,
+            size: 'lg'
+        });
+        modalModificaPartenza.componentInstance.partenza = this.richiesta.partenzeRichiesta[index];
     }
 
     onActionRichiesta(richiestaAction: RichiestaActionInterface) {

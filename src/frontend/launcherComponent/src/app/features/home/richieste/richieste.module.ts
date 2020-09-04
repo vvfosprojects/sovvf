@@ -45,6 +45,7 @@ import { TagInputModule } from 'ngx-chips';
 import { ModificaEntiModalComponent } from 'src/app/shared/modal/modifica-enti-modal/modifica-enti-modal.component';
 import { TrasferimentoChiamataModalComponent } from 'src/app/shared/modal/trasferimento-chiamata-modal/trasferimento-chiamata-modal.component';
 import { AllertaSedeModalComponent } from '../../../shared/modal/allerta-sede-modal/allerta-sede-modal.component';
+import { ModificaPartenzaModalComponent } from 'src/app/shared/modal/modifica-partenza-modal/modifica-partenza-modal.component';
 
 @NgModule({
     imports: [
@@ -94,7 +95,8 @@ import { AllertaSedeModalComponent } from '../../../shared/modal/allerta-sede-mo
         ModificaFonogrammaModalComponent,
         ModificaEntiModalComponent,
         TrasferimentoChiamataModalComponent,
-        AllertaSedeModalComponent
+        AllertaSedeModalComponent,
+        ModificaPartenzaModalComponent
     ],
     providers: [
         SintesiRichiesteService

@@ -1,0 +1,85 @@
+<div class="modal-header">
+  <h4 class="modal-title">{{ getTitle() | uppercase }}</h4>
+  <button type="button" class="btn btn-light close" style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px"
+          (click)="onDismiss()">
+      <i class="fa fa-times text-danger"></i>
+  </button>
+</div>
+
+  <div class="modal-body height py-4 px-5">
+    <form [formGroup]="modificaPartenzaForm" ngxsForm="modificaPartenzaModal.modificaPartenzaForm"
+          autocomplete="off">
+        <div class="form-group">
+            <label for="operatore">Operatore
+                <small class="text-danger">*</small>
+            </label>
+            <input id="operatore" formControlName="operatore" class="form-control" placeholder="Opeatore">
+        </div>
+        <div class="row mb-3">
+          <div class="col">
+            <label>Mezzo da sostituire
+              <small class="text-danger">*</small>
+            </label>
+            <div> <i class="guida fa fa-truck fa-fw mr-1 text-{{ statoMezzoColor(partenza.mezzo['stato']) }}" ngbTooltip="Mezzo {{ partenza.mezzo['stato'] }}"></i>
+                  <b>{{ partenza.mezzo['descrizione'] }}</b>
+                  <span class="badge badge-default m-0">{{ partenza.mezzo['genere'] }}</span>
+                  <i class="fa fa-check-circle-o text-success ml-3"></i>
+            </div>
+          </div>
+          <div *ngIf="partenza.squadre.length === 1" class="col" style="color:#666666">
+            <label>Squadra da sostituire
+              <small class="text-danger">*</small>
+            </label>
+            <div> <i class="fa fa-group mr-2" ngbTooltip="Squadra"></i>
+              <b>{{ partenza.mezzo['descrizione'] }}</b>
+              <i class="fa fa-check-circle-o text-success ml-3"></i>
+            </div>
+          </div>
+          <div *ngIf="partenza.squadre.length > 1" class="col" style="color:#666666">
+            <label>Squadre da sostituire
+              <small class="text-danger">*</small>
+            </label>
+            <div *ngFor="let squadre of partenza.squadre"> <i class="fa fa-group mr-2" ngbTooltip="Squadre"></i>
+              <b>{{ squadre['nome'] }}</b>
+              <i class="fa fa-check-circle-o text-success ml-3"></i>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="nuovoMezzo">
+              Seleziona Nuovo Mezzo
+              <small class="text-danger">*</small>
+          </label>
+          <ng-select
+                  id="nuovoMezzo"
+                  formControlName="nuovoMezzo"
+                  [items]=""
+                  [clearable]="false"
+                  placeholder=""
+                  [closeOnSelect]="true"
+                  [notFoundText]="''">
+          </ng-select>
+        </div>
+        <div class="form-group mb-3">
+          <label for="default-picker">Seleziona un orario
+            <small class="text-danger">*</small>
+          </label>          
+          <div class="md-form md-outline" id="default-picker" style="display: flex;">
+            <ngb-timepicker [(ngModel)]="time" [ngModelOptions]="{standalone: true}" style="margin-left: 25px;"></ngb-timepicker>
+            <i class="fa fa-clock-o" style="align-self: center; padding-left: 10px; font-size: 25px;"></i>
+          </div>
+          <small class="text-muted">* La modifica partenza risulterà alle {{time.hour <= 9 ? '0' + time.hour : time.hour}}:{{time.minute <= 9 ? '0' + time.minute : time.minute}}. </small>
+        </div>
+    </form>
+      <h6 class="text-danger">* Campi Obbligatori</h6>
+  </div>
+
+<div class="modal-footer">
+  <button type="button" class="btn btn-lg btn-secondary btn-no-hover" (click)="closeModal('ko')">
+      {{ 'Annulla' | uppercase }}
+  </button>
+  <button type="button" class="btn btn-lg btn-danger btn-no-hover" ngbTooltip="Riempi tutti i campi obbligatori"
+          [disableTooltip]="formValid" [disabled]="!formValid" (click)="onConferma()">
+      {{ 'Conferma' | uppercase }}
+  </button>
+</div>
