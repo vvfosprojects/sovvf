@@ -56,6 +56,7 @@ namespace SO115App.ExternalAPI.Fake.Box
 
             personale.SquadreAssegnate =
                 listaSquadreComposizione.Count(x => x.Squadra.Stato == Squadra.StatoSquadra.InViaggio) +
+                listaSquadreComposizione.Count(x => x.Squadra.Stato == Squadra.StatoSquadra.InUscita) +
                 listaSquadreComposizione.Count(x => x.Squadra.Stato == Squadra.StatoSquadra.SulPosto) +
                 listaSquadreComposizione.Count(x => x.Squadra.Stato == Squadra.StatoSquadra.InRientro);
             personale.SquadreServizio =
