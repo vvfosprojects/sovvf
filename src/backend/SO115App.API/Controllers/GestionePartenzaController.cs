@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AggiornaStatoMezzo;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AnnullaPartenza;
+using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.ModificaPartenza;
 
 namespace SO115App.API.Controllers
 {
@@ -17,12 +18,16 @@ namespace SO115App.API.Controllers
     {
         private readonly ICommandHandler<AggiornaStatoMezzoCommand> _addhandler;
         private readonly ICommandHandler<AnnullaPartenzaCommand> _annullaPartenzahandler;
+        private readonly ICommandHandler<ModificaPartenzaCommand> _modificaPartenzahandler;
 
         public GestionePartenzaController(
-            ICommandHandler<AggiornaStatoMezzoCommand> Addhandler, ICommandHandler<AnnullaPartenzaCommand> AnnullaPartenzahandler)
+            ICommandHandler<AggiornaStatoMezzoCommand> Addhandler, 
+            ICommandHandler<AnnullaPartenzaCommand> AnnullaPartenzahandler,
+            ICommandHandler<ModificaPartenzaCommand> ModificaPartenzahandler)
         {
             _addhandler = Addhandler;
             _annullaPartenzahandler = AnnullaPartenzahandler;
+            _modificaPartenzahandler = ModificaPartenzahandler;
         }
 
         [HttpPost("AggiornaPartenza")]
@@ -76,6 +81,29 @@ namespace SO115App.API.Controllers
             try
             {
                 _annullaPartenzahandler.Handle(command);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                    return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
+                else if (ex.Message.Contains(Costanti.MezzoErroreCambioStatoRichiestaChiusa))
+                    return StatusCode(403, new { message = Costanti.MezzoErroreCambioStatoRichiestaChiusa });
+                else
+                    return BadRequest(new { message = ex.Message });
+            }
+        }
+
+        [HttpPost("ModificaPartenza")]
+        public async Task<IActionResult> ModificaPartenzaCommand([FromBody] ModificaPartenzaCommand partenza)
+        {
+            partenza.CodSede = Request.Headers["CodiceSede"];
+            partenza.IdOperatore = Request.Headers["IdUtente"];
+
+            try
+            {
+                _modificaPartenzahandler.Handle(partenza);
 
                 return Ok();
             }
