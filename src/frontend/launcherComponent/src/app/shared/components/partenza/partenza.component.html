@@ -21,7 +21,7 @@
                     <div  *ngIf="inGestione && statoRichiesta !== statoRichiestaEnum.Chiusa" class="float-right" style="display: flex;">
                         <div class="mr-1">
                             <button class="btn btn-sm btn-block btn-info"  ngbTooltip="Modifica partenza"
-                                    (click)="modificaPartenza.emit(); $event.stopPropagation()">
+                                    (click)="modificaPartenza.emit(index); $event.stopPropagation()">
                             <i class="fa fa-cog"></i>
                             </button>
                         </div>

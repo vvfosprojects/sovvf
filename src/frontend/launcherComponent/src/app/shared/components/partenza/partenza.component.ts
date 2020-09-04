@@ -15,12 +15,13 @@ export class PartenzaComponent {
     @Input() partenza: Partenza;
     @Input() inGestione: boolean;
     @Input() statoRichiesta: StatoRichiesta;
+    @Input() index: String;
 
     @Output() listaSquadre = new EventEmitter<ListaSquadre>();
     @Output() actionMezzo: EventEmitter<MezzoActionInterface> = new EventEmitter();
     @Output() eliminaPartenza: EventEmitter<string> = new EventEmitter();
-    @Output() modificaPartenza: EventEmitter<string> = new EventEmitter();
-
+    @Output() modificaPartenza: EventEmitter<string> = new EventEmitter<string>();
+    
     statoRichiestaEnum = StatoRichiesta;
 
     onListaSquadrePartenza() {

@@ -7,6 +7,9 @@ import { Utente } from '../../model/utente.model';
 import { UpdateFormValue } from '@ngxs/form-plugin';
 import { AuthState } from 'src/app/features/auth/store/auth.state';
 import { ModificaPartenzaModalState } from '../../store/states/modifica-partenza-modal/modifica-partenza-modal.state';
+import { Partenza } from './../../model/partenza.model';
+import { statoMezzoColor } from '../../helper/function';
+import { StatoMezzo } from '../../enum/stato-mezzo.enum';
 
 @Component({
   selector: 'app-modifica-partenza-modal',
@@ -21,6 +24,8 @@ export class ModificaPartenzaModalComponent implements OnInit {
   formValid: boolean;
 
   operatore: string;
+  partenza: Partenza;
+  public time = { hour: 13, minute: 30 };
 
   modificaPartenzaForm: FormGroup;
   submitted: boolean;
@@ -32,6 +37,7 @@ export class ModificaPartenzaModalComponent implements OnInit {
               private fb: FormBuilder) { 
       this.initForm();
       this.inizializzaUser();
+      this.formatTime();
   }
 
   ngOnInit() {
@@ -69,7 +75,7 @@ export class ModificaPartenzaModalComponent implements OnInit {
   
 
   getTitle(): string {
-      let title = 'Modifica Partenza';
+      let title = 'Modifica Partenza Richiesta ' + this.partenza.mezzo['idRichiesta'];
       return title;
   }
 
@@ -97,6 +103,7 @@ export class ModificaPartenzaModalComponent implements OnInit {
   }
 
   this.modal.close({ success: true, result: this.modificaPartenzaForm.value });
+  //formatTimeForCallBack();
   }
 
   onDismiss(): void {
@@ -106,5 +113,19 @@ export class ModificaPartenzaModalComponent implements OnInit {
   closeModal(type: string) {
     this.modal.close(type);
   }
+
+  formatTime() {
+    const d = new Date();
+    this.time.hour = d.getHours();
+    this.time.minute = d.getMinutes();
+  }
+
+  formatTimeForCallBack(): any {
+    return { oraEvento: this.time };
+  }
+
+  statoMezzoColor(stato: StatoMezzo) {
+    return statoMezzoColor(stato);
+}
 
 }

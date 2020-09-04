@@ -216,13 +216,14 @@ export class SintesiRichiestaComponent implements OnChanges {
         });
     }
 
-    onModificaPartenza() {
-        const modal = this.modalService.open(ModificaPartenzaModalComponent, {
+    onModificaPartenza(index: string) {
+        const modalModificaPartenza = this.modalService.open(ModificaPartenzaModalComponent, {
             windowClass: 'modal-holder',
             backdropClass: 'light-blue-backdrop',
             centered: true,
             size: 'lg'
         });
+        modalModificaPartenza.componentInstance.partenza = this.richiesta.partenzeRichiesta[index];
     }
 
     onActionRichiesta(richiestaAction: RichiestaActionInterface) {
