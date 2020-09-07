@@ -75,36 +75,69 @@
         <div class="row">
           <div class="col">
             <div class="form-group"  id="nuovoMezzoShow" [ngbCollapse]="mezzoIsCollapsed">
-              <label for="nuovoMezzo">
-                  Lista Mezzi
-              </label>
-              <ng-select
-                      id="nuovoMezzo"
-                      formControlName="nuovoMezzo"
-                      [items]=""
-                      [clearable]="false"
-                      placeholder=""
-                      [closeOnSelect]="true"
-                      [notFoundText]="''">
-              </ng-select>
+              
+              <!-- lista mezzi -->
+              <div class="card card-shadow mx-auto" style="min-height:392px">
+                <div class="card-header clearfix px-2 py-1">
+                  <div class="float-left pt-2">
+                      <i class="fa fa-truck mr-2"></i>
+                      <span class="h6">Mezzi</span>
+                  </div>
+                  <div class="float-right">
+                      <input class="form-control" placeholder="Cerca..." type="search" name="ricercaMezzi" id="ricercaMezzi" >
+                  </div>
+                </div>
+              </div>
+
+
             </div>
           </div>
           <div class="col">
             <div class="form-group"  id="nuovaSquadraShow" [ngbCollapse]="squadraIsCollapsed">
-              <label for="nuovoMezzo">
-                  Lista Squadre
-              </label>
-                <ng-select
-                      id="nuovoMezzo"
-                      formControlName="nuovoMezzo"
-                      [items]=""
-                      [clearable]="false"
-                      placeholder=""
-                      [closeOnSelect]="true"
-                      [notFoundText]="''">
-                </ng-select>
+            <!-- lista squadre -->
+              <div class="card card-shadow mx-auto" style="min-height:392px">
+                <div class="card-header clearfix px-2 py-1">
+                  <div class="float-left pt-2">
+                      <i class="fa fa-users mr-2"></i>
+                      <span class="h6">Squadre</span>
+                  </div>
+                  <div class="float-right w-50">
+                      <input class="form-control" placeholder="Cerca..." 
+                            type="search" name="ricercaSquadre" id="ricercaSquadre">
+                  </div>
+                </div>
+                <ul class="list-group list-group-flush border-bottom scroll-y" style="max-height:345px; min-height:345px">
+                  <!--
+                  <ng-template [ngIf]="squadreComposizione && squadreComposizione.length > 0">
+                    <li *ngFor="let sC of squadreComposizione | filterBy: {'squadra': {'nome': ricercaSquadre}}" class="list-group-item cursor-pointer border"
+                         [ngClass]="liClass()">
+                      <div class="row" ngbTooltip="Squadra già impegnata" placement="bottom"
+                            [disableTooltip]="!squadraComposizioneBusy()">
+                       <div class="col-10 pl-0">
+                        <span class="badge badge-info mr-2 py-1" [ngbPopover]="componenti" placement="right" triggers="mouseenter:mouseleave">
+                          <i class="fa fa-user mr-1"></i><span *ngIf="componenti">{{sC.squadra.componenti.length}}</span>
+                        </span>
+                        <ng-template #componenti>
+                        <div *ngFor="let c of sC.squadra.componenti">
+                          <span class="badge badge-secondary mr-1">{{c.descrizioneQualifica | truncate: 12}}</span>
+                          <span class="d-inline-block mr-2">{{c.nominativo | replace: '.': ' ' | truncate: 15}}</span>
+                        </div>
+                        </ng-template>
+                        <span class="font-weight-bolder">{{sC.squadra.nome}}</span>
+                        </div>
+                        <div class="col-2 pl-0">
+                        <span class="badge" [ngClass]="badgeDistaccamentoClass()"
+                              [ngbTooltip]="sC.squadra.distaccamento.descrizione">{{sC.squadra.distaccamento.descrizione | slice:0:3}}</span>
+                        </div>
+                      </div>
+                    </li>
+                  </ng-template>
+                  -->
+                </ul>
               </div>
-            </div>
+            </div>    
+          </div>  
+
         </div>
         <!-- toggle orario -->
         <div class="row mt-3 mb-3">
