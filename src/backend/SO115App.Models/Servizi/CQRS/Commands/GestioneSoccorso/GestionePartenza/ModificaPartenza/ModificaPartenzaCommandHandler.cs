@@ -72,7 +72,9 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 CodiceSede = PartenzaToDelete.Partenza.Mezzo.Distaccamento.Codice,
                 IdMezzo = command.TargaMezzo,
                 StatoMezzo = Costanti.MezzoInSede,
-                Richiesta = Richiesta
+                Richiesta = Richiesta,
+                DataOraAggiornamento = data,
+                IdUtente = command.IdOperatore
             };
 
             _updateStatoPartenze.Update(commandStatoMezzo);
