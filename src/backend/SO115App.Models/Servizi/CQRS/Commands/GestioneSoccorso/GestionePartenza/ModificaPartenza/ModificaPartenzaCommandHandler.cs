@@ -35,13 +35,16 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
         public void Handle(ModificaPartenzaCommand command)
         {
             //ANNULLO PARTENZA
-            AnnullaPartenza(new AnnullaPartenzaCommand()
+            if (command.ModificaPartenza.Annullamento)
             {
-                IdOperatore = command.IdOperatore,
-                IdRichiesta = command.CodRichiesta,
-                TestoMotivazione = command.Motivazione,
-                TargaMezzo = command.CodMezzo.Split(".")[1]
-            }, command.DataAnnullamento);
+                AnnullaPartenza(new AnnullaPartenzaCommand()
+                {
+                    IdOperatore = command.IdOperatore,
+                    IdRichiesta = command.ModificaPartenza.CodRichiesta,
+                    TestoMotivazione = command.ModificaPartenza.MotivazioneAnnullamento,
+                    TargaMezzo = command.ModificaPartenza.CodMezzo.Split(".")[1]
+                }, command.ModificaPartenza.DataAnnullamento.Value);
+            }
 
             //NUOVA PARTENZA
 
@@ -80,5 +83,4 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
             _updateStatoPartenze.Update(commandStatoMezzo);
         }
     }
-    
 }

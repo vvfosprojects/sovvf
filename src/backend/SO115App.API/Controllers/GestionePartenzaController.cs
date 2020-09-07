@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using CQRS.Commands;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SO115App.Models.Classi.Composizione;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AggiornaStatoMezzo;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AnnullaPartenza;
@@ -96,14 +97,19 @@ namespace SO115App.API.Controllers
         }
 
         [HttpPost("ModificaPartenza")]
-        public async Task<IActionResult> ModificaPartenzaCommand([FromBody] ModificaPartenzaCommand partenza)
+        public async Task<IActionResult> ModificaPartenzaCommand([FromBody] ModificaPartenza partenza)
         {
-            partenza.CodSede = Request.Headers["CodiceSede"];
-            partenza.IdOperatore = Request.Headers["IdUtente"];
+            var command = new ModificaPartenzaCommand()
+            {
+                CodSede = Request.Headers["CodiceSede"],
+                IdOperatore = Request.Headers["IdUtente"],
+
+                ModificaPartenza = partenza
+            };
 
             try
             {
-                _modificaPartenzahandler.Handle(partenza);
+                _modificaPartenzahandler.Handle(command);
 
                 return Ok();
             }
