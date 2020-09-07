@@ -13,7 +13,7 @@ namespace SO115App.SignalR.Sender.GestionePartenza
 
         }
 
-        public Task SendNotification(ModificaPartenzaCommand command)
+        public async Task SendNotification(ModificaPartenzaCommand command)
         {
             throw new System.NotImplementedException();
         }
