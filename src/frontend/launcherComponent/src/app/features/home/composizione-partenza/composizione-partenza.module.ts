@@ -81,8 +81,7 @@ import { FilterPipeModule } from 'ngx-filter-pipe';
         ComposizionePartenzaComponent
     ],
     providers: [
-        AttivitaUtenteService,
-        CompPartenzaService
+        AttivitaUtenteService
     ]
 })
 export class ComposizionePartenzaModule {

@@ -5,10 +5,15 @@ export interface ModificaPartenzaModalStateModel {
     modificaPartenza: Array<ModificaPartenza>;
     modificaPartenzaForm: {
         model?: {
-            nuovoMezzo: string;
+            codMezzo: string;
+            codSquadre: string[];
             operatore: string;
             sede: string;
-            motivazione: string;
+            sequenza: {
+                stato: string;
+                time: {
+                        hour: number, minute: number };
+            };
         };
         dirty: boolean;
         status: string;
@@ -20,10 +25,11 @@ export const ModificaPartenzaModalStateDefaults: ModificaPartenzaModalStateModel
     modificaPartenza: undefined,
     modificaPartenzaForm: {
         model: {
-            nuovoMezzo: undefined,
+            codMezzo: undefined,
+            codSquadre: undefined,
             operatore: undefined,
             sede: undefined,
-            motivazione: undefined,
+            sequenza: undefined,
         },
         dirty: false,
         status: '',

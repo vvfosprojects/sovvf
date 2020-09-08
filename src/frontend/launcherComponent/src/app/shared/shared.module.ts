@@ -17,6 +17,7 @@ import { TrasferimentoChiamataModalComponent } from './modal/trasferimento-chiam
 import { AllertaSedeModalComponent } from './modal/allerta-sede-modal/allerta-sede-modal.component';
 import * as Shared from './index';
 import { ModificaPartenzaModalComponent } from './modal/modifica-partenza-modal/modifica-partenza-modal.component';
+import { SostituzionePartenzaModalComponent } from './modal/sostituzione-partenza-modal/sostituzione-partenza-modal.component';
 
 const COMPONENTS = [
     Shared.DebounceClickDirective,
@@ -51,7 +52,8 @@ const COMPONENTS = [
     TrasferimentoChiamataModalComponent,
     NotificheComponent,
     AllertaSedeModalComponent,
-    ModificaPartenzaModalComponent
+    ModificaPartenzaModalComponent,
+    SostituzionePartenzaModalComponent
 ];
 
 @NgModule({

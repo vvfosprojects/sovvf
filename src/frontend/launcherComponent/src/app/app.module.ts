@@ -61,6 +61,7 @@ import { NotificheState } from './shared/store/states/notifiche/notifiche.state'
 import { TrasferimentoChiamataModalState } from './shared/store/states/trasferimento-chiamata-modal/trasferimento-chiamata-modal.state';
 import { EntiState } from './shared/store/states/enti/enti.state';
 import { AllertaSedeModalState } from './shared/store/states/allerta-sede-modal/allerta-sede-modal.state';
+import { SostituzionePartenzaModalState } from './shared/store/states/sostituzione-partenza-modal/sostituzione-partenza-modal.state';
 
 
 @NgModule({
@@ -105,7 +106,8 @@ import { AllertaSedeModalState } from './shared/store/states/allerta-sede-modal/
                 EntiState,
                 TrasferimentoChiamataModalState,
                 NotificheState,
-                AllertaSedeModalState
+                AllertaSedeModalState,
+                SostituzionePartenzaModalState
             ],
             { developmentMode: !environment.production }
         ),

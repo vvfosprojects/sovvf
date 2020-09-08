@@ -24,163 +24,65 @@
           <input id="sede" formControlName="sede" class="form-control" placeholder="Sede">
         </div>
         <!-- mezzo e squadra da sostituire -->
-        <div class="row mb-3">
-          <div class="col">
-            <label>Mezzo da sostituire
-              <small class="text-danger">*</small>
-            </label>
-            <div> <i class="guida fa fa-truck fa-fw mr-1 text-{{ statoMezzoColor(partenza.mezzo['stato']) }}" ngbTooltip="Mezzo {{ partenza.mezzo['stato'] }}"></i>
-                  <b>{{ partenza.mezzo['descrizione'] }}</b>
-                  <span class="badge badge-default m-0">{{ partenza.mezzo['genere'] }}</span>
-                  <i class="fa fa-check-circle-o text-success ml-3"></i>
-            </div>
-          </div>
-          <div *ngIf="partenza.squadre.length === 1" class="col" style="color:#666666">
-            <label>Squadra da sostituire
-              <small class="text-danger">*</small>
-            </label>
-            <div> <i class="fa fa-group mr-2" ngbTooltip="Squadra"></i>
-              <b>{{ partenza.squadre[0].nome }}</b>
-              <i class="fa fa-check-circle-o text-success ml-3"></i>
-            </div>
-          </div>
-          <div *ngIf="partenza.squadre.length > 1" class="col" style="color:#666666">
-            <label>Squadre da sostituire
-              <small class="text-danger">*</small>
-            </label>
-            <div *ngFor="let squadre of partenza.squadre"> <i class="fa fa-group mr-2" ngbTooltip="Squadre"></i>
-              <b>{{ squadre['nome'] }}</b>
-              <i class="fa fa-check-circle-o text-success ml-3"></i>
-            </div>
-          </div>
-        </div>
-        <!-- toggle nuovo mezzo e squadra -->
-        <div class="row mt-4 mb-2">
-          <div class="col">
-            <button type="button" class="btn btn-outline-primary btn-sm btn-no-hover" (click)="mezzoIsCollapsed = !mezzoIsCollapsed"
-                    [attr.aria-expanded]="!mezzoIsCollapsed" aria-controls="nuovoMezzoShow">
-                    Seleziona mezzo 
-            </button>
-            <small class="text-danger required-collapse">*</small>
-          </div>
-          <div class="col">
-            <button type="button" class="btn btn-outline-primary btn-sm btn-no-hover" (click)="squadraIsCollapsed = !squadraIsCollapsed"
-                    [attr.aria-expanded]="!squadraIsCollapsed" aria-controls="nuovaSquadraShow">
-                    Seleziona squadra
-            </button>
-            <small class="text-danger required-collapse">*</small>
-          </div>
-        </div>
-        <!-- lista nuovo mezzo e squadra -->
-        <div class="row">
-          <div class="col">
-            <div class="form-group"  id="nuovoMezzoShow" [ngbCollapse]="mezzoIsCollapsed">
-              
-              <!-- lista mezzi -->
-              <div class="card card-shadow mx-auto" style="min-height:392px">
-                <div class="card-header clearfix px-2 py-1">
-                  <div class="float-left pt-2">
-                      <i class="fa fa-truck mr-2"></i>
-                      <span class="h6">Mezzi</span>
-                  </div>
-                  <div class="float-right">
-                      <input class="form-control" placeholder="Cerca..." type="search" name="ricercaMezzi" id="ricercaMezzi" >
-                  </div>
-                </div>
+        <div class="border-partenza-box" style="display: flex; place-content: space-evenly;">
+          <div class="mb-3" style="display: contents;">
+            <div class="">
+              <label>Mezzo</label>
+              <div> <i class="guida fa fa-truck fa-fw mr-1 text-{{ statoMezzoColor(partenza.mezzo['stato']) }}" ngbTooltip="Mezzo {{ partenza.mezzo['stato'] }}"></i>
+                    <b>{{ partenza.mezzo['descrizione'] }}</b>
+                    <span class="badge badge-default m-0">{{ partenza.mezzo['genere'] }}</span>
+                    <i class="fa fa-check-circle-o text-success ml-3"></i>
               </div>
-
-
             </div>
-          </div>
-          <div class="col">
-            <div class="form-group"  id="nuovaSquadraShow" [ngbCollapse]="squadraIsCollapsed">
-            <!-- lista squadre -->
-              <div class="card card-shadow mx-auto" style="min-height:392px">
-                <div class="card-header clearfix px-2 py-1">
-                  <div class="float-left pt-2">
-                      <i class="fa fa-users mr-2"></i>
-                      <span class="h6">Squadre</span>
-                  </div>
-                  <div class="float-right w-50">
-                      <input class="form-control" placeholder="Cerca..." 
-                            type="search" name="ricercaSquadre" id="ricercaSquadre">
-                  </div>
-                </div>
-                <ul class="list-group list-group-flush border-bottom scroll-y" style="max-height:345px; min-height:345px">
-                  <!--
-                  <ng-template [ngIf]="squadreComposizione && squadreComposizione.length > 0">
-                    <li *ngFor="let sC of squadreComposizione | filterBy: {'squadra': {'nome': ricercaSquadre}}" class="list-group-item cursor-pointer border"
-                         [ngClass]="liClass()">
-                      <div class="row" ngbTooltip="Squadra già impegnata" placement="bottom"
-                            [disableTooltip]="!squadraComposizioneBusy()">
-                       <div class="col-10 pl-0">
-                        <span class="badge badge-info mr-2 py-1" [ngbPopover]="componenti" placement="right" triggers="mouseenter:mouseleave">
-                          <i class="fa fa-user mr-1"></i><span *ngIf="componenti">{{sC.squadra.componenti.length}}</span>
-                        </span>
-                        <ng-template #componenti>
-                        <div *ngFor="let c of sC.squadra.componenti">
-                          <span class="badge badge-secondary mr-1">{{c.descrizioneQualifica | truncate: 12}}</span>
-                          <span class="d-inline-block mr-2">{{c.nominativo | replace: '.': ' ' | truncate: 15}}</span>
-                        </div>
-                        </ng-template>
-                        <span class="font-weight-bolder">{{sC.squadra.nome}}</span>
-                        </div>
-                        <div class="col-2 pl-0">
-                        <span class="badge" [ngClass]="badgeDistaccamentoClass()"
-                              [ngbTooltip]="sC.squadra.distaccamento.descrizione">{{sC.squadra.distaccamento.descrizione | slice:0:3}}</span>
-                        </div>
-                      </div>
-                    </li>
-                  </ng-template>
-                  -->
-                </ul>
+            <div *ngIf="partenza.squadre.length === 1" class="" style="color:#666666">
+              <label>Squadra</label>
+              <div> <i class="fa fa-group mr-2" ngbTooltip="Squadra"></i>
+                <b>{{ partenza.squadre[0].nome }}</b>
+                <i class="fa fa-check-circle-o text-success ml-3"></i>
               </div>
-            </div>    
-          </div>  
-
-        </div>
-        <!-- toggle orario -->
-        <div class="row mt-3 mb-3">
-          <div class="col">
-            <button type="button" class="btn btn-outline-primary btn-sm btn-no-hover" (click)="orarioIsCollapsed = !orarioIsCollapsed"
-                    [attr.aria-expanded]="!orarioIsCollapsed" aria-controls="orarioShow">
-                    Seleziona un orario
-            </button>
-            <small class="text-danger required-collapse">*</small>
-          </div>
-          <div class="col"></div>
-        </div>
-        <!-- orario -->
-        <div class="row mb-3"  id="orarioShow" [ngbCollapse]="orarioIsCollapsed">
-          <div class="col">
-            <div class="md-form md-outline" id="default-picker" style="display: flex;">
-              <ngb-timepicker [(ngModel)]="time" [ngModelOptions]="{standalone: true}" style="margin-left: 25px;"></ngb-timepicker>
-              <i class="fa fa-clock-o" style="align-self: center; padding-left: 10px; font-size: 25px;"></i>
             </div>
-            <small class="text-muted">* La modifica partenza risulterà alle {{time.hour <= 9 ? '0' + time.hour : time.hour}}:{{time.minute <= 9 ? '0' + time.minute : time.minute}}. </small>
-          </div>
-          <div class="col"></div>
-        </div>
-        <!-- toggle motivazione -->
-        <div class="row mt-4 mb-3">
-          <div class="col">
-            <button type="button" class="btn btn-outline-primary btn-sm btn-no-hover" (click)="motivazioneIsCollapsed = !motivazioneIsCollapsed"
-                    [attr.aria-expanded]="!motivazioneIsCollapsed" aria-controls="motivazioneShow">
-                    Scrivi una motivazione
-            </button>
-            <small class="text-danger required-collapse">*</small>
-          </div>
-          <div class="col"></div>
-        </div>
-        <!-- motivazione -->
-        <div class="row mb-3" id="motivazioneShow" [ngbCollapse]="motivazioneIsCollapsed">
-          <div class="col">
-            <textarea rows="4" cols="50" maxlength="4000" id="motivazione" placeholder="Inserisci la Motivazione"
-                      formControlName="motivazione"
-                      class="form-control"
-                      [ngClass]="{ 'is-invalid': submitted && f.motivazione.errors}" style="max-height: 100px;"></textarea>
+            <div *ngIf="partenza.squadre.length > 1" class="" style="color:#666666">
+              <label>Squadre</label>
+              <div *ngFor="let squadre of partenza.squadre"> <i class="fa fa-group mr-2" ngbTooltip="Squadre"></i>
+                <b>{{ squadre['nome'] }}</b>
+                <i class="fa fa-check-circle-o text-success ml-3"></i>
+              </div>
+            </div>
+            <div class=""  style="align-self: center;">
+              <button class="btn btn-sm btn-block btn-info btn-no-hover"  ngbTooltip="Modifica partenza" style="max-width: fit-content;">
+                <i class="fa fa-pencil-square-o" (click)="open()"></i>
+              </button>
+            </div>
           </div>
         </div>
+        <!-- sequenza eventi -->
+        <div class="my-4 d-inline-flex">
+          <label for="sequenzaEventi">Crea sequenza Eventi</label>
+          <button class="btn btn-sm btn-block btn-info btn-no-hover ml-2" (click)="onAddSequenza()"  ngbTooltip="Aggiungi evento" style="max-width: fit-content;">
+            <i class="fa fa-plus"></i>
+          </button>
+          <button class="btn btn-sm btn-danger btn-no-hover ml-2" (click)="onRemoveSequenza()"  ngbTooltip="Rimuovi evento" style="max-width: fit-content;">
+            <i class="fa fa-minus"></i>
+          </button>
+        </div>
+          <div *ngIf="numeroSequenze.length > 0" class="card mb-4" style="width: 31.5rem;">
+            <ul class="list-group list-group-flush" style="max-height: 500px;" [class.overflow-test]="numeroSequenze.length > 3">
+              <li *ngFor="let sequenza of numeroSequenze; let index = index" class="list-group-item" style="display: inline-flex; place-content: space-between;">
+                <ng-select [items]="listaStatoMezzo"
+                           bindLabel="name"
+                           placeholder="Seleziona stato Mezzo"
+                           [(ngModel)]="numeroSequenze[index].stato"
+                           [ngModelOptions]="{standalone: true}"
+                           style="width: 250px; align-self: center;"
+                           >
+                </ng-select>
+                <div class="md-form md-outline" id="default-picker" style="display: flex;">
+                  <ngb-timepicker [(ngModel)]="numeroSequenze[index].time" [ngModelOptions]="{standalone: true}" style="margin-left: 25px;"></ngb-timepicker>
+                  <i class="fa fa-clock-o" style="align-self: center; padding-left: 10px; font-size: 25px;"  size="small" ></i>
+                </div>
+              </li>
+            </ul>
+          </div>
     </form>
       <h6 class="text-danger">* Campi Obbligatori</h6>
   </div>
@@ -194,3 +96,111 @@
       {{ 'Conferma' | uppercase }}
   </button>
 </div>
+
+
+
+<!--
+
+          <div class="row mt-4 mb-2">
+            <div class="col">
+              <button type="button" class="btn btn-outline-primary btn-sm btn-no-hover" (click)="mezzoIsCollapsed = !mezzoIsCollapsed"
+                      [attr.aria-expanded]="!mezzoIsCollapsed" aria-controls="nuovoMezzoShow">
+                      Seleziona mezzo 
+              </button>
+              <small class="text-danger required-collapse">*</small>
+            </div>
+            <div class="col">
+              <button type="button" class="btn btn-outline-primary btn-sm btn-no-hover" (click)="squadraIsCollapsed = !squadraIsCollapsed"
+                      [attr.aria-expanded]="!squadraIsCollapsed" aria-controls="nuovaSquadraShow">
+                      Seleziona squadra
+              </button>
+              <small class="text-danger required-collapse">*</small>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col">
+              <div class="form-group"  id="nuovoMezzoShow" [ngbCollapse]="mezzoIsCollapsed">
+                
+
+                <div class="card card-shadow mx-auto" style="min-height:392px">
+                  <div class="card-header clearfix px-2 py-1">
+                    <div class="float-left pt-2">
+                        <i class="fa fa-truck mr-2"></i>
+                        <span class="h6">Mezzi</span>
+                    </div>
+                    <div class="float-right">
+                        <input class="form-control" placeholder="Cerca..." type="search" name="ricercaMezzi" id="ricercaMezzi" >
+                    </div>
+                  </div>
+                </div>
+  
+  
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-group"  id="nuovaSquadraShow" [ngbCollapse]="squadraIsCollapsed">
+
+                <div class="card card-shadow mx-auto" style="min-height:392px">
+                  <div class="card-header clearfix px-2 py-1">
+                    <div class="float-left pt-2">
+                        <i class="fa fa-users mr-2"></i>
+                        <span class="h6">Squadre</span>
+                    </div>
+                    <div class="float-right w-50">
+                        <input class="form-control" placeholder="Cerca..." 
+                              type="search" name="ricercaSquadre" id="ricercaSquadre">
+                    </div>
+                  </div>
+                  <ul class="list-group list-group-flush border-bottom scroll-y" style="max-height:345px; min-height:345px">
+
+
+                  </ul>
+                </div>
+              </div>    
+            </div>  
+  
+          </div>
+
+          <div class="row mt-3 mb-3">
+            <div class="col">
+              <button type="button" class="btn btn-outline-primary btn-sm btn-no-hover" (click)="orarioIsCollapsed = !orarioIsCollapsed"
+                      [attr.aria-expanded]="!orarioIsCollapsed" aria-controls="orarioShow">
+                      Seleziona un orario
+              </button>
+              <small class="text-danger required-collapse">*</small>
+            </div>
+            <div class="col"></div>
+          </div>
+
+          <div class="row mb-3"  id="orarioShow" [ngbCollapse]="orarioIsCollapsed">
+            <div class="col">
+              <div class="md-form md-outline" id="default-picker" style="display: flex;">
+                <ngb-timepicker [(ngModel)]="time" [ngModelOptions]="{standalone: true}" style="margin-left: 25px;"></ngb-timepicker>
+                <i class="fa fa-clock-o" style="align-self: center; padding-left: 10px; font-size: 25px;"></i>
+              </div>
+              <small class="text-muted">* La modifica partenza risulterà alle {{time.hour <= 9 ? '0' + time.hour : time.hour}}:{{time.minute <= 9 ? '0' + time.minute : time.minute}}. </small>
+            </div>
+            <div class="col"></div>
+          </div>
+
+          <div class="row mt-4 mb-3">
+            <div class="col">
+              <button type="button" class="btn btn-outline-primary btn-sm btn-no-hover" (click)="motivazioneIsCollapsed = !motivazioneIsCollapsed"
+                      [attr.aria-expanded]="!motivazioneIsCollapsed" aria-controls="motivazioneShow">
+                      Scrivi una motivazione
+              </button>
+              <small class="text-danger required-collapse">*</small>
+            </div>
+            <div class="col"></div>
+          </div>
+
+          <div class="row mb-3" id="motivazioneShow" [ngbCollapse]="motivazioneIsCollapsed">
+            <div class="col">
+              <textarea rows="4" cols="50" maxlength="4000" id="motivazione" placeholder="Inserisci la Motivazione"
+                        formControlName="motivazione"
+                        class="form-control"
+                        [ngClass]="{ 'is-invalid': submitted && f.motivazione.errors}" style="max-height: 100px;"></textarea>
+            </div>
+          </div>
+-->
