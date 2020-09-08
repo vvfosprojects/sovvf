@@ -164,6 +164,7 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
 
     open() {
         const sostituzioneModal = this.modalService.open(SostituzionePartenzaModalComponent, {
+            windowClass: 'modal-holder',
             size: 'lg',
             centered: true
         });
