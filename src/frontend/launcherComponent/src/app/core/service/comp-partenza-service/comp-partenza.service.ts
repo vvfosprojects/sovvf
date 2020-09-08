@@ -13,7 +13,9 @@ const API_URL_AVANZATA = BASE_URL + environment.apiUrl.composizione.avanzata;
 const API_URL_PRENOTAZIONE = BASE_URL + environment.apiUrl.composizione.prenotazione;
 const API_URL_CONFERMA_PARTENZA = BASE_URL + environment.apiUrl.composizione.confermaPartenze;
 
-@Injectable()
+@Injectable({
+    providedIn: 'root'
+})
 export class CompPartenzaService {
 
     constructor(private http: HttpClient) {
