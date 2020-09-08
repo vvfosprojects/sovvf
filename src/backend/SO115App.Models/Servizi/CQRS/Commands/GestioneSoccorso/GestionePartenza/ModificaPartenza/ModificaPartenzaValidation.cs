@@ -9,7 +9,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
     {
         public IEnumerable<ValidationResult> Validate(ModificaPartenzaCommand command)
         {
-            if (command.CodRichiesta == null || command.CodRichiesta == "")
+            if (command.ModificaPartenza.CodRichiesta == null || command.ModificaPartenza.CodRichiesta == "")
             {
                 yield return new ValidationResult(Costanti.IdRichiestaNonValida);
             }
