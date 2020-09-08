@@ -9,11 +9,13 @@ import { GetListaMezziSquadre } from '../../store/actions/sostituzione-partenza/
 })
 export class SostituzionePartenzaModalComponent implements OnInit {
 
+    idRichiesta: string;
+
     constructor(private store: Store) {
-        this.store.dispatch(new GetListaMezziSquadre());
     }
 
     ngOnInit() {
+        this.store.dispatch(new GetListaMezziSquadre(this.idRichiesta));
     }
 
 }

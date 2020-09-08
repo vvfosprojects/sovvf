@@ -23,20 +23,20 @@ export class SostituzionePartenzaModalState {
     }
 
     @Action(GetListaMezziSquadre)
-    getListaMezziSquadre({ dispatch }: StateContext<SostituzionePartenzaModel>) {
+    getListaMezziSquadre({ dispatch }: StateContext<SostituzionePartenzaModel>, action: GetListaMezziSquadre) {
         dispatch(new StartListaComposizioneLoading());
         const filtri = {} as FiltriComposizione;
-        // filtri.idRichiesta = this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione) ? this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione).id : '';
+        filtri.idRichiesta = action.idRichiesta;
         this.compPartenzaService.getListeComposizioneAvanzata(filtri).subscribe((listeCompAvanzata: ListaComposizioneAvanzata) => {
-                // const listaBoxPartenza = this.store.selectSnapshot(BoxPartenzaState.boxPartenzaList);
-                // if (listeCompAvanzata.composizioneMezzi) {
-                //     dispatch(new SetListaMezziComposizione(listeCompAvanzata.composizioneMezzi));
-                // }
-                // if (listeCompAvanzata.composizioneSquadre) {
-                //     dispatch(new SetListaSquadreComposizione(listeCompAvanzata.composizioneSquadre));
-                // }
-                dispatch(new SetListaMezziSquadre(listeCompAvanzata));
-                dispatch(new StopListaComposizioneLoading());
+            // const listaBoxPartenza = this.store.selectSnapshot(BoxPartenzaState.boxPartenzaList);
+            // if (listeCompAvanzata.composizioneMezzi) {
+            //     dispatch(new SetListaMezziComposizione(listeCompAvanzata.composizioneMezzi));
+            // }
+            // if (listeCompAvanzata.composizioneSquadre) {
+            //     dispatch(new SetListaSquadreComposizione(listeCompAvanzata.composizioneSquadre));
+            // }
+            dispatch(new SetListaMezziSquadre(listeCompAvanzata));
+            dispatch(new StopListaComposizioneLoading());
         }, () => {
             dispatch(new StopListaComposizioneLoading());
         });

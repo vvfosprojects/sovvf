@@ -1,5 +1,8 @@
 export class GetListaMezziSquadre {
     static readonly type = '[SostituzionePartenza] Get Lista Mezzi Squadre';
+
+    constructor(public idRichiesta: string) {
+    }
 }
 
 export class SetListaMezziSquadre {
