@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Store, Select } from '@ngxs/store';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subscription, Observable } from 'rxjs';
 import { Utente } from '../../model/utente.model';
 import { UpdateFormValue } from '@ngxs/form-plugin';
@@ -10,6 +10,11 @@ import { ModificaPartenzaModalState } from '../../store/states/modifica-partenza
 import { Partenza } from './../../model/partenza.model';
 import { statoMezzoColor } from '../../helper/function';
 import { StatoMezzo } from '../../enum/stato-mezzo.enum';
+
+  export interface ValoriSelezionati  {
+    stato: string;
+    time: { hour: number, minute: number };
+  }
 
 @Component({
   selector: 'app-modifica-partenza-modal',
@@ -27,10 +32,9 @@ export class ModificaPartenzaModalComponent implements OnInit {
   sede: string;
   partenza: Partenza;
   public time = { hour: 13, minute: 30 };
-  public mezzoIsCollapsed = true;
-  public squadraIsCollapsed = true;
-  public orarioIsCollapsed = true;
-  public motivazioneIsCollapsed = true;
+  listaStatoMezzo: any[];
+  statoMezzoSelezionato: string;
+  numeroSequenze: ValoriSelezionati[] = [];
 
   modificaPartenzaForm: FormGroup;
   submitted: boolean;
@@ -39,27 +43,32 @@ export class ModificaPartenzaModalComponent implements OnInit {
   
   constructor(private store: Store,
               private modal: NgbActiveModal,
-              private fb: FormBuilder) { 
+              private fb: FormBuilder,
+              private modalService: NgbModal, 
+              public activeModal: NgbActiveModal) { 
       this.initForm();
       this.inizializzaUser();
       this.formatTime();
   }
 
   ngOnInit() {
+    this.listaStatoMezzo = Object.values(StatoMezzo).map( x => ({id: x, name: x}));
   }
 
   initForm() {
     this.modificaPartenzaForm = new FormGroup({
-      nuovoMezzo: new FormControl(),
       operatore: new FormControl(),
       sede: new FormControl(),
-      motivazione: new FormControl(),
+      codMezzo: new FormControl(),
+      codSquadre: new FormControl(),
+      sequenza: new FormControl(),
     });
     this.modificaPartenzaForm = this.fb.group({
-      nuovoMezzo: [null, Validators.required],
       operatore: [null, Validators.required],
       sede: [null, Validators.required],
-      motivazione: [null, Validators.required],
+      codMezzo: [null, Validators.required],
+      codSquadre: [null, Validators.required],
+      sequenza: [null, Validators.required],
     });
     this.f.operatore.disable();
     this.f.sede.disable();
@@ -137,6 +146,24 @@ export class ModificaPartenzaModalComponent implements OnInit {
 
   statoMezzoColor(stato: StatoMezzo) {
     return statoMezzoColor(stato);
-}
+  }
+
+
+  onAddSequenza()  {
+    const d = new Date();
+    this.numeroSequenze.push({stato: undefined, time: {hour: d.getHours(), minute: d.getMinutes() }})
+  }
+
+  onRemoveSequenza()  {
+    this.numeroSequenze.pop();
+  }
+
+  /*
+  open() {
+    this.modalService.open(NgbdModal2Content, {
+      size: 'lg'
+    });
+  }
+  */
 
 }
