@@ -30,6 +30,9 @@ import { TipologicheMezziState } from './store/states/composizione-partenza/tipo
 import { SchedeContattoModule } from './schede-contatto/schede-contatto.module';
 import { BoxClickState } from './store/states/boxes/box-click.state';
 import { MapsFiltroState } from './store/states/maps/maps-filtro.state';
+import { SostituzionePartenzaModalComponent } from '../../shared/modal/sostituzione-partenza-modal/sostituzione-partenza-modal.component';
+import { AttivitaUtenteService } from '../../core/service/attivita-utente-service/attivita-utente.service';
+import { CompPartenzaService } from '../../core/service/comp-partenza-service/comp-partenza.service';
 
 @NgModule({
     declarations: [
@@ -72,6 +75,7 @@ import { MapsFiltroState } from './store/states/maps/maps-filtro.state';
         ),
     ],
     exports: [],
+    entryComponents: [SostituzionePartenzaModalComponent],
     providers: [
         HomeService,
         NgbActiveModal

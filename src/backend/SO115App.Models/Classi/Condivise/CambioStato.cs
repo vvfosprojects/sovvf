@@ -5,7 +5,7 @@ namespace SO115App.Models.Classi.Condivise
 {
     public class CambioStato
     {
-        [Required]
+        //[Required]
         public DateTime DataOraAggiornamento { get; set; }
         public enum StatoSquadra
         {

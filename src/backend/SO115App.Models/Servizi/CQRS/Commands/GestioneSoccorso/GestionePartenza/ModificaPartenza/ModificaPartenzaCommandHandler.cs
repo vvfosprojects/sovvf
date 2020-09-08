@@ -1,4 +1,6 @@
 ﻿using CQRS.Commands;
+using DomainModel.CQRS.Commands.ConfermaPartenze;
+using SO115App.API.Models.Classi.Composizione;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
@@ -7,6 +9,8 @@ using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.Ag
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AnnullaPartenza;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
+using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi;
+using SO115App.Models.Servizi.Infrastruttura.GestioneStatoOperativoSquadra;
 using System;
 using System.Linq;
 
@@ -17,23 +21,33 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
         private readonly IGetRichiestaById _getRichiestaById;
         private readonly IUpDateRichiestaAssistenza _upDateRichiestaAssistenza;
         private readonly IUpdateStatoPartenze _updateStatoPartenze;
+        private readonly IUpDateRichiestaAssistenza _updateRichiesta;
+        private readonly ISetStatoOperativoMezzo _setStatoOperativoMezzo;
+        private readonly ISetStatoSquadra _setStatoSquadra;
 
         private RichiestaAssistenza Richiesta;
 
         public ModificaPartenzaCommandHandler(
             IGetRichiestaById getRichiestaById,
             IUpDateRichiestaAssistenza upDateRichiestaAssistenza,
-            IUpdateStatoPartenze updateStatoPartenze
+            IUpdateStatoPartenze updateStatoPartenze,
+            IUpDateRichiestaAssistenza updateRichiesta,
+            ISetStatoOperativoMezzo setStatoOperativoMezzo,
+            ISetStatoSquadra setStatoSquadra
         )
         {
-            Richiesta = new RichiestaAssistenza();
             _getRichiestaById = getRichiestaById;
             _upDateRichiestaAssistenza = upDateRichiestaAssistenza;
             _updateStatoPartenze = updateStatoPartenze;
+            _updateRichiesta = updateRichiesta;
+            _setStatoOperativoMezzo = setStatoOperativoMezzo;
+            _setStatoSquadra = setStatoSquadra;
         }
 
         public void Handle(ModificaPartenzaCommand command)
         {
+            Richiesta = _getRichiestaById.GetById(command.ModificaPartenza.CodRichiesta);
+
             //ANNULLO PARTENZA
             if (command.ModificaPartenza.Annullamento)
             {
@@ -42,45 +56,58 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                     IdOperatore = command.IdOperatore,
                     IdRichiesta = command.ModificaPartenza.CodRichiesta,
                     TestoMotivazione = command.ModificaPartenza.MotivazioneAnnullamento,
-                    TargaMezzo = command.ModificaPartenza.CodMezzo.Split(".")[1]
-                }, command.ModificaPartenza.DataAnnullamento.Value);
+                    TargaMezzo = command.ModificaPartenza.CodMezzoDaAnnullare,
+                }, command.ModificaPartenza.DataAnnullamento.Value, command.CodSede);
             }
 
             //NUOVA PARTENZA
-
-
-            //TRADUCO GLI EVENTI
-            //foreach (var evento in command.lstEventi.OrderBy(c => c.Istante))
+            //NuovaPartenza(new ConfermaPartenzeCommand()
             //{
-            //    switch (evento.TipoEvento)
+            //    ConfermaPartenze = new ConfermaPartenze()
             //    {
-            //        default:
-            //            break;
+            //        IdRichiesta = command.ModificaPartenza.CodRichiesta,
+            //        CodiceSede = command.CodSede,
+            //        IdOperatore = command.IdOperatore,
+            //        richiesta = Richiesta,
+            //        Partenze = Richiesta.Partenze.Select(c => c.Partenza).ToList()
             //    }
-            //}
+            //});
+
+            ////TRADUCO GLI STATI
+            foreach (var stato in command.ModificaPartenza.SequenzaStati.OrderBy(c => c.DataOraAggiornamento))
+            {
+
+            }
         }
 
-        private void AnnullaPartenza(AnnullaPartenzaCommand command, DateTime data)
+        private void AnnullaPartenza(AnnullaPartenzaCommand command, DateTime data, string CodSede)
         {
-            Richiesta = _getRichiestaById.GetById(command.IdRichiesta);
+            //GESTISCO RICHIESTA
+            var PartenzaToDelete = Richiesta.Partenze.FirstOrDefault(x => x.Partenza.Mezzo.Codice.Equals(command.TargaMezzo));
 
-            var PartenzaToDelete = Richiesta.Partenze.Where(x => x.Partenza.Mezzo.Codice.Equals(command.TargaMezzo)).FirstOrDefault();
-            
             new RevocaPerAltraMotivazione(Richiesta, command.TargaMezzo, data, command.IdOperatore, command.TestoMotivazione);
-            
+
+            Richiesta.Partenze.FirstOrDefault(c => c.Partenza.Mezzo.Codice == command.TargaMezzo).PartenzaAnnullata = true;
+
             _upDateRichiestaAssistenza.UpDate(Richiesta);
 
-            AggiornaStatoMezzoCommand commandStatoMezzo = new AggiornaStatoMezzoCommand()
+            //GESTISCO STATO MEZZI E SQUADRE
+            var commandStatoMezzo = new AggiornaStatoMezzoCommand()
             {
                 CodiceSede = PartenzaToDelete.Partenza.Mezzo.Distaccamento.Codice,
                 IdMezzo = command.TargaMezzo,
-                StatoMezzo = Costanti.MezzoInSede,
+                StatoMezzo = Costanti.MezzoInRientro,
                 Richiesta = Richiesta,
                 DataOraAggiornamento = data,
                 IdUtente = command.IdOperatore
             };
 
             _updateStatoPartenze.Update(commandStatoMezzo);
+        }
+
+        private void NuovaPartenza()
+        {
+            
         }
     }
 }
