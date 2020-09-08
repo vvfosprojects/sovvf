@@ -7,17 +7,15 @@ using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.Eventi;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.API.Models.Classi.Soccorso.StatiRichiesta;
-using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
-using SO115App.Models.Classi.Soccorso;
+using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AggiornaStatoMezzo;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AnnullaPartenza;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GenerazioneCodiciRichiesta;
-using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi;
-using SO115App.Models.Servizi.Infrastruttura.GestioneStatoOperativoSquadra;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Squadre;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,15 +25,12 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
     public class ModificaPartenzaCommandHandler : ICommandHandler<ModificaPartenzaCommand>
     {
         private readonly IGetRichiestaById _getRichiestaById;
-        private readonly IUpDateRichiestaAssistenza _upDateRichiestaAssistenza;
         private readonly IUpdateStatoPartenze _updateStatoPartenze;
-        private readonly IUpDateRichiestaAssistenza _updateRichiesta;
-        private readonly ISetStatoOperativoMezzo _setStatoOperativoMezzo;
-        private readonly ISetStatoSquadra _setStatoSquadra;
         private readonly IGeneraCodiceRichiesta _generaCodiceRichiesta;
         private readonly IGetUtenteById _getUtenteById;
-        private readonly IGetStatoMezzi _getStatoMezzi;
         private readonly IUpdateConfermaPartenze _updateConfermaPartenze;
+        private readonly IGetListaMezzi _getListaMezzi;
+        private readonly IGetListaSquadre _getListaSquadre;
 
         private RichiestaAssistenza Richiesta;
         private Partenza Partenza;
@@ -45,27 +40,21 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 
         public ModificaPartenzaCommandHandler(
             IGetRichiestaById getRichiestaById,
-            IUpDateRichiestaAssistenza upDateRichiestaAssistenza,
             IUpdateStatoPartenze updateStatoPartenze,
-            IUpDateRichiestaAssistenza updateRichiesta,
-            ISetStatoOperativoMezzo setStatoOperativoMezzo,
-            ISetStatoSquadra setStatoSquadra,
             IGeneraCodiceRichiesta generaCodiceRichiesta,
             IGetUtenteById getUtenteById,
-            IGetStatoMezzi getStatoMezzi,
-            IUpdateConfermaPartenze updateConfermaPartenze
+            IUpdateConfermaPartenze updateConfermaPartenze,
+            IGetListaMezzi getListaMezzi,
+            IGetListaSquadre getListaSquadre
         )
         {
             _getRichiestaById = getRichiestaById;
-            _upDateRichiestaAssistenza = upDateRichiestaAssistenza;
             _updateStatoPartenze = updateStatoPartenze;
-            _updateRichiesta = updateRichiesta;
-            _setStatoOperativoMezzo = setStatoOperativoMezzo;
-            _setStatoSquadra = setStatoSquadra;
             _generaCodiceRichiesta = generaCodiceRichiesta;
-            _getStatoMezzi = getStatoMezzi;
             _getUtenteById = getUtenteById;
             _updateConfermaPartenze = updateConfermaPartenze;
+            _getListaMezzi = getListaMezzi;
+            _getListaSquadre = getListaSquadre;
         }
 
         public void Handle(ModificaPartenzaCommand command)
@@ -100,7 +89,8 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
             }, command.ModificaPartenza.SequenzaStati
                 .OrderBy(c => c.DataOraAggiornamento)
                 .Select(c => c.DataOraAggiornamento)
-                .FirstOrDefault());
+                .FirstOrDefault(),
+                command.ModificaPartenza.CodMezzo, command.ModificaPartenza.CodSquadre);
 
             //TRADUCO GLI STATI
             //foreach (var stato in command.ModificaPartenza.SequenzaStati.OrderBy(c => c.DataOraAggiornamento))
@@ -137,52 +127,25 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
             _updateStatoPartenze.Update(commandStatoMezzo);
         }
 
-        private void NuovaPartenza(ConfermaPartenzeCommand command, DateTime data)
+        private void NuovaPartenza(ConfermaPartenzeCommand command, DateTime data, string CodMezzo, string[] CodSquadre)
         {
-            //foreach (var partenza in command.ConfermaPartenze.Partenze)
-            //{
-            //    var listaMezzi = _getStatoMezzi.Get(command.ConfermaPartenze.CodiceSede, partenza.Mezzo.Codice);
-            //    if (listaMezzi.Count > 0)
-            //    {
-            //        if (listaMezzi[0].IdOpPrenotazione != null && !listaMezzi[0].IdOpPrenotazione.Equals(command.ConfermaPartenze.IdOperatore))
-            //            throw new Exception(Costanti.MezzoErroreGiaOccupato);
-            //    }
-            //}
+            var lstPersonale = _getListaSquadre.Get(new List<string>() { command.ConfermaPartenze.CodiceSede }).Result;
+            var lstMezzi = _getListaMezzi.Get(new string[] { command.ConfermaPartenze.CodiceSede });
 
-            //bool PartenzaEsistente = false;
-            //foreach (var partenza in command.ConfermaPartenze.Partenze)
-            //{
-            //    PartenzaEsistente = Richiesta.Partenze
-            //        .Select(x => x.Partenza.Mezzo.Codice.Equals(partenza.Mezzo.Codice) && !x.Partenza.Terminata && !x.Partenza.PartenzaAnnullata && !x.Partenza.Sganciata)
-            //        .FirstOrDefault();
-
-            //    if (PartenzaEsistente)
-            //        throw new Exception(Costanti.PartenzaGiaPresente);
-            //}
-
-            if (Richiesta.Eventi.Where(x => x is InizioPresaInCarico).ToList().Count == 0)
-                new InizioPresaInCarico(Richiesta, DateTime.UtcNow, command.ConfermaPartenze.IdOperatore);
-
-            //foreach (var partenza in command.ConfermaPartenze.Partenze)
-            //{
-            //    partenza.Sganciata = false;
-            //    new ComposizionePartenze(Richiesta, DateTime.UtcNow, Utente.Id, false)
-            //    {
-            //        Partenza = partenza
-            //    };
-            //}
+            new ComposizionePartenze(Richiesta, data, Utente.Id, false)
+            {
+                Partenza = new Partenza()
+                {
+                    Mezzo = lstMezzi.Select(c => c.Mezzo.Mezzo).FirstOrDefault(c => c.Codice == CodMezzo),
+                    Squadre = lstPersonale.Where(c => CodSquadre.Contains(c.Codice)).ToList(),
+                    Sganciata = false
+                }
+            };
 
             Richiesta.SincronizzaStatoRichiesta(Costanti.RichiestaAssegnata, Richiesta.StatoRichiesta, Utente.Id, "", data);
 
-            command.ConfermaPartenze.richiesta = Richiesta;
-
             if (Richiesta.CodRichiesta == null)
                 Richiesta.CodRichiesta = _generaCodiceRichiesta.Genera(Richiesta.CodSOCompetente, DateTime.UtcNow.Year);
-
-            //foreach (var partenza in command.ConfermaPartenze.Partenze)
-            //{
-            //    partenza.Mezzo.IdRichiesta = Richiesta.CodRichiesta;
-            //}
 
             var nominativo = Utente.Nome + "." + Utente.Cognome;
             if (Richiesta.UtPresaInCarico != null)
@@ -197,13 +160,12 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 };
             }
 
-            //foreach (var partenze in command.ConfermaPartenze.Partenze)
-            //{
-                foreach (var squadra in Partenza.Squadre)
-                {
-                    squadra.Stato = MappaStatoSquadraDaStatoMezzo.MappaStato(Partenza.Mezzo.Stato);
-                }
-            //}
+            foreach (var squadra in Partenza.Squadre)
+            {
+                squadra.Stato = MappaStatoSquadraDaStatoMezzo.MappaStato(Partenza.Mezzo.Stato);
+            }
+
+            command.ConfermaPartenze.richiesta = Richiesta;
 
             _updateConfermaPartenze.Update(command);
         }
