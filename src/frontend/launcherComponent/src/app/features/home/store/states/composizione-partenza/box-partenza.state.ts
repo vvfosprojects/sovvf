@@ -28,7 +28,7 @@ import {
     SelectMezzoComposizione,
     UnselectMezzoComposizione
 } from '../../actions/composizione-partenza/mezzi-composizione.actions';
-import { SquadraComposizione } from '../../../composizione-partenza/interface/squadra-composizione-interface';
+import { SquadraComposizione } from '../../../../../shared/interface/squadra-composizione-interface';
 import {
     ClearSelectedSquadreComposizione,
     FilterListaSquadreComposizione,

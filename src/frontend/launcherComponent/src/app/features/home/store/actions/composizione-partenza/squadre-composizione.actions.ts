@@ -1,6 +1,6 @@
-import { SquadraComposizione } from '../../../composizione-partenza/interface/squadra-composizione-interface';
+import { SquadraComposizione } from '../../../../../shared/interface/squadra-composizione-interface';
 import { ComposizioneFilterbar } from '../../../composizione-partenza/interface/composizione/composizione-filterbar-interface';
-import { MezzoComposizione } from '../../../composizione-partenza/interface/mezzo-composizione-interface';
+import { MezzoComposizione } from '../../../../../shared/interface/mezzo-composizione-interface';
 
 export class SetListaSquadreComposizione {
     static readonly type = '[SquadreComposizione] Set Lista Squadre Composizione';

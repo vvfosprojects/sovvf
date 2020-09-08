@@ -8,7 +8,6 @@ import { ClearDataHome, GetDataHome } from './store/actions/home.actions';
 import { NavbarState } from '../navbar/store/states/navbar.state';
 import { SetMapLoaded } from '../../shared/store/actions/app/app.actions';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { SostituzionePartenzaModalComponent } from '../../shared/modal/sostituzione-partenza-modal/sostituzione-partenza-modal.component';
 
 @Component({ templateUrl: 'home.component.html' })
 export class HomeComponent implements OnInit, OnDestroy {
@@ -44,10 +43,6 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     onMapFullLoaded() {
         this.store.dispatch(new SetMapLoaded(true));
-    }
-
-    open() {
-        this.modalService.open(SostituzionePartenzaModalComponent);
     }
 
 }

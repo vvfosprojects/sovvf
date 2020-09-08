@@ -33,6 +33,8 @@ import { MapsFiltroState } from './store/states/maps/maps-filtro.state';
 import { SostituzionePartenzaModalComponent } from '../../shared/modal/sostituzione-partenza-modal/sostituzione-partenza-modal.component';
 import { AttivitaUtenteService } from '../../core/service/attivita-utente-service/attivita-utente.service';
 import { CompPartenzaService } from '../../core/service/comp-partenza-service/comp-partenza.service';
+import { MezziComposizioneState } from '../../shared/store/states/mezzi-composizione/mezzi-composizione.state';
+import { SquadreComposizioneState } from '../../shared/store/states/squadre-composizione/squadre-composizione.state';
 
 @NgModule({
     declarations: [
@@ -70,7 +72,9 @@ import { CompPartenzaService } from '../../core/service/comp-partenza-service/co
                 RichiestaModificaState,
                 TipologicheMezziState,
                 BoxClickState,
-                MapsFiltroState
+                MapsFiltroState,
+                MezziComposizioneState,
+                SquadreComposizioneState
             ]
         ),
     ],

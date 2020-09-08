@@ -5,7 +5,7 @@ import {
     FiltriComposizione
 } from '../../../composizione-partenza/interface/filtri/filtri-composizione-interface';
 import { ConfermaPartenze } from '../../../composizione-partenza/interface/conferma-partenze-interface';
-import { MezzoComposizione } from '../../../composizione-partenza/interface/mezzo-composizione-interface';
+import { MezzoComposizione } from '../../../../../shared/interface/mezzo-composizione-interface';
 
 export class GetFiltriComposizione {
     static readonly type = '[FiltriComposizione] Get Lista Filtri';

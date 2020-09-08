@@ -1,4 +1,4 @@
-import { MezzoComposizione } from '../../features/home/composizione-partenza/interface/mezzo-composizione-interface';
+import { MezzoComposizione } from './mezzo-composizione-interface';
 
 export interface MezzoPrenotatoInterface {
     idMezzo?: string;

@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { SquadraComposizione } from '../../interface/squadra-composizione-interface';
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
-import { squadraComposizioneBusy } from '../../shared/functions/composizione-functions';
-import { Sede } from '../../../../../shared/model/sede.model';
+import { squadraComposizioneBusy } from '../../helper/composizione-functions';
+import { Sede } from '../../model/sede.model';
 
 @Component({
     selector: 'app-squadra-composizione',

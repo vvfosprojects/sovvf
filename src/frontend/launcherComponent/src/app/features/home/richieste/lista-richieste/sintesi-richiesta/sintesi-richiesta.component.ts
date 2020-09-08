@@ -224,6 +224,7 @@ export class SintesiRichiestaComponent implements OnChanges {
             size: 'lg'
         });
         modalModificaPartenza.componentInstance.partenza = this.richiesta.partenzeRichiesta[index];
+        modalModificaPartenza.componentInstance.idRichiesta = this.richiesta.id;
     }
 
     onActionRichiesta(richiestaAction: RichiestaActionInterface) {

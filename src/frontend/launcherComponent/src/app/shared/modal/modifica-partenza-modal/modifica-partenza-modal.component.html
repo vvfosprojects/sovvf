@@ -1,12 +1,11 @@
 <div class="modal-header">
-  <h4 class="modal-title">{{ getTitle() | uppercase }}</h4>
-  <button type="button" class="btn btn-light close" style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px"
-          (click)="onDismiss()">
-      <i class="fa fa-times text-danger"></i>
-  </button>
+    <h4 class="modal-title">{{ getTitle() | uppercase }}</h4>
+    <button type="button" class="btn btn-light close" style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px"
+            (click)="onDismiss()">
+        <i class="fa fa-times text-danger"></i>
+    </button>
 </div>
-
-  <div class="modal-body height py-4 px-5">
+<div class="modal-body height py-4 px-5">
     <form [formGroup]="modificaPartenzaForm" ngxsForm="modificaPartenzaModal.modificaPartenzaForm"
           autocomplete="off">
         <!-- operatore -->
@@ -18,85 +17,94 @@
         </div>
         <!-- sede -->
         <div class="form-group">
-          <label for="sede">Sede
-              <small class="text-danger">*</small>
-          </label>
-          <input id="sede" formControlName="sede" class="form-control" placeholder="Sede">
+            <label for="sede">Sede
+                <small class="text-danger">*</small>
+            </label>
+            <input id="sede" formControlName="sede" class="form-control" placeholder="Sede">
         </div>
         <!-- mezzo e squadra da sostituire -->
-        <div class="border-partenza-box" style="display: flex; place-content: space-evenly;">
-          <div class="mb-3" style="display: contents;">
-            <div class="">
-              <label>Mezzo</label>
-              <div> <i class="guida fa fa-truck fa-fw mr-1 text-{{ statoMezzoColor(partenza.mezzo['stato']) }}" ngbTooltip="Mezzo {{ partenza.mezzo['stato'] }}"></i>
-                    <b>{{ partenza.mezzo['descrizione'] }}</b>
-                    <span class="badge badge-default m-0">{{ partenza.mezzo['genere'] }}</span>
-                    <i class="fa fa-check-circle-o text-success ml-3"></i>
-              </div>
+        <div class="border-partenza-box pb-4 d-flex" style="place-content: space-evenly;">
+            <div class="mb-3" style="display: contents;">
+                <div>
+                    <label>Mezzo</label>
+                    <div><i class="guida fa fa-truck fa-fw mr-1 text-{{ statoMezzoColor(partenza.mezzo['stato']) }}"
+                            ngbTooltip="Mezzo {{ partenza.mezzo['stato'] }}"></i>
+                        <b>{{ partenza.mezzo['descrizione'] }}</b>
+                        <span class="badge badge-default m-0">{{ partenza.mezzo['genere'] }}</span>
+                        <i class="fa fa-check-circle-o text-success ml-3"></i>
+                    </div>
+                </div>
+                <div *ngIf="partenza.squadre.length === 1" style="color:#666666">
+                    <label>Squadra</label>
+                    <div><i class="fa fa-group mr-2" ngbTooltip="Squadra"></i>
+                        <b>{{ partenza.squadre[0].nome }}</b>
+                        <i class="fa fa-check-circle-o text-success ml-3"></i>
+                    </div>
+                </div>
+                <div *ngIf="partenza.squadre.length > 1" style="color:#666666">
+                    <label>Squadre</label>
+                    <div *ngFor="let squadre of partenza.squadre"><i class="fa fa-group mr-2" ngbTooltip="Squadre"></i>
+                        <b>{{ squadre['nome'] }}</b>
+                        <i class="fa fa-check-circle-o text-success ml-3"></i>
+                    </div>
+                </div>
+                <div style="align-self: center;">
+                    <button class="btn btn-sm btn-block btn-info btn-no-hover" ngbTooltip="Modifica partenza"
+                            style="max-width: fit-content;">
+                        <i class="fa fa-pencil-square-o" (click)="open()"></i>
+                    </button>
+                </div>
             </div>
-            <div *ngIf="partenza.squadre.length === 1" class="" style="color:#666666">
-              <label>Squadra</label>
-              <div> <i class="fa fa-group mr-2" ngbTooltip="Squadra"></i>
-                <b>{{ partenza.squadre[0].nome }}</b>
-                <i class="fa fa-check-circle-o text-success ml-3"></i>
-              </div>
-            </div>
-            <div *ngIf="partenza.squadre.length > 1" class="" style="color:#666666">
-              <label>Squadre</label>
-              <div *ngFor="let squadre of partenza.squadre"> <i class="fa fa-group mr-2" ngbTooltip="Squadre"></i>
-                <b>{{ squadre['nome'] }}</b>
-                <i class="fa fa-check-circle-o text-success ml-3"></i>
-              </div>
-            </div>
-            <div class=""  style="align-self: center;">
-              <button class="btn btn-sm btn-block btn-info btn-no-hover"  ngbTooltip="Modifica partenza" style="max-width: fit-content;">
-                <i class="fa fa-pencil-square-o" (click)="open()"></i>
-              </button>
-            </div>
-          </div>
         </div>
         <!-- sequenza eventi -->
         <div class="my-4 d-inline-flex">
-          <label for="sequenzaEventi">Crea sequenza Eventi</label>
-          <button class="btn btn-sm btn-block btn-info btn-no-hover ml-2" (click)="onAddSequenza()"  ngbTooltip="Aggiungi evento" style="max-width: fit-content;">
-            <i class="fa fa-plus"></i>
-          </button>
-          <button class="btn btn-sm btn-danger btn-no-hover ml-2" (click)="onRemoveSequenza()"  ngbTooltip="Rimuovi evento" style="max-width: fit-content;">
-            <i class="fa fa-minus"></i>
-          </button>
+            <label for="sequenzaEventi">Crea sequenza Eventi
+                <small class="text-danger">*</small>
+            </label>
+            <button class="btn btn-sm btn-block btn-info btn-no-hover ml-2" (click)="onAddSequenza()"
+                    ngbTooltip="Aggiungi evento" style="max-width: fit-content;">
+                <i class="fa fa-plus"></i>
+            </button>
+            <button class="btn btn-sm btn-danger btn-no-hover ml-2" (click)="onRemoveSequenza()"
+                    ngbTooltip="Rimuovi evento" style="max-width: fit-content;">
+                <i class="fa fa-minus"></i>
+            </button>
         </div>
-          <div *ngIf="numeroSequenze.length > 0" class="card mb-4" style="width: 31.5rem;">
-            <ul class="list-group list-group-flush" style="max-height: 500px;" [class.overflow-test]="numeroSequenze.length > 3">
-              <li *ngFor="let sequenza of numeroSequenze; let index = index" class="list-group-item" style="display: inline-flex; place-content: space-between;">
-                <ng-select [items]="listaStatoMezzo"
-                           bindLabel="name"
-                           placeholder="Seleziona stato Mezzo"
-                           [(ngModel)]="numeroSequenze[index].stato"
-                           [ngModelOptions]="{standalone: true}"
-                           style="width: 250px; align-self: center;"
-                           >
-                </ng-select>
-                <div class="md-form md-outline" id="default-picker" style="display: flex;">
-                  <ngb-timepicker [(ngModel)]="numeroSequenze[index].time" [ngModelOptions]="{standalone: true}" style="margin-left: 25px;"></ngb-timepicker>
-                  <i class="fa fa-clock-o" style="align-self: center; padding-left: 10px; font-size: 25px;"  size="small" ></i>
-                </div>
-              </li>
+        <div *ngIf="numeroSequenze.length > 0" class="card mb-4" style="width: 31.5rem;">
+            <ul class="list-group list-group-flush" style="max-height: 500px;"
+                [class.overflow-test]="numeroSequenze.length > 3">
+                <li *ngFor="let sequenza of numeroSequenze; let index = index" class="list-group-item"
+                    style="display: inline-flex; place-content: space-between;">
+                    <ng-select [items]="listaStatoMezzo"
+                               bindLabel="name"
+                               placeholder="Seleziona stato Mezzo"
+                               [(ngModel)]="numeroSequenze[index].stato"
+                               [ngModelOptions]="{standalone: true}"
+                               style="width: 250px; align-self: center;"
+                    >
+                    </ng-select>
+                    <div class="md-form md-outline" id="default-picker" style="display: flex;">
+                        <ngb-timepicker [(ngModel)]="numeroSequenze[index].time" [ngModelOptions]="{standalone: true}"
+                                        style="margin-left: 25px;"></ngb-timepicker>
+                        <i class="fa fa-clock-o" style="align-self: center; padding-left: 10px; font-size: 25px;"
+                           size="small"></i>
+                    </div>
+                </li>
             </ul>
-          </div>
+        </div>
     </form>
-      <h6 class="text-danger">* Campi Obbligatori</h6>
-  </div>
-
-<div class="modal-footer">
-  <button type="button" class="btn btn-lg btn-secondary btn-no-hover" (click)="closeModal('ko')">
-      {{ 'Annulla' | uppercase }}
-  </button>
-  <button type="button" class="btn btn-lg btn-danger btn-no-hover" ngbTooltip="Riempi tutti i campi obbligatori"
-          [disableTooltip]="formValid" [disabled]="!formValid" (click)="onConferma()">
-      {{ 'Conferma' | uppercase }}
-  </button>
+    <h6 class="text-danger">* Campi Obbligatori</h6>
 </div>
 
+<div class="modal-footer">
+    <button type="button" class="btn btn-lg btn-secondary btn-no-hover" (click)="closeModal('ko')">
+        {{ 'Annulla' | uppercase }}
+    </button>
+    <button type="button" class="btn btn-lg btn-danger btn-no-hover" ngbTooltip="Riempi tutti i campi obbligatori"
+            [disableTooltip]="formValid" [disabled]="!formValid" (click)="onConferma()">
+        {{ 'Conferma' | uppercase }}
+    </button>
+</div>
 
 
 <!--

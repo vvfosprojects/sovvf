@@ -23,13 +23,13 @@ import { ComposizioneAvanzataState } from './composizione-avanzata.state';
 import { insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
 import { makeCopy } from '../../../../../shared/helper/function';
 import { IdPreaccoppiati } from '../../../composizione-partenza/interface/id-preaccoppiati-interface';
-import { ListaComposizioneAvanzata } from '../../../composizione-partenza/interface/lista-composizione-avanzata-interface';
+import { ListaComposizioneAvanzata } from '../../../../../shared/interface/lista-composizione-avanzata-interface';
 import { ClearMarkerMezzoHover, SetMarkerMezzoHover } from '../../actions/maps/marker.actions';
 import {
     checkSquadraOccupata,
     codDistaccamentoIsEqual,
     mezzoComposizioneBusy
-} from '../../../composizione-partenza/shared/functions/composizione-functions';
+} from '../../../../../shared/helper/composizione-functions';
 import produce from 'immer';
 import { SetListaFiltriAffini } from '../../actions/composizione-partenza/composizione-partenza.actions';
 import { ComposizionePartenzaState } from './composizione-partenza.state';
