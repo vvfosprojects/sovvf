@@ -18,6 +18,9 @@ import { AllertaSedeModalComponent } from './modal/allerta-sede-modal/allerta-se
 import * as Shared from './index';
 import { ModificaPartenzaModalComponent } from './modal/modifica-partenza-modal/modifica-partenza-modal.component';
 import { SostituzionePartenzaModalComponent } from './modal/sostituzione-partenza-modal/sostituzione-partenza-modal.component';
+import { MezzoComposizioneComponent } from './components/mezzo-composizione/mezzo-composizione.component';
+import { SquadraComposizioneComponent } from './components/squadra-composizione/squadra-composizione.component';
+import { PrenotazioneProgressBarComponent } from './components/prenotazione-progress-bar/prenotazione-progress-bar.component';
 
 const COMPONENTS = [
     Shared.DebounceClickDirective,
@@ -53,7 +56,10 @@ const COMPONENTS = [
     NotificheComponent,
     AllertaSedeModalComponent,
     ModificaPartenzaModalComponent,
-    SostituzionePartenzaModalComponent
+    SostituzionePartenzaModalComponent,
+    MezzoComposizioneComponent,
+    SquadraComposizioneComponent,
+    PrenotazioneProgressBarComponent,
 ];
 
 @NgModule({

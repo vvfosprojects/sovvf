@@ -6,14 +6,14 @@ import {
     RemoveFiltriSelezionatiComposizione
 } from '../../../store/actions/composizione-partenza/composizione-partenza.actions';
 import { ComposizionePartenzaState } from '../../../store/states/composizione-partenza/composizione-partenza.state';
-import { MezziComposizioneState } from '../../../store/states/composizione-partenza/mezzi-composizione.state';
-import { SquadreComposizioneState } from '../../../store/states/composizione-partenza/squadre-composizione.state';
+import { MezziComposizioneState } from '../../../../../shared/store/states/mezzi-composizione/mezzi-composizione.state';
+import { SquadreComposizioneState } from '../../../../../shared/store/states/squadre-composizione/squadre-composizione.state';
 import { TurnOffComposizione, SwitchComposizione } from '../../../store/actions/view/view.actions';
 import { Composizione } from 'src/app/shared/enum/composizione.enum';
 import { ViewComponentState } from '../../../store/states/view/view.state';
 import { Observable } from 'rxjs';
 import { FiltriComposizione } from '../../interface/filtri/filtri-composizione-interface';
-import { iconaStatiClass } from '../functions/composizione-functions';
+import { iconaStatiClass } from '../../../../../shared/helper/composizione-functions';
 
 @Component({
     selector: 'app-composizione-filterbar',

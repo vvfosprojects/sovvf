@@ -1,16 +1,16 @@
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
 import { NgbPopoverConfig, NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
 import { Observable, Subscription } from 'rxjs';
-import { MezzoComposizione } from '../interface/mezzo-composizione-interface';
-import { SquadraComposizione } from '../interface/squadra-composizione-interface';
+import { MezzoComposizione } from '../../../../shared/interface/mezzo-composizione-interface';
+import { SquadraComposizione } from '../../../../shared/interface/squadra-composizione-interface';
 import { DirectionInterface } from '../../maps/maps-interface/direction-interface';
 import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.model';
 import { Composizione } from '../../../../shared/enum/composizione.enum';
 import { Select, Store } from '@ngxs/store';
 import { makeCopy } from '../../../../shared/helper/function';
 import { ComposizionePartenzaState } from '../../store/states/composizione-partenza/composizione-partenza.state';
-import { MezziComposizioneState } from '../../store/states/composizione-partenza/mezzi-composizione.state';
-import { SquadreComposizioneState } from '../../store/states/composizione-partenza/squadre-composizione.state';
+import { MezziComposizioneState } from '../../../../shared/store/states/mezzi-composizione/mezzi-composizione.state';
+import { SquadreComposizioneState } from '../../../../shared/store/states/squadre-composizione/squadre-composizione.state';
 import {
     HoverInMezzoComposizione,
     HoverOutMezzoComposizione,
@@ -39,7 +39,7 @@ import { ConfirmPartenze, GetFiltriComposizione } from '../../store/actions/comp
 import { TurnoState } from '../../../navbar/store/states/turno.state';
 import { SganciamentoInterface } from 'src/app/shared/interface/sganciamento.interface';
 import { MezzoDirection } from '../../../../shared/interface/mezzo-direction';
-import { squadraComposizioneBusy } from '../shared/functions/composizione-functions';
+import { squadraComposizioneBusy } from '../../../../shared/helper/composizione-functions';
 import { ConfermaPartenze } from '../interface/conferma-partenze-interface';
 import { StatoMezzo } from '../../../../shared/enum/stato-mezzo.enum';
 

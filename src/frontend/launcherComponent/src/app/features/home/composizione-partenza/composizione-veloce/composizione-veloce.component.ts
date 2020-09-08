@@ -14,7 +14,7 @@ import {
     UnselectPreAccoppiatoComposizione
 } from '../../store/actions/composizione-partenza/composizione-veloce.actions';
 import { makeCopy } from '../../../../shared/helper/function';
-import { SquadraComposizione } from '../interface/squadra-composizione-interface';
+import { SquadraComposizione } from '../../../../shared/interface/squadra-composizione-interface';
 import { ConfermaPartenze } from '../interface/conferma-partenze-interface';
 import { ComposizionePartenzaState } from '../../store/states/composizione-partenza/composizione-partenza.state';
 import { TurnoState } from '../../../navbar/store/states/turno.state';

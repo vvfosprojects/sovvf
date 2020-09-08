@@ -6,8 +6,8 @@ import { RequestResetBookMezzoComposizione } from '../../../store/actions/compos
 import { Store } from '@ngxs/store';
 import { ShowToastr } from 'src/app/shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from 'src/app/shared/enum/toastr';
-import { checkSquadraOccupata, iconaStatiClass, mezzoComposizioneBusy } from '../functions/composizione-functions';
-import { SquadraComposizione } from '../../interface/squadra-composizione-interface';
+import { checkSquadraOccupata, iconaStatiClass, mezzoComposizioneBusy } from '../../../../../shared/helper/composizione-functions';
+import { SquadraComposizione } from '../../../../../shared/interface/squadra-composizione-interface';
 import { BoxPartenzaHover } from '../../interface/composizione/box-partenza-hover-interface';
 import { StatoMezzo } from '../../../../../shared/enum/stato-mezzo.enum';
 

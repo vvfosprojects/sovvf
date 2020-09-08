@@ -1,12 +1,12 @@
 import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { MezzoComposizione } from '../../interface/mezzo-composizione-interface';
-import { makeCopy } from '../../../../../shared/helper/function';
-import { COMPOSIZIONEOPTIONS } from '../../../../../core/settings/timeout-composizione';
-import { OFFSET_SYNC_TIME } from '../../../../../core/settings/referral-time';
-import { RequestRemoveBookMezzoComposizione } from '../../../store/actions/composizione-partenza/mezzi-composizione.actions';
+import { makeCopy } from '../../helper/function';
+import { COMPOSIZIONEOPTIONS } from '../../../core/settings/timeout-composizione';
+import { OFFSET_SYNC_TIME } from '../../../core/settings/referral-time';
+import { RequestRemoveBookMezzoComposizione } from '../../../features/home/store/actions/composizione-partenza/mezzi-composizione.actions';
 import { Store } from '@ngxs/store';
-import { ComposizionePartenzaState } from '../../../store/states/composizione-partenza/composizione-partenza.state';
-import { Composizione } from '../../../../../shared/enum/composizione.enum';
+import { ComposizionePartenzaState } from '../../../features/home/store/states/composizione-partenza/composizione-partenza.state';
+import { Composizione } from '../../enum/composizione.enum';
 
 @Component({
     selector: 'app-prenotazione-progress-bar',

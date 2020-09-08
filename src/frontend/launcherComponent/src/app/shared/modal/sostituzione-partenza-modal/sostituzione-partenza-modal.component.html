@@ -1,3 +1,86 @@
-<p>
-  sostituzione-partenza works!
-</p>
+<div class="modal-header">
+    <h4 class="modal-title">{{ getTitle() | uppercase }}</h4>
+    <button type="button" class="btn btn-light close" style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px"
+            (click)="onDismiss()">
+        <i class="fa fa-times text-danger"></i>
+    </button>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col">
+            <div class="form-group">
+                <div class="card card-shadow mx-auto" style="min-height:392px">
+                    <div class="card-header clearfix px-2 py-1">
+                        <div class="float-left pt-2">
+                            <i class="fa fa-truck mr-2"></i>
+                            <span class="h6">Mezzi</span>
+                        </div>
+                        <div class="float-right">
+                            <input class="form-control" placeholder="Cerca..." type="search" name="ricercaMezzi"
+                                   id="ricercaMezzi">
+                        </div>
+                    </div>
+                    <ul class="list-group list-group-flush border-bottom scroll-y"
+                        style="max-height:345px; min-height:345px">
+                        <ng-template [ngIf]="mezziComposizione && mezziComposizione.length > 0">
+                            <div *ngFor="let mC of mezziComposizione">
+                                <ng-template [ngIf]="mC.mezzo.stato !== statoMezzo.OperativoPreaccoppiato">
+                                    <app-mezzo-composizione [mezzoComp]="mC"
+                                                            [itemSelezionato]="mC.id === idMezzoSelezionato"
+                                                            [itemHover]="mC.id === idMezzoHover"
+                                                            [itemInPrenotazione]="idMezziInPrenotazione.indexOf(mC.id) !== -1"
+                                                            [itemPrenotato]="idMezziPrenotati.indexOf(mC.id) !== -1"
+                                                            [itemBloccato]="idMezziBloccati.indexOf(mC.id) !== -1"
+                                                            (selezionato)="mezzoSelezionato($event)"
+                                                            (deselezionato)="mezzoDeselezionato($event)"
+                                                            (hoverIn)="mezzoHoverIn($event)"
+                                                            (hoverOut)="mezzoHoverOut()">
+                                    </app-mezzo-composizione>
+                                </ng-template>
+                            </div>
+                        </ng-template>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-group">
+                <div class="card card-shadow mx-auto" style="min-height:392px">
+                    <div class="card-header clearfix px-2 py-1">
+                        <div class="float-left pt-2">
+                            <i class="fa fa-users mr-2"></i>
+                            <span class="h6">Squadre</span>
+                        </div>
+                        <div class="float-right w-50">
+                            <input class="form-control" placeholder="Cerca..."
+                                   type="search" name="ricercaSquadre" id="ricercaSquadre">
+                        </div>
+                    </div>
+                    <ul class="list-group list-group-flush border-bottom scroll-y"
+                        style="max-height:345px; min-height:345px">
+                        <ng-template [ngIf]="squadreComposizione && squadreComposizione.length > 0">
+                            <app-squadra-composizione
+                                    *ngFor="let sC of squadreComposizione"
+                                    [squadraComp]="sC"
+                                    [itemSelezionato]="checkSquadraSelezione(sC.id)"
+                                    [itemHover]="sC.id === idSquadraHover"
+                                    (selezionata)="squadraSelezionata($event)"
+                                    (deselezionata)="squadraDeselezionata($event)"
+                                    (hoverIn)="squadraHoverIn($event)"
+                                    (hoverOut)="squadraHoverOut($event)"></app-squadra-composizione>
+                        </ng-template>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-lg btn-secondary btn-no-hover" (click)="closeModal('ko')">
+        {{ 'Annulla' | uppercase }}
+    </button>
+    <button type="button" class="btn btn-lg btn-danger btn-no-hover" ngbTooltip="Riempi tutti i campi obbligatori"
+            [disableTooltip]="formValid" [disabled]="!formValid" (click)="onConferma()">
+        {{ 'Conferma' | uppercase }}
+    </button>
+</div>

@@ -10,7 +10,7 @@ import { MeteoMarker } from '../../maps-model/meteo-marker.model';
 import { HelperSintesiRichiesta } from '../../../richieste/helper/_helper-sintesi-richiesta';
 import { SintesiRichiestaModalComponent } from './sintesi-richiesta-modal/sintesi-richiesta-modal.component';
 import { Store } from '@ngxs/store';
-import { mezzoComposizioneBusy } from '../../../composizione-partenza/shared/functions/composizione-functions';
+import { mezzoComposizioneBusy } from '../../../../../shared/helper/composizione-functions';
 import { SganciamentoMezzoComposizione } from '../../../store/actions/composizione-partenza/mezzi-composizione.actions';
 import { SganciamentoInterface } from 'src/app/shared/interface/sganciamento.interface';
 import { SetRichiestaById } from '../../../store/actions/richieste/richieste.actions';

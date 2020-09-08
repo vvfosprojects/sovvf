@@ -12,7 +12,8 @@ export interface ModificaPartenzaModalStateModel {
             sequenza: [{
                 stato: string;
                 time: {
-                        hour: number, minute: number };
+                        hour: number, minute: number
+                };
             }];
         };
         dirty: boolean;

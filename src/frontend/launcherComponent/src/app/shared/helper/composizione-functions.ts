@@ -1,6 +1,6 @@
-import { StatoSquadra } from '../../../../../shared/enum/stato-squadra.enum';
-import { SquadraComposizione } from '../../interface/squadra-composizione-interface';
-import { StatoMezzo } from '../../../../../shared/enum/stato-mezzo.enum';
+import { StatoSquadra } from '../enum/stato-squadra.enum';
+import { SquadraComposizione } from '../interface/squadra-composizione-interface';
+import { StatoMezzo } from '../enum/stato-mezzo.enum';
 
 export function squadraComposizioneBusy(stato: StatoSquadra) {
     switch (stato) {

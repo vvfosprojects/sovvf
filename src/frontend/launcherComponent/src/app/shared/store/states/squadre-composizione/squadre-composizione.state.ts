@@ -1,5 +1,5 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
-import { SquadraComposizione } from '../../../composizione-partenza/interface/squadra-composizione-interface';
+import { SquadraComposizione } from '../../../interface/squadra-composizione-interface';
 import {
     AddSquadraComposizione,
     ClearListaSquadreComposizione,
@@ -15,16 +15,16 @@ import {
     UnselectSquadra,
     UnselectSquadraComposizione,
     UpdateSquadraComposizione
-} from '../../actions/composizione-partenza/squadre-composizione.actions';
+} from '../../../../features/home/store/actions/composizione-partenza/squadre-composizione.actions';
 import { append, patch, removeItem } from '@ngxs/store/operators';
-import { AddSquadraBoxPartenza } from '../../actions/composizione-partenza/box-partenza.actions';
-import { BoxPartenzaState } from './box-partenza.state';
-import { FilterListaMezziComposizione } from '../../actions/composizione-partenza/mezzi-composizione.actions';
+import { AddSquadraBoxPartenza } from '../../../../features/home/store/actions/composizione-partenza/box-partenza.actions';
+import { BoxPartenzaState } from '../../../../features/home/store/states/composizione-partenza/box-partenza.state';
+import { FilterListaMezziComposizione } from '../../../../features/home/store/actions/composizione-partenza/mezzi-composizione.actions';
 import produce from 'immer';
-import { codDistaccamentoIsEqual } from '../../../composizione-partenza/shared/functions/composizione-functions';
-import { SetListaFiltriAffini } from '../../actions/composizione-partenza/composizione-partenza.actions';
-import { ComposizionePartenzaState } from './composizione-partenza.state';
-import { MezzoComposizione } from '../../../composizione-partenza/interface/mezzo-composizione-interface';
+import { codDistaccamentoIsEqual } from '../../../helper/composizione-functions';
+import { SetListaFiltriAffini } from '../../../../features/home/store/actions/composizione-partenza/composizione-partenza.actions';
+import { ComposizionePartenzaState } from '../../../../features/home/store/states/composizione-partenza/composizione-partenza.state';
+import { MezzoComposizione } from '../../../interface/mezzo-composizione-interface';
 
 export interface SquadreComposizioneStateStateModel {
     allSquadreComposione: SquadraComposizione[];
@@ -109,7 +109,7 @@ export class SquadreComposizioneState {
         // se non c'è già un mezzo selezionato (nell'attuale "box partenza"), filtro la lista dei mezzi
         const idBoxPartenzaSelezionato = this.store.selectSnapshot(BoxPartenzaState.idBoxPartenzaSelezionato);
         const boxPartenzaSelezionato = boxPartenzaList.filter(x => x.id === idBoxPartenzaSelezionato)[0];
-        if (boxPartenzaSelezionato && !boxPartenzaSelezionato.mezzoComposizione) {
+        if (!boxPartenzaSelezionato || (boxPartenzaSelezionato && !boxPartenzaSelezionato.mezzoComposizione)) {
             const filtriSelezionati = this.store.selectSnapshot(ComposizionePartenzaState.filtriSelezionati);
             dispatch(new FilterListaMezziComposizione(action.squadraComp.squadra.distaccamento.codice, filtriSelezionati));
             const idRichiesteSelezionate = getState().idSquadreSelezionate;
@@ -124,7 +124,7 @@ export class SquadreComposizioneState {
                 idSquadreSelezionate: append([action.squadraComp.squadra.id])
             })
         );
-        if (!boxPartenzaSelezionato.squadraComposizione.includes(action.squadraComp)) {
+        if (!boxPartenzaSelezionato || !boxPartenzaSelezionato.squadraComposizione.includes(action.squadraComp)) {
             this.store.dispatch(new AddSquadraBoxPartenza(action.squadraComp));
         }
     }
@@ -142,6 +142,7 @@ export class SquadreComposizioneState {
                 dispatch([
                     new FilterListaSquadreComposizione(null, filtriSelezionati),
                     new FilterListaMezziComposizione(null, filtriSelezionati),
+                    // todo: togliere commento e sistemare
                     new SetListaFiltriAffini()
                 ]);
             }

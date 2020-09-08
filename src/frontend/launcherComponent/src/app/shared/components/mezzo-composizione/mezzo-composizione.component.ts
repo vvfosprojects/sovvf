@@ -1,12 +1,12 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MezzoComposizione } from '../../interface/mezzo-composizione-interface';
-import { BoxPartenza } from '../../interface/box-partenza-interface';
+import { BoxPartenza } from '../../../features/home/composizione-partenza/interface/box-partenza-interface';
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
-import { MezzoDirection } from '../../../../../shared/interface/mezzo-direction';
+import { MezzoDirection } from '../../interface/mezzo-direction';
 import { SganciamentoInterface } from 'src/app/shared/interface/sganciamento.interface';
-import { iconaStatiClass, mezzoComposizioneBusy } from '../../shared/functions/composizione-functions';
-import { StatoMezzo } from '../../../../../shared/enum/stato-mezzo.enum';
-import { Sede } from '../../../../../shared/model/sede.model';
+import { iconaStatiClass, mezzoComposizioneBusy } from '../../helper/composizione-functions';
+import { StatoMezzo } from '../../enum/stato-mezzo.enum';
+import { Sede } from '../../model/sede.model';
 
 @Component({
     selector: 'app-mezzo-composizione',

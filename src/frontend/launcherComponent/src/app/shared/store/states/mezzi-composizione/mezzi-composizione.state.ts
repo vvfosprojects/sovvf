@@ -1,5 +1,5 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
-import { MezzoComposizione } from '../../../composizione-partenza/interface/mezzo-composizione-interface';
+import { MezzoComposizione } from '../../../interface/mezzo-composizione-interface';
 import {
     AddBookingMezzoComposizione,
     AddBookMezzoComposizione,
@@ -28,38 +28,38 @@ import {
     SganciamentoMezzoComposizione,
     UpdateMezzoComposizioneScadenzaByCodiceMezzo,
     FilterListaMezziComposizione
-} from '../../actions/composizione-partenza/mezzi-composizione.actions';
+} from '../../../../features/home/store/actions/composizione-partenza/mezzi-composizione.actions';
 import { insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
-import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
-import { ToastrType } from '../../../../../shared/enum/toastr';
-import { CompPartenzaService } from '../../../../../core/service/comp-partenza-service/comp-partenza.service';
+import { ShowToastr } from '../../actions/toastr/toastr.actions';
+import { ToastrType } from '../../../enum/toastr';
+import { CompPartenzaService } from '../../../../core/service/comp-partenza-service/comp-partenza.service';
 import {
     AddBoxPartenza,
     SelectBoxPartenza,
     UpdateMezzoBoxPartenza,
     AddMezzoBoxPartenzaSelezionato
-} from '../../actions/composizione-partenza/box-partenza.actions';
-import { BoxPartenzaState } from './box-partenza.state';
-import { calcolaTimeout, codDistaccamentoIsEqual, mezzoComposizioneBusy } from '../../../composizione-partenza/shared/functions/composizione-functions';
+} from '../../../../features/home/store/actions/composizione-partenza/box-partenza.actions';
+import { BoxPartenzaState } from '../../../../features/home/store/states/composizione-partenza/box-partenza.state';
+import { calcolaTimeout, codDistaccamentoIsEqual, mezzoComposizioneBusy } from '../../../helper/composizione-functions';
 import {
     ClearMarkerMezzoHover,
     SetMarkerMezzoHover,
     SetMarkerMezzoSelezionato
-} from '../../actions/maps/marker.actions';
+} from '../../../../features/home/store/actions/maps/marker.actions';
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
 import { Partenza } from 'src/app/shared/model/partenza.model';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { SganciamentoMezzoModalComponent } from '../../../composizione-partenza/shared/sganciamento-mezzo-modal/sganciamento-mezzo-modal.component';
-import { ConfermaPartenze } from '../../../composizione-partenza/interface/conferma-partenze-interface';
-import { ComposizionePartenzaState } from './composizione-partenza.state';
+import { SganciamentoMezzoModalComponent } from '../../../../features/home/composizione-partenza/shared/sganciamento-mezzo-modal/sganciamento-mezzo-modal.component';
+import { ConfermaPartenze } from '../../../../features/home/composizione-partenza/interface/conferma-partenze-interface';
+import { ComposizionePartenzaState } from '../../../../features/home/store/states/composizione-partenza/composizione-partenza.state';
 import { TurnoState } from 'src/app/features/navbar/store/states/turno.state';
-import { ConfirmPartenze, SetListaFiltriAffini } from '../../actions/composizione-partenza/composizione-partenza.actions';
-import { makeCopy } from '../../../../../shared/helper/function';
-import { SquadreComposizioneState } from './squadre-composizione.state';
-import { FilterListaSquadreComposizione, SetListaSquadreComposizione } from '../../actions/composizione-partenza/squadre-composizione.actions';
+import { ConfirmPartenze, SetListaFiltriAffini } from '../../../../features/home/store/actions/composizione-partenza/composizione-partenza.actions';
+import { makeCopy } from '../../../helper/function';
+import { SquadreComposizioneState } from '../squadre-composizione/squadre-composizione.state';
+import { FilterListaSquadreComposizione, SetListaSquadreComposizione } from '../../../../features/home/store/actions/composizione-partenza/squadre-composizione.actions';
 import produce from 'immer';
-import { SquadraComposizione } from '../../../composizione-partenza/interface/squadra-composizione-interface';
-import { SintesiRichiesteService } from '../../../../../core/service/lista-richieste-service/lista-richieste.service';
+import { SquadraComposizione } from '../../../interface/squadra-composizione-interface';
+import { SintesiRichiesteService } from '../../../../core/service/lista-richieste-service/lista-richieste.service';
 
 export interface MezziComposizioneStateStateModel {
     allMezziComposizione: MezzoComposizione[];

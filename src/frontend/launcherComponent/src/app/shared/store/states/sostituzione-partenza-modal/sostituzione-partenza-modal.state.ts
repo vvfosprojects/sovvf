@@ -1,16 +1,36 @@
-import { Action, State, StateContext } from '@ngxs/store';
+import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { GetListaMezziSquadre, SetListaMezziSquadre } from '../../actions/sostituzione-partenza/sostituzione-partenza.actions';
 import { StartListaComposizioneLoading, StopListaComposizioneLoading } from '../../../../features/home/store/actions/composizione-partenza/composizione-partenza.actions';
-import { ListaComposizioneAvanzata } from '../../../../features/home/composizione-partenza/interface/lista-composizione-avanzata-interface';
+import { ListaComposizioneAvanzata } from '../../../interface/lista-composizione-avanzata-interface';
 import { CompPartenzaService } from '../../../../core/service/comp-partenza-service/comp-partenza.service';
 import { FiltriComposizione } from '../../../../features/home/composizione-partenza/interface/filtri/filtri-composizione-interface';
+import { SetListaMezziComposizione } from '../../../../features/home/store/actions/composizione-partenza/mezzi-composizione.actions';
+import { SetListaSquadreComposizione } from '../../../../features/home/store/actions/composizione-partenza/squadre-composizione.actions';
 
 export interface SostituzionePartenzaModel {
     listaMezziSquadre: ListaComposizioneAvanzata;
+    sostituzionePartenzaForm: {
+        model?: {
+            codMezzo: string;
+            codSquadre: string[];
+        };
+        dirty: boolean;
+        status: string;
+        errors: any;
+    };
 }
 
 export const sostituzionePartenzaDefaults: SostituzionePartenzaModel = {
-    listaMezziSquadre: null
+    listaMezziSquadre: null,
+    sostituzionePartenzaForm: {
+        model: {
+            codMezzo: undefined,
+            codSquadre: undefined
+        },
+        dirty: false,
+        status: '',
+        errors: {}
+    }
 };
 
 @State<SostituzionePartenzaModel>({
@@ -19,26 +39,30 @@ export const sostituzionePartenzaDefaults: SostituzionePartenzaModel = {
 })
 export class SostituzionePartenzaModalState {
 
+    @Selector()
+    static formValid(state: SostituzionePartenzaModel) {
+        return state.sostituzionePartenzaForm.status !== 'INVALID';
+    }
+
     constructor(private compPartenzaService: CompPartenzaService) {
     }
 
     @Action(GetListaMezziSquadre)
     getListaMezziSquadre({ dispatch }: StateContext<SostituzionePartenzaModel>, action: GetListaMezziSquadre) {
-        dispatch(new StartListaComposizioneLoading());
+        // dispatch(new StartListaComposizioneLoading());
         const filtri = {} as FiltriComposizione;
         filtri.idRichiesta = action.idRichiesta;
         this.compPartenzaService.getListeComposizioneAvanzata(filtri).subscribe((listeCompAvanzata: ListaComposizioneAvanzata) => {
-            // const listaBoxPartenza = this.store.selectSnapshot(BoxPartenzaState.boxPartenzaList);
-            // if (listeCompAvanzata.composizioneMezzi) {
-            //     dispatch(new SetListaMezziComposizione(listeCompAvanzata.composizioneMezzi));
-            // }
-            // if (listeCompAvanzata.composizioneSquadre) {
-            //     dispatch(new SetListaSquadreComposizione(listeCompAvanzata.composizioneSquadre));
-            // }
+            if (listeCompAvanzata.composizioneMezzi) {
+                dispatch(new SetListaMezziComposizione(listeCompAvanzata.composizioneMezzi));
+            }
+            if (listeCompAvanzata.composizioneSquadre) {
+                dispatch(new SetListaSquadreComposizione(listeCompAvanzata.composizioneSquadre));
+            }
             dispatch(new SetListaMezziSquadre(listeCompAvanzata));
-            dispatch(new StopListaComposizioneLoading());
+            // dispatch(new StopListaComposizioneLoading());
         }, () => {
-            dispatch(new StopListaComposizioneLoading());
+            // dispatch(new StopListaComposizioneLoading());
         });
     }
 
