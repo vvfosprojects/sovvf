@@ -9,7 +9,8 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
     {
         public IEnumerable<AuthorizationResult> Authorize(ModificaPartenzaCommand command)
         {
-            throw new NotImplementedException();
+            if (false)
+                yield return new AuthorizationResult("");
         }
     }
 }

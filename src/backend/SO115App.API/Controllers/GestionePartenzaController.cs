@@ -97,7 +97,7 @@ namespace SO115App.API.Controllers
         }
 
         [HttpPost("ModificaPartenza")]
-        public async Task<IActionResult> ModificaPartenzaCommand([FromBody] ModificaPartenza partenza)
+        public async Task<IActionResult> ModificaPartenza([FromBody] ModificaPartenza partenza)
         {
             var command = new ModificaPartenzaCommand()
             {
