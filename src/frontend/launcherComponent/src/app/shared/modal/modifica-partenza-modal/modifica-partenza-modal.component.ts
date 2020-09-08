@@ -49,6 +49,7 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
                 private modalService: NgbModal,
                 public activeModal: NgbActiveModal) {
         this.initForm();
+        this.getFormValid();
         this.inizializzaUser();
         this.formatTime();
     }
