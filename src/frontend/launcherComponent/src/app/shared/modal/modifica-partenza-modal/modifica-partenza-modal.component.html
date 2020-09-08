@@ -24,9 +24,9 @@
           <input id="sede" formControlName="sede" class="form-control" placeholder="Sede">
         </div>
         <!-- mezzo e squadra da sostituire -->
-        <div class="border-partenza-box" style="display: flex; place-content: space-evenly;">
+        <div class="border-partenza-box pb-4 d-flex" style="place-content: space-evenly;">
           <div class="mb-3" style="display: contents;">
-            <div class="">
+            <div>
               <label>Mezzo</label>
               <div> <i class="guida fa fa-truck fa-fw mr-1 text-{{ statoMezzoColor(partenza.mezzo['stato']) }}" ngbTooltip="Mezzo {{ partenza.mezzo['stato'] }}"></i>
                     <b>{{ partenza.mezzo['descrizione'] }}</b>
@@ -34,21 +34,21 @@
                     <i class="fa fa-check-circle-o text-success ml-3"></i>
               </div>
             </div>
-            <div *ngIf="partenza.squadre.length === 1" class="" style="color:#666666">
+            <div *ngIf="partenza.squadre.length === 1" style="color:#666666">
               <label>Squadra</label>
               <div> <i class="fa fa-group mr-2" ngbTooltip="Squadra"></i>
                 <b>{{ partenza.squadre[0].nome }}</b>
                 <i class="fa fa-check-circle-o text-success ml-3"></i>
               </div>
             </div>
-            <div *ngIf="partenza.squadre.length > 1" class="" style="color:#666666">
+            <div *ngIf="partenza.squadre.length > 1" style="color:#666666">
               <label>Squadre</label>
               <div *ngFor="let squadre of partenza.squadre"> <i class="fa fa-group mr-2" ngbTooltip="Squadre"></i>
                 <b>{{ squadre['nome'] }}</b>
                 <i class="fa fa-check-circle-o text-success ml-3"></i>
               </div>
             </div>
-            <div class=""  style="align-self: center;">
+            <div  style="align-self: center;">
               <button class="btn btn-sm btn-block btn-info btn-no-hover"  ngbTooltip="Modifica partenza" style="max-width: fit-content;">
                 <i class="fa fa-pencil-square-o" (click)="open()"></i>
               </button>
@@ -57,7 +57,9 @@
         </div>
         <!-- sequenza eventi -->
         <div class="my-4 d-inline-flex">
-          <label for="sequenzaEventi">Crea sequenza Eventi</label>
+          <label for="sequenzaEventi">Crea sequenza Eventi
+            <small class="text-danger">*</small>
+          </label>
           <button class="btn btn-sm btn-block btn-info btn-no-hover ml-2" (click)="onAddSequenza()"  ngbTooltip="Aggiungi evento" style="max-width: fit-content;">
             <i class="fa fa-plus"></i>
           </button>

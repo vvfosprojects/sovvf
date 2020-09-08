@@ -10,6 +10,7 @@ import { ModificaPartenzaModalState } from '../../store/states/modifica-partenza
 import { Partenza } from './../../model/partenza.model';
 import { statoMezzoColor } from '../../helper/function';
 import { StatoMezzo } from '../../enum/stato-mezzo.enum';
+//import { SostituzionePartenzaModalComponent } from '../sostituzione-partenza-modal/sostituzione-partenza-modal.component';
 
   export interface ValoriSelezionati  {
     stato: string;
@@ -31,6 +32,7 @@ export class ModificaPartenzaModalComponent implements OnInit {
   operatore: string;
   sede: string;
   partenza: Partenza;
+  idRichiesta: string;
   public time = { hour: 13, minute: 30 };
   listaStatoMezzo: any[];
   statoMezzoSelezionato: string;
@@ -140,9 +142,11 @@ export class ModificaPartenzaModalComponent implements OnInit {
     this.time.minute = d.getMinutes();
   }
 
+  /*
   formatTimeForCallBack(): any {
     return { oraEvento: this.time };
   }
+  */
 
   statoMezzoColor(stato: StatoMezzo) {
     return statoMezzoColor(stato);
@@ -160,7 +164,7 @@ export class ModificaPartenzaModalComponent implements OnInit {
 
   /*
   open() {
-    this.modalService.open(NgbdModal2Content, {
+    this.modalService.open(SostituzionePartenzaModalComponent, {
       size: 'lg'
     });
   }
