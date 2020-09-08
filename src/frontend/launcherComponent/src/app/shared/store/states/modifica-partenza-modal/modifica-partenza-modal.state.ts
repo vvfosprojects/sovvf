@@ -54,9 +54,9 @@ export class ModificaPartenzaModalState {
     }
 
     /*
-    @Action(GetPartenzaSostitutiva)
-    getPartenzaSostitutiva({ patchState }: StateContext<ModificaPartenzaModalStateModel>) {
-    this.modificaPartenzaService.getPartenzaSostitutiva().subscribe((codMezzo: string, codSquadre: string[]) => {
+    @Action(GetListaMezziSquadre)
+    getListaMezziSquadre({ patchState }: StateContext<ModificaPartenzaModalStateModel>) {
+    this.modificaPartenzaService.getListaMezziSquadre().subscribe((codMezzo: string, codSquadre: string[]) => {
         patchState({
             codMezzo: codMezzo,
             codSquadre: codSquadre,
