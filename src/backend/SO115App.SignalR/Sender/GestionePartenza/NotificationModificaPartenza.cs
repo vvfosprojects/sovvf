@@ -1,8 +1,12 @@
-﻿using CQRS.Queries;
+﻿using AutoMapper;
+using CQRS.Queries;
 using Microsoft.AspNetCore.SignalR;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.ModificaPartenza;
+using SO115App.Models.Servizi.CustomMapper;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
+using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
+using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestionePartenza;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
 using SO115App.SignalR.Utility;
@@ -16,16 +20,22 @@ namespace SO115App.SignalR.Sender.GestionePartenza
     {
         private readonly IHubContext<NotificationHub> _notificationHubContext;
         private readonly GetGerarchiaToSend _getGerarchiaToSend;
+        private readonly MapperRichiestaAssistenzaSuSintesi _mapperRichiesta;
+
         private readonly IGetRichiestaById _getRichiesta;
         private readonly IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> _boxRichiesteHandler;
         private readonly IQueryHandler<BoxMezziQuery, BoxMezziResult> _boxMezziHandler;
         private readonly IQueryHandler<BoxPersonaleQuery, BoxPersonaleResult> _boxPersonaleHandler;
+
         public NotificationModificaPartenza(IHubContext<NotificationHub> notificationHubContext,
             IGetRichiestaById getRichiesta,
             IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative,
             IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> boxRichiesteHandler,
             IQueryHandler<BoxMezziQuery, BoxMezziResult> boxMezziHandler,
-            IQueryHandler<BoxPersonaleQuery, BoxPersonaleResult> boxPersonaleHandler)
+            IQueryHandler<BoxPersonaleQuery, BoxPersonaleResult> boxPersonaleHandler,
+            IMapper mapper,
+            IGetTipologieByCodice getTipologieByCodice,
+            IGetUtenteById getUtenteById)
         {
             _notificationHubContext = notificationHubContext;
             _getGerarchiaToSend = new GetGerarchiaToSend(getAlberaturaUnitaOperative);
@@ -33,6 +43,7 @@ namespace SO115App.SignalR.Sender.GestionePartenza
             _boxMezziHandler = boxMezziHandler;
             _boxPersonaleHandler = boxPersonaleHandler;
             _boxRichiesteHandler = boxRichiesteHandler;
+            _mapperRichiesta = new MapperRichiestaAssistenzaSuSintesi(mapper, getTipologieByCodice, getUtenteById);
         }
 
         public async Task SendNotification(ModificaPartenzaCommand command)
@@ -55,7 +66,7 @@ namespace SO115App.SignalR.Sender.GestionePartenza
                 await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxMezzi", boxMezzi);
                 await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxPersonale", boxPersonale);
 
-                await _notificationHubContext.Clients.Group(sede).SendAsync("ModifyAndNotifySuccess", richiesta);
+                await _notificationHubContext.Clients.Group(sede).SendAsync("ModifyAndNotifySuccess", _mapperRichiesta.Map(richiesta));
             }
         }
     }

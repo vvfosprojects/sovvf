@@ -67,11 +67,11 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi
 
             this.Istante = istante;
             this.CodiceFonte = codiceFonte;
-            richiesta.AddEvento(this);
             this.IstanteCreazione = DateTime.UtcNow;
             this.CodiceRichiesta = richiesta.Codice;
             this.TipoEvento = tipoEvento;
             this.SedeOperatore = SedeOperatore;
+            richiesta.AddEvento(this);
         }
 
         /// <summary>

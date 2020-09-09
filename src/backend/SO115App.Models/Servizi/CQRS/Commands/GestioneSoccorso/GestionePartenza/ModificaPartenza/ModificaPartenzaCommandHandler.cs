@@ -7,7 +7,7 @@ using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.Eventi;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.API.Models.Classi.Soccorso.StatiRichiesta;
-using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi;
+using SO115App.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AggiornaStatoMezzo;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AnnullaPartenza;
@@ -15,7 +15,6 @@ using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GenerazioneCodiciRichiesta;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti;
-using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Squadre;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,11 +28,10 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
         private readonly IGeneraCodiceRichiesta _generaCodiceRichiesta;
         private readonly IGetUtenteById _getUtenteById;
         private readonly IUpdateConfermaPartenze _updateConfermaPartenze;
-        private readonly IGetListaMezzi _getListaMezzi;
-        private readonly IGetListaSquadre _getListaSquadre;
 
         private RichiestaAssistenza Richiesta;
-        private Partenza Partenza;
+        private ComposizionePartenze PartenzaDaAnnullare;
+        private ComposizionePartenze NuovaPartenza;
         private Utente Utente;
 
         private bool _mezziTuttiInSede = true;
@@ -43,25 +41,20 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
             IUpdateStatoPartenze updateStatoPartenze,
             IGeneraCodiceRichiesta generaCodiceRichiesta,
             IGetUtenteById getUtenteById,
-            IUpdateConfermaPartenze updateConfermaPartenze,
-            IGetListaMezzi getListaMezzi,
-            IGetListaSquadre getListaSquadre
-        )
+            IUpdateConfermaPartenze updateConfermaPartenze)
         {
             _getRichiestaById = getRichiestaById;
             _updateStatoPartenze = updateStatoPartenze;
             _generaCodiceRichiesta = generaCodiceRichiesta;
             _getUtenteById = getUtenteById;
             _updateConfermaPartenze = updateConfermaPartenze;
-            _getListaMezzi = getListaMezzi;
-            _getListaSquadre = getListaSquadre;
         }
 
         public void Handle(ModificaPartenzaCommand command)
         {
             Richiesta = _getRichiestaById.GetById(command.ModificaPartenza.CodRichiesta);
             Utente = _getUtenteById.GetUtenteByCodice(command.IdOperatore);
-            Partenza = Richiesta.Partenze.FirstOrDefault(c => c.Partenza.Mezzo.Codice == command.ModificaPartenza.CodMezzoDaAnnullare).Partenza;
+            PartenzaDaAnnullare = Richiesta.Partenze.FirstOrDefault(c => c.Partenza.Mezzo.Codice.Equals(command.ModificaPartenza.CodMezzoDaAnnullare));
 
             //ANNULLO PARTENZA
             if (command.ModificaPartenza.Annullamento)
@@ -76,7 +69,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
             }
 
             //NUOVA PARTENZA
-            NuovaPartenza(new ConfermaPartenzeCommand()
+            ComponiPartenza(new ConfermaPartenzeCommand()
             {
                 ConfermaPartenze = new ConfermaPartenze()
                 {
@@ -86,11 +79,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                     richiesta = Richiesta,
                     Partenze = Richiesta.Partenze.Select(c => c.Partenza).ToList()
                 }
-            }, command.ModificaPartenza.SequenzaStati
-                .OrderBy(c => c.DataOraAggiornamento)
-                .Select(c => c.DataOraAggiornamento)
-                .FirstOrDefault(),
-                command.ModificaPartenza.CodMezzo, command.ModificaPartenza.CodSquadre);
+            }, command.ModificaPartenza.DataPrimoStato, command.ModificaPartenza.Mezzo, command.ModificaPartenza.Squadre);
 
             //TRADUCO GLI STATI
             //foreach (var stato in command.ModificaPartenza.SequenzaStati.OrderBy(c => c.DataOraAggiornamento))
@@ -105,67 +94,54 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
         private void AnnullaPartenza(AnnullaPartenzaCommand command, DateTime data)
         {
             //GESTISCO RICHIESTA
-            var PartenzaToDelete = Richiesta.Partenze.FirstOrDefault(x => x.Partenza.Mezzo.Codice.Equals(command.TargaMezzo));
+            new RevocaPerSostituzioneMezzo(Richiesta, command.TargaMezzo, data, command.IdOperatore, command.TestoMotivazione);
 
-            new RevocaPerAltraMotivazione(Richiesta, command.TargaMezzo, data, command.IdOperatore, command.TestoMotivazione);
+            PartenzaDaAnnullare.PartenzaAnnullata = true;
+            PartenzaDaAnnullare.Partenza.PartenzaAnnullata = true;
+            PartenzaDaAnnullare.Partenza.Mezzo.Stato = Costanti.MezzoInRientro;
 
-            Richiesta.Partenze.FirstOrDefault(c => c.Partenza.Mezzo.Codice == command.TargaMezzo).PartenzaAnnullata = true;
-
-            //_upDateRichiestaAssistenza.UpDate(Richiesta);
+            foreach (var squadra in PartenzaDaAnnullare.Partenza.Squadre)
+            {
+                squadra.Stato = MappaStatoSquadraDaStatoMezzo.MappaStato(PartenzaDaAnnullare.Partenza.Mezzo.Stato);
+            }
 
             //GESTISCO STATO MEZZI E SQUADRE
             var commandStatoMezzo = new AggiornaStatoMezzoCommand()
             {
-                CodiceSede = PartenzaToDelete.Partenza.Mezzo.Distaccamento.Codice,
+                CodiceSede = PartenzaDaAnnullare.Partenza.Mezzo.Distaccamento.Codice,
                 IdMezzo = command.TargaMezzo,
                 StatoMezzo = Costanti.MezzoInRientro,
                 Richiesta = Richiesta,
-                DataOraAggiornamento = data,
+                //DataOraAggiornamento = data,
                 IdUtente = command.IdOperatore
             };
 
             _updateStatoPartenze.Update(commandStatoMezzo);
         }
 
-        private void NuovaPartenza(ConfermaPartenzeCommand command, DateTime data, string CodMezzo, string[] CodSquadre)
+        private void ComponiPartenza(ConfermaPartenzeCommand command, DateTime data, Mezzo mezzo, List<Squadra> squadre)
         {
-            var lstPersonale = _getListaSquadre.Get(new List<string>() { command.ConfermaPartenze.CodiceSede }).Result;
-            var lstMezzi = _getListaMezzi.Get(new string[] { command.ConfermaPartenze.CodiceSede });
-
             new ComposizionePartenze(Richiesta, data, Utente.Id, false)
             {
                 Partenza = new Partenza()
                 {
-                    Mezzo = lstMezzi.Select(c => c.Mezzo.Mezzo).FirstOrDefault(c => c.Codice == CodMezzo),
-                    Squadre = lstPersonale.Where(c => CodSquadre.Contains(c.Codice)).ToList(),
+                    Mezzo = mezzo,
+                    Squadre = squadre,
                     Sganciata = false
                 }
             };
 
             Richiesta.SincronizzaStatoRichiesta(Costanti.RichiestaAssegnata, Richiesta.StatoRichiesta, Utente.Id, "", data);
 
-            if (Richiesta.CodRichiesta == null)
-                Richiesta.CodRichiesta = _generaCodiceRichiesta.Genera(Richiesta.CodSOCompetente, DateTime.UtcNow.Year);
+            NuovaPartenza = Richiesta.Partenze.FirstOrDefault(c => c.Partenza.Mezzo.Codice.Equals(mezzo.Codice));
 
-            var nominativo = Utente.Nome + "." + Utente.Cognome;
-            if (Richiesta.UtPresaInCarico != null)
+            NuovaPartenza.Partenza.Mezzo.Stato = Costanti.MezzoInUscita;
+            foreach (var squadra in NuovaPartenza.Partenza.Squadre)
             {
-                Richiesta.UtPresaInCarico.Add(nominativo);
-            }
-            else
-            {
-                Richiesta.UtPresaInCarico = new List<String>
-                {
-                    nominativo
-                };
+                squadra.Stato = MappaStatoSquadraDaStatoMezzo.MappaStato(NuovaPartenza.Partenza.Mezzo.Stato);
             }
 
-            foreach (var squadra in Partenza.Squadre)
-            {
-                squadra.Stato = MappaStatoSquadraDaStatoMezzo.MappaStato(Partenza.Mezzo.Stato);
-            }
-
-            command.ConfermaPartenze.richiesta = Richiesta;
+            command.ConfermaPartenze.Partenze.Add(NuovaPartenza.Partenza);
 
             _updateConfermaPartenze.Update(command);
         }
