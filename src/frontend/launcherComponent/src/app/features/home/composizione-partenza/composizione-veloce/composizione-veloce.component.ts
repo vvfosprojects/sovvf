@@ -5,7 +5,7 @@ import { Observable, Subscription } from 'rxjs';
 import { DirectionInterface } from '../../maps/maps-interface/direction-interface';
 import { Composizione } from '../../../../shared/enum/composizione.enum';
 import { Select, Store } from '@ngxs/store';
-import { ConfirmPartenze, GetFiltriComposizione } from '../../store/actions/composizione-partenza/composizione-partenza.actions';
+import { ConfirmPartenze } from '../../store/actions/composizione-partenza/composizione-partenza.actions';
 import { ComposizioneVeloceState } from '../../store/states/composizione-partenza/composizione-veloce.state';
 import {
     HoverInPreAccoppiatoComposizione,
@@ -21,6 +21,7 @@ import { TurnoState } from '../../../navbar/store/states/turno.state';
 import { Coordinate } from '../../../../shared/model/coordinate.model';
 import { BoxPartenzaHover } from '../interface/composizione/box-partenza-hover-interface';
 import { StatoMezzo } from '../../../../shared/enum/stato-mezzo.enum';
+import { GetFiltriComposizione } from '../../../../shared/store/actions/filtri-composizione/filtri-composizione.actions';
 
 @Component({
     selector: 'app-composizione-veloce',

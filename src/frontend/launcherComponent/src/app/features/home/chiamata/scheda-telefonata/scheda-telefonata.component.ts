@@ -24,13 +24,13 @@ import { DelChiamataMarker } from '../../store/actions/maps/chiamate-markers.act
 import { Tipologia } from '../../../../shared/model/tipologia.model';
 import { SchedeContattoState } from '../../store/states/schede-contatto/schede-contatto.state';
 import { SchedaContatto } from 'src/app/shared/interface/scheda-contatto.interface';
-import { ConfirmModalComponent } from '../../../../shared';
 import { HomeState } from '../../store/states/home.state';
 import { Options } from 'ngx-google-places-autocomplete/objects/options/options';
 import { LatLngBounds } from 'ngx-google-places-autocomplete/objects/latLngBounds';
 import { ComponentRestrictions } from 'ngx-google-places-autocomplete/objects/options/componentRestrictions';
 import { GOOGLEPLACESOPTIONS } from '../../../../core/settings/google-places-options';
 import { Ente } from 'src/app/shared/interface/ente.interface';
+import { ConfirmModalComponent } from '../../../../shared/modal/confirm-modal/confirm-modal.component';
 
 @Component({
     selector: 'app-scheda-telefonata',

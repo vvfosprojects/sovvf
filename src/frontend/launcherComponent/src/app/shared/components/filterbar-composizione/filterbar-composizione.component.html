@@ -1,13 +1,13 @@
 <div *ngIf="filtri" class="border card-shadow bg-light rounded mt-1 mb-2">
     <div class="row">
-        <div class="col-3 py-1 pl-4">
+        <div *ngIf="!nascondiTornaIndietro || !nascondiCambiaComposizioneMode" class="col-3 py-1 pl-4">
             <div class="row">
-                <div class="col-3">
+                <div *ngIf="!nascondiTornaIndietro" class="col-3">
                     <button class="btn btn-block btn-primary px-1" (click)="turnOffComposizione()">
                         <i class="fa fa-arrow-left"></i>
                     </button>
                 </div>
-                <div class="col-9 pl-1">
+                <div *ngIf="!nascondiCambiaComposizioneMode" class="col-9 pl-1">
                     <app-tasto-comp-partenza (cambioModalita)="compPartenzaSwitch($event)"
                                              [compPartenzaMode]="(composizioneMode$ | async)"
                                              [disableTasto]="disableComposizioneMode">
@@ -15,7 +15,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-4 py-1 pl-1">
+        <div class="py-1" [ngClass]="{'col-5': nascondiTornaIndietro && nascondiCambiaComposizioneMode, 'col-4 pl-1': !nascondiTornaIndietro || !nascondiCambiaComposizioneMode}">
             <ng-select [items]="filtri.distaccamenti"
                        bindLabel="descDistaccamento"
                        bindValue="id"
@@ -29,7 +29,7 @@
                        placeholder="Distaccamento: Tutti">
             </ng-select>
         </div>
-        <div class="col-3 py-1">
+        <div class="py-1" [ngClass]="{'col-4': nascondiTornaIndietro && nascondiCambiaComposizioneMode, 'col-3': !nascondiTornaIndietro || !nascondiCambiaComposizioneMode}">
             <ng-select [items]="filtri.generiMezzi"
                        bindLabel="descrizione"
                        bindValue="descrizione"
@@ -43,7 +43,7 @@
                        placeholder="Genere Mezzo: Tutti">
             </ng-select>
         </div>
-        <div class="col-2 py-1 pr-4">
+        <div class="py-1" [ngClass]="{'col-3 pr-3': nascondiTornaIndietro && nascondiCambiaComposizioneMode, 'col-2 pr-4': !nascondiTornaIndietro || !nascondiCambiaComposizioneMode}">
             <ng-select [items]="filtri.stati"
                        bindLabel="descrizione"
                        bindValue="codice"

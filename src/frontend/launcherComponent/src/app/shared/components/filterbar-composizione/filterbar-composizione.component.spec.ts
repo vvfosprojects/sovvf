@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ComposizioneFilterbarComponent } from './composizione-filterbar.component';
+import { FilterbarComposizioneComponent } from './filterbar-composizione.component';
 
 describe('ComposizioneFilterbarComponent', () => {
-  let component: ComposizioneFilterbarComponent;
-  let fixture: ComponentFixture<ComposizioneFilterbarComponent>;
+  let component: FilterbarComposizioneComponent;
+  let fixture: ComponentFixture<FilterbarComposizioneComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ComposizioneFilterbarComponent ]
+      declarations: [ FilterbarComposizioneComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ComposizioneFilterbarComponent);
+    fixture = TestBed.createComponent(FilterbarComposizioneComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -14,7 +14,9 @@ const API_GESTIONE_RICHIESTA = BASE_URL + environment.apiUrl.gestioneRichiesta;
 const API_GESTIONE_PARTENZA = BASE_URL + environment.apiUrl.gestionePartenza;
 const API_GESTIONE_FONOGRAMMA = BASE_URL + environment.apiUrl.gestioneFonogramma;
 
-@Injectable()
+@Injectable({
+    providedIn: 'root'
+})
 export class SintesiRichiesteService {
 
     constructor(private http: HttpClient) {

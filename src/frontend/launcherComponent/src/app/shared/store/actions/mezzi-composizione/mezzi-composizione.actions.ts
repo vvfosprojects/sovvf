@@ -1,9 +1,9 @@
-import { MezzoComposizione } from '../../../../../shared/interface/mezzo-composizione-interface';
-import { BoxPartenza } from '../../../composizione-partenza/interface/box-partenza-interface';
+import { MezzoComposizione } from '../../../interface/mezzo-composizione-interface';
+import { BoxPartenza } from '../../../../features/home/composizione-partenza/interface/box-partenza-interface';
 import { SganciamentoInterface } from 'src/app/shared/interface/sganciamento.interface';
-import { ComposizioneFilterbar } from '../../../composizione-partenza/interface/composizione/composizione-filterbar-interface';
-import { SquadraComposizione } from '../../../../../shared/interface/squadra-composizione-interface';
-import { Mezzo } from '../../../../../shared/model/mezzo.model';
+import { ComposizioneFilterbar } from '../../../../features/home/composizione-partenza/interface/composizione/composizione-filterbar-interface';
+import { SquadraComposizione } from '../../../interface/squadra-composizione-interface';
+import { Mezzo } from '../../../model/mezzo.model';
 
 export class SetListaMezziComposizione {
     static readonly type = '[MezziComposizione] Set Lista Mezzi Composizione';

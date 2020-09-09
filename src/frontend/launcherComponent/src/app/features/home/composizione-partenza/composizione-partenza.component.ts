@@ -23,12 +23,13 @@ import { MezzoActionInterface } from '../../../shared/interface/mezzo-action.int
 import { ActionMezzo } from '../store/actions/richieste/richieste.actions';
 import { SganciamentoInterface } from 'src/app/shared/interface/sganciamento.interface';
 import { ClearMarkerMezzoSelezionato } from '../store/actions/maps/marker.actions';
-import { ClearListaMezziComposizione, SganciamentoMezzoComposizione } from '../store/actions/composizione-partenza/mezzi-composizione.actions';
+import { ClearListaMezziComposizione, SganciamentoMezzoComposizione } from '../../../shared/store/actions/mezzi-composizione/mezzi-composizione.actions';
 import { AuthState } from '../../auth/store/auth.state';
-import { ClearListaSquadreComposizione } from '../store/actions/composizione-partenza/squadre-composizione.actions';
+import { ClearListaSquadreComposizione } from '../../../shared/store/actions/squadre-composizione/squadre-composizione.actions';
 import { ClearPreaccoppiati } from '../store/actions/composizione-partenza/composizione-veloce.actions';
-import { ClearFiltriAffini } from '../store/actions/composizione-partenza/composizione-partenza.actions';
 import { SetRicercaMezziComposizione, SetRicercaSquadreComposizione } from '../store/actions/composizione-partenza/composizione-avanzata.actions';
+import { FiltriComposizioneState } from '../../../shared/store/states/filtri-composizione/filtri-composizione.state';
+import { ClearFiltriAffini } from '../../../shared/store/actions/filtri-composizione/filtri-composizione.actions';
 
 @Component({
     selector: 'app-composizione-partenza',
@@ -42,7 +43,7 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
     Composizione = Composizione;
 
     @Select(ComposizioneVeloceState.preAccoppiati) preAccoppiati$: Observable<BoxPartenza[]>;
-    @Select(ComposizionePartenzaState.filtriAffini) filtriAffini$: Observable<any>;
+    @Select(FiltriComposizioneState.filtriAffini) filtriAffini$: Observable<any>;
     @Select(ComposizionePartenzaState.richiestaComposizione) richiestaComposizione$: Observable<SintesiRichiesta>;
     @Select(ComposizionePartenzaState.loadingInvioPartenza) loadingInvioPartenza$: Observable<boolean>;
     @Select(ComposizionePartenzaState.loadingListe) loadingListe$: Observable<boolean>;

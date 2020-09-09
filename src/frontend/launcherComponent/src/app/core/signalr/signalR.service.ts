@@ -20,7 +20,7 @@ import {
     RemoveBookMezzoComposizione,
     UpdateMezzoComposizione,
     UpdateMezzoComposizioneScadenzaByCodiceMezzo
-} from '../../features/home/store/actions/composizione-partenza/mezzi-composizione.actions';
+} from '../../shared/store/actions/mezzi-composizione/mezzi-composizione.actions';
 import { InsertRichiestaMarker, UpdateRichiestaMarker } from '../../features/home/store/actions/maps/richieste-markers.actions';
 import { ComposizionePartenzaState } from '../../features/home/store/states/composizione-partenza/composizione-partenza.state';
 import { Composizione } from '../../shared/enum/composizione.enum';

@@ -28,7 +28,7 @@ import {
     SganciamentoMezzoComposizione,
     UpdateMezzoComposizioneScadenzaByCodiceMezzo,
     FilterListaMezziComposizione
-} from '../../../../features/home/store/actions/composizione-partenza/mezzi-composizione.actions';
+} from '../../actions/mezzi-composizione/mezzi-composizione.actions';
 import { insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
 import { ShowToastr } from '../../actions/toastr/toastr.actions';
 import { ToastrType } from '../../../enum/toastr';
@@ -39,7 +39,6 @@ import {
     UpdateMezzoBoxPartenza,
     AddMezzoBoxPartenzaSelezionato
 } from '../../../../features/home/store/actions/composizione-partenza/box-partenza.actions';
-import { BoxPartenzaState } from '../../../../features/home/store/states/composizione-partenza/box-partenza.state';
 import { calcolaTimeout, codDistaccamentoIsEqual, mezzoComposizioneBusy } from '../../../helper/composizione-functions';
 import {
     ClearMarkerMezzoHover,
@@ -51,15 +50,15 @@ import { Partenza } from 'src/app/shared/model/partenza.model';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SganciamentoMezzoModalComponent } from '../../../../features/home/composizione-partenza/shared/sganciamento-mezzo-modal/sganciamento-mezzo-modal.component';
 import { ConfermaPartenze } from '../../../../features/home/composizione-partenza/interface/conferma-partenze-interface';
-import { ComposizionePartenzaState } from '../../../../features/home/store/states/composizione-partenza/composizione-partenza.state';
 import { TurnoState } from 'src/app/features/navbar/store/states/turno.state';
-import { ConfirmPartenze, SetListaFiltriAffini } from '../../../../features/home/store/actions/composizione-partenza/composizione-partenza.actions';
+import { ConfirmPartenze } from '../../../../features/home/store/actions/composizione-partenza/composizione-partenza.actions';
 import { makeCopy } from '../../../helper/function';
-import { SquadreComposizioneState } from '../squadre-composizione/squadre-composizione.state';
-import { FilterListaSquadreComposizione, SetListaSquadreComposizione } from '../../../../features/home/store/actions/composizione-partenza/squadre-composizione.actions';
-import produce from 'immer';
+import { FilterListaSquadreComposizione, SetListaSquadreComposizione } from '../../actions/squadre-composizione/squadre-composizione.actions';
 import { SquadraComposizione } from '../../../interface/squadra-composizione-interface';
 import { SintesiRichiesteService } from '../../../../core/service/lista-richieste-service/lista-richieste.service';
+import { SetListaFiltriAffini } from '../../actions/filtri-composizione/filtri-composizione.actions';
+import { SquadreComposizioneState } from '../squadre-composizione/squadre-composizione.state';
+import produce from 'immer';
 
 export interface MezziComposizioneStateStateModel {
     allMezziComposizione: MezzoComposizione[];
@@ -173,6 +172,7 @@ export class MezziComposizioneState {
     @Action(UpdateMezzoComposizione)
     updateMezzoComposizione({ getState, setState, dispatch }: StateContext<MezziComposizioneStateStateModel>, action: UpdateMezzoComposizione) {
         const state = getState();
+        // tslint:disable-next-line:max-line-length
         const mezzoComposizione = state.allMezziComposizione && state.allMezziComposizione.length > 0 ? state.allMezziComposizione.filter((mC: MezzoComposizione) => mC.mezzo.codice === action.mezzo.codice)[0] : null;
         const mezzoComposizioneCopy = mezzoComposizione ? makeCopy(mezzoComposizione) as MezzoComposizione : null;
         if (mezzoComposizione && mezzoComposizioneCopy) {
@@ -206,7 +206,7 @@ export class MezziComposizioneState {
     @Action(ReducerSelectMezzoComposizione)
     reducerSelectMezzoComposizione({ getState, dispatch }: StateContext<MezziComposizioneStateStateModel>, action: SelectMezzoComposizione) {
         const state = getState();
-        const boxPartenzaList = this.store.selectSnapshot(BoxPartenzaState.boxPartenzaList);
+        const boxPartenzaList = this.store.selectSnapshot(x => x.boxPartenza.boxPartenzaList);
 
         // controllo se lo stato del mezzo è diverso da "In Viaggio" o "Sul Posto"
         if (!mezzoComposizioneBusy(action.mezzoComp.mezzo.stato)) {
@@ -237,7 +237,7 @@ export class MezziComposizioneState {
         if (action && action.mezzoId) {
             const mezzoComposizione = getState().mezziComposizione.filter(mezzo => mezzo.mezzo.codice === action.mezzoId);
             if (mezzoComposizione && mezzoComposizione[0]) {
-                const boxPartenzaList = this.store.selectSnapshot(BoxPartenzaState.boxPartenzaList);
+                const boxPartenzaList = this.store.selectSnapshot(x => x.boxPartenza.boxPartenzaList);
                 if (boxPartenzaList.length === 0) {
                     dispatch(new ReducerSelectMezzoComposizione(mezzoComposizione[0]));
                 } else {
@@ -258,12 +258,12 @@ export class MezziComposizioneState {
         });
 
         // verifico se devo filtrare la lista
-        const idBoxPartenzaSelezionato = this.store.selectSnapshot(BoxPartenzaState.idBoxPartenzaSelezionato);
-        const boxPartenzaList = this.store.selectSnapshot(BoxPartenzaState.boxPartenzaList);
+        const idBoxPartenzaSelezionato = this.store.selectSnapshot(x => x.boxPartenza.idBoxPartenzaSelezionato);
+        const boxPartenzaList = this.store.selectSnapshot(x => x.boxPartenza.boxPartenzaList);
         const boxPartenzaSelezionato = boxPartenzaList.filter(x => x.id === idBoxPartenzaSelezionato)[0];
         if (boxPartenzaSelezionato && (!boxPartenzaSelezionato.squadraComposizione || boxPartenzaSelezionato.squadraComposizione.length <= 0)) {
             const allSquadreComposione = this.store.selectSnapshot(SquadreComposizioneState.allSquadreComposione);
-            const filtriSelezionati = this.store.selectSnapshot(ComposizionePartenzaState.filtriSelezionati);
+            const filtriSelezionati = this.store.selectSnapshot(x => x.filtriComposizione.filtriSelezionati);
             dispatch([
                 new SetListaSquadreComposizione(allSquadreComposione),
                 new FilterListaSquadreComposizione(action.mezzoComp.mezzo.distaccamento.codice, filtriSelezionati),
@@ -276,7 +276,7 @@ export class MezziComposizioneState {
     unselectMezzoComposizione({ getState, patchState, dispatch }: StateContext<MezziComposizioneStateStateModel>) {
         const idSquadreSelezionate = this.store.selectSnapshot(SquadreComposizioneState.idSquadreSelezionate);
         if (idSquadreSelezionate && idSquadreSelezionate.length <= 0) {
-            const filtriSelezionati = this.store.selectSnapshot(ComposizionePartenzaState.filtriSelezionati);
+            const filtriSelezionati = this.store.selectSnapshot(x => x.filtriComposizione.filtriSelezionati);
             dispatch([
                 new FilterListaSquadreComposizione(null, filtriSelezionati),
                 new FilterListaMezziComposizione(null, filtriSelezionati)
@@ -318,7 +318,7 @@ export class MezziComposizioneState {
     requestBookMezzoComposizione({ dispatch }: StateContext<MezziComposizioneStateStateModel>, action: RequestBookMezzoComposizione) {
         const mezzoPrenotatoObj = {
             'codiceMezzo': action.mezzoComp.mezzo.codice,
-            'codiceRichiesta': this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione).id
+            'codiceRichiesta': this.store.selectSnapshot(x => x.composizionePartenza.richiestaComposizione).id
         };
         dispatch(new AddBookingMezzoComposizione(action.mezzoComp));
         this._compPartenzaService.setMezzoPrenotato(mezzoPrenotatoObj).subscribe(() => {
@@ -359,7 +359,7 @@ export class MezziComposizioneState {
     requestRemoveBookMezzoComposizione({ dispatch }: StateContext<MezziComposizioneStateStateModel>, action: RequestRemoveBookMezzoComposizione) {
         const mezzoPrenotatoObj = {
             'codiceMezzo': action.mezzoComp.mezzo.codice,
-            'codiceRichiesta': this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione).id
+            'codiceRichiesta': this.store.selectSnapshot(x => x.composizionePartenza.richiestaComposizione).id
         };
         this._compPartenzaService.removeMezzoPrenotato(mezzoPrenotatoObj).subscribe(() => {
         });
@@ -436,6 +436,7 @@ export class MezziComposizioneState {
     sganciamentoMezzoComposizione({ patchState, dispatch }: StateContext<MezziComposizioneStateStateModel>, action: SganciamentoMezzoComposizione) {
         let partenzaDaSganciare = {} as Partenza;
         this._richiesteService.getRichiestaById(action.sganciamentoObj.idRichiestaDaSganciare).subscribe((richiestaDa: SintesiRichiesta) => {
+            // tslint:disable-next-line:max-line-length
             partenzaDaSganciare = richiestaDa.partenzeRichiesta && richiestaDa.partenzeRichiesta.length > 0 ? richiestaDa.partenzeRichiesta.filter(x => x.mezzo.codice === action.sganciamentoObj.idMezzoDaSganciare)[0] : null;
             if (richiestaDa && partenzaDaSganciare) {
                 const modalSganciamento = this.modalService.open(SganciamentoMezzoModalComponent, { windowClass: 'xlModal', backdropClass: 'light-blue-backdrop', centered: true });
@@ -453,7 +454,7 @@ export class MezziComposizioneState {
                         case 'ok':
                             const partenzaObj: ConfermaPartenze = {
                                 partenze: [partenzaDaSganciare],
-                                idRichiesta: this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione).codice,
+                                idRichiesta: this.store.selectSnapshot(x => x.composizionePartenza.richiestaComposizione).codice,
                                 turno: this.store.selectSnapshot(TurnoState.turnoCalendario).corrente,
                                 idRichiestaDaSganciare: action.sganciamentoObj.idRichiestaDaSganciare,
                                 idMezzoDaSganciare: action.sganciamentoObj.idMezzoDaSganciare

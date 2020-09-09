@@ -1,29 +1,29 @@
 import { Component, Input } from '@angular/core';
 import { Store, Select } from '@ngxs/store';
-import {
-    AddFiltroSelezionatoComposizione,
-    ReducerFilterListeComposizione,
-    RemoveFiltriSelezionatiComposizione
-} from '../../../store/actions/composizione-partenza/composizione-partenza.actions';
-import { ComposizionePartenzaState } from '../../../store/states/composizione-partenza/composizione-partenza.state';
-import { MezziComposizioneState } from '../../../../../shared/store/states/mezzi-composizione/mezzi-composizione.state';
-import { SquadreComposizioneState } from '../../../../../shared/store/states/squadre-composizione/squadre-composizione.state';
-import { TurnOffComposizione, SwitchComposizione } from '../../../store/actions/view/view.actions';
+import { ReducerFilterListeComposizione } from '../../../features/home/store/actions/composizione-partenza/composizione-partenza.actions';
+import { ComposizionePartenzaState } from '../../../features/home/store/states/composizione-partenza/composizione-partenza.state';
+import { MezziComposizioneState } from '../../store/states/mezzi-composizione/mezzi-composizione.state';
+import { SquadreComposizioneState } from '../../store/states/squadre-composizione/squadre-composizione.state';
+import { TurnOffComposizione, SwitchComposizione } from '../../../features/home/store/actions/view/view.actions';
 import { Composizione } from 'src/app/shared/enum/composizione.enum';
-import { ViewComponentState } from '../../../store/states/view/view.state';
+import { ViewComponentState } from '../../../features/home/store/states/view/view.state';
 import { Observable } from 'rxjs';
-import { FiltriComposizione } from '../../interface/filtri/filtri-composizione-interface';
-import { iconaStatiClass } from '../../../../../shared/helper/composizione-functions';
+import { FiltriComposizione } from '../../../features/home/composizione-partenza/interface/filtri/filtri-composizione-interface';
+import { iconaStatiClass } from '../../helper/composizione-functions';
+import { AddFiltroSelezionatoComposizione, RemoveFiltriSelezionatiComposizione } from '../../store/actions/filtri-composizione/filtri-composizione.actions';
+import { FiltriComposizioneState } from '../../store/states/filtri-composizione/filtri-composizione.state';
 
 @Component({
-    selector: 'app-composizione-filterbar',
-    templateUrl: './composizione-filterbar.component.html',
-    styleUrls: ['./composizione-filterbar.component.css']
+    selector: 'app-filterbar-composizione',
+    templateUrl: './filterbar-composizione.component.html',
+    styleUrls: ['./filterbar-composizione.component.css']
 })
-export class ComposizioneFilterbarComponent {
+export class FilterbarComposizioneComponent {
 
     @Input() filtri: any;
     @Input() disableComposizioneMode: boolean;
+    @Input() nascondiTornaIndietro: boolean;
+    @Input() nascondiCambiaComposizioneMode: boolean;
 
     @Select(ViewComponentState.composizioneMode) composizioneMode$: Observable<Composizione>;
 
@@ -45,7 +45,7 @@ export class ComposizioneFilterbarComponent {
     }
 
     update() {
-        const filtriSelezionati = this.store.selectSnapshot(ComposizionePartenzaState.filtriSelezionati);
+        const filtriSelezionati = this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati);
         const codiceMezzo = this.store.selectSnapshot(MezziComposizioneState.idMezzoSelezionato);
         const codiceSquadra = this.store.selectSnapshot(SquadreComposizioneState.idSquadreSelezionate);
         const filtri: FiltriComposizione = {

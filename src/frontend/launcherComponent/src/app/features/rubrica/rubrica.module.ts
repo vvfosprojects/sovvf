@@ -15,7 +15,6 @@ import { RubricaComponent } from './rubrica.component';
 import { TabellaRubricaComponent } from './tabella-rubrica/tabella-rubrica.component';
 import { RicercaRubricaComponent } from './ricerca-rubrica/ricerca-rubrica.component';
 import { EnteModalComponent } from '../../shared/modal/ente-modal/ente-modal.component';
-import { ConfirmModalComponent } from '../../shared';
 /**
  * Routing
  */
@@ -26,6 +25,7 @@ import { RubricaRouting } from './rubrica.routing';
  */
 import { RicercaRubricaState } from './store/states/ricerca-rubrica/ricerca-rubrica.state';
 import { RubricaState } from './store/states/rubrica/rubrica.state';
+import { ConfirmModalComponent } from '../../shared/modal/confirm-modal/confirm-modal.component';
 
 
 @NgModule({
@@ -49,7 +49,10 @@ import { RubricaState } from './store/states/rubrica/rubrica.state';
         NgxPaginationModule,
         NgbModule
     ],
-    entryComponents: [EnteModalComponent, ConfirmModalComponent],
+    entryComponents: [
+        EnteModalComponent,
+        ConfirmModalComponent
+    ],
     providers: []
 })
 export class RubricaModule {
