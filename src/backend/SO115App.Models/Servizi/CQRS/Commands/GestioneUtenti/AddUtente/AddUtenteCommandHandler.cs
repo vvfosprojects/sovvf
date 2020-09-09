@@ -24,6 +24,7 @@ using SO115App.API.Models.Classi.Organigramma;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.GestioneRuolo;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.GetUtenti;
+using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.VerificaUtente;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Personale;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
@@ -40,26 +41,24 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneUtenti.AddUtente
         private readonly IAddUtente _addUtente;
         private readonly IGetPersonaleByCF _personaleByCF;
         private readonly IGetAlberaturaUnitaOperative _getAlberaturaUnitaOperative;
-        private readonly IGetListaDistaccamentiByCodiceSede _getListaDistaccamentiByCodiceSede;
         private readonly IGetDistaccamentoByCodiceSedeUC _getDistaccamentoByCodiceSede;
         private readonly IGetUtenteByCF _getUtenteByCF;
         private readonly IAddRuoli _addRuoli;
+        private readonly IFindUserByUsername _checkOmonimia;
 
         public AddUtenteCommandHandler(IAddUtente addUtente, IGetPersonaleByCF personaleByCF,
-            IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative, IGetListaDistaccamentiByCodiceSede getListaDistaccamentiByCodiceSede,
             IGetDistaccamentoByCodiceSedeUC getDistaccamentoByCodiceSede,
             IGetUtenteByCF getUtenteByCF,
             IAddRuoli addRuoli,
-            ICheckEsistenzaRuolo checkEsistenzaRuolo)
+            IFindUserByUsername checkOmonimia)
 
         {
             _addUtente = addUtente;
             _personaleByCF = personaleByCF;
-            _getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
-            _getListaDistaccamentiByCodiceSede = getListaDistaccamentiByCodiceSede;
             _getDistaccamentoByCodiceSede = getDistaccamentoByCodiceSede;
             _getUtenteByCF = getUtenteByCF;
             _addRuoli = addRuoli;
+            _checkOmonimia = checkOmonimia;
         }
 
         /// <summary>
@@ -84,6 +83,11 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneUtenti.AddUtente
                         ruolo.DescSede = figli.Nome;
                     }
                 }
+            }
+
+            if (_checkOmonimia.FindUserByUs(personale.Nominativo.Replace(" ", "").ToLower()) != null)
+            {
+                personale.Nominativo = personale.Nominativo.Replace(" ", "").ToLower() + "1";
             }
             //Test di refresh chain
             var utenteVVF = new Utente(command.CodFiscale, personale.Nominativo.Split(".")[0], personale.Nominativo.Split(".")[1])
