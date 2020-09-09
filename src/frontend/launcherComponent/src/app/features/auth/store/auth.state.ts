@@ -128,7 +128,7 @@ export class AuthState {
             codice = cS;
         }
         dispatch(new SetVistaSedi([ codice ]));
-    } //QUI
+    } 
 
     @Action(UpdateCurrentUser)
     updateCurrentUser({ patchState, dispatch }: StateContext<AuthStateModel>, action: UpdateCurrentUser) {
