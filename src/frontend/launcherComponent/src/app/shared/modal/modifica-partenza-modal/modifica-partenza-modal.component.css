@@ -8,9 +8,18 @@
     border: 1px solid rgba(0,0,0,0.125);
     border-radius: 0.25rem;
     padding: 15px;
-    width: 400px;
 }
 
 .overflow-test  {
     overflow: auto;
+}
+
+.font-box-partenza  {
+    font-size: 20px;
+}
+
+.info-user {
+    max-width: fit-content; 
+    border-style: solid; 
+    border: 1px solid rgba(0,0,0,0.125);
 }
