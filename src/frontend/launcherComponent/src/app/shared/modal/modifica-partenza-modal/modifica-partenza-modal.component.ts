@@ -14,7 +14,7 @@ import { SostituzionePartenzaModalComponent } from '../sostituzione-partenza-mod
 import { ListaSquadre } from '../../interface/lista-squadre';
 import { VisualizzaListaSquadrePartenza } from 'src/app/features/home/store/actions/richieste/richieste.actions';
 
-export interface ValoriSelezionati {
+export interface SequenzaValoriSelezionati {
     stato: string;
     time: { hour: number, minute: number };
 }
@@ -38,7 +38,7 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
     public time = { hour: 13, minute: 30 };
     listaStatoMezzo: any[];
     statoMezzoSelezionato: string;
-    numeroSequenze: ValoriSelezionati[] = [];
+    sequenze: SequenzaValoriSelezionati[] = [];
 
     modificaPartenzaForm: FormGroup;
     submitted: boolean;
@@ -58,7 +58,7 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.listaStatoMezzo = Object.values(StatoMezzo).map(x => ({ id: x, name: x }));
-    }
+        }
 
     initForm() {
         this.modificaPartenzaForm = new FormGroup({
@@ -66,7 +66,7 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
             sede: new FormControl(),
             codMezzo: new FormControl(),
             codSquadre: new FormControl(),
-            sequenza: new FormControl(),
+            sequenze: new FormControl(),
         });
         this.modificaPartenzaForm = this.fb.group({
             operatore: [null, Validators.required],
@@ -145,11 +145,11 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
         this.time.minute = d.getMinutes();
     }
 
-    /*
+    
     formatTimeForCallBack(): any {
-      return { oraEvento: this.time };
+      return { oraEvento: this.sequenze['time'] };
     }
-    */
+    
 
     statoMezzoColor(stato: StatoMezzo) {
         return statoMezzoColor(stato);
@@ -158,11 +158,11 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
 
     onAddSequenza() {
         const d = new Date();
-        this.numeroSequenze.push({ stato: undefined, time: { hour: d.getHours(), minute: d.getMinutes() } });
+        this.sequenze.push({ stato: undefined, time: { hour: d.getHours(), minute: d.getMinutes() } });
     }
 
     onRemoveSequenza() {
-        this.numeroSequenze.pop();
+        this.sequenze.pop();
     }
 
     open() {
@@ -232,6 +232,8 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
     mezzoAction.listaMezzi = true;
     this.store.dispatch(new ActionMezzo(mezzoAction));
     }
+
+    this.sequenze.stato.replace(' ', '');
     */
 
 }

@@ -97,21 +97,21 @@
                 <i class="fa fa-minus"></i>
             </button>
         </div>
-        <div *ngIf="numeroSequenze.length > 0" class="card mb-4" style="width: 31.5rem;">
+        <div *ngIf="sequenze.length > 0" class="card mb-4" style="width: 31.5rem;">
             <ul class="list-group list-group-flush" style="max-height: 500px;"
-                [class.overflow-test]="numeroSequenze.length > 3">
-                <li *ngFor="let sequenza of numeroSequenze; let index = index" class="list-group-item"
+                [class.overflow-test]="sequenze.length > 3">
+                <li *ngFor="let sequenza of sequenze; let index = index" class="list-group-item"
                     style="display: inline-flex; place-content: space-between;">
                     <ng-select [items]="listaStatoMezzo"
                                bindLabel="name"
                                placeholder="Seleziona stato Mezzo"
-                               [(ngModel)]="numeroSequenze[index].stato"
+                               [(ngModel)]="sequenze[index].stato"
                                [ngModelOptions]="{standalone: true}"
                                style="width: 250px; align-self: center;"
                     >
                     </ng-select>
                     <div class="md-form md-outline" id="default-picker" style="display: flex;">
-                        <ngb-timepicker [(ngModel)]="numeroSequenze[index].time" [ngModelOptions]="{standalone: true}"
+                        <ngb-timepicker [(ngModel)]="sequenze[index].time" [ngModelOptions]="{standalone: true}"
                                         style="margin-left: 25px;"></ngb-timepicker>
                         <i class="fa fa-clock-o" style="align-self: center; padding-left: 10px; font-size: 25px;"
                            size="small"></i>

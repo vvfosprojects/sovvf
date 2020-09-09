@@ -1,5 +1,6 @@
 import { Selector, State, Action } from '@ngxs/store';
 import { ModificaPartenza } from 'src/app/shared/interface/modifica-partenza-interface';
+import { SequenzaValoriSelezionati } from 'src/app/shared/modal/modifica-partenza-modal/modifica-partenza-modal.component';
 
 export interface ModificaPartenzaModalStateModel {
     modificaPartenza: Array<ModificaPartenza>;
@@ -9,12 +10,7 @@ export interface ModificaPartenzaModalStateModel {
             codSquadre: string[];
             operatore: string;
             sede: string;
-            sequenza: [{
-                stato: string;
-                time: {
-                        hour: number, minute: number
-                };
-            }];
+            sequenze: SequenzaValoriSelezionati[];
         };
         dirty: boolean;
         status: string;
@@ -30,7 +26,7 @@ export const ModificaPartenzaModalStateDefaults: ModificaPartenzaModalStateModel
             codSquadre: undefined,
             operatore: undefined,
             sede: undefined,
-            sequenza: undefined,
+            sequenze: undefined,
         },
         dirty: false,
         status: '',
