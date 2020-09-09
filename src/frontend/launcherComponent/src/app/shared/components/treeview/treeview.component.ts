@@ -74,6 +74,7 @@ export class TreeviewComponent implements OnChanges, OnDestroy, OnInit {
 
     ngOnDestroy(): void {
         isDevMode() && console.log('Componente Shared Treeview distrutto');
+        sessionStorage.clear()
     }
 
     ngOnChanges(changes: SimpleChanges): void {
