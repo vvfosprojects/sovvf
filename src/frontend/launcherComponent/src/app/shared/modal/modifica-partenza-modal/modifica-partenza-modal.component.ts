@@ -11,6 +11,8 @@ import { Partenza } from './../../model/partenza.model';
 import { statoMezzoColor } from '../../helper/function';
 import { StatoMezzo } from '../../enum/stato-mezzo.enum';
 import { SostituzionePartenzaModalComponent } from '../sostituzione-partenza-modal/sostituzione-partenza-modal.component';
+import { ListaSquadre } from '../../interface/lista-squadre';
+import { VisualizzaListaSquadrePartenza } from 'src/app/features/home/store/actions/richieste/richieste.actions';
 
 export interface ValoriSelezionati {
     stato: string;
@@ -171,5 +173,65 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
         });
         sostituzioneModal.componentInstance.idRichiesta = this.idRichiesta;
     }
+
+    onListaSquadrePartenza() {
+        const listaSquadre = {} as ListaSquadre;
+        listaSquadre.idPartenza = this.partenza.id;
+        listaSquadre.squadre = this.partenza.squadre;
+        this.store.dispatch(new VisualizzaListaSquadrePartenza(listaSquadre))
+    }
+
+    /*
+    confermaPartenza() {
+        const partenza = makeCopy(this.nuovaPartenza);//-->dato seconda modale
+        const partenzaMappedArray = partenza.map(obj => {
+            const rObj = {};
+            if (obj.mezzoComposizione) {
+                rObj['mezzo'] = obj.mezzoComposizione.mezzo;
+            } else {
+                rObj['mezzo'] = null;
+            }
+            if (obj.squadraComposizione.length > 0) {
+                rObj['squadre'] = obj.squadraComposizione.map((squadraComp: SquadraComposizione) => {
+                    return squadraComp.squadra;
+                });
+            } else {
+                rObj['squadre'] = [];
+            }
+            return rObj;
+        });
+        const partenzaObj: ConfermaPartenza = {
+            partenza: partenzaMappedArray,
+            idRichiesta: this.idRichiesta,
+            turno: this.store.selectSnapshot(TurnoState.turnoCalendario).corrente
+        };
+        this.store.dispatch(new ConfirmPartenza(partenzaObj));
+    }
+    */
+
+    /*
+    onActionMezzo(action?: MezzoActionEmit) {
+    let actionMezzo: MezzoActionInterface;
+    if (action) {
+        let data = new Date();
+        const orario = action.oraEvento;
+        data.setHours(orario.ora);
+        data.setMinutes(orario.minuti);
+        data.setSeconds(0);
+        data.setMilliseconds(0);
+        data = new Date(data.getTime() + OFFSET_SYNC_TIME[0]);
+        actionMezzo = { 'mezzo': this.mezzo, 'action': action.mezzoAction, 'data': data };
+    } else {
+        actionMezzo = { 'mezzo': this.mezzo, 'action': null };
+    }
+    this.actionMezzo.emit(actionMezzo);
+    }
+
+    onActionMezzo(mezzoInServizio: Mezzo, mezzoAction: MezzoActionInterface) {
+    mezzoAction.codRichiesta = mezzoInServizio.idRichiesta;
+    mezzoAction.listaMezzi = true;
+    this.store.dispatch(new ActionMezzo(mezzoAction));
+    }
+    */
 
 }
