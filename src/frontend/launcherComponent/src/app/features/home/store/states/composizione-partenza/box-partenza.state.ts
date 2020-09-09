@@ -1,5 +1,4 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
-// Interface
 import { BoxPartenza } from '../../../composizione-partenza/interface/box-partenza-interface';
 
 import {
@@ -27,19 +26,18 @@ import {
     RequestRemoveBookMezzoComposizione,
     SelectMezzoComposizione,
     UnselectMezzoComposizione
-} from '../../actions/composizione-partenza/mezzi-composizione.actions';
+} from '../../../../../shared/store/actions/mezzi-composizione/mezzi-composizione.actions';
 import { SquadraComposizione } from '../../../../../shared/interface/squadra-composizione-interface';
 import {
     ClearSelectedSquadreComposizione,
     FilterListaSquadreComposizione,
     SelectSquadraComposizione,
     UnselectSquadraComposizione
-} from '../../actions/composizione-partenza/squadre-composizione.actions';
+} from '../../../../../shared/store/actions/squadre-composizione/squadre-composizione.actions';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from '../../../../../shared/enum/toastr';
 import { ClearDirection } from '../../actions/maps/maps-direction.actions';
 import { ClearMarkerMezzoSelezionato } from '../../actions/maps/marker.actions';
-import { ComposizionePartenzaState } from './composizione-partenza.state';
 import { StatoMezzo } from '../../../../../shared/enum/stato-mezzo.enum';
 
 
@@ -184,7 +182,7 @@ export class BoxPartenzaState {
 
         // ricarico la lista se necessario
         if (action.refreshLista) {
-            const filtriSelezionati = this.store.selectSnapshot(ComposizionePartenzaState.filtriSelezionati);
+            const filtriSelezionati = this.store.selectSnapshot(x => x.filtriComposizione.filtriSelezionati);
             dispatch([
                 new FilterListaMezziComposizione(null, filtriSelezionati),
                 new FilterListaSquadreComposizione(null, filtriSelezionati)
@@ -210,7 +208,7 @@ export class BoxPartenzaState {
             }
         }
         if (action.refreshLista) {
-            const filtriSelezionati = this.store.selectSnapshot(ComposizionePartenzaState.filtriSelezionati);
+            const filtriSelezionati = this.store.selectSnapshot(x => x.filtriComposizione.filtriSelezionati);
             dispatch([
                 new FilterListaMezziComposizione(null, filtriSelezionati),
                 new FilterListaSquadreComposizione(null, filtriSelezionati)
@@ -414,6 +412,7 @@ export function _disableConfirmPartenza(boxPartenzaList: BoxPartenza[], nuovaPar
     if (boxPartenzaList && boxPartenzaList.length > 0) {
         let boxValidiCount = 0;
         for (const boxPartenza of boxPartenzaList) {
+            // tslint:disable-next-line:max-line-length
             if (boxPartenza.mezzoComposizione && (boxPartenza.mezzoComposizione.mezzo.stato === StatoMezzo.InRientro || boxPartenza.mezzoComposizione.mezzo.stato === StatoMezzo.InSede) && boxPartenza.squadraComposizione && boxPartenza.squadraComposizione.length > 0) {
                 boxValidiCount++;
             }

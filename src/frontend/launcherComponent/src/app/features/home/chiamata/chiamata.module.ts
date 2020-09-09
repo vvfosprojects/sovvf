@@ -12,12 +12,13 @@ import { ChiamataService } from '../../../core/service/chiamata-service/chiamata
 import { NgxsModule } from '@ngxs/store';
 import { SchedaTelefonataState } from '../store/states/chiamata/scheda-telefonata.state';
 import { ClipboardState } from '../store/states/chiamata/clipboard.state';
-import { ConfirmModalComponent, RichiestaDuplicataModalComponent } from '../../../shared';
 import { UiSwitchModule } from 'ngx-ui-switch';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { NgxsFormPluginModule } from '@ngxs/form-plugin';
 import { TagInputModule } from 'ngx-chips';
 import { EnteModalComponent } from '../../../shared/modal/ente-modal/ente-modal.component';
+import { ConfirmModalComponent } from '../../../shared/modal/confirm-modal/confirm-modal.component';
+import { RichiestaDuplicataModalComponent } from '../../../shared/modal/richiesta-duplicata-modal/richiesta-duplicata-modal.component';
 
 @NgModule({
     imports: [
@@ -44,7 +45,11 @@ import { EnteModalComponent } from '../../../shared/modal/ente-modal/ente-modal.
     exports: [
         ChiamataComponent
     ],
-    entryComponents: [ConfirmModalComponent, RichiestaDuplicataModalComponent, EnteModalComponent],
+    entryComponents: [
+        ConfirmModalComponent,
+        RichiestaDuplicataModalComponent,
+        EnteModalComponent
+    ],
     providers: [
         ChiamataService
     ]

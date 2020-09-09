@@ -22,10 +22,6 @@ import { SintesiRichiestaSmComponent } from './lista-richieste/sintesi-richiesta
 import { RichiestaFissataComponent } from './richiesta-fissata/richiesta-fissata.component';
 import { ModificaRichiestaComponent } from './modifica-richiesta/modifica-richiesta.component';
 /**
- Service Provider
- */
-import { SintesiRichiesteService } from '../../../core/service/lista-richieste-service/lista-richieste.service';
-/**
  * Ngxs
  */
 import { NgxsModule } from '@ngxs/store';
@@ -33,7 +29,6 @@ import { RichiesteState } from '../store/states/richieste/richieste.state';
 import { RichiestaFissataState } from '../store/states/richieste/richiesta-fissata.state';
 import { RichiestaHoverState } from '../store/states/richieste/richiesta-hover.state';
 import { RichiestaSelezionataState } from '../store/states/richieste/richiesta-selezionata.state';
-import { ActionRichiestaModalComponent, ListaEntiComponent, MezzoActionsModalComponent, ModificaFonogrammaModalComponent, DettaglioFonogrammaModalComponent } from '../../../shared';
 import { ListaSquadrePartenzaComponent } from '../../../shared/components/lista-squadre-partenza/lista-squadre-partenza.component';
 import { RichiesteEspanseState } from '../store/states/richieste/richieste-espanse.state';
 import { RichiestaGestioneState } from '../store/states/richieste/richiesta-gestione.state';
@@ -46,6 +41,11 @@ import { ModificaEntiModalComponent } from 'src/app/shared/modal/modifica-enti-m
 import { TrasferimentoChiamataModalComponent } from 'src/app/shared/modal/trasferimento-chiamata-modal/trasferimento-chiamata-modal.component';
 import { AllertaSedeModalComponent } from '../../../shared/modal/allerta-sede-modal/allerta-sede-modal.component';
 import { ModificaPartenzaModalComponent } from 'src/app/shared/modal/modifica-partenza-modal/modifica-partenza-modal.component';
+import { ListaEntiComponent } from '../../../shared/components/lista-enti/lista-enti.component';
+import { ActionRichiestaModalComponent } from '../../../shared/modal/action-richiesta-modal/action-richiesta-modal.component';
+import { MezzoActionsModalComponent } from '../../../shared/modal/mezzo-actions-modal/mezzo-actions-modal.component';
+import { DettaglioFonogrammaModalComponent } from '../../../shared/modal/dettaglio-fonogramma-modal/dettaglio-fonogramma-modal.component';
+import { ModificaFonogrammaModalComponent } from '../../../shared/modal/modifica-fonogramma-modal/modifica-fonogramma-modal.component';
 
 @NgModule({
     imports: [
@@ -98,9 +98,7 @@ import { ModificaPartenzaModalComponent } from 'src/app/shared/modal/modifica-pa
         AllertaSedeModalComponent,
         ModificaPartenzaModalComponent
     ],
-    providers: [
-        SintesiRichiesteService
-    ]
+    providers: []
 })
 export class RichiesteModule {
 }

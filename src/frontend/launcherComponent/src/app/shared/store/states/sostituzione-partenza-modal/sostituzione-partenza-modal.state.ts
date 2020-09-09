@@ -4,8 +4,9 @@ import { StartListaComposizioneLoading, StopListaComposizioneLoading } from '../
 import { ListaComposizioneAvanzata } from '../../../interface/lista-composizione-avanzata-interface';
 import { CompPartenzaService } from '../../../../core/service/comp-partenza-service/comp-partenza.service';
 import { FiltriComposizione } from '../../../../features/home/composizione-partenza/interface/filtri/filtri-composizione-interface';
-import { SetListaMezziComposizione } from '../../../../features/home/store/actions/composizione-partenza/mezzi-composizione.actions';
-import { SetListaSquadreComposizione } from '../../../../features/home/store/actions/composizione-partenza/squadre-composizione.actions';
+import { FilterListaMezziComposizione, SetListaMezziComposizione } from '../../actions/mezzi-composizione/mezzi-composizione.actions';
+import { SetListaSquadreComposizione } from '../../actions/squadre-composizione/squadre-composizione.actions';
+import { GetFiltriComposizione } from '../../actions/filtri-composizione/filtri-composizione.actions';
 
 export interface SostituzionePartenzaModel {
     listaMezziSquadre: ListaComposizioneAvanzata;
@@ -67,9 +68,10 @@ export class SostituzionePartenzaModalState {
     }
 
     @Action(SetListaMezziSquadre)
-    setListaMezziSquadre({ patchState }: StateContext<SostituzionePartenzaModel>, action: SetListaMezziSquadre) {
+    setListaMezziSquadre({ patchState, dispatch }: StateContext<SostituzionePartenzaModel>, action: SetListaMezziSquadre) {
         patchState({
             listaMezziSquadre: action.listaMezziSquadre
         });
+        dispatch(new FilterListaMezziComposizione());
     }
 }

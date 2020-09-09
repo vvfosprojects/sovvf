@@ -4,7 +4,6 @@ import { GetListaMezziSquadre } from '../../store/actions/sostituzione-partenza/
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
-import { ModificaPartenzaModalState } from '../../store/states/modifica-partenza-modal/modifica-partenza-modal.state';
 import { SostituzionePartenzaModalState } from '../../store/states/sostituzione-partenza-modal/sostituzione-partenza-modal.state';
 import { MezziComposizioneState } from '../../store/states/mezzi-composizione/mezzi-composizione.state';
 import { MezzoComposizione } from '../../interface/mezzo-composizione-interface';
@@ -18,8 +17,8 @@ import {
     HoverOutMezzoComposizione,
     ReducerSelectMezzoComposizione,
     UnselectMezzoComposizione
-} from '../../../features/home/store/actions/composizione-partenza/mezzi-composizione.actions';
-import { AddBoxPartenza, ClearBoxPartenze, RemoveMezzoBoxPartenzaSelezionato, RemoveSquadraBoxPartenza } from '../../../features/home/store/actions/composizione-partenza/box-partenza.actions';
+} from '../../store/actions/mezzi-composizione/mezzi-composizione.actions';
+import { ClearBoxPartenze } from '../../../features/home/store/actions/composizione-partenza/box-partenza.actions';
 import { squadraComposizioneBusy } from '../../helper/composizione-functions';
 import {
     ClearListaSquadreComposizione,
@@ -27,11 +26,10 @@ import {
     HoverOutSquadraComposizione,
     SelectSquadraComposizione,
     UnselectSquadraComposizione
-} from '../../../features/home/store/actions/composizione-partenza/squadre-composizione.actions';
-import { UndoAllBoxes } from '../../../features/home/store/actions/boxes/box-click.actions';
-import { ClearPreaccoppiati } from '../../../features/home/store/actions/composizione-partenza/composizione-veloce.actions';
-import { ClearFiltriAffini } from '../../../features/home/store/actions/composizione-partenza/composizione-partenza.actions';
+} from '../../store/actions/squadre-composizione/squadre-composizione.actions';
 import { UnselectMezziAndSquadreComposizioneAvanzata } from '../../../features/home/store/actions/composizione-partenza/composizione-avanzata.actions';
+import { ClearFiltriAffini, GetFiltriComposizione } from '../../store/actions/filtri-composizione/filtri-composizione.actions';
+import { FiltriComposizioneState } from '../../store/states/filtri-composizione/filtri-composizione.state';
 
 @Component({
     selector: 'app-sostituzione-partenza',
@@ -43,7 +41,7 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
     @Select(SostituzionePartenzaModalState.formValid) formValid$: Observable<boolean>;
     formValid: boolean;
 
-// Mezzi Composizione
+    // Mezzi Composizione
     @Select(MezziComposizioneState.mezziComposizione) mezziComposizione$: Observable<MezzoComposizione[]>;
     mezziComposizione: MezzoComposizione[];
     @Select(MezziComposizioneState.idMezzoComposizioneSelezionato) idMezzoSelezionato$: Observable<string>;
@@ -64,6 +62,9 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
     idSquadreSelezionate: Array<string>;
     @Select(SquadreComposizioneState.idSquadraHover) idSquadraHover$: Observable<string>;
     idSquadraHover: string;
+
+    // Filtri
+    @Select(FiltriComposizioneState.filtriAffini) filtriAffini$: Observable<any>;
 
     idRichiesta: string;
     sostituzionePartenzaForm: FormGroup;
@@ -112,7 +113,6 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
                 this.idMezziBloccati = idMezzi;
             })
         );
-
         // Prendo le squadre da visualizzare nella lista
         this.subscription.add(
             this.squadraComposizione$.subscribe((squadreComp: SquadraComposizione[]) => {

@@ -7,6 +7,11 @@
 </div>
 <div class="modal-body">
     <div class="row">
+        <div class="col-12">
+            <app-filterbar-composizione [filtri]="filtriAffini$ | async"
+                                        [nascondiTornaIndietro]="true"
+                                        [nascondiCambiaComposizioneMode]="true"></app-filterbar-composizione>
+        </div>
         <div class="col">
             <div class="form-group">
                 <div class="card card-shadow mx-auto" style="min-height:392px">

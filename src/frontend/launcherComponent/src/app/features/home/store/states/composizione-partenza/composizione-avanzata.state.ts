@@ -3,7 +3,9 @@ import { CompPartenzaService } from 'src/app/core/service/comp-partenza-service/
 import {
     ClearComposizioneAvanzata,
     FilterListeComposizioneAvanzata,
-    GetListeComposizioneAvanzata, ResetRicercaMezziComposizione, ResetRicercaSquadreComposizione,
+    GetListeComposizioneAvanzata,
+    ResetRicercaMezziComposizione,
+    ResetRicercaSquadreComposizione,
     SetListeComposizioneAvanzata,
     SetRicercaMezziComposizione,
     SetRicercaSquadreComposizione,
@@ -12,8 +14,8 @@ import {
 import { MezziComposizioneState } from '../../../../../shared/store/states/mezzi-composizione/mezzi-composizione.state';
 import { SquadreComposizioneState } from '../../../../../shared/store/states/squadre-composizione/squadre-composizione.state';
 import { ComposizionePartenzaState, ComposizionePartenzaStateModel } from './composizione-partenza.state';
-import { ClearSelectedMezziComposizione, FilterListaMezziComposizione, SetListaMezziComposizione } from '../../actions/composizione-partenza/mezzi-composizione.actions';
-import { ClearSelectedSquadreComposizione, FilterListaSquadreComposizione, SetListaSquadreComposizione } from '../../actions/composizione-partenza/squadre-composizione.actions';
+import { ClearSelectedMezziComposizione, FilterListaMezziComposizione, SetListaMezziComposizione } from '../../../../../shared/store/actions/mezzi-composizione/mezzi-composizione.actions';
+import { ClearSelectedSquadreComposizione, FilterListaSquadreComposizione, SetListaSquadreComposizione } from '../../../../../shared/store/actions/squadre-composizione/squadre-composizione.actions';
 import { ListaComposizioneAvanzata } from '../../../../../shared/interface/lista-composizione-avanzata-interface';
 import { BoxPartenzaState } from './box-partenza.state';
 import { mezzoComposizioneBusy } from '../../../../../shared/helper/composizione-functions';
@@ -23,6 +25,7 @@ import { ViewComponentState } from '../view/view.state';
 import { Composizione } from '../../../../../shared/enum/composizione.enum';
 import { GetPreAccoppiati } from '../../actions/composizione-partenza/composizione-veloce.actions';
 import { StartListaComposizioneLoading, StopListaComposizioneLoading } from '../../actions/composizione-partenza/composizione-partenza.actions';
+import { FiltriComposizioneState } from '../../../../../shared/store/states/filtri-composizione/filtri-composizione.state';
 
 export interface ComposizioneAvanzataStateModel {
     listaMezziSquadre: ListaComposizioneAvanzata;
@@ -38,8 +41,7 @@ export const ComposizioneAvanzataStateDefaults: ComposizioneAvanzataStateModel =
 
 @State<ComposizioneAvanzataStateModel>({
     name: 'composizioneAvanzata',
-    defaults: ComposizioneAvanzataStateDefaults,
-    children: [MezziComposizioneState, SquadreComposizioneState]
+    defaults: ComposizioneAvanzataStateDefaults
 })
 export class ComposizioneAvanzataState {
 
@@ -103,7 +105,7 @@ export class ComposizioneAvanzataState {
         if (compMode === Composizione.Veloce) {
             dispatch(new GetPreAccoppiati());
         }
-        const filtriSelezionati = this.store.selectSnapshot(ComposizionePartenzaState.filtriSelezionati);
+        const filtriSelezionati = this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati);
         dispatch(new FilterListeComposizioneAvanzata(filtriSelezionati));
     }
 

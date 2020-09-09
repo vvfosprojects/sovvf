@@ -1,18 +1,10 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
-import { insertItem, patch, removeItem } from '@ngxs/store/operators';
 import {
-    AddFiltroSelezionatoComposizione,
-    ClearFiltriAffini,
     ClearPartenza,
     ConfirmPartenze,
-    GetFiltriComposizione,
     ReducerFilterListeComposizione,
-    RemoveFiltriSelezionatiComposizione,
-    RemoveFiltroSelezionatoComposizione,
     RichiestaComposizione,
     SetComposizioneMode,
-    SetFiltriComposizione,
-    SetListaFiltriAffini,
     StartInvioPartenzaLoading,
     StartListaComposizioneLoading,
     StopInvioPartenzaLoading,
@@ -28,8 +20,7 @@ import {
     ClearComposizioneVeloce,
     ClearPreaccoppiati,
     ClearPreAccoppiatiSelezionatiComposizione,
-    FilterListaPreAccoppiati,
-    GetListaIdPreAccoppiati
+    FilterListaPreAccoppiati
 } from '../../actions/composizione-partenza/composizione-veloce.actions';
 import { Composizione } from '../../../../../shared/enum/composizione.enum';
 import {
@@ -38,28 +29,19 @@ import {
     GetListeComposizioneAvanzata,
     UnselectMezziAndSquadreComposizioneAvanzata
 } from '../../actions/composizione-partenza/composizione-avanzata.actions';
-import { ClearListaMezziComposizione, ClearMezzoComposizione, ClearSelectedMezziComposizione } from '../../actions/composizione-partenza/mezzi-composizione.actions';
-import { ClearListaSquadreComposizione, ClearSelectedSquadreComposizione, ClearSquadraComposizione } from '../../actions/composizione-partenza/squadre-composizione.actions';
+import { ClearListaMezziComposizione, ClearMezzoComposizione, ClearSelectedMezziComposizione } from '../../../../../shared/store/actions/mezzi-composizione/mezzi-composizione.actions';
+import { ClearListaSquadreComposizione, ClearSelectedSquadreComposizione, ClearSquadraComposizione } from '../../../../../shared/store/actions/squadre-composizione/squadre-composizione.actions';
 import { CompPartenzaService } from '../../../../../core/service/comp-partenza-service/comp-partenza.service';
 import { AddInLavorazione, DeleteInLavorazione } from '../../actions/richieste/richiesta-attivita-utente.actions';
 import { ClearDirection } from '../../actions/maps/maps-direction.actions';
 import { GetInitCentroMappa } from '../../actions/maps/centro-mappa.actions';
 import { ClearMarkerMezzoSelezionato, ClearMarkerState } from '../../actions/maps/marker.actions';
-import { ListaTipologicheMezzi } from '../../../composizione-partenza/interface/filtri/lista-filtri-composizione-interface';
-import { ComposizioneFilterbar } from '../../../composizione-partenza/interface/composizione/composizione-filterbar-interface';
-import { MezzoComposizione } from '../../../../../shared/interface/mezzo-composizione-interface';
-import { DescrizioneTipologicaMezzo } from '../../../composizione-partenza/interface/filtri/descrizione-filtro-composizione-interface';
 import { ClearBoxPartenze } from '../../actions/composizione-partenza/box-partenza.actions';
 import { GetMarkersMappa, StartLoadingAreaMappa, StopLoadingAreaMappa } from '../../actions/maps/area-mappa.actions';
 import { ShowToastr } from 'src/app/shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from 'src/app/shared/enum/toastr';
-import { ListaComposizioneAvanzata } from '../../../../../shared/interface/lista-composizione-avanzata-interface';
 
 export interface ComposizionePartenzaStateModel {
-    filtriAffini: ListaTipologicheMezzi;
-    codiceDistaccamento: any[];
-    codiceTipoMezzo: any[];
-    codiceStatoMezzo: any[];
     richiesta: SintesiRichiesta;
     composizioneMode: Composizione;
     loadingListe: boolean;
@@ -68,14 +50,6 @@ export interface ComposizionePartenzaStateModel {
 }
 
 export const ComposizioneStateDefaults: ComposizionePartenzaStateModel = {
-    filtriAffini: {
-        distaccamenti: [],
-        generiMezzi: [],
-        stati: []
-    },
-    codiceDistaccamento: [],
-    codiceTipoMezzo: [],
-    codiceStatoMezzo: [],
     richiesta: null,
     composizioneMode: Composizione.Avanzata,
     loadingListe: false,
@@ -92,17 +66,8 @@ export const ComposizioneStateDefaults: ComposizionePartenzaStateModel = {
 export class ComposizionePartenzaState {
 
     @Selector()
-    static filtriAffini(state: ComposizionePartenzaStateModel) {
-        return state.filtriAffini;
-    }
-
-    @Selector()
-    static filtriSelezionati(state: ComposizionePartenzaStateModel): ComposizioneFilterbar {
-        return {
-            CodiceDistaccamento: state.codiceDistaccamento,
-            TipoMezzo: state.codiceTipoMezzo,
-            StatoMezzo: state.codiceStatoMezzo
-        };
+    static composizioneMode(state: ComposizionePartenzaStateModel): Composizione {
+        return state.composizioneMode;
     }
 
     @Selector()
@@ -143,193 +108,10 @@ export class ComposizionePartenzaState {
                 private compPartenzaService: CompPartenzaService) {
     }
 
-    @Action(GetFiltriComposizione)
-    getFiltriComposizione({ dispatch }: StateContext<ComposizionePartenzaStateModel>) {
-        const filtri = this.store.selectSnapshot(state => state.tipologicheMezzi.tipologiche);
-        dispatch(new SetFiltriComposizione(filtri));
-    }
-
-    @Action(SetFiltriComposizione)
-    setFiltriComposizione({ getState, dispatch }: StateContext<ComposizionePartenzaStateModel>) {
-        const state = getState();
-        const composizioneMode = state.composizioneMode;
-        const objFiltriSelezionati: ComposizioneFilterbar = {
-            CodiceDistaccamento: state.codiceDistaccamento,
-            TipoMezzo: state.codiceTipoMezzo,
-            StatoMezzo: state.codiceStatoMezzo
-        };
-        dispatch(new GetListeComposizioneAvanzata(objFiltriSelezionati));
-        if (composizioneMode === Composizione.Veloce) {
-            dispatch([
-                new GetListaIdPreAccoppiati()
-            ]);
-        }
-    }
-
-    @Action(SetListaFiltriAffini)
-    setListaFiltriAffini({ patchState }: StateContext<ComposizionePartenzaStateModel>, action: SetListaFiltriAffini) {
-        const filtri = this.store.selectSnapshot(state => state.tipologicheMezzi.tipologiche);
-        let composizioneMezzi = null as MezzoComposizione[];
-        composizioneMezzi = action.composizioneMezzi ? action.composizioneMezzi : this.store.selectSnapshot(state => state.composizioneAvanzata.listaMezziSquadre.composizioneMezzi);
-        const filtriDistaccamento = [] as DescrizioneTipologicaMezzo[];
-        const filtriStato = [] as DescrizioneTipologicaMezzo[];
-        const generiMezzi = [] as DescrizioneTipologicaMezzo[];
-        if (composizioneMezzi) {
-            if (filtri.distaccamenti) {
-                filtri.distaccamenti.forEach((distaccamento: DescrizioneTipologicaMezzo) => {
-                    if (checkDistaccamento(distaccamento)) {
-                        filtriDistaccamento.push(distaccamento);
-                    }
-                });
-            }
-            if (filtri.stati) {
-                filtri.stati.forEach((stato: DescrizioneTipologicaMezzo) => {
-                    if (checkStato(stato)) {
-                        filtriStato.push(stato);
-                    }
-                });
-            }
-            if (filtri.generiMezzi) {
-                filtri.generiMezzi.forEach((genereMezzi: DescrizioneTipologicaMezzo) => {
-                    if (checkGenereMezzo(genereMezzi)) {
-                        generiMezzi.push(genereMezzi);
-                    }
-                });
-            }
-        }
-
-        function checkDistaccamento(distaccamento: DescrizioneTipologicaMezzo) {
-            let _return = false;
-            composizioneMezzi.forEach((mezzoComp: MezzoComposizione) => {
-                if (mezzoComp.mezzo.distaccamento.codice === distaccamento.id) {
-                    _return = true;
-                }
-            });
-            return _return;
-        }
-
-        function checkStato(stato: DescrizioneTipologicaMezzo) {
-            let _return = false;
-            composizioneMezzi.forEach((mezzoComp: MezzoComposizione) => {
-                if (mezzoComp.mezzo.stato === stato.descrizione) {
-                    _return = true;
-                }
-            });
-            return _return;
-        }
-
-        function checkGenereMezzo(genereMezzo: DescrizioneTipologicaMezzo) {
-            let _return = false;
-            composizioneMezzi.forEach((mezzoComp: MezzoComposizione) => {
-                if (mezzoComp.mezzo.genere === genereMezzo.descrizione) {
-                    _return = true;
-                }
-            });
-            return _return;
-        }
-
-        patchState({
-            filtriAffini: {
-                distaccamenti: filtriDistaccamento,
-                generiMezzi: generiMezzi,
-                stati: filtriStato
-            }
-        });
-    }
-
-    @Action(ClearFiltriAffini)
-    clearFiltriAffini({ patchState }: StateContext<ComposizionePartenzaStateModel>) {
-        patchState({
-            filtriAffini: ComposizioneStateDefaults.filtriAffini
-        });
-    }
-
     @Action(UpdateListeComposizione)
     updateListe({ dispatch }: StateContext<ComposizionePartenzaStateModel>, action: UpdateListeComposizione) {
         console.warn('UpdateListeComposizione');
         dispatch(new GetListeComposizioneAvanzata(action.filtri));
-    }
-
-    @Action(AddFiltroSelezionatoComposizione)
-    addFiltroSelezionatoComposizione(ctx: StateContext<ComposizionePartenzaStateModel>, action: AddFiltroSelezionatoComposizione) {
-        console.log('Filtro selezionato => #ID = ' + action.id + ' - TIPO = ' + action.tipo);
-        switch (action.tipo) {
-            case 'codiceDistaccamento':
-                ctx.setState(
-                    patch({
-                        codiceDistaccamento: insertItem(action.id)
-                    })
-                );
-                break;
-            case 'codiceTipoMezzo':
-                ctx.setState(
-                    patch({
-                        codiceTipoMezzo: insertItem(action.id)
-                    })
-                );
-                break;
-            case 'codiceStatoMezzo':
-                ctx.setState(
-                    patch({
-                        codiceStatoMezzo: insertItem(action.id)
-                    })
-                );
-                break;
-        }
-    }
-
-    @Action(RemoveFiltroSelezionatoComposizione)
-    removeFiltroSelezionatoComposizione(ctx: StateContext<ComposizionePartenzaStateModel>, action: RemoveFiltroSelezionatoComposizione) {
-        switch (action.tipo) {
-            case 'codiceDistaccamento':
-                ctx.setState(
-                    patch({
-                        codiceDistaccamento: removeItem(filtro => filtro === action.id)
-                    })
-                );
-                break;
-            case 'codiceTipoMezzo':
-                ctx.setState(
-                    patch({
-                        codiceTipoMezzo: removeItem(filtro => filtro === action.id)
-                    })
-                );
-                break;
-            case 'codiceStatoMezzo':
-                ctx.setState(
-                    patch({
-                        codiceStatoMezzo: removeItem(filtro => filtro === action.id)
-                    })
-                );
-                break;
-        }
-    }
-
-    @Action(RemoveFiltriSelezionatiComposizione)
-    removeFiltriSelezionatiComposizione(ctx: StateContext<ComposizionePartenzaStateModel>, action: RemoveFiltriSelezionatiComposizione) {
-        switch (action.tipo) {
-            case 'codiceDistaccamento':
-                ctx.setState(
-                    patch({
-                        codiceDistaccamento: []
-                    })
-                );
-                break;
-            case 'codiceTipoMezzo':
-                ctx.setState(
-                    patch({
-                        codiceTipoMezzo: []
-                    })
-                );
-                break;
-            case 'codiceStatoMezzo':
-                ctx.setState(
-                    patch({
-                        codiceStatoMezzo: []
-                    })
-                );
-                break;
-        }
     }
 
     @Action(ReducerFilterListeComposizione)

@@ -11,7 +11,7 @@ import { HelperSintesiRichiesta } from '../../../richieste/helper/_helper-sintes
 import { SintesiRichiestaModalComponent } from './sintesi-richiesta-modal/sintesi-richiesta-modal.component';
 import { Store } from '@ngxs/store';
 import { mezzoComposizioneBusy } from '../../../../../shared/helper/composizione-functions';
-import { SganciamentoMezzoComposizione } from '../../../store/actions/composizione-partenza/mezzi-composizione.actions';
+import { SganciamentoMezzoComposizione } from '../../../../../shared/store/actions/mezzi-composizione/mezzi-composizione.actions';
 import { SganciamentoInterface } from 'src/app/shared/interface/sganciamento.interface';
 import { SetRichiestaById } from '../../../store/actions/richieste/richieste.actions';
 import { SchedaContattoMarker } from '../../maps-model/scheda-contatto-marker.model';

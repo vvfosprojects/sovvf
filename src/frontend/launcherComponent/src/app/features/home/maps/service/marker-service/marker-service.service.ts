@@ -57,7 +57,7 @@ import {
     HoverInMezzoComposizione,
     HoverOutMezzoComposizione,
     SelectMezzoComposizioneFromMappa
-} from '../../../store/actions/composizione-partenza/mezzi-composizione.actions';
+} from '../../../../../shared/store/actions/mezzi-composizione/mezzi-composizione.actions';
 import { ViewInterfaceMaps } from '../../../../../shared/interface/view.interface';
 import { ViewComponentState } from '../../../store/states/view/view.state';
 import { AppFeatures } from '../../../../../shared/enum/app-features.enum';

@@ -1,64 +1,17 @@
 import { Composizione } from '../../../../../shared/enum/composizione.enum';
 import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.model';
-import { ListaTipologicheMezzi } from '../../../composizione-partenza/interface/filtri/lista-filtri-composizione-interface';
-import {
-    FiltriComposizione
-} from '../../../composizione-partenza/interface/filtri/filtri-composizione-interface';
+import { FiltriComposizione } from '../../../composizione-partenza/interface/filtri/filtri-composizione-interface';
 import { ConfermaPartenze } from '../../../composizione-partenza/interface/conferma-partenze-interface';
-import { MezzoComposizione } from '../../../../../shared/interface/mezzo-composizione-interface';
-
-export class GetFiltriComposizione {
-    static readonly type = '[FiltriComposizione] Get Lista Filtri';
-}
-
-export class SetFiltriComposizione {
-    static readonly type = '[FiltriComposizione] Set Lista Filtri';
-
-    constructor(public filtri: ListaTipologicheMezzi) {
-    }
-}
-
-export class SetListaFiltriAffini {
-    static readonly type = '[FiltriComposizione] Set Lista Filtri Affini';
-
-    constructor(public composizioneMezzi?: MezzoComposizione[]) {
-    }
-}
-
-export class ClearFiltriAffini {
-    static readonly type = '[FiltriComposizione] Clear Filtri Affini';
-}
 
 export class UpdateListeComposizione {
-    static readonly type = '[FiltriComposizione] Update Liste Composizione';
+    static readonly type = '[ComposizionePartenza] Update Liste Composizione';
 
     constructor(public filtri: FiltriComposizione) {
     }
 }
 
-export class AddFiltroSelezionatoComposizione {
-    static readonly type = '[FiltriComposizione] Add Filtro Selezionato';
-
-    constructor(public id: string, public tipo: string) {
-    }
-}
-
-export class RemoveFiltroSelezionatoComposizione {
-    static readonly type = '[FiltriComposizione] Remove Filtro Selezionato';
-
-    constructor(public id: string, public tipo: string) {
-    }
-}
-
-export class RemoveFiltriSelezionatiComposizione {
-    static readonly type = '[FiltriComposizione] Remove Filtri Selezionati';
-
-    constructor(public tipo: string) {
-    }
-}
-
 export class ReducerFilterListeComposizione {
-    static readonly type = '[FiltriComposizione] Reducer Filter Liste Composizione';
+    static readonly type = '[ComposizionePartenza] Reducer Filter Liste Composizione';
 
     constructor(public filtri: FiltriComposizione) {
     }

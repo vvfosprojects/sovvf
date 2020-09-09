@@ -15,16 +15,16 @@ import {
     UnselectSquadra,
     UnselectSquadraComposizione,
     UpdateSquadraComposizione
-} from '../../../../features/home/store/actions/composizione-partenza/squadre-composizione.actions';
+} from '../../actions/squadre-composizione/squadre-composizione.actions';
 import { append, patch, removeItem } from '@ngxs/store/operators';
 import { AddSquadraBoxPartenza } from '../../../../features/home/store/actions/composizione-partenza/box-partenza.actions';
 import { BoxPartenzaState } from '../../../../features/home/store/states/composizione-partenza/box-partenza.state';
-import { FilterListaMezziComposizione } from '../../../../features/home/store/actions/composizione-partenza/mezzi-composizione.actions';
+import { FilterListaMezziComposizione } from '../../actions/mezzi-composizione/mezzi-composizione.actions';
 import produce from 'immer';
 import { codDistaccamentoIsEqual } from '../../../helper/composizione-functions';
-import { SetListaFiltriAffini } from '../../../../features/home/store/actions/composizione-partenza/composizione-partenza.actions';
-import { ComposizionePartenzaState } from '../../../../features/home/store/states/composizione-partenza/composizione-partenza.state';
 import { MezzoComposizione } from '../../../interface/mezzo-composizione-interface';
+import { FiltriComposizioneState } from '../filtri-composizione/filtri-composizione.state';
+import { SetListaFiltriAffini } from '../../actions/filtri-composizione/filtri-composizione.actions';
 
 export interface SquadreComposizioneStateStateModel {
     allSquadreComposione: SquadraComposizione[];
@@ -110,7 +110,7 @@ export class SquadreComposizioneState {
         const idBoxPartenzaSelezionato = this.store.selectSnapshot(BoxPartenzaState.idBoxPartenzaSelezionato);
         const boxPartenzaSelezionato = boxPartenzaList.filter(x => x.id === idBoxPartenzaSelezionato)[0];
         if (!boxPartenzaSelezionato || (boxPartenzaSelezionato && !boxPartenzaSelezionato.mezzoComposizione)) {
-            const filtriSelezionati = this.store.selectSnapshot(ComposizionePartenzaState.filtriSelezionati);
+            const filtriSelezionati = this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati);
             dispatch(new FilterListaMezziComposizione(action.squadraComp.squadra.distaccamento.codice, filtriSelezionati));
             const idRichiesteSelezionate = getState().idSquadreSelezionate;
             if (idRichiesteSelezionate && idRichiesteSelezionate.length <= 1) {
@@ -138,7 +138,7 @@ export class SquadreComposizioneState {
             const idBoxPartenzaSelezionato = this.store.selectSnapshot(BoxPartenzaState.idBoxPartenzaSelezionato);
             const boxPartenzaSelezionato = boxPartenzaList.filter(b => b.id === idBoxPartenzaSelezionato)[0];
             if (!boxPartenzaSelezionato || !boxPartenzaSelezionato.mezzoComposizione) {
-                const filtriSelezionati = this.store.selectSnapshot(ComposizionePartenzaState.filtriSelezionati);
+                const filtriSelezionati = this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati);
                 dispatch([
                     new FilterListaSquadreComposizione(null, filtriSelezionati),
                     new FilterListaMezziComposizione(null, filtriSelezionati),
@@ -220,12 +220,14 @@ export class SquadreComposizioneState {
                     if (action.filtri) {
                         // CODICE DISTACCAMENTO
                         if (action.filtri.CodiceDistaccamento && action.filtri.CodiceDistaccamento.length > 0) {
+                            // tslint:disable-next-line:max-line-length
                             draft.squadreComposizione = draft.squadreComposizione.filter((s: SquadraComposizione) => codDistaccamentoIsEqual(s.squadra.distaccamento.codice, action.filtri.CodiceDistaccamento[0]));
                         }
                         // CODICE SQUADRE SELEZIONATE O MEZZO SELEZIONATO
                         if (action.filtri.CodiceMezzo || (action.filtri.CodiceSquadre && action.filtri.CodiceSquadre.length > 0)) {
                             let codDistaccamentoSelezionato = null;
                             if (action.filtri.CodiceSquadre && action.filtri.CodiceSquadre.length > 0) {
+                                // tslint:disable-next-line:max-line-length
                                 codDistaccamentoSelezionato = state.squadreComposizione.filter((sC: SquadraComposizione) => sC.squadra.id === action.filtri.CodiceSquadre[0])[0].squadra.distaccamento.codice;
                             } else if (action.filtri.CodiceMezzo) {
                                 codDistaccamentoSelezionato = action.mezziComposizione.filter((mC: MezzoComposizione) => mC.mezzo.codice === action.filtri.CodiceMezzo)[0].mezzo.distaccamento.codice;
