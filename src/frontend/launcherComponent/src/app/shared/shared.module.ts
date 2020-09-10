@@ -46,6 +46,7 @@ import { ModificaFonogrammaModalComponent } from './modal/modifica-fonogramma-mo
 import { DettaglioFonogrammaModalComponent } from './modal/dettaglio-fonogramma-modal/dettaglio-fonogramma-modal.component';
 import { MezzoActionsModalComponent } from './modal/mezzo-actions-modal/mezzo-actions-modal.component';
 import { TastoCompPartenzaComponent } from './components/tasto-comp-partenza/tasto-comp-partenza.component';
+import { FilterPipeModule } from 'ngx-filter-pipe';
 
 const COMPONENTS = [
     DebounceClickDirective,
@@ -98,7 +99,8 @@ const COMPONENTS = [
         PipeModule,
         TreeviewModule.forRoot(),
         NgSelectModule,
-        NgxsFormPluginModule.forRoot()
+        NgxsFormPluginModule.forRoot(),
+        FilterPipeModule
     ],
     declarations: [
         ...COMPONENTS

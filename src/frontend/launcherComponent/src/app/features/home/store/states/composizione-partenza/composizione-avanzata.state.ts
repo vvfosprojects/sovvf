@@ -4,11 +4,7 @@ import {
     ClearComposizioneAvanzata,
     FilterListeComposizioneAvanzata,
     GetListeComposizioneAvanzata,
-    ResetRicercaMezziComposizione,
-    ResetRicercaSquadreComposizione,
     SetListeComposizioneAvanzata,
-    SetRicercaMezziComposizione,
-    SetRicercaSquadreComposizione,
     UnselectMezziAndSquadreComposizioneAvanzata
 } from '../../actions/composizione-partenza/composizione-avanzata.actions';
 import { MezziComposizioneState } from '../../../../../shared/store/states/mezzi-composizione/mezzi-composizione.state';
@@ -29,14 +25,10 @@ import { FiltriComposizioneState } from '../../../../../shared/store/states/filt
 
 export interface ComposizioneAvanzataStateModel {
     listaMezziSquadre: ListaComposizioneAvanzata;
-    ricercaSquadre: string;
-    ricercaMezzi: string;
 }
 
 export const ComposizioneAvanzataStateDefaults: ComposizioneAvanzataStateModel = {
-    listaMezziSquadre: null,
-    ricercaSquadre: undefined,
-    ricercaMezzi: undefined
+    listaMezziSquadre: null
 };
 
 @State<ComposizioneAvanzataStateModel>({
@@ -126,33 +118,5 @@ export class ComposizioneAvanzataState {
     @Action(ClearComposizioneAvanzata)
     clearComposizioneAvanzata({ patchState }: StateContext<ComposizioneAvanzataStateModel>) {
         patchState(ComposizioneAvanzataStateDefaults);
-    }
-
-    @Action(SetRicercaSquadreComposizione)
-    setRicercaSquadreComposizione({ patchState }: StateContext<ComposizioneAvanzataStateModel>, action: SetRicercaSquadreComposizione) {
-        patchState({
-            ricercaSquadre: action.ricerca
-        });
-    }
-
-    @Action(ResetRicercaSquadreComposizione)
-    resetRicercaSquadreComposizione({ patchState }: StateContext<ComposizioneAvanzataStateModel>) {
-        patchState({
-            ricercaSquadre: ComposizioneAvanzataStateDefaults.ricercaSquadre
-        });
-    }
-
-    @Action(SetRicercaMezziComposizione)
-    setRicercaMezziComposizione({ patchState }: StateContext<ComposizioneAvanzataStateModel>, action: SetRicercaMezziComposizione) {
-        patchState({
-            ricercaMezzi: action.ricerca
-        });
-    }
-
-    @Action(ResetRicercaMezziComposizione)
-    resetRicercaMezziComposizione({ patchState }: StateContext<ComposizioneAvanzataStateModel>) {
-        patchState({
-            ricercaMezzi: ComposizioneAvanzataStateDefaults.ricercaMezzi
-        });
     }
 }
