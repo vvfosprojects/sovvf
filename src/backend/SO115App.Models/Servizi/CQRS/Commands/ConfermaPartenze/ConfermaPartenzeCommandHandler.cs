@@ -193,6 +193,9 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                     squadra.Stato = MappaStatoSquadraDaStatoMezzo.MappaStato(partenze.Mezzo.Stato);
                 }
             }
+
+            command.ConfermaPartenze.IdRichiesta = richiesta.Id;
+
             var confermaPartenze = _updateConfermaPartenze.Update(command);
 
             command.ConfermaPartenze.CodiceSede = confermaPartenze.CodiceSede;

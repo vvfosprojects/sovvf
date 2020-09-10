@@ -39,6 +39,8 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 {
                     yield return new ValidationResult("Non puoi aggiungere un evento non ancora accaduto");
                 }
+
+                // TODO validazione sequenza data
             }
 
             if (command.ModificaPartenza.Annullamento)

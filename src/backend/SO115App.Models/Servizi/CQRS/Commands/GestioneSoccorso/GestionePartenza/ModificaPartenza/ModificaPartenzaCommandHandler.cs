@@ -11,7 +11,6 @@ using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AggiornaStatoMezzo;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AnnullaPartenza;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
-using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +19,6 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 {
     public class ModificaPartenzaCommandHandler : ICommandHandler<ModificaPartenzaCommand>
     {
-        private readonly IGetRichiestaById _getRichiestaById;
         private readonly IUpdateStatoPartenze _updateStatoPartenze;
         private readonly IUpdateConfermaPartenze _updateConfermaPartenze;
 
@@ -29,18 +27,16 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
         private ComposizionePartenze NuovaPartenza;
 
         public ModificaPartenzaCommandHandler(
-            IGetRichiestaById getRichiestaById,
             IUpdateStatoPartenze updateStatoPartenze,
             IUpdateConfermaPartenze updateConfermaPartenze)
         {
-            _getRichiestaById = getRichiestaById;
             _updateStatoPartenze = updateStatoPartenze;
             _updateConfermaPartenze = updateConfermaPartenze;
         }
 
         public void Handle(ModificaPartenzaCommand command)
         {
-            Richiesta = command.Richiesta; /*_getRichiestaById.GetById(command.ModificaPartenza.CodRichiesta);*/
+            Richiesta = command.Richiesta;
 
             PartenzaDaAnnullare = Richiesta.Partenze
                 .FirstOrDefault(c => c.Partenza.Mezzo.Codice.Equals(command.ModificaPartenza.CodMezzoDaAnnullare));
@@ -84,6 +80,9 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                     IdMezzo = NuovaPartenza.Partenza.Mezzo.Codice
                 });
             }
+
+            //Preparo dati per notifica
+            command.Richiesta = Richiesta;
         }
 
         private void AnnullaPartenza(AnnullaPartenzaCommand command, DateTime data)
@@ -107,11 +106,10 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 IdMezzo = command.TargaMezzo,
                 StatoMezzo = Costanti.MezzoInRientro,
                 Richiesta = Richiesta,
-                //DataOraAggiornamento = data,
                 IdUtente = command.IdOperatore
             };
 
-            _updateStatoPartenze.Update(commandStatoMezzo);
+            _updateStatoPartenze.Update(commandStatoMezzo);            
         }
 
         private void ComponiPartenza(ConfermaPartenzeCommand command, DateTime data, Mezzo mezzo, List<Squadra> squadre)
