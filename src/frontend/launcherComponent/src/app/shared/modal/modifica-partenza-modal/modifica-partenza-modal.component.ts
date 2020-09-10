@@ -69,14 +69,12 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
             sequenze: new FormControl(),
         });
         this.modificaPartenzaForm = this.fb.group({
-            operatore: [null, Validators.required],
-            sede: [null, Validators.required],
-            codMezzo: [null, Validators.required],
-            codSquadre: [null, Validators.required],
-            sequenza: [null, Validators.required],
+            operatore: [null],
+            sede: [null],
+            codMezzo: [null],
+            codSquadre: [null],
+            sequenze: [null],
         });
-        this.f.operatore.disable();
-        this.f.sede.disable();
     }
 
     get f() {
@@ -127,8 +125,12 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
             return;
         }
 
+        this.formatTimeForCallBack();
+        this.modificaPartenzaForm.value.sequenze = this.sequenze;
+        this.modificaPartenzaForm.value.codMezzo = this.partenza.mezzo.codice;
+        this.modificaPartenzaForm.value.codSquadre = this.partenza.squadre.map(x => x.id);
+        console.log('VALUE MODIFICA PARTENZA FORM: ', this.modificaPartenzaForm.value);
         this.modal.close({ success: true, result: this.modificaPartenzaForm.value });
-        // formatTimeForCallBack();
     }
 
     onDismiss(): void {

@@ -85,7 +85,7 @@
         </div>
         <!-- sequenza eventi -->
         <div class="my-4 d-inline-flex">
-            <label for="sequenzaEventi">Crea sequenza Eventi
+            <label id="sequenzaEventi">Crea sequenza Eventi
                 <small class="text-danger">*</small>
             </label>
             <button class="btn btn-sm btn-block btn-info btn-no-hover ml-2" (click)="onAddSequenza()"
@@ -128,7 +128,7 @@
         {{ 'Annulla' | uppercase }}
     </button>
     <button type="button" class="btn btn-lg btn-danger btn-no-hover" ngbTooltip="Riempi tutti i campi obbligatori"
-            [disableTooltip]="formValid" [disabled]="!formValid" (click)="onConferma()">
+            [disableTooltip]="formValid" (click)="onConferma()">
         {{ 'Conferma' | uppercase }}
     </button>
 </div>
