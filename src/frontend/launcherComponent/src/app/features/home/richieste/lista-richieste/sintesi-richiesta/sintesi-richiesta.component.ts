@@ -227,6 +227,22 @@ export class SintesiRichiestaComponent implements OnChanges {
         });
         modalModificaPartenza.componentInstance.partenza = this.richiesta.partenzeRichiesta[index];
         modalModificaPartenza.componentInstance.idRichiesta = this.richiesta.id;
+        /*
+        modalModificaPartenza.result.then((res: { status: string, result: any }) => {
+            switch (res.status) {
+                case 'ok' :
+                    const modPartenza = makeCopy(this.richiesta.partenzeRichiesta[index]);
+                    modPartenza.squadre = res.result.squadre;
+                    modPartenza.mezzo = res.result.mezzo;
+                    console.log('RESULT TESTTTTTT: ', res)
+                    console.log('RESULT TESTTTTTT: ', res.result)
+                    //this.store.dispatch(modPartenza as Partenza[]);
+                    break;
+                case 'ko':
+                    break;
+            }
+        });
+        */
     }
 
     onActionRichiesta(richiestaAction: RichiestaActionInterface) {
