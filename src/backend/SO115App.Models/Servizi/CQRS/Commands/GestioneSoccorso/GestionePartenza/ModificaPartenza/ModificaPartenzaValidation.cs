@@ -1,6 +1,7 @@
 ﻿using CQRS.Commands.Validators;
 using CQRS.Validation;
 using SO115App.Models.Classi.Utility;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -28,10 +29,17 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
             }
 
             if (command.ModificaPartenza.SequenzaStati != null)
-                if(command.ModificaPartenza.SequenzaStati.Any(s => s.Stato == null || s.Stato == "" || s.DataOraAggiornamento == null || s.DataOraAggiornamento == default))
+            {
+                if (command.ModificaPartenza.SequenzaStati.Any(s => s.Stato == null || s.Stato == "" || s.DataOraAggiornamento == null || s.DataOraAggiornamento == default))
                 {
-                    yield return new ValidationResult("Nessuna mezzo selezionato");
+                    yield return new ValidationResult("Cambi stato errati");
                 }
+
+                if(command.ModificaPartenza.SequenzaStati.Any(s => s.DataOraAggiornamento > DateTime.Now))
+                {
+                    yield return new ValidationResult("Non puoi aggiungere un evento non ancora accaduto");
+                }
+            }
 
             if (command.ModificaPartenza.Annullamento)
             {
@@ -50,6 +58,11 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 if (command.ModificaPartenza.DataAnnullamento == null || command.ModificaPartenza.DataAnnullamento == default)
                 {
                     yield return new ValidationResult("Nessuna data annullamento selezionata");
+                }
+
+                if(command.ModificaPartenza.DataAnnullamento > command.ModificaPartenza.SequenzaStati.Min(c => c.DataOraAggiornamento))
+                {
+                    yield return new ValidationResult("La data annullamento non può essere più recente di un cambio stato");
                 }
             }
         }
