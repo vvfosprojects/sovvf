@@ -68,6 +68,7 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
     @Select(FiltriComposizioneState.filtriAffini) filtriAffini$: Observable<any>;
 
     idRichiesta: string;
+    codRichiesta: string;
     sostituzionePartenzaForm: FormGroup;
     submitted: boolean;
 
@@ -134,6 +135,13 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
                 this.idSquadraHover = idSquadra;
             })
         );
+        // Prendo "formValid"
+        this.subscription.add(
+            this.formValid$.subscribe((formValid: boolean) => {
+                this.formValid = formValid;
+            })
+        );
+        this.initForm();
     }
 
     ngOnInit(): void {
@@ -152,15 +160,11 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
 
     initForm(): void {
         this.sostituzionePartenzaForm = new FormGroup({
-            codMezzo: new FormControl(),
-            codSquadre: new FormControl(),
+            motivazione: new FormControl(),
         });
         this.sostituzionePartenzaForm = this.fb.group({
-            codMezzo: [null, Validators.required],
-            codSquadre: [null, Validators.required],
+            motivazione: [null],
         });
-        this.f.operatore.disable();
-        this.f.sede.disable();
     }
 
     get f(): any {
@@ -226,7 +230,7 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
     }
 
     getTitle(): string {
-        return 'Modifica Partenza Richiesta ' + this.idRichiesta;
+        return 'Modifica Partenza Richiesta ' + this.codRichiesta;
     }
 
     onDismiss(): void {
@@ -244,7 +248,9 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
             return;
         }
 
-        this.modal.close({ success: true, result: this.sostituzionePartenzaForm.value });
-        // formatTimeForCallBack();
+
+        const codMezzo = this.store.selectSnapshot(MezziComposizioneState.idMezzoSelezionato);
+        const codSquadre = this.store.selectSnapshot(SquadreComposizioneState.idSquadreSelezionate);
+        this.modal.close({ success: true, result: { codMezzo: codMezzo, codSquadre: codSquadre, motivazione: this.f.motivazione.value } });
     }
 }

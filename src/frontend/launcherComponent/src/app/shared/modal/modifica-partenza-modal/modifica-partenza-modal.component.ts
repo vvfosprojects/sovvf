@@ -58,7 +58,7 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.listaStatoMezzo = Object.values(StatoMezzo).map(x => ({ id: x, name: x }));
-        }
+    }
 
     initForm() {
         this.modificaPartenzaForm = new FormGroup({
@@ -147,11 +147,11 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
         this.time.minute = d.getMinutes();
     }
 
-    
+
     formatTimeForCallBack(): any {
-      return { oraEvento: this.sequenze['time'] };
+        return { oraEvento: this.sequenze['time'] };
     }
-    
+
 
     statoMezzoColor(stato: StatoMezzo) {
         return statoMezzoColor(stato);
@@ -167,20 +167,24 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
         this.sequenze.pop();
     }
 
-    open() {
+    openSostituzioneModal() {
         const sostituzioneModal = this.modalService.open(SostituzionePartenzaModalComponent, {
             windowClass: 'modal-holder',
             size: 'lg',
             centered: true
         });
+        sostituzioneModal.componentInstance.codRichiesta = this.idRichiesta;
         sostituzioneModal.componentInstance.idRichiesta = this.idRichiesta;
+        sostituzioneModal.result.then((result: {success: boolean, result: any}) => {
+            console.log('Sostituzione Modal', result);
+        });
     }
 
     onListaSquadrePartenza() {
         const listaSquadre = {} as ListaSquadre;
         listaSquadre.idPartenza = this.partenza.id;
         listaSquadre.squadre = this.partenza.squadre;
-        this.store.dispatch(new VisualizzaListaSquadrePartenza(listaSquadre))
+        this.store.dispatch(new VisualizzaListaSquadrePartenza(listaSquadre));
     }
 
     /*

@@ -12,8 +12,7 @@ export interface SostituzionePartenzaModel {
     listaMezziSquadre: ListaComposizioneAvanzata;
     sostituzionePartenzaForm: {
         model?: {
-            codMezzo: string;
-            codSquadre: string[];
+            motivazione: string
         };
         dirty: boolean;
         status: string;
@@ -25,8 +24,7 @@ export const sostituzionePartenzaDefaults: SostituzionePartenzaModel = {
     listaMezziSquadre: null,
     sostituzionePartenzaForm: {
         model: {
-            codMezzo: undefined,
-            codSquadre: undefined
+            motivazione: undefined
         },
         dirty: false,
         status: '',
