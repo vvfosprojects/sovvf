@@ -63,16 +63,16 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneUtente.CasLogin
 
             if (Cas.serviceResponse.AuthenticationFailure != null)
             {
+                Log.Information($"Autenticazione Fallita = {Cas.serviceResponse.AuthenticationFailure.Description}");
                 return new CasLoginResult()
                 {
                     User = null
                 };
             }
 
-            Log.Information($"Attributi = {Cas.serviceResponse.AuthenticationSuccess}");
-
             if (Cas.serviceResponse.AuthenticationSuccess != null)
             {
+                Log.Information($"sAMAccountName = {Cas.serviceResponse.AuthenticationSuccess.Attributes.sAMAccountName}");
                 string CodFiscale;
 
                 if (Cas.serviceResponse.AuthenticationSuccess.Attributes.sAMAccountName != null)
@@ -87,6 +87,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneUtente.CasLogin
                         User = null
                     };
 
+                Log.Information($"Utente loggato = {utente.Username}");
                 var claim = new[]
                     {
                     new Claim(ClaimTypes.NameIdentifier, utente.CodiceFiscale.ToString()),
