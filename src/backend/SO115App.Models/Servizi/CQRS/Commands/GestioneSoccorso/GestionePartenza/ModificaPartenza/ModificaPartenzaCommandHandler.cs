@@ -1,6 +1,5 @@
 ﻿using CQRS.Commands;
 using DomainModel.CQRS.Commands.ConfermaPartenze;
-using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.API.Models.Classi.Composizione;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Soccorso;
@@ -13,8 +12,6 @@ using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.Ag
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AnnullaPartenza;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
-using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GenerazioneCodiciRichiesta;
-using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,33 +22,28 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
     {
         private readonly IGetRichiestaById _getRichiestaById;
         private readonly IUpdateStatoPartenze _updateStatoPartenze;
-        private readonly IGetUtenteById _getUtenteById;
         private readonly IUpdateConfermaPartenze _updateConfermaPartenze;
 
         private RichiestaAssistenza Richiesta;
         private ComposizionePartenze PartenzaDaAnnullare;
         private ComposizionePartenze NuovaPartenza;
-        private Utente Utente;
-
-        private bool _mezziTuttiInSede = true;
 
         public ModificaPartenzaCommandHandler(
             IGetRichiestaById getRichiestaById,
             IUpdateStatoPartenze updateStatoPartenze,
-            IGetUtenteById getUtenteById,
             IUpdateConfermaPartenze updateConfermaPartenze)
         {
             _getRichiestaById = getRichiestaById;
             _updateStatoPartenze = updateStatoPartenze;
-            _getUtenteById = getUtenteById;
             _updateConfermaPartenze = updateConfermaPartenze;
         }
 
         public void Handle(ModificaPartenzaCommand command)
         {
             Richiesta = _getRichiestaById.GetById(command.ModificaPartenza.CodRichiesta);
-            Utente = _getUtenteById.GetUtenteByCodice(command.IdOperatore);
-            PartenzaDaAnnullare = Richiesta.Partenze.FirstOrDefault(c => c.Partenza.Mezzo.Codice.Equals(command.ModificaPartenza.CodMezzoDaAnnullare));
+
+            PartenzaDaAnnullare = Richiesta.Partenze
+                .FirstOrDefault(c => c.Partenza.Mezzo.Codice.Equals(command.ModificaPartenza.CodMezzoDaAnnullare));
 
             //ANNULLO PARTENZA
             if (command.ModificaPartenza.Annullamento)
@@ -124,7 +116,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 
         private void ComponiPartenza(ConfermaPartenzeCommand command, DateTime data, Mezzo mezzo, List<Squadra> squadre)
         {
-            new ComposizionePartenze(Richiesta, data, Utente.Id, false)
+            new ComposizionePartenze(Richiesta, data, command.ConfermaPartenze.IdOperatore, false)
             {
                 Partenza = new Partenza()
                 {
@@ -134,7 +126,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 }
             };
 
-            Richiesta.SincronizzaStatoRichiesta(Costanti.RichiestaAssegnata, Richiesta.StatoRichiesta, Utente.Id, "", data);
+            Richiesta.SincronizzaStatoRichiesta(Costanti.RichiestaAssegnata, Richiesta.StatoRichiesta, command.ConfermaPartenze.IdOperatore, "", data);
 
             NuovaPartenza = Richiesta.Partenze.FirstOrDefault(c => c.Partenza.Mezzo.Codice.Equals(mezzo.Codice));
 
@@ -151,6 +143,10 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 
         private void AggiornaStato(AggiornaStatoMezzoCommand command)
         {
+            bool _mezziTuttiInSede = true;
+
+            #region Switch StatoMezzo
+
             if (command.StatoMezzo == Costanti.MezzoInViaggio)
             {
                 new UscitaPartenza(Richiesta, command.IdMezzo, command.DataOraAggiornamento, Richiesta.CodOperatore);
@@ -205,6 +201,8 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 NuovaPartenza.Partenza.Mezzo.Stato = Costanti.MezzoInViaggio;
                 NuovaPartenza.Partenza.Mezzo.IdRichiesta = Richiesta.CodRichiesta;
             }
+
+            #endregion
 
             if (_mezziTuttiInSede && Richiesta.StatoRichiesta is Sospesa)
             {
