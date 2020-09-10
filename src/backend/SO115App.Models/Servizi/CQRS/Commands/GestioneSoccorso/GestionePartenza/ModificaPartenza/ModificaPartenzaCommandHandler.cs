@@ -40,7 +40,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 
         public void Handle(ModificaPartenzaCommand command)
         {
-            Richiesta = _getRichiestaById.GetById(command.ModificaPartenza.CodRichiesta);
+            Richiesta = command.Richiesta; /*_getRichiestaById.GetById(command.ModificaPartenza.CodRichiesta);*/
 
             PartenzaDaAnnullare = Richiesta.Partenze
                 .FirstOrDefault(c => c.Partenza.Mezzo.Codice.Equals(command.ModificaPartenza.CodMezzoDaAnnullare));

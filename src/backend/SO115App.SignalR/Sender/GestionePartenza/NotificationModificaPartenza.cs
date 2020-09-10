@@ -44,21 +44,21 @@ namespace SO115App.SignalR.Sender.GestionePartenza
 
         public async Task SendNotification(ModificaPartenzaCommand command)
         {
-            var richiesta = _getRichiesta.GetById(command.ModificaPartenza.CodRichiesta);
+            //var richiesta = _getRichiesta.GetById(command.ModificaPartenza.CodRichiesta);
 
             var SediDaNotificare = new List<string>();
-            if (richiesta.CodSOAllertate != null)
-                SediDaNotificare = _getGerarchiaToSend.Get(richiesta.CodSOCompetente, richiesta.CodSOAllertate.ToArray());
+            if (command.Richiesta.CodSOAllertate != null)
+                SediDaNotificare = _getGerarchiaToSend.Get(command.Richiesta.CodSOCompetente, command.Richiesta.CodSOAllertate.ToArray());
             else
-                SediDaNotificare = _getGerarchiaToSend.Get(richiesta.CodSOCompetente);
+                SediDaNotificare = _getGerarchiaToSend.Get(command.Richiesta.CodSOCompetente);
 
             var confermaPartenza = new ConfermaPartenze()
             {
                 CodiceSede = command.CodSede,
                 IdOperatore = command.IdOperatore,
                 IdRichiesta = command.ModificaPartenza.CodRichiesta,
-                Partenze = richiesta.lstPartenze,
-                richiesta = richiesta
+                Partenze = command.Richiesta.lstPartenze,
+                richiesta = command.Richiesta
             };
 
             Parallel.ForEach(SediDaNotificare, sede =>
