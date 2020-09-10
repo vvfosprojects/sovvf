@@ -28,8 +28,9 @@ import {
     UnselectSquadraComposizione
 } from '../../store/actions/squadre-composizione/squadre-composizione.actions';
 import { UnselectMezziAndSquadreComposizioneAvanzata } from '../../../features/home/store/actions/composizione-partenza/composizione-avanzata.actions';
-import { ClearFiltriAffini, GetFiltriComposizione } from '../../store/actions/filtri-composizione/filtri-composizione.actions';
+import { ClearFiltriAffini } from '../../store/actions/filtri-composizione/filtri-composizione.actions';
 import { FiltriComposizioneState } from '../../store/states/filtri-composizione/filtri-composizione.state';
+import { SetRicercaMezziComposizione, SetRicercaSquadreComposizione } from '../../store/actions/ricerca-composizione/ricerca-composizione.actions';
 
 @Component({
     selector: 'app-sostituzione-partenza',
@@ -71,6 +72,8 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
     submitted: boolean;
 
     statoMezzo = StatoMezzo;
+    ricercaSquadre: string;
+    ricercaMezzi: string;
 
     subscription: Subscription = new Subscription();
 
@@ -147,7 +150,7 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
         ]);
     }
 
-    initForm() {
+    initForm(): void {
         this.sostituzionePartenzaForm = new FormGroup({
             codMezzo: new FormControl(),
             codSquadre: new FormControl(),
@@ -160,51 +163,51 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
         this.f.sede.disable();
     }
 
-    get f() {
+    get f(): any {
         return this.sostituzionePartenzaForm.controls;
     }
 
-    mezzoSelezionato(mezzoComposizione: MezzoComposizione) {
+    mezzoSelezionato(mezzoComposizione: MezzoComposizione): void {
         this.store.dispatch([
             new ReducerSelectMezzoComposizione(mezzoComposizione),
         ]);
     }
 
-    mezzoDeselezionato(mezzoComposizione: MezzoComposizione) {
+    mezzoDeselezionato(mezzoComposizione: MezzoComposizione): void {
         this.store.dispatch(new UnselectMezzoComposizione());
     }
 
-    mezzoHoverIn(mezzoComposizione: MezzoComposizione) {
+    mezzoHoverIn(mezzoComposizione: MezzoComposizione): void {
         this.store.dispatch([
             new HoverInMezzoComposizione(mezzoComposizione.id, mezzoComposizione.mezzo.coordinateFake),
         ]);
     }
 
-    mezzoHoverOut() {
+    mezzoHoverOut(): void {
         this.store.dispatch([
             new HoverOutMezzoComposizione(),
         ]);
     }
 
-    squadraSelezionata(squadraComposizione: SquadraComposizione) {
+    squadraSelezionata(squadraComposizione: SquadraComposizione): void {
         if (squadraComposizione && !squadraComposizioneBusy(squadraComposizione.squadra.stato)) {
             this.store.dispatch(new SelectSquadraComposizione(squadraComposizione));
         }
     }
 
-    squadraDeselezionata(squadraComposizione: SquadraComposizione) {
+    squadraDeselezionata(squadraComposizione: SquadraComposizione): void {
         this.store.dispatch(new UnselectSquadraComposizione(squadraComposizione));
     }
 
-    squadraHoverIn(squadraComposizione: SquadraComposizione) {
+    squadraHoverIn(squadraComposizione: SquadraComposizione): void {
         this.store.dispatch(new HoverInSquadraComposizione(squadraComposizione.id));
     }
 
-    squadraHoverOut(squadraComposizione: SquadraComposizione) {
+    squadraHoverOut(squadraComposizione: SquadraComposizione): void {
         this.store.dispatch(new HoverOutSquadraComposizione(squadraComposizione.id));
     }
 
-    checkSquadraSelezione(idSquadra: string) {
+    checkSquadraSelezione(idSquadra: string): boolean {
         let selected = false;
         this.idSquadreSelezionate.forEach((id: string) => {
             if (id === idSquadra) {
@@ -212,6 +215,14 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
             }
         });
         return selected;
+    }
+
+    changeRicercaSquadre(): void {
+        this.store.dispatch(new SetRicercaSquadreComposizione(makeCopy(this.ricercaSquadre)));
+    }
+
+    changeRicercaMezzi(): void {
+        this.store.dispatch(new SetRicercaMezziComposizione(makeCopy(this.ricercaMezzi)));
     }
 
     getTitle(): string {
@@ -226,7 +237,7 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
         this.modal.close(type);
     }
 
-    onConferma() {
+    onConferma(): void {
         this.submitted = true;
 
         if (!this.sostituzionePartenzaForm.valid) {

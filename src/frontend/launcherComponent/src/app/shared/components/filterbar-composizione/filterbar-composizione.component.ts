@@ -48,13 +48,14 @@ export class FilterbarComposizioneComponent {
         const filtriSelezionati = this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati);
         const codiceMezzo = this.store.selectSnapshot(MezziComposizioneState.idMezzoSelezionato);
         const codiceSquadra = this.store.selectSnapshot(SquadreComposizioneState.idSquadreSelezionate);
+        const richiestaComposizione = this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione);
         const filtri: FiltriComposizione = {
             CodiceDistaccamento: filtriSelezionati ? filtriSelezionati.CodiceDistaccamento : [],
             TipoMezzo: filtriSelezionati ? filtriSelezionati.TipoMezzo : [],
             StatoMezzo: filtriSelezionati ? filtriSelezionati.StatoMezzo : [],
             CodiceMezzo: codiceMezzo ? codiceMezzo : '',
             CodiceSquadre: codiceSquadra ? codiceSquadra : [],
-            idRichiesta: this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione).id
+            idRichiesta: richiestaComposizione ? richiestaComposizione.id : null
         };
 
         this.store.dispatch(new ReducerFilterListeComposizione(filtri));

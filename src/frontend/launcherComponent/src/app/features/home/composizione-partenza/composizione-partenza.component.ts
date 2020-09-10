@@ -27,9 +27,9 @@ import { ClearListaMezziComposizione, SganciamentoMezzoComposizione } from '../.
 import { AuthState } from '../../auth/store/auth.state';
 import { ClearListaSquadreComposizione } from '../../../shared/store/actions/squadre-composizione/squadre-composizione.actions';
 import { ClearPreaccoppiati } from '../store/actions/composizione-partenza/composizione-veloce.actions';
-import { SetRicercaMezziComposizione, SetRicercaSquadreComposizione } from '../store/actions/composizione-partenza/composizione-avanzata.actions';
 import { FiltriComposizioneState } from '../../../shared/store/states/filtri-composizione/filtri-composizione.state';
 import { ClearFiltriAffini } from '../../../shared/store/actions/filtri-composizione/filtri-composizione.actions';
+import { SetRicercaMezziComposizione, SetRicercaSquadreComposizione } from '../../../shared/store/actions/ricerca-composizione/ricerca-composizione.actions';
 
 @Component({
     selector: 'app-composizione-partenza',

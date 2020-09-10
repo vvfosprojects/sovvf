@@ -10,9 +10,42 @@
         <div class="col-12">
             <app-filterbar-composizione [filtri]="filtriAffini$ | async"
                                         [nascondiTornaIndietro]="true"
-                                        [nascondiCambiaComposizioneMode]="true"></app-filterbar-composizione>
+                                        [nascondiCambiaComposizioneMode]="true">
+            </app-filterbar-composizione>
         </div>
-        <div class="col">
+        <div class="col-5">
+            <div class="form-group">
+                <div class="card card-shadow mx-auto" style="min-height:392px">
+                    <div class="card-header clearfix px-2 py-1">
+                        <div class="float-left pt-2">
+                            <i class="fa fa-users mr-2"></i>
+                            <span class="h6">Squadre</span>
+                        </div>
+                        <div class="float-right w-50">
+                            <input class="form-control" placeholder="Cerca..." [(ngModel)]="ricercaSquadre"
+                                   [ngClass]="{'border-danger': ricercaSquadre && ricercaSquadre.length > 0}"
+                                   type="search" name="ricercaSquadre" id="ricercaSquadre"
+                                   (ngModelChange)="changeRicercaSquadre()">
+                        </div>
+                    </div>
+                    <ul class="list-group list-group-flush border-bottom scroll-y"
+                        style="max-height:345px; min-height:345px">
+                        <ng-template [ngIf]="squadreComposizione && squadreComposizione.length > 0">
+                            <app-squadra-composizione
+                                    *ngFor="let sC of squadreComposizione | filterBy: {'squadra': {'nome': ricercaSquadre}}"
+                                    [squadraComp]="sC"
+                                    [itemSelezionato]="checkSquadraSelezione(sC.id)"
+                                    [itemHover]="sC.id === idSquadraHover"
+                                    (selezionata)="squadraSelezionata($event)"
+                                    (deselezionata)="squadraDeselezionata($event)"
+                                    (hoverIn)="squadraHoverIn($event)"
+                                    (hoverOut)="squadraHoverOut($event)"></app-squadra-composizione>
+                        </ng-template>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-7">
             <div class="form-group">
                 <div class="card card-shadow mx-auto" style="min-height:392px">
                     <div class="card-header clearfix px-2 py-1">
@@ -21,14 +54,16 @@
                             <span class="h6">Mezzi</span>
                         </div>
                         <div class="float-right">
-                            <input class="form-control" placeholder="Cerca..." type="search" name="ricercaMezzi"
-                                   id="ricercaMezzi">
+                            <input class="form-control" placeholder="Cerca..." [(ngModel)]="ricercaMezzi"
+                                   [ngClass]="{'border-danger': ricercaMezzi && ricercaMezzi.length > 0}"
+                                   type="search" name="ricercaMezzi" id="ricercaMezzi"
+                                   (ngModelChange)="changeRicercaMezzi()">
                         </div>
                     </div>
                     <ul class="list-group list-group-flush border-bottom scroll-y"
                         style="max-height:345px; min-height:345px">
                         <ng-template [ngIf]="mezziComposizione && mezziComposizione.length > 0">
-                            <div *ngFor="let mC of mezziComposizione">
+                            <div *ngFor="let mC of mezziComposizione | filterBy: {'mezzo': {'descrizione': ricercaMezzi}}">
                                 <ng-template [ngIf]="mC.mezzo.stato !== statoMezzo.OperativoPreaccoppiato">
                                     <app-mezzo-composizione [mezzoComp]="mC"
                                                             [itemSelezionato]="mC.id === idMezzoSelezionato"
@@ -43,36 +78,6 @@
                                     </app-mezzo-composizione>
                                 </ng-template>
                             </div>
-                        </ng-template>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="form-group">
-                <div class="card card-shadow mx-auto" style="min-height:392px">
-                    <div class="card-header clearfix px-2 py-1">
-                        <div class="float-left pt-2">
-                            <i class="fa fa-users mr-2"></i>
-                            <span class="h6">Squadre</span>
-                        </div>
-                        <div class="float-right w-50">
-                            <input class="form-control" placeholder="Cerca..."
-                                   type="search" name="ricercaSquadre" id="ricercaSquadre">
-                        </div>
-                    </div>
-                    <ul class="list-group list-group-flush border-bottom scroll-y"
-                        style="max-height:345px; min-height:345px">
-                        <ng-template [ngIf]="squadreComposizione && squadreComposizione.length > 0">
-                            <app-squadra-composizione
-                                    *ngFor="let sC of squadreComposizione"
-                                    [squadraComp]="sC"
-                                    [itemSelezionato]="checkSquadraSelezione(sC.id)"
-                                    [itemHover]="sC.id === idSquadraHover"
-                                    (selezionata)="squadraSelezionata($event)"
-                                    (deselezionata)="squadraDeselezionata($event)"
-                                    (hoverIn)="squadraHoverIn($event)"
-                                    (hoverOut)="squadraHoverOut($event)"></app-squadra-composizione>
                         </ng-template>
                     </ul>
                 </div>

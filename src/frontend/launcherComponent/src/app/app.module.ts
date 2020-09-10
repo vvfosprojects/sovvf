@@ -109,11 +109,7 @@ import { SquadreComposizioneState } from './shared/store/states/squadre-composiz
                 EntiState,
                 TrasferimentoChiamataModalState,
                 NotificheState,
-                AllertaSedeModalState,
-                SostituzionePartenzaModalState,
-                MezziComposizioneState,
-                SquadreComposizioneState,
-                FiltriComposizioneState
+                AllertaSedeModalState
             ],
             { developmentMode: !environment.production }
         ),
