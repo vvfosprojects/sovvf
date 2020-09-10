@@ -25,7 +25,6 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
     {
         private readonly IGetRichiestaById _getRichiestaById;
         private readonly IUpdateStatoPartenze _updateStatoPartenze;
-        private readonly IGeneraCodiceRichiesta _generaCodiceRichiesta;
         private readonly IGetUtenteById _getUtenteById;
         private readonly IUpdateConfermaPartenze _updateConfermaPartenze;
 
@@ -39,13 +38,11 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
         public ModificaPartenzaCommandHandler(
             IGetRichiestaById getRichiestaById,
             IUpdateStatoPartenze updateStatoPartenze,
-            IGeneraCodiceRichiesta generaCodiceRichiesta,
             IGetUtenteById getUtenteById,
             IUpdateConfermaPartenze updateConfermaPartenze)
         {
             _getRichiestaById = getRichiestaById;
             _updateStatoPartenze = updateStatoPartenze;
-            _generaCodiceRichiesta = generaCodiceRichiesta;
             _getUtenteById = getUtenteById;
             _updateConfermaPartenze = updateConfermaPartenze;
         }

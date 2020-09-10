@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using CQRS.Queries;
 using Microsoft.AspNetCore.SignalR;
+using SO115App.API.Models.Classi.Composizione;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.ModificaPartenza;
 using SO115App.Models.Servizi.CustomMapper;
@@ -20,7 +21,6 @@ namespace SO115App.SignalR.Sender.GestionePartenza
     {
         private readonly IHubContext<NotificationHub> _notificationHubContext;
         private readonly GetGerarchiaToSend _getGerarchiaToSend;
-        private readonly MapperRichiestaAssistenzaSuSintesi _mapperRichiesta;
 
         private readonly IGetRichiestaById _getRichiesta;
         private readonly IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> _boxRichiesteHandler;
@@ -32,10 +32,7 @@ namespace SO115App.SignalR.Sender.GestionePartenza
             IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative,
             IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> boxRichiesteHandler,
             IQueryHandler<BoxMezziQuery, BoxMezziResult> boxMezziHandler,
-            IQueryHandler<BoxPersonaleQuery, BoxPersonaleResult> boxPersonaleHandler,
-            IMapper mapper,
-            IGetTipologieByCodice getTipologieByCodice,
-            IGetUtenteById getUtenteById)
+            IQueryHandler<BoxPersonaleQuery, BoxPersonaleResult> boxPersonaleHandler)
         {
             _notificationHubContext = notificationHubContext;
             _getGerarchiaToSend = new GetGerarchiaToSend(getAlberaturaUnitaOperative);
@@ -43,7 +40,6 @@ namespace SO115App.SignalR.Sender.GestionePartenza
             _boxMezziHandler = boxMezziHandler;
             _boxPersonaleHandler = boxPersonaleHandler;
             _boxRichiesteHandler = boxRichiesteHandler;
-            _mapperRichiesta = new MapperRichiestaAssistenzaSuSintesi(mapper, getTipologieByCodice, getUtenteById);
         }
 
         public async Task SendNotification(ModificaPartenzaCommand command)
@@ -56,18 +52,27 @@ namespace SO115App.SignalR.Sender.GestionePartenza
             else
                 SediDaNotificare = _getGerarchiaToSend.Get(richiesta.CodSOCompetente);
 
-            foreach (var sede in SediDaNotificare)
+            var confermaPartenza = new ConfermaPartenze()
+            {
+                CodiceSede = command.CodSede,
+                IdOperatore = command.IdOperatore,
+                IdRichiesta = command.ModificaPartenza.CodRichiesta,
+                Partenze = richiesta.lstPartenze,
+                richiesta = richiesta
+            };
+
+            Parallel.ForEach(SediDaNotificare, sede =>
             {
                 var boxInterventi = _boxRichiesteHandler.Handle(new BoxRichiesteQuery() { CodiciSede = new string[] { sede } }).BoxRichieste;
                 var boxMezzi = _boxMezziHandler.Handle(new BoxMezziQuery() { CodiciSede = new string[] { sede } }).BoxMezzi;
                 var boxPersonale = _boxPersonaleHandler.Handle(new BoxPersonaleQuery() { CodiciSede = new string[] { sede } }).BoxPersonale;
 
-                await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxInterventi", boxInterventi);
-                await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxMezzi", boxMezzi);
-                await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxPersonale", boxPersonale);
+                _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxInterventi", boxInterventi);
+                _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxMezzi", boxMezzi);
+                _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxPersonale", boxPersonale);
 
-                await _notificationHubContext.Clients.Group(sede).SendAsync("ModifyAndNotifySuccess", _mapperRichiesta.Map(richiesta));
-            }
+                _notificationHubContext.Clients.Group(sede).SendAsync("ModifyAndNotifySuccess", confermaPartenza);
+            });
         }
     }
 }

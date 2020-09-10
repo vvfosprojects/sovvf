@@ -898,5 +898,6 @@ namespace SO115App.API.Models.Classi.Soccorso
             {
             }
         }
+        public List<Partenza> lstPartenze => Partenze.Select(c => c.Partenza).ToList();
     }
 }
