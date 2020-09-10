@@ -17,11 +17,5 @@ namespace SO115App.Models.Classi.Composizione
         public DateTime? DataAnnullamento { get; set; }
         public string MotivazioneAnnullamento { get; set; }
         public List<CambioStato> SequenzaStati { get; set; }
-
-        public string[] CodSquadre => Squadre.Select(c => c.Codice).ToArray();
-        public DateTime DataPrimoStato => SequenzaStati
-                .OrderBy(c => c.DataOraAggiornamento)
-                .Select(c => c.DataOraAggiornamento)
-                .FirstOrDefault();
     }
 }

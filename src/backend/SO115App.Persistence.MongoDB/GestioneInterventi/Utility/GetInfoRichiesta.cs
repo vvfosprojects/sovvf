@@ -1,9 +1,6 @@
 ﻿using SO115App.API.Models.Classi.Marker;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.InfoRichiesta;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace SO115App.Persistence.MongoDB.GestioneInterventi.Utility
 {
@@ -20,11 +17,11 @@ namespace SO115App.Persistence.MongoDB.GestioneInterventi.Utility
         {
             if (idRichiesta == null) return null;
 
-            var richiesta = _getRichiestaById.GetByCodice(idRichiesta);
+            var richiesta = _getRichiestaById.GetById(idRichiesta);
 
             return new InfoRichiesta()
             {
-                CodiceRichiesta = richiesta.CodRichiesta,
+                CodiceRichiesta = richiesta.Id,
                 Indirizzo = richiesta.Localita.Indirizzo
             };
         }

@@ -36,6 +36,8 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 
         public void Handle(ModificaPartenzaCommand command)
         {
+            //TODO RAGIONARE CON COD RICHIESTA NON ID
+
             Richiesta = command.Richiesta;
 
             PartenzaDaAnnullare = Richiesta.Partenze
@@ -64,7 +66,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                     richiesta = Richiesta,
                     Partenze = Richiesta.Partenze.Select(c => c.Partenza).ToList()
                 }
-            }, command.ModificaPartenza.DataPrimoStato, command.ModificaPartenza.Mezzo, command.ModificaPartenza.Squadre);
+            }, command.DataPrimoStato, command.ModificaPartenza.Mezzo, command.ModificaPartenza.Squadre);
 
             //TRADUCO GLI STATI
             foreach (var stato in command.ModificaPartenza.SequenzaStati.OrderBy(c => c.DataOraAggiornamento))
