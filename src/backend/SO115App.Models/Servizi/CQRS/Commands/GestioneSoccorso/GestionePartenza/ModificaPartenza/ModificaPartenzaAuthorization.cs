@@ -1,6 +1,5 @@
 ﻿using CQRS.Authorization;
 using CQRS.Commands.Authorizers;
-using System;
 using System.Collections.Generic;
 
 namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.ModificaPartenza
