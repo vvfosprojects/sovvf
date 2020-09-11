@@ -186,19 +186,21 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
             centered: true
         });
         sostituzioneModal.componentInstance.idRichiesta = this.idRichiesta;
+        sostituzioneModal.componentInstance.codRichiesta = this.partenza.mezzo.idRichiesta;
         sostituzioneModal.result.then((res: { status: string, result: any }) => {
             switch (res.status) {
                 case 'ok' :
                     let nuovaPartenza = res.result;
+                    if (nuovaPartenza.mezzo && nuovaPartenza.squadre.length > 0) {
+                        this.modificaPartenzaForm.value.partenzaAnnullata = true;
+                    }
                     if (nuovaPartenza.mezzo) {
                         this.modificaPartenzaForm.value.codMezzo = nuovaPartenza.mezzo;
                         this.modificaPartenzaForm.value.mezzoDaAnnullare =  this.partenza.mezzo.codice;
-                        this.modificaPartenzaForm.value.partenzaAnnullata = true;
                     }
                     if (nuovaPartenza.squadre.length > 0) {
                         this.modificaPartenzaForm.value.codSquadre = nuovaPartenza.squadre.map(x => x);
                         this.modificaPartenzaForm.value.squadreDaAnnullare = this.partenza.squadre.map(x => x.id);
-                        this.modificaPartenzaForm.value.partenzaAnnullata = true;
                     }
                     break;
                 case 'ko':
