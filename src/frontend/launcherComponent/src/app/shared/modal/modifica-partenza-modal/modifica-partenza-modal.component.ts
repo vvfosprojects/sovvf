@@ -190,17 +190,15 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
         sostituzioneModal.result.then((res: { status: string, result: any }) => {
             switch (res.status) {
                 case 'ok' :
+                    console.log('RES SECONDO MODALE: ', res.result)
                     let nuovaPartenza = res.result;
-                    if (nuovaPartenza.mezzo && nuovaPartenza.squadre.length > 0) {
+                    if (nuovaPartenza.codMezzo && nuovaPartenza.codSquadre.length > 0) {
                         this.modificaPartenzaForm.value.partenzaAnnullata = true;
-                    }
-                    if (nuovaPartenza.mezzo) {
-                        this.modificaPartenzaForm.value.codMezzo = nuovaPartenza.mezzo;
+                        this.modificaPartenzaForm.value.codMezzo = nuovaPartenza.codMezzo;
+                        this.modificaPartenzaForm.value.codSquadre = nuovaPartenza.codSquadre.map(x => x);
                         this.modificaPartenzaForm.value.mezzoDaAnnullare =  this.partenza.mezzo.codice;
-                    }
-                    if (nuovaPartenza.squadre.length > 0) {
-                        this.modificaPartenzaForm.value.codSquadre = nuovaPartenza.squadre.map(x => x);
                         this.modificaPartenzaForm.value.squadreDaAnnullare = this.partenza.squadre.map(x => x.id);
+                        this.modificaPartenzaForm.value.motivazione = nuovaPartenza.motivazione;
                     }
                     break;
                 case 'ko':

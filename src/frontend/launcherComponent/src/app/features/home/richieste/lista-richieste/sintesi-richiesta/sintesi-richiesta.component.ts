@@ -238,6 +238,7 @@ export class SintesiRichiestaComponent implements OnChanges {
                         partenza.mezzo = result.codMezzo;
                         partenza.partenzaAnnullata = result.partenzaAnnullata;
                         partenza.sequenze = result.sequenze;
+                        partenza.motivazione = result.motivazione;
                     } else {
                         partenza.mezzo = null;
                     }
