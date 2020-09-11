@@ -5,6 +5,7 @@ using SO115App.Models.Servizi.Infrastruttura.Autenticazione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.VerificaUtente;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Principal;
 
 namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.ModificaPartenza
@@ -29,7 +30,14 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 
         public IEnumerable<AuthorizationResult> Authorize(ModificaPartenzaCommand command)
         {
-            command.Richiesta = _getRichiestaById.GetById(command.ModificaPartenza.CodRichiesta);
+            command.Richiesta = _getRichiestaById.GetByCodice(command.ModificaPartenza.CodRichiesta);
+
+            if (command.Richiesta == null) 
+                yield return new AuthorizationResult(Costanti.IdRichiestaNonValida);
+            else if(command.Richiesta.Partenze.Count == 0)
+                yield return new AuthorizationResult("La richiesta non ha partenze da annullare");
+            else if (command.Richiesta.Partenze.All(c => c.Partenza.PartenzaAnnullata.Equals(true)))
+                yield return new AuthorizationResult("La richiesta non ha partenze da annullare");
 
             var username = _currentUser.Identity.Name;
             var user = _findUserByUsername.FindUserByUs(username);

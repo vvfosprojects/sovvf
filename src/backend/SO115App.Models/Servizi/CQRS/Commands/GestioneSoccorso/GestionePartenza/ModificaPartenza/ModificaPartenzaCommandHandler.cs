@@ -36,8 +36,6 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 
         public void Handle(ModificaPartenzaCommand command)
         {
-            //TODO RAGIONARE CON COD RICHIESTA NON ID
-
             Richiesta = command.Richiesta;
 
             PartenzaDaAnnullare = Richiesta.Partenze
@@ -49,7 +47,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 AnnullaPartenza(new AnnullaPartenzaCommand()
                 {
                     IdOperatore = command.IdOperatore,
-                    IdRichiesta = command.ModificaPartenza.CodRichiesta,
+                    IdRichiesta = command.Richiesta.Id,
                     TestoMotivazione = command.ModificaPartenza.MotivazioneAnnullamento,
                     TargaMezzo = command.ModificaPartenza.CodMezzoDaAnnullare,
                 }, command.ModificaPartenza.DataAnnullamento.Value);
@@ -60,7 +58,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
             {
                 ConfermaPartenze = new ConfermaPartenze()
                 {
-                    IdRichiesta = command.ModificaPartenza.CodRichiesta,
+                    IdRichiesta = command.Richiesta.Id,
                     CodiceSede = command.CodSede,
                     IdOperatore = command.IdOperatore,
                     richiesta = Richiesta,
