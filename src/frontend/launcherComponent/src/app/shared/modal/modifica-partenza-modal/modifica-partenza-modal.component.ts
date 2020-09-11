@@ -14,12 +14,9 @@ import { SostituzionePartenzaModalComponent } from '../sostituzione-partenza-mod
 import { ListaSquadre } from '../../interface/lista-squadre';
 import { VisualizzaListaSquadrePartenza } from 'src/app/features/home/store/actions/richieste/richieste.actions';
 import { OFFSET_SYNC_TIME } from 'src/app/core/settings/referral-time';
+import { SequenzaValoriSelezionati } from '../../interface/sequenza-modifica-partenza.interface';
 
-export interface SequenzaValoriSelezionati {
-    stato: StatoMezzo;
-    time: { ora: number, minuti: number };
-    dataOraAggiornamento?: Date;
-}
+
 
 @Component({
     selector: 'app-modifica-partenza-modal',
@@ -37,7 +34,7 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
     sede: string;
     partenza: Partenza;
     idRichiesta: string;
-    public time = { ora: 13, minuti: 30 };
+    public time = { hour: 13, minute: 30 };
     listaStatoMezzo: any[];
     statoMezzoSelezionato: string;
     sequenze: SequenzaValoriSelezionati[] = [];
@@ -59,7 +56,7 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.listaStatoMezzo = Object.values(StatoMezzo).map(x => ({ id: x, name: x }));
+        this.listaStatoMezzo = Object.values(StatoMezzo).map(x => ({ name: x }));
     }
 
     initForm() {
@@ -143,21 +140,20 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
         if (!this.modificaPartenzaForm.value.squadreDaAnnullare) {
             this.modificaPartenzaForm.value.codSquadre = this.partenza.squadre.map(x => x.id);
         }
-        const sequenze = this.modificaPartenzaForm.value.sequenze;
+        let sequenze = this.modificaPartenzaForm.value.sequenze;
 
         if (sequenze) {
         sequenze.forEach((s: SequenzaValoriSelezionati) => {
             let data = new Date();
             const orario = s.time;
-            data.setHours(orario.ora);
-            data.setMinutes(orario.minuti);
+            data.setHours(orario.hour);
+            data.setMinutes(orario.minute);
             data.setSeconds(0);
             data.setMilliseconds(0);
             data = new Date(data.getTime() + OFFSET_SYNC_TIME[0]);
             s.dataOraAggiornamento = data;
         });
         }
-        console.log('VALUE MODIFICA PARTENZA FORM: ', this.modificaPartenzaForm.value);
         this.modal.close({ status: 'ok', result: this.modificaPartenzaForm.value });
     }
 
@@ -171,8 +167,8 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
 
     formatTime() {
         const d = new Date();
-        this.time.ora = d.getHours();
-        this.time.minuti = d.getMinutes();
+        this.time.hour = d.getHours();
+        this.time.minute = d.getMinutes();
     }
 
 
@@ -188,7 +184,7 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
 
     onAddSequenza() {
         const d = new Date();
-        this.sequenze.push({ stato: undefined, time: { ora: d.getHours(), minuti: d.getMinutes() } });
+        this.sequenze.push({ stato: undefined, time: { hour: d.getHours(), minute: d.getMinutes() } });
     }
 
     onRemoveSequenza() {
@@ -206,7 +202,6 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
         sostituzioneModal.result.then((res: { status: string, result: any }) => {
             switch (res.status) {
                 case 'ok' :
-                    console.log('RES SECONDO MODALE: ', res.result)
                     const nuovaPartenza = res.result;
                     if (nuovaPartenza.codMezzo && nuovaPartenza.codSquadre.length > 0) {
                         this.modificaPartenzaForm.value.partenzaAnnullata = true;

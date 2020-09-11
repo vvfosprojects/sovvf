@@ -239,6 +239,8 @@ export class SintesiRichiestaComponent implements OnChanges {
                         partenza.partenzaAnnullata = result.partenzaAnnullata;
                         partenza.sequenze = result.sequenze;
                         partenza.motivazione = result.motivazione;
+                        partenza.mezzoDaAnnullare = result.mezzoDaAnnullare;
+                        partenza.squadreDaAnnullare = result.squadreDaAnnullare;
                     } else {
                         partenza.mezzo = null;
                     }
@@ -252,7 +254,7 @@ export class SintesiRichiestaComponent implements OnChanges {
                     turno: this.store.selectSnapshot(TurnoState.turnoCalendario).corrente,
                     };
                     console.log('VALUE TEST: ', partenzeObj)
-                    //this.store.dispatch(new ConfirmPartenze(partenzeObj));
+                    //this.store.dispatch(new RequestAddModificaPartenza(partenzeObj));
                     break;
                 case 'ko':
                     break;

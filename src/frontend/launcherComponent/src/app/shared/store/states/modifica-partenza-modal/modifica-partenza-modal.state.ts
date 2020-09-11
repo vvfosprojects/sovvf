@@ -1,6 +1,7 @@
-import { Selector, State, Action } from '@ngxs/store';
+import { Selector, State, Action, StateContext } from '@ngxs/store';
 import { ModificaPartenza } from 'src/app/shared/interface/modifica-partenza-interface';
-import { SequenzaValoriSelezionati } from 'src/app/shared/modal/modifica-partenza-modal/modifica-partenza-modal.component';
+import { SequenzaValoriSelezionati } from 'src/app/shared/interface/sequenza-modifica-partenza.interface';
+import { RequestAddModificaPartenza } from '../../actions/modifica-partenza-modal/modifica-partenza-modal-actions';
 
     export interface ModificaPartenzaModalStateModel {
         modificaPartenza: Array<ModificaPartenza>;
@@ -48,10 +49,6 @@ export const ModificaPartenzaModalStateDefaults: ModificaPartenzaModalStateModel
 })
 
 export class ModificaPartenzaModalState {
-    /*
-    constructor(private modificaPartenzaService: ModificaPartenzaService) {
-    }
-    */
 
     @Selector()
     static formValid(state: ModificaPartenzaModalStateModel) {
@@ -59,13 +56,11 @@ export class ModificaPartenzaModalState {
     }
 
     /*
-    @Action(GetListaMezziSquadre)
-    getListaMezziSquadre({ patchState }: StateContext<ModificaPartenzaModalStateModel>) {
-    this.modificaPartenzaService.getListaMezziSquadre().subscribe((codMezzo: string, codSquadre: string[]) => {
-        patchState({
-            codMezzo: codMezzo,
-            codSquadre: codSquadre,
-        });
-    })
+    @Action(RequestAddModificaPartenza)
+    requestAddModificaPartenza({ getState }: StateContext<ModificaPartenzaModalStateModel>) {
+        const state = getState();
+        const form = state.modificaPartenzaForm.model;
+        const obj = {};
+    }
     */
 }
