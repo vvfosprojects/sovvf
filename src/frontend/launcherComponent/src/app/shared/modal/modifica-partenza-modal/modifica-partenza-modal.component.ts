@@ -58,7 +58,7 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.listaStatoMezzo = Object.values(StatoMezzo).map(x => ({ id: x, name: x }));
-        }
+    }
 
     initForm() {
         this.modificaPartenzaForm = new FormGroup({
@@ -67,6 +67,10 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
             codMezzo: new FormControl(),
             codSquadre: new FormControl(),
             sequenze: new FormControl(),
+            mezzoDaAnnullare: new FormControl(),
+            squadreDaAnnullare: new FormControl(),
+            motivazione: new FormControl(),
+            partenzaAnnullata: new FormControl(),
         });
         this.modificaPartenzaForm = this.fb.group({
             operatore: [null],
@@ -74,6 +78,10 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
             codMezzo: [null],
             codSquadre: [null],
             sequenze: [null],
+            mezzoDaAnnullare: [null],
+            squadreDaAnnullare: [null],
+            motivazione: [null],
+            partenzaAnnullata: [false],
         });
     }
 
@@ -127,10 +135,14 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
 
         this.formatTimeForCallBack();
         this.modificaPartenzaForm.value.sequenze = this.sequenze;
-        this.modificaPartenzaForm.value.codMezzo = this.partenza.mezzo.codice;
-        this.modificaPartenzaForm.value.codSquadre = this.partenza.squadre.map(x => x.id);
+        if (!this.modificaPartenzaForm.value.mezzoDaAnnullare) {
+            this.modificaPartenzaForm.value.codMezzo = this.partenza.mezzo.codice;
+        }
+        if (!this.modificaPartenzaForm.value.squadreDaAnnullare) {
+            this.modificaPartenzaForm.value.codSquadre = this.partenza.squadre.map(x => x.id);
+        }
         console.log('VALUE MODIFICA PARTENZA FORM: ', this.modificaPartenzaForm.value);
-        this.modal.close({ success: true, result: this.modificaPartenzaForm.value });
+        this.modal.close({ status: 'ok', result: this.modificaPartenzaForm.value });
     }
 
     onDismiss(): void {
@@ -147,11 +159,11 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
         this.time.minute = d.getMinutes();
     }
 
-    
+
     formatTimeForCallBack(): any {
-      return { oraEvento: this.sequenze['time'] };
+        return { oraEvento: this.sequenze['time'] };
     }
-    
+
 
     statoMezzoColor(stato: StatoMezzo) {
         return statoMezzoColor(stato);
@@ -167,51 +179,47 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
         this.sequenze.pop();
     }
 
-    open() {
+    openSostituzioneModal() {
         const sostituzioneModal = this.modalService.open(SostituzionePartenzaModalComponent, {
             windowClass: 'modal-holder',
             size: 'lg',
             centered: true
         });
         sostituzioneModal.componentInstance.idRichiesta = this.idRichiesta;
+        sostituzioneModal.componentInstance.codRichiesta = this.partenza.mezzo.idRichiesta;
+        sostituzioneModal.result.then((res: { status: string, result: any }) => {
+            switch (res.status) {
+                case 'ok' :
+                    console.log('RES SECONDO MODALE: ', res.result)
+                    let nuovaPartenza = res.result;
+                    if (nuovaPartenza.codMezzo && nuovaPartenza.codSquadre.length > 0) {
+                        this.modificaPartenzaForm.value.partenzaAnnullata = true;
+                        this.modificaPartenzaForm.value.codMezzo = nuovaPartenza.codMezzo;
+                        this.modificaPartenzaForm.value.codSquadre = nuovaPartenza.codSquadre.map(x => x);
+                        this.modificaPartenzaForm.value.mezzoDaAnnullare =  this.partenza.mezzo.codice;
+                        this.modificaPartenzaForm.value.squadreDaAnnullare = this.partenza.squadre.map(x => x.id);
+                        this.modificaPartenzaForm.value.motivazione = nuovaPartenza.motivazione;
+                    }
+                    break;
+                case 'ko':
+                    break;
+            }
+        });
     }
 
     onListaSquadrePartenza() {
         const listaSquadre = {} as ListaSquadre;
         listaSquadre.idPartenza = this.partenza.id;
         listaSquadre.squadre = this.partenza.squadre;
-        this.store.dispatch(new VisualizzaListaSquadrePartenza(listaSquadre))
+        this.store.dispatch(new VisualizzaListaSquadrePartenza(listaSquadre));
     }
 
-    /*
-    confermaPartenza() {
-        const partenza = makeCopy(this.nuovaPartenza);//-->dato seconda modale
-        const partenzaMappedArray = partenza.map(obj => {
-            const rObj = {};
-            if (obj.mezzoComposizione) {
-                rObj['mezzo'] = obj.mezzoComposizione.mezzo;
-            } else {
-                rObj['mezzo'] = null;
-            }
-            if (obj.squadraComposizione.length > 0) {
-                rObj['squadre'] = obj.squadraComposizione.map((squadraComp: SquadraComposizione) => {
-                    return squadraComp.squadra;
-                });
-            } else {
-                rObj['squadre'] = [];
-            }
-            return rObj;
-        });
-        const partenzaObj: ConfermaPartenza = {
-            partenza: partenzaMappedArray,
-            idRichiesta: this.idRichiesta,
-            turno: this.store.selectSnapshot(TurnoState.turnoCalendario).corrente
-        };
-        this.store.dispatch(new ConfirmPartenza(partenzaObj));
-    }
-    */
 
     /*
+    const orario = res.result.oraEvento;
+    this.actionMezzo.emit({ mezzoAction: this.statoMezzoActions, oraEvento: { ora: orario.hour, minuti: orario.minute } });
+
+
     onActionMezzo(action?: MezzoActionEmit) {
     let actionMezzo: MezzoActionInterface;
     if (action) {

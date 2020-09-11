@@ -7,7 +7,8 @@
 </div>
 <div class="modal-body height py-4 px-5">
     <form [formGroup]="modificaPartenzaForm" ngxsForm="modificaPartenzaModal.modificaPartenzaForm"
-          autocomplete="off">
+          autocomplete="off"
+          >
         <!-- operatore e sede -->
         <div class="d-inline-flex mb-3">
             <button class="btn btn-sm btn-block btn-light btn-no-hover ml-2 info-user" style="margin-left: 0px !important;"
@@ -76,15 +77,19 @@
                     </div>
                 </div>
                 <div style="align-self: center;">
-                    <button class="btn btn-sm btn-block btn-info btn-no-hover" ngbTooltip="Modifica partenza"
-                            style="max-width: fit-content;" (click)="open()">
+                    <button class="btn btn-xl btn-block btn-info btn-no-hover" ngbTooltip="Sostituisci partenza"
+                            style="padding-left: 15px;
+                            padding-right: 15px;
+                            padding-top: 5px;
+                            padding-bottom: 5px;
+                            font-size: 18px;" (click)="openSostituzioneModal()">
                         <i class="fa fa-pencil-square-o"></i>
                     </button>
                 </div>
             </div>
         </div>
         <!-- sequenza eventi -->
-        <div class="my-4 d-inline-flex">
+        <div class="my-4" style="display: flex; justify-content: center;">
             <label id="sequenzaEventi">Crea sequenza Eventi
                 <small class="text-danger">*</small>
             </label>
@@ -97,7 +102,7 @@
                 <i class="fa fa-minus"></i>
             </button>
         </div>
-        <div *ngIf="sequenze?.length > 0" class="card mb-4" style="width: 31.5rem;">
+        <div *ngIf="sequenze?.length > 0" class="card mb-4" style="width: 31.5rem; margin-left: 100px;">
             <ul class="list-group list-group-flush" style="max-height: 500px;"
                 [class.overflow-test]="sequenze?.length > 3">
                 <li *ngFor="let sequenza of sequenze; let index = index" class="list-group-item"
