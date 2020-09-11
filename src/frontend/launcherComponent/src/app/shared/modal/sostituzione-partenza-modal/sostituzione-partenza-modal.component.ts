@@ -234,11 +234,11 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
     }
 
     onDismiss(): void {
-        this.modal.dismiss('ko');
+        this.modal.close({ status: 'ko' });
     }
 
     closeModal(type: string) {
-        this.modal.close(type);
+        this.modal.close({ status: type });
     }
 
     onConferma(): void {
@@ -251,6 +251,6 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
 
         const codMezzo = this.store.selectSnapshot(MezziComposizioneState.idMezzoSelezionato);
         const codSquadre = this.store.selectSnapshot(SquadreComposizioneState.idSquadreSelezionate);
-        this.modal.close({ success: true, result: { codMezzo: codMezzo, codSquadre: codSquadre, motivazione: this.f.motivazione.value } });
+        this.modal.close({ status: 'ok', result: { codMezzo: codMezzo, codSquadre: codSquadre, motivazione: this.f.motivazione.value } });
     }
 }
