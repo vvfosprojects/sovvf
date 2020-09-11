@@ -2,21 +2,24 @@ import { Selector, State, Action } from '@ngxs/store';
 import { ModificaPartenza } from 'src/app/shared/interface/modifica-partenza-interface';
 import { SequenzaValoriSelezionati } from 'src/app/shared/modal/modifica-partenza-modal/modifica-partenza-modal.component';
 
-export interface ModificaPartenzaModalStateModel {
-    modificaPartenza: Array<ModificaPartenza>;
-    modificaPartenzaForm: {
-        model?: {
-            codMezzo: string;
-            codSquadre: string[];
-            operatore: string;
-            sede: string;
-            sequenze: SequenzaValoriSelezionati[];
+    export interface ModificaPartenzaModalStateModel {
+        modificaPartenza: Array<ModificaPartenza>;
+        modificaPartenzaForm: {
+            model?: {
+                codMezzo: string;
+                codSquadre: string[];
+                operatore: string;
+                sede: string;
+                sequenze: SequenzaValoriSelezionati[];
+                mezzoDaAnnullare: string;
+                squadreDaAnnullare: string[];
+                motivazione: string;
+            };
+            dirty: boolean;
+            status: string;
+            errors: any;
         };
-        dirty: boolean;
-        status: string;
-        errors: any;
-    };
-}
+    }
 
 export const ModificaPartenzaModalStateDefaults: ModificaPartenzaModalStateModel = {
     modificaPartenza: undefined,
@@ -27,6 +30,9 @@ export const ModificaPartenzaModalStateDefaults: ModificaPartenzaModalStateModel
             operatore: undefined,
             sede: undefined,
             sequenze: undefined,
+            mezzoDaAnnullare: undefined,
+            squadreDaAnnullare: undefined,
+            motivazione: undefined,
         },
         dirty: false,
         status: '',

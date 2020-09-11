@@ -22,6 +22,8 @@ import { ListaEntiComponent } from '../../../../../shared/components/lista-enti/
 import { EliminaPartenzaModalComponent } from '../../../../../shared/modal/elimina-partenza-modal/elimina-partenza-modal.component';
 import { DettaglioFonogrammaModalComponent } from '../../../../../shared/modal/dettaglio-fonogramma-modal/dettaglio-fonogramma-modal.component';
 import { ModificaFonogrammaModalComponent } from '../../../../../shared/modal/modifica-fonogramma-modal/modifica-fonogramma-modal.component';
+import { ConfermaPartenze } from '../../../composizione-partenza/interface/conferma-partenze-interface';
+import { TurnoState } from 'src/app/features/navbar/store/states/turno.state';
 
 @Component({
     selector: 'app-sintesi-richiesta',
@@ -227,22 +229,31 @@ export class SintesiRichiestaComponent implements OnChanges {
         });
         modalModificaPartenza.componentInstance.partenza = this.richiesta.partenzeRichiesta[index];
         modalModificaPartenza.componentInstance.idRichiesta = this.richiesta.id;
-        /*
         modalModificaPartenza.result.then((res: { status: string, result: any }) => {
             switch (res.status) {
                 case 'ok' :
-                    const modPartenza = makeCopy(this.richiesta.partenzeRichiesta[index]);
-                    modPartenza.squadre = res.result.squadre;
-                    modPartenza.mezzo = res.result.mezzo;
-                    console.log('RESULT TESTTTTTT: ', res)
-                    console.log('RESULT TESTTTTTT: ', res.result)
-                    //this.store.dispatch(modPartenza as Partenza[]);
+                    let result = res.result;
+                    let partenza = makeCopy(this.richiesta.partenzeRichiesta[index]);
+                    if (result.codMezzo) {
+                        partenza.mezzo = result.codMezzo;
+                    } else {
+                        partenza.mezzo = null;
+                    }
+                    if (result.codSquadre.length > 0) {
+                        partenza.squadre = result.codSquadre.map(x => x);
+                    } else partenza.squadre = [];
+                    const partenzeObj: ConfermaPartenze = {
+                    partenze: partenza,
+                    idRichiesta: this.richiesta.codice,
+                    turno: this.store.selectSnapshot(TurnoState.turnoCalendario).corrente,
+                    };
+                    console.log('VALUE TEST: ', partenzeObj)
+                    //this.store.dispatch(new ConfirmPartenze(partenzeObj));
                     break;
                 case 'ko':
                     break;
             }
         });
-        */
     }
 
     onActionRichiesta(richiestaAction: RichiestaActionInterface) {

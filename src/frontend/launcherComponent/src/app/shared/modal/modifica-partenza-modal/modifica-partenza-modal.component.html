@@ -84,7 +84,7 @@
             </div>
         </div>
         <!-- sequenza eventi -->
-        <div class="my-4 d-inline-flex">
+        <div class="my-4" style="display: flex; justify-content: center;">
             <label id="sequenzaEventi">Crea sequenza Eventi
                 <small class="text-danger">*</small>
             </label>
@@ -97,7 +97,7 @@
                 <i class="fa fa-minus"></i>
             </button>
         </div>
-        <div *ngIf="sequenze?.length > 0" class="card mb-4" style="width: 31.5rem;">
+        <div *ngIf="sequenze?.length > 0" class="card mb-4" style="width: 31.5rem; margin-left: 100px;">
             <ul class="list-group list-group-flush" style="max-height: 500px;"
                 [class.overflow-test]="sequenze?.length > 3">
                 <li *ngFor="let sequenza of sequenze; let index = index" class="list-group-item"

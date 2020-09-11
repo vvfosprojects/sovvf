@@ -67,6 +67,9 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
             codMezzo: new FormControl(),
             codSquadre: new FormControl(),
             sequenze: new FormControl(),
+            mezzoDaAnnullare: new FormControl(),
+            squadreDaAnnullare: new FormControl(),
+            motivazione: new FormControl(),
         });
         this.modificaPartenzaForm = this.fb.group({
             operatore: [null],
@@ -74,6 +77,9 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
             codMezzo: [null],
             codSquadre: [null],
             sequenze: [null],
+            mezzoDaAnnullare: [null],
+            squadreDaAnnullare: [null],
+            motivazione: [null],
         });
     }
 
@@ -127,10 +133,14 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
 
         this.formatTimeForCallBack();
         this.modificaPartenzaForm.value.sequenze = this.sequenze;
-        this.modificaPartenzaForm.value.codMezzo = this.partenza.mezzo.codice;
-        this.modificaPartenzaForm.value.codSquadre = this.partenza.squadre.map(x => x.id);
+        if (!this.modificaPartenzaForm.value.mezzoDaAnnullare) {
+            this.modificaPartenzaForm.value.codMezzo = this.partenza.mezzo.codice;
+        }
+        if (!this.modificaPartenzaForm.value.squadreDaAnnullare) {
+            this.modificaPartenzaForm.value.codSquadre = this.partenza.squadre.map(x => x.id);
+        }
         console.log('VALUE MODIFICA PARTENZA FORM: ', this.modificaPartenzaForm.value);
-        this.modal.close({ success: true, result: this.modificaPartenzaForm.value });
+        this.modal.close({ status: 'ok', result: this.modificaPartenzaForm.value });
     }
 
     onDismiss(): void {
@@ -173,10 +183,23 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
             size: 'lg',
             centered: true
         });
-        sostituzioneModal.componentInstance.codRichiesta = this.idRichiesta;
         sostituzioneModal.componentInstance.idRichiesta = this.idRichiesta;
-        sostituzioneModal.result.then((result: {success: boolean, result: any}) => {
-            console.log('Sostituzione Modal', result);
+        sostituzioneModal.result.then((res: { status: string, result: any }) => {
+            switch (res.status) {
+                case 'ok' :
+                    let nuovaPartenza = res.result;
+                    if (nuovaPartenza.mezzo) {
+                        this.modificaPartenzaForm.value.codMezzo = nuovaPartenza.mezzo;
+                        this.modificaPartenzaForm.value.mezzoDaAnnullare =  this.partenza.mezzo.codice;
+                    }
+                    if (nuovaPartenza.squadre.length > 0) {
+                        this.modificaPartenzaForm.value.codSquadre = nuovaPartenza.squadre.map(x => x);
+                         this.modificaPartenzaForm.value.squadreDaAnnullare = this.partenza.squadre.map(x => x.id);
+                    }
+                    break;
+                case 'ko':
+                    break;
+            }
         });
     }
 
