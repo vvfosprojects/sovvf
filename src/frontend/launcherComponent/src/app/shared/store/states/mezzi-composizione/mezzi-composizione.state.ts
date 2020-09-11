@@ -57,7 +57,7 @@ import { FilterListaSquadreComposizione, SetListaSquadreComposizione } from '../
 import { SquadraComposizione } from '../../../interface/squadra-composizione-interface';
 import { SintesiRichiesteService } from '../../../../core/service/lista-richieste-service/lista-richieste.service';
 import { SetListaFiltriAffini } from '../../actions/filtri-composizione/filtri-composizione.actions';
-import { SquadreComposizioneState } from '../squadre-composizione/squadre-composizione.state';
+import { SquadreComposizioneState, SquadreComposizioneStateStateModel } from '../squadre-composizione/squadre-composizione.state';
 import produce from 'immer';
 
 export interface MezziComposizioneStateStateModel {
@@ -96,6 +96,17 @@ export class MezziComposizioneState {
     @Selector()
     static allMezziComposizione(state: MezziComposizioneStateStateModel) {
         return state.allMezziComposizione;
+    }
+
+    @Selector()
+    static mezzoSelezionato(state: MezziComposizioneStateStateModel) {
+        let mezzoSelez = null as MezzoComposizione;
+        state.allMezziComposizione.forEach((m: MezzoComposizione) => {
+            if (m.id === state.idMezzoSelezionato) {
+                mezzoSelez = m;
+            }
+        });
+        return mezzoSelez;
     }
 
     @Selector()

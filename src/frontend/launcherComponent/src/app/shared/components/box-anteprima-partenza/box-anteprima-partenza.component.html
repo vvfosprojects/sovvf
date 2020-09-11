@@ -1,0 +1,53 @@
+<div class="border-partenza-box pb-4 d-flex" style="place-content: space-evenly;">
+    <div class="mb-3" style="display: contents;">
+        <div>
+            <label class="mb-3">Mezzo</label>
+            <div><i class="guida fa fa-truck fa-fw mr-1 text-{{ statoMezzoColor(partenza?.mezzo['stato']) }}"
+                    ngbTooltip="Mezzo {{ partenza?.mezzo['stato'] }}"></i>
+                <b class="font-box-partenza">{{ partenza?.mezzo['descrizione'] }}</b>
+                <span class="badge badge-default m-0">{{ partenza?.mezzo['genere'] }}</span>
+                <i class="fa fa-check-circle-o text-success ml-3"></i>
+            </div>
+        </div>
+        <div *ngIf="partenza?.squadre?.length === 1" style="color:#666666">
+            <div class="mb-2">
+                <label>Squadra</label>
+                <button class="btn btn-sm btn-light border ml-2 p-1 mr-2" ngbTooltip="Elenco squadra"
+                        style="padding: 5px !important; line-height: 0px;"
+                        (click)="onListaSquadrePartenza($event)">
+                    <span><i class="fa fa-search"></i></span>
+                </button>
+            </div>
+            <div><i class="fa fa-group mr-2" ngbTooltip="Squadra"></i>
+                <b class="font-box-partenza">{{ partenza?.squadre[0]?.nome }}</b>
+                <i class="fa fa-check-circle-o text-success ml-3"></i>
+            </div>
+        </div>
+        <div *ngIf="partenza?.squadre.length > 1" style="color:#666666">
+            <div class="mb-2">
+                <label>Squadre</label>
+                <button class="btn btn-sm btn-light border ml-2 p-1 mr-2" ngbTooltip="Elenco squadre"
+                        style="padding: 5px !important; line-height: 0px;"
+                        (click)="onListaSquadrePartenza($event)">
+                    <span><i class="fa fa-search"></i></span>
+                </button>
+            </div>
+            <div *ngFor="let squadre of partenza?.squadre"><i class="fa fa-group mr-2" ngbTooltip="Squadre"></i>
+                <b class="font-box-partenza">{{ squadre['nome'] }}</b>
+                <i class="fa fa-check-circle-o text-success ml-3"></i>
+            </div>
+        </div>
+        <ng-template [ngIf]="!nonModificabile">
+            <div style="align-self: center;">
+                <button class="btn btn-xl btn-block btn-info btn-no-hover" ngbTooltip="Sostituisci partenza"
+                        style="padding-left: 15px;
+                            padding-right: 15px;
+                            padding-top: 5px;
+                            padding-bottom: 5px;
+                            font-size: 18px;" (click)="onModificaPartenza($event)">
+                    <i class="fa fa-pencil-square-o"></i>
+                </button>
+            </div>
+        </ng-template>
+    </div>
+</div>

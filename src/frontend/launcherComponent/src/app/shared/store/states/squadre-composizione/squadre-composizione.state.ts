@@ -59,6 +59,19 @@ export class SquadreComposizioneState {
     }
 
     @Selector()
+    static squadreSelezionate(state: SquadreComposizioneStateStateModel) {
+        const squadreSelez = [];
+        state.allSquadreComposione.forEach((s: SquadraComposizione) => {
+            state.idSquadreSelezionate.forEach((idS: string) => {
+                if (s.id === idS) {
+                    squadreSelez.push(s);
+                }
+            });
+        });
+        return squadreSelez;
+    }
+
+    @Selector()
     static idSquadreSelezionate(state: SquadreComposizioneStateStateModel) {
         return state.idSquadreComposizioneSelezionate;
     }

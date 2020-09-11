@@ -1,35 +1,35 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
-import { GetListaMezziSquadre, SetListaMezziSquadre } from '../../actions/sostituzione-partenza/sostituzione-partenza.actions';
-import { StartListaComposizioneLoading, StopListaComposizioneLoading } from '../../../../features/home/store/actions/composizione-partenza/composizione-partenza.actions';
+import { GetListaMezziSquadre, SetListaMezziSquadre, StartListaComposizioneLoading, StopListaComposizioneLoading } from '../../actions/sostituzione-partenza/sostituzione-partenza.actions';
 import { ListaComposizioneAvanzata } from '../../../interface/lista-composizione-avanzata-interface';
 import { CompPartenzaService } from '../../../../core/service/comp-partenza-service/comp-partenza.service';
 import { FiltriComposizione } from '../../../../features/home/composizione-partenza/interface/filtri/filtri-composizione-interface';
 import { FilterListaMezziComposizione, SetListaMezziComposizione } from '../../actions/mezzi-composizione/mezzi-composizione.actions';
 import { SetListaSquadreComposizione } from '../../actions/squadre-composizione/squadre-composizione.actions';
-import { GetFiltriComposizione } from '../../actions/filtri-composizione/filtri-composizione.actions';
 
 export interface SostituzionePartenzaModel {
     listaMezziSquadre: ListaComposizioneAvanzata;
     sostituzionePartenzaForm: {
         model?: {
-            motivazione: string
+            motivazioneAnnullamento: string
         };
         dirty: boolean;
         status: string;
         errors: any;
     };
+    loadingListe: boolean;
 }
 
 export const sostituzionePartenzaDefaults: SostituzionePartenzaModel = {
     listaMezziSquadre: null,
     sostituzionePartenzaForm: {
         model: {
-            motivazione: undefined
+            motivazioneAnnullamento: undefined
         },
         dirty: false,
         status: '',
         errors: {}
-    }
+    },
+    loadingListe: false
 };
 
 @State<SostituzionePartenzaModel>({
@@ -41,6 +41,11 @@ export class SostituzionePartenzaModalState {
     @Selector()
     static formValid(state: SostituzionePartenzaModel) {
         return state.sostituzionePartenzaForm.status !== 'INVALID';
+    }
+
+    @Selector()
+    static loadingListe(state: SostituzionePartenzaModel) {
+        return state.loadingListe;
     }
 
     constructor(private compPartenzaService: CompPartenzaService) {
@@ -71,5 +76,20 @@ export class SostituzionePartenzaModalState {
             listaMezziSquadre: action.listaMezziSquadre
         });
         dispatch(new FilterListaMezziComposizione());
+    }
+
+
+    @Action(StartListaComposizioneLoading)
+    startListaComposizioneLoading({ patchState }: StateContext<SostituzionePartenzaModel>) {
+        patchState({
+            loadingListe: true
+        });
+    }
+
+    @Action(StopListaComposizioneLoading)
+    stopListaComposizioneLoading({ patchState }: StateContext<SostituzionePartenzaModel>) {
+        patchState({
+            loadingListe: false
+        });
     }
 }

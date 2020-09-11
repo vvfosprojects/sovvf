@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import { GetListaMezziSquadre } from '../../store/actions/sostituzione-partenza/sostituzione-partenza.actions';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
 import { SostituzionePartenzaModalState } from '../../store/states/sostituzione-partenza-modal/sostituzione-partenza-modal.state';
 import { MezziComposizioneState } from '../../store/states/mezzi-composizione/mezzi-composizione.state';
@@ -31,6 +31,10 @@ import { UnselectMezziAndSquadreComposizioneAvanzata } from '../../../features/h
 import { ClearFiltriAffini } from '../../store/actions/filtri-composizione/filtri-composizione.actions';
 import { FiltriComposizioneState } from '../../store/states/filtri-composizione/filtri-composizione.state';
 import { SetRicercaMezziComposizione, SetRicercaSquadreComposizione } from '../../store/actions/ricerca-composizione/ricerca-composizione.actions';
+import { ComposizionePartenzaState } from '../../../features/home/store/states/composizione-partenza/composizione-partenza.state';
+import { ListaSquadre } from '../../interface/lista-squadre';
+import { VisualizzaListaSquadrePartenza } from '../../../features/home/store/actions/richieste/richieste.actions';
+import { Partenza } from '../../model/partenza.model';
 
 @Component({
     selector: 'app-sostituzione-partenza',
@@ -67,8 +71,13 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
     // Filtri
     @Select(FiltriComposizioneState.filtriAffini) filtriAffini$: Observable<any>;
 
+    // Loading Liste Mezzi e Squadre
+    @Select(ComposizionePartenzaState.loadingListe) loadingListe$: Observable<boolean>;
+    loadingListe: boolean;
+
     idRichiesta: string;
     codRichiesta: string;
+    partenza: Partenza;
     sostituzionePartenzaForm: FormGroup;
     submitted: boolean;
 
@@ -141,6 +150,12 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
                 this.formValid = formValid;
             })
         );
+        // Prendo Loading Liste Mezzi e Squadre
+        this.subscription.add(
+            this.loadingListe$.subscribe((loading: boolean) => {
+                this.loadingListe = loading;
+            })
+        );
         this.initForm();
     }
 
@@ -160,15 +175,22 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
 
     initForm(): void {
         this.sostituzionePartenzaForm = new FormGroup({
-            motivazione: new FormControl(),
+            motivazioneAnnullamento: new FormControl(),
         });
         this.sostituzionePartenzaForm = this.fb.group({
-            motivazione: [null],
+            motivazioneAnnullamento: [null],
         });
     }
 
     get f(): any {
         return this.sostituzionePartenzaForm.controls;
+    }
+
+    onListaSquadrePartenza() {
+        const listaSquadre = {} as ListaSquadre;
+        listaSquadre.idPartenza = this.partenza.id;
+        listaSquadre.squadre = this.partenza.squadre;
+        this.store.dispatch(new VisualizzaListaSquadrePartenza(listaSquadre));
     }
 
     mezzoSelezionato(mezzoComposizione: MezzoComposizione): void {
@@ -248,9 +270,8 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
             return;
         }
 
-
-        const codMezzo = this.store.selectSnapshot(MezziComposizioneState.idMezzoSelezionato);
-        const codSquadre = this.store.selectSnapshot(SquadreComposizioneState.idSquadreSelezionate);
-        this.modal.close({ status: 'ok', result: { codMezzo: codMezzo, codSquadre: codSquadre, motivazione: this.f.motivazione.value } });
+        const mezzo = this.store.selectSnapshot(MezziComposizioneState.mezzoSelezionato);
+        const squadre = this.store.selectSnapshot(SquadreComposizioneState.squadreSelezionate);
+        this.modal.close({ status: 'ok', result: { mezzo: mezzo, squadre: squadre, motivazioneAnnullamento: this.f.motivazioneAnnullamento.value } });
     }
 }
