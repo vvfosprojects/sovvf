@@ -47,6 +47,7 @@ import { DettaglioFonogrammaModalComponent } from './modal/dettaglio-fonogramma-
 import { MezzoActionsModalComponent } from './modal/mezzo-actions-modal/mezzo-actions-modal.component';
 import { TastoCompPartenzaComponent } from './components/tasto-comp-partenza/tasto-comp-partenza.component';
 import { FilterPipeModule } from 'ngx-filter-pipe';
+import { BoxAnteprimaPartenzaComponent } from './components/box-anteprima-partenza/box-anteprima-partenza.component';
 
 const COMPONENTS = [
     DebounceClickDirective,
@@ -87,7 +88,8 @@ const COMPONENTS = [
     SquadraComposizioneComponent,
     PrenotazioneProgressBarComponent,
     FilterbarComposizioneComponent,
-    TastoCompPartenzaComponent
+    TastoCompPartenzaComponent,
+    BoxAnteprimaPartenzaComponent
 ];
 
 @NgModule({

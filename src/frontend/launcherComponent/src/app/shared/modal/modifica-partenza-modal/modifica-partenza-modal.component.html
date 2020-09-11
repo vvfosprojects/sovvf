@@ -7,24 +7,25 @@
 </div>
 <div class="modal-body height py-4 px-5">
     <form [formGroup]="modificaPartenzaForm" ngxsForm="modificaPartenzaModal.modificaPartenzaForm"
-          autocomplete="off"
-          >
+          autocomplete="off">
         <!-- operatore e sede -->
         <div class="d-inline-flex mb-3">
-            <button class="btn btn-sm btn-block btn-light btn-no-hover ml-2 info-user" style="margin-left: 0px !important;"
+            <button class="btn btn-sm btn-block btn-light btn-no-hover ml-2 info-user"
+                    style="margin-left: 0px !important;"
                     ngbTooltip="Visualizza Operatore" [ngbPopover]="operatore">
-                    <i class="fa fa-user"></i>
+                <i class="fa fa-user"></i>
             </button>
             <button class="btn btn-sm btn-light btn-no-hover ml-2 info-user"
                     ngbTooltip="Visualizza Sede" [ngbPopover]="sede">
-                    <i class="fa fa-building-o"></i>
+                <i class="fa fa-building-o"></i>
             </button>
         </div>
         <ng-template #operatore>
             <small class="d-block font-weight-bold">Operatore:</small>
             <div class="clearfix">
                 <div class="float-left">
-                        <input id="operatore" formControlName="operatore" class="form-control" placeholder="Opeatore" style="background: none; border: none"> 
+                    <input id="operatore" formControlName="operatore" class="form-control" placeholder="Opeatore"
+                           style="background: none; border: none">
                 </div>
             </div>
         </ng-template>
@@ -32,62 +33,15 @@
             <small class="d-block font-weight-bold">Sede:</small>
             <div class="clearfix">
                 <div class="float-left">
-                        <input id="sede" formControlName="sede" class="form-control" placeholder="Sede" style="background: none; border: none">
+                    <input id="sede" formControlName="sede" class="form-control" placeholder="Sede"
+                           style="background: none; border: none">
                 </div>
             </div>
         </ng-template>
-        <!-- mezzo e squadra da sostituire -->
-        <div class="border-partenza-box pb-4 d-flex" style="place-content: space-evenly;">
-            <div class="mb-3" style="display: contents;">
-                <div>
-                    <label class="mb-3">Mezzo</label>
-                    <div><i class="guida fa fa-truck fa-fw mr-1 text-{{ statoMezzoColor(partenza.mezzo['stato']) }}"
-                            ngbTooltip="Mezzo {{ partenza.mezzo['stato'] }}"></i>
-                        <b class="font-box-partenza">{{ partenza.mezzo['descrizione'] }}</b>
-                        <span class="badge badge-default m-0">{{ partenza.mezzo['genere'] }}</span>
-                        <i class="fa fa-check-circle-o text-success ml-3"></i>
-                </div>
-                </div>
-                <div *ngIf="partenza.squadre.length === 1" style="color:#666666">
-                <div class="mb-2">
-                    <label>Squadra</label>
-                    <button class="btn btn-sm btn-light border ml-2 p-1 mr-2" ngbTooltip="Elenco squadra"
-                            style="padding: 5px !important; line-height: 0px;"
-                            (click)="onListaSquadrePartenza(); $event.stopPropagation()">
-                        <span><i class="fa fa-search"></i></span>
-                    </button>
-                </div>    
-                <div><i class="fa fa-group mr-2" ngbTooltip="Squadra"></i>
-                    <b class="font-box-partenza">{{ partenza.squadre[0].nome }}</b>
-                    <i class="fa fa-check-circle-o text-success ml-3"></i>
-                </div>
-                </div>
-                <div *ngIf="partenza.squadre.length > 1" style="color:#666666">
-                    <div class="mb-2">
-                        <label>Squadre</label>
-                        <button class="btn btn-sm btn-light border ml-2 p-1 mr-2" ngbTooltip="Elenco squadre"
-                                style="padding: 5px !important; line-height: 0px;"
-                                (click)="onListaSquadrePartenza(); $event.stopPropagation()">
-                            <span><i class="fa fa-search"></i></span>
-                        </button>
-                    </div>
-                    <div *ngFor="let squadre of partenza.squadre"><i class="fa fa-group mr-2" ngbTooltip="Squadre"></i>
-                        <b class="font-box-partenza">{{ squadre['nome'] }}</b>
-                        <i class="fa fa-check-circle-o text-success ml-3"></i>
-                    </div>
-                </div>
-                <div style="align-self: center;">
-                    <button class="btn btn-xl btn-block btn-info btn-no-hover" ngbTooltip="Sostituisci partenza"
-                            style="padding-left: 15px;
-                            padding-right: 15px;
-                            padding-top: 5px;
-                            padding-bottom: 5px;
-                            font-size: 18px;" (click)="openSostituzioneModal()">
-                        <i class="fa fa-pencil-square-o"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
+        <!-- anteprima mezzo e squadra/e -->
+        <app-box-anteprima-partenza [partenza]="partenza"
+                                    (modificaPartenza)="openSostituzioneModal()"
+                                    (listaSquadrePartenza)="onListaSquadrePartenza()"></app-box-anteprima-partenza>
         <!-- sequenza eventi -->
         <div class="my-4" style="display: flex; justify-content: center;">
             <label id="sequenzaEventi">Crea sequenza Eventi

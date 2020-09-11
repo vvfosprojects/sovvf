@@ -11,3 +11,11 @@ export class SetListaMezziSquadre {
     constructor(public listaMezziSquadre: any) {
     }
 }
+
+export class StartListaComposizioneLoading {
+    static readonly type = '[SostituzionePartenza] Start Lista Composizione Loading';
+}
+
+export class StopListaComposizioneLoading {
+    static readonly type = '[SostituzionePartenza] Stop Lista Composizione Loading';
+}

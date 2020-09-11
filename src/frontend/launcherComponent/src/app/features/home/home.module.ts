@@ -36,6 +36,7 @@ import { SostituzionePartenzaModalState } from '../../shared/store/states/sostit
 import { MezziComposizioneState } from '../../shared/store/states/mezzi-composizione/mezzi-composizione.state';
 import { SquadreComposizioneState } from '../../shared/store/states/squadre-composizione/squadre-composizione.state';
 import { FiltriComposizioneState } from '../../shared/store/states/filtri-composizione/filtri-composizione.state';
+import { ModificaPartenzaModalState } from '../../shared/store/states/modifica-partenza-modal/modifica-partenza-modal.state';
 
 @NgModule({
     declarations: [
@@ -75,6 +76,7 @@ import { FiltriComposizioneState } from '../../shared/store/states/filtri-compos
                 BoxClickState,
                 MapsFiltroState,
                 RicercaComposizioneState,
+                ModificaPartenzaModalState,
                 SostituzionePartenzaModalState,
                 MezziComposizioneState,
                 SquadreComposizioneState,

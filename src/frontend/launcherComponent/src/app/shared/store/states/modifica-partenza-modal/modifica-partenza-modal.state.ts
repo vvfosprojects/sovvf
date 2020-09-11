@@ -1,40 +1,45 @@
-import { Selector, State, Action } from '@ngxs/store';
+import { Selector, State, Action, StateContext } from '@ngxs/store';
 import { ModificaPartenza } from 'src/app/shared/interface/modifica-partenza-interface';
-import { SequenzaValoriSelezionati } from 'src/app/shared/modal/modifica-partenza-modal/modifica-partenza-modal.component';
+import { SequenzaValoriSelezionati } from 'src/app/shared/interface/sequenza-modifica-partenza.interface';
+import { RequestAddModificaPartenza } from '../../actions/modifica-partenza-modal/modifica-partenza-modal-actions';
+import { MezzoComposizione } from '../../../interface/mezzo-composizione-interface';
+import { SquadraComposizione } from '../../../interface/squadra-composizione-interface';
 
-    export interface ModificaPartenzaModalStateModel {
-        modificaPartenza: Array<ModificaPartenza>;
-        modificaPartenzaForm: {
-            model?: {
-                codMezzo: string;
-                codSquadre: string[];
-                operatore: string;
-                sede: string;
-                sequenze: SequenzaValoriSelezionati[];
-                mezzoDaAnnullare: string;
-                squadreDaAnnullare: string[];
-                motivazione: string;
-                partenzaAnnullata: boolean,
-            };
-            dirty: boolean;
-            status: string;
-            errors: any;
+export interface ModificaPartenzaModalStateModel {
+    modificaPartenza: Array<ModificaPartenza>;
+    modificaPartenzaForm: {
+        model?: {
+            operatore: string;
+            sede: string;
+            codRichiesta: string;
+            annullamento: boolean;
+            codMezzoDaAnnullare: string;
+            codSquadreDaAnnullare: string[];
+            mezzo: MezzoComposizione;
+            squadre: SquadraComposizione[];
+            motivazioneAnnullamento: string;
+            sequenzaStati: SequenzaValoriSelezionati[];
         };
-    }
+        dirty: boolean;
+        status: string;
+        errors: any;
+    };
+}
 
 export const ModificaPartenzaModalStateDefaults: ModificaPartenzaModalStateModel = {
     modificaPartenza: undefined,
     modificaPartenzaForm: {
         model: {
-            codMezzo: undefined,
-            codSquadre: undefined,
             operatore: undefined,
             sede: undefined,
-            sequenze: undefined,
-            mezzoDaAnnullare: undefined,
-            squadreDaAnnullare: undefined,
-            motivazione: undefined,
-            partenzaAnnullata: undefined,
+            codRichiesta: undefined,
+            annullamento: undefined,
+            codMezzoDaAnnullare: undefined,
+            codSquadreDaAnnullare: undefined,
+            mezzo: null,
+            squadre: undefined,
+            motivazioneAnnullamento: undefined,
+            sequenzaStati: undefined
         },
         dirty: false,
         status: '',
@@ -48,24 +53,17 @@ export const ModificaPartenzaModalStateDefaults: ModificaPartenzaModalStateModel
 })
 
 export class ModificaPartenzaModalState {
-    /*
-    constructor(private modificaPartenzaService: ModificaPartenzaService) {
-    }
-    */
 
     @Selector()
     static formValid(state: ModificaPartenzaModalStateModel) {
         return state.modificaPartenzaForm.status !== 'INVALID';
     }
 
-    /*
-    @Action(GetListaMezziSquadre)
-    getListaMezziSquadre({ patchState }: StateContext<ModificaPartenzaModalStateModel>) {
-    this.modificaPartenzaService.getListaMezziSquadre().subscribe((codMezzo: string, codSquadre: string[]) => {
-        patchState({
-            codMezzo: codMezzo,
-            codSquadre: codSquadre,
-        });
-    })
-    */
+    @Action(RequestAddModificaPartenza)
+    requestAddModificaPartenza({ getState }: StateContext<ModificaPartenzaModalStateModel>) {
+        const state = getState();
+        const form = state.modificaPartenzaForm.model;
+        const obj = {};
+        console.log('RequestAddModificaPartenza FORM', form);
+    }
 }

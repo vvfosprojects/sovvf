@@ -91,7 +91,8 @@
                                 <a ngbTooltip="{{ (richiesta.istanteRicezioneRichiesta | friendlyDateTooltip) || '' }}">
                                     <span timeago
                                           [date]="methods._dateNumber(richiesta.istanteRicezioneRichiesta)"
-                                          [live]="live"></span>
+                                          [live]="live">
+                                    </span>
                                 </a>
                             </div>
                         </div>
@@ -110,13 +111,15 @@
                                         placement="right"
                                         [disableTooltip]="richiesta.richiedente.ragioneSociale.length <= 20">{{
                                     richiesta.richiedente.ragioneSociale | truncate:20 }}</a></span> -->
-                                <span *ngIf="richiesta.richiedente.nominativo"><a
-                                        ngbTooltip="{{ richiesta.richiedente.nominativo }}"
-                                        placement="right"
-                                        [disableTooltip]="richiesta.richiedente.nominativo.length <= 20">{{ richiesta.richiedente.nominativo | truncate:20 }}</a></span>
-                                <span class="ml-1">(<i class="guida fa fa-phone fa-fw mr-1"
-                                                       ngbTooltip="Numero richiedente"></i><a>{{
-                                    richiesta.richiedente.telefono}}</a>)</span>
+                                <span *ngIf="richiesta.richiedente.nominativo">
+                                    <a ngbTooltip="{{ richiesta.richiedente.nominativo }}" placement="right"
+                                       [disableTooltip]="richiesta.richiedente.nominativo.length <= 20">{{ richiesta.richiedente.nominativo | truncate:20 }}</a></span>
+                                <span class="ml-1">
+                                    (
+                                        <i class="guida fa fa-phone fa-fw mr-1" ngbTooltip="Numero richiedente"></i>
+                                        <a>{{ richiesta.richiedente.telefono }}</a>
+                                    )
+                                </span>
                             </div>
                         </div>
                         <div class="col-3 pr-3 text-right">

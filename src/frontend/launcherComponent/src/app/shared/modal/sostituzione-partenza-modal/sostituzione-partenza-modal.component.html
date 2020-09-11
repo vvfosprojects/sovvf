@@ -7,8 +7,16 @@
 </div>
 <div class="modal-body">
     <div class="row">
+        <!-- Anteprima mezzo e squadra/e -->
+        <div class="col-12">
+            <app-box-anteprima-partenza [partenza]="partenza"
+                                        [nonModificabile]="true"
+                                        (listaSquadrePartenza)="onListaSquadrePartenza()"></app-box-anteprima-partenza>
+        </div>
+        <!-- Filterbar -->
         <div class="col-12">
             <app-filterbar-composizione [filtri]="filtriAffini$ | async"
+                                        [disableComposizioneMode]="loadingListe"
                                         [nascondiTornaIndietro]="true"
                                         [nascondiCambiaComposizioneMode]="true">
             </app-filterbar-composizione>
@@ -16,6 +24,8 @@
         <div class="col-5">
             <div class="form-group">
                 <div class="card card-shadow mx-auto" style="min-height:392px">
+                    <app-partial-loader
+                            *ngIf="loadingListe || !squadreComposizione"></app-partial-loader>
                     <div class="card-header clearfix px-2 py-1">
                         <div class="float-left pt-2">
                             <i class="fa fa-users mr-2"></i>
@@ -48,6 +58,8 @@
         <div class="col-7">
             <div class="form-group">
                 <div class="card card-shadow mx-auto" style="min-height:392px">
+                    <app-partial-loader
+                            *ngIf="loadingListe || !mezziComposizione"></app-partial-loader>
                     <div class="card-header clearfix px-2 py-1">
                         <div class="float-left pt-2">
                             <i class="fa fa-truck mr-2"></i>
@@ -87,7 +99,7 @@
             <form [formGroup]="sostituzionePartenzaForm" ngxsForm="sostituzionePartenza.sostituzionePartenzaForm">
                 <div class="form-group">
                     <label for="motivazione">Motivazione</label>
-                    <textarea id="motivazione" class="w-100" formControlName="motivazione"></textarea>
+                    <textarea id="motivazione" class="w-100" formControlName="motivazioneAnnullamento"></textarea>
                 </div>
             </form>
         </div>
