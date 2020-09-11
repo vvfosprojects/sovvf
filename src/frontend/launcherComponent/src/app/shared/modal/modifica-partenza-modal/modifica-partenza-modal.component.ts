@@ -214,35 +214,12 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
         this.store.dispatch(new VisualizzaListaSquadrePartenza(listaSquadre));
     }
 
-    /*
-    confermaPartenza() {
-        const partenza = makeCopy(this.nuovaPartenza);//-->dato seconda modale
-        const partenzaMappedArray = partenza.map(obj => {
-            const rObj = {};
-            if (obj.mezzoComposizione) {
-                rObj['mezzo'] = obj.mezzoComposizione.mezzo;
-            } else {
-                rObj['mezzo'] = null;
-            }
-            if (obj.squadraComposizione.length > 0) {
-                rObj['squadre'] = obj.squadraComposizione.map((squadraComp: SquadraComposizione) => {
-                    return squadraComp.squadra;
-                });
-            } else {
-                rObj['squadre'] = [];
-            }
-            return rObj;
-        });
-        const partenzaObj: ConfermaPartenza = {
-            partenza: partenzaMappedArray,
-            idRichiesta: this.idRichiesta,
-            turno: this.store.selectSnapshot(TurnoState.turnoCalendario).corrente
-        };
-        this.store.dispatch(new ConfirmPartenza(partenzaObj));
-    }
-    */
 
     /*
+    const orario = res.result.oraEvento;
+    this.actionMezzo.emit({ mezzoAction: this.statoMezzoActions, oraEvento: { ora: orario.hour, minuti: orario.minute } });
+
+
     onActionMezzo(action?: MezzoActionEmit) {
     let actionMezzo: MezzoActionInterface;
     if (action) {
