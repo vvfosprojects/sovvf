@@ -70,6 +70,7 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
             mezzoDaAnnullare: new FormControl(),
             squadreDaAnnullare: new FormControl(),
             motivazione: new FormControl(),
+            partenzaAnnullata: new FormControl(),
         });
         this.modificaPartenzaForm = this.fb.group({
             operatore: [null],
@@ -80,6 +81,7 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
             mezzoDaAnnullare: [null],
             squadreDaAnnullare: [null],
             motivazione: [null],
+            partenzaAnnullata: [false],
         });
     }
 
@@ -191,10 +193,12 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
                     if (nuovaPartenza.mezzo) {
                         this.modificaPartenzaForm.value.codMezzo = nuovaPartenza.mezzo;
                         this.modificaPartenzaForm.value.mezzoDaAnnullare =  this.partenza.mezzo.codice;
+                        this.modificaPartenzaForm.value.partenzaAnnullata = true;
                     }
                     if (nuovaPartenza.squadre.length > 0) {
                         this.modificaPartenzaForm.value.codSquadre = nuovaPartenza.squadre.map(x => x);
-                         this.modificaPartenzaForm.value.squadreDaAnnullare = this.partenza.squadre.map(x => x.id);
+                        this.modificaPartenzaForm.value.squadreDaAnnullare = this.partenza.squadre.map(x => x.id);
+                        this.modificaPartenzaForm.value.partenzaAnnullata = true;
                     }
                     break;
                 case 'ko':

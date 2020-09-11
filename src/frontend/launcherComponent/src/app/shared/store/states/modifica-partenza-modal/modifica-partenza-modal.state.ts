@@ -14,6 +14,7 @@ import { SequenzaValoriSelezionati } from 'src/app/shared/modal/modifica-partenz
                 mezzoDaAnnullare: string;
                 squadreDaAnnullare: string[];
                 motivazione: string;
+                partenzaAnnullata: boolean,
             };
             dirty: boolean;
             status: string;
@@ -33,6 +34,7 @@ export const ModificaPartenzaModalStateDefaults: ModificaPartenzaModalStateModel
             mezzoDaAnnullare: undefined,
             squadreDaAnnullare: undefined,
             motivazione: undefined,
+            partenzaAnnullata: undefined,
         },
         dirty: false,
         status: '',

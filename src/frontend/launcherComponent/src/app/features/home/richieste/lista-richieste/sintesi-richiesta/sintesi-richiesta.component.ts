@@ -236,11 +236,13 @@ export class SintesiRichiestaComponent implements OnChanges {
                     let partenza = makeCopy(this.richiesta.partenzeRichiesta[index]);
                     if (result.codMezzo) {
                         partenza.mezzo = result.codMezzo;
+                        partenza.partenzaAnnullata = result.partenzaAnnullata;
                     } else {
                         partenza.mezzo = null;
                     }
                     if (result.codSquadre.length > 0) {
                         partenza.squadre = result.codSquadre.map(x => x);
+                        partenza.partenzaAnnullata = result.partenzaAnnullata;
                     } else partenza.squadre = [];
                     const partenzeObj: ConfermaPartenze = {
                     partenze: partenza,
