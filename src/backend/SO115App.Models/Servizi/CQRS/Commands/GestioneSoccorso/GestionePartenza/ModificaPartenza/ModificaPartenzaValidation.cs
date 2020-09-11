@@ -40,7 +40,13 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                     yield return new ValidationResult("Non puoi aggiungere un evento non ancora accaduto");
                 }
 
-                // TODO validazione sequenza stato e data
+                foreach (var stato in command.ModificaPartenza.SequenzaStati)
+                {
+                    string messaggioCoerenza = stato.Coerente(command.ModificaPartenza.SequenzaStati);
+
+                    if (messaggioCoerenza != null)
+                        yield return new ValidationResult(messaggioCoerenza);
+                }
             }
 
             if (command.ModificaPartenza.Annullamento)

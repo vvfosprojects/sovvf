@@ -120,7 +120,7 @@ namespace SO115App.API.Controllers
                 else if (ex.Message.Contains(Costanti.MezzoErroreCambioStatoRichiestaChiusa))
                     return StatusCode(403, new { message = Costanti.MezzoErroreCambioStatoRichiestaChiusa });
                 else
-                    return BadRequest(new { message = ex.Message });
+                    return BadRequest(new { message = ex.Message.Replace("\r\n", ". ") });
             }
         }
     }

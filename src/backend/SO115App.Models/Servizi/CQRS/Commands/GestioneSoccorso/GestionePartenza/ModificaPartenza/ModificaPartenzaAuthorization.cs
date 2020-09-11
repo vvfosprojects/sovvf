@@ -34,7 +34,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 
             if (command.Richiesta == null) 
                 yield return new AuthorizationResult(Costanti.IdRichiestaNonValida);
-            else if(command.Richiesta.Partenze.Count == 0)
+            else if(command.Richiesta.Partenze.Count == 0 && command.ModificaPartenza.Annullamento)
                 yield return new AuthorizationResult("La richiesta non ha partenze da annullare");
             else if (command.Richiesta.Partenze.All(c => c.Partenza.PartenzaAnnullata.Equals(true)))
                 yield return new AuthorizationResult("La richiesta non ha partenze da annullare");
