@@ -29,7 +29,9 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 
         public IEnumerable<AuthorizationResult> Authorize(ModificaPartenzaCommand command)
         {
-            command.Richiesta = _getRichiestaById.GetById(command.ModificaPartenza.CodRichiesta);
+            command.Richiesta = _getRichiestaById.GetByCodice(command.ModificaPartenza.CodRichiesta);
+            if (command.Richiesta == null) 
+                yield return new AuthorizationResult(Costanti.IdRichiestaNonValida);
 
             var username = _currentUser.Identity.Name;
             var user = _findUserByUsername.FindUserByUs(username);

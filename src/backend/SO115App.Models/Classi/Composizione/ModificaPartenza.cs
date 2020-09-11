@@ -2,7 +2,6 @@
 using SO115App.Models.Classi.Condivise;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace SO115App.Models.Classi.Composizione
 {
