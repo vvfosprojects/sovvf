@@ -3,3 +3,18 @@
     border-radius: 0.25rem;
     padding: 15px;
 }
+
+.box-in-sostituzione {
+    background-color: lightgray;
+    background-image: repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255, 255, 255, 0.5) 35px, rgba(255, 255, 255, 0.5) 70px);
+    border-color: darkred;
+    box-shadow: 0px 0px 5px 0px darkred;
+}
+
+.box-sostitutivo {
+    box-shadow: 0px 0px 5px 0px darkgreen;
+}
+
+.display-box {
+    display: none !important;
+}

@@ -36,6 +36,9 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
     listaStatoMezzo: any[];
     statoMezzoSelezionato: string;
     sequenze: SequenzaValoriSelezionati[] = [];
+    inSostituzione: boolean = false;
+    hideBox: boolean = true;
+    boxSostitutivo: boolean = false;
 
     modificaPartenzaForm: FormGroup;
     submitted: boolean;
@@ -156,11 +159,14 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
         sostituzioneModal.result.then((res: { status: string, result: any }) => {
             switch (res.status) {
                 case 'ok' :
+                    this.inSostituzione = true;
+                    this.hideBox = false;
+                    this.boxSostitutivo = true;
                     const nuovaPartenza = res.result;
                     if (nuovaPartenza.mezzo && nuovaPartenza.squadre && nuovaPartenza.squadre.length > 0) {
                         this.f.annullamento.patchValue(true);
                         this.f.mezzo.patchValue(nuovaPartenza.mezzo);
-                        this.f.squadre.patchValue(nuovaPartenza.squadre);
+                        this.f.squadre.patchValue(nuovaPartenza.squadre.map(x => x.id));
                         this.f.motivazioneAnnullamento.patchValue(nuovaPartenza.motivazioneAnnullamento);
                         this.f.codMezzoDaAnnullare.patchValue(this.partenza.mezzo.codice);
                         this.f.codSquadreDaAnnullare.patchValue(this.partenza.squadre.map(x => x.id));

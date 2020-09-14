@@ -39,9 +39,14 @@
             </div>
         </ng-template>
         <!-- anteprima mezzo e squadra/e -->
-        <app-box-anteprima-partenza [partenza]="partenza"
+        <app-box-anteprima-partenza [partenza]="partenza" [inSostituzione]="inSostituzione"
                                     (modificaPartenza)="openSostituzioneModal()"
                                     (listaSquadrePartenza)="onListaSquadrePartenza()"></app-box-anteprima-partenza>
+        <h4 *ngIf="!hideBox" class="my-3" style="text-align-last: center;">In sostituzione con</h4>                            
+        <!-- anteprima mezzo e squadra/e sostitutive-->
+        <app-box-anteprima-partenza [partenza]="partenza" [hideBox]="hideBox" [boxSostitutivo]="boxSostitutivo"
+        (modificaPartenza)="openSostituzioneModal()"
+        (listaSquadrePartenza)="onListaSquadrePartenza()"></app-box-anteprima-partenza>
         <!-- sequenza eventi -->
         <div class="my-4" style="display: flex; justify-content: center;">
             <label id="sequenzaEventi">Crea sequenza Eventi
