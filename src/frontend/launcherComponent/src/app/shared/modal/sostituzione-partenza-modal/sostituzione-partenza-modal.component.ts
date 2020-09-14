@@ -272,7 +272,7 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
 
         const mezzo = this.store.selectSnapshot(MezziComposizioneState.mezzoSelezionato);
         const squadre = this.store.selectSnapshot(SquadreComposizioneState.squadreSelezionate);
-        //rimuovere squadre duplicate
+        //per rimuovere squadre duplicate
         const squadreUnique = []; 
         let uniqueObject = {};
         for (let i in squadre) { 
@@ -283,7 +283,6 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
             squadreUnique.push(uniqueObject[i]); 
         } 
         //-----------------------------
-        console.log('SQUADRE SOST MOD ', squadreUnique)
         this.modal.close({ status: 'ok', result: { mezzo: mezzo, squadre: squadreUnique, motivazioneAnnullamento: this.f.motivazioneAnnullamento.value } });
     }
 }

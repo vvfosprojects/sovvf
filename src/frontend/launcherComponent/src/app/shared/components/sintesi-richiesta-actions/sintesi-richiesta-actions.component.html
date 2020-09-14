@@ -1,4 +1,4 @@
-<div class="btn-group btn-group-sm w-100 mr-3" (click)="$event.stopPropagation()">
+<div class="btn-group btn-group-sm w-100 mr-3" (click)="$event.stopPropagation()" style="min-width: 120px">
     <button type="button" class="btn btn-sm btn-{{statoRichiestaColor(richiesta)}} px-2 py-0 btn-no-hover"
             (click)="onClick(calcolaActionSuggeritaRichiesta(richiesta))"
             ngbTooltip="{{calcolaActionSuggeritaRichiesta(richiesta)}}">
