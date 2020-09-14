@@ -15,6 +15,7 @@ export class BoxAnteprimaPartenzaComponent implements OnInit {
     @Input() inSostituzione: boolean;
     @Input() hideBox: boolean;
     @Input() boxSostitutivo: boolean;
+    @Input() nuovoMezzo: string;
 
     @Output() listaSquadrePartenza: EventEmitter<any> = new EventEmitter<any>();
     @Output() modificaPartenza: EventEmitter<any> = new EventEmitter<any>();

@@ -39,6 +39,7 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
     inSostituzione: boolean = false;
     hideBox: boolean = true;
     boxSostitutivo: boolean = false;
+    nuovoMezzo: string;
 
     modificaPartenzaForm: FormGroup;
     submitted: boolean;
@@ -166,6 +167,8 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
                     if (nuovaPartenza.mezzo && nuovaPartenza.squadre && nuovaPartenza.squadre.length > 0) {
                         this.f.annullamento.patchValue(true);
                         this.f.mezzo.patchValue(nuovaPartenza.mezzo);
+                        this.nuovoMezzo = nuovaPartenza.mezzo.mezzo['descrizione'];
+                        console.log('VALORE NUOVO MEZZO ', this.nuovoMezzo)
                         this.f.squadre.patchValue(nuovaPartenza.squadre.map(x => x.id));
                         this.f.motivazioneAnnullamento.patchValue(nuovaPartenza.motivazioneAnnullamento);
                         this.f.codMezzoDaAnnullare.patchValue(this.partenza.mezzo.codice);

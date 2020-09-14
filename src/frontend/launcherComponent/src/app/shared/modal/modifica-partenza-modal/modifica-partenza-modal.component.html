@@ -44,7 +44,7 @@
                                     (listaSquadrePartenza)="onListaSquadrePartenza()"></app-box-anteprima-partenza>
         <h4 *ngIf="!hideBox" class="my-3" style="text-align-last: center;">In sostituzione con</h4>                            
         <!-- anteprima mezzo e squadra/e sostitutive-->
-        <app-box-anteprima-partenza [partenza]="nuovaPartenza1" [hideBox]="hideBox" [boxSostitutivo]="boxSostitutivo"
+        <app-box-anteprima-partenza [partenza]="partenza" [hideBox]="hideBox" [boxSostitutivo]="boxSostitutivo" [nuovoMezzo]="nuovoMezzo"
         [nonModificabile]="true"
         (modificaPartenza)="openSostituzioneModal()"
         (listaSquadrePartenza)="onListaSquadrePartenza()"></app-box-anteprima-partenza>

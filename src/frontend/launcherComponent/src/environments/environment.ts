@@ -37,7 +37,8 @@ export const environment = {
         navbar: '/api/Navbar',
         meteo: 'https://api.openweathermap.org/data/2.5/weather?',
         enti: '/api/GestioneEnti',
-        trasferimentoChiamata: '/api/GestioneTrasferimentiChiamate'
+        trasferimentoChiamata: '/api/GestioneTrasferimentiChiamate',
+        modificaPartenza: '/api/ModificaPartenza'
     },
     casUrl: {
         linkLogin: 'http://localhost:4001/?service=',

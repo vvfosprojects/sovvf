@@ -4,7 +4,8 @@
             <label class="mb-3">Mezzo</label>
             <div><i class="guida fa fa-truck fa-fw mr-1 text-{{ statoMezzoColor(partenza?.mezzo['stato']) }}"
                     ngbTooltip="Mezzo {{ partenza?.mezzo['stato'] }}"></i>
-                <b class="font-box-partenza">{{ partenza?.mezzo['descrizione'] }}</b>
+                <b *ngIf="!boxSostitutivo" class="font-box-partenza">{{ partenza?.mezzo['descrizione'] }}</b>
+                <b *ngIf="boxSostitutivo"  class="font-box-partenza">{{ nuovoMezzo }}</b>
                 <span class="badge badge-default m-0">{{ partenza?.mezzo['genere'] }}</span>
                 <i class="fa fa-check-circle-o text-success ml-3"></i>
             </div>

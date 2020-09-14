@@ -1,9 +1,10 @@
-import { Selector, State, Action, StateContext } from '@ngxs/store';
+import { Selector, State, Action, StateContext, Store } from '@ngxs/store';
 import { SequenzaValoriSelezionati } from 'src/app/shared/interface/sequenza-modifica-partenza.interface';
 import { RequestAddModificaPartenza } from '../../actions/modifica-partenza-modal/modifica-partenza-modal-actions';
 import { MezzoComposizione } from '../../../interface/mezzo-composizione-interface';
 import { SquadraComposizione } from '../../../interface/squadra-composizione-interface';
 import { ModificaPartenza } from 'src/app/shared/interface/modifica-partenza.interface';
+import { ModificaPartenzaService } from 'src/app/core/service/modifica-partenza/modifica-partenza.service';
 
 export interface ModificaPartenzaModalStateModel {
     modificaPartenzaForm: {
@@ -52,6 +53,9 @@ export const ModificaPartenzaModalStateDefaults: ModificaPartenzaModalStateModel
 
 export class ModificaPartenzaModalState {
 
+    constructor(private modificaPartenzaService: ModificaPartenzaService) {
+    }
+
     @Selector()
     static formValid(state: ModificaPartenzaModalStateModel) {
         return state.modificaPartenzaForm.status !== 'INVALID';
@@ -72,5 +76,7 @@ export class ModificaPartenzaModalState {
             sequenzaStati: form.sequenzaStati,
         } as ModificaPartenza;
         console.log('RequestAddModificaPartenza FORM', obj);
+        this.modificaPartenzaService.addModificaPartenza(obj).subscribe(() => {
+        });
     }
 }
