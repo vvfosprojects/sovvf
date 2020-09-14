@@ -1,6 +1,6 @@
 import { SequenzaValoriSelezionati } from './sequenza-modifica-partenza.interface';
 import { MezzoComposizione } from './mezzo-composizione-interface';
-import { SquadraComposizione } from './squadra-composizione-interface';
+import { Squadra } from '../model/squadra.model';
 
 export interface ModificaPartenza {
     codRichiesta: string;
@@ -8,7 +8,7 @@ export interface ModificaPartenza {
     codMezzoDaAnnullare: string;
     codSquadreDaAnnullare: string[];
     mezzo: MezzoComposizione;
-    squadre: SquadraComposizione[];
+    squadre: Squadra[];
     motivazioneAnnullamento: string;
     sequenzaStati: SequenzaValoriSelezionati[];
 }
