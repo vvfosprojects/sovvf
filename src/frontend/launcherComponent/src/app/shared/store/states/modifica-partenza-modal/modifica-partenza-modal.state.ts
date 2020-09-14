@@ -1,12 +1,11 @@
 import { Selector, State, Action, StateContext } from '@ngxs/store';
-import { ModificaPartenza } from 'src/app/shared/interface/modifica-partenza-interface';
 import { SequenzaValoriSelezionati } from 'src/app/shared/interface/sequenza-modifica-partenza.interface';
 import { RequestAddModificaPartenza } from '../../actions/modifica-partenza-modal/modifica-partenza-modal-actions';
 import { MezzoComposizione } from '../../../interface/mezzo-composizione-interface';
 import { SquadraComposizione } from '../../../interface/squadra-composizione-interface';
+import { ModificaPartenza } from 'src/app/shared/interface/modifica-partenza.interface';
 
 export interface ModificaPartenzaModalStateModel {
-    modificaPartenza: Array<ModificaPartenza>;
     modificaPartenzaForm: {
         model?: {
             operatore: string;
@@ -27,7 +26,6 @@ export interface ModificaPartenzaModalStateModel {
 }
 
 export const ModificaPartenzaModalStateDefaults: ModificaPartenzaModalStateModel = {
-    modificaPartenza: undefined,
     modificaPartenzaForm: {
         model: {
             operatore: undefined,
@@ -63,7 +61,16 @@ export class ModificaPartenzaModalState {
     requestAddModificaPartenza({ getState }: StateContext<ModificaPartenzaModalStateModel>) {
         const state = getState();
         const form = state.modificaPartenzaForm.model;
-        const obj = {};
-        console.log('RequestAddModificaPartenza FORM', form);
+        const obj = {
+            codRichiesta: form.codRichiesta,
+            annullamento: form.annullamento,
+            codMezzoDaAnnullare: form.codMezzoDaAnnullare,
+            codSquadreDaAnnullare: form.codSquadreDaAnnullare,
+            mezzo: form.mezzo,
+            squadre: form.squadre,
+            motivazioneAnnullamento: form.motivazioneAnnullamento,
+            sequenzaStati: form.sequenzaStati,
+        } as ModificaPartenza;
+        console.log('RequestAddModificaPartenza FORM', obj);
     }
 }
