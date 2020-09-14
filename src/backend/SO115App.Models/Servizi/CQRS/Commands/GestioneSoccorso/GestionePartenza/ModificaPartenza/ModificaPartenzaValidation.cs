@@ -47,7 +47,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 
                 foreach (var stato in command.ModificaPartenza.SequenzaStati)
                 {
-                    string messaggioCoerenza = stato.Coerente(command.ModificaPartenza.SequenzaStati);
+                    string messaggioCoerenza = stato.VerificaCoerenza(command.ModificaPartenza.SequenzaStati);
 
                     if (messaggioCoerenza != null)
                         yield return new ValidationResult(messaggioCoerenza);

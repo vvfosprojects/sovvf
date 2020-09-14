@@ -10,7 +10,7 @@ namespace SO115App.Models.Classi.Condivise
         public DateTime DataOraAggiornamento { get; set; }
         public string Stato { get; set; }
 
-        public string Coerente(List<CambioStato> lst)
+        public string VerificaCoerenza(List<CambioStato> lst)
         {
             var statoPrecedente = getStatoPrecedente(lst.OrderByDescending(c => c.DataOraAggiornamento).ToList());
 
