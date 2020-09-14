@@ -25,8 +25,6 @@ namespace SO115App.Models.Classi.Condivise
                 case "In Rientro": return checkCoerenza(CoerenzeStati.InRientro, statoPrecedente.Stato);
                 case "Rientrato": return checkCoerenza(CoerenzeStati.Rientrato, statoPrecedente.Stato);
                 case "In Sede": return checkCoerenza(CoerenzeStati.InSede, statoPrecedente.Stato);
-                case "Istituto": return checkCoerenza(CoerenzeStati.Istituto, statoPrecedente.Stato);
-                case "Fuori Servizio": return checkCoerenza(CoerenzeStati.FuoriServizio, statoPrecedente.Stato);
             }
 
             throw new Exception("Errore controllo sequenza stati");
@@ -74,13 +72,10 @@ namespace SO115App.Models.Classi.Condivise
     public static class CoerenzeStati
     {
         public static readonly List<string> InSede = new List<string> { Costanti.MezzoRientrato };
-        public static readonly List<string> InUscita = new List<string> { Costanti.MezzoInSede, Costanti.MezzoRientrato };
-        public static readonly List<string> InViaggio = new List<string> { Costanti.MezzoInSede, Costanti.MezzoRientrato, Costanti.MezzoInUscita };
-        public static readonly List<string> SulPosto = new List<string> { };
-        public static readonly List<string> InRientro = new List<string> { Costanti.MezzoInUscita, Costanti.MezzoInViaggio, Costanti.MezzoSulPosto };
-        public static readonly List<string> Rientrato = new List<string> { };
-
-        public static readonly List<string> Istituto = new List<string> { };
-        public static readonly List<string> FuoriServizio = new List<string> { };
+        public static readonly List<string> InUscita = new List<string> { Costanti.MezzoInSede };
+        public static readonly List<string> InViaggio = new List<string> { Costanti.MezzoInUscita };
+        public static readonly List<string> SulPosto = new List<string> { Costanti.MezzoInViaggio };
+        public static readonly List<string> InRientro = new List<string> { Costanti.MezzoSulPosto };
+        public static readonly List<string> Rientrato = new List<string> { Costanti.MezzoInRientro };
     }
 }
