@@ -2,9 +2,9 @@ import { Selector, State, Action, StateContext, Store } from '@ngxs/store';
 import { SequenzaValoriSelezionati } from 'src/app/shared/interface/sequenza-modifica-partenza.interface';
 import { RequestAddModificaPartenza } from '../../actions/modifica-partenza-modal/modifica-partenza-modal-actions';
 import { MezzoComposizione } from '../../../interface/mezzo-composizione-interface';
-import { SquadraComposizione } from '../../../interface/squadra-composizione-interface';
 import { ModificaPartenza } from 'src/app/shared/interface/modifica-partenza.interface';
 import { ModificaPartenzaService } from 'src/app/core/service/modifica-partenza/modifica-partenza.service';
+import { Squadra } from 'src/app/shared/model/squadra.model';
 
 export interface ModificaPartenzaModalStateModel {
     modificaPartenzaForm: {
@@ -16,7 +16,7 @@ export interface ModificaPartenzaModalStateModel {
             codMezzoDaAnnullare: string;
             codSquadreDaAnnullare: string[];
             mezzo: MezzoComposizione;
-            squadre: SquadraComposizione[];
+            squadre: Squadra[];
             motivazioneAnnullamento: string;
             sequenzaStati: SequenzaValoriSelezionati[];
         };
