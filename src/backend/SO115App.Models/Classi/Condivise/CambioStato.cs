@@ -19,21 +19,14 @@ namespace SO115App.Models.Classi.Condivise
 
             switch (Stato)
             {
-                case "In Uscita": return checkCoerenza(CoerenzeStati.InUscita, statoPrecedente);
-
-                case "In Viaggio": return checkCoerenza(CoerenzeStati.InViaggio, statoPrecedente);
-
-                case "Sul Posto": return checkCoerenza(CoerenzeStati.SulPosto, statoPrecedente);
-
-                case "In Rientro": return checkCoerenza(CoerenzeStati.InRientro, statoPrecedente);
-
-                case "Rientrato": return checkCoerenza(CoerenzeStati.Rientrato, statoPrecedente);
-
-                case "In Sede": return checkCoerenza(CoerenzeStati.InSede, statoPrecedente);
-
-                case "Istituto": return checkCoerenza(CoerenzeStati.Istituto, statoPrecedente);
-
-                case "Fuori Servizio": return checkCoerenza(CoerenzeStati.FuoriServizio, statoPrecedente);
+                case "In Uscita": return checkCoerenza(CoerenzeStati.InUscita, statoPrecedente.Stato);
+                case "In Viaggio": return checkCoerenza(CoerenzeStati.InViaggio, statoPrecedente.Stato);
+                case "Sul Posto": return checkCoerenza(CoerenzeStati.SulPosto, statoPrecedente.Stato);
+                case "In Rientro": return checkCoerenza(CoerenzeStati.InRientro, statoPrecedente.Stato);
+                case "Rientrato": return checkCoerenza(CoerenzeStati.Rientrato, statoPrecedente.Stato);
+                case "In Sede": return checkCoerenza(CoerenzeStati.InSede, statoPrecedente.Stato);
+                case "Istituto": return checkCoerenza(CoerenzeStati.Istituto, statoPrecedente.Stato);
+                case "Fuori Servizio": return checkCoerenza(CoerenzeStati.FuoriServizio, statoPrecedente.Stato);
             }
 
             throw new Exception("Errore controllo sequenza stati");
@@ -44,15 +37,12 @@ namespace SO115App.Models.Classi.Condivise
         /// </summary>
         /// <param name="coerenzeStatoAttuale">Costante CoerenzaStati</param>
         /// <returns>Messaggio ad HOC di errore</returns>
-        private string checkCoerenza(List<string> coerenzeStatoAttuale, CambioStato statoPrecedente)
+        private string checkCoerenza(List<string> coerenzeStatoAttuale, string statoPrecedente)
         {
-            if (!coerenzeStatoAttuale.Contains(statoPrecedente.Stato))
-                return $"Lo stato {Stato} non può seguire lo stato {statoPrecedente.Stato}";
-
-            //else if (DataOraAggiornamento <= statoPrecedente.DataOraAggiornamento)
-            //    return $"La data dello stato {Stato} è piu recente di quella di {statoPrecedente.Stato}";
-
-            return null;
+            if (!coerenzeStatoAttuale.Contains(statoPrecedente))
+                return $"Lo stato {Stato} non può seguire lo stato {statoPrecedente}";
+            else
+                return null;
         }
 
         /// <summary>
@@ -83,14 +73,14 @@ namespace SO115App.Models.Classi.Condivise
     /// </summary>
     public static class CoerenzeStati
     {
-        public static List<string> InSede = new List<string> { Costanti.MezzoRientrato };
-        public static List<string> InUscita = new List<string> { Costanti.MezzoInSede, Costanti.MezzoRientrato };
-        public static List<string> InViaggio = new List<string> { Costanti.MezzoInSede, Costanti.MezzoRientrato, Costanti.MezzoInUscita };
-        public static List<string> SulPosto = new List<string> { };
-        public static List<string> InRientro = new List<string> { Costanti.MezzoInUscita, Costanti.MezzoInViaggio, Costanti.MezzoSulPosto };
-        public static List<string> Rientrato = new List<string> { };
+        public static readonly List<string> InSede = new List<string> { Costanti.MezzoRientrato };
+        public static readonly List<string> InUscita = new List<string> { Costanti.MezzoInSede, Costanti.MezzoRientrato };
+        public static readonly List<string> InViaggio = new List<string> { Costanti.MezzoInSede, Costanti.MezzoRientrato, Costanti.MezzoInUscita };
+        public static readonly List<string> SulPosto = new List<string> { };
+        public static readonly List<string> InRientro = new List<string> { Costanti.MezzoInUscita, Costanti.MezzoInViaggio, Costanti.MezzoSulPosto };
+        public static readonly List<string> Rientrato = new List<string> { };
 
-        public static List<string> Istituto = new List<string> { };
-        public static List<string> FuoriServizio = new List<string> { };
+        public static readonly List<string> Istituto = new List<string> { };
+        public static readonly List<string> FuoriServizio = new List<string> { };
     }
 }

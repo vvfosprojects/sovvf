@@ -28,6 +28,11 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 yield return new ValidationResult("Nessuna squadra selezionata");
             }
 
+            if (command.ModificaPartenza.Squadre.Count != command.ModificaPartenza.Squadre.Distinct().Count())
+            {
+                yield return new ValidationResult("Hai selezionato più volte la stessa squadra");
+            }
+
             if (command.ModificaPartenza.SequenzaStati != null)
             {
                 if (command.ModificaPartenza.SequenzaStati.Any(s => s.Stato == null || s.Stato == "" || s.DataOraAggiornamento == null || s.DataOraAggiornamento == default))
