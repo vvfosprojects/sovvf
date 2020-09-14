@@ -5,6 +5,7 @@ import { MezzoComposizione } from '../../../interface/mezzo-composizione-interfa
 import { ModificaPartenza } from 'src/app/shared/interface/modifica-partenza.interface';
 import { ModificaPartenzaService } from 'src/app/core/service/modifica-partenza/modifica-partenza.service';
 import { Squadra } from 'src/app/shared/model/squadra.model';
+import { SquadraComposizione } from 'src/app/shared/interface/squadra-composizione-interface';
 
 export interface ModificaPartenzaModalStateModel {
     modificaPartenzaForm: {
@@ -16,7 +17,7 @@ export interface ModificaPartenzaModalStateModel {
             codMezzoDaAnnullare: string;
             codSquadreDaAnnullare: string[];
             mezzo: MezzoComposizione;
-            squadre: Squadra[];
+            squadre: SquadraComposizione[];
             motivazioneAnnullamento: string;
             sequenzaStati: SequenzaValoriSelezionati[];
         };
