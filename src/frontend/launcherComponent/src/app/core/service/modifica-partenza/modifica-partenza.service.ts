@@ -16,7 +16,7 @@ export class ModificaPartenzaService {
   constructor(private http: HttpClient) { }
 
   addModificaPartenza(obj: ModificaPartenza): Observable<any> {
-    return this.http.post(API_MODIFICA_PARTENZA + '/Add', obj);
+    return this.http.post(API_MODIFICA_PARTENZA, obj);
   }
 
 }
