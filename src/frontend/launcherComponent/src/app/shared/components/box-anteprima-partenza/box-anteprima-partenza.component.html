@@ -70,7 +70,7 @@
                 </div>
             </div>
         </span>
-        <ng-template [ngIf]="!nonModificabile">
+        <ng-template [ngIf]="!nonModificabile && partenza?.mezzo['stato'] === 'In Uscita'">
             <div style="align-self: center;">
                 <button class="btn btn-xl btn-block btn-info btn-no-hover" ngbTooltip="Sostituisci partenza"
                         style="padding-left: 15px; padding-right: 15px; padding-top: 5px; padding-bottom: 5px;
