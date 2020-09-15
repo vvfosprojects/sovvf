@@ -98,7 +98,6 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
         coordinate: null,
     };
     nuoveSquadre: Squadra[] = [];
-    nuovaSquadra: Squadra;
 
     subscription: Subscription = new Subscription();
 
@@ -244,12 +243,14 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
         if (squadraComposizione && !squadraComposizioneBusy(squadraComposizione.squadra.stato)) {
             this.store.dispatch(new SelectSquadraComposizione(squadraComposizione));
         }
-        this.nuovaSquadra = squadraComposizione.squadra;
-        this.nuoveSquadre.push(this.nuovaSquadra);
+        this.nuoveSquadre.includes(squadraComposizione.squadra) ? null : this.nuoveSquadre.push(squadraComposizione.squadra);
     }
 
     squadraDeselezionata(squadraComposizione: SquadraComposizione): void {
         this.store.dispatch(new UnselectSquadraComposizione(squadraComposizione));
+        let r = squadraComposizione.squadra;
+        let a = this.nuoveSquadre.filter(e => e != r);
+        this.nuoveSquadre = a;
     }
 
     squadraHoverIn(squadraComposizione: SquadraComposizione): void {
