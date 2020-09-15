@@ -8,7 +8,7 @@ import { UpdateFormValue } from '@ngxs/form-plugin';
 import { AuthState } from 'src/app/features/auth/store/auth.state';
 import { ModificaPartenzaModalState } from '../../store/states/modifica-partenza-modal/modifica-partenza-modal.state';
 import { Partenza } from './../../model/partenza.model';
-import { StatoMezzo } from '../../enum/stato-mezzo.enum';
+import { StatoMezzoSequenze } from '../../enum/stato-mezzo.enum';
 import { SostituzionePartenzaModalComponent } from '../sostituzione-partenza-modal/sostituzione-partenza-modal.component';
 import { ListaSquadre } from '../../interface/lista-squadre';
 import { VisualizzaListaSquadrePartenza } from 'src/app/features/home/store/actions/richieste/richieste.actions';
@@ -58,7 +58,7 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        this.listaStatoMezzo = Object.values(StatoMezzo);
+        this.listaStatoMezzo = Object.values(StatoMezzoSequenze);
         this.modificaPartenzaForm.reset();
         this.f.codRichiesta.patchValue(this.codRichiesta);
         this.f.mezzo.patchValue(this.partenza.mezzo);

@@ -17,3 +17,11 @@
     border-style: solid; 
     border: 1px solid rgba(0,0,0,0.125);
 }
+
+.alert-save-mod {
+    border-style: solid;
+    border-width: medium;
+    padding: 2px;
+    position: relative;
+    font-size: 12px;
+}

@@ -4,7 +4,6 @@ import { RequestAddModificaPartenza } from '../../actions/modifica-partenza-moda
 import { MezzoComposizione } from '../../../interface/mezzo-composizione-interface';
 import { ModificaPartenza } from 'src/app/shared/interface/modifica-partenza.interface';
 import { ModificaPartenzaService } from 'src/app/core/service/modifica-partenza/modifica-partenza.service';
-import { Squadra } from 'src/app/shared/model/squadra.model';
 import { SquadraComposizione } from 'src/app/shared/interface/squadra-composizione-interface';
 
 export interface ModificaPartenzaModalStateModel {

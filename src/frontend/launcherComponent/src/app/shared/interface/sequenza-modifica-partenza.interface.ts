@@ -1,7 +1,7 @@
-import { StatoMezzo } from '../enum/stato-mezzo.enum';
+import { StatoMezzoSequenze } from '../enum/stato-mezzo.enum';
 
 export interface SequenzaValoriSelezionati {
-    stato: StatoMezzo;
+    stato: StatoMezzoSequenze;
     time: { hour: number, minute: number };
     dataOraAggiornamento?: Date;
 }

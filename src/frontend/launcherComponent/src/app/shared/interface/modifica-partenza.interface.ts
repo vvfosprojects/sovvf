@@ -1,6 +1,5 @@
 import { SequenzaValoriSelezionati } from './sequenza-modifica-partenza.interface';
 import { MezzoComposizione } from './mezzo-composizione-interface';
-import { Squadra } from '../model/squadra.model';
 import { SquadraComposizione } from './squadra-composizione-interface';
 
 export interface ModificaPartenza {
