@@ -35,6 +35,8 @@ import { ComposizionePartenzaState } from '../../../features/home/store/states/c
 import { ListaSquadre } from '../../interface/lista-squadre';
 import { VisualizzaListaSquadrePartenza } from '../../../features/home/store/actions/richieste/richieste.actions';
 import { Partenza } from '../../model/partenza.model';
+import { Mezzo } from '../../model/mezzo.model';
+import { Squadra } from '../../model/squadra.model';
 
 @Component({
     selector: 'app-sostituzione-partenza',
@@ -84,6 +86,19 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
     statoMezzo = StatoMezzo;
     ricercaSquadre: string;
     ricercaMezzi: string;
+    partenzaDaSostituire: boolean = true;
+    partenzaSostitutiva: boolean = true;
+    nuovoMezzo: Mezzo = {
+        codice: '',
+        descrizione: '',
+        genere: '',
+        stato: null,
+        appartenenza: null,
+        distaccamento: null,
+        coordinate: null,
+    };
+    nuoveSquadre: Squadra[] = [];
+    nuovaSquadra: Squadra;
 
     subscription: Subscription = new Subscription();
 
@@ -197,10 +212,20 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
         this.store.dispatch([
             new ReducerSelectMezzoComposizione(mezzoComposizione),
         ]);
+        this.nuovoMezzo = mezzoComposizione.mezzo;
     }
 
     mezzoDeselezionato(mezzoComposizione: MezzoComposizione): void {
         this.store.dispatch(new UnselectMezzoComposizione());
+        this.nuovoMezzo = {
+            codice: '',
+            descrizione: '',
+            genere: '',
+            stato: null,
+            appartenenza: null,
+            distaccamento: null,
+            coordinate: null,
+        };
     }
 
     mezzoHoverIn(mezzoComposizione: MezzoComposizione): void {
@@ -219,6 +244,8 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
         if (squadraComposizione && !squadraComposizioneBusy(squadraComposizione.squadra.stato)) {
             this.store.dispatch(new SelectSquadraComposizione(squadraComposizione));
         }
+        this.nuovaSquadra = squadraComposizione.squadra;
+        this.nuoveSquadre.push(this.nuovaSquadra);
     }
 
     squadraDeselezionata(squadraComposizione: SquadraComposizione): void {

@@ -7,14 +7,14 @@
 </div>
 <div class="modal-body">
     <div class="row">
-        <!-- Anteprima mezzo e squadra/e -->
+        <!-- Anteprima mezzo e squadra/e da sostituire -->
         <div class="col-12">
-            <app-box-anteprima-partenza [partenza]="partenza"
+            <app-box-anteprima-partenza [partenza]="partenza"  [inSostituzione]="partenzaDaSostituire"
                                         [nonModificabile]="true"
                                         (listaSquadrePartenza)="onListaSquadrePartenza()"></app-box-anteprima-partenza>
         </div>
         <!-- Filterbar -->
-        <div class="col-12">
+        <div class="col-12 mt-3">
             <app-filterbar-composizione [filtri]="filtriAffini$ | async"
                                         [disableComposizioneMode]="loadingListe"
                                         [nascondiTornaIndietro]="true"
@@ -95,11 +95,18 @@
                 </div>
             </div>
         </div>
+        <h4 class="col-12 mb-1" style="text-align-last: center;">In sostituzione con</h4>
+        <!-- Anteprima mezzo e squadra/e selezionate -->
+        <div class="col-12 my-3">
+            <app-box-anteprima-partenza [partenza]="partenza" [boxSostitutivo]="partenzaSostitutiva"
+                                        [nonModificabile]="true" [nuovoMezzo]="nuovoMezzo" [nuoveSquadre]="nuoveSquadre"
+                                        (listaSquadrePartenza)="onListaSquadrePartenza()"></app-box-anteprima-partenza>
+        </div>
         <div class="col-12">
             <form [formGroup]="sostituzionePartenzaForm" ngxsForm="sostituzionePartenza.sostituzionePartenzaForm">
                 <div class="form-group">
                     <label for="motivazione">Motivazione</label>
-                    <textarea id="motivazione" class="w-100" formControlName="motivazioneAnnullamento"></textarea>
+                    <textarea id="motivazione" type="text" class="w-100 form-control" formControlName="motivazioneAnnullamento" placeholder="Scrivi una motivazione... (Opzionale)" style="height: 117px; max-height: 78px;"></textarea>
                 </div>
             </form>
         </div>
