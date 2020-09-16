@@ -22,7 +22,7 @@ import { ClearBoxPartenze } from '../../../features/home/store/actions/composizi
 import { squadraComposizioneBusy } from '../../helper/composizione-functions';
 import {
     ClearListaSquadreComposizione,
-    ClearSelectedSquadreComposizione,
+    ClearSquadraComposizione,
     HoverInSquadraComposizione,
     HoverOutSquadraComposizione,
     SelectSquadraComposizione,
@@ -38,6 +38,7 @@ import { VisualizzaListaSquadrePartenza } from '../../../features/home/store/act
 import { Partenza } from '../../model/partenza.model';
 import { Mezzo } from '../../model/mezzo.model';
 import { Squadra } from '../../model/squadra.model';
+import { UpdateFormValue } from '@ngxs/form-plugin';
 
 @Component({
     selector: 'app-sostituzione-partenza',
@@ -186,6 +187,13 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
             new UnselectMezziAndSquadreComposizioneAvanzata(),
             new ClearBoxPartenze()
         ]);
+        this.store.dispatch(new UpdateFormValue({
+            value: {
+                motivazioneAnnullamento: undefined,
+            },
+            path: 'sostituzionePartenza.sostituzionePartenzaForm'
+        }));
+        this.store.dispatch(new ClearSquadraComposizione());
     }
 
     initForm(): void {
