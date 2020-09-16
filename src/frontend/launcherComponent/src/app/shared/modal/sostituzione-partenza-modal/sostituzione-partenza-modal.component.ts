@@ -223,6 +223,17 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
         return { oraEvento: this.time };
     }
 
+    formatDate() {
+        let data = new Date();
+        const orario = this.time;
+        data.setHours(orario.hour);
+        data.setMinutes(orario.minute);
+        data.setSeconds(0);
+        data.setMilliseconds(0);
+        data = new Date(data.getTime());
+        this.f.dataAnnullamento.patchValue(data);
+    }
+
     onListaSquadrePartenza() {
         const listaSquadre = {} as ListaSquadre;
         listaSquadre.idPartenza = this.partenza.id;
@@ -335,14 +346,7 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
         }
         //handling time
         this.formatTimeForCallBack();
-        let data = new Date();
-        const orario = this.time;
-        data.setHours(orario.hour);
-        data.setMinutes(orario.minute);
-        data.setSeconds(0);
-        data.setMilliseconds(0);
-        data = new Date(data.getTime());
-        this.f.dataAnnullamento.patchValue(data);
+        this.formatDate();
         //
         const mezzo = this.store.selectSnapshot(MezziComposizioneState.mezzoSelezionato);
         const squadre = this.store.selectSnapshot(SquadreComposizioneState.squadreSelezionate);
