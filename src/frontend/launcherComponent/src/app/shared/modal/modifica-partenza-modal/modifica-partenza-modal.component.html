@@ -41,7 +41,7 @@
         </ng-template>
         <!-- anteprima mezzo e squadra/e -->
         <app-box-anteprima-partenza [partenza]="partenza" [inSostituzione]="inSostituzione"
-                                    (modificaPartenza)="openSostituzioneModal()"
+                                    (modificaPartenza)="openSostituzioneModal()" [nonModificabile]="nonModificabile"
                                     (listaSquadrePartenza)="onListaSquadrePartenza()"></app-box-anteprima-partenza>
         <h4 *ngIf="!hideBox" class="my-3" style="text-align-last: center;">In sostituzione con</h4>                            
         <!-- anteprima mezzo e squadra/e sostitutive-->

@@ -41,6 +41,7 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
     boxSostitutivo: boolean = false;
     nuovoMezzo: string;
     nuoveSquadre: string[];
+    nonModificabile: boolean = false;
 
     modificaPartenzaForm: FormGroup;
     submitted: boolean;
@@ -153,14 +154,16 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
 
     annullaPartenza() {
         this.hideBox = true;
-        //resettare data
+        this.nonModificabile = false;
     }
 
     openSostituzioneModal(): void {
         const sostituzioneModal = this.modalService.open(SostituzionePartenzaModalComponent, {
             windowClass: 'modal-holder',
             size: 'lg',
-            centered: true
+            centered: true,
+            backdrop  : 'static',
+            keyboard  : false,
         });
         sostituzioneModal.componentInstance.idRichiesta = this.idRichiesta;
         sostituzioneModal.componentInstance.codRichiesta = this.codRichiesta;
@@ -172,6 +175,7 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
                     this.inSostituzione = true;
                     this.hideBox = false;
                     this.boxSostitutivo = true;
+                    this.nonModificabile = true;
                     const nuovaPartenza = res.result;
                     if (nuovaPartenza.mezzo && nuovaPartenza.squadre && nuovaPartenza.squadre.length > 0) {
                         this.f.annullamento.patchValue(true);

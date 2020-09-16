@@ -224,7 +224,9 @@ export class SintesiRichiestaComponent implements OnChanges {
             windowClass: 'modal-holder',
             backdropClass: 'light-blue-backdrop',
             centered: true,
-            size: 'lg'
+            size: 'lg',
+            backdrop  : 'static',
+            keyboard  : false,
         });
         modalModificaPartenza.componentInstance.partenza = this.richiesta.partenzeRichiesta[index];
         modalModificaPartenza.componentInstance.idRichiesta = this.richiesta.id;
