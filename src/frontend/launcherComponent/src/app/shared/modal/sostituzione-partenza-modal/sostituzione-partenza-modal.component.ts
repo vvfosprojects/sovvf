@@ -22,6 +22,7 @@ import { ClearBoxPartenze } from '../../../features/home/store/actions/composizi
 import { squadraComposizioneBusy } from '../../helper/composizione-functions';
 import {
     ClearListaSquadreComposizione,
+    ClearSelectedSquadreComposizione,
     HoverInSquadraComposizione,
     HoverOutSquadraComposizione,
     SelectSquadraComposizione,
@@ -207,6 +208,19 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
         this.store.dispatch(new VisualizzaListaSquadrePartenza(listaSquadre));
     }
 
+    annullaPartenza(): void {
+        this.mezzoDeselezionato();
+        this.nuoveSquadre = [];
+        this.store.dispatch([
+            new ClearListaMezziComposizione(),
+            new ClearListaSquadreComposizione(),
+            new ClearFiltriAffini(),
+            new UnselectMezziAndSquadreComposizioneAvanzata(),
+            new ClearBoxPartenze(),
+            new GetListaMezziSquadre(this.idRichiesta),
+        ]);
+    }
+
     mezzoSelezionato(mezzoComposizione: MezzoComposizione): void {
         this.store.dispatch([
             new ReducerSelectMezzoComposizione(mezzoComposizione),
@@ -214,7 +228,7 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
         this.nuovoMezzo = mezzoComposizione.mezzo;
     }
 
-    mezzoDeselezionato(mezzoComposizione: MezzoComposizione): void {
+    mezzoDeselezionato(): void {
         this.store.dispatch(new UnselectMezzoComposizione());
         this.nuovoMezzo = {
             codice: '',
@@ -242,8 +256,8 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
     squadraSelezionata(squadraComposizione: SquadraComposizione): void {
         if (squadraComposizione && !squadraComposizioneBusy(squadraComposizione.squadra.stato)) {
             this.store.dispatch(new SelectSquadraComposizione(squadraComposizione));
+            this.nuoveSquadre.includes(squadraComposizione.squadra) ? this.nuoveSquadre : this.nuoveSquadre.push(squadraComposizione.squadra);
         }
-        this.nuoveSquadre.includes(squadraComposizione.squadra) ? null : this.nuoveSquadre.push(squadraComposizione.squadra);
     }
 
     squadraDeselezionata(squadraComposizione: SquadraComposizione): void {

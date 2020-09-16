@@ -98,7 +98,7 @@
         <h4 class="col-12 mb-1" style="text-align-last: center;">In sostituzione con</h4>
         <!-- Anteprima mezzo e squadra/e selezionate -->
         <div class="col-12 my-3">
-            <app-box-anteprima-partenza [partenza]="partenza" [boxSostitutivo]="partenzaSostitutiva"
+            <app-box-anteprima-partenza [partenza]="partenza" [boxSostitutivo]="partenzaSostitutiva" (annullaPartenza)="annullaPartenza()"
                                         [nonModificabile]="true" [nuovoMezzo]="nuovoMezzo" [nuoveSquadre]="nuoveSquadre"
                                         (listaSquadrePartenza)="onListaSquadrePartenza()"></app-box-anteprima-partenza>
         </div>

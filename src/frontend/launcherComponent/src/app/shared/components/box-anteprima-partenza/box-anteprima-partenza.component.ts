@@ -20,6 +20,7 @@ export class BoxAnteprimaPartenzaComponent implements OnInit {
 
     @Output() listaSquadrePartenza: EventEmitter<any> = new EventEmitter<any>();
     @Output() modificaPartenza: EventEmitter<any> = new EventEmitter<any>();
+    @Output() annullaPartenza: EventEmitter<any> = new EventEmitter<any>();
 
 
     constructor() {
@@ -46,4 +47,10 @@ export class BoxAnteprimaPartenzaComponent implements OnInit {
         return statoMezzoColor(stato);
     }
 
+    onDismissPartenza(event: any): void {
+        if (event) {
+            event.stopPropagation();
+        }
+        this.annullaPartenza.emit();
+    }
 }

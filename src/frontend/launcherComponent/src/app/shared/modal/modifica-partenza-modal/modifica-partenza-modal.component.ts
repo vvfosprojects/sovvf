@@ -149,6 +149,11 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
         this.sequenze.pop();
     }
 
+    annullaPartenza() {
+        this.hideBox = true;
+        //resettare data
+    }
+
     openSostituzioneModal(): void {
         const sostituzioneModal = this.modalService.open(SostituzionePartenzaModalComponent, {
             windowClass: 'modal-holder',
@@ -161,6 +166,7 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
         sostituzioneModal.result.then((res: { status: string, result: any }) => {
             switch (res.status) {
                 case 'ok' :
+                    console.log('RESULT ', res.result)
                     this.inSostituzione = true;
                     this.hideBox = false;
                     this.boxSostitutivo = true;
@@ -170,7 +176,6 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
                         this.f.mezzo.patchValue(nuovaPartenza.mezzo);
                         this.nuovoMezzo = nuovaPartenza.mezzo.mezzo;
                         this.nuoveSquadre = nuovaPartenza.squadre.map(x => x.squadra);
-                        console.log('VALORE NUOVO SQUADRE ', this.nuoveSquadre)
                         this.f.squadre.patchValue(nuovaPartenza.squadre.map(x => x));
                         this.f.motivazioneAnnullamento.patchValue(nuovaPartenza.motivazioneAnnullamento);
                         this.f.codMezzoDaAnnullare.patchValue(this.partenza.mezzo.codice);

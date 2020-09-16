@@ -46,8 +46,7 @@
         <h4 *ngIf="!hideBox" class="my-3" style="text-align-last: center;">In sostituzione con</h4>                            
         <!-- anteprima mezzo e squadra/e sostitutive-->
         <app-box-anteprima-partenza [partenza]="partenza" [hideBox]="hideBox" [boxSostitutivo]="boxSostitutivo" [nuovoMezzo]="nuovoMezzo" [nuoveSquadre]="nuoveSquadre"
-        [nonModificabile]="true"
-        (modificaPartenza)="openSostituzioneModal()"
+        [nonModificabile]="true" (annullaPartenza)="annullaPartenza()"
         (listaSquadrePartenza)="onListaSquadrePartenza()"></app-box-anteprima-partenza>
         <!-- sequenza eventi -->
         <div class="my-4" style="display: flex; justify-content: center;">
@@ -88,7 +87,7 @@
     </form>
     <div class="row">
         <h6 class="text-danger col">* Campi Obbligatori</h6>
-        <div *ngIf="boxSostitutivo" class="text-danger col" style="text-align-last: right;"><b class="alert-save-mod" ngbTooltip="Conferma per salvere le modifiche">
+        <div *ngIf="!hideBox" class="text-danger col" style="text-align-last: right;"><b class="alert-save-mod" ngbTooltip="Conferma per salvere le modifiche">
             Le modifiche non sono ancora salvate!</b></div>
     </div>
 </div>
