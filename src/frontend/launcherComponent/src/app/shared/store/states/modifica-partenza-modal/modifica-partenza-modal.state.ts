@@ -19,6 +19,7 @@ export interface ModificaPartenzaModalStateModel {
             squadre: SquadraComposizione[];
             motivazioneAnnullamento: string;
             sequenzaStati: SequenzaValoriSelezionati[];
+            dataAnnullamento: string;
         };
         dirty: boolean;
         status: string;
@@ -38,7 +39,8 @@ export const ModificaPartenzaModalStateDefaults: ModificaPartenzaModalStateModel
             mezzo: null,
             squadre: undefined,
             motivazioneAnnullamento: undefined,
-            sequenzaStati: undefined
+            sequenzaStati: undefined,
+            dataAnnullamento: undefined,
         },
         dirty: false,
         status: '',
@@ -74,6 +76,7 @@ export class ModificaPartenzaModalState {
             squadre: form.squadre,
             motivazioneAnnullamento: form.motivazioneAnnullamento,
             sequenzaStati: form.sequenzaStati,
+            dataAnnullamento: form.dataAnnullamento,
         } as ModificaPartenza;
         console.log('RequestAddModificaPartenza FORM', obj);
         this.modificaPartenzaService.addModificaPartenza(obj).subscribe(() => {

@@ -100,6 +100,7 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
         coordinate: null,
     };
     nuoveSquadre: Squadra[] = [];
+    public time = { hour: 13, minute: 30 };
 
     subscription: Subscription = new Subscription();
 
@@ -173,6 +174,7 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
             })
         );
         this.initForm();
+        this.formatTime();
     }
 
     ngOnInit(): void {
@@ -199,14 +201,26 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
     initForm(): void {
         this.sostituzionePartenzaForm = new FormGroup({
             motivazioneAnnullamento: new FormControl(),
+            dataAnnullamento: new FormControl(),
         });
         this.sostituzionePartenzaForm = this.fb.group({
             motivazioneAnnullamento: [null],
+            dataAnnullamento: [null],
         });
     }
 
     get f(): any {
         return this.sostituzionePartenzaForm.controls;
+    }
+
+    formatTime(): void {
+        const d = new Date();
+        this.time.hour = d.getHours();
+        this.time.minute = d.getMinutes();
+    }
+
+    formatTimeForCallBack(): any {
+        return { oraEvento: this.time };
     }
 
     onListaSquadrePartenza() {
@@ -319,7 +333,17 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
         if (!this.sostituzionePartenzaForm.valid) {
             return;
         }
-
+        //handling time
+        this.formatTimeForCallBack();
+        let data = new Date();
+        const orario = this.time;
+        data.setHours(orario.hour);
+        data.setMinutes(orario.minute);
+        data.setSeconds(0);
+        data.setMilliseconds(0);
+        data = new Date(data.getTime());
+        this.f.dataAnnullamento.patchValue(data);
+        //
         const mezzo = this.store.selectSnapshot(MezziComposizioneState.mezzoSelezionato);
         const squadre = this.store.selectSnapshot(SquadreComposizioneState.squadreSelezionate);
         //per rimuovere squadre duplicate
@@ -333,6 +357,6 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
             squadreUnique.push(uniqueObject[i]); 
         } 
         //-----------------------------
-        this.modal.close({ status: 'ok', result: { mezzo: mezzo, squadre: squadreUnique, motivazioneAnnullamento: this.f.motivazioneAnnullamento.value } });
+        this.modal.close({ status: 'ok', result: { mezzo: mezzo, squadre: squadreUnique, motivazioneAnnullamento: this.f.motivazioneAnnullamento.value, dataAnnullamento: this.f.dataAnnullamento.value } });
     }
 }

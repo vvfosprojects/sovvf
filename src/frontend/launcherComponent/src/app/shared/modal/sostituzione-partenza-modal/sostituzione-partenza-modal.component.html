@@ -8,13 +8,21 @@
 <div class="modal-body">
     <div class="row">
         <!-- Anteprima mezzo e squadra/e da sostituire -->
-        <div class="col-12">
+        <div class="col-6">
             <app-box-anteprima-partenza [partenza]="partenza"  [inSostituzione]="partenzaDaSostituire"
                                         [nonModificabile]="true"
                                         (listaSquadrePartenza)="onListaSquadrePartenza()"></app-box-anteprima-partenza>
-        </div>
+            </div>
+            <div class="col-6">
+                <div class="form-group d-inline-flex">
+                    <label style="align-self: center; width: 150px;">Seleziona Orario Annullamento</label>
+                    <ngb-timepicker [(ngModel)]="time" [ngModelOptions]="{standalone: true}"></ngb-timepicker>
+                    <i class="fa fa-clock-o" style="align-self: center; padding-left: 10px; font-size: 25px;"
+                    size="small"></i>
+                </div>
+            </div>
         <!-- Filterbar -->
-        <div class="col-12 mt-3">
+        <div class="col-12 mt-1">
             <app-filterbar-composizione [filtri]="filtriAffini$ | async"
                                         [disableComposizioneMode]="loadingListe"
                                         [nascondiTornaIndietro]="true"
