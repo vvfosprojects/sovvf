@@ -69,6 +69,7 @@
                     style="display: inline-flex; place-content: space-between;">
                     <ng-select [items]="listaStatoMezzo"
                                bindLabel="name"
+                               [multiple]="false"
                                placeholder="Seleziona stato Mezzo"
                                [(ngModel)]="sequenze[index].stato"
                                [ngModelOptions]="{standalone: true}"
