@@ -24,6 +24,7 @@ using SO115App.FakePersistence.JSon.Utility;
 using SO115App.Models.Servizi.Infrastruttura.GetComposizioneSquadre;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace SO115App.FakePersistenceJSon.Composizione
 {
@@ -39,7 +40,7 @@ namespace SO115App.FakePersistenceJSon.Composizione
             }
             var composizioneSquadre = JsonConvert.DeserializeObject<List<ComposizioneSquadre>>(json);
 
-            return composizioneSquadre;
+            return composizioneSquadre.Where(c => c.Squadra.Distaccamento.Codice.Split(".")[0].Equals(query.CodiceSede.Split(".")[0])).ToList();
         }
     }
 }

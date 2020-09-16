@@ -80,7 +80,7 @@ namespace SO115App.FakePersistenceJSon.Composizione
 
             var composizioneMezziPrenotati = GetComposizioneMezziPrenotati(composizioneMezzi, query.CodiceSede);
 
-            return composizioneMezziPrenotati.OrderByDescending(x => x.IndiceOrdinamento).ToList();
+            return composizioneMezziPrenotati.Where(c => c.Mezzo.Distaccamento.Codice.Equals(query.CodiceSede)).OrderByDescending(x => x.IndiceOrdinamento).ToList();
         }
 
         private List<ComposizioneMezzi> GetComposizioneMezziPrenotati(List<ComposizioneMezzi> composizioneMezzi, string codiceSede)
