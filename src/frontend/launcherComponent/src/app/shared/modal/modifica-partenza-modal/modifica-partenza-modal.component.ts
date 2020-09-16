@@ -33,7 +33,7 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
     idRichiesta: string;
     codRichiesta: string;
     public time = { hour: 13, minute: 30 };
-    listaStatoMezzo: any[];
+    listaStatoMezzo: string[];
     statoMezzoSelezionato: string;
     sequenze: SequenzaValoriSelezionati[] = [];
     inSostituzione: boolean = false;
