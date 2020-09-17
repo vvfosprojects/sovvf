@@ -11,9 +11,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
         public Classi.Composizione.ModificaPartenza ModificaPartenza { get; set; }
         public RichiestaAssistenza Richiesta { get; set; }
         public string[] CodSquadre => ModificaPartenza.Squadre.Select(c => c.Codice).ToArray();
-        public DateTime DataPrimoStato => ModificaPartenza.SequenzaStati
-                .OrderBy(c => c.DataOraAggiornamento)
-                .Select(c => c.DataOraAggiornamento)
-                .FirstOrDefault();
+        public DateTime DataUltimoStato => ModificaPartenza.SequenzaStati
+                .Max(c => c.DataOraAggiornamento);
     }
 }
