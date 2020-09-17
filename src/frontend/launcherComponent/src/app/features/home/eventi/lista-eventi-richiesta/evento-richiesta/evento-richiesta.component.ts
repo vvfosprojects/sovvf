@@ -58,6 +58,7 @@ export class EventoRichiestaComponent implements OnInit {
             ['FonogrammaDaInviare', ['fa-file-text-o', 'fa-exclamation-triangle']],
             ['TrasferimentoChiamata', ['fa-exchange']],
             ['UscitaPartenza', ['fa-truck', 'fa-hand-o-right']],
+            //['RevocaPartenza', ['fa-retweet']],
 
             // Default per gli eventi non gestiti
             ['EventoGenerico', ['fa-question-circle']],
