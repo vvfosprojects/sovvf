@@ -75,7 +75,10 @@ export class ModificaPartenzaModalState {
             mezzo: form.mezzo.mezzo,
             squadre: form.squadre.map(x => x.squadra),
             motivazioneAnnullamento: form.motivazioneAnnullamento,
-            sequenzaStati: form.sequenzaStati,
+            sequenzaStati: form.sequenzaStati.map(x => x = {
+                dataOraAggiornamento: x.dataOraAggiornamento,
+                stato: x.stato,
+            }),
             dataAnnullamento: form.dataAnnullamento,
         } as any; //adattate squadre e mezzo al BE => non rispetta piu ModificaPartenz => Squadra[] - Mezzo, necessari.
         console.log('RequestAddModificaPartenza FORM', obj);
