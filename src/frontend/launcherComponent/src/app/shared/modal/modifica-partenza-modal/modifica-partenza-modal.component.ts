@@ -32,7 +32,7 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
     partenza: Partenza;
     idRichiesta: string;
     codRichiesta: string;
-    public time = { hour: 13, minute: 30 };
+    public time = { hour: 13, minute: 30, second: 30 };
     listaStatoMezzo: string[];
     statoMezzoSelezionato: string;
     sequenze: SequenzaValoriSelezionati[] = [];
@@ -137,6 +137,7 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
         const d = new Date();
         this.time.hour = d.getHours();
         this.time.minute = d.getMinutes();
+        this.time.second = d.getSeconds();
     }
 
     formatTimeForCallBack(): any {
@@ -145,7 +146,7 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
 
     onAddSequenza(): void {
         const d = new Date();
-        this.sequenze.push({ stato: undefined, time: { hour: d.getHours(), minute: d.getMinutes() } });
+        this.sequenze.push({ stato: undefined, time: { hour: d.getHours(), minute: d.getMinutes(), second: d.getSeconds() } });
     }
 
     onRemoveSequenza(): void {
@@ -224,7 +225,7 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
                 const orario = s.time;
                 data.setHours(orario.hour);
                 data.setMinutes(orario.minute);
-                data.setSeconds(0);
+                data.setSeconds(orario.second);
                 data.setMilliseconds(0);
                 data = new Date(data.getTime());
                 s.dataOraAggiornamento = data;

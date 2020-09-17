@@ -100,7 +100,7 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
         coordinate: null,
     };
     nuoveSquadre: Squadra[] = [];
-    public time = { hour: 13, minute: 30 };
+    public time = { hour: 13, minute: 30, second: 30 };
 
     subscription: Subscription = new Subscription();
 
@@ -217,6 +217,7 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
         const d = new Date();
         this.time.hour = d.getHours();
         this.time.minute = d.getMinutes();
+        this.time.second = d.getSeconds();
     }
 
     formatTimeForCallBack(): any {
@@ -228,7 +229,7 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
         const orario = this.time;
         data.setHours(orario.hour);
         data.setMinutes(orario.minute);
-        data.setSeconds(0);
+        data.setSeconds(orario.second);
         data.setMilliseconds(0);
         data = new Date(data.getTime());
         this.f.dataAnnullamento.patchValue(data);
