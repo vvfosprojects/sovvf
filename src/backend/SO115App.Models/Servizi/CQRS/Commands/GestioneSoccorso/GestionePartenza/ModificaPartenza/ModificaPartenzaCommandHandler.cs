@@ -54,7 +54,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
             }
 
             //NUOVA PARTENZA
-            var dataComposizione = command.Richiesta.Eventi.Max(c => c.Istante);
+            var dataComposizione = command.Richiesta.Eventi.Max(c => c.Istante).AddMilliseconds(1);
             /*Richiesta = */ComponiPartenza(new ConfermaPartenzeCommand()
             {
                 ConfermaPartenze = new ConfermaPartenze()
