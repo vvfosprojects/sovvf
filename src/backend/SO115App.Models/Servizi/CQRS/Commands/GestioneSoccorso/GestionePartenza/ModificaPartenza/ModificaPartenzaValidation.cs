@@ -102,8 +102,9 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 }
 
                 var ultimoEvento = command.Richiesta.ListaEventi.Max(c => c.Istante);
-                
-                if (command.ModificaPartenza.DataAnnullamento.Value < ultimoEvento)
+                var x = command.ModificaPartenza.DataAnnullamento.Value;
+                var dataAnnullamento = new DateTime(x.Year, x.Month, x.Day, x.Hour, x.Minute, x.Second);
+                if (dataAnnullamento < ultimoEvento)
                 {
                     yield return new ValidationResult("La data annullamento non può essere minore di un evento già accaduto");
                 }
