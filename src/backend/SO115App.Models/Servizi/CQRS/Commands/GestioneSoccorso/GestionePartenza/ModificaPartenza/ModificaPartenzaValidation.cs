@@ -77,6 +77,11 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                     yield return new ValidationResult("Nessuna data annullamento selezionata");
                 }
 
+                if (command.ModificaPartenza.DataAnnullamento > command.ModificaPartenza.SequenzaStati.Min(c => c.DataOraAggiornamento))
+                {
+                    yield return new ValidationResult("La data annullamento non può essere più recente di un cambio stato");
+                }
+
                 command.Richiesta = _getRichiesta.GetByCodice(command.ModificaPartenza.CodRichiesta);
 
                 var ultimoEvento = command.Richiesta.ListaEventi.Max(c => c.Istante);
@@ -86,9 +91,14 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                     yield return new ValidationResult("Data annullamento non valida");
                 }
 
-                if (command.ModificaPartenza.DataAnnullamento > command.ModificaPartenza.SequenzaStati.Min(c => c.DataOraAggiornamento))
+                if(command.Richiesta.Sospesa)
                 {
-                    yield return new ValidationResult("La data annullamento non può essere più recente di un cambio stato");
+                    yield return new ValidationResult("Non puoi modificare una richiesta sospesa");
+                }
+
+                if (command.Richiesta.Chiusa)
+                {
+                    yield return new ValidationResult("Non puoi modificare una richiesta chiusa");
                 }
             }
         }
