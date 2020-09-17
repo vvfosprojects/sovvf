@@ -108,6 +108,7 @@ namespace SO115App.Models.Classi.Utility
         public static string RevocaPerFuoriServizio = "RevocaPerFuoriServizio";
         public static string RevocaPerInterventoNonPiuNecessario = "RevocaPerInterventoNonPiuNecessario";
         public static string RevocaPerRiassegnazione = "RevocaPerRiassegnazione";
+        public static string RevocaPerSostituzioneMezzo = "RevocaPerSostituzioneMezzo";
         public static string AnnullamentoPresaInCarico = "AnnullamentoPresaInCarico";
 
         public static string FonogrammaDaInviare = "FonogrammaDaInviare";
