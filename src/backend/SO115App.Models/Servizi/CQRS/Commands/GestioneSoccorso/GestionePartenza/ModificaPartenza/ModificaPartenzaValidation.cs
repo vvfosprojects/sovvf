@@ -1,6 +1,7 @@
 ﻿using CQRS.Commands.Validators;
 using CQRS.Validation;
 using SO115App.Models.Classi.Utility;
+using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,9 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 {
     public class ModificaPartenzaValidation : ICommandValidator<ModificaPartenzaCommand>
     {
+        IGetRichiestaById _getRichiesta;
+        public ModificaPartenzaValidation(IGetRichiestaById getRichiesta) => _getRichiesta = getRichiesta;
+
         public IEnumerable<ValidationResult> Validate(ModificaPartenzaCommand command)
         {
             if (command.ModificaPartenza.CodRichiesta == null || command.ModificaPartenza.CodRichiesta == "")
@@ -21,8 +25,8 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 yield return new ValidationResult("Nessun mezzo selezionato");
             }
 
-            if (command.ModificaPartenza.Squadre == null || 
-                command.ModificaPartenza.Squadre.Count == 0 || 
+            if (command.ModificaPartenza.Squadre == null ||
+                command.ModificaPartenza.Squadre.Count == 0 ||
                 command.ModificaPartenza.Squadre.Any(c => c == null || c == default))
             {
                 yield return new ValidationResult("Nessuna squadra selezionata");
@@ -40,7 +44,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                     yield return new ValidationResult("Cambi stato errati");
                 }
 
-                if(command.ModificaPartenza.SequenzaStati.Any(s => s.DataOraAggiornamento > DateTime.Now))
+                if (command.ModificaPartenza.SequenzaStati.Any(s => s.DataOraAggiornamento > DateTime.Now))
                 {
                     yield return new ValidationResult("Non puoi aggiungere un evento non ancora accaduto");
                 }
@@ -56,13 +60,13 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 
             if (command.ModificaPartenza.Annullamento)
             {
-                if(command.ModificaPartenza.CodMezzoDaAnnullare == null || command.ModificaPartenza.CodMezzoDaAnnullare == "")
+                if (command.ModificaPartenza.CodMezzoDaAnnullare == null || command.ModificaPartenza.CodMezzoDaAnnullare == "")
                 {
                     yield return new ValidationResult("Nessun codice mezzo selezionato");
                 }
 
-                if (command.ModificaPartenza.CodSquadreDaAnnullare == null || 
-                    command.ModificaPartenza.CodSquadreDaAnnullare.Count() == 0 || 
+                if (command.ModificaPartenza.CodSquadreDaAnnullare == null ||
+                    command.ModificaPartenza.CodSquadreDaAnnullare.Count() == 0 ||
                     command.ModificaPartenza.CodSquadreDaAnnullare.Any(c => c == null || c == ""))
                 {
                     yield return new ValidationResult("Codici squadre errati");
@@ -73,7 +77,11 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                     yield return new ValidationResult("Nessuna data annullamento selezionata");
                 }
 
-                if (command.ModificaPartenza.DataAnnullamento < command.DataUltimoStato)
+                command.Richiesta = _getRichiesta.GetByCodice(command.ModificaPartenza.CodRichiesta);
+
+                var ultimoEvento = command.Richiesta.ListaEventi.Max(c => c.Istante);
+
+                if (command.ModificaPartenza.DataAnnullamento < ultimoEvento)
                 {
                     yield return new ValidationResult("Data annullamento non valida");
                 }

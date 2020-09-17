@@ -54,6 +54,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
             }
 
             //NUOVA PARTENZA
+            var dataComposizione = command.Richiesta.Eventi.Max(c => c.Istante);
             /*Richiesta = */ComponiPartenza(new ConfermaPartenzeCommand()
             {
                 ConfermaPartenze = new ConfermaPartenze()
@@ -64,7 +65,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                     richiesta = Richiesta,
                     Partenze = Richiesta.Partenze.Select(c => c.Partenza).ToList()
                 }
-            }, command.DataUltimoStato, command.ModificaPartenza.Mezzo, command.ModificaPartenza.Squadre);
+            }, dataComposizione, command.ModificaPartenza.Mezzo, command.ModificaPartenza.Squadre);
 
             //TRADUCO GLI STATI
             foreach (var stato in command.ModificaPartenza.SequenzaStati.OrderBy(c => c.DataOraAggiornamento))

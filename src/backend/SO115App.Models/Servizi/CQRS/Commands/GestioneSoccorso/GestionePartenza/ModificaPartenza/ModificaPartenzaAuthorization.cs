@@ -15,23 +15,18 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
         private readonly IPrincipal _currentUser;
         private readonly IFindUserByUsername _findUserByUsername;
         private readonly IGetAutorizzazioni _getAutorizzazioni;
-        private readonly IGetRichiestaById _getRichiestaById;
         public ModificaPartenzaAuthorization(
             IPrincipal currentUser,
             IFindUserByUsername findUserByUsername,
-            IGetAutorizzazioni getAutorizzazioni,
-            IGetRichiestaById getRichiestaById)
+            IGetAutorizzazioni getAutorizzazioni)
         {
             _currentUser = currentUser;
             _findUserByUsername = findUserByUsername;
             _getAutorizzazioni = getAutorizzazioni;
-            _getRichiestaById = getRichiestaById;
         }
 
         public IEnumerable<AuthorizationResult> Authorize(ModificaPartenzaCommand command)
         {
-            command.Richiesta = _getRichiestaById.GetByCodice(command.ModificaPartenza.CodRichiesta);
-
             if (command.Richiesta == null) 
                 yield return new AuthorizationResult(Costanti.IdRichiestaNonValida);
             else if(command.Richiesta.Partenze.Count == 0 && command.ModificaPartenza.Annullamento)
