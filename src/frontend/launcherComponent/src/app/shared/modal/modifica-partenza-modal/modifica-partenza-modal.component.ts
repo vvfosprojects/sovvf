@@ -231,6 +231,7 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
                 s.dataOraAggiornamento = data;
             });
         }
+        if(this.boxSostitutivo) {
         this.store.dispatch(new UpdateFormValue({
             value: {
                 operatore: this.f.operatore.value,
@@ -248,6 +249,25 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
             path: 'modificaPartenzaModal.modificaPartenzaForm'
         }));
         this.modal.close({ status: 'ok' });
+        } else {
+            this.store.dispatch(new UpdateFormValue({
+                value: {
+                    operatore: this.f.operatore.value,
+                    sede: this.f.sede.value,
+                    codRichiesta: this.f.codRichiesta.value,
+                    annullamento: false,
+                    codMezzoDaAnnullare: this.f.codMezzoDaAnnullare.value,
+                    codSquadreDaAnnullare: this.f.codSquadreDaAnnullare.value,
+                    mezzo: this.f.mezzo.value,
+                    squadre: this.f.squadre.value,
+                    motivazioneAnnullamento: this.f.motivazioneAnnullamento.value,
+                    sequenzaStati: sequenze,
+                    dataAnnullamento: this.f.dataAnnullamento.value,
+                },
+                path: 'modificaPartenzaModal.modificaPartenzaForm'
+            }));
+            this.modal.close({ status: 'ok' });
+        }
     }
 
     onDismiss(): void {

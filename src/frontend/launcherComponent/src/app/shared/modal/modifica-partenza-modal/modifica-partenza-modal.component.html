@@ -81,6 +81,7 @@
                                         style="margin-left: 25px;" [seconds]="true" ></ngb-timepicker>
                         <i class="fa fa-clock-o" style="align-self: center; padding-left: 10px; font-size: 25px;"
                            size="small"></i>
+                        <small class="text-muted" style="display: flex; transform: translate(-229px, 109px); min-width: fit-content;" >* Il cambio di stato risulterà alle {{sequenza.time.hour <= 9 ? '0' + sequenza.time.hour : sequenza.time.hour}}:{{sequenza.time.minute <= 9 ? '0' + sequenza.time.minute : sequenza.time.minute}}:{{sequenza.time.second <= 9 ? '0' + sequenza.time.second : sequenza.time.second}}. </small>
                     </div>
                 </li>
             </ul>
