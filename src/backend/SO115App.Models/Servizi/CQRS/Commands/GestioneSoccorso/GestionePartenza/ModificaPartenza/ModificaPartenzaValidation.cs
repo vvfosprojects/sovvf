@@ -58,6 +58,25 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 }
             }
 
+            command.Richiesta = _getRichiesta.GetByCodice(command.ModificaPartenza.CodRichiesta);
+
+            if (command.Richiesta == null)
+                yield return new ValidationResult(Costanti.IdRichiestaNonValida);
+            else if (command.Richiesta.Partenze.Count == 0 && command.ModificaPartenza.Annullamento)
+                yield return new ValidationResult("La richiesta non ha partenze da annullare");
+            else if (command.Richiesta.Partenze.All(c => c.Partenza.PartenzaAnnullata.Equals(true)))
+                yield return new ValidationResult("La richiesta non ha partenze da annullare");
+
+            if (command.Richiesta.Sospesa)
+            {
+                yield return new ValidationResult("Non puoi modificare una richiesta sospesa");
+            }
+
+            if (command.Richiesta.Chiusa)
+            {
+                yield return new ValidationResult("Non puoi modificare una richiesta chiusa");
+            }
+
             if (command.ModificaPartenza.Annullamento)
             {
                 if (command.ModificaPartenza.CodMezzoDaAnnullare == null || command.ModificaPartenza.CodMezzoDaAnnullare == "")
@@ -82,23 +101,11 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                     yield return new ValidationResult("La data annullamento non può essere più recente di un cambio stato");
                 }
 
-                command.Richiesta = _getRichiesta.GetByCodice(command.ModificaPartenza.CodRichiesta);
-
                 var ultimoEvento = command.Richiesta.ListaEventi.Max(c => c.Istante);
-
-                if (command.ModificaPartenza.DataAnnullamento < ultimoEvento)
+                
+                if (command.ModificaPartenza.DataAnnullamento.Value < ultimoEvento)
                 {
-                    yield return new ValidationResult("Data annullamento non valida");
-                }
-
-                if(command.Richiesta.Sospesa)
-                {
-                    yield return new ValidationResult("Non puoi modificare una richiesta sospesa");
-                }
-
-                if (command.Richiesta.Chiusa)
-                {
-                    yield return new ValidationResult("Non puoi modificare una richiesta chiusa");
+                    yield return new ValidationResult("La data annullamento non può essere minore di un evento già accaduto");
                 }
             }
         }
