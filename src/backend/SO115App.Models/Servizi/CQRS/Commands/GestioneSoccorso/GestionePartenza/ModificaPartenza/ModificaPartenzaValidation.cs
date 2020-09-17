@@ -73,7 +73,12 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                     yield return new ValidationResult("Nessuna data annullamento selezionata");
                 }
 
-                if(command.ModificaPartenza.DataAnnullamento > command.ModificaPartenza.SequenzaStati.Min(c => c.DataOraAggiornamento))
+                if (command.ModificaPartenza.DataAnnullamento < command.DataUltimoStato)
+                {
+                    yield return new ValidationResult("Data annullamento non valida");
+                }
+
+                if (command.ModificaPartenza.DataAnnullamento > command.ModificaPartenza.SequenzaStati.Min(c => c.DataOraAggiornamento))
                 {
                     yield return new ValidationResult("La data annullamento non può essere più recente di un cambio stato");
                 }
