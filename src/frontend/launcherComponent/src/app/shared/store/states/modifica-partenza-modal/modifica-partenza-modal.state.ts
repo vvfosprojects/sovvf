@@ -72,12 +72,12 @@ export class ModificaPartenzaModalState {
             annullamento: form.annullamento,
             codMezzoDaAnnullare: form.codMezzoDaAnnullare,
             codSquadreDaAnnullare: form.codSquadreDaAnnullare,
-            mezzo: form.mezzo,
-            squadre: form.squadre,
+            mezzo: form.mezzo.mezzo,
+            squadre: form.squadre.map(x => x.squadra),
             motivazioneAnnullamento: form.motivazioneAnnullamento,
             sequenzaStati: form.sequenzaStati,
             dataAnnullamento: form.dataAnnullamento,
-        } as ModificaPartenza;
+        } as any; //adattate squadre e mezzo al BE => non rispetta piu ModificaPartenz => Squadra[] - Mezzo, necessari.
         console.log('RequestAddModificaPartenza FORM', obj);
         this.modificaPartenzaService.addModificaPartenza(obj).subscribe(() => {
         });
