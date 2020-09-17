@@ -16,7 +16,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 yield return new ValidationResult(Costanti.IdRichiestaNonValida);
             }
 
-            if (command.ModificaPartenza.Mezzo == null || command.ModificaPartenza.Mezzo == default)
+            if (command.ModificaPartenza.Mezzo == null || command.ModificaPartenza.Mezzo == default || command.ModificaPartenza.Mezzo.Codice == null || command.ModificaPartenza.Mezzo.Codice == "")
             {
                 yield return new ValidationResult("Nessun mezzo selezionato");
             }
