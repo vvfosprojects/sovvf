@@ -54,7 +54,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 yield return new ValidationResult("Non puoi modificare una richiesta chiusa");
 
 
-
+            //SE HO STATI NUOVI
             if (command.ModificaPartenza.SequenzaStati != null)
             {
                 if (command.ModificaPartenza.SequenzaStati.Any(s => s.Stato == null || s.Stato == "" || s.DataOraAggiornamento == null || s.DataOraAggiornamento == default))
@@ -63,6 +63,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 if (command.ModificaPartenza.SequenzaStati.Any(s => s.DataOraAggiornamento > DateTime.Now))
                     yield return new ValidationResult("Non puoi aggiungere un evento non ancora accaduto");
 
+                //QUI VERIFICO LA COERENZA TRA GLI STATI CONSIDERANDO L'ATTUALE STATO DELLA PARTENZA DA MODIFICARE
                 var seqEventi = command.ModificaPartenza.SequenzaStati;
                 var partenzaDaModificare = command.Richiesta.Partenze.FirstOrDefault(p => command.ModificaPartenza.CodMezzoDaAnnullare.Equals(p.Partenza.Mezzo.Descrizione));
                 seqEventi.Add(new CambioStato()
@@ -80,6 +81,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
             }
 
 
+            //SE DEVO ANNULLARE LA PARTENZA DA MODIFICARE
             if (command.ModificaPartenza.Annullamento)
             {
                 if (command.ModificaPartenza.DataAnnullamento == null || command.ModificaPartenza.DataAnnullamento == default)
