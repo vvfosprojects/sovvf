@@ -13,14 +13,14 @@
                                         [nonModificabile]="true"
                                         (listaSquadrePartenza)="onListaSquadrePartenza()"></app-box-anteprima-partenza>
             </div>
-            <div class="col-6" style="display: flex; transform: translate(10px, -10px); max-height: 146px;">
+            <div class="col-6" style="max-height: 146px; transform: translate(70px, -5px);">
                 <div class="form-group" style="margin-bottom: 0px !important;">
-                    <label style="align-self: center;">Seleziona Orario Annullamento</label>
-                    <ngb-timepicker [(ngModel)]="time" [ngModelOptions]="{standalone: true}" [seconds]="true" style="transform: translate(10px, -14px); display: flex;"></ngb-timepicker>
-                    <i class="fa fa-clock-o" style="align-self: center; padding-left: 10px; font-size: 25px; display: flex; transform: translate(240px, -83px);"
+                    <label>Seleziona Orario Annullamento</label>
+                    <ngb-timepicker [(ngModel)]="time" [ngModelOptions]="{standalone: true}" style="transform: translate(10px, -14px); display: flex;"></ngb-timepicker>
+                    <i class="fa fa-clock-o" style="align-self: center; padding-left: 10px; font-size: 25px; display: flex; transform: translate(176px, -83px);"
                     size="small"></i>
                 </div>
-                <small class="text-muted" style="display: flex; transform: translate(-219px, 130px); min-width: fit-content;">* Il mezzo risulterà anullato alle {{time.hour <= 9 ? '0' + time.hour : time.hour}}:{{time.minute <= 9 ? '0' + time.minute : time.minute}}:{{time.second <= 9 ? '0' + time.second : time.second}}. </small>
+                <small class="text-muted" style="display: flex; transform: translate(3px, -40px);">* Il mezzo risulterà anullato alle {{time.hour <= 9 ? '0' + time.hour : time.hour}}:{{time.minute <= 9 ? '0' + time.minute : time.minute}}. </small>
             </div>
         <!-- Filterbar -->
         <div class="col-12 mt-1">
