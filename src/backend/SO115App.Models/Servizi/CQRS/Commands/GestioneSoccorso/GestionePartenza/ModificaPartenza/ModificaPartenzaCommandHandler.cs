@@ -38,13 +38,14 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
         {
             Richiesta = command.Richiesta;
 
-            PartenzaDaAnnullare = Richiesta.Partenze
-                .FirstOrDefault(c => c.Partenza.Mezzo.Codice.Equals(command.ModificaPartenza.CodMezzoDaAnnullare));
-
             //ANNULLO PARTENZA
             if (command.ModificaPartenza.Annullamento)
             {
-                /*Richiesta = */AnnullaPartenza(new AnnullaPartenzaCommand()
+                PartenzaDaAnnullare = Richiesta.Partenze
+                                    .FirstOrDefault(c => c.Partenza.Mezzo.Codice.Equals(command.ModificaPartenza.CodMezzoDaAnnullare));
+
+                /*Richiesta = */
+                AnnullaPartenza(new AnnullaPartenzaCommand()
                 {
                     IdOperatore = command.IdOperatore,
                     IdRichiesta = command.Richiesta.Id,
@@ -55,7 +56,8 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 
             //NUOVA PARTENZA
             var dataComposizione = command.Richiesta.Eventi.Max(c => c.Istante).AddMilliseconds(1);
-            /*Richiesta = */ComponiPartenza(new ConfermaPartenzeCommand()
+            /*Richiesta = */
+            ComponiPartenza(new ConfermaPartenzeCommand()
             {
                 ConfermaPartenze = new ConfermaPartenze()
                 {
@@ -70,7 +72,8 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
             //TRADUCO GLI STATI
             foreach (var stato in command.ModificaPartenza.SequenzaStati.OrderBy(c => c.DataOraAggiornamento))
             {
-                /*Richiesta = */AggiornaStato(new AggiornaStatoMezzoCommand()
+                /*Richiesta = */
+                AggiornaStato(new AggiornaStatoMezzoCommand()
                 {
                     Richiesta = Richiesta,
                     CodiceSede = command.CodSede,
