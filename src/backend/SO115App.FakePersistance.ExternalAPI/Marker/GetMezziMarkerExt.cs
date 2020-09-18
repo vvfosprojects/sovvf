@@ -68,7 +68,7 @@ namespace SO115App.ExternalAPI.Fake.Marker
                 var mezzoMarker = new MezzoMarker()
                 {
                     Mezzo = mezzo,
-                    InfoRichiesta = _getInfoRichiesta.GetInfoRichiestaFromIdRichiestaMezzo(mezzo.IdRichiesta)
+                    InfoRichiesta = _getInfoRichiesta.GetInfoRichiestaFromCodiceRichiestaMezzo(mezzo.IdRichiesta)
                 };
                 listaMezziMarker.Add(mezzoMarker);
             }
