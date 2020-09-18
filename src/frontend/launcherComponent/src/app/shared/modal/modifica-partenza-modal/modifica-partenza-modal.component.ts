@@ -178,8 +178,11 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
         if (this.sequenze.length === 0) {
             this.valid = false;
         } 
-        if (this.sequenze.length === 1 && !this.f.sequenzaStati[0]) {
+        if (this.sequenze.length === 1 && !this.sequenze[0].stato) {
             this.valid = false;
+        }         
+        if (this.sequenze.length === 1 && this.sequenze[0].stato) {
+            this.valid = true;
         } 
     }
 
