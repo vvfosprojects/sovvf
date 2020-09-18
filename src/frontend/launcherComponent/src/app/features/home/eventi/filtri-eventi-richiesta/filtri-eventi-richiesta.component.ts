@@ -20,7 +20,7 @@ export class FiltriEventiRichiestaComponent implements OnChanges {
   @Output() toggleIconeNomeClasseEvento = new EventEmitter<boolean>();
 
   form: FormGroup;
-  targheSelezionateUniqe: FiltroTargaMezzo[] = [];
+  targheSelezionateUnique: FiltroTargaMezzo[] = [];
 
   constructor(private formBuilder: FormBuilder) {
     this.form = this.formBuilder.group({
@@ -32,19 +32,19 @@ export class FiltriEventiRichiestaComponent implements OnChanges {
     if (changes && changes.listaTargaMezzo && changes.listaTargaMezzo.currentValue) {
     //per rimuovere targhe duplicate
     const listaTargaMezzoFirst: FiltroTargaMezzo[] =  changes.listaTargaMezzo.currentValue;
-    this.targheSelezionateUniqe = [];
+    this.targheSelezionateUnique = [];
     let uniqueObject = {};
     for (let i in listaTargaMezzoFirst) { 
         let objTitle = listaTargaMezzoFirst[i]['targa']; 
         uniqueObject[objTitle] = listaTargaMezzoFirst[i]; 
     } 
     for (let i in uniqueObject) { 
-      this.targheSelezionateUniqe.push(uniqueObject[i]); 
+      this.targheSelezionateUnique.push(uniqueObject[i]); 
     } 
     //-----------------------------
-    console.log('Lista targa mezzo' , this.targheSelezionateUniqe)
+    console.log('Lista targa mezzo' , this.targheSelezionateUnique)
     console.log('Change List targa mezzo' , changes.listaTargaMezzo)
-    if (this.targheSelezionateUniqe.length > 0) {
+    if (this.targheSelezionateUnique.length > 0) {
       this.targaControl.enable();
     }
     }
@@ -65,7 +65,7 @@ export class FiltriEventiRichiestaComponent implements OnChanges {
   }
 
   mostraTesto(): string {
-    if (this.targheSelezionateUniqe && this.targheSelezionateUniqe.length > 0) {
+    if (this.targheSelezionateUnique && this.targheSelezionateUnique.length > 0) {
       return 'Filtra per mezzo';
     } else {
       return 'Non ci sono mezzi da filtrare';
