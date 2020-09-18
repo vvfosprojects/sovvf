@@ -47,38 +47,6 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 yield return new ValidationResult("Non puoi modificare una richiesta chiusa");
 
 
-            //SE HO STATI NUOVI
-            if (command.ModificaPartenza.SequenzaStati != null)
-            {
-                if (command.ModificaPartenza.SequenzaStati.Any(s => s.Stato == null || s.Stato == "" || s.DataOraAggiornamento == null || s.DataOraAggiornamento == default))
-                    yield return new ValidationResult("Cambi stato errati");
-
-                if (command.ModificaPartenza.SequenzaStati.Any(s => s.DataOraAggiornamento > DateTime.Now))
-                    yield return new ValidationResult("Non puoi aggiungere un evento non ancora accaduto");
-
-                //QUI VERIFICO LA COERENZA TRA GLI STATI CONSIDERANDO L'ATTUALE STATO DELLA PARTENZA DA MODIFICARE
-                ComposizionePartenze partenzaDaModificare;
-                if(command.ModificaPartenza.Annullamento)
-                    partenzaDaModificare = command.Richiesta.Partenze.FirstOrDefault(p => command.ModificaPartenza.CodMezzoDaAnnullare.Equals(p.Partenza.Mezzo.Descrizione));
-                else 
-                    partenzaDaModificare = command.Richiesta.Partenze.FirstOrDefault(p => command.ModificaPartenza.Mezzo.Codice.Equals(p.Partenza.Mezzo.Codice));
-
-                var seqEventi = command.ModificaPartenza.SequenzaStati;
-                seqEventi.Add(new CambioStato()
-                {
-                    Stato = partenzaDaModificare.Partenza.Mezzo.Stato,
-                    DataOraAggiornamento = partenzaDaModificare.Istante
-                });
-                foreach (var stato in seqEventi)
-                {
-                    string messaggioCoerenza = stato.VerificaCoerenza(command.ModificaPartenza.SequenzaStati);
-
-                    if (messaggioCoerenza != null)
-                        yield return new ValidationResult(messaggioCoerenza);
-                }
-            }
-
-
             //SE DEVO ANNULLARE LA PARTENZA DA MODIFICARE
             if (command.ModificaPartenza.Annullamento)
             {
@@ -101,6 +69,39 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 var dataAnnullamento = new DateTime(x.Year, x.Month, x.Day, x.Hour, x.Minute, x.Second);
                 if (dataAnnullamento < ultimoEvento)
                     yield return new ValidationResult("La data annullamento non può essere minore di un evento già accaduto");
+            }
+
+
+            //SE HO STATI NUOVI
+            if (command.ModificaPartenza.SequenzaStati != null)
+            {
+                if (command.ModificaPartenza.SequenzaStati.Any(s => s.Stato == null || s.Stato == "" || s.DataOraAggiornamento == null || s.DataOraAggiornamento == default))
+                    yield return new ValidationResult("Cambi stato errati");
+
+                if (command.ModificaPartenza.SequenzaStati.Any(s => s.DataOraAggiornamento > DateTime.Now))
+                    yield return new ValidationResult("Non puoi aggiungere un evento non ancora accaduto");
+
+                //QUI VERIFICO LA COERENZA TRA GLI STATI CONSIDERANDO L'ATTUALE STATO DELLA PARTENZA DA MODIFICARE
+                ComposizionePartenze partenzaDaModificare;
+                if(command.ModificaPartenza.Annullamento)
+                    partenzaDaModificare = command.Richiesta.Partenze.FirstOrDefault(p => command.ModificaPartenza.CodMezzoDaAnnullare.Equals(p.Partenza.Mezzo.Codice));
+                else 
+                    partenzaDaModificare = command.Richiesta.Partenze.FirstOrDefault(p => command.ModificaPartenza.Mezzo.Codice.Equals(p.Partenza.Mezzo.Codice));
+
+                List<CambioStato> seqEventi = new List<CambioStato>();
+                seqEventi.AddRange(command.ModificaPartenza.SequenzaStati);
+                seqEventi.Add(new CambioStato()
+                {
+                    Stato = partenzaDaModificare.Partenza.Mezzo.Stato,
+                    DataOraAggiornamento = partenzaDaModificare.Istante
+                });
+                foreach (var stato in seqEventi)
+                {
+                    string messaggioCoerenza = stato.VerificaCoerenza(command.ModificaPartenza.SequenzaStati);
+
+                    if (messaggioCoerenza != null)
+                        yield return new ValidationResult(messaggioCoerenza);
+                }
             }
         }
     }

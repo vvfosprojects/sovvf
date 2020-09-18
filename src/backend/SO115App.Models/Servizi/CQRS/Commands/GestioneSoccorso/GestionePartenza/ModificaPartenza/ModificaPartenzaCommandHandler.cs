@@ -93,7 +93,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 
             PartenzaDaAnnullare.PartenzaAnnullata = true;
             PartenzaDaAnnullare.Partenza.PartenzaAnnullata = true;
-            PartenzaDaAnnullare.Partenza.Mezzo.Stato = Costanti.MezzoInRientro;
+            PartenzaDaAnnullare.Partenza.Mezzo.Stato = Costanti.MezzoInSede;
 
             foreach (var squadra in PartenzaDaAnnullare.Partenza.Squadre)
             {
