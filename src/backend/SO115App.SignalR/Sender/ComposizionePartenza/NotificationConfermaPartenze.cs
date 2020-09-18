@@ -88,7 +88,7 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
         {
             const bool notificaChangeState = true;
 
-            var richiesta = _getRichiestaById.GetByCodice(conferma.ConfermaPartenze.IdRichiesta);
+            var richiesta = _getRichiestaById.GetById(conferma.ConfermaPartenze.IdRichiesta);
             var sintesi = _mapperSintesi.Map(richiesta);
             sintesi.Competenze = MapCompetenze(richiesta.CodUOCompetenza);
             conferma.ConfermaPartenze.Chiamata = sintesi;
