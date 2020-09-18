@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { Store, Select } from '@ngxs/store';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -13,6 +13,7 @@ import { SostituzionePartenzaModalComponent } from '../sostituzione-partenza-mod
 import { ListaSquadre } from '../../interface/lista-squadre';
 import { VisualizzaListaSquadrePartenza } from 'src/app/features/home/store/actions/richieste/richieste.actions';
 import { SequenzaValoriSelezionati } from '../../interface/sequenza-modifica-partenza.interface';
+import { makeCopy } from '../../helper/function';
 
 
 @Component({
@@ -42,6 +43,14 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
     nuovoMezzo: string;
     nuoveSquadre: string[];
     nonModificabile: boolean = false;
+    statiMezzo: any[] = [
+        {disabled: false, name: 'In Uscita'},
+        {disabled: true, name: 'In Viaggio'},
+        {disabled: true, name: 'Sul Posto'},
+        {disabled: true, name: 'In Rientro'},
+        {disabled: true, name: 'Rientrato'},
+    ];
+    valid: boolean = false;
 
     modificaPartenzaForm: FormGroup;
     submitted: boolean;
@@ -111,6 +120,13 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
         );
     }
 
+    onValid() {
+        this.valid = true;
+    }
+ 
+    onNotValid() {
+        this.valid = false;
+    }
 
     getTitle(): string {
         return 'Modifica Partenza Richiesta ' + this.codRichiesta;
@@ -145,12 +161,26 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
     }
 
     onAddSequenza(): void {
+        this.valid = false;
         const d = new Date();
-        this.sequenze.push({ stato: undefined, time: { hour: d.getHours(), minute: d.getMinutes(), second: d.getSeconds() } });
+        let select = makeCopy(this.statiMezzo);
+        if (this.sequenze.length > 0 ) {
+        select = makeCopy(this.sequenze[this.sequenze.length - 1].select);    
+        const i = select.findIndex(x => !x.disabled)
+        select[i].disabled = true;
+        select[i+1].disabled = false;
+        } 
+        this.sequenze.push({ stato: undefined, time: { hour: d.getHours(), minute: d.getMinutes(), second: d.getSeconds() }, select });
     }
 
     onRemoveSequenza(): void {
         this.sequenze.pop();
+        if (this.sequenze.length === 0) {
+            this.valid = false;
+        } 
+        if (this.sequenze.length === 1 && !this.f.sequenzaStati[0]) {
+            this.valid = false;
+        } 
     }
 
     annullaPartenza() {
@@ -172,7 +202,7 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
         sostituzioneModal.result.then((res: { status: string, result: any }) => {
             switch (res.status) {
                 case 'ok' :
-                    console.log('RESULT ', res.result)
+                    console.log('RESULT SECONDO MOD ', res.result)
                     this.inSostituzione = true;
                     this.hideBox = false;
                     this.boxSostitutivo = true;
@@ -231,26 +261,7 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
                 s.dataOraAggiornamento = data;
             });
         }
-        if(this.boxSostitutivo) {
         this.store.dispatch(new UpdateFormValue({
-            value: {
-                operatore: this.f.operatore.value,
-                sede: this.f.sede.value,
-                codRichiesta: this.f.codRichiesta.value,
-                annullamento: this.f.annullamento.value,
-                codMezzoDaAnnullare: this.f.codMezzoDaAnnullare.value,
-                codSquadreDaAnnullare: this.f.codSquadreDaAnnullare.value,
-                mezzo: this.f.mezzo.value,
-                squadre: this.f.squadre.value,
-                motivazioneAnnullamento: this.f.motivazioneAnnullamento.value,
-                sequenzaStati: sequenze,
-                dataAnnullamento: this.f.dataAnnullamento.value,
-            },
-            path: 'modificaPartenzaModal.modificaPartenzaForm'
-        }));
-        this.modal.close({ status: 'ok' });
-        } else {
-            this.store.dispatch(new UpdateFormValue({
                 value: {
                     operatore: this.f.operatore.value,
                     sede: this.f.sede.value,
@@ -266,8 +277,7 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
                 },
                 path: 'modificaPartenzaModal.modificaPartenzaForm'
             }));
-            this.modal.close({ status: 'ok' });
-        }
+        this.modal.close({ status: 'ok' });
     }
 
     onDismiss(): void {

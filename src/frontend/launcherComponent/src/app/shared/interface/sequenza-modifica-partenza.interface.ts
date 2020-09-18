@@ -4,4 +4,5 @@ export interface SequenzaValoriSelezionati {
     stato: StatoMezzoSequenze;
     time?: { hour: number, minute: number, second: number };
     dataOraAggiornamento?: Date;
+    select?: any[];
 }

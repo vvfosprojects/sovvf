@@ -57,31 +57,32 @@
                     ngbTooltip="Aggiungi evento" style="max-width: fit-content;">
                 <i class="fa fa-plus"></i>
             </button>
-            <button class="btn btn-sm btn-danger btn-no-hover ml-2" (click)="onRemoveSequenza()"
+            <button class="btn btn-sm btn-danger btn-no-hover ml-2" (click)="onRemoveSequenza()" [disabled]="sequenze?.length === 0"
                     ngbTooltip="Rimuovi evento" style="max-width: fit-content;">
                 <i class="fa fa-minus"></i>
             </button>
         </div>
-        <div *ngIf="sequenze?.length > 0" class="card mb-4" style="width: 33.5rem; margin-left: 85px;">
+        <div *ngIf="sequenze?.length > 0" class="card mb-4" style="width: 37.5rem; margin-left: 55px;">
             <ul class="list-group list-group-flush" style="max-height: 500px;"
                 [class.overflow-test]="sequenze?.length > 3">
                 <li *ngFor="let sequenza of sequenze; let index = index" class="list-group-item"
                     style="display: inline-flex; place-content: space-between;">
-                    <ng-select [items]="listaStatoMezzo"
-                               bindLabel="name"
-                               [multiple]="false"
-                               placeholder="Seleziona stato Mezzo"
-                               [(ngModel)]="sequenze[index].stato"
-                               [ngModelOptions]="{standalone: true}"
-                               style="min-width: 220px; align-self: center;"
-                    >
+                    <ng-select [items]="sequenza.select"
+                    bindLabel="name"
+                    [multiple]="false"
+                    placeholder="Seleziona stato Mezzo"
+                    [(ngModel)]="sequenze[index].stato"
+                    (change)="onValid()"
+                    (clear)="onNotValid()"
+                    [ngModelOptions]="{standalone: true}"
+                    style="min-width: 220px; align-self: center;">
                     </ng-select>
                     <div class="md-form md-outline" id="default-picker" style="display: flex;">
                         <ngb-timepicker [(ngModel)]="sequenze[index].time" [ngModelOptions]="{standalone: true}"
                                         style="margin-left: 25px;" [seconds]="true" ></ngb-timepicker>
                         <i class="fa fa-clock-o" style="align-self: center; padding-left: 10px; font-size: 25px;"
                            size="small"></i>
-                        <small class="text-muted" style="display: flex; transform: translate(-229px, 109px); min-width: fit-content;" >* Il cambio di stato risulterà alle {{sequenza.time.hour <= 9 ? '0' + sequenza.time.hour : sequenza.time.hour}}:{{sequenza.time.minute <= 9 ? '0' + sequenza.time.minute : sequenza.time.minute}}:{{sequenza.time.second <= 9 ? '0' + sequenza.time.second : sequenza.time.second}}. </small>
+                        <small class="text-muted" style="display: flex; position: absolute; transform: translate(39px, 109px); min-width: fit-content;" >* Il cambio di stato risulterà alle {{sequenza.time.hour <= 9 ? '0' + sequenza.time.hour : sequenza.time.hour}}:{{sequenza.time.minute <= 9 ? '0' + sequenza.time.minute : sequenza.time.minute}}:{{sequenza.time.second <= 9 ? '0' + sequenza.time.second : sequenza.time.second}}. </small>
                     </div>
                 </li>
             </ul>
@@ -98,8 +99,7 @@
     <button type="button" class="btn btn-lg btn-secondary btn-no-hover" (click)="closeModal('ko')">
         {{ 'Annulla' | uppercase }}
     </button>
-    <button type="button" class="btn btn-lg btn-danger btn-no-hover" ngbTooltip="Riempi tutti i campi obbligatori"
-            [disableTooltip]="formValid" (click)="onConferma()">
+    <button type="button" class="btn btn-lg btn-danger btn-no-hover" [disabled]="!valid" (click)="onConferma()">
         {{ 'Salva' | uppercase }}
     </button>
 </div>
