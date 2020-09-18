@@ -42,8 +42,6 @@ export class FiltriEventiRichiestaComponent implements OnChanges {
       this.targheSelezionateUnique.push(uniqueObject[i]); 
     } 
     //-----------------------------
-    console.log('Lista targa mezzo' , this.targheSelezionateUnique)
-    console.log('Change List targa mezzo' , changes.listaTargaMezzo)
     if (this.targheSelezionateUnique.length > 0) {
       this.targaControl.enable();
     }
