@@ -130,7 +130,6 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
     }
 
     checkStatoMezzoSquenza() {
-        console.log(this.partenza.mezzo.stato)
         for (let i = 0; i < this.statiMezzo.length - 2; i++) {
             if (this.partenza.mezzo.stato === this.statiMezzo[i].name) {
                 this.statiMezzo[i+1].disabled = false;
