@@ -73,6 +73,7 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
         this.f.codRichiesta.patchValue(this.codRichiesta);
         this.f.mezzo.patchValue(this.partenza.mezzo);
         this.f.squadre.patchValue(this.partenza.squadre);
+        this.checkStatoMezzoSquenza();
     }
 
     initForm(): void {
@@ -126,6 +127,16 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
  
     onNotValid() {
         this.valid = false;
+    }
+
+    checkStatoMezzoSquenza() {
+        console.log(this.partenza.mezzo.stato)
+        for (let i = 0; i < this.statiMezzo.length - 2; i++) {
+            if (this.partenza.mezzo.stato === this.statiMezzo[i].name) {
+                this.statiMezzo[i+1].disabled = false;
+                this.statiMezzo.splice(0, i+1);
+        } 
+       }
     }
 
     getTitle(): string {
