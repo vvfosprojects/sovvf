@@ -37,14 +37,6 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 command.ModificaPartenza.Squadre.Any(c => c == null || c == default))
                 yield return new ValidationResult("Nessuna squadra selezionata");
 
-            if (command.ModificaPartenza.CodMezzoDaAnnullare == null || command.ModificaPartenza.CodMezzoDaAnnullare == "")
-                yield return new ValidationResult("Nessun codice mezzo selezionato");
-
-            if (command.ModificaPartenza.CodSquadreDaAnnullare == null ||
-                command.ModificaPartenza.CodSquadreDaAnnullare.Count() == 0 ||
-                command.ModificaPartenza.CodSquadreDaAnnullare.Any(c => c == null || c == ""))
-                yield return new ValidationResult("Codici squadre errati");
-
             if (command.ModificaPartenza.Squadre.Count != command.ModificaPartenza.Squadre.Distinct().Count())
                 yield return new ValidationResult("Hai selezionato più volte la stessa squadra");
 
@@ -95,6 +87,14 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 
                 if (command.ModificaPartenza.DataAnnullamento > command.ModificaPartenza.SequenzaStati.Min(c => c.DataOraAggiornamento))
                     yield return new ValidationResult("La data annullamento non può essere più recente di un cambio stato");
+
+                if (command.ModificaPartenza.CodMezzoDaAnnullare == null || command.ModificaPartenza.CodMezzoDaAnnullare == "")
+                    yield return new ValidationResult("Nessun codice mezzo selezionato");
+
+                if (command.ModificaPartenza.CodSquadreDaAnnullare == null ||
+                    command.ModificaPartenza.CodSquadreDaAnnullare.Count() == 0 ||
+                    command.ModificaPartenza.CodSquadreDaAnnullare.Any(c => c == null || c == ""))
+                    yield return new ValidationResult("Codici squadre errati");
 
                 var ultimoEvento = command.Richiesta.ListaEventi.Max(c => c.Istante);
                 var x = command.ModificaPartenza.DataAnnullamento.Value;
