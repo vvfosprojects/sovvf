@@ -1,5 +1,6 @@
 ﻿using CQRS.Commands.Validators;
 using CQRS.Validation;
+using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using System;
@@ -49,7 +50,14 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                     yield return new ValidationResult("Non puoi aggiungere un evento non ancora accaduto");
                 }
 
-                foreach (var stato in command.ModificaPartenza.SequenzaStati)
+                var seqEventi = command.ModificaPartenza.SequenzaStati;
+                var partenzaDaModificare = command.Richiesta.Partenze.FirstOrDefault(p => command.ModificaPartenza.CodMezzoDaAnnullare.Equals(p.Partenza.Mezzo.Codice));
+                seqEventi.Add(new CambioStato()
+                {
+                    Stato = partenzaDaModificare.Partenza.Mezzo.Stato,
+                    DataOraAggiornamento = partenzaDaModificare.Istante
+                });
+                foreach (var stato in seqEventi)
                 {
                     string messaggioCoerenza = stato.VerificaCoerenza(command.ModificaPartenza.SequenzaStati);
 

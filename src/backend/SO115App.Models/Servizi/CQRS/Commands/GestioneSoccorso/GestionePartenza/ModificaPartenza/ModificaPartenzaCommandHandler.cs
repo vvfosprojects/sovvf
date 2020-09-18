@@ -105,7 +105,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
             {
                 CodiceSede = PartenzaDaAnnullare.Partenza.Mezzo.Distaccamento.Codice,
                 IdMezzo = command.TargaMezzo,
-                StatoMezzo = Costanti.MezzoInRientro,
+                StatoMezzo = Costanti.MezzoInSede,
                 Richiesta = Richiesta,
                 IdUtente = command.IdOperatore
             };
