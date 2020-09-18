@@ -16,6 +16,15 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 
         public IEnumerable<ValidationResult> Validate(ModificaPartenzaCommand command)
         {
+            command.Richiesta = _getRichiesta.GetByCodice(command.ModificaPartenza.CodRichiesta);
+
+            if (command.Richiesta == null)
+                yield return new ValidationResult(Costanti.IdRichiestaNonValida);
+            else if (command.Richiesta.Partenze.Count == 0 && command.ModificaPartenza.Annullamento)
+                yield return new ValidationResult("La richiesta non ha partenze da annullare");
+            else if (command.Richiesta.Partenze.All(c => c.Partenza.PartenzaAnnullata.Equals(true)))
+                yield return new ValidationResult("La richiesta non ha partenze da annullare");
+
             if (command.ModificaPartenza.CodRichiesta == null || command.ModificaPartenza.CodRichiesta == "")
             {
                 yield return new ValidationResult(Costanti.IdRichiestaNonValida);
@@ -31,6 +40,18 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 command.ModificaPartenza.Squadre.Any(c => c == null || c == default))
             {
                 yield return new ValidationResult("Nessuna squadra selezionata");
+            }
+
+            if (command.ModificaPartenza.CodMezzoDaAnnullare == null || command.ModificaPartenza.CodMezzoDaAnnullare == "")
+            {
+                yield return new ValidationResult("Nessun codice mezzo selezionato");
+            }
+
+            if (command.ModificaPartenza.CodSquadreDaAnnullare == null ||
+                command.ModificaPartenza.CodSquadreDaAnnullare.Count() == 0 ||
+                command.ModificaPartenza.CodSquadreDaAnnullare.Any(c => c == null || c == ""))
+            {
+                yield return new ValidationResult("Codici squadre errati");
             }
 
             if (command.ModificaPartenza.Squadre.Count != command.ModificaPartenza.Squadre.Distinct().Count())
@@ -51,7 +72,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 }
 
                 var seqEventi = command.ModificaPartenza.SequenzaStati;
-                var partenzaDaModificare = command.Richiesta.Partenze.FirstOrDefault(p => command.ModificaPartenza.CodMezzoDaAnnullare.Equals(p.Partenza.Mezzo.Codice));
+                var partenzaDaModificare = command.Richiesta.Partenze.FirstOrDefault(p => command.ModificaPartenza.CodMezzoDaAnnullare.Equals(p.Partenza.Mezzo.Descrizione));
                 seqEventi.Add(new CambioStato()
                 {
                     Stato = partenzaDaModificare.Partenza.Mezzo.Stato,
@@ -66,15 +87,6 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 }
             }
 
-            command.Richiesta = _getRichiesta.GetByCodice(command.ModificaPartenza.CodRichiesta);
-
-            if (command.Richiesta == null)
-                yield return new ValidationResult(Costanti.IdRichiestaNonValida);
-            else if (command.Richiesta.Partenze.Count == 0 && command.ModificaPartenza.Annullamento)
-                yield return new ValidationResult("La richiesta non ha partenze da annullare");
-            else if (command.Richiesta.Partenze.All(c => c.Partenza.PartenzaAnnullata.Equals(true)))
-                yield return new ValidationResult("La richiesta non ha partenze da annullare");
-
             if (command.Richiesta.Sospesa)
             {
                 yield return new ValidationResult("Non puoi modificare una richiesta sospesa");
@@ -87,18 +99,6 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 
             if (command.ModificaPartenza.Annullamento)
             {
-                if (command.ModificaPartenza.CodMezzoDaAnnullare == null || command.ModificaPartenza.CodMezzoDaAnnullare == "")
-                {
-                    yield return new ValidationResult("Nessun codice mezzo selezionato");
-                }
-
-                if (command.ModificaPartenza.CodSquadreDaAnnullare == null ||
-                    command.ModificaPartenza.CodSquadreDaAnnullare.Count() == 0 ||
-                    command.ModificaPartenza.CodSquadreDaAnnullare.Any(c => c == null || c == ""))
-                {
-                    yield return new ValidationResult("Codici squadre errati");
-                }
-
                 if (command.ModificaPartenza.DataAnnullamento == null || command.ModificaPartenza.DataAnnullamento == default)
                 {
                     yield return new ValidationResult("Nessuna data annullamento selezionata");
