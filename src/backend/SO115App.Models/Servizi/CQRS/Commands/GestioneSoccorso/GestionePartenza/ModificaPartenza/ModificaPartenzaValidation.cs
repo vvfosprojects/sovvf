@@ -90,18 +90,22 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 
                 List<CambioStato> seqEventi = new List<CambioStato>();
                 seqEventi.AddRange(command.ModificaPartenza.SequenzaStati);
-                seqEventi.Add(new CambioStato()
-                {
-                    Stato = partenzaDaModificare.Partenza.Mezzo.Stato,
-                    DataOraAggiornamento = partenzaDaModificare.Istante
-                });
+                if(!command.ModificaPartenza.Annullamento)
+                    seqEventi.Add(new CambioStato()
+                    {
+                        Stato = partenzaDaModificare.Partenza.Mezzo.Stato,
+                        DataOraAggiornamento = partenzaDaModificare.Istante
+                    });
                 foreach (var stato in seqEventi)
                 {
-                    string messaggioCoerenza = stato.VerificaCoerenza(command.ModificaPartenza.SequenzaStati);
+                    string messaggioCoerenza = stato.VerificaCoerenza(seqEventi);
 
                     if (messaggioCoerenza != null)
                         yield return new ValidationResult(messaggioCoerenza);
                 }
+
+                if (command.ModificaPartenza.SequenzaStati.Min(c => c.DataOraAggiornamento) < partenzaDaModificare.Istante)
+                    yield return new ValidationResult("Non puoi aggiungere un evento accaduto prima di una partenza");
             }
         }
     }
