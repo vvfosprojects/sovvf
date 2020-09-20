@@ -67,43 +67,22 @@ export class ModificaPartenzaModalState {
     requestAddModificaPartenza({ getState }: StateContext<ModificaPartenzaModalStateModel>) {
         const state = getState();
         const form = state.modificaPartenzaForm.model;
-        if(form.codMezzoDaAnnullare && form.codSquadreDaAnnullare) {
-            const obj = {
-                codRichiesta: form.codRichiesta,
-                annullamento: true,
-                codMezzoDaAnnullare: form.codMezzoDaAnnullare,
-                codSquadreDaAnnullare: form.codSquadreDaAnnullare,
-                mezzo: form.mezzo.mezzo,
-                squadre: form.squadre.map(x => x.squadra),
-                motivazioneAnnullamento: form.motivazioneAnnullamento,
-                sequenzaStati: form.sequenzaStati.map(x => ({
-                    dataOraAggiornamento: x.dataOraAggiornamento,
-                    stato: x.stato ? x.stato['name'] : undefined,
-                })),
-                dataAnnullamento: form.dataAnnullamento,
-            } as any; //adattate squadre e mezzo al BE => non rispetta piu ModificaPartenz => Squadra[] - Mezzo, necessari.
-            console.log('RequestAddModificaPartenza FORM', obj);
-            this.modificaPartenzaService.addModificaPartenza(obj).subscribe(() => {
-            });
-        } else {
-            const obj = {
-                codRichiesta: form.codRichiesta,
-                annullamento: false,
-                codMezzoDaAnnullare: form.codMezzoDaAnnullare,
-                codSquadreDaAnnullare: form.codSquadreDaAnnullare,
-                mezzo: form.mezzo,
-                squadre: form.squadre.map(x => x),
-                motivazioneAnnullamento: form.motivazioneAnnullamento,
-                sequenzaStati: form.sequenzaStati.map(x => x = {
-                    dataOraAggiornamento: x.dataOraAggiornamento,
-                    stato: x.stato ? x.stato['name'] : undefined,
-                }),
-                dataAnnullamento: form.dataAnnullamento,
-            } as any;
-            console.log('RequestAddModificaPartenza FORM', obj);
-            this.modificaPartenzaService.addModificaPartenza(obj).subscribe(() => {
-            });
-        }
-
+        const obj = {
+            codRichiesta: form.codRichiesta,
+            annullamento: form.annullamento,
+            codMezzoDaAnnullare: form.codMezzoDaAnnullare,
+            codSquadreDaAnnullare: form.codSquadreDaAnnullare,
+            mezzo: form.mezzo.mezzo ? form.mezzo.mezzo : form.mezzo,
+            squadre: form.squadre,
+            motivazioneAnnullamento: form.motivazioneAnnullamento,
+            sequenzaStati: form.sequenzaStati.map(x => ({
+                dataOraAggiornamento: x.dataOraAggiornamento,
+                stato: x.stato ? x.stato['name'] : undefined,
+            })),
+            dataAnnullamento: form.dataAnnullamento,
+        } as any; //adattate squadre e mezzo al BE => non rispetta piu ModificaPartenz => Squadra[] - Mezzo, necessari.
+        console.log('RequestAddModificaPartenza FORM', obj);
+        this.modificaPartenzaService.addModificaPartenza(obj).subscribe(() => {
+        });
     }
 }
