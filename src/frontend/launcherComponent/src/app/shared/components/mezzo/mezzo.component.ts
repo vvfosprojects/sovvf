@@ -60,7 +60,7 @@ export class MezzoComponent implements OnInit {
             data.setMinutes(orario.minuti);
             data.setSeconds(0);
             data.setMilliseconds(0);
-            data = new Date(data.getTime() + OFFSET_SYNC_TIME[0]);
+            data = new Date(data.getTime());
             actionMezzo = { 'mezzo': this.mezzo, 'action': action.mezzoAction, 'data': data };
         } else {
             actionMezzo = { 'mezzo': this.mezzo, 'action': null };
