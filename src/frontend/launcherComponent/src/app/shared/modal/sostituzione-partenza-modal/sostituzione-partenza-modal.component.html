@@ -112,7 +112,7 @@
             </div>
         </div>
     </div>
-        <div class="alert alert-info text-uppercase font-weight-bold" role="alert">* Il mezzo {{partenza?.mezzo.descrizione}} {{partenza?.mezzo.genere}} sarà annullato alle {{time.hour <= 9 ? '0' + time.hour : time.hour}}:{{time.minute <= 9 ? '0' + time.minute : time.minute}}. </div>
+        <div class="alert alert-info text-uppercase font-weight-bold" role="alert">Il mezzo {{partenza?.mezzo.descrizione}} {{partenza?.mezzo.genere}} sarà annullato alle {{time.hour <= 9 ? '0' + time.hour : time.hour}}:{{time.minute <= 9 ? '0' + time.minute : time.minute}}. </div>
 </div>
 <div class="modal-footer">
     <button type="button" class="btn btn-lg btn-secondary btn-no-hover" (click)="closeModal('ko')">

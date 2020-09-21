@@ -34,6 +34,7 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
     idRichiesta: string;
     codRichiesta: string;
     public time = { hour: 13, minute: 30, second: 30 };
+    public timeAnnullamento = { hour: 13, minute: 30 };
     listaStatoMezzo: string[];
     statoMezzoSelezionato: string;
     sequenze: SequenzaValoriSelezionati[] = [];
@@ -173,6 +174,12 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
         return { oraEvento: this.sequenze['time'] };
     }
 
+    formatTimeAnnullamento(): void {
+        const d = new Date();
+        this.timeAnnullamento.hour = d.getHours();
+        this.timeAnnullamento.minute = d.getMinutes();
+    }
+
     onAddSequenza(): void {
         for (let i = 0; i < this.statiMezzo.length - 1; i++) {
             if (!this.sequenze[i]) {
@@ -222,6 +229,7 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
             backdrop  : 'static',
             keyboard  : false,
         });
+        this.formatTimeAnnullamento()
         sostituzioneModal.componentInstance.idRichiesta = this.idRichiesta;
         sostituzioneModal.componentInstance.codRichiesta = this.codRichiesta;
         sostituzioneModal.componentInstance.partenza = this.partenza;
