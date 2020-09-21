@@ -12,15 +12,20 @@
     <small class="d-inline-block text-muted mb-3">
         {{ changelog.descrizione }}
     </small>
-    <div *ngIf="ultimoChangelog" class="text-right">
-        <h6>
-            <span class="text-danger">
-               Problemi con questo aggiornamento?
-            </span>
-            Scrivi a
-            <a href="{{'mailto://' + emailProblemi}}">
-                {{ emailProblemi }}
-            </a>
-        </h6>
+    <div *ngIf="ultimoChangelog" class="clearfix">
+        <div class="float-left">
+            <div class="badge badge-success font-weight-bolder h5">VERSIONE ATTUALE</div>
+        </div>
+        <div class="float-right">
+            <h5>
+                <span class="text-danger">
+                   Problemi con questo aggiornamento?
+                </span>
+                Scrivi a
+                <a href="{{'mailto://' + emailProblemi}}">
+                    {{ emailProblemi }}
+                </a>
+            </h5>
+        </div>
     </div>
 </div>
