@@ -51,6 +51,7 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
         {disabled: true, name: 'Rientrato'},
     ];
     valid: boolean = false;
+    sequenzeValid: boolean = true;
 
     modificaPartenzaForm: FormGroup;
     submitted: boolean;
@@ -73,7 +74,7 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
         this.f.codRichiesta.patchValue(this.codRichiesta);
         this.f.mezzo.patchValue(this.partenza.mezzo);
         this.f.squadre.patchValue(this.partenza.squadre);
-        this.checkStatoMezzoSquenza();
+        this.checkStatoMezzoSequenza();
     }
 
     initForm(): void {
@@ -123,13 +124,15 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
 
     onValid() {
         this.valid = true;
+        this.sequenzeValid = true;
     }
  
     onNotValid() {
         this.valid = false;
+        this.sequenzeValid = false;
     }
 
-    checkStatoMezzoSquenza() {
+    checkStatoMezzoSequenza() {
         for (let i = 0; i < this.statiMezzo.length - 2; i++) {
             if (this.partenza.mezzo.stato === this.statiMezzo[i].name) {
                 this.statiMezzo[i+1].disabled = false;
@@ -171,6 +174,11 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
     }
 
     onAddSequenza(): void {
+        for (let i = 0; i < this.statiMezzo.length - 1; i++) {
+            if (!this.sequenze[i]) {
+                this.sequenzeValid = false;
+            }
+        }
         this.valid = false;
         const d = new Date();
         let select = makeCopy(this.statiMezzo);
@@ -184,9 +192,13 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
     }
 
     onRemoveSequenza(): void {
+        if (!this.sequenzeValid) {
+            this.sequenzeValid = true;
+        }
         this.sequenze.pop();
         if (this.sequenze.length === 0) {
             this.valid = false;
+            this.sequenzeValid = true;
         } 
         if (this.sequenze.length === 1 && !this.sequenze[0].stato) {
             this.valid = false;
@@ -199,6 +211,7 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
     annullaPartenza() {
         this.hideBox = true;
         this.nonModificabile = false;
+        this.inSostituzione = false;
     }
 
     openSostituzioneModal(): void {
