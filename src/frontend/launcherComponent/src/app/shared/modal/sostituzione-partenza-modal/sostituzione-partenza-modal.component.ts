@@ -359,7 +359,7 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
             uniqueObject[objTitle] = squadre[i]; 
         } 
         for (let i in uniqueObject) { 
-            squadreUnique.push(uniqueObject[i]); 
+            squadreUnique.push(uniqueObject[i].squadra); 
         } 
         //-----------------------------
         this.modal.close({ status: 'ok', result: { mezzo: mezzo, squadre: squadreUnique, motivazioneAnnullamento: this.f.motivazioneAnnullamento.value, dataAnnullamento: this.f.dataAnnullamento.value } });
