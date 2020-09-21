@@ -170,7 +170,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
 
             foreach (var partenza in command.ConfermaPartenze.Partenze)
             {
-                partenza.Mezzo.IdRichiesta = richiesta.CodRichiesta;
+                partenza.Mezzo.IdRichiesta = richiesta.Id;
             }
             var nominativo = utente.Nome + "." + utente.Cognome;
 
@@ -194,7 +194,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                 }
             }
 
-            command.ConfermaPartenze.IdRichiesta = richiesta.Id;
+            command.ConfermaPartenze.IdRichiesta = richiesta.Codice;
 
             var confermaPartenze = _updateConfermaPartenze.Update(command);
 
