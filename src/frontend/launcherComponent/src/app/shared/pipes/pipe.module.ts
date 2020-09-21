@@ -16,6 +16,7 @@ import { SelectedFilterTipologiaRichiestePipe } from './selected-filter-tipologi
 import { ReplacePipe } from './replace.pipe';
 import { CompetenzaFormatPipe } from './competenza-format.pipe';
 import { TipoNotificaPipe } from './tipo-notifica.pipe';
+import { ReversePipe } from './reverse.pipe';
 
 const COMPONENTS = [
     TruncatePipe,
@@ -34,7 +35,8 @@ const COMPONENTS = [
     SelectedFilterTipologiaRichiestePipe,
     ReplacePipe,
     CompetenzaFormatPipe,
-    TipoNotificaPipe
+    TipoNotificaPipe,
+    ReversePipe
 ];
 
 @NgModule({

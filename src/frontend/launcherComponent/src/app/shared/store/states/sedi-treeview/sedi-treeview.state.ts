@@ -14,8 +14,7 @@ import { allFalseTreeItem, checkTreeItem, findItem } from './sedi-treeview.helpe
 import { ReloadApp, SetVistaSedi } from '../../actions/app/app.actions';
 import { ToastrType } from '../../../enum/toastr';
 import { SetTurnoCalendario } from 'src/app/features/navbar/store/actions/turno.actions';
-
-export const KEY_CACHE_SEDI_TREE_SELECTED = 'KEY_CACHE_SEDI_TREE_SELECTED_SDGHUJHFGD'
+import { LSNAME } from '../../../../core/settings/config';
 
 export interface SediTreeviewStateModel {
     listeSedi: ListaSedi;
@@ -87,7 +86,7 @@ export class SediTreeviewState {
 
     @Action(PatchListaSediNavbar)
     patchListaSediNavbar({ getState, patchState }: StateContext<SediTreeviewStateModel>, action: PatchListaSediNavbar) {
-        const cS: any = sessionStorage.getItem(KEY_CACHE_SEDI_TREE_SELECTED);
+        const cS: any = sessionStorage.getItem(LSNAME.cacheSedi);
         if ( action.selected && cS)  {
             action.selected = [cS];
         }
