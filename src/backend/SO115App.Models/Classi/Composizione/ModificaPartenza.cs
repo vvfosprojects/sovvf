@@ -15,6 +15,6 @@ namespace SO115App.Models.Classi.Composizione
         public List<Squadra> Squadre { get; set; }
         public DateTime? DataAnnullamento { get; set; }
         public string MotivazioneAnnullamento { get; set; }
-        public List<CambioStato> SequenzaStati { get; set; }
+        public List<CambioStatoMezzo> SequenzaStati { get; set; }
     }
 }

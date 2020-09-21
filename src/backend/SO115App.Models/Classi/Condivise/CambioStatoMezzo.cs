@@ -5,12 +5,13 @@ using System.Linq;
 
 namespace SO115App.Models.Classi.Condivise
 {
-    public class CambioStato
+    public class CambioStatoMezzo
     {
         public DateTime DataOraAggiornamento { get; set; }
         public string Stato { get; set; }
+        public string CodMezzo { get; set; }
 
-        public string VerificaCoerenza(List<CambioStato> lst)
+        public string VerificaCoerenza(List<CambioStatoMezzo> lst)
         {
             var statoPrecedente = getStatoPrecedente(lst.OrderByDescending(c => c.DataOraAggiornamento).ToList());
 
@@ -48,7 +49,7 @@ namespace SO115App.Models.Classi.Condivise
         /// La lista degli stati deve essere ordinata al di fuori del metodo per non sprecare performance
         /// </summary>
         /// <param name="lst">La lista degli stati ordinata</param>
-        private CambioStato getStatoPrecedente(List<CambioStato> lst)
+        private CambioStatoMezzo getStatoPrecedente(List<CambioStatoMezzo> lst)
         {
             bool trovato = false;
 

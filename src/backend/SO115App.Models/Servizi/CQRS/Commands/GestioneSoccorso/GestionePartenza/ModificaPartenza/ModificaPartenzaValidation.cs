@@ -47,6 +47,12 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 yield return new ValidationResult("Non puoi modificare una richiesta chiusa");
 
 
+
+
+
+            //TODO ID MEZZO CAMBIO STATO TUTTI UGUALI
+
+
             //SE DEVO ANNULLARE LA PARTENZA DA MODIFICARE
             if (command.ModificaPartenza.Annullamento)
             {
@@ -88,14 +94,14 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 else 
                     partenzaDaModificare = command.Richiesta.Partenze.FirstOrDefault(p => command.ModificaPartenza.Mezzo.Codice.Equals(p.Partenza.Mezzo.Codice));
 
-                List<CambioStato> seqEventi = new List<CambioStato>();
+                List<CambioStatoMezzo> seqEventi = new List<CambioStatoMezzo>();
                 seqEventi.AddRange(command.ModificaPartenza.SequenzaStati);
-                if(!command.ModificaPartenza.Annullamento)
-                    seqEventi.Add(new CambioStato()
-                    {
-                        Stato = partenzaDaModificare.Partenza.Mezzo.Stato,
-                        DataOraAggiornamento = partenzaDaModificare.Istante
-                    });
+                //if(!command.ModificaPartenza.Annullamento)
+                //    seqEventi.Add(new CambioStatoMezzo()
+                //    {
+                //        Stato = partenzaDaModificare.Partenza.Mezzo.Stato,
+                //        DataOraAggiornamento = partenzaDaModificare.Istante
+                //    });
                 foreach (var stato in seqEventi)
                 {
                     string messaggioCoerenza = stato.VerificaCoerenza(seqEventi);
