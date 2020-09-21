@@ -92,7 +92,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                         Richiesta.CodOperatore, "", stato.DataOraAggiornamento);
 
                     partenzaDaLavorare.Partenza.Mezzo.Stato = Costanti.MezzoInViaggio;
-                    partenzaDaLavorare.Partenza.Mezzo.IdRichiesta = Richiesta.CodRichiesta;
+                    partenzaDaLavorare.Partenza.Mezzo.IdRichiesta = Richiesta.Id;
                 }
                 else if (stato.Stato == Costanti.MezzoSulPosto)
                 {
@@ -102,7 +102,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                         Richiesta.CodOperatore, "", stato.DataOraAggiornamento);
 
                     partenzaDaLavorare.Partenza.Mezzo.Stato = Costanti.MezzoSulPosto;
-                    partenzaDaLavorare.Partenza.Mezzo.IdRichiesta = Richiesta.CodRichiesta;
+                    partenzaDaLavorare.Partenza.Mezzo.IdRichiesta = Richiesta.Id;
                 }
                 else if (stato.Stato == Costanti.MezzoInRientro)
                 {
@@ -136,7 +136,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 else if (stato.Stato == Costanti.MezzoInViaggio)
                 {
                     partenzaDaLavorare.Partenza.Mezzo.Stato = Costanti.MezzoInViaggio;
-                    partenzaDaLavorare.Partenza.Mezzo.IdRichiesta = Richiesta.CodRichiesta;
+                    partenzaDaLavorare.Partenza.Mezzo.IdRichiesta = Richiesta.Id;
                 }
 
                 #endregion Switch StatoMezzo
