@@ -19,28 +19,29 @@ import { TrasferimentoChiamataModalComponent } from 'src/app/shared/modal/trasfe
 
 
 @NgModule({
-  declarations: [
-      TrasferimentoChiamataComponent,
-      RicercaTrasferimentoChiamataComponent,
-      TabellaTrasferimentoChiamataComponent
-  ],
-  imports: [
-      CommonModule,
-      TrasferimentoChiamataRouting,
-      TreeviewModule.forRoot(),
-      SharedModule.forRoot(),
-      NgxsModule.forFeature([
-        TrasferimentoChiamataState,
-        RicercaTrasferimentoChiamataState
-      ]),
-      NgxsFormPluginModule.forRoot(),
-      FormsModule,
-      NgSelectModule,
-      NgxPaginationModule,
-      NgbModule
-  ],
-  entryComponents: [TrasferimentoChiamataModalComponent, ConfirmModalComponent],
-  providers: []
+    declarations: [
+        TrasferimentoChiamataComponent,
+        RicercaTrasferimentoChiamataComponent,
+        TabellaTrasferimentoChiamataComponent
+    ],
+    imports: [
+        CommonModule,
+        TrasferimentoChiamataRouting,
+        TreeviewModule.forRoot(),
+        SharedModule.forRoot(),
+        NgxsModule.forFeature([
+            TrasferimentoChiamataState,
+            RicercaTrasferimentoChiamataState
+        ]),
+        NgxsFormPluginModule.forRoot(),
+        FormsModule,
+        NgSelectModule,
+        NgxPaginationModule,
+        NgbModule
+    ],
+    entryComponents: [TrasferimentoChiamataModalComponent, ConfirmModalComponent],
+    providers: []
 })
 
-export class TrasferimentoChiamataModule { }
+export class TrasferimentoChiamataModule {
+}
