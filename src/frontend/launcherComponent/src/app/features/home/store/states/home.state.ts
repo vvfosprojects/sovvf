@@ -52,7 +52,7 @@ export class HomeState {
     static tipologie(state: HomeStateModel) {
         return state.tipologie;
     }
-    
+
     @Selector()
     static bounds(state: HomeStateModel) {
         return state.bounds;
