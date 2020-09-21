@@ -8,19 +8,10 @@
 <div class="modal-body">
     <div class="row">
         <!-- Anteprima mezzo e squadra/e da sostituire -->
-        <div class="col-6">
+        <div class="col-12 mb-3">
             <app-box-anteprima-partenza [partenza]="partenza"  [inSostituzione]="partenzaDaSostituire"
                                         [nonModificabile]="true"
                                         (listaSquadrePartenza)="onListaSquadrePartenza()"></app-box-anteprima-partenza>
-            </div>
-            <div class="col-6" style="max-height: 146px; transform: translate(70px, -5px);">
-                <div class="form-group" style="margin-bottom: 0px !important;">
-                    <label>Seleziona Orario Annullamento</label>
-                    <ngb-timepicker [(ngModel)]="time" [ngModelOptions]="{standalone: true}" style="transform: translate(10px, -14px); display: flex;"></ngb-timepicker>
-                    <i class="fa fa-clock-o" style="align-self: center; padding-left: 10px; font-size: 25px; display: flex; transform: translate(176px, -83px);"
-                    size="small"></i>
-                </div>
-                <small class="text-muted" style="display: flex; transform: translate(3px, -40px);">* Il mezzo risulterà anullato alle {{time.hour <= 9 ? '0' + time.hour : time.hour}}:{{time.minute <= 9 ? '0' + time.minute : time.minute}}. </small>
             </div>
         <!-- Filterbar -->
         <div class="col-12 mt-1">
@@ -104,14 +95,7 @@
                 </div>
             </div>
         </div>
-        <h4 class="col-12 mb-1" style="text-align-last: center;">In sostituzione con</h4>
-        <!-- Anteprima mezzo e squadra/e selezionate -->
-        <div class="col-12 my-3">
-            <app-box-anteprima-partenza [partenza]="partenza" [boxSostitutivo]="partenzaSostitutiva" (annullaPartenza)="annullaPartenza()"
-                                        [nonModificabile]="true" [nuovoMezzo]="nuovoMezzo" [nuoveSquadre]="nuoveSquadre"
-                                        (listaSquadrePartenza)="onListaSquadrePartenza()"></app-box-anteprima-partenza>
-        </div>
-        <div class="col-12">
+        <div class="col-6">
             <form [formGroup]="sostituzionePartenzaForm" ngxsForm="sostituzionePartenza.sostituzionePartenzaForm">
                 <div class="form-group">
                     <label for="motivazione">Motivazione</label>
@@ -119,7 +103,16 @@
                 </div>
             </form>
         </div>
+        <div class="col-6" style="max-height: 146px; transform: translate(70px, 0px);">
+            <div class="form-group" style="margin-bottom: 0px !important;">
+                <label>Seleziona Orario Annullamento</label>
+                <ngb-timepicker [(ngModel)]="time" [ngModelOptions]="{standalone: true}" style="transform: translate(10px, -14px); display: flex;"></ngb-timepicker>
+                <i class="fa fa-clock-o" style="align-self: center; padding-left: 10px; font-size: 25px; display: flex; transform: translate(176px, -83px);"
+                size="small"></i>
+            </div>
+        </div>
     </div>
+        <div class="alert alert-info text-uppercase font-weight-bold" role="alert">* Il mezzo {{partenza?.mezzo.descrizione}} {{partenza?.mezzo.genere}} sarà annullato alle {{time.hour <= 9 ? '0' + time.hour : time.hour}}:{{time.minute <= 9 ? '0' + time.minute : time.minute}}. </div>
 </div>
 <div class="modal-footer">
     <button type="button" class="btn btn-lg btn-secondary btn-no-hover" (click)="closeModal('ko')">
