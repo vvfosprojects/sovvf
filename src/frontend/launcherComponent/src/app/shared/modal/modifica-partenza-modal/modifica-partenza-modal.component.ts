@@ -180,7 +180,7 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
         select[i].disabled = true;
         select[i+1].disabled = false;
         } 
-        this.sequenze.push({ stato: undefined, time: { hour: d.getHours(), minute: d.getMinutes(), second: d.getSeconds() }, select });
+        this.sequenze.push({ stato: undefined, time: { hour: d.getHours(), minute: d.getMinutes(), second: d.getSeconds() }, select, codMezzo: this.boxSostitutivo ? this.nuovoMezzo : this.f.mezzo.value });
     }
 
     onRemoveSequenza(): void {
@@ -215,7 +215,6 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
         sostituzioneModal.result.then((res: { status: string, result: any }) => {
             switch (res.status) {
                 case 'ok' :
-                    console.log('RESULT SECONDO MOD ', res.result)
                     this.inSostituzione = true;
                     this.hideBox = false;
                     this.boxSostitutivo = true;
