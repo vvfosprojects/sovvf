@@ -237,7 +237,7 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
                         this.f.annullamento.patchValue(true);
                         this.f.mezzo.patchValue(nuovaPartenza.mezzo);
                         this.nuovoMezzo = nuovaPartenza.mezzo.mezzo;
-                        this.nuoveSquadre = nuovaPartenza.squadre.map(x => x.squadra);
+                        this.nuoveSquadre = nuovaPartenza.squadre.map(x => x);
                         this.f.squadre.patchValue(nuovaPartenza.squadre.map(x => x));
                         this.f.motivazioneAnnullamento.patchValue(nuovaPartenza.motivazioneAnnullamento);
                         this.f.codMezzoDaAnnullare.patchValue(this.partenza.mezzo.codice);

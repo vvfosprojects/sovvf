@@ -255,7 +255,7 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
         ]);
     }
 
-    mezzoSelezionato(mezzoComposizione: MezzoComposizione): void {
+    mezzoSelezionato(mezzoComposizione: MezzoComposizione) {
         this.store.dispatch([
             new ReducerSelectMezzoComposizione(mezzoComposizione),
         ]);
