@@ -43,6 +43,7 @@
         <app-box-anteprima-partenza [partenza]="partenza" [inSostituzione]="inSostituzione"
                                     (modificaPartenza)="openSostituzioneModal()" [nonModificabile]="nonModificabile"
                                     (listaSquadrePartenza)="onListaSquadrePartenza()"></app-box-anteprima-partenza>
+        <div *ngIf="!hideBox"  class="alert alert-info text-uppercase font-weight-bold" role="alert">Annullata alle {{dataAnnullamento}}</div>
         <h4 *ngIf="!hideBox" class="my-3" style="text-align-last: center;">In sostituzione con</h4>                            
         <!-- anteprima mezzo e squadra/e sostitutive-->
         <app-box-anteprima-partenza [partenza]="partenza" [hideBox]="hideBox" [boxSostitutivo]="boxSostitutivo" [nuovoMezzo]="nuovoMezzo" [nuoveSquadre]="nuoveSquadre"
@@ -90,10 +91,8 @@
     </form>
     <div class="row">
         <h6 class="text-danger col" style="align-self: center;">* Campi Obbligatori</h6>
-        <div *ngIf="!hideBox"  class="alert alert-danger" role="alert">
-            Le modifiche non sono ancora salvate!
-          </div>
     </div>
+    <div *ngIf="!hideBox"  class="alert alert-danger text-uppercase font-weight-bold" role="alert">Modifiche non salvate</div>
 </div>
 
 <div class="modal-footer">

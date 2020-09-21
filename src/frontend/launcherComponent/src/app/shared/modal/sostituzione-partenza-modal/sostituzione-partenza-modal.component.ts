@@ -28,7 +28,7 @@ import {
     SelectSquadraComposizione,
     UnselectSquadraComposizione
 } from '../../store/actions/squadre-composizione/squadre-composizione.actions';
-import { UnselectMezziAndSquadreComposizioneAvanzata } from '../../../features/home/store/actions/composizione-partenza/composizione-avanzata.actions';
+import { ClearComposizioneAvanzata, UnselectMezziAndSquadreComposizioneAvanzata } from '../../../features/home/store/actions/composizione-partenza/composizione-avanzata.actions';
 import { ClearFiltriAffini } from '../../store/actions/filtri-composizione/filtri-composizione.actions';
 import { FiltriComposizioneState } from '../../store/states/filtri-composizione/filtri-composizione.state';
 import { SetRicercaMezziComposizione, SetRicercaSquadreComposizione } from '../../store/actions/ricerca-composizione/ricerca-composizione.actions';
@@ -250,6 +250,7 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
             new ClearListaSquadreComposizione(),
             new ClearFiltriAffini(),
             new UnselectMezziAndSquadreComposizioneAvanzata(),
+            new ClearComposizioneAvanzata,
             new ClearBoxPartenze(),
             new GetListaMezziSquadre(this.idRichiesta),
         ]);
@@ -328,7 +329,7 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
     }
 
     getTitle(): string {
-        return 'Modifica Partenza Richiesta ' + this.codRichiesta;
+        return 'Sostituzione Partenza Richiesta ' + this.codRichiesta;
     }
 
     onDismiss(): void {

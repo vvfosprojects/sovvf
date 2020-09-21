@@ -52,5 +52,6 @@ export class BoxAnteprimaPartenzaComponent implements OnInit {
             event.stopPropagation();
         }
         this.annullaPartenza.emit();
+        this.nuoveSquadre = [];
     }
 }
