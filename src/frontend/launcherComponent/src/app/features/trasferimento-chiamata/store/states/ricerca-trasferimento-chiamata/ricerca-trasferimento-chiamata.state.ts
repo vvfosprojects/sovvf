@@ -15,6 +15,7 @@ export const RicercaTrasferimentoChiamataStateDefaults: RicercaTrasferimentoChia
 })
 
 export class RicercaTrasferimentoChiamataState {
+
     constructor() {
     }
 

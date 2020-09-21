@@ -24,16 +24,16 @@ export const ViewportStateDefaults: ViewportStateModel = {
 })
 export class ViewportState {
 
-    @Selector([ RouterState ])
+    @Selector([RouterState])
     static footerFixed(state: ViewportStateModel, routerState: RouterStateModel) {
-        const grantUrl = [`/${RoutesPath.Home}`, `/${RoutesPath.GestioneUtenti}`, `/${RoutesPath.Rubrica}`, `/${RoutesPath.TrasferimentoChiamata}`];
+        const grantUrl = [`/${RoutesPath.Home}`, `/${RoutesPath.GestioneUtenti}`, `/${RoutesPath.Rubrica}`, `/${RoutesPath.TrasferimentoChiamata}`, `/${RoutesPath.Changelog}`];
         const granted = grantUrl.includes(routerState.state.url);
         return /*state.availHeight > state.contentHeight && granted;*/ granted;
     }
 
-    @Selector([ RouterState, AuthState, AppState ])
+    @Selector([RouterState, AuthState, AppState])
     static footerVisible(state: ViewportStateModel, routerState: RouterStateModel, authState: AuthStateModel, appState: AppStateModel) {
-        const grantUrl = [`/${RoutesPath.Home}`, `/${RoutesPath.GestioneUtenti}`, `/${RoutesPath.Rubrica}`, `/${RoutesPath.TrasferimentoChiamata}`];
+        const grantUrl = [`/${RoutesPath.Home}`, `/${RoutesPath.GestioneUtenti}`, `/${RoutesPath.Rubrica}`, `/${RoutesPath.TrasferimentoChiamata}`, `/${RoutesPath.Changelog}`];
         const granted = grantUrl.includes(routerState.state.url);
         const logged = authState.logged;
         const appReady = appState.appIsLoaded;

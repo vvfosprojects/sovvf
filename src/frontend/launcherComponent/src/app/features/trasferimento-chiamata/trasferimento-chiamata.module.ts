@@ -46,4 +46,5 @@ import { ConfirmModalComponent } from '../../shared/modal/confirm-modal/confirm-
   providers: []
 })
 
-export class TrasferimentoChiamataModule { }
+export class TrasferimentoChiamataModule {
+}
