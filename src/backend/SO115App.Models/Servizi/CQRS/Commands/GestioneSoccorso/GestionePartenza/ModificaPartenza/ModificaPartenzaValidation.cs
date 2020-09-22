@@ -17,6 +17,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 
         public IEnumerable<ValidationResult> Validate(ModificaPartenzaCommand command)
         {
+            //CONTROLLI RICHIESTA
             command.Richiesta = _getRichiesta.GetByCodice(command.ModificaPartenza.CodRichiesta);
 
             if (command.Richiesta == null)
@@ -25,6 +26,16 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 yield return new ValidationResult("La richiesta non ha partenze da annullare");
             else if (command.Richiesta.Partenze.All(c => c.Partenza.PartenzaAnnullata.Equals(true)))
                 yield return new ValidationResult("La richiesta non ha partenze da annullare");
+
+            if (command.Richiesta.Sospesa)
+                yield return new ValidationResult("Non puoi modificare una richiesta sospesa");
+
+            if (command.Richiesta.Chiusa)
+                yield return new ValidationResult("Non puoi modificare una richiesta chiusa");
+
+            //CONTROLLI PROPRIETA' MODELLO
+            if (command.ModificaPartenza.Squadre.Count != command.ModificaPartenza.Squadre.Distinct().Count())
+                yield return new ValidationResult("Hai selezionato più volte la stessa squadra");
 
             if (command.ModificaPartenza.CodRichiesta == null || command.ModificaPartenza.CodRichiesta == "")
                 yield return new ValidationResult(Costanti.IdRichiestaNonValida);
@@ -37,23 +48,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 command.ModificaPartenza.Squadre.Any(c => c == null || c == default))
                 yield return new ValidationResult("Nessuna squadra selezionata");
 
-            if (command.ModificaPartenza.Squadre.Count != command.ModificaPartenza.Squadre.Distinct().Count())
-                yield return new ValidationResult("Hai selezionato più volte la stessa squadra");
-
-            if (command.Richiesta.Sospesa)
-                yield return new ValidationResult("Non puoi modificare una richiesta sospesa");
-
-            if (command.Richiesta.Chiusa)
-                yield return new ValidationResult("Non puoi modificare una richiesta chiusa");
-
-
-
-
-
-            //TODO ID MEZZO CAMBIO STATO TUTTI UGUALI
-
-
-            //SE DEVO ANNULLARE LA PARTENZA DA MODIFICARE
+            //CONTROLLI ANNULLAMENTO
             if (command.ModificaPartenza.Annullamento)
             {
                 if (command.ModificaPartenza.DataAnnullamento == null || command.ModificaPartenza.DataAnnullamento == default)
@@ -70,17 +65,16 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                     command.ModificaPartenza.CodSquadreDaAnnullare.Any(c => c == null || c == ""))
                     yield return new ValidationResult("Codici squadre errati");
 
-                var ultimoEvento = command.Richiesta.ListaEventi.Max(c => c.Istante);
-                var x = command.ModificaPartenza.DataAnnullamento.Value;
-                var dataAnnullamento = new DateTime(x.Year, x.Month, x.Day, x.Hour, x.Minute, x.Second);
-                if (dataAnnullamento < ultimoEvento)
+                if(command.ModificaPartenza.DataAnnullamento.Value < command.Richiesta.ListaEventi.Max(c => c.Istante))
                     yield return new ValidationResult("La data annullamento non può essere minore di un evento già accaduto");
             }
 
-
-            //SE HO STATI NUOVI
-            if (command.ModificaPartenza.SequenzaStati != null)
+            //CONTROLLI STATI
+            if (command.ModificaPartenza.SequenzaStati != null && command.ModificaPartenza.SequenzaStati.All(s => s != null))
             {
+                if(command.ModificaPartenza.SequenzaStati.Select(s => s.CodMezzo).Distinct().Count() > 1)
+                    yield return new ValidationResult("Cambi stato errati");
+
                 if (command.ModificaPartenza.SequenzaStati.Any(s => s.Stato == null || s.Stato == "" || s.DataOraAggiornamento == null || s.DataOraAggiornamento == default))
                     yield return new ValidationResult("Cambi stato errati");
 
@@ -96,12 +90,11 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 
                 List<CambioStatoMezzo> seqEventi = new List<CambioStatoMezzo>();
                 seqEventi.AddRange(command.ModificaPartenza.SequenzaStati);
-                //if(!command.ModificaPartenza.Annullamento)
-                //    seqEventi.Add(new CambioStatoMezzo()
-                //    {
-                //        Stato = partenzaDaModificare.Partenza.Mezzo.Stato,
-                //        DataOraAggiornamento = partenzaDaModificare.Istante
-                //    });
+                if (command.ModificaPartenza.Annullamento) seqEventi.Add(new CambioStatoMezzo()
+                {
+                    Stato = partenzaDaModificare.Partenza.Mezzo.Stato,
+                    DataOraAggiornamento = partenzaDaModificare.Istante
+                });
                 foreach (var stato in seqEventi)
                 {
                     string messaggioCoerenza = stato.VerificaCoerenza(seqEventi);
