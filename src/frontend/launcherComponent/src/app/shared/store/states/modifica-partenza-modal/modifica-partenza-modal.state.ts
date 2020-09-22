@@ -78,7 +78,7 @@ export class ModificaPartenzaModalState {
             sequenzaStati: form.sequenzaStati.map(x => ({
                 dataOraAggiornamento: x.dataOraAggiornamento,
                 stato: x.stato ? x.stato['name'] : undefined,
-                codMezzo: x.codMezzo['codice'],
+                codMezzo: x.codMezzo ? x.codMezzo['codice'] : undefined,
             })),
             dataAnnullamento: form.dataAnnullamento,
         } as any; //adattate squadre e mezzo al BE => non rispetta piu ModificaPartenz => Squadra[] - Mezzo, necessari.

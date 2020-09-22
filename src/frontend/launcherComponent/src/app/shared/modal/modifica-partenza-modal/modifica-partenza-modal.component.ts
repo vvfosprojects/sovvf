@@ -189,7 +189,7 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
         select[i].disabled = true;
         select[i+1].disabled = false;
         } 
-        this.sequenze.push({ stato: undefined, time: { hour: d.getHours(), minute: d.getMinutes(), second: d.getSeconds() }, select, codMezzo: this.boxSostitutivo ? this.nuovoMezzo : this.f.mezzo.value });
+        this.sequenze.push({ stato: undefined, time: { hour: d.getHours(), minute: d.getMinutes(), second: d.getSeconds() }, select, codMezzo: this.inSostituzione ? this.nuovoMezzo : this.f.mezzo.value });
     }
 
     onRemoveSequenza(): void {
@@ -213,6 +213,18 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
         this.hideBox = true;
         this.nonModificabile = false;
         this.inSostituzione = false;
+        this.store.dispatch(new UpdateFormValue({
+            value: {
+                annullamento: false,
+                codMezzoDaAnnullare: null,
+                codSquadreDaAnnullare: null,
+                motivazioneAnnullamento: null,
+                sequenzaStati: [],
+                dataAnnullamento: null,
+            },
+            path: 'modificaPartenzaModal.modificaPartenzaForm'
+        }));
+        console.log(this.f.sequenzaStati.value)
     }
 
     openSostituzioneModal(): void {
