@@ -224,7 +224,6 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
             },
             path: 'modificaPartenzaModal.modificaPartenzaForm'
         }));
-        console.log(this.f.sequenzaStati.value)
     }
 
     openSostituzioneModal(): void {
