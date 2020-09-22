@@ -8,11 +8,6 @@ namespace SO115App.Models.Classi.Soccorso.Eventi.Partenze
     {
         public RevocaPerSostituzioneMezzo(RichiestaAssistenza richiesta, string codiceMezzo, DateTime istante, string codiceFonte, string motivazione) : base(richiesta, codiceMezzo, istante, codiceFonte)
         {
-            if (string.IsNullOrWhiteSpace(motivazione))
-            {
-                throw new ArgumentException("La motivazione della revoca deve essere specificata", nameof(motivazione));
-            }
-
             this.Motivazione = motivazione;
         }
 
