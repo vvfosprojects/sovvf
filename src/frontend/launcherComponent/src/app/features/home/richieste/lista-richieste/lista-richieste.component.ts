@@ -8,6 +8,7 @@ import { StatoRichiesta } from '../../../../shared/enum/stato-richiesta.enum';
 import { PermissionFeatures } from '../../../../shared/enum/permission-features.enum';
 import { VociFiltroDefault } from '../../../../shared/enum/voci-filtro-default.enum';
 import { ModificaStatoFonogrammaEmitInterface } from '../../../../shared/interface/modifica-stato-fonogramma-emit.interface';
+import { AllertaSedeEmitInterface } from '../../../../shared/interface/allerta-sede-emit.interface';
 
 @Component({
     selector: 'app-lista-richieste',
@@ -57,6 +58,7 @@ export class ListaRichiesteComponent implements OnInit {
     @Output() actionRichiesta = new EventEmitter<RichiestaActionInterface>();
     @Output() outEspansoId = new EventEmitter<string>();
     @Output() modificaStatoFonogramma = new EventEmitter<ModificaStatoFonogrammaEmitInterface>();
+    @Output() allertaSede = new EventEmitter<AllertaSedeEmitInterface>();
     @Output() eliminaPartenza = new EventEmitter<{ targaMezzo: string, idRichiesta: string, modalResult: any }>();
 
     methods = new HelperSintesiRichiesta;

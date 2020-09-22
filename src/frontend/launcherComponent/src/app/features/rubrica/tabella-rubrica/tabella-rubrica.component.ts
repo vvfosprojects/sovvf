@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Ente, TipoTelefono } from 'src/app/shared/interface/ente.interface';
+import { Ente } from 'src/app/shared/interface/ente.interface';
 
 @Component({
     selector: 'app-tabella-rubrica',

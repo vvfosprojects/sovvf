@@ -94,6 +94,7 @@ export class GestioneUtentiComponent implements OnInit, OnDestroy {
 
     onAddUtente() {
         const aggiungiUtenteModal = this.modalService.open(GestioneUtenteModalComponent, {
+            windowClass: 'modal-holder',
             backdropClass: 'light-blue-backdrop',
             centered: true,
             size: 'lg'
@@ -116,6 +117,7 @@ export class GestioneUtentiComponent implements OnInit, OnDestroy {
 
     onAddRuoloUtente(event: { codFiscale: string, fullName: string, ruoliAttuali: Ruolo[] }) {
         const aggiungiRuoloUtenteModal = this.modalService.open(GestioneUtenteModalComponent, {
+            windowClass: 'modal-holder',
             backdropClass: 'light-blue-backdrop',
             centered: true,
             size: 'lg'
@@ -144,6 +146,7 @@ export class GestioneUtentiComponent implements OnInit, OnDestroy {
 
     onRemoveRuoloUtente(payload: { codFiscale: string, ruolo: Ruolo, nominativoUtente: string }) {
         const modalConfermaAnnulla = this.modalService.open(ConfirmModalComponent, {
+            windowClass: 'modal-holder',
             backdropClass: 'light-blue-backdrop',
             centered: true
         });
@@ -173,6 +176,7 @@ export class GestioneUtentiComponent implements OnInit, OnDestroy {
 
     onRemoveUtente(payload: { codFiscale: string, nominativoUtente: string }) {
         const modalConfermaAnnulla = this.modalService.open(ConfirmModalComponent, {
+            windowClass: 'modal-holder',
             backdropClass: 'light-blue-backdrop',
             centered: true
         });

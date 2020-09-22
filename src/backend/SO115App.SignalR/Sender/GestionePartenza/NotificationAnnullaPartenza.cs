@@ -28,7 +28,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneMezziInServizio.ListaMezziInSerivizio;
 using SO115App.API.Models.Servizi.CQRS.Queries.Marker.MezziMarker;
-using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AggiornaStatoMezzo;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
 using SO115App.API.Models.Classi.Geo;
 using System.Collections.Generic;
@@ -77,7 +76,12 @@ namespace SO115App.SignalR.Sender.GestionePartenza
         public async Task SendNotification(AnnullaPartenzaCommand partenza)
         {
             var richiesta = _getRichiestaById.GetById(partenza.IdRichiesta);
-            var SediDaNotificare = _getGerarchiaToSend.Get(richiesta.CodSOCompetente);
+
+            var SediDaNotificare = new List<string>();
+            if (richiesta.CodSOAllertate != null)
+                SediDaNotificare = _getGerarchiaToSend.Get(richiesta.CodSOCompetente, richiesta.CodSOAllertate.ToArray());
+            else
+                SediDaNotificare = _getGerarchiaToSend.Get(richiesta.CodSOCompetente);
 
             const bool notificaChangeState = true;
 
@@ -138,9 +142,11 @@ namespace SO115App.SignalR.Sender.GestionePartenza
 
                 AreaMappa areaMappa = new AreaMappa();
                 areaMappa.CodiceSede = new List<string>() { sede };
+                areaMappa.FiltroMezzi = new Models.Classi.Filtri.FiltroMezzi();
+                areaMappa.FiltroMezzi.FiltraPerAreaMappa = false;
                 var queryListaMezzi = new MezziMarkerQuery()
                 {
-                    Filtro = areaMappa
+                    Filtro = areaMappa,
                 };
 
                 var listaMezziMarker = _listaMezziMarkerHandler.Handle(queryListaMezzi).ListaMezziMarker;

@@ -252,6 +252,7 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
 
     aggiungiNuovoEnte() {
         const addEnteModal = this.modalService.open(EnteModalComponent, {
+            windowClass: 'modal-holder',
             backdropClass: 'light-blue-backdrop',
             centered: true,
             size: 'lg'

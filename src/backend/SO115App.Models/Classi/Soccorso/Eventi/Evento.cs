@@ -32,13 +32,14 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi
     public class Evento : IEvento
     {
         [JsonConstructor]
-        public Evento(DateTime Istante, string CodiceFonte, string Codice, string TipoEvento)
+        public Evento(DateTime Istante, string CodiceFonte, string Codice, string TipoEvento, string SedeOperatore = "")
         {
             this.Istante = Istante;
             this.CodiceFonte = CodiceFonte;
             this.IstanteCreazione = DateTime.UtcNow;
             this.CodiceRichiesta = Codice;
             this.TipoEvento = TipoEvento;
+            this.SedeOperatore = SedeOperatore;
         }
 
         /// <summary>
@@ -47,7 +48,7 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi
         /// <param name="richiesta">E' la richiesta di assistenza a cui si aggiunge l'evento</param>
         /// <param name="istante">L'istante in cui avviene l'evento.</param>
         /// <param name="codiceFonte">Il codice della fonte informativa dell'evento.</param>
-        public Evento(RichiestaAssistenza richiesta, DateTime istante, string codiceFonte, string tipoEvento)
+        public Evento(RichiestaAssistenza richiesta, DateTime istante, string codiceFonte, string tipoEvento, string SedeOperatore = "")
         {
             if (richiesta == null)
             {
@@ -70,6 +71,7 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi
             this.IstanteCreazione = DateTime.UtcNow;
             this.CodiceRichiesta = richiesta.Codice;
             this.TipoEvento = tipoEvento;
+            this.SedeOperatore = SedeOperatore;
         }
 
         /// <summary>
@@ -96,5 +98,11 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi
         ///   caso in cui la registrazione di un evento avvenga posticipata.
         /// </summary>
         private DateTime IstanteCreazione { get; set; }
+
+        /// <summary>
+        /// E' la DESCRIZIONE della sede originaria/principale dell'utente che ha effetuato l'evento 
+        /// (risiede sul db, nella collection utenti).
+        /// </summary>
+        public string SedeOperatore { get; set; }
     }
 }

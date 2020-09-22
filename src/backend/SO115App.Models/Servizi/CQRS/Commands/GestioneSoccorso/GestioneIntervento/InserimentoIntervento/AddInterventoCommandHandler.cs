@@ -103,8 +103,8 @@ namespace DomainModel.CQRS.Commands.AddIntervento
                 CodUOCompetenza = Competenze.ToArray(),
                 CodOperatore = command.CodUtente,
                 CodSOCompetente = command.CodiceSede,
-                CodEntiIntervenuti = command.Chiamata.listaEnti != null ? command.Chiamata.listaEnti.Select(c => c.ToString()).ToList() : null,
-                CodSOAllertate = Competenze.ToArray().ToHashSet()
+                CodEntiIntervenuti = command.Chiamata.listaEnti != null ? command.Chiamata.listaEnti.Select(c => c.ToString()).ToList() : null
+                //,CodSOAllertate = Competenze.ToArray().ToHashSet()
             };
 
             if (command.Chiamata.Stato == Costanti.RichiestaChiusa)

@@ -71,7 +71,12 @@ namespace SO115App.SignalR.Sender.GestionePartenza
 
         public async Task SendNotification(AggiornaStatoMezzoCommand intervento)
         {
-            var SediDaNotificare = _getGerarchiaToSend.Get(intervento.Richiesta.CodSOCompetente);
+            var SediDaNotificare = new List<string>();
+            if (intervento.Richiesta.CodSOAllertate != null)
+                SediDaNotificare = _getGerarchiaToSend.Get(intervento.Richiesta.CodSOCompetente, intervento.Richiesta.CodSOAllertate.ToArray());
+            else
+                SediDaNotificare = _getGerarchiaToSend.Get(intervento.Richiesta.CodSOCompetente);
+
             const bool notificaChangeState = true;
 
             var sintesiRichiesteAssistenzaQuery = new SintesiRichiesteAssistenzaQuery
@@ -127,7 +132,7 @@ namespace SO115App.SignalR.Sender.GestionePartenza
                 await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxMezzi", boxMezzi);
                 await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxPersonale", boxPersonale);
                 //await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetListaMezziInServizio", listaMezziInServizio);
-                await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyUpdateMezzoInServizio", listaMezziInServizio.Find(x=>x.Mezzo.Mezzo.Codice.Equals(intervento.IdMezzo)));
+                await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyUpdateMezzoInServizio", listaMezziInServizio.Find(x => x.Mezzo.Mezzo.Codice.Equals(intervento.IdMezzo)));
 
                 if (intervento.Chiamata != null)
                 {

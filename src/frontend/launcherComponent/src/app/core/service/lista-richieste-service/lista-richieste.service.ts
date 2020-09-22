@@ -63,4 +63,9 @@ export class SintesiRichiesteService {
         console.log('modificaStatoFonogrammaRichiesta', obj);
         return this.http.post<any>(`${API_GESTIONE_FONOGRAMMA}/InfoFonogramma`, obj);
     }
+
+    public allertaSede(obj: any): Observable<any> {
+        console.log('allertaSede', obj);
+        return this.http.post<any>(`${API_GESTIONE_RICHIESTA}/AllertaAltreSedi`, obj);
+    }
 }

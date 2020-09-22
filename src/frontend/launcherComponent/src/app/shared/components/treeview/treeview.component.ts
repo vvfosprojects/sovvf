@@ -17,6 +17,7 @@ import { Ricorsivo, TreeviewEmitterInterface } from '../../interface/treeview.in
 import { TreeviewSelezione } from '../../model/treeview-selezione.model';
 import { sedeString } from '../../store/states/sedi-treeview/sedi-treeview.helper';
 import { Observable } from 'rxjs';
+import { KEY_CACHE_SEDI_TREE_SELECTED } from '../../store/states/sedi-treeview/sedi-treeview.state';
 
 
 @Component({
@@ -189,6 +190,9 @@ export class TreeviewComponent implements OnChanges, OnDestroy, OnInit {
                 };
             }
         }
+        if (unique[0]) {
+            sessionStorage.setItem(KEY_CACHE_SEDI_TREE_SELECTED, unique[0])
+        } 
         if (this.visualizzaTasti) {
             // console.log(eventEmitter);
             this.patch(eventEmitter);

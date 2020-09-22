@@ -113,6 +113,7 @@ namespace SO115App.Models.Classi.Utility
         public static string FonogrammaDaInviare = "FonogrammaDaInviare";
         public static string FonogrammaInviato = "FonogrammaInviato";
 
+        public static string AllertaAltreSedi = "AllertaAltreSedi";
         #endregion Eventi
 
         #region Ruoli Utenti

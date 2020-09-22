@@ -329,12 +329,39 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
         }
     }
 
-    confermaPartenze() {
+    confermaPartenzeInViaggio() {
         const partenze = makeCopy(this.boxPartenzaList);
         const partenzeMappedArray = partenze.map(obj => {
             const rObj = {};
             if (obj.mezzoComposizione) {
                 obj.mezzoComposizione.mezzo.stato = StatoMezzo.InViaggio;
+                rObj['mezzo'] = obj.mezzoComposizione.mezzo;
+            } else {
+                rObj['mezzo'] = null;
+            }
+            if (obj.squadraComposizione.length > 0) {
+                rObj['squadre'] = obj.squadraComposizione.map((squadraComp: SquadraComposizione) => {
+                    return squadraComp.squadra;
+                });
+            } else {
+                rObj['squadre'] = [];
+            }
+            return rObj;
+        });
+        const partenzeObj: ConfermaPartenze = {
+            partenze: partenzeMappedArray,
+            idRichiesta: this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione).codice,
+            turno: this.store.selectSnapshot(TurnoState.turnoCalendario).corrente
+        };
+        this.store.dispatch(new ConfirmPartenze(partenzeObj));
+    }
+
+    confermaPartenzeInUscita() {
+        const partenze = makeCopy(this.boxPartenzaList);
+        const partenzeMappedArray = partenze.map(obj => {
+            const rObj = {};
+            if (obj.mezzoComposizione) {
+                obj.mezzoComposizione.mezzo.stato = StatoMezzo.InUscita;
                 rObj['mezzo'] = obj.mezzoComposizione.mezzo;
             } else {
                 rObj['mezzo'] = null;

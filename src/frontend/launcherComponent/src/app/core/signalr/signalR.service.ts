@@ -4,7 +4,7 @@ import { Subject } from 'rxjs';
 import { Store } from '@ngxs/store';
 import { SetConnectionId, SignalRHubConnesso, SignalRHubDisconnesso } from './store/signalR.actions';
 import { ShowToastr } from '../../shared/store/actions/toastr/toastr.actions';
-import { StopLoadingActionMezzo, UpdateRichiesta } from '../../features/home/store/actions/richieste/richieste.actions';
+import { GetListaRichieste, StopLoadingActionMezzo, UpdateRichiesta } from '../../features/home/store/actions/richieste/richieste.actions';
 import { SignalRNotification } from './model/signalr-notification.model';
 import { SetTimeSync } from '../../shared/store/actions/app/app.actions';
 import { SetBoxPersonale } from '../../features/home/store/actions/boxes/box-personale.actions';
@@ -18,7 +18,6 @@ import {
     AddBookMezzoComposizione,
     RemoveBookingMezzoComposizione,
     RemoveBookMezzoComposizione,
-    SetListaMezziComposizione,
     UpdateMezzoComposizione,
     UpdateMezzoComposizioneScadenzaByCodiceMezzo
 } from '../../features/home/store/actions/composizione-partenza/mezzi-composizione.actions';
@@ -49,7 +48,7 @@ import { BoxMezzi } from '../../features/home/boxes/boxes-model/box-mezzi.model'
 import { BoxInterventi } from '../../features/home/boxes/boxes-model/box-interventi.model';
 import { ChiamataMarker } from '../../features/home/maps/maps-model/chiamata-marker.model';
 import { SintesiRichiesta } from '../../shared/model/sintesi-richiesta.model';
-import { MezzoComposizione } from '../../features/home/composizione-partenza/interface/mezzo-composizione-interface';
+
 import { AuthState } from '../../features/auth/store/auth.state';
 import { ClearCurrentUser, UpdateRuoliPersonali } from '../../features/auth/store/auth.actions';
 import { ViewComponentState } from '../../features/home/store/states/view/view.state';
@@ -58,6 +57,10 @@ import { AddVoceRubrica, DeleteVoceRubrica, UpdateVoceRubrica } from '../../feat
 import { SetEnti } from '../../shared/store/actions/enti/enti.actions';
 import { PatchPagination } from '../../shared/store/actions/pagination/pagination.actions';
 import { PaginationState } from '../../shared/store/states/pagination/pagination.state';
+import { AddNotifica } from '../../shared/store/actions/notifiche/notifiche.actions';
+import { NotificaInterface } from '../../shared/interface/notifica.interface';
+import { ResponseAddTrasferimentoInterface } from '../../shared/interface/trasferimento-chiamata.interface';
+import { AddTrasferimentoChiamata } from '../../features/trasferimento-chiamata/store/actions/trasferimento-chiamata/trasferimento-chiamata.actions';
 
 const HUB_URL = environment.baseUrl + environment.signalRHub;
 const SIGNALR_BYPASS = !environment.signalR;
@@ -114,6 +117,13 @@ export class SignalRService {
             console.log('NotifyLogOut', data);
             // avvisa gli altri client che un utente si è scollegato alla sua stessa sede
             this.store.dispatch(new ShowToastr(ToastrType.Info, 'Utente disconnesso:', data, 3, null, true));
+        });
+
+        /**
+         * Notifiche Navbar
+         */
+        this.hubNotification.on('NotifyNavbar', (data: NotificaInterface) => {
+            this.store.dispatch(new AddNotifica(data));
         });
 
         /**
@@ -187,7 +197,6 @@ export class SignalRService {
         });
         this.hubNotification.on('NotifyGetBoxInterventi', (data: BoxInterventi) => {
             console.log('NotifyGetBoxInterventi', data);
-
             this.store.dispatch(new SetBoxRichieste(data));
             this.store.dispatch(new ShowToastr(ToastrType.Info, 'Box Richieste ricevute da signalR', null, 5));
         });
@@ -248,20 +257,20 @@ export class SignalRService {
         });
 
         /**
-         * Composizione Partenza
+         * Allerta Sedi
          */
-        this.hubNotification.on('NotifyGetComposizioneMezzi', (data: MezzoComposizione[]) => {
-            console.log('NotifyGetComposizioneMezzi', data);
-            this.store.dispatch(new SetListaMezziComposizione(data));
-            this.store.dispatch(new ShowToastr(ToastrType.Info, 'Mezzi Composizione ricevute da signalR', null, 5));
+        this.hubNotification.on('NotifyAllertaAltreSedi', () => {
+            console.log('NotifyAllertaAltreSedi');
+            this.store.dispatch(new GetListaRichieste());
+        });
+        this.hubNotification.on('NotifyDeleteAllertaAltreSedi', () => {
+            console.log('NotifyDeleteAllertaAltreSedi');
+            this.store.dispatch(new GetListaRichieste());
         });
 
-        // Todo: è ancora utilizzato?
-        this.hubNotification.on('NotifyGetComposizioneSquadre', (data: any) => {
-            console.log('NotifyGetComposizioneSquadre', data);
-            // this.store.dispatch(new SetListaSquadreComposizione(data));
-            this.store.dispatch(new ShowToastr(ToastrType.Info, 'Squadre Composizione ricevute da signalR', null, 5));
-        });
+        /**
+         * Composizione Partenza
+         */
         this.hubNotification.on('NotifyGetPreaccoppiati', (data: IdPreaccoppiati[]) => {
             this.store.dispatch(new SetListaIdPreAccoppiati(data));
             this.store.dispatch(new ShowToastr(ToastrType.Info, 'Preaccoppiati Composizione ricevute da signalR', null, 5));
@@ -298,7 +307,6 @@ export class SignalRService {
             console.log('NotifyAddUtente', codSede);
             this.store.dispatch(new SuccessAddUtenteGestione(codSede));
         });
-
         this.hubNotification.on('NotifyModificatoRuoloUtente', (idUtente: string) => {
             console.log('NotifyModificatoRuoloUtente', idUtente);
             if (idUtente) {
@@ -310,7 +318,6 @@ export class SignalRService {
                 }
             }
         });
-
         this.hubNotification.on('NotifyDeleteUtente', (idUtente: string) => {
             console.log('NotifyDeleteUtente', idUtente);
             const utenteAttuale = this.store.selectSnapshot(AuthState.currentUser);
@@ -328,26 +335,37 @@ export class SignalRService {
             console.log('NotifyChangeEnti', enti);
             this.store.dispatch(new SetEnti(enti));
         });
-
         this.hubNotification.on('NotifyAddEnte', (response: ResponseAddEnteRubricaInterface) => {
             console.log('NotifyAddEnte', response);
             this.store.dispatch(new AddVoceRubrica());
             const pagination = this.store.selectSnapshot(PaginationState.pagination);
             this.store.dispatch(new PatchPagination({ ...pagination, totalItems: response.pagination.totalItems }));
         });
-
         this.hubNotification.on('NotifyUpdateEnte', (response: ResponseUpdateEnteRubricaInterface) => {
             console.log('NotifyUpdateEnte', response);
             this.store.dispatch(new UpdateVoceRubrica(response.data));
             const pagination = this.store.selectSnapshot(PaginationState.pagination);
             this.store.dispatch(new PatchPagination({ ...pagination, totalItems: response.pagination.totalItems }));
         });
-
         this.hubNotification.on('NotifyDeleteEnte', (response: ResponseDeleteEnteRubricaInterface) => {
             console.log('NotifyDeleteEnte', response);
             this.store.dispatch(new DeleteVoceRubrica(response.data));
             const pagination = this.store.selectSnapshot(PaginationState.pagination);
             this.store.dispatch(new PatchPagination({ ...pagination, totalItems: response.pagination.totalItems }));
+        });
+
+        /**
+         * Trasferimenti
+         */
+        this.hubNotification.on('NotifyAddTrasferimento', (response: ResponseAddTrasferimentoInterface) => {
+            console.log('NotifyAddTrasferimento', response);
+            this.store.dispatch(new AddTrasferimentoChiamata());
+            const pagination = this.store.selectSnapshot(PaginationState.pagination);
+            this.store.dispatch(new PatchPagination({ ...pagination, totalItems: response.pagination.totalItems }));
+        });
+        this.hubNotification.on('NotifyDeleteChiamata', (idRichiesta: string) => {
+            console.log('NotifyDeleteChiamata', idRichiesta);
+            this.store.dispatch(new GetListaRichieste());
         });
 
         /**

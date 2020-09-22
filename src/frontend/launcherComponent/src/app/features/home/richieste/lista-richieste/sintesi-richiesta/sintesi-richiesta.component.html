@@ -57,11 +57,14 @@
                                         t.descrizione }}
                                     </div>
                                 </ng-template>
-                                <span><a *ngIf="!!richiesta.tipologie && richiesta?.tipologie?.length > 0"
-                                         class="h6 font-weight-bold descrizione-int"
-                                         ngbTooltip="{{ richiesta.descrizione }}"
-                                         [disableTooltip]="richiesta.descrizione.length <= 45">{{
-                                    richiesta.tipologie[0].descrizione | truncate:45 }}</a></span>
+                                <span>
+                                    <a *ngIf="!!richiesta.tipologie && richiesta?.tipologie?.length > 0"
+                                       class="h6 font-weight-bold descrizione-int"
+                                       ngbTooltip="{{ richiesta.descrizione }}"
+                                       [disableTooltip]="richiesta.descrizione.length <= 45">
+                                        {{ richiesta.tipologie[0].descrizione | truncate:45 }}
+                                    </a>
+                                </span>
                             </div>
                         </div>
                         <div class="col-3 pr-3 text-right">
@@ -132,7 +135,7 @@
                                             <div class="h6" *ngFor="let s of squadre">
                                                 <span>{{ s }}</span>
                                             </div>
-                                            <h6 class="mb-0" *ngIf="squadre.length === 0">Nessuna squadra</h6>
+                                            <h6 class="mb-0" *ngIf="squadre.length === 0">Nessuna Squadra</h6>
                                         </ng-template>
                                     </ng-container>
                                 </span>
@@ -152,7 +155,7 @@
                                                     class="font-weight-bold mx-1">{{ m.descrizione }}</span><small
                                             >{{ m.genere }}</small></span>
                                         </div>
-                                        <h6 class="mb-0" *ngIf="methods.numeroMezzi(richiesta) === 0">Nessun mezzo</h6>
+                                        <h6 class="mb-0" *ngIf="methods.numeroMezzi(richiesta) === 0">Nessun Mezzo</h6>
                                     </ng-template>
                                 </span>
                             </div>
@@ -170,7 +173,7 @@
 
                                 <!-- presidiato / non presidiato (1) -->
                                 <span *ngIf="richiesta.stato === StatoRichiesta.Chiamata || !richiesta.istantePrimaAssegnazione">
-                                    <span class="badge badge-warning text-white">non presidiato</span>
+                                    <span class="badge badge-warning text-white">Non Presidiato</span>
                                 </span>
                             </div>
                         </div>
@@ -257,8 +260,9 @@
                                         </div>
                                         <div class="h5 mb-0 pull-right">
                                             <span *ngFor="let ze of richiesta.zoneEmergenza"
-                                                  class="badge badge-danger pull-right m-1">{{
-                                                ze }}</span>
+                                                  class="badge badge-danger pull-right m-1">
+                                                {{ ze }}
+                                            </span>
                                         </div>
                                     </div>
                                     <div class="col-12 text-right">
@@ -267,7 +271,7 @@
                                               class="badge badge-secondary text-right py-2 m-1"><i
                                                 class="fa fa-hashtag fa-fw text-left"></i>{{tag}}</span>
                                         <span *ngIf="!richiesta.tags || (richiesta.tags && richiesta.tags.length <= 0)">
-                                            Non ci sono tags
+                                            Non ci sono Tags
                                         </span>
                                     </div>
                                 </div>
@@ -312,7 +316,9 @@
                                     </div>
                                 </div>
                                 <ng-template #nonPresaInCarico>
-                                    <a class="badge badge-secondary text-light">Non presa in carico</a>
+                                    <a class="badge badge-secondary text-light">
+                                        Non Presa in Carico
+                                    </a>
                                 </ng-template>
                             </div>
 
@@ -353,7 +359,9 @@
                                     {{ richiesta.codiceSchedaNue }}
                                 </a>
                                 <ng-template #nessunCodiceNue>
-                                    <span class="badge badge-secondary text-light">Non presente</span>
+                                    <span class="badge badge-secondary text-light">
+                                        Nessuna scheda NUE
+                                    </span>
                                 </ng-template>
                             </div>
 
@@ -362,18 +370,54 @@
                                 <i class="guida fa fa-paper-plane-o fa-fw mr-1" ngbTooltip="Stato Fonogramma"
                                    placement="right"></i>
                                 <span *ngIf="richiesta?.fonogramma" class="h6 badge m-0 cursor-pointer"
-                                      [ngClass]="{'badge-success text-light': richiesta?.fonogramma?.stato === statoFonogramma.Inviato, 'badge-secondary text-light': richiesta?.fonogramma?.stato === statoFonogramma.NonNecessario, 'badge-warning text-light': richiesta?.fonogramma?.stato === statoFonogramma.DaInviare}"
+                                      [ngClass]="{'badge-success text-light': richiesta?.fonogramma?.stato === StatoFonogramma.Inviato, 'badge-secondary text-light': richiesta?.fonogramma?.stato === StatoFonogramma.NonNecessario, 'badge-warning text-light': richiesta?.fonogramma?.stato === StatoFonogramma.DaInviare}"
                                       (click)="onDettaglioStatoFonogramma(); $event.stopPropagation()"
                                       ngbTooltip="Visualizza Fonogramma">
                                     {{ getStatoFonogrammaStringByEnum(richiesta?.fonogramma?.stato) }}
                                 </span>
                                 <span *ngIf="!richiesta.fonogramma" class="badge badge-secondary text-white">
-                                    Non presente
+                                    Nessun Fonogramma
                                 </span>
                                 <button *ngIf="inGestione" class="btn btn-sm btn-info ml-2"
                                         ngbTooltip="Modifica Fonogramma"
                                         (click)="onModificaStatoFonogramma(); $event.stopPropagation()">
                                     <i class="fa fa-edit"></i>
+                                </button>
+                            </div>
+
+                            <div *ngIf="inGestione" class="h6">
+                                <div *ngIf="methods._primaSedeAllertata(richiesta.sediAllertate) as sediAllertate; else nonAllertata"
+                                     class="d-inline-block h6 m-0 mr-1" ngbTooltip="{{ sediAllertate }}"
+                                     [disableTooltip]="sediAllertate.length <= 10" placement="bottom">
+                                    <i class="guida fa fa-exclamation-circle fa-fw mr-1" ngbTooltip="Sedi Allertate"
+                                       placement="right"></i>
+                                    {{ sediAllertate | truncate: 10 }}
+                                </div>
+                                <div *ngIf="richiesta.codSOAllertate && richiesta.codSOAllertate.length > 1"
+                                     ngbDropdown class="d-inline-block" placement="bottom">
+                                    <button ngbDropdownToggle class="btn btn-light border py-0 px-1"
+                                            (click)="$event.stopPropagation()">
+                                        +{{ richiesta.codSOAllertate.length - 1 }}
+                                    </button>
+                                    <div ngbDropdownMenu class="p-2 text-center">
+                                        <div *ngIf="methods._altreSediAllertate(richiesta.sediAllertate) as codSOAllertate">
+                                            <div *ngFor="let sede of codSOAllertate">
+                                                {{ sede }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <ng-template #nonAllertata class="badge badge-secondary text-white">
+                                    <!-- Nessuna Sede Allertata -->
+                                </ng-template>
+                                <button class="btn btn-sm btn-warning ml-2 mr-1" ngbTooltip="Allerta Sede"
+                                        (click)="onAllertaSede(); $event.stopPropagation()">
+                                    <i class="fa fa-exclamation-triangle"></i>
+                                </button>
+                                <button *ngIf="richiesta?.stato === StatoRichiesta.Chiamata"
+                                        class="btn btn-sm btn-danger" ngbTooltip="Trasferisci ad altro comando"
+                                        (click)="onAddTrasferimentoChiamata(richiesta.codice); $event.stopPropagation()">
+                                    <i class="fa fa-send-o"></i>
                                 </button>
                             </div>
                         </div>
@@ -454,11 +498,11 @@
 
                             <!-- enti intervenuti -->
                             <div class="h6 text-right">
-                                <button *ngIf="inGestione" 
+                                <button *ngIf="inGestione"
                                         class="btn btn-sm btn-info mr-2"
                                         ngbTooltip="Modifica Enti Intervenuti"
                                         (click)="onModificaEntiIntervenuti(); $event.stopPropagation()">
-                                            <i class="fa fa-edit"></i>
+                                    <i class="fa fa-edit"></i>
                                 </button>
                                 <button class="btn btn-light border big_font py-0 px-1" ngbTooltip="Elenco Enti"
                                         *ngIf="methods._entiCount(richiesta.listaEntiIntervenuti?.length, richiesta.listaEntiPresaInCarico?.length) as totaleEnti; else nessunEnte"
@@ -506,7 +550,7 @@
                             </div>
 
                             <!-- Cambio Stato Richiesta (Gestione) -->
-                            <div *ngIf="inGestione" class="border p-2 mt-2"
+                            <div *ngIf="inGestione" class="border p-2 mt-3"
                                  [ngClass]="{'shadow border-info rounded': inGestione, 'border-light': !inGestione}">
                                 <app-sintesi-richiesta-actions [richiesta]="richiesta"
                                                                (actionRichiesta)="onActionRichiesta($event)"></app-sintesi-richiesta-actions>

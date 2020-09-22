@@ -4,12 +4,12 @@ import {
     ResponseAddEnteRubricaInterface,
     ResponseDeleteEnteRubricaInterface,
     ResponseUpdateEnteRubricaInterface,
-    TipoTelefono,
     Ente
 } from 'src/app/shared/interface/ente.interface';
 import { ClearFormEnte, GetCategorieEnti, RequestAddEnte, RequestDeleteEnte, RequestUpdateEnte, SetCategorieEnti, SetEnti } from '../../actions/enti/enti.actions';
 import { RubricaStateModel } from '../../../../features/rubrica/store/states/rubrica/rubrica.state';
 import { EntiService } from '../../../../core/service/enti-service/enti.service';
+import { TipoTelefono } from '../../../enum/tipo-telefono.enum';
 
 export interface EntiStateModel {
     enti: Array<Ente>;

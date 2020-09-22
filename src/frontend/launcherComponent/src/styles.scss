@@ -13,9 +13,9 @@
   font-family: "icon-marker";
   src: url("./assets/fonts/icon-marker.eot?7adah4");
   src: url("./assets/fonts/icon-marker.eot?7adah4#iefix") format("embedded-opentype"),
-    url("./assets/fonts/icon-marker.ttf?7adah4") format("truetype"),
-    url("./assets/fonts/icon-marker.woff?7adah4") format("woff"),
-    url("./assets/fonts/icon-marker.svg?7adah4#icon-marker") format("svg");
+  url("./assets/fonts/icon-marker.ttf?7adah4") format("truetype"),
+  url("./assets/fonts/icon-marker.woff?7adah4") format("woff"),
+  url("./assets/fonts/icon-marker.svg?7adah4#icon-marker") format("svg");
   font-weight: normal;
   font-style: normal;
 }
@@ -32,28 +32,68 @@ html {
 
 // End Dropdown Google Places
 
-.xlModal>.modal-dialog {
+.modal-holder {
+  animation-name: jumpIn;
+  animation-duration: 0.3s;
+}
+
+.xlModal {
+  animation-name: jumpIn;
+  animation-duration: 0.3s;
+}
+
+.xlModal > .modal-dialog {
   max-width: 1490px !important;
   min-width: 650px !important;
   width: 65% !important;
 }
 
-.squadrePartenza>.modal-dialog {
+.squadrePartenza {
+  animation-name: jumpIn;
+  animation-duration: 0.3s;
+}
+
+.squadrePartenza > .modal-dialog {
   max-width: 590px !important;
   min-width: 100px !important;
   width: 45% !important;
+  animation-name: jumpIn;
+  animation-duration: 0.3s;
 }
 
-.enti>.modal-dialog {
+.enti {
+  animation-name: jumpIn;
+  animation-duration: 0.3s;
+}
+
+.enti > .modal-dialog {
   max-width: 590px !important;
   min-width: 100px !important;
   width: 45% !important;
+  animation-name: jumpIn;
+  animation-duration: 0.3s;
 }
 
-.modalModificaRichiesta>.modal-dialog {
+.modalModificaRichiesta {
+  animation-name: jumpIn;
+  animation-duration: 0.3s;
+}
+
+.modalModificaRichiesta > .modal-dialog {
   max-width: 1490px !important;
   min-width: 650px !important;
   width: 50% !important;
+  animation-name: jumpIn;
+  animation-duration: 0.3s;
+}
+
+@keyframes jumpIn {
+  0% {
+    transform: scale(0.65)
+  }
+  100% {
+    transform: scale(1)
+  }
 }
 
 .app-shadow {
@@ -321,11 +361,11 @@ a:hover {
   background-color: #809e59 !important;
 }
 
-.btn:hover{
+.btn:hover {
   transform: scale(1.1);
 }
 
-.btn-no-hover:hover{
+.btn-no-hover:hover {
   transform: scale(1) !important;
 }
 
@@ -365,10 +405,10 @@ a:hover {
 .diagonal-stripes {
   background-color: gray;
   background-image: repeating-linear-gradient(45deg,
-      transparent,
-      transparent 35px,
-      rgba(255, 255, 255, 0.5) 35px,
-      rgba(255, 255, 255, 0.5) 70px);
+          transparent,
+          transparent 35px,
+          rgba(255, 255, 255, 0.5) 35px,
+          rgba(255, 255, 255, 0.5) 70px);
 }
 
 .bg-grey {
@@ -418,30 +458,39 @@ a:hover {
 .icon-wifi:before {
   content: "\e907";
 }
+
 .icon-gps-alert:before {
   content: "\e900";
 }
+
 .icon-humidity:before {
   content: "\e901";
 }
+
 .icon-truck-fire-q:before {
   content: "\e902";
 }
+
 .icon-fa-sedi:before {
   content: "\e903";
 }
+
 .icon-fa-richieste:before {
   content: "\e904";
 }
+
 .icon-not-recursive:before {
   content: "\e905";
 }
+
 .icon-not-recursive-single:before {
   content: "\e906";
 }
+
 .icon-recursive:before {
   content: "\e912";
 }
+
 .icon-truck-fire:before {
   content: "\e913";
 }

@@ -1,0 +1,31 @@
+<div class="border border-light px-4 pt-4 pb-2" [ngClass]="{'shadow-sm': !ultimoChangelog, 'shadow': ultimoChangelog}">
+    <h6 class="float-right" [ngClass]="{'font-weight-bolder text-success': ultimoChangelog}">
+        <i class="fa fa-calendar-check-o"></i>
+        {{ changelog?.dataRilascio | date: 'dd/MM/yyyy HH:mm' }}
+    </h6>
+    <div *ngFor="let capitolo of changelog?.capitoli">
+        <h4>{{ capitolo.titolo }}</h4>
+        <p>
+            {{ capitolo.descrizione }}
+        </p>
+    </div>
+    <small class="d-inline-block text-muted mb-3">
+        {{ changelog.descrizione }}
+    </small>
+    <div *ngIf="ultimoChangelog" class="clearfix">
+        <div class="float-left">
+            <div class="badge badge-success font-weight-bolder h5">VERSIONE ATTUALE</div>
+        </div>
+        <div class="float-right">
+            <h5>
+                <span class="text-danger">
+                   Problemi con questo aggiornamento?
+                </span>
+                Scrivi a
+                <a href="{{'mailto://' + emailProblemi}}">
+                    {{ emailProblemi }}
+                </a>
+            </h5>
+        </div>
+    </div>
+</div>

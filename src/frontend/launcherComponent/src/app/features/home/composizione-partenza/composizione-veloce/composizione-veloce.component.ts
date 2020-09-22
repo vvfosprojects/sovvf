@@ -133,7 +133,7 @@ export class FasterComponent implements OnInit, OnDestroy {
         }
     }
 
-    confermaPartenze(): void {
+    confermaPartenzeInViaggio(): void {
         const boxPartenzaList: BoxPartenza[] = [];
         this.preAccoppiati.forEach(result => {
             if (this.idPreAccoppiatiSelezionati.includes(result.id)) {
@@ -145,6 +145,40 @@ export class FasterComponent implements OnInit, OnDestroy {
             const rObj = {};
             if (obj.mezzoComposizione) {
                 obj.mezzoComposizione.mezzo.stato = StatoMezzo.InViaggio;
+                rObj['mezzo'] = obj.mezzoComposizione.mezzo;
+            } else {
+                rObj['mezzo'] = null;
+            }
+            if (obj.squadraComposizione.length > 0) {
+                rObj['squadre'] = obj.squadraComposizione.map((squadraComp: SquadraComposizione) => {
+                    return squadraComp.squadra;
+                });
+            } else {
+                rObj['squadre'] = [];
+            }
+            return rObj;
+        });
+        const partenzeObj: ConfermaPartenze = {
+            partenze: partenzeMappedArray,
+            idRichiesta: this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione).codice,
+            turno: this.store.selectSnapshot(TurnoState.turnoCalendario).corrente
+        };
+        // console.log('mappedArray', partenzeMappedArray);
+        this.store.dispatch(new ConfirmPartenze(partenzeObj));
+    }
+
+    confermaPartenzeInUscita(): void {
+        const boxPartenzaList: BoxPartenza[] = [];
+        this.preAccoppiati.forEach(result => {
+            if (this.idPreAccoppiatiSelezionati.includes(result.id)) {
+                boxPartenzaList.push(result);
+            }
+        });
+        const partenze = makeCopy(boxPartenzaList);
+        const partenzeMappedArray = partenze.map(obj => {
+            const rObj = {};
+            if (obj.mezzoComposizione) {
+                obj.mezzoComposizione.mezzo.stato = StatoMezzo.InUscita;
                 rObj['mezzo'] = obj.mezzoComposizione.mezzo;
             } else {
                 rObj['mezzo'] = null;

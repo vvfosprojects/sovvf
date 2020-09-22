@@ -13,12 +13,13 @@ import { SetTurnoCalendario } from './store/actions/turno.actions';
 import { AuthService } from '../../core/auth/auth.service';
 import { NewVersionState } from '../../shared/store/states/nuova-versione/nuova-versione.state';
 import { GetNewVersion } from '../../shared/store/actions/nuova-versione/nuova-versione.actions';
+import { SetNotificheLette } from '../../shared/store/actions/notifiche/notifiche.actions';
 import { RoutesPath } from '../../shared/enum/routes-path.enum';
 
 @Component({
     selector: 'app-navbar',
     templateUrl: './navbar.component.html',
-    styleUrls: [ './navbar.component.css' ]
+    styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit, OnDestroy {
 
@@ -100,6 +101,10 @@ export class NavbarComponent implements OnInit, OnDestroy {
     // Todo centralizzare nello store.
     logout() {
         this.authenticationService.logout();
+    }
+
+    setNotificheLette() {
+        this.store.dispatch(new SetNotificheLette());
     }
 
 }

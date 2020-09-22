@@ -177,6 +177,7 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
 
     onUndoMergeSchedaContatto($event: string): void {
         const modalConfermaAnnulla = this.modal.open(ConfirmModalComponent, {
+            windowClass: 'modal-holder',
             backdropClass: 'light-blue-backdrop',
             centered: true
         });

@@ -98,7 +98,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                     throw new Exception(Costanti.PartenzaGiaPresente);
             }
 
-            ///Gestione Sganciamento
+            #region SGANCIAMENTO
+
             if (command.ConfermaPartenze.IdRichiestaDaSganciare != null)
             {
                 richiestaDaSganciare = _getRichiestaById.GetByCodice(command.ConfermaPartenze.IdRichiestaDaSganciare);
@@ -129,25 +130,27 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                 }
 
                 if (idComposizioneDaSganciare == 1)
-                    richiestaDaSganciare.SincronizzaStatoRichiesta(Costanti.RichiestaSospesa, richiestaDaSganciare.StatoRichiesta, richiestaDaSganciare.CodOperatore, "");
+                    richiestaDaSganciare.SincronizzaStatoRichiesta(Costanti.RichiestaSospesa, richiestaDaSganciare.StatoRichiesta, richiestaDaSganciare.CodOperatore, "", DateTime.UtcNow);
                 else
                 {
                     if (StatoSulPosto > 0)
-                        richiestaDaSganciare.SincronizzaStatoRichiesta(Costanti.RichiestaPresidiata, richiestaDaSganciare.StatoRichiesta, richiestaDaSganciare.CodOperatore, "");
+                        richiestaDaSganciare.SincronizzaStatoRichiesta(Costanti.RichiestaPresidiata, richiestaDaSganciare.StatoRichiesta, richiestaDaSganciare.CodOperatore, "", DateTime.UtcNow);
                     else if (StatoInViaggio > 0)
-                        richiestaDaSganciare.SincronizzaStatoRichiesta(Costanti.RichiestaAssegnata, richiestaDaSganciare.StatoRichiesta, richiestaDaSganciare.CodOperatore, "");
+                        richiestaDaSganciare.SincronizzaStatoRichiesta(Costanti.RichiestaAssegnata, richiestaDaSganciare.StatoRichiesta, richiestaDaSganciare.CodOperatore, "", DateTime.UtcNow);
                 }
 
                 //new RevocaPerRiassegnazione(richiesta, richiestaDaSganciare, command.ConfermaPartenze.IdMezzoDaSganciare, DateTime.UtcNow, richiesta.CodOperatore);
                 _updateRichiestaAssistenza.UpDate(richiestaDaSganciare);
             }
 
+            #endregion SGANCIAMENTO
+
             if (richiesta.Eventi.Where(x => x is InizioPresaInCarico).ToList().Count == 0)
                 new InizioPresaInCarico(richiesta, DateTime.UtcNow, utente.Id);
 
             foreach (var partenza in command.ConfermaPartenze.Partenze)
             {
-                partenza.Mezzo.Stato = Costanti.MezzoInUscita;
+                //partenza.Mezzo.Stato = Costanti.MezzoInUscita;
                 partenza.Sganciata = false;
                 new ComposizionePartenze(richiesta, DateTime.UtcNow, utente.Id, false)
                 {
@@ -155,12 +158,12 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                 };
             }
 
-            richiesta.SincronizzaStatoRichiesta(Costanti.RichiestaAssegnata, richiesta.StatoRichiesta, utente.Id, "");
+            richiesta.SincronizzaStatoRichiesta(Costanti.RichiestaAssegnata, richiesta.StatoRichiesta, utente.Id, "", DateTime.UtcNow);
 
             //richiesta.Id = command.ConfermaPartenze.IdRichiesta;
             command.ConfermaPartenze.richiesta = richiesta;
 
-            var sedeRichiesta = command.ConfermaPartenze.CodiceSede;
+            var sedeRichiesta = richiesta.CodSOCompetente;
 
             if (richiesta.CodRichiesta == null)
                 richiesta.CodRichiesta = _generaCodiceRichiesta.Genera(sedeRichiesta, DateTime.UtcNow.Year);

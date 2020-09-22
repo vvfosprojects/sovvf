@@ -33,7 +33,7 @@ import { RichiesteState } from '../store/states/richieste/richieste.state';
 import { RichiestaFissataState } from '../store/states/richieste/richiesta-fissata.state';
 import { RichiestaHoverState } from '../store/states/richieste/richiesta-hover.state';
 import { RichiestaSelezionataState } from '../store/states/richieste/richiesta-selezionata.state';
-import { ActionRichiestaModalComponent, ListaEntiComponent, MezzoActionsModalComponent, ModificaFonogrammaModalComponent, DettaglioFonogrammaModalComponent  } from '../../../shared';
+import { ActionRichiestaModalComponent, ListaEntiComponent, MezzoActionsModalComponent, ModificaFonogrammaModalComponent, DettaglioFonogrammaModalComponent } from '../../../shared';
 import { ListaSquadrePartenzaComponent } from '../../../shared/components/lista-squadre-partenza/lista-squadre-partenza.component';
 import { RichiesteEspanseState } from '../store/states/richieste/richieste-espanse.state';
 import { RichiestaGestioneState } from '../store/states/richieste/richiesta-gestione.state';
@@ -43,6 +43,8 @@ import { ModalFiltriTipologiaComponent } from '../filterbar/filtri-richieste/mod
 import { EliminaPartenzaModalComponent } from '../../../shared/modal/elimina-partenza-modal/elimina-partenza-modal.component';
 import { TagInputModule } from 'ngx-chips';
 import { ModificaEntiModalComponent } from 'src/app/shared/modal/modifica-enti-modal/modifica-enti-modal.component';
+import { TrasferimentoChiamataModalComponent } from 'src/app/shared/modal/trasferimento-chiamata-modal/trasferimento-chiamata-modal.component';
+import { AllertaSedeModalComponent } from '../../../shared/modal/allerta-sede-modal/allerta-sede-modal.component';
 
 @NgModule({
     imports: [
@@ -90,7 +92,9 @@ import { ModificaEntiModalComponent } from 'src/app/shared/modal/modifica-enti-m
         MezzoActionsModalComponent,
         DettaglioFonogrammaModalComponent,
         ModificaFonogrammaModalComponent,
-        ModificaEntiModalComponent
+        ModificaEntiModalComponent,
+        TrasferimentoChiamataModalComponent,
+        AllertaSedeModalComponent
     ],
     providers: [
         SintesiRichiesteService

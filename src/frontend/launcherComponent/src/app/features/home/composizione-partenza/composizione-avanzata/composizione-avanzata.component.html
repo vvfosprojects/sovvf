@@ -100,7 +100,7 @@
         </div>
         <app-composizione-buttons [boxPartenzaLenght]="boxPartenzaList.length" [disableConfirmPrenota]="disablePrenota"
                                   [prenotato]="prenotato" [disableConfirmPartenza]="(disableConfirmPartenza$ | async)"
-                                  (confirmPartenza)="confermaPartenze()" (confirmPrenota)="prenota.emit($event)"
+                                  (confirmPartenzaInViaggio)="confermaPartenzeInViaggio()" (confirmPartenzaInUscita)="confermaPartenzeInUscita()" (confirmPrenota)="prenota.emit($event)"
         ></app-composizione-buttons>
     </div>
 </div>
