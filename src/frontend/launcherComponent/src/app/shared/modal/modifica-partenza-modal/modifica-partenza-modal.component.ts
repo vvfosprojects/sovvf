@@ -219,6 +219,8 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
                 codMezzoDaAnnullare: null,
                 codSquadreDaAnnullare: null,
                 motivazioneAnnullamento: null,
+                mezzo: this.partenza.mezzo,
+                squadre: this.partenza.squadre,
                 sequenzaStati: [],
                 dataAnnullamento: null,
             },
