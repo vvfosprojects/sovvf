@@ -242,19 +242,6 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
         this.store.dispatch(new VisualizzaListaSquadrePartenza(listaSquadre));
     }
 
-    annullaPartenza(): void {
-        this.mezzoDeselezionato();
-        this.nuoveSquadre = [];
-        this.store.dispatch([
-            new ClearListaMezziComposizione(),
-            new ClearListaSquadreComposizione(),
-            new ClearFiltriAffini(),
-            new UnselectMezziAndSquadreComposizioneAvanzata(),
-            new ClearComposizioneAvanzata,
-            new ClearBoxPartenze(),
-            new GetListaMezziSquadre(this.idRichiesta),
-        ]);
-    }
 
     mezzoSelezionato(mezzoComposizione: MezzoComposizione) {
         this.store.dispatch([
@@ -264,7 +251,8 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
     }
 
     mezzoDeselezionato(): void {
-        this.store.dispatch(new UnselectMezzoComposizione());
+        this.store.dispatch([new UnselectMezzoComposizione(),
+                            new ClearBoxPartenze()]);
         this.nuovoMezzo = {
             codice: '',
             descrizione: '',

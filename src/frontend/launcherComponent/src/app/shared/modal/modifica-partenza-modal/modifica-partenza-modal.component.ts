@@ -219,6 +219,8 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
                 codMezzoDaAnnullare: null,
                 codSquadreDaAnnullare: null,
                 motivazioneAnnullamento: null,
+                mezzo: this.partenza.mezzo,
+                squadre: this.partenza.squadre,
                 sequenzaStati: [],
                 dataAnnullamento: null,
             },
@@ -274,6 +276,16 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
         const listaSquadre = {} as ListaSquadre;
         listaSquadre.idPartenza = this.partenza.id;
         listaSquadre.squadre = this.partenza.squadre;
+        this.store.dispatch(new VisualizzaListaSquadrePartenza(listaSquadre));
+    }
+
+    onListaSquadrePartenzaSostitutiva(): void {
+        const listaSquadre = {
+            idPartenza: '',
+            squadre: [],
+        };
+        listaSquadre.idPartenza = this.partenza.id;
+        listaSquadre.squadre = this.nuoveSquadre;
         this.store.dispatch(new VisualizzaListaSquadrePartenza(listaSquadre));
     }
 
