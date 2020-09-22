@@ -279,6 +279,16 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
         this.store.dispatch(new VisualizzaListaSquadrePartenza(listaSquadre));
     }
 
+    onListaSquadrePartenzaSostitutiva(): void {
+        const listaSquadre = {
+            idPartenza: '',
+            squadre: [],
+        };
+        listaSquadre.idPartenza = this.partenza.id;
+        listaSquadre.squadre = this.nuoveSquadre;
+        this.store.dispatch(new VisualizzaListaSquadrePartenza(listaSquadre));
+    }
+
     onConferma(): void {
         this.submitted = true;
 
