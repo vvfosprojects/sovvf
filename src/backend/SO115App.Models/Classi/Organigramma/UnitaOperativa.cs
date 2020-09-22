@@ -101,7 +101,7 @@ namespace SO115App.API.Models.Classi.Organigramma
         /// </returns>
         public virtual IEnumerable<UnitaOperativa> GetSottoAlbero(IEnumerable<PinNodo> pins)
         {
-            var pin = pins.SingleOrDefault(t => t.Codice == this.Codice);
+            var pin = pins.FirstOrDefault(t => t.Codice == this.Codice);
             if (pin != null)
             {
                 if (pin.Ricorsivo)
