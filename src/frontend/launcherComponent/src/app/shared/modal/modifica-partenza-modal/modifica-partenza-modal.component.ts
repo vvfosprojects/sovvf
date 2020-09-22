@@ -241,11 +241,15 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
         sostituzioneModal.result.then((res: { status: string, result: any }) => {
             switch (res.status) {
                 case 'ok' :
+                    const nuovaPartenza = res.result;
+                    const d = new Date();
+                    let select = makeCopy(this.statiMezzo);
+                    this.sequenzeValid = false;
+                    this.sequenze.push({ stato: undefined, time: { hour: d.getHours(), minute: d.getMinutes(), second: d.getSeconds() }, select, codMezzo: nuovaPartenza.mezzo.mezzo });
                     this.inSostituzione = true;
                     this.hideBox = false;
                     this.boxSostitutivo = true;
                     this.nonModificabile = true;
-                    const nuovaPartenza = res.result;
                     this.timeAnnullamento = nuovaPartenza.time;
                     if (nuovaPartenza.mezzo && nuovaPartenza.squadre && nuovaPartenza.squadre.length > 0) {
                         this.f.annullamento.patchValue(true);
