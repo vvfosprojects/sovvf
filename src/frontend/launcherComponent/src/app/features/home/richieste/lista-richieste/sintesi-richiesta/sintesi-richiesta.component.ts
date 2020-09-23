@@ -229,8 +229,10 @@ export class SintesiRichiestaComponent implements OnChanges {
             keyboard  : false,
         });
         modalModificaPartenza.componentInstance.partenza = this.richiesta.partenzeRichiesta[index];
+        if (this.richiesta.codice) {
+            modalModificaPartenza.componentInstance.codRichiesta = this.richiesta.codice;
+        } else  modalModificaPartenza.componentInstance.codRichiesta = this.richiesta.codiceRichiesta;
         modalModificaPartenza.componentInstance.idRichiesta = this.richiesta.id;
-        modalModificaPartenza.componentInstance.codRichiesta = this.richiesta.codice;
         modalModificaPartenza.result.then((res: { status: string, result: any }) => {
             switch (res.status) {
                 case 'ok' :

@@ -143,7 +143,7 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
     }
 
     getTitle(): string {
-        return 'Modifica Partenza Richiesta ' + this.codRichiesta;
+        return 'Modifica Partenza - Richiesta ' + this.codRichiesta;
     }
 
     inizializzaUser(): void {

@@ -324,7 +324,7 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
     }
 
     getTitle(): string {
-        return 'Sostituzione Partenza Richiesta ' + this.codRichiesta;
+        return 'Sostituzione Partenza - Richiesta ' + this.codRichiesta;
     }
 
     onDismiss(): void {
