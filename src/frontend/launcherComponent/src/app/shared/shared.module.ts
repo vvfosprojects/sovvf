@@ -16,6 +16,8 @@ import { RisultatiRicercaComponent } from './components/risultati-ricerca/risult
 import { TrasferimentoChiamataModalComponent } from './modal/trasferimento-chiamata-modal/trasferimento-chiamata-modal.component';
 import { AllertaSedeModalComponent } from './modal/allerta-sede-modal/allerta-sede-modal.component';
 import * as Shared from './index';
+import { AnnuncioNuovaVersioneModalComponent } from './modal/annuncio-nuova-versione-modal/annuncio-nuova-versione-modal.component';
+import { NuoveFeaturesInfoModalComponent } from './modal/nuove-features-info-modal/nuove-features-info-modal.component';
 
 const COMPONENTS = [
     Shared.DebounceClickDirective,
@@ -49,7 +51,9 @@ const COMPONENTS = [
     RisultatiRicercaComponent,
     TrasferimentoChiamataModalComponent,
     NotificheComponent,
-    AllertaSedeModalComponent
+    AllertaSedeModalComponent,
+    AnnuncioNuovaVersioneModalComponent,
+    NuoveFeaturesInfoModalComponent
 ];
 
 @NgModule({

@@ -6,36 +6,7 @@ export interface ChangelogStateModel {
 }
 
 export const ChangelogStateDefaults: ChangelogStateModel = {
-    listaChangelog: [
-        {
-            dataRilascio: new Date().toString(),
-            descrizione: 'Questa è una descrizione di test per scrivere qualcosa di non troppo importante!',
-            capitoli: [
-                {
-                    titolo: 'Questo è il primo capitolo',
-                    descrizione: 'Benvenuti nel primo capitolo, qui ci saranno dele informazioni importanti ai fini del corretto utilizzo dell\'applicazione'
-                },
-                {
-                    titolo: 'Questo è il secondo capitolo',
-                    descrizione: 'Eccoci nel secondi capitolo, qui ci saranno dele informazioni importanti scritte nel secondo capitolo!'
-                }
-            ]
-        },
-        {
-            dataRilascio: new Date().toString(),
-            descrizione: 'Questa è una descrizione di test per scrivere qualcosa di non troppo importante!',
-            capitoli: [
-                {
-                    titolo: 'Questo è il primo capitolo',
-                    descrizione: 'Benvenuti nel primo capitolo, qui ci saranno dele informazioni importanti ai fini del corretto utilizzo dell\'applicazione'
-                },
-                {
-                    titolo: 'Questo è il secondo capitolo',
-                    descrizione: 'Eccoci nel secondi capitolo, qui ci saranno dele informazioni importanti scritte nel secondo capitolo!'
-                }
-            ]
-        },
-    ]
+    listaChangelog: undefined
 };
 
 @State<ChangelogStateModel>({

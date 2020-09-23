@@ -1,8 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Select } from '@ngxs/store';
+import { Select, Store } from '@ngxs/store';
 import { ChangelogState } from './store/changelog.state';
 import { Observable, Subscription } from 'rxjs';
 import { ChangelogInterface } from '../../shared/interface/changelog.interface';
+import { SetCurrentUrl } from '../../shared/store/actions/app/app.actions';
+import { RoutesPath } from '../../shared/enum/routes-path.enum';
+import { SetSediNavbarVisible } from '../../shared/store/actions/sedi-treeview/sedi-treeview.actions';
 
 @Component({
     selector: 'app-changelog',
@@ -16,11 +19,15 @@ export class ChangelogComponent implements OnInit, OnDestroy {
 
     private subscription: Subscription = new Subscription();
 
-    constructor() {
+    constructor(private store: Store) {
         this.getListaChangelog();
     }
 
     ngOnInit(): void {
+        this.store.dispatch([
+            new SetCurrentUrl(RoutesPath.Changelog),
+            new SetSediNavbarVisible(false)
+        ]);
     }
 
     ngOnDestroy(): void {

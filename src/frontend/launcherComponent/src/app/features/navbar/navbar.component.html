@@ -10,7 +10,7 @@
                         <i class="fa fa-bars"></i>
                     </button>
                 </div> -->
-                <div class="col-4">
+                <div class="col-5">
                     <button class="btn btn-outline-light mr-2" ngbTooltip="Vai alla Home"
                             [routerLink]="['/' + RoutesPath.Home]"
                             [routerLinkActive]="['btn-light-nav', 'text-dark']">
@@ -26,32 +26,50 @@
                             [routerLinkActive]="['btn-light-nav', 'text-dark']">
                         <i class="fa fa-exchange"></i>
                     </button>
-                    <button class="btn btn-outline-light mr-4" ngbTooltip="Visualizza Rubrica"
+                    <button class="btn btn-outline-light mr-2" ngbTooltip="Visualizza Rubrica"
                             [routerLink]="['/' + RoutesPath.Rubrica]"
                             [routerLinkActive]="['btn-light-nav', 'text-dark']">
                         <i class="fa fa-address-book"></i>
+                    </button>
+                    <button class="btn btn-outline-light mr-2" ngbTooltip="Visualizza Info Aggiornamenti"
+                            [routerLink]="['/' + RoutesPath.Changelog]"
+                            [routerLinkActive]="['btn-light-nav', 'text-dark']">
+                        <i class="fa fa-newspaper-o"></i>
                     </button>
                 </div>
                 <div class="col-4 text-left">
                     <app-unita-operativa *ngIf="listeSediNavbarLoaded$ | async" [colorButton]="colorButton">
                     </app-unita-operativa>
                 </div>
-                <div class="col-4 px-0 text-center">
+                <div class="col-3 px-0 text-center">
                     <app-clock [time]="time"></app-clock>
                 </div>
             </div>
         </div>
-        <div class="col-2 mr-auto">
+        <div class="col-1 mr-auto">
             <div class="row">
                 <div class="col-12">
                     <app-turno [turno]="turnoCalendario" [turnoExtra]="turnoExtra"></app-turno>
                 </div>
             </div>
         </div>
-        <div class="col-2">
+        <div class="col-3">
             <ng-template [ngIf]="newVersion">
                 <app-bottone-nuova-versione [btnBlock]="true"
-                                            (getNewVersion)="getNewVersion()"></app-bottone-nuova-versione>
+                                            (doAction)="onGetNewVersion()"></app-bottone-nuova-versione>
+            </ng-template>
+            <ng-template [ngIf]="newVersionSoon && !newVersion">
+                <app-bottone-nuova-versione [btnBlock]="true"
+                                            [testo]="'Nuova versione presto disponibile'"
+                                            [tooltip]="'Ad Ottobre sarà disponibile una nuova versione, clicca per maggiori informazioni'"
+                                            (doAction)="onNewVersionSoon()"></app-bottone-nuova-versione>
+            </ng-template>
+            <ng-template [ngIf]="newFeaturesInfo && !newVersionSoon && !newVersion && url !== '/changelog'">
+                <app-bottone-nuova-versione [btnBlock]="true"
+                                            [icona]="'fa-newspaper-o'"
+                                            [testo]="'Cosa c\'è di nuovo?'"
+                                            [tooltip]="'Clicca per visualizzare le novità della nuova versione'"
+                                            (doAction)="onNewFeaturesInfo()"></app-bottone-nuova-versione>
             </ng-template>
         </div>
         <div class="col-3 ml-auto text-right pr-0">
