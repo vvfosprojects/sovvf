@@ -107,7 +107,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 else if (stato.Stato == Costanti.MezzoInRientro)
                 {
                     partenzaDaLavorare.Partenza.Mezzo.Stato = Costanti.MezzoInRientro;
-                    partenzaDaLavorare.Partenza.Mezzo.IdRichiesta = null;
+                    //partenzaDaLavorare.Partenza.Mezzo.IdRichiesta = null;
                     //partenzaDaLavorare.Partenza.Terminata = true;
 
                     new PartenzaInRientro(Richiesta, partenzaDaLavorare.Partenza.Mezzo.Codice, stato.DataOraAggiornamento, Richiesta.CodOperatore);
