@@ -67,12 +67,18 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi
 
             this.Istante = istante;
             this.CodiceFonte = codiceFonte;
-            richiesta.AddEvento(this);
             this.IstanteCreazione = DateTime.UtcNow;
             this.CodiceRichiesta = richiesta.Codice;
             this.TipoEvento = tipoEvento;
             this.SedeOperatore = SedeOperatore;
+            this.DataOraInserimento = DateTime.Now;
+            richiesta.AddEvento(this);
         }
+
+        /// <summary>
+        /// Data e ora in cui l'operatore ha inserito l'evento.
+        /// </summary>
+        public DateTime DataOraInserimento { get; set; }
 
         /// <summary>
         ///   E' l'istante in cui si è verificato l'evento.

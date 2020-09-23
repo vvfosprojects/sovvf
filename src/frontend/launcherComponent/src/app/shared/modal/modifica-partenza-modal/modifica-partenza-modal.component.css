@@ -1,0 +1,27 @@
+.required-collapse  {
+    margin-left: 5px;
+    position: relative;
+    top: -5px;
+}
+
+.overflow-test  {
+    overflow: auto;
+}
+
+.font-box-partenza  {
+    font-size: 20px;
+}
+
+.info-user {
+    max-width: fit-content; 
+    border-style: solid; 
+    border: 1px solid rgba(0,0,0,0.125);
+}
+
+.alert-save-mod {
+    border-style: solid;
+    border-width: medium;
+    padding: 2px;
+    position: relative;
+    font-size: 12px;
+}

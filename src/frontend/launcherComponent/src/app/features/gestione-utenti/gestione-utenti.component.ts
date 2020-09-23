@@ -21,7 +21,6 @@ import { RicercaUtentiState } from './store/states/ricerca-utenti/ricerca-utenti
 import { PaginationState } from '../../shared/store/states/pagination/pagination.state';
 import { LoadingState } from '../../shared/store/states/loading/loading.state';
 import { GestioneUtenteModalComponent } from './gestione-utente-modal/gestione-utente-modal.component';
-import { ConfirmModalComponent } from 'src/app/shared';
 import { SetPageSize } from '../../shared/store/actions/pagination/pagination.actions';
 import { wipeStringUppercase } from '../../shared/helper/function';
 import { SetSediNavbarVisible } from '../../shared/store/actions/sedi-treeview/sedi-treeview.actions';
@@ -29,6 +28,7 @@ import { RuoliUtenteLoggatoState } from '../../shared/store/states/ruoli-utente-
 import { SetCurrentUrl } from '../../shared/store/actions/app/app.actions';
 import { RoutesPath } from '../../shared/enum/routes-path.enum';
 import { AuthState } from '../auth/store/auth.state';
+import { ConfirmModalComponent } from '../../shared/modal/confirm-modal/confirm-modal.component';
 
 @Component({
     selector: 'app-gestione-utenti',

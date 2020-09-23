@@ -23,16 +23,17 @@ import { ComposizioneAvanzataState } from './composizione-avanzata.state';
 import { insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
 import { makeCopy } from '../../../../../shared/helper/function';
 import { IdPreaccoppiati } from '../../../composizione-partenza/interface/id-preaccoppiati-interface';
-import { ListaComposizioneAvanzata } from '../../../composizione-partenza/interface/lista-composizione-avanzata-interface';
+import { ListaComposizioneAvanzata } from '../../../../../shared/interface/lista-composizione-avanzata-interface';
 import { ClearMarkerMezzoHover, SetMarkerMezzoHover } from '../../actions/maps/marker.actions';
 import {
     checkSquadraOccupata,
     codDistaccamentoIsEqual,
     mezzoComposizioneBusy
-} from '../../../composizione-partenza/shared/functions/composizione-functions';
+} from '../../../../../shared/helper/composizione-functions';
 import produce from 'immer';
-import { SetListaFiltriAffini } from '../../actions/composizione-partenza/composizione-partenza.actions';
 import { ComposizionePartenzaState } from './composizione-partenza.state';
+import { FiltriComposizioneState } from '../../../../../shared/store/states/filtri-composizione/filtri-composizione.state';
+import { SetListaFiltriAffini } from '../../../../../shared/store/actions/filtri-composizione/filtri-composizione.actions';
 
 export interface PreAccoppiatiStateModel {
     allPreAccoppiati: BoxPartenza[];
@@ -131,7 +132,7 @@ export class ComposizioneVeloceState {
                 allPreAccoppiati: action.boxPartenza
             });
         }
-        const filtriSelezionati = this.store.selectSnapshot(ComposizionePartenzaState.filtriSelezionati);
+        const filtriSelezionati = this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati);
         dispatch(new FilterListaPreAccoppiati(filtriSelezionati));
     }
 
@@ -255,6 +256,7 @@ export class ComposizioneVeloceState {
                 if (action.filtri) {
                     // CODICE DISTACCAMENTO
                     if (action.filtri.CodiceDistaccamento && action.filtri.CodiceDistaccamento.length > 0) {
+                        // tslint:disable-next-line:max-line-length
                         draft.preAccoppiati = draft.preAccoppiati.filter((p: BoxPartenza) => codDistaccamentoIsEqual(p.mezzoComposizione.mezzo.distaccamento.codice, action.filtri.CodiceDistaccamento[0]));
                     }
                     // CODICE TIPO MEZZO

@@ -1,6 +1,5 @@
 import { ComposizioneFilterbar } from '../../../composizione-partenza/interface/composizione/composizione-filterbar-interface';
-import { ListaComposizioneAvanzata } from '../../../composizione-partenza/interface/lista-composizione-avanzata-interface';
-import { FiltriComposizione } from '../../../composizione-partenza/interface/filtri/filtri-composizione-interface';
+import { ListaComposizioneAvanzata } from '../../../../../shared/interface/lista-composizione-avanzata-interface';
 
 export class GetListeComposizioneAvanzata {
     static readonly type = '[ComposizioneAvanzata] Get Liste Composizione Avanzata';
@@ -31,26 +30,4 @@ export class UnselectMezziAndSquadreComposizioneAvanzata {
 
 export class ClearComposizioneAvanzata {
     static readonly type = '[ComposizioneAvanzata] Clear Composizione Partenza Avanzata';
-}
-
-export class SetRicercaSquadreComposizione {
-    static readonly type = '[ComposizioneAvanzata] Set Ricerca Squadre Composizione';
-
-    constructor(public ricerca: string) {
-    }
-}
-
-export class ResetRicercaSquadreComposizione {
-    static readonly type = '[ComposizioneAvanzata] Reset Ricerca Squadre Composizione';
-}
-
-export class SetRicercaMezziComposizione {
-    static readonly type = '[ComposizioneAvanzata] Set Ricerca Mezzi Composizione';
-
-    constructor(public ricerca: string) {
-    }
-}
-
-export class ResetRicercaMezziComposizione {
-    static readonly type = '[ComposizioneAvanzata] Reset Ricerca Mezzi Composizione';
 }

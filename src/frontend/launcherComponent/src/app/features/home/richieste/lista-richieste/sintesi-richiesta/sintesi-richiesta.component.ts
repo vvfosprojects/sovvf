@@ -2,13 +2,11 @@ import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, OnChan
 import { NgbModal, NgbPopoverConfig, NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
 import { TimeagoIntl } from 'ngx-timeago';
 import { strings as italianStrings } from 'ngx-timeago/language-strings/it';
-import { DettaglioFonogrammaModalComponent, ListaEntiComponent, ModificaFonogrammaModalComponent } from '../../../../../shared';
 import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.model';
 import { StatoRichiesta } from 'src/app/shared/enum/stato-richiesta.enum';
 import { MezzoActionInterface } from '../../../../../shared/interface/mezzo-action.interface';
 import { RichiestaActionInterface } from '../../../../../shared/interface/richiesta-action.interface';
 import { HelperSintesiRichiesta } from '../../helper/_helper-sintesi-richiesta';
-import { EliminaPartenzaModalComponent } from '../../../../../shared';
 import { ModificaStatoFonogrammaEmitInterface } from '../../../../../shared/interface/modifica-stato-fonogramma-emit.interface';
 import { StatoFonogramma } from '../../../../../shared/enum/stato-fonogramma.enum';
 import { ModificaEntiModalComponent } from 'src/app/shared/modal/modifica-enti-modal/modifica-enti-modal.component';
@@ -19,6 +17,12 @@ import { TrasferimentoChiamataModalComponent } from 'src/app/shared/modal/trasfe
 import { ClearFormTrasferimentoChiamata, RequestAddTrasferimentoChiamata } from 'src/app/shared/store/actions/trasferimento-chiamata-modal/trasferimento-chiamata-modal.actions';
 import { AllertaSedeModalComponent } from '../../../../../shared/modal/allerta-sede-modal/allerta-sede-modal.component';
 import { AllertaSedeEmitInterface } from '../../../../../shared/interface/allerta-sede-emit.interface';
+import { ModificaPartenzaModalComponent } from 'src/app/shared/modal/modifica-partenza-modal/modifica-partenza-modal.component';
+import { ListaEntiComponent } from '../../../../../shared/components/lista-enti/lista-enti.component';
+import { EliminaPartenzaModalComponent } from '../../../../../shared/modal/elimina-partenza-modal/elimina-partenza-modal.component';
+import { DettaglioFonogrammaModalComponent } from '../../../../../shared/modal/dettaglio-fonogramma-modal/dettaglio-fonogramma-modal.component';
+import { ModificaFonogrammaModalComponent } from '../../../../../shared/modal/modifica-fonogramma-modal/modifica-fonogramma-modal.component';
+import { RequestAddModificaPartenza } from '../../../../../shared/store/actions/modifica-partenza-modal/modifica-partenza-modal-actions';
 
 @Component({
     selector: 'app-sintesi-richiesta',
@@ -208,6 +212,29 @@ export class SintesiRichiestaComponent implements OnChanges {
             switch (res.status) {
                 case 'ok' :
                     this.eliminaPartenza.emit({ targaMezzo, idRichiesta: this.richiesta.id, modalResult: res.result });
+                    break;
+                case 'ko':
+                    break;
+            }
+        });
+    }
+
+    onModificaPartenza(index: string) {
+        const modalModificaPartenza = this.modalService.open(ModificaPartenzaModalComponent, {
+            windowClass: 'modal-holder',
+            backdropClass: 'light-blue-backdrop',
+            centered: true,
+            size: 'lg',
+            backdrop  : 'static',
+            keyboard  : false,
+        });
+        modalModificaPartenza.componentInstance.partenza = this.richiesta.partenzeRichiesta[index];
+        modalModificaPartenza.componentInstance.idRichiesta = this.richiesta.id;
+        modalModificaPartenza.componentInstance.codRichiesta = this.richiesta.codice;
+        modalModificaPartenza.result.then((res: { status: string, result: any }) => {
+            switch (res.status) {
+                case 'ok' :
+                    this.store.dispatch(new RequestAddModificaPartenza());
                     break;
                 case 'ko':
                     break;

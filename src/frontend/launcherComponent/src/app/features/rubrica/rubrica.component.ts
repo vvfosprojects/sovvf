@@ -13,9 +13,9 @@ import { ClearRicercaRubrica, SetRicercaRubrica } from './store/actions/ricerca-
 import { Ente } from '../../shared/interface/ente.interface';
 import { EnteModalComponent } from '../../shared/modal/ente-modal/ente-modal.component';
 import { RubricaState } from './store/states/rubrica/rubrica.state';
-import { ConfirmModalComponent } from '../../shared';
 import { GetRubrica } from './store/actions/rubrica/rubrica.actions';
 import { ClearFormEnte, RequestAddEnte, RequestDeleteEnte, RequestUpdateEnte } from '../../shared/store/actions/enti/enti.actions';
+import { ConfirmModalComponent } from '../../shared/modal/confirm-modal/confirm-modal.component';
 
 @Component({
     selector: 'app-rubrica',

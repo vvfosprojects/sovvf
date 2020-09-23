@@ -4,8 +4,8 @@ import {
     ActionMezzo,
     ActionRichiesta,
     AddRichiesta,
-    AddRichieste, AllertaSede,
-    CambiaStatoRichiesta,
+    AddRichieste,
+    AllertaSede,
     ClearIdChiamataInviaPartenza,
     ClearRichiestaById,
     ClearRichieste,
@@ -47,7 +47,6 @@ import { RichiesteEspanseState } from './richieste-espanse.state';
 import { calcolaActionSuggeritaMezzo, getStatoFonogrammaEnumByName } from '../../../../../shared/helper/function';
 import { RichiestaGestioneState } from './richiesta-gestione.state';
 import { RichiestaAttivitaUtenteState } from './richiesta-attivita-utente.state';
-import { ListaSquadrePartenzaComponent } from '../../../../../shared';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { RicercaFilterbarState } from '../filterbar/ricerca-filterbar.state';
 import { FiltriRichiesteState } from '../filterbar/filtri-richieste.state';
@@ -62,6 +61,7 @@ import { ClearRichiestaMarkerModifica } from '../../actions/maps/richieste-marke
 import { AuthState } from '../../../../auth/store/auth.state';
 import { UpdateRichiestaFissata } from '../../actions/richieste/richiesta-fissata.actions';
 import { TreeviewSelezione } from '../../../../../shared/model/treeview-selezione.model';
+import { ListaSquadrePartenzaComponent } from '../../../../../shared/components/lista-squadre-partenza/lista-squadre-partenza.component';
 
 export interface RichiesteStateModel {
     richieste: SintesiRichiesta[];

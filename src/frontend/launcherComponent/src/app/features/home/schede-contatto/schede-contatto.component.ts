@@ -2,7 +2,8 @@ import { Component, isDevMode, OnDestroy, OnInit } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import {
     ClearSchedaContattoHover,
-    GetListaSchedeContatto, OpenDetailSC,
+    GetListaSchedeContatto,
+    OpenDetailSC,
     SetRangeVisualizzazioneSchedeContatto,
     SetSchedaContattoGestita,
     SetSchedaContattoHover,
@@ -33,9 +34,9 @@ import {
 import { CheckboxInterface } from '../../../shared/interface/checkbox.interface';
 import { ClassificazioneSchedaContatto } from '../../../shared/enum/classificazione-scheda-contatto.enum';
 import { LoadingState } from '../../../shared/store/states/loading/loading.state';
-import { ConfirmModalComponent } from '../../../shared';
 import { AreaMappaState } from '../store/states/maps/area-mappa.state';
 import { PermissionFeatures } from '../../../shared/enum/permission-features.enum';
+import { ConfirmModalComponent } from '../../../shared/modal/confirm-modal/confirm-modal.component';
 
 @Component({
     selector: 'app-schede-contatto',

@@ -25,6 +25,7 @@ using SO115App.API.Models.Classi.Soccorso.Eventi.Fonogramma;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
 using SO115App.Models.Classi.Soccorso.Eventi;
+using SO115App.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.CustomMapper;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti;
@@ -114,6 +115,9 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
                 case RevocaPerAltraMotivazione _:
                     return ((RevocaPerAltraMotivazione)evento).Motivazione;
 
+                case RevocaPerSostituzioneMezzo _:
+                    return ((RevocaPerSostituzioneMezzo)evento).Motivazione;
+
                 case RevocaPerRiassegnazione _:
                     string codRichiesta;
                     if (((RevocaPerRiassegnazione)evento).RichiestaSubentrata.CodRichiesta.Trim().Length > 0)
@@ -131,6 +135,11 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
         private string MapTarghe(Evento evento)
         {
             var targa = "";
+
+            if(evento is RevocaPerSostituzioneMezzo)
+            {
+                targa = ((RevocaPerSostituzioneMezzo)evento).CodiceMezzo;
+            }
 
             if (evento is ComposizionePartenze)
             {
@@ -246,6 +255,9 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
 
                 case AllertaSedi _:
                     return Costanti.AllertaAltreSedi;
+
+                case RevocaPerSostituzioneMezzo _:
+                    return Costanti.RevocaPerSostituzioneMezzo;
 
                 default:
                     return Costanti.EventoGenerico;

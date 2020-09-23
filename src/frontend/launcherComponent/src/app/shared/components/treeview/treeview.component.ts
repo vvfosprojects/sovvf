@@ -3,7 +3,9 @@ import {
     EventEmitter,
     HostListener,
     Input, isDevMode,
-    OnChanges, OnDestroy, OnInit,
+    OnChanges,
+    OnDestroy,
+    OnInit,
     Output,
     SimpleChanges,
     ViewChild,
@@ -17,7 +19,7 @@ import { Ricorsivo, TreeviewEmitterInterface } from '../../interface/treeview.in
 import { TreeviewSelezione } from '../../model/treeview-selezione.model';
 import { sedeString } from '../../store/states/sedi-treeview/sedi-treeview.helper';
 import { Observable } from 'rxjs';
-import { KEY_CACHE_SEDI_TREE_SELECTED } from '../../store/states/sedi-treeview/sedi-treeview.state';
+import { LSNAME } from '../../../core/settings/config';
 
 
 @Component({
@@ -191,8 +193,8 @@ export class TreeviewComponent implements OnChanges, OnDestroy, OnInit {
             }
         }
         if (unique[0]) {
-            sessionStorage.setItem(KEY_CACHE_SEDI_TREE_SELECTED, unique[0])
-        } 
+            sessionStorage.setItem(LSNAME.cacheSedi, unique[0]);
+        }
         if (this.visualizzaTasti) {
             // console.log(eventEmitter);
             this.patch(eventEmitter);

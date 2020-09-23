@@ -112,9 +112,15 @@ namespace SO115App.CompositionRoot
             container.Register<
                  SO115App.Models.Servizi.Infrastruttura.Composizione.IUpdateStatoPartenze,
                 ExternalAPI.Fake.Composizione.UpdateStatoPartenzaExt>();
+
             container.Register<
                SO115App.Models.Servizi.Infrastruttura.GetComposizioneMezzi.IGetComposizioneMezzi,
+               //#if DEBUG
+               //SO115App.FakePersistenceJSon.Composizione.GetComposizioneMezzi>();
+               //#endif
+               //#if !DEBUG
                SO115App.ExternalAPI.Fake.Composizione.GetComposizioneMezzi>();
+            //#endif
             container.Register<ISetMezzoLibero, SetMezzoLibero>();
             container.Register<ISetMezzoOccupato, SetMezzoOccupato>();
 
@@ -181,7 +187,12 @@ namespace SO115App.CompositionRoot
                 SO115App.ExternalAPI.Fake.ImportOracle.SquadreMapper.GetSquadraById>();
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.GetComposizioneSquadre.IGetComposizioneSquadre,
+                //#if DEBUG
+                //SO115App.FakePersistenceJSon.Composizione.GetComposizioneSquadre>();
+                //#endif
+                //#if !DEBUG
                 SO115App.ExternalAPI.Fake.Composizione.GetComposizioneSquadre>();
+            //#endif
 
             #endregion Squadre
 

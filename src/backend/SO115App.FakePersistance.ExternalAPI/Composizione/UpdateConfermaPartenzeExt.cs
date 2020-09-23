@@ -63,7 +63,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             {
                 var dataMovintazione = DateTime.UtcNow;
 
-                _setStatoOperativoMezzo.Set(partenza.Mezzo.Distaccamento.Codice, partenza.Mezzo.Codice, partenza.Mezzo.Stato, command.ConfermaPartenze.IdRichiesta);
+                _setStatoOperativoMezzo.Set(partenza.Mezzo.Distaccamento.Codice, partenza.Mezzo.Codice, partenza.Mezzo.Stato, command.ConfermaPartenze.richiesta.Codice);
 
                 foreach (var squadra in partenza.Squadre)
                 {
