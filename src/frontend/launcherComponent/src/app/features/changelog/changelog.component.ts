@@ -17,7 +17,7 @@ export class ChangelogComponent implements OnInit, OnDestroy {
     @Select(ChangelogState.listaChangelog) listaChangelog$: Observable<ChangelogInterface[]>;
     listaChangelog: ChangelogInterface[];
 
-    private subscription: Subscription = new Subscription();
+    private subscriptions: Subscription = new Subscription();
 
     constructor(private store: Store) {
         this.getListaChangelog();
@@ -31,11 +31,14 @@ export class ChangelogComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-        this.subscription.unsubscribe();
+        this.store.dispatch([
+            new SetSediNavbarVisible()
+        ]);
+        this.subscriptions.unsubscribe();
     }
 
     getListaChangelog(): void {
-        this.subscription.add(
+        this.subscriptions.add(
             this.listaChangelog$.subscribe((changelogs: ChangelogInterface[]) => {
                 this.listaChangelog = changelogs;
             })
