@@ -18,7 +18,7 @@ import {
     ReducerSelectMezzoComposizione,
     UnselectMezzoComposizione
 } from '../../store/actions/mezzi-composizione/mezzi-composizione.actions';
-import { ClearBoxPartenze } from '../../../features/home/store/actions/composizione-partenza/box-partenza.actions';
+import { AddBoxPartenza, ClearBoxPartenze } from '../../../features/home/store/actions/composizione-partenza/box-partenza.actions';
 import { squadraComposizioneBusy } from '../../helper/composizione-functions';
 import {
     ClearListaSquadreComposizione,
@@ -28,7 +28,7 @@ import {
     SelectSquadraComposizione,
     UnselectSquadraComposizione
 } from '../../store/actions/squadre-composizione/squadre-composizione.actions';
-import { ClearComposizioneAvanzata, UnselectMezziAndSquadreComposizioneAvanzata } from '../../../features/home/store/actions/composizione-partenza/composizione-avanzata.actions';
+import { UnselectMezziAndSquadreComposizioneAvanzata } from '../../../features/home/store/actions/composizione-partenza/composizione-avanzata.actions';
 import { ClearFiltriAffini } from '../../store/actions/filtri-composizione/filtri-composizione.actions';
 import { FiltriComposizioneState } from '../../store/states/filtri-composizione/filtri-composizione.state';
 import { SetRicercaMezziComposizione, SetRicercaSquadreComposizione } from '../../store/actions/ricerca-composizione/ricerca-composizione.actions';
@@ -244,15 +244,13 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
 
 
     mezzoSelezionato(mezzoComposizione: MezzoComposizione) {
-        this.store.dispatch([
-            new ReducerSelectMezzoComposizione(mezzoComposizione),
-        ]);
+        this.store.dispatch(new ReducerSelectMezzoComposizione(mezzoComposizione));
         this.nuovoMezzo = mezzoComposizione.mezzo;
     }
 
     mezzoDeselezionato(): void {
         this.store.dispatch([new UnselectMezzoComposizione(),
-                            new ClearBoxPartenze()]);
+                            new ClearBoxPartenze(),]);
         this.nuovoMezzo = {
             codice: '',
             descrizione: '',
@@ -261,7 +259,7 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
             appartenenza: null,
             distaccamento: null,
             coordinate: null,
-        };
+        }
     }
 
     mezzoHoverIn(mezzoComposizione: MezzoComposizione): void {
@@ -277,9 +275,14 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
     }
 
     squadraSelezionata(squadraComposizione: SquadraComposizione): void {
+        if (this.nuovoMezzo.codice === '' && this.nuoveSquadre.length <= 0) {
+            this.store.dispatch(new AddBoxPartenza());
+        }
         if (squadraComposizione && !squadraComposizioneBusy(squadraComposizione.squadra.stato)) {
-            this.store.dispatch(new SelectSquadraComposizione(squadraComposizione));
-            this.nuoveSquadre.includes(squadraComposizione.squadra) ? this.nuoveSquadre : this.nuoveSquadre.push(squadraComposizione.squadra);
+            if (!this.nuoveSquadre.includes(squadraComposizione.squadra)) {
+                this.nuoveSquadre.push(squadraComposizione.squadra)
+                this.store.dispatch(new SelectSquadraComposizione(squadraComposizione));
+            }
         }
     }
 
@@ -288,6 +291,10 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
         let r = squadraComposizione.squadra;
         let a = this.nuoveSquadre.filter(e => e != r);
         this.nuoveSquadre = a;
+        if (this.nuovoMezzo && this.nuoveSquadre.length >= 0) {
+            this.nuoveSquadre = [];
+            this.store.dispatch(new ClearBoxPartenze())
+        }
     }
 
     squadraHoverIn(squadraComposizione: SquadraComposizione): void {
