@@ -53,7 +53,6 @@
         <!-- sequenza eventi -->
         <div class="my-4" style="display: flex; justify-content: center;">
             <label id="sequenzaEventi">Crea sequenza Eventi
-                <small class="text-danger">*</small>
             </label>
             <button class="btn btn-sm btn-block btn-info btn-no-hover ml-2" (click)="onAddSequenza()" [disabled]="!sequenzeValid"
                     ngbTooltip="Aggiungi evento" style="max-width: fit-content;">
@@ -92,9 +91,6 @@
         <div *ngIf="!hideBox"  class="alert alert-info text-uppercase font-weight-bold" role="alert">
             Il mezzo {{nuovoMezzo?.descrizione}} {{nuovoMezzo?.genere}} In Uscita alle {{timeAnnullamento.hour <= 9 ? '0' + timeAnnullamento.hour : timeAnnullamento.hour}}:{{timeAnnullamento.minute <= 9 ? '0' + timeAnnullamento.minute : timeAnnullamento.minute}}</div>
     </form>
-    <div class="row">
-        <h6 class="text-danger col" style="align-self: center;">* Campi Obbligatori</h6>
-    </div>
     <div *ngIf="!hideBox"  class="alert alert-danger text-uppercase font-weight-bold" role="alert">Modifiche non salvate</div>
 </div>
 
