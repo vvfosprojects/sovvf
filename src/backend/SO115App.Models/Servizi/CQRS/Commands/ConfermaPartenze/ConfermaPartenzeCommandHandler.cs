@@ -194,7 +194,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                 }
             }
 
-            command.ConfermaPartenze.IdRichiesta = richiesta.Codice;
+            command.ConfermaPartenze.IdRichiesta = richiesta.Id;
 
             var confermaPartenze = _updateConfermaPartenze.Update(command);
 
