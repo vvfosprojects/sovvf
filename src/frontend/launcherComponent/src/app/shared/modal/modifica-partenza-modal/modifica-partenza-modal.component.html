@@ -44,12 +44,14 @@
                                     (modificaPartenza)="openSostituzioneModal()" [nonModificabile]="nonModificabile"
                                     (listaSquadrePartenza)="onListaSquadrePartenza()"></app-box-anteprima-partenza>
         <div *ngIf="!hideBox"  class="alert alert-info text-uppercase font-weight-bold" role="alert">
-            Annullata alle {{timeAnnullamento.hour <= 9 ? '0' + timeAnnullamento.hour : timeAnnullamento.hour}}:{{timeAnnullamento.minute <= 9 ? '0' + timeAnnullamento.minute : timeAnnullamento.minute}}</div>
+            Il mezzo {{partenza.mezzo?.descrizione}} {{partenza.mezzo?.genere}} Annullato alle {{timeAnnullamento.hour <= 9 ? '0' + timeAnnullamento.hour : timeAnnullamento.hour}}:{{timeAnnullamento.minute <= 9 ? '0' + timeAnnullamento.minute : timeAnnullamento.minute}}</div>
         <h4 *ngIf="!hideBox" class="my-3" style="text-align-last: center;">In sostituzione con</h4>                            
         <!-- anteprima mezzo e squadra/e sostitutive-->
         <app-box-anteprima-partenza [partenza]="partenza" [hideBox]="hideBox" [boxSostitutivo]="boxSostitutivo" [nuovoMezzo]="nuovoMezzo" [nuoveSquadre]="nuoveSquadre"
         [nonModificabile]="true" (annullaPartenza)="annullaPartenza()"
         (listaSquadrePartenza)="onListaSquadrePartenzaSostitutiva()"></app-box-anteprima-partenza>
+        <div *ngIf="!hideBox"  class="alert alert-info text-uppercase font-weight-bold" role="alert">
+            Il mezzo {{nuovoMezzo?.descrizione}} {{nuovoMezzo?.genere}} In Uscita alle {{timeAnnullamento.hour <= 9 ? '0' + timeAnnullamento.hour : timeAnnullamento.hour}}:{{timeAnnullamento.minute <= 9 ? '0' + timeAnnullamento.minute : timeAnnullamento.minute}}</div>
         <!-- sequenza eventi -->
         <div class="my-4" style="display: flex; justify-content: center;">
             <label id="sequenzaEventi">Crea sequenza Eventi
@@ -88,8 +90,6 @@
                 </li>
             </ul>
         </div>
-        <div *ngIf="!hideBox"  class="alert alert-info text-uppercase font-weight-bold" role="alert">
-            Il mezzo {{nuovoMezzo?.descrizione}} {{nuovoMezzo?.genere}} In Uscita alle {{timeAnnullamento.hour <= 9 ? '0' + timeAnnullamento.hour : timeAnnullamento.hour}}:{{timeAnnullamento.minute <= 9 ? '0' + timeAnnullamento.minute : timeAnnullamento.minute}}</div>
     </form>
     <div *ngIf="!hideBox"  class="alert alert-danger text-uppercase font-weight-bold" role="alert">Modifiche non salvate</div>
 </div>
