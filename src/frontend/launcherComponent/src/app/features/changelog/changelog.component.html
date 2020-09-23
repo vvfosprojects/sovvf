@@ -7,7 +7,8 @@
             </h2>
         </div>
         <div *ngFor="let changelog of listaChangelog; let i = index"
-             class="col-11 col-md-10 col-lg-9 col-xl-7 mx-auto mb-3">
+             class="col-11 col-md-10 col-lg-9 col-xl-7 mx-auto mb-3 py-4"
+             style="height: 850px; max-height: 850px; overflow-y: auto; overflow-x: hidden">
             <app-changelog-item [changelog]="changelog"
                                 [ultimoChangelog]="i === 0"></app-changelog-item>
         </div>

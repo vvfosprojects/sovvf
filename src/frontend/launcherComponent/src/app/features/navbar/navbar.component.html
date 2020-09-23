@@ -61,13 +61,13 @@
             <ng-template [ngIf]="newVersionSoon && !newVersion">
                 <app-bottone-nuova-versione [btnBlock]="true"
                                             [testo]="'Nuova versione presto disponibile'"
-                                            [tooltip]="'Ad Ottobre sarà disponibile una nuova versione, clicca per maggiori informazioni'"
+                                            [tooltip]="'A breve sarà disponibile una nuova versione, clicca per maggiori informazioni'"
                                             (doAction)="onNewVersionSoon()"></app-bottone-nuova-versione>
             </ng-template>
             <ng-template [ngIf]="newFeaturesInfo && !newVersionSoon && !newVersion && url !== '/changelog'">
                 <app-bottone-nuova-versione [btnBlock]="true"
                                             [icona]="'fa-newspaper-o'"
-                                            [testo]="'Cosa c\'è di nuovo?'"
+                                            [testo]="'Nuova versione: scopri di più'"
                                             [tooltip]="'Clicca per visualizzare le novità della nuova versione'"
                                             (doAction)="onNewFeaturesInfo()"></app-bottone-nuova-versione>
             </ng-template>

@@ -1,17 +1,32 @@
 <div class="border border-light px-4 pt-4 pb-2" [ngClass]="{'shadow-sm': !ultimoChangelog, 'shadow': ultimoChangelog}">
-    <h6 class="float-right" [ngClass]="{'font-weight-bolder text-success': ultimoChangelog}">
-        <i class="fa fa-calendar-check-o"></i>
-        {{ changelog?.dataRilascio | date: 'dd/MM/yyyy HH:mm' }}
-    </h6>
-    <div *ngFor="let capitolo of changelog?.capitoli">
-        <h4>{{ capitolo.titolo }}</h4>
-        <p>
-            {{ capitolo.descrizione }}
-        </p>
+    <div class="clearfix">
+        <h5 class="float-left mb-0" [ngClass]="{'font-weight-bolder text-success': ultimoChangelog}">
+            {{ changelog?.nomeVersione | uppercase }}
+        </h5>
+        <h6 class="float-right mb-0" [ngClass]="{'font-weight-bolder text-success': ultimoChangelog}">
+            <i class="fa fa-calendar-check-o"></i>
+            {{ changelog?.dataRilascio | date: 'dd/MM/yyyy HH:mm' }}
+        </h6>
     </div>
-    <small class="d-inline-block text-muted mb-3">
-        {{ changelog.descrizione }}
+    <hr>
+    <!-- Todo: indice con titoli delle nuove funzionalità, con ancora che porta al capitolo desiderato -->
+    <div *ngFor="let capitolo of changelog?.capitoli; let i = index" class="my-5">
+        <h3 class="mb-4 font-weight-bolder">
+            {{ i + 1 }}. {{ capitolo?.titolo | uppercase }}
+        </h3>
+        <div *ngFor="let descrizione of capitolo?.descrizioni">
+            <div class="pl-3">
+                <h5>{{ descrizione?.testo }}</h5>
+            </div>
+            <div *ngIf="descrizione?.img" class="text-center my-4">
+                <img [src]="descrizione?.img" class="img-fluid shadow rounded">
+            </div>
+        </div>
+    </div>
+    <small *ngIf="changelog?.descrizione" class="d-inline-block text-muted mb-3">
+        {{ changelog?.descrizione }}
     </small>
+    <hr>
     <div *ngIf="ultimoChangelog" class="clearfix">
         <div class="float-left">
             <div class="badge badge-success font-weight-bolder h5">VERSIONE ATTUALE</div>

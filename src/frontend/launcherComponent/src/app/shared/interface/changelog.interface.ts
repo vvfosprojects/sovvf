@@ -1,4 +1,5 @@
 export interface ChangelogInterface {
+    nomeVersione: string;
     dataRilascio: string;
     capitoli?: CapitoloInterface[];
     descrizione?: string;
@@ -6,5 +7,10 @@ export interface ChangelogInterface {
 
 interface CapitoloInterface {
     titolo: string;
-    descrizione: string;
+    descrizioni: DescrizioneInterface[];
+}
+
+interface DescrizioneInterface {
+    testo: string;
+    img?: string;
 }
