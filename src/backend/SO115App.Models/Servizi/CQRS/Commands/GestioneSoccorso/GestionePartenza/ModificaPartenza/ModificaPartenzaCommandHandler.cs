@@ -1,18 +1,12 @@
 ﻿using CQRS.Commands;
-using DomainModel.CQRS.Commands.ConfermaPartenze;
-using SO115App.API.Models.Classi.Composizione;
 using SO115App.API.Models.Classi.Condivise;
-using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Soccorso.Eventi;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.API.Models.Classi.Soccorso.StatiRichiesta;
 using SO115App.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AggiornaStatoMezzo;
-using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AnnullaPartenza;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.ModificaPartenza
