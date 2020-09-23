@@ -16,7 +16,7 @@
         </h3>
         <div *ngFor="let descrizione of capitolo?.descrizioni">
             <div class="pl-3">
-                <h5>{{ descrizione?.testo }}</h5>
+                <h4>{{ descrizione?.testo }}</h4>
             </div>
             <div *ngIf="descrizione?.img" class="text-center my-4">
                 <img [src]="descrizione?.img" class="img-fluid shadow rounded">
