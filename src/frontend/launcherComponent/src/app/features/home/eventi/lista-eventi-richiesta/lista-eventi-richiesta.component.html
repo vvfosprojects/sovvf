@@ -9,9 +9,6 @@
                 Quando
             </th>
             <th scope="col" style="width:12%">
-                Primo
-            </th>
-            <th scope="col" style="width:12%">
                 Targa
             </th>
             <th scope="col" style="width:16%">
@@ -25,7 +22,6 @@
                 <tr app-evento-richiesta *ngFor="let r of elencoEventi; let i = index" [eventoRichiesta]="r"
                     [nomeClasseEvento]="r.nomeClasseEvento"
                     [visualizzaIconeNomeClasseEvento]="iconeNomeClasseEvento"
-                    [istantePrimoEvento]="istantePrimoEvento"
                     [istanteEventoPrecedente]="setIstanteEventoPrecedente(i)"
                     [operatore]="r.operatore"
                     (filtroTarga)="setRicercaTargaMezzo($event)"></tr>

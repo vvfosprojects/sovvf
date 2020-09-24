@@ -15,10 +15,6 @@
       {{eventoRichiesta.istanteEvento | friendlyHour : true}}</span>
 </td>
 <td>
-  <span *ngIf="eventoRichiesta.istanteEvento"
-        ngbTooltip="Data Primo Evento">{{eventoRichiesta.istanteEvento | distanzaTemporale : istantePrimoEvento : 'N' }}</span>
-</td>
-<td>
     <small *ngIf="eventoRichiesta.targa" class="cursor-pointer" (click)="filtroTarga.emit(eventoRichiesta.targa)"
            ngbTooltip="Clicca qui per ricercare gli eventi">
         <i class="fa fa-hashtag"></i>

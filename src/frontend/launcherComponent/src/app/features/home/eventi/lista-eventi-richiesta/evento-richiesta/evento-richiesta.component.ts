@@ -17,7 +17,6 @@ export class EventoRichiestaComponent implements OnInit {
     @Input() eventoRichiesta: EventoRichiesta;
     @Input() operatore: Utente;
     @Input() istanteEventoPrecedente: Date;
-    @Input() istantePrimoEvento: Date;
     @Input() nomeClasseEvento: string;
     @Input() visualizzaIconeNomeClasseEvento: boolean;
 
