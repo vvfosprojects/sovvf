@@ -11,4 +11,5 @@ export interface ModificaPartenza {
     squadre: SquadraComposizione[];
     motivazioneAnnullamento: string;
     sequenzaStati: SequenzaValoriSelezionati[];
+    dataAnnullamento: string;
 }

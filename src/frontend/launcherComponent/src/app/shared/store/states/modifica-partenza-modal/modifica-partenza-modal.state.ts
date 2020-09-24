@@ -1,9 +1,10 @@
-import { Selector, State, Action, StateContext, Store } from '@ngxs/store';
+import { Selector, State, Action, StateContext } from '@ngxs/store';
 import { SequenzaValoriSelezionati } from 'src/app/shared/interface/sequenza-modifica-partenza.interface';
 import { RequestAddModificaPartenza } from '../../actions/modifica-partenza-modal/modifica-partenza-modal-actions';
 import { MezzoComposizione } from '../../../interface/mezzo-composizione-interface';
 import { ModificaPartenzaService } from 'src/app/core/service/modifica-partenza/modifica-partenza.service';
 import { SquadraComposizione } from 'src/app/shared/interface/squadra-composizione-interface';
+import { ModificaPartenza } from '../../../interface/modifica-partenza.interface';
 
 export interface ModificaPartenzaModalStateModel {
     modificaPartenzaForm: {
@@ -76,11 +77,11 @@ export class ModificaPartenzaModalState {
             motivazioneAnnullamento: form.motivazioneAnnullamento,
             sequenzaStati: form.sequenzaStati.map(x => ({
                 dataOraAggiornamento: x.dataOraAggiornamento,
-                stato: x.stato ? x.stato: undefined,
+                stato: x.stato ? x.stato : undefined,
                 codMezzo: x.codMezzo ? x.codMezzo['codice'] : undefined,
             })),
             dataAnnullamento: form.dataAnnullamento,
-        } as any; //adattate squadre e mezzo al BE => non rispetta piu ModificaPartenz => Squadra[] - Mezzo, necessari.
+        } as ModificaPartenza;
         console.log('RequestAddModificaPartenza FORM', obj);
         this.modificaPartenzaService.addModificaPartenza(obj).subscribe(() => {
         });
