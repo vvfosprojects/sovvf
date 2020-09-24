@@ -10,6 +10,7 @@
              class="col-11 col-md-10 col-lg-9 col-xl-7 mx-auto mb-3 py-4"
              style="height: 850px; max-height: 850px; overflow-y: auto; overflow-x: hidden">
             <app-changelog-item [changelog]="changelog"
+                                [changelogId]="''+i"
                                 [ultimoChangelog]="i === 0"></app-changelog-item>
         </div>
         <div *ngIf="!listaChangelog?.length" class="col-12 col-md-8 mx-auto">
