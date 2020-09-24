@@ -68,8 +68,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 
 
             //AGGIORNAMENTO STATO
-
-            if (command.ModificaPartenza.SequenzaStati.Count > 0)
+            if (command.ModificaPartenza.SequenzaStati != null && command.ModificaPartenza.SequenzaStati.Count > 0)
             {
                 var partenzaDaLavorare = Richiesta.Partenze
                     .OrderByDescending(p => p.Istante)

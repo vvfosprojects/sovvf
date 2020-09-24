@@ -54,8 +54,9 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 if (command.ModificaPartenza.DataAnnullamento == null || command.ModificaPartenza.DataAnnullamento == default)
                     yield return new ValidationResult("Nessuna data annullamento selezionata");
 
-                if (command.ModificaPartenza.DataAnnullamento > command.ModificaPartenza.SequenzaStati.Min(c => c.DataOraAggiornamento))
-                    yield return new ValidationResult("La data annullamento non può essere più recente di un cambio stato");
+                if (command.ModificaPartenza.SequenzaStati != null && command.ModificaPartenza.SequenzaStati.Count > 0)
+                    if (command.ModificaPartenza.DataAnnullamento > command.ModificaPartenza.SequenzaStati.Min(c => c.DataOraAggiornamento))
+                        yield return new ValidationResult("La data annullamento non può essere più recente di un cambio stato");
 
                 if (command.ModificaPartenza.CodMezzoDaAnnullare == null || command.ModificaPartenza.CodMezzoDaAnnullare == "")
                     yield return new ValidationResult("Nessun codice mezzo selezionato");
@@ -65,14 +66,14 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                     command.ModificaPartenza.CodSquadreDaAnnullare.Any(c => c == null || c == ""))
                     yield return new ValidationResult("Codici squadre errati");
 
-                if(command.ModificaPartenza.DataAnnullamento.Value < command.Richiesta.ListaEventi.Max(c => c.Istante))
+                if (command.ModificaPartenza.DataAnnullamento.Value < command.Richiesta.ListaEventi.Max(c => c.Istante))
                     yield return new ValidationResult("La data annullamento non può essere minore di un evento già accaduto");
             }
 
             //CONTROLLI STATI
             if (command.ModificaPartenza.SequenzaStati != null && command.ModificaPartenza.SequenzaStati.All(s => s != null))
             {
-                if(command.ModificaPartenza.SequenzaStati.Select(s => s.CodMezzo).Distinct().Count() > 1)
+                if (command.ModificaPartenza.SequenzaStati.Select(s => s.CodMezzo).Distinct().Count() > 1)
                     yield return new ValidationResult("Cambi stato errati");
 
                 if (command.ModificaPartenza.SequenzaStati.Any(s => s.Stato == null || s.Stato == "" || s.DataOraAggiornamento == null || s.DataOraAggiornamento == default))
@@ -83,9 +84,9 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 
                 //QUI VERIFICO LA COERENZA TRA GLI STATI CONSIDERANDO L'ATTUALE STATO DELLA PARTENZA DA MODIFICARE
                 ComposizionePartenze partenzaDaModificare;
-                if(command.ModificaPartenza.Annullamento)
+                if (command.ModificaPartenza.Annullamento)
                     partenzaDaModificare = command.Richiesta.Partenze.FirstOrDefault(p => command.ModificaPartenza.CodMezzoDaAnnullare.Equals(p.Partenza.Mezzo.Codice));
-                else 
+                else
                     partenzaDaModificare = command.Richiesta.Partenze.FirstOrDefault(p => command.ModificaPartenza.Mezzo.Codice.Equals(p.Partenza.Mezzo.Codice));
 
                 List<CambioStatoMezzo> seqEventi = new List<CambioStatoMezzo>();
@@ -103,8 +104,9 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                         yield return new ValidationResult(messaggioCoerenza);
                 }
 
-                if (command.ModificaPartenza.SequenzaStati.Min(c => c.DataOraAggiornamento) < partenzaDaModificare.Istante)
-                    yield return new ValidationResult("Non puoi aggiungere un evento accaduto prima di una partenza");
+                if (command.ModificaPartenza.SequenzaStati != null && command.ModificaPartenza.SequenzaStati.Count > 0)
+                    if (command.ModificaPartenza.SequenzaStati.Min(c => c.DataOraAggiornamento) < partenzaDaModificare.Istante)
+                        yield return new ValidationResult("Non puoi aggiungere un evento accaduto prima di una partenza");
             }
         }
     }
