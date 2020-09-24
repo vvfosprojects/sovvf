@@ -91,8 +91,8 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                     if (composizione.Partenza.Mezzo.Codice == command.IdMezzo)
                     {
                         composizione.Partenza.Mezzo.Stato = Costanti.MezzoInRientro;
-                        composizione.Partenza.Mezzo.IdRichiesta = null;
-                        composizione.Partenza.Terminata = true;
+                        //composizione.Partenza.Mezzo.IdRichiesta = null;
+                        //composizione.Partenza.Terminata = true;
                     }
                 }
 
