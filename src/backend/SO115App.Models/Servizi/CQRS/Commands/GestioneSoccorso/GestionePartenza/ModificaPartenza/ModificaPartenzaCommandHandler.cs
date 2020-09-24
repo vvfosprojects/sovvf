@@ -72,7 +72,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 .OrderByDescending(p => p.Istante)
                 .FirstOrDefault(p => p.Partenza.Mezzo.Codice.Equals(command.ModificaPartenza.SequenzaStati.Select(s => s.CodMezzo).FirstOrDefault()));
 
-            if (command.ModificaPartenza.SequenzaStati != null)
+            if (command.ModificaPartenza.SequenzaStati.Count > 0)
             {
                 foreach (var stato in command.ModificaPartenza.SequenzaStati.OrderBy(c => c.DataOraAggiornamento))
                 {
