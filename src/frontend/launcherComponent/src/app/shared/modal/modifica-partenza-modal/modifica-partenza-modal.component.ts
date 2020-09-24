@@ -45,11 +45,11 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
     nuoveSquadre: string[];
     nonModificabile: boolean = false;
     statiMezzo: any[] = [
-        {disabled: false, name: 'In Uscita'},
-        {disabled: true, name: 'In Viaggio'},
-        {disabled: true, name: 'Sul Posto'},
-        {disabled: true, name: 'In Rientro'},
-        {disabled: true, name: 'Rientrato'},
+        { name: 'In Uscita'},
+        { name: 'In Viaggio'},
+        { name: 'Sul Posto'},
+        { name: 'In Rientro'},
+        { name: 'Rientrato'},
     ];
     valid: boolean = false;
     sequenzeValid: boolean = true;
@@ -123,16 +123,6 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
         );
     }
 
-    onValid() {
-        this.valid = true;
-        this.sequenzeValid = true;
-    }
- 
-    onNotValid() {
-        this.valid = false;
-        this.sequenzeValid = false;
-    }
-
     checkStatoMezzoSequenza() {
         for (let i = 0; i < this.statiMezzo.length - 2; i++) {
             if (this.partenza.mezzo.stato === this.statiMezzo[i].name) {
@@ -174,38 +164,23 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
         return { oraEvento: this.sequenze['time'] };
     }
 
-    onAddSequenza(): void {
-        for (let i = 0; i < this.statiMezzo.length - 1; i++) {
-            if (!this.sequenze[i]) {
-                this.sequenzeValid = false;
-            }
-        }
-        this.valid = false;
+    onAddSequenza(): void { 
+        this.valid = true;
         const d = new Date();
-        let select = makeCopy(this.statiMezzo);
-        if (this.sequenze.length > 0 ) {
-        select = makeCopy(this.sequenze[this.sequenze.length - 1].select);    
-        const i = select.findIndex(x => !x.disabled)
-        select[i].disabled = true;
-        select[i+1].disabled = false;
-        } 
-        this.sequenze.push({ stato: undefined, time: { hour: d.getHours(), minute: d.getMinutes(), second: d.getSeconds() }, select, codMezzo: this.inSostituzione ? this.nuovoMezzo : this.f.mezzo.value });
+        let select = makeCopy(this.statiMezzo);  
+        let statoResult = this.statiMezzo[this.sequenze.length].name;
+        if (statoResult === 'Rientrato') {
+            this.sequenzeValid = false;
+        }
+        this.sequenze.push({ stato: statoResult , time: { hour: d.getHours(), minute: d.getMinutes(), second: d.getSeconds() }, select, codMezzo: this.inSostituzione ? this.nuovoMezzo : this.f.mezzo.value });
     }
 
     onRemoveSequenza(): void {
-        if (!this.sequenzeValid) {
-            this.sequenzeValid = true;
-        }
         this.sequenze.pop();
+        this.sequenzeValid = true;  
         if (this.sequenze.length === 0) {
             this.valid = false;
             this.sequenzeValid = true;
-        } 
-        if (this.sequenze.length === 1 && !this.sequenze[0].stato) {
-            this.valid = false;
-        }         
-        if (this.sequenze.length === 1 && this.sequenze[0].stato) {
-            this.valid = true;
         } 
     }
 
@@ -228,6 +203,7 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
         }));
         this.sequenze = [];
         this.sequenzeValid = true;
+        this.valid = false;
     }
 
     openSostituzioneModal(): void {
@@ -246,9 +222,7 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
                 case 'ok' :
                     const nuovaPartenza = res.result;
                     const d = new Date();
-                    let select = makeCopy(this.statiMezzo);
-                    this.sequenzeValid = false;
-                    this.sequenze.push({ stato: undefined, time: { hour: d.getHours(), minute: d.getMinutes(), second: d.getSeconds() }, select, codMezzo: nuovaPartenza.mezzo.mezzo });
+                    this.valid = true;
                     this.inSostituzione = true;
                     this.hideBox = false;
                     this.boxSostitutivo = true;

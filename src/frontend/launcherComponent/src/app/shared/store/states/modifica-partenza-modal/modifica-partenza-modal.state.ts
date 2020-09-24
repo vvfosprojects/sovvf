@@ -2,7 +2,6 @@ import { Selector, State, Action, StateContext, Store } from '@ngxs/store';
 import { SequenzaValoriSelezionati } from 'src/app/shared/interface/sequenza-modifica-partenza.interface';
 import { RequestAddModificaPartenza } from '../../actions/modifica-partenza-modal/modifica-partenza-modal-actions';
 import { MezzoComposizione } from '../../../interface/mezzo-composizione-interface';
-import { ModificaPartenza } from 'src/app/shared/interface/modifica-partenza.interface';
 import { ModificaPartenzaService } from 'src/app/core/service/modifica-partenza/modifica-partenza.service';
 import { SquadraComposizione } from 'src/app/shared/interface/squadra-composizione-interface';
 
@@ -77,7 +76,7 @@ export class ModificaPartenzaModalState {
             motivazioneAnnullamento: form.motivazioneAnnullamento,
             sequenzaStati: form.sequenzaStati.map(x => ({
                 dataOraAggiornamento: x.dataOraAggiornamento,
-                stato: x.stato ? x.stato['name'] : undefined,
+                stato: x.stato ? x.stato: undefined,
                 codMezzo: x.codMezzo ? x.codMezzo['codice'] : undefined,
             })),
             dataAnnullamento: form.dataAnnullamento,

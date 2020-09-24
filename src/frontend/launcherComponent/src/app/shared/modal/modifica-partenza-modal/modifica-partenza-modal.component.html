@@ -70,16 +70,7 @@
                 [class.overflow-test]="sequenze?.length > 3">
                 <li *ngFor="let sequenza of sequenze; let index = index" class="list-group-item"
                     style="display: inline-flex; place-content: space-between;">
-                    <ng-select [items]="sequenza.select"
-                    bindLabel="name"
-                    [multiple]="false"
-                    placeholder="Seleziona stato Mezzo"
-                    [(ngModel)]="sequenze[index].stato"
-                    (change)="onValid()"
-                    (clear)="onNotValid()"
-                    [ngModelOptions]="{standalone: true}"
-                    style="min-width: 220px; align-self: center;">
-                    </ng-select>
+                    <input [(ngModel)]="sequenze[index].select[index].name" [ngModelOptions]="{standalone: true}" style="min-width: 220px; align-self: center;" readonly>
                     <div class="md-form md-outline" id="default-picker" style="display: flex;">
                         <ngb-timepicker [(ngModel)]="sequenze[index].time" [ngModelOptions]="{standalone: true}"
                                         style="margin-left: 25px;" ></ngb-timepicker>
