@@ -112,12 +112,9 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 
                     else if (stato.Stato == Costanti.MezzoRientrato)
                     {
-                        if (!partenzaDaLavorare.Partenza.Terminata)
-                        {
-                            partenzaDaLavorare.Partenza.Mezzo.Stato = Costanti.MezzoInSede;
-                            partenzaDaLavorare.Partenza.Mezzo.IdRichiesta = null;
-                            partenzaDaLavorare.Partenza.Terminata = true;
-                        }
+                        partenzaDaLavorare.Partenza.Mezzo.Stato = Costanti.MezzoInSede;
+                        partenzaDaLavorare.Partenza.Mezzo.IdRichiesta = null;
+                        partenzaDaLavorare.Partenza.Terminata = true;
 
                         new PartenzaRientrata(Richiesta, partenzaDaLavorare.Partenza.Mezzo.Codice, stato.DataOraAggiornamento, Richiesta.CodOperatore);
 
