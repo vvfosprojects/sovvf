@@ -67,7 +67,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
                 foreach (var squadra in partenza.Squadre)
                 {
-                    _setStatoSquadra.SetStato(squadra.Codice, command.ConfermaPartenze.IdRichiesta, squadra.Stato.ToString(), squadra.Distaccamento.Codice);
+                    _setStatoSquadra.SetStato(squadra.Codice, command.ConfermaPartenze.IdRichiesta, partenza.Mezzo.Stato, squadra.Distaccamento.Codice);
                 }
             }
 

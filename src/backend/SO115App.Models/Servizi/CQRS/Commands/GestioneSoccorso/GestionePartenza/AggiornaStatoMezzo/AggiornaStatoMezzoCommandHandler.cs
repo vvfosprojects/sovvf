@@ -20,37 +20,33 @@
 using CQRS.Commands;
 using SO115App.API.Models.Classi.Soccorso.Eventi;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
-using SO115App.API.Models.Classi.Soccorso.Mezzi.StatiMezzo;
 using SO115App.API.Models.Classi.Soccorso.StatiRichiesta;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using System;
+using System.Linq;
 
 namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AggiornaStatoMezzo
 {
     public class AggiornaStatoMezzoCommandHandler : ICommandHandler<AggiornaStatoMezzoCommand>
     {
-        private readonly IGetRichiestaById _getRichiestaById;
         private readonly IUpdateStatoPartenze _updateStatoPartenze;
         private bool _mezziTuttiInSede = true;
 
-        public AggiornaStatoMezzoCommandHandler(
-            IGetRichiestaById getRichiestaById,
-            IUpdateStatoPartenze updateStatoPartenze
-        )
-        {
-            _getRichiestaById = getRichiestaById;
-            _updateStatoPartenze = updateStatoPartenze;
-        }
+        public AggiornaStatoMezzoCommandHandler(IUpdateStatoPartenze updateStatoPartenze) => _updateStatoPartenze = updateStatoPartenze;
 
         public void Handle(AggiornaStatoMezzoCommand command)
         {
-            var richiesta = _getRichiestaById.GetByCodice(command.CodRichiesta);
+            var richiesta = command.Richiesta;
 
             //TODO DA TOGLIERE
             if (command.DataOraAggiornamento == null || command.DataOraAggiornamento == DateTime.MinValue)
                 command.DataOraAggiornamento = DateTime.UtcNow;
+
+            var partenzaDaLavorare = richiesta.Partenze.FirstOrDefault(p => p.Partenza.Mezzo.Codice.Equals(command.IdMezzo));
+
+            #region SWITCH STATO MEZZI
 
             if (command.StatoMezzo == Costanti.MezzoInViaggio)
             {
@@ -59,14 +55,8 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 richiesta.SincronizzaStatoRichiesta(Costanti.RichiestaAssegnata, richiesta.StatoRichiesta,
                     richiesta.CodOperatore, "", command.DataOraAggiornamento);
 
-                foreach (var composizione in richiesta.Partenze)
-                {
-                    if (composizione.Partenza.Mezzo.Codice == command.IdMezzo)
-                    {
-                        composizione.Partenza.Mezzo.Stato = Costanti.MezzoInViaggio;
-                        composizione.Partenza.Mezzo.IdRichiesta = richiesta.CodRichiesta;
-                    }
-                }
+                partenzaDaLavorare.Partenza.Mezzo.Stato = Costanti.MezzoInViaggio;
+                partenzaDaLavorare.Partenza.Mezzo.IdRichiesta = richiesta.Id;
             }
             else if (command.StatoMezzo == Costanti.MezzoSulPosto)
             {
@@ -75,61 +65,31 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 richiesta.SincronizzaStatoRichiesta(Costanti.RichiestaPresidiata, richiesta.StatoRichiesta,
                     richiesta.CodOperatore, "", command.DataOraAggiornamento);
 
-                foreach (var composizione in richiesta.Partenze)
-                {
-                    if (composizione.Partenza.Mezzo.Codice == command.IdMezzo)
-                    {
-                        composizione.Partenza.Mezzo.Stato = Costanti.MezzoSulPosto;
-                        composizione.Partenza.Mezzo.IdRichiesta = richiesta.CodRichiesta;
-                    }
-                }
+                partenzaDaLavorare.Partenza.Mezzo.Stato = Costanti.MezzoSulPosto;
+                partenzaDaLavorare.Partenza.Mezzo.IdRichiesta = richiesta.Id;
             }
             else if (command.StatoMezzo == Costanti.MezzoInRientro)
             {
-                foreach (var composizione in richiesta.Partenze)
-                {
-                    if (composizione.Partenza.Mezzo.Codice == command.IdMezzo)
-                    {
-                        composizione.Partenza.Mezzo.Stato = Costanti.MezzoInRientro;
-                        //composizione.Partenza.Mezzo.IdRichiesta = null;
-                        //composizione.Partenza.Terminata = true;
-                    }
-                }
+                partenzaDaLavorare.Partenza.Mezzo.Stato = Costanti.MezzoInRientro;
 
-                //foreach (var composizione in richiesta.Partenze)
-                //{
-                //    if (composizione.Partenza.Mezzo.Stato == Costanti.MezzoSulPosto
-                //        || composizione.Partenza.Mezzo.Stato == Costanti.MezzoInViaggio)
-                //    {
-                //        _mezziTuttiInSede = false;
-                //    }
-                //}
-
-                //if (_mezziTuttiInSede)
-
-                new PartenzaInRientro(richiesta, command.IdMezzo, command.DataOraAggiornamento, richiesta.CodOperatore); //TODO GESTIRE IL CODICE OPERATORE
+                new PartenzaInRientro(richiesta, command.IdMezzo, command.DataOraAggiornamento, richiesta.CodOperatore);
             }
             else if (command.StatoMezzo == Costanti.MezzoRientrato)
             {
-                foreach (var composizione in richiesta.Partenze)
+                if (partenzaDaLavorare.Partenza.Terminata)
                 {
-                    if (composizione.Partenza.Mezzo.Codice == command.IdMezzo && !composizione.Partenza.Terminata)
-                    {
-                        composizione.Partenza.Mezzo.Stato = Costanti.MezzoInSede;
-                        composizione.Partenza.Mezzo.IdRichiesta = null;
-                        composizione.Partenza.Terminata = true;
-                    }
+                    partenzaDaLavorare.Partenza.Mezzo.Stato = Costanti.MezzoInSede;
+                    partenzaDaLavorare.Partenza.Mezzo.IdRichiesta = null;
+                    partenzaDaLavorare.Partenza.Terminata = true;
                 }
 
-                foreach (var composizione in richiesta.Partenze)
+                if (!partenzaDaLavorare.Partenza.Terminata && !partenzaDaLavorare.Partenza.Sganciata)
                 {
-                    if (!composizione.Partenza.Terminata && !composizione.Partenza.Sganciata)
+                    if (partenzaDaLavorare.Partenza.Mezzo.Stato != Costanti.MezzoInSede
+                        && partenzaDaLavorare.Partenza.Mezzo.Stato != Costanti.MezzoInUscita
+                        && partenzaDaLavorare.Partenza.Mezzo.Stato != Costanti.MezzoRientrato)
                     {
-                        if (composizione.Partenza.Mezzo.Stato != Costanti.MezzoInSede && composizione.Partenza.Mezzo.Stato != Costanti.MezzoInUscita
-                            && composizione.Partenza.Mezzo.Stato != Costanti.MezzoRientrato)
-                        {
-                            _mezziTuttiInSede = false;
-                        }
+                        _mezziTuttiInSede = false;
                     }
                 }
 
@@ -140,40 +100,32 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
             }
             else if (command.StatoMezzo == Costanti.MezzoInViaggio)
             {
-                foreach (var composizione in richiesta.Partenze)
-                {
-                    if (composizione.Partenza.Mezzo.Codice == command.IdMezzo)
-                    {
-                        composizione.Partenza.Mezzo.Stato = Costanti.MezzoInViaggio;
-                        composizione.Partenza.Mezzo.IdRichiesta = richiesta.CodRichiesta;
-                    }
-                }
+                partenzaDaLavorare.Partenza.Mezzo.Stato = Costanti.MezzoInViaggio;
+                partenzaDaLavorare.Partenza.Mezzo.IdRichiesta = richiesta.Id;
             }
 
-            if (_mezziTuttiInSede)
+            #endregion
+
+            if (_mezziTuttiInSede && richiesta.StatoRichiesta is Sospesa)
             {
-                if (richiesta.StatoRichiesta is Sospesa)
-                {
-                    new ChiusuraRichiesta("", richiesta, command.DataOraAggiornamento, richiesta.CodOperatore);
-                }
+                new ChiusuraRichiesta("", richiesta, command.DataOraAggiornamento, richiesta.CodOperatore);
             }
 
-            foreach (var composizione in richiesta.Partenze)
+            foreach (var squadra in partenzaDaLavorare.Partenza.Squadre)
             {
-                if (composizione.Partenza.Mezzo.Codice == command.IdMezzo)
-                {
-                    foreach (var squadra in composizione.Partenza.Squadre)
-                    {
-                        {
-                            squadra.Stato = MappaStatoSquadraDaStatoMezzo.MappaStato(command.StatoMezzo);
-                        }
-                    }
-                }
-
-                command.Richiesta = richiesta;
-
-                _updateStatoPartenze.Update(command);
+                squadra.Stato = MappaStatoSquadraDaStatoMezzo.MappaStato(command.StatoMezzo);
             }
+
+            _updateStatoPartenze.Update(new AggiornaStatoMezzoCommand()
+            {
+                CodiceSede = command.CodiceSede,
+                CodRichiesta = richiesta.Codice,
+                Richiesta = richiesta,
+                IdUtente = command.IdUtente,
+                DataOraAggiornamento = command.DataOraAggiornamento,
+                StatoMezzo = command.StatoMezzo,
+                IdMezzo = command.IdMezzo
+            });
         }
     }
 }

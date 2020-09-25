@@ -62,7 +62,7 @@ namespace SO115App.SignalR.Utility
                 }
             }
 
-            return ListaCodiciSediInteressate;
+            return ListaCodiciSediInteressate.Distinct().ToList();
         }
     }
 }

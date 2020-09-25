@@ -17,15 +17,14 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System.Collections.Generic;
-using System.Security.Principal;
 using CQRS.Authorization;
 using CQRS.Commands.Authorizers;
-using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Autenticazione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.VerificaUtente;
+using System.Collections.Generic;
+using System.Security.Principal;
 
 namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AggiornaStatoMezzo
 {
@@ -48,7 +47,9 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 
         public IEnumerable<AuthorizationResult> Authorize(AggiornaStatoMezzoCommand command)
         {
-            var richiesta = _getRichiestaById.GetByCodice(command.CodRichiesta);
+            command.Richiesta = _getRichiestaById.GetByCodice(command.CodRichiesta);
+            var richiesta = command.Richiesta;
+
             var username = _currentUser.Identity.Name;
             var user = _findUserByUsername.FindUserByUs(username);
 
