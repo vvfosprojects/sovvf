@@ -1,10 +1,7 @@
-import { Selector, State, Action, StateContext } from '@ngxs/store';
+import { Selector, State } from '@ngxs/store';
 import { SequenzaValoriSelezionati } from 'src/app/shared/interface/sequenza-modifica-partenza.interface';
-import { RequestAddModificaPartenza } from '../../actions/modifica-partenza-modal/modifica-partenza-modal-actions';
 import { MezzoComposizione } from '../../../interface/mezzo-composizione-interface';
-import { ModificaPartenzaService } from 'src/app/core/service/modifica-partenza/modifica-partenza.service';
 import { SquadraComposizione } from 'src/app/shared/interface/squadra-composizione-interface';
-import { ModificaPartenza } from '../../../interface/modifica-partenza.interface';
 
 export interface ModificaPartenzaModalStateModel {
     modificaPartenzaForm: {
@@ -55,35 +52,14 @@ export const ModificaPartenzaModalStateDefaults: ModificaPartenzaModalStateModel
 
 export class ModificaPartenzaModalState {
 
-    constructor(private modificaPartenzaService: ModificaPartenzaService) {
+    @Selector()
+    static formValue(state: ModificaPartenzaModalStateModel): any {
+        return state.modificaPartenzaForm.model;
     }
 
     @Selector()
-    static formValid(state: ModificaPartenzaModalStateModel) {
+    static formValid(state: ModificaPartenzaModalStateModel): boolean {
         return state.modificaPartenzaForm.status !== 'INVALID';
     }
 
-    @Action(RequestAddModificaPartenza)
-    requestAddModificaPartenza({ getState }: StateContext<ModificaPartenzaModalStateModel>) {
-        const state = getState();
-        const form = state.modificaPartenzaForm.model;
-        const obj = {
-            codRichiesta: form.codRichiesta,
-            annullamento: form.annullamento,
-            codMezzoDaAnnullare: form.codMezzoDaAnnullare,
-            codSquadreDaAnnullare: form.codSquadreDaAnnullare,
-            mezzo: form.mezzo.mezzo ? form.mezzo.mezzo : form.mezzo,
-            squadre: form.squadre,
-            motivazioneAnnullamento: form.motivazioneAnnullamento,
-            sequenzaStati: form.sequenzaStati.map(x => ({
-                dataOraAggiornamento: x.dataOraAggiornamento,
-                stato: x.stato ? x.stato : undefined,
-                codMezzo: x.codMezzo ? x.codMezzo['codice'] : undefined,
-            })),
-            dataAnnullamento: form.dataAnnullamento,
-        } as ModificaPartenza;
-        console.log('RequestAddModificaPartenza FORM', obj);
-        this.modificaPartenzaService.addModificaPartenza(obj).subscribe(() => {
-        });
-    }
 }

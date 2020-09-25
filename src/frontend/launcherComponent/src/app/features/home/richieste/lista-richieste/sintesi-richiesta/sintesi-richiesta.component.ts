@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, OnChanges, SimpleChanges } from '@angular/core';
-import { NgbModal, NgbPopoverConfig, NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModal, NgbPopoverConfig, NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
 import { TimeagoIntl } from 'ngx-timeago';
 import { strings as italianStrings } from 'ngx-timeago/language-strings/it';
 import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.model';
@@ -22,7 +22,6 @@ import { ListaEntiComponent } from '../../../../../shared/components/lista-enti/
 import { EliminaPartenzaModalComponent } from '../../../../../shared/modal/elimina-partenza-modal/elimina-partenza-modal.component';
 import { DettaglioFonogrammaModalComponent } from '../../../../../shared/modal/dettaglio-fonogramma-modal/dettaglio-fonogramma-modal.component';
 import { ModificaFonogrammaModalComponent } from '../../../../../shared/modal/modifica-fonogramma-modal/modifica-fonogramma-modal.component';
-import { RequestAddModificaPartenza } from '../../../../../shared/store/actions/modifica-partenza-modal/modifica-partenza-modal-actions';
 
 @Component({
     selector: 'app-sintesi-richiesta',
@@ -80,6 +79,7 @@ export class SintesiRichiestaComponent implements OnChanges {
     StatoFonogramma = StatoFonogramma;
 
     constructor(private modalService: NgbModal,
+                private activeModal: NgbActiveModal,
                 private popoverConfig: NgbPopoverConfig,
                 private tooltipConfig: NgbTooltipConfig,
                 private intl: TimeagoIntl,
@@ -225,23 +225,24 @@ export class SintesiRichiestaComponent implements OnChanges {
             backdropClass: 'light-blue-backdrop',
             centered: true,
             size: 'lg',
-            backdrop  : 'static',
-            keyboard  : false,
+            backdrop: 'static',
+            keyboard: false
         });
         modalModificaPartenza.componentInstance.partenza = this.richiesta.partenzeRichiesta[index];
         if (this.richiesta.codice) {
             modalModificaPartenza.componentInstance.codRichiesta = this.richiesta.codice;
-        } else  modalModificaPartenza.componentInstance.codRichiesta = this.richiesta.codiceRichiesta;
-        modalModificaPartenza.componentInstance.idRichiesta = this.richiesta.id;
-        modalModificaPartenza.result.then((res: { status: string, result: any }) => {
-            switch (res.status) {
-                case 'ok' :
-                    this.store.dispatch(new RequestAddModificaPartenza());
-                    break;
-                case 'ko':
-                    break;
-            }
-        });
+        } else {
+            modalModificaPartenza.componentInstance.codRichiesta = this.richiesta.codiceRichiesta;
+            modalModificaPartenza.componentInstance.idRichiesta = this.richiesta.id;
+            modalModificaPartenza.result.then((res: { status: string, result: any }) => {
+                switch (res.status) {
+                    case 'ok' :
+                        break;
+                    case 'ko':
+                        break;
+                }
+            });
+        }
     }
 
     onActionRichiesta(richiestaAction: RichiestaActionInterface) {
