@@ -16,6 +16,8 @@ import { SequenzaValoriSelezionati } from '../../interface/sequenza-modifica-par
 import { makeCopy } from '../../helper/function';
 import { ModificaPartenza } from '../../interface/modifica-partenza.interface';
 import { ModificaPartenzaService } from '../../../core/service/modifica-partenza/modifica-partenza.service';
+import { Mezzo } from '../../model/mezzo.model';
+import { Squadra } from '../../model/squadra.model';
 
 
 @Component({
@@ -43,8 +45,8 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
     inSostituzione = false;
     hideBox = true;
     boxSostitutivo = false;
-    nuovoMezzo: string;
-    nuoveSquadre: string[];
+    nuovoMezzo: Mezzo;
+    nuoveSquadre: Squadra[];
     nonModificabile = false;
     statiMezzo: any[] = [
         { name: 'In Uscita' },
@@ -334,7 +336,7 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
         console.log('RequestAddModificaPartenza FORM', obj);
         this.modificaPartenzaService.addModificaPartenza(obj).subscribe(() => {
             this.modal.close({ status: 'ok' });
-        });
+        }, () => this.submitted = false);
     }
 
     onDismiss(): void {

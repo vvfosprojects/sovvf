@@ -229,20 +229,17 @@ export class SintesiRichiestaComponent implements OnChanges {
             keyboard: false
         });
         modalModificaPartenza.componentInstance.partenza = this.richiesta.partenzeRichiesta[index];
-        if (this.richiesta.codice) {
-            modalModificaPartenza.componentInstance.codRichiesta = this.richiesta.codice;
-        } else {
-            modalModificaPartenza.componentInstance.codRichiesta = this.richiesta.codiceRichiesta;
-            modalModificaPartenza.componentInstance.idRichiesta = this.richiesta.id;
-            modalModificaPartenza.result.then((res: { status: string, result: any }) => {
-                switch (res.status) {
-                    case 'ok' :
-                        break;
-                    case 'ko':
-                        break;
-                }
-            });
-        }
+        const codiceRichiesta = this.richiesta.codice ? this.richiesta.codice : this.richiesta.codiceRichiesta;
+        modalModificaPartenza.componentInstance.codRichiesta = codiceRichiesta;
+        modalModificaPartenza.componentInstance.idRichiesta = this.richiesta.id;
+        modalModificaPartenza.result.then((res: { status: string, result: any }) => {
+            switch (res.status) {
+                case 'ok' :
+                    break;
+                case 'ko':
+                    break;
+            }
+        });
     }
 
     onActionRichiesta(richiestaAction: RichiestaActionInterface) {
