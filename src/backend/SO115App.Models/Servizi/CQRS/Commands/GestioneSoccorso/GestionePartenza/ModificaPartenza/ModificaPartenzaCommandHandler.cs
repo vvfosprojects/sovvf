@@ -78,7 +78,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 {
                     bool _mezziTuttiInSede = true;
 
-                    #region Switch StatoMezzo
+                    #region SWITCH STATO MEZZI
 
                     if (stato.Stato == Costanti.MezzoInViaggio)
                     {
@@ -115,11 +115,14 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                             partenzaDaLavorare.Partenza.Terminata = true;
                         }
 
-                        if (partenzaDaLavorare.Partenza.Mezzo.Stato != Costanti.MezzoInSede
+                        if (!partenzaDaLavorare.Partenza.Terminata && !partenzaDaLavorare.Partenza.Sganciata)
+                        {
+                            if (partenzaDaLavorare.Partenza.Mezzo.Stato != Costanti.MezzoInSede
                             && partenzaDaLavorare.Partenza.Mezzo.Stato != Costanti.MezzoInUscita
                             && partenzaDaLavorare.Partenza.Mezzo.Stato != Costanti.MezzoRientrato)
-                        {
-                            _mezziTuttiInSede = false;
+                            {
+                                _mezziTuttiInSede = false;
+                            }
                         }
 
                         if (_mezziTuttiInSede)
