@@ -76,8 +76,6 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 
                 foreach (var stato in command.ModificaPartenza.SequenzaStati.OrderBy(c => c.DataOraAggiornamento))
                 {
-                    bool _mezziTuttiInSede = true;
-
                     #region SWITCH STATO MEZZI
 
                     if (stato.Stato == Costanti.MezzoInViaggio)
@@ -90,6 +88,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                         partenzaDaLavorare.Partenza.Mezzo.Stato = Costanti.MezzoInViaggio;
                         partenzaDaLavorare.Partenza.Mezzo.IdRichiesta = Richiesta.Id;
                     }
+
                     else if (stato.Stato == Costanti.MezzoSulPosto)
                     {
                         new ArrivoSulPosto(Richiesta, partenzaDaLavorare.Partenza.Mezzo.Codice, stato.DataOraAggiornamento, Richiesta.CodOperatore);
@@ -100,12 +99,17 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                         partenzaDaLavorare.Partenza.Mezzo.Stato = Costanti.MezzoSulPosto;
                         partenzaDaLavorare.Partenza.Mezzo.IdRichiesta = Richiesta.Id;
                     }
+
                     else if (stato.Stato == Costanti.MezzoInRientro)
                     {
                         partenzaDaLavorare.Partenza.Mezzo.Stato = Costanti.MezzoInRientro;
 
                         new PartenzaInRientro(Richiesta, partenzaDaLavorare.Partenza.Mezzo.Codice, stato.DataOraAggiornamento, Richiesta.CodOperatore);
+
+                        if (Richiesta.lstPartenze.Select(p => p.Mezzo.Stato).All(s => s != Costanti.MezzoInSede && s != Costanti.MezzoInViaggio && s != Costanti.MezzoInUscita && s != Costanti.MezzoSulPosto))
+                            new ChiusuraRichiesta("", Richiesta, stato.DataOraAggiornamento, Richiesta.CodOperatore);
                     }
+
                     else if (stato.Stato == Costanti.MezzoRientrato)
                     {
                         if (!partenzaDaLavorare.Partenza.Terminata)
@@ -115,21 +119,12 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                             partenzaDaLavorare.Partenza.Terminata = true;
                         }
 
-                        if (!partenzaDaLavorare.Partenza.Terminata && !partenzaDaLavorare.Partenza.Sganciata)
-                        {
-                            if (partenzaDaLavorare.Partenza.Mezzo.Stato != Costanti.MezzoInSede
-                            && partenzaDaLavorare.Partenza.Mezzo.Stato != Costanti.MezzoInUscita
-                            && partenzaDaLavorare.Partenza.Mezzo.Stato != Costanti.MezzoRientrato)
-                            {
-                                _mezziTuttiInSede = false;
-                            }
-                        }
+                        new PartenzaRientrata(Richiesta, partenzaDaLavorare.Partenza.Mezzo.Codice, stato.DataOraAggiornamento, Richiesta.CodOperatore);
 
-                        if (_mezziTuttiInSede)
-                        {
-                            new PartenzaRientrata(Richiesta, partenzaDaLavorare.Partenza.Mezzo.Codice, stato.DataOraAggiornamento, Richiesta.CodOperatore);
-                        }
+                        if (Richiesta.lstPartenze.Select(p => p.Mezzo.Stato).All(s => s != Costanti.MezzoInSede && s != Costanti.MezzoInViaggio && s != Costanti.MezzoInUscita && s != Costanti.MezzoSulPosto))
+                            new ChiusuraRichiesta("", Richiesta, stato.DataOraAggiornamento, Richiesta.CodOperatore);
                     }
+
                     else if (stato.Stato == Costanti.MezzoInViaggio)
                     {
                         partenzaDaLavorare.Partenza.Mezzo.Stato = Costanti.MezzoInViaggio;
@@ -138,15 +133,8 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 
                     #endregion Switch StatoMezzo
 
-                    if (_mezziTuttiInSede && Richiesta.StatoRichiesta is Sospesa)
-                    {
-                        new ChiusuraRichiesta("", Richiesta, stato.DataOraAggiornamento, Richiesta.CodOperatore);
-                    }
-
                     foreach (var squadra in partenzaDaLavorare.Partenza.Squadre)
-                    {
                         squadra.Stato = MappaStatoSquadraDaStatoMezzo.MappaStato(stato.Stato);
-                    }
 
                     _updateStatoPartenze.Update(new AggiornaStatoMezzoCommand()
                     {
