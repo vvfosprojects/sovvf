@@ -37,7 +37,8 @@
                 <small *ngIf="f.fax.value" class="text-muted">(opzionale)</small>
             </label>
             <input id="telefono" type="tel" formControlName="telefono" class="form-control"
-                   placeholder="Inserisci il Telefono">
+                   placeholder="Inserisci il Telefono" (keypress)="checkInputPattern($event, 'PHONE')"
+                   (paste)="checkInputPattern($event, 'PHONE')"> 
         </div>
         <div class="form-group">
             <label for="fax">
@@ -46,7 +47,8 @@
                 <small *ngIf="f.telefono.value" class="text-muted">(opzionale)</small>
             </label>
             <input id="fax" type="tel" formControlName="fax" class="form-control"
-                   placeholder="Inserisci il Fax">
+                   placeholder="Inserisci il Fax" (keypress)="checkInputPattern($event, 'PHONE')"
+                   (paste)="checkInputPattern($event, 'PHONE')">
         </div>
         <div class="my-3">
             <app-checkbox appClickStopPropagation [checkboxState]="checkboxRicorsivoState"

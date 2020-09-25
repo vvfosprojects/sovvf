@@ -61,8 +61,8 @@ export class EnteModalComponent implements OnInit, OnDestroy {
             cap: [null],
             noteEnte: [null],
             email: [null],
-            telefono: [null],
-            fax: [null]
+            telefono: [null, [Validators.pattern('^(\\+?)[0-9]+$')]],
+            fax: [null, [Validators.pattern('^(\\+?)[0-9]+$')]]
         });
         this.checkboxRicorsivoState = { id: 'ricorsivo', status: this.f.ricorsivo.value, label: 'Visibile ai Distaccamenti', disabled: false };
     }
@@ -123,6 +123,7 @@ export class EnteModalComponent implements OnInit, OnDestroy {
         }));
     }
 
+
     onConferma() {
         this.submitted = true;
 
@@ -151,5 +152,28 @@ export class EnteModalComponent implements OnInit, OnDestroy {
             title = 'Modifica ' + this.editEnte.descrizione;
         }
         return title;
+    }
+
+    checkInputPattern(event: any, type: string): void {
+        let regexp;
+        switch (type) {
+            case 'PHONE':
+                regexp = /^[0-9\+]*$/;
+                break;
+            case 'LAT_LON':
+                regexp = /^[0-9\.\-]$/;
+                break;
+        }
+
+        let inputValue;
+        if (event instanceof ClipboardEvent) {
+            inputValue = event.clipboardData.getData('Text');
+        } else {
+            inputValue = event.key;
+        }
+
+        if (!regexp.test(inputValue)) {
+            event.preventDefault();
+        }
     }
 }
