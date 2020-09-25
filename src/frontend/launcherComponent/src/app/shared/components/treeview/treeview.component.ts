@@ -41,6 +41,8 @@ export class TreeviewComponent implements OnChanges, OnDestroy, OnInit {
     @Input() placement: string;
     @Input() maxHeight: number;
     @Input() disabled: boolean;
+    @Input() cache = false;
+
     @Output() annullaSelezione = new EventEmitter();
     @Output() confermaSelezione = new EventEmitter<TreeviewSelezione[]>();
     @Output() patchSelezione = new EventEmitter<TreeviewEmitterInterface>();
@@ -192,7 +194,7 @@ export class TreeviewComponent implements OnChanges, OnDestroy, OnInit {
                 };
             }
         }
-        if (unique[0]) {
+        if (unique[0] && this.cache) {
             sessionStorage.setItem(LSNAME.cacheSedi, unique[0]);
         }
         if (this.visualizzaTasti) {

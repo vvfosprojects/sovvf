@@ -9,7 +9,8 @@
         </h6>
     </div>
     <hr>
-    <div class="bg-light p-3">
+    <!-- INDICE -->
+    <div class="bg-light p-3 shadow-sm">
         <div class="clearfix">
             <div class="float-left">
                 <h4>Indice</h4>
@@ -29,7 +30,7 @@
             </div>
         </ng-template>
     </div>
-
+    <!-- TESTO -->
     <div *ngFor="let capitolo of changelog?.capitoli; let i = index" class="my-5" [id]="changelogId + '-' + (''+i)">
         <h3 class="mb-4 font-weight-bolder">
             {{ i + 1 }}. {{ capitolo?.titolo | uppercase }}

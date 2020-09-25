@@ -2,6 +2,8 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angu
 import { Partenza } from '../../model/partenza.model';
 import { StatoMezzo } from '../../enum/stato-mezzo.enum';
 import { statoMezzoColor } from '../../helper/function';
+import { Mezzo } from '../../model/mezzo.model';
+import { Squadra } from '../../model/squadra.model';
 
 @Component({
     selector: 'app-box-anteprima-partenza',
@@ -15,8 +17,8 @@ export class BoxAnteprimaPartenzaComponent implements OnInit {
     @Input() inSostituzione: boolean;
     @Input() hideBox: boolean;
     @Input() boxSostitutivo: boolean;
-    @Input() nuovoMezzo: string;
-    @Input() nuoveSquadre: string[];
+    @Input() nuovoMezzo: Mezzo;
+    @Input() nuoveSquadre: Squadra[];
 
     @Output() listaSquadrePartenza: EventEmitter<any> = new EventEmitter<any>();
     @Output() modificaPartenza: EventEmitter<any> = new EventEmitter<any>();

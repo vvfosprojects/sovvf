@@ -88,8 +88,7 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
     statoMezzo = StatoMezzo;
     ricercaSquadre: string;
     ricercaMezzi: string;
-    partenzaDaSostituire: boolean = true;
-    partenzaSostitutiva: boolean = true;
+    partenzaDaSostituire = true;
     nuovoMezzo: Mezzo = {
         codice: '',
         descrizione: '',
@@ -250,7 +249,7 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
 
     mezzoDeselezionato(): void {
         this.store.dispatch([new UnselectMezzoComposizione(),
-                            new ClearBoxPartenze(),]);
+            new ClearBoxPartenze(),]);
         this.nuovoMezzo = {
             codice: '',
             descrizione: '',
@@ -259,7 +258,7 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
             appartenenza: null,
             distaccamento: null,
             coordinate: null,
-        }
+        };
     }
 
     mezzoHoverIn(mezzoComposizione: MezzoComposizione): void {
@@ -280,7 +279,7 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
         }
         if (squadraComposizione && !squadraComposizioneBusy(squadraComposizione.squadra.stato)) {
             if (!this.nuoveSquadre.includes(squadraComposizione.squadra)) {
-                this.nuoveSquadre.push(squadraComposizione.squadra)
+                this.nuoveSquadre.push(squadraComposizione.squadra);
                 this.store.dispatch(new SelectSquadraComposizione(squadraComposizione));
             }
         }
@@ -293,7 +292,7 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
         this.nuoveSquadre = a;
         if (this.nuovoMezzo && this.nuoveSquadre.length >= 0) {
             this.nuoveSquadre = [];
-            this.store.dispatch(new ClearBoxPartenze())
+            this.store.dispatch(new ClearBoxPartenze());
         }
     }
 
@@ -341,23 +340,24 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
         if (!this.sostituzionePartenzaForm.valid) {
             return;
         }
-        //handling time
+        // handling time
         this.formatTimeForCallBack();
         this.formatDate();
-        //
         const mezzo = this.store.selectSnapshot(MezziComposizioneState.mezzoSelezionato);
         const squadre = this.store.selectSnapshot(SquadreComposizioneState.squadreSelezionate);
-        //per rimuovere squadre duplicate
-        const squadreUnique = []; 
-        let uniqueObject = {};
-        for (let i in squadre) { 
-            let objTitle = squadre[i]['id']; 
-            uniqueObject[objTitle] = squadre[i]; 
-        } 
-        for (let i in uniqueObject) { 
-            squadreUnique.push(uniqueObject[i].squadra); 
-        } 
-        //-----------------------------
-        this.modal.close({ status: 'ok', result: { mezzo: mezzo, squadre: squadreUnique, motivazioneAnnullamento: this.f.motivazioneAnnullamento.value, dataAnnullamento: this.f.dataAnnullamento.value, time: this.time } });
+        // per rimuovere squadre duplicate
+        const squadreUnique = [];
+        const uniqueObject = {};
+        for (const i in squadre) {
+            let objTitle = squadre[i]['id'];
+            uniqueObject[objTitle] = squadre[i];
+        }
+        for (const i in uniqueObject) {
+            squadreUnique.push(uniqueObject[i].squadra);
+        }
+        this.modal.close({
+            status: 'ok',
+            result: { mezzo: mezzo, squadre: squadreUnique, motivazioneAnnullamento: this.f.motivazioneAnnullamento.value, dataAnnullamento: this.f.dataAnnullamento.value, time: this.time }
+        });
     }
 }

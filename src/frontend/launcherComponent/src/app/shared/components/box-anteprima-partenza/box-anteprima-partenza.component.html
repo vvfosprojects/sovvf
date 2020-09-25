@@ -1,4 +1,5 @@
-<div [class.display-box]="hideBox" [class.box-in-sostituzione]="inSostituzione" [class.box-sostitutivo]="boxSostitutivo" class="border-partenza-box pb-4 d-flex" style="place-content: space-evenly;">
+<div [class.display-box]="hideBox" [class.box-in-sostituzione]="inSostituzione" [class.box-sostitutivo]="boxSostitutivo"
+     class="border-partenza-box pb-4 d-flex" style="place-content: space-evenly;">
     <div class="mb-3" style="display: contents;">
         <div>
             <label class="mb-3">Mezzo</label>
@@ -9,13 +10,15 @@
                 <span class="badge badge-default m-0 t-color">{{ partenza?.mezzo['genere'] }}</span>
                 <i class="fa fa-check-circle-o text-success ml-3"></i>
             </div>
-            <div *ngIf="boxSostitutivo && !nuovoMezzo['descrizione']" class="font-box-partenza"><span class="text-muted">Nessun risultato...</span></div>
-            <div *ngIf="boxSostitutivo && nuovoMezzo['descrizione']"> 
-            <i class="guida fa fa-truck fa-fw mr-1 text-{{ statoMezzoColor(nuovoMezzo['stato']) }}"
-               ngbTooltip="Mezzo {{ nuovoMezzo['stato'] }}"></i>
-            <b class="font-box-partenza t-color">{{ nuovoMezzo['descrizione'] }}</b>
-            <span class="badge badge-default m-0 t-color">{{ nuovoMezzo['genere'] }}</span>
-            <i class="fa fa-check-circle-o text-success ml-3"></i>
+            <div *ngIf="boxSostitutivo && !nuovoMezzo['descrizione']" class="font-box-partenza">
+                <span class="text-muted">Nessun risultato...</span>
+            </div>
+            <div *ngIf="boxSostitutivo && nuovoMezzo['descrizione']">
+                <i class="guida fa fa-truck fa-fw mr-1 text-{{ statoMezzoColor(nuovoMezzo['stato']) }}"
+                   ngbTooltip="Mezzo {{ nuovoMezzo['stato'] }}"></i>
+                <b class="font-box-partenza t-color">{{ nuovoMezzo['descrizione'] }}</b>
+                <span class="badge badge-default m-0 t-color">{{ nuovoMezzo['genere'] }}</span>
+                <i class="fa fa-check-circle-o text-success ml-3"></i>
             </div>
         </div>
         <span *ngIf="!boxSostitutivo">
@@ -52,14 +55,17 @@
             <div>
                 <div *ngIf="nuoveSquadre?.length === 0 || nuoveSquadre?.length === 1" class="mb-2">
                     <label>Squadra</label>
-                    <button *ngIf="nuoveSquadre?.length === 1" class="btn btn-sm btn-light border ml-2 p-1 mr-2" ngbTooltip="Elenco squadra"
+                    <button *ngIf="nuoveSquadre?.length === 1" class="btn btn-sm btn-light border ml-2 p-1 mr-2"
+                            ngbTooltip="Elenco squadra"
                             style="padding: 5px !important; line-height: 0px;"
                             (click)="onListaSquadrePartenza($event)">
                         <span><i class="fa fa-search"></i></span>
                     </button>
                 </div>
-                <div *ngIf="!nuoveSquadre[0]" class="font-box-partenza"><span class="text-muted">Nessun risultato...</span></div>
-                <div *ngIf="nuoveSquadre?.length === 1" class="t-color"><i class="fa fa-group mr-2 t-color" ngbTooltip="Squadra"></i>
+                <div *ngIf="!nuoveSquadre[0]" class="font-box-partenza"><span
+                        class="text-muted">Nessun risultato...</span></div>
+                <div *ngIf="nuoveSquadre?.length === 1" class="t-color"><i class="fa fa-group mr-2 t-color"
+                                                                           ngbTooltip="Squadra"></i>
                     <b class="font-box-partenza">{{ nuoveSquadre[0]?.nome }}</b>
                     <i class="fa fa-check-circle-o text-success ml-3"></i>
                 </div>
@@ -90,7 +96,7 @@
             <div style="align-self: center;">
                 <button class="btn btn-xl btn-block btn-danger btn-no-hover" ngbTooltip="Annulla partenza"
                         style="padding-left: 15px; padding-right: 15px; padding-top: 5px; padding-bottom: 5px;
-                            font-size: 18px;" (click)="onDismissPartenza($event)" >
+                            font-size: 18px;" (click)="onDismissPartenza($event)">
                     <i class="fa fa-times"></i>
                 </button>
             </div>
