@@ -20,19 +20,19 @@
 
 using CQRS.Queries;
 using Microsoft.AspNetCore.SignalR;
+using SO115App.API.Models.Classi.Geo;
+using SO115App.API.Models.Servizi.CQRS.Queries.GestioneMezziInServizio.ListaMezziInSerivizio;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza;
+using SO115App.API.Models.Servizi.CQRS.Queries.Marker.MezziMarker;
 using SO115App.API.Models.Servizi.CQRS.Queries.Marker.SintesiRichiesteAssistenzaMarker;
+using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
+using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AggiornaStatoMezzo;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestionePartenza;
+using SO115App.SignalR.Utility;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using SO115App.API.Models.Servizi.CQRS.Queries.GestioneMezziInServizio.ListaMezziInSerivizio;
-using SO115App.API.Models.Servizi.CQRS.Queries.Marker.MezziMarker;
-using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AggiornaStatoMezzo;
-using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
-using SO115App.API.Models.Classi.Geo;
-using System.Collections.Generic;
-using SO115App.SignalR.Utility;
 
 namespace SO115App.SignalR.Sender.GestionePartenza
 {
@@ -139,11 +139,16 @@ namespace SO115App.SignalR.Sender.GestionePartenza
                 {
                     _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetRichiestaUpDateMarker", listaSintesiMarker.LastOrDefault(marker => marker.Codice == intervento.Chiamata.Codice));
 
-                    AreaMappa areaMappa = new AreaMappa();
-                    areaMappa.CodiceSede = new List<string>() { sede };
                     var queryListaMezzi = new MezziMarkerQuery()
                     {
-                        Filtro = areaMappa
+                        Filtro = new AreaMappa()
+                        {
+                            CodiceSede = new List<string>() { sede },
+                            FiltroMezzi = new Models.Classi.Filtri.FiltroMezzi()
+                            {
+                                FiltraPerAreaMappa = false
+                            }
+                        }
                     };
 
                     var listaMezziMarker = _listaMezziMarkerHandler.Handle(queryListaMezzi).ListaMezziMarker;

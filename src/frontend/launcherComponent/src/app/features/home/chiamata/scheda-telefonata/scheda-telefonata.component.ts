@@ -187,8 +187,8 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy {
         this.nuovaRichiesta.localita.coordinate.longitudine = f.longitudine.value;
         this.nuovaRichiesta.localita.coordinate.latitudine = f.latitudine.value;
         this.nuovaRichiesta.tags = (f.etichette.value && f.etichette.value.length) ? f.etichette.value : null;
-        this.nuovaRichiesta.rilevanteGrave = f.rilevanzaGrave.value;
-        this.nuovaRichiesta.rilevanteStArCu = f.rilevanzaStArCu.value;
+        this.nuovaRichiesta.rilevanteGrave = f.rilevanzaGrave.value ? f.rilevanzaGrave.value : false;
+        this.nuovaRichiesta.rilevanteStArCu = f.rilevanzaStArCu.value ? f.rilevanzaGrave.value : false;
         this.nuovaRichiesta.descrizione = f.descrizione.value;
         this.nuovaRichiesta.zoneEmergenza = f.zoneEmergenza.value ? f.zoneEmergenza.value.split(' ') : null;
         this.nuovaRichiesta.notePrivate = f.notePrivate.value;
