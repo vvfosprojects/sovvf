@@ -32,13 +32,13 @@ import { SetCurrentJwt, SetCurrentUser, SetLoggedCas } from './features/auth/sto
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
-    styleUrls: [ './app.component.css' ]
+    styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
 
     private subscription = new Subscription();
     private imgs = [];
-    private deniedPath = [ RoutesPath.NotFound.toString(), RoutesPath.Login.toString() ];
+    private deniedPath = [RoutesPath.NotFound.toString(), RoutesPath.Login.toString()];
     private height;
     private availHeight;
     private currentUrl: string;
@@ -110,16 +110,16 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
         this.subscription.add(this.user$.subscribe((user: Utente) => {
             this.user = user;
             if (user && user.sede) {
-                this.listeSediLoaded && this.store.dispatch(new PatchListaSediNavbar([ user.sede.codice ]));
+                this.listeSediLoaded && this.store.dispatch(new PatchListaSediNavbar([user.sede.codice]));
             } else {
                 this.store.dispatch(new ClearListaSediNavbar());
             }
         }));
         this.subscription.add(this.listeSediLoaded$.subscribe((r: boolean) => {
             this.listeSediLoaded = r;
-            r && this.store.dispatch(new PatchListaSediNavbar([ this.user.sede.codice ]));
+            r && this.store.dispatch(new PatchListaSediNavbar([this.user.sede.codice]));
         }));
-        this.subscription.add(this.vistaSedi$.subscribe(r => r && this.store.dispatch(new PatchListaSediNavbar([ ...r ]))));
+        this.subscription.add(this.vistaSedi$.subscribe(r => r && this.store.dispatch(new PatchListaSediNavbar([...r]))));
     }
 
     private _isReady(status: boolean): void {
@@ -131,7 +131,8 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
     }
 
     private getHeight(): void {
-        if (this.currentUrl === RoutesPath.Home || this.currentUrl === RoutesPath.GestioneUtenti) {
+        // tslint:disable-next-line:max-line-length
+        if (this.currentUrl === RoutesPath.Home || this.currentUrl === RoutesPath.GestioneUtenti || this.currentUrl === RoutesPath.TrasferimentoChiamata || this.currentUrl === RoutesPath.Rubrica || this.currentUrl === RoutesPath.Changelog) {
             const availHeight = window.innerHeight;
             const height = this.contentElement.nativeElement.offsetHeight;
             if (height) {
