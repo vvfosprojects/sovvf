@@ -34,6 +34,7 @@ export class FasterComponent implements OnInit, OnDestroy {
     @Input() disablePrenota: boolean;
     @Input() prenotato: boolean;
     @Input() loadingInvioPartenza: boolean;
+    @Input() boxAttivi: boolean;
 
     @Select(ComposizioneVeloceState.preAccoppiati) preAccoppiati$: Observable<BoxPartenza[]>;
     preAccoppiati: BoxPartenza[];

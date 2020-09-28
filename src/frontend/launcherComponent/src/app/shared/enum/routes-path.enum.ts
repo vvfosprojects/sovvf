@@ -12,5 +12,6 @@ export enum RoutesPath {
     UtenteNonAbilitato = 'utente-non-abilitato',
     Rubrica = 'rubrica',
     TrasferimentoChiamata = 'trasferimento-chiamata',
-    Changelog = 'changelog'
+    Changelog = 'changelog',
+    Impostazioni = 'impostazioni'
 }

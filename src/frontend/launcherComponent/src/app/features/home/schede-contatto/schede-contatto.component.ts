@@ -1,4 +1,4 @@
-import { Component, isDevMode, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, isDevMode, OnDestroy, OnInit } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import {
     ClearSchedaContattoHover,
@@ -45,6 +45,7 @@ import { ConfirmModalComponent } from '../../../shared/modal/confirm-modal/confi
 })
 export class SchedeContattoComponent implements OnInit, OnDestroy {
 
+    @Input() boxAttivi: boolean;
 
     @Select(SchedeContattoState.schedeContatto) schedeContatto$: Observable<SchedaContatto[]>;
     schedeContatto: SchedaContatto[];

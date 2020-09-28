@@ -50,6 +50,7 @@ import { AllertaSedeEmitInterface } from '../../../shared/interface/allerta-sede
 export class RichiesteComponent implements OnInit, OnDestroy {
 
     @Input() split: boolean;
+    @Input() boxAttivi: boolean;
 
     @Select(RicercaFilterbarState.ricerca) ricerca$: Observable<string>;
     ricerca: { descrizione: '' };
@@ -138,11 +139,19 @@ export class RichiesteComponent implements OnInit, OnDestroy {
             this.richiestaFissata$.subscribe((richiestaFissata: SintesiRichiesta) => {
                 if (richiestaFissata) {
                     this.richiestaFissata = richiestaFissata;
-                    this.listHeightClass = 'm-h-590';
+                    if (this.boxAttivi) {
+                        this.listHeightClass = 'm-h-590';
+                    } else {
+                        this.listHeightClass = 'm-h-695';
+                    }
                 } else {
                     setTimeout(() => {
                         this.richiestaFissata = null;
-                        this.listHeightClass = 'm-h-695';
+                        if (this.boxAttivi) {
+                            this.listHeightClass = 'm-h-695';
+                        } else {
+                            this.listHeightClass = 'm-h-800';
+                        }
                     }, 300);
                 }
             })

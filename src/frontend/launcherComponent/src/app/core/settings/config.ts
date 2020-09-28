@@ -7,5 +7,6 @@ export const LSNAME = {
     casLogin: 'sso-sovvf',
     emailError: 'assistenza.sovvf@vigilfuoco.it',
     defaultErrorMsg: 'Errore applicativo. Si prega di riprovare più tardi. Se l\'errore persiste si prega di segnalare a',
-    cacheSedi: 'KEY_CACHE_SEDI_TREE_SELECTED'
+    cacheSedi: 'KEY_CACHE_SEDI_TREE_SELECTED',
+    impostazioni: 'imp-sovvf'
 };

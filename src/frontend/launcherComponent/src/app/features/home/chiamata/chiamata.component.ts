@@ -1,4 +1,4 @@
-import { Component, isDevMode, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, isDevMode, OnDestroy, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Select, Store } from '@ngxs/store';
 import { Utente } from '../../../shared/model/utente.model';
@@ -19,6 +19,8 @@ import { ClearFormEnte, RequestAddEnte } from '../../../shared/store/actions/ent
     styleUrls: ['./chiamata.component.css']
 })
 export class ChiamataComponent implements OnInit, OnDestroy {
+
+    @Input() boxAttivi: boolean;
 
     @Select(SchedaTelefonataState.loadingNuovaChiamata) loadingNuovaChiamata$: Observable<boolean>;
     @Select(AuthState.currentUser) utente$: Observable<Utente>;

@@ -31,6 +31,8 @@ export class MapsComponent implements OnInit, OnDestroy {
     centroMappa: CentroMappa;
     subscription = new Subscription();
     @Input() viewStateMappa: ViewInterfaceMaps;
+    @Input() boxAttivi: boolean;
+
     @Select(CentroMappaState.centroMappa) centroMappa$: Observable<CentroMappa>;
     @Select(ChiamateMarkersState.chiamateMarkers) chiamataMarkers$: Observable<ChiamataMarker[]>;
     @Select(ComposizionePartenzaState.richiestaComposizioneMarker) composizioneMarkers$: Observable<ComposizioneMarker[]>;

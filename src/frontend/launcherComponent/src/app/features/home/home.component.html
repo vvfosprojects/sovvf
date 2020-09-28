@@ -1,28 +1,33 @@
 <div class="container-fluid " *ngIf="(navbarLoaded | async)">
     <div class="row">
-        <div class="col-12 px-0">
+        <div class="col-12 px-0" [ngClass]="{'d-none': !boxAttivi}">
             <app-info-aggregate></app-info-aggregate>
         </div>
     </div>
     <div class="row">
-        <div class="col-12">
+        <div class="col-12" [ngClass]="{'mt-3': !boxAttivi}">
             <app-filterbar [colorButton]="(colorButton$ | async)" [viewState]="viewState"></app-filterbar>
         </div>
     </div>
-    <div class="row">
-        <div class="" [ngClass]="columnState.sinistra">
-            <app-richieste [ngClass]="{'d-none' : !viewState.richieste.active}" [split]="viewState.richieste.split">
+    <div class="row" [ngClass]="{'mt-1': !boxAttivi}">
+        <div [ngClass]="columnState.sinistra">
+            <app-richieste [ngClass]="{'d-none' : !viewState.richieste.active}"
+                           [boxAttivi]="boxAttivi"
+                           [split]="viewState.richieste.split">
             </app-richieste>
-            <app-chiamata *ngIf="viewState.chiamata.active"></app-chiamata>
+            <app-chiamata *ngIf="viewState.chiamata.active" [boxAttivi]="boxAttivi"></app-chiamata>
             <app-composizione-partenza *ngIf="viewState.composizione.active"
+                                       [boxAttivi]="boxAttivi"
                                        [compPartenzaMode]="(composizioneMode$ | async)">
             </app-composizione-partenza>
             <app-modifica-richiesta *ngIf="viewState.modifica.active"></app-modifica-richiesta>
             <app-mezzi-in-servizio *ngIf="viewState.mezziInServizio.active"></app-mezzi-in-servizio>
-            <app-schede-contatto *ngIf="viewState.schedeContatto.active"></app-schede-contatto>
+            <app-schede-contatto *ngIf="viewState.schedeContatto.active" [boxAttivi]="boxAttivi"></app-schede-contatto>
         </div>
         <div class="mt-2" [ngClass]="columnState.destra || {'d-none' : !viewState.mappa.active}">
-            <app-maps [viewStateMappa]="(viewStateMappa$ | async)" (mapFullLoaded)="onMapFullLoaded()"></app-maps>
+            <app-maps [viewStateMappa]="(viewStateMappa$ | async)"
+                      [boxAttivi]="boxAttivi"
+                      (mapFullLoaded)="onMapFullLoaded()"></app-maps>
         </div>
     </div>
 </div>

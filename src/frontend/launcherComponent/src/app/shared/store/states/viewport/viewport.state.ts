@@ -26,7 +26,8 @@ export class ViewportState {
 
     @Selector([RouterState, AppState])
     static footerFixed(state: ViewportStateModel, routerState: RouterStateModel, appState: AppStateModel): boolean {
-        const grantUrl = [`/${RoutesPath.Home}`, `/${RoutesPath.GestioneUtenti}`, `/${RoutesPath.Rubrica}`, `/${RoutesPath.TrasferimentoChiamata}`, `/${RoutesPath.Changelog}`];
+        // tslint:disable-next-line:max-line-length
+        const grantUrl = [`/${RoutesPath.Home}`, `/${RoutesPath.GestioneUtenti}`, `/${RoutesPath.Rubrica}`, `/${RoutesPath.TrasferimentoChiamata}`, `/${RoutesPath.Changelog}`, `/${RoutesPath.Impostazioni}`];
         let granted = false;
         const appReady = appState.appIsLoaded;
         grantUrl.forEach((url: string) => {
@@ -39,7 +40,8 @@ export class ViewportState {
 
     @Selector([RouterState, AuthState, AppState])
     static footerVisible(state: ViewportStateModel, routerState: RouterStateModel, authState: AuthStateModel, appState: AppStateModel): boolean {
-        const grantUrl = [`/${RoutesPath.Home}`, `/${RoutesPath.GestioneUtenti}`, `/${RoutesPath.Rubrica}`, `/${RoutesPath.TrasferimentoChiamata}`, `/${RoutesPath.Changelog}`];
+        // tslint:disable-next-line:max-line-length
+        const grantUrl = [`/${RoutesPath.Home}`, `/${RoutesPath.GestioneUtenti}`, `/${RoutesPath.Rubrica}`, `/${RoutesPath.TrasferimentoChiamata}`, `/${RoutesPath.Changelog}`, `/${RoutesPath.Impostazioni}`];
         let granted = false;
         grantUrl.forEach((url: string) => {
             if (url.indexOf(routerState.state.url.split('#')[0].substring(1)) !== -1) {
