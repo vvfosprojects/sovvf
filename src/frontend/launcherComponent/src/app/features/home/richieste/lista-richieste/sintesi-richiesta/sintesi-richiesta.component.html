@@ -553,7 +553,7 @@
                                             (click)="onAllertaSede(); $event.stopPropagation()">
                                         <i class="fa fa-exclamation-triangle"></i>
                                     </button>
-                                    <button *ngIf="richiesta?.stato === StatoRichiesta.Chiamata"
+                                    <button *ngIf="!richiesta?.codiceRichiesta"
                                             class="btn btn-sm btn-danger" ngbTooltip="Trasferisci ad altro comando"
                                             (click)="onAddTrasferimentoChiamata(richiesta.codice); $event.stopPropagation()">
                                         <i class="fa fa-send-o"></i>
