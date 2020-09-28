@@ -97,26 +97,12 @@ namespace SO115App.SignalR.Sender.GestionePartenza
                 _notificationHubContext.Clients.Group(sede).SendAsync("ModifyAndNotifySuccess", intervento);
                 _notificationHubContext.Clients.Group(sede).SendAsync("ChangeStateSuccess", notificaChangeState);
 
-                var boxRichiesteQuery = new BoxRichiesteQuery()
-                {
-                    CodiciSede = new string[] { sede }
-                };
-                var boxInterventi = _boxRichiesteHandler.Handle(boxRichiesteQuery).BoxRichieste; 
-                _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxInterventi", boxInterventi);
-
                 var boxMezziQuery = new BoxMezziQuery()
                 {
                     CodiciSede = new string[] { sede }
                 };
                 var boxMezzi = _boxMezziHandler.Handle(boxMezziQuery).BoxMezzi;
                 _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxMezzi", boxMezzi);
-
-                var boxPersonaleQuery = new BoxPersonaleQuery()
-                {
-                    CodiciSede = new string[] { sede }
-                };
-                var boxPersonale = _boxPersonaleHandler.Handle(boxPersonaleQuery).BoxPersonale;
-                _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxPersonale", boxPersonale);
 
                 var listaMezziInServizioQuery = new ListaMezziInServizioQuery
                 {
@@ -125,6 +111,20 @@ namespace SO115App.SignalR.Sender.GestionePartenza
                 };
                 var listaMezziInServizio = _listaMezziInServizioHandler.Handle(listaMezziInServizioQuery).ListaMezzi; 
                 _notificationHubContext.Clients.Group(sede).SendAsync("NotifyUpdateMezzoInServizio", listaMezziInServizio.Find(x => x.Mezzo.Mezzo.Codice.Equals(intervento.IdMezzo)));
+
+                var boxRichiesteQuery = new BoxRichiesteQuery()
+                {
+                    CodiciSede = new string[] { sede }
+                };
+                var boxInterventi = _boxRichiesteHandler.Handle(boxRichiesteQuery).BoxRichieste; 
+                _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxInterventi", boxInterventi);
+
+                var boxPersonaleQuery = new BoxPersonaleQuery()
+                {
+                    CodiciSede = new string[] { sede }
+                };
+                var boxPersonale = _boxPersonaleHandler.Handle(boxPersonaleQuery).BoxPersonale;
+                _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxPersonale", boxPersonale);
 
                 if (intervento.Chiamata != null)
                 {

@@ -24,6 +24,7 @@ using SO115App.API.Models.Classi.Soccorso.Eventi;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Fonogramma;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
+using SO115App.API.Models.Classi.Soccorso.Fonogramma;
 using SO115App.API.Models.Classi.Soccorso.Mezzi.StatiMezzo;
 using SO115App.API.Models.Classi.Soccorso.StatiRichiesta;
 using SO115App.Models.Classi.Condivise;
@@ -31,7 +32,6 @@ using SO115App.Models.Classi.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 
 namespace SO115App.API.Models.Classi.Soccorso
 {
@@ -63,7 +63,6 @@ namespace SO115App.API.Models.Classi.Soccorso
             this.Tags = new HashSet<string>();
             this.UtInLavorazione = new List<string>();
             this.UtPresaInCarico = new List<string>();
-            //this.ListaPartenze = new List<Partenza>();
         }
 
         /// <summary>
@@ -102,6 +101,81 @@ namespace SO115App.API.Models.Classi.Soccorso
             Altissima
         }
 
+        /// <summary>
+        /// Cambio lo stato di una singola partenza e dei relativi mezzi e stato squadre
+        /// </summary>
+        /// <param name="partenzaDaLavorare">La partenza la quale devo cambiarne lo stato</param>
+        /// <param name="stato">Lo stato che va attribuito alla partenza</param>
+        internal void CambiaStatoPartenza(ComposizionePartenze partenzaDaLavorare, CambioStatoMezzo stato)
+        {
+            #region SWITCH STATO MEZZI
+
+            if (stato.Stato == Costanti.MezzoInViaggio)
+            {
+                new UscitaPartenza(this, partenzaDaLavorare.Partenza.Mezzo.Codice, stato.DataOraAggiornamento, CodOperatore);
+
+                SincronizzaStatoRichiesta(Costanti.RichiestaAssegnata, StatoRichiesta, CodOperatore, "", stato.DataOraAggiornamento);
+
+                partenzaDaLavorare.Partenza.Mezzo.Stato = Costanti.MezzoInViaggio;
+                partenzaDaLavorare.Partenza.Mezzo.IdRichiesta = Id;
+            }
+
+            else if (stato.Stato == Costanti.MezzoSulPosto)
+            {
+                new ArrivoSulPosto(this, partenzaDaLavorare.Partenza.Mezzo.Codice, stato.DataOraAggiornamento, CodOperatore);
+
+                SincronizzaStatoRichiesta(Costanti.RichiestaPresidiata, StatoRichiesta, CodOperatore, "", stato.DataOraAggiornamento);
+
+                partenzaDaLavorare.Partenza.Mezzo.Stato = Costanti.MezzoSulPosto;
+                partenzaDaLavorare.Partenza.Mezzo.IdRichiesta = Id;
+            }
+
+            else if (stato.Stato == Costanti.MezzoInRientro)
+            {
+                partenzaDaLavorare.Partenza.Mezzo.Stato = Costanti.MezzoInRientro;
+
+                new PartenzaInRientro(this, partenzaDaLavorare.Partenza.Mezzo.Codice, stato.DataOraAggiornamento, CodOperatore);
+
+                if (lstPartenze.Select(p => p.Mezzo.Stato).All(s => s != Costanti.MezzoInSede && s != Costanti.MezzoInViaggio && s != Costanti.MezzoInUscita && s != Costanti.MezzoSulPosto))
+                    new ChiusuraRichiesta("", this, stato.DataOraAggiornamento, CodOperatore);
+            }
+
+            else if (stato.Stato == Costanti.MezzoRientrato)
+            {
+                partenzaDaLavorare.Partenza.Mezzo.Stato = Costanti.MezzoInSede;
+                partenzaDaLavorare.Partenza.Mezzo.IdRichiesta = null;
+                partenzaDaLavorare.Partenza.Terminata = true;
+
+                new PartenzaRientrata(this, partenzaDaLavorare.Partenza.Mezzo.Codice, stato.DataOraAggiornamento, CodOperatore);
+
+                if (lstPartenze.Select(p => p.Mezzo.Stato).All(s => s != Costanti.MezzoInSede && s != Costanti.MezzoInViaggio && s != Costanti.MezzoInUscita && s != Costanti.MezzoSulPosto))
+                    new ChiusuraRichiesta("", this, stato.DataOraAggiornamento, CodOperatore);
+            }
+
+            else if (stato.Stato == Costanti.MezzoInViaggio)
+            {
+                partenzaDaLavorare.Partenza.Mezzo.Stato = Costanti.MezzoInViaggio;
+                partenzaDaLavorare.Partenza.Mezzo.IdRichiesta = Id;
+            }
+
+            else if (stato.Stato == Costanti.MezzoInUscita)
+            {
+                partenzaDaLavorare.Partenza.Mezzo.Stato = Costanti.MezzoInUscita;
+            }
+
+            #endregion SWITCH STATO MEZZI
+
+            foreach (var squadra in partenzaDaLavorare.Partenza.Squadre)
+                squadra.Stato = MappaStatoSquadraDaStatoMezzo.MappaStato(stato.Stato);
+        }
+
+        /// <summary>
+        /// Aggiorno lo stato della richiesta in base al vecchio stato
+        /// </summary>
+        /// <param name="stato">stato da attribuire alla richiesta</param>
+        /// <param name="statoRichiesta">stato attuale della richiesta</param>
+        /// <param name="id">id della fonte (operatore)</param>
+        /// <param name="motivazione">testo della motivazione</param>
         internal void SincronizzaStatoRichiesta(string stato, IStatoRichiesta statoRichiesta, string id, string motivazione, DateTime dataEvento)
         {
             if (stato == Costanti.RichiestaChiusa && !(statoRichiesta is Chiusa))
@@ -329,8 +403,6 @@ namespace SO115App.API.Models.Classi.Soccorso
             get;
             //set;
         }
-
-        //public List<Partenza> ListaPartenze { get; set; }
 
         /// <summary>
         ///   Indica l'istante di chiusura della richiesta, impostato dall'evento <see cref="ChiusuraRichiesta" />
@@ -750,7 +822,7 @@ namespace SO115App.API.Models.Classi.Soccorso
         ///   Calcola lo stato di invio del fonogramma per la richiesta, in base all'ultimo evento
         ///   fonogramma presente nella richiesta.
         /// </summary>
-        public virtual Fonogramma.IStatoFonogramma StatoInvioFonogramma
+        public virtual IStatoFonogramma StatoInvioFonogramma
         {
             get
             {
@@ -852,7 +924,7 @@ namespace SO115App.API.Models.Classi.Soccorso
         ///   solleva un'eccezione.
         /// </summary>
         /// <param name="evento">L'evento da aggiungere</param>
-        public void AddEvento(Evento evento) 
+        public void AddEvento(Evento evento)
         {
             if (this._eventi.Any() && this._eventi.Last().Istante > evento.Istante && evento.TipoEvento != "RevocaPartenza")
             {
@@ -901,6 +973,7 @@ namespace SO115App.API.Models.Classi.Soccorso
             {
             }
         }
+
         public List<Partenza> lstPartenze => Partenze.Select(c => c.Partenza).ToList();
     }
 }
