@@ -110,7 +110,10 @@ namespace SO115App.API.Models.Classi.Soccorso
             }
             else if (stato.Equals(Costanti.RichiestaRiaperta) && !(statoRichiesta is Riaperta))
             {
-                new RiaperturaRichiesta(motivazione, this, dataEvento, id);
+                if (lstPartenze.Where(p => !p.PartenzaAnnullata).ToList().Count == 0 || Partenze.All(p => p.PartenzaAnnullata))
+                    new RiaperturaRichiesta(motivazione, this, dataEvento, id);
+                else
+                    new AssegnataRichiesta(this, DateTime.UtcNow, id);
             }
             else if (stato.Equals(Costanti.RichiestaAssegnata) && !(statoRichiesta is Assegnata))
             {

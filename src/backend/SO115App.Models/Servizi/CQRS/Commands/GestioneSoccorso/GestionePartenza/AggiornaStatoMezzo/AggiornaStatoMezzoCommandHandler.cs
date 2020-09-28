@@ -39,7 +39,6 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
         {
             var richiesta = command.Richiesta;
 
-            //TODO DA TOGLIERE
             if (command.DataOraAggiornamento == null || command.DataOraAggiornamento == DateTime.MinValue)
                 command.DataOraAggiornamento = DateTime.UtcNow;
 
@@ -95,6 +94,10 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
             {
                 partenzaDaLavorare.Partenza.Mezzo.Stato = Costanti.MezzoInViaggio;
                 partenzaDaLavorare.Partenza.Mezzo.IdRichiesta = richiesta.Id;
+            }
+            else if (command.StatoMezzo == Costanti.MezzoInUscita)
+            {
+                partenzaDaLavorare.Partenza.Mezzo.Stato = Costanti.MezzoInUscita;
             }
 
             #endregion

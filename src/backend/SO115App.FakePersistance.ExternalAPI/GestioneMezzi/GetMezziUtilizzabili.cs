@@ -163,6 +163,7 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
                 if (ListaStatoOperativoMezzo.Count > 0)
                 {
                     mezzo.Stato = ListaStatoOperativoMezzo.Find(x => x.CodiceMezzo.Equals(mezzo.Codice)).StatoOperativo;
+                    mezzo.IdRichiesta = ListaStatoOperativoMezzo.FirstOrDefault(x => x.CodiceMezzo.Equals(mezzo.Codice)).CodiceRichiesta;
                 }
             }
 
