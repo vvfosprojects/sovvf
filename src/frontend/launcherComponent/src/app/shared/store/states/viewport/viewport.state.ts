@@ -25,7 +25,7 @@ export const ViewportStateDefaults: ViewportStateModel = {
 export class ViewportState {
 
     @Selector([RouterState, AppState])
-    static footerFixed(state: ViewportStateModel, routerState: RouterStateModel, appState: AppStateModel) {
+    static footerFixed(state: ViewportStateModel, routerState: RouterStateModel, appState: AppStateModel): boolean {
         const grantUrl = [`/${RoutesPath.Home}`, `/${RoutesPath.GestioneUtenti}`, `/${RoutesPath.Rubrica}`, `/${RoutesPath.TrasferimentoChiamata}`, `/${RoutesPath.Changelog}`];
         let granted = false;
         const appReady = appState.appIsLoaded;
@@ -38,7 +38,7 @@ export class ViewportState {
     }
 
     @Selector([RouterState, AuthState, AppState])
-    static footerVisible(state: ViewportStateModel, routerState: RouterStateModel, authState: AuthStateModel, appState: AppStateModel) {
+    static footerVisible(state: ViewportStateModel, routerState: RouterStateModel, authState: AuthStateModel, appState: AppStateModel): boolean {
         const grantUrl = [`/${RoutesPath.Home}`, `/${RoutesPath.GestioneUtenti}`, `/${RoutesPath.Rubrica}`, `/${RoutesPath.TrasferimentoChiamata}`, `/${RoutesPath.Changelog}`];
         let granted = false;
         grantUrl.forEach((url: string) => {
