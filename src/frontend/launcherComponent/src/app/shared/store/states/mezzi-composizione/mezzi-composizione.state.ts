@@ -329,7 +329,7 @@ export class MezziComposizioneState {
     requestBookMezzoComposizione({ dispatch }: StateContext<MezziComposizioneStateStateModel>, action: RequestBookMezzoComposizione) {
         const mezzoPrenotatoObj = {
             'codiceMezzo': action.mezzoComp.mezzo.codice,
-            'codiceRichiesta': this.store.selectSnapshot(x => x.composizionePartenza.richiesta).id, //quiii
+            'codiceRichiesta': this.store.selectSnapshot(x => x.composizionePartenza.richiesta).id,
         };
         dispatch(new AddBookingMezzoComposizione(action.mezzoComp));
         this._compPartenzaService.setMezzoPrenotato(mezzoPrenotatoObj).subscribe(() => {
@@ -370,7 +370,7 @@ export class MezziComposizioneState {
     requestRemoveBookMezzoComposizione({ dispatch }: StateContext<MezziComposizioneStateStateModel>, action: RequestRemoveBookMezzoComposizione) {
         const mezzoPrenotatoObj = {
             'codiceMezzo': action.mezzoComp.mezzo.codice,
-            'codiceRichiesta': this.store.selectSnapshot(x => x.composizionePartenza.richiesta).id //quii
+            'codiceRichiesta': this.store.selectSnapshot(x => x.composizionePartenza.richiesta).id
         };
         this._compPartenzaService.removeMezzoPrenotato(mezzoPrenotatoObj).subscribe(() => {
         });

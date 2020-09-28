@@ -127,6 +127,10 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                         partenzaDaLavorare.Partenza.Mezzo.Stato = Costanti.MezzoInViaggio;
                         partenzaDaLavorare.Partenza.Mezzo.IdRichiesta = Richiesta.Id;
                     }
+                    else if (stato.Stato == Costanti.MezzoInUscita)
+                    {
+                        partenzaDaLavorare.Partenza.Mezzo.Stato = Costanti.MezzoInUscita;
+                    }
 
                     #endregion Switch StatoMezzo
 
