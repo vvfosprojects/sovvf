@@ -1,4 +1,4 @@
-import { Component, isDevMode, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, isDevMode, OnDestroy, OnInit } from '@angular/core';
 import { Store, Select } from '@ngxs/store';
 import { ToggleMezziInServizio } from '../store/actions/view/view.actions';
 import { SetIdRichiestaEventi, ClearEventiRichiesta, SetFiltroTargaMezzo } from '../store/actions/eventi/eventi-richiesta.actions';
@@ -32,6 +32,8 @@ import { ClearRicercaFilterbar } from '../store/actions/filterbar/ricerca-richie
     styleUrls: ['./mezzi-in-servizio.component.css']
 })
 export class MezziInServizioComponent implements OnInit, OnDestroy {
+
+    @Input() boxAttivi: boolean;
 
     @Select(MezziInServizioState.mezziInServizioFiltered) mezziInServizio$: Observable<MezzoInServizio[]>;
     mezziInServizio: MezzoInServizio[];
