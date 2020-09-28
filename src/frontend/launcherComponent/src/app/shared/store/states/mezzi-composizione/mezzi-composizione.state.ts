@@ -329,7 +329,7 @@ export class MezziComposizioneState {
     requestBookMezzoComposizione({ dispatch }: StateContext<MezziComposizioneStateStateModel>, action: RequestBookMezzoComposizione) {
         const mezzoPrenotatoObj = {
             'codiceMezzo': action.mezzoComp.mezzo.codice,
-            'codiceRichiesta': this.store.selectSnapshot(x => x.composizionePartenza.richiestaComposizione).id
+            'codiceRichiesta': this.store.selectSnapshot(x => x.composizionePartenza.richiesta).id, //quiii
         };
         dispatch(new AddBookingMezzoComposizione(action.mezzoComp));
         this._compPartenzaService.setMezzoPrenotato(mezzoPrenotatoObj).subscribe(() => {
@@ -370,7 +370,7 @@ export class MezziComposizioneState {
     requestRemoveBookMezzoComposizione({ dispatch }: StateContext<MezziComposizioneStateStateModel>, action: RequestRemoveBookMezzoComposizione) {
         const mezzoPrenotatoObj = {
             'codiceMezzo': action.mezzoComp.mezzo.codice,
-            'codiceRichiesta': this.store.selectSnapshot(x => x.composizionePartenza.richiestaComposizione).id
+            'codiceRichiesta': this.store.selectSnapshot(x => x.composizionePartenza.richiesta).id //quii
         };
         this._compPartenzaService.removeMezzoPrenotato(mezzoPrenotatoObj).subscribe(() => {
         });
@@ -465,7 +465,7 @@ export class MezziComposizioneState {
                         case 'ok':
                             const partenzaObj: ConfermaPartenze = {
                                 partenze: [partenzaDaSganciare],
-                                idRichiesta: this.store.selectSnapshot(x => x.composizionePartenza.richiestaComposizione).codice,
+                                idRichiesta: this.store.selectSnapshot(x => x.composizionePartenza.richiesta).codice,
                                 turno: this.store.selectSnapshot(TurnoState.turnoCalendario).corrente,
                                 idRichiestaDaSganciare: action.sganciamentoObj.idRichiestaDaSganciare,
                                 idMezzoDaSganciare: action.sganciamentoObj.idMezzoDaSganciare
