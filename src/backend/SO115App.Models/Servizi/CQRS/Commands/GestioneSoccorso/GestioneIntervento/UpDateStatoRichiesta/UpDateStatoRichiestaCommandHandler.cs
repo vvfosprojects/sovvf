@@ -75,6 +75,7 @@ namespace DomainModel.CQRS.Commands.UpDateStatoRichiesta
             }
 
             richiesta.SincronizzaStatoRichiesta(command.Stato, richiesta.StatoRichiesta, command.IdOperatore, command.Note, DateTime.UtcNow);
+            
             if (command.Stato == Costanti.RichiestaRiaperta)
                 richiesta.IstanteChiusura = null;
 
