@@ -2,7 +2,6 @@
 using CQRS.Validation;
 using SO115App.Models.Classi.Utility;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneTrasferimentiChiamate.AddTrasferimento
 {
@@ -19,6 +18,9 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneTrasfer
 
                 if (command.TrasferimentoChiamata.CodSedeA == null || command.TrasferimentoChiamata.CodSedeA == "")
                     yield return new ValidationResult("Nessun codice sede a");
+
+                if (command.TrasferimentoChiamata.CodSedeA == command.CodiceSede)
+                    yield return new ValidationResult("Non puoi trasferire la chiamata alla stassa sede di provenienza");
             }
         }
     }
