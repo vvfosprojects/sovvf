@@ -58,10 +58,11 @@ export class EventoRichiestaComponent implements OnInit {
             ['TrasferimentoChiamata', ['fa-exchange']],
             ['UscitaPartenza', ['fa-truck', 'fa-hand-o-right']],
             ['RevocaPerSostituzioneMezzo', ['fa-refresh']],
+            ['AllertaAltreSedi', ['fa-exclamation-triangle']],
 
             // Default per gli eventi non gestiti
             ['EventoGenerico', ['fa-question-circle']],
-
+            
             // Per adesso non utilizzqti
             // ['MarcaNonRilevante', ['fa-warning', 'fa-close']],
             // ['VaInFuoriServizio', ['fa-truck', 'fa-wrench']],
