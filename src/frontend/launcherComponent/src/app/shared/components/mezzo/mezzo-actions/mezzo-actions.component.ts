@@ -35,7 +35,10 @@ export class MezzoActionsComponent implements OnInit {
         this.statoMezzoString = statoMezzoActionsEnumToStringArray([this.mezzo.stato, StatoMezzo.Istituto, calcolaActionSuggeritaMezzo(this.mezzo.stato)]);
     }
 
-    onClick(action?: string) {
+    onClick(action?: string, event?: MouseEvent) {
+        if (event) {
+            event.stopPropagation();
+        }
         this.modalService.open(MezzoActionsModalComponent, {
             windowClass: 'modal-holder',
             backdropClass: 'light-blue-backdrop',
