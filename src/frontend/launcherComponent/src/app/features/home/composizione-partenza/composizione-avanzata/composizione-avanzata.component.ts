@@ -1,23 +1,23 @@
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
 import { NgbPopoverConfig, NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
 import { Observable, Subscription } from 'rxjs';
-import { MezzoComposizione } from '../interface/mezzo-composizione-interface';
-import { SquadraComposizione } from '../interface/squadra-composizione-interface';
+import { MezzoComposizione } from '../../../../shared/interface/mezzo-composizione-interface';
+import { SquadraComposizione } from '../../../../shared/interface/squadra-composizione-interface';
 import { DirectionInterface } from '../../maps/maps-interface/direction-interface';
 import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.model';
 import { Composizione } from '../../../../shared/enum/composizione.enum';
 import { Select, Store } from '@ngxs/store';
 import { makeCopy } from '../../../../shared/helper/function';
 import { ComposizionePartenzaState } from '../../store/states/composizione-partenza/composizione-partenza.state';
-import { MezziComposizioneState } from '../../store/states/composizione-partenza/mezzi-composizione.state';
-import { SquadreComposizioneState } from '../../store/states/composizione-partenza/squadre-composizione.state';
+import { MezziComposizioneState } from '../../../../shared/store/states/mezzi-composizione/mezzi-composizione.state';
+import { SquadreComposizioneState } from '../../../../shared/store/states/squadre-composizione/squadre-composizione.state';
 import {
     HoverInMezzoComposizione,
     HoverOutMezzoComposizione,
     RequestRemoveBookMezzoComposizione,
     UnselectMezzoComposizione,
     ReducerSelectMezzoComposizione
-} from '../../store/actions/composizione-partenza/mezzi-composizione.actions';
+} from '../../../../shared/store/actions/mezzi-composizione/mezzi-composizione.actions';
 import { BoxPartenzaState } from '../../store/states/composizione-partenza/box-partenza.state';
 import { BoxPartenza } from '../interface/box-partenza-interface';
 import {
@@ -27,24 +27,23 @@ import {
     RemoveMezzoBoxPartenzaSelezionato,
     RemoveSquadraBoxPartenza,
     RequestAddBoxPartenza,
-    RequestSelectBoxPartenza
+    DeselectBoxPartenza
 } from '../../store/actions/composizione-partenza/box-partenza.actions';
 import {
     HoverInSquadraComposizione,
     HoverOutSquadraComposizione,
     SelectSquadraComposizione,
     UnselectSquadraComposizione
-} from '../../store/actions/composizione-partenza/squadre-composizione.actions';
-import {
-    ConfirmPartenze,
-    GetFiltriComposizione
-} from '../../store/actions/composizione-partenza/composizione-partenza.actions';
+} from '../../../../shared/store/actions/squadre-composizione/squadre-composizione.actions';
+import { ConfirmPartenze } from '../../store/actions/composizione-partenza/composizione-partenza.actions';
 import { TurnoState } from '../../../navbar/store/states/turno.state';
 import { SganciamentoInterface } from 'src/app/shared/interface/sganciamento.interface';
 import { MezzoDirection } from '../../../../shared/interface/mezzo-direction';
-import { squadraComposizioneBusy } from '../shared/functions/composizione-functions';
+import { squadraComposizioneBusy } from '../../../../shared/helper/composizione-functions';
 import { ConfermaPartenze } from '../interface/conferma-partenze-interface';
 import { StatoMezzo } from '../../../../shared/enum/stato-mezzo.enum';
+import { FiltriComposizioneState } from '../../../../shared/store/states/filtri-composizione/filtri-composizione.state';
+import { GetFiltriComposizione } from '../../../../shared/store/actions/filtri-composizione/filtri-composizione.actions';
 
 @Component({
     selector: 'app-composizione-avanzata',
@@ -57,6 +56,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
     @Input() disablePrenota: boolean;
     @Input() prenotato: boolean;
     @Input() loadingInvioPartenza: boolean;
+    @Input() boxAttivi: boolean;
 
     // Mezzi Composizione
     @Select(MezziComposizioneState.mezziComposizione) mezziComposizione$: Observable<MezzoComposizione[]>;
@@ -81,7 +81,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
     idSquadraHover: string;
 
     // Filtri Composizione
-    @Select(ComposizionePartenzaState.filtriSelezionati) filtriSelezionati$: Observable<any>;
+    @Select(FiltriComposizioneState.filtriSelezionati) filtriSelezionati$: Observable<any>;
     filtriSelezionati: any;
 
     // BoxPartenza Composizione
@@ -105,8 +105,13 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
     @Output() clearDirection = new EventEmitter();
     @Output() prenota = new EventEmitter<boolean>();
     @Output() sganciamento = new EventEmitter<SganciamentoInterface>();
+    @Output() changeRicercaSquadre = new EventEmitter<string>();
+    @Output() changeRicercaMezzi = new EventEmitter<string>();
 
     statoMezzo = StatoMezzo;
+
+    ricercaSquadre: string;
+    ricercaMezzi: string;
 
     constructor(private popoverConfig: NgbPopoverConfig,
                 private tooltipConfig: NgbTooltipConfig,
@@ -256,6 +261,14 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
         this.store.dispatch(new HoverOutSquadraComposizione(squadraComposizione.id));
     }
 
+    onSearchSquadre() {
+        this.changeRicercaSquadre.emit(makeCopy(this.ricercaSquadre));
+    }
+
+    onSearchMezzi() {
+        this.changeRicercaMezzi.emit(makeCopy(this.ricercaMezzi));
+    }
+
     checkSquadraSelezione(idSquadra: string) {
         let selected = false;
         this.idSquadreSelezionate.forEach((id: string) => {
@@ -272,6 +285,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
 
     nuovaPartenza() {
         this.store.dispatch(new RequestAddBoxPartenza());
+        this.dopoAggiungiBoxPartenza();
     }
 
     eliminaBoxPartenza(boxPartenza: BoxPartenza) {
@@ -282,6 +296,16 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
             this.store.dispatch(new RemoveBoxPartenza(boxPartenza, true));
         }
         this.onClearDirection();
+    }
+
+    dopoAggiungiBoxPartenza() {
+        this.boxPartenzaList.forEach(boxPartenza => {
+            if (boxPartenza.mezzoComposizione) {
+                const mezzoComp = boxPartenza.mezzoComposizione;
+                this.store.dispatch(new DeselectBoxPartenza(boxPartenza, true));
+            }
+            this.onClearDirection();
+        });
     }
 
     // Interazione con Mappa
@@ -308,12 +332,39 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
         }
     }
 
-    confermaPartenze() {
+    confermaPartenzeInViaggio() {
         const partenze = makeCopy(this.boxPartenzaList);
         const partenzeMappedArray = partenze.map(obj => {
             const rObj = {};
             if (obj.mezzoComposizione) {
                 obj.mezzoComposizione.mezzo.stato = StatoMezzo.InViaggio;
+                rObj['mezzo'] = obj.mezzoComposizione.mezzo;
+            } else {
+                rObj['mezzo'] = null;
+            }
+            if (obj.squadraComposizione.length > 0) {
+                rObj['squadre'] = obj.squadraComposizione.map((squadraComp: SquadraComposizione) => {
+                    return squadraComp.squadra;
+                });
+            } else {
+                rObj['squadre'] = [];
+            }
+            return rObj;
+        });
+        const partenzeObj: ConfermaPartenze = {
+            partenze: partenzeMappedArray,
+            idRichiesta: this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione).codice,
+            turno: this.store.selectSnapshot(TurnoState.turnoCalendario).corrente
+        };
+        this.store.dispatch(new ConfirmPartenze(partenzeObj));
+    }
+
+    confermaPartenzeInUscita() {
+        const partenze = makeCopy(this.boxPartenzaList);
+        const partenzeMappedArray = partenze.map(obj => {
+            const rObj = {};
+            if (obj.mezzoComposizione) {
+                obj.mezzoComposizione.mezzo.stato = StatoMezzo.InUscita;
                 rObj['mezzo'] = obj.mezzoComposizione.mezzo;
             } else {
                 rObj['mezzo'] = null;

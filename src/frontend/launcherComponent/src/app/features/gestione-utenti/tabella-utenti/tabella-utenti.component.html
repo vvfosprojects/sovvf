@@ -2,8 +2,8 @@
     <table class="table table-striped app-shadow mt-2">
         <thead>
         <tr>
-            <th scope="col" width="25%">Nominativo</th>
-            <th scope="col" width="40%">Ruoli Assegnati</th>
+            <th scope="col" width="25%"><i class="fa fa-user mr-2"></i>Nominativo</th>
+            <th scope="col" width="40%"><i class="fa fa-wrench mr-2"></i>Ruoli Assegnati</th>
         </tr>
         </thead>
         <tbody>
@@ -11,11 +11,12 @@
             <td width="40%" class="pb-1">
                 <button class="btn btn-sm btn-danger font-weight-bold float-left mt-1 mr-3" ngbTooltip="Rimuovi utente"
                         placement="bottom" [disabled]="utente.id === idUtenteLoggato"
+                        [class.cursor-not-allowed]="utente.id === idUtenteLoggato"
                         (click)="onRemoveUtente(utente.codiceFiscale, utente.cognome + ' ' + utente.nome)">
                     <i class="fa fa-trash"></i>
                 </button>
                 <div class="h5 font-weight-bold mt-1 pt-1">
-                    {{utente.cognome | uppercase}} {{utente.nome | uppercase}}
+                    <span [ngbTooltip]="utente?.codiceFiscale">{{utente.cognome | uppercase}} {{utente.nome | uppercase}}</span>
                 </div>
             </td>
             <td width="60%">
@@ -53,7 +54,7 @@
                 <div *ngIf="utente?.ruoli.length <= 0 && !loading" class="d-inline-block h6 font-weight-normal">
                     <div class="badge badge-secondary d-flex align-items-center justify-content-center cursor-pointer shadow-sm py-3 px-2"
                          style="opacity:.6; min-height:67px">
-                        <span class="d-block">Solo Visualizzazione</span>
+                        <span class="d-block">Visualizzatore</span>
                     </div>
                 </div>
             </td>
@@ -69,8 +70,8 @@
     </table>
 </div>
 <div *ngIf="listaUtenti?.length > 0" class="d-flex justify-content-between p-2">
-    <app-utenti-per-pagina [pageSize]="pageSize" [pageSizes]="pageSizes"
-                           (pageSizeChange)="pageSizeChange.emit($event)"></app-utenti-per-pagina>
+    <app-select-elementi-per-pagina [pageSize]="pageSize" [pageSizes]="pageSizes" [placeholderElementi]="'utenti'"
+                                    (pageSizeChange)="pageSizeChange.emit($event)"></app-select-elementi-per-pagina>
     <pagination-controls class="mt-1 mb-0" [previousLabel]="'Precedente'" [nextLabel]="'Successiva'"
                          (pageChange)="pageChange.emit($event)">
     </pagination-controls>

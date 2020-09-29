@@ -30,6 +30,7 @@ namespace SO115App.Models.Servizi.Infrastruttura.GestioneStatoOperativoSquadra
         /// <param name="idSquadra">l'identificativo della squadra</param>
         /// <param name="idRichiesta">l'identificativo della richiesta</param>
         /// <param name="statoSquadra">lo stato operativo da trascrivere</param>
-        void SetStato(string idSquadra, string idRichiesta, string statoSquadra, string codiceSede);
+        /// <param name="codMezzo">Il codice del mezzo in cui si trova la squadra</param>
+        void SetStato(string idSquadra, string idRichiesta, string statoSquadra, string codiceSede, string codMezzo);
     }
 }

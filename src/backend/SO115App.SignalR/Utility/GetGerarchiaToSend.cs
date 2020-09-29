@@ -19,7 +19,7 @@ namespace SO115App.SignalR.Utility
             this.getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
         }
 
-        public List<string> Get(string codSedeDiPartenza)
+        public List<string> Get(string codSedeDiPartenza, string[] CodSediAllertate = null)
         {
             var listaSediAlberata = getAlberaturaUnitaOperative.ListaSediAlberata();
             var pin = new PinNodo(codSedeDiPartenza);
@@ -54,7 +54,15 @@ namespace SO115App.SignalR.Utility
                 }
             }
 
-            return ListaCodiciSediInteressate;
+            if (CodSediAllertate != null)
+            {
+                foreach (var sede in CodSediAllertate)
+                {
+                    ListaCodiciSediInteressate.Add(sede);
+                }
+            }
+
+            return ListaCodiciSediInteressate.Distinct().ToList();
         }
     }
 }

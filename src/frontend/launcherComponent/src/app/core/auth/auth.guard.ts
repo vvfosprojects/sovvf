@@ -33,8 +33,7 @@ export class AuthGuard implements CanActivate {
                      * utente loggato ma senza permesso
                      */
                     this.store.dispatch(new ShowToastr(ToastrType.Error, 'Utente non abilitato', 'La risorsa richiesta non è accessibile'));
-                    // Todo verificare se l'utente ha il permesso per entrare su home
-                    this.store.dispatch(new Navigate([ '/' + RoutesPath.Home ]));
+                    this.store.dispatch(new Navigate(['/' + RoutesPath.Home]));
                     return false;
                 }
 
@@ -43,7 +42,7 @@ export class AuthGuard implements CanActivate {
         }
         console.log('Not logged user', state.url);
         localStorage.setItem(LSNAME.redirectUrl, JSON.stringify(state.url));
-        this.store.dispatch(new Navigate([ '/' + RoutesPath.Login ]));
+        this.store.dispatch(new Navigate(['/' + RoutesPath.Login]));
         return false;
     }
 }

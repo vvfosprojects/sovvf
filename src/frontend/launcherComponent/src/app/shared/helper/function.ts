@@ -11,18 +11,19 @@ import { AreaMappa } from '../../features/home/maps/maps-model/area-mappa-model'
 import { Role, Utente } from '../model/utente.model';
 import { Sede } from '../model/sede.model';
 import { LatLngBoundsLiteral } from 'ngx-google-places-autocomplete/objects/latLng';
+import { StatoFonogramma } from '../enum/stato-fonogramma.enum';
 
 export function makeCopy(value): any {
     return (JSON.parse(JSON.stringify(value)));
 }
 
 export function wipeStatoRichiesta(stato: StatoRichiesta): string {
-    const stati: [ StatoRichiesta, string ][] = [
-        [ StatoRichiesta.Chiamata, 'chiamate' ],
-        [ StatoRichiesta.Sospesa, 'sospesi' ],
-        [ StatoRichiesta.Assegnata, 'assegnati' ],
-        [ StatoRichiesta.Presidiata, 'presidiati' ],
-        [ StatoRichiesta.Chiusa, 'chiusi' ]
+    const stati: [StatoRichiesta, string][] = [
+        [StatoRichiesta.Chiamata, 'chiamate'],
+        [StatoRichiesta.Sospesa, 'sospesi'],
+        [StatoRichiesta.Assegnata, 'assegnati'],
+        [StatoRichiesta.Presidiata, 'presidiati'],
+        [StatoRichiesta.Chiusa, 'chiusi']
     ];
     const mapTipoStato: Map<StatoRichiesta, string> = new Map(stati);
 
@@ -62,7 +63,7 @@ export function makeLatLngBounds(areaMappa: AreaMappa): LatLngBoundsLiteral {
 
 export function degToCompass(num: number) {
     const val = Math.floor((num / 22.5) + 0.5);
-    const arr = [ 'N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW' ];
+    const arr = ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW'];
     return arr[(val % 16)];
 }
 
@@ -162,6 +163,9 @@ export function roundTodecimal(value: number, exp?: number) {
 export function calcolaActionSuggeritaMezzo(stato: StatoMezzo) {
     let actionSuggerita: StatoMezzoActions;
     switch (stato) {
+        case StatoMezzo.InUscita:
+            actionSuggerita = StatoMezzoActions.InViaggio;
+            break;
         case StatoMezzo.InViaggio:
             actionSuggerita = StatoMezzoActions.SulPosto;
             break;
@@ -206,6 +210,9 @@ export function statoMezzoColor(stato: StatoMezzo) {
         case StatoMezzo.Rientrato:
             _returnColor = 'success';
             break;
+        case StatoMezzo.InUscita:
+            _returnColor = 'secondary';
+            break;
         case StatoMezzo.InViaggio:
             _returnColor = 'warning';
             break;
@@ -228,6 +235,9 @@ export function statoMezzoActionColor(stato: StatoMezzoActions) {
         case StatoMezzoActions.Rientrato:
             _returnColor = 'success';
             break;
+        case StatoMezzoActions.InUscita:
+            _returnColor = 'secondary';
+            break;
         case StatoMezzoActions.InViaggio:
             _returnColor = 'warning';
             break;
@@ -249,6 +259,9 @@ export function statoMezzoBorderClass(stato: StatoMezzo) {
             break;
         case StatoMezzo.Rientrato:
             _returnClass = 'status_border_inSede';
+            break;
+        case StatoMezzo.InUscita:
+            _returnClass = 'status_border_inUscita';
             break;
         case StatoMezzo.InViaggio:
             _returnClass = 'status_border_inViaggio';
@@ -352,4 +365,22 @@ export function _isAdministrator(utente: Utente, options?: { sede?: Sede }) {
         }
     }
     return count > 0;
+}
+
+export function getStatoFonogrammaEnumByName(name: string): StatoFonogramma {
+    switch (name) {
+        case 'Inviato':
+            return StatoFonogramma.Inviato;
+        case 'Da Inviare':
+            return StatoFonogramma.DaInviare;
+    }
+}
+
+export function getStatoFonogrammaStringByEnum(fonogrammaEnum: StatoFonogramma): string {
+    switch (fonogrammaEnum) {
+        case StatoFonogramma.Inviato:
+            return 'Inviato';
+        case StatoFonogramma.DaInviare:
+            return 'Da Inviare';
+    }
 }

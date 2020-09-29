@@ -22,6 +22,7 @@ export class ViewModeComponent {
 
     AppFeature = AppFeatures;
     OptionsRichieste = OptionsRichieste;
+    public filtriNonImplementati: boolean = true;
 
     constructor(config: NgbTooltipConfig) {
         config.container = 'body';

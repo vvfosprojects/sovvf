@@ -9,5 +9,9 @@ export enum RoutesPath {
     NotFound = '404',
     Auth = 'auth',
     CasLogout = 'caslogout',
-    UtenteNonAbilitato = 'utente-non-abilitato'
+    UtenteNonAbilitato = 'utente-non-abilitato',
+    Rubrica = 'rubrica',
+    TrasferimentoChiamata = 'trasferimento-chiamata',
+    Changelog = 'changelog',
+    Impostazioni = 'impostazioni'
 }

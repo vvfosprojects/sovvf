@@ -18,6 +18,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Queries;
+using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.API.Models.Classi.Organigramma;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.GetUtenti;
@@ -63,7 +64,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneUtente.ListaOperatori
         /// <returns>ListaOperatoriResult</returns>
         public ListaOperatoriResult Handle(ListaOperatoriQuery query)
         {
-            var codiciSede = query.CodiciSede.Split(',');
+            //var codiciSede = query.CodiciSede.Split(',');
             var utente = _getUtenteById.GetUtenteByCodice(query.IdUtente);
             var listaCodiciSedeRuoloAdmin = new List<string>();
             var sediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
@@ -71,27 +72,60 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneUtente.ListaOperatori
 
             foreach (var ruolo in utente.Ruoli.FindAll(x => x.Descrizione.Equals("Amministratore")))
             {
-                if (codiciSede.Contains(ruolo.CodSede))
+                listaCodiciSedeRuoloAdmin.Add(ruolo.CodSede);
+                if (ruolo.Ricorsivo)
                 {
-                    listaCodiciSedeRuoloAdmin.Add(ruolo.CodSede);
-                    if (ruolo.Ricorsivo)
+                    listaPin.Add(new PinNodo(ruolo.CodSede, ruolo.Ricorsivo));
+                    foreach (var figli in sediAlberate.GetSottoAlbero(listaPin))
                     {
-                        listaPin.Add(new PinNodo(ruolo.CodSede, ruolo.Ricorsivo));
-                        foreach (var figli in sediAlberate.GetSottoAlbero(listaPin))
-                        {
-                            listaCodiciSedeRuoloAdmin.Add(figli.Codice);
-                        }
+                        listaCodiciSedeRuoloAdmin.Add(figli.Codice);
                     }
                 }
             }
+
             var utentiByCodSede = _getUtenteByCodiciSedi.Get(listaCodiciSedeRuoloAdmin, query.Filters.Search);
+            if (query.Filters.CodSede != null)
+            {
+                List<Utente> listaFiltrata = new List<Utente>();
+                foreach (string sede in query.Filters.CodSede)
+                {
+                    listaFiltrata.AddRange(utentiByCodSede.FindAll(x => x.Ruoli.Any(y => y.CodSede.Equals(sede))).ToList());
+                }
+
+                utentiByCodSede = listaFiltrata.ToHashSet().ToList();
+            }
+
             utentiByCodSede.Reverse();
             var utentiPaginati = utentiByCodSede.Skip((query.Pagination.Page - 1) * query.Pagination.PageSize).Take(query.Pagination.PageSize).ToList();
             query.Pagination.TotalItems = utentiByCodSede.Count;
+
+            List<Role> listaSediPresenti = new List<Role>();
+
+            query.Filters.Search = null;
+            foreach (var UtenteInLista in _getUtenteByCodiciSedi.Get(listaCodiciSedeRuoloAdmin, query.Filters.Search))
+            {
+                foreach (var ruolo in UtenteInLista.Ruoli)
+                {
+                    Role ruoloToAdd = new Role("", ruolo.CodSede)
+                    {
+                        DescSede = ruolo.DescSede
+                    };
+
+                    if (listaSediPresenti.Count > 0)
+                    {
+                        if (listaSediPresenti.Find(x => x.CodSede.Equals(ruoloToAdd.CodSede)) == null)
+                            listaSediPresenti.Add(ruoloToAdd);
+                    }
+                    else
+                        listaSediPresenti.Add(ruoloToAdd);
+                }
+            }
+
             return new ListaOperatoriResult
             {
                 DataArray = utentiPaginati,
-                Pagination = query.Pagination
+                Pagination = query.Pagination,
+                ListaSediPresenti = listaSediPresenti.ToHashSet().ToList()
             };
         }
     }

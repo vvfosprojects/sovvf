@@ -46,6 +46,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.Marker.MezziMarker
         {
             Log.Debug("Inizio elaborazione Lista Mezzi Marker Handler");
 
+            //query.Filtro.FiltraPerAreaMappa = true;
             var mezziMarker = _iGetMezziMarker.GetListaMezziMarker(query.Filtro);
 
             Log.Debug("Fine elaborazione Lista Mezzi Marker Handler");

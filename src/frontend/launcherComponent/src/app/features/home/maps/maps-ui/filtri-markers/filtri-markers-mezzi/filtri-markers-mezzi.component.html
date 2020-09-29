@@ -1,5 +1,11 @@
 <h6>Mezzi</h6>
 <div class="mt-1">
+    <div>
+        <app-checkbox [checkboxState]="checkboxMezziAltriComandiState"
+                      (checkbox)="onChangeMezziAltriComandi($event)"></app-checkbox>
+    </div>
+</div>
+<div class="mt-2">
     <label>Stato</label>
     <div>
         <ng-select [items]="statiMezzo" [multiple]="true" placeholder="Nessuno stato selezionato"

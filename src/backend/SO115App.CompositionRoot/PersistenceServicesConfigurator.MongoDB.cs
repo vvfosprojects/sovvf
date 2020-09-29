@@ -195,6 +195,51 @@ namespace SO115App.CompositionRoot
                 SO115App.Persistence.MongoDB.GestioneInterventi.GeneraCodiceRichiesta>();
 
             #endregion Utility
+
+            #region Rubrica
+
+            container.Register<
+                SO115App.Models.Servizi.Infrastruttura.GestioneRubrica.Enti.IGetRubrica,
+                SO115App.Persistence.MongoDB.GestioneRubrica.Enti.GetRubrica>();
+
+            container.Register<
+                SO115App.Models.Servizi.Infrastruttura.GestioneRubrica.Categorie.IGetEnteCategorie,
+                SO115App.Persistence.MongoDB.GestioneRubrica.Categorie.GetEnteCategorie>();
+
+            container.Register<
+                SO115App.Models.Servizi.Infrastruttura.GestioneRubrica.Enti.IUpdateEnte,
+                SO115App.Persistence.MongoDB.GestioneRubrica.Enti.UpdateEnte>();
+
+            container.Register<
+                SO115App.Models.Servizi.Infrastruttura.GestioneRubrica.Enti.IAddEnte,
+                SO115App.Persistence.MongoDB.GestioneRubrica.Enti.AddEnte>();
+
+            container.Register<
+                SO115App.Models.Servizi.Infrastruttura.GestioneRubrica.Enti.IDeleteEnte,
+                SO115App.Persistence.MongoDB.GestioneRubrica.Enti.DeleteEnte>();
+
+
+            #endregion Rubrica
+
+            #region TrasferimentoChiamata
+
+            container.Register<
+                Models.Servizi.Infrastruttura.GestioneTrasferimentiChiamate.IAddTrasferimento,
+                Persistence.MongoDB.GestioneTrasferimentiChiamate.AddTrasferimento>();
+
+            container.Register<
+                Models.Servizi.Infrastruttura.GestioneTrasferimentiChiamate.IGetTrasferimenti,
+                Persistence.MongoDB.GestioneTrasferimentiChiamate.GetTrasferimenti>();
+
+            container.Register<
+                Models.Servizi.Infrastruttura.GestioneTrasferimentiChiamate.IDeleteTrasferimento,
+                Persistence.MongoDB.GestioneTrasferimentiChiamate.DeleteTrasferimento>();
+
+            container.Register<
+                Models.Servizi.Infrastruttura.GestioneTrasferimentiChiamate.CodiciChiamate.IGetCodiciChiamate,
+                Persistence.MongoDB.GestioneTrasferimentiChiamate.CodiciChiamate.GetCodiciChiamate>();
+
+            #endregion
         }
     }
 }

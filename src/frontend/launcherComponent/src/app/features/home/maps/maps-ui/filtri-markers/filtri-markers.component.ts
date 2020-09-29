@@ -10,7 +10,7 @@ import {
     UpdateStatiMezzi,
     UpdateStatiRichiesta,
     UpdateGenereMezzi,
-    ToggleGestitaSC
+    ToggleGestitaSC, UpdateMezziAltriComandi
 } from '../../../store/actions/maps/filtri-markers.actions';
 import { StatoRichiesta } from '../../../../../shared/enum/stato-richiesta.enum';
 import { FiltroMezzi } from '../../maps-model/filtro-mezzi.interface';
@@ -51,6 +51,10 @@ export class FiltriMarkersComponent {
 
     changeStatiRichiesta(statiRichiesta: StatoRichiesta[]) {
         this.store.dispatch(new UpdateStatiRichiesta(statiRichiesta));
+    }
+
+    onChangeMezziAltriComandi(status: boolean) {
+        this.store.dispatch(new UpdateMezziAltriComandi(status));
     }
 
     changeStatiMezzi(statiMezzi: StatoMezzo[]) {

@@ -18,27 +18,21 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Queries;
-using SO115App.API.Models.Servizi.CQRS.Queries.Filtri;
-using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes;
-using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
-using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza;
-using SO115App.API.Models.Servizi.CQRS.Queries.Marker.CentroMappaMarker;
-using SO115App.API.Models.Servizi.CQRS.Queries.Marker.ListaChiamateInCorsoMarker;
-using SO115App.Models.Classi.Marker;
-using System.Collections.Generic;
-using SO115App.Models.Servizi.CQRS.Queries.GestioneSchedeNue.GetContatoreSchede;
-using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
-using SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.Tipologie;
-using SO115App.API.Models.Classi.Organigramma;
-using System.Linq;
 using Serilog;
+using SO115App.API.Models.Classi.Organigramma;
+using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza;
+using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
+using SO115App.Models.Classi.Filtri;
+using SO115App.Models.Servizi.CQRS.Queries.GestioneRubrica;
 using SO115App.Models.Servizi.Infrastruttura.Box;
-using SO115App.Models.Servizi.Infrastruttura.Marker;
+using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
 using SO115App.Models.Servizi.Infrastruttura.GetFiltri;
+using SO115App.Models.Servizi.Infrastruttura.Marker;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
-using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
 {
@@ -58,6 +52,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
         private readonly IGetConteggioSchede _getConteggioSchedeHandler;
         private readonly IGetTipologieByCodice _tipologieQueryHandler;
         private readonly IGetAlberaturaUnitaOperative _getAlberaturaUnitaOperative;
+        private readonly IQueryHandler<RubricaQuery, RubricaResult> _rubricaQueryHandler;
 
         public WelcomeQueryHandler(IGetBoxMezzi boxMezziHandler,
             IGetBoxPersonale boxPersonaleHandler,
@@ -69,7 +64,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
             IGetListaDistaccamentiByPinListaSedi getDistaccamenti,
             IGetConteggioSchede getConteggioSchedeHandler,
             IGetTipologieByCodice tipologieQueryHandler,
-            IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative)
+            IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative,
+            IQueryHandler<RubricaQuery, RubricaResult> rubricaQueryHandler)
         {
             this._boxMezziHandler = boxMezziHandler;
             this._boxPersonaleHandler = boxPersonaleHandler;
@@ -82,6 +78,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
             this._getConteggioSchedeHandler = getConteggioSchedeHandler;
             this._tipologieQueryHandler = tipologieQueryHandler;
             this._getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
+            this._rubricaQueryHandler = rubricaQueryHandler;
         }
 
         /// <summary>
@@ -131,6 +128,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
 
             try
             {
+                var rubrica = _rubricaQueryHandler.Handle(new RubricaQuery() { IdOperatore = query.idOperatore, IdSede = query.CodiceSede, Filters = new FiltriRubrica() { Search = "" }, Pagination = default }).DataArray;
                 var boxListaInterventi = _boxRichiesteHandler.Get(pinNodi.ToHashSet());
                 var boxListaMezzi = _boxMezziHandler.Get(query.CodiceSede);
                 var boxListaPersonale = _boxPersonaleHandler.Get(query.CodiceSede);
@@ -151,7 +149,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
                     CentroMappaMarker = centroMappaMarker,
                     ListaFiltri = listaFiltri,
                     InfoNue = infoNue,
-                    Tipologie = tipologie
+                    Tipologie = tipologie,
+                    Rubrica = rubrica
                 };
 
                 Log.Debug("Fine elaborazione Welcome Handler");

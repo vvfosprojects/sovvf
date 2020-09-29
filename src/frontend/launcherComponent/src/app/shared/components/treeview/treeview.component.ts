@@ -3,7 +3,9 @@ import {
     EventEmitter,
     HostListener,
     Input, isDevMode,
-    OnChanges, OnDestroy, OnInit,
+    OnChanges,
+    OnDestroy,
+    OnInit,
     Output,
     SimpleChanges,
     ViewChild,
@@ -17,6 +19,7 @@ import { Ricorsivo, TreeviewEmitterInterface } from '../../interface/treeview.in
 import { TreeviewSelezione } from '../../model/treeview-selezione.model';
 import { sedeString } from '../../store/states/sedi-treeview/sedi-treeview.helper';
 import { Observable } from 'rxjs';
+import { LSNAME } from '../../../core/settings/config';
 
 
 @Component({
@@ -38,6 +41,8 @@ export class TreeviewComponent implements OnChanges, OnDestroy, OnInit {
     @Input() placement: string;
     @Input() maxHeight: number;
     @Input() disabled: boolean;
+    @Input() cache = false;
+
     @Output() annullaSelezione = new EventEmitter();
     @Output() confermaSelezione = new EventEmitter<TreeviewSelezione[]>();
     @Output() patchSelezione = new EventEmitter<TreeviewEmitterInterface>();
@@ -188,6 +193,9 @@ export class TreeviewComponent implements OnChanges, OnDestroy, OnInit {
                     log: `nessuna sede selezionata`
                 };
             }
+        }
+        if (unique[0] && this.cache) {
+            sessionStorage.setItem(LSNAME.cacheSedi, unique[0]);
         }
         if (this.visualizzaTasti) {
             // console.log(eventEmitter);

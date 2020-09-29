@@ -1,6 +1,10 @@
-agm-map {
+.agm-map-750 {
     height: 750px;
 }
+
+.agm-map-850 {
+     height: 850px;
+ }
 
 .tutto-schermo-mappa {
     width: 100%;

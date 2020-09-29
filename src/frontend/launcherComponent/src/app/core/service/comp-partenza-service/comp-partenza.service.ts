@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
-import { ListaComposizioneAvanzata } from '../../../features/home/composizione-partenza/interface/lista-composizione-avanzata-interface';
+import { ListaComposizioneAvanzata } from '../../../shared/interface/lista-composizione-avanzata-interface';
 import { ConfermaPartenze } from '../../../features/home/composizione-partenza/interface/conferma-partenze-interface';
 import { IdPreaccoppiati } from '../../../features/home/composizione-partenza/interface/id-preaccoppiati-interface';
 import { ComposizioneFilterbar } from '../../../features/home/composizione-partenza/interface/composizione/composizione-filterbar-interface';
@@ -13,7 +13,9 @@ const API_URL_AVANZATA = BASE_URL + environment.apiUrl.composizione.avanzata;
 const API_URL_PRENOTAZIONE = BASE_URL + environment.apiUrl.composizione.prenotazione;
 const API_URL_CONFERMA_PARTENZA = BASE_URL + environment.apiUrl.composizione.confermaPartenze;
 
-@Injectable()
+@Injectable({
+    providedIn: 'root'
+})
 export class CompPartenzaService {
 
     constructor(private http: HttpClient) {

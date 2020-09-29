@@ -36,10 +36,10 @@
     </form>
 </div>
 <div class="modal-footer">
-    <button class="btn btn-lg btn-secondary text-right" style="font-weight:600" (click)="onCancel()">
+    <button class="btn btn-lg btn-secondary text-right btn-no-hover" style="font-weight:600" (click)="onCancel()">
         {{ 'Annulla' | uppercase }}
     </button>
-    <button class="btn btn-lg btn-danger text-right" style="font-weight:600" [disabled]="!eliminaPartenzaForm.valid"
+    <button class="btn btn-lg btn-danger text-right btn-no-hover" style="font-weight:600" [disabled]="!eliminaPartenzaForm.valid"
             (click)="onSubmit()">
         {{ 'Elimina Partenza' | uppercase }}
     </button>

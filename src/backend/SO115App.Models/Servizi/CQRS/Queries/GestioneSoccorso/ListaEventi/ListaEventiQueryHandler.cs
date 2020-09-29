@@ -21,10 +21,14 @@ using CQRS.Queries;
 using Serilog;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Soccorso.Eventi;
+using SO115App.API.Models.Classi.Soccorso.Eventi.Fonogramma;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
+using SO115App.Models.Classi.Soccorso.Eventi;
+using SO115App.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.CustomMapper;
+using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti;
 using SO115App.Models.Servizi.Infrastruttura.GetListaEventi;
 using System;
 using System.Collections.Generic;
@@ -60,13 +64,15 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
     public class ListaEventiQueryHandler : IQueryHandler<ListaEventiQuery, ListaEventiResult>
     {
         private readonly IGetListaEventi _iEventi;
+        private readonly IGetUtenteById _getUtenteById;
 
         /// <summary>
         ///   Costruttore della classe
         /// </summary>
-        public ListaEventiQueryHandler(IGetListaEventi iEventi)
+        public ListaEventiQueryHandler(IGetListaEventi iEventi, IGetUtenteById getUtenteById)
         {
             this._iEventi = iEventi;
+            this._getUtenteById = getUtenteById;
         }
 
         /// <summary>
@@ -82,12 +88,14 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
             var eventiMapper = new List<MapperEventoSuEventoGui>();
             foreach (var evento in eventi)
             {
+                var operatore = _getUtenteById.GetUtenteByCodice(evento.CodiceFonte);
                 var eventoMapper = new MapperEventoSuEventoGui
                 {
                     NomeClasseEvento = MapEvento(evento),
                     IstanteEvento = evento.Istante,
                     Targa = MapTarghe(evento),
-                    Note = MapNote(evento)
+                    Note = MapNote(evento),
+                    Operatore = operatore.Nome + " " + operatore.Cognome
                 };
                 eventiMapper.Add(eventoMapper);
             }
@@ -107,12 +115,17 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
                 case RevocaPerAltraMotivazione _:
                     return ((RevocaPerAltraMotivazione)evento).Motivazione;
 
+                case RevocaPerSostituzioneMezzo _:
+                    return ((RevocaPerSostituzioneMezzo)evento).Motivazione;
+
                 case RevocaPerRiassegnazione _:
                     string codRichiesta;
                     if (((RevocaPerRiassegnazione)evento).RichiestaSubentrata.CodRichiesta.Trim().Length > 0)
                         return ((RevocaPerRiassegnazione)evento).RichiestaSubentrata.CodRichiesta;
                     else
                         return ((RevocaPerRiassegnazione)evento).RichiestaSubentrata.Codice;
+
+                case AllertaSedi _:
 
                 default:
                     return "";
@@ -123,14 +136,24 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
         {
             var targa = "";
 
+            if(evento is RevocaPerSostituzioneMezzo)
+            {
+                targa = ((RevocaPerSostituzioneMezzo)evento).CodiceMezzo;
+            }
+
             if (evento is ComposizionePartenze)
             {
-                targa = ((ComposizionePartenze)evento).Partenza.Mezzo.Descrizione;
+                targa = ((ComposizionePartenze)evento).Partenza.Mezzo.Codice;
             }
 
             if (evento is ArrivoSulPosto)
             {
                 targa = ((ArrivoSulPosto)evento).CodiceMezzo;
+            }
+
+            if (evento is UscitaPartenza)
+            {
+                targa = ((UscitaPartenza)evento).CodiceMezzo;
             }
 
             if (evento is PartenzaInRientro)
@@ -185,6 +208,9 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
                 case ArrivoSulPosto _:
                     return Costanti.ArrivoSulPosto;
 
+                case UscitaPartenza _:
+                    return Costanti.UscitaPartenza;
+
                 case RichiestaPresidiata _:
                     return Costanti.RichiestaPresidiata;
 
@@ -220,6 +246,18 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
 
                 case AnnullamentoPresaInCarico _:
                     return Costanti.AnnullamentoPresaInCarico;
+
+                case InviareFonogramma _:
+                    return Costanti.FonogrammaDaInviare;
+
+                case FonogrammaInviato _:
+                    return Costanti.FonogrammaInviato;
+
+                case AllertaSedi _:
+                    return Costanti.AllertaAltreSedi;
+
+                case RevocaPerSostituzioneMezzo _:
+                    return Costanti.RevocaPerSostituzioneMezzo;
 
                 default:
                     return Costanti.EventoGenerico;

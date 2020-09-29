@@ -4,7 +4,8 @@ import {
     CasLogout,
     CasResponse,
     ClearAuth,
-    ClearCurrentUser, ClearDataUser,
+    ClearCurrentUser,
+    ClearDataUser,
     GetAuth,
     Logout,
     RecoveryUrl,
@@ -113,7 +114,7 @@ export class AuthState {
                 currentJwt: action.currentJwt,
                 currentTicket: null
             });
-            dispatch([ new SetLogged() ]);
+            dispatch([new SetLogged()]);
         }
     }
 
@@ -121,7 +122,12 @@ export class AuthState {
     setCurrentUser({ patchState, dispatch }: StateContext<AuthStateModel>, { currentUser }: SetCurrentUser) {
         sessionStorage.setItem(LSNAME.currentUser, JSON.stringify(currentUser));
         patchState({ currentUser });
-        dispatch(new SetVistaSedi([ currentUser.sede.codice ]));
+        const cS: any = sessionStorage.getItem(LSNAME.cacheSedi);
+        let codice = currentUser.sede.codice;
+        if (cS) {
+            codice = cS;
+        }
+        dispatch(new SetVistaSedi([codice]));
     }
 
     @Action(UpdateCurrentUser)
@@ -144,7 +150,7 @@ export class AuthState {
                         new UpdateRuoliUtenteLoggato(utente.ruoli)
                     ]);
                     if (!_isAdministrator(utente)) {
-                        dispatch(new Navigate([ '/home' ]));
+                        dispatch(new Navigate(['/home']));
                     }
                 }
             }
@@ -182,9 +188,9 @@ export class AuthState {
         console.log('RecoveryUrl', currentUrl);
         if (currentUrl) {
             localStorage.removeItem(LSNAME.redirectUrl);
-            dispatch(new Navigate([ currentUrl ]));
+            dispatch(new Navigate([currentUrl]));
         } else {
-            dispatch(new Navigate([ '/' + RoutesPath.Home ]));
+            dispatch(new Navigate(['/' + RoutesPath.Home]));
         }
     }
 
@@ -204,7 +210,7 @@ export class AuthState {
         if (!action.ticket) {
             dispatch(new CasLogin());
         } else {
-            dispatch([ new SetCurrentTicket(action.ticket) ]);
+            dispatch([new SetCurrentTicket(action.ticket)]);
         }
     }
 
@@ -217,7 +223,7 @@ export class AuthState {
     clearAuth({ dispatch, patchState }: StateContext<AuthStateModel>) {
         patchState(AuthStateDefaults);
         this.removeStorage();
-        dispatch(new Navigate([ '/login' ]));
+        dispatch(new Navigate(['/login']));
     }
 
     @Action(ClearDataUser)
@@ -258,6 +264,7 @@ export class AuthState {
         sessionStorage.removeItem(LSNAME.currentUser);
         sessionStorage.removeItem(LSNAME.casLogin);
         localStorage.removeItem(LSNAME.redirectUrl);
+        sessionStorage.removeItem(LSNAME.cacheSedi);
     }
 
 }

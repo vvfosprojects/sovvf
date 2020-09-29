@@ -21,6 +21,6 @@ namespace SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi
 {
     public interface ISetStatoOperativoMezzo
     {
-        void Set(string codiceSede, string codiceMezzo, string statoOperativo, string idRichiesta);
+        void Set(string codiceSede, string codiceMezzo, string statoOperativo, string codRichiesta);
     }
 }

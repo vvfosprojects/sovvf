@@ -9,6 +9,8 @@ import { TipoTerrenoMqHa } from '../../../../shared/interface/tipo-terreno-mq-ha
 import { AttivitaUtente } from '../../../../shared/model/attivita-utente.model';
 import { round1decimal } from '../../../../shared/helper/function';
 import { Mezzo } from 'src/app/shared/model/mezzo.model';
+import { Sede } from '../../../../shared/model/sede.model';
+import { Tipologia } from '../../../../shared/model/tipologia.model';
 
 export class HelperSintesiRichiesta {
 
@@ -24,6 +26,7 @@ export class HelperSintesiRichiesta {
             id: string;
             nome: string;
         }
+
         const nomiSquadre: string[] = [];
         const squadre: SquadraPartenza[] = [];
 
@@ -47,7 +50,7 @@ export class HelperSintesiRichiesta {
 
         return nomiSquadre;
     }
-    
+
     /* Restituisce il mezzo */
     mezziRichiesta(richiesta: SintesiRichiesta): Mezzo[] {
         const mezzi = [];
@@ -101,7 +104,11 @@ export class HelperSintesiRichiesta {
     }
 
     /* Permette di colorare l'icona della tipologia */
-    coloraIcona(nome: any): any {
+    coloraIcona(tipologia: Tipologia): string {
+        if (!tipologia) {
+            return 'fa fa-exclamation-triangle text-warning';
+        }
+        const nome = tipologia.icona;
         if (nome) {
             const colori = [
                 {
@@ -319,6 +326,20 @@ export class HelperSintesiRichiesta {
     _altriUtenti(attivita: AttivitaUtente[]): AttivitaUtente[] {
         if (attivita) {
             return attivita.slice(1);
+        }
+        return null;
+    }
+
+    _primaSedeAllertata(sediAllertate: Sede[]): string {
+        if (sediAllertate && sediAllertate[0]) {
+            return sediAllertate[0].descrizione;
+        }
+        return null;
+    }
+
+    _altreSediAllertate(sediAllertate: Sede[]): string[] {
+        if (sediAllertate) {
+            return sediAllertate.slice(1).map((s: Sede) => s.descrizione);
         }
         return null;
     }

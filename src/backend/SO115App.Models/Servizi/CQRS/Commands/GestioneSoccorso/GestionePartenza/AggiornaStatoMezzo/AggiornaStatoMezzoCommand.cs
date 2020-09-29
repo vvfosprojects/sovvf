@@ -19,6 +19,7 @@
 //-----------------------------------------------------------------------
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
+using System;
 
 namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AggiornaStatoMezzo
 {
@@ -30,6 +31,8 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 
         public string IdMezzo { get; set; }
         public string StatoMezzo { get; set; }
+
+        public DateTime DataOraAggiornamento { get; set; }
 
         public SintesiRichiesta Chiamata { get; set; }
 

@@ -1,42 +1,60 @@
 import { Component, OnDestroy, OnInit, isDevMode } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import { EventiRichiestaState } from '../store/states/eventi/eventi-richiesta.state';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { EventoRichiesta } from '../../../shared/model/evento-richiesta.model';
 import { FiltroTargaMezzo } from './filtro-targa-mezzo.interface';
 import { SetFiltroTargaMezzo, ToggleIconeNomeClasseEvento } from '../store/actions/eventi/eventi-richiesta.actions';
 import { LoadingState } from '../../../shared/store/states/loading/loading.state';
+import { ImpostazioniState } from '../../../shared/store/states/impostazioni/impostazioni.state';
 
 @Component({
-  selector: 'app-eventi-richiesta',
-  templateUrl: './eventi-richiesta.component.html',
-  styleUrls: ['./eventi-richiesta.component.css']
+    selector: 'app-eventi-richiesta',
+    templateUrl: './eventi-richiesta.component.html',
+    styleUrls: ['./eventi-richiesta.component.css']
 })
 export class EventiRichiestaComponent implements OnInit, OnDestroy {
 
-  @Select(EventiRichiestaState.listaEventiFiltrata) eventiRichiesta$: Observable<EventoRichiesta[]>;
-  @Select(EventiRichiestaState.listaTargaMezzo) listaTargaMezzo$: Observable<FiltroTargaMezzo[]>;
-  @Select(EventiRichiestaState.codiceRichiesta) codiceRichiesta$: Observable<string>;
-  @Select(EventiRichiestaState.targheSelezionate) targheSelezionate$: Observable<string[]>;
-  @Select(EventiRichiestaState.visualizzazioneIconeNomeClasseEvento) visualizzazioneIconeNomeClasseEvento$: Observable<boolean>;
-  @Select(LoadingState.loading) loading$: Observable<boolean>;
+    @Select(EventiRichiestaState.listaEventiFiltrata) eventiRichiesta$: Observable<EventoRichiesta[]>;
+    @Select(EventiRichiestaState.listaTargaMezzo) listaTargaMezzo$: Observable<FiltroTargaMezzo[]>;
+    @Select(EventiRichiestaState.codiceRichiesta) codiceRichiesta$: Observable<string>;
+    @Select(EventiRichiestaState.targheSelezionate) targheSelezionate$: Observable<string[]>;
+    @Select(EventiRichiestaState.visualizzazioneIconeNomeClasseEvento) visualizzazioneIconeNomeClasseEvento$: Observable<boolean>;
+    @Select(LoadingState.loading) loading$: Observable<boolean>;
 
-  constructor(private store: Store) {
-  }
+    @Select(ImpostazioniState.visualizzazioneTestualeEventi) visualizzazioneTestualeEventi$: Observable<boolean>;
 
-  ngOnInit(): void {
-    isDevMode() && console.log('Componente Eventi Richiesta Creato');
-  }
 
-  ngOnDestroy(): void {
-    isDevMode() && console.log('Componente Eventi Richiesta Distrutto');
-  }
+    private subscription: Subscription = new Subscription();
 
-  onSelezioneTarga($event) {
-    this.store.dispatch(new SetFiltroTargaMezzo($event));
-  }
+    constructor(private store: Store) {
+        this.getVisualizzazioneTestualeEventi();
+    }
 
-  toggleIconeNomeClasseEvento() {
-    this.store.dispatch(new ToggleIconeNomeClasseEvento());
-  }
+    ngOnInit(): void {
+        isDevMode() && console.log('Componente Eventi Richiesta Creato');
+    }
+
+    ngOnDestroy(): void {
+        isDevMode() && console.log('Componente Eventi Richiesta Distrutto');
+        this.subscription.unsubscribe();
+    }
+
+    onSelezioneTarga($event): void {
+        this.store.dispatch(new SetFiltroTargaMezzo($event));
+    }
+
+    toggleIconeNomeClasseEvento(): void {
+        this.store.dispatch(new ToggleIconeNomeClasseEvento());
+    }
+
+    getVisualizzazioneTestualeEventi(): void {
+        this.subscription.add(
+            this.visualizzazioneTestualeEventi$.subscribe((value: boolean) => {
+                if (value) {
+                    this.store.dispatch(new ToggleIconeNomeClasseEvento());
+                }
+            })
+        );
+    }
 }

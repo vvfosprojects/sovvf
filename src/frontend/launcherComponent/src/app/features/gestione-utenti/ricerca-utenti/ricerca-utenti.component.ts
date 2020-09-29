@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { Ruolo } from '../../../shared/model/utente.model';
-import { CheckboxInterface } from '../../../shared/interface/checkbox.interface';
 import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
+import { Ruolo } from '../../../shared/model/utente.model';
 
 @Component({
     selector: 'app-ricerca-utenti',
@@ -17,13 +16,19 @@ export class RicercaUtentiComponent {
 
     @Output() ricercaChange = new EventEmitter<any>();
     @Output() filtroChange = new EventEmitter<string>();
+    @Output() filtriReset = new EventEmitter<any>();
 
+    sediFiltroSearch: string;
 
     constructor(config: NgbDropdownConfig) {
         config.placement = 'bottom-right';
     }
 
     _isSelected(codSede: string): boolean {
-        return this.sediFiltroSelezionate.filter(s => s === codSede).length > 0;
+        return this.sediFiltroSelezionate && this.sediFiltroSelezionate.filter(s => s === codSede).length > 0;
+    }
+
+    resetFiltriSedi() {
+        this.filtriReset.emit();
     }
 }

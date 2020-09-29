@@ -28,17 +28,18 @@ import { Images } from './shared/enum/images.enum';
 import { AuthState } from './features/auth/store/auth.state';
 import { LSNAME } from './core/settings/config';
 import { SetCurrentJwt, SetCurrentUser, SetLoggedCas } from './features/auth/store/auth.actions';
+import { GetImpostazioniLocalStorage } from './shared/store/actions/impostazioni/impostazioni.actions';
 
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
-    styleUrls: [ './app.component.css' ]
+    styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
 
     private subscription = new Subscription();
     private imgs = [];
-    private deniedPath = [ RoutesPath.NotFound.toString(), RoutesPath.Login.toString() ];
+    private deniedPath = [RoutesPath.NotFound.toString(), RoutesPath.Login.toString()];
     private height;
     private availHeight;
     private currentUrl: string;
@@ -73,6 +74,7 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
                 private _permessiService: PermessiService,
                 private versionCheckService: VersionCheckService,
                 private modals: NgbModal) {
+        this.getImpostazioniLocalStorage();
         this.getSessionData();
         router.events.subscribe((val) => {
             if (val instanceof NavigationEnd) {
@@ -98,8 +100,12 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
         this.subscription.unsubscribe();
     }
 
-    _toggleOpened() {
+    _toggleOpened(): void {
         this._opened = !this._opened;
+    }
+
+    getImpostazioniLocalStorage(): void {
+        this.store.dispatch(new GetImpostazioniLocalStorage());
     }
 
     private initSubscription(): void {
@@ -110,16 +116,16 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
         this.subscription.add(this.user$.subscribe((user: Utente) => {
             this.user = user;
             if (user && user.sede) {
-                this.listeSediLoaded && this.store.dispatch(new PatchListaSediNavbar([ user.sede.codice ]));
+                this.listeSediLoaded && this.store.dispatch(new PatchListaSediNavbar([user.sede.codice]));
             } else {
                 this.store.dispatch(new ClearListaSediNavbar());
             }
         }));
         this.subscription.add(this.listeSediLoaded$.subscribe((r: boolean) => {
             this.listeSediLoaded = r;
-            r && this.store.dispatch(new PatchListaSediNavbar([ this.user.sede.codice ]));
+            r && this.store.dispatch(new PatchListaSediNavbar([this.user.sede.codice]));
         }));
-        this.subscription.add(this.vistaSedi$.subscribe(r => r && this.store.dispatch(new PatchListaSediNavbar([ ...r ]))));
+        this.subscription.add(this.vistaSedi$.subscribe(r => r && this.store.dispatch(new PatchListaSediNavbar([...r]))));
     }
 
     private _isReady(status: boolean): void {
@@ -131,7 +137,8 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
     }
 
     private getHeight(): void {
-        if (this.currentUrl === RoutesPath.Home || this.currentUrl === RoutesPath.GestioneUtenti) {
+        // tslint:disable-next-line:max-line-length
+        if (_isActive(this.currentUrl)) {
             const availHeight = window.innerHeight;
             const height = this.contentElement.nativeElement.offsetHeight;
             if (height) {
@@ -145,6 +152,25 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
                     this.availHeight = availHeight;
                     this.store.dispatch(new SetAvailHeight(availHeight));
                 }
+            }
+        }
+
+        function _isActive(currentUrl): boolean {
+            switch (currentUrl) {
+                case RoutesPath.Home:
+                    return true;
+                case RoutesPath.GestioneUtenti:
+                    return true;
+                case RoutesPath.TrasferimentoChiamata:
+                    return true;
+                case RoutesPath.Rubrica:
+                    return true;
+                case RoutesPath.Changelog:
+                    return true;
+                case RoutesPath.Impostazioni:
+                    return true;
+                default:
+                    return false;
             }
         }
     }

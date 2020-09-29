@@ -11,11 +11,16 @@ export class ComposizioneButtonsComponent {
     @Input() disableConfirmPartenza = true;
     @Input() disableConfirmPrenota = true;
     @Input() prenotato = false;
-    @Output() confirmPartenza = new EventEmitter();
+    @Output() confirmPartenzaInViaggio = new EventEmitter();
+    @Output() confirmPartenzaInUscita = new EventEmitter();
     @Output() confirmPrenota = new EventEmitter<boolean>();
 
-    _confirmPartenza(): void {
-        this.confirmPartenza.emit();
+    _confirmPartenzaInViaggio(): void {
+        this.confirmPartenzaInViaggio.emit();
+    }
+
+    _confirmPartenzaInUscita(): void {
+        this.confirmPartenzaInUscita.emit();
     }
 
     _confirmPrenota(): void {

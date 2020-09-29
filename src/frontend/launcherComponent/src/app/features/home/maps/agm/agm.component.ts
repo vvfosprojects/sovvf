@@ -40,7 +40,7 @@ declare var google: any;
 @Component({
     selector: 'app-agm',
     templateUrl: './agm.component.html',
-    styleUrls: [ './agm.component.css' ]
+    styleUrls: ['./agm.component.css']
 })
 
 export class AgmComponent implements OnDestroy {
@@ -52,6 +52,8 @@ export class AgmComponent implements OnDestroy {
     @Input() viewStateMappa: ViewInterfaceMaps;
     @Input() composizioneMarkers: ComposizioneMarker[];
     @Input() schedeContattoMarkers: SchedaContattoMarker[];
+    @Input() boxAttivi: boolean;
+
     @Output() mapFullyLoaded = new EventEmitter<boolean>();
     cachedMarkers: CachedMarker[] = [];
     AppFeatures = AppFeatures;
@@ -343,10 +345,10 @@ export class AgmComponent implements OnDestroy {
      */
     mapZoomToRound(): Map<number, number> {
         return new Map([
-            [ 6, 0 ],
-            [ 7, 1 ], [ 8, 1 ], [ 9, 1 ],
-            [ 10, 2 ], [ 11, 2 ], [ 12, 2 ], [ 13, 2 ],
-            [ 14, 3 ], [ 15, 3 ], [ 16, 3 ], [ 17, 3 ], [ 18, 3 ]
+            [6, 0],
+            [7, 1], [8, 1], [9, 1],
+            [10, 2], [11, 2], [12, 2], [13, 2],
+            [14, 3], [15, 3], [16, 3], [17, 3], [18, 3]
         ]);
     }
 

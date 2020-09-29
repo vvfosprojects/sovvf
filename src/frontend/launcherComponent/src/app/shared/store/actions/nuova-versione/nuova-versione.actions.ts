@@ -17,3 +17,11 @@ export class SetCurrentVersion {
 export class GetNewVersion {
     static readonly type = '[NewVersion] Get New Version';
 }
+
+export class OpenModalNewVersionSoon {
+    static readonly type = '[NewVersion] Get New Version Soon';
+}
+
+export class OpenModalNewFeaturesInfo {
+    static readonly type = '[NewVersion] Get New Features Info';
+}
