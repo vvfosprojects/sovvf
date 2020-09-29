@@ -10,6 +10,7 @@ import { AttivitaUtente } from '../../../../shared/model/attivita-utente.model';
 import { round1decimal } from '../../../../shared/helper/function';
 import { Mezzo } from 'src/app/shared/model/mezzo.model';
 import { Sede } from '../../../../shared/model/sede.model';
+import { Tipologia } from '../../../../shared/model/tipologia.model';
 
 export class HelperSintesiRichiesta {
 
@@ -103,7 +104,11 @@ export class HelperSintesiRichiesta {
     }
 
     /* Permette di colorare l'icona della tipologia */
-    coloraIcona(nome: any): any {
+    coloraIcona(tipologia: Tipologia): string {
+        if (!tipologia) {
+            return 'fa fa-exclamation-triangle text-warning';
+        }
+        const nome = tipologia.icona;
         if (nome) {
             const colori = [
                 {

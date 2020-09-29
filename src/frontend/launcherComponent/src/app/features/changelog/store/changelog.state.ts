@@ -8,8 +8,8 @@ export interface ChangelogStateModel {
 export const ChangelogStateDefaults: ChangelogStateModel = {
     listaChangelog: [
         {
-            nomeVersione: 'Versione di Ottobre',
-            dataRilascio: new Date().toString(),
+            nomeVersione: 'Versione del 29 settembre 2020',
+            dataRilascio: '29/09/2020 13:00',
             capitoli: [
                 {
                     titolo: 'Possibilità di consultare e modificare la Rubrica',
