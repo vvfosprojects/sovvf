@@ -46,7 +46,10 @@ namespace SO115App.Persistence.MongoDB.GestioneSedi
                 {
                     listaSedi = _dbContext.SediCollection.Find(x => x.codProv.Equals(CodSede) && x.codFiglio_TC.Equals("1000")).ToList();
                     sede = listaSedi.Find(x => x.codFiglio_TC.Equals(1000) && x.codProv.Equals(CodSede));
-                    coordinate = new Coordinate(sede.latitudine, sede.longitudine);
+                    if (sede != null)
+                        coordinate = new Coordinate(sede.latitudine, sede.longitudine);
+                    else
+                        coordinate = null;
                 }
             }
             else
