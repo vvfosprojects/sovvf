@@ -10,6 +10,7 @@ namespace SO115App.Persistence.MongoDB.GestioneTrasferimentiChiamate
     public class GetTrasferimenti : IGetTrasferimenti
     {
         private readonly DbContext _dbContext;
+
         public GetTrasferimenti(DbContext dbContext) => _dbContext = dbContext;
 
         public List<TrasferimentoChiamata> GetAll(string[] CodiciSedi, string textSearch)
@@ -17,7 +18,7 @@ namespace SO115App.Persistence.MongoDB.GestioneTrasferimentiChiamate
             var text = textSearch?.ToLower() ?? "";
 
             return _dbContext.TrasferimentiChiamateCollection
-                .Find(c => c.CodRichiesta.ToLower().Contains(text) && (CodiciSedi.Contains(c.CodSedeA) || CodiciSedi.Contains(c.CodSedeDa)))
+                .Find(c => c.CodChiamata.ToLower().Contains(text) && (CodiciSedi.Contains(c.CodSedeA) || CodiciSedi.Contains(c.CodSedeDa)))
                 .ToList();
         }
 

@@ -14,6 +14,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneTrasfer
         private readonly IGetRichiestaById _getRichiestaById;
         private readonly IGetDistaccamentoByCodiceSede _getSede;
         private readonly IGetUtenteById _getUtenteById;
+
         public AddTrasferimentoCommandHandler(IAddTrasferimento addTrasferimento,
             IGetRichiestaById getRichiestaById,
             IGetDistaccamentoByCodiceSede getSede,
@@ -28,7 +29,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneTrasfer
         public void Handle(AddTrasferimentoCommand command)
         {
             //GESTIONE RICHIESTA E TRASFERIMENTO
-            var richiesta = _getRichiestaById.GetByCodice(command.TrasferimentoChiamata.CodRichiesta);
+            var richiesta = _getRichiestaById.GetByCodice(command.TrasferimentoChiamata.CodChiamata);
 
             command.TrasferimentoChiamata.CodSedeDa = richiesta.CodSOCompetente;
             richiesta.CodSOCompetente = command.TrasferimentoChiamata.CodSedeA;

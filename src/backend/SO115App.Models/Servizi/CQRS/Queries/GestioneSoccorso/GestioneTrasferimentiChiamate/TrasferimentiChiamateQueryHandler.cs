@@ -16,6 +16,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GestioneTrasferi
         private readonly IGetUtenteById _getUtenteById;
         private readonly IGetDistaccamentoByCodiceSede _getDistaccamentoByCodiceSede;
         private readonly GerarchiaReader _getGerarchia;
+
         public TrasferimentiChiamateQueryHandler(IGetTrasferimenti getTrasferimenti,
             IGetUtenteById getUtenteById,
             IGetDistaccamentoByCodiceSede getDistaccamentoByCodiceSede,
@@ -25,7 +26,6 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GestioneTrasferi
             _getUtenteById = getUtenteById;
             _getDistaccamentoByCodiceSede = getDistaccamentoByCodiceSede;
             _getGerarchia = new GerarchiaReader(getAlberaturaUnitaOperative);
-
         }
 
         public TrasferimentiChiamateResult Handle(TrasferimentiChiamateQuery query)
@@ -38,7 +38,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GestioneTrasferi
                 .Select(c => new TrasferimentoChiamataFull()
                 {
                     Id = c.Id,
-                    CodRichiesta = c.CodRichiesta,
+                    CodChiamata = c.CodChiamata,
                     SedeA = _getDistaccamentoByCodiceSede.Get(c.CodSedeA).Descrizione,
                     SedeDa = _getDistaccamentoByCodiceSede.Get(c.CodSedeDa).Descrizione,
                     Data = c.Data,

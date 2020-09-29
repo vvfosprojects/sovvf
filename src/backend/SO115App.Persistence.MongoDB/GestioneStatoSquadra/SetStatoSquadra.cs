@@ -43,24 +43,29 @@ namespace SO115App.Persistence.MongoDB.GestioneStatoSquadra
         /// <param name="idSquadra">l'identificativo della squadra</param>
         /// <param name="idRichiesta">l'id della richiesta</param>
         /// <param name="statoSquadra">lo stato della squadra</param>
-        public void SetStato(string idSquadra, string idRichiesta, string statoSquadra, string codiceSede)
+        /// <param name="codMezzo">Il codice del mezzo nel quale si trova la squadra</param>
+        public void SetStato(string idSquadra, string idRichiesta, string statoSquadra, string codiceSede, string codMezzo)
         {
             var statoOperativoSquadra = new StatoOperativoSquadra
             {
                 IdRichiesta = idRichiesta,
                 IdSquadra = idSquadra,
                 StatoSquadra = statoSquadra,
-                CodiceSede = codiceSede
+                CodiceSede = codiceSede,
+                CodMezzo = codMezzo
             };
 
             if (statoOperativoSquadra.StatoSquadra.Equals(Costanti.MezzoInSede) || statoOperativoSquadra.StatoSquadra.Equals(Costanti.MezzoRientrato))
             {
-                _dbContext.StatoSquadraCollection.DeleteOne(Builders<StatoOperativoSquadra>.Filter.Eq(x => x.IdSquadra, idSquadra));
+                _dbContext.StatoSquadraCollection.DeleteOne(Builders<StatoOperativoSquadra>.Filter.And(Builders<StatoOperativoSquadra>.Filter.Eq(x => x.IdSquadra, idSquadra),
+                                                                                                       Builders<StatoOperativoSquadra>.Filter.Eq(x => x.CodMezzo, codMezzo)));
             }
             else
             {
                 var findAndReplaceOptions = new FindOneAndReplaceOptions<StatoOperativoSquadra> { IsUpsert = true };
-                _dbContext.StatoSquadraCollection.FindOneAndReplace(Builders<StatoOperativoSquadra>.Filter.Eq(x => x.IdSquadra, idSquadra), statoOperativoSquadra, findAndReplaceOptions);
+                _dbContext.StatoSquadraCollection.FindOneAndReplace(Builders<StatoOperativoSquadra>.Filter.And(Builders<StatoOperativoSquadra>.Filter.Eq(x => x.IdSquadra, idSquadra),
+                                                                                                               Builders<StatoOperativoSquadra>.Filter.Eq(x => x.CodMezzo, codMezzo)),
+                                                                                                               statoOperativoSquadra, findAndReplaceOptions);
             }
         }
     }

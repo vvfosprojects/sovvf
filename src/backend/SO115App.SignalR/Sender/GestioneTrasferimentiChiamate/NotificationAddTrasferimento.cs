@@ -24,6 +24,7 @@ namespace SO115App.SignalR.Sender.GestioneTrasferimentiChiamate
         private readonly IGetUtenteById _getUtenteById;
         private readonly IGetDistaccamentoByCodiceSede _getSede;
         private readonly GetGerarchiaToSend _getGerarchiaToSend;
+
         public NotificationAddTrasferimento(IHubContext<NotificationHub> notificationHubContext,
             IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> boxRichiesteHandler,
             IQueryHandler<GetSintesiRichiestaAssistenzaQuery, GetSintesiRichiestaAssistenzaResult> getRichiesta,
@@ -49,7 +50,7 @@ namespace SO115App.SignalR.Sender.GestioneTrasferimentiChiamate
             var totalItemsDa = _getTrasferimenti.Count(command.TrasferimentoChiamata.CodSedeDa);
             var richiesta = _getRichiesta.Handle(new GetSintesiRichiestaAssistenzaQuery()
             {
-                CodiceRichiesta = command.TrasferimentoChiamata.CodRichiesta,
+                CodiceRichiesta = command.TrasferimentoChiamata.CodChiamata,
                 CodiceSede = command.TrasferimentoChiamata.CodSedeA
             }).SintesiRichiesta;
 
@@ -69,7 +70,7 @@ namespace SO115App.SignalR.Sender.GestioneTrasferimentiChiamate
                     Data = new TrasferimentoChiamataFull()
                     {
                         Id = command.TrasferimentoChiamata.Id,
-                        CodRichiesta = command.TrasferimentoChiamata.CodRichiesta,
+                        CodChiamata = command.TrasferimentoChiamata.CodChiamata,
                         Data = command.TrasferimentoChiamata.Data,
                         SedeA = _getSede.Get(command.TrasferimentoChiamata.CodSedeA).Descrizione,
                         SedeDa = mioComandoDes,
@@ -107,7 +108,7 @@ namespace SO115App.SignalR.Sender.GestioneTrasferimentiChiamate
                     Data = new TrasferimentoChiamataFull()
                     {
                         Id = command.TrasferimentoChiamata.Id,
-                        CodRichiesta = command.TrasferimentoChiamata.CodRichiesta,
+                        CodChiamata = command.TrasferimentoChiamata.CodChiamata,
                         Data = command.TrasferimentoChiamata.Data,
                         SedeA = _getSede.Get(command.TrasferimentoChiamata.CodSedeA).Descrizione,
                         SedeDa = mioComandoDes,
