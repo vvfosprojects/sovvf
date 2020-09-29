@@ -64,8 +64,10 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
 
             var composizioneAvanzata = new Classi.Composizione.ComposizionePartenzaAvanzata()
             {
-                ComposizioneMezzi = this._composizioneMezzihandler.Handle(composizioneMezziquery).ComposizioneMezzi,
-                ComposizioneSquadre = this._composizioneSquadrehandler.Handle(composizioneSquadreQuery).ComposizioneSquadre,
+                ComposizioneMezziDataArray = _composizioneMezzihandler.Handle(composizioneMezziquery).ComposizioneMezzi,
+                ComposizioneSquadreDataArray = _composizioneSquadrehandler.Handle(composizioneSquadreQuery).ComposizioneSquadre,
+                MezziPagination = query.Filtro.MezziPagination,
+                SquadrePagination = query.Filtro.SquadrePagination
             };
 
             Log.Debug("Fine elaborazione Composizione partenza avanzata Handler");

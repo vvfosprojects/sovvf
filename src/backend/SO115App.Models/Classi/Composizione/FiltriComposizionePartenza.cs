@@ -18,6 +18,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using Newtonsoft.Json;
+using SO115App.Models.Classi.Condivise;
 
 namespace SO115App.Models.Classi.Composizione
 {
@@ -25,5 +26,7 @@ namespace SO115App.Models.Classi.Composizione
     {
         [JsonRequired]
         public string IdRichiesta { get; set; }
+        public Paginazione MezziPagination { get; set; }
+        public Paginazione SquadrePagination { get; set; }
     }
 }
