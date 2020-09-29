@@ -188,7 +188,7 @@
                                          [disableTooltip]="richiesta.localita.indirizzo.length <= 30">{{
                                     richiesta.localita.indirizzo | truncate:30 }}</a></span>
                                 <span class="list-inline list-unstyled m-0 ml-2">
-                                    <app-competenza *ngFor="let c of richiesta.competenze; let i = index"
+                                    <app-competenza *ngFor="let c of richiesta?.competenze; let i = index"
                                                     [competenza]="c" [i]="i"></app-competenza>
                                 </span>
                             </div>
