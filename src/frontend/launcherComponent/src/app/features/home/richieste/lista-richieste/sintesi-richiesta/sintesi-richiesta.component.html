@@ -567,7 +567,7 @@
                             <!-- Cambio Stato Richiesta (Gestione) -->
                             <div *ngIf="inGestione" class="border p-2 mt-3" style="display: inline-flex; float: right;"
                                  [ngClass]="{'shadow border-info rounded': inGestione, 'border-light': !inGestione}">
-                                <div class="mr-2">
+                                <div class="mr-2" style="display: inline-flex;">
                                     <button class="btn btn-sm btn-warning ml-2 mr-1" ngbTooltip="Allerta Sede"
                                             (click)="onAllertaSede(); $event.stopPropagation()">
                                         <i class="fa fa-exclamation-triangle"></i>
