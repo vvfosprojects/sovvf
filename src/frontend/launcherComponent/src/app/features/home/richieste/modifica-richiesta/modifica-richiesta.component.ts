@@ -1,4 +1,4 @@
-import { Component, EventEmitter, isDevMode, OnDestroy, OnInit, Output, ViewEncapsulation } from '@angular/core';
+import { Component, Input, isDevMode, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.model';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { RichiestaModificaState } from '../../store/states/richieste/richiesta-modifica.state';
@@ -9,11 +9,7 @@ import { PatchRichiesta } from '../../store/actions/richieste/richieste.actions'
 import { Address } from 'ngx-google-places-autocomplete/objects/address';
 import { Coordinate } from '../../../../shared/model/coordinate.model';
 import { CopyToClipboard } from '../../store/actions/chiamata/clipboard.actions';
-import {
-    ChiudiRichiestaModifica,
-    ModificaIndirizzo,
-    ClearRichiestaModifica
-} from '../../store/actions/richieste/richiesta-modifica.actions';
+import { ChiudiRichiestaModifica, ModificaIndirizzo, ClearRichiestaModifica } from '../../store/actions/richieste/richiesta-modifica.actions';
 import { Tipologia } from '../../../../shared/model/tipologia.model';
 import { GOOGLEPLACESOPTIONS } from '../../../../core/settings/google-places-options';
 import { Localita } from '../../../../shared/model/localita.model';
@@ -40,6 +36,8 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
     encapsulation: ViewEncapsulation.None
 })
 export class ModificaRichiestaComponent implements OnInit, OnDestroy {
+
+    @Input() boxAttivi: boolean;
 
     @Select(LoadingState.loading) loading$: Observable<boolean>;
 

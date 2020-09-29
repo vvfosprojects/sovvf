@@ -7,7 +7,7 @@ import { Composizione } from '../../shared/enum/composizione.enum';
 import { ClearDataHome, GetDataHome } from './store/actions/home.actions';
 import { NavbarState } from '../navbar/store/states/navbar.state';
 import { SetMapLoaded } from '../../shared/store/actions/app/app.actions';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ImpostazioniState } from '../../shared/store/states/impostazioni/impostazioni.state';
 
 @Component({ templateUrl: 'home.component.html' })
 export class HomeComponent implements OnInit, OnDestroy {
@@ -24,10 +24,13 @@ export class HomeComponent implements OnInit, OnDestroy {
     @Select(ViewComponentState.colorButton) colorButton$: Observable<ViewInterfaceButton>;
     @Select(ViewComponentState.viewStateMaps) viewStateMappa$: Observable<ViewInterfaceMaps>;
 
-    constructor(private store: Store,
-                private modalService: NgbModal) {
-        this.subscription.add(this.viewState$.subscribe(r => this.viewState = r));
-        this.subscription.add(this.columnState$.subscribe(r => this.columnState = r));
+    @Select(ImpostazioniState.boxAttivi) boxAttivi$: Observable<boolean>;
+    boxAttivi: boolean;
+
+    constructor(private store: Store) {
+        this.getViewState();
+        this.getColumnState();
+        this.getBoxAttivi();
     }
 
     ngOnInit() {
@@ -43,6 +46,18 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     onMapFullLoaded() {
         this.store.dispatch(new SetMapLoaded(true));
+    }
+
+    getViewState(): void {
+        this.subscription.add(this.viewState$.subscribe(r => this.viewState = r));
+    }
+
+    getColumnState() {
+        this.subscription.add(this.columnState$.subscribe(r => this.columnState = r));
+    }
+
+    getBoxAttivi(): void {
+        this.subscription.add(this.boxAttivi$.subscribe(bA => this.boxAttivi = bA));
     }
 
 }

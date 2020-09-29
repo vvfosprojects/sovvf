@@ -28,6 +28,7 @@ import { Images } from './shared/enum/images.enum';
 import { AuthState } from './features/auth/store/auth.state';
 import { LSNAME } from './core/settings/config';
 import { SetCurrentJwt, SetCurrentUser, SetLoggedCas } from './features/auth/store/auth.actions';
+import { GetImpostazioniLocalStorage } from './shared/store/actions/impostazioni/impostazioni.actions';
 
 @Component({
     selector: 'app-root',
@@ -73,6 +74,7 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
                 private _permessiService: PermessiService,
                 private versionCheckService: VersionCheckService,
                 private modals: NgbModal) {
+        this.getImpostazioniLocalStorage();
         this.getSessionData();
         router.events.subscribe((val) => {
             if (val instanceof NavigationEnd) {
@@ -98,8 +100,12 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
         this.subscription.unsubscribe();
     }
 
-    _toggleOpened() {
+    _toggleOpened(): void {
         this._opened = !this._opened;
+    }
+
+    getImpostazioniLocalStorage(): void {
+        this.store.dispatch(new GetImpostazioniLocalStorage());
     }
 
     private initSubscription(): void {
@@ -132,7 +138,7 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
 
     private getHeight(): void {
         // tslint:disable-next-line:max-line-length
-        if (this.currentUrl === RoutesPath.Home || this.currentUrl === RoutesPath.GestioneUtenti || this.currentUrl === RoutesPath.TrasferimentoChiamata || this.currentUrl === RoutesPath.Rubrica || this.currentUrl === RoutesPath.Changelog) {
+        if (_isActive(this.currentUrl)) {
             const availHeight = window.innerHeight;
             const height = this.contentElement.nativeElement.offsetHeight;
             if (height) {
@@ -146,6 +152,25 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
                     this.availHeight = availHeight;
                     this.store.dispatch(new SetAvailHeight(availHeight));
                 }
+            }
+        }
+
+        function _isActive(currentUrl): boolean {
+            switch (currentUrl) {
+                case RoutesPath.Home:
+                    return true;
+                case RoutesPath.GestioneUtenti:
+                    return true;
+                case RoutesPath.TrasferimentoChiamata:
+                    return true;
+                case RoutesPath.Rubrica:
+                    return true;
+                case RoutesPath.Changelog:
+                    return true;
+                case RoutesPath.Impostazioni:
+                    return true;
+                default:
+                    return false;
             }
         }
     }

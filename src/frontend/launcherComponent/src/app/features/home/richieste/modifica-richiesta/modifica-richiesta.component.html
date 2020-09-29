@@ -1,4 +1,4 @@
-<div *ngIf="richiestaModifica" class="row mt-2 pl-3" style="height: 750px">
+<div *ngIf="richiestaModifica" class="row mt-2 pl-3" [ngClass]="{'m-h-750-modificarichiesta': boxAttivi, 'm-h-850-modificarichiesta': !boxAttivi}">
     <app-partial-loader *ngIf="loading$ | async"></app-partial-loader>
     <div class="col-12 p-3 rounded" [ngClass]="methods.cardFissataClasses(richiestaModifica)">
         <form [formGroup]="modificaRichiestaForm" ngxsForm="richiestaModifica.modificaRichiestaForm" autocomplete="off">

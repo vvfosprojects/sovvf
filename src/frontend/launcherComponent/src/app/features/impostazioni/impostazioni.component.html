@@ -1,0 +1,84 @@
+<div class="container-fluid pt-4 pb-2">
+    <div class="row">
+        <div class="col-12 col-md-5 mx-auto mt-2 mb-5">
+            <div class="card card-shadow px-4 py-3">
+                <div class="clearfix">
+                    <div class="float-left">
+                        <h3>
+                            <i class="fa fa-user mr-1"></i>
+                            {{ (utente.nome + ' ' + utente.cognome) | uppercase }}
+                        </h3>
+                        <h6>
+                            <span class="font-weight-bold">CF:</span>
+                            {{ utente.codiceFiscale | uppercase }}
+                        </h6>
+                    </div>
+                    <div class="float-right">
+                        <h5 class="font-weight-bold">
+                            <i class="fa fa-cogs mr-1"></i>
+                            {{ 'ruoli assegnati' | uppercase }}
+                        </h5>
+                        <div *ngFor="let ruolo of ruoliUtenteLoggato">
+                            <span class="font-weight-bold">{{ ruolo.codSede }}</span> -
+                            {{ ruolo.descrizione }}
+                        </div>
+                        <div *ngIf="ruoliUtenteLoggato?.length === 0">
+                            Solo Visualizzazione
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-8 mx-auto mb-3">
+            <div class="clearfix mb-3">
+                <div class="float-left">
+                    <h2>
+                        <i class="fa fa-window-maximize"></i>
+                        Impostazioni Interfaccia
+                    </h2>
+                </div>
+                <div class="float-right">
+                    <!-- todo: abilitare ricerca se necessario -->
+                    <!-- <label for="ricercaImp" class="d-none">Ricerca</label>
+                    <input id="ricercaImp" class="form-control" type="text" placeholder="Cerca nelle impostazioni"
+                           [ngModel]="ricerca"> -->
+                </div>
+            </div>
+            <hr class="mt-1 mb-4">
+            <div class="row">
+                <div *ngFor="let impostazione of listaImpostazioni"
+                     class="card card-shadow col-12 col-md-4 mx-md-auto py-4 px-3">
+                    <h4>
+                        <i class="fa {{ impostazione?.icona }} mr-1"></i>
+                        {{ impostazione?.tipo }}
+                    </h4>
+                    <hr class="mt-1">
+                    <div *ngFor="let opzione of impostazione?.opzioni" class="clearfix px-3">
+                        <div class="float-left">
+                            {{ opzione?.label }}
+                        </div>
+                        <div class="float-right">
+                            <ng-template [ngIf]="opzione?.singleValue">
+                                <label [for]="opzione?.label" class="d-none">{{ opzione?.label }}</label>
+                                <input [id]="opzione?.label" type="checkbox" [checked]="opzione?.singleValue?.value"
+                                       (change)="setImpostazione(impostazione?.tipo, opzione.label, !opzione?.singleValue?.value)">
+                            </ng-template>
+                            <ng-template [ngIf]="opzione?.select">
+                                <label [for]="opzione?.label" class="d-none">{{ opzione?.label }}</label>
+                                <ng-select [id]="opzione?.label"
+                                           bindValue="id"
+                                           bindLabel="desc"
+                                           [ngModel]="opzione?.select?.selected"
+                                           [items]="opzione?.select?.itemsSelect"
+                                           [multiple]="false"
+                                           [clearable]="false"
+                                           (ngModelChange)="setImpostazione(impostazione?.tipo, opzione.label, $event)">
+                                </ng-select>
+                            </ng-template>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

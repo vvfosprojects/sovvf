@@ -188,7 +188,7 @@
                                          [disableTooltip]="richiesta.localita.indirizzo.length <= 30">{{
                                     richiesta.localita.indirizzo | truncate:30 }}</a></span>
                                 <span class="list-inline list-unstyled m-0 ml-2">
-                                    <app-competenza *ngFor="let c of richiesta.competenze; let i = index"
+                                    <app-competenza *ngFor="let c of richiesta?.competenze; let i = index"
                                                     [competenza]="c" [i]="i"></app-competenza>
                                 </span>
                             </div>
@@ -553,7 +553,7 @@
                                             (click)="onAllertaSede(); $event.stopPropagation()">
                                         <i class="fa fa-exclamation-triangle"></i>
                                     </button>
-                                    <button *ngIf="richiesta?.stato === StatoRichiesta.Chiamata"
+                                    <button *ngIf="!richiesta?.codiceRichiesta"
                                             class="btn btn-sm btn-danger" ngbTooltip="Trasferisci ad altro comando"
                                             (click)="onAddTrasferimentoChiamata(richiesta.codice); $event.stopPropagation()">
                                         <i class="fa fa-send-o"></i>

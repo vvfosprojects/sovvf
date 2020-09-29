@@ -1,9 +1,11 @@
 <div class="row">
-    <div *ngIf="loadingInvioPartenza" class="col-12" style="max-height:345px; min-height:345px">
+    <div *ngIf="loadingInvioPartenza" class="col-12"
+         [ngClass]="{'m-h-boxes-avanzata': boxAttivi, 'm-h-no-boxes-avanzata': !boxAttivi}">
         <app-partial-loader></app-partial-loader>
     </div>
     <div *ngIf="!loadingInvioPartenza" class="col-3 pr-0">
-        <div class="card card-shadow mx-auto" style="min-height:392px">
+        <div class="card card-shadow mx-auto"
+             [ngClass]="{'m-h-boxes-avanzata': boxAttivi, 'm-h-no-boxes-avanzata': !boxAttivi}">
             <app-partial-loader
                     *ngIf="loadingListe || !squadreComposizione"></app-partial-loader>
             <div class="card-header clearfix px-2 py-1">
@@ -17,7 +19,8 @@
                            type="search" name="ricercaSquadre" id="ricercaSquadre" (ngModelChange)="onSearchSquadre()">
                 </div>
             </div>
-            <ul class="list-group list-group-flush border-bottom scroll-y" style="max-height:345px; min-height:345px">
+            <ul class="list-group list-group-flush border-bottom scroll-y"
+                [ngClass]="{'m-h-boxes-avanzata': boxAttivi, 'm-h-no-boxes-avanzata': !boxAttivi}">
                 <ng-template [ngIf]="squadreComposizione && squadreComposizione.length > 0">
                     <app-squadra-composizione
                             *ngFor="let sC of squadreComposizione | filterBy: {'squadra': {'nome': ricercaSquadre}}"
@@ -33,7 +36,8 @@
         </div>
     </div>
     <div *ngIf="!loadingInvioPartenza" class="col-5 pr-0">
-        <div class="card card-shadow mx-auto" style="min-height:392px">
+        <div class="card card-shadow mx-auto"
+             [ngClass]="{'m-h-boxes-avanzata': boxAttivi, 'm-h-no-boxes-avanzata': !boxAttivi}">
             <app-partial-loader *ngIf="loadingListe || !mezziComposizione"></app-partial-loader>
             <div class="card-header clearfix px-2 py-1">
                 <div class="float-left pt-2">
@@ -46,7 +50,8 @@
                            type="search" name="ricercaMezzi" id="ricercaMezzi" (ngModelChange)="onSearchMezzi()">
                 </div>
             </div>
-            <ul class="list-group list-group-flush border-bottom scroll-y" style="max-height:345px; min-height:345px">
+            <ul class="list-group list-group-flush border-bottom scroll-y"
+                [ngClass]="{'m-h-boxes-avanzata': boxAttivi, 'm-h-no-boxes-avanzata': !boxAttivi}">
                 <ng-template [ngIf]="mezziComposizione && mezziComposizione.length > 0">
                     <div *ngFor="let mC of mezziComposizione | filterBy: {'mezzo': {'descrizione': ricercaMezzi}}">
                         <ng-template [ngIf]="mC.mezzo.stato !== statoMezzo.OperativoPreaccoppiato">
@@ -70,7 +75,8 @@
         </div>
     </div>
     <div *ngIf="mezziComposizione && squadreComposizione && !loadingInvioPartenza" class="col-4">
-        <div class="w-100 py-2 px-1 scroll-y" style="max-height:350px; min-height:350px">
+        <div class="w-100 py-2 px-1 scroll-y"
+             [ngClass]="{'m-h-boxes-avanzata': boxAttivi, 'm-h-no-boxes-avanzata': !boxAttivi}">
             <!-- nessuna partenza -->
             <div *ngIf="boxPartenzaList.length <= 0" class="text-center mt-3">
                 <h6 class="font-weight-normal">Seleziona un mezzo o una squadra.</h6>

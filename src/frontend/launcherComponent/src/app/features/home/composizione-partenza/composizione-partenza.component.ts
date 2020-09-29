@@ -39,6 +39,7 @@ import { SetRicercaMezziComposizione, SetRicercaSquadreComposizione } from '../.
 export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
 
     @Input() compPartenzaMode: Composizione;
+    @Input() boxAttivi: boolean;
 
     Composizione = Composizione;
 

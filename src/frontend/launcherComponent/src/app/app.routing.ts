@@ -50,6 +50,11 @@ const appRoutes: Routes = [
         loadChildren: './features/changelog/changelog.module#ChangelogModule',
         canActivate: [AuthGuard]
     },
+    {
+        path: RoutesPath.Impostazioni,
+        loadChildren: './features/impostazioni/impostazioni.module#ImpostazioniModule',
+        canActivate: [AuthGuard]
+    },
     { path: RoutesPath.NotFound, loadChildren: './features/not-found/not-found.module#NotFoundModule' },
     { path: '', pathMatch: 'full', redirectTo: RoutesPath.Home },
     {

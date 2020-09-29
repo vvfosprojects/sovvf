@@ -1,11 +1,9 @@
 <app-notifiche [listaNotifiche]="listaNotifiche$ | async"
                [nuoveNotifiche]="nuoveNotifiche$ | async"
                (notificheLette)="setNotificheLette()"></app-notifiche>
-<!-- <button class="btn btn-light mr-2" ngbTooltip="Impostazioni" [ngbPopover]="impostazioni" placement="bottom"><i
-        class="fa fa-cogs"></i>
-</button> -->
 <div *ngIf="user" class="btn-group" role="group">
-    <button class="btn btn-light mr-2 btn-no-hover" [ngbPopover]="ruoli" placement="bottom">
+    <button class="btn btn-outline-light mr-2 btn-no-hover" [routerLink]="['/' + RoutesPath.Impostazioni]"
+            [routerLinkActive]="['btn-light-nav', 'text-dark']">
         <i class="fa fa-user"></i>
         {{user.nome}} {{user.cognome}}
     </button>
@@ -14,20 +12,3 @@
         class="fa fa-sign-out"></i>
     Esci
 </button>
-<!-- <ng-template #notifiche>
-    <h6 class="mb-2">Notifiche</h6>
-</ng-template>
-<ng-template #impostazioni>
-    <h6 class="mb-2">Impostazioni</h6>
-</ng-template> -->
-<ng-template #ruoli>
-    <div class="py-1">
-        <small class="d-block font-weight-bold">Ruoli Assegnati:</small>
-        <div *ngFor="let ruolo of ruoliUtenteLoggato" class="d-block badge badge-primary mt-2 p-2">
-            {{ruolo.descrizione}} ({{ruolo.codSede}})
-        </div>
-        <div *ngIf="ruoliUtenteLoggato?.length === 0" class="badge badge-secondary mt-2 p-2">
-            Solo Visualizzazione
-        </div>
-    </div>
-</ng-template>

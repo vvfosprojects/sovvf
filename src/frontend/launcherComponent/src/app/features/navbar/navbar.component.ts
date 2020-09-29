@@ -16,7 +16,6 @@ import { GetNewVersion, OpenModalNewFeaturesInfo, OpenModalNewVersionSoon } from
 import { SetNotificheLette } from '../../shared/store/actions/notifiche/notifiche.actions';
 import { RoutesPath } from '../../shared/enum/routes-path.enum';
 import { RouterState } from '@ngxs/router-plugin';
-import { RouterStateModel } from '@ngxs/router-plugin/src/router.state';
 
 @Component({
     selector: 'app-navbar',

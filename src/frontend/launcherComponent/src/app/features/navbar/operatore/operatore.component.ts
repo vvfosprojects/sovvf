@@ -4,6 +4,7 @@ import { Select } from '@ngxs/store';
 import { NotificheState } from '../../../shared/store/states/notifiche/notifiche.state';
 import { Observable } from 'rxjs';
 import { NotificaInterface } from '../../../shared/interface/notifica.interface';
+import { RoutesPath } from '../../../shared/enum/routes-path.enum';
 
 @Component({
     selector: 'app-operatore',
@@ -21,7 +22,9 @@ export class OperatoreComponent {
     @Select(NotificheState.listaNotifiche) listaNotifiche$: Observable<NotificaInterface[]>;
     @Select(NotificheState.nuoveNotifiche) nuoveNotifiche$: Observable<number>;
 
-    setNotificheLette() {
+    RoutesPath = RoutesPath;
+
+    setNotificheLette(): void {
         this.notificheLette.emit();
     }
 }

@@ -61,10 +61,7 @@ import { NotificheState } from './shared/store/states/notifiche/notifiche.state'
 import { TrasferimentoChiamataModalState } from './shared/store/states/trasferimento-chiamata-modal/trasferimento-chiamata-modal.state';
 import { EntiState } from './shared/store/states/enti/enti.state';
 import { AllertaSedeModalState } from './shared/store/states/allerta-sede-modal/allerta-sede-modal.state';
-import { SostituzionePartenzaModalState } from './shared/store/states/sostituzione-partenza-modal/sostituzione-partenza-modal.state';
-import { FiltriComposizioneState } from './shared/store/states/filtri-composizione/filtri-composizione.state';
-import { MezziComposizioneState } from './shared/store/states/mezzi-composizione/mezzi-composizione.state';
-import { SquadreComposizioneState } from './shared/store/states/squadre-composizione/squadre-composizione.state';
+import { ImpostazioniState } from './shared/store/states/impostazioni/impostazioni.state';
 
 
 @NgModule({
@@ -109,7 +106,8 @@ import { SquadreComposizioneState } from './shared/store/states/squadre-composiz
                 EntiState,
                 TrasferimentoChiamataModalState,
                 NotificheState,
-                AllertaSedeModalState
+                AllertaSedeModalState,
+                ImpostazioniState
             ],
             { developmentMode: !environment.production }
         ),

@@ -22,8 +22,9 @@
         <div *ngIf="richiesta && compPartenzaMode === Composizione.Veloce" class="px-3">
             <app-composizione-veloce [richiesta]="richiesta"
                                      [disablePrenota]="disablePrenota"
-                                     [loadingInvioPartenza]="loadingInvioPartenza$ | async"
                                      [prenotato]="prenotato"
+                                     [loadingInvioPartenza]="loadingInvioPartenza$ | async"
+                                     [boxAttivi]="boxAttivi"
                                      (sendDirection)="onSendDirection($event)"
                                      (clearDirection)="onClearDirection()"
                                      (prenota)="onPrenota($event)"
@@ -35,6 +36,7 @@
                                        [prenotato]="prenotato"
                                        [disablePrenota]="disablePrenota"
                                        [loadingInvioPartenza]="loadingInvioPartenza$ | async"
+                                       [boxAttivi]="boxAttivi"
                                        (sendDirection)="onSendDirection($event)"
                                        (clearDirection)="onClearDirection()"
                                        (centraMappa)="centraMappa()"
