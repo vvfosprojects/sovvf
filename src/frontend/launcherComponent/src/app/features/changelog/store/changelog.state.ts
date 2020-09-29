@@ -16,12 +16,12 @@ export const ChangelogStateDefaults: ChangelogStateModel = {
                     descrizioni: [
                         {
                             // tslint:disable-next-line:max-line-length
-                            testo: 'Nella barra di navigazione è stata aggiunta la possibilità di consultare la rubrica del comando di appartenenza. Per poter consultare la rubrica basta premere quarto tasto posto nella marra di navigazione.',
+                            testo: 'Nella barra di navigazione è stata aggiunta la possibilità di consultare la rubrica del comando di appartenenza. Per poter consultare la rubrica basta premere il quarto tasto posto nella barra di navigazione.',
                             img: '../../../../assets/changelog/ottobre/NuovaBarraNavigazione.png'
                         },
                         {
                             // tslint:disable-next-line:max-line-length
-                            testo: 'E’ stata introdotta la possibilità di aggiungere una nuova voce e di specificare se è ricorsiva o meno. Qualora si specificasse la ricorsività tutte le sedi al di sopra dell’attuale potranno vedere l’elemento inserito. Es. Se il comando di Roma inserisce una nuova voce in rubrica specificando la ricorsività, sarà visibile anche alla “Direzione Regionale del Lazio” ed al “CON”.',
+                            testo: 'E’ stata introdotta la possibilità di aggiungere una nuova voce e di specificare se è ricorsiva o meno. Qualora si specificasse la ricorsività tutte le sedi al di sotto dell’attuale potranno vedere l’elemento inserito. Es. Se il comando di Roma inserisce una nuova voce in rubrica specificando la ricorsività, sarà visibile anche al “Distaccamento di Ostiense”.',
                             img: '../../../../assets/changelog/ottobre/Rubrica.png'
                         },
                         {
@@ -31,7 +31,7 @@ export const ChangelogStateDefaults: ChangelogStateModel = {
                         },
                         {
                             // tslint:disable-next-line:max-line-length
-                            testo: 'Per modificare una voce presente basta premere sul tasto giallo alla sinistra della voce da modificare e comparirà la modale di seguito con i campi già precompilati e dove sarà possibile modificare quello che si desidera.',
+                            testo: 'Per modificare una voce presente basta premere sul tasto giallo alla sinistra della voce da modificare e comparirà la modale di seguito con i campi già precompilati e dove sarà quindi possibile modificare quello che si desidera.',
                             img: '../../../../assets/changelog/ottobre/ModificaRubrica.png'
                         },
                         {
@@ -48,17 +48,17 @@ export const ChangelogStateDefaults: ChangelogStateModel = {
                         },
                         {
                             // tslint:disable-next-line:max-line-length
-                            testo: 'In inserimento o modifica di una chiamata è possibile selezionare un ente tra quelli già presenti in rubrica, basta iniziare a scriverlo ed il sistema troverà l’ente desiderato, oppure, qualora l’ente non sia presente in rubrica, premendo il tasto “Nuovo Ente” più aggiungerlo in rubrica ed inserirlo nella richiesta.',
+                            testo: 'In inserimento o modifica di una chiamata è possibile selezionare un ente tra quelli già presenti in rubrica, basta iniziare a scriverlo ed il sistema troverà l’ente desiderato, oppure, qualora l’ente non sia presente in rubrica, premendo il tasto “Nuovo Ente” è possibile aggiungerlo in rubrica ed inserirlo nella richiesta.',
                             img: '../../../../assets/changelog/ottobre/EntiIntervenutiDaModifica.png'
                         },
                         {
                             // tslint:disable-next-line:max-line-length
-                            testo: 'E’ stata aggiunta la possibilità di inserire l’ente anche direttamente dalla lista delle sintesi. Infatti, premendo sul tasto “Gestisci” di una richiesta si attiverà il tasto di seguito',
+                            testo: 'E’ stata aggiunta la possibilità di inserire l’ente anche direttamente dalla lista delle Richieste. Infatti, premendo sul tasto “Gestisci” su una richiesta si attiverà il tasto di seguito riportato',
                             img: '../../../../assets/changelog/ottobre/AggiuntaRapidaEnte.png'
                         },
                         {
                             // tslint:disable-next-line:max-line-length
-                            testo: 'Premendolo si aprirà una modale che permetterà di aggiungere l’ente direttamente dall’elenco senza dover entrare nella modifica della richiesta.'
+                            testo: 'Premendolo si aprirà una modale che permetterà di aggiungere l’ente intervenuto direttamente dalla richiesta.'
                         }
                     ]
                 },
@@ -67,7 +67,7 @@ export const ChangelogStateDefaults: ChangelogStateModel = {
                     descrizioni: [
                         {
                             // tslint:disable-next-line:max-line-length
-                            testo: 'E’ stata aggiunta la possibilità di inserire il fonogramma della richiesta. E’ possibile aggiungere il fonogramma direttamente dall’elenco delle sintesi. Basta premere sul tasto “Gestisci“ di una richiesta e si attiverà un tasto vicino al fonogramma',
+                            testo: 'E’ stata aggiunta la possibilità di inserire il fonogramma della richiesta. E’ possibile aggiungere il fonogramma direttamente dall’elenco delle richieste. Basta premere sul tasto “Gestisci“ su una richiesta e si attiverà il tasto di modifica vicino al fonogramma',
                             img: '../../../../assets/changelog/ottobre/AggiuntaRapidaFonogramma.png'
                         },
                         {
@@ -80,14 +80,14 @@ export const ChangelogStateDefaults: ChangelogStateModel = {
                     descrizioni: [
                         {
                             // tslint:disable-next-line:max-line-length
-                            testo: 'E’ stata introdotta la possibilità di allertare altre sedi su una richiesta. Questa operazione farà si che la richiesta compaia sia nell’elenco delle sintesi della sede che l’ha registrata sia nell’elenco delle richieste della sede che ha ricevuto l’allerta. Anche quest’ultima potrà inviare una partenza sul luogo dell’evento e seguirne l’evoluzione.'
+                            testo: 'E’ stata introdotta la possibilità di allertare altre sedi su una richiesta. Questa operazione farà si che la richiesta compaia sia nell’elenco delle richieste della sede che l’ha registrata sia nell’elenco delle richieste della sede che è stata allertata. Anche quest’ultima potrà inviare una partenza sul luogo dell’evento e seguirne l’evoluzione.'
                         },
                         {
-                            testo: 'Per allertare una sede basta premere il tasto “Gestisci” ed il tasto giallo accanto al cambio stato richiesta',
+                            testo: 'Per allertare una sede basta premere il tasto “Gestisci” su una richiesta e successivamente il tasto giallo accanto al cambio stato richiesta',
                             img: '../../../../assets/changelog/ottobre/TastiStatoRichiestaAllertaTrasferimento.png'
                         },
                         {
-                            testo: 'Nella modale che si apre va selezionata la sede da allertare e confermare l’operazione, alla sede che riceve l’allerta comparirà in alto a destra una notifica'
+                            testo: 'Nella modale che si apre va selezionata la sede da allertare e va confermata l’operazione, alla sede che viene allertata comparirà in alto a destra una notifica'
                         }
                     ]
                 },
@@ -125,7 +125,7 @@ export const ChangelogStateDefaults: ChangelogStateModel = {
                             img: '../../../../assets/changelog/ottobre/TastiFunzionePartenza.png'
                         },
                         {
-                            testo: 'Nella finestra successiva premere l’icona blu accanto alla partenza',
+                            testo: 'Nella finestra successiva premere l’icona blu accanto alla partenza (l\'icona sarà visibile soltanto se il mezzo è "In Uscita")',
                             img: '../../../../assets/changelog/ottobre/SostituzionePartenza.png'
                         },
                         {

@@ -13,10 +13,16 @@
             {{ 'Vai alle informazioni sugli aggiornamenti' | uppercase }}
         </button>
     </div>
-    <h5 class="text-danger mt-1 mb-2">
+    <div class="alert alert-danger font-weight-bolder mt-1 mb-2">
         <i class="fa fa-exclamation-triangle mr-1"></i>
-        Questo aggiornamento ha richiesto il reset della base dati, tutti i dati sono stati eliminati
-    </h5>
+        Questo aggiornamento ha richiesto il reset della base dati, tutti i dati sono stati eliminati (È stato
+        effettuato un backup dei dati qualora ci fosse la necessità di effettuare analisi).
+    </div>
+    <div class="alert alert-success font-weight-bold mt-1 mb-2">
+        <i class="fa fa-info-circle mr-1"></i>
+        Volevamo ringraziarvi per la partecipazione, ad oggi sono stati registrati circa <b>1500 utenti</b> e sono state
+        inserite più di <b>1100 richieste di assistenza</b>.
+    </div>
 </div>
 <div class="modal-footer">
     <button class="btn btn-no-hover btn-lg btn-danger font-weight-bolder" (click)="close()">
