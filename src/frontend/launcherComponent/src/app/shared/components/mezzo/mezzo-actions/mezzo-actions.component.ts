@@ -60,7 +60,10 @@ export class MezzoActionsComponent implements OnInit {
         });
     }
 
-    calcolaActionSuggeritaMezzo(stato: StatoMezzo) {
+    calcolaActionSuggeritaMezzo(stato: StatoMezzo, event?: MouseEvent) {
+        if (event) {
+            event.stopPropagation();
+        }
         return calcolaActionSuggeritaMezzo(stato);
     }
 

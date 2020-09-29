@@ -1,6 +1,5 @@
 export const environment = {
     production: false,
-
     productionTest: false,
     consoleLog: true,
     toastr: true,
