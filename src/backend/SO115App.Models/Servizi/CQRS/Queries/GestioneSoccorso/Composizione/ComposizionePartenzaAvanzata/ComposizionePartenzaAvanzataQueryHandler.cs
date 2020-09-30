@@ -55,17 +55,19 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                 Filtro = query.Filtro,
                 CodiceSede = query.CodiceSede
             };
+            var composizioneMezzi = _composizioneMezzihandler.Handle(composizioneMezziquery).ComposizioneMezzi;
 
             var composizioneSquadreQuery = new ComposizioneSquadreQuery
             {
                 Filtro = query.Filtro,
                 CodiceSede = query.CodiceSede
             };
+            var composizioneSquadre = _composizioneSquadrehandler.Handle(composizioneSquadreQuery).ComposizioneSquadre;
 
             var composizioneAvanzata = new Classi.Composizione.ComposizionePartenzaAvanzata()
             {
-                ComposizioneMezziDataArray = _composizioneMezzihandler.Handle(composizioneMezziquery).ComposizioneMezzi,
-                ComposizioneSquadreDataArray = _composizioneSquadrehandler.Handle(composizioneSquadreQuery).ComposizioneSquadre,
+                ComposizioneMezziDataArray = composizioneMezzi,
+                ComposizioneSquadreDataArray = composizioneSquadre,
                 MezziPagination = query.Filtro.MezziPagination,
                 SquadrePagination = query.Filtro.SquadrePagination
             };
