@@ -1,4 +1,5 @@
-<div *ngIf="richiestaModifica" class="row mt-2 pl-3" [ngClass]="{'m-h-750-modificarichiesta': boxAttivi, 'm-h-850-modificarichiesta': !boxAttivi}">
+<div *ngIf="richiestaModifica" class="row mt-2 pl-3"
+     [ngClass]="{'m-h-750-modificarichiesta': boxAttivi, 'm-h-850-modificarichiesta': !boxAttivi}">
     <app-partial-loader *ngIf="loading$ | async"></app-partial-loader>
     <div class="col-12 p-3 rounded" [ngClass]="methods.cardFissataClasses(richiestaModifica)">
         <form [formGroup]="modificaRichiestaForm" ngxsForm="richiestaModifica.modificaRichiestaForm" autocomplete="off">
@@ -15,10 +16,10 @@
                         <span *ngIf="!richiestaModifica.codiceRichiesta">{{ richiestaModifica.codice }} </span>
                         <span *ngIf="f.rilevanzaGrave?.value || f.rilevanzaStArCu?.value"
                               class="d-inline-block mr-1 text-danger"
-                              [ngbTooltip]="rilevante" placement="bottom"><i *ngIf="f.rilevanzaGrave?.value"
-                                                                             class="fa fa-exclamation mr-2"></i><i
-                                *ngIf="f.rilevanzaStArCu?.value"
-                                class="fa fa-university"></i></span>
+                              [ngbTooltip]="rilevante" placement="bottom">
+                            <i *ngIf="f.rilevanzaGrave?.value" class="fa fa-exclamation mr-2"></i>
+                            <i *ngIf="f.rilevanzaStArCu?.value" class="fa fa-university"></i>
+                        </span>
                     </h4>
                 </div>
                 <div class="col-4">
