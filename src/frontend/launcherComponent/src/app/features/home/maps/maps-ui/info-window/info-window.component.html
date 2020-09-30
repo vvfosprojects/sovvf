@@ -56,7 +56,7 @@
                     </div>
                     <div class="col pl-0 pr-1 text-right">
               <span>
-                <i class="guida fa fa-thermometer-half fa-fw" ngbTooltip="Priorità della richiesta"></i>
+                <i class="guida fa fa-thermometer-half fa-fw" ngbTooltip="Priorità della richiesta" [class.high-priority]="richiestaMarker.priorita > 3"></i>
                 <ng-template #t let-fill="fill" let-index="index">
                   <span class="circle-font" [class.filled]="fill === 100" [class.bad]="index > 2 && fill === 100">
                     <i class="fa fa-circle mr-0"></i>
@@ -76,10 +76,14 @@
                   class="fa-fw mr-1 {{ methods.coloraIcona(tipologia?.icona) }}"
                   ngbTooltip="{{ tipologia?.descrizione }}">
             </span>
-                    <span *ngIf="richiestaMarker.label" ngbTooltip="{{ richiestaMarker.label }}"
+            <span *ngIf="richiestaMarker.tipologia[0] as tipologia" ngbTooltip="{{ tipologia?.descrizione }}"
+                          [disableTooltip]="tipologia?.descrizione.length <= 30">
+              {{tipologia?.descrizione | truncate:30 }}
+            </span>
+            <!--<span *ngIf="richiestaMarker.label" ngbTooltip="{{ richiestaMarker.label }}"
                           [disableTooltip]="richiestaMarker.label.length <= 30">
               {{richiestaMarker.label | truncate:30 }}
-            </span>
+            </span>-->
                 </th>
             </tr>
             <tr *ngIf="richiestaMarker.localita.indirizzo && !compact">

@@ -1,4 +1,4 @@
-<div class="row mt-2" style="height: 750px">
+<div class="row mt-2 h-100">
     <app-partial-loader *ngIf="loading"></app-partial-loader>
     <div class="col-12 pt-2 mx-auto rounded status_chiamata card-shadow-danger">
         <form [formGroup]="chiamataForm" ngxsForm="schedaTelefonata.nuovaRichiestaForm" autocomplete="off">
@@ -64,7 +64,8 @@
                         <label for="nominativo">Richiedente</label>
                         <input id="nominativo" type="text" placeholder="Descrivi chi ha richiesto l'intervento"
                                formControlName="nominativo" class="form-control"
-                               [ngClass]="{ 'is-invalid': submitted && f.nominativo.errors }"/>
+                               [ngClass]="{ 'is-invalid': submitted && f.nominativo.errors }"
+                               role="presentation"/>
                         <div *ngIf="submitted && f.nominativo.errors" class="invalid-feedback">
                             <div *ngIf="f.nominativo.errors.required">Il Nominativo è richiesto</div>
                         </div>
@@ -93,7 +94,8 @@
                                [ngClass]="{ 'is-invalid': submitted && (f.indirizzo.errors || !coordinate) }"
                                placeholder="Ricerca indirizzo" [options]="ngxGooglePlacesOptions"
                                (onAddressChange)="onCercaIndirizzo($event)"
-                               autocomplete="new-password">
+                               role="presentation"
+                        >
                         <div *ngIf="submitted && (f.indirizzo.errors || !coordinate)" class="invalid-feedback">
                             <div *ngIf="onMsgIndirizzo() as messaggio">{{messaggio}}</div>
                         </div>
@@ -165,7 +167,9 @@
                         <textarea id="noteIndirizzo" placeholder="Inserisci le Note (opzionale)"
                                   formControlName="noteIndirizzo"
                                   class="form-control"
-                                  [ngClass]="{ 'is-invalid': submitted && f.noteIndirizzo.errors}"></textarea>
+                                  [ngClass]="{ 'is-invalid': submitted && f.noteIndirizzo.errors}"
+                                  role="presentation"
+                        ></textarea>
                     </div>
                 </div>
             </div>
@@ -200,20 +204,51 @@
                     </div>
                     <div class="col-2 pl-0" style="padding-top: 2rem !important">
                         <div class="form-group m-0 float-right">
-              <span class="d-inline-block mt-1 mr-2">
-                <ui-switch size="small" color="#dc3545" [checked]="f.rilevanzaGrave?.value === true"
-                           (change)="setRilevanza()"></ui-switch>
-              </span>
+                            <span class="d-inline-block mt-1 mr-2">
+                              <ui-switch size="small" color="#dc3545" [checked]="f.rilevanzaGrave?.value === true"
+                                         (change)="setRilevanza()"></ui-switch>
+                            </span>
                             <span class="d-inline-block mb-1">Rilevante</span>
                         </div>
                     </div>
                     <div class="col-4 pr-0" style="padding-top: 2rem !important">
                         <div class="form-group m-0">
-              <span class="d-inline-block mt-1 mr-2">
-                <ui-switch size="small" color="#dc3545" [checked]="f.rilevanzaStArCu?.value === true"
-                           (change)="setRilevanzaStArCu()"></ui-switch>
-              </span>
+                            <span class="d-inline-block mt-1 mr-2">
+                                <ui-switch size="small" color="#dc3545" [checked]="f.rilevanzaStArCu?.value === true"
+                                           (change)="setRilevanzaStArCu()"></ui-switch>
+                            </span>
                             <span class="d-inline-block mb-1">Storico Artistico e Culturale</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix mb-2">
+                    <div class="float-left w-75">
+                        <div class="form-group m-0">
+                            <label for="listaEnti">Enti Intervenuti</label>
+                            <ng-select
+                                    id="listaEnti"
+                                    formControlName="listaEnti"
+                                    [items]="enti"
+                                    bindLabel="descrizione"
+                                    bindValue="codice"
+                                    clearAllText="Clear"
+                                    [multiple]="true"
+                                    placeholder="Enti Intervenuti (opzionale)"
+                                    [closeOnSelect]="true"
+                                    [hideSelected]="true"
+                                    [notFoundText]="'Nessun ente trovato con i parametri di ricerca'"
+                                    (add)="onAddEnti($event)"
+                                    (remove)="onRemoveEnti($event)">
+                            </ng-select>
+                        </div>
+                    </div>
+                    <div class="float-left w-25">
+                        <div class="px-2" style="padding-top:34px">
+                            <button class="btn btn-sm btn-block btn-primary btn-no-hover"
+                                    (click)="onAggiungiNuovoEnte()">
+                                <i class="fa fa-plus mr-1"></i>
+                                Nuovo ente
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -222,19 +257,27 @@
                         <div class="form-group">
                             <label for="etichette">Tag</label>
                             <tag-input id="etichette" formControlName="etichette" [modelAsStrings]="true"
-                                       [placeholder]="'Inserisci i tag (opzionale)'"
-                                       [secondaryPlaceholder]="'Inserisci i tag (opzionale)'"></tag-input>
+                                       [placeholder]="'Inserisci tag (opzionale)'"
+                                       [secondaryPlaceholder]="'Inserisci tag (opzionale)'"></tag-input>
                         </div>
                     </div>
                 </div>
-                <!--<div class="row">-->
-                <!--<div class="col-12">-->
+
+                <!--                
+                <ng-select class="border"
+                bindLabel="codiceDescrizione"
+                bindValue="codice"
+                clearAllText="Clear">
+                 </ng-select>
+                -->
+                <!--<div class="row"></div>
+                    <div class="col-12">-->
                 <!--<app-selezione-tipi-terreno-->
                 <!--(tipiTerrenoSelezionati)="onTerreniSelezionati($event)"></app-selezione-tipi-terreno>-->
                 <!--</div>-->
                 <!--</div>-->
             </div>
-            <div class="row mt-1">
+            <div class="row mt-1 mb-3">
                 <div class="col-7">
                     <div class="btn-group">
                         <button type="button" class="btn btn-outline-danger" (click)="onAnnullaChiamata()">Annulla
@@ -257,7 +300,7 @@
                             </div>
                         </div>
                     </div>
-                    <button class="btn btn-outline-secondary ml-2" type="button" (click)="onResetChiamata()">
+                    <button class="btn btn-outline-secondary ml-2 mr-2" type="button" (click)="onResetChiamata()">
                         <i class="fa fa-recycle mr-1"></i>Reset
                     </button>
                     <span ngbTooltip="Inserire il resto dei campi obbligatori" [disableTooltip]="!checkCollapsed()"

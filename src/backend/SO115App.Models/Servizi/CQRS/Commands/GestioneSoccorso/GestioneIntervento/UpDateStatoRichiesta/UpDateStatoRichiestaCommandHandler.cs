@@ -23,6 +23,7 @@ using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AggiornaStatoMezzo;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
+using System;
 
 namespace DomainModel.CQRS.Commands.UpDateStatoRichiesta
 {
@@ -67,10 +68,14 @@ namespace DomainModel.CQRS.Commands.UpDateStatoRichiesta
                             _upDatePartenza.Update(statoMezzo);
                         }
                     }
+
+                    if (command.Stato.Equals(Costanti.RichiestaChiusa) || command.Stato.Equals(Costanti.RichiestaSospesa))
+                        composizione.Partenza.Terminata = true;
                 }
             }
 
-            richiesta.SincronizzaStatoRichiesta(command.Stato, richiesta.StatoRichiesta, command.IdOperatore, command.Note);
+            richiesta.SincronizzaStatoRichiesta(command.Stato, richiesta.StatoRichiesta, command.IdOperatore, command.Note, DateTime.UtcNow);
+            
             if (command.Stato == Costanti.RichiestaRiaperta)
                 richiesta.IstanteChiusura = null;
 

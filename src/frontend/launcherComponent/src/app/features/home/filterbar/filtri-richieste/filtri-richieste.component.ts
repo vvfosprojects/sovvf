@@ -30,7 +30,13 @@ export class FiltriRichiesteComponent {
     }
 
     openFiltersModal() {
-        const modalOptions = { windowClass: 'xlModal', backdrop: 'static', backdropClass: 'light-blue-backdrop', centered: true, keyboard: false } as NgbModalOptions;
+        const modalOptions = {
+            windowClass: 'xlModal',
+            backdrop: 'static',
+            backdropClass: 'light-blue-backdrop',
+            centered: true,
+            keyboard: false
+        } as NgbModalOptions;
         const modal = this.modalService.open(ModalFiltriTipologiaComponent, modalOptions);
         modal.result.then((res: string) => {
             switch (res) {

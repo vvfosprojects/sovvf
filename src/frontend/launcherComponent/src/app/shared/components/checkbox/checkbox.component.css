@@ -63,3 +63,7 @@
 [type="checkbox"]:not(:checked):focus + label:before {
   border: 2px dotted #0000ff;
 }
+
+.disable-checkbox {
+  cursor: not-allowed !important;
+}

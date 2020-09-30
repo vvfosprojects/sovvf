@@ -82,7 +82,7 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
                 var mezzoMarker = new MezzoMarker()
                 {
                     Mezzo = mezzo,
-                    InfoRichiesta = _getInfoRichiesta.GetInfoRichiestaFromIdRichiestaMezzo(mezzo.IdRichiesta)
+                    InfoRichiesta = _getInfoRichiesta.GetInfoRichiestaFromCodiceRichiestaMezzo(mezzo.IdRichiesta)
                 };
                 var mezzoInServizio = new MezzoInServizio()
                 {
@@ -111,7 +111,9 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
                 listaMezzoInServizio.Add(mezzoInServizio);
             }
 
-            return listaMezzoInServizio;
+            return listaMezzoInServizio
+                .OrderBy(c => c.Mezzo.Mezzo.Stato == Costanti.MezzoInSede)
+                .ToList();
         }
     }
 }

@@ -1,5 +1,4 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
-// Interface
 import { BoxPartenza } from '../../../composizione-partenza/interface/box-partenza-interface';
 
 import {
@@ -14,7 +13,8 @@ import {
     RequestAddBoxPartenza,
     RequestSelectBoxPartenza,
     SelectBoxPartenza,
-    UpdateMezzoBoxPartenza
+    UpdateMezzoBoxPartenza,
+    DeselectBoxPartenza
 } from '../../actions/composizione-partenza/box-partenza.actions';
 import { append, patch, removeItem } from '@ngxs/store/operators';
 import { makeID } from '../../../../../shared/helper/function';
@@ -26,19 +26,18 @@ import {
     RequestRemoveBookMezzoComposizione,
     SelectMezzoComposizione,
     UnselectMezzoComposizione
-} from '../../actions/composizione-partenza/mezzi-composizione.actions';
-import { SquadraComposizione } from '../../../composizione-partenza/interface/squadra-composizione-interface';
+} from '../../../../../shared/store/actions/mezzi-composizione/mezzi-composizione.actions';
+import { SquadraComposizione } from '../../../../../shared/interface/squadra-composizione-interface';
 import {
     ClearSelectedSquadreComposizione,
     FilterListaSquadreComposizione,
     SelectSquadraComposizione,
     UnselectSquadraComposizione
-} from '../../actions/composizione-partenza/squadre-composizione.actions';
+} from '../../../../../shared/store/actions/squadre-composizione/squadre-composizione.actions';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from '../../../../../shared/enum/toastr';
 import { ClearDirection } from '../../actions/maps/maps-direction.actions';
 import { ClearMarkerMezzoSelezionato } from '../../actions/maps/marker.actions';
-import { ComposizionePartenzaState } from './composizione-partenza.state';
 import { StatoMezzo } from '../../../../../shared/enum/stato-mezzo.enum';
 
 
@@ -145,7 +144,7 @@ export class BoxPartenzaState {
         if (action.boxPartenza.id === state.idBoxPartenzaSelezionato) {
             // Deseleziono il mezzo selezionato se presenti nel box-partenza da eliminare
             if (action.boxPartenza.mezzoComposizione) {
-                dispatch(new UnselectMezzoComposizione());
+               dispatch(new UnselectMezzoComposizione());
             }
             // Deseleziono le squadre selezionate se presenti nel box-partenza da eliminare
             if (action.boxPartenza.squadraComposizione && action.boxPartenza.squadraComposizione.length > 0) {
@@ -164,10 +163,10 @@ export class BoxPartenzaState {
                     prevIndex = index - 1;
                     if (state.boxPartenzaList[prevIndex] && prevIndex > -1) {
                         prevIdBox = state.boxPartenzaList[prevIndex].id;
-                        dispatch(new SelectBoxPartenza(prevIdBox));
+                       dispatch(new SelectBoxPartenza(prevIdBox));
                     } else {
                         prevIdBox = state.boxPartenzaList[state.boxPartenzaList.length - 1].id;
-                        dispatch(new SelectBoxPartenza(prevIdBox));
+                       dispatch(new SelectBoxPartenza(prevIdBox));
                     }
                 }
             });
@@ -183,7 +182,33 @@ export class BoxPartenzaState {
 
         // ricarico la lista se necessario
         if (action.refreshLista) {
-            const filtriSelezionati = this.store.selectSnapshot(ComposizionePartenzaState.filtriSelezionati);
+            const filtriSelezionati = this.store.selectSnapshot(x => x.filtriComposizione.filtriSelezionati);
+            dispatch([
+                new FilterListaMezziComposizione(null, filtriSelezionati),
+                new FilterListaSquadreComposizione(null, filtriSelezionati)
+            ]);
+        }
+    }
+
+    @Action(DeselectBoxPartenza)
+    deselectBoxPartenza({ getState, setState, dispatch }: StateContext<BoxPartenzaStateModel>, action: RemoveBoxPartenza) {
+        const state = getState();
+
+        // controllo se il boxPartenza che sto eliminando è quello selezionato
+        if (action.boxPartenza.id === state.idBoxPartenzaSelezionato) {
+            // Deseleziono il mezzo selezionato se presenti nel box-partenza da eliminare
+            if (action.boxPartenza.mezzoComposizione) {
+               dispatch(new UnselectMezzoComposizione());
+            }
+            // Deseleziono le squadre selezionate se presenti nel box-partenza da eliminare
+            if (action.boxPartenza.squadraComposizione && action.boxPartenza.squadraComposizione.length > 0) {
+                action.boxPartenza.squadraComposizione.forEach((squadra: SquadraComposizione) => {
+                    dispatch(new UnselectSquadraComposizione(squadra));
+                });
+            }
+        }
+        if (action.refreshLista) {
+            const filtriSelezionati = this.store.selectSnapshot(x => x.filtriComposizione.filtriSelezionati);
             dispatch([
                 new FilterListaMezziComposizione(null, filtriSelezionati),
                 new FilterListaSquadreComposizione(null, filtriSelezionati)
@@ -328,7 +353,7 @@ export class BoxPartenzaState {
                 draft.boxPartenzaList.forEach((box: BoxPartenza) => {
                     if (box && box.mezzoComposizione) {
                         // console.log('mezzoComposizione', box.mezzoComposizione);
-                        if (box.mezzoComposizione.mezzo.codice === action.mezzoComp.mezzo.codice) {
+                        if ( box.mezzoComposizione && action.mezzoComp &&  box.mezzoComposizione.mezzo.codice === action.mezzoComp.mezzo.codice) {
                             // console.log('codiceMezzo', box.mezzoComposizione.mezzo.codice);
                             box.mezzoComposizione = action.mezzoComp;
                         }
@@ -387,6 +412,7 @@ export function _disableConfirmPartenza(boxPartenzaList: BoxPartenza[], nuovaPar
     if (boxPartenzaList && boxPartenzaList.length > 0) {
         let boxValidiCount = 0;
         for (const boxPartenza of boxPartenzaList) {
+            // tslint:disable-next-line:max-line-length
             if (boxPartenza.mezzoComposizione && (boxPartenza.mezzoComposizione.mezzo.stato === StatoMezzo.InRientro || boxPartenza.mezzoComposizione.mezzo.stato === StatoMezzo.InSede) && boxPartenza.squadraComposizione && boxPartenza.squadraComposizione.length > 0) {
                 boxValidiCount++;
             }

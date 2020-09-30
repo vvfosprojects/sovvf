@@ -19,10 +19,8 @@
 //-----------------------------------------------------------------------
 using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Composizione;
-using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneSquadre;
 using SO115App.FakePersistence.JSon.Utility;
-using SO115App.FakePersistenceJSon.GestioneIntervento;
 using SO115App.Models.Servizi.Infrastruttura.GetComposizioneSquadre;
 using System.Collections.Generic;
 using System.IO;
@@ -42,7 +40,7 @@ namespace SO115App.FakePersistenceJSon.Composizione
             }
             var composizioneSquadre = JsonConvert.DeserializeObject<List<ComposizioneSquadre>>(json);
 
-            return composizioneSquadre;
+            return composizioneSquadre.Where(c => c.Squadra.Distaccamento.Codice.Split(".")[0].Equals(query.CodiceSede.Split(".")[0])).ToList();
         }
     }
 }

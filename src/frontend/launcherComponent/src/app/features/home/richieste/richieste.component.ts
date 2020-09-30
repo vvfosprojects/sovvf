@@ -30,7 +30,7 @@ import { RichiesteEspanseState } from '../store/states/richieste/richieste-espan
 import { SetRichiestaGestione } from '../store/actions/richieste/richiesta-gestione.actions';
 import { RichiestaGestioneState } from '../store/states/richieste/richiesta-gestione.state';
 import { MezzoActionInterface } from '../../../shared/interface/mezzo-action.interface';
-import { ActionMezzo, ActionRichiesta, EliminaPartenzaRichiesta, GetListaRichieste } from '../store/actions/richieste/richieste.actions';
+import { ActionMezzo, ActionRichiesta, AllertaSede, EliminaPartenzaRichiesta, GetListaRichieste, ModificaStatoFonogramma } from '../store/actions/richieste/richieste.actions';
 import { ReducerRichiesteEspanse } from '../store/actions/richieste/richieste-espanse.actions';
 import { RichiestaActionInterface } from '../../../shared/interface/richiesta-action.interface';
 import { PermissionFeatures } from '../../../shared/enum/permission-features.enum';
@@ -39,6 +39,8 @@ import { ResetFiltriSelezionatiRichieste } from '../store/actions/filterbar/filt
 import { StatoRichiesta } from '../../../shared/enum/stato-richiesta.enum';
 import { FiltriRichiesteState } from '../store/states/filterbar/filtri-richieste.state';
 import { VoceFiltro } from '../filterbar/filtri-richieste/voce-filtro.model';
+import { ModificaStatoFonogrammaEmitInterface } from '../../../shared/interface/modifica-stato-fonogramma-emit.interface';
+import { AllertaSedeEmitInterface } from '../../../shared/interface/allerta-sede-emit.interface';
 
 @Component({
     selector: 'app-richieste',
@@ -48,6 +50,7 @@ import { VoceFiltro } from '../filterbar/filtri-richieste/voce-filtro.model';
 export class RichiesteComponent implements OnInit, OnDestroy {
 
     @Input() split: boolean;
+    @Input() boxAttivi: boolean;
 
     @Select(RicercaFilterbarState.ricerca) ricerca$: Observable<string>;
     ricerca: { descrizione: '' };
@@ -136,11 +139,19 @@ export class RichiesteComponent implements OnInit, OnDestroy {
             this.richiestaFissata$.subscribe((richiestaFissata: SintesiRichiesta) => {
                 if (richiestaFissata) {
                     this.richiestaFissata = richiestaFissata;
-                    this.listHeightClass = 'm-h-590';
+                    if (this.boxAttivi) {
+                        this.listHeightClass = 'm-h-590';
+                    } else {
+                        this.listHeightClass = 'm-h-695';
+                    }
                 } else {
                     setTimeout(() => {
                         this.richiestaFissata = null;
-                        this.listHeightClass = 'm-h-695';
+                        if (this.boxAttivi) {
+                            this.listHeightClass = 'm-h-695';
+                        } else {
+                            this.listHeightClass = 'm-h-800';
+                        }
                     }, 300);
                 }
             })
@@ -319,5 +330,13 @@ export class RichiesteComponent implements OnInit, OnDestroy {
 
     onEliminaPartenza(event: { targaMezzo: string, idRichiesta: string, modalResult: any }) {
         this.store.dispatch(new EliminaPartenzaRichiesta(event.targaMezzo, event.idRichiesta, event.modalResult));
+    }
+
+    onModificaStatoFonogramma(event: ModificaStatoFonogrammaEmitInterface) {
+        this.store.dispatch(new ModificaStatoFonogramma(event));
+    }
+
+    onAllertaSede(event: AllertaSedeEmitInterface) {
+        this.store.dispatch(new AllertaSede(event));
     }
 }

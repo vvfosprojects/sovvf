@@ -5,7 +5,7 @@ import { Observable, Subscription } from 'rxjs';
 import { DirectionInterface } from '../../maps/maps-interface/direction-interface';
 import { Composizione } from '../../../../shared/enum/composizione.enum';
 import { Select, Store } from '@ngxs/store';
-import { ConfirmPartenze, GetFiltriComposizione } from '../../store/actions/composizione-partenza/composizione-partenza.actions';
+import { ConfirmPartenze } from '../../store/actions/composizione-partenza/composizione-partenza.actions';
 import { ComposizioneVeloceState } from '../../store/states/composizione-partenza/composizione-veloce.state';
 import {
     HoverInPreAccoppiatoComposizione,
@@ -14,13 +14,14 @@ import {
     UnselectPreAccoppiatoComposizione
 } from '../../store/actions/composizione-partenza/composizione-veloce.actions';
 import { makeCopy } from '../../../../shared/helper/function';
-import { SquadraComposizione } from '../interface/squadra-composizione-interface';
+import { SquadraComposizione } from '../../../../shared/interface/squadra-composizione-interface';
 import { ConfermaPartenze } from '../interface/conferma-partenze-interface';
 import { ComposizionePartenzaState } from '../../store/states/composizione-partenza/composizione-partenza.state';
 import { TurnoState } from '../../../navbar/store/states/turno.state';
 import { Coordinate } from '../../../../shared/model/coordinate.model';
 import { BoxPartenzaHover } from '../interface/composizione/box-partenza-hover-interface';
 import { StatoMezzo } from '../../../../shared/enum/stato-mezzo.enum';
+import { GetFiltriComposizione } from '../../../../shared/store/actions/filtri-composizione/filtri-composizione.actions';
 
 @Component({
     selector: 'app-composizione-veloce',
@@ -33,6 +34,7 @@ export class FasterComponent implements OnInit, OnDestroy {
     @Input() disablePrenota: boolean;
     @Input() prenotato: boolean;
     @Input() loadingInvioPartenza: boolean;
+    @Input() boxAttivi: boolean;
 
     @Select(ComposizioneVeloceState.preAccoppiati) preAccoppiati$: Observable<BoxPartenza[]>;
     preAccoppiati: BoxPartenza[];
@@ -133,7 +135,7 @@ export class FasterComponent implements OnInit, OnDestroy {
         }
     }
 
-    confermaPartenze(): void {
+    confermaPartenzeInViaggio(): void {
         const boxPartenzaList: BoxPartenza[] = [];
         this.preAccoppiati.forEach(result => {
             if (this.idPreAccoppiatiSelezionati.includes(result.id)) {
@@ -145,6 +147,40 @@ export class FasterComponent implements OnInit, OnDestroy {
             const rObj = {};
             if (obj.mezzoComposizione) {
                 obj.mezzoComposizione.mezzo.stato = StatoMezzo.InViaggio;
+                rObj['mezzo'] = obj.mezzoComposizione.mezzo;
+            } else {
+                rObj['mezzo'] = null;
+            }
+            if (obj.squadraComposizione.length > 0) {
+                rObj['squadre'] = obj.squadraComposizione.map((squadraComp: SquadraComposizione) => {
+                    return squadraComp.squadra;
+                });
+            } else {
+                rObj['squadre'] = [];
+            }
+            return rObj;
+        });
+        const partenzeObj: ConfermaPartenze = {
+            partenze: partenzeMappedArray,
+            idRichiesta: this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione).codice,
+            turno: this.store.selectSnapshot(TurnoState.turnoCalendario).corrente
+        };
+        // console.log('mappedArray', partenzeMappedArray);
+        this.store.dispatch(new ConfirmPartenze(partenzeObj));
+    }
+
+    confermaPartenzeInUscita(): void {
+        const boxPartenzaList: BoxPartenza[] = [];
+        this.preAccoppiati.forEach(result => {
+            if (this.idPreAccoppiatiSelezionati.includes(result.id)) {
+                boxPartenzaList.push(result);
+            }
+        });
+        const partenze = makeCopy(boxPartenzaList);
+        const partenzeMappedArray = partenze.map(obj => {
+            const rObj = {};
+            if (obj.mezzoComposizione) {
+                obj.mezzoComposizione.mezzo.stato = StatoMezzo.InUscita;
                 rObj['mezzo'] = obj.mezzoComposizione.mezzo;
             } else {
                 rObj['mezzo'] = null;

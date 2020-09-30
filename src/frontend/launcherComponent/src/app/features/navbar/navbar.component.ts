@@ -12,12 +12,15 @@ import { calcolaTurnoCalendario } from 'src/app/shared/helper/calcola-turno';
 import { SetTurnoCalendario } from './store/actions/turno.actions';
 import { AuthService } from '../../core/auth/auth.service';
 import { NewVersionState } from '../../shared/store/states/nuova-versione/nuova-versione.state';
-import { GetNewVersion } from '../../shared/store/actions/nuova-versione/nuova-versione.actions';
+import { GetNewVersion, OpenModalNewFeaturesInfo, OpenModalNewVersionSoon } from '../../shared/store/actions/nuova-versione/nuova-versione.actions';
+import { SetNotificheLette } from '../../shared/store/actions/notifiche/notifiche.actions';
+import { RoutesPath } from '../../shared/enum/routes-path.enum';
+import { RouterState } from '@ngxs/router-plugin';
 
 @Component({
     selector: 'app-navbar',
     templateUrl: './navbar.component.html',
-    styleUrls: [ './navbar.component.css' ]
+    styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit, OnDestroy {
 
@@ -26,9 +29,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
     time: Date;
 
     colorButton = 'btn-dark';
+    RoutesPath = RoutesPath;
 
     @Input() user: Utente;
     @Input() ruoliUtenteLoggato: Ruolo[];
+
     @Output() openedSidebar = new EventEmitter<any>();
 
     @Select(TurnoState.turnoCalendario) turnoCalendario$: Observable<TurnoCalendario>;
@@ -37,44 +42,108 @@ export class NavbarComponent implements OnInit, OnDestroy {
     turnoExtra: TurnoExtra;
     @Select(NewVersionState.newVersion) newVersion$: Observable<boolean>;
     newVersion: boolean;
+    @Select(NewVersionState.newVersionSoon) newVersionSoon$: Observable<boolean>;
+    newVersionSoon: boolean;
+    @Select(NewVersionState.newFeaturesInfo) newFeaturesInfo$: Observable<boolean>;
+    newFeaturesInfo: boolean;
 
     @Select(SediTreeviewState.listeSediNavbarLoaded) listeSediNavbarLoaded$: Observable<boolean>;
+
+    @Select(RouterState.url) url$: Observable<string>;
+    url: string;
 
     constructor(private store: Store,
                 private authenticationService: AuthService,
                 private _clock: ClockService) {
-        this.time = new Date();
-        this.clock$ = this._clock.getClock();
-        this.subscription.add(this.clock$.subscribe((tick: Date) => {
-            this.time = tick;
-            this.checkTurno();
-        }));
-        this.subscription.add(this.turnoCalendario$.subscribe((turnoC: TurnoCalendario) => this.turnoCalendario = turnoC));
-        this.subscription.add(this.turnoExtra$.subscribe((turnoExtra: TurnoExtra) => {
-            this.turnoExtra = turnoExtra;
-            if (turnoExtra) {
-                this.colorButton = 'btn-danger';
-            }
-        }));
-        this.subscription.add(this.newVersion$.subscribe((newVersion: boolean) => {
-            this.newVersion = newVersion;
-        }));
+        this.setTime();
+        this.getClock();
+        this.getTurnoCalendario();
+        this.getTurnoExtra();
+        this.getNewVersion();
+        this.getNewVersionSoon();
+        this.getNewFeaturesInfo();
+        this.getUrl();
     }
 
-    ngOnInit() {
+    ngOnInit(): void {
         isDevMode() && console.log('Componente Navbar creato');
         this.store.dispatch(new GetDataNavbar());
     }
 
     ngOnDestroy(): void {
-        this.subscription.unsubscribe();
         isDevMode() && console.log('Componente Navbar distrutto');
+        this.subscription.unsubscribe();
         this.store.dispatch(new ClearDataNavbar());
     }
 
-    openSidebar() {
-        this.openedSidebar.emit();
+    setTime(): void {
+        this.time = new Date();
     }
+
+    getClock(): void {
+        this.clock$ = this._clock.getClock();
+        this.subscription.add(
+            this.clock$.subscribe((tick: Date) => {
+                this.time = tick;
+                this.checkTurno();
+            })
+        );
+    }
+
+    getTurnoCalendario(): void {
+        this.subscription.add(
+            this.turnoCalendario$.subscribe((turnoC: TurnoCalendario) => {
+                this.turnoCalendario = turnoC;
+            })
+        );
+    }
+
+    getTurnoExtra(): void {
+        this.subscription.add(
+            this.turnoExtra$.subscribe((turnoExtra: TurnoExtra) => {
+                this.turnoExtra = turnoExtra;
+                if (turnoExtra) {
+                    this.colorButton = 'btn-danger';
+                }
+            })
+        );
+    }
+
+    getNewVersion(): void {
+        this.subscription.add(
+            this.newVersion$.subscribe((newVersion: boolean) => {
+                this.newVersion = newVersion;
+            })
+        );
+    }
+
+    getNewVersionSoon(): void {
+        this.subscription.add(
+            this.newVersionSoon$.subscribe((newVersionSoon: boolean) => {
+                this.newVersionSoon = newVersionSoon;
+            })
+        );
+    }
+
+    getNewFeaturesInfo(): void {
+        this.subscription.add(
+            this.newFeaturesInfo$.subscribe((newFeaturesInfo: boolean) => {
+                this.newFeaturesInfo = newFeaturesInfo;
+            })
+        );
+    }
+
+    getUrl(): void {
+        this.subscription.add(
+            this.url$.subscribe((url: string) => {
+                this.url = url;
+            })
+        );
+    }
+
+    /* openSidebar() {
+        this.openedSidebar.emit();
+    } */
 
     checkTurno(): void {
         if (!this.turnoCalendario) {
@@ -87,17 +156,29 @@ export class NavbarComponent implements OnInit, OnDestroy {
         }
     }
 
-    setTurno() {
+    setTurno(): void {
         this.store.dispatch(new SetTurnoCalendario());
     }
 
-    getNewVersion() {
+    onGetNewVersion(): void {
         this.store.dispatch(new GetNewVersion());
     }
 
+    onNewVersionSoon(): void {
+        this.store.dispatch(new OpenModalNewVersionSoon());
+    }
+
+    onNewFeaturesInfo(): void {
+        this.store.dispatch(new OpenModalNewFeaturesInfo());
+    }
+
     // Todo centralizzare nello store.
-    logout() {
+    logout(): void {
         this.authenticationService.logout();
+    }
+
+    setNotificheLette(): void {
+        this.store.dispatch(new SetNotificheLette());
     }
 
 }

@@ -31,5 +31,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneUtente.CasLogin
         /// </summary>
         public Utente User
         { get; set; }
+
+        public string ErrorMessage { get; set; }
     }
 }

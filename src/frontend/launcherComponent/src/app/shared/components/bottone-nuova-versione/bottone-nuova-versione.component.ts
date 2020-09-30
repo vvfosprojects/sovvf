@@ -8,9 +8,13 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 export class BottoneNuovaVersioneComponent {
 
     @Input() btnBlock: boolean;
-    @Output() getNewVersion: EventEmitter<boolean> = new EventEmitter<boolean>();
+    @Input() icona = 'fa-refresh';
+    @Input() testo = 'Nuova versione disponibile';
+    @Input() tooltip = 'Clicca per ricaricare l\'applicazione all\'ultima versione disponibile!';
 
-    onGetNewVersion() {
-        this.getNewVersion.emit(true);
+    @Output() doAction: EventEmitter<boolean> = new EventEmitter<boolean>();
+
+    onClick(): void {
+        this.doAction.emit(true);
     }
 }

@@ -4,9 +4,8 @@ import { Observable, Subscription } from 'rxjs';
 import { Select, Store } from '@ngxs/store';
 import {
     ClearRicercaUtenti,
-    ReducerSelezioneFiltroSede,
-    SetRicercaUtenti,
-    SetSediFiltro, SetSediFiltroConFigli
+    ReducerSelezioneFiltroSede, ResetSediFiltroSelezionate,
+    SetRicercaUtenti
 } from './store/actions/ricerca-utenti/ricerca-utenti.actons';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import {
@@ -22,7 +21,6 @@ import { RicercaUtentiState } from './store/states/ricerca-utenti/ricerca-utenti
 import { PaginationState } from '../../shared/store/states/pagination/pagination.state';
 import { LoadingState } from '../../shared/store/states/loading/loading.state';
 import { GestioneUtenteModalComponent } from './gestione-utente-modal/gestione-utente-modal.component';
-import { ConfirmModalComponent } from 'src/app/shared';
 import { SetPageSize } from '../../shared/store/actions/pagination/pagination.actions';
 import { wipeStringUppercase } from '../../shared/helper/function';
 import { SetSediNavbarVisible } from '../../shared/store/actions/sedi-treeview/sedi-treeview.actions';
@@ -30,6 +28,7 @@ import { RuoliUtenteLoggatoState } from '../../shared/store/states/ruoli-utente-
 import { SetCurrentUrl } from '../../shared/store/actions/app/app.actions';
 import { RoutesPath } from '../../shared/enum/routes-path.enum';
 import { AuthState } from '../auth/store/auth.state';
+import { ConfirmModalComponent } from '../../shared/modal/confirm-modal/confirm-modal.component';
 
 @Component({
     selector: 'app-gestione-utenti',
@@ -66,8 +65,7 @@ export class GestioneUtentiComponent implements OnInit, OnDestroy {
         this.getUtente();
         this.getRicerca();
         this.getPageSize();
-        this.getPageSize();
-        this.getSediFiltro();
+        this.getUtentiGestione(true);
     }
 
     ngOnInit() {
@@ -90,8 +88,13 @@ export class GestioneUtentiComponent implements OnInit, OnDestroy {
         this.store.dispatch(new ReducerSelezioneFiltroSede(filtroSede));
     }
 
+    onFiltriReset() {
+        this.store.dispatch(new ResetSediFiltroSelezionate());
+    }
+
     onAddUtente() {
         const aggiungiUtenteModal = this.modalService.open(GestioneUtenteModalComponent, {
+            windowClass: 'modal-holder',
             backdropClass: 'light-blue-backdrop',
             centered: true,
             size: 'lg'
@@ -114,6 +117,7 @@ export class GestioneUtentiComponent implements OnInit, OnDestroy {
 
     onAddRuoloUtente(event: { codFiscale: string, fullName: string, ruoliAttuali: Ruolo[] }) {
         const aggiungiRuoloUtenteModal = this.modalService.open(GestioneUtenteModalComponent, {
+            windowClass: 'modal-holder',
             backdropClass: 'light-blue-backdrop',
             centered: true,
             size: 'lg'
@@ -142,11 +146,13 @@ export class GestioneUtentiComponent implements OnInit, OnDestroy {
 
     onRemoveRuoloUtente(payload: { codFiscale: string, ruolo: Ruolo, nominativoUtente: string }) {
         const modalConfermaAnnulla = this.modalService.open(ConfirmModalComponent, {
+            windowClass: 'modal-holder',
             backdropClass: 'light-blue-backdrop',
             centered: true
         });
         modalConfermaAnnulla.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
         modalConfermaAnnulla.componentInstance.titolo = 'Elimina ruolo a ' + payload.nominativoUtente;
+        // tslint:disable-next-line:max-line-length
         modalConfermaAnnulla.componentInstance.messaggioAttenzione = 'Sei sicuro di voler rimuovere il ruolo "' + wipeStringUppercase(payload.ruolo.descrizione) + '" su "' + payload.ruolo.descSede + '"?';
         modalConfermaAnnulla.componentInstance.bottoni = [
             { type: 'ko', descrizione: 'Annulla', colore: 'secondary' },
@@ -170,6 +176,7 @@ export class GestioneUtentiComponent implements OnInit, OnDestroy {
 
     onRemoveUtente(payload: { codFiscale: string, nominativoUtente: string }) {
         const modalConfermaAnnulla = this.modalService.open(ConfirmModalComponent, {
+            windowClass: 'modal-holder',
             backdropClass: 'light-blue-backdrop',
             centered: true
         });
@@ -239,26 +246,6 @@ export class GestioneUtentiComponent implements OnInit, OnDestroy {
                         this.store.dispatch(new GetUtentiGestione());
                     }
                     this.pageSize = pageSize;
-                }
-            })
-        );
-    }
-
-    getSediFiltro() {
-        this.subscriptions.add(
-            this.ruoliUtenteLoggato$.subscribe((ruoli: Ruolo[]) => {
-                if (ruoli && ruoli.length > 0) {
-                    const sediFiltro = ruoli.filter((r: Ruolo) => r.descrizione === 'Amministratore');
-                    this.store.dispatch(new SetSediFiltro(sediFiltro));
-                    this.getUtentiGestione(true);
-                }
-            })
-        );
-        this.subscriptions.add(
-            this.ruoliUtenteLoggatoConDistaccamenti$.subscribe((ruoli: Ruolo[]) => {
-                if (ruoli && ruoli.length > 0) {
-                    const sediFiltroConDistaccamenti = ruoli.filter((r: Ruolo) => r.descrizione === 'Amministratore');
-                    this.store.dispatch(new SetSediFiltroConFigli(sediFiltroConDistaccamenti));
                 }
             })
         );

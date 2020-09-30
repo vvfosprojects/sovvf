@@ -15,15 +15,11 @@ export class ListaEventiRichiestaComponent implements OnInit {
 
     @Input() iconeNomeClasseEvento: boolean;
     istanteEventoPrecedente: Date; // erano private implementare setter and getter
-    istantePrimoEvento: Date; // erano private implementare setter and getter
 
     constructor() {
     }
 
     ngOnInit() {
-        if (this.istantePrimoEvento == null) {
-            this.setIstantePrimoEvento(moment().toDate());
-        }
     }
 
     private setIstanteEventoPrecedente(i: number): Date {
@@ -33,10 +29,6 @@ export class ListaEventiRichiestaComponent implements OnInit {
             this.istanteEventoPrecedente = this.elencoEventi[0].istanteEvento;
         }
         return this.istanteEventoPrecedente;
-    }
-
-    private setIstantePrimoEvento(p: Date): void {
-        this.istantePrimoEvento = p;
     }
 
     setRicercaTargaMezzo(targa: string) {

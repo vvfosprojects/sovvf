@@ -1,9 +1,11 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { NgbDropdownConfig, NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDropdownConfig, NgbTooltipConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Mezzo } from '../../../model/mezzo.model';
 import { calcolaActionSuggeritaMezzo, statoMezzoActionColor, statoMezzoActionsEnumToStringArray } from '../../../helper/function';
 import { StatoMezzoActions } from '../../../enum/stato-mezzo-actions.enum';
 import { StatoMezzo } from 'src/app/shared/enum/stato-mezzo.enum';
+import { MezzoActionsModalComponent } from 'src/app/shared/modal/mezzo-actions-modal/mezzo-actions-modal.component';
+import { MezzoActionEmit } from '../../../interface/mezzo-action-emit.interface';
 
 @Component({
     selector: 'app-mezzo-actions',
@@ -16,10 +18,13 @@ export class MezzoActionsComponent implements OnInit {
     statoMezzoActions: StatoMezzoActions;
     statoMezzoString: Array<string>;
 
-    @Output() actionMezzo: EventEmitter<StatoMezzoActions> = new EventEmitter();
+    @Output() actionMezzo: EventEmitter<MezzoActionEmit> = new EventEmitter<MezzoActionEmit>();
 
-    constructor(dropdownConfig: NgbDropdownConfig,
-                tooltipConfig: NgbTooltipConfig) {
+    constructor(
+        dropdownConfig: NgbDropdownConfig,
+        tooltipConfig: NgbTooltipConfig,
+        private modalService: NgbModal
+    ) {
         dropdownConfig.container = 'body';
         dropdownConfig.placement = 'top';
         tooltipConfig.container = 'body';
@@ -30,16 +35,35 @@ export class MezzoActionsComponent implements OnInit {
         this.statoMezzoString = statoMezzoActionsEnumToStringArray([this.mezzo.stato, StatoMezzo.Istituto, calcolaActionSuggeritaMezzo(this.mezzo.stato)]);
     }
 
-    onClick(action?: string) {
-        if (action) {
-            this.statoMezzoActions = StatoMezzoActions[action.replace(' ', '')];
-            this.actionMezzo.emit(this.statoMezzoActions);
-        } else {
-            this.actionMezzo.emit();
+    onClick(action?: string, event?: MouseEvent) {
+        if (event) {
+            event.stopPropagation();
         }
+        this.modalService.open(MezzoActionsModalComponent, {
+            windowClass: 'modal-holder',
+            backdropClass: 'light-blue-backdrop',
+            centered: true
+        }).result.then((res: { status: string, result: any }) => {
+            switch (res.status) {
+                case 'ok' :
+                    if (action) {
+                        this.statoMezzoActions = StatoMezzoActions[action.replace(' ', '')];
+                        const orario = res.result.oraEvento;
+                        this.actionMezzo.emit({ mezzoAction: this.statoMezzoActions, oraEvento: { ora: orario.hour, minuti: orario.minute } });
+                    } else {
+                        this.actionMezzo.emit();
+                    }
+                    break;
+                case 'ko':
+                    break;
+            }
+        });
     }
 
-    calcolaActionSuggeritaMezzo(stato: StatoMezzo) {
+    calcolaActionSuggeritaMezzo(stato: StatoMezzo, event?: MouseEvent) {
+        if (event) {
+            event.stopPropagation();
+        }
         return calcolaActionSuggeritaMezzo(stato);
     }
 

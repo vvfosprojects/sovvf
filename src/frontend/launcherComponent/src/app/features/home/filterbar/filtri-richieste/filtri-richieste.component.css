@@ -2,3 +2,12 @@
     background-image: url('../../../../../assets/img/wallpaper.png');
     background-size: cover;
 }
+
+.altri-filtri{
+    border-left: none;
+ }
+
+.altri-filtri:hover{
+   background-color: #e2e2e2 !important; 
+   border-left: none;
+}

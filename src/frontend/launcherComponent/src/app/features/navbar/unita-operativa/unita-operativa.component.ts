@@ -22,6 +22,7 @@ export class UnitaOperativaComponent implements OnDestroy, OnInit {
     subscription = new Subscription();
 
     @Input() colorButton: string;
+    @Input() cache = false;
 
     @Select(SediTreeviewState.listeSediNavbar) listeSedi$: Observable<TreeItem>;
     items: TreeviewItem[];

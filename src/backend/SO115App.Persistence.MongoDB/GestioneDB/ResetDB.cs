@@ -31,6 +31,9 @@ namespace SO115App.Persistence.MongoDB.GestioneDB
                 if (!_dbContext.DeleteDB("statoSquadra"))
                     return false;
 
+                if (!_dbContext.DeleteDB("trasferimentiChiamate"))
+                    return false;
+
                 return true;
             }
             catch

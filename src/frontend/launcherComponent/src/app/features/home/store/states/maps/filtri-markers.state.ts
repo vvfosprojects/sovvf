@@ -6,7 +6,7 @@ import {
     UpdateStatiMezzi,
     UpdateStatiRichiesta,
     UpdateGenereMezzi,
-    ToggleGestitaSC
+    ToggleGestitaSC, UpdateMezziAltriComandi
 } from '../../actions/maps/filtri-markers.actions';
 import { FiltroSchedeContatto } from '../../../maps/maps-model/filtro-schede-contatto';
 import { isEqual } from 'lodash';
@@ -23,6 +23,7 @@ export const FiltriMarkersStateDefaults: FiltriMarkersStateModel = {
         priorita: 0
     },
     filtroMezzi: {
+        filtraPerAreaMappa: false,
         tipologia: [],
         stato: []
     },
@@ -75,6 +76,17 @@ export class FiltriMarkersState {
             filtroRichieste: {
                 ...state.filtroRichieste,
                 stato: action.statiFiltro
+            }
+        });
+    }
+
+    @Action(UpdateMezziAltriComandi)
+    updateMezziAltriComandi({ getState, patchState }: StateContext<FiltriMarkersStateModel>, action: UpdateMezziAltriComandi) {
+        const state = getState();
+        patchState({
+            filtroMezzi: {
+                ...state.filtroMezzi,
+                filtraPerAreaMappa: action.status
             }
         });
     }

@@ -6,9 +6,9 @@ namespace SO115App.Models.Classi.Utility
     {
         public static Squadra.StatoSquadra MappaStato(string statoMezzo)
         {
-            if (statoMezzo == Costanti.MezzoInRientro)
+            if (statoMezzo == Costanti.MezzoInUscita)
             {
-                return Squadra.StatoSquadra.InRientro;
+                return Squadra.StatoSquadra.InUscita;
             }
             else if (statoMezzo == Costanti.MezzoInViaggio)
             {
@@ -17,6 +17,10 @@ namespace SO115App.Models.Classi.Utility
             else if (statoMezzo == Costanti.MezzoSulPosto)
             {
                 return Squadra.StatoSquadra.SulPosto;
+            }
+            else if (statoMezzo == Costanti.MezzoInRientro)
+            {
+                return Squadra.StatoSquadra.InRientro;
             }
             else
             {

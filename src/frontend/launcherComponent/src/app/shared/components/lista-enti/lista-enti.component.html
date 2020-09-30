@@ -4,15 +4,32 @@
             <table class="table">
                 <thead class="thead-light">
                 <tr>
-                    <th scope="col">Enti Intervenuti</th>
+                    <th scope="col">
+                        <div class="text-center">
+                            Enti Intervenuti
+                        </div>
+                    </th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr *ngFor="let enteIntervenuto of listaEntiIntervenuti">
-                    <td>{{enteIntervenuto.descrizione}}</td>
+                    <td>
+                        <div class="clearfix">
+                            <div class="float-left">
+                                {{ enteIntervenuto.descrizione }}
+                            </div>
+                            <div class="float-right">
+                                <app-numeri-ente [telefoni]="enteIntervenuto?.telefoni"></app-numeri-ente>
+                            </div>
+                        </div>
+                    </td>
                 </tr>
                 <tr *ngIf="!listaEntiIntervenuti">
-                    <td>nessuno</td>
+                    <td>
+                        <div class="text-center text-danger">
+                            Nessun ente presente
+                        </div>
+                    </td>
                 </tr>
                 </tbody>
             </table>
@@ -21,15 +38,32 @@
             <table class="table">
                 <thead class="thead-light">
                 <tr>
-                    <th scope="col">Enti Presa In Carico</th>
+                    <th scope="col">
+                        <div class="text-center">
+                            Enti Presa In Carico
+                        </div>
+                    </th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr *ngFor="let entePresaInCarico of listaEntiPresaInCarico">
-                    <td>{{entePresaInCarico.descrizione}}</td>
+                    <td>
+                        <div class="clearfix">
+                            <div class="float-left">
+                                {{ entePresaInCarico.descrizione }}
+                            </div>
+                            <div class="float-right">
+                                <app-numeri-ente [telefoni]="entePresaInCarico?.telefoni"></app-numeri-ente>
+                            </div>
+                        </div>
+                    </td>
                 </tr>
                 <tr *ngIf="!listaEntiPresaInCarico">
-                    <td>nessuno</td>
+                    <td>
+                        <div class="text-center text-danger">
+                            Nessun ente presente
+                        </div>
+                    </td>
                 </tr>
                 </tbody>
             </table>

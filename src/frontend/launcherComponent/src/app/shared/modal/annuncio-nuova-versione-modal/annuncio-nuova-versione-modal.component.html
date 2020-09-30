@@ -1,0 +1,25 @@
+<div class="modal-header text-primary">
+    <h2 class="font-weight-bolder mb-0">
+        <i class="fa fa-refresh mr-1"></i>
+        {{ 'nuova versione in arrivo' + ' ' + newVersionSoonData | uppercase }}
+    </h2>
+</div>
+<div class="modal-body">
+    <h2 class="font-weight-bold mt-2">
+        Quali funzionalità verranno aggiunte?
+    </h2>
+    <ul class="my-4">
+        <li *ngFor="let info of newVersionSoonInfo" class="h4">
+            {{ info }}
+        </li>
+    </ul>
+    <div class="alert alert-danger h3 font-weight-bolder">
+        Questo aggiornamento richiede il reset della base dati, tutti i dati verranno eliminati
+        AUTOMATICAMENTE.
+    </div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-lg btn-danger font-weight-bolder" (click)="close()">
+        {{ 'Chiudi' | uppercase }}
+    </button>
+</div>

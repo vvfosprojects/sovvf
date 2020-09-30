@@ -15,13 +15,14 @@ import { Observable } from 'rxjs';
 })
 export class ListaPartenzeComponent {
 
-    @Input() idDaSganciare: '';
+    @Input() idDaSganciare: string;
     @Input() partenze: Partenza[];
     @Input() statoRichiesta: StatoRichiesta;
     @Input() inGestione: boolean;
 
     @Output() actionMezzo: EventEmitter<MezzoActionInterface> = new EventEmitter<MezzoActionInterface>();
     @Output() eliminaPartenza: EventEmitter<string> = new EventEmitter();
+    @Output() modificaPartenza: EventEmitter<string> = new EventEmitter();
 
     @Select(RichiesteState.loadingActionMezzo) loadingActionMezzo$: Observable<string>;
 

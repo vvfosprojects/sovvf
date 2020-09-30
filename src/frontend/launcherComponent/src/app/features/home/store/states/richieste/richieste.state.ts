@@ -4,28 +4,31 @@ import {
     ActionMezzo,
     ActionRichiesta,
     AddRichiesta,
-    CambiaStatoRichiesta,
+    AddRichieste,
+    AllertaSede,
     ClearIdChiamataInviaPartenza,
     ClearRichiestaById,
     ClearRichieste,
+    EliminaPartenzaRichiesta,
     GetListaRichieste,
+    ModificaStatoFonogramma,
     PatchRichiesta,
     SetIdChiamataInviaPartenza,
-    SetRichiestaById,
-    AddRichieste,
-    StartInviaPartenzaFromChiamata,
-    UpdateRichiesta,
-    VisualizzaListaSquadrePartenza,
     SetNeedRefresh,
-    StartLoadingRichieste,
-    StopLoadingRichieste,
-    EliminaPartenzaRichiesta,
+    SetRichiestaById,
+    StartInviaPartenzaFromChiamata,
     StartLoadingActionMezzo,
-    StopLoadingActionMezzo,
     StartLoadingActionRichiesta,
-    StopLoadingActionRichiesta,
     StartLoadingEliminaPartenza,
-    StopLoadingEliminaPartenza
+    StartLoadingModificaFonogramma,
+    StartLoadingRichieste,
+    StopLoadingActionMezzo,
+    StopLoadingActionRichiesta,
+    StopLoadingEliminaPartenza,
+    StopLoadingModificaFonogramma,
+    StopLoadingRichieste,
+    UpdateRichiesta,
+    VisualizzaListaSquadrePartenza
 } from '../../actions/richieste/richieste.actions';
 import { SintesiRichiesteService } from 'src/app/core/service/lista-richieste-service/lista-richieste.service';
 import { insertItem, patch, updateItem } from '@ngxs/store/operators';
@@ -41,10 +44,9 @@ import { SetMarkerRichiestaSelezionato } from '../../actions/maps/marker.actions
 import { ComposizionePartenzaState } from '../composizione-partenza/composizione-partenza.state';
 import { ClearRichiesteEspanse } from '../../actions/richieste/richieste-espanse.actions';
 import { RichiesteEspanseState } from './richieste-espanse.state';
-import { calcolaActionSuggeritaMezzo } from '../../../../../shared/helper/function';
+import { calcolaActionSuggeritaMezzo, getStatoFonogrammaEnumByName } from '../../../../../shared/helper/function';
 import { RichiestaGestioneState } from './richiesta-gestione.state';
 import { RichiestaAttivitaUtenteState } from './richiesta-attivita-utente.state';
-import { ListaSquadrePartenzaComponent } from '../../../../../shared';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { RicercaFilterbarState } from '../filterbar/ricerca-filterbar.state';
 import { FiltriRichiesteState } from '../filterbar/filtri-richieste.state';
@@ -58,8 +60,8 @@ import { GetInitCentroMappa } from '../../actions/maps/centro-mappa.actions';
 import { ClearRichiestaMarkerModifica } from '../../actions/maps/richieste-markers.actions';
 import { AuthState } from '../../../../auth/store/auth.state';
 import { UpdateRichiestaFissata } from '../../actions/richieste/richiesta-fissata.actions';
-import { OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { TreeviewSelezione } from '../../../../../shared/model/treeview-selezione.model';
+import { ListaSquadrePartenzaComponent } from '../../../../../shared/components/lista-squadre-partenza/lista-squadre-partenza.component';
 
 export interface RichiesteStateModel {
     richieste: SintesiRichiesta[];
@@ -69,6 +71,7 @@ export interface RichiesteStateModel {
     loadingActionMezzo: string;
     loadingEliminaPartenza: boolean;
     loadingActionRichiesta: string;
+    loadingModificaFonogramma: boolean;
     needRefresh: boolean;
 }
 
@@ -80,6 +83,7 @@ export const RichiesteStateDefaults: RichiesteStateModel = {
     loadingEliminaPartenza: false,
     loadingActionMezzo: null,
     loadingActionRichiesta: null,
+    loadingModificaFonogramma: false,
     needRefresh: false
 };
 
@@ -138,6 +142,11 @@ export class RichiesteState {
         return state.loadingEliminaPartenza;
     }
 
+    @Selector()
+    static loadingModificaFonogramma(state: RichiesteStateModel) {
+        return state.loadingModificaFonogramma;
+    }
+
     constructor(private richiesteService: SintesiRichiesteService,
                 private modalService: NgbModal,
                 private store: Store) {
@@ -158,6 +167,9 @@ export class RichiesteState {
                 pageSize: 7
             };
             this.richiesteService.getRichieste(filters, pagination).subscribe((response: ResponseInterface) => {
+                /* response.sintesiRichiesta.forEach( e => {
+                    e.listaEnti = e.listaEntiIntervenuti;
+                }) */
                 dispatch([
                     new AddRichieste(response.sintesiRichiesta),
                     new PatchPagination(response.pagination),
@@ -285,16 +297,6 @@ export class RichiesteState {
         }
     }
 
-    @Action(CambiaStatoRichiesta)
-    cambiaStatoRichiesta({ patchState, dispatch }: StateContext<RichiesteStateModel>, action: CambiaStatoRichiesta) {
-        const obj = {
-            'idRichiesta': action.idRichiesta,
-            'stato': action.stato
-        };
-        this.richiesteService.aggiornaStatoRichiesta(obj).subscribe(() => {
-        });
-    }
-
     @Action(SetIdChiamataInviaPartenza)
     setIdChiamataInviaPartenza({ patchState, dispatch }: StateContext<RichiesteStateModel>, action: SetIdChiamataInviaPartenza) {
         patchState({
@@ -327,6 +329,7 @@ export class RichiesteState {
             'codRichiesta': action.mezzoAction.codRichiesta,
             'idMezzo': action.mezzoAction.mezzo.codice,
             'statoMezzo': action.mezzoAction.action ? action.mezzoAction.action : calcolaActionSuggeritaMezzo(action.mezzoAction.mezzo.stato),
+            'dataOraAggiornamento': action.mezzoAction.data
         };
         this.richiesteService.aggiornaStatoMezzo(obj).subscribe(() => {
             },
@@ -355,6 +358,31 @@ export class RichiesteState {
         const obj = action.richiestaAction;
         console.log('Obj', obj);
         this.richiesteService.aggiornaStatoRichiesta(obj).subscribe(() => {
+        }, error => dispatch(new StopLoadingActionRichiesta()));
+    }
+
+    @Action(ModificaStatoFonogramma)
+    modificaStatoFonogramma({ dispatch }: StateContext<RichiesteStateModel>, action: ModificaStatoFonogramma) {
+        dispatch(new StartLoadingModificaFonogramma());
+        const obj = {
+            'idRichiesta': action.event.idRichiesta,
+            'numeroFonogramma': action.event.numeroFonogramma,
+            'protocolloFonogramma': action.event.protocolloFonogramma,
+            'destinatari': action.event.destinatari,
+            'stato': getStatoFonogrammaEnumByName(action.event.stato)
+        };
+        this.richiesteService.modificaStatoFonogrammaRichiesta(obj).subscribe(() => {
+            dispatch(new StopLoadingModificaFonogramma());
+        }, error => dispatch(new StopLoadingModificaFonogramma()));
+    }
+
+    @Action(AllertaSede)
+    allertaSede({ dispatch }: StateContext<RichiesteStateModel>, action: AllertaSede) {
+        const obj = {
+            'codiceRichiesta': action.event.codRichiesta,
+            'codSediAllertate': action.event.sedi.map((s: TreeviewSelezione) => s.idSede)
+        };
+        this.richiesteService.allertaSede(obj).subscribe(() => {
         });
     }
 
@@ -376,7 +404,11 @@ export class RichiesteState {
 
     @Action(VisualizzaListaSquadrePartenza)
     visualizzaListaSquadrePartenza({ patchState }: StateContext<RichiesteStateModel>, action: VisualizzaListaSquadrePartenza) {
-        const modal = this.modalService.open(ListaSquadrePartenzaComponent, { windowClass: 'squadrePartenza', backdropClass: 'light-blue-backdrop', centered: true });
+        const modal = this.modalService.open(ListaSquadrePartenzaComponent, {
+            windowClass: 'modal-holder',
+            backdropClass: 'light-blue-backdrop',
+            centered: true
+        });
         modal.componentInstance.listaSquadre = action.listaSquadre;
         modal.result.then(() => console.log('Lista Squadre Partenza Aperta'),
             () => console.log('Lista Squadre Partenza Chiusa'));
@@ -436,6 +468,20 @@ export class RichiesteState {
     stopLoadingActionRichiesta({ patchState }: StateContext<RichiesteStateModel>) {
         patchState({
             loadingActionRichiesta: null
+        });
+    }
+
+    @Action(StartLoadingModificaFonogramma)
+    startLoadingModificaFonogramma({ patchState }: StateContext<RichiesteStateModel>) {
+        patchState({
+            loadingModificaFonogramma: true
+        });
+    }
+
+    @Action(StopLoadingModificaFonogramma)
+    stopLoadingModificaFonogramma({ patchState }: StateContext<RichiesteStateModel>) {
+        patchState({
+            loadingModificaFonogramma: false
         });
     }
 

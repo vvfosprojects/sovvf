@@ -108,7 +108,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Command.GestioneSoccorso.Shared
         /// <summary>
         ///   Lista degli enti intervenuti (Es. ACEA)
         /// </summary>
-        public List<EntiIntervenuti> ListaEntiIntervenuti { get; set; }
+        public List<EnteIntervenuto> ListaEntiIntervenuti { get; set; }
 
         /// <summary>
         ///   Se l'intervento è su un obiettivo ritenuto rilevante (Es. Colosseo) si seleziona da
@@ -182,5 +182,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Command.GestioneSoccorso.Shared
         public Azione Azione { get; set; }
 
         public string Motivazione { get; set; }
+
+        public List<int> listaEnti { get; set; }
     }
 }

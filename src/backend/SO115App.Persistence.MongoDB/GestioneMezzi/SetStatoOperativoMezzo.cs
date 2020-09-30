@@ -34,7 +34,7 @@ namespace SO115App.Persistence.MongoDB.GestioneMezzi
         /// <param name="codiceMezzo">il codice del mezzo (sigla.targa)</param>
         /// <param name="statoOperativo">lo stato operativo del mezzo</param>
         /// <param name="idRichiesta">l'id della richiesta a cui è associato il mezzo</param>
-        public void Set(string codiceSede, string codiceMezzo, string statoOperativo, string idRichiesta)
+        public void Set(string codiceSede, string codiceMezzo, string statoOperativo, string codRichiesta)
         {
             if (statoOperativo.Equals(Costanti.MezzoRientrato) || statoOperativo.Equals(Costanti.MezzoInSede))
             {
@@ -46,7 +46,7 @@ namespace SO115App.Persistence.MongoDB.GestioneMezzi
                 {
                     CodiceMezzo = codiceMezzo,
                     CodiceSede = codiceSede,
-                    CodiceRichiesta = idRichiesta,
+                    CodiceRichiesta = codRichiesta,
                     StatoOperativo = statoOperativo
                 };
 

@@ -66,7 +66,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneUtente.CasLogin
                 Log.Information($"Autenticazione Fallita = {Cas.serviceResponse.AuthenticationFailure.Description}");
                 return new CasLoginResult()
                 {
-                    User = null
+                    User = null,
+                    ErrorMessage = Cas.serviceResponse.AuthenticationFailure.Description
                 };
             }
 
@@ -84,7 +85,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneUtente.CasLogin
                 if (utente == null)
                     return new CasLoginResult()
                     {
-                        User = null
+                        User = null,
+                        ErrorMessage = "Utente non abilitato. Contattare l'assistenza per l'abilitazione"
                     };
 
                 Log.Information($"Utente loggato = {utente.Username}");
@@ -93,7 +95,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneUtente.CasLogin
                     new Claim(ClaimTypes.NameIdentifier, utente.CodiceFiscale.ToString()),
                     new Claim(ClaimTypes.Name,utente.Username)
                 };
-
                 var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config.GetSection("AppSettings:Token").Value));
 
                 var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
@@ -122,7 +123,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneUtente.CasLogin
                 if (utente == null)
                     return new CasLoginResult()
                     {
-                        User = null
+                        User = null,
+                        ErrorMessage = "Utente non abilitato. Contattare l'assistenza per l'abilitazione"
                     };
 
                 var claim = new[]

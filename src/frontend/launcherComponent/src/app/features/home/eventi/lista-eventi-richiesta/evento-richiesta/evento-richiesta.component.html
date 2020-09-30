@@ -15,10 +15,6 @@
       {{eventoRichiesta.istanteEvento | friendlyHour : true}}</span>
 </td>
 <td>
-  <span *ngIf="eventoRichiesta.istanteEvento"
-        ngbTooltip="Data Primo Evento">{{eventoRichiesta.istanteEvento | distanzaTemporale : istantePrimoEvento : 'N' }}</span>
-</td>
-<td>
     <small *ngIf="eventoRichiesta.targa" class="cursor-pointer" (click)="filtroTarga.emit(eventoRichiesta.targa)"
            ngbTooltip="Clicca qui per ricercare gli eventi">
         <i class="fa fa-hashtag"></i>
@@ -26,8 +22,13 @@
     </small>
 </td>
 <td>
+  <span *ngIf="operatore" class="h6 text-muted"
+        [ngbTooltip]="eventoRichiesta?.sedeOperatore ? eventoRichiesta?.sedeOperatore : 'Sede operatore non disponibile'">
+      {{eventoRichiesta.operatore | uppercase}}
+  </span>
+</td>
+<td>
   <span *ngIf="eventoRichiesta.note">
-    <i class="fa fa-sticky-note-o" ngbTooltip="Note Evento"> </i>
       {{eventoRichiesta.note}}
   </span>
 </td>

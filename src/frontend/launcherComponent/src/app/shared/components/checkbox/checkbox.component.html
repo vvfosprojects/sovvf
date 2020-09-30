@@ -2,5 +2,5 @@
      [disableTooltip]="!tooltipMessage">
     <input type="checkbox" id="{{typeName}}{{checkboxState.id}}" [checked]="checkboxState.status" (click)="onCheck()"
            [disabled]="checkboxState?.disabled"/>
-    <label for="{{typeName}}{{checkboxState.id}}" [innerHTML]="labelFormat()"></label>
+    <label for="{{typeName}}{{checkboxState.id}}" [innerHTML]="labelFormat()" [class.disable-checkbox]="checkboxState?.disabled"></label>
 </div>

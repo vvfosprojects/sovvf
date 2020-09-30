@@ -6,7 +6,8 @@
                     <i class="fa fa-spinner fa-spin fa-3x"></i>
                 </div>
             </div>
-            <agm-map [disableDefaultUI]="true"
+            <agm-map [ngClass]="{'agm-map-750': boxAttivi, 'agm-map-850': !boxAttivi}"
+                     [disableDefaultUI]="true"
                      [zoomControl]="true"
                      [zoomControlOptions]="zoomControlOptions"
                      [minZoom]="mapsOptions.minZoom"
@@ -227,7 +228,8 @@
                                         [showCloseButton]="false"
                                         wrapperClass="snazzy-margin-priorita-4">
                                     <ng-template>
-                                        <app-info-window [mezzoMarker]="mezzoMarker"  [disabilitaIndicatoriMezzo]="disabilitaIndicatoriMezzo"
+                                        <app-info-window [mezzoMarker]="mezzoMarker"
+                                                         [disabilitaIndicatoriMezzo]="disabilitaIndicatoriMezzo"
                                                          [datiMeteo]="findDatiMeteo('mezzo-'+mezzoMarker.mezzo.codice)"
                                                          [inComposizione]="viewStateMappa.active === AppFeatures.ComposizionePartenza"
                                                          (addMezzoComposizione)="onAddMezzoComposizione($event)">
