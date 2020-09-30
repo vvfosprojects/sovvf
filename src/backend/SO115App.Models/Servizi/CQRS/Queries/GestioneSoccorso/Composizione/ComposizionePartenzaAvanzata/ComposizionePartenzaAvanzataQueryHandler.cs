@@ -75,9 +75,10 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             #region MEZZI 
 
             var composizioneMezzi = GeneraListaComposizioneMezzi(lstMezzi);
-            string[] generiMezzi;
-            string[] statiMezzi;
-            string codiceDistaccamento;
+
+            //string[] generiMezzi;
+            //string[] statiMezzi;
+            //string codiceDistaccamento;
 
             foreach (var composizione in composizioneMezzi)
             {
