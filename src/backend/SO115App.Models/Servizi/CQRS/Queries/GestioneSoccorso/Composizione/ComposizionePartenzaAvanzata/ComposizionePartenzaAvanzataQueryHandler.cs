@@ -19,47 +19,69 @@
 //-----------------------------------------------------------------------
 
 using CQRS.Queries;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using Serilog;
 using SO115App.API.Models.Classi.Condivise;
+using SO115App.API.Models.Classi.Organigramma;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneStatoOperativoSquadra;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Personale;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Squadre;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizionePartenzaAvanzata
 {
     public class ComposizionePartenzaAvanzataQueryHandler : IQueryHandler<ComposizionePartenzaAvanzataQuery, ComposizionePartenzaAvanzataResult>
     {
-        //private readonly IQueryHandler<ComposizioneMezziQuery, ComposizioneMezziResult> _composizioneMezzihandler;
-        //private readonly IQueryHandler<ComposizioneSquadreQuery, ComposizioneSquadreResult> _composizioneSquadrehandler;
-
-        //public ComposizionePartenzaAvanzataQueryHandler(
-        //    IQueryHandler<ComposizioneMezziQuery, ComposizioneMezziResult> composizioneMezzihandler,
-        //    IQueryHandler<ComposizioneSquadreQuery, ComposizioneSquadreResult> composizioneSquadrehandler
-        //    )
-        //{
-        //    _composizioneMezzihandler = composizioneMezzihandler;
-        //    _composizioneSquadrehandler = composizioneSquadrehandler;
-        //}
-
-        private readonly IGetListaSquadre _getSquadre;
+        private readonly IGetListaSquadre _getListaSquadre;
         private readonly IGetStatoSquadra _getStatoSquadre;
-
         private readonly IGetStatoMezzi _getMezziPrenotati;
-        //private readonly OrdinamentoMezzi _ordinamentoMezzi;
         private readonly IGetMezziUtilizzabili _getMezziUtilizzabili;
 
-        public ComposizionePartenzaAvanzataQueryHandler(IGetListaSquadre getSquadre, IGetStatoSquadra getStatoSquadre, IGetStatoMezzi getMezziPrenotati, IGetMezziUtilizzabili getMezziUtilizzabili)
+        ////private readonly HttpClient _client;
+        //private readonly IConfiguration _configuration;
+        //private readonly IGetDistaccamentoByCodiceSedeUC _getDistaccamentoByCodiceSedeUC;
+        //private readonly IGetPersonaleByCF _getPersonaleByCF;
+        //private readonly IGetAlberaturaUnitaOperative _getAlberaturaUnitaOperative;
+        //private readonly IMemoryCache _memoryCache;
+
+        public ComposizionePartenzaAvanzataQueryHandler(
+            IGetListaSquadre getListaSquadre,
+            IGetStatoSquadra getStatoSquadre, 
+            IGetStatoMezzi getMezziPrenotati, 
+            IGetMezziUtilizzabili getMezziUtilizzabili
+
+            //IConfiguration configuration,
+            //IGetDistaccamentoByCodiceSedeUC getDistaccamentoByCodiceSedeUC,
+            //IGetPersonaleByCF getPersonaleByCF,
+            //IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative,
+            //IMemoryCache memoryCache
+            //HttpClient client
+            )
         {
+            _getListaSquadre = getListaSquadre;
             _getMezziPrenotati = getMezziPrenotati;
             _getMezziUtilizzabili = getMezziUtilizzabili;
-            _getSquadre = getSquadre;
             _getStatoSquadre = getStatoSquadre;
+
+            //_client = client;
+            //_configuration = configuration;
+            //_getDistaccamentoByCodiceSedeUC = getDistaccamentoByCodiceSedeUC;
+            //_getPersonaleByCF = getPersonaleByCF;
+            //_getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
+            //_memoryCache = memoryCache;
         }
 
         public ComposizionePartenzaAvanzataResult Handle(ComposizionePartenzaAvanzataQuery query)
@@ -69,16 +91,12 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             var lstSedi = new List<string>() { query.CodiceSede };
 
             var lstMezzi = _getMezziUtilizzabili.Get(lstSedi).Result;
-            var lstSquadre = _getSquadre.Get(lstSedi).Result;
+            var lstSquadre = _getListaSquadre.Get(lstSedi).Result;
             var statiOperativi = _getStatoSquadre.Get(lstSedi);
 
             #region MEZZI 
 
             var composizioneMezzi = GeneraListaComposizioneMezzi(lstMezzi);
-
-            //string[] generiMezzi;
-            //string[] statiMezzi;
-            //string codiceDistaccamento;
 
             foreach (var composizione in composizioneMezzi)
             {
@@ -149,8 +167,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
 
             #endregion
 
-
-
             var composizioneAvanzata = new Classi.Composizione.ComposizionePartenzaAvanzata()
             {
                 ComposizioneMezziDataArray = mezziresult,
@@ -200,5 +216,133 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                         TempoPercorrenza = Math.Round(tempoPer, 2).ToString(CultureInfo.InvariantCulture),
                     }).ToList();
         }
+
+
+
+
+        //private async Task<List<Squadra>> getSquadre(List<string> sedi)
+        //{
+        //    List<Squadra> listaSquadre = new List<Squadra>();
+        //    List<string> ListaCodiciSedi = new List<string>();
+        //    foreach (string sede in sedi)
+        //    {
+        //        var codice = sede.Substring(0, 2);
+        //        string codiceE = "";
+        //        codiceE = ListaCodiciSedi.Find(x => x.Equals(codice));
+        //        if (string.IsNullOrEmpty(codiceE))
+        //        {
+        //            ListaCodiciSedi.Add(codice);
+        //        }
+        //    }
+
+        //    foreach (string CodSede in ListaCodiciSedi)
+        //    {
+        //        #region LEGGO DA API ESTERNA
+
+        //        using (var _client = new HttpClient())
+        //        {
+        //            _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("test");
+        //            var response = await _client.GetAsync($"{_configuration.GetSection("OracleImplementation").GetSection(CodSede).GetSection("UrlAPISquadre").Value}/GetListaSquadre?CodSede={CodSede}").ConfigureAwait(false);
+        //            response.EnsureSuccessStatusCode();
+        //            using HttpContent content = response.Content;
+
+        //            string data = await content.ReadAsStringAsync().ConfigureAwait(false);
+        //            List<ORASquadre> ListaSquadreOracle = JsonConvert.DeserializeObject<List<ORASquadre>>(data);
+
+        //            var lstPersonaleSquadre = GetListaPersonaleSquadre(_client);
+        //            var ListaPersonaleSquadre = await lstPersonaleSquadre.Get(CodSede);
+        //        }
+
+        //        #endregion LEGGO DA API ESTERNA
+
+        //        List<Squadra> listaSquadrePerSede = MapListaSquadreOraInMongoDB(ListaSquadreOracle, lstPersonaleSquadre, CodSede);
+
+        //        foreach (Squadra s in listaSquadrePerSede)
+        //        {
+        //            listaSquadre.Add(s);
+        //        }
+        //    }
+
+        //    return listaSquadre;
+        //}
+
+        //private List<Squadra> MapListaSquadreOraInMongoDB(List<ORASquadre> ListaSquadreOracle, List<ORAPersonaleSquadre> ListaPersonaleSquadre, string CodSede)
+        //{
+        //    List<Squadra> ListaSquadre = new List<Squadra>();
+        //    List<ORAPersonaleSquadre> ListOraPS = new List<ORAPersonaleSquadre>();
+
+        //    foreach (ORASquadre OraS in ListaSquadreOracle)
+        //    {
+        //        List<Distaccamento> distaccamenti = _getListaDistaccamentiByCodiceSede.GetListaDistaccamenti(CodSede);
+        //        var distaccamentoCoordinate = distaccamenti.Find(x => x.CodDistaccamento.Equals(Decimal.ToInt32(OraS.COD_DISTACCAMENTO)));
+
+        //        var distaccamento = new Distaccamento();
+        //        distaccamento = _getDistaccamentoByCodiceSedeUC.Get(CodSede + "." + OraS.COD_DISTACCAMENTO.ToString()).Result;
+        //        Sede sedeDistaccamento;
+        //        if (distaccamento != null)
+        //        {
+        //            sedeDistaccamento = new Sede(CodSede.ToString() + "." + distaccamento.CodDistaccamento.ToString(), distaccamento.DescDistaccamento, distaccamento.Indirizzo, distaccamentoCoordinate.Coordinate, "", "", "", "", "");
+        //            Squadra.StatoSquadra Stato;
+
+        //            switch (OraS.STATO.ToString())
+        //            {
+        //                case "L": Stato = Squadra.StatoSquadra.InSede; break;
+        //                case "A": Stato = Squadra.StatoSquadra.SulPosto; break;
+        //                case "R": Stato = Squadra.StatoSquadra.InRientro; break;
+        //                default: Stato = Squadra.StatoSquadra.InSede; break;
+        //            }
+
+        //            Stato = Squadra.StatoSquadra.InSede;
+
+        //            List<Componente> ComponentiSquadra = new List<Componente>();
+        //            List<string> ListaCodiciFiscaliComponentiSquadra = new List<string>();
+        //            ListOraPS = ListaPersonaleSquadre.FindAll(x => x.COD_SQUADRA.Equals(OraS.COD_SQUADRA));
+        //            if (ListOraPS.Count > 0)
+        //            //if (!istOraPS.Any())
+        //            {
+        //                foreach (ORAPersonaleSquadre p in ListOraPS)
+        //                {
+        //                    PersonaleVVF pVVf = _getPersonaleByCF.Get(p.MATDIP, CodSede).Result;
+
+        //                    bool capoPartenza = false; bool autista = false;
+        //                    if (p.FLAG_CAPO_SQUADRA.Equals("S")) capoPartenza = true;
+        //                    if (p.AUTISTA.Equals("S")) autista = true;
+        //                    Componente c = new Componente(p.QUALIFICA_ABBREV, pVVf.Nominativo, pVVf.Nominativo, capoPartenza, autista, false)
+        //                    {
+        //                        CodiceFiscale = pVVf.CodFiscale,
+        //                    };
+        //                    if (p.ORA_INIZIO.HasValue) c.OrarioInizio = (DateTime)p.ORA_INIZIO;
+        //                    if (p.ORA_FINE.HasValue) c.OrarioInizio = (DateTime)p.ORA_FINE;
+
+        //                    ComponentiSquadra.Add(c);
+        //                    ListaCodiciFiscaliComponentiSquadra.Add(p.MATDIP);
+        //                }
+        //            }
+        //            Squadra squadra = new Squadra(OraS.SIGLA, Stato, ComponentiSquadra, sedeDistaccamento);
+        //            squadra.Id = OraS.COD_SQUADRA.ToString();
+
+        //            squadra.ListaCodiciFiscaliComponentiSquadra = ListaCodiciFiscaliComponentiSquadra;
+        //            ListaSquadre.Add(squadra);
+        //        }
+        //        else
+        //        {
+        //            //Se il distaccamento è vuoto non viene aggiunta la squadra
+        //        }
+        //    }
+
+        //    return ListaSquadre;
+        //}
+
+        //private async Task<List<ORAPersonaleSquadre>> GetListaPersonaleSquadre(HttpClient _client)
+        //{
+        //    _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("test");
+        //    var response = await _client.GetAsync($"{_configuration.GetSection("OracleImplementation").GetSection(CodSede).GetSection("UrlAPISquadre").Value}/GetListaPersonaleSquadre?CodSede={CodSede}").ConfigureAwait(false);
+        //    response.EnsureSuccessStatusCode();
+        //    using HttpContent content = response.Content;
+
+        //    string data = await content.ReadAsStringAsync().ConfigureAwait(false);
+
+        //    return JsonConvert.DeserializeObject<List<ORAPersonaleSquadre>>(data);
+        //}
     }
 }
