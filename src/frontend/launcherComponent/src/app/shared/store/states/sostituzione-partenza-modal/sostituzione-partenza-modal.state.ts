@@ -2,9 +2,9 @@ import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { GetListaMezziSquadre, SetListaMezziSquadre, StartListaComposizioneLoading, StopListaComposizioneLoading } from '../../actions/sostituzione-partenza/sostituzione-partenza.actions';
 import { ListaComposizioneAvanzata } from '../../../interface/lista-composizione-avanzata-interface';
 import { CompPartenzaService } from '../../../../core/service/comp-partenza-service/comp-partenza.service';
-import { FiltriComposizione } from '../../../../features/home/composizione-partenza/interface/filtri/filtri-composizione-interface';
 import { FilterListaMezziComposizione, SetListaMezziComposizione } from '../../actions/mezzi-composizione/mezzi-composizione.actions';
 import { SetListaSquadreComposizione } from '../../actions/squadre-composizione/squadre-composizione.actions';
+import { FiltriListaComposizioneAvanzata } from 'src/app/shared/interface/filtri-lista-composizione-avanzata.interface';
 
 export interface SostituzionePartenzaModel {
     listaMezziSquadre: ListaComposizioneAvanzata;
@@ -54,9 +54,9 @@ export class SostituzionePartenzaModalState {
     @Action(GetListaMezziSquadre)
     getListaMezziSquadre({ dispatch }: StateContext<SostituzionePartenzaModel>, action: GetListaMezziSquadre) {
         // dispatch(new StartListaComposizioneLoading());
-        const filtri = {} as FiltriComposizione;
-        filtri.idRichiesta = action.idRichiesta;
-        this.compPartenzaService.getListeComposizioneAvanzata(filtri).subscribe((listeCompAvanzata: ListaComposizioneAvanzata) => {
+        const obj = {} as FiltriListaComposizioneAvanzata;
+        obj.idRichiesta = action.idRichiesta;
+        this.compPartenzaService.getListeComposizioneAvanzata(obj).subscribe((listeCompAvanzata: ListaComposizioneAvanzata) => {
             if (listeCompAvanzata.composizioneMezzi) {
                 dispatch(new SetListaMezziComposizione(listeCompAvanzata.composizioneMezzi));
             }

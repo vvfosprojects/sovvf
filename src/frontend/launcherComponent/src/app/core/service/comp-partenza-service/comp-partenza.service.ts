@@ -5,7 +5,7 @@ import { environment } from '../../../../environments/environment';
 import { ListaComposizioneAvanzata } from '../../../shared/interface/lista-composizione-avanzata-interface';
 import { ConfermaPartenze } from '../../../features/home/composizione-partenza/interface/conferma-partenze-interface';
 import { IdPreaccoppiati } from '../../../features/home/composizione-partenza/interface/id-preaccoppiati-interface';
-import { ComposizioneFilterbar } from '../../../features/home/composizione-partenza/interface/composizione/composizione-filterbar-interface';
+import { FiltriListaComposizioneAvanzata } from 'src/app/shared/interface/filtri-lista-composizione-avanzata.interface';
 
 const BASE_URL = environment.baseUrl;
 const API_URL_PREACCOPPIATI = BASE_URL + environment.apiUrl.composizione.preaccoppiati;
@@ -26,8 +26,9 @@ export class CompPartenzaService {
     }
 
     // Todo: modificare nome in getListeComposizione ?
-    getListeComposizioneAvanzata(filtri: ComposizioneFilterbar): Observable<ListaComposizioneAvanzata> {
-        return this.http.post<ListaComposizioneAvanzata>(API_URL_AVANZATA, filtri);
+    getListeComposizioneAvanzata(obj: FiltriListaComposizioneAvanzata): Observable<ListaComposizioneAvanzata> {
+        console.log('*******ID RICHIESTA' , obj)
+        return this.http.post<ListaComposizioneAvanzata>(API_URL_AVANZATA, obj);
     }
 
     setMezzoPrenotato(mezzoPrenotatoObj: any) {

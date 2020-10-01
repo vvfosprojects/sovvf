@@ -16,12 +16,12 @@ import { ListaComposizioneAvanzata } from '../../../../../shared/interface/lista
 import { BoxPartenzaState } from './box-partenza.state';
 import { mezzoComposizioneBusy } from '../../../../../shared/helper/composizione-functions';
 import { RemoveBoxPartenza } from '../../actions/composizione-partenza/box-partenza.actions';
-import { FiltriComposizione } from '../../../composizione-partenza/interface/filtri/filtri-composizione-interface';
 import { ViewComponentState } from '../view/view.state';
 import { Composizione } from '../../../../../shared/enum/composizione.enum';
 import { GetPreAccoppiati } from '../../actions/composizione-partenza/composizione-veloce.actions';
 import { StartListaComposizioneLoading, StopListaComposizioneLoading } from '../../actions/composizione-partenza/composizione-partenza.actions';
 import { FiltriComposizioneState } from '../../../../../shared/store/states/filtri-composizione/filtri-composizione.state';
+import { FiltriListaComposizioneAvanzata } from 'src/app/shared/interface/filtri-lista-composizione-avanzata.interface';
 
 export interface ComposizioneAvanzataStateModel {
     listaMezziSquadre: ListaComposizioneAvanzata;
@@ -49,10 +49,19 @@ export class ComposizioneAvanzataState {
     @Action(GetListeComposizioneAvanzata)
     getListeComposizioneAvanzata({ dispatch }: StateContext<ComposizioneAvanzataStateModel>) {
         dispatch(new StartListaComposizioneLoading());
-        const filtri = {} as FiltriComposizione;
-        filtri.idRichiesta = this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione) ? this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione).id : '';
-
-        this.squadreService.getListeComposizioneAvanzata(filtri).subscribe((listeCompAvanzata: ListaComposizioneAvanzata) => {
+        const obj = {} as FiltriListaComposizioneAvanzata;
+        obj.idRichiesta = this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione) ? this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione).id : '';
+        obj.mezziPagination = {
+            page:  this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione).pageNumber ? this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione).pageNumber : 1,
+            pageSize: 10,
+        };
+        obj.squadrePagination = {
+            page:  this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione).pageNumber ? this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione).pageNumber : 1,
+            pageSize: 10,
+        };
+        console.log('*******OBJ CHE MANDIAMO ' , obj)
+        this.squadreService.getListeComposizioneAvanzata(obj).subscribe((listeCompAvanzata: ListaComposizioneAvanzata) => {
+            console.log('*******LISTA MEZZI E SQUADRE ' , listeCompAvanzata) // qui devo avere la prima pagina
             if (listeCompAvanzata) {
                 const listaBoxPartenza = this.store.selectSnapshot(BoxPartenzaState.boxPartenzaList);
                 if (listeCompAvanzata.composizioneMezzi) {

@@ -35,7 +35,7 @@ import {
     SelectSquadraComposizione,
     UnselectSquadraComposizione
 } from '../../../../shared/store/actions/squadre-composizione/squadre-composizione.actions';
-import { ConfirmPartenze } from '../../store/actions/composizione-partenza/composizione-partenza.actions';
+import { ConfirmPartenze, RichiestaComposizione } from '../../store/actions/composizione-partenza/composizione-partenza.actions';
 import { TurnoState } from '../../../navbar/store/states/turno.state';
 import { SganciamentoInterface } from 'src/app/shared/interface/sganciamento.interface';
 import { MezzoDirection } from '../../../../shared/interface/mezzo-direction';
@@ -44,6 +44,7 @@ import { ConfermaPartenze } from '../interface/conferma-partenze-interface';
 import { StatoMezzo } from '../../../../shared/enum/stato-mezzo.enum';
 import { FiltriComposizioneState } from '../../../../shared/store/states/filtri-composizione/filtri-composizione.state';
 import { GetFiltriComposizione } from '../../../../shared/store/actions/filtri-composizione/filtri-composizione.actions';
+import { SetMarkerRichiestaSelezionato } from '../../store/actions/maps/marker.actions';
 
 @Component({
     selector: 'app-composizione-avanzata',
@@ -109,6 +110,11 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
     @Output() changeRicercaMezzi = new EventEmitter<string>();
 
     statoMezzo = StatoMezzo;
+    mezziPagConfig = {
+        itemsPerPage: 10,
+        currentPage: 1,
+        totalItems: 0,
+    };
 
     ricercaSquadre: string;
     ricercaMezzi: string;
@@ -127,6 +133,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
         this.subscription.add(
             this.mezziComposizione$.subscribe((mezziComp: MezzoComposizione[]) => {
                 this.mezziComposizione = mezziComp;
+                this.mezziPagConfig.totalItems = mezziComp ? mezziComp.length : 0;
             })
         );
         // Prendo il mezzo selezionato
@@ -389,5 +396,16 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
     onClearDirection(): void {
         this.clearDirection.emit();
         this.centraMappa.emit();
+    }
+
+    mezziPageChanged(event) {
+        this.mezziPagConfig.currentPage = event;
+        let richiesta = this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione);
+        if (richiesta) {
+            richiesta = makeCopy(richiesta)
+            richiesta.pageNumber = richiesta.pageNumber + 1;
+            this.store.dispatch(new SetMarkerRichiestaSelezionato(richiesta.id));
+            this.store.dispatch(new RichiestaComposizione(richiesta));
+        }
     }
 }

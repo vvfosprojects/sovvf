@@ -72,6 +72,9 @@
                     </div>
                 </ng-template>
             </ul>
+            <pagination-controls class="mt-1 mb-0" [previousLabel]="'Precedente'" [nextLabel]="'Successiva'" (pageChange)="mezziPageChanged($event)" maxSize="20"
+            > <!-- (pageChange)="pageChange.emit($event)" -->
+            </pagination-controls>
         </div>
     </div>
     <div *ngIf="mezziComposizione && squadreComposizione && !loadingInvioPartenza" class="col-4">
