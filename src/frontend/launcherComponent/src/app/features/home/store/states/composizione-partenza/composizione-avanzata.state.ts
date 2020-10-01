@@ -49,7 +49,7 @@ export class ComposizioneAvanzataState {
 
     @Action(GetListeComposizioneAvanzata)
     getListeComposizioneAvanzata({ dispatch }: StateContext<ComposizioneAvanzataStateModel>) {
-        const page = this.store.selectSnapshot(PaginationComposizionePartenzaState.page);
+        const page = this.store.selectSnapshot(PaginationComposizionePartenzaState.page) ? this.store.selectSnapshot(PaginationComposizionePartenzaState.page) : 1 ;
         dispatch(new StartListaComposizioneLoading());
         const obj = {} as FiltriListaComposizioneAvanzata;
         obj.idRichiesta = this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione) ? this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione).id : '';
@@ -61,7 +61,7 @@ export class ComposizioneAvanzataState {
             page:  page ? page : 1,
             pageSize: 1000,
         };
-        console.log('**********JUST CURIOUS ', this.store.selectSnapshot(PaginationComposizionePartenzaState.page))
+        console.log('*******PAGE INIZIALE ', page)
         console.log('*******OBJ CHE MANDIAMO ' , obj)
         this.squadreService.getListeComposizioneAvanzata(obj).subscribe((listeCompAvanzata: ListaComposizioneAvanzata) => {
             console.log('*******LISTA MEZZI E SQUADRE ' , listeCompAvanzata) // qui devo avere la prima pagina

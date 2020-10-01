@@ -45,8 +45,8 @@ import { StatoMezzo } from '../../../../shared/enum/stato-mezzo.enum';
 import { FiltriComposizioneState } from '../../../../shared/store/states/filtri-composizione/filtri-composizione.state';
 import { GetFiltriComposizione } from '../../../../shared/store/actions/filtri-composizione/filtri-composizione.actions';
 import { SetMarkerRichiestaSelezionato } from '../../store/actions/maps/marker.actions';
-import { PatchPagination } from 'src/app/shared/store/actions/pagination/pagination.actions';
 import { PaginationComposizionePartenzaState } from 'src/app/shared/store/states/pagination-composizione-partenza/pagination-composizione-partenza.state';
+import { PatchPaginationMezziSquadre } from 'src/app/shared/store/actions/pagination-composizione-partenza/pagination-composizione-partenza.actions';
 
 @Component({
     selector: 'app-composizione-avanzata',
@@ -402,7 +402,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
                 pageSize: this.store.selectSnapshot(PaginationComposizionePartenzaState.pageSize),
             }
             paginaAttuale.page = paginaAttuale.page + 1;
-            this.store.dispatch(new PatchPagination(paginaAttuale))
+            this.store.dispatch(new PatchPaginationMezziSquadre(paginaAttuale))
             this.store.dispatch(new SetMarkerRichiestaSelezionato(richiesta.id));
             this.store.dispatch(new RichiestaComposizione(richiesta));
         }
