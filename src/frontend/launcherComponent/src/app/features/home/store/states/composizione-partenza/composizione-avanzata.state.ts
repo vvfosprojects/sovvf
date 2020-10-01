@@ -53,11 +53,11 @@ export class ComposizioneAvanzataState {
         obj.idRichiesta = this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione) ? this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione).id : '';
         obj.mezziPagination = {
             page:  this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione).pageNumber ? this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione).pageNumber : 1,
-            pageSize: 10,
+            pageSize: 1000,
         };
         obj.squadrePagination = {
             page:  this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione).pageNumber ? this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione).pageNumber : 1,
-            pageSize: 10,
+            pageSize: 1000,
         };
         console.log('*******OBJ CHE MANDIAMO ' , obj)
         this.squadreService.getListeComposizioneAvanzata(obj).subscribe((listeCompAvanzata: ListaComposizioneAvanzata) => {
