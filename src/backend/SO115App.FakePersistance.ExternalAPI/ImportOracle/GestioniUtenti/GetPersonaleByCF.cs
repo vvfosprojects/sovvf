@@ -4,6 +4,7 @@ using SO115App.ExternalAPI.Fake.Classi.DTOOracle;
 using SO115App.ExternalAPI.Fake.Classi.Utility;
 using SO115App.Models.Classi.Utenti.Autenticazione;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Personale;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -35,6 +36,11 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.GestioniUtenti
         public async Task<PersonaleVVF> Get(string codiceFiscale, string codSede)
         {
             return _getListaPersonale.Get(codSede).Result.Find(x => x.CodFiscale.Equals(codiceFiscale));
+        }
+
+        public Task<List<PersonaleVVF>> Get(string[] codiceFiscale, string[] codSede = null)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

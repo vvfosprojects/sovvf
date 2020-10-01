@@ -90,9 +90,9 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
 
             var lstSedi = new List<string>() { query.CodiceSede };
 
-            var lstMezzi = _getMezziUtilizzabili.Get(lstSedi).Result;
             var lstSquadre = _getListaSquadre.Get(lstSedi).Result;
             var statiOperativi = _getStatoSquadre.Get(lstSedi);
+            var lstMezzi = _getMezziUtilizzabili.Get(lstSedi).Result;
 
             #region MEZZI 
 
