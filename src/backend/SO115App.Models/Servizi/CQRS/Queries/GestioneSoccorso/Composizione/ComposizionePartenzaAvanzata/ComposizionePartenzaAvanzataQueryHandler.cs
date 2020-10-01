@@ -51,38 +51,16 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
         private readonly IGetStatoMezzi _getMezziPrenotati;
         private readonly IGetMezziUtilizzabili _getMezziUtilizzabili;
 
-        ////private readonly HttpClient _client;
-        //private readonly IConfiguration _configuration;
-        //private readonly IGetDistaccamentoByCodiceSedeUC _getDistaccamentoByCodiceSedeUC;
-        //private readonly IGetPersonaleByCF _getPersonaleByCF;
-        //private readonly IGetAlberaturaUnitaOperative _getAlberaturaUnitaOperative;
-        //private readonly IMemoryCache _memoryCache;
-
         public ComposizionePartenzaAvanzataQueryHandler(
             IGetListaSquadre getListaSquadre,
             IGetStatoSquadra getStatoSquadre, 
             IGetStatoMezzi getMezziPrenotati, 
-            IGetMezziUtilizzabili getMezziUtilizzabili
-
-            //IConfiguration configuration,
-            //IGetDistaccamentoByCodiceSedeUC getDistaccamentoByCodiceSedeUC,
-            //IGetPersonaleByCF getPersonaleByCF,
-            //IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative,
-            //IMemoryCache memoryCache
-            //HttpClient client
-            )
+            IGetMezziUtilizzabili getMezziUtilizzabili)
         {
             _getListaSquadre = getListaSquadre;
             _getMezziPrenotati = getMezziPrenotati;
             _getMezziUtilizzabili = getMezziUtilizzabili;
             _getStatoSquadre = getStatoSquadre;
-
-            //_client = client;
-            //_configuration = configuration;
-            //_getDistaccamentoByCodiceSedeUC = getDistaccamentoByCodiceSedeUC;
-            //_getPersonaleByCF = getPersonaleByCF;
-            //_getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
-            //_memoryCache = memoryCache;
         }
 
         public ComposizionePartenzaAvanzataResult Handle(ComposizionePartenzaAvanzataQuery query)
