@@ -107,7 +107,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
 
                 var lstVVF = _getPersonaleByCF.Get(lstcodicifiscali).Result;
 
-                foreach (string CodSede in ListaCodiciSedi)
+                Parallel.ForEach(ListaCodiciSedi, CodSede =>
                 {
                     var listaSquadraBySede = new List<Squadra>();
                     if (!_memoryCache.TryGetValue("listaSquadre-" + CodSede, out listaSquadraBySede))
@@ -142,7 +142,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
                     {
                         listaSquadre.AddRange(listaSquadraBySede);
                     }
-                }
+                });
 
                 return listaSquadre;
             }
