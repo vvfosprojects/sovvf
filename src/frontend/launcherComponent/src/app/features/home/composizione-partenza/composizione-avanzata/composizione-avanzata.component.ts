@@ -45,6 +45,8 @@ import { StatoMezzo } from '../../../../shared/enum/stato-mezzo.enum';
 import { FiltriComposizioneState } from '../../../../shared/store/states/filtri-composizione/filtri-composizione.state';
 import { GetFiltriComposizione } from '../../../../shared/store/actions/filtri-composizione/filtri-composizione.actions';
 import { SetMarkerRichiestaSelezionato } from '../../store/actions/maps/marker.actions';
+import { PatchPagination } from 'src/app/shared/store/actions/pagination/pagination.actions';
+import { PaginationComposizionePartenzaState } from 'src/app/shared/store/states/pagination-composizione-partenza/pagination-composizione-partenza.state';
 
 @Component({
     selector: 'app-composizione-avanzata',
@@ -110,11 +112,6 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
     @Output() changeRicercaMezzi = new EventEmitter<string>();
 
     statoMezzo = StatoMezzo;
-    mezziPagConfig = {
-        itemsPerPage: 10,
-        currentPage: 1,
-        totalItems: 0,
-    };
 
     ricercaSquadre: string;
     ricercaMezzi: string;
@@ -133,7 +130,6 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
         this.subscription.add(
             this.mezziComposizione$.subscribe((mezziComp: MezzoComposizione[]) => {
                 this.mezziComposizione = mezziComp;
-                this.mezziPagConfig.totalItems = mezziComp ? mezziComp.length : 0;
             })
         );
         // Prendo il mezzo selezionato
@@ -398,12 +394,15 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
         this.centraMappa.emit();
     }
 
-    mezziPageChanged(event) {
-        this.mezziPagConfig.currentPage = event;
+    mezziPageChanged() {
         let richiesta = this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione);
         if (richiesta) {
-            richiesta = makeCopy(richiesta)
-            richiesta.pageNumber = richiesta.pageNumber + 1;
+            let paginaAttuale = {
+                page: this.store.selectSnapshot(PaginationComposizionePartenzaState.page),
+                pageSize: this.store.selectSnapshot(PaginationComposizionePartenzaState.pageSize),
+            }
+            paginaAttuale.page = paginaAttuale.page + 1;
+            this.store.dispatch(new PatchPagination(paginaAttuale))
             this.store.dispatch(new SetMarkerRichiestaSelezionato(richiesta.id));
             this.store.dispatch(new RichiestaComposizione(richiesta));
         }

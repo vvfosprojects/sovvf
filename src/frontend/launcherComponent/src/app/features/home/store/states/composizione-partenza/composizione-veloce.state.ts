@@ -95,15 +95,15 @@ export class ComposizioneVeloceState {
         const listaMezziSquadre: ListaComposizioneAvanzata = this.store.selectSnapshot(ComposizioneAvanzataState.listaMezziSquadre);
         const state = getState();
         const preaccoppiati: BoxPartenza[] = [];
-        if (listaMezziSquadre.composizioneSquadre.length > 0 && listaMezziSquadre.composizioneMezzi.length > 0 && state.idPreAccoppiati) {
+        if (listaMezziSquadre.composizioneSquadreDataArray.length > 0 && listaMezziSquadre.composizioneMezziDataArray.length > 0 && state.idPreAccoppiati) {
             state.idPreAccoppiati.forEach((idPreaccopiati: IdPreaccoppiati) => {
                 const preaccoppiato = {} as BoxPartenza;
                 preaccoppiato.id = idPreaccopiati.id;
-                const mezzoComposizione = listaMezziSquadre.composizioneMezzi.filter(value => value.mezzo.codice === idPreaccopiati.mezzo);
+                const mezzoComposizione = listaMezziSquadre.composizioneMezziDataArray.filter(value => value.mezzo.codice === idPreaccopiati.mezzo);
                 if (mezzoComposizione && mezzoComposizione.length > 0) {
                     preaccoppiato.mezzoComposizione = mezzoComposizione[0];
                 }
-                const squadreComposizione = listaMezziSquadre.composizioneSquadre.filter(value => idPreaccopiati.squadre.includes(value.squadra.id));
+                const squadreComposizione = listaMezziSquadre.composizioneSquadreDataArray.filter(value => idPreaccopiati.squadre.includes(value.squadra.id));
                 if (squadreComposizione && squadreComposizione.length > 0) {
                     preaccoppiato.squadraComposizione = squadreComposizione;
                 }

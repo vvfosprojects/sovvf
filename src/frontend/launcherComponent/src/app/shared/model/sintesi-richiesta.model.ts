@@ -169,8 +169,6 @@ export class SintesiRichiesta {
          * lista Enti intervenuti
          */
         public listaEnti?: Ente[],
-
-        public pageNumber?: number,
     ) {
     }
 }

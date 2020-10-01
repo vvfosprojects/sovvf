@@ -57,11 +57,11 @@ export class SostituzionePartenzaModalState {
         const obj = {} as FiltriListaComposizioneAvanzata;
         obj.idRichiesta = action.idRichiesta;
         this.compPartenzaService.getListeComposizioneAvanzata(obj).subscribe((listeCompAvanzata: ListaComposizioneAvanzata) => {
-            if (listeCompAvanzata.composizioneMezzi) {
-                dispatch(new SetListaMezziComposizione(listeCompAvanzata.composizioneMezzi));
+            if (listeCompAvanzata.composizioneMezziDataArray) {
+                dispatch(new SetListaMezziComposizione(listeCompAvanzata.composizioneMezziDataArray));
             }
-            if (listeCompAvanzata.composizioneSquadre) {
-                dispatch(new SetListaSquadreComposizione(listeCompAvanzata.composizioneSquadre));
+            if (listeCompAvanzata.composizioneSquadreDataArray) {
+                dispatch(new SetListaSquadreComposizione(listeCompAvanzata.composizioneSquadreDataArray));
             }
             dispatch(new SetListaMezziSquadre(listeCompAvanzata));
             // dispatch(new StopListaComposizioneLoading());
