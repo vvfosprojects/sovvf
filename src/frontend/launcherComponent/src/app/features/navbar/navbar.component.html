@@ -58,7 +58,7 @@
                                             [tooltip]="'A breve sarà disponibile una nuova versione, clicca per maggiori informazioni'"
                                             (doAction)="onNewVersionSoon()"></app-bottone-nuova-versione>
             </ng-template>
-            <ng-template [ngIf]="newFeaturesInfo && !newVersionSoon && !newVersion && url.indexOf('changelog') === -1">
+            <ng-template [ngIf]="newFeaturesInfo && !newVersionSoon && !newVersion && url?.indexOf('changelog') === -1">
                 <app-bottone-nuova-versione [btnBlock]="true"
                                             [icona]="'fa-newspaper-o'"
                                             [testo]="'Nuova versione: scopri di più'"
