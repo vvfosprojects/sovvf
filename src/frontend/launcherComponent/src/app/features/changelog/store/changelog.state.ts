@@ -21,7 +21,7 @@ export const ChangelogStateDefaults: ChangelogStateModel = {
                         },
                         {
                             // tslint:disable-next-line:max-line-length
-                            testo: 'E’ stata introdotta la possibilità di aggiungere una nuova voce e di specificare se è ricorsiva o meno. Qualora si specificasse la ricorsività tutte le sedi al di sotto dell’attuale potranno vedere l’elemento inserito. Es. Se il comando di Roma inserisce una nuova voce in rubrica specificando la ricorsività, sarà visibile anche al “Distaccamento di Ostiense”.',
+                            testo: 'È stata introdotta la possibilità di aggiungere una nuova voce e di specificare se è ricorsiva o meno. Qualora si specificasse la ricorsività tutte le sedi al di sotto dell’attuale potranno vedere l’elemento inserito. Es. Se il comando di Roma inserisce una nuova voce in rubrica specificando la ricorsività, sarà visibile anche al “Distaccamento di Ostiense”.',
                             img: '../../../../assets/changelog/ottobre/Rubrica.png'
                         },
                         {
@@ -44,7 +44,7 @@ export const ChangelogStateDefaults: ChangelogStateModel = {
                     titolo: 'Possibilità di aggiungere gli enti interessati ad un intervento',
                     descrizioni: [
                         {
-                            testo: 'E’ stata aggiunta la possibilità di inserire un ente intervenuto in una richiesta.'
+                            testo: 'È stata aggiunta la possibilità di inserire un ente intervenuto in una richiesta.'
                         },
                         {
                             // tslint:disable-next-line:max-line-length
@@ -53,7 +53,7 @@ export const ChangelogStateDefaults: ChangelogStateModel = {
                         },
                         {
                             // tslint:disable-next-line:max-line-length
-                            testo: 'E’ stata aggiunta la possibilità di inserire l’ente anche direttamente dalla lista delle Richieste. Infatti, premendo sul tasto “Gestisci” su una richiesta si attiverà il tasto di seguito riportato',
+                            testo: 'È stata aggiunta la possibilità di inserire l’ente anche direttamente dalla lista delle Richieste. Infatti, premendo sul tasto “Gestisci” su una richiesta si attiverà il tasto di seguito riportato',
                             img: '../../../../assets/changelog/ottobre/AggiuntaRapidaEnte.png'
                         },
                         {
@@ -67,7 +67,7 @@ export const ChangelogStateDefaults: ChangelogStateModel = {
                     descrizioni: [
                         {
                             // tslint:disable-next-line:max-line-length
-                            testo: 'E’ stata aggiunta la possibilità di inserire il fonogramma della richiesta. E’ possibile aggiungere il fonogramma direttamente dall’elenco delle richieste. Basta premere sul tasto “Gestisci“ su una richiesta e si attiverà il tasto di modifica vicino al fonogramma',
+                            testo: 'È stata aggiunta la possibilità di inserire il fonogramma della richiesta. È possibile aggiungere il fonogramma direttamente dall’elenco delle richieste. Basta premere sul tasto “Gestisci“ su una richiesta e si attiverà il tasto di modifica vicino al fonogramma',
                             img: '../../../../assets/changelog/ottobre/AggiuntaRapidaFonogramma.png'
                         },
                         {
@@ -80,7 +80,7 @@ export const ChangelogStateDefaults: ChangelogStateModel = {
                     descrizioni: [
                         {
                             // tslint:disable-next-line:max-line-length
-                            testo: 'E’ stata introdotta la possibilità di allertare altre sedi su una richiesta. Questa operazione farà si che la richiesta compaia sia nell’elenco delle richieste della sede che l’ha registrata sia nell’elenco delle richieste della sede che è stata allertata. Anche quest’ultima potrà inviare una partenza sul luogo dell’evento e seguirne l’evoluzione.'
+                            testo: 'È stata introdotta la possibilità di allertare altre sedi su una richiesta. Questa operazione farà si che la richiesta compaia sia nell’elenco delle richieste della sede che l’ha registrata sia nell’elenco delle richieste della sede che è stata allertata. Anche quest’ultima potrà inviare una partenza sul luogo dell’evento e seguirne l’evoluzione.'
                         },
                         {
                             testo: 'Per allertare una sede basta premere il tasto “Gestisci” su una richiesta e successivamente il tasto giallo accanto al cambio stato richiesta',
@@ -96,7 +96,7 @@ export const ChangelogStateDefaults: ChangelogStateModel = {
                     descrizioni: [
                         {
                             // tslint:disable-next-line:max-line-length
-                            testo: 'E’ stata introdotta la possibilità di trasferire una chiamata ad altra sede. Questa azione è possibile solo se la richiesta non è stata ancora gestita e non ha partenze attive. Se si effettua un trasferimento la richiesta non sarà più consultabile dall’elenco della sede trasferente ma sarà visibile e quindi anche gestibile solo dalla sede al quale è stata trasferita. '
+                            testo: 'È stata introdotta la possibilità di trasferire una chiamata ad altra sede. Questa azione è possibile solo se la richiesta non è stata ancora gestita e non ha partenze attive. Se si effettua un trasferimento la richiesta non sarà più consultabile dall’elenco della sede trasferente ma sarà visibile e quindi anche gestibile solo dalla sede al quale è stata trasferita. '
                         },
                         {
                             testo: 'Per trasferire la richiesta è sufficiente premere sul tasto “Gestisci” e poi sul tasto rosso accanto al tasto per il cambio di stato della richiesta.',
@@ -104,7 +104,7 @@ export const ChangelogStateDefaults: ChangelogStateModel = {
                         },
                         {
                             // tslint:disable-next-line:max-line-length
-                            testo: 'La sede traferente potrà comunque consultare uno storico delle richieste trasferite tramite un’apposita funzionalità posta in alto nella barra di navigazione. E’ la terza icona da sinistra.',
+                            testo: 'La sede traferente potrà comunque consultare uno storico delle richieste trasferite tramite un’apposita funzionalità posta in alto nella barra di navigazione. È la terza icona da sinistra.',
                             img: '../../../../assets/changelog/ottobre/NuovaBarraNavigazione.png'
                         },
                         {
@@ -119,7 +119,7 @@ export const ChangelogStateDefaults: ChangelogStateModel = {
                     descrizioni: [
                         {
                             // tslint:disable-next-line:max-line-length
-                            testo: 'E’ stata aggiunta la possibilità di sostituire un mezzo in uscita. Per effettuare la sostituzione i passi sono i seguenti:\n' +
+                            testo: 'È stata aggiunta la possibilità di sostituire un mezzo in uscita. Per effettuare la sostituzione i passi sono i seguenti:\n' +
                                 '- Premere il tasto “Gestione”\n' +
                                 '- Accanto al mezzo compariranno due tasti, va premuto il tasto blu con l’ingranaggio.\n',
                             img: '../../../../assets/changelog/ottobre/TastiFunzionePartenza.png'
@@ -172,7 +172,7 @@ export const ChangelogStateDefaults: ChangelogStateModel = {
                     descrizioni: [
                         {
                             // tslint:disable-next-line:max-line-length
-                            testo: 'E’ stato modificato l’ordinamento dei mezzi in servizio nell’apposita sezione. Ora i mezzi occupati su un intervento vengono visualizzati in cima all’elenco.'
+                            testo: 'È stato modificato l’ordinamento dei mezzi in servizio nell’apposita sezione. Ora i mezzi occupati su un intervento vengono visualizzati in cima all’elenco.'
                         }
                     ]
                 },
@@ -187,6 +187,17 @@ export const ChangelogStateDefaults: ChangelogStateModel = {
                             // tslint:disable-next-line:max-line-length
                             testo: 'Ora quando si compone una partenza, sulla mappa, verranno visualizzati anche eventuali mezzi nelle vicinanze appartenenti ad altri comandi.'
                         }
+                    ]
+                },
+                {
+                    titolo: 'Nuova pagina del Profilo e possibilità di modificare l\'Interfaccia',
+                    descrizioni: [
+                        {
+                            testo: 'Cliccando sul nome utente è possibile raggiungere la nuova pagina dedicata al Profilo Utente, da questa pagina è anche possibile modificare l\'interfaccia.'
+                        },
+                        {
+                            testo: 'Ad esempio, si possono nascondere i "Box di Riepilogo".'
+                        },
                     ]
                 },
             ]
