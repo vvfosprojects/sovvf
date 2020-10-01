@@ -1,4 +1,4 @@
-import { Component, OnInit, isDevMode, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, isDevMode, OnDestroy, Input } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { ClockService } from './clock/clock-service/clock.service';
 import { Store, Select } from '@ngxs/store';
@@ -26,6 +26,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
     @Input() user: Utente;
     @Input() ruoliUtenteLoggato: Ruolo[];
+
+    @Output() openedSidebar = new EventEmitter<any>();
 
     @Select(TurnoState.turnoCalendario) turnoCalendario$: Observable<TurnoCalendario>;
     turnoCalendario: TurnoCalendario;
@@ -68,7 +70,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
         if (isDevMode()) {
             console.log('Componente Navbar creato');
         }
-        this.store.dispatch(new GetDataNavbar());
     }
 
     ngOnDestroy(): void {
@@ -140,13 +141,12 @@ export class NavbarComponent implements OnInit, OnDestroy {
         this.subscription.add(
             this.url$.subscribe((url: string) => {
                 this.url = url;
+                if (url && url !== '/login' && url !== '/auth/caslogout' && url.indexOf('/auth?ticket=') === -1 && url !== '/auth/utente-non-abilitato') {
+                    this.store.dispatch(new GetDataNavbar());
+                }
             })
         );
     }
-
-    /* openSidebar() {
-        this.openedSidebar.emit();
-    } */
 
     checkTurno(): void {
         if (!this.turnoCalendario) {

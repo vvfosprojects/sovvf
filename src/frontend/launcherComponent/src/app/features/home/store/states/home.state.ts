@@ -84,7 +84,6 @@ export class HomeState {
 
     @Action(GetDataHome)
     getDataHome({ dispatch }: StateContext<HomeStateModel>) {
-        dispatch(new StartBigLoading());
         this.homeService.getHome().subscribe((data: Welcome) => {
             console.log('Welcome', data);
             dispatch([

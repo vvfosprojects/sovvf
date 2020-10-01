@@ -6,6 +6,7 @@ import { SetListaSediTreeview } from '../../../../shared/store/actions/sedi-tree
 import { AppSettings } from '../../../../shared/interface/app-settings.interface';
 import { SetRuoliUtenteLoggato } from '../../../../shared/store/actions/ruoli/ruoli.actions';
 import { Injectable } from '@angular/core';
+import { StartBigLoading } from '../../../../shared/store/actions/loading/loading.actions';
 
 export interface NavbarStateModel {
     loaded: boolean;
@@ -44,6 +45,7 @@ export class NavbarState {
 
     @Action(GetDataNavbar)
     getDataNavbar({ dispatch }: StateContext<NavbarStateModel>) {
+        dispatch(new StartBigLoading());
         this.navbarService.getNavbar().subscribe((data: AppSettings) => {
             dispatch(new SetDataNavbar(data));
         });

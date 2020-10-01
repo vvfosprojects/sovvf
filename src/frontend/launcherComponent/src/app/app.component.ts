@@ -58,7 +58,7 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
 
     ngxLoaderConfiguration = {
         hasProgressBar: false,
-        overlayColor: 'rgba(206, 43, 55, 0.93)',
+        overlayColor: 'rgba(206, 43, 55, 0.97)',
         logoUrl: '../assets/img/logo_vvf_200x.png',
         logoSize: 300,
         logoPosition: 'center-center',
@@ -67,7 +67,7 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
         gap: 60,
         text: 'ATTENDI, STO CARICANDO I DATI...',
         textColor: '#FFFFFF',
-        textPosition: 'bottom-center'
+        textPosition: 'top-center'
     };
 
     @ViewChild('contentElement', { read: ElementRef }) contentElement: ElementRef;

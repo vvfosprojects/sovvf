@@ -70,14 +70,17 @@ export class GestioneUtentiComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.store.dispatch([new SetCurrentUrl(RoutesPath.GestioneUtenti), new SetSediNavbarVisible(false)]);
+        this.store.dispatch([
+            new SetCurrentUrl(RoutesPath.GestioneUtenti),
+            new SetSediNavbarVisible(false),
+            new StopBigLoading()
+        ]);
     }
 
     ngOnDestroy(): void {
         this.store.dispatch([
             new ClearRicercaUtenti(),
-            new SetSediNavbarVisible(),
-            new StopBigLoading()
+            new SetSediNavbarVisible()
         ]);
         this.subscriptions.unsubscribe();
     }

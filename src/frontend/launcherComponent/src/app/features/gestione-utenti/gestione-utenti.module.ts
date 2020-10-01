@@ -21,7 +21,6 @@ import { GestioneUtentiRouting } from './gestione-utenti.routing';
  * Module
  */
 import { SharedModule } from '../../shared/shared.module';
-import { UiSwitchModule } from 'ngx-ui-switch';
 /**
  * Ngxs
  */
@@ -51,7 +50,6 @@ import { RubricaState } from '../rubrica/store/states/rubrica/rubrica.state';
         SharedModule,
         TreeviewModule.forRoot(),
         SharedModule.forRoot(),
-        UiSwitchModule.forRoot(null),
         NgxsModule.forFeature(
             [
                 GestioneUtentiState,

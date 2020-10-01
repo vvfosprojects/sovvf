@@ -62,7 +62,7 @@ export class AppState {
     }
 
     @Selector([ AuthState ])
-    static previusUrl(state: AppStateModel, authState: AuthStateModel) {
+    static previousUrl(state: AppStateModel, authState: AuthStateModel) {
         const userLogged = authState.currentUser;
         return userLogged ? state.previusUrl : RoutesPath.Login;
     }

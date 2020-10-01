@@ -49,14 +49,17 @@ export class TrasferimentoChiamataComponent implements OnInit, OnDestroy {
 
 
     ngOnInit() {
-        this.store.dispatch([new SetCurrentUrl(RoutesPath.TrasferimentoChiamata), new SetSediNavbarVisible(false)]);
+        this.store.dispatch([
+            new SetCurrentUrl(RoutesPath.TrasferimentoChiamata),
+            new SetSediNavbarVisible(false),
+            new StopBigLoading()
+        ]);
     }
 
     ngOnDestroy(): void {
         this.store.dispatch([
             new CleaRicercaTrasferimentoChiamata(),
-            new SetSediNavbarVisible(),
-            new StopBigLoading()
+            new SetSediNavbarVisible()
         ]);
         this.subscriptions.unsubscribe();
     }
