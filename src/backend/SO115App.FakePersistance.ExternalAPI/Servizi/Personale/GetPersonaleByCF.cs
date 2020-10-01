@@ -93,18 +93,23 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
         private async Task<List<PersonaleVVF>> GetPersonaleVVFExternalAPIByCF(string[] CodFiscale)
         {
             //PersonaleVVF Persona = new PersonaleVVF();
-            var stringcodici = string.Concat(CodFiscale.Select(c => '"' + c + '"' + ',' + ' '));
-            var charcount = stringcodici.Count() - 2;
-            var datareq = stringcodici.Substring(0, charcount);
-            _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("test");
-            var response = await _client.GetAsync($"{_configuration.GetSection("UrlExternalApi").GetSection("PersonaleApiUtenteComuni").Value}?codiciFiscali={datareq}").ConfigureAwait(false);
-            response.EnsureSuccessStatusCode();
-            using HttpContent content = response.Content;
-            string data = await content.ReadAsStringAsync().ConfigureAwait(false);
-            var personaleUC = JsonConvert.DeserializeObject<List<PersonaleUC>>(data);
+            //var stringcodici = string.Concat(CodFiscale.Select(c => '"' + c + '"' + ',' + ' '));
+            //var charcount = stringcodici.Count() - 2;
+            //var datareq = stringcodici.Substring(0, charcount);
+            var result = new List<PersonaleVVF>();
+            Parallel.ForEach(CodFiscale, codf =>
+            {
+                var client = new HttpClient();
+                client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("test");
+                var response = client.GetAsync($"{_configuration.GetSection("UrlExternalApi").GetSection("PersonaleApiUtenteComuni").Value}?codiciFiscali={codf}").Result;
+                response.EnsureSuccessStatusCode();
+                using HttpContent content = response.Content;
+                string data = content.ReadAsStringAsync().Result;
+                var personaleUC = JsonConvert.DeserializeObject<List<PersonaleUC>>(data);
 
-            return MapPersonaleVVFsuPersonaleUC.Map(personaleUC).Where(x => x.CodFiscale.Equals(CodFiscale)).ToList();
-
+                result.AddRange(MapPersonaleVVFsuPersonaleUC.Map(personaleUC)/*.Where(x => x.CodFiscale.Equals(CodFiscale)).ToList()*/);
+            });
+            return result;
             //return Persona;
         }
     }
