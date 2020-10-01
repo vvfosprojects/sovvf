@@ -5,7 +5,6 @@ using SO115App.ExternalAPI.Fake.Classi.PersonaleUtentiComuni;
 using SO115App.ExternalAPI.Fake.Classi.Utility;
 using SO115App.Models.Classi.Utenti.Autenticazione;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Personale;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -47,20 +46,16 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
         public async Task<List<PersonaleVVF>> Get(string[] codiceFiscale, string[] codSede = null)
         {
             if (codSede != null)
-            {
                 return GetPersonaleVVFExternalAPI(codSede).Result;
-                //return ListaPersonaleVVF.Find(x => x.CodFiscale.Equals(codiceFiscale));
-            }
             else
-            {
                 return GetPersonaleVVFExternalAPIByCF(codiceFiscale).Result;
-                //return Persona;
-            }
         }
 
         private async Task<List<PersonaleVVF>> GetPersonaleVVFExternalAPI(string[] codSede)
         {
             List<PersonaleVVF> listaPersonale = new List<PersonaleVVF>();
+
+            #region API ESTERNA
 
             _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("test");
             var sede = string.Concat(codSede.Select(c => c.Split(".")[0]));
@@ -70,35 +65,32 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
             string data = await content.ReadAsStringAsync().ConfigureAwait(false);
             var personaleUC = JsonConvert.DeserializeObject<List<PersonaleUC>>(data);
 
+            #endregion
+
             listaPersonale = MapPersonaleVVFsuPersonaleUC.Map(personaleUC);
 
-            foreach (var codice in codSede)
-            {
-                if (!_memoryCache.TryGetValue($"Personale_{codice.Split('.')[0]}", out listaPersonale))
-                {
-                    var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromHours(8));
-                    _memoryCache.Set($"Personale_{codice.Split('.')[0]}", listaPersonale, cacheEntryOptions);
+            //TODO GESTIONE CACHE
 
-                    //return listaPersonale;
-                }
-                //else
-                //{
-                //    return listaPersonale;
-                //}
-            }
+            //foreach (var codice in codSede)
+            //{
+            //    if (!_memoryCache.TryGetValue($"Personale_{codice.Split('.')[0]}", out listaPersonale))
+            //    {
+            //        var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromHours(8));
+            //        _memoryCache.Set($"Personale_{codice.Split('.')[0]}", listaPersonale, cacheEntryOptions);
+            //    }
+            //}
 
             return listaPersonale;
         }
 
         private async Task<List<PersonaleVVF>> GetPersonaleVVFExternalAPIByCF(string[] CodFiscale)
         {
-            //PersonaleVVF Persona = new PersonaleVVF();
-            //var stringcodici = string.Concat(CodFiscale.Select(c => '"' + c + '"' + ',' + ' '));
-            //var charcount = stringcodici.Count() - 2;
-            //var datareq = stringcodici.Substring(0, charcount);
             var result = new List<PersonaleVVF>();
+
             Parallel.ForEach(CodFiscale, codf =>
             {
+                #region API ESTERNA
+
                 var client = new HttpClient();
                 client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("test");
                 var response = client.GetAsync($"{_configuration.GetSection("UrlExternalApi").GetSection("PersonaleApiUtenteComuni").Value}?codiciFiscali={codf}").Result;
@@ -107,10 +99,12 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
                 string data = content.ReadAsStringAsync().Result;
                 var personaleUC = JsonConvert.DeserializeObject<List<PersonaleUC>>(data);
 
+                #endregion
+
                 result.AddRange(MapPersonaleVVFsuPersonaleUC.Map(personaleUC)/*.Where(x => x.CodFiscale.Equals(CodFiscale)).ToList()*/);
             });
+
             return result;
-            //return Persona;
         }
     }
 }
