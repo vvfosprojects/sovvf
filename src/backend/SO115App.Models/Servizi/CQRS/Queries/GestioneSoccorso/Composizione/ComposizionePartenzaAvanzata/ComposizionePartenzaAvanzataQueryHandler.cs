@@ -91,98 +91,98 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
 
             var lstSedi = new List<string>() { query.CodiceSede };
 
-            var lstSquadre = _getListaSquadre.Get(lstSedi).Result;
+            //REPERISCO I DATI
+
             var statiOperativi = _getStatoSquadre.Get(lstSedi);
-            var lstMezzi = _getMezziUtilizzabili.Get(lstSedi).Result;
 
-            #region MEZZI 
-
-            var composizioneMezzi = GeneraListaComposizioneMezzi(lstMezzi);
-
-            foreach (var composizione in composizioneMezzi)
+            var lstSquadre = _getListaSquadre.Get(lstSedi).ContinueWith(lstsquadre =>
             {
-                //composizione.IndiceOrdinamento = _ordinamentoMezzi.GetIndiceOrdinamento(query.Filtro.IdRichiesta, composizione, composizione.Mezzo.CoordinateFake, composizione.Mezzo.IdRichiesta);
-                composizione.Id = composizione.Mezzo.Codice;
+                var composizioneSquadre = new List<Classi.Composizione.ComposizioneSquadre>();
 
-                if (composizione.IstanteScadenzaSelezione < DateTime.Now)
+                foreach (Squadra s in lstsquadre.Result)
                 {
-                    composizione.IstanteScadenzaSelezione = null;
+                    if (statiOperativi.Exists(x => x.IdSquadra.Equals(s.Id)))
+                    {
+                        s.Stato = MappaStatoSquadraDaStatoMezzo.MappaStato(statiOperativi.Find(x => x.IdSquadra.Equals(s.Id)).StatoSquadra);
+                        s.IndiceOrdinamento = -200;
+                    }
+                    else
+                    {
+                        s.Stato = Squadra.StatoSquadra.InSede;
+                    }
+
+                    var c = new Classi.Composizione.ComposizioneSquadre
+                    {
+                        Squadra = s,
+                        Id = s.Id
+                    };
+                    composizioneSquadre.Add(c);
                 }
-            }
 
-            var composizioneMezziPrenotati = GetComposizioneMezziPrenotati(composizioneMezzi, query.CodiceSede);
-            //Per i mezzi con coordinate Fake nella property  i Km  e la TempoPercorrenza vengono impostati i  valori medi della collection
-            decimal totaleKM = 0;
-            decimal totaleTempoPercorrenza = 0;
+                return composizioneSquadre.OrderByDescending(x => x.Squadra.IndiceOrdinamento).ToList();
+            });
 
-            foreach (var composizione in composizioneMezziPrenotati)
+            var lstMezzi = _getMezziUtilizzabili.Get(lstSedi).ContinueWith(lstmezzi =>
             {
-                totaleKM = totaleKM + Convert.ToDecimal(composizione.Km.Replace(".", ","));
-                totaleTempoPercorrenza = totaleTempoPercorrenza + Convert.ToDecimal(composizione.TempoPercorrenza.Replace(".", ","));
-            }
+                var composizioneMezzi = GeneraListaComposizioneMezzi(lstmezzi.Result);
 
-            string mediaDistanza = Math.Round((totaleKM / composizioneMezzi.Count), 2).ToString(CultureInfo.InvariantCulture);
-            string mediaTempoPercorrenza = Math.Round((totaleTempoPercorrenza / composizioneMezzi.Count), 2).ToString(CultureInfo.InvariantCulture);
-
-            foreach (var composizione in composizioneMezziPrenotati)
-            {
-                if (composizione.Mezzo.CoordinateFake)
+                foreach (var composizione in composizioneMezzi)
                 {
-                    composizione.Km = mediaDistanza;
-                    composizione.TempoPercorrenza = mediaTempoPercorrenza;
                     //composizione.IndiceOrdinamento = _ordinamentoMezzi.GetIndiceOrdinamento(query.Filtro.IdRichiesta, composizione, composizione.Mezzo.CoordinateFake, composizione.Mezzo.IdRichiesta);
-                    composizione.Km = null;
-                    composizione.TempoPercorrenza = null;
-                }
-            }
+                    composizione.Id = composizione.Mezzo.Codice;
 
-            var mezziresult = composizioneMezziPrenotati.OrderByDescending(x => x.IndiceOrdinamento).ToList();
-
-            #endregion
-
-            #region SQUADRE
-
-            var composizioneSquadre = new List<Classi.Composizione.ComposizioneSquadre>();
-
-            foreach (Squadra s in lstSquadre)
-            {
-                if (statiOperativi.Exists(x => x.IdSquadra.Equals(s.Id)))
-                {
-                    s.Stato = MappaStatoSquadraDaStatoMezzo.MappaStato(statiOperativi.Find(x => x.IdSquadra.Equals(s.Id)).StatoSquadra);
-                    s.IndiceOrdinamento = -200;
-                }
-                else
-                {
-                    s.Stato = Squadra.StatoSquadra.InSede;
+                    if (composizione.IstanteScadenzaSelezione < DateTime.Now)
+                    {
+                        composizione.IstanteScadenzaSelezione = null;
+                    }
                 }
 
-                var c = new Classi.Composizione.ComposizioneSquadre
+                var composizioneMezziPrenotati = GetComposizioneMezziPrenotati(composizioneMezzi, query.CodiceSede);
+                //Per i mezzi con coordinate Fake nella property  i Km  e la TempoPercorrenza vengono impostati i  valori medi della collection
+                decimal totaleKM = 0;
+                decimal totaleTempoPercorrenza = 0;
+
+                foreach (var composizione in composizioneMezziPrenotati)
                 {
-                    Squadra = s,
-                    Id = s.Id
-                };
-                composizioneSquadre.Add(c);
-            }
+                    totaleKM = totaleKM + Convert.ToDecimal(composizione.Km.Replace(".", ","));
+                    totaleTempoPercorrenza = totaleTempoPercorrenza + Convert.ToDecimal(composizione.TempoPercorrenza.Replace(".", ","));
+                }
 
-            var squadreresult = composizioneSquadre.OrderByDescending(x => x.Squadra.IndiceOrdinamento).ToList();
+                string mediaDistanza = Math.Round((totaleKM / composizioneMezzi.Count), 2).ToString(CultureInfo.InvariantCulture);
+                string mediaTempoPercorrenza = Math.Round((totaleTempoPercorrenza / composizioneMezzi.Count), 2).ToString(CultureInfo.InvariantCulture);
 
-            #endregion
+                foreach (var composizione in composizioneMezziPrenotati)
+                {
+                    if (composizione.Mezzo.CoordinateFake)
+                    {
+                        composizione.Km = mediaDistanza;
+                        composizione.TempoPercorrenza = mediaTempoPercorrenza;
+                        //composizione.IndiceOrdinamento = _ordinamentoMezzi.GetIndiceOrdinamento(query.Filtro.IdRichiesta, composizione, composizione.Mezzo.CoordinateFake, composizione.Mezzo.IdRichiesta);
+                        composizione.Km = null;
+                        composizione.TempoPercorrenza = null;
+                    }
+                }
 
+                return composizioneMezziPrenotati.OrderByDescending(x => x.IndiceOrdinamento).ToList();
+            });
+
+
+            //COMPONGO IL DTO
             var composizioneAvanzata = new Classi.Composizione.ComposizionePartenzaAvanzata()
             {
-                ComposizioneMezziDataArray = mezziresult,
-                ComposizioneSquadreDataArray = squadreresult,
+                ComposizioneMezziDataArray = lstMezzi.Result,
+                ComposizioneSquadreDataArray = lstSquadre.Result,
                 MezziPagination = new Paginazione()
                 {
                     Page = query.Filtro.MezziPagination.Page,
                     PageSize = query.Filtro.MezziPagination.PageSize,
-                    TotalItems = mezziresult.Count
+                    TotalItems = lstMezzi.Result.Count
                 },
                 SquadrePagination = new Paginazione()
                 {
                     Page = query.Filtro.SquadrePagination.Page,
                     PageSize = query.Filtro.SquadrePagination.PageSize,
-                    TotalItems = squadreresult.Count
+                    TotalItems = lstSquadre.Result.Count
                 }
             };
 
