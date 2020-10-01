@@ -64,11 +64,12 @@ export class ComposizioneAvanzataState {
             console.log('*******LISTA MEZZI E SQUADRE ' , listeCompAvanzata) // qui devo avere la prima pagina
             if (listeCompAvanzata) {
                 const listaBoxPartenza = this.store.selectSnapshot(BoxPartenzaState.boxPartenzaList);
-                if (listeCompAvanzata.composizioneMezzi) {
-                    dispatch(new SetListaMezziComposizione(listeCompAvanzata.composizioneMezzi));
+                console.log('*******11111111111111' , listeCompAvanzata.composizioneMezziDataArray) // **************
+                if (listeCompAvanzata.composizioneMezziDataArray) {
+                    dispatch(new SetListaMezziComposizione(listeCompAvanzata.composizioneMezziDataArray));
                 }
-                if (listeCompAvanzata.composizioneSquadre) {
-                    dispatch(new SetListaSquadreComposizione(listeCompAvanzata.composizioneSquadre));
+                if (listeCompAvanzata.composizioneSquadreDataArray) {
+                    dispatch(new SetListaSquadreComposizione(listeCompAvanzata.composizioneSquadreDataArray));
                 }
                 dispatch(new SetListeComposizioneAvanzata(listeCompAvanzata));
 
