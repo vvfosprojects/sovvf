@@ -33,7 +33,6 @@ import FullscreenControlOptions = google.maps.FullscreenControlOptions;
 import LatLngBounds = google.maps.LatLngBounds;
 import LatLngLiteral = google.maps.LatLngLiteral;
 
-
 @Component({
     selector: 'app-agm',
     templateUrl: './agm.component.html',
@@ -41,6 +40,7 @@ import LatLngLiteral = google.maps.LatLngLiteral;
 })
 
 export class AgmComponent implements OnDestroy {
+
     @Input() richiesteMarkers: RichiestaMarker[];
     @Input() sediMarkers: SedeMarker[];
     @Input() mezziMarkers: MezzoMarker[];

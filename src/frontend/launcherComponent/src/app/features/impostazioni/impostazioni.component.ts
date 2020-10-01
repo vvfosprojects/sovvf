@@ -11,6 +11,7 @@ import { makeCopy } from '../../shared/helper/function';
 import { SetCurrentUrl } from '../../shared/store/actions/app/app.actions';
 import { RoutesPath } from '../../shared/enum/routes-path.enum';
 import { SetSediNavbarVisible } from '../../shared/store/actions/sedi-treeview/sedi-treeview.actions';
+import { StopBigLoading } from '../../shared/store/actions/loading/loading.actions';
 
 @Component({
     selector: 'app-impostazioni',
@@ -39,7 +40,8 @@ export class ImpostazioniComponent implements OnInit, OnDestroy {
         isDevMode() && console.log('Componente Impostazioni creato');
         this.store.dispatch([
             new SetCurrentUrl(RoutesPath.Impostazioni),
-            new SetSediNavbarVisible(false)
+            new SetSediNavbarVisible(false),
+            new StopBigLoading()
         ]);
     }
 

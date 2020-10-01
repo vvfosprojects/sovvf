@@ -1,6 +1,7 @@
 {
-  "name": "test-app",
-  "version": "0.0.0",
+  "name": "sala-operativa-so115",
+  "version": "0.2.0",
+  "license": "MIT",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -67,6 +68,7 @@
     "ngx-timeago": "^1.0.4",
     "ngx-toastr": "^13.0.0",
     "ngx-treeview": "^10.0.2",
+    "ngx-ui-loader": "^9.1.1",
     "ngx-ui-switch": "^10.0.2",
     "node-sass": "^4.14.1",
     "npm": "^6.14.8",

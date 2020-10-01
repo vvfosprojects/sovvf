@@ -15,6 +15,7 @@ import { GetListaTrasferimentiChiamate } from './store/actions/trasferimento-chi
 import { RequestAddTrasferimentoChiamata, ClearFormTrasferimentoChiamata } from 'src/app/shared/store/actions/trasferimento-chiamata-modal/trasferimento-chiamata-modal.actions';
 import { TrasferimentoChiamataModalComponent } from 'src/app/shared/modal/trasferimento-chiamata-modal/trasferimento-chiamata-modal.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { StopBigLoading } from '../../shared/store/actions/loading/loading.actions';
 
 
 @Component({
@@ -54,7 +55,8 @@ export class TrasferimentoChiamataComponent implements OnInit, OnDestroy {
     ngOnDestroy(): void {
         this.store.dispatch([
             new CleaRicercaTrasferimentoChiamata(),
-            new SetSediNavbarVisible()
+            new SetSediNavbarVisible(),
+            new StopBigLoading()
         ]);
         this.subscriptions.unsubscribe();
     }

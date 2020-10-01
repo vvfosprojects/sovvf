@@ -1,6 +1,7 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
-import { StartLoading, StopLoading } from '../../actions/loading/loading.actions';
+import { StartBigLoading, StartLoading, StopBigLoading, StopLoading } from '../../actions/loading/loading.actions';
 import { Injectable } from '@angular/core';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 
 export interface LoadingStateModel {
     loading: boolean;
@@ -22,7 +23,7 @@ export class LoadingState {
         return state.loading;
     }
 
-    constructor() {
+    constructor(private ngxLoader: NgxUiLoaderService) {
     }
 
     @Action(StartLoading)
@@ -37,5 +38,15 @@ export class LoadingState {
         patchState({
             loading: false
         });
+    }
+
+    @Action(StartBigLoading)
+    startBigLoading({ patchState }: StateContext<LoadingStateModel>) {
+        this.ngxLoader.start();
+    }
+
+    @Action(StopBigLoading)
+    stopBigLoading({ patchState }: StateContext<LoadingStateModel>) {
+        this.ngxLoader.stop();
     }
 }

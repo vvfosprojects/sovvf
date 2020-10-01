@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Output, isDevMode, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, isDevMode, OnDestroy, Input } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { ClockService } from './clock/clock-service/clock.service';
 import { Store, Select } from '@ngxs/store';
@@ -24,17 +24,8 @@ import { RouterState } from '@ngxs/router-plugin';
 })
 export class NavbarComponent implements OnInit, OnDestroy {
 
-    subscription = new Subscription();
-    clock$: Observable<Date>;
-    time: Date;
-
-    colorButton = 'btn-dark';
-    RoutesPath = RoutesPath;
-
     @Input() user: Utente;
     @Input() ruoliUtenteLoggato: Ruolo[];
-
-    @Output() openedSidebar = new EventEmitter<any>();
 
     @Select(TurnoState.turnoCalendario) turnoCalendario$: Observable<TurnoCalendario>;
     turnoCalendario: TurnoCalendario;
@@ -52,9 +43,17 @@ export class NavbarComponent implements OnInit, OnDestroy {
     @Select(RouterState.url) url$: Observable<string>;
     url: string;
 
+    clock$: Observable<Date>;
+    time: Date;
+
+    colorButton = 'btn-dark';
+    RoutesPath = RoutesPath;
+
+    private subscription = new Subscription();
+
     constructor(private store: Store,
                 private authenticationService: AuthService,
-                private _clock: ClockService) {
+                private clock: ClockService) {
         this.setTime();
         this.getClock();
         this.getTurnoCalendario();
@@ -66,12 +65,16 @@ export class NavbarComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        isDevMode() && console.log('Componente Navbar creato');
+        if (isDevMode()) {
+            console.log('Componente Navbar creato');
+        }
         this.store.dispatch(new GetDataNavbar());
     }
 
     ngOnDestroy(): void {
-        isDevMode() && console.log('Componente Navbar distrutto');
+        if (isDevMode()) {
+            console.log('Componente Navbar distrutto');
+        }
         this.subscription.unsubscribe();
         this.store.dispatch(new ClearDataNavbar());
     }
@@ -81,7 +84,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     }
 
     getClock(): void {
-        this.clock$ = this._clock.getClock();
+        this.clock$ = this.clock.getClock();
         this.subscription.add(
             this.clock$.subscribe((tick: Date) => {
                 this.time = tick;
