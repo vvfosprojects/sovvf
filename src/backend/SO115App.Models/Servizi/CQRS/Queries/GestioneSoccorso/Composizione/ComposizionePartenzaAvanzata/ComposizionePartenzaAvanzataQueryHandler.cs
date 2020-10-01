@@ -77,7 +77,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             {
                 var composizioneSquadre = new List<Classi.Composizione.ComposizioneSquadre>();
 
-                foreach (Squadra s in lstsquadre.Result)
+                foreach (var s in lstsquadre.Result)
                 {
                     if (statiOperativi.Exists(x => x.IdSquadra.Equals(s.Id)))
                     {

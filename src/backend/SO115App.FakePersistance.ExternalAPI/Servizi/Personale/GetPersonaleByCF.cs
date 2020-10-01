@@ -46,7 +46,10 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
         public async Task<List<PersonaleVVF>> Get(string[] codiceFiscale, string[] codSede = null)
         {
             if (codSede != null)
-                return GetPersonaleVVFExternalAPI(codSede).Result;
+            {
+                var lstPersonale = GetPersonaleVVFExternalAPI(codSede).Result;
+                return lstPersonale.FindAll(c => codiceFiscale.Contains(c.CodFiscale));
+            }
             else
                 return GetPersonaleVVFExternalAPIByCF(codiceFiscale).Result;
         }
@@ -91,26 +94,18 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
             {
                 #region API ESTERNA
 
-                //bool trovato = false;
-                var mapped = new List<PersonaleVVF>();
-
-                //while (!trovato)
-                //{
-                    var client = new HttpClient();
-                    client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("test");
-                    var response = client.GetAsync($"{_configuration.GetSection("UrlExternalApi").GetSection("PersonaleApiUtenteComuni").Value}?codiciFiscali={codf}").Result;
-                    response.EnsureSuccessStatusCode();
-                    using HttpContent content = response.Content;
-                    string data = content.ReadAsStringAsync().Result;
-                    var personaleUC = JsonConvert.DeserializeObject<List<PersonaleUC>>(data);
-
-                    //if(personaleUC == null)
-                        mapped = MapPersonaleVVFsuPersonaleUC.Map(personaleUC);
-                //}
+                var client = new HttpClient();
+                client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("test");
+                var response = client.GetAsync($"{_configuration.GetSection("UrlExternalApi").GetSection("PersonaleApiUtenteComuni").Value}?codiciFiscali={codf}").Result;
+                response.EnsureSuccessStatusCode();
+                using HttpContent content = response.Content;
+                string data = content.ReadAsStringAsync().Result;
+                var personaleUC = JsonConvert.DeserializeObject<List<PersonaleUC>>(data);
+                var mapped = MapPersonaleVVFsuPersonaleUC.Map(personaleUC);
 
                 #endregion
 
-                result.AddRange(mapped); 
+                lock (new object()) { result.AddRange(mapped); }
             });
 
             return result.Where(s => s != null).ToList();

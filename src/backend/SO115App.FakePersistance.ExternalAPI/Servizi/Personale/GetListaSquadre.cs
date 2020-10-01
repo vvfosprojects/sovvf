@@ -103,9 +103,13 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
 
                 var listaSquadreJson = JsonConvert.DeserializeObject<List<SquadraFake>>(json);
 
-                var lstcodicifiscali = listaSquadreJson.Where(c => sedi.Contains(c.Sede)).SelectMany(c => c.ComponentiSquadra).Select(c => c.CodiceFiscale).Distinct().ToArray();
+                var lstcodicifiscali = listaSquadreJson/*.Where(c => sedi.Contains(c.Sede))*/
+                    .SelectMany(c => c.ComponentiSquadra)
+                    .Select(c => c.CodiceFiscale)
+                    .Distinct()
+                    .ToArray();
 
-                var lstVVF = _getPersonaleByCF.Get(lstcodicifiscali).Result;
+                var lstVVF = _getPersonaleByCF.Get(lstcodicifiscali, sedi.ToArray()).Result;
 
                 Parallel.ForEach(ListaCodiciSedi, CodSede =>
                 {
@@ -130,8 +134,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
 
                         foreach (var squadraFake in ListaSquadreSede)
                         {
-                            var componenti = lstVVF.Where(p => squadraFake.ComponentiSquadra.Select(c => c.CodiceFiscale).Contains(p.CodFiscale)).ToList();
-                            var squadra = MapSqaudra(squadraFake, componenti, CodSede);
+                            var squadra = MapSqaudra(squadraFake, lstVVF, CodSede);
                             listaSquadraBySedeAppo.Add(squadra);
                             listaSquadre.Add(squadra);
                         }
@@ -165,21 +168,21 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
                 default: Stato = Squadra.StatoSquadra.InSede; break;
             }
 
-            var distaccamento = new Distaccamento();
-            distaccamento = _getDistaccamentoByCodiceSedeUC.Get(squadraFake.Sede).Result;
+            var distaccamento = _getDistaccamentoByCodiceSedeUC.Get(squadraFake.Sede).Result;
             var sedeDistaccamento = new Sede(squadraFake.Sede, distaccamento.DescDistaccamento, distaccamento.Indirizzo, distaccamento.Coordinate, "", "", "", "", "");
 
-            List<string> ListaCodiciFiscaliComponentiSquadra = new List<string>();
-            List<Componente> ComponentiSquadra = new List<Componente>();
-            foreach (ComponenteSquadraFake componenteFake in squadraFake.ComponentiSquadra)
-            {
-                //PersonaleVVF pVVf = _getPersonaleByCF.Get(componenteFake.CodiceFiscale, CodSede).Result;
+            var ListaCodiciFiscaliComponentiSquadra = new List<string>();
+            var ComponentiSquadra = new List<Componente>();
 
-                foreach (var pVVf in lstVVF)
-                {
+            foreach (var componenteFake in squadraFake.ComponentiSquadra)
+            {
+                //foreach (var pVVf in lstVVF)
+                //{
+                var pVVf = lstVVF.FirstOrDefault(p => p.CodFiscale.Equals(componenteFake.CodiceFiscale));
+
                     if (pVVf != null)
                     {
-                        Componente componente = new Componente(componenteFake.DescrizioneQualificaLunga,
+                        var componente = new Componente(componenteFake.DescrizioneQualificaLunga,
                         pVVf.Nominativo, componenteFake.Tooltip, componenteFake.CapoPartenza, componenteFake.Autista, componenteFake.Rimpiazzo)
                         {
                             CodiceFiscale = pVVf.CodFiscale,
@@ -194,10 +197,10 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
                         ComponentiSquadra.Add(componente);
                         ListaCodiciFiscaliComponentiSquadra.Add(pVVf.CodFiscale);
                     }
-                }
+                //}
             }
 
-            Squadra s = new Squadra(squadraFake.NomeSquadra, Stato, ComponentiSquadra, sedeDistaccamento);
+            var s = new Squadra(squadraFake.NomeSquadra, Stato, ComponentiSquadra, sedeDistaccamento);
 
             s.Id = squadraFake.CodiceSquadra;
             s.Codice = squadraFake.CodiceSquadra;
