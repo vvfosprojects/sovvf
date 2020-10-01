@@ -47,6 +47,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneUtenti.AddUtente
         private readonly IFindUserByUsername _checkOmonimia;
 
         public AddUtenteCommandHandler(IAddUtente addUtente, IGetPersonaleByCF personaleByCF,
+            IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative,
             IGetDistaccamentoByCodiceSedeUC getDistaccamentoByCodiceSede,
             IGetUtenteByCF getUtenteByCF,
             IAddRuoli addRuoli,
@@ -55,6 +56,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneUtenti.AddUtente
         {
             _addUtente = addUtente;
             _personaleByCF = personaleByCF;
+            _getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
             _getDistaccamentoByCodiceSede = getDistaccamentoByCodiceSede;
             _getUtenteByCF = getUtenteByCF;
             _addRuoli = addRuoli;
