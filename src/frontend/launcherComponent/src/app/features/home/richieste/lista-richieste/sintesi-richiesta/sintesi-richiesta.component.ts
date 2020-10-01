@@ -149,10 +149,7 @@ export class SintesiRichiestaComponent implements OnChanges {
     }
 
     invioPartenza(richiesta: SintesiRichiesta) { // quuiiiii
-        let richiestaFake = this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione);
         if (richiesta) {
-            richiesta = makeCopy(richiesta)
-            richiesta.pageNumber = richiesta.pageNumber + 1;
             this.nuovaPartenza.emit(richiesta);
         }
     }
