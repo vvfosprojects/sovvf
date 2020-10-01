@@ -145,11 +145,21 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             });
 
 
+
+            //PAGINAZIONE FAKE
+
             //COMPONGO IL DTO
             var composizioneAvanzata = new Classi.Composizione.ComposizionePartenzaAvanzata()
             {
-                ComposizioneMezziDataArray = lstMezzi.Result,
-                ComposizioneSquadreDataArray = lstSquadre.Result,
+                ComposizioneMezziDataArray = lstMezzi.Result
+                    .Skip(query.Filtro.MezziPagination.PageSize * (query.Filtro.MezziPagination.Page - 1))
+                    .Take(query.Filtro.MezziPagination.PageSize)
+                    .ToList(),
+                ComposizioneSquadreDataArray = lstSquadre.Result
+                    .Skip(query.Filtro.SquadrePagination.PageSize * (query.Filtro.SquadrePagination.Page - 1))
+                    .Take(query.Filtro.SquadrePagination.PageSize)
+                    .ToList(),
+
                 MezziPagination = new Paginazione()
                 {
                     Page = query.Filtro.MezziPagination.Page,
