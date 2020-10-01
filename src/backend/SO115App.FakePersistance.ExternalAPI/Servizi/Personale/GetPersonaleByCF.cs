@@ -91,20 +91,29 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
             {
                 #region API ESTERNA
 
-                var client = new HttpClient();
-                client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("test");
-                var response = client.GetAsync($"{_configuration.GetSection("UrlExternalApi").GetSection("PersonaleApiUtenteComuni").Value}?codiciFiscali={codf}").Result;
-                response.EnsureSuccessStatusCode();
-                using HttpContent content = response.Content;
-                string data = content.ReadAsStringAsync().Result;
-                var personaleUC = JsonConvert.DeserializeObject<List<PersonaleUC>>(data);
+                //bool trovato = false;
+                var mapped = new List<PersonaleVVF>();
+
+                //while (!trovato)
+                //{
+                    var client = new HttpClient();
+                    client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("test");
+                    var response = client.GetAsync($"{_configuration.GetSection("UrlExternalApi").GetSection("PersonaleApiUtenteComuni").Value}?codiciFiscali={codf}").Result;
+                    response.EnsureSuccessStatusCode();
+                    using HttpContent content = response.Content;
+                    string data = content.ReadAsStringAsync().Result;
+                    var personaleUC = JsonConvert.DeserializeObject<List<PersonaleUC>>(data);
+
+                    //if(personaleUC == null)
+                        mapped = MapPersonaleVVFsuPersonaleUC.Map(personaleUC);
+                //}
 
                 #endregion
 
-                result.AddRange(MapPersonaleVVFsuPersonaleUC.Map(personaleUC)/*.Where(x => x.CodFiscale.Equals(CodFiscale)).ToList()*/);
+                result.AddRange(mapped); 
             });
 
-            return result;
+            return result.Where(s => s != null).ToList();
         }
     }
 }

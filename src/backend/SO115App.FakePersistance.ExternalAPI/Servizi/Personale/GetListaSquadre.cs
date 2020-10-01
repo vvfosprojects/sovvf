@@ -130,7 +130,8 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
 
                         foreach (var squadraFake in ListaSquadreSede)
                         {
-                            var squadra = MapSqaudra(squadraFake, lstVVF, CodSede);
+                            var componenti = lstVVF.Where(p => squadraFake.ComponentiSquadra.Select(c => c.CodiceFiscale).Contains(p.CodFiscale)).ToList();
+                            var squadra = MapSqaudra(squadraFake, componenti, CodSede);
                             listaSquadraBySedeAppo.Add(squadra);
                             listaSquadre.Add(squadra);
                         }
