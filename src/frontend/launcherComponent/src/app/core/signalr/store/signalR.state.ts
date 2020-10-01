@@ -22,6 +22,7 @@ import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap/modal/modal-ref';
 import { Navigate } from '@ngxs/router-plugin';
 import { RoutesPath } from '../../../shared/enum/routes-path.enum';
 import { AuthState } from '../../../features/auth/store/auth.state';
+import { Injectable } from '@angular/core';
 
 export interface SignalRStateModel {
     connected: boolean;
@@ -41,6 +42,7 @@ export const SignalRStateDefaults: SignalRStateModel = {
     idUtente: null
 };
 
+@Injectable()
 @State<SignalRStateModel>({
     name: 'signalR',
     defaults: SignalRStateDefaults

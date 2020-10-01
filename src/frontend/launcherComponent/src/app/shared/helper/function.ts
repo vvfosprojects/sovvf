@@ -6,12 +6,12 @@ import { StatoMezzoActions } from '../enum/stato-mezzo-actions.enum';
 import { SintesiRichiesta } from '../model/sintesi-richiesta.model';
 import { StatoRichiestaActions } from '../enum/stato-richiesta-actions.enum';
 import { Tipologia } from '../model/tipologia.model';
-import { LatLngBounds } from '@agm/core';
 import { AreaMappa } from '../../features/home/maps/maps-model/area-mappa-model';
 import { Role, Utente } from '../model/utente.model';
 import { Sede } from '../model/sede.model';
 import { LatLngBoundsLiteral } from 'ngx-google-places-autocomplete/objects/latLng';
 import { StatoFonogramma } from '../enum/stato-fonogramma.enum';
+import { LatLngBounds } from 'ngx-google-places-autocomplete/objects/latLngBounds';
 
 export function makeCopy(value): any {
     return (JSON.parse(JSON.stringify(value)));

@@ -21,8 +21,8 @@ export class ListaPartenzeComponent {
     @Input() inGestione: boolean;
 
     @Output() actionMezzo: EventEmitter<MezzoActionInterface> = new EventEmitter<MezzoActionInterface>();
-    @Output() eliminaPartenza: EventEmitter<string> = new EventEmitter();
-    @Output() modificaPartenza: EventEmitter<string> = new EventEmitter();
+    @Output() eliminaPartenza: EventEmitter<string> = new EventEmitter<string>();
+    @Output() modificaPartenza: EventEmitter<string> = new EventEmitter<string>();
 
     @Select(RichiesteState.loadingActionMezzo) loadingActionMezzo$: Observable<string>;
 

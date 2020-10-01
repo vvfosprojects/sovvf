@@ -34,7 +34,7 @@ import { SediTreeviewState } from './shared/store/states/sedi-treeview/sedi-tree
 /**
  * Route
  */
-import { APP_ROUTING } from './app.routing';
+import { APP_ROUTING } from './app-routing.module';
 /**
  * Interceptor
  */
@@ -125,8 +125,7 @@ import { ImpostazioniState } from './shared/store/states/impostazioni/impostazio
         { provide: HTTP_INTERCEPTORS, useClass: RpcInterceptor, multi: true },
         I18n,
     ],
-    bootstrap: [AppComponent],
-    entryComponents: [SignalROfflineComponent]
+    bootstrap: [AppComponent]
 })
 
 export class AppModule {

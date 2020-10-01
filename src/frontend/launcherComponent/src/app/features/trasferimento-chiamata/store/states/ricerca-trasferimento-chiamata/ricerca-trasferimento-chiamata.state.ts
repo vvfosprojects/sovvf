@@ -1,5 +1,6 @@
 import { State, Selector, Action, StateContext } from '@ngxs/store';
 import { CleaRicercaTrasferimentoChiamata, SetRicercaTrasferimentoChiamata } from '../../actions/ricerca-trasferimento-chiamata/ricerca-trasferimento-chiamata.actions';
+import { Injectable } from '@angular/core';
 
 export interface RicercaTrasferimentoChiamataStateModel {
     ricerca: string;
@@ -9,6 +10,7 @@ export const RicercaTrasferimentoChiamataStateDefaults: RicercaTrasferimentoChia
     ricerca: null
 };
 
+@Injectable()
 @State<RicercaTrasferimentoChiamataStateModel>({
     name: 'ricercaTrasferimentoChiamata',
     defaults: RicercaTrasferimentoChiamataStateDefaults

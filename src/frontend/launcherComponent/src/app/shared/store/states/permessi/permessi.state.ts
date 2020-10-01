@@ -2,6 +2,7 @@ import { Selector, State } from '@ngxs/store';
 import { PermissionFeatures } from '../../../enum/permission-features.enum';
 import { Role } from '../../../model/utente.model';
 import { PermessiFeatureInterface } from '../../../interface/permessi-feature.interface';
+import { Injectable } from '@angular/core';
 
 export interface PermessiStateModel {
     permessi: Array<PermessiFeatureInterface>;
@@ -68,6 +69,7 @@ export const PermessiStateDefaults: PermessiStateModel = {
     ]
 };
 
+@Injectable()
 @State<PermessiStateModel>({
     name: 'permessi',
     defaults: PermessiStateDefaults

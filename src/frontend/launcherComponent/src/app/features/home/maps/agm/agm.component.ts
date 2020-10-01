@@ -8,14 +8,6 @@ import { CentroMappa } from '../maps-model/centro-mappa.model';
 import { MarkerService } from '../service/marker-service/marker-service.service';
 import { Observable, Subscription } from 'rxjs';
 import { MapService } from '../service/map-service/map-service.service';
-import {
-    ControlPosition,
-    FullscreenControlOptions,
-    GoogleMap,
-    LatLngBounds,
-    LatLngLiteral,
-    ZoomControlOptions
-} from '@agm/core/services/google-maps-types';
 import { MeteoMarker } from '../maps-model/meteo-marker.model';
 import { DirectionInterface } from '../maps-interface/direction-interface';
 import { CachedMarker } from '../maps-model/cached-marker.model';
@@ -35,7 +27,12 @@ import { MapsOptionsInterface } from '../../../../core/settings/maps-options';
 import { SchedaContattoMarker } from '../maps-model/scheda-contatto-marker.model';
 import { ClassificazioneSchedaContatto } from '../../../../shared/enum/classificazione-scheda-contatto.enum';
 
-declare var google: any;
+import ZoomControlOptions = google.maps.ZoomControlOptions;
+import ControlPosition = google.maps.ControlPosition;
+import FullscreenControlOptions = google.maps.FullscreenControlOptions;
+import LatLngBounds = google.maps.LatLngBounds;
+import LatLngLiteral = google.maps.LatLngLiteral;
+
 
 @Component({
     selector: 'app-agm',
@@ -66,7 +63,7 @@ export class AgmComponent implements OnDestroy {
     map_loaded = false;
     subscription = new Subscription();
     map: any;
-    mapWrapper: GoogleMap;
+    mapWrapper: any;
     richiestaMarkerIconUrl: string;
     meteoMarkerIconUrl: string;
     schedaContattoMarkerIconUrl: string;
@@ -166,7 +163,7 @@ export class AgmComponent implements OnDestroy {
         this.map = event;
         this.map.controls[google.maps.ControlPosition.RIGHT_TOP].push(document.getElementById('Settings'));
         this.map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(document.getElementById('CustomButtons'));
-        google.maps.event.addListenerOnce(this.map, 'tilesloaded', function () {
+        google.maps.event.addListenerOnce(this.map, 'tilesloaded', () => {
             self.cachedMarkers = [];
             self.mapFullyLoaded.emit(true);
         });

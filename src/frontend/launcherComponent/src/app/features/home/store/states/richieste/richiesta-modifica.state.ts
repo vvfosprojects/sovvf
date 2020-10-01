@@ -19,6 +19,7 @@ import { UpdateRichiestaMarker, UpdateRichiestaMarkerModifica } from '../../acti
 import { SetCoordCentroMappa, SetZoomCentroMappa } from '../../actions/maps/centro-mappa.actions';
 import { Observable } from 'rxjs';
 import { UpdateFormValue } from '@ngxs/form-plugin';
+import { Injectable } from '@angular/core';
 
 export interface RichiestaModificaStateModel {
     modificaRichiestaForm: {
@@ -64,6 +65,7 @@ export const RichiestaModificaStateDefaults: RichiestaModificaStateModel = {
     modificaIndirizzo: false
 };
 
+@Injectable()
 @State<RichiestaModificaStateModel>({
     name: 'richiestaModifica',
     defaults: RichiestaModificaStateDefaults

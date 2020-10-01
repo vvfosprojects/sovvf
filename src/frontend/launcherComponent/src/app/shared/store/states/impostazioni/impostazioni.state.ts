@@ -3,6 +3,7 @@ import { GetImpostazioniLocalStorage, PatchImpostazioni } from '../../actions/im
 import { Impostazione, OpzioneImpostazione, TipoImpostazione } from '../../../interface/impostazioni.interface';
 import { LSNAME } from '../../../../core/settings/config';
 import { patch, updateItem } from '@ngxs/store/operators';
+import { Injectable } from '@angular/core';
 
 export interface ImpostazioniStateModel {
     listaImpostazioni: Impostazione[];
@@ -47,6 +48,7 @@ export const impostazioniStateDefaults: ImpostazioniStateModel = {
     ]
 };
 
+@Injectable()
 @State<ImpostazioniStateModel>({
     name: 'impostazioni',
     defaults: impostazioniStateDefaults

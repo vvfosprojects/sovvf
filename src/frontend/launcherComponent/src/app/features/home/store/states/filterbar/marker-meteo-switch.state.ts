@@ -3,6 +3,7 @@ import { Action, Selector, State, StateContext } from '@ngxs/store';
 // Action
 import { SetMarkerMeteoSwitch } from '../../actions/filterbar/marker-meteo-switch.actions';
 import { RemoveMeteoMarker } from '../../actions/maps/meteo-markers.actions';
+import { Injectable } from '@angular/core';
 
 export interface MarkerMeteoStateModel {
   active: boolean;
@@ -12,6 +13,7 @@ export const markerMeteoStateDefaults: MarkerMeteoStateModel = {
   active: false
 };
 
+@Injectable()
 @State<MarkerMeteoStateModel>({
   name: 'markerMeteoSwitch',
   defaults: markerMeteoStateDefaults

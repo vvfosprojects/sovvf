@@ -14,6 +14,7 @@ import { ClearMarkerOpachiMezzi, SetMarkerOpachiMezzi } from '../../actions/maps
 import { append, insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
 import { StatoMezzo } from '../../../../../shared/enum/stato-mezzo.enum';
 import { StartLoadingAreaMappa, StopLoadingAreaMappa } from '../../actions/maps/area-mappa.actions';
+import { Injectable } from '@angular/core';
 
 
 export interface MezziMarkersStateModel {
@@ -32,6 +33,7 @@ export const MezziMarkersStateDefaults: MezziMarkersStateModel = {
     tipoOpacita: null
 };
 
+@Injectable()
 @State<MezziMarkersStateModel>({
     name: 'mezziMarkers',
     defaults: MezziMarkersStateDefaults

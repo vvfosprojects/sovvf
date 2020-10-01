@@ -45,6 +45,7 @@ import {
     ToggleComposizioneMode
 } from '../../actions/composizione-partenza/composizione-partenza.actions';
 import { ClearListaSchedeContatto, ClearSchedaContattoTelefonata } from '../../actions/schede-contatto/schede-contatto.actions';
+import { Injectable } from '@angular/core';
 
 export const ViewComponentStateDefault: ViewComponentStateModel = {
     view: {
@@ -83,6 +84,7 @@ export const ViewComponentStateDefault: ViewComponentStateModel = {
     }
 };
 
+@Injectable()
 @State<ViewComponentStateModel>({
     name: 'viewComponent',
     defaults: ViewComponentStateDefault,

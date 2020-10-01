@@ -22,6 +22,7 @@ import { Composizione } from '../../../../../shared/enum/composizione.enum';
 import { GetPreAccoppiati } from '../../actions/composizione-partenza/composizione-veloce.actions';
 import { StartListaComposizioneLoading, StopListaComposizioneLoading } from '../../actions/composizione-partenza/composizione-partenza.actions';
 import { FiltriComposizioneState } from '../../../../../shared/store/states/filtri-composizione/filtri-composizione.state';
+import { Injectable } from '@angular/core';
 
 export interface ComposizioneAvanzataStateModel {
     listaMezziSquadre: ListaComposizioneAvanzata;
@@ -31,6 +32,7 @@ export const ComposizioneAvanzataStateDefaults: ComposizioneAvanzataStateModel =
     listaMezziSquadre: null
 };
 
+@Injectable()
 @State<ComposizioneAvanzataStateModel>({
     name: 'composizioneAvanzata',
     defaults: ComposizioneAvanzataStateDefaults

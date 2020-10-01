@@ -1,8 +1,10 @@
 import { Action, State, StateContext } from '@ngxs/store';
 import { SaveView } from '../../actions/view/view.actions';
 import { ViewComponentStateModel } from '../../../../../shared/interface/view.interface';
+import { Injectable } from '@angular/core';
 
 
+@Injectable()
 @State<ViewComponentStateModel>({
     name: 'backupViewComponent'
 })

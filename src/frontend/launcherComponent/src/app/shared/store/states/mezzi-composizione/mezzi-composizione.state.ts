@@ -59,6 +59,7 @@ import { SintesiRichiesteService } from '../../../../core/service/lista-richiest
 import { SetListaFiltriAffini } from '../../actions/filtri-composizione/filtri-composizione.actions';
 import { SquadreComposizioneState, SquadreComposizioneStateStateModel } from '../squadre-composizione/squadre-composizione.state';
 import produce from 'immer';
+import { Injectable } from '@angular/core';
 
 export interface MezziComposizioneStateStateModel {
     allMezziComposizione: MezzoComposizione[];
@@ -82,6 +83,7 @@ export const MezziComposizioneStateDefaults: MezziComposizioneStateStateModel = 
     idMezziBloccati: []
 };
 
+@Injectable()
 @State<MezziComposizioneStateStateModel>({
     name: 'mezziComposizione',
     defaults: MezziComposizioneStateDefaults

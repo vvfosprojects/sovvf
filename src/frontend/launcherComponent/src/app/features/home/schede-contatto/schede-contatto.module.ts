@@ -21,7 +21,8 @@ import { SchedaCollegataComponent } from './scheda-collegata/scheda-collegata.co
         SharedModule,
         NgxsModule.forFeature(
             [
-                SchedeContattoState, MergeSchedeContattoState
+                SchedeContattoState,
+                MergeSchedeContattoState
             ]
         )
     ],

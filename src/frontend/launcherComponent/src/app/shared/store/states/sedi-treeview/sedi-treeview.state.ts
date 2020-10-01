@@ -15,6 +15,7 @@ import { ReloadApp, SetVistaSedi } from '../../actions/app/app.actions';
 import { ToastrType } from '../../../enum/toastr';
 import { SetTurnoCalendario } from 'src/app/features/navbar/store/actions/turno.actions';
 import { LSNAME } from '../../../../core/settings/config';
+import { Injectable } from '@angular/core';
 
 export interface SediTreeviewStateModel {
     listeSedi: ListaSedi;
@@ -36,6 +37,7 @@ export const SediTreeviewStateDefaults: SediTreeviewStateModel = {
     sediNavbarVisible: true
 };
 
+@Injectable()
 @State<SediTreeviewStateModel>({
     name: 'listaSediTreeview',
     defaults: SediTreeviewStateDefaults

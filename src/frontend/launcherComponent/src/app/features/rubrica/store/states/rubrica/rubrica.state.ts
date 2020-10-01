@@ -14,6 +14,7 @@ import { RicercaRubricaState } from '../ricerca-rubrica/ricerca-rubrica.state';
 import { ResponseInterface } from '../../../../../shared/interface/response.interface';
 import { PatchPagination } from '../../../../../shared/store/actions/pagination/pagination.actions';
 import { PaginationState } from '../../../../../shared/store/states/pagination/pagination.state';
+import { Injectable } from '@angular/core';
 
 export interface RubricaStateModel {
     vociRubrica: Ente[];
@@ -23,6 +24,7 @@ export const RubricaStateModelDefaults: RubricaStateModel = {
     vociRubrica: undefined
 };
 
+@Injectable()
 @State<RubricaStateModel>({
     name: 'rubrica',
     defaults: RubricaStateModelDefaults,

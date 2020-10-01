@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.model';
 import { HelperSintesiRichiesta } from '../helper/_helper-sintesi-richiesta';
-import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { MezzoActionInterface } from '../../../../shared/interface/mezzo-action.interface';
 import { RichiestaActionInterface } from '../../../../shared/interface/richiesta-action.interface';
 import { StatoRichiesta } from '../../../../shared/enum/stato-richiesta.enum';
@@ -65,8 +64,6 @@ export class ListaRichiesteComponent implements OnInit {
     scrolling = false;
     statoRichiesta = StatoRichiesta;
     vociFiltroDefault = VociFiltroDefault;
-
-    @ViewChild(CdkVirtualScrollViewport) virtualScroll: CdkVirtualScrollViewport;
 
     constructor() {
     }

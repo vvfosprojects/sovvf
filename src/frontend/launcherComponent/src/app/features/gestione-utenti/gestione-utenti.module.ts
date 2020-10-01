@@ -61,7 +61,6 @@ import { RubricaState } from '../rubrica/store/states/rubrica/rubrica.state';
         NgxPaginationModule,
         NgxsFormPluginModule,
     ],
-    entryComponents: [GestioneUtenteModalComponent, ConfirmModalComponent],
     providers: []
 })
 export class GestioneUtentiModule {

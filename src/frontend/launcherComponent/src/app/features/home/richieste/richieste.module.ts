@@ -9,7 +9,6 @@ import { FilterPipeModule } from 'ngx-filter-pipe';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { ScrollingModule } from '@angular/cdk/scrolling';
 import { SintesiRichiestaModule } from './lista-richieste/sintesi-richiesta/sintesi-richiesta.module';
 import { UiSwitchModule } from 'ngx-ui-switch';
 import { GooglePlaceModule } from 'ngx-google-places-autocomplete';
@@ -18,7 +17,6 @@ import { GooglePlaceModule } from 'ngx-google-places-autocomplete';
  */
 import { RichiesteComponent } from './richieste.component';
 import { ListaRichiesteComponent } from './lista-richieste/lista-richieste.component';
-import { SintesiRichiestaSmComponent } from './lista-richieste/sintesi-richiesta-sm/sintesi-richiesta-sm.component';
 import { RichiestaFissataComponent } from './richiesta-fissata/richiesta-fissata.component';
 import { ModificaRichiestaComponent } from './modifica-richiesta/modifica-richiesta.component';
 /**
@@ -58,7 +56,6 @@ import { ModificaFonogrammaModalComponent } from '../../../shared/modal/modifica
         UiSwitchModule.forRoot(null),
         NgSelectModule,
         SharedModule.forRoot(),
-        ScrollingModule,
         SintesiRichiestaModule,
         GooglePlaceModule,
         TagInputModule,
@@ -77,7 +74,6 @@ import { ModificaFonogrammaModalComponent } from '../../../shared/modal/modifica
         RichiesteComponent,
         ListaRichiesteComponent,
         RichiestaFissataComponent,
-        SintesiRichiestaSmComponent,
         ModificaRichiestaComponent,
     ],
     exports: [

@@ -5,6 +5,7 @@ import { MeteoMarker } from '../../../maps/maps-model/meteo-marker.model';
 
 // Action
 import { AddMeteoMarker, RemoveMeteoMarker } from '../../actions/maps/meteo-markers.actions';
+import { Injectable } from '@angular/core';
 
 export interface MeteoMarkersStateModel {
     meteoMarkers: MeteoMarker[];
@@ -14,6 +15,7 @@ export const meteoMarkerStateDefaults: MeteoMarkersStateModel = {
     meteoMarkers: []
 };
 
+@Injectable()
 @State<MeteoMarkersStateModel>({
     name: 'meteoMarker',
     defaults: meteoMarkerStateDefaults

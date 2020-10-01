@@ -12,6 +12,7 @@ import { Navigate, RouterState } from '@ngxs/router-plugin';
 import { RouterStateModel } from '@ngxs/router-plugin/src/router.state';
 import { RoutesPath } from '../../../enum/routes-path.enum';
 import { AuthState, AuthStateModel } from '../../../../features/auth/store/auth.state';
+import { Injectable } from '@angular/core';
 
 export interface AppStateModel {
     previusUrl: string;
@@ -29,6 +30,7 @@ export const appStateDefaults: AppStateModel = {
     mapIsLoaded: null
 };
 
+@Injectable()
 @State<AppStateModel>({
     name: 'appState',
     defaults: appStateDefaults

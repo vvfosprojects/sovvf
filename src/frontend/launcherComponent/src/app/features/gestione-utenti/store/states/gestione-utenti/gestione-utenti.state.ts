@@ -34,6 +34,7 @@ import { ActivatedRoute } from '@angular/router';
 import { _isAdministrator } from '../../../../../shared/helper/function';
 import { AuthState } from '../../../../auth/store/auth.state';
 import { SetSediFiltro } from '../../actions/ricerca-utenti/ricerca-utenti.actons';
+import { Injectable } from '@angular/core';
 
 export interface GestioneUtentiStateModel {
     listaUtentiVVF: UtenteVvfInterface[];
@@ -64,6 +65,7 @@ export const GestioneUtentiStateModelDefaults: GestioneUtentiStateModel = {
     }
 };
 
+@Injectable()
 @State<GestioneUtentiStateModel>({
     name: 'gestioneUtenti',
     defaults: GestioneUtentiStateModelDefaults

@@ -5,6 +5,7 @@ import { CompPartenzaService } from '../../../../core/service/comp-partenza-serv
 import { FiltriComposizione } from '../../../../features/home/composizione-partenza/interface/filtri/filtri-composizione-interface';
 import { FilterListaMezziComposizione, SetListaMezziComposizione } from '../../actions/mezzi-composizione/mezzi-composizione.actions';
 import { SetListaSquadreComposizione } from '../../actions/squadre-composizione/squadre-composizione.actions';
+import { Injectable } from '@angular/core';
 
 export interface SostituzionePartenzaModel {
     listaMezziSquadre: ListaComposizioneAvanzata;
@@ -32,6 +33,7 @@ export const sostituzionePartenzaDefaults: SostituzionePartenzaModel = {
     loadingListe: false
 };
 
+@Injectable()
 @State<SostituzionePartenzaModel>({
     name: 'sostituzionePartenza',
     defaults: sostituzionePartenzaDefaults

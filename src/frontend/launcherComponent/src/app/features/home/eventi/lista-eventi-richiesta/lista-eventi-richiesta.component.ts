@@ -22,7 +22,7 @@ export class ListaEventiRichiestaComponent implements OnInit {
     ngOnInit() {
     }
 
-    private setIstanteEventoPrecedente(i: number): Date {
+    setIstanteEventoPrecedente(i: number): Date {
         if (i > 0) {
             this.istanteEventoPrecedente = this.elencoEventi[i - 1].istanteEvento;
         } else {

@@ -14,6 +14,7 @@ import {
 } from '../../actions/boxes/box-click.actions';
 import { StatoMezzo } from '../../../../../shared/enum/stato-mezzo.enum';
 import { CheckBoxClick } from '../../actions/maps/maps-filtro.actions';
+import { Injectable } from '@angular/core';
 
 export interface BoxClickStateModel {
     boxClick: BoxClickInterface;
@@ -38,6 +39,7 @@ export const boxClickStateDefaults: BoxClickStateModel = {
     }
 };
 
+@Injectable()
 @State<BoxClickStateModel>({
     name: 'boxClick',
     defaults: boxClickStateDefaults

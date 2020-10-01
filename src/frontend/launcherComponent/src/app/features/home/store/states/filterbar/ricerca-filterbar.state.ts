@@ -1,6 +1,7 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { ClearRicercaFilterbar, SetRicercaFilterbar } from '../../actions/filterbar/ricerca-richieste.actions';
 import { FiltriRichiesteState } from './filtri-richieste.state';
+import { Injectable } from '@angular/core';
 
 export interface RicercaFilterbarStateModel {
     ricerca: string;
@@ -10,6 +11,7 @@ export const RicercaFilterbarStateDefaults: RicercaFilterbarStateModel = {
     ricerca: ''
 };
 
+@Injectable()
 @State<RicercaFilterbarStateModel>({
     name: 'ricercaFilterbar',
     defaults: RicercaFilterbarStateDefaults

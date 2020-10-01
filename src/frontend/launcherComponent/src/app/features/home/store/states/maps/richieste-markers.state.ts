@@ -22,6 +22,7 @@ import { ClearMarkerOpachiRichieste, SetMarkerOpachiRichieste } from '../../acti
 import { append, insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
 import { RichiesteMarkerAdapterService } from '../../../../../core/service/maps-service/richieste-marker/adapters/richieste-marker-adapter.service';
 import { StartLoadingAreaMappa, StopLoadingAreaMappa } from '../../actions/maps/area-mappa.actions';
+import { Injectable } from '@angular/core';
 
 export interface RichiesteMarkersStateModel {
     richiesteMarkers: RichiestaMarker[];
@@ -41,6 +42,7 @@ export const RichiesteMarkersStateDefaults: RichiesteMarkersStateModel = {
     tipoOpacita: null
 };
 
+@Injectable()
 @State<RichiesteMarkersStateModel>({
     name: 'richiesteMarkers',
     defaults: RichiesteMarkersStateDefaults

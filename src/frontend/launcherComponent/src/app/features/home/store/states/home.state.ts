@@ -24,6 +24,7 @@ import { RoutesPath } from '../../../../shared/enum/routes-path.enum';
 import { ClearViewState } from '../actions/view/view.actions';
 import { LatLngBoundsLiteral } from 'ngx-google-places-autocomplete/objects/latLng';
 import { SetEnti } from 'src/app/shared/store/actions/enti/enti.actions';
+import { Injectable } from '@angular/core';
 
 export interface HomeStateModel {
     markerLoading: boolean;
@@ -37,6 +38,7 @@ export const HomeStateDefaults: HomeStateModel = {
     bounds: null
 };
 
+@Injectable()
 @State<HomeStateModel>({
     name: 'home',
     defaults: HomeStateDefaults
