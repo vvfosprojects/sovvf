@@ -1,23 +1,23 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Condivise;
-using SO115App.Models.Classi.Condivise;
+using SO115App.API.Models.Classi.Organigramma;
+using SO115App.ExternalAPI.Fake.Classi.DTOFake;
+using SO115App.ExternalAPI.Fake.Classi.Gac;
+using SO115App.Models.Classi.ServiziEsterni;
+using SO115App.Models.Classi.Utility;
+using SO115App.Models.Servizi.Infrastruttura.Composizione;
+using SO115App.Models.Servizi.Infrastruttura.GeoFleet;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
-using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
-using SO115App.Models.Servizi.Infrastruttura.Composizione;
-using Newtonsoft.Json;
-using System.IO;
-using SO115App.ExternalAPI.Fake.Classi.DTOFake;
-using SO115App.ExternalAPI.Fake.Classi.Gac;
-using SO115App.Models.Classi.Utility;
-using SO115App.Models.Servizi.Infrastruttura.GeoFleet;
-using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
-using SO115App.API.Models.Classi.Organigramma;
-using Microsoft.Extensions.Caching.Memory;
-using System;
 
 namespace SO115App.ExternalAPI.Fake.GestioneMezzi
 {
@@ -48,18 +48,12 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
             _getPosizioneFlotta = getPosizioneFlotta;
         }
 
-        public async Task<List<Mezzo>> Get(List<string> sedi, string genereMezzo = null, string codiceMezzo = null)
+        public async Task<List<Mezzo>> Get(List<string> sedi, string genereMezzo = null, string codiceMezzo = null, List<MessaggioPosizione> posizioneFlotta = null)
         {
-            var ListaCodiciSedi = new List<string>();
+            var pinNodi = sedi.Select(s => new PinNodo(s, true));
             var ListaCodiciComandi = new List<string>();
-
+            var ListaCodiciSedi = new List<string>();
             var listaSediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
-            var pinNodi = new List<PinNodo>();
-
-            foreach (var sede in sedi)
-            {
-                pinNodi.Add(new PinNodo(sede, true));
-            }
 
             foreach (var figlio in listaSediAlberate.GetSottoAlbero(pinNodi))
             {
@@ -74,11 +68,13 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
                 }
             }
 
-            var ListaAnagraficaMezzo = new List<AnagraficaMezzo>();
-            var ListaMezzi = new List<Mezzo>();
-            var ListaPosizioneFlotta = _getPosizioneFlotta.Get(0).Result;
+            var ListaPosizioneFlotta = new List<MessaggioPosizione>();
+            if (posizioneFlotta == null)
+                ListaPosizioneFlotta = _getPosizioneFlotta.Get(0).Result;
+            else
+                ListaPosizioneFlotta = posizioneFlotta;
 
-            ListaAnagraficaMezzo = GetAnagraficaMezziByCodComando(ListaCodiciComandi).Result;
+            var ListaAnagraficaMezzo = GetAnagraficaMezziByCodComando(ListaCodiciComandi).Result;
 
             #region LEGGO DA JSON FAKE
 
@@ -88,9 +84,13 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
             {
                 json = r.ReadToEnd();
             }
-            var listaMezzi = JsonConvert.DeserializeObject<List<MezzoFake>>(json);
 
             #endregion LEGGO DA JSON FAKE
+
+            //PAGINARE QUI I MEZZI
+            var listaMezziJson = JsonConvert.DeserializeObject<List<MezzoFake>>(json);
+
+            var result = new List<Mezzo>();
 
             foreach (string CodSede in ListaCodiciSedi)
             {
@@ -109,7 +109,7 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
 
                     #endregion LEGGO DA API ESTERNA
 
-                    var ListaMezziSede = listaMezzi.FindAll(x => x.Sede.Equals(CodSede)).ToList();
+                    var ListaMezziSede = listaMezziJson.FindAll(x => x.Sede.Equals(CodSede)).ToList();
 
                     List<Mezzo> listaMezziBySedeAppo = new List<Mezzo>();
                     foreach (MezzoFake mezzoFake in ListaMezziSede)
@@ -122,7 +122,7 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
                             if (mezzo != null)
                             {
                                 listaMezziBySedeAppo.Add(mezzo);
-                                ListaMezzi.Add(mezzo);
+                                result.Add(mezzo);
                             }
                         }
                     }
@@ -132,11 +132,11 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
                 }
                 else
                 {
-                    ListaMezzi.AddRange(listaMezziBySede);
+                    result.AddRange(listaMezziBySede);
                 }
             }
 
-            foreach (var mezzo in ListaMezzi)
+            foreach (var mezzo in result)
             {
                 var CoordinateMezzoGeoFleet = ListaPosizioneFlotta.Find(x => x.CodiceMezzo.Equals(mezzo.Codice));
 
@@ -152,7 +152,7 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
                 }
             }
 
-            return GetListaMezziConStatoAggiornat(ListaMezzi);
+            return GetListaMezziConStatoAggiornat(result);
         }
 
         private List<Mezzo> GetListaMezziConStatoAggiornat(List<Mezzo> listaMezzi)

@@ -18,6 +18,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using SO115App.API.Models.Classi.Condivise;
+using SO115App.Models.Classi.ServiziEsterni;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -35,6 +36,6 @@ namespace SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac
         /// <param name="genereMezzo">il genere del mezzo (opzionale)</param>
         /// <param name="codiceMezzo">la sigla del mezzo (opzionale)</param>
         /// <returns>una lista mezzi</returns>
-        Task<List<Mezzo>> Get(List<string> sedi, string genereMezzo = null, string codiceMezzo = null);
+        Task<List<Mezzo>> Get(List<string> sedi, string genereMezzo = null, string codiceMezzo = null, List<MessaggioPosizione> posizioneFlotta = null);
     }
 }

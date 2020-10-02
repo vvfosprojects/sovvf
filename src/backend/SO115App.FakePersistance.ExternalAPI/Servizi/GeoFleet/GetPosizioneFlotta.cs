@@ -49,11 +49,15 @@ namespace SO115App.ExternalAPI.Fake.Servizi.GeoFleet
         /// <returns>Il messaggio posizione da Geofleet</returns>
         public async Task<List<MessaggioPosizione>> Get(int Secondi)
         {
+            //TODO CACHE
+
             var response = await _client.GetAsync($"{_configuration.GetSection("UrlExternalApi").GetSection("GeofleetApi").Value}posizioneFlotta").ConfigureAwait(false);
             if (response.StatusCode != System.Net.HttpStatusCode.OK) return null;
             response.EnsureSuccessStatusCode();
+
             using HttpContent content = response.Content;
             string data = await content.ReadAsStringAsync().ConfigureAwait(false);
+
             return JsonConvert.DeserializeObject<List<MessaggioPosizione>>(data);
         }
     }

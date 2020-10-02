@@ -66,11 +66,9 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
         {
             try
             {
-                var listaSediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
-
                 var pinNodi = sedi.Select(s => new PinNodo(s, true));
-
                 var ListaCodiciSedi = new List<string>();
+                var listaSediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
 
                 foreach (var figlio in listaSediAlberate.GetSottoAlbero(pinNodi))
                 {
@@ -101,7 +99,6 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
                     .SelectMany(c => c.ComponentiSquadra).Select(c => c.CodiceFiscale).Distinct().ToArray();
 
                 var lstVVF = _getPersonaleByCF.Get(lstcodicifiscali, sedi.ToArray()).Result;
-
 
                 var result = new List<Squadra>();
 
@@ -138,7 +135,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
                     }
                     else
                     {
-                        lock (new object()) { result.AddRange(listaSquadraBySede); }
+                        lock (result) { result.AddRange(listaSquadraBySede); }
                     }
                 });
 
