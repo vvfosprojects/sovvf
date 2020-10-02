@@ -64,6 +64,28 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             var lstSedi = new List<string>() { query.CodiceSede };
 
             //REPERISCO MEZZI E SQUADRE
+            var lstSquadre = _getListaSquadre.Get(lstSedi).ContinueWith(lstsquadre =>
+            {
+                var statiOperativi = _getStatoSquadre.Get(lstSedi);
+
+                return lstsquadre.Result.Select(squadra =>
+                {
+                    if (statiOperativi.Exists(x => x.IdSquadra.Equals(squadra.Id)))
+                    {
+                        squadra.Stato = MappaStatoSquadraDaStatoMezzo.MappaStato(statiOperativi.Find(x => x.IdSquadra.Equals(squadra.Id)).StatoSquadra);
+                        squadra.IndiceOrdinamento = -200;
+                    }
+                    else
+                        squadra.Stato = Squadra.StatoSquadra.InSede;
+
+                    return new Classi.Composizione.ComposizioneSquadre()
+                    {
+                        Id = squadra.Id,
+                        Squadra = squadra
+                    };
+                }).OrderByDescending(c => c.Squadra.IndiceOrdinamento).ToList();
+            });
+
             var lstMezzi = _getPosizioneFlotta.Get(0)
                 .ContinueWith(lstPosizioneFlotta => _getMezziUtilizzabili.Get(lstSedi, posizioneFlotta: lstPosizioneFlotta.Result).Result)
                 .ContinueWith(lstmezzi =>
@@ -109,36 +131,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
 
                     return composizioneMezziPrenotati.OrderByDescending(x => x.IndiceOrdinamento).ToList();
                 });
-
-            var lstSquadre = _getListaSquadre.Get(lstSedi).ContinueWith(lstsquadre =>
-            {
-                var statiOperativi = _getStatoSquadre.Get(lstSedi);
-
-                var composizioneSquadre = new List<Classi.Composizione.ComposizioneSquadre>();
-
-                foreach (var s in lstsquadre.Result)
-                {
-                    if (statiOperativi.Exists(x => x.IdSquadra.Equals(s.Id)))
-                    {
-                        s.Stato = MappaStatoSquadraDaStatoMezzo.MappaStato(statiOperativi.Find(x => x.IdSquadra.Equals(s.Id)).StatoSquadra);
-                        s.IndiceOrdinamento = -200;
-                    }
-                    else
-                    {
-                        s.Stato = Squadra.StatoSquadra.InSede;
-                    }
-
-                    var c = new Classi.Composizione.ComposizioneSquadre
-                    {
-                        Squadra = s,
-                        Id = s.Id
-                    };
-
-                    composizioneSquadre.Add(c);
-                }
-
-                return composizioneSquadre.OrderByDescending(x => x.Squadra.IndiceOrdinamento).ToList();
-            });
 
             //COMPONGO IL DTO
             var composizioneAvanzata = new Classi.Composizione.ComposizionePartenzaAvanzata()
