@@ -116,7 +116,7 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
                     {
                         if (!mezzoFake.CodDestinazione.Equals("CMOB"))
                         {
-                            var anagraficaMezzo = ListaAnagraficaMezzo.Find(x => x.Targa.Equals(mezzoFake.Targa)); //GetAnagraficaMezzoByTarga(mezzoFake.Targa).Result;
+                            var anagraficaMezzo = ListaAnagraficaMezzo.Find(x => x.Targa.Equals(mezzoFake.Targa));
 
                             var mezzo = MapMezzo(anagraficaMezzo, mezzoFake);
                             if (mezzo != null)
