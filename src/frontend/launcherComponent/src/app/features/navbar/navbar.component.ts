@@ -16,6 +16,7 @@ import { GetNewVersion, OpenModalNewFeaturesInfo, OpenModalNewVersionSoon } from
 import { SetNotificheLette } from '../../shared/store/actions/notifiche/notifiche.actions';
 import { RoutesPath } from '../../shared/enum/routes-path.enum';
 import { RouterState } from '@ngxs/router-plugin';
+import { Logout } from '../auth/store/auth.actions';
 
 @Component({
     selector: 'app-navbar',
@@ -175,9 +176,9 @@ export class NavbarComponent implements OnInit, OnDestroy {
         this.store.dispatch(new OpenModalNewFeaturesInfo());
     }
 
-    // Todo centralizzare nello store.
     logout(): void {
-        this.authenticationService.logout();
+        const homeUrl = this.store.selectSnapshot(RouterState.url);
+        this.store.dispatch(new Logout(homeUrl));
     }
 
     setNotificheLette(): void {

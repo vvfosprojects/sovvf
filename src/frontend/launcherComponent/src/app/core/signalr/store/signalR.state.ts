@@ -102,7 +102,7 @@ export class SignalRState implements NgxsOnChanges {
         }
         patchState({
             connected: true,
-            reconnected: reconnected,
+            reconnected,
             disconnected: false
         });
     }
@@ -117,7 +117,7 @@ export class SignalRState implements NgxsOnChanges {
         patchState({
             connected: SignalRStateDefaults.connected,
             reconnected: false,
-            disconnected: disconnected,
+            disconnected,
             connectionId: null,
         });
     }
@@ -173,10 +173,11 @@ export class SignalRState implements NgxsOnChanges {
     @Action(LogoffUtenteSignalR)
     logoffUtenteSignalR({ getState, dispatch }: StateContext<SignalRStateModel>, { utente }: LogoffUtenteSignalR) {
         const codiciSede = getState().codiciSede;
-        this.signalR.removeToGroup(new SignalRNotification(
-            codiciSede,
-            utente.id,
-            `${utente.nome} ${utente.cognome}`
+        this.signalR.removeToGroup(
+            new SignalRNotification(
+                codiciSede,
+                utente.id,
+                `${utente.nome} ${utente.cognome}`
             )
         );
         dispatch(new ClearCodiceSede());
@@ -193,7 +194,9 @@ export class SignalRState implements NgxsOnChanges {
     }
 
     openModal(): void {
-        this.modalService.hasOpenModals() && this.modalService.dismissAll();
+        if (this.modalService.hasOpenModals()) {
+            this.modalService.dismissAll();
+        }
         this.modalInstance = this.modalService.open(SignalROfflineComponent, {
             windowClass: 'modal-holder',
             centered: true,
