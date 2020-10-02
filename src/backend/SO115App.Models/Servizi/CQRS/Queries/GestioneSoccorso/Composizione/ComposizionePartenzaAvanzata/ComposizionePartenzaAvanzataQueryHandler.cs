@@ -94,6 +94,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                         Squadra = s,
                         Id = s.Id
                     };
+
                     composizioneSquadre.Add(c);
                 }
 
@@ -122,8 +123,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
 
                 foreach (var composizione in composizioneMezziPrenotati)
                 {
-                    totaleKM = totaleKM + Convert.ToDecimal(composizione.Km.Replace(".", ","));
-                    totaleTempoPercorrenza = totaleTempoPercorrenza + Convert.ToDecimal(composizione.TempoPercorrenza.Replace(".", ","));
+                    totaleKM += Convert.ToDecimal(composizione.Km.Replace(".", ","));
+                    totaleTempoPercorrenza += Convert.ToDecimal(composizione.TempoPercorrenza.Replace(".", ","));
                 }
 
                 string mediaDistanza = Math.Round((totaleKM / composizioneMezzi.Count), 2).ToString(CultureInfo.InvariantCulture);

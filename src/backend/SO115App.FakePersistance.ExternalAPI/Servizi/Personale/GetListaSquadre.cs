@@ -66,11 +66,10 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
         {
             try
             {
-                List<Squadra> listaSquadre = new List<Squadra>();
-                List<string> ListaCodiciSedi = new List<string>();
-
                 var listaSediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
+
                 var pinNodi = new List<PinNodo>();
+                var ListaCodiciSedi = new List<string>();
 
                 foreach (var sede in sedi)
                 {
@@ -88,8 +87,6 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
                     }
                 }
 
-                var ListaMezzi = new List<Mezzo>();
-
                 #region LEGGO DA JSON FAKE
 
                 var filepath = Costanti.ListaSquadre;
@@ -103,13 +100,15 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
 
                 var listaSquadreJson = JsonConvert.DeserializeObject<List<SquadraFake>>(json);
 
-                var lstcodicifiscali = listaSquadreJson/*.Where(c => sedi.Contains(c.Sede))*/
+                var lstcodicifiscali = listaSquadreJson
                     .SelectMany(c => c.ComponentiSquadra)
                     .Select(c => c.CodiceFiscale)
                     .Distinct()
                     .ToArray();
 
                 var lstVVF = _getPersonaleByCF.Get(lstcodicifiscali, sedi.ToArray()).Result;
+
+                var result = new List<Squadra>();
 
                 Parallel.ForEach(ListaCodiciSedi, CodSede =>
                 {
@@ -136,7 +135,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
                         {
                             var squadra = MapSqaudra(squadraFake, lstVVF, CodSede);
                             listaSquadraBySedeAppo.Add(squadra);
-                            listaSquadre.Add(squadra);
+                            result.Add(squadra);
                         }
 
                         var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromHours(4));
@@ -144,11 +143,11 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
                     }
                     else
                     {
-                        listaSquadre.AddRange(listaSquadraBySede);
+                        result.AddRange(listaSquadraBySede);
                     }
                 });
 
-                return listaSquadre;
+                return result;
             }
             catch (Exception ex)
             {
@@ -176,28 +175,25 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
 
             foreach (var componenteFake in squadraFake.ComponentiSquadra)
             {
-                //foreach (var pVVf in lstVVF)
-                //{
                 var pVVf = lstVVF.FirstOrDefault(p => p.CodFiscale.Equals(componenteFake.CodiceFiscale));
 
-                    if (pVVf != null)
+                if (pVVf != null)
+                {
+                    var componente = new Componente(componenteFake.DescrizioneQualificaLunga,
+                    pVVf.Nominativo, componenteFake.Tooltip, componenteFake.CapoPartenza, componenteFake.Autista, componenteFake.Rimpiazzo)
                     {
-                        var componente = new Componente(componenteFake.DescrizioneQualificaLunga,
-                        pVVf.Nominativo, componenteFake.Tooltip, componenteFake.CapoPartenza, componenteFake.Autista, componenteFake.Rimpiazzo)
-                        {
-                            CodiceFiscale = pVVf.CodFiscale,
-                            OrarioFine = componenteFake.OrarioFine,
-                            OrarioInizio = componenteFake.OrarioInizio,
-                            Telefono = componenteFake.Telefono,
-                            TecnicoGuardia1 = componenteFake.TecnicoGuardia1,
-                            TecnicoGuardia2 = componenteFake.TecnicoGuardia2,
-                            FunGuardia = componenteFake.FunGuardia,
-                            CapoTurno = componenteFake.CapoTurno
-                        };
-                        ComponentiSquadra.Add(componente);
-                        ListaCodiciFiscaliComponentiSquadra.Add(pVVf.CodFiscale);
-                    }
-                //}
+                        CodiceFiscale = pVVf.CodFiscale,
+                        OrarioFine = componenteFake.OrarioFine,
+                        OrarioInizio = componenteFake.OrarioInizio,
+                        Telefono = componenteFake.Telefono,
+                        TecnicoGuardia1 = componenteFake.TecnicoGuardia1,
+                        TecnicoGuardia2 = componenteFake.TecnicoGuardia2,
+                        FunGuardia = componenteFake.FunGuardia,
+                        CapoTurno = componenteFake.CapoTurno
+                    };
+                    ComponentiSquadra.Add(componente);
+                    ListaCodiciFiscaliComponentiSquadra.Add(pVVf.CodFiscale);
+                }
             }
 
             var s = new Squadra(squadraFake.NomeSquadra, Stato, ComponentiSquadra, sedeDistaccamento);
