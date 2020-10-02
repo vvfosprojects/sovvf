@@ -12,7 +12,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { SidebarModule } from 'ng-sidebar';
 import { FilterPipeModule } from 'ngx-filter-pipe';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { NgProgressModule } from '@ngx-progressbar/core';
