@@ -68,13 +68,9 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
             {
                 var listaSediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
 
-                var pinNodi = new List<PinNodo>();
-                var ListaCodiciSedi = new List<string>();
+                var pinNodi = sedi.Select(s => new PinNodo(s, true));
 
-                foreach (var sede in sedi)
-                {
-                    pinNodi.Add(new PinNodo(sede, true));
-                }
+                var ListaCodiciSedi = new List<string>();
 
                 foreach (var figlio in listaSediAlberate.GetSottoAlbero(pinNodi))
                 {
@@ -98,15 +94,14 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
 
                 #endregion LEGGO DA JSON FAKE
 
+                //PAGINARE QUI LE SQUADRE
                 var listaSquadreJson = JsonConvert.DeserializeObject<List<SquadraFake>>(json);
 
                 var lstcodicifiscali = listaSquadreJson
-                    .SelectMany(c => c.ComponentiSquadra)
-                    .Select(c => c.CodiceFiscale)
-                    .Distinct()
-                    .ToArray();
+                    .SelectMany(c => c.ComponentiSquadra).Select(c => c.CodiceFiscale).Distinct().ToArray();
 
                 var lstVVF = _getPersonaleByCF.Get(lstcodicifiscali, sedi.ToArray()).Result;
+
 
                 var result = new List<Squadra>();
 
@@ -133,7 +128,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
 
                         foreach (var squadraFake in ListaSquadreSede)
                         {
-                            var squadra = MapSqaudra(squadraFake, lstVVF, CodSede);
+                            var squadra = MapSqaudra(squadraFake, lstVVF);
                             listaSquadraBySedeAppo.Add(squadra);
                             result.Add(squadra);
                         }
@@ -143,7 +138,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
                     }
                     else
                     {
-                        result.AddRange(listaSquadraBySede);
+                        lock (new object()) { result.AddRange(listaSquadraBySede); }
                     }
                 });
 
@@ -155,7 +150,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
             }
         }
 
-        private Squadra MapSqaudra(SquadraFake squadraFake, List<PersonaleVVF> lstVVF, string CodSede)
+        private Squadra MapSqaudra(SquadraFake squadraFake, List<PersonaleVVF> lstVVF)
         {
             Squadra.StatoSquadra Stato;
 

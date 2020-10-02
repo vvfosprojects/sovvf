@@ -59,7 +59,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
         {
             var listaPersonale = new List<PersonaleVVF>();
 
-            Parallel.ForEach(codSede, async codice =>
+            Parallel.ForEach(codSede, codice =>
             {
                 if (!_memoryCache.TryGetValue($"Personale_{codice.Split('.')[0]}", out listaPersonale))
                 {
@@ -69,15 +69,17 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
                     var client = new HttpClient();
                     client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("test");
                     var sede = string.Concat(codSede.Select(c => c.Split(".")[0]));
-                    var response = await client.GetAsync($"{_configuration.GetSection("UrlExternalApi").GetSection("PersonaleApiUtenteComuni").Value}?codiciSede={sede}").ConfigureAwait(false);
+
+                    var response = client.GetAsync($"{_configuration.GetSection("UrlExternalApi").GetSection("PersonaleApiUtenteComuni").Value}?codiciSede={sede}").Result;
                     response.EnsureSuccessStatusCode();
+
                     using HttpContent content = response.Content;
-                    string data = await content.ReadAsStringAsync().ConfigureAwait(false);
+                    string data = content.ReadAsStringAsync().Result;
                     var personaleUC = JsonConvert.DeserializeObject<List<PersonaleUC>>(data);
 
-                    listaPersonale = MapPersonaleVVFsuPersonaleUC.Map(personaleUC);
-
                     #endregion
+
+                    listaPersonale = MapPersonaleVVFsuPersonaleUC.Map(personaleUC);
 
                     var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromHours(8));
                     _memoryCache.Set($"Personale_{codice.Split('.')[0]}", listaPersonale, cacheEntryOptions);
