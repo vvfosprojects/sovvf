@@ -90,46 +90,51 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                 .ContinueWith(lstPosizioneFlotta => _getMezziUtilizzabili.Get(lstSedi, posizioneFlotta: lstPosizioneFlotta.Result).Result)
                 .ContinueWith(lstmezzi =>
                 {
-                    var composizioneMezzi = GeneraListaComposizioneMezzi(lstmezzi.Result);
+                    var composizioneMezzi = (from mezzo in lstmezzi.Result
+                                             let kmGen = new Random().Next(1, 60).ToString()
+                                             let tempoPer = Convert.ToDouble(kmGen.Replace(".", ",")) / 1.75
+                                             select new Classi.Composizione.ComposizioneMezzi()
+                                             {
+                                                 Id = mezzo.Codice,
+                                                 Mezzo = mezzo,
+                                                 Km = kmGen,
+                                                 TempoPercorrenza = Math.Round(tempoPer, 2).ToString(CultureInfo.InvariantCulture),
+                                             }).ToList();
 
-                    foreach (var composizione in composizioneMezzi)
-                    {
-                        //composizione.IndiceOrdinamento = _ordinamentoMezzi.GetIndiceOrdinamento(query.Filtro.IdRichiesta, composizione, composizione.Mezzo.CoordinateFake, composizione.Mezzo.IdRichiesta);
-                        composizione.Id = composizione.Mezzo.Codice;
+                    var mezziPrenotati = _getMezziPrenotati.Get(query.CodiceSede);
 
-                        if (composizione.IstanteScadenzaSelezione < DateTime.Now)
-                        {
-                            composizione.IstanteScadenzaSelezione = null;
-                        }
-                    }
-
-                    var composizioneMezziPrenotati = GetComposizioneMezziPrenotati(composizioneMezzi, query.CodiceSede);
-                    //Per i mezzi con coordinate Fake nella property  i Km  e la TempoPercorrenza vengono impostati i  valori medi della collection
                     decimal totaleKM = 0;
                     decimal totaleTempoPercorrenza = 0;
+                    string mediaDistanza;
+                    string mediaTempoPercorrenza;
 
-                    foreach (var composizione in composizioneMezziPrenotati)
+                    return composizioneMezzi.Select(c =>
                     {
-                        totaleKM += Convert.ToDecimal(composizione.Km.Replace(".", ","));
-                        totaleTempoPercorrenza += Convert.ToDecimal(composizione.TempoPercorrenza.Replace(".", ","));
-                    }
+                        if (c.IstanteScadenzaSelezione < DateTime.Now)
+                            c.IstanteScadenzaSelezione = null;
 
-                    string mediaDistanza = Math.Round((totaleKM / composizioneMezzi.Count), 2).ToString(CultureInfo.InvariantCulture);
-                    string mediaTempoPercorrenza = Math.Round((totaleTempoPercorrenza / composizioneMezzi.Count), 2).ToString(CultureInfo.InvariantCulture);
-
-                    foreach (var composizione in composizioneMezziPrenotati)
-                    {
-                        if (composizione.Mezzo.CoordinateFake)
+                        if (mezziPrenotati.Find(x => x.CodiceMezzo.Equals(c.Mezzo.Codice)) != null)
                         {
-                            composizione.Km = mediaDistanza;
-                            composizione.TempoPercorrenza = mediaTempoPercorrenza;
-                            //composizione.IndiceOrdinamento = _ordinamentoMezzi.GetIndiceOrdinamento(query.Filtro.IdRichiesta, composizione, composizione.Mezzo.CoordinateFake, composizione.Mezzo.IdRichiesta);
-                            composizione.Km = null;
-                            composizione.TempoPercorrenza = null;
-                        }
-                    }
+                            c.Id = c.Mezzo.Codice;
+                            c.IstanteScadenzaSelezione = mezziPrenotati.Find(x => x.CodiceMezzo.Equals(c.Mezzo.Codice)).IstanteScadenzaSelezione;
 
-                    return composizioneMezziPrenotati.OrderByDescending(x => x.IndiceOrdinamento).ToList();
+                            if (c.Mezzo.Stato.Equals("In Sede"))
+                                c.Mezzo.Stato = mezziPrenotati.Find(x => x.CodiceMezzo.Equals(c.Mezzo.Codice)).StatoOperativo;
+                        }
+
+                        //Per i mezzi con coordinate Fake nella property  i Km  e la TempoPercorrenza vengono impostati i  valori medi della collection
+                        totaleKM += Convert.ToDecimal(c.Km.Replace(".", ","));
+                        totaleTempoPercorrenza += Convert.ToDecimal(c.TempoPercorrenza.Replace(".", ","));
+
+                        mediaDistanza = Math.Round(totaleKM / composizioneMezzi.Count(), 2).ToString(CultureInfo.InvariantCulture);
+                        mediaTempoPercorrenza = Math.Round(totaleTempoPercorrenza / composizioneMezzi.Count(), 2).ToString(CultureInfo.InvariantCulture);
+
+                        c.Km = mediaDistanza;
+                        c.TempoPercorrenza = mediaTempoPercorrenza;
+                        //composizione.IndiceOrdinamento = _ordinamentoMezzi.GetIndiceOrdinamento(query.Filtro.IdRichiesta, composizione, composizione.Mezzo.CoordinateFake, composizione.Mezzo.IdRichiesta);
+
+                        return c;
+                    }).OrderByDescending(x => x.IndiceOrdinamento).ToList();
                 });
 
             //COMPONGO IL DTO
@@ -158,41 +163,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             {
                 ComposizionePartenzaAvanzata = composizioneAvanzata
             };
-        }
-
-        private List<Classi.Composizione.ComposizioneMezzi> GetComposizioneMezziPrenotati(List<Classi.Composizione.ComposizioneMezzi> composizioneMezzi, string codiceSede)
-        {
-            var mezziPrenotati = _getMezziPrenotati.Get(codiceSede);
-
-            foreach (var composizione in composizioneMezzi)
-            {
-                if (mezziPrenotati.Find(x => x.CodiceMezzo.Equals(composizione.Mezzo.Codice)) != null)
-                {
-                    composizione.IstanteScadenzaSelezione = mezziPrenotati.Find(x => x.CodiceMezzo.Equals(composizione.Mezzo.Codice)).IstanteScadenzaSelezione;
-
-                    if (composizione.Mezzo.Stato.Equals("In Sede"))
-                    {
-                        composizione.Mezzo.Stato = mezziPrenotati.Find(x => x.CodiceMezzo.Equals(composizione.Mezzo.Codice)).StatoOperativo;
-                    }
-                }
-            }
-            return composizioneMezzi;
-        }
-
-        private List<Classi.Composizione.ComposizioneMezzi> GeneraListaComposizioneMezzi(IEnumerable<Mezzo> listaMezzi)
-        {
-            var random = new Random();
-
-            return (from mezzo in listaMezzi
-                    let kmGen = random.Next(1, 60).ToString()
-                    let tempoPer = Convert.ToDouble(kmGen.Replace(".", ",")) / 1.75
-                    select new Classi.Composizione.ComposizioneMezzi()
-                    {
-                        Id = mezzo.Codice,
-                        Mezzo = mezzo,
-                        Km = kmGen,
-                        TempoPercorrenza = Math.Round(tempoPer, 2).ToString(CultureInfo.InvariantCulture),
-                    }).ToList();
         }
     }
 }
