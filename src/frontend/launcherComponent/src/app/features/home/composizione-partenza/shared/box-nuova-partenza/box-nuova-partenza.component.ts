@@ -40,7 +40,7 @@ export class BoxNuovaPartenzaComponent {
     constructor(private store: Store) {
     }
 
-    onClick() {
+    onClick(): void {
         if (!this.itemOccupato) {
             if (!this.itemSelezionato) {
                 this.selezionato.emit(this.partenza);
@@ -55,12 +55,12 @@ export class BoxNuovaPartenzaComponent {
         }
     }
 
-    onElimina(e: MouseEvent) {
+    onElimina(e: MouseEvent): void {
         e.stopPropagation();
         this.eliminato.emit(this.partenza);
     }
 
-    ngClass() {
+    ngClass(): string {
         let returnClass: string;
 
         if (this.compPartenzaMode === Composizione.Veloce) {
@@ -109,7 +109,7 @@ export class BoxNuovaPartenzaComponent {
         return returnClass;
     }
 
-    badgeDistaccamentoClass() {
+    badgeDistaccamentoClass(): string {
         let result = 'badge-secondary';
 
         if (this.richiesta && this.partenza.mezzoComposizione) {
@@ -118,6 +118,7 @@ export class BoxNuovaPartenzaComponent {
             if (this.richiesta.competenze && this.richiesta.competenze.length > 0) {
                 if (this.richiesta.competenze[0].descrizione === distaccamentoMezzo) {
                     result = 'badge-primary';
+                    // tslint:disable-next-line:max-line-length
                 } else if (this.richiesta.competenze.length > 0 && this.richiesta.competenze[1] && this.richiesta.competenze[1].descrizione === distaccamentoMezzo) {
                     result = 'badge-info';
                 }
@@ -127,12 +128,13 @@ export class BoxNuovaPartenzaComponent {
         return result;
     }
 
-    boxValidationClass() {
+    boxValidationClass(): { result: string, tooltip: string } {
         let result = 'text-danger';
         let tooltip = 'Errore sconosciuto';
         const prefix = 'fa ';
         let icon = 'fa-exclamation-triangle';
         const squadra2 = this.partenza.squadraComposizione.length > 0 ? 'squadra-si' : 'squadra-no';
+        // tslint:disable-next-line:max-line-length
         const mezzo2 = this.partenza.mezzoComposizione && (this.partenza.mezzoComposizione.mezzo.stato === StatoMezzo.InSede || this.partenza.mezzoComposizione.mezzo.stato === StatoMezzo.InRientro) ? 'mezzo-si' : 'mezzo-no';
 
         switch (mezzo2 + '|' + squadra2) {
@@ -153,10 +155,10 @@ export class BoxNuovaPartenzaComponent {
                 break;
         }
 
-        return { result: result + ' ' + prefix + icon, tooltip: tooltip };
+        return { result: result + ' ' + prefix + icon, tooltip };
     }
 
-    onResetTimeout(e: MouseEvent) {
+    onResetTimeout(e: MouseEvent): void {
         e.stopPropagation();
         this.store.dispatch(new RequestResetBookMezzoComposizione(this.partenza.mezzoComposizione));
     }

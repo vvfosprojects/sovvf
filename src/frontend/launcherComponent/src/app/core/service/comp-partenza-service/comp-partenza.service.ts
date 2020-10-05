@@ -30,15 +30,15 @@ export class CompPartenzaService {
         return this.http.post<ListaComposizioneAvanzata>(API_URL_AVANZATA, filtri);
     }
 
-    setMezzoPrenotato(mezzoPrenotatoObj: any) {
+    setMezzoPrenotato(mezzoPrenotatoObj: any): Observable<any> {
         return this.http.post(`${API_URL_PRENOTAZIONE}/PrenotaMezzo`, mezzoPrenotatoObj);
     }
 
-    removeMezzoPrenotato(mezzoPrenotatoObj: any) {
+    removeMezzoPrenotato(mezzoPrenotatoObj: any): Observable<any> {
         return this.http.post(`${API_URL_PRENOTAZIONE}/SbloccaMezzo`, mezzoPrenotatoObj);
     }
 
-    confermaPartenze(partenze: ConfermaPartenze) {
+    confermaPartenze(partenze: ConfermaPartenze): Observable<any> {
         return this.http.post(API_URL_CONFERMA_PARTENZA, partenze);
     }
 }

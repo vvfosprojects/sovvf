@@ -33,14 +33,18 @@ export class ChiamataComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        isDevMode() && console.log('Componente Chiamata creato');
+        if (isDevMode()) {
+            console.log('Componente Chiamata creato');
+        }
     }
 
     ngOnDestroy(): void {
-        isDevMode() && console.log('Componente Chiamata distrutto');
+        if (isDevMode()) {
+            console.log('Componente Chiamata distrutto');
+        }
     }
 
-    aggiungiNuovoEnte() {
+    aggiungiNuovoEnte(): void {
         const addEnteModal = this.modalService.open(EnteModalComponent, {
             windowClass: 'modal-holder',
             backdropClass: 'light-blue-backdrop',

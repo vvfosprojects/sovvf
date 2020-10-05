@@ -80,7 +80,7 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy {
 
     }
 
-    ngOnInit() {
+    ngOnInit(): void {
         this.chiamataForm = this.createForm();
         this.initNuovaRichiesta();
         this.idChiamata = this.makeIdChiamata();
@@ -107,7 +107,7 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy {
     }
 
 
-    clearFormDisconnection() {
+    clearFormDisconnection(): void {
         this.submitted = false;
         this.chiamataForm.reset();
         this.clearTipologieSelezionate();
@@ -140,16 +140,23 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy {
         });
     }
 
-    get f() {
+    get f(): any {
         return this.chiamataForm.controls;
     }
 
-    initNuovaRichiesta() {
+    initNuovaRichiesta(): void {
         this.nuovaRichiesta = new SintesiRichiesta(
             null,
             null,
             null,
-            new Utente(this.operatore.id, this.operatore.nome, this.operatore.cognome, this.operatore.codiceFiscale, this.operatore.sede, this.operatore.username),
+            new Utente(
+                this.operatore.id,
+                this.operatore.nome,
+                this.operatore.cognome,
+                this.operatore.codiceFiscale,
+                this.operatore.sede,
+                this.operatore.username
+            ),
             null,
             StatoRichiesta.Chiamata,
             0,
@@ -164,7 +171,7 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy {
         this.nuovaRichiesta.rilevanteGrave = false;
     }
 
-    setRilevanza() {
+    setRilevanza(): void {
         if (this.f.rilevanzaGrave.value === true) {
             this.f.rilevanzaGrave.setValue(false);
         } else {
@@ -172,7 +179,7 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy {
         }
     }
 
-    setRilevanzaStArCu() {
+    setRilevanzaStArCu(): void {
         if (this.f.rilevanzaStArCu.value === true) {
             this.f.rilevanzaStArCu.setValue(false);
         } else {
@@ -180,7 +187,7 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy {
         }
     }
 
-    getChiamataForm() {
+    getChiamataForm(): void {
         const f = this.f;
         this.nuovaRichiesta.richiedente = new Richiedente(f.telefono.value, f.nominativo.value);
         this.nuovaRichiesta.localita.note = f.noteIndirizzo.value;
@@ -202,7 +209,7 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy {
         console.log('Nuova Richiesta', this.nuovaRichiesta);
     }
 
-    onAddTipologia(tipologia: any) {
+    onAddTipologia(tipologia: any): void {
         if (!this.nuovaRichiesta.tipologie) {
             this.nuovaRichiesta.tipologie = [];
             this.onAddTipologia(tipologia);
@@ -211,7 +218,7 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy {
         }
     }
 
-    onAddEnti(ente: any) {
+    onAddEnti(ente: any): void {
         if (!this.nuovaRichiesta.listaEnti) {
             this.nuovaRichiesta.listaEnti = [];
             this.onAddEnti(ente);
@@ -220,11 +227,11 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy {
         }
     }
 
-    onRemoveTipologia(tipologia: any) {
+    onRemoveTipologia(tipologia: any): void {
         this.nuovaRichiesta.tipologie.splice(this.nuovaRichiesta.tipologie.indexOf(tipologia.codice), 1);
     }
 
-    onRemoveEnti(ente: any) {
+    onRemoveEnti(ente: any): void {
         this.nuovaRichiesta.listaEnti.splice(this.nuovaRichiesta.listaEnti.indexOf(ente.codice), 1);
     }
 
@@ -236,17 +243,17 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy {
         return !!!(this.nuovaRichiesta.listaEnti && (this.nuovaRichiesta.listaEnti.length > 0));
     }
 
-    clearTipologieSelezionate() {
+    clearTipologieSelezionate(): void {
         this.f.selectedTipologie.patchValue([]);
         this.nuovaRichiesta.tipologie = [];
     }
 
-    clearEntiSelezionati() {
+    clearEntiSelezionati(): void {
         this.f.listaEnti.patchValue([]);
         this.nuovaRichiesta.listaEnti = [];
     }
 
-    onAggiungiNuovoEnte() {
+    onAggiungiNuovoEnte(): void {
         this.aggiungiNuovoEnte.emit();
     }
 
@@ -287,8 +294,8 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy {
         }
     }
 
-    checkNessunCampoModificato() {
-        let _return = false;
+    checkNessunCampoModificato(): boolean {
+        let campiModificati = false;
         if (!this.f.selectedTipologie.value && !this.f.nominativo.value && !this.f.telefono.value
             && !this.f.indirizzo.value && !this.f.latitudine.value && !this.f.longitudine.value
             && !this.f.piano.value && !this.f.etichette.value && !this.f.noteIndirizzo.value
@@ -296,9 +303,9 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy {
             && !this.f.notePrivate.value && !this.f.notePubbliche.value
             && !this.f.descrizione.value && !this.f.zoneEmergenza.value
             && this.f.prioritaRichiesta.value === 3) {
-            _return = true;
+            campiModificati = true;
         }
-        return _return;
+        return campiModificati;
     }
 
     onResetChiamata(): void {
@@ -396,21 +403,16 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy {
         let error = '';
         error += this.f.selectedTipologie.errors ? 'Tipologia;' : '';
         error += this.f.nominativo.errors ? 'Nominativo;' : '';
-        // error += this.f.cognome.errors ? 'Cognome;' : '';
-        // error += this.f.nome.errors ? 'Nome;' : '';
-        // error += this.f.ragioneSociale.errors ? 'Ragione Sociale;' : '';
         error += this.f.telefono.errors ? 'Telefono;' : '';
         error += this.f.indirizzo.errors ? 'Indirizzo;' : '';
-        // error += this.f.descrizione.errors ? 'Motivazione;' : '';
-        const errors: string[] = error.split(/\s*(?:;|$)\s*/);
-        return errors;
+        return error.split(/\s*(?:;|$)\s*/);
     }
 
     checkCollapsed(): boolean {
         return !(this.chiamataForm.valid && !!this.coordinate);
     }
 
-    impostaAzioneChiamata($event: AzioneChiamataEnum) {
+    impostaAzioneChiamata($event: AzioneChiamataEnum): void {
         if ($event === AzioneChiamataEnum.InviaPartenza || $event === AzioneChiamataEnum.MettiInCoda) {
             this.nuovaRichiesta.azione = $event;
         } else {
@@ -458,7 +460,7 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy {
         }
     }
 
-    setSchedaContatto(scheda: SchedaContatto) {
+    setSchedaContatto(scheda: SchedaContatto): void {
         const f = this.f;
 
         f.nominativo.patchValue(scheda.richiedente.nominativo);
@@ -477,7 +479,7 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy {
         this._statoChiamata('cerca');
     }
 
-    onSubmit(azione?: AzioneChiamataEnum) {
+    onSubmit(azione?: AzioneChiamataEnum): void {
         this.submitted = true;
         if (this.checkSubmit()) {
             this.getChiamataForm();
@@ -485,10 +487,10 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy {
         }
     }
 
-    _statoChiamata(tipo: string, azione?: AzioneChiamataEnum) {
+    _statoChiamata(tipo: string, azione?: AzioneChiamataEnum): void {
 
         const schedaTelefonata: SchedaTelefonataInterface = {
-            tipo: tipo,
+            tipo,
             nuovaRichiesta: this.nuovaRichiesta,
             markerChiamata: this.chiamataMarker
         };
@@ -503,15 +505,5 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy {
     makeIdChiamata(): string {
         return `${this.operatore.sede.codice}-${this.operatore.id}-${makeID(8)}`;
     }
-
-    /*
-    onShowRubrica()  {
-        this.showRubrica = !this.showRubrica;
-    }
-    */
-
-    // onTerreniSelezionati($event: TipoTerreno[]): void {
-    //     this.nuovaRichiesta.tipoTerreno = $event;
-    // }
 
 }

@@ -48,11 +48,11 @@ export class VersionCheckService {
 
     }
 
-    newVersion(version: VersionInterface) {
+    newVersion(version: VersionInterface): void {
         this.store.dispatch(new SetNewVersion(version));
     }
 
-    currentVersion(version: VersionInterface) {
+    currentVersion(version: VersionInterface): void {
         this.store.dispatch(new SetCurrentVersion(version));
     }
 

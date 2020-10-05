@@ -217,7 +217,7 @@ export class ChangelogState {
     }
 
     @Selector()
-    static listaChangelog(state: ChangelogStateModel) {
+    static listaChangelog(state: ChangelogStateModel): ChangelogInterface[] {
         return state.listaChangelog;
     }
 }

@@ -15,6 +15,6 @@ export class MezziInServizioService {
   constructor(private http: HttpClient) { }
 
   public getMezziInServizio(): Observable<any> {
-    return this.http.get(`${API_MEZZI_IN_SERVIZIO}/GetListaMezzi`, { 'headers': this.headers });
+    return this.http.get(`${API_MEZZI_IN_SERVIZIO}/GetListaMezzi`, { headers: this.headers });
   }
 }
