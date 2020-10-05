@@ -1,10 +1,10 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { PaginationInterface } from '../../../interface/pagination.interface';
-import { PatchPagination, SetPageSize } from '../../actions/pagination/pagination.actions';
+import { PatchPaginationMezziSquadre } from '../../actions/pagination-composizione-partenza/pagination-composizione-partenza.actions';
+import { SetPageSize } from '../../actions/pagination/pagination.actions';
 
 export interface PaginationComposizionePartenzaStateModel {
     pagination: PaginationInterface;
-    // pageSizes: number[];
 }
 
 export const PaginationComposizionePartenzaStateModelDefaults: PaginationComposizionePartenzaStateModel = {
@@ -45,21 +45,11 @@ export class PaginationComposizionePartenzaState {
         return state.pagination.totalFilteredItems;
     }
 
-    @Action(PatchPagination)
-    patchPagination({ patchState }: StateContext<PatchPagination>, action: PatchPagination) {
+    @Action(PatchPaginationMezziSquadre)
+    patchPagination({ patchState }: StateContext<PatchPaginationMezziSquadre>, action: PatchPaginationMezziSquadre) {
         patchState({
             pagination: action.pagination
         });
     }
 
-    @Action(SetPageSize)
-    setPageSize({ getState, patchState }: StateContext<PatchPagination>, action: SetPageSize) {
-        const state = getState();
-        patchState({
-            pagination: {
-                ...state.pagination,
-                pageSize: action.pageSize
-            }
-        });
-    }
 }
