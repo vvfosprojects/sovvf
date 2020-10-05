@@ -185,7 +185,6 @@
                                         {{ richiesta?.istantePrimaAssegnazione | friendlyDateTooltip }}
                                     </span>
                                 </span>
-
                                 <!-- presidiato / non presidiato (1) -->
                                 <span *ngIf="richiesta?.stato === StatoRichiesta.Chiamata || !richiesta?.istantePrimaAssegnazione">
                                     <span class="badge badge-warning text-white">Non Presidiato</span>
