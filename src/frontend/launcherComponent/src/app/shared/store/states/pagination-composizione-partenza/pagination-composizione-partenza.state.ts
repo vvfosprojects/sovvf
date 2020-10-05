@@ -1,5 +1,6 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { PaginationInterface } from '../../../interface/pagination.interface';
+import { Injectable } from '@angular/core';
 import { PatchPaginationMezziSquadre } from '../../actions/pagination-composizione-partenza/pagination-composizione-partenza.actions';
 
 export interface PaginationComposizionePartenzaStateModel {
@@ -18,6 +19,7 @@ export const PaginationComposizionePartenzaStateModelDefaults: PaginationComposi
     },
 };
 
+@Injectable()
 @State<PaginationComposizionePartenzaStateModel>({
     name: 'paginationComposizionePartenza',
     defaults: PaginationComposizionePartenzaStateModelDefaults
@@ -64,31 +66,20 @@ export class PaginationComposizionePartenzaState {
         return state.paginationSquadre.totalItems;
     }
 
-    @Selector()
-    static page(state: PaginationComposizionePartenzaStateModel) {
-        return state.paginationMezzi.page, state.paginationSquadre.page;
-    }
 
-    @Selector()
-    static pageSize(state: PaginationComposizionePartenzaStateModel) {
-        return state.paginationMezzi.pageSize , state.paginationSquadre.pageSize;
-    }
-
-    /*
     @Action(PatchPaginationMezziSquadre)
-    patchPagination({ patchState }: StateContext<PatchPaginationMezziSquadre>, action: PatchPaginationMezziSquadre) {
+    patchPagination({ patchState }: StateContext<PaginationComposizionePartenzaStateModel>, action: PatchPaginationMezziSquadre) {
         switch (action.type) {
-            case 'mezzi' : {
+            case 'mezzi' :
                 patchState({
                     paginationMezzi: action.pagination
                 });
-            }
-            case 'squadre' : {
+                break;
+            case 'squadre' :
                 patchState({
                     paginationSquadre: action.pagination
                 });
-            }
+                break;
         }
     }
-    */
 }

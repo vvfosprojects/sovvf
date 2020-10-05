@@ -29,8 +29,16 @@ import {
     GetListeComposizioneAvanzata,
     UnselectMezziAndSquadreComposizioneAvanzata
 } from '../../actions/composizione-partenza/composizione-avanzata.actions';
-import { ClearListaMezziComposizione, ClearMezzoComposizione, ClearSelectedMezziComposizione } from '../../../../../shared/store/actions/mezzi-composizione/mezzi-composizione.actions';
-import { ClearListaSquadreComposizione, ClearSelectedSquadreComposizione, ClearSquadraComposizione } from '../../../../../shared/store/actions/squadre-composizione/squadre-composizione.actions';
+import {
+    ClearListaMezziComposizione,
+    ClearMezzoComposizione,
+    ClearSelectedMezziComposizione
+} from '../../../../../shared/store/actions/mezzi-composizione/mezzi-composizione.actions';
+import {
+    ClearListaSquadreComposizione,
+    ClearSelectedSquadreComposizione,
+    ClearSquadraComposizione
+} from '../../../../../shared/store/actions/squadre-composizione/squadre-composizione.actions';
 import { CompPartenzaService } from '../../../../../core/service/comp-partenza-service/comp-partenza.service';
 import { AddInLavorazione, DeleteInLavorazione } from '../../actions/richieste/richiesta-attivita-utente.actions';
 import { ClearDirection } from '../../actions/maps/maps-direction.actions';
@@ -113,11 +121,11 @@ export class ComposizionePartenzaState {
     @Action(UpdateListeComposizione)
     updateListe({ dispatch }: StateContext<ComposizionePartenzaStateModel>, action: UpdateListeComposizione) {
         console.warn('UpdateListeComposizione');
-        const filtri = { filtri: action.filtri}
-        dispatch(new GetListeComposizioneAvanzata(filtri));
+        dispatch(new GetListeComposizioneAvanzata());
     }
 
     @Action(ReducerFilterListeComposizione)
+    // tslint:disable-next-line:max-line-length
     reducerFilterListeComposizione({ getState, dispatch }: StateContext<ComposizionePartenzaStateModel>, action: ReducerFilterListeComposizione) {
         const state = getState();
         const compMode = state.composizioneMode;

@@ -228,9 +228,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
         // Prendo Totale Items Mezzi
         this.subscription.add(
             this.totalItemsMezzi$.subscribe((totalItemsMezzi: number) => {
-                this.totalItemsMezzi = totalItemsMezzi; 
-                // TEST
-                this.totalItemsMezzi = 121;
+                this.totalItemsMezzi = totalItemsMezzi;
                 console.log('totalItemsMezzi', this.totalItemsMezzi);
             })
         );
@@ -259,7 +257,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
                 this.pageSizeSquadre = pageSizeSquadre;
             })
         );
-        
+
 
         this.subscription.add(this.loadingListe$.subscribe(res => this.loadingListe = res));
 
@@ -454,11 +452,11 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
     }
 
     mezziPageChange(pageMezzi: number) {
-        const options = { 
+        const options = {
             page: {
                 pageMezzi,
             }
-        }
+        };
         this.store.dispatch(new GetListeComposizioneAvanzata(options));
     }
 

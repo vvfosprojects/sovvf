@@ -1,10 +1,11 @@
 import { ComposizioneFilterbar } from '../../../composizione-partenza/interface/composizione/composizione-filterbar-interface';
 import { ListaComposizioneAvanzata } from '../../../../../shared/interface/lista-composizione-avanzata-interface';
+import { FiltriComposizione } from '../../../composizione-partenza/interface/filtri/filtri-composizione-interface';
 
 export class GetListeComposizioneAvanzata {
     static readonly type = '[ComposizioneAvanzata] Get Liste Composizione Avanzata';
 
-    constructor(public options?: { filtri?: ComposizioneFilterbar, page?: { pageMezzi?: number, pageSquadre?: number}}) {
+    constructor(public options?: { filtri?: FiltriComposizione, page?: { pageMezzi?: number, pageSquadre?: number}}) {
     }
 }
 

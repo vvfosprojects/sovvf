@@ -77,8 +77,8 @@ export class FiltriComposizioneState {
             StatoMezzo: state.codiceStatoMezzo
         };
         console.log('SetFiltriComposizione');
-        const filtri = { filtri: objFiltriSelezionati}
-        dispatch(new GetListeComposizioneAvanzata(filtri));
+        // const filtri = { filtri: objFiltriSelezionati}
+        dispatch(new GetListeComposizioneAvanzata());
         if (composizioneMode === Composizione.Veloce) {
             dispatch([
                 new GetListaIdPreAccoppiati()
