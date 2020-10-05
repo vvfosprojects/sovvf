@@ -247,9 +247,11 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
         this.nuovoMezzo = mezzoComposizione.mezzo;
     }
 
-    mezzoDeselezionato(): void {
-        this.store.dispatch([new UnselectMezzoComposizione(),
-            new ClearBoxPartenze(),]);
+    mezzoDeselezionato(event?: any): void {
+        this.store.dispatch([
+            new UnselectMezzoComposizione(),
+            new ClearBoxPartenze()
+        ]);
         this.nuovoMezzo = {
             codice: '',
             descrizione: '',

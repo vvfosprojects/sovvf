@@ -30,7 +30,7 @@ import { RichiestaSelezionataState } from '../richieste/richiesta-selezionata.st
 import { PaginationState } from '../../../../../shared/store/states/pagination/pagination.state';
 import { RichiestaGestioneState } from '../richieste/richiesta-gestione.state';
 import { UpdateFormValue } from '@ngxs/form-plugin';
-import { NgZone } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { RichiestaDuplicataModalComponent } from '../../../../../shared/modal/richiesta-duplicata-modal/richiesta-duplicata-modal.component';
 import { ModalServiziComponent } from '../../../boxes/info-aggregate/modal-servizi/modal-servizi.component';
@@ -83,6 +83,7 @@ export const SchedaTelefonataStateDefaults: SchedaTelefonataStateModel = {
     loadingNuovaChiamata: false
 };
 
+@Injectable()
 @State<SchedaTelefonataStateModel>({
     name: 'schedaTelefonata',
     defaults: SchedaTelefonataStateDefaults,

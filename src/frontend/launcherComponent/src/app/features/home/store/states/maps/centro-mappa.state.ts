@@ -9,6 +9,7 @@ import {
     SetZoomCentroMappa
 } from '../../actions/maps/centro-mappa.actions';
 import { Coordinate } from '../../../../../shared/model/coordinate.model';
+import { Injectable } from '@angular/core';
 
 export interface CentroMappaStateModel {
     centroMappa: CentroMappa;
@@ -20,6 +21,7 @@ export const CentroMappaStateDefaults: CentroMappaStateModel = {
     initCentroMappa: null,
 };
 
+@Injectable()
 @State<CentroMappaStateModel>({
     name: 'centroMappa',
     defaults: CentroMappaStateDefaults

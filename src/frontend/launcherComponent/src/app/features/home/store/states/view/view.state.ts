@@ -12,7 +12,8 @@ import {
     ToggleModifica,
     TurnOffComposizione,
     ToggleMezziInServizio,
-    ToggleSchedeContatto, ClearViewState
+    ToggleSchedeContatto,
+    ClearViewState
 } from '../../actions/view/view.actions';
 import { BackupViewComponentState } from './save-view.state';
 import {
@@ -40,11 +41,9 @@ import { ClearDirection } from '../../actions/maps/maps-direction.actions';
 import { ClearMarkerRichiestaSelezionato } from '../../actions/maps/marker.actions';
 import { ResetChiamata } from '../../actions/chiamata/scheda-telefonata.actions';
 import { ComposizionePartenzaState } from '../composizione-partenza/composizione-partenza.state';
-import {
-    TerminaComposizione,
-    ToggleComposizioneMode
-} from '../../actions/composizione-partenza/composizione-partenza.actions';
+import { TerminaComposizione, ToggleComposizioneMode } from '../../actions/composizione-partenza/composizione-partenza.actions';
 import { ClearListaSchedeContatto, ClearSchedaContattoTelefonata } from '../../actions/schede-contatto/schede-contatto.actions';
+import { Injectable } from '@angular/core';
 
 export const ViewComponentStateDefault: ViewComponentStateModel = {
     view: {
@@ -83,6 +82,7 @@ export const ViewComponentStateDefault: ViewComponentStateModel = {
     }
 };
 
+@Injectable()
 @State<ViewComponentStateModel>({
     name: 'viewComponent',
     defaults: ViewComponentStateDefault,

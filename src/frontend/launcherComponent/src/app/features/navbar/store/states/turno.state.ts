@@ -4,6 +4,7 @@ import { ClearTurnoExtra, GetTurnoExtra, SetTurnoExtra, SetTurnoCalendario } fro
 import { TurnoExtraService } from '../../../../core/service/turno-service/turno-extra.service';
 import { TurnoExtra } from '../../turno/turno-extra.model';
 import { calcolaTurnoCalendario } from '../../../../shared/helper/calcola-turno';
+import { Injectable } from '@angular/core';
 
 export interface TurniStateModel {
     turnoCalendario: TurnoCalendario;
@@ -15,6 +16,7 @@ export const TurniStateDefaults: TurniStateModel = {
     turnoExtra: null
 };
 
+@Injectable()
 @State<TurniStateModel>({
     name: 'turni',
     defaults: TurniStateDefaults

@@ -39,6 +39,7 @@ import { ToastrType } from '../../../../../shared/enum/toastr';
 import { ClearDirection } from '../../actions/maps/maps-direction.actions';
 import { ClearMarkerMezzoSelezionato } from '../../actions/maps/marker.actions';
 import { StatoMezzo } from '../../../../../shared/enum/stato-mezzo.enum';
+import { Injectable } from '@angular/core';
 
 
 export interface BoxPartenzaStateModel {
@@ -51,6 +52,7 @@ export const BoxPartenzaStateDefaults: BoxPartenzaStateModel = {
     idBoxPartenzaSelezionato: null
 };
 
+@Injectable()
 @State<BoxPartenzaStateModel>({
     name: 'boxPartenza',
     defaults: BoxPartenzaStateDefaults

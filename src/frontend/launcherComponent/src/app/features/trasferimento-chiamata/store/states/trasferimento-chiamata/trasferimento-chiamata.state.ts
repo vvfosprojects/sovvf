@@ -11,6 +11,7 @@ import {
     AddTrasferimentoChiamata
 } from '../../actions/trasferimento-chiamata/trasferimento-chiamata.actions';
 import { TrasferimentoChiamataService } from 'src/app/core/service/trasferimento-chiamata/trasferimento-chiamata.service';
+import { Injectable } from '@angular/core';
 
 export interface TrasferimentoChiamataStateModel {
     listaTrasferimentiChiamate: TrasferimentoChiamata[];
@@ -20,6 +21,7 @@ export const TrasferimentoChiamataStateModelDefaults: TrasferimentoChiamataState
     listaTrasferimentiChiamate: undefined
 };
 
+@Injectable()
 @State<TrasferimentoChiamataStateModel>({
     name: 'trasferimentoChiamata',
     defaults: TrasferimentoChiamataStateModelDefaults,

@@ -4,6 +4,7 @@ import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { SetRichiestaSelezionata, ClearRichiestaSelezionata } from '../../actions/richieste/richiesta-selezionata.actions';
 import { ClearRichiestaGestione } from '../../actions/richieste/richiesta-gestione.actions';
 import { RichiestaGestioneState } from './richiesta-gestione.state';
+import { Injectable } from '@angular/core';
 
 export interface RichiestaSelezionataStateModel {
     idRichiestaSelezionata: string;
@@ -13,6 +14,7 @@ export const RichiestaSelezionataStateDefaults: RichiestaSelezionataStateModel =
     idRichiestaSelezionata: null
 };
 
+@Injectable()
 @State<RichiestaSelezionataStateModel>({
     name: 'richiestaSelezionata',
     defaults: RichiestaSelezionataStateDefaults

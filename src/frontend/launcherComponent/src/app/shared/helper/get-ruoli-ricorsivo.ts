@@ -25,7 +25,7 @@ export function getRuoliRicorsivo(ruoloRicorsivo: Ruolo, listaSedi: ListaSedi): 
     return [ ...ruoliNonRicorsivi, ruoloRicorsivo ];
 }
 
-function treeToList(tree, collection) {
+function treeToList(tree, collection): any {
     if (!tree.children || tree.children.length === 0) {
         return;
     }

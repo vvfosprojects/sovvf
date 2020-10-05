@@ -8,7 +8,6 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { FilterbarComponent } from './filterbar.component';
 import { ViewModeComponent } from './view-mode/view-mode.component';
 import { FiltriMappaComponent } from './filtri-mappa/filtri-mappa.component';
-import { UiSwitchModule } from 'ngx-ui-switch';
 import { LoaderMarkerComponent } from './loader-marker/loader-marker.component';
 import { TastiTelefonataGroupComponent } from './tasti-telefonata-group/tasti-telefonata-group.component';
 import { TastoChiamataComponent } from './tasti-telefonata-group/tasto-chiamata/tasto-chiamata.component';
@@ -27,8 +26,7 @@ import { ModalFiltriTipologiaComponent } from './filtri-richieste/modal-filtri-t
         FilterPipeModule,
         NgxPaginationModule,
         NgbModule,
-        SharedModule.forRoot(),
-        UiSwitchModule.forRoot(null)
+        SharedModule
     ],
     declarations: [
         FilterbarComponent,

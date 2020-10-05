@@ -5,7 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 
 // Action
 import { SetToastr, ShowToastr } from '../../actions/toastr/toastr.actions';
-import { NgZone } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 
 export interface ToastrStateModel {
     type: string;
@@ -21,6 +21,7 @@ export const toastrStateDefaults: ToastrStateModel = {
     timeout: 5
 };
 
+@Injectable()
 @State<ToastrStateModel>({
     name: 'toastr',
     defaults: toastrStateDefaults

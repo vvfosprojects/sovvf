@@ -6,6 +6,7 @@ import {
     SetMarkerOpachiRichieste,
     SetMarkerOpachiSC
 } from '../../actions/maps/marker-opachi.actions';
+import { Injectable } from '@angular/core';
 
 export interface MarkerOpachiStateModel {
     markerOpachiId: {
@@ -37,6 +38,7 @@ export const MarkerOpachiStateDefaults: MarkerOpachiStateModel = {
     }
 };
 
+@Injectable()
 @State<MarkerOpachiStateModel>({
     name: 'markerOpachi',
     defaults: MarkerOpachiStateDefaults

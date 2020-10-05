@@ -11,6 +11,7 @@ import { insertItem, patch, removeItem } from '@ngxs/store/operators';
 import { SaveMergeSchedeContatto } from '../../actions/schede-contatto/schede-contatto.actions';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from '../../../../../shared/enum/toastr';
+import { Injectable } from '@angular/core';
 
 export interface MergeSchedeContattoStateModel {
     statoModalita: boolean;
@@ -24,6 +25,7 @@ export const MergeSchedeContattoStateDefaults: MergeSchedeContattoStateModel = {
     schedeSelezionateId: []
 };
 
+@Injectable()
 @State<MergeSchedeContattoStateModel>({
     name: 'mergeSchedeContatto',
     defaults: MergeSchedeContattoStateDefaults
