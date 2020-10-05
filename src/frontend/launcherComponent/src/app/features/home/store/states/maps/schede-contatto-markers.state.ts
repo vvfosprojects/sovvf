@@ -22,6 +22,7 @@ import { ClearMarkerOpachiSC, SetMarkerOpachiSC } from '../../actions/maps/marke
 import { FiltriMarkersState } from './filtri-markers.state';
 import { AreaMappaState } from './area-mappa.state';
 import { StartLoadingAreaMappa, StopLoadingAreaMappa } from '../../actions/maps/area-mappa.actions';
+import { Injectable } from '@angular/core';
 
 export interface SchedeContattoMarkersStateModel {
     schedeContattoMarkers: SchedaContattoMarker[];
@@ -39,6 +40,7 @@ export const SchedeContattoMarkersStateDefaults: SchedeContattoMarkersStateModel
     tipoOpacita: null
 };
 
+@Injectable()
 @State<SchedeContattoMarkersStateModel>({
     name: 'schedeContattoMarkers',
     defaults: SchedeContattoMarkersStateDefaults

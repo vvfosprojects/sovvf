@@ -15,6 +15,7 @@ import { FiltroTargaMezzo } from '../../../eventi/filtro-targa-mezzo.interface';
 import { StartLoading, StopLoading } from '../../../../../shared/store/actions/loading/loading.actions';
 import { SintesiRichiesteService } from '../../../../../core/service/lista-richieste-service/lista-richieste.service';
 import { GestioneUtentiService } from '../../../../../core/service/gestione-utenti-service/gestione-utenti.service';
+import { Injectable } from '@angular/core';
 
 export interface EventiRichiestaStateModel {
     codiceRichiesta: string;
@@ -34,6 +35,7 @@ export const eventiRichiestaStateDefaults: EventiRichiestaStateModel = {
     visualizzazioneIconeNomeClasseEvento: true
 };
 
+@Injectable()
 @State<EventiRichiestaStateModel>({
     name: 'eventiRichiesta',
     defaults: eventiRichiestaStateDefaults

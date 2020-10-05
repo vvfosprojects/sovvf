@@ -11,6 +11,7 @@ import {
 import { insertItem, patch, removeItem } from '@ngxs/store/operators';
 import { GetUtentiGestione } from '../../actions/gestione-utenti/gestione-utenti.actions';
 import { Ruolo } from '../../../../../shared/model/utente.model';
+import { Injectable } from '@angular/core';
 
 export interface RicercaUtentiStateModel {
     ricerca: string;
@@ -24,6 +25,7 @@ export const RicercaUtentiStateDefaults: RicercaUtentiStateModel = {
     sediFiltroSelezionate: undefined
 };
 
+@Injectable()
 @State<RicercaUtentiStateModel>({
     name: 'ricercaUtenti',
     defaults: RicercaUtentiStateDefaults

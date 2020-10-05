@@ -5,6 +5,7 @@ import { BoxInterventi } from '../../../boxes/boxes-model/box-interventi.model';
 
 // Action
 import { ClearBoxRichieste, SetBoxRichieste } from '../../actions/boxes/box-richieste.actions';
+import { Injectable } from '@angular/core';
 
 export interface BoxRichiesteStateModel {
     richieste: BoxInterventi;
@@ -14,6 +15,7 @@ export const boxRichiesteStateDefaults: BoxRichiesteStateModel = {
     richieste: null,
 };
 
+@Injectable()
 @State<BoxRichiesteStateModel>({
     name: 'boxRichieste',
     defaults: boxRichiesteStateDefaults

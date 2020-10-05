@@ -10,6 +10,7 @@ import {
 import { MarkerFiltro } from '../../../../../shared/interface/marker-filtro.interface';
 import { ToggleOpacitaMezziMarkers } from '../../actions/maps/mezzi-markers.actions';
 import { ToggleOpacitaRichiesteMarkers } from '../../actions/maps/richieste-markers.actions';
+import { Injectable } from '@angular/core';
 
 export interface MapsFiltroStateModel {
     filtroMarker: MarkerFiltro[];
@@ -45,6 +46,7 @@ export const MapsFiltroStateDefaults: MapsFiltroStateModel = {
     filtroMarkerAttivoCopy: null,
 };
 
+@Injectable()
 @State<MapsFiltroStateModel>({
     name: 'mapsFiltro',
     defaults: MapsFiltroStateDefaults

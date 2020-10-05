@@ -15,7 +15,7 @@ export class AuthGuard implements CanActivate {
     constructor(private store: Store) {
     }
 
-    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
         const logged = this.store.selectSnapshot(AuthState.logged);
         if (logged) {
             const ruoliUtenteLoggato = JSON.parse(sessionStorage.getItem(LSNAME.role));
@@ -47,7 +47,7 @@ export class AuthGuard implements CanActivate {
     }
 }
 
-export function checkUserPermission(roles: Array<any>, ruoliUtente: Ruolo[]) {
+export function checkUserPermission(roles: Array<any>, ruoliUtente: Ruolo[]): boolean {
     let count = 0;
     if (roles && ruoliUtente.length > 0) {
         ruoliUtente.forEach((ruolo: Ruolo) => {

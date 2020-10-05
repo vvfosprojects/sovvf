@@ -22,6 +22,7 @@ import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap/modal/modal-ref';
 import { Navigate } from '@ngxs/router-plugin';
 import { RoutesPath } from '../../../shared/enum/routes-path.enum';
 import { AuthState } from '../../../features/auth/store/auth.state';
+import { Injectable } from '@angular/core';
 
 export interface SignalRStateModel {
     connected: boolean;
@@ -41,6 +42,7 @@ export const SignalRStateDefaults: SignalRStateModel = {
     idUtente: null
 };
 
+@Injectable()
 @State<SignalRStateModel>({
     name: 'signalR',
     defaults: SignalRStateDefaults
@@ -100,7 +102,7 @@ export class SignalRState implements NgxsOnChanges {
         }
         patchState({
             connected: true,
-            reconnected: reconnected,
+            reconnected,
             disconnected: false
         });
     }
@@ -115,7 +117,7 @@ export class SignalRState implements NgxsOnChanges {
         patchState({
             connected: SignalRStateDefaults.connected,
             reconnected: false,
-            disconnected: disconnected,
+            disconnected,
             connectionId: null,
         });
     }
@@ -171,10 +173,11 @@ export class SignalRState implements NgxsOnChanges {
     @Action(LogoffUtenteSignalR)
     logoffUtenteSignalR({ getState, dispatch }: StateContext<SignalRStateModel>, { utente }: LogoffUtenteSignalR) {
         const codiciSede = getState().codiciSede;
-        this.signalR.removeToGroup(new SignalRNotification(
-            codiciSede,
-            utente.id,
-            `${utente.nome} ${utente.cognome}`
+        this.signalR.removeToGroup(
+            new SignalRNotification(
+                codiciSede,
+                utente.id,
+                `${utente.nome} ${utente.cognome}`
             )
         );
         dispatch(new ClearCodiceSede());
@@ -191,7 +194,9 @@ export class SignalRState implements NgxsOnChanges {
     }
 
     openModal(): void {
-        this.modalService.hasOpenModals() && this.modalService.dismissAll();
+        if (this.modalService.hasOpenModals()) {
+            this.modalService.dismissAll();
+        }
         this.modalInstance = this.modalService.open(SignalROfflineComponent, {
             windowClass: 'modal-holder',
             centered: true,

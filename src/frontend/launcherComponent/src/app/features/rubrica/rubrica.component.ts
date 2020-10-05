@@ -16,6 +16,7 @@ import { RubricaState } from './store/states/rubrica/rubrica.state';
 import { GetRubrica } from './store/actions/rubrica/rubrica.actions';
 import { ClearFormEnte, RequestAddEnte, RequestDeleteEnte, RequestUpdateEnte } from '../../shared/store/actions/enti/enti.actions';
 import { ConfirmModalComponent } from '../../shared/modal/confirm-modal/confirm-modal.component';
+import { StopBigLoading } from '../../shared/store/actions/loading/loading.actions';
 
 @Component({
     selector: 'app-rubrica',
@@ -51,7 +52,8 @@ export class RubricaComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.store.dispatch([
             new SetCurrentUrl(RoutesPath.Rubrica),
-            new SetSediNavbarVisible(false)
+            new SetSediNavbarVisible(false),
+            new StopBigLoading()
         ]);
     }
 

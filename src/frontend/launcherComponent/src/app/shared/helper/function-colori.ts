@@ -13,8 +13,8 @@ export function markerColor(stato: string): string {
         ['sulpo', '#dc3545'],
         ['istit', '#868e96'],
     ]);
-    const _stato = stato.split(' ').join('');
-    const statoMarker = _stato.toLowerCase().substring(0, 5);
+    const statoSplit = stato.split(' ').join('');
+    const statoMarker = statoSplit.toLowerCase().substring(0, 5);
     const color = mapColorStato.get(statoMarker);
     return color ? color : '#343a40';
 }

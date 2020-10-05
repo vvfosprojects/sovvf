@@ -5,6 +5,7 @@ import { BoxMezzi } from '../../../boxes/boxes-model/box-mezzi.model';
 
 // Action
 import { SetBoxMezzi, ClearBoxMezzi } from '../../actions/boxes/box-mezzi.actions';
+import { Injectable } from '@angular/core';
 
 export interface BoxMezziStateModel {
     mezzi: BoxMezzi;
@@ -14,6 +15,7 @@ export const boxMezziStateDefaults: BoxMezziStateModel = {
     mezzi: null,
 };
 
+@Injectable()
 @State<BoxMezziStateModel>({
     name: 'boxMezzi',
     defaults: boxMezziStateDefaults

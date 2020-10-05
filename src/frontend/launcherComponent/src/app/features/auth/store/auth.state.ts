@@ -227,7 +227,7 @@ export class AuthState {
     }
 
     @Action(ClearDataUser)
-    clearDataUser({ getState, patchState, dispatch }: StateContext<AuthStateModel>) {
+    clearDataUser({ getState, dispatch }: StateContext<AuthStateModel>) {
         const state = getState();
         if (state.currentUser) {
             dispatch([
@@ -239,11 +239,9 @@ export class AuthState {
         dispatch([
             new ClearRuoliUtenteLoggato(),
             new ClearViewState(),
-            new ClearRichieste()
+            new ClearRichieste(),
+            new ClearAuth()
         ]);
-        patchState({
-            currentUser: null
-        });
     }
 
     @Action(ClearCurrentUser)
@@ -253,10 +251,11 @@ export class AuthState {
             if (action.skipDeleteAll) {
                 dispatch(new ClearDataUser());
             } else {
-                this.authService.clearUserData().subscribe(() => dispatch(new ClearDataUser()));
+                this.authService.clearUserData().subscribe(() => {
+                    dispatch(new ClearDataUser());
+                });
             }
         }
-        dispatch(new ClearAuth());
     }
 
     removeStorage(): void {

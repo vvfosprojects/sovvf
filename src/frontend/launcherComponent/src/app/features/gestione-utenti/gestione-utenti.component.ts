@@ -29,6 +29,7 @@ import { SetCurrentUrl } from '../../shared/store/actions/app/app.actions';
 import { RoutesPath } from '../../shared/enum/routes-path.enum';
 import { AuthState } from '../auth/store/auth.state';
 import { ConfirmModalComponent } from '../../shared/modal/confirm-modal/confirm-modal.component';
+import { StopBigLoading } from '../../shared/store/actions/loading/loading.actions';
 
 @Component({
     selector: 'app-gestione-utenti',
@@ -69,7 +70,11 @@ export class GestioneUtentiComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.store.dispatch([new SetCurrentUrl(RoutesPath.GestioneUtenti), new SetSediNavbarVisible(false)]);
+        this.store.dispatch([
+            new SetCurrentUrl(RoutesPath.GestioneUtenti),
+            new SetSediNavbarVisible(false),
+            new StopBigLoading()
+        ]);
     }
 
     ngOnDestroy(): void {

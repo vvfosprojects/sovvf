@@ -11,6 +11,7 @@ import { AuthState } from '../auth/store/auth.state';
 import { Utente } from '../../shared/model/utente.model';
 import { Navigate } from '@ngxs/router-plugin';
 import { RoutesPath } from '../../shared/enum/routes-path.enum';
+import { StopBigLoading } from '../../shared/store/actions/loading/loading.actions';
 
 @Component({
     templateUrl: 'login.component.html',
@@ -49,6 +50,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
+        this.store.dispatch(new StopBigLoading());
         this.loginForm = this.formBuilder.group({
             username: ['', Validators.required],
             password: ['', Validators.required]

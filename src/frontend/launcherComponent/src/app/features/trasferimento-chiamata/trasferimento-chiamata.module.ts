@@ -39,10 +39,6 @@ import { ConfirmModalComponent } from '../../shared/modal/confirm-modal/confirm-
       NgxPaginationModule,
       NgbModule
   ],
-  entryComponents: [
-      TrasferimentoChiamataModalComponent,
-      ConfirmModalComponent
-  ],
   providers: []
 })
 

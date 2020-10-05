@@ -1,4 +1,5 @@
-<div class="border border-light px-4 pt-4 pb-2" [ngClass]="{'shadow-sm': !ultimoChangelog, 'shadow': ultimoChangelog}">
+<div class="bg-white border border-light px-4 pt-4 pb-2"
+     [ngClass]="{'shadow-sm': !ultimoChangelog, 'shadow': ultimoChangelog}">
     <div class="clearfix">
         <h5 class="float-left mb-0" [ngClass]="{'font-weight-bolder text-success': ultimoChangelog}">
             {{ changelog?.nomeVersione | uppercase }}

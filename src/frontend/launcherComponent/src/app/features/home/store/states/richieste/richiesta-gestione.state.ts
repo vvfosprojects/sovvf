@@ -10,6 +10,7 @@ import { AddRichiestaEspansa } from '../../actions/richieste/richieste-espanse.a
 import { ClearMarkerRichiestaSelezionato, SetMarkerRichiestaSelezionato } from '../../actions/maps/marker.actions';
 import { GetInitCentroMappa } from '../../actions/maps/centro-mappa.actions';
 import { RichiestaFissataState } from './richiesta-fissata.state';
+import { Injectable } from '@angular/core';
 
 export interface RichiestaGestioneStateModel {
     richiestaGestione: SintesiRichiesta;
@@ -19,6 +20,7 @@ export const RichiestaGestioneStateDefaults: RichiestaGestioneStateModel = {
     richiestaGestione: null
 };
 
+@Injectable()
 @State<RichiestaGestioneStateModel>({
     name: 'richiestaGestione',
     defaults: RichiestaGestioneStateDefaults

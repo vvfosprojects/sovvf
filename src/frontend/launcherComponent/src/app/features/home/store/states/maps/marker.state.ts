@@ -37,6 +37,7 @@ import { ChiamateMarkersState } from './chiamate-markers.state';
 import { MapsButtonsState } from './maps-buttons.state';
 import { MAPSOPTIONS } from '../../../../../core/settings/maps-options';
 import { SchedeContattoMarkersState } from './schede-contatto-markers.state';
+import { Injectable } from '@angular/core';
 
 export interface MarkerStateModel {
     markerRichiestaSelezionato: string;
@@ -60,6 +61,7 @@ export const markerStateDefaults: MarkerStateModel = {
     markerSCHover: null
 };
 
+@Injectable()
 @State<MarkerStateModel>({
     name: 'marker',
     defaults: markerStateDefaults,

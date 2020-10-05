@@ -48,7 +48,7 @@ import {
 } from '../../actions/maps/schede-contatto-markers.actions';
 import { DettaglioSchedaModalComponent } from '../../../schede-contatto/dettaglio-scheda-modal/dettaglio-scheda-modal.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { NgZone } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { ClearMarkerSCSelezionato } from '../../actions/maps/marker.actions';
 
 export interface SchedeContattoStateModel {
@@ -94,6 +94,7 @@ export const SchedeContattoStateDefaults: SchedeContattoStateModel = {
     }
 };
 
+@Injectable()
 @State<SchedeContattoStateModel>({
     name: 'schedeContatto',
     defaults: SchedeContattoStateDefaults,

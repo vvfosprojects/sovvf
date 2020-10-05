@@ -16,6 +16,8 @@ import {
 } from '../../actions/filtri-composizione/filtri-composizione.actions';
 import { insertItem, patch, removeItem } from '@ngxs/store/operators';
 import { ListaTipologicheMezzi } from '../../../../features/home/composizione-partenza/interface/filtri/lista-filtri-composizione-interface';
+import { MezziComposizioneState } from '../mezzi-composizione/mezzi-composizione.state';
+import { Injectable } from '@angular/core';
 
 export interface FiltriComposizioneStateStateModel {
     filtriAffini: ListaTipologicheMezzi;
@@ -35,6 +37,7 @@ export const FiltriComposizioneStateDefaults: FiltriComposizioneStateStateModel 
     codiceStatoMezzo: [],
 };
 
+@Injectable()
 @State<FiltriComposizioneStateStateModel>({
     name: 'filtriComposizione',
     defaults: FiltriComposizioneStateDefaults
