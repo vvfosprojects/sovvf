@@ -16,7 +16,6 @@ import {
 } from '../../actions/filtri-composizione/filtri-composizione.actions';
 import { insertItem, patch, removeItem } from '@ngxs/store/operators';
 import { ListaTipologicheMezzi } from '../../../../features/home/composizione-partenza/interface/filtri/lista-filtri-composizione-interface';
-import { MezziComposizioneState } from '../mezzi-composizione/mezzi-composizione.state';
 
 export interface FiltriComposizioneStateStateModel {
     filtriAffini: ListaTipologicheMezzi;
@@ -75,7 +74,8 @@ export class FiltriComposizioneState {
             StatoMezzo: state.codiceStatoMezzo
         };
         console.log('SetFiltriComposizione');
-        dispatch(new GetListeComposizioneAvanzata(objFiltriSelezionati));
+        const filtri = { filtri: objFiltriSelezionati}
+        dispatch(new GetListeComposizioneAvanzata(filtri));
         if (composizioneMode === Composizione.Veloce) {
             dispatch([
                 new GetListaIdPreAccoppiati()

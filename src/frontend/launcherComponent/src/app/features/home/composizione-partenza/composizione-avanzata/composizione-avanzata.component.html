@@ -53,7 +53,10 @@
             <ul class="list-group list-group-flush border-bottom scroll-y"
                 [ngClass]="{'m-h-boxes-avanzata': boxAttivi, 'm-h-no-boxes-avanzata': !boxAttivi}">
                 <ng-template [ngIf]="mezziComposizione && mezziComposizione.length > 0">
-                    <div *ngFor="let mC of mezziComposizione | filterBy: {'mezzo': {'descrizione': ricercaMezzi}}">
+                    <div *ngFor="let mC of mezziComposizione | paginate: { id: 'paginationMezzi',
+                                                                            itemsPerPage: pageSizeMezzi,
+                                                                            currentPage: currentPageMezzi,
+                                                                            totalItems: totalItemsMezzi }">
                         <ng-template [ngIf]="mC.mezzo.stato !== statoMezzo.OperativoPreaccoppiato">
                             <app-mezzo-composizione [mezzoComp]="mC"
                                                     [itemSelezionato]="mC.id === idMezzoSelezionato"
@@ -72,9 +75,10 @@
                     </div>
                 </ng-template>
             </ul>
-            <pagination-controls class="mt-1 mb-0" [previousLabel]="'Precedente'" [nextLabel]="'Successiva'" (pageChange)="mezziPageChanged($event)" maxSize="20"
+            <pagination-controls class="mt-1 mb-0" [previousLabel]="'Precedente'" [nextLabel]="'Successiva'" (pageChange)="mezziPageChange($event)"
             > <!-- (pageChange)="pageChange.emit($event)" -->
             </pagination-controls>
+            <button class="btn btn-sm" (click)="mezziPageChange(2)"> FAKE</button>
         </div>
     </div>
     <div *ngIf="mezziComposizione && squadreComposizione && !loadingInvioPartenza" class="col-4">

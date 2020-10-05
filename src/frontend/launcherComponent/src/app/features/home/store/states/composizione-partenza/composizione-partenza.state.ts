@@ -111,7 +111,8 @@ export class ComposizionePartenzaState {
     @Action(UpdateListeComposizione)
     updateListe({ dispatch }: StateContext<ComposizionePartenzaStateModel>, action: UpdateListeComposizione) {
         console.warn('UpdateListeComposizione');
-        dispatch(new GetListeComposizioneAvanzata(action.filtri));
+        const filtri = { filtri: action.filtri}
+        dispatch(new GetListeComposizioneAvanzata(filtri));
     }
 
     @Action(ReducerFilterListeComposizione)

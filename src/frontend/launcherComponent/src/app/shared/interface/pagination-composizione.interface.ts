@@ -1,8 +1,6 @@
 import { PaginationInterface } from './pagination.interface';
 
-export interface FiltriListaComposizioneAvanzata {
-    idRichiesta: string;
+export interface PaginationComposizione {
     mezziPagination: PaginationInterface;
     squadrePagination: PaginationInterface;
-    // filtri
 }

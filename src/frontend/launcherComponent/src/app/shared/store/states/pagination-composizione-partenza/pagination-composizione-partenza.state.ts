@@ -1,14 +1,18 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { PaginationInterface } from '../../../interface/pagination.interface';
 import { PatchPaginationMezziSquadre } from '../../actions/pagination-composizione-partenza/pagination-composizione-partenza.actions';
-import { SetPageSize } from '../../actions/pagination/pagination.actions';
 
 export interface PaginationComposizionePartenzaStateModel {
-    pagination: PaginationInterface;
+    paginationMezzi: PaginationInterface;
+    paginationSquadre: PaginationInterface;
 }
 
 export const PaginationComposizionePartenzaStateModelDefaults: PaginationComposizionePartenzaStateModel = {
-    pagination: {
+    paginationMezzi: {
+        page: 1,
+        pageSize: 10
+    },
+    paginationSquadre: {
         page: 1,
         pageSize: 10
     },
@@ -21,35 +25,70 @@ export const PaginationComposizionePartenzaStateModelDefaults: PaginationComposi
 export class PaginationComposizionePartenzaState {
 
     @Selector()
-    static pagination(state: PaginationComposizionePartenzaStateModel) {
-        return state.pagination;
+    static paginationMezzi(state: PaginationComposizionePartenzaStateModel) {
+        return state.paginationMezzi;
+    }
+
+    @Selector()
+    static pageMezzi(state: PaginationComposizionePartenzaStateModel) {
+        return state.paginationMezzi.page;
+    }
+
+    @Selector()
+    static pageSizeMezzi(state: PaginationComposizionePartenzaStateModel) {
+        return state.paginationMezzi.pageSize;
+    }
+
+    @Selector()
+    static totalItemsMezzi(state: PaginationComposizionePartenzaStateModel) {
+        return state.paginationMezzi.totalItems;
+    }
+
+    @Selector()
+    static paginationSquadre(state: PaginationComposizionePartenzaStateModel) {
+        return state.paginationSquadre;
+    }
+
+    @Selector()
+    static pageSquadre(state: PaginationComposizionePartenzaStateModel) {
+        return state.paginationSquadre.page;
+    }
+
+    @Selector()
+    static pageSizeSquadre(state: PaginationComposizionePartenzaStateModel) {
+        return state.paginationSquadre.pageSize;
+    }
+
+    @Selector()
+    static totalItemsSquadre(state: PaginationComposizionePartenzaStateModel) {
+        return state.paginationSquadre.totalItems;
     }
 
     @Selector()
     static page(state: PaginationComposizionePartenzaStateModel) {
-        return state.pagination.page;
+        return state.paginationMezzi.page, state.paginationSquadre.page;
     }
 
     @Selector()
     static pageSize(state: PaginationComposizionePartenzaStateModel) {
-        return state.pagination.pageSize;
+        return state.paginationMezzi.pageSize , state.paginationSquadre.pageSize;
     }
 
-    @Selector()
-    static totalItems(state: PaginationComposizionePartenzaStateModel) {
-        return state.pagination.totalItems;
-    }
-
-    @Selector()
-    static totalFilteredItems(state: PaginationComposizionePartenzaStateModel) {
-        return state.pagination.totalFilteredItems;
-    }
-
+    /*
     @Action(PatchPaginationMezziSquadre)
     patchPagination({ patchState }: StateContext<PatchPaginationMezziSquadre>, action: PatchPaginationMezziSquadre) {
-        patchState({
-            pagination: action.pagination
-        });
+        switch (action.type) {
+            case 'mezzi' : {
+                patchState({
+                    paginationMezzi: action.pagination
+                });
+            }
+            case 'squadre' : {
+                patchState({
+                    paginationSquadre: action.pagination
+                });
+            }
+        }
     }
-
+    */
 }

@@ -4,7 +4,7 @@ import { ListaComposizioneAvanzata } from '../../../interface/lista-composizione
 import { CompPartenzaService } from '../../../../core/service/comp-partenza-service/comp-partenza.service';
 import { FilterListaMezziComposizione, SetListaMezziComposizione } from '../../actions/mezzi-composizione/mezzi-composizione.actions';
 import { SetListaSquadreComposizione } from '../../actions/squadre-composizione/squadre-composizione.actions';
-import { FiltriListaComposizioneAvanzata } from 'src/app/shared/interface/filtri-lista-composizione-avanzata.interface';
+import { FiltriComposizione } from 'src/app/features/home/composizione-partenza/interface/filtri/filtri-composizione-interface';
 
 export interface SostituzionePartenzaModel {
     listaMezziSquadre: ListaComposizioneAvanzata;
@@ -54,7 +54,7 @@ export class SostituzionePartenzaModalState {
     @Action(GetListaMezziSquadre)
     getListaMezziSquadre({ dispatch }: StateContext<SostituzionePartenzaModel>, action: GetListaMezziSquadre) {
         // dispatch(new StartListaComposizioneLoading());
-        const obj = {} as FiltriListaComposizioneAvanzata;
+        const obj = {} as FiltriComposizione;
         obj.idRichiesta = action.idRichiesta;
         this.compPartenzaService.getListeComposizioneAvanzata(obj).subscribe((listeCompAvanzata: ListaComposizioneAvanzata) => {
             if (listeCompAvanzata.composizioneMezziDataArray) {

@@ -4,9 +4,7 @@ import { ListaComposizioneAvanzata } from '../../../../../shared/interface/lista
 export class GetListeComposizioneAvanzata {
     static readonly type = '[ComposizioneAvanzata] Get Liste Composizione Avanzata';
 
-    constructor(public filtri?: ComposizioneFilterbar,
-                public onlySquadreComposizione?: boolean,
-                public onlyMezziComposizione?: boolean) {
+    constructor(public options?: { filtri?: ComposizioneFilterbar, page?: { pageMezzi?: number, pageSquadre?: number}}) {
     }
 }
 

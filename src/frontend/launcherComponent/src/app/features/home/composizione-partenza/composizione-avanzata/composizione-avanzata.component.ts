@@ -47,6 +47,7 @@ import { GetFiltriComposizione } from '../../../../shared/store/actions/filtri-c
 import { SetMarkerRichiestaSelezionato } from '../../store/actions/maps/marker.actions';
 import { PaginationComposizionePartenzaState } from 'src/app/shared/store/states/pagination-composizione-partenza/pagination-composizione-partenza.state';
 import { PatchPaginationMezziSquadre } from 'src/app/shared/store/actions/pagination-composizione-partenza/pagination-composizione-partenza.actions';
+import { GetListeComposizioneAvanzata } from '../../store/actions/composizione-partenza/composizione-avanzata.actions';
 
 @Component({
     selector: 'app-composizione-avanzata',
@@ -99,6 +100,22 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
     // Loading Liste Mezzi e Squadre
     @Select(ComposizionePartenzaState.loadingListe) loadingListe$: Observable<boolean>;
     loadingListe: boolean;
+
+    // Paginazione Mezzi
+    @Select(PaginationComposizionePartenzaState.pageMezzi) currentPageMezzi$: Observable<number>;
+    currentPageMezzi: number;
+    @Select(PaginationComposizionePartenzaState.totalItemsMezzi) totalItemsMezzi$: Observable<number>;
+    totalItemsMezzi: number;
+    @Select(PaginationComposizionePartenzaState.pageSizeMezzi) pageSizeMezzi$: Observable<number>;
+    pageSizeMezzi: number;
+
+    // Paginazione Squadre
+    @Select(PaginationComposizionePartenzaState.pageSquadre) currentPageSquadre$: Observable<number>;
+    currentPageSquadre: number;
+    @Select(PaginationComposizionePartenzaState.totalItemsSquadre) totalItemsSquadre$: Observable<number>;
+    totalItemsSquadre: number;
+    @Select(PaginationComposizionePartenzaState.pageSizeSquadre) pageSizeSquadre$: Observable<number>;
+    pageSizeSquadre: number;
 
     Composizione = Composizione;
     subscription = new Subscription();
@@ -201,6 +218,48 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
                 this.idBoxPartenzaSelezionato = idBoxPartenza;
             })
         );
+        // Prendo Pagina Corrente Mezzi
+        this.subscription.add(
+            this.currentPageMezzi$.subscribe((currentPageMezzi: number) => {
+                this.currentPageMezzi = currentPageMezzi;
+                console.log('currentPageMezzi', this.currentPageMezzi);
+            })
+        );
+        // Prendo Totale Items Mezzi
+        this.subscription.add(
+            this.totalItemsMezzi$.subscribe((totalItemsMezzi: number) => {
+                this.totalItemsMezzi = totalItemsMezzi; 
+                // TEST
+                this.totalItemsMezzi = 121;
+                console.log('totalItemsMezzi', this.totalItemsMezzi);
+            })
+        );
+        // Prendo Pagina Size Mezzi
+        this.subscription.add(
+            this.pageSizeMezzi$.subscribe((pageSizeMezzi: number) => {
+                this.pageSizeMezzi = pageSizeMezzi;
+                console.log('pageSizeMezzi', this.pageSizeMezzi);
+            })
+        );
+        // Prendo Pagina Corrente Squadre
+        this.subscription.add(
+            this.currentPageSquadre$.subscribe((currentPageSquadre: number) => {
+                this.currentPageSquadre = currentPageSquadre;
+            })
+        );
+        // Prendo Totale Items Squadre
+        this.subscription.add(
+            this.totalItemsSquadre$.subscribe((totalItemsSquadre: number) => {
+                this.totalItemsSquadre = totalItemsSquadre;
+            })
+        );
+        // Prendo Pagina Size Squadre
+        this.subscription.add(
+            this.pageSizeSquadre$.subscribe((pageSizeSquadre: number) => {
+                this.pageSizeSquadre = pageSizeSquadre;
+            })
+        );
+        
 
         this.subscription.add(this.loadingListe$.subscribe(res => this.loadingListe = res));
 
@@ -394,17 +453,20 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
         this.centraMappa.emit();
     }
 
-    mezziPageChanged() {
+    mezziPageChange(pageMezzi: number) {
+        const options = { 
+            page: {
+                pageMezzi,
+            }
+        }
+        this.store.dispatch(new GetListeComposizioneAvanzata(options));
+    }
+
+    squadrePageChange(pageSelected: number) {
         let richiesta = this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione);
         if (richiesta) {
-            let paginaAttuale = {
-                page: this.store.selectSnapshot(PaginationComposizionePartenzaState.page),
-                pageSize: this.store.selectSnapshot(PaginationComposizionePartenzaState.pageSize),
-            }
-            paginaAttuale.page = paginaAttuale.page + 1;
-            this.store.dispatch(new PatchPaginationMezziSquadre(paginaAttuale))
-            this.store.dispatch(new SetMarkerRichiestaSelezionato(richiesta.id));
-            this.store.dispatch(new RichiestaComposizione(richiesta));
+            let paginaAttuale = this.store.selectSnapshot(PaginationComposizionePartenzaState.paginationSquadre);
+            paginaAttuale.page = pageSelected;
         }
     }
 }

@@ -62,6 +62,7 @@ import { TrasferimentoChiamataModalState } from './shared/store/states/trasferim
 import { EntiState } from './shared/store/states/enti/enti.state';
 import { AllertaSedeModalState } from './shared/store/states/allerta-sede-modal/allerta-sede-modal.state';
 import { ImpostazioniState } from './shared/store/states/impostazioni/impostazioni.state';
+import { PaginationComposizionePartenzaState } from './shared/store/states/pagination-composizione-partenza/pagination-composizione-partenza.state';
 
 
 @NgModule({
@@ -107,7 +108,8 @@ import { ImpostazioniState } from './shared/store/states/impostazioni/impostazio
                 TrasferimentoChiamataModalState,
                 NotificheState,
                 AllertaSedeModalState,
-                ImpostazioniState
+                ImpostazioniState,
+                PaginationComposizionePartenzaState
             ],
             { developmentMode: !environment.production }
         ),
