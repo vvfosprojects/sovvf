@@ -17,6 +17,7 @@ import { insertItem, patch, removeItem } from '@ngxs/store/operators';
 import { GetListaRichieste } from '../../actions/richieste/richieste.actions';
 import produce from 'immer';
 import { VociFiltroDefault } from '../../../../../shared/enum/voci-filtro-default.enum';
+import { Injectable } from '@angular/core';
 
 export interface FiltriRichiesteStateModel {
     filtriStaticiRichieste: VoceFiltro[];
@@ -28,17 +29,39 @@ export interface FiltriRichiesteStateModel {
 
 export const filtriRichiesteStateDefaults: FiltriRichiesteStateModel = {
     filtriStaticiRichieste: [
-        { codice: VociFiltroDefault.Aperte, categoria: 'Aperte', descrizione: 'Aperte', name: 'includiRichiesteAperte', star: true, statico: true },
-        { codice: VociFiltroDefault.Chiuse, categoria: 'Chiuse', descrizione: 'Chiuse', name: 'includiRichiesteChiuse', star: true, statico: true }
+        {
+            codice: VociFiltroDefault.Aperte,
+            categoria: 'Aperte',
+            descrizione: 'Aperte',
+            name: 'includiRichiesteAperte',
+            star: true,
+            statico: true
+        },
+        {
+            codice: VociFiltroDefault.Chiuse,
+            categoria: 'Chiuse',
+            descrizione: 'Chiuse',
+            name: 'includiRichiesteChiuse',
+            star: true,
+            statico: true
+        }
     ],
     filtriRichieste: [],
     filtriRichiesteSelezionati: [
-        { codice: VociFiltroDefault.Aperte, categoria: 'Aperte', descrizione: 'Aperte', name: 'includiRichiesteAperte', star: true, statico: true }
+        {
+            codice: VociFiltroDefault.Aperte,
+            categoria: 'Aperte',
+            descrizione: 'Aperte',
+            name: 'includiRichiesteAperte',
+            star: true,
+            statico: true
+        }
     ],
     categoriaFiltriRichieste: [],
     filtriTipologiaSelezionati: []
 };
 
+@Injectable()
 @State<FiltriRichiesteStateModel>({
     name: 'filtriRichieste',
     defaults: filtriRichiesteStateDefaults

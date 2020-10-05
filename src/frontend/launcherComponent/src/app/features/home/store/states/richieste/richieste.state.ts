@@ -62,6 +62,7 @@ import { AuthState } from '../../../../auth/store/auth.state';
 import { UpdateRichiestaFissata } from '../../actions/richieste/richiesta-fissata.actions';
 import { TreeviewSelezione } from '../../../../../shared/model/treeview-selezione.model';
 import { ListaSquadrePartenzaComponent } from '../../../../../shared/components/lista-squadre-partenza/lista-squadre-partenza.component';
+import { Injectable } from '@angular/core';
 
 export interface RichiesteStateModel {
     richieste: SintesiRichiesta[];
@@ -87,6 +88,7 @@ export const RichiesteStateDefaults: RichiesteStateModel = {
     needRefresh: false
 };
 
+@Injectable()
 @State<RichiesteStateModel>({
     name: 'richieste',
     defaults: RichiesteStateDefaults,

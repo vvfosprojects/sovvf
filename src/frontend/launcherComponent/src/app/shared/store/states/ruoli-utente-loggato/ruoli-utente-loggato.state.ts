@@ -8,6 +8,7 @@ import { Ruolo } from '../../../model/utente.model';
 import { NavbarState } from '../../../../features/navbar/store/states/navbar.state';
 import { getRuoliRicorsivo } from '../../../helper/get-ruoli-ricorsivo';
 import { LSNAME } from '../../../../core/settings/config';
+import { Injectable } from '@angular/core';
 
 export interface RuoliUtenteLoggatoStateModel {
     ruoliPrincipali: Ruolo[];
@@ -19,6 +20,7 @@ export const ruoliStateModelDefaults: RuoliUtenteLoggatoStateModel = {
     ruoli: []
 };
 
+@Injectable()
 @State<RuoliUtenteLoggatoStateModel>({
     name: 'ruoliUtenteLoggato',
     defaults: ruoliStateModelDefaults

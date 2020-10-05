@@ -10,6 +10,7 @@ import { ClearFormEnte, GetCategorieEnti, RequestAddEnte, RequestDeleteEnte, Req
 import { RubricaStateModel } from '../../../../features/rubrica/store/states/rubrica/rubrica.state';
 import { EntiService } from '../../../../core/service/enti-service/enti.service';
 import { TipoTelefono } from '../../../enum/tipo-telefono.enum';
+import { Injectable } from '@angular/core';
 
 export interface EntiStateModel {
     enti: Array<Ente>;
@@ -57,6 +58,7 @@ export const entiStateDefaults: EntiStateModel = {
     }
 };
 
+@Injectable()
 @State<EntiStateModel>({
     name: 'enti',
     defaults: entiStateDefaults

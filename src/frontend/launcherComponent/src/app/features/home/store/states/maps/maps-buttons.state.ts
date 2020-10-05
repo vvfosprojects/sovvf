@@ -4,6 +4,7 @@ import { GetInitCentroMappa } from '../../actions/maps/centro-mappa.actions';
 import { ButtonControlAnimation } from '../../../maps/maps-interface/maps-custom-buttons';
 import { MapsFiltroState } from './maps-filtro.state';
 import { Observable } from 'rxjs';
+import { Injectable } from '@angular/core';
 
 export interface MapsButtonsStateModel {
     controlAnimation: ButtonControlAnimation;
@@ -22,6 +23,7 @@ export const mapsButtonsStateDefaults: MapsButtonsStateModel = {
     prevState: false
 };
 
+@Injectable()
 @State<MapsButtonsStateModel>({
     name: 'mapsButton',
     defaults: mapsButtonsStateDefaults

@@ -23,6 +23,7 @@ import { StartListaComposizioneLoading, StopListaComposizioneLoading } from '../
 import { FiltriComposizioneState } from '../../../../../shared/store/states/filtri-composizione/filtri-composizione.state';
 import { FiltriListaComposizioneAvanzata } from 'src/app/shared/interface/filtri-lista-composizione-avanzata.interface';
 import { PaginationComposizionePartenzaState } from 'src/app/shared/store/states/pagination-composizione-partenza/pagination-composizione-partenza.state';
+import { Injectable } from '@angular/core';
 
 export interface ComposizioneAvanzataStateModel {
     listaMezziSquadre: ListaComposizioneAvanzata;
@@ -32,6 +33,7 @@ export const ComposizioneAvanzataStateDefaults: ComposizioneAvanzataStateModel =
     listaMezziSquadre: null
 };
 
+@Injectable()
 @State<ComposizioneAvanzataStateModel>({
     name: 'composizioneAvanzata',
     defaults: ComposizioneAvanzataStateDefaults

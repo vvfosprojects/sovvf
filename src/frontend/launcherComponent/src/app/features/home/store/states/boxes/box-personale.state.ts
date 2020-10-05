@@ -3,6 +3,7 @@ import { BoxPersonale } from '../../../boxes/boxes-model/box-personale.model';
 import { ClearBoxPersonale, SetBoxPersonale, SetBoxPersonalePresenze, SetBoxPersonaleQty } from '../../actions/boxes/box-personale.actions';
 import { BoxPersonalePersona, BoxPersonalePresenze, BoxPersonaleQty } from '../../../../../shared/interface/box-personale.interface';
 import { BoxFunzionariSo } from '../../../boxes/boxes-model/box-funzionari-so.model';
+import { Injectable } from '@angular/core';
 
 export interface BoxPersonaleStateModel {
     personale: BoxPersonale;
@@ -16,6 +17,7 @@ export const boxPersonaleStateDefaults: BoxPersonaleStateModel = {
     personaleQty: null
 };
 
+@Injectable()
 @State<BoxPersonaleStateModel>({
     name: 'boxPersonale',
     defaults: boxPersonaleStateDefaults

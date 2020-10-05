@@ -4,7 +4,7 @@ import { ShowToastr } from '../../actions/toastr/toastr.actions';
 import { ToastrType } from '../../../enum/toastr';
 import { VersionInterface } from '../../../interface/version.interface';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { NgZone } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { AnnuncioNuovaVersioneModalComponent } from '../../../modal/annuncio-nuova-versione-modal/annuncio-nuova-versione-modal.component';
 import { VersionSoonInterface } from '../../../interface/version-soon.interface';
 import { NuoveFeaturesInfoModalComponent } from '../../../modal/nuove-features-info-modal/nuove-features-info-modal.component';
@@ -23,6 +23,7 @@ export const NewVersionStateModelDefaults: NewVersionStateModel = {
     newFeaturesInfo: true
 };
 
+@Injectable()
 @State<NewVersionStateModel>({
     name: 'newVersion',
     defaults: NewVersionStateModelDefaults

@@ -12,7 +12,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { SidebarModule } from 'ng-sidebar';
 import { FilterPipeModule } from 'ngx-filter-pipe';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { NgProgressModule } from '@ngx-progressbar/core';
@@ -34,7 +33,7 @@ import { SediTreeviewState } from './shared/store/states/sedi-treeview/sedi-tree
 /**
  * Route
  */
-import { APP_ROUTING } from './app.routing';
+import { APP_ROUTING } from './app-routing.module';
 /**
  * Interceptor
  */
@@ -54,7 +53,6 @@ import { RuoliUtenteLoggatoState } from './shared/store/states/ruoli-utente-logg
 import { NewVersionState } from './shared/store/states/nuova-versione/nuova-versione.state';
 import { ViewportState } from './shared/store/states/viewport/viewport.state';
 import { SignalROfflineComponent } from './core/signalr/signal-r-offline/signal-r-offline.component';
-import { LoaderComponent } from './shared/components/loader/loader.component';
 import { FooterComponent } from './shared/components/footer/footer.component';
 import { AuthState } from './features/auth/store/auth.state';
 import { NotificheState } from './shared/store/states/notifiche/notifiche.state';
@@ -62,13 +60,12 @@ import { TrasferimentoChiamataModalState } from './shared/store/states/trasferim
 import { EntiState } from './shared/store/states/enti/enti.state';
 import { AllertaSedeModalState } from './shared/store/states/allerta-sede-modal/allerta-sede-modal.state';
 import { ImpostazioniState } from './shared/store/states/impostazioni/impostazioni.state';
-
+import { NgxUiLoaderModule } from 'ngx-ui-loader';
 
 @NgModule({
     declarations: [
         AppComponent,
         SignalROfflineComponent,
-        LoaderComponent,
         FooterComponent
     ],
     imports: [
@@ -85,7 +82,7 @@ import { ImpostazioniState } from './shared/store/states/impostazioni/impostazio
         NgProgressHttpModule,
         SharedModule,
         NavbarModule,
-        SidebarModule.forRoot(),
+        NgxUiLoaderModule.forRoot({}),
         ToastrModule.forRoot({
             positionClass: 'toast-bottom-center',
             preventDuplicates: true,
@@ -125,8 +122,7 @@ import { ImpostazioniState } from './shared/store/states/impostazioni/impostazio
         { provide: HTTP_INTERCEPTORS, useClass: RpcInterceptor, multi: true },
         I18n,
     ],
-    bootstrap: [AppComponent],
-    entryComponents: [SignalROfflineComponent]
+    bootstrap: [AppComponent]
 })
 
 export class AppModule {

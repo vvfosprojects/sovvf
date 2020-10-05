@@ -10,6 +10,7 @@ import {
 } from '../../actions/maps/filtri-markers.actions';
 import { FiltroSchedeContatto } from '../../../maps/maps-model/filtro-schede-contatto';
 import { isEqual } from 'lodash';
+import { Injectable } from '@angular/core';
 
 export interface FiltriMarkersStateModel {
     filtroRichieste: FiltroRichieste;
@@ -32,6 +33,7 @@ export const FiltriMarkersStateDefaults: FiltriMarkersStateModel = {
     }
 };
 
+@Injectable()
 @State<FiltriMarkersStateModel>({
     name: 'filtriMarkers',
     defaults: FiltriMarkersStateDefaults

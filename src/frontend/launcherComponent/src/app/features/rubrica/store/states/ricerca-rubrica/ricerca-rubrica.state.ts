@@ -1,5 +1,6 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { ClearRicercaRubrica, SetRicercaRubrica } from '../../actions/ricerca-rubrica/ricerca-rubrica.actions';
+import { Injectable } from '@angular/core';
 
 export interface RicercaRubricaStateModel {
     ricerca: string;
@@ -9,6 +10,7 @@ export const RicercaRubricaStateDefaults: RicercaRubricaStateModel = {
     ricerca: null
 };
 
+@Injectable()
 @State<RicercaRubricaStateModel>({
     name: 'ricercaRubrica',
     defaults: RicercaRubricaStateDefaults

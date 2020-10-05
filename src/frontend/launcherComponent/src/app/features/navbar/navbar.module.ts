@@ -57,10 +57,6 @@ import { NavbarState } from './store/states/navbar.state';
         OperatoreComponent,
         UnitaOperativaComponent
     ],
-    entryComponents: [
-        AnnuncioNuovaVersioneModalComponent,
-        NuoveFeaturesInfoModalComponent
-    ],
     exports: [NavbarComponent],
     providers: [
         { provide: TurnoExtraService, useClass: TurnoExtraServiceFake },

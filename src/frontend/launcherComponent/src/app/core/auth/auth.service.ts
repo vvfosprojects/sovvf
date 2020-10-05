@@ -4,10 +4,9 @@ import { map } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { Store } from '@ngxs/store';
 import { StartLoading, StopLoading } from '../../shared/store/actions/loading/loading.actions';
-import { RouterState } from '@ngxs/router-plugin';
 import { Observable } from 'rxjs';
 import { Utente } from '../../shared/model/utente.model';
-import { Logout, SetCurrentJwt, SetCurrentUser } from '../../features/auth/store/auth.actions';
+import { SetCurrentJwt, SetCurrentUser } from '../../features/auth/store/auth.actions';
 
 const BASE_URL = environment.baseUrl;
 const API_AUTH = BASE_URL + environment.apiUrl.auth;
@@ -43,10 +42,5 @@ export class AuthService {
 
     clearUserData(): Observable<any> {
         return this.http.get<any>(`${API_URL_CHIAMATA}/DeleteAll`);
-    }
-
-    logout() {
-        const homeUrl = this.store.selectSnapshot(RouterState.url);
-        this.store.dispatch(new Logout(homeUrl));
     }
 }

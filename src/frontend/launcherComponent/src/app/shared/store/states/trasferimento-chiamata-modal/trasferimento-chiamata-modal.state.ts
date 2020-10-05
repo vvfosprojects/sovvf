@@ -3,6 +3,7 @@ import { State, Selector, Action, StateContext } from '@ngxs/store';
 import { TrasferimentoChiamataService } from 'src/app/core/service/trasferimento-chiamata/trasferimento-chiamata.service';
 import { TreeviewSelezione } from 'src/app/shared/model/treeview-selezione.model';
 import { GetRichiesteTrasferibili, RequestAddTrasferimentoChiamata } from '../../actions/trasferimento-chiamata-modal/trasferimento-chiamata-modal.actions';
+import { Injectable } from '@angular/core';
 
 export interface TrasferimentoChiamataModalStateModel {
     trasferimentoChiamata: Array<TrasferimentoChiamata>;
@@ -34,6 +35,7 @@ export const TrasferimentoChiamataModalStateDefaults: TrasferimentoChiamataModal
     }
 };
 
+@Injectable()
 @State<TrasferimentoChiamataModalStateModel>({
     name: 'trasferimentoChiamataModal',
     defaults: TrasferimentoChiamataModalStateDefaults

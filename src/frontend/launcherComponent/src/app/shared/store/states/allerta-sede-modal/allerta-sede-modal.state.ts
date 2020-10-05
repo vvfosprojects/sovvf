@@ -4,6 +4,7 @@ import { TrasferimentoChiamataService } from 'src/app/core/service/trasferimento
 import { TreeviewSelezione } from 'src/app/shared/model/treeview-selezione.model';
 import { GetRichiesteTrasferibili } from '../../actions/trasferimento-chiamata-modal/trasferimento-chiamata-modal.actions';
 import { GestioneUtentiStateModel } from '../../../../features/gestione-utenti/store/states/gestione-utenti/gestione-utenti.state';
+import { Injectable } from '@angular/core';
 
 export interface AllertaSedeModalStateModel {
     allertaSedeForm: {
@@ -27,6 +28,7 @@ export const AllertaSedeModalStateDefaults: AllertaSedeModalStateModel = {
     }
 };
 
+@Injectable()
 @State<AllertaSedeModalStateModel>({
     name: 'allertaSede',
     defaults: AllertaSedeModalStateDefaults

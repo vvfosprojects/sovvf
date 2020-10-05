@@ -2,6 +2,7 @@ import { Selector, State } from '@ngxs/store';
 import { SequenzaValoriSelezionati } from 'src/app/shared/interface/sequenza-modifica-partenza.interface';
 import { MezzoComposizione } from '../../../interface/mezzo-composizione-interface';
 import { SquadraComposizione } from 'src/app/shared/interface/squadra-composizione-interface';
+import { Injectable } from '@angular/core';
 
 export interface ModificaPartenzaModalStateModel {
     modificaPartenzaForm: {
@@ -45,6 +46,7 @@ export const ModificaPartenzaModalStateDefaults: ModificaPartenzaModalStateModel
     }
 };
 
+@Injectable()
 @State<ModificaPartenzaModalStateModel>({
     name: 'modificaPartenzaModal',
     defaults: ModificaPartenzaModalStateDefaults

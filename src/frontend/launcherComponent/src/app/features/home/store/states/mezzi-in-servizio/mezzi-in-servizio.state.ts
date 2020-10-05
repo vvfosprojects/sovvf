@@ -29,6 +29,7 @@ import { makeCopy } from '../../../../../shared/helper/function';
 import { resetFiltriSelezionati as _resetFiltriSelezionati, setFiltroSelezionato as _setFiltroSelezionato } from '../../../../../shared/helper/function-filtro';
 import { StopLoadingActionMezzo } from '../../actions/richieste/richieste.actions';
 import { patch, updateItem } from '@ngxs/store/operators';
+import { Injectable } from '@angular/core';
 
 export interface MezziInServizioStateModel {
     mezziInServizio: MezzoInServizio[];
@@ -58,6 +59,7 @@ export const MezziInServizioStateDefaults: MezziInServizioStateModel = {
     loadingMezziInServizio: false
 };
 
+@Injectable()
 @State<MezziInServizioStateModel>({
     name: 'mezziInServizio',
     defaults: MezziInServizioStateDefaults

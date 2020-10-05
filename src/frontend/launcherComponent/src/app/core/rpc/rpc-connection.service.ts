@@ -40,7 +40,8 @@ export class RpcConnectionService {
     }
 
     private determineLocalIp() {
-        window.RTCPeerConnection = RpcConnectionService.getRTCPeerConnection();
+        const a = RpcConnectionService.getRTCPeerConnection();
+        // window.RTCPeerConnection = a;
 
         const pc = new RTCPeerConnection({ iceServers: [] });
         pc.createDataChannel('');

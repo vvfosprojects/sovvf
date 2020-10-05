@@ -3,6 +3,7 @@ import { AddRichiestaEspansa, ClearRichiesteEspanse, ReducerRichiesteEspanse, Re
 import { insertItem, patch, removeItem } from '@ngxs/store/operators';
 import { RichiestaGestioneState } from './richiesta-gestione.state';
 import { ClearRichiestaGestione } from '../../actions/richieste/richiesta-gestione.actions';
+import { Injectable } from '@angular/core';
 
 export interface RichiesteEspanseStateModel {
     richiesteEspanse: string[];
@@ -12,6 +13,7 @@ export const RichiesteEspanseStateDefaults: RichiesteEspanseStateModel = {
     richiesteEspanse: []
 };
 
+@Injectable()
 @State<RichiesteEspanseStateModel>({
     name: 'richiesteEspanse',
     defaults: RichiesteEspanseStateDefaults,

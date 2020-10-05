@@ -15,7 +15,7 @@ export class EventoRichiestaComponent implements OnInit {
     myMap: any;
 
     @Input() eventoRichiesta: EventoRichiesta;
-    @Input() operatore: Utente;
+    @Input() operatore: string;
     @Input() istanteEventoPrecedente: Date;
     @Input() nomeClasseEvento: string;
     @Input() visualizzaIconeNomeClasseEvento: boolean;

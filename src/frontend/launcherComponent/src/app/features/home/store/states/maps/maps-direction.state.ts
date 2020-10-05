@@ -5,6 +5,7 @@ import { DirectionInterface } from '../../../maps/maps-interface/direction-inter
 
 // Action
 import { SetDirection, ClearDirection } from '../../actions/maps/maps-direction.actions';
+import { Injectable } from '@angular/core';
 
 export interface MapsDirectionStateModel {
     direction: DirectionInterface;
@@ -16,6 +17,7 @@ export const mapsDirectionStateDefaults: MapsDirectionStateModel = {
     }
 };
 
+@Injectable()
 @State<MapsDirectionStateModel>({
     name: 'mapsDirection',
     defaults: mapsDirectionStateDefaults

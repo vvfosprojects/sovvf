@@ -1,5 +1,6 @@
 import { State, Selector } from '@ngxs/store';
 import { ChangelogInterface } from '../../../shared/interface/changelog.interface';
+import { Injectable } from '@angular/core';
 
 export interface ChangelogStateModel {
     listaChangelog: ChangelogInterface[];
@@ -205,6 +206,7 @@ export const ChangelogStateDefaults: ChangelogStateModel = {
     ]
 };
 
+@Injectable()
 @State<ChangelogStateModel>({
     name: 'changelog',
     defaults: ChangelogStateDefaults

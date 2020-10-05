@@ -2,6 +2,7 @@ import { Action, Selector, State, StateContext } from '@ngxs/store';
 
 // Action
 import { SetRichiestaHover, ClearRichiestaHover } from '../../actions/richieste/richiesta-hover.actions';
+import { Injectable } from '@angular/core';
 
 export interface RichiestaHoverStateModel {
     idRichiestaHover: string;
@@ -11,6 +12,7 @@ export const RichiestaHoverStateDefaults: RichiestaHoverStateModel = {
     idRichiestaHover: null
 };
 
+@Injectable()
 @State<RichiestaHoverStateModel>({
     name: 'richiestaHover',
     defaults: RichiestaHoverStateDefaults

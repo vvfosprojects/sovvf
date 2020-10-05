@@ -5,6 +5,7 @@ import {
     SetRicercaMezziComposizione,
     SetRicercaSquadreComposizione
 } from '../../actions/ricerca-composizione/ricerca-composizione.actions';
+import { Injectable } from '@angular/core';
 
 export interface RicercaComposizioneStateStateModel {
     ricercaSquadre: string;
@@ -16,6 +17,7 @@ export const RicercaComposizioneStateDefaults: RicercaComposizioneStateStateMode
     ricercaMezzi: undefined
 };
 
+@Injectable()
 @State<RicercaComposizioneStateStateModel>({
     name: 'ricercaComposizione',
     defaults: RicercaComposizioneStateDefaults

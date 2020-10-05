@@ -24,6 +24,7 @@ import { FiltroSchedeContatto } from '../../../maps/maps-model/filtro-schede-con
 import { makeCopy } from '../../../../../shared/helper/function';
 import { SetBoundsIniziale } from '../../actions/home.actions';
 import { ComposizionePartenzaState } from '../composizione-partenza/composizione-partenza.state';
+import { Injectable } from '@angular/core';
 
 export interface AreaMappaStateModel {
     areaMappa: AreaMappa;
@@ -35,6 +36,7 @@ export const AreaMappaStateDefaults: AreaMappaStateModel = {
     areaMappaLoading: 0
 };
 
+@Injectable()
 @State<AreaMappaStateModel>({
     name: 'areaMappa',
     defaults: AreaMappaStateDefaults

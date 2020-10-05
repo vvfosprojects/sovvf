@@ -1,6 +1,7 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { PaginationInterface } from '../../../interface/pagination.interface';
 import { PatchPagination, SetPageSize } from '../../actions/pagination/pagination.actions';
+import { Injectable } from '@angular/core';
 
 export interface PaginationStateModel {
     pagination: PaginationInterface;
@@ -15,6 +16,7 @@ export const PaginationStateModelDefaults: PaginationStateModel = {
     pageSizes: [10, 20, 30]
 };
 
+@Injectable()
 @State<PaginationStateModel>({
     name: 'pagination',
     defaults: PaginationStateModelDefaults

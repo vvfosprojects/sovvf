@@ -19,6 +19,7 @@ import { SchedaTelefonataState } from '../chiamata/scheda-telefonata.state';
 import { ClearIndirizzo } from '../../actions/chiamata/scheda-telefonata.actions';
 import { GetMarkerDatiMeteo } from '../../actions/maps/marker-info-window.actions';
 import { ClearCentroMappa, GetInitCentroMappa, SetCentroMappa, SetCoordCentroMappa, SetZoomCentroMappa } from '../../actions/maps/centro-mappa.actions';
+import { Injectable } from '@angular/core';
 
 export interface ChiamateMarkersStateModel {
     chiamateMarkers: ChiamataMarker[];
@@ -28,6 +29,7 @@ export const ChiamateMarkersStateDefaults: ChiamateMarkersStateModel = {
     chiamateMarkers: null,
 };
 
+@Injectable()
 @State<ChiamateMarkersStateModel>({
     name: 'chiamateMarkers',
     defaults: ChiamateMarkersStateDefaults

@@ -66,9 +66,9 @@ export class SintesiRichiestaActionsComponent implements OnInit {
         ];
 
         const richiestaAction = {
-            'idRichiesta': null,
-            'stato': stato,
-            'note': null
+            idRichiesta: null,
+            stato: stato,
+            note: null
         };
 
         modalConferma.result.then(

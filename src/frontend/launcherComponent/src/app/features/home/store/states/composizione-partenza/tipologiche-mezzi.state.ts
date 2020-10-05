@@ -1,6 +1,7 @@
 import { Selector, State, Action, StateContext } from '@ngxs/store';
 import { ListaTipologicheMezzi } from '../../../composizione-partenza/interface/filtri/lista-filtri-composizione-interface';
 import { SetTipologicheMezzi } from '../../actions/composizione-partenza/tipologiche-mezzi.actions';
+import { Injectable } from '@angular/core';
 
 export interface TipologicheMezziStateModel {
     tipologiche: ListaTipologicheMezzi;
@@ -11,6 +12,7 @@ export const TipologicheMezziStateDefaults: TipologicheMezziStateModel = {
 };
 
 
+@Injectable()
 @State<TipologicheMezziStateModel>({
     name: 'tipologicheMezzi',
     defaults: TipologicheMezziStateDefaults

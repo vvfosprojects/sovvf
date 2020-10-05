@@ -4,6 +4,7 @@ import { MarkerDatiMeteo } from '../../../maps/maps-model/marker-dati-meteo.inte
 import { MeteoService } from '../../../../../shared/meteo/meteo-service.service';
 import { Meteo } from '../../../../../shared/model/meteo.model';
 import { GetMarkerDatiMeteo, AddMarkerDatiMeteo, UpdateMarkerDatiMeteo, GetMarkerDatiMeteoFromApi } from '../../actions/maps/marker-info-window.actions';
+import { Injectable } from '@angular/core';
 
 export interface MarkerInfoWindowStateModel {
     markerDatiMeteo: MarkerDatiMeteo[];
@@ -14,6 +15,7 @@ export const markerInfoWindowStateDefaults: MarkerInfoWindowStateModel = {
     markerDatiMeteo: [],
 };
 
+@Injectable()
 @State<MarkerInfoWindowStateModel>({
     name: 'markerInfoWindow',
     defaults: markerInfoWindowStateDefaults
