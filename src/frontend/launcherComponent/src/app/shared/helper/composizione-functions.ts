@@ -2,7 +2,7 @@ import { StatoSquadra } from '../enum/stato-squadra.enum';
 import { SquadraComposizione } from '../interface/squadra-composizione-interface';
 import { StatoMezzo } from '../enum/stato-mezzo.enum';
 
-export function squadraComposizioneBusy(stato: StatoSquadra) {
+export function squadraComposizioneBusy(stato: StatoSquadra): boolean {
     switch (stato) {
         case StatoSquadra.SulPosto:
             return true;
@@ -13,7 +13,7 @@ export function squadraComposizioneBusy(stato: StatoSquadra) {
     }
 }
 
-export function mezzoComposizioneBusy(stato: StatoMezzo) {
+export function mezzoComposizioneBusy(stato: StatoMezzo): boolean {
     switch (stato) {
         case StatoMezzo.SulPosto:
             return true;
@@ -39,7 +39,6 @@ export function checkSquadraOccupata(squadreComposizione: SquadraComposizione[])
 
 export function iconaStatiClass(stato: string): string {
     let returnClass = '';
-
     switch (stato) {
         case StatoMezzo.InSede:
             returnClass = 'text-success';
@@ -66,17 +65,17 @@ export function iconaStatiClass(stato: string): string {
     return returnClass;
 }
 
-export function codDistaccamentoIsEqual(codDistaccamentoSquadra: string, codDistaccamentoMezzo: string) {
+export function codDistaccamentoIsEqual(codDistaccamentoSquadra: string, codDistaccamentoMezzo: string): boolean {
     return codDistaccamentoSquadra === codDistaccamentoMezzo;
 }
 
-export function calcolaTimeout(addBoxPartenza: boolean) {
-    let _timeout = 0;
+export function calcolaTimeout(addBoxPartenza: boolean): number {
+    let timeout = 0;
     if (!addBoxPartenza) {
-        _timeout = 0;
+        timeout = 0;
     } else {
-        _timeout = 10;
+        timeout = 10;
     }
-    return _timeout;
+    return timeout;
 }
 

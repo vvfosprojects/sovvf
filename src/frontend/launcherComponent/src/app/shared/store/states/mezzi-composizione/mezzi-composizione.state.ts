@@ -57,7 +57,7 @@ import { FilterListaSquadreComposizione, SetListaSquadreComposizione } from '../
 import { SquadraComposizione } from '../../../interface/squadra-composizione-interface';
 import { SintesiRichiesteService } from '../../../../core/service/lista-richieste-service/lista-richieste.service';
 import { SetListaFiltriAffini } from '../../actions/filtri-composizione/filtri-composizione.actions';
-import { SquadreComposizioneState, SquadreComposizioneStateStateModel } from '../squadre-composizione/squadre-composizione.state';
+import { SquadreComposizioneState } from '../squadre-composizione/squadre-composizione.state';
 import produce from 'immer';
 import { Injectable } from '@angular/core';
 
@@ -142,8 +142,8 @@ export class MezziComposizioneState {
     }
 
     constructor(private store: Store,
-                private _compPartenzaService: CompPartenzaService,
-                private _richiesteService: SintesiRichiesteService,
+                private compPartenzaService: CompPartenzaService,
+                private richiesteService: SintesiRichiesteService,
                 private modalService: NgbModal) {
     }
 
@@ -183,9 +183,9 @@ export class MezziComposizioneState {
     }
 
     @Action(UpdateMezzoComposizione)
+    // tslint:disable-next-line:max-line-length
     updateMezzoComposizione({ getState, setState, dispatch }: StateContext<MezziComposizioneStateStateModel>, action: UpdateMezzoComposizione) {
         const state = getState();
-        // tslint:disable-next-line:max-line-length
         const mezzoComposizione = state.allMezziComposizione && state.allMezziComposizione.length > 0 ? state.allMezziComposizione.filter((mC: MezzoComposizione) => mC.mezzo.codice === action.mezzo.codice)[0] : null;
         const mezzoComposizioneCopy = mezzoComposizione ? makeCopy(mezzoComposizione) as MezzoComposizione : null;
         if (mezzoComposizione && mezzoComposizioneCopy) {
@@ -217,6 +217,7 @@ export class MezziComposizioneState {
     }
 
     @Action(ReducerSelectMezzoComposizione)
+    // tslint:disable-next-line:max-line-length
     reducerSelectMezzoComposizione({ getState, dispatch }: StateContext<MezziComposizioneStateStateModel>, action: SelectMezzoComposizione) {
         const state = getState();
         const boxPartenzaList = this.store.selectSnapshot(x => x.boxPartenza.boxPartenzaList);
@@ -224,6 +225,7 @@ export class MezziComposizioneState {
         // controllo se lo stato del mezzo è diverso da "In Viaggio" o "Sul Posto"
         if (!mezzoComposizioneBusy(action.mezzoComp.mezzo.stato)) {
             // controllo se è un mezzo prenotato oppure se è in prenotazione
+            // tslint:disable-next-line:max-line-length
             if (state.idMezziPrenotati.indexOf(action.mezzoComp.id) === -1 && state.idMezziInPrenotazione.indexOf(action.mezzoComp.id) === -1) {
                 let addBoxPartenza = false;
                 if (boxPartenzaList.length <= 0) {
@@ -231,7 +233,9 @@ export class MezziComposizioneState {
                     dispatch(new AddBoxPartenza());
                 }
                 setTimeout(() => {
-                    !action.mezzoComp.mezzo.coordinateFake && dispatch(new SetMarkerMezzoSelezionato(action.mezzoComp.mezzo.codice, true));
+                    if (!action.mezzoComp.mezzo.coordinateFake) {
+                        dispatch(new SetMarkerMezzoSelezionato(action.mezzoComp.mezzo.codice, true));
+                    }
                     dispatch(new SelectMezzoComposizione(action.mezzoComp));
                     dispatch(new AddMezzoBoxPartenzaSelezionato(action.mezzoComp));
                 }, calcolaTimeout(addBoxPartenza));
@@ -330,11 +334,11 @@ export class MezziComposizioneState {
     @Action(RequestBookMezzoComposizione)
     requestBookMezzoComposizione({ dispatch }: StateContext<MezziComposizioneStateStateModel>, action: RequestBookMezzoComposizione) {
         const mezzoPrenotatoObj = {
-            'codiceMezzo': action.mezzoComp.mezzo.codice,
-            'codiceRichiesta': this.store.selectSnapshot(x => x.composizionePartenza.richiesta).id,
+            codiceMezzo: action.mezzoComp.mezzo.codice,
+            codiceRichiesta: this.store.selectSnapshot(x => x.composizionePartenza.richiesta).id,
         };
         dispatch(new AddBookingMezzoComposizione(action.mezzoComp));
-        this._compPartenzaService.setMezzoPrenotato(mezzoPrenotatoObj).subscribe(() => {
+        this.compPartenzaService.setMezzoPrenotato(mezzoPrenotatoObj).subscribe(() => {
             if (action.addBoxPartenza) {
                 dispatch(new AddBoxPartenza());
             } else if (action.selectBoxPartenza) {
@@ -371,10 +375,10 @@ export class MezziComposizioneState {
     @Action(RequestRemoveBookMezzoComposizione)
     requestRemoveBookMezzoComposizione({ dispatch }: StateContext<MezziComposizioneStateStateModel>, action: RequestRemoveBookMezzoComposizione) {
         const mezzoPrenotatoObj = {
-            'codiceMezzo': action.mezzoComp.mezzo.codice,
-            'codiceRichiesta': this.store.selectSnapshot(x => x.composizionePartenza.richiesta).id
+            codiceMezzo: action.mezzoComp.mezzo.codice,
+            codiceRichiesta: this.store.selectSnapshot(x => x.composizionePartenza.richiesta).id
         };
-        this._compPartenzaService.removeMezzoPrenotato(mezzoPrenotatoObj).subscribe(() => {
+        this.compPartenzaService.removeMezzoPrenotato(mezzoPrenotatoObj).subscribe(() => {
         });
     }
 
@@ -404,9 +408,9 @@ export class MezziComposizioneState {
     @Action(RequestResetBookMezzoComposizione)
     requestResetBookMezzoComposizione({ dispatch }: StateContext<MezziComposizioneStateStateModel>, action: RequestResetBookMezzoComposizione) {
         const mezzoPrenotatoObj = {
-            'mezzoComposizione': action.mezzoComp
+            mezzoComposizione: action.mezzoComp
         };
-        this._compPartenzaService.setMezzoPrenotato(mezzoPrenotatoObj).subscribe(() => {
+        this.compPartenzaService.setMezzoPrenotato(mezzoPrenotatoObj).subscribe(() => {
         });
     }
 
@@ -448,7 +452,7 @@ export class MezziComposizioneState {
     @Action(SganciamentoMezzoComposizione)
     sganciamentoMezzoComposizione({ patchState, dispatch }: StateContext<MezziComposizioneStateStateModel>, action: SganciamentoMezzoComposizione) {
         let partenzaDaSganciare = {} as Partenza;
-        this._richiesteService.getRichiestaById(action.sganciamentoObj.idRichiestaDaSganciare).subscribe((richiestaDa: SintesiRichiesta) => {
+        this.richiesteService.getRichiestaById(action.sganciamentoObj.idRichiestaDaSganciare).subscribe((richiestaDa: SintesiRichiesta) => {
             // tslint:disable-next-line:max-line-length
             partenzaDaSganciare = richiestaDa.partenzeRichiesta && richiestaDa.partenzeRichiesta.length > 0 ? richiestaDa.partenzeRichiesta.filter(x => x.mezzo.codice === action.sganciamentoObj.idMezzoDaSganciare)[0] : null;
             if (richiestaDa && partenzaDaSganciare) {

@@ -5,7 +5,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Address } from 'ngx-google-places-autocomplete/objects/address';
 import { SchedaTelefonataInterface } from '../../../../shared/interface/scheda-telefonata.interface';
 import { ChiamataMarker } from '../../maps/maps-model/chiamata-marker.model';
-import { makeID, roundTodecimal } from '../../../../shared/helper/function';
+import { makeID, roundToDecimal } from '../../../../shared/helper/function';
 import { AzioneChiamataEnum } from '../../../../shared/enum/azione-chiamata.enum';
 import { Select, Store } from '@ngxs/store';
 import { ShowToastr } from '../../../../shared/store/actions/toastr/toastr.actions';
@@ -345,8 +345,8 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy {
     }
 
     onCercaIndirizzo(result: Address): void {
-        const lat = roundTodecimal(result.geometry.location.lat(), 6);
-        const lng = roundTodecimal(result.geometry.location.lng(), 6);
+        const lat = roundToDecimal(result.geometry.location.lat(), 6);
+        const lng = roundToDecimal(result.geometry.location.lng(), 6);
         this.coordinate = new Coordinate(lat, lng);
         this.chiamataMarker = new ChiamataMarker(this.idChiamata, `${this.operatore.nome} ${this.operatore.cognome}`, `${this.operatore.sede.codice}`,
             new Localita(this.coordinate ? this.coordinate : null, result.formatted_address), null

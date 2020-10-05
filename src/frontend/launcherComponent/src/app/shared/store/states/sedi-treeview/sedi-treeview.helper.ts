@@ -1,17 +1,17 @@
 import { ListaSedi } from '../../../interface/lista-sedi';
 import { Ricorsivo } from '../../../interface/treeview.interface';
 
-export function allFalseTreeItem(lista: ListaSedi) {
+export function allFalseTreeItem(listaSedi: any) {
     const key = 'children';
-    Object.assign(lista, { checked: false, collapsed: true });
-    if (key in lista) {
-        lista[key].forEach(nodes => {
+    Object.assign(listaSedi, { checked: false, collapsed: true });
+    if (key in listaSedi) {
+        listaSedi[key].forEach(nodes => {
             allFalseTreeItem(nodes);
         });
     }
 }
 
-export function findItem(element: ListaSedi, value: string): ListaSedi {
+export function findItem(element: any, value: string): ListaSedi {
     if (element.value === value) {
         return element;
     } else if (element.children != null) {
@@ -25,56 +25,56 @@ export function findItem(element: ListaSedi, value: string): ListaSedi {
     return null;
 }
 
-export function checkTreeItem(lista: ListaSedi, checkIds: string[], ricorsivo?: Ricorsivo): number {
+export function checkTreeItem(listaSedi: any, checkIds: string[], ricorsivo?: Ricorsivo): number {
     const key = 'children';
     if (ricorsivo === Ricorsivo.Ricorsivo) {
         /**
          * il nodo padre è selezionato e nel ramo corrente sono tutti selezionati
          */
-        Object.assign(lista, { checked: true });
+        Object.assign(listaSedi, { checked: true });
         /**
          * se ci sono nodi figli li seleziono ricorsivamente
          */
-        if (key in lista) {
-            lista[key].forEach(nodes => {
+        if (key in listaSedi) {
+            listaSedi[key].forEach(nodes => {
                 checkTreeItem(nodes, checkIds, Ricorsivo.Ricorsivo);
             });
         }
         return 1;
     }
-    if (checkIds.includes(lista.value)) {
+    if (checkIds.includes(listaSedi.value)) {
         /**
          * il nodo padre NON è selezionato, ma nel ramo corrente ci sono selezionati
          */
-        Object.assign(lista, { checked: true });
+        Object.assign(listaSedi, { checked: true });
         /**
          * se ci sono nodi figli li seleziono ricorsivamente
          */
-        if (key in lista) {
-            lista[key].forEach(nodes => {
+        if (key in listaSedi) {
+            listaSedi[key].forEach(nodes => {
                 checkTreeItem(nodes, checkIds, Ricorsivo.Ricorsivo);
             });
         }
         return 1;
     } else {
-        Object.assign(lista, { collapsed: false });
+        Object.assign(listaSedi, { collapsed: false });
     }
     /**
      * non ci sono padri selezionati e nemmeno nel ramo corrente
      */
-    if (key in lista) {
+    if (key in listaSedi) {
         let countChecked = null;
-        lista[key].forEach(nodes => {
+        listaSedi[key].forEach(nodes => {
             if (checkTreeItem(nodes, checkIds, Ricorsivo.NonRicorsivo) !== null) {
                 countChecked += 1;
             }
         });
         if (countChecked !== null) {
-            if (lista[key].length !== countChecked) {
-                Object.assign(lista, { collapsed: false });
+            if (listaSedi[key].length !== countChecked) {
+                Object.assign(listaSedi, { collapsed: false });
             }
         } else if (countChecked === null) {
-            Object.assign(lista, { collapsed: true });
+            Object.assign(listaSedi, { collapsed: true });
         }
         return countChecked;
     }

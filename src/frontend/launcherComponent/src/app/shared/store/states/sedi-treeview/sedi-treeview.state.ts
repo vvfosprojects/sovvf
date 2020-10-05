@@ -19,7 +19,7 @@ import { Injectable } from '@angular/core';
 
 export interface SediTreeviewStateModel {
     listeSedi: ListaSedi;
-    listaSediNavbar: ListaSedi;
+    listaSediNavbar: any; // ListaSedi
     sediNavbarTesto: TreeViewStateSelezione;
     sediNavbarSelezionate: TreeViewStateSelezioneArr;
     sediNavbarVisible: boolean;
@@ -115,6 +115,7 @@ export class SediTreeviewState {
     }
 
     @Action(PatchSediNavbarSelezionate)
+    // tslint:disable-next-line:max-line-length
     patchSediNavbarSelezionate({ getState, patchState, dispatch }: StateContext<SediTreeviewStateModel>, action: PatchSediNavbarSelezionate) {
         const state = getState();
         let item = '';

@@ -30,7 +30,7 @@ export class ColoriStatoMezzo {
     /**
      *  mappa dei colori stato efficenza mezzo
      */
-    private colorStatoEfficienza() {
+    private colorStatoEfficienza(): void {
         this.statoEfficienza = [
             [0, 'danger'],
             [1, 'warning'],
@@ -38,13 +38,12 @@ export class ColoriStatoMezzo {
             [3, 'success']
         ];
         this.mapStatoEfficienza = new Map(this.statoEfficienza);
-
     }
 
     /**
      *  mappa dei colori livello carburante mezzo
      */
-    private colorLivelloCarburante() {
+    private colorLivelloCarburante(): void {
         this.livelloCarburante = [
             [0, 'default'],
             [1, 'danger'],
@@ -58,7 +57,7 @@ export class ColoriStatoMezzo {
     /**
      *  mappa dei colori livello estinguente mezzo
      */
-    private colorLivelloEstinguente() {
+    private colorLivelloEstinguente(): void {
         this.livelloEstinguente = [
             [0, 'default'],
             [1, 'danger'],
@@ -72,7 +71,7 @@ export class ColoriStatoMezzo {
     /**
      *  mappa dei colori appartenenza mezzo
      */
-    private colorAppartenenza() {
+    private colorAppartenenza(): void {
         this.appartenenza = [
             [0, 'default'],
             [1, 'danger'],
@@ -86,7 +85,7 @@ export class ColoriStatoMezzo {
     /**
      *  mappa dei metodi helper da richiamare all'occorrenza
      */
-    private stato() {
+    private stato(): void {
         this.tipoStato = [
             ['efficienza', 'mapStatoEfficienza'],
             ['carburante', 'mapLivelloCarburante'],
@@ -103,12 +102,12 @@ export class ColoriStatoMezzo {
      * @param tipostato
      * @param classBootstrap
      */
-    getColor(stato: string | number, tipostato: string, classBootstrap?: string) {
+    getColor(stato: string | number, tipostato: string, classBootstrap?: string): string {
         const method = this.mapTipoStato.get(tipostato);
         const colore = this[method].get(stato);
-        const color_default = 'guida';
+        const coloreDefault = 'guida';
         const classe = classBootstrap ? classBootstrap + '-' : '';
-        return colore ? classe + colore : color_default;
+        return colore ? classe + colore : coloreDefault;
     }
 
 }

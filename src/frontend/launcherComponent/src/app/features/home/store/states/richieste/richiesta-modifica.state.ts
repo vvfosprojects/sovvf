@@ -11,7 +11,6 @@ import {
     ClearIndirizzo
 } from '../../actions/richieste/richiesta-modifica.actions';
 import produce from 'immer';
-import { makeCopy } from '../../../../../shared/helper/function';
 import { ToggleModifica } from '../../actions/view/view.actions';
 import { RichiestaMarker } from '../../../maps/maps-model/richiesta-marker.model';
 import { RichiesteMarkersState } from '../maps/richieste-markers.state';
@@ -20,6 +19,7 @@ import { SetCoordCentroMappa, SetZoomCentroMappa } from '../../actions/maps/cent
 import { Observable } from 'rxjs';
 import { UpdateFormValue } from '@ngxs/form-plugin';
 import { Injectable } from '@angular/core';
+import { makeCopy } from '../../../../../shared/helper/function';
 
 export interface RichiestaModificaStateModel {
     modificaRichiestaForm: {
@@ -123,7 +123,7 @@ export class RichiestaModificaState {
     modificaRilevanzaStArCu({ getState, setState }: StateContext<RichiestaModificaStateModel>) {
         setState(
             produce(getState(), draft => {
-                const richiesta = makeCopy(draft.richiestaModifica);
+                const richiesta = draft.richiestaModifica;
                 if (draft.richiestaModifica.rilevanteStArCu === true) {
                     richiesta.rilevanteStArCu = false;
                     draft.richiestaModifica = richiesta;
@@ -136,7 +136,7 @@ export class RichiestaModificaState {
     }
 
     @Action(ModificaIndirizzo)
-    modificaIndirizzo({ getState, patchState, dispatch }: StateContext<RichiestaModificaStateModel>, action: ModificaIndirizzo) {
+    modificaIndirizzo({ getState, setState, patchState, dispatch }: StateContext<RichiestaModificaStateModel>, action: ModificaIndirizzo) {
         if (action.nuovoIndirizzo) {
             patchState({
                 modificaIndirizzo: true
@@ -156,7 +156,7 @@ export class RichiestaModificaState {
             dispatch(new UpdateRichiestaMarker(state.richiestaMarker));
         }
         dispatch(new ToggleModifica(true));
-        dispatch(new ClearRichiestaModifica);
+        dispatch(new ClearRichiestaModifica());
     }
 
     @Action(SuccessRichiestaModifica)
