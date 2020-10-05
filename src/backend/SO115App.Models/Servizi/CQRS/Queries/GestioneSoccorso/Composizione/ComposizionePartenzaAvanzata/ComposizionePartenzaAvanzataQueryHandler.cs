@@ -141,10 +141,10 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             var composizioneAvanzata = new Classi.Composizione.ComposizionePartenzaAvanzata()
             {
                 ComposizioneMezziDataArray = lstMezzi.Result
-                    .Skip(query.Filtro.MezziPagination.Page * (query.Filtro.MezziPagination.PageSize - 1))
+                    .Skip(query.Filtro.MezziPagination.PageSize * (query.Filtro.MezziPagination.Page - 1))
                     .Take(query.Filtro.MezziPagination.PageSize).ToList(),
                 ComposizioneSquadreDataArray = lstSquadre.Result
-                    .Skip(query.Filtro.SquadrePagination.Page * (query.Filtro.SquadrePagination.PageSize - 1))
+                    .Skip(query.Filtro.SquadrePagination.PageSize * (query.Filtro.SquadrePagination.Page - 1))
                     .Take(query.Filtro.SquadrePagination.PageSize).ToList(),
 
                 MezziPagination = new Paginazione()
