@@ -63,23 +63,24 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
             {
                 if (!_memoryCache.TryGetValue($"Personale_{codice.Split('.')[0]}", out listaPersonale))
                 {
+                    try
+                    {
+                        var client = new HttpClient();
+                        client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("test");
+                        var sede = string.Concat(codSede.Select(c => c.Split(".")[0]));
 
-                    #region API ESTERNA
+                        var response = client.GetAsync($"{_configuration.GetSection("UrlExternalApi").GetSection("PersonaleApiUtenteComuni").Value}?codiciSede={sede}").Result;
+                        response.EnsureSuccessStatusCode();
 
-                    var client = new HttpClient();
-                    client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("test");
-                    var sede = string.Concat(codSede.Select(c => c.Split(".")[0]));
-
-                    var response = client.GetAsync($"{_configuration.GetSection("UrlExternalApi").GetSection("PersonaleApiUtenteComuni").Value}?codiciSede={sede}").Result;
-                    response.EnsureSuccessStatusCode();
-
-                    using HttpContent content = response.Content;
-                    string data = content.ReadAsStringAsync().Result;
-                    var personaleUC = JsonConvert.DeserializeObject<List<PersonaleUC>>(data);
-
-                    #endregion
-
-                    listaPersonale = MapPersonaleVVFsuPersonaleUC.Map(personaleUC);
+                        using HttpContent content = response.Content;
+                        string data = content.ReadAsStringAsync().Result;
+                        var personaleUC = JsonConvert.DeserializeObject<List<PersonaleUC>>(data);
+                        listaPersonale = MapPersonaleVVFsuPersonaleUC.Map(personaleUC);
+                    }
+                    catch (Exception e)
+                    {
+                        throw new Exception("Elenco del personale non disponibile");
+                    }
 
                     var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromHours(8));
                     _memoryCache.Set($"Personale_{codice.Split('.')[0]}", listaPersonale, cacheEntryOptions);

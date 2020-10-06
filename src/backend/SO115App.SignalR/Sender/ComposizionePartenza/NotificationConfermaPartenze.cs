@@ -18,19 +18,14 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-using AutoMapper;
 using CQRS.Queries;
 using DomainModel.CQRS.Commands.ConfermaPartenze;
 using Microsoft.AspNetCore.SignalR;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes;
-using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza;
 using SO115App.API.Models.Servizi.CQRS.Queries.Marker.SintesiRichiesteAssistenzaMarker;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi;
-using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
 using SO115App.Models.Servizi.CustomMapper;
-using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
-using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
 using SO115App.Models.Servizi.Infrastruttura.Notification.ComposizionePartenza;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
 using SO115App.SignalR.Utility;
@@ -47,11 +42,7 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
         private readonly IQueryHandler<BoxMezziQuery, BoxMezziResult> _boxMezzihandler;
         private readonly IQueryHandler<BoxPersonaleQuery, BoxPersonaleResult> _boxPersonalehandler;
         private readonly IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> _sintesiRichiesteAssistenzaMarkerhandler;
-        private readonly IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> _sintesiRichiesteHandler;
-        private readonly IMapper _mapper;
-        private readonly IGetTipologieByCodice _getTipologieByCodice;
         private readonly MapperRichiestaAssistenzaSuSintesi _mapperSintesi;
-        private readonly IGetRichiestaById _getRichiestaById;
         private readonly GetGerarchiaToSend _getGerarchiaToSend;
         private readonly IGetDistaccamentoByCodiceSedeUC _getDistaccamentoUC;
         private readonly IGetListaMezzi _getListaMezzi;
@@ -61,10 +52,8 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
             IQueryHandler<BoxMezziQuery, BoxMezziResult> boxMezzihandler,
             IQueryHandler<BoxPersonaleQuery, BoxPersonaleResult> boxPersonalehandler,
             IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> sintesiRichiesteAssistenzaMarkerhandler,
-            IMapper mapper,
-            IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> sintesiRichiesteHandler,
-            IGetTipologieByCodice getTipologieByCodice, MapperRichiestaAssistenzaSuSintesi mapperSintesi,
-            IGetRichiestaById getRichiestaById, GetGerarchiaToSend getGerarchiaToSend, IGetDistaccamentoByCodiceSedeUC getDistaccamentoUC, IGetListaMezzi getListaMezzi)
+            MapperRichiestaAssistenzaSuSintesi mapperSintesi,
+            GetGerarchiaToSend getGerarchiaToSend, IGetDistaccamentoByCodiceSedeUC getDistaccamentoUC, IGetListaMezzi getListaMezzi)
         {
             _getGerarchiaToSend = getGerarchiaToSend;
             _getDistaccamentoUC = getDistaccamentoUC;
@@ -74,11 +63,7 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
             _boxMezzihandler = boxMezzihandler;
             _boxPersonalehandler = boxPersonalehandler;
             _sintesiRichiesteAssistenzaMarkerhandler = sintesiRichiesteAssistenzaMarkerhandler;
-            _mapper = mapper;
-            _sintesiRichiesteHandler = sintesiRichiesteHandler;
-            _getTipologieByCodice = getTipologieByCodice;
             _mapperSintesi = mapperSintesi;
-            _getRichiestaById = getRichiestaById;
             _getDistaccamentoUC = getDistaccamentoUC;
         }
 
@@ -86,82 +71,72 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
         {
             const bool notificaChangeState = true;
 
-            var richiesta = _getRichiestaById.GetById(conferma.ConfermaPartenze.IdRichiesta);
-            var sintesi = _mapperSintesi.Map(richiesta);
-            sintesi.Competenze = MapCompetenze(richiesta.CodUOCompetenza);
-            conferma.ConfermaPartenze.Chiamata = sintesi;
-
             //Sedi gerarchicamente superiori alla richiesta che dovanno ricevere la notifica
             var SediDaNotificare = new List<string>();
-            if (richiesta.CodSOAllertate != null)
-                SediDaNotificare = _getGerarchiaToSend.Get(richiesta.CodSOCompetente, richiesta.CodSOAllertate.ToArray());
+            if (conferma.Richiesta.CodSOAllertate != null)
+                SediDaNotificare = _getGerarchiaToSend.Get(conferma.Richiesta.CodSOCompetente, conferma.Richiesta.CodSOAllertate.ToArray());
             else
-                SediDaNotificare = _getGerarchiaToSend.Get(richiesta.CodSOCompetente);
+                SediDaNotificare = _getGerarchiaToSend.Get(conferma.Richiesta.CodSOCompetente);
 
             //Sedi dei mezzi in partenza che dovranno ricevere la notifica
-            foreach (var partenza in conferma.ConfermaPartenze.Partenze)
-            {
-                SediDaNotificare.Add(partenza.Mezzo.Distaccamento.Codice);
-            }
+            SediDaNotificare.AddRange(conferma.ConfermaPartenze.Partenze.Select(c => c.Mezzo.Distaccamento.Codice));
 
-            sintesi.Motivazione = sintesi.Descrizione;
+            var listaMezziInServizio = Task.Factory.StartNew(() => _getListaMezzi.Get(SediDaNotificare.ToArray()));
+            var sintesi = Task.Factory.StartNew(() => _mapperSintesi.Map(conferma.Richiesta)).ContinueWith(sintesi =>
+            {
+                sintesi.Result.Competenze = MapCompetenze(conferma.Richiesta.CodUOCompetenza);
+                conferma.ConfermaPartenze.Chiamata = sintesi.Result;
+                sintesi.Result.Motivazione = sintesi.Result.Descrizione;
+
+                return sintesi.Result;
+            });
 
             Parallel.ForEach(SediDaNotificare, sede =>
             {
+                var CodSede = new string[] { sede };
+
+                _notificationHubContext.Clients.Group(sede).SendAsync("ModifyAndNotifySuccess", conferma.ConfermaPartenze);
+
                 var boxRichiesteQuery = new BoxRichiesteQuery()
                 {
                     CodiciSede = new string[] { sede }
                 };
+                var boxInterventi = _boxRichiestehandler.Handle(boxRichiesteQuery).BoxRichieste;
+                _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxInterventi", boxInterventi);
+
                 var boxMezziQuery = new BoxMezziQuery()
                 {
                     CodiciSede = new string[] { sede }
                 };
+                var boxMezzi = _boxMezzihandler.Handle(boxMezziQuery).BoxMezzi;
+                _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxMezzi", boxMezzi);
+
                 var boxPersonaleQuery = new BoxPersonaleQuery()
                 {
                     CodiciSede = new string[] { sede }
                 };
-                var sintesiRichiesteAssistenzaQuery = new SintesiRichiesteAssistenzaQuery
-                {
-                    Filtro = new FiltroRicercaRichiesteAssistenza
-                    {
-                        idOperatore = conferma.ConfermaPartenze.IdOperatore
-                    },
-                    CodiciSede = new string[] { sede }
-                };
+                var boxPersonale = _boxPersonalehandler.Handle(boxPersonaleQuery).BoxPersonale;
+                _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxPersonale", boxPersonale);
+
+                _notificationHubContext.Clients.Group(sede).SendAsync("ChangeStateSuccess", notificaChangeState);
 
                 var sintesiRichiesteAssistenzaMarkerQuery = new SintesiRichiesteAssistenzaMarkerQuery()
                 {
                     CodiciSedi = new string[] { sede }
                 };
-
-                var CodSede = new string[] { sede };
-                var listaMezziInServizio = _getListaMezzi.Get(CodSede);
-
-                var boxInterventi = _boxRichiestehandler.Handle(boxRichiesteQuery).BoxRichieste;
-                var boxMezzi = _boxMezzihandler.Handle(boxMezziQuery).BoxMezzi;
-                var boxPersonale = _boxPersonalehandler.Handle(boxPersonaleQuery).BoxPersonale;
-                var sintesiRichieste = _sintesiRichiesteHandler.Handle(sintesiRichiesteAssistenzaQuery).SintesiRichiesta;
                 var listaSintesiMarker = _sintesiRichiesteAssistenzaMarkerhandler.Handle(sintesiRichiesteAssistenzaMarkerQuery).SintesiRichiestaMarker;
-
-                _notificationHubContext.Clients.Group(sede).SendAsync("ModifyAndNotifySuccess", conferma.ConfermaPartenze);
+                _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetRichiestaMarker", listaSintesiMarker.LastOrDefault(marker => marker.CodiceRichiesta == sintesi.Result.CodiceRichiesta));
 
                 if (conferma.ConfermaPartenze.IdRichiestaDaSganciare != null)
                 {
-                    var richiestaSganciata = _getRichiestaById.GetByCodice(conferma.ConfermaPartenze.IdRichiestaDaSganciare);
-                    var sintesiSganciata = _mapperSintesi.Map(richiesta);
-                    sintesiSganciata.Competenze = MapCompetenze(richiesta.CodUOCompetenza);
-                    conferma.ConfermaPartenze.Chiamata = sintesi;
+                    var sintesiSganciata = _mapperSintesi.Map(conferma.RichiestaDaSganciare);
+                    sintesiSganciata.Competenze = MapCompetenze(conferma.Richiesta.CodUOCompetenza);
+                    conferma.ConfermaPartenze.Chiamata = sintesi.Result;
                     _notificationHubContext.Clients.Group(sede).SendAsync("ModifyAndNotifySuccess", conferma.ConfermaPartenze);
                 }
 
-                _notificationHubContext.Clients.Group(sede).SendAsync("ChangeStateSuccess", notificaChangeState);
-                _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxInterventi", boxInterventi);
-                _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxMezzi", boxMezzi);
-                _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxPersonale", boxPersonale);
-                _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetRichiestaMarker", listaSintesiMarker.LastOrDefault(marker => marker.CodiceRichiesta == sintesi.CodiceRichiesta));
-
                 foreach (var partenze in conferma.ConfermaPartenze.Partenze)
-                    _notificationHubContext.Clients.Group(sede).SendAsync("NotifyUpdateMezzoInServizio", listaMezziInServizio.Find(x => x.Mezzo.Mezzo.Codice.Equals(partenze.Mezzo.Codice)));
+                    _notificationHubContext.Clients.Group(sede).SendAsync("NotifyUpdateMezzoInServizio", listaMezziInServizio.Result.Find(x => x.Mezzo.Mezzo.Codice.Equals(partenze.Mezzo.Codice)));
             });
         }
 

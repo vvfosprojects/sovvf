@@ -63,7 +63,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
 
             var lstSedi = new List<string>() { query.CodiceSede };
 
-            //REPERISCO MEZZI E SQUADRE
+            //REPERISCO I DATI (MEZZI E SQUADRE)
             var lstSquadre = _getListaSquadre.Get(lstSedi).ContinueWith(lstsquadre =>
             {
                 var statiOperativi = _getStatoSquadre.Get(lstSedi);
@@ -137,7 +137,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                     }).OrderByDescending(x => x.IndiceOrdinamento).ToList();
                 });
 
-            //COMPONGO IL DTO, FILTRI E PAGINAZIONE
+            //COMPONGO IL DTO CON FILTRI E PAGINAZIONE
             var composizioneAvanzata = new Classi.Composizione.ComposizionePartenzaAvanzata()
             {
                 ComposizioneMezziDataArray = lstMezzi.Result
@@ -149,7 +149,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                     })
                     .Where(m =>
                     {
-                        if (query.Filtro.RicercaSquadre != null) // aggiungere altri campi in or (fulltext)
+                        if (query.Filtro.RicercaSquadre != null) // aggiungere altri campi in OR (fulltext)
                             return m.Mezzo.Codice.Contains(query.Filtro.RicercaMezzi) || m.Mezzo.Descrizione.Contains(query.Filtro.RicercaMezzi);
                         return true;
                     })
@@ -161,10 +161,11 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                     })
                     .Skip(query.Filtro.MezziPagination.PageSize * (query.Filtro.MezziPagination.Page - 1))
                     .Take(query.Filtro.MezziPagination.PageSize).ToList(),
+
                 ComposizioneSquadreDataArray = lstSquadre.Result
                     .Where(s =>
                     {
-                        if (query.Filtro.RicercaSquadre != null) // aggiungere altri campi in or (fulltext)
+                        if (query.Filtro.RicercaSquadre != null) // aggiungere altri campi in OR (fulltext)
                             return s.Squadra.Codice.Contains(query.Filtro.RicercaSquadre);
                         return true;
                     })

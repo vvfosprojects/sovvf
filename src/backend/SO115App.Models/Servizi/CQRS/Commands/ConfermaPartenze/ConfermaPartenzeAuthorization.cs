@@ -1,15 +1,12 @@
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Principal;
 using CQRS.Authorization;
 using CQRS.Commands.Authorizers;
 using DomainModel.CQRS.Commands.ConfermaPartenze;
-using DomainModel.CQRS.Commands.MezzoPrenotato;
-using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Autenticazione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.VerificaUtente;
+using System.Collections.Generic;
+using System.Security.Principal;
 
 namespace DomainModel.CQRS.Commands.MezzoPrenotato
 {
@@ -31,29 +28,27 @@ namespace DomainModel.CQRS.Commands.MezzoPrenotato
 
         public IEnumerable<AuthorizationResult> Authorize(ConfermaPartenzeCommand command)
         {
-            var richiesta = _getRichiestaById.GetByCodice(command.ConfermaPartenze.IdRichiesta);
-
-            var username = _currentUser.Identity.Name;
-            var user = _findUserByUsername.FindUserByUs(username);
+            command.Richiesta = _getRichiestaById.GetByCodice(command.ConfermaPartenze.IdRichiesta);
+            command.Utente = _findUserByUsername.FindUserByUs(_currentUser.Identity.Name);
 
             if (_currentUser.Identity.IsAuthenticated)
             {
-                if (user == null)
+                if (command.Utente == null)
                     yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
                 else
                 {
                     bool abilitato = false;
-                    foreach (var competenza in richiesta.CodUOCompetenza)
+                    foreach (var competenza in command.Richiesta.CodUOCompetenza)
                     {
-                        if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, competenza, Costanti.GestoreRichieste))
+                        if (_getAutorizzazioni.GetAutorizzazioniUtente(command.Utente.Ruoli, competenza, Costanti.GestoreRichieste))
                             abilitato = true;
                     }
 
-                    if (richiesta.CodSOAllertate != null)
+                    if (command.Richiesta.CodSOAllertate != null)
                     {
-                        foreach (var competenza in richiesta.CodSOAllertate)
+                        foreach (var competenza in command.Richiesta.CodSOAllertate)
                         {
-                            if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, competenza, Costanti.GestoreRichieste))
+                            if (_getAutorizzazioni.GetAutorizzazioniUtente(command.Utente.Ruoli, competenza, Costanti.GestoreRichieste))
                                 abilitato = true;
                         }
                     }
