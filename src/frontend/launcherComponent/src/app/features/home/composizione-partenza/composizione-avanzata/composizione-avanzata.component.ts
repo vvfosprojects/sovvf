@@ -222,21 +222,18 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
         this.subscription.add(
             this.currentPageMezzi$.subscribe((currentPageMezzi: number) => {
                 this.currentPageMezzi = currentPageMezzi;
-                console.log('currentPageMezzi', this.currentPageMezzi);
             })
         );
         // Prendo Totale Items Mezzi
         this.subscription.add(
             this.totalItemsMezzi$.subscribe((totalItemsMezzi: number) => {
                 this.totalItemsMezzi = totalItemsMezzi;
-                console.log('totalItemsMezzi', this.totalItemsMezzi);
             })
         );
         // Prendo Pagina Size Mezzi
         this.subscription.add(
             this.pageSizeMezzi$.subscribe((pageSizeMezzi: number) => {
                 this.pageSizeMezzi = pageSizeMezzi;
-                console.log('pageSizeMezzi', this.pageSizeMezzi);
             })
         );
         // Prendo Pagina Corrente Squadre
@@ -460,11 +457,12 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
         this.store.dispatch(new GetListeComposizioneAvanzata(options));
     }
 
-    squadrePageChange(pageSelected: number) {
-        let richiesta = this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione);
-        if (richiesta) {
-            let paginaAttuale = this.store.selectSnapshot(PaginationComposizionePartenzaState.paginationSquadre);
-            paginaAttuale.page = pageSelected;
-        }
+    squadrePageChange(pageSquadre: number) {
+        const options = {
+            page: {
+                pageSquadre,
+            }
+        };
+        this.store.dispatch(new GetListeComposizioneAvanzata(options));
     }
 }

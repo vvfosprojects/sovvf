@@ -28,7 +28,6 @@ export class CompPartenzaService {
 
     // Todo: modificare nome in getListeComposizione ?
     getListeComposizioneAvanzata(obj: FiltriComposizione): Observable<ListaComposizioneAvanzata> {
-        console.log('*******ID RICHIESTA' , obj)
         return this.http.post<ListaComposizioneAvanzata>(API_URL_AVANZATA, obj);
     }
 
