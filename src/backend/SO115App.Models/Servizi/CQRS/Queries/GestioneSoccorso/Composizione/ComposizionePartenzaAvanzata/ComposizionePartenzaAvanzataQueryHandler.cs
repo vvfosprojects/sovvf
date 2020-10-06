@@ -159,6 +159,12 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                             return query.Filtro.CodiceDistaccamento.Contains(m.Mezzo.Distaccamento.Codice);
                         return true;
                     })
+                    .Where(m =>
+                    {
+                        if (query.Filtro.CodiceDistaccamentoMezziSquadre != null)
+                            return m.Mezzo.Distaccamento.Codice == query.Filtro.CodiceDistaccamentoMezziSquadre;
+                        return true;
+                    })
                     .Skip(query.Filtro.MezziPagination.PageSize * (query.Filtro.MezziPagination.Page - 1))
                     .Take(query.Filtro.MezziPagination.PageSize).ToList(),
 
@@ -173,6 +179,12 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                     {
                         if (query.Filtro.CodiceDistaccamento != null && query.Filtro.CodiceDistaccamento.All(c => c != ""))
                             return query.Filtro.CodiceDistaccamento.Contains(s.Squadra.Distaccamento.Codice);
+                        return true;
+                    })
+                    .Where(s =>
+                    {
+                        if (query.Filtro.CodiceDistaccamentoMezziSquadre != null)
+                            return s.Squadra.Distaccamento.Codice == query.Filtro.CodiceDistaccamentoMezziSquadre;
                         return true;
                     })
                     .Skip(query.Filtro.SquadrePagination.PageSize * (query.Filtro.SquadrePagination.Page - 1))
