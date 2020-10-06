@@ -42,21 +42,20 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
         private readonly IQueryHandler<BoxMezziQuery, BoxMezziResult> _boxMezzihandler;
         private readonly IQueryHandler<BoxPersonaleQuery, BoxPersonaleResult> _boxPersonalehandler;
         private readonly IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> _sintesiRichiesteAssistenzaMarkerhandler;
+        private readonly IGetListaMezzi _getListaMezzi;
         private readonly MapperRichiestaAssistenzaSuSintesi _mapperSintesi;
         private readonly GetGerarchiaToSend _getGerarchiaToSend;
-        private readonly IGetDistaccamentoByCodiceSedeUC _getDistaccamentoUC;
-        private readonly IGetListaMezzi _getListaMezzi;
 
         public NotificationConfermaPartenze(IHubContext<NotificationHub> notificationHubContext,
             IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> boxRichiestehandler,
             IQueryHandler<BoxMezziQuery, BoxMezziResult> boxMezzihandler,
             IQueryHandler<BoxPersonaleQuery, BoxPersonaleResult> boxPersonalehandler,
             IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> sintesiRichiesteAssistenzaMarkerhandler,
+            IGetListaMezzi getListaMezzi,
             MapperRichiestaAssistenzaSuSintesi mapperSintesi,
-            GetGerarchiaToSend getGerarchiaToSend, IGetDistaccamentoByCodiceSedeUC getDistaccamentoUC, IGetListaMezzi getListaMezzi)
+            GetGerarchiaToSend getGerarchiaToSend)
         {
             _getGerarchiaToSend = getGerarchiaToSend;
-            _getDistaccamentoUC = getDistaccamentoUC;
             _getListaMezzi = getListaMezzi;
             _notificationHubContext = notificationHubContext;
             _boxRichiestehandler = boxRichiestehandler;
@@ -64,7 +63,6 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
             _boxPersonalehandler = boxPersonalehandler;
             _sintesiRichiesteAssistenzaMarkerhandler = sintesiRichiesteAssistenzaMarkerhandler;
             _mapperSintesi = mapperSintesi;
-            _getDistaccamentoUC = getDistaccamentoUC;
         }
 
         public async Task SendNotification(ConfermaPartenzeCommand conferma)
