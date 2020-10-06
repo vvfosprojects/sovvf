@@ -1,5 +1,5 @@
 /**
- Modules
+ * Modules
  */
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -14,7 +14,7 @@ import { UiSwitchModule } from 'ngx-ui-switch';
 import { GooglePlaceModule } from 'ngx-google-places-autocomplete';
 import { TagInputModule } from 'ngx-chips';
 /**
- Components
+ * Components
  */
 import { RichiesteComponent } from './richieste.component';
 import { ListaRichiesteComponent } from './lista-richieste/lista-richieste.component';

@@ -11,7 +11,7 @@ import {
     FiltraEventiRichiesta,
     ToggleIconeNomeClasseEvento
 } from '../../actions/eventi/eventi-richiesta.actions';
-import { FiltroTargaMezzo } from '../../../eventi/filtro-targa-mezzo.interface';
+import { FiltroTargaMezzo } from '../../../eventi/interface/filtro-targa-mezzo.interface';
 import { StartLoading, StopLoading } from '../../../../../shared/store/actions/loading/loading.actions';
 import { SintesiRichiesteService } from '../../../../../core/service/lista-richieste-service/lista-richieste.service';
 import { GestioneUtentiService } from '../../../../../core/service/gestione-utenti-service/gestione-utenti.service';

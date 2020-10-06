@@ -60,7 +60,7 @@ export class AgmComponent implements OnDestroy {
     meteoMarkers: MeteoMarker[] = [];
 
     mapsOptions: MapsOptionsInterface;
-    map_loaded = false;
+    mapLoaded = false;
     subscription = new Subscription();
     map: any;
     mapWrapper: any;
@@ -150,7 +150,7 @@ export class AgmComponent implements OnDestroy {
         this.mapZoom = this.mapZoomToRound();
     }
 
-    ngOnDestroy() {
+    ngOnDestroy(): void {
         this.subscription.unsubscribe();
     }
 
@@ -159,7 +159,7 @@ export class AgmComponent implements OnDestroy {
          *  imposto una proprietà a true quando la mappa è caricata e inserisco nell'oggetto map il menù
          */
         const self = this;
-        this.map_loaded = true;
+        this.mapLoaded = true;
         this.map = event;
         this.map.controls[google.maps.ControlPosition.RIGHT_TOP].push(document.getElementById('Settings'));
         this.map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(document.getElementById('CustomButtons'));
@@ -232,7 +232,7 @@ export class AgmComponent implements OnDestroy {
         this.mapService.setArea(bounds, this.mapZoom.get(this.mapWrapper.getZoom()));
     }
 
-    mapClick(event: any) {
+    mapClick(event: any): void {
         this.markerService.createMeteoMarker(event);
         this.markerService.clearSelfClick();
     }
@@ -288,6 +288,7 @@ export class AgmComponent implements OnDestroy {
         /**
          * scateno l'azione relativa all'evento del mouse ricevuto
          */
+        // tslint:disable-next-line:max-line-length
         this.markerService.actionMezzoMarker(id, event, this.viewStateMappa.active === AppFeatures.ComposizionePartenza, this.viewStateMappa.active === AppFeatures.MezziInServizio);
     }
 
@@ -305,11 +306,11 @@ export class AgmComponent implements OnDestroy {
         this.markerService.actionSchedaContattoMarker(id, event);
     }
 
-    findDatiMeteo(_id: string): Meteo {
+    findDatiMeteo(id: string): Meteo {
         /**
          * ritorno i dati meteo del marker selezionato
          */
-        return this.markerService.findDatiMeteo(_id);
+        return this.markerService.findDatiMeteo(id);
     }
 
     colorWindow(stato: string): string {
@@ -338,7 +339,7 @@ export class AgmComponent implements OnDestroy {
 
     /**
      * zoom agm - roundExp
-     * @returns {Map<number, number>}
+     * @returns { Map<number, number> }
      */
     mapZoomToRound(): Map<number, number> {
         return new Map([

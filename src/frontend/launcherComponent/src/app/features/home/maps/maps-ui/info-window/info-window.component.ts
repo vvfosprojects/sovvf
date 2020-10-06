@@ -21,7 +21,7 @@ import { SchedaContattoMarker } from '../../maps-model/scheda-contatto-marker.mo
     templateUrl: './info-window.component.html',
     styleUrls: ['./info-window.component.css']
 })
-export class InfoWindowComponent implements OnInit {
+export class InfoWindowComponent {
 
     @Input() disabilitaIndicatoriMezzo = false;
     @Input() datiMeteo: Meteo;
@@ -37,10 +37,10 @@ export class InfoWindowComponent implements OnInit {
     @Output() addMezzoComposizione = new EventEmitter<string>();
 
     clickedPopover: NgbPopover;
-    methods = new HelperSintesiRichiesta;
+    methods = new HelperSintesiRichiesta();
 
     constructor(private store: Store,
-                private _modalService: NgbModal,
+                private modalService: NgbModal,
                 popoverConfig: NgbPopoverConfig,
                 tooltipConfig: NgbTooltipConfig) {
         popoverConfig.container = 'body';
@@ -49,14 +49,14 @@ export class InfoWindowComponent implements OnInit {
         tooltipConfig.placement = 'bottom';
     }
 
-    openModal(mode: string, id_richiesta?: string) {
+    openModal(mode: string, idRichiesta?: string): void {
         switch (mode) {
             case 'cambioSede':
-                this._modalService.open(CambioSedeModalComponent, { centered: true });
+                this.modalService.open(CambioSedeModalComponent, { centered: true });
                 break;
             case 'visualizzaRichiesta':
-                this.store.dispatch(new SetRichiestaById(id_richiesta));
-                this._modalService.open(SintesiRichiestaModalComponent, {
+                this.store.dispatch(new SetRichiestaById(idRichiesta));
+                this.modalService.open(SintesiRichiestaModalComponent, {
                     windowClass: 'xlModal',
                     backdropClass: 'light-blue-backdrop',
                     centered: true
@@ -65,10 +65,7 @@ export class InfoWindowComponent implements OnInit {
         }
     }
 
-    ngOnInit() {
-    }
-
-    apriPopover(popover: NgbPopover) {
+    apriPopover(popover: NgbPopover): void {
         if (this.clickedPopover) {
             this.clickedPopover.close();
         }
@@ -76,7 +73,7 @@ export class InfoWindowComponent implements OnInit {
         this.clickedPopover = popover;
     }
 
-    onAddMezzoComposizione(mezzoMarker: MezzoMarker) {
+    onAddMezzoComposizione(mezzoMarker: MezzoMarker): void {
         console.log(mezzoMarker);
         if (!mezzoComposizioneBusy(mezzoMarker.mezzo.stato)) {
             this.addMezzoComposizione.emit(mezzoMarker.mezzo.codice);

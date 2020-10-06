@@ -88,26 +88,26 @@ export class FilterbarComponent {
     /**
      * Filtri Richieste Events
      */
-    onSelezioneFiltroRichieste(filtro: VoceFiltro) {
+    onSelezioneFiltroRichieste(filtro: VoceFiltro): void {
         this.store.dispatch(new SetFiltroSelezionatoRichieste(filtro));
     }
 
-    onDeselezioneFiltroRichieste(filtro: VoceFiltro) {
+    onDeselezioneFiltroRichieste(filtro: VoceFiltro): void {
         this.store.dispatch(new ClearFiltroSelezionatoRichieste(filtro));
     }
 
-    eliminaFiltriAttiviRichieste() {
+    eliminaFiltriAttiviRichieste(): void {
         this.store.dispatch(new ResetFiltriSelezionatiRichieste());
     }
 
     /**
      * Ricerca Richieste Events
      */
-    onSearch(ricerca: string) {
+    onSearch(ricerca: string): void {
         this.store.dispatch(new SetRicercaFilterbar(ricerca));
     }
 
-    getRicercaPlaceholder() {
+    getRicercaPlaceholder(): string {
         let placeholder = 'Cosa vuoi cercare?';
         const mezziInServizioActive = this.store.selectSnapshot(ViewComponentState.mezziInServizio);
         if (mezziInServizioActive) {
@@ -119,18 +119,18 @@ export class FilterbarComponent {
     /**
      * Filtri Schede Contatto Events
      */
-    onSelezioneFiltroSchedeContatto(filtro: VoceFiltro) {
+    onSelezioneFiltroSchedeContatto(filtro: VoceFiltro): void {
         this.store.dispatch(new ReducerSetFiltroSchedeContatto(filtro));
     }
 
-    eliminaFiltriAttiviSchedeContatto() {
+    eliminaFiltriAttiviSchedeContatto(): void {
         this.store.dispatch(new ClearFiltriSchedeContatto());
     }
 
     /**
      * Ricerca Schede Contatto Events
      */
-    onSearchSchedeContatto(ricerca: any) {
+    onSearchSchedeContatto(ricerca: any): void {
         this.store.dispatch(new SetFiltroKeySchedeContatto(ricerca));
     }
 
@@ -138,30 +138,30 @@ export class FilterbarComponent {
     /**
      * Filtri Schede Contatto Events
      */
-    onSelezioneFiltroMezziInServizio(filtro: VoceFiltro) {
+    onSelezioneFiltroMezziInServizio(filtro: VoceFiltro): void {
         this.store.dispatch(new SetFiltroMezziInServizio(filtro));
     }
 
-    eliminaFiltriAttiviMezziInServizio() {
+    eliminaFiltriAttiviMezziInServizio(): void {
         this.store.dispatch(new ClearFiltriMezziInServizio());
     }
 
     /**
      * Marker Meteo Switch Events
      */
-    onMeteoSwitch(active: boolean) {
+    onMeteoSwitch(active: boolean): void {
         this.store.dispatch(new SetMarkerMeteoSwitch(active));
     }
 
-    toggleChiamata() {
+    toggleChiamata(): void {
         this.store.dispatch(new ToggleChiamata());
     }
 
-    switchView(event: AppFeatures) {
+    switchView(event: AppFeatures): void {
         this.store.dispatch(new ChangeView(event));
     }
 
-    onOptionsRichieste(event: OptionsRichieste) {
+    onOptionsRichieste(event: OptionsRichieste): void {
         switch (event) {
             case OptionsRichieste.Restringi:
                 this.store.dispatch(new ClearRichiesteEspanse());
