@@ -22,11 +22,7 @@
             <ul class="list-group list-group-flush border-bottom scroll-y"
                 [ngClass]="{'m-h-boxes-avanzata': boxAttivi, 'm-h-no-boxes-avanzata': !boxAttivi}">
                 <ng-template [ngIf]="squadreComposizione && squadreComposizione.length > 0">
-                    <app-squadra-composizione *ngFor="let sC of squadreComposizione | paginate: { id: 'paginationSquadre',
-                                                                                        itemsPerPage: pageSizeSquadre,
-                                                                                        currentPage: currentPageSquadre,
-                                                                                        totalItems: totalItemsSquadre } 
-                                                                                    | filterBy: {'squadra': {'nome': ricercaSquadre}}"
+                    <app-squadra-composizione *ngFor="let sC of squadreComposizione | filterBy: {'squadra': {'nome': ricercaSquadre}}"
                             [squadraComp]="sC"
                             [itemSelezionato]="checkSquadraSelezione(sC.id)"
                             [itemHover]="sC.id === idSquadraHover"

@@ -14,6 +14,7 @@ import { AddFiltroSelezionatoComposizione, RemoveFiltriSelezionatiComposizione }
 import { FiltriComposizioneState } from '../../store/states/filtri-composizione/filtri-composizione.state';
 import { SintesiRichiesta } from '../../model/sintesi-richiesta.model';
 import { SetMarkerRichiestaSelezionato } from 'src/app/features/home/store/actions/maps/marker.actions';
+import { GetListeComposizioneAvanzata } from 'src/app/features/home/store/actions/composizione-partenza/composizione-avanzata.actions';
 
 @Component({
     selector: 'app-filterbar-composizione',
@@ -43,6 +44,13 @@ export class FilterbarComposizioneComponent {
             this.update();
             this.nuovaPartenza(this.richiesta);
         }
+        const options = {
+         page: {
+                pageMezzi: 1,
+                pageSquadre: 1,
+            }
+        };
+        this.store.dispatch(new GetListeComposizioneAvanzata(options));
     }
 
     clearFiltri(tipo: string) {
