@@ -137,13 +137,43 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                     }).OrderByDescending(x => x.IndiceOrdinamento).ToList();
                 });
 
-            //COMPONGO IL DTO
+            //COMPONGO IL DTO, FILTRI E PAGINAZIONE
             var composizioneAvanzata = new Classi.Composizione.ComposizionePartenzaAvanzata()
             {
                 ComposizioneMezziDataArray = lstMezzi.Result
+                    .Where(m =>
+                    {
+                        if (query.Filtro.StatoMezzo != null)
+                            return query.Filtro.StatoMezzo.Contains(m.Mezzo.Stato.ToString());
+                        return true;
+                    })
+                    .Where(m =>
+                    {
+                        if (query.Filtro.RicercaSquadre != null) // aggiungere altri campi in or (fulltext)
+                            return m.Mezzo.Codice.Contains(query.Filtro.RicercaMezzi) || m.Mezzo.Descrizione.Contains(query.Filtro.RicercaMezzi);
+                        return true;
+                    })
+                    .Where(m =>
+                    {
+                        if (query.Filtro.CodiceDistaccamento != null && query.Filtro.CodiceDistaccamento.All(c => c != ""))
+                            return query.Filtro.CodiceDistaccamento.Contains(m.Mezzo.Distaccamento.Codice);
+                        return true;
+                    })
                     .Skip(query.Filtro.MezziPagination.PageSize * (query.Filtro.MezziPagination.Page - 1))
                     .Take(query.Filtro.MezziPagination.PageSize).ToList(),
                 ComposizioneSquadreDataArray = lstSquadre.Result
+                    .Where(s =>
+                    {
+                        if (query.Filtro.RicercaSquadre != null) // aggiungere altri campi in or (fulltext)
+                            return s.Squadra.Codice.Contains(query.Filtro.RicercaSquadre);
+                        return true;
+                    })
+                    .Where(s =>
+                    {
+                        if (query.Filtro.CodiceDistaccamento != null && query.Filtro.CodiceDistaccamento.All(c => c != ""))
+                            return query.Filtro.CodiceDistaccamento.Contains(s.Squadra.Distaccamento.Codice);
+                        return true;
+                    })
                     .Skip(query.Filtro.SquadrePagination.PageSize * (query.Filtro.SquadrePagination.Page - 1))
                     .Take(query.Filtro.SquadrePagination.PageSize).ToList(),
 

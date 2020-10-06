@@ -26,7 +26,20 @@ namespace SO115App.Models.Classi.Composizione
     {
         [JsonRequired]
         public string IdRichiesta { get; set; }
+
         public Paginazione MezziPagination { get; set; }
         public Paginazione SquadrePagination { get; set; }
+
+        public string[] CodiceDistaccamento { get; set; }
+        public string[] TipoMezzo { get; set; }
+        public string[] StatoMezzo { get; set; }
+
+        public string RicercaMezzi { get; set; }
+        public string RicercaSquadre { get; set; }
+
+        /// <summary>
+        /// codice per filtrare le squadre quando seleziono la squadra
+        /// </summary>
+        public string CodiceDistaccamentoMezziSquadre { get; set; }
     }
 }
