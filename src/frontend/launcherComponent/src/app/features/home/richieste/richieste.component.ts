@@ -306,7 +306,6 @@ export class RichiesteComponent implements OnInit, OnDestroy {
     }
 
     nuovaPartenza($event: SintesiRichiesta) {
-        console.log('MOSTRATIIIII ', $event)
         this.store.dispatch(new SetMarkerRichiestaSelezionato($event.id));
         this.store.dispatch(new RichiestaComposizione($event)); //questo quiiiiii
     }
