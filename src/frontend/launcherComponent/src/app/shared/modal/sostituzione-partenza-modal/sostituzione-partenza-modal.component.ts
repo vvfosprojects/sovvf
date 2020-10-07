@@ -29,7 +29,6 @@ import {
     UnselectSquadraComposizione
 } from '../../store/actions/squadre-composizione/squadre-composizione.actions';
 import { UnselectMezziAndSquadreComposizioneAvanzata } from '../../../features/home/store/actions/composizione-partenza/composizione-avanzata.actions';
-import { ClearFiltriAffini } from '../../store/actions/filtri-composizione/filtri-composizione.actions';
 import { FiltriComposizioneState } from '../../store/states/filtri-composizione/filtri-composizione.state';
 import { SetRicercaMezziComposizione, SetRicercaSquadreComposizione } from '../../store/actions/ricerca-composizione/ricerca-composizione.actions';
 import { ComposizionePartenzaState } from '../../../features/home/store/states/composizione-partenza/composizione-partenza.state';
@@ -73,7 +72,7 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
     idSquadraHover: string;
 
     // Filtri
-    @Select(FiltriComposizioneState.filtriAffini) filtriAffini$: Observable<any>;
+    @Select(FiltriComposizioneState.filtri) filtriAffini$: Observable<any>;
 
     // Loading Liste Mezzi e Squadre
     @Select(ComposizionePartenzaState.loadingListe) loadingListe$: Observable<boolean>;
@@ -184,7 +183,6 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
         this.store.dispatch([
             new ClearListaMezziComposizione(),
             new ClearListaSquadreComposizione(),
-            new ClearFiltriAffini(),
             new UnselectMezziAndSquadreComposizioneAvanzata(),
             new ClearBoxPartenze()
         ]);
@@ -289,8 +287,8 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
 
     squadraDeselezionata(squadraComposizione: SquadraComposizione): void {
         this.store.dispatch(new UnselectSquadraComposizione(squadraComposizione));
-        let r = squadraComposizione.squadra;
-        let a = this.nuoveSquadre.filter(e => e != r);
+        const r = squadraComposizione.squadra;
+        const a = this.nuoveSquadre.filter(e => e !== r);
         this.nuoveSquadre = a;
         if (this.nuovoMezzo && this.nuoveSquadre.length >= 0) {
             this.nuoveSquadre = [];
@@ -351,7 +349,7 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
         const squadreUnique = [];
         const uniqueObject = {};
         for (const i in squadre) {
-            let objTitle = squadre[i]['id'];
+            const objTitle = squadre[i]['id'];
             uniqueObject[objTitle] = squadre[i];
         }
         for (const i in uniqueObject) {
@@ -359,7 +357,7 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
         }
         this.modal.close({
             status: 'ok',
-            result: { mezzo: mezzo, squadre: squadreUnique, motivazioneAnnullamento: this.f.motivazioneAnnullamento.value, dataAnnullamento: this.f.dataAnnullamento.value, time: this.time }
+            result: { mezzo, squadre: squadreUnique, motivazioneAnnullamento: this.f.motivazioneAnnullamento.value, dataAnnullamento: this.f.dataAnnullamento.value, time: this.time }
         });
     }
 }

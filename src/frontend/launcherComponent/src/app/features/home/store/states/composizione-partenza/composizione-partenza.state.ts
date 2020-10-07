@@ -25,7 +25,6 @@ import {
 import { Composizione } from '../../../../../shared/enum/composizione.enum';
 import {
     ClearComposizioneAvanzata,
-    FilterListeComposizioneAvanzata,
     GetListeComposizioneAvanzata,
     UnselectMezziAndSquadreComposizioneAvanzata
 } from '../../actions/composizione-partenza/composizione-avanzata.actions';
@@ -130,9 +129,9 @@ export class ComposizionePartenzaState {
         const state = getState();
         const compMode = state.composizioneMode;
         if (compMode === Composizione.Avanzata) {
-            dispatch(new FilterListeComposizioneAvanzata(action.filtri));
+            dispatch(new GetListeComposizioneAvanzata());
         } else if (compMode === Composizione.Veloce) {
-            dispatch(new FilterListaPreAccoppiati(action.filtri));
+            dispatch(new FilterListaPreAccoppiati());
         }
     }
 

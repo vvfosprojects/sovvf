@@ -31,9 +31,7 @@ import {
     mezzoComposizioneBusy
 } from '../../../../../shared/helper/composizione-functions';
 import produce from 'immer';
-import { ComposizionePartenzaState } from './composizione-partenza.state';
 import { FiltriComposizioneState } from '../../../../../shared/store/states/filtri-composizione/filtri-composizione.state';
-import { SetListaFiltriAffini } from '../../../../../shared/store/actions/filtri-composizione/filtri-composizione.actions';
 import { Injectable } from '@angular/core';
 
 export interface PreAccoppiatiStateModel {
@@ -248,9 +246,9 @@ export class ComposizioneVeloceState {
         dispatch(new ClearMarkerMezzoHover());
     }
 
-    @Action(FilterListaPreAccoppiati) //*********
+    @Action(FilterListaPreAccoppiati)
     filterListaPreAccoppiati({ getState, setState, dispatch }: StateContext<PreAccoppiatiStateModel>, action: FilterListaPreAccoppiati) {
-        let state = getState();
+        const state = getState();
         setState(
             produce(state, (draft: PreAccoppiatiStateModel) => {
                 draft.preAccoppiati = draft.allPreAccoppiati;
@@ -272,7 +270,5 @@ export class ComposizioneVeloceState {
                 }
             })
         );
-        state = getState();
-        dispatch(new SetListaFiltriAffini(state.preAccoppiati.map((p: BoxPartenza) => p.mezzoComposizione)));
     }
 }

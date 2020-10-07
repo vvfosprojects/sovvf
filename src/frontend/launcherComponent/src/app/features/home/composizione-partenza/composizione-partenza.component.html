@@ -16,7 +16,7 @@
             </div>
         </div>
         <div class="px-3">
-            <app-filterbar-composizione [filtri]="filtriAffini$ | async"
+            <app-filterbar-composizione [filtri]="filtri$ | async"
                                         [disableComposizioneMode]="loadingListe"></app-filterbar-composizione>
         </div>
         <div *ngIf="richiesta && compPartenzaMode === Composizione.Veloce" class="px-3">

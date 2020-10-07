@@ -35,7 +35,7 @@ import {
     SelectSquadraComposizione,
     UnselectSquadraComposizione
 } from '../../../../shared/store/actions/squadre-composizione/squadre-composizione.actions';
-import { ConfirmPartenze, RichiestaComposizione } from '../../store/actions/composizione-partenza/composizione-partenza.actions';
+import { ConfirmPartenze } from '../../store/actions/composizione-partenza/composizione-partenza.actions';
 import { TurnoState } from '../../../navbar/store/states/turno.state';
 import { SganciamentoInterface } from 'src/app/shared/interface/sganciamento.interface';
 import { MezzoDirection } from '../../../../shared/interface/mezzo-direction';
@@ -44,9 +44,8 @@ import { ConfermaPartenze } from '../interface/conferma-partenze-interface';
 import { StatoMezzo } from '../../../../shared/enum/stato-mezzo.enum';
 import { FiltriComposizioneState } from '../../../../shared/store/states/filtri-composizione/filtri-composizione.state';
 import { GetFiltriComposizione } from '../../../../shared/store/actions/filtri-composizione/filtri-composizione.actions';
-import { SetMarkerRichiestaSelezionato } from '../../store/actions/maps/marker.actions';
 import { PaginationComposizionePartenzaState } from 'src/app/shared/store/states/pagination-composizione-partenza/pagination-composizione-partenza.state';
-import { PatchCodDistaccamentoMezzo, PatchCodDistaccamentoSquadre, PatchPaginationMezziSquadre } from 'src/app/shared/store/actions/pagination-composizione-partenza/pagination-composizione-partenza.actions';
+import { PatchCodDistaccamentoMezzo } from 'src/app/shared/store/actions/pagination-composizione-partenza/pagination-composizione-partenza.actions';
 import { GetListeComposizioneAvanzata } from '../../store/actions/composizione-partenza/composizione-avanzata.actions';
 
 @Component({
@@ -273,7 +272,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
     }
 
     mezzoSelezionato(mezzoComposizione: MezzoComposizione) {
-        let codDistaccamentoMezzo = mezzoComposizione.mezzo.distaccamento.codice;
+        const codDistaccamentoMezzo = mezzoComposizione.mezzo.distaccamento.codice;
         this.store.dispatch([
             // new PatchPaginationMezziSquadre('squadre', {page: 1, pageSize: 10}), => la fa il BE
             new PatchCodDistaccamentoMezzo(codDistaccamentoMezzo),
@@ -304,10 +303,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
             if (this.boxPartenzaList.length <= 0) {
                 this.store.dispatch(new AddBoxPartenza());
             }
-            let codDistaccamentoSquadre = squadraComposizione.squadra.distaccamento.codice;
             this.store.dispatch([
-                // new PatchPaginationMezziSquadre('mezzi', {page: 1, pageSize: 10}),
-                new PatchCodDistaccamentoSquadre(codDistaccamentoSquadre),
                 new SelectSquadraComposizione(squadraComposizione),
             ]);
         }

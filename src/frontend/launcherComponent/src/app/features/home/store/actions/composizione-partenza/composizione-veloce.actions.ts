@@ -76,9 +76,10 @@ export class HoverOutPreAccoppiatoComposizione {
     static readonly type = '[PreAccoppiati] Hover Out PreAccoppiato Composizione';
 }
 
+// TODO: da rivedere
 export class FilterListaPreAccoppiati {
     static readonly type = '[PreAccoppiati] Filter Lista PreAccoppiati';
 
-    constructor(public filtri: ComposizioneFilterbar) {
+    constructor(public filtri?: ComposizioneFilterbar) {
     }
 }
