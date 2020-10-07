@@ -28,13 +28,13 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
         private readonly IConfiguration _configuration;
         private readonly IGetStatoMezzi _getStatoMezzi;
         private readonly IGetDistaccamentoByCodiceSedeUC _getDistaccamentoByCodiceSedeUC;
-        private readonly IGetPosizioneByCodiceMezzo _getPosizioneByCodiceMezzo;
+        //private readonly IGetPosizioneByCodiceMezzo _getPosizioneByCodiceMezzo;
         private readonly IGetAlberaturaUnitaOperative _getAlberaturaUnitaOperative;
         private readonly IMemoryCache _memoryCache;
         private readonly IGetPosizioneFlotta _getPosizioneFlotta;
 
         public GetMezziUtilizzabili(HttpClient client, IConfiguration configuration, IGetStatoMezzi GetStatoMezzi,
-            IGetDistaccamentoByCodiceSedeUC GetDistaccamentoByCodiceSedeUC, IGetPosizioneByCodiceMezzo getPosizioneByCodiceMezzo,
+            IGetDistaccamentoByCodiceSedeUC GetDistaccamentoByCodiceSedeUC, /*IGetPosizioneByCodiceMezzo getPosizioneByCodiceMezzo,*/
             IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative,
             IMemoryCache memoryCache, IGetPosizioneFlotta getPosizioneFlotta)
         {
@@ -42,7 +42,7 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
             _configuration = configuration;
             _getStatoMezzi = GetStatoMezzi;
             _getDistaccamentoByCodiceSedeUC = GetDistaccamentoByCodiceSedeUC;
-            _getPosizioneByCodiceMezzo = getPosizioneByCodiceMezzo;
+            //_getPosizioneByCodiceMezzo = getPosizioneByCodiceMezzo;
             _getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
             _memoryCache = memoryCache;
             _getPosizioneFlotta = getPosizioneFlotta;
@@ -78,23 +78,21 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
 
             #region LEGGO DA JSON FAKE
 
-            var filepath = Costanti.ListaMezzi;
             string json;
-            using (var r = new StreamReader(filepath))
+            using (var r = new StreamReader(Costanti.ListaMezzi))
             {
                 json = r.ReadToEnd();
             }
 
             #endregion LEGGO DA JSON FAKE
 
-            //PAGINARE QUI I MEZZI
             var listaMezziJson = JsonConvert.DeserializeObject<List<MezzoFake>>(json);
 
             var result = new List<Mezzo>();
 
             foreach (string CodSede in ListaCodiciSedi)
             {
-                List<Mezzo> listaMezziBySede = new List<Mezzo>();
+                var listaMezziBySede = new List<Mezzo>();
                 string nomeCache = "M_" + CodSede.Replace(".", "");
                 if (!_memoryCache.TryGetValue(nomeCache, out listaMezziBySede))
                 {
@@ -111,8 +109,8 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
 
                     var ListaMezziSede = listaMezziJson.FindAll(x => x.Sede.Equals(CodSede)).ToList();
 
-                    List<Mezzo> listaMezziBySedeAppo = new List<Mezzo>();
-                    foreach (MezzoFake mezzoFake in ListaMezziSede)
+                    var listaMezziBySedeAppo = new List<Mezzo>();
+                    foreach (var mezzoFake in ListaMezziSede)
                     {
                         if (!mezzoFake.CodDestinazione.Equals("CMOB"))
                         {

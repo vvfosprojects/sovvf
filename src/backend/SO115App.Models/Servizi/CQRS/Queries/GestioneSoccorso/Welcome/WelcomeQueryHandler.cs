@@ -20,6 +20,7 @@
 using CQRS.Queries;
 using Serilog;
 using SO115App.API.Models.Classi.Organigramma;
+using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizionePartenzaAvanzata;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
 using SO115App.Models.Classi.Filtri;
@@ -45,7 +46,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
         private readonly IGetBoxMezzi _boxMezziHandler;
         private readonly IGetBoxPersonale _boxPersonaleHandler;
         private readonly IGetBoxRichieste _boxRichiesteHandler;
-        private readonly IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> _sintesiRichiesteAssistenzaHandler;
         private readonly IGetChiamateInCorso _listaChiamateInCorsoMarkerHandler;
         private readonly IGetCentroMappaMarker _centroMappaMarkerHandler;
         private readonly IGetFiltri _filtriHandler;
@@ -53,12 +53,12 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
         private readonly IGetConteggioSchede _getConteggioSchedeHandler;
         private readonly IGetTipologieByCodice _tipologieQueryHandler;
         private readonly IGetAlberaturaUnitaOperative _getAlberaturaUnitaOperative;
+        private readonly IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> _sintesiRichiesteAssistenzaHandler;
         private readonly IQueryHandler<RubricaQuery, RubricaResult> _rubricaQueryHandler;
 
         public WelcomeQueryHandler(IGetBoxMezzi boxMezziHandler,
             IGetBoxPersonale boxPersonaleHandler,
             IGetBoxRichieste boxRichiesteHandler,
-            IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> sintesiRichiesteAssistenzaHandler,
             IGetChiamateInCorso listaChiamateInCorsoMarkerHandler,
             IGetCentroMappaMarker centroMappaMarkerHandler,
             IGetFiltri filtriHandler,
@@ -66,20 +66,21 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
             IGetConteggioSchede getConteggioSchedeHandler,
             IGetTipologieByCodice tipologieQueryHandler,
             IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative,
-            IQueryHandler<RubricaQuery, RubricaResult> rubricaQueryHandler)
+            IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> sintesiRichiesteAssistenzaHandler,
+            IQueryHandler<RubricaQuery, RubricaResult> rubricaQueryHandler
         {
-            this._boxMezziHandler = boxMezziHandler;
-            this._boxPersonaleHandler = boxPersonaleHandler;
-            this._boxRichiesteHandler = boxRichiesteHandler;
-            this._sintesiRichiesteAssistenzaHandler = sintesiRichiesteAssistenzaHandler;
-            this._listaChiamateInCorsoMarkerHandler = listaChiamateInCorsoMarkerHandler;
-            this._centroMappaMarkerHandler = centroMappaMarkerHandler;
-            this._filtriHandler = filtriHandler;
-            this._getDistaccamenti = getDistaccamenti;
-            this._getConteggioSchedeHandler = getConteggioSchedeHandler;
-            this._tipologieQueryHandler = tipologieQueryHandler;
-            this._getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
-            this._rubricaQueryHandler = rubricaQueryHandler;
+            _boxMezziHandler = boxMezziHandler;
+            _boxPersonaleHandler = boxPersonaleHandler;
+            _boxRichiesteHandler = boxRichiesteHandler;
+            _sintesiRichiesteAssistenzaHandler = sintesiRichiesteAssistenzaHandler;
+            _listaChiamateInCorsoMarkerHandler = listaChiamateInCorsoMarkerHandler;
+            _centroMappaMarkerHandler = centroMappaMarkerHandler;
+            _filtriHandler = filtriHandler;
+            _getDistaccamenti = getDistaccamenti;
+            _getConteggioSchedeHandler = getConteggioSchedeHandler;
+            _tipologieQueryHandler = tipologieQueryHandler;
+            _getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
+            _rubricaQueryHandler = rubricaQueryHandler;
         }
 
         /// <summary>
@@ -106,6 +107,11 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
             {
                 pinNodi.Add(new PinNodo(figlio.Codice, true));
             }
+
+            Task.Factory.StartNew(() => 
+            {
+
+            });
 
             FiltroRicercaRichiesteAssistenza filtro = new FiltroRicercaRichiesteAssistenza
             {
