@@ -83,6 +83,25 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                         Id = squadra.Id,
                         Squadra = squadra
                     };
+                })
+                //FILTRI
+                .Where(s =>
+                {
+                    if (query.Filtro.RicercaSquadre != null) // aggiungere altri campi in OR (fulltext)
+                        return s.Squadra.Codice.Contains(query.Filtro.RicercaSquadre);
+                    return true;
+                })
+                .Where(s =>
+                {
+                    if (query.Filtro.CodiceDistaccamento != null && query.Filtro.CodiceDistaccamento.All(c => c != ""))
+                        return query.Filtro.CodiceDistaccamento.Contains(s.Squadra.Distaccamento.Codice);
+                    return true;
+                })
+                .Where(s =>
+                {
+                    if (query.Filtro.CodiceDistaccamentoMezziSquadre != null)
+                        return s.Squadra.Distaccamento.Codice == query.Filtro.CodiceDistaccamentoMezziSquadre;
+                    return true;
                 }).OrderByDescending(c => c.Squadra.IndiceOrdinamento).ToList();
             });
 
@@ -134,13 +153,9 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                         //composizione.IndiceOrdinamento = _ordinamentoMezzi.GetIndiceOrdinamento(query.Filtro.IdRichiesta, composizione, composizione.Mezzo.CoordinateFake, composizione.Mezzo.IdRichiesta);
 
                         return c;
-                    }).OrderByDescending(x => x.IndiceOrdinamento).ToList();
-                });
+                    })
 
-            //COMPONGO IL DTO CON FILTRI E PAGINAZIONE
-            var composizioneAvanzata = new Classi.Composizione.ComposizionePartenzaAvanzata()
-            {
-                ComposizioneMezziDataArray = lstMezzi.Result
+                    //FILTRI 
                     .Where(m =>
                     {
                         if (query.Filtro.StatoMezzo != null)
@@ -161,32 +176,32 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                     })
                     .Where(m =>
                     {
+                        if (query.Filtro.TipoMezzo != null && query.Filtro.TipoMezzo.All(c => c != ""))
+                            return query.Filtro.TipoMezzo.Contains(m.Mezzo.Genere);
+                        return true;
+                    })
+                    .Where(m =>
+                    {
+                        if (query.Filtro.StatoMezzo != null && query.Filtro.StatoMezzo.All(c => c != ""))
+                            return query.Filtro.StatoMezzo.Contains(m.Mezzo.Stato);
+                        return true;
+                    })
+                    .Where(m =>
+                    {
                         if (query.Filtro.CodiceDistaccamentoMezziSquadre != null)
                             return m.Mezzo.Distaccamento.Codice == query.Filtro.CodiceDistaccamentoMezziSquadre;
                         return true;
-                    })
+                    }).OrderByDescending(x => x.IndiceOrdinamento).ToList();
+                });
+
+            //COMPONGO IL DTO E PAGINAZIONE
+            var composizioneAvanzata = new Classi.Composizione.ComposizionePartenzaAvanzata()
+            {
+                ComposizioneMezziDataArray = lstMezzi.Result
                     .Skip(query.Filtro.MezziPagination.PageSize * (query.Filtro.MezziPagination.Page - 1))
                     .Take(query.Filtro.MezziPagination.PageSize).ToList(),
 
                 ComposizioneSquadreDataArray = lstSquadre.Result
-                    .Where(s =>
-                    {
-                        if (query.Filtro.RicercaSquadre != null) // aggiungere altri campi in OR (fulltext)
-                            return s.Squadra.Codice.Contains(query.Filtro.RicercaSquadre);
-                        return true;
-                    })
-                    .Where(s =>
-                    {
-                        if (query.Filtro.CodiceDistaccamento != null && query.Filtro.CodiceDistaccamento.All(c => c != ""))
-                            return query.Filtro.CodiceDistaccamento.Contains(s.Squadra.Distaccamento.Codice);
-                        return true;
-                    })
-                    .Where(s =>
-                    {
-                        if (query.Filtro.CodiceDistaccamentoMezziSquadre != null)
-                            return s.Squadra.Distaccamento.Codice == query.Filtro.CodiceDistaccamentoMezziSquadre;
-                        return true;
-                    })
                     .Skip(query.Filtro.SquadrePagination.PageSize * (query.Filtro.SquadrePagination.Page - 1))
                     .Take(query.Filtro.SquadrePagination.PageSize).ToList(),
 
