@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { EnteTelefono } from '../../interface/ente.interface';
 
 @Component({
@@ -6,14 +6,11 @@ import { EnteTelefono } from '../../interface/ente.interface';
     templateUrl: './numeri-ente.component.html',
     styleUrls: ['./numeri-ente.component.css']
 })
-export class NumeriEnteComponent implements OnInit {
+export class NumeriEnteComponent {
 
     @Input() telefoni: EnteTelefono[];
 
     constructor() {
-    }
-
-    ngOnInit(): void {
     }
 
 }

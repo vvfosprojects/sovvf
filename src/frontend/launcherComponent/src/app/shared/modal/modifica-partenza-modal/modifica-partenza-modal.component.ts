@@ -128,7 +128,7 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
         );
     }
 
-    checkStatoMezzoSequenza() {
+    checkStatoMezzoSequenza(): void {
         for (let i = 0; i < this.statiMezzo.length - 2; i++) {
             if (this.partenza.mezzo.stato === this.statiMezzo[i].name) {
                 this.statiMezzo[i + 1].disabled = false;
@@ -194,7 +194,7 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
         }
     }
 
-    annullaPartenza() {
+    annullaPartenza(): void {
         this.hideBox = true;
         this.nonModificabile = false;
         this.inSostituzione = false;

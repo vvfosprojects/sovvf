@@ -24,14 +24,14 @@ export class PartenzaComponent {
 
     statoRichiestaEnum = StatoRichiesta;
 
-    onListaSquadrePartenza() {
+    onListaSquadrePartenza(): void {
         const listaSquadre = {} as ListaSquadre;
         listaSquadre.idPartenza = this.partenza.id;
         listaSquadre.squadre = this.partenza.squadre;
         this.listaSquadre.emit(listaSquadre);
     }
 
-    onActionMezzo(mezzoAction: MezzoActionInterface) {
+    onActionMezzo(mezzoAction: MezzoActionInterface): void {
         this.actionMezzo.emit(mezzoAction);
     }
 }

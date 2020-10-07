@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Store } from '@ngxs/store';
 import { ClearIndirizzo, ClearMarkerChiamata } from '../../../features/home/store/actions/chiamata/scheda-telefonata.actions';
@@ -9,7 +9,7 @@ import { ToggleChiamata } from '../../../features/home/store/actions/view/view.a
     templateUrl: './richiesta-duplicata-modal.component.html',
     styleUrls: ['./richiesta-duplicata-modal.component.css']
 })
-export class RichiestaDuplicataModalComponent implements OnInit {
+export class RichiestaDuplicataModalComponent {
 
     messaggio: string;
 
@@ -17,10 +17,7 @@ export class RichiestaDuplicataModalComponent implements OnInit {
                 public modal: NgbActiveModal) {
     }
 
-    ngOnInit() {
-    }
-
-    onAction(actionName: string) {
+    onAction(actionName: string): void {
         switch (actionName) {
             case 'annullaChiamata':
                 this.store.dispatch(new ClearMarkerChiamata());

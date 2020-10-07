@@ -27,7 +27,7 @@ export class EnteModalComponent implements OnInit, OnDestroy {
     checkboxRicorsivoState: { id: string, status: boolean, label: string, disabled: boolean };
     submitted: boolean;
 
-    subscription: Subscription = new Subscription();
+    private subscription: Subscription = new Subscription();
 
     constructor(private store: Store,
                 private modal: NgbActiveModal,
@@ -37,7 +37,7 @@ export class EnteModalComponent implements OnInit, OnDestroy {
         this.getFormValid();
     }
 
-    initForm() {
+    initForm(): void {
         this.enteForm = new FormGroup({
             id: new FormControl(),
             codice: new FormControl(),
@@ -78,7 +78,7 @@ export class EnteModalComponent implements OnInit, OnDestroy {
         this.subscription.unsubscribe();
     }
 
-    getFormValid() {
+    getFormValid(): void {
         this.subscription.add(
             this.formValid$.subscribe((valid: boolean) => {
                 this.formValid = valid;
@@ -86,11 +86,11 @@ export class EnteModalComponent implements OnInit, OnDestroy {
         );
     }
 
-    get f() {
+    get f(): any {
         return this.enteForm.controls;
     }
 
-    updateEnteForm(editEnte: Ente) {
+    updateEnteForm(editEnte: Ente): void {
         console.log('updateEnteForm', editEnte);
         this.store.dispatch(new UpdateFormValue({
             value: {
@@ -111,7 +111,7 @@ export class EnteModalComponent implements OnInit, OnDestroy {
         this.checkboxRicorsivoState.status = editEnte.ricorsivo;
     }
 
-    setRicorsivoValue(value: { id: string, status: boolean }) {
+    setRicorsivoValue(value: { id: string, status: boolean }): void {
         this.checkboxRicorsivoState.status = value.status;
         this.f[value.id].patchValue(value.status);
         this.store.dispatch(new UpdateFormValue({
@@ -124,7 +124,7 @@ export class EnteModalComponent implements OnInit, OnDestroy {
     }
 
 
-    onConferma() {
+    onConferma(): void {
         this.submitted = true;
 
         if (!this.formValid) {
@@ -138,11 +138,11 @@ export class EnteModalComponent implements OnInit, OnDestroy {
         this.modal.dismiss('ko');
     }
 
-    closeModal(type: string) {
+    closeModal(type: string): void {
         this.modal.close(type);
     }
 
-    getCategorieEnte() {
+    getCategorieEnte(): void {
         this.store.dispatch(new GetCategorieEnti());
     }
 

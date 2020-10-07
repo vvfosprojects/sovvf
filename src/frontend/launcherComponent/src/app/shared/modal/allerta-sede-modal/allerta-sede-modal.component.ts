@@ -41,7 +41,7 @@ export class AllertaSedeModalComponent implements OnInit, OnDestroy {
         this.getSediSelezionate();
     }
 
-    initForm() {
+    initForm(): void {
         this.allertaSedeForm = new FormGroup({
             codRichiesta: new FormControl(),
             sedi: new FormControl()
@@ -52,7 +52,7 @@ export class AllertaSedeModalComponent implements OnInit, OnDestroy {
         });
     }
 
-    ngOnInit() {
+    ngOnInit(): void {
         this.f.codRichiesta.patchValue(this.codRichiesta);
     }
 
@@ -60,7 +60,7 @@ export class AllertaSedeModalComponent implements OnInit, OnDestroy {
         this.subscription.unsubscribe();
     }
 
-    getFormValid() {
+    getFormValid(): void {
         this.subscription.add(
             this.formValid$.subscribe((valid: boolean) => {
                 this.formValid = valid;
@@ -68,11 +68,11 @@ export class AllertaSedeModalComponent implements OnInit, OnDestroy {
         );
     }
 
-    get f() {
+    get f(): any {
         return this.allertaSedeForm.controls;
     }
 
-    inizializzaSediTreeview() {
+    inizializzaSediTreeview(): void {
         this.subscription.add(
             this.listeSediNavbar$.subscribe((listaSedi: TreeItem) => {
                 this.listeSediNavbar = [];
@@ -81,11 +81,11 @@ export class AllertaSedeModalComponent implements OnInit, OnDestroy {
         );
     }
 
-    onPatchSedi(event: TreeviewSelezione[]) {
+    onPatchSedi(event: TreeviewSelezione[]): void {
         this.f.sedi.patchValue(event);
     }
 
-    getSediSelezionate() {
+    getSediSelezionate(): void {
         this.subscription.add(
             this.sediSelezionate$.subscribe((sedi: TreeviewSelezione[]) => {
                 const listaSediNavbar = this.store.selectSnapshot(SediTreeviewState.listeSediNavbar);
@@ -108,7 +108,7 @@ export class AllertaSedeModalComponent implements OnInit, OnDestroy {
         );
     }
 
-    onConferma() {
+    onConferma(): void {
         this.submitted = true;
 
         if (!this.allertaSedeForm.valid) {
@@ -122,7 +122,7 @@ export class AllertaSedeModalComponent implements OnInit, OnDestroy {
         this.modal.dismiss('ko');
     }
 
-    closeModal(type: string) {
+    closeModal(type: string): void {
         this.modal.close(type);
     }
 }

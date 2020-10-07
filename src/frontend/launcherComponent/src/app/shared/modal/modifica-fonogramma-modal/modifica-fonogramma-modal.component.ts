@@ -28,7 +28,7 @@ export class ModificaFonogrammaModalComponent implements OnInit {
         this.initForm();
     }
 
-    ngOnInit() {
+    ngOnInit(): void {
         this.idRichiesta ? this.f.idRichiesta.patchValue(this.idRichiesta) : this.f.idRichiesta.patchValue('');
         this.codiceRichiesta ? this.f.codiceRichiesta.patchValue(this.codiceRichiesta) : this.f.codiceRichiesta.patchValue('');
         this.fonogramma && this.fonogramma.numeroFonogramma ? this.f.numeroFonogramma.patchValue(this.fonogramma.numeroFonogramma) : this.f.numeroFonogramma.patchValue('');
@@ -37,7 +37,7 @@ export class ModificaFonogrammaModalComponent implements OnInit {
         this.fonogramma && this.fonogramma.stato ? this.f.stato.patchValue(getStatoFonogrammaStringByEnum(this.fonogramma.stato)) : this.f.stato.patchValue(null);
     }
 
-    initForm() {
+    initForm(): void {
         this.modificaStatoFonogrammaForm = this.fb.group({
             idRichiesta: ['', Validators.required],
             codiceRichiesta: ['', Validators.required],
@@ -49,11 +49,11 @@ export class ModificaFonogrammaModalComponent implements OnInit {
         this.f.codiceRichiesta.disable();
     }
 
-    get f() {
+    get f(): any {
         return this.modificaStatoFonogrammaForm.controls;
     }
 
-    onSubmit() {
+    onSubmit(): void {
         this.submitted = true;
 
         if (!this.modificaStatoFonogrammaForm.valid) {
@@ -63,7 +63,7 @@ export class ModificaFonogrammaModalComponent implements OnInit {
         this.modal.close({ status: 'ok', result: this.modificaStatoFonogrammaForm.value });
     }
 
-    onCancel() {
+    onCancel(): void {
         this.modal.close({ status: 'ko', result: null });
     }
 }

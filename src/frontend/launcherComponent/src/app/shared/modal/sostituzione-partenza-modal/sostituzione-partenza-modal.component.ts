@@ -223,7 +223,7 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
         return { oraEvento: this.time };
     }
 
-    formatDate() {
+    formatDate(): void {
         let data = new Date();
         const orario = this.time;
         data.setHours(orario.hour);
@@ -234,7 +234,7 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
         this.f.dataAnnullamento.patchValue(data);
     }
 
-    onListaSquadrePartenza() {
+    onListaSquadrePartenza(): void {
         const listaSquadre = {} as ListaSquadre;
         listaSquadre.idPartenza = this.partenza.id;
         listaSquadre.squadre = this.partenza.squadre;
@@ -242,7 +242,7 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
     }
 
 
-    mezzoSelezionato(mezzoComposizione: MezzoComposizione) {
+    mezzoSelezionato(mezzoComposizione: MezzoComposizione): void {
         this.store.dispatch(new ReducerSelectMezzoComposizione(mezzoComposizione));
         this.nuovoMezzo = mezzoComposizione.mezzo;
     }
@@ -289,8 +289,8 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
 
     squadraDeselezionata(squadraComposizione: SquadraComposizione): void {
         this.store.dispatch(new UnselectSquadraComposizione(squadraComposizione));
-        let r = squadraComposizione.squadra;
-        let a = this.nuoveSquadre.filter(e => e != r);
+        const r = squadraComposizione.squadra;
+        const a = this.nuoveSquadre.filter(e => e !== r);
         this.nuoveSquadre = a;
         if (this.nuovoMezzo && this.nuoveSquadre.length >= 0) {
             this.nuoveSquadre = [];
@@ -332,7 +332,7 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
         this.modal.close({ status: 'ko' });
     }
 
-    closeModal(type: string) {
+    closeModal(type: string): void {
         this.modal.close({ status: type });
     }
 
@@ -351,7 +351,7 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
         const squadreUnique = [];
         const uniqueObject = {};
         for (const i in squadre) {
-            let objTitle = squadre[i]['id'];
+            const objTitle = squadre[i]['id'];
             uniqueObject[objTitle] = squadre[i];
         }
         for (const i in uniqueObject) {
@@ -359,7 +359,7 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
         }
         this.modal.close({
             status: 'ok',
-            result: { mezzo: mezzo, squadre: squadreUnique, motivazioneAnnullamento: this.f.motivazioneAnnullamento.value, dataAnnullamento: this.f.dataAnnullamento.value, time: this.time }
+            result: { mezzo, squadre: squadreUnique, motivazioneAnnullamento: this.f.motivazioneAnnullamento.value, dataAnnullamento: this.f.dataAnnullamento.value, time: this.time }
         });
     }
 }

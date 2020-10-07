@@ -28,27 +28,21 @@ export class MezzoComposizioneComponent implements OnInit {
     @Output() hoverIn = new EventEmitter<MezzoComposizione>();
     @Output() hoverOut = new EventEmitter<MezzoComposizione>();
     @Output() sbloccato = new EventEmitter<MezzoComposizione>();
-
-    // Progress Bar
     @Output() startTimeout = new EventEmitter<MezzoComposizione>();
     @Output() stopTimeout = new EventEmitter<MezzoComposizione>();
-
-    // Mappa
     @Output() mezzoCoordinate = new EventEmitter<MezzoDirection>();
-
-    // Sganciamento
     @Output() sganciamento = new EventEmitter<SganciamentoInterface>();
 
-    public sganciamentoDisabilitato: boolean = false;
+    public sganciamentoDisabilitato = false;
 
     constructor() {
     }
 
-    ngOnInit() {
+    ngOnInit(): void {
         this.sganciamentoCheck();
     }
 
-    sganciamentoCheck() {
+    sganciamentoCheck(): void {
         if (this.richiesta && this.richiesta.partenzeRichiesta && this.richiesta.partenzeRichiesta.length > 0) {
             this.sganciamentoDisabilitato = !!this.richiesta.partenzeRichiesta.find(e => {
                 return e.mezzo.descrizione === this.mezzoComp.mezzo.descrizione &&
@@ -57,30 +51,29 @@ export class MezzoComposizioneComponent implements OnInit {
         }
     }
 
-    // Events
-    onClick() {
+    onClick(): void {
         if (!this.itemSelezionato) {
             this.selezionato.emit(this.mezzoComp);
-
             // mappa
             if (!mezzoComposizioneBusy(this.mezzoComp.mezzo.stato)) {
-                !this.mezzoComp.mezzo.coordinateFake && this.mezzoDirection(this.mezzoComp);
+                if (!this.mezzoComp.mezzo.coordinateFake) {
+                    this.mezzoDirection(this.mezzoComp);
+                }
             }
         } else if (this.selezionato) {
             this.deselezionato.emit(this.mezzoComp);
         }
     }
 
-    onHoverIn() {
+    onHoverIn(): void {
         this.hoverIn.emit(this.mezzoComp);
     }
 
-    onHoverOut() {
+    onHoverOut(): void {
         this.hoverOut.emit(this.mezzoComp);
     }
 
-    // Lucchetto
-    onSganciamento() {
+    onSganciamento(): boolean {
         if (this.sganciamentoDisabilitato) {
             return false;
         }
@@ -96,8 +89,7 @@ export class MezzoComposizioneComponent implements OnInit {
         }
     }
 
-    // NgClass
-    liClass() {
+    liClass(): string {
         let returnClass = '';
 
         const hover = this.itemHover ? 'hover-si' : 'hover-no';
@@ -140,7 +132,7 @@ export class MezzoComposizioneComponent implements OnInit {
         return returnClass;
     }
 
-    badgeDistaccamentoClass() {
+    badgeDistaccamentoClass(): string {
         let result = 'badge-secondary';
 
         if (this.richiesta && this.mezzoComp) {
@@ -160,7 +152,6 @@ export class MezzoComposizioneComponent implements OnInit {
         return result;
     }
 
-    // Mappa
     mezzoDirection(mezzoComp: MezzoComposizione): void {
         const mezzoDirection = {
             idMezzo: mezzoComp.id,

@@ -91,17 +91,17 @@ export const MezziComposizioneStateDefaults: MezziComposizioneStateStateModel = 
 export class MezziComposizioneState {
 
     @Selector()
-    static mezziComposizione(state: MezziComposizioneStateStateModel) {
+    static mezziComposizione(state: MezziComposizioneStateStateModel): MezzoComposizione[] {
         return state.mezziComposizione;
     }
 
     @Selector()
-    static allMezziComposizione(state: MezziComposizioneStateStateModel) {
+    static allMezziComposizione(state: MezziComposizioneStateStateModel): MezzoComposizione[] {
         return state.allMezziComposizione;
     }
 
     @Selector()
-    static mezzoSelezionato(state: MezziComposizioneStateStateModel) {
+    static mezzoSelezionato(state: MezziComposizioneStateStateModel): MezzoComposizione {
         let mezzoSelez = null as MezzoComposizione;
         state.allMezziComposizione.forEach((m: MezzoComposizione) => {
             if (m.id === state.idMezzoSelezionato) {
@@ -112,32 +112,32 @@ export class MezziComposizioneState {
     }
 
     @Selector()
-    static idMezzoComposizioneSelezionato(state: MezziComposizioneStateStateModel) {
+    static idMezzoComposizioneSelezionato(state: MezziComposizioneStateStateModel): string {
         return state.idMezzoComposizioneSelezionato;
     }
 
     @Selector()
-    static idMezzoSelezionato(state: MezziComposizioneStateStateModel) {
+    static idMezzoSelezionato(state: MezziComposizioneStateStateModel): string {
         return state.idMezzoSelezionato;
     }
 
     @Selector()
-    static idMezziInPrenotazione(state: MezziComposizioneStateStateModel) {
+    static idMezziInPrenotazione(state: MezziComposizioneStateStateModel): string[] {
         return state.idMezziInPrenotazione;
     }
 
     @Selector()
-    static idMezziPrenotati(state: MezziComposizioneStateStateModel) {
+    static idMezziPrenotati(state: MezziComposizioneStateStateModel): string[] {
         return state.idMezziPrenotati;
     }
 
     @Selector()
-    static idMezziBloccati(state: MezziComposizioneStateStateModel) {
+    static idMezziBloccati(state: MezziComposizioneStateStateModel): string[] {
         return state.idMezziBloccati;
     }
 
     @Selector()
-    static idMezzoHover(state: MezziComposizioneStateStateModel) {
+    static idMezzoHover(state: MezziComposizioneStateStateModel): string {
         return state.idMezzoComposizioneHover;
     }
 
@@ -148,7 +148,7 @@ export class MezziComposizioneState {
     }
 
     @Action(SetListaMezziComposizione)
-    setListaMezziComposizione({ getState, patchState, dispatch }: StateContext<MezziComposizioneStateStateModel>, action: SetListaMezziComposizione) {
+    setListaMezziComposizione({ getState, patchState, dispatch }: StateContext<MezziComposizioneStateStateModel>, action: SetListaMezziComposizione): void {
         const state = getState();
         const allMezziComposione = action.mezziComp ? action.mezziComp : this.store.selectSnapshot(MezziComposizioneState.allMezziComposizione);
         patchState({
@@ -165,7 +165,7 @@ export class MezziComposizioneState {
     }
 
     @Action(ClearListaMezziComposizione)
-    clearListaMezziComposizione({ patchState }: StateContext<MezziComposizioneStateStateModel>) {
+    clearListaMezziComposizione({ patchState }: StateContext<MezziComposizioneStateStateModel>): void  {
         patchState({
             mezziComposizione: null,
             allMezziComposizione: null
@@ -173,17 +173,17 @@ export class MezziComposizioneState {
     }
 
     @Action(AddMezzoComposizione)
-    addMezzoComposizione({ patchState }: StateContext<MezziComposizioneStateStateModel>, action: AddMezzoComposizione) {
+    addMezzoComposizione({ patchState }: StateContext<MezziComposizioneStateStateModel>, action: AddMezzoComposizione): void  {
         console.log(action.mezzoComp);
     }
 
     @Action(RemoveMezzoComposizione)
-    removeMezzoComposizione({ getState, patchState }: StateContext<MezziComposizioneStateStateModel>, action: RemoveMezzoComposizione) {
+    removeMezzoComposizione({ getState, patchState }: StateContext<MezziComposizioneStateStateModel>, action: RemoveMezzoComposizione): void  {
         console.log(action.idMezzoComp);
     }
 
     @Action(UpdateMezzoComposizione)
-    updateMezzoComposizione({ getState, setState, dispatch }: StateContext<MezziComposizioneStateStateModel>, action: UpdateMezzoComposizione) {
+    updateMezzoComposizione({ getState, setState, dispatch }: StateContext<MezziComposizioneStateStateModel>, action: UpdateMezzoComposizione): void  {
         const state = getState();
         const mezzoComposizione = state.allMezziComposizione && state.allMezziComposizione.length > 0 ? state.allMezziComposizione.filter((mC: MezzoComposizione) => mC.mezzo.codice === action.mezzo.codice)[0] : null;
         const mezzoComposizioneCopy = mezzoComposizione ? makeCopy(mezzoComposizione) as MezzoComposizione : null;
@@ -200,7 +200,7 @@ export class MezziComposizioneState {
     }
 
     @Action(UpdateMezzoComposizioneScadenzaByCodiceMezzo)
-    updateMezzoComposizioneScadenzaByCodiceMezzo({ getState, setState, dispatch }: StateContext<MezziComposizioneStateStateModel>, action: UpdateMezzoComposizioneScadenzaByCodiceMezzo) {
+    updateMezzoComposizioneScadenzaByCodiceMezzo({ getState, setState, dispatch }: StateContext<MezziComposizioneStateStateModel>, action: UpdateMezzoComposizioneScadenzaByCodiceMezzo): void  {
         const state = getState();
         let mezzoComposizione = state.mezziComposizione.filter(mezzoComp => mezzoComp.mezzo.codice === action.codiceMezzo)[0];
         if (mezzoComposizione) {
@@ -216,7 +216,7 @@ export class MezziComposizioneState {
     }
 
     @Action(ReducerSelectMezzoComposizione)
-    reducerSelectMezzoComposizione({ getState, dispatch }: StateContext<MezziComposizioneStateStateModel>, action: SelectMezzoComposizione) {
+    reducerSelectMezzoComposizione({ getState, dispatch }: StateContext<MezziComposizioneStateStateModel>, action: SelectMezzoComposizione): void  {
         const state = getState();
         const boxPartenzaList = this.store.selectSnapshot(x => x.boxPartenza.boxPartenzaList);
 
@@ -247,7 +247,7 @@ export class MezziComposizioneState {
     }
 
     @Action(SelectMezzoComposizioneFromMappa)
-    selectMezzoComposizioneFromMappa({ getState, dispatch }: StateContext<MezziComposizioneStateStateModel>, action: SelectMezzoComposizioneFromMappa) {
+    selectMezzoComposizioneFromMappa({ getState, dispatch }: StateContext<MezziComposizioneStateStateModel>, action: SelectMezzoComposizioneFromMappa): void {
         if (action && action.mezzoId) {
             const mezzoComposizione = getState().mezziComposizione.filter(mezzo => mezzo.mezzo.codice === action.mezzoId);
             if (mezzoComposizione && mezzoComposizione[0]) {
@@ -265,7 +265,7 @@ export class MezziComposizioneState {
     }
 
     @Action(SelectMezzoComposizione)
-    selectMezzoComposizione({ patchState, dispatch }: StateContext<MezziComposizioneStateStateModel>, action: SelectMezzoComposizione) {
+    selectMezzoComposizione({ patchState, dispatch }: StateContext<MezziComposizioneStateStateModel>, action: SelectMezzoComposizione): void  {
         patchState({
             idMezzoComposizioneSelezionato: action.mezzoComp.id,
             idMezzoSelezionato: action.mezzoComp.mezzo.codice
@@ -287,7 +287,7 @@ export class MezziComposizioneState {
     }
 
     @Action(UnselectMezzoComposizione)
-    unselectMezzoComposizione({ getState, patchState, dispatch }: StateContext<MezziComposizioneStateStateModel>) {
+    unselectMezzoComposizione({ getState, patchState, dispatch }: StateContext<MezziComposizioneStateStateModel>): void  {
         const idSquadreSelezionate = this.store.selectSnapshot(SquadreComposizioneState.idSquadreSelezionate);
         if (idSquadreSelezionate && idSquadreSelezionate.length <= 0) {
             const filtriSelezionati = this.store.selectSnapshot(x => x.filtriComposizione.filtriSelezionati);
@@ -303,7 +303,7 @@ export class MezziComposizioneState {
     }
 
     @Action(ClearSelectedMezziComposizione)
-    clearSelectedMezziComposizione({ patchState }: StateContext<MezziComposizioneStateStateModel>) {
+    clearSelectedMezziComposizione({ patchState }: StateContext<MezziComposizioneStateStateModel>): void {
         patchState({
             idMezzoComposizioneSelezionato: null,
             idMezzoSelezionato: null
@@ -311,7 +311,7 @@ export class MezziComposizioneState {
     }
 
     @Action(HoverInMezzoComposizione)
-    hoverInMezzoComposizione({ getState, patchState, dispatch }: StateContext<MezziComposizioneStateStateModel>, action: HoverInMezzoComposizione) {
+    hoverInMezzoComposizione({ getState, patchState, dispatch }: StateContext<MezziComposizioneStateStateModel>, action: HoverInMezzoComposizione): void {
         patchState({
             idMezzoComposizioneHover: action.idMezzoComp
         });
@@ -321,7 +321,7 @@ export class MezziComposizioneState {
     }
 
     @Action(HoverOutMezzoComposizione)
-    hoverOutMezzoComposizione({ patchState, dispatch }: StateContext<MezziComposizioneStateStateModel>) {
+    hoverOutMezzoComposizione({ patchState, dispatch }: StateContext<MezziComposizioneStateStateModel>): void {
         patchState({
             idMezzoComposizioneHover: null
         });
@@ -329,7 +329,7 @@ export class MezziComposizioneState {
     }
 
     @Action(RequestBookMezzoComposizione)
-    requestBookMezzoComposizione({ dispatch }: StateContext<MezziComposizioneStateStateModel>, action: RequestBookMezzoComposizione) {
+    requestBookMezzoComposizione({ dispatch }: StateContext<MezziComposizioneStateStateModel>, action: RequestBookMezzoComposizione): void {
         const mezzoPrenotatoObj = {
             codiceMezzo: action.mezzoComp.mezzo.codice,
             codiceRichiesta: this.store.selectSnapshot(x => x.composizionePartenza.richiesta).id,
@@ -345,7 +345,7 @@ export class MezziComposizioneState {
     }
 
     @Action(AddBookMezzoComposizione)
-    addBookMezzoComposizione({ getState, setState }: StateContext<MezziComposizioneStateStateModel>, action: AddBookMezzoComposizione) {
+    addBookMezzoComposizione({ getState, setState }: StateContext<MezziComposizioneStateStateModel>, action: AddBookMezzoComposizione): void {
         const state = getState();
         const mezzoComp = state.mezziComposizione.length > 0 ? state.mezziComposizione.filter(x => x.mezzo.codice === action.codiceMezzo)[0] : null;
         const idMezzoComp = mezzoComp ? mezzoComp.id : null;
@@ -361,7 +361,7 @@ export class MezziComposizioneState {
     }
 
     @Action(AddBookingMezzoComposizione)
-    addBookingMezzoComposizione({ setState }: StateContext<MezziComposizioneStateStateModel>, action: AddBookingMezzoComposizione) {
+    addBookingMezzoComposizione({ setState }: StateContext<MezziComposizioneStateStateModel>, action: AddBookingMezzoComposizione): void {
         setState(
             patch({
                 idMezziInPrenotazione: insertItem(action.mezzoComp.id)
@@ -370,7 +370,7 @@ export class MezziComposizioneState {
     }
 
     @Action(RequestRemoveBookMezzoComposizione)
-    requestRemoveBookMezzoComposizione({ dispatch }: StateContext<MezziComposizioneStateStateModel>, action: RequestRemoveBookMezzoComposizione) {
+    requestRemoveBookMezzoComposizione({ dispatch }: StateContext<MezziComposizioneStateStateModel>, action: RequestRemoveBookMezzoComposizione): void {
         const mezzoPrenotatoObj = {
             codiceMezzo: action.mezzoComp.mezzo.codice,
             codiceRichiesta: this.store.selectSnapshot(x => x.composizionePartenza.richiesta).id
@@ -380,7 +380,7 @@ export class MezziComposizioneState {
     }
 
     @Action(RemoveBookMezzoComposizione)
-    removeBookMezzoComposizione({ getState, setState }: StateContext<MezziComposizioneStateStateModel>, action: RemoveBookMezzoComposizione) {
+    removeBookMezzoComposizione({ getState, setState }: StateContext<MezziComposizioneStateStateModel>, action: RemoveBookMezzoComposizione): void {
         const state = getState();
         const mezzoComp = state.mezziComposizione.filter(x => x.mezzo.codice === action.codiceMezzo);
         const idMezzoComp = mezzoComp && mezzoComp.length > 0 ? mezzoComp[0].id : null;
@@ -394,7 +394,7 @@ export class MezziComposizioneState {
     }
 
     @Action(RemoveBookingMezzoComposizione)
-    removeBookingMezzoComposizione({ getState, setState }: StateContext<MezziComposizioneStateStateModel>, action: RemoveBookingMezzoComposizione) {
+    removeBookingMezzoComposizione({ getState, setState }: StateContext<MezziComposizioneStateStateModel>, action: RemoveBookingMezzoComposizione): void {
         setState(
             patch({
                 idMezziInPrenotazione: removeItem(id => id === action.codiceMezzo)
@@ -403,7 +403,7 @@ export class MezziComposizioneState {
     }
 
     @Action(RequestResetBookMezzoComposizione)
-    requestResetBookMezzoComposizione({ dispatch }: StateContext<MezziComposizioneStateStateModel>, action: RequestResetBookMezzoComposizione) {
+    requestResetBookMezzoComposizione({ dispatch }: StateContext<MezziComposizioneStateStateModel>, action: RequestResetBookMezzoComposizione): void {
         const mezzoPrenotatoObj = {
             mezzoComposizione: action.mezzoComp
         };
@@ -412,12 +412,12 @@ export class MezziComposizioneState {
     }
 
     @Action(ResetBookMezzoComposizione)
-    resetBookMezzoComposizione({ getState, setState, dispatch }: StateContext<MezziComposizioneStateStateModel>, action: ResetBookMezzoComposizione) {
+    resetBookMezzoComposizione({ getState, setState, dispatch }: StateContext<MezziComposizioneStateStateModel>, action: ResetBookMezzoComposizione): void {
         console.log('Reset Mezzo prenotato Object', action.mezzoComp);
     }
 
     @Action(LockMezzoComposizione)
-    lockMezzoComposizione({ setState }: StateContext<MezziComposizioneStateStateModel>, action: LockMezzoComposizione) {
+    lockMezzoComposizione({ setState }: StateContext<MezziComposizioneStateStateModel>, action: LockMezzoComposizione): void {
         setState(
             patch({
                 idMezzoSelezionato: null,
@@ -427,7 +427,7 @@ export class MezziComposizioneState {
     }
 
     @Action(UnlockMezzoComposizione)
-    unlockMezzoComposizione({ setState }: StateContext<MezziComposizioneStateStateModel>, action: UnlockMezzoComposizione) {
+    unlockMezzoComposizione({ setState }: StateContext<MezziComposizioneStateStateModel>, action: UnlockMezzoComposizione): void {
         setState(
             patch({
                 idMezzoSelezionato: null,
@@ -437,17 +437,17 @@ export class MezziComposizioneState {
     }
 
     @Action(RequestUnlockMezzoComposizione)
-    requestUnlockMezzoComposizione({ patchState }: StateContext<MezziComposizioneStateStateModel>, action: RequestUnlockMezzoComposizione) {
+    requestUnlockMezzoComposizione({ patchState }: StateContext<MezziComposizioneStateStateModel>, action: RequestUnlockMezzoComposizione): void {
         console.log(action.idMezzoComp);
     }
 
     @Action(ClearMezzoComposizione)
-    clearMezzoComposizione({ patchState }: StateContext<MezziComposizioneStateStateModel>) {
+    clearMezzoComposizione({ patchState }: StateContext<MezziComposizioneStateStateModel>): void {
         patchState(MezziComposizioneStateDefaults);
     }
 
     @Action(SganciamentoMezzoComposizione)
-    sganciamentoMezzoComposizione({ patchState, dispatch }: StateContext<MezziComposizioneStateStateModel>, action: SganciamentoMezzoComposizione) {
+    sganciamentoMezzoComposizione({ patchState, dispatch }: StateContext<MezziComposizioneStateStateModel>, action: SganciamentoMezzoComposizione): void {
         let partenzaDaSganciare = {} as Partenza;
         this.richiesteService.getRichiestaById(action.sganciamentoObj.idRichiestaDaSganciare).subscribe((richiestaDa: SintesiRichiesta) => {
             partenzaDaSganciare = richiestaDa.partenzeRichiesta && richiestaDa.partenzeRichiesta.length > 0 ? richiestaDa.partenzeRichiesta.filter(x => x.mezzo.codice === action.sganciamentoObj.idMezzoDaSganciare)[0] : null;
@@ -483,7 +483,7 @@ export class MezziComposizioneState {
     }
 
     @Action(FilterListaMezziComposizione)
-    filterListaMezziComposizione({ getState, setState, dispatch }: StateContext<MezziComposizioneStateStateModel>, action: FilterListaMezziComposizione) {
+    filterListaMezziComposizione({ getState, setState, dispatch }: StateContext<MezziComposizioneStateStateModel>, action: FilterListaMezziComposizione): void {
         let state = getState();
         setState(
             produce(state, (draft: MezziComposizioneStateStateModel) => {
