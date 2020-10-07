@@ -77,7 +77,12 @@ export class ComposizioneAvanzataState {
             page: action.options && action.options.page && action.options.page.pageSquadre ? action.options.page.pageSquadre : paginationSquadre.page,
             pageSize: paginationSquadre.pageSize
         };
-        obj['codDistaccamentoMezzo'] = this.store.selectSnapshot(PaginationComposizionePartenzaState.codDistaccamentoMezzo) ? this.store.selectSnapshot(PaginationComposizionePartenzaState.codDistaccamentoMezzo) : null;
+        const mezzoComp = this.store.selectSnapshot(MezziComposizioneState.mezzoSelezionato);
+        let codDistaccamentoMezzo = null;
+        if(mezzoComp) {
+            codDistaccamentoMezzo =  mezzoComp.mezzo.distaccamento.codice;
+        }
+        obj['codDistaccamentoMezzo'] = codDistaccamentoMezzo ? codDistaccamentoMezzo : null;
         obj['codDistaccamentoSquadre'] = this.store.selectSnapshot(PaginationComposizionePartenzaState.codDistaccamentoSquadre) ? this.store.selectSnapshot(PaginationComposizionePartenzaState.codDistaccamentoSquadre) : null;
         obj['CodiceDistaccamento'] = this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).CodiceDistaccamento.length > 0 ? this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).CodiceDistaccamento : null;
         obj['StatoMezzo'] = this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).StatoMezzo.length> 0 ? this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).StatoMezzo : null;
