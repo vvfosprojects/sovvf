@@ -82,8 +82,13 @@ export class ComposizioneAvanzataState {
         if(mezzoComp) {
             codDistaccamentoMezzo =  mezzoComp.mezzo.distaccamento.codice;
         }
+        const squadreComp = this.store.selectSnapshot(SquadreComposizioneState.squadreSelezionate);
+        let codDistaccamentoSquadre = null;
+        if(squadreComp) {
+            codDistaccamentoSquadre =  squadreComp.squadra.distaccamento.codice;
+        }
         obj['codDistaccamentoMezzo'] = codDistaccamentoMezzo ? codDistaccamentoMezzo : null;
-        obj['codDistaccamentoSquadre'] = this.store.selectSnapshot(PaginationComposizionePartenzaState.codDistaccamentoSquadre) ? this.store.selectSnapshot(PaginationComposizionePartenzaState.codDistaccamentoSquadre) : null;
+        obj['codDistaccamentoSquadre'] = codDistaccamentoSquadre && codDistaccamentoSquadre != [] ? codDistaccamentoSquadre : null;
         obj['CodiceDistaccamento'] = this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).CodiceDistaccamento.length > 0 ? this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).CodiceDistaccamento : null;
         obj['StatoMezzo'] = this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).StatoMezzo.length> 0 ? this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).StatoMezzo : null;
         obj['TipoMezzo'] = this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).TipoMezzo.length > 0 ? this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).TipoMezzo : null;
@@ -91,7 +96,7 @@ export class ComposizioneAvanzataState {
         obj['ricercaSquadre'] = this.store.selectSnapshot(RicercaComposizioneState.ricercaSquadre) ? this.store.selectSnapshot(RicercaComposizioneState.ricercaSquadre) : null;
         console.log('*******OBJ CHE MANDIAMO ', obj);
         this.squadreService.getListeComposizioneAvanzata(obj).subscribe((listeCompAvanzata: ListaComposizioneAvanzata) => {
-            console.log('*******LISTA MEZZI E SQUADRE ', listeCompAvanzata); // qui devo avere la prima pagina
+            console.log('*******LISTA MEZZI E SQUADRE ', listeCompAvanzata);
             if (listeCompAvanzata) {
                 const listaBoxPartenza = this.store.selectSnapshot(BoxPartenzaState.boxPartenzaList);
                 if (listeCompAvanzata.composizioneMezziDataArray) {

@@ -26,6 +26,7 @@ import { MezzoComposizione } from '../../../interface/mezzo-composizione-interfa
 import { FiltriComposizioneState } from '../filtri-composizione/filtri-composizione.state';
 import { SetListaFiltriAffini } from '../../actions/filtri-composizione/filtri-composizione.actions';
 import { Injectable } from '@angular/core';
+import { GetListeComposizioneAvanzata } from 'src/app/features/home/store/actions/composizione-partenza/composizione-avanzata.actions';
 
 export interface SquadreComposizioneStateStateModel {
     allSquadreComposione: SquadraComposizione[];
@@ -62,11 +63,11 @@ export class SquadreComposizioneState {
 
     @Selector()
     static squadreSelezionate(state: SquadreComposizioneStateStateModel) {
-        const squadreSelez = [];
+        let squadreSelez = null as SquadraComposizione;
         state.allSquadreComposione.forEach((s: SquadraComposizione) => {
             state.idSquadreSelezionate.forEach((idS: string) => {
                 if (s.id === idS) {
-                    squadreSelez.push(s);
+                    squadreSelez = s;
                 }
             });
         });
@@ -124,6 +125,7 @@ export class SquadreComposizioneState {
         // se non c'è già un mezzo selezionato (nell'attuale "box partenza"), filtro la lista dei mezzi
         const idBoxPartenzaSelezionato = this.store.selectSnapshot(BoxPartenzaState.idBoxPartenzaSelezionato);
         const boxPartenzaSelezionato = boxPartenzaList.filter(x => x.id === idBoxPartenzaSelezionato)[0];
+        /*
         if (!boxPartenzaSelezionato || (boxPartenzaSelezionato && !boxPartenzaSelezionato.mezzoComposizione)) {
             const filtriSelezionati = this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati);
             dispatch(new FilterListaMezziComposizione(action.squadraComp.squadra.distaccamento.codice, filtriSelezionati));
@@ -132,6 +134,7 @@ export class SquadreComposizioneState {
                 dispatch(new FilterListaSquadreComposizione(action.squadraComp.squadra.distaccamento.codice, filtriSelezionati));
             }
         }
+        */
         // Aggiorno lo store
         setState(
             patch({
@@ -139,6 +142,7 @@ export class SquadreComposizioneState {
                 idSquadreSelezionate: append([action.squadraComp.squadra.id])
             })
         );
+        this.store.dispatch(new GetListeComposizioneAvanzata());
         if (!boxPartenzaSelezionato || !boxPartenzaSelezionato.squadraComposizione.includes(action.squadraComp)) {
             this.store.dispatch(new AddSquadraBoxPartenza(action.squadraComp));
         }
@@ -146,6 +150,14 @@ export class SquadreComposizioneState {
 
     @Action(UnselectSquadraComposizione)
     unselectSquadraComposizione({ getState, setState, dispatch }: StateContext<SquadreComposizioneStateStateModel>, action: UnselectSquadraComposizione) {
+        setState(
+            patch({
+                idSquadreComposizioneSelezionate: removeItem(id => id === action.squadraComp.id),
+                idSquadreSelezionate: removeItem(id => id === action.squadraComp.squadra.id)
+            })
+        );
+        this.store.dispatch(new GetListeComposizioneAvanzata());
+        /*
         const state = getState();
         const idSquadreSelezionate = state.idSquadreSelezionate;
         if (idSquadreSelezionate && idSquadreSelezionate.length <= 1) {
@@ -153,7 +165,7 @@ export class SquadreComposizioneState {
             const idBoxPartenzaSelezionato = this.store.selectSnapshot(BoxPartenzaState.idBoxPartenzaSelezionato);
             const boxPartenzaSelezionato = boxPartenzaList.filter(b => b.id === idBoxPartenzaSelezionato)[0];
             if (!boxPartenzaSelezionato || !boxPartenzaSelezionato.mezzoComposizione) {
-                const filtriSelezionati = this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati);
+                // const filtriSelezionati = this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati);
                 dispatch([
                     new FilterListaSquadreComposizione(null, filtriSelezionati),
                     new FilterListaMezziComposizione(null, filtriSelezionati),
@@ -162,12 +174,7 @@ export class SquadreComposizioneState {
                 ]);
             }
         }
-        setState(
-            patch({
-                idSquadreComposizioneSelezionate: removeItem(id => id === action.squadraComp.id),
-                idSquadreSelezionate: removeItem(id => id === action.squadraComp.squadra.id)
-            })
-        );
+        */
     }
 
     @Action(SelectSquadra)
