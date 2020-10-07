@@ -16,14 +16,13 @@ import {
 } from '../../actions/filtri-composizione/filtri-composizione.actions';
 import { insertItem, patch, removeItem } from '@ngxs/store/operators';
 import { ListaTipologicheMezzi } from '../../../../features/home/composizione-partenza/interface/filtri/lista-filtri-composizione-interface';
-import { MezziComposizioneState } from '../mezzi-composizione/mezzi-composizione.state';
 import { Injectable } from '@angular/core';
 
 export interface FiltriComposizioneStateStateModel {
     filtriAffini: ListaTipologicheMezzi;
     codiceDistaccamento: any[];
-    codiceTipoMezzo: any[];
-    codiceStatoMezzo: any[];
+    tipoMezzo: any[];
+    statoMezzo: any[];
 }
 
 export const FiltriComposizioneStateDefaults: FiltriComposizioneStateStateModel = {
@@ -33,8 +32,8 @@ export const FiltriComposizioneStateDefaults: FiltriComposizioneStateStateModel 
         stati: []
     },
     codiceDistaccamento: [],
-    codiceTipoMezzo: [],
-    codiceStatoMezzo: [],
+    tipoMezzo: [],
+    statoMezzo: [],
 };
 
 @Injectable()
@@ -53,8 +52,8 @@ export class FiltriComposizioneState {
     static filtriSelezionati(state: FiltriComposizioneStateStateModel): ComposizioneFilterbar {
         return {
             CodiceDistaccamento: state.codiceDistaccamento,
-            TipoMezzo: state.codiceTipoMezzo,
-            StatoMezzo: state.codiceStatoMezzo
+            TipoMezzo: state.tipoMezzo,
+            StatoMezzo: state.statoMezzo
         };
     }
 
@@ -73,8 +72,8 @@ export class FiltriComposizioneState {
         const composizioneMode = this.store.selectSnapshot(x => x.composizionePartenza.composizioneMode);
         const objFiltriSelezionati: ComposizioneFilterbar = {
             CodiceDistaccamento: state.codiceDistaccamento,
-            TipoMezzo: state.codiceTipoMezzo,
-            StatoMezzo: state.codiceStatoMezzo
+            TipoMezzo: state.tipoMezzo,
+            StatoMezzo: state.statoMezzo
         };
         console.log('SetFiltriComposizione');
         // const filtri = { filtri: objFiltriSelezionati}
@@ -174,17 +173,17 @@ export class FiltriComposizioneState {
                     })
                 );
                 break;
-            case 'codiceTipoMezzo':
+            case 'tipoMezzo':
                 ctx.setState(
                     patch({
-                        codiceTipoMezzo: insertItem(action.id)
+                        tipoMezzo: insertItem(action.id)
                     })
                 );
                 break;
-            case 'codiceStatoMezzo':
+            case 'statoMezzo':
                 ctx.setState(
                     patch({
-                        codiceStatoMezzo: insertItem(action.id)
+                        statoMezzo: insertItem(action.id)
                     })
                 );
                 break;
@@ -201,17 +200,17 @@ export class FiltriComposizioneState {
                     })
                 );
                 break;
-            case 'codiceTipoMezzo':
+            case 'tipoMezzo':
                 ctx.setState(
                     patch({
-                        codiceTipoMezzo: removeItem(filtro => filtro === action.id)
+                        tipoMezzo: removeItem(filtro => filtro === action.id)
                     })
                 );
                 break;
-            case 'codiceStatoMezzo':
+            case 'statoMezzo':
                 ctx.setState(
                     patch({
-                        codiceStatoMezzo: removeItem(filtro => filtro === action.id)
+                        statoMezzo: removeItem(filtro => filtro === action.id)
                     })
                 );
                 break;
@@ -228,17 +227,17 @@ export class FiltriComposizioneState {
                     })
                 );
                 break;
-            case 'codiceTipoMezzo':
+            case 'tipoMezzo':
                 ctx.setState(
                     patch({
-                        codiceTipoMezzo: []
+                        tipoMezzo: []
                     })
                 );
                 break;
-            case 'codiceStatoMezzo':
+            case 'statoMezzo':
                 ctx.setState(
                     patch({
-                        codiceStatoMezzo: []
+                        statoMezzo: []
                     })
                 );
                 break;

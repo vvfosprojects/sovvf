@@ -46,7 +46,7 @@ import { FiltriComposizioneState } from '../../../../shared/store/states/filtri-
 import { GetFiltriComposizione } from '../../../../shared/store/actions/filtri-composizione/filtri-composizione.actions';
 import { SetMarkerRichiestaSelezionato } from '../../store/actions/maps/marker.actions';
 import { PaginationComposizionePartenzaState } from 'src/app/shared/store/states/pagination-composizione-partenza/pagination-composizione-partenza.state';
-import { PatchPaginationMezziSquadre } from 'src/app/shared/store/actions/pagination-composizione-partenza/pagination-composizione-partenza.actions';
+import { PatchCodDistaccamentoMezzo, PatchCodDistaccamentoSquadre, PatchPaginationMezziSquadre } from 'src/app/shared/store/actions/pagination-composizione-partenza/pagination-composizione-partenza.actions';
 import { GetListeComposizioneAvanzata } from '../../store/actions/composizione-partenza/composizione-avanzata.actions';
 
 @Component({
@@ -273,8 +273,12 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
     }
 
     mezzoSelezionato(mezzoComposizione: MezzoComposizione) {
+        let codDistaccamentoMezzo = mezzoComposizione.mezzo.distaccamento.codice;
         this.store.dispatch([
+            new PatchPaginationMezziSquadre('squadre', {page: 1, pageSize: 10}),
+            new PatchCodDistaccamentoMezzo(codDistaccamentoMezzo),
             new ReducerSelectMezzoComposizione(mezzoComposizione),
+            new GetListeComposizioneAvanzata(),
         ]);
     }
 
@@ -301,7 +305,13 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
             if (this.boxPartenzaList.length <= 0) {
                 this.store.dispatch(new AddBoxPartenza());
             }
-            this.store.dispatch(new SelectSquadraComposizione(squadraComposizione));
+            let codDistaccamentoSquadre = squadraComposizione.squadra.distaccamento.codice;
+            this.store.dispatch([
+                new PatchPaginationMezziSquadre('mezzi', {page: 1, pageSize: 10}),
+                new PatchCodDistaccamentoSquadre(codDistaccamentoSquadre),
+                new SelectSquadraComposizione(squadraComposizione),
+                new GetListeComposizioneAvanzata(),
+            ]);
         }
     }
 

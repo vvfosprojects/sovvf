@@ -30,6 +30,8 @@ import { ClearPreaccoppiati } from '../store/actions/composizione-partenza/compo
 import { FiltriComposizioneState } from '../../../shared/store/states/filtri-composizione/filtri-composizione.state';
 import { ClearFiltriAffini } from '../../../shared/store/actions/filtri-composizione/filtri-composizione.actions';
 import { SetRicercaMezziComposizione, SetRicercaSquadreComposizione } from '../../../shared/store/actions/ricerca-composizione/ricerca-composizione.actions';
+import { GetListeComposizioneAvanzata } from '../store/actions/composizione-partenza/composizione-avanzata.actions';
+import { PatchPaginationMezziSquadre } from 'src/app/shared/store/actions/pagination-composizione-partenza/pagination-composizione-partenza.actions';
 
 @Component({
     selector: 'app-composizione-partenza',
@@ -145,11 +147,15 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
     }
 
     changeRicercaSquadre(ricerca: string) {
-        this.store.dispatch(new SetRicercaSquadreComposizione(ricerca));
+        this.store.dispatch([new SetRicercaSquadreComposizione(ricerca),
+                            new PatchPaginationMezziSquadre('squadre', {page: 1, pageSize: 10}),
+                            new GetListeComposizioneAvanzata(),]);
     }
 
     changeRicercaMezzi(ricerca: string) {
-        this.store.dispatch(new SetRicercaMezziComposizione(ricerca));
+        this.store.dispatch([new SetRicercaMezziComposizione(ricerca),
+                            new PatchPaginationMezziSquadre('mezzi', {page: 1, pageSize: 10}),
+                            new GetListeComposizioneAvanzata(),]);
     }
 }
 

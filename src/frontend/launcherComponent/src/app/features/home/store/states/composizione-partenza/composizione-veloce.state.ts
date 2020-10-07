@@ -248,7 +248,7 @@ export class ComposizioneVeloceState {
         dispatch(new ClearMarkerMezzoHover());
     }
 
-    @Action(FilterListaPreAccoppiati)
+    @Action(FilterListaPreAccoppiati) //*********
     filterListaPreAccoppiati({ getState, setState, dispatch }: StateContext<PreAccoppiatiStateModel>, action: FilterListaPreAccoppiati) {
         let state = getState();
         setState(

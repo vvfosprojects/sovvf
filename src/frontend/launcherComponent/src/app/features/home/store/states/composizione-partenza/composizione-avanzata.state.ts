@@ -36,6 +36,7 @@ import { PaginationComposizionePartenzaState } from 'src/app/shared/store/states
 import { FiltriComposizione } from '../../../composizione-partenza/interface/filtri/filtri-composizione-interface';
 import { Injectable } from '@angular/core';
 import { PatchPaginationMezziSquadre } from '../../../../../shared/store/actions/pagination-composizione-partenza/pagination-composizione-partenza.actions';
+import { RicercaComposizioneState } from 'src/app/shared/store/states/ricerca-composizione/ricerca-composizione.state';
 
 export interface ComposizioneAvanzataStateModel {
     listaMezziSquadre: ListaComposizioneAvanzata;
@@ -76,9 +77,13 @@ export class ComposizioneAvanzataState {
             page: action.options && action.options.page && action.options.page.pageSquadre ? action.options.page.pageSquadre : paginationSquadre.page,
             pageSize: paginationSquadre.pageSize
         };
+        obj['codDistaccamentoMezzo'] = this.store.selectSnapshot(PaginationComposizionePartenzaState.codDistaccamentoMezzo) ? this.store.selectSnapshot(PaginationComposizionePartenzaState.codDistaccamentoMezzo) : null;
+        obj['codDistaccamentoSquadre'] = this.store.selectSnapshot(PaginationComposizionePartenzaState.codDistaccamentoSquadre) ? this.store.selectSnapshot(PaginationComposizionePartenzaState.codDistaccamentoSquadre) : null;
         obj['CodiceDistaccamento'] = this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).CodiceDistaccamento.length > 0 ? this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).CodiceDistaccamento : null;
-        obj['CodiceStatoMezzo'] = this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).StatoMezzo.length > 0 ? this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).StatoMezzo : null;
-        obj['CodiceTipoMezzo'] = this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).TipoMezzo.length > 0 ? this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).TipoMezzo : null;
+        obj['StatoMezzo'] = this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).StatoMezzo.length> 0 ? this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).StatoMezzo : null;
+        obj['TipoMezzo'] = this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).TipoMezzo.length > 0 ? this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).TipoMezzo : null;
+        obj['ricercaMezzi'] = this.store.selectSnapshot(RicercaComposizioneState.ricercaMezzi) ? this.store.selectSnapshot(RicercaComposizioneState.ricercaMezzi) : null;
+        obj['ricercaSquadre'] = this.store.selectSnapshot(RicercaComposizioneState.ricercaSquadre) ? this.store.selectSnapshot(RicercaComposizioneState.ricercaSquadre) : null;
         console.log('*******OBJ CHE MANDIAMO ', obj);
         this.squadreService.getListeComposizioneAvanzata(obj).subscribe((listeCompAvanzata: ListaComposizioneAvanzata) => {
             console.log('*******LISTA MEZZI E SQUADRE ', listeCompAvanzata); // qui devo avere la prima pagina
@@ -132,7 +137,7 @@ export class ComposizioneAvanzataState {
         dispatch(new FilterListeComposizioneAvanzata(filtriSelezionati));
     }
 
-    @Action(FilterListeComposizioneAvanzata)
+    @Action(FilterListeComposizioneAvanzata) //********
     filterListeComposizioneAvanzata({ dispatch }: StateContext<ComposizionePartenzaStateModel>, action: FilterListeComposizioneAvanzata) {
         const squadreComposizione = this.store.selectSnapshot(SquadreComposizioneState.allSquadreComposione);
         const mezziComposizione = this.store.selectSnapshot(MezziComposizioneState.mezziComposizione);
