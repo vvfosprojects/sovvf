@@ -30,8 +30,10 @@ using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
 using SO115App.Models.Servizi.Infrastruttura.GetFiltri;
 using SO115App.Models.Servizi.Infrastruttura.Marker;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Squadre;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -53,6 +55,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
         private readonly IGetConteggioSchede _getConteggioSchedeHandler;
         private readonly IGetTipologieByCodice _tipologieQueryHandler;
         private readonly IGetAlberaturaUnitaOperative _getAlberaturaUnitaOperative;
+        private readonly IGetListaSquadre _getListaSquadre;
+        private readonly IGetMezziUtilizzabili _getMezziUtilizzabili;
         private readonly IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> _sintesiRichiesteAssistenzaHandler;
         private readonly IQueryHandler<RubricaQuery, RubricaResult> _rubricaQueryHandler;
 
@@ -65,9 +69,11 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
             IGetListaDistaccamentiByPinListaSedi getDistaccamenti,
             IGetConteggioSchede getConteggioSchedeHandler,
             IGetTipologieByCodice tipologieQueryHandler,
+            IGetListaSquadre getListaSquadre,
+            IGetMezziUtilizzabili getMezziUtilizzabili,
             IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative,
             IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> sintesiRichiesteAssistenzaHandler,
-            IQueryHandler<RubricaQuery, RubricaResult> rubricaQueryHandler
+            IQueryHandler<RubricaQuery, RubricaResult> rubricaQueryHandler)
         {
             _boxMezziHandler = boxMezziHandler;
             _boxPersonaleHandler = boxPersonaleHandler;
@@ -81,6 +87,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
             _tipologieQueryHandler = tipologieQueryHandler;
             _getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
             _rubricaQueryHandler = rubricaQueryHandler;
+            _getMezziUtilizzabili = getMezziUtilizzabili;
+            _getListaSquadre = getListaSquadre;
         }
 
         /// <summary>
@@ -108,10 +116,12 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
                 pinNodi.Add(new PinNodo(figlio.Codice, true));
             }
 
-            Task.Factory.StartNew(() => 
-            {
-
-            });
+            //IL TASK SEGUENTE ESEGUE LA PRIMA CHIAMATA ESTERNA DI COMPOSIZIONE MEZZI E SQUADRE AL FINE DI SALVARLI IN CACHE
+            //Task.Factory.StartNew(() => 
+            //{
+            //    _getMezziUtilizzabili.Get(query.CodiceSede.ToList());
+            //    _getListaSquadre.Get(query.CodiceSede.ToList());
+            //});
 
             FiltroRicercaRichiesteAssistenza filtro = new FiltroRicercaRichiesteAssistenza
             {

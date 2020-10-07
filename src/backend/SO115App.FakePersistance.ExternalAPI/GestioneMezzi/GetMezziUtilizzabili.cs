@@ -28,13 +28,12 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
         private readonly IConfiguration _configuration;
         private readonly IGetStatoMezzi _getStatoMezzi;
         private readonly IGetDistaccamentoByCodiceSedeUC _getDistaccamentoByCodiceSedeUC;
-        //private readonly IGetPosizioneByCodiceMezzo _getPosizioneByCodiceMezzo;
         private readonly IGetAlberaturaUnitaOperative _getAlberaturaUnitaOperative;
         private readonly IMemoryCache _memoryCache;
         private readonly IGetPosizioneFlotta _getPosizioneFlotta;
 
         public GetMezziUtilizzabili(HttpClient client, IConfiguration configuration, IGetStatoMezzi GetStatoMezzi,
-            IGetDistaccamentoByCodiceSedeUC GetDistaccamentoByCodiceSedeUC, /*IGetPosizioneByCodiceMezzo getPosizioneByCodiceMezzo,*/
+            IGetDistaccamentoByCodiceSedeUC GetDistaccamentoByCodiceSedeUC,
             IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative,
             IMemoryCache memoryCache, IGetPosizioneFlotta getPosizioneFlotta)
         {
@@ -42,7 +41,6 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
             _configuration = configuration;
             _getStatoMezzi = GetStatoMezzi;
             _getDistaccamentoByCodiceSedeUC = GetDistaccamentoByCodiceSedeUC;
-            //_getPosizioneByCodiceMezzo = getPosizioneByCodiceMezzo;
             _getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
             _memoryCache = memoryCache;
             _getPosizioneFlotta = getPosizioneFlotta;

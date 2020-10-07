@@ -38,9 +38,9 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
     public class ComposizionePartenzaAvanzataQueryHandler : IQueryHandler<ComposizionePartenzaAvanzataQuery, ComposizionePartenzaAvanzataResult>
     {
         private readonly IGetListaSquadre _getListaSquadre;
+        private readonly IGetMezziUtilizzabili _getMezziUtilizzabili;
         private readonly IGetStatoSquadra _getStatoSquadre;
         private readonly IGetStatoMezzi _getMezziPrenotati;
-        private readonly IGetMezziUtilizzabili _getMezziUtilizzabili;
         private readonly IGetPosizioneFlotta _getPosizioneFlotta;
 
         public ComposizionePartenzaAvanzataQueryHandler(
@@ -86,7 +86,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                         };
                     });
                 })
-                .ContinueWith(lstCompSquadre => //Filtri
+                .ContinueWith(lstCompSquadre => //Filtri 
                 {
                     return lstCompSquadre.Result
                     .Where(s =>
@@ -202,7 +202,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                         .OrderByDescending(x => x.IndiceOrdinamento).ToList();
                 });
 
-            //COMPONGO IL DTO E PAGINAZIONE
+            //COMPONGO IL DTO E FACCIO LA PAGINAZIONE
             var composizioneAvanzata = new Classi.Composizione.ComposizionePartenzaAvanzata()
             {
                 ComposizioneMezziDataArray = lstMezzi.Result
