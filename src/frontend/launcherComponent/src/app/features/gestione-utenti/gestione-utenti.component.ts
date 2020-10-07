@@ -157,7 +157,6 @@ export class GestioneUtentiComponent implements OnInit, OnDestroy {
         });
         modalConfermaAnnulla.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
         modalConfermaAnnulla.componentInstance.titolo = 'Elimina ruolo a ' + payload.nominativoUtente;
-        // tslint:disable-next-line:max-line-length
         modalConfermaAnnulla.componentInstance.messaggioAttenzione = 'Sei sicuro di voler rimuovere il ruolo "' + wipeStringUppercase(payload.ruolo.descrizione) + '" su "' + payload.ruolo.descSede + '"?';
         modalConfermaAnnulla.componentInstance.bottoni = [
             { type: 'ko', descrizione: 'Annulla', colore: 'secondary' },

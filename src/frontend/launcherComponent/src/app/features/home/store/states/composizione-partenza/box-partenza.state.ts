@@ -349,7 +349,6 @@ export class BoxPartenzaState {
                 draft.boxPartenzaList.forEach((box: BoxPartenza) => {
                     if (box && box.mezzoComposizione) {
                         // console.log('mezzoComposizione', box.mezzoComposizione);
-                        // tslint:disable-next-line:max-line-length
                         if (box.mezzoComposizione && action.mezzoComp && box.mezzoComposizione.mezzo.codice === action.mezzoComp.mezzo.codice) {
                             // console.log('codiceMezzo', box.mezzoComposizione.mezzo.codice);
                             box.mezzoComposizione = action.mezzoComp;
@@ -409,7 +408,6 @@ export function disableConfirmPartenza(boxPartenzaList: BoxPartenza[], nuovaPart
     if (boxPartenzaList && boxPartenzaList.length > 0) {
         let boxValidiCount = 0;
         for (const boxPartenza of boxPartenzaList) {
-            // tslint:disable-next-line:max-line-length
             if (boxPartenza.mezzoComposizione && (boxPartenza.mezzoComposizione.mezzo.stato === StatoMezzo.InRientro || boxPartenza.mezzoComposizione.mezzo.stato === StatoMezzo.InSede) && boxPartenza.squadraComposizione && boxPartenza.squadraComposizione.length > 0) {
                 boxValidiCount++;
             }

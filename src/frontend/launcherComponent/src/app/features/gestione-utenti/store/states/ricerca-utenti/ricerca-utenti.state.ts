@@ -93,7 +93,6 @@ export class RicercaUtentiState {
     }
 
     @Action(SetSedeFiltroDeselezionato)
-    // tslint:disable-next-line:max-line-length
     setSedeFiltroDeselezionato({ getState, setState, dispatch }: StateContext<RicercaUtentiStateModel>, action: SetSedeFiltroDeselezionato): void {
         setState(
             patch({

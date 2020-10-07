@@ -125,7 +125,6 @@ export class ComposizionePartenzaState {
     }
 
     @Action(ReducerFilterListeComposizione)
-    // tslint:disable-next-line:max-line-length
     reducerFilterListeComposizione({ getState, dispatch }: StateContext<ComposizionePartenzaStateModel>, action: ReducerFilterListeComposizione): void {
         const state = getState();
         const compMode = state.composizioneMode;

@@ -115,7 +115,6 @@ export class SediTreeviewState {
     }
 
     @Action(PatchSediNavbarSelezionate)
-    // tslint:disable-next-line:max-line-length
     patchSediNavbarSelezionate({ getState, patchState, dispatch }: StateContext<SediTreeviewStateModel>, action: PatchSediNavbarSelezionate) {
         const state = getState();
         let item = '';

@@ -141,7 +141,6 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
     creaForm(): void {
         const zoneEmergenza = this.richiestaModifica.zoneEmergenza ? this.richiestaModifica.zoneEmergenza.join(' ') : null;
         const etichette = (this.richiestaModifica.tags && this.richiestaModifica.tags.length) ? this.richiestaModifica.tags : null;
-        // tslint:disable-next-line:max-line-length
         const listaEnti = (this.richiestaModifica.listaEnti && this.richiestaModifica.listaEnti.length) ? this.richiestaModifica.listaEnti : null;
         this.modificaRichiestaForm = this.formBuilder.group({
             tipoIntervento: [this.richiestaModifica.tipologie, Validators.required],
@@ -189,7 +188,6 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
     }
 
     onCercaIndirizzo(result: Address): void {
-        // tslint:disable-next-line:max-line-length
         const coordinate = new Coordinate(roundToDecimal(result.geometry.location.lat(), 6), roundToDecimal(result.geometry.location.lng(), 6));
         this.coordinate = coordinate;
         this.f.latitudine.patchValue(coordinate.latitudine);

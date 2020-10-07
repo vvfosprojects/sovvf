@@ -68,7 +68,6 @@ export class ImpostazioniState {
 
     @Selector()
     static visualizzazioneTestualeEventi(state: ImpostazioniStateModel): boolean {
-        // tslint:disable-next-line:max-line-length
         return state.listaImpostazioni.filter((i: Impostazione) => i.tipo === TipoImpostazione.EventiRichiesta)[0].opzioni.filter((o: OpzioneImpostazione) => o.label === 'Visualizzazione Iniziale')[0].select.selected === '2';
     }
 

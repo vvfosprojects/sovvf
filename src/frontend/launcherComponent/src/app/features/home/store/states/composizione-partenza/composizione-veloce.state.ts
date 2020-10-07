@@ -252,7 +252,6 @@ export class ComposizioneVeloceState {
                 if (action.filtri) {
                     // CODICE DISTACCAMENTO
                     if (action.filtri.CodiceDistaccamento && action.filtri.CodiceDistaccamento.length > 0) {
-                        // tslint:disable-next-line:max-line-length
                         draft.preAccoppiati = draft.preAccoppiati.filter((p: BoxPartenza) => codDistaccamentoIsEqual(p.mezzoComposizione.mezzo.distaccamento.codice, action.filtri.CodiceDistaccamento[0]));
                     }
                     // CODICE TIPO MEZZO

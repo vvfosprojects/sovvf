@@ -100,9 +100,7 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
             })
         );
         this.subscription.add(this.statoModalita$.subscribe((stato: boolean) => this.statoModalita = stato));
-        // tslint:disable-next-line:max-line-length
         this.subscription.add(this.classificazioneMerge$.subscribe((classificazione: ClassificazioneSchedaContatto) => this.classificazioneMerge = classificazione));
-        // tslint:disable-next-line:max-line-length
         this.subscription.add(this.idSelezionatiMerge$.subscribe((idSelezionatiMerge: string[]) => this.idSelezionatiMerge = idSelezionatiMerge));
 
     }

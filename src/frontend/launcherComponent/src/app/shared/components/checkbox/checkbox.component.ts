@@ -14,14 +14,14 @@ export class CheckboxComponent {
     @Output() checkbox = new EventEmitter<CheckboxInterface>();
     @Output() container = new EventEmitter();
 
-    onCheck() {
+    onCheck(): void {
         this.checkbox.emit({
             id: this.checkboxState.id,
             status: !this.checkboxState.status
         });
     }
 
-    labelFormat() {
+    labelFormat(): string {
         if (this.checkboxState) {
             const id = this.checkboxState.id;
             return id ? id : '&nbsp;';

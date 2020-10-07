@@ -183,7 +183,6 @@ export class MezziComposizioneState {
     }
 
     @Action(UpdateMezzoComposizione)
-    // tslint:disable-next-line:max-line-length
     updateMezzoComposizione({ getState, setState, dispatch }: StateContext<MezziComposizioneStateStateModel>, action: UpdateMezzoComposizione) {
         const state = getState();
         const mezzoComposizione = state.allMezziComposizione && state.allMezziComposizione.length > 0 ? state.allMezziComposizione.filter((mC: MezzoComposizione) => mC.mezzo.codice === action.mezzo.codice)[0] : null;
@@ -217,7 +216,6 @@ export class MezziComposizioneState {
     }
 
     @Action(ReducerSelectMezzoComposizione)
-    // tslint:disable-next-line:max-line-length
     reducerSelectMezzoComposizione({ getState, dispatch }: StateContext<MezziComposizioneStateStateModel>, action: SelectMezzoComposizione) {
         const state = getState();
         const boxPartenzaList = this.store.selectSnapshot(x => x.boxPartenza.boxPartenzaList);
@@ -225,7 +223,6 @@ export class MezziComposizioneState {
         // controllo se lo stato del mezzo è diverso da "In Viaggio" o "Sul Posto"
         if (!mezzoComposizioneBusy(action.mezzoComp.mezzo.stato)) {
             // controllo se è un mezzo prenotato oppure se è in prenotazione
-            // tslint:disable-next-line:max-line-length
             if (state.idMezziPrenotati.indexOf(action.mezzoComp.id) === -1 && state.idMezziInPrenotazione.indexOf(action.mezzoComp.id) === -1) {
                 let addBoxPartenza = false;
                 if (boxPartenzaList.length <= 0) {
@@ -453,7 +450,6 @@ export class MezziComposizioneState {
     sganciamentoMezzoComposizione({ patchState, dispatch }: StateContext<MezziComposizioneStateStateModel>, action: SganciamentoMezzoComposizione) {
         let partenzaDaSganciare = {} as Partenza;
         this.richiesteService.getRichiestaById(action.sganciamentoObj.idRichiestaDaSganciare).subscribe((richiestaDa: SintesiRichiesta) => {
-            // tslint:disable-next-line:max-line-length
             partenzaDaSganciare = richiestaDa.partenzeRichiesta && richiestaDa.partenzeRichiesta.length > 0 ? richiestaDa.partenzeRichiesta.filter(x => x.mezzo.codice === action.sganciamentoObj.idMezzoDaSganciare)[0] : null;
             if (richiestaDa && partenzaDaSganciare) {
                 const modalSganciamento = this.modalService.open(SganciamentoMezzoModalComponent, { windowClass: 'xlModal', backdropClass: 'light-blue-backdrop', centered: true });
@@ -515,7 +511,6 @@ export class MezziComposizioneState {
                         if (action.filtri.CodiceMezzo) {
                             codDistaccamentoSelezionato = state.mezziComposizione.filter((mC: MezzoComposizione) => mC.mezzo.codice === action.filtri.CodiceMezzo)[0].mezzo.distaccamento.codice;
                         } else if (action.filtri.CodiceSquadre && action.filtri.CodiceSquadre.length > 0) {
-                            // tslint:disable-next-line:max-line-length
                             codDistaccamentoSelezionato = action.squadreComposizione.filter((sC: SquadraComposizione) => sC.squadra.id === action.filtri.CodiceSquadre[0])[0].squadra.distaccamento.codice;
                         }
                         draft.mezziComposizione = draft.mezziComposizione.filter((mC: MezzoComposizione) => mC.mezzo.distaccamento.codice === codDistaccamentoSelezionato);

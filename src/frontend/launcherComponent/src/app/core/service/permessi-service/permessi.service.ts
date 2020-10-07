@@ -62,7 +62,6 @@ export class PermessiService {
         }
     }
 
-    // tslint:disable-next-line:max-line-length
     checkUserPermissionRichiesta(feature: PermissionFeatures, codUOCompetenza: string[], codSOCompetente: string, codSOAllertate: string[]): boolean {
         const featureIndex = searchFeatureIndex(this.permessi, feature);
         if (this.ruoli && this.ruoli && this.ruoli.length > 0 && this.permessi && featureIndex !== null) {
@@ -75,7 +74,6 @@ export class PermessiService {
         function checkRuoliUtente(ruoli, permessi, index): boolean {
             let count = 0;
             ruoli.forEach((ruolo: Ruolo) => {
-                // tslint:disable-next-line:max-line-length
                 if (checkSede(ruolo, codUOCompetenza, codSOCompetente, codSOAllertate) && permessi[index].roles.indexOf(ruolo.descrizione) !== -1) {
                     count++;
                 }

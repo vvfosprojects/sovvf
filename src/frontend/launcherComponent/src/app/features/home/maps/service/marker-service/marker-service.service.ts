@@ -242,7 +242,6 @@ export class MarkerService implements OnDestroy {
     isSelfClicked(id: string, tipoMarker: string): boolean {
         let trueMarkerValue = false;
         if (this.isVisible(tipoMarker)) {
-            // tslint:disable-next-line:max-line-length
             if (this.selfClickedMarker === `${tipoMarker}-${id}` || (this.selfHoveredMarker === `${tipoMarker}-${id}` && this.isClicked(id, tipoMarker))) {
                 trueMarkerValue = true;
             }

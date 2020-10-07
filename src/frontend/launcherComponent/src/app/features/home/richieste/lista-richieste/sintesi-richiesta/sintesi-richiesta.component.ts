@@ -24,7 +24,6 @@ import { ModificaPartenzaModalComponent } from 'src/app/shared/modal/modifica-pa
 import { ListaEntiComponent } from '../../../../../shared/components/lista-enti/lista-enti.component';
 import { EliminaPartenzaModalComponent } from '../../../../../shared/modal/elimina-partenza-modal/elimina-partenza-modal.component';
 import { DettaglioFonogrammaModalComponent } from '../../../../../shared/modal/dettaglio-fonogramma-modal/dettaglio-fonogramma-modal.component';
-// tslint:disable-next-line:max-line-length
 import { ModificaFonogrammaModalComponent } from '../../../../../shared/modal/modifica-fonogramma-modal/modifica-fonogramma-modal.component';
 import { Tipologia } from '../../../../../shared/model/tipologia.model';
 
@@ -214,7 +213,6 @@ export class SintesiRichiestaComponent implements OnChanges {
             centered: true
         });
         modal.componentInstance.listaEntiIntervenuti = this.richiesta.listaEntiIntervenuti ? this.richiesta.listaEntiIntervenuti : null;
-        // tslint:disable-next-line:max-line-length
         modal.componentInstance.listaEntiPresaInCarico = this.richiesta.listaEntiPresaInCarico ? this.richiesta.listaEntiPresaInCarico : null;
         modal.result.then(() => console.log('Lista Enti Aperta'),
             () => console.log('Lista Enti Chiusa'));
@@ -278,7 +276,6 @@ export class SintesiRichiestaComponent implements OnChanges {
             backdropClass: 'light-blue-backdrop',
             centered: true
         });
-        // tslint:disable-next-line:max-line-length
         modalDettaglioFonogramma.componentInstance.codiceRichiesta = this.richiesta.codiceRichiesta ? this.richiesta.codiceRichiesta : this.richiesta.codice;
         modalDettaglioFonogramma.componentInstance.fonogramma = this.richiesta.fonogramma;
     }
@@ -289,7 +286,6 @@ export class SintesiRichiestaComponent implements OnChanges {
             backdropClass: 'light-blue-backdrop',
             centered: true
         });
-        // tslint:disable-next-line:max-line-length
         modalModificaStatoFonogramma.componentInstance.codiceRichiesta = this.richiesta.codiceRichiesta ? this.richiesta.codiceRichiesta : this.richiesta.codice;
         modalModificaStatoFonogramma.componentInstance.idRichiesta = this.richiesta.id;
         modalModificaStatoFonogramma.componentInstance.fonogramma = this.richiesta.fonogramma;
@@ -340,7 +336,6 @@ export class SintesiRichiestaComponent implements OnChanges {
             centered: true
         });
         modalModificaEntiIntervenuti.componentInstance.enti = this.richiesta.listaEnti ? this.richiesta.listaEnti : null;
-        // tslint:disable-next-line:max-line-length
         modalModificaEntiIntervenuti.componentInstance.listaEntiIntervenuti = this.richiesta.listaEntiIntervenuti ? this.richiesta.listaEntiIntervenuti : null;
         modalModificaEntiIntervenuti.result.then((res: { status: string, result: any }) => {
             switch (res.status) {

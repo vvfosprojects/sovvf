@@ -48,7 +48,6 @@ export class BoxNuovaPartenzaComponent {
                 this.deselezionato.emit(this.partenza);
             }
         } else if (mezzoComposizioneBusy(this.partenza.mezzoComposizione.mezzo.stato)) {
-            // tslint:disable-next-line:max-line-length
             this.store.dispatch(new ShowToastr(ToastrType.Warning, 'Impossibile assegnare il Preaccopiato', 'Il mezzo è ' + this.partenza.mezzoComposizione.mezzo.stato + ' ed è impegnato in un\'altra richiesta', null, null, true));
         } else if (this._checkSquadraOccupata(this.partenza.squadraComposizione)) {
             this.store.dispatch(new ShowToastr(ToastrType.Warning, 'Impossibile assegnare il Preaccopiato', 'Una o più squadre del Preaccopiato risultano impegnate in un\'altra richiesta', null, null, true));
@@ -118,7 +117,6 @@ export class BoxNuovaPartenzaComponent {
             if (this.richiesta.competenze && this.richiesta.competenze.length > 0) {
                 if (this.richiesta.competenze[0].descrizione === distaccamentoMezzo) {
                     result = 'badge-primary';
-                    // tslint:disable-next-line:max-line-length
                 } else if (this.richiesta.competenze.length > 0 && this.richiesta.competenze[1] && this.richiesta.competenze[1].descrizione === distaccamentoMezzo) {
                     result = 'badge-info';
                 }
@@ -134,7 +132,6 @@ export class BoxNuovaPartenzaComponent {
         const prefix = 'fa ';
         let icon = 'fa-exclamation-triangle';
         const squadra2 = this.partenza.squadraComposizione.length > 0 ? 'squadra-si' : 'squadra-no';
-        // tslint:disable-next-line:max-line-length
         const mezzo2 = this.partenza.mezzoComposizione && (this.partenza.mezzoComposizione.mezzo.stato === StatoMezzo.InSede || this.partenza.mezzoComposizione.mezzo.stato === StatoMezzo.InRientro) ? 'mezzo-si' : 'mezzo-no';
 
         switch (mezzo2 + '|' + squadra2) {

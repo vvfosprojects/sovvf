@@ -288,7 +288,6 @@ export class AgmComponent implements OnDestroy {
         /**
          * scateno l'azione relativa all'evento del mouse ricevuto
          */
-        // tslint:disable-next-line:max-line-length
         this.markerService.actionMezzoMarker(id, event, this.viewStateMappa.active === AppFeatures.ComposizionePartenza, this.viewStateMappa.active === AppFeatures.MezziInServizio);
     }
 

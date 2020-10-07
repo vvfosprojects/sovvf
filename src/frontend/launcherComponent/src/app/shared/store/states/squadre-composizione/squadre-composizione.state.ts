@@ -235,14 +235,12 @@ export class SquadreComposizioneState {
                     if (action.filtri) {
                         // CODICE DISTACCAMENTO
                         if (action.filtri.CodiceDistaccamento && action.filtri.CodiceDistaccamento.length > 0) {
-                            // tslint:disable-next-line:max-line-length
                             draft.squadreComposizione = draft.squadreComposizione.filter((s: SquadraComposizione) => codDistaccamentoIsEqual(s.squadra.distaccamento.codice, action.filtri.CodiceDistaccamento[0]));
                         }
                         // CODICE SQUADRE SELEZIONATE O MEZZO SELEZIONATO
                         if (action.filtri.CodiceMezzo || (action.filtri.CodiceSquadre && action.filtri.CodiceSquadre.length > 0)) {
                             let codDistaccamentoSelezionato = null;
                             if (action.filtri.CodiceSquadre && action.filtri.CodiceSquadre.length > 0) {
-                                // tslint:disable-next-line:max-line-length
                                 codDistaccamentoSelezionato = state.squadreComposizione.filter((sC: SquadraComposizione) => sC.squadra.id === action.filtri.CodiceSquadre[0])[0].squadra.distaccamento.codice;
                             } else if (action.filtri.CodiceMezzo) {
                                 codDistaccamentoSelezionato = action.mezziComposizione.filter((mC: MezzoComposizione) => mC.mezzo.codice === action.filtri.CodiceMezzo)[0].mezzo.distaccamento.codice;

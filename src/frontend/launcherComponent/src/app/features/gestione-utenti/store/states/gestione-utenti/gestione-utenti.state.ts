@@ -228,7 +228,6 @@ export class GestioneUtentiState {
     }
 
     @Action(UpdateUtenteGestioneInLista)
-    // tslint:disable-next-line:max-line-length
     updateUtenteGestioneInLista({ getState, setState, dispatch }: StateContext<GestioneUtentiStateModel>, action: UpdateUtenteGestioneInLista): void {
         const listaUtentiGestione = getState().listaUtenti;
         const utentePresente = listaUtentiGestione.filter((u: Utente) => u.id === action.idUtente).length > 0;

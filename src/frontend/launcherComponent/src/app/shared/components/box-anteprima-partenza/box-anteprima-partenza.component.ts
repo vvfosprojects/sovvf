@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Partenza } from '../../model/partenza.model';
 import { StatoMezzo } from '../../enum/stato-mezzo.enum';
 import { statoMezzoColor } from '../../helper/function';
@@ -10,7 +10,7 @@ import { Squadra } from '../../model/squadra.model';
     templateUrl: './box-anteprima-partenza.component.html',
     styleUrls: ['./box-anteprima-partenza.component.css']
 })
-export class BoxAnteprimaPartenzaComponent implements OnInit {
+export class BoxAnteprimaPartenzaComponent {
 
     @Input() partenza: Partenza;
     @Input() nonModificabile: boolean;
@@ -28,9 +28,6 @@ export class BoxAnteprimaPartenzaComponent implements OnInit {
     constructor() {
     }
 
-    ngOnInit(): void {
-    }
-
     onListaSquadrePartenza(event: any): void {
         if (event) {
             event.stopPropagation();
@@ -45,7 +42,7 @@ export class BoxAnteprimaPartenzaComponent implements OnInit {
         this.modificaPartenza.emit();
     }
 
-    statoMezzoColor(stato: StatoMezzo) {
+    statoMezzoColor(stato: StatoMezzo): string {
         return statoMezzoColor(stato);
     }
 
