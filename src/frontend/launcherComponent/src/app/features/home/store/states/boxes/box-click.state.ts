@@ -50,11 +50,11 @@ export class BoxClickState implements NgxsOnChanges {
     }
 
     @Selector()
-    static boxClick(state: BoxClickStateModel) {
+    static boxClick(state: BoxClickStateModel): BoxClickInterface {
         return state.boxClick;
     }
 
-    ngxsOnChanges(change: NgxsSimpleChange) {
+    ngxsOnChanges(change: NgxsSimpleChange): void {
         const currentValue = change.currentValue && change.currentValue.boxClick;
         const previousValue = change.previousValue && change.previousValue.boxClick;
         if (previousValue) {
@@ -63,18 +63,18 @@ export class BoxClickState implements NgxsOnChanges {
     }
 
     @Action(ReducerBoxClick)
-    reducer({ dispatch }: StateContext<BoxClickStateModel>, action: ReducerBoxClick) {
+    reducer({ dispatch }: StateContext<BoxClickStateModel>, action: ReducerBoxClick): void {
         switch (action.cat) {
             case 'richieste':
                 if (action.tipo === 'tutti') {
-                    dispatch(new AllFalseBoxRichieste);
+                    dispatch(new AllFalseBoxRichieste());
                 } else {
                     dispatch(new UpdateBoxRichieste(action.tipo));
                 }
                 break;
             case 'mezzi':
                 if (action.tipo === 'tutti') {
-                    dispatch(new AllFalseBoxMezzi);
+                    dispatch(new AllFalseBoxMezzi());
                 } else {
                     dispatch(new UpdateBoxMezzi(action.tipo));
                 }
@@ -83,7 +83,7 @@ export class BoxClickState implements NgxsOnChanges {
     }
 
     @Action(UpdateBoxRichieste)
-    updateBoxRichieste({ getState, patchState }: StateContext<BoxClickStateModel>, action: UpdateBoxRichieste) {
+    updateBoxRichieste({ getState, patchState }: StateContext<BoxClickStateModel>, action: UpdateBoxRichieste): void {
         const state = getState();
 
         patchState({
@@ -102,7 +102,7 @@ export class BoxClickState implements NgxsOnChanges {
     }
 
     @Action(AllTrueBoxRichieste)
-    allTrueBoxRichieste({ getState, patchState }: StateContext<BoxClickStateModel>) {
+    allTrueBoxRichieste({ getState, patchState }: StateContext<BoxClickStateModel>): void {
         const state = getState();
 
         patchState({
@@ -121,7 +121,7 @@ export class BoxClickState implements NgxsOnChanges {
     }
 
     @Action(AllFalseBoxRichieste)
-    resetBoxRichieste({ getState, patchState }: StateContext<BoxClickStateModel>) {
+    resetBoxRichieste({ getState, patchState }: StateContext<BoxClickStateModel>): void {
         const state = getState();
 
         patchState({
@@ -134,7 +134,7 @@ export class BoxClickState implements NgxsOnChanges {
     }
 
     @Action(UpdateBoxMezzi)
-    updateBoxMezzi({ getState, patchState }: StateContext<BoxClickStateModel>, action: UpdateBoxMezzi) {
+    updateBoxMezzi({ getState, patchState }: StateContext<BoxClickStateModel>, action: UpdateBoxMezzi): void {
         const state = getState();
 
         patchState({
@@ -153,7 +153,7 @@ export class BoxClickState implements NgxsOnChanges {
     }
 
     @Action(AllTrueBoxMezzi)
-    allTrueBoxMezzi({ getState, patchState }: StateContext<BoxClickStateModel>) {
+    allTrueBoxMezzi({ getState, patchState }: StateContext<BoxClickStateModel>): void {
         const state = getState();
 
         patchState({
@@ -172,7 +172,7 @@ export class BoxClickState implements NgxsOnChanges {
     }
 
     @Action(AllTrueBoxMezziPresenti)
-    allTrueBoxMezziPresenti({ getState, patchState }: StateContext<BoxClickStateModel>, action: AllTrueBoxMezziPresenti) {
+    allTrueBoxMezziPresenti({ getState, patchState }: StateContext<BoxClickStateModel>, action: AllTrueBoxMezziPresenti): void {
         const state = getState();
 
         patchState({
@@ -191,7 +191,7 @@ export class BoxClickState implements NgxsOnChanges {
     }
 
     @Action(AllFalseBoxMezzi)
-    resetBoxMezzi({ getState, patchState }: StateContext<BoxClickStateModel>) {
+    resetBoxMezzi({ getState, patchState }: StateContext<BoxClickStateModel>): void {
         const state = getState();
 
         patchState({
@@ -206,7 +206,7 @@ export class BoxClickState implements NgxsOnChanges {
     // TUTTI
 
     @Action(UndoAllBoxes)
-    undoAllBoxes({ getState, patchState }: StateContext<BoxClickStateModel>, action: UndoAllBoxes) {
+    undoAllBoxes({ getState, patchState }: StateContext<BoxClickStateModel>, action: UndoAllBoxes): void {
         const state = getState();
 
         patchState({
@@ -216,8 +216,8 @@ export class BoxClickState implements NgxsOnChanges {
     }
 
     @Action(ResetAllBoxes)
-    resetAllBoxes({ dispatch }: StateContext<BoxClickStateModel>) {
-        dispatch(new AllFalseBoxRichieste);
-        dispatch(new AllFalseBoxMezzi);
+    resetAllBoxes({ dispatch }: StateContext<BoxClickStateModel>): void {
+        dispatch(new AllFalseBoxRichieste());
+        dispatch(new AllFalseBoxMezzi());
     }
 }

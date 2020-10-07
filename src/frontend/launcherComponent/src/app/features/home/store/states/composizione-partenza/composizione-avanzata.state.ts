@@ -10,8 +10,16 @@ import {
 import { MezziComposizioneState } from '../../../../../shared/store/states/mezzi-composizione/mezzi-composizione.state';
 import { SquadreComposizioneState } from '../../../../../shared/store/states/squadre-composizione/squadre-composizione.state';
 import { ComposizionePartenzaState, ComposizionePartenzaStateModel } from './composizione-partenza.state';
-import { ClearSelectedMezziComposizione, FilterListaMezziComposizione, SetListaMezziComposizione } from '../../../../../shared/store/actions/mezzi-composizione/mezzi-composizione.actions';
-import { ClearSelectedSquadreComposizione, FilterListaSquadreComposizione, SetListaSquadreComposizione } from '../../../../../shared/store/actions/squadre-composizione/squadre-composizione.actions';
+import {
+    ClearSelectedMezziComposizione,
+    FilterListaMezziComposizione,
+    SetListaMezziComposizione
+} from '../../../../../shared/store/actions/mezzi-composizione/mezzi-composizione.actions';
+import {
+    ClearSelectedSquadreComposizione,
+    FilterListaSquadreComposizione,
+    SetListaSquadreComposizione
+} from '../../../../../shared/store/actions/squadre-composizione/squadre-composizione.actions';
 import { ListaComposizioneAvanzata } from '../../../../../shared/interface/lista-composizione-avanzata-interface';
 import { BoxPartenzaState } from './box-partenza.state';
 import { mezzoComposizioneBusy } from '../../../../../shared/helper/composizione-functions';
@@ -20,7 +28,10 @@ import { FiltriComposizione } from '../../../composizione-partenza/interface/fil
 import { ViewComponentState } from '../view/view.state';
 import { Composizione } from '../../../../../shared/enum/composizione.enum';
 import { GetPreAccoppiati } from '../../actions/composizione-partenza/composizione-veloce.actions';
-import { StartListaComposizioneLoading, StopListaComposizioneLoading } from '../../actions/composizione-partenza/composizione-partenza.actions';
+import {
+    StartListaComposizioneLoading,
+    StopListaComposizioneLoading
+} from '../../actions/composizione-partenza/composizione-partenza.actions';
 import { FiltriComposizioneState } from '../../../../../shared/store/states/filtri-composizione/filtri-composizione.state';
 import { Injectable } from '@angular/core';
 
@@ -40,7 +51,7 @@ export const ComposizioneAvanzataStateDefaults: ComposizioneAvanzataStateModel =
 export class ComposizioneAvanzataState {
 
     @Selector()
-    static listaMezziSquadre(state: ComposizioneAvanzataStateModel) {
+    static listaMezziSquadre(state: ComposizioneAvanzataStateModel): ListaComposizioneAvanzata {
         return state.listaMezziSquadre;
     }
 
@@ -49,11 +60,10 @@ export class ComposizioneAvanzataState {
     }
 
     @Action(GetListeComposizioneAvanzata)
-    getListeComposizioneAvanzata({ dispatch }: StateContext<ComposizioneAvanzataStateModel>) {
+    getListeComposizioneAvanzata({ dispatch }: StateContext<ComposizioneAvanzataStateModel>): void {
         dispatch(new StartListaComposizioneLoading());
         const filtri = {} as FiltriComposizione;
         filtri.idRichiesta = this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione) ? this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione).id : '';
-
         this.squadreService.getListeComposizioneAvanzata(filtri).subscribe((listeCompAvanzata: ListaComposizioneAvanzata) => {
             if (listeCompAvanzata) {
                 const listaBoxPartenza = this.store.selectSnapshot(BoxPartenzaState.boxPartenzaList);
@@ -91,7 +101,7 @@ export class ComposizioneAvanzataState {
     }
 
     @Action(SetListeComposizioneAvanzata)
-    setListeComposizioneAvanzata({ patchState, dispatch }: StateContext<ComposizioneAvanzataStateModel>, action: SetListeComposizioneAvanzata) {
+    setListeComposizioneAvanzata({ patchState, dispatch }: StateContext<ComposizioneAvanzataStateModel>, action: SetListeComposizioneAvanzata): void {
         patchState({
             listaMezziSquadre: action.listaMezziSquadre
         });
@@ -104,7 +114,7 @@ export class ComposizioneAvanzataState {
     }
 
     @Action(FilterListeComposizioneAvanzata)
-    filterListeComposizioneAvanzata({ dispatch }: StateContext<ComposizionePartenzaStateModel>, action: FilterListeComposizioneAvanzata) {
+    filterListeComposizioneAvanzata({ dispatch }: StateContext<ComposizionePartenzaStateModel>, action: FilterListeComposizioneAvanzata): void {
         const squadreComposizione = this.store.selectSnapshot(SquadreComposizioneState.allSquadreComposione);
         const mezziComposizione = this.store.selectSnapshot(MezziComposizioneState.mezziComposizione);
         dispatch(new FilterListaMezziComposizione(null, action.filtri, squadreComposizione));
@@ -112,13 +122,13 @@ export class ComposizioneAvanzataState {
     }
 
     @Action(UnselectMezziAndSquadreComposizioneAvanzata)
-    unselectMezziAndSquadreComposizioneAvanzata({ dispatch }: StateContext<ComposizioneAvanzataStateModel>) {
+    unselectMezziAndSquadreComposizioneAvanzata({ dispatch }: StateContext<ComposizioneAvanzataStateModel>): void {
         dispatch(new ClearSelectedMezziComposizione());
         dispatch(new ClearSelectedSquadreComposizione());
     }
 
     @Action(ClearComposizioneAvanzata)
-    clearComposizioneAvanzata({ patchState }: StateContext<ComposizioneAvanzataStateModel>) {
+    clearComposizioneAvanzata({ patchState }: StateContext<ComposizioneAvanzataStateModel>): void {
         patchState(ComposizioneAvanzataStateDefaults);
     }
 }

@@ -1,6 +1,12 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { append, insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
 import { ChiamataMarker } from '../../../maps/maps-model/chiamata-marker.model';
+import { ChiamateMarkerService } from '../../../../../core/service/maps-service';
+import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
+import { ToastrType } from '../../../../../shared/enum/toastr';
+import { SchedaTelefonataState } from '../chiamata/scheda-telefonata.state';
+import { ClearIndirizzo } from '../../actions/chiamata/scheda-telefonata.actions';
+import { GetInitCentroMappa } from '../../actions/maps/centro-mappa.actions';
 import {
     ClearChiamateMarkers,
     DelChiamataMarker,
@@ -12,13 +18,6 @@ import {
     UpdateChiamataMarker,
     UpdateItemChiamataMarker
 } from '../../actions/maps/chiamate-markers.actions';
-import { ChiamateMarkerService } from '../../../../../core/service/maps-service';
-import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
-import { ToastrType } from '../../../../../shared/enum/toastr';
-import { SchedaTelefonataState } from '../chiamata/scheda-telefonata.state';
-import { ClearIndirizzo } from '../../actions/chiamata/scheda-telefonata.actions';
-import { GetMarkerDatiMeteo } from '../../actions/maps/marker-info-window.actions';
-import { ClearCentroMappa, GetInitCentroMappa, SetCentroMappa, SetCoordCentroMappa, SetZoomCentroMappa } from '../../actions/maps/centro-mappa.actions';
 import { Injectable } from '@angular/core';
 
 export interface ChiamateMarkersStateModel {
@@ -38,7 +37,7 @@ export const ChiamateMarkersStateDefaults: ChiamateMarkersStateModel = {
 export class ChiamateMarkersState {
 
     @Selector()
-    static chiamateMarkers(state: ChiamateMarkersStateModel) {
+    static chiamateMarkers(state: ChiamateMarkersStateModel): ChiamataMarker[] {
         return state.chiamateMarkers;
     }
 
@@ -47,7 +46,7 @@ export class ChiamateMarkersState {
     }
 
     @Action(GetChiamateMarkers)
-    getChiamateMarkers({ dispatch }: StateContext<ChiamateMarkersStateModel>) {
+    getChiamateMarkers({ dispatch }: StateContext<ChiamateMarkersStateModel>): void {
         this.chiamateMarkerService.getChiamateMarkers().subscribe((data: ChiamataMarker[]) => {
             dispatch(new SetChiamateMarkers(data));
         }, error => {
@@ -57,7 +56,7 @@ export class ChiamateMarkersState {
     }
 
     @Action(SetChiamataMarker)
-    setChiamataMarker({ dispatch }: StateContext<ChiamateMarkersStateModel>, action: SetChiamataMarker) {
+    setChiamataMarker({ dispatch }: StateContext<ChiamateMarkersStateModel>, action: SetChiamataMarker): void {
         this.chiamateMarkerService.setChiamataInCorso(action.chiamataMarker).subscribe(() => {
         }, error => {
             dispatch(new ClearIndirizzo());
@@ -66,7 +65,7 @@ export class ChiamateMarkersState {
     }
 
     @Action(UpdateChiamataMarker)
-    updateChiamataMarker({ dispatch }: StateContext<ChiamateMarkersStateModel>, action: UpdateChiamataMarker) {
+    updateChiamataMarker({ dispatch }: StateContext<ChiamateMarkersStateModel>, action: UpdateChiamataMarker): void {
         this.chiamateMarkerService.updateChiamataInCorso(action.chiamataMarker).subscribe(() => {
         }, error => {
             dispatch(new ClearIndirizzo());
@@ -75,7 +74,7 @@ export class ChiamateMarkersState {
     }
 
     @Action(DelChiamataMarker)
-    delChiamataMarker({ getState, dispatch }: StateContext<ChiamateMarkersStateModel>, action: DelChiamataMarker) {
+    delChiamataMarker({ getState, dispatch }: StateContext<ChiamateMarkersStateModel>, action: DelChiamataMarker): void {
         const state = getState();
 
         if (state.chiamateMarkers) {
@@ -91,7 +90,7 @@ export class ChiamateMarkersState {
     }
 
     @Action(SetChiamateMarkers)
-    insertChiamateMarkers({ setState }: StateContext<ChiamateMarkersStateModel>, { chiamateMarkers }: SetChiamateMarkers) {
+    insertChiamateMarkers({ setState }: StateContext<ChiamateMarkersStateModel>, { chiamateMarkers }: SetChiamateMarkers): void {
         setState(
             patch({
                 chiamateMarkers: append(chiamateMarkers)
@@ -100,7 +99,7 @@ export class ChiamateMarkersState {
     }
 
     @Action(InsertChiamataMarker)
-    insertChiamataMarker({ setState, dispatch }: StateContext<ChiamateMarkersStateModel>, { chiamataMarker }: InsertChiamataMarker) {
+    insertChiamataMarker({ setState, dispatch }: StateContext<ChiamateMarkersStateModel>, { chiamataMarker }: InsertChiamataMarker): void {
         const mySelf = this.store.selectSnapshot(SchedaTelefonataState.myChiamataMarker);
         if (mySelf) {
             chiamataMarker.mySelf = mySelf === chiamataMarker.id;
@@ -113,7 +112,7 @@ export class ChiamateMarkersState {
     }
 
     @Action(UpdateItemChiamataMarker)
-    updateItemChiamataMarker({ setState, dispatch }: StateContext<ChiamateMarkersStateModel>, { chiamataMarker }: UpdateItemChiamataMarker) {
+    updateItemChiamataMarker({ setState, dispatch }: StateContext<ChiamateMarkersStateModel>, { chiamataMarker }: UpdateItemChiamataMarker): void {
         const mySelf = this.store.selectSnapshot(SchedaTelefonataState.myChiamataMarker);
         if (mySelf) {
             chiamataMarker.mySelf = mySelf === chiamataMarker.id;
@@ -126,7 +125,7 @@ export class ChiamateMarkersState {
     }
 
     @Action(RemoveChiamataMarker)
-    removeChiamataMarker({ setState }: StateContext<ChiamateMarkersStateModel>, { id }: RemoveChiamataMarker) {
+    removeChiamataMarker({ setState }: StateContext<ChiamateMarkersStateModel>, { id }: RemoveChiamataMarker): void {
         console.log(id);
 
         setState(
@@ -137,7 +136,7 @@ export class ChiamateMarkersState {
     }
 
     @Action(ClearChiamateMarkers)
-    clearChiamateMarkers({ patchState }: StateContext<ChiamateMarkersStateModel>) {
+    clearChiamateMarkers({ patchState }: StateContext<ChiamateMarkersStateModel>): void {
         patchState(ChiamateMarkersStateDefaults);
     }
 

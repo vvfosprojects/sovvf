@@ -1,9 +1,5 @@
 import { Selector, State, Action, StateContext } from '@ngxs/store';
-
-// Model
 import { MeteoMarker } from '../../../maps/maps-model/meteo-marker.model';
-
-// Action
 import { AddMeteoMarker, RemoveMeteoMarker } from '../../actions/maps/meteo-markers.actions';
 import { Injectable } from '@angular/core';
 
@@ -25,13 +21,13 @@ export class MeteoMarkersState {
     constructor() { }
 
     @Selector()
-    static meteoMarkers(state: MeteoMarkersStateModel) {
+    static meteoMarkers(state: MeteoMarkersStateModel): MeteoMarker[] {
         return state.meteoMarkers;
     }
 
     // ADD METEO MARKER
     @Action(AddMeteoMarker)
-    addMeteoMarker({ getState, patchState, dispatch }: StateContext<MeteoMarkersStateModel>, action: AddMeteoMarker) {
+    addMeteoMarker({ getState, patchState, dispatch }: StateContext<MeteoMarkersStateModel>, action: AddMeteoMarker): void {
         const state = getState();
 
         patchState({
@@ -42,7 +38,7 @@ export class MeteoMarkersState {
 
     // REMOVE METEO MARKER
     @Action(RemoveMeteoMarker)
-    removeMeteoMarker({ getState, patchState }: StateContext<MeteoMarkersStateModel>) {
+    removeMeteoMarker({ getState, patchState }: StateContext<MeteoMarkersStateModel>): void {
         const state = getState();
 
         patchState({
@@ -52,7 +48,7 @@ export class MeteoMarkersState {
     }
 }
 
-export function addMeteoMarker(marker: MeteoMarker) {
+export function addMeteoMarker(marker: MeteoMarker): MeteoMarker[] {
     const markers: MeteoMarker[] = [];
     markers.push(marker);
     return markers;

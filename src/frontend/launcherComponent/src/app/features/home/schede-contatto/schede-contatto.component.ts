@@ -19,10 +19,7 @@ import { ToggleChiamata, ToggleSchedeContatto } from '../store/actions/view/view
 import { NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { ContatoriSchedeContatto } from '../../../shared/interface/contatori-schede-contatto.interface';
 import { RangeSchedeContattoEnum } from '../../../shared/enum/range-schede-contatto';
-import {
-    ClearSchedeContattoMarkers,
-    GetSchedeContattoMarkers
-} from '../store/actions/maps/schede-contatto-markers.actions';
+import { ClearSchedeContattoMarkers, GetSchedeContattoMarkers } from '../store/actions/maps/schede-contatto-markers.actions';
 import { MergeSchedeContattoState } from '../store/states/schede-contatto/merge-schede-contatto.state';
 import {
     CheckboxError,
@@ -103,13 +100,17 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
             })
         );
         this.subscription.add(this.statoModalita$.subscribe((stato: boolean) => this.statoModalita = stato));
+        // tslint:disable-next-line:max-line-length
         this.subscription.add(this.classificazioneMerge$.subscribe((classificazione: ClassificazioneSchedaContatto) => this.classificazioneMerge = classificazione));
+        // tslint:disable-next-line:max-line-length
         this.subscription.add(this.idSelezionatiMerge$.subscribe((idSelezionatiMerge: string[]) => this.idSelezionatiMerge = idSelezionatiMerge));
 
     }
 
     ngOnInit(): void {
-        isDevMode() && console.log('Componente Schede Contatto creato');
+        if (isDevMode()) {
+            console.log('Componente Schede Contatto creato');
+        }
         const areaMappa = this.store.selectSnapshot(AreaMappaState.areaMappa);
         this.store.dispatch([new GetListaSchedeContatto(), new GetSchedeContattoMarkers(areaMappa)]);
     }
@@ -117,55 +118,57 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
     ngOnDestroy(): void {
         this.store.dispatch(new ClearSchedeContattoMarkers());
         this.store.dispatch(new ClearMergeSchedeContatto());
-        isDevMode() && console.log('Componente Schede Contatto distrutto');
+        if (isDevMode()) {
+            console.log('Componente Schede Contatto distrutto');
+        }
     }
 
-    setSchedaContattoGestita(schedaContatto: SchedaContatto, gestita: boolean) {
+    setSchedaContattoGestita(schedaContatto: SchedaContatto, gestita: boolean): void {
         this.store.dispatch(new SetSchedaContattoGestita(schedaContatto, gestita));
     }
 
-    setSchedaContattoTelefonata(schedaContatto: SchedaContatto) {
+    setSchedaContattoTelefonata(schedaContatto: SchedaContatto): void {
         this.store.dispatch(new SetSchedaContattoTelefonata(schedaContatto));
         this.store.dispatch(new ToggleChiamata());
     }
 
-    setFiltroRange(range: RangeSchedeContattoEnum) {
+    setFiltroRange(range: RangeSchedeContattoEnum): void {
         this.store.dispatch(new SetRangeVisualizzazioneSchedeContatto(range));
     }
 
-    dettaglioScheda(idSchedaContatto: string) {
+    dettaglioScheda(idSchedaContatto: string): void {
         this.store.dispatch(new OpenDetailSC(idSchedaContatto));
     }
 
-    hoverIn(idSchedaContatto: string) {
+    hoverIn(idSchedaContatto: string): void {
         this.store.dispatch(new SetSchedaContattoHover(idSchedaContatto));
     }
 
-    hoverOut() {
+    hoverOut(): void {
         this.store.dispatch(new ClearSchedaContattoHover());
     }
 
-    tornaIndietro() {
+    tornaIndietro(): void {
         this.store.dispatch(new ToggleSchedeContatto());
     }
 
-    onToggleModalitaMerge() {
+    onToggleModalitaMerge(): void {
         this.store.dispatch(new ToggleModalitaMerge());
     }
 
-    onEditSchedaSelezionata($event: CheckboxInterface) {
+    onEditSchedaSelezionata($event: CheckboxInterface): void {
         this.store.dispatch(new SetMergeSchedaId($event.object));
     }
 
-    onCheckboxError() {
+    onCheckboxError(): void {
         this.store.dispatch(new CheckboxError());
     }
 
-    onSaveMerge() {
+    onSaveMerge(): void {
         this.store.dispatch(new InitSaveMergeSchedeContatto());
     }
 
-    onSelectTab($event: NgbTabChangeEvent) {
+    onSelectTab($event: NgbTabChangeEvent): void {
         let classificazione: ClassificazioneSchedaContatto = null;
         if ($event.nextId !== 'Tutte') {
             classificazione = $event.nextId as ClassificazioneSchedaContatto;
@@ -173,7 +176,7 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
         this.store.dispatch(new SetTabAttivo(classificazione));
     }
 
-    onCollapsed($event: string) {
+    onCollapsed($event: string): void {
         this.store.dispatch(new ToggleCollapsed($event));
     }
 
