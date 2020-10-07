@@ -275,10 +275,9 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
     mezzoSelezionato(mezzoComposizione: MezzoComposizione) {
         let codDistaccamentoMezzo = mezzoComposizione.mezzo.distaccamento.codice;
         this.store.dispatch([
-            new PatchPaginationMezziSquadre('squadre', {page: 1, pageSize: 10}),
+            // new PatchPaginationMezziSquadre('squadre', {page: 1, pageSize: 10}), => la fa il BE
             new PatchCodDistaccamentoMezzo(codDistaccamentoMezzo),
             new ReducerSelectMezzoComposizione(mezzoComposizione),
-            new GetListeComposizioneAvanzata(),
         ]);
     }
 
@@ -307,10 +306,9 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
             }
             let codDistaccamentoSquadre = squadraComposizione.squadra.distaccamento.codice;
             this.store.dispatch([
-                new PatchPaginationMezziSquadre('mezzi', {page: 1, pageSize: 10}),
+                // new PatchPaginationMezziSquadre('mezzi', {page: 1, pageSize: 10}),
                 new PatchCodDistaccamentoSquadre(codDistaccamentoSquadre),
                 new SelectSquadraComposizione(squadraComposizione),
-                new GetListeComposizioneAvanzata(),
             ]);
         }
     }

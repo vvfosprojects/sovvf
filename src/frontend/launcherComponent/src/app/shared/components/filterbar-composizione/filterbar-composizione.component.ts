@@ -40,16 +40,10 @@ export class FilterbarComposizioneComponent {
 
     addFiltro(event: any, tipo: string) {
         if (event) {
-            const options = {
-                page: {
-                       pageMezzi: 1,
-                       pageSquadre: 1,
-                   }
-               };
             this.store.dispatch(new AddFiltroSelezionatoComposizione(event.id || event.descrizione, tipo));
             this.update();
             this.nuovaPartenza(this.richiesta);
-            this.store.dispatch(new GetListeComposizioneAvanzata(options));
+            this.store.dispatch(new GetListeComposizioneAvanzata());
         }
     }
 
@@ -71,7 +65,6 @@ export class FilterbarComposizioneComponent {
             CodiceSquadre: codiceSquadra ? codiceSquadra : [],
             idRichiesta: richiestaComposizione ? richiestaComposizione.id : null
         } as FiltriComposizione;
-        console.log('******FILTRI UPDATE ', filtri)
         this.store.dispatch(new ReducerFilterListeComposizione(filtri));
     }
 

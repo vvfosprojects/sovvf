@@ -60,6 +60,7 @@ import { SetListaFiltriAffini } from '../../actions/filtri-composizione/filtri-c
 import { SquadreComposizioneState } from '../squadre-composizione/squadre-composizione.state';
 import produce from 'immer';
 import { Injectable } from '@angular/core';
+import { GetListeComposizioneAvanzata } from './../../../../features/home/store/actions/composizione-partenza/composizione-avanzata.actions';
 
 export interface MezziComposizioneStateStateModel {
     allMezziComposizione: MezzoComposizione[];
@@ -282,27 +283,30 @@ export class MezziComposizioneState {
             const allSquadreComposione = this.store.selectSnapshot(SquadreComposizioneState.allSquadreComposione);
             const filtriSelezionati = this.store.selectSnapshot(x => x.filtriComposizione.filtriSelezionati);
             dispatch([
-                new SetListaSquadreComposizione(allSquadreComposione),
-                new FilterListaSquadreComposizione(action.mezzoComp.mezzo.distaccamento.codice, filtriSelezionati),
-                new FilterListaMezziComposizione(action.mezzoComp.mezzo.distaccamento.codice, filtriSelezionati)
+                // new SetListaSquadreComposizione(allSquadreComposione),
+                // new FilterListaSquadreComposizione(action.mezzoComp.mezzo.distaccamento.codice, filtriSelezionati),
+                // new FilterListaMezziComposizione(action.mezzoComp.mezzo.distaccamento.codice, filtriSelezionati)
+                new GetListeComposizioneAvanzata(),
             ]);
         }
     }
 
     @Action(UnselectMezzoComposizione)
     unselectMezzoComposizione({ getState, patchState, dispatch }: StateContext<MezziComposizioneStateStateModel>) {
-        const idSquadreSelezionate = this.store.selectSnapshot(SquadreComposizioneState.idSquadreSelezionate);
-        if (idSquadreSelezionate && idSquadreSelezionate.length <= 0) {
-            const filtriSelezionati = this.store.selectSnapshot(x => x.filtriComposizione.filtriSelezionati);
-            dispatch([
-                new FilterListaSquadreComposizione(null, filtriSelezionati),
-                new FilterListaMezziComposizione(null, filtriSelezionati)
-            ]);
-        }
         patchState({
             idMezzoComposizioneSelezionato: null,
             idMezzoSelezionato: null
         });
+        
+        const idSquadreSelezionate = this.store.selectSnapshot(SquadreComposizioneState.idSquadreSelezionate);
+        if (idSquadreSelezionate && idSquadreSelezionate.length <= 0) {
+            // const filtriSelezionati = this.store.selectSnapshot(x => x.filtriComposizione.filtriSelezionati);
+            dispatch([
+                // new FilterListaSquadreComposizione(null, filtriSelezionati),
+                // new FilterListaMezziComposizione(null, filtriSelezionati)
+                new GetListeComposizioneAvanzata(),
+            ]);
+        }
     }
 
     @Action(ClearSelectedMezziComposizione)
