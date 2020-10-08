@@ -391,7 +391,10 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
     confermaPartenzeInViaggio(): void {
         const partenze = makeCopy(this.boxPartenzaList);
         const partenzeMappedArray = partenze.map(obj => {
-            const rObj = null;
+            const rObj = {
+                mezzo: null,
+                squadre: null
+            };
             if (obj.mezzoComposizione) {
                 obj.mezzoComposizione.mezzo.stato = StatoMezzo.InViaggio;
                 rObj.mezzo = obj.mezzoComposizione.mezzo;
@@ -418,7 +421,10 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
     confermaPartenzeInUscita(): void {
         const partenze = makeCopy(this.boxPartenzaList);
         const partenzeMappedArray = partenze.map(obj => {
-            const rObj = null;
+            const rObj = {
+                mezzo: null,
+                squadre: null
+            };
             if (obj.mezzoComposizione) {
                 obj.mezzoComposizione.mezzo.stato = StatoMezzo.InUscita;
                 rObj.mezzo = obj.mezzoComposizione.mezzo;
