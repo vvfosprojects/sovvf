@@ -32,7 +32,7 @@ export class FilterbarComposizioneComponent {
         this.richiesta = this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione);
     }
 
-    addFiltro(event: any, tipo: string) {
+    addFiltro(event: any, tipo: string): void {
         if (event) {
             this.store.dispatch(new AddFiltroSelezionatoComposizione(event.id || event.descrizione, tipo));
             this.nuovaPartenza(this.richiesta);
@@ -42,20 +42,20 @@ export class FilterbarComposizioneComponent {
         }
     }
 
-    clearFiltri(tipo: string) {
+    clearFiltri(tipo: string): void {
         this.store.dispatch(new ResetFiltriComposizione(tipo));
         this.update();
     }
 
-    update() {
+    update(): void {
         this.store.dispatch(new ReducerFilterListeComposizione());
     }
 
-    turnOffComposizione() {
+    turnOffComposizione(): void {
         this.store.dispatch(new TurnOffComposizione());
     }
 
-    compPartenzaSwitch(event: Composizione) {
+    compPartenzaSwitch(event: Composizione): void {
         this.store.dispatch(new SwitchComposizione(event));
     }
 
@@ -63,9 +63,10 @@ export class FilterbarComposizioneComponent {
         return iconaStatiClass(statoMezzo);
     }
 
-    // richiamare la action
-    nuovaPartenza(richiesta: SintesiRichiesta) {
-        this.store.dispatch(new SetMarkerRichiestaSelezionato(richiesta.id));
-        this.store.dispatch(new RichiestaComposizione(richiesta));
+    nuovaPartenza(richiesta: SintesiRichiesta): void {
+        this.store.dispatch([
+            new SetMarkerRichiestaSelezionato(richiesta.id),
+            new RichiestaComposizione(richiesta)
+        ]);
     }
 }

@@ -22,7 +22,6 @@
                 <tr app-evento-richiesta *ngFor="let r of elencoEventi; let i = index" [eventoRichiesta]="r"
                     [nomeClasseEvento]="r.nomeClasseEvento"
                     [visualizzaIconeNomeClasseEvento]="iconeNomeClasseEvento"
-                    [istanteEventoPrecedente]="setIstanteEventoPrecedente(i)"
                     [operatore]="r.operatore"
                     (filtroTarga)="setRicercaTargaMezzo($event)"></tr>
             </tbody>

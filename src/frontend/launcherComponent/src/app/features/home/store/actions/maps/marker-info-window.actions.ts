@@ -6,7 +6,7 @@ export class GetMarkerDatiMeteo {
     date: Date;
 
     constructor(public id: string, public coordinate: Coordinate) {
-        this.date = new Date;
+        this.date = new Date();
     }
 }
 
@@ -15,7 +15,7 @@ export class GetMarkerDatiMeteoFromApi {
     date: Date;
 
     constructor(public id: string, public coordinate: Coordinate) {
-        this.date = new Date;
+        this.date = new Date();
     }
 }
 

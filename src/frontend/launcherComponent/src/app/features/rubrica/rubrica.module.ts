@@ -14,18 +14,15 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { RubricaComponent } from './rubrica.component';
 import { TabellaRubricaComponent } from './tabella-rubrica/tabella-rubrica.component';
 import { RicercaRubricaComponent } from './ricerca-rubrica/ricerca-rubrica.component';
-import { EnteModalComponent } from '../../shared/modal/ente-modal/ente-modal.component';
 /**
  * Routing
  */
 import { RubricaRouting } from './rubrica.routing';
-
 /**
  * States
  */
 import { RicercaRubricaState } from './store/states/ricerca-rubrica/ricerca-rubrica.state';
 import { RubricaState } from './store/states/rubrica/rubrica.state';
-import { ConfirmModalComponent } from '../../shared/modal/confirm-modal/confirm-modal.component';
 
 
 @NgModule({
@@ -48,10 +45,6 @@ import { ConfirmModalComponent } from '../../shared/modal/confirm-modal/confirm-
         NgSelectModule,
         NgxPaginationModule,
         NgbModule
-    ],
-    entryComponents: [
-        EnteModalComponent,
-        ConfirmModalComponent
     ],
     providers: []
 })

@@ -1,15 +1,16 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { FiltroRichieste } from '../../../maps/maps-model/filtro-richieste.interface';
 import { FiltroMezzi } from '../../../maps/maps-model/filtro-mezzi.interface';
+import { FiltroSchedeContatto } from '../../../maps/maps-model/filtro-schede-contatto';
+import { isEqual } from 'lodash';
 import {
     SetPropritaRichiesta,
     UpdateStatiMezzi,
     UpdateStatiRichiesta,
     UpdateGenereMezzi,
-    ToggleGestitaSC, UpdateMezziAltriComandi
+    ToggleGestitaSC,
+    UpdateMezziAltriComandi
 } from '../../actions/maps/filtri-markers.actions';
-import { FiltroSchedeContatto } from '../../../maps/maps-model/filtro-schede-contatto';
-import { isEqual } from 'lodash';
 import { Injectable } from '@angular/core';
 
 export interface FiltriMarkersStateModel {
@@ -41,17 +42,17 @@ export const FiltriMarkersStateDefaults: FiltriMarkersStateModel = {
 export class FiltriMarkersState {
 
     @Selector()
-    static filtroRichieste(state: FiltriMarkersStateModel) {
+    static filtroRichieste(state: FiltriMarkersStateModel): FiltroRichieste {
         return state.filtroRichieste;
     }
 
     @Selector()
-    static filtroMezzi(state: FiltriMarkersStateModel) {
+    static filtroMezzi(state: FiltriMarkersStateModel): FiltroMezzi {
         return state.filtroMezzi;
     }
 
     @Selector()
-    static filtroSC(state: FiltriMarkersStateModel) {
+    static filtroSC(state: FiltriMarkersStateModel): FiltroSchedeContatto {
         return state.filtroSchedeContatto;
     }
 
@@ -61,7 +62,7 @@ export class FiltriMarkersState {
     }
 
     @Action(SetPropritaRichiesta)
-    setPropritaRichiesta({ getState, patchState }: StateContext<FiltriMarkersStateModel>, action: SetPropritaRichiesta) {
+    setPropritaRichiesta({ getState, patchState }: StateContext<FiltriMarkersStateModel>, action: SetPropritaRichiesta): void {
         const state = getState();
         patchState({
             filtroRichieste: {
@@ -72,7 +73,7 @@ export class FiltriMarkersState {
     }
 
     @Action(UpdateStatiRichiesta)
-    updateStatiRichiesta({ getState, patchState }: StateContext<FiltriMarkersStateModel>, action: UpdateStatiRichiesta) {
+    updateStatiRichiesta({ getState, patchState }: StateContext<FiltriMarkersStateModel>, action: UpdateStatiRichiesta): void {
         const state = getState();
         patchState({
             filtroRichieste: {
@@ -83,7 +84,7 @@ export class FiltriMarkersState {
     }
 
     @Action(UpdateMezziAltriComandi)
-    updateMezziAltriComandi({ getState, patchState }: StateContext<FiltriMarkersStateModel>, action: UpdateMezziAltriComandi) {
+    updateMezziAltriComandi({ getState, patchState }: StateContext<FiltriMarkersStateModel>, action: UpdateMezziAltriComandi): void {
         const state = getState();
         patchState({
             filtroMezzi: {
@@ -94,7 +95,7 @@ export class FiltriMarkersState {
     }
 
     @Action(UpdateStatiMezzi)
-    updateStatiMezzi({ getState, patchState }: StateContext<FiltriMarkersStateModel>, action: UpdateStatiMezzi) {
+    updateStatiMezzi({ getState, patchState }: StateContext<FiltriMarkersStateModel>, action: UpdateStatiMezzi): void {
         const state = getState();
         patchState({
             filtroMezzi: {
@@ -105,7 +106,7 @@ export class FiltriMarkersState {
     }
 
     @Action(UpdateGenereMezzi)
-    updateGenereMezzi({ getState, patchState }: StateContext<FiltriMarkersStateModel>, action: UpdateGenereMezzi) {
+    updateGenereMezzi({ getState, patchState }: StateContext<FiltriMarkersStateModel>, action: UpdateGenereMezzi): void {
         const state = getState();
         patchState({
             filtroMezzi: {
@@ -116,7 +117,7 @@ export class FiltriMarkersState {
     }
 
     @Action(ToggleGestitaSC)
-    toggleGestitaSC({ getState, patchState }: StateContext<FiltriMarkersStateModel>) {
+    toggleGestitaSC({ getState, patchState }: StateContext<FiltriMarkersStateModel>): void {
         const state = getState();
         if (!state.filtroSchedeContatto.mostraGestite) {
             patchState({

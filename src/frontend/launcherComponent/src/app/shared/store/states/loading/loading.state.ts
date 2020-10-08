@@ -19,7 +19,7 @@ export const LoadingStateDefaults: LoadingStateModel = {
 export class LoadingState {
 
     @Selector()
-    static loading(state: LoadingStateModel) {
+    static loading(state: LoadingStateModel): boolean {
         return state.loading;
     }
 
@@ -27,26 +27,26 @@ export class LoadingState {
     }
 
     @Action(StartLoading)
-    startLoading({ patchState }: StateContext<LoadingStateModel>) {
+    startLoading({ patchState }: StateContext<LoadingStateModel>): void {
         patchState({
             loading: true
         });
     }
 
     @Action(StopLoading)
-    stopLoading({ patchState }: StateContext<LoadingStateModel>) {
+    stopLoading({ patchState }: StateContext<LoadingStateModel>): void {
         patchState({
             loading: false
         });
     }
 
     @Action(StartBigLoading)
-    startBigLoading({ patchState }: StateContext<LoadingStateModel>) {
+    startBigLoading({ patchState }: StateContext<LoadingStateModel>): void {
         this.ngxLoader.start();
     }
 
     @Action(StopBigLoading)
-    stopBigLoading({ patchState }: StateContext<LoadingStateModel>) {
+    stopBigLoading({ patchState }: StateContext<LoadingStateModel>): void {
         this.ngxLoader.stop();
     }
 }

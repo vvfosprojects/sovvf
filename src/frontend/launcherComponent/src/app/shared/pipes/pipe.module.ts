@@ -47,7 +47,7 @@ const COMPONENTS = [
 
 export class PipeModule {
 
-    static forRoot() {
+    static forRoot(): any {
         return {
             ngModule: PipeModule,
             providers: [],

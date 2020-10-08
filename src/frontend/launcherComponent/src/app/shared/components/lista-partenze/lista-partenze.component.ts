@@ -29,11 +29,11 @@ export class ListaPartenzeComponent {
     constructor(private store: Store) {
     }
 
-    onListaSquadrePartenza(listaSquadre: ListaSquadre) {
+    onListaSquadrePartenza(listaSquadre: ListaSquadre): void {
         this.store.dispatch(new VisualizzaListaSquadrePartenza(listaSquadre));
     }
 
-    checkNumeroPartenze(partenze: Partenza[]) {
+    checkNumeroPartenze(partenze: Partenza[]): number {
         let count = 0;
         if (partenze && partenze.length > 0) {
             partenze.forEach((p: Partenza) => {
@@ -45,7 +45,7 @@ export class ListaPartenzeComponent {
         return count;
     }
 
-    onActionMezzo(mezzoAction: MezzoActionInterface) {
+    onActionMezzo(mezzoAction: MezzoActionInterface): void {
         this.actionMezzo.emit(mezzoAction);
     }
 }

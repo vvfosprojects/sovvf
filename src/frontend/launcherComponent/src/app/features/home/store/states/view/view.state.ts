@@ -155,7 +155,7 @@ export class ViewComponentState {
     }
 
     @Action(ChangeView)
-    changeView({ getState, patchState }: StateContext<ViewComponentStateModel>, action: ChangeView) {
+    changeView({ getState, patchState }: StateContext<ViewComponentStateModel>, action: ChangeView): void {
         const state = getState();
         const stateDefault = makeCopy(ViewComponentStateDefault);
         const newState = updateView(stateDefault, action);
@@ -167,7 +167,7 @@ export class ViewComponentState {
     }
 
     @Action(ToggleChiamata)
-    toggleChiamata({ getState, patchState, dispatch }: StateContext<ViewComponentStateModel>, action: ToggleChiamata) {
+    toggleChiamata({ getState, patchState, dispatch }: StateContext<ViewComponentStateModel>, action: ToggleChiamata): void {
         const state = getState();
         const stateDefault = makeCopy(ViewComponentStateDefault);
         /**
@@ -197,7 +197,7 @@ export class ViewComponentState {
     }
 
     @Action(ToggleModifica)
-    toggleModifica({ getState, patchState, dispatch }: StateContext<ViewComponentStateModel>, action: ToggleModifica) {
+    toggleModifica({ getState, patchState, dispatch }: StateContext<ViewComponentStateModel>, action: ToggleModifica): void {
         const state = getState();
         const currentState = makeCopy(state);
         const stateDefault = makeCopy(ViewComponentStateDefault);
@@ -228,7 +228,7 @@ export class ViewComponentState {
     }
 
     @Action(ToggleComposizione)
-    toggleComposizione({ getState, patchState, dispatch }: StateContext<ViewComponentStateModel>, action: ToggleComposizione) {
+    toggleComposizione({ getState, patchState, dispatch }: StateContext<ViewComponentStateModel>, action: ToggleComposizione): void {
         const state = getState();
         const stateDefault = makeCopy(ViewComponentStateDefault);
         dispatch(new SaveView(makeCopy(state)));
@@ -241,7 +241,7 @@ export class ViewComponentState {
     }
 
     @Action(TurnOffComposizione)
-    turnOffComposizione({ getState, patchState, dispatch }: StateContext<ViewComponentStateModel>) {
+    turnOffComposizione({ getState, patchState, dispatch }: StateContext<ViewComponentStateModel>): void {
         const state = getState();
         const currentState = makeCopy(state);
         const lastState: ViewComponentStateModel = this.store.selectSnapshot(BackupViewComponentState);
@@ -255,7 +255,7 @@ export class ViewComponentState {
     }
 
     @Action(SwitchComposizione)
-    switchComposizione({ getState, patchState, dispatch }: StateContext<ViewComponentStateModel>, action: SwitchComposizione) {
+    switchComposizione({ getState, patchState, dispatch }: StateContext<ViewComponentStateModel>, action: SwitchComposizione): void {
         const state = getState();
         const currentState = makeCopy(state);
         const newState = switchComposizione(currentState, action.modalita);
@@ -274,7 +274,7 @@ export class ViewComponentState {
     }
 
     @Action(ToggleMezziInServizio)
-    toggleGestioneRisorse({ getState, patchState, dispatch }: StateContext<ViewComponentStateModel>) {
+    toggleGestioneRisorse({ getState, patchState, dispatch }: StateContext<ViewComponentStateModel>): void {
         const state = getState();
         const stateDefault = makeCopy(ViewComponentStateDefault);
 
@@ -298,7 +298,7 @@ export class ViewComponentState {
     }
 
     @Action(ToggleSchedeContatto)
-    toggleSchedeContatto({ getState, patchState, dispatch }: StateContext<ViewComponentStateModel>) {
+    toggleSchedeContatto({ getState, patchState, dispatch }: StateContext<ViewComponentStateModel>): void {
         const state = getState();
         const stateDefault = makeCopy(ViewComponentStateDefault);
         if (!state.view.schedeContatto.active) {
@@ -317,7 +317,7 @@ export class ViewComponentState {
     }
 
     @Action(ClearViewState)
-    clearViewState({ patchState }: StateContext<ViewComponentStateModel>) {
+    clearViewState({ patchState }: StateContext<ViewComponentStateModel>): void {
         patchState(ViewComponentStateDefault);
     }
 }

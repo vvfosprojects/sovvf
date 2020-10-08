@@ -71,7 +71,7 @@ export class SignalRState implements NgxsOnChanges {
                 private modalService: NgbModal) {
     }
 
-    ngxsOnChanges(change: NgxsSimpleChange) {
+    ngxsOnChanges(change: NgxsSimpleChange): void {
         const currentValue = change.currentValue;
         const previousValue = change.previousValue;
         if (!currentValue.disconnected && currentValue.reconnected && previousValue.reconnected) {
@@ -83,7 +83,7 @@ export class SignalRState implements NgxsOnChanges {
     }
 
     @Action(SignalRHubConnesso)
-    signalRConnesso({ getState, patchState, dispatch }: StateContext<SignalRStateModel>) {
+    signalRConnesso({ getState, patchState, dispatch }: StateContext<SignalRStateModel>): void {
         const state = getState();
         const reconnected = state.disconnected ? true : null;
         if (reconnected) {
@@ -108,7 +108,7 @@ export class SignalRState implements NgxsOnChanges {
     }
 
     @Action(SignalRHubDisconnesso)
-    signalRDisconnesso({ getState, patchState, dispatch }: StateContext<SignalRStateModel>) {
+    signalRDisconnesso({ getState, patchState, dispatch }: StateContext<SignalRStateModel>): void {
         const state = getState();
         const disconnected = state.connected ? true : null;
         if (disconnected) {
@@ -123,12 +123,12 @@ export class SignalRState implements NgxsOnChanges {
     }
 
     @Action(SetConnectionId)
-    setConnectionId({ patchState }: StateContext<SignalRStateModel>, action: SetConnectionId) {
+    setConnectionId({ patchState }: StateContext<SignalRStateModel>, action: SetConnectionId): void {
         patchState({ connectionId: action.connectionId });
     }
 
     @Action(SetCodiceSede)
-    setCodiceSede({ getState, patchState, dispatch }: StateContext<SignalRStateModel>, { codiciSede }: SetCodiceSede) {
+    setCodiceSede({ getState, patchState, dispatch }: StateContext<SignalRStateModel>, { codiciSede }: SetCodiceSede): void {
         const codiciSedeAttuali = getState().codiciSede;
         const codiciSedeAdd = difference(codiciSede, codiciSedeAttuali);
         const codiciSedeRemove = difference(codiciSedeAttuali, codiciSede);
@@ -140,12 +140,12 @@ export class SignalRState implements NgxsOnChanges {
     }
 
     @Action(ClearCodiceSede)
-    clearCodiceSede({ patchState }: StateContext<SignalRStateModel>) {
+    clearCodiceSede({ patchState }: StateContext<SignalRStateModel>): void {
         patchState({ codiciSede: SignalRStateDefaults.codiciSede });
     }
 
     @Action(SetUtenteSignalR)
-    setUtenteSignalR({ dispatch }: StateContext<SignalRStateModel>, { codiciSede }: SetUtenteSignalR) {
+    setUtenteSignalR({ dispatch }: StateContext<SignalRStateModel>, { codiciSede }: SetUtenteSignalR): void {
         const utente = this.store.selectSnapshot(AuthState.currentUser);
         dispatch(new SetIdUtente(utente.id));
         if (codiciSede && codiciSede.length > 0) {
@@ -158,7 +158,7 @@ export class SignalRState implements NgxsOnChanges {
     }
 
     @Action(ClearUtenteSignalR)
-    clearUtenteSignalR({}: StateContext<SignalRStateModel>, { codiciSede }: ClearUtenteSignalR) {
+    clearUtenteSignalR({}: StateContext<SignalRStateModel>, { codiciSede }: ClearUtenteSignalR): void {
         if (codiciSede && codiciSede.length > 0) {
             const utente = this.store.selectSnapshot(AuthState.currentUser);
             this.signalR.removeToGroup(new SignalRNotification(
@@ -171,7 +171,7 @@ export class SignalRState implements NgxsOnChanges {
     }
 
     @Action(LogoffUtenteSignalR)
-    logoffUtenteSignalR({ getState, dispatch }: StateContext<SignalRStateModel>, { utente }: LogoffUtenteSignalR) {
+    logoffUtenteSignalR({ getState, dispatch }: StateContext<SignalRStateModel>, { utente }: LogoffUtenteSignalR): void {
         const codiciSede = getState().codiciSede;
         this.signalR.removeToGroup(
             new SignalRNotification(
@@ -184,12 +184,12 @@ export class SignalRState implements NgxsOnChanges {
     }
 
     @Action(SetIdUtente)
-    setIdUtente({ patchState }: StateContext<SignalRStateModel>, action: SetIdUtente) {
+    setIdUtente({ patchState }: StateContext<SignalRStateModel>, action: SetIdUtente): void {
         patchState({ idUtente: action.idUtente });
     }
 
     @Action(ClearIdUtente)
-    clearIdUtente({ patchState }: StateContext<SignalRStateModel>) {
+    clearIdUtente({ patchState }: StateContext<SignalRStateModel>): void {
         patchState({ idUtente: SignalRStateDefaults.idUtente });
     }
 

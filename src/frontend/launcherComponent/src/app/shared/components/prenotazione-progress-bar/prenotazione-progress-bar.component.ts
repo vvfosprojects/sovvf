@@ -13,19 +13,16 @@ import { Composizione } from '../../enum/composizione.enum';
     templateUrl: './prenotazione-progress-bar.component.html',
     styleUrls: ['./prenotazione-progress-bar.component.css']
 })
-export class PrenotazioneProgressBarComponent implements OnInit, OnChanges, OnDestroy {
+export class PrenotazioneProgressBarComponent implements OnChanges, OnDestroy {
     @Input() mezzoComp: MezzoComposizione;
     @Input() itemPrenotato: boolean;
     @Input() graphic: boolean;
     option = COMPOSIZIONEOPTIONS;
     currentTimeout: number;
-    _interval: any;
+    interval: any;
     scadenza: any;
 
     constructor(private store: Store) {
-    }
-
-    ngOnInit() {
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -35,7 +32,7 @@ export class PrenotazioneProgressBarComponent implements OnInit, OnChanges, OnDe
                 // console.log('scadenza Selezione', istanteScadenzaSelezione); //
                 if (this.scadenza && this.scadenza !== istanteScadenzaSelezione) {
                     this.scadenza = makeCopy(istanteScadenzaSelezione);
-                    clearInterval(this._interval);
+                    clearInterval(this.interval);
                     this.getProgressBarValue();
                     // da vedere altrimenti si rimuoverebbe la prenotazione e subito dopo si rimetterebbe la prenotazione, invece non deve accadere...
                     // console.log('data di scadenza cambiata');
@@ -46,7 +43,7 @@ export class PrenotazioneProgressBarComponent implements OnInit, OnChanges, OnDe
                     // console.log('data scadenza inserita');
                 }
             } else if (this.scadenza > 0) {
-                clearInterval(this._interval);
+                clearInterval(this.interval);
                 // console.log('prenotazione rimossa manualmente');
             } else {
                 // console.log('nessuna prenotazione in corso');
@@ -55,13 +52,13 @@ export class PrenotazioneProgressBarComponent implements OnInit, OnChanges, OnDe
     }
 
     ngOnDestroy(): void {
-        clearInterval(this._interval);
+        clearInterval(this.interval);
     }
 
-    getProgressBarValue() {
+    getProgressBarValue(): void {
         if (this.scadenza) {
             let alert = false;
-            this._interval = setInterval(() => {
+            this.interval = setInterval(() => {
                 const dataScadenza = new Date(this.mezzoComp.istanteScadenzaSelezione).getTime();
                 const dataAttuale = new Date(new Date().getTime() + OFFSET_SYNC_TIME[0]).getTime();
                 this.currentTimeout = dataScadenza - dataAttuale;
@@ -80,7 +77,7 @@ export class PrenotazioneProgressBarComponent implements OnInit, OnChanges, OnDe
                         this.store.dispatch(new RequestRemoveBookMezzoComposizione(this.mezzoComp));
                     }
                     this.scadenza = null;
-                    clearInterval(this._interval);
+                    clearInterval(this.interval);
                     // console.log('Mezzo non più prenotato');
                 }
             }, 500);

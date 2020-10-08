@@ -47,22 +47,22 @@ export class TrasferimentoChiamataModalState {
     }
 
     @Selector()
-    static codiciRichiesteTrasferibili(state: TrasferimentoChiamataModalStateModel) {
+    static codiciRichiesteTrasferibili(state: TrasferimentoChiamataModalStateModel): string[] {
         return state.codiciRichiesteTrasferibili;
     }
 
     @Selector()
-    static sedeSelezionata(state: TrasferimentoChiamataModalStateModel) {
+    static sedeSelezionata(state: TrasferimentoChiamataModalStateModel): TreeviewSelezione[] {
         return state.trasferimentoChiamataForm.model.sedeA;
     }
 
     @Selector()
-    static formValid(state: TrasferimentoChiamataModalStateModel) {
+    static formValid(state: TrasferimentoChiamataModalStateModel): boolean {
         return state.trasferimentoChiamataForm.status !== 'INVALID';
     }
 
     @Action(GetRichiesteTrasferibili)
-    getRichiesteTrasferibili({ patchState }: StateContext<TrasferimentoChiamataModalStateModel>) {
+    getRichiesteTrasferibili({ patchState }: StateContext<TrasferimentoChiamataModalStateModel>): void {
         this.trasferimentoChiamataService.getRichiesteTrasferibili().subscribe((codiciRichieste: string[]) => {
             patchState({
                 codiciRichiesteTrasferibili: codiciRichieste
@@ -71,7 +71,7 @@ export class TrasferimentoChiamataModalState {
     }
 
     @Action(RequestAddTrasferimentoChiamata)
-    requestAddTrasferimentoChiamata({ getState }: StateContext<TrasferimentoChiamataModalStateModel>) {
+    requestAddTrasferimentoChiamata({ getState }: StateContext<TrasferimentoChiamataModalStateModel>): void {
         const state = getState();
         const form = state.trasferimentoChiamataForm.model;
         const obj = {

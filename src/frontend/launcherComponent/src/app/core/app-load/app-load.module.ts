@@ -3,11 +3,11 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppLoadService } from './app-load.service';
 import { RpcConnectionService } from '../rpc/rpc-connection.service';
 
-export function init_app(appLoadService: AppLoadService) {
+export function init_app(appLoadService: AppLoadService): any {
     return () => appLoadService.initializeApp();
 }
 
-export function get_rpc(rpcService: RpcConnectionService) {
+export function get_rpc(rpcService: RpcConnectionService): any {
     return () => rpcService.initializeRpc();
 }
 

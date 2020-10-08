@@ -40,7 +40,7 @@ export const FiltriComposizioneStateDefaults: FiltriComposizioneStateStateModel 
 export class FiltriComposizioneState {
 
     @Selector()
-    static filtri(state: FiltriComposizioneStateStateModel) {
+    static filtri(state: FiltriComposizioneStateStateModel): ListaTipologicheMezzi {
         return state.filtri;
     }
 
@@ -58,26 +58,27 @@ export class FiltriComposizioneState {
 
 
     @Action(GetFiltriComposizione)
-    getFiltriComposizione({ dispatch }: StateContext<FiltriComposizioneStateStateModel>) {
+    getFiltriComposizione({ dispatch }: StateContext<FiltriComposizioneStateStateModel>): void {
         dispatch(new SetFiltriComposizione());
     }
 
     @Action(SetFiltriComposizione)
-    setFiltriComposizione({ patchState, dispatch }: StateContext<FiltriComposizioneStateStateModel>) {
+    setFiltriComposizione({ patchState, dispatch }: StateContext<FiltriComposizioneStateStateModel>): void {
         const composizioneMode = this.store.selectSnapshot(x => x.composizionePartenza.composizioneMode);
         if (composizioneMode === Composizione.Avanzata) {
             dispatch(new GetListeComposizioneAvanzata());
         }
         if (composizioneMode === Composizione.Veloce) {
             dispatch(new GetListaIdPreAccoppiati());
+            dispatch([
+                new GetListaIdPreAccoppiati()
+            ]);
         }
-        patchState({
-            filtri: this.store.selectSnapshot(state => state.tipologicheMezzi.tipologiche)
-        });
     }
 
+
     @Action(AddFiltroSelezionatoComposizione)
-    addFiltroSelezionatoComposizione(ctx: StateContext<FiltriComposizioneStateStateModel>, action: AddFiltroSelezionatoComposizione) {
+    addFiltroSelezionatoComposizione(ctx: StateContext<FiltriComposizioneStateStateModel>, action: AddFiltroSelezionatoComposizione): void {
         console.log('Filtro selezionato => #ID = ' + action.id + ' - TIPO = ' + action.tipoFiltro);
         switch (action.tipoFiltro) {
             case 'codiceDistaccamento':
@@ -105,7 +106,7 @@ export class FiltriComposizioneState {
     }
 
     @Action(RemoveFiltroSelezionatoComposizione)
-    removeFiltroSelezionatoComposizione(ctx: StateContext<FiltriComposizioneStateStateModel>, action: RemoveFiltroSelezionatoComposizione) {
+    removeFiltroSelezionatoComposizione(ctx: StateContext<FiltriComposizioneStateStateModel>, action: RemoveFiltroSelezionatoComposizione): void {
         switch (action.tipoFiltro) {
             case 'codiceDistaccamento':
                 ctx.setState(
@@ -132,7 +133,7 @@ export class FiltriComposizioneState {
     }
 
     @Action(ResetFiltriComposizione)
-    resetFiltriComposizione(ctx: StateContext<FiltriComposizioneStateStateModel>, action: ResetFiltriComposizione) {
+    resetFiltriComposizione(ctx: StateContext<FiltriComposizioneStateStateModel>, action: ResetFiltriComposizione): void {
         switch (action.tipoFiltro) {
             case 'codiceDistaccamento':
                 ctx.setState(

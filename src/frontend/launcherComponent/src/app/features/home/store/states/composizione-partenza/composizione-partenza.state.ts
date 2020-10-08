@@ -99,17 +99,17 @@ export class ComposizionePartenzaState {
     }
 
     @Selector()
-    static loadingListe(state: ComposizionePartenzaStateModel) {
+    static loadingListe(state: ComposizionePartenzaStateModel): boolean {
         return state.loadingListe;
     }
 
     @Selector()
-    static loadingInvioPartenza(state: ComposizionePartenzaStateModel) {
+    static loadingInvioPartenza(state: ComposizionePartenzaStateModel): boolean {
         return state.loadingInvioPartenza;
     }
 
     @Selector()
-    static loaded(state: ComposizionePartenzaStateModel) {
+    static loaded(state: ComposizionePartenzaStateModel): boolean {
         return state.loaded;
     }
 
@@ -118,14 +118,13 @@ export class ComposizionePartenzaState {
     }
 
     @Action(UpdateListeComposizione)
-    updateListe({ dispatch }: StateContext<ComposizionePartenzaStateModel>, action: UpdateListeComposizione) {
+    updateListe({ dispatch }: StateContext<ComposizionePartenzaStateModel>, action: UpdateListeComposizione): void {
         console.warn('UpdateListeComposizione');
         dispatch(new GetListeComposizioneAvanzata());
     }
 
     @Action(ReducerFilterListeComposizione)
-    // tslint:disable-next-line:max-line-length
-    reducerFilterListeComposizione({ getState, dispatch }: StateContext<ComposizionePartenzaStateModel>, action: ReducerFilterListeComposizione) {
+    reducerFilterListeComposizione({ getState, dispatch }: StateContext<ComposizionePartenzaStateModel>, action: ReducerFilterListeComposizione): void {
         const state = getState();
         const compMode = state.composizioneMode;
         if (compMode === Composizione.Avanzata) {
@@ -136,7 +135,7 @@ export class ComposizionePartenzaState {
     }
 
     @Action(RichiestaComposizione)
-    richiestaComposizione({ patchState, dispatch }: StateContext<ComposizionePartenzaStateModel>, action: RichiestaComposizione) {
+    richiestaComposizione({ patchState, dispatch }: StateContext<ComposizionePartenzaStateModel>, action: RichiestaComposizione): void {
         patchState({
             richiesta: action.richiesta
         });
@@ -144,7 +143,7 @@ export class ComposizionePartenzaState {
     }
 
     @Action(ToggleComposizioneMode)
-    toggleComposizioneMode({ getState, patchState, dispatch }: StateContext<ComposizionePartenzaStateModel>) {
+    toggleComposizioneMode({ getState, patchState, dispatch }: StateContext<ComposizionePartenzaStateModel>): void {
         const state = getState();
         if (state.composizioneMode === Composizione.Avanzata) {
             dispatch(new ClearListaMezziComposizione());
@@ -162,21 +161,21 @@ export class ComposizionePartenzaState {
     }
 
     @Action(SetComposizioneMode)
-    setComposizioneMode({ patchState }: StateContext<ComposizionePartenzaStateModel>, action: SetComposizioneMode) {
+    setComposizioneMode({ patchState }: StateContext<ComposizionePartenzaStateModel>, action: SetComposizioneMode): void {
         patchState({
             composizioneMode: action.compMode
         });
     }
 
     @Action(UpdateRichiestaComposizione)
-    updateRichiestaComposizione({ patchState }: StateContext<ComposizionePartenzaStateModel>, action: UpdateRichiestaComposizione) {
+    updateRichiestaComposizione({ patchState }: StateContext<ComposizionePartenzaStateModel>, action: UpdateRichiestaComposizione): void {
         patchState({
             richiesta: action.richiesta
         });
     }
 
     @Action(ConfirmPartenze)
-    confirmPartenze({ getState, patchState, dispatch }: StateContext<ComposizionePartenzaStateModel>, action: ConfirmPartenze) {
+    confirmPartenze({ getState, patchState, dispatch }: StateContext<ComposizionePartenzaStateModel>, action: ConfirmPartenze): void {
         dispatch(new StartInvioPartenzaLoading());
         this.compPartenzaService.confermaPartenze(action.partenze).subscribe(() => {
             const state = getState();
@@ -211,7 +210,7 @@ export class ComposizionePartenzaState {
     }
 
     @Action(TerminaComposizione)
-    terminaComposizione({ getState, dispatch }: StateContext<ComposizionePartenzaStateModel>) {
+    terminaComposizione({ getState, dispatch }: StateContext<ComposizionePartenzaStateModel>): void {
         const state = getState();
         dispatch([
             new DeleteInLavorazione(state.richiesta),
@@ -227,12 +226,12 @@ export class ComposizionePartenzaState {
     }
 
     @Action(ClearPartenza)
-    clearPartenza({ patchState }: StateContext<ComposizionePartenzaStateModel>) {
+    clearPartenza({ patchState }: StateContext<ComposizionePartenzaStateModel>): void {
         patchState(ComposizioneStateDefaults);
     }
 
     @Action(StartListaComposizioneLoading)
-    startListaComposizioneLoading({ dispatch, patchState }: StateContext<ComposizionePartenzaStateModel>) {
+    startListaComposizioneLoading({ dispatch, patchState }: StateContext<ComposizionePartenzaStateModel>): void {
         patchState({
             loadingListe: true,
             loaded: false
@@ -241,7 +240,7 @@ export class ComposizionePartenzaState {
     }
 
     @Action(StopListaComposizioneLoading)
-    stopListaComposizioneLoading({ dispatch, patchState }: StateContext<ComposizionePartenzaStateModel>) {
+    stopListaComposizioneLoading({ dispatch, patchState }: StateContext<ComposizionePartenzaStateModel>): void {
         patchState({
             loadingListe: false,
             loaded: true
@@ -250,14 +249,14 @@ export class ComposizionePartenzaState {
     }
 
     @Action(StartInvioPartenzaLoading)
-    startInvioPartenzaLoading({ patchState }: StateContext<ComposizionePartenzaStateModel>) {
+    startInvioPartenzaLoading({ patchState }: StateContext<ComposizionePartenzaStateModel>): void {
         patchState({
             loadingInvioPartenza: true
         });
     }
 
     @Action(StopInvioPartenzaLoading)
-    stopInvioPartenzaLoading({ patchState }: StateContext<ComposizionePartenzaStateModel>) {
+    stopInvioPartenzaLoading({ patchState }: StateContext<ComposizionePartenzaStateModel>): void {
         patchState({
             loadingInvioPartenza: false
         });

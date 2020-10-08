@@ -53,7 +53,7 @@ import { GetListeComposizioneAvanzata } from '../../store/actions/composizione-p
     templateUrl: './composizione-avanzata.component.html',
     styleUrls: ['./composizione-avanzata.component.css']
 })
-export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestroy {
+export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
 
     @Input() richiesta: SintesiRichiesta;
     @Input() disablePrenota: boolean;
@@ -259,11 +259,8 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
 
     }
 
-    ngOnInit() {
+    ngOnInit(): void {
         this.store.dispatch(new GetFiltriComposizione());
-    }
-
-    ngOnChanges() {
     }
 
     ngOnDestroy(): void {
@@ -271,34 +268,32 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
         this.subscription.unsubscribe();
     }
 
-    mezzoSelezionato(mezzoComposizione: MezzoComposizione) {
+    mezzoSelezionato(mezzoComposizione: MezzoComposizione): void {
         const codDistaccamentoMezzo = mezzoComposizione.mezzo.distaccamento.codice;
         this.store.dispatch([
-            // new PatchPaginationMezziSquadre('squadre', {page: 1, pageSize: 10}), => la fa il BE
-            new PatchCodDistaccamentoMezzo(codDistaccamentoMezzo),
             new ReducerSelectMezzoComposizione(mezzoComposizione),
         ]);
     }
 
-    mezzoDeselezionato(mezzoComposizione: MezzoComposizione) {
+    mezzoDeselezionato(mezzoComposizione: MezzoComposizione): void {
         this.store.dispatch(new UnselectMezzoComposizione());
         this.store.dispatch(new RemoveMezzoBoxPartenzaSelezionato());
         this.onClearDirection();
     }
 
-    mezzoHoverIn(mezzoComposizione: MezzoComposizione) {
+    mezzoHoverIn(mezzoComposizione: MezzoComposizione): void {
         this.store.dispatch([
             new HoverInMezzoComposizione(mezzoComposizione.id, mezzoComposizione.mezzo.coordinateFake),
         ]);
     }
 
-    mezzoHoverOut() {
+    mezzoHoverOut(): void {
         this.store.dispatch([
             new HoverOutMezzoComposizione(),
         ]);
     }
 
-    squadraSelezionata(squadraComposizione: SquadraComposizione) {
+    squadraSelezionata(squadraComposizione: SquadraComposizione): void {
         if (squadraComposizione && !squadraComposizioneBusy(squadraComposizione.squadra.stato)) {
             if (this.boxPartenzaList.length <= 0) {
                 this.store.dispatch(new AddBoxPartenza());
@@ -309,47 +304,47 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
         }
     }
 
-    squadraDeselezionata(squadraComposizione: SquadraComposizione) {
+    squadraDeselezionata(squadraComposizione: SquadraComposizione): void {
         this.store.dispatch(new UnselectSquadraComposizione(squadraComposizione));
         this.store.dispatch(new RemoveSquadraBoxPartenza(squadraComposizione.id));
     }
 
-    squadraHoverIn(squadraComposizione: SquadraComposizione) {
+    squadraHoverIn(squadraComposizione: SquadraComposizione): void {
         this.store.dispatch(new HoverInSquadraComposizione(squadraComposizione.id));
     }
 
-    squadraHoverOut(squadraComposizione: SquadraComposizione) {
+    squadraHoverOut(squadraComposizione: SquadraComposizione): void {
         this.store.dispatch(new HoverOutSquadraComposizione(squadraComposizione.id));
     }
 
-    onSearchSquadre() {
+    onSearchSquadre(): void {
         this.changeRicercaSquadre.emit(makeCopy(this.ricercaSquadre));
     }
 
-    onSearchMezzi() {
+    onSearchMezzi(): void {
         this.changeRicercaMezzi.emit(makeCopy(this.ricercaMezzi));
     }
 
-    checkSquadraSelezione(idSquadra: string) {
-        let selected = false;
+    checkSquadraSelezione(idSquadra: string): boolean {
+        let squadraSelezionata = false;
         this.idSquadreSelezionate.forEach((id: string) => {
             if (id === idSquadra) {
-                selected = true;
+                squadraSelezionata = true;
             }
         });
-        return selected;
+        return squadraSelezionata;
     }
 
-    boxPartenzaSelezionato(boxPartenza: BoxPartenza) {
+    boxPartenzaSelezionato(boxPartenza: BoxPartenza): void {
         // this.store.dispatch(new RequestSelectBoxPartenza(boxPartenza.id));
     }
 
-    nuovaPartenza() {
+    nuovaPartenza(): void {
         this.store.dispatch(new RequestAddBoxPartenza());
         this.dopoAggiungiBoxPartenza();
     }
 
-    eliminaBoxPartenza(boxPartenza: BoxPartenza) {
+    eliminaBoxPartenza(boxPartenza: BoxPartenza): void {
         if (boxPartenza.mezzoComposizione && boxPartenza.mezzoComposizione.istanteScadenzaSelezione) {
             const mezzoComp = boxPartenza.mezzoComposizione;
             this.store.dispatch(new RequestRemoveBookMezzoComposizione(mezzoComp, boxPartenza));
@@ -359,7 +354,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
         this.onClearDirection();
     }
 
-    dopoAggiungiBoxPartenza() {
+    dopoAggiungiBoxPartenza(): void {
         this.boxPartenzaList.forEach(boxPartenza => {
             if (boxPartenza.mezzoComposizione) {
                 const mezzoComp = boxPartenza.mezzoComposizione;
@@ -393,22 +388,22 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
         }
     }
 
-    confermaPartenzeInViaggio() {
+    confermaPartenzeInViaggio(): void {
         const partenze = makeCopy(this.boxPartenzaList);
         const partenzeMappedArray = partenze.map(obj => {
-            const rObj = {};
+            const rObj = null;
             if (obj.mezzoComposizione) {
                 obj.mezzoComposizione.mezzo.stato = StatoMezzo.InViaggio;
-                rObj['mezzo'] = obj.mezzoComposizione.mezzo;
+                rObj.mezzo = obj.mezzoComposizione.mezzo;
             } else {
-                rObj['mezzo'] = null;
+                rObj.mezzo = null;
             }
             if (obj.squadraComposizione.length > 0) {
-                rObj['squadre'] = obj.squadraComposizione.map((squadraComp: SquadraComposizione) => {
+                rObj.squadre = obj.squadraComposizione.map((squadraComp: SquadraComposizione) => {
                     return squadraComp.squadra;
                 });
             } else {
-                rObj['squadre'] = [];
+                rObj.squadre = [];
             }
             return rObj;
         });
@@ -420,22 +415,22 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
         this.store.dispatch(new ConfirmPartenze(partenzeObj));
     }
 
-    confermaPartenzeInUscita() {
+    confermaPartenzeInUscita(): void {
         const partenze = makeCopy(this.boxPartenzaList);
         const partenzeMappedArray = partenze.map(obj => {
-            const rObj = {};
+            const rObj = null;
             if (obj.mezzoComposizione) {
                 obj.mezzoComposizione.mezzo.stato = StatoMezzo.InUscita;
-                rObj['mezzo'] = obj.mezzoComposizione.mezzo;
+                rObj.mezzo = obj.mezzoComposizione.mezzo;
             } else {
-                rObj['mezzo'] = null;
+                rObj.mezzo = null;
             }
             if (obj.squadraComposizione.length > 0) {
-                rObj['squadre'] = obj.squadraComposizione.map((squadraComp: SquadraComposizione) => {
+                rObj.squadre = obj.squadraComposizione.map((squadraComp: SquadraComposizione) => {
                     return squadraComp.squadra;
                 });
             } else {
-                rObj['squadre'] = [];
+                rObj.squadre = [];
             }
             return rObj;
         });
@@ -452,7 +447,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
         this.centraMappa.emit();
     }
 
-    mezziPageChange(pageMezzi: number) {
+    mezziPageChange(pageMezzi: number): void {
         const options = {
             page: {
                 pageMezzi,
@@ -461,7 +456,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnChanges, OnDestr
         this.store.dispatch(new GetListeComposizioneAvanzata(options));
     }
 
-    squadrePageChange(pageSquadre: number) {
+    squadrePageChange(pageSquadre: number): void {
         const options = {
             page: {
                 pageSquadre,

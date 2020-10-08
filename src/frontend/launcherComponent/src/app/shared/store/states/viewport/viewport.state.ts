@@ -26,7 +26,7 @@ export class ViewportState {
 
     @Selector([RouterState, AppState])
     static footerFixed(state: ViewportStateModel, routerState: RouterStateModel, appState: AppStateModel): boolean {
-        // tslint:disable-next-line:max-line-length
+
         const grantUrl = [`/${RoutesPath.Home}`, `/${RoutesPath.GestioneUtenti}`, `/${RoutesPath.Rubrica}`, `/${RoutesPath.TrasferimentoChiamata}`, `/${RoutesPath.Changelog}`, `/${RoutesPath.Impostazioni}`];
         let granted = false;
         const appReady = appState.appIsLoaded;
@@ -40,7 +40,7 @@ export class ViewportState {
 
     @Selector([RouterState, AuthState, AppState])
     static footerVisible(state: ViewportStateModel, routerState: RouterStateModel, authState: AuthStateModel, appState: AppStateModel): boolean {
-        // tslint:disable-next-line:max-line-length
+
         const grantUrl = [`/${RoutesPath.Home}`, `/${RoutesPath.GestioneUtenti}`, `/${RoutesPath.Rubrica}`, `/${RoutesPath.TrasferimentoChiamata}`, `/${RoutesPath.Changelog}`, `/${RoutesPath.Impostazioni}`];
         let granted = false;
         grantUrl.forEach((url: string) => {
@@ -54,12 +54,12 @@ export class ViewportState {
     }
 
     @Action(SetAvailHeight)
-    setAvailHeight({ patchState }: StateContext<ViewportStateModel>, { availHeight }: SetAvailHeight) {
+    setAvailHeight({ patchState }: StateContext<ViewportStateModel>, { availHeight }: SetAvailHeight): void {
         patchState({ availHeight });
     }
 
     @Action(SetContentHeight)
-    setContentHeight({ patchState }: StateContext<ViewportStateModel>, { contentHeight }: SetContentHeight) {
+    setContentHeight({ patchState }: StateContext<ViewportStateModel>, { contentHeight }: SetContentHeight): void {
         patchState({ contentHeight });
     }
 }

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
@@ -16,11 +16,11 @@ export class RpcStoreService {
         return this.localIp.value;
     }
 
-    getRcpStatus() {
+    getRcpStatus(): Observable<any> {
         return this.rcpStatus.asObservable();
     }
 
-    setLocalIp(value: string) {
+    setLocalIp(value: string): void {
         this.localIp.next(value);
         this.rcpStatus.next(true);
     }

@@ -14,9 +14,10 @@ import { RichiestaActionInterface } from '../../interface/richiesta-action.inter
 export class SintesiRichiestaActionsComponent implements OnInit {
 
     @Input() richiesta: SintesiRichiesta;
-    statoRichiestaString: Array<StatoRichiestaActions>;
 
     @Output() actionRichiesta: EventEmitter<RichiestaActionInterface> = new EventEmitter();
+
+    statoRichiestaString: Array<StatoRichiestaActions>;
 
     constructor(dropdownConfig: NgbDropdownConfig,
                 tooltipConfig: NgbTooltipConfig,
@@ -27,12 +28,12 @@ export class SintesiRichiestaActionsComponent implements OnInit {
         tooltipConfig.placement = 'top';
     }
 
-    ngOnInit() {
+    ngOnInit(): void {
         const exceptStati = [this.richiesta.stato, StatoRichiestaActions.Riaperta, calcolaActionSuggeritaRichiesta(this.richiesta)];
         this.statoRichiestaString = statoRichiestaActionsEnumToStringArray(exceptStati);
     }
 
-    onClick(stato: StatoRichiestaActions) {
+    onClick(stato: StatoRichiestaActions): void {
         const modalConferma = this.modalService.open(ActionRichiestaModalComponent, {
             windowClass: 'modal-holder',
             backdropClass: 'light-blue-backdrop',
@@ -67,7 +68,7 @@ export class SintesiRichiestaActionsComponent implements OnInit {
 
         const richiestaAction = {
             idRichiesta: null,
-            stato: stato,
+            stato,
             note: null
         };
 
@@ -85,11 +86,11 @@ export class SintesiRichiestaActionsComponent implements OnInit {
         );
     }
 
-    calcolaActionSuggeritaRichiesta(richiesta: SintesiRichiesta) {
+    calcolaActionSuggeritaRichiesta(richiesta: SintesiRichiesta): StatoRichiestaActions {
         return calcolaActionSuggeritaRichiesta(richiesta);
     }
 
-    statoRichiestaColor(richiesta: SintesiRichiesta) {
+    statoRichiestaColor(richiesta: SintesiRichiesta): string {
         return statoRichiestaColor(richiesta.stato);
     }
 }

@@ -20,25 +20,25 @@ export const ClipboardStateDefaults: ClipboardStateModel = {
 
 export class ClipboardState {
 
-    constructor(private _clipboardService: ClipboardService) {
+    constructor(private clipboardService: ClipboardService) {
     }
 
 
     @Action(CopyToClipboard)
-    copyToClipboard({ patchState }: StateContext<ClipboardStateModel>, action: CopyToClipboard) {
+    copyToClipboard({ patchState }: StateContext<ClipboardStateModel>, action: CopyToClipboard): void {
         patchState({
             clipboard: this.toClipboard(action.coordinate)
         });
     }
 
     @Action(ClearClipboard)
-    clearClipboard({ patchState }: StateContext<ClipboardStateModel>) {
+    clearClipboard({ patchState }: StateContext<ClipboardStateModel>): void {
         patchState(ClipboardStateDefaults);
     }
 
     toClipboard(coordinate: Coordinate): string {
         const copiedText = coordinate.latitudine.toString() + ', ' + coordinate.longitudine.toString();
-        this._clipboardService.copyFromContent(copiedText);
+        this.clipboardService.copyFromContent(copiedText);
         return copiedText;
     }
 

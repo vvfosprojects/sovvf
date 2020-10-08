@@ -15,7 +15,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
     templateUrl: './modal-filtri-tipologia.component.html',
     styleUrls: ['./modal-filtri-tipologia.component.css']
 })
-export class ModalFiltriTipologiaComponent implements OnInit, OnDestroy {
+export class ModalFiltriTipologiaComponent implements OnDestroy {
 
     @Select(FiltriRichiesteState.categoriaFiltriTipologie) categoriaFiltriRichieste$: Observable<string[]>;
     categorie: string[];
@@ -38,18 +38,15 @@ export class ModalFiltriTipologiaComponent implements OnInit, OnDestroy {
         this.getFiltriSelezionati();
     }
 
-    ngOnInit() {
-    }
-
-    ngOnDestroy() {
+    ngOnDestroy(): void {
         this.subscription.unsubscribe();
     }
 
-    initSearch() {
+    initSearch(): void {
         this.filtersSearch = { descrizione: '' };
     }
 
-    getCategorie() {
+    getCategorie(): void {
         this.subscription.add(
             this.categoriaFiltriRichieste$.subscribe((categorie: string[]) => {
                 this.categorie = categorie;
@@ -58,7 +55,7 @@ export class ModalFiltriTipologiaComponent implements OnInit, OnDestroy {
         );
     }
 
-    getFiltri() {
+    getFiltri(): void {
         this.subscription.add(
             this.filtriRichieste$.subscribe((filtri: VoceFiltro[]) => {
                 this.filtri = filtri;
@@ -66,7 +63,7 @@ export class ModalFiltriTipologiaComponent implements OnInit, OnDestroy {
         );
     }
 
-    getFiltriSelezionati() {
+    getFiltriSelezionati(): void {
         this.subscription.add(
             this.filtriTipologiaSelezionati$.subscribe((filtriSelezionati: VoceFiltro[]) => {
                 this.filtriSelezionati = filtriSelezionati;
@@ -74,23 +71,23 @@ export class ModalFiltriTipologiaComponent implements OnInit, OnDestroy {
         );
     }
 
-    onSelezioneCategoria(categoria: any) {
+    onSelezioneCategoria(categoria: any): void {
         this.categoriaSelezionata = categoria;
     }
 
-    onSelezioneFiltroTipologia(filtro: VoceFiltro) {
+    onSelezioneFiltroTipologia(filtro: VoceFiltro): void {
         this.store.dispatch(new SetFiltroTipologiaSelezionatoRichieste(filtro));
     }
 
-    onDeselezioneFiltroTipologia(filtro: VoceFiltro) {
+    onDeselezioneFiltroTipologia(filtro: VoceFiltro): void {
         this.store.dispatch(new ClearFiltroTipologiaSelezionatoRichieste(filtro));
     }
 
-    chiudiModalFiltriTipologia(closeRes: string) {
+    chiudiModalFiltriTipologia(closeRes: string): void {
         this.modal.close(closeRes);
     }
 
-    resetFiltri() {
+    resetFiltri(): void {
         this.store.dispatch(new ClearAllFiltriTipologiaSelezionatiRichieste());
     }
 }

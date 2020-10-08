@@ -13,14 +13,14 @@ export class TastoChiamataComponent {
     @Input() disabled = false;
     @Output() startChiamata = new EventEmitter();
 
-    chiamata() {
+    chiamata(): void {
         const bool = this.colorButtonChiamata === 'btn-outline-success';
         if (bool) {
             this.startChiamata.emit();
         }
     }
 
-    getClasses() {
+    getClasses(): string {
         let returnClass = 'btn-outline-success';
         if (this.disabled) {
             returnClass += ' cursor-not-allowed';

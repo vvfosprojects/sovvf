@@ -27,22 +27,22 @@ export class TabellaUtentiComponent {
     constructor() {
     }
 
-    onRemoveUtente(codFiscale: string, nominativoUtente: string) {
+    onRemoveUtente(codFiscale: string, nominativoUtente: string): void {
         const obj = { codFiscale, nominativoUtente };
         this.removeUser.emit(obj);
     }
 
-    onRemoveRuoloUtente(codFiscale: string, ruolo: Ruolo, nominativoUtente: string) {
+    onRemoveRuoloUtente(codFiscale: string, ruolo: Ruolo, nominativoUtente: string): void {
         const obj = { codFiscale, ruolo, nominativoUtente };
         this.removeRoleUser.emit(obj);
     }
 
-    onAddRuoloUtente(codFiscale: string, fullName: string, ruoliAttuali: Ruolo[]) {
-        const obj = { codFiscale: codFiscale, fullName: fullName, ruoliAttuali: ruoliAttuali };
+    onAddRuoloUtente(codFiscale: string, fullName: string, ruoliAttuali: Ruolo[]): void {
+        const obj = { codFiscale, fullName, ruoliAttuali };
         this.addRuoloUtente.emit(obj);
     }
 
-    wipeRoleString(text: string) {
+    wipeRoleString(text: string): string {
         return wipeStringUppercase(text);
     }
 }

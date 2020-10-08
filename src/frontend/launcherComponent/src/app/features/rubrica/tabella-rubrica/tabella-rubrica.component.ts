@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Ente } from 'src/app/shared/interface/ente.interface';
 
 @Component({
@@ -6,7 +6,7 @@ import { Ente } from 'src/app/shared/interface/ente.interface';
     templateUrl: './tabella-rubrica.component.html',
     styleUrls: ['./tabella-rubrica.component.css']
 })
-export class TabellaRubricaComponent implements OnInit {
+export class TabellaRubricaComponent {
 
     @Input() page: number;
     @Input() pageSize: number;
@@ -23,14 +23,11 @@ export class TabellaRubricaComponent implements OnInit {
     constructor() {
     }
 
-    ngOnInit() {
-    }
-
-    onEditVoceRubrica(voceRubrica: Ente) {
+    onEditVoceRubrica(voceRubrica: Ente): void {
         this.editVoceRubrica.emit(voceRubrica);
     }
 
-    onDeleteVoceRubrica(idVoceRubrica: string, descrizioneVoceRubrica: string) {
+    onDeleteVoceRubrica(idVoceRubrica: string, descrizioneVoceRubrica: string): void {
         this.deleteVoceRubrica.emit({ idVoceRubrica, descrizioneVoceRubrica });
     }
 }
