@@ -22,22 +22,20 @@ using System.Threading.Tasks;
 namespace SO115App.ExternalAPI.Fake.GestioneMezzi
 {
     public class GetMezziUtilizzabili : IGetMezziUtilizzabili
-
     {
-        private readonly HttpClient _client;
         private readonly IConfiguration _configuration;
+        private readonly IMemoryCache _memoryCache;
+
         private readonly IGetStatoMezzi _getStatoMezzi;
         private readonly IGetDistaccamentoByCodiceSedeUC _getDistaccamentoByCodiceSedeUC;
         private readonly IGetAlberaturaUnitaOperative _getAlberaturaUnitaOperative;
-        private readonly IMemoryCache _memoryCache;
         private readonly IGetPosizioneFlotta _getPosizioneFlotta;
 
-        public GetMezziUtilizzabili(HttpClient client, IConfiguration configuration, IGetStatoMezzi GetStatoMezzi,
+        public GetMezziUtilizzabili(IConfiguration configuration, IGetStatoMezzi GetStatoMezzi,
             IGetDistaccamentoByCodiceSedeUC GetDistaccamentoByCodiceSedeUC,
             IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative,
             IMemoryCache memoryCache, IGetPosizioneFlotta getPosizioneFlotta)
         {
-            _client = client;
             _configuration = configuration;
             _getStatoMezzi = GetStatoMezzi;
             _getDistaccamentoByCodiceSedeUC = GetDistaccamentoByCodiceSedeUC;
@@ -205,15 +203,27 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
 
         private async Task<List<AnagraficaMezzo>> GetAnagraficaMezziByCodComando(List<string> ListCodComando)
         {
-            string combindedString = string.Join(",", ListCodComando);
-            _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("test");
-            var response = await _client.GetAsync($"{_configuration.GetSection("UrlExternalApi").GetSection("MezziApidipvvf").Value}?codiciSede={combindedString}").ConfigureAwait(false);
-            response.EnsureSuccessStatusCode();
-            using HttpContent contentMezzo = response.Content;
-            var data = await contentMezzo.ReadAsStringAsync().ConfigureAwait(false);
-
             var listaAnagraficaMezzo = new List<AnagraficaMezzo>();
-            listaAnagraficaMezzo = JsonConvert.DeserializeObject<List<AnagraficaMezzo>>(data);
+            try
+            {
+                using var _client = new HttpClient();
+                _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("test");
+                
+                var response = _client.GetAsync($"{_configuration.GetSection("UrlExternalApi").GetSection("MezziApidipvvf").Value}?codiciSede={string.Join(",", ListCodComando)}").Result;
+                response.EnsureSuccessStatusCode();
+
+                if (response == null)
+                    throw new HttpRequestException();
+                
+                using HttpContent contentMezzo = response.Content;
+                var data = await contentMezzo.ReadAsStringAsync().ConfigureAwait(false);
+
+                listaAnagraficaMezzo = JsonConvert.DeserializeObject<List<AnagraficaMezzo>>(data);
+            }
+            catch (Exception e) 
+            {
+                throw new Exception("Elenco del personale non disponibile");
+            }
 
             return listaAnagraficaMezzo;
         }
