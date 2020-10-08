@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.IO;
 using SO115App.Models.Classi.Utility;
+using System.Linq;
 
 namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
 
@@ -71,6 +72,21 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
                 _memoryCache.Set("ListaPreAccoppiati", ListaPreAccoppiati, cacheEntryOptions);
             }
             return ListaPreAccoppiati;
+        }
+
+        public List<PreAccoppiatiFakeJson> GetFake(PreAccoppiatiQuery query)
+        {
+            var preAccoppiati = new List<PreAccoppiatiFakeJson>();
+            string filepath = "Fake/PreAccoppiatiComposizione.json";
+            string json;
+            using (StreamReader r = new StreamReader(filepath))
+            {
+                json = r.ReadToEnd();
+            }
+
+            preAccoppiati = JsonConvert.DeserializeObject<List<PreAccoppiatiFakeJson>>(json);
+
+            return preAccoppiati.Where(x => x.CodiceSede == query.CodiceSede).ToList();
         }
 
         private List<PreAccoppiati> MapPreAccoppiati(List<PreAccoppiatiFake> ListaPreAccoppiatiFake)

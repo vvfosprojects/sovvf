@@ -18,8 +18,10 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using System.Collections.Generic;
+using System.Linq;
 using CQRS.Queries;
 using Serilog;
+using SO115App.API.Models.Classi.Composizione;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneMezzi;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneSquadre;
 using SO115App.Models.Servizi.Infrastruttura.GetComposizioneSquadre;
@@ -48,7 +50,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
         {
             Log.Debug("Inizio elaborazione Lista Preaccoppiati Composizione Handler");
 
-            var ListapreAccoppiati = _iGetPreAccoppiati.Get(query);
+            var ListapreAccoppiati = _iGetPreAccoppiati.GetFake(query);
 
             Log.Debug("Fine elaborazione Lista Preaccoppiati Composizione Handler");
 

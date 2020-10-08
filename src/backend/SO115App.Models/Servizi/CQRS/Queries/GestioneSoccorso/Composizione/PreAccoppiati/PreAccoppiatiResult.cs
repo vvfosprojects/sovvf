@@ -29,6 +29,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
         /// <summary>
         ///   Elenco PreAccopiati per la composizione partenza semplificata
         /// </summary>
-        public List<SO115App.API.Models.Classi.Composizione.PreAccoppiati> preAccoppiati { get; set; }
+        public List<Classi.Composizione.PreAccoppiatiFakeJson> preAccoppiati { get; set; }
     }
 }

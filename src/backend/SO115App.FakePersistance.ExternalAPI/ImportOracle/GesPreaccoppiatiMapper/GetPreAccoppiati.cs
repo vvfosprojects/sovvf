@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -50,6 +51,21 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.GesPreaccoppiatiMapper
                 _memoryCache.Set("ListaPreAccoppiati", ListaPreAccoppiati, cacheEntryOptions);
             }
             return ListaPreAccoppiati;
+        }
+
+        public List<PreAccoppiatiFakeJson> GetFake(PreAccoppiatiQuery query)
+        {
+            var preAccoppiati = new List<PreAccoppiatiFakeJson>();
+            string filepath = "Fake/PreAccoppiatiComposizione.json";
+            string json;
+            using (var r = new StreamReader(filepath))
+            {
+                json = r.ReadToEnd();
+            }
+
+            preAccoppiati = JsonConvert.DeserializeObject<List<PreAccoppiatiFakeJson>>(json);
+
+            return preAccoppiati.Where(x => x.CodiceSede == query.CodiceSede).ToList();
         }
 
         private List<PreAccoppiati> MapListaPreAccoppiatiOraInMongoDB(List<ORAGesPreaccoppiati> ListaPreAccoppiatiOracle)

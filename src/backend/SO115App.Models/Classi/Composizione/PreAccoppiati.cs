@@ -30,4 +30,14 @@ namespace SO115App.API.Models.Classi.Composizione
 
         public string[] Squadre { get; set; }
     }
+
+    public class PreAccoppiatiFakeJson
+    {
+        public string Id { get; set; }
+        public string CodiceSede { get; set; }
+
+        public ComposizioneMezzi Mezzo { get; set; }
+
+        public List<ComposizioneSquadre> Squadre { get; set; }
+    }
 }
