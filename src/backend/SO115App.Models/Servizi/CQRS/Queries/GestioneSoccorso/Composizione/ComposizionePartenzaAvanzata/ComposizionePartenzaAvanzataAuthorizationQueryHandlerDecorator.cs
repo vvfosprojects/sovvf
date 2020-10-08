@@ -17,16 +17,14 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System.Collections.Generic;
-using System.Security.Principal;
 using CQRS.Authorization;
 using CQRS.Queries.Authorizers;
-using SO115App.API.Models.Classi.Autenticazione;
-using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Autenticazione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.VerificaUtente;
+using System.Collections.Generic;
+using System.Security.Principal;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizionePartenzaAvanzata
 {
@@ -51,27 +49,26 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
 
         public IEnumerable<AuthorizationResult> Authorize(ComposizionePartenzaAvanzataQuery query)
         {
-            string username = this._currentUser.Identity.Name;
-            Utente user = _findUserByUsername.FindUserByUs(username);
+            var user = _findUserByUsername.FindUserByUs(_currentUser.Identity.Name);
 
-            var richiesta = _getRichiestaAssistenzaById.GetById(query.Filtro.IdRichiesta);
+            query.Richiesta = _getRichiestaAssistenzaById.GetById(query.Filtro.IdRichiesta);
 
-            if (this._currentUser.Identity.IsAuthenticated)
+            if (_currentUser.Identity.IsAuthenticated)
             {
                 if (user == null)
                     yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
                 else
                 {
                     bool abilitato = false;
-                    foreach (var competenza in richiesta.CodUOCompetenza)
+                    foreach (var competenza in query.Richiesta.CodUOCompetenza)
                     {
                         if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, competenza, Costanti.GestoreRichieste))
                             abilitato = true;
                     }
 
-                    if (richiesta.CodSOAllertate != null)
+                    if (query.Richiesta.CodSOAllertate != null)
                     {
-                        foreach (var competenza in richiesta.CodSOAllertate)
+                        foreach (var competenza in query.Richiesta.CodSOAllertate)
                         {
                             if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, competenza, Costanti.GestoreRichieste))
                                 abilitato = true;

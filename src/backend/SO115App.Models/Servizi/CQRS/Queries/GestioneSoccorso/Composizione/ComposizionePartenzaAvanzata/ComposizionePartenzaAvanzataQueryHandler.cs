@@ -19,12 +19,18 @@
 //-----------------------------------------------------------------------
 
 using CQRS.Queries;
+using Google_API;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using Serilog;
 using SO115App.API.Models.Classi.Condivise;
+using SO115App.API.Models.Classi.Soccorso;
 using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GeoFleet;
+using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
 using SO115App.Models.Servizi.Infrastruttura.GestioneStatoOperativoSquadra;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Squadre;
@@ -32,6 +38,8 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizionePartenzaAvanzata
 {
@@ -43,18 +51,30 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
         private readonly IGetStatoMezzi _getMezziPrenotati;
         private readonly IGetPosizioneFlotta _getPosizioneFlotta;
 
+        private readonly IGetTipologieByCodice _getTipologieByCodice;
+        private readonly IConfiguration _configuration;
+        private readonly IMemoryCache _memoryCache;
+
         public ComposizionePartenzaAvanzataQueryHandler(
             IGetListaSquadre getListaSquadre,
             IGetStatoSquadra getStatoSquadre,
             IGetStatoMezzi getMezziPrenotati,
             IGetMezziUtilizzabili getMezziUtilizzabili,
-            IGetPosizioneFlotta getPosizioneFlotta)
+            IGetPosizioneFlotta getPosizioneFlotta,
+
+            IGetTipologieByCodice getTipologieByCodice,
+            IConfiguration configuration,
+            IMemoryCache memoryCache)
         {
             _getListaSquadre = getListaSquadre;
             _getMezziPrenotati = getMezziPrenotati;
             _getMezziUtilizzabili = getMezziUtilizzabili;
             _getStatoSquadre = getStatoSquadre;
             _getPosizioneFlotta = getPosizioneFlotta;
+
+            _getTipologieByCodice = getTipologieByCodice;
+            _configuration = configuration;
+            _memoryCache = memoryCache;
         }
 
         public ComposizionePartenzaAvanzataResult Handle(ComposizionePartenzaAvanzataQuery query)
@@ -155,7 +175,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
 
                         c.Km = mediaDistanza;
                         c.TempoPercorrenza = mediaTempoPercorrenza;
-                        //composizione.IndiceOrdinamento = _ordinamentoMezzi.GetIndiceOrdinamento(query.Filtro.IdRichiesta, composizione, composizione.Mezzo.CoordinateFake, composizione.Mezzo.IdRichiesta);
+                        c.IndiceOrdinamento = new OrdinamentoMezzi(query.Richiesta, _getTipologieByCodice, _configuration, _memoryCache).GetIndiceOrdinamento(c, c.Mezzo.CoordinateFake);
 
                         return c;
                     });
@@ -172,7 +192,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                         .Where(m =>
                         {
                             if (query.Filtro.RicercaSquadre != null) // aggiungere altri campi in OR (fulltext)
-                            return m.Mezzo.Codice.Contains(query.Filtro.RicercaMezzi) || m.Mezzo.Descrizione.Contains(query.Filtro.RicercaMezzi);
+                                return m.Mezzo.Codice.Contains(query.Filtro.RicercaMezzi) || m.Mezzo.Descrizione.Contains(query.Filtro.RicercaMezzi);
                             return true;
                         })
                         .Where(m =>
@@ -233,6 +253,98 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             {
                 ComposizionePartenzaAvanzata = composizioneAvanzata
             };
+        }
+    }
+
+    internal class OrdinamentoMezzi
+    {
+        private readonly RichiestaAssistenza _Richiesta;
+        private readonly IGetTipologieByCodice _getTipologieByCodice;
+        private readonly IConfiguration _configuration;
+        private readonly IMemoryCache _memoryCache;
+
+        public OrdinamentoMezzi(RichiestaAssistenza Richiesta, IGetTipologieByCodice getTipologieByCodice, IConfiguration configuration, IMemoryCache memoryCache)
+        {
+            _Richiesta = Richiesta;
+            _getTipologieByCodice = getTipologieByCodice;
+            _configuration = configuration;
+            _memoryCache = memoryCache;
+        }
+
+        public decimal GetIndiceOrdinamento(Classi.Composizione.ComposizioneMezzi composizione, bool CoordinateFake)
+        {
+            int ValoreIntOriginePerSganciamento = 0;
+            decimal ValoreAdeguatezzaMezzo;
+
+            ValoreAdeguatezzaMezzo = GeneraValoreAdeguatezzaMezzo(_Richiesta.Tipologie, composizione.Mezzo.Genere);
+
+            if (!CoordinateFake)
+                composizione = GetDistanceByGoogle(composizione, _Richiesta).Result;
+
+            return 100 / (1 + Convert.ToDecimal(composizione.TempoPercorrenza.Replace(".", ",")) / 5400) + ValoreIntOriginePerSganciamento + ValoreAdeguatezzaMezzo;
+        }
+
+        private async Task<Classi.Composizione.ComposizioneMezzi> GetDistanceByGoogle(Classi.Composizione.ComposizioneMezzi composizione, RichiestaAssistenza richiesta)
+        {
+            var origine = $"origins={ composizione.Mezzo.Coordinate.Latitudine.ToString().Replace(",", ".")},{ composizione.Mezzo.Coordinate.Longitudine.ToString().Replace(",", ".")}";
+            var destination = $"destinations={ richiesta.Localita.Coordinate.Latitudine.ToString().Replace(",", ".")},{ richiesta.Localita.Coordinate.Longitudine.ToString().Replace(",", ".")}";
+            var mode = "mode=Driving";
+            var sensor = "sensor=false";
+
+            var queryString = new StringContent("");
+
+            //CACHE
+            DistanceMatrix distanza;
+            var nomeCache = "DistanceMatrix_";
+            using var _client = new HttpClient();
+
+            if (!_memoryCache.TryGetValue(nomeCache, out distanza))
+            {
+                var response = await _client.PostAsync(_configuration.GetSection("UrlExternalApi").GetSection("DistanceMatrix").Value + $"&{origine}&{destination}&{mode}&{sensor}", queryString).ConfigureAwait(false);
+                response.EnsureSuccessStatusCode();
+                using HttpContent content = response.Content;
+                
+                string data = await content.ReadAsStringAsync().ConfigureAwait(false);
+                distanza = JsonConvert.DeserializeObject<DistanceMatrix>(data);
+
+                var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromHours(8));
+                _memoryCache.Set(nomeCache, distanza, cacheEntryOptions);
+            }
+            //FINE CACHE
+
+            if (distanza.Rows[0].Elements[0].Distance != null)
+            {
+                //LE Value sono espresse in SECONDI
+                composizione.Km = distanza.Rows[0].Elements[0].Distance.Text.ToString().Substring(0, distanza.Rows[0].Elements[0].Distance.Text.ToString().Length - 2);
+                composizione.TempoPercorrenza = (distanza.Rows[0].Elements[0].Duration.Value / 60).ToString();
+            }
+            else
+            {
+                composizione.Km = "100";
+                composizione.TempoPercorrenza = "50";
+            }
+
+            return composizione;
+        }
+
+        private decimal GeneraValoreAdeguatezzaMezzo(List<string> codiciTipologie, string genere)
+        {
+            foreach (var tipologia in _getTipologieByCodice.Get(codiciTipologie))
+            {
+                if (tipologia != null)
+                {
+                    return genere switch
+                    {
+                        "APS" => Convert.ToDecimal(tipologia.AdeguatezzaMezzo.Aps),
+                        "AS" => Convert.ToDecimal(tipologia.AdeguatezzaMezzo.As),
+                        "AB" => Convert.ToDecimal(tipologia.AdeguatezzaMezzo.Ab),
+                        "AV" => Convert.ToDecimal(tipologia.AdeguatezzaMezzo.Av),
+                        "AG" => Convert.ToDecimal(tipologia.AdeguatezzaMezzo.Ag),
+                        _ => Convert.ToDecimal(tipologia.AdeguatezzaMezzo.Default),
+                    };
+                }
+            }
+            return 10;
         }
     }
 }
