@@ -63,11 +63,11 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
         public void Handle(ConfermaPartenzeCommand command)
         {
             /// preparazione del DTO
-            var stato_mezzo = _getStatoMezzi.Get(command.ConfermaPartenze.CodiceSede);
+            var stato_mezzo = _getStatoMezzi.Get(new string[] { command.ConfermaPartenze.CodiceSede });
 
             foreach (var partenza in command.ConfermaPartenze.Partenze)
             {
-                var listaMezzi = _getStatoMezzi.Get(command.ConfermaPartenze.CodiceSede, partenza.Mezzo.Codice);
+                var listaMezzi = _getStatoMezzi.Get(new string[] { command.ConfermaPartenze.CodiceSede }, partenza.Mezzo.Codice);
                 if (listaMezzi.Count > 0)
                 {
                     if (listaMezzi[0].IdOpPrenotazione != null && !listaMezzi[0].IdOpPrenotazione.Equals(command.ConfermaPartenze.IdOperatore))

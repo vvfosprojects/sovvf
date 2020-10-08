@@ -81,7 +81,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
         {
             Log.Debug("Inizio elaborazione Composizione partenza avanzata Handler");
 
-            var lstSedi = new List<string>() { query.CodiceSede };
+            var lstSedi = query.CodiceSede.ToList();
 
             //REPERISCO I DATI, FACCIO IL MAPPING ED APPLICO I FILTRI (MEZZI E SQUADRE)
             var lstSquadre = _getListaSquadre.Get(lstSedi)
