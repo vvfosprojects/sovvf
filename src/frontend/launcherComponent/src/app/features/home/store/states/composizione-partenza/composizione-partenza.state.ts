@@ -47,10 +47,6 @@ import { GetMarkersMappa, StartLoadingAreaMappa, StopLoadingAreaMappa } from '..
 import { ShowToastr } from 'src/app/shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from 'src/app/shared/enum/toastr';
 import { Injectable } from '@angular/core';
-import { BoxPartenzaState } from './box-partenza.state';
-import { ComposizioneAvanzataState } from './composizione-avanzata.state';
-import { ComposizioneVeloceState } from './composizione-veloce.state';
-import { TipologicheMezziState } from './tipologiche-mezzi.state';
 
 export interface ComposizionePartenzaStateModel {
     richiesta: SintesiRichiesta;
@@ -72,13 +68,7 @@ export const ComposizioneStateDefaults: ComposizionePartenzaStateModel = {
 @Injectable()
 @State<ComposizionePartenzaStateModel>({
     name: 'composizionePartenza',
-    defaults: ComposizioneStateDefaults,
-    children: [
-        BoxPartenzaState,
-        ComposizioneAvanzataState,
-        ComposizioneVeloceState,
-        TipologicheMezziState
-    ]
+    defaults: ComposizioneStateDefaults
 })
 
 export class ComposizionePartenzaState {

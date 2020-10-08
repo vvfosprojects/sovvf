@@ -74,8 +74,9 @@ export class FiltriComposizioneState {
                 new GetListaIdPreAccoppiati()
             ]);
         }
+        const filtri = this.store.selectSnapshot(state => state.tipologicheMezzi.tipologiche);
+        patchState({ filtri });
     }
-
 
     @Action(AddFiltroSelezionatoComposizione)
     addFiltroSelezionatoComposizione(ctx: StateContext<FiltriComposizioneStateStateModel>, action: AddFiltroSelezionatoComposizione): void {
