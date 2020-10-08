@@ -151,7 +151,6 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
     changeRicercaSquadre(ricerca: string): void {
         this.store.dispatch([
             new SetRicercaSquadreComposizione(ricerca),
-            new PatchPaginationMezziSquadre('squadre', { page: 1, pageSize: 10 }),
             new GetListeComposizioneAvanzata()
         ]);
     }
@@ -159,7 +158,6 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
     changeRicercaMezzi(ricerca: string): void {
         this.store.dispatch([
             new SetRicercaMezziComposizione(ricerca),
-            new PatchPaginationMezziSquadre('mezzi', { page: 1, pageSize: 10 }),
             new GetListeComposizioneAvanzata()
         ]);
     }
