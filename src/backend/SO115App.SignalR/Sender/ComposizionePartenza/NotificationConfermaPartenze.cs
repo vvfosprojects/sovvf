@@ -94,6 +94,8 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
                 var CodSede = new string[] { sede };
 
                 _notificationHubContext.Clients.Group(sede).SendAsync("ChangeStateSuccess", true);
+
+                conferma.ConfermaPartenze.Chiamata = _mapperSintesi.Map(conferma.Richiesta);
                 _notificationHubContext.Clients.Group(sede).SendAsync("ModifyAndNotifySuccess", conferma.ConfermaPartenze);
 
                 Task.Factory.StartNew(() =>
@@ -135,7 +137,6 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
                     var listaSintesiMarker = _sintesiRichiesteAssistenzaMarkerhandler.Handle(sintesiRichiesteAssistenzaMarkerQuery).SintesiRichiestaMarker;
                     _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetRichiestaMarker", listaSintesiMarker.LastOrDefault(marker => marker.CodiceRichiesta == sintesi.Result.CodiceRichiesta));
                 });
-
 
                 if (conferma.ConfermaPartenze.IdRichiestaDaSganciare != null)
                 {
