@@ -94,7 +94,6 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
                 var CodSede = new string[] { sede };
 
                 _notificationHubContext.Clients.Group(sede).SendAsync("ChangeStateSuccess", true);
-                _notificationHubContext.Clients.Group(sede).SendAsync("ModifyAndNotifySuccess", conferma.ConfermaPartenze);
 
                 Task.Factory.StartNew(() =>
                 {
@@ -136,6 +135,14 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
                     _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetRichiestaMarker", listaSintesiMarker.LastOrDefault(marker => marker.CodiceRichiesta == sintesi.Result.CodiceRichiesta));
                 });
 
+                Task.Factory.StartNew(() =>
+                {
+                    foreach (var partenze in conferma.ConfermaPartenze.Partenze)
+                        _notificationHubContext.Clients.Group(sede).SendAsync("NotifyUpdateMezzoInServizio", listaMezziInServizio.Result.Find(x => x.Mezzo.Mezzo.Codice.Equals(partenze.Mezzo.Codice)));
+                });
+
+                conferma.ConfermaPartenze.Chiamata = sintesi.Result;
+                _notificationHubContext.Clients.Group(sede).SendAsync("ModifyAndNotifySuccess", conferma.ConfermaPartenze);
 
                 if (conferma.ConfermaPartenze.IdRichiestaDaSganciare != null)
                 {
@@ -147,12 +154,6 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
                         _notificationHubContext.Clients.Group(sede).SendAsync("ModifyAndNotifySuccess", conferma.ConfermaPartenze);
                     });
                 }
-
-                Task.Factory.StartNew(() =>
-                {
-                    foreach (var partenze in conferma.ConfermaPartenze.Partenze)
-                        _notificationHubContext.Clients.Group(sede).SendAsync("NotifyUpdateMezzoInServizio", listaMezziInServizio.Result.Find(x => x.Mezzo.Mezzo.Codice.Equals(partenze.Mezzo.Codice)));
-                });
             });
         }
 
