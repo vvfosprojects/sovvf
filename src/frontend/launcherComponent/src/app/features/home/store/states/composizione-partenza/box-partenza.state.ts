@@ -1,6 +1,5 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { BoxPartenza } from '../../../composizione-partenza/interface/box-partenza-interface';
-
 import {
     AddBoxPartenza,
     AddMezzoBoxPartenzaSelezionato,
@@ -16,9 +15,6 @@ import {
     UpdateMezzoBoxPartenza,
     DeselectBoxPartenza
 } from '../../actions/composizione-partenza/box-partenza.actions';
-import { append, patch, removeItem } from '@ngxs/store/operators';
-import { makeID } from '../../../../../shared/helper/function';
-import produce from 'immer';
 import {
     ClearSelectedMezziComposizione,
     FilterListaMezziComposizione,
@@ -27,13 +23,16 @@ import {
     SelectMezzoComposizione,
     UnselectMezzoComposizione
 } from '../../../../../shared/store/actions/mezzi-composizione/mezzi-composizione.actions';
-import { SquadraComposizione } from '../../../../../shared/interface/squadra-composizione-interface';
 import {
     ClearSelectedSquadreComposizione,
     FilterListaSquadreComposizione,
     SelectSquadraComposizione,
     UnselectSquadraComposizione
 } from '../../../../../shared/store/actions/squadre-composizione/squadre-composizione.actions';
+import { append, patch, removeItem } from '@ngxs/store/operators';
+import { makeID } from '../../../../../shared/helper/function';
+import produce from 'immer';
+import { SquadraComposizione } from '../../../../../shared/interface/squadra-composizione-interface';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from '../../../../../shared/enum/toastr';
 import { ClearDirection } from '../../actions/maps/maps-direction.actions';
@@ -60,30 +59,30 @@ export const BoxPartenzaStateDefaults: BoxPartenzaStateModel = {
 export class BoxPartenzaState {
 
     @Selector()
-    static boxPartenzaList(state: BoxPartenzaStateModel) {
+    static boxPartenzaList(state: BoxPartenzaStateModel): BoxPartenza[] {
         return state.boxPartenzaList;
     }
 
     @Selector()
-    static idBoxPartenzaSelezionato(state: BoxPartenzaStateModel) {
+    static idBoxPartenzaSelezionato(state: BoxPartenzaStateModel): string {
         return state.idBoxPartenzaSelezionato;
     }
 
     @Selector()
-    static disableConfirmPartenza(state: BoxPartenzaStateModel) {
-        return _disableConfirmPartenza(state.boxPartenzaList);
+    static disableConfirmPartenza(state: BoxPartenzaStateModel): boolean {
+        return disableConfirmPartenza(state.boxPartenzaList);
     }
 
     @Selector()
-    static disableNuovaPartenza(state: BoxPartenzaStateModel) {
-        return _disableConfirmPartenza(state.boxPartenzaList, true);
+    static disableNuovaPartenza(state: BoxPartenzaStateModel): boolean {
+        return disableConfirmPartenza(state.boxPartenzaList, true);
     }
 
     constructor(private store: Store) {
     }
 
     @Action(RequestAddBoxPartenza)
-    requestAddBoxPartenza({ getState, dispatch }: StateContext<BoxPartenzaStateModel>) {
+    requestAddBoxPartenza({ getState, dispatch }: StateContext<BoxPartenzaStateModel>): void {
         const state = getState();
         if (validateBoxPartenza(state.boxPartenzaList)) {
             if (state.boxPartenzaList.length <= 0) {
@@ -107,10 +106,10 @@ export class BoxPartenzaState {
     }
 
     @Action(AddBoxPartenza)
-    addBoxPartenza({ getState, setState, dispatch }: StateContext<BoxPartenzaStateModel>) {
+    addBoxPartenza({ getState, setState, dispatch }: StateContext<BoxPartenzaStateModel>): void {
         const state = getState();
         // credo un ID logico random da asseganre al box-partenza
-        const _id = makeID();
+        const id = makeID();
         // controllo se tutti i box-partenza sono validi
         if (validateBoxPartenza(state.boxPartenzaList)) {
             // controllo se ho raggiunto il numero massimo di box-partenza (3 MAX)
@@ -120,7 +119,7 @@ export class BoxPartenzaState {
                     patch({
                         boxPartenzaList: append([
                             {
-                                id: _id,
+                                id,
                                 mezzoComposizione: null,
                                 squadraComposizione: []
                             }
@@ -128,7 +127,7 @@ export class BoxPartenzaState {
                     })
                 );
                 // seleziono il nuovo box partenza
-                dispatch(new SelectBoxPartenza(_id));
+                dispatch(new SelectBoxPartenza(id));
             } else {
                 dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Limite massimo raggiunto.', 5));
             }
@@ -139,14 +138,13 @@ export class BoxPartenzaState {
     }
 
     @Action(RemoveBoxPartenza)
-    removeBoxPartenza({ getState, setState, dispatch }: StateContext<BoxPartenzaStateModel>, action: RemoveBoxPartenza) {
+    removeBoxPartenza({ getState, setState, dispatch }: StateContext<BoxPartenzaStateModel>, action: RemoveBoxPartenza): void {
         const state = getState();
-
         // controllo se il boxPartenza che sto eliminando è quello selezionato
         if (action.boxPartenza.id === state.idBoxPartenzaSelezionato) {
             // Deseleziono il mezzo selezionato se presenti nel box-partenza da eliminare
             if (action.boxPartenza.mezzoComposizione) {
-               dispatch(new UnselectMezzoComposizione());
+                dispatch(new UnselectMezzoComposizione());
             }
             // Deseleziono le squadre selezionate se presenti nel box-partenza da eliminare
             if (action.boxPartenza.squadraComposizione && action.boxPartenza.squadraComposizione.length > 0) {
@@ -155,7 +153,6 @@ export class BoxPartenzaState {
                 });
             }
         }
-
         // Seleziono il box precedente
         if (state.boxPartenzaList.length > 1 && state.idBoxPartenzaSelezionato === action.boxPartenza.id) {
             let prevIndex = null;
@@ -165,23 +162,21 @@ export class BoxPartenzaState {
                     prevIndex = index - 1;
                     if (state.boxPartenzaList[prevIndex] && prevIndex > -1) {
                         prevIdBox = state.boxPartenzaList[prevIndex].id;
-                       dispatch(new SelectBoxPartenza(prevIdBox));
+                        dispatch(new SelectBoxPartenza(prevIdBox));
                     } else {
                         prevIdBox = state.boxPartenzaList[state.boxPartenzaList.length - 1].id;
-                       dispatch(new SelectBoxPartenza(prevIdBox));
+                        dispatch(new SelectBoxPartenza(prevIdBox));
                     }
                 }
             });
         }
         dispatch([new ClearDirection(), new ClearMarkerMezzoSelezionato()]);
-
         // rimuovo il box dalla lista
         setState(
             patch({
                 boxPartenzaList: removeItem((item: BoxPartenza) => item.id === action.boxPartenza.id)
             })
         );
-
         // ricarico la lista se necessario
         if (action.refreshLista) {
             const filtriSelezionati = this.store.selectSnapshot(x => x.filtriComposizione.filtriSelezionati);
@@ -193,14 +188,13 @@ export class BoxPartenzaState {
     }
 
     @Action(DeselectBoxPartenza)
-    deselectBoxPartenza({ getState, setState, dispatch }: StateContext<BoxPartenzaStateModel>, action: RemoveBoxPartenza) {
+    deselectBoxPartenza({ getState, setState, dispatch }: StateContext<BoxPartenzaStateModel>, action: RemoveBoxPartenza): void {
         const state = getState();
-
         // controllo se il boxPartenza che sto eliminando è quello selezionato
         if (action.boxPartenza.id === state.idBoxPartenzaSelezionato) {
             // Deseleziono il mezzo selezionato se presenti nel box-partenza da eliminare
             if (action.boxPartenza.mezzoComposizione) {
-               dispatch(new UnselectMezzoComposizione());
+                dispatch(new UnselectMezzoComposizione());
             }
             // Deseleziono le squadre selezionate se presenti nel box-partenza da eliminare
             if (action.boxPartenza.squadraComposizione && action.boxPartenza.squadraComposizione.length > 0) {
@@ -219,7 +213,7 @@ export class BoxPartenzaState {
     }
 
     @Action(RemoveBoxPartenzaByMezzoId)
-    removeBoxPartenzaByMezzoId({ getState, dispatch }: StateContext<BoxPartenzaStateModel>, action: RemoveBoxPartenzaByMezzoId) {
+    removeBoxPartenzaByMezzoId({ getState, dispatch }: StateContext<BoxPartenzaStateModel>, action: RemoveBoxPartenzaByMezzoId): void {
         const state = getState();
         let boxPartenza: BoxPartenza;
         state.boxPartenzaList.forEach((box: BoxPartenza) => {
@@ -245,7 +239,7 @@ export class BoxPartenzaState {
     }
 
     @Action(RequestSelectBoxPartenza)
-    requestSelectBoxPartenza({ getState, dispatch }: StateContext<BoxPartenzaStateModel>, action: RequestSelectBoxPartenza) {
+    requestSelectBoxPartenza({ getState, dispatch }: StateContext<BoxPartenzaStateModel>, action: RequestSelectBoxPartenza): void {
         const state = getState();
         if (validateBoxPartenza(state.boxPartenzaList)) {
             // prendo il box partenza selezionato tramite l'id
@@ -264,7 +258,7 @@ export class BoxPartenzaState {
     }
 
     @Action(SelectBoxPartenza)
-    selectBoxPartenza({ getState, patchState, dispatch, setState }: StateContext<BoxPartenzaStateModel>, action: SelectBoxPartenza) {
+    selectBoxPartenza({ getState, patchState, dispatch, setState }: StateContext<BoxPartenzaStateModel>, action: SelectBoxPartenza): void {
         const state = getState();
         dispatch(new ClearSelectedMezziComposizione());
         dispatch(new ClearSelectedSquadreComposizione());
@@ -287,7 +281,7 @@ export class BoxPartenzaState {
     }
 
     @Action(AddSquadraBoxPartenza)
-    addSquadraBoxPartenza({ getState, setState }: StateContext<BoxPartenzaStateModel>, action: AddSquadraBoxPartenza) {
+    addSquadraBoxPartenza({ getState, setState }: StateContext<BoxPartenzaStateModel>, action: AddSquadraBoxPartenza): void {
         const state = getState();
         setState(
             produce(state, draft => {
@@ -301,7 +295,7 @@ export class BoxPartenzaState {
     }
 
     @Action(RemoveSquadraBoxPartenza)
-    removeSquadraBoxPartenza({ getState, setState }: StateContext<BoxPartenzaStateModel>, action: RemoveSquadraBoxPartenza) {
+    removeSquadraBoxPartenza({ getState, setState }: StateContext<BoxPartenzaStateModel>, action: RemoveSquadraBoxPartenza): void {
         const state = getState();
         setState(
             produce(state, draft => {
@@ -321,7 +315,7 @@ export class BoxPartenzaState {
     }
 
     @Action(AddMezzoBoxPartenzaSelezionato)
-    addMezzoBoxPartenzaSelezionato({ getState, setState, dispatch }: StateContext<BoxPartenzaStateModel>, action: AddMezzoBoxPartenzaSelezionato) {
+    addMezzoBoxPartenzaSelezionato({ getState, setState, dispatch }: StateContext<BoxPartenzaStateModel>, action: AddMezzoBoxPartenzaSelezionato): void {
         const state = getState();
         if (state.boxPartenzaList.length > 0) {
             state.boxPartenzaList.forEach((box: BoxPartenza) => {
@@ -348,14 +342,14 @@ export class BoxPartenzaState {
     }
 
     @Action(UpdateMezzoBoxPartenza)
-    updateMezzoBoxPartenza({ getState, setState }: StateContext<BoxPartenzaStateModel>, action: UpdateMezzoBoxPartenza) {
+    updateMezzoBoxPartenza({ getState, setState }: StateContext<BoxPartenzaStateModel>, action: UpdateMezzoBoxPartenza): void {
         const state = getState();
         setState(
             produce(state, draft => {
                 draft.boxPartenzaList.forEach((box: BoxPartenza) => {
                     if (box && box.mezzoComposizione) {
                         // console.log('mezzoComposizione', box.mezzoComposizione);
-                        if ( box.mezzoComposizione && action.mezzoComp &&  box.mezzoComposizione.mezzo.codice === action.mezzoComp.mezzo.codice) {
+                        if (box.mezzoComposizione && action.mezzoComp && box.mezzoComposizione.mezzo.codice === action.mezzoComp.mezzo.codice) {
                             // console.log('codiceMezzo', box.mezzoComposizione.mezzo.codice);
                             box.mezzoComposizione = action.mezzoComp;
                         }
@@ -366,7 +360,7 @@ export class BoxPartenzaState {
     }
 
     @Action(RemoveMezzoBoxPartenzaSelezionato)
-    removeMezzoBoxPartenzaSelezionato({ getState, setState }: StateContext<BoxPartenzaStateModel>) {
+    removeMezzoBoxPartenzaSelezionato({ getState, setState }: StateContext<BoxPartenzaStateModel>): void {
         const state = getState();
         setState(
             produce(state, draft => {
@@ -380,7 +374,7 @@ export class BoxPartenzaState {
     }
 
     @Action(ClearBoxPartenze)
-    clearBoxPartenze({ patchState, dispatch }: StateContext<BoxPartenzaStateModel>) {
+    clearBoxPartenze({ patchState, dispatch }: StateContext<BoxPartenzaStateModel>): void {
         dispatch(new ClearDirection());
         patchState({
             boxPartenzaList: BoxPartenzaStateDefaults.boxPartenzaList
@@ -388,8 +382,8 @@ export class BoxPartenzaState {
     }
 }
 
-export function validateBoxPartenza(boxPartenzaList: BoxPartenza[]) {
-    let _return = false;
+export function validateBoxPartenza(boxPartenzaList: BoxPartenza[]): boolean {
+    let valid = false;
     let boxValidiCount = 0;
     if (boxPartenzaList.length > 0) {
         boxPartenzaList.forEach((box: BoxPartenza) => {
@@ -398,14 +392,14 @@ export function validateBoxPartenza(boxPartenzaList: BoxPartenza[]) {
             }
         });
 
-        _return = boxValidiCount === boxPartenzaList.length;
+        valid = boxValidiCount === boxPartenzaList.length;
     } else if (boxPartenzaList.length <= 0) {
-        _return = true;
+        valid = true;
     }
-    return _return;
+    return valid;
 }
 
-export function _disableConfirmPartenza(boxPartenzaList: BoxPartenza[], nuovaPartenza?: boolean) {
+export function disableConfirmPartenza(boxPartenzaList: BoxPartenza[], nuovaPartenza?: boolean): boolean {
     if (nuovaPartenza) {
         if (boxPartenzaList && boxPartenzaList.length === 0) {
             return false;
@@ -414,7 +408,6 @@ export function _disableConfirmPartenza(boxPartenzaList: BoxPartenza[], nuovaPar
     if (boxPartenzaList && boxPartenzaList.length > 0) {
         let boxValidiCount = 0;
         for (const boxPartenza of boxPartenzaList) {
-            // tslint:disable-next-line:max-line-length
             if (boxPartenza.mezzoComposizione && (boxPartenza.mezzoComposizione.mezzo.stato === StatoMezzo.InRientro || boxPartenza.mezzoComposizione.mezzo.stato === StatoMezzo.InSede) && boxPartenza.squadraComposizione && boxPartenza.squadraComposizione.length > 0) {
                 boxValidiCount++;
             }

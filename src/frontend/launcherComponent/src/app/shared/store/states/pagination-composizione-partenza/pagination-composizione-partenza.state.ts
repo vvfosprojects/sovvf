@@ -27,47 +27,47 @@ export const PaginationComposizionePartenzaStateModelDefaults: PaginationComposi
 export class PaginationComposizionePartenzaState {
 
     @Selector()
-    static paginationMezzi(state: PaginationComposizionePartenzaStateModel) {
+    static paginationMezzi(state: PaginationComposizionePartenzaStateModel): PaginationInterface {
         return state.paginationMezzi;
     }
 
     @Selector()
-    static pageMezzi(state: PaginationComposizionePartenzaStateModel) {
+    static pageMezzi(state: PaginationComposizionePartenzaStateModel): number {
         return state.paginationMezzi.page;
     }
 
     @Selector()
-    static pageSizeMezzi(state: PaginationComposizionePartenzaStateModel) {
+    static pageSizeMezzi(state: PaginationComposizionePartenzaStateModel): number {
         return state.paginationMezzi.pageSize;
     }
 
     @Selector()
-    static totalItemsMezzi(state: PaginationComposizionePartenzaStateModel) {
+    static totalItemsMezzi(state: PaginationComposizionePartenzaStateModel): number {
         return state.paginationMezzi.totalItems;
     }
 
     @Selector()
-    static paginationSquadre(state: PaginationComposizionePartenzaStateModel) {
+    static paginationSquadre(state: PaginationComposizionePartenzaStateModel): PaginationInterface {
         return state.paginationSquadre;
     }
 
     @Selector()
-    static pageSquadre(state: PaginationComposizionePartenzaStateModel) {
+    static pageSquadre(state: PaginationComposizionePartenzaStateModel): number {
         return state.paginationSquadre.page;
     }
 
     @Selector()
-    static pageSizeSquadre(state: PaginationComposizionePartenzaStateModel) {
+    static pageSizeSquadre(state: PaginationComposizionePartenzaStateModel): number {
         return state.paginationSquadre.pageSize;
     }
 
     @Selector()
-    static totalItemsSquadre(state: PaginationComposizionePartenzaStateModel) {
+    static totalItemsSquadre(state: PaginationComposizionePartenzaStateModel): number {
         return state.paginationSquadre.totalItems;
     }
 
     @Action(PatchPaginationMezziSquadre)
-    patchPagination({ patchState }: StateContext<PaginationComposizionePartenzaStateModel>, action: PatchPaginationMezziSquadre) {
+    patchPagination({ patchState }: StateContext<PaginationComposizionePartenzaStateModel>, action: PatchPaginationMezziSquadre): void {
         switch (action.type) {
             case 'mezzi' :
                 patchState({

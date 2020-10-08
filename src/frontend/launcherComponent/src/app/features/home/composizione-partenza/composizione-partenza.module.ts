@@ -49,9 +49,6 @@ import { NgxPaginationModule } from 'ngx-pagination';
         FormsModule,
         FilterPipeModule,
     ],
-    entryComponents: [
-        SganciamentoMezzoModalComponent
-    ],
     exports: [
         ComposizionePartenzaComponent
     ],

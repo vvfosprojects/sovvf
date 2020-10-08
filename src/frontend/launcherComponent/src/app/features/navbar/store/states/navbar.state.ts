@@ -26,12 +26,12 @@ export const NavbarStateDefaults: NavbarStateModel = {
 export class NavbarState {
 
     @Selector()
-    static listaSedi(state: NavbarStateModel) {
+    static listaSedi(state: NavbarStateModel): ListaSedi {
         return state.listaSedi;
     }
 
     @Selector()
-    static navbarIsLoaded(state: NavbarStateModel) {
+    static navbarIsLoaded(state: NavbarStateModel): boolean {
         return state.loaded;
     }
 
@@ -39,12 +39,12 @@ export class NavbarState {
     }
 
     @Action(ClearDataNavbar)
-    clearDataNavbar({ patchState }: StateContext<NavbarStateModel>) {
+    clearDataNavbar({ patchState }: StateContext<NavbarStateModel>): void {
         patchState(NavbarStateDefaults);
     }
 
     @Action(GetDataNavbar)
-    getDataNavbar({ dispatch }: StateContext<NavbarStateModel>) {
+    getDataNavbar({ dispatch }: StateContext<NavbarStateModel>): void {
         dispatch(new StartBigLoading());
         this.navbarService.getNavbar().subscribe((data: AppSettings) => {
             dispatch(new SetDataNavbar(data));
@@ -52,7 +52,7 @@ export class NavbarState {
     }
 
     @Action(SetDataNavbar)
-    setDataNavbar({ patchState, dispatch }: StateContext<NavbarStateModel>, action: SetDataNavbar) {
+    setDataNavbar({ patchState, dispatch }: StateContext<NavbarStateModel>, action: SetDataNavbar): void {
         patchState({
             listaSedi: action.settings.listaSedi,
             loaded: true

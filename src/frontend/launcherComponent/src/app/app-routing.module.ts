@@ -52,7 +52,6 @@ const appRoutes: Routes = [
     },
     {
         path: RoutesPath.TrasferimentoChiamata,
-        // tslint:disable-next-line:max-line-length
         loadChildren: () => import('./features/trasferimento-chiamata/trasferimento-chiamata.module').then(m => m.TrasferimentoChiamataModule),
         canActivate: [AuthGuard]
     },

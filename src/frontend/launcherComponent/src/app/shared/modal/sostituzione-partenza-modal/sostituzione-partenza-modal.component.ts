@@ -221,7 +221,7 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
         return { oraEvento: this.time };
     }
 
-    formatDate() {
+    formatDate(): void {
         let data = new Date();
         const orario = this.time;
         data.setHours(orario.hour);
@@ -232,7 +232,7 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
         this.f.dataAnnullamento.patchValue(data);
     }
 
-    onListaSquadrePartenza() {
+    onListaSquadrePartenza(): void {
         const listaSquadre = {} as ListaSquadre;
         listaSquadre.idPartenza = this.partenza.id;
         listaSquadre.squadre = this.partenza.squadre;
@@ -240,7 +240,7 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
     }
 
 
-    mezzoSelezionato(mezzoComposizione: MezzoComposizione) {
+    mezzoSelezionato(mezzoComposizione: MezzoComposizione): void {
         this.store.dispatch(new ReducerSelectMezzoComposizione(mezzoComposizione));
         this.nuovoMezzo = mezzoComposizione.mezzo;
     }
@@ -330,7 +330,7 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
         this.modal.close({ status: 'ko' });
     }
 
-    closeModal(type: string) {
+    closeModal(type: string): void {
         this.modal.close({ status: type });
     }
 

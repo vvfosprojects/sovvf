@@ -1,5 +1,12 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { append, insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
+import { SchedaContattoMarker } from '../../../maps/maps-model/scheda-contatto-marker.model';
+import { SchedeContattoMarkerService } from '../../../../../core/service/maps-service/schede-contatto-marker/schede-contatto-marker.service';
+import { ClassificazioneSchedaContatto } from '../../../../../shared/enum/classificazione-scheda-contatto.enum';
+import { ClearMarkerOpachiSC, SetMarkerOpachiSC } from '../../actions/maps/marker-opachi.actions';
+import { FiltriMarkersState } from './filtri-markers.state';
+import { AreaMappaState } from './area-mappa.state';
+import { StartLoadingAreaMappa, StopLoadingAreaMappa } from '../../actions/maps/area-mappa.actions';
 import {
     AddSchedeContattoMarkers,
     ClearSchedeContattoMarkers,
@@ -15,13 +22,6 @@ import {
     ToggleOpacitaSchedeContattoMarkers,
     UpdateSchedaContattoMarker
 } from '../../actions/maps/schede-contatto-markers.actions';
-import { SchedaContattoMarker } from '../../../maps/maps-model/scheda-contatto-marker.model';
-import { SchedeContattoMarkerService } from '../../../../../core/service/maps-service/schede-contatto-marker/schede-contatto-marker.service';
-import { ClassificazioneSchedaContatto } from '../../../../../shared/enum/classificazione-scheda-contatto.enum';
-import { ClearMarkerOpachiSC, SetMarkerOpachiSC } from '../../actions/maps/marker-opachi.actions';
-import { FiltriMarkersState } from './filtri-markers.state';
-import { AreaMappaState } from './area-mappa.state';
-import { StartLoadingAreaMappa, StopLoadingAreaMappa } from '../../actions/maps/area-mappa.actions';
 import { Injectable } from '@angular/core';
 
 export interface SchedeContattoMarkersStateModel {
@@ -45,33 +45,33 @@ export const SchedeContattoMarkersStateDefaults: SchedeContattoMarkersStateModel
     name: 'schedeContattoMarkers',
     defaults: SchedeContattoMarkersStateDefaults
 })
-
 export class SchedeContattoMarkersState {
 
     @Selector()
-    static schedeContattoMarkers(state: SchedeContattoMarkersStateModel) {
+    static schedeContattoMarkers(state: SchedeContattoMarkersStateModel): SchedaContattoMarker[] {
         return state.schedeContattoMarkers;
     }
 
     @Selector()
-    static schedeContattoMarkersIds(state: SchedeContattoMarkersStateModel) {
+    static schedeContattoMarkersIds(state: SchedeContattoMarkersStateModel): string[] {
         return state.schedeContattoMarkersId;
     }
 
     @Selector()
-    static getSchedaContattoMarkerById(state: SchedeContattoMarkersStateModel) {
+    static getSchedaContattoMarkerById(state: SchedeContattoMarkersStateModel): SchedaContattoMarker {
         return state.schedaContattoMarker;
     }
 
-    constructor(private _schedeContatto: SchedeContattoMarkerService, private store: Store) {
+    constructor(private schedeContattoMarkerService: SchedeContattoMarkerService,
+                private store: Store) {
     }
 
     @Action(GetSchedeContattoMarkers)
-    getSchedeContattoMarkers({ dispatch }: StateContext<SchedeContattoMarkersStateModel>, action: GetSchedeContattoMarkers) {
+    getSchedeContattoMarkers({ dispatch }: StateContext<SchedeContattoMarkersStateModel>, action: GetSchedeContattoMarkers): void {
         dispatch([
             new StartLoadingAreaMappa()
         ]);
-        this._schedeContatto.getSchedeContattoMarkers(action.areaMappa, action.filtri).subscribe((data: any) => {
+        this.schedeContattoMarkerService.getSchedeContattoMarkers(action.areaMappa, action.filtri).subscribe((data: any) => {
                 dispatch([
                     new SetSchedeContattoMarkers(data.listaSchedeMarker),
                     new StopLoadingAreaMappa()
@@ -83,7 +83,7 @@ export class SchedeContattoMarkersState {
     }
 
     @Action(SetSchedeContattoMarkers)
-    setSchedeContattoMarkers({ getState, dispatch }: StateContext<SchedeContattoMarkersStateModel>, action: SetSchedeContattoMarkers) {
+    setSchedeContattoMarkers({ getState, dispatch }: StateContext<SchedeContattoMarkersStateModel>, action: SetSchedeContattoMarkers): void {
         const state = getState();
         if (action.schedeContatto) {
             if (state.schedeContattoMarkers.length === 0) {
@@ -131,7 +131,7 @@ export class SchedeContattoMarkersState {
     }
 
     @Action(PatchSchedeContattoMarkers)
-    patchSchedeContattoMarkers({ patchState }: StateContext<SchedeContattoMarkersStateModel>, { payload }: PatchSchedeContattoMarkers) {
+    patchSchedeContattoMarkers({ patchState }: StateContext<SchedeContattoMarkersStateModel>, { payload }: PatchSchedeContattoMarkers): void {
         patchState({
             schedeContattoMarkers: payload.map((scheda: SchedaContattoMarker) => scheda),
             schedeContattoMarkersId: payload.map((scheda: SchedaContattoMarker) => scheda.codiceScheda)
@@ -139,7 +139,7 @@ export class SchedeContattoMarkersState {
     }
 
     @Action(AddSchedeContattoMarkers)
-    addSchedeContattoMarkers({ setState }: StateContext<SchedeContattoMarkersStateModel>, { payload }: AddSchedeContattoMarkers) {
+    addSchedeContattoMarkers({ setState }: StateContext<SchedeContattoMarkersStateModel>, { payload }: AddSchedeContattoMarkers): void {
         setState(
             patch({
                 schedeContattoMarkers: append(payload.map((scheda: SchedaContattoMarker) => scheda)),
@@ -149,7 +149,7 @@ export class SchedeContattoMarkersState {
     }
 
     @Action(InsertSchedaContattoMarker)
-    insertSchedaContattoMarker({ setState }: StateContext<SchedeContattoMarkersStateModel>, { payload, before }: InsertSchedaContattoMarker) {
+    insertSchedaContattoMarker({ setState }: StateContext<SchedeContattoMarkersStateModel>, { payload, before }: InsertSchedaContattoMarker): void {
         setState(
             patch({
                 schedeContattoMarkers: insertItem(payload, before),
@@ -159,7 +159,7 @@ export class SchedeContattoMarkersState {
     }
 
     @Action(UpdateSchedaContattoMarker)
-    updateSchedaContattoMarker({ setState }: StateContext<SchedeContattoMarkersStateModel>, { payload }: UpdateSchedaContattoMarker) {
+    updateSchedaContattoMarker({ setState }: StateContext<SchedeContattoMarkersStateModel>, { payload }: UpdateSchedaContattoMarker): void {
         setState(
             patch({
                 schedeContattoMarkers: updateItem<SchedaContattoMarker>((scheda: SchedaContattoMarker) => scheda.codiceScheda === payload.codiceScheda, payload)
@@ -168,7 +168,7 @@ export class SchedeContattoMarkersState {
     }
 
     @Action(RemoveSchedaContattoMarker)
-    removeSchedaContattoMarker({ setState }: StateContext<SchedeContattoMarkersStateModel>, { payload }: RemoveSchedaContattoMarker) {
+    removeSchedaContattoMarker({ setState }: StateContext<SchedeContattoMarkersStateModel>, { payload }: RemoveSchedaContattoMarker): void {
         setState(
             patch({
                 schedeContattoMarkers: removeItem<SchedaContattoMarker>((scheda: SchedaContattoMarker) => scheda.codiceScheda === payload),
@@ -178,7 +178,7 @@ export class SchedeContattoMarkersState {
     }
 
     @Action(SetSchedaContattoMarkerById)
-    setSchedaContattoMarkerById({ getState, patchState }: StateContext<SchedeContattoMarkersStateModel>, action: SetSchedaContattoMarkerById) {
+    setSchedaContattoMarkerById({ getState, patchState }: StateContext<SchedeContattoMarkersStateModel>, action: SetSchedaContattoMarkerById): void {
         const state = getState();
         if (action.id) {
             patchState({
@@ -192,7 +192,7 @@ export class SchedeContattoMarkersState {
     }
 
     @Action(ToggleOpacitaSchedeContattoMarkers)
-    toggleOpacitaSchedaContattoMarkers({ patchState, dispatch }: StateContext<SchedeContattoMarkersStateModel>, action: ToggleOpacitaSchedeContattoMarkers) {
+    toggleOpacitaSchedaContattoMarkers({ patchState, dispatch }: StateContext<SchedeContattoMarkersStateModel>, action: ToggleOpacitaSchedeContattoMarkers): void {
         patchState({
             statoOpacita: action.toggle
         });
@@ -207,7 +207,7 @@ export class SchedeContattoMarkersState {
     }
 
     @Action(SetTipoOpacitaSchedeContattoMarkers)
-    setTipoOpacitaSchedaContattoMarkers({ patchState, dispatch }: StateContext<SchedeContattoMarkersStateModel>, action: SetTipoOpacitaSchedeContattoMarkers) {
+    setTipoOpacitaSchedaContattoMarkers({ patchState, dispatch }: StateContext<SchedeContattoMarkersStateModel>, action: SetTipoOpacitaSchedeContattoMarkers): void {
         patchState({
             tipoOpacita: action.stato
         });
@@ -215,7 +215,7 @@ export class SchedeContattoMarkersState {
     }
 
     @Action(OpacizzaSchedeContattoMarkers)
-    opacizzaSchedaContattoMarkers({ getState, dispatch }: StateContext<SchedeContattoMarkersStateModel>) {
+    opacizzaSchedaContattoMarkers({ getState, dispatch }: StateContext<SchedeContattoMarkersStateModel>): void {
         const state = getState();
         if (state.statoOpacita && state.tipoOpacita) {
             if (state.schedeContattoMarkers) {
@@ -225,13 +225,13 @@ export class SchedeContattoMarkersState {
     }
 
     @Action(ClearSchedeContattoMarkers)
-    clearSchedeContattoMarkers({ patchState, dispatch }: StateContext<SchedeContattoMarkersStateModel>) {
+    clearSchedeContattoMarkers({ patchState, dispatch }: StateContext<SchedeContattoMarkersStateModel>): void {
         patchState(SchedeContattoMarkersStateDefaults);
         dispatch(new ClearMarkerOpachiSC());
     }
 
     @Action(RefreshSchedeContattoMarkers)
-    refreshSchedeContattoMarkers({ dispatch }: StateContext<SchedeContattoMarkersStateModel>) {
+    refreshSchedeContattoMarkers({ dispatch }: StateContext<SchedeContattoMarkersStateModel>): void {
         const filtroSC = this.store.selectSnapshot(FiltriMarkersState.filtroSC);
         const areaMappa = this.store.selectSnapshot(AreaMappaState.areaMappa);
         dispatch(new GetSchedeContattoMarkers(areaMappa, filtroSC));

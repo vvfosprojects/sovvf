@@ -8,11 +8,11 @@ import { PermessiService } from '../../core/service/permessi-service/permessi.se
 })
 export class CheckPermissionPipe implements PipeTransform {
 
-    constructor(private _permessiService: PermessiService) {
+    constructor(private permessiService: PermessiService) {
     }
 
     transform(feature: PermissionFeatures): any {
-        return !this._permessiService.checkUserPermissionByFeature(feature);
+        return !this.permessiService.checkUserPermissionByFeature(feature);
     }
 
 }

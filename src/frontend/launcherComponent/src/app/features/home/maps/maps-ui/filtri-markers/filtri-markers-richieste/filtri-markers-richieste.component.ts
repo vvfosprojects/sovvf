@@ -22,11 +22,11 @@ export class FiltriMarkersRichiesteComponent implements OnInit {
         this.statiSelezionati = this.filtroRichieste.stato;
     }
 
-    onClearPriorita() {
+    onClearPriorita(): void {
         this.changePriorita.emit(null);
     }
 
-    onChangeStati($event) {
+    onChangeStati($event): void {
         console.log($event);
         this.changeStati.emit($event);
     }

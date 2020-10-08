@@ -9,7 +9,7 @@ import { Sede } from '../../model/sede.model';
     templateUrl: './squadra-composizione.component.html',
     styleUrls: ['./squadra-composizione.component.css']
 })
-export class SquadraComposizioneComponent implements OnInit {
+export class SquadraComposizioneComponent {
     @Input() squadraComp: SquadraComposizione;
     @Input() richiesta: SintesiRichiesta;
     @Input() itemSelezionato: boolean;
@@ -26,10 +26,7 @@ export class SquadraComposizioneComponent implements OnInit {
     constructor() {
     }
 
-    ngOnInit() {
-    }
-
-    onClick() {
+    onClick(): void {
         if (!this.itemSelezionato) {
             this.selezionata.emit(this.squadraComp);
         } else {
@@ -37,15 +34,15 @@ export class SquadraComposizioneComponent implements OnInit {
         }
     }
 
-    onHoverIn() {
+    onHoverIn(): void {
         this.hoverIn.emit(this.squadraComp);
     }
 
-    onHoverOut() {
+    onHoverOut(): void {
         this.hoverOut.emit(this.squadraComp);
     }
 
-    liClass() {
+    liClass(): string {
         let returnClass = '';
 
         const hover = this.itemHover ? 'hover-si' : 'hover-no';
@@ -69,7 +66,7 @@ export class SquadraComposizioneComponent implements OnInit {
         return returnClass;
     }
 
-    squadraComposizioneBusy() {
+    squadraComposizioneBusy(): boolean {
         if (this.squadraComp && this.squadraComp.squadra) {
             return squadraComposizioneBusy(this.squadraComp.squadra.stato);
         } else {
@@ -77,7 +74,7 @@ export class SquadraComposizioneComponent implements OnInit {
         }
     }
 
-    badgeDistaccamentoClass() {
+    badgeDistaccamentoClass(): string {
         let result = 'badge-secondary';
 
         if (this.richiesta && this.squadraComp) {

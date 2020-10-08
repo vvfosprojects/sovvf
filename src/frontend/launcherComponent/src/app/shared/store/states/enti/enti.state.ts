@@ -13,7 +13,7 @@ import { TipoTelefono } from '../../../enum/tipo-telefono.enum';
 import { Injectable } from '@angular/core';
 
 export interface EntiStateModel {
-    enti: Array<Ente>;
+    enti: Ente[];
     categorieEnti: CategoriaEnte[];
     enteForm: {
         model?: {
@@ -67,17 +67,17 @@ export const entiStateDefaults: EntiStateModel = {
 export class EntiState {
 
     @Selector()
-    static enti(state: EntiStateModel) {
+    static enti(state: EntiStateModel): Ente[] {
         return state.enti;
     }
 
     @Selector()
-    static categorieEnti(state: EntiStateModel) {
+    static categorieEnti(state: EntiStateModel): CategoriaEnte[] {
         return state.categorieEnti;
     }
 
     @Selector()
-    static formValid(state: EntiStateModel) {
+    static formValid(state: EntiStateModel): boolean {
         return state.enteForm.status !== 'INVALID';
     }
 
@@ -85,21 +85,21 @@ export class EntiState {
     }
 
     @Action(SetEnti)
-    setEnti({ patchState }: StateContext<EntiStateModel>, action: SetEnti) {
+    setEnti({ patchState }: StateContext<EntiStateModel>, action: SetEnti): void {
         patchState({
             enti: action.enti
         });
     }
 
     @Action(GetCategorieEnti)
-    getCategorieEnti({ dispatch }: StateContext<EntiStateModel>) {
+    getCategorieEnti({ dispatch }: StateContext<EntiStateModel>): void {
         this.entiService.getCategorie().subscribe((categorie: CategoriaEnte[]) => {
             dispatch(new SetCategorieEnti(categorie));
         });
     }
 
     @Action(SetCategorieEnti)
-    setCategorieEnti({ patchState }: StateContext<EntiStateModel>, action: SetCategorieEnti) {
+    setCategorieEnti({ patchState }: StateContext<EntiStateModel>, action: SetCategorieEnti): void {
         patchState({
             categorieEnti: action.categorie
         });
@@ -107,7 +107,7 @@ export class EntiState {
 
 
     @Action(RequestAddEnte)
-    requestAddEnte({ getState, dispatch }: StateContext<EntiStateModel>) {
+    requestAddEnte({ getState, dispatch }: StateContext<EntiStateModel>): void {
         const form = getState().enteForm.model;
         const newEnte = {
             descrizione: form.descrizione,
@@ -147,7 +147,7 @@ export class EntiState {
 
 
     @Action(RequestUpdateEnte)
-    requestUpdateEnte({ getState, dispatch }: StateContext<EntiStateModel>, action: RequestUpdateEnte) {
+    requestUpdateEnte({ getState, dispatch }: StateContext<EntiStateModel>): void {
         const form = getState().enteForm.model;
         const updatedEnte = {
             id: form.id,
@@ -187,13 +187,13 @@ export class EntiState {
     }
 
     @Action(RequestDeleteEnte)
-    requestDeleteEnte({ setState, dispatch }: StateContext<RubricaStateModel>, action: RequestDeleteEnte) {
+    requestDeleteEnte({ setState, dispatch }: StateContext<RubricaStateModel>, action: RequestDeleteEnte): void {
         this.entiService.delete(action.ente).subscribe((response: ResponseDeleteEnteRubricaInterface) => {
         });
     }
 
     @Action(ClearFormEnte)
-    clearFormEnte({ patchState }: StateContext<EntiStateModel>) {
+    clearFormEnte({ patchState }: StateContext<EntiStateModel>): void {
         patchState({
             enteForm: entiStateDefaults.enteForm
         });

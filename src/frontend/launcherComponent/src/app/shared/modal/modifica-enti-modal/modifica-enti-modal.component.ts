@@ -35,7 +35,7 @@ export class ModificaEntiModalComponent implements OnInit, OnDestroy {
         this.subscription.unsubscribe();
     }
 
-    ngOnInit() {
+    ngOnInit(): void {
         this.modificaEntiIntervenutiForm = this.fb.group({
             listaEnti: [this.listaEntiIntervenuti ? this.listaEntiIntervenuti.map(e => e.codice) : null],
         });
@@ -73,7 +73,7 @@ export class ModificaEntiModalComponent implements OnInit, OnDestroy {
         );
     }
 
-    onSubmit() {
+    onSubmit(): void {
         this.submitted = true;
 
         if (!this.modificaEntiIntervenutiForm.valid) {
@@ -83,7 +83,7 @@ export class ModificaEntiModalComponent implements OnInit, OnDestroy {
         this.modal.close({ status: 'ok', result: this.modificaEntiIntervenutiForm.value });
     }
 
-    onCancel() {
+    onCancel(): void {
         this.modal.close({ status: 'ko', result: null });
     }
 }

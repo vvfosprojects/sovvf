@@ -1,6 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { EventoRichiesta } from '../../../../../shared/model/evento-richiesta.model';
-import { Utente } from '../../../../../shared/model/utente.model';
 
 @Component({
     selector: '[app-evento-richiesta]',
@@ -16,7 +15,6 @@ export class EventoRichiestaComponent implements OnInit {
 
     @Input() eventoRichiesta: EventoRichiesta;
     @Input() operatore: string;
-    @Input() istanteEventoPrecedente: Date;
     @Input() nomeClasseEvento: string;
     @Input() visualizzaIconeNomeClasseEvento: boolean;
 
@@ -26,13 +24,13 @@ export class EventoRichiestaComponent implements OnInit {
     constructor() {
     }
 
-    ngOnInit() {
+    ngOnInit(): void {
         this.initIconeClassiEvento();
         this.myMap = new Map(this.iconeClassiEvento);
         this.iconeClasseEventoCorrente = this.myMap.get(this.nomeClasseEvento);
     }
 
-    initIconeClassiEvento() {
+    initIconeClassiEvento(): void {
         this.iconeClassiEvento = [
             ['Telefonata', ['fa-phone-square']],
             ['InizioPresaInCarico', ['fa-user', 'fa-wrench']],
@@ -62,7 +60,7 @@ export class EventoRichiestaComponent implements OnInit {
 
             // Default per gli eventi non gestiti
             ['EventoGenerico', ['fa-question-circle']],
-            
+
             // Per adesso non utilizzqti
             // ['MarcaNonRilevante', ['fa-warning', 'fa-close']],
             // ['VaInFuoriServizio', ['fa-truck', 'fa-wrench']],

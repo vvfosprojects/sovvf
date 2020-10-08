@@ -1,9 +1,5 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
-
-// Model
 import { BoxInterventi } from '../../../boxes/boxes-model/box-interventi.model';
-
-// Action
 import { ClearBoxRichieste, SetBoxRichieste } from '../../actions/boxes/box-richieste.actions';
 import { Injectable } from '@angular/core';
 
@@ -26,20 +22,19 @@ export class BoxRichiesteState {
     }
 
     @Selector()
-    static richieste(state: BoxRichiesteStateModel) {
+    static richieste(state: BoxRichiesteStateModel): BoxInterventi {
         return state.richieste;
     }
 
     @Action(SetBoxRichieste)
-    setBoxRichieste({ patchState }: StateContext<BoxRichiesteStateModel>, action: SetBoxRichieste) {
-
+    setBoxRichieste({ patchState }: StateContext<BoxRichiesteStateModel>, action: SetBoxRichieste): void {
         patchState({
             richieste: action.payload
         });
     }
 
     @Action(ClearBoxRichieste)
-    clearBoxRichieste({ patchState }: StateContext<BoxRichiesteStateModel>) {
+    clearBoxRichieste({ patchState }: StateContext<BoxRichiesteStateModel>): void {
         patchState(boxRichiesteStateDefaults);
     }
 }

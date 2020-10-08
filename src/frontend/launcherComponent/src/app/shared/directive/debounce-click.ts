@@ -14,18 +14,18 @@ export class DebounceClickDirective implements OnInit, OnDestroy {
     constructor() {
     }
 
-    ngOnInit() {
+    ngOnInit(): void {
         this.subscription.add(this.clicks.pipe(
             debounceTime(this.debounceTime)
         ).subscribe(e => this.debounceClick.emit(e)));
     }
 
-    ngOnDestroy() {
+    ngOnDestroy(): void {
         this.subscription.unsubscribe();
     }
 
     @HostListener('click', ['$event'])
-    clickEvent(event) {
+    clickEvent(event): void {
         event.preventDefault();
         event.stopPropagation();
         this.clicks.next(event);

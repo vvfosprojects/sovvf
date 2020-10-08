@@ -2,10 +2,7 @@ import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { ClearDataHome, GetDataHome, SetBoundsIniziale, SetDataTipologie } from '../actions/home.actions';
 import { ClearRichieste, AddRichieste } from '../actions/richieste/richieste.actions';
 import { ClearSediMarkers } from '../actions/maps/sedi-markers.actions';
-import {
-    ClearCentroMappa,
-    SetInitCentroMappa
-} from '../actions/maps/centro-mappa.actions';
+import { ClearCentroMappa, SetInitCentroMappa } from '../actions/maps/centro-mappa.actions';
 import { ClearMezziMarkers } from '../actions/maps/mezzi-markers.actions';
 import { ClearRichiesteMarkers } from '../actions/maps/richieste-markers.actions';
 import { ClearBoxRichieste, SetBoxRichieste } from '../actions/boxes/box-richieste.actions';
@@ -25,7 +22,7 @@ import { ClearViewState } from '../actions/view/view.actions';
 import { LatLngBoundsLiteral } from 'ngx-google-places-autocomplete/objects/latLng';
 import { SetEnti } from 'src/app/shared/store/actions/enti/enti.actions';
 import { Injectable } from '@angular/core';
-import { StartBigLoading, StopBigLoading } from '../../../../shared/store/actions/loading/loading.actions';
+import { StopBigLoading } from '../../../../shared/store/actions/loading/loading.actions';
 
 export interface HomeStateModel {
     markerLoading: boolean;
@@ -47,17 +44,17 @@ export const HomeStateDefaults: HomeStateModel = {
 export class HomeState {
 
     @Selector()
-    static markerOnLoading(state: HomeStateModel) {
+    static markerOnLoading(state: HomeStateModel): boolean {
         return state.markerLoading;
     }
 
     @Selector()
-    static tipologie(state: HomeStateModel) {
+    static tipologie(state: HomeStateModel): Tipologia[] {
         return state.tipologie;
     }
 
     @Selector()
-    static bounds(state: HomeStateModel) {
+    static bounds(state: HomeStateModel): LatLngBoundsLiteral {
         return state.bounds;
     }
 
@@ -65,7 +62,7 @@ export class HomeState {
     }
 
     @Action(ClearDataHome)
-    clearDataHome({ patchState, dispatch }: StateContext<HomeStateModel>) {
+    clearDataHome({ patchState, dispatch }: StateContext<HomeStateModel>): void {
         dispatch([
             new ClearCentroMappa(),
             new ClearSediMarkers(),
@@ -83,7 +80,7 @@ export class HomeState {
     }
 
     @Action(GetDataHome)
-    getDataHome({ dispatch }: StateContext<HomeStateModel>) {
+    getDataHome({ dispatch }: StateContext<HomeStateModel>): void {
         this.homeService.getHome().subscribe((data: Welcome) => {
             console.log('Welcome', data);
             dispatch([
@@ -105,7 +102,7 @@ export class HomeState {
     }
 
     @Action(SetDataTipologie)
-    setDataTipologie({ patchState, dispatch }: StateContext<HomeStateModel>, action: SetDataTipologie) {
+    setDataTipologie({ patchState, dispatch }: StateContext<HomeStateModel>, action: SetDataTipologie): void {
         patchState({
             tipologie: action.tipologie
         });
@@ -113,7 +110,7 @@ export class HomeState {
     }
 
     @Action(SetBoundsIniziale)
-    setBoundsIniziale({ getState, patchState }: StateContext<HomeStateModel>, { bounds }: SetBoundsIniziale) {
+    setBoundsIniziale({ getState, patchState }: StateContext<HomeStateModel>, { bounds }: SetBoundsIniziale): void {
         if (!getState().bounds) {
             patchState({
                 bounds

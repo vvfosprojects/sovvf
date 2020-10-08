@@ -42,7 +42,7 @@
     "max-classes-per-file": false,
     "max-line-length": [
       true,
-      140
+      270
     ],
     "member-ordering": [
       true,
@@ -94,6 +94,10 @@
         "named": "never"
       }
     },
+    "typedef": [
+      true,
+      "call-signature"
+    ],
     "typedef-whitespace": {
       "options": [
         {

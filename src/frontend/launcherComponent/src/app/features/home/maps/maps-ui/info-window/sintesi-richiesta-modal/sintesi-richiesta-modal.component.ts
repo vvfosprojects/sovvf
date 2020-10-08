@@ -23,17 +23,21 @@ export class SintesiRichiestaModalComponent implements OnInit, OnDestroy {
         this.subscription.add(this.sintesiRichiesta$.subscribe(sintesi => this.sintesiRichiesta = sintesi));
     }
 
-    ngOnInit() {
-        isDevMode() && console.log('Componente Sintesi Richiesta Modal creato');
+    ngOnInit(): void {
+        if (isDevMode()) {
+            console.log('Componente Sintesi Richiesta Modal creato');
+        }
     }
 
-    ngOnDestroy() {
+    ngOnDestroy(): void {
         this.subscription.unsubscribe();
         this.store.dispatch(new ClearRichiestaById());
-        isDevMode() && console.log('Componente Sintesi Richiesta Modal distrutto');
+        if (isDevMode()) {
+            console.log('Componente Sintesi Richiesta Modal distrutto');
+        }
     }
 
-    onActionMezzo(actionMezzo: MezzoActionInterface) {
+    onActionMezzo(actionMezzo: MezzoActionInterface): void {
         this.store.dispatch(new ActionMezzo(actionMezzo));
     }
 

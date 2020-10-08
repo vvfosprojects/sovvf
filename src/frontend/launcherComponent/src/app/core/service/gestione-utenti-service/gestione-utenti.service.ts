@@ -9,6 +9,7 @@ import { AddRuoloUtenteInterface } from '../../../shared/interface/add-ruolo-ute
 import { PaginationInterface } from 'src/app/shared/interface/pagination.interface';
 import { FiltersInterface } from 'src/app/shared/interface/filters.interface';
 import { GestioneUtentiObjInterface } from '../../../shared/interface/gestione-utenti-obj.interface';
+import { ListaComposizioneAvanzata } from '../../../shared/interface/lista-composizione-avanzata-interface';
 
 const BASE_URL = environment.baseUrl;
 const API_URL = BASE_URL + environment.apiUrl.gestioneUtenti;
@@ -49,7 +50,7 @@ export class GestioneUtentiService {
         return this.http.post<Utente>(API_URL + '/AddUtente', addUtente);
     }
 
-    removeUtente(codFiscale: string) {
+    removeUtente(codFiscale: string): Observable<any> {
         const obj = {
             codFiscale
         };
@@ -60,7 +61,7 @@ export class GestioneUtentiService {
         return this.http.post<Utente>(API_URL_RUOLO + '/AddRuolo', addRuolo);
     }
 
-    removeRuoloUtente(codFiscale: string, ruolo: Ruolo) {
+    removeRuoloUtente(codFiscale: string, ruolo: Ruolo): Observable<any> {
         const obj = {
             codFiscale,
             ruolo

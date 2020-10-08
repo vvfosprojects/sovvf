@@ -1,22 +1,4 @@
 import { Selector, State, Action, StateContext, Select } from '@ngxs/store';
-
-import {
-    SetMarkerRichiestaSelezionato,
-    ClearMarkerRichiestaSelezionato,
-    SetMarkerRichiestaHover,
-    ClearMarkerRichiestaHover,
-    SetMarkerMezzoSelezionato,
-    ClearMarkerMezzoSelezionato,
-    SetMarkerMezzoHover,
-    ClearMarkerMezzoHover,
-    SetMarkerSedeSelezionato,
-    ClearMarkerSedeSelezionato,
-    SetMarkerSedeHover,
-    ClearMarkerSedeHover,
-    ClearMarkerState,
-    SetMarkerSCHover,
-    ClearMarkerSCHover, ClearMarkerSCSelezionato, SetMarkerSCSelezionato
-} from '../../actions/maps/marker.actions';
 import { RichiestaMarker } from '../../../maps/maps-model/richiesta-marker.model';
 import { Observable } from 'rxjs';
 import { RichiesteMarkersState } from './richieste-markers.state';
@@ -37,6 +19,25 @@ import { ChiamateMarkersState } from './chiamate-markers.state';
 import { MapsButtonsState } from './maps-buttons.state';
 import { MAPSOPTIONS } from '../../../../../core/settings/maps-options';
 import { SchedeContattoMarkersState } from './schede-contatto-markers.state';
+import {
+    SetMarkerRichiestaSelezionato,
+    ClearMarkerRichiestaSelezionato,
+    SetMarkerRichiestaHover,
+    ClearMarkerRichiestaHover,
+    SetMarkerMezzoSelezionato,
+    ClearMarkerMezzoSelezionato,
+    SetMarkerMezzoHover,
+    ClearMarkerMezzoHover,
+    SetMarkerSedeSelezionato,
+    ClearMarkerSedeSelezionato,
+    SetMarkerSedeHover,
+    ClearMarkerSedeHover,
+    ClearMarkerState,
+    SetMarkerSCHover,
+    ClearMarkerSCHover,
+    ClearMarkerSCSelezionato,
+    SetMarkerSCSelezionato
+} from '../../actions/maps/marker.actions';
 import { Injectable } from '@angular/core';
 
 export interface MarkerStateModel {
@@ -84,52 +85,52 @@ export class MarkerState {
     @Select(RichiesteMarkersState.getRichiestaById) richiestaMarkerById$: Observable<RichiestaMarker>;
 
     @Selector()
-    static markerRichiestaSelezionato(state: MarkerStateModel) {
+    static markerRichiestaSelezionato(state: MarkerStateModel): string {
         return state.markerRichiestaSelezionato;
     }
 
     @Selector()
-    static markerRichiestaHover(state: MarkerStateModel) {
+    static markerRichiestaHover(state: MarkerStateModel): string {
         return state.markerRichiestaHover;
     }
 
     @Selector()
-    static markerMezzoSelezionato(state: MarkerStateModel) {
+    static markerMezzoSelezionato(state: MarkerStateModel): string {
         return state.markerMezzoSelezionato;
     }
 
     @Selector()
-    static markerMezzoHover(state: MarkerStateModel) {
+    static markerMezzoHover(state: MarkerStateModel): string {
         return state.markerMezzoHover;
     }
 
     @Selector()
-    static markerSedeSelezionato(state: MarkerStateModel) {
+    static markerSedeSelezionato(state: MarkerStateModel): string {
         return state.markerSedeSelezionato;
     }
 
     @Selector()
-    static markerSedeHover(state: MarkerStateModel) {
+    static markerSedeHover(state: MarkerStateModel): string {
         return state.markerSedeHover;
     }
 
     @Selector()
-    static markerSCSelezionato(state: MarkerStateModel) {
+    static markerSCSelezionato(state: MarkerStateModel): string {
         return state.markerSCSelezionato;
     }
 
     @Selector()
-    static markerSCHover(state: MarkerStateModel) {
+    static markerSCHover(state: MarkerStateModel): string {
         return state.markerSCHover;
     }
 
     @Selector()
-    static markerStateNull(state: MarkerStateModel) {
+    static markerStateNull(state: MarkerStateModel): boolean {
         return (!state.markerRichiestaSelezionato && !state.markerMezzoSelezionato && !state.markerSedeSelezionato);
     }
 
     @Action(SetMarkerRichiestaSelezionato)
-    setMarkerRichiestaSelezionato({ getState, patchState, dispatch }: StateContext<MarkerStateModel>, action: SetMarkerRichiestaSelezionato) {
+    setMarkerRichiestaSelezionato({ getState, patchState, dispatch }: StateContext<MarkerStateModel>, action: SetMarkerRichiestaSelezionato): void {
         dispatch(new SetRichiestaMarkerById(action.markerRichiestaSelezionato));
         const state = getState();
         this.richiestaMarkerById$.subscribe(s => {
@@ -146,28 +147,28 @@ export class MarkerState {
     }
 
     @Action(ClearMarkerRichiestaSelezionato)
-    clearMarkerRichiestaSelezionato({ patchState }: StateContext<MarkerStateModel>) {
+    clearMarkerRichiestaSelezionato({ patchState }: StateContext<MarkerStateModel>): void {
         patchState({
             markerRichiestaSelezionato: markerStateDefaults.markerRichiestaSelezionato
         });
     }
 
     @Action(SetMarkerRichiestaHover)
-    setMarkerRichiestaHover({ patchState }: StateContext<MarkerStateModel>, action: SetMarkerRichiestaHover) {
+    setMarkerRichiestaHover({ patchState }: StateContext<MarkerStateModel>, action: SetMarkerRichiestaHover): void {
         patchState({
             markerRichiestaHover: action.markerRichiestaHover
         });
     }
 
     @Action(ClearMarkerRichiestaHover)
-    clearMarkerRichiestaHover({ patchState }: StateContext<MarkerStateModel>) {
+    clearMarkerRichiestaHover({ patchState }: StateContext<MarkerStateModel>): void {
         patchState({
             markerRichiestaHover: markerStateDefaults.markerRichiestaHover
         });
     }
 
     @Action(SetMarkerMezzoSelezionato)
-    setMarkerMezzoSelezionato({ getState, patchState, dispatch }: StateContext<MarkerStateModel>, action: SetMarkerMezzoSelezionato) {
+    setMarkerMezzoSelezionato({ getState, patchState, dispatch }: StateContext<MarkerStateModel>, action: SetMarkerMezzoSelezionato): void {
         dispatch(new SetMezzoMarkerById(action.markerMezzoSelezionato));
         const state = getState();
         this.mezzoMarkerById$.subscribe(s => {
@@ -186,28 +187,28 @@ export class MarkerState {
     }
 
     @Action(ClearMarkerMezzoSelezionato)
-    clearMarkerMezzoSelezionato({ patchState }: StateContext<MarkerStateModel>) {
+    clearMarkerMezzoSelezionato({ patchState }: StateContext<MarkerStateModel>): void {
         patchState({
             markerMezzoSelezionato: markerStateDefaults.markerMezzoSelezionato
         });
     }
 
     @Action(SetMarkerMezzoHover)
-    setMarkerMezzoHover({ patchState }: StateContext<MarkerStateModel>, action: SetMarkerMezzoHover) {
+    setMarkerMezzoHover({ patchState }: StateContext<MarkerStateModel>, action: SetMarkerMezzoHover): void {
         patchState({
             markerMezzoHover: action.markerMezzoHover
         });
     }
 
     @Action(ClearMarkerMezzoHover)
-    clearMarkerMezzoHover({ patchState }: StateContext<MarkerStateModel>) {
+    clearMarkerMezzoHover({ patchState }: StateContext<MarkerStateModel>): void {
         patchState({
             markerMezzoHover: markerStateDefaults.markerMezzoHover
         });
     }
 
     @Action(SetMarkerSedeSelezionato)
-    setMarkerSedeSelezionato({ getState, patchState, dispatch }: StateContext<MarkerStateModel>, action: SetMarkerSedeSelezionato) {
+    setMarkerSedeSelezionato({ getState, patchState, dispatch }: StateContext<MarkerStateModel>, action: SetMarkerSedeSelezionato): void {
         dispatch(new SetSedeMarkerById(action.markerSedeSelezionato));
         const state = getState();
         this.sedeMarkerById$.subscribe(s => {
@@ -224,7 +225,7 @@ export class MarkerState {
     }
 
     @Action(ClearMarkerSedeSelezionato)
-    clearMarkerSedeSelezionato({ patchState, dispatch }: StateContext<MarkerStateModel>) {
+    clearMarkerSedeSelezionato({ patchState, dispatch }: StateContext<MarkerStateModel>): void {
         dispatch(new SetSedeMarkerById());
         patchState({
             markerSedeSelezionato: markerStateDefaults.markerSedeSelezionato
@@ -232,21 +233,21 @@ export class MarkerState {
     }
 
     @Action(SetMarkerSedeHover)
-    setMarkerSedeHover({ patchState }: StateContext<MarkerStateModel>, action: SetMarkerSedeHover) {
+    setMarkerSedeHover({ patchState }: StateContext<MarkerStateModel>, action: SetMarkerSedeHover): void {
         patchState({
             markerSedeHover: action.markerSedeHover
         });
     }
 
     @Action(ClearMarkerSedeHover)
-    clearMarkerSedeHover({ patchState }: StateContext<MarkerStateModel>) {
+    clearMarkerSedeHover({ patchState }: StateContext<MarkerStateModel>): void {
         patchState({
             markerSedeHover: markerStateDefaults.markerSedeHover
         });
     }
 
     @Action(SetMarkerSCSelezionato)
-    setMarkerSCSelezionato({ getState, patchState, dispatch }: StateContext<MarkerStateModel>, action: SetMarkerSCSelezionato) {
+    setMarkerSCSelezionato({ getState, patchState, dispatch }: StateContext<MarkerStateModel>, action: SetMarkerSCSelezionato): void {
         // dispatch(new SetSCMarkerById(action.markerSCSelezionato));
         const state = getState();
         patchState({
@@ -256,7 +257,7 @@ export class MarkerState {
     }
 
     @Action(ClearMarkerSCSelezionato)
-    clearMarkerSCSelezionato({ patchState, dispatch }: StateContext<MarkerStateModel>) {
+    clearMarkerSCSelezionato({ patchState, dispatch }: StateContext<MarkerStateModel>): void {
         // dispatch(new SetSCMarkerById());
         patchState({
             markerSCSelezionato: markerStateDefaults.markerSCSelezionato
@@ -264,21 +265,21 @@ export class MarkerState {
     }
 
     @Action(SetMarkerSCHover)
-    setMarkerSCHover({ patchState }: StateContext<MarkerStateModel>, action: SetMarkerSCHover) {
+    setMarkerSCHover({ patchState }: StateContext<MarkerStateModel>, action: SetMarkerSCHover): void {
         patchState({
             markerSCHover: action.markerSCHover
         });
     }
 
     @Action(ClearMarkerSCHover)
-    clearMarkerSCHover({ patchState }: StateContext<MarkerStateModel>) {
+    clearMarkerSCHover({ patchState }: StateContext<MarkerStateModel>): void {
         patchState({
             markerSCHover: markerStateDefaults.markerSCHover
         });
     }
 
     @Action(ClearMarkerState)
-    clearMarkerState({ patchState }: StateContext<MarkerStateModel>) {
+    clearMarkerState({ patchState }: StateContext<MarkerStateModel>): void {
         patchState(markerStateDefaults);
     }
 

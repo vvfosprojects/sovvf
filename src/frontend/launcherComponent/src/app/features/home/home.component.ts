@@ -33,18 +33,22 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.getBoxAttivi();
     }
 
-    ngOnInit() {
-        isDevMode() && console.log('Componente Home creato');
+    ngOnInit(): void {
+        if (isDevMode()) {
+            console.log('Componente Home creato');
+        }
         this.store.dispatch(new GetDataHome());
     }
 
-    ngOnDestroy() {
-        isDevMode() && console.log('Componente Home distrutto');
+    ngOnDestroy(): void {
+        if (isDevMode()) {
+            console.log('Componente Home distrutto');
+        }
         this.subscription.unsubscribe();
         this.store.dispatch(new ClearDataHome());
     }
 
-    onMapFullLoaded() {
+    onMapFullLoaded(): void {
         this.store.dispatch(new SetMapLoaded(true));
     }
 
@@ -52,7 +56,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.subscription.add(this.viewState$.subscribe(r => this.viewState = r));
     }
 
-    getColumnState() {
+    getColumnState(): void {
         this.subscription.add(this.columnState$.subscribe(r => this.columnState = r));
     }
 

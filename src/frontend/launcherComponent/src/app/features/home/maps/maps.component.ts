@@ -51,16 +51,20 @@ export class MapsComponent implements OnInit, OnDestroy {
         }));
     }
 
-    ngOnInit() {
-        isDevMode() && console.log('Componente Maps creato');
+    ngOnInit(): void {
+        if (isDevMode()) {
+            console.log('Componente Maps creato');
+        }
     }
 
-    ngOnDestroy() {
+    ngOnDestroy(): void {
         this.subscription.unsubscribe();
-        isDevMode() && console.log('Componente Maps distrutto');
+        if (isDevMode()) {
+            console.log('Componente Maps distrutto');
+        }
     }
 
-    mapIsLoaded(event) {
+    mapIsLoaded(event): void {
         if (event) {
             this.mapsFullyLoaded = true;
             if (this.mapsFullyLoaded) {

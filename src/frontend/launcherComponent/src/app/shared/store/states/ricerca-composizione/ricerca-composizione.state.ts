@@ -36,28 +36,28 @@ export class RicercaComposizioneState {
     }
 
     @Action(SetRicercaSquadreComposizione)
-    setRicercaSquadreComposizione({ patchState }: StateContext<RicercaComposizioneStateStateModel>, action: SetRicercaSquadreComposizione) {
+    setRicercaSquadreComposizione({ patchState }: StateContext<RicercaComposizioneStateStateModel>, action: SetRicercaSquadreComposizione): void {
         patchState({
             ricercaSquadre: action.ricerca
         });
     }
 
     @Action(ResetRicercaSquadreComposizione)
-    resetRicercaSquadreComposizione({ patchState }: StateContext<RicercaComposizioneStateStateModel>) {
+    resetRicercaSquadreComposizione({ patchState }: StateContext<RicercaComposizioneStateStateModel>): void {
         patchState({
             ricercaSquadre: RicercaComposizioneStateDefaults.ricercaSquadre
         });
     }
 
     @Action(SetRicercaMezziComposizione)
-    setRicercaMezziComposizione({ patchState }: StateContext<RicercaComposizioneStateStateModel>, action: SetRicercaMezziComposizione) {
+    setRicercaMezziComposizione({ patchState }: StateContext<RicercaComposizioneStateStateModel>, action: SetRicercaMezziComposizione): void {
         patchState({
             ricercaMezzi: action.ricerca
         });
     }
 
     @Action(ResetRicercaMezziComposizione)
-    resetRicercaMezziComposizione({ patchState }: StateContext<RicercaComposizioneStateStateModel>) {
+    resetRicercaMezziComposizione({ patchState }: StateContext<RicercaComposizioneStateStateModel>): void {
         patchState({
             ricercaMezzi: RicercaComposizioneStateDefaults.ricercaMezzi
         });

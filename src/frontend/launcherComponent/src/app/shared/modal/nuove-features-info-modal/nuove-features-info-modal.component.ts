@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Store } from '@ngxs/store';
 import { Navigate } from '@ngxs/router-plugin';
@@ -9,13 +9,10 @@ import { RoutesPath } from '../../enum/routes-path.enum';
     templateUrl: './nuove-features-info-modal.component.html',
     styleUrls: ['./nuove-features-info-modal.component.css']
 })
-export class NuoveFeaturesInfoModalComponent implements OnInit {
+export class NuoveFeaturesInfoModalComponent {
 
     constructor(private store: Store,
                 private modal: NgbActiveModal) {
-    }
-
-    ngOnInit(): void {
     }
 
     goToChangelog(): void {

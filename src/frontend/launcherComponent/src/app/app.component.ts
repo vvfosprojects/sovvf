@@ -1,13 +1,4 @@
-import {
-    AfterViewChecked,
-    Component,
-    ElementRef,
-    HostListener,
-    isDevMode,
-    OnDestroy,
-    OnInit,
-    ViewChild
-} from '@angular/core';
+import { AfterViewChecked, Component, ElementRef, HostListener, isDevMode, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { RoutesPath } from './shared/enum/routes-path.enum';
 import { Select, Store } from '@ngxs/store';
@@ -144,7 +135,6 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
     }
 
     private getHeight(): void {
-        // tslint:disable-next-line:max-line-length
         if (_isActive(this.currentUrl)) {
             const availHeight = window.innerHeight;
             const height = this.contentElement.nativeElement.offsetHeight;

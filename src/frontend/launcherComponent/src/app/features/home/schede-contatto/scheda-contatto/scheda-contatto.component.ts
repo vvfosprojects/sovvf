@@ -22,6 +22,7 @@ export class SchedaContattoComponent implements OnChanges {
     @Input() disableGestisci: boolean;
     @Input() disableRaggruppamento: boolean;
     @Input() disableEliminaRaggruppamento: boolean;
+
     @Output() hoverIn = new EventEmitter<string>();
     @Output() hoverOut = new EventEmitter();
     @Output() dettaglioScheda = new EventEmitter<string>();
@@ -53,31 +54,31 @@ export class SchedaContattoComponent implements OnChanges {
         }
     }
 
-    cardClasses(id: string) {
-        let _returnClass = '';
+    cardClasses(id: string): string{
+        let cardClasses = '';
         if (this.idSchedaContattoHover === id && !this.scheda.gestita) {
-            _returnClass = ' bg-light';
+            cardClasses = ' bg-light';
         }
         switch (this.scheda.classificazione) {
             case ClassificazioneSchedaContatto.Competenza:
-                _returnClass += ' status_chiamata';
+                cardClasses += ' status_chiamata';
                 break;
             case ClassificazioneSchedaContatto.Conoscenza:
-                _returnClass += ' status_assegnato';
+                cardClasses += ' status_assegnato';
                 break;
             case ClassificazioneSchedaContatto.Differibile:
-                _returnClass += ' status_chiuso';
+                cardClasses += ' status_chiuso';
                 break;
         }
 
         if (this.scheda.gestita) {
-            _returnClass += ' gestita';
+            cardClasses += ' gestita';
         }
 
-        return _returnClass;
+        return cardClasses;
     }
 
-    checkDisabled() {
+    checkDisabled(): boolean {
         if (this.disableRaggruppamento) {
             return false;
         }
@@ -91,29 +92,29 @@ export class SchedaContattoComponent implements OnChanges {
         }
     }
 
-    checkMessage() {
+    checkMessage(): string {
         if (this.schedeContattoSelezionate.length > 0) {
             return this.checkDisabled() ? 'Non selezionabile' : 'Selezionabile';
         }
     }
 
-    onCheckBoxClick() {
+    onCheckBoxClick(): void {
         if (this.checkDisabled()) {
             this.checkBoxError.emit();
         }
     }
 
-    onEditSchedaSelezionata($event: CheckboxInterface) {
+    onEditSchedaSelezionata($event: CheckboxInterface): void {
         console.log('click checkbox', $event);
         $event.object = this.scheda;
         this.editSelezionata.emit($event);
     }
 
-    onCollapse() {
+    onCollapse(): void {
         this.collapsed.emit(this.scheda.codiceScheda);
     }
 
-    onUndoRaggruppamento() {
+    onUndoRaggruppamento(): void {
         this.undoRaggruppamento.emit(this.scheda.codiceScheda);
     }
 }

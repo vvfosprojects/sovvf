@@ -12,7 +12,7 @@ export class AgmContentComponent implements OnInit {
     constructor(public gMaps: GoogleMapsAPIWrapper) {
     }
 
-    ngOnInit() {
+    ngOnInit(): void {
         this.gMaps.getNativeMap().then((map) => {
             this.mapLoad.emit(map);
         });

@@ -22,25 +22,25 @@ export class ViewModeComponent {
 
     AppFeature = AppFeatures;
     OptionsRichieste = OptionsRichieste;
-    public filtriNonImplementati: boolean = true;
+    public filtriNonImplementati = true;
 
     constructor(config: NgbTooltipConfig) {
         config.container = 'body';
     }
 
-    buttonViewMode($event) {
+    buttonViewMode($event): void {
         this.buttonView.emit($event);
     }
 
-    buttonOptionRichieste($event) {
+    buttonOptionRichieste($event): void {
         this.optionRichieste.emit($event);
     }
 
-    onChange() {
+    onChange(): void {
         this.toggleMeteo.emit(!this.stateSwitch);
     }
 
-    getMezziInServizioBtnClasses() {
+    getMezziInServizioBtnClasses(): string {
         let returnClasses = '';
         if (this.mezziInServizioActive) {
             returnClasses = 'btn-secondary';

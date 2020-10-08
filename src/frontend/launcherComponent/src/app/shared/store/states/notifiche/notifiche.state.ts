@@ -23,29 +23,29 @@ export const NotificheStateModelDefaults: NotificheStateModel = {
 export class NotificheState {
 
     @Selector()
-    static listaNotifiche(state: NotificheStateModel) {
+    static listaNotifiche(state: NotificheStateModel): NotificaInterface[] {
         return state.listaNotifiche;
     }
 
     @Selector()
-    static nuoveNotifiche(state: NotificheStateModel) {
+    static nuoveNotifiche(state: NotificheStateModel): number {
         return state.nuoveNotifiche;
     }
 
     // todo: se necessario implementare creando un service "NotificheService"
     @Action(GetListaNotifiche)
-    getListaNotifiche({ dispatch }: StateContext<NotificheStateModel>) {
+    getListaNotifiche({ dispatch }: StateContext<NotificheStateModel>): void {
     }
 
     @Action(SetListaNotifiche)
-    setListaNotifiche({ patchState }: StateContext<NotificheStateModel>, action: SetListaNotifiche) {
+    setListaNotifiche({ patchState }: StateContext<NotificheStateModel>, action: SetListaNotifiche): void {
         patchState({
             listaNotifiche: action.notifiche
         });
     }
 
     @Action(AddNotifica)
-    addNotifica({ getState, setState }: StateContext<NotificheStateModel>, action: AddNotifica) {
+    addNotifica({ getState, setState }: StateContext<NotificheStateModel>, action: AddNotifica): void {
         const nuoveNotifiche = getState().nuoveNotifiche;
         const countNuoveNotifiche = nuoveNotifiche ? makeCopy(nuoveNotifiche) : 0;
         setState(
@@ -57,7 +57,7 @@ export class NotificheState {
     }
 
     @Action(SetNotificheLette)
-    setNotificheLette({ patchState }: StateContext<NotificheStateModel>) {
+    setNotificheLette({ patchState }: StateContext<NotificheStateModel>): void {
         patchState({
             nuoveNotifiche: 0
         });

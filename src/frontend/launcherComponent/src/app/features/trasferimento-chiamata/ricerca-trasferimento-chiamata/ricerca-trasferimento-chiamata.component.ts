@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
+import { Component, Output, EventEmitter, Input } from '@angular/core';
 import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
@@ -6,7 +6,7 @@ import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
     templateUrl: './ricerca-trasferimento-chiamata.component.html',
     styleUrls: ['./ricerca-trasferimento-chiamata.component.css']
 })
-export class RicercaTrasferimentoChiamataComponent implements OnInit {
+export class RicercaTrasferimentoChiamataComponent {
 
     @Input() loading: boolean;
     ricerca: string;
@@ -16,9 +16,4 @@ export class RicercaTrasferimentoChiamataComponent implements OnInit {
     constructor(config: NgbDropdownConfig) {
         config.placement = 'bottom-right';
     }
-
-
-    ngOnInit() {
-    }
-
 }

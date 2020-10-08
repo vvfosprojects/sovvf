@@ -7,14 +7,15 @@ export class NotFoundComponent implements OnInit, OnDestroy {
 
     tick = 5;
     private delayTime = 5000;
+
     private subscription: Subscription;
 
     constructor(private router: Router) {
     }
 
-    ngOnInit() {
+    ngOnInit(): void {
         setTimeout(() => {
-            this.router.navigate([ 'home' ]);
+            this.router.navigate(['home']);
         }, this.delayTime);
         const source = timer(1000, 1000);
         this.delayTime = this.delayTime / 1000 - 1;

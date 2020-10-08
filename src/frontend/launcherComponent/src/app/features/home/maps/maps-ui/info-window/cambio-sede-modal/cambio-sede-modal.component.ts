@@ -29,7 +29,7 @@ export class CambioSedeModalComponent implements OnDestroy {
         this.subscription.unsubscribe();
     }
 
-    cambioSede() {
+    cambioSede(): void {
         this.store.dispatch([
             new ClearMarkerSedeSelezionato(),
             new PatchSediNavbarSelezionate([this.sede.codice], false),
@@ -37,7 +37,7 @@ export class CambioSedeModalComponent implements OnDestroy {
         ]);
     }
 
-    dismissModale() {
+    dismissModale(): void {
         this.modal.dismiss('ko');
     }
 

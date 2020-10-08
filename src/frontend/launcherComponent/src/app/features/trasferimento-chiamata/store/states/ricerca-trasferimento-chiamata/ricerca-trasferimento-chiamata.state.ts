@@ -18,23 +18,20 @@ export const RicercaTrasferimentoChiamataStateDefaults: RicercaTrasferimentoChia
 
 export class RicercaTrasferimentoChiamataState {
 
-    constructor() {
-    }
-
     @Selector()
-    static ricerca(state: RicercaTrasferimentoChiamataStateModel) {
+    static ricerca(state: RicercaTrasferimentoChiamataStateModel): string {
         return state.ricerca;
     }
 
     @Action(SetRicercaTrasferimentoChiamata)
-    setRicercaRubrica({ patchState }: StateContext<RicercaTrasferimentoChiamataStateModel>, action: SetRicercaTrasferimentoChiamata) {
+    setRicercaRubrica({ patchState }: StateContext<RicercaTrasferimentoChiamataStateModel>, action: SetRicercaTrasferimentoChiamata): void {
         patchState({
             ricerca: action.ricerca
         });
     }
 
     @Action(CleaRicercaTrasferimentoChiamata)
-    clearRicercaRubrica({ patchState }: StateContext<RicercaTrasferimentoChiamataStateModel>) {
+    clearRicercaRubrica({ patchState }: StateContext<RicercaTrasferimentoChiamataStateModel>): void {
         patchState({
             ricerca: null
         });

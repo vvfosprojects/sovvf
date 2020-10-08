@@ -9,7 +9,9 @@ import {
 import { MezziComposizioneState } from '../../../../../shared/store/states/mezzi-composizione/mezzi-composizione.state';
 import { ComposizionePartenzaState } from './composizione-partenza.state';
 import { ClearSelectedMezziComposizione, SetListaMezziComposizione } from '../../../../../shared/store/actions/mezzi-composizione/mezzi-composizione.actions';
-import { ClearSelectedSquadreComposizione, SetListaSquadreComposizione } from '../../../../../shared/store/actions/squadre-composizione/squadre-composizione.actions';
+import { ClearSelectedSquadreComposizione,
+    SetListaSquadreComposizione
+} from '../../../../../shared/store/actions/squadre-composizione/squadre-composizione.actions';
 import { ListaComposizioneAvanzata } from '../../../../../shared/interface/lista-composizione-avanzata-interface';
 import { BoxPartenzaState } from './box-partenza.state';
 import { mezzoComposizioneBusy } from '../../../../../shared/helper/composizione-functions';
@@ -17,7 +19,10 @@ import { RemoveBoxPartenza } from '../../actions/composizione-partenza/box-parte
 import { ViewComponentState } from '../view/view.state';
 import { Composizione } from '../../../../../shared/enum/composizione.enum';
 import { GetPreAccoppiati } from '../../actions/composizione-partenza/composizione-veloce.actions';
-import { StartListaComposizioneLoading, StopListaComposizioneLoading } from '../../actions/composizione-partenza/composizione-partenza.actions';
+import {
+    StartListaComposizioneLoading,
+    StopListaComposizioneLoading
+} from '../../actions/composizione-partenza/composizione-partenza.actions';
 import { FiltriComposizioneState } from '../../../../../shared/store/states/filtri-composizione/filtri-composizione.state';
 import { PaginationComposizionePartenzaState } from 'src/app/shared/store/states/pagination-composizione-partenza/pagination-composizione-partenza.state';
 import { FiltriComposizione } from '../../../composizione-partenza/interface/filtri/filtri-composizione-interface';
@@ -42,7 +47,7 @@ export const ComposizioneAvanzataStateDefaults: ComposizioneAvanzataStateModel =
 export class ComposizioneAvanzataState {
 
     @Selector()
-    static listaMezziSquadre(state: ComposizioneAvanzataStateModel) {
+    static listaMezziSquadre(state: ComposizioneAvanzataStateModel): ListaComposizioneAvanzata {
         return state.listaMezziSquadre;
     }
 
@@ -51,7 +56,7 @@ export class ComposizioneAvanzataState {
     }
 
     @Action(GetListeComposizioneAvanzata)
-    getListeComposizioneAvanzata({ dispatch }: StateContext<ComposizioneAvanzataStateModel>, action: GetListeComposizioneAvanzata) {
+    getListeComposizioneAvanzata({ dispatch }: StateContext<ComposizioneAvanzataStateModel>, action: GetListeComposizioneAvanzata): void {
         dispatch(new StartListaComposizioneLoading());
         const paginationMezzi = this.store.selectSnapshot(PaginationComposizionePartenzaState.paginationMezzi);
         const paginationSquadre = this.store.selectSnapshot(PaginationComposizionePartenzaState.paginationSquadre);
@@ -122,7 +127,7 @@ export class ComposizioneAvanzataState {
     }
 
     @Action(SetListeComposizioneAvanzata)
-    setListeComposizioneAvanzata({ patchState, dispatch }: StateContext<ComposizioneAvanzataStateModel>, action: SetListeComposizioneAvanzata) {
+    setListeComposizioneAvanzata({ patchState, dispatch }: StateContext<ComposizioneAvanzataStateModel>, action: SetListeComposizioneAvanzata): void {
         patchState({
             listaMezziSquadre: action.listaMezziSquadre
         });
@@ -133,13 +138,13 @@ export class ComposizioneAvanzataState {
     }
 
     @Action(UnselectMezziAndSquadreComposizioneAvanzata)
-    unselectMezziAndSquadreComposizioneAvanzata({ dispatch }: StateContext<ComposizioneAvanzataStateModel>) {
+    unselectMezziAndSquadreComposizioneAvanzata({ dispatch }: StateContext<ComposizioneAvanzataStateModel>): void {
         dispatch(new ClearSelectedMezziComposizione());
         dispatch(new ClearSelectedSquadreComposizione());
     }
 
     @Action(ClearComposizioneAvanzata)
-    clearComposizioneAvanzata({ patchState }: StateContext<ComposizioneAvanzataStateModel>) {
+    clearComposizioneAvanzata({ patchState }: StateContext<ComposizioneAvanzataStateModel>): void {
         patchState(ComposizioneAvanzataStateDefaults);
     }
 }

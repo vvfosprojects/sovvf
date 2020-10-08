@@ -10,11 +10,11 @@ export class ShowToastr {
                 public message?: string,
                 public duration?: number,
                 public tapToDismiss?: boolean,
-                _alwaysVisible = environment.toastr) {
+                alwaysVisible: boolean = environment.toastr) {
         if (type === ToastrType.Clear) {
             this.alwaysVisible = true;
         } else {
-            this.alwaysVisible = _alwaysVisible;
+            this.alwaysVisible = alwaysVisible;
         }
     }
 }

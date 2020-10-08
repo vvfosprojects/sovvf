@@ -18,24 +18,26 @@ export class ActionRichiestaModalComponent implements OnInit {
     actionRichiestaForm: FormGroup;
 
     constructor(public modal: NgbActiveModal,
-        private formBuilder: FormBuilder) {
+                private formBuilder: FormBuilder) {
         this.actionRichiestaForm = this.formBuilder.group({
             note: new FormControl()
         });
     }
 
-    get f() { return this.actionRichiestaForm.controls; }
+    get f(): any {
+        return this.actionRichiestaForm.controls;
+    }
 
-    ngOnInit() {
+    ngOnInit(): void {
         this.actionRichiestaForm = this.formBuilder.group({
             note: ['']
         });
     }
 
-    close(esito: string) {
+    close(esito: string): void {
         const obj = {
-            'esito': esito,
-            'note': this.f.note.value ? this.f.note.value : null
+            esito: esito,
+            note: this.f.note.value ? this.f.note.value : null
         };
         this.modal.close(obj);
     }
