@@ -109,7 +109,7 @@ export class BoxPartenzaState {
     addBoxPartenza({ getState, setState, dispatch }: StateContext<BoxPartenzaStateModel>): void {
         const state = getState();
         // credo un ID logico random da asseganre al box-partenza
-        const _id = makeID();
+        const id = makeID();
         // controllo se tutti i box-partenza sono validi
         if (validateBoxPartenza(state.boxPartenzaList)) {
             // controllo se ho raggiunto il numero massimo di box-partenza (3 MAX)
@@ -119,7 +119,7 @@ export class BoxPartenzaState {
                     patch({
                         boxPartenzaList: append([
                             {
-                                id: _id,
+                                id,
                                 mezzoComposizione: null,
                                 squadraComposizione: []
                             }
@@ -127,7 +127,7 @@ export class BoxPartenzaState {
                     })
                 );
                 // seleziono il nuovo box partenza
-                dispatch(new SelectBoxPartenza(_id));
+                dispatch(new SelectBoxPartenza(id));
             } else {
                 dispatch(new ShowToastr(ToastrType.Error, 'Errore', 'Limite massimo raggiunto.', 5));
             }

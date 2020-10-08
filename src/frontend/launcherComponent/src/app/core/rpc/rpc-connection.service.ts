@@ -47,7 +47,7 @@ export class RpcConnectionService {
         pc.createDataChannel('');
         pc.createOffer().then(pc.setLocalDescription.bind(pc));
 
-        pc.onicecandidate = (ice) => {
+        pc.onicecandidate = (ice: RTCPeerConnectionIceEvent) => {
             this.zone.run(() => {
                 if (!ice || !ice.candidate || !ice.candidate.candidate) {
                     return;

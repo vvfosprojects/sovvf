@@ -15,7 +15,7 @@ export class VersionCheckService {
 
     /**
      * Checks in every set frequency the version of frontend application
-     * @param {number} frequency - in milliseconds
+     * @param: {number} frequency - in milliseconds
      */
     public initVersionCheck(frequency = 30): void {
         const url = environment.versionCheckURL;
@@ -28,8 +28,8 @@ export class VersionCheckService {
 
     /**
      * Will do the call and check if the hash has changed or not
-     * @param url
-     * @param first is used for first check
+     * @param: url
+     * @param: first is used for first check
      */
     private checkVersion(url: string, first?: boolean): void {
         this.http.get<VersionInterface>(url + '?t=' + new Date().getTime())

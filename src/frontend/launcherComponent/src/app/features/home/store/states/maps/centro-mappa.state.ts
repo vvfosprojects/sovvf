@@ -51,9 +51,9 @@ export class CentroMappaState {
 
     /**
      * Imposta lo stato iniziale del centro Mappa
-     * @param getState
-     * @param patchState
-     * @param action
+     * @param: getState
+     * @param: patchState
+     * @param: action
      */
     @Action(SetInitCentroMappa)
     setInitCentroMappa({ patchState, dispatch }: StateContext<CentroMappaStateModel>, action: SetInitCentroMappa): void {
@@ -65,9 +65,9 @@ export class CentroMappaState {
 
     /**
      * Imposta lo stato attuale del centro Mappa
-     * @param getState
-     * @param patchState
-     * @param action
+     * @param: getState
+     * @param: patchState
+     * @param: action
      */
     @Action(SetCentroMappa)
     setCentroMappa({ patchState }: StateContext<CentroMappaStateModel>, action: SetCentroMappa): void {
@@ -78,9 +78,9 @@ export class CentroMappaState {
 
     /**
      * Imposta lo stato attuale del centro Mappa (solo il livello di zoom)
-     * @param getState
-     * @param patchState
-     * @param action
+     * @param: getState
+     * @param: patchState
+     * @param: action
      */
     @Action(SetZoomCentroMappa)
     setZoomCentroMappa({ getState, patchState }: StateContext<CentroMappaStateModel>, action: SetZoomCentroMappa): void {
@@ -96,9 +96,9 @@ export class CentroMappaState {
 
     /**
      * Imposta lo stato attuale del centro Mappa (solo le coordinate)
-     * @param getState
-     * @param patchState
-     * @param action
+     * @param: getState
+     * @param: patchState
+     * @param: action
      */
     @Action(SetCoordCentroMappa)
     setCoordCentroMappa({ getState, patchState }: StateContext<CentroMappaStateModel>, action: SetCoordCentroMappa): void {
@@ -114,8 +114,8 @@ export class CentroMappaState {
 
     /**
      * Recupera lo stato iniziale del centro Mappa e dispatcha l'azione per fare il relativo set
-     * @param getState
-     * @param dispatch
+     * @param: getState
+     * @param: dispatch
      */
     @Action(GetInitCentroMappa)
     getInitCentroMappa({ getState, dispatch }: StateContext<CentroMappaStateModel>): void {
@@ -125,8 +125,8 @@ export class CentroMappaState {
 
     /**
      * Recupera lo stato iniziale del centro Mappa (solo il livello di zoom) e dispatcha l'azione per fare il relativo set
-     * @param getState
-     * @param dispatch
+     * @param: getState
+     * @param: dispatch
      */
     @Action(GetInitZoomCentroMappa)
     getInitZoomCentroMappa({ getState, dispatch }: StateContext<CentroMappaStateModel>): void {
@@ -136,8 +136,8 @@ export class CentroMappaState {
 
     /**
      * Recupera lo stato iniziale del centro Mappa (solo le coordinate) e dispatcha l'azione per fare il relativo set
-     * @param getState
-     * @param dispatch
+     * @param: getState
+     * @param: dispatch
      */
     @Action(GetInitCoordCentroMappa)
     getInitCoordCentroMappa({ getState, dispatch }: StateContext<CentroMappaStateModel>): void {

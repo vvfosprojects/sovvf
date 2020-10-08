@@ -77,7 +77,7 @@ export const PermessiStateDefaults: PermessiStateModel = {
 export class PermessiState {
 
     @Selector()
-    static permessi(state: PermessiStateModel) {
+    static permessi(state: PermessiStateModel): PermessiFeatureInterface[] {
         return state.permessi;
     }
 

@@ -77,7 +77,7 @@ export class FilterbarComponent {
 
     /**
      * aggiunti viewState per verificare se è attivo richieste o mappa
-     * @param store
+     * @param:: store
      */
     @Select(ViewComponentState.mapsIsActive) mapsStatus$: Observable<boolean>;
     @Select(ViewComponentState.richiesteIsActive) richiesteStatus$: Observable<boolean>;

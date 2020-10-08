@@ -6,7 +6,8 @@ import {
     PatchListaSediNavbar,
     PatchSediNavbarSelezionate,
     SetListaSediTreeview,
-    SetSediNavbarSelezionate, SetSediNavbarVisible
+    SetSediNavbarSelezionate,
+    SetSediNavbarVisible
 } from '../../actions/sedi-treeview/sedi-treeview.actions';
 import { arraysEqual, makeCopy } from '../../../helper/function';
 import { ShowToastr } from '../../actions/toastr/toastr.actions';
@@ -45,27 +46,27 @@ export const SediTreeviewStateDefaults: SediTreeviewStateModel = {
 export class SediTreeviewState {
 
     @Selector()
-    static listeSediLoaded(state: SediTreeviewStateModel) {
+    static listeSediLoaded(state: SediTreeviewStateModel): boolean {
         return !!state.listeSedi;
     }
 
     @Selector()
-    static listeSediNavbarLoaded(state: SediTreeviewStateModel) {
+    static listeSediNavbarLoaded(state: SediTreeviewStateModel): boolean {
         return !!state.listaSediNavbar;
     }
 
     @Selector()
-    static listeSediNavbar(state: SediTreeviewStateModel) {
+    static listeSediNavbar(state: SediTreeviewStateModel): ListaSedi {
         return state.listaSediNavbar;
     }
 
     @Selector()
-    static sediNavbarTesto(state: SediTreeviewStateModel) {
+    static sediNavbarTesto(state: SediTreeviewStateModel): string {
         return state.sediNavbarTesto.iniziale;
     }
 
     @Selector()
-    static sediNavbarVisible(state: SediTreeviewStateModel) {
+    static sediNavbarVisible(state: SediTreeviewStateModel): boolean {
         return state.sediNavbarVisible;
     }
 
@@ -80,16 +81,16 @@ export class SediTreeviewState {
     }
 
     @Action(SetListaSediTreeview)
-    setListaSediTreeview({ patchState }: StateContext<SediTreeviewStateModel>, action: SetListaSediTreeview) {
+    setListaSediTreeview({ patchState }: StateContext<SediTreeviewStateModel>, action: SetListaSediTreeview): void {
         patchState({
             listeSedi: action.listaSedi
         });
     }
 
     @Action(PatchListaSediNavbar)
-    patchListaSediNavbar({ getState, patchState }: StateContext<SediTreeviewStateModel>, action: PatchListaSediNavbar) {
+    patchListaSediNavbar({ getState, patchState }: StateContext<SediTreeviewStateModel>, action: PatchListaSediNavbar): void {
         const cS: any = sessionStorage.getItem(LSNAME.cacheSedi);
-        if ( action.selected && cS)  {
+        if (action.selected && cS) {
             action.selected = [cS];
         }
         const state = getState();
@@ -106,7 +107,7 @@ export class SediTreeviewState {
     }
 
     @Action(ClearListaSediNavbar)
-    clearListaSediNavbar({ patchState }: StateContext<SediTreeviewStateModel>) {
+    clearListaSediNavbar({ patchState }: StateContext<SediTreeviewStateModel>): void {
         patchState({
             listaSediNavbar: SediTreeviewStateDefaults.listaSediNavbar,
             sediNavbarTesto: SediTreeviewStateDefaults.sediNavbarTesto,
@@ -115,7 +116,7 @@ export class SediTreeviewState {
     }
 
     @Action(PatchSediNavbarSelezionate)
-    patchSediNavbarSelezionate({ getState, patchState, dispatch }: StateContext<SediTreeviewStateModel>, action: PatchSediNavbarSelezionate) {
+    patchSediNavbarSelezionate({ getState, patchState, dispatch }: StateContext<SediTreeviewStateModel>, action: PatchSediNavbarSelezionate): void {
         const state = getState();
         let item = '';
         if (action.selected[0]) {
@@ -152,7 +153,7 @@ export class SediTreeviewState {
     }
 
     @Action(ClearSediNavbarSelezionate)
-    clearSediNavbarSelezionate({ getState, patchState, dispatch }: StateContext<SediTreeviewStateModel>) {
+    clearSediNavbarSelezionate({ getState, patchState, dispatch }: StateContext<SediTreeviewStateModel>): void {
         const state = getState();
         dispatch(new PatchListaSediNavbar(state.sediNavbarSelezionate.iniziali));
         patchState({
@@ -169,7 +170,7 @@ export class SediTreeviewState {
     }
 
     @Action(SetSediNavbarSelezionate)
-    setSediNavbarSelezionate({ getState, patchState, dispatch }: StateContext<SediTreeviewStateModel>) {
+    setSediNavbarSelezionate({ getState, patchState, dispatch }: StateContext<SediTreeviewStateModel>): void {
         console.clear();
         const state = getState();
         patchState({
@@ -188,7 +189,7 @@ export class SediTreeviewState {
     }
 
     @Action(SetSediNavbarVisible)
-    setSediNavbarVisible({ patchState }: StateContext<SediTreeviewStateModel>, { sediNavbarVisible }: SetSediNavbarVisible) {
+    setSediNavbarVisible({ patchState }: StateContext<SediTreeviewStateModel>, { sediNavbarVisible }: SetSediNavbarVisible): void {
         patchState({ sediNavbarVisible });
     }
 

@@ -107,14 +107,14 @@ export class AgmComponent implements OnDestroy {
         });
         /**
          * marker di tipo meteo
-         * @type {Subscription}
+         * @returns: { Subscription }
          */
         this.subscription.add(this.meteoMarkers$.subscribe((marker: MeteoMarker[]) => {
             this.meteoMarkers = marker;
         }));
         /**
          * direzioni di tipo direction
-         * @type {Subscription}
+         * @returns: { Subscription }
          */
         this.subscription.add(
             this.direction$.subscribe((direzioni: DirectionInterface) => {
@@ -145,7 +145,7 @@ export class AgmComponent implements OnDestroy {
         );
         /**
          * creo una mappa zoom corrente -> round exp da utilizzare per arrotondare le coordinate
-         * @type {Map<number, number>}
+         * @returns: { Map<number, number> }
          */
         this.mapZoom = this.mapZoomToRound();
     }
@@ -338,7 +338,7 @@ export class AgmComponent implements OnDestroy {
 
     /**
      * zoom agm - roundExp
-     * @returns { Map<number, number> }
+     * @returns: { Map<number, number> }
      */
     mapZoomToRound(): Map<number, number> {
         return new Map([

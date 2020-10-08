@@ -171,7 +171,7 @@ export class MarkerService implements OnDestroy {
 
     /**
      * ritorna l'url del path dell'icona "speciale" da utilizzare
-     * @param tipo
+     * @param: tipo
      */
     iconaSpeciale(tipo: string): string {
         return this.icone.iconaSpeciale(tipo);
@@ -357,7 +357,7 @@ export class MarkerService implements OnDestroy {
 
     /**
      * crea a runtime un marker, se l'utente clicca in un punto della mappa
-     * @param event
+     * @param: event
      */
     createMeteoMarker(event: any): void {
         if (this.switchMeteo) {

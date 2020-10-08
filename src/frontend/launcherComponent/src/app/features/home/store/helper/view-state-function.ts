@@ -6,8 +6,8 @@ import { Composizione } from '../../../../shared/enum/composizione.enum';
 
 /**
  * partendo dallo stato di default, cambia lo stato di visualizzazione dell'applicazione in 3 differenti modalità
- * @param stateDefault
- * @param action
+ * @param: stateDefault
+ * @param: action
  */
 export function updateView(stateDefault: any, action: ChangeView): ViewComponentStateModel {
     if (action.modalita !== AppFeatures.Default) {
@@ -30,7 +30,7 @@ export function updateView(stateDefault: any, action: ChangeView): ViewComponent
 
 /**
  * partendo dallo stato di default, cambia lo stato di visualizzazione di chiamata
- * @param stateDefault
+ * @param: stateDefault
  */
 export function activeChiamata(stateDefault: any): ViewComponentStateModel {
     stateDefault.view.richieste.active = false;
@@ -42,8 +42,8 @@ export function activeChiamata(stateDefault: any): ViewComponentStateModel {
 
 /**
  * partendo dallo stato di default, cambia lo stato di visualizzazione di composizionePartenza
- * @param stateDefault
- * @param modalita
+ * @param: stateDefault
+ * @param: modalita
  */
 export function activeComposizione(stateDefault: any, modalita: Composizione): ViewComponentStateModel {
     stateDefault.view.richieste.active = false;
@@ -56,8 +56,8 @@ export function activeComposizione(stateDefault: any, modalita: Composizione): V
 
 /**
  * partendo dallo stato attuale, cambia la modalità di composizionePartenza
- * @param state
- * @param modalita
+ * @param: state
+ * @param: modalita
  */
 export function switchComposizione(state: any, modalita: Composizione): ViewComponentStateModel {
     state.view.composizione.options = [modalita];
@@ -66,8 +66,8 @@ export function switchComposizione(state: any, modalita: Composizione): ViewComp
 
 /**
  * partendo dallo stato attuale di Composizione, torno a Richieste e verifico la modalità dallo stato salvato
- * @param state
- * @param lastState
+ * @param: state
+ * @param: lastState
  */
 export function turnOffComposizione(state: any, lastState: ViewComponentStateModel): ViewComponentStateModel {
     if (lastState.column.sinistra === Grid.No && !lastState.view.richieste.split) {
@@ -85,8 +85,8 @@ export function turnOffComposizione(state: any, lastState: ViewComponentStateMod
 
 /**
  * partendo dallo stato attuale di Composizione, torno a Richieste e verifico la modalità dallo stato salvato
- * @param state
- * @param lastState
+ * @param: state
+ * @param: lastState
  */
 export function turnOffModifica(state: any, lastState: ViewComponentStateModel): ViewComponentStateModel {
     if (lastState.column.sinistra === Grid.No && !lastState.view.richieste.split) {
@@ -104,7 +104,7 @@ export function turnOffModifica(state: any, lastState: ViewComponentStateModel):
 
 /**
  * partendo dallo stato attuale, ritorna lo stato dei button Chiamata e ViewMode
- * @param state
+ * @param: state
  */
 export function colorButton(state: any): ViewInterfaceButton {
     return {
@@ -119,7 +119,7 @@ export function colorButton(state: any): ViewInterfaceButton {
 
 /**
  * partendo dallo stato attuale, ritorna lo stato di visualizzazione attivo del componente maps
- * @param state
+ * @param: state
  */
 export function viewStateMaps(state: any): ViewInterfaceMaps {
     return {
@@ -129,7 +129,7 @@ export function viewStateMaps(state: any): ViewInterfaceMaps {
 
 /**
  * funzione helper che assegna le corrette classi di bootstrap
- * @param feature
+ * @param: feature
  */
 export function gridSolve(feature: AppFeatures): Grids {
     const grids = {} as Grids;
@@ -150,7 +150,7 @@ export function gridSolve(feature: AppFeatures): Grids {
 
 /**
  * partendo dallo stato di default, cambia lo stato di visualizzazione di modifica
- * @param stateDefault
+ * @param: stateDefault
  */
 export function activeModifica(stateDefault: any): ViewComponentStateModel {
     stateDefault.view.richieste.active = false;
@@ -161,7 +161,7 @@ export function activeModifica(stateDefault: any): ViewComponentStateModel {
 
 /**
  * partendo dallo stato di default, cambia lo stato di visualizzazione di mezziInServizio
- * @param stateDefault
+ * @param: stateDefault
  */
 export function activeMezziInServizio(stateDefault: any): ViewComponentStateModel {
     stateDefault.view.richieste.active = false;
@@ -172,7 +172,7 @@ export function activeMezziInServizio(stateDefault: any): ViewComponentStateMode
 
 /**
  * partendo dallo stato di default, cambia lo stato di visualizzazione di schedeContatto
- * @param stateDefault
+ * @param: stateDefault
  */
 export function activeSchedeContatto(stateDefault: any): ViewComponentStateModel {
     stateDefault.view.richieste.active = false;

@@ -54,12 +54,12 @@ export class ViewportState {
     }
 
     @Action(SetAvailHeight)
-    setAvailHeight({ patchState }: StateContext<ViewportStateModel>, { availHeight }: SetAvailHeight) {
+    setAvailHeight({ patchState }: StateContext<ViewportStateModel>, { availHeight }: SetAvailHeight): void {
         patchState({ availHeight });
     }
 
     @Action(SetContentHeight)
-    setContentHeight({ patchState }: StateContext<ViewportStateModel>, { contentHeight }: SetContentHeight) {
+    setContentHeight({ patchState }: StateContext<ViewportStateModel>, { contentHeight }: SetContentHeight): void {
         patchState({ contentHeight });
     }
 }

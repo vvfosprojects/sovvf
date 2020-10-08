@@ -18,7 +18,7 @@ export class HelperSintesiRichiesta {
 
     /**
      * restituisce le squadre realmente impegnate in una partenza
-     * @param richiesta
+     * @param: richiesta
      */
     getSquadre(richiesta: SintesiRichiesta): string[] {
 
@@ -204,17 +204,21 @@ export class HelperSintesiRichiesta {
 
     cardBorder(r: SintesiRichiesta): any {
         if (r) {
+            let classes = null;
             if (!this._isPresaInCarico(r.stato, r.listaUtentiPresaInCarico)) {
-                return {
-                    // Bordo sinistro (stato)
-                    'status_chiamata': r.stato === StatoRichiesta.Chiamata,
-                    'status_presidiato': r.stato === StatoRichiesta.Presidiata,
-                    'status_assegnato': r.stato === StatoRichiesta.Assegnata,
-                    'status_sospeso': r.stato === StatoRichiesta.Sospesa,
-                    'status_chiuso': r.stato === StatoRichiesta.Chiusa,
+                classes = {
+                    status_chiamata: r.stato === StatoRichiesta.Chiamata,
+                    status_presidiato: r.stato === StatoRichiesta.Presidiata,
+                    status_assegnato: r.stato === StatoRichiesta.Assegnata,
+                    status_sospeso: r.stato === StatoRichiesta.Sospesa,
+                    status_chiuso: r.stato === StatoRichiesta.Chiusa,
                 };
+                return classes;
             } else {
-                return { 'status_in_lavorazione': true };
+                classes = {
+                    status_in_lavorazione: true
+                };
+                return classes;
             }
         }
     }
