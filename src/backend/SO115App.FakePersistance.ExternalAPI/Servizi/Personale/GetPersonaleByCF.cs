@@ -19,13 +19,11 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
     /// </summary>
     public class GetPersonaleByCF : IGetPersonaleByCF
     {
-        private readonly HttpClient _client;
         private readonly IConfiguration _configuration;
         private readonly IMemoryCache _memoryCache;
 
-        public GetPersonaleByCF(HttpClient client, IConfiguration configuration, IMemoryCache memoryCache)
+        public GetPersonaleByCF(IConfiguration configuration, IMemoryCache memoryCache)
         {
-            _client = client;
             _configuration = configuration;
             _memoryCache = memoryCache;
         }
@@ -65,12 +63,15 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
                 {
                     try
                     {
-                        var client = new HttpClient();
+                        using var client = new HttpClient();
                         client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("test");
                         var sede = string.Concat(codSede.Select(c => c.Split(".")[0]));
 
                         var response = client.GetAsync($"{_configuration.GetSection("UrlExternalApi").GetSection("PersonaleApiUtenteComuni").Value}?codiciSede={sede}").Result;
                         response.EnsureSuccessStatusCode();
+
+                        if (response == null)
+                            throw new HttpRequestException();
 
                         using HttpContent content = response.Content;
                         string data = content.ReadAsStringAsync().Result;
