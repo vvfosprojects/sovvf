@@ -222,7 +222,7 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
             }
             catch (Exception e) 
             {
-                throw new Exception("Elenco del personale non disponibile");
+                throw new Exception("Elenco dei mezzi non disponibile");
             }
 
             return listaAnagraficaMezzo;
