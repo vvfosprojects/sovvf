@@ -1,5 +1,5 @@
 import { BoxPartenza } from '../../../composizione-partenza/interface/box-partenza-interface';
-import { IdPreaccoppiati } from '../../../composizione-partenza/interface/id-preaccoppiati-interface';
+import {DatiPreaccoppiati} from '../../../composizione-partenza/interface/id-preaccoppiati-interface';
 import { BoxPartenzaHover } from '../../../composizione-partenza/interface/composizione/box-partenza-hover-interface';
 import { ComposizioneFilterbar } from '../../../composizione-partenza/interface/composizione/composizione-filterbar-interface';
 
@@ -47,14 +47,14 @@ export class ClearComposizioneVeloce {
     static readonly type = '[PreAccoppiati] Clear PreAccoppiati';
 }
 
-export class GetListaIdPreAccoppiati {
+export class GetListaDatiPreAccoppiati {
     static readonly type = '[ComposizioneVeloce] Get Id PreAccoppiati';
 }
 
-export class SetListaIdPreAccoppiati {
-    static readonly type = '[ComposizioneVeloce] Set Id PreAccoppiati';
+export class SetListaDatiPreAccoppiati {
+    static readonly type = '[ComposizioneVeloce] Set Lista Dati PreAccoppiati';
 
-    constructor(public idPreaccoppiati: IdPreaccoppiati[]) {
+    constructor(public datiPreaccopiati: DatiPreaccoppiati[]) {
     }
 }
 

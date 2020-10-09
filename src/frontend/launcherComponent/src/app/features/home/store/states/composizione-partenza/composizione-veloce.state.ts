@@ -1,19 +1,18 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import {
-    ClearComposizioneVeloce,
-    ClearPreaccoppiati,
-    GetPreAccoppiati,
-    GetListaIdPreAccoppiati,
-    SelectPreAccoppiatoComposizione,
-    SetPreaccoppiati,
-    SetListaIdPreAccoppiati,
-    UnselectPreAccoppiatoComposizione,
-    UpdateMezzoPreAccoppiatoComposizione,
-    ClearPreAccoppiatiSelezionatiComposizione,
-    HoverInPreAccoppiatoComposizione,
-    HoverOutPreAccoppiatoComposizione,
-    SetIdPreAccoppiatiOccupati,
-    FilterListaPreAccoppiati
+  ClearComposizioneVeloce,
+  ClearPreaccoppiati,
+  GetPreAccoppiati,
+  GetListaDatiPreAccoppiati,
+  SelectPreAccoppiatoComposizione,
+  SetPreaccoppiati,
+  UnselectPreAccoppiatoComposizione,
+  UpdateMezzoPreAccoppiatoComposizione,
+  ClearPreAccoppiatiSelezionatiComposizione,
+  HoverInPreAccoppiatoComposizione,
+  HoverOutPreAccoppiatoComposizione,
+  SetIdPreAccoppiatiOccupati,
+  FilterListaPreAccoppiati, SetListaDatiPreAccoppiati
 } from '../../actions/composizione-partenza/composizione-veloce.actions';
 import { BoxPartenza } from '../../../composizione-partenza/interface/box-partenza-interface';
 import { CompPartenzaService } from 'src/app/core/service/comp-partenza-service/comp-partenza.service';
@@ -22,7 +21,7 @@ import { ToastrType } from '../../../../../shared/enum/toastr';
 import { ComposizioneAvanzataState } from './composizione-avanzata.state';
 import { insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
 import { makeCopy } from '../../../../../shared/helper/function';
-import { IdPreaccoppiati } from '../../../composizione-partenza/interface/id-preaccoppiati-interface';
+import {DatiPreaccoppiati} from '../../../composizione-partenza/interface/id-preaccoppiati-interface';
 import { ListaComposizioneAvanzata } from '../../../../../shared/interface/lista-composizione-avanzata-interface';
 import { ClearMarkerMezzoHover, SetMarkerMezzoHover } from '../../actions/maps/marker.actions';
 import {
@@ -37,21 +36,23 @@ import produce from 'immer';
 export interface PreAccoppiatiStateModel {
     allPreAccoppiati: BoxPartenza[];
     preAccoppiati: BoxPartenza[];
-    idPreAccoppiati: IdPreaccoppiati[];
+    // idPreAccoppiati: IdPreaccoppiati[];
     idPreAccoppiatoSelezionato: string;
     idPreAccoppiatiSelezionati: string[];
     idPreAccoppiatiOccupati: string[];
     idPreaccoppiatoHover: string;
+    datiPreaccoppiati: DatiPreaccoppiati[];
 }
 
 export const PreAccoppiatiStateModelStateDefaults: PreAccoppiatiStateModel = {
     allPreAccoppiati: null,
     preAccoppiati: null,
-    idPreAccoppiati: null,
+    // idPreAccoppiati: null,
     idPreAccoppiatoSelezionato: null,
     idPreAccoppiatiSelezionati: [],
     idPreAccoppiatiOccupati: [],
-    idPreaccoppiatoHover: null
+    idPreaccoppiatoHover: null,
+    datiPreaccoppiati: null,
 };
 
 @Injectable()
@@ -91,19 +92,19 @@ export class ComposizioneVeloceState {
     }
 
     @Action(GetPreAccoppiati)
-    getPreAccoppiati({ getState, dispatch }: StateContext<PreAccoppiatiStateModel>): void {
+    getDatiPreAccoppiati({ getState, dispatch }: StateContext<PreAccoppiatiStateModel>): void {
         const listaMezziSquadre: ListaComposizioneAvanzata = this.store.selectSnapshot(ComposizioneAvanzataState.listaMezziSquadre);
         const state = getState();
         const preaccoppiati: BoxPartenza[] = [];
-        if (listaMezziSquadre.composizioneSquadreDataArray.length > 0 && listaMezziSquadre.composizioneMezziDataArray.length > 0 && state.idPreAccoppiati) {
-            state.idPreAccoppiati.forEach((idPreaccopiati: IdPreaccoppiati) => {
+        if (listaMezziSquadre.composizioneSquadreDataArray.length > 0 && listaMezziSquadre.composizioneMezziDataArray.length > 0 && state.datiPreaccoppiati) {
+            state.datiPreaccoppiati.forEach((datiPreaccoppiati: DatiPreaccoppiati) => {
                 const preaccoppiato = {} as BoxPartenza;
-                preaccoppiato.id = idPreaccopiati.id;
-                const mezzoComposizione = listaMezziSquadre.composizioneMezziDataArray.filter(value => value.mezzo.codice === idPreaccopiati.mezzo);
+                preaccoppiato.id = datiPreaccoppiati.id;
+                const mezzoComposizione = listaMezziSquadre.composizioneMezziDataArray.filter(value => value.mezzo === datiPreaccoppiati.mezzo.mezzo);
                 if (mezzoComposizione && mezzoComposizione.length > 0) {
                     preaccoppiato.mezzoComposizione = mezzoComposizione[0];
                 }
-                const squadreComposizione = listaMezziSquadre.composizioneSquadreDataArray.filter(value => idPreaccopiati.squadre.includes(value.squadra.id));
+                const squadreComposizione = listaMezziSquadre.composizioneSquadreDataArray.filter(value => datiPreaccoppiati.squadre.includes(value));
                 if (squadreComposizione && squadreComposizione.length > 0) {
                     preaccoppiato.squadraComposizione = squadreComposizione;
                 }
@@ -201,23 +202,23 @@ export class ComposizioneVeloceState {
         patchState(PreAccoppiatiStateModelStateDefaults);
     }
 
-    @Action(GetListaIdPreAccoppiati)
-    getListaIdPreAccoppiati({ dispatch }: StateContext<PreAccoppiatiStateModel>): void {
-        this.preAccoppiatiService.getPreAccoppiati().subscribe((data) => {
-            this.store.dispatch(new SetListaIdPreAccoppiati(data));
+    @Action(GetListaDatiPreAccoppiati)
+    getListaIdPreAccoppiati({ }: StateContext<PreAccoppiatiStateModel>): void {
+        this.preAccoppiatiService.getDatiPreAccoppiati().subscribe((data) => {
+            this.store.dispatch(new SetListaDatiPreAccoppiati(data));
         });
     }
-
+    /*
     @Action(SetListaIdPreAccoppiati)
     setListaIdPreAccoppiati({ patchState, dispatch }: StateContext<PreAccoppiatiStateModel>, action: SetListaIdPreAccoppiati): void {
         if (action && action.idPreaccoppiati) {
             patchState({
                 idPreAccoppiati: action.idPreaccoppiati
             });
-            dispatch(new GetPreAccoppiati());
+            dispatch(new GetDatiPreAccoppiati());
         }
     }
-
+    */
     @Action(SetIdPreAccoppiatiOccupati)
     setIdPreAccoppiatiOccupati({ patchState }: StateContext<PreAccoppiatiStateModel>, action: SetIdPreAccoppiatiOccupati): void {
         if (action && action.idPreaccoppiatiOccupati) {
