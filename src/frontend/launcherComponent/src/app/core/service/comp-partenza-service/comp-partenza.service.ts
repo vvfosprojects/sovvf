@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { ListaComposizioneAvanzata } from '../../../shared/interface/lista-composizione-avanzata-interface';
 import { ConfermaPartenze } from '../../../features/home/composizione-partenza/interface/conferma-partenze-interface';
-import { IdPreaccoppiati } from '../../../features/home/composizione-partenza/interface/id-preaccoppiati-interface';
+import {DatiPreaccoppiati} from '../../../features/home/composizione-partenza/interface/id-preaccoppiati-interface';
 import { FiltriComposizione } from 'src/app/features/home/composizione-partenza/interface/filtri/filtri-composizione-interface';
 
 
@@ -21,9 +21,13 @@ export class CompPartenzaService {
 
     constructor(private http: HttpClient) {
     }
-
+    /*
     getPreAccoppiati(): Observable<IdPreaccoppiati[]> {
         return this.http.get<IdPreaccoppiati[]>(API_URL_PREACCOPPIATI);
+    }
+    */
+    getDatiPreAccoppiati(): Observable<DatiPreaccoppiati[]> {
+      return this.http.get<DatiPreaccoppiati[]>(API_URL_PREACCOPPIATI);
     }
 
     // Todo: modificare nome in getListeComposizione ?

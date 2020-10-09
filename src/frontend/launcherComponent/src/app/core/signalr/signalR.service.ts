@@ -24,9 +24,12 @@ import {
 import { InsertRichiestaMarker, UpdateRichiestaMarker } from '../../features/home/store/actions/maps/richieste-markers.actions';
 import { ComposizionePartenzaState } from '../../features/home/store/states/composizione-partenza/composizione-partenza.state';
 import { Composizione } from '../../shared/enum/composizione.enum';
-import { SetListaIdPreAccoppiati, UpdateMezzoPreAccoppiatoComposizione } from '../../features/home/store/actions/composizione-partenza/composizione-veloce.actions';
+import {
+  SetListaDatiPreAccoppiati,
+  UpdateMezzoPreAccoppiatoComposizione
+} from '../../features/home/store/actions/composizione-partenza/composizione-veloce.actions';
 import { SetMezziInServizio, UpdateMezzoInServizio } from 'src/app/features/home/store/actions/mezzi-in-servizio/mezzi-in-servizio.actions';
-import { IdPreaccoppiati } from '../../features/home/composizione-partenza/interface/id-preaccoppiati-interface';
+import {DatiPreaccoppiati} from '../../features/home/composizione-partenza/interface/id-preaccoppiati-interface';
 import { UpdateMezzoMarker } from '../../features/home/store/actions/maps/mezzi-markers.actions';
 import {
     InsertSchedeContatto,
@@ -270,8 +273,8 @@ export class SignalRService {
         /**
          * Composizione Partenza
          */
-        this.hubNotification.on('NotifyGetPreaccoppiati', (data: IdPreaccoppiati[]) => {
-            this.store.dispatch(new SetListaIdPreAccoppiati(data));
+        this.hubNotification.on('NotifyGetPreaccoppiati', (data: DatiPreaccoppiati[]) => {
+            this.store.dispatch(new SetListaDatiPreAccoppiati(data));
             this.store.dispatch(new ShowToastr(ToastrType.Info, 'Preaccoppiati Composizione ricevute da signalR', null, 5));
         });
 
