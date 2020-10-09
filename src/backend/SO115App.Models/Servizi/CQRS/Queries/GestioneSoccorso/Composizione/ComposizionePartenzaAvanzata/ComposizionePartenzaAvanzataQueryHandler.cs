@@ -191,7 +191,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                         })
                         .Where(m =>
                         {
-                            if (query.Filtro.RicercaSquadre != null) // aggiungere altri campi in OR (fulltext)
+                            if (query.Filtro.RicercaMezzi != null) // aggiungere altri campi in OR (fulltext)
                                 return m.Mezzo.Codice.Contains(query.Filtro.RicercaMezzi) || m.Mezzo.Descrizione.Contains(query.Filtro.RicercaMezzi);
                             return true;
                         })
