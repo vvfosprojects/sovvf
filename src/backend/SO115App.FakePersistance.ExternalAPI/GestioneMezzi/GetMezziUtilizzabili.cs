@@ -86,7 +86,7 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
 
             var result = new List<Mezzo>();
 
-            foreach (string CodSede in ListaCodiciSedi)
+            Parallel.ForEach(ListaCodiciSedi, CodSede =>
             {
                 var listaMezziBySede = new List<Mezzo>();
                 string nomeCache = "M_" + CodSede.Replace(".", "");
@@ -116,7 +116,7 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
                             if (mezzo != null)
                             {
                                 listaMezziBySedeAppo.Add(mezzo);
-                                result.Add(mezzo);
+                                lock (result) { result.Add(mezzo); }
                             }
                         }
                     }
@@ -126,11 +126,11 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
                 }
                 else
                 {
-                    result.AddRange(listaMezziBySede);
+                    lock (result) { result.AddRange(listaMezziBySede); }
                 }
-            }
+            });
 
-            foreach (var mezzo in result)
+            result = result.Select(mezzo =>
             {
                 var CoordinateMezzoGeoFleet = ListaPosizioneFlotta.Find(x => x.CodiceMezzo.Equals(mezzo.Codice));
 
@@ -144,14 +144,16 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
                     mezzo.Coordinate = new Coordinate(CoordinateMezzoGeoFleet.Localizzazione.Lat, CoordinateMezzoGeoFleet.Localizzazione.Lon);
                     mezzo.CoordinateFake = false;
                 }
-            }
+
+                return mezzo;
+            }).ToList();
 
             return GetListaMezziConStatoAggiornat(result);
         }
 
         private List<Mezzo> GetListaMezziConStatoAggiornat(List<Mezzo> listaMezzi)
         {
-            foreach (Mezzo mezzo in listaMezzi)
+            listaMezzi = listaMezzi.Select(mezzo =>
             {
                 var ListaStatoOperativoMezzo = _getStatoMezzi.Get(mezzo.Distaccamento.Codice, mezzo.Codice);
                 if (ListaStatoOperativoMezzo.Count > 0)
@@ -159,7 +161,9 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
                     mezzo.Stato = ListaStatoOperativoMezzo.Find(x => x.CodiceMezzo.Equals(mezzo.Codice)).StatoOperativo;
                     mezzo.IdRichiesta = ListaStatoOperativoMezzo.FirstOrDefault(x => x.CodiceMezzo.Equals(mezzo.Codice)).CodiceRichiesta;
                 }
-            }
+
+                return mezzo;
+            }).ToList();
 
             int i = listaMezzi.RemoveAll(x =>
             {
