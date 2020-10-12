@@ -19,6 +19,7 @@
 //-----------------------------------------------------------------------
 using CQRS.Queries;
 using SO115App.Models.Classi.Composizione;
+using SO115App.Models.Classi.Condivise;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.PreAccoppiati
 {
@@ -32,6 +33,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
         /// </summary>
         /// <remarks>Eventualmente si può filtrare per cercare solo i dati di un singolo Box</remarks>
         public FiltriComposizionePartenza Filtro { get; set; }
+
+        public Paginazione Pagination { get; set; }
 
         public string CodiceSede { get; set; }
     }

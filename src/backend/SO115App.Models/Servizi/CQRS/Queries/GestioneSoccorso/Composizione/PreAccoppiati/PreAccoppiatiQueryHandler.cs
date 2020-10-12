@@ -50,13 +50,21 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
         {
             Log.Debug("Inizio elaborazione Lista Preaccoppiati Composizione Handler");
 
-            var ListapreAccoppiati = _iGetPreAccoppiati.GetFake(query);
+            var ListapreAccoppiati = _iGetPreAccoppiati.GetFake(query)
+                .Skip(query.Pagination.PageSize * (query.Pagination.Page - 1))
+                .Take(query.Pagination.PageSize).ToList();
 
             Log.Debug("Fine elaborazione Lista Preaccoppiati Composizione Handler");
 
             return new PreAccoppiatiResult()
             {
-                preAccoppiati = ListapreAccoppiati
+                preAccoppiati = ListapreAccoppiati,
+                Pagination = new SO115App.Models.Classi.Condivise.Paginazione()
+                {
+                    Page = query.Pagination.Page,
+                    PageSize = query.Pagination.PageSize,
+                    TotalItems = ListapreAccoppiati.Count
+                }
             };
         }
     }

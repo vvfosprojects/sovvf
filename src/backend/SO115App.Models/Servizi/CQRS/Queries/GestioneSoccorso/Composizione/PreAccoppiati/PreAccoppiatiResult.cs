@@ -17,6 +17,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using SO115App.Models.Classi.Condivise;
 using System.Collections.Generic;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.PreAccoppiati
@@ -30,5 +31,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
         ///   Elenco PreAccopiati per la composizione partenza semplificata
         /// </summary>
         public List<Classi.Composizione.PreAccoppiatiFakeJson> preAccoppiati { get; set; }
+        public Paginazione Pagination { get; set; }
     }
 }
