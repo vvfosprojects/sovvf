@@ -25,6 +25,7 @@ import { PaginationComposizionePartenzaState } from '../../../../../shared/store
 import { ComposizionePartenzaState } from './composizione-partenza.state';
 import { FiltriComposizioneState } from '../../../../../shared/store/states/filtri-composizione/filtri-composizione.state';
 import { FiltriComposizione } from '../../../composizione-partenza/interface/filtri/filtri-composizione-interface';
+import { ListaComposizioneVeloce } from '../../../../../shared/interface/lista-composizione-veloce-interface';
 
 export interface ComposizioneVeloceStateModel {
     allPreAccoppiati: BoxPartenza[];
@@ -93,15 +94,15 @@ export class ComposizioneVeloceState {
             statoMezzo: this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).StatoMezzo.length > 0 ? this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).StatoMezzo : null,
             tipoMezzo: this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).TipoMezzo.length > 0 ? this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).TipoMezzo : null,
         } as FiltriComposizione;
-        this.compPartenzaService.getListaComposizioneVeloce(obj).subscribe((preAccoppiati: BoxPartenza[]) => {
+        this.compPartenzaService.getListaComposizioneVeloce(obj).subscribe((response: ListaComposizioneVeloce) => {
             const preaccoppiatiOccupati = [];
-            preAccoppiati.forEach((preaccoppiato: BoxPartenza) => {
+            response.composizionePreaccoppiatiDataArray.forEach((preaccoppiato: BoxPartenza) => {
                 if (mezzoComposizioneBusy(preaccoppiato.mezzoComposizione.mezzo.stato) || checkSquadraOccupata(preaccoppiato.squadreComposizione)) {
                     preaccoppiatiOccupati.push(preaccoppiato.id);
                 }
             });
             dispatch([
-                new SetListaPreaccoppiati(preAccoppiati),
+                new SetListaPreaccoppiati(response.composizionePreaccoppiatiDataArray),
                 new SetIdPreAccoppiatiOccupati(preaccoppiatiOccupati)
             ]);
         });

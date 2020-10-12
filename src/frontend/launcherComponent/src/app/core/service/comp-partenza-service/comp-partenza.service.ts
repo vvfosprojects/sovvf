@@ -7,6 +7,7 @@ import { ConfermaPartenze } from '../../../features/home/composizione-partenza/i
 import { DatiPreaccoppiati } from '../../../features/home/composizione-partenza/interface/id-preaccoppiati-interface';
 import { FiltriComposizione } from 'src/app/features/home/composizione-partenza/interface/filtri/filtri-composizione-interface';
 import { BoxPartenza } from '../../../features/home/composizione-partenza/interface/box-partenza-interface';
+import { ListaComposizioneVeloce } from '../../../shared/interface/lista-composizione-veloce-interface';
 
 
 const BASE_URL = environment.baseUrl;
@@ -23,8 +24,8 @@ export class CompPartenzaService {
     constructor(private http: HttpClient) {
     }
 
-    getListaComposizioneVeloce(obj: FiltriComposizione): Observable<BoxPartenza[]> {
-        return this.http.post<BoxPartenza[]>(API_URL_PREACCOPPIATI, obj);
+    getListaComposizioneVeloce(obj: FiltriComposizione): Observable<ListaComposizioneVeloce> {
+        return this.http.post<ListaComposizioneVeloce>(API_URL_PREACCOPPIATI, obj);
     }
 
     getListeComposizioneAvanzata(obj: FiltriComposizione): Observable<ListaComposizioneAvanzata> {
