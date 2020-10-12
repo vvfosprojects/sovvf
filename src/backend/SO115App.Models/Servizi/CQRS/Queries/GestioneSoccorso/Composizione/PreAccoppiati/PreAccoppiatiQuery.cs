@@ -26,5 +26,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
     {
         public FiltriPreaccoppiati Filtri { get; set; }
         public string[] CodiceSede { get; set; }
+        public string IdUtente { get; set; }
     }
 }

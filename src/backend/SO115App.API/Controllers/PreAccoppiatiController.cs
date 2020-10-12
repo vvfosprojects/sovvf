@@ -44,8 +44,7 @@ namespace SO115App.API.Controllers
         ///   Costruttore della classe
         /// </summary>
         /// <param name="handler">L'handler iniettato del servizio</param>
-        public PreAccoppiatiController(IPrincipal currentUser,
-            IQueryHandler<PreAccoppiatiQuery, PreAccoppiatiResult> handler)
+        public PreAccoppiatiController(IPrincipal currentUser, IQueryHandler<PreAccoppiatiQuery, PreAccoppiatiResult> handler)
         {
             this._handler = handler;
         }
@@ -61,7 +60,8 @@ namespace SO115App.API.Controllers
             var query = new PreAccoppiatiQuery()
             {
                 CodiceSede = Request.Headers["codicesede"].ToArray(),
-                Filtri = filtri
+                IdUtente = Request.Headers["idUtente"].ToString(),
+                Filtri = filtri 
             };
 
             try
