@@ -12,6 +12,7 @@ import {
 import { insertItem, patch, removeItem } from '@ngxs/store/operators';
 import { ListaTipologicheMezzi } from '../../../../features/home/composizione-partenza/interface/filtri/lista-filtri-composizione-interface';
 import { Injectable } from '@angular/core';
+import {ComposizionePartenzaState} from '../../../../features/home/store/states/composizione-partenza/composizione-partenza.state';
 import { GetListaComposizioneVeloce } from '../../../../features/home/store/actions/composizione-partenza/composizione-veloce.actions';
 
 export interface FiltriComposizioneStateStateModel {
@@ -65,7 +66,7 @@ export class FiltriComposizioneState {
     @Action(SetFiltriComposizione)
     setFiltriComposizione({ patchState, dispatch }: StateContext<FiltriComposizioneStateStateModel>): void {
         const composizioneMode = this.store.selectSnapshot(x => x.composizionePartenza.composizioneMode);
-        if (composizioneMode === Composizione.Avanzata) {
+        if (composizioneMode === Composizione.Avanzata &&  this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione)) {
             dispatch(new GetListeComposizioneAvanzata());
         }
         if (composizioneMode === Composizione.Veloce) {

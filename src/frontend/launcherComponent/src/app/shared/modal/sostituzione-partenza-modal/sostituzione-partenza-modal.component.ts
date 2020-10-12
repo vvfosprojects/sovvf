@@ -42,6 +42,7 @@ import { Squadra } from '../../model/squadra.model';
 import { UpdateFormValue } from '@ngxs/form-plugin';
 import {PaginationComposizionePartenzaState} from '../../store/states/pagination-composizione-partenza/pagination-composizione-partenza.state';
 import {SintesiRichiesta} from '../../model/sintesi-richiesta.model';
+import {GetFiltriComposizione} from '../../store/actions/filtri-composizione/filtri-composizione.actions';
 
 @Component({
     selector: 'app-sostituzione-partenza',
@@ -247,6 +248,7 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
         tipoMezzo: null,
       } as any;
       this.store.dispatch(new GetListaMezziSquadre(obj));
+      this.store.dispatch(new GetFiltriComposizione());
     }
 
     ngOnDestroy(): void {
