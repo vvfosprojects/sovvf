@@ -37,7 +37,7 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.GesPreaccoppiatiMapper
         {
             List<PreAccoppiati> ListaPreAccoppiati = new List<PreAccoppiati>();
 
-            string CodSede = query.CodiceSede.Substring(0, 2);
+            string CodSede = query.CodiceSede.FirstOrDefault().Substring(0, 2);
             if (!_memoryCache.TryGetValue("ListaPreAccoppiati", out ListaPreAccoppiati))
             {
                 _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("test");
@@ -65,7 +65,7 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.GesPreaccoppiatiMapper
 
             preAccoppiati = JsonConvert.DeserializeObject<List<PreAccoppiatiFakeJson>>(json);
 
-            return preAccoppiati.Where(x => x.CodiceSede == query.CodiceSede).ToList();
+            return preAccoppiati.Where(x => query.CodiceSede.Contains(x.CodiceSede)).ToList();
         }
 
         private List<PreAccoppiati> MapListaPreAccoppiatiOraInMongoDB(List<ORAGesPreaccoppiati> ListaPreAccoppiatiOracle)

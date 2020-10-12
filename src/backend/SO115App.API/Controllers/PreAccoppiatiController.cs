@@ -24,6 +24,7 @@ using CQRS.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.PreAccoppiati;
+using SO115App.Models.Classi.Filtri;
 using SO115App.Models.Classi.Utility;
 
 namespace SO115App.API.Controllers
@@ -43,8 +44,7 @@ namespace SO115App.API.Controllers
         ///   Costruttore della classe
         /// </summary>
         /// <param name="handler">L'handler iniettato del servizio</param>
-        public PreAccoppiatiController(IPrincipal currentUser,
-            IQueryHandler<PreAccoppiatiQuery, PreAccoppiatiResult> handler)
+        public PreAccoppiatiController(IPrincipal currentUser, IQueryHandler<PreAccoppiatiQuery, PreAccoppiatiResult> handler)
         {
             this._handler = handler;
         }
@@ -54,19 +54,19 @@ namespace SO115App.API.Controllers
         /// </summary>
         /// <param name="filtro">Il filtro per le richieste</param>
         /// <returns>Le sintesi delle richieste di assistenza</returns>
-        [HttpGet]
-        public async Task<IActionResult> Get()
+        [HttpPost("")]
+        public async Task<IActionResult> Post(FiltriPreaccoppiati filtri)
         {
-            var codiceSede = Request.Headers["codicesede"];
-
             var query = new PreAccoppiatiQuery()
             {
-                CodiceSede = codiceSede
+                CodiceSede = Request.Headers["codicesede"].ToArray(),
+                IdUtente = Request.Headers["idUtente"].ToString(),
+                Filtri = filtri 
             };
 
             try
             {
-                return Ok(_handler.Handle(query).preAccoppiati);
+                return Ok(_handler.Handle(query));
             }
             catch (Exception ex)
             {

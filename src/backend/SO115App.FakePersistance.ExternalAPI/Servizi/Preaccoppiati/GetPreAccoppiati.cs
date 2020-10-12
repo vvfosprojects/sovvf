@@ -38,7 +38,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
         {
             List<PreAccoppiati> ListaPreAccoppiati = new List<PreAccoppiati>();
 
-            string CodSede = query.CodiceSede.Substring(0, 2);
+            string CodSede = query.CodiceSede.FirstOrDefault().Substring(0, 2);
             if (!_memoryCache.TryGetValue("ListaPreAccoppiati", out ListaPreAccoppiati))
             {
                 #region LEGGO DA API ESTERNA
@@ -86,7 +86,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
 
             preAccoppiati = JsonConvert.DeserializeObject<List<PreAccoppiatiFakeJson>>(json);
 
-            return preAccoppiati.Where(x => x.CodiceSede == query.CodiceSede).ToList();
+            return preAccoppiati.Where(x => query.CodiceSede.Contains(x.CodiceSede)).ToList();
         }
 
         private List<PreAccoppiati> MapPreAccoppiati(List<PreAccoppiatiFake> ListaPreAccoppiatiFake)
