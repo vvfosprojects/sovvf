@@ -17,15 +17,11 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using System.Collections.Generic;
-using System.Linq;
 using CQRS.Queries;
 using Serilog;
-using SO115App.API.Models.Classi.Composizione;
-using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneMezzi;
-using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizioneSquadre;
-using SO115App.Models.Servizi.Infrastruttura.GetComposizioneSquadre;
+using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Servizi.Infrastruttura.GetPreAccoppiati;
+using System.Linq;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.PreAccoppiati
 {
@@ -34,12 +30,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
     /// </summary>
     public class PreAccoppiatiQueryHandler : IQueryHandler<PreAccoppiatiQuery, PreAccoppiatiResult>
     {
-        private readonly IGetPreAccoppiati _iGetPreAccoppiati;
-
-        public PreAccoppiatiQueryHandler(IGetPreAccoppiati iGetPreAccoppiati)
-        {
-            this._iGetPreAccoppiati = iGetPreAccoppiati;
-        }
+        private readonly IGetPreAccoppiati _GetPreAccoppiati;
+        public PreAccoppiatiQueryHandler(IGetPreAccoppiati iGetPreAccoppiati) => _GetPreAccoppiati = iGetPreAccoppiati;
 
         /// <summary>
         ///   Query che estrae i valori dei Box presenti in Home Page
@@ -50,19 +42,19 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
         {
             Log.Debug("Inizio elaborazione Lista Preaccoppiati Composizione Handler");
 
-            var ListapreAccoppiati = _iGetPreAccoppiati.GetFake(query)
-                .Skip(query.Pagination.PageSize * (query.Pagination.Page - 1))
-                .Take(query.Pagination.PageSize).ToList();
+            var ListapreAccoppiati = _GetPreAccoppiati.GetFake(query)
+                .Skip(query.Filtri.Pagination.PageSize * (query.Filtri.Pagination.Page - 1))
+                .Take(query.Filtri.Pagination.PageSize).ToList();
 
             Log.Debug("Fine elaborazione Lista Preaccoppiati Composizione Handler");
 
             return new PreAccoppiatiResult()
             {
-                preAccoppiati = ListapreAccoppiati,
-                Pagination = new SO115App.Models.Classi.Condivise.Paginazione()
+                ComposizionePreaccoppiatiDataArray = ListapreAccoppiati,
+                Pagination = new Paginazione()
                 {
-                    Page = query.Pagination.Page,
-                    PageSize = query.Pagination.PageSize,
+                    Page = query.Filtri.Pagination.Page,
+                    PageSize = query.Filtri.Pagination.PageSize,
                     TotalItems = ListapreAccoppiati.Count
                 }
             };

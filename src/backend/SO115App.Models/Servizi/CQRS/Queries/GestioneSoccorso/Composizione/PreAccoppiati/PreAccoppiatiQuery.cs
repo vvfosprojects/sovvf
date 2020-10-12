@@ -18,24 +18,13 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Queries;
-using SO115App.Models.Classi.Composizione;
-using SO115App.Models.Classi.Condivise;
+using SO115App.Models.Classi.Filtri;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.PreAccoppiati
 {
-    /// <summary>
-    ///   DTO che alimenta il Navbar presente in Home Page
-    /// </summary>
     public class PreAccoppiatiQuery : IQuery<PreAccoppiatiResult>
     {
-        /// <summary>
-        ///   Filtra solo i mezzi appartenenti all'unità operativa indicata.
-        /// </summary>
-        /// <remarks>Eventualmente si può filtrare per cercare solo i dati di un singolo Box</remarks>
-        public FiltriComposizionePartenza Filtro { get; set; }
-
-        public Paginazione Pagination { get; set; }
-
-        public string CodiceSede { get; set; }
+        public FiltriPreaccoppiati Filtri { get; set; }
+        public string[] CodiceSede { get; set; }
     }
 }
