@@ -45,7 +45,6 @@ import { StatoMezzo } from '../../../../shared/enum/stato-mezzo.enum';
 import { FiltriComposizioneState } from '../../../../shared/store/states/filtri-composizione/filtri-composizione.state';
 import { GetFiltriComposizione } from '../../../../shared/store/actions/filtri-composizione/filtri-composizione.actions';
 import { PaginationComposizionePartenzaState } from 'src/app/shared/store/states/pagination-composizione-partenza/pagination-composizione-partenza.state';
-import { PatchCodDistaccamentoMezzo } from 'src/app/shared/store/actions/pagination-composizione-partenza/pagination-composizione-partenza.actions';
 import { GetListeComposizioneAvanzata } from '../../store/actions/composizione-partenza/composizione-avanzata.actions';
 
 @Component({
@@ -217,6 +216,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
                 this.idBoxPartenzaSelezionato = idBoxPartenza;
             })
         );
+
         // Prendo Pagina Corrente Mezzi
         this.subscription.add(
             this.currentPageMezzi$.subscribe((currentPageMezzi: number) => {
@@ -235,6 +235,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
                 this.pageSizeMezzi = pageSizeMezzi;
             })
         );
+
         // Prendo Pagina Corrente Squadre
         this.subscription.add(
             this.currentPageSquadre$.subscribe((currentPageSquadre: number) => {
@@ -253,10 +254,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
                 this.pageSizeSquadre = pageSizeSquadre;
             })
         );
-
-
         this.subscription.add(this.loadingListe$.subscribe(res => this.loadingListe = res));
-
     }
 
     ngOnInit(): void {

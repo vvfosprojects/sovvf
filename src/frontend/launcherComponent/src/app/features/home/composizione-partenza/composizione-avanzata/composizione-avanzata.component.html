@@ -14,15 +14,18 @@
                     <span class="h6">Squadre</span>
                 </div>
                 <div class="float-right w-50">
-                    <input class="form-control" placeholder="Cerca..." [(ngModel)]="ricercaSquadre"
-                           [ngClass]="{'border-danger': ricercaSquadre && ricercaSquadre.length > 0}"
-                           type="search" name="ricercaSquadre" id="ricercaSquadre" (ngModelChange)="onSearchSquadre()">
+                    <label for="ricercaSquadre" class="d-none"></label>
+                    <input id="ricercaSquadre" type="search" name="ricercaSquadre" class="form-control"
+                           placeholder="Cerca..." [(ngModel)]="ricercaSquadre" appDebounceKeyUp
+                           (debounceKeyUp)="onSearchSquadre()" [debounceTime]="1000"
+                           [ngClass]="{'border-danger': ricercaSquadre && ricercaSquadre.length > 0}">
                 </div>
             </div>
             <ul class="list-group list-group-flush border-bottom scroll-y"
                 [ngClass]="{'m-h-boxes-avanzata': boxAttivi, 'm-h-no-boxes-avanzata': !boxAttivi}">
                 <ng-template [ngIf]="squadreComposizione && squadreComposizione.length > 0">
-                    <app-squadra-composizione *ngFor="let sC of squadreComposizione | filterBy: {'squadra': {'nome': ricercaSquadre}}"
+                    <app-squadra-composizione
+                            *ngFor="let sC of squadreComposizione"
                             [squadraComp]="sC"
                             [itemSelezionato]="checkSquadraSelezione(sC.id)"
                             [itemHover]="sC.id === idSquadraHover"
@@ -35,14 +38,13 @@
         </div>
         <div class="row">
             <div class="col" style="display: flex; place-content: center; margin-top: 10px;">
-                    <ngb-pagination
-                    [(page)]="currentPageSquadre"
-                    [pageSize]="pageSizeSquadre"
-                    [collectionSize]="totalItemsSquadre"
-                    (pageChange)="squadrePageChange($event)"
-                    [maxSize]="2"
-                    >
-            </ngb-pagination>
+                <ngb-pagination
+                        [(page)]="currentPageSquadre"
+                        [pageSize]="pageSizeSquadre"
+                        [collectionSize]="totalItemsSquadre"
+                        (pageChange)="squadrePageChange($event)"
+                        [maxSize]="2">
+                </ngb-pagination>
             </div>
         </div>
     </div>
@@ -56,9 +58,11 @@
                     <span class="h6">Mezzi</span>
                 </div>
                 <div class="float-right">
-                    <input class="form-control" placeholder="Cerca..." [(ngModel)]="ricercaMezzi"
-                           [ngClass]="{'border-danger': ricercaMezzi && ricercaMezzi.length > 0}"
-                           type="search" name="ricercaMezzi" id="ricercaMezzi" (ngModelChange)="onSearchMezzi()">
+                    <label for="ricercaMezzi" class="d-none"></label>
+                    <input id="ricercaMezzi" type="search" name="ricercaMezzi" class="form-control"
+                           placeholder="Cerca..." [(ngModel)]="ricercaMezzi" appDebounceKeyUp
+                           (debounceKeyUp)="onSearchMezzi()" [debounceTime]="1000"
+                           [ngClass]="{'border-danger': ricercaMezzi && ricercaMezzi.length > 0}">
                 </div>
             </div>
             <ul class="list-group list-group-flush border-bottom scroll-y"
@@ -86,14 +90,13 @@
         </div>
         <div class="row">
             <div class="col" style="display: flex; place-content: center; margin-top: 10px;">
-                    <ngb-pagination
-                    [(page)]="currentPageMezzi"
-                    [pageSize]="pageSizeMezzi"
-                    [collectionSize]="totalItemsMezzi"
-                    (pageChange)="mezziPageChange($event)"
-                    [maxSize]="5"
-                    >
-            </ngb-pagination>
+                <ngb-pagination
+                        [(page)]="currentPageMezzi"
+                        [pageSize]="pageSizeMezzi"
+                        [collectionSize]="totalItemsMezzi"
+                        (pageChange)="mezziPageChange($event)"
+                        [maxSize]="5">
+                </ngb-pagination>
             </div>
         </div>
     </div>
