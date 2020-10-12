@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
-import {GetListaMezziSquadre, IdRichiestaSostituzione} from '../../store/actions/sostituzione-partenza/sostituzione-partenza.actions';
+import { GetListaMezziSquadre, IdRichiestaSostituzione } from '../../store/actions/sostituzione-partenza/sostituzione-partenza.actions';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
@@ -28,9 +28,7 @@ import {
     SelectSquadraComposizione,
     UnselectSquadraComposizione
 } from '../../store/actions/squadre-composizione/squadre-composizione.actions';
-import {
-  UnselectMezziAndSquadreComposizioneAvanzata
-} from '../../../features/home/store/actions/composizione-partenza/composizione-avanzata.actions';
+import { UnselectMezziAndSquadreComposizioneAvanzata } from '../../../features/home/store/actions/composizione-partenza/composizione-avanzata.actions';
 import { FiltriComposizioneState } from '../../store/states/filtri-composizione/filtri-composizione.state';
 import { SetRicercaMezziComposizione, SetRicercaSquadreComposizione } from '../../store/actions/ricerca-composizione/ricerca-composizione.actions';
 import { ComposizionePartenzaState } from '../../../features/home/store/states/composizione-partenza/composizione-partenza.state';
@@ -40,8 +38,9 @@ import { Partenza } from '../../model/partenza.model';
 import { Mezzo } from '../../model/mezzo.model';
 import { Squadra } from '../../model/squadra.model';
 import { UpdateFormValue } from '@ngxs/form-plugin';
-import {PaginationComposizionePartenzaState} from '../../store/states/pagination-composizione-partenza/pagination-composizione-partenza.state';
-import {SintesiRichiesta} from '../../model/sintesi-richiesta.model';
+import { PaginationComposizionePartenzaState } from '../../store/states/pagination-composizione-partenza/pagination-composizione-partenza.state';
+import { SintesiRichiesta } from '../../model/sintesi-richiesta.model';
+import { GetFiltriComposizione } from '../../store/actions/filtri-composizione/filtri-composizione.actions';
 
 @Component({
     selector: 'app-sostituzione-partenza',
@@ -195,58 +194,48 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
         );
         // Prendo Pagina Corrente Mezzi
         this.subscription.add(
-          this.currentPageMezzi$.subscribe((currentPageMezzi: number) => {
-            this.currentPageMezzi = currentPageMezzi;
-          })
+            this.currentPageMezzi$.subscribe((currentPageMezzi: number) => {
+                this.currentPageMezzi = currentPageMezzi;
+            })
         );
         // Prendo Totale Items Mezzi
         this.subscription.add(
-          this.totalItemsMezzi$.subscribe((totalItemsMezzi: number) => {
-            this.totalItemsMezzi = totalItemsMezzi;
-          })
+            this.totalItemsMezzi$.subscribe((totalItemsMezzi: number) => {
+                this.totalItemsMezzi = totalItemsMezzi;
+            })
         );
         // Prendo Pagina Size Mezzi
         this.subscription.add(
-          this.pageSizeMezzi$.subscribe((pageSizeMezzi: number) => {
-            this.pageSizeMezzi = pageSizeMezzi;
-          })
+            this.pageSizeMezzi$.subscribe((pageSizeMezzi: number) => {
+                this.pageSizeMezzi = pageSizeMezzi;
+            })
         );
         // Prendo Pagina Corrente Squadre
         this.subscription.add(
-          this.currentPageSquadre$.subscribe((currentPageSquadre: number) => {
-            this.currentPageSquadre = currentPageSquadre;
-          })
+            this.currentPageSquadre$.subscribe((currentPageSquadre: number) => {
+                this.currentPageSquadre = currentPageSquadre;
+            })
         );
         // Prendo Totale Items Squadre
         this.subscription.add(
-          this.totalItemsSquadre$.subscribe((totalItemsSquadre: number) => {
-            this.totalItemsSquadre = totalItemsSquadre;
-          })
+            this.totalItemsSquadre$.subscribe((totalItemsSquadre: number) => {
+                this.totalItemsSquadre = totalItemsSquadre;
+            })
         );
         // Prendo Pagina Size Squadre
         this.subscription.add(
-          this.pageSizeSquadre$.subscribe((pageSizeSquadre: number) => {
-            this.pageSizeSquadre = pageSizeSquadre;
-          })
+            this.pageSizeSquadre$.subscribe((pageSizeSquadre: number) => {
+                this.pageSizeSquadre = pageSizeSquadre;
+            })
         );
         this.initForm();
         this.formatTime();
     }
 
     ngOnInit(): void {
-      this.store.dispatch(new IdRichiestaSostituzione(this.idRichiesta));
-      const obj = {
-        idRichiesta: this.idRichiesta,
-        codiceDistaccamento: null,
-        codiceDistaccamentoMezziSquadre: null,
-        mezziPagination: this.store.selectSnapshot(PaginationComposizionePartenzaState.pageMezzi),
-        squadrePagination: this.store.selectSnapshot(PaginationComposizionePartenzaState.pageSquadre),
-        ricercaMezzi: null,
-        ricercaSquadre: null,
-        statoMezzo: null,
-        tipoMezzo: null,
-      } as any;
-      this.store.dispatch(new GetListaMezziSquadre(obj));
+        this.store.dispatch(new IdRichiestaSostituzione(this.idRichiesta));
+        this.store.dispatch(new GetListaMezziSquadre());
+        this.store.dispatch(new GetFiltriComposizione());
     }
 
     ngOnDestroy(): void {
@@ -344,10 +333,10 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
     }
 
     squadraSelezionata(squadraComposizione: SquadraComposizione): void {
-      if (this.nuovoMezzo.codice === '' && this.nuoveSquadre.length <= 0) {
+        if (this.nuovoMezzo.codice === '' && this.nuoveSquadre.length <= 0) {
             this.store.dispatch(new AddBoxPartenza());
         }
-      if (squadraComposizione && !squadraComposizioneBusy(squadraComposizione.squadra.stato)) {
+        if (squadraComposizione && !squadraComposizioneBusy(squadraComposizione.squadra.stato)) {
             if (!this.nuoveSquadre.includes(squadraComposizione.squadra)) {
                 this.nuoveSquadre.push(squadraComposizione.squadra);
                 this.store.dispatch(new SelectSquadraComposizione(squadraComposizione));
@@ -432,22 +421,22 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
     }
 
     mezziPageChange(pageMezzi: number): void {
-      const options = {
-        page: {
-          pageMezzi,
-        },
-        idRichiesta: this.idRichiesta,
-      };
-      this.store.dispatch(new GetListaMezziSquadre(options));
+        const options = {
+            page: {
+                pageMezzi,
+            },
+            idRichiesta: this.idRichiesta,
+        };
+        this.store.dispatch(new GetListaMezziSquadre(options));
     }
 
     squadrePageChange(pageSquadre: number): void {
-      const options = {
-        page: {
-          pageSquadre,
-        },
-        idRichiesta: this.idRichiesta,
-      };
-      this.store.dispatch(new GetListaMezziSquadre(options));
+        const options = {
+            page: {
+                pageSquadre,
+            },
+            idRichiesta: this.idRichiesta,
+        };
+        this.store.dispatch(new GetListaMezziSquadre(options));
     }
 }

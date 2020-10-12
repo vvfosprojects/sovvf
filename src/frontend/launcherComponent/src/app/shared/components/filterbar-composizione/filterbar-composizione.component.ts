@@ -10,7 +10,8 @@ import { iconaStatiClass } from '../../helper/composizione-functions';
 import { AddFiltroSelezionatoComposizione, ResetFiltriComposizione } from '../../store/actions/filtri-composizione/filtri-composizione.actions';
 import { SintesiRichiesta } from '../../model/sintesi-richiesta.model';
 import { SetMarkerRichiestaSelezionato } from 'src/app/features/home/store/actions/maps/marker.actions';
-import {SostituzionePartenzaModalState} from '../../store/states/sostituzione-partenza-modal/sostituzione-partenza-modal.state';
+import { SostituzionePartenzaModalState } from '../../store/states/sostituzione-partenza-modal/sostituzione-partenza-modal.state';
+import { GetListaMezziSquadre } from '../../store/actions/sostituzione-partenza/sostituzione-partenza.actions';
 
 @Component({
     selector: 'app-filterbar-composizione',
@@ -23,6 +24,8 @@ export class FilterbarComposizioneComponent {
     @Input() disableComposizioneMode: boolean;
     @Input() nascondiTornaIndietro: boolean;
     @Input() nascondiCambiaComposizioneMode: boolean;
+    @Input() composizionePartenza: boolean;
+    @Input() sostituzionePartenza: boolean;
 
     @Select(ViewComponentState.composizioneMode) composizioneMode$: Observable<Composizione>;
 
@@ -49,7 +52,11 @@ export class FilterbarComposizioneComponent {
     }
 
     update(): void {
-        this.store.dispatch(new ReducerFilterListeComposizione());
+        if (this.composizionePartenza) {
+            this.store.dispatch(new ReducerFilterListeComposizione());
+        } else if (this.sostituzionePartenza) {
+            this.store.dispatch(new GetListaMezziSquadre());
+        }
     }
 
     turnOffComposizione(): void {
@@ -66,16 +73,16 @@ export class FilterbarComposizioneComponent {
 
     nuovaPartenza(richiesta: SintesiRichiesta): void {
         if (this.store.selectSnapshot(SostituzionePartenzaModalState.idRichiestaSostituzione)) {
-          const idRichiesta = this.store.selectSnapshot(SostituzionePartenzaModalState.idRichiestaSostituzione);
-          this.store.dispatch([
-            new SetMarkerRichiestaSelezionato(idRichiesta),
-            new RichiestaComposizione(richiesta)
-          ]);
+            const idRichiesta = this.store.selectSnapshot(SostituzionePartenzaModalState.idRichiestaSostituzione);
+            this.store.dispatch([
+                new SetMarkerRichiestaSelezionato(idRichiesta),
+                new RichiestaComposizione(richiesta)
+            ]);
         } else {
-          this.store.dispatch([
-            new SetMarkerRichiestaSelezionato(richiesta.id),
-            new RichiestaComposizione(richiesta)
-          ]);
+            this.store.dispatch([
+                new SetMarkerRichiestaSelezionato(richiesta.id),
+                new RichiestaComposizione(richiesta)
+            ]);
         }
 
     }
