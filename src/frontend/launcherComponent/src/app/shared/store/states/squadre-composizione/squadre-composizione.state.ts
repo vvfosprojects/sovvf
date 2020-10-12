@@ -24,6 +24,8 @@ import { codDistaccamentoIsEqual } from '../../../helper/composizione-functions'
 import { MezzoComposizione } from '../../../interface/mezzo-composizione-interface';
 import { Injectable } from '@angular/core';
 import { GetListeComposizioneAvanzata } from '../../../../features/home/store/actions/composizione-partenza/composizione-avanzata.actions';
+import {ComposizionePartenzaState} from '../../../../features/home/store/states/composizione-partenza/composizione-partenza.state';
+import {GetListaMezziSquadre} from '../../actions/sostituzione-partenza/sostituzione-partenza.actions';
 
 export interface SquadreComposizioneStateStateModel {
     allSquadreComposione: SquadraComposizione[];
@@ -121,8 +123,10 @@ export class SquadreComposizioneState {
         const boxPartenzaList = this.store.selectSnapshot(BoxPartenzaState.boxPartenzaList);
         const idBoxPartenzaSelezionato = this.store.selectSnapshot(BoxPartenzaState.idBoxPartenzaSelezionato);
         const boxPartenzaSelezionato = boxPartenzaList.filter(x => x.id === idBoxPartenzaSelezionato)[0];
-        if (!boxPartenzaSelezionato || (boxPartenzaSelezionato && !boxPartenzaSelezionato.mezzoComposizione)) {
+        if (!boxPartenzaSelezionato && this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione) || (boxPartenzaSelezionato && !boxPartenzaSelezionato.mezzoComposizione && this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione))) {
             dispatch(new GetListeComposizioneAvanzata());
+        } else {
+          dispatch(new GetListaMezziSquadre());
         }
         // Aggiorno lo store
         setState(
@@ -144,8 +148,10 @@ export class SquadreComposizioneState {
             const boxPartenzaList = this.store.selectSnapshot(BoxPartenzaState.boxPartenzaList);
             const idBoxPartenzaSelezionato = this.store.selectSnapshot(BoxPartenzaState.idBoxPartenzaSelezionato);
             const boxPartenzaSelezionato = boxPartenzaList.filter(b => b.id === idBoxPartenzaSelezionato)[0];
-            if (!boxPartenzaSelezionato || !boxPartenzaSelezionato.mezzoComposizione) {
+            if (!boxPartenzaSelezionato && this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione) || !boxPartenzaSelezionato.mezzoComposizione && this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione)) {
                 dispatch(new GetListeComposizioneAvanzata());
+            } else {
+              dispatch(new GetListaMezziSquadre());
             }
         }
         setState(

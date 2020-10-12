@@ -318,7 +318,7 @@ export class RichiesteComponent implements OnInit, OnDestroy {
 
     nuovaPartenza($event: SintesiRichiesta): void {
         this.store.dispatch(new SetMarkerRichiestaSelezionato($event.id));
-        this.store.dispatch(new RichiestaComposizione($event)); //questo quiiiiii
+        this.store.dispatch(new RichiestaComposizione($event));
     }
 
     onActionMezzo(actionMezzo: MezzoActionInterface): void {
