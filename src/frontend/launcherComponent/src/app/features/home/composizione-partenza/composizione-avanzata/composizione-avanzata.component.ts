@@ -35,7 +35,7 @@ import {
     SelectSquadraComposizione,
     UnselectSquadraComposizione
 } from '../../../../shared/store/actions/squadre-composizione/squadre-composizione.actions';
-import {ConfirmPartenze} from '../../store/actions/composizione-partenza/composizione-partenza.actions';
+import { ConfirmPartenze } from '../../store/actions/composizione-partenza/composizione-partenza.actions';
 import { TurnoState } from '../../../navbar/store/states/turno.state';
 import { SganciamentoInterface } from 'src/app/shared/interface/sganciamento.interface';
 import { MezzoDirection } from '../../../../shared/interface/mezzo-direction';
@@ -46,6 +46,7 @@ import { FiltriComposizioneState } from '../../../../shared/store/states/filtri-
 import { GetFiltriComposizione } from '../../../../shared/store/actions/filtri-composizione/filtri-composizione.actions';
 import { PaginationComposizionePartenzaState } from 'src/app/shared/store/states/pagination-composizione-partenza/pagination-composizione-partenza.state';
 import { GetListeComposizioneAvanzata } from '../../store/actions/composizione-partenza/composizione-avanzata.actions';
+import { ResetPaginationMezziSquadre, ResetPaginationPreaccoppiati } from '../../../../shared/store/actions/pagination-composizione-partenza/pagination-composizione-partenza.actions';
 
 @Component({
     selector: 'app-composizione-avanzata',
@@ -262,7 +263,10 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-        this.store.dispatch(new ClearBoxPartenze());
+        this.store.dispatch([
+            new ClearBoxPartenze(),
+            new ResetPaginationMezziSquadre()
+        ]);
         this.subscription.unsubscribe();
     }
 

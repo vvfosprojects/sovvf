@@ -7,16 +7,10 @@ export class PatchPaginationMezziSquadre {
     }
 }
 
-export class PatchCodDistaccamentoMezzo {
-    static readonly type = '[PatchCodDistaccamentoMezzo] Patch Cod Distaccamento Mezzo';
-
-    constructor(public codDistaccamento: string) {
-    }
+export class ResetPaginationMezziSquadre {
+    static readonly type = '[PaginationComposizionePartenza] Reset Pagination Mezzi/Squadre';
 }
 
-export class PatchCodDistaccamentoSquadre {
-    static readonly type = '[PatchCodDistaccamentoSquadre] Patch Cod Distaccamento Squadre';
-
-    constructor(public codDistaccamento: string) {
-    }
+export class ResetPaginationPreaccoppiati {
+    static readonly type = '[PaginationComposizionePartenza] Reset Pagination Preaccoppiati';
 }

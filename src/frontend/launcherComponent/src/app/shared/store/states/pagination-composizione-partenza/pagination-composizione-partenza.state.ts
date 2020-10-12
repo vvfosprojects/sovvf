@@ -1,7 +1,7 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { PaginationInterface } from '../../../interface/pagination.interface';
 import { Injectable } from '@angular/core';
-import { PatchPaginationMezziSquadre } from '../../actions/pagination-composizione-partenza/pagination-composizione-partenza.actions';
+import { PatchPaginationMezziSquadre, ResetPaginationMezziSquadre, ResetPaginationPreaccoppiati } from '../../actions/pagination-composizione-partenza/pagination-composizione-partenza.actions';
 
 export interface PaginationComposizionePartenzaStateModel {
     paginationMezzi: PaginationInterface;
@@ -9,7 +9,7 @@ export interface PaginationComposizionePartenzaStateModel {
     paginationPreaccoppiati: PaginationInterface;
 }
 
-export const PaginationComposizionePartenzaStateModelDefaults: PaginationComposizionePartenzaStateModel = {
+export const PaginationComposizionePartenzaStateDefaults: PaginationComposizionePartenzaStateModel = {
     paginationMezzi: {
         page: 1,
         pageSize: 10
@@ -27,7 +27,7 @@ export const PaginationComposizionePartenzaStateModelDefaults: PaginationComposi
 @Injectable()
 @State<PaginationComposizionePartenzaStateModel>({
     name: 'paginationComposizionePartenza',
-    defaults: PaginationComposizionePartenzaStateModelDefaults
+    defaults: PaginationComposizionePartenzaStateDefaults
 })
 export class PaginationComposizionePartenzaState {
 
@@ -110,5 +110,20 @@ export class PaginationComposizionePartenzaState {
                 });
                 break;
         }
+    }
+
+    @Action(ResetPaginationMezziSquadre)
+    resetPaginationMezziSquadre({ patchState }: StateContext<PaginationComposizionePartenzaStateModel>): void {
+        patchState({
+            paginationMezzi: PaginationComposizionePartenzaStateDefaults.paginationMezzi,
+            paginationSquadre: PaginationComposizionePartenzaStateDefaults.paginationSquadre
+        });
+    }
+
+    @Action(ResetPaginationPreaccoppiati)
+    resetPaginationPreaccoppiati({ patchState }: StateContext<PaginationComposizionePartenzaStateModel>): void {
+        patchState({
+            paginationPreaccoppiati: PaginationComposizionePartenzaStateDefaults.paginationPreaccoppiati
+        });
     }
 }
