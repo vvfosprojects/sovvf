@@ -42,7 +42,7 @@ namespace SO115App.FakePersistenceJSon.Composizione
 
             preAccoppiati = JsonConvert.DeserializeObject<List<PreAccoppiati>>(json);
 
-            return preAccoppiati.Where(x => x.CodiceSede == query.CodiceSede).ToList();
+            return preAccoppiati.Where(x => query.CodiceSede.Contains(x.CodiceSede)).ToList();
         }
 
         public List<PreAccoppiatiFakeJson> GetFake(PreAccoppiatiQuery query)
