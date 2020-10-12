@@ -48,6 +48,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
         NgxPaginationModule,
         FormsModule,
         FilterPipeModule,
+        SharedModule,
     ],
     exports: [
         ComposizionePartenzaComponent

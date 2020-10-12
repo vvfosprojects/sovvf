@@ -19,7 +19,7 @@ import { ComposizioneMarker } from '../../../maps/maps-model/composizione-marker
 import {
     ClearComposizioneVeloce,
     ClearPreaccoppiati,
-    ClearPreAccoppiatiSelezionatiComposizione
+    ClearPreAccoppiatiSelezionatiComposizione, GetListaComposizioneVeloce
 } from '../../actions/composizione-partenza/composizione-veloce.actions';
 import { Composizione } from '../../../../../shared/enum/composizione.enum';
 import {
@@ -129,7 +129,7 @@ export class ComposizionePartenzaState {
         if (compMode === Composizione.Avanzata) {
             dispatch(new GetListeComposizioneAvanzata());
         } else if (compMode === Composizione.Veloce) {
-            // dispatch(new FilterListaPreAccoppiati());
+            dispatch(new GetListaComposizioneVeloce());
         }
     }
 

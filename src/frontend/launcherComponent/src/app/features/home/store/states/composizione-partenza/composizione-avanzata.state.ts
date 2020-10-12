@@ -18,7 +18,7 @@ import { mezzoComposizioneBusy } from '../../../../../shared/helper/composizione
 import { RemoveBoxPartenza } from '../../actions/composizione-partenza/box-partenza.actions';
 import { ViewComponentState } from '../view/view.state';
 import { Composizione } from '../../../../../shared/enum/composizione.enum';
-import { GetPreAccoppiati } from '../../actions/composizione-partenza/composizione-veloce.actions';
+import { GetListaComposizioneVeloce } from '../../actions/composizione-partenza/composizione-veloce.actions';
 import {
     StartListaComposizioneLoading,
     StopListaComposizioneLoading
@@ -133,7 +133,7 @@ export class ComposizioneAvanzataState {
         });
         const compMode = this.store.selectSnapshot(ViewComponentState.composizioneMode);
         if (compMode === Composizione.Veloce) {
-            dispatch(new GetPreAccoppiati());
+            dispatch(new GetListaComposizioneVeloce());
         }
     }
 

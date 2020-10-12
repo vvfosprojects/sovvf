@@ -131,7 +131,7 @@ export class SquadreComposizioneState {
                 idSquadreSelezionate: append([action.squadraComp.squadra.id])
             })
         );
-        if (!boxPartenzaSelezionato || !boxPartenzaSelezionato.squadraComposizione.includes(action.squadraComp)) {
+        if (!boxPartenzaSelezionato || !boxPartenzaSelezionato.squadreComposizione.includes(action.squadraComp)) {
             this.store.dispatch(new AddSquadraBoxPartenza(action.squadraComp));
         }
     }

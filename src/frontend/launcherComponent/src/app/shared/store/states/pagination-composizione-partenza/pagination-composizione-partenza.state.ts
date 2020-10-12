@@ -6,6 +6,7 @@ import { PatchPaginationMezziSquadre } from '../../actions/pagination-composizio
 export interface PaginationComposizionePartenzaStateModel {
     paginationMezzi: PaginationInterface;
     paginationSquadre: PaginationInterface;
+    paginationPreaccoppiati: PaginationInterface;
 }
 
 export const PaginationComposizionePartenzaStateModelDefaults: PaginationComposizionePartenzaStateModel = {
@@ -17,6 +18,10 @@ export const PaginationComposizionePartenzaStateModelDefaults: PaginationComposi
         page: 1,
         pageSize: 10
     },
+    paginationPreaccoppiati: {
+        page: 1,
+        pageSize: 10
+    }
 };
 
 @Injectable()
@@ -66,6 +71,26 @@ export class PaginationComposizionePartenzaState {
         return state.paginationSquadre.totalItems;
     }
 
+    @Selector()
+    static paginationPreaccoppiati(state: PaginationComposizionePartenzaStateModel): PaginationInterface {
+        return state.paginationPreaccoppiati;
+    }
+
+    @Selector()
+    static pagePreaccoppiati(state: PaginationComposizionePartenzaStateModel): number {
+        return state.paginationPreaccoppiati.page;
+    }
+
+    @Selector()
+    static pageSizePreaccoppiati(state: PaginationComposizionePartenzaStateModel): number {
+        return state.paginationPreaccoppiati.pageSize;
+    }
+
+    @Selector()
+    static totalItemsPreaccoppiati(state: PaginationComposizionePartenzaStateModel): number {
+        return state.paginationPreaccoppiati.totalItems;
+    }
+
     @Action(PatchPaginationMezziSquadre)
     patchPagination({ patchState }: StateContext<PaginationComposizionePartenzaStateModel>, action: PatchPaginationMezziSquadre): void {
         switch (action.type) {
@@ -77,6 +102,11 @@ export class PaginationComposizionePartenzaState {
             case 'squadre' :
                 patchState({
                     paginationSquadre: action.pagination
+                });
+                break;
+            case 'preaccoppiati' :
+                patchState({
+                    paginationPreaccoppiati: action.pagination
                 });
                 break;
         }

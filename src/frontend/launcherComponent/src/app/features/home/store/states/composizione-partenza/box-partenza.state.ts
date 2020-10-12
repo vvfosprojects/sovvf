@@ -121,7 +121,7 @@ export class BoxPartenzaState {
                             {
                                 id,
                                 mezzoComposizione: null,
-                                squadraComposizione: []
+                                squadreComposizione: []
                             }
                         ])
                     })
@@ -147,8 +147,8 @@ export class BoxPartenzaState {
                 dispatch(new UnselectMezzoComposizione());
             }
             // Deseleziono le squadre selezionate se presenti nel box-partenza da eliminare
-            if (action.boxPartenza.squadraComposizione && action.boxPartenza.squadraComposizione.length > 0) {
-                action.boxPartenza.squadraComposizione.forEach((squadra: SquadraComposizione) => {
+            if (action.boxPartenza.squadreComposizione && action.boxPartenza.squadreComposizione.length > 0) {
+                action.boxPartenza.squadreComposizione.forEach((squadra: SquadraComposizione) => {
                     dispatch(new UnselectSquadraComposizione(squadra));
                 });
             }
@@ -197,8 +197,8 @@ export class BoxPartenzaState {
                 dispatch(new UnselectMezzoComposizione());
             }
             // Deseleziono le squadre selezionate se presenti nel box-partenza da eliminare
-            if (action.boxPartenza.squadraComposizione && action.boxPartenza.squadraComposizione.length > 0) {
-                action.boxPartenza.squadraComposizione.forEach((squadra: SquadraComposizione) => {
+            if (action.boxPartenza.squadreComposizione && action.boxPartenza.squadreComposizione.length > 0) {
+                action.boxPartenza.squadreComposizione.forEach((squadra: SquadraComposizione) => {
                     dispatch(new UnselectSquadraComposizione(squadra));
                 });
             }
@@ -228,8 +228,8 @@ export class BoxPartenzaState {
                         dispatch(new UnselectMezzoComposizione());
                     }
                     // Deseleziono le squadre selezionate se presenti nel box-partenza da eliminare
-                    if (boxPartenza.squadraComposizione && boxPartenza.squadraComposizione.length > 0) {
-                        boxPartenza.squadraComposizione.forEach((squadra: SquadraComposizione) => {
+                    if (boxPartenza.squadreComposizione && boxPartenza.squadreComposizione.length > 0) {
+                        boxPartenza.squadreComposizione.forEach((squadra: SquadraComposizione) => {
                             dispatch(new UnselectSquadraComposizione(squadra));
                         });
                     }
@@ -270,8 +270,8 @@ export class BoxPartenzaState {
                 if (box.mezzoComposizione) {
                     dispatch(new SelectMezzoComposizione(box.mezzoComposizione));
                 }
-                if (box.squadraComposizione.length > 0) {
-                    box.squadraComposizione.forEach((squadra: SquadraComposizione) => {
+                if (box.squadreComposizione.length > 0) {
+                    box.squadreComposizione.forEach((squadra: SquadraComposizione) => {
                         dispatch(new SelectSquadraComposizione(squadra));
                     });
                 }
@@ -287,7 +287,7 @@ export class BoxPartenzaState {
             produce(state, draft => {
                 draft.boxPartenzaList.forEach((box: BoxPartenza) => {
                     if (box.id === state.idBoxPartenzaSelezionato) {
-                        box.squadraComposizione.push(action.squadra);
+                        box.squadreComposizione.push(action.squadra);
                     }
                 });
             })
@@ -302,12 +302,12 @@ export class BoxPartenzaState {
                 draft.boxPartenzaList.forEach((box: BoxPartenza) => {
                     if (box.id === state.idBoxPartenzaSelezionato) {
                         let index = null;
-                        box.squadraComposizione.forEach((squadra: SquadraComposizione, i) => {
+                        box.squadreComposizione.forEach((squadra: SquadraComposizione, i) => {
                             if (action.idSquadra === squadra.id) {
                                 index = i;
                             }
                         });
-                        box.squadraComposizione.splice(index, 1);
+                        box.squadreComposizione.splice(index, 1);
                     }
                 });
             })
@@ -321,8 +321,8 @@ export class BoxPartenzaState {
             state.boxPartenzaList.forEach((box: BoxPartenza) => {
                 if (box.id === state.idBoxPartenzaSelezionato && box.mezzoComposizione && box.mezzoComposizione.istanteScadenzaSelezione) {
                     dispatch(new RequestRemoveBookMezzoComposizione(box.mezzoComposizione));
-                    if (box.squadraComposizione && box.squadraComposizione.length > 0) {
-                        box.squadraComposizione.forEach((squadra: SquadraComposizione) => {
+                    if (box.squadreComposizione && box.squadreComposizione.length > 0) {
+                        box.squadreComposizione.forEach((squadra: SquadraComposizione) => {
                             dispatch(new RemoveSquadraBoxPartenza(squadra.id));
                             dispatch(new UnselectSquadraComposizione(squadra));
                         });
@@ -387,7 +387,7 @@ export function validateBoxPartenza(boxPartenzaList: BoxPartenza[]): boolean {
     let boxValidiCount = 0;
     if (boxPartenzaList.length > 0) {
         boxPartenzaList.forEach((box: BoxPartenza) => {
-            if (box.squadraComposizione && box.squadraComposizione.length > 0) {
+            if (box.squadreComposizione && box.squadreComposizione.length > 0) {
                 boxValidiCount++;
             }
         });
@@ -408,7 +408,7 @@ export function disableConfirmPartenza(boxPartenzaList: BoxPartenza[], nuovaPart
     if (boxPartenzaList && boxPartenzaList.length > 0) {
         let boxValidiCount = 0;
         for (const boxPartenza of boxPartenzaList) {
-            if (boxPartenza.mezzoComposizione && (boxPartenza.mezzoComposizione.mezzo.stato === StatoMezzo.InRientro || boxPartenza.mezzoComposizione.mezzo.stato === StatoMezzo.InSede) && boxPartenza.squadraComposizione && boxPartenza.squadraComposizione.length > 0) {
+            if (boxPartenza.mezzoComposizione && (boxPartenza.mezzoComposizione.mezzo.stato === StatoMezzo.InRientro || boxPartenza.mezzoComposizione.mezzo.stato === StatoMezzo.InSede) && boxPartenza.squadreComposizione && boxPartenza.squadreComposizione.length > 0) {
                 boxValidiCount++;
             }
         }

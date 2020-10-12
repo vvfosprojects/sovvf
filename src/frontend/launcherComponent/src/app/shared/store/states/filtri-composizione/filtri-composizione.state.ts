@@ -2,7 +2,6 @@ import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { ComposizioneFilterbar } from '../../../../features/home/composizione-partenza/interface/composizione/composizione-filterbar-interface';
 import { GetListeComposizioneAvanzata } from '../../../../features/home/store/actions/composizione-partenza/composizione-avanzata.actions';
 import { Composizione } from '../../../enum/composizione.enum';
-import { GetListaDatiPreAccoppiati } from '../../../../features/home/store/actions/composizione-partenza/composizione-veloce.actions';
 import {
     AddFiltroSelezionatoComposizione,
     GetFiltriComposizione,
@@ -13,6 +12,7 @@ import {
 import { insertItem, patch, removeItem } from '@ngxs/store/operators';
 import { ListaTipologicheMezzi } from '../../../../features/home/composizione-partenza/interface/filtri/lista-filtri-composizione-interface';
 import { Injectable } from '@angular/core';
+import { GetListaComposizioneVeloce } from '../../../../features/home/store/actions/composizione-partenza/composizione-veloce.actions';
 
 export interface FiltriComposizioneStateStateModel {
     filtri: ListaTipologicheMezzi;
@@ -69,10 +69,7 @@ export class FiltriComposizioneState {
             dispatch(new GetListeComposizioneAvanzata());
         }
         if (composizioneMode === Composizione.Veloce) {
-            dispatch(new GetListaDatiPreAccoppiati());
-            dispatch([
-                new GetListaDatiPreAccoppiati()
-            ]);
+            dispatch(new GetListaComposizioneVeloce());
         }
         const filtri = this.store.selectSnapshot(state => state.tipologicheMezzi.tipologiche);
         patchState({ filtri });
@@ -83,41 +80,41 @@ export class FiltriComposizioneState {
         console.log('Filtro selezionato => #ID = ' + action.id + ' - TIPO = ' + action.tipoFiltro);
         switch (action.tipoFiltro) {
             case 'codiceDistaccamento':
-              ctx.setState(
-                patch({
-                  codiceDistaccamento: removeItem(codiceDistaccamento => codiceDistaccamento !== action.id)
-                })
-              );
-              ctx.setState(
+                ctx.setState(
+                    patch({
+                        codiceDistaccamento: removeItem(codiceDistaccamento => codiceDistaccamento !== action.id)
+                    })
+                );
+                ctx.setState(
                     patch({
                         codiceDistaccamento: insertItem(action.id)
                     })
                 );
-              break;
+                break;
             case 'tipoMezzo':
-              ctx.setState(
-                patch({
-                  tipoMezzo: removeItem(tipoMezzo => tipoMezzo !== action.id)
-                })
-              );
-              ctx.setState(
+                ctx.setState(
+                    patch({
+                        tipoMezzo: removeItem(tipoMezzo => tipoMezzo !== action.id)
+                    })
+                );
+                ctx.setState(
                     patch({
                         tipoMezzo: insertItem(action.id)
                     })
                 );
-              break;
+                break;
             case 'statoMezzo':
-              ctx.setState(
-                patch({
-                  statoMezzo: removeItem(statoMezzo => statoMezzo !== action.id)
-                })
-              );
-              ctx.setState(
+                ctx.setState(
+                    patch({
+                        statoMezzo: removeItem(statoMezzo => statoMezzo !== action.id)
+                    })
+                );
+                ctx.setState(
                     patch({
                         statoMezzo: insertItem(action.id)
                     })
                 );
-              break;
+                break;
         }
     }
 

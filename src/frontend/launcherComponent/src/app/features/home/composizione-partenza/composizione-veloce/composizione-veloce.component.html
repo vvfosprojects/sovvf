@@ -15,6 +15,15 @@
                                     (hoverOut)="onHoverOut()">
             </app-box-nuova-partenza>
         </div>
+        <div class="col" style="display: flex; place-content: center; margin-top: 10px;">
+            <ngb-pagination
+                    [(page)]="currentPagePreaccoppiati"
+                    [pageSize]="pageSizePreaccoppiati"
+                    [collectionSize]="totalItemsPreaccoppiati"
+                    (pageChange)="preAccoppiatiPageChange($event)"
+                    [maxSize]="2">
+            </ngb-pagination>
+        </div>
         <div class="col-12 text-right">
             <app-composizione-buttons (confirmPartenzaInViaggio)="confermaPartenzeInViaggio()"
                                       (confirmPartenzaInUscita)="confermaPartenzeInUscita()"

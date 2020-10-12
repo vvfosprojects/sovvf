@@ -1,16 +1,18 @@
 import { BoxPartenza } from '../../../composizione-partenza/interface/box-partenza-interface';
-import {DatiPreaccoppiati} from '../../../composizione-partenza/interface/id-preaccoppiati-interface';
 import { BoxPartenzaHover } from '../../../composizione-partenza/interface/composizione/box-partenza-hover-interface';
-import { ComposizioneFilterbar } from '../../../composizione-partenza/interface/composizione/composizione-filterbar-interface';
+import { FiltriComposizione } from '../../../composizione-partenza/interface/filtri/filtri-composizione-interface';
 
-export class GetPreAccoppiati {
+export class GetListaComposizioneVeloce {
     static readonly type = '[ComposizioneVeloce] Get PreAccoppiati';
+
+    constructor(public options?: { filtri?: FiltriComposizione, page?: number }) {
+    }
 }
 
-export class SetPreaccoppiati {
+export class SetListaPreaccoppiati {
     static readonly type = '[ComposizioneVeloce] Set PreAccoppiati';
 
-    constructor(public boxPartenza: BoxPartenza[]) {
+    constructor(public preAccoppiati: BoxPartenza[]) {
     }
 }
 
@@ -47,17 +49,6 @@ export class ClearComposizioneVeloce {
     static readonly type = '[PreAccoppiati] Clear PreAccoppiati';
 }
 
-export class GetListaDatiPreAccoppiati {
-    static readonly type = '[ComposizioneVeloce] Get Id PreAccoppiati';
-}
-
-export class SetListaDatiPreAccoppiati {
-    static readonly type = '[ComposizioneVeloce] Set Lista Dati PreAccoppiati';
-
-    constructor(public datiPreaccopiati: DatiPreaccoppiati[]) {
-    }
-}
-
 export class SetIdPreAccoppiatiOccupati {
     static readonly type = '[ComposizioneVeloce] Set Id PreAccoppiati Occupati';
 
@@ -74,12 +65,4 @@ export class HoverInPreAccoppiatoComposizione {
 
 export class HoverOutPreAccoppiatoComposizione {
     static readonly type = '[PreAccoppiati] Hover Out PreAccoppiato Composizione';
-}
-
-// TODO: da rivedere
-export class FilterListaPreAccoppiati {
-    static readonly type = '[PreAccoppiati] Filter Lista PreAccoppiati';
-
-    constructor(public filtri?: ComposizioneFilterbar) {
-    }
 }
