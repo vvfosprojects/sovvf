@@ -28,7 +28,7 @@ import {
     SelectSquadraComposizione,
     UnselectSquadraComposizione
 } from '../../store/actions/squadre-composizione/squadre-composizione.actions';
-import { UnselectMezziAndSquadreComposizioneAvanzata } from '../../../features/home/store/actions/composizione-partenza/composizione-avanzata.actions';
+import {UnselectMezziAndSquadreComposizioneAvanzata} from '../../../features/home/store/actions/composizione-partenza/composizione-avanzata.actions';
 import { FiltriComposizioneState } from '../../store/states/filtri-composizione/filtri-composizione.state';
 import { SetRicercaMezziComposizione, SetRicercaSquadreComposizione } from '../../store/actions/ricerca-composizione/ricerca-composizione.actions';
 import { ComposizionePartenzaState } from '../../../features/home/store/states/composizione-partenza/composizione-partenza.state';
@@ -374,11 +374,13 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
     }
 
     changeRicercaSquadre(): void {
-        this.store.dispatch(new SetRicercaSquadreComposizione(makeCopy(this.ricercaSquadre)));
+        this.store.dispatch([new SetRicercaSquadreComposizione(makeCopy(this.ricercaSquadre)),
+                                          new GetListaMezziSquadre()]);
     }
 
     changeRicercaMezzi(): void {
-        this.store.dispatch(new SetRicercaMezziComposizione(makeCopy(this.ricercaMezzi)));
+        this.store.dispatch([new SetRicercaMezziComposizione(makeCopy(this.ricercaMezzi)),
+                                          new GetListaMezziSquadre()]);
     }
 
     getTitle(): string {
