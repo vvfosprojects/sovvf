@@ -27,7 +27,6 @@ namespace SO115App.API.Models.Classi.Composizione
         public string CodiceSede { get; set; }
 
         public string Mezzo { get; set; }
-
         public string[] Squadre { get; set; }
     }
 
@@ -37,7 +36,6 @@ namespace SO115App.API.Models.Classi.Composizione
         public string CodiceSede { get; set; }
 
         public ComposizioneMezzi MezzoComposizione { get; set; }
-
         public List<ComposizioneSquadre> SquadreComposizione { get; set; }
     }
 }

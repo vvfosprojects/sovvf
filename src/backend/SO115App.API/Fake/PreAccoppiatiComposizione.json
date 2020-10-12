@@ -2,7 +2,7 @@
   {
     "Id": "3",
     "CodiceSede": "RM.1000",
-    "Mezzo": {
+    "MezzoComposizione": {
       "id": "O.29319",
       "mezzo": {
         "codice": "O.29319",
@@ -48,7 +48,7 @@
       "istanteScadenzaSelezione": null,
       "indiceOrdinamento": 199.95483522260312007167131888
     },
-    "Squadre": [
+    "SquadreComposizione": [
       {
         "id": "62",
         "squadra": {
@@ -316,7 +316,7 @@
   {
     "Id": "9",
     "CodiceSede": "RM.1000",
-    "Mezzo": {
+    "MezzoComposizione": {
       "id": "O.30000",
       "mezzo": {
         "codice": "O.30000",
@@ -362,7 +362,7 @@
       "istanteScadenzaSelezione": null,
       "indiceOrdinamento": 199.95576032089501128204368807
     },
-    "Squadre": [
+    "SquadreComposizione": [
       {
         "id": "62",
         "squadra": {
@@ -500,7 +500,7 @@
   {
     "Id": "2",
     "CodiceSede": "RM.1000",
-    "Mezzo": {
+    "MezzoComposizione": {
       "id": "O.20653",
       "mezzo": {
         "codice": "O.20653",
@@ -546,7 +546,7 @@
       "istanteScadenzaSelezione": null,
       "indiceOrdinamento": 199.9463251216939051250254493
     },
-    "Squadre": [
+    "SquadreComposizione": [
       {
         "id": "62",
         "squadra": {
@@ -814,7 +814,7 @@
   {
     "Id": "5",
     "CodiceSede": "RM.1000",
-    "Mezzo": {
+    "MezzoComposizione": {
       "id": "O.29903",
       "mezzo": {
         "codice": "O.29903",
@@ -860,7 +860,7 @@
       "istanteScadenzaSelezione": null,
       "indiceOrdinamento": 199.91766044648391603215868404
     },
-    "Squadre": [
+    "SquadreComposizione": [
       {
         "id": "31",
         "squadra": {
