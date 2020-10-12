@@ -51,7 +51,7 @@ export class ComposizioneAvanzataState {
         return state.listaMezziSquadre;
     }
 
-    constructor(private squadreService: CompPartenzaService,
+    constructor(private compPartenzaService: CompPartenzaService,
                 private store: Store) {
     }
 
@@ -87,7 +87,7 @@ export class ComposizioneAvanzataState {
             ricercaSquadre: this.store.selectSnapshot(RicercaComposizioneState.ricercaSquadre) ? this.store.selectSnapshot(RicercaComposizioneState.ricercaSquadre) : null
         } as FiltriComposizione;
         console.log('*******OBJ CHE MANDIAMO ', obj);
-        this.squadreService.getListeComposizioneAvanzata(obj).subscribe((listeCompAvanzata: ListaComposizioneAvanzata) => {
+        this.compPartenzaService.getListeComposizioneAvanzata(obj).subscribe((listeCompAvanzata: ListaComposizioneAvanzata) => {
             console.log('*******LISTA MEZZI E SQUADRE ', listeCompAvanzata);
             if (listeCompAvanzata) {
                 const listaBoxPartenza = this.store.selectSnapshot(BoxPartenzaState.boxPartenzaList);

@@ -26,7 +26,6 @@ import { EliminaPartenzaModalComponent } from '../../../../../shared/modal/elimi
 import { DettaglioFonogrammaModalComponent } from '../../../../../shared/modal/dettaglio-fonogramma-modal/dettaglio-fonogramma-modal.component';
 import { ModificaFonogrammaModalComponent } from '../../../../../shared/modal/modifica-fonogramma-modal/modifica-fonogramma-modal.component';
 import { Tipologia } from '../../../../../shared/model/tipologia.model';
-import { ComposizionePartenzaState } from '../../../store/states/composizione-partenza/composizione-partenza.state';
 
 @Component({
     selector: 'app-sintesi-richiesta',
@@ -252,6 +251,7 @@ export class SintesiRichiestaComponent implements OnChanges {
         modalModificaPartenza.componentInstance.partenza = this.richiesta.partenzeRichiesta[index];
         const codiceRichiesta = this.richiesta.codice ? this.richiesta.codice : this.richiesta.codiceRichiesta;
         modalModificaPartenza.componentInstance.codRichiesta = codiceRichiesta;
+        modalModificaPartenza.componentInstance.richiesta = this.richiesta;
         modalModificaPartenza.componentInstance.idRichiesta = this.richiesta.id;
         modalModificaPartenza.result.then((res: { status: string, result: any }) => {
             switch (res.status) {

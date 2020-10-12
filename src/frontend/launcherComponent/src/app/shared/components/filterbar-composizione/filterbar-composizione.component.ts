@@ -10,6 +10,7 @@ import { iconaStatiClass } from '../../helper/composizione-functions';
 import { AddFiltroSelezionatoComposizione, ResetFiltriComposizione } from '../../store/actions/filtri-composizione/filtri-composizione.actions';
 import { SintesiRichiesta } from '../../model/sintesi-richiesta.model';
 import { SetMarkerRichiestaSelezionato } from 'src/app/features/home/store/actions/maps/marker.actions';
+import {SostituzionePartenzaModalState} from '../../store/states/sostituzione-partenza-modal/sostituzione-partenza-modal.state';
 
 @Component({
     selector: 'app-filterbar-composizione',
@@ -64,9 +65,18 @@ export class FilterbarComposizioneComponent {
     }
 
     nuovaPartenza(richiesta: SintesiRichiesta): void {
-        this.store.dispatch([
+        if (this.store.selectSnapshot(SostituzionePartenzaModalState.idRichiestaSostituzione)) {
+          const idRichiesta = this.store.selectSnapshot(SostituzionePartenzaModalState.idRichiestaSostituzione);
+          this.store.dispatch([
+            new SetMarkerRichiestaSelezionato(idRichiesta),
+            new RichiestaComposizione(richiesta)
+          ]);
+        } else {
+          this.store.dispatch([
             new SetMarkerRichiestaSelezionato(richiesta.id),
             new RichiestaComposizione(richiesta)
-        ]);
+          ]);
+        }
+
     }
 }

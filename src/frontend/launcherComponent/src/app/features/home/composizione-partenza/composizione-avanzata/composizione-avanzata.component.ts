@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { NgbPopoverConfig, NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
 import { Observable, Subscription } from 'rxjs';
 import { MezzoComposizione } from '../../../../shared/interface/mezzo-composizione-interface';
@@ -35,7 +35,7 @@ import {
     SelectSquadraComposizione,
     UnselectSquadraComposizione
 } from '../../../../shared/store/actions/squadre-composizione/squadre-composizione.actions';
-import { ConfirmPartenze } from '../../store/actions/composizione-partenza/composizione-partenza.actions';
+import {ConfirmPartenze} from '../../store/actions/composizione-partenza/composizione-partenza.actions';
 import { TurnoState } from '../../../navbar/store/states/turno.state';
 import { SganciamentoInterface } from 'src/app/shared/interface/sganciamento.interface';
 import { MezzoDirection } from '../../../../shared/interface/mezzo-direction';
@@ -267,7 +267,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
     }
 
     mezzoSelezionato(mezzoComposizione: MezzoComposizione): void {
-        const codDistaccamentoMezzo = mezzoComposizione.mezzo.distaccamento.codice;
+        // const codDistaccamentoMezzo = mezzoComposizione.mezzo.distaccamento.codice;
         this.store.dispatch([
             new ReducerSelectMezzoComposizione(mezzoComposizione),
         ]);
@@ -355,7 +355,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
     dopoAggiungiBoxPartenza(): void {
         this.boxPartenzaList.forEach(boxPartenza => {
             if (boxPartenza.mezzoComposizione) {
-                const mezzoComp = boxPartenza.mezzoComposizione;
+                // const mezzoComp = boxPartenza.mezzoComposizione;
                 this.store.dispatch(new DeselectBoxPartenza(boxPartenza, true));
             }
             this.onClearDirection();

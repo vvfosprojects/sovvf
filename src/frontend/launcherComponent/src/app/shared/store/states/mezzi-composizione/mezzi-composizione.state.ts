@@ -56,6 +56,8 @@ import { SintesiRichiesteService } from '../../../../core/service/lista-richiest
 import { SquadreComposizioneState } from '../squadre-composizione/squadre-composizione.state';
 import { Injectable } from '@angular/core';
 import { GetListeComposizioneAvanzata } from '../../../../features/home/store/actions/composizione-partenza/composizione-avanzata.actions';
+import {ComposizionePartenzaState} from '../../../../features/home/store/states/composizione-partenza/composizione-partenza.state';
+import {GetListaMezziSquadre} from '../../actions/sostituzione-partenza/sostituzione-partenza.actions';
 
 export interface MezziComposizioneStateStateModel {
     allMezziComposizione: MezzoComposizione[];
@@ -271,25 +273,25 @@ export class MezziComposizioneState {
         const idBoxPartenzaSelezionato = this.store.selectSnapshot(x => x.boxPartenza.idBoxPartenzaSelezionato);
         const boxPartenzaList = this.store.selectSnapshot(x => x.boxPartenza.boxPartenzaList);
         const boxPartenzaSelezionato = boxPartenzaList.filter(x => x.id === idBoxPartenzaSelezionato)[0];
-        if (boxPartenzaSelezionato && (!boxPartenzaSelezionato.squadraComposizione || boxPartenzaSelezionato.squadraComposizione.length <= 0)) {
-            dispatch([
-                new GetListeComposizioneAvanzata(),
-            ]);
-        }
+        if (boxPartenzaSelezionato && (!boxPartenzaSelezionato.squadraComposizione || boxPartenzaSelezionato.squadraComposizione.length <= 0) && this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione)) {
+            dispatch(new GetListeComposizioneAvanzata(), );
+          } else {
+            dispatch(new GetListaMezziSquadre());
+          }
     }
 
     @Action(UnselectMezzoComposizione)
-    unselectMezzoComposizione({ getState, patchState, dispatch }: StateContext<MezziComposizioneStateStateModel>): void  {
+    unselectMezzoComposizione({ patchState, dispatch }: StateContext<MezziComposizioneStateStateModel>): void  {
         patchState({
             idMezzoComposizioneSelezionato: null,
             idMezzoSelezionato: null
         });
 
         const idSquadreSelezionate = this.store.selectSnapshot(SquadreComposizioneState.idSquadreSelezionate);
-        if (idSquadreSelezionate && idSquadreSelezionate.length <= 0) {
-            dispatch([
-                new GetListeComposizioneAvanzata(),
-            ]);
+        if (idSquadreSelezionate && idSquadreSelezionate.length <= 0 && this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione)) {
+            dispatch(new GetListeComposizioneAvanzata(), );
+        } else {
+          dispatch(new GetListaMezziSquadre());
         }
     }
 
