@@ -11,7 +11,7 @@ import { AddFiltroSelezionatoComposizione, ResetFiltriComposizione } from '../..
 import { SintesiRichiesta } from '../../model/sintesi-richiesta.model';
 import { SetMarkerRichiestaSelezionato } from 'src/app/features/home/store/actions/maps/marker.actions';
 import { SostituzionePartenzaModalState } from '../../store/states/sostituzione-partenza-modal/sostituzione-partenza-modal.state';
-import { GetListaMezziSquadre } from '../../store/actions/sostituzione-partenza/sostituzione-partenza.actions';
+import {GetListaMezziSquadre, StartListaComposizioneLoading} from '../../store/actions/sostituzione-partenza/sostituzione-partenza.actions';
 
 @Component({
     selector: 'app-filterbar-composizione',
@@ -37,6 +37,7 @@ export class FilterbarComposizioneComponent {
     }
 
     addFiltro(event: any, tipo: string): void {
+        this.store.dispatch(new StartListaComposizioneLoading());
         if (event) {
             this.store.dispatch(new AddFiltroSelezionatoComposizione(event.id || event.descrizione, tipo));
             this.nuovaPartenza(this.richiesta);
