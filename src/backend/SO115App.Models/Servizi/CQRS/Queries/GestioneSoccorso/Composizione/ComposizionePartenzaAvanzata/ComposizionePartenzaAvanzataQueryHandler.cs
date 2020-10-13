@@ -127,7 +127,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                             return s.Squadra.Distaccamento.Codice == query.Filtro.CodiceDistaccamentoMezziSquadre;
                         return true;
                     })
-                    .OrderByDescending(c => c.Squadra.IndiceOrdinamento).ToList();
+                    .OrderByDescending(c => c.Squadra.Stato).ToList();
                 });
 
             var lstMezzi = _getPosizioneFlotta.Get(0)
@@ -219,7 +219,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                                 return m.Mezzo.Distaccamento.Codice == query.Filtro.CodiceDistaccamentoMezziSquadre;
                             return true;
                         })
-                        .OrderByDescending(x => x.IndiceOrdinamento).ToList();
+                        .OrderBy(x => x.Mezzo.Stato).ThenByDescending(c => c.IndiceOrdinamento).ToList();
                 });
 
             //COMPONGO IL DTO E FACCIO LA PAGINAZIONE
