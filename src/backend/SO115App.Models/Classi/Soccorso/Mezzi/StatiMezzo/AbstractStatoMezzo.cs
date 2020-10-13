@@ -164,5 +164,18 @@ namespace SO115App.API.Models.Classi.Soccorso.Mezzi.StatiMezzo
         {
             throw new WorkflowException($"Impossibile transire in seguito all'evento {nameof(composizionePartenze)}");
         }
+
+        /// <summary>
+        ///   Accetta il visitor e scatena l'implementazione di default che consiste nel sollevare
+        ///   una <see cref="WorkflowException" />. Gli stati concreti, implementati nelle classi
+        ///   derivate, effettuano l'override dei metodi corrispondenti a transizioni di stato
+        ///   ammesse, restituendo lo stato corretto a fronte dell'evento (visitor) di ingresso.
+        /// </summary>
+        /// <param name="sostituzionePartenzaFineTurno">Il visitor accettato</param>
+        /// <returns>Niente, poiché solleva un'eccezione</returns>
+        public virtual IStatoMezzo AcceptVisitor(SostituzionePartenzaFineTurno sostituzionePartenzaFineTurno)
+        {
+            throw new WorkflowException($"Impossibile transire in seguito all'evento {nameof(sostituzionePartenzaFineTurno)}");
+        }
     }
 }

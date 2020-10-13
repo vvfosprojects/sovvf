@@ -109,12 +109,14 @@ namespace SO115App.Models.Classi.Utility
         public static string RevocaPerInterventoNonPiuNecessario = "RevocaPerInterventoNonPiuNecessario";
         public static string RevocaPerRiassegnazione = "RevocaPerRiassegnazione";
         public static string RevocaPerSostituzioneMezzo = "RevocaPerSostituzioneMezzo";
+        public static string SostituzionePartenza = "SostituzionePartenza";
         public static string AnnullamentoPresaInCarico = "AnnullamentoPresaInCarico";
 
         public static string FonogrammaDaInviare = "FonogrammaDaInviare";
         public static string FonogrammaInviato = "FonogrammaInviato";
 
         public static string AllertaAltreSedi = "AllertaAltreSedi";
+
         #endregion Eventi
 
         #region Ruoli Utenti
