@@ -1,6 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
-import { GetListaMezziSquadre, IdRichiestaSostituzione } from '../../store/actions/sostituzione-partenza/sostituzione-partenza.actions';
+import {
+  GetListaMezziSquadre,
+  IdRichiestaSostituzione,
+  StartListaComposizioneLoading,
+} from '../../store/actions/sostituzione-partenza/sostituzione-partenza.actions';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
@@ -31,7 +35,6 @@ import {
 import {UnselectMezziAndSquadreComposizioneAvanzata} from '../../../features/home/store/actions/composizione-partenza/composizione-avanzata.actions';
 import { FiltriComposizioneState } from '../../store/states/filtri-composizione/filtri-composizione.state';
 import { SetRicercaMezziComposizione, SetRicercaSquadreComposizione } from '../../store/actions/ricerca-composizione/ricerca-composizione.actions';
-import { ComposizionePartenzaState } from '../../../features/home/store/states/composizione-partenza/composizione-partenza.state';
 import { ListaSquadre } from '../../interface/lista-squadre';
 import { VisualizzaListaSquadrePartenza } from '../../../features/home/store/actions/richieste/richieste.actions';
 import { Partenza } from '../../model/partenza.model';
@@ -95,7 +98,7 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
     @Select(FiltriComposizioneState.filtri) filtriAffini$: Observable<any>;
 
     // Loading Liste Mezzi e Squadre
-    @Select(ComposizionePartenzaState.loadingListe) loadingListe$: Observable<boolean>;
+    @Select(SostituzionePartenzaModalState.loadingListe) loadingListe$: Observable<boolean>;
     loadingListe: boolean;
 
     richiesta: SintesiRichiesta;
@@ -230,6 +233,7 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
         );
         this.initForm();
         this.formatTime();
+        this.subscription.add(this.loadingListe$.subscribe(res => this.loadingListe = res));
     }
 
     ngOnInit(): void {
@@ -300,12 +304,14 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
 
 
     mezzoSelezionato(mezzoComposizione: MezzoComposizione): void {
-        this.store.dispatch(new ReducerSelectMezzoComposizione(mezzoComposizione));
+        this.store.dispatch([new StartListaComposizioneLoading(),
+                                          new ReducerSelectMezzoComposizione(mezzoComposizione)]);
         this.nuovoMezzo = mezzoComposizione.mezzo;
     }
 
     mezzoDeselezionato(event?: any): void {
         this.store.dispatch([
+            new StartListaComposizioneLoading(),
             new UnselectMezzoComposizione(),
             new ClearBoxPartenze()
         ]);
@@ -333,6 +339,7 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
     }
 
     squadraSelezionata(squadraComposizione: SquadraComposizione): void {
+        this.store.dispatch(new StartListaComposizioneLoading());
         if (this.nuovoMezzo.codice === '' && this.nuoveSquadre.length <= 0) {
             this.store.dispatch(new AddBoxPartenza());
         }
@@ -345,7 +352,8 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
     }
 
     squadraDeselezionata(squadraComposizione: SquadraComposizione): void {
-        this.store.dispatch(new UnselectSquadraComposizione(squadraComposizione));
+        this.store.dispatch([new StartListaComposizioneLoading(),
+                                          new UnselectSquadraComposizione(squadraComposizione)]);
         const r = squadraComposizione.squadra;
         const a = this.nuoveSquadre.filter(e => e !== r);
         this.nuoveSquadre = a;
@@ -374,12 +382,14 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
     }
 
     changeRicercaSquadre(): void {
-        this.store.dispatch([new SetRicercaSquadreComposizione(makeCopy(this.ricercaSquadre)),
+        this.store.dispatch([new StartListaComposizioneLoading(),
+                                          new SetRicercaSquadreComposizione(makeCopy(this.ricercaSquadre)),
                                           new GetListaMezziSquadre()]);
     }
 
     changeRicercaMezzi(): void {
-        this.store.dispatch([new SetRicercaMezziComposizione(makeCopy(this.ricercaMezzi)),
+        this.store.dispatch([new StartListaComposizioneLoading(),
+                                          new SetRicercaMezziComposizione(makeCopy(this.ricercaMezzi)),
                                           new GetListaMezziSquadre()]);
     }
 
@@ -423,6 +433,7 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
     }
 
     mezziPageChange(pageMezzi: number): void {
+        this.store.dispatch(new StartListaComposizioneLoading());
         const options = {
             page: {
                 pageMezzi,
@@ -433,6 +444,7 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
     }
 
     squadrePageChange(pageSquadre: number): void {
+        this.store.dispatch(new StartListaComposizioneLoading());
         const options = {
             page: {
                 pageSquadre,

@@ -137,6 +137,7 @@ export class SostituzionePartenzaModalState {
       this.compPartenzaService.getListeComposizioneAvanzata(obj).subscribe((listeCompAvanzata: ListaComposizioneAvanzata) => {
         console.log('*******LISTA MEZZI E SQUADRE ', listeCompAvanzata);
         if (listeCompAvanzata) {
+          this.store.dispatch(new StopListaComposizioneLoading());
           const listaBoxPartenza = this.store.selectSnapshot(BoxPartenzaState.boxPartenzaList);
           if (listeCompAvanzata.composizioneMezziDataArray) {
             dispatch(new SetListaMezziComposizione(listeCompAvanzata.composizioneMezziDataArray));
