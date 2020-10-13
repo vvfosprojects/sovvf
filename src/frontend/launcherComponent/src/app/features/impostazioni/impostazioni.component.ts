@@ -11,6 +11,7 @@ import { makeCopy } from '../../shared/helper/function';
 import { SetCurrentUrl } from '../../shared/store/actions/app/app.actions';
 import { RoutesPath } from '../../shared/enum/routes-path.enum';
 import { SetSediNavbarVisible } from '../../shared/store/actions/sedi-treeview/sedi-treeview.actions';
+import { StopBigLoading } from '../../shared/store/actions/loading/loading.actions';
 
 @Component({
     selector: 'app-impostazioni',
@@ -35,16 +36,21 @@ export class ImpostazioniComponent implements OnInit, OnDestroy {
         this.getListaImpostazioni();
     }
 
-    ngOnInit() {
-        isDevMode() && console.log('Componente Impostazioni creato');
+    ngOnInit(): void {
+        if (isDevMode()) {
+            console.log('Componente Impostazioni creato');
+        }
         this.store.dispatch([
             new SetCurrentUrl(RoutesPath.Impostazioni),
-            new SetSediNavbarVisible(false)
+            new SetSediNavbarVisible(false),
+            new StopBigLoading()
         ]);
     }
 
-    ngOnDestroy() {
-        isDevMode() && console.log('Componente Impostazioni distrutto');
+    ngOnDestroy(): void {
+        if (isDevMode()) {
+            console.log('Componente Impostazioni distrutto');
+        }
         this.store.dispatch([
             new SetSediNavbarVisible()
         ]);
@@ -75,7 +81,7 @@ export class ImpostazioniComponent implements OnInit, OnDestroy {
         );
     }
 
-    setImpostazione(tipo: TipoImpostazione, opzioneLabel: string, value: any) {
+    setImpostazione(tipo: TipoImpostazione, opzioneLabel: string, value: any): void {
         const listaImpostazioni = makeCopy(this.listaImpostazioni);
         const impostazione = listaImpostazioni.filter((i: Impostazione) => i.tipo === tipo)[0] as Impostazione;
         if (!impostazione) {

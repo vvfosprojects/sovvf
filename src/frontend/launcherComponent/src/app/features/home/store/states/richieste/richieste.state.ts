@@ -62,6 +62,7 @@ import { AuthState } from '../../../../auth/store/auth.state';
 import { UpdateRichiestaFissata } from '../../actions/richieste/richiesta-fissata.actions';
 import { TreeviewSelezione } from '../../../../../shared/model/treeview-selezione.model';
 import { ListaSquadrePartenzaComponent } from '../../../../../shared/components/lista-squadre-partenza/lista-squadre-partenza.component';
+import { Injectable } from '@angular/core';
 
 export interface RichiesteStateModel {
     richieste: SintesiRichiesta[];
@@ -87,6 +88,7 @@ export const RichiesteStateDefaults: RichiesteStateModel = {
     needRefresh: false
 };
 
+@Injectable()
 @State<RichiesteStateModel>({
     name: 'richieste',
     defaults: RichiesteStateDefaults,
@@ -103,47 +105,47 @@ export const RichiesteStateDefaults: RichiesteStateModel = {
 export class RichiesteState {
 
     @Selector()
-    static richieste(state: RichiesteStateModel) {
+    static richieste(state: RichiesteStateModel): SintesiRichiesta[] {
         return state.richieste;
     }
 
     @Selector()
-    static getRichiestaById(state: RichiesteStateModel) {
+    static getRichiestaById(state: RichiesteStateModel): SintesiRichiesta {
         return state.richiestaById;
     }
 
     @Selector()
-    static richiestaById(state: RichiesteStateModel) {
+    static richiestaById(state: RichiesteStateModel): any {
         return (id: string) => state.richieste.find(x => x.id === id);
     }
 
     @Selector()
-    static needRefresh(state: RichiesteStateModel) {
+    static needRefresh(state: RichiesteStateModel): boolean {
         return state.needRefresh;
     }
 
     @Selector()
-    static loadingRichieste(state: RichiesteStateModel) {
+    static loadingRichieste(state: RichiesteStateModel): boolean {
         return state.loadingRichieste;
     }
 
     @Selector()
-    static loadingActionMezzo(state: RichiesteStateModel) {
+    static loadingActionMezzo(state: RichiesteStateModel): string {
         return state.loadingActionMezzo;
     }
 
     @Selector()
-    static loadingActionRichiesta(state: RichiesteStateModel) {
+    static loadingActionRichiesta(state: RichiesteStateModel): string {
         return state.loadingActionRichiesta;
     }
 
     @Selector()
-    static loadingEliminaPartenza(state: RichiesteStateModel) {
+    static loadingEliminaPartenza(state: RichiesteStateModel): boolean {
         return state.loadingEliminaPartenza;
     }
 
     @Selector()
-    static loadingModificaFonogramma(state: RichiesteStateModel) {
+    static loadingModificaFonogramma(state: RichiesteStateModel): boolean {
         return state.loadingModificaFonogramma;
     }
 
@@ -153,7 +155,7 @@ export class RichiesteState {
     }
 
     @Action(GetListaRichieste, { cancelUncompleted: true })
-    getRichieste({ getState, dispatch }: StateContext<RichiesteStateModel>, action: GetListaRichieste) {
+    getRichieste({ getState, dispatch }: StateContext<RichiesteStateModel>, action: GetListaRichieste): void {
         const state = getState();
         const utente = this.store.selectSnapshot(AuthState.currentUser);
         if (utente) {
@@ -196,10 +198,10 @@ export class RichiesteState {
     }
 
     @Action(PatchRichiesta)
-    patchRichiesta({ dispatch }: StateContext<RichiesteStateModel>, action: PatchRichiesta) {
+    patchRichiesta({ dispatch }: StateContext<RichiesteStateModel>, action: PatchRichiesta): void {
         action.richiesta.richiedente.telefono = action.richiesta.richiedente.telefono.toString();
         this.richiesteService.patchRichiesta(action.richiesta).subscribe(() => {
-            dispatch(new SuccessRichiestaModifica);
+            dispatch(new SuccessRichiestaModifica());
         }, () => {
             dispatch([
                 new ClearIndirizzo(),
@@ -210,21 +212,21 @@ export class RichiesteState {
     }
 
     @Action(AddRichieste)
-    setRichieste({ getState, patchState }: StateContext<RichiesteStateModel>, action: AddRichieste) {
+    setRichieste({ getState, patchState }: StateContext<RichiesteStateModel>, action: AddRichieste): void {
         patchState({
             richieste: action.richieste
         });
     }
 
     @Action(ClearRichieste)
-    clearRichieste({ patchState, dispatch }: StateContext<RichiesteStateModel>) {
+    clearRichieste({ patchState, dispatch }: StateContext<RichiesteStateModel>): void {
         dispatch(new ClearRichiesteEspanse());
         patchState(RichiesteStateDefaults);
     }
 
 
     @Action(SetNeedRefresh)
-    setNeedRefresh({ getState, patchState }: StateContext<RichiesteStateModel>, action: SetNeedRefresh) {
+    setNeedRefresh({ getState, patchState }: StateContext<RichiesteStateModel>, action: SetNeedRefresh): void {
         const needRefreshValue = action.value;
         if (needRefreshValue === true) {
             patchState({
@@ -238,7 +240,7 @@ export class RichiesteState {
     }
 
     @Action(UpdateRichiesta)
-    updateRichiesta({ getState, setState, dispatch }: StateContext<RichiesteStateModel>, action: UpdateRichiesta) {
+    updateRichiesta({ getState, setState, dispatch }: StateContext<RichiesteStateModel>, action: UpdateRichiesta): void {
         if (action.richiesta) {
             // Controllo se la richiesta aggiornata è anche la richiesta attualmente in composzione
             const richiestaComposizione = this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione);
@@ -278,7 +280,7 @@ export class RichiesteState {
     }
 
     @Action(AddRichiesta)
-    addRichiesta({ getState, setState, dispatch }: StateContext<RichiesteStateModel>, { richiesta }: AddRichiesta) {
+    addRichiesta({ getState, setState, dispatch }: StateContext<RichiesteStateModel>, { richiesta }: AddRichiesta): void {
         const state = getState();
         const beforePosition = state.richieste.length > 0 ? 0 : null;
         setState(
@@ -298,7 +300,7 @@ export class RichiesteState {
     }
 
     @Action(SetIdChiamataInviaPartenza)
-    setIdChiamataInviaPartenza({ patchState, dispatch }: StateContext<RichiesteStateModel>, action: SetIdChiamataInviaPartenza) {
+    setIdChiamataInviaPartenza({ patchState, dispatch }: StateContext<RichiesteStateModel>, action: SetIdChiamataInviaPartenza): void {
         patchState({
             chiamataInviaPartenza: action.richiesta.codice
         });
@@ -306,14 +308,14 @@ export class RichiesteState {
     }
 
     @Action(ClearIdChiamataInviaPartenza)
-    clearIdChiamataInviaPartenza({ patchState }: StateContext<RichiesteStateModel>) {
+    clearIdChiamataInviaPartenza({ patchState }: StateContext<RichiesteStateModel>): void {
         patchState({
             chiamataInviaPartenza: RichiesteStateDefaults.chiamataInviaPartenza
         });
     }
 
     @Action(StartInviaPartenzaFromChiamata)
-    startInviaPartenzaFromChiamata({ dispatch, patchState }: StateContext<RichiesteStateModel>, action: StartInviaPartenzaFromChiamata) {
+    startInviaPartenzaFromChiamata({ dispatch, patchState }: StateContext<RichiesteStateModel>, action: StartInviaPartenzaFromChiamata): void {
         dispatch([
             new ClearIdChiamataInviaPartenza(),
             new ToggleComposizione(Composizione.Avanzata),
@@ -323,13 +325,13 @@ export class RichiesteState {
     }
 
     @Action(ActionMezzo)
-    actionMezzo({ dispatch }: StateContext<RichiesteStateModel>, action: ActionMezzo) {
+    actionMezzo({ dispatch }: StateContext<RichiesteStateModel>, action: ActionMezzo): void {
         dispatch(new StartLoadingActionMezzo(action.mezzoAction.mezzo.codice));
         const obj = {
-            'codRichiesta': action.mezzoAction.codRichiesta,
-            'idMezzo': action.mezzoAction.mezzo.codice,
-            'statoMezzo': action.mezzoAction.action ? action.mezzoAction.action : calcolaActionSuggeritaMezzo(action.mezzoAction.mezzo.stato),
-            'dataOraAggiornamento': action.mezzoAction.data
+            codRichiesta: action.mezzoAction.codRichiesta,
+            idMezzo: action.mezzoAction.mezzo.codice,
+            statoMezzo: action.mezzoAction.action ? action.mezzoAction.action : calcolaActionSuggeritaMezzo(action.mezzoAction.mezzo.stato),
+            dataOraAggiornamento: action.mezzoAction.data
         };
         this.richiesteService.aggiornaStatoMezzo(obj).subscribe(() => {
             },
@@ -338,14 +340,14 @@ export class RichiesteState {
     }
 
     @Action(EliminaPartenzaRichiesta)
-    eliminaPartenzaRichiesta({ dispatch }: StateContext<RichiesteStateModel>, action: EliminaPartenzaRichiesta) {
+    eliminaPartenzaRichiesta({ dispatch }: StateContext<RichiesteStateModel>, action: EliminaPartenzaRichiesta): void {
         dispatch(new StartLoadingEliminaPartenza());
         const obj = {
-            'idRichiesta': action.idRichiesta,
-            'targaMezzo': action.targaMezzo,
-            'codMotivazione': action.motivazione.codMotivazione,
-            'testoMotivazione': action.motivazione.testoMotivazione ? action.motivazione.testoMotivazione : null,
-            'codRichiestaSubentrata': action.motivazione.codRichiestaSubentrata ? action.motivazione.codRichiestaSubentrata : null
+            idRichiesta: action.idRichiesta,
+            targaMezzo: action.targaMezzo,
+            codMotivazione: action.motivazione.codMotivazione,
+            testoMotivazione: action.motivazione.testoMotivazione ? action.motivazione.testoMotivazione : null,
+            codRichiestaSubentrata: action.motivazione.codRichiestaSubentrata ? action.motivazione.codRichiestaSubentrata : null
         };
         this.richiesteService.eliminaPartenzaRichiesta(obj).subscribe(() => {
             dispatch(new StopLoadingEliminaPartenza());
@@ -353,7 +355,7 @@ export class RichiesteState {
     }
 
     @Action(ActionRichiesta)
-    actionRichiesta({ dispatch }: StateContext<RichiesteStateModel>, action: ActionRichiesta) {
+    actionRichiesta({ dispatch }: StateContext<RichiesteStateModel>, action: ActionRichiesta): void {
         dispatch(new StartLoadingActionRichiesta(action.richiestaAction.idRichiesta));
         const obj = action.richiestaAction;
         console.log('Obj', obj);
@@ -362,14 +364,14 @@ export class RichiesteState {
     }
 
     @Action(ModificaStatoFonogramma)
-    modificaStatoFonogramma({ dispatch }: StateContext<RichiesteStateModel>, action: ModificaStatoFonogramma) {
+    modificaStatoFonogramma({ dispatch }: StateContext<RichiesteStateModel>, action: ModificaStatoFonogramma): void {
         dispatch(new StartLoadingModificaFonogramma());
         const obj = {
-            'idRichiesta': action.event.idRichiesta,
-            'numeroFonogramma': action.event.numeroFonogramma,
-            'protocolloFonogramma': action.event.protocolloFonogramma,
-            'destinatari': action.event.destinatari,
-            'stato': getStatoFonogrammaEnumByName(action.event.stato)
+            idRichiesta: action.event.idRichiesta,
+            numeroFonogramma: action.event.numeroFonogramma,
+            protocolloFonogramma: action.event.protocolloFonogramma,
+            destinatari: action.event.destinatari,
+            stato: getStatoFonogrammaEnumByName(action.event.stato)
         };
         this.richiesteService.modificaStatoFonogrammaRichiesta(obj).subscribe(() => {
             dispatch(new StopLoadingModificaFonogramma());
@@ -377,17 +379,17 @@ export class RichiesteState {
     }
 
     @Action(AllertaSede)
-    allertaSede({ dispatch }: StateContext<RichiesteStateModel>, action: AllertaSede) {
+    allertaSede({ dispatch }: StateContext<RichiesteStateModel>, action: AllertaSede): void {
         const obj = {
-            'codiceRichiesta': action.event.codRichiesta,
-            'codSediAllertate': action.event.sedi.map((s: TreeviewSelezione) => s.idSede)
+            codiceRichiesta: action.event.codRichiesta,
+            codSediAllertate: action.event.sedi.map((s: TreeviewSelezione) => s.idSede)
         };
         this.richiesteService.allertaSede(obj).subscribe(() => {
         });
     }
 
     @Action(SetRichiestaById)
-    setRichiestaById({ patchState, dispatch }: StateContext<RichiesteStateModel>, action: SetRichiestaById) {
+    setRichiestaById({ patchState, dispatch }: StateContext<RichiesteStateModel>, action: SetRichiestaById): void {
         this.richiesteService.getRichiestaById(action.idRichiesta).subscribe((data: SintesiRichiesta) => {
             patchState({
                 richiestaById: data
@@ -396,14 +398,14 @@ export class RichiesteState {
     }
 
     @Action(ClearRichiestaById)
-    clearRichiestaById({ patchState }: StateContext<RichiesteStateModel>) {
+    clearRichiestaById({ patchState }: StateContext<RichiesteStateModel>): void {
         patchState({
             richiestaById: RichiesteStateDefaults.richiestaById
         });
     }
 
     @Action(VisualizzaListaSquadrePartenza)
-    visualizzaListaSquadrePartenza({ patchState }: StateContext<RichiesteStateModel>, action: VisualizzaListaSquadrePartenza) {
+    visualizzaListaSquadrePartenza({ patchState }: StateContext<RichiesteStateModel>, action: VisualizzaListaSquadrePartenza): void {
         const modal = this.modalService.open(ListaSquadrePartenzaComponent, {
             windowClass: 'modal-holder',
             backdropClass: 'light-blue-backdrop',
@@ -415,28 +417,28 @@ export class RichiesteState {
     }
 
     @Action(StartLoadingRichieste)
-    startLoadingRichieste({ patchState }: StateContext<RichiesteStateModel>) {
+    startLoadingRichieste({ patchState }: StateContext<RichiesteStateModel>): void {
         patchState({
             loadingRichieste: true
         });
     }
 
     @Action(StopLoadingRichieste)
-    stopLoadingRichieste({ patchState }: StateContext<RichiesteStateModel>) {
+    stopLoadingRichieste({ patchState }: StateContext<RichiesteStateModel>): void {
         patchState({
             loadingRichieste: false
         });
     }
 
     @Action(StartLoadingActionMezzo)
-    startLoadingActionMezzo({ patchState }: StateContext<RichiesteStateModel>, action: StartLoadingActionMezzo) {
+    startLoadingActionMezzo({ patchState }: StateContext<RichiesteStateModel>, action: StartLoadingActionMezzo): void {
         patchState({
             loadingActionMezzo: action.idMezzo
         });
     }
 
     @Action(StopLoadingActionMezzo)
-    stopLoadingActionMezzo({ patchState }: StateContext<RichiesteStateModel>) {
+    stopLoadingActionMezzo({ patchState }: StateContext<RichiesteStateModel>): void {
         patchState({
             loadingActionMezzo: null
         });
@@ -444,42 +446,42 @@ export class RichiesteState {
 
 
     @Action(StartLoadingEliminaPartenza)
-    startLoadingEliminaPartenza({ patchState }: StateContext<RichiesteStateModel>) {
+    startLoadingEliminaPartenza({ patchState }: StateContext<RichiesteStateModel>): void {
         patchState({
             loadingEliminaPartenza: true
         });
     }
 
     @Action(StopLoadingEliminaPartenza)
-    stopLoadingEliminaPartenza({ patchState }: StateContext<RichiesteStateModel>) {
+    stopLoadingEliminaPartenza({ patchState }: StateContext<RichiesteStateModel>): void {
         patchState({
             loadingEliminaPartenza: false
         });
     }
 
     @Action(StartLoadingActionRichiesta)
-    startLoadingActionRichiesta({ patchState }: StateContext<RichiesteStateModel>, action: StartLoadingActionRichiesta) {
+    startLoadingActionRichiesta({ patchState }: StateContext<RichiesteStateModel>, action: StartLoadingActionRichiesta): void {
         patchState({
             loadingActionRichiesta: action.idRichiesta
         });
     }
 
     @Action(StopLoadingActionRichiesta)
-    stopLoadingActionRichiesta({ patchState }: StateContext<RichiesteStateModel>) {
+    stopLoadingActionRichiesta({ patchState }: StateContext<RichiesteStateModel>): void {
         patchState({
             loadingActionRichiesta: null
         });
     }
 
     @Action(StartLoadingModificaFonogramma)
-    startLoadingModificaFonogramma({ patchState }: StateContext<RichiesteStateModel>) {
+    startLoadingModificaFonogramma({ patchState }: StateContext<RichiesteStateModel>): void {
         patchState({
             loadingModificaFonogramma: true
         });
     }
 
     @Action(StopLoadingModificaFonogramma)
-    stopLoadingModificaFonogramma({ patchState }: StateContext<RichiesteStateModel>) {
+    stopLoadingModificaFonogramma({ patchState }: StateContext<RichiesteStateModel>): void {
         patchState({
             loadingModificaFonogramma: false
         });

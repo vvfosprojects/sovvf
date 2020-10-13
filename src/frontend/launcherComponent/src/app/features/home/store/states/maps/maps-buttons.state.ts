@@ -4,6 +4,7 @@ import { GetInitCentroMappa } from '../../actions/maps/centro-mappa.actions';
 import { ButtonControlAnimation } from '../../../maps/maps-interface/maps-custom-buttons';
 import { MapsFiltroState } from './maps-filtro.state';
 import { Observable } from 'rxjs';
+import { Injectable } from '@angular/core';
 
 export interface MapsButtonsStateModel {
     controlAnimation: ButtonControlAnimation;
@@ -22,6 +23,7 @@ export const mapsButtonsStateDefaults: MapsButtonsStateModel = {
     prevState: false
 };
 
+@Injectable()
 @State<MapsButtonsStateModel>({
     name: 'mapsButton',
     defaults: mapsButtonsStateDefaults
@@ -41,12 +43,12 @@ export class MapsButtonsState {
     }
 
     @Action(CentraMappaButton)
-    centraMappaButton({ dispatch }: StateContext<MapsButtonsStateModel>) {
+    centraMappaButton({ dispatch }: StateContext<MapsButtonsStateModel>): void {
         dispatch(new GetInitCentroMappa());
     }
 
     @Action(ToggleAnimationButton)
-    toggleAnimationButton({ getState, patchState, dispatch }: StateContext<MapsButtonsStateModel>, action: ToggleAnimationButton) {
+    toggleAnimationButton({ getState, patchState, dispatch }: StateContext<MapsButtonsStateModel>, action: ToggleAnimationButton): void {
         let richiesteIsOn = true;
         this.filtroMarkerAttivo$.subscribe((result: string[]) => {
             if (result) {
@@ -92,7 +94,7 @@ export class MapsButtonsState {
     }
 
     @Action(ForceActiveAnimation)
-    forceActiveAnimation({ getState, patchState, dispatch }: StateContext<MapsButtonsStateModel>) {
+    forceActiveAnimation({ getState, patchState, dispatch }: StateContext<MapsButtonsStateModel>): void {
         const state = getState();
         if (state.controlAnimation.toggleStatus) {
             patchState(mapsButtonsStateDefaults);
@@ -102,15 +104,13 @@ export class MapsButtonsState {
     }
 
     @Action(ToggleAnimation)
-    toggleAnimation({ getState, patchState }: StateContext<MapsButtonsStateModel>) {
-
+    toggleAnimation({ getState, patchState }: StateContext<MapsButtonsStateModel>): void {
         patchBounceAnimation();
-
         setTimeout(() => {
             patchBounceAnimation();
         }, 2000);
 
-        function patchBounceAnimation() {
+        function patchBounceAnimation(): void {
             patchState({
                 bounceAnimation: !getState().bounceAnimation
             });

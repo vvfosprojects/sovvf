@@ -8,6 +8,7 @@ import { Ruolo } from '../../../model/utente.model';
 import { NavbarState } from '../../../../features/navbar/store/states/navbar.state';
 import { getRuoliRicorsivo } from '../../../helper/get-ruoli-ricorsivo';
 import { LSNAME } from '../../../../core/settings/config';
+import { Injectable } from '@angular/core';
 
 export interface RuoliUtenteLoggatoStateModel {
     ruoliPrincipali: Ruolo[];
@@ -19,6 +20,7 @@ export const ruoliStateModelDefaults: RuoliUtenteLoggatoStateModel = {
     ruoli: []
 };
 
+@Injectable()
 @State<RuoliUtenteLoggatoStateModel>({
     name: 'ruoliUtenteLoggato',
     defaults: ruoliStateModelDefaults
@@ -26,17 +28,17 @@ export const ruoliStateModelDefaults: RuoliUtenteLoggatoStateModel = {
 export class RuoliUtenteLoggatoState {
 
     @Selector()
-    static ruoliPrincipali(state: RuoliUtenteLoggatoStateModel) {
+    static ruoliPrincipali(state: RuoliUtenteLoggatoStateModel): Ruolo[] {
         return state.ruoliPrincipali;
     }
 
     @Selector()
-    static ruoli(state: RuoliUtenteLoggatoStateModel) {
+    static ruoli(state: RuoliUtenteLoggatoStateModel): Ruolo[] {
         return state.ruoli;
     }
 
     @Selector()
-    static ruoliFiltrati(state: RuoliUtenteLoggatoStateModel) {
+    static ruoliFiltrati(state: RuoliUtenteLoggatoStateModel): Ruolo[] {
         return state.ruoli.filter((r: Ruolo) => !r.hidden);
     }
 
@@ -44,7 +46,7 @@ export class RuoliUtenteLoggatoState {
     }
 
     @Action(SetRuoliUtenteLoggato)
-    setRuoliUtenteLoggato({ patchState }: StateContext<RuoliUtenteLoggatoStateModel>, action: SetRuoliUtenteLoggato) {
+    setRuoliUtenteLoggato({ patchState }: StateContext<RuoliUtenteLoggatoStateModel>, action: SetRuoliUtenteLoggato): void {
         patchState({
             ruoliPrincipali: action.ruoliUtenteLoggato,
             ruoli: this.getRuoliFullList(action.ruoliUtenteLoggato)
@@ -53,7 +55,7 @@ export class RuoliUtenteLoggatoState {
     }
 
     @Action(UpdateRuoliUtenteLoggato)
-    updateRuoliUtenteLoggato({ patchState }: StateContext<RuoliUtenteLoggatoStateModel>, action: UpdateRuoliUtenteLoggato) {
+    updateRuoliUtenteLoggato({ patchState }: StateContext<RuoliUtenteLoggatoStateModel>, action: UpdateRuoliUtenteLoggato): void {
         patchState({
             ruoliPrincipali: action.ruoliUtenteLoggato,
             ruoli: this.getRuoliFullList(action.ruoliUtenteLoggato)
@@ -62,7 +64,7 @@ export class RuoliUtenteLoggatoState {
     }
 
     @Action(ClearRuoliUtenteLoggato)
-    clearRuoliUtenteLoggato({ patchState }: StateContext<RuoliUtenteLoggatoStateModel>) {
+    clearRuoliUtenteLoggato({ patchState }: StateContext<RuoliUtenteLoggatoStateModel>): void {
         patchState({
             ruoli: ruoliStateModelDefaults.ruoli
         });

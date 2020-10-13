@@ -9,7 +9,7 @@ import { AreaMappa } from '../../maps-model/area-mappa-model';
 import { SetAreaMappa } from '../../../store/actions/maps/area-mappa.actions';
 import { MAPSOPTIONS } from '../../../../../core/settings/maps-options';
 import { diffCoordinate, makeAreaMappa, makeCoordinate } from '../../../../../shared/helper/function';
-import { LatLngBounds } from '@agm/core/services/google-maps-types';
+import { LatLngBounds } from 'ngx-google-places-autocomplete/objects/latLngBounds';
 
 @Injectable()
 export class MapService {

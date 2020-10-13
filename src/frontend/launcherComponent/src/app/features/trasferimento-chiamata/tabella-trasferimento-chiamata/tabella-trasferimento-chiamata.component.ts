@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
+import { Component, EventEmitter, Output, Input } from '@angular/core';
 import { TrasferimentoChiamata } from 'src/app/shared/interface/trasferimento-chiamata.interface';
 
 @Component({
@@ -6,7 +6,7 @@ import { TrasferimentoChiamata } from 'src/app/shared/interface/trasferimento-ch
     templateUrl: './tabella-trasferimento-chiamata.component.html',
     styleUrls: ['./tabella-trasferimento-chiamata.component.css']
 })
-export class TabellaTrasferimentoChiamataComponent implements OnInit {
+export class TabellaTrasferimentoChiamataComponent {
 
     @Input() page: number;
     @Input() pageSize: number;
@@ -15,15 +15,7 @@ export class TabellaTrasferimentoChiamataComponent implements OnInit {
     @Input() loading: boolean;
     @Input() listaTrasferimentiChiamate: TrasferimentoChiamata[];
 
-
     @Output() pageChange: EventEmitter<number> = new EventEmitter<number>();
     @Output() pageSizeChange: EventEmitter<number> = new EventEmitter<number>();
-
-
-    constructor() {
-    }
-
-    ngOnInit() {
-    }
 
 }

@@ -5,3 +5,11 @@ export class StartLoading {
 export class StopLoading {
     static readonly type = '[Loading] Stop';
 }
+
+export class StartBigLoading {
+    static readonly type = '[Loading] Start Big';
+}
+
+export class StopBigLoading {
+    static readonly type = '[Loading] Stop Big';
+}

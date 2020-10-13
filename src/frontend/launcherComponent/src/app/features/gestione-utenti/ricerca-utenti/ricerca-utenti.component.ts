@@ -28,7 +28,7 @@ export class RicercaUtentiComponent {
         return this.sediFiltroSelezionate && this.sediFiltroSelezionate.filter(s => s === codSede).length > 0;
     }
 
-    resetFiltriSedi() {
+    resetFiltriSedi(): void {
         this.filtriReset.emit();
     }
 }

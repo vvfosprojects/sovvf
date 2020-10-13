@@ -14,7 +14,10 @@ import { Store } from '@ngxs/store';
 import { PatchRichiesta } from '../../../store/actions/richieste/richieste.actions';
 import { makeCopy } from 'src/app/shared/helper/function';
 import { TrasferimentoChiamataModalComponent } from 'src/app/shared/modal/trasferimento-chiamata-modal/trasferimento-chiamata-modal.component';
-import { ClearFormTrasferimentoChiamata, RequestAddTrasferimentoChiamata } from 'src/app/shared/store/actions/trasferimento-chiamata-modal/trasferimento-chiamata-modal.actions';
+import {
+    ClearFormTrasferimentoChiamata,
+    RequestAddTrasferimentoChiamata
+} from 'src/app/shared/store/actions/trasferimento-chiamata-modal/trasferimento-chiamata-modal.actions';
 import { AllertaSedeModalComponent } from '../../../../../shared/modal/allerta-sede-modal/allerta-sede-modal.component';
 import { AllertaSedeEmitInterface } from '../../../../../shared/interface/allerta-sede-emit.interface';
 import { ModificaPartenzaModalComponent } from 'src/app/shared/modal/modifica-partenza-modal/modifica-partenza-modal.component';
@@ -22,6 +25,7 @@ import { ListaEntiComponent } from '../../../../../shared/components/lista-enti/
 import { EliminaPartenzaModalComponent } from '../../../../../shared/modal/elimina-partenza-modal/elimina-partenza-modal.component';
 import { DettaglioFonogrammaModalComponent } from '../../../../../shared/modal/dettaglio-fonogramma-modal/dettaglio-fonogramma-modal.component';
 import { ModificaFonogrammaModalComponent } from '../../../../../shared/modal/modifica-fonogramma-modal/modifica-fonogramma-modal.component';
+import { Tipologia } from '../../../../../shared/model/tipologia.model';
 
 @Component({
     selector: 'app-sintesi-richiesta',
@@ -70,7 +74,7 @@ export class SintesiRichiestaComponent implements OnChanges {
     @Output() allertaSede = new EventEmitter<AllertaSedeEmitInterface>();
     @Output() outEspansoId = new EventEmitter<string>();
 
-    methods = new HelperSintesiRichiesta;
+    methods = new HelperSintesiRichiesta();
     isSingleClick = true;
     live = true;
 
@@ -105,7 +109,7 @@ export class SintesiRichiestaComponent implements OnChanges {
     }
 
     /* Eventi */
-    richiestaClick(richiesta: SintesiRichiesta) {
+    richiestaClick(richiesta: SintesiRichiesta): void {
         if (richiesta) {
             this.isSingleClick = true;
             setTimeout(() => {
@@ -116,7 +120,7 @@ export class SintesiRichiestaComponent implements OnChanges {
         }
     }
 
-    richiestaDoubleClick(richiesta: SintesiRichiesta) {
+    richiestaDoubleClick(richiesta: SintesiRichiesta): void {
         if (richiesta && this.espandibile) {
             this.isSingleClick = false;
             this.toggleEspanso(richiesta.id);
@@ -124,29 +128,29 @@ export class SintesiRichiestaComponent implements OnChanges {
         }
     }
 
-    fissaClick(richiesta: SintesiRichiesta) {
+    fissaClick(richiesta: SintesiRichiesta): void {
         if (richiesta) {
             this.fissaInAlto.emit(richiesta);
         }
     }
 
-    richiestaHoverIn(richiesta: SintesiRichiesta) {
+    richiestaHoverIn(richiesta: SintesiRichiesta): void {
         if (richiesta) {
             this.hoverIn.emit(richiesta.id);
         }
     }
 
-    richiestaHoverOut(richiesta: SintesiRichiesta) {
+    richiestaHoverOut(richiesta: SintesiRichiesta): void {
         if (richiesta) {
             this.hoverOut.emit(richiesta.id);
         }
     }
 
-    visualizzaEventiRichiesta(codice: string) {
+    visualizzaEventiRichiesta(codice: string): void {
         this.eventiRichiesta.emit(codice);
     }
 
-    invioPartenza(richiesta: SintesiRichiesta) {
+    invioPartenza(richiesta: SintesiRichiesta): void {
         if (richiesta) {
             this.nuovaPartenza.emit(richiesta);
         }
@@ -159,48 +163,67 @@ export class SintesiRichiestaComponent implements OnChanges {
         }
     }
 
-    complessitaClass(richiesta: SintesiRichiesta) {
+    complessitaClass(richiesta: SintesiRichiesta): any {
         return this.methods.complessitaClass(richiesta);
     }
 
-    onModificaRichiesta() {
+    onModificaRichiesta(): void {
         this.modificaRichiesta.emit(this.richiesta);
     }
 
-    onGestioneRichiesta() {
+    onGestioneRichiesta(): void {
         this.gestioneRichiesta.emit(this.richiesta);
     }
 
-    getPresaInCaricoTooltip(utentiPresaInCaricoValue: any) {
+    getPresaInCaricoTooltip(utentiPresaInCaricoValue: any): any {
         return {
             nominativo: utentiPresaInCaricoValue.nominativo.length <= 15 ? '' : utentiPresaInCaricoValue.nominativo,
             dataInizioAttivita: utentiPresaInCaricoValue.dataInizioAttivita
         };
     }
 
-    getInLavorazioneTooltip(utentiInLavorazioneValue: any) {
+    getPrimaTipologia(richiesta: SintesiRichiesta): Tipologia {
+        if (richiesta.tipologie && richiesta.tipologie.length > 0) {
+            return richiesta.tipologie[0];
+        } else {
+            return null;
+        }
+    }
+
+    getDescrizionePrimaTipologia(richiesta: SintesiRichiesta): string {
+        if (richiesta.tipologie && richiesta.tipologie.length > 0) {
+            return richiesta.tipologie[0].descrizione;
+        } else {
+            return '';
+        }
+    }
+
+    getInLavorazioneTooltip(utentiInLavorazioneValue: any): string {
         return utentiInLavorazioneValue.nominativo;
     }
 
-    _inLavorazioneTooltipDisabled(utentiInLavorazioneValue: any) {
+    _inLavorazioneTooltipDisabled(utentiInLavorazioneValue: any): boolean {
         return utentiInLavorazioneValue.nominativo.length <= 15;
     }
 
-    onListaEnti() {
-        const modal = this.modalService.open(ListaEntiComponent, { windowClass: 'enti', backdropClass: 'light-blue-backdrop', centered: true });
+    onListaEnti(): void {
+        const modal = this.modalService.open(ListaEntiComponent, {
+            windowClass: 'enti',
+            backdropClass: 'light-blue-backdrop',
+            centered: true
+        });
         modal.componentInstance.listaEntiIntervenuti = this.richiesta.listaEntiIntervenuti ? this.richiesta.listaEntiIntervenuti : null;
         modal.componentInstance.listaEntiPresaInCarico = this.richiesta.listaEntiPresaInCarico ? this.richiesta.listaEntiPresaInCarico : null;
         modal.result.then(() => console.log('Lista Enti Aperta'),
             () => console.log('Lista Enti Chiusa'));
     }
 
-    onActionMezzo(mezzoAction: MezzoActionInterface) {
-        const _mezzoAction = mezzoAction;
-        _mezzoAction.codRichiesta = this.richiesta.codice;
-        this.actionMezzo.emit(_mezzoAction);
+    onActionMezzo(mezzoAction: MezzoActionInterface): void {
+        mezzoAction.codRichiesta = this.richiesta.codice;
+        this.actionMezzo.emit(mezzoAction);
     }
 
-    onEliminaPartenza(targaMezzo: string) {
+    onEliminaPartenza(targaMezzo: string): void {
         const modal = this.modalService.open(EliminaPartenzaModalComponent, {
             windowClass: 'modal-holder',
             backdropClass: 'light-blue-backdrop',
@@ -219,7 +242,7 @@ export class SintesiRichiestaComponent implements OnChanges {
         });
     }
 
-    onModificaPartenza(index: string) {
+    onModificaPartenza(index: string): void {
         const modalModificaPartenza = this.modalService.open(ModificaPartenzaModalComponent, {
             windowClass: 'modal-holder',
             backdropClass: 'light-blue-backdrop',
@@ -242,12 +265,12 @@ export class SintesiRichiestaComponent implements OnChanges {
         });
     }
 
-    onActionRichiesta(richiestaAction: RichiestaActionInterface) {
+    onActionRichiesta(richiestaAction: RichiestaActionInterface): void {
         richiestaAction.idRichiesta = this.richiesta.id;
         this.actionRichiesta.emit(richiestaAction);
     }
 
-    onDettaglioStatoFonogramma() {
+    onDettaglioStatoFonogramma(): void {
         const modalDettaglioFonogramma = this.modalService.open(DettaglioFonogrammaModalComponent, {
             windowClass: 'modal-holder',
             backdropClass: 'light-blue-backdrop',
@@ -257,7 +280,7 @@ export class SintesiRichiestaComponent implements OnChanges {
         modalDettaglioFonogramma.componentInstance.fonogramma = this.richiesta.fonogramma;
     }
 
-    onModificaStatoFonogramma() {
+    onModificaStatoFonogramma(): void {
         const modalModificaStatoFonogramma = this.modalService.open(ModificaFonogrammaModalComponent, {
             windowClass: 'modal-holder',
             backdropClass: 'light-blue-backdrop',
@@ -277,7 +300,7 @@ export class SintesiRichiestaComponent implements OnChanges {
         });
     }
 
-    onAllertaSede() {
+    onAllertaSede(): void {
         const modalAllertaSede = this.modalService.open(AllertaSedeModalComponent, {
             windowClass: 'modal-holder',
             backdropClass: 'light-blue-backdrop',
@@ -306,7 +329,7 @@ export class SintesiRichiestaComponent implements OnChanges {
         }
     }
 
-    onModificaEntiIntervenuti() {
+    onModificaEntiIntervenuti(): void {
         const modalModificaEntiIntervenuti = this.modalService.open(ModificaEntiModalComponent, {
             windowClass: 'modal-holder',
             backdropClass: 'light-blue-backdrop',
@@ -327,7 +350,7 @@ export class SintesiRichiestaComponent implements OnChanges {
         });
     }
 
-    onAddTrasferimentoChiamata(codiceRichiesta: string) {
+    onAddTrasferimentoChiamata(codiceRichiesta: string): void {
         const addTrasferimentoChiamataModal = this.modalService.open(TrasferimentoChiamataModalComponent, {
             windowClass: 'modal-holder',
             backdropClass: 'light-blue-backdrop',
@@ -351,7 +374,7 @@ export class SintesiRichiestaComponent implements OnChanges {
         );
     }
 
-    addTrasferimentoChiamata() {
+    addTrasferimentoChiamata(): void {
         this.store.dispatch(new RequestAddTrasferimentoChiamata());
     }
 

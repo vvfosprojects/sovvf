@@ -4,7 +4,7 @@ import { ShowToastr } from '../../actions/toastr/toastr.actions';
 import { ToastrType } from '../../../enum/toastr';
 import { VersionInterface } from '../../../interface/version.interface';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { NgZone } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { AnnuncioNuovaVersioneModalComponent } from '../../../modal/annuncio-nuova-versione-modal/annuncio-nuova-versione-modal.component';
 import { VersionSoonInterface } from '../../../interface/version-soon.interface';
 import { NuoveFeaturesInfoModalComponent } from '../../../modal/nuove-features-info-modal/nuove-features-info-modal.component';
@@ -23,6 +23,7 @@ export const NewVersionStateModelDefaults: NewVersionStateModel = {
     newFeaturesInfo: true
 };
 
+@Injectable()
 @State<NewVersionStateModel>({
     name: 'newVersion',
     defaults: NewVersionStateModelDefaults
@@ -34,32 +35,32 @@ export class NewVersionState {
     }
 
     @Selector()
-    static newVersion(state: NewVersionStateModel) {
+    static newVersion(state: NewVersionStateModel): boolean {
         return state.newVersion && (state.newVersion.hash !== state.currentVersion.hash);
     }
 
     @Selector()
-    static newVersionSoon(state: NewVersionStateModel) {
+    static newVersionSoon(state: NewVersionStateModel): boolean {
         return !!state.newVersionSoon;
     }
 
     @Selector()
-    static newVersionSoonInfo(state: NewVersionStateModel) {
+    static newVersionSoonInfo(state: NewVersionStateModel): string[] {
         return state.newVersionSoon ? state.newVersionSoon.nuoveFeatures : null;
     }
 
     @Selector()
-    static newFeaturesInfo(state: NewVersionStateModel) {
+    static newFeaturesInfo(state: NewVersionStateModel): boolean {
         return state.newFeaturesInfo;
     }
 
     @Selector()
-    static version(state: NewVersionStateModel) {
+    static version(state: NewVersionStateModel): VersionInterface {
         return state.currentVersion;
     }
 
     @Action(SetNewVersion)
-    setNewVersion({ getState, patchState, dispatch }: StateContext<NewVersionStateModel>, { newVersion }: SetNewVersion) {
+    setNewVersion({ getState, patchState, dispatch }: StateContext<NewVersionStateModel>, { newVersion }: SetNewVersion): void {
         const state = getState();
         if (state.newVersion && state.newVersion.hash !== newVersion.hash) {
             dispatch(new ShowToastr(ToastrType.Info, 'Nuova versione disponibile!', 'Premi sul bottone in alto per aggiornare l\'applicazione', 5, true, true));
@@ -68,17 +69,17 @@ export class NewVersionState {
     }
 
     @Action(SetCurrentVersion)
-    setCurrentVersion({ getState, patchState, dispatch }: StateContext<NewVersionStateModel>, { currentVersion }: SetCurrentVersion) {
+    setCurrentVersion({ getState, patchState, dispatch }: StateContext<NewVersionStateModel>, { currentVersion }: SetCurrentVersion): void {
         patchState({ currentVersion });
     }
 
     @Action(GetNewVersion)
-    getNewVersion() {
+    getNewVersion(): void {
         window.location.reload();
     }
 
     @Action(OpenModalNewVersionSoon)
-    openModalNewVersionSoon({ getState }: StateContext<NewVersionStateModel>) {
+    openModalNewVersionSoon({ getState }: StateContext<NewVersionStateModel>): void {
         const state = getState();
         this.ngZone.run(() => {
             const newVersionSoonModal = this.modalService.open(AnnuncioNuovaVersioneModalComponent, {
@@ -93,7 +94,7 @@ export class NewVersionState {
     }
 
     @Action(OpenModalNewFeaturesInfo)
-    openModalNewFeaturesInfo({ getState }: StateContext<NewVersionStateModel>) {
+    openModalNewFeaturesInfo({ getState }: StateContext<NewVersionStateModel>): void {
         const state = getState();
         this.ngZone.run(() => {
             const newFeaturesInfoModal = this.modalService.open(NuoveFeaturesInfoModalComponent, {

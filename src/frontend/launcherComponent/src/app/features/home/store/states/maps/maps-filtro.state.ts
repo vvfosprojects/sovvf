@@ -1,15 +1,17 @@
 import { Selector, State, Action, StateContext } from '@ngxs/store';
 import { makeCopy } from '../../../../../shared/helper/function';
-import {
-    CheckBoxClick,
-    ClearCopiaFiltroAttivo,
-    CopiaFiltroAttivo, ReducerFiltroMarker,
-    SetFiltriMarker,
-    SetFiltroMarker
-} from '../../actions/maps/maps-filtro.actions';
 import { MarkerFiltro } from '../../../../../shared/interface/marker-filtro.interface';
 import { ToggleOpacitaMezziMarkers } from '../../actions/maps/mezzi-markers.actions';
 import { ToggleOpacitaRichiesteMarkers } from '../../actions/maps/richieste-markers.actions';
+import {
+    CheckBoxClick,
+    ClearCopiaFiltroAttivo,
+    CopiaFiltroAttivo,
+    ReducerFiltroMarker,
+    SetFiltriMarker,
+    SetFiltroMarker
+} from '../../actions/maps/maps-filtro.actions';
+import { Injectable } from '@angular/core';
 
 export interface MapsFiltroStateModel {
     filtroMarker: MarkerFiltro[];
@@ -45,6 +47,7 @@ export const MapsFiltroStateDefaults: MapsFiltroStateModel = {
     filtroMarkerAttivoCopy: null,
 };
 
+@Injectable()
 @State<MapsFiltroStateModel>({
     name: 'mapsFiltro',
     defaults: MapsFiltroStateDefaults
@@ -67,7 +70,7 @@ export class MapsFiltroState {
     }
 
     @Action(ReducerFiltroMarker)
-    reducerFiltroMarker({ getState, dispatch }: StateContext<MapsFiltroStateModel>, action: ReducerFiltroMarker) {
+    reducerFiltroMarker({ getState, dispatch }: StateContext<MapsFiltroStateModel>, action: ReducerFiltroMarker): void {
         const state = getState();
         if (!state.filtroMarkerAttivo.includes(action.selected)) {
             dispatch(new SetFiltroMarker(action.selected));
@@ -75,7 +78,7 @@ export class MapsFiltroState {
     }
 
     @Action(SetFiltroMarker)
-    setFiltroMarker({ getState, patchState, dispatch }: StateContext<MapsFiltroStateModel>, action: SetFiltroMarker) {
+    setFiltroMarker({ getState, patchState, dispatch }: StateContext<MapsFiltroStateModel>, action: SetFiltroMarker): void {
         const state = getState();
         const filtroMarkerCopy: MarkerFiltro[] = makeCopy(state.filtroMarker);
         const filtroAttivo: string[] = [];
@@ -94,7 +97,7 @@ export class MapsFiltroState {
     }
 
     @Action(SetFiltriMarker)
-    setFiltriMarker({ getState, patchState }: StateContext<MapsFiltroStateModel>, action: SetFiltriMarker) {
+    setFiltriMarker({ getState, patchState }: StateContext<MapsFiltroStateModel>, action: SetFiltriMarker): void {
         const state = getState();
         const filtroMarkerCopy: MarkerFiltro[] = makeCopy(state.filtroMarker);
         filtroMarkerCopy.forEach(r => {
@@ -111,7 +114,7 @@ export class MapsFiltroState {
     }
 
     @Action(CopiaFiltroAttivo)
-    copiaFiltroAttivo({ getState, patchState }: StateContext<MapsFiltroStateModel>) {
+    copiaFiltroAttivo({ getState, patchState }: StateContext<MapsFiltroStateModel>): void {
         const state = getState();
         patchState({
             ...state,
@@ -120,14 +123,14 @@ export class MapsFiltroState {
     }
 
     @Action(ClearCopiaFiltroAttivo)
-    clearCopiaFiltroAttivo({ patchState }: StateContext<MapsFiltroStateModel>) {
+    clearCopiaFiltroAttivo({ patchState }: StateContext<MapsFiltroStateModel>): void {
         patchState({
             filtroMarkerAttivoCopy: MapsFiltroStateDefaults.filtroMarkerAttivoCopy
         });
     }
 
     @Action(CheckBoxClick)
-    checkBoxClick({ getState, dispatch }: StateContext<MapsFiltroStateModel>, { boxClick }: CheckBoxClick) {
+    checkBoxClick({ getState, dispatch }: StateContext<MapsFiltroStateModel>, { boxClick }: CheckBoxClick): void {
         const filtroAttivoCopy: string[] = getState().filtroMarkerAttivoCopy;
         if (boxClick) {
             const filtroCheckBox = [];
@@ -166,9 +169,9 @@ export class MapsFiltroState {
             }
         }
 
-        function pushFiltro(string: string, array: any[]) {
-            if (!array.includes(string)) {
-                array.push(string);
+        function pushFiltro(filtro: string, arrayFiltri: any[]): void {
+            if (!arrayFiltri.includes(filtro)) {
+                arrayFiltri.push(filtro);
             }
         }
     }

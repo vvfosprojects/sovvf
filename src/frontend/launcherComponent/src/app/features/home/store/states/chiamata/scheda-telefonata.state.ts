@@ -30,10 +30,9 @@ import { RichiestaSelezionataState } from '../richieste/richiesta-selezionata.st
 import { PaginationState } from '../../../../../shared/store/states/pagination/pagination.state';
 import { RichiestaGestioneState } from '../richieste/richiesta-gestione.state';
 import { UpdateFormValue } from '@ngxs/form-plugin';
-import { NgZone } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { RichiestaDuplicataModalComponent } from '../../../../../shared/modal/richiesta-duplicata-modal/richiesta-duplicata-modal.component';
-import { ModalServiziComponent } from '../../../boxes/info-aggregate/modal-servizi/modal-servizi.component';
 import { AuthState } from '../../../../auth/store/auth.state';
 
 export interface SchedaTelefonataStateModel {
@@ -83,6 +82,7 @@ export const SchedaTelefonataStateDefaults: SchedaTelefonataStateModel = {
     loadingNuovaChiamata: false
 };
 
+@Injectable()
 @State<SchedaTelefonataStateModel>({
     name: 'schedaTelefonata',
     defaults: SchedaTelefonataStateDefaults,
@@ -98,22 +98,22 @@ export class SchedaTelefonataState {
     }
 
     @Selector()
-    static resetChiamata(state: SchedaTelefonataStateModel) {
+    static resetChiamata(state: SchedaTelefonataStateModel): boolean {
         return state.resetChiamata;
     }
 
     @Selector()
-    static myChiamataMarker(state: SchedaTelefonataStateModel) {
+    static myChiamataMarker(state: SchedaTelefonataStateModel): string {
         return state.idChiamataMarker;
     }
 
     @Selector()
-    static loadingNuovaChiamata(state: SchedaTelefonataStateModel) {
+    static loadingNuovaChiamata(state: SchedaTelefonataStateModel): boolean {
         return state.loadingNuovaChiamata;
     }
 
     @Action(ReducerSchedaTelefonata)
-    reducer({ getState, dispatch }: StateContext<SchedaTelefonataStateModel>, action: ReducerSchedaTelefonata) {
+    reducer({ getState, dispatch }: StateContext<SchedaTelefonataStateModel>, action: ReducerSchedaTelefonata): void {
         switch (action.schedaTelefonata.tipo) {
             case 'copiaIndirizzo':
                 dispatch(new CopyToClipboard(getState().coordinate));
@@ -136,8 +136,7 @@ export class SchedaTelefonataState {
     }
 
     @Action(InsertChiamata)
-    insertChiamata({ patchState, dispatch }: StateContext<SchedaTelefonataStateModel>, action: InsertChiamata) {
-
+    insertChiamata({ patchState, dispatch }: StateContext<SchedaTelefonataStateModel>, action: InsertChiamata): void {
         patchState({
             azioneChiamata: action.azioneChiamata
         });
@@ -149,7 +148,14 @@ export class SchedaTelefonataState {
                 dispatch([
                     new CestinaChiamata(),
                     new SetIdChiamataInviaPartenza(richiesta),
-                    new ShowToastr(ToastrType.Success, 'Inserimento della chiamata effettuato', action.nuovaRichiesta.descrizione, 5, null, true)
+                    new ShowToastr(
+                        ToastrType.Success,
+                        'Inserimento della chiamata effettuato',
+                        action.nuovaRichiesta.descrizione,
+                        5,
+                        null,
+                        true
+                    )
                 ]);
             } else {
                 dispatch(new CestinaChiamata());
@@ -165,7 +171,7 @@ export class SchedaTelefonataState {
     }
 
     @Action(InsertChiamataSuccess)
-    insertChiamataSuccess({ dispatch }: StateContext<SchedaTelefonataStateModel>, action: InsertChiamataSuccess) {
+    insertChiamataSuccess({ dispatch }: StateContext<SchedaTelefonataStateModel>, action: InsertChiamataSuccess): void {
         console.log('InsertChiamataSuccess', action.nuovaRichiesta);
         const idRichiestaSelezionata = this.store.selectSnapshot(RichiestaSelezionataState.idRichiestaSelezionata);
         const idRichiestaGestione = this.store.selectSnapshot(RichiestaGestioneState.idRichiestaGestione);
@@ -184,7 +190,7 @@ export class SchedaTelefonataState {
     }
 
     @Action(ResetChiamata)
-    resetChiamata({ patchState, dispatch }: StateContext<SchedaTelefonataStateModel>) {
+    resetChiamata({ patchState, dispatch }: StateContext<SchedaTelefonataStateModel>): void {
         patchState(SchedaTelefonataStateDefaults);
         dispatch(
             new UpdateFormValue({
@@ -197,7 +203,7 @@ export class SchedaTelefonataState {
     }
 
     @Action(CestinaChiamata)
-    cestinaChiamata({ dispatch }: StateContext<SchedaTelefonataStateModel>) {
+    cestinaChiamata({ dispatch }: StateContext<SchedaTelefonataStateModel>): void {
         dispatch(new ClearMarkerChiamata());
         dispatch(new ResetChiamata());
         dispatch(new ToggleChiamata());
@@ -206,15 +212,13 @@ export class SchedaTelefonataState {
     }
 
     @Action(MarkerChiamata)
-    markerChiamata({ getState, patchState, dispatch }: StateContext<SchedaTelefonataStateModel>, action: MarkerChiamata) {
+    markerChiamata({ getState, patchState, dispatch }: StateContext<SchedaTelefonataStateModel>, action: MarkerChiamata): void {
         const state = getState();
-
         if (state.idChiamataMarker) {
             dispatch(new UpdateChiamataMarker(action.marker));
         } else {
             dispatch(new SetChiamataMarker(action.marker));
         }
-
         const coordinate: Coordinate = {
             latitudine: action.marker.localita.coordinate.latitudine,
             longitudine: action.marker.localita.coordinate.longitudine
@@ -223,13 +227,13 @@ export class SchedaTelefonataState {
         dispatch(new SetCoordCentroMappa(coordinate));
         dispatch(new SetZoomCentroMappa(18));
         patchState({
-            coordinate: coordinate,
+            coordinate,
             idChiamataMarker: action.marker.id
         });
     }
 
     @Action(ClearMarkerChiamata)
-    clearMarkerChiamata({ getState, dispatch }: StateContext<SchedaTelefonataStateModel>) {
+    clearMarkerChiamata({ getState, dispatch }: StateContext<SchedaTelefonataStateModel>): void {
         const state = getState();
         if (state.idChiamataMarker) {
             dispatch(new DelChiamataMarker(state.idChiamataMarker));
@@ -237,19 +241,19 @@ export class SchedaTelefonataState {
     }
 
     @Action(ClearChiamata)
-    clearChiamata({ patchState }: StateContext<SchedaTelefonataStateModel>) {
+    clearChiamata({ patchState }: StateContext<SchedaTelefonataStateModel>): void {
         patchState(SchedaTelefonataStateDefaults);
     }
 
     @Action(StartChiamata)
-    startChiamata({ patchState }: StateContext<SchedaTelefonataStateModel>) {
+    startChiamata({ patchState }: StateContext<SchedaTelefonataStateModel>): void {
         patchState({
             resetChiamata: false
         });
     }
 
     @Action(ClearIndirizzo)
-    ClearIndirizzo({ dispatch }: StateContext<SchedaTelefonataStateModel>) {
+    ClearIndirizzo({ dispatch }: StateContext<SchedaTelefonataStateModel>): void {
         dispatch(new UpdateFormValue({
             path: 'schedaTelefonata.nuovaRichiestaForm',
             value: {
@@ -261,7 +265,7 @@ export class SchedaTelefonataState {
     }
 
     @Action(ApriModaleRichiestaDuplicata)
-    apriModaleRichiestaDuplicata({ dispatch }: StateContext<SchedaTelefonataStateModel>, action: ApriModaleRichiestaDuplicata) {
+    apriModaleRichiestaDuplicata({ dispatch }: StateContext<SchedaTelefonataStateModel>, action: ApriModaleRichiestaDuplicata): void {
         this.ngZone.run(() => {
             const richiestaDuplicataModal = this.modalService.open(RichiestaDuplicataModalComponent, {
                 windowClass: 'modal-holder',
@@ -274,14 +278,14 @@ export class SchedaTelefonataState {
     }
 
     @Action(StartLoadingNuovaChiamata)
-    startLoadingNuovaChiamata({ patchState }: StateContext<SchedaTelefonataStateModel>) {
+    startLoadingNuovaChiamata({ patchState }: StateContext<SchedaTelefonataStateModel>): void {
         patchState({
             loadingNuovaChiamata: true
         });
     }
 
     @Action(StopLoadingNuovaChiamata)
-    stopLoadingNuovaChiamata({ patchState }: StateContext<SchedaTelefonataStateModel>) {
+    stopLoadingNuovaChiamata({ patchState }: StateContext<SchedaTelefonataStateModel>): void {
         patchState({
             loadingNuovaChiamata: false
         });

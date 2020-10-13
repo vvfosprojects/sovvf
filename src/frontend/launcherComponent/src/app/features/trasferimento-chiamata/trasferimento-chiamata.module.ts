@@ -14,9 +14,6 @@ import { RicercaTrasferimentoChiamataComponent } from './ricerca-trasferimento-c
 import { TabellaTrasferimentoChiamataComponent } from './tabella-trasferimento-chiamata/tabella-trasferimento-chiamata.component';
 import { TrasferimentoChiamataState } from './store/states/trasferimento-chiamata/trasferimento-chiamata.state';
 import { RicercaTrasferimentoChiamataState } from './store/states/ricerca-trasferimento-chiamata/ricerca-trasferimento-chiamata.state';
-import { TrasferimentoChiamataModalComponent } from 'src/app/shared/modal/trasferimento-chiamata-modal/trasferimento-chiamata-modal.component';
-import { ConfirmModalComponent } from '../../shared/modal/confirm-modal/confirm-modal.component';
-
 
 @NgModule({
   declarations: [
@@ -38,10 +35,6 @@ import { ConfirmModalComponent } from '../../shared/modal/confirm-modal/confirm-
       NgSelectModule,
       NgxPaginationModule,
       NgbModule
-  ],
-  entryComponents: [
-      TrasferimentoChiamataModalComponent,
-      ConfirmModalComponent
   ],
   providers: []
 })

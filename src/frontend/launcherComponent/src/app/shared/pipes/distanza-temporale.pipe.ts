@@ -8,17 +8,19 @@ export class DistanzaTemporalePipe implements PipeTransform {
 
     transform(dataDa: Date, dataA: Date, formatoSintetico: string): string {
         let ritorno = '';
-        let dataIniziale, dataFinale: Date;
-        let ore, minuti, secondi, millisecondi: number;
+        let dataIniziale: Date;
+        let dataFinale: Date;
+        let ore: number;
+        let minuti: number;
+        let secondi: number;
+        let millisecondi: number;
         if ((!dataDa) || (!dataA)) {
             return '';
         }
-
         if (new Date(dataDa).getTime() === new Date(dataA).getTime()) {
             return '';
         }
         moment.locale('it');
-
         if (formatoSintetico === 'S') {
             if (dataDa > dataA) {
                 dataIniziale = dataDa;

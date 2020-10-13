@@ -9,7 +9,7 @@
         <div class="clearfix" style="float: right;">
             <div [ngClass]="{'float-left': inGestione && statoRichiesta !== statoRichiestaEnum.Chiusa}">
                 <div *ngIf="partenza.squadre && partenza.squadre.length > 0"
-                     class="h6 text-right mb-0 font-weight-bold">
+                     class="h6 text-right mb-0 font-weight-bold" style="display: inline-flex; align-items: center;">
                     <i class="fa fa-group mr-2"></i>
                     <span ngbTooltip="{{partenza.squadre[0].nome}}"
                           [disableTooltip]="partenza.squadre[0].nome.length <= 6">{{partenza.squadre[0].nome | truncate: 6}}</span>

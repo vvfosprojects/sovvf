@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { TurnoExtra } from '../../../features/navbar/turno/turno-extra.model';
-import * as moment from 'moment';
-
 
 @Injectable({
     providedIn: 'root'

@@ -15,10 +15,11 @@ import { MezzoActionEmit } from '../../../interface/mezzo-action-emit.interface'
 export class MezzoActionsComponent implements OnInit {
 
     @Input() mezzo: Mezzo;
-    statoMezzoActions: StatoMezzoActions;
-    statoMezzoString: Array<string>;
 
     @Output() actionMezzo: EventEmitter<MezzoActionEmit> = new EventEmitter<MezzoActionEmit>();
+
+    statoMezzoActions: StatoMezzoActions;
+    statoMezzoString: Array<string>;
 
     constructor(
         dropdownConfig: NgbDropdownConfig,
@@ -31,11 +32,14 @@ export class MezzoActionsComponent implements OnInit {
         tooltipConfig.placement = 'top';
     }
 
-    ngOnInit() {
+    ngOnInit(): void {
         this.statoMezzoString = statoMezzoActionsEnumToStringArray([this.mezzo.stato, StatoMezzo.Istituto, calcolaActionSuggeritaMezzo(this.mezzo.stato)]);
     }
 
-    onClick(action?: string) {
+    onClick(action?: string, event?: MouseEvent): void {
+        if (event) {
+            event.stopPropagation();
+        }
         this.modalService.open(MezzoActionsModalComponent, {
             windowClass: 'modal-holder',
             backdropClass: 'light-blue-backdrop',
@@ -57,11 +61,14 @@ export class MezzoActionsComponent implements OnInit {
         });
     }
 
-    calcolaActionSuggeritaMezzo(stato: StatoMezzo) {
+    calcolaActionSuggeritaMezzo(stato: StatoMezzo, event?: MouseEvent): StatoMezzoActions {
+        if (event) {
+            event.stopPropagation();
+        }
         return calcolaActionSuggeritaMezzo(stato);
     }
 
-    getBtnColor(stato: StatoMezzo) {
+    getBtnColor(stato: StatoMezzo): string {
         return statoMezzoActionColor(calcolaActionSuggeritaMezzo(stato));
     }
 }

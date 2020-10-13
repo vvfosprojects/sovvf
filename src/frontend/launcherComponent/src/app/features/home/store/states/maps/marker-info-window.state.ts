@@ -4,16 +4,17 @@ import { MarkerDatiMeteo } from '../../../maps/maps-model/marker-dati-meteo.inte
 import { MeteoService } from '../../../../../shared/meteo/meteo-service.service';
 import { Meteo } from '../../../../../shared/model/meteo.model';
 import { GetMarkerDatiMeteo, AddMarkerDatiMeteo, UpdateMarkerDatiMeteo, GetMarkerDatiMeteoFromApi } from '../../actions/maps/marker-info-window.actions';
+import { Injectable } from '@angular/core';
 
 export interface MarkerInfoWindowStateModel {
     markerDatiMeteo: MarkerDatiMeteo[];
-
 }
 
 export const markerInfoWindowStateDefaults: MarkerInfoWindowStateModel = {
     markerDatiMeteo: [],
 };
 
+@Injectable()
 @State<MarkerInfoWindowStateModel>({
     name: 'markerInfoWindow',
     defaults: markerInfoWindowStateDefaults
@@ -30,12 +31,12 @@ export class MarkerInfoWindowState {
     }
 
     @Selector()
-    static markerDatiMeteo(state: MarkerInfoWindowStateModel) {
+    static markerDatiMeteo(state: MarkerInfoWindowStateModel): MarkerDatiMeteo[] {
         return state.markerDatiMeteo;
     }
 
     @Action(GetMarkerDatiMeteo)
-    getMarkerDatiMeteo({ getState, dispatch }: StateContext<MarkerInfoWindowStateModel>, action: GetMarkerDatiMeteo) {
+    getMarkerDatiMeteo({ getState, dispatch }: StateContext<MarkerInfoWindowStateModel>, action: GetMarkerDatiMeteo): void {
         const state = getState();
         const index = state.markerDatiMeteo.findIndex(dati => dati.id === action.id);
         const checkUpdate = !!(index >= 0 && new Date().getTime() - state.markerDatiMeteo[index].date.getTime() > this.meteoUpdateTime * 60000);
@@ -45,7 +46,7 @@ export class MarkerInfoWindowState {
     }
 
     @Action(GetMarkerDatiMeteoFromApi)
-    getMarkerDatiMeteoFromApi({ getState, dispatch }: StateContext<MarkerInfoWindowStateModel>, action: GetMarkerDatiMeteoFromApi) {
+    getMarkerDatiMeteoFromApi({ getState, dispatch }: StateContext<MarkerInfoWindowStateModel>, action: GetMarkerDatiMeteoFromApi): void {
         const state = getState();
         const index = state.markerDatiMeteo.findIndex(dati => dati.id === action.id);
         this.meteo.getMeteoData(action.coordinate).subscribe((response: Meteo) => {
@@ -63,7 +64,7 @@ export class MarkerInfoWindowState {
     }
 
     @Action(AddMarkerDatiMeteo)
-    addMarkerDatiMeteo({ setState }: StateContext<MarkerInfoWindowStateModel>, { payload }: AddMarkerDatiMeteo) {
+    addMarkerDatiMeteo({ setState }: StateContext<MarkerInfoWindowStateModel>, { payload }: AddMarkerDatiMeteo): void {
         setState(
             patch({
                 markerDatiMeteo: append([payload])
@@ -72,7 +73,7 @@ export class MarkerInfoWindowState {
     }
 
     @Action(UpdateMarkerDatiMeteo)
-    updateMarkerDatiMeteo({ setState }: StateContext<MarkerInfoWindowStateModel>, { payload }: UpdateMarkerDatiMeteo) {
+    updateMarkerDatiMeteo({ setState }: StateContext<MarkerInfoWindowStateModel>, { payload }: UpdateMarkerDatiMeteo): void {
         setState(
             patch({
                 markerDatiMeteo: updateItem<MarkerDatiMeteo>(dati => dati.id === payload.id, payload)

@@ -34,13 +34,13 @@ export class BoxMezziComponent implements OnChanges {
         // config.closeDelay = 100;
     }
 
-    checkDiff(key: string) {
+    checkDiff(key: string): string {
         if (this.mezziDiff) {
             return setBlinking(this.mezziDiff[key]);
         }
     }
 
-    realDiff(key: string) {
+    realDiff(key: string): string {
         if (this.mezziDiff) {
             return setArrow(this.mezziDiff[key]);
         }

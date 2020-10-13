@@ -1,9 +1,6 @@
-import { TrasferimentoChiamata } from 'src/app/shared/interface/trasferimento-chiamata.interface';
-import { State, Selector, Action, StateContext } from '@ngxs/store';
-import { TrasferimentoChiamataService } from 'src/app/core/service/trasferimento-chiamata/trasferimento-chiamata.service';
+import { State, Selector } from '@ngxs/store';
 import { TreeviewSelezione } from 'src/app/shared/model/treeview-selezione.model';
-import { GetRichiesteTrasferibili } from '../../actions/trasferimento-chiamata-modal/trasferimento-chiamata-modal.actions';
-import { GestioneUtentiStateModel } from '../../../../features/gestione-utenti/store/states/gestione-utenti/gestione-utenti.state';
+import { Injectable } from '@angular/core';
 
 export interface AllertaSedeModalStateModel {
     allertaSedeForm: {
@@ -27,6 +24,7 @@ export const AllertaSedeModalStateDefaults: AllertaSedeModalStateModel = {
     }
 };
 
+@Injectable()
 @State<AllertaSedeModalStateModel>({
     name: 'allertaSede',
     defaults: AllertaSedeModalStateDefaults
@@ -38,17 +36,12 @@ export class AllertaSedeModalState {
     }
 
     @Selector()
-    static sedeSelezionata(state: AllertaSedeModalStateModel) {
+    static sedeSelezionata(state: AllertaSedeModalStateModel): TreeviewSelezione[] {
         return state.allertaSedeForm.model.sedi;
     }
 
     @Selector()
-    static formValid(state: AllertaSedeModalStateModel) {
+    static formValid(state: AllertaSedeModalStateModel): boolean {
         return state.allertaSedeForm.status !== 'INVALID';
-    }
-
-    @Action(GetRichiesteTrasferibili)
-    getRichiesteTrasferibili({ patchState }: StateContext<AllertaSedeModalStateModel>) {
-
     }
 }

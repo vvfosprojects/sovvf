@@ -1,21 +1,15 @@
 <div class="row">
     <div class="col-12" [ngSwitch]="true">
         <div class="position-relative">
-            <div *ngIf="!map_loaded" class="tutto-schermo-mappa">
+            <div *ngIf="!mapLoaded" class="tutto-schermo-mappa">
                 <div class="loader-centrato-mappa">
                     <i class="fa fa-spinner fa-spin fa-3x"></i>
                 </div>
             </div>
             <agm-map [ngClass]="{'agm-map-750': boxAttivi, 'agm-map-850': !boxAttivi}"
                      [disableDefaultUI]="true"
-                     [zoomControl]="true"
-                     [zoomControlOptions]="zoomControlOptions"
                      [minZoom]="mapsOptions.minZoom"
                      [maxZoom]="mapsOptions.maxZoom"
-                     [fullscreenControl]="true"
-                     [fullscreenControlOptions]="fullscreenControlOptions"
-                     [mapTypeControl]="true"
-                     [streetViewControl]="true"
                      [latitude]="centroMappa.coordinateCentro.latitudine"
                      [longitude]="centroMappa.coordinateCentro.longitudine"
                      [zoom]="centroMappa.zoom"

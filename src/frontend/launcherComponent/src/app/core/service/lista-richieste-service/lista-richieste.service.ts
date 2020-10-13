@@ -25,11 +25,11 @@ export class SintesiRichiesteService {
     public getRichieste(filters: FiltersInterface, pagination: PaginationInterface): Observable<any> {
         const filtriTipologie = filters.others.filter((f: VoceFiltro) => f.descrizione !== 'Chiuse' && f.descrizione !== 'Aperte');
         const obj = {
-            'page': pagination.page,
-            'pageSize': pagination.pageSize || 30,
-            'includiRichiesteAperte': !!(filters.others && filters.others.filter((f: VoceFiltro) => f.descrizione === 'Aperte')[0]),
-            'includiRichiesteChiuse': !!(filters.others && filters.others.filter((f: VoceFiltro) => f.descrizione === 'Chiuse')[0]),
-            'filtriTipologie': filtriTipologie && filtriTipologie.length > 0 ? filtriTipologie.map(f => f.codice) : null
+            page: pagination.page,
+            pageSize: pagination.pageSize || 30,
+            includiRichiesteAperte: !!(filters.others && filters.others.filter((f: VoceFiltro) => f.descrizione === 'Aperte')[0]),
+            includiRichiesteChiuse: !!(filters.others && filters.others.filter((f: VoceFiltro) => f.descrizione === 'Chiuse')[0]),
+            filtriTipologie: filtriTipologie && filtriTipologie.length > 0 ? filtriTipologie.map(f => f.codice) : null
         };
         return this.http.post(API_URL_RICHIESTE, obj);
     }

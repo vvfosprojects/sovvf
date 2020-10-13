@@ -1,6 +1,11 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { RichiesteMarkerService } from '../../../../../core/service/maps-service';
 import { RichiestaMarker } from '../../../maps/maps-model/richiesta-marker.model';
+import { wipeStatoRichiesta } from '../../../../../shared/helper/function';
+import { ClearMarkerOpachiRichieste, SetMarkerOpachiRichieste } from '../../actions/maps/marker-opachi.actions';
+import { append, insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
+import { RichiesteMarkerAdapterService } from '../../../../../core/service/maps-service/richieste-marker/adapters/richieste-marker-adapter.service';
+import { StartLoadingAreaMappa, StopLoadingAreaMappa } from '../../actions/maps/area-mappa.actions';
 import {
     AddRichiesteMarkers,
     ClearRichiestaMarkerModifica,
@@ -17,11 +22,7 @@ import {
     UpdateRichiestaMarker,
     UpdateRichiestaMarkerModifica
 } from '../../actions/maps/richieste-markers.actions';
-import { wipeStatoRichiesta } from '../../../../../shared/helper/function';
-import { ClearMarkerOpachiRichieste, SetMarkerOpachiRichieste } from '../../actions/maps/marker-opachi.actions';
-import { append, insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
-import { RichiesteMarkerAdapterService } from '../../../../../core/service/maps-service/richieste-marker/adapters/richieste-marker-adapter.service';
-import { StartLoadingAreaMappa, StopLoadingAreaMappa } from '../../actions/maps/area-mappa.actions';
+import { Injectable } from '@angular/core';
 
 export interface RichiesteMarkersStateModel {
     richiesteMarkers: RichiestaMarker[];
@@ -41,6 +42,7 @@ export const RichiesteMarkersStateDefaults: RichiesteMarkersStateModel = {
     tipoOpacita: null
 };
 
+@Injectable()
 @State<RichiesteMarkersStateModel>({
     name: 'richiesteMarkers',
     defaults: RichiesteMarkersStateDefaults
@@ -49,7 +51,7 @@ export const RichiesteMarkersStateDefaults: RichiesteMarkersStateModel = {
 export class RichiesteMarkersState {
 
     @Selector()
-    static richiesteMarkers(state: RichiesteMarkersStateModel) {
+    static richiesteMarkers(state: RichiesteMarkersStateModel): RichiestaMarker[] {
         let markers = [];
         markers = state.richiesteMarkers;
         if (state.richiestaMarkerModifica) {
@@ -60,20 +62,20 @@ export class RichiesteMarkersState {
     }
 
     @Selector()
-    static getRichiestaById(state: RichiesteMarkersStateModel) {
+    static getRichiestaById(state: RichiesteMarkersStateModel): RichiestaMarker {
         return state.richiestaMarkerById;
     }
 
-    constructor(private _richieste: RichiesteMarkerService) {
+    constructor(private richiesteMarkerService: RichiesteMarkerService) {
     }
 
     @Action(GetRichiesteMarkers)
-    getRichiesteMarkers({ dispatch }: StateContext<RichiesteMarkersStateModel>, action: GetRichiesteMarkers) {
+    getRichiesteMarkers({ dispatch }: StateContext<RichiesteMarkersStateModel>, action: GetRichiesteMarkers): void {
         dispatch([
             new StartLoadingAreaMappa()
         ]);
         // console.log('FiltroRichieste', action.filtri);
-        this._richieste.getRichiesteMarkers(action.areaMappa, action.filtri).subscribe((data: RichiestaMarker[]) => {
+        this.richiesteMarkerService.getRichiesteMarkers(action.areaMappa, action.filtri).subscribe((data: RichiestaMarker[]) => {
                 dispatch([
                     new SetRichiesteMarkers(data),
                     new StopLoadingAreaMappa()
@@ -85,7 +87,7 @@ export class RichiesteMarkersState {
     }
 
     @Action(SetRichiesteMarkers)
-    setRichiesteMarkers({ getState, dispatch }: StateContext<RichiesteMarkersStateModel>, action: SetRichiesteMarkers) {
+    setRichiesteMarkers({ getState, dispatch }: StateContext<RichiesteMarkersStateModel>, action: SetRichiesteMarkers): void {
         const state = getState();
         if (action.richiesteMarkers) {
             if (state.richiesteMarkers.length === 0) {
@@ -139,7 +141,7 @@ export class RichiesteMarkersState {
     }
 
     @Action(PatchRichiesteMarkers)
-    patchRichiesteMarkers({ patchState }: StateContext<RichiesteMarkersStateModel>, { payload }: PatchRichiesteMarkers) {
+    patchRichiesteMarkers({ patchState }: StateContext<RichiesteMarkersStateModel>, { payload }: PatchRichiesteMarkers): void {
         patchState({
             richiesteMarkers: payload.map(item => RichiesteMarkerAdapterService.adapt(item)),
             richiesteMarkersId: payload.map(item => item.id)
@@ -147,7 +149,7 @@ export class RichiesteMarkersState {
     }
 
     @Action(AddRichiesteMarkers)
-    addRichiesteMarkers({ setState }: StateContext<RichiesteMarkersStateModel>, { payload }: AddRichiesteMarkers) {
+    addRichiesteMarkers({ setState }: StateContext<RichiesteMarkersStateModel>, { payload }: AddRichiesteMarkers): void {
         setState(
             patch({
                 richiesteMarkers: append(payload.map(item => RichiesteMarkerAdapterService.adapt(item))),
@@ -157,7 +159,7 @@ export class RichiesteMarkersState {
     }
 
     @Action(InsertRichiestaMarker)
-    insertRichiestaMarker({ setState }: StateContext<RichiesteMarkersStateModel>, { payload, before }: InsertRichiestaMarker) {
+    insertRichiestaMarker({ setState }: StateContext<RichiesteMarkersStateModel>, { payload, before }: InsertRichiestaMarker): void {
         setState(
             patch({
                 richiesteMarkers: insertItem(RichiesteMarkerAdapterService.adapt(payload), before),
@@ -167,7 +169,7 @@ export class RichiesteMarkersState {
     }
 
     @Action(UpdateRichiestaMarker)
-    updateRichiestaMarker({ setState }: StateContext<RichiesteMarkersStateModel>, { payload }: UpdateRichiestaMarker) {
+    updateRichiestaMarker({ setState }: StateContext<RichiesteMarkersStateModel>, { payload }: UpdateRichiestaMarker): void {
         setState(
             patch({
                 richiesteMarkers: updateItem<RichiestaMarker>(richiesta => richiesta.id === payload.id, RichiesteMarkerAdapterService.adapt(payload))
@@ -176,7 +178,7 @@ export class RichiesteMarkersState {
     }
 
     @Action(RemoveRichiestaMarker)
-    removeRichiestaMarker({ setState }: StateContext<RichiesteMarkersStateModel>, { payload }: RemoveRichiestaMarker) {
+    removeRichiestaMarker({ setState }: StateContext<RichiesteMarkersStateModel>, { payload }: RemoveRichiestaMarker): void {
         setState(
             patch({
                 richiesteMarkers: removeItem<RichiestaMarker>(richiesta => richiesta.id === payload),
@@ -186,21 +188,21 @@ export class RichiesteMarkersState {
     }
 
     @Action(UpdateRichiestaMarkerModifica)
-    updateRichiestaMarkerModifica({ patchState }: StateContext<RichiesteMarkersStateModel>, { payload }: UpdateRichiestaMarkerModifica) {
+    updateRichiestaMarkerModifica({ patchState }: StateContext<RichiesteMarkersStateModel>, { payload }: UpdateRichiestaMarkerModifica): void {
         patchState({
             richiestaMarkerModifica: payload
         });
     }
 
     @Action(ClearRichiestaMarkerModifica)
-    clearRichiestaMarkerModifica({ patchState }: StateContext<RichiesteMarkersStateModel>) {
+    clearRichiestaMarkerModifica({ patchState }: StateContext<RichiesteMarkersStateModel>): void {
         patchState({
             richiestaMarkerModifica: null
         });
     }
 
     @Action(SetRichiestaMarkerById)
-    setRichiestaMarkerById({ getState, patchState }: StateContext<RichiesteMarkersStateModel>, action: SetRichiestaMarkerById) {
+    setRichiestaMarkerById({ getState, patchState }: StateContext<RichiesteMarkersStateModel>, action: SetRichiestaMarkerById): void {
         const state = getState();
         if (action.id) {
             patchState({
@@ -214,7 +216,7 @@ export class RichiesteMarkersState {
     }
 
     @Action(ToggleOpacitaRichiesteMarkers)
-    toggleOpacitaRichiesteMarkers({ patchState, dispatch }: StateContext<RichiesteMarkersStateModel>, action: ToggleOpacitaRichiesteMarkers) {
+    toggleOpacitaRichiesteMarkers({ patchState, dispatch }: StateContext<RichiesteMarkersStateModel>, action: ToggleOpacitaRichiesteMarkers): void {
         patchState({
             statoOpacita: action.toggle
         });
@@ -229,7 +231,7 @@ export class RichiesteMarkersState {
     }
 
     @Action(SetTipoOpacitaRichiesteMarkers)
-    setTipoOpacitaRichiesteMarkers({ patchState, dispatch }: StateContext<RichiesteMarkersStateModel>, action: SetTipoOpacitaRichiesteMarkers) {
+    setTipoOpacitaRichiesteMarkers({ patchState, dispatch }: StateContext<RichiesteMarkersStateModel>, action: SetTipoOpacitaRichiesteMarkers): void {
         patchState({
             tipoOpacita: action.stato
         });
@@ -237,7 +239,7 @@ export class RichiesteMarkersState {
     }
 
     @Action(OpacizzaRichiesteMarkers)
-    opacizzaRichiesteMarkers({ getState, dispatch }: StateContext<RichiesteMarkersStateModel>) {
+    opacizzaRichiesteMarkers({ getState, dispatch }: StateContext<RichiesteMarkersStateModel>): void {
         const state = getState();
         if (state.statoOpacita && state.tipoOpacita) {
             if (state.richiesteMarkers) {
@@ -247,7 +249,7 @@ export class RichiesteMarkersState {
     }
 
     @Action(ClearRichiesteMarkers)
-    clearRichiesteMarkers({ patchState }: StateContext<RichiesteMarkersStateModel>) {
+    clearRichiesteMarkers({ patchState }: StateContext<RichiesteMarkersStateModel>): void {
         patchState(RichiesteMarkersStateDefaults);
     }
 

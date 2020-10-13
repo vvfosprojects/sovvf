@@ -13,8 +13,8 @@ export function markerColor(stato: string): string {
         ['sulpo', '#dc3545'],
         ['istit', '#868e96'],
     ]);
-    const _stato = stato.split(' ').join('');
-    const statoMarker = _stato.toLowerCase().substring(0, 5);
+    const statoSplit = stato.split(' ').join('');
+    const statoMarker = statoSplit.toLowerCase().substring(0, 5);
     const color = mapColorStato.get(statoMarker);
     return color ? color : '#343a40';
 }
@@ -33,8 +33,8 @@ export function markerColorRichiesta(stato: StatoRichiesta): string {
 
 /**
  * ritorna il colore di un marker scheda contatto
- * @param {string} stato
- * @returns {string}
+ * @param: { string } stato
+ * @returns: { string }
  */
 export function markerColorSC(stato: ClassificazioneSchedaContatto): string {
     const mapColorStato = new Map([

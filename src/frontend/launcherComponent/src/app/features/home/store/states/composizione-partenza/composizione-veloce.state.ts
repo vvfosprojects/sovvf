@@ -1,5 +1,4 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
-import { BoxPartenza } from '../../../composizione-partenza/interface/box-partenza-interface';
 import {
     ClearComposizioneVeloce,
     ClearPreaccoppiati,
@@ -16,6 +15,7 @@ import {
     SetIdPreAccoppiatiOccupati,
     FilterListaPreAccoppiati
 } from '../../actions/composizione-partenza/composizione-veloce.actions';
+import { BoxPartenza } from '../../../composizione-partenza/interface/box-partenza-interface';
 import { CompPartenzaService } from 'src/app/core/service/comp-partenza-service/comp-partenza.service';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from '../../../../../shared/enum/toastr';
@@ -25,15 +25,11 @@ import { makeCopy } from '../../../../../shared/helper/function';
 import { IdPreaccoppiati } from '../../../composizione-partenza/interface/id-preaccoppiati-interface';
 import { ListaComposizioneAvanzata } from '../../../../../shared/interface/lista-composizione-avanzata-interface';
 import { ClearMarkerMezzoHover, SetMarkerMezzoHover } from '../../actions/maps/marker.actions';
-import {
-    checkSquadraOccupata,
-    codDistaccamentoIsEqual,
-    mezzoComposizioneBusy
-} from '../../../../../shared/helper/composizione-functions';
-import produce from 'immer';
-import { ComposizionePartenzaState } from './composizione-partenza.state';
+import { checkSquadraOccupata, codDistaccamentoIsEqual, mezzoComposizioneBusy } from '../../../../../shared/helper/composizione-functions';
 import { FiltriComposizioneState } from '../../../../../shared/store/states/filtri-composizione/filtri-composizione.state';
 import { SetListaFiltriAffini } from '../../../../../shared/store/actions/filtri-composizione/filtri-composizione.actions';
+import { Injectable } from '@angular/core';
+import produce from 'immer';
 
 export interface PreAccoppiatiStateModel {
     allPreAccoppiati: BoxPartenza[];
@@ -55,6 +51,7 @@ export const PreAccoppiatiStateModelStateDefaults: PreAccoppiatiStateModel = {
     idPreaccoppiatoHover: null
 };
 
+@Injectable()
 @State<PreAccoppiatiStateModel>({
     name: 'preAccoppiati',
     defaults: PreAccoppiatiStateModelStateDefaults
@@ -62,27 +59,27 @@ export const PreAccoppiatiStateModelStateDefaults: PreAccoppiatiStateModel = {
 export class ComposizioneVeloceState {
 
     @Selector()
-    static preAccoppiati(state: PreAccoppiatiStateModel) {
+    static preAccoppiati(state: PreAccoppiatiStateModel): BoxPartenza[] {
         return state.preAccoppiati;
     }
 
     @Selector()
-    static idPreAccoppiatiSelezionati(state: PreAccoppiatiStateModel) {
+    static idPreAccoppiatiSelezionati(state: PreAccoppiatiStateModel): string[] {
         return state.idPreAccoppiatiSelezionati;
     }
 
     @Selector()
-    static idPreAccoppiatiOccupati(state: PreAccoppiatiStateModel) {
+    static idPreAccoppiatiOccupati(state: PreAccoppiatiStateModel): string[] {
         return state.idPreAccoppiatiOccupati;
     }
 
     @Selector()
-    static idPreAccoppiatoSelezionato(state: PreAccoppiatiStateModel) {
+    static idPreAccoppiatoSelezionato(state: PreAccoppiatiStateModel): string {
         return state.idPreAccoppiatoSelezionato;
     }
 
     @Selector()
-    static idPreAccoppiatoHover(state: PreAccoppiatiStateModel) {
+    static idPreAccoppiatoHover(state: PreAccoppiatiStateModel): string {
         return state.idPreaccoppiatoHover;
     }
 
@@ -91,7 +88,7 @@ export class ComposizioneVeloceState {
     }
 
     @Action(GetPreAccoppiati)
-    getPreAccoppiati({ getState, dispatch }: StateContext<PreAccoppiatiStateModel>) {
+    getPreAccoppiati({ getState, dispatch }: StateContext<PreAccoppiatiStateModel>): void {
         const listaMezziSquadre: ListaComposizioneAvanzata = this.store.selectSnapshot(ComposizioneAvanzataState.listaMezziSquadre);
         const state = getState();
         const preaccoppiati: BoxPartenza[] = [];
@@ -125,7 +122,7 @@ export class ComposizioneVeloceState {
     }
 
     @Action(SetPreaccoppiati)
-    setPreaccoppiati({ getState, patchState, dispatch }: StateContext<PreAccoppiatiStateModel>, action: SetPreaccoppiati) {
+    setPreaccoppiati({ getState, patchState, dispatch }: StateContext<PreAccoppiatiStateModel>, action: SetPreaccoppiati): void {
         if (action.boxPartenza) {
             patchState({
                 preAccoppiati: action.boxPartenza,
@@ -137,7 +134,7 @@ export class ComposizioneVeloceState {
     }
 
     @Action(ClearPreaccoppiati)
-    clearPreaccoppiati({ patchState }: StateContext<PreAccoppiatiStateModel>) {
+    clearPreaccoppiati({ patchState }: StateContext<PreAccoppiatiStateModel>): void {
         patchState({
             preAccoppiati: null,
             allPreAccoppiati: null
@@ -146,7 +143,7 @@ export class ComposizioneVeloceState {
 
 
     @Action(SelectPreAccoppiatoComposizione)
-    selectPreAccoppiatoComposizione({ setState, getState, patchState, dispatch }: StateContext<PreAccoppiatiStateModel>, action: SelectPreAccoppiatoComposizione) {
+    selectPreAccoppiatoComposizione({ setState, getState, patchState, dispatch }: StateContext<PreAccoppiatiStateModel>, action: SelectPreAccoppiatoComposizione): void {
         // controllo se il mezzo che è all'interno del preAccoppiato non è prenotato
         if (!action.preAcc.mezzoComposizione.istanteScadenzaSelezione) {
             setState(
@@ -161,7 +158,7 @@ export class ComposizioneVeloceState {
     }
 
     @Action(UnselectPreAccoppiatoComposizione)
-    unselectPreAccoppiatoComposizione({ setState, patchState, dispatch }: StateContext<PreAccoppiatiStateModel>, action: UnselectPreAccoppiatoComposizione) {
+    unselectPreAccoppiatoComposizione({ setState, patchState, dispatch }: StateContext<PreAccoppiatiStateModel>, action: UnselectPreAccoppiatoComposizione): void {
         setState(
             patch({
                 idPreAccoppiatiSelezionati: removeItem(x => x === action.preAcc.id),
@@ -171,7 +168,7 @@ export class ComposizioneVeloceState {
     }
 
     @Action(ClearPreAccoppiatiSelezionatiComposizione)
-    clearPreAccoppiatiSelezionatiComposizione({ patchState }: StateContext<PreAccoppiatiStateModel>) {
+    clearPreAccoppiatiSelezionatiComposizione({ patchState }: StateContext<PreAccoppiatiStateModel>): void {
         patchState({
                 idPreAccoppiatiSelezionati: PreAccoppiatiStateModelStateDefaults.idPreAccoppiatiSelezionati,
                 idPreAccoppiatoSelezionato: PreAccoppiatiStateModelStateDefaults.idPreAccoppiatoSelezionato
@@ -180,7 +177,7 @@ export class ComposizioneVeloceState {
     }
 
     @Action(UpdateMezzoPreAccoppiatoComposizione)
-    updateMezzoBoxPartenzaComposizione({ getState, setState, patchState, dispatch }: StateContext<PreAccoppiatiStateModel>, action: UpdateMezzoPreAccoppiatoComposizione) {
+    updateMezzoBoxPartenzaComposizione({ getState, setState, patchState, dispatch }: StateContext<PreAccoppiatiStateModel>, action: UpdateMezzoPreAccoppiatoComposizione): void {
         const state = getState();
         let preAccoppiato = null;
         state.preAccoppiati.forEach((preAcc: BoxPartenza) => {
@@ -197,19 +194,19 @@ export class ComposizioneVeloceState {
     }
 
     @Action(ClearComposizioneVeloce)
-    clearComposizioneVeloce({ patchState }: StateContext<PreAccoppiatiStateModel>) {
+    clearComposizioneVeloce({ patchState }: StateContext<PreAccoppiatiStateModel>): void {
         patchState(PreAccoppiatiStateModelStateDefaults);
     }
 
     @Action(GetListaIdPreAccoppiati)
-    getListaIdPreAccoppiati({ dispatch }: StateContext<PreAccoppiatiStateModel>) {
+    getListaIdPreAccoppiati({ dispatch }: StateContext<PreAccoppiatiStateModel>): void {
         this.preAccoppiatiService.getPreAccoppiati().subscribe((data) => {
             this.store.dispatch(new SetListaIdPreAccoppiati(data));
         });
     }
 
     @Action(SetListaIdPreAccoppiati)
-    setListaIdPreAccoppiati({ patchState, dispatch }: StateContext<PreAccoppiatiStateModel>, action: SetListaIdPreAccoppiati) {
+    setListaIdPreAccoppiati({ patchState, dispatch }: StateContext<PreAccoppiatiStateModel>, action: SetListaIdPreAccoppiati): void {
         if (action && action.idPreaccoppiati) {
             patchState({
                 idPreAccoppiati: action.idPreaccoppiati
@@ -219,7 +216,7 @@ export class ComposizioneVeloceState {
     }
 
     @Action(SetIdPreAccoppiatiOccupati)
-    setIdPreAccoppiatiOccupati({ patchState }: StateContext<PreAccoppiatiStateModel>, action: SetIdPreAccoppiatiOccupati) {
+    setIdPreAccoppiatiOccupati({ patchState }: StateContext<PreAccoppiatiStateModel>, action: SetIdPreAccoppiatiOccupati): void {
         if (action && action.idPreaccoppiatiOccupati) {
             patchState({
                 idPreAccoppiatiOccupati: action.idPreaccoppiatiOccupati
@@ -228,7 +225,7 @@ export class ComposizioneVeloceState {
     }
 
     @Action(HoverInPreAccoppiatoComposizione)
-    hoverInPreAccoppiatoComposizione({ getState, patchState, dispatch }: StateContext<PreAccoppiatiStateModel>, action: HoverInPreAccoppiatoComposizione) {
+    hoverInPreAccoppiatoComposizione({ getState, patchState, dispatch }: StateContext<PreAccoppiatiStateModel>, action: HoverInPreAccoppiatoComposizione): void {
         const state = getState();
         patchState({
             idPreaccoppiatoHover: action.idBoxPartenzaHover.idBoxPartenza
@@ -239,7 +236,7 @@ export class ComposizioneVeloceState {
     }
 
     @Action(HoverOutPreAccoppiatoComposizione)
-    hoverOutPreAccoppiatoComposizione({ patchState, dispatch }: StateContext<PreAccoppiatiStateModel>) {
+    hoverOutPreAccoppiatoComposizione({ patchState, dispatch }: StateContext<PreAccoppiatiStateModel>): void {
         patchState({
             idPreaccoppiatoHover: null
         });
@@ -247,16 +244,14 @@ export class ComposizioneVeloceState {
     }
 
     @Action(FilterListaPreAccoppiati)
-    filterListaPreAccoppiati({ getState, setState, dispatch }: StateContext<PreAccoppiatiStateModel>, action: FilterListaPreAccoppiati) {
+    filterListaPreAccoppiati({ getState, setState, dispatch }: StateContext<PreAccoppiatiStateModel>, action: FilterListaPreAccoppiati): void {
         let state = getState();
         setState(
             produce(state, (draft: PreAccoppiatiStateModel) => {
                 draft.preAccoppiati = draft.allPreAccoppiati;
-
                 if (action.filtri) {
                     // CODICE DISTACCAMENTO
                     if (action.filtri.CodiceDistaccamento && action.filtri.CodiceDistaccamento.length > 0) {
-                        // tslint:disable-next-line:max-line-length
                         draft.preAccoppiati = draft.preAccoppiati.filter((p: BoxPartenza) => codDistaccamentoIsEqual(p.mezzoComposizione.mezzo.distaccamento.codice, action.filtri.CodiceDistaccamento[0]));
                     }
                     // CODICE TIPO MEZZO

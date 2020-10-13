@@ -1,20 +1,19 @@
-import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
-import {Sede} from '../../model/sede.model';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Sede } from '../../model/sede.model';
 
 @Component({
     selector: 'app-competenza',
     templateUrl: './competenza.component.html',
     styleUrls: ['./competenza.component.scss']
 })
-export class CompetenzaComponent implements OnInit {
+export class CompetenzaComponent {
+
     @Input() competenza: Sede;
     @Input() i: number;
+
     @Output() LocalizzazioneCompetenza: EventEmitter<Sede> = new EventEmitter(); // (1)
 
     constructor() {
-    }
-
-    ngOnInit() {
     }
 
     localizzazioneCompetenza(competenza): void {

@@ -25,6 +25,7 @@ import { codDistaccamentoIsEqual } from '../../../helper/composizione-functions'
 import { MezzoComposizione } from '../../../interface/mezzo-composizione-interface';
 import { FiltriComposizioneState } from '../filtri-composizione/filtri-composizione.state';
 import { SetListaFiltriAffini } from '../../actions/filtri-composizione/filtri-composizione.actions';
+import { Injectable } from '@angular/core';
 
 export interface SquadreComposizioneStateStateModel {
     allSquadreComposione: SquadraComposizione[];
@@ -42,6 +43,7 @@ export const SquadreComposizioneStateDefaults: SquadreComposizioneStateStateMode
     idSquadraHover: null
 };
 
+@Injectable()
 @State<SquadreComposizioneStateStateModel>({
     name: 'squadreComposizione',
     defaults: SquadreComposizioneStateDefaults
@@ -49,17 +51,17 @@ export const SquadreComposizioneStateDefaults: SquadreComposizioneStateStateMode
 export class SquadreComposizioneState {
 
     @Selector()
-    static squadreComposizione(state: SquadreComposizioneStateStateModel) {
+    static squadreComposizione(state: SquadreComposizioneStateStateModel): SquadraComposizione[] {
         return state.squadreComposizione;
     }
 
     @Selector()
-    static allSquadreComposione(state: SquadreComposizioneStateStateModel) {
+    static allSquadreComposione(state: SquadreComposizioneStateStateModel): SquadraComposizione[] {
         return state.allSquadreComposione;
     }
 
     @Selector()
-    static squadreSelezionate(state: SquadreComposizioneStateStateModel) {
+    static squadreSelezionate(state: SquadreComposizioneStateStateModel): SquadraComposizione[] {
         const squadreSelez = [];
         state.allSquadreComposione.forEach((s: SquadraComposizione) => {
             state.idSquadreSelezionate.forEach((idS: string) => {
@@ -72,12 +74,12 @@ export class SquadreComposizioneState {
     }
 
     @Selector()
-    static idSquadreSelezionate(state: SquadreComposizioneStateStateModel) {
+    static idSquadreSelezionate(state: SquadreComposizioneStateStateModel): string[] {
         return state.idSquadreComposizioneSelezionate;
     }
 
     @Selector()
-    static idSquadraHover(state: SquadreComposizioneStateStateModel) {
+    static idSquadraHover(state: SquadreComposizioneStateStateModel): string {
         return state.idSquadraHover;
     }
 
@@ -85,16 +87,16 @@ export class SquadreComposizioneState {
     }
 
     @Action(SetListaSquadreComposizione)
-    setListaSquadreComposizione({ patchState }: StateContext<SquadreComposizioneStateStateModel>, action: SetListaSquadreComposizione) {
+    setListaSquadreComposizione({ patchState }: StateContext<SquadreComposizioneStateStateModel>, action: SetListaSquadreComposizione): void {
         const allSquadreComposione = action.squadreComp ? action.squadreComp : this.store.selectSnapshot(SquadreComposizioneState.allSquadreComposione);
         patchState({
             squadreComposizione: allSquadreComposione,
-            allSquadreComposione: allSquadreComposione
+            allSquadreComposione
         });
     }
 
     @Action(ClearListaSquadreComposizione)
-    clearListaSquadreComposizione({ patchState }: StateContext<SquadreComposizioneStateStateModel>) {
+    clearListaSquadreComposizione({ patchState }: StateContext<SquadreComposizioneStateStateModel>): void {
         patchState({
             squadreComposizione: null,
             allSquadreComposione: null
@@ -102,22 +104,22 @@ export class SquadreComposizioneState {
     }
 
     @Action(AddSquadraComposizione)
-    addSquadraComposizione({ patchState }: StateContext<SquadreComposizioneStateStateModel>, action: AddSquadraComposizione) {
+    addSquadraComposizione({ patchState }: StateContext<SquadreComposizioneStateStateModel>, action: AddSquadraComposizione): void {
         console.log(action.squadraComp);
     }
 
     @Action(RemoveSquadraComposizione)
-    removeSquadraComposizione({ patchState }: StateContext<SquadreComposizioneStateStateModel>, action: RemoveSquadraComposizione) {
+    removeSquadraComposizione({ patchState }: StateContext<SquadreComposizioneStateStateModel>, action: RemoveSquadraComposizione): void {
         console.log(action.idSquadra);
     }
 
     @Action(UpdateSquadraComposizione)
-    updateSquadraComposizione({ patchState }: StateContext<SquadreComposizioneStateStateModel>, action: UpdateSquadraComposizione) {
+    updateSquadraComposizione({ patchState }: StateContext<SquadreComposizioneStateStateModel>, action: UpdateSquadraComposizione): void {
         console.log(action.squadraComp);
     }
 
     @Action(SelectSquadraComposizione)
-    selectSquadraComposizione({ getState, setState, dispatch }: StateContext<SquadreComposizioneStateStateModel>, action: SelectSquadraComposizione) {
+    selectSquadraComposizione({ getState, setState, dispatch }: StateContext<SquadreComposizioneStateStateModel>, action: SelectSquadraComposizione): void {
         const boxPartenzaList = this.store.selectSnapshot(BoxPartenzaState.boxPartenzaList);
         // se non c'è già un mezzo selezionato (nell'attuale "box partenza"), filtro la lista dei mezzi
         const idBoxPartenzaSelezionato = this.store.selectSnapshot(BoxPartenzaState.idBoxPartenzaSelezionato);
@@ -143,7 +145,7 @@ export class SquadreComposizioneState {
     }
 
     @Action(UnselectSquadraComposizione)
-    unselectSquadraComposizione({ getState, setState, dispatch }: StateContext<SquadreComposizioneStateStateModel>, action: UnselectSquadraComposizione) {
+    unselectSquadraComposizione({ getState, setState, dispatch }: StateContext<SquadreComposizioneStateStateModel>, action: UnselectSquadraComposizione): void {
         const state = getState();
         const idSquadreSelezionate = state.idSquadreSelezionate;
         if (idSquadreSelezionate && idSquadreSelezionate.length <= 1) {
@@ -169,7 +171,7 @@ export class SquadreComposizioneState {
     }
 
     @Action(SelectSquadra)
-    selectSquadra({ setState }: StateContext<SquadreComposizioneStateStateModel>, action: SelectSquadra) {
+    selectSquadra({ setState }: StateContext<SquadreComposizioneStateStateModel>, action: SelectSquadra): void {
         setState(
             patch({
                 idSquadreSelezionate: append([action.idSquadra])
@@ -178,7 +180,7 @@ export class SquadreComposizioneState {
     }
 
     @Action(UnselectSquadra)
-    unselectSquadra({ setState }: StateContext<SquadreComposizioneStateStateModel>, action: UnselectSquadra) {
+    unselectSquadra({ setState }: StateContext<SquadreComposizioneStateStateModel>, action: UnselectSquadra): void {
         setState(
             patch({
                 idSquadreSelezionate: removeItem(id => id === action.idSquadra)
@@ -187,7 +189,7 @@ export class SquadreComposizioneState {
     }
 
     @Action(ClearSelectedSquadreComposizione)
-    clearSelectedSquadreComposizione({ getState, patchState }: StateContext<SquadreComposizioneStateStateModel>) {
+    clearSelectedSquadreComposizione({ getState, patchState }: StateContext<SquadreComposizioneStateStateModel>): void {
         const state = getState();
         patchState({
             ...state,
@@ -196,7 +198,7 @@ export class SquadreComposizioneState {
     }
 
     @Action(HoverInSquadraComposizione)
-    hoverInSquadraComposizione({ getState, patchState }: StateContext<SquadreComposizioneStateStateModel>, action: HoverInSquadraComposizione) {
+    hoverInSquadraComposizione({ getState, patchState }: StateContext<SquadreComposizioneStateStateModel>, action: HoverInSquadraComposizione): void {
         const state = getState();
         patchState({
             ...state,
@@ -205,7 +207,7 @@ export class SquadreComposizioneState {
     }
 
     @Action(HoverOutSquadraComposizione)
-    hoverOutSquadraComposizione({ getState, patchState }: StateContext<SquadreComposizioneStateStateModel>, action: HoverOutSquadraComposizione) {
+    hoverOutSquadraComposizione({ getState, patchState }: StateContext<SquadreComposizioneStateStateModel>, action: HoverOutSquadraComposizione): void {
         const state = getState();
         patchState({
             ...state,
@@ -214,12 +216,12 @@ export class SquadreComposizioneState {
     }
 
     @Action(ClearSquadraComposizione)
-    clearSquadraComposizione({ patchState }: StateContext<SquadreComposizioneStateStateModel>) {
+    clearSquadraComposizione({ patchState }: StateContext<SquadreComposizioneStateStateModel>): void {
         patchState(SquadreComposizioneStateDefaults);
     }
 
     @Action(FilterListaSquadreComposizione)
-    filterListaSquadreComposizione({ getState, setState, patchState, dispatch }: StateContext<SquadreComposizioneStateStateModel>, action: FilterListaSquadreComposizione) {
+    filterListaSquadreComposizione({ getState, setState, patchState, dispatch }: StateContext<SquadreComposizioneStateStateModel>, action: FilterListaSquadreComposizione): void {
         const state = getState();
         const idSquadreSelezionate = state.idSquadreSelezionate;
         if (idSquadreSelezionate && idSquadreSelezionate.length <= 1) {
@@ -233,14 +235,12 @@ export class SquadreComposizioneState {
                     if (action.filtri) {
                         // CODICE DISTACCAMENTO
                         if (action.filtri.CodiceDistaccamento && action.filtri.CodiceDistaccamento.length > 0) {
-                            // tslint:disable-next-line:max-line-length
                             draft.squadreComposizione = draft.squadreComposizione.filter((s: SquadraComposizione) => codDistaccamentoIsEqual(s.squadra.distaccamento.codice, action.filtri.CodiceDistaccamento[0]));
                         }
                         // CODICE SQUADRE SELEZIONATE O MEZZO SELEZIONATO
                         if (action.filtri.CodiceMezzo || (action.filtri.CodiceSquadre && action.filtri.CodiceSquadre.length > 0)) {
                             let codDistaccamentoSelezionato = null;
                             if (action.filtri.CodiceSquadre && action.filtri.CodiceSquadre.length > 0) {
-                                // tslint:disable-next-line:max-line-length
                                 codDistaccamentoSelezionato = state.squadreComposizione.filter((sC: SquadraComposizione) => sC.squadra.id === action.filtri.CodiceSquadre[0])[0].squadra.distaccamento.codice;
                             } else if (action.filtri.CodiceMezzo) {
                                 codDistaccamentoSelezionato = action.mezziComposizione.filter((mC: MezzoComposizione) => mC.mezzo.codice === action.filtri.CodiceMezzo)[0].mezzo.distaccamento.codice;

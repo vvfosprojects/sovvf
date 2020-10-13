@@ -18,7 +18,7 @@ export class RicercaComponent {
     constructor() {
     }
 
-    onSearch() {
+    onSearch(): void {
         this.search.emit(makeCopy(this.ricerca));
     }
 

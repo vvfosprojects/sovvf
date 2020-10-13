@@ -28,18 +28,18 @@ export class FiltriMarkersMezziComponent implements OnInit {
         this.generiSelezionati = this.filtroMezziAttivi.tipologia;
     }
 
-    onChangeMezziAltriComandi($event: CheckboxInterface) {
+    onChangeMezziAltriComandi($event: CheckboxInterface): void {
         console.log('onChangeMezziAltriComandi', $event);
         this.checkboxMezziAltriComandiState.status = $event.status;
         this.changeMezziAltriComandi.emit($event.status);
     }
 
-    onChangeGenere($event) {
+    onChangeGenere($event): void {
         console.log('onChangeGenere', $event);
         this.changeGenere.emit($event);
     }
 
-    onChangeStati($event) {
+    onChangeStati($event): void {
         console.log('onChangeStati', $event);
         this.changeStati.emit($event);
     }

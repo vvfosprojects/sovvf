@@ -1,4 +1,4 @@
-import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.model';
+import { Priorita, SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.model';
 import { StatoRichiesta } from '../../../../shared/enum/stato-richiesta.enum';
 import { Partenza } from '../../../../shared/model/partenza.model';
 import { Squadra } from '../../../../shared/model/squadra.model';
@@ -10,6 +10,7 @@ import { AttivitaUtente } from '../../../../shared/model/attivita-utente.model';
 import { round1decimal } from '../../../../shared/helper/function';
 import { Mezzo } from 'src/app/shared/model/mezzo.model';
 import { Sede } from '../../../../shared/model/sede.model';
+import { Tipologia } from '../../../../shared/model/tipologia.model';
 
 export class HelperSintesiRichiesta {
 
@@ -17,7 +18,7 @@ export class HelperSintesiRichiesta {
 
     /**
      * restituisce le squadre realmente impegnate in una partenza
-     * @param richiesta
+     * @param: richiesta
      */
     getSquadre(richiesta: SintesiRichiesta): string[] {
 
@@ -103,7 +104,11 @@ export class HelperSintesiRichiesta {
     }
 
     /* Permette di colorare l'icona della tipologia */
-    coloraIcona(nome: any): any {
+    coloraIcona(tipologia: Tipologia): string {
+        if (!tipologia) {
+            return 'fa fa-exclamation-triangle text-warning';
+        }
+        const nome = tipologia.icona;
         if (nome) {
             const colori = [
                 {
@@ -134,7 +139,7 @@ export class HelperSintesiRichiesta {
     }
 
     /* Ritorna true se le parole matchano almeno in parte */
-    match(word1: string, word2: string, substr: number) {
+    match(word1: string, word2: string, substr: number): boolean {
         const word1San = word1.toLowerCase().substr(0, word1.length - substr);
         const word2San = word2.toLowerCase().substr(0, word2.length - substr);
         if (word1San === word2San) {
@@ -142,19 +147,17 @@ export class HelperSintesiRichiesta {
         }
     }
 
-    toggleEspansoClass(espanso: boolean) {
+    toggleEspansoClass(espanso: boolean): string {
         let returnClass = '';
-
         if (!espanso) {
             returnClass = 'fa-long-arrow-down text-secondary';
         } else {
             returnClass = 'fa-long-arrow-up text-light';
         }
-
         return returnClass;
     }
 
-    complessitaClass(richiesta: any) {
+    complessitaClass(richiesta: any): any {
         if (richiesta.complessita) {
             return {
                 'badge-success': this.match(richiesta.complessita.descrizione, 'bassa', 1),
@@ -165,7 +168,7 @@ export class HelperSintesiRichiesta {
     }
 
     /* NgClass Card Status */
-    cardClasses(r: SintesiRichiesta, richiestaSelezionata: string, richiestaHover: string) {
+    cardClasses(r: SintesiRichiesta, richiestaSelezionata: string, richiestaHover: string): any {
         if (r && r.id) {
             const classes = {
                 // Hover (stato)
@@ -184,7 +187,7 @@ export class HelperSintesiRichiesta {
     }
 
     /* NgClass Card Fissata Status */
-    cardFissataClasses(r: SintesiRichiesta) {
+    cardFissataClasses(r: SintesiRichiesta): any {
         if (r) {
             const classes = {
                 'card-shadow-warning': r.stato === StatoRichiesta.Assegnata,
@@ -199,56 +202,60 @@ export class HelperSintesiRichiesta {
         }
     }
 
-    cardBorder(r: SintesiRichiesta) {
+    cardBorder(r: SintesiRichiesta): any {
         if (r) {
+            let classes = null;
             if (!this._isPresaInCarico(r.stato, r.listaUtentiPresaInCarico)) {
-                return {
-                    // Bordo sinistro (stato)
-                    'status_chiamata': r.stato === StatoRichiesta.Chiamata,
-                    'status_presidiato': r.stato === StatoRichiesta.Presidiata,
-                    'status_assegnato': r.stato === StatoRichiesta.Assegnata,
-                    'status_sospeso': r.stato === StatoRichiesta.Sospesa,
-                    'status_chiuso': r.stato === StatoRichiesta.Chiusa,
+                classes = {
+                    status_chiamata: r.stato === StatoRichiesta.Chiamata,
+                    status_presidiato: r.stato === StatoRichiesta.Presidiata,
+                    status_assegnato: r.stato === StatoRichiesta.Assegnata,
+                    status_sospeso: r.stato === StatoRichiesta.Sospesa,
+                    status_chiuso: r.stato === StatoRichiesta.Chiusa,
                 };
+                return classes;
             } else {
-                return { 'status_in_lavorazione': true };
+                classes = {
+                    status_in_lavorazione: true
+                };
+                return classes;
             }
         }
     }
 
-    vettorePallini(richiesta) {
+    vettorePallini(richiesta): Priorita[] {
         return new Array(richiesta.priorita);
     }
 
-    vettoreBuchini(richiesta) {
+    vettoreBuchini(richiesta): string[] {
         const MAX_PRIORITA = 5;
         return new Array(MAX_PRIORITA - richiesta.priorita);
     }
 
-    dettagliMezzo(stato, tipostato, classe) {
+    dettagliMezzo(stato, tipostato, classe): string {
         return this.stato.getColor(stato, tipostato, classe);
     }
 
 
-    _dateNumber(dateString: any) {
+    _dateNumber(dateString: any): number {
         return new Date(dateString).getTime();
     }
 
-    _dateTime(dateString: any) {
+    _dateTime(dateString: any): Date {
         return new Date(dateString);
     }
 
     _terrenoMaggiore(tipoTerreno: TipoTerreno[]): TipoTerrenoMqHa {
         if (tipoTerreno && tipoTerreno.length > 0) {
             let value = 0;
-            let string = '';
+            let terrenoString = '';
             tipoTerreno.forEach(result => {
                 if (result.mq > value) {
-                    string = TipoTerrenoEnum[result.descrizione];
+                    terrenoString = TipoTerrenoEnum[result.descrizione];
                     value = result.mq;
                 }
             });
-            return { terrenoHa: `${string} (${round1decimal(value / 10000)} ha)`, terrenoMq: `${string} (${value} mq)` };
+            return { terrenoHa: `${terrenoString} (${round1decimal(value / 10000)} ha)`, terrenoMq: `${terrenoString} (${value} mq)` };
         } else {
             return null;
         }
@@ -285,11 +292,11 @@ export class HelperSintesiRichiesta {
 
     _isPresaInCarico(stato: StatoRichiesta, attivita: AttivitaUtente[]): boolean {
         if (attivita && stato === StatoRichiesta.Chiamata) {
-            for (const _attivita in attivita) {
+            for (const a in attivita) {
                 /**
                  * eventuale logica di controllo
                  */
-                if (_attivita) {
+                if (a) {
                     return true;
                 }
             }
@@ -299,11 +306,11 @@ export class HelperSintesiRichiesta {
 
     _isInLavorazione(stato: StatoRichiesta, attivita: AttivitaUtente[]): boolean {
         if (attivita && stato === StatoRichiesta.Chiamata) {
-            for (const _attivita in attivita) {
+            for (const a in attivita) {
                 /**
                  * eventuale logica di controllo
                  */
-                if (_attivita) {
+                if (a) {
                     return true;
                 }
             }

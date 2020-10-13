@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Fonogramma } from '../../model/fonogramma.model';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { getStatoFonogrammaStringByEnum } from '../../helper/function';
@@ -8,7 +8,7 @@ import { getStatoFonogrammaStringByEnum } from '../../helper/function';
     templateUrl: './dettaglio-fonogramma-modal.component.html',
     styleUrls: ['./dettaglio-fonogramma-modal.component.css']
 })
-export class DettaglioFonogrammaModalComponent implements OnInit {
+export class DettaglioFonogrammaModalComponent {
 
     codiceRichiesta: string;
     fonogramma: Fonogramma;
@@ -16,14 +16,11 @@ export class DettaglioFonogrammaModalComponent implements OnInit {
     constructor(public modal: NgbActiveModal) {
     }
 
-    ngOnInit() {
-    }
-
     getStatoFonogrammaStringByEnum(statoFonogramma): string {
         return getStatoFonogrammaStringByEnum(statoFonogramma);
     }
 
-    onClose() {
+    onClose(): void {
         this.modal.dismiss('ko');
     }
 }

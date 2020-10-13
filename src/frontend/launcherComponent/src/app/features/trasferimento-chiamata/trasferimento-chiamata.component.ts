@@ -15,6 +15,7 @@ import { GetListaTrasferimentiChiamate } from './store/actions/trasferimento-chi
 import { RequestAddTrasferimentoChiamata, ClearFormTrasferimentoChiamata } from 'src/app/shared/store/actions/trasferimento-chiamata-modal/trasferimento-chiamata-modal.actions';
 import { TrasferimentoChiamataModalComponent } from 'src/app/shared/modal/trasferimento-chiamata-modal/trasferimento-chiamata-modal.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { StopBigLoading } from '../../shared/store/actions/loading/loading.actions';
 
 
 @Component({
@@ -34,7 +35,7 @@ export class TrasferimentoChiamataComponent implements OnInit, OnDestroy {
     @Select(PaginationState.page) page$: Observable<number>;
     @Select(LoadingState.loading) loading$: Observable<boolean>;
 
-    subscriptions: Subscription = new Subscription();
+    private subscriptions: Subscription = new Subscription();
 
     constructor(private store: Store, public modalService: NgbModal) {
         const pageSizeAttuale = this.store.selectSnapshot(PaginationState.pageSize);
@@ -47,8 +48,12 @@ export class TrasferimentoChiamataComponent implements OnInit, OnDestroy {
     }
 
 
-    ngOnInit() {
-        this.store.dispatch([new SetCurrentUrl(RoutesPath.TrasferimentoChiamata), new SetSediNavbarVisible(false)]);
+    ngOnInit(): void {
+        this.store.dispatch([
+            new SetCurrentUrl(RoutesPath.TrasferimentoChiamata),
+            new SetSediNavbarVisible(false),
+            new StopBigLoading()
+        ]);
     }
 
     ngOnDestroy(): void {
@@ -60,11 +65,11 @@ export class TrasferimentoChiamataComponent implements OnInit, OnDestroy {
     }
 
 
-    onRicercaTrasferimentoChiamata(ricerca: string) {
+    onRicercaTrasferimentoChiamata(ricerca: string): void {
         this.store.dispatch(new SetRicercaTrasferimentoChiamata(ricerca));
     }
 
-    getTrasferimentoChiamata(pageAttuale: boolean) {
+    getTrasferimentoChiamata(pageAttuale: boolean): void {
         let page = null;
         if (pageAttuale) {
             page = this.store.selectSnapshot(PaginationState.page);
@@ -72,7 +77,7 @@ export class TrasferimentoChiamataComponent implements OnInit, OnDestroy {
         this.store.dispatch(new GetListaTrasferimentiChiamate(page));
     }
 
-    onAddTrasferimentoChiamata() {
+    onAddTrasferimentoChiamata(): void {
         const addTrasferimentoChiamataModal = this.modalService.open(TrasferimentoChiamataModalComponent, {
             windowClass: 'modal-holder',
             backdropClass: 'light-blue-backdrop',
@@ -95,19 +100,19 @@ export class TrasferimentoChiamataComponent implements OnInit, OnDestroy {
         );
     }
 
-    addTrasferimentoChiamata() {
+    addTrasferimentoChiamata(): void {
         this.store.dispatch(new RequestAddTrasferimentoChiamata());
     }
 
-    onPageChange(page: number) {
+    onPageChange(page: number): void {
         this.store.dispatch(new GetListaTrasferimentiChiamate(page));
     }
 
-    onPageSizeChange(pageSize: number) {
+    onPageSizeChange(pageSize: number): void {
         this.store.dispatch(new SetPageSize(pageSize));
     }
 
-    getRicerca() {
+    getRicerca(): void {
         this.subscriptions.add(
             this.ricerca$.subscribe((ricerca: string) => {
                 if (ricerca !== null) {
@@ -118,7 +123,7 @@ export class TrasferimentoChiamataComponent implements OnInit, OnDestroy {
         );
     }
 
-    getPageSize() {
+    getPageSize(): void {
         this.subscriptions.add(
             this.pageSize$.subscribe((pageSize: number) => {
                 if (pageSize) {

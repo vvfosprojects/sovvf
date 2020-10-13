@@ -17,28 +17,28 @@ export class MezzoActionsModalComponent implements OnInit {
     constructor(public modal: NgbActiveModal, private fb: FormBuilder) {
     }
 
-    ngOnInit() {
+    ngOnInit(): void {
         this.initForm();
     }
 
-    initForm() {
+    initForm(): void {
         this.formatTime();
         this.timeActionForm = this.fb.group({
             time: [this.time, Validators.required],
         });
     }
 
-    formatTime() {
+    formatTime(): void {
         const d = new Date();
         this.time.hour = d.getHours();
         this.time.minute = d.getMinutes();
     }
 
-    onCancel() {
+    onCancel(): void {
         this.modal.close({ status: 'ko', result: null });
     }
 
-    onSubmit() {
+    onSubmit(): void {
         this.submitted = true;
 
         if (!this.timeActionForm.valid) {

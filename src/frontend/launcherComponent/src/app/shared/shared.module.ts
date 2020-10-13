@@ -119,7 +119,7 @@ const COMPONENTS = [
 })
 export class SharedModule {
 
-    static forRoot() {
+    static forRoot(): any {
         return {
             ngModule: SharedModule,
             providers: [

@@ -1,11 +1,12 @@
-<div class="border border-light px-4 pt-4 pb-2" [ngClass]="{'shadow-sm': !ultimoChangelog, 'shadow': ultimoChangelog}">
+<div class="bg-white border border-light px-4 pt-4 pb-2"
+     [ngClass]="{'shadow-sm': !ultimoChangelog, 'shadow': ultimoChangelog}">
     <div class="clearfix">
         <h5 class="float-left mb-0" [ngClass]="{'font-weight-bolder text-success': ultimoChangelog}">
             {{ changelog?.nomeVersione | uppercase }}
         </h5>
         <h6 class="float-right mb-0" [ngClass]="{'font-weight-bolder text-success': ultimoChangelog}">
             <i class="fa fa-calendar-check-o"></i>
-            {{ changelog?.dataRilascio | date: 'dd/MM/yyyy HH:mm' }}
+            {{ changelog?.dataRilascio }}
         </h6>
     </div>
     <hr>

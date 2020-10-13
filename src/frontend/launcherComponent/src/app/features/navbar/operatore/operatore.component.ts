@@ -17,7 +17,7 @@ export class OperatoreComponent {
     @Input() ruoliUtenteLoggato: Ruolo[];
 
     @Output() notificheLette: EventEmitter<boolean> = new EventEmitter<boolean>();
-    @Output() _logout = new EventEmitter();
+    @Output() logout = new EventEmitter();
 
     @Select(NotificheState.listaNotifiche) listaNotifiche$: Observable<NotificaInterface[]>;
     @Select(NotificheState.nuoveNotifiche) nuoveNotifiche$: Observable<number>;

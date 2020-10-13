@@ -11,11 +11,15 @@ export class ListaSquadrePartenzaComponent implements OnInit, OnDestroy {
     listaSquadre: ListaSquadre;
 
     ngOnInit(): void {
-        isDevMode() && console.log('Componente Lista Squadre Partenza creato');
+        if (isDevMode()) {
+            console.log('Componente Lista Squadre Partenza creato');
+        }
     }
 
     ngOnDestroy(): void {
-        isDevMode() && console.log('Componente Lista Squadre Partenza distrutto');
+        if (isDevMode()) {
+            console.log('Componente Lista Squadre Partenza distrutto');
+        }
     }
 
 }

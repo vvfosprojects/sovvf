@@ -6,10 +6,8 @@ import { SharedModule } from '../../../shared/shared.module';
  * AGM CORE
  */
 import { AgmCoreModule } from '@agm/core';
-import { AgmJsMarkerClustererModule } from '@agm/js-marker-clusterer';
 import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
 import { AgmDirectionModule } from 'agm-direction';
-
 /**
  * MAPS
  */
@@ -19,6 +17,7 @@ import { AgmContentComponent } from './agm/agm-content.component';
 /**
  * MAPS-UI
  */
+import { AgmMarkerClustererModule } from '@agm/markerclusterer';
 import { InfoWindowComponent } from './maps-ui/info-window/info-window.component';
 import { CambioSedeModalComponent } from './maps-ui/info-window/cambio-sede-modal/cambio-sede-modal.component';
 import { FiltriMarkersComponent } from './maps-ui/filtri-markers/filtri-markers.component';
@@ -28,11 +27,12 @@ import { FiltriMarkersMezziComponent } from './maps-ui/filtri-markers/filtri-mar
  * Provider
  */
 import {
-    MezziMarkerService, SediMarkerService, RichiesteMarkerService,
+    MezziMarkerService,
+    SediMarkerService,
+    RichiesteMarkerService,
     ChiamateMarkerService
 } from '../../../core/service/maps-service';
 import { RichiesteMarkerAdapterService } from '../../../core/service/maps-service/richieste-marker/adapters/richieste-marker-adapter.service';
-
 /**
  * Ngxs
  */
@@ -66,7 +66,7 @@ import { FormsModule } from '@angular/forms';
         NgbModule,
         AgmCoreModule.forRoot(),
         AgmDirectionModule,
-        AgmJsMarkerClustererModule,
+        AgmMarkerClustererModule,
         AgmSnazzyInfoWindowModule,
         SintesiRichiestaModule,
         SharedModule.forRoot(),
@@ -105,7 +105,6 @@ import { FormsModule } from '@angular/forms';
         FiltriMarkersMezziComponent,
         FiltriScComponent
     ],
-    entryComponents: [CambioSedeModalComponent, SintesiRichiestaModalComponent],
     exports: [
         MapsComponent
     ],

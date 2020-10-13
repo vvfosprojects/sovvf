@@ -1,13 +1,4 @@
-import {
-    AfterViewChecked,
-    Component,
-    ElementRef,
-    HostListener,
-    isDevMode,
-    OnDestroy,
-    OnInit,
-    ViewChild
-} from '@angular/core';
+import { AfterViewChecked, Component, ElementRef, HostListener, isDevMode, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { RoutesPath } from './shared/enum/routes-path.enum';
 import { Select, Store } from '@ngxs/store';
@@ -17,7 +8,6 @@ import { OFFSET_SYNC_TIME } from './core/settings/referral-time';
 import { Ruolo, Utente } from './shared/model/utente.model';
 import { ClearListaSediNavbar, PatchListaSediNavbar } from './shared/store/actions/sedi-treeview/sedi-treeview.actions';
 import { SediTreeviewState } from './shared/store/states/sedi-treeview/sedi-treeview.state';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PermissionFeatures } from './shared/enum/permission-features.enum';
 import { PermessiService } from './core/service/permessi-service/permessi.service';
 import { RuoliUtenteLoggatoState } from './shared/store/states/ruoli-utente-loggato/ruoli-utente-loggato.state';
@@ -33,13 +23,12 @@ import { GetImpostazioniLocalStorage } from './shared/store/actions/impostazioni
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
-    styleUrls: ['./app.component.css']
+    styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
 
     private subscription = new Subscription();
     private imgs = [];
-    private deniedPath = [RoutesPath.NotFound.toString(), RoutesPath.Login.toString()];
     private height;
     private availHeight;
     private currentUrl: string;
@@ -58,41 +47,47 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
     permissionFeatures = PermissionFeatures;
     RoutesPath = RoutesPath;
 
-    _opened = false;
-    _toggle = false;
+    ngxLoaderConfiguration = {
+        hasProgressBar: false,
+        overlayColor: 'rgba(206, 43, 55, 0.97)',
+        logoUrl: '../assets/img/logo_vvf_200x.png',
+        logoSize: 300,
+        logoPosition: 'center-center',
+        fgsColor: '#FFFFFF',
+        fgsSize: 50,
+        gap: 60,
+        text: 'ATTENDI, STO CARICANDO I DATI...',
+        textColor: '#FFFFFF',
+        textPosition: 'top-center'
+    };
 
     @ViewChild('contentElement', { read: ElementRef }) contentElement: ElementRef;
 
     @HostListener('window:resize')
-    onResize() {
+    onResize(): void {
         this.getHeight();
     }
 
     constructor(private router: Router,
                 private authService: AuthService,
                 private store: Store,
-                private _permessiService: PermessiService,
-                private versionCheckService: VersionCheckService,
-                private modals: NgbModal) {
+                private permessiService: PermessiService,
+                private versionCheckService: VersionCheckService) {
+        this.getRouterEvents();
         this.getImpostazioniLocalStorage();
         this.getSessionData();
-        router.events.subscribe((val) => {
-            if (val instanceof NavigationEnd) {
-                this.currentUrl = val.urlAfterRedirects.slice(1);
-                const isLogged = this.store.selectSnapshot(AuthState.logged);
-                !this.deniedPath.includes(val.urlAfterRedirects.slice(1)) && isLogged ? this._toggle = true : this._toggle = false;
-            }
-        });
         this.initSubscription();
     }
 
 
-    ngOnInit() {
-        !isDevMode() && this.versionCheckService.initVersionCheck(3);
+    ngOnInit(): void {
+        if (!isDevMode()) {
+            this.versionCheckService.initVersionCheck(3);
+        }
         this.preloadImage(Images.Disconnected);
     }
 
-    ngAfterViewChecked() {
+    ngAfterViewChecked(): void {
         this.getHeight();
     }
 
@@ -100,8 +95,14 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
         this.subscription.unsubscribe();
     }
 
-    _toggleOpened(): void {
-        this._opened = !this._opened;
+    getRouterEvents(): void {
+        this.subscription.add(
+            this.router.events.subscribe((val) => {
+                if (val instanceof NavigationEnd) {
+                    this.currentUrl = val.urlAfterRedirects.slice(1);
+                }
+            })
+        );
     }
 
     getImpostazioniLocalStorage(): void {
@@ -109,35 +110,31 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
     }
 
     private initSubscription(): void {
-        this.subscription.add(this.isLoaded$.subscribe((r: boolean) => {
-            this._isReady(r);
-        }));
         this.subscription.add(this.offsetTime$.subscribe((serverTime: number) => OFFSET_SYNC_TIME.unshift(serverTime)));
         this.subscription.add(this.user$.subscribe((user: Utente) => {
             this.user = user;
             if (user && user.sede) {
-                this.listeSediLoaded && this.store.dispatch(new PatchListaSediNavbar([user.sede.codice]));
+                if (this.listeSediLoaded) {
+                    this.store.dispatch(
+                        new PatchListaSediNavbar([user.sede.codice])
+                    );
+                }
             } else {
                 this.store.dispatch(new ClearListaSediNavbar());
             }
         }));
         this.subscription.add(this.listeSediLoaded$.subscribe((r: boolean) => {
             this.listeSediLoaded = r;
-            r && this.store.dispatch(new PatchListaSediNavbar([this.user.sede.codice]));
+            if (r) {
+                this.store.dispatch(
+                    new PatchListaSediNavbar([this.user.sede.codice])
+                );
+            }
         }));
         this.subscription.add(this.vistaSedi$.subscribe(r => r && this.store.dispatch(new PatchListaSediNavbar([...r]))));
     }
 
-    private _isReady(status: boolean): void {
-        console.log('_isReady', status);
-        if (!status) {
-            // Todo verificare se necessario
-            this.modals.dismissAll();
-        }
-    }
-
     private getHeight(): void {
-        // tslint:disable-next-line:max-line-length
         if (_isActive(this.currentUrl)) {
             const availHeight = window.innerHeight;
             const height = this.contentElement.nativeElement.offsetHeight;
@@ -186,9 +183,15 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
         const sessionToken = JSON.parse(sessionStorage.getItem(LSNAME.token));
         const sessionCurrentUser = JSON.parse(sessionStorage.getItem(LSNAME.currentUser));
         const casLogin = JSON.parse(sessionStorage.getItem(LSNAME.casLogin));
-        sessionToken && this.store.dispatch(new SetCurrentJwt(sessionToken));
-        sessionCurrentUser && this.store.dispatch(new SetCurrentUser(sessionCurrentUser));
-        casLogin && this.store.dispatch(new SetLoggedCas());
+        if (sessionToken) {
+            this.store.dispatch(new SetCurrentJwt(sessionToken));
+        }
+        if (sessionCurrentUser) {
+            this.store.dispatch(new SetCurrentUser(sessionCurrentUser));
+        }
+        if (casLogin) {
+            this.store.dispatch(new SetLoggedCas());
+        }
     }
 
 }

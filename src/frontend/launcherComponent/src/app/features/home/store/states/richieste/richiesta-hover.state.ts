@@ -1,7 +1,6 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
-
-// Action
 import { SetRichiestaHover, ClearRichiestaHover } from '../../actions/richieste/richiesta-hover.actions';
+import { Injectable } from '@angular/core';
 
 export interface RichiestaHoverStateModel {
     idRichiestaHover: string;
@@ -11,38 +10,28 @@ export const RichiestaHoverStateDefaults: RichiestaHoverStateModel = {
     idRichiestaHover: null
 };
 
+@Injectable()
 @State<RichiestaHoverStateModel>({
     name: 'richiestaHover',
     defaults: RichiestaHoverStateDefaults
 })
 export class RichiestaHoverState {
 
-    constructor() { }
-
-    // SELECTORS
     @Selector()
-    static idRichiestaHover(state: RichiestaHoverStateModel) {
+    static idRichiestaHover(state: RichiestaHoverStateModel): string {
         return state.idRichiestaHover;
     }
 
-    // SET
     @Action(SetRichiestaHover)
-    setRichiestaHover({ getState, patchState }: StateContext<RichiestaHoverStateModel>, action: SetRichiestaHover) {
-        const state = getState();
-
+    setRichiestaHover({ patchState }: StateContext<RichiestaHoverStateModel>, action: SetRichiestaHover): void {
         patchState({
-            ...state,
             idRichiestaHover: action.idRichiesta
         });
     }
 
-    // CLEAR
     @Action(ClearRichiestaHover)
-    clearRichiestaHover({ getState, patchState }: StateContext<RichiestaHoverStateModel>) {
-        const state = getState();
-
+    clearRichiestaHover({ patchState }: StateContext<RichiestaHoverStateModel>): void {
         patchState({
-            ...state,
             idRichiestaHover: null
         });
     }

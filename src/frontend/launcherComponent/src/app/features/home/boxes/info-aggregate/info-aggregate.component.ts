@@ -3,7 +3,6 @@ import { BoxInterventi } from '../boxes-model/box-interventi.model';
 import { BoxMezzi } from '../boxes-model/box-mezzi.model';
 import { BoxClickInterface } from '../box-interface/box-click-interface';
 import { Subscription, Observable } from 'rxjs';
-import { ModalServiziComponent } from './modal-servizi/modal-servizi.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { MeteoService } from '../../../../shared/meteo/meteo-service.service';
 import { Meteo } from '../../../../shared/model/meteo.model';
@@ -40,32 +39,36 @@ export class InfoAggregateComponent implements OnInit, OnDestroy {
     timerMeteo: NodeJS.Timer;
 
     constructor(private store: Store,
-        private modalService: NgbModal,
-        private meteoService: MeteoService) {
+                private modalService: NgbModal,
+                private meteoService: MeteoService) {
         this.startMeteo();
     }
 
     ngOnInit(): void {
-        isDevMode() && console.log('Componente Info Aggregate creato');
+        if (isDevMode()) {
+            console.log('Componente Info Aggregate creato');
+        }
     }
 
     ngOnDestroy(): void {
         this.subscription.unsubscribe();
-        isDevMode() && console.log('Componente Info Aggregate Distrutto');
         clearInterval(this.timerMeteo);
+        if (isDevMode()) {
+            console.log('Componente Info Aggregate Distrutto');
+        }
     }
 
     clickBox(cat: string, tipo: string): void {
         this.store.dispatch(new ReducerBoxClick(cat, tipo));
     }
 
-    clickServizi(tipo: string) {
+    clickServizi(tipo: string): void {
         if (tipo === 'openModal') {
             // this.modalService.open(ModalServiziComponent, { size: 'lg', centered: true });
         }
     }
 
-    startMeteo() {
+    startMeteo(): void {
         const coordinateUtente = this.store.selectSnapshot(AuthState.currentUser).sede.coordinate;
         const coordinate = new Coordinate(coordinateUtente.latitudine, coordinateUtente.longitudine);
         this._getMeteoData(coordinate);
@@ -75,7 +78,7 @@ export class InfoAggregateComponent implements OnInit, OnDestroy {
         }, 300000);
     }
 
-    _getMeteoData(coords: Coordinate) {
+    _getMeteoData(coords: Coordinate): void {
         setTimeout(() => {
             this.meteoService.getMeteoData(coords)
                 .subscribe(data => {

@@ -5,12 +5,9 @@ import { PatchPagination } from 'src/app/shared/store/actions/pagination/paginat
 import { StopLoading, StartLoading } from 'src/app/shared/store/actions/loading/loading.actions';
 import { ResponseInterface } from 'src/app/shared/interface/response.interface';
 import { PaginationState } from 'src/app/shared/store/states/pagination/pagination.state';
-import {
-    GetListaTrasferimentiChiamate,
-    SetListaTrasferimentiChiamate,
-    AddTrasferimentoChiamata
-} from '../../actions/trasferimento-chiamata/trasferimento-chiamata.actions';
+import { GetListaTrasferimentiChiamate, SetListaTrasferimentiChiamate, AddTrasferimentoChiamata } from '../../actions/trasferimento-chiamata/trasferimento-chiamata.actions';
 import { TrasferimentoChiamataService } from 'src/app/core/service/trasferimento-chiamata/trasferimento-chiamata.service';
+import { Injectable } from '@angular/core';
 
 export interface TrasferimentoChiamataStateModel {
     listaTrasferimentiChiamate: TrasferimentoChiamata[];
@@ -20,6 +17,7 @@ export const TrasferimentoChiamataStateModelDefaults: TrasferimentoChiamataState
     listaTrasferimentiChiamate: undefined
 };
 
+@Injectable()
 @State<TrasferimentoChiamataStateModel>({
     name: 'trasferimentoChiamata',
     defaults: TrasferimentoChiamataStateModelDefaults,
@@ -33,12 +31,12 @@ export class TrasferimentoChiamataState {
     }
 
     @Selector()
-    static listaTrasferimentiChiamate(state: TrasferimentoChiamataStateModel) {
+    static listaTrasferimentiChiamate(state: TrasferimentoChiamataStateModel): TrasferimentoChiamata[] {
         return state.listaTrasferimentiChiamate;
     }
 
     @Action(GetListaTrasferimentiChiamate)
-    getListaTrasferimentiChiamate({ dispatch }: StateContext<TrasferimentoChiamataStateModel>, action: GetListaTrasferimentiChiamate) {
+    getListaTrasferimentiChiamate({ dispatch }: StateContext<TrasferimentoChiamataStateModel>, action: GetListaTrasferimentiChiamate): void {
         dispatch(new StartLoading());
         const ricerca = this.store.selectSnapshot(RicercaTrasferimentoChiamataState.ricerca);
         const filters = {
@@ -58,14 +56,14 @@ export class TrasferimentoChiamataState {
     }
 
     @Action(SetListaTrasferimentiChiamate)
-    setListaTrasferimentiChiamate({ patchState }: StateContext<TrasferimentoChiamataStateModel>, action: SetListaTrasferimentiChiamate) {
+    setListaTrasferimentiChiamate({ patchState }: StateContext<TrasferimentoChiamataStateModel>, action: SetListaTrasferimentiChiamate): void {
         patchState({
             listaTrasferimentiChiamate: action.vociTrasferimentoChiamata
         });
     }
 
     @Action(AddTrasferimentoChiamata)
-    addTrasferimentoChiamata({ dispatch }: StateContext<TrasferimentoChiamataStateModel>) {
+    addTrasferimentoChiamata({ dispatch }: StateContext<TrasferimentoChiamataStateModel>): void {
         const pagina = this.store.selectSnapshot(PaginationState.page);
         dispatch(new GetListaTrasferimentiChiamate(pagina));
     }

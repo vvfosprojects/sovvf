@@ -16,7 +16,7 @@ import {
 } from '../../actions/filtri-composizione/filtri-composizione.actions';
 import { insertItem, patch, removeItem } from '@ngxs/store/operators';
 import { ListaTipologicheMezzi } from '../../../../features/home/composizione-partenza/interface/filtri/lista-filtri-composizione-interface';
-import { MezziComposizioneState } from '../mezzi-composizione/mezzi-composizione.state';
+import { Injectable } from '@angular/core';
 
 export interface FiltriComposizioneStateStateModel {
     filtriAffini: ListaTipologicheMezzi;
@@ -36,6 +36,7 @@ export const FiltriComposizioneStateDefaults: FiltriComposizioneStateStateModel 
     codiceStatoMezzo: [],
 };
 
+@Injectable()
 @State<FiltriComposizioneStateStateModel>({
     name: 'filtriComposizione',
     defaults: FiltriComposizioneStateDefaults
@@ -43,7 +44,7 @@ export const FiltriComposizioneStateDefaults: FiltriComposizioneStateStateModel 
 export class FiltriComposizioneState {
 
     @Selector()
-    static filtriAffini(state: FiltriComposizioneStateStateModel) {
+    static filtriAffini(state: FiltriComposizioneStateStateModel): ListaTipologicheMezzi {
         return state.filtriAffini;
     }
 
@@ -61,12 +62,12 @@ export class FiltriComposizioneState {
 
 
     @Action(GetFiltriComposizione)
-    getFiltriComposizione({ dispatch }: StateContext<FiltriComposizioneStateStateModel>) {
+    getFiltriComposizione({ dispatch }: StateContext<FiltriComposizioneStateStateModel>): void {
         dispatch(new SetFiltriComposizione());
     }
 
     @Action(SetFiltriComposizione)
-    setFiltriComposizione({ getState, dispatch }: StateContext<FiltriComposizioneStateStateModel>) {
+    setFiltriComposizione({ getState, dispatch }: StateContext<FiltriComposizioneStateStateModel>): void {
         const state = getState();
         const composizioneMode = this.store.selectSnapshot(x => x.composizionePartenza.composizioneMode);
         const objFiltriSelezionati: ComposizioneFilterbar = {
@@ -84,7 +85,7 @@ export class FiltriComposizioneState {
     }
 
     @Action(SetListaFiltriAffini)
-    setListaFiltriAffini({ patchState }: StateContext<FiltriComposizioneStateStateModel>, action: SetListaFiltriAffini) {
+    setListaFiltriAffini({ patchState }: StateContext<FiltriComposizioneStateStateModel>, action: SetListaFiltriAffini): void {
         const filtri = this.store.selectSnapshot(state => state.tipologicheMezzi.tipologiche);
         const composizioneMezzi = action.composizioneMezzi ? action.composizioneMezzi : this.store.selectSnapshot(x => x.mezziComposizione.allMezziComposizione);
         const filtriDistaccamento = [] as DescrizioneTipologicaMezzo[];
@@ -114,54 +115,54 @@ export class FiltriComposizioneState {
             }
         }
 
-        function checkDistaccamento(distaccamento: DescrizioneTipologicaMezzo) {
-            let _return = false;
+        function checkDistaccamento(distaccamento: DescrizioneTipologicaMezzo): boolean {
+            let check = false;
             composizioneMezzi.forEach((mezzoComp: MezzoComposizione) => {
                 if (mezzoComp.mezzo.distaccamento.codice === distaccamento.id) {
-                    _return = true;
+                    check = true;
                 }
             });
-            return _return;
+            return check;
         }
 
-        function checkStato(stato: DescrizioneTipologicaMezzo) {
-            let _return = false;
+        function checkStato(stato: DescrizioneTipologicaMezzo): boolean {
+            let check = false;
             composizioneMezzi.forEach((mezzoComp: MezzoComposizione) => {
                 if (mezzoComp.mezzo.stato === stato.descrizione) {
-                    _return = true;
+                    check = true;
                 }
             });
-            return _return;
+            return check;
         }
 
-        function checkGenereMezzo(genereMezzo: DescrizioneTipologicaMezzo) {
-            let _return = false;
+        function checkGenereMezzo(genereMezzo: DescrizioneTipologicaMezzo): boolean {
+            let check = false;
             composizioneMezzi.forEach((mezzoComp: MezzoComposizione) => {
                 if (mezzoComp.mezzo.genere === genereMezzo.descrizione) {
-                    _return = true;
+                    check = true;
                 }
             });
-            return _return;
+            return check;
         }
 
         patchState({
             filtriAffini: {
                 distaccamenti: filtriDistaccamento,
-                generiMezzi: generiMezzi,
+                generiMezzi,
                 stati: filtriStato
             }
         });
     }
 
     @Action(ClearFiltriAffini)
-    clearFiltriAffini({ patchState }: StateContext<FiltriComposizioneStateStateModel>) {
+    clearFiltriAffini({ patchState }: StateContext<FiltriComposizioneStateStateModel>): void {
         patchState({
             filtriAffini: FiltriComposizioneStateDefaults.filtriAffini
         });
     }
 
     @Action(AddFiltroSelezionatoComposizione)
-    addFiltroSelezionatoComposizione(ctx: StateContext<FiltriComposizioneStateStateModel>, action: AddFiltroSelezionatoComposizione) {
+    addFiltroSelezionatoComposizione(ctx: StateContext<FiltriComposizioneStateStateModel>, action: AddFiltroSelezionatoComposizione): void {
         console.log('Filtro selezionato => #ID = ' + action.id + ' - TIPO = ' + action.tipo);
         switch (action.tipo) {
             case 'codiceDistaccamento':
@@ -189,7 +190,7 @@ export class FiltriComposizioneState {
     }
 
     @Action(RemoveFiltroSelezionatoComposizione)
-    removeFiltroSelezionatoComposizione(ctx: StateContext<FiltriComposizioneStateStateModel>, action: RemoveFiltroSelezionatoComposizione) {
+    removeFiltroSelezionatoComposizione(ctx: StateContext<FiltriComposizioneStateStateModel>, action: RemoveFiltroSelezionatoComposizione): void {
         switch (action.tipo) {
             case 'codiceDistaccamento':
                 ctx.setState(
@@ -216,7 +217,7 @@ export class FiltriComposizioneState {
     }
 
     @Action(RemoveFiltriSelezionatiComposizione)
-    removeFiltriSelezionatiComposizione(ctx: StateContext<FiltriComposizioneStateStateModel>, action: RemoveFiltriSelezionatiComposizione) {
+    removeFiltriSelezionatiComposizione(ctx: StateContext<FiltriComposizioneStateStateModel>, action: RemoveFiltriSelezionatiComposizione): void {
         switch (action.tipo) {
             case 'codiceDistaccamento':
                 ctx.setState(

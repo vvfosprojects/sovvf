@@ -32,19 +32,19 @@ export class FilterbarComposizioneComponent {
     constructor(private store: Store) {
     }
 
-    addFiltro(event: any, tipo: string) {
+    addFiltro(event: any, tipo: string): void {
         if (event) {
             this.store.dispatch(new AddFiltroSelezionatoComposizione(event.id || event.descrizione, tipo));
             this.update();
         }
     }
 
-    clearFiltri(tipo: string) {
+    clearFiltri(tipo: string): void {
         this.store.dispatch(new RemoveFiltriSelezionatiComposizione(tipo));
         this.update();
     }
 
-    update() {
+    update(): void {
         const filtriSelezionati = this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati);
         const codiceMezzo = this.store.selectSnapshot(MezziComposizioneState.idMezzoSelezionato);
         const codiceSquadra = this.store.selectSnapshot(SquadreComposizioneState.idSquadreSelezionate);
@@ -61,11 +61,11 @@ export class FilterbarComposizioneComponent {
         this.store.dispatch(new ReducerFilterListeComposizione(filtri));
     }
 
-    turnOffComposizione() {
+    turnOffComposizione(): void {
         this.store.dispatch(new TurnOffComposizione());
     }
 
-    compPartenzaSwitch(event: Composizione) {
+    compPartenzaSwitch(event: Composizione): void {
         this.store.dispatch(new SwitchComposizione(event));
     }
 
