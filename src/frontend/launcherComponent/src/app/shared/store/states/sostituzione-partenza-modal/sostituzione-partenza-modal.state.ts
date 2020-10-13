@@ -84,26 +84,6 @@ export class SostituzionePartenzaModalState {
 
     @Action(GetListaMezziSquadre)
     getListaMezziSquadre({ dispatch, getState }: StateContext<SostituzionePartenzaModel>, action: GetListaMezziSquadre): void {
-      /*
-        // dispatch(new StartListaComposizioneLoading());
-        const obj = {} as FiltriComposizione;
-        obj.idRichiesta = action.idRichiesta;
-        this.compPartenzaService.getListeComposizioneAvanzata(obj).subscribe((listeCompAvanzata: ListaComposizioneAvanzata) => {
-            if (listeCompAvanzata.composizioneMezziDataArray) {
-                dispatch(new SetListaMezziComposizione(listeCompAvanzata.composizioneMezziDataArray));
-            }
-            if (listeCompAvanzata.composizioneSquadreDataArray) {
-                dispatch(new SetListaSquadreComposizione(listeCompAvanzata.composizioneSquadreDataArray));
-            }
-            dispatch(new SetListaMezziSquadre(listeCompAvanzata));
-            // dispatch(new StopListaComposizioneLoading());
-        }, () => {
-            // dispatch(new StopListaComposizioneLoading());
-        });
-       */
-
-      // dispatch(new StartListaComposizioneLoading());
-      // tslint:disable-next-line:no-shadowed-variable
       const state = getState();
       const paginationMezzi = this.store.selectSnapshot(PaginationComposizionePartenzaState.paginationMezzi);
       const paginationSquadre = this.store.selectSnapshot(PaginationComposizionePartenzaState.paginationSquadre);

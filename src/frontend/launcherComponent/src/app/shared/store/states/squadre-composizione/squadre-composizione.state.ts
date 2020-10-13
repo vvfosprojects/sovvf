@@ -26,6 +26,7 @@ import { Injectable } from '@angular/core';
 import { GetListeComposizioneAvanzata } from '../../../../features/home/store/actions/composizione-partenza/composizione-avanzata.actions';
 import {ComposizionePartenzaState} from '../../../../features/home/store/states/composizione-partenza/composizione-partenza.state';
 import {GetListaMezziSquadre} from '../../actions/sostituzione-partenza/sostituzione-partenza.actions';
+import {SostituzionePartenzaModalState} from '../sostituzione-partenza-modal/sostituzione-partenza-modal.state';
 
 export interface SquadreComposizioneStateStateModel {
     allSquadreComposione: SquadraComposizione[];
@@ -125,7 +126,7 @@ export class SquadreComposizioneState {
         const boxPartenzaSelezionato = boxPartenzaList.filter(x => x.id === idBoxPartenzaSelezionato)[0];
         if (!boxPartenzaSelezionato && this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione) || (boxPartenzaSelezionato && !boxPartenzaSelezionato.mezzoComposizione && this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione))) {
             dispatch(new GetListeComposizioneAvanzata());
-        } else {
+        } else if (this.store.selectSnapshot(SostituzionePartenzaModalState.idRichiestaSostituzione)) {
           dispatch(new GetListaMezziSquadre());
         }
         // Aggiorno lo store
@@ -150,7 +151,7 @@ export class SquadreComposizioneState {
             const boxPartenzaSelezionato = boxPartenzaList.filter(b => b.id === idBoxPartenzaSelezionato)[0];
             if (!boxPartenzaSelezionato && this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione) || !boxPartenzaSelezionato.mezzoComposizione && this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione)) {
                 dispatch(new GetListeComposizioneAvanzata());
-            } else {
+            } else if (this.store.selectSnapshot(SostituzionePartenzaModalState.idRichiestaSostituzione)) {
               dispatch(new GetListaMezziSquadre());
             }
         }

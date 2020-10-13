@@ -58,6 +58,7 @@ import { Injectable } from '@angular/core';
 import { GetListeComposizioneAvanzata } from '../../../../features/home/store/actions/composizione-partenza/composizione-avanzata.actions';
 import {ComposizionePartenzaState} from '../../../../features/home/store/states/composizione-partenza/composizione-partenza.state';
 import {GetListaMezziSquadre} from '../../actions/sostituzione-partenza/sostituzione-partenza.actions';
+import {SostituzionePartenzaModalState} from '../sostituzione-partenza-modal/sostituzione-partenza-modal.state';
 
 export interface MezziComposizioneStateStateModel {
     allMezziComposizione: MezzoComposizione[];
@@ -275,7 +276,7 @@ export class MezziComposizioneState {
         const boxPartenzaSelezionato = boxPartenzaList.filter(x => x.id === idBoxPartenzaSelezionato)[0];
         if (boxPartenzaSelezionato && (!boxPartenzaSelezionato.squadraComposizione || boxPartenzaSelezionato.squadraComposizione.length <= 0) && this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione)) {
             dispatch(new GetListeComposizioneAvanzata(), );
-          } else {
+          } else if (this.store.selectSnapshot(SostituzionePartenzaModalState.idRichiestaSostituzione)) {
             dispatch(new GetListaMezziSquadre());
           }
     }
@@ -290,7 +291,7 @@ export class MezziComposizioneState {
         const idSquadreSelezionate = this.store.selectSnapshot(SquadreComposizioneState.idSquadreSelezionate);
         if (idSquadreSelezionate && idSquadreSelezionate.length <= 0 && this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione)) {
             dispatch(new GetListeComposizioneAvanzata(), );
-        } else {
+        } else if (this.store.selectSnapshot(SostituzionePartenzaModalState.idRichiestaSostituzione)) {
           dispatch(new GetListaMezziSquadre());
         }
     }
