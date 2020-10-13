@@ -1,6 +1,8 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { SedeMarker } from '../../../maps/maps-model/sede-marker.model';
 import { SediMarkerService } from '../../../../../core/service/maps-service';
+import { append, insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
+import { StartLoadingAreaMappa, StopLoadingAreaMappa } from '../../actions/maps/area-mappa.actions';
 import {
     AddSediMarkers,
     ClearSediMarkers,
@@ -12,8 +14,6 @@ import {
     SetSediMarkers,
     UpdateSedeMarker
 } from '../../actions/maps/sedi-markers.actions';
-import { append, insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
-import { StartLoadingAreaMappa, StopLoadingAreaMappa } from '../../actions/maps/area-mappa.actions';
 import { Injectable } from '@angular/core';
 
 export interface SediMarkersStateModel {
@@ -37,25 +37,25 @@ export const SediMarkersStateDefaults: SediMarkersStateModel = {
 export class SediMarkersState {
 
     @Selector()
-    static sediMarkers(state: SediMarkersStateModel) {
+    static sediMarkers(state: SediMarkersStateModel): SedeMarker[] {
         return state.sediMarkers;
     }
 
     @Selector()
-    static getSedeById(state: SediMarkersStateModel) {
+    static getSedeById(state: SediMarkersStateModel): SedeMarker {
         return state.sedeMarkerById;
     }
 
-    constructor(private _sedi: SediMarkerService) {
+    constructor(private sediMarkerService: SediMarkerService) {
 
     }
 
     @Action(GetSediMarkers)
-    getSediMarkers({ dispatch }: StateContext<SediMarkersStateModel>, action: GetSediMarkers) {
+    getSediMarkers({ dispatch }: StateContext<SediMarkersStateModel>, action: GetSediMarkers): void {
         dispatch([
             new StartLoadingAreaMappa()
         ]);
-        this._sedi.getSediMarkers(action.areaMappa).subscribe((data: SedeMarker[]) => {
+        this.sediMarkerService.getSediMarkers(action.areaMappa).subscribe((data: SedeMarker[]) => {
                 dispatch([
                     new SetSediMarkers(data),
                     new StopLoadingAreaMappa()
@@ -67,7 +67,7 @@ export class SediMarkersState {
     }
 
     @Action(SetSediMarkers)
-    setSediMarkers({ getState, dispatch }: StateContext<SediMarkersStateModel>, action: SetSediMarkers) {
+    setSediMarkers({ getState, dispatch }: StateContext<SediMarkersStateModel>, action: SetSediMarkers): void {
         const state = getState();
         if (action.sediMarkers) {
             if (state.sediMarkers.length === 0) {
@@ -112,7 +112,7 @@ export class SediMarkersState {
     }
 
     @Action(PatchSediMarkers)
-    patchSediMarkers({ patchState }: StateContext<SediMarkersStateModel>, { payload }: PatchSediMarkers) {
+    patchSediMarkers({ patchState }: StateContext<SediMarkersStateModel>, { payload }: PatchSediMarkers): void {
         patchState({
             sediMarkers: payload.map(item => item),
             sediMarkersId: payload.map(item => item.codice)
@@ -120,7 +120,7 @@ export class SediMarkersState {
     }
 
     @Action(AddSediMarkers)
-    addSediMarkers({ setState }: StateContext<SediMarkersStateModel>, { payload }: AddSediMarkers) {
+    addSediMarkers({ setState }: StateContext<SediMarkersStateModel>, { payload }: AddSediMarkers): void {
         setState(
             patch({
                 sediMarkers: append(payload.map(item => item)),
@@ -130,7 +130,7 @@ export class SediMarkersState {
     }
 
     @Action(InsertSedeMarker)
-    insertRichiestaMarker({ setState }: StateContext<SediMarkersStateModel>, { payload, before }: InsertSedeMarker) {
+    insertRichiestaMarker({ setState }: StateContext<SediMarkersStateModel>, { payload, before }: InsertSedeMarker): void {
         setState(
             patch({
                 sediMarkers: insertItem(payload, before),
@@ -140,7 +140,7 @@ export class SediMarkersState {
     }
 
     @Action(UpdateSedeMarker)
-    updateRichiestaMarker({ setState }: StateContext<SediMarkersStateModel>, { payload }: UpdateSedeMarker) {
+    updateRichiestaMarker({ setState }: StateContext<SediMarkersStateModel>, { payload }: UpdateSedeMarker): void {
         setState(
             patch({
                 sediMarkers: updateItem<SedeMarker>(mezzo => mezzo.codice === payload.codice, payload)
@@ -149,7 +149,7 @@ export class SediMarkersState {
     }
 
     @Action(RemoveSedeMarker)
-    removeRichiestaMarker({ setState }: StateContext<SediMarkersStateModel>, { payload }: RemoveSedeMarker) {
+    removeRichiestaMarker({ setState }: StateContext<SediMarkersStateModel>, { payload }: RemoveSedeMarker): void {
         setState(
             patch({
                 sediMarkers: removeItem<SedeMarker>(mezzo => mezzo.codice === payload),
@@ -159,7 +159,7 @@ export class SediMarkersState {
     }
 
     @Action(SetSedeMarkerById)
-    setSedeMarkerById({ getState, patchState }: StateContext<SediMarkersStateModel>, action: SetSedeMarkerById) {
+    setSedeMarkerById({ getState, patchState }: StateContext<SediMarkersStateModel>, action: SetSedeMarkerById): void {
         const state = getState();
         if (action.id) {
             patchState({
@@ -173,7 +173,7 @@ export class SediMarkersState {
     }
 
     @Action(ClearSediMarkers)
-    clearSediMarkers({ patchState }: StateContext<SediMarkersStateModel>) {
+    clearSediMarkers({ patchState }: StateContext<SediMarkersStateModel>): void {
         patchState(SediMarkersStateDefaults);
     }
 }

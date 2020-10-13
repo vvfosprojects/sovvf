@@ -8,7 +8,6 @@ import { SharedModule } from '../../../shared/shared.module';
 import { AgmCoreModule } from '@agm/core';
 import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
 import { AgmDirectionModule } from 'agm-direction';
-
 /**
  * MAPS
  */
@@ -28,11 +27,12 @@ import { FiltriMarkersMezziComponent } from './maps-ui/filtri-markers/filtri-mar
  * Provider
  */
 import {
-    MezziMarkerService, SediMarkerService, RichiesteMarkerService,
+    MezziMarkerService,
+    SediMarkerService,
+    RichiesteMarkerService,
     ChiamateMarkerService
 } from '../../../core/service/maps-service';
 import { RichiesteMarkerAdapterService } from '../../../core/service/maps-service/richieste-marker/adapters/richieste-marker-adapter.service';
-
 /**
  * Ngxs
  */
@@ -105,7 +105,6 @@ import { FormsModule } from '@angular/forms';
         FiltriMarkersMezziComponent,
         FiltriScComponent
     ],
-    entryComponents: [CambioSedeModalComponent, SintesiRichiestaModalComponent],
     exports: [
         MapsComponent
     ],

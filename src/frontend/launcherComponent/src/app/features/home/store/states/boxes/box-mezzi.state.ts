@@ -1,9 +1,5 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
-
-// Model
 import { BoxMezzi } from '../../../boxes/boxes-model/box-mezzi.model';
-
-// Action
 import { SetBoxMezzi, ClearBoxMezzi } from '../../actions/boxes/box-mezzi.actions';
 import { Injectable } from '@angular/core';
 
@@ -26,19 +22,19 @@ export class BoxMezziState {
     }
 
     @Selector()
-    static mezzi(state: BoxMezziStateModel) {
+    static mezzi(state: BoxMezziStateModel): BoxMezzi {
         return state.mezzi;
     }
 
     @Action(SetBoxMezzi)
-    setBoxMezzi({ patchState }: StateContext<BoxMezziStateModel>, action: SetBoxMezzi) {
+    setBoxMezzi({ patchState }: StateContext<BoxMezziStateModel>, action: SetBoxMezzi): void {
         patchState({
             mezzi: action.payload
         });
     }
 
     @Action(ClearBoxMezzi)
-    clearBoxMezzi({ patchState }: StateContext<BoxMezziStateModel>) {
+    clearBoxMezzi({ patchState }: StateContext<BoxMezziStateModel>): void {
         patchState(boxMezziStateDefaults);
     }
 }

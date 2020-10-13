@@ -48,7 +48,6 @@ import { BoxMezzi } from '../../features/home/boxes/boxes-model/box-mezzi.model'
 import { BoxInterventi } from '../../features/home/boxes/boxes-model/box-interventi.model';
 import { ChiamataMarker } from '../../features/home/maps/maps-model/chiamata-marker.model';
 import { SintesiRichiesta } from '../../shared/model/sintesi-richiesta.model';
-
 import { AuthState } from '../../features/auth/store/auth.state';
 import { ClearCurrentUser, UpdateRuoliPersonali } from '../../features/auth/store/auth.actions';
 import { ViewComponentState } from '../../features/home/store/states/view/view.state';
@@ -81,17 +80,17 @@ export class SignalRService {
         this.startSubscriptionConnection();
     }
 
-    checkConnection() {
+    checkConnection(): any {
         return this.connectionEstablished.asObservable();
     }
 
-    private createSubscriptionConnection() {
+    private createSubscriptionConnection(): void {
         this.hubNotification = new HubConnectionBuilder()
             .withUrl(HUB_URL)
             .build();
     }
 
-    private startSubscriptionConnection() {
+    private startSubscriptionConnection(): void {
         this.hubNotification.start().then(() => {
             console.log('Hub Subscription Connesso');
             this.connectionEstablished.next(true);
@@ -387,7 +386,7 @@ export class SignalRService {
         this.store.dispatch(new SetConnectionId('N{[=sE=2\\_A/y"J7v;ZMEDcGZ3a$K53dmn9UJ]mR{PXd8rx\\M\\tdeE>:2NPH<3!n:s^2;'));
     }
 
-    getContextId() {
+    getContextId(): void {
         if (!SIGNALR_BYPASS) {
             this.hubNotification.invoke('GetConnectionId').then(connectionId => {
                 this.store.dispatch(new SetConnectionId(connectionId));
@@ -395,7 +394,7 @@ export class SignalRService {
         }
     }
 
-    startGetTime() {
+    startGetTime(): void {
         if (!SIGNALR_BYPASS) {
             this.hubNotification.invoke('GetDateTime')
                 .then((data: any) => {
@@ -406,7 +405,7 @@ export class SignalRService {
     }
 
 
-    addToGroup(notification: SignalRNotification) {
+    addToGroup(notification: SignalRNotification): void {
         if (!SIGNALR_BYPASS) {
             console.log('addToGroup', notification);
             this.hubNotification.invoke('AddToGroup', notification).then(
@@ -417,7 +416,7 @@ export class SignalRService {
         }
     }
 
-    removeToGroup(notification: SignalRNotification) {
+    removeToGroup(notification: SignalRNotification): void {
         if (!SIGNALR_BYPASS) {
             console.log('removeToGroup', notification);
             this.hubNotification.invoke('RemoveToGroup', notification).then(

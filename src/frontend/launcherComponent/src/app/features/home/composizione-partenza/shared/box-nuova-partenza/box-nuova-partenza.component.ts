@@ -40,7 +40,7 @@ export class BoxNuovaPartenzaComponent {
     constructor(private store: Store) {
     }
 
-    onClick() {
+    onClick(): void {
         if (!this.itemOccupato) {
             if (!this.itemSelezionato) {
                 this.selezionato.emit(this.partenza);
@@ -48,19 +48,18 @@ export class BoxNuovaPartenzaComponent {
                 this.deselezionato.emit(this.partenza);
             }
         } else if (mezzoComposizioneBusy(this.partenza.mezzoComposizione.mezzo.stato)) {
-            // tslint:disable-next-line:max-line-length
             this.store.dispatch(new ShowToastr(ToastrType.Warning, 'Impossibile assegnare il Preaccopiato', 'Il mezzo è ' + this.partenza.mezzoComposizione.mezzo.stato + ' ed è impegnato in un\'altra richiesta', null, null, true));
         } else if (this._checkSquadraOccupata(this.partenza.squadraComposizione)) {
             this.store.dispatch(new ShowToastr(ToastrType.Warning, 'Impossibile assegnare il Preaccopiato', 'Una o più squadre del Preaccopiato risultano impegnate in un\'altra richiesta', null, null, true));
         }
     }
 
-    onElimina(e: MouseEvent) {
+    onElimina(e: MouseEvent): void {
         e.stopPropagation();
         this.eliminato.emit(this.partenza);
     }
 
-    ngClass() {
+    ngClass(): string {
         let returnClass: string;
 
         if (this.compPartenzaMode === Composizione.Veloce) {
@@ -109,7 +108,7 @@ export class BoxNuovaPartenzaComponent {
         return returnClass;
     }
 
-    badgeDistaccamentoClass() {
+    badgeDistaccamentoClass(): string {
         let result = 'badge-secondary';
 
         if (this.richiesta && this.partenza.mezzoComposizione) {
@@ -127,7 +126,7 @@ export class BoxNuovaPartenzaComponent {
         return result;
     }
 
-    boxValidationClass() {
+    boxValidationClass(): { result: string, tooltip: string } {
         let result = 'text-danger';
         let tooltip = 'Errore sconosciuto';
         const prefix = 'fa ';
@@ -153,10 +152,10 @@ export class BoxNuovaPartenzaComponent {
                 break;
         }
 
-        return { result: result + ' ' + prefix + icon, tooltip: tooltip };
+        return { result: result + ' ' + prefix + icon, tooltip };
     }
 
-    onResetTimeout(e: MouseEvent) {
+    onResetTimeout(e: MouseEvent): void {
         e.stopPropagation();
         this.store.dispatch(new RequestResetBookMezzoComposizione(this.partenza.mezzoComposizione));
     }

@@ -21,19 +21,19 @@ export class RicercaRubricaState {
     }
 
     @Selector()
-    static ricerca(state: RicercaRubricaStateModel) {
+    static ricerca(state: RicercaRubricaStateModel): string {
         return state.ricerca;
     }
 
     @Action(SetRicercaRubrica)
-    setRicercaRubrica({ getState, patchState }: StateContext<RicercaRubricaStateModel>, action: SetRicercaRubrica) {
+    setRicercaRubrica({ getState, patchState }: StateContext<RicercaRubricaStateModel>, action: SetRicercaRubrica): void {
         patchState({
             ricerca: action.ricerca
         });
     }
 
     @Action(ClearRicercaRubrica)
-    clearRicercaRubrica({ patchState }: StateContext<RicercaRubricaStateModel>) {
+    clearRicercaRubrica({ patchState }: StateContext<RicercaRubricaStateModel>): void {
         patchState({
             ricerca: null
         });

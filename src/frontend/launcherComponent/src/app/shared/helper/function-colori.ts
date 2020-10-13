@@ -33,8 +33,8 @@ export function markerColorRichiesta(stato: StatoRichiesta): string {
 
 /**
  * ritorna il colore di un marker scheda contatto
- * @param {string} stato
- * @returns {string}
+ * @param: { string } stato
+ * @returns: { string }
  */
 export function markerColorSC(stato: ClassificazioneSchedaContatto): string {
     const mapColorStato = new Map([

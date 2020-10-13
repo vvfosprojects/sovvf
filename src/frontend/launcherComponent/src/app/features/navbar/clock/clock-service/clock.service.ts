@@ -3,7 +3,6 @@ import { Observable, interval } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { OFFSET_SYNC_TIME } from '../../../../core/settings/referral-time';
 
-
 @Injectable({
     providedIn: 'root'
 })

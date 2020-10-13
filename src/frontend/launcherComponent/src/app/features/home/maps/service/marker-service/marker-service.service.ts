@@ -25,13 +25,17 @@ import {
     ClearMarkerMezzoHover,
     ClearMarkerMezzoSelezionato,
     ClearMarkerRichiestaHover,
-    ClearMarkerRichiestaSelezionato, ClearMarkerSCHover, ClearMarkerSCSelezionato,
+    ClearMarkerRichiestaSelezionato,
+    ClearMarkerSCHover,
+    ClearMarkerSCSelezionato,
     ClearMarkerSedeHover,
     ClearMarkerSedeSelezionato,
     SetMarkerMezzoHover,
     SetMarkerMezzoSelezionato,
     SetMarkerRichiestaHover,
-    SetMarkerRichiestaSelezionato, SetMarkerSCHover, SetMarkerSCSelezionato,
+    SetMarkerRichiestaSelezionato,
+    SetMarkerSCHover,
+    SetMarkerSCSelezionato,
     SetMarkerSedeHover,
     SetMarkerSedeSelezionato,
 } from '../../../store/actions/maps/marker.actions';
@@ -47,11 +51,7 @@ import { MarkerInfoWindowState } from '../../../store/states/maps/marker-info-wi
 import { MarkerDatiMeteo } from '../../maps-model/marker-dati-meteo.interface';
 import { MarkerOpachiState, MarkerOpachiStateModel } from '../../../store/states/maps/marker-opachi.state';
 import { CustomButtonsMaps } from '../../maps-interface/maps-custom-buttons';
-import {
-    CentraMappaButton,
-    ToggleAnimation,
-    ToggleAnimationButton
-} from '../../../store/actions/maps/maps-buttons.actions';
+import { CentraMappaButton, ToggleAnimationButton } from '../../../store/actions/maps/maps-buttons.actions';
 import { MAPSOPTIONS, MapsOptionsInterface } from '../../../../../core/settings/maps-options';
 import {
     HoverInMezzoComposizione,
@@ -67,7 +67,8 @@ import {
     SetMezzoInServizioSelezionato
 } from '../../../store/actions/mezzi-in-servizio/mezzi-in-servizio.actions';
 import {
-    ClearSchedaContattoHover, OpenDetailSC,
+    ClearSchedaContattoHover,
+    OpenDetailSC,
     SetSchedaContattoHover
 } from '../../../store/actions/schede-contatto/schede-contatto.actions';
 
@@ -164,13 +165,13 @@ export class MarkerService implements OnDestroy {
         // }, MAPSOPTIONS.animationTimeoutMs);
     }
 
-    ngOnDestroy() {
+    ngOnDestroy(): void {
         this.subscription.unsubscribe();
     }
 
     /**
      * ritorna l'url del path dell'icona "speciale" da utilizzare
-     * @param tipo
+     * @param: tipo
      */
     iconaSpeciale(tipo: string): string {
         return this.icone.iconaSpeciale(tipo);
@@ -356,9 +357,9 @@ export class MarkerService implements OnDestroy {
 
     /**
      * crea a runtime un marker, se l'utente clicca in un punto della mappa
-     * @param event
+     * @param: event
      */
-    createMeteoMarker(event: any) {
+    createMeteoMarker(event: any): void {
         if (this.switchMeteo) {
             const coordinate = new Coordinate(event.coords.lat, event.coords.lng);
             const etichetta = `(lat: ${coord2String(event.coords.lat)} - lng: ${coord2String(event.coords.lng)})`;
@@ -406,25 +407,23 @@ export class MarkerService implements OnDestroy {
         return this.icone.iconaSedeTipoWindow(tipo);
     }
 
-    actionRichiestaMarker(id: string, codice: string, mouse: MouseE) {
+    actionRichiestaMarker(id: string, codice: string, mouse: MouseE): void {
         switch (mouse) {
-            case MouseE.HoverIn: {
+            case MouseE.HoverIn:
                 this.store.dispatch([
                     new SetMarkerRichiestaHover(id),
                     new SetRichiestaHover(id)
                 ]);
                 this.selfHoveredMarker = `richiesta-${id}`;
-            }
                 break;
-            case MouseE.HoverOut: {
+            case MouseE.HoverOut:
                 this.store.dispatch([
                     new ClearMarkerRichiestaHover(),
                     new ClearRichiestaHover()
                 ]);
                 this.selfHoveredMarker = ``;
-            }
                 break;
-            case MouseE.Click: {
+            case MouseE.Click:
                 if (this.markerRichiestaSelezionato !== id) {
                     this.store.dispatch([
                         new SetMarkerRichiestaSelezionato(id),
@@ -432,14 +431,13 @@ export class MarkerService implements OnDestroy {
                     ]);
                 }
                 this.selfClickedMarker = `richiesta-${id}`;
-            }
                 break;
         }
     }
 
-    actionMezzoMarker(id: string, mouse: MouseE, composizione: boolean, mezziInServizio: boolean) {
+    actionMezzoMarker(id: string, mouse: MouseE, composizione: boolean, mezziInServizio: boolean): void {
         switch (mouse) {
-            case MouseE.HoverIn: {
+            case MouseE.HoverIn:
                 this.store.dispatch(new SetMarkerMezzoHover(id));
                 this.selfHoveredMarker = `mezzo-${id}`;
                 if (composizione) {
@@ -447,9 +445,8 @@ export class MarkerService implements OnDestroy {
                 } else if (mezziInServizio) {
                     this.store.dispatch(new SetMezzoInServizioHover(id));
                 }
-            }
                 break;
-            case MouseE.HoverOut: {
+            case MouseE.HoverOut:
                 this.store.dispatch(new ClearMarkerMezzoHover());
                 this.selfHoveredMarker = ``;
                 if (composizione) {
@@ -457,9 +454,8 @@ export class MarkerService implements OnDestroy {
                 } else if (mezziInServizio) {
                     this.store.dispatch(new ClearMezzoInServizioHover());
                 }
-            }
                 break;
-            case MouseE.Click: {
+            case MouseE.Click:
                 if (this.markerMezzoSelezionato !== id) {
                     this.store.dispatch(new SetMarkerMezzoSelezionato(id));
                 }
@@ -467,52 +463,46 @@ export class MarkerService implements OnDestroy {
                     this.store.dispatch(new SetMezzoInServizioSelezionato(id));
                 }
                 this.selfClickedMarker = `mezzo-${id}`;
-            }
                 break;
         }
     }
 
-    actionSedeMarker(id: string, mouse: MouseE) {
+    actionSedeMarker(id: string, mouse: MouseE): void {
         switch (mouse) {
-            case MouseE.HoverIn: {
+            case MouseE.HoverIn:
                 this.store.dispatch(new SetMarkerSedeHover(id));
                 this.selfHoveredMarker = `sede-${id}`;
-            }
                 break;
-            case MouseE.HoverOut: {
+            case MouseE.HoverOut:
                 this.store.dispatch(new ClearMarkerSedeHover());
                 this.selfHoveredMarker = ``;
-            }
                 break;
-            case MouseE.Click: {
+            case MouseE.Click:
                 if (this.markerSedeSelezionato !== id) {
                     this.store.dispatch(new SetMarkerSedeSelezionato(id));
                 }
                 this.selfClickedMarker = `sede-${id}`;
-            }
                 break;
         }
     }
 
-    actionSchedaContattoMarker(id: string, mouse: MouseE) {
+    actionSchedaContattoMarker(id: string, mouse: MouseE): void {
         switch (mouse) {
-            case MouseE.HoverIn: {
+            case MouseE.HoverIn:
                 this.store.dispatch([
                     new SetMarkerSCHover(id),
                     new SetSchedaContattoHover(id)
                 ]);
                 this.selfHoveredMarker = `schedaContatto-${id}`;
-            }
                 break;
-            case MouseE.HoverOut: {
+            case MouseE.HoverOut:
                 this.store.dispatch([
                     new ClearMarkerSCHover(),
                     new ClearSchedaContattoHover()
                 ]);
                 this.selfHoveredMarker = ``;
-            }
                 break;
-            case MouseE.Click: {
+            case MouseE.Click:
                 if (this.markerSCSelezionato !== id) {
                     this.store.dispatch([
                         new OpenDetailSC(id),
@@ -520,16 +510,15 @@ export class MarkerService implements OnDestroy {
                     ]);
                 }
                 this.selfClickedMarker = `schedaContatto-${id}`;
-            }
                 break;
         }
     }
 
-    clearSelfClick() {
+    clearSelfClick(): void {
         this.selfClickedMarker = ``;
     }
 
-    noAction() {
+    noAction(): void {
         if (this.viewStateMaps.active !== AppFeatures.ComposizionePartenza) {
             this.store.dispatch([
                 new ClearRichiestaFissata(),
@@ -543,9 +532,9 @@ export class MarkerService implements OnDestroy {
         this.store.dispatch(new GetInitCentroMappa());
     }
 
-    findDatiMeteo(_id: string): Meteo {
+    findDatiMeteo(id: string): Meteo {
         let meteoData: Meteo = null;
-        const filterData = this.datiMeteo.filter(datiMeteo => datiMeteo.id === _id)[0];
+        const filterData = this.datiMeteo.filter(datiMeteo => datiMeteo.id === id)[0];
         if (filterData && filterData.id !== undefined) {
             meteoData = filterData.datiMeteo;
         }

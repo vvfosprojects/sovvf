@@ -1,6 +1,7 @@
 import { Sede } from './sede.model';
 import { StatoMezzo } from '../enum/stato-mezzo.enum';
 import { Coordinate } from './coordinate.model';
+
 /**
  * Modella un mezzo impegnato su una richiesta di assistenza
  */
@@ -29,8 +30,8 @@ export class Mezzo {
          */
         public appartenenza: number,
         /**
-        * Distaccamento di appartenza
-        */
+         * Distaccamento di appartenza
+         */
         public distaccamento: Sede,
         /**
          *  Coordinate che definiscono la posizione attuale del mezzo

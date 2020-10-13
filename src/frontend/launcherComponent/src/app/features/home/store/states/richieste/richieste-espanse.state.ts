@@ -21,7 +21,7 @@ export const RichiesteEspanseStateDefaults: RichiesteEspanseStateModel = {
 export class RichiesteEspanseState {
 
     @Selector()
-    static richiesteEspanse(state: RichiesteEspanseStateModel) {
+    static richiesteEspanse(state: RichiesteEspanseStateModel): string[] {
         return state.richiesteEspanse;
     }
 
@@ -29,7 +29,7 @@ export class RichiesteEspanseState {
     }
 
     @Action(ClearRichiesteEspanse)
-    clearRichiesteEspanse({ getState, patchState, dispatch }: StateContext<RichiesteEspanseStateModel>) {
+    clearRichiesteEspanse({ getState, patchState, dispatch }: StateContext<RichiesteEspanseStateModel>): void {
         const state = getState();
         const idRichiestaGestione = this.store.selectSnapshot(RichiestaGestioneState.richiestaGestione) ? this.store.selectSnapshot(RichiestaGestioneState.richiestaGestione).id : null;
 
@@ -45,7 +45,7 @@ export class RichiesteEspanseState {
     }
 
     @Action(ReducerRichiesteEspanse)
-    reducerRichiesteEspanse({ getState, dispatch }: StateContext<RichiesteEspanseStateModel>, action: ReducerRichiesteEspanse) {
+    reducerRichiesteEspanse({ getState, dispatch }: StateContext<RichiesteEspanseStateModel>, action: ReducerRichiesteEspanse): void {
         const state = getState();
         if (action && action.idRichiesta) {
             state.richiesteEspanse.includes(action.idRichiesta) ? dispatch(new RemoveRichiestaEspansa(action.idRichiesta)) : dispatch(new AddRichiestaEspansa(action.idRichiesta));
@@ -53,7 +53,7 @@ export class RichiesteEspanseState {
     }
 
     @Action(AddRichiestaEspansa)
-    addRichiestaEspansa({ getState, setState }: StateContext<RichiesteEspanseStateModel>, action: AddRichiestaEspansa) {
+    addRichiestaEspansa({ getState, setState }: StateContext<RichiesteEspanseStateModel>, action: AddRichiestaEspansa): void {
         const state = getState();
         if (!state.richiesteEspanse.includes(action.idRichiesta)) {
             setState(
@@ -65,7 +65,7 @@ export class RichiesteEspanseState {
     }
 
     @Action(RemoveRichiestaEspansa)
-    removeRichiestaEspansa({ getState, setState, dispatch }: StateContext<RichiesteEspanseStateModel>, action: RemoveRichiestaEspansa) {
+    removeRichiestaEspansa({ getState, setState, dispatch }: StateContext<RichiesteEspanseStateModel>, action: RemoveRichiestaEspansa): void {
         const state = getState();
         if (state.richiesteEspanse.includes(action.idRichiesta)) {
             setState(

@@ -47,9 +47,6 @@ import { FilterPipeModule } from 'ngx-filter-pipe';
         FormsModule,
         FilterPipeModule,
     ],
-    entryComponents: [
-        SganciamentoMezzoModalComponent
-    ],
     exports: [
         ComposizionePartenzaComponent
     ],

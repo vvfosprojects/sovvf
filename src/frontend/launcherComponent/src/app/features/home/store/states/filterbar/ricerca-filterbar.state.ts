@@ -18,29 +18,30 @@ export const RicercaFilterbarStateDefaults: RicercaFilterbarStateModel = {
 })
 export class RicercaFilterbarState {
 
-    constructor() { }
+    constructor() {
+    }
 
     @Selector()
-    static ricerca(state: RicercaFilterbarStateModel) {
+    static ricerca(state: RicercaFilterbarStateModel): string {
         return state.ricerca;
     }
 
     @Selector([FiltriRichiesteState])
-    static ricercaRichiesteConFiltri(state: RicercaFilterbarStateModel) {
+    static ricercaRichiesteConFiltri(state: RicercaFilterbarStateModel): any {
         const ricerca = state.ricerca;
         const filtri = FiltriRichiesteState.filtriRichiesteSelezionati;
-        return {ricerca , filtri};
+        return { ricerca, filtri };
     }
 
     @Action(SetRicercaFilterbar)
-    setRicerca({ patchState }: StateContext<RicercaFilterbarStateModel>, action: SetRicercaFilterbar) {
+    setRicerca({ patchState }: StateContext<RicercaFilterbarStateModel>, action: SetRicercaFilterbar): void {
         patchState({
             ricerca: action.ricerca
         });
     }
 
     @Action(ClearRicercaFilterbar)
-    clearRicercaRichieste({ patchState }: StateContext<RicercaFilterbarStateModel>) {
+    clearRicercaRichieste({ patchState }: StateContext<RicercaFilterbarStateModel>): void {
         patchState({
             ricerca: ''
         });

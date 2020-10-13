@@ -9,8 +9,8 @@ export class FriendlyDatePipe implements PipeTransform {
     /**
      * Restituisce la data in forma friendly. La data odierna diventa 'oggi', la data di ieri diventa 'ieri',
      * altrimenti scrive la data nel formato 'dd/mm' se è di quest'anno, nel formato 'dd/mm/yy' se è in un anno diverso.
-     * @param date la data da trasformare
-     * @param oreMin se diverso da zero, indica il numero di ore
+     * @param: date la data da trasformare
+     * @param: oreMin se diverso da zero, indica il numero di ore
      * al di sotto del quale l'indicazione della data viene completamente soppressa
      * Il numero di ore viene trasformato in secondi e viene confrontato con la data dello stato del mezzo risultante dal servizio.
      *

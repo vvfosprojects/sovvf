@@ -8,15 +8,16 @@ const BASE_URL = environment.baseUrl;
 const API_MODIFICA_PARTENZA = BASE_URL + environment.apiUrl.modificaPartenza;
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 
 export class ModificaPartenzaService {
 
-  constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient) {
+    }
 
-  addModificaPartenza(obj: ModificaPartenza): Observable<any> {
-    return this.http.post(API_MODIFICA_PARTENZA, obj);
-  }
+    addModificaPartenza(obj: ModificaPartenza): Observable<any> {
+        return this.http.post(API_MODIFICA_PARTENZA, obj);
+    }
 
 }

@@ -94,7 +94,7 @@ export class FasterComponent implements OnInit, OnDestroy {
         );
     }
 
-    ngOnInit() {
+    ngOnInit(): void {
         this.store.dispatch(new GetFiltriComposizione());
     }
 
@@ -102,12 +102,14 @@ export class FasterComponent implements OnInit, OnDestroy {
         this.subscription.unsubscribe();
     }
 
-    selezionaPreaccoppiato(preAcc: BoxPartenza) {
-        !preAcc.mezzoComposizione.mezzo.coordinateFake && this.mezzoCoordinate(preAcc.mezzoComposizione.mezzo.coordinate);
+    selezionaPreaccoppiato(preAcc: BoxPartenza): void {
+        if (!preAcc.mezzoComposizione.mezzo.coordinateFake) {
+            this.mezzoCoordinate(preAcc.mezzoComposizione.mezzo.coordinate);
+        }
         this.store.dispatch(new SelectPreAccoppiatoComposizione(preAcc));
     }
 
-    deselezionaPreaccoppiato(preAcc: BoxPartenza) {
+    deselezionaPreaccoppiato(preAcc: BoxPartenza): void {
         this.onClearDirection();
         this.store.dispatch(new UnselectPreAccoppiatoComposizione(preAcc));
     }
@@ -144,19 +146,19 @@ export class FasterComponent implements OnInit, OnDestroy {
         });
         const partenze = makeCopy(boxPartenzaList);
         const partenzeMappedArray = partenze.map(obj => {
-            const rObj = {};
+            const rObj = null;
             if (obj.mezzoComposizione) {
                 obj.mezzoComposizione.mezzo.stato = StatoMezzo.InViaggio;
-                rObj['mezzo'] = obj.mezzoComposizione.mezzo;
+                rObj.mezzo = obj.mezzoComposizione.mezzo;
             } else {
-                rObj['mezzo'] = null;
+                rObj.mezzo = null;
             }
             if (obj.squadraComposizione.length > 0) {
-                rObj['squadre'] = obj.squadraComposizione.map((squadraComp: SquadraComposizione) => {
+                rObj.squadre = obj.squadraComposizione.map((squadraComp: SquadraComposizione) => {
                     return squadraComp.squadra;
                 });
             } else {
-                rObj['squadre'] = [];
+                rObj.squadre = [];
             }
             return rObj;
         });
@@ -178,19 +180,19 @@ export class FasterComponent implements OnInit, OnDestroy {
         });
         const partenze = makeCopy(boxPartenzaList);
         const partenzeMappedArray = partenze.map(obj => {
-            const rObj = {};
+            const rObj = null;
             if (obj.mezzoComposizione) {
                 obj.mezzoComposizione.mezzo.stato = StatoMezzo.InUscita;
-                rObj['mezzo'] = obj.mezzoComposizione.mezzo;
+                rObj.mezzo = obj.mezzoComposizione.mezzo;
             } else {
-                rObj['mezzo'] = null;
+                rObj.mezzo = null;
             }
             if (obj.squadraComposizione.length > 0) {
-                rObj['squadre'] = obj.squadraComposizione.map((squadraComp: SquadraComposizione) => {
+                rObj.squadre = obj.squadraComposizione.map((squadraComp: SquadraComposizione) => {
                     return squadraComp.squadra;
                 });
             } else {
-                rObj['squadre'] = [];
+                rObj.squadre = [];
             }
             return rObj;
         });
@@ -199,7 +201,6 @@ export class FasterComponent implements OnInit, OnDestroy {
             idRichiesta: this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione).codice,
             turno: this.store.selectSnapshot(TurnoState.turnoCalendario).corrente
         };
-        // console.log('mappedArray', partenzeMappedArray);
         this.store.dispatch(new ConfirmPartenze(partenzeObj));
     }
 

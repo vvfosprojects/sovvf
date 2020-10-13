@@ -1,19 +1,24 @@
 import { MezzoMarker } from '../../../maps/maps-model/mezzo-marker.model';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { MezziMarkerService } from '../../../../../core/service/maps-service';
-import {
-    AddMezziMarkers,
-    ClearMezziMarkers,
-    GetMezziMarkers, InsertMezzoMarker,
-    OpacizzaMezziMarkers,
-    PatchMezziMarkers, RemoveMezzoMarker,
-    SetMezziMarkers,
-    SetMezzoMarkerById, SetTipoOpacitaMezziMarkers, ToggleOpacitaMezziMarkers, UpdateMezzoMarker
-} from '../../actions/maps/mezzi-markers.actions';
 import { ClearMarkerOpachiMezzi, SetMarkerOpachiMezzi } from '../../actions/maps/marker-opachi.actions';
 import { append, insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
 import { StatoMezzo } from '../../../../../shared/enum/stato-mezzo.enum';
 import { StartLoadingAreaMappa, StopLoadingAreaMappa } from '../../actions/maps/area-mappa.actions';
+import {
+    AddMezziMarkers,
+    ClearMezziMarkers,
+    GetMezziMarkers,
+    InsertMezzoMarker,
+    OpacizzaMezziMarkers,
+    PatchMezziMarkers,
+    RemoveMezzoMarker,
+    SetMezziMarkers,
+    SetMezzoMarkerById,
+    SetTipoOpacitaMezziMarkers,
+    ToggleOpacitaMezziMarkers,
+    UpdateMezzoMarker
+} from '../../actions/maps/mezzi-markers.actions';
 import { Injectable } from '@angular/core';
 
 
@@ -42,31 +47,31 @@ export const MezziMarkersStateDefaults: MezziMarkersStateModel = {
 export class MezziMarkersState {
 
     @Selector()
-    static mezziMarkers(state: MezziMarkersStateModel) {
+    static mezziMarkers(state: MezziMarkersStateModel): MezzoMarker[] {
         return state.mezziMarkers;
     }
 
     @Selector()
-    static mezziMarkersIds(state: MezziMarkersStateModel) {
+    static mezziMarkersIds(state: MezziMarkersStateModel): string[] {
         return state.mezziMarkersId;
     }
 
     @Selector()
-    static getMezzoById(state: MezziMarkersStateModel) {
+    static getMezzoById(state: MezziMarkersStateModel): MezzoMarker {
         return state.mezzoMarker;
     }
 
-    constructor(private _mezzi: MezziMarkerService) {
+    constructor(private mezziMarker: MezziMarkerService) {
 
     }
 
     @Action(GetMezziMarkers)
-    getMezziMarkers({ dispatch }: StateContext<MezziMarkersStateModel>, action: GetMezziMarkers) {
+    getMezziMarkers({ dispatch }: StateContext<MezziMarkersStateModel>, action: GetMezziMarkers): void {
         dispatch([
             new StartLoadingAreaMappa()
         ]);
         console.log('filtroMezzi', action.filtri);
-        this._mezzi.getMezziMarkers(action.areaMappa, action.filtri).subscribe((data: MezzoMarker[]) => {
+        this.mezziMarker.getMezziMarkers(action.areaMappa, action.filtri).subscribe((data: MezzoMarker[]) => {
                 data.map((mezzo: MezzoMarker) => {
                     if (mezzo.mezzo.stato === StatoMezzo.OperativoPreaccoppiato) {
                         mezzo.mezzo.stato = StatoMezzo.InSede;
@@ -83,7 +88,7 @@ export class MezziMarkersState {
     }
 
     @Action(SetMezziMarkers)
-    setMezziMarkers({ getState, dispatch }: StateContext<MezziMarkersStateModel>, action: SetMezziMarkers) {
+    setMezziMarkers({ getState, dispatch }: StateContext<MezziMarkersStateModel>, action: SetMezziMarkers): void {
         const state = getState();
         if (action.mezziMarkers) {
             if (state.mezziMarkers.length === 0) {
@@ -131,7 +136,7 @@ export class MezziMarkersState {
     }
 
     @Action(PatchMezziMarkers)
-    patchMezziMarkers({ patchState }: StateContext<MezziMarkersStateModel>, { payload }: PatchMezziMarkers) {
+    patchMezziMarkers({ patchState }: StateContext<MezziMarkersStateModel>, { payload }: PatchMezziMarkers): void {
         patchState({
             mezziMarkers: payload.map(item => item),
             mezziMarkersId: payload.map(item => item.mezzo.codice)
@@ -139,7 +144,7 @@ export class MezziMarkersState {
     }
 
     @Action(AddMezziMarkers)
-    addMezziMarkers({ setState }: StateContext<MezziMarkersStateModel>, { payload }: AddMezziMarkers) {
+    addMezziMarkers({ setState }: StateContext<MezziMarkersStateModel>, { payload }: AddMezziMarkers): void {
         setState(
             patch({
                 mezziMarkers: append(payload.map(item => item)),
@@ -149,7 +154,7 @@ export class MezziMarkersState {
     }
 
     @Action(InsertMezzoMarker)
-    insertMezzoMarker({ setState }: StateContext<MezziMarkersStateModel>, { payload, before }: InsertMezzoMarker) {
+    insertMezzoMarker({ setState }: StateContext<MezziMarkersStateModel>, { payload, before }: InsertMezzoMarker): void {
         setState(
             patch({
                 mezziMarkers: insertItem(payload, before),
@@ -159,7 +164,7 @@ export class MezziMarkersState {
     }
 
     @Action(UpdateMezzoMarker)
-    updateMezzoMarker({ setState }: StateContext<MezziMarkersStateModel>, { payload }: UpdateMezzoMarker) {
+    updateMezzoMarker({ setState }: StateContext<MezziMarkersStateModel>, { payload }: UpdateMezzoMarker): void {
         setState(
             patch({
                 mezziMarkers: updateItem<MezzoMarker>(mezzo => mezzo.mezzo.codice === payload.mezzo.codice, payload)
@@ -168,7 +173,7 @@ export class MezziMarkersState {
     }
 
     @Action(RemoveMezzoMarker)
-    removeMezzoMarker({ setState }: StateContext<MezziMarkersStateModel>, { payload }: RemoveMezzoMarker) {
+    removeMezzoMarker({ setState }: StateContext<MezziMarkersStateModel>, { payload }: RemoveMezzoMarker): void {
         setState(
             patch({
                 mezziMarkers: removeItem<MezzoMarker>(mezzo => mezzo.mezzo.codice === payload),
@@ -178,7 +183,7 @@ export class MezziMarkersState {
     }
 
     @Action(SetMezzoMarkerById)
-    setMezzoMarkerById({ getState, patchState }: StateContext<MezziMarkersStateModel>, action: SetMezzoMarkerById) {
+    setMezzoMarkerById({ getState, patchState }: StateContext<MezziMarkersStateModel>, action: SetMezzoMarkerById): void {
         const state = getState();
         if (action.id) {
             patchState({
@@ -192,7 +197,7 @@ export class MezziMarkersState {
     }
 
     @Action(ToggleOpacitaMezziMarkers)
-    toggleOpacitaMezziMarkers({ patchState, dispatch }: StateContext<MezziMarkersStateModel>, action: ToggleOpacitaMezziMarkers) {
+    toggleOpacitaMezziMarkers({ patchState, dispatch }: StateContext<MezziMarkersStateModel>, action: ToggleOpacitaMezziMarkers): void {
         patchState({
             statoOpacita: action.toggle
         });
@@ -207,7 +212,7 @@ export class MezziMarkersState {
     }
 
     @Action(SetTipoOpacitaMezziMarkers)
-    setTipoOpacitaMezziMarkers({ patchState, dispatch }: StateContext<MezziMarkersStateModel>, action: SetTipoOpacitaMezziMarkers) {
+    setTipoOpacitaMezziMarkers({ patchState, dispatch }: StateContext<MezziMarkersStateModel>, action: SetTipoOpacitaMezziMarkers): void {
         patchState({
             tipoOpacita: action.stato
         });
@@ -215,7 +220,7 @@ export class MezziMarkersState {
     }
 
     @Action(OpacizzaMezziMarkers)
-    opacizzaMezziMarkers({ getState, dispatch }: StateContext<MezziMarkersStateModel>) {
+    opacizzaMezziMarkers({ getState, dispatch }: StateContext<MezziMarkersStateModel>): void {
         const state = getState();
         if (state.statoOpacita && state.tipoOpacita) {
             if (state.mezziMarkers) {
@@ -225,7 +230,7 @@ export class MezziMarkersState {
     }
 
     @Action(ClearMezziMarkers)
-    clearMezziMarkers({ patchState }: StateContext<MezziMarkersStateModel>) {
+    clearMezziMarkers({ patchState }: StateContext<MezziMarkersStateModel>): void {
         patchState(MezziMarkersStateDefaults);
     }
 
@@ -233,12 +238,12 @@ export class MezziMarkersState {
 
 export function idMezziFiltrati(stati: string[], mezziMarkers: MezzoMarker[]): string[] {
     const filteredId: string[] = [];
-    mezziMarkers.forEach(mezzoMarker => {
-        stati.forEach(statoMezzo => {
-            const _statoMezzo = statoMezzo.split(' ').join('');
-            const _mezzoMarker = mezzoMarker.mezzo.stato.toString().split(' ').join('');
-            if (_mezzoMarker.substring(0, 5).toLowerCase() === _statoMezzo.substring(0, 5).toLowerCase()) {
-                filteredId.push(mezzoMarker.mezzo.codice);
+    mezziMarkers.forEach(marker => {
+        stati.forEach(stato => {
+            const statoMezzo = stato.split(' ').join('');
+            const mezzoMarker = marker.mezzo.stato.toString().split(' ').join('');
+            if (mezzoMarker.substring(0, 5).toLowerCase() === statoMezzo.substring(0, 5).toLowerCase()) {
+                filteredId.push(marker.mezzo.codice);
             }
         });
     });

@@ -13,11 +13,11 @@ export class UtenteNonAbilitatoComponent implements OnInit {
     constructor(private store: Store) {
     }
 
-    ngOnInit() {
+    ngOnInit(): void {
         this.store.dispatch(new StopBigLoading());
     }
 
-    clearCas() {
+    clearCas(): void {
         this.store.dispatch(new CasLogout());
     }
 

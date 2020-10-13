@@ -1,7 +1,7 @@
 import { ListaSedi } from '../../../interface/lista-sedi';
 import { Ricorsivo } from '../../../interface/treeview.interface';
 
-export function allFalseTreeItem(listaSedi: any) {
+export function allFalseTreeItem(listaSedi: any): void {
     const key = 'children';
     Object.assign(listaSedi, { checked: false, collapsed: true });
     if (key in listaSedi) {
@@ -103,29 +103,28 @@ export function getWord(value: string): string {
 
     return truncate ? capitalizeFirstLetter(truncate) : value;
 
-    function capitalizeFirstLetter(string) {
-        return string.charAt(0).toUpperCase() + string.slice(1);
+    function capitalizeFirstLetter(stringa: string): string {
+        return stringa.charAt(0).toUpperCase() + stringa.slice(1);
     }
 }
 
 export function sedeString(value: string): string {
-
     const maxLength = 21;
     const stringLength = value.length;
 
-    function truncateWord(_value) {
+    function truncateWord(word: string): string {
         let truncateString = '';
         let currentLength = stringLength;
-        splitWord(_value).forEach((string, index, array) => {
-            const wordTruncate = getWord(string);
-            const diffWordLength = string.length - wordTruncate.length;
+        splitWord(word).forEach((splittedWord: string, index: number, stringArray: string[]) => {
+            const wordTruncate = getWord(splittedWord);
+            const diffWordLength = splittedWord.length - wordTruncate.length;
             currentLength -= diffWordLength;
             if (index === 0 || currentLength >= maxLength) {
                 truncateString += wordTruncate;
             } else {
-                truncateString += string;
+                truncateString += splittedWord;
             }
-            truncateString += (index - (array.length - 1)) ? ' ' : '';
+            truncateString += (index - (stringArray.length - 1)) ? ' ' : '';
         });
         return truncateString;
     }

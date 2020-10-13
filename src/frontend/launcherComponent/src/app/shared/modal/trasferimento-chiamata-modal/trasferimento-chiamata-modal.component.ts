@@ -51,7 +51,7 @@ export class TrasferimentoChiamataModalComponent implements OnInit, OnDestroy {
         this.inizializzaUser();
     }
 
-    ngOnInit() {
+    ngOnInit(): void {
         if (!this.codRichiesta) {
             this.getCodiciRichiesteTrasferibili();
         } else {
@@ -60,7 +60,7 @@ export class TrasferimentoChiamataModalComponent implements OnInit, OnDestroy {
         }
     }
 
-    initForm() {
+    initForm(): void {
         this.trasferimentoChiamataForm = new FormGroup({
             codiceRichiesta: new FormControl(),
             operatore: new FormControl(),
@@ -74,7 +74,7 @@ export class TrasferimentoChiamataModalComponent implements OnInit, OnDestroy {
         this.f.operatore.disable();
     }
 
-    get f() {
+    get f(): any {
         return this.trasferimentoChiamataForm.controls;
     }
 
@@ -83,7 +83,7 @@ export class TrasferimentoChiamataModalComponent implements OnInit, OnDestroy {
         this.subscription.unsubscribe();
     }
 
-    getFormValid() {
+    getFormValid(): void {
         this.subscription.add(
             this.formValid$.subscribe((valid: boolean) => {
                 this.formValid = valid;
@@ -99,7 +99,7 @@ export class TrasferimentoChiamataModalComponent implements OnInit, OnDestroy {
         return title;
     }
 
-    inizializzaSediTreeview() {
+    inizializzaSediTreeview(): void {
         this.subscription.add(
             this.listeSediNavbar$.subscribe((listaSedi: TreeItem) => {
                 this.listeSediNavbar = [];
@@ -108,11 +108,11 @@ export class TrasferimentoChiamataModalComponent implements OnInit, OnDestroy {
         );
     }
 
-    onPatchSedi(event: TreeviewSelezione[]) {
+    onPatchSedi(event: TreeviewSelezione[]): void {
         this.f.sedeA.patchValue(event);
     }
 
-    getSediSelezionate() {
+    getSediSelezionate(): void {
         this.subscription.add(
             this.sediSelezionate$.subscribe((sedi: TreeviewSelezione[]) => {
                 const listaSediNavbar = this.store.selectSnapshot(SediTreeviewState.listeSediNavbar);
@@ -135,7 +135,7 @@ export class TrasferimentoChiamataModalComponent implements OnInit, OnDestroy {
         );
     }
 
-    inizializzaUser() {
+    inizializzaUser(): void {
         this.subscription.add(
             this.user$.subscribe((user: Utente) => {
                 console.log('inizializzaUser', user);
@@ -151,11 +151,11 @@ export class TrasferimentoChiamataModalComponent implements OnInit, OnDestroy {
         );
     }
 
-    getCodiciRichiesteTrasferibili() {
+    getCodiciRichiesteTrasferibili(): void {
         this.store.dispatch(new GetRichiesteTrasferibili());
     }
 
-    onConferma() {
+    onConferma(): void {
         this.submitted = true;
 
         if (!this.trasferimentoChiamataForm.valid) {
@@ -169,7 +169,7 @@ export class TrasferimentoChiamataModalComponent implements OnInit, OnDestroy {
         this.modal.dismiss('ko');
     }
 
-    closeModal(type: string) {
+    closeModal(type: string): void {
         this.modal.close(type);
     }
 }

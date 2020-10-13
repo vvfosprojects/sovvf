@@ -45,14 +45,14 @@ export class EliminaPartenzaModalComponent implements OnInit {
         this.initForm();
     }
 
-    ngOnInit() {
+    ngOnInit(): void {
         this.f.codMotivazione.patchValue(this.motivazioni[0].codice);
         this.sintesiRichiesteService.getCodiciRichieste(this.idRichiesta).subscribe((res: { listaCodiciRichiesta: string[] }) => {
             this.codiciRichieste = res.listaCodiciRichiesta;
         });
     }
 
-    initForm() {
+    initForm(): void {
         this.eliminaPartenzaForm = this.fb.group({
             codMotivazione: ['', Validators.required],
             testoMotivazione: [''],
@@ -60,15 +60,15 @@ export class EliminaPartenzaModalComponent implements OnInit {
         });
     }
 
-    get f() {
+    get f(): any {
         return this.eliminaPartenzaForm.controls;
     }
 
-    onSelezioneMotivazione(newMotivazione: { codice: string, descrizione: string }) {
+    onSelezioneMotivazione(newMotivazione: { codice: string, descrizione: string }): void {
         this.changeFormValidators(newMotivazione);
     }
 
-    changeFormValidators(newMotivazione: { codice: string, descrizione: string }) {
+    changeFormValidators(newMotivazione: { codice: string, descrizione: string }): void {
         this.f.testoMotivazione.clearValidators();
         this.f.codRichiestaSubentrata.clearValidators();
         this.f.testoMotivazione.patchValue('');
@@ -93,7 +93,7 @@ export class EliminaPartenzaModalComponent implements OnInit {
         }
     }
 
-    onSubmit() {
+    onSubmit(): void {
         this.submitted = true;
 
         if (!this.eliminaPartenzaForm.valid) {
@@ -103,7 +103,7 @@ export class EliminaPartenzaModalComponent implements OnInit {
         this.modal.close({ status: 'ok', result: this.eliminaPartenzaForm.value });
     }
 
-    onCancel() {
+    onCancel(): void {
         this.modal.close({ status: 'ko', result: null });
     }
 }

@@ -12,16 +12,15 @@ export class TastoCompPartenzaComponent {
     @Input() disableTasto: boolean;
 
     @Output() cambioModalita = new EventEmitter<Composizione>();
+
     Composizione = Composizione;
 
-    changeMode() {
-
+    changeMode(): void {
         if (this.compPartenzaMode === Composizione.Avanzata) {
             this.cambioModalita.emit(Composizione.Veloce);
         } else {
             this.cambioModalita.emit(Composizione.Avanzata);
         }
-
     }
 
 }
