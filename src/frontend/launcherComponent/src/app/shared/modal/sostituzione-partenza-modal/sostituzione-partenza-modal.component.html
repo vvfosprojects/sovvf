@@ -62,8 +62,8 @@
                         [collectionSize]="totalItemsSquadre"
                         (pageChange)="squadrePageChange($event)"
                         [maxSize]="2"
-                        style="display: flex; place-content: center;"
-                >
+                        [disabled]="loadingListe"
+                        style="display: flex; place-content: center;">
                 </ngb-pagination>
             </div>
         </div>
@@ -113,8 +113,8 @@
                         [collectionSize]="totalItemsMezzi"
                         (pageChange)="mezziPageChange($event)"
                         [maxSize]="5"
-                        style="display: flex; place-content: center;"
-                >
+                        [disabled]="loadingListe"
+                        style="display: flex; place-content: center;">
                 </ngb-pagination>
             </div>
         </div>
