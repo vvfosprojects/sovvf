@@ -86,7 +86,30 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Preaccoppiati
 
             preAccoppiati = JsonConvert.DeserializeObject<List<PreAccoppiatiFakeJson>>(json);
 
-            return preAccoppiati.Where(x => query.CodiceSede.Contains(x.CodiceSede)).ToList();
+            return preAccoppiati
+                .Where(x => query.CodiceSede.Contains(x.CodiceSede))
+                .Where(c =>
+                {
+                    if(c.MezzoComposizione.Mezzo.IdRichiesta != null)
+                        return c.MezzoComposizione.Mezzo.IdRichiesta == query.Filtri.IdRichiesta;
+                    return true;
+                })
+                .Where(c =>
+                {
+                    if (query.Filtri.StatoMezzo != null)
+                        return query.Filtri.StatoMezzo.Contains(c.MezzoComposizione.Mezzo.Stato);
+                    return true;
+                }).Where(c =>
+                {
+                    if (query.Filtri.TipoMezzo != null)
+                        return query.Filtri.TipoMezzo.Contains(c.MezzoComposizione.Mezzo.Genere);
+                    return true;
+                }).Where(c =>
+                {
+                    if (query.Filtri.CodiceDistaccamento != null)
+                        return query.Filtri.CodiceDistaccamento.Contains(c.MezzoComposizione.Mezzo.Distaccamento.Codice);
+                    return true;
+                }).ToList();
         }
 
         private List<PreAccoppiati> MapPreAccoppiati(List<PreAccoppiatiFake> ListaPreAccoppiatiFake)

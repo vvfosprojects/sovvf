@@ -59,8 +59,8 @@ namespace SO115App.API.Controllers
         {
             var query = new PreAccoppiatiQuery()
             {
-                CodiceSede = Request.Headers["codicesede"].ToArray(),
-                IdUtente = Request.Headers["idUtente"].ToString(),
+                CodiceSede = Request.Headers["CodiceSede"].ToArray(),
+                IdUtente = Request.Headers["IdUtente"].ToString(),
                 Filtri = filtri 
             };
 
