@@ -9,9 +9,7 @@ import {
 import { MezziComposizioneState } from '../../../../../shared/store/states/mezzi-composizione/mezzi-composizione.state';
 import { ComposizionePartenzaState } from './composizione-partenza.state';
 import { ClearSelectedMezziComposizione, SetListaMezziComposizione } from '../../../../../shared/store/actions/mezzi-composizione/mezzi-composizione.actions';
-import { ClearSelectedSquadreComposizione,
-    SetListaSquadreComposizione
-} from '../../../../../shared/store/actions/squadre-composizione/squadre-composizione.actions';
+import { ClearSelectedSquadreComposizione, SetListaSquadreComposizione } from '../../../../../shared/store/actions/squadre-composizione/squadre-composizione.actions';
 import { ListaComposizioneAvanzata } from '../../../../../shared/interface/lista-composizione-avanzata-interface';
 import { BoxPartenzaState } from './box-partenza.state';
 import { mezzoComposizioneBusy } from '../../../../../shared/helper/composizione-functions';
@@ -19,10 +17,7 @@ import { RemoveBoxPartenza } from '../../actions/composizione-partenza/box-parte
 import { ViewComponentState } from '../view/view.state';
 import { Composizione } from '../../../../../shared/enum/composizione.enum';
 import { GetListaComposizioneVeloce } from '../../actions/composizione-partenza/composizione-veloce.actions';
-import {
-    StartListaComposizioneLoading,
-    StopListaComposizioneLoading
-} from '../../actions/composizione-partenza/composizione-partenza.actions';
+import { StartListaComposizioneLoading, StopListaComposizioneLoading } from '../../actions/composizione-partenza/composizione-partenza.actions';
 import { FiltriComposizioneState } from '../../../../../shared/store/states/filtri-composizione/filtri-composizione.state';
 import { PaginationComposizionePartenzaState } from 'src/app/shared/store/states/pagination-composizione-partenza/pagination-composizione-partenza.state';
 import { FiltriComposizione } from '../../../composizione-partenza/interface/filtri/filtri-composizione-interface';
@@ -30,6 +25,7 @@ import { Injectable } from '@angular/core';
 import { PatchPaginationMezziSquadre } from '../../../../../shared/store/actions/pagination-composizione-partenza/pagination-composizione-partenza.actions';
 import { RicercaComposizioneState } from 'src/app/shared/store/states/ricerca-composizione/ricerca-composizione.state';
 import { SquadreComposizioneState } from '../../../../../shared/store/states/squadre-composizione/squadre-composizione.state';
+import { SquadraComposizione } from '../../../../../shared/interface/squadra-composizione-interface';
 
 export interface ComposizioneAvanzataStateModel {
     listaMezziSquadre: ListaComposizioneAvanzata;
@@ -60,17 +56,11 @@ export class ComposizioneAvanzataState {
         dispatch(new StartListaComposizioneLoading());
         const paginationMezzi = this.store.selectSnapshot(PaginationComposizionePartenzaState.paginationMezzi);
         const paginationSquadre = this.store.selectSnapshot(PaginationComposizionePartenzaState.paginationSquadre);
-        const mezzoComp = this.store.selectSnapshot(MezziComposizioneState.mezzoSelezionato);
-        const squadreCompArray = this.store.selectSnapshot(SquadreComposizioneState.squadreSelezionate);
-        let codDistaccamentoMezziSquadre = null;
-        if (mezzoComp) {
-            codDistaccamentoMezziSquadre = mezzoComp.mezzo.distaccamento.codice;
-        }
-        if (squadreCompArray && squadreCompArray.length > 0) {
-            codDistaccamentoMezziSquadre = squadreCompArray[0].squadra.distaccamento.codice;
-        }
+        const mezzoSelezionato = this.store.selectSnapshot(MezziComposizioneState.mezzoSelezionato)?.mezzo;
+        const squadreSelezionate = this.store.selectSnapshot(SquadreComposizioneState.squadreSelezionate)?.map((s: SquadraComposizione) => s.squadra);
+        const idRichiesta = this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione)?.id;
         const obj = {
-            idRichiesta: this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione) ? this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione).id : null,
+            idRichiesta: idRichiesta ? idRichiesta : null,
             mezziPagination: {
                 page: action.options && action.options.page && action.options.page.pageMezzi ? action.options.page.pageMezzi : paginationMezzi.page,
                 pageSize: paginationMezzi.pageSize
@@ -79,7 +69,8 @@ export class ComposizioneAvanzataState {
                 page: action.options && action.options.page && action.options.page.pageSquadre ? action.options.page.pageSquadre : paginationSquadre.page,
                 pageSize: paginationSquadre.pageSize
             },
-            codiceDistaccamentoMezziSquadre: codDistaccamentoMezziSquadre ? codDistaccamentoMezziSquadre : null,
+            mezzo: mezzoSelezionato ? mezzoSelezionato : null,
+            squadre: squadreSelezionate && squadreSelezionate.length > 0 ? squadreSelezionate : null,
             codiceDistaccamento: this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).CodiceDistaccamento.length > 0 ? this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).CodiceDistaccamento : null,
             statoMezzo: this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).StatoMezzo.length > 0 ? this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).StatoMezzo : null,
             tipoMezzo: this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).TipoMezzo.length > 0 ? this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).TipoMezzo : null,

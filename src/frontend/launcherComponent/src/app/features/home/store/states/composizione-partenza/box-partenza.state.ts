@@ -17,18 +17,12 @@ import {
 } from '../../actions/composizione-partenza/box-partenza.actions';
 import {
     ClearSelectedMezziComposizione,
-    FilterListaMezziComposizione,
     RequestBookMezzoComposizione,
     RequestRemoveBookMezzoComposizione,
     SelectMezzoComposizione,
     UnselectMezzoComposizione
 } from '../../../../../shared/store/actions/mezzi-composizione/mezzi-composizione.actions';
-import {
-    ClearSelectedSquadreComposizione,
-    FilterListaSquadreComposizione,
-    SelectSquadraComposizione,
-    UnselectSquadraComposizione
-} from '../../../../../shared/store/actions/squadre-composizione/squadre-composizione.actions';
+import { ClearSelectedSquadreComposizione, SelectSquadraComposizione, UnselectSquadraComposizione } from '../../../../../shared/store/actions/squadre-composizione/squadre-composizione.actions';
 import { append, patch, removeItem } from '@ngxs/store/operators';
 import { makeID } from '../../../../../shared/helper/function';
 import produce from 'immer';
@@ -39,6 +33,7 @@ import { ClearDirection } from '../../actions/maps/maps-direction.actions';
 import { ClearMarkerMezzoSelezionato } from '../../actions/maps/marker.actions';
 import { StatoMezzo } from '../../../../../shared/enum/stato-mezzo.enum';
 import { Injectable } from '@angular/core';
+import { GetListeComposizioneAvanzata } from '../../actions/composizione-partenza/composizione-avanzata.actions';
 
 
 export interface BoxPartenzaStateModel {
@@ -179,10 +174,8 @@ export class BoxPartenzaState {
         );
         // ricarico la lista se necessario
         if (action.refreshLista) {
-            const filtriSelezionati = this.store.selectSnapshot(x => x.filtriComposizione.filtriSelezionati);
             dispatch([
-                new FilterListaMezziComposizione(null, filtriSelezionati),
-                new FilterListaSquadreComposizione(null, filtriSelezionati)
+                new GetListeComposizioneAvanzata()
             ]);
         }
     }
@@ -204,10 +197,8 @@ export class BoxPartenzaState {
             }
         }
         if (action.refreshLista) {
-            const filtriSelezionati = this.store.selectSnapshot(x => x.filtriComposizione.filtriSelezionati);
             dispatch([
-                new FilterListaMezziComposizione(null, filtriSelezionati),
-                new FilterListaSquadreComposizione(null, filtriSelezionati)
+                new GetListeComposizioneAvanzata()
             ]);
         }
     }
