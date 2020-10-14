@@ -123,8 +123,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                     })
                     .Where(s =>
                     {
-                        if (query.Filtro.CodiceDistaccamentoMezziSquadre != null)
-                            return s.Squadra.Distaccamento.Codice == query.Filtro.CodiceDistaccamentoMezziSquadre;
+                        if (query.Filtro.Squadre.FirstOrDefault() != null && query.Filtro.Squadre.FirstOrDefault().Distaccamento.Codice != null)
+                            return s.Squadra.Distaccamento.Codice == query.Filtro.Squadre.FirstOrDefault().Distaccamento.Codice;
                         return true;
                     })
                     .OrderByDescending(c => c.Squadra.Stato).ToList();
@@ -215,12 +215,22 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                         })
                         .Where(m =>
                         {
-                            if (query.Filtro.CodiceDistaccamentoMezziSquadre != null)
-                                return m.Mezzo.Distaccamento.Codice == query.Filtro.CodiceDistaccamentoMezziSquadre;
+                            if (query.Filtro.Mezzo.Distaccamento.Codice != null)
+                                return m.Mezzo.Distaccamento.Codice == query.Filtro.Mezzo.Distaccamento.Codice;
                             return true;
                         })
                         .OrderBy(x => x.Mezzo.Stato).ThenByDescending(c => c.IndiceOrdinamento).ToList();
                 });
+
+            //PREPARO PAGINAZIONE IN BASE AI FILTRI
+            var indexMezzo = lstMezzi.Result.FindIndex(c => c.Mezzo.Codice.Equals(query.Filtro.Mezzo.Codice));
+            var indexSquadra = lstSquadre.Result.FindIndex(c => c.Squadra.Codice.Equals(query.Filtro.Squadre.FirstOrDefault().Codice));
+
+            if (indexMezzo != 0)
+                query.Filtro.MezziPagination.Page = indexMezzo / query.Filtro.MezziPagination.PageSize + 1;
+
+            if (indexSquadra != 0)
+                query.Filtro.SquadrePagination.Page = indexSquadra / query.Filtro.SquadrePagination.PageSize + 1;
 
             //COMPONGO IL DTO E FACCIO LA PAGINAZIONE
             var composizioneAvanzata = new Classi.Composizione.ComposizionePartenzaAvanzata()
