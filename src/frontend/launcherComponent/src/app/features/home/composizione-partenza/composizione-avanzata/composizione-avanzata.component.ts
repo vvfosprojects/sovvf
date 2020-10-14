@@ -351,7 +351,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
             const mezzoComp = boxPartenza.mezzoComposizione;
             this.store.dispatch(new RequestRemoveBookMezzoComposizione(mezzoComp, boxPartenza));
         } else {
-            this.store.dispatch(new RemoveBoxPartenza(boxPartenza, true));
+            this.store.dispatch(new RemoveBoxPartenza(boxPartenza));
         }
         this.onClearDirection();
     }
@@ -360,7 +360,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
         this.boxPartenzaList.forEach(boxPartenza => {
             if (boxPartenza.mezzoComposizione) {
                 // const mezzoComp = boxPartenza.mezzoComposizione;
-                this.store.dispatch(new DeselectBoxPartenza(boxPartenza, true));
+                this.store.dispatch(new DeselectBoxPartenza(boxPartenza));
             }
             this.onClearDirection();
         });

@@ -33,8 +33,6 @@ import { ClearDirection } from '../../actions/maps/maps-direction.actions';
 import { ClearMarkerMezzoSelezionato } from '../../actions/maps/marker.actions';
 import { StatoMezzo } from '../../../../../shared/enum/stato-mezzo.enum';
 import { Injectable } from '@angular/core';
-import { GetListeComposizioneAvanzata } from '../../actions/composizione-partenza/composizione-avanzata.actions';
-
 
 export interface BoxPartenzaStateModel {
     boxPartenzaList: BoxPartenza[];
@@ -172,12 +170,6 @@ export class BoxPartenzaState {
                 boxPartenzaList: removeItem((item: BoxPartenza) => item.id === action.boxPartenza.id)
             })
         );
-        // ricarico la lista se necessario
-        if (action.refreshLista) {
-            dispatch([
-                new GetListeComposizioneAvanzata()
-            ]);
-        }
     }
 
     @Action(DeselectBoxPartenza)
@@ -195,11 +187,6 @@ export class BoxPartenzaState {
                     dispatch(new UnselectSquadraComposizione(squadra));
                 });
             }
-        }
-        if (action.refreshLista) {
-            dispatch([
-                new GetListeComposizioneAvanzata()
-            ]);
         }
     }
 
