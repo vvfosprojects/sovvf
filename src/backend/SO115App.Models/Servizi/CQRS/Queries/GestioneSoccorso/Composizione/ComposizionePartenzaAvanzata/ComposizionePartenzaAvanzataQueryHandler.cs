@@ -123,7 +123,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                     })
                     .Where(s =>
                     {
-                        if (query.Filtro.Squadre.FirstOrDefault() != null && query.Filtro.Squadre.FirstOrDefault().Distaccamento.Codice != null)
+                        if (query.Filtro.Squadre != null && query.Filtro.Squadre.Count > 0 && query.Filtro.Squadre.FirstOrDefault().Distaccamento.Codice != null)
                             return s.Squadra.Distaccamento.Codice == query.Filtro.Squadre.FirstOrDefault().Distaccamento.Codice;
                         return true;
                     })
@@ -215,7 +215,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                         })
                         .Where(m =>
                         {
-                            if (query.Filtro.Mezzo.Distaccamento.Codice != null)
+                            if (query.Filtro.Mezzo != null && query.Filtro.Mezzo.Distaccamento.Codice != null)
                                 return m.Mezzo.Distaccamento.Codice == query.Filtro.Mezzo.Distaccamento.Codice;
                             return true;
                         })
@@ -223,8 +223,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                 });
 
             //PREPARO PAGINAZIONE IN BASE AI FILTRI
-            var indexMezzo = lstMezzi.Result.FindIndex(c => c.Mezzo.Codice.Equals(query.Filtro.Mezzo.Codice));
-            var indexSquadra = lstSquadre.Result.FindIndex(c => c.Squadra.Codice.Equals(query.Filtro.Squadre.FirstOrDefault().Codice));
+            var indexMezzo = query.Filtro.Mezzo != null ? lstMezzi.Result.FindIndex(c => c.Mezzo.Codice.Equals(query.Filtro.Mezzo.Codice)) : 0;
+            var indexSquadra = query.Filtro.Squadre != null ? lstSquadre.Result.FindIndex(c => c.Squadra.Codice.Equals(query.Filtro.Squadre.FirstOrDefault().Codice)) : 0;
 
             if (indexMezzo != 0)
                 query.Filtro.MezziPagination.Page = indexMezzo / query.Filtro.MezziPagination.PageSize + 1;

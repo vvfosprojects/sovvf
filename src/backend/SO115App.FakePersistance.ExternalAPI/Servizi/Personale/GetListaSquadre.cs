@@ -125,9 +125,12 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
 
                         foreach (var squadraFake in ListaSquadreSede)
                         {
-                            var squadra = MapSqaudra(squadraFake, lstVVF);
+                            Squadra squadra;
+                            lock(squadraFake) squadra = MapSqaudra(squadraFake, lstVVF);
+                            
                             listaSquadraBySedeAppo.Add(squadra);
-                            result.Add(squadra);
+
+                            lock(result) result.Add(squadra);
                         }
 
                         var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromHours(4));
