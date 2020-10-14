@@ -108,26 +108,27 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                 })
                 .ContinueWith(lstCompSquadre => //Filtri 
                 {
-                    return lstCompSquadre.Result
-                    .Where(s =>
+                    return lstCompSquadre.Result.Where(s =>
                     {
                         if (query.Filtro.RicercaSquadre != null) // aggiungere altri campi in OR (fulltext)
                             return s.Squadra.Codice.Contains(query.Filtro.RicercaSquadre);
                         return true;
-                    })
-                    .Where(s =>
+                    }).Where(s =>
                     {
                         if (query.Filtro.CodiceDistaccamento != null && query.Filtro.CodiceDistaccamento.All(c => c != ""))
                             return query.Filtro.CodiceDistaccamento.Contains(s.Squadra.Distaccamento.Codice);
                         return true;
-                    })
-                    .Where(s =>
+                    }).Where(s =>
                     {
                         if (query.Filtro.Squadre != null && query.Filtro.Squadre.Count > 0 && query.Filtro.Squadre.FirstOrDefault().Distaccamento.Codice != null)
                             return s.Squadra.Distaccamento.Codice == query.Filtro.Squadre.FirstOrDefault().Distaccamento.Codice;
                         return true;
-                    })
-                    .OrderByDescending(c => c.Squadra.Stato).ToList();
+                    }).Where(m =>
+                    {
+                        if (query.Filtro.Mezzo != null && query.Filtro.Mezzo.Distaccamento.Codice != null)
+                            return m.Squadra.Distaccamento.Codice == query.Filtro.Mezzo.Distaccamento.Codice;
+                        return true;
+                    }).OrderByDescending(c => c.Squadra.Stato).ToList();
                 });
 
             var lstMezzi = _getPosizioneFlotta.Get(0)
@@ -182,44 +183,42 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                 })
                 .ContinueWith(lstCompMezzi => //Filtri 
                 {
-                    return lstCompMezzi.Result
-                        .Where(m =>
-                        {
-                            if (query.Filtro.StatoMezzo != null)
-                                return query.Filtro.StatoMezzo.Contains(m.Mezzo.Stato.ToString());
-                            return true;
-                        })
-                        .Where(m =>
-                        {
-                            if (query.Filtro.RicercaMezzi != null) // aggiungere altri campi in OR (fulltext)
-                                return m.Mezzo.Codice.Contains(query.Filtro.RicercaMezzi) || m.Mezzo.Descrizione.Contains(query.Filtro.RicercaMezzi);
-                            return true;
-                        })
-                        .Where(m =>
-                        {
-                            if (query.Filtro.CodiceDistaccamento != null && query.Filtro.CodiceDistaccamento.All(c => c != ""))
-                                return query.Filtro.CodiceDistaccamento.Contains(m.Mezzo.Distaccamento.Codice);
-                            return true;
-                        })
-                        .Where(m =>
-                        {
-                            if (query.Filtro.TipoMezzo != null && query.Filtro.TipoMezzo.All(c => c != ""))
-                                return query.Filtro.TipoMezzo.Contains(m.Mezzo.Genere);
-                            return true;
-                        })
-                        .Where(m =>
-                        {
-                            if (query.Filtro.StatoMezzo != null && query.Filtro.StatoMezzo.All(c => c != ""))
-                                return query.Filtro.StatoMezzo.Contains(m.Mezzo.Stato);
-                            return true;
-                        })
-                        .Where(m =>
-                        {
-                            if (query.Filtro.Mezzo != null && query.Filtro.Mezzo.Distaccamento.Codice != null)
-                                return m.Mezzo.Distaccamento.Codice == query.Filtro.Mezzo.Distaccamento.Codice;
-                            return true;
-                        })
-                        .OrderBy(x => x.Mezzo.Stato).ThenByDescending(c => c.IndiceOrdinamento).ToList();
+                    return lstCompMezzi.Result.Where(m =>
+                    {
+                        if (query.Filtro.StatoMezzo != null)
+                            return query.Filtro.StatoMezzo.Contains(m.Mezzo.Stato.ToString());
+                        return true;
+                    }).Where(m =>
+                    {
+                        if (query.Filtro.RicercaMezzi != null) // aggiungere altri campi in OR (fulltext)
+                            return m.Mezzo.Codice.Contains(query.Filtro.RicercaMezzi) || m.Mezzo.Descrizione.Contains(query.Filtro.RicercaMezzi);
+                        return true;
+                    }).Where(m =>
+                    {
+                        if (query.Filtro.CodiceDistaccamento != null && query.Filtro.CodiceDistaccamento.All(c => c != ""))
+                            return query.Filtro.CodiceDistaccamento.Contains(m.Mezzo.Distaccamento.Codice);
+                        return true;
+                    }).Where(m =>
+                    {
+                        if (query.Filtro.TipoMezzo != null && query.Filtro.TipoMezzo.All(c => c != ""))
+                            return query.Filtro.TipoMezzo.Contains(m.Mezzo.Genere);
+                        return true;
+                    }).Where(m =>
+                    {
+                        if (query.Filtro.StatoMezzo != null && query.Filtro.StatoMezzo.All(c => c != ""))
+                            return query.Filtro.StatoMezzo.Contains(m.Mezzo.Stato);
+                        return true;
+                    }).Where(s =>
+                    {
+                        if (query.Filtro.Squadre != null && query.Filtro.Squadre.Count > 0 && query.Filtro.Squadre.FirstOrDefault().Distaccamento.Codice != null)
+                            return s.Mezzo.Distaccamento.Codice == query.Filtro.Squadre.FirstOrDefault().Distaccamento.Codice;
+                        return true;
+                    }).Where(m =>
+                    {
+                        if (query.Filtro.Mezzo != null && query.Filtro.Mezzo.Distaccamento.Codice != null)
+                            return m.Mezzo.Distaccamento.Codice == query.Filtro.Mezzo.Distaccamento.Codice;
+                        return true;
+                    }).OrderBy(x => x.Mezzo.Stato).ThenByDescending(c => c.IndiceOrdinamento).ToList();
                 });
 
             //PREPARO PAGINAZIONE IN BASE AI FILTRI
