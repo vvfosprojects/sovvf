@@ -64,24 +64,22 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
 
         public async Task<List<Squadra>> Get(List<string> sedi)
         {
-            try
+            var pinNodi = sedi.Select(s => new PinNodo(s, true));
+            var ListaCodiciSedi = new List<string>();
+            var listaSediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
+
+            foreach (var figlio in listaSediAlberate.GetSottoAlbero(pinNodi))
             {
-                var pinNodi = sedi.Select(s => new PinNodo(s, true));
-                var ListaCodiciSedi = new List<string>();
-                var listaSediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
-
-                foreach (var figlio in listaSediAlberate.GetSottoAlbero(pinNodi))
+                var codice = figlio.Codice;
+                string codiceE = "";
+                codiceE = ListaCodiciSedi.Find(x => x.Equals(codice));
+                if (string.IsNullOrEmpty(codiceE))
                 {
-                    var codice = figlio.Codice;
-                    string codiceE = "";
-                    codiceE = ListaCodiciSedi.Find(x => x.Equals(codice));
-                    if (string.IsNullOrEmpty(codiceE))
-                    {
-                        ListaCodiciSedi.Add(codice);
-                    }
+                    ListaCodiciSedi.Add(codice);
                 }
+            }
 
-                #region LEGGO DA JSON FAKE
+            #region LEGGO DA JSON FAKE
 
                 var filepath = Costanti.ListaSquadre;
                 string json;
@@ -92,22 +90,22 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
 
                 #endregion LEGGO DA JSON FAKE
 
-                //PAGINARE QUI LE SQUADRE
-                var listaSquadreJson = JsonConvert.DeserializeObject<List<SquadraFake>>(json);
+            //PAGINARE QUI LE SQUADRE
+            var listaSquadreJson = JsonConvert.DeserializeObject<List<SquadraFake>>(json);
 
-                var lstcodicifiscali = listaSquadreJson
-                    .SelectMany(c => c.ComponentiSquadra).Select(c => c.CodiceFiscale).Distinct().ToArray();
+            var lstcodicifiscali = listaSquadreJson
+                .SelectMany(c => c.ComponentiSquadra).Select(c => c.CodiceFiscale).Distinct().ToArray();
 
-                var lstVVF = _getPersonaleByCF.Get(lstcodicifiscali, sedi.ToArray()).Result;
+            var lstVVF = _getPersonaleByCF.Get(lstcodicifiscali, sedi.ToArray()).Result;
 
-                var result = new List<Squadra>();
+            var result = new List<Squadra>();
 
-                Parallel.ForEach(ListaCodiciSedi, CodSede =>
+            Parallel.ForEach(ListaCodiciSedi, CodSede =>
+            {
+                var listaSquadraBySede = new List<Squadra>();
+                if (!_memoryCache.TryGetValue("listaSquadre-" + CodSede, out listaSquadraBySede))
                 {
-                    var listaSquadraBySede = new List<Squadra>();
-                    if (!_memoryCache.TryGetValue("listaSquadre-" + CodSede, out listaSquadraBySede))
-                    {
-                        #region LEGGO DA API ESTERNA
+                    #region LEGGO DA API ESTERNA
 
                         //_client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("test");
                         //var response = await _client.GetAsync($"{_configuration.GetSection("DataFakeImplementation").GetSection("UrlAPISquadre").Value}/GetListaSquadreByCodComando?CodComando={CodSede}").ConfigureAwait(false);
@@ -119,35 +117,30 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
 
                         #endregion LEGGO DA API ESTERNA
 
-                        var ListaSquadreSede = listaSquadreJson.FindAll(x => x.Sede.Equals(CodSede));
+                    var ListaSquadreSede = listaSquadreJson.FindAll(x => x.Sede.Equals(CodSede));
 
-                        var listaSquadraBySedeAppo = new List<Squadra>();
+                    var listaSquadraBySedeAppo = new List<Squadra>();
 
-                        foreach (var squadraFake in ListaSquadreSede)
-                        {
-                            Squadra squadra;
-                            lock(squadraFake) squadra = MapSqaudra(squadraFake, lstVVF);
-                            
-                            listaSquadraBySedeAppo.Add(squadra);
-
-                            lock(result) result.Add(squadra);
-                        }
-
-                        var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromHours(4));
-                        _memoryCache.Set("listaSquadre-" + CodSede, listaSquadraBySedeAppo, cacheEntryOptions);
-                    }
-                    else
+                    foreach (var squadraFake in ListaSquadreSede)
                     {
-                        lock (result) { result.AddRange(listaSquadraBySede); }
-                    }
-                });
+                        Squadra squadra;
+                        lock(squadraFake) squadra = MapSqaudra(squadraFake, lstVVF);
+                        
+                        listaSquadraBySedeAppo.Add(squadra);
 
-                return result;
-            }
-            catch (Exception ex)
-            {
-                return null;
-            }
+                        lock(result) result.Add(squadra);
+                    }
+
+                    var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromHours(4));
+                    _memoryCache.Set("listaSquadre-" + CodSede, listaSquadraBySedeAppo, cacheEntryOptions);
+                }
+                else
+                {
+                    lock (result) { result.AddRange(listaSquadraBySede); }
+                }
+            });
+
+            return result;
         }
 
         private Squadra MapSqaudra(SquadraFake squadraFake, List<PersonaleVVF> lstVVF)
