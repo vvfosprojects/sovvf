@@ -1,7 +1,8 @@
 <li class="list-group-item cursor-pointer border px-0" (click)="onClick()"
     (mouseenter)="onHoverIn()" (mouseleave)="onHoverOut()"
     [ngClass]="liClass()">
-    <div class="row px-3">
+    <div class="row px-3" ngbTooltip="Mezzo già impegnato" placement="bottom"
+         [disableTooltip]="!itemBloccato && !mezzoComp.istanteScadenzaSelezione && !itemPrenotato">
         <div class="col-1 pr-0">
       <span class="fa fa-eercast mr-1" [ngbTooltip]="mezzoComp.mezzo.stato"
             [ngClass]="_iconaStatiClass(mezzoComp.mezzo.stato)"></span>

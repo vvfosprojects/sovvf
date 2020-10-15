@@ -15,7 +15,6 @@ import { MezzoActionEmit } from '../../interface/mezzo-action-emit.interface';
 export class MezzoComponent {
 
     @Input() mezzo: Mezzo;
-
     @Input() mostraIndicatori: boolean;
     @Input() mostraNotifiche: boolean;
     @Input() mostraRichiestaAssociata: boolean;

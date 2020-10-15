@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { SquadraComposizione } from '../../interface/squadra-composizione-interface';
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
 import { squadraComposizioneBusy } from '../../helper/composizione-functions';
@@ -27,10 +27,12 @@ export class SquadraComposizioneComponent {
     }
 
     onClick(): void {
-        if (!this.itemSelezionato) {
+        if (!this.itemSelezionato && !squadraComposizioneBusy(this.squadraComp.squadra.stato)) {
+            console.log('TEST1');
             this.selezionata.emit(this.squadraComp);
-        } else {
-            this.deselezionata.emit(this.squadraComp);
+        } else if (!squadraComposizioneBusy(this.squadraComp.squadra.stato)) {
+          console.log('TEST2');
+          this.deselezionata.emit(this.squadraComp);
         }
     }
 
