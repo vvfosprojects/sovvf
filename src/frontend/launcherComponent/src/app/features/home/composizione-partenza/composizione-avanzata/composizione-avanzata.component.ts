@@ -403,8 +403,8 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
             } else {
                 rObj.mezzo = null;
             }
-            if (obj.squadraComposizione.length > 0) {
-                rObj.squadre = obj.squadraComposizione.map((squadraComp: SquadraComposizione) => {
+            if (obj.squadreComposizione.length > 0) {
+                rObj.squadre = obj.squadreComposizione.map((squadraComp: SquadraComposizione) => {
                     return squadraComp.squadra;
                 });
             } else {
@@ -422,6 +422,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
 
     confermaPartenzeInUscita(): void {
         const partenze = makeCopy(this.boxPartenzaList);
+        console.log('TEST ', partenze);
         const partenzeMappedArray = partenze.map(obj => {
             const rObj = {
                 mezzo: null,
@@ -433,8 +434,8 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
             } else {
                 rObj.mezzo = null;
             }
-            if (obj.squadraComposizione.length > 0) {
-                rObj.squadre = obj.squadraComposizione.map((squadraComp: SquadraComposizione) => {
+            if (obj.squadreComposizione.length > 0) {
+                rObj.squadre = obj.squadreComposizione.map((squadraComp: SquadraComposizione) => {
                     return squadraComp.squadra;
                 });
             } else {
