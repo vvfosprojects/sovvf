@@ -62,7 +62,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                     IdUtente = command.IdOperatore,
                     IdMezzo = partenzaDaAnnullare.Partenza.Mezzo.Codice,
                     DataOraAggiornamento = command.ModificaPartenza.DataAnnullamento.Value,
-                    StatoMezzo = Costanti.MezzoInSede
+                    StatoMezzo = nuovaPartenza.Partenza.Mezzo.Stato
                 });
             }
 
