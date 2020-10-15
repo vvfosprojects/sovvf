@@ -28,10 +28,8 @@ export class SquadraComposizioneComponent {
 
     onClick(): void {
         if (!this.itemSelezionato && !squadraComposizioneBusy(this.squadraComp.squadra.stato)) {
-            console.log('TEST1');
             this.selezionata.emit(this.squadraComp);
         } else if (!squadraComposizioneBusy(this.squadraComp.squadra.stato)) {
-          console.log('TEST2');
           this.deselezionata.emit(this.squadraComp);
         }
     }
