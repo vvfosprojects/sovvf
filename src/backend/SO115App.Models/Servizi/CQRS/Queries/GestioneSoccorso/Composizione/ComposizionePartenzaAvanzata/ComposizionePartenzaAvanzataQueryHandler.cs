@@ -226,10 +226,10 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             var indexSquadra = query.Filtro.Squadre != null ? lstSquadre.Result.FindIndex(c => c.Squadra.Codice.Equals(query.Filtro.Squadre.FirstOrDefault().Codice)) : 0;
 
             if (indexMezzo != 0)
-                query.Filtro.MezziPagination.Page = indexMezzo / query.Filtro.MezziPagination.PageSize + 1;
+                query.Filtro.MezziPagination.Page = (indexMezzo + 1) / query.Filtro.MezziPagination.PageSize + 1;
 
             if (indexSquadra != 0)
-                query.Filtro.SquadrePagination.Page = indexSquadra / query.Filtro.SquadrePagination.PageSize + 1;
+                query.Filtro.SquadrePagination.Page = (indexSquadra + 1) / query.Filtro.SquadrePagination.PageSize + 1;
 
             //COMPONGO IL DTO E FACCIO LA PAGINAZIONE
             var composizioneAvanzata = new Classi.Composizione.ComposizionePartenzaAvanzata()
