@@ -34,7 +34,12 @@ import {
 } from '../../store/actions/squadre-composizione/squadre-composizione.actions';
 import {UnselectMezziAndSquadreComposizioneAvanzata} from '../../../features/home/store/actions/composizione-partenza/composizione-avanzata.actions';
 import { FiltriComposizioneState } from '../../store/states/filtri-composizione/filtri-composizione.state';
-import { SetRicercaMezziComposizione, SetRicercaSquadreComposizione } from '../../store/actions/ricerca-composizione/ricerca-composizione.actions';
+import {
+  ResetRicercaMezziComposizione,
+  ResetRicercaSquadreComposizione,
+  SetRicercaMezziComposizione,
+  SetRicercaSquadreComposizione
+} from '../../store/actions/ricerca-composizione/ricerca-composizione.actions';
 import { ListaSquadre } from '../../interface/lista-squadre';
 import { VisualizzaListaSquadrePartenza } from '../../../features/home/store/actions/richieste/richieste.actions';
 import { Partenza } from '../../model/partenza.model';
@@ -246,8 +251,10 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
         this.store.dispatch([
             new ClearListaMezziComposizione(),
             new ClearListaSquadreComposizione(),
+            new ResetRicercaSquadreComposizione(),
+            new ResetRicercaMezziComposizione(),
             new UnselectMezziAndSquadreComposizioneAvanzata(),
-            new ClearBoxPartenze()
+            new ClearBoxPartenze(),
         ]);
         this.store.dispatch(new UpdateFormValue({
             value: {
