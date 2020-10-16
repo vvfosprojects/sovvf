@@ -27,9 +27,9 @@ export class SquadraComposizioneComponent {
     }
 
     onClick(): void {
-        if (!this.itemSelezionato && !squadraComposizioneBusy(this.squadraComp.squadra.stato)) {
+        if (!this.itemSelezionato) {
             this.selezionata.emit(this.squadraComp);
-        } else if (!squadraComposizioneBusy(this.squadraComp.squadra.stato)) {
+        } else {
           this.deselezionata.emit(this.squadraComp);
         }
     }

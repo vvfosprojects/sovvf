@@ -39,7 +39,6 @@ import { ConfirmPartenze } from '../../store/actions/composizione-partenza/compo
 import { TurnoState } from '../../../navbar/store/states/turno.state';
 import { SganciamentoInterface } from 'src/app/shared/interface/sganciamento.interface';
 import { MezzoDirection } from '../../../../shared/interface/mezzo-direction';
-import { squadraComposizioneBusy } from '../../../../shared/helper/composizione-functions';
 import { ConfermaPartenze } from '../interface/conferma-partenze-interface';
 import { StatoMezzo } from '../../../../shared/enum/stato-mezzo.enum';
 import { FiltriComposizioneState } from '../../../../shared/store/states/filtri-composizione/filtri-composizione.state';
@@ -296,7 +295,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
     }
 
     squadraSelezionata(squadraComposizione: SquadraComposizione): void {
-        if (squadraComposizione && !squadraComposizioneBusy(squadraComposizione.squadra.stato)) {
+        if (squadraComposizione) {
             if (this.boxPartenzaList.length <= 0) {
                 this.store.dispatch(new AddBoxPartenza());
             }
@@ -422,7 +421,6 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
 
     confermaPartenzeInUscita(): void {
         const partenze = makeCopy(this.boxPartenzaList);
-        console.log('TEST ', partenze);
         const partenzeMappedArray = partenze.map(obj => {
             const rObj = {
                 mezzo: null,

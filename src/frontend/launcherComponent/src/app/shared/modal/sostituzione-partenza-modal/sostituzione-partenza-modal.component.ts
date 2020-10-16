@@ -23,7 +23,6 @@ import {
     UnselectMezzoComposizione
 } from '../../store/actions/mezzi-composizione/mezzi-composizione.actions';
 import { AddBoxPartenza, ClearBoxPartenze } from '../../../features/home/store/actions/composizione-partenza/box-partenza.actions';
-import { squadraComposizioneBusy } from '../../helper/composizione-functions';
 import {
     ClearListaSquadreComposizione,
     ClearSquadraComposizione,
@@ -350,7 +349,7 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
         if (this.nuovoMezzo.codice === '' && this.nuoveSquadre.length <= 0) {
             this.store.dispatch(new AddBoxPartenza());
         }
-        if (squadraComposizione && !squadraComposizioneBusy(squadraComposizione.squadra.stato)) {
+        if (squadraComposizione) {
             if (!this.nuoveSquadre.includes(squadraComposizione.squadra)) {
                 this.nuoveSquadre.push(squadraComposizione.squadra);
                 this.store.dispatch(new SelectSquadraComposizione(squadraComposizione));
