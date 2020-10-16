@@ -93,7 +93,8 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 if (command.ModificaPartenza.Annullamento) seqEventi.Add(new CambioStatoMezzo()
                 {
                     Stato = partenzaDaModificare.Partenza.Mezzo.Stato,
-                    DataOraAggiornamento = partenzaDaModificare.Istante
+                    DataOraAggiornamento = partenzaDaModificare.Istante,
+                    CodMezzo = partenzaDaModificare.Partenza.Mezzo.Codice
                 });
                 foreach (var stato in seqEventi)
                 {
