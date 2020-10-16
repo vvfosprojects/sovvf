@@ -89,8 +89,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 else
                     partenzaDaModificare = command.Richiesta.Partenze.FirstOrDefault(p => command.ModificaPartenza.Mezzo.Codice.Equals(p.Partenza.Mezzo.Codice));
 
-                List<CambioStatoMezzo> seqEventi = new List<CambioStatoMezzo>();
-                seqEventi.AddRange(command.ModificaPartenza.SequenzaStati);
+                var seqEventi = command.ModificaPartenza.SequenzaStati;
                 if (command.ModificaPartenza.Annullamento) seqEventi.Add(new CambioStatoMezzo()
                 {
                     Stato = partenzaDaModificare.Partenza.Mezzo.Stato,
