@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { NgbPopoverConfig, NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
 import { Observable, Subscription } from 'rxjs';
 import { MezzoComposizione } from '../../../../shared/interface/mezzo-composizione-interface';
@@ -332,7 +332,10 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
     confermaPartenzeInViaggio(): void {
         const partenze = makeCopy(this.boxPartenzaList);
         const partenzeMappedArray = partenze.map(obj => {
-            const rObj = null;
+            const rObj = {
+              mezzo: null,
+              squadre: null
+            };
             if (obj.mezzoComposizione) {
                 obj.mezzoComposizione.mezzo.stato = StatoMezzo.InViaggio;
                 rObj.mezzo = obj.mezzoComposizione.mezzo;
@@ -359,7 +362,10 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
     confermaPartenzeInUscita(): void {
         const partenze = makeCopy(this.boxPartenzaList);
         const partenzeMappedArray = partenze.map(obj => {
-            const rObj = null;
+            const rObj = {
+              mezzo: null,
+              squadre: null
+            };
             if (obj.mezzoComposizione) {
                 obj.mezzoComposizione.mezzo.stato = StatoMezzo.InUscita;
                 rObj.mezzo = obj.mezzoComposizione.mezzo;
