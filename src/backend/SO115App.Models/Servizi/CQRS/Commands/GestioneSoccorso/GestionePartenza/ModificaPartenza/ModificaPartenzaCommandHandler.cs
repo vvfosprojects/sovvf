@@ -34,7 +34,6 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 foreach (var squadra in partenzaDaAnnullare.Partenza.Squadre)
                     squadra.Stato = MappaStatoSquadraDaStatoMezzo.MappaStato(partenzaDaAnnullare.Partenza.Mezzo.Stato);
 
-
                 //COMPOSIZIONE ---
                 var dataComposizione = command.Richiesta.Eventi.Max(c => c.Istante).AddMilliseconds(1);
 
@@ -52,7 +51,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 foreach (var squadra in nuovaPartenza.Partenza.Squadre)
                     squadra.Stato = MappaStatoSquadraDaStatoMezzo.MappaStato(nuovaPartenza.Partenza.Mezzo.Stato);
 
-                Richiesta.Partenze.Add(nuovaPartenza);
+                //Richiesta.Partenze.Add(nuovaPartenza);
 
                 _updateStatoPartenze.Update(new AggiornaStatoMezzoCommand()
                 {
@@ -62,7 +61,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                     IdUtente = command.IdOperatore,
                     IdMezzo = partenzaDaAnnullare.Partenza.Mezzo.Codice,
                     DataOraAggiornamento = command.ModificaPartenza.DataAnnullamento.Value,
-                    StatoMezzo = Costanti.MezzoInSede
+                    StatoMezzo = nuovaPartenza.Partenza.Mezzo.Stato
                 });
             }
 

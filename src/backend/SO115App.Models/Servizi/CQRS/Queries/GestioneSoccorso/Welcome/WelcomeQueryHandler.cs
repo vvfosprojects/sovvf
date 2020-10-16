@@ -113,11 +113,11 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
                 UnitaOperative = pinNodi.ToHashSet()
             };
 
-            var sintesiRichiesteAssistenzaQuery = new SintesiRichiesteAssistenzaQuery()
-            {
-                CodiciSede = query.CodiceSede,
-                Filtro = filtro
-            };
+            //var sintesiRichiesteAssistenzaQuery = new SintesiRichiesteAssistenzaQuery()
+            //{
+            //    CodiciSede = query.CodiceSede,
+            //    Filtro = filtro
+            //};
 
             var filtri = _filtriHandler.Get();
 
@@ -133,7 +133,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
                 var boxListaMezzi = _boxMezziHandler.Get(query.CodiceSede);
                 var boxListaPersonale = _boxPersonaleHandler.Get(query.CodiceSede);
                 var listaChiamateInCorso = _listaChiamateInCorsoMarkerHandler.Get(pinNodi);
-                var listaSintesi = _sintesiRichiesteAssistenzaHandler.Handle(sintesiRichiesteAssistenzaQuery);
+                //var listaSintesi = _sintesiRichiesteAssistenzaHandler.Handle(sintesiRichiesteAssistenzaQuery);
                 var centroMappaMarker = _centroMappaMarkerHandler.GetCentroMappaMarker(query.CodiceSede[0]);
                 var listaFiltri = filtri;
                 var infoNue = _getConteggioSchedeHandler.GetConteggio(query.CodiceSede);
@@ -145,7 +145,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
                     BoxListaMezzi = boxListaMezzi,
                     BoxListaPersonale = boxListaPersonale,
                     ListaChiamateInCorso = listaChiamateInCorso,
-                    ListaSintesi = listaSintesi,
+                    //ListaSintesi = listaSintesi,
                     CentroMappaMarker = centroMappaMarker,
                     ListaFiltri = listaFiltri,
                     InfoNue = infoNue,
