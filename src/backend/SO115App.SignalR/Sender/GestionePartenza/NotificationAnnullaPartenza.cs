@@ -20,20 +20,20 @@
 
 using CQRS.Queries;
 using Microsoft.AspNetCore.SignalR;
+using SO115App.API.Models.Classi.Geo;
+using SO115App.API.Models.Servizi.CQRS.Queries.GestioneMezziInServizio.ListaMezziInSerivizio;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Boxes;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza;
-using SO115App.API.Models.Servizi.CQRS.Queries.Marker.SintesiRichiesteAssistenzaMarker;
-using SO115App.Models.Servizi.Infrastruttura.Notification.GestionePartenza;
-using System.Linq;
-using System.Threading.Tasks;
-using SO115App.API.Models.Servizi.CQRS.Queries.GestioneMezziInServizio.ListaMezziInSerivizio;
 using SO115App.API.Models.Servizi.CQRS.Queries.Marker.MezziMarker;
+using SO115App.API.Models.Servizi.CQRS.Queries.Marker.SintesiRichiesteAssistenzaMarker;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
-using SO115App.API.Models.Classi.Geo;
-using System.Collections.Generic;
-using SO115App.SignalR.Utility;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AnnullaPartenza;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
+using SO115App.Models.Servizi.Infrastruttura.Notification.GestionePartenza;
+using SO115App.SignalR.Utility;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace SO115App.SignalR.Sender.GestionePartenza
 {
@@ -73,85 +73,100 @@ namespace SO115App.SignalR.Sender.GestionePartenza
             _getGerarchiaToSend = getGerarchiaToSend;
         }
 
-        public async Task SendNotification(AnnullaPartenzaCommand partenza)
+        public async Task SendNotification(AnnullaPartenzaCommand command)
         {
-            var richiesta = _getRichiestaById.GetById(partenza.IdRichiesta);
-
             var SediDaNotificare = new List<string>();
-            if (richiesta.CodSOAllertate != null)
-                SediDaNotificare = _getGerarchiaToSend.Get(richiesta.CodSOCompetente, richiesta.CodSOAllertate.ToArray());
+            if (command.Richiesta.CodSOAllertate != null)
+                SediDaNotificare = _getGerarchiaToSend.Get(command.Richiesta.CodSOCompetente, command.Richiesta.CodSOAllertate.ToArray());
             else
-                SediDaNotificare = _getGerarchiaToSend.Get(richiesta.CodSOCompetente);
+                SediDaNotificare = _getGerarchiaToSend.Get(command.Richiesta.CodSOCompetente);
 
-            const bool notificaChangeState = true;
-
-            foreach (var sede in SediDaNotificare)
+            Parallel.ForEach(SediDaNotificare, sede =>
             {
-                var sintesiRichiesteAssistenzaQuery = new SintesiRichiesteAssistenzaQuery
+                _notificationHubContext.Clients.Group(sede).SendAsync("ModifyAndNotifySuccess", command);
+                _notificationHubContext.Clients.Group(sede).SendAsync("ChangeStateSuccess", true);
+
+                Task.Factory.StartNew(() =>
                 {
-                    Filtro = new FiltroRicercaRichiesteAssistenza
+                    var boxRichiesteQuery = new BoxRichiesteQuery()
                     {
-                        idOperatore = partenza.IdOperatore,
-                        PageSize = 99
-                    },
-                    CodiciSede = new string[] { sede }
-                };
-                var listaSintesi = _sintesiRichiesteAssistenzahandler.Handle(sintesiRichiesteAssistenzaQuery).SintesiRichiesta;
+                        CodiciSede = new string[] { sede }
+                    };
+                    var boxInterventi = _boxRichiesteHandler.Handle(boxRichiesteQuery).BoxRichieste;
+                    _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxInterventi", boxInterventi);
+                });
 
-                var boxRichiesteQuery = new BoxRichiesteQuery()
+                Task.Factory.StartNew(() =>
                 {
-                    CodiciSede = new string[] { sede }
-                };
-                var boxInterventi = _boxRichiesteHandler.Handle(boxRichiesteQuery).BoxRichieste;
+                    var boxMezziQuery = new BoxMezziQuery()
+                    {
+                        CodiciSede = new string[] { sede }
+                    };
+                    var boxMezzi = _boxMezziHandler.Handle(boxMezziQuery).BoxMezzi;
+                    _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxMezzi", boxMezzi);
+                });
 
-                var boxMezziQuery = new BoxMezziQuery()
+                Task.Factory.StartNew(() =>
                 {
-                    CodiciSede = new string[] { sede }
-                };
-                var boxMezzi = _boxMezziHandler.Handle(boxMezziQuery).BoxMezzi;
+                    var boxPersonaleQuery = new BoxPersonaleQuery()
+                    {
+                        CodiciSede = new string[] { sede }
+                    };
+                    var boxPersonale = _boxPersonaleHandler.Handle(boxPersonaleQuery).BoxPersonale;
+                    _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxPersonale", boxPersonale);
+                });
 
-                var boxPersonaleQuery = new BoxPersonaleQuery()
+                Task.Factory.StartNew(() =>
                 {
-                    CodiciSede = new string[] { sede }
-                };
-                var boxPersonale = _boxPersonaleHandler.Handle(boxPersonaleQuery).BoxPersonale;
+                    var listaMezziInServizioQuery = new ListaMezziInServizioQuery
+                    {
+                        CodiciSede = new string[] { sede },
+                        IdOperatore = command.IdOperatore
+                    };
+                    var listaMezziInServizio = _listaMezziInServizioHandler.Handle(listaMezziInServizioQuery).DataArray;
+                    _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetListaMezziInServizio", listaMezziInServizio);
+                });
 
-                var listaMezziInServizioQuery = new ListaMezziInServizioQuery
+                Task.Factory.StartNew(() =>
                 {
-                    IdSede = new string[] { sede },
-                    IdOperatore = partenza.IdOperatore
-                };
-                var listaMezziInServizio = _listaMezziInServizioHandler.Handle(listaMezziInServizioQuery).ListaMezzi;
+                    var sintesiRichiesteAssistenzaQuery = new SintesiRichiesteAssistenzaQuery
+                    {
+                        Filtro = new FiltroRicercaRichiesteAssistenza
+                        {
+                            idOperatore = command.IdOperatore,
+                            PageSize = 99
+                        },
+                        CodiciSede = new string[] { sede }
+                    };
+                    var listaSintesi = _sintesiRichiesteAssistenzahandler.Handle(sintesiRichiesteAssistenzaQuery).SintesiRichiesta;
+                    command.Chiamata = listaSintesi.LastOrDefault(richiesta => richiesta.Id == command.IdRichiesta);
+                    var sintesiRichiesteAssistenzaMarkerQuery = new SintesiRichiesteAssistenzaMarkerQuery()
+                    {
+                        CodiciSedi = new string[] { sede }
+                    };
+                    var listaSintesiMarker = _sintesiRichiesteAssistenzaMarkerhandler.Handle(sintesiRichiesteAssistenzaMarkerQuery).SintesiRichiestaMarker;
+                    _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetRichiestaUpDateMarker", listaSintesiMarker.LastOrDefault(marker => marker.Codice == command.Chiamata.Codice));
+                });
 
-                var sintesiRichiesteAssistenzaMarkerQuery = new SintesiRichiesteAssistenzaMarkerQuery()
+                Task.Factory.StartNew(() =>
                 {
-                    CodiciSedi = new string[] { sede }
-                };
+                    var areaMappa = new AreaMappa()
+                    {
+                        CodiceSede = new List<string>() { sede },
+                        FiltroMezzi = new Models.Classi.Filtri.FiltroMezzi()
+                        {
+                            FiltraPerAreaMappa = false
+                        }
+                    };
 
-                var listaSintesiMarker = _sintesiRichiesteAssistenzaMarkerhandler.Handle(sintesiRichiesteAssistenzaMarkerQuery).SintesiRichiestaMarker;
-
-                partenza.Chiamata = listaSintesi.LastOrDefault(richiesta => richiesta.Id == partenza.IdRichiesta);
-
-                await _notificationHubContext.Clients.Group(sede).SendAsync("ModifyAndNotifySuccess", partenza);
-                await _notificationHubContext.Clients.Group(sede).SendAsync("ChangeStateSuccess", notificaChangeState);
-                await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxInterventi", boxInterventi);
-                await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxMezzi", boxMezzi);
-                await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxPersonale", boxPersonale);
-                await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetListaMezziInServizio", listaMezziInServizio);
-                await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetRichiestaUpDateMarker", listaSintesiMarker.LastOrDefault(marker => marker.Codice == partenza.Chiamata.Codice));
-
-                AreaMappa areaMappa = new AreaMappa();
-                areaMappa.CodiceSede = new List<string>() { sede };
-                areaMappa.FiltroMezzi = new Models.Classi.Filtri.FiltroMezzi();
-                areaMappa.FiltroMezzi.FiltraPerAreaMappa = false;
-                var queryListaMezzi = new MezziMarkerQuery()
-                {
-                    Filtro = areaMappa,
-                };
-
-                var listaMezziMarker = _listaMezziMarkerHandler.Handle(queryListaMezzi).ListaMezziMarker;
-                await _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetMezzoUpDateMarker", listaMezziMarker.LastOrDefault(marker => marker.Mezzo.IdRichiesta == partenza.Chiamata.Codice));
-            }
+                    var queryListaMezzi = new MezziMarkerQuery()
+                    {
+                        Filtro = areaMappa,
+                    };
+                    var listaMezziMarker = _listaMezziMarkerHandler.Handle(queryListaMezzi).ListaMezziMarker;
+                    _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetMezzoUpDateMarker", listaMezziMarker.LastOrDefault(marker => marker.Mezzo.IdRichiesta == command.Chiamata.Codice));
+                });
+            });
         }
     }
 }
