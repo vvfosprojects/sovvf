@@ -27,43 +27,75 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 {
                     foreach (var squadra in sostituzione.SquadreSmontanti)
                     {
-                        NoteSquadreSmontanti = NoteSquadreSmontanti + squadra.Id + ",";
+                        NoteSquadreSmontanti = NoteSquadreSmontanti + squadra + ",";
                     }
 
                     NoteSquadreSmontanti = "Le squadre " + NoteSquadreSmontanti.Substring(0, NoteSquadreSmontanti.Length - 1) + " vengono sostituite ";
                 }
-                else NoteSquadreSmontanti = "La squadra " + sostituzione.SquadreSmontanti[0].Id + " viene sostituita ";
+                else NoteSquadreSmontanti = "La squadra " + sostituzione.SquadreSmontanti[0] + " viene sostituita ";
 
                 if (sostituzione.SquadreMontanti.Count > 1)
                 {
                     foreach (var squadra in sostituzione.SquadreMontanti)
                     {
-                        NoteSquadreMontanti = NoteSquadreMontanti + squadra.Id + ",";
+                        NoteSquadreMontanti = NoteSquadreMontanti + squadra + ",";
                     }
 
                     NoteSquadreMontanti = " dalle squadre " + NoteSquadreMontanti.Substring(0, NoteSquadreMontanti.Length - 1);
                 }
-                else NoteSquadreMontanti = " dalla squadra " + sostituzione.SquadreMontanti[0].Id;
+                else NoteSquadreMontanti = " dalla squadra " + sostituzione.SquadreMontanti[0];
 
-                string Note = NoteSquadreSmontanti + NoteSquadreMontanti + " sul mezzo " + sostituzione.IdMezzo;
+                string Note = NoteSquadreSmontanti + NoteSquadreMontanti + " sul mezzo " + sostituzione.CodMezzoSmontante;
 
-                var EventoPartenza = new SostituzionePartenzaFineTurno(Richiesta, sostituzione.IdMezzo, command.sostituzione.DataOraOperazione, command.sostituzione.idOperatore, Note);
+                var EventoPartenza = new SostituzionePartenzaFineTurno(Richiesta, sostituzione.CodMezzoSmontante, command.sostituzione.DataOraOperazione, command.sostituzione.idOperatore, Note);
 
-                var appoPartenza = Richiesta.Partenze.FirstOrDefault(x => x.Partenza.Squadre.Equals(command.sostituzione.Sostituzioni[0].IdMezzo));
-                Richiesta.Partenze.Remove(appoPartenza);
+                #region Aggiornamento Partenze nella Richiesta
 
-                appoPartenza.Partenza.Squadre = sostituzione.SquadreMontanti;
-                Richiesta.Partenze.Add(appoPartenza);
+                var appoPartenzaSmontante = Richiesta.Partenze.FirstOrDefault(x => x.Partenza.Squadre.Equals(command.sostituzione.Sostituzioni[0].CodMezzoSmontante));
+                var appoPartenzaMontante = Richiesta.Partenze.FirstOrDefault(x => x.Partenza.Squadre.Equals(command.sostituzione.Sostituzioni[0].CodMezzoMontante));
+
+                //SPET 1 - Rimuovo la partenza smontante originale
+                Richiesta.Partenze.Remove(appoPartenzaSmontante);
+                //SPET 2 - Aggiungo la partenza smontante indicando che è terminata
+                appoPartenzaSmontante.Partenza.Terminata = true;
+                Richiesta.Partenze.Add(appoPartenzaSmontante);
+                //SPET 3 - Aggiungo la partenza smontante nuova con la nuova squadra montante
+                appoPartenzaSmontante.Partenza.Squadre = appoPartenzaMontante.Partenza.Squadre;
+                appoPartenzaSmontante.Partenza.Terminata = false;
+                Richiesta.Partenze.Add(appoPartenzaSmontante);
+
+                //SPET 4 - Rimuovo la partenza montante originale
+                Richiesta.Partenze.Remove(appoPartenzaMontante);
+                //SPET 5 - Aggiungo la partenza Montante indicando che è terminata
+                appoPartenzaMontante.Partenza.Terminata = true;
+                Richiesta.Partenze.Add(appoPartenzaMontante);
+                //SPET 6 - Aggiungo la partenza Montante nuova con la squadra smontante
+                appoPartenzaMontante.Partenza.Squadre = appoPartenzaSmontante.Partenza.Squadre;
+                appoPartenzaMontante.Partenza.Terminata = false;
+                Richiesta.Partenze.Add(appoPartenzaMontante);
+
+                #endregion Aggiornamento Partenze nella Richiesta
 
                 _updateStatoPartenze.Update(new AggiornaStatoMezzoCommand()
                 {
-                    CodiceSede = Richiesta.Partenze.FirstOrDefault(x => x.Partenza.Squadre.Equals(sostituzione.IdMezzo)).Partenza.Mezzo.Distaccamento.Codice,
+                    CodiceSede = Richiesta.Partenze.FirstOrDefault(x => x.Partenza.Squadre.Equals(sostituzione.CodMezzoMontante)).Partenza.Mezzo.Distaccamento.Codice,
                     CodRichiesta = Richiesta.Codice,
                     Richiesta = Richiesta,
                     IdUtente = command.sostituzione.idOperatore,
                     DataOraAggiornamento = command.sostituzione.DataOraOperazione,
                     StatoMezzo = "SulPosto",
-                    IdMezzo = sostituzione.IdMezzo
+                    IdMezzo = sostituzione.CodMezzoSmontante
+                });
+
+                _updateStatoPartenze.Update(new AggiornaStatoMezzoCommand()
+                {
+                    CodiceSede = Richiesta.Partenze.FirstOrDefault(x => x.Partenza.Squadre.Equals(sostituzione.CodMezzoMontante)).Partenza.Mezzo.Distaccamento.Codice,
+                    CodRichiesta = Richiesta.Codice,
+                    Richiesta = Richiesta,
+                    IdUtente = command.sostituzione.idOperatore,
+                    DataOraAggiornamento = command.sostituzione.DataOraOperazione,
+                    StatoMezzo = "SulPosto",
+                    IdMezzo = sostituzione.CodMezzoMontante
                 });
             }
         }

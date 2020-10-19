@@ -7,8 +7,9 @@ namespace SO115App.Models.Classi.SostituzionePartenza
 {
     public class Sostituzione
     {
-        public string IdMezzo { get; set; }
-        public List<Squadra> SquadreSmontanti { get; set; }
-        public List<Squadra> SquadreMontanti { get; set; }
+        public string CodMezzoSmontante { get; set; }
+        public List<string> SquadreSmontanti { get; set; }
+        public string CodMezzoMontante { get; set; }
+        public List<string> SquadreMontanti { get; set; }
     }
 }
