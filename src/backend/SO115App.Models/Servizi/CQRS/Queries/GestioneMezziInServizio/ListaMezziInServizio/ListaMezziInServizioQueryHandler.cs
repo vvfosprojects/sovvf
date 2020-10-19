@@ -34,15 +34,12 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneMezziInServizio.Lista
         private readonly IGetUtenteById _getUtenteById;
         private readonly IGetAlberaturaUnitaOperative _getAlberaturaUnitaOperative;
 
-        /// <summary>
-        ///   Costruttore della classe
-        /// </summary>
         public ListaMezziInServizioQueryHandler(IGetListaMezzi getListaMezzi, IGetUtenteById getUtenteById,
             IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative)
         {
-            this._getListaMezzi = getListaMezzi;
-            this._getUtenteById = getUtenteById;
-            this._getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
+            _getListaMezzi = getListaMezzi;
+            _getUtenteById = getUtenteById;
+            _getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
         }
 
         /// <summary>
@@ -79,7 +76,16 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneMezziInServizio.Lista
 
             return new ListaMezziInServizioResult()
             {
-                ListaMezzi = listaMezzi
+                DataArray = listaMezzi
+                    .Skip(query.Pagination.PageSize * (query.Pagination.Page - 1))
+                    .Take(query.Pagination.PageSize).ToList(),
+
+                Pagination = new SO115App.Models.Classi.Condivise.Paginazione()
+                {
+                    Page = query.Pagination.Page,
+                    PageSize = query.Pagination.PageSize,
+                    TotalItems = listaMezzi.Count,
+                }
             };
         }
     }

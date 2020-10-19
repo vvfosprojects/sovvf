@@ -5,6 +5,7 @@ using CQRS.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneMezziInServizio.ListaMezziInSerivizio;
+using SO115App.Models.Classi.Filtri;
 using SO115App.Models.Classi.Utility;
 
 namespace SO115App.API.Controllers
@@ -16,27 +17,20 @@ namespace SO115App.API.Controllers
     {
         private readonly IQueryHandler<ListaMezziInServizioQuery, ListaMezziInServizioResult> _addHandler;
 
-        public GestioneMezziInServizioController(
-            IQueryHandler<ListaMezziInServizioQuery, ListaMezziInServizioResult> addHandler)
+        public GestioneMezziInServizioController(IQueryHandler<ListaMezziInServizioQuery, ListaMezziInServizioResult> addHandler)
         {
             _addHandler = addHandler;
         }
 
-        [HttpGet("GetListaMezzi")]
-        public async Task<IActionResult> GetListaMezzi()
+        [HttpPost("GetListaMezzi")]
+        public async Task<IActionResult> GetListaMezzi([FromBody] ListaMezziInServizioQuery query)
         {
-            var idOperatore = Request.Headers["IdUtente"];
-            var codiceSede = Request.Headers["CodiceSede"].ToString().Split(',');
-
-            var query = new ListaMezziInServizioQuery()
-            {
-                IdSede = codiceSede,
-                IdOperatore = idOperatore
-            };
+            query.IdOperatore = Request.Headers["IdUtente"].ToString();
+            query.CodiciSede = Request.Headers["CodiceSede"].ToString().Split(',');
 
             try
             {
-                return Ok(this._addHandler.Handle(query));
+                return Ok(_addHandler.Handle(query));
             }
             catch (Exception ex)
             {

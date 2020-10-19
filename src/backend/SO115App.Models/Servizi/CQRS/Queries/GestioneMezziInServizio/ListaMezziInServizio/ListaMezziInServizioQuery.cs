@@ -18,8 +18,8 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Queries;
-using MongoDB.Bson.Serialization.IdGenerators;
-using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
+using SO115App.Models.Classi.Condivise;
+using SO115App.Models.Classi.Filtri;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneMezziInServizio.ListaMezziInSerivizio
 {
@@ -28,16 +28,11 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneMezziInServizio.Lista
     /// </summary>
     public class ListaMezziInServizioQuery : IQuery<ListaMezziInServizioResult>
     {
-        /// <summary>
-        ///   Il filtro utilizzato per la ricerca dei mezzi in servizio
-        /// </summary>
-        public string[] IdSede { get; set; }
+        public FiltriListaMezziInServizio Filtri { get; set; }
 
-        /// <summary>
-        ///   L'id dell'operatore che ha fatto la richiesta di visualizzazione mezzi in servizio
-        /// </summary>
+        public Paginazione Pagination { get; set; }
+
+        public string[] CodiciSede { get; set; }
         public string IdOperatore { get; set; }
-
-        public FiltroRicercaRichiesteAssistenza Filtro { get; set; }
     }
 }
