@@ -29,7 +29,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneMezziInServizio.Lista
     /// </summary>
     public class ListaMezziInServizioQuery : IQuery<ListaMezziInServizioResult>
     {
-        public FiltriListaMezziInServizio Filtri { get; set; }
+        public FiltriListaMezziInServizio Filters { get; set; }
         public Paginazione Pagination { get; set; }
 
         public string[] CodiciSede { get; set; }

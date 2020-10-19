@@ -71,14 +71,15 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneMezziInServizio.Lista
             var listaMezzi = _getListaMezzi.Get(listaCodiciSediGestite) //FILTRI
                 .Where(c =>
                 {
-                    if (query.Filtri != null && query.Filtri.StatiMezzo != null && query.Filtri.StatiMezzo.Count() > 0)
-                        return query.Filtri.StatiMezzo.Contains(c.Mezzo.Mezzo.Stato);
+                    if (query.Filters != null && query.Filters.StatiMezzo != null && query.Filters.StatiMezzo.Count() > 0)
+                        return query.Filters.StatiMezzo.Contains(c.Mezzo.Mezzo.Stato);
                     else
                         return true;
                 }).Where(c =>
-                {
-                    if (query.Filtri != null && string.IsNullOrEmpty(query.Filtri.Search))
-                        return query.Filtri.Search.Contains(c.Mezzo.Mezzo.Descrizione); //Aggiungere in OR gli altri campi da filtrare con la fulltext
+                { 
+                    if (query.Filters != null && !string.IsNullOrEmpty(query.Filters.Search))
+                        return c.Mezzo.Mezzo.Descrizione.Contains(query.Filters.Search)
+                            || (c.Mezzo.Mezzo.IdRichiesta != null && c.Mezzo.Mezzo.IdRichiesta.Contains(query.Filters.Search));
                     else
                         return true;
                 }).ToList();
