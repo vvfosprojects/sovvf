@@ -157,7 +157,6 @@ export class SquadreComposizioneState {
                 dispatch([
                     new FilterListaSquadreComposizione(null, filtriSelezionati),
                     new FilterListaMezziComposizione(null, filtriSelezionati),
-                    // todo: togliere commento e sistemare
                     new SetListaFiltriAffini()
                 ]);
             }
