@@ -18,7 +18,7 @@ import { SquadreComposizioneState } from '../squadre-composizione/squadre-compos
 import { FiltriComposizioneState } from '../filtri-composizione/filtri-composizione.state';
 import { RicercaComposizioneState } from '../ricerca-composizione/ricerca-composizione.state';
 import { BoxPartenzaState } from '../../../../features/home/store/states/composizione-partenza/box-partenza.state';
-import { PatchPaginationMezziSquadre } from '../../actions/pagination-composizione-partenza/pagination-composizione-partenza.actions';
+import { PatchPaginationComposizionePartenza } from '../../actions/pagination-composizione-partenza/pagination-composizione-partenza.actions';
 import { mezzoComposizioneBusy } from '../../../helper/composizione-functions';
 import { RemoveBoxPartenza } from '../../../../features/home/store/actions/composizione-partenza/box-partenza.actions';
 import { SquadraComposizione } from '../../../interface/squadra-composizione-interface';
@@ -122,8 +122,8 @@ export class SostituzionePartenzaModalState {
                     dispatch(new SetListaSquadreComposizione(listaMezziSquadre.composizioneSquadreDataArray));
                 }
                 dispatch(new SetListeComposizioneAvanzata(listaMezziSquadre));
-                dispatch(new PatchPaginationMezziSquadre('mezzi', listaMezziSquadre.mezziPagination));
-                dispatch(new PatchPaginationMezziSquadre('squadre', listaMezziSquadre.squadrePagination));
+                dispatch(new PatchPaginationComposizionePartenza('mezzi', listaMezziSquadre.mezziPagination));
+                dispatch(new PatchPaginationComposizionePartenza('squadre', listaMezziSquadre.squadrePagination));
 
                 if (listaBoxPartenza.length > 0) {
                     const listaBoxMezzi = listaBoxPartenza.filter(box => box.mezzoComposizione !== null);

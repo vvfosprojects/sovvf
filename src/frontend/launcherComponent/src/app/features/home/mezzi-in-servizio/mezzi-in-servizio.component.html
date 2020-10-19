@@ -2,8 +2,11 @@
     <div class="col-12 border-bottom border-light shadown-sm scroll-y"
          [ngClass]="{'m-h-705-mezziinservizio': boxAttivi, 'm-h-805-mezziinservizio': !boxAttivi}">
         <app-partial-loader *ngIf="loadingMezziInServizio$ | async"></app-partial-loader>
+        <div *ngIf="ricerca" class="col-12 col-md-8 mx-auto pl-4">
+            <app-risultati-ricerca [ricerca]="ricerca"></app-risultati-ricerca>
+        </div>
         <div *ngIf="mezziInServizio" class="row">
-            <div *ngFor="let m of mezziInServizio | filterBy: ricercaMezziInServizio" class="col-6 pl-4 mb-1">
+            <div *ngFor="let m of mezziInServizio" class="col-6 pl-4 mb-1">
                 <app-mezzo-in-servizio [mezzoInServizio]="m" [idMezzoInServizioHover]="idMezzoInServizioHover"
                                        [idMezzoInServizioSelezionato]="idMezzoInServizioSelezionato"
                                        [loading]="(loadingActionMezzo$ | async) && (loadingActionMezzo$ | async) === m.mezzo.mezzo.codice"
@@ -12,6 +15,15 @@
                                        (dettaglioRichiesta)="onDettaglioRichiesta($event)"
                                        (visualizzaEventiRichiesta)="onVisualizzaEventiRichiesta($event)"
                                        (actionMezzo)="onActionMezzo($event.a, $event.b)"></app-mezzo-in-servizio>
+            </div>
+            <div *ngIf="mezziInServizio?.length > 0" class="d-flex justify-content-between p-2">
+                <app-select-elementi-per-pagina [pageSize]="pageSize"
+                                                [pageSizes]="pageSizes$ | async"
+                                                [placeholderElementi]="'mezzi'"
+                                                (pageSizeChange)="onPageSizeChange($event)"></app-select-elementi-per-pagina>
+                <pagination-controls class="mt-1 mb-0" [previousLabel]="'Precedente'" [nextLabel]="'Successiva'"
+                                     (pageChange)="onPageChange($event)">
+                </pagination-controls>
             </div>
         </div>
     </div>

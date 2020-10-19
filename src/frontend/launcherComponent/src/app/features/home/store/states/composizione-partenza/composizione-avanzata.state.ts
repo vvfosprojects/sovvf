@@ -22,7 +22,7 @@ import { FiltriComposizioneState } from '../../../../../shared/store/states/filt
 import { PaginationComposizionePartenzaState } from 'src/app/shared/store/states/pagination-composizione-partenza/pagination-composizione-partenza.state';
 import { FiltriComposizione } from '../../../composizione-partenza/interface/filtri/filtri-composizione-interface';
 import { Injectable } from '@angular/core';
-import { PatchPaginationMezziSquadre } from '../../../../../shared/store/actions/pagination-composizione-partenza/pagination-composizione-partenza.actions';
+import { PatchPaginationComposizionePartenza } from '../../../../../shared/store/actions/pagination-composizione-partenza/pagination-composizione-partenza.actions';
 import { RicercaComposizioneState } from 'src/app/shared/store/states/ricerca-composizione/ricerca-composizione.state';
 import { SquadreComposizioneState } from '../../../../../shared/store/states/squadre-composizione/squadre-composizione.state';
 import { SquadraComposizione } from '../../../../../shared/interface/squadra-composizione-interface';
@@ -89,8 +89,8 @@ export class ComposizioneAvanzataState {
                     dispatch(new SetListaSquadreComposizione(listeCompAvanzata.composizioneSquadreDataArray));
                 }
                 dispatch(new SetListeComposizioneAvanzata(listeCompAvanzata));
-                dispatch(new PatchPaginationMezziSquadre('mezzi', listeCompAvanzata.mezziPagination));
-                dispatch(new PatchPaginationMezziSquadre('squadre', listeCompAvanzata.squadrePagination));
+                dispatch(new PatchPaginationComposizionePartenza('mezzi', listeCompAvanzata.mezziPagination));
+                dispatch(new PatchPaginationComposizionePartenza('squadre', listeCompAvanzata.squadrePagination));
 
                 if (listaBoxPartenza.length > 0) {
                     const listaBoxMezzi = listaBoxPartenza.filter(box => box.mezzoComposizione !== null);

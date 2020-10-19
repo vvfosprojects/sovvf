@@ -1,8 +1,11 @@
 import { MezzoInServizio } from '../../../../../shared/interface/mezzo-in-servizio.interface';
 import { VoceFiltro } from '../../../filterbar/filtri-richieste/voce-filtro.model';
 
-export class GetMezziInServizio {
-    static readonly type = '[MezziInServizio] Get Mezzi In Servizio';
+export class GetListaMezziInServizio {
+    static readonly type = '[MezziInServizio] Get Lista Mezzi In Servizio';
+
+    constructor(public page?: number) {
+    }
 }
 
 export class SetMezziInServizio {

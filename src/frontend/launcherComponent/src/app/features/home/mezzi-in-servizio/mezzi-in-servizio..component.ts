@@ -19,12 +19,14 @@ import { BoxClickState, BoxClickStateModel } from '../store/states/boxes/box-cli
 import {
     ClearFiltriMezziInServizio,
     ClearMezzoInServizioHover,
-    GetMezziInServizio,
+    GetListaMezziInServizio,
     SetMezzoInServizioHover,
     SetMezzoInServizioSelezionato
 } from '../store/actions/mezzi-in-servizio/mezzi-in-servizio.actions';
 import { RicercaFilterbarState } from '../store/states/filterbar/ricerca-filterbar.state';
 import { ClearRicercaFilterbar } from '../store/actions/filterbar/ricerca-richieste.actions';
+import { SetPageSize } from '../../../shared/store/actions/pagination/pagination.actions';
+import { PaginationState } from '../../../shared/store/states/pagination/pagination.state';
 
 @Component({
     selector: 'app-mezzi-in-servizio',
@@ -34,6 +36,14 @@ import { ClearRicercaFilterbar } from '../store/actions/filterbar/ricerca-richie
 export class MezziInServizioComponent implements OnInit, OnDestroy {
 
     @Input() boxAttivi: boolean;
+
+    @Select(MezziInServizioState.ricerca) ricerca$: Observable<string>;
+    ricerca: string;
+    @Select(PaginationState.pageSize) pageSize$: Observable<number>;
+    pageSize: number;
+    @Select(PaginationState.pageSizes) pageSizes$: Observable<number[]>;
+    @Select(PaginationState.totalItems) totalItems$: Observable<number>;
+    @Select(PaginationState.page) page$: Observable<number>;
 
     @Select(MezziInServizioState.mezziInServizioFiltered) mezziInServizio$: Observable<MezzoInServizio[]>;
     mezziInServizio: MezzoInServizio[];
@@ -48,10 +58,17 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
 
     statiMezziInServizio: StatoMezzo[];
     prevStateBoxClick: BoxClickStateModel;
-    subscription: Subscription = new Subscription();
+
+    private subscriptions: Subscription = new Subscription();
 
     constructor(private store: Store,
                 private modalService: NgbModal) {
+        const pageSizeAttuale = this.store.selectSnapshot(PaginationState.pageSize);
+        if (pageSizeAttuale === 7) {
+            this.store.dispatch(new SetPageSize(10));
+        }
+        this.getRicerca();
+        this.getPageSize();
         this.getMezziInServizio();
         this.getMezzoInServizioHover();
         this.getMezzoInServizioSelezionato();
@@ -66,7 +83,7 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-        this.subscription.unsubscribe();
+        this.subscriptions.unsubscribe();
         this.store.dispatch(new ClearFiltriMezziInServizio());
         this.store.dispatch(new ClearRicercaFilterbar());
         this.store.dispatch(new UndoAllBoxes(this.prevStateBoxClick));
@@ -77,8 +94,8 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
 
     getMezziInServizio(): void {
         this.prevStateBoxClick = this.store.selectSnapshot(BoxClickState);
-        this.store.dispatch(new GetMezziInServizio());
-        this.subscription.add(
+        this.store.dispatch(new GetListaMezziInServizio());
+        this.subscriptions.add(
             this.mezziInServizio$.subscribe((mezzi: MezzoInServizio[]) => {
                 this.mezziInServizio = mezzi;
                 if (this.mezziInServizio && this.mezziInServizio.length > 0) {
@@ -92,7 +109,7 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
     }
 
     getMezzoInServizioHover(): void {
-        this.subscription.add(
+        this.subscriptions.add(
             this.idMezzoInServizioHover$.subscribe((idMezzo: string) => {
                 this.idMezzoInServizioHover = idMezzo;
             })
@@ -100,7 +117,7 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
     }
 
     getMezzoInServizioSelezionato(): void {
-        this.subscription.add(
+        this.subscriptions.add(
             this.idMezzoInServizioSelezionato$.subscribe((idMezzo: string) => {
                 this.idMezzoInServizioSelezionato = idMezzo;
             })
@@ -108,9 +125,41 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
     }
 
     getRicercaMezziInServizio(): void {
-        this.subscription.add(
+        this.subscriptions.add(
             this.ricercaMezziInServizio$.subscribe((ricerca: string) => {
                 this.ricercaMezziInServizio = { mezzo: { mezzo: { descrizione: ricerca } } };
+            })
+        );
+    }
+
+    onPageChange(page: number): void {
+        this.store.dispatch(new GetListaMezziInServizio(page));
+    }
+
+    onPageSizeChange(pageSize: number): void {
+        this.store.dispatch(new SetPageSize(pageSize));
+    }
+
+    getRicerca(): void {
+        this.subscriptions.add(
+            this.ricerca$.subscribe((ricerca: string) => {
+                if (ricerca !== null) {
+                    this.ricerca = ricerca;
+                    this.store.dispatch(new GetListaMezziInServizio());
+                }
+            })
+        );
+    }
+
+    getPageSize(): void {
+        this.subscriptions.add(
+            this.pageSize$.subscribe((pageSize: number) => {
+                if (pageSize) {
+                    if (this.pageSize && pageSize !== this.pageSize) {
+                        this.store.dispatch(new GetListaMezziInServizio());
+                    }
+                    this.pageSize = pageSize;
+                }
             })
         );
     }

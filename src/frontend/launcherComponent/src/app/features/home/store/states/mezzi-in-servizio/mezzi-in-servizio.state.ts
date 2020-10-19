@@ -1,4 +1,4 @@
-import { State, Selector, Action, StateContext, Select } from '@ngxs/store';
+import { State, Selector, Action, StateContext, Select, Store } from '@ngxs/store';
 import { ClearMarkerMezzoHover, ClearMarkerMezzoSelezionato, SetMarkerMezzoHover, SetMarkerMezzoSelezionato } from '../../actions/maps/marker.actions';
 import { MezzoInServizio } from '../../../../../shared/interface/mezzo-in-servizio.interface';
 import { MezziInServizioService } from '../../../../../core/service/mezzi-in-servizio-service/mezzi-in-servizio.service';
@@ -22,7 +22,7 @@ import {
     ClearMezzoInServizioSelezionato,
     ClearRicercaMezziInServizio,
     FilterMezziInServizio,
-    GetMezziInServizio,
+    GetListaMezziInServizio,
     SetFiltroMezziInServizio,
     SetMezziInServizio,
     SetMezzoInServizioHover,
@@ -33,6 +33,12 @@ import {
     UpdateMezzoInServizio
 } from '../../actions/mezzi-in-servizio/mezzi-in-servizio.actions';
 import { Injectable } from '@angular/core';
+import { RicercaTrasferimentoChiamataState } from '../../../../trasferimento-chiamata/store/states/ricerca-trasferimento-chiamata/ricerca-trasferimento-chiamata.state';
+import { PaginationState } from '../../../../../shared/store/states/pagination/pagination.state';
+import { PatchPagination } from '../../../../../shared/store/actions/pagination/pagination.actions';
+import { ResponseInterface } from '../../../../../shared/interface/response.interface';
+import { FiltersInterface } from '../../../../../shared/interface/filters.interface';
+import { PaginationInterface } from '../../../../../shared/interface/pagination.interface';
 
 export interface MezziInServizioStateModel {
     mezziInServizio: MezzoInServizio[];
@@ -72,7 +78,8 @@ export class MezziInServizioState {
 
     @Select(MezziMarkersState.mezziMarkersIds) mezziMarkersIds$: Observable<string[]>;
 
-    constructor(private mezziInServizioService: MezziInServizioService) {
+    constructor(private mezziInServizioService: MezziInServizioService,
+                private store: Store) {
     }
 
     @Selector()
@@ -106,7 +113,7 @@ export class MezziInServizioState {
     }
 
     @Selector()
-    static ricercaMezziInServizio(state: MezziInServizioStateModel): { mezzo: { mezzo: { descrizione: string } } } {
+    static ricerca(state: MezziInServizioStateModel): { mezzo: { mezzo: { descrizione: string } } } {
         return state.ricerca;
     }
 
@@ -115,12 +122,23 @@ export class MezziInServizioState {
         return state.loadingMezziInServizio;
     }
 
-    @Action(GetMezziInServizio)
-    getMezziInServizio({ dispatch }: StateContext<MezziInServizioStateModel>): void {
+    @Action(GetListaMezziInServizio)
+    getListaMezziInServizio({ getState, dispatch }: StateContext<MezziInServizioStateModel>, action: GetListaMezziInServizio): void {
         dispatch(new StartLoadingMezziInServizio());
-        this.mezziInServizioService.getMezziInServizio().subscribe(data => {
-                console.log('Mezzi In Servizio Controller', data);
-                dispatch(new SetMezziInServizio(data.listaMezzi));
+        const state = getState();
+        const ricerca = this.store.selectSnapshot(RicercaTrasferimentoChiamataState.ricerca);
+        const statiMezzo = state.filtriMezziInServizio.filter((f: VoceFiltro) => f.selezionato === true).map((f: VoceFiltro) => f.descrizione);
+        const filters = {
+            search: ricerca,
+            statiMezzo: statiMezzo && statiMezzo.length > 0 ? statiMezzo : null
+        } as FiltersInterface;
+        const pagination = {
+            page: action.page ? action.page : 1,
+            pageSize: this.store.selectSnapshot(PaginationState.pageSize)
+        } as PaginationInterface;
+        this.mezziInServizioService.getMezziInServizio(filters, pagination).subscribe((response: ResponseInterface) => {
+                dispatch(new SetMezziInServizio(response.dataArray));
+                dispatch(new PatchPagination(response.pagination));
                 dispatch(new StopLoadingMezziInServizio());
             },
             error => dispatch(new StopLoadingActionMezzo())
@@ -176,7 +194,8 @@ export class MezziInServizioState {
         patchState({
             filtriMezziInServizio: _setFiltroSelezionato(filtriMezziInServizio, filtro)
         });
-        dispatch(new FilterMezziInServizio());
+        // dispatch(new FilterMezziInServizio());
+        dispatch(new GetListaMezziInServizio());
     }
 
     @Action(ClearFiltriMezziInServizio)
@@ -187,7 +206,8 @@ export class MezziInServizioState {
             ...state,
             filtriMezziInServizio: _resetFiltriSelezionati(filtriMezziInServizio)
         });
-        dispatch(new FilterMezziInServizio());
+        // dispatch(new FilterMezziInServizio());
+        dispatch(new GetListaMezziInServizio());
     }
 
     @Action(SetMezzoInServizioHover)

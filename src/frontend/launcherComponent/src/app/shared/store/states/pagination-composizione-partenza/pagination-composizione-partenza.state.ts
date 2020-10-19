@@ -1,7 +1,7 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { PaginationInterface } from '../../../interface/pagination.interface';
 import { Injectable } from '@angular/core';
-import { PatchPaginationMezziSquadre, ResetPaginationMezziSquadre, ResetPaginationPreaccoppiati } from '../../actions/pagination-composizione-partenza/pagination-composizione-partenza.actions';
+import { PatchPaginationComposizionePartenza, ResetPaginationComposizionePartenza, ResetPaginationPreaccoppiati } from '../../actions/pagination-composizione-partenza/pagination-composizione-partenza.actions';
 
 export interface PaginationComposizionePartenzaStateModel {
     paginationMezzi: PaginationInterface;
@@ -91,8 +91,8 @@ export class PaginationComposizionePartenzaState {
         return state.paginationPreaccoppiati.totalItems;
     }
 
-    @Action(PatchPaginationMezziSquadre)
-    patchPagination({ patchState }: StateContext<PaginationComposizionePartenzaStateModel>, action: PatchPaginationMezziSquadre): void {
+    @Action(PatchPaginationComposizionePartenza)
+    patchPagination({ patchState }: StateContext<PaginationComposizionePartenzaStateModel>, action: PatchPaginationComposizionePartenza): void {
         switch (action.type) {
             case 'mezzi' :
                 patchState({
@@ -112,7 +112,7 @@ export class PaginationComposizionePartenzaState {
         }
     }
 
-    @Action(ResetPaginationMezziSquadre)
+    @Action(ResetPaginationComposizionePartenza)
     resetPaginationMezziSquadre({ patchState }: StateContext<PaginationComposizionePartenzaStateModel>): void {
         patchState({
             paginationMezzi: PaginationComposizionePartenzaStateDefaults.paginationMezzi,

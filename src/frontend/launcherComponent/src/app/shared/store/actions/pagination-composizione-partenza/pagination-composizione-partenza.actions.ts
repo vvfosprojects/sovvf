@@ -1,14 +1,14 @@
 import { PaginationInterface } from '../../../interface/pagination.interface';
 
-export class PatchPaginationMezziSquadre {
-    static readonly type = '[PaginationComposizionePartenza] Patch Pagination';
+export class PatchPaginationComposizionePartenza {
+    static readonly type = '[PaginationComposizionePartenza] Patch Pagination Composizione Partenza';
 
     constructor(public type: string, public pagination: PaginationInterface) {
     }
 }
 
-export class ResetPaginationMezziSquadre {
-    static readonly type = '[PaginationComposizionePartenza] Reset Pagination Mezzi/Squadre';
+export class ResetPaginationComposizionePartenza {
+    static readonly type = '[PaginationComposizionePartenza] Reset Pagination Composizione Partenza';
 }
 
 export class ResetPaginationPreaccoppiati {
