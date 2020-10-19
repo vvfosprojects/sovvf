@@ -12,6 +12,7 @@ export class RicercaComponent {
     @Input() ricerca: string;
     @Input() disabled: boolean;
     @Input() debounce: boolean;
+    @Input() disableSearch: boolean;
 
     @Output() search: EventEmitter<string> = new EventEmitter<string>();
 

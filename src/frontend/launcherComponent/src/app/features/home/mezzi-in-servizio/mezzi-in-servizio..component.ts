@@ -25,8 +25,8 @@ import {
 } from '../store/actions/mezzi-in-servizio/mezzi-in-servizio.actions';
 import { RicercaFilterbarState } from '../store/states/filterbar/ricerca-filterbar.state';
 import { ClearRicercaFilterbar } from '../store/actions/filterbar/ricerca-richieste.actions';
-import { SetPageSize } from '../../../shared/store/actions/pagination/pagination.actions';
 import { PaginationState } from '../../../shared/store/states/pagination/pagination.state';
+import { CleaRicercaTrasferimentoChiamata } from '../../trasferimento-chiamata/store/actions/ricerca-trasferimento-chiamata/ricerca-trasferimento-chiamata.actions';
 
 @Component({
     selector: 'app-mezzi-in-servizio',
@@ -37,7 +37,7 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
 
     @Input() boxAttivi: boolean;
 
-    @Select(MezziInServizioState.ricerca) ricerca$: Observable<string>;
+    @Select(RicercaFilterbarState.ricerca) ricerca$: Observable<string>;
     ricerca: string;
     @Select(PaginationState.pageSize) pageSize$: Observable<number>;
     pageSize: number;
@@ -51,8 +51,6 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
     idMezzoInServizioHover: string;
     @Select(MezziInServizioState.idMezzoInServizioSelezionato) idMezzoInServizioSelezionato$: Observable<string>;
     idMezzoInServizioSelezionato: string;
-    @Select(RicercaFilterbarState.ricerca) ricercaMezziInServizio$: Observable<string>;
-    ricercaMezziInServizio: { mezzo: { mezzo: { descrizione: string } } };
     @Select(RichiesteState.loadingActionMezzo) loadingActionMezzo$: Observable<string>;
     @Select(MezziInServizioState.loadingMezziInServizio) loadingMezziInServizio$: Observable<boolean>;
 
@@ -63,16 +61,10 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
 
     constructor(private store: Store,
                 private modalService: NgbModal) {
-        const pageSizeAttuale = this.store.selectSnapshot(PaginationState.pageSize);
-        if (pageSizeAttuale === 7) {
-            this.store.dispatch(new SetPageSize(10));
-        }
         this.getRicerca();
-        this.getPageSize();
         this.getMezziInServizio();
         this.getMezzoInServizioHover();
         this.getMezzoInServizioSelezionato();
-        this.getRicercaMezziInServizio();
     }
 
     ngOnInit(): void {
@@ -84,9 +76,12 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(): void {
         this.subscriptions.unsubscribe();
-        this.store.dispatch(new ClearFiltriMezziInServizio());
-        this.store.dispatch(new ClearRicercaFilterbar());
-        this.store.dispatch(new UndoAllBoxes(this.prevStateBoxClick));
+        this.store.dispatch([
+            new ClearFiltriMezziInServizio(),
+            new ClearRicercaFilterbar(),
+            new UndoAllBoxes(this.prevStateBoxClick),
+            new CleaRicercaTrasferimentoChiamata()
+        ]);
         if (isDevMode()) {
             console.log('Componente Mezzo in Servizio distrutto');
         }
@@ -124,20 +119,8 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
         );
     }
 
-    getRicercaMezziInServizio(): void {
-        this.subscriptions.add(
-            this.ricercaMezziInServizio$.subscribe((ricerca: string) => {
-                this.ricercaMezziInServizio = { mezzo: { mezzo: { descrizione: ricerca } } };
-            })
-        );
-    }
-
     onPageChange(page: number): void {
         this.store.dispatch(new GetListaMezziInServizio(page));
-    }
-
-    onPageSizeChange(pageSize: number): void {
-        this.store.dispatch(new SetPageSize(pageSize));
     }
 
     getRicerca(): void {
@@ -146,19 +129,6 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
                 if (ricerca !== null) {
                     this.ricerca = ricerca;
                     this.store.dispatch(new GetListaMezziInServizio());
-                }
-            })
-        );
-    }
-
-    getPageSize(): void {
-        this.subscriptions.add(
-            this.pageSize$.subscribe((pageSize: number) => {
-                if (pageSize) {
-                    if (this.pageSize && pageSize !== this.pageSize) {
-                        this.store.dispatch(new GetListaMezziInServizio());
-                    }
-                    this.pageSize = pageSize;
                 }
             })
         );

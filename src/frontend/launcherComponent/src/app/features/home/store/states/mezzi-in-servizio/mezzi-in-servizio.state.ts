@@ -20,25 +20,23 @@ import {
     ClearFiltriMezziInServizio,
     ClearMezzoInServizioHover,
     ClearMezzoInServizioSelezionato,
-    ClearRicercaMezziInServizio,
     FilterMezziInServizio,
     GetListaMezziInServizio,
     SetFiltroMezziInServizio,
     SetMezziInServizio,
     SetMezzoInServizioHover,
     SetMezzoInServizioSelezionato,
-    SetRicercaMezziInServizio,
     StartLoadingMezziInServizio,
     StopLoadingMezziInServizio,
     UpdateMezzoInServizio
 } from '../../actions/mezzi-in-servizio/mezzi-in-servizio.actions';
 import { Injectable } from '@angular/core';
-import { RicercaTrasferimentoChiamataState } from '../../../../trasferimento-chiamata/store/states/ricerca-trasferimento-chiamata/ricerca-trasferimento-chiamata.state';
-import { PaginationState } from '../../../../../shared/store/states/pagination/pagination.state';
 import { PatchPagination } from '../../../../../shared/store/actions/pagination/pagination.actions';
 import { ResponseInterface } from '../../../../../shared/interface/response.interface';
 import { FiltersInterface } from '../../../../../shared/interface/filters.interface';
 import { PaginationInterface } from '../../../../../shared/interface/pagination.interface';
+import { ImpostazioniState } from '../../../../../shared/store/states/impostazioni/impostazioni.state';
+import { RicercaFilterbarState } from '../filterbar/ricerca-filterbar.state';
 
 export interface MezziInServizioStateModel {
     mezziInServizio: MezzoInServizio[];
@@ -46,7 +44,6 @@ export interface MezziInServizioStateModel {
     idMezzoInServizioHover: string;
     idMezzoInServizioSelezionato: string;
     filtriMezziInServizio: VoceFiltro[];
-    ricerca: { mezzo: { mezzo: { descrizione: string } } };
     loadingMezziInServizio: boolean;
 }
 
@@ -64,7 +61,6 @@ export const MezziInServizioStateDefaults: MezziInServizioStateModel = {
         new VoceFiltro('1', Categoria.FuoriServizio, 'Fuori Servizio', false),
         new VoceFiltro('6', Categoria.Istituto, 'Istituto', false),
     ],
-    ricerca: { mezzo: { mezzo: { descrizione: '' } } },
     loadingMezziInServizio: false
 };
 
@@ -113,11 +109,6 @@ export class MezziInServizioState {
     }
 
     @Selector()
-    static ricerca(state: MezziInServizioStateModel): { mezzo: { mezzo: { descrizione: string } } } {
-        return state.ricerca;
-    }
-
-    @Selector()
     static loadingMezziInServizio(state: MezziInServizioStateModel): boolean {
         return state.loadingMezziInServizio;
     }
@@ -126,15 +117,16 @@ export class MezziInServizioState {
     getListaMezziInServizio({ getState, dispatch }: StateContext<MezziInServizioStateModel>, action: GetListaMezziInServizio): void {
         dispatch(new StartLoadingMezziInServizio());
         const state = getState();
-        const ricerca = this.store.selectSnapshot(RicercaTrasferimentoChiamataState.ricerca);
+        const ricerca = this.store.selectSnapshot(RicercaFilterbarState.ricerca);
         const statiMezzo = state.filtriMezziInServizio.filter((f: VoceFiltro) => f.selezionato === true).map((f: VoceFiltro) => f.descrizione);
+        const boxesVisibili = this.store.selectSnapshot(ImpostazioniState.boxAttivi);
         const filters = {
             search: ricerca,
             statiMezzo: statiMezzo && statiMezzo.length > 0 ? statiMezzo : null
         } as FiltersInterface;
         const pagination = {
             page: action.page ? action.page : 1,
-            pageSize: this.store.selectSnapshot(PaginationState.pageSize)
+            pageSize: boxesVisibili ? 10 : 12
         } as PaginationInterface;
         this.mezziInServizioService.getMezziInServizio(filters, pagination).subscribe((response: ResponseInterface) => {
                 dispatch(new SetMezziInServizio(response.dataArray));
@@ -253,20 +245,6 @@ export class MezziInServizioState {
             idMezzoInServizioSelezionato: null
         });
         dispatch(new ClearMarkerMezzoSelezionato());
-    }
-
-    @Action(SetRicercaMezziInServizio)
-    setRicercaMezziInServizio({ patchState }: StateContext<MezziInServizioStateModel>, action: SetRicercaMezziInServizio): void {
-        patchState({
-            ricerca: { mezzo: { mezzo: { descrizione: action.ricerca } } }
-        });
-    }
-
-    @Action(ClearRicercaMezziInServizio)
-    clearRicercaMezziInServizio({ patchState }: StateContext<MezziInServizioStateModel>): void {
-        patchState({
-            ricerca: { mezzo: { mezzo: { descrizione: '' } } }
-        });
     }
 
     @Action(StartLoadingMezziInServizio)

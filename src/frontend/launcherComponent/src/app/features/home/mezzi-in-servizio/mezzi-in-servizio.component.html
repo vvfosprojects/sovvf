@@ -16,21 +16,23 @@
                                        (visualizzaEventiRichiesta)="onVisualizzaEventiRichiesta($event)"
                                        (actionMezzo)="onActionMezzo($event.a, $event.b)"></app-mezzo-in-servizio>
             </div>
-            <div *ngIf="mezziInServizio?.length > 0" class="d-flex justify-content-between p-2">
-                <app-select-elementi-per-pagina [pageSize]="pageSize"
-                                                [pageSizes]="pageSizes$ | async"
-                                                [placeholderElementi]="'mezzi'"
-                                                (pageSizeChange)="onPageSizeChange($event)"></app-select-elementi-per-pagina>
-                <pagination-controls class="mt-1 mb-0" [previousLabel]="'Precedente'" [nextLabel]="'Successiva'"
-                                     (pageChange)="onPageChange($event)">
-                </pagination-controls>
-            </div>
         </div>
     </div>
-    <div class="col-4">
-        <button class="btn btn-block btn-primary mt-2 btn-no-hover" (click)="tornaIndietro()">
-            <i class="fa fa-arrow-left mr-2"></i>
-            Torna Indietro
-        </button>
+    <div class="col-12">
+        <div class="row">
+            <div class="col-4">
+                <button class="btn btn-block btn-primary mt-2 btn-no-hover" (click)="tornaIndietro()">
+                    <i class="fa fa-arrow-left mr-2"></i>
+                    Torna Indietro
+                </button>
+            </div>
+            <div class="col-8">
+                <div *ngIf="mezziInServizio?.length > 0" class="d-flex justify-content-between p-2">
+                    <pagination-controls class="mt-1 mb-0" [previousLabel]="'Precedente'" [nextLabel]="'Successiva'"
+                                         (pageChange)="onPageChange($event)">
+                    </pagination-controls>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
