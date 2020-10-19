@@ -1,6 +1,6 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { ClearDataHome, GetDataHome, SetBoundsIniziale, SetDataTipologie } from '../actions/home.actions';
-import { ClearRichieste, AddRichieste } from '../actions/richieste/richieste.actions';
+import { ClearRichieste, GetListaRichieste } from '../actions/richieste/richieste.actions';
 import { ClearSediMarkers } from '../actions/maps/sedi-markers.actions';
 import { ClearCentroMappa, SetInitCentroMappa } from '../actions/maps/centro-mappa.actions';
 import { ClearMezziMarkers } from '../actions/maps/mezzi-markers.actions';
@@ -85,8 +85,8 @@ export class HomeState {
             console.log('Welcome', data);
             dispatch([
                 new StopBigLoading(),
+                new GetListaRichieste(),
                 new SetCurrentUrl(RoutesPath.Home),
-                new AddRichieste(data.listaSintesi.sintesiRichiesta),
                 new PatchPagination(data.listaSintesi.pagination),
                 new SetBoxRichieste(data.boxListaInterventi),
                 new SetBoxMezzi(data.boxListaMezzi),
