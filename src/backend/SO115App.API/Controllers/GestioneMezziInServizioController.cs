@@ -1,12 +1,10 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-using CQRS.Queries;
+﻿using CQRS.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneMezziInServizio.ListaMezziInSerivizio;
-using SO115App.Models.Classi.Filtri;
 using SO115App.Models.Classi.Utility;
+using System;
+using System.Threading.Tasks;
 
 namespace SO115App.API.Controllers
 {

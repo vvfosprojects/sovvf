@@ -31,14 +31,11 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneMezziInServizio.Lista
     public class ListaMezziInServizioQueryHandler : IQueryHandler<ListaMezziInServizioQuery, ListaMezziInServizioResult>
     {
         private readonly IGetListaMezzi _getListaMezzi;
-        private readonly IGetUtenteById _getUtenteById;
         private readonly IGetAlberaturaUnitaOperative _getAlberaturaUnitaOperative;
 
-        public ListaMezziInServizioQueryHandler(IGetListaMezzi getListaMezzi, IGetUtenteById getUtenteById,
-            IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative)
+        public ListaMezziInServizioQueryHandler(IGetListaMezzi getListaMezzi, IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative)
         {
             _getListaMezzi = getListaMezzi;
-            _getUtenteById = getUtenteById;
             _getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
         }
 
@@ -49,8 +46,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneMezziInServizio.Lista
         /// <returns>Il DTO di uscita della query</returns>
         public ListaMezziInServizioResult Handle(ListaMezziInServizioQuery query)
         {
-            var Utente = _getUtenteById.GetUtenteByCodice(query.IdOperatore);
-            var listaSediUtenteAbilitate = Utente.Ruoli.Where(x => x.Descrizione.Equals(Costanti.GestoreRichieste)).ToHashSet();
+            var listaSediUtenteAbilitate = query.Operatore.Ruoli.Where(x => x.Descrizione.Equals(Costanti.GestoreRichieste)).ToHashSet();
             var listaSediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
             var pinNodi = new List<PinNodo>();
 
@@ -72,7 +68,20 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneMezziInServizio.Lista
 
             var listaCodiciSediGestite = pinNodi.Select(x => x.Codice).ToArray();
 
-            var listaMezzi = _getListaMezzi.Get(listaCodiciSediGestite);
+            var listaMezzi = _getListaMezzi.Get(listaCodiciSediGestite) //FILTRI
+                .Where(c =>
+                {
+                    if (query.Filtri != null && query.Filtri.StatiMezzo != null && query.Filtri.StatiMezzo.Count() > 0)
+                        return query.Filtri.StatiMezzo.Contains(c.Mezzo.Mezzo.Stato);
+                    else
+                        return true;
+                }).Where(c =>
+                {
+                    if (query.Filtri != null && string.IsNullOrEmpty(query.Filtri.Search))
+                        return query.Filtri.Search.Contains(c.Mezzo.Mezzo.Descrizione); //Aggiungere in OR gli altri campi da filtrare con la fulltext
+                    else
+                        return true;
+                }).ToList();
 
             return new ListaMezziInServizioResult()
             {

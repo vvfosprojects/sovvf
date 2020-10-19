@@ -18,6 +18,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Queries;
+using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.Filtri;
 
@@ -29,10 +30,10 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneMezziInServizio.Lista
     public class ListaMezziInServizioQuery : IQuery<ListaMezziInServizioResult>
     {
         public FiltriListaMezziInServizio Filtri { get; set; }
-
         public Paginazione Pagination { get; set; }
 
         public string[] CodiciSede { get; set; }
         public string IdOperatore { get; set; }
+        public Utente Operatore { get; set; }
     }
 }

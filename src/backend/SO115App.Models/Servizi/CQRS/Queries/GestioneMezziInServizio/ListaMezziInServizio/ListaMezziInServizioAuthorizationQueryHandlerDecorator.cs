@@ -43,11 +43,11 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneMezziInServizio.Lista
 
         public IEnumerable<AuthorizationResult> Authorize(ListaMezziInServizioQuery query)
         {
-            var utente = _findUserByUsername.FindUserByUs(_currentUser.Identity.Name);
+            query.Operatore = _findUserByUsername.FindUserByUs(_currentUser.Identity.Name);
 
             if (_currentUser.Identity.IsAuthenticated)
             {
-                if (utente == null)
+                if (query.Operatore == null)
                     yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
             }
             else
