@@ -120,10 +120,10 @@ namespace SO115App.SignalR.Sender.GestionePartenza
                 {
                     var listaMezziInServizioQuery = new ListaMezziInServizioQuery
                     {
-                        //Filtro = new string[] { sede },
+                        CodiciSede = new string[] { sede },
                         IdOperatore = command.IdOperatore
                     };
-                    var listaMezziInServizio = _listaMezziInServizioHandler.Handle(listaMezziInServizioQuery).ListaMezzi;
+                    var listaMezziInServizio = _listaMezziInServizioHandler.Handle(listaMezziInServizioQuery).DataArray;
                     _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetListaMezziInServizio", listaMezziInServizio);
                 });
 
