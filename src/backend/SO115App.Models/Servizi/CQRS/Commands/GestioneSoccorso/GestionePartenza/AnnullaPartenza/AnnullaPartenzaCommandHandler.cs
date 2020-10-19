@@ -48,12 +48,12 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 
         public void Handle(AnnullaPartenzaCommand command)
         {
-            var richiesta = _getRichiestaById.GetById(command.IdRichiesta);
-            var PartenzaToDelete = richiesta.Partenze.Where(x => x.Partenza.Mezzo.Codice.Equals(command.TargaMezzo)).FirstOrDefault();
+            var PartenzaToDelete = command.Richiesta.Partenze.Where(x => x.Partenza.Mezzo.Codice.Equals(command.TargaMezzo)).FirstOrDefault();
+
             switch (command.CodMotivazione)
             {
                 case 1:
-                    new RevocaPerInterventoNonPiuNecessario(richiesta, command.TargaMezzo, DateTime.Now, command.IdOperatore);
+                    new RevocaPerInterventoNonPiuNecessario(command.Richiesta, command.TargaMezzo, DateTime.Now, command.IdOperatore);
                     break;
 
                 case 2:
@@ -61,24 +61,24 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                     if (richiestaSubentrata == null)
                         richiestaSubentrata = _getRichiestaById.GetByCodiceRichiesta(command.CodRichiestaSubentrata);
 
-                    new RevocaPerRiassegnazione(richiesta, richiestaSubentrata, command.TargaMezzo, DateTime.Now, command.IdOperatore);
+                    new RevocaPerRiassegnazione(command.Richiesta, richiestaSubentrata, command.TargaMezzo, DateTime.Now, command.IdOperatore);
                     break;
 
                 case 3:
-                    new RevocaPerFuoriServizio(richiesta, command.TargaMezzo, DateTime.Now, command.IdOperatore);
+                    new RevocaPerFuoriServizio(command.Richiesta, command.TargaMezzo, DateTime.Now, command.IdOperatore);
                     break;
 
                 case 4:
-                    new RevocaPerAltraMotivazione(richiesta, command.TargaMezzo, DateTime.Now, command.IdOperatore, command.TestoMotivazione);
+                    new RevocaPerAltraMotivazione(command.Richiesta, command.TargaMezzo, DateTime.Now, command.IdOperatore, command.TestoMotivazione);
                     break;
             }
-            _upDateRichiestaAssistenza.UpDate(richiesta);
+            _upDateRichiestaAssistenza.UpDate(command.Richiesta);
 
             AggiornaStatoMezzoCommand commandStatoMezzo = new AggiornaStatoMezzoCommand();
             commandStatoMezzo.CodiceSede = PartenzaToDelete.Partenza.Mezzo.Distaccamento.Codice;
             commandStatoMezzo.IdMezzo = command.TargaMezzo;
             commandStatoMezzo.StatoMezzo = Costanti.MezzoInSede;
-            commandStatoMezzo.Richiesta = richiesta;
+            commandStatoMezzo.Richiesta = command.Richiesta;
             _updateStatoPartenze.Update(commandStatoMezzo);
         }
     }

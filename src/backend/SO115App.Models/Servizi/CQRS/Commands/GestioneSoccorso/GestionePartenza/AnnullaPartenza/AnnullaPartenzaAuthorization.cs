@@ -48,31 +48,30 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 
         public IEnumerable<AuthorizationResult> Authorize(AnnullaPartenzaCommand command)
         {
-            var richiesta = _getRichiestaById.GetById(command.IdRichiesta);
-            var username = _currentUser.Identity.Name;
-            var user = _findUserByUsername.FindUserByUs(username);
+            command.Operatore = _findUserByUsername.FindUserByUs(_currentUser.Identity.Name);
+            command.Richiesta = _getRichiestaById.GetById(command.IdRichiesta);
 
             if (_currentUser.Identity.IsAuthenticated)
             {
-                if (user == null)
+                if (command.Operatore == null)
                     yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
                 else
                 {
-                    if (richiesta.Chiusa)
+                    if (command.Richiesta.Chiusa)
                         yield return new AuthorizationResult(Costanti.MezzoErroreCambioStatoRichiestaChiusa);
 
                     bool abilitato = false;
-                    foreach (var competenza in richiesta.CodUOCompetenza)
+                    foreach (var competenza in command.Richiesta.CodUOCompetenza)
                     {
-                        if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, competenza, Costanti.GestoreRichieste))
+                        if (_getAutorizzazioni.GetAutorizzazioniUtente(command.Operatore.Ruoli, competenza, Costanti.GestoreRichieste))
                             abilitato = true;
                     }
 
-                    if (richiesta.CodSOAllertate != null)
+                    if (command.Richiesta.CodSOAllertate != null)
                     {
-                        foreach (var competenza in richiesta.CodSOAllertate)
+                        foreach (var competenza in command.Richiesta.CodSOAllertate)
                         {
-                            if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, competenza, Costanti.GestoreRichieste))
+                            if (_getAutorizzazioni.GetAutorizzazioniUtente(command.Operatore.Ruoli, competenza, Costanti.GestoreRichieste))
                                 abilitato = true;
                         }
                     }
