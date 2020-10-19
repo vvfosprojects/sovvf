@@ -270,7 +270,6 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
     }
 
     mezzoSelezionato(mezzoComposizione: MezzoComposizione): void {
-        // const codDistaccamentoMezzo = mezzoComposizione.mezzo.distaccamento.codice;
         this.store.dispatch([
             new ReducerSelectMezzoComposizione(mezzoComposizione),
         ]);

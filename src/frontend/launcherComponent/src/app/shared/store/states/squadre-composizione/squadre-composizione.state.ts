@@ -179,22 +179,28 @@ export class SquadreComposizioneState {
     }
 
     @Action(ClearSelectedSquadreComposizione)
-    clearSelectedSquadreComposizione({ patchState }: StateContext<SquadreComposizioneStateStateModel>): void {
+    clearSelectedSquadreComposizione({ getState, patchState }: StateContext<SquadreComposizioneStateStateModel>): void {
+        const state = getState();
         patchState({
+            ...state,
             idSquadreComposizioneSelezionate: []
         });
     }
 
     @Action(HoverInSquadraComposizione)
-    hoverInSquadraComposizione({ patchState }: StateContext<SquadreComposizioneStateStateModel>, action: HoverInSquadraComposizione): void {
+    hoverInSquadraComposizione({ getState, patchState }: StateContext<SquadreComposizioneStateStateModel>, action: HoverInSquadraComposizione): void {
+        const state = getState();
         patchState({
+            ...state,
             idSquadraHover: action.idSquadraComp
         });
     }
 
     @Action(HoverOutSquadraComposizione)
-    hoverOutSquadraComposizione({ patchState }: StateContext<SquadreComposizioneStateStateModel>, action: HoverOutSquadraComposizione): void {
+    hoverOutSquadraComposizione({ getState, patchState }: StateContext<SquadreComposizioneStateStateModel>, action: HoverOutSquadraComposizione): void {
+        const state = getState();
         patchState({
+            ...state,
             idSquadraHover: null
         });
     }
