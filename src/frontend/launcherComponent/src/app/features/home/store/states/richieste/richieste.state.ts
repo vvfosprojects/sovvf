@@ -63,6 +63,7 @@ import { UpdateRichiestaFissata } from '../../actions/richieste/richiesta-fissat
 import { TreeviewSelezione } from '../../../../../shared/model/treeview-selezione.model';
 import { ListaSquadrePartenzaComponent } from '../../../../../shared/components/lista-squadre-partenza/lista-squadre-partenza.component';
 import { Injectable } from '@angular/core';
+import { ImpostazioniState } from '../../../../../shared/store/states/impostazioni/impostazioni.state';
 
 export interface RichiesteStateModel {
     richieste: SintesiRichiesta[];
@@ -160,13 +161,14 @@ export class RichiesteState {
         const utente = this.store.selectSnapshot(AuthState.currentUser);
         if (utente) {
             dispatch(new StartLoadingRichieste());
+            const boxesVisibili = this.store.selectSnapshot(ImpostazioniState.boxAttivi);
             const filters = {
                 search: this.store.selectSnapshot(RicercaFilterbarState.ricerca),
                 others: this.store.selectSnapshot(FiltriRichiesteState.filtriRichiesteSelezionati)
             };
             const pagination = {
                 page: action.options && action.options.page ? action.options.page : 1,
-                pageSize: 7
+                pageSize: boxesVisibili ? 7 : 8
             };
             this.richiesteService.getRichieste(filters, pagination).subscribe((response: ResponseInterface) => {
                 /* response.sintesiRichiesta.forEach( e => {

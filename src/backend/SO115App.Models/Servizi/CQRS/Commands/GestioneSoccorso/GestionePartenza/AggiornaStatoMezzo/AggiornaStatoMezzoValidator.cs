@@ -17,6 +17,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using System;
 using System.Collections.Generic;
 using CQRS.Commands.Validators;
 using SO115App.Models.Classi.Utility;
@@ -33,6 +34,9 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
             {
                 yield return new ValidationResult(Costanti.IdRichiestaNonValida);
             }
+
+            if (command.DataOraAggiornamento >= DateTime.Now)
+                yield return new ValidationResult("Non puoi inserire un evento che deve ancora verificarsi");
         }
     }
 }
