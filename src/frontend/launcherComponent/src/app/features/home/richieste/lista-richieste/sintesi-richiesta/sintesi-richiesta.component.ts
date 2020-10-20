@@ -50,8 +50,6 @@ export class SintesiRichiestaComponent implements OnChanges {
     @Input() disableTooltips = false;
     @Input() disableFissaInAltro = false;
     @Input() loadingEliminaPartenza = false;
-
-    // Permessi
     @Input() disabledModificaRichiesta = false;
     @Input() disabledGestisciRichiesta = false;
     @Input() disabledComposizionePartenza = false;
@@ -64,7 +62,6 @@ export class SintesiRichiestaComponent implements OnChanges {
     @Output() eliminaPartenza = new EventEmitter<{ targaMezzo: string, idRichiesta: string, modalResult: any }>();
     @Output() modificaRichiesta = new EventEmitter<SintesiRichiesta>();
     @Output() gestioneRichiesta = new EventEmitter<SintesiRichiesta>();
-    // tslint:disable-next-line:no-output-on-prefix
     @Output() onEspanso = new EventEmitter();
     @Output() hoverIn = new EventEmitter<string>();
     @Output() hoverOut = new EventEmitter<string>();
@@ -150,7 +147,7 @@ export class SintesiRichiestaComponent implements OnChanges {
         this.eventiRichiesta.emit(codice);
     }
 
-    invioPartenza(richiesta: SintesiRichiesta): void {
+    invioPartenza(richiesta: SintesiRichiesta): void { // quuiiiii
         if (richiesta) {
             this.nuovaPartenza.emit(richiesta);
         }
@@ -254,6 +251,7 @@ export class SintesiRichiestaComponent implements OnChanges {
         modalModificaPartenza.componentInstance.partenza = this.richiesta.partenzeRichiesta[index];
         const codiceRichiesta = this.richiesta.codice ? this.richiesta.codice : this.richiesta.codiceRichiesta;
         modalModificaPartenza.componentInstance.codRichiesta = codiceRichiesta;
+        modalModificaPartenza.componentInstance.richiesta = this.richiesta;
         modalModificaPartenza.componentInstance.idRichiesta = this.richiesta.id;
         modalModificaPartenza.result.then((res: { status: string, result: any }) => {
             switch (res.status) {

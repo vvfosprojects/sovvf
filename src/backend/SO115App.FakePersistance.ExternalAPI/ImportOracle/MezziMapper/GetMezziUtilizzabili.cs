@@ -13,6 +13,7 @@ using Newtonsoft.Json;
 using SO115App.ExternalAPI.Fake.Classi.Gac;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.GeoFleet;
+using SO115App.Models.Classi.ServiziEsterni;
 
 namespace SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper
 {
@@ -36,7 +37,7 @@ namespace SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper
             _getPosizioneByCodiceMezzo = getPosizioneByCodiceMezzo;
         }
 
-        public async Task<List<Mezzo>> Get(List<string> sedi, string genereMezzo = null, string codiceMezzo = null)
+        public async Task<List<Mezzo>> Get(List<string> sedi, string genereMezzo = null, string codiceMezzo = null, List<MessaggioPosizione> posizioneFlotta = null)
         {
             var ListaMezzi = new List<Mezzo>();
             var ListaCodiciSedi = new List<string>();

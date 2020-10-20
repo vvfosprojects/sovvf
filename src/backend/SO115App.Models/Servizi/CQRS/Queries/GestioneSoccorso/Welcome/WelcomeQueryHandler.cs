@@ -20,6 +20,7 @@
 using CQRS.Queries;
 using Serilog;
 using SO115App.API.Models.Classi.Organigramma;
+using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizionePartenzaAvanzata;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
 using SO115App.Models.Classi.Filtri;
@@ -29,10 +30,13 @@ using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GestioneTipologie;
 using SO115App.Models.Servizi.Infrastruttura.GetFiltri;
 using SO115App.Models.Servizi.Infrastruttura.Marker;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Squadre;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
 {
@@ -44,7 +48,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
         private readonly IGetBoxMezzi _boxMezziHandler;
         private readonly IGetBoxPersonale _boxPersonaleHandler;
         private readonly IGetBoxRichieste _boxRichiesteHandler;
-        private readonly IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> _sintesiRichiesteAssistenzaHandler;
         private readonly IGetChiamateInCorso _listaChiamateInCorsoMarkerHandler;
         private readonly IGetCentroMappaMarker _centroMappaMarkerHandler;
         private readonly IGetFiltri _filtriHandler;
@@ -52,33 +55,40 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
         private readonly IGetConteggioSchede _getConteggioSchedeHandler;
         private readonly IGetTipologieByCodice _tipologieQueryHandler;
         private readonly IGetAlberaturaUnitaOperative _getAlberaturaUnitaOperative;
+        private readonly IGetListaSquadre _getListaSquadre;
+        private readonly IGetMezziUtilizzabili _getMezziUtilizzabili;
+        private readonly IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> _sintesiRichiesteAssistenzaHandler;
         private readonly IQueryHandler<RubricaQuery, RubricaResult> _rubricaQueryHandler;
 
         public WelcomeQueryHandler(IGetBoxMezzi boxMezziHandler,
             IGetBoxPersonale boxPersonaleHandler,
             IGetBoxRichieste boxRichiesteHandler,
-            IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> sintesiRichiesteAssistenzaHandler,
             IGetChiamateInCorso listaChiamateInCorsoMarkerHandler,
             IGetCentroMappaMarker centroMappaMarkerHandler,
             IGetFiltri filtriHandler,
             IGetListaDistaccamentiByPinListaSedi getDistaccamenti,
             IGetConteggioSchede getConteggioSchedeHandler,
             IGetTipologieByCodice tipologieQueryHandler,
+            IGetListaSquadre getListaSquadre,
+            IGetMezziUtilizzabili getMezziUtilizzabili,
             IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative,
+            IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> sintesiRichiesteAssistenzaHandler,
             IQueryHandler<RubricaQuery, RubricaResult> rubricaQueryHandler)
         {
-            this._boxMezziHandler = boxMezziHandler;
-            this._boxPersonaleHandler = boxPersonaleHandler;
-            this._boxRichiesteHandler = boxRichiesteHandler;
-            this._sintesiRichiesteAssistenzaHandler = sintesiRichiesteAssistenzaHandler;
-            this._listaChiamateInCorsoMarkerHandler = listaChiamateInCorsoMarkerHandler;
-            this._centroMappaMarkerHandler = centroMappaMarkerHandler;
-            this._filtriHandler = filtriHandler;
-            this._getDistaccamenti = getDistaccamenti;
-            this._getConteggioSchedeHandler = getConteggioSchedeHandler;
-            this._tipologieQueryHandler = tipologieQueryHandler;
-            this._getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
-            this._rubricaQueryHandler = rubricaQueryHandler;
+            _boxMezziHandler = boxMezziHandler;
+            _boxPersonaleHandler = boxPersonaleHandler;
+            _boxRichiesteHandler = boxRichiesteHandler;
+            _sintesiRichiesteAssistenzaHandler = sintesiRichiesteAssistenzaHandler;
+            _listaChiamateInCorsoMarkerHandler = listaChiamateInCorsoMarkerHandler;
+            _centroMappaMarkerHandler = centroMappaMarkerHandler;
+            _filtriHandler = filtriHandler;
+            _getDistaccamenti = getDistaccamenti;
+            _getConteggioSchedeHandler = getConteggioSchedeHandler;
+            _tipologieQueryHandler = tipologieQueryHandler;
+            _getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
+            _rubricaQueryHandler = rubricaQueryHandler;
+            _getMezziUtilizzabili = getMezziUtilizzabili;
+            _getListaSquadre = getListaSquadre;
         }
 
         /// <summary>
@@ -106,6 +116,13 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
                 pinNodi.Add(new PinNodo(figlio.Codice, true));
             }
 
+            //IL TASK SEGUENTE ESEGUE LA PRIMA CHIAMATA ESTERNA DI COMPOSIZIONE MEZZI E SQUADRE AL FINE DI SALVARLI IN CACHE
+            //Task.Factory.StartNew(() => 
+            //{
+            //    _getMezziUtilizzabili.Get(query.CodiceSede.ToList());
+            //    _getListaSquadre.Get(query.CodiceSede.ToList());
+            //});
+
             FiltroRicercaRichiesteAssistenza filtro = new FiltroRicercaRichiesteAssistenza
             {
                 SearchKey = "0",
@@ -128,29 +145,28 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
 
             try
             {
-                var rubrica = _rubricaQueryHandler.Handle(new RubricaQuery() { IdOperatore = query.idOperatore, IdSede = query.CodiceSede, Filters = new FiltriRubrica() { Search = "" }, Pagination = default }).DataArray;
-                var boxListaInterventi = _boxRichiesteHandler.Get(pinNodi.ToHashSet());
-                var boxListaMezzi = _boxMezziHandler.Get(query.CodiceSede);
-                var boxListaPersonale = _boxPersonaleHandler.Get(query.CodiceSede);
-                var listaChiamateInCorso = _listaChiamateInCorsoMarkerHandler.Get(pinNodi);
-                var listaSintesi = _sintesiRichiesteAssistenzaHandler.Handle(sintesiRichiesteAssistenzaQuery);
-                var centroMappaMarker = _centroMappaMarkerHandler.GetCentroMappaMarker(query.CodiceSede[0]);
-                var listaFiltri = filtri;
-                var infoNue = _getConteggioSchedeHandler.GetConteggio(query.CodiceSede);
-                var tipologie = _tipologieQueryHandler.Get();
+                var rubrica = Task.Factory.StartNew(() => _rubricaQueryHandler.Handle(new RubricaQuery() { IdOperatore = query.idOperatore, IdSede = query.CodiceSede, Filters = new FiltriRubrica() { Search = "" }, Pagination = default }).DataArray);
+                var boxListaInterventi = Task.Factory.StartNew(() => _boxRichiesteHandler.Get(pinNodi.ToHashSet()));
+                var boxListaMezzi = Task.Factory.StartNew(() => _boxMezziHandler.Get(query.CodiceSede));
+                var boxListaPersonale = Task.Factory.StartNew(() => _boxPersonaleHandler.Get(query.CodiceSede));
+                var listaChiamateInCorso = Task.Factory.StartNew(() => _listaChiamateInCorsoMarkerHandler.Get(pinNodi));
+                var listaSintesi = Task.Factory.StartNew(() => _sintesiRichiesteAssistenzaHandler.Handle(sintesiRichiesteAssistenzaQuery));
+                var centroMappaMarker = Task.Factory.StartNew(() => _centroMappaMarkerHandler.GetCentroMappaMarker(query.CodiceSede[0]));
+                var infoNue = Task.Factory.StartNew(() => _getConteggioSchedeHandler.GetConteggio(query.CodiceSede));
+                var tipologie = Task.Factory.StartNew(() => _tipologieQueryHandler.Get());
 
                 var welcome = new SO115App.Models.Classi.Condivise.Welcome()
                 {
-                    BoxListaInterventi = boxListaInterventi,
-                    BoxListaMezzi = boxListaMezzi,
-                    BoxListaPersonale = boxListaPersonale,
-                    ListaChiamateInCorso = listaChiamateInCorso,
-                    ListaSintesi = listaSintesi,
-                    CentroMappaMarker = centroMappaMarker,
-                    ListaFiltri = listaFiltri,
-                    InfoNue = infoNue,
-                    Tipologie = tipologie,
-                    Rubrica = rubrica
+                    BoxListaInterventi = boxListaInterventi.Result,
+                    BoxListaMezzi = boxListaMezzi.Result,
+                    BoxListaPersonale = boxListaPersonale.Result,
+                    ListaChiamateInCorso = listaChiamateInCorso.Result,
+                    ListaSintesi = listaSintesi.Result,
+                    CentroMappaMarker = centroMappaMarker.Result,
+                    ListaFiltri = filtri,
+                    InfoNue = infoNue.Result,
+                    Tipologie = tipologie.Result,
+                    Rubrica = rubrica.Result
                 };
 
                 Log.Debug("Fine elaborazione Welcome Handler");

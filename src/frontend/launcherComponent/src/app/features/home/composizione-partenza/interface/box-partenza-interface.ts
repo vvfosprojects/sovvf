@@ -4,5 +4,5 @@ import { SquadraComposizione } from '../../../../shared/interface/squadra-compos
 export interface BoxPartenza {
     id: string;
     mezzoComposizione: MezzoComposizione;
-    squadraComposizione: SquadraComposizione[];
+    squadreComposizione: SquadraComposizione[];
 }

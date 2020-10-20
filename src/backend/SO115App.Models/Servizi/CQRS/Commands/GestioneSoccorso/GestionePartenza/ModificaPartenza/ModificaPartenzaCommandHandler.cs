@@ -31,9 +31,16 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 partenzaDaAnnullare.Partenza.PartenzaAnnullata = true;
                 partenzaDaAnnullare.Partenza.Mezzo.Stato = Costanti.MezzoInSede;
 
-                foreach (var squadra in partenzaDaAnnullare.Partenza.Squadre)
-                    squadra.Stato = MappaStatoSquadraDaStatoMezzo.MappaStato(partenzaDaAnnullare.Partenza.Mezzo.Stato);
-
+                _updateStatoPartenze.Update(new AggiornaStatoMezzoCommand()
+                {
+                    CodiceSede = command.CodSede,
+                    CodRichiesta = Richiesta.CodRichiesta,
+                    Richiesta = Richiesta,
+                    IdUtente = command.IdOperatore,
+                    IdMezzo = partenzaDaAnnullare.Partenza.Mezzo.Codice,
+                    DataOraAggiornamento = command.ModificaPartenza.DataAnnullamento.Value,
+                    StatoMezzo = partenzaDaAnnullare.Partenza.Mezzo.Stato
+                });
                 //COMPOSIZIONE ---
                 var dataComposizione = command.Richiesta.Eventi.Max(c => c.Istante).AddMilliseconds(1);
 
@@ -59,7 +66,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                     CodRichiesta = Richiesta.CodRichiesta,
                     Richiesta = Richiesta,
                     IdUtente = command.IdOperatore,
-                    IdMezzo = partenzaDaAnnullare.Partenza.Mezzo.Codice,
+                    IdMezzo = nuovaPartenza.Partenza.Mezzo.Codice,
                     DataOraAggiornamento = command.ModificaPartenza.DataAnnullamento.Value,
                     StatoMezzo = nuovaPartenza.Partenza.Mezzo.Stato
                 });
@@ -79,12 +86,12 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                     _updateStatoPartenze.Update(new AggiornaStatoMezzoCommand()
                     {
                         CodiceSede = command.CodSede,
-                        CodRichiesta = Richiesta.Codice,
+                        CodRichiesta = Richiesta.CodRichiesta,
                         Richiesta = Richiesta,
                         IdUtente = command.IdOperatore,
+                        IdMezzo = stato.CodMezzo,
                         DataOraAggiornamento = stato.DataOraAggiornamento,
-                        StatoMezzo = stato.Stato,
-                        IdMezzo = stato.CodMezzo
+                        StatoMezzo = stato.Stato
                     });
                 }
             }

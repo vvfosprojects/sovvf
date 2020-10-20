@@ -18,6 +18,7 @@ import { ComposizioneButtonsComponent } from './shared/composizione-buttons/comp
 import { SganciamentoMezzoModalComponent } from './shared/sganciamento-mezzo-modal/sganciamento-mezzo-modal.component';
 import { FormsModule } from '@angular/forms';
 import { FilterPipeModule } from 'ngx-filter-pipe';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
     declarations: [
@@ -44,8 +45,10 @@ import { FilterPipeModule } from 'ngx-filter-pipe';
                 ComposizioneAvanzataState
             ]
         ),
+        NgxPaginationModule,
         FormsModule,
         FilterPipeModule,
+        SharedModule,
     ],
     exports: [
         ComposizionePartenzaComponent

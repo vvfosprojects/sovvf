@@ -56,7 +56,8 @@ import { RichiestaAttivitaUtenteState } from '../store/states/richieste/richiest
             RichiestaGestioneState,
             RichiestaAttivitaUtenteState
         ]),
-        NgxsFormPluginModule
+        NgxsFormPluginModule,
+        SharedModule
     ],
     declarations: [
         RichiesteComponent,

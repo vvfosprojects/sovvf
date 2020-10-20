@@ -19,13 +19,11 @@ import { ComposizioneMarker } from '../../../maps/maps-model/composizione-marker
 import {
     ClearComposizioneVeloce,
     ClearPreaccoppiati,
-    ClearPreAccoppiatiSelezionatiComposizione,
-    FilterListaPreAccoppiati
+    ClearPreAccoppiatiSelezionatiComposizione, GetListaComposizioneVeloce
 } from '../../actions/composizione-partenza/composizione-veloce.actions';
 import { Composizione } from '../../../../../shared/enum/composizione.enum';
 import {
     ClearComposizioneAvanzata,
-    FilterListeComposizioneAvanzata,
     GetListeComposizioneAvanzata,
     UnselectMezziAndSquadreComposizioneAvanzata
 } from '../../actions/composizione-partenza/composizione-avanzata.actions';
@@ -121,7 +119,7 @@ export class ComposizionePartenzaState {
     @Action(UpdateListeComposizione)
     updateListe({ dispatch }: StateContext<ComposizionePartenzaStateModel>, action: UpdateListeComposizione): void {
         console.warn('UpdateListeComposizione');
-        dispatch(new GetListeComposizioneAvanzata(action.filtri));
+        dispatch(new GetListeComposizioneAvanzata());
     }
 
     @Action(ReducerFilterListeComposizione)
@@ -129,9 +127,9 @@ export class ComposizionePartenzaState {
         const state = getState();
         const compMode = state.composizioneMode;
         if (compMode === Composizione.Avanzata) {
-            dispatch(new FilterListeComposizioneAvanzata(action.filtri));
+            dispatch(new GetListeComposizioneAvanzata());
         } else if (compMode === Composizione.Veloce) {
-            dispatch(new FilterListaPreAccoppiati(action.filtri));
+            dispatch(new GetListaComposizioneVeloce());
         }
     }
 

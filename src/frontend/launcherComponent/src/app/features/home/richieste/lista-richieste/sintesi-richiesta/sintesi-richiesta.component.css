@@ -24,7 +24,7 @@
     background-color: beige;
 }
 
-.default-cursor{
+.default-cursor {
     cursor: default !important;
 }
 
@@ -46,7 +46,7 @@
 }
 
 .badge-notify {
-    background-color:#949494;
+    background-color: #949494;
     position: absolute;
     top: -8px;
     left: 12px;
@@ -58,18 +58,26 @@
 }
 
 .circle {
-  font-size: 1rem;
-  color: #e2e2e2;
+    font-size: 1rem;
+    color: #e2e2e2;
 }
 
 .filled {
-  color: #9b9b9b;
+    color: #9b9b9b;
 }
 
 .bad {
-  color: #c23535;
+    color: #c23535;
 }
 
-.high-priority{
+.high-priority {
     color: darkred;
+}
+
+.m-h-160 {
+    max-height: 160px;
+}
+
+.m-h-100 {
+    max-height: 100px;
 }

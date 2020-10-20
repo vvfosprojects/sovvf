@@ -52,7 +52,7 @@ export class MezzoComposizioneComponent implements OnInit {
     }
 
     onClick(): void {
-        if (!this.itemSelezionato) {
+        if (!this.itemSelezionato && !this.mezzoComp.istanteScadenzaSelezione && !this.itemBloccato) {
             this.selezionato.emit(this.mezzoComp);
             // mappa
             if (!mezzoComposizioneBusy(this.mezzoComp.mezzo.stato)) {
@@ -60,7 +60,7 @@ export class MezzoComposizioneComponent implements OnInit {
                     this.mezzoDirection(this.mezzoComp);
                 }
             }
-        } else if (this.selezionato) {
+        } else if (this.selezionato && !this.mezzoComp.istanteScadenzaSelezione && !this.itemBloccato) {
             this.deselezionato.emit(this.mezzoComp);
         }
     }

@@ -4,7 +4,7 @@
         <i class="fa fa-truck mr-2"></i><span class="h6">Pre-Accoppiati</span>
     </div>
     <div *ngIf="preAccoppiati && preAccoppiati?.length > 0" class="row p-2 m-0 scroll-y">
-        <div class="col-3 px-1" *ngFor="let preAcc of preAccoppiati">
+        <div class="col-4 px-1" *ngFor="let preAcc of preAccoppiati">
             <app-box-nuova-partenza [partenza]="preAcc" [richiesta]="richiesta"
                                     [itemSelezionato]="idPreAccoppiatiSelezionati.indexOf(preAcc.id) > -1"
                                     [itemHover]="preAcc.id === idPreaccoppiatoHover"
@@ -14,6 +14,16 @@
                                     (deselezionato)="deselezionaPreaccoppiato($event)" (hoverIn)="onHoverIn($event)"
                                     (hoverOut)="onHoverOut()">
             </app-box-nuova-partenza>
+        </div>
+        <div *ngIf="totalItemsPreaccoppiati > pageSizePreaccoppiati" class="col-12"
+             style="display: flex; place-content: center; margin-top: 10px;">
+            <ngb-pagination
+                    [(page)]="currentPagePreaccoppiati"
+                    [pageSize]="pageSizePreaccoppiati"
+                    [collectionSize]="totalItemsPreaccoppiati"
+                    (pageChange)="preAccoppiatiPageChange($event)"
+                    [maxSize]="2">
+            </ngb-pagination>
         </div>
         <div class="col-12 text-right">
             <app-composizione-buttons (confirmPartenzaInViaggio)="confermaPartenzeInViaggio()"

@@ -108,7 +108,8 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
                     mezzoInServizio.Squadre = null;
                 }
 
-                listaMezzoInServizio.Add(mezzoInServizio);
+                if(mezzoInServizio.Mezzo.Mezzo != null)
+                    listaMezzoInServizio.Add(mezzoInServizio);
             }
 
             return listaMezzoInServizio

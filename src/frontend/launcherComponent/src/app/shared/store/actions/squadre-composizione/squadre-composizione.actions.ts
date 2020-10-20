@@ -1,6 +1,4 @@
 import { SquadraComposizione } from '../../../interface/squadra-composizione-interface';
-import { ComposizioneFilterbar } from '../../../../features/home/composizione-partenza/interface/composizione/composizione-filterbar-interface';
-import { MezzoComposizione } from '../../../interface/mezzo-composizione-interface';
 
 export class SetListaSquadreComposizione {
     static readonly type = '[SquadreComposizione] Set Lista Squadre Composizione';
@@ -82,11 +80,4 @@ export class HoverOutSquadraComposizione {
 
 export class ClearSquadraComposizione {
     static readonly type = '[SquadreComposizione] Clear Squadra Composizione';
-}
-
-export class FilterListaSquadreComposizione {
-    static readonly type = '[SquadreComposizione] Filter Lista Squadre Composizione';
-
-    constructor(public codDistaccamento?: string, public filtri?: ComposizioneFilterbar, public mezziComposizione?: MezzoComposizione[]) {
-    }
 }

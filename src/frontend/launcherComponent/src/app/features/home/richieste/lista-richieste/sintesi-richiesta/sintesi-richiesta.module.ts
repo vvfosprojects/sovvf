@@ -10,11 +10,11 @@ import {TimeagoVVFFormatter} from './helper/timeago-custom-formatter/timago-cust
     imports: [
         CommonModule,
         NgbModule,
-        SharedModule.forRoot(),
+        SharedModule,
         TimeagoModule.forRoot({
             intl: TimeagoIntl,
             formatter: { provide: TimeagoFormatter, useClass: TimeagoVVFFormatter }
-        })
+        }),
     ],
     declarations: [
         SintesiRichiestaComponent

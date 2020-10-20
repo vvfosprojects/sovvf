@@ -2,6 +2,7 @@ import { VoceFiltro } from '../../features/home/filterbar/filtri-richieste/voce-
 
 export interface FiltersInterface {
     search: string;
-    others?: VoceFiltro[];
     codSede?: string[];
+    statiMezzo?: string[];
+    others?: VoceFiltro[];
 }

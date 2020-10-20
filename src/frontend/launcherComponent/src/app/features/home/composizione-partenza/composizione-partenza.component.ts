@@ -28,8 +28,9 @@ import { AuthState } from '../../auth/store/auth.state';
 import { ClearListaSquadreComposizione } from '../../../shared/store/actions/squadre-composizione/squadre-composizione.actions';
 import { ClearPreaccoppiati } from '../store/actions/composizione-partenza/composizione-veloce.actions';
 import { FiltriComposizioneState } from '../../../shared/store/states/filtri-composizione/filtri-composizione.state';
-import { ClearFiltriAffini } from '../../../shared/store/actions/filtri-composizione/filtri-composizione.actions';
 import { SetRicercaMezziComposizione, SetRicercaSquadreComposizione } from '../../../shared/store/actions/ricerca-composizione/ricerca-composizione.actions';
+import { GetListeComposizioneAvanzata } from '../store/actions/composizione-partenza/composizione-avanzata.actions';
+import { PatchPaginationComposizionePartenza } from '../../../shared/store/actions/pagination-composizione-partenza/pagination-composizione-partenza.actions';
 
 @Component({
     selector: 'app-composizione-partenza',
@@ -42,7 +43,7 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
     @Input() boxAttivi: boolean;
 
     @Select(ComposizioneVeloceState.preAccoppiati) preAccoppiati$: Observable<BoxPartenza[]>;
-    @Select(FiltriComposizioneState.filtriAffini) filtriAffini$: Observable<any>;
+    @Select(FiltriComposizioneState.filtri) filtri$: Observable<any>;
     @Select(ComposizionePartenzaState.richiestaComposizione) richiestaComposizione$: Observable<SintesiRichiesta>;
     @Select(ComposizionePartenzaState.loadingInvioPartenza) loadingInvioPartenza$: Observable<boolean>;
     @Select(ComposizionePartenzaState.loadingListe) loadingListe$: Observable<boolean>;
@@ -92,8 +93,7 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
             new UndoAllBoxes(this.prevStateBoxClick),
             new ClearListaMezziComposizione(),
             new ClearListaSquadreComposizione(),
-            new ClearPreaccoppiati(),
-            new ClearFiltriAffini()
+            new ClearPreaccoppiati()
         ]);
         this.subscription.unsubscribe();
         if (isDevMode()) {
@@ -149,11 +149,17 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
     }
 
     changeRicercaSquadre(ricerca: string): void {
-        this.store.dispatch(new SetRicercaSquadreComposizione(ricerca));
+        this.store.dispatch([
+            new SetRicercaSquadreComposizione(ricerca),
+            new GetListeComposizioneAvanzata()
+        ]);
     }
 
     changeRicercaMezzi(ricerca: string): void {
-        this.store.dispatch(new SetRicercaMezziComposizione(ricerca));
+        this.store.dispatch([
+            new SetRicercaMezziComposizione(ricerca),
+            new GetListeComposizioneAvanzata()
+        ]);
     }
 }
 

@@ -85,9 +85,8 @@ export class HomeState {
             console.log('Welcome', data);
             dispatch([
                 new StopBigLoading(),
-                new GetListaRichieste(),
+                // new GetListaRichieste(),
                 new SetCurrentUrl(RoutesPath.Home),
-                new PatchPagination(data.listaSintesi.pagination),
                 new SetBoxRichieste(data.boxListaInterventi),
                 new SetBoxMezzi(data.boxListaMezzi),
                 new SetBoxPersonale(data.boxListaPersonale),

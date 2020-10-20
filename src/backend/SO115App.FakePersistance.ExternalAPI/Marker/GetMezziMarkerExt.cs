@@ -53,25 +53,18 @@ namespace SO115App.ExternalAPI.Fake.Marker
         public List<MezzoMarker> GetListaMezziMarker(AreaMappa filtroAreaMappa)
         {
             var listaMezziFilter = new List<MezzoMarker>();
-
-            List<Mezzo> listaMezzi = new List<Mezzo>();
+            var listaMezzi = new List<Mezzo>();
 
             if (!filtroAreaMappa.FiltroMezzi.FiltraPerAreaMappa)
                 listaMezzi = _getMezziUtilizzabili.Get(filtroAreaMappa.CodiceSede).Result;
             else
                 listaMezzi = _getMezziUtilizzabiliByAreaMappa.Get(filtroAreaMappa).Result;
 
-            var listaMezziMarker = new List<MezzoMarker>();
-
-            foreach (var mezzo in listaMezzi)
+            var listaMezziMarker = listaMezzi.Select(mezzo => new MezzoMarker()
             {
-                var mezzoMarker = new MezzoMarker()
-                {
-                    Mezzo = mezzo,
-                    InfoRichiesta = _getInfoRichiesta.GetInfoRichiestaFromCodiceRichiestaMezzo(mezzo.IdRichiesta)
-                };
-                listaMezziMarker.Add(mezzoMarker);
-            }
+                Mezzo = mezzo,
+                InfoRichiesta = _getInfoRichiesta.GetInfoRichiestaFromCodiceRichiestaMezzo(mezzo.IdRichiesta)
+            }).ToList();
 
             if (filtroAreaMappa.BottomLeft == null) return listaMezziMarker;
 

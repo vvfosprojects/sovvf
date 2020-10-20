@@ -39,11 +39,13 @@ import { ConfirmPartenze } from '../../store/actions/composizione-partenza/compo
 import { TurnoState } from '../../../navbar/store/states/turno.state';
 import { SganciamentoInterface } from 'src/app/shared/interface/sganciamento.interface';
 import { MezzoDirection } from '../../../../shared/interface/mezzo-direction';
-import { squadraComposizioneBusy } from '../../../../shared/helper/composizione-functions';
 import { ConfermaPartenze } from '../interface/conferma-partenze-interface';
 import { StatoMezzo } from '../../../../shared/enum/stato-mezzo.enum';
 import { FiltriComposizioneState } from '../../../../shared/store/states/filtri-composizione/filtri-composizione.state';
 import { GetFiltriComposizione } from '../../../../shared/store/actions/filtri-composizione/filtri-composizione.actions';
+import { PaginationComposizionePartenzaState } from 'src/app/shared/store/states/pagination-composizione-partenza/pagination-composizione-partenza.state';
+import { GetListeComposizioneAvanzata } from '../../store/actions/composizione-partenza/composizione-avanzata.actions';
+import { ResetPaginationComposizionePartenza } from '../../../../shared/store/actions/pagination-composizione-partenza/pagination-composizione-partenza.actions';
 
 @Component({
     selector: 'app-composizione-avanzata',
@@ -96,6 +98,22 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
     // Loading Liste Mezzi e Squadre
     @Select(ComposizionePartenzaState.loadingListe) loadingListe$: Observable<boolean>;
     loadingListe: boolean;
+
+    // Paginazione Mezzi
+    @Select(PaginationComposizionePartenzaState.pageMezzi) currentPageMezzi$: Observable<number>;
+    currentPageMezzi: number;
+    @Select(PaginationComposizionePartenzaState.totalItemsMezzi) totalItemsMezzi$: Observable<number>;
+    totalItemsMezzi: number;
+    @Select(PaginationComposizionePartenzaState.pageSizeMezzi) pageSizeMezzi$: Observable<number>;
+    pageSizeMezzi: number;
+
+    // Paginazione Squadre
+    @Select(PaginationComposizionePartenzaState.pageSquadre) currentPageSquadre$: Observable<number>;
+    currentPageSquadre: number;
+    @Select(PaginationComposizionePartenzaState.totalItemsSquadre) totalItemsSquadre$: Observable<number>;
+    totalItemsSquadre: number;
+    @Select(PaginationComposizionePartenzaState.pageSizeSquadre) pageSizeSquadre$: Observable<number>;
+    pageSizeSquadre: number;
 
     Composizione = Composizione;
     subscription = new Subscription();
@@ -199,8 +217,44 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
             })
         );
 
-        this.subscription.add(this.loadingListe$.subscribe(res => this.loadingListe = res));
+        // Prendo Pagina Corrente Mezzi
+        this.subscription.add(
+            this.currentPageMezzi$.subscribe((currentPageMezzi: number) => {
+                this.currentPageMezzi = currentPageMezzi;
+            })
+        );
+        // Prendo Totale Items Mezzi
+        this.subscription.add(
+            this.totalItemsMezzi$.subscribe((totalItemsMezzi: number) => {
+                this.totalItemsMezzi = totalItemsMezzi;
+            })
+        );
+        // Prendo Pagina Size Mezzi
+        this.subscription.add(
+            this.pageSizeMezzi$.subscribe((pageSizeMezzi: number) => {
+                this.pageSizeMezzi = pageSizeMezzi;
+            })
+        );
 
+        // Prendo Pagina Corrente Squadre
+        this.subscription.add(
+            this.currentPageSquadre$.subscribe((currentPageSquadre: number) => {
+                this.currentPageSquadre = currentPageSquadre;
+            })
+        );
+        // Prendo Totale Items Squadre
+        this.subscription.add(
+            this.totalItemsSquadre$.subscribe((totalItemsSquadre: number) => {
+                this.totalItemsSquadre = totalItemsSquadre;
+            })
+        );
+        // Prendo Pagina Size Squadre
+        this.subscription.add(
+            this.pageSizeSquadre$.subscribe((pageSizeSquadre: number) => {
+                this.pageSizeSquadre = pageSizeSquadre;
+            })
+        );
+        this.subscription.add(this.loadingListe$.subscribe(res => this.loadingListe = res));
     }
 
     ngOnInit(): void {
@@ -208,7 +262,10 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-        this.store.dispatch(new ClearBoxPartenze());
+        this.store.dispatch([
+            new ClearBoxPartenze(),
+            new ResetPaginationComposizionePartenza()
+        ]);
         this.subscription.unsubscribe();
     }
 
@@ -237,11 +294,13 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
     }
 
     squadraSelezionata(squadraComposizione: SquadraComposizione): void {
-        if (squadraComposizione && !squadraComposizioneBusy(squadraComposizione.squadra.stato)) {
+        if (squadraComposizione) {
             if (this.boxPartenzaList.length <= 0) {
                 this.store.dispatch(new AddBoxPartenza());
             }
-            this.store.dispatch(new SelectSquadraComposizione(squadraComposizione));
+            this.store.dispatch([
+                new SelectSquadraComposizione(squadraComposizione),
+            ]);
         }
     }
 
@@ -290,7 +349,7 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
             const mezzoComp = boxPartenza.mezzoComposizione;
             this.store.dispatch(new RequestRemoveBookMezzoComposizione(mezzoComp, boxPartenza));
         } else {
-            this.store.dispatch(new RemoveBoxPartenza(boxPartenza, true));
+            this.store.dispatch(new RemoveBoxPartenza(boxPartenza));
         }
         this.onClearDirection();
     }
@@ -298,8 +357,8 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
     dopoAggiungiBoxPartenza(): void {
         this.boxPartenzaList.forEach(boxPartenza => {
             if (boxPartenza.mezzoComposizione) {
-                const mezzoComp = boxPartenza.mezzoComposizione;
-                this.store.dispatch(new DeselectBoxPartenza(boxPartenza, true));
+                // const mezzoComp = boxPartenza.mezzoComposizione;
+                this.store.dispatch(new DeselectBoxPartenza(boxPartenza));
             }
             this.onClearDirection();
         });
@@ -333,8 +392,8 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
         const partenze = makeCopy(this.boxPartenzaList);
         const partenzeMappedArray = partenze.map(obj => {
             const rObj = {
-              mezzo: null,
-              squadre: null
+                mezzo: null,
+                squadre: null
             };
             if (obj.mezzoComposizione) {
                 obj.mezzoComposizione.mezzo.stato = StatoMezzo.InViaggio;
@@ -342,8 +401,8 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
             } else {
                 rObj.mezzo = null;
             }
-            if (obj.squadraComposizione.length > 0) {
-                rObj.squadre = obj.squadraComposizione.map((squadraComp: SquadraComposizione) => {
+            if (obj.squadreComposizione.length > 0) {
+                rObj.squadre = obj.squadreComposizione.map((squadraComp: SquadraComposizione) => {
                     return squadraComp.squadra;
                 });
             } else {
@@ -363,8 +422,8 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
         const partenze = makeCopy(this.boxPartenzaList);
         const partenzeMappedArray = partenze.map(obj => {
             const rObj = {
-              mezzo: null,
-              squadre: null
+                mezzo: null,
+                squadre: null
             };
             if (obj.mezzoComposizione) {
                 obj.mezzoComposizione.mezzo.stato = StatoMezzo.InUscita;
@@ -372,8 +431,8 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
             } else {
                 rObj.mezzo = null;
             }
-            if (obj.squadraComposizione.length > 0) {
-                rObj.squadre = obj.squadraComposizione.map((squadraComp: SquadraComposizione) => {
+            if (obj.squadreComposizione.length > 0) {
+                rObj.squadre = obj.squadreComposizione.map((squadraComp: SquadraComposizione) => {
                     return squadraComp.squadra;
                 });
             } else {
@@ -392,5 +451,23 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
     onClearDirection(): void {
         this.clearDirection.emit();
         this.centraMappa.emit();
+    }
+
+    mezziPageChange(pageMezzi: number): void {
+        const options = {
+            page: {
+                pageMezzi,
+            }
+        };
+        this.store.dispatch(new GetListeComposizioneAvanzata(options));
+    }
+
+    squadrePageChange(pageSquadre: number): void {
+        const options = {
+            page: {
+                pageSquadre,
+            }
+        };
+        this.store.dispatch(new GetListeComposizioneAvanzata(options));
     }
 }

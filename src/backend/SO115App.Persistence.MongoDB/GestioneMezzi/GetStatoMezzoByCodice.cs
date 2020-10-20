@@ -22,6 +22,48 @@ namespace SO115App.Persistence.MongoDB.GestioneMezzi
             _getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
         }
 
+        public List<StatoOperativoMezzo> Get(string[] codiciSede, string codiceMezzo = null)
+        {
+            var listaSediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
+
+            var pinNodi = new List<PinNodo>();
+            var pinNodiNoDistaccamenti = new List<PinNodo>();
+
+            pinNodi.AddRange(codiciSede.Select(c => new PinNodo(c, true)));
+
+            foreach (var figlio in listaSediAlberate.GetSottoAlbero(pinNodi))
+            {
+                pinNodi.Add(new PinNodo(figlio.Codice, true));
+            }
+
+            if (codiceMezzo == null)
+            {
+                var listaMezziPrenotati = _dbContext.StatoMezzoCollection.Find(Builders<StatoOperativoMezzo>.Filter.In(x => x.CodiceSede, pinNodi.Select(y => y.Codice))).ToList();
+                foreach (var mezzo in listaMezziPrenotati)
+                {
+                    if (mezzo.IstantePrenotazione != null)
+                        mezzo.IstantePrenotazione = TimeZoneInfo.ConvertTime(mezzo.IstantePrenotazione.Value, TimeZoneInfo.Local);
+                    if (mezzo.IstanteScadenzaSelezione != null)
+
+                        mezzo.IstanteScadenzaSelezione = TimeZoneInfo.ConvertTime(mezzo.IstanteScadenzaSelezione.Value, TimeZoneInfo.Local);
+                }
+                return listaMezziPrenotati;
+            }
+            else
+            {
+                var listaMezziPrenotati = _dbContext.StatoMezzoCollection.Find(Builders<StatoOperativoMezzo>.Filter.Eq(x => x.CodiceMezzo, codiceMezzo)).ToList();
+
+                foreach (var mezzo in listaMezziPrenotati)
+                {
+                    if (mezzo.IstantePrenotazione != null)
+                        mezzo.IstantePrenotazione = TimeZoneInfo.ConvertTime(mezzo.IstantePrenotazione.Value, TimeZoneInfo.Local);
+                    if (mezzo.IstanteScadenzaSelezione != null)
+                        mezzo.IstanteScadenzaSelezione = TimeZoneInfo.ConvertTime(mezzo.IstanteScadenzaSelezione.Value, TimeZoneInfo.Local);
+                }
+                return listaMezziPrenotati;
+            }
+        }
+
         public List<StatoOperativoMezzo> Get(string codiceSede, string codiceMezzo = null)
         {
             var listaSediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();

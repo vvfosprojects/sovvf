@@ -47,7 +47,7 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GestioneMezzoPre
         {
             Log.Debug("Inizio elaborazione Lista mezzi prenotati Handler");
 
-            var mezziPrenotati = _getMezzoPrenotato.Get(query.CodiceSede);
+            var mezziPrenotati = _getMezzoPrenotato.Get(new string[] { query.CodiceSede });
 
             Log.Debug("Fine elaborazione Lista mezzi prenotati Handler");
 

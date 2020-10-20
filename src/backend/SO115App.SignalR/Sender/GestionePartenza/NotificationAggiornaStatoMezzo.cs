@@ -106,10 +106,10 @@ namespace SO115App.SignalR.Sender.GestionePartenza
 
                 var listaMezziInServizioQuery = new ListaMezziInServizioQuery
                 {
-                    IdSede = new string[] { sede },
+                    CodiciSede = new string[] { sede },
                     IdOperatore = intervento.IdUtente
                 };
-                var listaMezziInServizio = _listaMezziInServizioHandler.Handle(listaMezziInServizioQuery).ListaMezzi; 
+                var listaMezziInServizio = _listaMezziInServizioHandler.Handle(listaMezziInServizioQuery).DataArray; 
                 _notificationHubContext.Clients.Group(sede).SendAsync("NotifyUpdateMezzoInServizio", listaMezziInServizio.Find(x => x.Mezzo.Mezzo.Codice.Equals(intervento.IdMezzo)));
 
                 var boxRichiesteQuery = new BoxRichiesteQuery()

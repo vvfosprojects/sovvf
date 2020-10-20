@@ -1,4 +1,4 @@
-import { Action, State, StateContext } from '@ngxs/store';
+import { Action, Selector, State, StateContext } from '@ngxs/store';
 import {
     ResetRicercaMezziComposizione,
     ResetRicercaSquadreComposizione,
@@ -8,13 +8,14 @@ import {
 import { Injectable } from '@angular/core';
 
 export interface RicercaComposizioneStateStateModel {
-    ricercaSquadre: string;
     ricercaMezzi: string;
+    ricercaSquadre: string;
+
 }
 
 export const RicercaComposizioneStateDefaults: RicercaComposizioneStateStateModel = {
+    ricercaMezzi: undefined,
     ricercaSquadre: undefined,
-    ricercaMezzi: undefined
 };
 
 @Injectable()
@@ -24,6 +25,15 @@ export const RicercaComposizioneStateDefaults: RicercaComposizioneStateStateMode
 })
 export class RicercaComposizioneState {
 
+    @Selector()
+    static ricercaMezzi(state: RicercaComposizioneStateStateModel) {
+        return state.ricercaMezzi;
+    }
+
+    @Selector()
+    static ricercaSquadre(state: RicercaComposizioneStateStateModel) {
+        return state.ricercaSquadre;
+    }
 
     @Action(SetRicercaSquadreComposizione)
     setRicercaSquadreComposizione({ patchState }: StateContext<RicercaComposizioneStateStateModel>, action: SetRicercaSquadreComposizione): void {

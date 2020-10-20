@@ -8,22 +8,24 @@
 <div class="modal-body">
     <div class="row">
         <!-- Anteprima mezzo e squadra/e da sostituire -->
-        <div class="col-12 mb-3">
-            <app-box-anteprima-partenza [partenza]="partenza"  [inSostituzione]="partenzaDaSostituire"
+        <div class="col-12 mb-1">
+            <app-box-anteprima-partenza [partenza]="partenza" [inSostituzione]="partenzaDaSostituire"
                                         [nonModificabile]="true"
-                                        (listaSquadrePartenza)="onListaSquadrePartenza()"></app-box-anteprima-partenza>
-            </div>
+                                        (listaSquadrePartenza)="onListaSquadrePartenza()">
+            </app-box-anteprima-partenza>
+        </div>
         <!-- Filterbar -->
         <div class="col-12 mt-1">
             <app-filterbar-composizione [filtri]="filtriAffini$ | async"
                                         [disableComposizioneMode]="loadingListe"
                                         [nascondiTornaIndietro]="true"
-                                        [nascondiCambiaComposizioneMode]="true">
+                                        [nascondiCambiaComposizioneMode]="true"
+                                        [sostituzionePartenza]="true">
             </app-filterbar-composizione>
         </div>
         <div class="col-5">
-            <div class="form-group">
-                <div class="card card-shadow mx-auto" style="min-height:392px">
+            <div class="form-group mb-0">
+                <div class="card card-shadow mx-auto" style="min-height:392px; margin-bottom: 15px">
                     <app-partial-loader
                             *ngIf="loadingListe || !squadreComposizione"></app-partial-loader>
                     <div class="card-header clearfix px-2 py-1">
@@ -32,17 +34,19 @@
                             <span class="h6">Squadre</span>
                         </div>
                         <div class="float-right w-50">
-                            <input class="form-control" placeholder="Cerca..." [(ngModel)]="ricercaSquadre"
+                            <input class="form-control" placeholder="Cerca..."
                                    [ngClass]="{'border-danger': ricercaSquadre && ricercaSquadre.length > 0}"
                                    type="search" name="ricercaSquadre" id="ricercaSquadre"
-                                   (ngModelChange)="changeRicercaSquadre()">
+                                   [(ngModel)]="ricercaSquadre" appDebounceKeyUp
+                                   (debounceKeyUp)="changeRicercaSquadre()"
+                                   [debounceTime]="1000">
                         </div>
                     </div>
                     <ul class="list-group list-group-flush border-bottom scroll-y"
                         style="max-height:345px; min-height:345px">
                         <ng-template [ngIf]="squadreComposizione && squadreComposizione.length > 0">
                             <app-squadra-composizione
-                                    *ngFor="let sC of squadreComposizione | filterBy: {'squadra': {'nome': ricercaSquadre}}"
+                                    *ngFor="let sC of squadreComposizione"
                                     [squadraComp]="sC"
                                     [itemSelezionato]="checkSquadraSelezione(sC.id)"
                                     [itemHover]="sC.id === idSquadraHover"
@@ -53,11 +57,20 @@
                         </ng-template>
                     </ul>
                 </div>
+                <ngb-pagination
+                        [(page)]="currentPageSquadre"
+                        [pageSize]="pageSizeSquadre"
+                        [collectionSize]="totalItemsSquadre"
+                        (pageChange)="squadrePageChange($event)"
+                        [maxSize]="2"
+                        [disabled]="loadingListe"
+                        style="display: flex; place-content: center;">
+                </ngb-pagination>
             </div>
         </div>
         <div class="col-7">
-            <div class="form-group">
-                <div class="card card-shadow mx-auto" style="min-height:392px">
+            <div class="form-group mb-0">
+                <div class="card card-shadow mx-auto" style="min-height:392px; margin-bottom: 15px">
                     <app-partial-loader
                             *ngIf="loadingListe || !mezziComposizione"></app-partial-loader>
                     <div class="card-header clearfix px-2 py-1">
@@ -66,16 +79,18 @@
                             <span class="h6">Mezzi</span>
                         </div>
                         <div class="float-right">
-                            <input class="form-control" placeholder="Cerca..." [(ngModel)]="ricercaMezzi"
+                            <input class="form-control" placeholder="Cerca..."
                                    [ngClass]="{'border-danger': ricercaMezzi && ricercaMezzi.length > 0}"
                                    type="search" name="ricercaMezzi" id="ricercaMezzi"
-                                   (ngModelChange)="changeRicercaMezzi()">
+                                   [(ngModel)]="ricercaMezzi" appDebounceKeyUp
+                                   (debounceKeyUp)="changeRicercaMezzi()"
+                                   [debounceTime]="1000">
                         </div>
                     </div>
                     <ul class="list-group list-group-flush border-bottom scroll-y"
                         style="max-height:345px; min-height:345px">
                         <ng-template [ngIf]="mezziComposizione && mezziComposizione.length > 0">
-                            <div *ngFor="let mC of mezziComposizione | filterBy: {'mezzo': {'descrizione': ricercaMezzi}}">
+                            <div *ngFor="let mC of mezziComposizione">
                                 <ng-template [ngIf]="mC.mezzo.stato !== statoMezzo.OperativoPreaccoppiato">
                                     <app-mezzo-composizione [mezzoComp]="mC"
                                                             [itemSelezionato]="mC.id === idMezzoSelezionato"
@@ -93,26 +108,43 @@
                         </ng-template>
                     </ul>
                 </div>
+                <ngb-pagination
+                        [(page)]="currentPageMezzi"
+                        [pageSize]="pageSizeMezzi"
+                        [collectionSize]="totalItemsMezzi"
+                        (pageChange)="mezziPageChange($event)"
+                        [maxSize]="5"
+                        [disabled]="loadingListe"
+                        style="display: flex; place-content: center;">
+                </ngb-pagination>
             </div>
         </div>
         <div class="col-6">
             <form [formGroup]="sostituzionePartenzaForm" ngxsForm="sostituzionePartenza.sostituzionePartenzaForm">
                 <div class="form-group">
                     <label for="motivazione">Motivazione</label>
-                    <textarea id="motivazione" type="text" class="w-100 form-control" formControlName="motivazioneAnnullamento" placeholder="Scrivi una motivazione... (Opzionale)" style="height: 117px; max-height: 78px;"></textarea>
+                    <textarea id="motivazione" type="text" class="w-100 form-control"
+                              formControlName="motivazioneAnnullamento"
+                              placeholder="Scrivi una motivazione... (Opzionale)"
+                              style="height: 117px; max-height: 78px;"></textarea>
                 </div>
             </form>
         </div>
         <div class="col-6" style="max-height: 146px; transform: translate(70px, 0px);">
             <div class="form-group" style="margin-bottom: 0px !important;">
                 <label>Seleziona Orario Annullamento</label>
-                <ngb-timepicker [(ngModel)]="time" [ngModelOptions]="{standalone: true}" style="transform: translate(10px, -14px); display: flex;"></ngb-timepicker>
-                <i class="fa fa-clock-o" style="align-self: center; padding-left: 10px; font-size: 25px; display: flex; transform: translate(160px, -83px);"
-                size="small"></i>
+                <ngb-timepicker [(ngModel)]="time" [ngModelOptions]="{standalone: true}"
+                                style="transform: translate(10px, -14px); display: flex;"></ngb-timepicker>
+                <i class="fa fa-clock-o"
+                   style="align-self: center; padding-left: 10px; font-size: 25px; display: flex; transform: translate(160px, -83px);"
+                   size="small"></i>
             </div>
         </div>
     </div>
-        <div class="alert alert-info text-uppercase font-weight-bold" role="alert">Il mezzo {{partenza?.mezzo.descrizione}} {{partenza?.mezzo.genere}} sarà annullato alle {{time.hour <= 9 ? '0' + time.hour : time.hour}}:{{time.minute <= 9 ? '0' + time.minute : time.minute}}. </div>
+    <div class="alert alert-info text-uppercase font-weight-bold mb-0" role="alert">Il
+        mezzo {{partenza?.mezzo.descrizione}} {{partenza?.mezzo.genere}} sarà annullato
+        alle {{time.hour <= 9 ? '0' + time.hour : time.hour}}:{{time.minute <= 9 ? '0' + time.minute : time.minute}}.
+    </div>
 </div>
 <div class="modal-footer">
     <button type="button" class="btn btn-lg btn-secondary btn-no-hover" (click)="closeModal('ko')">

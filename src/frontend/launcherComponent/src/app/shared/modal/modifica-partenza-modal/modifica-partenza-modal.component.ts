@@ -18,6 +18,7 @@ import { ModificaPartenza } from '../../interface/modifica-partenza.interface';
 import { ModificaPartenzaService } from '../../../core/service/modifica-partenza/modifica-partenza.service';
 import { Mezzo } from '../../model/mezzo.model';
 import { Squadra } from '../../model/squadra.model';
+import {SintesiRichiesta} from '../../model/sintesi-richiesta.model';
 
 
 @Component({
@@ -35,6 +36,7 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
     operatore: string;
     sede: string;
     partenza: Partenza;
+    richiesta: SintesiRichiesta;
     idRichiesta: string;
     codRichiesta: string;
     public time = { hour: 13, minute: 30, second: 30 };
@@ -231,7 +233,6 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
             switch (res.status) {
                 case 'ok' :
                     const nuovaPartenza = res.result;
-                    const d = new Date();
                     this.valid = true;
                     this.inSostituzione = true;
                     this.hideBox = false;

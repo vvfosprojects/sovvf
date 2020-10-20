@@ -17,5 +17,6 @@ namespace SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Personale
         /// <param name="codSede">di default null</param>
         /// <returns>La persona fisica</returns>
         Task<PersonaleVVF> Get(string codiceFiscale, string codSede = null);
+        Task<List<PersonaleVVF>> Get(string[] codiceFiscale, string[] codSede = null);
     }
 }
