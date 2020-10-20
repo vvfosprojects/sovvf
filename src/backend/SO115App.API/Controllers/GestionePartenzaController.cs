@@ -5,10 +5,12 @@ using CQRS.Commands;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SO115App.Models.Classi.Composizione;
+using SO115App.Models.Classi.SostituzionePartenza;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AggiornaStatoMezzo;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.AnnullaPartenza;
 using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.ModificaPartenza;
+using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.SostituzionePartenza;
 
 namespace SO115App.API.Controllers
 {
@@ -20,15 +22,18 @@ namespace SO115App.API.Controllers
         private readonly ICommandHandler<AggiornaStatoMezzoCommand> _addhandler;
         private readonly ICommandHandler<AnnullaPartenzaCommand> _annullaPartenzahandler;
         private readonly ICommandHandler<ModificaPartenzaCommand> _modificaPartenzahandler;
+        private readonly ICommandHandler<SostituzionePartenzaCommand> _sostituzionePartenzahandler;
 
         public GestionePartenzaController(
-            ICommandHandler<AggiornaStatoMezzoCommand> Addhandler, 
+            ICommandHandler<AggiornaStatoMezzoCommand> Addhandler,
             ICommandHandler<AnnullaPartenzaCommand> AnnullaPartenzahandler,
-            ICommandHandler<ModificaPartenzaCommand> ModificaPartenzahandler)
+            ICommandHandler<ModificaPartenzaCommand> ModificaPartenzahandler,
+            ICommandHandler<SostituzionePartenzaCommand> SostituzionePartenzahandler)
         {
             _addhandler = Addhandler;
             _annullaPartenzahandler = AnnullaPartenzahandler;
             _modificaPartenzahandler = ModificaPartenzahandler;
+            _sostituzionePartenzahandler = SostituzionePartenzahandler;
         }
 
         [HttpPost("AggiornaPartenza")]
@@ -110,6 +115,31 @@ namespace SO115App.API.Controllers
             try
             {
                 _modificaPartenzahandler.Handle(command);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                    return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
+                else if (ex.Message.Contains(Costanti.MezzoErroreCambioStatoRichiestaChiusa))
+                    return StatusCode(403, new { message = Costanti.MezzoErroreCambioStatoRichiestaChiusa });
+                else
+                    return BadRequest(new { message = ex.Message.Replace("\r\n", ". ") });
+            }
+        }
+
+        [HttpPost("SostituzionePartenza")]
+        public async Task<IActionResult> SostituzionePartenza([FromBody] SostituzioneDTO partenzeDaSostituire)
+        {
+            var command = new SostituzionePartenzaCommand()
+            {
+                sostituzione = partenzeDaSostituire
+            };
+
+            try
+            {
+                _sostituzionePartenzahandler.Handle(command);
 
                 return Ok();
             }

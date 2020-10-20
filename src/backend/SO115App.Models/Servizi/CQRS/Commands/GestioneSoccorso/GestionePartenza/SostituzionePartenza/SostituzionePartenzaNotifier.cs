@@ -1,4 +1,5 @@
 ﻿using CQRS.Commands.Notifiers;
+using SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.ModificaPartenza;
 using SO115App.Models.Servizi.Infrastruttura.Notification.GestionePartenza;
 
 namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenza.SostituzionePartenza
@@ -11,7 +12,14 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 
         public void Notify(SostituzionePartenzaCommand command)
         {
-            //_notifier.SendNotification(command);
+            var modificaPartenza = new ModificaPartenzaCommand()
+            {
+                CodSede = command.Richiesta.CodSOCompetente,
+                IdOperatore = command.sostituzione.idOperatore,
+                Richiesta = command.Richiesta
+            };
+
+            _notifier.SendNotification(modificaPartenza);
         }
     }
 }
