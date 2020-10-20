@@ -6,7 +6,7 @@ import { AllTrueBoxMezzi, AllTrueBoxMezziPresenti, UndoAllBoxes } from '../store
 import { MezziInServizioState } from '../store/states/mezzi-in-servizio/mezzi-in-servizio.state';
 import { Observable, Subscription } from 'rxjs';
 import { MezzoActionInterface } from 'src/app/shared/interface/mezzo-action.interface';
-import { ActionMezzo, SetRichiestaById } from '../store/actions/richieste/richieste.actions';
+import { ActionMezzo, GetListaRichieste, SetRichiestaById } from '../store/actions/richieste/richieste.actions';
 import { RichiesteState } from '../store/states/richieste/richieste.state';
 import { EventiRichiestaComponent } from '../eventi/eventi-richiesta.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -27,6 +27,7 @@ import { RicercaFilterbarState } from '../store/states/filterbar/ricerca-filterb
 import { ClearRicercaFilterbar } from '../store/actions/filterbar/ricerca-richieste.actions';
 import { PaginationState } from '../../../shared/store/states/pagination/pagination.state';
 import { CleaRicercaTrasferimentoChiamata } from '../../trasferimento-chiamata/store/actions/ricerca-trasferimento-chiamata/ricerca-trasferimento-chiamata.actions';
+import { PatchPagination } from '../../../shared/store/actions/pagination/pagination.actions';
 
 @Component({
     selector: 'app-mezzi-in-servizio',
@@ -77,10 +78,10 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
     ngOnDestroy(): void {
         this.subscriptions.unsubscribe();
         this.store.dispatch([
-            new ClearFiltriMezziInServizio(),
+            new GetListaRichieste(),
+            new ClearFiltriMezziInServizio(true),
             new ClearRicercaFilterbar(),
-            new UndoAllBoxes(this.prevStateBoxClick),
-            new CleaRicercaTrasferimentoChiamata()
+            new UndoAllBoxes(this.prevStateBoxClick)
         ]);
         if (isDevMode()) {
             console.log('Componente Mezzo in Servizio distrutto');

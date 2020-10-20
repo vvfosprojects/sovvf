@@ -20,7 +20,6 @@ import {
     ClearFiltriMezziInServizio,
     ClearMezzoInServizioHover,
     ClearMezzoInServizioSelezionato,
-    FilterMezziInServizio,
     GetListaMezziInServizio,
     SetFiltroMezziInServizio,
     SetMezziInServizio,
@@ -37,6 +36,7 @@ import { FiltersInterface } from '../../../../../shared/interface/filters.interf
 import { PaginationInterface } from '../../../../../shared/interface/pagination.interface';
 import { ImpostazioniState } from '../../../../../shared/store/states/impostazioni/impostazioni.state';
 import { RicercaFilterbarState } from '../filterbar/ricerca-filterbar.state';
+import { ViewComponentState } from '../view/view.state';
 
 export interface MezziInServizioStateModel {
     mezziInServizio: MezzoInServizio[];
@@ -120,6 +120,7 @@ export class MezziInServizioState {
         const ricerca = this.store.selectSnapshot(RicercaFilterbarState.ricerca);
         const statiMezzo = state.filtriMezziInServizio.filter((f: VoceFiltro) => f.selezionato === true).map((f: VoceFiltro) => f.descrizione);
         const boxesVisibili = this.store.selectSnapshot(ImpostazioniState.boxAttivi);
+        const mezziInServizioActive = this.store.selectSnapshot(ViewComponentState.mezziInServizio);
         const filters = {
             search: ricerca,
             statiMezzo: statiMezzo && statiMezzo.length > 0 ? statiMezzo : null
@@ -129,8 +130,12 @@ export class MezziInServizioState {
             pageSize: boxesVisibili ? 10 : 12
         } as PaginationInterface;
         this.mezziInServizioService.getMezziInServizio(filters, pagination).subscribe((response: ResponseInterface) => {
-                dispatch(new SetMezziInServizio(response.dataArray));
-                dispatch(new PatchPagination(response.pagination));
+                if (mezziInServizioActive) {
+                    dispatch([
+                        new SetMezziInServizio(response.dataArray),
+                        new PatchPagination(response.pagination)
+                    ]);
+                }
                 dispatch(new StopLoadingMezziInServizio());
             },
             error => dispatch(new StopLoadingActionMezzo())
@@ -143,7 +148,6 @@ export class MezziInServizioState {
             mezziInServizio: action.mezzi,
             mezziInServizioFiltered: action.mezzi
         });
-        dispatch(new FilterMezziInServizio());
     }
 
     @Action(UpdateMezzoInServizio)
@@ -155,27 +159,7 @@ export class MezziInServizioState {
                 }
             )
         );
-        dispatch(new FilterMezziInServizio());
-    }
-
-    @Action(FilterMezziInServizio)
-    filterMezziInServizio({ getState, patchState }: StateContext<MezziInServizioStateModel>): void {
-        const state = getState();
-        const mezziInServizio = makeCopy(state.mezziInServizio) as MezzoInServizio[];
-        if (mezziInServizio && mezziInServizio.length > 0) {
-            const filtriMezziInServizio = makeCopy(state.filtriMezziInServizio) as VoceFiltro[];
-            const descFiltriMezziInServizio = filtriMezziInServizio.filter(f => f.selezionato).map(f => f.descrizione);
-            const newArrayMezzi = mezziInServizio.filter((m: MezzoInServizio) => descFiltriMezziInServizio.includes(m.mezzo.mezzo.stato));
-            if (filtriMezziInServizio.filter(f => f.selezionato).length > 0) {
-                patchState({
-                    mezziInServizioFiltered: newArrayMezzi
-                });
-            } else {
-                patchState({
-                    mezziInServizioFiltered: mezziInServizio
-                });
-            }
-        }
+        dispatch(new GetListaMezziInServizio());
     }
 
     @Action(SetFiltroMezziInServizio)
@@ -186,20 +170,20 @@ export class MezziInServizioState {
         patchState({
             filtriMezziInServizio: _setFiltroSelezionato(filtriMezziInServizio, filtro)
         });
-        // dispatch(new FilterMezziInServizio());
         dispatch(new GetListaMezziInServizio());
     }
 
     @Action(ClearFiltriMezziInServizio)
-    clearFiltriMezziInServizio({ getState, patchState, dispatch }: StateContext<MezziInServizioStateModel>): void {
+    clearFiltriMezziInServizio({ getState, patchState, dispatch }: StateContext<MezziInServizioStateModel>, action: ClearFiltriMezziInServizio): void {
         const state = getState();
         const filtriMezziInServizio = makeCopy(state.filtriMezziInServizio);
         patchState({
             ...state,
             filtriMezziInServizio: _resetFiltriSelezionati(filtriMezziInServizio)
         });
-        // dispatch(new FilterMezziInServizio());
-        dispatch(new GetListaMezziInServizio());
+        if (!action.preventReloadLista) {
+            dispatch(new GetListaMezziInServizio());
+        }
     }
 
     @Action(SetMezzoInServizioHover)

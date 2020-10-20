@@ -1,7 +1,7 @@
 <div class="row mt-2 px-0">
+    <app-partial-loader *ngIf="loadingMezziInServizio$ | async"></app-partial-loader>
     <div class="col-12 border-bottom border-light shadown-sm scroll-y"
          [ngClass]="{'m-h-705-mezziinservizio': boxAttivi, 'm-h-805-mezziinservizio': !boxAttivi}">
-        <app-partial-loader *ngIf="loadingMezziInServizio$ | async"></app-partial-loader>
         <div *ngIf="ricerca" class="col-12 col-md-8 mx-auto pl-4">
             <app-risultati-ricerca [ricerca]="ricerca"></app-risultati-ricerca>
         </div>

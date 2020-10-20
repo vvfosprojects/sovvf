@@ -22,10 +22,6 @@ export class UpdateMezzoInServizio {
     }
 }
 
-export class FilterMezziInServizio {
-    static readonly type = '[MezziInServizio] Filter Mezzi In Servizio';
-}
-
 export class SetFiltroMezziInServizio {
     static readonly type = '[MezziInServizio] Set Filtro Mezzi In Servizio';
 
@@ -35,6 +31,9 @@ export class SetFiltroMezziInServizio {
 
 export class ClearFiltriMezziInServizio {
     static readonly type = '[MezziInServizio] Clear Filtri Mezzi In Servizio';
+
+    constructor(public preventReloadLista?: boolean) {
+    }
 }
 
 export class SetMezzoInServizioHover {

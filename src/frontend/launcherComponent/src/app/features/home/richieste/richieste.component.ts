@@ -34,6 +34,7 @@ import {
     ActionMezzo,
     ActionRichiesta,
     AllertaSede,
+    ClearRichieste,
     EliminaPartenzaRichiesta,
     GetListaRichieste,
     ModificaStatoFonogramma
@@ -107,6 +108,7 @@ export class RichiesteComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
+        this.store.dispatch(new GetListaRichieste());
         this.getRichiestaFissata();
         this.getRichiestaFissataEspanso();
         this.getRichiestaHover();
@@ -121,7 +123,10 @@ export class RichiesteComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(): void {
         this.subscription.unsubscribe();
-        this.store.dispatch(new ResetFiltriSelezionatiRichieste({ preventGetList: true }));
+        this.store.dispatch([
+            new ResetFiltriSelezionatiRichieste({ preventGetList: true }),
+            new ClearRichieste()
+        ]);
         if (isDevMode()) {
             console.log('Componente Richieste distrutto');
         }
