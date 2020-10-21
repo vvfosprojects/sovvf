@@ -183,7 +183,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
                 targa = ((RevocaPerRiassegnazione)evento).CodiceMezzo;
             }
 
-            return targa;
+            return targa.Contains('.') ? targa.Split('.')[1] : targa;
         }
 
         private string MapEvento(Evento evento)
