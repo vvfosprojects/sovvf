@@ -54,7 +54,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 
             _updateStatoPartenze.Update(new AggiornaStatoMezzoCommand()
             {
-                CodiceSede = command.CodiceSede,
+                CodiciSede = command.CodiciSede,
                 CodRichiesta = richiesta.Codice,
                 Richiesta = richiesta,
                 IdUtente = command.IdUtente,

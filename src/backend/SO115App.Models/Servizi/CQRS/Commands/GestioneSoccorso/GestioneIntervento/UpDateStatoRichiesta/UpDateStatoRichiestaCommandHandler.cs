@@ -61,7 +61,7 @@ namespace DomainModel.CQRS.Commands.UpDateStatoRichiesta
                             composizione.Partenza.Mezzo.IdRichiesta = null;
 
                             AggiornaStatoMezzoCommand statoMezzo = new AggiornaStatoMezzoCommand();
-                            statoMezzo.CodiceSede = command.CodiceSede;
+                            statoMezzo.CodiciSede = new string[] { command.CodiceSede };
                             statoMezzo.IdMezzo = composizione.Partenza.Mezzo.Codice;
                             statoMezzo.Richiesta = richiesta;
                             statoMezzo.StatoMezzo = Costanti.MezzoInRientro;

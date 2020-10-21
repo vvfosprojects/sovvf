@@ -33,7 +33,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 
                 _updateStatoPartenze.Update(new AggiornaStatoMezzoCommand()
                 {
-                    CodiceSede = command.CodSede,
+                    CodiciSede = new string[] { command.CodSede },
                     CodRichiesta = Richiesta.CodRichiesta,
                     Richiesta = Richiesta,
                     IdUtente = command.IdOperatore,
@@ -58,11 +58,9 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 foreach (var squadra in nuovaPartenza.Partenza.Squadre)
                     squadra.Stato = MappaStatoSquadraDaStatoMezzo.MappaStato(nuovaPartenza.Partenza.Mezzo.Stato);
 
-                //Richiesta.Partenze.Add(nuovaPartenza);
-
                 _updateStatoPartenze.Update(new AggiornaStatoMezzoCommand()
                 {
-                    CodiceSede = command.CodSede,
+                    CodiciSede = new string[] { command.CodSede },
                     CodRichiesta = Richiesta.CodRichiesta,
                     Richiesta = Richiesta,
                     IdUtente = command.IdOperatore,
@@ -85,7 +83,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 
                     _updateStatoPartenze.Update(new AggiornaStatoMezzoCommand()
                     {
-                        CodiceSede = command.CodSede,
+                        CodiciSede = new string[] { command.CodSede },
                         CodRichiesta = Richiesta.CodRichiesta,
                         Richiesta = Richiesta,
                         IdUtente = command.IdOperatore,

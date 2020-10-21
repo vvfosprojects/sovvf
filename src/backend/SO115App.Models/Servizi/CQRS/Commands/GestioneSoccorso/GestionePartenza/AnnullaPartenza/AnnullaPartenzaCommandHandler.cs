@@ -75,7 +75,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
             _upDateRichiestaAssistenza.UpDate(command.Richiesta);
 
             AggiornaStatoMezzoCommand commandStatoMezzo = new AggiornaStatoMezzoCommand();
-            commandStatoMezzo.CodiceSede = PartenzaToDelete.Partenza.Mezzo.Distaccamento.Codice;
+            commandStatoMezzo.CodiciSede = new string[] { PartenzaToDelete.Partenza.Mezzo.Distaccamento.Codice };
             commandStatoMezzo.IdMezzo = command.TargaMezzo;
             commandStatoMezzo.StatoMezzo = Costanti.MezzoInSede;
             commandStatoMezzo.Richiesta = command.Richiesta;

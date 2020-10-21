@@ -84,11 +84,11 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneMezziInServizio.Lista
                         return true;
                 }).ToList();
 
-            return new ListaMezziInServizioResult()
+            if (query.Pagination != null) return new ListaMezziInServizioResult()
             {
                 DataArray = listaMezzi
-                    .Skip(query.Pagination.PageSize * (query.Pagination.Page - 1))
-                    .Take(query.Pagination.PageSize).ToList(),
+                     .Skip(query.Pagination.PageSize * (query.Pagination.Page - 1))
+                     .Take(query.Pagination.PageSize).ToList(),
 
                 Pagination = new SO115App.Models.Classi.Condivise.Paginazione()
                 {
@@ -96,6 +96,10 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneMezziInServizio.Lista
                     PageSize = query.Pagination.PageSize,
                     TotalItems = listaMezzi.Count,
                 }
+            };
+            else return new ListaMezziInServizioResult()
+            {
+                DataArray = listaMezzi
             };
         }
     }
