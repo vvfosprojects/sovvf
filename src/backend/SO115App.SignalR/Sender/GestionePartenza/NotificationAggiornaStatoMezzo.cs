@@ -111,7 +111,7 @@ namespace SO115App.SignalR.Sender.GestionePartenza
                     {
                         CodiciSede = new string[] { sede }
                     };
-                    var boxInterventi = _boxRichiesteHandler.Handle(boxRichiesteQuery).BoxRichieste; 
+                    var boxInterventi = _boxRichiesteHandler.Handle(boxRichiesteQuery).BoxRichieste;
                     _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxInterventi", boxInterventi);
                 });
 
