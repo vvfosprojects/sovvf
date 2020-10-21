@@ -232,9 +232,13 @@ namespace SO115App.Persistence.MongoDB
                 }
             }
 
+            //ORDINAMENTO RICHIESTE
             return listaSistesiRichieste
-                    .OrderByDescending(x => x.Stato == Costanti.Chiamata)
-                    .ThenByDescending(x => x.Chiusa == false)
+                    .OrderByDescending(c => c.Stato.Equals(Costanti.Chiamata) && c.Partenze.Count == 0)
+                    .ThenByDescending(c => c.Stato.Equals(Costanti.Chiamata) && c.Partenze.Count > 0)
+                    .ThenByDescending(c => c.Stato.Equals(Costanti.RichiestaPresidiata))
+                    .ThenByDescending(c => c.Stato.Equals(Costanti.RichiestaAssegnata))
+                    //.ThenByDescending(x => x.Chiusa == false)
                     .ThenByDescending(x => x.PrioritaRichiesta)
                     .ThenBy(x => x.IstanteRicezioneRichiesta)
                     .ToList();
