@@ -236,9 +236,9 @@ namespace SO115App.Persistence.MongoDB
             return listaSistesiRichieste
                     .OrderByDescending(c => c.Stato.Equals(Costanti.Chiamata) && c.Partenze.Count == 0)
                     .ThenByDescending(c => c.Stato.Equals(Costanti.Chiamata) && c.Partenze.Count > 0)
-                    .ThenByDescending(c => c.Stato.Equals(Costanti.RichiestaPresidiata))
                     .ThenByDescending(c => c.Stato.Equals(Costanti.RichiestaAssegnata))
-                    //.ThenByDescending(x => x.Chiusa == false)
+                    .ThenByDescending(c => c.Stato.Equals(Costanti.RichiestaPresidiata))
+                    .ThenByDescending(c => c.Stato.Equals(Costanti.RichiestaChiusa))
                     .ThenByDescending(x => x.PrioritaRichiesta)
                     .ThenBy(x => x.IstanteRicezioneRichiesta)
                     .ToList();
