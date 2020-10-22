@@ -12,11 +12,14 @@ import {
 import { insertItem, patch, removeItem } from '@ngxs/store/operators';
 import { ListaTipologicheMezzi } from '../../../../features/home/composizione-partenza/interface/filtri/lista-filtri-composizione-interface';
 import { Injectable } from '@angular/core';
-import {ComposizionePartenzaState} from '../../../../features/home/store/states/composizione-partenza/composizione-partenza.state';
+import { ComposizionePartenzaState } from '../../../../features/home/store/states/composizione-partenza/composizione-partenza.state';
 import { GetListaComposizioneVeloce } from '../../../../features/home/store/actions/composizione-partenza/composizione-veloce.actions';
+import { DescrizioneTipologicaMezzo } from '../../../../features/home/composizione-partenza/interface/filtri/descrizione-filtro-composizione-interface';
+import { makeCopy } from '../../../helper/function';
 
 export interface FiltriComposizioneStateStateModel {
     filtri: ListaTipologicheMezzi;
+    turno: string;
     codiceDistaccamento: any[];
     tipoMezzo: any[];
     statoMezzo: any[];
@@ -24,10 +27,12 @@ export interface FiltriComposizioneStateStateModel {
 
 export const FiltriComposizioneStateDefaults: FiltriComposizioneStateStateModel = {
     filtri: {
+        turni: [],
         distaccamenti: [],
         generiMezzi: [],
         stati: []
     },
+    turno: undefined,
     codiceDistaccamento: [],
     tipoMezzo: [],
     statoMezzo: [],
@@ -48,6 +53,7 @@ export class FiltriComposizioneState {
     @Selector()
     static filtriSelezionati(state: FiltriComposizioneStateStateModel): ComposizioneFilterbar {
         return {
+            Turno: state.turno,
             CodiceDistaccamento: state.codiceDistaccamento,
             TipoMezzo: state.tipoMezzo,
             StatoMezzo: state.statoMezzo
@@ -66,20 +72,35 @@ export class FiltriComposizioneState {
     @Action(SetFiltriComposizione)
     setFiltriComposizione({ patchState, dispatch }: StateContext<FiltriComposizioneStateStateModel>): void {
         const composizioneMode = this.store.selectSnapshot(x => x.composizionePartenza.composizioneMode);
-        if (composizioneMode === Composizione.Avanzata &&  this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione)) {
+        if (composizioneMode === Composizione.Avanzata && this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione)) {
             dispatch(new GetListeComposizioneAvanzata());
         }
         if (composizioneMode === Composizione.Veloce) {
             dispatch(new GetListaComposizioneVeloce());
         }
-        const filtri = this.store.selectSnapshot(state => state.tipologicheMezzi.tipologiche);
-        patchState({ filtri });
+        const filtri = makeCopy(this.store.selectSnapshot(state => state.tipologicheMezzi.tipologiche));
+        filtri.distaccamenti = filtri.distaccamenti.map((d: DescrizioneTipologicaMezzo) => {
+            d.descDistaccamento = d.descDistaccamento.replace('Distaccamento di ', '');
+            d.descDistaccamento = d.descDistaccamento.replace('Distaccamento ', '');
+            return d;
+        });
+        filtri.turni = ['A', 'B', 'C', 'D'];
+        patchState({
+            filtri
+        });
     }
 
     @Action(AddFiltroSelezionatoComposizione)
     addFiltroSelezionatoComposizione(ctx: StateContext<FiltriComposizioneStateStateModel>, action: AddFiltroSelezionatoComposizione): void {
         console.log('Filtro selezionato => #ID = ' + action.id + ' - TIPO = ' + action.tipoFiltro);
         switch (action.tipoFiltro) {
+            case 'turno':
+                ctx.setState(
+                    patch({
+                        turno: action.id
+                    })
+                );
+                break;
             case 'codiceDistaccamento':
                 ctx.setState(
                     patch({
@@ -149,24 +170,31 @@ export class FiltriComposizioneState {
     @Action(ResetFiltriComposizione)
     resetFiltriComposizione(ctx: StateContext<FiltriComposizioneStateStateModel>, action: ResetFiltriComposizione): void {
         switch (action.tipoFiltro) {
+            case 'turno':
+                ctx.setState(
+                    patch({
+                        turno: FiltriComposizioneStateDefaults.turno
+                    })
+                );
+                break;
             case 'codiceDistaccamento':
                 ctx.setState(
                     patch({
-                        codiceDistaccamento: []
+                        codiceDistaccamento: FiltriComposizioneStateDefaults.codiceDistaccamento
                     })
                 );
                 break;
             case 'tipoMezzo':
                 ctx.setState(
                     patch({
-                        tipoMezzo: []
+                        tipoMezzo: FiltriComposizioneStateDefaults.tipoMezzo
                     })
                 );
                 break;
             case 'statoMezzo':
                 ctx.setState(
                     patch({
-                        statoMezzo: []
+                        statoMezzo: FiltriComposizioneStateDefaults.statoMezzo
                     })
                 );
                 break;

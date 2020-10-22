@@ -14,7 +14,7 @@ import { ComposizioneVeloceState } from '../store/states/composizione-partenza/c
 import { ComposizioneAvanzataState } from '../store/states/composizione-partenza/composizione-avanzata.state';
 import { ComposizionePartenzaState } from '../store/states/composizione-partenza/composizione-partenza.state';
 import { BoxPartenzaState } from '../store/states/composizione-partenza/box-partenza.state';
-import { ComposizioneButtonsComponent } from './shared/composizione-buttons/composizione-buttons.component';
+import { ComposizioneConfirmButtonComponent } from './shared/composizione-buttons/composizione-confirm-button.component';
 import { SganciamentoMezzoModalComponent } from './shared/sganciamento-mezzo-modal/sganciamento-mezzo-modal.component';
 import { FormsModule } from '@angular/forms';
 import { FilterPipeModule } from 'ngx-filter-pipe';
@@ -26,7 +26,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
         FasterComponent,
         ComposizioneAvanzataComponent,
         BoxNuovaPartenzaComponent,
-        ComposizioneButtonsComponent,
+        ComposizioneConfirmButtonComponent,
         SganciamentoMezzoModalComponent
     ],
     imports: [

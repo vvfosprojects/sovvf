@@ -55,8 +55,6 @@ import { ResetPaginationComposizionePartenza } from '../../../../shared/store/ac
 export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
 
     @Input() richiesta: SintesiRichiesta;
-    @Input() disablePrenota: boolean;
-    @Input() prenotato: boolean;
     @Input() loadingInvioPartenza: boolean;
     @Input() boxAttivi: boolean;
 
@@ -121,7 +119,6 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
     @Output() centraMappa = new EventEmitter();
     @Output() sendDirection = new EventEmitter<DirectionInterface>();
     @Output() clearDirection = new EventEmitter();
-    @Output() prenota = new EventEmitter<boolean>();
     @Output() sganciamento = new EventEmitter<SganciamentoInterface>();
     @Output() changeRicercaSquadre = new EventEmitter<string>();
     @Output() changeRicercaMezzi = new EventEmitter<string>();

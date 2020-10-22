@@ -31,6 +31,7 @@ import { FiltriComposizioneState } from '../../../shared/store/states/filtri-com
 import { SetRicercaMezziComposizione, SetRicercaSquadreComposizione } from '../../../shared/store/actions/ricerca-composizione/ricerca-composizione.actions';
 import { GetListeComposizioneAvanzata } from '../store/actions/composizione-partenza/composizione-avanzata.actions';
 import { PatchPaginationComposizionePartenza } from '../../../shared/store/actions/pagination-composizione-partenza/pagination-composizione-partenza.actions';
+import { ListaTipologicheMezzi } from './interface/filtri/lista-filtri-composizione-interface';
 
 @Component({
     selector: 'app-composizione-partenza',
@@ -43,7 +44,7 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
     @Input() boxAttivi: boolean;
 
     @Select(ComposizioneVeloceState.preAccoppiati) preAccoppiati$: Observable<BoxPartenza[]>;
-    @Select(FiltriComposizioneState.filtri) filtri$: Observable<any>;
+    @Select(FiltriComposizioneState.filtri) filtri$: Observable<ListaTipologicheMezzi>;
     @Select(ComposizionePartenzaState.richiestaComposizione) richiestaComposizione$: Observable<SintesiRichiesta>;
     @Select(ComposizionePartenzaState.loadingInvioPartenza) loadingInvioPartenza$: Observable<boolean>;
     @Select(ComposizionePartenzaState.loadingListe) loadingListe$: Observable<boolean>;

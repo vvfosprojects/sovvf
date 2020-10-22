@@ -1,5 +1,11 @@
-<button class="btn btn-block btn-outline-secondary app-shadow px-2" (click)="changeMode()" [disabled]="disableTasto">
-    <!-- <span class="mr-2">Passa a:</span> -->
-    <span *ngIf="compPartenzaMode === Composizione.Veloce">Modalità Avanzata</span>
-    <span *ngIf="compPartenzaMode === Composizione.Avanzata">Modalità Rapida</span>
+<button class="btn btn-block btn-outline-secondary btn-no-hover" (click)="changeMode()" [disabled]="disableTasto"
+        [ngbTooltip]="tooltipCompPartenzaMode">
+    <i class="fa"
+       [class.fa-bolt]="compPartenzaMode === Composizione.Avanzata"
+       [class.fa-clone]="compPartenzaMode === Composizione.Veloce">
+    </i>
 </button>
+<ng-template #tooltipCompPartenzaMode>
+    <span *ngIf="compPartenzaMode === Composizione.Veloce">Passa a: Modalità Avanzata</span>
+    <span *ngIf="compPartenzaMode === Composizione.Avanzata">Passa a: Modalità Rapida</span>
+</ng-template>

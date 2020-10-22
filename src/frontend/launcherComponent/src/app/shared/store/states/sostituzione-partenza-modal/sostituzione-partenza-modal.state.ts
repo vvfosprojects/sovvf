@@ -22,7 +22,6 @@ import { PatchPaginationComposizionePartenza } from '../../actions/pagination-co
 import { mezzoComposizioneBusy } from '../../../helper/composizione-functions';
 import { RemoveBoxPartenza } from '../../../../features/home/store/actions/composizione-partenza/box-partenza.actions';
 import { SquadraComposizione } from '../../../interface/squadra-composizione-interface';
-import { ComposizionePartenzaState } from '../../../../features/home/store/states/composizione-partenza/composizione-partenza.state';
 import { SetListeComposizioneAvanzata } from '../../../../features/home/store/actions/composizione-partenza/composizione-avanzata.actions';
 
 export interface SostituzionePartenzaModel {
@@ -106,6 +105,7 @@ export class SostituzionePartenzaModalState {
             },
             mezzo: mezzoSelezionato ? mezzoSelezionato : null,
             squadre: squadreSelezionate && squadreSelezionate.length > 0 ? squadreSelezionate : null,
+            turno: this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).Turno ? this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).Turno : null,
             codiceDistaccamento: this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).CodiceDistaccamento.length > 0 ? this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).CodiceDistaccamento : null,
             statoMezzo: this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).StatoMezzo.length > 0 ? this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).StatoMezzo : null,
             tipoMezzo: this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).TipoMezzo.length > 0 ? this.store.selectSnapshot(FiltriComposizioneState.filtriSelezionati).TipoMezzo : null,
