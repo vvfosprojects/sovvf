@@ -25,6 +25,7 @@ namespace SO115App.ExternalAPI.Fake.Classi.Utility
                     CodFiscale = personaUC.CodiceFiscale,
                     CodSede = personaUC.Sede.Id,
                     DescSede = personaUC.Sede.Descrizione,
+                    Turno = personaUC.Turno,
                     Nominativo = $"{personaUC.Cognome}.{personaUC.Nome}"
                 });
             }

@@ -78,5 +78,10 @@ namespace SO115App.ExternalAPI.Fake.Classi.DTOFake
         ///   descrive il numero di telefono del componente
         /// </summary>
         public string Telefono { get; set; }
+
+        /// <summary>
+        ///   descrive il turno del componente
+        /// </summary>
+        public string Turno { get; set; }
     }
 }
