@@ -42,8 +42,8 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSchedeNue.GetSchedeFiltra
             string codiceFiscale = null;
             //if (query.Filters.CercaPerOperatore == true)
             //{
-                var utente = _getUtenteBy.GetUtenteByCodice(query.IdUtente);
-                codiceFiscale = utente.CodiceFiscale;
+            //var utente = _getUtenteBy.GetUtenteByCodice(query.IdUtente);
+            //codiceFiscale = utente.CodiceFiscale;
             //}
 
             var listaSchedeContatto = new List<SchedaContatto>();
