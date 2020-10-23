@@ -53,9 +53,9 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Nue
             var ListaSchede = _getSchede.GetSchede(codiceSede);//json
             var ListaSchedeRaggruppate = _context.SchedeContattoCollection.Find(Builders<SchedaContatto>.Filter.Empty).ToList();
 
-            List<SchedaContatto> ListaSchedefiltrata = new List<SchedaContatto>();
+            var ListaSchedefiltrata = new List<SchedaContatto>();
 
-            foreach (SchedaContatto scheda in ListaSchede)
+            foreach (var scheda in ListaSchede)
             {
                 if (!ListaSchedeRaggruppate.Exists(x => x.CodiceScheda.Equals(scheda.CodiceScheda)))
                 {

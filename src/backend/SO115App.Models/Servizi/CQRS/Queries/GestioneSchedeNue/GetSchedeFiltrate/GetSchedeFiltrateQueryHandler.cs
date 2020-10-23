@@ -18,8 +18,10 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Queries;
+using SO115App.Models.Classi.NUE;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSchedeNue.GetSchedeFiltrate
@@ -38,17 +40,31 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSchedeNue.GetSchedeFiltra
         public GetSchedeFiltrateResult Handle(GetSchedeFiltrateQuery query)
         {
             string codiceFiscale = null;
-            if (query.Filtro.CercaPerOperatore == true)
-            {
-                var utente = _getUtenteBy.GetUtenteByCodice(query.Filtro.IdUtente);
+            //if (query.Filters.CercaPerOperatore == true)
+            //{
+                var utente = _getUtenteBy.GetUtenteByCodice(query.IdUtente);
                 codiceFiscale = utente.CodiceFiscale;
-            }
+            //}
 
-            var listaSchedeContatto = _getSchedeFiltrate.Get(query.Filtro.TestoLibero, query.Filtro.Gestita, codiceFiscale, query.Filtro.RangeVisualizzazione, query.CodiceSede).OrderByDescending(x => !x.Gestita).ThenByDescending(x => x.Priorita).ThenBy(x => x.DataInserimento).ToList();
+            var listaSchedeContatto = new List<SchedaContatto>();
+
+            query.CodiciSede.ToList().ForEach(codice => 
+                listaSchedeContatto.AddRange(_getSchedeFiltrate.Get(query.Filters.Search, query.Filters.Gestita, codiceFiscale, query.Filters.RangeVisualizzazione, codice)));
+
+            var result = listaSchedeContatto.OrderByDescending(x => !x.Gestita).ThenByDescending(x => x.Priorita).ThenBy(x => x.DataInserimento).ToList();
 
             return new GetSchedeFiltrateResult()
             {
-                SchedeContatto = listaSchedeContatto
+                DataArray = result
+                    .Skip((query.Pagination.Page - 1) * query.Pagination.PageSize)
+                    .Take(query.Pagination.PageSize).ToList(),
+
+                Pagination = new Classi.Condivise.Paginazione()
+                {
+                    Page = query.Pagination.Page,
+                    PageSize = query.Pagination.PageSize,
+                    TotalItems = result.Count
+                }
             };
         }
     }
