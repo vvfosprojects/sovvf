@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Store, Select } from '@ngxs/store';
 import { ReducerFilterListeComposizione, RichiestaComposizione } from '../../../features/home/store/actions/composizione-partenza/composizione-partenza.actions';
 import { ComposizionePartenzaState } from '../../../features/home/store/states/composizione-partenza/composizione-partenza.state';
@@ -11,7 +11,8 @@ import { AddFiltroSelezionatoComposizione, ResetFiltriComposizione } from '../..
 import { SintesiRichiesta } from '../../model/sintesi-richiesta.model';
 import { SetMarkerRichiestaSelezionato } from 'src/app/features/home/store/actions/maps/marker.actions';
 import { SostituzionePartenzaModalState } from '../../store/states/sostituzione-partenza-modal/sostituzione-partenza-modal.state';
-import {GetListaMezziSquadre, StartListaComposizioneLoading} from '../../store/actions/sostituzione-partenza/sostituzione-partenza.actions';
+import { GetListaMezziSquadre, StartListaComposizioneLoading } from '../../store/actions/sostituzione-partenza/sostituzione-partenza.actions';
+import { ListaTipologicheMezzi } from '../../../features/home/composizione-partenza/interface/filtri/lista-filtri-composizione-interface';
 
 @Component({
     selector: 'app-filterbar-composizione',
@@ -20,12 +21,15 @@ import {GetListaMezziSquadre, StartListaComposizioneLoading} from '../../store/a
 })
 export class FilterbarComposizioneComponent {
 
-    @Input() filtri: any;
+    @Input() filtri: ListaTipologicheMezzi;
+    @Input() prenotato: any;
     @Input() disableComposizioneMode: boolean;
     @Input() nascondiTornaIndietro: boolean;
     @Input() nascondiCambiaComposizioneMode: boolean;
     @Input() composizionePartenza: boolean;
     @Input() sostituzionePartenza: boolean;
+
+    @Output() confirmPrenota = new EventEmitter<boolean>();
 
     @Select(ViewComponentState.composizioneMode) composizioneMode$: Observable<Composizione>;
 
@@ -39,7 +43,11 @@ export class FilterbarComposizioneComponent {
     addFiltro(event: any, tipo: string): void {
         this.store.dispatch(new StartListaComposizioneLoading());
         if (event) {
-            this.store.dispatch(new AddFiltroSelezionatoComposizione(event.id || event.descrizione, tipo));
+            if (event?.id || event?.descrizione) {
+                this.store.dispatch(new AddFiltroSelezionatoComposizione(event.id || event.descrizione, tipo));
+            } else {
+                this.store.dispatch(new AddFiltroSelezionatoComposizione(event, tipo));
+            }
             this.nuovaPartenza(this.richiesta);
             this.update();
         } else {
@@ -70,6 +78,11 @@ export class FilterbarComposizioneComponent {
 
     _iconaStatiClass(statoMezzo: string): string {
         return iconaStatiClass(statoMezzo);
+    }
+
+    _confirmPrenota(): void {
+        const value = !this.prenotato;
+        this.confirmPrenota.emit(value);
     }
 
     nuovaPartenza(richiesta: SintesiRichiesta): void {
