@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { FiltersInterface } from 'src/app/shared/interface/filters.interface';
+import { FiltersInterface } from 'src/app/shared/interface/filters/filters.interface';
 import { PaginationInterface } from 'src/app/shared/interface/pagination.interface';
 import { Observable } from 'rxjs';
 import { ResponseInterface } from '../../../shared/interface/response.interface';
