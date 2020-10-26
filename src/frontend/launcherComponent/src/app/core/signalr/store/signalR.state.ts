@@ -138,7 +138,7 @@ export class SignalRState implements NgxsOnChanges {
         if (cS) {
           cS = JSON.parse(cS);
         }
-        const codiciSedeAttuali = getState().codiciSede ? getState().codiciSede : cS;
+        const codiciSedeAttuali = cS ? cS : getState().codiciSede;
         const codiciSedeAdd = difference(codiciSede, codiciSedeAttuali);
         const codiciSedeRemove = difference(codiciSedeAttuali, codiciSede);
         console.log('SetCodiceSede', JSON.stringify({
@@ -163,7 +163,7 @@ export class SignalRState implements NgxsOnChanges {
         dispatch(new SetIdUtente(utente.id));
         if (codiciSede && codiciSede.length > 0) {
             let cS: any = sessionStorage.getItem(LSNAME.cacheSedi) ? sessionStorage.getItem(LSNAME.cacheSedi) : codiciSede;
-            if (cS) {
+            if (cS.includes(',')) {
               cS = [cS];
             }
             this.signalR.addToGroup(new SignalRNotification(
