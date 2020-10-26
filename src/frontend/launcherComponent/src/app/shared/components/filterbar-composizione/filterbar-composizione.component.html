@@ -20,12 +20,11 @@
                             [ngbTooltip]="tooltipPrenota"
                             (click)="_confirmPrenota()"
                             [disabled]="disableComposizioneMode">
+                        <i class="fa fa-hand-paper-o mr-1"></i>
                         <span *ngIf="!prenotato">
-                            <i class="fa fa-hand-o-up mr-1"></i>
                             Prenota
                         </span>
                         <span *ngIf="prenotato" class="font-weight-bolder">
-                            <i class="fa fa-hand-o-up mr-1"></i>
                             Prenotata
                         </span>
                         <ng-template #tooltipPrenota>
