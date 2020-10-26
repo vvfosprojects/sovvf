@@ -72,13 +72,13 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
             IGetListaSquadre getListaSquadre,
             IGetMezziUtilizzabili getMezziUtilizzabili,
             IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative,
-            IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> sintesiRichiesteAssistenzaHandler,
+            //IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> sintesiRichiesteAssistenzaHandler,
             IQueryHandler<RubricaQuery, RubricaResult> rubricaQueryHandler)
         {
             _boxMezziHandler = boxMezziHandler;
             _boxPersonaleHandler = boxPersonaleHandler;
             _boxRichiesteHandler = boxRichiesteHandler;
-            _sintesiRichiesteAssistenzaHandler = sintesiRichiesteAssistenzaHandler;
+            //_sintesiRichiesteAssistenzaHandler = sintesiRichiesteAssistenzaHandler;
             _listaChiamateInCorsoMarkerHandler = listaChiamateInCorsoMarkerHandler;
             _centroMappaMarkerHandler = centroMappaMarkerHandler;
             _filtriHandler = filtriHandler;
@@ -116,13 +116,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
                 pinNodi.Add(new PinNodo(figlio.Codice, true));
             }
 
-            //IL TASK SEGUENTE ESEGUE LA PRIMA CHIAMATA ESTERNA DI COMPOSIZIONE MEZZI E SQUADRE AL FINE DI SALVARLI IN CACHE
-            //Task.Factory.StartNew(() => 
-            //{
-            //    _getMezziUtilizzabili.Get(query.CodiceSede.ToList());
-            //    _getListaSquadre.Get(query.CodiceSede.ToList());
-            //});
-
             FiltroRicercaRichiesteAssistenza filtro = new FiltroRicercaRichiesteAssistenza
             {
                 SearchKey = "0",
@@ -143,43 +136,36 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
             else
                 filtri.Distaccamenti = _getDistaccamenti.GetListaDistaccamenti(pinNodiNoDistaccamenti);
 
-            try
+            var rubrica = Task.Factory.StartNew(() => _rubricaQueryHandler.Handle(new RubricaQuery() { IdOperatore = query.idOperatore, IdSede = query.CodiceSede, Filters = new FiltriRubrica() { Search = "" }, Pagination = default }).DataArray);
+            var boxListaInterventi = Task.Factory.StartNew(() => _boxRichiesteHandler.Get(pinNodi.ToHashSet()));
+            var boxListaMezzi = Task.Factory.StartNew(() => _boxMezziHandler.Get(query.CodiceSede));
+            var boxListaPersonale = Task.Factory.StartNew(() => _boxPersonaleHandler.Get(query.CodiceSede));
+            var listaChiamateInCorso = Task.Factory.StartNew(() => _listaChiamateInCorsoMarkerHandler.Get(pinNodi));
+            //var listaSintesi = Task.Factory.StartNew(() => _sintesiRichiesteAssistenzaHandler.Handle(sintesiRichiesteAssistenzaQuery));
+            var centroMappaMarker = Task.Factory.StartNew(() => _centroMappaMarkerHandler.GetCentroMappaMarker(query.CodiceSede[0]));
+            var infoNue = Task.Factory.StartNew(() => _getConteggioSchedeHandler.GetConteggio(query.CodiceSede));
+            var tipologie = Task.Factory.StartNew(() => _tipologieQueryHandler.Get());
+
+            var welcome = new SO115App.Models.Classi.Condivise.Welcome()
             {
-                var rubrica = Task.Factory.StartNew(() => _rubricaQueryHandler.Handle(new RubricaQuery() { IdOperatore = query.idOperatore, IdSede = query.CodiceSede, Filters = new FiltriRubrica() { Search = "" }, Pagination = default }).DataArray);
-                var boxListaInterventi = Task.Factory.StartNew(() => _boxRichiesteHandler.Get(pinNodi.ToHashSet()));
-                var boxListaMezzi = Task.Factory.StartNew(() => _boxMezziHandler.Get(query.CodiceSede));
-                var boxListaPersonale = Task.Factory.StartNew(() => _boxPersonaleHandler.Get(query.CodiceSede));
-                var listaChiamateInCorso = Task.Factory.StartNew(() => _listaChiamateInCorsoMarkerHandler.Get(pinNodi));
-                var listaSintesi = Task.Factory.StartNew(() => _sintesiRichiesteAssistenzaHandler.Handle(sintesiRichiesteAssistenzaQuery));
-                var centroMappaMarker = Task.Factory.StartNew(() => _centroMappaMarkerHandler.GetCentroMappaMarker(query.CodiceSede[0]));
-                var infoNue = Task.Factory.StartNew(() => _getConteggioSchedeHandler.GetConteggio(query.CodiceSede));
-                var tipologie = Task.Factory.StartNew(() => _tipologieQueryHandler.Get());
+                BoxListaInterventi = boxListaInterventi.Result,
+                BoxListaMezzi = boxListaMezzi.Result,
+                BoxListaPersonale = boxListaPersonale.Result,
+                ListaChiamateInCorso = listaChiamateInCorso.Result,
+                //ListaSintesi = listaSintesi.Result,
+                CentroMappaMarker = centroMappaMarker.Result,
+                ListaFiltri = filtri,
+                InfoNue = infoNue.Result,
+                Tipologie = tipologie.Result,
+                Rubrica = rubrica.Result
+            };
 
-                var welcome = new SO115App.Models.Classi.Condivise.Welcome()
-                {
-                    BoxListaInterventi = boxListaInterventi.Result,
-                    BoxListaMezzi = boxListaMezzi.Result,
-                    BoxListaPersonale = boxListaPersonale.Result,
-                    ListaChiamateInCorso = listaChiamateInCorso.Result,
-                    ListaSintesi = listaSintesi.Result,
-                    CentroMappaMarker = centroMappaMarker.Result,
-                    ListaFiltri = filtri,
-                    InfoNue = infoNue.Result,
-                    Tipologie = tipologie.Result,
-                    Rubrica = rubrica.Result
-                };
+            Log.Debug("Fine elaborazione Welcome Handler");
 
-                Log.Debug("Fine elaborazione Welcome Handler");
-
-                return new WelcomeResult()
-                {
-                    WelcomeRes = welcome
-                };
-            }
-            catch (System.Exception ex)
+            return new WelcomeResult()
             {
-                throw;
-            }
+                WelcomeRes = welcome
+            };
         }
     }
 }
