@@ -24,7 +24,6 @@ import { BoxPartenzaHover } from '../interface/composizione/box-partenza-hover-i
 import { StatoMezzo } from '../../../../shared/enum/stato-mezzo.enum';
 import { GetFiltriComposizione } from '../../../../shared/store/actions/filtri-composizione/filtri-composizione.actions';
 import { PaginationComposizionePartenzaState } from '../../../../shared/store/states/pagination-composizione-partenza/pagination-composizione-partenza.state';
-import { GetListeComposizioneAvanzata } from '../../store/actions/composizione-partenza/composizione-avanzata.actions';
 import { ResetPaginationPreaccoppiati } from '../../../../shared/store/actions/pagination-composizione-partenza/pagination-composizione-partenza.actions';
 
 @Component({
@@ -35,8 +34,6 @@ import { ResetPaginationPreaccoppiati } from '../../../../shared/store/actions/p
 export class FasterComponent implements OnInit, OnDestroy {
 
     @Input() richiesta: SintesiRichiesta;
-    @Input() disablePrenota: boolean;
-    @Input() prenotato: boolean;
     @Input() loadingInvioPartenza: boolean;
     @Input() boxAttivi: boolean;
 
@@ -66,7 +63,6 @@ export class FasterComponent implements OnInit, OnDestroy {
     @Output() sendDirection: EventEmitter<DirectionInterface> = new EventEmitter();
     @Output() clearDirection: EventEmitter<any> = new EventEmitter();
     @Output() centraMappa = new EventEmitter();
-    @Output() prenota = new EventEmitter<boolean>();
 
     constructor(private store: Store) {
         // Prendo i preaccoppiati da visualizzare nella lista

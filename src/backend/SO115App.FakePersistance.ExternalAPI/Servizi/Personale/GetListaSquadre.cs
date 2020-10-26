@@ -184,11 +184,12 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
                 }
             }
 
-            var s = new Squadra(squadraFake.NomeSquadra, Stato, ComponentiSquadra, sedeDistaccamento);
+            var s = new Squadra(squadraFake.NomeSquadra, Stato, ComponentiSquadra, sedeDistaccamento, squadraFake.Turno);
 
             s.Id = squadraFake.CodiceSquadra;
             s.Codice = squadraFake.CodiceSquadra;
             s.ListaCodiciFiscaliComponentiSquadra = ListaCodiciFiscaliComponentiSquadra;
+
             return s;
         }
     }

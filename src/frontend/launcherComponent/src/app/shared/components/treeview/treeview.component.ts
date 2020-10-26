@@ -187,7 +187,9 @@ export class TreeviewComponent implements OnChanges, OnDestroy, OnInit {
             }
         }
         if (unique[0] && this.cache) {
-            sessionStorage.setItem(LSNAME.cacheSedi, unique[0]);
+            sessionStorage.setItem(LSNAME.cacheSedi, JSON.stringify(unique));
+        } else {
+            sessionStorage.setItem(LSNAME.cacheSedi, JSON.stringify([...parents, ...leaves]));
         }
         if (this.visualizzaTasti) {
             // console.log(eventEmitter);

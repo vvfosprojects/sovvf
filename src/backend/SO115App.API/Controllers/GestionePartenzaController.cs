@@ -37,23 +37,10 @@ namespace SO115App.API.Controllers
         }
 
         [HttpPost("AggiornaPartenza")]
-        public async Task<IActionResult> AggiornaPartenza([FromBody] AggiornaStatoMezzoCommand intervento)
+        public async Task<IActionResult> AggiornaPartenza([FromBody] AggiornaStatoMezzoCommand command)
         {
-            var headerValues = Request.Headers["IdUtente"];
-            var codiceSede = Request.Headers["CodiceSede"];
-            string idUtente = headerValues.FirstOrDefault();
-
-            var command = new AggiornaStatoMezzoCommand()
-            {
-                //IdRichiesta = intervento.IdRichiesta,
-                IdUtente = idUtente,
-                Chiamata = intervento.Chiamata,
-                IdMezzo = intervento.IdMezzo,
-                StatoMezzo = intervento.StatoMezzo,
-                CodiceSede = codiceSede,
-                CodRichiesta = intervento.CodRichiesta,
-                DataOraAggiornamento = intervento.DataOraAggiornamento.ToLocalTime()
-            };
+            command.CodiciSede = Request.Headers["CodiceSede"].ToString().Split(',');
+            command.IdUtente = Request.Headers["IdUtente"].ToString();
 
             try
             {
