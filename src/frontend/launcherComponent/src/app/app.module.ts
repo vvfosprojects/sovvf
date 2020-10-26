@@ -85,7 +85,7 @@ import { NgxUiLoaderModule } from 'ngx-ui-loader';
         NavbarModule,
         NgxUiLoaderModule.forRoot({}),
         ToastrModule.forRoot({
-            positionClass: 'toast-bottom-center',
+            positionClass: 'toast-center-right',
             preventDuplicates: true,
         }),
         NgxsModule.forRoot(
