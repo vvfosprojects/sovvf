@@ -133,7 +133,7 @@ namespace SO115App.SignalR.Sender.GestionePartenza
                         IdOperatore = intervento.IdUtente
                     };
                     var listaMezziInServizio = _listaMezziInServizioHandler.Handle(listaMezziInServizioQuery).DataArray; 
-                    _notificationHubContext.Clients.Group(sede).SendAsync("NotifyUpdateMezzoInServizio", listaMezziInServizio.Find(x => x.Mezzo.Mezzo.Codice.Equals(intervento.IdMezzo.Split('.')[1])));
+                    _notificationHubContext.Clients.Group(sede).SendAsync("NotifyUpdateMezzoInServizio", listaMezziInServizio.Find(x => x.Mezzo.Mezzo.Codice.Equals(intervento.IdMezzo/*.Split('.')[1]*/)));
                 });
 
                 if (intervento.Chiamata != null)
