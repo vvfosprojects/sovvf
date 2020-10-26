@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
-import { FiltersInterface } from '../../../shared/interface/filters.interface';
+import { FiltersInterface } from '../../../shared/interface/filters/filters.interface';
 import { PaginationInterface } from '../../../shared/interface/pagination.interface';
 import { VoceFiltro } from '../../../features/home/filterbar/filtri-richieste/voce-filtro.model';
 

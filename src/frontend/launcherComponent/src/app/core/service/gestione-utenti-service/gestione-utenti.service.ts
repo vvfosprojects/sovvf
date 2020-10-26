@@ -7,9 +7,7 @@ import { Ruolo, Utente } from '../../../shared/model/utente.model';
 import { UtenteVvfInterface } from '../../../shared/interface/utente-vvf.interface';
 import { AddRuoloUtenteInterface } from '../../../shared/interface/add-ruolo-utente.interface';
 import { PaginationInterface } from 'src/app/shared/interface/pagination.interface';
-import { FiltersInterface } from 'src/app/shared/interface/filters.interface';
-import { GestioneUtentiObjInterface } from '../../../shared/interface/gestione-utenti-obj.interface';
-import { ListaComposizioneAvanzata } from '../../../shared/interface/lista-composizione-avanzata-interface';
+import { FiltersInterface } from 'src/app/shared/interface/filters/filters.interface';
 
 const BASE_URL = environment.baseUrl;
 const API_URL = BASE_URL + environment.apiUrl.gestioneUtenti;
@@ -35,7 +33,7 @@ export class GestioneUtentiService {
     }
 
     getListaUtentiGestione(filters: FiltersInterface, pagination: PaginationInterface): Observable<ResponseInterface> {
-        const obj: GestioneUtentiObjInterface = {
+        const obj = {
             filters: {
                 search: filters.search,
                 codSede: filters.codSede && filters.codSede.length > 0 ? filters.codSede : null

@@ -30,10 +30,13 @@ import {
 } from '../store/actions/schede-contatto/merge-schede-contatto.actions';
 import { CheckboxInterface } from '../../../shared/interface/checkbox.interface';
 import { ClassificazioneSchedaContatto } from '../../../shared/enum/classificazione-scheda-contatto.enum';
-import { LoadingState } from '../../../shared/store/states/loading/loading.state';
 import { AreaMappaState } from '../store/states/maps/area-mappa.state';
 import { PermissionFeatures } from '../../../shared/enum/permission-features.enum';
 import { ConfirmModalComponent } from '../../../shared/modal/confirm-modal/confirm-modal.component';
+import { ClearRicercaFilterbar } from '../store/actions/filterbar/ricerca-richieste.actions';
+import { RicercaFilterbarState } from '../store/states/filterbar/ricerca-filterbar.state';
+import { PaginationState } from '../../../shared/store/states/pagination/pagination.state';
+import { LoadingState } from '../../../shared/store/states/loading/loading.state';
 
 @Component({
     selector: 'app-schede-contatto',
@@ -43,6 +46,14 @@ import { ConfirmModalComponent } from '../../../shared/modal/confirm-modal/confi
 export class SchedeContattoComponent implements OnInit, OnDestroy {
 
     @Input() boxAttivi: boolean;
+
+    @Select(RicercaFilterbarState.ricerca) ricerca$: Observable<string>;
+    ricerca: string;
+    @Select(PaginationState.pageSize) pageSize$: Observable<number>;
+    pageSize: number;
+    @Select(PaginationState.pageSizes) pageSizes$: Observable<number[]>;
+    @Select(PaginationState.totalItems) totalItems$: Observable<number>;
+    @Select(PaginationState.page) page$: Observable<number>;
 
     @Select(SchedeContattoState.schedeContatto) schedeContatto$: Observable<SchedaContatto[]>;
     schedeContatto: SchedaContatto[];
@@ -68,57 +79,92 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
     @Select(MergeSchedeContattoState.schedeSelezionateId) idSelezionatiMerge$: Observable<string[]>;
     idSelezionatiMerge: string[];
     @Select(LoadingState.loading) loading$: Observable<boolean>;
+    @Select(SchedeContattoState.loadingSchedeContatto) loadingSchedeContatto$: Observable<boolean>;
 
     rangeSchedeContattoEnumValues = Object.values(RangeSchedeContattoEnum);
     RangeVisualizzazione = RangeSchedeContattoEnum;
-    private subscription: Subscription = new Subscription();
+    private subscriptions: Subscription = new Subscription();
 
     ClassificazioneEnum = ClassificazioneSchedaContatto;
     permessiFeature = PermissionFeatures;
 
     constructor(private store: Store,
                 private modal: NgbModal) {
-        this.subscription.add(
-            this.schedeContatto$.subscribe((schedeContatto: SchedaContatto[]) => {
-                this.schedeContatto = schedeContatto;
-            })
-        );
-
-        this.subscription.add(
-            this.codiceSchedaContattoHover$.subscribe((codiceSchedaContatto: string) => {
-                this.codiceSchedaContattoHover = codiceSchedaContatto;
-            })
-        );
-        this.subscription.add(
-            this.contatoriSchedeContatto$.subscribe((contaotoriSchede: ContatoriSchedeContatto) => {
-                this.contatoriSchedeContatto = contaotoriSchede;
-            })
-        );
-        this.subscription.add(
-            this.rangeVisualizzazione$.subscribe((range: RangeSchedeContattoEnum) => {
-                this.rangeVisualizzazione = range;
-            })
-        );
-        this.subscription.add(this.statoModalita$.subscribe((stato: boolean) => this.statoModalita = stato));
-        this.subscription.add(this.classificazioneMerge$.subscribe((classificazione: ClassificazioneSchedaContatto) => this.classificazioneMerge = classificazione));
-        this.subscription.add(this.idSelezionatiMerge$.subscribe((idSelezionatiMerge: string[]) => this.idSelezionatiMerge = idSelezionatiMerge));
-
+        this.getRicerca();
+        this.getSchedeContatto();
+        this.getSchedeContattoMarkers();
+        this.getSchedeContattoHover();
+        this.getRangeVisualizzazioneContatoriSchedeContatto();
+        this.getContatoriSchedeContatto();
+        this.subscriptions.add(this.statoModalita$.subscribe((stato: boolean) => this.statoModalita = stato));
+        this.subscriptions.add(this.classificazioneMerge$.subscribe((classificazione: ClassificazioneSchedaContatto) => this.classificazioneMerge = classificazione));
+        this.subscriptions.add(this.idSelezionatiMerge$.subscribe((idSelezionatiMerge: string[]) => this.idSelezionatiMerge = idSelezionatiMerge));
     }
 
     ngOnInit(): void {
         if (isDevMode()) {
             console.log('Componente Schede Contatto creato');
         }
-        const areaMappa = this.store.selectSnapshot(AreaMappaState.areaMappa);
-        this.store.dispatch([new GetListaSchedeContatto(), new GetSchedeContattoMarkers(areaMappa)]);
     }
 
     ngOnDestroy(): void {
-        this.store.dispatch(new ClearSchedeContattoMarkers());
-        this.store.dispatch(new ClearMergeSchedeContatto());
+        this.store.dispatch([
+            new ClearSchedeContattoMarkers(),
+            new ClearMergeSchedeContatto(),
+            new ClearRicercaFilterbar()
+        ]);
         if (isDevMode()) {
             console.log('Componente Schede Contatto distrutto');
         }
+    }
+
+    getRicerca(): void {
+        this.subscriptions.add(
+            this.ricerca$.subscribe((ricerca: string) => {
+                if (ricerca !== null) {
+                    this.ricerca = ricerca;
+                    this.store.dispatch(new GetListaSchedeContatto());
+                }
+            })
+        );
+    }
+
+    getSchedeContatto(): void {
+        this.store.dispatch(new GetListaSchedeContatto());
+        this.subscriptions.add(
+            this.schedeContatto$.subscribe((schedeContatto: SchedaContatto[]) => {
+                this.schedeContatto = schedeContatto;
+            })
+        );
+    }
+
+    getSchedeContattoMarkers(): void {
+        const areaMappa = this.store.selectSnapshot(AreaMappaState.areaMappa);
+        this.store.dispatch(new GetSchedeContattoMarkers(areaMappa));
+    }
+
+    getSchedeContattoHover(): void {
+        this.subscriptions.add(
+            this.codiceSchedaContattoHover$.subscribe((codiceSchedaContatto: string) => {
+                this.codiceSchedaContattoHover = codiceSchedaContatto;
+            })
+        );
+    }
+
+    getContatoriSchedeContatto(): void {
+        this.subscriptions.add(
+            this.contatoriSchedeContatto$.subscribe((contaotoriSchede: ContatoriSchedeContatto) => {
+                this.contatoriSchedeContatto = contaotoriSchede;
+            })
+        );
+    }
+
+    getRangeVisualizzazioneContatoriSchedeContatto(): void {
+        this.subscriptions.add(
+            this.rangeVisualizzazione$.subscribe((range: RangeSchedeContattoEnum) => {
+                this.rangeVisualizzazione = range;
+            })
+        );
     }
 
     setSchedaContattoGestita(schedaContatto: SchedaContatto, gestita: boolean): void {
@@ -164,6 +210,10 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
 
     onSaveMerge(): void {
         this.store.dispatch(new InitSaveMergeSchedeContatto());
+    }
+
+    onPageChange(page: number): void {
+        this.store.dispatch(new GetListaSchedeContatto(page));
     }
 
     onSelectTab($event: NgbTabChangeEvent): void {

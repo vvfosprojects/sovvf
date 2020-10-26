@@ -1,4 +1,4 @@
-import { Component, EventEmitter, HostBinding, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, HostBinding, Input, Output } from '@angular/core';
 import { VoceFiltro } from '../filtri-richieste/voce-filtro.model';
 import { CategoriaFiltriSchedeContatto as Categoria } from 'src/app/shared/enum/categoria-filtri-schede-contatto';
 
@@ -34,6 +34,11 @@ export class FiltriSchedeContattoComponent {
 
     eliminaFiltriAttivi(): void {
         this.filtriReset.emit();
+    }
+
+
+    _isSelezionato(filtro: VoceFiltro): boolean {
+        return this.filtriSelezionati.filter((f: VoceFiltro) => f.codice === filtro.codice).length > 0;
     }
 
 }

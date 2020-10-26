@@ -21,11 +21,7 @@ import { Grid } from '../../../shared/enum/layout.enum';
 import { OptionsRichieste } from '../../../shared/enum/options-richieste';
 import { ClearRichiesteEspanse } from '../store/actions/richieste/richieste-espanse.actions';
 import { SchedeContattoState } from '../store/states/schede-contatto/schede-contatto.state';
-import {
-    ClearFiltriSchedeContatto,
-    ReducerSetFiltroSchedeContatto,
-    SetFiltroKeySchedeContatto
-} from '../store/actions/schede-contatto/schede-contatto.actions';
+import { ClearFiltriSchedeContatto, ReducerSetFiltroSchedeContatto } from '../store/actions/schede-contatto/schede-contatto.actions';
 import { MezziInServizioState } from '../store/states/mezzi-in-servizio/mezzi-in-servizio.state';
 import { ClearFiltriMezziInServizio, SetFiltroMezziInServizio } from '../store/actions/mezzi-in-servizio/mezzi-in-servizio.actions';
 import { PermissionFeatures } from '../../../shared/enum/permission-features.enum';
@@ -56,9 +52,6 @@ export class FilterbarComponent {
     // Filtri Schede Contatto
     @Select(SchedeContattoState.filtriSchedeContatto) filtriSchedeContatto$: Observable<VoceFiltro[]>;
     @Select(SchedeContattoState.filtriSelezionati) filtriSelezionatiSchedeContatto$: Observable<VoceFiltro[]>;
-
-    // Ricerca Schede Contatto
-    @Select(SchedeContattoState.ricerca) ricercaSchedeContatto$: Observable<string>;
 
     // Filtri Mezzi in Servizio
     @Select(MezziInServizioState.filtriMezziInServizio) filtriMezziInServizio$: Observable<VoceFiltro[]>;
@@ -126,14 +119,6 @@ export class FilterbarComponent {
     eliminaFiltriAttiviSchedeContatto(): void {
         this.store.dispatch(new ClearFiltriSchedeContatto());
     }
-
-    /**
-     * Ricerca Schede Contatto Events
-     */
-    onSearchSchedeContatto(ricerca: any): void {
-        this.store.dispatch(new SetFiltroKeySchedeContatto(ricerca));
-    }
-
 
     /**
      * Filtri Schede Contatto Events
