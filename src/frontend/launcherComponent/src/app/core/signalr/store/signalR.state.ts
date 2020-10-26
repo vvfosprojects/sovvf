@@ -165,6 +165,8 @@ export class SignalRState implements NgxsOnChanges {
             let cS: any = sessionStorage.getItem(LSNAME.cacheSedi) ? sessionStorage.getItem(LSNAME.cacheSedi) : codiciSede;
             if (cS.includes(',')) {
               cS = [cS];
+            } else {
+              cS = JSON.parse(cS);
             }
             this.signalR.addToGroup(new SignalRNotification(
                 cS,
