@@ -60,12 +60,13 @@ namespace SO115App.API.Models.Classi.Condivise
             InUscita,
         }
 
-        public Squadra(string Nome, StatoSquadra Stato, List<Componente> Componenti, Sede Distaccamento)
+        public Squadra(string Nome, StatoSquadra Stato, List<Componente> Componenti, Sede Distaccamento, string Turno = null)
         {
             this.Nome = Nome;
             this.Stato = Stato;
             this.Componenti = Componenti;
             this.Distaccamento = Distaccamento;
+            this.Turno = Turno;
         }
 
         public string Id { get; set; }
@@ -100,5 +101,7 @@ namespace SO115App.API.Models.Classi.Condivise
         public List<string> ListaCodiciFiscaliComponentiSquadra { get; set; }
 
         public int IndiceOrdinamento { get; set; }
+
+        public string Turno { get; set; }
     }
 }

@@ -102,7 +102,7 @@
             </div>
         </div>
     </div>
-    <div *ngIf="mezziComposizione && squadreComposizione && !loadingInvioPartenza" class="col-4">
+    <div *ngIf="mezziComposizione && squadreComposizione && !loadingInvioPartenza" class="col-4 pr-0">
         <div class="w-100 py-2 px-1 scroll-y"
              [ngClass]="{'m-h-boxes-avanzata': boxAttivi, 'm-h-no-boxes-avanzata': !boxAttivi}">
             <!-- nessuna partenza -->
@@ -132,10 +132,10 @@
                 </div>
             </div>
         </div>
-        <app-composizione-buttons [boxPartenzaLenght]="boxPartenzaList.length" [disableConfirmPrenota]="disablePrenota"
-                                  [prenotato]="prenotato" [disableConfirmPartenza]="(disableConfirmPartenza$ | async)"
-                                  (confirmPartenzaInViaggio)="confermaPartenzeInViaggio()"
-                                  (confirmPartenzaInUscita)="confermaPartenzeInUscita()"
-                                  (confirmPrenota)="prenota.emit($event)"></app-composizione-buttons>
+        <app-composizione-confirm-button [boxPartenzaLenght]="boxPartenzaList.length"
+                                         [disableConfirmPartenza]="(disableConfirmPartenza$ | async)"
+                                         (confirmPartenzaInViaggio)="confermaPartenzeInViaggio()"
+                                         (confirmPartenzaInUscita)="confermaPartenzeInUscita()">
+        </app-composizione-confirm-button>
     </div>
 </div>

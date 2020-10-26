@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace SO115App.ExternalAPI.Fake.Classi.PersonaleUtentiComuni
+﻿namespace SO115App.ExternalAPI.Fake.Classi.PersonaleUtentiComuni
 {
     /// <summary>
     ///   la classe che mappa i dati in arrivo dal servizio UtentiComuni
