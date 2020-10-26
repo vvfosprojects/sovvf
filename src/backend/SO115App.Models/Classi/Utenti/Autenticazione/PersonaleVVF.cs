@@ -24,10 +24,5 @@
         ///   la descrizione della sede
         /// </summary>
         public string DescSede { get; set; }
-
-        /// <summary>
-        ///   il turno della sede
-        /// </summary>
-        public string Turno { get; set; }
     }
 }

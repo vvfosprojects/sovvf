@@ -184,17 +184,12 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
                 }
             }
 
-            var lstTurniSquadra = lstVVF
-                .Where(l => squadraFake.ComponentiSquadra.Select(c => c.CodiceFiscale).Contains(l.CodFiscale))
-                .Select(c => c.Turno)
-                .Distinct();
-            var turnoSquadra = lstTurniSquadra.FirstOrDefault();
-
-            var s = new Squadra(squadraFake.NomeSquadra, Stato, ComponentiSquadra, sedeDistaccamento, turnoSquadra);
+            var s = new Squadra(squadraFake.NomeSquadra, Stato, ComponentiSquadra, sedeDistaccamento, squadraFake.Turno);
 
             s.Id = squadraFake.CodiceSquadra;
             s.Codice = squadraFake.CodiceSquadra;
             s.ListaCodiciFiscaliComponentiSquadra = ListaCodiciFiscaliComponentiSquadra;
+
             return s;
         }
     }

@@ -83,7 +83,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             Log.Debug("Inizio elaborazione Composizione partenza avanzata Handler");
 
             var lstSedi = query.CodiceSede.ToList();
-            //var turno = _getTurno.Get();
 
             //REPERISCO I DATI, FACCIO IL MAPPING ED APPLICO I FILTRI (MEZZI E SQUADRE)
             var lstSquadre = _getListaSquadre.Get(lstSedi)
@@ -112,7 +111,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                 {
                     return lstCompSquadre.Result.Where(s =>
                     {
-                        if (query.Filtro.RicercaSquadre != null) // aggiungere altri campi in OR (fulltext)
+                        if (!string.IsNullOrEmpty(query.Filtro.RicercaSquadre))
                             return s.Squadra.Codice.Contains(query.Filtro.RicercaSquadre);
                         return true;
                     }).Where(s =>
@@ -124,6 +123,11 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                     {
                         if (query.Filtro.Squadre != null && query.Filtro.Squadre.Count > 0 && query.Filtro.Squadre.FirstOrDefault().Distaccamento.Codice != null)
                             return s.Squadra.Distaccamento.Codice == query.Filtro.Squadre.FirstOrDefault().Distaccamento.Codice;
+                        return true;
+                    }).Where(s =>
+                    {
+                        if (!string.IsNullOrEmpty(query.Filtro.Turno))
+                            return s.Squadra.Turno == query.Filtro.Turno;
                         return true;
                     }).Where(m =>
                     {
@@ -192,7 +196,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                         return true;
                     }).Where(m =>
                     {
-                        if (query.Filtro.RicercaMezzi != null) // aggiungere altri campi in OR (fulltext)
+                        if (!string.IsNullOrEmpty(query.Filtro.RicercaMezzi)) 
                             return m.Mezzo.Codice.Contains(query.Filtro.RicercaMezzi) || m.Mezzo.Descrizione.Contains(query.Filtro.RicercaMezzi);
                         return true;
                     }).Where(m =>
