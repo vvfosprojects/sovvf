@@ -18,14 +18,17 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CQRS.Queries;
+using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.Filtri;
 
 namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSchedeNue.GetSchedeFiltrate
 {
     public class GetSchedeFiltrateQuery : IQuery<GetSchedeFiltrateResult>
     {
-        public string CodiceSede { get; set; }
+        public string[] CodiciSede { get; set; }
+        public string IdUtente { get; set; }
 
-        public FiltriSchede Filtro { get; set; }
+        public FiltriSchede Filters { get; set; }
+        public Paginazione Pagination { get; set; }
     }
 }
