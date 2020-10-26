@@ -95,9 +95,9 @@
                         [(page)]="currentPageMezzi"
                         [pageSize]="pageSizeMezzi"
                         [collectionSize]="totalItemsMezzi"
-                        (pageChange)="mezziPageChange($event)"
                         [maxSize]="5"
-                        [disabled]="loadingListe">
+                        [disabled]="loadingListe"
+                        (pageChange)="mezziPageChange($event)">
                 </ngb-pagination>
             </div>
         </div>

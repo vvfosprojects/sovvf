@@ -146,6 +146,7 @@
             <div class="col-4">
                 <div *ngIf="schedeContatto?.length > 0" class="d-flex justify-content-between p-2">
                     <pagination-controls class="mt-1 mb-0"
+                                         [autoHide]="true"
                                          [previousLabel]="'Precedente'"
                                          [nextLabel]="'Successiva'"
                                          (pageChange)="onPageChange($event)">
