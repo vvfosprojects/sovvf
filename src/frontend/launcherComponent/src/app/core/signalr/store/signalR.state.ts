@@ -162,11 +162,11 @@ export class SignalRState implements NgxsOnChanges {
         const utente = this.store.selectSnapshot(AuthState.currentUser);
         dispatch(new SetIdUtente(utente.id));
         if (codiciSede && codiciSede.length > 0) {
-            let cS: any = sessionStorage.getItem(LSNAME.cacheSedi) ? sessionStorage.getItem(LSNAME.cacheSedi) : codiciSede;
-            if (cS.includes(',')) {
-              cS = [cS];
-            } else {
+            let cS: any = sessionStorage.getItem(LSNAME.cacheSedi);
+            if (cS) {
               cS = JSON.parse(cS);
+            } else {
+              cS = codiciSede;
             }
             this.signalR.addToGroup(new SignalRNotification(
                 cS,
