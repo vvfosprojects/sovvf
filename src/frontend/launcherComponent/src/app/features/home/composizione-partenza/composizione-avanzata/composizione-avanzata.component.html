@@ -15,15 +15,16 @@
                 </div>
                 <div class="float-right w-50">
                     <label for="ricercaSquadre" class="d-none"></label>
-                    <input id="ricercaSquadre" type="search" name="ricercaSquadre" class="form-control"
+                    <input id="ricercaSquadre" type="text" name="ricercaSquadre" class="form-control"
                            placeholder="Cerca..." [(ngModel)]="ricercaSquadre" appDebounceKeyUp
                            (debounceKeyUp)="onSearchSquadre()" [debounceTime]="1000"
                            [ngClass]="{'border-danger': ricercaSquadre && ricercaSquadre.length > 0}">
+                    <i *ngIf="ricercaSquadre" (click)="onClearSearchSquadre()" class="fa fa-times clear-search-squadre"></i>
                 </div>
             </div>
             <ul class="list-group list-group-flush border-bottom scroll-y"
                 [ngClass]="{'m-h-boxes-avanzata': boxAttivi, 'm-h-no-boxes-avanzata': !boxAttivi}">
-              <li *ngIf="squadreComposizione && squadreComposizione.length <= 0" class="list-group-item cursor-pointer border" style="cursor: default"><span class="text-muted">Nessun risultato trovato...</span></li>
+              <li *ngIf="squadreComposizione && squadreComposizione.length <= 0" class="list-group-item cursor-pointer border" style="cursor: default"><span class="text-muted">Nessun risultato...</span></li>
                 <ng-template [ngIf]="squadreComposizione && squadreComposizione.length > 0">
                     <app-squadra-composizione
                             *ngFor="let sC of squadreComposizione"
@@ -61,15 +62,16 @@
                 </div>
                 <div class="float-right">
                     <label for="ricercaMezzi" class="d-none"></label>
-                    <input id="ricercaMezzi" type="search" name="ricercaMezzi" class="form-control"
+                    <input id="ricercaMezzi" type="text" name="ricercaMezzi" class="form-control"
                            placeholder="Cerca..." [(ngModel)]="ricercaMezzi" appDebounceKeyUp
                            (debounceKeyUp)="onSearchMezzi()" [debounceTime]="1000"
                            [ngClass]="{'border-danger': ricercaMezzi && ricercaMezzi.length > 0}">
+                    <i *ngIf="ricercaMezzi" (click)="onClearSearchMezzi()" class="fa fa-times clear-search-mezzi"></i>
                 </div>
             </div>
             <ul class="list-group list-group-flush border-bottom scroll-y"
                 [ngClass]="{'m-h-boxes-avanzata': boxAttivi, 'm-h-no-boxes-avanzata': !boxAttivi}">
-              <li *ngIf="mezziComposizione && mezziComposizione.length <= 0" class="list-group-item cursor-pointer border" style="cursor: default"><span class="text-muted">Nessun risultato trovato...</span></li>
+              <li *ngIf="mezziComposizione && mezziComposizione.length <= 0" class="list-group-item cursor-pointer border" style="cursor: default"><span class="text-muted">Nessun risultato...</span></li>
                 <ng-template [ngIf]="mezziComposizione && mezziComposizione.length > 0">
                     <div *ngFor="let mC of mezziComposizione">
                         <ng-template [ngIf]="mC.mezzo.stato !== statoMezzo.OperativoPreaccoppiato">

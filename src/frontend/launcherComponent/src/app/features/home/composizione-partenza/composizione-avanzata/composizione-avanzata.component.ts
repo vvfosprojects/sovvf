@@ -322,6 +322,16 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
         this.changeRicercaMezzi.emit(makeCopy(this.ricercaMezzi));
     }
 
+    onClearSearchSquadre(): void {
+      this.ricercaSquadre = '';
+      this.changeRicercaSquadre.emit(makeCopy(this.ricercaSquadre));
+    }
+
+    onClearSearchMezzi(): void {
+      this.ricercaMezzi = '';
+      this.changeRicercaMezzi.emit(makeCopy(this.ricercaMezzi));
+    }
+
     checkSquadraSelezione(idSquadra: string): boolean {
         let squadraSelezionata = false;
         this.idSquadreSelezionate.forEach((id: string) => {

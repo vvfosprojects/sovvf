@@ -399,6 +399,20 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
                                           new GetListaMezziSquadre()]);
     }
 
+    onClearSearchSquadre(): void {
+      this.ricercaSquadre = '';
+      this.store.dispatch([new StartListaComposizioneLoading(),
+        new SetRicercaSquadreComposizione(makeCopy(this.ricercaSquadre)),
+        new GetListaMezziSquadre()]);
+    }
+
+    onClearSearchMezzi(): void {
+      this.ricercaMezzi = '';
+      this.store.dispatch([new StartListaComposizioneLoading(),
+        new SetRicercaMezziComposizione(makeCopy(this.ricercaMezzi)),
+        new GetListaMezziSquadre()]);
+    }
+
     getTitle(): string {
         return 'Sostituzione Partenza - Richiesta ' + this.codRichiesta;
     }

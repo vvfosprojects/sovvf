@@ -1,0 +1,11 @@
+.clear-search-mezzi {
+  transform: translate(175px, -26px);
+  position: fixed;
+  cursor: pointer
+}
+
+.clear-search-squadre {
+  transform: translate(120px, -26px);
+  position: fixed;
+  cursor: pointer
+}
