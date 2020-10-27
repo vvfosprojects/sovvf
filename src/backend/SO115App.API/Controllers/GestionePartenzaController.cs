@@ -88,7 +88,7 @@ namespace SO115App.API.Controllers
         {
             var command = new ModificaPartenzaCommand()
             {
-                CodSede = Request.Headers["CodiceSede"],
+                CodSede = Request.Headers["CodiceSede"].ToString().Split(",", StringSplitOptions.RemoveEmptyEntries),
                 IdOperatore = Request.Headers["IdUtente"],
 
                 ModificaPartenza = partenza

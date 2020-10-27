@@ -29,11 +29,11 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 
                 partenzaDaAnnullare.PartenzaAnnullata = true;
                 partenzaDaAnnullare.Partenza.PartenzaAnnullata = true;
-                partenzaDaAnnullare.Partenza.Mezzo.Stato = Costanti.MezzoInRientro;
+                partenzaDaAnnullare.Partenza.Mezzo.Stato = Costanti.MezzoRientrato;
 
                 _updateStatoPartenze.Update(new AggiornaStatoMezzoCommand()
                 {
-                    CodiciSede = new string[] { command.CodSede },
+                    CodiciSede = command.CodSede,
                     CodRichiesta = Richiesta.CodRichiesta,
                     Richiesta = Richiesta,
                     IdUtente = command.IdOperatore,
@@ -61,7 +61,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 
                 _updateStatoPartenze.Update(new AggiornaStatoMezzoCommand()
                 {
-                    CodiciSede = new string[] { command.CodSede },
+                    CodiciSede = command.CodSede,
                     CodRichiesta = Richiesta.CodRichiesta,
                     Richiesta = Richiesta,
                     IdUtente = command.IdOperatore,
@@ -84,7 +84,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
 
                     _updateStatoPartenze.Update(new AggiornaStatoMezzoCommand()
                     {
-                        CodiciSede = new string[] { command.CodSede },
+                        CodiciSede = command.CodSede,
                         CodRichiesta = Richiesta.CodRichiesta,
                         Richiesta = Richiesta,
                         IdUtente = command.IdOperatore,
