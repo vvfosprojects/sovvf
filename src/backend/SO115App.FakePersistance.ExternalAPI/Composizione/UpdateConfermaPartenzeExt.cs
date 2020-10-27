@@ -59,15 +59,18 @@ namespace SO115App.ExternalAPI.Fake.Composizione
             var conferma = new ConfermaPartenze();
 
             _updateRichiesta.UpDate(command.ConfermaPartenze.richiesta);
+
+            var codiceSede = command.ConfermaPartenze.CodiceSede.Split(",", StringSplitOptions.RemoveEmptyEntries)[0];
+
             foreach (var partenza in command.ConfermaPartenze.Partenze)
             {
                 var dataMovintazione = DateTime.UtcNow;
 
-                _setStatoOperativoMezzo.Set(partenza.Mezzo.Distaccamento.Codice, partenza.Mezzo.Codice, partenza.Mezzo.Stato, command.ConfermaPartenze.richiesta.Codice);
+                _setStatoOperativoMezzo.Set(codiceSede, partenza.Mezzo.Codice, partenza.Mezzo.Stato, command.ConfermaPartenze.richiesta.Codice);
 
                 foreach (var squadra in partenza.Squadre)
                 {
-                    _setStatoSquadra.SetStato(squadra.Codice, command.ConfermaPartenze.IdRichiesta, partenza.Mezzo.Stato, squadra.Distaccamento.Codice, partenza.Mezzo.Codice);
+                    _setStatoSquadra.SetStato(squadra.Codice, command.ConfermaPartenze.IdRichiesta, partenza.Mezzo.Stato, codiceSede, partenza.Mezzo.Codice);
                 }
             }
 
