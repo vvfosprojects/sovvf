@@ -32,6 +32,8 @@ namespace SO115App.Persistence.MongoDB.GestioneInterventi.Utility
 
             var richiesta = _getRichiestaById.GetByCodice(CodRichiesta);
 
+            if (richiesta == null) richiesta = _getRichiestaById.GetById(CodRichiesta);
+
             return new InfoRichiesta()
             {
                 CodiceRichiesta = richiesta.Codice,
