@@ -60,7 +60,7 @@ namespace SO115App.ExternalAPI.Fake.Marker
             else
                 listaMezzi = _getMezziUtilizzabiliByAreaMappa.Get(filtroAreaMappa).Result;
 
-            var listaMezziMarker = listaMezzi.Select(mezzo => new MezzoMarker()
+            var listaMezziMarker = listaMezzi.Where(m => m != null).Select(mezzo => new MezzoMarker()
             {
                 Mezzo = mezzo,
                 InfoRichiesta = _getInfoRichiesta.GetInfoRichiestaFromCodiceRichiestaMezzo(mezzo.IdRichiesta)
