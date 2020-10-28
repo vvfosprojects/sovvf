@@ -15,11 +15,19 @@ export class SetPartenzaMontante {
     }
 }
 
-export class AddSostituzione {
-    static readonly type = '[SostituzioneFineTurno] Add Sostituzione';
+export class SetSostituzioni {
+    static readonly type = '[SostituzioneFineTurno] Set Sostituzioni';
+}
 
-    constructor(public sostituzione: SostituzioneInterface) {
+export class UpdateSostituzione {
+    static readonly type = '[SostituzioneFineTurno] Update Sostituzione';
+
+    constructor(public codSquadraMontante: string, public codSquadraSmontante: string, public codMezzoSmontante: string) {
     }
+}
+
+export class ConfirmSostituzioni {
+    static readonly type = '[SostituzioneFineTurno] Confirm Sostituzioni';
 }
 
 export class ClearSostituzioneFineTurno {
