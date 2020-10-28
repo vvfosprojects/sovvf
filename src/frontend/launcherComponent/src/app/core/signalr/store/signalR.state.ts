@@ -23,6 +23,7 @@ import { Navigate } from '@ngxs/router-plugin';
 import { RoutesPath } from '../../../shared/enum/routes-path.enum';
 import { AuthState } from '../../../features/auth/store/auth.state';
 import { Injectable } from '@angular/core';
+import {LSNAME} from '../../settings/config';
 
 export interface SignalRStateModel {
     connected: boolean;
@@ -92,9 +93,13 @@ export class SignalRState implements NgxsOnChanges {
                 new ShowToastr(ToastrType.Success, 'signalR', 'Sei di nuovo online!', 5, null, true)
             ]);
             if (state.codiciSede && state.codiciSede.length > 0) {
+                let cS: any = sessionStorage.getItem(LSNAME.cacheSedi);
+                if (cS) {
+                  cS = JSON.parse(cS);
+                }
                 const utente = this.store.selectSnapshot(AuthState.currentUser);
                 this.signalR.addToGroup(new SignalRNotification(
-                    state.codiciSede,
+                    cS,
                     utente.id,
                     `${utente.nome} ${utente.cognome}`
                 ));
@@ -129,7 +134,11 @@ export class SignalRState implements NgxsOnChanges {
 
     @Action(SetCodiceSede)
     setCodiceSede({ getState, patchState, dispatch }: StateContext<SignalRStateModel>, { codiciSede }: SetCodiceSede): void {
-        const codiciSedeAttuali = getState().codiciSede;
+        let cS: any = sessionStorage.getItem(LSNAME.cacheSedi);
+        if (cS) {
+          cS = JSON.parse(cS);
+        }
+        const codiciSedeAttuali = cS ? cS : getState().codiciSede;
         const codiciSedeAdd = difference(codiciSede, codiciSedeAttuali);
         const codiciSedeRemove = difference(codiciSedeAttuali, codiciSede);
         console.log('SetCodiceSede', JSON.stringify({
@@ -141,7 +150,11 @@ export class SignalRState implements NgxsOnChanges {
 
     @Action(ClearCodiceSede)
     clearCodiceSede({ patchState }: StateContext<SignalRStateModel>): void {
-        patchState({ codiciSede: SignalRStateDefaults.codiciSede });
+        let cS: any = sessionStorage.getItem(LSNAME.cacheSedi);
+        if (cS) {
+          cS = JSON.parse(cS);
+        }
+        patchState({ codiciSede: cS ? cS : SignalRStateDefaults.codiciSede });
     }
 
     @Action(SetUtenteSignalR)
@@ -149,8 +162,14 @@ export class SignalRState implements NgxsOnChanges {
         const utente = this.store.selectSnapshot(AuthState.currentUser);
         dispatch(new SetIdUtente(utente.id));
         if (codiciSede && codiciSede.length > 0) {
+            let cS: any = sessionStorage.getItem(LSNAME.cacheSedi);
+            if (cS) {
+              cS = JSON.parse(cS);
+            } else {
+              cS = codiciSede;
+            }
             this.signalR.addToGroup(new SignalRNotification(
-                codiciSede,
+                cS,
                 utente.id,
                 `${utente.nome} ${utente.cognome}`
             ));
@@ -160,9 +179,13 @@ export class SignalRState implements NgxsOnChanges {
     @Action(ClearUtenteSignalR)
     clearUtenteSignalR({}: StateContext<SignalRStateModel>, { codiciSede }: ClearUtenteSignalR): void {
         if (codiciSede && codiciSede.length > 0) {
+            let cS: any = sessionStorage.getItem(LSNAME.cacheSedi);
+            if (cS) {
+              cS = JSON.parse(cS);
+            }
             const utente = this.store.selectSnapshot(AuthState.currentUser);
             this.signalR.removeToGroup(new SignalRNotification(
-                codiciSede,
+                cS,
                 utente.id,
                 `${utente.nome} ${utente.cognome}`
                 )
@@ -172,10 +195,14 @@ export class SignalRState implements NgxsOnChanges {
 
     @Action(LogoffUtenteSignalR)
     logoffUtenteSignalR({ getState, dispatch }: StateContext<SignalRStateModel>, { utente }: LogoffUtenteSignalR): void {
-        const codiciSede = getState().codiciSede;
+        let cS: any = sessionStorage.getItem(LSNAME.cacheSedi);
+        if (cS) {
+          cS = JSON.parse(cS);
+        }
+        // const codiciSede = getState().codiciSede;
         this.signalR.removeToGroup(
             new SignalRNotification(
-                codiciSede,
+                cS,
                 utente.id,
                 `${utente.nome} ${utente.cognome}`
             )
