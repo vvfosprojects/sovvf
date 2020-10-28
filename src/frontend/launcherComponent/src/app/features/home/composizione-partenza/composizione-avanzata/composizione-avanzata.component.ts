@@ -348,8 +348,14 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
     }
 
     nuovaPartenza(): void {
-        this.store.dispatch(new RequestAddBoxPartenza());
-        this.dopoAggiungiBoxPartenza();
+        if (this.boxPartenzaList.length === 0) {
+            this.store.dispatch(new RequestAddBoxPartenza());
+            this.dopoAggiungiBoxPartenza();
+        } else {
+            this.store.dispatch(new RequestAddBoxPartenza());
+            this.dopoAggiungiBoxPartenza();
+            this.store.dispatch(new GetListeComposizioneAvanzata());
+        }
     }
 
     eliminaBoxPartenza(boxPartenza: BoxPartenza): void {
