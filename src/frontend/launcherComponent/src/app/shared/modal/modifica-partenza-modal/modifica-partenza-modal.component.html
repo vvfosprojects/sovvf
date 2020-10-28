@@ -41,7 +41,8 @@
         </ng-template>
         <!-- anteprima mezzo e squadra/e -->
         <app-box-anteprima-partenza [partenza]="partenza" [inSostituzione]="inSostituzione"
-                                    (modificaPartenza)="openSostituzioneModal()" [nonModificabile]="nonModificabile"
+                                    (modificaPartenza)="openSostituzioneModal()"
+                                    [testoModifica]="'Sostitusci Mezzo/Squadra'" [nonModificabile]="nonModificabile"
                                     (listaSquadrePartenza)="onListaSquadrePartenza()"></app-box-anteprima-partenza>
         <div *ngIf="!hideBox" class="alert alert-info text-uppercase font-weight-bold" role="alert">
             Il mezzo {{partenza?.mezzo?.descrizione}} {{partenza?.mezzo?.genere}} Annullato

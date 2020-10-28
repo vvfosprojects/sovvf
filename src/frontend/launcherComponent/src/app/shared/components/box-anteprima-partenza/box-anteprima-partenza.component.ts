@@ -13,6 +13,8 @@ import { Squadra } from '../../model/squadra.model';
 export class BoxAnteprimaPartenzaComponent {
 
     @Input() partenza: Partenza;
+    @Input() title: string;
+    @Input() testoModifica: string;
     @Input() nonModificabile: boolean;
     @Input() inSostituzione: boolean;
     @Input() hideBox: boolean;

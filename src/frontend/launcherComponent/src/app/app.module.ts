@@ -62,6 +62,7 @@ import { AllertaSedeModalState } from './shared/store/states/allerta-sede-modal/
 import { ImpostazioniState } from './shared/store/states/impostazioni/impostazioni.state';
 import { PaginationComposizionePartenzaState } from './shared/store/states/pagination-composizione-partenza/pagination-composizione-partenza.state';
 import { NgxUiLoaderModule } from 'ngx-ui-loader';
+import { SostituzionePartenzeFineTurnoModalState } from './shared/store/states/sostituzione-partenze-fine-turno-modal/sostituzione-partenze-fine-turno-modal.state';
 
 @NgModule({
     declarations: [
@@ -106,7 +107,8 @@ import { NgxUiLoaderModule } from 'ngx-ui-loader';
                 NotificheState,
                 AllertaSedeModalState,
                 ImpostazioniState,
-                PaginationComposizionePartenzaState
+                PaginationComposizionePartenzaState,
+                SostituzionePartenzeFineTurnoModalState
             ],
             { developmentMode: !environment.production }
         ),

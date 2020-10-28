@@ -50,6 +50,7 @@ import { FilterPipeModule } from 'ngx-filter-pipe';
 import { BoxAnteprimaPartenzaComponent } from './components/box-anteprima-partenza/box-anteprima-partenza.component';
 import { AnnuncioNuovaVersioneModalComponent } from './modal/annuncio-nuova-versione-modal/annuncio-nuova-versione-modal.component';
 import { NuoveFeaturesInfoModalComponent } from './modal/nuove-features-info-modal/nuove-features-info-modal.component';
+import { SostituzionePartenzeFineTunoModalComponent } from './modal/sostituzione-partenze-fine-turno-modal/sostituzione-partenze-fine-tuno-modal.component';
 
 const COMPONENTS = [
     DebounceClickDirective,
@@ -94,7 +95,8 @@ const COMPONENTS = [
     BoxAnteprimaPartenzaComponent,
     AllertaSedeModalComponent,
     AnnuncioNuovaVersioneModalComponent,
-    NuoveFeaturesInfoModalComponent
+    NuoveFeaturesInfoModalComponent,
+    SostituzionePartenzeFineTunoModalComponent
 ];
 
 @NgModule({

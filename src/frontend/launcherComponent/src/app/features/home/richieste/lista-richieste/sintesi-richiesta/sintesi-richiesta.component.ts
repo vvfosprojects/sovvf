@@ -26,6 +26,9 @@ import { EliminaPartenzaModalComponent } from '../../../../../shared/modal/elimi
 import { DettaglioFonogrammaModalComponent } from '../../../../../shared/modal/dettaglio-fonogramma-modal/dettaglio-fonogramma-modal.component';
 import { ModificaFonogrammaModalComponent } from '../../../../../shared/modal/modifica-fonogramma-modal/modifica-fonogramma-modal.component';
 import { Tipologia } from '../../../../../shared/model/tipologia.model';
+import { Partenza } from '../../../../../shared/model/partenza.model';
+import { SetListaPartenzeSostituzioneFineTurno } from '../../../../../shared/store/actions/modifica-partenzef-fine-turno-modal/sostituzione-partenze-fine-turno.actions';
+import { SostituzionePartenzeFineTunoModalComponent } from '../../../../../shared/modal/sostituzione-partenze-fine-turno-modal/sostituzione-partenze-fine-tuno-modal.component';
 
 @Component({
     selector: 'app-sintesi-richiesta',
@@ -244,7 +247,7 @@ export class SintesiRichiestaComponent implements OnChanges {
             windowClass: 'modal-holder',
             backdropClass: 'light-blue-backdrop',
             centered: true,
-            size: 'lg',
+            size: 'xl',
             backdrop: 'static',
             keyboard: false
         });
@@ -309,6 +312,27 @@ export class SintesiRichiestaComponent implements OnChanges {
             switch (res.status) {
                 case 'ok' :
                     this.allertaSede.emit(res.result);
+                    break;
+                case 'ko':
+                    break;
+            }
+        });
+    }
+
+    onSostituzioneFineTurno(partenze: Partenza[]): void {
+        const modalAllertaSede = this.modalService.open(SostituzionePartenzeFineTunoModalComponent, {
+            windowClass: 'modal-holder',
+            backdropClass: 'light-blue-backdrop',
+            size: 'xl',
+            centered: true
+        });
+        const partenzeDisponibili = partenze.filter((p: Partenza) => !p.sganciata && !p.partenzaAnnullata && !p.terminata);
+        this.store.dispatch(new SetListaPartenzeSostituzioneFineTurno(partenzeDisponibili));
+        modalAllertaSede.componentInstance.codRichiesta = this.richiesta.codice;
+        modalAllertaSede.result.then((res: { status: string, result: any }) => {
+            switch (res.status) {
+                case 'ok' :
+                    // this.allertaSede.emit(res.result);
                     break;
                 case 'ko':
                     break;
