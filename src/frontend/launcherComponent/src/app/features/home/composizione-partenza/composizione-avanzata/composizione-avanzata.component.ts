@@ -30,12 +30,13 @@ import {
     DeselectBoxPartenza
 } from '../../store/actions/composizione-partenza/box-partenza.actions';
 import {
-    HoverInSquadraComposizione,
-    HoverOutSquadraComposizione,
-    SelectSquadraComposizione,
-    UnselectSquadraComposizione
+  ClearSquadraComposizione,
+  HoverInSquadraComposizione,
+  HoverOutSquadraComposizione,
+  SelectSquadraComposizione,
+  UnselectSquadraComposizione
 } from '../../../../shared/store/actions/squadre-composizione/squadre-composizione.actions';
-import { ConfirmPartenze } from '../../store/actions/composizione-partenza/composizione-partenza.actions';
+import { ConfirmPartenze} from '../../store/actions/composizione-partenza/composizione-partenza.actions';
 import { TurnoState } from '../../../navbar/store/states/turno.state';
 import { SganciamentoInterface } from 'src/app/shared/interface/sganciamento.interface';
 import { MezzoDirection } from '../../../../shared/interface/mezzo-direction';
@@ -422,7 +423,10 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
             idRichiesta: this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione).codice,
             turno: this.store.selectSnapshot(TurnoState.turnoCalendario).corrente
         };
-        this.store.dispatch(new ConfirmPartenze(partenzeObj));
+        this.store.dispatch([
+          new ConfirmPartenze(partenzeObj),
+          new ClearSquadraComposizione()
+          ]);
     }
 
     confermaPartenzeInUscita(): void {
@@ -452,7 +456,9 @@ export class ComposizioneAvanzataComponent implements OnInit, OnDestroy {
             idRichiesta: this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione).codice,
             turno: this.store.selectSnapshot(TurnoState.turnoCalendario).corrente
         };
-        this.store.dispatch(new ConfirmPartenze(partenzeObj));
+        this.store.dispatch([
+          new ConfirmPartenze(partenzeObj),
+          new ClearSquadraComposizione()]);
     }
 
     onClearDirection(): void {
