@@ -34,7 +34,7 @@
                 </app-filtri-mezzi-servizio>
             </div>
             <div class="col-7 pl-0">
-                <app-ricerca *ngIf="((chiamataStatus$ | async) === false) && ((composizioneStatus$ | async) === false)"
+                <app-ricerca *ngIf="((chiamataStatus$ | async) === false) && ((composizioneStatus$ | async) === false) && ((modificaRichiestaStatus$ | async) === false)"
                              [ricerca]="ricercaRichieste$ | async"
                              [debounce]="true"
                              [placeholder]="getRicercaPlaceholder()"

@@ -125,6 +125,11 @@ export class ViewComponentState {
     }
 
     @Selector()
+    static modificaRichiestaStatus(state: ViewComponentStateModel): boolean {
+        return state.view.modifica.active;
+    }
+
+    @Selector()
     static schedeContattoStatus(state: ViewComponentStateModel): boolean {
         return state.view.schedeContatto.active;
     }
