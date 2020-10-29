@@ -5,7 +5,7 @@
     <div *ngFor="let p of partenze; let index = index">
         <li *ngIf="!p.sganciata && !p.partenzaAnnullata && !p.terminata" class="border-bottom">
             <app-partial-loader
-                    *ngIf="(loadingActionMezzo$ | async) && (loadingActionMezzo$ | async) === p.mezzo.codice"></app-partial-loader>
+                    *ngIf="loadingActionMezzoArray.includes(p.mezzo.codice)"></app-partial-loader>
             <app-partenza [partenza]="p"
                           [inGestione]="inGestione"
                           [statoRichiesta]="statoRichiesta"
