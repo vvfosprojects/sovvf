@@ -15,7 +15,7 @@ export class MezzoInServizioComponent {
     @Input() mezzoInServizio: MezzoInServizio;
     @Input() idMezzoInServizioHover: string;
     @Input() idMezzoInServizioSelezionato: string;
-    @Input() loading: boolean;
+    @Input() loading: string;
 
     @Output() hoverIn: EventEmitter<any> = new EventEmitter<any>();
     @Output() hoverOut: EventEmitter<any> = new EventEmitter<any>();
@@ -26,8 +26,18 @@ export class MezzoInServizioComponent {
 
     StatoMezzo = StatoMezzo;
     mostraIndicatori = false;
+    loadingArray: any[] = [];
 
     constructor(private store: Store) {
+    }
+
+    // tslint:disable-next-line:use-lifecycle-interface
+    ngOnChanges(): void {
+      if (this.loading && !this.loadingArray.includes(this.loading)) {
+        this.loadingArray.push(this.loading);
+      } else if (!this.loading) {
+        this.loadingArray.shift();
+      }
     }
 
     onListaSquadrePartenza(): void {

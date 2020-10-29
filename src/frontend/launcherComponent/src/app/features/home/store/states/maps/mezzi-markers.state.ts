@@ -167,7 +167,7 @@ export class MezziMarkersState {
     updateMezzoMarker({ setState }: StateContext<MezziMarkersStateModel>, { payload }: UpdateMezzoMarker): void {
         setState(
             patch({
-                mezziMarkers: updateItem<MezzoMarker>(mezzo => mezzo.mezzo.codice === payload.mezzo.codice, payload)
+                mezziMarkers: payload ? updateItem<MezzoMarker>(mezzo => mezzo.mezzo.codice === payload.mezzo.codice, payload) : null,
             })
         );
     }
