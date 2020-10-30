@@ -14,7 +14,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
         {
             var modificaPartenza = new ModificaPartenzaCommand()
             {
-                CodSede = command.Richiesta.CodSOCompetente,
+                CodSede = new string[] { command.Richiesta.CodSOCompetente },
                 IdOperatore = command.sostituzione.idOperatore,
                 Richiesta = command.Richiesta
             };
