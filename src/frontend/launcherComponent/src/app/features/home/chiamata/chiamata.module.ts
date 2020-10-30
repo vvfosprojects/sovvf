@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { FormsModule } from '@angular/forms';
-import { GooglePlaceModule } from 'ngx-google-places-autocomplete';
+import { GooglePlaceModule } from 'ngx-google-places-autocomplete';  // Dependency
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ClipboardModule } from 'ngx-clipboard';
 import { ReactiveFormsModule } from '@angular/forms';

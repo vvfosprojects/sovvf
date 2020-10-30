@@ -17,6 +17,11 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "allowedCommonJsDependencies": [
+              "lodash",
+              "@agm/snazzy-info-window",
+              "ngx-google-places-autocomplete"
+            ],
             "outputPath": "dist/SO115",
             "index": "src/index.html",
             "main": "src/main.ts",
