@@ -7,7 +7,11 @@ import { Composizione } from 'src/app/shared/enum/composizione.enum';
 import { ViewComponentState } from '../../../features/home/store/states/view/view.state';
 import { Observable } from 'rxjs';
 import { iconaStatiClass } from '../../helper/composizione-functions';
-import { AddFiltroSelezionatoComposizione, ResetFiltriComposizione } from '../../store/actions/filtri-composizione/filtri-composizione.actions';
+import {
+  AddFiltroSelezionatoComposizione,
+  ClearFiltriComposizione,
+  ResetFiltriComposizione
+} from '../../store/actions/filtri-composizione/filtri-composizione.actions';
 import { SintesiRichiesta } from '../../model/sintesi-richiesta.model';
 import { SetMarkerRichiestaSelezionato } from 'src/app/features/home/store/actions/maps/marker.actions';
 import { SostituzionePartenzaModalState } from '../../store/states/sostituzione-partenza-modal/sostituzione-partenza-modal.state';
@@ -38,6 +42,11 @@ export class FilterbarComposizioneComponent {
 
     constructor(private store: Store) {
         this.richiesta = this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione);
+    }
+
+    // tslint:disable-next-line:use-lifecycle-interface
+    ngOnDestroy(): void {
+      this.store.dispatch(new ClearFiltriComposizione());
     }
 
     addFiltro(event: any, tipo: string): void {

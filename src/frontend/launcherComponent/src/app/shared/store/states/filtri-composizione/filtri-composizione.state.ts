@@ -3,11 +3,11 @@ import { ComposizioneFilterbar } from '../../../../features/home/composizione-pa
 import { GetListeComposizioneAvanzata } from '../../../../features/home/store/actions/composizione-partenza/composizione-avanzata.actions';
 import { Composizione } from '../../../enum/composizione.enum';
 import {
-    AddFiltroSelezionatoComposizione,
-    GetFiltriComposizione,
-    ResetFiltriComposizione,
-    RemoveFiltroSelezionatoComposizione,
-    SetFiltriComposizione
+  AddFiltroSelezionatoComposizione,
+  GetFiltriComposizione,
+  ResetFiltriComposizione,
+  RemoveFiltroSelezionatoComposizione,
+  SetFiltriComposizione, ClearFiltriComposizione
 } from '../../actions/filtri-composizione/filtri-composizione.actions';
 import { insertItem, patch, removeItem } from '@ngxs/store/operators';
 import { ListaTipologicheMezzi } from '../../../../features/home/composizione-partenza/interface/filtri/lista-filtri-composizione-interface';
@@ -199,5 +199,21 @@ export class FiltriComposizioneState {
                 );
                 break;
         }
+    }
+
+    @Action(ClearFiltriComposizione)
+    clearFiltriComposizione({ patchState }: StateContext<FiltriComposizioneStateStateModel>): void {
+      patchState({
+        filtri: {
+          turni: [],
+          distaccamenti: [],
+          generiMezzi: [],
+          stati: []
+        },
+        turno: undefined,
+        codiceDistaccamento: [],
+        tipoMezzo: [],
+        statoMezzo: [],
+      });
     }
 }

@@ -26,3 +26,7 @@ export class ResetFiltriComposizione {
     constructor(public tipoFiltro: string) {
     }
 }
+
+export class ClearFiltriComposizione {
+  static readonly type = '[FiltriComposizione] Clear Filtri Composizione';
+}
