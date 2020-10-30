@@ -14,10 +14,7 @@ import { Store } from '@ngxs/store';
 import { PatchRichiesta } from '../../../store/actions/richieste/richieste.actions';
 import { makeCopy } from 'src/app/shared/helper/function';
 import { TrasferimentoChiamataModalComponent } from 'src/app/shared/modal/trasferimento-chiamata-modal/trasferimento-chiamata-modal.component';
-import {
-    ClearFormTrasferimentoChiamata,
-    RequestAddTrasferimentoChiamata
-} from 'src/app/shared/store/actions/trasferimento-chiamata-modal/trasferimento-chiamata-modal.actions';
+import { ClearFormTrasferimentoChiamata, RequestAddTrasferimentoChiamata } from 'src/app/shared/store/actions/trasferimento-chiamata-modal/trasferimento-chiamata-modal.actions';
 import { AllertaSedeModalComponent } from '../../../../../shared/modal/allerta-sede-modal/allerta-sede-modal.component';
 import { AllertaSedeEmitInterface } from '../../../../../shared/interface/allerta-sede-emit.interface';
 import { ModificaPartenzaModalComponent } from 'src/app/shared/modal/modifica-partenza-modal/modifica-partenza-modal.component';
@@ -27,7 +24,7 @@ import { DettaglioFonogrammaModalComponent } from '../../../../../shared/modal/d
 import { ModificaFonogrammaModalComponent } from '../../../../../shared/modal/modifica-fonogramma-modal/modifica-fonogramma-modal.component';
 import { Tipologia } from '../../../../../shared/model/tipologia.model';
 import { Partenza } from '../../../../../shared/model/partenza.model';
-import { SetListaPartenzeSostituzioneFineTurno } from '../../../../../shared/store/actions/modifica-partenzef-fine-turno-modal/sostituzione-partenze-fine-turno.actions';
+import { ConfirmSostituzioni, SetListaPartenzeSostituzioneFineTurno } from '../../../../../shared/store/actions/modifica-partenzef-fine-turno-modal/sostituzione-partenze-fine-turno.actions';
 import { SostituzionePartenzeFineTunoModalComponent } from '../../../../../shared/modal/sostituzione-partenze-fine-turno-modal/sostituzione-partenze-fine-tuno-modal.component';
 
 @Component({
@@ -50,6 +47,7 @@ export class SintesiRichiestaComponent implements OnChanges {
     @Input() composizionePartenza = true;
     @Input() modificabile = true;
     @Input() gestibile = true;
+    @Input() sostituzioneFineTurno = false;
     @Input() disableTooltips = false;
     @Input() disableFissaInAltro = false;
     @Input() loadingEliminaPartenza = false;
@@ -320,7 +318,7 @@ export class SintesiRichiestaComponent implements OnChanges {
     }
 
     onSostituzioneFineTurno(partenze: Partenza[]): void {
-        const modalAllertaSede = this.modalService.open(SostituzionePartenzeFineTunoModalComponent, {
+        const modalSostituzioneFineTurno = this.modalService.open(SostituzionePartenzeFineTunoModalComponent, {
             windowClass: 'modal-holder',
             backdropClass: 'light-blue-backdrop',
             size: 'xl',
@@ -328,11 +326,12 @@ export class SintesiRichiestaComponent implements OnChanges {
         });
         const partenzeDisponibili = partenze.filter((p: Partenza) => !p.sganciata && !p.partenzaAnnullata && !p.terminata);
         this.store.dispatch(new SetListaPartenzeSostituzioneFineTurno(partenzeDisponibili));
-        modalAllertaSede.componentInstance.codRichiesta = this.richiesta.codice;
-        modalAllertaSede.result.then((res: { status: string, result: any }) => {
+        modalSostituzioneFineTurno.componentInstance.idRichiesta = this.richiesta.id;
+        modalSostituzioneFineTurno.componentInstance.codRichiesta = this.richiesta.codice;
+        modalSostituzioneFineTurno.result.then((res: { status: string, result: any }) => {
             switch (res.status) {
                 case 'ok' :
-                    // this.allertaSede.emit(res.result);
+                    this.store.dispatch(new ConfirmSostituzioni());
                     break;
                 case 'ko':
                     break;

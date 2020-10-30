@@ -1,6 +1,6 @@
 import { SostituzioneInterface } from '../sostituzione.interface';
 
-export interface SostituzionePartenzaFineTurnoDtoInterface {
+export interface SostituzionePartenzaFineTurnoDto {
     idRichiesta: string;
     dataOraOperazione: Date;
     sostituzioni: SostituzioneInterface[];

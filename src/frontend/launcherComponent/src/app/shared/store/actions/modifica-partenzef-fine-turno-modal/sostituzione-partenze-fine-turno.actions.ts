@@ -1,5 +1,11 @@
-import { SostituzioneInterface } from '../../../interface/sostituzione.interface';
 import { Partenza } from '../../../model/partenza.model';
+
+export class SetIdRichiestaSostituzioneFineTurno {
+    static readonly type = '[SostituzioneFineTurno] Set ID Richiesta Sostituzione Fine Turno';
+
+    constructor(public idRichiesta: string) {
+    }
+}
 
 export class SetListaPartenzeSostituzioneFineTurno {
     static readonly type = '[SostituzioneFineTurno] Set Lista Partenze Sostituzione Fine Turno';
@@ -22,7 +28,7 @@ export class SetSostituzioni {
 export class UpdateSostituzione {
     static readonly type = '[SostituzioneFineTurno] Update Sostituzione';
 
-    constructor(public codSquadraMontante: string, public codSquadraSmontante: string, public codMezzoSmontante: string) {
+    constructor(public squadraMontante: string, public squadraSmontante: string, public codMezzoSmontante: string) {
     }
 }
 

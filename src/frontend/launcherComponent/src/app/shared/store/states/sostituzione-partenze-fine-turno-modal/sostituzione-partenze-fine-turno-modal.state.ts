@@ -1,10 +1,19 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { Injectable } from '@angular/core';
 import { SostituzioneInterface } from '../../../interface/sostituzione.interface';
-import { SetSostituzioni, ClearSostituzioneFineTurno, SetListaPartenzeSostituzioneFineTurno, SetPartenzaMontante, UpdateSostituzione, ConfirmSostituzioni } from '../../actions/modifica-partenzef-fine-turno-modal/sostituzione-partenze-fine-turno.actions';
+import {
+    SetSostituzioni,
+    ClearSostituzioneFineTurno,
+    SetListaPartenzeSostituzioneFineTurno,
+    SetPartenzaMontante,
+    UpdateSostituzione,
+    ConfirmSostituzioni, SetIdRichiestaSostituzioneFineTurno
+} from '../../actions/modifica-partenzef-fine-turno-modal/sostituzione-partenze-fine-turno.actions';
 import { Partenza } from '../../../model/partenza.model';
 import { Squadra } from '../../../model/squadra.model';
-import { SostituzionePartenzaFineTurnoDtoInterface } from '../../../interface/dto/sostituzione-partenza-fine-turno-dto.interface';
+import { SostituzionePartenzaFineTurnoDto } from '../../../interface/dto/sostituzione-partenza-fine-turno-dto.interface';
+import { patch, updateItem } from '@ngxs/store/operators';
+import { ModificaPartenzaService } from '../../../../core/service/modifica-partenza/modifica-partenza.service';
 
 export interface ModificaPartenzeFineTurnoStateModel {
     idRichiesta: string;
@@ -27,6 +36,9 @@ export const ModificaPartenzeFineTurnoStateDefaults: ModificaPartenzeFineTurnoSt
 })
 export class SostituzionePartenzeFineTurnoModalState {
 
+    constructor(private modificaPartenzService: ModificaPartenzaService) {
+    }
+
     @Selector()
     static partenze(state: ModificaPartenzeFineTurnoStateModel): Partenza[] {
         return state.partenze;
@@ -40,6 +52,18 @@ export class SostituzionePartenzeFineTurnoModalState {
     @Selector()
     static sostituzioni(state: ModificaPartenzeFineTurnoStateModel): SostituzioneInterface[] {
         return state.sostituzioni;
+    }
+
+    @Selector()
+    static disableButtonConferma(state: ModificaPartenzeFineTurnoStateModel): boolean {
+        return state.sostituzioni.filter((s: SostituzioneInterface) => !s.codMezzoSmontante)?.length > 0;
+    }
+
+    @Action(SetIdRichiestaSostituzioneFineTurno)
+    setIdRichiestaSostituzioneFineTurno({ patchState }: StateContext<ModificaPartenzeFineTurnoStateModel>, action: SetIdRichiestaSostituzioneFineTurno): void {
+        patchState({
+            idRichiesta: action.idRichiesta
+        });
     }
 
     @Action(SetListaPartenzeSostituzioneFineTurno)
@@ -67,7 +91,7 @@ export class SostituzionePartenzeFineTurnoModalState {
                 codMezzoSmontante: undefined,
                 squadreSmontanti: null,
                 codMezzoMontante: partenzaMontate.mezzo.codice,
-                squadreMontanti: [s.id]
+                squadreMontanti: [s.nome]
             };
             sostituzioni.push(sostituzione);
         });
@@ -77,18 +101,27 @@ export class SostituzionePartenzeFineTurnoModalState {
     }
 
     @Action(UpdateSostituzione)
-    updateSostituzione({ getState, patchState }: StateContext<ModificaPartenzeFineTurnoStateModel>, action: UpdateSostituzione): void {
-        console.log('UpdateSostituzione, squadra montante', action.codSquadraMontante);
-        const codSquadraMontante = action.codSquadraMontante;
-        const codSquadraSmontante = action.codSquadraSmontante;
-        const codMezzoSmontante = action.codMezzoSmontante;
+    updateSostituzione({ getState, setState }: StateContext<ModificaPartenzeFineTurnoStateModel>, action: UpdateSostituzione): void {
         const state = getState();
-        const sostituzione = state.sostituzioni.filter((s: SostituzioneInterface) => s.squadreMontanti.includes(codSquadraMontante));
-        console.log('Sostituzione da aggiornare', sostituzione);
+        const codMezzoMontante = state.partenzaMontante.mezzo.codice;
+        const codMezzoSmontante = action.codMezzoSmontante;
+        const squadraMontante = action.squadraMontante;
+        const squadraSmontante = action.squadraSmontante;
+        const nuovaSostituzione = {
+            codMezzoMontante,
+            codMezzoSmontante,
+            squadreMontanti: squadraMontante ? [squadraMontante] : null,
+            squadreSmontanti: squadraSmontante ? [squadraSmontante] : null
+        } as SostituzioneInterface;
+        setState(
+            patch({
+                sostituzioni: updateItem<SostituzioneInterface>((s: SostituzioneInterface) => s.squadreMontanti[0] === squadraMontante, nuovaSostituzione)
+            })
+        );
     }
 
     @Action(ConfirmSostituzioni)
-    confirmSostituzioni({ getState }: StateContext<ModificaPartenzeFineTurnoStateModel>): void {
+    confirmSostituzioni({ getState, dispatch }: StateContext<ModificaPartenzeFineTurnoStateModel>): void {
         const state = getState();
         const idRichiesta = state.idRichiesta;
         const sostituzioni = state.sostituzioni;
@@ -96,9 +129,10 @@ export class SostituzionePartenzeFineTurnoModalState {
             idRichiesta,
             sostituzioni,
             dataOraOperazione: new Date()
-        } as SostituzionePartenzaFineTurnoDtoInterface;
-        console.log('ConfirmSostituzioni', obj);
-        // TODO: creare service
+        } as SostituzionePartenzaFineTurnoDto;
+        this.modificaPartenzService.addSostituzioneFineTurno(obj).subscribe(() => {
+            dispatch(new ClearSostituzioneFineTurno());
+        }, () => dispatch(new ClearSostituzioneFineTurno()));
     }
 
     @Action(ClearSostituzioneFineTurno)
