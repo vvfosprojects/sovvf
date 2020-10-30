@@ -9,7 +9,7 @@
             <div *ngFor="let m of mezziInServizio" class="col-6 pl-4 mb-1">
                 <app-mezzo-in-servizio [mezzoInServizio]="m" [idMezzoInServizioHover]="idMezzoInServizioHover"
                                        [idMezzoInServizioSelezionato]="idMezzoInServizioSelezionato"
-                                       [loading]="(loadingActionMezzo$ | async) && (loadingActionMezzo$ | async) === m.mezzo.mezzo.codice"
+                                       [loading]="(loadingActionMezzo$ | async)"
                                        (hoverIn)="hoverIn($event)" (hoverOut)="hoverOut()"
                                        (selezionato)="selezionato($event)"
                                        (dettaglioRichiesta)="onDettaglioRichiesta($event)"

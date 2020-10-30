@@ -6,7 +6,7 @@ import { SharedModule } from '../../../shared/shared.module';
  * AGM CORE
  */
 import { AgmCoreModule } from '@agm/core';
-import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
+import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window'; // Dependency
 import { AgmDirectionModule } from 'agm-direction';
 /**
  * MAPS

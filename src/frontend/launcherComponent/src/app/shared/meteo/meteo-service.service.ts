@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpBackend, HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
-import { map } from 'rxjs/internal/operators';
+import { map } from 'rxjs/operators';
 import { Meteo } from '../model/meteo.model';
 import { Coordinate } from '../model/coordinate.model';
 import { degToCompass, wipeCoordinate } from '../helper/function';

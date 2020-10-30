@@ -227,6 +227,7 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
             keyboard: false,
         });
         sostituzioneModal.componentInstance.idRichiesta = this.idRichiesta;
+        sostituzioneModal.componentInstance.richiesta = this.richiesta;
         sostituzioneModal.componentInstance.codRichiesta = this.codRichiesta;
         sostituzioneModal.componentInstance.partenza = this.partenza;
         sostituzioneModal.result.then((res: { status: string, result: any }) => {

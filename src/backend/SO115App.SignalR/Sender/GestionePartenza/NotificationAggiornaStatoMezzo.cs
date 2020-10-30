@@ -90,6 +90,20 @@ namespace SO115App.SignalR.Sender.GestionePartenza
             var listaSintesi = _sintesiRichiesteAssistenzahandler.Handle(sintesiRichiesteAssistenzaQuery).SintesiRichiesta;
             intervento.Chiamata = listaSintesi.LastOrDefault(richiesta => richiesta.Codice == intervento.CodRichiesta);
 
+            Task.Factory.StartNew(() =>
+            {
+                var listaMezziInServizioQuery = new ListaMezziInServizioQuery
+                {
+                    CodiciSede = intervento.CodiciSede,
+                    IdOperatore = intervento.IdUtente
+                };
+                var listaMezziInServizio = _listaMezziInServizioHandler.Handle(listaMezziInServizioQuery).DataArray;
+                var mezzo = listaMezziInServizio.Find(x => x.Mezzo.Mezzo.Codice.Equals(intervento.IdMezzo));
+
+                foreach (var sede in listaMezziInServizioQuery.CodiciSede)
+                    _notificationHubContext.Clients.Group(sede).SendAsync("NotifyUpdateMezzoInServizio", mezzo);
+            });
+
             Parallel.ForEach(SediDaNotificare.Distinct(), sede =>
             {
                 _notificationHubContext.Clients.Group(sede).SendAsync("ModifyAndNotifySuccess", intervento);
@@ -123,17 +137,6 @@ namespace SO115App.SignalR.Sender.GestionePartenza
                     };
                     var boxPersonale = _boxPersonaleHandler.Handle(boxPersonaleQuery).BoxPersonale;
                     _notificationHubContext.Clients.Group(sede).SendAsync("NotifyGetBoxPersonale", boxPersonale);
-                });
-
-                Task.Factory.StartNew(() =>
-                {
-                    var listaMezziInServizioQuery = new ListaMezziInServizioQuery
-                    {
-                        CodiciSede = new string[] { sede },
-                        IdOperatore = intervento.IdUtente
-                    };
-                    var listaMezziInServizio = _listaMezziInServizioHandler.Handle(listaMezziInServizioQuery).DataArray; 
-                    _notificationHubContext.Clients.Group(sede).SendAsync("NotifyUpdateMezzoInServizio", listaMezziInServizio.Find(x => x.Mezzo.Mezzo.Codice.Equals(intervento.IdMezzo/*.Split('.')[1]*/)));
                 });
 
                 if (intervento.Chiamata != null)
