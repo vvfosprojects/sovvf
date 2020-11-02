@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SharedModule } from '../../../shared/shared.module';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { SintesiRichiestaModule } from '../richieste/lista-richieste/sintesi-richiesta/sintesi-richiesta.module';
 import { ComposizionePartenzaComponent } from './composizione-partenza.component';
 import { ComposizioneAvanzataComponent } from './composizione-avanzata/composizione-avanzata.component';
 import { FasterComponent } from './composizione-veloce/composizione-veloce.component';
@@ -15,7 +14,6 @@ import { ComposizioneAvanzataState } from '../store/states/composizione-partenza
 import { ComposizionePartenzaState } from '../store/states/composizione-partenza/composizione-partenza.state';
 import { BoxPartenzaState } from '../store/states/composizione-partenza/box-partenza.state';
 import { ComposizioneConfirmButtonComponent } from './shared/composizione-buttons/composizione-confirm-button.component';
-import { SganciamentoMezzoModalComponent } from './shared/sganciamento-mezzo-modal/sganciamento-mezzo-modal.component';
 import { FormsModule } from '@angular/forms';
 import { FilterPipeModule } from 'ngx-filter-pipe';
 import { NgxPaginationModule } from 'ngx-pagination';
@@ -26,13 +24,11 @@ import { NgxPaginationModule } from 'ngx-pagination';
         FasterComponent,
         ComposizioneAvanzataComponent,
         BoxNuovaPartenzaComponent,
-        ComposizioneConfirmButtonComponent,
-        SganciamentoMezzoModalComponent
+        ComposizioneConfirmButtonComponent
     ],
     imports: [
         CommonModule,
         NgbModule,
-        SintesiRichiestaModule,
         SharedModule.forRoot(),
         NgSelectModule,
         NgxsModule.forFeature(

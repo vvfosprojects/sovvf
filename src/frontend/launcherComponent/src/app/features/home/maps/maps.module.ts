@@ -46,7 +46,6 @@ import { SediMarkersState } from '../store/states/maps/sedi-markers.state';
 import { RichiesteMarkersState } from '../store/states/maps/richieste-markers.state';
 import { CentroMappaState } from '../store/states/maps/centro-mappa.state';
 import { SintesiRichiestaModalComponent } from './maps-ui/info-window/sintesi-richiesta-modal/sintesi-richiesta-modal.component';
-import { SintesiRichiestaModule } from '../richieste/lista-richieste/sintesi-richiesta/sintesi-richiesta.module';
 import { MarkerInfoWindowState } from '../store/states/maps/marker-info-window.state';
 import { MarkerOpachiState } from '../store/states/maps/marker-opachi.state';
 import { ChiamateMarkersState } from '../store/states/maps/chiamate-markers.state';
@@ -68,7 +67,6 @@ import { FormsModule } from '@angular/forms';
         AgmDirectionModule,
         AgmMarkerClustererModule,
         AgmSnazzyInfoWindowModule,
-        SintesiRichiestaModule,
         SharedModule.forRoot(),
         NgSelectModule,
         NgxsModule.forFeature(

@@ -91,8 +91,12 @@ export class RichiestaFissataComponent implements OnInit, OnDestroy {
                 animate(350, style({ height: 'auto', opacity: '1' }))
             ]);
 
-        this.playerContainer = animationContainerRichiesta.create(this.richiestaContainer.nativeElement);
-        this.playerRichiesta = animationRichiesta.create(this.richiesta.nativeElement);
+        if (this.richiestaContainer) {
+            this.playerContainer = animationContainerRichiesta.create(this.richiestaContainer.nativeElement);
+        }
+        if (this.richiesta) {
+            this.playerRichiesta = animationRichiesta.create(this.richiesta.nativeElement);
+        }
     }
 
     createAnimazioneOut(): void {
@@ -120,14 +124,22 @@ export class RichiestaFissataComponent implements OnInit, OnDestroy {
 
     animazioneIn(): void {
         this.createAnimazioneIn();
-        this.playerContainer.play();
-        this.playerRichiesta.play();
+        if (this.playerContainer) {
+            this.playerContainer.play();
+        }
+        if (this.playerRichiesta) {
+            this.playerRichiesta.play();
+        }
     }
 
     animazioneOut(): void {
         this.createAnimazioneOut();
-        this.playerContainer.play();
-        this.playerRichiesta.play();
+        if (this.playerContainer) {
+            this.playerContainer.play();
+        }
+        if (this.playerRichiesta) {
+            this.playerRichiesta.play();
+        }
     }
 
     visualizzaEventiRichiesta(idRichiesta: string): void {

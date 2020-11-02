@@ -1,6 +1,5 @@
 ﻿using CQRS.Authorization;
 using CQRS.Queries.Authorizers;
-using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GestioneTrasferimentiChiamate.CodiciChiamate;
 using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.VerificaUtente;
@@ -16,16 +15,15 @@ namespace SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GestioneTrasferi
 
         public TrasferimentiChiamateAuthorizationQueryHandlerDecorator(IPrincipal currentUser, IFindUserByUsername findUserByUsername)
         {
-            this._currentUser = currentUser;
+            _currentUser = currentUser;
             _findUserByUsername = findUserByUsername;
         }
 
         public IEnumerable<AuthorizationResult> Authorize(CodiciChiamateQuery query)
         {
-            string username = this._currentUser.Identity.Name;
-            Utente user = _findUserByUsername.FindUserByUs(username);
+            var user = _findUserByUsername.FindUserByUs(_currentUser.Identity.Name);
 
-            if (this._currentUser.Identity.IsAuthenticated)
+            if (_currentUser.Identity.IsAuthenticated)
             {
                 if (user == null)
                     yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);

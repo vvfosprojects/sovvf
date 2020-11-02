@@ -20,6 +20,7 @@ import {
     HoverInMezzoComposizione,
     HoverOutMezzoComposizione,
     ReducerSelectMezzoComposizione,
+    SganciamentoMezzoComposizione,
     UnselectMezzoComposizione
 } from '../../store/actions/mezzi-composizione/mezzi-composizione.actions';
 import { AddBoxPartenza, ClearBoxPartenze } from '../../../features/home/store/actions/composizione-partenza/box-partenza.actions';
@@ -48,6 +49,7 @@ import { UpdateFormValue } from '@ngxs/form-plugin';
 import { PaginationComposizionePartenzaState } from '../../store/states/pagination-composizione-partenza/pagination-composizione-partenza.state';
 import { SintesiRichiesta } from '../../model/sintesi-richiesta.model';
 import { GetFiltriComposizione } from '../../store/actions/filtri-composizione/filtri-composizione.actions';
+import { SganciamentoInterface } from '../../interface/sganciamento.interface';
 
 @Component({
     selector: 'app-sostituzione-partenza',
@@ -342,6 +344,10 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
         this.store.dispatch([
             new HoverOutMezzoComposizione(),
         ]);
+    }
+
+    onSganciamento(sganciamentoObj: SganciamentoInterface): void {
+        this.store.dispatch(new SganciamentoMezzoComposizione(sganciamentoObj));
     }
 
     squadraSelezionata(squadraComposizione: SquadraComposizione): void {

@@ -63,7 +63,7 @@ namespace SO115App.API.Controllers
         public async Task<IActionResult> Get(TrasferimentiChiamateQuery query)
         {
             query.IdOperatore = Request.Headers["IdUtente"];
-            query.CodiceSede = Request.Headers["CodiceSede"];
+            query.CodiciSede = Request.Headers["CodiceSede"].ToString().Split(",", StringSplitOptions.RemoveEmptyEntries);
 
             try
             {
