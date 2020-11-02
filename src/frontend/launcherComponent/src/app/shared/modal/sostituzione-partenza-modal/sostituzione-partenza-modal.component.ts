@@ -1,9 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import {
-  GetListaMezziSquadre,
-  IdRichiestaSostituzione,
-  StartListaComposizioneLoading,
+    GetListaMezziSquadre,
+    IdRichiestaSostituzione,
+    StartListaComposizioneLoading,
 } from '../../store/actions/sostituzione-partenza/sostituzione-partenza.actions';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
@@ -19,7 +19,7 @@ import {
     ClearListaMezziComposizione,
     HoverInMezzoComposizione,
     HoverOutMezzoComposizione,
-    ReducerSelectMezzoComposizione,
+    ReducerSelectMezzoComposizione, SganciamentoMezzoComposizione,
     UnselectMezzoComposizione
 } from '../../store/actions/mezzi-composizione/mezzi-composizione.actions';
 import { AddBoxPartenza, ClearBoxPartenze } from '../../../features/home/store/actions/composizione-partenza/box-partenza.actions';
@@ -31,13 +31,13 @@ import {
     SelectSquadraComposizione,
     UnselectSquadraComposizione
 } from '../../store/actions/squadre-composizione/squadre-composizione.actions';
-import {UnselectMezziAndSquadreComposizioneAvanzata} from '../../../features/home/store/actions/composizione-partenza/composizione-avanzata.actions';
+import { UnselectMezziAndSquadreComposizioneAvanzata } from '../../../features/home/store/actions/composizione-partenza/composizione-avanzata.actions';
 import { FiltriComposizioneState } from '../../store/states/filtri-composizione/filtri-composizione.state';
 import {
-  ResetRicercaMezziComposizione,
-  ResetRicercaSquadreComposizione,
-  SetRicercaMezziComposizione,
-  SetRicercaSquadreComposizione
+    ResetRicercaMezziComposizione,
+    ResetRicercaSquadreComposizione,
+    SetRicercaMezziComposizione,
+    SetRicercaSquadreComposizione
 } from '../../store/actions/ricerca-composizione/ricerca-composizione.actions';
 import { ListaSquadre } from '../../interface/lista-squadre';
 import { VisualizzaListaSquadrePartenza } from '../../../features/home/store/actions/richieste/richieste.actions';
@@ -48,6 +48,7 @@ import { UpdateFormValue } from '@ngxs/form-plugin';
 import { PaginationComposizionePartenzaState } from '../../store/states/pagination-composizione-partenza/pagination-composizione-partenza.state';
 import { SintesiRichiesta } from '../../model/sintesi-richiesta.model';
 import { GetFiltriComposizione } from '../../store/actions/filtri-composizione/filtri-composizione.actions';
+import { SganciamentoInterface } from '../../interface/sganciamento.interface';
 
 @Component({
     selector: 'app-sostituzione-partenza',
@@ -311,7 +312,7 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
 
     mezzoSelezionato(mezzoComposizione: MezzoComposizione): void {
         this.store.dispatch([new StartListaComposizioneLoading(),
-                                          new ReducerSelectMezzoComposizione(mezzoComposizione)]);
+            new ReducerSelectMezzoComposizione(mezzoComposizione)]);
         this.nuovoMezzo = mezzoComposizione.mezzo;
     }
 
@@ -344,6 +345,10 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
         ]);
     }
 
+    onSganciamento(sganciamentoObj: SganciamentoInterface): void {
+        this.store.dispatch(new SganciamentoMezzoComposizione(sganciamentoObj));
+    }
+
     squadraSelezionata(squadraComposizione: SquadraComposizione): void {
         this.store.dispatch(new StartListaComposizioneLoading());
         if (this.nuovoMezzo.codice === '' && this.nuoveSquadre.length <= 0) {
@@ -359,7 +364,7 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
 
     squadraDeselezionata(squadraComposizione: SquadraComposizione): void {
         this.store.dispatch([new StartListaComposizioneLoading(),
-                                          new UnselectSquadraComposizione(squadraComposizione)]);
+            new UnselectSquadraComposizione(squadraComposizione)]);
         const r = squadraComposizione.squadra;
         const a = this.nuoveSquadre.filter(e => e !== r);
         this.nuoveSquadre = a;
@@ -389,28 +394,28 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
 
     changeRicercaSquadre(): void {
         this.store.dispatch([new StartListaComposizioneLoading(),
-                                          new SetRicercaSquadreComposizione(makeCopy(this.ricercaSquadre)),
-                                          new GetListaMezziSquadre()]);
+            new SetRicercaSquadreComposizione(makeCopy(this.ricercaSquadre)),
+            new GetListaMezziSquadre()]);
     }
 
     changeRicercaMezzi(): void {
         this.store.dispatch([new StartListaComposizioneLoading(),
-                                          new SetRicercaMezziComposizione(makeCopy(this.ricercaMezzi)),
-                                          new GetListaMezziSquadre()]);
+            new SetRicercaMezziComposizione(makeCopy(this.ricercaMezzi)),
+            new GetListaMezziSquadre()]);
     }
 
     onClearSearchSquadre(): void {
-      this.ricercaSquadre = '';
-      this.store.dispatch([new StartListaComposizioneLoading(),
-        new SetRicercaSquadreComposizione(makeCopy(this.ricercaSquadre)),
-        new GetListaMezziSquadre()]);
+        this.ricercaSquadre = '';
+        this.store.dispatch([new StartListaComposizioneLoading(),
+            new SetRicercaSquadreComposizione(makeCopy(this.ricercaSquadre)),
+            new GetListaMezziSquadre()]);
     }
 
     onClearSearchMezzi(): void {
-      this.ricercaMezzi = '';
-      this.store.dispatch([new StartListaComposizioneLoading(),
-        new SetRicercaMezziComposizione(makeCopy(this.ricercaMezzi)),
-        new GetListaMezziSquadre()]);
+        this.ricercaMezzi = '';
+        this.store.dispatch([new StartListaComposizioneLoading(),
+            new SetRicercaMezziComposizione(makeCopy(this.ricercaMezzi)),
+            new GetListaMezziSquadre()]);
     }
 
     getTitle(): string {

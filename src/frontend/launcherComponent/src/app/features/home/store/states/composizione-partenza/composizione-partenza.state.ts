@@ -47,6 +47,7 @@ import { GetMarkersMappa, StartLoadingAreaMappa, StopLoadingAreaMappa } from '..
 import { ShowToastr } from 'src/app/shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from 'src/app/shared/enum/toastr';
 import { Injectable } from '@angular/core';
+import { GetListaMezziSquadre } from '../../../../../shared/store/actions/sostituzione-partenza/sostituzione-partenza.actions';
 
 export interface ComposizionePartenzaStateModel {
     richiesta: SintesiRichiesta;
@@ -201,6 +202,8 @@ export class ComposizionePartenzaState {
             const composizioneActive = !!(getState().richiesta);
             if (composizioneActive) {
                 dispatch(new GetListeComposizioneAvanzata());
+            } else {
+                dispatch(new GetListaMezziSquadre());
             }
             dispatch(new ShowToastr(ToastrType.Success, 'Partenza inviata con successo'));
         }, () => {

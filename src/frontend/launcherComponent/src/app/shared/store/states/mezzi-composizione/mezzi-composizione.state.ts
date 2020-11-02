@@ -43,7 +43,7 @@ import { ClearMarkerMezzoHover, SetMarkerMezzoHover, SetMarkerMezzoSelezionato }
 import { SintesiRichiesta } from 'src/app/shared/model/sintesi-richiesta.model';
 import { Partenza } from 'src/app/shared/model/partenza.model';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { SganciamentoMezzoModalComponent } from '../../../../features/home/composizione-partenza/shared/sganciamento-mezzo-modal/sganciamento-mezzo-modal.component';
+import { SganciamentoMezzoModalComponent } from '../../../modal/sganciamento-mezzo-modal/sganciamento-mezzo-modal.component';
 import { ConfermaPartenze } from '../../../../features/home/composizione-partenza/interface/conferma-partenze-interface';
 import { TurnoState } from 'src/app/features/navbar/store/states/turno.state';
 import { ConfirmPartenze } from '../../../../features/home/store/actions/composizione-partenza/composizione-partenza.actions';
@@ -54,6 +54,7 @@ import { Injectable } from '@angular/core';
 import { GetListeComposizioneAvanzata } from '../../../../features/home/store/actions/composizione-partenza/composizione-avanzata.actions';
 import { ComposizionePartenzaState } from '../../../../features/home/store/states/composizione-partenza/composizione-partenza.state';
 import { GetListaMezziSquadre } from '../../actions/sostituzione-partenza/sostituzione-partenza.actions';
+import { ModificaPartenzaModalState } from '../modifica-partenza-modal/modifica-partenza-modal.state';
 
 export interface MezziComposizioneStateStateModel {
     allMezziComposizione: MezzoComposizione[];
@@ -451,13 +452,16 @@ export class MezziComposizioneState {
                     { type: 'ko', descrizione: 'Annulla', colore: 'danger' },
                     { type: 'ok', descrizione: 'Sgancia', colore: 'success' },
                 ];
-
+                let idRichiesta = this.store.selectSnapshot(x => x.composizionePartenza.richiesta) ? this.store.selectSnapshot(x => x.composizionePartenza.richiesta).codice : null;
+                if (!idRichiesta) {
+                    idRichiesta = this.store.selectSnapshot(ModificaPartenzaModalState.codRichiesta);
+                }
                 modalSganciamento.result.then((val) => {
                     switch (val) {
                         case 'ok':
                             const partenzaObj: ConfermaPartenze = {
                                 partenze: [partenzaDaSganciare],
-                                idRichiesta: this.store.selectSnapshot(x => x.composizionePartenza.richiesta).codice,
+                                idRichiesta,
                                 turno: this.store.selectSnapshot(TurnoState.turnoCalendario).corrente,
                                 idRichiestaDaSganciare: action.sganciamentoObj.idRichiestaDaSganciare,
                                 idMezzoDaSganciare: action.sganciamentoObj.idMezzoDaSganciare
