@@ -9,7 +9,6 @@ import { FilterPipeModule } from 'ngx-filter-pipe';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { SintesiRichiestaModule } from './lista-richieste/sintesi-richiesta/sintesi-richiesta.module';
 import { UiSwitchModule } from 'ngx-ui-switch';
 import { GooglePlaceModule } from 'ngx-google-places-autocomplete';
 import { TagInputModule } from 'ngx-chips';
@@ -44,7 +43,6 @@ import { RichiestaAttivitaUtenteState } from '../store/states/richieste/richiest
         UiSwitchModule.forRoot(null),
         NgSelectModule,
         SharedModule.forRoot(),
-        SintesiRichiestaModule,
         GooglePlaceModule,
         TagInputModule,
         NgxsModule.forFeature([

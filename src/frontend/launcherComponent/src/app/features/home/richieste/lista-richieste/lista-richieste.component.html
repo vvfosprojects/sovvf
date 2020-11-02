@@ -12,7 +12,7 @@
                                        [richiesta]="r"
                                        [fissata]="false"
                                        [fissabile]="true"
-                                       [espanso]="isEspanso(r.id)"
+                                       [isEspanso]="isEspanso(r.id)"
                                        [espandibile]="true" [listaEventi]="true"
                                        [inGestione]="richiestaGestione?.id === r.id"
                                        [disabledModificaRichiesta]="permessiFeature.ModificaRichiesta | checkPermissionRichiesta: r.codUOCompetenza : r.codSOCompetente : r.codSOAllertate"
