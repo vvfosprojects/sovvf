@@ -125,6 +125,9 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
                     else
                         return ((RevocaPerRiassegnazione)evento).RichiestaSubentrata.Codice;
 
+                case TrasferimentoChiamata _:
+                    return ((TrasferimentoChiamata)evento).Note;
+
                 case AllertaSedi _:
 
                 default:
@@ -258,6 +261,9 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
 
                 case RevocaPerSostituzioneMezzo _:
                     return Costanti.RevocaPerSostituzioneMezzo;
+
+                case TrasferimentoChiamata _:
+                    return Costanti.TrasferimentoChiamata;
 
                 default:
                     return Costanti.EventoGenerico;
