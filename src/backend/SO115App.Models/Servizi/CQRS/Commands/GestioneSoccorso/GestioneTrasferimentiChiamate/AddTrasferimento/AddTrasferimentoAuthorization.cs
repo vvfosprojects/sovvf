@@ -35,9 +35,9 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestioneTrasfer
                     bool abilitato = false;
                     foreach (var ruolo in user.Ruoli)
                     {
-                        if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, command.CodiceSede, Costanti.GestoreChiamate))
+                        if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, command.CodiciSede[0], Costanti.GestoreChiamate))
                             abilitato = true;
-                        if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, command.CodiceSede, Costanti.GestoreRichieste))
+                        if (_getAutorizzazioni.GetAutorizzazioniUtente(user.Ruoli, command.CodiciSede[0], Costanti.GestoreRichieste))
                             abilitato = true;
                     }
 
