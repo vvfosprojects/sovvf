@@ -22,7 +22,7 @@
                                        [disabledGestisciRichiesta]="permessiFeature.GestisciRichiesta | checkPermissionRichiesta: r.codUOCompetenza : r.codSOCompetente : r.codSOAllertate"
                                        [disabledComposizionePartenza]="(permessiFeature.ComposizionePartenzaRichiesta | checkPermissionRichiesta: r.codUOCompetenza : r.codSOCompetente : r.codSOAllertate) || r.stato === statoRichiesta.Chiusa"
                                        [disableTooltips]="scrolling"
-                                       [disableFissaInAltro]="richieste.length === 1"
+                                       [disableFissaInAlto]="richieste.length === 1"
                                        [loadingEliminaPartenza]="loadingEliminaPartenza"
                                        (hoverIn)="richiestaHoverIn($event)"
                                        (hoverOut)="richiestaHoverOut($event)"

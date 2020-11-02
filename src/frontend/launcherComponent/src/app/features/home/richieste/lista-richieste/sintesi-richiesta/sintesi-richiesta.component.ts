@@ -49,7 +49,7 @@ export class SintesiRichiestaComponent implements OnChanges {
     @Input() gestibile = true;
     @Input() sostituzioneFineTurno = false;
     @Input() disableTooltips = false;
-    @Input() disableFissaInAltro = false;
+    @Input() disableFissaInAlto = false;
     @Input() loadingEliminaPartenza = false;
     @Input() disabledModificaRichiesta = false;
     @Input() disabledGestisciRichiesta = false;
