@@ -150,7 +150,7 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
                     {
                         var sintesiSganciata = _mapperSintesi.Map(conferma.RichiestaDaSganciare);
                         sintesiSganciata.Competenze = MapCompetenze(conferma.Richiesta.CodUOCompetenza);
-                        conferma.ConfermaPartenze.Chiamata = sintesi.Result;
+                        conferma.ConfermaPartenze.Chiamata = sintesiSganciata;
                         _notificationHubContext.Clients.Group(sede).SendAsync("ModifyAndNotifySuccess", conferma.ConfermaPartenze);
                     });
                 }

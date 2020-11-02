@@ -39,7 +39,7 @@ namespace SO115App.API.Controllers
             var command = new AddTrasferimentoCommand()
             {
                 IdOperatore = Request.Headers["IdUtente"],
-                CodiceSede = Request.Headers["CodiceSede"],
+                CodiciSede = Request.Headers["CodiceSede"].ToString().Split(",", StringSplitOptions.RemoveEmptyEntries),
 
                 TrasferimentoChiamata = trasferimento
             };

@@ -55,9 +55,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
         private readonly IGetConteggioSchede _getConteggioSchedeHandler;
         private readonly IGetTipologieByCodice _tipologieQueryHandler;
         private readonly IGetAlberaturaUnitaOperative _getAlberaturaUnitaOperative;
-        private readonly IGetListaSquadre _getListaSquadre;
-        private readonly IGetMezziUtilizzabili _getMezziUtilizzabili;
-        private readonly IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> _sintesiRichiesteAssistenzaHandler;
         private readonly IQueryHandler<RubricaQuery, RubricaResult> _rubricaQueryHandler;
 
         public WelcomeQueryHandler(IGetBoxMezzi boxMezziHandler,
@@ -69,16 +66,12 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
             IGetListaDistaccamentiByPinListaSedi getDistaccamenti,
             IGetConteggioSchede getConteggioSchedeHandler,
             IGetTipologieByCodice tipologieQueryHandler,
-            IGetListaSquadre getListaSquadre,
-            IGetMezziUtilizzabili getMezziUtilizzabili,
             IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative,
-            //IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> sintesiRichiesteAssistenzaHandler,
             IQueryHandler<RubricaQuery, RubricaResult> rubricaQueryHandler)
         {
             _boxMezziHandler = boxMezziHandler;
             _boxPersonaleHandler = boxPersonaleHandler;
             _boxRichiesteHandler = boxRichiesteHandler;
-            //_sintesiRichiesteAssistenzaHandler = sintesiRichiesteAssistenzaHandler;
             _listaChiamateInCorsoMarkerHandler = listaChiamateInCorsoMarkerHandler;
             _centroMappaMarkerHandler = centroMappaMarkerHandler;
             _filtriHandler = filtriHandler;
@@ -87,8 +80,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
             _tipologieQueryHandler = tipologieQueryHandler;
             _getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
             _rubricaQueryHandler = rubricaQueryHandler;
-            _getMezziUtilizzabili = getMezziUtilizzabili;
-            _getListaSquadre = getListaSquadre;
         }
 
         /// <summary>
@@ -141,7 +132,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
             var boxListaMezzi = Task.Factory.StartNew(() => _boxMezziHandler.Get(query.CodiceSede));
             var boxListaPersonale = Task.Factory.StartNew(() => _boxPersonaleHandler.Get(query.CodiceSede));
             var listaChiamateInCorso = Task.Factory.StartNew(() => _listaChiamateInCorsoMarkerHandler.Get(pinNodi));
-            //var listaSintesi = Task.Factory.StartNew(() => _sintesiRichiesteAssistenzaHandler.Handle(sintesiRichiesteAssistenzaQuery));
             var centroMappaMarker = Task.Factory.StartNew(() => _centroMappaMarkerHandler.GetCentroMappaMarker(query.CodiceSede[0]));
             var infoNue = Task.Factory.StartNew(() => _getConteggioSchedeHandler.GetConteggio(query.CodiceSede));
             var tipologie = Task.Factory.StartNew(() => _tipologieQueryHandler.Get());
@@ -152,7 +142,6 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Welcome
                 BoxListaMezzi = boxListaMezzi.Result,
                 BoxListaPersonale = boxListaPersonale.Result,
                 ListaChiamateInCorso = listaChiamateInCorso.Result,
-                //ListaSintesi = listaSintesi.Result,
                 CentroMappaMarker = centroMappaMarker.Result,
                 ListaFiltri = filtri,
                 InfoNue = infoNue.Result,

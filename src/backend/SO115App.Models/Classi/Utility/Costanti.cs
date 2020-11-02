@@ -117,6 +117,7 @@ namespace SO115App.Models.Classi.Utility
 
         public static string AllertaAltreSedi = "AllertaAltreSedi";
 
+        public static string TrasferimentoChiamata = "TrasferimentoChiamata";
         #endregion Eventi
 
         #region Ruoli Utenti

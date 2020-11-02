@@ -128,6 +128,9 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
                 case SostituzionePartenzaFineTurno _:
                     return ((SostituzionePartenzaFineTurno)evento).Note;
 
+                case TrasferimentoChiamata _:
+                    return ((TrasferimentoChiamata)evento).Note;
+
                 case AllertaSedi _:
 
                 default:
@@ -268,6 +271,9 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
 
                 case SostituzionePartenzaFineTurno _:
                     return Costanti.SostituzionePartenza;
+
+                case TrasferimentoChiamata _:
+                    return Costanti.TrasferimentoChiamata;
 
                 default:
                     return Costanti.EventoGenerico;
