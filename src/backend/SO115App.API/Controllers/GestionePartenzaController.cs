@@ -119,6 +119,8 @@ namespace SO115App.API.Controllers
         [HttpPost("SostituzionePartenza")]
         public async Task<IActionResult> SostituzionePartenza([FromBody] SostituzioneDTO partenzeDaSostituire)
         {
+            partenzeDaSostituire.idOperatore = Request.Headers["IdUtente"];
+
             var command = new SostituzionePartenzaCommand()
             {
                 sostituzione = partenzeDaSostituire
