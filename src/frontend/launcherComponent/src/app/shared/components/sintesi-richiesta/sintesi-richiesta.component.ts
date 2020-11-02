@@ -23,9 +23,9 @@ import { EliminaPartenzaModalComponent } from '../../modal/elimina-partenza-moda
 import { DettaglioFonogrammaModalComponent } from '../../modal/dettaglio-fonogramma-modal/dettaglio-fonogramma-modal.component';
 import { ModificaFonogrammaModalComponent } from '../../modal/modifica-fonogramma-modal/modifica-fonogramma-modal.component';
 import { Tipologia } from '../../model/tipologia.model';
-import { Partenza } from '../../../../../shared/model/partenza.model';
-import { ConfirmSostituzioni, SetListaPartenzeSostituzioneFineTurno } from '../../../../../shared/store/actions/modifica-partenzef-fine-turno-modal/sostituzione-partenze-fine-turno.actions';
-import { SostituzionePartenzeFineTunoModalComponent } from '../../../../../shared/modal/sostituzione-partenze-fine-turno-modal/sostituzione-partenze-fine-tuno-modal.component';
+import { Partenza } from '../../model/partenza.model';
+import { SostituzionePartenzeFineTunoModalComponent } from '../../modal/sostituzione-partenze-fine-turno-modal/sostituzione-partenze-fine-tuno-modal.component';
+import { ConfirmSostituzioni, SetListaPartenzeSostituzioneFineTurno } from '../../store/actions/modifica-partenzef-fine-turno-modal/sostituzione-partenze-fine-turno.actions';
 
 @Component({
     selector: 'app-sintesi-richiesta',
