@@ -1,4 +1,4 @@
-import { Component, isDevMode, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import { RuoliUtenteLoggatoState } from '../../shared/store/states/ruoli-utente-loggato/ruoli-utente-loggato.state';
 import { Observable, Subscription } from 'rxjs';
@@ -37,9 +37,7 @@ export class ImpostazioniComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        if (isDevMode()) {
-            console.log('Componente Impostazioni creato');
-        }
+        console.log('Componente Impostazioni creato');
         this.store.dispatch([
             new SetCurrentUrl(RoutesPath.Impostazioni),
             new SetSediNavbarVisible(false),
@@ -48,9 +46,7 @@ export class ImpostazioniComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-        if (isDevMode()) {
-            console.log('Componente Impostazioni distrutto');
-        }
+        console.log('Componente Impostazioni distrutto');
         this.store.dispatch([
             new SetSediNavbarVisible()
         ]);

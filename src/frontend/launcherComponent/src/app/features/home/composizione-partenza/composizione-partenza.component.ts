@@ -1,4 +1,4 @@
-import { Component, Input, isDevMode, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
 import { Observable, Subscription } from 'rxjs';
 import { Select, Store } from '@ngxs/store';
@@ -30,7 +30,6 @@ import { ClearPreaccoppiati } from '../store/actions/composizione-partenza/compo
 import { FiltriComposizioneState } from '../../../shared/store/states/filtri-composizione/filtri-composizione.state';
 import { SetRicercaMezziComposizione, SetRicercaSquadreComposizione } from '../../../shared/store/actions/ricerca-composizione/ricerca-composizione.actions';
 import { GetListeComposizioneAvanzata } from '../store/actions/composizione-partenza/composizione-avanzata.actions';
-import { PatchPaginationComposizionePartenza } from '../../../shared/store/actions/pagination-composizione-partenza/pagination-composizione-partenza.actions';
 import { ListaTipologicheMezzi } from './interface/filtri/lista-filtri-composizione-interface';
 
 @Component({
@@ -76,9 +75,7 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        if (isDevMode()) {
-            console.log('Componente Composizione creato');
-        }
+        console.log('Componente Composizione creato');
         this.prevStateBoxClick = this.store.selectSnapshot(BoxClickState);
         if (this.richiesta) {
             this.store.dispatch([
@@ -97,9 +94,7 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
             new ClearPreaccoppiati()
         ]);
         this.subscription.unsubscribe();
-        if (isDevMode()) {
-            console.log('Componente Composizione distrutto');
-        }
+        console.log('Componente Composizione distrutto');
     }
 
     cardClasses(r: SintesiRichiesta): void {

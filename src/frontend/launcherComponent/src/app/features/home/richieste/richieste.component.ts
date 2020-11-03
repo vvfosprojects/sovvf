@@ -1,4 +1,4 @@
-import { Component, Input, isDevMode, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FilterPipe } from 'ngx-filter-pipe';
@@ -116,9 +116,7 @@ export class RichiesteComponent implements OnInit, OnDestroy {
         this.getRichiestaGestione();
         this.getRicercaRichieste();
         this.getFiltriSelezionati();
-        if (isDevMode()) {
-            console.log('Componente Richieste creato');
-        }
+        console.log('Componente Richieste creato');
     }
 
     ngOnDestroy(): void {
@@ -127,9 +125,7 @@ export class RichiesteComponent implements OnInit, OnDestroy {
             new ResetFiltriSelezionatiRichieste({ preventGetList: true }),
             new ClearRichieste()
         ]);
-        if (isDevMode()) {
-            console.log('Componente Richieste distrutto');
-        }
+        console.log('Componente Richieste distrutto');
     }
 
     getRichieste(): void {

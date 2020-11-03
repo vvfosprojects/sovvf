@@ -1,4 +1,4 @@
-import { Component, EventEmitter, HostListener, Input, isDevMode, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild, ViewEncapsulation } from '@angular/core';
 import { DownlineTreeviewItem, OrderDownlineTreeviewEventParser, TreeviewConfig, TreeviewEventParser, TreeviewItem } from 'ngx-treeview';
 import { NgbDropdown, NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 import { arrayUnique } from '../../helper/function';
@@ -61,15 +61,11 @@ export class TreeviewComponent implements OnChanges, OnDestroy, OnInit {
     }
 
     ngOnInit(): void {
-        if (isDevMode()) {
             console.log('Componente Shared Treeview creato');
-        }
     }
 
     ngOnDestroy(): void {
-        if (isDevMode()) {
             console.log('Componente Shared Treeview distrutto');
-        }
     }
 
     ngOnChanges(changes: SimpleChanges): void {

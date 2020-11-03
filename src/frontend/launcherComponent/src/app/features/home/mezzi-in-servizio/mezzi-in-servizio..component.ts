@@ -1,4 +1,4 @@
-import { Component, Input, isDevMode, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Store, Select } from '@ngxs/store';
 import { ToggleMezziInServizio } from '../store/actions/view/view.actions';
 import { SetIdRichiestaEventi, ClearEventiRichiesta, SetFiltroTargaMezzo } from '../store/actions/eventi/eventi-richiesta.actions';
@@ -70,9 +70,7 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.store.dispatch(new ClearRicercaFilterbar());
-        if (isDevMode()) {
-            console.log('Componente Mezzo in Servizio creato');
-        }
+        console.log('Componente Mezzo in Servizio creato');
     }
 
     ngOnDestroy(): void {
@@ -83,9 +81,7 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
             new ClearRicercaFilterbar(),
             new UndoAllBoxes(this.prevStateBoxClick)
         ]);
-        if (isDevMode()) {
-            console.log('Componente Mezzo in Servizio distrutto');
-        }
+        console.log('Componente Mezzo in Servizio distrutto');
     }
 
     getMezziInServizio(): void {

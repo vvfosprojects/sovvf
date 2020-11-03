@@ -9,7 +9,7 @@ import { AppComponent } from './app.component';
  */
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { isDevMode, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FilterPipeModule } from 'ngx-filter-pipe';
@@ -85,7 +85,7 @@ import { NgxUiLoaderModule } from 'ngx-ui-loader';
         NavbarModule,
         NgxUiLoaderModule.forRoot({}),
         ToastrModule.forRoot({
-            positionClass: isDevMode() ? 'toast-bottom-right' : 'toast-bottom-center',
+            positionClass: 'toast-bottom-center',
             preventDuplicates: true,
         }),
         NgxsModule.forRoot(

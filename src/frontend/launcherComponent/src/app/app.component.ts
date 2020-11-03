@@ -1,4 +1,4 @@
-import { AfterViewChecked, Component, ElementRef, HostListener, isDevMode, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewChecked, Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { RoutesPath } from './shared/enum/routes-path.enum';
 import { Select, Store } from '@ngxs/store';
@@ -81,9 +81,7 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
 
 
     ngOnInit(): void {
-        if (!isDevMode()) {
-            this.versionCheckService.initVersionCheck(3);
-        }
+        this.versionCheckService.initVersionCheck(3);
         this.preloadImage(Images.Disconnected);
     }
 
