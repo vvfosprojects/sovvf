@@ -1,26 +1,40 @@
 <div class="container-fluid pt-4 pb-2">
     <div class="row">
         <div class="col-12 col-md-5 mx-auto mt-2 mb-5">
-            <div class="card card-shadow px-4 py-3">
+            <div class="card card-shadow px-4 py-3 no-padding-custom" >
                 <div class="clearfix">
-                    <div class="float-left">
-                        <h3>
-                            <i class="fa fa-user mr-1"></i>
+                    <div class="text-center float-left" style="width: 50%">
+                        <div class="container mt-2">
+                          <div class="d-flex justify-content-center h-100">
+                            <div class="img-fuori-container">
+                              <div class="icona-verde"></div>
+                              <div class="img-dentro-container">
+                                <img src="../../../../assets/img/logo_vvf_200x.png">
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <h3 class="mb-1">
                             {{ (utente.nome + ' ' + utente.cognome) | uppercase }}
                         </h3>
-                        <h6>
-                            <span class="font-weight-bold">CF:</span>
-                            {{ utente.codiceFiscale | uppercase }}
+                        <div class="divider-custom">
+                          <div class="divider-custom-line" style="height: 0.09rem;"></div>
+                        </div>
+                        <h6 class="mt-1">
+                          <span class="font-weight-bold">CF:</span>
+                          {{ utente.codiceFiscale | uppercase }}
                         </h6>
-                    </div>
-                    <div class="float-right">
-                        <h5 class="font-weight-bold">
+                        </div>
+                    <div class="text-center float-right py-2" style="background-color: rgba(255, 0, 0, 0.1); width: 50%">
+                        <h5 class="font-weight-bold allineamento-list">
                             <i class="fa fa-cogs mr-1"></i>
                             {{ 'ruoli assegnati' | uppercase }}
                         </h5>
-                        <div *ngFor="let ruolo of ruoliUtenteLoggato">
-                            <span class="font-weight-bold">{{ ruolo.codSede }}</span> -
-                            {{ ruolo.descrizione }}
+                        <div class="allineamento-list">
+                          <div *ngFor="let ruolo of ruoliUtenteLoggato">
+                              <span class="font-weight-bold">{{ ruolo.codSede }}</span> -
+                              {{ ruolo.descrizione }}
+                          </div>
                         </div>
                         <div *ngIf="ruoliUtenteLoggato?.length === 0">
                             Solo Visualizzazione
