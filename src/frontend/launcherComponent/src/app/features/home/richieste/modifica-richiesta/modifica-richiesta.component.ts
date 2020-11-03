@@ -1,4 +1,4 @@
-import { Component, Input, isDevMode, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.model';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { RichiestaModificaState } from '../../store/states/richieste/richiesta-modifica.state';
@@ -98,18 +98,14 @@ export class ModificaRichiestaComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        if (isDevMode()) {
             console.log('Componente Modifica Richiesta creato');
-        }
         this.creaForm();
     }
 
     ngOnDestroy(): void {
         this.subscription.unsubscribe();
         this.store.dispatch(new ClearRichiestaMarkerModifica());
-        if (isDevMode()) {
             console.log('Componente Modifica Richiesta Distrutto');
-        }
     }
 
     initForm(): void {

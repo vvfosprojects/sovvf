@@ -30,7 +30,7 @@ export class AllertaSedeModalComponent implements OnInit, OnDestroy {
 
     codRichiesta: string;
 
-    subscription: Subscription = new Subscription();
+    subscriptions: Subscription = new Subscription();
 
     constructor(private fb: FormBuilder,
                 private modal: NgbActiveModal,
@@ -57,11 +57,11 @@ export class AllertaSedeModalComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-        this.subscription.unsubscribe();
+        this.subscriptions.unsubscribe();
     }
 
     getFormValid(): void {
-        this.subscription.add(
+        this.subscriptions.add(
             this.formValid$.subscribe((valid: boolean) => {
                 this.formValid = valid;
             })
@@ -73,7 +73,7 @@ export class AllertaSedeModalComponent implements OnInit, OnDestroy {
     }
 
     inizializzaSediTreeview(): void {
-        this.subscription.add(
+        this.subscriptions.add(
             this.listeSediNavbar$.subscribe((listaSedi: TreeItem) => {
                 this.listeSediNavbar = [];
                 this.listeSediNavbar[0] = new TreeviewItem(listaSedi);
@@ -86,7 +86,7 @@ export class AllertaSedeModalComponent implements OnInit, OnDestroy {
     }
 
     getSediSelezionate(): void {
-        this.subscription.add(
+        this.subscriptions.add(
             this.sediSelezionate$.subscribe((sedi: TreeviewSelezione[]) => {
                 const listaSediNavbar = this.store.selectSnapshot(SediTreeviewState.listeSediNavbar);
                 if (listaSediNavbar && sedi && sedi.length >= 0) {

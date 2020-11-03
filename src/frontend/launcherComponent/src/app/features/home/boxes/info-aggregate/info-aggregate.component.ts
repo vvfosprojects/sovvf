@@ -1,4 +1,4 @@
-import { Component, isDevMode, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { BoxInterventi } from '../boxes-model/box-interventi.model';
 import { BoxMezzi } from '../boxes-model/box-mezzi.model';
 import { BoxClickInterface } from '../box-interface/box-click-interface';
@@ -45,17 +45,13 @@ export class InfoAggregateComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        if (isDevMode()) {
-            console.log('Componente Info Aggregate creato');
-        }
+        console.log('Componente Info Aggregate creato');
     }
 
     ngOnDestroy(): void {
         this.subscription.unsubscribe();
         clearInterval(this.timerMeteo);
-        if (isDevMode()) {
-            console.log('Componente Info Aggregate Distrutto');
-        }
+        console.log('Componente Info Aggregate Distrutto');
     }
 
     clickBox(cat: string, tipo: string): void {

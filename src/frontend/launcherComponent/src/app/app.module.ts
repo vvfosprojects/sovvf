@@ -9,7 +9,7 @@ import { AppComponent } from './app.component';
  */
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { isDevMode, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FilterPipeModule } from 'ngx-filter-pipe';
@@ -62,6 +62,7 @@ import { AllertaSedeModalState } from './shared/store/states/allerta-sede-modal/
 import { ImpostazioniState } from './shared/store/states/impostazioni/impostazioni.state';
 import { PaginationComposizionePartenzaState } from './shared/store/states/pagination-composizione-partenza/pagination-composizione-partenza.state';
 import { NgxUiLoaderModule } from 'ngx-ui-loader';
+import { SostituzionePartenzeFineTurnoModalState } from './shared/store/states/sostituzione-partenze-fine-turno-modal/sostituzione-partenze-fine-turno-modal.state';
 
 @NgModule({
     declarations: [
@@ -85,7 +86,7 @@ import { NgxUiLoaderModule } from 'ngx-ui-loader';
         NavbarModule,
         NgxUiLoaderModule.forRoot({}),
         ToastrModule.forRoot({
-            positionClass: isDevMode() ? 'toast-bottom-right' : 'toast-bottom-center',
+            positionClass: 'toast-bottom-center',
             preventDuplicates: true,
         }),
         NgxsModule.forRoot(
@@ -106,7 +107,8 @@ import { NgxUiLoaderModule } from 'ngx-ui-loader';
                 NotificheState,
                 AllertaSedeModalState,
                 ImpostazioniState,
-                PaginationComposizionePartenzaState
+                PaginationComposizionePartenzaState,
+                SostituzionePartenzeFineTurnoModalState
             ],
             { developmentMode: !environment.production }
         ),

@@ -1,4 +1,4 @@
-import { Component, Input, isDevMode, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import {
     ClearSchedaContattoHover,
@@ -102,9 +102,7 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        if (isDevMode()) {
             console.log('Componente Schede Contatto creato');
-        }
     }
 
     ngOnDestroy(): void {
@@ -113,9 +111,7 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
             new ClearMergeSchedeContatto(),
             new ClearRicercaFilterbar()
         ]);
-        if (isDevMode()) {
             console.log('Componente Schede Contatto distrutto');
-        }
     }
 
     getRicerca(): void {

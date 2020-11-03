@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, isDevMode, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { CentroMappa } from './maps-model/centro-mappa.model';
 import { RichiestaMarker } from './maps-model/richiesta-marker.model';
 import { MezzoMarker } from './maps-model/mezzo-marker.model';
@@ -52,16 +52,12 @@ export class MapsComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        if (isDevMode()) {
             console.log('Componente Maps creato');
-        }
     }
 
     ngOnDestroy(): void {
         this.subscription.unsubscribe();
-        if (isDevMode()) {
             console.log('Componente Maps distrutto');
-        }
     }
 
     mapIsLoaded(event): void {

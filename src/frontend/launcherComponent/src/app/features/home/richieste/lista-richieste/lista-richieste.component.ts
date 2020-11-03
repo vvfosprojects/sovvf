@@ -8,6 +8,7 @@ import { PermissionFeatures } from '../../../../shared/enum/permission-features.
 import { VociFiltroDefault } from '../../../../shared/enum/voci-filtro-default.enum';
 import { ModificaStatoFonogrammaEmitInterface } from '../../../../shared/interface/modifica-stato-fonogramma-emit.interface';
 import { AllertaSedeEmitInterface } from '../../../../shared/interface/allerta-sede-emit.interface';
+import { Partenza } from '../../../../shared/model/partenza.model';
 
 @Component({
     selector: 'app-lista-richieste',
@@ -25,21 +26,17 @@ export class ListaRichiesteComponent {
     @Input() itemSize = 98;
     @Input() listHeightClass: string;
     @Input() idRichiesteEspanse: string[] = [];
-
+    // Loading
     @Input() loading: boolean;
     @Input() needRefresh: boolean;
     @Input() loadingActionRichiesta: string[] = [];
     @Input() loadingEliminaPartenza: boolean;
-
     // Paginazione
     @Input() page: number;
     @Input() pageSize: number;
     @Input() totalItems: number;
-
+    // FIltri Selezionati
     @Input() codiciFiltriSelezionati: string[];
-
-    // Permessi
-    permessiFeature = PermissionFeatures;
 
     @Output() statoPartenza = new EventEmitter<boolean>();
     @Output() composizionePartenza = new EventEmitter<SintesiRichiesta>();
@@ -59,6 +56,9 @@ export class ListaRichiesteComponent {
     @Output() modificaStatoFonogramma = new EventEmitter<ModificaStatoFonogrammaEmitInterface>();
     @Output() allertaSede = new EventEmitter<AllertaSedeEmitInterface>();
     @Output() eliminaPartenza = new EventEmitter<{ targaMezzo: string, idRichiesta: string, modalResult: any }>();
+
+    // Permessi
+    permessiFeature = PermissionFeatures;
 
     methods = new HelperSintesiRichiesta();
     scrolling = false;

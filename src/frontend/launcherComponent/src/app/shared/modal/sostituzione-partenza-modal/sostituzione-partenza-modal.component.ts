@@ -19,7 +19,8 @@ import {
     ClearListaMezziComposizione,
     HoverInMezzoComposizione,
     HoverOutMezzoComposizione,
-    ReducerSelectMezzoComposizione, SganciamentoMezzoComposizione,
+    ReducerSelectMezzoComposizione,
+    SganciamentoMezzoComposizione,
     UnselectMezzoComposizione
 } from '../../store/actions/mezzi-composizione/mezzi-composizione.actions';
 import { AddBoxPartenza, ClearBoxPartenze } from '../../../features/home/store/actions/composizione-partenza/box-partenza.actions';
@@ -393,29 +394,37 @@ export class SostituzionePartenzaModalComponent implements OnInit, OnDestroy {
     }
 
     changeRicercaSquadre(): void {
-        this.store.dispatch([new StartListaComposizioneLoading(),
+        this.store.dispatch([
+            new StartListaComposizioneLoading(),
             new SetRicercaSquadreComposizione(makeCopy(this.ricercaSquadre)),
-            new GetListaMezziSquadre()]);
+            new GetListaMezziSquadre()
+        ]);
     }
 
     changeRicercaMezzi(): void {
-        this.store.dispatch([new StartListaComposizioneLoading(),
+        this.store.dispatch([
+            new StartListaComposizioneLoading(),
             new SetRicercaMezziComposizione(makeCopy(this.ricercaMezzi)),
-            new GetListaMezziSquadre()]);
+            new GetListaMezziSquadre()
+        ]);
     }
 
     onClearSearchSquadre(): void {
         this.ricercaSquadre = '';
-        this.store.dispatch([new StartListaComposizioneLoading(),
+        this.store.dispatch([
+            new StartListaComposizioneLoading(),
             new SetRicercaSquadreComposizione(makeCopy(this.ricercaSquadre)),
-            new GetListaMezziSquadre()]);
+            new GetListaMezziSquadre()
+        ]);
     }
 
     onClearSearchMezzi(): void {
         this.ricercaMezzi = '';
-        this.store.dispatch([new StartListaComposizioneLoading(),
+        this.store.dispatch([
+            new StartListaComposizioneLoading(),
             new SetRicercaMezziComposizione(makeCopy(this.ricercaMezzi)),
-            new GetListaMezziSquadre()]);
+            new GetListaMezziSquadre()
+        ]);
     }
 
     getTitle(): string {

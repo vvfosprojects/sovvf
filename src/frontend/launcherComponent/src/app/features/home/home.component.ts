@@ -1,4 +1,4 @@
-import { Component, isDevMode, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { Grids, ViewInterfaceButton, ViewInterfaceMaps, ViewLayouts } from '../../shared/interface/view.interface';
 import { Select, Store } from '@ngxs/store';
@@ -34,16 +34,12 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        if (isDevMode()) {
-            console.log('Componente Home creato');
-        }
+        console.log('Componente Home creato');
         this.store.dispatch(new GetDataHome());
     }
 
     ngOnDestroy(): void {
-        if (isDevMode()) {
-            console.log('Componente Home distrutto');
-        }
+        console.log('Componente Home distrutto');
         this.subscription.unsubscribe();
         this.store.dispatch(new ClearDataHome());
     }

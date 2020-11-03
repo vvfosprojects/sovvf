@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, isDevMode } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import { EventiRichiestaState } from '../store/states/eventi/eventi-richiesta.state';
 import { Observable, Subscription } from 'rxjs';
@@ -32,15 +32,11 @@ export class EventiRichiestaComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        if (isDevMode()) {
-            console.log('Componente Eventi Richiesta Creato');
-        }
+        console.log('Componente Eventi Richiesta Creato');
     }
 
     ngOnDestroy(): void {
-        if (isDevMode()) {
-            console.log('Componente Eventi Richiesta Distrutto');
-        }
+        console.log('Componente Eventi Richiesta Distrutto');
         this.subscription.unsubscribe();
     }
 

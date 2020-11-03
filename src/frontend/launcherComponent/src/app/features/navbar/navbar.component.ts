@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Output, isDevMode, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, OnDestroy, Input } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { ClockService } from './clock/clock-service/clock.service';
 import { Store, Select } from '@ngxs/store';
@@ -68,15 +68,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        if (isDevMode()) {
-            console.log('Componente Navbar creato');
-        }
+        console.log('Componente Navbar creato');
     }
 
     ngOnDestroy(): void {
-        if (isDevMode()) {
-            console.log('Componente Navbar distrutto');
-        }
+        console.log('Componente Navbar distrutto');
         this.subscription.unsubscribe();
         this.store.dispatch(new ClearDataNavbar());
     }
