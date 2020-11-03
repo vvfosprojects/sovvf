@@ -125,6 +125,9 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
                     else
                         return ((RevocaPerRiassegnazione)evento).RichiestaSubentrata.Codice;
 
+                case SostituzionePartenzaFineTurno _:
+                    return ((SostituzionePartenzaFineTurno)evento).Note;
+
                 case TrasferimentoChiamata _:
                     return ((TrasferimentoChiamata)evento).Note;
 
@@ -139,7 +142,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
         {
             var targa = "";
 
-            if(evento is RevocaPerSostituzioneMezzo)
+            if (evento is RevocaPerSostituzioneMezzo)
             {
                 targa = ((RevocaPerSostituzioneMezzo)evento).CodiceMezzo;
             }
@@ -184,6 +187,10 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
             if (evento is RevocaPerRiassegnazione)
             {
                 targa = ((RevocaPerRiassegnazione)evento).CodiceMezzo;
+            }
+            if (evento is SostituzionePartenzaFineTurno)
+            {
+                targa = ((SostituzionePartenzaFineTurno)evento).CodiceMezzo;
             }
 
             return targa.Contains('.') ? targa.Split('.')[1] : targa;
@@ -261,6 +268,9 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.ListaEventi
 
                 case RevocaPerSostituzioneMezzo _:
                     return Costanti.RevocaPerSostituzioneMezzo;
+
+                case SostituzionePartenzaFineTurno _:
+                    return Costanti.SostituzionePartenza;
 
                 case TrasferimentoChiamata _:
                     return Costanti.TrasferimentoChiamata;

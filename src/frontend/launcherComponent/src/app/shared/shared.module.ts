@@ -52,8 +52,9 @@ import { AnnuncioNuovaVersioneModalComponent } from './modal/annuncio-nuova-vers
 import { NuoveFeaturesInfoModalComponent } from './modal/nuove-features-info-modal/nuove-features-info-modal.component';
 import { SganciamentoMezzoModalComponent } from './modal/sganciamento-mezzo-modal/sganciamento-mezzo-modal.component';
 import { TimeagoFormatter, TimeagoIntl, TimeagoModule } from 'ngx-timeago';
-import { TimeagoVVFFormatter } from './components/sintesi-richiesta/helper/timeago-custom-formatter/timago-custom-formatter';
+import { TimeagoVVFFormatter } from './helper/timago-custom-formatter';
 import { SintesiRichiestaComponent } from './components/sintesi-richiesta/sintesi-richiesta.component';
+import { SostituzionePartenzeFineTunoModalComponent } from './modal/sostituzione-partenze-fine-turno-modal/sostituzione-partenze-fine-tuno-modal.component';
 
 const COMPONENTS = [
     DebounceClickDirective,
@@ -100,7 +101,8 @@ const COMPONENTS = [
     AnnuncioNuovaVersioneModalComponent,
     NuoveFeaturesInfoModalComponent,
     SganciamentoMezzoModalComponent,
-    SintesiRichiestaComponent
+    SintesiRichiestaComponent,
+    SostituzionePartenzeFineTunoModalComponent
 ];
 
 @NgModule({

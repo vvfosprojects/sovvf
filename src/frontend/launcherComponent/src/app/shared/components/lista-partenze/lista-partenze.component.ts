@@ -23,6 +23,7 @@ export class ListaPartenzeComponent {
     @Output() actionMezzo: EventEmitter<MezzoActionInterface> = new EventEmitter<MezzoActionInterface>();
     @Output() eliminaPartenza: EventEmitter<string> = new EventEmitter<string>();
     @Output() modificaPartenza: EventEmitter<string> = new EventEmitter<string>();
+    @Output() sostituzioneFineTurno: EventEmitter<any> = new EventEmitter<any>();
 
     @Select(RichiesteState.loadingActionMezzo) loadingActionMezzo$: Observable<string>;
 

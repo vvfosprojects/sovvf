@@ -23,6 +23,9 @@ import { EliminaPartenzaModalComponent } from '../../modal/elimina-partenza-moda
 import { DettaglioFonogrammaModalComponent } from '../../modal/dettaglio-fonogramma-modal/dettaglio-fonogramma-modal.component';
 import { ModificaFonogrammaModalComponent } from '../../modal/modifica-fonogramma-modal/modifica-fonogramma-modal.component';
 import { Tipologia } from '../../model/tipologia.model';
+import { Partenza } from '../../model/partenza.model';
+import { SostituzionePartenzeFineTunoModalComponent } from '../../modal/sostituzione-partenze-fine-turno-modal/sostituzione-partenze-fine-tuno-modal.component';
+import { ConfirmSostituzioni, SetListaPartenzeSostituzioneFineTurno } from '../../store/actions/modifica-partenzef-fine-turno-modal/sostituzione-partenze-fine-turno.actions';
 
 @Component({
     selector: 'app-sintesi-richiesta',
@@ -44,8 +47,9 @@ export class SintesiRichiestaComponent implements OnChanges {
     @Input() composizionePartenza = true;
     @Input() modificabile = true;
     @Input() gestibile = true;
+    @Input() sostituzioneFineTurno = false;
     @Input() disableTooltips = false;
-    @Input() disableFissaInAltro = false;
+    @Input() disableFissaInAlto = false;
     @Input() loadingEliminaPartenza = false;
     @Input() disabledModificaRichiesta = false;
     @Input() disabledGestisciRichiesta = false;
@@ -241,7 +245,7 @@ export class SintesiRichiestaComponent implements OnChanges {
             windowClass: 'modal-holder',
             backdropClass: 'light-blue-backdrop',
             centered: true,
-            size: 'lg',
+            size: 'xl',
             backdrop: 'static',
             keyboard: false
         });
@@ -306,6 +310,28 @@ export class SintesiRichiestaComponent implements OnChanges {
             switch (res.status) {
                 case 'ok' :
                     this.allertaSede.emit(res.result);
+                    break;
+                case 'ko':
+                    break;
+            }
+        });
+    }
+
+    onSostituzioneFineTurno(partenze: Partenza[]): void {
+        const modalSostituzioneFineTurno = this.modalService.open(SostituzionePartenzeFineTunoModalComponent, {
+            windowClass: 'modal-holder',
+            backdropClass: 'light-blue-backdrop',
+            size: 'xl',
+            centered: true
+        });
+        const partenzeDisponibili = partenze.filter((p: Partenza) => !p.sganciata && !p.partenzaAnnullata && !p.terminata);
+        this.store.dispatch(new SetListaPartenzeSostituzioneFineTurno(partenzeDisponibili));
+        modalSostituzioneFineTurno.componentInstance.idRichiesta = this.richiesta.id;
+        modalSostituzioneFineTurno.componentInstance.codRichiesta = this.richiesta.codice;
+        modalSostituzioneFineTurno.result.then((res: { status: string, result: any }) => {
+            switch (res.status) {
+                case 'ok' :
+                    this.store.dispatch(new ConfirmSostituzioni());
                     break;
                 case 'ko':
                     break;

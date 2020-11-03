@@ -106,6 +106,7 @@ namespace Persistence.MongoDB
             BsonClassMap.RegisterClassMap<FonogrammaInviato>();
             BsonClassMap.RegisterClassMap<AllertaSedi>();
             BsonClassMap.RegisterClassMap<RevocaPerSostituzioneMezzo>();
+            BsonClassMap.RegisterClassMap<SostituzionePartenzaFineTurno>();
         }
 
         public IMongoCollection<SO115App.Models.Classi.Condivise.TrasferimentoChiamata> TrasferimentiChiamateCollection

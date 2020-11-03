@@ -37,7 +37,8 @@ export const environment = {
         meteo: 'https://api.openweathermap.org/data/2.5/weather?',
         enti: '/api/GestioneEnti',
         trasferimentoChiamata: '/api/GestioneTrasferimentiChiamate',
-        modificaPartenza: '/api/GestionePartenza/ModificaPartenza'
+        modificaPartenza: '/api/GestionePartenza/ModificaPartenza',
+        sostituzionePartenza: '/api/GestionePartenza/SostituzionePartenza'
     },
     casUrl: {
         linkLogin: 'https://sso.vigilfuoco.it/cas/login?service=',
