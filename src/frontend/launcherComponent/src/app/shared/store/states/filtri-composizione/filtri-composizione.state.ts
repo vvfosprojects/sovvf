@@ -93,7 +93,7 @@ export class FiltriComposizioneState {
 
     @Action(AddFiltroSelezionatoComposizione)
     addFiltroSelezionatoComposizione(ctx: StateContext<FiltriComposizioneStateStateModel>, action: AddFiltroSelezionatoComposizione): void {
-        console.log('Filtro selezionato => #ID = ' + action.id + ' - TIPO = ' + action.tipoFiltro, 'aaaa', FiltroTurnoSquadre[action.id]);
+        console.log('Filtro selezionato => #ID = ' + action.id + ' - TIPO = ' + action.tipoFiltro);
         switch (action.tipoFiltro) {
             case 'turno':
                 ctx.setState(
