@@ -70,6 +70,7 @@ export class FasterComponent implements OnInit, OnDestroy {
             this.preAccoppiati$.subscribe((preAcc: BoxPartenza[]) => {
                 this.preAccoppiati = preAcc;
                 console.log('preAccoppiati', this.preAccoppiati);
+                this.totalItemsPreaccoppiati = this.preAccoppiati ? this.preAccoppiati.length : null;
             })
         );
         // Prendo gli id dei preAccoppiati selezionati
@@ -106,7 +107,7 @@ export class FasterComponent implements OnInit, OnDestroy {
         // Prendo Totale Items Preaccoppiati
         this.subscription.add(
             this.totalItemsPreaccoppiati$.subscribe((totalItemsPreaccoppiati: number) => {
-                this.totalItemsPreaccoppiati = totalItemsPreaccoppiati;
+                // this.totalItemsPreaccoppiati = totalItemsPreaccoppiati;
             })
         );
         // Prendo Pagina Size Preaccoppiati
