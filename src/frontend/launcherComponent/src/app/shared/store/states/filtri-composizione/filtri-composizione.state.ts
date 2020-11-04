@@ -33,7 +33,7 @@ export const FiltriComposizioneStateDefaults: FiltriComposizioneStateStateModel 
         generiMezzi: [],
         stati: []
     },
-    turno: undefined,
+    turno: null,
     codiceDistaccamento: [],
     tipoMezzo: [],
     statoMezzo: [],
