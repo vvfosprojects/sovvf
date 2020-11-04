@@ -26,6 +26,7 @@ using Newtonsoft.Json;
 using Serilog;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Soccorso;
+using SO115App.API.Models.Classi.Utenti;
 using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
@@ -55,6 +56,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
         private readonly IGetTipologieByCodice _getTipologieByCodice;
         private readonly IConfiguration _configuration;
         private readonly IMemoryCache _memoryCache;
+        private readonly IGetTurno _getTurno;
 
         public ComposizionePartenzaAvanzataQueryHandler(
             IGetListaSquadre getListaSquadre,
@@ -65,7 +67,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
 
             IGetTipologieByCodice getTipologieByCodice,
             IConfiguration configuration,
-            IMemoryCache memoryCache)
+            IMemoryCache memoryCache,
+            IGetTurno getTurno)
         {
             _getListaSquadre = getListaSquadre;
             _getMezziPrenotati = getMezziPrenotati;
@@ -76,6 +79,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             _getTipologieByCodice = getTipologieByCodice;
             _configuration = configuration;
             _memoryCache = memoryCache;
+            _getTurno = getTurno;
         }
 
         public ComposizionePartenzaAvanzataResult Handle(ComposizionePartenzaAvanzataQuery query)
@@ -83,6 +87,36 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             Log.Debug("Inizio elaborazione Composizione partenza avanzata Handler");
 
             var lstSedi = query.CodiceSede.ToList();
+
+            //CALCOLO I TURNI
+            string turnoPrecedente = null;
+            string turnoSuccessivo = null;
+
+            if(query.Filtro.TurnoSelezionato != null)
+            {
+                var turno = _getTurno.Get();
+
+                if(turno.Codice.Contains('A'))
+                { 
+                    turnoPrecedente = "D"; 
+                    turnoSuccessivo = "B"; 
+                }
+                else if(turno.Codice.Contains('B'))
+                {
+                    turnoPrecedente = "A";
+                    turnoSuccessivo = "C";
+                }
+                else if (turno.Codice.Contains('C'))
+                {
+                    turnoPrecedente = "B";
+                    turnoSuccessivo = "D";
+                }
+                else if (turno.Codice.Contains('D'))
+                {
+                    turnoPrecedente = "C";
+                    turnoSuccessivo = "A";
+                }
+            }
 
             //REPERISCO I DATI, FACCIO IL MAPPING ED APPLICO I FILTRI (MEZZI E SQUADRE)
             var lstSquadre = _getListaSquadre.Get(lstSedi)
@@ -126,8 +160,17 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                         return true;
                     }).Where(s =>
                     {
-                        if (!string.IsNullOrEmpty(query.Filtro.Turno))
-                            return s.Squadra.Turno == query.Filtro.Turno;
+                        if (query.Filtro.TurnoSelezionato != null)
+                        {
+                            switch (query.Filtro.TurnoSelezionato)
+                            {
+                                case SO115App.Models.Classi.Composizione.Turno.Precedente:
+                                    return turnoPrecedente.Contains(s.Squadra.Turno);
+
+                                case SO115App.Models.Classi.Composizione.Turno.Successivo:
+                                    return turnoSuccessivo.Contains(s.Squadra.Turno);
+                            }
+                        }
                         return true;
                     }).Where(m =>
                     {
