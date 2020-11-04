@@ -27,6 +27,7 @@ using Serilog;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Classi.Utenti;
+using SO115App.Models.Classi.Composizione;
 using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
@@ -89,29 +90,28 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             var lstSedi = query.CodiceSede.ToList();
 
             //CALCOLO I TURNI
+            var turnoCorrente = _getTurno.Get();
             string turnoPrecedente = null;
             string turnoSuccessivo = null;
 
-            if(query.Filtro.TurnoSelezionato != null)
+            if(query.Filtro.Turno != null)
             {
-                var turno = _getTurno.Get();
-
-                if(turno.Codice.Contains('A'))
+                if(turnoCorrente.Codice.Contains('A'))
                 { 
                     turnoPrecedente = "D"; 
                     turnoSuccessivo = "B"; 
                 }
-                else if(turno.Codice.Contains('B'))
+                else if(turnoCorrente.Codice.Contains('B'))
                 {
                     turnoPrecedente = "A";
                     turnoSuccessivo = "C";
                 }
-                else if (turno.Codice.Contains('C'))
+                else if (turnoCorrente.Codice.Contains('C'))
                 {
                     turnoPrecedente = "B";
                     turnoSuccessivo = "D";
                 }
-                else if (turno.Codice.Contains('D'))
+                else if (turnoCorrente.Codice.Contains('D'))
                 {
                     turnoPrecedente = "C";
                     turnoSuccessivo = "A";
@@ -160,18 +160,11 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                         return true;
                     }).Where(s =>
                     {
-                        if (query.Filtro.TurnoSelezionato != null)
-                        {
-                            switch (query.Filtro.TurnoSelezionato)
-                            {
-                                case SO115App.Models.Classi.Composizione.Turno.Precedente:
-                                    return turnoPrecedente.Contains(s.Squadra.Turno);
-
-                                case SO115App.Models.Classi.Composizione.Turno.Successivo:
-                                    return turnoSuccessivo.Contains(s.Squadra.Turno);
-                            }
-                        }
-                        return true;
+                        if (turnoPrecedente != null)
+                            return turnoPrecedente.Contains(s.Squadra.Turno);
+                        else if (turnoPrecedente != null)
+                            return turnoSuccessivo.Contains(s.Squadra.Turno);
+                        return turnoCorrente.Codice.Contains(s.Squadra.Turno);
                     }).Where(m =>
                     {
                         if (query.Filtro.Mezzo != null && query.Filtro.Mezzo.Distaccamento.Codice != null)
