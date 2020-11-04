@@ -1,4 +1,4 @@
 export enum FiltroTurnoSquadre {
-  Precedente,
-  Successivo,
+    Precedente,
+    Successivo,
 }

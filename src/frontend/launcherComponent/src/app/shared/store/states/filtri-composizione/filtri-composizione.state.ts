@@ -16,10 +16,11 @@ import { ComposizionePartenzaState } from '../../../../features/home/store/state
 import { GetListaComposizioneVeloce } from '../../../../features/home/store/actions/composizione-partenza/composizione-veloce.actions';
 import { DescrizioneTipologicaMezzo } from '../../../../features/home/composizione-partenza/interface/filtri/descrizione-filtro-composizione-interface';
 import { makeCopy } from '../../../helper/function';
+import {FiltroTurnoSquadre} from '../../../enum/filtro-turno-composizione-partenza.enum';
 
 export interface FiltriComposizioneStateStateModel {
     filtri: ListaTipologicheMezzi;
-    turno: string;
+    turno: number;
     codiceDistaccamento: any[];
     tipoMezzo: any[];
     statoMezzo: any[];
@@ -27,7 +28,7 @@ export interface FiltriComposizioneStateStateModel {
 
 export const FiltriComposizioneStateDefaults: FiltriComposizioneStateStateModel = {
     filtri: {
-        turni: [],
+        turni: null,
         distaccamenti: [],
         generiMezzi: [],
         stati: []
@@ -84,7 +85,7 @@ export class FiltriComposizioneState {
             d.descDistaccamento = d.descDistaccamento.replace('Distaccamento ', '');
             return d;
         });
-        filtri.turni = ['A', 'B', 'C', 'D'];
+        filtri.turni = [FiltroTurnoSquadre[0], FiltroTurnoSquadre[1]];
         patchState({
             filtri
         });
@@ -92,12 +93,12 @@ export class FiltriComposizioneState {
 
     @Action(AddFiltroSelezionatoComposizione)
     addFiltroSelezionatoComposizione(ctx: StateContext<FiltriComposizioneStateStateModel>, action: AddFiltroSelezionatoComposizione): void {
-        console.log('Filtro selezionato => #ID = ' + action.id + ' - TIPO = ' + action.tipoFiltro);
+        console.log('Filtro selezionato => #ID = ' + action.id + ' - TIPO = ' + action.tipoFiltro, 'aaaa', FiltroTurnoSquadre[action.id]);
         switch (action.tipoFiltro) {
             case 'turno':
                 ctx.setState(
                     patch({
-                        turno: action.id
+                        turno: FiltroTurnoSquadre[action.id]
                     })
                 );
                 break;
@@ -205,7 +206,7 @@ export class FiltriComposizioneState {
     clearFiltriComposizione({ patchState }: StateContext<FiltriComposizioneStateStateModel>): void {
       patchState({
         filtri: {
-          turni: [],
+          turni: null,
           distaccamenti: [],
           generiMezzi: [],
           stati: []
