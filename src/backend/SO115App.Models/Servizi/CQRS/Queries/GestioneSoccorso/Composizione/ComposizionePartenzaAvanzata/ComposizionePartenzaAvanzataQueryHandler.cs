@@ -296,7 +296,15 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             if (!CoordinateFake)
                 composizione = GetDistanceByGoogle(composizione, _Richiesta).Result;
 
-            return 100 / (1 + Convert.ToDecimal(composizione.TempoPercorrenza.Replace(".", ",")) / 5400) + ValoreIntOriginePerSganciamento + ValoreAdeguatezzaMezzo;
+            int ValoreCompetenza = 0;
+            switch (_Richiesta.Competenze.FindIndex(c => c.Equals(composizione.Mezzo.Distaccamento)))
+            {
+                case 0: ValoreCompetenza = 3000; break;
+                case 1: ValoreCompetenza = 2000; break;
+                case 2: ValoreCompetenza = 1000; break;
+            }
+
+            return 100 / (1 + Convert.ToDecimal(composizione.TempoPercorrenza.Replace(".", ",")) / 5400) + ValoreIntOriginePerSganciamento + ValoreAdeguatezzaMezzo + ValoreCompetenza;
         }
 
         private async Task<Classi.Composizione.ComposizioneMezzi> GetDistanceByGoogle(Classi.Composizione.ComposizioneMezzi composizione, RichiestaAssistenza richiesta)
