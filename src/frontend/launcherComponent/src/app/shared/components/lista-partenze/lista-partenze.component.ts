@@ -19,6 +19,7 @@ export class ListaPartenzeComponent {
     @Input() partenze: Partenza[];
     @Input() statoRichiesta: StatoRichiesta;
     @Input() inGestione: boolean;
+    @Input() sostituzioneFineTurnoActive: boolean;
 
     @Output() actionMezzo: EventEmitter<MezzoActionInterface> = new EventEmitter<MezzoActionInterface>();
     @Output() eliminaPartenza: EventEmitter<string> = new EventEmitter<string>();
@@ -51,9 +52,9 @@ export class ListaPartenzeComponent {
     onActionMezzo(mezzoAction: MezzoActionInterface): void {
         this.actionMezzo.emit(mezzoAction);
         if (mezzoAction.mezzo.codice && !this.loadingActionMezzoArray.includes(mezzoAction.mezzo.codice)) {
-          this.loadingActionMezzoArray.push(mezzoAction.mezzo.codice);
+            this.loadingActionMezzoArray.push(mezzoAction.mezzo.codice);
         } else if (!mezzoAction.mezzo.codice) {
-          this.loadingActionMezzoArray.shift();
+            this.loadingActionMezzoArray.shift();
         }
     }
 }

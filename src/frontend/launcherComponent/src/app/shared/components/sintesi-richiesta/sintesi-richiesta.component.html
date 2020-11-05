@@ -432,10 +432,11 @@
                                 <app-lista-partenze [partenze]="richiesta?.partenzeRichiesta"
                                                     [statoRichiesta]="richiesta?.stato"
                                                     [inGestione]="inGestione"
+                                                    [idDaSganciare]="idDaSganciare"
+                                                    [sostituzioneFineTurnoActive]="_isSostituzioneFineTurnoActive(richiesta?.partenzeRichiesta)"
                                                     (actionMezzo)="onActionMezzo($event)"
                                                     (eliminaPartenza)="onEliminaPartenza($event)"
                                                     (modificaPartenza)="onModificaPartenza($event)"
-                                                    [idDaSganciare]="idDaSganciare"
                                                     (sostituzioneFineTurno)="onSostituzioneFineTurno(richiesta.partenzeRichiesta)">
                                 </app-lista-partenze>
                             </div>

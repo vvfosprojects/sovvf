@@ -49,7 +49,7 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
 
     ngxLoaderConfiguration = {
         hasProgressBar: false,
-        overlayColor: 'rgba(206, 43, 55, 0.97)',
+        overlayColor: 'rgba(206,43,55,0.85)',
         logoUrl: '../assets/img/logo_vvf_200x.png',
         logoSize: 300,
         logoPosition: 'center-center',

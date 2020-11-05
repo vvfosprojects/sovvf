@@ -11,6 +11,7 @@ import {
     SetPartenzaMontante,
     UpdateSostituzione
 } from '../../store/actions/modifica-partenzef-fine-turno-modal/sostituzione-partenze-fine-turno.actions';
+import { StatoMezzo } from '../../enum/stato-mezzo.enum';
 
 @Component({
     selector: 'app-sostituzione-partenze-modal',
@@ -90,11 +91,11 @@ export class SostituzionePartenzeFineTunoModalComponent implements OnInit, OnDes
     }
 
     getSquadrePartenze(): any[] {
-        return this.partenze.filter((p: Partenza) => p.mezzo.codice !== this.partenzaMontante.mezzo.codice).map((p: Partenza) => p.squadre);
+        return this.partenze.filter((p: Partenza) => p.mezzo.codice !== this.partenzaMontante.mezzo.codice && p.mezzo.stato === StatoMezzo.SulPosto).map((p: Partenza) => p.squadre);
     }
 
     getPartenzeSostituzione(): Partenza[] {
-        return this.partenze.filter((p: Partenza) => p.mezzo.codice !== this.partenzaMontante.mezzo.codice);
+        return this.partenze.filter((p: Partenza) => p.mezzo.codice !== this.partenzaMontante.mezzo.codice && p.mezzo.stato === StatoMezzo.SulPosto);
     }
 
     getSostituzioneBySquadraMontante(squadraMontante: string): SostituzioneInterface {

@@ -146,7 +146,7 @@
                 </div>
                 <div class="col-1">
                     <label>Copia</label>
-                    <button type="button" class="btn btn-secondary" [ngbTooltip]="coordsTooltip" placement="bottom"
+                    <button type="button" class="btn btn-secondary btn-no-hover" [ngbTooltip]="coordsTooltip" placement="bottom"
                             (click)="onCopiaIndirizzo()" [disabled]="!f.longitudine.value || !f.latitudine.value">
                         <i class="fa fa-clipboard"></i>
                     </button>
@@ -280,10 +280,10 @@
             </div>
         </form>
         <div class="form-group mb-2">
-            <button type="button" class="btn btn-primary float-right ml-1" (click)="onConfermaModifica()">Conferma
+            <button type="button" class="btn btn-primary btn-no-hover float-right ml-1" (click)="onConfermaModifica()">Conferma
                 Modifica
             </button>
-            <button class="btn btn-danger float-right mr-2" (click)="onChiudiModifica()">Annulla</button>
+            <button class="btn btn-danger btn-no-hover float-right mr-2" (click)="onChiudiModifica()">Annulla</button>
         </div>
     </div>
 </div>
