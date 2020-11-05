@@ -48,7 +48,7 @@
     <small *ngIf="changelog?.descrizione" class="d-inline-block text-muted mb-3">
         {{ changelog?.descrizione }}
     </small>
-    <hr>
+    <hr  *ngIf="ultimoChangelog">
     <div *ngIf="ultimoChangelog" class="clearfix">
         <div class="float-left">
             <div class="badge badge-success font-weight-bolder h5">VERSIONE ATTUALE</div>
