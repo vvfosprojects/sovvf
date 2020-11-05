@@ -1,9 +1,9 @@
-import { Component, OnDestroy, OnInit, isDevMode } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import { EventiRichiestaState } from '../store/states/eventi/eventi-richiesta.state';
 import { Observable, Subscription } from 'rxjs';
 import { EventoRichiesta } from '../../../shared/model/evento-richiesta.model';
-import { FiltroTargaMezzo } from './filtro-targa-mezzo.interface';
+import { FiltroTargaMezzo } from './interface/filtro-targa-mezzo.interface';
 import { SetFiltroTargaMezzo, ToggleIconeNomeClasseEvento } from '../store/actions/eventi/eventi-richiesta.actions';
 import { LoadingState } from '../../../shared/store/states/loading/loading.state';
 import { ImpostazioniState } from '../../../shared/store/states/impostazioni/impostazioni.state';
@@ -32,11 +32,11 @@ export class EventiRichiestaComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        isDevMode() && console.log('Componente Eventi Richiesta Creato');
+        console.log('Componente Eventi Richiesta Creato');
     }
 
     ngOnDestroy(): void {
-        isDevMode() && console.log('Componente Eventi Richiesta Distrutto');
+        console.log('Componente Eventi Richiesta Distrutto');
         this.subscription.unsubscribe();
     }
 

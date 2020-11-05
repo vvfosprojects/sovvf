@@ -4,22 +4,25 @@
     <div *ngIf="richieste && richieste.length > 0" class="col-12 py-1 px-0" [ngClass]="heightControl()"
          style="overflow-x: hidden; overflow-y: auto">
         <div *ngFor="let r of richieste | paginate: { itemsPerPage: pageSize, currentPage: page, totalItems: totalItems }"
-             [ngClass]="{'col-double': !_split, 'col-12': _split}" class=" test-hover">
+             [ngClass]="{'col-double': !split, 'col-12': split}" class=" test-hover">
             <div id="richiesta" *ngIf="!richiestaFissata || (r.id !== richiestaFissata.id)"
                  class="w-100 rounded card-shadow" [ngClass]="cardClasses(r)">
-                <app-partial-loader *ngIf="loadingActionRichiesta === r.id"></app-partial-loader>
+                <app-partial-loader *ngIf="actionRichiestaArray.includes(r.id)"></app-partial-loader>
+                <!-- TODO: inserire condizione corretta per "sostituzioneFineTurno" -->
                 <app-sintesi-richiesta class="non-fissata"
                                        [richiesta]="r"
                                        [fissata]="false"
                                        [fissabile]="true"
-                                       [espanso]="isEspanso(r.id)"
-                                       [espandibile]="true" [listaEventi]="true"
+                                       [isEspanso]="isEspanso(r.id)"
+                                       [espandibile]="true"
+                                       [listaEventi]="true"
+                                       [sostituzioneFineTurno]="true"
                                        [inGestione]="richiestaGestione?.id === r.id"
                                        [disabledModificaRichiesta]="permessiFeature.ModificaRichiesta | checkPermissionRichiesta: r.codUOCompetenza : r.codSOCompetente : r.codSOAllertate"
                                        [disabledGestisciRichiesta]="permessiFeature.GestisciRichiesta | checkPermissionRichiesta: r.codUOCompetenza : r.codSOCompetente : r.codSOAllertate"
                                        [disabledComposizionePartenza]="(permessiFeature.ComposizionePartenzaRichiesta | checkPermissionRichiesta: r.codUOCompetenza : r.codSOCompetente : r.codSOAllertate) || r.stato === statoRichiesta.Chiusa"
                                        [disableTooltips]="scrolling"
-                                       [disableFissaInAltro]="richieste.length === 1"
+                                       [disableFissaInAlto]="richieste.length === 1"
                                        [loadingEliminaPartenza]="loadingEliminaPartenza"
                                        (hoverIn)="richiestaHoverIn($event)"
                                        (hoverOut)="richiestaHoverOut($event)"

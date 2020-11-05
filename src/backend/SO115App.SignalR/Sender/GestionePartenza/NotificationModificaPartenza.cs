@@ -55,7 +55,7 @@ namespace SO115App.SignalR.Sender.GestionePartenza
 
             var confermaPartenza = new ConfermaPartenze()
             {
-                CodiceSede = command.CodSede,
+                CodiceSede = command.CodSede.First(),
                 IdOperatore = command.IdOperatore,
                 IdRichiesta = command.Richiesta.Id,
                 Chiamata =  _mapperSintesi.Map(command.Richiesta),

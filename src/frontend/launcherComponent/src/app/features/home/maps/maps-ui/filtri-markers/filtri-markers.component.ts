@@ -10,7 +10,8 @@ import {
     UpdateStatiMezzi,
     UpdateStatiRichiesta,
     UpdateGenereMezzi,
-    ToggleGestitaSC, UpdateMezziAltriComandi
+    ToggleGestitaSC,
+    UpdateMezziAltriComandi
 } from '../../../store/actions/maps/filtri-markers.actions';
 import { StatoRichiesta } from '../../../../../shared/enum/stato-richiesta.enum';
 import { FiltroMezzi } from '../../maps-model/filtro-mezzi.interface';
@@ -28,8 +29,6 @@ import { ViewComponentState } from '../../../store/states/view/view.state';
 })
 export class FiltriMarkersComponent {
 
-    private subscription = new Subscription();
-
     @Select(FiltriMarkersState.filtroRichieste) filtroRichieste$: Observable<FiltroRichieste>;
     @Select(FiltriMarkersState.filtroMezzi) filtroMezzi$: Observable<FiltroMezzi>;
     @Select(FiltriMarkersState.filtroSC) filtroSC$: Observable<FiltroSchedeContatto>;
@@ -38,34 +37,42 @@ export class FiltriMarkersComponent {
     @Select(TipologicheMezziState.generiMezzi) generiMezzi$: Observable<DescrizioneTipologicaMezzo[]>;
     @Select(ViewComponentState.schedeContattoStatus) scStatus$: Observable<boolean>;
 
+    private subscription = new Subscription();
+
     constructor(private store: Store,
                 config: NgbDropdownConfig) {
         config.placement = 'bottom-right';
         config.autoClose = 'outside';
-        this.subscription.add(this.filtriAttivi$.subscribe(r => this.filtriAttivi = r));
+        this.getFiltriAttivi();
     }
 
-    changePriorita(priorita: Priorita) {
+    getFiltriAttivi(): void {
+        this.subscription.add(this.filtriAttivi$.subscribe(r => {
+            this.filtriAttivi = r;
+        }));
+    }
+
+    changePriorita(priorita: Priorita): void {
         this.store.dispatch(new SetPropritaRichiesta(priorita));
     }
 
-    changeStatiRichiesta(statiRichiesta: StatoRichiesta[]) {
+    changeStatiRichiesta(statiRichiesta: StatoRichiesta[]): void {
         this.store.dispatch(new UpdateStatiRichiesta(statiRichiesta));
     }
 
-    onChangeMezziAltriComandi(status: boolean) {
+    onChangeMezziAltriComandi(status: boolean): void {
         this.store.dispatch(new UpdateMezziAltriComandi(status));
     }
 
-    changeStatiMezzi(statiMezzi: StatoMezzo[]) {
+    changeStatiMezzi(statiMezzi: StatoMezzo[]): void {
         this.store.dispatch(new UpdateStatiMezzi(statiMezzi));
     }
 
-    changeGenere(genere: DescrizioneTipologicaMezzo[]) {
+    changeGenere(genere: DescrizioneTipologicaMezzo[]): void {
         this.store.dispatch(new UpdateGenereMezzi(genere.map(x => x.descrizione)));
     }
 
-    toggleGestitaSC() {
+    toggleGestitaSC(): void {
         this.store.dispatch(new ToggleGestitaSC());
     }
 }

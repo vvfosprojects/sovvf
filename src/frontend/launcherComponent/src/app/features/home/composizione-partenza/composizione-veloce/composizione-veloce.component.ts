@@ -8,6 +8,7 @@ import { Select, Store } from '@ngxs/store';
 import { ConfirmPartenze } from '../../store/actions/composizione-partenza/composizione-partenza.actions';
 import { ComposizioneVeloceState } from '../../store/states/composizione-partenza/composizione-veloce.state';
 import {
+    GetListaComposizioneVeloce,
     HoverInPreAccoppiatoComposizione,
     HoverOutPreAccoppiatoComposizione,
     SelectPreAccoppiatoComposizione,
@@ -22,6 +23,8 @@ import { Coordinate } from '../../../../shared/model/coordinate.model';
 import { BoxPartenzaHover } from '../interface/composizione/box-partenza-hover-interface';
 import { StatoMezzo } from '../../../../shared/enum/stato-mezzo.enum';
 import { GetFiltriComposizione } from '../../../../shared/store/actions/filtri-composizione/filtri-composizione.actions';
+import { PaginationComposizionePartenzaState } from '../../../../shared/store/states/pagination-composizione-partenza/pagination-composizione-partenza.state';
+import { ResetPaginationPreaccoppiati } from '../../../../shared/store/actions/pagination-composizione-partenza/pagination-composizione-partenza.actions';
 
 @Component({
     selector: 'app-composizione-veloce',
@@ -31,25 +34,27 @@ import { GetFiltriComposizione } from '../../../../shared/store/actions/filtri-c
 export class FasterComponent implements OnInit, OnDestroy {
 
     @Input() richiesta: SintesiRichiesta;
-    @Input() disablePrenota: boolean;
-    @Input() prenotato: boolean;
     @Input() loadingInvioPartenza: boolean;
     @Input() boxAttivi: boolean;
 
     @Select(ComposizioneVeloceState.preAccoppiati) preAccoppiati$: Observable<BoxPartenza[]>;
     preAccoppiati: BoxPartenza[];
-
     @Select(ComposizioneVeloceState.idPreAccoppiatoSelezionato) idPreAccoppiatoSelezionato$: Observable<string>;
     idPreAccoppiatoSelezionato: string;
-
     @Select(ComposizioneVeloceState.idPreAccoppiatiSelezionati) idPreAccoppiatiSelezionati$: Observable<string[]>;
     idPreAccoppiatiSelezionati: string[];
-
     @Select(ComposizioneVeloceState.idPreAccoppiatiOccupati) idPreAccoppiatiOccupati$: Observable<string[]>;
     idPreAccoppiatiOccupati: string[];
-
     @Select(ComposizioneVeloceState.idPreAccoppiatoHover) idPreaccoppiatoHover$: Observable<string>;
     idPreaccoppiatoHover: string;
+
+    // Paginazione
+    @Select(PaginationComposizionePartenzaState.pagePreaccoppiati) currentPagePreaccoppiati$: Observable<number>;
+    currentPagePreaccoppiati: number;
+    @Select(PaginationComposizionePartenzaState.totalItemsMezzi) totalItemsPreaccoppiati$: Observable<number>;
+    totalItemsPreaccoppiati: number;
+    @Select(PaginationComposizionePartenzaState.pageSizeMezzi) pageSizePreaccoppiati$: Observable<number>;
+    pageSizePreaccoppiati: number;
 
     Composizione = Composizione;
 
@@ -58,7 +63,6 @@ export class FasterComponent implements OnInit, OnDestroy {
     @Output() sendDirection: EventEmitter<DirectionInterface> = new EventEmitter();
     @Output() clearDirection: EventEmitter<any> = new EventEmitter();
     @Output() centraMappa = new EventEmitter();
-    @Output() prenota = new EventEmitter<boolean>();
 
     constructor(private store: Store) {
         // Prendo i preaccoppiati da visualizzare nella lista
@@ -66,6 +70,7 @@ export class FasterComponent implements OnInit, OnDestroy {
             this.preAccoppiati$.subscribe((preAcc: BoxPartenza[]) => {
                 this.preAccoppiati = preAcc;
                 console.log('preAccoppiati', this.preAccoppiati);
+                this.totalItemsPreaccoppiati = this.preAccoppiati ? this.preAccoppiati.length : null;
             })
         );
         // Prendo gli id dei preAccoppiati selezionati
@@ -92,22 +97,44 @@ export class FasterComponent implements OnInit, OnDestroy {
                 this.idPreAccoppiatiOccupati = idPreAccoppiatiOccupati;
             })
         );
+
+        // Prendo Pagina Corrente Preaccoppiati
+        this.subscription.add(
+            this.currentPagePreaccoppiati$.subscribe((currentPagePreaccoppiati: number) => {
+                this.currentPagePreaccoppiati = currentPagePreaccoppiati;
+            })
+        );
+        // Prendo Totale Items Preaccoppiati
+        this.subscription.add(
+            this.totalItemsPreaccoppiati$.subscribe((totalItemsPreaccoppiati: number) => {
+                // this.totalItemsPreaccoppiati = totalItemsPreaccoppiati;
+            })
+        );
+        // Prendo Pagina Size Preaccoppiati
+        this.subscription.add(
+            this.pageSizePreaccoppiati$.subscribe((pageSizePreaccoppiati: number) => {
+                this.pageSizePreaccoppiati = pageSizePreaccoppiati;
+            })
+        );
     }
 
-    ngOnInit() {
+    ngOnInit(): void {
         this.store.dispatch(new GetFiltriComposizione());
     }
 
     ngOnDestroy(): void {
+        this.store.dispatch(new ResetPaginationPreaccoppiati());
         this.subscription.unsubscribe();
     }
 
-    selezionaPreaccoppiato(preAcc: BoxPartenza) {
-        !preAcc.mezzoComposizione.mezzo.coordinateFake && this.mezzoCoordinate(preAcc.mezzoComposizione.mezzo.coordinate);
+    selezionaPreaccoppiato(preAcc: BoxPartenza): void {
+        if (!preAcc.mezzoComposizione.mezzo.coordinateFake) {
+            this.mezzoCoordinate(preAcc.mezzoComposizione.mezzo.coordinate);
+        }
         this.store.dispatch(new SelectPreAccoppiatoComposizione(preAcc));
     }
 
-    deselezionaPreaccoppiato(preAcc: BoxPartenza) {
+    deselezionaPreaccoppiato(preAcc: BoxPartenza): void {
         this.onClearDirection();
         this.store.dispatch(new UnselectPreAccoppiatoComposizione(preAcc));
     }
@@ -143,20 +170,23 @@ export class FasterComponent implements OnInit, OnDestroy {
             }
         });
         const partenze = makeCopy(boxPartenzaList);
-        const partenzeMappedArray = partenze.map(obj => {
-            const rObj = {};
+        const partenzeMappedArray = partenze.map((obj: BoxPartenza) => {
+            const rObj = {
+                mezzo: null,
+                squadre: null
+            };
             if (obj.mezzoComposizione) {
                 obj.mezzoComposizione.mezzo.stato = StatoMezzo.InViaggio;
-                rObj['mezzo'] = obj.mezzoComposizione.mezzo;
+                rObj.mezzo = obj.mezzoComposizione.mezzo;
             } else {
-                rObj['mezzo'] = null;
+                rObj.mezzo = null;
             }
-            if (obj.squadraComposizione.length > 0) {
-                rObj['squadre'] = obj.squadraComposizione.map((squadraComp: SquadraComposizione) => {
+            if (obj.squadreComposizione.length > 0) {
+                rObj.squadre = obj.squadreComposizione.map((squadraComp: SquadraComposizione) => {
                     return squadraComp.squadra;
                 });
             } else {
-                rObj['squadre'] = [];
+                rObj.squadre = [];
             }
             return rObj;
         });
@@ -177,20 +207,23 @@ export class FasterComponent implements OnInit, OnDestroy {
             }
         });
         const partenze = makeCopy(boxPartenzaList);
-        const partenzeMappedArray = partenze.map(obj => {
-            const rObj = {};
+        const partenzeMappedArray = partenze.map((obj: BoxPartenza) => {
+            const rObj = {
+                mezzo: null,
+                squadre: null
+            };
             if (obj.mezzoComposizione) {
                 obj.mezzoComposizione.mezzo.stato = StatoMezzo.InUscita;
-                rObj['mezzo'] = obj.mezzoComposizione.mezzo;
+                rObj.mezzo = obj.mezzoComposizione.mezzo;
             } else {
-                rObj['mezzo'] = null;
+                rObj.mezzo = null;
             }
-            if (obj.squadraComposizione.length > 0) {
-                rObj['squadre'] = obj.squadraComposizione.map((squadraComp: SquadraComposizione) => {
+            if (obj.squadreComposizione.length > 0) {
+                rObj.squadre = obj.squadreComposizione.map((squadraComp: SquadraComposizione) => {
                     return squadraComp.squadra;
                 });
             } else {
-                rObj['squadre'] = [];
+                rObj.squadre = [];
             }
             return rObj;
         });
@@ -199,7 +232,6 @@ export class FasterComponent implements OnInit, OnDestroy {
             idRichiesta: this.store.selectSnapshot(ComposizionePartenzaState.richiestaComposizione).codice,
             turno: this.store.selectSnapshot(TurnoState.turnoCalendario).corrente
         };
-        // console.log('mappedArray', partenzeMappedArray);
         this.store.dispatch(new ConfirmPartenze(partenzeObj));
     }
 
@@ -216,4 +248,10 @@ export class FasterComponent implements OnInit, OnDestroy {
         this.store.dispatch(new HoverOutPreAccoppiatoComposizione());
     }
 
+    preAccoppiatiPageChange(pagePreaccoppiati: number): void {
+        const options = {
+            page: pagePreaccoppiati
+        };
+        this.store.dispatch(new GetListaComposizioneVeloce(options));
+    }
 }

@@ -36,19 +36,18 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneMezziInServizio.Lista
 
         public ListaMezziInServizioAuthorizationQueryHandlerDecorator(IPrincipal currentUser, IFindUserByUsername findUserByUsername, IGetAutorizzazioni getAutorizzazioni)
         {
-            this._currentUser = currentUser;
+            _currentUser = currentUser;
             _findUserByUsername = findUserByUsername;
             _getAutorizzazioni = getAutorizzazioni;
         }
 
         public IEnumerable<AuthorizationResult> Authorize(ListaMezziInServizioQuery query)
         {
-            string username = this._currentUser.Identity.Name;
-            Utente user = _findUserByUsername.FindUserByUs(username);
+            query.Operatore = _findUserByUsername.FindUserByUs(_currentUser.Identity.Name);
 
-            if (this._currentUser.Identity.IsAuthenticated)
+            if (_currentUser.Identity.IsAuthenticated)
             {
-                if (user == null)
+                if (query.Operatore == null)
                     yield return new AuthorizationResult(Costanti.UtenteNonAutorizzato);
             }
             else

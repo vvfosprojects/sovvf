@@ -1,4 +1,4 @@
-import { Component, Input, isDevMode, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Select, Store } from '@ngxs/store';
 import { Utente } from '../../../shared/model/utente.model';
@@ -33,14 +33,14 @@ export class ChiamataComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        isDevMode() && console.log('Componente Chiamata creato');
+        console.log('Componente Chiamata creato');
     }
 
     ngOnDestroy(): void {
-        isDevMode() && console.log('Componente Chiamata distrutto');
+        console.log('Componente Chiamata distrutto');
     }
 
-    aggiungiNuovoEnte() {
+    aggiungiNuovoEnte(): void {
         const addEnteModal = this.modalService.open(EnteModalComponent, {
             windowClass: 'modal-holder',
             backdropClass: 'light-blue-backdrop',

@@ -67,13 +67,13 @@ namespace SO115App.API.Controllers
             var command = new AddInterventoCommand()
             {
                 Chiamata = chiamata,
-                CodiceSede = codiceSede,
+                CodiceSede = codiceSede.ToString().Split(',', StringSplitOptions.RemoveEmptyEntries)[0],
                 CodUtente = idUtente
             };
 
             try
             {
-                this._Addhandler.Handle(command);
+                _Addhandler.Handle(command);
                 return Ok(_getSintesiRichiestaByCodice.GetSintesi(command.Chiamata.Codice));
             }
             catch (Exception ex)

@@ -44,7 +44,7 @@ namespace SO115App.SignalR.Sender.GestioneTrasferimentiChiamate
 
         public async Task SendNotification(AddTrasferimentoCommand command)
         {
-            var mioComandoDes = _getSede.Get(command.CodiceSede).Descrizione;
+            var mioComandoDes = _getSede.Get(command.CodiciSede[0]).Descrizione;
             var mioOperatore = _getUtenteById.GetUtenteByCodice(command.TrasferimentoChiamata.IdOperatore);
             var totalItemsA = _getTrasferimenti.Count(command.TrasferimentoChiamata.CodSedeA);
             var totalItemsDa = _getTrasferimenti.Count(command.TrasferimentoChiamata.CodSedeDa);

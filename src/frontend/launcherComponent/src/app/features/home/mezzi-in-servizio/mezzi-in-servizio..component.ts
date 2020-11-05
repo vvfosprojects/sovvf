@@ -1,4 +1,4 @@
-import { Component, Input, isDevMode, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Store, Select } from '@ngxs/store';
 import { ToggleMezziInServizio } from '../store/actions/view/view.actions';
 import { SetIdRichiestaEventi, ClearEventiRichiesta, SetFiltroTargaMezzo } from '../store/actions/eventi/eventi-richiesta.actions';
@@ -6,7 +6,7 @@ import { AllTrueBoxMezzi, AllTrueBoxMezziPresenti, UndoAllBoxes } from '../store
 import { MezziInServizioState } from '../store/states/mezzi-in-servizio/mezzi-in-servizio.state';
 import { Observable, Subscription } from 'rxjs';
 import { MezzoActionInterface } from 'src/app/shared/interface/mezzo-action.interface';
-import { ActionMezzo, SetRichiestaById } from '../store/actions/richieste/richieste.actions';
+import { ActionMezzo, GetListaRichieste, SetRichiestaById } from '../store/actions/richieste/richieste.actions';
 import { RichiesteState } from '../store/states/richieste/richieste.state';
 import { EventiRichiestaComponent } from '../eventi/eventi-richiesta.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -19,12 +19,15 @@ import { BoxClickState, BoxClickStateModel } from '../store/states/boxes/box-cli
 import {
     ClearFiltriMezziInServizio,
     ClearMezzoInServizioHover,
-    GetMezziInServizio,
+    GetListaMezziInServizio,
     SetMezzoInServizioHover,
     SetMezzoInServizioSelezionato
 } from '../store/actions/mezzi-in-servizio/mezzi-in-servizio.actions';
 import { RicercaFilterbarState } from '../store/states/filterbar/ricerca-filterbar.state';
 import { ClearRicercaFilterbar } from '../store/actions/filterbar/ricerca-richieste.actions';
+import { PaginationState } from '../../../shared/store/states/pagination/pagination.state';
+import { CleaRicercaTrasferimentoChiamata } from '../../trasferimento-chiamata/store/actions/ricerca-trasferimento-chiamata/ricerca-trasferimento-chiamata.actions';
+import { PatchPagination } from '../../../shared/store/actions/pagination/pagination.actions';
 
 @Component({
     selector: 'app-mezzi-in-servizio',
@@ -35,46 +38,56 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
 
     @Input() boxAttivi: boolean;
 
+    @Select(RicercaFilterbarState.ricerca) ricerca$: Observable<string>;
+    ricerca: string;
+    @Select(PaginationState.pageSize) pageSize$: Observable<number>;
+    pageSize: number;
+    @Select(PaginationState.pageSizes) pageSizes$: Observable<number[]>;
+    @Select(PaginationState.totalItems) totalItems$: Observable<number>;
+    @Select(PaginationState.page) page$: Observable<number>;
+
     @Select(MezziInServizioState.mezziInServizioFiltered) mezziInServizio$: Observable<MezzoInServizio[]>;
     mezziInServizio: MezzoInServizio[];
     @Select(MezziInServizioState.idMezzoInServizioHover) idMezzoInServizioHover$: Observable<string>;
     idMezzoInServizioHover: string;
     @Select(MezziInServizioState.idMezzoInServizioSelezionato) idMezzoInServizioSelezionato$: Observable<string>;
     idMezzoInServizioSelezionato: string;
-    @Select(RicercaFilterbarState.ricerca) ricercaMezziInServizio$: Observable<string>;
-    ricercaMezziInServizio: { mezzo: { mezzo: { descrizione: string } } };
     @Select(RichiesteState.loadingActionMezzo) loadingActionMezzo$: Observable<string>;
     @Select(MezziInServizioState.loadingMezziInServizio) loadingMezziInServizio$: Observable<boolean>;
 
     statiMezziInServizio: StatoMezzo[];
     prevStateBoxClick: BoxClickStateModel;
-    subscription: Subscription = new Subscription();
+
+    private subscriptions: Subscription = new Subscription();
 
     constructor(private store: Store,
                 private modalService: NgbModal) {
+        this.getRicerca();
         this.getMezziInServizio();
         this.getMezzoInServizioHover();
         this.getMezzoInServizioSelezionato();
-        this.getRicercaMezziInServizio();
     }
 
-    ngOnInit() {
+    ngOnInit(): void {
         this.store.dispatch(new ClearRicercaFilterbar());
-        isDevMode() && console.log('Componente Mezzo in Servizio creato');
+        console.log('Componente Mezzo in Servizio creato');
     }
 
     ngOnDestroy(): void {
-        this.subscription.unsubscribe();
-        this.store.dispatch(new ClearFiltriMezziInServizio());
-        this.store.dispatch(new ClearRicercaFilterbar());
-        this.store.dispatch(new UndoAllBoxes(this.prevStateBoxClick));
-        isDevMode() && console.log('Componente Mezzo in Servizio distrutto');
+        this.subscriptions.unsubscribe();
+        this.store.dispatch([
+            new GetListaRichieste(),
+            new ClearFiltriMezziInServizio(true),
+            new ClearRicercaFilterbar(),
+            new UndoAllBoxes(this.prevStateBoxClick)
+        ]);
+        console.log('Componente Mezzo in Servizio distrutto');
     }
 
-    getMezziInServizio() {
+    getMezziInServizio(): void {
         this.prevStateBoxClick = this.store.selectSnapshot(BoxClickState);
-        this.store.dispatch(new GetMezziInServizio());
-        this.subscription.add(
+        this.store.dispatch(new GetListaMezziInServizio());
+        this.subscriptions.add(
             this.mezziInServizio$.subscribe((mezzi: MezzoInServizio[]) => {
                 this.mezziInServizio = mezzi;
                 if (this.mezziInServizio && this.mezziInServizio.length > 0) {
@@ -87,37 +100,44 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
         );
     }
 
-    getMezzoInServizioHover() {
-        this.subscription.add(
+    getMezzoInServizioHover(): void {
+        this.subscriptions.add(
             this.idMezzoInServizioHover$.subscribe((idMezzo: string) => {
                 this.idMezzoInServizioHover = idMezzo;
             })
         );
     }
 
-    getMezzoInServizioSelezionato() {
-        this.subscription.add(
+    getMezzoInServizioSelezionato(): void {
+        this.subscriptions.add(
             this.idMezzoInServizioSelezionato$.subscribe((idMezzo: string) => {
                 this.idMezzoInServizioSelezionato = idMezzo;
             })
         );
     }
 
-    getRicercaMezziInServizio() {
-        this.subscription.add(
-            this.ricercaMezziInServizio$.subscribe((ricerca: string) => {
-                this.ricercaMezziInServizio = { mezzo: { mezzo: { descrizione: ricerca } } };
+    onPageChange(page: number): void {
+        this.store.dispatch(new GetListaMezziInServizio(page));
+    }
+
+    getRicerca(): void {
+        this.subscriptions.add(
+            this.ricerca$.subscribe((ricerca: string) => {
+                if (ricerca !== null) {
+                    this.ricerca = ricerca;
+                    this.store.dispatch(new GetListaMezziInServizio());
+                }
             })
         );
     }
 
-    onActionMezzo(mezzoInServizio: Mezzo, mezzoAction: MezzoActionInterface) {
+    onActionMezzo(mezzoInServizio: Mezzo, mezzoAction: MezzoActionInterface): void {
         mezzoAction.codRichiesta = mezzoInServizio.idRichiesta;
         mezzoAction.listaMezzi = true;
         this.store.dispatch(new ActionMezzo(mezzoAction));
     }
 
-    onDettaglioRichiesta(idRichiesta: string) {
+    onDettaglioRichiesta(idRichiesta: string): void {
         this.store.dispatch(new SetRichiestaById(idRichiesta));
         this.modalService.open(SintesiRichiestaModalComponent, {
             windowClass: 'xlModal',
@@ -127,7 +147,7 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
     }
 
     /* Apre il modal per visualizzare gli eventi relativi alla richiesta cliccata */
-    onVisualizzaEventiRichiesta(mezzo: Mezzo) {
+    onVisualizzaEventiRichiesta(mezzo: Mezzo): void {
         this.store.dispatch(new SetFiltroTargaMezzo([mezzo.descrizione]));
         this.store.dispatch(new SetIdRichiestaEventi(mezzo.idRichiesta));
         const modal = this.modalService.open(EventiRichiestaComponent, {
@@ -140,19 +160,19 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
             () => this.store.dispatch(new ClearEventiRichiesta()));
     }
 
-    hoverIn(idMezzoInServizio: string) {
+    hoverIn(idMezzoInServizio: string): void {
         this.store.dispatch(new SetMezzoInServizioHover(idMezzoInServizio));
     }
 
-    hoverOut() {
+    hoverOut(): void {
         this.store.dispatch(new ClearMezzoInServizioHover());
     }
 
-    selezionato(idMezzoInServizio: string) {
+    selezionato(idMezzoInServizio: string): void {
         this.store.dispatch(new SetMezzoInServizioSelezionato(idMezzoInServizio));
     }
 
-    tornaIndietro() {
+    tornaIndietro(): void {
         this.store.dispatch(new ToggleMezziInServizio());
     }
 

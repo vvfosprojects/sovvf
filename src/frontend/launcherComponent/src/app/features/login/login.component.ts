@@ -11,6 +11,7 @@ import { AuthState } from '../auth/store/auth.state';
 import { Utente } from '../../shared/model/utente.model';
 import { Navigate } from '@ngxs/router-plugin';
 import { RoutesPath } from '../../shared/enum/routes-path.enum';
+import { StopBigLoading } from '../../shared/store/actions/loading/loading.actions';
 
 @Component({
     templateUrl: 'login.component.html',
@@ -48,22 +49,23 @@ export class LoginComponent implements OnInit, OnDestroy {
         );
     }
 
-    ngOnInit() {
+    ngOnInit(): void {
+        this.store.dispatch(new StopBigLoading());
         this.loginForm = this.formBuilder.group({
             username: ['', Validators.required],
             password: ['', Validators.required]
         });
     }
 
-    ngOnDestroy() {
+    ngOnDestroy(): void {
         this.subscription.unsubscribe();
     }
 
-    get f() {
+    get f(): any {
         return this.loginForm.controls;
     }
 
-    onSubmit() {
+    onSubmit(): void {
         this.submitted = true;
         this.error = '';
 
@@ -83,7 +85,7 @@ export class LoginComponent implements OnInit, OnDestroy {
                 });
     }
 
-    onCasLogin() {
+    onCasLogin(): void {
         this.store.dispatch(new CasLogin());
     }
 }

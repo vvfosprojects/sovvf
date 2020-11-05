@@ -1,4 +1,4 @@
-import { Component, Input, isDevMode, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
 import { Observable, Subscription } from 'rxjs';
 import { Select, Store } from '@ngxs/store';
@@ -28,8 +28,9 @@ import { AuthState } from '../../auth/store/auth.state';
 import { ClearListaSquadreComposizione } from '../../../shared/store/actions/squadre-composizione/squadre-composizione.actions';
 import { ClearPreaccoppiati } from '../store/actions/composizione-partenza/composizione-veloce.actions';
 import { FiltriComposizioneState } from '../../../shared/store/states/filtri-composizione/filtri-composizione.state';
-import { ClearFiltriAffini } from '../../../shared/store/actions/filtri-composizione/filtri-composizione.actions';
 import { SetRicercaMezziComposizione, SetRicercaSquadreComposizione } from '../../../shared/store/actions/ricerca-composizione/ricerca-composizione.actions';
+import { GetListeComposizioneAvanzata } from '../store/actions/composizione-partenza/composizione-avanzata.actions';
+import { ListaTipologicheMezzi } from './interface/filtri/lista-filtri-composizione-interface';
 
 @Component({
     selector: 'app-composizione-partenza',
@@ -41,22 +42,22 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
     @Input() compPartenzaMode: Composizione;
     @Input() boxAttivi: boolean;
 
-    Composizione = Composizione;
-
     @Select(ComposizioneVeloceState.preAccoppiati) preAccoppiati$: Observable<BoxPartenza[]>;
-    @Select(FiltriComposizioneState.filtriAffini) filtriAffini$: Observable<any>;
+    @Select(FiltriComposizioneState.filtri) filtri$: Observable<ListaTipologicheMezzi>;
     @Select(ComposizionePartenzaState.richiestaComposizione) richiestaComposizione$: Observable<SintesiRichiesta>;
     @Select(ComposizionePartenzaState.loadingInvioPartenza) loadingInvioPartenza$: Observable<boolean>;
     @Select(ComposizionePartenzaState.loadingListe) loadingListe$: Observable<boolean>;
     loadingListe: boolean;
 
-    private subscription = new Subscription();
-
     richiesta: SintesiRichiesta;
     prevStateBoxClick: BoxClickStateModel;
-    methods = new HelperSintesiRichiesta;
+    methods = new HelperSintesiRichiesta();
     disablePrenota: boolean;
     prenotato: boolean;
+
+    Composizione = Composizione;
+
+    private subscription = new Subscription();
 
     constructor(private modalService: NgbModal, private store: Store) {
         this.subscription.add(
@@ -73,7 +74,8 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
         );
     }
 
-    ngOnInit() {
+    ngOnInit(): void {
+        console.log('Componente Composizione creato');
         this.prevStateBoxClick = this.store.selectSnapshot(BoxClickState);
         if (this.richiesta) {
             this.store.dispatch([
@@ -82,38 +84,36 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
                 new ReducerBoxClick('richieste', wipeStatoRichiesta(this.richiesta.stato))
             ]);
         }
-        isDevMode() && console.log('Componente Composizione creato');
     }
 
-    ngOnDestroy() {
+    ngOnDestroy(): void {
         this.store.dispatch([
             new UndoAllBoxes(this.prevStateBoxClick),
             new ClearListaMezziComposizione(),
             new ClearListaSquadreComposizione(),
-            new ClearPreaccoppiati(),
-            new ClearFiltriAffini()
+            new ClearPreaccoppiati()
         ]);
         this.subscription.unsubscribe();
-        isDevMode() && console.log('Componente Composizione distrutto');
+        console.log('Componente Composizione distrutto');
     }
 
-    cardClasses(r: SintesiRichiesta) {
+    cardClasses(r: SintesiRichiesta): void {
         return this.methods.cardBorder(r);
     }
 
-    onSendDirection(direction: DirectionInterface) {
+    onSendDirection(direction: DirectionInterface): void {
         this.store.dispatch(new SetDirection(direction));
     }
 
-    onClearDirection() {
+    onClearDirection(): void {
         this.store.dispatch([new ClearDirection(), new ClearMarkerMezzoSelezionato()]);
     }
 
-    centraMappa() {
+    centraMappa(): void {
         this.store.dispatch(new SetCoordCentroMappa(this.richiesta.localita.coordinate));
     }
 
-    onVisualizzaEventiRichiesta(idRichiesta: string) {
+    onVisualizzaEventiRichiesta(idRichiesta: string): void {
         this.store.dispatch(new SetIdRichiestaEventi(idRichiesta));
         const modal = this.modalService.open(EventiRichiestaComponent, { windowClass: 'xlModal', backdropClass: 'light-blue-backdrop', centered: true });
         modal.result.then(() => {
@@ -132,24 +132,30 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
         }
     }
 
-    onPrenota($event) {
+    onPrenota($event): void {
         $event ? this.store.dispatch(new AddPresaInCarico(this.richiesta)) : this.store.dispatch(new DeletePresaInCarico(this.richiesta));
     }
 
-    onActionMezzo(actionMezzo: MezzoActionInterface) {
+    onActionMezzo(actionMezzo: MezzoActionInterface): void {
         this.store.dispatch(new ActionMezzo(actionMezzo));
     }
 
-    onSganciamento(sganciamentoObj: SganciamentoInterface) {
+    onSganciamento(sganciamentoObj: SganciamentoInterface): void {
         this.store.dispatch(new SganciamentoMezzoComposizione(sganciamentoObj));
     }
 
-    changeRicercaSquadre(ricerca: string) {
-        this.store.dispatch(new SetRicercaSquadreComposizione(ricerca));
+    changeRicercaSquadre(ricerca: string): void {
+        this.store.dispatch([
+            new SetRicercaSquadreComposizione(ricerca),
+            new GetListeComposizioneAvanzata()
+        ]);
     }
 
-    changeRicercaMezzi(ricerca: string) {
-        this.store.dispatch(new SetRicercaMezziComposizione(ricerca));
+    changeRicercaMezzi(ricerca: string): void {
+        this.store.dispatch([
+            new SetRicercaMezziComposizione(ricerca),
+            new GetListeComposizioneAvanzata()
+        ]);
     }
 }
 

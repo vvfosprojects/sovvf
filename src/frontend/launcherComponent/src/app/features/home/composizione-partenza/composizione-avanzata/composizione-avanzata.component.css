@@ -18,3 +18,15 @@
     min-height: 100%;
     align-items: center;
 }
+
+.clear-search-mezzi {
+    transform: translate(175px, -26px);
+    position: fixed;
+    cursor: pointer
+}
+
+.clear-search-squadre {
+  transform: translate(78px, -26px);
+  position: fixed;
+  cursor: pointer
+}

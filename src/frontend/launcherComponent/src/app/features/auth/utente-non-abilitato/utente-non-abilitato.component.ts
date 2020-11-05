@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { CasLogout } from '../store/auth.actions';
+import { StopBigLoading } from '../../../shared/store/actions/loading/loading.actions';
 
 @Component({
     selector: 'app-utente-non-abilitato',
@@ -12,10 +13,11 @@ export class UtenteNonAbilitatoComponent implements OnInit {
     constructor(private store: Store) {
     }
 
-    ngOnInit() {
+    ngOnInit(): void {
+        this.store.dispatch(new StopBigLoading());
     }
 
-    clearCas() {
+    clearCas(): void {
         this.store.dispatch(new CasLogout());
     }
 

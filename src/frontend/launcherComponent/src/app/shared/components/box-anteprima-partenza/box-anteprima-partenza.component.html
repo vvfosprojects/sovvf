@@ -1,3 +1,6 @@
+<ng-template [ngIf]="title">
+    <h3>{{ title }}</h3>
+</ng-template>
 <div [class.display-box]="hideBox" [class.box-in-sostituzione]="inSostituzione" [class.box-sostitutivo]="boxSostitutivo"
      class="border-partenza-box pb-4 d-flex" style="place-content: space-evenly;">
     <div class="mb-3" style="display: contents;">
@@ -88,7 +91,8 @@
                 <button class="btn btn-xl btn-block btn-info btn-no-hover" ngbTooltip="Sostituisci partenza"
                         style="padding-left: 15px; padding-right: 15px; padding-top: 5px; padding-bottom: 5px;
                             font-size: 18px;" (click)="onModificaPartenza($event)">
-                    <i class="fa fa-pencil-square-o"></i>
+                    <i class="fa fa-pencil-square-o mr-1"></i>
+                    {{ testoModifica }}
                 </button>
             </div>
         </ng-template>

@@ -1,5 +1,11 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { VoceFiltro } from '../../../filterbar/filtri-richieste/voce-filtro.model';
+import { Tipologia } from '../../../../../shared/model/tipologia.model';
+import { HomeState } from '../home.state';
+import { _isStatico } from '../../../../../shared/helper/function-filtro';
+import { insertItem, patch, removeItem } from '@ngxs/store/operators';
+import { GetListaRichieste } from '../../actions/richieste/richieste.actions';
+import { VociFiltroDefault } from '../../../../../shared/enum/voci-filtro-default.enum';
 import {
     GetFiltriRichieste,
     SetFiltroSelezionatoRichieste,
@@ -10,13 +16,8 @@ import {
     ClearAllFiltriTipologiaSelezionatiRichieste,
     ApplyFiltriTipologiaSelezionatiRichieste
 } from '../../actions/filterbar/filtri-richieste.actions';
-import { Tipologia } from '../../../../../shared/model/tipologia.model';
-import { HomeState } from '../home.state';
-import { _isStatico } from '../../../../../shared/helper/function-filtro';
-import { insertItem, patch, removeItem } from '@ngxs/store/operators';
-import { GetListaRichieste } from '../../actions/richieste/richieste.actions';
+import { Injectable } from '@angular/core';
 import produce from 'immer';
-import { VociFiltroDefault } from '../../../../../shared/enum/voci-filtro-default.enum';
 
 export interface FiltriRichiesteStateModel {
     filtriStaticiRichieste: VoceFiltro[];
@@ -28,17 +29,39 @@ export interface FiltriRichiesteStateModel {
 
 export const filtriRichiesteStateDefaults: FiltriRichiesteStateModel = {
     filtriStaticiRichieste: [
-        { codice: VociFiltroDefault.Aperte, categoria: 'Aperte', descrizione: 'Aperte', name: 'includiRichiesteAperte', star: true, statico: true },
-        { codice: VociFiltroDefault.Chiuse, categoria: 'Chiuse', descrizione: 'Chiuse', name: 'includiRichiesteChiuse', star: true, statico: true }
+        {
+            codice: VociFiltroDefault.Aperte,
+            categoria: 'Aperte',
+            descrizione: 'Aperte',
+            name: 'includiRichiesteAperte',
+            star: true,
+            statico: true
+        },
+        {
+            codice: VociFiltroDefault.Chiuse,
+            categoria: 'Chiuse',
+            descrizione: 'Chiuse',
+            name: 'includiRichiesteChiuse',
+            star: true,
+            statico: true
+        }
     ],
     filtriRichieste: [],
     filtriRichiesteSelezionati: [
-        { codice: VociFiltroDefault.Aperte, categoria: 'Aperte', descrizione: 'Aperte', name: 'includiRichiesteAperte', star: true, statico: true }
+        {
+            codice: VociFiltroDefault.Aperte,
+            categoria: 'Aperte',
+            descrizione: 'Aperte',
+            name: 'includiRichiesteAperte',
+            star: true,
+            statico: true
+        }
     ],
     categoriaFiltriRichieste: [],
     filtriTipologiaSelezionati: []
 };
 
+@Injectable()
 @State<FiltriRichiesteStateModel>({
     name: 'filtriRichieste',
     defaults: filtriRichiesteStateDefaults
@@ -49,27 +72,27 @@ export class FiltriRichiesteState {
     }
 
     @Selector()
-    static filtriTipologie(state: FiltriRichiesteStateModel) {
+    static filtriTipologie(state: FiltriRichiesteStateModel): VoceFiltro[] {
         return state.filtriRichieste;
     }
 
     @Selector()
-    static categoriaFiltriTipologie(state: FiltriRichiesteStateModel) {
+    static categoriaFiltriTipologie(state: FiltriRichiesteStateModel): string[] {
         return state.categoriaFiltriRichieste;
     }
 
     @Selector()
-    static filtriRichiesteSelezionati(state: FiltriRichiesteStateModel) {
+    static filtriRichiesteSelezionati(state: FiltriRichiesteStateModel): VoceFiltro[] {
         return state.filtriRichiesteSelezionati;
     }
 
     @Selector()
-    static filtriTipologiaSelezionati(state: FiltriRichiesteStateModel) {
+    static filtriTipologiaSelezionati(state: FiltriRichiesteStateModel): VoceFiltro[] {
         return state.filtriTipologiaSelezionati;
     }
 
     @Action(GetFiltriRichieste)
-    getFiltriRichieste({ getState, patchState }: StateContext<FiltriRichiesteStateModel>) {
+    getFiltriRichieste({ getState, patchState }: StateContext<FiltriRichiesteStateModel>): void {
         const state = getState();
 
         const filtriStatici: VoceFiltro[] = state.filtriStaticiRichieste;
@@ -91,13 +114,13 @@ export class FiltriRichiesteState {
 
         patchState({
             ...state,
-            filtriRichieste: filtriRichieste,
+            filtriRichieste,
             categoriaFiltriRichieste: categorie
         });
     }
 
     @Action(SetFiltroSelezionatoRichieste)
-    setFiltroSelezionato({ getState, setState, patchState, dispatch }: StateContext<FiltriRichiesteStateModel>, action: SetFiltroSelezionatoRichieste) {
+    setFiltroSelezionato({ getState, setState, patchState, dispatch }: StateContext<FiltriRichiesteStateModel>, action: SetFiltroSelezionatoRichieste): void {
         const state = getState();
         if (_isStatico(state.filtriStaticiRichieste, action.filtro)) {
             const filtroStaticoSelezionato = state.filtriRichiesteSelezionati && state.filtriRichiesteSelezionati.filter((f: VoceFiltro) => f.categoria === action.filtro.categoria)[0];
@@ -124,7 +147,7 @@ export class FiltriRichiesteState {
     }
 
     @Action(ClearFiltroSelezionatoRichieste)
-    clearFiltroSelezionatoRichieste({ getState, setState, patchState, dispatch }: StateContext<FiltriRichiesteStateModel>, action: ClearFiltroSelezionatoRichieste) {
+    clearFiltroSelezionatoRichieste({ getState, setState, patchState, dispatch }: StateContext<FiltriRichiesteStateModel>, action: ClearFiltroSelezionatoRichieste): void {
         setState(
             patch({
                 filtriRichiesteSelezionati: removeItem<VoceFiltro>(filtro => filtro.codice === action.filtro.codice)
@@ -134,7 +157,7 @@ export class FiltriRichiesteState {
     }
 
     @Action(SetFiltroTipologiaSelezionatoRichieste)
-    setFiltroTipologiaSelezionatoRichieste({ setState }: StateContext<FiltriRichiesteStateModel>, action: SetFiltroTipologiaSelezionatoRichieste) {
+    setFiltroTipologiaSelezionatoRichieste({ setState }: StateContext<FiltriRichiesteStateModel>, action: SetFiltroTipologiaSelezionatoRichieste): void {
         setState(
             patch({
                 filtriTipologiaSelezionati: insertItem<VoceFiltro>(action.filtro)
@@ -143,7 +166,7 @@ export class FiltriRichiesteState {
     }
 
     @Action(ClearFiltroTipologiaSelezionatoRichieste)
-    clearFiltroTipologiaSelezionatoRichieste({ setState }: StateContext<FiltriRichiesteStateModel>, action: ClearFiltroTipologiaSelezionatoRichieste) {
+    clearFiltroTipologiaSelezionatoRichieste({ setState }: StateContext<FiltriRichiesteStateModel>, action: ClearFiltroTipologiaSelezionatoRichieste): void {
         setState(
             patch({
                 filtriTipologiaSelezionati: removeItem<VoceFiltro>(filtro => filtro.codice === action.filtro.codice)
@@ -152,7 +175,7 @@ export class FiltriRichiesteState {
     }
 
     @Action(ApplyFiltriTipologiaSelezionatiRichieste)
-    applyFiltriTipologiaSelezionatiRichieste({ getState, setState, dispatch }: StateContext<FiltriRichiesteStateModel>) {
+    applyFiltriTipologiaSelezionatiRichieste({ getState, setState, dispatch }: StateContext<FiltriRichiesteStateModel>): void {
         const filtriTipologiaSelezionati = getState().filtriTipologiaSelezionati;
         setState(
             produce(getState(), draft => {
@@ -166,14 +189,14 @@ export class FiltriRichiesteState {
     }
 
     @Action(ClearAllFiltriTipologiaSelezionatiRichieste)
-    clearAllFiltriTipologiaSelezionatiRichieste({ patchState }: StateContext<FiltriRichiesteStateModel>) {
+    clearAllFiltriTipologiaSelezionatiRichieste({ patchState }: StateContext<FiltriRichiesteStateModel>): void {
         patchState({
             filtriTipologiaSelezionati: []
         });
     }
 
     @Action(ResetFiltriSelezionatiRichieste)
-    resetFiltriSelezionati({ setState, dispatch }: StateContext<FiltriRichiesteStateModel>, action: ResetFiltriSelezionatiRichieste) {
+    resetFiltriSelezionati({ setState, dispatch }: StateContext<FiltriRichiesteStateModel>, action: ResetFiltriSelezionatiRichieste): void {
         setState(filtriRichiesteStateDefaults);
         dispatch([
             new GetFiltriRichieste()

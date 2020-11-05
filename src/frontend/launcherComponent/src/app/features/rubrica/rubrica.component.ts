@@ -16,6 +16,7 @@ import { RubricaState } from './store/states/rubrica/rubrica.state';
 import { GetRubrica } from './store/actions/rubrica/rubrica.actions';
 import { ClearFormEnte, RequestAddEnte, RequestDeleteEnte, RequestUpdateEnte } from '../../shared/store/actions/enti/enti.actions';
 import { ConfirmModalComponent } from '../../shared/modal/confirm-modal/confirm-modal.component';
+import { StopBigLoading } from '../../shared/store/actions/loading/loading.actions';
 
 @Component({
     selector: 'app-rubrica',
@@ -48,10 +49,11 @@ export class RubricaComponent implements OnInit, OnDestroy {
     }
 
 
-    ngOnInit() {
+    ngOnInit(): void {
         this.store.dispatch([
             new SetCurrentUrl(RoutesPath.Rubrica),
-            new SetSediNavbarVisible(false)
+            new SetSediNavbarVisible(false),
+            new StopBigLoading()
         ]);
     }
 
@@ -63,7 +65,7 @@ export class RubricaComponent implements OnInit, OnDestroy {
         this.subscriptions.unsubscribe();
     }
 
-    getRubrica(pageAttuale: boolean) {
+    getRubrica(pageAttuale: boolean): void {
         let page = null;
         if (pageAttuale) {
             page = this.store.selectSnapshot(PaginationState.page);
@@ -71,7 +73,7 @@ export class RubricaComponent implements OnInit, OnDestroy {
         this.store.dispatch(new GetRubrica(page));
     }
 
-    onAddVoceRubrica() {
+    onAddVoceRubrica(): void {
         const addVoceRubricaModal = this.modalService.open(EnteModalComponent, {
             windowClass: 'modal-holder',
             backdropClass: 'light-blue-backdrop',
@@ -94,11 +96,11 @@ export class RubricaComponent implements OnInit, OnDestroy {
         );
     }
 
-    addVoceRubrica() {
+    addVoceRubrica(): void {
         this.store.dispatch(new RequestAddEnte());
     }
 
-    onEditVoceRubrica(voceRubrica: Ente) {
+    onEditVoceRubrica(voceRubrica: Ente): void {
         console.log('onEditVoceRubrica', voceRubrica);
         const editVoceRubricaModal = this.modalService.open(EnteModalComponent, {
             windowClass: 'modal-holder',
@@ -123,11 +125,11 @@ export class RubricaComponent implements OnInit, OnDestroy {
         );
     }
 
-    updateVoceRubrica() {
+    updateVoceRubrica(): void {
         this.store.dispatch(new RequestUpdateEnte());
     }
 
-    onDeleteVoceRubrica(payload: { idVoceRubrica: string, descrizioneVoceRubrica: string }) {
+    onDeleteVoceRubrica(payload: { idVoceRubrica: string, descrizioneVoceRubrica: string }): void {
         const modalConfermaAnnulla = this.modalService.open(ConfirmModalComponent, {
             windowClass: 'modal-holder',
             backdropClass: 'light-blue-backdrop',
@@ -156,23 +158,23 @@ export class RubricaComponent implements OnInit, OnDestroy {
         );
     }
 
-    deleteVoceRubrica(id: string) {
+    deleteVoceRubrica(id: string): void {
         this.store.dispatch(new RequestDeleteEnte({ id }));
     }
 
-    onRicercaRubrica(ricerca: string) {
+    onRicercaRubrica(ricerca: string): void {
         this.store.dispatch(new SetRicercaRubrica(ricerca));
     }
 
-    onPageChange(page: number) {
+    onPageChange(page: number): void {
         this.store.dispatch(new GetRubrica(page));
     }
 
-    onPageSizeChange(pageSize: number) {
+    onPageSizeChange(pageSize: number): void {
         this.store.dispatch(new SetPageSize(pageSize));
     }
 
-    getRicerca() {
+    getRicerca(): void {
         this.subscriptions.add(
             this.ricerca$.subscribe((ricerca: string) => {
                 if (ricerca !== null) {
@@ -183,7 +185,7 @@ export class RubricaComponent implements OnInit, OnDestroy {
         );
     }
 
-    getPageSize() {
+    getPageSize(): void {
         this.subscriptions.add(
             this.pageSize$.subscribe((pageSize: number) => {
                 if (pageSize) {

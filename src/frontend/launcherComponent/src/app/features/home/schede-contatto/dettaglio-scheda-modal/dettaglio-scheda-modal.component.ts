@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { SchedaContatto } from 'src/app/shared/interface/scheda-contatto.interface';
 import { Priorita } from '../../../../shared/model/sintesi-richiesta.model';
 
@@ -7,15 +7,12 @@ import { Priorita } from '../../../../shared/model/sintesi-richiesta.model';
     templateUrl: './dettaglio-scheda-modal.component.html',
     styleUrls: ['./dettaglio-scheda-modal.component.css']
 })
-export class DettaglioSchedaModalComponent implements OnInit {
+export class DettaglioSchedaModalComponent {
 
     schedaContatto: SchedaContatto;
     priorita = Priorita;
 
     constructor() {
-    }
-
-    ngOnInit() {
     }
 
 }

@@ -26,5 +26,7 @@ namespace SO115App.Models.Servizi.Infrastruttura.GetPreAccoppiati
     public interface IGetPreAccoppiati
     {
         List<PreAccoppiati> Get(PreAccoppiatiQuery query);
+
+        List<PreAccoppiatiFakeJson> GetFake(PreAccoppiatiQuery query);
     }
 }

@@ -11,6 +11,7 @@ import { DettaglioSchedaModalComponent } from './dettaglio-scheda-modal/dettagli
 import { SchedaContattoComponent } from './scheda-contatto/scheda-contatto.component';
 import { MergeSchedeContattoState } from '../store/states/schede-contatto/merge-schede-contatto.state';
 import { SchedaCollegataComponent } from './scheda-collegata/scheda-collegata.component';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
     imports: [
@@ -21,9 +22,11 @@ import { SchedaCollegataComponent } from './scheda-collegata/scheda-collegata.co
         SharedModule,
         NgxsModule.forFeature(
             [
-                SchedeContattoState, MergeSchedeContattoState
+                SchedeContattoState,
+                MergeSchedeContattoState
             ]
-        )
+        ),
+        NgxPaginationModule
     ],
     declarations: [
         SchedeContattoComponent,

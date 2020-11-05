@@ -19,21 +19,25 @@ export class ListaPartenzeComponent {
     @Input() partenze: Partenza[];
     @Input() statoRichiesta: StatoRichiesta;
     @Input() inGestione: boolean;
+    @Input() sostituzioneFineTurnoActive: boolean;
 
     @Output() actionMezzo: EventEmitter<MezzoActionInterface> = new EventEmitter<MezzoActionInterface>();
-    @Output() eliminaPartenza: EventEmitter<string> = new EventEmitter();
-    @Output() modificaPartenza: EventEmitter<string> = new EventEmitter();
+    @Output() eliminaPartenza: EventEmitter<string> = new EventEmitter<string>();
+    @Output() modificaPartenza: EventEmitter<string> = new EventEmitter<string>();
+    @Output() sostituzioneFineTurno: EventEmitter<any> = new EventEmitter<any>();
 
     @Select(RichiesteState.loadingActionMezzo) loadingActionMezzo$: Observable<string>;
+
+    loadingActionMezzoArray: any[] = [];
 
     constructor(private store: Store) {
     }
 
-    onListaSquadrePartenza(listaSquadre: ListaSquadre) {
+    onListaSquadrePartenza(listaSquadre: ListaSquadre): void {
         this.store.dispatch(new VisualizzaListaSquadrePartenza(listaSquadre));
     }
 
-    checkNumeroPartenze(partenze: Partenza[]) {
+    checkNumeroPartenze(partenze: Partenza[]): number {
         let count = 0;
         if (partenze && partenze.length > 0) {
             partenze.forEach((p: Partenza) => {
@@ -45,7 +49,12 @@ export class ListaPartenzeComponent {
         return count;
     }
 
-    onActionMezzo(mezzoAction: MezzoActionInterface) {
+    onActionMezzo(mezzoAction: MezzoActionInterface): void {
         this.actionMezzo.emit(mezzoAction);
+        if (mezzoAction.mezzo.codice && !this.loadingActionMezzoArray.includes(mezzoAction.mezzo.codice)) {
+            this.loadingActionMezzoArray.push(mezzoAction.mezzo.codice);
+        } else if (!mezzoAction.mezzo.codice) {
+            this.loadingActionMezzoArray.shift();
+        }
     }
 }

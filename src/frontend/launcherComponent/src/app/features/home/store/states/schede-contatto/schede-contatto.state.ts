@@ -6,25 +6,32 @@ import {
     ClearSchedaContattoHover,
     ClearSchedaContattoTelefonata,
     GeneraListaSchedeContatto,
-    GetListaSchedeContatto, InsertSchedeContatto, OpenDetailSC,
+    GetListaSchedeContatto,
+    InsertSchedeContatto,
+    OpenDetailSC,
     ReducerSetFiltroSchedeContatto,
     RemoveSchedeContatto,
     ResetFiltriSelezionatiSchedeContatto,
     SaveMergeSchedeContatto,
     SetContatoriSchedeContatto,
     SetFiltroGestitaSchedeContatto,
-    SetFiltroKeySchedeContatto,
-    SetFiltroSelezionatoSchedaContatto, SetIdVisualizzati,
+    SetFiltroSelezionatoSchedaContatto,
+    SetIdVisualizzati,
     SetListaSchedeContatto,
     SetRangeVisualizzazioneSchedeContatto,
     SetSchedaContattoGestita,
     SetSchedaContattoHover,
-    SetSchedaContattoTelefonata, SetTabAttivo, ToggleCollapsed, UndoMergeSchedeContatto,
+    SetSchedaContattoTelefonata,
+    SetTabAttivo,
+    StartLoadingSchedeContatto,
+    StopLoadingSchedeContatto,
+    ToggleCollapsed,
+    UndoMergeSchedeContatto,
     UpdateSchedaContatto
 } from '../../actions/schede-contatto/schede-contatto.actions';
 import { ClassificazioneSchedaContatto } from '../../../../../shared/enum/classificazione-scheda-contatto.enum';
 import { SchedeContattoService } from '../../../../../core/service/schede-contatto/schede-contatto.service';
-import { FiltriSchedeContatto } from '../../../../../shared/interface/filtri-schede-contatto.interface';
+import { FiltersSchedeContattoInterface } from '../../../../../shared/interface/filters/filters-schede-contatto.interface';
 import { VoceFiltro } from '../../../filterbar/filtri-richieste/voce-filtro.model';
 import { makeCopy } from '../../../../../shared/helper/function';
 import {
@@ -32,24 +39,25 @@ import {
     setFiltroSelezionato as _setFiltroSelezionato
 } from '../../../../../shared/helper/function-filtro';
 import { CategoriaFiltriSchedeContatto as Categoria } from '../../../../../shared/enum/categoria-filtri-schede-contatto';
-import { ContatoriSchedeContatto } from '../../../../../shared/interface/contatori-schede-contatto.interface';
+import { ContatoreSchedeContatto, ContatoriSchedeContatto } from '../../../../../shared/interface/contatori-schede-contatto.interface';
 import { ContatoriSchedeContattoModel } from '../../../../../shared/model/contatori-schede-contatto.model';
 import { append, insertItem, patch, removeItem, updateItem } from '@ngxs/store/operators';
 import { RangeSchedeContattoEnum } from '../../../../../shared/enum/range-schede-contatto';
 import { MergeSchedeContattoState } from './merge-schede-contatto.state';
 import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.actions';
 import { ToastrType } from '../../../../../shared/enum/toastr';
-import {
-    ClearMergeSchedeContatto
-} from '../../actions/schede-contatto/merge-schede-contatto.actions';
-import {
-    RefreshSchedeContattoMarkers,
-    ToggleOpacitaSchedeContattoMarkers
-} from '../../actions/maps/schede-contatto-markers.actions';
+import { ClearMergeSchedeContatto } from '../../actions/schede-contatto/merge-schede-contatto.actions';
+import { RefreshSchedeContattoMarkers, ToggleOpacitaSchedeContattoMarkers } from '../../actions/maps/schede-contatto-markers.actions';
 import { DettaglioSchedaModalComponent } from '../../../schede-contatto/dettaglio-scheda-modal/dettaglio-scheda-modal.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { NgZone } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { ClearMarkerSCSelezionato } from '../../actions/maps/marker.actions';
+import { FiltersInterface } from '../../../../../shared/interface/filters/filters.interface';
+import { PaginationInterface } from '../../../../../shared/interface/pagination.interface';
+import { RicercaFilterbarState } from '../filterbar/ricerca-filterbar.state';
+import { ResponseInterface } from '../../../../../shared/interface/response.interface';
+import { PatchPagination } from '../../../../../shared/store/actions/pagination/pagination.actions';
+import { ImpostazioniState } from '../../../../../shared/store/states/impostazioni/impostazioni.state';
 
 export interface SchedeContattoStateModel {
     contatoriSchedeContatto: ContatoriSchedeContatto;
@@ -60,10 +68,11 @@ export interface SchedeContattoStateModel {
     schedaContattoTelefonata: SchedaContatto;
     codiceSchedaContattoHover: string;
     filtriSchedeContatto: VoceFiltro[];
-    filtriSelezionati: FiltriSchedeContatto;
+    filtriSelezionati: FiltersSchedeContattoInterface;
     tabAttivo: ClassificazioneSchedaContatto;
     idVisualizzati: string[];
     idCollapsed: string[];
+    loadingSchedeContatto: boolean;
 }
 
 export const SchedeContattoEmpty = {
@@ -73,111 +82,110 @@ export const SchedeContattoEmpty = {
     idSchedeContattoDifferibili: [],
     tabAttivo: null,
     idVisualizzati: [],
-    idCollapsed: []
+    idCollapsed: [],
+    loadingSchedeContatto: false
 };
 
 export const SchedeContattoStateDefaults: SchedeContattoStateModel = {
     contatoriSchedeContatto: new ContatoriSchedeContattoModel(),
     ...SchedeContattoEmpty,
-    schedaContattoTelefonata: null,
-    codiceSchedaContattoHover: null,
+    schedaContattoTelefonata: undefined,
+    codiceSchedaContattoHover: undefined,
     filtriSchedeContatto: [
         new VoceFiltro('1', Categoria.Gestione, 'Gestita', false),
         new VoceFiltro('2', Categoria.Gestione, 'Non Gestita', false)
-        // new VoceFiltro('4', Categoria.Appartenenza, 'Personali', false),
-        // new VoceFiltro('4', Categoria.Appartenenza, 'Non Personali', false)
     ],
     filtriSelezionati: {
-        testoLibero: '',
-        gestita: null,
+        gestita: undefined,
         rangeVisualizzazione: RangeSchedeContattoEnum.DaSempre
     }
 };
 
+@Injectable()
 @State<SchedeContattoStateModel>({
     name: 'schedeContatto',
     defaults: SchedeContattoStateDefaults,
-    children: [ MergeSchedeContattoState ]
+    children: [MergeSchedeContattoState]
 })
 export class SchedeContattoState {
 
     @Selector()
-    static contatoreSchedeContattoTotale(state: SchedeContattoStateModel) {
+    static loadingSchedeContatto(state: SchedeContattoStateModel): boolean {
+        return state.loadingSchedeContatto;
+    }
+
+    @Selector()
+    static contatoreSchedeContattoTotale(state: SchedeContattoStateModel): ContatoreSchedeContatto {
         return state.contatoriSchedeContatto.totaleSchede;
     }
 
     @Selector()
-    static contatoriSchedeContatto(state: SchedeContattoStateModel) {
+    static contatoriSchedeContatto(state: SchedeContattoStateModel): ContatoriSchedeContatto {
         return state.contatoriSchedeContatto;
     }
 
     @Selector()
-    static schedeContatto(state: SchedeContattoStateModel) {
+    static schedeContatto(state: SchedeContattoStateModel): SchedaContatto[] {
         return state.schedeContatto;
     }
 
     @Selector()
-    static idSchedeCompetenza(state: SchedeContattoStateModel) {
+    static idSchedeCompetenza(state: SchedeContattoStateModel): string[] {
         return state.idSchedeContattoCompetenza;
     }
 
     @Selector()
-    static idSchedeConoscenza(state: SchedeContattoStateModel) {
+    static idSchedeConoscenza(state: SchedeContattoStateModel): string[] {
         return state.idSchedeContattoConoscenza;
     }
 
     @Selector()
-    static idSchedeDifferibili(state: SchedeContattoStateModel) {
+    static idSchedeDifferibili(state: SchedeContattoStateModel): string[] {
         return state.idSchedeContattoDifferibili;
     }
 
     @Selector()
-    static idVisualizzati(state: SchedeContattoStateModel) {
+    static idVisualizzati(state: SchedeContattoStateModel): string[] {
         return state.idVisualizzati;
     }
 
     @Selector()
-    static idCollapsed(state: SchedeContattoStateModel) {
+    static idCollapsed(state: SchedeContattoStateModel): string[] {
         return state.idCollapsed;
     }
 
     @Selector()
-    static schedaContattoTelefonata(state: SchedeContattoStateModel) {
+    static schedaContattoTelefonata(state: SchedeContattoStateModel): SchedaContatto {
         return state.schedaContattoTelefonata;
     }
 
     @Selector()
-    static numeroSchedeContattoCompetenza(state: SchedeContattoStateModel) {
+    static numeroSchedeContattoCompetenza(state: SchedeContattoStateModel): number {
         return state.idSchedeContattoCompetenza.length;
     }
 
     @Selector()
-    static codiceSchedaContattoHover(state: SchedeContattoStateModel) {
+    static codiceSchedaContattoHover(state: SchedeContattoStateModel): string {
         return state.codiceSchedaContattoHover;
     }
 
     @Selector()
-    static filtriSchedeContatto(state: SchedeContattoStateModel) {
+    static filtriSchedeContatto(state: SchedeContattoStateModel): VoceFiltro[] {
         return state.filtriSchedeContatto;
     }
 
     @Selector()
-    static filtriSelezionati(state: SchedeContattoStateModel) {
+    static filtriSelezionati(state: SchedeContattoStateModel): VoceFiltro[] {
         return state.filtriSchedeContatto.filter(f => f.selezionato === true);
     }
 
     @Selector()
-    static ricerca(state: SchedeContattoStateModel) {
-        return state.filtriSelezionati.testoLibero;
-    }
-
-    @Selector()
-    static rangeVisualizzazione(state: SchedeContattoStateModel) {
+    static rangeVisualizzazione(state: SchedeContattoStateModel): RangeSchedeContattoEnum | number {
         return state.filtriSelezionati.rangeVisualizzazione;
     }
 
     @Selector()
-    static tabAttivo(state: SchedeContattoStateModel) {
+    static tabAttivo(state: SchedeContattoStateModel): string {
         if (state.tabAttivo) {
             return state.tabAttivo;
         } else {
@@ -187,43 +195,58 @@ export class SchedeContattoState {
 
     constructor(private schedeContattoService: SchedeContattoService,
                 private modal: NgbModal,
-                private ngZone: NgZone) {
+                private ngZone: NgZone,
+                private store: Store) {
     }
 
     @Action(SetContatoriSchedeContatto)
-    setContatoriSchedeContatto({ patchState }: StateContext<SchedeContattoStateModel>, action: SetContatoriSchedeContatto) {
+    setContatoriSchedeContatto({ patchState }: StateContext<SchedeContattoStateModel>, action: SetContatoriSchedeContatto): void {
         patchState({
             contatoriSchedeContatto: action.contatori
         });
     }
 
     @Action(GetListaSchedeContatto)
-    getListaSchedeContatto({ getState, dispatch }: StateContext<SchedeContattoStateModel>) {
+    getListaSchedeContatto({ getState, dispatch }: StateContext<SchedeContattoStateModel>, action: GetListaSchedeContatto): void {
+        dispatch(new StartLoadingSchedeContatto());
         const state = getState();
-        const filtri = {
-            testoLibero: state.filtriSelezionati.testoLibero,
-            gestita: state.filtriSelezionati.gestita
-        } as FiltriSchedeContatto;
+        const gestita = state.filtriSelezionati.gestita;
+        const search = this.store.selectSnapshot(RicercaFilterbarState.ricerca);
+        const boxesVisibili = this.store.selectSnapshot(ImpostazioniState.boxAttivi);
+        let rangeVisualizzazione = state.filtriSelezionati.rangeVisualizzazione;
         if (state.filtriSelezionati.rangeVisualizzazione !== RangeSchedeContattoEnum.DaSempre) {
-            switch (state.filtriSelezionati.rangeVisualizzazione) {
+            switch (rangeVisualizzazione) {
                 case RangeSchedeContattoEnum.UltimaOra:
-                    filtri.rangeVisualizzazione = 1;
+                    rangeVisualizzazione = 1;
                     break;
                 case RangeSchedeContattoEnum.UltimeDueOre:
-                    filtri.rangeVisualizzazione = 2;
+                    rangeVisualizzazione = 2;
                     break;
                 case RangeSchedeContattoEnum.UltimoGiorno:
-                    filtri.rangeVisualizzazione = 24;
+                    rangeVisualizzazione = 24;
                     break;
             }
         }
-        this.schedeContattoService.getSchedeContatto(filtri).subscribe((schedeContatto: SchedaContatto[]) => {
-            dispatch(new SetListaSchedeContatto(schedeContatto));
+        const filters = {
+            search,
+            gestita,
+            rangeVisualizzazione: rangeVisualizzazione !== RangeSchedeContattoEnum.DaSempre ? rangeVisualizzazione : null
+        } as FiltersInterface;
+        const pagination = {
+            page: action.page ? action.page : 1,
+            pageSize: boxesVisibili ? 13 : 15
+        } as PaginationInterface;
+        this.schedeContattoService.getSchedeContatto(filters, pagination).subscribe((response: ResponseInterface) => {
+            dispatch([
+                new SetListaSchedeContatto(response.dataArray),
+                new PatchPagination(response.pagination),
+                new StopLoadingSchedeContatto()
+            ]);
         });
     }
 
     @Action(SetListaSchedeContatto)
-    setListaSchedeContatto({ patchState, dispatch }: StateContext<SchedeContattoStateModel>, action: SetListaSchedeContatto) {
+    setListaSchedeContatto({ patchState, dispatch }: StateContext<SchedeContattoStateModel>, action: SetListaSchedeContatto): void {
         patchState({
             schedeContatto: action.schedeContatto
         });
@@ -231,23 +254,25 @@ export class SchedeContattoState {
     }
 
     @Action(GeneraListaSchedeContatto)
-    generaListaSchedeContatto({ getState, patchState, dispatch }: StateContext<SchedeContattoStateModel>) {
+    generaListaSchedeContatto({ getState, patchState, dispatch }: StateContext<SchedeContattoStateModel>): void {
         const state = getState();
-        patchState({
-            idSchedeContattoCompetenza: state.schedeContatto.filter(scheda => scheda.classificazione === ClassificazioneSchedaContatto.Competenza).map(value => value.codiceScheda),
-            idSchedeContattoConoscenza: state.schedeContatto.filter(scheda => scheda.classificazione === ClassificazioneSchedaContatto.Conoscenza).map(value => value.codiceScheda),
-            idSchedeContattoDifferibili: state.schedeContatto.filter(scheda => scheda.classificazione === ClassificazioneSchedaContatto.Differibile).map(value => value.codiceScheda)
-        });
-        dispatch(new SetIdVisualizzati());
+        if (state?.schedeContatto?.length > 0) {
+            patchState({
+                idSchedeContattoCompetenza: state.schedeContatto.filter(scheda => scheda.classificazione === ClassificazioneSchedaContatto.Competenza).map(value => value.codiceScheda),
+                idSchedeContattoConoscenza: state.schedeContatto.filter(scheda => scheda.classificazione === ClassificazioneSchedaContatto.Conoscenza).map(value => value.codiceScheda),
+                idSchedeContattoDifferibili: state.schedeContatto.filter(scheda => scheda.classificazione === ClassificazioneSchedaContatto.Differibile).map(value => value.codiceScheda)
+            });
+            dispatch(new SetIdVisualizzati());
+        }
     }
 
     @Action(ClearListaSchedeContatto)
-    clearListaSchedeContatto({ patchState }: StateContext<SchedeContattoStateModel>) {
+    clearListaSchedeContatto({ patchState }: StateContext<SchedeContattoStateModel>): void {
         patchState(SchedeContattoEmpty);
     }
 
     @Action(UpdateSchedaContatto)
-    updateSchedaContatto({ setState }: StateContext<SchedeContattoStateModel>, action: UpdateSchedaContatto) {
+    updateSchedaContatto({ setState }: StateContext<SchedeContattoStateModel>, action: UpdateSchedaContatto): void {
         setState(
             patch({
                 schedeContatto: updateItem<SchedaContatto>(s => s.codiceScheda === action.schedaContatto.codiceScheda, action.schedaContatto)
@@ -256,17 +281,17 @@ export class SchedeContattoState {
     }
 
     @Action(InsertSchedeContatto)
-    insertSchedeContatto({ setState, dispatch }: StateContext<SchedeContattoStateModel>, action: InsertSchedeContatto) {
+    insertSchedeContatto({ setState, dispatch }: StateContext<SchedeContattoStateModel>, action: InsertSchedeContatto): void {
         setState(
             patch({
-                schedeContatto: append(<SchedaContatto[]>(action.schedaContatto))
+                schedeContatto: append<SchedaContatto>((action.schedaContatto))
             })
         );
         dispatch(new GeneraListaSchedeContatto());
     }
 
     @Action(RemoveSchedeContatto)
-    removeSchedeContatto({ setState }: StateContext<SchedeContattoStateModel>, { idSchedeRimosse }: RemoveSchedeContatto) {
+    removeSchedeContatto({ setState }: StateContext<SchedeContattoStateModel>, { idSchedeRimosse }: RemoveSchedeContatto): void {
         console.log(idSchedeRimosse);
         idSchedeRimosse.forEach(idScheda => {
             setState(
@@ -283,7 +308,7 @@ export class SchedeContattoState {
     }
 
     @Action(SetTabAttivo)
-    setTabAttivo({ patchState, dispatch }: StateContext<SchedeContattoStateModel>, action: SetTabAttivo) {
+    setTabAttivo({ patchState, dispatch }: StateContext<SchedeContattoStateModel>, action: SetTabAttivo): void {
         if (action.tabAttivo) {
             patchState({
                 tabAttivo: action.tabAttivo,
@@ -299,7 +324,7 @@ export class SchedeContattoState {
     }
 
     @Action(SetIdVisualizzati)
-    setIdVisualizzati({ getState, patchState }: StateContext<SchedeContattoStateModel>) {
+    setIdVisualizzati({ getState, patchState }: StateContext<SchedeContattoStateModel>): void {
         const state = getState();
         if (state.tabAttivo) {
             patchState({
@@ -307,13 +332,13 @@ export class SchedeContattoState {
             });
         } else {
             patchState({
-                idVisualizzati: [ ...state.idSchedeContattoCompetenza, ...state.idSchedeContattoConoscenza, ...state.idSchedeContattoDifferibili ]
+                idVisualizzati: [...state.idSchedeContattoCompetenza, ...state.idSchedeContattoConoscenza, ...state.idSchedeContattoDifferibili]
             });
         }
     }
 
     @Action(ToggleCollapsed)
-    toggleCollapsed({ getState, setState }: StateContext<SchedeContattoStateModel>, action: ToggleCollapsed) {
+    toggleCollapsed({ getState, setState }: StateContext<SchedeContattoStateModel>, action: ToggleCollapsed): void {
         const state = getState();
         if (state.idCollapsed.length === 0 || !state.idCollapsed.includes(action.codiceScheda)) {
             setState(
@@ -331,41 +356,41 @@ export class SchedeContattoState {
     }
 
     @Action(SetSchedaContattoGestita)
-    setSchedaContattoGestita({ patchState }: StateContext<SchedeContattoStateModel>, action: SetSchedaContattoGestita) {
+    setSchedaContattoGestita({ patchState }: StateContext<SchedeContattoStateModel>, action: SetSchedaContattoGestita): void {
         this.schedeContattoService.setSchedaContattoGestita(action.schedaContatto, action.gestita).subscribe(() => {
         });
     }
 
     @Action(SetSchedaContattoTelefonata)
-    setSchedaContattoTelefonata({ patchState }: StateContext<SchedeContattoStateModel>, action: SetSchedaContattoTelefonata) {
+    setSchedaContattoTelefonata({ patchState }: StateContext<SchedeContattoStateModel>, action: SetSchedaContattoTelefonata): void {
         patchState({
             schedaContattoTelefonata: action.schedaContatto
         });
     }
 
     @Action(ClearSchedaContattoTelefonata)
-    clearSchedaContattoTelefonata({ patchState }: StateContext<SchedeContattoStateModel>) {
+    clearSchedaContattoTelefonata({ patchState }: StateContext<SchedeContattoStateModel>): void {
         patchState({
             schedaContattoTelefonata: null
         });
     }
 
     @Action(SetSchedaContattoHover)
-    setSchedaContattoHover({ patchState }: StateContext<SchedeContattoStateModel>, action: SetSchedaContattoHover) {
+    setSchedaContattoHover({ patchState }: StateContext<SchedeContattoStateModel>, action: SetSchedaContattoHover): void {
         patchState({
             codiceSchedaContattoHover: action.codiceSchedaContatto
         });
     }
 
     @Action(ClearSchedaContattoHover)
-    clearSchedaContattoHover({ patchState }: StateContext<SchedeContattoStateModel>) {
+    clearSchedaContattoHover({ patchState }: StateContext<SchedeContattoStateModel>): void {
         patchState({
             codiceSchedaContattoHover: null
         });
     }
 
     @Action(ReducerSetFiltroSchedeContatto)
-    reducerSetFiltroSchedeContatto({ getState, dispatch }: StateContext<SchedeContattoStateModel>, action: ReducerSetFiltroSchedeContatto) {
+    reducerSetFiltroSchedeContatto({ getState, dispatch }: StateContext<SchedeContattoStateModel>, action: ReducerSetFiltroSchedeContatto): void {
         const state = getState();
         switch (action.filtro.codice) {
             case '1':
@@ -381,20 +406,8 @@ export class SchedeContattoState {
         dispatch(new SetFiltroSelezionatoSchedaContatto(action.filtro));
     }
 
-    @Action(SetFiltroKeySchedeContatto)
-    setFiltroKeySchedeContatto({ getState, patchState, dispatch }: StateContext<SchedeContattoStateModel>, action: SetFiltroKeySchedeContatto) {
-        const state = getState();
-        patchState({
-            filtriSelezionati: {
-                ...state.filtriSelezionati,
-                testoLibero: action.key
-            }
-        });
-        dispatch(new GetListaSchedeContatto());
-    }
-
     @Action(SetFiltroGestitaSchedeContatto)
-    setFiltroGestitaSchedeContatto({ getState, patchState, dispatch }: StateContext<SchedeContattoStateModel>, action: SetFiltroGestitaSchedeContatto) {
+    setFiltroGestitaSchedeContatto({ getState, patchState, dispatch }: StateContext<SchedeContattoStateModel>, action: SetFiltroGestitaSchedeContatto): void {
         const state = getState();
         patchState({
             filtriSelezionati: {
@@ -406,7 +419,7 @@ export class SchedeContattoState {
     }
 
     @Action(ClearFiltriSchedeContatto)
-    clearFiltriSchedeContatto({ getState, patchState, dispatch }: StateContext<SchedeContattoStateModel>) {
+    clearFiltriSchedeContatto({ getState, patchState, dispatch }: StateContext<SchedeContattoStateModel>): void {
         const state = getState();
         patchState({
             filtriSelezionati: {
@@ -414,30 +427,26 @@ export class SchedeContattoState {
                 gestita: null
             }
         });
-        dispatch([ new GetListaSchedeContatto(), new ResetFiltriSelezionatiSchedeContatto() ]);
+        dispatch([
+            new GetListaSchedeContatto(), new ResetFiltriSelezionatiSchedeContatto()
+        ]);
     }
 
-    // SET FILTRO SELEZIONATO (SELEZIONATO, NON-SELEZIONATO)
     @Action(SetFiltroSelezionatoSchedaContatto)
-    setFiltroSelezionato({ getState, patchState }: StateContext<SchedeContattoStateModel>, action: SetFiltroSelezionatoSchedaContatto) {
+    setFiltroSelezionato({ getState, patchState }: StateContext<SchedeContattoStateModel>, action: SetFiltroSelezionatoSchedaContatto): void {
         const state = getState();
-
         const filtriSchedeContatto = makeCopy(state.filtriSchedeContatto);
         const filtro = makeCopy(action.filtro);
-
         patchState({
             ...state,
             filtriSchedeContatto: _setFiltroSelezionato(filtriSchedeContatto, filtro)
         });
     }
 
-    // RESET FILTRI SELEZIONATI
     @Action(ResetFiltriSelezionatiSchedeContatto)
-    resetFiltriSelezionati({ getState, patchState }: StateContext<SchedeContattoStateModel>) {
+    resetFiltriSelezionati({ getState, patchState }: StateContext<SchedeContattoStateModel>): void {
         const state = getState();
-
         const filtriSchedeContatto = makeCopy(state.filtriSchedeContatto);
-
         patchState({
             ...state,
             filtriSchedeContatto: _resetFiltriSelezionati(filtriSchedeContatto)
@@ -445,7 +454,7 @@ export class SchedeContattoState {
     }
 
     @Action(SetRangeVisualizzazioneSchedeContatto)
-    setRangeVisualizzazioneSchedeContatto({ getState, patchState, dispatch }: StateContext<SchedeContattoStateModel>, action: SetRangeVisualizzazioneSchedeContatto) {
+    setRangeVisualizzazioneSchedeContatto({ getState, patchState, dispatch }: StateContext<SchedeContattoStateModel>, action: SetRangeVisualizzazioneSchedeContatto): void {
         const state = getState();
         patchState({
             filtriSelezionati: {
@@ -457,7 +466,7 @@ export class SchedeContattoState {
     }
 
     @Action(SaveMergeSchedeContatto)
-    saveMergeSchedeContatto({ getState, dispatch }: StateContext<SchedeContattoStateModel>, action: SaveMergeSchedeContatto) {
+    saveMergeSchedeContatto({ getState, dispatch }: StateContext<SchedeContattoStateModel>, action: SaveMergeSchedeContatto): void {
         console.log('Id Schede contatto selezionate', action.schedeSelezionateId);
         const state = getState();
         const schedeSelezionate = state.schedeContatto.filter((value) => {
@@ -469,12 +478,12 @@ export class SchedeContattoState {
                 (a.priorita === b.priorita) ? ((new Date(a.dataInserimento).getTime() > new Date(b.dataInserimento).getTime()) ? 1 : -1) : -1);
         const mergeSchedeContatto: SchedaContatto = {
             ...schedeSelezionate[0],
-            collegate: [ ...schedeSelezionate.slice(1).map(value => {
+            collegate: [...schedeSelezionate.slice(1).map(value => {
                 return {
                     ...value,
                     collegata: true
                 };
-            }) ]
+            })]
         };
         this.schedeContattoService.mergeSchedeContatto(mergeSchedeContatto).subscribe(() => {
             console.log('Unione schede completata', mergeSchedeContatto);
@@ -487,7 +496,7 @@ export class SchedeContattoState {
     }
 
     @Action(UndoMergeSchedeContatto)
-    undoMergeSchedeContatto({ getState, dispatch }: StateContext<SchedeContattoStateModel>, action: UndoMergeSchedeContatto) {
+    undoMergeSchedeContatto({ getState, dispatch }: StateContext<SchedeContattoStateModel>, action: UndoMergeSchedeContatto): void {
         console.log('Id Scheda Contato Undo Merge', action.codiceScheda);
         const undoMergeSchedaContatto = getState().schedeContatto.filter(value => value.codiceScheda === action.codiceScheda)[0];
         this.schedeContattoService.undoMergeSchedeContatto(undoMergeSchedaContatto).subscribe(() => {
@@ -501,7 +510,7 @@ export class SchedeContattoState {
     }
 
     @Action(OpenDetailSC)
-    openDetailSC({ getState, dispatch }: StateContext<SchedeContattoStateModel>, action: OpenDetailSC) {
+    openDetailSC({ getState, dispatch }: StateContext<SchedeContattoStateModel>, action: OpenDetailSC): void {
         const state = getState();
         const schedaContattoDetail = state.schedeContatto.filter(value => value.codiceScheda === action.codiceScheda)[0];
         this.ngZone.run(() => {
@@ -514,6 +523,20 @@ export class SchedeContattoState {
                 },
                 () => dispatch(new ClearMarkerSCSelezionato())
             );
+        });
+    }
+
+    @Action(StartLoadingSchedeContatto)
+    startLoadingSchedeContatto({ patchState }: StateContext<SchedeContattoStateModel>): void {
+        patchState({
+            loadingSchedeContatto: true
+        });
+    }
+
+    @Action(StopLoadingSchedeContatto)
+    stopLoadingSchedeContatto({ patchState }: StateContext<SchedeContattoStateModel>): void {
+        patchState({
+            loadingSchedeContatto: false
         });
     }
 }

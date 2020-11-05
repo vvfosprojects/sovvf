@@ -24,9 +24,8 @@ import {
 import { InsertRichiestaMarker, UpdateRichiestaMarker } from '../../features/home/store/actions/maps/richieste-markers.actions';
 import { ComposizionePartenzaState } from '../../features/home/store/states/composizione-partenza/composizione-partenza.state';
 import { Composizione } from '../../shared/enum/composizione.enum';
-import { SetListaIdPreAccoppiati, UpdateMezzoPreAccoppiatoComposizione } from '../../features/home/store/actions/composizione-partenza/composizione-veloce.actions';
+import { SetListaPreaccoppiati, UpdateMezzoPreAccoppiatoComposizione } from '../../features/home/store/actions/composizione-partenza/composizione-veloce.actions';
 import { SetMezziInServizio, UpdateMezzoInServizio } from 'src/app/features/home/store/actions/mezzi-in-servizio/mezzi-in-servizio.actions';
-import { IdPreaccoppiati } from '../../features/home/composizione-partenza/interface/id-preaccoppiati-interface';
 import { UpdateMezzoMarker } from '../../features/home/store/actions/maps/mezzi-markers.actions';
 import {
     InsertSchedeContatto,
@@ -48,7 +47,6 @@ import { BoxMezzi } from '../../features/home/boxes/boxes-model/box-mezzi.model'
 import { BoxInterventi } from '../../features/home/boxes/boxes-model/box-interventi.model';
 import { ChiamataMarker } from '../../features/home/maps/maps-model/chiamata-marker.model';
 import { SintesiRichiesta } from '../../shared/model/sintesi-richiesta.model';
-
 import { AuthState } from '../../features/auth/store/auth.state';
 import { ClearCurrentUser, UpdateRuoliPersonali } from '../../features/auth/store/auth.actions';
 import { ViewComponentState } from '../../features/home/store/states/view/view.state';
@@ -61,6 +59,7 @@ import { AddNotifica } from '../../shared/store/actions/notifiche/notifiche.acti
 import { NotificaInterface } from '../../shared/interface/notifica.interface';
 import { ResponseAddTrasferimentoInterface } from '../../shared/interface/trasferimento-chiamata.interface';
 import { AddTrasferimentoChiamata } from '../../features/trasferimento-chiamata/store/actions/trasferimento-chiamata/trasferimento-chiamata.actions';
+import { BoxPartenza } from '../../features/home/composizione-partenza/interface/box-partenza-interface';
 
 const HUB_URL = environment.baseUrl + environment.signalRHub;
 const SIGNALR_BYPASS = !environment.signalR;
@@ -81,17 +80,17 @@ export class SignalRService {
         this.startSubscriptionConnection();
     }
 
-    checkConnection() {
+    checkConnection(): any {
         return this.connectionEstablished.asObservable();
     }
 
-    private createSubscriptionConnection() {
+    private createSubscriptionConnection(): void {
         this.hubNotification = new HubConnectionBuilder()
             .withUrl(HUB_URL)
             .build();
     }
 
-    private startSubscriptionConnection() {
+    private startSubscriptionConnection(): void {
         this.hubNotification.start().then(() => {
             console.log('Hub Subscription Connesso');
             this.connectionEstablished.next(true);
@@ -271,8 +270,8 @@ export class SignalRService {
         /**
          * Composizione Partenza
          */
-        this.hubNotification.on('NotifyGetPreaccoppiati', (data: IdPreaccoppiati[]) => {
-            this.store.dispatch(new SetListaIdPreAccoppiati(data));
+        this.hubNotification.on('NotifyGetPreaccoppiati', (data: BoxPartenza[]) => {
+            this.store.dispatch(new SetListaPreaccoppiati(data));
             this.store.dispatch(new ShowToastr(ToastrType.Info, 'Preaccoppiati Composizione ricevute da signalR', null, 5));
         });
 
@@ -387,7 +386,7 @@ export class SignalRService {
         this.store.dispatch(new SetConnectionId('N{[=sE=2\\_A/y"J7v;ZMEDcGZ3a$K53dmn9UJ]mR{PXd8rx\\M\\tdeE>:2NPH<3!n:s^2;'));
     }
 
-    getContextId() {
+    getContextId(): void {
         if (!SIGNALR_BYPASS) {
             this.hubNotification.invoke('GetConnectionId').then(connectionId => {
                 this.store.dispatch(new SetConnectionId(connectionId));
@@ -395,7 +394,7 @@ export class SignalRService {
         }
     }
 
-    startGetTime() {
+    startGetTime(): void {
         if (!SIGNALR_BYPASS) {
             this.hubNotification.invoke('GetDateTime')
                 .then((data: any) => {
@@ -406,7 +405,7 @@ export class SignalRService {
     }
 
 
-    addToGroup(notification: SignalRNotification) {
+    addToGroup(notification: SignalRNotification): void {
         if (!SIGNALR_BYPASS) {
             console.log('addToGroup', notification);
             this.hubNotification.invoke('AddToGroup', notification).then(
@@ -417,7 +416,7 @@ export class SignalRService {
         }
     }
 
-    removeToGroup(notification: SignalRNotification) {
+    removeToGroup(notification: SignalRNotification): void {
         if (!SIGNALR_BYPASS) {
             console.log('removeToGroup', notification);
             this.hubNotification.invoke('RemoveToGroup', notification).then(

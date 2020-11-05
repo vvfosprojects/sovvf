@@ -69,7 +69,7 @@ export class SelezioneTipiTerrenoComponent implements OnChanges, AfterViewInit {
         this.tipiTerrenoSelezionati.emit(terreniArray);
     }
 
-    onKeyMqTerreno(event: any, tipoTerreno: string) {
+    onKeyMqTerreno(event: any, tipoTerreno: string): void {
         this.tipiTerreniChecked.forEach(tipoTerrenoChecked => {
             if (tipoTerrenoChecked.name === tipoTerreno) {
                 tipoTerrenoChecked.value = event.target.value;
@@ -79,7 +79,7 @@ export class SelezioneTipiTerrenoComponent implements OnChanges, AfterViewInit {
         this.validateChechBoxTerreni();
     }
 
-    onCheckboxTerreno(name: string) {
+    onCheckboxTerreno(name: string): void {
         this.tipiTerreniChecked.forEach(tipoTerrenoChecked => {
             if (tipoTerrenoChecked.name === name) {
                 tipoTerrenoChecked.checked = !tipoTerrenoChecked.checked;

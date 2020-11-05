@@ -3,6 +3,7 @@ export const environment = {
     productionTest: true,
     consoleLog: true,
     toastr: true,
+    onlyCas: false,
     signalRHub: '/NotificationHub',
     baseUrl: 'http://localhost:5220',
     signalR: true,
@@ -36,7 +37,8 @@ export const environment = {
         meteo: 'https://api.openweathermap.org/data/2.5/weather?',
         enti: '/api/GestioneEnti',
         trasferimentoChiamata: '/api/GestioneTrasferimentiChiamate',
-        modificaPartenza: '/api/GestionePartenza/ModificaPartenza'
+        modificaPartenza: '/api/GestionePartenza/ModificaPartenza',
+        sostituzionePartenza: '/api/GestionePartenza/SostituzionePartenza'
     },
     casUrl: {
         linkLogin: 'http://sso.vigilfuoco.it/cas-test/login?service=',

@@ -50,6 +50,13 @@ namespace SO115App.API.Models.Classi.Soccorso.Mezzi.StatiMezzo
         /// <summary>
         ///   Accetta il visitor
         /// </summary>
+        /// <param name="sostituzionePartenza">Il visitor accettato</param>
+        /// <returns>Il nuovo stato</returns>
+        IStatoMezzo AcceptVisitor(SostituzionePartenzaFineTurno sostituzionePartenza);
+
+        /// <summary>
+        ///   Accetta il visitor
+        /// </summary>
         /// <param name="revoca">Il visitor accettato</param>
         /// <returns>Il nuovo stato</returns>
         IStatoMezzo AcceptVisitor(Revoca revoca);

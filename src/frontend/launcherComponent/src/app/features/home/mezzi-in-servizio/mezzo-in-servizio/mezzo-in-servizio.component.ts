@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { statoMezzoBorderClass } from '../../../../shared/helper/function';
 import { MezzoInServizio } from '../../../../shared/interface/mezzo-in-servizio.interface';
 import { VisualizzaListaSquadrePartenza } from '../../store/actions/richieste/richieste.actions';
@@ -10,12 +10,12 @@ import { StatoMezzo } from '../../../../shared/enum/stato-mezzo.enum';
     templateUrl: './mezzo-in-servizio.component.html',
     styleUrls: ['./mezzo-in-servizio.component.css']
 })
-export class MezzoInServizioComponent implements OnInit {
+export class MezzoInServizioComponent {
 
     @Input() mezzoInServizio: MezzoInServizio;
     @Input() idMezzoInServizioHover: string;
     @Input() idMezzoInServizioSelezionato: string;
-    @Input() loading: boolean;
+    @Input() loading: string;
 
     @Output() hoverIn: EventEmitter<any> = new EventEmitter<any>();
     @Output() hoverOut: EventEmitter<any> = new EventEmitter<any>();
@@ -26,28 +26,35 @@ export class MezzoInServizioComponent implements OnInit {
 
     StatoMezzo = StatoMezzo;
     mostraIndicatori = false;
+    loadingArray: any[] = [];
 
     constructor(private store: Store) {
     }
 
-    ngOnInit() {
+    // tslint:disable-next-line:use-lifecycle-interface
+    ngOnChanges(): void {
+      if (this.loading && !this.loadingArray.includes(this.loading)) {
+        this.loadingArray.push(this.loading);
+      } else if (!this.loading) {
+        this.loadingArray.shift();
+      }
     }
 
-    onListaSquadrePartenza() {
+    onListaSquadrePartenza(): void {
         const listaSquadre = {
             squadre: this.mezzoInServizio.squadre
         };
         this.store.dispatch(new VisualizzaListaSquadrePartenza(listaSquadre));
     }
 
-    cardClasses(stato: StatoMezzo, idMezzo: string) {
-        let _returnClass = statoMezzoBorderClass(stato);
+    cardClasses(stato: StatoMezzo, idMezzo: string): string {
+        let returnClass = statoMezzoBorderClass(stato);
         if (this.idMezzoInServizioHover === idMezzo) {
-            _returnClass += ' bg-light';
+            returnClass += ' bg-light';
         }
         if (this.idMezzoInServizioSelezionato === idMezzo) {
-            _returnClass += ' bg-light';
+            returnClass += ' bg-light';
         }
-        return _returnClass;
+        return returnClass;
     }
 }

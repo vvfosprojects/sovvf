@@ -16,7 +16,7 @@ export class SelectElementiPerPaginaComponent {
     constructor() {
     }
 
-    onChangePageSize(pageSize: number) {
+    onChangePageSize(pageSize: number): void {
         this.pageSizeChange.emit(pageSize);
     }
 }

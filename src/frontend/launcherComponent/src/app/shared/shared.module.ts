@@ -50,6 +50,11 @@ import { FilterPipeModule } from 'ngx-filter-pipe';
 import { BoxAnteprimaPartenzaComponent } from './components/box-anteprima-partenza/box-anteprima-partenza.component';
 import { AnnuncioNuovaVersioneModalComponent } from './modal/annuncio-nuova-versione-modal/annuncio-nuova-versione-modal.component';
 import { NuoveFeaturesInfoModalComponent } from './modal/nuove-features-info-modal/nuove-features-info-modal.component';
+import { SganciamentoMezzoModalComponent } from './modal/sganciamento-mezzo-modal/sganciamento-mezzo-modal.component';
+import { TimeagoFormatter, TimeagoIntl, TimeagoModule } from 'ngx-timeago';
+import { TimeagoVVFFormatter } from './helper/timago-custom-formatter';
+import { SintesiRichiestaComponent } from './components/sintesi-richiesta/sintesi-richiesta.component';
+import { SostituzionePartenzeFineTunoModalComponent } from './modal/sostituzione-partenze-fine-turno-modal/sostituzione-partenze-fine-tuno-modal.component';
 
 const COMPONENTS = [
     DebounceClickDirective,
@@ -94,7 +99,10 @@ const COMPONENTS = [
     BoxAnteprimaPartenzaComponent,
     AllertaSedeModalComponent,
     AnnuncioNuovaVersioneModalComponent,
-    NuoveFeaturesInfoModalComponent
+    NuoveFeaturesInfoModalComponent,
+    SganciamentoMezzoModalComponent,
+    SintesiRichiestaComponent,
+    SostituzionePartenzeFineTunoModalComponent
 ];
 
 @NgModule({
@@ -107,7 +115,11 @@ const COMPONENTS = [
         TreeviewModule.forRoot(),
         NgSelectModule,
         NgxsFormPluginModule.forRoot(),
-        FilterPipeModule
+        FilterPipeModule,
+        TimeagoModule.forRoot({
+            intl: TimeagoIntl,
+            formatter: { provide: TimeagoFormatter, useClass: TimeagoVVFFormatter }
+        })
     ],
     declarations: [
         ...COMPONENTS
@@ -119,7 +131,7 @@ const COMPONENTS = [
 })
 export class SharedModule {
 
-    static forRoot() {
+    static forRoot(): any {
         return {
             ngModule: SharedModule,
             providers: [

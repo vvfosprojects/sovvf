@@ -12,13 +12,14 @@ export class RicercaComponent {
     @Input() ricerca: string;
     @Input() disabled: boolean;
     @Input() debounce: boolean;
+    @Input() disableSearch: boolean;
 
     @Output() search: EventEmitter<string> = new EventEmitter<string>();
 
     constructor() {
     }
 
-    onSearch() {
+    onSearch(): void {
         this.search.emit(makeCopy(this.ricerca));
     }
 

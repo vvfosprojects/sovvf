@@ -22,6 +22,8 @@ import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap/modal/modal-ref';
 import { Navigate } from '@ngxs/router-plugin';
 import { RoutesPath } from '../../../shared/enum/routes-path.enum';
 import { AuthState } from '../../../features/auth/store/auth.state';
+import { Injectable } from '@angular/core';
+import {LSNAME} from '../../settings/config';
 
 export interface SignalRStateModel {
     connected: boolean;
@@ -41,6 +43,7 @@ export const SignalRStateDefaults: SignalRStateModel = {
     idUtente: null
 };
 
+@Injectable()
 @State<SignalRStateModel>({
     name: 'signalR',
     defaults: SignalRStateDefaults
@@ -69,7 +72,7 @@ export class SignalRState implements NgxsOnChanges {
                 private modalService: NgbModal) {
     }
 
-    ngxsOnChanges(change: NgxsSimpleChange) {
+    ngxsOnChanges(change: NgxsSimpleChange): void {
         const currentValue = change.currentValue;
         const previousValue = change.previousValue;
         if (!currentValue.disconnected && currentValue.reconnected && previousValue.reconnected) {
@@ -81,7 +84,7 @@ export class SignalRState implements NgxsOnChanges {
     }
 
     @Action(SignalRHubConnesso)
-    signalRConnesso({ getState, patchState, dispatch }: StateContext<SignalRStateModel>) {
+    signalRConnesso({ getState, patchState, dispatch }: StateContext<SignalRStateModel>): void {
         const state = getState();
         const reconnected = state.disconnected ? true : null;
         if (reconnected) {
@@ -90,9 +93,13 @@ export class SignalRState implements NgxsOnChanges {
                 new ShowToastr(ToastrType.Success, 'signalR', 'Sei di nuovo online!', 5, null, true)
             ]);
             if (state.codiciSede && state.codiciSede.length > 0) {
+                let cS: any = sessionStorage.getItem(LSNAME.cacheSedi);
+                if (cS) {
+                  cS = JSON.parse(cS);
+                }
                 const utente = this.store.selectSnapshot(AuthState.currentUser);
                 this.signalR.addToGroup(new SignalRNotification(
-                    state.codiciSede,
+                    cS,
                     utente.id,
                     `${utente.nome} ${utente.cognome}`
                 ));
@@ -100,13 +107,13 @@ export class SignalRState implements NgxsOnChanges {
         }
         patchState({
             connected: true,
-            reconnected: reconnected,
+            reconnected,
             disconnected: false
         });
     }
 
     @Action(SignalRHubDisconnesso)
-    signalRDisconnesso({ getState, patchState, dispatch }: StateContext<SignalRStateModel>) {
+    signalRDisconnesso({ getState, patchState, dispatch }: StateContext<SignalRStateModel>): void {
         const state = getState();
         const disconnected = state.connected ? true : null;
         if (disconnected) {
@@ -115,19 +122,23 @@ export class SignalRState implements NgxsOnChanges {
         patchState({
             connected: SignalRStateDefaults.connected,
             reconnected: false,
-            disconnected: disconnected,
+            disconnected,
             connectionId: null,
         });
     }
 
     @Action(SetConnectionId)
-    setConnectionId({ patchState }: StateContext<SignalRStateModel>, action: SetConnectionId) {
+    setConnectionId({ patchState }: StateContext<SignalRStateModel>, action: SetConnectionId): void {
         patchState({ connectionId: action.connectionId });
     }
 
     @Action(SetCodiceSede)
-    setCodiceSede({ getState, patchState, dispatch }: StateContext<SignalRStateModel>, { codiciSede }: SetCodiceSede) {
-        const codiciSedeAttuali = getState().codiciSede;
+    setCodiceSede({ getState, patchState, dispatch }: StateContext<SignalRStateModel>, { codiciSede }: SetCodiceSede): void {
+        let cS: any = sessionStorage.getItem(LSNAME.cacheSedi);
+        if (cS) {
+          cS = JSON.parse(cS);
+        }
+        const codiciSedeAttuali = cS ? cS : getState().codiciSede;
         const codiciSedeAdd = difference(codiciSede, codiciSedeAttuali);
         const codiciSedeRemove = difference(codiciSedeAttuali, codiciSede);
         console.log('SetCodiceSede', JSON.stringify({
@@ -138,17 +149,27 @@ export class SignalRState implements NgxsOnChanges {
     }
 
     @Action(ClearCodiceSede)
-    clearCodiceSede({ patchState }: StateContext<SignalRStateModel>) {
-        patchState({ codiciSede: SignalRStateDefaults.codiciSede });
+    clearCodiceSede({ patchState }: StateContext<SignalRStateModel>): void {
+        let cS: any = sessionStorage.getItem(LSNAME.cacheSedi);
+        if (cS) {
+          cS = JSON.parse(cS);
+        }
+        patchState({ codiciSede: cS ? cS : SignalRStateDefaults.codiciSede });
     }
 
     @Action(SetUtenteSignalR)
-    setUtenteSignalR({ dispatch }: StateContext<SignalRStateModel>, { codiciSede }: SetUtenteSignalR) {
+    setUtenteSignalR({ dispatch }: StateContext<SignalRStateModel>, { codiciSede }: SetUtenteSignalR): void {
         const utente = this.store.selectSnapshot(AuthState.currentUser);
         dispatch(new SetIdUtente(utente.id));
         if (codiciSede && codiciSede.length > 0) {
+            let cS: any = sessionStorage.getItem(LSNAME.cacheSedi);
+            if (cS) {
+              cS = JSON.parse(cS);
+            } else {
+              cS = codiciSede;
+            }
             this.signalR.addToGroup(new SignalRNotification(
-                codiciSede,
+                cS,
                 utente.id,
                 `${utente.nome} ${utente.cognome}`
             ));
@@ -156,11 +177,15 @@ export class SignalRState implements NgxsOnChanges {
     }
 
     @Action(ClearUtenteSignalR)
-    clearUtenteSignalR({}: StateContext<SignalRStateModel>, { codiciSede }: ClearUtenteSignalR) {
+    clearUtenteSignalR({}: StateContext<SignalRStateModel>, { codiciSede }: ClearUtenteSignalR): void {
         if (codiciSede && codiciSede.length > 0) {
+            let cS: any = sessionStorage.getItem(LSNAME.cacheSedi);
+            if (cS) {
+              cS = JSON.parse(cS);
+            }
             const utente = this.store.selectSnapshot(AuthState.currentUser);
             this.signalR.removeToGroup(new SignalRNotification(
-                codiciSede,
+                cS,
                 utente.id,
                 `${utente.nome} ${utente.cognome}`
                 )
@@ -169,29 +194,36 @@ export class SignalRState implements NgxsOnChanges {
     }
 
     @Action(LogoffUtenteSignalR)
-    logoffUtenteSignalR({ getState, dispatch }: StateContext<SignalRStateModel>, { utente }: LogoffUtenteSignalR) {
-        const codiciSede = getState().codiciSede;
-        this.signalR.removeToGroup(new SignalRNotification(
-            codiciSede,
-            utente.id,
-            `${utente.nome} ${utente.cognome}`
+    logoffUtenteSignalR({ getState, dispatch }: StateContext<SignalRStateModel>, { utente }: LogoffUtenteSignalR): void {
+        let cS: any = sessionStorage.getItem(LSNAME.cacheSedi);
+        if (cS) {
+          cS = JSON.parse(cS);
+        }
+        // const codiciSede = getState().codiciSede;
+        this.signalR.removeToGroup(
+            new SignalRNotification(
+                cS,
+                utente.id,
+                `${utente.nome} ${utente.cognome}`
             )
         );
         dispatch(new ClearCodiceSede());
     }
 
     @Action(SetIdUtente)
-    setIdUtente({ patchState }: StateContext<SignalRStateModel>, action: SetIdUtente) {
+    setIdUtente({ patchState }: StateContext<SignalRStateModel>, action: SetIdUtente): void {
         patchState({ idUtente: action.idUtente });
     }
 
     @Action(ClearIdUtente)
-    clearIdUtente({ patchState }: StateContext<SignalRStateModel>) {
+    clearIdUtente({ patchState }: StateContext<SignalRStateModel>): void {
         patchState({ idUtente: SignalRStateDefaults.idUtente });
     }
 
     openModal(): void {
-        this.modalService.hasOpenModals() && this.modalService.dismissAll();
+        if (this.modalService.hasOpenModals()) {
+            this.modalService.dismissAll();
+        }
         this.modalInstance = this.modalService.open(SignalROfflineComponent, {
             windowClass: 'modal-holder',
             centered: true,

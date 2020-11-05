@@ -1,6 +1,5 @@
-import { Component, Input, isDevMode, OnDestroy, OnInit } from '@angular/core';
-import { EnteIntervenuto } from '../../model/ente-intervenuto';
-import {Ente} from '../../interface/ente.interface';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Ente } from '../../interface/ente.interface';
 
 @Component({
     selector: 'app-lista-enti',
@@ -13,11 +12,11 @@ export class ListaEntiComponent implements OnInit, OnDestroy {
     listaEntiPresaInCarico: Ente[];
 
     ngOnInit(): void {
-        isDevMode() && console.log('Componente Lista Enti creato');
+        console.log('Componente Lista Enti creato');
     }
 
     ngOnDestroy(): void {
-        isDevMode() && console.log('Componente Lista Enti distrutto');
+        console.log('Componente Lista Enti distrutto');
     }
 
 }

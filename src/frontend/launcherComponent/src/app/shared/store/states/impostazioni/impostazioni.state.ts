@@ -3,6 +3,7 @@ import { GetImpostazioniLocalStorage, PatchImpostazioni } from '../../actions/im
 import { Impostazione, OpzioneImpostazione, TipoImpostazione } from '../../../interface/impostazioni.interface';
 import { LSNAME } from '../../../../core/settings/config';
 import { patch, updateItem } from '@ngxs/store/operators';
+import { Injectable } from '@angular/core';
 
 export interface ImpostazioniStateModel {
     listaImpostazioni: Impostazione[];
@@ -47,6 +48,7 @@ export const impostazioniStateDefaults: ImpostazioniStateModel = {
     ]
 };
 
+@Injectable()
 @State<ImpostazioniStateModel>({
     name: 'impostazioni',
     defaults: impostazioniStateDefaults
@@ -66,12 +68,11 @@ export class ImpostazioniState {
 
     @Selector()
     static visualizzazioneTestualeEventi(state: ImpostazioniStateModel): boolean {
-        // tslint:disable-next-line:max-line-length
         return state.listaImpostazioni.filter((i: Impostazione) => i.tipo === TipoImpostazione.EventiRichiesta)[0].opzioni.filter((o: OpzioneImpostazione) => o.label === 'Visualizzazione Iniziale')[0].select.selected === '2';
     }
 
     @Action(GetImpostazioniLocalStorage)
-    getImpostazioniLocalStorage({ patchState }: StateContext<ImpostazioniStateModel>) {
+    getImpostazioniLocalStorage({ patchState }: StateContext<ImpostazioniStateModel>): void {
         const impostazioni = localStorage.getItem(LSNAME.impostazioni);
         if (impostazioni) {
             patchState({
@@ -81,7 +82,7 @@ export class ImpostazioniState {
     }
 
     @Action(PatchImpostazioni)
-    patchImpostazioni({ getState, setState }: StateContext<ImpostazioniStateModel>, action: PatchImpostazioni) {
+    patchImpostazioni({ getState, setState }: StateContext<ImpostazioniStateModel>, action: PatchImpostazioni): void {
         setState(
             patch({
                 listaImpostazioni: updateItem((i: Impostazione) => i.tipo === action.impostazione.tipo, action.impostazione)

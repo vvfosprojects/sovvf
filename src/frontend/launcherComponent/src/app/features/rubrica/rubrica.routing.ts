@@ -6,12 +6,12 @@ import { Routes, RouterModule } from '@angular/router';
 import { RubricaComponent } from './rubrica.component';
 
 const rubricaiRoutes: Routes = [
-  { path: '', component: RubricaComponent },
-
+    { path: '', component: RubricaComponent },
 ];
 
 @NgModule({
     imports: [RouterModule.forChild(rubricaiRoutes)],
     exports: [RouterModule]
-  })
-  export class RubricaRouting { }
+})
+export class RubricaRouting {
+}

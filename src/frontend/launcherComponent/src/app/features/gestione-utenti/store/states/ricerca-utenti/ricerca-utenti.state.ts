@@ -11,6 +11,7 @@ import {
 import { insertItem, patch, removeItem } from '@ngxs/store/operators';
 import { GetUtentiGestione } from '../../actions/gestione-utenti/gestione-utenti.actions';
 import { Ruolo } from '../../../../../shared/model/utente.model';
+import { Injectable } from '@angular/core';
 
 export interface RicercaUtentiStateModel {
     ricerca: string;
@@ -24,6 +25,7 @@ export const RicercaUtentiStateDefaults: RicercaUtentiStateModel = {
     sediFiltroSelezionate: undefined
 };
 
+@Injectable()
 @State<RicercaUtentiStateModel>({
     name: 'ricercaUtenti',
     defaults: RicercaUtentiStateDefaults
@@ -34,43 +36,43 @@ export class RicercaUtentiState {
     }
 
     @Selector()
-    static ricerca(state: RicercaUtentiStateModel) {
+    static ricerca(state: RicercaUtentiStateModel): string {
         return state.ricerca;
     }
 
     @Selector()
-    static sediFiltro(state: RicercaUtentiStateModel) {
+    static sediFiltro(state: RicercaUtentiStateModel): Ruolo[] {
         return state.sediFiltro;
     }
 
     @Selector()
-    static sediFiltroSelezionate(state: RicercaUtentiStateModel) {
+    static sediFiltroSelezionate(state: RicercaUtentiStateModel): string[] {
         return state.sediFiltroSelezionate;
     }
 
     @Action(SetRicercaUtenti)
-    setRicercaUtenti({ getState, patchState }: StateContext<RicercaUtentiStateModel>, action: SetRicercaUtenti) {
+    setRicercaUtenti({ getState, patchState }: StateContext<RicercaUtentiStateModel>, action: SetRicercaUtenti): void {
         patchState({
             ricerca: action.ricerca
         });
     }
 
     @Action(ClearRicercaUtenti)
-    clearRicercaUtenti({ patchState }: StateContext<RicercaUtentiStateModel>) {
+    clearRicercaUtenti({ patchState }: StateContext<RicercaUtentiStateModel>): void {
         patchState({
             ricerca: null
         });
     }
 
     @Action(SetSediFiltro)
-    setSediFiltro({ getState, patchState }: StateContext<RicercaUtentiStateModel>, action: SetSediFiltro) {
+    setSediFiltro({ getState, patchState }: StateContext<RicercaUtentiStateModel>, action: SetSediFiltro): void {
         patchState({
             sediFiltro: action.sedi
         });
     }
 
     @Action(ReducerSelezioneFiltroSede)
-    reducerSelezioneFiltroSede({ getState, dispatch }: StateContext<RicercaUtentiStateModel>, action: ReducerSelezioneFiltroSede) {
+    reducerSelezioneFiltroSede({ getState, dispatch }: StateContext<RicercaUtentiStateModel>, action: ReducerSelezioneFiltroSede): void {
         const filtriSedeSelezionati = getState().sediFiltroSelezionate;
         const filtroSelezionato = filtriSedeSelezionati && filtriSedeSelezionati.filter(f => f === action.sedeFiltro).length === 1;
         if (!filtroSelezionato) {
@@ -81,7 +83,7 @@ export class RicercaUtentiState {
     }
 
     @Action(SetSedeFiltroSelezionato)
-    setSedeFiltroSelezionato({ setState, dispatch }: StateContext<RicercaUtentiStateModel>, action: SetSedeFiltroSelezionato) {
+    setSedeFiltroSelezionato({ setState, dispatch }: StateContext<RicercaUtentiStateModel>, action: SetSedeFiltroSelezionato): void {
         setState(
             patch({
                 sediFiltroSelezionate: insertItem(action.sedeFiltro)
@@ -91,7 +93,7 @@ export class RicercaUtentiState {
     }
 
     @Action(SetSedeFiltroDeselezionato)
-    setSedeFiltroDeselezionato({ getState, setState, dispatch }: StateContext<RicercaUtentiStateModel>, action: SetSedeFiltroDeselezionato) {
+    setSedeFiltroDeselezionato({ getState, setState, dispatch }: StateContext<RicercaUtentiStateModel>, action: SetSedeFiltroDeselezionato): void {
         setState(
             patch({
                 sediFiltroSelezionate: removeItem(sede => sede === action.sedeFiltro)
@@ -101,7 +103,7 @@ export class RicercaUtentiState {
     }
 
     @Action(ResetSediFiltroSelezionate)
-    resetSediFiltroSelezionate({ patchState, dispatch }: StateContext<RicercaUtentiStateModel>) {
+    resetSediFiltroSelezionate({ patchState, dispatch }: StateContext<RicercaUtentiStateModel>): void {
         patchState({
             sediFiltroSelezionate: RicercaUtentiStateDefaults.sediFiltroSelezionate
         });

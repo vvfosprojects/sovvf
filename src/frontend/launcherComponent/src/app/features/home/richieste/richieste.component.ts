@@ -1,4 +1,4 @@
-import { Component, Input, isDevMode, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FilterPipe } from 'ngx-filter-pipe';
@@ -30,7 +30,15 @@ import { RichiesteEspanseState } from '../store/states/richieste/richieste-espan
 import { SetRichiestaGestione } from '../store/actions/richieste/richiesta-gestione.actions';
 import { RichiestaGestioneState } from '../store/states/richieste/richiesta-gestione.state';
 import { MezzoActionInterface } from '../../../shared/interface/mezzo-action.interface';
-import { ActionMezzo, ActionRichiesta, AllertaSede, EliminaPartenzaRichiesta, GetListaRichieste, ModificaStatoFonogramma } from '../store/actions/richieste/richieste.actions';
+import {
+    ActionMezzo,
+    ActionRichiesta,
+    AllertaSede,
+    ClearRichieste,
+    EliminaPartenzaRichiesta,
+    GetListaRichieste,
+    ModificaStatoFonogramma
+} from '../store/actions/richieste/richieste.actions';
 import { ReducerRichiesteEspanse } from '../store/actions/richieste/richieste-espanse.actions';
 import { RichiestaActionInterface } from '../../../shared/interface/richiesta-action.interface';
 import { PermissionFeatures } from '../../../shared/enum/permission-features.enum';
@@ -100,6 +108,7 @@ export class RichiesteComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
+        this.store.dispatch(new GetListaRichieste());
         this.getRichiestaFissata();
         this.getRichiestaFissataEspanso();
         this.getRichiestaHover();
@@ -107,16 +116,19 @@ export class RichiesteComponent implements OnInit, OnDestroy {
         this.getRichiestaGestione();
         this.getRicercaRichieste();
         this.getFiltriSelezionati();
-        isDevMode() && console.log('Componente Richieste creato');
+        console.log('Componente Richieste creato');
     }
 
-    ngOnDestroy() {
+    ngOnDestroy(): void {
         this.subscription.unsubscribe();
-        this.store.dispatch(new ResetFiltriSelezionatiRichieste({ preventGetList: true }));
-        isDevMode() && console.log('Componente Richieste distrutto');
+        this.store.dispatch([
+            new ResetFiltriSelezionatiRichieste({ preventGetList: true }),
+            new ClearRichieste()
+        ]);
+        console.log('Componente Richieste distrutto');
     }
 
-    getRichieste() {
+    getRichieste(): void {
         this.subscription.add(
             this.richieste$.subscribe((richieste: SintesiRichiesta[]) => {
                 this.richieste = richieste;
@@ -125,16 +137,16 @@ export class RichiesteComponent implements OnInit, OnDestroy {
         );
     }
 
-    onNuoveRichieste(page: number) {
-        this.store.dispatch(new GetListaRichieste({ page: page }));
+    onNuoveRichieste(page: number): void {
+        this.store.dispatch(new GetListaRichieste({ page }));
     }
 
-    onRefreshRichieste() {
+    onRefreshRichieste(): void {
         this.store.dispatch(new GetListaRichieste());
     }
 
     // Restituisce la Richiesta Fissata
-    getRichiestaFissata() {
+    getRichiestaFissata(): void {
         this.subscription.add(
             this.richiestaFissata$.subscribe((richiestaFissata: SintesiRichiesta) => {
                 if (richiestaFissata) {
@@ -158,7 +170,7 @@ export class RichiesteComponent implements OnInit, OnDestroy {
         );
     }
 
-    getRichiestaFissataEspanso() {
+    getRichiestaFissataEspanso(): void {
         this.subscription.add(
             this.richiestaFissataEspanso$.subscribe((richiestaEspanso: boolean) => {
                 // console.log(richiestaEspanso);
@@ -172,7 +184,7 @@ export class RichiesteComponent implements OnInit, OnDestroy {
     }
 
     // Restituisce la Richiesta Hover
-    getRichiestaHover() {
+    getRichiestaHover(): void {
         this.subscription.add(
             this.idRichiestaHover$.subscribe((idRichiestaHover: string) => {
                 if (idRichiestaHover) {
@@ -186,7 +198,7 @@ export class RichiesteComponent implements OnInit, OnDestroy {
     }
 
     // Restituisce la Richiesta Selezionata
-    getRichiestaSelezionata() {
+    getRichiestaSelezionata(): void {
         this.subscription.add(
             this.idRichiestaSelezionata$.subscribe((idRichiestaSelezionata: string) => {
                 if (idRichiestaSelezionata) {
@@ -199,7 +211,7 @@ export class RichiesteComponent implements OnInit, OnDestroy {
         );
     }
 
-    getRichiestaGestione() {
+    getRichiestaGestione(): void {
         this.subscription.add(
             this.richiestaGestione$.subscribe((richiestaGestione: SintesiRichiesta) => {
                 if (richiestaGestione) {
@@ -212,7 +224,7 @@ export class RichiesteComponent implements OnInit, OnDestroy {
         );
     }
 
-    getRicercaRichieste() {
+    getRicercaRichieste(): void {
         // Restituisce la stringa di ricerca
         this.subscription.add(
             this.ricerca$.subscribe((ricerca: any) => {
@@ -222,7 +234,7 @@ export class RichiesteComponent implements OnInit, OnDestroy {
         );
     }
 
-    getFiltriSelezionati() {
+    getFiltriSelezionati(): void {
         this.subscription.add(
             this.filtriRichiesteSelezionati$.subscribe((filtri: VoceFiltro[]) => {
                 this.codiciFiltriSelezionati = filtri.map(filtro => filtro.codice);
@@ -234,51 +246,51 @@ export class RichiesteComponent implements OnInit, OnDestroy {
         const result = this.filter.transform(this.richieste, ricerca);
         if (result) {
             if (!(this.richieste.length === result.length) && result.length > 0) {
-                const string = [];
+                const s = [];
                 result.forEach((c: any) => {
-                    string.push(c.id);
+                    s.push(c.id);
                 });
-                this.store.dispatch(new SetMarkerOpachiRichieste(string));
+                this.store.dispatch(new SetMarkerOpachiRichieste(s));
             } else {
                 this.store.dispatch(new ClearMarkerOpachiRichieste());
             }
         }
     }
 
-    onHoverIn(idRichiesta: string) {
+    onHoverIn(idRichiesta: string): void {
         this.store.dispatch(new SetMarkerRichiestaHover(idRichiesta));
         this.store.dispatch(new SetRichiestaHover(idRichiesta));
     }
 
-    onHoverOut() {
+    onHoverOut(): void {
         this.store.dispatch(new ClearMarkerRichiestaHover());
         this.store.dispatch(new ClearRichiestaHover());
     }
 
-    onSelezione(idRichiesta: string) {
+    onSelezione(idRichiesta: string): void {
         this.store.dispatch(new SetMarkerRichiestaSelezionato(idRichiesta));
         this.store.dispatch(new SetRichiestaSelezionata(idRichiesta));
     }
 
-    onDeselezione() {
+    onDeselezione(): void {
         this.store.dispatch(new ClearMarkerRichiestaSelezionato());
         this.store.dispatch(new GetInitZoomCentroMappa());
         this.store.dispatch(new ClearRichiestaSelezionata());
     }
 
-    onFissaInAlto(richiesta: SintesiRichiesta) {
+    onFissaInAlto(richiesta: SintesiRichiesta): void {
         this.store.dispatch(new SetMarkerRichiestaSelezionato(richiesta.id));
         this.store.dispatch(new SetRichiestaFissata(richiesta.id, richiesta.codice));
     }
 
-    onDefissa() {
+    onDefissa(): void {
         this.store.dispatch(new ClearMarkerRichiestaSelezionato());
         this.store.dispatch(new GetInitZoomCentroMappa());
         this.store.dispatch(new ClearRichiestaFissata());
     }
 
     /* Apre il modal per visualizzare gli eventi relativi alla richiesta cliccata */
-    onVisualizzaEventiRichiesta(codice: string) {
+    onVisualizzaEventiRichiesta(codice: string): void {
         this.store.dispatch(new SetIdRichiestaEventi(codice));
         const modal = this.modalService.open(EventiRichiestaComponent, {
             windowClass: 'xlModal',
@@ -290,32 +302,32 @@ export class RichiesteComponent implements OnInit, OnDestroy {
             () => this.store.dispatch(new ClearEventiRichiesta()));
     }
 
-    onModificaRichiesta(richiesta: SintesiRichiesta) {
+    onModificaRichiesta(richiesta: SintesiRichiesta): void {
         this.store.dispatch(new SetRichiestaModifica(richiesta));
         this.store.dispatch(new SetMarkerRichiestaSelezionato(richiesta.id));
         this.store.dispatch(new ToggleModifica());
     }
 
-    onGestioneRichiesta(richiesta: SintesiRichiesta) {
+    onGestioneRichiesta(richiesta: SintesiRichiesta): void {
         this.store.dispatch(new SetRichiestaGestione(richiesta));
         // console.log('Gestione Richiesta', richiesta);
     }
 
-    toggleComposizione() {
+    toggleComposizione(): void {
         this.store.dispatch(new ToggleComposizione(Composizione.Avanzata));
     }
 
-    nuovaPartenza($event: SintesiRichiesta) {
+    nuovaPartenza($event: SintesiRichiesta): void {
         this.store.dispatch(new SetMarkerRichiestaSelezionato($event.id));
         this.store.dispatch(new RichiestaComposizione($event));
     }
 
-    onActionMezzo(actionMezzo: MezzoActionInterface) {
+    onActionMezzo(actionMezzo: MezzoActionInterface): void {
         this.store.dispatch(new ActionMezzo(actionMezzo));
         // console.log('actionMezzo', actionMezzo);
     }
 
-    onActionRichiesta(actionRichiesta: RichiestaActionInterface) {
+    onActionRichiesta(actionRichiesta: RichiestaActionInterface): void {
         this.store.dispatch(new ActionRichiesta(actionRichiesta));
         // console.log('actionRichiesta', actionRichiesta);
     }
@@ -328,15 +340,15 @@ export class RichiesteComponent implements OnInit, OnDestroy {
         this.store.dispatch(new SetEspanso(result));
     }
 
-    onEliminaPartenza(event: { targaMezzo: string, idRichiesta: string, modalResult: any }) {
+    onEliminaPartenza(event: { targaMezzo: string, idRichiesta: string, modalResult: any }): void {
         this.store.dispatch(new EliminaPartenzaRichiesta(event.targaMezzo, event.idRichiesta, event.modalResult));
     }
 
-    onModificaStatoFonogramma(event: ModificaStatoFonogrammaEmitInterface) {
+    onModificaStatoFonogramma(event: ModificaStatoFonogrammaEmitInterface): void {
         this.store.dispatch(new ModificaStatoFonogramma(event));
     }
 
-    onAllertaSede(event: AllertaSedeEmitInterface) {
+    onAllertaSede(event: AllertaSedeEmitInterface): void {
         this.store.dispatch(new AllertaSede(event));
     }
 }

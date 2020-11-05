@@ -107,7 +107,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.DistaccamentoUtentiComuni
                 return listaDistaccamenti;
             }
 
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         Sede IGetDistaccamentoByCodiceSede.Get(string codiceSede)

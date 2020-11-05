@@ -24,15 +24,15 @@ export class FiltriMezziServizioComponent {
         dropdownOpts.placement = 'bottom';
     }
 
-    onSelezioneFiltro(filtro: VoceFiltro) {
+    onSelezioneFiltro(filtro: VoceFiltro): void {
         this.filtroSelezionato.emit(filtro);
     }
 
-    resetFiltri() {
+    resetFiltri(): void {
         this.filtriReset.emit();
     }
 
-    _isSelezionato(filtro: VoceFiltro) {
+    _isSelezionato(filtro: VoceFiltro): boolean {
         return this.filtriSelezionati.filter((f: VoceFiltro) => f.codice === filtro.codice).length > 0;
     }
 }

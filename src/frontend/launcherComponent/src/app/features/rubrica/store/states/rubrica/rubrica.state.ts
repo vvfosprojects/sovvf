@@ -14,6 +14,7 @@ import { RicercaRubricaState } from '../ricerca-rubrica/ricerca-rubrica.state';
 import { ResponseInterface } from '../../../../../shared/interface/response.interface';
 import { PatchPagination } from '../../../../../shared/store/actions/pagination/pagination.actions';
 import { PaginationState } from '../../../../../shared/store/states/pagination/pagination.state';
+import { Injectable } from '@angular/core';
 
 export interface RubricaStateModel {
     vociRubrica: Ente[];
@@ -23,6 +24,7 @@ export const RubricaStateModelDefaults: RubricaStateModel = {
     vociRubrica: undefined
 };
 
+@Injectable()
 @State<RubricaStateModel>({
     name: 'rubrica',
     defaults: RubricaStateModelDefaults,
@@ -35,12 +37,12 @@ export class RubricaState {
     }
 
     @Selector()
-    static vociRubrica(state: RubricaStateModel) {
+    static vociRubrica(state: RubricaStateModel): Ente[] {
         return state.vociRubrica;
     }
 
     @Action(GetRubrica)
-    getRubrica({ dispatch }: StateContext<RubricaStateModel>, action: GetRubrica) {
+    getRubrica({ dispatch }: StateContext<RubricaStateModel>, action: GetRubrica): void {
         dispatch(new StartLoading());
         const ricerca = this.store.selectSnapshot(RicercaRubricaState.ricerca);
         const filters = {
@@ -60,21 +62,21 @@ export class RubricaState {
     }
 
     @Action(SetRubrica)
-    setRubrica({ patchState }: StateContext<RubricaStateModel>, action: SetRubrica) {
+    setRubrica({ patchState }: StateContext<RubricaStateModel>, action: SetRubrica): void {
         patchState({
             vociRubrica: action.vociRubrica
         });
     }
 
     @Action(AddVoceRubrica)
-    addVoceRubrica({ dispatch }: StateContext<RubricaStateModel>) {
+    addVoceRubrica({ dispatch }: StateContext<RubricaStateModel>): void {
         const pagina = this.store.selectSnapshot(PaginationState.page);
         dispatch(new GetRubrica(pagina));
     }
 
 
     @Action(UpdateVoceRubrica)
-    updateVoceRubrica({ setState }: StateContext<RubricaStateModel>, action: UpdateVoceRubrica) {
+    updateVoceRubrica({ setState }: StateContext<RubricaStateModel>, action: UpdateVoceRubrica): void {
         setState(
             patch({
                 vociRubrica: updateItem<Ente>(voce => voce.codice === action.voceRubrica.codice, action.voceRubrica)
@@ -83,7 +85,7 @@ export class RubricaState {
     }
 
     @Action(DeleteVoceRubrica)
-    deleteVoceRubrica({ setState, getState, dispatch }: StateContext<RubricaStateModel>, action: DeleteVoceRubrica) {
+    deleteVoceRubrica({ setState, getState, dispatch }: StateContext<RubricaStateModel>, action: DeleteVoceRubrica): void {
         const state = getState();
         if (state.vociRubrica && state.vociRubrica.length === 1) {
             const page = this.store.selectSnapshot(PaginationState.page);

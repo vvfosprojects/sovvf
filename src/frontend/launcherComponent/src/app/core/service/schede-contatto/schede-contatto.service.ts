@@ -3,7 +3,9 @@ import { Observable } from 'rxjs';
 import { SchedaContatto } from 'src/app/shared/interface/scheda-contatto.interface';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-import { FiltriSchedeContatto } from '../../../shared/interface/filtri-schede-contatto.interface';
+import { FiltersInterface } from '../../../shared/interface/filters/filters.interface';
+import { PaginationInterface } from '../../../shared/interface/pagination.interface';
+import { ResponseInterface } from '../../../shared/interface/response.interface';
 
 const BASE_URL = environment.baseUrl;
 const API_SCHEDE_CONTATTO = BASE_URL + environment.apiUrl.schedeContatto;
@@ -16,24 +18,32 @@ export class SchedeContattoService {
     constructor(private http: HttpClient) {
     }
 
-    getSchedeContatto(filtri: FiltriSchedeContatto): Observable<SchedaContatto[]> {
-        return this.http.post<SchedaContatto[]>(`${API_SCHEDE_CONTATTO}/GetSchede`, filtri);
+    getSchedeContatto(filters: FiltersInterface, pagination: PaginationInterface): Observable<ResponseInterface> {
+        const obj = {
+            filters: {
+                search: filters.search,
+                gestita: filters.gestita,
+                rangeVisualizzazione: filters.rangeVisualizzazione
+            },
+            pagination
+        };
+        return this.http.post<ResponseInterface>(`${API_SCHEDE_CONTATTO}/GetSchede`, obj);
     }
 
-    mergeSchedeContatto(schedaUnita: SchedaContatto) {
+    mergeSchedeContatto(schedaUnita: SchedaContatto): Observable<any> {
         return this.http.post<SchedaContatto[]>(`${API_SCHEDE_CONTATTO}/MergeSchede`, schedaUnita);
     }
 
-    undoMergeSchedeContatto(schedaUnita: SchedaContatto) {
+    undoMergeSchedeContatto(schedaUnita: SchedaContatto): Observable<any> {
         return this.http.post<SchedaContatto[]>(`${API_SCHEDE_CONTATTO}/UndoMergeSchede`, schedaUnita);
     }
 
-    setSchedaContattoLetta(codiceScheda: string, letta: boolean) {
+    setSchedaContattoLetta(codiceScheda: string, letta: boolean): Observable<any> {
         const obj = { codiceScheda, letta };
         return this.http.put<any>(`${API_SCHEDE_CONTATTO}/SetLetta`, obj);
     }
 
-    setSchedaContattoGestita(scheda: SchedaContatto, gestita: boolean) {
+    setSchedaContattoGestita(scheda: SchedaContatto, gestita: boolean): Observable<any> {
         const obj = { scheda, gestita };
         return this.http.put<any>(`${API_SCHEDE_CONTATTO}/SetGestita`, obj);
     }

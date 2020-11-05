@@ -45,13 +45,13 @@ export class BoxInterventiComponent implements OnChanges {
         // config.closeDelay = 100;
     }
 
-    checkDiff(key: string) {
+    checkDiff(key: string): string {
         if (this.interventiDiff) {
             return setBlinking(this.interventiDiff[key]);
         }
     }
 
-    realDiff(key: string) {
+    realDiff(key: string): string {
         if (this.interventiDiff) {
             return setArrow(this.interventiDiff[key]);
         }

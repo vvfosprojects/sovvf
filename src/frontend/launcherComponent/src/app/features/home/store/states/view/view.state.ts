@@ -12,7 +12,8 @@ import {
     ToggleModifica,
     TurnOffComposizione,
     ToggleMezziInServizio,
-    ToggleSchedeContatto, ClearViewState
+    ToggleSchedeContatto,
+    ClearViewState
 } from '../../actions/view/view.actions';
 import { BackupViewComponentState } from './save-view.state';
 import {
@@ -40,11 +41,9 @@ import { ClearDirection } from '../../actions/maps/maps-direction.actions';
 import { ClearMarkerRichiestaSelezionato } from '../../actions/maps/marker.actions';
 import { ResetChiamata } from '../../actions/chiamata/scheda-telefonata.actions';
 import { ComposizionePartenzaState } from '../composizione-partenza/composizione-partenza.state';
-import {
-    TerminaComposizione,
-    ToggleComposizioneMode
-} from '../../actions/composizione-partenza/composizione-partenza.actions';
+import { TerminaComposizione, ToggleComposizioneMode } from '../../actions/composizione-partenza/composizione-partenza.actions';
 import { ClearListaSchedeContatto, ClearSchedaContattoTelefonata } from '../../actions/schede-contatto/schede-contatto.actions';
+import { Injectable } from '@angular/core';
 
 export const ViewComponentStateDefault: ViewComponentStateModel = {
     view: {
@@ -83,6 +82,7 @@ export const ViewComponentStateDefault: ViewComponentStateModel = {
     }
 };
 
+@Injectable()
 @State<ViewComponentStateModel>({
     name: 'viewComponent',
     defaults: ViewComponentStateDefault,
@@ -125,6 +125,11 @@ export class ViewComponentState {
     }
 
     @Selector()
+    static modificaRichiestaStatus(state: ViewComponentStateModel): boolean {
+        return state.view.modifica.active;
+    }
+
+    @Selector()
     static schedeContattoStatus(state: ViewComponentStateModel): boolean {
         return state.view.schedeContatto.active;
     }
@@ -155,7 +160,7 @@ export class ViewComponentState {
     }
 
     @Action(ChangeView)
-    changeView({ getState, patchState }: StateContext<ViewComponentStateModel>, action: ChangeView) {
+    changeView({ getState, patchState }: StateContext<ViewComponentStateModel>, action: ChangeView): void {
         const state = getState();
         const stateDefault = makeCopy(ViewComponentStateDefault);
         const newState = updateView(stateDefault, action);
@@ -167,7 +172,7 @@ export class ViewComponentState {
     }
 
     @Action(ToggleChiamata)
-    toggleChiamata({ getState, patchState, dispatch }: StateContext<ViewComponentStateModel>, action: ToggleChiamata) {
+    toggleChiamata({ getState, patchState, dispatch }: StateContext<ViewComponentStateModel>, action: ToggleChiamata): void {
         const state = getState();
         const stateDefault = makeCopy(ViewComponentStateDefault);
         /**
@@ -197,7 +202,7 @@ export class ViewComponentState {
     }
 
     @Action(ToggleModifica)
-    toggleModifica({ getState, patchState, dispatch }: StateContext<ViewComponentStateModel>, action: ToggleModifica) {
+    toggleModifica({ getState, patchState, dispatch }: StateContext<ViewComponentStateModel>, action: ToggleModifica): void {
         const state = getState();
         const currentState = makeCopy(state);
         const stateDefault = makeCopy(ViewComponentStateDefault);
@@ -228,7 +233,7 @@ export class ViewComponentState {
     }
 
     @Action(ToggleComposizione)
-    toggleComposizione({ getState, patchState, dispatch }: StateContext<ViewComponentStateModel>, action: ToggleComposizione) {
+    toggleComposizione({ getState, patchState, dispatch }: StateContext<ViewComponentStateModel>, action: ToggleComposizione): void {
         const state = getState();
         const stateDefault = makeCopy(ViewComponentStateDefault);
         dispatch(new SaveView(makeCopy(state)));
@@ -241,7 +246,7 @@ export class ViewComponentState {
     }
 
     @Action(TurnOffComposizione)
-    turnOffComposizione({ getState, patchState, dispatch }: StateContext<ViewComponentStateModel>) {
+    turnOffComposizione({ getState, patchState, dispatch }: StateContext<ViewComponentStateModel>): void {
         const state = getState();
         const currentState = makeCopy(state);
         const lastState: ViewComponentStateModel = this.store.selectSnapshot(BackupViewComponentState);
@@ -255,7 +260,7 @@ export class ViewComponentState {
     }
 
     @Action(SwitchComposizione)
-    switchComposizione({ getState, patchState, dispatch }: StateContext<ViewComponentStateModel>, action: SwitchComposizione) {
+    switchComposizione({ getState, patchState, dispatch }: StateContext<ViewComponentStateModel>, action: SwitchComposizione): void {
         const state = getState();
         const currentState = makeCopy(state);
         const newState = switchComposizione(currentState, action.modalita);
@@ -274,7 +279,7 @@ export class ViewComponentState {
     }
 
     @Action(ToggleMezziInServizio)
-    toggleGestioneRisorse({ getState, patchState, dispatch }: StateContext<ViewComponentStateModel>) {
+    toggleGestioneRisorse({ getState, patchState, dispatch }: StateContext<ViewComponentStateModel>): void {
         const state = getState();
         const stateDefault = makeCopy(ViewComponentStateDefault);
 
@@ -298,7 +303,7 @@ export class ViewComponentState {
     }
 
     @Action(ToggleSchedeContatto)
-    toggleSchedeContatto({ getState, patchState, dispatch }: StateContext<ViewComponentStateModel>) {
+    toggleSchedeContatto({ getState, patchState, dispatch }: StateContext<ViewComponentStateModel>): void {
         const state = getState();
         const stateDefault = makeCopy(ViewComponentStateDefault);
         if (!state.view.schedeContatto.active) {
@@ -317,7 +322,7 @@ export class ViewComponentState {
     }
 
     @Action(ClearViewState)
-    clearViewState({ patchState }: StateContext<ViewComponentStateModel>) {
+    clearViewState({ patchState }: StateContext<ViewComponentStateModel>): void {
         patchState(ViewComponentStateDefault);
     }
 }

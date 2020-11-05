@@ -11,27 +11,27 @@ import { StatoRichiesta } from '../../enum/stato-richiesta.enum';
 })
 export class PartenzaComponent {
 
-    @Input() idDaSganciare: '';
+    @Input() idDaSganciare: string;
     @Input() partenza: Partenza;
     @Input() inGestione: boolean;
     @Input() statoRichiesta: StatoRichiesta;
-    @Input() index: String;
+    @Input() index: string;
 
     @Output() listaSquadre = new EventEmitter<ListaSquadre>();
     @Output() actionMezzo: EventEmitter<MezzoActionInterface> = new EventEmitter();
     @Output() eliminaPartenza: EventEmitter<string> = new EventEmitter();
     @Output() modificaPartenza: EventEmitter<string> = new EventEmitter<string>();
-    
+
     statoRichiestaEnum = StatoRichiesta;
 
-    onListaSquadrePartenza() {
+    onListaSquadrePartenza(): void {
         const listaSquadre = {} as ListaSquadre;
         listaSquadre.idPartenza = this.partenza.id;
         listaSquadre.squadre = this.partenza.squadre;
         this.listaSquadre.emit(listaSquadre);
     }
 
-    onActionMezzo(mezzoAction: MezzoActionInterface) {
+    onActionMezzo(mezzoAction: MezzoActionInterface): void {
         this.actionMezzo.emit(mezzoAction);
     }
 }

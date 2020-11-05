@@ -30,7 +30,7 @@ export class AllertaSedeModalComponent implements OnInit, OnDestroy {
 
     codRichiesta: string;
 
-    subscription: Subscription = new Subscription();
+    subscriptions: Subscription = new Subscription();
 
     constructor(private fb: FormBuilder,
                 private modal: NgbActiveModal,
@@ -41,7 +41,7 @@ export class AllertaSedeModalComponent implements OnInit, OnDestroy {
         this.getSediSelezionate();
     }
 
-    initForm() {
+    initForm(): void {
         this.allertaSedeForm = new FormGroup({
             codRichiesta: new FormControl(),
             sedi: new FormControl()
@@ -52,28 +52,28 @@ export class AllertaSedeModalComponent implements OnInit, OnDestroy {
         });
     }
 
-    ngOnInit() {
+    ngOnInit(): void {
         this.f.codRichiesta.patchValue(this.codRichiesta);
     }
 
     ngOnDestroy(): void {
-        this.subscription.unsubscribe();
+        this.subscriptions.unsubscribe();
     }
 
-    getFormValid() {
-        this.subscription.add(
+    getFormValid(): void {
+        this.subscriptions.add(
             this.formValid$.subscribe((valid: boolean) => {
                 this.formValid = valid;
             })
         );
     }
 
-    get f() {
+    get f(): any {
         return this.allertaSedeForm.controls;
     }
 
-    inizializzaSediTreeview() {
-        this.subscription.add(
+    inizializzaSediTreeview(): void {
+        this.subscriptions.add(
             this.listeSediNavbar$.subscribe((listaSedi: TreeItem) => {
                 this.listeSediNavbar = [];
                 this.listeSediNavbar[0] = new TreeviewItem(listaSedi);
@@ -81,12 +81,12 @@ export class AllertaSedeModalComponent implements OnInit, OnDestroy {
         );
     }
 
-    onPatchSedi(event: TreeviewSelezione[]) {
+    onPatchSedi(event: TreeviewSelezione[]): void {
         this.f.sedi.patchValue(event);
     }
 
-    getSediSelezionate() {
-        this.subscription.add(
+    getSediSelezionate(): void {
+        this.subscriptions.add(
             this.sediSelezionate$.subscribe((sedi: TreeviewSelezione[]) => {
                 const listaSediNavbar = this.store.selectSnapshot(SediTreeviewState.listeSediNavbar);
                 if (listaSediNavbar && sedi && sedi.length >= 0) {
@@ -108,7 +108,7 @@ export class AllertaSedeModalComponent implements OnInit, OnDestroy {
         );
     }
 
-    onConferma() {
+    onConferma(): void {
         this.submitted = true;
 
         if (!this.allertaSedeForm.valid) {
@@ -122,7 +122,7 @@ export class AllertaSedeModalComponent implements OnInit, OnDestroy {
         this.modal.dismiss('ko');
     }
 
-    closeModal(type: string) {
+    closeModal(type: string): void {
         this.modal.close(type);
     }
 }

@@ -57,13 +57,15 @@ namespace SO115App.ExternalAPI.Fake.Composizione
         {
             _upDateRichiesta.UpDate(command.Richiesta);
 
-            _setStatoOperativoMezzo.Set(command.CodiceSede, command.IdMezzo, command.StatoMezzo, command.Richiesta.Codice);
+            var codiceSedeMezzo = command.CodiciSede.First();
+
+            _setStatoOperativoMezzo.Set(codiceSedeMezzo, command.IdMezzo, command.StatoMezzo, command.Richiesta.Codice);
 
             foreach (var partenza in command.Richiesta.Partenze.Where(c => c.Partenza.Mezzo.Codice == command.IdMezzo))
             {
                 foreach (var squadra in partenza.Partenza.Squadre)
                 {
-                    _setStatoSquadra.SetStato(squadra.Codice, command.Richiesta.Id, command.StatoMezzo, command.CodiceSede, command.IdMezzo);
+                    _setStatoSquadra.SetStato(squadra.Codice, command.Richiesta.Id, command.StatoMezzo, codiceSedeMezzo, command.IdMezzo);
                 }
             }
         }

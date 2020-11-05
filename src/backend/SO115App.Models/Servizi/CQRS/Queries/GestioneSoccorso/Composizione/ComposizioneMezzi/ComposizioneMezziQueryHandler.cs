@@ -47,7 +47,10 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
         {
             Log.Debug("Inizio elaborazione Lista Mezzi per Composizione Handler");
             // preparazione del DTO
-            var composizioneMezzi = _iGetComposizioneMezzi.Get(query);
+            var composizioneMezzi = _iGetComposizioneMezzi.Get(query)
+                .Skip(query.Filtro.SquadrePagination.Page * query.Filtro.SquadrePagination.PageSize)
+                .Take(query.Filtro.SquadrePagination.PageSize)
+                .ToList();
 
             Log.Debug("Fine elaborazione Lista Mezzi per Composizione Handler");
 

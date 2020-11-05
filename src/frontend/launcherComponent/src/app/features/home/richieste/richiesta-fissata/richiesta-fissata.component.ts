@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, ViewChild, ElementRef, Input, OnDestroy, isDevMode } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, ViewChild, ElementRef, Input, OnDestroy } from '@angular/core';
 import { animate, style, AnimationBuilder, AnimationPlayer } from '@angular/animations';
 import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.model';
 import { HelperSintesiRichiesta } from '../helper/_helper-sintesi-richiesta';
@@ -12,7 +12,7 @@ import { ModificaStatoFonogrammaEmitInterface } from '../../../../shared/interfa
     styleUrls: ['./richiesta-fissata.component.css']
 })
 export class RichiestaFissataComponent implements OnInit, OnDestroy {
-    @Input() _split: boolean;
+    @Input() splitted: boolean;
     @Input() richiestaFissata: SintesiRichiesta;
     @Input() idRichiesteEspanse: string[] = [];
     @Input() richiestaGestione: SintesiRichiesta;
@@ -40,7 +40,7 @@ export class RichiestaFissataComponent implements OnInit, OnDestroy {
     @ViewChild('richiestaContainer') private richiestaContainer: ElementRef;
     @ViewChild('richiesta') private richiesta: ElementRef;
 
-    methods = new HelperSintesiRichiesta;
+    methods = new HelperSintesiRichiesta();
 
     private playerContainer: AnimationPlayer;
     private playerRichiesta: AnimationPlayer;
@@ -49,7 +49,7 @@ export class RichiestaFissataComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        isDevMode() && console.log('Componente RichiestaFissata creato');
+            console.log('Componente RichiestaFissata creato');
         if (this.richiestaFissata) {
             this.animazioneIn();
             const result = !!this.idRichiesteEspanse.includes(this.richiestaFissata.id);
@@ -58,17 +58,17 @@ export class RichiestaFissataComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-        isDevMode() && console.log('Componente RichiestaFissata distrutto');
+            console.log('Componente RichiestaFissata distrutto');
     }
 
     // Ritorna la richiesta nella lista, defissandola
-    onDefissa() {
+    onDefissa(): void {
         this.animazioneOut();
         this.defissa.emit();
     }
 
     // Animazioni
-    createAnimazioneIn() {
+    createAnimazioneIn(): void {
         if (this.playerContainer) {
             this.playerContainer.destroy();
         } else if (this.playerRichiesta) {
@@ -87,11 +87,15 @@ export class RichiestaFissataComponent implements OnInit, OnDestroy {
                 animate(350, style({ height: 'auto', opacity: '1' }))
             ]);
 
-        this.playerContainer = animationContainerRichiesta.create(this.richiestaContainer.nativeElement);
-        this.playerRichiesta = animationRichiesta.create(this.richiesta.nativeElement);
+        if (this.richiestaContainer) {
+            this.playerContainer = animationContainerRichiesta.create(this.richiestaContainer.nativeElement);
+        }
+        if (this.richiesta) {
+            this.playerRichiesta = animationRichiesta.create(this.richiesta.nativeElement);
+        }
     }
 
-    createAnimazioneOut() {
+    createAnimazioneOut(): void {
         if (this.playerContainer) {
             this.playerContainer.destroy();
         } else if (this.playerRichiesta) {
@@ -114,47 +118,55 @@ export class RichiestaFissataComponent implements OnInit, OnDestroy {
         this.playerRichiesta = animationRichiesta.create(this.richiesta.nativeElement);
     }
 
-    animazioneIn() {
+    animazioneIn(): void {
         this.createAnimazioneIn();
-        this.playerContainer.play();
-        this.playerRichiesta.play();
+        if (this.playerContainer) {
+            this.playerContainer.play();
+        }
+        if (this.playerRichiesta) {
+            this.playerRichiesta.play();
+        }
     }
 
-    animazioneOut() {
+    animazioneOut(): void {
         this.createAnimazioneOut();
-        this.playerContainer.play();
-        this.playerRichiesta.play();
+        if (this.playerContainer) {
+            this.playerContainer.play();
+        }
+        if (this.playerRichiesta) {
+            this.playerRichiesta.play();
+        }
     }
 
-    visualizzaEventiRichiesta(idRichiesta: string) {
+    visualizzaEventiRichiesta(idRichiesta: string): void {
         this.eventiRichiesta.emit(idRichiesta);
     }
 
     /* Apre il componente per la creazione della partenza */
-    nuovaPartenza(richiesta: SintesiRichiesta) {
+    nuovaPartenza(richiesta: SintesiRichiesta): void {
         this.composizionePartenza.emit(richiesta);
         this.statoPartenza.emit(true);
         console.log(richiesta);
     }
 
-    onModificaRichiesta(richiesta: SintesiRichiesta) {
+    onModificaRichiesta(richiesta: SintesiRichiesta): void {
         this.modificaRichiesta.emit(richiesta);
     }
 
-    onGestioneRichiesta(richiesta: SintesiRichiesta) {
+    onGestioneRichiesta(richiesta: SintesiRichiesta): void {
         this.gestioneRichiesta.emit(richiesta);
     }
 
-    setEspanso() {
+    setEspanso(): void {
         this.outEspanso.emit();
     }
 
     /* NgClass Template */
-    cardFissataClasses(r: any) {
+    cardFissataClasses(r: any): void {
         return this.methods.cardFissataClasses(r);
     }
 
-    isEspanso(id: string) {
+    isEspanso(id: string): boolean {
         if (this.idRichiesteEspanse && id) {
             return this.idRichiesteEspanse.includes(id);
         }

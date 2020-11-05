@@ -18,14 +18,20 @@ export class FiltriMappaComponent implements OnDestroy {
 
 
     constructor(private store: Store) {
-        this.subscription.add(this.filtroMarker$.subscribe((filtro: MarkerFiltro[]) => this.filtroMarker = filtro));
+        this.getFiltroMarker();
     }
 
     ngOnDestroy(): void {
         this.subscription.unsubscribe();
     }
 
-    onSelected(selected) {
+    getFiltroMarker(): void {
+        this.subscription.add(this.filtroMarker$.subscribe((filtro: MarkerFiltro[]) => {
+            this.filtroMarker = filtro;
+        }));
+    }
+
+    onSelected(selected): void {
         this.store.dispatch(new SetFiltroMarker(selected));
     }
 

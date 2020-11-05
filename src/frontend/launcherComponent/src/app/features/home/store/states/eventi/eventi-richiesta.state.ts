@@ -1,6 +1,10 @@
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { EventiRichiestaService } from 'src/app/core/service/eventi-richiesta-service/eventi-richiesta.service';
 import { EventoRichiesta } from '../../../../../shared/model/evento-richiesta.model';
+import { FiltroTargaMezzo } from '../../../eventi/interface/filtro-targa-mezzo.interface';
+import { StartLoading, StopLoading } from '../../../../../shared/store/actions/loading/loading.actions';
+import { SintesiRichiesteService } from '../../../../../core/service/lista-richieste-service/lista-richieste.service';
+import { GestioneUtentiService } from '../../../../../core/service/gestione-utenti-service/gestione-utenti.service';
 import {
     ClearEventiRichiesta,
     GetEventiRichiesta,
@@ -11,10 +15,7 @@ import {
     FiltraEventiRichiesta,
     ToggleIconeNomeClasseEvento
 } from '../../actions/eventi/eventi-richiesta.actions';
-import { FiltroTargaMezzo } from '../../../eventi/filtro-targa-mezzo.interface';
-import { StartLoading, StopLoading } from '../../../../../shared/store/actions/loading/loading.actions';
-import { SintesiRichiesteService } from '../../../../../core/service/lista-richieste-service/lista-richieste.service';
-import { GestioneUtentiService } from '../../../../../core/service/gestione-utenti-service/gestione-utenti.service';
+import { Injectable } from '@angular/core';
 
 export interface EventiRichiestaStateModel {
     codiceRichiesta: string;
@@ -34,6 +35,7 @@ export const eventiRichiestaStateDefaults: EventiRichiestaStateModel = {
     visualizzazioneIconeNomeClasseEvento: true
 };
 
+@Injectable()
 @State<EventiRichiestaStateModel>({
     name: 'eventiRichiesta',
     defaults: eventiRichiestaStateDefaults
@@ -42,17 +44,17 @@ export class EventiRichiestaState {
 
     constructor(private store: Store,
                 private richiesteService: SintesiRichiesteService,
-                private _eventiRichiesta: EventiRichiestaService,
-                private _gestioneUtentiService: GestioneUtentiService) {
+                private eventiRichiesta: EventiRichiestaService,
+                private gestioneUtentiService: GestioneUtentiService) {
     }
 
     @Selector()
-    static listaEventiFiltrata(state: EventiRichiestaStateModel) {
+    static listaEventiFiltrata(state: EventiRichiestaStateModel): EventoRichiesta[] {
         return state.listaEventiFiltrata;
     }
 
     @Selector()
-    static codiceRichiesta(state: EventiRichiestaStateModel) {
+    static codiceRichiesta(state: EventiRichiestaStateModel): string {
         return state.codiceRichiesta;
     }
 
@@ -72,7 +74,7 @@ export class EventiRichiestaState {
     }
 
     @Action(SetIdRichiestaEventi)
-    setIdRichiesta({ patchState, dispatch }: StateContext<EventiRichiestaStateModel>, action: SetIdRichiestaEventi) {
+    setIdRichiesta({ patchState, dispatch }: StateContext<EventiRichiestaStateModel>, action: SetIdRichiestaEventi): void {
         patchState({
             codiceRichiesta: action.codice
         });
@@ -80,10 +82,10 @@ export class EventiRichiestaState {
     }
 
     @Action(GetEventiRichiesta)
-    getEventiRichiesta({ getState, dispatch }: StateContext<EventiRichiestaStateModel>) {
+    getEventiRichiesta({ getState, dispatch }: StateContext<EventiRichiestaStateModel>): void {
         const codice = getState().codiceRichiesta;
         dispatch(new StartLoading());
-        this._eventiRichiesta.getEventiRichiesta(codice).subscribe((data: EventoRichiesta[]) => {
+        this.eventiRichiesta.getEventiRichiesta(codice).subscribe((data: EventoRichiesta[]) => {
             console.log('Risposta Controller Eventi', data);
             dispatch(new SetEventiRichiesta(data));
             dispatch(new StopLoading());
@@ -91,7 +93,7 @@ export class EventiRichiestaState {
     }
 
     @Action(SetEventiRichiesta)
-    setEventiRichiesta({ getState, patchState, dispatch }: StateContext<EventiRichiestaStateModel>, action: SetEventiRichiesta) {
+    setEventiRichiesta({ getState, patchState, dispatch }: StateContext<EventiRichiestaStateModel>, action: SetEventiRichiesta): void {
         patchState({
             eventi: action.eventi,
             listaEventiFiltrata: action.eventi
@@ -104,7 +106,7 @@ export class EventiRichiestaState {
     }
 
     @Action(SetListaTarghe)
-    setListaTarghe({ getState, patchState }: StateContext<EventiRichiestaStateModel>) {
+    setListaTarghe({ getState, patchState }: StateContext<EventiRichiestaStateModel>): void {
         const state = getState();
         const listaTarghe: FiltroTargaMezzo[] = [];
         if (state && state.eventi) {
@@ -120,7 +122,7 @@ export class EventiRichiestaState {
     }
 
     @Action(SetFiltroTargaMezzo)
-    setFiltroTargaMezzo({ patchState, dispatch }: StateContext<EventiRichiestaStateModel>, action: SetFiltroTargaMezzo) {
+    setFiltroTargaMezzo({ patchState, dispatch }: StateContext<EventiRichiestaStateModel>, action: SetFiltroTargaMezzo): void {
         patchState({
             filtroTargaMezzo: action.filtroTargaMezzo
         });
@@ -128,7 +130,7 @@ export class EventiRichiestaState {
     }
 
     @Action(FiltraEventiRichiesta)
-    filtraEventiRichiesta({ getState, patchState }: StateContext<EventiRichiestaStateModel>) {
+    filtraEventiRichiesta({ getState, patchState }: StateContext<EventiRichiestaStateModel>): void {
         const state = getState();
         if (state.eventi && state.filtroTargaMezzo && state.filtroTargaMezzo.length > 0) {
             const listaEventiFiltrata: EventoRichiesta[] = [];
@@ -140,7 +142,7 @@ export class EventiRichiestaState {
                 }
             });
             patchState({
-                listaEventiFiltrata: listaEventiFiltrata
+                listaEventiFiltrata
             });
         } else {
             patchState({
@@ -150,12 +152,12 @@ export class EventiRichiestaState {
     }
 
     @Action(ClearEventiRichiesta)
-    clearEventiRichiesta({ patchState }: StateContext<EventiRichiestaStateModel>) {
+    clearEventiRichiesta({ patchState }: StateContext<EventiRichiestaStateModel>): void {
         patchState(eventiRichiestaStateDefaults);
     }
 
     @Action(ToggleIconeNomeClasseEvento)
-    toggleIconeNomeClasseEvento({ getState, patchState }: StateContext<EventiRichiestaStateModel>) {
+    toggleIconeNomeClasseEvento({ getState, patchState }: StateContext<EventiRichiestaStateModel>): void {
         const state = getState();
         patchState({
             visualizzazioneIconeNomeClasseEvento: !state.visualizzazioneIconeNomeClasseEvento

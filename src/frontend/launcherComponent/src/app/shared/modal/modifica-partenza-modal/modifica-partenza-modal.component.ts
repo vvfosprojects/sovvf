@@ -14,10 +14,11 @@ import { ListaSquadre } from '../../interface/lista-squadre';
 import { VisualizzaListaSquadrePartenza } from 'src/app/features/home/store/actions/richieste/richieste.actions';
 import { SequenzaValoriSelezionati } from '../../interface/sequenza-modifica-partenza.interface';
 import { makeCopy } from '../../helper/function';
-import { ModificaPartenza } from '../../interface/modifica-partenza.interface';
+import { ModificaPartenzaDto } from '../../interface/dto/modifica-partenza-dto.interface';
 import { ModificaPartenzaService } from '../../../core/service/modifica-partenza/modifica-partenza.service';
 import { Mezzo } from '../../model/mezzo.model';
 import { Squadra } from '../../model/squadra.model';
+import { SintesiRichiesta } from '../../model/sintesi-richiesta.model';
 
 
 @Component({
@@ -35,6 +36,7 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
     operatore: string;
     sede: string;
     partenza: Partenza;
+    richiesta: SintesiRichiesta;
     idRichiesta: string;
     codRichiesta: string;
     public time = { hour: 13, minute: 30, second: 30 };
@@ -128,7 +130,7 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
         );
     }
 
-    checkStatoMezzoSequenza() {
+    checkStatoMezzoSequenza(): void {
         for (let i = 0; i < this.statiMezzo.length - 2; i++) {
             if (this.partenza.mezzo.stato === this.statiMezzo[i].name) {
                 this.statiMezzo[i + 1].disabled = false;
@@ -194,7 +196,7 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
         }
     }
 
-    annullaPartenza() {
+    annullaPartenza(): void {
         this.hideBox = true;
         this.nonModificabile = false;
         this.inSostituzione = false;
@@ -225,13 +227,13 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
             keyboard: false,
         });
         sostituzioneModal.componentInstance.idRichiesta = this.idRichiesta;
+        sostituzioneModal.componentInstance.richiesta = this.richiesta;
         sostituzioneModal.componentInstance.codRichiesta = this.codRichiesta;
         sostituzioneModal.componentInstance.partenza = this.partenza;
         sostituzioneModal.result.then((res: { status: string, result: any }) => {
             switch (res.status) {
                 case 'ok' :
                     const nuovaPartenza = res.result;
-                    const d = new Date();
                     this.valid = true;
                     this.inSostituzione = true;
                     this.hideBox = false;
@@ -332,7 +334,7 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
                 codMezzo: x.codMezzo ? x.codMezzo['codice'] : undefined,
             })),
             dataAnnullamento: form.dataAnnullamento,
-        } as ModificaPartenza;
+        } as ModificaPartenzaDto;
         console.log('RequestAddModificaPartenza FORM', obj);
         this.modificaPartenzaService.addModificaPartenza(obj).subscribe(() => {
             this.modal.close({ status: 'ok' });

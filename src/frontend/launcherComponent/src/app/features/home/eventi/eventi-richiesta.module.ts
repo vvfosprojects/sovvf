@@ -35,7 +35,6 @@ import { NgSelectModule } from '@ng-select/ng-select';
     exports: [
         EventiRichiestaComponent
     ],
-    entryComponents: [EventiRichiestaComponent],
     providers: [
         EventiRichiestaService
     ],

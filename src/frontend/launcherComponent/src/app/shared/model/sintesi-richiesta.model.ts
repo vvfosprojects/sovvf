@@ -168,7 +168,7 @@ export class SintesiRichiesta {
         /**
          * lista Enti intervenuti
          */
-        public listaEnti?: Ente[]
+        public listaEnti?: Ente[],
     ) {
     }
 }
