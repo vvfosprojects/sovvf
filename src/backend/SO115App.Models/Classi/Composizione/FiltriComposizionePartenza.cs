@@ -40,6 +40,9 @@ namespace SO115App.Models.Classi.Composizione
 
         public string Turno { get; set; }
 
+        public bool SquadreDiEmergenza { get; set; }
+        public bool SquadreColonnaMobile { get; set; }
+
         public Mezzo Mezzo { get; set; }
         public List<Squadra> Squadre { get; set; }
     }
