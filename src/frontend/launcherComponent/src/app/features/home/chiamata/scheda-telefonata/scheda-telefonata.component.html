@@ -126,7 +126,7 @@
                     </div>
                     <div class="d-inline-block mb-2" style="width:20%">
                         <label>Copia</label>
-                        <button type="button" class="btn btn-block btn-secondary" [ngbTooltip]="coordsTooltip"
+                        <button type="button" class="btn btn-block btn-secondary btn-no-hover" [ngbTooltip]="coordsTooltip"
                                 placement="bottom"
                                 (click)="onCopiaIndirizzo()" [disabled]="!coordinate">
                             <i class="fa fa-clipboard"></i>
@@ -263,7 +263,7 @@
                     </div>
                 </div>
 
-                <!--                
+                <!--
                 <ng-select class="border"
                 bindLabel="codiceDescrizione"
                 bindValue="codice"
@@ -280,10 +280,10 @@
             <div class="row mt-1 mb-3">
                 <div class="col-7">
                     <div class="btn-group">
-                        <button type="button" class="btn btn-outline-danger" (click)="onAnnullaChiamata()">Annulla
+                        <button type="button" class="btn btn-outline-danger btn-no-hover" (click)="onAnnullaChiamata()">Annulla
                         </button>
                         <div class="btn-group" ngbDropdown autoClose="outside" placement="top" role="group">
-                            <button class="btn btn-outline-danger dropdown-toggle-split" ngbDropdownToggle></button>
+                            <button class="btn btn-outline-danger dropdown-toggle-split btn-no-hover" ngbDropdownToggle></button>
                             <div class="dropdown-menu dropdownAnnulla" ngbDropdownMenu>
                                 <button class="dropdown-item"
                                         (click)="impostaAzioneChiamata(AzioneChiamataEnum.FalsoAllarme)">Falso
@@ -300,12 +300,12 @@
                             </div>
                         </div>
                     </div>
-                    <button class="btn btn-outline-secondary ml-2 mr-2" type="button" (click)="onResetChiamata()">
+                    <button class="btn btn-outline-secondary ml-2 mr-2 btn-no-hover" type="button" (click)="onResetChiamata()">
                         <i class="fa fa-recycle mr-1"></i>Reset
                     </button>
                     <span ngbTooltip="Inserire il resto dei campi obbligatori" [disableTooltip]="!checkCollapsed()"
                           placement="bottom">
-            <button type="button" class="btn btn-outline-primary ml-2" (click)="toggleCollapsed()"
+            <button type="button" class="btn btn-outline-primary btn-no-hover ml-2" (click)="toggleCollapsed()"
                     [attr.aria-expanded]="!isCollapsed" aria-controls="collapseExample" [disabled]="checkCollapsed()">
               Informazioni Aggiuntive
               <i *ngIf="isCollapsed" class="fa fa-arrow-down ml-1"></i>
@@ -314,14 +314,14 @@
           </span>
                 </div>
                 <div class="col-5 text-right">
-                    <button class="btn btn-primary mr-2" style="min-width: 100px"
+                    <button class="btn btn-primary btn-no-hover mr-2" style="min-width: 100px"
                             [disabled]="disabledInviaPartenza"
                             [ngClass]="{'cursor-not-allowed': disabledInviaPartenza}"
                             (click)="impostaAzioneChiamata(AzioneChiamataEnum.InviaPartenza)"
                             ngbTooltip="Invia Partenza">
                         <i class="fa fa-truck"></i>
                     </button>
-                    <button class="btn btn-success" style="min-width: 100px"
+                    <button class="btn btn-success btn-no-hover" style="min-width: 100px"
                             (click)="impostaAzioneChiamata(AzioneChiamataEnum.MettiInCoda)" ngbTooltip="Metti In Coda">
                         <i class="fa fa-check"></i>
                     </button>
