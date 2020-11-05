@@ -1,37 +1,46 @@
 <div *ngIf="filtri" class="border card-shadow bg-light rounded mt-1 mb-2 px-2">
     <div class="row">
         <!-- Tasti Composizione Partenza -->
-        <div *ngIf="composizionePartenza" class="col-3 py-1 pr-0">
+        <div *ngIf="composizionePartenza" class="col-1 py-1 pr-0">
             <div class="clearfix">
                 <div class="float-left">
                     <button class="btn btn-block btn-primary btn-no-hover" (click)="turnOffComposizione()">
                         <i class="fa fa-arrow-left"></i>
                     </button>
                 </div>
-                <div class="float-right">
-                    <app-tasto-comp-partenza (cambioModalita)="compPartenzaSwitch($event)"
-                                             [compPartenzaMode]="(composizioneMode$ | async)"
-                                             [disableTasto]="disableComposizioneMode">
-                    </app-tasto-comp-partenza>
-                </div>
-                <div class="float-right pr-2">
-                    <button class="btn btn-warning btn-block card-shadow btn-no-hover"
-                            [ngClass]="{'btn-danger' : prenotato}"
-                            [ngbTooltip]="tooltipPrenota"
-                            (click)="_confirmPrenota()"
-                            [disabled]="disableComposizioneMode">
-                        <i class="fa fa-hand-paper-o mr-1"></i>
-                        <span *ngIf="!prenotato">
-                            Prenota
-                        </span>
-                        <span *ngIf="prenotato" class="font-weight-bolder">
-                            Prenotata
-                        </span>
-                        <ng-template #tooltipPrenota>
-                            <span *ngIf="!prenotato">Voglio prenderla in carico</span>
-                            <span *ngIf="prenotato">Annulla presa in carico</span>
-                        </ng-template>
-                    </button>
+                <div class="float-left ml-1" style="display:flex;" (click)="$event.stopPropagation()">
+                    <div class="d-inline-block" ngbDropdown #dropdownActionsMezzo="ngbDropdown"
+                         (click)="$event.stopPropagation()">
+                        <button class="btn btn-info btn-no-hover" id="dropdownActionsMezzo" ngbDropdownAnchor
+                                ngbTooltip="Opzioni"
+                                (click)="dropdownActionsMezzo.toggle(); $event.stopPropagation()">
+                            <i class="fa fa-ellipsis-v"></i>
+                        </button>
+                        <div ngbDropdownMenu>
+                            <div ngbDropdownItem>
+                                <app-tasto-comp-partenza (cambioModalita)="compPartenzaSwitch($event)"
+                                                         [compPartenzaMode]="(composizioneMode$ | async)"
+                                                         [disableTasto]="disableComposizioneMode">
+                                </app-tasto-comp-partenza>
+                            </div>
+                            <div ngbDropdownItem>
+                                <button class="btn btn-block btn-no-hover" [ngbTooltip]="tooltipPrenota"
+                                        (click)="_confirmPrenota()" [disabled]="disableComposizioneMode">
+                                    <i class="fa fa-hand-paper-o mr-1"></i>
+                                    <span *ngIf="!prenotato">
+                                        Prenota
+                                    </span>
+                                    <span *ngIf="prenotato" class="font-weight-bolder">
+                                        Prenotata
+                                    </span>
+                                    <ng-template #tooltipPrenota>
+                                        <span *ngIf="!prenotato">Voglio prenderla in carico</span>
+                                        <span *ngIf="prenotato">Annulla presa in carico</span>
+                                    </ng-template>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -40,8 +49,9 @@
              [class.col-12]="sostituzionePartenza">
             <div class="row pt-1"
                  [class.pb-2]="sostituzionePartenza">
-                <div class="col-2">
-                    <ng-select [items]="filtri?.turni"
+                <div class="col-3">
+                    <ng-select class="align-self-center"
+                               [items]="filtri?.turni"
                                [multiple]="false"
                                [closeOnSelect]="true"
                                [hideSelected]="true"
@@ -52,8 +62,9 @@
                                placeholder="Turno: Corrente">
                     </ng-select>
                 </div>
-                <div class="col-4">
-                    <ng-select [items]="filtri?.distaccamenti"
+                <div class="col-3">
+                    <ng-select class="align-self-center"
+                               [items]="filtri?.distaccamenti"
                                bindLabel="descDistaccamento"
                                bindValue="id"
                                [multiple]="false"
@@ -66,8 +77,9 @@
                                placeholder="Distaccamento: Tutti">
                     </ng-select>
                 </div>
-                <div [ngClass]="{'col-2': !composizionePartenza && sostituzionePartenza, 'col-3': composizionePartenza && !sostituzionePartenza}">
-                    <ng-select [items]="filtri?.generiMezzi"
+                <div [ngClass]="{'col-3': !composizionePartenza && sostituzionePartenza, 'col-3': composizionePartenza && !sostituzionePartenza}">
+                    <ng-select class="align-self-center"
+                               [items]="filtri?.generiMezzi"
                                bindLabel="descrizione"
                                bindValue="descrizione"
                                [multiple]="false"
@@ -81,7 +93,8 @@
                     </ng-select>
                 </div>
                 <div [ngClass]="{'col-4': !composizionePartenza && sostituzionePartenza, 'col-3': composizionePartenza && !sostituzionePartenza}">
-                    <ng-select [items]="filtri?.stati"
+                    <ng-select class="align-self-center"
+                               [items]="filtri?.stati"
                                bindLabel="descrizione"
                                bindValue="codice"
                                [multiple]="false"
@@ -100,5 +113,16 @@
                 </div>
             </div>
         </div>
+        <!-- Elimina Filtri Attivi -->
+        <button class="btn btn-sm btn-danger align-self-center" ngbTooltip="Elimina Filtri Attivi">
+            <i class="fa fa-trash"></i>
+        </button>
+        <!-- Altri Filtri -->
+        <ng-template [ngIf]="composizionePartenza">
+            <a href="javascript:void(0)" class="align-self-center font-weight-bolder">
+                Altri Filtri
+                <i class="fa fa-chevron-down"></i>
+            </a>
+        </ng-template>
     </div>
 </div>
