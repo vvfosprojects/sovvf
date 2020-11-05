@@ -38,12 +38,18 @@ namespace SO115App.Models.Classi.Composizione
         public string RicercaMezzi { get; set; }
         public string RicercaSquadre { get; set; }
 
-        public string Turno { get; set; }
+        public FiltroTurnoRelativo? Turno { get; set; }
 
         public bool SquadreDiEmergenza { get; set; }
         public bool SquadreColonnaMobile { get; set; }
 
         public Mezzo Mezzo { get; set; }
         public List<Squadra> Squadre { get; set; }
+    }
+
+    public enum FiltroTurnoRelativo
+    {
+        Precedente,
+        Successivo
     }
 }

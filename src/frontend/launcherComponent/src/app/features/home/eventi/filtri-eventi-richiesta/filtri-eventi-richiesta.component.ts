@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { FiltroTargaMezzo } from '../interface/filtro-targa-mezzo.interface';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { EventoRichiesta } from '../../../../shared/model/evento-richiesta.model';
@@ -63,9 +63,9 @@ export class FiltriEventiRichiestaComponent implements OnChanges {
 
     mostraTesto(): string {
         if (this.targheSelezionateUnique && this.targheSelezionateUnique.length > 0) {
-            return 'Filtra per mezzo';
+            return 'Filtra per targa mezzo';
         } else {
-            return 'Non ci sono mezzi da filtrare';
+            return 'Nessun mezzo trovato';
         }
     }
 

@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy, OnChanges, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { NgbActiveModal, NgbModal, NgbPopoverConfig, NgbTooltipConfig } from '@ng-bootstrap/ng-bootstrap';
 import { TimeagoIntl } from 'ngx-timeago';
 import { strings as italianStrings } from 'ngx-timeago/language-strings/it';
@@ -26,6 +26,7 @@ import { Tipologia } from '../../model/tipologia.model';
 import { Partenza } from '../../model/partenza.model';
 import { SostituzionePartenzeFineTunoModalComponent } from '../../modal/sostituzione-partenze-fine-turno-modal/sostituzione-partenze-fine-tuno-modal.component';
 import { ConfirmSostituzioni, SetListaPartenzeSostituzioneFineTurno } from '../../store/actions/modifica-partenzef-fine-turno-modal/sostituzione-partenze-fine-turno.actions';
+import { StatoMezzo } from '../../enum/stato-mezzo.enum';
 
 @Component({
     selector: 'app-sintesi-richiesta',
@@ -204,6 +205,12 @@ export class SintesiRichiestaComponent implements OnChanges {
         return utentiInLavorazioneValue.nominativo.length <= 15;
     }
 
+    _isSostituzioneFineTurnoActive(partenze: Partenza[]): boolean {
+        if (partenze?.length > 0) {
+            return partenze.filter((p: Partenza) => !p.sganciata && !p.partenzaAnnullata && !p.terminata && p.mezzo.stato === StatoMezzo.SulPosto).length >= 2;
+        }
+    }
+
     onListaEnti(): void {
         const modal = this.modalService.open(ListaEntiComponent, {
             windowClass: 'enti',
@@ -324,7 +331,7 @@ export class SintesiRichiestaComponent implements OnChanges {
             size: 'xl',
             centered: true
         });
-        const partenzeDisponibili = partenze.filter((p: Partenza) => !p.sganciata && !p.partenzaAnnullata && !p.terminata);
+        const partenzeDisponibili = partenze.filter((p: Partenza) => !p.sganciata && !p.partenzaAnnullata && !p.terminata && p.mezzo.stato === StatoMezzo.SulPosto);
         this.store.dispatch(new SetListaPartenzeSostituzioneFineTurno(partenzeDisponibili));
         modalSostituzioneFineTurno.componentInstance.idRichiesta = this.richiesta.id;
         modalSostituzioneFineTurno.componentInstance.codRichiesta = this.richiesta.codice;
