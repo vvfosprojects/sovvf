@@ -18,7 +18,7 @@
             </app-partenza>
         </li>
     </div>
-    <ng-template [ngIf]="inGestione">
+    <ng-template [ngIf]="inGestione && sostituzioneFineTurnoActive">
         <button class="btn btn-sm btn-info" ngbTooltip="Sostituzione Fine Turno"
                 style="position:absolute; top:-14px; left:-14px"
                 (click)="sostituzioneFineTurno.emit(); $event.stopPropagation()">
