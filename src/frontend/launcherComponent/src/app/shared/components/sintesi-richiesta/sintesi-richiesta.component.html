@@ -133,7 +133,8 @@
                                         </button>
                                         <ng-template #popSquadre>
                                             <div class="h6" *ngFor="let s of squadre">
-                                                <span>{{ s }}</span>
+                                                <span>{{ s['nome'] }}</span>
+                                                <span> ({{ s['turno'] }})</span>
                                             </div>
                                             <h6 class="mb-0" *ngIf="squadre?.length === 0">Nessuna Squadra</h6>
                                         </ng-template>
