@@ -165,6 +165,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneUtente.CasLogin
             using HttpContent content = response.Content;
             var data = await content.ReadAsStringAsync().ConfigureAwait(false);
 
+            Log.Information($"CasResponseData: '{data}'");
+
             var RispostaCas = JsonConvert.DeserializeObject<CasResponse>(data);
 
             return RispostaCas;
