@@ -411,7 +411,8 @@ export class RichiesteState {
         const modal = this.modalService.open(ListaSquadrePartenzaComponent, {
             windowClass: 'modal-holder',
             backdropClass: 'light-blue-backdrop',
-            centered: true
+            centered: true,
+            size: 'lg',
         });
         modal.componentInstance.listaSquadre = action.listaSquadre;
         modal.result.then(() => console.log('Lista Squadre Partenza Aperta'),
