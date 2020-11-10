@@ -35,7 +35,7 @@
                 </button>
             </div>
             <div><i class="fa fa-group mr-2" ngbTooltip="Squadra"></i>
-                <b class="font-box-partenza">{{ partenza?.squadre[0]?.nome }}</b>
+                <b class="font-box-partenza">{{ partenza?.squadre[0]?.nome }} ({{partenza?.squadre[0]?.turno}}) </b>
                 <i class="fa fa-check-circle-o text-success ml-3"></i>
             </div>
         </div>
@@ -50,6 +50,7 @@
             </div>
             <div *ngFor="let squadre of partenza?.squadre"><i class="fa fa-group mr-2" ngbTooltip="Squadre"></i>
                 <b class="font-box-partenza">{{ squadre['nome'] }}</b>
+                <b class="font-box-partenza ml-1">({{ squadre['turno'] }})</b>
                 <i class="fa fa-check-circle-o text-success ml-3"></i>
             </div>
         </div>
@@ -70,6 +71,7 @@
                 <div *ngIf="nuoveSquadre?.length === 1" class="t-color"><i class="fa fa-group mr-2 t-color"
                                                                            ngbTooltip="Squadra"></i>
                     <b class="font-box-partenza">{{ nuoveSquadre[0]?.nome }}</b>
+                    <b class="font-box-partenza ml-1">({{ nuoveSquadre[0]?.turno }})</b>
                     <i class="fa fa-check-circle-o text-success ml-3"></i>
                 </div>
             </div>
@@ -82,6 +84,7 @@
                     </button>
                 <div *ngFor="let squadre of nuoveSquadre"><i class="fa fa-group mr-2" ngbTooltip="Squadre"></i>
                     <b class="font-box-partenza">{{ squadre['nome'] }}</b>
+                    <b class="font-box-partenza ml-1">({{ squadre['turno'] }})</b>
                     <i class="fa fa-check-circle-o text-success ml-3"></i>
                 </div>
             </div>
