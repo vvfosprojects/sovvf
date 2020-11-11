@@ -13,6 +13,7 @@
                     <i class="fa fa-group mr-2"></i>
                     <span ngbTooltip="{{partenza.squadre[0].nome}}"
                           [disableTooltip]="partenza.squadre[0].nome.length <= 6">{{partenza.squadre[0].nome | truncate: 6}}</span>
+                    <span class="ml-1">({{partenza.squadre[0].turno}})</span>
                     <button class="btn btn-sm btn-light border ml-2 p-1 mr-2" ngbTooltip="Elenco squadre"
                             (click)="onListaSquadrePartenza(); $event.stopPropagation()">
                         <span *ngIf="partenza.squadre.length === 1"><i class="fa fa-search"></i></span>
