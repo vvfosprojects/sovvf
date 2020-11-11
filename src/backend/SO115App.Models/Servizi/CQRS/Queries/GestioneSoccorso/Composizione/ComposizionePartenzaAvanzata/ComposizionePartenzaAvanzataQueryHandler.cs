@@ -43,11 +43,15 @@ using System.Globalization;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using ComposizioneSquadre = SO115App.API.Models.Classi.Composizione.ComposizioneSquadre;
+using ComposizioneMezzi = SO115App.API.Models.Classi.Composizione.ComposizioneMezzi;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizionePartenzaAvanzata
 {
     public class ComposizionePartenzaAvanzataQueryHandler : IQueryHandler<ComposizionePartenzaAvanzataQuery, ComposizionePartenzaAvanzataResult>
     {
+        #region Servizi
+
         private readonly IGetListaSquadre _getListaSquadre;
         private readonly IGetMezziUtilizzabili _getMezziUtilizzabili;
         private readonly IGetStatoSquadra _getStatoSquadre;
@@ -58,6 +62,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
         private readonly IConfiguration _configuration;
         private readonly IMemoryCache _memoryCache;
         private readonly IGetTurno _getTurno;
+
+        #endregion
 
         public ComposizionePartenzaAvanzataQueryHandler(
             IGetListaSquadre getListaSquadre,
@@ -129,18 +135,20 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                     return lstsquadre.Result.Select(squadra =>
                     {
                         if (statiOperativi.Exists(x => x.IdSquadra.Equals(squadra.Id)))
-                        {
                             squadra.Stato = MappaStatoSquadraDaStatoMezzo.MappaStato(statiOperativi.Find(x => x.IdSquadra.Equals(squadra.Id)).StatoSquadra);
-                            squadra.IndiceOrdinamento = -200;
-                        }
                         else
                             squadra.Stato = Squadra.StatoSquadra.InSede;
 
-                        return new Classi.Composizione.ComposizioneSquadre()
+                        var comp =  new Classi.Composizione.ComposizioneSquadre()
                         {
                             Id = squadra.Id,
                             Squadra = squadra
                         };
+
+                        squadra.IndiceOrdinamento = new OrdinamentoSquadre(query.Richiesta).GetIndiceOrdinamento(comp);
+
+
+                        return comp;
                     });
                 })
                 .ContinueWith(lstCompSquadre => FiltraSquadre(query, lstCompSquadre.Result, tipologia90, turnoCorrente, turnoPrecedente, turnoSuccessivo));
@@ -336,7 +344,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             })
             .Where(s => s != null)
 #endif
-            .OrderByDescending(c => c.Squadra.Stato)
+            .OrderByDescending(c => c.Squadra.IndiceOrdinamento)
             .ToList();
         }
     }
@@ -439,6 +447,32 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                 }
             }
             return 10;
+        }
+    }
+
+    internal class OrdinamentoSquadre
+    {
+        RichiestaAssistenza _Richiesta;
+        public OrdinamentoSquadre(RichiestaAssistenza Richiesta)
+        {
+            _Richiesta = Richiesta;
+        }
+
+        public decimal GetIndiceOrdinamento(Classi.Composizione.ComposizioneSquadre composizione)
+        {
+            int ValoreCompetenza = 0;
+
+            if (composizione.Squadra.Stato == Squadra.StatoSquadra.InSede)
+            {
+                switch (_Richiesta.Competenze.Select(c => c.Descrizione).ToList().FindIndex(c => c.Equals(composizione.Squadra.Distaccamento.Descrizione)))
+                {
+                    case 0: ValoreCompetenza = 3000; break;
+                    case 1: ValoreCompetenza = 2000; break;
+                    case 2: ValoreCompetenza = 1000; break;
+                }
+            }
+
+            return ValoreCompetenza;
         }
     }
 }

@@ -104,7 +104,7 @@ namespace SO115App.API.Models.Classi.Condivise
 
         public List<string> ListaCodiciFiscaliComponentiSquadra { get; set; }
 
-        public int IndiceOrdinamento { get; set; }
+        public decimal IndiceOrdinamento { get; set; }
 
         public string Turno { get; set; }
     }
