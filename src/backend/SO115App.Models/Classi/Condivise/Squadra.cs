@@ -71,6 +71,10 @@ namespace SO115App.API.Models.Classi.Condivise
 
         public string Id { get; set; }
 
+        public bool ColonnaMobile { get; set; }
+
+        public bool DiEmergenza { get; set; }
+
         public string Codice { get; set; }
 
         /// <summary>
