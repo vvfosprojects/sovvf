@@ -4,14 +4,12 @@ using SimpleInjector;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.Box;
 using SO115App.Models.Servizi.Infrastruttura.GestioneDB;
-using SO115App.Models.Servizi.Infrastruttura.GestionePartenza;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Servizi.Infrastruttura.GestioneStatoOperativoSquadra;
 using SO115App.Persistence.MongoDB;
 using SO115App.Persistence.MongoDB.GestioneDB;
 using SO115App.Persistence.MongoDB.GestioneInterventi;
 using SO115App.Persistence.MongoDB.GestioneMezzi;
-using SO115App.Persistence.MongoDB.GestionePartenze;
 
 namespace SO115App.CompositionRoot
 {
@@ -42,12 +40,6 @@ namespace SO115App.CompositionRoot
             container.Register<SO115App.Models.Servizi.Infrastruttura.GetListaEventi.IGetListaEventi, GetListaEventiByCodiceRichiesta>();
 
             #endregion Gestione richiesta di assistenza
-
-            #region Gestione Partenze
-
-            container.Register<IAddComposizioniPartenza, AddComposizioniPartenza>();
-
-            #endregion
 
             #region BOX
 
