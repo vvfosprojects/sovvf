@@ -22,32 +22,32 @@ export class HelperSintesiRichiesta {
      */
     getSquadre(richiesta: SintesiRichiesta): string[] {
 
-      // const nomiSquadre: string[] = [];
-      const squadre = [];
+        // const nomiSquadre: string[] = [];
+        const squadre = [];
 
-      if (richiesta.partenzeRichiesta) {
-        richiesta.partenzeRichiesta.forEach((partenza: Partenza) => {
-          if (partenza.squadre && !partenza.sganciata && !partenza.partenzaAnnullata && !partenza.terminata) {
-            partenza.squadre.forEach((squadra: Squadra) => {
-              squadre.push({ id: squadra.id, nome: squadra.nome, turno: squadra.turno });
+        if (richiesta.partenzeRichiesta) {
+            richiesta.partenzeRichiesta.forEach((partenza: Partenza) => {
+                if (partenza.squadre && !partenza.sganciata && !partenza.partenzaAnnullata && !partenza.terminata) {
+                    partenza.squadre.forEach((squadra: Squadra) => {
+                        squadre.push({ id: squadra.id, nome: squadra.nome, turno: squadra.turno });
+                    });
+                }
             });
-          }
-        });
-      } else {
-        return [];
-      }
+        } else {
+            return [];
+        }
 
-      function getUnique(arr, comp): any[] {
-        return arr.map(e => e[comp]).map((e, i, final) => final.indexOf(e) === i && i).filter(e => arr[e]).map(e => arr[e]);
-      }
+        function getUnique(arr, comp): any[] {
+            return arr.map(e => e[comp]).map((e, i, final) => final.indexOf(e) === i && i).filter(e => arr[e]).map(e => arr[e]);
+        }
 
-      // nomiSquadre.push(...getUnique(squadre, 'id').map((squadra: SquadraPartenza) => squadra.nome));
+        // nomiSquadre.push(...getUnique(squadre, 'id').map((squadra: SquadraPartenza) => squadra.nome));
 
-      return squadre;
+        return squadre;
     }
 
 
-  /* Restituisce il mezzo */
+    /* Restituisce il mezzo */
     mezziRichiesta(richiesta: SintesiRichiesta): Mezzo[] {
         const mezzi = [];
         if (richiesta.partenzeRichiesta) {
@@ -200,22 +200,13 @@ export class HelperSintesiRichiesta {
 
     cardBorder(r: SintesiRichiesta): any {
         if (r) {
-            let classes = null;
-            if (!this._isPresaInCarico(r.stato, r.listaUtentiPresaInCarico)) {
-                classes = {
-                    status_chiamata: r.stato === StatoRichiesta.Chiamata,
-                    status_presidiato: r.stato === StatoRichiesta.Presidiata,
-                    status_assegnato: r.stato === StatoRichiesta.Assegnata,
-                    status_sospeso: r.stato === StatoRichiesta.Sospesa,
-                    status_chiuso: r.stato === StatoRichiesta.Chiusa,
-                };
-                return classes;
-            } else {
-                classes = {
-                    status_in_lavorazione: true
-                };
-                return classes;
-            }
+            return {
+                status_chiamata: r.stato === StatoRichiesta.Chiamata,
+                status_presidiato: r.stato === StatoRichiesta.Presidiata,
+                status_assegnato: r.stato === StatoRichiesta.Assegnata,
+                status_sospeso: r.stato === StatoRichiesta.Sospesa,
+                status_chiuso: r.stato === StatoRichiesta.Chiusa,
+            };
         }
     }
 
