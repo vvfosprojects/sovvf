@@ -38,7 +38,7 @@
                             (click)="setSchedaContattoTelefonata.emit(scheda); $event.stopPropagation()">
                         <i class="fa fa-arrow-right"></i>
                     </button>
-                    <button *ngIf="scheda.classificazione === classificazioneSchedaContatto.Differibile"
+                    <button *ngIf="scheda.classificazione"
                             class="btn float-right px-2 py-1 mr-1" [ngClass]="btnGestita.type"
                             ngbTooltip="{{btnGestita.tooltip}}" [disabled]="disableGestisci"  [class.cursor-not-allowed]="disableCreaRichiesta"
                             (click)="setSchedaContattoGestita.emit(!scheda.gestita); $event.stopPropagation()">
