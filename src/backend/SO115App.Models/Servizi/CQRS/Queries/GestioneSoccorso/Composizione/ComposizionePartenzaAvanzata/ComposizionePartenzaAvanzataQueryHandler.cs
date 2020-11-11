@@ -91,31 +91,29 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
 
             //CALCOLO I TURNI
             var turnoCorrente = _getTurno.Get();
+
             string turnoPrecedente = null;
             string turnoSuccessivo = null;
 
-            if(query.Filtro.Turno != null)
+            if(turnoCorrente.Codice.Contains('A'))
+            { 
+                turnoPrecedente = "C"; 
+                turnoSuccessivo = "D"; 
+            }
+            else if(turnoCorrente.Codice.Contains('B'))
             {
-                if(turnoCorrente.Codice.Contains('A'))
-                { 
-                    turnoPrecedente = "D"; 
-                    turnoSuccessivo = "B"; 
-                }
-                else if(turnoCorrente.Codice.Contains('B'))
-                {
-                    turnoPrecedente = "A";
-                    turnoSuccessivo = "C";
-                }
-                else if (turnoCorrente.Codice.Contains('C'))
-                {
-                    turnoPrecedente = "B";
-                    turnoSuccessivo = "D";
-                }
-                else if (turnoCorrente.Codice.Contains('D'))
-                {
-                    turnoPrecedente = "C";
-                    turnoSuccessivo = "A";
-                }
+                turnoPrecedente = "D";
+                turnoSuccessivo = "C";
+            }
+            else if (turnoCorrente.Codice.Contains('C'))
+            {
+                turnoPrecedente = "B";
+                turnoSuccessivo = "A";
+            }
+            else if (turnoCorrente.Codice.Contains('D'))
+            {
+                turnoPrecedente = "A";
+                turnoSuccessivo = "B";
             }
 
             //REPERISCO I DATI, FACCIO IL MAPPING ED APPLICO I FILTRI (MEZZI E SQUADRE)
@@ -181,16 +179,13 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
 #if DEBUG
                     .Select(s =>
                     {
-
-                        if (!turnoCorrente.Codice.Contains(s.Squadra.Turno))
-                        {
                             switch (query.Filtro.Turno)
                             {
                                 case FiltroTurnoRelativo.Precedente: s.Squadra.Turno = turnoPrecedente; break;
                                 case FiltroTurnoRelativo.Successivo: s.Squadra.Turno = turnoSuccessivo; break;
                                 case null: s.Squadra.Turno = turnoCorrente.Codice; break;
                             }
-                        }
+
                         return s;
                     })
                     .Where(s => s != null)
