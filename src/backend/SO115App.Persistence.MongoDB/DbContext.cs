@@ -17,8 +17,11 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Conventions;
+using MongoDB.Bson.Serialization.IdGenerators;
+using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Driver;
 using SO115App.API.Models.Classi.Autenticazione;
 using SO115App.API.Models.Classi.Condivise;
@@ -76,12 +79,12 @@ namespace Persistence.MongoDB
             SchedeNueMap.Map();
             RubricaMap.Map();
             CategorieEntiMap.Map();
+            ComposizioniPartenzeMap.Map();
             BsonClassMap.RegisterClassMap<SO115App.Models.Classi.Soccorso.Eventi.TrasferimentoChiamata>();
             BsonClassMap.RegisterClassMap<Telefonata>();
             BsonClassMap.RegisterClassMap<AssegnazionePriorita>();
             BsonClassMap.RegisterClassMap<InizioPresaInCarico>();
             BsonClassMap.RegisterClassMap<AnnullamentoPresaInCarico>();
-            BsonClassMap.RegisterClassMap<ComposizionePartenze>();
             BsonClassMap.RegisterClassMap<RevocaPerAltraMotivazione>();
             BsonClassMap.RegisterClassMap<RevocaPerFuoriServizio>();
             BsonClassMap.RegisterClassMap<RevocaPerInterventoNonPiuNecessario>();
@@ -114,6 +117,14 @@ namespace Persistence.MongoDB
             get
             {
                 return database.GetCollection<SO115App.Models.Classi.Condivise.TrasferimentoChiamata>("trasferimentiChiamate");
+            }
+        }
+
+        public IMongoCollection<ComposizionePartenze> ComposizioniPartenzeCollection
+        {
+            get
+            {
+                return database.GetCollection<ComposizionePartenze>("composizioniPartenze");
             }
         }
 

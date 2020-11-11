@@ -20,9 +20,11 @@
 
 using DomainModel.CQRS.Commands.ConfermaPartenze;
 using SO115App.API.Models.Classi.Composizione;
+using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
+using SO115App.Models.Servizi.Infrastruttura.GestionePartenza;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi;
 using SO115App.Models.Servizi.Infrastruttura.GestioneStatoOperativoSquadra;
 using System;
@@ -38,15 +40,17 @@ namespace SO115App.ExternalAPI.Fake.Composizione
         private readonly IUpDateRichiestaAssistenza _updateRichiesta;
         private readonly ISetStatoOperativoMezzo _setStatoOperativoMezzo;
         private readonly ISetStatoSquadra _setStatoSquadra;
+        private readonly IAddComposizioniPartenza _addPartenza;
 
         /// <summary>
         ///   Costruttore della classe
         /// </summary>
-        public UpdateConfermaPartenzeExt(IUpDateRichiestaAssistenza updateRichiesta, ISetStatoOperativoMezzo setStatoOperativoMezzo, ISetStatoSquadra setStatoSquadra)
+        public UpdateConfermaPartenzeExt(IUpDateRichiestaAssistenza updateRichiesta, ISetStatoOperativoMezzo setStatoOperativoMezzo, ISetStatoSquadra setStatoSquadra, IAddComposizioniPartenza addPartenza)
         {
             _updateRichiesta = updateRichiesta;
             _setStatoOperativoMezzo = setStatoOperativoMezzo;
             _setStatoSquadra = setStatoSquadra;
+            _addPartenza = addPartenza;
         }
 
         /// <summary>
@@ -57,6 +61,9 @@ namespace SO115App.ExternalAPI.Fake.Composizione
         public ConfermaPartenze Update(ConfermaPartenzeCommand command)
         {
             var conferma = new ConfermaPartenze();
+
+            foreach (var composizionePartenze in command.Richiesta.Partenze)
+                _addPartenza.AddOrUpdate(composizionePartenze);
 
             _updateRichiesta.UpDate(command.ConfermaPartenze.richiesta);
 
@@ -69,9 +76,7 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                 _setStatoOperativoMezzo.Set(codiceSede, partenza.Mezzo.Codice, partenza.Mezzo.Stato, command.ConfermaPartenze.richiesta.Codice);
 
                 foreach (var squadra in partenza.Squadre)
-                {
                     _setStatoSquadra.SetStato(squadra.Codice, command.ConfermaPartenze.IdRichiesta, partenza.Mezzo.Stato, codiceSede, partenza.Mezzo.Codice);
-                }
             }
 
             conferma.CodiceSede = command.ConfermaPartenze.CodiceSede;

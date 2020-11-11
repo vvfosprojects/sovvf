@@ -22,6 +22,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Condivise;
+using SO115App.API.Models.Classi.Persistenza;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Eccezioni;
 using SO115App.API.Models.Classi.Soccorso.Mezzi.StatiMezzo;
 
@@ -37,7 +38,7 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi.Partenze
     ///   soccorso. Valuteremo se i mezzi e le attrezzature possono essere ricondotti ad un'unica
     ///   categoria (risorsa strumentale).
     /// </remarks>
-    public class ComposizionePartenze : Evento, IPartenza
+    public class ComposizionePartenze : Evento, IPartenza, IEntity
     {
         [JsonConstructor]
         public ComposizionePartenze(DateTime istante, string codiceFonte, string codice, bool fuoriSede) : base(istante, codiceFonte, codice, "ComposizionePartenza")
@@ -66,6 +67,8 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi.Partenze
             this.Componenti = new HashSet<ComponentePartenza>();
             this.FuoriSede = fuoriSede;
         }
+
+        public string Id { get; protected internal set; }
 
         /// <summary>
         ///   Restituisce il codice fiscale del capopartenza presente all'interno dei componenti.
