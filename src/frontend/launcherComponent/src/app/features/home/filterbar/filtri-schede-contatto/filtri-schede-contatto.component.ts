@@ -23,13 +23,13 @@ export class FiltriSchedeContattoComponent {
     }
 
     onSelezioneFiltro(filtro: VoceFiltro): void {
-        console.log('filtriSelezionati', this.filtriSelezionati);
-        this.filtriSelezionati.forEach((f: VoceFiltro) => {
+      console.log('filtriSelezionati', this.filtriSelezionati);
+      this.filtriSelezionati.forEach((f: VoceFiltro) => {
             if (f !== filtro && f.categoria === filtro.categoria) {
                 this.filtroSelezionato.emit(f);
             }
         });
-        this.filtroSelezionato.emit(filtro);
+      this.filtroSelezionato.emit(filtro);
     }
 
     eliminaFiltriAttivi(): void {

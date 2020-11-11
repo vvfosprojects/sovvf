@@ -93,7 +93,7 @@ export class ReducerSetFiltroSchedeContatto {
 export class SetFiltroGestitaSchedeContatto {
     static readonly type = '[SchedeContatto] Set Filtro Gestita Schede Contatto';
 
-    constructor(public gestita: boolean) {
+    constructor(public gestita: boolean, public recenti?: string) {
     }
 }
 
