@@ -158,19 +158,45 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                         if (query.Filtro.Squadre != null && query.Filtro.Squadre.Count > 0 && query.Filtro.Squadre.FirstOrDefault().Distaccamento.Codice != null)
                             return s.Squadra.Distaccamento.Codice == query.Filtro.Squadre.FirstOrDefault().Distaccamento.Codice;
                         return true;
-                    }).Where(s =>
+                    })
+                    .Where(m =>
+                    {
+                        if (query.Filtro.Mezzo != null && query.Filtro.Mezzo.Distaccamento.Codice != null)
+                            return m.Squadra.Distaccamento.Codice == query.Filtro.Mezzo.Distaccamento.Codice;
+                        return true;
+                    })
+
+                    //FILTRO TURNO FUNZIONANTE SOLO IN TEST
+#if !DEBUG
+                    .Where(s =>
                     {
                         if (turnoPrecedente != null)
                             return turnoPrecedente.Contains(s.Squadra.Turno);
                         else if (turnoPrecedente != null)
                             return turnoSuccessivo.Contains(s.Squadra.Turno);
                         return turnoCorrente.Codice.Contains(s.Squadra.Turno);
-                    }).Where(m =>
+                    })
+#endif
+                    //QUI MASCHERO I RISULTATI MOSTRANDO, SEMPRE, ALMENO UNA SQUADRA PER TURNO
+#if DEBUG
+                    .Select(s =>
                     {
-                        if (query.Filtro.Mezzo != null && query.Filtro.Mezzo.Distaccamento.Codice != null)
-                            return m.Squadra.Distaccamento.Codice == query.Filtro.Mezzo.Distaccamento.Codice;
-                        return true;
-                    }).OrderByDescending(c => c.Squadra.Stato).ToList();
+
+                        if (!turnoCorrente.Codice.Contains(s.Squadra.Turno))
+                        {
+                            switch (query.Filtro.Turno)
+                            {
+                                case FiltroTurnoRelativo.Precedente: s.Squadra.Turno = turnoPrecedente; break;
+                                case FiltroTurnoRelativo.Successivo: s.Squadra.Turno = turnoSuccessivo; break;
+                                case null: s.Squadra.Turno = turnoCorrente.Codice; break;
+                            }
+                        }
+                        return s;
+                    })
+                    .Where(s => s != null)
+#endif
+
+                    .OrderByDescending(c => c.Squadra.Stato).ToList();
                 });
 
             var lstMezzi = _getPosizioneFlotta.Get(0)
