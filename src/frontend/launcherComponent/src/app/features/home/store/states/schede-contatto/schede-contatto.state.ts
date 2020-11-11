@@ -120,6 +120,21 @@ export class SchedeContattoState {
     }
 
     @Selector()
+    static contatoreSchedeContattoCompetenza(state: SchedeContattoStateModel): ContatoreSchedeContatto {
+      return state.contatoriSchedeContatto.competenzaSchede;
+    }
+
+    @Selector()
+    static contatoreSchedeContattoConoscenza(state: SchedeContattoStateModel): ContatoreSchedeContatto {
+      return state.contatoriSchedeContatto.conoscenzaSchede;
+    }
+
+    @Selector()
+    static contatoreSchedeContattoDifferibile(state: SchedeContattoStateModel): ContatoreSchedeContatto {
+      return state.contatoriSchedeContatto.differibileSchede;
+    }
+
+    @Selector()
     static contatoriSchedeContatto(state: SchedeContattoStateModel): ContatoriSchedeContatto {
         return state.contatoriSchedeContatto;
     }

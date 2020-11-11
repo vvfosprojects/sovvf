@@ -3,7 +3,7 @@ import { ToggleSchedeContatto } from '../../../store/actions/view/view.actions';
 import { Select, Store } from '@ngxs/store';
 import { SchedeContattoState } from '../../../store/states/schede-contatto/schede-contatto.state';
 import { Observable, Subscription } from 'rxjs';
-import { ContatoreSchedeContatto } from '../../../../../shared/interface/contatori-schede-contatto.interface';
+import {ContatoreSchedeContatto, ContatoriSchedeContatto} from '../../../../../shared/interface/contatori-schede-contatto.interface';
 
 @Component({
     selector: 'app-tasto-schede-contatto',
@@ -19,6 +19,8 @@ export class TastoSchedeContattoComponent {
 
     @Select(SchedeContattoState.contatoreSchedeContattoTotale) contatoreSchedeContattoTotale$: Observable<ContatoreSchedeContatto>;
     contatoreSchedeContattoTotale: ContatoreSchedeContatto;
+    @Select(SchedeContattoState.contatoriSchedeContatto) contatoriSchedeContatto$: Observable<ContatoriSchedeContatto>;
+    contatoriSchedeContatto: ContatoriSchedeContatto;
 
     subscription: Subscription = new Subscription();
 
@@ -27,6 +29,11 @@ export class TastoSchedeContattoComponent {
             this.contatoreSchedeContattoTotale$.subscribe((contatoreTotale: ContatoreSchedeContatto) => {
                 this.contatoreSchedeContattoTotale = contatoreTotale;
             })
+        );
+        this.subscription.add(
+          this.contatoriSchedeContatto$.subscribe((contaotoriSchede: ContatoriSchedeContatto) => {
+            this.contatoriSchedeContatto = contaotoriSchede;
+          })
         );
     }
 
