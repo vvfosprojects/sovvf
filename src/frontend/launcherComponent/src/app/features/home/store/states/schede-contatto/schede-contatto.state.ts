@@ -101,7 +101,7 @@ export const SchedeContattoStateDefaults: SchedeContattoStateModel = {
     ],
     filtriSelezionati: {
         gestita: undefined,
-        recenti: '',
+        recenti: '0',
         rangeVisualizzazione: RangeSchedeContattoEnum.DaSempre
     }
 };
@@ -422,16 +422,16 @@ export class SchedeContattoState {
                 state.filtriSelezionati.gestita === false ? dispatch(new SetFiltroGestitaSchedeContatto(null)) : dispatch(new SetFiltroGestitaSchedeContatto(false));
                 break;
             case '3':
-              state.filtriSelezionati.recenti ? dispatch(new SetFiltroGestitaSchedeContatto(null, '1')) : dispatch(new SetFiltroGestitaSchedeContatto(false, '0'));
+              state.filtriSelezionati.recenti !== '1' ? dispatch(new SetFiltroGestitaSchedeContatto(null, '1')) : dispatch(new SetFiltroGestitaSchedeContatto(false, '0'));
               break;
             case '4':
-              state.filtriSelezionati.recenti ? dispatch(new SetFiltroGestitaSchedeContatto(null, '2')) : dispatch(new SetFiltroGestitaSchedeContatto(false, '0'));
+              state.filtriSelezionati.recenti !== '2' ? dispatch(new SetFiltroGestitaSchedeContatto(null, '2')) : dispatch(new SetFiltroGestitaSchedeContatto(false, '0'));
               break;
             case '5':
-                state.filtriSelezionati.recenti ? dispatch(new SetFiltroGestitaSchedeContatto(null, '3')) : dispatch(new SetFiltroGestitaSchedeContatto(false, '0'));
+                state.filtriSelezionati.recenti !== '3' ? dispatch(new SetFiltroGestitaSchedeContatto(null, '3')) : dispatch(new SetFiltroGestitaSchedeContatto(false, '0'));
                 break;
             case '6':
-              state.filtriSelezionati.recenti ? dispatch(new SetFiltroGestitaSchedeContatto(null, '0')) : dispatch(new SetFiltroGestitaSchedeContatto(false, '0'));
+              state.filtriSelezionati.recenti !== '.' ? dispatch(new SetFiltroGestitaSchedeContatto(null, '0')) : dispatch(new SetFiltroGestitaSchedeContatto(false, '0'));
               break;
               default:
                 console.error('[Errore Switch] ReducerSetFiltroSchedeContatto');
