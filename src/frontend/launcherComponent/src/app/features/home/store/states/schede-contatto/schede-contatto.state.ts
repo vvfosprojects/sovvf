@@ -96,13 +96,13 @@ export const SchedeContattoStateDefaults: SchedeContattoStateModel = {
         new VoceFiltro('2', Categoria.Gestione, 'Non Gestita', false),
         new VoceFiltro('3', Categoria.Gestione, 'Ultima ora', false),
         new VoceFiltro('4', Categoria.Gestione, 'Ultime 2 ore', false),
-        new VoceFiltro('5', Categoria.Gestione, 'Ultime 24 ore', false),
+        new VoceFiltro('5', Categoria.Gestione, 'Ultime 24 ore', false, true),
         new VoceFiltro('6', Categoria.Gestione, 'Da sempre', false),
     ],
     filtriSelezionati: {
         gestita: undefined,
-        recenti: '0',
-        rangeVisualizzazione: RangeSchedeContattoEnum.DaSempre
+        recenti: '3',
+        rangeVisualizzazione: RangeSchedeContattoEnum.UltimoGiorno,
     }
 };
 
@@ -416,23 +416,23 @@ export class SchedeContattoState {
         const state = getState();
         switch (action.filtro.codice) {
             case '1':
-                state.filtriSelezionati.gestita === true ? dispatch(new SetFiltroGestitaSchedeContatto(null)) : dispatch(new SetFiltroGestitaSchedeContatto(true));
+                state.filtriSelezionati.gestita === true ? dispatch(new SetFiltroGestitaSchedeContatto(null)) : dispatch(new SetFiltroGestitaSchedeContatto(true, '3'));
                 break;
             case '2':
-                state.filtriSelezionati.gestita === false ? dispatch(new SetFiltroGestitaSchedeContatto(null)) : dispatch(new SetFiltroGestitaSchedeContatto(false));
+                state.filtriSelezionati.gestita === false ? dispatch(new SetFiltroGestitaSchedeContatto(null)) : dispatch(new SetFiltroGestitaSchedeContatto(false, '3'));
                 break;
             case '3':
-              state.filtriSelezionati.recenti !== '1' ? dispatch(new SetFiltroGestitaSchedeContatto(null, '1')) : dispatch(new SetFiltroGestitaSchedeContatto(false, '0'));
-              break;
+                action.filtro.codice === '3' && state.filtriSelezionati.recenti !== '1' ? dispatch(new SetFiltroGestitaSchedeContatto(null, '1')) : dispatch(new SetFiltroGestitaSchedeContatto(null, '0'));
+                break;
             case '4':
-              state.filtriSelezionati.recenti !== '2' ? dispatch(new SetFiltroGestitaSchedeContatto(null, '2')) : dispatch(new SetFiltroGestitaSchedeContatto(false, '0'));
-              break;
+                action.filtro.codice === '4' && state.filtriSelezionati.recenti !== '2' ? dispatch(new SetFiltroGestitaSchedeContatto(null, '2')) : dispatch(new SetFiltroGestitaSchedeContatto(null, '0'));
+                break;
             case '5':
-                state.filtriSelezionati.recenti !== '3' ? dispatch(new SetFiltroGestitaSchedeContatto(null, '3')) : dispatch(new SetFiltroGestitaSchedeContatto(false, '0'));
+                action.filtro.codice === '5' && state.filtriSelezionati.recenti !== '3' ? dispatch(new SetFiltroGestitaSchedeContatto(null, '3')) : dispatch(new SetFiltroGestitaSchedeContatto(null, '0'));
                 break;
             case '6':
-              state.filtriSelezionati.recenti !== '.' ? dispatch(new SetFiltroGestitaSchedeContatto(null, '0')) : dispatch(new SetFiltroGestitaSchedeContatto(false, '0'));
-              break;
+                action.filtro.codice === '6' ? dispatch(new SetFiltroGestitaSchedeContatto(null, '0')) : dispatch(new SetFiltroGestitaSchedeContatto(null, '3'));
+                break;
               default:
                 console.error('[Errore Switch] ReducerSetFiltroSchedeContatto');
                 break;
@@ -446,10 +446,10 @@ export class SchedeContattoState {
         switch (action.recenti) {
           case '0':
             patchState({
+              ...state.filtriSelezionati,
               filtriSelezionati: {
-                ...state.filtriSelezionati,
                 gestita: action.gestita,
-                recenti: '0',
+                recenti: '1',
                 rangeVisualizzazione: RangeSchedeContattoEnum.DaSempre
               }
             });
@@ -457,8 +457,8 @@ export class SchedeContattoState {
             break;
             case '1':
               patchState({
+                ...state.filtriSelezionati,
                 filtriSelezionati: {
-                  ...state.filtriSelezionati,
                   gestita: action.gestita,
                   recenti: '1',
                   rangeVisualizzazione: RangeSchedeContattoEnum.UltimaOra
@@ -468,8 +468,8 @@ export class SchedeContattoState {
               break;
             case '2':
               patchState({
+                ...state.filtriSelezionati,
                 filtriSelezionati: {
-                  ...state.filtriSelezionati,
                   gestita: action.gestita,
                   recenti: '2',
                   rangeVisualizzazione: RangeSchedeContattoEnum.UltimeDueOre
@@ -479,8 +479,8 @@ export class SchedeContattoState {
               break;
             case '3':
               patchState({
+                ...state.filtriSelezionati,
                 filtriSelezionati: {
-                  ...state.filtriSelezionati,
                   gestita: action.gestita,
                   recenti: '3',
                   rangeVisualizzazione: RangeSchedeContattoEnum.UltimoGiorno
@@ -490,8 +490,8 @@ export class SchedeContattoState {
               break;
             default:
               patchState({
+                ...state.filtriSelezionati,
                 filtriSelezionati: {
-                  ...state.filtriSelezionati,
                   gestita: action.gestita,
                   recenti: '0',
                   rangeVisualizzazione: RangeSchedeContattoEnum.DaSempre

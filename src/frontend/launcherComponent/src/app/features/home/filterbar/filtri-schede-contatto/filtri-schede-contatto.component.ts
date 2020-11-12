@@ -1,4 +1,4 @@
-import { Component, EventEmitter, HostBinding, Input, Output } from '@angular/core';
+import {Component, EventEmitter, HostBinding, Input, Output} from '@angular/core';
 import { VoceFiltro } from '../filtri-richieste/voce-filtro.model';
 import { CategoriaFiltriSchedeContatto as Categoria } from 'src/app/shared/enum/categoria-filtri-schede-contatto';
 
@@ -23,13 +23,25 @@ export class FiltriSchedeContattoComponent {
     }
 
     onSelezioneFiltro(filtro: VoceFiltro): void {
-      console.log('filtriSelezionati', this.filtriSelezionati);
-      this.filtriSelezionati.forEach((f: VoceFiltro) => {
-            if (f !== filtro && f.categoria === filtro.categoria) {
-                this.filtroSelezionato.emit(f);
-            }
+      if (filtro) {
+        this.filtriSelezionati.forEach((f: VoceFiltro) => {
+          if (f !== filtro && f.categoria === filtro.categoria) {
+            this.filtroSelezionato.emit(f);
+          }
         });
-      this.filtroSelezionato.emit(filtro);
+        this.filtroSelezionato.emit(filtro);
+      } else {
+        const filtroDefault = {
+          categoria: 'Gestione',
+          codice: '6',
+          descrizione: 'Da Sempre',
+          name: undefined,
+          selezionato: false,
+          star: false,
+          statico: undefined,
+        };
+        this.filtroSelezionato.emit(filtroDefault);
+      }
     }
 
     eliminaFiltriAttivi(): void {
@@ -40,5 +52,4 @@ export class FiltriSchedeContattoComponent {
     _isSelezionato(filtro: VoceFiltro): boolean {
         return this.filtriSelezionati.filter((f: VoceFiltro) => f.codice === filtro.codice).length > 0;
     }
-
 }
