@@ -107,5 +107,6 @@ namespace SO115App.API.Models.Classi.Condivise
         public decimal IndiceOrdinamento { get; set; }
 
         public string Turno { get; set; }
+        public DateTime DataInServizio { get; set; }
     }
 }
