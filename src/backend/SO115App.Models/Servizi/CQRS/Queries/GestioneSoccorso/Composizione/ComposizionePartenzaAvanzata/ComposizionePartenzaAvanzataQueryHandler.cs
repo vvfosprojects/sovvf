@@ -96,35 +96,9 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             var lstSedi = query.CodiceSede.ToList();
             var tipologia90 = _getTipologieByCodice.Get(new List<string> { "90" }).First();
 
-            #region Gestione turni
-
             var turnoCorrente = _getTurno.Get();
-
-            string turnoPrecedente = null;
-            string turnoSuccessivo = null;
-
-            if (turnoCorrente.Codice.Contains('A'))
-            {
-                turnoPrecedente = "C";
-                turnoSuccessivo = "D";
-            }
-            else if (turnoCorrente.Codice.Contains('B'))
-            {
-                turnoPrecedente = "D";
-                turnoSuccessivo = "C";
-            }
-            else if (turnoCorrente.Codice.Contains('C'))
-            {
-                turnoPrecedente = "B";
-                turnoSuccessivo = "A";
-            }
-            else if (turnoCorrente.Codice.Contains('D'))
-            {
-                turnoPrecedente = "A";
-                turnoSuccessivo = "B";
-            }
-
-            #endregion
+            var turnoPrecedente = _getTurno.Get(turnoCorrente.DataOraInizio.AddMilliseconds(-1));
+            var turnoSuccessivo = _getTurno.Get(turnoCorrente.DataOraFine.AddMinutes(1));
 
             //REPERISCO I DATI, FACCIO IL MAPPING ED APPLICO I FILTRI (MEZZI E SQUADRE)
             var lstSquadre = _getListaSquadre.Get(lstSedi)
@@ -288,7 +262,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             }).OrderBy(x => x.Mezzo.Stato).ThenByDescending(c => c.IndiceOrdinamento).ToList();
         }
 
-        private List<Classi.Composizione.ComposizioneSquadre> FiltraSquadre(ComposizionePartenzaAvanzataQuery query, IEnumerable<Classi.Composizione.ComposizioneSquadre> lstCompSquadre, Tipologia tipologia90, Turno turnoCorrente, string turnoPrecedente, string turnoSuccessivo)
+        private List<Classi.Composizione.ComposizioneSquadre> FiltraSquadre(ComposizionePartenzaAvanzataQuery query, IEnumerable<Classi.Composizione.ComposizioneSquadre> lstCompSquadre, Tipologia tipologia90, Turno turnoCorrente, Turno turnoPrecedente, Turno turnoSuccessivo)
         {
             return lstCompSquadre.Where(s =>
             {
@@ -335,8 +309,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             {
                 switch (query.Filtro.Turno)
                 {
-                    case FiltroTurnoRelativo.Precedente: s.Squadra.Turno = turnoPrecedente; break;
-                    case FiltroTurnoRelativo.Successivo: s.Squadra.Turno = turnoSuccessivo; break;
+                    case FiltroTurnoRelativo.Precedente: s.Squadra.Turno = turnoPrecedente.Codice; break;
+                    case FiltroTurnoRelativo.Successivo: s.Squadra.Turno = turnoSuccessivo.Codice; break;
                     case null: s.Squadra.Turno = turnoCorrente.Codice; break;
                 }
 
