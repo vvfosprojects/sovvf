@@ -5,29 +5,28 @@ using Polly.Caching;
 using Polly.Caching.Memory;
 using Polly.Wrap;
 using System;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace Prova_Polly2
+namespace SO115App.ExternalAPI.Fake.HttpManager
 {
-    public class HttpRequestManager<OutputData> : IHttpRequestManager<OutputData>, IDisposable
+    public class HttpRequestManager<OutputData> : IHttpRequestManager<OutputData>// IDisposable
     {
         private readonly HttpClient _client;
         private AsyncPolicyWrap<HttpResponseMessage> policies;
         private OutputData Result = default;
 
-        private HttpRequestManager() { }
-        public HttpRequestManager(HttpClient client, string cacheString = null)
+        public HttpRequestManager(HttpClient client) => _client = client;
+        public void Configure(string cacheString = null)
         {
-            _client = client;
-
             var timeoutPolicy = Policy
                 .TimeoutAsync<HttpResponseMessage>(120);
 
             var retryPolicy = Policy
                 .Handle<AggregateException>(e => throw new Exception("Servizio non raggiungibile"))
-                .OrResult<HttpResponseMessage>(c => c.StatusCode == HttpStatusCode.NotFound)
+                .OrResult<HttpResponseMessage>(c => false)
                 .RetryAsync(3);
 
             if (!string.IsNullOrEmpty(cacheString))
@@ -88,9 +87,9 @@ namespace Prova_Polly2
             return Result;
         }
 
-        public void Dispose()
-        {
-            _client.Dispose();
-        }
+        //public void Dispose()
+        //{
+        //    _client.Dispose();
+        //}
     }
 }

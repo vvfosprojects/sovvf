@@ -12,12 +12,14 @@ using Newtonsoft.Json;
 using System.IO;
 using SO115App.ExternalAPI.Fake.Classi.DTOFake;
 using SO115App.ExternalAPI.Fake.Classi.Gac;
-using SO115App.Models.Classi.Utility;
+using SO115App.ExternalAPI.Fake.Classi;
 using SO115App.Models.Servizi.Infrastruttura.GeoFleet;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
 using SO115App.API.Models.Classi.Organigramma;
 using Microsoft.Extensions.Caching.Memory;
 using System;
+using SO115App.ExternalAPI.Fake.HttpManager;
+using System.Net.Http.Headers;
 
 namespace SO115App.ExternalAPI.Fake.GestioneMezzi
 {
@@ -80,51 +82,54 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
 
             #region LEGGO DA JSON FAKE
 
-            var filepath = Costanti.ListaMezzi;
-            string json;
-            using (var r = new StreamReader(filepath))
-            {
-                json = r.ReadToEnd();
-            }
-            var listaMezzi = JsonConvert.DeserializeObject<List<MezzoFake>>(json);
+            //var filepath = Costanti.ListaMezzi;
+            //string json;
+            //using (var r = new StreamReader(filepath))
+            //{
+            //    json = r.ReadToEnd();
+            //}
+            //var listaMezzi = JsonConvert.DeserializeObject<List<MezzoFake>>(json);
 
             #endregion LEGGO DA JSON FAKE
 
+            var httpManager = new HttpRequestManager<List<MezzoDTO>>(_client);
+            httpManager.Configure();
+
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "test");
+
             foreach (string CodSede in ListaCodiciSedi)
             {
-                List<Mezzo> listaMezziBySede = new List<Mezzo>();
+                var listaMezziBySede = new List<Mezzo>();
                 string nomeCache = "M_PerBox_" + CodSede.Replace(".", "");
                 if (!_memoryCache.TryGetValue(nomeCache, out listaMezziBySede))
                 {
                     #region LEGGO DA API ESTERNA
 
-                    //_client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("test");
-                    //var response = await _client.GetAsync($"{_configuration.GetSection("DataFakeImplementation").GetSection("UrlAPIMezzi").Value}/GetListaMezziByCodComando?CodComando={CodSede}").ConfigureAwait(false);
-                    //response.EnsureSuccessStatusCode();
-                    //using HttpContent content = response.Content;
-                    //var data = await content.ReadAsStringAsync().ConfigureAwait(false);
-                    //var ListaMezziSede = JsonConvert.DeserializeObject<List<MezzoFake>>(data);
+                    var url = new Uri($"{_configuration.GetSection("UrlExternalApi").GetSection("GacApi").Value}{Costanti.GacGetMezziUtilizzabili}?codiciSedi={CodSede}");
+                    var result = await httpManager.ExecuteGet(url);
+
+                    var listaMezzi = result;
 
                     #endregion LEGGO DA API ESTERNA
 
-                    var ListaMezziSede = listaMezzi.FindAll(x => x.Sede.Equals(CodSede)).ToList();
+                    var ListaMezziSede = listaMezzi.FindAll(x => x.CodiceDistaccamento.Equals(CodSede)).ToList();
 
-                    List<Mezzo> listaMezziBySedeAppo = new List<Mezzo>();
-                    foreach (MezzoFake mezzoFake in ListaMezziSede)
+                    var listaMezziBySedeAppo = new List<Mezzo>();
+                    foreach (var mezzoFake in ListaMezziSede)
                     {
-                        if (!mezzoFake.CodDestinazione.Equals("CMOB"))
-                        {
+                        //if (!mezzoFake.Equals("CMOB"))
+                        //{
                             var mezzo = MapMezzo(mezzoFake);
                             if (mezzo != null)
                             {
                                 listaMezziBySedeAppo.Add(mezzo);
                                 ListaMezzi.Add(mezzo);
                             }
-                        }
+                        //}
                     }
 
                     var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromHours(8));
-                    _memoryCache.Set(nomeCache, listaMezziBySedeAppo, cacheEntryOptions);
+                    _memoryCache.Set(nomeCache, listaMezzi, cacheEntryOptions);
                 }
                 else
                 {
@@ -153,24 +158,19 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
             return listaMezzi;
         }
 
-        private Mezzo MapMezzo(MezzoFake mezzoFake)
+        private Mezzo MapMezzo(MezzoDTO mezzoDto)
         {
             var coordinate = new Coordinate(0, 0);
 
-            var sede = new Sede(mezzoFake.Sede,
-                                null,
-                                null,
-                                null,
-                                "", "", "", "", "");
+            var sede = new Sede(mezzoDto.CodiceDistaccamento, null, null, null, "", "", "", "", "");
 
-            Mezzo mezzo = new Mezzo(mezzoFake.TipoMezzo + "." + mezzoFake.Targa,
-                mezzoFake.Targa,
-                mezzoFake.TipoMezzo,
-                GetStatoOperativoMezzo(mezzoFake.Sede, mezzoFake.TipoMezzo + "." + mezzoFake.Targa, mezzoFake.Stato),
-               mezzoFake.CodDestinazione, sede, coordinate)
+            var mezzo = new Mezzo(mezzoDto.CodiceMezzo, mezzoDto.Descrizione, mezzoDto.Genere, 
+                GetStatoOperativoMezzo(mezzoDto.CodiceDistaccamento, mezzoDto.CodiceMezzo, mezzoDto.Movimentazione.StatoOperativo),
+                mezzoDto.CodiceDistaccamento, sede, coordinate)
             {
-                DescrizioneAppartenenza = mezzoFake.DescDestinazione,
+                DescrizioneAppartenenza = mezzoDto.DescrizioneAppartenenza,
             };
+
             return mezzo;
         }
 
@@ -179,7 +179,7 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
             string stato;
             if (StatoMezzoOra.Equals("I"))
             {
-                stato = Costanti.MezzoSulPosto;
+                stato = SO115App.Models.Classi.Utility.Costanti.MezzoSulPosto;
             }
             else
             {
@@ -188,11 +188,11 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
                 {
                     switch (StatoMezzoOra)
                     {
-                        case "D": stato = Costanti.MezzoInSede; break;
-                        case "R": stato = Costanti.MezzoInRientro; break;
-                        case "O": stato = Costanti.MezzoOperativoPreaccoppiato; break;
-                        case "A": stato = Costanti.MezzoAssegnatoPreaccoppiato; break;
-                        default: stato = Costanti.MezzoStatoSconosciuto; break;
+                        case "D": stato = SO115App.Models.Classi.Utility.Costanti.MezzoInSede; break;
+                        case "R": stato = SO115App.Models.Classi.Utility.Costanti.MezzoInRientro; break;
+                        case "O": stato = SO115App.Models.Classi.Utility.Costanti.MezzoOperativoPreaccoppiato; break;
+                        case "A": stato = SO115App.Models.Classi.Utility.Costanti.MezzoAssegnatoPreaccoppiato; break;
+                        default: stato = SO115App.Models.Classi.Utility.Costanti.MezzoStatoSconosciuto; break;
                     }
                 }
                 else

@@ -2,10 +2,12 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace Prova_Polly2
+namespace SO115App.ExternalAPI.Fake.HttpManager
 {
     public interface IHttpRequestManager<OutputData>
     {
+        void Configure(string cacheString = null);
+
         Task<OutputData> ExecuteGet(Uri url);
 
         Task<OutputData> ExecutePost(Uri url, HttpContent content);

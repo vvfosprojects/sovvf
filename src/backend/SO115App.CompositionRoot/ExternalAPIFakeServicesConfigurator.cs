@@ -19,6 +19,7 @@
 //-----------------------------------------------------------------------
 using Microsoft.Extensions.Caching.Memory;
 using SimpleInjector;
+using SO115App.ExternalAPI.Fake.HttpManager;
 using SO115App.ExternalAPI.Fake.Nue;
 using SO115App.ExternalAPI.Fake.Personale;
 using SO115App.ExternalAPI.Fake.Servizi.DistaccamentoUtentiComuni;
@@ -49,6 +50,8 @@ namespace SO115App.CompositionRoot
                     ExpirationScanFrequency = TimeSpan.FromHours(2)
                 }
                 ), Lifestyle.Singleton);
+
+            container.Register<IHttpRequestManager<object>, HttpRequestManager<object>>();
 
             #region NUE
 

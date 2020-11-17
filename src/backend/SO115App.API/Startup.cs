@@ -91,8 +91,8 @@ namespace SO115App.API
             services.AddControllers();
             services.AddHttpContextAccessor();
             services.AddMemoryCache();
-            services.AddSingleton<GetMezziUtilizzabili>();
-            services.AddSingleton<GetListaSquadre>();
+            //services.AddSingleton<GetMezziUtilizzabili>();
+            //services.AddSingleton<GetListaSquadre>();
             services.AddMvcCore().AddApiExplorer().AddNewtonsoftJson();
             services.AddSwaggerGen(c =>
             {
