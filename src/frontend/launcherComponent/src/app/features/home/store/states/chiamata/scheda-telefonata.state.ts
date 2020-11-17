@@ -34,6 +34,8 @@ import { Injectable, NgZone } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { RichiestaDuplicataModalComponent } from '../../../../../shared/modal/richiesta-duplicata-modal/richiesta-duplicata-modal.component';
 import { AuthState } from '../../../../auth/store/auth.state';
+import { SetSchedaContattoGestita } from '../../actions/schede-contatto/schede-contatto.actions';
+import { SchedaContatto } from '../../../../../shared/interface/scheda-contatto.interface';
 
 export interface SchedaTelefonataStateModel {
     nuovaRichiestaForm: {
@@ -143,10 +145,10 @@ export class SchedaTelefonataState {
         dispatch(new StartLoadingNuovaChiamata());
 
         action.nuovaRichiesta.richiedente.telefono = action.nuovaRichiesta.richiedente.telefono.toString();
+        dispatch(new CestinaChiamata());
         this.chiamataService.insertChiamata(action.nuovaRichiesta).subscribe((richiesta: SintesiRichiesta) => {
             if (richiesta && action.azioneChiamata === AzioneChiamataEnum.InviaPartenza) {
                 dispatch([
-                    new CestinaChiamata(),
                     new SetIdChiamataInviaPartenza(richiesta),
                     new ShowToastr(
                         ToastrType.Success,
@@ -157,8 +159,6 @@ export class SchedaTelefonataState {
                         true
                     )
                 ]);
-            } else {
-                dispatch(new CestinaChiamata());
             }
         }, () => {
             dispatch(new StopLoadingNuovaChiamata());
@@ -184,7 +184,12 @@ export class SchedaTelefonataState {
             dispatch(new SetNeedRefresh(true));
         }
         dispatch(new StopLoadingNuovaChiamata());
-        if (idUtenteLoggato !== action.nuovaRichiesta.operatore.id) {
+        if (idUtenteLoggato === action.nuovaRichiesta.operatore.id) {
+            const scheda = {
+                codiceScheda: action.nuovaRichiesta.codiceSchedaNue
+            } as SchedaContatto;
+            dispatch(new SetSchedaContattoGestita(scheda, true));
+        } else if (idUtenteLoggato !== action.nuovaRichiesta.operatore.id) {
             dispatch(new ShowToastr(ToastrType.Success, 'Nuova chiamata inserita', action.nuovaRichiesta.descrizione, 5, null, true));
         }
     }

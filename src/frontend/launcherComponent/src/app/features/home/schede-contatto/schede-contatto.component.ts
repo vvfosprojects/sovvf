@@ -4,7 +4,6 @@ import {
     ClearSchedaContattoHover,
     GetListaSchedeContatto,
     OpenDetailSC,
-    SetRangeVisualizzazioneSchedeContatto,
     SetSchedaContattoGestita,
     SetSchedaContattoHover,
     SetSchedaContattoTelefonata,
@@ -81,8 +80,6 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
     @Select(LoadingState.loading) loading$: Observable<boolean>;
     @Select(SchedeContattoState.loadingSchedeContatto) loadingSchedeContatto$: Observable<boolean>;
 
-    rangeSchedeContattoEnumValues = Object.values(RangeSchedeContattoEnum);
-    RangeVisualizzazione = RangeSchedeContattoEnum;
     private subscriptions: Subscription = new Subscription();
 
     ClassificazioneEnum = ClassificazioneSchedaContatto;
@@ -111,7 +108,7 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
             new ClearMergeSchedeContatto(),
             new ClearRicercaFilterbar()
         ]);
-            console.log('Componente Schede Contatto distrutto');
+        console.log('Componente Schede Contatto distrutto');
     }
 
     getRicerca(): void {
@@ -170,10 +167,6 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
     setSchedaContattoTelefonata(schedaContatto: SchedaContatto): void {
         this.store.dispatch(new SetSchedaContattoTelefonata(schedaContatto));
         this.store.dispatch(new ToggleChiamata());
-    }
-
-    setFiltroRange(range: RangeSchedeContattoEnum): void {
-        this.store.dispatch(new SetRangeVisualizzazioneSchedeContatto(range));
     }
 
     dettaglioScheda(idSchedaContatto: string): void {
