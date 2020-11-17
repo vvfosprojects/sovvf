@@ -1,25 +1,21 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Configuration;
 using SO115App.API.Models.Classi.Condivise;
-using SO115App.Models.Classi.Condivise;
+using SO115App.API.Models.Classi.Organigramma;
+using SO115App.ExternalAPI.Fake.Classi;
+using SO115App.ExternalAPI.Fake.Classi.Gac;
+using SO115App.ExternalAPI.Fake.HttpManager;
+using SO115App.Models.Servizi.Infrastruttura.Composizione;
+using SO115App.Models.Servizi.Infrastruttura.GeoFleet;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using System.Threading.Tasks;
-using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
-using SO115App.Models.Servizi.Infrastruttura.Composizione;
-using Newtonsoft.Json;
-using System.IO;
-using SO115App.ExternalAPI.Fake.Classi.DTOFake;
-using SO115App.ExternalAPI.Fake.Classi.Gac;
-using SO115App.ExternalAPI.Fake.Classi;
-using SO115App.Models.Servizi.Infrastruttura.GeoFleet;
-using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
-using SO115App.API.Models.Classi.Organigramma;
-using Microsoft.Extensions.Caching.Memory;
-using System;
-using SO115App.ExternalAPI.Fake.HttpManager;
 using System.Net.Http.Headers;
+using System.Threading.Tasks;
 
 namespace SO115App.ExternalAPI.Fake.GestioneMezzi
 {
@@ -80,62 +76,45 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
             var ListaMezzi = new List<Mezzo>();
             var ListaPosizioneFlotta = _getPosizioneFlotta.Get(0).Result;
 
-            #region LEGGO DA JSON FAKE
 
-            //var filepath = Costanti.ListaMezzi;
-            //string json;
-            //using (var r = new StreamReader(filepath))
-            //{
-            //    json = r.ReadToEnd();
-            //}
-            //var listaMezzi = JsonConvert.DeserializeObject<List<MezzoFake>>(json);
-
-            #endregion LEGGO DA JSON FAKE
-
+            //PREPARO PER CHIAMATA SERVIZIO GAC
             var httpManager = new HttpRequestManager<List<MezzoDTO>>(_client);
             httpManager.Configure();
-
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "test");
 
-            foreach (string CodSede in ListaCodiciSedi)
+            var listaMezziBySede = new List<Mezzo>();
+            string nomeCache = "BoxMezzi_" + string.Join("_", ListaCodiciSedi);
+            if (!_memoryCache.TryGetValue(nomeCache, out listaMezziBySede))
             {
-                var listaMezziBySede = new List<Mezzo>();
-                string nomeCache = "M_PerBox_" + CodSede.Replace(".", "");
-                if (!_memoryCache.TryGetValue(nomeCache, out listaMezziBySede))
+                #region LEGGO DA API ESTERNA
+                var lstSediQueryString = string.Join("&codiciSedi=", ListaCodiciSedi);
+                var url = new Uri($"{_configuration.GetSection("UrlExternalApi").GetSection("GacApi").Value}{Costanti.GacGetMezziUtilizzabili}?codiciSedi={lstSediQueryString}");
+                var lstMezziDto = await httpManager.ExecuteGet(url);
+
+                #endregion LEGGO DA API ESTERNA
+
+                ListaMezzi = lstMezziDto.Select(m =>
                 {
-                    #region LEGGO DA API ESTERNA
-
-                    var url = new Uri($"{_configuration.GetSection("UrlExternalApi").GetSection("GacApi").Value}{Costanti.GacGetMezziUtilizzabili}?codiciSedi={CodSede}");
-                    var result = await httpManager.ExecuteGet(url);
-
-                    var listaMezzi = result;
-
-                    #endregion LEGGO DA API ESTERNA
-
-                    var ListaMezziSede = listaMezzi.FindAll(x => x.CodiceDistaccamento.Equals(CodSede)).ToList();
-
-                    var listaMezziBySedeAppo = new List<Mezzo>();
-                    foreach (var mezzoFake in ListaMezziSede)
+                    //if (!mezzoFake.Equals("CMOB"))
+                    //{
+                    var mezzo = MapMezzo(m);
+                    if (mezzo != null)
                     {
-                        //if (!mezzoFake.Equals("CMOB"))
-                        //{
-                            var mezzo = MapMezzo(mezzoFake);
-                            if (mezzo != null)
-                            {
-                                listaMezziBySedeAppo.Add(mezzo);
-                                ListaMezzi.Add(mezzo);
-                            }
-                        //}
+                        //listaMezziBySedeAppo.Add(mezzo);
+                        ListaMezzi.Add(mezzo);
                     }
+                    //}
+                    return mezzo;
+                }).ToList();
 
-                    var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromHours(8));
-                    _memoryCache.Set(nomeCache, listaMezzi, cacheEntryOptions);
-                }
-                else
-                {
-                    ListaMezzi.AddRange(listaMezziBySede);
-                }
+                var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromHours(8));
+                _memoryCache.Set(nomeCache, ListaMezzi, cacheEntryOptions);
             }
+            else
+            {
+                ListaMezzi.AddRange(listaMezziBySede);
+            }
+            //}
 
             return GetListaMezziConStatoAggiornat(ListaMezzi);
         }
@@ -164,7 +143,7 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
 
             var sede = new Sede(mezzoDto.CodiceDistaccamento, null, null, null, "", "", "", "", "");
 
-            var mezzo = new Mezzo(mezzoDto.CodiceMezzo, mezzoDto.Descrizione, mezzoDto.Genere, 
+            var mezzo = new Mezzo(mezzoDto.CodiceMezzo, mezzoDto.Descrizione, mezzoDto.Genere,
                 GetStatoOperativoMezzo(mezzoDto.CodiceDistaccamento, mezzoDto.CodiceMezzo, mezzoDto.Movimentazione.StatoOperativo),
                 mezzoDto.CodiceDistaccamento, sede, coordinate)
             {

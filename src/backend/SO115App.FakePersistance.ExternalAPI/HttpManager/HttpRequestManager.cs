@@ -21,14 +21,26 @@ namespace SO115App.ExternalAPI.Fake.HttpManager
         public HttpRequestManager(HttpClient client) => _client = client;
         public void Configure(string cacheString = null)
         {
+            //TIMEOUT
             var timeoutPolicy = Policy
                 .TimeoutAsync<HttpResponseMessage>(120);
 
+            //ECCEZIONI E RESPONSE
             var retryPolicy = Policy
                 .Handle<AggregateException>(e => throw new Exception("Servizio non raggiungibile"))
-                .OrResult<HttpResponseMessage>(c => false)
+                .OrResult<HttpResponseMessage>(c =>
+                {
+                    switch(c.StatusCode)
+                    {
+                        case HttpStatusCode.NotFound:
+                            throw new Exception("Servizio non raggiungibile");
+                    }
+
+                    return false;
+                })
                 .RetryAsync(3);
 
+            //CACHE
             if (!string.IsNullOrEmpty(cacheString))
             {
                 var memoryCacheProvider = new MemoryCacheProvider(new MemoryCache(new MemoryCacheOptions()));
