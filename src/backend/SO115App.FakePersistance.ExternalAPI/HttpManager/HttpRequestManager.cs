@@ -5,14 +5,13 @@ using Polly.Caching;
 using Polly.Caching.Memory;
 using Polly.Wrap;
 using System;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace SO115App.ExternalAPI.Fake.HttpManager
 {
-    public class HttpRequestManager<OutputData> : IHttpRequestManager<OutputData>// IDisposable
+    public class HttpRequestManager<OutputData> : IHttpRequestManager<OutputData>
     {
         private readonly HttpClient _client;
         private AsyncPolicyWrap<HttpResponseMessage> policies;
@@ -57,7 +56,7 @@ namespace SO115App.ExternalAPI.Fake.HttpManager
                 policies = Policy.WrapAsync(retryPolicy, timeoutPolicy);
         }
 
-        public async Task<OutputData> ExecuteGet(Uri url)
+        public async Task<OutputData> GetAsync(Uri url)
         {
             await policies.ExecuteAsync(() => Task.Run(() =>
             {
@@ -71,7 +70,7 @@ namespace SO115App.ExternalAPI.Fake.HttpManager
             return Result;
         }
 
-        public async Task<OutputData> ExecutePost(Uri url, HttpContent content)
+        public async Task<OutputData> PostAsync(Uri url, HttpContent content)
         {
             await policies.ExecuteAsync(() => Task.Run(() =>
             {
@@ -85,7 +84,7 @@ namespace SO115App.ExternalAPI.Fake.HttpManager
             return Result;
         }
 
-        public async Task<OutputData> ExecutePut(Uri url, HttpContent content)
+        public async Task<OutputData> PutAsync(Uri url, HttpContent content)
         {
             await policies.ExecuteAsync(() => Task.Run(() =>
             {

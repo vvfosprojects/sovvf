@@ -86,7 +86,7 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
 
             var lstSediQueryString = string.Join("&codiciSedi=", ListaCodiciSedi);
             var url = new Uri($"{_configuration.GetSection("UrlExternalApi").GetSection("GacApi").Value}{Costanti.GacGetMezziUtilizzabili}?codiciSedi={lstSediQueryString}");
-            var lstMezziDto = await httpManager.ExecuteGet(url);
+            var lstMezziDto = await httpManager.GetAsync(url);
 
             #endregion LEGGO DA API ESTERNA
 

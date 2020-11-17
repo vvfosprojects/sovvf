@@ -8,10 +8,8 @@ namespace SO115App.ExternalAPI.Fake.HttpManager
     {
         void Configure(string cacheString = null);
 
-        Task<OutputData> ExecuteGet(Uri url);
-
-        Task<OutputData> ExecutePost(Uri url, HttpContent content);
-
-        Task<OutputData> ExecutePut(Uri url, HttpContent content);
+        Task<OutputData> GetAsync(Uri url);
+        Task<OutputData> PostAsync(Uri url, HttpContent content);
+        Task<OutputData> PutAsync(Uri url, HttpContent content);
     }
 }
