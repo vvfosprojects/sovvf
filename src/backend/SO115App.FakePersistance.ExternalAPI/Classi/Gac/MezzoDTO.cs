@@ -26,12 +26,12 @@ namespace SO115App.ExternalAPI.Fake.Classi.Gac
         /// <summary>
         ///   Codice del mezzo
         /// </summary>
-
         public string CodiceMezzo { get; set; }
 
         /// <summary>
         ///   Codice del radio trasmittente
         /// </summary>
+        /// 
         public string IdRadio { get; set; }
 
         /// <summary>
@@ -57,7 +57,6 @@ namespace SO115App.ExternalAPI.Fake.Classi.Gac
         /// <summary>
         ///   Appartenenza del mezzo
         /// </summary>
-
         public string Appartenenza { get; set; }
 
         /// <summary>
@@ -68,7 +67,6 @@ namespace SO115App.ExternalAPI.Fake.Classi.Gac
         /// <summary>
         ///   Descrizione dell'appartenenza del mezzo
         /// </summary>
-
         public string DescrizioneAppartenenza { get; set; }
 
         /// <summary>
@@ -105,5 +103,10 @@ namespace SO115App.ExternalAPI.Fake.Classi.Gac
         ///   descrive il livello dell'estinguente del mezzo
         /// </summary>
         public string DescrizioneLivelloEstinguente { get; set; }
+
+        /// <summary>
+        /// Indica se un mezzo è in servzio di istituto o meno
+        /// </summary>
+        public bool Istituto { get; set; }
     }
 }
