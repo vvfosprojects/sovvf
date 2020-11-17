@@ -44,7 +44,7 @@ namespace SO115App.ExternalAPI.Fake.HttpManager
             if (!string.IsNullOrEmpty(cacheString))
             {
                 var memoryCacheProvider = new MemoryCacheProvider(new MemoryCache(new MemoryCacheOptions()));
-                var cachePolicy = Policy.CacheAsync(memoryCacheProvider.AsyncFor<HttpResponseMessage>(), TimeSpan.FromHours(6), c =>
+                var cachePolicy = Policy.CacheAsync(memoryCacheProvider.AsyncFor<HttpResponseMessage>(), TimeSpan.FromHours(8), c =>
                 {
                     var msgCache = "Risultato salvato in cache";
                     Console.WriteLine(msgCache);

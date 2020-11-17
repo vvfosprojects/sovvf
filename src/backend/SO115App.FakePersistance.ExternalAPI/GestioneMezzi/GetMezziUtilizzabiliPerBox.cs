@@ -77,44 +77,34 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
             var ListaPosizioneFlotta = _getPosizioneFlotta.Get(0).Result;
 
 
-            //PREPARO PER CHIAMATA SERVIZIO GAC
-            var httpManager = new HttpRequestManager<List<MezzoDTO>>(_client);
-            httpManager.Configure();
+            //PREPARO CHIAMATA SERVIZIO GAC
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "test");
 
-            var listaMezziBySede = new List<Mezzo>();
+            var httpManager = new HttpRequestManager<List<MezzoDTO>>(_client);
             string nomeCache = "BoxMezzi_" + string.Join("_", ListaCodiciSedi);
-            if (!_memoryCache.TryGetValue(nomeCache, out listaMezziBySede))
+            httpManager.Configure(nomeCache);
+
+            #region LEGGO DA API ESTERNA
+            var lstSediQueryString = string.Join("&codiciSedi=", ListaCodiciSedi);
+            var url = new Uri($"{_configuration.GetSection("UrlExternalApi").GetSection("GacApi").Value}{Costanti.GacGetMezziUtilizzabili}?codiciSedi={lstSediQueryString}");
+            var lstMezziDto = await httpManager.ExecuteGet(url);
+
+            #endregion LEGGO DA API ESTERNA
+
+            //mapping
+            ListaMezzi = lstMezziDto.Select(m =>
             {
-                #region LEGGO DA API ESTERNA
-                var lstSediQueryString = string.Join("&codiciSedi=", ListaCodiciSedi);
-                var url = new Uri($"{_configuration.GetSection("UrlExternalApi").GetSection("GacApi").Value}{Costanti.GacGetMezziUtilizzabili}?codiciSedi={lstSediQueryString}");
-                var lstMezziDto = await httpManager.ExecuteGet(url);
-
-                #endregion LEGGO DA API ESTERNA
-
-                ListaMezzi = lstMezziDto.Select(m =>
+                //if (!mezzoFake.Equals("CMOB"))
+                //{
+                var mezzo = MapMezzo(m);
+                if (mezzo != null)
                 {
-                    //if (!mezzoFake.Equals("CMOB"))
-                    //{
-                    var mezzo = MapMezzo(m);
-                    if (mezzo != null)
-                    {
-                        //listaMezziBySedeAppo.Add(mezzo);
-                        ListaMezzi.Add(mezzo);
-                    }
-                    //}
-                    return mezzo;
-                }).ToList();
-
-                var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromHours(8));
-                _memoryCache.Set(nomeCache, ListaMezzi, cacheEntryOptions);
-            }
-            else
-            {
-                ListaMezzi.AddRange(listaMezziBySede);
-            }
-            //}
+                    //listaMezziBySedeAppo.Add(mezzo);
+                    ListaMezzi.Add(mezzo);
+                }
+                //}
+                return mezzo;
+            }).ToList();
 
             return GetListaMezziConStatoAggiornat(ListaMezzi);
         }
