@@ -213,7 +213,12 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
             }
             else
             {
-                Mezzo mezzo = null;
+                var mezzo = new Mezzo(mezzoDto.CodiceMezzo, mezzoDto.Descrizione, mezzoDto.Genere,
+                GetStatoOperativoMezzo(mezzoDto.CodiceDistaccamento, mezzoDto.CodiceMezzo, mezzoDto.Movimentazione.StatoOperativo),
+                mezzoDto.CodiceDistaccamento, sede, coordinate)
+                {
+                    DescrizioneAppartenenza = mezzoDto.DescrizioneAppartenenza,
+                };
                 return mezzo;
             }
         }
