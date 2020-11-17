@@ -76,22 +76,21 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
             var ListaMezzi = new List<Mezzo>();
             var ListaPosizioneFlotta = _getPosizioneFlotta.Get(0).Result;
 
+            #region LEGGO DA API ESTERNA
 
-            //PREPARO CHIAMATA SERVIZIO GAC
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "test");
 
             var httpManager = new HttpRequestManager<List<MezzoDTO>>(_client);
             string nomeCache = "BoxMezzi_" + string.Join("_", ListaCodiciSedi);
             httpManager.Configure(nomeCache);
 
-            #region LEGGO DA API ESTERNA
             var lstSediQueryString = string.Join("&codiciSedi=", ListaCodiciSedi);
             var url = new Uri($"{_configuration.GetSection("UrlExternalApi").GetSection("GacApi").Value}{Costanti.GacGetMezziUtilizzabili}?codiciSedi={lstSediQueryString}");
             var lstMezziDto = await httpManager.ExecuteGet(url);
 
             #endregion LEGGO DA API ESTERNA
 
-            //mapping
+            //MAPPING
             ListaMezzi = lstMezziDto.Select(m =>
             {
                 //if (!mezzoFake.Equals("CMOB"))
@@ -111,7 +110,7 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
 
         private List<Mezzo> GetListaMezziConStatoAggiornat(List<Mezzo> listaMezzi)
         {
-            foreach (Mezzo mezzo in listaMezzi)
+            foreach (var mezzo in listaMezzi)
             {
                 var ListaStatoOperativoMezzo = _getStatoMezzi.Get(mezzo.Distaccamento.Codice, mezzo.Codice);
                 if (ListaStatoOperativoMezzo.Count > 0)
