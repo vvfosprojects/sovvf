@@ -78,52 +78,22 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
 
             var ListaMezzi = new List<Mezzo>();
 
-            //Parallel.ForEach(ListaCodiciSedi, CodSede =>
-            //{
-            //    var listaMezziBySede = new List<Mezzo>();
-            //    string nomeCache = "M_" + CodSede.Replace(".", "");
-            //    if (!_memoryCache.TryGetValue(nomeCache, out listaMezziBySede))
-            //    {
-            //        #region LEGGO DA API ESTERNA
-
-            // //_client.DefaultRequestHeaders.Authorization = new
-            // System.Net.Http.Headers.AuthenticationHeaderValue("test"); //var response = await
-            // _client.GetAsync($"{_configuration.GetSection("DataFakeImplementation").GetSection("UrlAPIMezzi").Value}/GetListaMezziByCodComando?CodComando={CodSede}").ConfigureAwait(false);
-            // //response.EnsureSuccessStatusCode(); //using HttpContent content = response.Content;
-            // //var data = await content.ReadAsStringAsync().ConfigureAwait(false); //var
-            // ListaMezziSede = JsonConvert.DeserializeObject<List<MezzoFake>>(data);
-
-            // #endregion LEGGO DA API ESTERNA
-
-            // var ListaMezziSede = listaMezziJson.FindAll(x => x.Sede.Equals(CodSede)).ToList();
-
-            // var listaMezziBySedeAppo = new List<Mezzo>(); foreach (var mezzoFake in
-            // ListaMezziSede) { if (!mezzoFake.CodDestinazione.Equals("CMOB")) { var
-            // anagraficaMezzo = ListaAnagraficaMezzo.Find(x => x.Targa.Equals(mezzoFake.Targa));
-
-            // var mezzo = MapMezzo(anagraficaMezzo, mezzoFake); if (mezzo != null) {
-            // listaMezziBySedeAppo.Add(mezzo); lock (result) { result.Add(mezzo); } } } }
-
-            //        var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromHours(8));
-            //        _memoryCache.Set(nomeCache, listaMezziBySedeAppo, cacheEntryOptions);
-            //    }
-            //    else
-            //    {
-            //        lock (result) { result.AddRange(listaMezziBySede); }
-            //    }
-            //});
 
             #region LEGGO DA API ESTERNA
 
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "test");
 
-            var httpManager = new HttpRequestManager<List<MezzoDTO>>(_client);
-            string nomeCache = "MezziUtilizzabili_" + string.Join("_", ListaCodiciSedi);
-            httpManager.Configure(nomeCache);
+            var lstMezziDto = new List<MezzoDTO>();
+            Parallel.ForEach(sedi, sede =>
+            {
+                var httpManager = new HttpRequestManager<List<MezzoDTO>>(_client);
+                string nomeCache = "BoxMezzi_" + sede;
+                httpManager.Configure(nomeCache);
 
-            var lstSediQueryString = string.Join("&codiciSedi=", ListaCodiciSedi);
-            var url = new Uri($"{_configuration.GetSection("UrlExternalApi").GetSection("GacApi").Value}{SO115App.ExternalAPI.Fake.Classi.Costanti.GacGetMezziUtilizzabili}?codiciSedi={lstSediQueryString}");
-            var lstMezziDto = await httpManager.GetAsync(url);
+                var lstSediQueryString = string.Join("&codiciSedi=", ListaCodiciSedi.Where(s => sede.Contains(s.Split(".")[0])).ToArray());
+                var url = new Uri($"{_configuration.GetSection("UrlExternalApi").GetSection("GacApi").Value}{Classi.Costanti.GacGetMezziUtilizzabili}?codiciSedi={lstSediQueryString}");
+                lock (lstMezziDto) { lstMezziDto.AddRange(httpManager.GetAsync(url).Result); }
+            });
 
             #endregion LEGGO DA API ESTERNA
 
@@ -185,7 +155,7 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
 
             return listaMezzi;
         }
-
+        
         private Mezzo MapMezzo(AnagraficaMezzo anagraficaMezzo, MezzoDTO mezzoDto)
         {
             var coordinate = new Coordinate(0, 0);
