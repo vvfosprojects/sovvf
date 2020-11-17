@@ -71,17 +71,22 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
             var ListaMezzi = new List<Mezzo>();
             var ListaPosizioneFlotta = _getPosizioneFlotta.Get(0).Result;
 
+
             #region LEGGO DA API ESTERNA
 
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "test");
-
             var httpManager = new HttpRequestManager<List<MezzoDTO>>(_client);
-            string nomeCache = "BoxMezzi_" + string.Join("_", ListaCodiciSedi);
-            httpManager.Configure(nomeCache);
 
-            var lstSediQueryString = string.Join("&codiciSedi=", ListaCodiciSedi);
-            var url = new Uri($"{_configuration.GetSection("UrlExternalApi").GetSection("GacApi").Value}{Costanti.GacGetMezziUtilizzabili}?codiciSedi={lstSediQueryString}");
-            var lstMezziDto = await httpManager.GetAsync(url);
+            var lstMezziDto = new List<MezzoDTO>();
+            Parallel.ForEach(sedi, sede =>
+            {
+                string nomeCache = "BoxMezzi_" + sede;
+                httpManager.Configure(nomeCache);
+
+                var lstSediQueryString = string.Join("&codiciSedi=", ListaCodiciSedi.Where(s => sede.Contains(s.Split(".")[0])).ToArray());
+                var url = new Uri($"{_configuration.GetSection("UrlExternalApi").GetSection("GacApi").Value}{Costanti.GacGetMezziUtilizzabili}?codiciSedi={lstSediQueryString}");
+                lstMezziDto.AddRange(httpManager.GetAsync(url).Result);
+            });
 
             #endregion LEGGO DA API ESTERNA
 
