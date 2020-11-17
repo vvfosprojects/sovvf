@@ -144,7 +144,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                     return lstCompSquadre.Result.Where(s =>
                     {
                         if (!string.IsNullOrEmpty(query.Filtro.RicercaSquadre))
-                            return s.Squadra.Codice.Contains(query.Filtro.RicercaSquadre);
+                            return s.Squadra.Nome.Contains(query.Filtro.RicercaSquadre.ToUpper());
                         return true;
                     }).Where(s =>
                     {
