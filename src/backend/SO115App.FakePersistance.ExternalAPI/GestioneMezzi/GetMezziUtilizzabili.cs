@@ -87,7 +87,7 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
             Parallel.ForEach(sedi, sede =>
             {
                 var httpManager = new HttpRequestManager<List<MezzoDTO>>(_client);
-                string nomeCache = "BoxMezzi_" + sede;
+                string nomeCache = "Mezzi_" + sede;
                 httpManager.Configure(nomeCache);
 
                 var lstSediQueryString = string.Join("&codiciSedi=", ListaCodiciSedi.Where(s => sede.Contains(s.Split(".")[0])).ToArray());
