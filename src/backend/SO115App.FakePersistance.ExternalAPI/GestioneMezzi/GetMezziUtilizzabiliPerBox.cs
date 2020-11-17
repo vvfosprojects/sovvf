@@ -52,12 +52,7 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
             var ListaCodiciComandi = new List<string>();
 
             var listaSediAlberate = _getAlberaturaUnitaOperative.ListaSediAlberata();
-            var pinNodi = new List<PinNodo>();
-
-            foreach (var sede in sedi)
-            {
-                pinNodi.Add(new PinNodo(sede, true));
-            }
+            var pinNodi = sedi.Select(sede => new PinNodo(sede, true)).ToList();
 
             foreach (var figlio in listaSediAlberate.GetSottoAlbero(pinNodi))
             {
