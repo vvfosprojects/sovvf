@@ -71,6 +71,21 @@ namespace SO115App.API.Controllers
             }
         }
 
+        [HttpPost("GetIP")]
+        public async Task<IActionResult> GetIP()
+        {
+            try
+            {
+                return Ok(HttpContext.Connection.RemoteIpAddress.ToString());
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                    return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
         [HttpPut("SetGestita")]
         public async Task<IActionResult> SetGestita([FromBody] SetSchedaGestitaCommand command)
         {

@@ -1,4 +1,6 @@
-﻿namespace SO115App.Models.Classi.Filtri
+﻿using SO115App.API.Models.Classi.Condivise;
+
+namespace SO115App.Models.Classi.Filtri
 {
     /// <summary>
     ///   Classe che contiene i filtri per la ricerca delle schede contatto NUE
@@ -34,5 +36,25 @@
         ///   Stringa per la ricerca a testo libero
         /// </summary>
         public string Search { get; set; }
+
+        ///<summary>
+        ///   Stringa utilizzata per i suggerimenti di raggruppamento per Nominativo
+        /// </summary>
+        public string Nominativo { get; set; }
+
+        ///<summary>
+        ///   Stringa utilizzata per i suggerimenti di raggruppamento per Indirizzo
+        /// </summary>
+        public string Indirizzo { get; set; }
+
+        ///<summary>
+        ///   Stringa utilizzata per i suggerimenti di raggruppamento per Telefono
+        /// </summary>
+        public string Telefono { get; set; }
+
+        ///<summary>
+        ///   Stringa utilizzata per i suggerimenti di raggruppamento per Coordinate
+        /// </summary>
+        public Coordinate Coordinate { get; set; }
     }
 }
