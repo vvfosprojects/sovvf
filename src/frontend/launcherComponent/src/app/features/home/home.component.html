@@ -4,13 +4,14 @@
             <app-info-aggregate></app-info-aggregate>
         </div>
     </div>
-    <div class="row">
+    <div class="row" [class.d-none]="viewState.chiamata.active">
         <div class="col-12" [ngClass]="{'mt-3': !boxAttivi}">
             <app-filterbar [colorButton]="(colorButton$ | async)" [viewState]="viewState"></app-filterbar>
         </div>
     </div>
-    <div class="row" [ngClass]="{'mt-1': !boxAttivi}">
-        <div [ngClass]="columnState.sinistra">
+    <div class="row" [ngClass]="{'mt-1': !boxAttivi && !viewState.chiamata.active}">
+        <div [ngClass]="columnState.sinistra"
+             [class.col-12]="viewState.chiamata.active">
             <app-richieste [ngClass]="{'d-none' : !viewState.richieste.active}" [split]="viewState.richieste.split"
                            [boxAttivi]="boxAttivi">
             </app-richieste>
@@ -24,7 +25,9 @@
                                    [boxAttivi]="boxAttivi"></app-mezzi-in-servizio>
             <app-schede-contatto *ngIf="viewState.schedeContatto.active" [boxAttivi]="boxAttivi"></app-schede-contatto>
         </div>
-        <div class="mt-2" [ngClass]="columnState.destra || {'d-none' : !viewState.mappa.active}">
+        <div class="mt-2"
+             [ngClass]="columnState.destra || {'d-none' : !viewState.mappa.active}"
+             [class.d-none]="viewState.chiamata.active">
             <app-maps [viewStateMappa]="(viewStateMappa$ | async)"
                       [boxAttivi]="boxAttivi"
                       (mapFullLoaded)="onMapFullLoaded()"></app-maps>

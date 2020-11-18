@@ -1,4 +1,4 @@
-<div class="pl-3" [ngClass]="{'m-h-750-chiamata': boxAttivi, 'm-h-850-chiamata': !boxAttivi}">
+<div [ngClass]="{'m-h-750-chiamata': boxAttivi, 'm-h-930-chiamata': !boxAttivi}">
     <app-scheda-telefonata [tipologie]="(tipologie$ | async)"
                            [operatore]="(utente$ | async)"
                            [disabledInviaPartenza]="permessiFeature.ComposizionePartenzaRichiesta | checkPermission"

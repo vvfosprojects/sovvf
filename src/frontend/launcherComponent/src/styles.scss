@@ -140,6 +140,30 @@ a:hover {
   border-top: 5px solid #007bff;
 }
 
+/* input custom */
+input {
+  font-weight: 600;
+  font-size: 1.2rem;
+  background-color: #f3f3f3;
+  border: 1px solid #888888;
+}
+
+input:focus {
+  font-weight: bolder;
+  background-color: #f3f3f3;
+  border: 1px solid #cacaca;
+}
+
+input:valid {
+  background-color: #f3f3f3;
+}
+
+input:invalid {
+  font-weight: bolder;
+  background-color: #ffff52;
+  border: 1px solid #d61616 !important;
+}
+
 /* icone di guida */
 .guida {
   color: #bbbbbb;

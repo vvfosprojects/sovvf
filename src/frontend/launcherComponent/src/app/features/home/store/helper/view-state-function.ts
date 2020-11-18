@@ -35,6 +35,7 @@ export function updateView(stateDefault: any, action: ChangeView): ViewComponent
 export function activeChiamata(stateDefault: any): ViewComponentStateModel {
     stateDefault.view.richieste.active = false;
     stateDefault.view.chiamata.active = true;
+    stateDefault.view.mappa.active = false;
     stateDefault.view.mappa.options = [AppFeatures.Chiamata];
     stateDefault.view.filterbar.options = [Grid.Col6];
     return stateDefault;

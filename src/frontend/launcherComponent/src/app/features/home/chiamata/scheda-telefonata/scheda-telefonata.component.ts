@@ -64,6 +64,8 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy {
 
     idSchedaContatto: string;
 
+    civicokm = 'CIVICO';
+
     subscription = new Subscription();
 
     @Select(SchedaTelefonataState.resetChiamata) resetChiamata$: Observable<boolean>;

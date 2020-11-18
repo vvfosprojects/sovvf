@@ -88,7 +88,8 @@ import { FormsModule } from '@angular/forms';
                 SchedeContattoMarkersState
             ]
         ),
-        FormsModule
+        FormsModule,
+        SharedModule
     ],
     declarations: [
         MapsComponent,

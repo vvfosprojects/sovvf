@@ -1,332 +1,413 @@
-<div class="row mt-2 h-100">
+<div class="row h-100">
     <app-partial-loader *ngIf="loading"></app-partial-loader>
-    <div class="col-12 pt-2 mx-auto rounded status_chiamata card-shadow-danger">
-        <form [formGroup]="chiamataForm" ngxsForm="schedaTelefonata.nuovaRichiestaForm" autocomplete="off">
-            <div class="row">
-                <div class="col-5">
-                    <ng-template #rilevante>
-                        <div *ngIf="f.rilevanzaGrave?.value">Intervento Rilevante</div>
-                        <div *ngIf="f.rilevanzaStArCu?.value">Intervento Rilevante Storico Artistico
-                            Culturale
-                        </div>
-                    </ng-template>
-                    <h3 class="mb-0">
-                        Chiamata in corso...
-                        <span *ngIf="f.rilevanzaGrave?.value || f.rilevanzaStArCu?.value"
-                              class="d-inline-block mr-1 text-danger"
-                              [ngbTooltip]="rilevante" placement="bottom">
-                            <i *ngIf="f.rilevanzaGrave?.value" class="fa fa-exclamation mr-2"></i>
-                            <i *ngIf="f.rilevanzaStArCu?.value" class="fa fa-university"></i>
-                        </span>
-                    </h3>
-                </div>
-                <div class="col-4">
-                    <!-- Spazio libero -->
-                </div>
-                <div class="col-3 float-right text-right">
-                    <span class="mr-2 h5 font-weight-normal">Priorità</span>
-                    <ngb-rating [formControl]="f.prioritaRichiesta" [starTemplate]="t" [max]="5"></ngb-rating>
-                    <ng-template #t let-fill="fill" let-index="index">
-            <span class="circle" [class.filled]="fill === 100" [class.bad]="index > 2 && fill === 100">
-              <i class="fa fa-circle mr-1"></i>
-            </span>
-                    </ng-template>
-                    <span *ngIf="submitted && f.prioritaRichiesta.errors" class="form-text small">
-            <div *ngIf="f.prioritaRichiesta.errors.required" class="text-danger">La priorità è richiesta</div>
-          </span>
-                </div>
-            </div>
-            <hr class="mt-1 mb-2">
-            <div class="form-group mb-2">
-                <label class="d-none">Tipologia intervento</label>
-                <ng-select class="border"
-                           [ngClass]="{'errore': submitted && checkTipologie()}"
-                           bindLabel="codiceDescrizione"
-                           bindValue="codice"
-                           clearAllText="Clear"
-                           placeholder="Seleziona Tipologia Intervento"
-                           formControlName="selectedTipologie"
-                           [notFoundText]="'Nessuna tipologia trovata con i parametri di ricerca'"
-                           [items]="tipologie"
-                           [multiple]="true"
-                           [closeOnSelect]="true"
-                           [hideSelected]="true"
-                           (add)="onAddTipologia($event)"
-                           (remove)="onRemoveTipologia($event)">
-                </ng-select>
-                <div *ngIf="submitted && checkTipologie()" class="text-danger">
-                    <small>Almeno una tipologia è richiesta</small>
-                </div>
-            </div>
-            <div class="row mb-2">
-                <div class="col-8">
-                    <div class="form-group mb-1">
-                        <label for="nominativo">Richiedente</label>
-                        <input id="nominativo" type="text" placeholder="Descrivi chi ha richiesto l'intervento"
-                               formControlName="nominativo" class="form-control"
-                               [ngClass]="{ 'is-invalid': submitted && f.nominativo.errors }"
-                               role="presentation"/>
-                        <div *ngIf="submitted && f.nominativo.errors" class="invalid-feedback">
-                            <div *ngIf="f.nominativo.errors.required">Il Nominativo è richiesto</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col pl-0">
-                    <div class="form-group mb-1">
-                        <label for="telefono">Telefono</label>
-                        <input id="telefono" type="tel" placeholder="Inserisci il Telefono"
-                               formControlName="telefono" (keypress)="checkInputPattern($event, 'PHONE')"
-                               (paste)="checkInputPattern($event, 'PHONE')"
-                               class="form-control" [ngClass]="{ 'is-invalid': submitted && f.telefono.errors }"/>
-                        <div *ngIf="submitted && f.telefono.errors" class="invalid-feedback">
-                            <div *ngIf="f.telefono.errors.required">Il Telefono è richiesto</div>
-                            <div *ngIf="f.telefono.errors.pattern">Il Telefono è non è corretto</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-6">
-                    <div class="form-group mb-2">
-                        <label for="indirizzo">Indirizzo</label>
-                        <input id="indirizzo" ngx-google-places-autocomplete type="text" formControlName="indirizzo"
-                               class="form-control"
-                               [ngClass]="{ 'is-invalid': submitted && (f.indirizzo.errors || !coordinate) }"
-                               placeholder="Ricerca indirizzo" [options]="ngxGooglePlacesOptions"
-                               (onAddressChange)="onCercaIndirizzo($event)"
-                               role="presentation"
-                        >
-                        <div *ngIf="submitted && (f.indirizzo.errors || !coordinate)" class="invalid-feedback">
-                            <div *ngIf="onMsgIndirizzo() as messaggio">{{messaggio}}</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-4">
-                    <div class="form-group d-inline-block mb-2" style="width:38%; margin-right: 2%">
-                        <label for="latitudine">Latitudine</label>
-                        <input id="latitudine" type="tel" placeholder="Latitudine" formControlName="latitudine"
-                               (keypress)="checkInputPattern($event, 'LAT_LON')"
-                               (paste)="checkInputPattern($event, 'LAT_LON')"
-                               class="form-control" [ngClass]="{ 'is-invalid': submitted && f.latitudine.errors }"/>
-                        <div *ngIf="submitted && f.latitudine.errors" class="invalid-feedback">
-                            <div *ngIf="f.latitudine.errors.required">La latitudine è richiesta</div>
-                            <div *ngIf="f.latitudine.errors.pattern">La latitudine non è corretta</div>
-                        </div>
-                    </div>
-                    <div class="form-group d-inline-block mb-2" style="width:38%; margin-right: 2%">
-                        <label for="longitudine">Longitudine</label>
-                        <input id="longitudine" type="tel" placeholder="Longitudine" formControlName="longitudine"
-                               (keypress)="checkInputPattern($event, 'LAT_LON')"
-                               (paste)="checkInputPattern($event, 'LAT_LON')"
-                               class="form-control" [ngClass]="{ 'is-invalid': submitted && f.longitudine.errors }"/>
-                        <div *ngIf="submitted && f.longitudine.errors" class="invalid-feedback">
-                            <div *ngIf="f.longitudine.errors.required">La longitudine è richiesta</div>
-                            <div *ngIf="f.longitudine.errors.pattern">La longitudine non è corretta</div>
-                        </div>
-                    </div>
-                    <div class="d-inline-block mb-2" style="width:20%">
-                        <label>Copia</label>
-                        <button type="button" class="btn btn-block btn-secondary btn-no-hover" [ngbTooltip]="coordsTooltip"
-                                placement="bottom"
-                                (click)="onCopiaIndirizzo()" [disabled]="!coordinate">
-                            <i class="fa fa-clipboard"></i>
-                        </button>
-
-                        <ng-template #coordsTooltip>
-                            Copia: {{coordinate.latitudine}}
-                            - {{coordinate.longitudine}}
-                        </ng-template>
-                    </div>
-                </div>
-                <div class="col-2">
-                    <label for="piano">Piano</label>
-                    <input id="piano" type="text" placeholder="Piano (opzionale)" formControlName="piano"
-                           class="form-control"
-                           [ngClass]="{ 'is-invalid': submitted && f.piano.errors }"/>
-                    <div *ngIf="submitted && f.piano.errors" class="invalid-feedback">
-                        <div *ngIf="f.piano.errors.required">Il Piano è richiesto</div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    <div class="form-group mb-2">
-                        <label for="descrizione">Motivazione</label>
-                        <textarea id="descrizione" placeholder="Inserisci la Motivazione (opzionale)"
-                                  formControlName="descrizione"
-                                  class="form-control"
-                                  [ngClass]="{ 'is-invalid': submitted && f.descrizione.errors}"></textarea>
-                        <!--                        <div *ngIf="submitted && f.descrizione.errors" class="invalid-feedback">-->
-                        <!--                            <div *ngIf="f.descrizione.errors.required">La Motivazione è richiesta</div>-->
-                        <!--                        </div>-->
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="form-group mb-2">
-                        <label for="noteIndirizzo">Note Indirizzo</label>
-                        <textarea id="noteIndirizzo" placeholder="Inserisci le Note (opzionale)"
-                                  formControlName="noteIndirizzo"
-                                  class="form-control"
-                                  [ngClass]="{ 'is-invalid': submitted && f.noteIndirizzo.errors}"
-                                  role="presentation"
-                        ></textarea>
-                    </div>
-                </div>
-            </div>
-            <div id="collapseExample" [ngbCollapse]="isCollapsed">
-                <div class="row">
-                    <div class="col">
-                        <div class="form-group mb-2">
-                            <label for="notePubbliche">Note Pubbliche</label>
-                            <textarea id="notePubbliche" placeholder="Inserisci le Note Pubbliche (opzionale)"
-                                      formControlName="notePubbliche" class="form-control"
-                                      [ngClass]="{ 'is-invalid': submitted && f.notePubbliche.errors}"></textarea>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="form-group mb-2">
-                            <label for="notePrivate">Note Private</label>
-                            <textarea id="notePrivate" type="text" placeholder="Inserisci le Note Private (opzionale)"
-                                      formControlName="notePrivate" class="form-control"
-                                      [ngClass]="{ 'is-invalid': submitted && f.notePrivate.errors}"></textarea>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-6">
-                        <div class="form-group mb-2">
-                            <label for="zoneEmergenza">Codice emergenza</label>
-                            <input id="zoneEmergenza" type="text"
-                                   placeholder="Inserisci il Codice Emergenza (opzionale)"
-                                   formControlName="zoneEmergenza" class="form-control"
-                                   [ngClass]="{ 'is-invalid': submitted && f.zoneEmergenza.errors}"/>
-                        </div>
-                    </div>
-                    <div class="col-2 pl-0" style="padding-top: 2rem !important">
-                        <div class="form-group m-0 float-right">
-                            <span class="d-inline-block mt-1 mr-2">
-                              <ui-switch size="small" color="#dc3545" [checked]="f.rilevanzaGrave?.value === true"
-                                         (change)="setRilevanza()"></ui-switch>
-                            </span>
-                            <span class="d-inline-block mb-1">Rilevante</span>
-                        </div>
-                    </div>
-                    <div class="col-4 pr-0" style="padding-top: 2rem !important">
-                        <div class="form-group m-0">
-                            <span class="d-inline-block mt-1 mr-2">
-                                <ui-switch size="small" color="#dc3545" [checked]="f.rilevanzaStArCu?.value === true"
-                                           (change)="setRilevanzaStArCu()"></ui-switch>
-                            </span>
-                            <span class="d-inline-block mb-1">Storico Artistico e Culturale</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="clearfix mb-2">
-                    <div class="float-left w-75">
-                        <div class="form-group m-0">
-                            <label for="listaEnti">Enti Intervenuti</label>
-                            <ng-select
-                                    id="listaEnti"
-                                    formControlName="listaEnti"
-                                    [items]="enti"
-                                    bindLabel="descrizione"
-                                    bindValue="codice"
-                                    clearAllText="Clear"
-                                    [multiple]="true"
-                                    placeholder="Enti Intervenuti (opzionale)"
-                                    [closeOnSelect]="true"
-                                    [hideSelected]="true"
-                                    [notFoundText]="'Nessun ente trovato con i parametri di ricerca'"
-                                    (add)="onAddEnti($event)"
-                                    (remove)="onRemoveEnti($event)">
-                            </ng-select>
-                        </div>
-                    </div>
-                    <div class="float-left w-25">
-                        <div class="px-2" style="padding-top:34px">
-                            <button class="btn btn-sm btn-block btn-primary btn-no-hover"
-                                    (click)="onAggiungiNuovoEnte()">
-                                <i class="fa fa-plus mr-1"></i>
-                                Nuovo ente
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-12">
-                        <div class="form-group">
-                            <label for="etichette">Tag</label>
-                            <tag-input id="etichette" formControlName="etichette" [modelAsStrings]="true"
-                                       [placeholder]="'Inserisci tag (opzionale)'"
-                                       [secondaryPlaceholder]="'Inserisci tag (opzionale)'"></tag-input>
-                        </div>
-                    </div>
-                </div>
-
-                <!--
-                <ng-select class="border"
-                bindLabel="codiceDescrizione"
-                bindValue="codice"
-                clearAllText="Clear">
-                 </ng-select>
-                -->
-                <!--<div class="row"></div>
-                    <div class="col-12">-->
-                <!--<app-selezione-tipi-terreno-->
-                <!--(tipiTerrenoSelezionati)="onTerreniSelezionati($event)"></app-selezione-tipi-terreno>-->
-                <!--</div>-->
-                <!--</div>-->
-            </div>
-            <div class="row mt-1 mb-3">
-                <div class="col-7">
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-outline-danger btn-no-hover" (click)="onAnnullaChiamata()">Annulla
-                        </button>
-                        <div class="btn-group" ngbDropdown autoClose="outside" placement="top" role="group">
-                            <button class="btn btn-outline-danger dropdown-toggle-split btn-no-hover" ngbDropdownToggle></button>
-                            <div class="dropdown-menu dropdownAnnulla" ngbDropdownMenu>
-                                <button class="dropdown-item"
-                                        (click)="impostaAzioneChiamata(AzioneChiamataEnum.FalsoAllarme)">Falso
-                                    allarme
-                                </button>
-                                <button class="dropdown-item"
-                                        (click)="impostaAzioneChiamata(AzioneChiamataEnum.InterventoNonPiuNecessario)">
-                                    Non più necessario
-                                </button>
-                                <button class="dropdown-item"
-                                        (click)="impostaAzioneChiamata(AzioneChiamataEnum.InterventoDuplicato)">
-                                    Duplicato
-                                </button>
+    <div class="col-12 mx-auto h-100">
+        <div class="row h-100 border-top border-white">
+            <!-- FORM -->
+            <div class="col-10">
+                <form [formGroup]="chiamataForm" ngxsForm="schedaTelefonata.nuovaRichiestaForm" autocomplete="off">
+                    <!-- HEADER => data/ora/operatore -->
+                    <div class="row">
+                        <div class="col-12 bg-dark text-white border-bottom border-white py-2">
+                            <div class="clearfix">
+                                <div class="float-left w-25">
+                                    <span class="font-weight-bolder mr-1">Numero Chiamata</span>
+                                    321321321
+                                </div>
+                                <div class="float-left w-25">
+                                    <span class="font-weight-bolder mr-1">Data Chiamata</span>
+                                    12/12/2012
+                                </div>
+                                <div class="float-left w-25">
+                                    <span class="font-weight-bolder mr-1">Ora Chiamata</span>
+                                    13:30
+                                </div>
+                                <div class="float-left w-25">
+                                    <span class="font-weight-bolder mr-1">Operatore</span>
+                                    Andrea Milani
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <button class="btn btn-outline-secondary ml-2 mr-2 btn-no-hover" type="button" (click)="onResetChiamata()">
-                        <i class="fa fa-recycle mr-1"></i>Reset
-                    </button>
-                    <span ngbTooltip="Inserire il resto dei campi obbligatori" [disableTooltip]="!checkCollapsed()"
-                          placement="bottom">
-            <button type="button" class="btn btn-outline-primary btn-no-hover ml-2" (click)="toggleCollapsed()"
-                    [attr.aria-expanded]="!isCollapsed" aria-controls="collapseExample" [disabled]="checkCollapsed()">
-              Informazioni Aggiuntive
-              <i *ngIf="isCollapsed" class="fa fa-arrow-down ml-1"></i>
-              <i *ngIf="!isCollapsed" class="fa fa-arrow-up ml-1"></i>
-            </button>
-          </span>
-                </div>
-                <div class="col-5 text-right">
-                    <button class="btn btn-primary btn-no-hover mr-2" style="min-width: 100px"
-                            [disabled]="disabledInviaPartenza"
-                            [ngClass]="{'cursor-not-allowed': disabledInviaPartenza}"
-                            (click)="impostaAzioneChiamata(AzioneChiamataEnum.InviaPartenza)"
-                            ngbTooltip="Invia Partenza">
-                        <i class="fa fa-truck"></i>
-                    </button>
-                    <button class="btn btn-success btn-no-hover" style="min-width: 100px"
-                            (click)="impostaAzioneChiamata(AzioneChiamataEnum.MettiInCoda)" ngbTooltip="Metti In Coda">
-                        <i class="fa fa-check"></i>
-                    </button>
-                </div>
+                    <!-- TIPOLOGIA -->
+                    <div class="row">
+                        <div class="col-12 bg-danger border-bottom py-1">
+                            <h5 class="font-weight-bolder text-white pl-2 m-0">
+                                {{ 'tipologia' | uppercase }}
+                            </h5>
+                        </div>
+                        <div class="col-12 bg-lightdanger pt-2 pb-1">
+                            <div class="clearfix">
+                                <div class="float-left w-100">
+                                    <div class="form-control-lg w-100 p-0 mb-0">
+                                        <label class="d-none">Tipologia Intervento</label>
+                                        <ng-select [ngClass]="{'errore': submitted && checkTipologie()}"
+                                                   bindLabel="codiceDescrizione"
+                                                   bindValue="codice"
+                                                   clearAllText="Clear"
+                                                   placeholder="Clicca qui per selezionare una Tipologia Intervento"
+                                                   formControlName="selectedTipologie"
+                                                   [notFoundText]="'Nessuna tipologia trovata con i parametri di ricerca'"
+                                                   [items]="tipologie"
+                                                   [multiple]="true"
+                                                   [closeOnSelect]="true"
+                                                   [hideSelected]="true"
+                                                   (add)="onAddTipologia($event)"
+                                                   (remove)="onRemoveTipologia($event)">
+                                        </ng-select>
+                                        <div *ngIf="submitted && checkTipologie()" class="text-danger">
+                                            <small>Almeno una tipologia è richiesta</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- INDIRIZZO -->
+                    <div class="row">
+                        <div class="col-12 bg-danger border-bottom py-1">
+                            <h5 class="font-weight-bolder text-white pl-2 m-0">
+                                {{ 'indirizzo' | uppercase }}
+                            </h5>
+                        </div>
+                        <div class="col-12 bg-lightdanger py-2">
+                            <div class="clearfix">
+                                <!-- RICERCA GOOGLE SELECT -->
+                                <div class="float-left w-75">
+                                    <div class="form-group-lg w-100 p-0 mb-0">
+                                        <label for="indirizzo" class="d-none">Indirizzo Intervento</label>
+                                        <input id="indirizzo" ngx-google-places-autocomplete
+                                               class="form-control-lg w-100"
+                                               [ngClass]="{ 'is-invalid': submitted && (f.indirizzo.errors || !coordinate) }"
+                                               type="text"
+                                               role="presentation"
+                                               placeholder="Indirizzo"
+                                               formControlName="indirizzo"
+                                               [options]="ngxGooglePlacesOptions"
+                                               (onAddressChange)="onCercaIndirizzo($event)"
+                                               [required]="true">
+                                        <div *ngIf="submitted && (f.indirizzo.errors || !coordinate)"
+                                             class="invalid-feedback">
+                                            <div *ngIf="onMsgIndirizzo() as messaggio">{{messaggio}}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- CIVICO / KM -->
+                                <div class="float-left w-25">
+                                    <div class="clearfix">
+                                        <!-- SELECT CIVICO / KM -->
+                                        <div class="float-left w-50">
+                                            <div class="form-control-lg p-0 mb-0">
+                                                <label for="civicokmSelect" class="d-none">Civico/Km Select</label>
+                                                <!-- <ng-select id="civicokmSelect" class="form-control-lg"
+                                                           [items]="['CIVICO', 'KM']"
+                                                           [clearable]="false"
+                                                           [searchable]="false"
+                                                           [(ngModel)]="civicokm"
+                                                           [ngModelOptions]="{standalone: true}">
+                                                </ng-select> -->
+                                                <select id="civicokmSelect" name="civicokmSelect" [(ngModel)]="civicokm"
+                                                        [ngModelOptions]="{standalone: true}">
+                                                    <option value="CIVICO" [selected]="civicokm === 'CIVICO'">CIVICO
+                                                    </option>
+                                                    <option value="KM" [selected]="civicokm === 'KM'">KM</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <!-- INPUT SELECT CIVICO / KM -->
+                                        <div class="float-left w-50">
+                                            <div class="form-group-lg p-0 mb-0">
+                                                <ng-template [ngIf]="civicokm === 'CIVICO'">
+                                                    <label for="civico" class="d-none">Civico Indirizzo</label>
+                                                    <input id="civico" class="form-control-lg w-100"
+                                                           [ngClass]="{ 'is-invalid': submitted && (f.indirizzo.errors || !coordinate) }"
+                                                           type="text" placeholder="Civico">
+                                                </ng-template>
+                                                <ng-template [ngIf]="civicokm === 'KM'">
+                                                    <label for="km" class="d-none">Km Indirizzo</label>
+                                                    <input id="km" class="form-control-lg w-100"
+                                                           [ngClass]="{ 'is-invalid': submitted && (f.indirizzo.errors || !coordinate) }"
+                                                           type="text" placeholder="Km">
+                                                </ng-template>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- COORDINATE -->
+                        <div class="col-12 bg-light py-2">
+                            <div class="clearfix">
+                                <!-- LATITUDINE -->
+                                <div class="float-left pr-2">
+                                    <div class="form-group-lg">
+                                        <label for="latitudine" class="d-none">Latitudine</label>
+                                        <input id="latitudine"
+                                               class="form-control-lg"
+                                               [ngClass]="{ 'is-invalid': submitted && f.latitudine.errors }"
+                                               type="tel"
+                                               placeholder="Latitudine"
+                                               formControlName="latitudine"
+                                               (keypress)="checkInputPattern($event, 'LAT_LON')"
+                                               (paste)="checkInputPattern($event, 'LAT_LON')"
+                                               [required]="true"/>
+                                        <div *ngIf="submitted && f.latitudine.errors" class="invalid-feedback">
+                                            <div *ngIf="f.latitudine.errors.required">La latitudine è
+                                                richiesta
+                                            </div>
+                                            <div *ngIf="f.latitudine.errors.pattern">La latitudine non è
+                                                corretta
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- LONGITUDINE -->
+                                <div class="float-left px-2">
+                                    <div class="form-group-lg">
+                                        <label for="longitudine" class="d-none">Longitudine</label>
+                                        <input id="longitudine"
+                                               class="form-control-lg"
+                                               [ngClass]="{ 'is-invalid': submitted && f.longitudine.errors }"
+                                               type="tel"
+                                               placeholder="Longitudine"
+                                               formControlName="longitudine"
+                                               (keypress)="checkInputPattern($event, 'LAT_LON')"
+                                               (paste)="checkInputPattern($event, 'LAT_LON')"
+                                               [required]="true"/>
+                                        <div *ngIf="submitted && f.longitudine.errors" class="invalid-feedback">
+                                            <div *ngIf="f.longitudine.errors.required">La longitudine è
+                                                richiesta
+                                            </div>
+                                            <div *ngIf="f.longitudine.errors.pattern">La longitudine non è
+                                                corretta
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- BOTTONE COPIA COORDINATE -->
+                                <div class="float-left px-2">
+                                    <button type="button"
+                                            class="btn btn-lg btn-block btn-secondary btn-no-hover"
+                                            [ngbTooltip]="coordsTooltip"
+                                            placement="bottom"
+                                            (click)="onCopiaIndirizzo()" [disabled]="!coordinate">
+                                        <i class="fa fa-clipboard"></i>
+                                    </button>
+                                    <ng-template #coordsTooltip>
+                                        Copia: {{coordinate.latitudine}}
+                                        - {{coordinate.longitudine}}
+                                    </ng-template>
+                                </div>
+                                <!-- INCROCIO -->
+                                <div class="float-left pl-3 pr-2">
+                                    <div class="form-group-lg">
+                                        <label for="incrocio" class="d-none">Incrocio</label>
+                                        <input id="incrocio"
+                                               class="form-control-lg w-100"
+                                               type="text"
+                                               placeholder="Incrocio"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- RICHIEDENTE -->
+                    <div class="row">
+                        <div class="col-12 bg-danger border-bottom py-1">
+                            <div class="clearfix">
+                                <div class="float-left w-75">
+                                    <h5 class="font-weight-bolder text-white pl-2 m-0">
+                                        {{ 'richiedente' | uppercase }}
+                                    </h5>
+                                </div>
+                                <div class="float-left w-25">
+                                    <div class="clearfix">
+                                        <div class="float-left w-25 px-1">
+                                            <span class="d-inline-block">
+                                                <span class="d-none">
+                                                    spazio libero
+                                                </span>
+                                                </span>
+                                        </div>
+                                        <div class="float-left w-75 px-2">
+                                            <h5 class="font-weight-bolder text-white m-0">
+                                                {{ 'enti intervenuti' | uppercase }}
+                                            </h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 px-0">
+                            <div class="clearfix">
+                                <div class="float-left bg-lightdanger w-75 pl-3 pr-2 py-2">
+                                    <div class="clearfix">
+                                        <!-- NOMINATIVO -->
+                                        <div class="float-left w-75 pr-2">
+                                            <div class="form-group-lg w-100">
+                                                <label for="nominativo" class="d-none">Richiedente</label>
+                                                <input id="nominativo"
+                                                       class="form-control-lg w-100"
+                                                       [ngClass]="{ 'is-invalid': submitted && f.nominativo.errors }"
+                                                       type="text"
+                                                       placeholder="Nominativo"
+                                                       formControlName="nominativo"
+                                                       role="presentation"
+                                                       [required]="true"/>
+                                                <div *ngIf="submitted && f.nominativo.errors" class="invalid-feedback">
+                                                    <div *ngIf="f.nominativo.errors.required">Il Nominativo è
+                                                        richiesto
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- TELEFONO -->
+                                        <div class="float-left w-25 px-2">
+                                            <div class="form-group-lg w-100">
+                                                <label for="telefono" class="d-none">Telefono</label>
+                                                <input id="telefono"
+                                                       class="form-control-lg w-100"
+                                                       [ngClass]="{ 'is-invalid': submitted && f.telefono.errors }"
+                                                       type="tel"
+                                                       placeholder="Telefono"
+                                                       formControlName="telefono"
+                                                       (keypress)="checkInputPattern($event, 'PHONE')"
+                                                       (paste)="checkInputPattern($event, 'PHONE')"
+                                                       [required]="true"/>
+                                                <div *ngIf="submitted && f.telefono.errors" class="invalid-feedback">
+                                                    <div *ngIf="f.telefono.errors.required">Il Telefono è richiesto
+                                                    </div>
+                                                    <div *ngIf="f.telefono.errors.pattern">Il Telefono è non è
+                                                        corretto
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- PALAZZO E INFO -->
+                                        <div class="float-left w-100 mt-2">
+                                            <div class="clearfix">
+                                                <!-- PALAZZO/CITOFONO/INFO -->
+                                                <div class="float-left w-50 pr-2">
+                                                    <div class="form-group-lg w-100">
+                                                        <label for="palazzoInfo"
+                                                               class="d-none">Palazzo/Citofono/Info</label>
+                                                        <input id="palazzoInfo"
+                                                               class="form-control-lg w-100"
+                                                               [ngClass]="{ 'is-invalid': submitted && f.palazzoInfo.errors }"
+                                                               type="tel"
+                                                               placeholder="Palazzo/Citofono/Info"
+                                                               formControlName="palazzoInfo"/>
+                                                    </div>
+                                                </div>
+                                                <div class="float-left w-50 px-2">
+                                                    <div class="clearfix">
+                                                        <!-- SCALA -->
+                                                        <div class="float-left w-25 pr-1">
+                                                            <div class="form-group-lg w-100">
+                                                                <label for="scala" class="d-none">Scala</label>
+                                                                <input id="scala"
+                                                                       class="form-control-lg w-100"
+                                                                       [ngClass]="{ 'is-invalid': submitted && f.scala.errors }"
+                                                                       type="text"
+                                                                       placeholder="Scala"
+                                                                       formControlName="scala"/>
+                                                            </div>
+                                                        </div>
+                                                        <!-- PIANO -->
+                                                        <div class="float-left w-25 px-1">
+                                                            <div class="form-group-lg w-100">
+                                                                <label for="piano" class="d-none">Piano</label>
+                                                                <input id="piano"
+                                                                       class="form-control-lg w-100"
+                                                                       [ngClass]="{ 'is-invalid': submitted && f.piano.errors }"
+                                                                       type="text"
+                                                                       placeholder="Piano"
+                                                                       formControlName="piano"/>
+                                                            </div>
+                                                        </div>
+                                                        <!-- INTERNO -->
+                                                        <div class="float-left w-25 px-1">
+                                                            <div class="form-group-lg w-100">
+                                                                <label for="interno" class="d-none">Interno</label>
+                                                                <input id="interno"
+                                                                       class="form-control-lg w-100"
+                                                                       [ngClass]="{ 'is-invalid': submitted && f.interno.errors }"
+                                                                       type="text"
+                                                                       placeholder="Interno"/>
+                                                            </div>
+                                                        </div>
+                                                        <!-- SCHEDA CONTATTO -->
+                                                        <div class="float-left w-25 px-1">
+                                                            <div class="form-group-lg w-100">
+                                                                <label for="schedaContatto" class="d-none">Scheda
+                                                                    Contatto</label>
+                                                                <input id="schedaContatto"
+                                                                       class="form-control-lg w-100"
+                                                                       [ngClass]="{ 'is-invalid': submitted && f.schedaContatto.errors }"
+                                                                       type="text"
+                                                                       placeholder="Scheda Contatto"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="float-left w-25 py-2">
+                                    <div class="clearfix">
+                                        <div class="float-left w-25 pl-2 pr-1">
+                                            <div class="custom-control custom-radio">
+                                                <input type="radio" id="112" name="112"
+                                                       class="custom-control-input">
+                                                <label class="custom-control-label" for="112">
+                                                    112
+                                                </label>
+                                            </div>
+                                            <div class="custom-control custom-radio">
+                                                <input type="radio" id="113" name="113"
+                                                       class="custom-control-input">
+                                                <label class="custom-control-label" for="113">
+                                                    113
+                                                </label>
+                                            </div>
+                                            <div class="custom-control custom-radio">
+                                                <input type="radio" id="118" name="118"
+                                                       class="custom-control-input">
+                                                <label class="custom-control-label" for="118">
+                                                    118
+                                                </label>
+                                            </div>
+                                            <div class="custom-control custom-radio">
+                                                <input type="radio" id="VV.UU." name="VV.UU."
+                                                       class="custom-control-input">
+                                                <label class="custom-control-label" for="VV.UU.">
+                                                    VV.UU.
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="float-left w-75">
+                                            <h5 class="text-danger">Nessun Ente</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
             </div>
-        </form>
+            <!-- SUGGERIMENTI -->
+            <div class="col-2 bg-dark text-white border-left border-white pt-3">
+                <h3 class="text-center">
+                    {{ 'suggerimenti' | uppercase }}
+                </h3>
+                <hr class="mt-2 mb-3">
+                <!-- PROCEDURE OPERATIVE -->
+                <button class="btn btn-lg btn-block btn-danger btn-no-hover"
+                        [disabled]="nuovaRichiesta?.tipologie?.length <= 0">
+                    VISUALIZZA
+                    <span class="font-weight-bolder">P.O.S.</span>
+                </button>
+            </div>
+        </div>
     </div>
 </div>
