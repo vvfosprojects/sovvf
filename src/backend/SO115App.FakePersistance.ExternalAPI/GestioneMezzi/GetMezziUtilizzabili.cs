@@ -84,9 +84,8 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
             var lstMezziDto = new List<MezzoDTO>();
             Parallel.ForEach(sedi, sede =>
             {
-                var httpManager = new HttpRequestManager<List<MezzoDTO>>(_memoryCache, _client);
-                string nomeCache = "Mezzi_" + sede;
-                httpManager.Configure(nomeCache);
+                var httpManager = new HttpRequestManager<List<MezzoDTO>>(_memoryCache, _client); 
+                httpManager.Configure("Mezzi_" + sede);
 
                 var lstSediQueryString = string.Join("&codiciSedi=", ListaCodiciSedi.Where(s => sede.Contains(s.Split(".")[0])).ToArray());
                 var url = new Uri($"{_configuration.GetSection("UrlExternalApi").GetSection("GacApi").Value}{Classi.Costanti.GacGetMezziUtilizzabili}?codiciSedi={lstSediQueryString}");
