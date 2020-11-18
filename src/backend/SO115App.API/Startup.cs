@@ -42,6 +42,7 @@ using SO115App.Models.Servizi.CustomMapper;
 using SO115App.SignalR;
 using System;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Net.WebSockets;
 using System.Security.Principal;
 using System.Text;
@@ -86,7 +87,8 @@ namespace SO115App.API
                 });
             });
 
-            HttpClient httpClient = new HttpClient();
+            var httpClient = new HttpClient();
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "test");
             services.AddSingleton(httpClient);
             services.AddControllers();
             services.AddHttpContextAccessor();

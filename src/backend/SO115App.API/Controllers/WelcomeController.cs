@@ -56,7 +56,7 @@ namespace SO115App.API.Controllers
                     idOperatore = idUtente
                 };
 
-                return Ok(this._handler.Handle(query).WelcomeRes);
+                return Ok(_handler.Handle(query).WelcomeRes);
             }
             catch (Exception ex)
             {
