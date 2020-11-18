@@ -13,11 +13,18 @@ namespace SO115App.ExternalAPI.Fake.HttpManager
 {
     public class HttpRequestManager<OutputData> : IHttpRequestManager<OutputData>
     {
+        private readonly IMemoryCache _memoryCache;
         private readonly HttpClient _client;
+
         private AsyncPolicyWrap<HttpResponseMessage> policies;
         private OutputData Result = default;
 
-        public HttpRequestManager(HttpClient client) => _client = client;
+        public HttpRequestManager(IMemoryCache memoryCache, HttpClient client)
+        {
+            _client = client;
+            _memoryCache = memoryCache;
+        }
+
         public void Configure(string cacheString = null)
         {
             //TIMEOUT
@@ -42,13 +49,8 @@ namespace SO115App.ExternalAPI.Fake.HttpManager
             //CACHE
             if (!string.IsNullOrEmpty(cacheString))
             {
-                var memoryCacheProvider = new MemoryCacheProvider(new MemoryCache(new MemoryCacheOptions()));
-                var cachePolicy = Policy.CacheAsync(memoryCacheProvider.AsyncFor<HttpResponseMessage>(), TimeSpan.FromHours(8), c =>
-                {
-                    var msgCache = "Risultato salvato in cache";
-                    Console.WriteLine(msgCache);
-                    return msgCache;
-                });
+                var memoryCacheProvider = new MemoryCacheProvider(_memoryCache);
+                var cachePolicy = Policy.CacheAsync(memoryCacheProvider.AsyncFor<HttpResponseMessage>(), TimeSpan.FromHours(8), c => cacheString);
 
                 policies = Policy.WrapAsync(cachePolicy, retryPolicy, timeoutPolicy);
             }
@@ -58,49 +60,30 @@ namespace SO115App.ExternalAPI.Fake.HttpManager
 
         public async Task<OutputData> GetAsync(Uri url)
         {
-            await policies.ExecuteAsync(() => Task.Run(() =>
-            {
-                var response = _client.GetAsync(url).Result;
-                var data = response.Content.ReadAsStringAsync().Result;
-                Result = JsonConvert.DeserializeObject<OutputData>(data);
+            var response = await policies.ExecuteAsync(() => _client.GetAsync(url));
 
-                return response;
-            }));
-
-            return Result;
+            return ManageResponse(response);
         }
 
         public async Task<OutputData> PostAsync(Uri url, HttpContent content)
         {
-            await policies.ExecuteAsync(() => Task.Run(() =>
-            {
-                var response = _client.PostAsync(url, content).Result;
-                var data = response.Content.ReadAsStringAsync().Result;
-                Result = JsonConvert.DeserializeObject<OutputData>(data);
+            var response = await policies.ExecuteAsync(() => _client.PostAsync(url, content));
 
-                return response;
-            }));
-
-            return Result;
+            return ManageResponse(response);
         }
 
         public async Task<OutputData> PutAsync(Uri url, HttpContent content)
         {
-            await policies.ExecuteAsync(() => Task.Run(() =>
-            {
-                var response = _client.PutAsync(url, content).Result;
-                var data = response.Content.ReadAsStringAsync().Result;
-                Result = JsonConvert.DeserializeObject<OutputData>(data);
+            var response = await policies.ExecuteAsync(() => _client.PostAsync(url, content));
 
-                return response;
-            }));
-
-            return Result;
+            return ManageResponse(response);
         }
 
-        //public void Dispose()
-        //{
-        //    _client.Dispose();
-        //}
+        private OutputData ManageResponse(HttpResponseMessage response)
+        {
+            var data = response.Content.ReadAsStringAsync().Result;
+
+            return JsonConvert.DeserializeObject<OutputData>(data);
+        }
     }
 }

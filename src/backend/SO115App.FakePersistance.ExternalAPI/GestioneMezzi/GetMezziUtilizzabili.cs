@@ -86,13 +86,16 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
             var lstMezziDto = new List<MezzoDTO>();
             Parallel.ForEach(sedi, sede =>
             {
-                var httpManager = new HttpRequestManager<List<MezzoDTO>>(_client);
+                var httpManager = new HttpRequestManager<List<MezzoDTO>>(_memoryCache, _client);
                 string nomeCache = "Mezzi_" + sede;
                 httpManager.Configure(nomeCache);
 
                 var lstSediQueryString = string.Join("&codiciSedi=", ListaCodiciSedi.Where(s => sede.Contains(s.Split(".")[0])).ToArray());
                 var url = new Uri($"{_configuration.GetSection("UrlExternalApi").GetSection("GacApi").Value}{Classi.Costanti.GacGetMezziUtilizzabili}?codiciSedi={lstSediQueryString}");
-                lock (lstMezziDto) { lstMezziDto.AddRange(httpManager.GetAsync(url).Result); }
+                lock (lstMezziDto) 
+                { 
+                    lstMezziDto.AddRange(httpManager.GetAsync(url).Result); 
+                }
             });
 
             #endregion LEGGO DA API ESTERNA
