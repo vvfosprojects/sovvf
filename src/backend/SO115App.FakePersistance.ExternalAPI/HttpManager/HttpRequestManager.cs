@@ -17,7 +17,6 @@ namespace SO115App.ExternalAPI.Fake.HttpManager
         private readonly HttpClient _client;
 
         private AsyncPolicyWrap<HttpResponseMessage> policies;
-        private OutputData Result = default;
 
         public HttpRequestManager(IMemoryCache memoryCache, HttpClient client)
         {
