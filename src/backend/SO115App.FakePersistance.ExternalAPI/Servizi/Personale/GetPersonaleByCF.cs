@@ -67,7 +67,6 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
                     var httpManager = new HttpRequestManager<List<PersonaleVVF>>(_memoryCache, _client);
                     httpManager.Configure("Personale_" + sede);
 
-                    var lstSediQueryString = string.Join("&codiciSedi=", codSede.Where(s => sede.Contains(s.Split(".")[0])).ToArray());
                     var url = new Uri($"{_configuration.GetSection("UrlExternalApi").GetSection("PersonaleApiUtenteComuni").Value}?codiciSede={sede}");
                     lock (listaPersonale)
                         listaPersonale.AddRange(httpManager.GetAsync(url).Result);
