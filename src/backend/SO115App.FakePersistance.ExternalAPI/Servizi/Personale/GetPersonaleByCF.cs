@@ -60,9 +60,9 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
         {
             var listaPersonale = new List<PersonaleVVF>();
 
-            Parallel.ForEach(codSede, sede =>
+            try
             {
-                try
+                Parallel.ForEach(codSede, sede =>
                 {
                     var httpManager = new HttpRequestManager<List<PersonaleVVF>>(_memoryCache, _client);
                     httpManager.Configure("Personale_" + sede);
@@ -71,12 +71,12 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
                     var url = new Uri($"{_configuration.GetSection("UrlExternalApi").GetSection("PersonaleApiUtenteComuni").Value}?codiciSede={sede}");
                     lock (listaPersonale)
                         listaPersonale.AddRange(httpManager.GetAsync(url).Result);
-                }
-                catch (Exception e)
-                {
-                    throw new Exception("Elenco del personale non disponibile");
-                }
-            });
+                });
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Elenco del personale non disponibile");
+            }
 
             return listaPersonale;
         }
