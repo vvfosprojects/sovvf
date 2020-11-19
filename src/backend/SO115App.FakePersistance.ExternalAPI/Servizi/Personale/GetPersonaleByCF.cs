@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using SO115App.ExternalAPI.Fake.Classi.PersonaleUtentiComuni;
 using SO115App.ExternalAPI.Fake.Classi.Utility;
+using SO115App.ExternalAPI.Fake.HttpManager;
 using SO115App.Models.Classi.Utenti.Autenticazione;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Personale;
 using System;
@@ -19,13 +20,15 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
     /// </summary>
     public class GetPersonaleByCF : IGetPersonaleByCF
     {
+        private readonly HttpClient _client;
         private readonly IConfiguration _configuration;
         private readonly IMemoryCache _memoryCache;
 
-        public GetPersonaleByCF(IConfiguration configuration, IMemoryCache memoryCache)
+        public GetPersonaleByCF(HttpClient client, IConfiguration configuration, IMemoryCache memoryCache)
         {
             _configuration = configuration;
             _memoryCache = memoryCache;
+            _client = client;
         }
 
         public async Task<PersonaleVVF> Get(string codiceFiscale, string codSede = null)
@@ -57,34 +60,21 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
         {
             var listaPersonale = new List<PersonaleVVF>();
 
-            Parallel.ForEach(codSede, codice =>
+            Parallel.ForEach(codSede, sede =>
             {
-                if (!_memoryCache.TryGetValue($"Personale_{codice.Split('.')[0]}", out listaPersonale))
+                try
                 {
-                    try
-                    {
-                        using var client = new HttpClient();
-                        client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("test");
-                        var sede = string.Concat(codSede.Select(c => c.Split(".")[0]));
+                    var httpManager = new HttpRequestManager<List<PersonaleVVF>>(_memoryCache, _client);
+                    httpManager.Configure("Personale_" + sede);
 
-                        var response = client.GetAsync($"{_configuration.GetSection("UrlExternalApi").GetSection("PersonaleApiUtenteComuni").Value}?codiciSede={sede}").Result;
-                        response.EnsureSuccessStatusCode();
-
-                        if (response == null)
-                            throw new HttpRequestException();
-
-                        using HttpContent content = response.Content;
-                        string data = content.ReadAsStringAsync().Result;
-                        var personaleUC = JsonConvert.DeserializeObject<List<PersonaleUC>>(data);
-                        listaPersonale = MapPersonaleVVFsuPersonaleUC.Map(personaleUC);
-                    }
-                    catch (Exception e)
-                    {
-                        throw new Exception("Elenco del personale non disponibile");
-                    }
-
-                    var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromHours(8));
-                    _memoryCache.Set($"Personale_{codice.Split('.')[0]}", listaPersonale, cacheEntryOptions);
+                    var lstSediQueryString = string.Join("&codiciSedi=", codSede.Where(s => sede.Contains(s.Split(".")[0])).ToArray());
+                    var url = new Uri($"{_configuration.GetSection("UrlExternalApi").GetSection("PersonaleApiUtenteComuni").Value}?codiciSede={sede}");
+                    lock (listaPersonale)
+                        listaPersonale.AddRange(httpManager.GetAsync(url).Result);
+                }
+                catch (Exception e)
+                {
+                    throw new Exception("Elenco del personale non disponibile");
                 }
             });
 

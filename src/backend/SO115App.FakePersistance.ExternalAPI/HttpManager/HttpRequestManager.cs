@@ -28,7 +28,7 @@ namespace SO115App.ExternalAPI.Fake.HttpManager
         {
             //TIMEOUT
             var timeoutPolicy = Policy
-                .TimeoutAsync<HttpResponseMessage>(120);
+                .TimeoutAsync<HttpResponseMessage>(60);
 
             //ECCEZIONI E RESPONSE
             var retryPolicy = Policy
