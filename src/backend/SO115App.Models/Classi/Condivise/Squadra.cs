@@ -71,6 +71,10 @@ namespace SO115App.API.Models.Classi.Condivise
 
         public string Id { get; set; }
 
+        public bool ColonnaMobile { get; set; }
+
+        public bool DiEmergenza { get; set; }
+
         public string Codice { get; set; }
 
         /// <summary>
@@ -100,8 +104,9 @@ namespace SO115App.API.Models.Classi.Condivise
 
         public List<string> ListaCodiciFiscaliComponentiSquadra { get; set; }
 
-        public int IndiceOrdinamento { get; set; }
+        public decimal IndiceOrdinamento { get; set; }
 
         public string Turno { get; set; }
+        public DateTime DataInServizio { get; set; }
     }
 }

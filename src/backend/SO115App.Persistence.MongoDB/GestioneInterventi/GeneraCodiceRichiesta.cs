@@ -1,4 +1,5 @@
-﻿using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GenerazioneCodiciRichiesta;
+﻿using SO115App.API.Models.Classi.Condivise;
+using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GenerazioneCodiciRichiesta;
 using SO115App.Persistence.MongoDB.GestioneInterventi.Utility;
 using System;
 using System.Collections.Generic;
@@ -31,6 +32,11 @@ namespace SO115App.Persistence.MongoDB.GestioneInterventi
             int maxNumero = _getMaxCodice.GetMaxCodiceChiamata(codiceProvincia);
             string returnString = string.Format("{0}{1}{2}{3}{4:D5}", codiceProvincia.Split('.')[0], giorno, mese, ultimeDueCifreAnno, maxNumero);
             return returnString;
+        }
+
+        public string GeneraCodicePartenza()
+        {
+            return (int.Parse(_getMaxCodice.GetMaxCodicePartenza() ?? "0") + 1).ToString();
         }
     }
 }

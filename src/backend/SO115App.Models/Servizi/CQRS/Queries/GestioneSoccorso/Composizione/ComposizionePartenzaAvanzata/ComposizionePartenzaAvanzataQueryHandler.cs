@@ -43,11 +43,15 @@ using System.Globalization;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using ComposizioneSquadre = SO115App.API.Models.Classi.Composizione.ComposizioneSquadre;
+using ComposizioneMezzi = SO115App.API.Models.Classi.Composizione.ComposizioneMezzi;
 
 namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.ComposizionePartenzaAvanzata
 {
     public class ComposizionePartenzaAvanzataQueryHandler : IQueryHandler<ComposizionePartenzaAvanzataQuery, ComposizionePartenzaAvanzataResult>
     {
+        #region Servizi
+
         private readonly IGetListaSquadre _getListaSquadre;
         private readonly IGetMezziUtilizzabili _getMezziUtilizzabili;
         private readonly IGetStatoSquadra _getStatoSquadre;
@@ -58,6 +62,8 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
         private readonly IConfiguration _configuration;
         private readonly IMemoryCache _memoryCache;
         private readonly IGetTurno _getTurno;
+
+        #endregion
 
         public ComposizionePartenzaAvanzataQueryHandler(
             IGetListaSquadre getListaSquadre,
@@ -88,111 +94,38 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             Log.Debug("Inizio elaborazione Composizione partenza avanzata Handler");
 
             var lstSedi = query.CodiceSede.ToList();
+            var tipologia90 = _getTipologieByCodice.Get(new List<string> { "90" }).First();
 
-            //CALCOLO I TURNI
             var turnoCorrente = _getTurno.Get();
-
-            string turnoPrecedente = null;
-            string turnoSuccessivo = null;
-
-            if(turnoCorrente.Codice.Contains('A'))
-            { 
-                turnoPrecedente = "C"; 
-                turnoSuccessivo = "D"; 
-            }
-            else if(turnoCorrente.Codice.Contains('B'))
-            {
-                turnoPrecedente = "D";
-                turnoSuccessivo = "C";
-            }
-            else if (turnoCorrente.Codice.Contains('C'))
-            {
-                turnoPrecedente = "B";
-                turnoSuccessivo = "A";
-            }
-            else if (turnoCorrente.Codice.Contains('D'))
-            {
-                turnoPrecedente = "A";
-                turnoSuccessivo = "B";
-            }
+            var turnoPrecedente = _getTurno.Get(turnoCorrente.DataOraInizio.AddMilliseconds(-1));
+            var turnoSuccessivo = _getTurno.Get(turnoCorrente.DataOraFine.AddMinutes(1));
 
             //REPERISCO I DATI, FACCIO IL MAPPING ED APPLICO I FILTRI (MEZZI E SQUADRE)
             var lstSquadre = _getListaSquadre.Get(lstSedi)
-                .ContinueWith(lstsquadre => //Mapping 
+                .ContinueWith(lstsquadre =>
                 {
                     var statiOperativi = _getStatoSquadre.Get(lstSedi);
 
                     return lstsquadre.Result.Select(squadra =>
                     {
                         if (statiOperativi.Exists(x => x.IdSquadra.Equals(squadra.Id)))
-                        {
                             squadra.Stato = MappaStatoSquadraDaStatoMezzo.MappaStato(statiOperativi.Find(x => x.IdSquadra.Equals(squadra.Id)).StatoSquadra);
-                            squadra.IndiceOrdinamento = -200;
-                        }
                         else
                             squadra.Stato = Squadra.StatoSquadra.InSede;
 
-                        return new Classi.Composizione.ComposizioneSquadre()
+                        var comp =  new Classi.Composizione.ComposizioneSquadre()
                         {
                             Id = squadra.Id,
                             Squadra = squadra
                         };
+
+                        squadra.IndiceOrdinamento = new OrdinamentoSquadre(query.Richiesta).GetIndiceOrdinamento(comp);
+
+
+                        return comp;
                     });
                 })
-                .ContinueWith(lstCompSquadre => //Filtri 
-                {
-                    return lstCompSquadre.Result.Where(s =>
-                    {
-                        if (!string.IsNullOrEmpty(query.Filtro.RicercaSquadre))
-                            return s.Squadra.Nome.Contains(query.Filtro.RicercaSquadre.ToUpper());
-                        return true;
-                    }).Where(s =>
-                    {
-                        if (query.Filtro.CodiceDistaccamento != null && query.Filtro.CodiceDistaccamento.All(c => c != ""))
-                            return query.Filtro.CodiceDistaccamento.Contains(s.Squadra.Distaccamento.Codice);
-                        return true;
-                    }).Where(s =>
-                    {
-                        if (query.Filtro.Squadre != null && query.Filtro.Squadre.Count > 0 && query.Filtro.Squadre.FirstOrDefault().Distaccamento.Codice != null)
-                            return s.Squadra.Distaccamento.Codice == query.Filtro.Squadre.FirstOrDefault().Distaccamento.Codice;
-                        return true;
-                    })
-                    .Where(m =>
-                    {
-                        if (query.Filtro.Mezzo != null && query.Filtro.Mezzo.Distaccamento.Codice != null)
-                            return m.Squadra.Distaccamento.Codice == query.Filtro.Mezzo.Distaccamento.Codice;
-                        return true;
-                    })
-
-                    //FILTRO TURNO FUNZIONANTE SOLO IN TEST
-#if !DEBUG
-                    .Where(s =>
-                    {
-                        if (turnoPrecedente != null)
-                            return turnoPrecedente.Contains(s.Squadra.Turno);
-                        else if (turnoPrecedente != null)
-                            return turnoSuccessivo.Contains(s.Squadra.Turno);
-                        return turnoCorrente.Codice.Contains(s.Squadra.Turno);
-                    })
-#endif
-                    //QUI MASCHERO I RISULTATI MOSTRANDO, SEMPRE, ALMENO UNA SQUADRA PER TURNO
-#if DEBUG
-                    .Select(s =>
-                    {
-                            switch (query.Filtro.Turno)
-                            {
-                                case FiltroTurnoRelativo.Precedente: s.Squadra.Turno = turnoPrecedente; break;
-                                case FiltroTurnoRelativo.Successivo: s.Squadra.Turno = turnoSuccessivo; break;
-                                case null: s.Squadra.Turno = turnoCorrente.Codice; break;
-                            }
-
-                        return s;
-                    })
-                    .Where(s => s != null)
-#endif
-
-                    .OrderByDescending(c => c.Squadra.Stato).ToList();
-                });
+                .ContinueWith(lstCompSquadre => FiltraSquadre(query, lstCompSquadre.Result, tipologia90, turnoCorrente, turnoPrecedente, turnoSuccessivo));
 
             var lstMezzi = _getPosizioneFlotta.Get(0)
                 .ContinueWith(lstPosizioneFlotta => _getMezziUtilizzabili.Get(lstSedi, posizioneFlotta: lstPosizioneFlotta.Result).Result)
@@ -244,45 +177,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                         return c;
                     });
                 })
-                .ContinueWith(lstCompMezzi => //Filtri 
-                {
-                    return lstCompMezzi.Result.Where(m =>
-                    {
-                        if (query.Filtro.StatoMezzo != null)
-                            return query.Filtro.StatoMezzo.Contains(m.Mezzo.Stato.ToString());
-                        return true;
-                    }).Where(m =>
-                    {
-                        if (!string.IsNullOrEmpty(query.Filtro.RicercaMezzi)) 
-                            return m.Mezzo.Codice.Contains(query.Filtro.RicercaMezzi) || m.Mezzo.Descrizione.Contains(query.Filtro.RicercaMezzi);
-                        return true;
-                    }).Where(m =>
-                    {
-                        if (query.Filtro.CodiceDistaccamento != null && query.Filtro.CodiceDistaccamento.All(c => c != ""))
-                            return query.Filtro.CodiceDistaccamento.Contains(m.Mezzo.Distaccamento.Codice);
-                        return true;
-                    }).Where(m =>
-                    {
-                        if (query.Filtro.TipoMezzo != null && query.Filtro.TipoMezzo.All(c => c != ""))
-                            return query.Filtro.TipoMezzo.Contains(m.Mezzo.Genere);
-                        return true;
-                    }).Where(m =>
-                    {
-                        if (query.Filtro.StatoMezzo != null && query.Filtro.StatoMezzo.All(c => c != ""))
-                            return query.Filtro.StatoMezzo.Contains(m.Mezzo.Stato);
-                        return true;
-                    }).Where(s =>
-                    {
-                        if (query.Filtro.Squadre != null && query.Filtro.Squadre.Count > 0 && query.Filtro.Squadre.FirstOrDefault().Distaccamento.Codice != null)
-                            return s.Mezzo.Distaccamento.Codice == query.Filtro.Squadre.FirstOrDefault().Distaccamento.Codice;
-                        return true;
-                    }).Where(m =>
-                    {
-                        if (query.Filtro.Mezzo != null && query.Filtro.Mezzo.Distaccamento.Codice != null)
-                            return m.Mezzo.Distaccamento.Codice == query.Filtro.Mezzo.Distaccamento.Codice;
-                        return true;
-                    }).OrderBy(x => x.Mezzo.Stato).ThenByDescending(c => c.IndiceOrdinamento).ToList();
-                });
+                .ContinueWith(lstCompMezzi => FiltraMezzi(query, lstCompMezzi.Result));
 
             //PREPARO PAGINAZIONE IN BASE AI FILTRI
             var indexMezzo = query.Filtro.Mezzo != null ? lstMezzi.Result.FindIndex(c => c.Mezzo.Codice.Equals(query.Filtro.Mezzo.Codice)) : 0;
@@ -326,6 +221,106 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                 ComposizionePartenzaAvanzata = composizioneAvanzata
             };
         }
+
+        private List<Classi.Composizione.ComposizioneMezzi> FiltraMezzi(ComposizionePartenzaAvanzataQuery query, IEnumerable<Classi.Composizione.ComposizioneMezzi> lstCompMezzi)
+        {
+            return lstCompMezzi.Where(m =>
+            {
+                if (query.Filtro.StatoMezzo != null)
+                    return query.Filtro.StatoMezzo.Contains(m.Mezzo.Stato.ToString());
+                return true;
+            }).Where(m =>
+            {
+                if (!string.IsNullOrEmpty(query.Filtro.RicercaMezzi))
+                    return m.Mezzo.Codice.Contains(query.Filtro.RicercaMezzi) || m.Mezzo.Descrizione.Contains(query.Filtro.RicercaMezzi);
+                return true;
+            }).Where(m =>
+            {
+                if (query.Filtro.CodiceDistaccamento != null && query.Filtro.CodiceDistaccamento.All(c => c != ""))
+                    return query.Filtro.CodiceDistaccamento.Contains(m.Mezzo.Distaccamento.Codice);
+                return true;
+            }).Where(m =>
+            {
+                if (query.Filtro.TipoMezzo != null && query.Filtro.TipoMezzo.All(c => c != ""))
+                    return query.Filtro.TipoMezzo.Contains(m.Mezzo.Genere);
+                return true;
+            }).Where(m =>
+            {
+                if (query.Filtro.StatoMezzo != null && query.Filtro.StatoMezzo.All(c => c != ""))
+                    return query.Filtro.StatoMezzo.Contains(m.Mezzo.Stato);
+                return true;
+            }).Where(s =>
+            {
+                if (query.Filtro.Squadre != null && query.Filtro.Squadre.Count > 0 && query.Filtro.Squadre.FirstOrDefault().Distaccamento.Codice != null)
+                    return s.Mezzo.Distaccamento.Codice == query.Filtro.Squadre.FirstOrDefault().Distaccamento.Codice;
+                return true;
+            }).Where(m =>
+            {
+                if (query.Filtro.Mezzo != null && query.Filtro.Mezzo.Distaccamento.Codice != null)
+                    return m.Mezzo.Distaccamento.Codice == query.Filtro.Mezzo.Distaccamento.Codice;
+                return true;
+            }).OrderBy(x => x.Mezzo.Stato).ThenByDescending(c => c.IndiceOrdinamento).ToList();
+        }
+
+        private List<Classi.Composizione.ComposizioneSquadre> FiltraSquadre(ComposizionePartenzaAvanzataQuery query, IEnumerable<Classi.Composizione.ComposizioneSquadre> lstCompSquadre, Tipologia tipologia90, Turno turnoCorrente, Turno turnoPrecedente, Turno turnoSuccessivo)
+        {
+            return lstCompSquadre.Where(s =>
+            {
+                if (!string.IsNullOrEmpty(query.Filtro.RicercaSquadre))
+                    return s.Squadra.Codice.Contains(query.Filtro.RicercaSquadre);
+                return true;
+            }).Where(s =>
+            {
+                if (query.Filtro.CodiceDistaccamento != null && query.Filtro.CodiceDistaccamento.All(c => c != ""))
+                    return query.Filtro.CodiceDistaccamento.Contains(s.Squadra.Distaccamento.Codice);
+                return true;
+            }).Where(s =>
+            {
+                if (query.Filtro.Squadre != null && query.Filtro.Squadre.Count > 0 && query.Filtro.Squadre.FirstOrDefault().Distaccamento.Codice != null)
+                    return s.Squadra.Distaccamento.Codice == query.Filtro.Squadre.FirstOrDefault().Distaccamento.Codice;
+                return true;
+            }).Where(s =>
+            {
+                if (query.Filtro.Mezzo != null && query.Filtro.Mezzo.Distaccamento.Codice != null)
+                    return s.Squadra.Distaccamento.Codice == query.Filtro.Mezzo.Distaccamento.Codice;
+                return true;
+            }).Where(s => s.Squadra.DiEmergenza == query.Filtro.SquadreDiEmergenza)
+            .Where(s =>
+            {
+                if (!query.Richiesta.Tipologie.Contains(tipologia90.Codice))
+                    return s.Squadra.ColonnaMobile == query.Filtro.SquadreColonnaMobile;
+                return true;
+            })
+
+            //FILTRO TURNO FUNZIONANTE SOLO IN TEST
+#if !DEBUG
+            .Where(s =>
+            {
+                if (turnoPrecedente != null)
+                    return turnoPrecedente.Contains(s.Squadra.Turno);
+                else if (turnoPrecedente != null)
+                    return turnoSuccessivo.Contains(s.Squadra.Turno);
+                return turnoCorrente.Codice.Contains(s.Squadra.Turno);
+            })
+#endif
+            //QUI MASCHERO I RISULTATI MOSTRANDO, SEMPRE, ALMENO UNA SQUADRA PER TURNO
+#if DEBUG
+            .Select(s =>
+            {
+                switch (query.Filtro.Turno)
+                {
+                    case FiltroTurnoRelativo.Precedente: s.Squadra.Turno = turnoPrecedente.Codice; break;
+                    case FiltroTurnoRelativo.Successivo: s.Squadra.Turno = turnoSuccessivo.Codice; break;
+                    case null: s.Squadra.Turno = turnoCorrente.Codice; break;
+                }
+
+                return s;
+            })
+            .Where(s => s != null)
+#endif
+            .OrderByDescending(c => c.Squadra.IndiceOrdinamento)
+            .ToList();
+        }
     }
 
     internal class OrdinamentoMezzi
@@ -353,7 +348,16 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
             if (!CoordinateFake)
                 composizione = GetDistanceByGoogle(composizione, _Richiesta).Result;
 
-            return 100 / (1 + Convert.ToDecimal(composizione.TempoPercorrenza.Replace(".", ",")) / 5400) + ValoreIntOriginePerSganciamento + ValoreAdeguatezzaMezzo;
+            int ValoreCompetenza = 0;
+            switch (_Richiesta.Competenze.Select(c => c.Descrizione).ToList().FindIndex(c => c.Equals(composizione.Mezzo.Distaccamento.Descrizione)))
+            {
+                case 0: ValoreCompetenza = 3000; break;
+                case 1: ValoreCompetenza = 2000; break;
+                case 2: ValoreCompetenza = 1000; break;
+            }
+
+            return 100 / (1 + Convert.ToDecimal(composizione.TempoPercorrenza.Replace(".", ",")) / 5400) 
+                + ValoreIntOriginePerSganciamento + ValoreAdeguatezzaMezzo + ValoreCompetenza;
         }
 
         private async Task<Classi.Composizione.ComposizioneMezzi> GetDistanceByGoogle(Classi.Composizione.ComposizioneMezzi composizione, RichiestaAssistenza richiesta)
@@ -417,6 +421,32 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
                 }
             }
             return 10;
+        }
+    }
+
+    internal class OrdinamentoSquadre
+    {
+        RichiestaAssistenza _Richiesta;
+        public OrdinamentoSquadre(RichiestaAssistenza Richiesta)
+        {
+            _Richiesta = Richiesta;
+        }
+
+        public decimal GetIndiceOrdinamento(Classi.Composizione.ComposizioneSquadre composizione)
+        {
+            int ValoreCompetenza = 0;
+
+            if (composizione.Squadra.Stato == Squadra.StatoSquadra.InSede)
+            {
+                switch (_Richiesta.Competenze.Select(c => c.Descrizione).ToList().FindIndex(c => c.Equals(composizione.Squadra.Distaccamento.Descrizione)))
+                {
+                    case 0: ValoreCompetenza = 3000; break;
+                    case 1: ValoreCompetenza = 2000; break;
+                    case 2: ValoreCompetenza = 1000; break;
+                }
+            }
+
+            return ValoreCompetenza;
         }
     }
 }
