@@ -106,7 +106,7 @@
                                                            [ngModelOptions]="{standalone: true}">
                                                 </ng-select> -->
                                                 <select id="civicokmSelect" name="civicokmSelect" [(ngModel)]="civicokm"
-                                                        [ngModelOptions]="{standalone: true}">
+                                                        [ngModelOptions]="{standalone: true}" style="margin-left: 10px;height: inherit;">
                                                     <option value="CIVICO" [selected]="civicokm === 'CIVICO'">CIVICO
                                                     </option>
                                                     <option value="KM" [selected]="civicokm === 'KM'">KM</option>
@@ -135,7 +135,7 @@
                             </div>
                         </div>
                         <!-- COORDINATE -->
-                        <div class="col-12 bg-light py-2">
+                        <div class="col-12 bg-lightdanger py-2">
                             <div class="clearfix">
                                 <!-- LATITUDINE -->
                                 <div class="float-left pr-2">
@@ -353,46 +353,172 @@
                                         </div>
                                     </div>
                                 </div>
+                                <!---->
                                 <div class="float-left w-25 py-2">
                                     <div class="clearfix">
                                         <div class="float-left w-25 pl-2 pr-1">
                                             <div class="custom-control custom-radio">
-                                                <input type="radio" id="112" name="112"
+                                                <input type="checkbox" id="112" name="112"
                                                        class="custom-control-input">
                                                 <label class="custom-control-label" for="112">
                                                     112
                                                 </label>
                                             </div>
                                             <div class="custom-control custom-radio">
-                                                <input type="radio" id="113" name="113"
+                                                <input type="checkbox" id="113" name="113"
                                                        class="custom-control-input">
                                                 <label class="custom-control-label" for="113">
                                                     113
                                                 </label>
                                             </div>
                                             <div class="custom-control custom-radio">
-                                                <input type="radio" id="118" name="118"
+                                                <input type="checkbox" id="118" name="118"
                                                        class="custom-control-input">
                                                 <label class="custom-control-label" for="118">
                                                     118
                                                 </label>
                                             </div>
                                             <div class="custom-control custom-radio">
-                                                <input type="radio" id="VV.UU." name="VV.UU."
+                                                <input type="checkbox" id="VV.UU." name="VV.UU."
                                                        class="custom-control-input">
                                                 <label class="custom-control-label" for="VV.UU.">
                                                     VV.UU.
                                                 </label>
                                             </div>
                                         </div>
+                                        <!-- ENTI INTERVENUTI -->
                                         <div class="float-left w-75">
-                                            <h5 class="text-danger">Nessun Ente</h5>
+                                          <div class="form-control-lg pl-0 m-0 pb-5">
+                                            <label for="listaEnti" class="d-none">Enti Intervenuti</label>
+                                            <ng-select
+                                              id="listaEnti"
+                                              formControlName="listaEnti"
+                                              [items]="enti"
+                                              bindLabel="descrizione"
+                                              bindValue="codice"
+                                              [multiple]="true"
+                                              placeholder="Enti Intervenuti"
+                                              [closeOnSelect]="true"
+                                              [hideSelected]="true"
+                                              [notFoundText]="'Nessun ente trovato con i parametri di ricerca'">
+                                            </ng-select>
+                                          </div>
+                                          <button class="btn btn-sm w-50 btn-secondary btn-no-hover" (click)="onAggiungiNuovoEnte()"><i class="fa fa-plus mr-1"></i></button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <!-- NOTE CHIAMATE-->
+                    <div class="row">
+                    <div class="col-12 bg-danger border-bottom py-1"></div>
+                    <div class="col-12 px-0">
+                      <div class="clearfix bg-lightdanger">
+                        <div class="float-left w-75 pl-3 pr-2 py-2">
+                          <div class="clearfix">
+                            <!-- NOTE -->
+                            <div class="float-left w-75 pr-2 d-inline-flex">
+                              <div class="form-group-lg w-50">
+                                <label for="noteOperatore" class="d-none">Note per l'Operatore</label>
+                                <textarea id="noteOperatore" placeholder="Inserisci Note per l'Operatore" formcontrolname="descrizione" class="form-control font-weight-bolder" style="background-color: #f3f3f3; max-height: 225px; min-height: 225px; font-size: 20px"></textarea>
+                              </div>
+                              <div class="form-group-lg w-50">
+                                <label for="noteIntervento" class="d-none">Inserisci Note per l'Intervento</label>
+                                <textarea id="noteIntervento" placeholder="Inserisci Note per l'Intervento" formcontrolname="descrizione" class="form-control font-weight-bolder" style="max-height: 130px; min-height: 130px; font-size: 20px; margin-bottom: 10px"></textarea>
+                                <label for="noteNue112" class="d-none">Inserisci Note Nue112</label>
+                                <textarea id="noteNue112" placeholder="Inserisci Note Nue112" formcontrolname="descrizione" class="form-control font-weight-bolder" style="max-height: 85px; min-height: 85px; font-size: 20px"></textarea>
+                              </div>
+                            </div>
+                            <!-- PRIORITA' -->
+                            <div class="float-left w-25 px-2">
+                              <span class="mr-2 h5 font-weight-normal">Priorità</span>
+                              <div class="form-group-lg">
+                                <div class="bg-white pl-2">
+                                  <div class="custom-control custom-radio bg-white">
+                                    <input type="checkbox" id="Nessuna" name="Nessuna"
+                                           class="custom-control-input">
+                                    <label class="custom-control-label" for="Nessuna">
+                                      Nessuna
+                                    </label>
+                                  </div>
+                                  <div class="custom-control custom-radio bg-white">
+                                    <input type="checkbox" id="Bassa" name="Bassa"
+                                           class="custom-control-input">
+                                    <label class="custom-control-label" for="Bassa">
+                                      Bassa
+                                    </label>
+                                  </div>
+                                  <div class="custom-control custom-radio bg-white">
+                                    <input type="checkbox" id="Media" name="Media"
+                                           class="custom-control-input">
+                                    <label class="custom-control-label" for="Media">
+                                      Media
+                                    </label>
+                                  </div>
+                                  <div class="custom-control custom-radio bg-white">
+                                    <input type="checkbox" id="Alta" name="Alta"
+                                           class="custom-control-input">
+                                    <label class="custom-control-label" for="Alta">
+                                      Alta
+                                    </label>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <!-- INFO PROSSIMITA' -->
+                        <div class="float-left w-25 py-2">
+                          <span class="mr-2 h5 font-weight-normal">Info-prossimità</span>
+                          <div class="bg-white pl-2">
+                            <div class="custom-control custom-checkbox bg-white py-2">
+                              <input type="checkbox" id="prossimita" name="prossimita"
+                                     class="custom-control-input">
+                              <label class="custom-control-label" for="prossimita">
+                                Chiamate/interventi in prossimità
+                              </label>
+                            </div>
+                            <div class="custom-control custom-checkbox bg-white py-2">
+                              <input type="checkbox" id="stessaVia" name="stessaVia"
+                                     class="custom-control-input">
+                              <label class="custom-control-label" for="stessaVia">
+                                Chiamate/interventi nella stessa via
+                              </label>
+                            </div>
+                            <div class="custom-control custom-checkbox bg-white py-2">
+                              <input type="checkbox" id="stessoIndirizzo" name="stessoIndirizzo"
+                                     class="custom-control-input">
+                              <label class="custom-control-label" for="stessoIndirizzo">
+                                Chiamate/interventi chiusi con lo stesso indirizzo
+                              </label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                    <!-- FOOTER AZIONI -->
+                    <div class="row">
+                    <div class="col-12 bg-dark text-white border-bottom border-white py-2">
+                      <div class="clearfix">
+                        <div class="float-left box-azione-chiamata bg-secondary" style="width: 27.5%;">
+                          <button type="button" class="btn btn-light btn-xlarge btn-no-hover" (click)="onAnnullaChiamata()">Annulla</button>
+                          <button type="button" class="btn btn-light btn-xlarge btn-no-hover">Abilita Modifica</button>
+                        </div>
+                        <div class="float-left box-azione-chiamata bg-secondary" style="width: 32.5%;">
+                          <button type="button" class="btn btn-light btn-xlarge btn-no-hover">Invio Partenza</button>
+                          <button type="button" class="btn btn-light btn-xlarge btn-no-hover">In Attesa</button>
+                        </div>
+                        <div class="float-left box-azione-chiamata bg-secondary" style="width: 25%;">
+                          <button type="button" class="btn btn-light btn-xlarge btn-no-hover">Chiusura Chiamata</button>
+                        </div>
+                        <div class="float-left box-azione-chiamata bg-secondary" style="width: 15%;">
+                          <button type="button" class="btn btn-light btn-xlarge btn-no-hover">Uscita</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </form>
             </div>
             <!-- SUGGERIMENTI -->
