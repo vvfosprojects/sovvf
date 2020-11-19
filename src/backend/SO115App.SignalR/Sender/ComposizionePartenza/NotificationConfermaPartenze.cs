@@ -45,7 +45,7 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
         private readonly MapperRichiestaAssistenzaSuSintesi _mapperSintesi;
         private readonly GetGerarchiaToSend _getGerarchiaToSend;
         private readonly IGetDistaccamentoByCodiceSedeUC _getDistaccamentoUC;
-        private readonly IGetListaMezzi _getListaMezzi;
+        private readonly IGetMezziInServizio _getListaMezzi;
 
         public NotificationConfermaPartenze(IHubContext<NotificationHub> notificationHubContext,
             IQueryHandler<BoxRichiesteQuery, BoxRichiesteResult> boxRichiestehandler,
@@ -53,7 +53,7 @@ namespace SO115App.SignalR.Sender.ComposizionePartenza
             IQueryHandler<BoxPersonaleQuery, BoxPersonaleResult> boxPersonalehandler,
             IQueryHandler<SintesiRichiesteAssistenzaMarkerQuery, SintesiRichiesteAssistenzaMarkerResult> sintesiRichiesteAssistenzaMarkerhandler,
             MapperRichiestaAssistenzaSuSintesi mapperSintesi,
-            GetGerarchiaToSend getGerarchiaToSend, IGetDistaccamentoByCodiceSedeUC getDistaccamentoUC, IGetListaMezzi getListaMezzi)
+            GetGerarchiaToSend getGerarchiaToSend, IGetDistaccamentoByCodiceSedeUC getDistaccamentoUC, IGetMezziInServizio getListaMezzi)
         {
             _getGerarchiaToSend = getGerarchiaToSend;
             _getListaMezzi = getListaMezzi;

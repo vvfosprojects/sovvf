@@ -27,7 +27,7 @@ namespace SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi
     ///   Servizio di risoluzione di un <see cref="Mezzo" /> mediante interrogazione di
     ///   un'anagrafica dei mezzi.
     /// </summary>
-    public interface IGetListaMezzi
+    public interface IGetMezziInServizio
     {
         /// <summary>
         ///   Restituisce l'anagrafica del mezzo a partire dal suo codice

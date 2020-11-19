@@ -106,8 +106,8 @@ namespace SO115App.CompositionRoot
             container.Register<IGetMezziFuoriServizio, GetMezziFuoriServizio>();
             container.Register<ISetMovimentazione, SetMovimentazione>();
             container.Register<
-                SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi.IGetListaMezzi,
-                ExternalAPI.Fake.GestioneMezzi.GetListaMezziExt>();
+                SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi.IGetMezziInServizio,
+                GetMezziInServizio>();
 
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.Composizione.IUpdateConfermaPartenze,

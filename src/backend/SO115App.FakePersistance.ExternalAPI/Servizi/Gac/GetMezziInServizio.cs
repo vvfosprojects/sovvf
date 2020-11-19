@@ -17,10 +17,8 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
-using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Marker;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi;
-using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.ListaMezziInServizio;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
@@ -30,21 +28,21 @@ using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SO115App.ExternalAPI.Fake.GestioneMezzi
+namespace SO115App.ExternalAPI.Fake.Servizi.Gac
 {
     /// <summary>
     ///   La classe recupera i dati di tutti i mezzi utilizzabili dal gac e i dati delle richieste
     ///   associate ai mezzi e restistuisce una lista di mezzi in servizio completa di tutte le
     ///   informazioni (squadre sul mezzo, richiesta a cui il mezzo e associato e il mezzo stesso)
     /// </summary>
-    public class GetListaMezziExt : IGetListaMezzi
+    public class GetMezziInServizio : IGetMezziInServizio
     {
         private readonly IGetInfoRichiesta _getInfoRichiesta;
         private readonly IGetMezziUtilizzabili _getMezziUtilizzabili;
         private readonly IGetRichiestaById _getRichiestaById;
         private readonly IGetStatoMezzi _getStatoMezzi;
 
-        public GetListaMezziExt(IGetInfoRichiesta getInfoRichiesta, IGetMezziUtilizzabili getMezziUtilizzabili, IGetRichiestaById getRichiestaById, IGetStatoMezzi getStatoMezzi)
+        public GetMezziInServizio(IGetInfoRichiesta getInfoRichiesta, IGetMezziUtilizzabili getMezziUtilizzabili, IGetRichiestaById getRichiestaById, IGetStatoMezzi getStatoMezzi)
         {
             _getInfoRichiesta = getInfoRichiesta;
             _getMezziUtilizzabili = getMezziUtilizzabili;
@@ -59,22 +57,10 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
         /// <returns>Lista di MezziInServizio</returns>
         public List<MezzoInServizio> Get(string[] CodiciSede)
         {
-            var listaMezzoInServizio = new List<MezzoInServizio>();
+            var mezzi = _getMezziUtilizzabili.Get(CodiciSede.ToList());
+            var statoMezzi = _getStatoMezzi.Get(CodiciSede);
 
-            var listaCodiciSede = CodiciSede.ToList();
-
-            var codiceSedeIniziali = listaCodiciSede[0];
-
-            var mezzi = _getMezziUtilizzabili.Get(listaCodiciSede.ToHashSet().ToList()).Result;
-
-            var statoMezzi = new List<StatoOperativoMezzo>();
-
-            foreach (var codsede in listaCodiciSede)
-            {
-                statoMezzi.AddRange(_getStatoMezzi.Get(codsede));
-            }
-
-            foreach (var mezzo in mezzi)
+            var listaMezzoInServizio = mezzi.Result.Select(mezzo =>
             {
                 var statoOperativoMezzi = statoMezzi.Find(x => x.CodiceMezzo.Equals(mezzo.Codice));
                 mezzo.Stato = statoOperativoMezzi != null ? statoOperativoMezzi.StatoOperativo : Costanti.MezzoInSede;
@@ -108,9 +94,8 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
                     mezzoInServizio.Squadre = null;
                 }
 
-                if(mezzoInServizio.Mezzo.Mezzo != null)
-                    listaMezzoInServizio.Add(mezzoInServizio);
-            }
+                return mezzoInServizio;
+            });
 
             return listaMezzoInServizio
                 .OrderBy(c => c.Mezzo.Mezzo.Stato == Costanti.MezzoInSede)

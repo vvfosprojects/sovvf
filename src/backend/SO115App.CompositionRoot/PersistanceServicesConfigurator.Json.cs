@@ -78,7 +78,7 @@ namespace SO115App.CompositionRoot
                 SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi.IGetMezzoByCodice,
                 SO115App.FakePersistence.JSon.GestioneMezzi.GetMezzoById>();
             container.Register<
-                SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi.IGetListaMezzi,
+                SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi.IGetMezziInServizio,
                 GetListaMezzi>();
             container.Register<
                 Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi.ISetStatoOperativoMezzo,
