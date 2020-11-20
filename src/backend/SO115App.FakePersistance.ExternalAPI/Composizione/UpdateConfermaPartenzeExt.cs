@@ -38,15 +38,17 @@ namespace SO115App.ExternalAPI.Fake.Composizione
         private readonly IUpDateRichiestaAssistenza _updateRichiesta;
         private readonly ISetStatoOperativoMezzo _setStatoOperativoMezzo;
         private readonly ISetStatoSquadra _setStatoSquadra;
+        private readonly ISetUscitaMezzo _setUscitaMezzo;
 
         /// <summary>
         ///   Costruttore della classe
         /// </summary>
-        public UpdateConfermaPartenzeExt(IUpDateRichiestaAssistenza updateRichiesta, ISetStatoOperativoMezzo setStatoOperativoMezzo, ISetStatoSquadra setStatoSquadra)
+        public UpdateConfermaPartenzeExt(IUpDateRichiestaAssistenza updateRichiesta, ISetStatoOperativoMezzo setStatoOperativoMezzo, ISetStatoSquadra setStatoSquadra, ISetUscitaMezzo setUscitaMezzo)
         {
             _updateRichiesta = updateRichiesta;
             _setStatoOperativoMezzo = setStatoOperativoMezzo;
             _setStatoSquadra = setStatoSquadra;
+            _setUscitaMezzo = setUscitaMezzo;
         }
 
         /// <summary>
@@ -73,6 +75,8 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                     _setStatoSquadra.SetStato(squadra.Codice, command.ConfermaPartenze.IdRichiesta, partenza.Mezzo.Stato, codiceSede, partenza.Mezzo.Codice);
                 }
             }
+
+            //GAC
 
             conferma.CodiceSede = command.ConfermaPartenze.CodiceSede;
             conferma.IdRichiesta = command.ConfermaPartenze.IdRichiesta;

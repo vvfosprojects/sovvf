@@ -15,6 +15,7 @@ namespace SO115App.ExternalAPI.Fake.HttpManager
     {
         private readonly IMemoryCache _memoryCache;
         private readonly HttpClient _client;
+        private readonly HttpContent _httpContent;
 
         private AsyncPolicyWrap<HttpResponseMessage> policies;
 
@@ -73,7 +74,7 @@ namespace SO115App.ExternalAPI.Fake.HttpManager
 
         public async Task<OutputData> PutAsync(Uri url, HttpContent content)
         {
-            var response = await policies.ExecuteAsync(() => _client.PostAsync(url, content));
+            var response = await policies.ExecuteAsync(() => _client.PutAsync(url, content));
 
             return ManageResponse(response);
         }
