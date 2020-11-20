@@ -122,3 +122,22 @@ tag-input {
     }
   }
 }
+
+.box-azione-chiamata {
+  width: 33.3%;
+  border: solid;
+  margin-top: 30px;
+  margin-bottom: 10px;
+  padding: 10px;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.btn-xlarge {
+  padding: 16px 26px; // modifica dimensione a piacimento
+  font-size: 18px; // modifica dimensione a piacimento
+  line-height: normal;
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+  border-radius: 8px;
+}
