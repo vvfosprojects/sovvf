@@ -15,7 +15,6 @@ namespace SO115App.ExternalAPI.Fake.HttpManager
     {
         private readonly IMemoryCache _memoryCache;
         private readonly HttpClient _client;
-        private readonly HttpContent _httpContent;
 
         private AsyncPolicyWrap<HttpResponseMessage> policies;
 
