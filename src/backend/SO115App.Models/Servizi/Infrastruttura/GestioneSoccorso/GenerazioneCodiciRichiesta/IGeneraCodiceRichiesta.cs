@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using SO115App.API.Models.Classi.Condivise;
 
 namespace SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GenerazioneCodiciRichiesta
 {
@@ -9,5 +7,7 @@ namespace SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GenerazioneCod
         string GeneraCodiceChiamata(string codiceProvincia, int anno);
 
         string Genera(string codiceProvincia, int anno);
+
+        string GeneraCodicePartenza();
     }
 }
