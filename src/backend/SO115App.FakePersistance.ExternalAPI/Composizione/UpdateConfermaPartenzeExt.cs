@@ -21,6 +21,7 @@
 using DomainModel.CQRS.Commands.ConfermaPartenze;
 using SO115App.API.Models.Classi.Composizione;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
+using SO115App.Models.Classi.ServiziEsterni.Gac;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi;
@@ -76,7 +77,12 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                 }
             }
 
-            //GAC
+            //GAC USCITA/ENTRATA
+            if (true)
+                _setUscitaMezzo.Set(new UscitaMezzo());
+            else
+                _setUscitaMezzo.Set(null);
+
 
             conferma.CodiceSede = command.ConfermaPartenze.CodiceSede;
             conferma.IdRichiesta = command.ConfermaPartenze.IdRichiesta;

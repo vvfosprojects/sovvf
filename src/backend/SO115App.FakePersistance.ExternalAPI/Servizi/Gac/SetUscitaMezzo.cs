@@ -14,7 +14,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
             : base(client, configuration, memoryCache) { }
 
 
-        public void Put(UscitaMezzo uscitaMezzo)
+        public void Set(UscitaMezzo uscitaMezzo)
         {
             var requestManager = new HttpRequestManager<UscitaMezzo>(_memoryCache, _client);
             requestManager.Configure();
