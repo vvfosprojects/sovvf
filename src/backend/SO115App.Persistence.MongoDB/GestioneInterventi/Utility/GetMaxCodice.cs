@@ -55,5 +55,11 @@ namespace SO115App.Persistence.MongoDB.GestioneInterventi.Utility
 
             return MaxIdSintesi;
         }
+
+        public string GetMaxCodicePartenza()
+        {
+            return _dbContext.RichiestaAssistenzaCollection.Find(Builders<RichiestaAssistenza>.Filter.Empty).ToList()
+                .SelectMany(r => r.Partenze.Select(p => p.Partenza.Codice)).Max();
+        }
     }
 }

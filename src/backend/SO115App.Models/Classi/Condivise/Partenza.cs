@@ -24,6 +24,11 @@ namespace SO115App.API.Models.Classi.Condivise
     public class Partenza
     {
         /// <summary>
+        /// Codice incrementale univoco legato alla partenza
+        /// </summary>
+        public string Codice { get; set; }
+
+        /// <summary>
         ///   Lista delle squadre coinvolte
         /// </summary>
         public List<Squadra> Squadre { get; set; }
