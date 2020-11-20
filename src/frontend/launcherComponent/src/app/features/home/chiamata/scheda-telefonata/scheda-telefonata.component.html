@@ -421,13 +421,21 @@
                             <div class="float-left w-75 pr-2 d-inline-flex">
                               <div class="form-group-lg w-50">
                                 <label for="noteOperatore" class="d-none">Note per l'Operatore</label>
-                                <textarea id="noteOperatore" placeholder="Inserisci Note per l'Operatore" formcontrolname="descrizione" class="form-control font-weight-bolder" style="background-color: #f3f3f3; max-height: 225px; min-height: 225px; font-size: 20px"></textarea>
+                                <textarea id="noteOperatore" placeholder="Inserisci Note per l'Operatore" formcontrolname="descrizione" class="form-control font-weight-bolder" style="margin-bottom: 10px; background-color: #f3f3f3; max-height: 225px; min-height: 225px; font-size: 20px"></textarea>
+                                  <label for="zoneEmergenza" class="d-none">Codice emergenza</label>
+                                  <input id="zoneEmergenza" type="text" placeholder="Codice Emergenza"
+                                         formControlName="zoneEmergenza"
+                                         class="form-control-lg font-weight-bolder w-100" [ngClass]="{ 'is-invalid': submitted && f.zoneEmergenza.errors }"/>
                               </div>
                               <div class="form-group-lg w-50">
                                 <label for="noteIntervento" class="d-none">Inserisci Note per l'Intervento</label>
                                 <textarea id="noteIntervento" placeholder="Inserisci Note per l'Intervento" formcontrolname="descrizione" class="form-control font-weight-bolder" style="max-height: 130px; min-height: 130px; font-size: 20px; margin-bottom: 10px"></textarea>
                                 <label for="noteNue112" class="d-none">Inserisci Note Nue112</label>
-                                <textarea id="noteNue112" placeholder="Inserisci Note Nue112" formcontrolname="descrizione" class="form-control font-weight-bolder" style="max-height: 85px; min-height: 85px; font-size: 20px"></textarea>
+                                <textarea id="noteNue112" placeholder="Inserisci Note Nue112" formcontrolname="descrizione" class="form-control font-weight-bolder" style="margin-bottom: 10px; max-height: 85px; min-height: 85px; font-size: 20px"></textarea>
+                                  <label for="etichette" class="d-none">Tag</label>
+                                  <tag-input id="etichette" class="tag-form-control-lg font-weight-bolder" formControlName="etichette" [modelAsStrings]="true"
+                                             [placeholder]="'Inserisci tag'"
+                                             [secondaryPlaceholder]="'Inserisci tag'"></tag-input>
                               </div>
                             </div>
                             <!-- PRIORITA' -->
