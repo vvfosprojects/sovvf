@@ -41,6 +41,7 @@
                                     <div class="form-control-lg w-100 p-0 mb-0">
                                         <label class="d-none">Tipologia Intervento</label>
                                         <ng-select [ngClass]="{'errore': submitted && checkTipologie()}"
+                                                   style="border: 1px solid #888888;"
                                                    bindLabel="codiceDescrizione"
                                                    bindValue="codice"
                                                    clearAllText="Clear"
@@ -106,7 +107,7 @@
                                                            [ngModelOptions]="{standalone: true}">
                                                 </ng-select> -->
                                                 <select id="civicokmSelect" name="civicokmSelect" [(ngModel)]="civicokm"
-                                                        [ngModelOptions]="{standalone: true}" style="margin-left: 10px;height: inherit;">
+                                                        [ngModelOptions]="{standalone: true}" style="margin-left: 10px;height: inherit; border: 1px solid #888888;">
                                                     <option value="CIVICO" [selected]="civicokm === 'CIVICO'">CIVICO
                                                     </option>
                                                     <option value="KM" [selected]="civicokm === 'KM'">KM</option>
@@ -421,7 +422,7 @@
                             <div class="float-left w-75 pr-2 d-inline-flex">
                               <div class="form-group-lg w-50">
                                 <label for="noteOperatore" class="d-none">Note per l'Operatore</label>
-                                <textarea id="noteOperatore" placeholder="Inserisci Note per l'Operatore" formcontrolname="descrizione" class="form-control font-weight-bolder" style="margin-bottom: 10px; background-color: #f3f3f3; max-height: 225px; min-height: 225px; font-size: 20px"></textarea>
+                                <textarea id="noteOperatore" placeholder="Inserisci Note per l'Operatore" formcontrolname="descrizione" class="form-control font-weight-bolder area-note-operatore"></textarea>
                                   <label for="zoneEmergenza" class="d-none">Codice emergenza</label>
                                   <input id="zoneEmergenza" type="text" placeholder="Codice Emergenza"
                                          formControlName="zoneEmergenza"
@@ -429,9 +430,9 @@
                               </div>
                               <div class="form-group-lg w-50">
                                 <label for="noteIntervento" class="d-none">Inserisci Note per l'Intervento</label>
-                                <textarea id="noteIntervento" placeholder="Inserisci Note per l'Intervento" formcontrolname="descrizione" class="form-control font-weight-bolder" style="max-height: 130px; min-height: 130px; font-size: 20px; margin-bottom: 10px"></textarea>
+                                <textarea id="noteIntervento" placeholder="Inserisci Note per l'Intervento" formcontrolname="descrizione" class="form-control font-weight-bolder area-note-intervento"></textarea>
                                 <label for="noteNue112" class="d-none">Inserisci Note Nue112</label>
-                                <textarea id="noteNue112" placeholder="Inserisci Note Nue112" formcontrolname="descrizione" class="form-control font-weight-bolder" style="margin-bottom: 10px; max-height: 85px; min-height: 85px; font-size: 20px"></textarea>
+                                <textarea id="noteNue112" placeholder="Inserisci Note Nue112" formcontrolname="descrizione" class="form-control font-weight-bolder area-note-nue"></textarea>
                                   <label for="etichette" class="d-none">Tag</label>
                                   <tag-input id="etichette" class="tag-form-control-lg font-weight-bolder" formControlName="etichette" [modelAsStrings]="true"
                                              [placeholder]="'Inserisci tag'"

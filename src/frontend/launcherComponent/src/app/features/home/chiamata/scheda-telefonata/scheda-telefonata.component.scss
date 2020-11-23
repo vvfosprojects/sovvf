@@ -133,7 +133,7 @@ tag-input {
   justify-content: space-evenly;
 }
 
-.btn-xlarge {
+.btn-xlarge { // si può spostare su style.scss
   padding: 16px 26px; // modifica dimensione a piacimento
   font-size: 18px; // modifica dimensione a piacimento
   line-height: normal;
@@ -149,4 +149,27 @@ tag-input {
   font-size: 1.25rem;
   line-height: 2.1;
   border-radius: 0.3rem;
+}
+
+.area-note-operatore {
+  margin-bottom: 10px;
+  background-color: #f3f3f3;
+  max-height: 225px;
+  min-height: 225px;
+  font-size: 20px;
+  border: 1px solid #888888;
+}
+
+.area-note-intervento {
+  max-height: 130px;
+  min-height: 130px;
+  font-size: 20px;
+  margin-bottom: 10px
+}
+
+.area-note-nue {
+  margin-bottom: 10px;
+  max-height: 85px;
+  min-height: 85px;
+  font-size: 20px
 }
