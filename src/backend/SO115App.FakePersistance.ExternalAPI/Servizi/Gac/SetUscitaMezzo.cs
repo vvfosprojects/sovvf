@@ -8,7 +8,7 @@ using System.Net.Http;
 
 namespace SO115App.ExternalAPI.Fake.Servizi.Gac
 {
-    public class SetUscitaMezzo : BaseExternalApiService, ISetUscitaMezzo
+    public class SetUscitaMezzo : BaseService, ISetUscitaMezzo
     {
         public SetUscitaMezzo(HttpClient client, IConfiguration configuration, IMemoryCache memoryCache)
             : base(client, configuration, memoryCache) { }

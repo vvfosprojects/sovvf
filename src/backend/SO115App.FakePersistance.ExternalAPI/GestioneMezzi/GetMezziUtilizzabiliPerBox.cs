@@ -17,25 +17,19 @@ using System.Threading.Tasks;
 
 namespace SO115App.ExternalAPI.Fake.GestioneMezzi
 {
-    public class GetMezziUtilizzabiliPerBox : IGetMezziUtilizzabiliPerBox
-
+    public class GetMezziUtilizzabiliPerBox : BaseService, IGetMezziUtilizzabiliPerBox
     {
-        private readonly HttpClient _client;
-        private readonly IConfiguration _configuration;
         private readonly IGetStatoMezzi _getStatoMezzi;
         private readonly IGetAlberaturaUnitaOperative _getAlberaturaUnitaOperative;
-        private readonly IMemoryCache _memoryCache;
         private readonly IGetPosizioneFlotta _getPosizioneFlotta;
 
         public GetMezziUtilizzabiliPerBox(HttpClient client, IConfiguration configuration, IGetStatoMezzi GetStatoMezzi,
             IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative,
             IMemoryCache memoryCache, IGetPosizioneFlotta getPosizioneFlotta)
+            : base(client, configuration, memoryCache)
         {
-            _client = client;
-            _configuration = configuration;
             _getStatoMezzi = GetStatoMezzi;
             _getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
-            _memoryCache = memoryCache;
             _getPosizioneFlotta = getPosizioneFlotta;
         }
 

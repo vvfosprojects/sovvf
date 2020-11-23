@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace SO115App.ExternalAPI.Fake.HttpManager
 {
-    public class HttpRequestManager<OutputData> : IHttpRequestManager<OutputData>
+    public class HttpRequestManager<ResponseObject> : IHttpRequestManager<ResponseObject> where ResponseObject : class
     {
         private readonly IMemoryCache _memoryCache;
         private readonly HttpClient _client;
@@ -57,32 +57,32 @@ namespace SO115App.ExternalAPI.Fake.HttpManager
                 policies = Policy.WrapAsync(retryPolicy, timeoutPolicy);
         }
 
-        public async Task<OutputData> GetAsync(Uri url)
+        public async Task<ResponseObject> GetAsync(Uri url)
         {
             var response = await policies.ExecuteAsync(() => _client.GetAsync(url));
 
             return ManageResponse(response);
         }
 
-        public async Task<OutputData> PostAsync(Uri url, HttpContent content)
+        public async Task<ResponseObject> PostAsync(Uri url, HttpContent content)
         {
             var response = await policies.ExecuteAsync(() => _client.PostAsync(url, content));
 
             return ManageResponse(response);
         }
 
-        public async Task<OutputData> PutAsync(Uri url, HttpContent content)
+        public async Task<ResponseObject> PutAsync(Uri url, HttpContent content)
         {
             var response = await policies.ExecuteAsync(() => _client.PutAsync(url, content));
 
             return ManageResponse(response);
         }
 
-        private OutputData ManageResponse(HttpResponseMessage response)
+        private ResponseObject ManageResponse(HttpResponseMessage response)
         {
             var data = response.Content.ReadAsStringAsync().Result;
 
-            return JsonConvert.DeserializeObject<OutputData>(data);
+            return JsonConvert.DeserializeObject<ResponseObject>(data);
         }
     }
 }

@@ -29,6 +29,7 @@ using SO115App.ExternalAPI.Fake.Servizi.Identity;
 using SO115App.ExternalAPI.Fake.Servizi.Nue;
 using SO115App.ExternalAPI.Fake.Territorio;
 using SO115App.ExternalAPI.Fake.Uos;
+using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GeoFleet;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.IdentityManagement;
@@ -100,6 +101,7 @@ namespace SO115App.CompositionRoot
 
             #region Gac
 
+            container.Register<ISetUscitaMezzo, SetUscitaMezzo>();
             container.Register<IGetMezziByICCID, GetMezziByICCID>();
             container.Register<IGetMezziByCodiceMezzo, SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper.GetMezziByCodiceMezzo>();
             container.Register<IGetMezziBySelettiva, GetMezziBySelettiva>();

@@ -4,12 +4,12 @@ using System.Threading.Tasks;
 
 namespace SO115App.ExternalAPI.Fake.HttpManager
 {
-    public interface IHttpRequestManager<OutputData>
+    public interface IHttpRequestManager<ResponseObject> where ResponseObject : class
     {
         void Configure(string cacheString = null);
 
-        Task<OutputData> GetAsync(Uri url);
-        Task<OutputData> PostAsync(Uri url, HttpContent content);
-        Task<OutputData> PutAsync(Uri url, HttpContent content);
+        Task<ResponseObject> GetAsync(Uri url);
+        Task<ResponseObject> PostAsync(Uri url, HttpContent content);
+        Task<ResponseObject> PutAsync(Uri url, HttpContent content);
     }
 }
