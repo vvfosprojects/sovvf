@@ -5,37 +5,14 @@
             <!-- FORM -->
             <div class="col-10">
                 <form [formGroup]="chiamataForm" ngxsForm="schedaTelefonata.nuovaRichiestaForm" autocomplete="off">
-                    <!-- HEADER => data/ora/operatore -->
-                    <div class="row">
-                        <div class="col-12 bg-dark text-white border-bottom border-white py-2">
-                            <div class="clearfix">
-                                <div class="float-left w-25">
-                                    <span class="font-weight-bolder mr-1">Numero Chiamata</span>
-                                    321321321
-                                </div>
-                                <div class="float-left w-25">
-                                    <span class="font-weight-bolder mr-1">Data Chiamata</span>
-                                    12/12/2012
-                                </div>
-                                <div class="float-left w-25">
-                                    <span class="font-weight-bolder mr-1">Ora Chiamata</span>
-                                    13:30
-                                </div>
-                                <div class="float-left w-25">
-                                    <span class="font-weight-bolder mr-1">Operatore</span>
-                                    Andrea Milani
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                     <!-- TIPOLOGIA -->
                     <div class="row">
-                        <div class="col-12 bg-danger border-bottom py-1">
+                        <div class="col-12 bg-secondary border-bottom py-1">
                             <h5 class="font-weight-bolder text-white pl-2 m-0">
                                 {{ 'tipologia' | uppercase }}
                             </h5>
                         </div>
-                        <div class="col-12 bg-lightdanger pt-2 pb-1">
+                        <div class="col-12 pt-2 pb-1">
                             <div class="clearfix">
                                 <div class="float-left w-100">
                                     <div class="form-control-lg w-100 p-0 mb-0">
@@ -65,12 +42,12 @@
                     </div>
                     <!-- INDIRIZZO -->
                     <div class="row">
-                        <div class="col-12 bg-danger border-bottom py-1">
+                        <div class="col-12 bg-secondary border-bottom py-1">
                             <h5 class="font-weight-bolder text-white pl-2 m-0">
                                 {{ 'indirizzo' | uppercase }}
                             </h5>
                         </div>
-                        <div class="col-12 bg-lightdanger py-2">
+                        <div class="col-12 py-2">
                             <div class="clearfix">
                                 <!-- RICERCA GOOGLE SELECT -->
                                 <div class="float-left w-75">
@@ -136,7 +113,7 @@
                             </div>
                         </div>
                         <!-- COORDINATE -->
-                        <div class="col-12 bg-lightdanger py-2">
+                        <div class="col-12 py-2">
                             <div class="clearfix">
                                 <!-- LATITUDINE -->
                                 <div class="float-left pr-2">
@@ -213,7 +190,7 @@
                     </div>
                     <!-- RICHIEDENTE -->
                     <div class="row">
-                        <div class="col-12 bg-danger border-bottom py-1">
+                        <div class="col-12 bg-secondary border-bottom py-1">
                             <div class="clearfix">
                                 <div class="float-left w-75">
                                     <h5 class="font-weight-bolder text-white pl-2 m-0">
@@ -240,7 +217,7 @@
                         </div>
                         <div class="col-12 px-0">
                             <div class="clearfix">
-                                <div class="float-left bg-lightdanger w-75 pl-3 pr-2 py-2" style="background: linear-gradient(180deg, rgba(231, 113, 110, 0.2) 50%, white 50%)">
+                                <div class="float-left w-75 pl-3 pr-2 py-2">
                                     <div class="clearfix">
                                         <!-- NOMINATIVO -->
                                         <div class="float-left w-75 pr-2">
@@ -413,7 +390,7 @@
                     </div>
                     <!-- NOTE CHIAMATE-->
                     <div class="row">
-                    <div class="col-12 bg-danger border-bottom py-1"></div>
+                    <div class="col-12 bg-secondary border-bottom py-1"></div>
                     <div class="col-12 px-0">
                       <div class="clearfix">
                         <div class="float-left w-75 pl-3 pr-2 py-2">
@@ -430,9 +407,9 @@
                               </div>
                               <div class="form-group-lg w-50">
                                 <label for="noteIntervento" class="d-none">Inserisci Note per l'Intervento</label>
-                                <textarea id="noteIntervento" placeholder="Inserisci Note per l'Intervento" formcontrolname="descrizione" class="form-control font-weight-bolder area-note-intervento"></textarea>
+                                <textarea id="noteIntervento" placeholder="Inserisci Note per l'Intervento" formcontrolname="descrizione" class="form-control font-weight-bolder area-note-intervento"  style="border: 1px solid #888888; background-color: #f3f3f3;"></textarea>
                                 <label for="noteNue112" class="d-none">Inserisci Note Nue112</label>
-                                <textarea id="noteNue112" placeholder="Inserisci Note Nue112" formcontrolname="descrizione" class="form-control font-weight-bolder area-note-nue"></textarea>
+                                <textarea id="noteNue112" placeholder="Inserisci Note Nue112" formcontrolname="descrizione" class="form-control font-weight-bolder area-note-nue" style="border: 1px solid #888888; background-color: #f3f3f3;"></textarea>
                                   <label for="etichette" class="d-none">Tag</label>
                                   <tag-input id="etichette" class="tag-form-control-lg font-weight-bolder" style="overflow: auto" formControlName="etichette" [modelAsStrings]="true"
                                              [placeholder]="'Inserisci tag'"
@@ -511,18 +488,18 @@
                     <div class="row">
                     <div class="col-12 bg-dark text-white border-bottom border-white py-2">
                       <div class="clearfix">
-                        <div class="float-left box-azione-chiamata bg-secondary" style="width: 27.5%;">
+                        <div class="float-left box-azione-chiamata" style="width: 27.5%;">
                           <button type="button" class="btn btn-light btn-xlarge btn-no-hover" (click)="onAnnullaChiamata()">Annulla</button>
                           <button type="button" class="btn btn-light btn-xlarge btn-no-hover">Abilita Modifica</button>
                         </div>
-                        <div class="float-left box-azione-chiamata bg-secondary" style="width: 32.5%;">
+                        <div class="float-left box-azione-chiamata" style="width: 32.5%;">
                           <button type="button" class="btn btn-light btn-xlarge btn-no-hover">Invio Partenza</button>
                           <button type="button" class="btn btn-light btn-xlarge btn-no-hover">In Attesa</button>
                         </div>
-                        <div class="float-left box-azione-chiamata bg-secondary" style="width: 25%;">
+                        <div class="float-left box-azione-chiamata" style="width: 25%;">
                           <button type="button" class="btn btn-light btn-xlarge btn-no-hover">Chiusura Chiamata</button>
                         </div>
-                        <div class="float-left box-azione-chiamata bg-secondary" style="width: 15%;">
+                        <div class="float-left box-azione-chiamata" style="width: 15%;">
                           <button type="button" class="btn btn-light btn-xlarge btn-no-hover">Uscita</button>
                         </div>
                       </div>
