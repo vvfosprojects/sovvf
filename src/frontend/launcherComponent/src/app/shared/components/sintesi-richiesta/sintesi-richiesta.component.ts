@@ -213,7 +213,7 @@ export class SintesiRichiestaComponent implements OnChanges {
 
     onListaEnti(): void {
         const modal = this.modalService.open(ListaEntiComponent, {
-            windowClass: 'enti',
+            windowClass: 'enti modal-left',
             backdropClass: 'light-blue-backdrop',
             centered: true
         });
@@ -230,7 +230,7 @@ export class SintesiRichiestaComponent implements OnChanges {
 
     onEliminaPartenza(targaMezzo: string): void {
         const modal = this.modalService.open(EliminaPartenzaModalComponent, {
-            windowClass: 'modal-holder',
+            windowClass: 'modal-holder modal-left',
             backdropClass: 'light-blue-backdrop',
             centered: true
         });
@@ -249,7 +249,7 @@ export class SintesiRichiestaComponent implements OnChanges {
 
     onModificaPartenza(index: string): void {
         const modalModificaPartenza = this.modalService.open(ModificaPartenzaModalComponent, {
-            windowClass: 'modal-holder',
+            windowClass: 'modal-holder modal-left',
             backdropClass: 'light-blue-backdrop',
             centered: true,
             size: 'xl',
@@ -278,7 +278,7 @@ export class SintesiRichiestaComponent implements OnChanges {
 
     onDettaglioStatoFonogramma(): void {
         const modalDettaglioFonogramma = this.modalService.open(DettaglioFonogrammaModalComponent, {
-            windowClass: 'modal-holder',
+            windowClass: 'modal-holder modal-left',
             backdropClass: 'light-blue-backdrop',
             centered: true
         });
@@ -288,7 +288,7 @@ export class SintesiRichiestaComponent implements OnChanges {
 
     onModificaStatoFonogramma(): void {
         const modalModificaStatoFonogramma = this.modalService.open(ModificaFonogrammaModalComponent, {
-            windowClass: 'modal-holder',
+            windowClass: 'modal-holder modal-left',
             backdropClass: 'light-blue-backdrop',
             centered: true
         });
@@ -308,7 +308,7 @@ export class SintesiRichiestaComponent implements OnChanges {
 
     onAllertaSede(): void {
         const modalAllertaSede = this.modalService.open(AllertaSedeModalComponent, {
-            windowClass: 'modal-holder',
+            windowClass: 'modal-holder modal-left',
             backdropClass: 'light-blue-backdrop',
             centered: true
         });
@@ -326,7 +326,7 @@ export class SintesiRichiestaComponent implements OnChanges {
 
     onSostituzioneFineTurno(partenze: Partenza[]): void {
         const modalSostituzioneFineTurno = this.modalService.open(SostituzionePartenzeFineTunoModalComponent, {
-            windowClass: 'modal-holder',
+            windowClass: 'modal-holder modal-left',
             backdropClass: 'light-blue-backdrop',
             size: 'xl',
             centered: true
@@ -380,7 +380,7 @@ export class SintesiRichiestaComponent implements OnChanges {
 
     onAddTrasferimentoChiamata(codiceRichiesta: string): void {
         const addTrasferimentoChiamataModal = this.modalService.open(TrasferimentoChiamataModalComponent, {
-            windowClass: 'modal-holder',
+            windowClass: 'modal-holder modal-left',
             backdropClass: 'light-blue-backdrop',
             centered: true,
             size: 'lg'

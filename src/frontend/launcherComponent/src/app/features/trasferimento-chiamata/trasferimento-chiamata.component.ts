@@ -79,7 +79,7 @@ export class TrasferimentoChiamataComponent implements OnInit, OnDestroy {
 
     onAddTrasferimentoChiamata(): void {
         const addTrasferimentoChiamataModal = this.modalService.open(TrasferimentoChiamataModalComponent, {
-            windowClass: 'modal-holder',
+            windowClass: 'modal-holder modal-left',
             backdropClass: 'light-blue-backdrop',
             centered: true,
             size: 'lg'

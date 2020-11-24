@@ -31,7 +31,7 @@ export class FiltriRichiesteComponent {
 
     openFiltersModal(): void {
         const modalOptions = {
-            windowClass: 'xlModal',
+            windowClass: 'xlModal modal-left',
             backdrop: 'static',
             backdropClass: 'light-blue-backdrop',
             centered: true,

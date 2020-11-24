@@ -83,7 +83,7 @@ export class NewVersionState {
         const state = getState();
         this.ngZone.run(() => {
             const newVersionSoonModal = this.modalService.open(AnnuncioNuovaVersioneModalComponent, {
-                windowClass: 'modal-holder',
+                windowClass: 'modal-holder modal-left',
                 backdropClass: 'light-blue-backdrop',
                 centered: true,
                 size: 'lg'
@@ -98,7 +98,7 @@ export class NewVersionState {
         const state = getState();
         this.ngZone.run(() => {
             const newFeaturesInfoModal = this.modalService.open(NuoveFeaturesInfoModalComponent, {
-                windowClass: 'modal-holder',
+                windowClass: 'modal-holder modal-left',
                 backdropClass: 'light-blue-backdrop',
                 centered: true,
                 size: 'lg'

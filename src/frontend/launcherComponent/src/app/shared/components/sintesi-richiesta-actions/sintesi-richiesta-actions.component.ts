@@ -35,7 +35,7 @@ export class SintesiRichiestaActionsComponent implements OnInit {
 
     onClick(stato: StatoRichiestaActions): void {
         const modalConferma = this.modalService.open(ActionRichiestaModalComponent, {
-            windowClass: 'modal-holder',
+            windowClass: 'modal-holder modal-left',
             backdropClass: 'light-blue-backdrop',
             centered: true
         });

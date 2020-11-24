@@ -268,7 +268,7 @@ export class SchedaTelefonataState {
     apriModaleRichiestaDuplicata({ dispatch }: StateContext<SchedaTelefonataStateModel>, action: ApriModaleRichiestaDuplicata): void {
         this.ngZone.run(() => {
             const richiestaDuplicataModal = this.modalService.open(RichiestaDuplicataModalComponent, {
-                windowClass: 'modal-holder',
+                windowClass: 'modal-holder modal-left',
                 size: 'lg',
                 centered: true,
                 backdrop: 'static'

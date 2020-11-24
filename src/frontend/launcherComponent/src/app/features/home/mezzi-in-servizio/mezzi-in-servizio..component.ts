@@ -26,8 +26,6 @@ import {
 import { RicercaFilterbarState } from '../store/states/filterbar/ricerca-filterbar.state';
 import { ClearRicercaFilterbar } from '../store/actions/filterbar/ricerca-richieste.actions';
 import { PaginationState } from '../../../shared/store/states/pagination/pagination.state';
-import { CleaRicercaTrasferimentoChiamata } from '../../trasferimento-chiamata/store/actions/ricerca-trasferimento-chiamata/ricerca-trasferimento-chiamata.actions';
-import { PatchPagination } from '../../../shared/store/actions/pagination/pagination.actions';
 
 @Component({
     selector: 'app-mezzi-in-servizio',
@@ -140,7 +138,7 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
     onDettaglioRichiesta(idRichiesta: string): void {
         this.store.dispatch(new SetRichiestaById(idRichiesta));
         this.modalService.open(SintesiRichiestaModalComponent, {
-            windowClass: 'xlModal',
+            windowClass: 'xlModal modal-left',
             backdropClass: 'light-blue-backdrop',
             centered: true
         });
@@ -151,7 +149,7 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
         this.store.dispatch(new SetFiltroTargaMezzo([mezzo.descrizione]));
         this.store.dispatch(new SetIdRichiestaEventi(mezzo.idRichiesta));
         const modal = this.modalService.open(EventiRichiestaComponent, {
-            windowClass: 'xlModal',
+            windowClass: 'xlModal modal-left',
             backdropClass: 'light-blue-backdrop',
             centered: true
         });

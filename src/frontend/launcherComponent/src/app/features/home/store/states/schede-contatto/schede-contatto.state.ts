@@ -515,7 +515,7 @@ export class SchedeContattoState {
         const schedaContattoDetail = state.schedeContatto.filter(value => value.codiceScheda === action.codiceScheda)[0];
         this.ngZone.run(() => {
             const modal = this.modal.open(DettaglioSchedaModalComponent,
-                { windowClass: 'xlModal', backdropClass: 'light-blue-backdrop', centered: true }
+                { windowClass: 'xlModal modal-left', backdropClass: 'light-blue-backdrop', centered: true }
             );
             modal.componentInstance.schedaContatto = schedaContattoDetail;
             modal.result.then(

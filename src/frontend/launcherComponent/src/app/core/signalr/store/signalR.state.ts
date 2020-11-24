@@ -225,7 +225,7 @@ export class SignalRState implements NgxsOnChanges {
             this.modalService.dismissAll();
         }
         this.modalInstance = this.modalService.open(SignalROfflineComponent, {
-            windowClass: 'modal-holder',
+            windowClass: 'modal-holder modal-left',
             centered: true,
             size: 'lg',
             backdropClass: 'backdrop-custom-black',

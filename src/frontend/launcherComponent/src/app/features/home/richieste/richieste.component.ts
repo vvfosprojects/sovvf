@@ -293,7 +293,7 @@ export class RichiesteComponent implements OnInit, OnDestroy {
     onVisualizzaEventiRichiesta(codice: string): void {
         this.store.dispatch(new SetIdRichiestaEventi(codice));
         const modal = this.modalService.open(EventiRichiestaComponent, {
-            windowClass: 'xlModal',
+            windowClass: 'xlModal modal-left',
             backdropClass: 'light-blue-backdrop',
             centered: true
         });

@@ -262,7 +262,7 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy {
     onAnnullaChiamata(): void {
         if (!this.checkNessunCampoModificato()) {
             const modalConfermaAnnulla = this.modalService.open(ConfirmModalComponent, {
-                windowClass: 'modal-holder',
+                windowClass: 'modal-holder modal-left',
                 backdropClass: 'light-blue-backdrop',
                 centered: true
             });
@@ -312,7 +312,7 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy {
 
     onResetChiamata(): void {
         const modalConfermaReset = this.modalService.open(ConfirmModalComponent, {
-            windowClass: 'modal-holder',
+            windowClass: 'modal-holder modal-left',
             backdropClass: 'light-blue-backdrop',
             centered: true
         });

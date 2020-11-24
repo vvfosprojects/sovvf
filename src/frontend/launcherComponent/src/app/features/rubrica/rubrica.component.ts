@@ -75,7 +75,7 @@ export class RubricaComponent implements OnInit, OnDestroy {
 
     onAddVoceRubrica(): void {
         const addVoceRubricaModal = this.modalService.open(EnteModalComponent, {
-            windowClass: 'modal-holder',
+            windowClass: 'modal-holder modal-left',
             backdropClass: 'light-blue-backdrop',
             centered: true,
             size: 'lg'
@@ -103,7 +103,7 @@ export class RubricaComponent implements OnInit, OnDestroy {
     onEditVoceRubrica(voceRubrica: Ente): void {
         console.log('onEditVoceRubrica', voceRubrica);
         const editVoceRubricaModal = this.modalService.open(EnteModalComponent, {
-            windowClass: 'modal-holder',
+            windowClass: 'modal-holder modal-left',
             backdropClass: 'light-blue-backdrop',
             centered: true,
             size: 'lg'
@@ -131,7 +131,7 @@ export class RubricaComponent implements OnInit, OnDestroy {
 
     onDeleteVoceRubrica(payload: { idVoceRubrica: string, descrizioneVoceRubrica: string }): void {
         const modalConfermaAnnulla = this.modalService.open(ConfirmModalComponent, {
-            windowClass: 'modal-holder',
+            windowClass: 'modal-holder modal-left',
             backdropClass: 'light-blue-backdrop',
             centered: true
         });

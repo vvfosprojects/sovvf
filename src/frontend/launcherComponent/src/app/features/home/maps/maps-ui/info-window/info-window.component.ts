@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Meteo } from '../../../../../shared/model/meteo.model';
 import { RichiestaMarker } from '../../maps-model/richiesta-marker.model';
 import { SedeMarker } from '../../maps-model/sede-marker.model';
@@ -57,7 +57,7 @@ export class InfoWindowComponent {
             case 'visualizzaRichiesta':
                 this.store.dispatch(new SetRichiestaById(idRichiesta));
                 this.modalService.open(SintesiRichiestaModalComponent, {
-                    windowClass: 'xlModal',
+                    windowClass: 'xlModal modal-left',
                     backdropClass: 'light-blue-backdrop',
                     centered: true
                 });

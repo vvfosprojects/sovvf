@@ -58,7 +58,7 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
         gap: 60,
         text: 'ATTENDI, STO CARICANDO I DATI...',
         textColor: '#FFFFFF',
-        textPosition: 'top-center'
+        textPosition: 'top-center loader-position-left'
     };
 
     @ViewChild('contentElement', { read: ElementRef }) contentElement: ElementRef;

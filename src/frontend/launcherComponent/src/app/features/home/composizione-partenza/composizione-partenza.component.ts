@@ -115,7 +115,7 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
 
     onVisualizzaEventiRichiesta(idRichiesta: string): void {
         this.store.dispatch(new SetIdRichiestaEventi(idRichiesta));
-        const modal = this.modalService.open(EventiRichiestaComponent, { windowClass: 'xlModal', backdropClass: 'light-blue-backdrop', centered: true });
+        const modal = this.modalService.open(EventiRichiestaComponent, { windowClass: 'xlModal modal-left', backdropClass: 'light-blue-backdrop', centered: true });
         modal.result.then(() => {
             },
             () => this.store.dispatch(new ClearEventiRichiesta()));

@@ -41,7 +41,7 @@ export class MezzoActionsComponent implements OnInit {
             event.stopPropagation();
         }
         this.modalService.open(MezzoActionsModalComponent, {
-            windowClass: 'modal-holder',
+            windowClass: 'modal-holder modal-left',
             backdropClass: 'light-blue-backdrop',
             centered: true
         }).result.then((res: { status: string, result: any }) => {

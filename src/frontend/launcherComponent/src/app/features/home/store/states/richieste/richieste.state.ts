@@ -409,7 +409,7 @@ export class RichiesteState {
     @Action(VisualizzaListaSquadrePartenza)
     visualizzaListaSquadrePartenza({ patchState }: StateContext<RichiesteStateModel>, action: VisualizzaListaSquadrePartenza): void {
         const modal = this.modalService.open(ListaSquadrePartenzaComponent, {
-            windowClass: 'modal-holder',
+            windowClass: 'modal-holder modal-left',
             backdropClass: 'light-blue-backdrop',
             centered: true,
             size: 'lg',

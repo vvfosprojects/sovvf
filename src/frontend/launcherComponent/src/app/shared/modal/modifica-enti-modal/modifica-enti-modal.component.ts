@@ -52,7 +52,7 @@ export class ModificaEntiModalComponent implements OnInit, OnDestroy {
 
     aggiungiNuovoEnte(): void {
         const addEnteModal = this.modalService.open(EnteModalComponent, {
-            windowClass: 'modal-holder',
+            windowClass: 'modal-holder modal-left',
             backdropClass: 'light-blue-backdrop',
             centered: true,
             size: 'lg'
