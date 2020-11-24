@@ -60,6 +60,8 @@ namespace SO115App.API.Controllers
             }
             catch (Exception ex)
             {
+                ex = ex.GetBaseException();
+
                 if (ex.Message.Contains("404"))
                     return StatusCode(404, new { message = "Servizio non raggiungibile. Riprovare più tardi" });
                 else
