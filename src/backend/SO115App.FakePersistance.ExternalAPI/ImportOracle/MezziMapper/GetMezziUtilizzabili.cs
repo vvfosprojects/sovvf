@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using SO115App.API.Models.Classi.Condivise;
-using SO115App.ExternalAPI.Fake.Classi.DTOOracle;
+using SO115App.Models.Classi.ServiziEsterni.Utility;
 using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
 using System.Collections.Generic;
@@ -10,10 +10,12 @@ using System.Threading.Tasks;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using Newtonsoft.Json;
+using SO115App.Models.Classi.ServiziEsterni.Oracle;
 using SO115App.ExternalAPI.Fake.Classi.Gac;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.GeoFleet;
 using SO115App.Models.Classi.ServiziEsterni;
+using SO115App.Models.Classi.ServiziEsterni.Gac;
 
 namespace SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper
 {

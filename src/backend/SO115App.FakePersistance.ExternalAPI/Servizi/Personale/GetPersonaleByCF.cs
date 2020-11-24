@@ -1,9 +1,9 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
-using SO115App.ExternalAPI.Fake.Classi.PersonaleUtentiComuni;
-using SO115App.ExternalAPI.Fake.Classi.Utility;
 using SO115App.ExternalAPI.Fake.HttpManager;
+using SO115App.Models.Classi.ServiziEsterni.UtenteComune;
+using SO115App.Models.Classi.ServiziEsterni.Utility;
 using SO115App.Models.Classi.Utenti.Autenticazione;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Personale;
 using System;

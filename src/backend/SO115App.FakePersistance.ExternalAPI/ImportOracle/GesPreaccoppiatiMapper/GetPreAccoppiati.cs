@@ -10,8 +10,9 @@ using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Composizione;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione.PreAccoppiati;
-using SO115App.ExternalAPI.Fake.Classi.DTOOracle;
+using SO115App.Models.Classi.ServiziEsterni.Utility;
 using SO115App.Models.Servizi.Infrastruttura.GetPreAccoppiati;
+using SO115App.Models.Classi.ServiziEsterni.Oracle;
 
 namespace SO115App.ExternalAPI.Fake.ImportOracle.GesPreaccoppiatiMapper
 {

@@ -13,9 +13,9 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
         public SetEntrataMezzo(HttpClient client, IConfiguration configuration, IMemoryCache memoryCache)
             : base(client, configuration, memoryCache) { }
 
-        public void Set(EntrataMezzo entrataMezzo)
+        public void Set(RientroGAC rientro)
         {
-            var requestManager = new HttpRequestManager<UscitaMezzo>(_memoryCache, _client);
+            var requestManager = new HttpRequestManager<RientroGAC>(_memoryCache, _client);
             requestManager.Configure();
 
             var content = new StringContent("");

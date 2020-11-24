@@ -17,6 +17,7 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using ExternalAPI.Fake.Servizi.Personale;
 using Microsoft.Extensions.Caching.Memory;
 using SimpleInjector;
 using SO115App.ExternalAPI.Fake.HttpManager;
@@ -27,6 +28,7 @@ using SO115App.ExternalAPI.Fake.Servizi.Gac;
 using SO115App.ExternalAPI.Fake.Servizi.GeoFleet;
 using SO115App.ExternalAPI.Fake.Servizi.Identity;
 using SO115App.ExternalAPI.Fake.Servizi.Nue;
+using SO115App.ExternalAPI.Fake.Servizi.Personale;
 using SO115App.ExternalAPI.Fake.Territorio;
 using SO115App.ExternalAPI.Fake.Uos;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
@@ -84,9 +86,9 @@ namespace SO115App.CompositionRoot
             container.Register<IGetSquadreBySede, GetSquadreBySede>();
             container.Register<IGetPersonaFisica, GetPersonaFisica>();
             container.Register<IGetSquadreNelTurno, GetSquadreNelTurno>();
-            container.Register<IGetPersonaleVVF, ExternalAPI.Fake.Servizi.Personale.GetPersonaleVVF>();
-            container.Register<IGetPersonaleByCF, ExternalAPI.Fake.Servizi.Personale.GetPersonaleByCF>();
-            container.Register<IGetPersonaleByCodSede, ExternalAPI.Fake.ImportOracle.GestioniUtenti.GetPersonaleByCodSede>();
+            container.Register<IGetPersonaleVVF, GetPersonaleVVF>();
+            container.Register<IGetPersonaleByCF, GetPersonaleByCF>();
+            container.Register<IGetPersonaleByCodSede, GetPersonaleByCodSede>();
 
             #endregion Personale
 

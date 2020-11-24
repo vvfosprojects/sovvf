@@ -1,18 +1,16 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using SO115App.API.Models.Classi.Condivise;
-using SO115App.ExternalAPI.Fake.Classi.DTOOracle;
-using SO115App.ExternalAPI.Fake.ImportOracle.GestioniUtenti;
 using SO115App.Models.Classi.Condivise;
+using SO115App.Models.Classi.ServiziEsterni.Oracle;
 using SO115App.Models.Classi.Utenti.Autenticazione;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Personale;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Squadre;
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
-using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
-using System;
-using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Personale;
 
 namespace SO115App.ExternalAPI.Fake.ImportOracle.SquadreMapper
 {

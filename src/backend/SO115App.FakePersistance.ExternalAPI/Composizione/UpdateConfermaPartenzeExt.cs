@@ -80,9 +80,9 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
                 //GAC USCITA/ENTRATA
                 if (partenza.Mezzo.Stato.Equals(Costanti.MezzoInSede))
-                    _setEntrataMezzo.Set(new EntrataMezzo());
+                    _setEntrataMezzo.Set(new RientroGAC());
                 else
-                    _setUscitaMezzo.Set(new UscitaMezzo());
+                    _setUscitaMezzo.Set(new UscitaGAC());
             }
 
 
