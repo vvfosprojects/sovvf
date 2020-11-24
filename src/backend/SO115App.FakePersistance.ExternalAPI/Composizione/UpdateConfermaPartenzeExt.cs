@@ -40,18 +40,18 @@ namespace SO115App.ExternalAPI.Fake.Composizione
         private readonly ISetStatoOperativoMezzo _setStatoOperativoMezzo;
         private readonly ISetStatoSquadra _setStatoSquadra;
         private readonly ISetUscitaMezzo _setUscitaMezzo;
-        private readonly ISetEntrataMezzo _setEntrataMezzo;
+        private readonly ISetRientroMezzo _setRientroMezzo;
 
         /// <summary>
         ///   Costruttore della classe
         /// </summary>
-        public UpdateConfermaPartenzeExt(IUpDateRichiestaAssistenza updateRichiesta, ISetStatoOperativoMezzo setStatoOperativoMezzo, ISetStatoSquadra setStatoSquadra, ISetUscitaMezzo setUscitaMezzo, ISetEntrataMezzo setEntrataMezzo)
+        public UpdateConfermaPartenzeExt(IUpDateRichiestaAssistenza updateRichiesta, ISetStatoOperativoMezzo setStatoOperativoMezzo, ISetStatoSquadra setStatoSquadra, ISetUscitaMezzo setUscitaMezzo, ISetRientroMezzo setRientroMezzo)
         {
             _updateRichiesta = updateRichiesta;
             _setStatoOperativoMezzo = setStatoOperativoMezzo;
             _setStatoSquadra = setStatoSquadra;
             _setUscitaMezzo = setUscitaMezzo;
-            _setEntrataMezzo = setEntrataMezzo;
+            _setRientroMezzo = setRientroMezzo;
         }
 
         /// <summary>
@@ -79,10 +79,44 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                 }
 
                 //GAC USCITA/ENTRATA
-                if (partenza.Mezzo.Stato.Equals(Costanti.MezzoInSede))
-                    _setEntrataMezzo.Set(new RientroGAC());
-                else
-                    _setUscitaMezzo.Set(new UscitaGAC());
+                if(!partenza.Mezzo.Stato.Equals(Costanti.MezzoInUscita))
+                    if (partenza.Mezzo.Stato.Equals(Costanti.MezzoInSede) || partenza.Mezzo.Stato.Equals(Costanti.MezzoRientrato))
+                        _setRientroMezzo.Set(new RientroGAC()
+                        {
+                            Autista = "",
+                            CodicePartenza = partenza.Codice,
+                            DataIntervento = dataMovintazione,
+                            DataRientro = dataMovintazione,
+                            NumeroIntervento = command.Richiesta.Codice,
+                            Targa = partenza.Mezzo.Codice,
+                            TipoMezzo = partenza.Mezzo.Descrizione
+                        });
+                    else
+                        _setUscitaMezzo.Set(new UscitaGAC()
+                        {
+                            Autista = "",
+                            CodicePartenza = partenza.Codice,
+                            DataIntervento = dataMovintazione,
+                            NumeroIntervento = command.Richiesta.Codice,
+                            Targa = partenza.Mezzo.Codice,
+                            TipoMezzo = partenza.Mezzo.Descrizione,
+                            DataUscita = dataMovintazione,
+                            Latitudine = command.Richiesta.Localita.Coordinate.Latitudine.ToString(),
+                            Longitudine = command.Richiesta.Localita.Coordinate.Longitudine.ToString(),
+                            Localita = command.Richiesta.Localita.Citta,
+                            Comune = new ComuneGAC()
+                            {
+                                Descrizione = command.Richiesta.Localita.Citta,
+                            },
+                            Provincia = new Models.Classi.Gac.ProvinciaGAC()
+                            {
+                                Descrizione = command.Richiesta.Localita.Provincia
+                            },
+                            TipoUscita = new TipoUscita()
+                            {
+                                Descrizione = ""
+                            }
+                        });
             }
 
 

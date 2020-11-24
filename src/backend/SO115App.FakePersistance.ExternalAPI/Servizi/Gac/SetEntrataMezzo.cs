@@ -1,5 +1,7 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
+using SO115App.ExternalAPI.Fake.Classi;
 using SO115App.ExternalAPI.Fake.HttpManager;
 using SO115App.Models.Classi.ServiziEsterni.Gac;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
@@ -8,7 +10,7 @@ using System.Net.Http;
 
 namespace SO115App.ExternalAPI.Fake.Servizi.Gac
 {
-    public class SetEntrataMezzo : BaseService, ISetEntrataMezzo
+    public class SetEntrataMezzo : BaseService, ISetRientroMezzo
     {
         public SetEntrataMezzo(HttpClient client, IConfiguration configuration, IMemoryCache memoryCache)
             : base(client, configuration, memoryCache) { }
@@ -18,9 +20,11 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
             var requestManager = new HttpRequestManager<RientroGAC>(_memoryCache, _client);
             requestManager.Configure();
 
-            var content = new StringContent("");
-            var uri = new Uri("");
-            var result = requestManager.PutAsync(uri, content);
+            var jsonString = JsonConvert.SerializeObject(rientro);
+            var content = new StringContent(jsonString);
+            var uri = new Uri(_configuration.GetSection("UrlExternalApi").GetSection("GacApi").Value + Costanti.GacRientroMezzo);
+
+            var result = requestManager.PutAsync(uri, content).Result;
         }
     }
 }

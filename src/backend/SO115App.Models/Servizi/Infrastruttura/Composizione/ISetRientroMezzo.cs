@@ -2,7 +2,7 @@
 
 namespace SO115App.Models.Servizi.Infrastruttura.Composizione
 {
-    public interface ISetEntrataMezzo
+    public interface ISetRientroMezzo
     {
         void Set(RientroGAC rientro);
     }

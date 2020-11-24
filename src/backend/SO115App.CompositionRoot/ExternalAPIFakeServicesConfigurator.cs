@@ -104,7 +104,7 @@ namespace SO115App.CompositionRoot
             #region Gac
 
 
-            container.Register<ISetEntrataMezzo, SetEntrataMezzo>();
+            container.Register<ISetRientroMezzo, SetEntrataMezzo>();
             container.Register<ISetUscitaMezzo, SetUscitaMezzo>();
             container.Register<IGetMezziByICCID, GetMezziByICCID>();
             container.Register<IGetMezziByCodiceMezzo, SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper.GetMezziByCodiceMezzo>();

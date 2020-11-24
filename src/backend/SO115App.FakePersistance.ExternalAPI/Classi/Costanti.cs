@@ -22,6 +22,13 @@ namespace SO115App.ExternalAPI.Fake.Classi
 {
     public static class Costanti
     {
+        #region Eccezioni
+
+        public static string ServizioNonRaggiungibile = "Servizio non raggiungibile";
+
+        #endregion
+
+
         #region Url
 
         public static string TerritorioUrl = "http://172.16.25.10:7002/api/";
@@ -79,9 +86,12 @@ namespace SO115App.ExternalAPI.Fake.Classi
         public static string GacGetICCID = "ICCID";
         public static string GacGetSELETTIVA = "SELETTIVA";
         public static string GacPutMovimentazione = "Movimentazione";
+
         public static string GacGetCodiceMezzo = "/SO115/AnagraficaMezzi/CodiceMezzo";
         public static string GacSetMezzoLibero = "/SO115/AnagraficaMezzi/SetMezzoLibero";
         public static string GacSetMezzoOccupato = "/SO115/AnagraficaMezzi/SetMezzoOccupato";
+        public static string GacUscitaMezzo = "/SO115/AnagraficaMezzi/UscitaMezzo";
+        public static string GacRientroMezzo = "/SO115/AnagraficaMezzi/RientroMezzo";
 
         #endregion GacMethods
 
