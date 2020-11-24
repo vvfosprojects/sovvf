@@ -6,6 +6,7 @@ import { RouterStateModel } from '@ngxs/router-plugin/src/router.state';
 import { AuthState, AuthStateModel } from '../../../../features/auth/store/auth.state';
 import { AppState, AppStateModel } from '../app/app.state';
 import { RoutesPath } from '../../../enum/routes-path.enum';
+import { ChangeView } from '../../../../features/home/store/actions/view/view.actions';
 
 export interface ViewportStateModel {
     availHeight: number;
@@ -69,7 +70,10 @@ export class ViewportState {
     }
 
     @Action(SetInnerWidth)
-    setInnerWidth({ patchState }: StateContext<ViewportStateModel>, { innerWidth }: SetInnerWidth): void {
+    setInnerWidth({ patchState, dispatch }: StateContext<ViewportStateModel>, { innerWidth }: SetInnerWidth): void {
+        if (innerWidth > 3800) {
+            dispatch(new ChangeView(8));
+        }
         patchState({ innerWidth });
     }
 }
