@@ -4,6 +4,7 @@ using Polly;
 using Polly.Caching;
 using Polly.Caching.Memory;
 using Polly.Wrap;
+using SO115App.ExternalAPI.Fake.Classi;
 using System;
 using System.Net;
 using System.Net.Http;
@@ -32,13 +33,13 @@ namespace SO115App.ExternalAPI.Fake.HttpManager
 
             //ECCEZIONI E RESPONSE
             var retryPolicy = Policy
-                .Handle<AggregateException>(e => throw new Exception("Servizio non raggiungibile"))
+                .Handle<AggregateException>(e => throw new Exception(Costanti.ServizioNonRaggiungibile))
                 .OrResult<HttpResponseMessage>(c =>
                 {
                     switch(c.StatusCode)
                     {
                         case HttpStatusCode.NotFound:
-                            throw new Exception("Servizio non raggiungibile");
+                            throw new Exception(Costanti.ServizioNonRaggiungibile);
                     }
 
                     return false;
