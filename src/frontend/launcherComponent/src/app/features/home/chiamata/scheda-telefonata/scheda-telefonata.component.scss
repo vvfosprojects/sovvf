@@ -123,53 +123,28 @@ tag-input {
   }
 }
 
-.box-azione-chiamata {
-  width: 33.3%;
-  // border: solid;
-  margin-top: 30px;
-  margin-bottom: 10px;
-  padding: 10px;
-  display: flex;
-  justify-content: space-evenly;
-}
-
 .btn-xlarge { // si può spostare su style.scss
   padding: 16px 26px; // modifica dimensione a piacimento
-  font-size: 18px; // modifica dimensione a piacimento
+  font-size: 20px; // modifica dimensione a piacimento
   line-height: normal;
   -webkit-border-radius: 8px;
   -moz-border-radius: 8px;
   border-radius: 8px;
 }
 
-.tag-form-control-lg {
-  background-color: #f3f3f3;
-  border: 1px solid #888888;
-  height: calc(1.5em + 1rem + 2px);
-  font-size: 1.25rem;
-  line-height: 2.1;
-  border-radius: 0.3rem;
+.area-size {
+  max-height: 75px;
+  min-height: 75px;
 }
 
-.area-note-operatore {
-  margin-bottom: 10px;
-  background-color: #f3f3f3;
-  max-height: 225px;
-  min-height: 225px;
-  font-size: 20px;
-  border: 1px solid #888888;
+/* Per editare ng-select
+ng-select {
+  > div {
+    border: solid #dc3545 !important;
+  }
 }
+*/
 
-.area-note-intervento {
-  max-height: 130px;
-  min-height: 130px;
-  font-size: 20px;
-  margin-bottom: 10px
-}
 
-.area-note-nue {
-  margin-bottom: 10px;
-  max-height: 85px;
-  min-height: 85px;
-  font-size: 20px
-}
+
+

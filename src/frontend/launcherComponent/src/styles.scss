@@ -170,6 +170,14 @@ input:invalid {
   border: 1px solid #d61616 !important;
 }
 
+textarea:valid {
+  background-color: #f3f3f3;
+}
+
+tag-input {
+  background-color: #f3f3f3;
+}
+
 /* icone di guida */
 .guida {
   color: #bbbbbb;
@@ -630,6 +638,14 @@ input:invalid {
 }
 
 .loader-position-fgs-left {
-  margin-left: 23% !important;
-  margin-top: 30% !important;
+  margin-left: 24.5% !important;
+  margin-top: 35% !important;
+}
+
+.font-xlarge {
+  font-size: 20px;
+}
+
+.required-field {
+  border: solid #dc3545;
 }
