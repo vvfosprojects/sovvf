@@ -1,74 +1,87 @@
 <nav *ngIf="listeSediNavbarLoaded$ | async" class="navbar navbar-expand-lg text-light"
      [ngClass]="{'navbar-dark bg-dark': !turnoExtra, 'navbar-danger bg-danger': turnoExtra}">
-    <div class="row py-0 w-100">
-        <div class="col-5 mr-auto">
-            <div class="row">
-                <div class="col-5">
+    <div class="clearfix w-100">
+        <!-- Zona Sinistra -->
+        <div class="float-left">
+            <div class="clearfix">
+                <!-- Bottoni Sinistra -->
+                <div class="float-left mr-5">
                     <button class="btn btn-outline-light mr-2" ngbTooltip="Vai alla Home"
                             [routerLink]="['/' + RoutesPath.Home]"
                             [routerLinkActive]="['btn-light-nav', 'text-dark']">
                         <i class="fa fa-home"></i>
                     </button>
+                    <button class="btn btn-outline-light mr-2" ngbTooltip="Visualizza Mezzi in Servizio"
+                            [routerLink]="['/' + RoutesPath.Home]"
+                            [routerLinkActive]="['btn-light-nav', 'text-dark']">
+                        <i class="fa fa-truck"></i>
+                    </button>
+                    <button class="btn btn-outline-light mr-2" ngbTooltip="Visualizza Schede NUE"
+                            [routerLink]="['/' + RoutesPath.Home]"
+                            [routerLinkActive]="['btn-light-nav', 'text-dark']">
+                        <i class="fa fa-address-book"></i>
+                    </button>
+                    <button class="btn btn-outline-light mr-2" ngbTooltip="Visualizza Trasferimenti Chiamate"
+                            [routerLink]="['/' + RoutesPath.TrasferimentoChiamata]">
+                        <i class="fa fa-exchange"></i>
+                    </button>
+                    <button class="btn btn-outline-light mr-2" ngbTooltip="Visualizza Rubrica"
+                            [routerLink]="['/' + RoutesPath.Rubrica]">
+                        <i class="fa fa-address-book"></i>
+                    </button>
+                </div>
+                <!-- Treeview -->
+                <div class="float-left mr-5">
+                    <app-unita-operativa *ngIf="listeSediNavbarLoaded$ | async" [colorButton]="colorButton"
+                                         [cache]="true">
+                    </app-unita-operativa>
+                </div>
+                <!-- Turno -->
+                <div class="float-left mr-5">
+                    <app-turno [turno]="turnoCalendario" [turnoExtra]="turnoExtra"></app-turno>
+                </div>
+                <!-- Data/Ora -->
+                <div class="float-left">
+                    <app-clock [time]="time"></app-clock>
+                </div>
+            </div>
+        </div>
+        <!-- Zona Destra -->
+        <div class="float-right">
+            <div class="clearfix">
+                <!-- Nuova versione -->
+                <div class="float-left mr-2">
+                    <ng-template [ngIf]="newVersion">
+                        <app-bottone-nuova-versione [btnBlock]="true"
+                                                    (doAction)="onGetNewVersion()"></app-bottone-nuova-versione>
+                    </ng-template>
+                    <ng-template [ngIf]="newVersionSoon && !newVersion">
+                        <app-bottone-nuova-versione [btnBlock]="true"
+                                                    [testo]="'Nuova versione presto disponibile'"
+                                                    [tooltip]="'A breve sarà disponibile una nuova versione, clicca per maggiori informazioni'"
+                                                    (doAction)="onNewVersionSoon()"></app-bottone-nuova-versione>
+                    </ng-template>
+                    <ng-template
+                            [ngIf]="newFeaturesInfo && !newVersionSoon && !newVersion && url?.indexOf('changelog') === -1">
+                        <app-bottone-nuova-versione [btnBlock]="true"
+                                                    [icona]="'fa-newspaper-o'"
+                                                    [testo]="'Nuova versione: scopri di più'"
+                                                    [tooltip]="'Clicca per visualizzare le novità della nuova versione'"
+                                                    (doAction)="onNewFeaturesInfo()"></app-bottone-nuova-versione>
+                    </ng-template>
+                </div>
+                <!-- Operatore e Bottono Destra -->
+                <div class="float-right">
                     <button class="btn btn-outline-light mr-2" ngbTooltip="Visualizza Gestione Utenti"
                             [routerLink]="['/' + RoutesPath.GestioneUtenti]"
                             [routerLinkActive]="['btn-light-nav', 'text-dark']">
                         <i class="fa fa-users"></i>
                     </button>
-                    <button class="btn btn-outline-light mr-2" ngbTooltip="Visualizza Trasferimenti Chiamate"
-                            [routerLink]="['/' + RoutesPath.TrasferimentoChiamata]"
-                            [routerLinkActive]="['btn-light-nav', 'text-dark']">
-                        <i class="fa fa-exchange"></i>
-                    </button>
-                    <button class="btn btn-outline-light mr-2" ngbTooltip="Visualizza Rubrica"
-                            [routerLink]="['/' + RoutesPath.Rubrica]"
-                            [routerLinkActive]="['btn-light-nav', 'text-dark']">
-                        <i class="fa fa-address-book"></i>
-                    </button>
-                    <button class="btn btn-outline-light mr-2" ngbTooltip="Visualizza Info Aggiornamenti"
+                    <button class="btn btn-outline-light" ngbTooltip="Visualizza Info Aggiornamenti"
                             [routerLink]="['/' + RoutesPath.Changelog]"
                             [routerLinkActive]="['btn-light-nav', 'text-dark']">
                         <i class="fa fa-newspaper-o"></i>
                     </button>
-                </div>
-                <div class="col-4 text-left">
-                    <app-unita-operativa *ngIf="listeSediNavbarLoaded$ | async" [colorButton]="colorButton"
-                                         [cache]="true">
-                    </app-unita-operativa>
-                </div>
-                <div class="col-3 px-0 text-center">
-                    <app-clock [time]="time"></app-clock>
-                </div>
-            </div>
-        </div>
-        <div class="col-1 mr-auto">
-            <div class="row">
-                <div class="col-12">
-                    <app-turno [turno]="turnoCalendario" [turnoExtra]="turnoExtra"></app-turno>
-                </div>
-            </div>
-        </div>
-        <div class="col-3">
-            <ng-template [ngIf]="newVersion">
-                <app-bottone-nuova-versione [btnBlock]="true"
-                                            (doAction)="onGetNewVersion()"></app-bottone-nuova-versione>
-            </ng-template>
-            <ng-template [ngIf]="newVersionSoon && !newVersion">
-                <app-bottone-nuova-versione [btnBlock]="true"
-                                            [testo]="'Nuova versione presto disponibile'"
-                                            [tooltip]="'A breve sarà disponibile una nuova versione, clicca per maggiori informazioni'"
-                                            (doAction)="onNewVersionSoon()"></app-bottone-nuova-versione>
-            </ng-template>
-            <ng-template [ngIf]="newFeaturesInfo && !newVersionSoon && !newVersion && url?.indexOf('changelog') === -1">
-                <app-bottone-nuova-versione [btnBlock]="true"
-                                            [icona]="'fa-newspaper-o'"
-                                            [testo]="'Nuova versione: scopri di più'"
-                                            [tooltip]="'Clicca per visualizzare le novità della nuova versione'"
-                                            (doAction)="onNewFeaturesInfo()"></app-bottone-nuova-versione>
-            </ng-template>
-        </div>
-        <div class="col-3 ml-auto text-right pr-0">
-            <div class="row">
-                <div class="col-12">
                     <app-operatore [user]="user" [ruoliUtenteLoggato]="ruoliUtenteLoggato"
                                    (notificheLette)="setNotificheLette()" (logout)="logout()"></app-operatore>
                 </div>

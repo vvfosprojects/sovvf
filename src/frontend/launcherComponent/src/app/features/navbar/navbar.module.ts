@@ -49,6 +49,7 @@ import { NavbarState } from './store/states/navbar.state';
                 TurnoState
             ]
         ),
+        SharedModule,
     ],
     declarations: [
         NavbarComponent,
