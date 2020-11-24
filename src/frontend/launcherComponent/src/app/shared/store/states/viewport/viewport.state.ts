@@ -56,7 +56,7 @@ export class ViewportState {
 
     @Selector()
     static doubleMonitor(state: ViewportStateModel): boolean {
-        return state.innerWidth > 3800;
+        return state.innerWidth > 3400;
     }
 
     @Action(SetAvailHeight)
