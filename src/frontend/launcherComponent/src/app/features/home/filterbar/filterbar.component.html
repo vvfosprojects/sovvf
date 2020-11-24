@@ -1,7 +1,7 @@
-<div class="row">
-    <div [ngClass]="(filterBarCol$ | async)">
-        <div class="row">
-            <div class="col-3 text-left">
+<div class="clearfix">
+    <div [ngClass]="(filterBarCol$ | async)" class="float-left">
+        <div class="clearfix">
+            <div class="float-left">
                 <app-tasto-chiamata-group>
                     <app-tasto-chiamata [colorButtonChiamata]="colorButton.chiamata"
                                         [disabled]="permessiFeature.SchedaTelefonata | checkPermission"
@@ -11,7 +11,7 @@
                                                [disabled]="(chiamataStatus$ | async) || (permessiFeature.SchedeContatto | checkPermission)"></app-tasto-schede-contatto>
                 </app-tasto-chiamata-group>
             </div>
-            <div class="col-2 pl-0 text-left">
+            <div class="float-left">
                 <app-filtri-richieste *ngIf="richiesteStatus$ | async"
                                       [filtri]="filtriRichieste$ | async"
                                       [filtriSelezionati]="filtriRichiesteSelezionati$ | async"
@@ -33,20 +33,21 @@
                                            (filtriReset)="eliminaFiltriAttiviMezziInServizio()">
                 </app-filtri-mezzi-servizio>
             </div>
-            <div class="col-7 pl-0">
-                <app-ricerca *ngIf="((chiamataStatus$ | async) === false) && ((composizioneStatus$ | async) === false) && ((modificaRichiestaStatus$ | async) === false)"
-                             [ricerca]="ricercaRichieste$ | async"
-                             [debounce]="true"
-                             [placeholder]="getRicercaPlaceholder()"
-                             [disableSearch]="!!(richiesteStatus$ | async)"
-                             (search)="onSearch($event)">
+            <div class="float-left">
+                <app-ricerca
+                        *ngIf="((chiamataStatus$ | async) === false) && ((composizioneStatus$ | async) === false) && ((modificaRichiestaStatus$ | async) === false)"
+                        [ricerca]="ricercaRichieste$ | async"
+                        [debounce]="true"
+                        [placeholder]="getRicercaPlaceholder()"
+                        [disableSearch]="!!(richiesteStatus$ | async)"
+                        (search)="onSearch($event)">
                 </app-ricerca>
             </div>
         </div>
     </div>
-    <div *ngIf="((composizioneStatus$ | async) === false) && ((chiamataStatus$ | async) === false)" class="col-2">
-        <div class="row">
-            <div class="col-12">
+    <div *ngIf="((composizioneStatus$ | async) === false) && ((chiamataStatus$ | async) === false) && ((doubleMonitor$ | async) === false)" class="float-left">
+        <div class="clearfix">
+            <div class="float-left">
                 <app-view-mode [colorButtonView]="colorButton.buttonView"
                                [disabledMezziInServizio]="permessiFeature.MezziInServizio | checkPermission"
                                [mezziInServizioActive]="viewState?.mezziInServizio.active"
@@ -59,7 +60,7 @@
             </div>
         </div>
     </div>
-    <div [ngClass]="(filterBarCol$ | async)">
+    <div [ngClass]="(filterBarCol$ | async)" class="float-right">
         <div class="row">
             <div class="offset-7"></div>
             <div *ngIf="(mapsStatus$ | async)" class="col-5 pl-0">

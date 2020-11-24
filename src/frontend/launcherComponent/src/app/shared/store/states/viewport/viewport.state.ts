@@ -1,6 +1,6 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { Injectable } from '@angular/core';
-import { SetContentHeight, SetAvailHeight } from '../../actions/viewport/viewport.actions';
+import { SetContentHeight, SetAvailHeight, SetInnerWidth } from '../../actions/viewport/viewport.actions';
 import { RouterState } from '@ngxs/router-plugin';
 import { RouterStateModel } from '@ngxs/router-plugin/src/router.state';
 import { AuthState, AuthStateModel } from '../../../../features/auth/store/auth.state';
@@ -10,11 +10,13 @@ import { RoutesPath } from '../../../enum/routes-path.enum';
 export interface ViewportStateModel {
     availHeight: number;
     contentHeight: number;
+    innerWidth: number;
 }
 
 export const ViewportStateDefaults: ViewportStateModel = {
     availHeight: null,
-    contentHeight: null
+    contentHeight: null,
+    innerWidth: null
 };
 
 @Injectable()
@@ -51,6 +53,11 @@ export class ViewportState {
         return granted && logged && appReady;
     }
 
+    @Selector()
+    static doubleMonitor(state: ViewportStateModel): boolean {
+        return state.innerWidth > 3800;
+    }
+
     @Action(SetAvailHeight)
     setAvailHeight({ patchState }: StateContext<ViewportStateModel>, { availHeight }: SetAvailHeight): void {
         patchState({ availHeight });
@@ -59,5 +66,10 @@ export class ViewportState {
     @Action(SetContentHeight)
     setContentHeight({ patchState }: StateContext<ViewportStateModel>, { contentHeight }: SetContentHeight): void {
         patchState({ contentHeight });
+    }
+
+    @Action(SetInnerWidth)
+    setInnerWidth({ patchState }: StateContext<ViewportStateModel>, { innerWidth }: SetInnerWidth): void {
+        patchState({ innerWidth });
     }
 }

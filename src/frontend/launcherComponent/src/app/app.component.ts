@@ -13,7 +13,7 @@ import { PermessiService } from './core/service/permessi-service/permessi.servic
 import { RuoliUtenteLoggatoState } from './shared/store/states/ruoli-utente-loggato/ruoli-utente-loggato.state';
 import { AuthService } from './core/auth/auth.service';
 import { VersionCheckService } from './core/service/version-check/version-check.service';
-import { SetAvailHeight, SetContentHeight } from './shared/store/actions/viewport/viewport.actions';
+import { SetAvailHeight, SetContentHeight, SetInnerWidth } from './shared/store/actions/viewport/viewport.actions';
 import { Images } from './shared/enum/images.enum';
 import { AuthState } from './features/auth/store/auth.state';
 import { LSNAME } from './core/settings/config';
@@ -31,6 +31,7 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
     private imgs = [];
     private height;
     private availHeight;
+    private width;
     private currentUrl: string;
 
     @Select(SediTreeviewState.listeSediLoaded) listeSediLoaded$: Observable<boolean>;
@@ -66,6 +67,7 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
     @HostListener('window:resize')
     onResize(): void {
         this.getHeight();
+        this.getWidth();
     }
 
     constructor(private router: Router,
@@ -87,6 +89,7 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
 
     ngAfterViewChecked(): void {
         this.getHeight();
+        this.getWidth();
     }
 
     ngOnDestroy(): void {
@@ -163,6 +166,27 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
                 case RoutesPath.Changelog:
                     return true;
                 case RoutesPath.Impostazioni:
+                    return true;
+                default:
+                    return false;
+            }
+        }
+    }
+
+    private getWidth(): void {
+        if (_isActive(this.currentUrl)) {
+            const innerWidth = window.innerWidth;
+            if (innerWidth) {
+                if (this.width !== innerWidth) {
+                    this.width = innerWidth;
+                    this.store.dispatch(new SetInnerWidth(innerWidth));
+                }
+            }
+        }
+
+        function _isActive(currentUrl): boolean {
+            switch (currentUrl) {
+                case RoutesPath.Home:
                     return true;
                 default:
                     return false;

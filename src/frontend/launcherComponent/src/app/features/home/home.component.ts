@@ -8,6 +8,7 @@ import { ClearDataHome, GetDataHome } from './store/actions/home.actions';
 import { NavbarState } from '../navbar/store/states/navbar.state';
 import { SetMapLoaded } from '../../shared/store/actions/app/app.actions';
 import { ImpostazioniState } from '../../shared/store/states/impostazioni/impostazioni.state';
+import { ViewportState } from '../../shared/store/states/viewport/viewport.state';
 
 @Component({ templateUrl: 'home.component.html' })
 export class HomeComponent implements OnInit, OnDestroy {
@@ -23,6 +24,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     @Select(ViewComponentState.composizioneMode) composizioneMode$: Observable<Composizione>;
     @Select(ViewComponentState.colorButton) colorButton$: Observable<ViewInterfaceButton>;
     @Select(ViewComponentState.viewStateMaps) viewStateMappa$: Observable<ViewInterfaceMaps>;
+
+    @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
 
     @Select(ImpostazioniState.boxAttivi) boxAttivi$: Observable<boolean>;
     boxAttivi: boolean;

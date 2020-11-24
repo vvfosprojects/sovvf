@@ -1,17 +1,20 @@
 <div class="container-fluid" *ngIf="(navbarLoaded | async)">
     <div class="row">
-        <div class="col-12 px-0" [ngClass]="{'d-none': !boxAttivi}">
+        <div [class.col-12]="((doubleMonitor$ | async) === false)"
+             [class.col-6]="doubleMonitor$ | async"
+             [ngClass]="{'d-none': !boxAttivi}">
             <app-info-aggregate></app-info-aggregate>
         </div>
     </div>
     <div class="row" [class.d-none]="viewState.chiamata.active">
-        <div class="col-12" [ngClass]="{'mt-3': !boxAttivi}">
+        <div [class.col-12]="((doubleMonitor$ | async) === false)"
+             [class.col-6]="doubleMonitor$ | async"
+             [ngClass]="{'mt-3': !boxAttivi}">
             <app-filterbar [colorButton]="(colorButton$ | async)" [viewState]="viewState"></app-filterbar>
         </div>
     </div>
     <div class="row" [ngClass]="{'mt-1': !boxAttivi && !viewState.chiamata.active}">
-        <div [ngClass]="columnState.sinistra"
-             [class.col-12]="viewState.chiamata.active">
+        <div [ngClass]="columnState.sinistra">
             <app-richieste [ngClass]="{'d-none' : !viewState.richieste.active}" [split]="viewState.richieste.split"
                            [boxAttivi]="boxAttivi">
             </app-richieste>
@@ -27,7 +30,7 @@
         </div>
         <div class="mt-2"
              [ngClass]="columnState.destra || {'d-none' : !viewState.mappa.active}"
-             [class.d-none]="viewState.chiamata.active">
+             [class.mapFull]="doubleMonitor$ | async">
             <app-maps [viewStateMappa]="(viewStateMappa$ | async)"
                       [boxAttivi]="boxAttivi"
                       (mapFullLoaded)="onMapFullLoaded()"></app-maps>

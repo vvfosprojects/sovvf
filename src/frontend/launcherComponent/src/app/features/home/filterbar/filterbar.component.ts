@@ -26,6 +26,7 @@ import { MezziInServizioState } from '../store/states/mezzi-in-servizio/mezzi-in
 import { ClearFiltriMezziInServizio, SetFiltroMezziInServizio } from '../store/actions/mezzi-in-servizio/mezzi-in-servizio.actions';
 import { PermissionFeatures } from '../../../shared/enum/permission-features.enum';
 import { RichiesteState } from '../store/states/richieste/richieste.state';
+import { ViewportState } from '../../../shared/store/states/viewport/viewport.state';
 
 @Component({
     selector: 'app-filterbar',
@@ -68,6 +69,8 @@ export class FilterbarComponent {
     @Select(ViewComponentState.modificaRichiestaStatus) modificaRichiestaStatus$: Observable<boolean>;
     @Select(ViewComponentState.mezziInServizio) mezziInServizioStatus$: Observable<boolean>;
     @Select(ViewComponentState.filterBarCol) filterBarCol$: Observable<Grid>;
+
+    @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
 
     /**
      * aggiunti viewState per verificare se è attivo richieste o mappa

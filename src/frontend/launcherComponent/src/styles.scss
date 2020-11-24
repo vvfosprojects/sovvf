@@ -26,11 +26,17 @@ html {
 }
 
 // Dropdown Google Places
+
 .pac-container {
   z-index: 99999 !important;
 }
 
 // End Dropdown Google Places
+
+.mapFull {
+  transform: translate(-10px, -172px);
+}
+
 
 .modal-holder {
   animation-name: jumpIn;
