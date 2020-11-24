@@ -40,16 +40,18 @@ namespace SO115App.ExternalAPI.Fake.Composizione
         private readonly ISetStatoOperativoMezzo _setStatoOperativoMezzo;
         private readonly ISetStatoSquadra _setStatoSquadra;
         private readonly ISetUscitaMezzo _setUscitaMezzo;
+        private readonly ISetEntrataMezzo _setEntrataMezzo;
 
         /// <summary>
         ///   Costruttore della classe
         /// </summary>
-        public UpdateConfermaPartenzeExt(IUpDateRichiestaAssistenza updateRichiesta, ISetStatoOperativoMezzo setStatoOperativoMezzo, ISetStatoSquadra setStatoSquadra, ISetUscitaMezzo setUscitaMezzo)
+        public UpdateConfermaPartenzeExt(IUpDateRichiestaAssistenza updateRichiesta, ISetStatoOperativoMezzo setStatoOperativoMezzo, ISetStatoSquadra setStatoSquadra, ISetUscitaMezzo setUscitaMezzo, ISetEntrataMezzo setEntrataMezzo)
         {
             _updateRichiesta = updateRichiesta;
             _setStatoOperativoMezzo = setStatoOperativoMezzo;
             _setStatoSquadra = setStatoSquadra;
             _setUscitaMezzo = setUscitaMezzo;
+            _setEntrataMezzo = setEntrataMezzo;
         }
 
         /// <summary>
@@ -75,13 +77,13 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                 {
                     _setStatoSquadra.SetStato(squadra.Codice, command.ConfermaPartenze.IdRichiesta, partenza.Mezzo.Stato, codiceSede, partenza.Mezzo.Codice);
                 }
-            }
 
-            //GAC USCITA/ENTRATA
-            if (true)
-                _setUscitaMezzo.Set(new UscitaMezzo());
-            else
-                _setUscitaMezzo.Set(null);
+                //GAC USCITA/ENTRATA
+                if (partenza.Mezzo.Stato.Equals(Costanti.MezzoInSede))
+                    _setEntrataMezzo.Set(new EntrataMezzo());
+                else
+                    _setUscitaMezzo.Set(new UscitaMezzo());
+            }
 
 
             conferma.CodiceSede = command.ConfermaPartenze.CodiceSede;
