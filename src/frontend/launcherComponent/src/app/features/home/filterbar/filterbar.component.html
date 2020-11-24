@@ -43,11 +43,8 @@
                         (search)="onSearch($event)">
                 </app-ricerca>
             </div>
-        </div>
-    </div>
-    <div *ngIf="((composizioneStatus$ | async) === false) && ((chiamataStatus$ | async) === false) && ((doubleMonitor$ | async) === false)" class="float-left">
-        <div class="clearfix">
-            <div class="float-left">
+            <div *ngIf="((composizioneStatus$ | async) === false) && ((chiamataStatus$ | async) === false) && ((doubleMonitor$ | async) === false)"
+                 class="float-left">
                 <app-view-mode [colorButtonView]="colorButton.buttonView"
                                [disabledMezziInServizio]="permessiFeature.MezziInServizio | checkPermission"
                                [mezziInServizioActive]="viewState?.mezziInServizio.active"

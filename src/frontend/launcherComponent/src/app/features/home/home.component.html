@@ -14,7 +14,8 @@
         </div>
     </div>
     <div class="row" [ngClass]="{'mt-1': !boxAttivi && !viewState.chiamata.active}">
-        <div [ngClass]="columnState.sinistra">
+        <div [ngClass]="columnState.sinistra"
+             [class.col-12]="((doubleMonitor$ | async) === false) && viewState.chiamata.active">
             <app-richieste [ngClass]="{'d-none' : !viewState.richieste.active}" [split]="viewState.richieste.split"
                            [boxAttivi]="boxAttivi">
             </app-richieste>
@@ -30,7 +31,8 @@
         </div>
         <div class="mt-2"
              [ngClass]="columnState.destra || {'d-none' : !viewState.mappa.active}"
-             [class.mapFull]="doubleMonitor$ | async">
+             [class.mapFull]="doubleMonitor$ | async"
+             [class.d-none]="((doubleMonitor$ | async) === false) && viewState.chiamata.active">
             <app-maps [viewStateMappa]="(viewStateMappa$ | async)"
                       [boxAttivi]="boxAttivi"
                       (mapFullLoaded)="onMapFullLoaded()"></app-maps>
