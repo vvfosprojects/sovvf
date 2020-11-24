@@ -359,7 +359,7 @@ export class SintesiRichiestaComponent implements OnChanges {
 
     onModificaEntiIntervenuti(): void {
         const modalModificaEntiIntervenuti = this.modalService.open(ModificaEntiModalComponent, {
-            windowClass: 'modal-holder',
+            windowClass: 'modal-holder modal-left',
             backdropClass: 'light-blue-backdrop',
             centered: true
         });
