@@ -7,7 +7,6 @@ using Polly.Wrap;
 using SO115App.ExternalAPI.Fake.Classi;
 using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Servizi.Infrastruttura.GestioneLog;
-using SO115App.Persistence.MongoDB.GestioneLog;
 using System;
 using System.Net;
 using System.Net.Http;
@@ -49,7 +48,7 @@ namespace SO115App.ExternalAPI.Fake.HttpManager
 
                     var response = c.Content.ReadAsStringAsync().Result;
 
-                    LogException exception = new LogException()
+                    var exception = new LogException()
                     {
                         Content = content,
                         DataOraEsecuzione = DateTime.Now,
@@ -86,6 +85,16 @@ namespace SO115App.ExternalAPI.Fake.HttpManager
                             {
                                 _writeLog.Save(exception);
                                 throw new Exception(Costanti.ES.NonTuttiIDatiInviatiSonoStatiProcessati);
+                            }
+                        case HttpStatusCode.UnsupportedMediaType:
+                            {
+                                _writeLog.Save(exception);
+                                throw new Exception(Costanti.ES.OggettoNonValido);
+                            }
+                        case 0:
+                            {
+                                _writeLog.Save(exception);
+                                throw new Exception(Costanti.ES.OggettoNonValido);
                             }
                     }
 

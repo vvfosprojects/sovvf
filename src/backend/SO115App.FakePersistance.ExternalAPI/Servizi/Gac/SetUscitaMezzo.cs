@@ -7,6 +7,7 @@ using SO115App.Models.Classi.ServiziEsterni.Gac;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneLog;
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 
 namespace SO115App.ExternalAPI.Fake.Servizi.Gac
@@ -19,10 +20,12 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
 
         public void Set(UscitaGAC uscita)
         {
+            var lstUscite = new List<UscitaGAC>() { uscita };
+
             var requestManager = new HttpRequestManager<RientroGAC>(_memoryCache, _client, _writeLog);
             requestManager.Configure();
 
-            var jsonString = JsonConvert.SerializeObject(uscita);
+            var jsonString = JsonConvert.SerializeObject(lstUscite);
             var content = new StringContent(jsonString);
             var uri = new Uri(_configuration.GetSection("UrlExternalApi").GetSection("GacApi").Value + Costanti.GacUscitaMezzo);
 

@@ -130,6 +130,8 @@ namespace SO115App.ExternalAPI.Fake.Classi
             public static string ErroreInternoAlServer = "Il servizio ha segnalato un errore interno. Consultare il log e contattare il supporto tecnico.";
             public static string NonTuttiIDatiInviatiSonoStatiProcessati = "Il servizio non è riuscito a processare tutti i dati che sono stati inviati. Consultare il log e contattare il supporto tecnico.";
 
+            public static string OggettoNonValido = "E' stato inviato un oggetto al servizio diverso da quello atteso. Consultare il log e contattare il supporto tecnico.";
+
             #endregion Eccezioni
         }
     }

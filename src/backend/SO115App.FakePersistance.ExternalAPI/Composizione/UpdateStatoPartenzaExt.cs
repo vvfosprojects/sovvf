@@ -20,6 +20,7 @@
 using System;
 using System.Linq;
 using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
+using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Classi.ServiziEsterni.Gac;
 using SO115App.Models.Classi.Utility;
@@ -84,10 +85,10 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                     if (partenza.Partenza.Mezzo.Stato.Equals(Costanti.MezzoInSede) || partenza.Partenza.Mezzo.Stato.Equals(Costanti.MezzoRientrato))
                         _setRientroMezzo.Set(new RientroGAC()
                         {
-                            //Autista = "",
+                            Autista = "",
                             CodicePartenza = partenza.Partenza.Codice,
-                            DataIntervento = command.Richiesta.IstanteRicezioneRichiesta.Value,
-                            DataRientro = command.Richiesta.ListaEventi.OfType<PartenzaRientrata>().First(e => e.CodicePartenza.Equals(partenza.Partenza.Codice)).Istante,
+                            DataIntervento = command.Richiesta.ListaEventi.OfType<Telefonata>().FirstOrDefault(p => p.CodiceRichiesta.Equals(command.Richiesta.CodRichiesta)).Istante,
+                            DataRientro = command.Richiesta.ListaEventi.OfType<PartenzaRientrata>().FirstOrDefault(p => p.CodicePartenza.Equals(partenza.Partenza.Codice)).Istante,
                             NumeroIntervento = command.Richiesta.CodRichiesta,
                             Targa = partenza.Partenza.Mezzo.Codice,
                             TipoMezzo = partenza.Partenza.Mezzo.Genere
@@ -95,29 +96,29 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                     else
                         _setUscitaMezzo.Set(new UscitaGAC()
                         {
-                            //Autista = partenza.Partenza.Squadre.,
+                            Autista = "",
                             CodicePartenza = partenza.Partenza.Codice,
-                            DataIntervento = command.Richiesta.IstanteRicezioneRichiesta.Value,
+                            DataIntervento = command.Richiesta.ListaEventi.OfType<Telefonata>().FirstOrDefault(p => p.CodiceRichiesta.Equals(command.Richiesta.CodRichiesta)).Istante,
                             NumeroIntervento = command.Richiesta.CodRichiesta,
                             Targa = partenza.Partenza.Mezzo.Codice,
                             TipoMezzo = partenza.Partenza.Mezzo.Genere,
-                            DataUscita = command.Richiesta.ListaEventi.OfType<UscitaPartenza>().First(e => e.CodicePartenza.Equals(partenza.Partenza.Codice)).Istante,
+                            DataUscita = command.Richiesta.ListaEventi.OfType<UscitaPartenza>().FirstOrDefault(p => p.CodicePartenza.Equals(partenza.Partenza.Codice)).Istante,
                             Latitudine = command.Richiesta.Localita.Coordinate.Latitudine.ToString(),
                             Longitudine = command.Richiesta.Localita.Coordinate.Longitudine.ToString(),
                             Localita = command.Richiesta.Localita.Citta,
                             Comune = new ComuneGAC()
                             {
-                                //Codice = 
+                                //Codice
                                 Descrizione = command.Richiesta.Localita.Citta,
                             },
                             Provincia = new Models.Classi.Gac.ProvinciaGAC()
                             {
-                                //Codice = 
+                                //Codice
                                 Descrizione = command.Richiesta.Localita.Provincia
                             },
                             TipoUscita = new TipoUscita()
                             {
-                                //Codice = 
+                                //Codice
                                 Descrizione = "Servizio"
                             }
                         });
