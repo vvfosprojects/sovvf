@@ -42,6 +42,8 @@ export class ViewportState {
 
     @Selector([RouterState, AuthState, AppState])
     static footerVisible(state: ViewportStateModel, routerState: RouterStateModel, authState: AuthStateModel, appState: AppStateModel): boolean {
+        return;
+        /*
         const grantUrl = [`/${RoutesPath.Home}`, `/${RoutesPath.GestioneUtenti}`, `/${RoutesPath.Rubrica}`, `/${RoutesPath.TrasferimentoChiamata}`, `/${RoutesPath.Changelog}`, `/${RoutesPath.Impostazioni}`];
         let granted = false;
         grantUrl.forEach((url: string) => {
@@ -52,6 +54,7 @@ export class ViewportState {
         const logged = authState.logged;
         const appReady = appState.appIsLoaded;
         return granted && logged && appReady;
+        */
     }
 
     @Selector()
