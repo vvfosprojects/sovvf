@@ -5,6 +5,9 @@ using Polly.Caching;
 using Polly.Caching.Memory;
 using Polly.Wrap;
 using SO115App.ExternalAPI.Fake.Classi;
+using SO115App.Models.Classi.Condivise;
+using SO115App.Models.Servizi.Infrastruttura.GestioneLog;
+using SO115App.Persistence.MongoDB.GestioneLog;
 using System;
 using System.Net;
 using System.Net.Http;
@@ -12,16 +15,17 @@ using System.Threading.Tasks;
 
 namespace SO115App.ExternalAPI.Fake.HttpManager
 {
-    public class HttpRequestManager<ResponseObject> : IHttpRequestManager<ResponseObject> where ResponseObject : class
+    public class HttpRequestManager<ResponseObject, LogObject> : IHttpRequestManager<ResponseObject> where ResponseObject : class
     {
         private readonly IMemoryCache _memoryCache;
         private readonly HttpClient _client;
-
+        private readonly IWriteLog _writeLog;
         private AsyncPolicyWrap<HttpResponseMessage> policies;
 
-        public HttpRequestManager(IMemoryCache memoryCache, HttpClient client)
+        public HttpRequestManager(IMemoryCache memoryCache, HttpClient client, IWriteLog writeLog)
         {
             _client = client;
+            _writeLog = writeLog;
             _memoryCache = memoryCache;
         }
 
@@ -33,13 +37,45 @@ namespace SO115App.ExternalAPI.Fake.HttpManager
 
             //ECCEZIONI E RESPONSE
             var retryPolicy = Policy
-                .Handle<AggregateException>(e => throw new Exception(Costanti.ServizioNonRaggiungibile))
+                .Handle<AggregateException>(e => throw new Exception(Costanti.ES.ServizioNonRaggiungibile))
                 .OrResult<HttpResponseMessage>(c =>
                 {
-                    switch(c.StatusCode)
+                    LogException exception = new LogException()
+                    {
+                        Content = JsonConvert.SerializeObject(_client.DefaultRequestHeaders),
+                        DataOraEsecuzione = DateTime.Now,
+                        Response = c.Content.ReadAsStringAsync().Result,
+                        Servizio = _client.BaseAddress.Host,
+                        //CodComando = _client.DefaultRequestHeaders.GetValues()
+                    };
+
+                    switch (c.StatusCode)
                     {
                         case HttpStatusCode.NotFound:
-                            throw new Exception(Costanti.ServizioNonRaggiungibile);
+                            {
+                                _writeLog.Save(exception);
+                                throw new Exception(Costanti.ES.ServizioNonRaggiungibile);
+                            }
+                        case HttpStatusCode.Forbidden:
+                            {
+                                _writeLog.Save(exception);
+                                throw new Exception(Costanti.ES.AutorizzazioneNegata);
+                            }
+                        case HttpStatusCode.UnprocessableEntity:
+                            {
+                                _writeLog.Save(exception);
+                                throw new Exception(Costanti.ES.DatiMancanti);
+                            }
+                        case HttpStatusCode.InternalServerError:
+                            {
+                                _writeLog.Save(exception);
+                                throw new Exception(Costanti.ES.ErroreInternoAlServer);
+                            }
+                        case HttpStatusCode.Created:
+                            {
+                                _writeLog.Save(exception);
+                                throw new Exception(Costanti.ES.NonTuttiIDatiInviatiSonoStatiProcessati);
+                            }
                     }
 
                     return false;
