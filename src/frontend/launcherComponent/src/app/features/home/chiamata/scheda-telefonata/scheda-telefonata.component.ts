@@ -124,6 +124,10 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy {
       latitudine: [null, [Validators.required, Validators.pattern('^(\\-?)([0-9]+)(\\.)([0-9]+)$')]],
       longitudine: [null, [Validators.required, Validators.pattern('^(\\-?)([0-9]+)(\\.)([0-9]+)$')]],
       piano: [null],
+      palazzo: [null],
+      scala: [null],
+      interno: [null],
+      contatto: [null],
       etichette: [null],
       noteIndirizzo: [null],
       rilevanzaGrave: [false],
@@ -199,6 +203,10 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy {
     this.nuovaRichiesta.notePubbliche = f.notePubbliche.value;
     this.nuovaRichiesta.prioritaRichiesta = f.prioritaRichiesta.value;
     this.nuovaRichiesta.localita.piano = f.piano.value;
+    this.nuovaRichiesta.localita.palazzo = f.palazzo.value;
+    this.nuovaRichiesta.localita.scala = f.scala.value;
+    this.nuovaRichiesta.localita.interno = f.interno.value;
+    this.nuovaRichiesta.localita.contatto = f.contatto.value;
     this.nuovaRichiesta.codiceSchedaNue = this.idSchedaContatto ? this.idSchedaContatto : null;
     this.nuovaRichiesta.listaEnti = (f.listaEnti.value && f.listaEnti.value.length) ? f.listaEnti.value : null;
 

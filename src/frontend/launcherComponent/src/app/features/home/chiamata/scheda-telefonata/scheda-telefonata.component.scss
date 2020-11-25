@@ -137,6 +137,11 @@ tag-input {
   min-height: 75px;
 }
 
+input::placeholder {
+  font-size: 20px;
+  font-weight: 500;
+}
+
 /* Per editare ng-select
 ng-select {
   > div {
