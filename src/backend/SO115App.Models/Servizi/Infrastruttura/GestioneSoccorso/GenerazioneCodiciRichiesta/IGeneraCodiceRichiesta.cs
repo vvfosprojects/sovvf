@@ -8,6 +8,6 @@ namespace SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GenerazioneCod
 
         string Genera(string codiceProvincia, int anno);
 
-        string GeneraCodicePartenza();
+        int GeneraCodicePartenza();
     }
 }

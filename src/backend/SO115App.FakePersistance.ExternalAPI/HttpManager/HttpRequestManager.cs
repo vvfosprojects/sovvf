@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace SO115App.ExternalAPI.Fake.HttpManager
 {
-    public class HttpRequestManager<ResponseObject, LogObject> : IHttpRequestManager<ResponseObject> where ResponseObject : class
+    public class HttpRequestManager<ResponseObject> : IHttpRequestManager<ResponseObject> where ResponseObject : class
     {
         private readonly IMemoryCache _memoryCache;
         private readonly HttpClient _client;

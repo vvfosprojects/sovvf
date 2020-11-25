@@ -4,6 +4,6 @@
     {
         public string Targa { get; set; }
         public string TipoMezzo { get; set; }
-        public string CodicePartenza { get; set; }
+        public int CodicePartenza { get; set; }
     }
 }

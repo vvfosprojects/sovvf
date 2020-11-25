@@ -34,9 +34,9 @@ namespace SO115App.Persistence.MongoDB.GestioneInterventi
             return returnString;
         }
 
-        public string GeneraCodicePartenza()
+        public int GeneraCodicePartenza()
         {
-            return (int.Parse(_getMaxCodice.GetMaxCodicePartenza() ?? "0") + 1).ToString();
+            return _getMaxCodice.GetMaxCodicePartenza() + 1;
         }
     }
 }

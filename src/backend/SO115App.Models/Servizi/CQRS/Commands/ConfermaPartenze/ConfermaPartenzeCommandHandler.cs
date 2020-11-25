@@ -177,7 +177,7 @@ namespace SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Composizione
 
             foreach (var partenza in command.ConfermaPartenze.Partenze)
             {
-                if (string.IsNullOrEmpty(partenza.Codice))
+                if (partenza.Codice == 0)
                     partenza.Codice = _generaCodiceRichiesta.GeneraCodicePartenza();
 
                 foreach (var squadra in partenza.Squadre)

@@ -25,7 +25,7 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                 //ANNULLAMENTO ---
                 var partenzaDaAnnullare = command.Richiesta.Partenze.FirstOrDefault(p => p.Partenza.Mezzo.Codice.Equals(command.ModificaPartenza.CodMezzoDaAnnullare));
 
-                new RevocaPerSostituzioneMezzo(Richiesta, command.ModificaPartenza.CodMezzoDaAnnullare, command.ModificaPartenza.DataAnnullamento.Value, command.IdOperatore, command.ModificaPartenza.MotivazioneAnnullamento);
+                new RevocaPerSostituzioneMezzo(Richiesta, command.ModificaPartenza.CodMezzoDaAnnullare, command.ModificaPartenza.DataAnnullamento.Value, command.IdOperatore, command.ModificaPartenza.MotivazioneAnnullamento, partenzaDaAnnullare.Partenza.Codice);
 
                 partenzaDaAnnullare.PartenzaAnnullata = true;
                 partenzaDaAnnullare.Partenza.PartenzaAnnullata = true;

@@ -19,6 +19,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using SO115App.Models.Classi.ServiziEsterni.Gac;
+using SO115App.Models.Servizi.Infrastruttura.GestioneLog;
 
 namespace SO115App.ExternalAPI.Fake.Servizi.Gac
 {
@@ -27,6 +28,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
         private readonly HttpClient _client;
         private readonly IConfiguration _configuration;
         private readonly IMemoryCache _memoryCache;
+        private readonly IWriteLog _writeLog;
 
         private readonly IGetStatoMezzi _getStatoMezzi;
         private readonly IGetDistaccamentoByCodiceSedeUC _getDistaccamentoByCodiceSedeUC;
@@ -36,7 +38,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
         public GetMezziUtilizzabili(HttpClient client, IConfiguration configuration, IGetStatoMezzi GetStatoMezzi,
             IGetDistaccamentoByCodiceSedeUC GetDistaccamentoByCodiceSedeUC,
             IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative,
-            IMemoryCache memoryCache, IGetPosizioneFlotta getPosizioneFlotta)
+            IMemoryCache memoryCache, IGetPosizioneFlotta getPosizioneFlotta, IWriteLog writeLog)
         {
             _client = client;
             _configuration = configuration;
@@ -45,6 +47,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
             _getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
             _memoryCache = memoryCache;
             _getPosizioneFlotta = getPosizioneFlotta;
+            _writeLog = writeLog;
         }
 
         public async Task<List<Mezzo>> Get(List<string> sedi, string genereMezzo = null, string codiceMezzo = null, List<MessaggioPosizione> posizioneFlotta = null)
@@ -85,7 +88,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
             { 
                 Parallel.ForEach(sedi, sede =>
                 {
-                    var httpManager = new HttpRequestManager<List<MezzoDTO>>(_memoryCache, _client);
+                    var httpManager = new HttpRequestManager<List<MezzoDTO>>(_memoryCache, _client, _writeLog);
                     httpManager.Configure("Mezzi_" + sede);
 
                     var lstSediQueryString = string.Join("&codiciSedi=", ListaCodiciSedi.Where(s => sede.Contains(s.Split(".")[0])).ToArray());

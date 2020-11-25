@@ -5,6 +5,7 @@ using SO115App.ExternalAPI.Fake.HttpManager;
 using SO115App.Models.Classi.ServiziEsterni.UtenteComune;
 using SO115App.Models.Classi.ServiziEsterni.Utility;
 using SO115App.Models.Classi.Utenti.Autenticazione;
+using SO115App.Models.Servizi.Infrastruttura.GestioneLog;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Personale;
 using System;
 using System.Collections.Generic;
@@ -23,12 +24,14 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
         private readonly HttpClient _client;
         private readonly IConfiguration _configuration;
         private readonly IMemoryCache _memoryCache;
+        private readonly IWriteLog _writeLog;
 
-        public GetPersonaleByCF(HttpClient client, IConfiguration configuration, IMemoryCache memoryCache)
+        public GetPersonaleByCF(HttpClient client, IConfiguration configuration, IMemoryCache memoryCache, IWriteLog writeLog)
         {
             _configuration = configuration;
             _memoryCache = memoryCache;
             _client = client;
+            _writeLog = writeLog;
         }
 
         public async Task<PersonaleVVF> Get(string codiceFiscale, string codSede = null)
@@ -64,7 +67,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
             {
                 Parallel.ForEach(codSede, sede =>
                 {
-                    var httpManager = new HttpRequestManager<List<PersonaleVVF>>(_memoryCache, _client);
+                    var httpManager = new HttpRequestManager<List<PersonaleVVF>>(_memoryCache, _client, _writeLog);
                     httpManager.Configure("Personale_" + sede);
 
                     var url = new Uri($"{_configuration.GetSection("UrlExternalApi").GetSection("PersonaleApiUtenteComuni").Value}?codiciSede={sede}");

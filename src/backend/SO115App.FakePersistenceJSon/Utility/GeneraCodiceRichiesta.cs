@@ -25,7 +25,7 @@ namespace SO115App.FakePersistence.JSon.Utility
             return returnString;
         }
 
-        public string GeneraCodicePartenza()
+        public int GeneraCodicePartenza()
         {
             throw new NotImplementedException();
         }

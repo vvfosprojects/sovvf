@@ -112,7 +112,7 @@ namespace SO115App.API.Models.Classi.Soccorso
 
             if (stato.Stato == Costanti.MezzoInViaggio)
             {
-                new UscitaPartenza(this, partenzaDaLavorare.Partenza.Mezzo.Codice, stato.DataOraAggiornamento, CodOperatore);
+                new UscitaPartenza(this, partenzaDaLavorare.Partenza.Mezzo.Codice, stato.DataOraAggiornamento, CodOperatore, partenzaDaLavorare.Partenza.Codice);
 
                 SincronizzaStatoRichiesta(Costanti.RichiestaAssegnata, StatoRichiesta, CodOperatore, "", stato.DataOraAggiornamento);
 
@@ -122,7 +122,7 @@ namespace SO115App.API.Models.Classi.Soccorso
 
             else if (stato.Stato == Costanti.MezzoSulPosto)
             {
-                new ArrivoSulPosto(this, partenzaDaLavorare.Partenza.Mezzo.Codice, stato.DataOraAggiornamento, CodOperatore);
+                new ArrivoSulPosto(this, partenzaDaLavorare.Partenza.Mezzo.Codice, stato.DataOraAggiornamento, CodOperatore, partenzaDaLavorare.Partenza.Codice);
 
                 SincronizzaStatoRichiesta(Costanti.RichiestaPresidiata, StatoRichiesta, CodOperatore, "", stato.DataOraAggiornamento);
 
@@ -134,7 +134,7 @@ namespace SO115App.API.Models.Classi.Soccorso
             {
                 partenzaDaLavorare.Partenza.Mezzo.Stato = Costanti.MezzoInRientro;
 
-                new PartenzaInRientro(this, partenzaDaLavorare.Partenza.Mezzo.Codice, stato.DataOraAggiornamento, CodOperatore);
+                new PartenzaInRientro(this, partenzaDaLavorare.Partenza.Mezzo.Codice, stato.DataOraAggiornamento, CodOperatore, partenzaDaLavorare.Partenza.Codice);
 
                 if (lstPartenze.Select(p => p.Mezzo.Stato).All(s => s != Costanti.MezzoInSede && s != Costanti.MezzoInViaggio && s != Costanti.MezzoInUscita && s != Costanti.MezzoSulPosto))
                     new ChiusuraRichiesta("", this, stato.DataOraAggiornamento, CodOperatore);
@@ -146,7 +146,7 @@ namespace SO115App.API.Models.Classi.Soccorso
                 partenzaDaLavorare.Partenza.Mezzo.IdRichiesta = null;
                 partenzaDaLavorare.Partenza.Terminata = true;
 
-                new PartenzaRientrata(this, partenzaDaLavorare.Partenza.Mezzo.Codice, stato.DataOraAggiornamento, CodOperatore);
+                new PartenzaRientrata(this, partenzaDaLavorare.Partenza.Mezzo.Codice, stato.DataOraAggiornamento, CodOperatore, partenzaDaLavorare.Partenza.Codice);
 
                 if (lstPartenze.Select(p => p.Mezzo.Stato).All(s => s != Costanti.MezzoInSede && s != Costanti.MezzoInViaggio && s != Costanti.MezzoInUscita && s != Costanti.MezzoSulPosto))
                     new ChiusuraRichiesta("", this, stato.DataOraAggiornamento, CodOperatore);

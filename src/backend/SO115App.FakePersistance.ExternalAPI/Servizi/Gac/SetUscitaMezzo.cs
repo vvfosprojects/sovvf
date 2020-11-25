@@ -5,21 +5,21 @@ using SO115App.ExternalAPI.Fake.Classi;
 using SO115App.ExternalAPI.Fake.HttpManager;
 using SO115App.Models.Classi.ServiziEsterni.Gac;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
+using SO115App.Models.Servizi.Infrastruttura.GestioneLog;
 using System;
 using System.Net.Http;
-using System.Text;
 
 namespace SO115App.ExternalAPI.Fake.Servizi.Gac
 {
     public class SetUscitaMezzo : BaseService, ISetUscitaMezzo
     {
-        public SetUscitaMezzo(HttpClient client, IConfiguration configuration, IMemoryCache memoryCache)
-            : base(client, configuration, memoryCache) { }
+        public SetUscitaMezzo(HttpClient client, IConfiguration configuration, IMemoryCache memoryCache, IWriteLog writeLog)
+            : base(client, configuration, memoryCache, writeLog) { }
 
 
         public void Set(UscitaGAC uscita)
         {
-            var requestManager = new HttpRequestManager<RientroGAC>(_memoryCache, _client);
+            var requestManager = new HttpRequestManager<RientroGAC>(_memoryCache, _client, _writeLog);
             requestManager.Configure();
 
             var jsonString = JsonConvert.SerializeObject(uscita);

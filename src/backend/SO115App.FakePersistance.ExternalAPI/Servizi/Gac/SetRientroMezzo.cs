@@ -5,19 +5,20 @@ using SO115App.ExternalAPI.Fake.Classi;
 using SO115App.ExternalAPI.Fake.HttpManager;
 using SO115App.Models.Classi.ServiziEsterni.Gac;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
+using SO115App.Models.Servizi.Infrastruttura.GestioneLog;
 using System;
 using System.Net.Http;
 
 namespace SO115App.ExternalAPI.Fake.Servizi.Gac
 {
-    public class SetEntrataMezzo : BaseService, ISetRientroMezzo
+    public class SetRientroMezzo : BaseService, ISetRientroMezzo
     {
-        public SetEntrataMezzo(HttpClient client, IConfiguration configuration, IMemoryCache memoryCache)
-            : base(client, configuration, memoryCache) { }
+        public SetRientroMezzo(HttpClient client, IConfiguration configuration, IMemoryCache memoryCache, IWriteLog writeLog)
+            : base(client, configuration, memoryCache, writeLog) { }
 
         public void Set(RientroGAC rientro)
         {
-            var requestManager = new HttpRequestManager<RientroGAC>(_memoryCache, _client);
+            var requestManager = new HttpRequestManager<RientroGAC>(_memoryCache, _client, _writeLog);
             requestManager.Configure();
 
             var jsonString = JsonConvert.SerializeObject(rientro);

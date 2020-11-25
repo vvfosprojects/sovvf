@@ -8,6 +8,7 @@ using SO115App.ExternalAPI.Fake.HttpManager;
 using SO115App.Models.Classi.ServiziEsterni.Gac;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GeoFleet;
+using SO115App.Models.Servizi.Infrastruttura.GestioneLog;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.ServizioSede;
 using System;
@@ -26,8 +27,8 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
 
         public GetMezziUtilizzabiliPerBox(HttpClient client, IConfiguration configuration, IGetStatoMezzi GetStatoMezzi,
             IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative,
-            IMemoryCache memoryCache, IGetPosizioneFlotta getPosizioneFlotta)
-            : base(client, configuration, memoryCache)
+            IMemoryCache memoryCache, IGetPosizioneFlotta getPosizioneFlotta, IWriteLog writeLog)
+            : base(client, configuration, memoryCache, writeLog)
         {
             _getStatoMezzi = GetStatoMezzi;
             _getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
@@ -64,7 +65,7 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
             var lstMezziDto = new List<MezzoDTO>();
             Parallel.ForEach(sedi, sede =>
             {
-                var httpManager = new HttpRequestManager<List<MezzoDTO>>(_memoryCache, _client);
+                var httpManager = new HttpRequestManager<List<MezzoDTO>>(_memoryCache, _client, _writeLog);
                 httpManager.Configure("Mezzi_" + sede);
 
                 var lstSediQueryString = string.Join("&codiciSedi=", ListaCodiciSedi.Where(s => sede.Contains(s.Split(".")[0])).ToArray());
