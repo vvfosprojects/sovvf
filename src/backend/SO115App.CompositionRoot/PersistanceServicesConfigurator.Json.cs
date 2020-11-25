@@ -8,13 +8,14 @@ namespace SO115App.CompositionRoot
     internal static class PersistanceServicesConfigurator_Json
     {
         internal static void Configure(Container container)
-        {           
-            Configure_JsonDatabase(container, false);            
+        {
+            Configure_JsonDatabase(container, false);
         }
 
         private static void Configure_JsonDatabase(Container container, bool v)
         {
             #region Chiamate In Corso
+
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.Marker.IAddChiamataInCorso,
                 FakePersistenceJSon.Marker.AddChiamateInCorso>();
@@ -27,9 +28,11 @@ namespace SO115App.CompositionRoot
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.Marker.IUpDateChiamataInCorso,
                 FakePersistenceJSon.Marker.UpDateChiamateInCorso>();
-            #endregion
 
-            #region Marker 
+            #endregion Chiamate In Corso
+
+            #region Marker
+
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.Marker.IGetMezziMarker,
                 GetMezziMarker>();
@@ -42,15 +45,19 @@ namespace SO115App.CompositionRoot
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.Marker.IGetCentroMappaMarker,
                 FakePersistenceJSon.Marker.GetCentroMappa>();
+
             #endregion Marker
 
             #region Box
+
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.Box.IGetBoxMezzi,
                 SO115App.FakePersistenceJSon.Box.GetBoxMezzi>();
+
             #endregion Box
 
             #region Utility
+
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.GetFiltri.IGetFiltri,
                 FakePersistenceJSon.Filtri.GetFiltri>();
@@ -66,9 +73,11 @@ namespace SO115App.CompositionRoot
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.Turni.IGetTurno,
                 SO115App.FakePersistence.JSon.Turni.GetTurno>();
+
             #endregion Utility
 
             #region Getione Mezzi
+
             container.Register<
                 Models.Servizi.Infrastruttura.Composizione.ISetMezzoPrenotato,
                 FakePersistence.JSon.Composizione.SetMezzoPrenotato>();
@@ -83,10 +92,11 @@ namespace SO115App.CompositionRoot
             container.Register<
                 Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi.ISetStatoOperativoMezzo,
                 FakePersistence.JSon.GestioneMezzi.SetStatoOperativoMezzo>();
-            #endregion Gestione Mezzi
 
+            #endregion Getione Mezzi
 
             #region Gestione Utenti
+
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.GestioneUtenti.IGetUtenteById,
                 SO115App.FakePersistence.JSon.GestioneUtenti.GetUtenteById>();
@@ -99,18 +109,22 @@ namespace SO115App.CompositionRoot
             container.Register<
                 Models.Servizi.Infrastruttura.GestioneUtenti.VerificaUtente.IVerificaLogIn,
                 FakePersistence.JSon.GestioneUtenti.VerificaLogIn>();
+
             #endregion Gestione Utenti
 
-            #region Partenze 
+            #region Partenze
+
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.Composizione.IUpdateConfermaPartenze,
                 UpdateConfermaPartenze>();
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.Composizione.IUpdateStatoPartenze,
                 UpdateStatoPartenza>();
+
             #endregion Partenze
 
             #region Gestione Richiesta
+
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.GetListaEventi.IGetListaEventi,
                 FakePersistenceJSon.ListaEventi.GetListaEventi>();
@@ -123,8 +137,8 @@ namespace SO115App.CompositionRoot
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.InfoRichiesta.IGetInfoRichiesta,
                 FakePersistence.JSon.Utility.GetInfoRichiesta>();
-            #endregion Gestione Richiesta
 
+            #endregion Gestione Richiesta
         }
     }
 }

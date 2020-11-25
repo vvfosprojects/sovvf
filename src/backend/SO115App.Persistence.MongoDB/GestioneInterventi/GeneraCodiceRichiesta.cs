@@ -33,10 +33,5 @@ namespace SO115App.Persistence.MongoDB.GestioneInterventi
             string returnString = string.Format("{0}{1}{2}{3}{4:D5}", codiceProvincia.Split('.')[0], giorno, mese, ultimeDueCifreAnno, maxNumero);
             return returnString;
         }
-
-        public int GeneraCodicePartenza()
-        {
-            return _getMaxCodice.GetMaxCodicePartenza() + 1;
-        }
     }
 }

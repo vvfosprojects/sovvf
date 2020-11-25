@@ -7,7 +7,5 @@ namespace SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GenerazioneCod
         string GeneraCodiceChiamata(string codiceProvincia, int anno);
 
         string Genera(string codiceProvincia, int anno);
-
-        int GeneraCodicePartenza();
     }
 }

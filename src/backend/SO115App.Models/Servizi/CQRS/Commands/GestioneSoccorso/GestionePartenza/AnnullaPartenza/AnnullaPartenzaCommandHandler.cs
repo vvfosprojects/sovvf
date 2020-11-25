@@ -54,12 +54,10 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
         {
             var PartenzaToDelete = command.Richiesta.Partenze.Where(x => x.Partenza.Mezzo.Codice.Equals(command.TargaMezzo)).FirstOrDefault();
 
-            var nuovoCodicePartenza = _generatoreCodici.GeneraCodicePartenza();
-
             switch (command.CodMotivazione)
             {
                 case 1:
-                    new RevocaPerInterventoNonPiuNecessario(command.Richiesta, command.TargaMezzo, DateTime.Now, command.IdOperatore, nuovoCodicePartenza);
+                    new RevocaPerInterventoNonPiuNecessario(command.Richiesta, command.TargaMezzo, DateTime.Now, command.IdOperatore, PartenzaToDelete.Partenza.Codice);
                     break;
 
                 case 2:
@@ -67,15 +65,15 @@ namespace SO115App.Models.Servizi.CQRS.Commands.GestioneSoccorso.GestionePartenz
                     if (richiestaSubentrata == null)
                         richiestaSubentrata = _getRichiestaById.GetByCodiceRichiesta(command.CodRichiestaSubentrata);
 
-                    new RevocaPerRiassegnazione(command.Richiesta, richiestaSubentrata, command.TargaMezzo, DateTime.Now, command.IdOperatore, nuovoCodicePartenza);
+                    new RevocaPerRiassegnazione(command.Richiesta, richiestaSubentrata, command.TargaMezzo, DateTime.Now, command.IdOperatore, PartenzaToDelete.Partenza.Codice);
                     break;
 
                 case 3:
-                    new RevocaPerFuoriServizio(command.Richiesta, command.TargaMezzo, DateTime.Now, command.IdOperatore, nuovoCodicePartenza);
+                    new RevocaPerFuoriServizio(command.Richiesta, command.TargaMezzo, DateTime.Now, command.IdOperatore, PartenzaToDelete.Partenza.Codice);
                     break;
 
                 case 4:
-                    new RevocaPerAltraMotivazione(command.Richiesta, command.TargaMezzo, DateTime.Now, command.IdOperatore, command.TestoMotivazione, nuovoCodicePartenza);
+                    new RevocaPerAltraMotivazione(command.Richiesta, command.TargaMezzo, DateTime.Now, command.IdOperatore, command.TestoMotivazione, PartenzaToDelete.Partenza.Codice);
                     break;
             }
             _upDateRichiestaAssistenza.UpDate(command.Richiesta);
