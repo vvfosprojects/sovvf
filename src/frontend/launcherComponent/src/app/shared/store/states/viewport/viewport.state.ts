@@ -56,7 +56,12 @@ export class ViewportState {
 
     @Selector()
     static doubleMonitor(state: ViewportStateModel): boolean {
-        return state.innerWidth > 3400;
+        return state.innerWidth > 3700;
+    }
+
+    @Selector()
+    static chiamataConMappa(state: ViewportStateModel): boolean {
+        return state.innerWidth > 2400;
     }
 
     @Action(SetAvailHeight)

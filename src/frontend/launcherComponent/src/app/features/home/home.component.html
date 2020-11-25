@@ -6,7 +6,7 @@
             <app-info-aggregate></app-info-aggregate>
         </div>
     </div>
-    <div class="row" [class.d-none]="viewState.chiamata.active">
+    <div class="row">
         <div [class.col-12]="((doubleMonitor$ | async) === false)"
              [class.col-6]="doubleMonitor$ | async"
              [ngClass]="{'mt-3': !boxAttivi}">
@@ -15,7 +15,7 @@
     </div>
     <div class="row" [ngClass]="{'mt-1': !boxAttivi && !viewState.chiamata.active}">
         <div [ngClass]="columnState.sinistra"
-             [class.col-12]="((doubleMonitor$ | async) === false) && viewState.chiamata.active">
+             [class.col-12]="((chiamataConMappa$ | async) === false) && viewState.chiamata.active">
             <app-richieste [ngClass]="{'d-none' : !viewState.richieste.active}" [split]="viewState.richieste.split"
                            [boxAttivi]="boxAttivi">
             </app-richieste>
@@ -32,7 +32,7 @@
         <div class="mt-2"
              [ngClass]="columnState.destra || {'d-none' : !viewState.mappa.active}"
              [class.mapFull]="doubleMonitor$ | async"
-             [class.d-none]="((doubleMonitor$ | async) === false) && viewState.chiamata.active">
+             [class.d-none]="((chiamataConMappa$ | async) === false) && viewState.chiamata.active">
             <app-maps [viewStateMappa]="(viewStateMappa$ | async)"
                       [boxAttivi]="boxAttivi"
                       (mapFullLoaded)="onMapFullLoaded()"></app-maps>
