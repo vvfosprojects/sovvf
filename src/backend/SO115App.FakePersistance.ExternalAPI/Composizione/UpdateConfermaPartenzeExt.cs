@@ -20,6 +20,8 @@
 
 using DomainModel.CQRS.Commands.ConfermaPartenze;
 using SO115App.API.Models.Classi.Composizione;
+using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
+using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Classi.ServiziEsterni.Gac;
 using SO115App.Models.Classi.Utility;
@@ -27,6 +29,7 @@ using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi;
 using SO115App.Models.Servizi.Infrastruttura.GestioneStatoOperativoSquadra;
 using System;
+using System.Linq;
 
 namespace SO115App.ExternalAPI.Fake.Composizione
 {
@@ -83,38 +86,41 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                     if (partenza.Mezzo.Stato.Equals(Costanti.MezzoInSede) || partenza.Mezzo.Stato.Equals(Costanti.MezzoRientrato))
                         _setRientroMezzo.Set(new RientroGAC()
                         {
-                            Autista = "",
+                            //Autista = "",
                             CodicePartenza = partenza.Codice,
-                            DataIntervento = dataMovintazione,
-                            DataRientro = dataMovintazione,
-                            NumeroIntervento = command.Richiesta.Codice,
+                            DataIntervento = command.Richiesta.ListaEventi.OfType<Telefonata>().FirstOrDefault(p => p.CodiceRichiesta.Equals(command.Richiesta.CodRichiesta)).Istante,
+                            DataRientro = command.Richiesta.ListaEventi.OfType<PartenzaRientrata>().FirstOrDefault(p => p.CodicePartenza.Equals(partenza.Codice)).Istante,
+                            NumeroIntervento = command.Richiesta.CodRichiesta,
                             Targa = partenza.Mezzo.Codice,
-                            TipoMezzo = partenza.Mezzo.Descrizione
+                            TipoMezzo = partenza.Mezzo.Genere
                         });
                     else
                         _setUscitaMezzo.Set(new UscitaGAC()
                         {
-                            Autista = "",
+                            //Autista = "",
                             CodicePartenza = partenza.Codice,
-                            DataIntervento = dataMovintazione,
-                            NumeroIntervento = command.Richiesta.Codice,
+                            DataIntervento = command.Richiesta.ListaEventi.OfType<Telefonata>().FirstOrDefault(p => p.CodiceRichiesta.Equals(command.Richiesta.CodRichiesta)).Istante,
+                            NumeroIntervento = command.Richiesta.CodRichiesta,
                             Targa = partenza.Mezzo.Codice,
-                            TipoMezzo = partenza.Mezzo.Descrizione,
-                            DataUscita = dataMovintazione,
+                            TipoMezzo = partenza.Mezzo.Genere,
+                            DataUscita = command.Richiesta.ListaEventi.OfType<UscitaPartenza>().FirstOrDefault(p => p.CodicePartenza.Equals(partenza.Codice)).Istante,
                             Latitudine = command.Richiesta.Localita.Coordinate.Latitudine.ToString(),
                             Longitudine = command.Richiesta.Localita.Coordinate.Longitudine.ToString(),
                             Localita = command.Richiesta.Localita.Citta,
                             Comune = new ComuneGAC()
                             {
+                                //Codice
                                 Descrizione = command.Richiesta.Localita.Citta,
                             },
                             Provincia = new Models.Classi.Gac.ProvinciaGAC()
                             {
+                                //Codice
                                 Descrizione = command.Richiesta.Localita.Provincia
                             },
                             TipoUscita = new TipoUscita()
                             {
-                                Descrizione = ""
+                                //Codice
+                                Descrizione = "Servizio"
                             }
                         });
             }

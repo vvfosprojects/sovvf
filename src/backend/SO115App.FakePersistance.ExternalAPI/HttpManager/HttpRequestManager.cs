@@ -37,15 +37,24 @@ namespace SO115App.ExternalAPI.Fake.HttpManager
 
             //ECCEZIONI E RESPONSE
             var retryPolicy = Policy
-                .Handle<AggregateException>(e => throw new Exception(Costanti.ES.ServizioNonRaggiungibile))
-                .OrResult<HttpResponseMessage>(c =>
+                //.Handle<AggregateException>(e => 
+                //throw new Exception(Costanti.ES.ServizioNonRaggiungibile))
+                .HandleResult<HttpResponseMessage>(c =>
                 {
+                    var content = "";
+                    if (c.RequestMessage.Method.Method.Equals("GET"))
+                        content = c.RequestMessage.RequestUri.AbsoluteUri;
+                    else
+                        content = c.RequestMessage.Content.ReadAsStringAsync().Result;
+
+                    var response = c.Content.ReadAsStringAsync().Result;
+
                     LogException exception = new LogException()
                     {
-                        Content = JsonConvert.SerializeObject(_client.DefaultRequestHeaders),
+                        Content = content,
                         DataOraEsecuzione = DateTime.Now,
-                        Response = c.Content.ReadAsStringAsync().Result,
-                        Servizio = _client.BaseAddress.Host,
+                        Response = response,
+                        //Servizio = _client.BaseAddress?.Host,
                         //CodComando = _client.DefaultRequestHeaders.GetValues()
                     };
 
@@ -53,6 +62,8 @@ namespace SO115App.ExternalAPI.Fake.HttpManager
                     {
                         case HttpStatusCode.NotFound:
                             {
+                                exception.Response = c.ReasonPhrase;
+
                                 _writeLog.Save(exception);
                                 throw new Exception(Costanti.ES.ServizioNonRaggiungibile);
                             }
