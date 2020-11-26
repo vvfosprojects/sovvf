@@ -633,13 +633,13 @@ tag-input {
 }
 
 .loader-position-img-left {
-  margin-left: 18% !important;
-  margin-top: 15% !important;
+  top: calc((45% - 60px) - 30px) !important;
+  left: calc((26% - 0px) - 30px) !important;
 }
 
 .loader-position-fgs-left {
-  margin-left: 24.5% !important;
-  margin-top: 35% !important;
+  top: calc((65% - 50px) - 30px) !important;
+  left: calc((26% - 0px) - 30px) !important;
 }
 
 .font-xlarge {

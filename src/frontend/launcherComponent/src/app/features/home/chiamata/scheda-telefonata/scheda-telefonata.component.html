@@ -11,7 +11,7 @@
             </div>
           </ng-template>
           <h3 class="mb-0">
-            Chiamata in corso...
+            Inserimento nuova chiamata...
             <span *ngIf="f.rilevanzaGrave?.value || f.rilevanzaStArCu?.value"
                   class="d-inline-block mr-1 text-danger"
                   [ngbTooltip]="rilevante" placement="bottom">
@@ -20,26 +20,14 @@
                         </span>
           </h3>
         </div>
-        <div class="col-4">
+        <div class="col-7">
           <!-- Spazio libero -->
-        </div>
-        <div class="col-3 float-right text-right font-xlarge">
-          <span class="mr-2 h5 font-weight-normal">Priorità</span>
-          <ngb-rating [formControl]="f.prioritaRichiesta" [starTemplate]="t" [max]="5"></ngb-rating>
-          <ng-template #t let-fill="fill" let-index="index">
-            <span class="circle" [class.filled]="fill === 100" [class.bad]="index > 2 && fill === 100">
-              <i class="fa fa-circle mr-1"></i>
-            </span>
-          </ng-template>
-          <span *ngIf="submitted && f.prioritaRichiesta.errors" class="form-text small">
-            <div *ngIf="f.prioritaRichiesta.errors.required" class="text-danger">La priorità è richiesta</div>
-          </span>
         </div>
       </div>
       <hr class="mt-1 mb-2">
       <div class="form-group mb-2">
         <!-- TIPOLOGIA  -->
-        <div class="row p-2 my-2 bg-secondary text-white font-xlarge font-weight-bold">TIPOLOGIA</div>
+        <div class="row px-2 my-2 bg-secondary text-white font-xlarge font-weight-bold">TIPOLOGIA</div>
         <label class="d-none">Tipologia intervento</label>
         <div class="required-field">
           <ng-select class="border font-xlarge test-ng-select"
@@ -63,7 +51,7 @@
         </div>
       </div>
       <!-- INDIRIZZO  -->
-      <div class="row p-2 my-2 bg-secondary text-white font-xlarge font-weight-bold">INDIRIZZO</div>
+      <div class="row px-2 my-2 bg-secondary text-white font-xlarge font-weight-bold">INDIRIZZO</div>
       <div class="row">
         <div class="col-6">
           <div class="form-group mb-2">
@@ -80,8 +68,8 @@
             </div>
           </div>
         </div>
-        <div class="col-4">
-          <div class="form-group d-inline-block mb-2" style="width:38%; margin-right: 2%">
+        <div class="col-4 d-inline-flex">
+          <div class="form-group mb-2" style="width:38%; margin-right: 2%">
             <label class="d-none" for="latitudine">Latitudine</label>
             <input id="latitudine" type="tel" placeholder="Latitudine" formControlName="latitudine"
                    (keypress)="checkInputPattern($event, 'LAT_LON')"
@@ -92,7 +80,7 @@
               <div *ngIf="f.latitudine.errors.pattern">La latitudine non è corretta</div>
             </div>
           </div>
-          <div class="form-group d-inline-block mb-2" style="width:38%; margin-right: 2%">
+          <div class="form-group mb-2" style="width:38%; margin-right: 2%">
             <label class="d-none" for="longitudine">Longitudine</label>
             <input id="longitudine" type="tel" placeholder="Longitudine" formControlName="longitudine"
                    (keypress)="checkInputPattern($event, 'LAT_LON')"
@@ -103,7 +91,7 @@
               <div *ngIf="f.longitudine.errors.pattern">La longitudine non è corretta</div>
             </div>
           </div>
-          <div class="d-inline-block mb-2" style="width:20%">
+          <div class="mb-2" style="width:20%">
             <label class="d-none">Copia</label>
             <button type="button" class="btn btn-block btn-secondary btn-no-hover font-xlarge" [ngbTooltip]="coordsTooltip"
                     placement="bottom"
@@ -119,9 +107,9 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-6">
+        <div class="col-7">
           <!-- RICHIEDENTE  -->
-          <div class="row p-2 my-2 bg-secondary text-white font-xlarge font-weight-bold">RICHIEDENTE</div>
+          <div class="row px-2 my-2 bg-secondary text-white font-xlarge font-weight-bold">RICHIEDENTE</div>
           <div class="row mb-2">
             <div class="col-8">
               <div class="form-group mb-1">
@@ -181,12 +169,41 @@
             </div>
           </div>
         </div>
-        <div class="col-6">
+        <div class="col-1">
+          <!-- 112  -->
+          <div class="row my-2 bg-secondary" style="padding: 15px"></div>
+          <div class="row">
+            <div class="col wrapper-grid custom-control custom-radio">
+              <span class="mb-0 h5 font-xlarge d-none">Numeri</span>
+              <span class="pl-2" style="font-size: 18px;">
+              <span style="width: max-content; display: inline-grid; margin-left: 5px">
+                <span>
+                  <input type="checkbox" id="112" name="112">
+                  <label class="ml-1 mb-0" for="112" style="cursor: pointer">112</label>
+                </span>
+                <span>
+                  <input type="checkbox" id="113" name="113">
+                  <label class="ml-1 mb-0" for="113" style="cursor: pointer">113</label>
+                </span>
+                <span>
+                  <input type="checkbox" id="118" name="118">
+                  <label class="ml-1 mb-0" for="118" style="cursor: pointer">118</label>
+                </span>
+                <span>
+                  <input type="checkbox" id="VV.UU." name="VV.UU.">
+                  <label class="ml-1 mb-0" for="VV.UU." style="cursor: pointer">VV.UU.</label>
+                </span>
+              </span>
+            </span>
+            </div>
+          </div>
+        </div>
+        <div class="col-4">
           <!-- ENTI INTERVENUTI  -->
-          <div class="row p-2 my-2 bg-secondary text-white font-xlarge font-weight-bold">ENTI INTERVENUTI</div>
+          <div class="row px-2 my-2 bg-secondary text-white font-xlarge font-weight-bold">ENTI INTERVENUTI</div>
           <div class="row">
             <div class="col-12">
-              <div class="float-left w-75">
+              <div class="w-75 pr-1">
                 <div class="form-group m-0">
                   <label class="d-none" for="listaEnti">Enti Intervenuti</label>
                   <ng-select
@@ -207,18 +224,15 @@
                   </ng-select>
                 </div>
               </div>
-              <div class="float-left w-25">
-                <div class="px-2">
+              <div class="w-50 mt-2">
                   <button class="btn btn-sm btn-block btn-primary btn-no-hover font-xlarge"
                           (click)="onAggiungiNuovoEnte()">
                     <i class="fa fa-plus mr-1"></i>
                     Nuovo ente
                   </button>
-                </div>
               </div>
             </div>
           </div>
-
         </div>
       </div>
       <!-- NOTE  -->
@@ -268,6 +282,28 @@
                          [modelAsStrings]="true" [placeholder]="'Inserisci tag'"
                          [secondaryPlaceholder]="'Inserisci tag'"></tag-input>
             </div>
+          </div>
+        </div>
+        <div class="col-3">
+          <div class="wrapper-grid">
+            <span class="mb-0 h5 font-xlarge">Priorità</span>
+            <span class="pl-2" style="font-size: 18px;">
+              <ngb-rating [formControl]="f.prioritaRichiesta" [starTemplate]="t" [max]="4" style="width: max-content; display: inline-grid !important;"></ngb-rating>
+              <ng-template #t let-fill="fill" let-index="index">
+              <span class="circle" [class.filled]="fill === 100" [class.bad]="index > 2 && fill === 100">
+                <i class="fa fa-circle mr-1"></i>
+              </span>
+              </ng-template>
+              <span style="width: max-content; display: inline-grid; margin-left: 5px">
+                <span>Nessuna</span>
+                <span>Bassa</span>
+                <span>Media</span>
+                <span>Alta</span>
+              </span>
+            </span>
+            <span *ngIf="submitted && f.prioritaRichiesta.errors" class="form-text small">
+            <div *ngIf="f.prioritaRichiesta.errors.required" class="text-danger">La priorità è richiesta</div>
+          </span>
           </div>
         </div>
       </div>
