@@ -23,7 +23,7 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
         {
             var lstUscite = new List<UscitaGAC>() { uscita };
 
-            var requestManager = new HttpRequestManager<RientroGAC>(_client, _memoryCache, _writeLog, _httpContext);
+            var requestManager = new HttpRequestManager<object>(_client, _memoryCache, _writeLog, _httpContext);
             requestManager.Configure();
 
             var jsonString = JsonConvert.SerializeObject(lstUscite);

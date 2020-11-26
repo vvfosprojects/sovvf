@@ -107,7 +107,7 @@ namespace Persistence.MongoDB
             BsonClassMap.RegisterClassMap<AllertaSedi>();
             BsonClassMap.RegisterClassMap<RevocaPerSostituzioneMezzo>();
             BsonClassMap.RegisterClassMap<SostituzionePartenzaFineTurno>();
-            BsonClassMap.RegisterClassMap<LogException>();
+            BsonClassMap.RegisterClassMap<ExternalApiLog>();
         }
 
         public IMongoCollection<SO115App.Models.Classi.Condivise.TrasferimentoChiamata> TrasferimentiChiamateCollection
@@ -206,11 +206,11 @@ namespace Persistence.MongoDB
             }
         }
 
-        public IMongoCollection<LogException> LogExceptionCollection
+        public IMongoCollection<ExternalApiLog> ExternalApiLog
         {
             get
             {
-                return database.GetCollection<LogException>("logException");
+                return database.GetCollection<ExternalApiLog>("externalApiLog");
             }
         }
 

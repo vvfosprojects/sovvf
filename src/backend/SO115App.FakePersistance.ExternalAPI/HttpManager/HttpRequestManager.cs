@@ -44,11 +44,11 @@ namespace SO115App.ExternalAPI.Fake.HttpManager
                 {
                     if (c.StatusCode != HttpStatusCode.OK)
                     {
-                        var exception = new LogException()
+                        var exception = new ExternalApiLog()
                         {
                             Content = c.RequestMessage.Method.Method.Equals("GET") ? c.RequestMessage.RequestUri.Query : c.RequestMessage.Content.ReadAsStringAsync().Result,
                             DataOraEsecuzione = DateTime.Now,
-                            Response = c.Content.ReadAsStringAsync().Result ?? c.ReasonPhrase,
+                            Response = string.IsNullOrEmpty(c.Content.ReadAsStringAsync().Result) ? c.ReasonPhrase : c.Content.ReadAsStringAsync().Result,
                             Servizio = c.RequestMessage.RequestUri.Host + c.RequestMessage.RequestUri.LocalPath,
                             CodComando = _httpContext.HttpContext.Request.Headers["codiceSede"],
                             IdOperatore = _httpContext.HttpContext.Request.Headers["IdUtente"]

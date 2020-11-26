@@ -7,6 +7,6 @@ namespace SO115App.Models.Servizi.Infrastruttura.GestioneLog
 {
     public interface IWriteLog
     {
-        public void Save(LogException exception);
+        public void Save(ExternalApiLog exception);
     }
 }

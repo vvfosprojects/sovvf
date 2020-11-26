@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace SO115App.Models.Classi.Condivise
 {
-    public class LogException
+    public class ExternalApiLog
     {
         public DateTime DataOraEsecuzione { get; set; }
         public string Servizio { get; set; }

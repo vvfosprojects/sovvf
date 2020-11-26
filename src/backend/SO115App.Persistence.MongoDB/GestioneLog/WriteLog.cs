@@ -16,9 +16,9 @@ namespace SO115App.Persistence.MongoDB.GestioneLog
             _dbContext = dbContext;
         }
 
-        public void Save(LogException exception)
+        public void Save(ExternalApiLog exception)
         {
-            _dbContext.LogExceptionCollection.InsertOne(exception);
+            _dbContext.ExternalApiLog.InsertOne(exception);
         }
     }
 }
