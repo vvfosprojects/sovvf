@@ -117,17 +117,17 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                             Localita = command.Richiesta.Localita.Citta,
                             Comune = new ComuneGAC()
                             {
-                                //Codice
+                                Codice = "",
                                 Descrizione = command.Richiesta.Localita.Citta,
                             },
                             Provincia = new Models.Classi.Gac.ProvinciaGAC()
                             {
-                                //Codice
+                                Codice = "",
                                 Descrizione = command.Richiesta.Localita.Provincia
                             },
                             TipoUscita = new TipoUscita()
                             {
-                                //Codice
+                                Codice = "",
                                 Descrizione = "Servizio"
                             }
                         });

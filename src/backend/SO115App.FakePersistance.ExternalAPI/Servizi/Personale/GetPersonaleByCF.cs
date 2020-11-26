@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Caching.Memory;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using SO115App.ExternalAPI.Fake.HttpManager;
@@ -19,20 +20,10 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
     ///   classe che estende l'interfaccia e recupera la persona fisica partendo dal codice fiscale
     ///   su Utenti Comuni
     /// </summary>
-    public class GetPersonaleByCF : IGetPersonaleByCF
+    public class GetPersonaleByCF : BaseService, IGetPersonaleByCF
     {
-        private readonly HttpClient _client;
-        private readonly IConfiguration _configuration;
-        private readonly IMemoryCache _memoryCache;
-        private readonly IWriteLog _writeLog;
-
-        public GetPersonaleByCF(HttpClient client, IConfiguration configuration, IMemoryCache memoryCache, IWriteLog writeLog)
-        {
-            _configuration = configuration;
-            _memoryCache = memoryCache;
-            _client = client;
-            _writeLog = writeLog;
-        }
+        public GetPersonaleByCF(HttpClient client, IConfiguration configuration, IMemoryCache memoryCache, IWriteLog writeLog, IHttpContextAccessor httpContext)
+            : base(client, configuration, memoryCache, writeLog, httpContext) { }
 
         public async Task<PersonaleVVF> Get(string codiceFiscale, string codSede = null)
         {
@@ -63,22 +54,22 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
         {
             var listaPersonale = new List<PersonaleVVF>();
 
-            try
-            {
+            //try
+            //{
                 Parallel.ForEach(codSede, sede =>
                 {
-                    var httpManager = new HttpRequestManager<List<PersonaleVVF>>(_memoryCache, _client, _writeLog);
+                    var httpManager = new HttpRequestManager<List<PersonaleVVF>>(_client, _memoryCache, _writeLog, _httpContext);
                     httpManager.Configure("Personale_" + sede);
 
                     var url = new Uri($"{_configuration.GetSection("UrlExternalApi").GetSection("PersonaleApiUtenteComuni").Value}?codiciSede={sede}");
                     lock (listaPersonale)
                         listaPersonale.AddRange(httpManager.GetAsync(url).Result);
                 });
-            }
-            catch (Exception e)
-            {
-                throw new Exception("Elenco del personale non disponibile");
-            }
+            //}
+            //catch (Exception e)
+            //{
+            //    throw new Exception("Elenco del personale non disponibile");
+            //}
 
             return listaPersonale;
         }

@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Caching.Memory;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Organigramma;
@@ -27,8 +28,8 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
 
         public GetMezziUtilizzabiliPerBox(HttpClient client, IConfiguration configuration, IGetStatoMezzi GetStatoMezzi,
             IGetAlberaturaUnitaOperative getAlberaturaUnitaOperative,
-            IMemoryCache memoryCache, IGetPosizioneFlotta getPosizioneFlotta, IWriteLog writeLog)
-            : base(client, configuration, memoryCache, writeLog)
+            IMemoryCache memoryCache, IGetPosizioneFlotta getPosizioneFlotta, IWriteLog writeLog, IHttpContextAccessor httpContext)
+            : base(client, configuration, memoryCache, writeLog, httpContext)
         {
             _getStatoMezzi = GetStatoMezzi;
             _getAlberaturaUnitaOperative = getAlberaturaUnitaOperative;
@@ -65,7 +66,7 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
             var lstMezziDto = new List<MezzoDTO>();
             Parallel.ForEach(sedi, sede =>
             {
-                var httpManager = new HttpRequestManager<List<MezzoDTO>>(_memoryCache, _client, _writeLog);
+                var httpManager = new HttpRequestManager<List<MezzoDTO>>(_client, _memoryCache, _writeLog, _httpContext);
                 httpManager.Configure("Mezzi_" + sede);
 
                 var lstSediQueryString = string.Join("&codiciSedi=", ListaCodiciSedi.Where(s => sede.Contains(s.Split(".")[0])).ToArray());

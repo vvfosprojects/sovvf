@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Caching.Memory;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Caching.Memory;
 using Newtonsoft.Json;
 using Polly;
 using Polly.Caching;
@@ -16,17 +17,20 @@ namespace SO115App.ExternalAPI.Fake.HttpManager
 {
     public class HttpRequestManager<ResponseObject> : IHttpRequestManager<ResponseObject> where ResponseObject : class
     {
-        private readonly IMemoryCache _memoryCache;
         private readonly HttpClient _client;
+        private readonly IMemoryCache _memoryCache;
         private readonly IWriteLog _writeLog;
-        private AsyncPolicyWrap<HttpResponseMessage> policies;
+        private readonly IHttpContextAccessor _httpContext;
 
-        public HttpRequestManager(IMemoryCache memoryCache, HttpClient client, IWriteLog writeLog)
+        public HttpRequestManager(HttpClient client, IMemoryCache memoryCache, IWriteLog writeLog, IHttpContextAccessor httpContext)
         {
             _client = client;
-            _writeLog = writeLog;
             _memoryCache = memoryCache;
+            _writeLog = writeLog;
+            _httpContext = httpContext;
         }
+
+        private AsyncPolicyWrap<HttpResponseMessage> policies;
 
         public void Configure(string cacheString = null)
         {
@@ -36,8 +40,6 @@ namespace SO115App.ExternalAPI.Fake.HttpManager
 
             //ECCEZIONI E RESPONSE
             var retryPolicy = Policy
-                //.Handle<AggregateException>(e => 
-                //throw new Exception(Costanti.ES.ServizioNonRaggiungibile))
                 .HandleResult<HttpResponseMessage>(c =>
                 {
                     if (c.StatusCode != HttpStatusCode.OK)
@@ -46,9 +48,10 @@ namespace SO115App.ExternalAPI.Fake.HttpManager
                         {
                             Content = c.RequestMessage.Method.Method.Equals("GET") ? c.RequestMessage.RequestUri.Query : c.RequestMessage.Content.ReadAsStringAsync().Result,
                             DataOraEsecuzione = DateTime.Now,
-                            Response = c.Content.ReadAsStringAsync().Result,
-                            Servizio = c.RequestMessage.RequestUri.Host + c.RequestMessage.RequestUri.LocalPath
-                            //CodComando = c.RequestMessage. //TODO trovare nel content o nella querystring
+                            Response = c.Content.ReadAsStringAsync().Result ?? c.ReasonPhrase,
+                            Servizio = c.RequestMessage.RequestUri.Host + c.RequestMessage.RequestUri.LocalPath,
+                            CodComando = _httpContext.HttpContext.Request.Headers["codiceSede"],
+                            IdOperatore = _httpContext.HttpContext.Request.Headers["IdUtente"]
                         };
 
                         _writeLog.Save(exception);
@@ -56,10 +59,7 @@ namespace SO115App.ExternalAPI.Fake.HttpManager
                         switch (c.StatusCode)
                         {
                             case HttpStatusCode.NotFound:
-                            {
-                                exception.Response = c.ReasonPhrase;
                                 throw new Exception(Costanti.ES.ServizioNonRaggiungibile);
-                            }
                             case HttpStatusCode.Forbidden:
                                 throw new Exception(Costanti.ES.AutorizzazioneNegata);
                             case HttpStatusCode.UnprocessableEntity:

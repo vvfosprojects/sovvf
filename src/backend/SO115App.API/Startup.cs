@@ -85,7 +85,10 @@ namespace SO115App.API
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "test");
             services.AddSingleton(httpClient);
             services.AddControllers();
+
+            services.AddControllersWithViews();
             services.AddHttpContextAccessor();
+
             services.AddMemoryCache();
             services.AddMvcCore().AddApiExplorer().AddNewtonsoftJson();
             services.AddSwaggerGen(c =>
