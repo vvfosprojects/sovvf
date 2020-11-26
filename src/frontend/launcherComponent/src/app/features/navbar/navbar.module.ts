@@ -17,8 +17,7 @@ import { UnitaOperativaComponent } from './unita-operativa/unita-operativa.compo
 import { ClockComponent } from './clock/clock.component';
 import { NavbarComponent } from './navbar.component';
 import { TurnoComponent } from './turno/turno.component';
-import { AnnuncioNuovaVersioneModalComponent } from '../../shared/modal/annuncio-nuova-versione-modal/annuncio-nuova-versione-modal.component';
-import { NuoveFeaturesInfoModalComponent } from '../../shared/modal/nuove-features-info-modal/nuove-features-info-modal.component';
+import { TastoSchedeContattoComponent } from '../home/filterbar/tasti-telefonata-group/tasto-schede-contatto/tasto-schede-contatto.component';
 /**
  * Module
  */
@@ -56,7 +55,8 @@ import { NavbarState } from './store/states/navbar.state';
         TurnoComponent,
         ClockComponent,
         OperatoreComponent,
-        UnitaOperativaComponent
+        UnitaOperativaComponent,
+        TastoSchedeContattoComponent
     ],
     exports: [NavbarComponent],
     providers: [

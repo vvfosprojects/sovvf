@@ -12,12 +12,16 @@ export interface ViewportStateModel {
     availHeight: number;
     contentHeight: number;
     innerWidth: number;
+    maxInnerWidthDoubleMonitor: number;
+    maxInnerWidthChiamataConMappa: number;
 }
 
 export const ViewportStateDefaults: ViewportStateModel = {
     availHeight: null,
     contentHeight: null,
-    innerWidth: null
+    innerWidth: null,
+    maxInnerWidthDoubleMonitor: 3700,
+    maxInnerWidthChiamataConMappa: 2400
 };
 
 @Injectable()
@@ -59,12 +63,12 @@ export class ViewportState {
 
     @Selector()
     static doubleMonitor(state: ViewportStateModel): boolean {
-        return state.innerWidth > 3700;
+        return state.innerWidth > state.maxInnerWidthDoubleMonitor;
     }
 
     @Selector()
     static chiamataConMappa(state: ViewportStateModel): boolean {
-        return state.innerWidth > 2400;
+        return state.innerWidth > state.maxInnerWidthChiamataConMappa;
     }
 
     @Action(SetAvailHeight)
@@ -78,8 +82,9 @@ export class ViewportState {
     }
 
     @Action(SetInnerWidth)
-    setInnerWidth({ patchState, dispatch }: StateContext<ViewportStateModel>, { innerWidth }: SetInnerWidth): void {
-        if (innerWidth > 3800) {
+    setInnerWidth({ getState, patchState, dispatch }: StateContext<ViewportStateModel>, { innerWidth }: SetInnerWidth): void {
+        const state = getState();
+        if (innerWidth > state.maxInnerWidthDoubleMonitor) {
             dispatch(new ChangeView(8));
         }
         patchState({ innerWidth });

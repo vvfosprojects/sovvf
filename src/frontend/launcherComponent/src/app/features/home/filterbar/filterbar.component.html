@@ -46,10 +46,7 @@
             <div *ngIf="((composizioneStatus$ | async) === false) && ((chiamataStatus$ | async) === false) && ((doubleMonitor$ | async) === false)"
                  class="float-right">
                 <app-view-mode [colorButtonView]="colorButton.buttonView"
-                               [disabledMezziInServizio]="permessiFeature.MezziInServizio | checkPermission"
-                               [mezziInServizioActive]="viewState?.mezziInServizio.active"
                                (buttonView)="switchView($event)"
-                               (optionRichieste)="onOptionsRichieste($event)"
                                [stateSwitch]="(stateSwitch$ | async)"
                                [mapStatus]="(mapsStatus$ | async)"
                                (toggleMeteo)="onMeteoSwitch($event)">

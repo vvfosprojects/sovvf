@@ -19,6 +19,8 @@ import { AuthState } from './features/auth/store/auth.state';
 import { LSNAME } from './core/settings/config';
 import { SetCurrentJwt, SetCurrentUser, SetLoggedCas } from './features/auth/store/auth.actions';
 import { GetImpostazioniLocalStorage } from './shared/store/actions/impostazioni/impostazioni.actions';
+import { ViewComponentState } from './features/home/store/states/view/view.state';
+import { ViewInterfaceButton, ViewLayouts } from './shared/interface/view.interface';
 
 @Component({
     selector: 'app-root',
@@ -33,6 +35,10 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
     private availHeight;
     private width;
     private currentUrl: string;
+
+    @Select(ViewComponentState.viewComponent) viewState$: Observable<ViewLayouts>;
+    viewState: ViewLayouts;
+    @Select(ViewComponentState.colorButton) colorButton$: Observable<ViewInterfaceButton>;
 
     @Select(SediTreeviewState.listeSediLoaded) listeSediLoaded$: Observable<boolean>;
     private listeSediLoaded: boolean;
@@ -77,6 +83,7 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
                 private permessiService: PermessiService,
                 private versionCheckService: VersionCheckService) {
         this.getRouterEvents();
+        this.getViewState();
         this.getImpostazioniLocalStorage();
         this.getSessionData();
         this.initSubscription();
@@ -105,6 +112,10 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
                 }
             })
         );
+    }
+
+    getViewState(): void {
+        this.subscription.add(this.viewState$.subscribe(r => this.viewState = r));
     }
 
     getImpostazioniLocalStorage(): void {

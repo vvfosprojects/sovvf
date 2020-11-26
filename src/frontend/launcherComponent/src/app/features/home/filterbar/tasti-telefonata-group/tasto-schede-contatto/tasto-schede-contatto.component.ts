@@ -35,9 +35,9 @@ export class TastoSchedeContattoComponent {
     }
 
     coloreTasto(): string {
-        let returnClass = 'btn-outline-success';
+        let returnClass = 'btn-outline-light';
         if (this.active) {
-            returnClass = 'btn-danger';
+            returnClass = 'btn-light';
         }
         if (this.disabled) {
             returnClass = 'btn-outline-secondary cursor-not-allowed';
