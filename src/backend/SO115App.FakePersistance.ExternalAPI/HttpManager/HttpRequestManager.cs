@@ -22,6 +22,7 @@ namespace SO115App.ExternalAPI.Fake.HttpManager
         private readonly IWriteLog _writeLog;
         private readonly IHttpContextAccessor _httpContext;
 
+        private HttpRequestManager() { }
         public HttpRequestManager(HttpClient client, IMemoryCache memoryCache, IWriteLog writeLog, IHttpContextAccessor httpContext)
         {
             _client = client;
