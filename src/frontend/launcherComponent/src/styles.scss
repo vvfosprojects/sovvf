@@ -623,7 +623,7 @@ tag-input {
   background: #555;
 }
 
-.modal-left {
+.modal-left { // Modale a sx
   padding-right: 50%;
 }
 
@@ -649,4 +649,8 @@ tag-input {
 
 .required-field {
   border: solid #dc3545;
+}
+
+.toast-container { // Toast a sx
+  padding-right: 50% !important;
 }
