@@ -40,62 +40,39 @@ namespace SO115App.ExternalAPI.Fake.HttpManager
                 //throw new Exception(Costanti.ES.ServizioNonRaggiungibile))
                 .HandleResult<HttpResponseMessage>(c =>
                 {
-                    var content = "";
-                    if (c.RequestMessage.Method.Method.Equals("GET"))
-                        content = c.RequestMessage.RequestUri.AbsoluteUri;
-                    else
-                        content = c.RequestMessage.Content.ReadAsStringAsync().Result;
-
-                    var response = c.Content.ReadAsStringAsync().Result;
-
-                    var exception = new LogException()
+                    if (c.StatusCode != HttpStatusCode.OK)
                     {
-                        Content = content,
-                        DataOraEsecuzione = DateTime.Now,
-                        Response = response,
-                        //Servizio = _client.BaseAddress?.Host,
-                        //CodComando = _client.DefaultRequestHeaders.GetValues()
-                    };
+                        var exception = new LogException()
+                        {
+                            Content = c.RequestMessage.Method.Method.Equals("GET") ? c.RequestMessage.RequestUri.Query : c.RequestMessage.Content.ReadAsStringAsync().Result,
+                            DataOraEsecuzione = DateTime.Now,
+                            Response = c.Content.ReadAsStringAsync().Result,
+                            Servizio = c.RequestMessage.RequestUri.Host + c.RequestMessage.RequestUri.LocalPath
+                            //CodComando = c.RequestMessage. //TODO trovare nel content o nella querystring
+                        };
 
-                    switch (c.StatusCode)
-                    {
-                        case HttpStatusCode.NotFound:
+                        _writeLog.Save(exception);
+
+                        switch (c.StatusCode)
+                        {
+                            case HttpStatusCode.NotFound:
                             {
                                 exception.Response = c.ReasonPhrase;
-
-                                _writeLog.Save(exception);
                                 throw new Exception(Costanti.ES.ServizioNonRaggiungibile);
                             }
-                        case HttpStatusCode.Forbidden:
-                            {
-                                _writeLog.Save(exception);
+                            case HttpStatusCode.Forbidden:
                                 throw new Exception(Costanti.ES.AutorizzazioneNegata);
-                            }
-                        case HttpStatusCode.UnprocessableEntity:
-                            {
-                                _writeLog.Save(exception);
+                            case HttpStatusCode.UnprocessableEntity:
                                 throw new Exception(Costanti.ES.DatiMancanti);
-                            }
-                        case HttpStatusCode.InternalServerError:
-                            {
-                                _writeLog.Save(exception);
+                            case HttpStatusCode.InternalServerError:
                                 throw new Exception(Costanti.ES.ErroreInternoAlServer);
-                            }
-                        case HttpStatusCode.Created:
-                            {
-                                _writeLog.Save(exception);
+                            case HttpStatusCode.Created:
                                 throw new Exception(Costanti.ES.NonTuttiIDatiInviatiSonoStatiProcessati);
-                            }
-                        case HttpStatusCode.UnsupportedMediaType:
-                            {
-                                _writeLog.Save(exception);
+                            case HttpStatusCode.UnsupportedMediaType:
                                 throw new Exception(Costanti.ES.OggettoNonValido);
-                            }
-                        case 0:
-                            {
-                                _writeLog.Save(exception);
-                                throw new Exception(Costanti.ES.OggettoNonValido);
-                            }
+                            case 0:
+                                throw new Exception(c.ReasonPhrase);
+                        }
                     }
 
                     return false;
