@@ -1,11 +1,7 @@
 <div class="clearfix">
-    <div [ngClass]="(filterBarCol$ | async)" class="float-left">
+    <div class="float-left">
         <div class="clearfix">
             <div class="float-left mr-4">
-                <!-- <app-tasto-chiamata-group>
-                    <app-tasto-schede-contatto [active]="schedeContattoStatus$ | async"
-                                               [disabled]="(chiamataStatus$ | async) || (permessiFeature.SchedeContatto | checkPermission)"></app-tasto-schede-contatto>
-                </app-tasto-chiamata-group> -->
                 <app-tasto-chiamata [colorButtonChiamata]="colorButton.chiamata"
                                     [disabled]="permessiFeature.SchedaTelefonata | checkPermission"
                                     (startChiamata)="toggleChiamata()">
@@ -23,6 +19,7 @@
                 <app-filtri-schede-contatto *ngIf="schedeContattoStatus$ | async"
                                             [filtri]="filtriSchedeContatto$ | async"
                                             [filtriSelezionati]="filtriSelezionatiSchedeContatto$ | async"
+                                            [disableFilters]="loadingSchedeContatto$ | async"
                                             (filtroSelezionato)="onSelezioneFiltroSchedeContatto($event)"
                                             (filtriReset)="eliminaFiltriAttiviSchedeContatto()">
                 </app-filtri-schede-contatto>
@@ -43,8 +40,12 @@
                         (search)="onSearch($event)">
                 </app-ricerca>
             </div>
+        </div>
+    </div>
+    <div class="float-right">
+        <div class="clearfix">
             <div *ngIf="((composizioneStatus$ | async) === false) && ((chiamataStatus$ | async) === false) && ((doubleMonitor$ | async) === false)"
-                 class="float-right">
+                 class="float-left mr-3">
                 <app-view-mode [colorButtonView]="colorButton.buttonView"
                                (buttonView)="switchView($event)"
                                [stateSwitch]="(stateSwitch$ | async)"
@@ -52,12 +53,7 @@
                                (toggleMeteo)="onMeteoSwitch($event)">
                 </app-view-mode>
             </div>
-        </div>
-    </div>
-    <div [ngClass]="(filterBarCol$ | async)" class="float-right">
-        <div class="row">
-            <div class="offset-7"></div>
-            <div *ngIf="(mapsStatus$ | async)" class="col-5 pl-0">
+            <div *ngIf="(mapsStatus$ | async)" class="float-left">
                 <app-filtri-mappa></app-filtri-mappa>
             </div>
         </div>

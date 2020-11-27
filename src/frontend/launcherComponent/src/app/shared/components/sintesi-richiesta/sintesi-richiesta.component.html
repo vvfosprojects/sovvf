@@ -7,6 +7,9 @@
         <div class="col-12">
             <div class="row">
                 <div class="col-md-12">
+                    <span *ngIf="richiesta?.stato === StatoRichiesta.Sospesa"
+                          class="d-inline-block text-danger font-weight-bolder h4"
+                          style="position: absolute; left: 0px; top:22px">S</span>
                     <div class="row">
                         <div class="col-3">
                             <ng-template #rilevante>

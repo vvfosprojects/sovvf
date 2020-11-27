@@ -1,31 +1,8 @@
 <div class="row mt-2 h-100">
   <app-partial-loader *ngIf="loading"></app-partial-loader>
-  <div class="col-12 pt-2 mx-auto rounded status_chiamata card-shadow-danger">
+  <div class="col-12 mx-auto border border-light shadow-lg">
     <form [formGroup]="chiamataForm" ngxsForm="schedaTelefonata.nuovaRichiestaForm" autocomplete="off">
-      <div class="row">
-        <div class="col-5">
-          <ng-template #rilevante>
-            <div *ngIf="f.rilevanzaGrave?.value">Intervento Rilevante</div>
-            <div *ngIf="f.rilevanzaStArCu?.value">Intervento Rilevante Storico Artistico
-              Culturale
-            </div>
-          </ng-template>
-          <h3 class="mb-0">
-            Inserimento nuova chiamata...
-            <span *ngIf="f.rilevanzaGrave?.value || f.rilevanzaStArCu?.value"
-                  class="d-inline-block mr-1 text-danger"
-                  [ngbTooltip]="rilevante" placement="bottom">
-                            <i *ngIf="f.rilevanzaGrave?.value" class="fa fa-exclamation mr-2"></i>
-                            <i *ngIf="f.rilevanzaStArCu?.value" class="fa fa-university"></i>
-                        </span>
-          </h3>
-        </div>
-        <div class="col-7">
-          <!-- Spazio libero -->
-        </div>
-      </div>
-      <hr class="mt-1 mb-2">
-      <div class="form-group mb-2">
+      <div class="form-group">
         <!-- TIPOLOGIA  -->
         <div class="row px-2 my-2 bg-secondary text-white font-xlarge font-weight-bold">TIPOLOGIA</div>
         <label class="d-none">Tipologia intervento</label>

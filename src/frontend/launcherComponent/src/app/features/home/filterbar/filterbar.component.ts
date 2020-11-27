@@ -47,12 +47,15 @@ export class FilterbarComponent {
     // Ricerca Richieste
     @Select(RicercaFilterbarState.ricerca) ricercaRichieste$: Observable<string>;
 
-    // Loading LIsta Richieste
+    // Loading Lista Richieste
     @Select(RichiesteState.loadingRichieste) loadingRichieste$: Observable<boolean>;
 
     // Filtri Schede Contatto
     @Select(SchedeContattoState.filtriSchedeContatto) filtriSchedeContatto$: Observable<VoceFiltro[]>;
     @Select(SchedeContattoState.filtriSelezionati) filtriSelezionatiSchedeContatto$: Observable<VoceFiltro[]>;
+
+    // Loading Schede Contatto
+    @Select(SchedeContattoState.loadingSchedeContatto) loadingSchedeContatto$: Observable<boolean>;
 
     // Filtri Mezzi in Servizio
     @Select(MezziInServizioState.filtriMezziInServizio) filtriMezziInServizio$: Observable<VoceFiltro[]>;

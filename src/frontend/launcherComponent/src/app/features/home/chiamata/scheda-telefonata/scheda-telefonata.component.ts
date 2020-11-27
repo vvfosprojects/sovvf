@@ -31,6 +31,7 @@ import { ComponentRestrictions } from 'ngx-google-places-autocomplete/objects/op
 import { GOOGLEPLACESOPTIONS } from '../../../../core/settings/google-places-options';
 import { Ente } from 'src/app/shared/interface/ente.interface';
 import { ConfirmModalComponent } from '../../../../shared/modal/confirm-modal/confirm-modal.component';
+import {ViewportState} from '../../../../shared/store/states/viewport/viewport.state';
 
 @Component({
   selector: 'app-scheda-telefonata',
@@ -66,6 +67,8 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy {
 
   @Select(SchedaTelefonataState.resetChiamata) resetChiamata$: Observable<boolean>;
   @Select(SchedeContattoState.schedaContattoTelefonata) schedaContattoTelefonata$: Observable<SchedaContatto>;
+  @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
+  doubleMonitor: boolean;
 
   constructor(private formBuilder: FormBuilder,
               private store: Store,
@@ -97,6 +100,7 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy {
         }
       }
     }));
+    this.subscription.add(this.doubleMonitor$.subscribe(r => this.doubleMonitor = r));
   }
 
   ngOnDestroy(): void {
@@ -314,11 +318,20 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy {
   }
 
   onResetChiamata(): void {
-    const modalConfermaReset = this.modalService.open(ConfirmModalComponent, {
-      windowClass: 'modal-holder modal-left',
-      backdropClass: 'light-blue-backdrop',
-      centered: true
-    });
+    let modalConfermaReset;
+    if (this.doubleMonitor) {
+      modalConfermaReset = this.modalService.open(ConfirmModalComponent, {
+        windowClass: 'modal-holder modal-left',
+        backdropClass: 'light-blue-backdrop',
+        centered: true
+      });
+    } else {
+      modalConfermaReset = this.modalService.open(ConfirmModalComponent, {
+        windowClass: 'modal-holder',
+        backdropClass: 'light-blue-backdrop',
+        centered: true
+      });
+    }
     modalConfermaReset.componentInstance.icona = { descrizione: 'exclamation-triangle', colore: 'danger' };
     modalConfermaReset.componentInstance.titolo = 'Reset Chiamata';
     modalConfermaReset.componentInstance.messaggio = 'Sei sicuro di voler effettuare il reset della chiamata?';

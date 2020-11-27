@@ -55,6 +55,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
     @Select(ViewComponentState.chiamataStatus) chiamataStatus$: Observable<boolean>;
     @Select(ViewComponentState.schedeContattoStatus) schedeContattoStatus$: Observable<boolean>;
+    schedeContattoStatus: boolean;
 
     clock$: Observable<Date>;
     time: Date;
@@ -86,6 +87,15 @@ export class NavbarComponent implements OnInit, OnDestroy {
         console.log('Componente Navbar distrutto');
         this.subscription.unsubscribe();
         this.store.dispatch(new ClearDataNavbar());
+    }
+
+    getSchedeContattoStatus(): void {
+        this.clock$ = this.clock.getClock();
+        this.subscription.add(
+            this.schedeContattoStatus$.subscribe((value: boolean) => {
+                this.schedeContattoStatus = value;
+            })
+        );
     }
 
     setTime(): void {

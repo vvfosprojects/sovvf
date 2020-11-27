@@ -1,11 +1,14 @@
 <div class="btn-group w-100">
     <div ngbDropdown autoClose="outside" class="btn-group w-100">
-        <button ngbDropdownToggle class="btn btn-block app-shadow"
-                [ngClass]="{'btn-outline-primary': !filtriSelezionati || filtriSelezionati.length <= 0, 'btn-primary': filtriSelezionati &&filtriSelezionati.length > 0}"
+        <button ngbDropdownToggle class="btn btn-block font-weight-bolder app-shadow"
+                [ngClass]="{'btn-outline-secondary': !filtriSelezionati || filtriSelezionati.length <= 0, 'btn-secondary': filtriSelezionati &&filtriSelezionati.length > 0}"
                 type="button" id="dropdownMenuButton" data-toggle="dropdown">
-            <i class="fa fa-filter mr-1"></i>Filtri
-            <span *ngIf="filtriSelezionati && filtriSelezionati.length > 0" class="badge badge-success text-light">
-              {{filtriSelezionati.length}}
+            <i class="fa fa-filter"></i>
+            {{ 'Filtri' | uppercase }}
+            <span class="badge text-light"
+                  [class.badge-secondary]="!filtriSelezionati || filtriSelezionati?.length <= 0"
+                  [class.badge-success]="filtriSelezionati?.length > 0">
+              {{ filtriSelezionati?.length }}
             </span>
         </button>
         <div ngbDropdownMenu class="bg-light px-3">
@@ -30,8 +33,7 @@
             </div>
         </div>
     </div>
-    <button *ngIf="filtriSelezionati && filtriSelezionati.length > 0" class="btn btn-outline-secondary p-1 altri-filtri"
-            (click)="resetFiltri()" [disabled]="disableFilters">
+    <button class="btn btn-outline-secondary p-1 altri-filtri" (click)="resetFiltri()" [disabled]="disableFilters">
         <i class="fa fa-undo text-dark px-1"></i>
     </button>
 </div>

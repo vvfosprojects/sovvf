@@ -11,7 +11,14 @@ export class TastoChiamataComponent {
 
     @Input() colorButtonChiamata = 'btn-outline-success';
     @Input() disabled = false;
+
     @Output() startChiamata = new EventEmitter();
+
+    defaultColorButtonChiamata: string;
+
+    constructor() {
+        this.defaultColorButtonChiamata = this.colorButtonChiamata;
+    }
 
     chiamata(): void {
         const bool = this.colorButtonChiamata === 'btn-outline-success';
@@ -21,11 +28,14 @@ export class TastoChiamataComponent {
     }
 
     getClasses(): string {
-        let returnClass = 'btn-outline-success';
+        let returnClass = this.colorButtonChiamata;
         if (this.disabled) {
             returnClass += ' cursor-not-allowed';
         }
         return returnClass;
     }
 
+    getActive(): boolean {
+        return this.colorButtonChiamata !== this.defaultColorButtonChiamata;
+    }
 }
