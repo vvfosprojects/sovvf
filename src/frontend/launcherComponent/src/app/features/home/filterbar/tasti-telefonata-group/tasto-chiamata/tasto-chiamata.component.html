@@ -1,4 +1,13 @@
-<button type="button" class="btn" (click)="chiamata()" [ngClass]="getClasses()" [disabled]="disabled">
-    <i class="fa fa-plus mr-1"></i>
-    Nuova Chiamata
+<button type="button" class="btn font-weight-bolder"
+        [ngClass]="getClasses()"
+        [class.btn-no-hover]="getActive()"
+        [disabled]="disabled"
+        (click)="chiamata()">
+    <i class="fa fa-phone"></i>
+    <ng-template [ngIf]="!getActive()">
+        {{ 'nuova chiamata' | uppercase }}
+    </ng-template>
+    <ng-template [ngIf]="getActive()">
+        {{ 'stai inserendo una nuova chiamata' | uppercase }}
+    </ng-template>
 </button>

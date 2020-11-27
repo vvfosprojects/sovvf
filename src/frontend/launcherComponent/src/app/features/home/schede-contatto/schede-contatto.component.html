@@ -1,9 +1,12 @@
-<div class="row mt-2 px-0" [ngClass]="{'m-h-750-schedecontatto': boxAttivi, 'm-h-850-schedecontatto': !boxAttivi}">
+<div class="row px-0"
+     [class.m-h-750-schedecontatto]="boxAttivi"
+     [class.m-h-850-schedecontatto]="!boxAttivi"
+     [class.mt-2]="!ricerca">
     <app-partial-loader *ngIf="loadingSchedeContatto$ | async"></app-partial-loader>
     <div *ngIf="schedeContatto" class="col-12 scroll-y" style="height: calc(100% - 50px)">
-        <div *ngIf="ricerca" class="col-12 col-md-8 mx-auto pl-4">
+        <ng-template [ngIf]="ricerca">
             <app-risultati-ricerca [ricerca]="ricerca"></app-risultati-ricerca>
-        </div>
+        </ng-template>
         <ngb-tabset [activeId]="tabAttivo$ | async" (tabChange)="onSelectTab($event)">
             <ngb-tab id="Tutte">
                 <ng-template ngbTabTitle>

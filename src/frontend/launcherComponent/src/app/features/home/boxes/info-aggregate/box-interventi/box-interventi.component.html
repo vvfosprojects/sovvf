@@ -73,8 +73,7 @@
                     <div class="col pr-0 text-secondary">
                         <ul class="list-unstyled m-0">
                             <li><span class="d-inline-block h6" ngbTooltip="Richieste presidiate">Presidiati</span></li>
-                            <!-- TODO: sostituire con "Chiusi" -->
-                            <li><span class="d-inline-block h6" ngbTooltip="Richieste sospese">Sospesi</span></li>
+                            <li><span class="d-inline-block h6" ngbTooltip="Richieste chiuse">Chiusi</span></li>
                         </ul>
                     </div>
                     <div class="col px-0 text-secondary text-center">
@@ -87,14 +86,13 @@
                                                                                    class="blink-i-aggregate fa"
                                                                                    [ngClass]="realDiff('presidiati')"></i>{{interventi.presidiati}}</span>
                             </li>
-                            <!-- TODO: sostituire con "Chiusi" -->
-                            <li [ngClass]="checkDiff('sospesi')"><span
-                                    class="position-relative badge bg-orange text-light h6 w-75 cursor-pointer"
-                                    ngbTooltip="Evidenzia richieste sospese sulla mappa"
-                                    [ngClass]="{'border-click-checked': boxClick?.richieste.sospesi, 'border-info-aggregate': !boxClick?.richieste.sospesi}"
-                                    (click)="clickRichieste.emit('sospesi')"><i *ngIf="interventiDiff"
-                                                                                class="blink-i-aggregate fa"
-                                                                                [ngClass]="realDiff('sospesi')"></i>{{interventi.sospesi}}</span>
+                            <li [ngClass]="checkDiff('chiusi')"><span
+                                    class="position-relative badge bg-secondary text-light h6 w-75 cursor-pointer"
+                                    ngbTooltip="Evidenzia richieste chiuse sulla mappa"
+                                    [ngClass]="{'border-click-checked': boxClick?.richieste.chiusi, 'border-info-aggregate': !boxClick?.richieste.chiusi}"
+                                    (click)="clickRichieste.emit('chiusi')"><i *ngIf="interventiDiff"
+                                                                               class="blink-i-aggregate fa"
+                                                                               [ngClass]="realDiff('chiusi')"></i>{{interventi.chiusi}}</span>
                             </li>
                         </ul>
                     </div>

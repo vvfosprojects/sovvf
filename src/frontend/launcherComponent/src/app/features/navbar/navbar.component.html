@@ -6,28 +6,21 @@
             <div class="clearfix">
                 <!-- Bottoni Sinistra -->
                 <div class="float-left mr-5">
-                    <button class="btn btn-outline-light mr-2" ngbTooltip="Vai alla Home"
+                    <button class="btn btn-outline-light font-weight-bolder mr-2" ngbTooltip="Vai alla lista Chiamate/Interventi"
                             [routerLink]="['/' + RoutesPath.Home]"
-                            [routerLinkActive]="!mezziInServizioActive && !schedeContattoActive ? ['btn-light-nav', 'text-dark'] : []">
-                        <i class="fa fa-home"></i>
+                            [routerLinkActive]="!schedeContattoStatus ? ['btn-light-nav', 'text-dark'] : ['btn-outline-light']">
+                        <span class="d-inline-block">CHIAMATE / INTERVENTI</span>
                     </button>
-                    <button class="btn btn-outline-light mr-2" ngbTooltip="Visualizza Mezzi in Servizio"
+                    <button class="btn btn-outline-light font-weight-bolder mr-2"
+                            ngbTooltip="Visualizza Mezzi in Servizio"
                             [disabled]="colorButtonView && colorButtonView[2] === 'btn-secondary' || disabledMezziInServizio"
                             [ngClass]="getMezziInServizioBtnClasses()"
                             [class.cursor-not-allowed]="colorButtonView && colorButtonView[2] === 'btn-secondary'"
                             (click)="onMezziInSerivizo()">
-                        <i class="fa fa-truck"></i>
+                        <span class="d-inline-block">MEZZI</span>
                     </button>
                     <app-tasto-schede-contatto [active]="schedeContattoStatus$ | async"
                                                [disabled]="(chiamataStatus$ | async) || (permessiFeature.SchedeContatto | checkPermission)"></app-tasto-schede-contatto>
-                    <button class="btn btn-outline-light mr-2" ngbTooltip="Visualizza Trasferimenti Chiamate"
-                            [routerLink]="['/' + RoutesPath.TrasferimentoChiamata]">
-                        <i class="fa fa-exchange"></i>
-                    </button>
-                    <button class="btn btn-outline-light mr-2" ngbTooltip="Visualizza Rubrica"
-                            [routerLink]="['/' + RoutesPath.Rubrica]">
-                        <i class="fa fa-address-book"></i>
-                    </button>
                 </div>
                 <!-- Treeview -->
                 <div class="float-left mr-5">
@@ -71,6 +64,16 @@
                 </div>
                 <!-- Operatore e Bottono Destra -->
                 <div class="float-right">
+                    <button class="btn btn-outline-light mr-2" ngbTooltip="Visualizza Trasferimenti Chiamate"
+                            [routerLink]="['/' + RoutesPath.TrasferimentoChiamata]"
+                            [routerLinkActive]="['btn-light-nav', 'text-dark']">
+                        <i class="fa fa-exchange"></i>
+                    </button>
+                    <button class="btn btn-outline-light mr-2" ngbTooltip="Visualizza Rubrica"
+                            [routerLink]="['/' + RoutesPath.Rubrica]"
+                            [routerLinkActive]="['btn-light-nav', 'text-dark']">
+                        <i class="fa fa-address-book"></i>
+                    </button>
                     <button class="btn btn-outline-light mr-2" ngbTooltip="Visualizza Gestione Utenti"
                             [routerLink]="['/' + RoutesPath.GestioneUtenti]"
                             [routerLinkActive]="['btn-light-nav', 'text-dark']">
