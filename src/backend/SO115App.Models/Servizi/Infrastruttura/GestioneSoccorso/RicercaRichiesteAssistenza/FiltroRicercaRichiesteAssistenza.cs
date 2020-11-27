@@ -33,7 +33,7 @@ namespace SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRic
         ///   Indica lo stato in cui può trovarsi una richiesta con riferimento all'avanzamento
         ///   nella sua gestione.
         /// </summary>
-        public enum StatoRichiesta { Qualsiasi, Chiamata, Intervento }
+        public string[] StatiRichiesta { get; set; }
 
         /// <summary>
         ///   Indica il numero di pagina che si vuole ricevere (la prima pagina ha indice 1)
@@ -69,7 +69,7 @@ namespace SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRic
         /// <summary>
         ///   Indica quali richieste si vogliono includere nel risultato.
         /// </summary>
-        public StatoRichiesta StatoRichieste { get; set; }
+        //public StatoRichiesta StatoRichieste { get; set; }
 
         /// <summary>
         ///   Indica una chiave di ricerca full-text
