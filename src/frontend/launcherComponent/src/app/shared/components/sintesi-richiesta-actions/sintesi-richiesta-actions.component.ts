@@ -5,6 +5,9 @@ import { calcolaActionSuggeritaRichiesta, statoRichiestaActionsEnumToStringArray
 import { StatoRichiestaActions } from '../../enum/stato-richiesta-actions.enum';
 import { ActionRichiestaModalComponent } from '../../modal/action-richiesta-modal/action-richiesta-modal.component';
 import { RichiestaActionInterface } from '../../interface/richiesta-action.interface';
+import {Select} from '@ngxs/store';
+import {ViewportState} from '../../store/states/viewport/viewport.state';
+import {Observable, Subscription} from 'rxjs';
 
 @Component({
     selector: 'app-sintesi-richiesta-actions',
@@ -16,8 +19,11 @@ export class SintesiRichiestaActionsComponent implements OnInit {
     @Input() richiesta: SintesiRichiesta;
 
     @Output() actionRichiesta: EventEmitter<RichiestaActionInterface> = new EventEmitter();
+    @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
+    doubleMonitor: boolean;
 
     statoRichiestaString: Array<StatoRichiestaActions>;
+    private subscription = new Subscription();
 
     constructor(dropdownConfig: NgbDropdownConfig,
                 tooltipConfig: NgbTooltipConfig,
@@ -31,14 +37,24 @@ export class SintesiRichiestaActionsComponent implements OnInit {
     ngOnInit(): void {
         const exceptStati = [this.richiesta.stato, StatoRichiestaActions.Riaperta, calcolaActionSuggeritaRichiesta(this.richiesta)];
         this.statoRichiestaString = statoRichiestaActionsEnumToStringArray(exceptStati);
+        this.subscription.add(this.doubleMonitor$.subscribe(r => this.doubleMonitor = r));
     }
 
     onClick(stato: StatoRichiestaActions): void {
-        const modalConferma = this.modalService.open(ActionRichiestaModalComponent, {
+        let modalConferma;
+        if (this.doubleMonitor) {
+          modalConferma = this.modalService.open(ActionRichiestaModalComponent, {
             windowClass: 'modal-holder modal-left',
             backdropClass: 'light-blue-backdrop',
             centered: true
-        });
+          });
+        } else {
+          modalConferma = this.modalService.open(ActionRichiestaModalComponent, {
+            windowClass: 'modal-holder',
+            backdropClass: 'light-blue-backdrop',
+            centered: true
+          });
+        }
         modalConferma.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
         switch (stato) {
             case StatoRichiestaActions.Chiusa:

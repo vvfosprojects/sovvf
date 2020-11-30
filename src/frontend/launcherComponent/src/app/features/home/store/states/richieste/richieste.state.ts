@@ -408,12 +408,23 @@ export class RichiesteState {
 
     @Action(VisualizzaListaSquadrePartenza)
     visualizzaListaSquadrePartenza({ patchState }: StateContext<RichiesteStateModel>, action: VisualizzaListaSquadrePartenza): void {
-        const modal = this.modalService.open(ListaSquadrePartenzaComponent, {
+        const innerWidth = window.innerWidth;
+        let modal;
+        if (innerWidth && innerWidth > 3700) {
+          modal = this.modalService.open(ListaSquadrePartenzaComponent, {
             windowClass: 'modal-holder modal-left',
             backdropClass: 'light-blue-backdrop',
             centered: true,
             size: 'lg',
-        });
+          });
+        } else {
+          modal = this.modalService.open(ListaSquadrePartenzaComponent, {
+            windowClass: 'modal-holder',
+            backdropClass: 'light-blue-backdrop',
+            centered: true,
+            size: 'lg',
+          });
+        }
         modal.componentInstance.listaSquadre = action.listaSquadre;
         modal.result.then(() => console.log('Lista Squadre Partenza Aperta'),
             () => console.log('Lista Squadre Partenza Chiusa'));

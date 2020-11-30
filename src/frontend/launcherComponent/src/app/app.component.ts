@@ -54,20 +54,7 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
     permissionFeatures = PermissionFeatures;
     RoutesPath = RoutesPath;
 
-    ngxLoaderConfiguration = {
-        hasProgressBar: false,
-        overlayColor: 'rgba(206,43,55,0.85)',
-        logoUrl: '../assets/img/logo_vvf_200x.png',
-        logoSize: 300,
-        logoPosition: 'center-center loader-position-img-left',
-        fgsColor: '#FFFFFF',
-        fgsPosition: 'center-center loader-position-fgs-left',
-        fgsSize: 50,
-        gap: 60,
-        text: 'ATTENDI, STO CARICANDO I DATI...',
-        textColor: '#FFFFFF',
-        textPosition: 'top-center loader-position-left'
-    };
+    ngxLoaderConfiguration: any = {};
 
     @ViewChild('contentElement', { read: ElementRef }) contentElement: ElementRef;
 
@@ -93,6 +80,7 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
     ngOnInit(): void {
         this.versionCheckService.initVersionCheck(3);
         this.preloadImage(Images.Disconnected);
+        this.setLoaderPosition();
     }
 
     ngAfterViewChecked(): void {
@@ -226,6 +214,41 @@ export class AppComponent implements OnInit, AfterViewChecked, OnDestroy {
         if (casLogin) {
             this.store.dispatch(new SetLoggedCas());
         }
+    }
+
+    private setLoaderPosition(): void {
+      const innerWidth = window.innerWidth;
+      if (innerWidth && innerWidth > 3700) {
+        this.ngxLoaderConfiguration = {
+          hasProgressBar: false,
+          overlayColor: 'rgba(206,43,55,0.85)',
+          logoUrl: '../assets/img/logo_vvf_200x.png',
+          logoSize: 300,
+          logoPosition: 'center-center loader-position-img-left',
+          fgsColor: '#FFFFFF',
+          fgsPosition: 'center-center loader-position-fgs-left',
+          fgsSize: 50,
+          gap: 60,
+          text: 'ATTENDI, STO CARICANDO I DATI...',
+          textColor: '#FFFFFF',
+          textPosition: 'top-center loader-position-left'
+        };
+      } else {
+        this.ngxLoaderConfiguration = {
+          hasProgressBar: false,
+          overlayColor: 'rgba(206,43,55,0.85)',
+          logoUrl: '../assets/img/logo_vvf_200x.png',
+          logoSize: 300,
+          logoPosition: 'center-center',
+          fgsColor: '#FFFFFF',
+          fgsPosition: 'center-center',
+          fgsSize: 50,
+          gap: 60,
+          text: 'ATTENDI, STO CARICANDO I DATI...',
+          textColor: '#FFFFFF',
+          textPosition: 'top-center'
+        };
+      }
     }
 
 }

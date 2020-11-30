@@ -513,17 +513,32 @@ export class SchedeContattoState {
     openDetailSC({ getState, dispatch }: StateContext<SchedeContattoStateModel>, action: OpenDetailSC): void {
         const state = getState();
         const schedaContattoDetail = state.schedeContatto.filter(value => value.codiceScheda === action.codiceScheda)[0];
-        this.ngZone.run(() => {
+        const innerWidth = window.innerWidth;
+        if (innerWidth && innerWidth > 3700) {
+          this.ngZone.run(() => {
             const modal = this.modal.open(DettaglioSchedaModalComponent,
-                { windowClass: 'xlModal modal-left', backdropClass: 'light-blue-backdrop', centered: true }
+              { windowClass: 'xlModal modal-left', backdropClass: 'light-blue-backdrop', centered: true }
             );
             modal.componentInstance.schedaContatto = schedaContattoDetail;
             modal.result.then(
-                () => {
-                },
-                () => dispatch(new ClearMarkerSCSelezionato())
+              () => {
+              },
+              () => dispatch(new ClearMarkerSCSelezionato())
             );
-        });
+          });
+        } else {
+          this.ngZone.run(() => {
+            const modal = this.modal.open(DettaglioSchedaModalComponent,
+              { windowClass: 'xlModal', backdropClass: 'light-blue-backdrop', centered: true }
+            );
+            modal.componentInstance.schedaContatto = schedaContattoDetail;
+            modal.result.then(
+              () => {
+              },
+              () => dispatch(new ClearMarkerSCSelezionato())
+            );
+          });
+        }
     }
 
     @Action(StartLoadingSchedeContatto)

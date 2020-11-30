@@ -1,5 +1,5 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import {Observable, Subscription} from 'rxjs';
 import { Select, Store } from '@ngxs/store';
 import { Utente } from '../../../shared/model/utente.model';
 import { Tipologia } from '../../../shared/model/tipologia.model';
@@ -12,6 +12,7 @@ import { Ente } from 'src/app/shared/interface/ente.interface';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { EnteModalComponent } from '../../../shared/modal/ente-modal/ente-modal.component';
 import { ClearFormEnte, RequestAddEnte } from '../../../shared/store/actions/enti/enti.actions';
+import {ViewportState} from '../../../shared/store/states/viewport/viewport.state';
 
 @Component({
     selector: 'app-chiamata',
@@ -26,7 +27,10 @@ export class ChiamataComponent implements OnInit, OnDestroy {
     @Select(AuthState.currentUser) utente$: Observable<Utente>;
     @Select(HomeState.tipologie) tipologie$: Observable<Tipologia[]>;
     @Select(EntiState.enti) enti$: Observable<Ente[]>;
+    @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
+    doubleMonitor: boolean;
     permessiFeature = PermissionFeatures;
+    private subscription = new Subscription();
 
     constructor(private modalService: NgbModal,
                 private store: Store) {
@@ -34,6 +38,7 @@ export class ChiamataComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         console.log('Componente Chiamata creato');
+        this.subscription.add(this.doubleMonitor$.subscribe(r => this.doubleMonitor = r));
     }
 
     ngOnDestroy(): void {
@@ -41,12 +46,22 @@ export class ChiamataComponent implements OnInit, OnDestroy {
     }
 
     aggiungiNuovoEnte(): void {
-        const addEnteModal = this.modalService.open(EnteModalComponent, {
+        let addEnteModal;
+        if (this.doubleMonitor) {
+          addEnteModal = this.modalService.open(EnteModalComponent, {
             windowClass: 'modal-holder modal-left',
             backdropClass: 'light-blue-backdrop',
             centered: true,
             size: 'lg'
-        });
+          });
+        } else {
+          addEnteModal = this.modalService.open(EnteModalComponent, {
+            windowClass: 'modal-holder',
+            backdropClass: 'light-blue-backdrop',
+            centered: true,
+            size: 'lg'
+          });
+        }
         addEnteModal.result.then(
             (result: { success: boolean }) => {
                 if (result.success) {

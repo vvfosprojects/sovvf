@@ -443,7 +443,13 @@ export class MezziComposizioneState {
         this.richiesteService.getRichiestaById(action.sganciamentoObj.idRichiestaDaSganciare).subscribe((richiestaDa: SintesiRichiesta) => {
             partenzaDaSganciare = richiestaDa.partenzeRichiesta && richiestaDa.partenzeRichiesta.length > 0 ? richiestaDa.partenzeRichiesta.filter(x => x.mezzo.codice === action.sganciamentoObj.idMezzoDaSganciare)[0] : null;
             if (richiestaDa && partenzaDaSganciare) {
-                const modalSganciamento = this.modalService.open(SganciamentoMezzoModalComponent, { windowClass: 'xlModal modal-left', backdropClass: 'light-blue-backdrop', centered: true });
+                let modalSganciamento;
+                const innerWidth = window.innerWidth;
+                if (innerWidth && innerWidth > 3700) {
+                  modalSganciamento = this.modalService.open(SganciamentoMezzoModalComponent, { windowClass: 'xlModal modal-left', backdropClass: 'light-blue-backdrop', centered: true });
+                } else {
+                  modalSganciamento = this.modalService.open(SganciamentoMezzoModalComponent, { windowClass: 'xlModal modal-left', backdropClass: 'light-blue-backdrop', centered: true });
+                }
                 modalSganciamento.componentInstance.icona = { descrizione: 'truck', colore: 'secondary' };
                 modalSganciamento.componentInstance.titolo = 'Sganciamento Mezzo';
                 modalSganciamento.componentInstance.richiestaDa = richiestaDa;

@@ -19,6 +19,7 @@ import { ModificaPartenzaService } from '../../../core/service/modifica-partenza
 import { Mezzo } from '../../model/mezzo.model';
 import { Squadra } from '../../model/squadra.model';
 import { SintesiRichiesta } from '../../model/sintesi-richiesta.model';
+import {ViewportState} from '../../store/states/viewport/viewport.state';
 
 
 @Component({
@@ -32,6 +33,8 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
     user: Utente;
     @Select(ModificaPartenzaModalState.formValid) formValid$: Observable<boolean>;
     formValid: boolean;
+    @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
+    doubleMonitor: boolean;
 
     operatore: string;
     sede: string;
@@ -83,6 +86,7 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
         this.f.mezzo.patchValue(this.partenza.mezzo);
         this.f.squadre.patchValue(this.partenza.squadre);
         this.checkStatoMezzoSequenza();
+        this.subscription.add(this.doubleMonitor$.subscribe(r => this.doubleMonitor = r));
     }
 
     initForm(): void {
@@ -219,13 +223,24 @@ export class ModificaPartenzaModalComponent implements OnInit, OnDestroy {
     }
 
     openSostituzioneModal(): void {
-        const sostituzioneModal = this.modalService.open(SostituzionePartenzaModalComponent, {
+        let sostituzioneModal;
+        if (this.doubleMonitor) {
+          sostituzioneModal = this.modalService.open(SostituzionePartenzaModalComponent, {
             windowClass: 'modal-holder modal-left',
             size: 'lg',
             centered: true,
             backdrop: 'static',
             keyboard: false,
-        });
+          });
+        } else {
+          sostituzioneModal = this.modalService.open(SostituzionePartenzaModalComponent, {
+            windowClass: 'modal-holder',
+            size: 'lg',
+            centered: true,
+            backdrop: 'static',
+            keyboard: false,
+          });
+        }
         sostituzioneModal.componentInstance.idRichiesta = this.idRichiesta;
         sostituzioneModal.componentInstance.richiesta = this.richiesta;
         sostituzioneModal.componentInstance.codRichiesta = this.codRichiesta;

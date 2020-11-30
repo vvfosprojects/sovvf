@@ -37,6 +37,7 @@ import { ClearRicercaFilterbar } from '../store/actions/filterbar/ricerca-richie
 import { RicercaFilterbarState } from '../store/states/filterbar/ricerca-filterbar.state';
 import { PaginationState } from '../../../shared/store/states/pagination/pagination.state';
 import { LoadingState } from '../../../shared/store/states/loading/loading.state';
+import {ViewportState} from '../../../shared/store/states/viewport/viewport.state';
 
 @Component({
     selector: 'app-schede-contatto',
@@ -81,6 +82,9 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
     @Select(LoadingState.loading) loading$: Observable<boolean>;
     @Select(SchedeContattoState.loadingSchedeContatto) loadingSchedeContatto$: Observable<boolean>;
 
+    @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
+    doubleMonitor: boolean;
+
     rangeSchedeContattoEnumValues = Object.values(RangeSchedeContattoEnum);
     RangeVisualizzazione = RangeSchedeContattoEnum;
     private subscriptions: Subscription = new Subscription();
@@ -99,6 +103,8 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
         this.subscriptions.add(this.statoModalita$.subscribe((stato: boolean) => this.statoModalita = stato));
         this.subscriptions.add(this.classificazioneMerge$.subscribe((classificazione: ClassificazioneSchedaContatto) => this.classificazioneMerge = classificazione));
         this.subscriptions.add(this.idSelezionatiMerge$.subscribe((idSelezionatiMerge: string[]) => this.idSelezionatiMerge = idSelezionatiMerge));
+        this.subscriptions.add(this.doubleMonitor$.subscribe(r => this.doubleMonitor = r));
+
     }
 
     ngOnInit(): void {
@@ -225,11 +231,20 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
     }
 
     onUndoMergeSchedaContatto($event: string): void {
-        const modalConfermaAnnulla = this.modal.open(ConfirmModalComponent, {
+        let modalConfermaAnnulla;
+        if (this.doubleMonitor) {
+          modalConfermaAnnulla = this.modal.open(ConfirmModalComponent, {
             windowClass: 'modal-holder modal-left',
             backdropClass: 'light-blue-backdrop',
             centered: true
-        });
+          });
+        } else {
+          modalConfermaAnnulla = this.modal.open(ConfirmModalComponent, {
+            windowClass: 'modal-holder',
+            backdropClass: 'light-blue-backdrop',
+            centered: true
+          });
+        }
         modalConfermaAnnulla.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
         modalConfermaAnnulla.componentInstance.titolo = 'Annulla Raggruppamento';
         modalConfermaAnnulla.componentInstance.messaggio = 'Sei sicuro di voler annullare il raggruppamento delle schede contatto selezionate?';

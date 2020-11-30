@@ -3,7 +3,9 @@ import { VoceFiltro } from './voce-filtro.model';
 import { NgbActiveModal, NgbDropdownConfig, NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { ModalFiltriTipologiaComponent } from './modal-filtri-tipologia/modal-filtri-tipologia.component';
 import { ApplyFiltriTipologiaSelezionatiRichieste } from '../../store/actions/filterbar/filtri-richieste.actions';
-import { Store } from '@ngxs/store';
+import {Select, Store} from '@ngxs/store';
+import {ViewportState} from '../../../../shared/store/states/viewport/viewport.state';
+import {Observable, Subscription} from 'rxjs';
 
 @Component({
     selector: 'app-filtri-richieste',
@@ -22,21 +24,38 @@ export class FiltriRichiesteComponent {
     @Output() filtroDeselezionato: EventEmitter<VoceFiltro> = new EventEmitter();
     @Output() filtriReset: EventEmitter<any> = new EventEmitter();
 
+    @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
+    doubleMonitor: boolean;
+
+    subscription = new Subscription();
+
     constructor(private store: Store,
                 private modalService: NgbModal,
                 private modal: NgbActiveModal,
                 dropdownOpts: NgbDropdownConfig) {
         dropdownOpts.placement = 'bottom';
+        this.subscription.add(this.doubleMonitor$.subscribe(r => this.doubleMonitor = r));
     }
 
     openFiltersModal(): void {
-        const modalOptions = {
+        let modalOptions;
+        if (this.doubleMonitor) {
+          modalOptions = {
             windowClass: 'xlModal modal-left',
             backdrop: 'static',
             backdropClass: 'light-blue-backdrop',
             centered: true,
             keyboard: false
-        } as NgbModalOptions;
+          } as NgbModalOptions;
+        } else {
+          modalOptions = {
+            windowClass: 'xlModal',
+            backdrop: 'static',
+            backdropClass: 'light-blue-backdrop',
+            centered: true,
+            keyboard: false
+          } as NgbModalOptions;
+        }
         const modal = this.modalService.open(ModalFiltriTipologiaComponent, modalOptions);
         modal.result.then((res: string) => {
             switch (res) {

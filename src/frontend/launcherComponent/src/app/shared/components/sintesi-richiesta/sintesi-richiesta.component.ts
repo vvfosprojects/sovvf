@@ -10,7 +10,7 @@ import { HelperSintesiRichiesta } from '../../../features/home/richieste/helper/
 import { ModificaStatoFonogrammaEmitInterface } from '../../interface/modifica-stato-fonogramma-emit.interface';
 import { StatoFonogramma } from '../../enum/stato-fonogramma.enum';
 import { ModificaEntiModalComponent } from 'src/app/shared/modal/modifica-enti-modal/modifica-enti-modal.component';
-import { Store } from '@ngxs/store';
+import {Select, Store} from '@ngxs/store';
 import { PatchRichiesta } from '../../../features/home/store/actions/richieste/richieste.actions';
 import { makeCopy } from 'src/app/shared/helper/function';
 import { TrasferimentoChiamataModalComponent } from 'src/app/shared/modal/trasferimento-chiamata-modal/trasferimento-chiamata-modal.component';
@@ -27,6 +27,8 @@ import { Partenza } from '../../model/partenza.model';
 import { SostituzionePartenzeFineTunoModalComponent } from '../../modal/sostituzione-partenze-fine-turno-modal/sostituzione-partenze-fine-tuno-modal.component';
 import { ConfirmSostituzioni, SetListaPartenzeSostituzioneFineTurno } from '../../store/actions/modifica-partenzef-fine-turno-modal/sostituzione-partenze-fine-turno.actions';
 import { StatoMezzo } from '../../enum/stato-mezzo.enum';
+import {ViewportState} from '../../store/states/viewport/viewport.state';
+import {Observable, Subscription} from 'rxjs';
 
 @Component({
     selector: 'app-sintesi-richiesta',
@@ -73,9 +75,13 @@ export class SintesiRichiestaComponent implements OnChanges {
     @Output() allertaSede = new EventEmitter<AllertaSedeEmitInterface>();
     @Output() outEspansoId = new EventEmitter<string>();
 
+    @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
+    doubleMonitor: boolean;
+
     methods = new HelperSintesiRichiesta();
     isSingleClick = true;
     live = true;
+    private subscription = new Subscription();
 
     // Enum
     StatoRichiesta = StatoRichiesta;
@@ -95,6 +101,7 @@ export class SintesiRichiestaComponent implements OnChanges {
         popoverConfig.placement = 'bottom';
         tooltipConfig.container = 'body';
         tooltipConfig.placement = 'bottom';
+        this.subscription.add(this.doubleMonitor$.subscribe(r => this.doubleMonitor = r));
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -212,11 +219,20 @@ export class SintesiRichiestaComponent implements OnChanges {
     }
 
     onListaEnti(): void {
-        const modal = this.modalService.open(ListaEntiComponent, {
+        let modal;
+        if (this.doubleMonitor) {
+          modal = this.modalService.open(ListaEntiComponent, {
             windowClass: 'enti modal-left',
             backdropClass: 'light-blue-backdrop',
             centered: true
-        });
+          });
+        } else {
+          modal = this.modalService.open(ListaEntiComponent, {
+            windowClass: 'enti',
+            backdropClass: 'light-blue-backdrop',
+            centered: true
+          });
+        }
         modal.componentInstance.listaEntiIntervenuti = this.richiesta.listaEntiIntervenuti ? this.richiesta.listaEntiIntervenuti : null;
         modal.componentInstance.listaEntiPresaInCarico = this.richiesta.listaEntiPresaInCarico ? this.richiesta.listaEntiPresaInCarico : null;
         modal.result.then(() => console.log('Lista Enti Aperta'),
@@ -229,11 +245,20 @@ export class SintesiRichiestaComponent implements OnChanges {
     }
 
     onEliminaPartenza(targaMezzo: string): void {
-        const modal = this.modalService.open(EliminaPartenzaModalComponent, {
+        let modal;
+        if (this.doubleMonitor) {
+          modal = this.modalService.open(EliminaPartenzaModalComponent, {
             windowClass: 'modal-holder modal-left',
             backdropClass: 'light-blue-backdrop',
             centered: true
-        });
+          });
+        } else {
+          modal = this.modalService.open(EliminaPartenzaModalComponent, {
+            windowClass: 'modal-holder',
+            backdropClass: 'light-blue-backdrop',
+            centered: true
+          });
+        }
         modal.componentInstance.targaMezzo = targaMezzo;
         modal.componentInstance.idRichiesta = this.richiesta.id;
         modal.result.then((res: { status: string, result: any }) => {
@@ -248,14 +273,26 @@ export class SintesiRichiestaComponent implements OnChanges {
     }
 
     onModificaPartenza(index: string): void {
-        const modalModificaPartenza = this.modalService.open(ModificaPartenzaModalComponent, {
+        let modalModificaPartenza;
+        if (this.doubleMonitor) {
+          modalModificaPartenza = this.modalService.open(ModificaPartenzaModalComponent, {
             windowClass: 'modal-holder modal-left',
             backdropClass: 'light-blue-backdrop',
             centered: true,
             size: 'xl',
             backdrop: 'static',
             keyboard: false
-        });
+          });
+        } else {
+          modalModificaPartenza = this.modalService.open(ModificaPartenzaModalComponent, {
+            windowClass: 'modal-holder',
+            backdropClass: 'light-blue-backdrop',
+            centered: true,
+            size: 'xl',
+            backdrop: 'static',
+            keyboard: false
+          });
+        }
         modalModificaPartenza.componentInstance.partenza = this.richiesta.partenzeRichiesta[index];
         const codiceRichiesta = this.richiesta.codice ? this.richiesta.codice : this.richiesta.codiceRichiesta;
         modalModificaPartenza.componentInstance.codRichiesta = codiceRichiesta;
@@ -277,21 +314,39 @@ export class SintesiRichiestaComponent implements OnChanges {
     }
 
     onDettaglioStatoFonogramma(): void {
-        const modalDettaglioFonogramma = this.modalService.open(DettaglioFonogrammaModalComponent, {
+        let modalDettaglioFonogramma;
+        if (this.doubleMonitor) {
+          modalDettaglioFonogramma = this.modalService.open(DettaglioFonogrammaModalComponent, {
             windowClass: 'modal-holder modal-left',
             backdropClass: 'light-blue-backdrop',
             centered: true
-        });
+          });
+        } else {
+          modalDettaglioFonogramma = this.modalService.open(DettaglioFonogrammaModalComponent, {
+            windowClass: 'modal-holder',
+            backdropClass: 'light-blue-backdrop',
+            centered: true
+          });
+        }
         modalDettaglioFonogramma.componentInstance.codiceRichiesta = this.richiesta.codiceRichiesta ? this.richiesta.codiceRichiesta : this.richiesta.codice;
         modalDettaglioFonogramma.componentInstance.fonogramma = this.richiesta.fonogramma;
     }
 
     onModificaStatoFonogramma(): void {
-        const modalModificaStatoFonogramma = this.modalService.open(ModificaFonogrammaModalComponent, {
+        let modalModificaStatoFonogramma;
+        if (this.doubleMonitor) {
+          modalModificaStatoFonogramma = this.modalService.open(ModificaFonogrammaModalComponent, {
             windowClass: 'modal-holder modal-left',
             backdropClass: 'light-blue-backdrop',
             centered: true
-        });
+          });
+        } else {
+          modalModificaStatoFonogramma = this.modalService.open(ModificaFonogrammaModalComponent, {
+            windowClass: 'modal-holder',
+            backdropClass: 'light-blue-backdrop',
+            centered: true
+          });
+        }
         modalModificaStatoFonogramma.componentInstance.codiceRichiesta = this.richiesta.codiceRichiesta ? this.richiesta.codiceRichiesta : this.richiesta.codice;
         modalModificaStatoFonogramma.componentInstance.idRichiesta = this.richiesta.id;
         modalModificaStatoFonogramma.componentInstance.fonogramma = this.richiesta.fonogramma;
@@ -307,11 +362,20 @@ export class SintesiRichiestaComponent implements OnChanges {
     }
 
     onAllertaSede(): void {
-        const modalAllertaSede = this.modalService.open(AllertaSedeModalComponent, {
+        let modalAllertaSede;
+        if (this.doubleMonitor) {
+          modalAllertaSede = this.modalService.open(AllertaSedeModalComponent, {
             windowClass: 'modal-holder modal-left',
             backdropClass: 'light-blue-backdrop',
             centered: true
-        });
+          });
+        } else {
+          modalAllertaSede = this.modalService.open(AllertaSedeModalComponent, {
+            windowClass: 'modal-holder',
+            backdropClass: 'light-blue-backdrop',
+            centered: true
+          });
+        }
         modalAllertaSede.componentInstance.codRichiesta = this.richiesta.codice;
         modalAllertaSede.result.then((res: { status: string, result: any }) => {
             switch (res.status) {
@@ -325,12 +389,22 @@ export class SintesiRichiestaComponent implements OnChanges {
     }
 
     onSostituzioneFineTurno(partenze: Partenza[]): void {
-        const modalSostituzioneFineTurno = this.modalService.open(SostituzionePartenzeFineTunoModalComponent, {
+        let modalSostituzioneFineTurno;
+        if (this.doubleMonitor) {
+          modalSostituzioneFineTurno = this.modalService.open(SostituzionePartenzeFineTunoModalComponent, {
             windowClass: 'modal-holder modal-left',
             backdropClass: 'light-blue-backdrop',
             size: 'xl',
             centered: true
-        });
+          });
+        } else {
+          modalSostituzioneFineTurno = this.modalService.open(SostituzionePartenzeFineTunoModalComponent, {
+            windowClass: 'modal-holder',
+            backdropClass: 'light-blue-backdrop',
+            size: 'xl',
+            centered: true
+          });
+        }
         const partenzeDisponibili = partenze.filter((p: Partenza) => !p.sganciata && !p.partenzaAnnullata && !p.terminata && p.mezzo.stato === StatoMezzo.SulPosto);
         this.store.dispatch(new SetListaPartenzeSostituzioneFineTurno(partenzeDisponibili));
         modalSostituzioneFineTurno.componentInstance.idRichiesta = this.richiesta.id;
@@ -358,11 +432,20 @@ export class SintesiRichiestaComponent implements OnChanges {
     }
 
     onModificaEntiIntervenuti(): void {
-        const modalModificaEntiIntervenuti = this.modalService.open(ModificaEntiModalComponent, {
+        let modalModificaEntiIntervenuti;
+        if (this.doubleMonitor) {
+          modalModificaEntiIntervenuti = this.modalService.open(ModificaEntiModalComponent, {
             windowClass: 'modal-holder modal-left',
             backdropClass: 'light-blue-backdrop',
             centered: true
-        });
+          });
+        } else {
+          modalModificaEntiIntervenuti = this.modalService.open(ModificaEntiModalComponent, {
+            windowClass: 'modal-holder',
+            backdropClass: 'light-blue-backdrop',
+            centered: true
+          });
+        }
         modalModificaEntiIntervenuti.componentInstance.enti = this.richiesta.listaEnti ? this.richiesta.listaEnti : null;
         modalModificaEntiIntervenuti.componentInstance.listaEntiIntervenuti = this.richiesta.listaEntiIntervenuti ? this.richiesta.listaEntiIntervenuti : null;
         modalModificaEntiIntervenuti.result.then((res: { status: string, result: any }) => {
@@ -379,12 +462,22 @@ export class SintesiRichiestaComponent implements OnChanges {
     }
 
     onAddTrasferimentoChiamata(codiceRichiesta: string): void {
-        const addTrasferimentoChiamataModal = this.modalService.open(TrasferimentoChiamataModalComponent, {
+        let addTrasferimentoChiamataModal;
+        if (this.doubleMonitor) {
+          addTrasferimentoChiamataModal = this.modalService.open(TrasferimentoChiamataModalComponent, {
             windowClass: 'modal-holder modal-left',
             backdropClass: 'light-blue-backdrop',
             centered: true,
             size: 'lg'
-        });
+          });
+        } else {
+          addTrasferimentoChiamataModal = this.modalService.open(TrasferimentoChiamataModalComponent, {
+            windowClass: 'modal-holder',
+            backdropClass: 'light-blue-backdrop',
+            centered: true,
+            size: 'lg'
+          });
+        }
         addTrasferimentoChiamataModal.componentInstance.codRichiesta = codiceRichiesta;
         addTrasferimentoChiamataModal.result.then(
             (result: { success: boolean }) => {

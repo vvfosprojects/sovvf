@@ -1,4 +1,4 @@
-import { Action, Selector, State, StateContext } from '@ngxs/store';
+import {Action, Selector, State, StateContext, Store} from '@ngxs/store';
 import { OpenModalNewFeaturesInfo, GetNewVersion, OpenModalNewVersionSoon, SetCurrentVersion, SetNewVersion } from '../../actions/nuova-versione/nuova-versione.actions';
 import { ShowToastr } from '../../actions/toastr/toastr.actions';
 import { ToastrType } from '../../../enum/toastr';
@@ -8,6 +8,7 @@ import { Injectable, NgZone } from '@angular/core';
 import { AnnuncioNuovaVersioneModalComponent } from '../../../modal/annuncio-nuova-versione-modal/annuncio-nuova-versione-modal.component';
 import { VersionSoonInterface } from '../../../interface/version-soon.interface';
 import { NuoveFeaturesInfoModalComponent } from '../../../modal/nuove-features-info-modal/nuove-features-info-modal.component';
+import {ViewportStateModel} from '../viewport/viewport.state';
 
 export interface NewVersionStateModel {
     currentVersion: VersionInterface;
@@ -31,7 +32,7 @@ export const NewVersionStateModelDefaults: NewVersionStateModel = {
 export class NewVersionState {
 
     constructor(private modalService: NgbModal,
-                private ngZone: NgZone) {
+                private ngZone: NgZone, private store: Store) {
     }
 
     @Selector()
@@ -81,30 +82,60 @@ export class NewVersionState {
     @Action(OpenModalNewVersionSoon)
     openModalNewVersionSoon({ getState }: StateContext<NewVersionStateModel>): void {
         const state = getState();
-        this.ngZone.run(() => {
+        const innerWidth = window.innerWidth;
+        if (innerWidth && innerWidth > 3700) {
+          this.ngZone.run(() => {
             const newVersionSoonModal = this.modalService.open(AnnuncioNuovaVersioneModalComponent, {
-                windowClass: 'modal-holder modal-left',
-                backdropClass: 'light-blue-backdrop',
-                centered: true,
-                size: 'lg'
+              windowClass: 'modal-holder modal-left',
+              backdropClass: 'light-blue-backdrop',
+              centered: true,
+              size: 'lg'
             });
             newVersionSoonModal.componentInstance.newVersionSoonInfo = state.newVersionSoon.nuoveFeatures;
             newVersionSoonModal.componentInstance.newVersionSoonData = state.newVersionSoon.data;
-        });
+          });
+        } else {
+          this.ngZone.run(() => {
+            const newVersionSoonModal = this.modalService.open(AnnuncioNuovaVersioneModalComponent, {
+              windowClass: 'modal-holder',
+              backdropClass: 'light-blue-backdrop',
+              centered: true,
+              size: 'lg'
+            });
+            newVersionSoonModal.componentInstance.newVersionSoonInfo = state.newVersionSoon.nuoveFeatures;
+            newVersionSoonModal.componentInstance.newVersionSoonData = state.newVersionSoon.data;
+          });
+        }
+
     }
 
     @Action(OpenModalNewFeaturesInfo)
     openModalNewFeaturesInfo({ getState }: StateContext<NewVersionStateModel>): void {
         const state = getState();
-        this.ngZone.run(() => {
+        const innerWidth = window.innerWidth;
+        /*
+        const doubleMonitor = this.store.selectSnapshot(x => x.viewport.innerWidth);
+        console.log('****test double monitor ', doubleMonitor);
+        */
+        if (innerWidth && innerWidth > 3700) {
+          this.ngZone.run(() => {
             const newFeaturesInfoModal = this.modalService.open(NuoveFeaturesInfoModalComponent, {
-                windowClass: 'modal-holder modal-left',
-                backdropClass: 'light-blue-backdrop',
-                centered: true,
-                size: 'lg'
+              windowClass: 'modal-holder modal-left',
+              backdropClass: 'light-blue-backdrop',
+              centered: true,
+              size: 'lg'
             });
-            // newVersionSoonModal.componentInstance.newVersionSoonInfo = state.newVersionSoon.nuoveFeatures;
-            // newVersionSoonModal.componentInstance.newVersionSoonData = state.newVersionSoon.data;
-        });
+          });
+        } else {
+          this.ngZone.run(() => {
+            const newFeaturesInfoModal = this.modalService.open(NuoveFeaturesInfoModalComponent, {
+              windowClass: 'modal-holder',
+              backdropClass: 'light-blue-backdrop',
+              centered: true,
+              size: 'lg'
+            });
+          });
+        }
+
     }
 }

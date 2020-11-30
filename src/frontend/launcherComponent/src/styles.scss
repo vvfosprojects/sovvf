@@ -652,6 +652,14 @@ tag-input {
   border: solid #dc3545;
 }
 
-.toast-container { // Toast a sx
-  padding-right: 50% !important;
+.toast-postion-left { // Toast a sx
+  bottom: 0 !important;
+  left: 25% !important;
+  margin-left: -135px;
+}
+
+.toast-postion-center {
+  bottom: 0 !important;
+  left: 50% !important;
+  margin-left: -135px;
 }

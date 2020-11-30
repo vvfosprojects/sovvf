@@ -31,6 +31,7 @@ import { RoutesPath } from '../../shared/enum/routes-path.enum';
 import { AuthState } from '../auth/store/auth.state';
 import { ConfirmModalComponent } from '../../shared/modal/confirm-modal/confirm-modal.component';
 import { StopBigLoading } from '../../shared/store/actions/loading/loading.actions';
+import {ViewportState} from '../../shared/store/states/viewport/viewport.state';
 
 @Component({
     selector: 'app-gestione-utenti',
@@ -55,6 +56,8 @@ export class GestioneUtentiComponent implements OnInit, OnDestroy {
     @Select(RuoliUtenteLoggatoState.ruoli) ruoliUtenteLoggatoConDistaccamenti$: Observable<Ruolo[]>;
     @Select(RicercaUtentiState.sediFiltro) sediFiltro$: Observable<Ruolo[]>;
     @Select(RicercaUtentiState.sediFiltroSelezionate) sediFiltroSelezionate$: Observable<string[]>;
+    @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
+    doubleMonitor: boolean;
 
     subscriptions: Subscription = new Subscription();
 
@@ -76,6 +79,7 @@ export class GestioneUtentiComponent implements OnInit, OnDestroy {
             new SetSediNavbarVisible(false),
             new StopBigLoading()
         ]);
+        this.subscriptions.add(this.doubleMonitor$.subscribe(r => this.doubleMonitor = r));
     }
 
     ngOnDestroy(): void {
@@ -99,12 +103,22 @@ export class GestioneUtentiComponent implements OnInit, OnDestroy {
     }
 
     onAddUtente(): void {
-        const aggiungiUtenteModal = this.modalService.open(GestioneUtenteModalComponent, {
+        let aggiungiUtenteModal;
+        if (this.doubleMonitor) {
+          aggiungiUtenteModal = this.modalService.open(GestioneUtenteModalComponent, {
             windowClass: 'modal-holder modal-left',
             backdropClass: 'light-blue-backdrop',
             centered: true,
             size: 'lg'
-        });
+          });
+        } else {
+          aggiungiUtenteModal = this.modalService.open(GestioneUtenteModalComponent, {
+            windowClass: 'modal-holder',
+            backdropClass: 'light-blue-backdrop',
+            centered: true,
+            size: 'lg'
+          });
+        }
         aggiungiUtenteModal.result.then(
             (result: { success: boolean }) => {
                 if (result.success) {
@@ -122,12 +136,22 @@ export class GestioneUtentiComponent implements OnInit, OnDestroy {
     }
 
     onAddRuoloUtente(event: { codFiscale: string, fullName: string, ruoliAttuali: Ruolo[] }): void {
-        const aggiungiRuoloUtenteModal = this.modalService.open(GestioneUtenteModalComponent, {
+        let aggiungiRuoloUtenteModal;
+        if (this.doubleMonitor) {
+          aggiungiRuoloUtenteModal = this.modalService.open(GestioneUtenteModalComponent, {
             windowClass: 'modal-holder modal-left',
             backdropClass: 'light-blue-backdrop',
             centered: true,
             size: 'lg'
-        });
+          });
+        } else {
+          aggiungiRuoloUtenteModal = this.modalService.open(GestioneUtenteModalComponent, {
+            windowClass: 'modal-holder',
+            backdropClass: 'light-blue-backdrop',
+            centered: true,
+            size: 'lg'
+          });
+        }
         const codFiscaleUtenteVVF = event.codFiscale;
         const nominativoUtenteVVF = event.fullName;
         const ruoliAttuali = event.ruoliAttuali;
@@ -151,11 +175,20 @@ export class GestioneUtentiComponent implements OnInit, OnDestroy {
     }
 
     onRemoveRuoloUtente(payload: { codFiscale: string, ruolo: Ruolo, nominativoUtente: string }): void {
-        const modalConfermaAnnulla = this.modalService.open(ConfirmModalComponent, {
+        let modalConfermaAnnulla;
+        if (this.doubleMonitor) {
+          modalConfermaAnnulla = this.modalService.open(ConfirmModalComponent, {
             windowClass: 'modal-holder modal-left',
             backdropClass: 'light-blue-backdrop',
             centered: true
-        });
+          });
+        } else {
+          modalConfermaAnnulla = this.modalService.open(ConfirmModalComponent, {
+            windowClass: 'modal-holder',
+            backdropClass: 'light-blue-backdrop',
+            centered: true
+          });
+        }
         modalConfermaAnnulla.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
         modalConfermaAnnulla.componentInstance.titolo = 'Elimina ruolo a ' + payload.nominativoUtente;
         modalConfermaAnnulla.componentInstance.messaggioAttenzione = 'Sei sicuro di voler rimuovere il ruolo "' + wipeStringUppercase(payload.ruolo.descrizione) + '" su "' + payload.ruolo.descSede + '"?';
@@ -180,11 +213,20 @@ export class GestioneUtentiComponent implements OnInit, OnDestroy {
     }
 
     onRemoveUtente(payload: { codFiscale: string, nominativoUtente: string }): void {
-        const modalConfermaAnnulla = this.modalService.open(ConfirmModalComponent, {
+        let modalConfermaAnnulla;
+        if (this.doubleMonitor) {
+          modalConfermaAnnulla = this.modalService.open(ConfirmModalComponent, {
             windowClass: 'modal-holder modal-left',
             backdropClass: 'light-blue-backdrop',
             centered: true
-        });
+          });
+        } else {
+          modalConfermaAnnulla = this.modalService.open(ConfirmModalComponent, {
+            windowClass: 'modal-holder',
+            backdropClass: 'light-blue-backdrop',
+            centered: true
+          });
+        }
         modalConfermaAnnulla.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
         modalConfermaAnnulla.componentInstance.titolo = 'Elimina ' + payload.nominativoUtente;
         modalConfermaAnnulla.componentInstance.messaggioAttenzione = 'Sei sicuro di voler rimuovere l\'utente?';

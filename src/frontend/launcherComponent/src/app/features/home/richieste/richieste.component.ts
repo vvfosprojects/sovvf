@@ -49,6 +49,7 @@ import { FiltriRichiesteState } from '../store/states/filterbar/filtri-richieste
 import { VoceFiltro } from '../filterbar/filtri-richieste/voce-filtro.model';
 import { ModificaStatoFonogrammaEmitInterface } from '../../../shared/interface/modifica-stato-fonogramma-emit.interface';
 import { AllertaSedeEmitInterface } from '../../../shared/interface/allerta-sede-emit.interface';
+import {ViewportState} from '../../../shared/store/states/viewport/viewport.state';
 
 @Component({
     selector: 'app-richieste',
@@ -94,6 +95,9 @@ export class RichiesteComponent implements OnInit, OnDestroy {
     @Select(FiltriRichiesteState.filtriRichiesteSelezionati) filtriRichiesteSelezionati$: Observable<VoceFiltro[]>;
     codiciFiltriSelezionati: string[] = [];
 
+    @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
+    doubleMonitor: boolean;
+
     loaderRichieste = true;
     listHeightClass = 'm-h-695';
     permessiFeature = PermissionFeatures;
@@ -116,6 +120,7 @@ export class RichiesteComponent implements OnInit, OnDestroy {
         this.getRichiestaGestione();
         this.getRicercaRichieste();
         this.getFiltriSelezionati();
+        this.subscription.add(this.doubleMonitor$.subscribe(r => this.doubleMonitor = r));
         console.log('Componente Richieste creato');
     }
 
@@ -292,11 +297,20 @@ export class RichiesteComponent implements OnInit, OnDestroy {
     /* Apre il modal per visualizzare gli eventi relativi alla richiesta cliccata */
     onVisualizzaEventiRichiesta(codice: string): void {
         this.store.dispatch(new SetIdRichiestaEventi(codice));
-        const modal = this.modalService.open(EventiRichiestaComponent, {
+        let modal;
+        if (this.doubleMonitor) {
+          modal = this.modalService.open(EventiRichiestaComponent, {
             windowClass: 'xlModal modal-left',
             backdropClass: 'light-blue-backdrop',
             centered: true
-        });
+          });
+        } else {
+          modal = this.modalService.open(EventiRichiestaComponent, {
+            windowClass: 'xlModal',
+            backdropClass: 'light-blue-backdrop',
+            centered: true
+          });
+        }
         modal.result.then(() => {
             },
             () => this.store.dispatch(new ClearEventiRichiesta()));

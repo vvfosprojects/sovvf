@@ -31,6 +31,7 @@ import { FiltriComposizioneState } from '../../../shared/store/states/filtri-com
 import { SetRicercaMezziComposizione, SetRicercaSquadreComposizione } from '../../../shared/store/actions/ricerca-composizione/ricerca-composizione.actions';
 import { GetListeComposizioneAvanzata } from '../store/actions/composizione-partenza/composizione-avanzata.actions';
 import { ListaTipologicheMezzi } from './interface/filtri/lista-filtri-composizione-interface';
+import {ViewportState} from '../../../shared/store/states/viewport/viewport.state';
 
 @Component({
     selector: 'app-composizione-partenza',
@@ -48,6 +49,8 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
     @Select(ComposizionePartenzaState.loadingInvioPartenza) loadingInvioPartenza$: Observable<boolean>;
     @Select(ComposizionePartenzaState.loadingListe) loadingListe$: Observable<boolean>;
     loadingListe: boolean;
+    @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
+    doubleMonitor: boolean;
 
     richiesta: SintesiRichiesta;
     prevStateBoxClick: BoxClickStateModel;
@@ -72,6 +75,7 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
                 this.loadingListe = loading;
             })
         );
+        this.subscription.add(this.doubleMonitor$.subscribe(r => this.doubleMonitor = r));
     }
 
     ngOnInit(): void {
@@ -115,7 +119,12 @@ export class ComposizionePartenzaComponent implements OnInit, OnDestroy {
 
     onVisualizzaEventiRichiesta(idRichiesta: string): void {
         this.store.dispatch(new SetIdRichiestaEventi(idRichiesta));
-        const modal = this.modalService.open(EventiRichiestaComponent, { windowClass: 'xlModal modal-left', backdropClass: 'light-blue-backdrop', centered: true });
+        let modal;
+        if (this.doubleMonitor) {
+          modal = this.modalService.open(EventiRichiestaComponent, { windowClass: 'xlModal modal-left', backdropClass: 'light-blue-backdrop', centered: true });
+        } else {
+          modal = this.modalService.open(EventiRichiestaComponent, { windowClass: 'xlModal', backdropClass: 'light-blue-backdrop', centered: true });
+        }
         modal.result.then(() => {
             },
             () => this.store.dispatch(new ClearEventiRichiesta()));

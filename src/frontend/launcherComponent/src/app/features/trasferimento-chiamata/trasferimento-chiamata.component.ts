@@ -16,6 +16,7 @@ import { RequestAddTrasferimentoChiamata, ClearFormTrasferimentoChiamata } from 
 import { TrasferimentoChiamataModalComponent } from 'src/app/shared/modal/trasferimento-chiamata-modal/trasferimento-chiamata-modal.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { StopBigLoading } from '../../shared/store/actions/loading/loading.actions';
+import {ViewportState} from '../../shared/store/states/viewport/viewport.state';
 
 
 @Component({
@@ -34,6 +35,8 @@ export class TrasferimentoChiamataComponent implements OnInit, OnDestroy {
     @Select(PaginationState.totalItems) totalItems$: Observable<number>;
     @Select(PaginationState.page) page$: Observable<number>;
     @Select(LoadingState.loading) loading$: Observable<boolean>;
+    @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
+    doubleMonitor: boolean;
 
     private subscriptions: Subscription = new Subscription();
 
@@ -54,6 +57,8 @@ export class TrasferimentoChiamataComponent implements OnInit, OnDestroy {
             new SetSediNavbarVisible(false),
             new StopBigLoading()
         ]);
+        this.subscriptions.add(this.doubleMonitor$.subscribe(r => this.doubleMonitor = r));
+
     }
 
     ngOnDestroy(): void {
@@ -78,13 +83,23 @@ export class TrasferimentoChiamataComponent implements OnInit, OnDestroy {
     }
 
     onAddTrasferimentoChiamata(): void {
-        const addTrasferimentoChiamataModal = this.modalService.open(TrasferimentoChiamataModalComponent, {
+      let addTrasferimentoChiamataModal;
+      if (this.doubleMonitor) {
+          addTrasferimentoChiamataModal = this.modalService.open(TrasferimentoChiamataModalComponent, {
             windowClass: 'modal-holder modal-left',
             backdropClass: 'light-blue-backdrop',
             centered: true,
             size: 'lg'
-        });
-        addTrasferimentoChiamataModal.result.then(
+          });
+        } else {
+          addTrasferimentoChiamataModal = this.modalService.open(TrasferimentoChiamataModalComponent, {
+            windowClass: 'modal-holder',
+            backdropClass: 'light-blue-backdrop',
+            centered: true,
+            size: 'lg'
+          });
+        }
+      addTrasferimentoChiamataModal.result.then(
             (result: { success: boolean }) => {
                 if (result.success) {
                     this.addTrasferimentoChiamata();

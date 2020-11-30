@@ -266,15 +266,28 @@ export class SchedaTelefonataState {
 
     @Action(ApriModaleRichiestaDuplicata)
     apriModaleRichiestaDuplicata({ dispatch }: StateContext<SchedaTelefonataStateModel>, action: ApriModaleRichiestaDuplicata): void {
-        this.ngZone.run(() => {
+        const innerWidth = window.innerWidth;
+        if (innerWidth && innerWidth > 3700) {
+          this.ngZone.run(() => {
             const richiestaDuplicataModal = this.modalService.open(RichiestaDuplicataModalComponent, {
-                windowClass: 'modal-holder modal-left',
-                size: 'lg',
-                centered: true,
-                backdrop: 'static'
+              windowClass: 'modal-holder modal-left',
+              size: 'lg',
+              centered: true,
+              backdrop: 'static'
             });
             richiestaDuplicataModal.componentInstance.messaggio = action.messaggio;
-        });
+          });
+        } else {
+          this.ngZone.run(() => {
+            const richiestaDuplicataModal = this.modalService.open(RichiestaDuplicataModalComponent, {
+              windowClass: 'modal-holder',
+              size: 'lg',
+              centered: true,
+              backdrop: 'static'
+            });
+            richiestaDuplicataModal.componentInstance.messaggio = action.messaggio;
+          });
+        }
     }
 
     @Action(StartLoadingNuovaChiamata)

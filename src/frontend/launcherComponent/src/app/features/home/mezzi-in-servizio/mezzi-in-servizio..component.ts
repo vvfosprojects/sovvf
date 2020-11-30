@@ -26,6 +26,7 @@ import {
 import { RicercaFilterbarState } from '../store/states/filterbar/ricerca-filterbar.state';
 import { ClearRicercaFilterbar } from '../store/actions/filterbar/ricerca-richieste.actions';
 import { PaginationState } from '../../../shared/store/states/pagination/pagination.state';
+import {ViewportState} from '../../../shared/store/states/viewport/viewport.state';
 
 @Component({
     selector: 'app-mezzi-in-servizio',
@@ -52,6 +53,8 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
     idMezzoInServizioSelezionato: string;
     @Select(RichiesteState.loadingActionMezzo) loadingActionMezzo$: Observable<string>;
     @Select(MezziInServizioState.loadingMezziInServizio) loadingMezziInServizio$: Observable<boolean>;
+    @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
+    doubleMonitor: boolean;
 
     statiMezziInServizio: StatoMezzo[];
     prevStateBoxClick: BoxClickStateModel;
@@ -68,6 +71,7 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.store.dispatch(new ClearRicercaFilterbar());
+        this.subscriptions.add(this.doubleMonitor$.subscribe(r => this.doubleMonitor = r));
         console.log('Componente Mezzo in Servizio creato');
     }
 
@@ -137,22 +141,39 @@ export class MezziInServizioComponent implements OnInit, OnDestroy {
 
     onDettaglioRichiesta(idRichiesta: string): void {
         this.store.dispatch(new SetRichiestaById(idRichiesta));
-        this.modalService.open(SintesiRichiestaModalComponent, {
+        if (this.doubleMonitor) {
+          this.modalService.open(SintesiRichiestaModalComponent, {
             windowClass: 'xlModal modal-left',
             backdropClass: 'light-blue-backdrop',
             centered: true
-        });
+          });
+        } else {
+          this.modalService.open(SintesiRichiestaModalComponent, {
+            windowClass: 'xlModal',
+            backdropClass: 'light-blue-backdrop',
+            centered: true
+          });
+        }
     }
 
     /* Apre il modal per visualizzare gli eventi relativi alla richiesta cliccata */
     onVisualizzaEventiRichiesta(mezzo: Mezzo): void {
         this.store.dispatch(new SetFiltroTargaMezzo([mezzo.descrizione]));
         this.store.dispatch(new SetIdRichiestaEventi(mezzo.idRichiesta));
-        const modal = this.modalService.open(EventiRichiestaComponent, {
+        let modal;
+        if (this.doubleMonitor) {
+          modal = this.modalService.open(EventiRichiestaComponent, {
             windowClass: 'xlModal modal-left',
             backdropClass: 'light-blue-backdrop',
             centered: true
-        });
+          });
+        } else {
+          modal = this.modalService.open(EventiRichiestaComponent, {
+            windowClass: 'xlModal',
+            backdropClass: 'light-blue-backdrop',
+            centered: true
+          });
+        }
         modal.result.then(() => {
             },
             () => this.store.dispatch(new ClearEventiRichiesta()));
