@@ -122,13 +122,13 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
         private string GetStatoOperativoMezzo(string codiceSedeDistaccamento, string codiceMezzo, string StatoMezzoOra)
         {
             string stato;
-            if (StatoMezzoOra.Equals("I"))
-            {
-                stato = Models.Classi.Utility.Costanti.MezzoSulPosto;
-            }
-            else
-            {
-                var ListaStatoOperativoMezzo = _getStatoMezzi.Get(codiceSedeDistaccamento, codiceMezzo);
+            //if (StatoMezzoOra.Equals("I"))
+            //{
+            //    stato = Models.Classi.Utility.Costanti.MezzoSulPosto;
+            //}
+            //else
+            //{
+            var ListaStatoOperativoMezzo = _getStatoMezzi.Get(codiceSedeDistaccamento, codiceMezzo);
                 if (ListaStatoOperativoMezzo.Count == 0)
                 {
                     switch (StatoMezzoOra)
@@ -144,7 +144,7 @@ namespace SO115App.ExternalAPI.Fake.GestioneMezzi
                 {
                     stato = ListaStatoOperativoMezzo.Find(x => x.CodiceMezzo.Equals(codiceMezzo)).StatoOperativo;
                 }
-            }
+            //}
             return stato;
         }
     }
