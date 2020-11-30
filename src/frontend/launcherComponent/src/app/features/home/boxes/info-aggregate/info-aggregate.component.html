@@ -7,8 +7,8 @@
                     <div class="card app-shadow">
                         <app-box-interventi [interventi]="(richieste$ | async)"
                                             [boxClick]="(boxClick$ | async)"
-                                            (clickRichieste)="clickBox('richieste', $event)"
-                                            [turno]="(turnoCalendario$ | async)">
+                                            [turno]="(turnoCalendario$ | async)"
+                                            (clickRichieste)="clickBox('richieste', $event)">
                         </app-box-interventi>
                     </div>
                 </div>

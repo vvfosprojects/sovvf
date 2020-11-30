@@ -164,16 +164,14 @@ export class RichiesteState {
             const boxesVisibili = this.store.selectSnapshot(ImpostazioniState.boxAttivi);
             const filters = {
                 search: this.store.selectSnapshot(RicercaFilterbarState.ricerca),
-                others: this.store.selectSnapshot(FiltriRichiesteState.filtriRichiesteSelezionati)
+                others: this.store.selectSnapshot(FiltriRichiesteState.filtriRichiesteSelezionati),
+                statiRichiesta: this.store.selectSnapshot(FiltriRichiesteState.filtriStatoRichiestaSelezionati)
             };
             const pagination = {
                 page: action.options && action.options.page ? action.options.page : 1,
                 pageSize: boxesVisibili ? 7 : 8
             };
             this.richiesteService.getRichieste(filters, pagination).subscribe((response: ResponseInterface) => {
-                /* response.sintesiRichiesta.forEach( e => {
-                    e.listaEnti = e.listaEntiIntervenuti;
-                }) */
                 dispatch([
                     new AddRichieste(response.sintesiRichiesta),
                     new PatchPagination(response.pagination),
@@ -185,7 +183,6 @@ export class RichiesteState {
             }, () => {
                 dispatch(new StopLoadingRichieste());
             });
-
             // Clear dei dati presenti nella pagina che si sta lasciando
             dispatch([
                 new ClearRichiestaSelezionata(),
@@ -411,19 +408,19 @@ export class RichiesteState {
         const innerWidth = window.innerWidth;
         let modal;
         if (innerWidth && innerWidth > 3700) {
-          modal = this.modalService.open(ListaSquadrePartenzaComponent, {
-            windowClass: 'modal-holder modal-left',
-            backdropClass: 'light-blue-backdrop',
-            centered: true,
-            size: 'lg',
-          });
+            modal = this.modalService.open(ListaSquadrePartenzaComponent, {
+                windowClass: 'modal-holder modal-left',
+                backdropClass: 'light-blue-backdrop',
+                centered: true,
+                size: 'lg',
+            });
         } else {
-          modal = this.modalService.open(ListaSquadrePartenzaComponent, {
-            windowClass: 'modal-holder',
-            backdropClass: 'light-blue-backdrop',
-            centered: true,
-            size: 'lg',
-          });
+            modal = this.modalService.open(ListaSquadrePartenzaComponent, {
+                windowClass: 'modal-holder',
+                backdropClass: 'light-blue-backdrop',
+                centered: true,
+                size: 'lg',
+            });
         }
         modal.componentInstance.listaSquadre = action.listaSquadre;
         modal.result.then(() => console.log('Lista Squadre Partenza Aperta'),

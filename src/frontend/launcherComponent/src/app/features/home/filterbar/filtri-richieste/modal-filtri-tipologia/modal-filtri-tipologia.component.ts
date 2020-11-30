@@ -4,7 +4,7 @@ import { Select, Store } from '@ngxs/store';
 import { FiltriRichiesteState } from '../../../store/states/filterbar/filtri-richieste.state';
 import { Observable, Subscription } from 'rxjs';
 import {
-    ClearAllFiltriTipologiaSelezionatiRichieste,
+    ClearFiltriTipologiaSelezionatiRichieste,
     ClearFiltroTipologiaSelezionatoRichieste,
     SetFiltroTipologiaSelezionatoRichieste
 } from '../../../store/actions/filterbar/filtri-richieste.actions';
@@ -88,6 +88,6 @@ export class ModalFiltriTipologiaComponent implements OnDestroy {
     }
 
     resetFiltri(): void {
-        this.store.dispatch(new ClearAllFiltriTipologiaSelezionatiRichieste());
+        this.store.dispatch(new ClearFiltriTipologiaSelezionatiRichieste());
     }
 }

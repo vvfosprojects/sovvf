@@ -29,8 +29,10 @@ export class SintesiRichiesteService {
             pageSize: pagination.pageSize || 30,
             includiRichiesteAperte: !!(filters.others && filters.others.filter((f: VoceFiltro) => f.descrizione === 'Aperte')[0]),
             includiRichiesteChiuse: !!(filters.others && filters.others.filter((f: VoceFiltro) => f.descrizione === 'Chiuse')[0]),
-            filtriTipologie: filtriTipologie && filtriTipologie.length > 0 ? filtriTipologie.map(f => f.codice) : null
+            filtriTipologie: filtriTipologie && filtriTipologie.length > 0 ? filtriTipologie.map(f => f.codice) : null,
+            statiRichiesta: filters.statiRichiesta
         };
+        console.log('getRichieste OBJ', obj);
         return this.http.post(API_URL_RICHIESTE, obj);
     }
 

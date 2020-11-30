@@ -1,4 +1,5 @@
 import { VoceFiltro } from '../../../filterbar/filtri-richieste/voce-filtro.model';
+import { StatoRichiesta } from '../../../../../shared/enum/stato-richiesta.enum';
 
 export class GetFiltriRichieste {
     static readonly type = '[FiltriRichieste] Get Filtri Richieste';
@@ -15,6 +16,13 @@ export class ClearFiltroSelezionatoRichieste {
     static readonly type = '[FiltriRichieste] Clear Filtro Richieste Selezionato';
 
     constructor(public filtro: VoceFiltro) {
+    }
+}
+
+export class SetFiltroBoxRichieste {
+    static readonly type = '[FiltriRichieste] Set Filtro Box Richieste';
+
+    constructor(public statoRichiesta: string) {
     }
 }
 
@@ -36,8 +44,8 @@ export class ApplyFiltriTipologiaSelezionatiRichieste {
     static readonly type = '[FiltriRichieste] Apply Filtri Tipologia Richieste Selezionati';
 }
 
-export class ClearAllFiltriTipologiaSelezionatiRichieste {
-    static readonly type = '[FiltriRichieste] Clear All Filtri Tipologia Richieste Selezionati';
+export class ClearFiltriTipologiaSelezionatiRichieste {
+    static readonly type = '[FiltriRichieste] Clear Filtri Tipologia Richieste Selezionati';
 }
 
 export class ResetFiltriSelezionatiRichieste {
