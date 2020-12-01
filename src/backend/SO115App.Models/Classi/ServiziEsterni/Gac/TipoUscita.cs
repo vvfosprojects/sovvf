@@ -11,11 +11,11 @@ namespace SO115App.Models.Classi.ServiziEsterni.Gac
         /// <summary>
         ///   il codice della tipologia dell'intervento
         /// </summary>
-        public string Codice { get; set; }
+        public string codice { get; set; }
 
         /// <summary>
         ///   la descrizione della tipologia
         /// </summary>
-        public string Descrizione { get; set; }
+        public string descrizione { get; set; }
     }
 }

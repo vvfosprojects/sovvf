@@ -11,6 +11,7 @@ using SO115App.Models.Servizi.Infrastruttura.GestioneLog;
 using System;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
 namespace SO115App.ExternalAPI.Fake.HttpManager
@@ -22,7 +23,10 @@ namespace SO115App.ExternalAPI.Fake.HttpManager
         private readonly IWriteLog _writeLog;
         private readonly IHttpContextAccessor _httpContext;
 
-        private HttpRequestManager() { }
+        private HttpRequestManager()
+        {
+        }
+
         public HttpRequestManager(HttpClient client, IMemoryCache memoryCache, IWriteLog writeLog, IHttpContextAccessor httpContext)
         {
             _client = client;
@@ -101,6 +105,7 @@ namespace SO115App.ExternalAPI.Fake.HttpManager
 
         public async Task<ResponseObject> PostAsync(Uri url, HttpContent content)
         {
+            content.Headers.ContentType = new MediaTypeWithQualityHeaderValue("application/json");
             var response = await policies.ExecuteAsync(() => _client.PostAsync(url, content));
 
             return ManageResponse(response);
@@ -108,6 +113,7 @@ namespace SO115App.ExternalAPI.Fake.HttpManager
 
         public async Task<ResponseObject> PutAsync(Uri url, HttpContent content)
         {
+            content.Headers.ContentType = new MediaTypeWithQualityHeaderValue("application/json");
             var response = await policies.ExecuteAsync(() => _client.PutAsync(url, content));
 
             return ManageResponse(response);

@@ -2,8 +2,8 @@
 {
     public abstract class BaseGAC
     {
-        public string Targa { get; set; }
-        public string TipoMezzo { get; set; }
-        public int CodicePartenza { get; set; }
+        public string targa { get; set; }
+        public string tipoMezzo { get; set; }
+        public string idPartenza { get; set; }
     }
 }

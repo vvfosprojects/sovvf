@@ -83,7 +83,6 @@ namespace SO115App.ExternalAPI.Fake.Composizione
 
                 var dataIntervento = command.Richiesta.ListaEventi.OfType<Telefonata>().FirstOrDefault(p => p.CodiceRichiesta.Equals(command.Richiesta.Codice)).Istante;
 
-
                 //GAC USCITA/ENTRATA
                 if (!partenza.Mezzo.Stato.Equals(Costanti.MezzoInUscita))
                     if (partenza.Mezzo.Stato.Equals(Costanti.MezzoInSede) || partenza.Mezzo.Stato.Equals(Costanti.MezzoRientrato))
@@ -91,49 +90,48 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                         var dataRientro = command.Richiesta.ListaEventi.OfType<PartenzaRientrata>().FirstOrDefault(p => p.CodicePartenza.Equals(partenza.Codice)).Istante;
                         _setRientroMezzo.Set(new RientroGAC()
                         {
-                            Autista = "",
-                            CodicePartenza = partenza.Codice,
-                            DataIntervento = dataIntervento,
-                            DataRientro = dataRientro,
-                            NumeroIntervento = command.Richiesta.CodRichiesta,
-                            Targa = partenza.Mezzo.Codice,
-                            TipoMezzo = partenza.Mezzo.Genere
+                            targa = partenza.Mezzo.Codice.Split('.')[1],
+                            tipoMezzo = partenza.Mezzo.Codice.Split('.')[0],
+                            idPartenza = partenza.Codice.ToString(),
+                            numeroIntervento = command.Richiesta.CodRichiesta,
+                            dataIntervento = dataIntervento,
+                            dataRientro = dataRientro,
+                            autista = ""
                         });
                     }
-                    else
+                    else if (partenza.Mezzo.Stato.Equals(Costanti.MezzoInViaggio))
                     {
                         var dataUscita = command.Richiesta.ListaEventi.OfType<ComposizionePartenze>().FirstOrDefault(p => p.Partenza.Codice.Equals(partenza.Codice)).Istante;
                         _setUscitaMezzo.Set(new UscitaGAC()
                         {
-                            Autista = "",
-                            CodicePartenza = partenza.Codice,
-                            DataIntervento = dataIntervento,
-                            NumeroIntervento = command.Richiesta.CodRichiesta,
-                            Targa = partenza.Mezzo.Codice,
-                            TipoMezzo = partenza.Mezzo.Genere,
-                            DataUscita = dataUscita,
-                            Latitudine = command.Richiesta.Localita.Coordinate.Latitudine.ToString(),
-                            Longitudine = command.Richiesta.Localita.Coordinate.Longitudine.ToString(),
-                            Localita = command.Richiesta.Localita.Citta,
-                            Comune = new ComuneGAC()
+                            targa = partenza.Mezzo.Codice.Split('.')[1],
+                            tipoMezzo = partenza.Mezzo.Codice.Split('.')[0],
+                            idPartenza = partenza.Codice.ToString(),
+                            numeroIntervento = command.Richiesta.CodRichiesta,
+                            dataIntervento = dataIntervento,
+                            dataUscita = dataUscita,
+                            autista = "",
+                            tipoUscita = new TipoUscita()
                             {
-                                Codice = "",
-                                Descrizione = command.Richiesta.Localita.Citta,
+                                codice = "",
+                                descrizione = "Servizio"
                             },
-                            Provincia = new Models.Classi.Gac.ProvinciaGAC()
+                            comune = new ComuneGAC()
                             {
-                                Codice = "",
-                                Descrizione = command.Richiesta.Localita.Provincia
+                                codice = "",
+                                descrizione = command.Richiesta.Localita.Citta,
                             },
-                            TipoUscita = new TipoUscita()
+                            provincia = new Models.Classi.Gac.ProvinciaGAC()
                             {
-                                Codice = "",
-                                Descrizione = "Servizio"
-                            }
+                                codice = "",
+                                descrizione = command.Richiesta.Localita.Provincia
+                            },
+                            localita = command.Richiesta.Localita.Citta,
+                            latitudine = command.Richiesta.Localita.Coordinate.Latitudine.ToString(),
+                            longitudine = command.Richiesta.Localita.Coordinate.Longitudine.ToString(),
                         });
                     }
             }
-
 
             conferma.CodiceSede = command.ConfermaPartenze.CodiceSede;
             conferma.IdRichiesta = command.ConfermaPartenze.IdRichiesta;

@@ -9,11 +9,11 @@ namespace SO115App.Models.Classi.Gac
         /// <summary>
         ///   il codice della provincia
         /// </summary>
-        public string Codice { get; set; }
+        public string codice { get; set; }
 
         /// <summary>
         ///   la descrizione della provincia
         /// </summary>
-        public string Descrizione { get; set; }
+        public string descrizione { get; set; }
     }
 }

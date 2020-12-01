@@ -9,11 +9,11 @@ namespace SO115App.Models.Classi.ServiziEsterni.Gac
         /// <summary>
         ///   il codice del comune
         /// </summary>
-        public string Codice { get; set; }
+        public string codice { get; set; }
 
         /// <summary>
         ///   la descrizione del comune
         /// </summary>
-        public string Descrizione { get; set; }
+        public string descrizione { get; set; }
     }
 }
