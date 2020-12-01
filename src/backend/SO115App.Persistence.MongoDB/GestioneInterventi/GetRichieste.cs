@@ -233,7 +233,7 @@ namespace SO115App.Persistence.MongoDB
             }
 
             if (filtro.StatiRichiesta != null && filtro.StatiRichiesta.Count() > 0)
-                result = result.Where(r => filtro.StatiRichiesta.Contains(r.StatoRichiesta.ToString())).ToList();
+                result = result.Where(r => filtro.StatiRichiesta.Contains(r.StatoRichiesta.GetType().Name)).ToList();
 
             //ORDINAMENTO RICHIESTE
             return listaSistesiRichieste
