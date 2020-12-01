@@ -19,7 +19,7 @@
 //-----------------------------------------------------------------------
 using Newtonsoft.Json;
 using SO115App.ExternalAPI.Fake.Classi;
-using SO115App.ExternalAPI.Fake.Classi.Gac;
+using SO115App.Models.Classi.ServiziEsterni.Gac;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;

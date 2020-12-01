@@ -20,12 +20,16 @@
 
 using DomainModel.CQRS.Commands.ConfermaPartenze;
 using SO115App.API.Models.Classi.Composizione;
+using SO115App.API.Models.Classi.Soccorso.Eventi.Partenze;
+using SO115App.API.Models.Classi.Soccorso.Eventi.Segnalazioni;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
+using SO115App.Models.Classi.ServiziEsterni.Gac;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi;
 using SO115App.Models.Servizi.Infrastruttura.GestioneStatoOperativoSquadra;
 using System;
+using System.Linq;
 
 namespace SO115App.ExternalAPI.Fake.Composizione
 {
@@ -38,15 +42,19 @@ namespace SO115App.ExternalAPI.Fake.Composizione
         private readonly IUpDateRichiestaAssistenza _updateRichiesta;
         private readonly ISetStatoOperativoMezzo _setStatoOperativoMezzo;
         private readonly ISetStatoSquadra _setStatoSquadra;
+        private readonly ISetUscitaMezzo _setUscitaMezzo;
+        private readonly ISetRientroMezzo _setRientroMezzo;
 
         /// <summary>
         ///   Costruttore della classe
         /// </summary>
-        public UpdateConfermaPartenzeExt(IUpDateRichiestaAssistenza updateRichiesta, ISetStatoOperativoMezzo setStatoOperativoMezzo, ISetStatoSquadra setStatoSquadra)
+        public UpdateConfermaPartenzeExt(IUpDateRichiestaAssistenza updateRichiesta, ISetStatoOperativoMezzo setStatoOperativoMezzo, ISetStatoSquadra setStatoSquadra, ISetUscitaMezzo setUscitaMezzo, ISetRientroMezzo setRientroMezzo)
         {
             _updateRichiesta = updateRichiesta;
             _setStatoOperativoMezzo = setStatoOperativoMezzo;
             _setStatoSquadra = setStatoSquadra;
+            _setUscitaMezzo = setUscitaMezzo;
+            _setRientroMezzo = setRientroMezzo;
         }
 
         /// <summary>
@@ -72,6 +80,57 @@ namespace SO115App.ExternalAPI.Fake.Composizione
                 {
                     _setStatoSquadra.SetStato(squadra.Codice, command.ConfermaPartenze.IdRichiesta, partenza.Mezzo.Stato, codiceSede, partenza.Mezzo.Codice);
                 }
+
+                var dataIntervento = command.Richiesta.ListaEventi.OfType<Telefonata>().FirstOrDefault(p => p.CodiceRichiesta.Equals(command.Richiesta.Codice)).Istante;
+
+                //GAC USCITA/ENTRATA
+                if (!partenza.Mezzo.Stato.Equals(Costanti.MezzoInUscita))
+                    if (partenza.Mezzo.Stato.Equals(Costanti.MezzoInSede) || partenza.Mezzo.Stato.Equals(Costanti.MezzoRientrato))
+                    {
+                        var dataRientro = command.Richiesta.ListaEventi.OfType<PartenzaRientrata>().FirstOrDefault(p => p.CodicePartenza.Equals(partenza.Codice)).Istante;
+                        _setRientroMezzo.Set(new RientroGAC()
+                        {
+                            targa = partenza.Mezzo.Codice.Split('.')[1],
+                            tipoMezzo = partenza.Mezzo.Codice.Split('.')[0],
+                            idPartenza = partenza.Codice.ToString(),
+                            numeroIntervento = command.Richiesta.CodRichiesta,
+                            dataIntervento = dataIntervento,
+                            dataRientro = dataRientro,
+                            autista = ""
+                        });
+                    }
+                    else if (partenza.Mezzo.Stato.Equals(Costanti.MezzoInViaggio))
+                    {
+                        var dataUscita = command.Richiesta.ListaEventi.OfType<ComposizionePartenze>().FirstOrDefault(p => p.Partenza.Codice.Equals(partenza.Codice)).Istante;
+                        _setUscitaMezzo.Set(new UscitaGAC()
+                        {
+                            targa = partenza.Mezzo.Codice.Split('.')[1],
+                            tipoMezzo = partenza.Mezzo.Codice.Split('.')[0],
+                            idPartenza = partenza.Codice.ToString(),
+                            numeroIntervento = command.Richiesta.CodRichiesta,
+                            dataIntervento = dataIntervento,
+                            dataUscita = dataUscita,
+                            autista = "",
+                            tipoUscita = new TipoUscita()
+                            {
+                                codice = "",
+                                descrizione = "Servizio"
+                            },
+                            comune = new ComuneGAC()
+                            {
+                                codice = "",
+                                descrizione = command.Richiesta.Localita.Citta,
+                            },
+                            provincia = new Models.Classi.Gac.ProvinciaGAC()
+                            {
+                                codice = "",
+                                descrizione = command.Richiesta.Localita.Provincia
+                            },
+                            localita = command.Richiesta.Localita.Citta,
+                            latitudine = command.Richiesta.Localita.Coordinate.Latitudine.ToString(),
+                            longitudine = command.Richiesta.Localita.Coordinate.Longitudine.ToString(),
+                        });
+                    }
             }
 
             conferma.CodiceSede = command.ConfermaPartenze.CodiceSede;

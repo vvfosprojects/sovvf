@@ -68,7 +68,7 @@ namespace SO115App.FakePersistence.InMemory
             return string.Format("{0}-{1}-{2}-{3}_{2:D5}", codiceProvincia, giorno, mese, ultimeDueCifreAnno, nuovoNumero);
         }
 
-        public string GeneraCodicePartenza()
+        public int GeneraCodicePartenza()
         {
             throw new NotImplementedException();
         }

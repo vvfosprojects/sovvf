@@ -37,8 +37,8 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Gac
                         IdRichiesta = idRichiesta,
                         TipoUscita = new TipoUscita
                         {
-                            Codice = codTipologia,
-                            Descrizione = descTipologia
+                            codice = codTipologia,
+                            descrizione = descTipologia
                         }
                     }
                 }; //Il servizio GAC si aspetta un array

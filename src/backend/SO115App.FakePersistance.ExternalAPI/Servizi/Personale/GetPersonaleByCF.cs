@@ -1,9 +1,12 @@
-﻿using Microsoft.Extensions.Caching.Memory;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
-using SO115App.ExternalAPI.Fake.Classi.PersonaleUtentiComuni;
-using SO115App.ExternalAPI.Fake.Classi.Utility;
+using SO115App.ExternalAPI.Fake.HttpManager;
+using SO115App.Models.Classi.ServiziEsterni.UtenteComune;
+using SO115App.Models.Classi.ServiziEsterni.Utility;
 using SO115App.Models.Classi.Utenti.Autenticazione;
+using SO115App.Models.Servizi.Infrastruttura.GestioneLog;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Personale;
 using System;
 using System.Collections.Generic;
@@ -17,16 +20,10 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
     ///   classe che estende l'interfaccia e recupera la persona fisica partendo dal codice fiscale
     ///   su Utenti Comuni
     /// </summary>
-    public class GetPersonaleByCF : IGetPersonaleByCF
+    public class GetPersonaleByCF : BaseService, IGetPersonaleByCF
     {
-        private readonly IConfiguration _configuration;
-        private readonly IMemoryCache _memoryCache;
-
-        public GetPersonaleByCF(IConfiguration configuration, IMemoryCache memoryCache)
-        {
-            _configuration = configuration;
-            _memoryCache = memoryCache;
-        }
+        public GetPersonaleByCF(HttpClient client, IConfiguration configuration, IMemoryCache memoryCache, IWriteLog writeLog, IHttpContextAccessor httpContext)
+            : base(client, configuration, memoryCache, writeLog, httpContext) { }
 
         public async Task<PersonaleVVF> Get(string codiceFiscale, string codSede = null)
         {
@@ -57,36 +54,22 @@ namespace SO115App.ExternalAPI.Fake.Servizi.Personale
         {
             var listaPersonale = new List<PersonaleVVF>();
 
-            Parallel.ForEach(codSede, codice =>
-            {
-                if (!_memoryCache.TryGetValue($"Personale_{codice.Split('.')[0]}", out listaPersonale))
+            //try
+            //{
+                Parallel.ForEach(codSede, sede =>
                 {
-                    try
-                    {
-                        using var client = new HttpClient();
-                        client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("test");
-                        var sede = string.Concat(codSede.Select(c => c.Split(".")[0]));
+                    var httpManager = new HttpRequestManager<List<PersonaleVVF>>(_client, _memoryCache, _writeLog, _httpContext);
+                    httpManager.Configure("Personale_" + sede);
 
-                        var response = client.GetAsync($"{_configuration.GetSection("UrlExternalApi").GetSection("PersonaleApiUtenteComuni").Value}?codiciSede={sede}").Result;
-                        response.EnsureSuccessStatusCode();
-
-                        if (response == null)
-                            throw new HttpRequestException();
-
-                        using HttpContent content = response.Content;
-                        string data = content.ReadAsStringAsync().Result;
-                        var personaleUC = JsonConvert.DeserializeObject<List<PersonaleUC>>(data);
-                        listaPersonale = MapPersonaleVVFsuPersonaleUC.Map(personaleUC);
-                    }
-                    catch (Exception e)
-                    {
-                        throw new Exception("Elenco del personale non disponibile");
-                    }
-
-                    var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromHours(8));
-                    _memoryCache.Set($"Personale_{codice.Split('.')[0]}", listaPersonale, cacheEntryOptions);
-                }
-            });
+                    var url = new Uri($"{_configuration.GetSection("UrlExternalApi").GetSection("PersonaleApiUtenteComuni").Value}?codiciSede={sede}");
+                    lock (listaPersonale)
+                        listaPersonale.AddRange(httpManager.GetAsync(url).Result);
+                });
+            //}
+            //catch (Exception e)
+            //{
+            //    throw new Exception("Elenco del personale non disponibile");
+            //}
 
             return listaPersonale;
         }

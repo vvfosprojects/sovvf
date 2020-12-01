@@ -14,6 +14,7 @@ using SO115App.Models.Servizi.Infrastruttura.GeoFleet;
 using SO115App.API.Models.Classi.Geo;
 using SO115App.Models.Classi.ServiziEsterni;
 using System;
+using SO115App.Models.Classi.ServiziEsterni.Gac;
 
 namespace SO115App.ExternalAPI.Fake.GestioneMezzi
 {

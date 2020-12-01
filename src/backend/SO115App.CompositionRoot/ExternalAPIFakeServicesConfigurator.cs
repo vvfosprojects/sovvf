@@ -17,8 +17,10 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // </copyright>
 //-----------------------------------------------------------------------
+using ExternalAPI.Fake.Servizi.Personale;
 using Microsoft.Extensions.Caching.Memory;
 using SimpleInjector;
+using SO115App.ExternalAPI.Fake.HttpManager;
 using SO115App.ExternalAPI.Fake.Nue;
 using SO115App.ExternalAPI.Fake.Personale;
 using SO115App.ExternalAPI.Fake.Servizi.DistaccamentoUtentiComuni;
@@ -26,8 +28,10 @@ using SO115App.ExternalAPI.Fake.Servizi.Gac;
 using SO115App.ExternalAPI.Fake.Servizi.GeoFleet;
 using SO115App.ExternalAPI.Fake.Servizi.Identity;
 using SO115App.ExternalAPI.Fake.Servizi.Nue;
+using SO115App.ExternalAPI.Fake.Servizi.Personale;
 using SO115App.ExternalAPI.Fake.Territorio;
 using SO115App.ExternalAPI.Fake.Uos;
+using SO115App.Models.Servizi.Infrastruttura.Composizione;
 using SO115App.Models.Servizi.Infrastruttura.GeoFleet;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.IdentityManagement;
@@ -49,6 +53,8 @@ namespace SO115App.CompositionRoot
                     ExpirationScanFrequency = TimeSpan.FromHours(2)
                 }
                 ), Lifestyle.Singleton);
+
+            container.Register<IHttpRequestManager<object>, HttpRequestManager<object>>();
 
             #region NUE
 
@@ -80,9 +86,9 @@ namespace SO115App.CompositionRoot
             container.Register<IGetSquadreBySede, GetSquadreBySede>();
             container.Register<IGetPersonaFisica, GetPersonaFisica>();
             container.Register<IGetSquadreNelTurno, GetSquadreNelTurno>();
-            container.Register<IGetPersonaleVVF, ExternalAPI.Fake.Servizi.Personale.GetPersonaleVVF>();
-            container.Register<IGetPersonaleByCF, ExternalAPI.Fake.Servizi.Personale.GetPersonaleByCF>();
-            container.Register<IGetPersonaleByCodSede, ExternalAPI.Fake.ImportOracle.GestioniUtenti.GetPersonaleByCodSede>();
+            container.Register<IGetPersonaleVVF, GetPersonaleVVF>();
+            container.Register<IGetPersonaleByCF, GetPersonaleByCF>();
+            container.Register<IGetPersonaleByCodSede, GetPersonaleByCodSede>();
 
             #endregion Personale
 
@@ -97,14 +103,17 @@ namespace SO115App.CompositionRoot
 
             #region Gac
 
+
+            container.Register<ISetRientroMezzo, SetRientroMezzo>();
+            container.Register<ISetUscitaMezzo, SetUscitaMezzo>();
             container.Register<IGetMezziByICCID, GetMezziByICCID>();
             container.Register<IGetMezziByCodiceMezzo, SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper.GetMezziByCodiceMezzo>();
             container.Register<IGetMezziBySelettiva, GetMezziBySelettiva>();
             container.Register<IGetMezziFuoriServizio, GetMezziFuoriServizio>();
             container.Register<ISetMovimentazione, SetMovimentazione>();
             container.Register<
-                SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi.IGetListaMezzi,
-                ExternalAPI.Fake.GestioneMezzi.GetListaMezziExt>();
+                SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.Mezzi.IGetMezziInServizio,
+                GetMezziInServizio>();
 
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.Composizione.IUpdateConfermaPartenze,
@@ -169,10 +178,10 @@ namespace SO115App.CompositionRoot
             container.Register<
                 SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Mezzi.IGetMezzoById,
                 SO115App.ExternalAPI.Fake.ImportOracle.MezziMapper.GetMezzoById>();
-            container.Register<IGetMezziUtilizzabili, SO115App.ExternalAPI.Fake.GestioneMezzi.GetMezziUtilizzabili>();
+            container.Register<IGetMezziUtilizzabili, GetMezziUtilizzabili>();
 
             container.Register<
-                SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac.IGetMezziUtilizzabiliByAreaMappa,
+                IGetMezziUtilizzabiliByAreaMappa,
                 ExternalAPI.Fake.GestioneMezzi.GetMezziUtilizzabiliByAreaMappa>();
 
             #endregion Mezzi

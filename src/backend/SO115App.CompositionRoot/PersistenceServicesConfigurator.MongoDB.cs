@@ -194,6 +194,10 @@ namespace SO115App.CompositionRoot
                 SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GenerazioneCodiciRichiesta.IGeneraCodiceRichiesta,
                 SO115App.Persistence.MongoDB.GestioneInterventi.GeneraCodiceRichiesta>();
 
+            container.Register<
+                SO115App.Models.Servizi.Infrastruttura.GestioneLog.IWriteLog,
+                SO115App.Persistence.MongoDB.GestioneLog.WriteLog>();
+
             #endregion Utility
 
             #region Rubrica
@@ -218,7 +222,6 @@ namespace SO115App.CompositionRoot
                 SO115App.Models.Servizi.Infrastruttura.GestioneRubrica.Enti.IDeleteEnte,
                 SO115App.Persistence.MongoDB.GestioneRubrica.Enti.DeleteEnte>();
 
-
             #endregion Rubrica
 
             #region TrasferimentoChiamata
@@ -239,7 +242,7 @@ namespace SO115App.CompositionRoot
                 Models.Servizi.Infrastruttura.GestioneTrasferimentiChiamate.CodiciChiamate.IGetCodiciChiamate,
                 Persistence.MongoDB.GestioneTrasferimentiChiamate.CodiciChiamate.GetCodiciChiamate>();
 
-            #endregion
+            #endregion TrasferimentoChiamata
         }
     }
 }

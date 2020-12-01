@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using SO115App.ExternalAPI.Fake.Classi;
 using SO115App.ExternalAPI.Fake.Classi.Gac;
+using SO115App.Models.Classi.ServiziEsterni.Gac;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Gac;
 using System;
 using System.Collections.Generic;

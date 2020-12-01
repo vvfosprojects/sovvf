@@ -31,7 +31,7 @@ using System.IO;
 
 namespace SO115App.FakePersistenceJSon.GestioneMezzi
 {
-    public class GetListaMezzi : IGetListaMezzi
+    public class GetListaMezzi : IGetMezziInServizio
     {
         private readonly IGetInfoRichiesta _getInfoRichiesta;
 

@@ -40,7 +40,8 @@ namespace SO115App.API.Models.Classi.Soccorso.Eventi.Partenze
             RichiestaAssistenza richiesta,
             string codiceMezzo,
             DateTime istante,
-            string codiceFonte) : base(richiesta, codiceMezzo, istante, codiceFonte, "RevocaPartenza")
+            string codiceFonte,
+            int codicePartenza) : base(richiesta, codiceMezzo, istante, codiceFonte, "RevocaPartenza", codicePartenza)
         {
         }
 
