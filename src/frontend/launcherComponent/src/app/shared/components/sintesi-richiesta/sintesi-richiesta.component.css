@@ -81,3 +81,19 @@
 .m-h-100 {
     max-height: 100px;
 }
+
+.double-monitor .font-double-monitor {
+    font-size: 130% !important;
+}
+
+.wrapper-grid {
+  display: grid;
+  grid-template-columns: repeat(1, 2fr);
+  gap: 5px;
+}
+
+.col-1-d-monitor {
+  flex: 0 0 16.666667%;
+  max-width: 16.666667%;
+  align-self: center;
+}

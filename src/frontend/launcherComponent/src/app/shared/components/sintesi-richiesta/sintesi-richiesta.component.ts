@@ -29,6 +29,8 @@ import { ConfirmSostituzioni, SetListaPartenzeSostituzioneFineTurno } from '../.
 import { StatoMezzo } from '../../enum/stato-mezzo.enum';
 import {ViewportState} from '../../store/states/viewport/viewport.state';
 import {Observable, Subscription} from 'rxjs';
+import {ViewComponentStateModel} from '../../interface/view.interface';
+import {ViewComponentState} from '../../../features/home/store/states/view/view.state';
 
 @Component({
     selector: 'app-sintesi-richiesta',
@@ -77,6 +79,8 @@ export class SintesiRichiestaComponent implements OnChanges {
 
     @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
     doubleMonitor: boolean;
+    @Select(ViewComponentState.mapsIsActive) mapsIsActive$: Observable<boolean>;
+    mapsIsActive: boolean;
 
     methods = new HelperSintesiRichiesta();
     isSingleClick = true;
