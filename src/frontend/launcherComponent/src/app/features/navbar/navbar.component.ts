@@ -19,7 +19,7 @@ import { Navigate, RouterState } from '@ngxs/router-plugin';
 import { Logout } from '../auth/store/auth.actions';
 import { ViewComponentState } from '../home/store/states/view/view.state';
 import { PermissionFeatures } from '../../shared/enum/permission-features.enum';
-import { ToggleMezziInServizio } from '../home/store/actions/view/view.actions';
+import { ToggleMezziInServizio, ToggleSchedeContatto } from '../home/store/actions/view/view.actions';
 import { ViewInterfaceButton } from '../../shared/interface/view.interface';
 
 @Component({
@@ -32,8 +32,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
     @Input() user: Utente;
     @Input() ruoliUtenteLoggato: Ruolo[];
 
-    @Input() mezziInServizioActive: boolean;
-    @Input() schedeContattoActive: boolean;
     @Input() disabledMezziInServizio: boolean;
     @Input() colorButtonView: ViewInterfaceButton;
 
@@ -53,9 +51,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
     @Select(RouterState.url) url$: Observable<string>;
     url: string;
 
+    @Select(ViewComponentState.richiesteStatus) richiesteStatus$: Observable<boolean>;
     @Select(ViewComponentState.chiamataStatus) chiamataStatus$: Observable<boolean>;
+    @Select(ViewComponentState.composizioneStatus) composizioneStatus$: Observable<boolean>;
+    @Select(ViewComponentState.mezziInServizioStatus) mezziInServizioStatus$: Observable<boolean>;
     @Select(ViewComponentState.schedeContattoStatus) schedeContattoStatus$: Observable<boolean>;
-    schedeContattoStatus: boolean;
 
     clock$: Observable<Date>;
     time: Date;
@@ -89,19 +89,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
         this.store.dispatch(new ClearDataNavbar());
     }
 
-    getSchedeContattoStatus(): void {
-        this.clock$ = this.clock.getClock();
-        this.subscription.add(
-            this.schedeContattoStatus$.subscribe((value: boolean) => {
-                this.schedeContattoStatus = value;
-            })
-        );
-    }
-
-    setTime(): void {
-        this.time = new Date();
-    }
-
     getClock(): void {
         this.clock$ = this.clock.getClock();
         this.subscription.add(
@@ -110,6 +97,10 @@ export class NavbarComponent implements OnInit, OnDestroy {
                 this.checkTurno();
             })
         );
+    }
+
+    setTime(): void {
+        this.time = new Date();
     }
 
     getTurnoCalendario(): void {
@@ -197,24 +188,30 @@ export class NavbarComponent implements OnInit, OnDestroy {
         this.store.dispatch(new SetNotificheLette());
     }
 
-    onMezziInSerivizo(): void {
-        this.store.dispatch([
-            new Navigate([RoutesPath.Home]),
-            new ToggleMezziInServizio()
-        ]);
+    onChiamateInterventi(): void {
+        const mezziInServizioStatus = this.store.selectSnapshot(ViewComponentState.mezziInServizioStatus);
+        const schedeContattoStatus = this.store.selectSnapshot(ViewComponentState.schedeContattoStatus);
+        if (mezziInServizioStatus) {
+            this.toggleMezziInSerivizo();
+        } else if (schedeContattoStatus) {
+            this.toggleSchedeContatto();
+        }
     }
 
-    getMezziInServizioBtnClasses(): string {
-        let returnClasses = '';
-        if (this.mezziInServizioActive) {
-            returnClasses = 'btn-secondary';
-        } else if (!this.mezziInServizioActive) {
-            returnClasses = 'btn-outline-secondary';
-        }
-        if (this.disabledMezziInServizio) {
-            returnClasses += ' cursor-not-allowed';
-        }
-        return returnClasses;
+    toggleMezziInSerivizo(): void {
+        this.returnToHome();
+        this.store.dispatch(new ToggleMezziInServizio());
+    }
+
+    toggleSchedeContatto(): void {
+        this.returnToHome();
+        this.store.dispatch(new ToggleSchedeContatto());
+    }
+
+    returnToHome(): void {
+        this.store.dispatch([
+            new Navigate([RoutesPath.Home])
+        ]);
     }
 
     logout(): void {

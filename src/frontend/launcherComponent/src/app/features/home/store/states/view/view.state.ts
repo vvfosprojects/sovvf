@@ -135,7 +135,7 @@ export class ViewComponentState {
     }
 
     @Selector()
-    static mezziInServizio(state: ViewComponentStateModel): boolean {
+    static mezziInServizioStatus(state: ViewComponentStateModel): boolean {
         return state.view.mezziInServizio.active;
     }
 
@@ -155,7 +155,7 @@ export class ViewComponentState {
     }
 
     @Selector()
-    static richiesteIsActive(state: ViewComponentStateModel): boolean {
+    static richiesteStatus(state: ViewComponentStateModel): boolean {
         return state.view.richieste.active;
     }
 

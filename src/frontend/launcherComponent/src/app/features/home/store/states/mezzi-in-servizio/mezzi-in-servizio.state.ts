@@ -120,7 +120,7 @@ export class MezziInServizioState {
         const ricerca = this.store.selectSnapshot(RicercaFilterbarState.ricerca);
         const statiMezzo = state.filtriMezziInServizio.filter((f: VoceFiltro) => f.selezionato === true).map((f: VoceFiltro) => f.descrizione);
         const boxesVisibili = this.store.selectSnapshot(ImpostazioniState.boxAttivi);
-        const mezziInServizioActive = this.store.selectSnapshot(ViewComponentState.mezziInServizio);
+        const mezziInServizioActive = this.store.selectSnapshot(ViewComponentState.mezziInServizioStatus);
         const filters = {
             search: ricerca,
             statiMezzo: statiMezzo && statiMezzo.length > 0 ? statiMezzo : null

@@ -73,7 +73,7 @@ export class FilterbarComponent {
     @Select(ViewComponentState.schedeContattoStatus) schedeContattoStatus$: Observable<boolean>;
     @Select(ViewComponentState.chiamataStatus) chiamataStatus$: Observable<boolean>;
     @Select(ViewComponentState.modificaRichiestaStatus) modificaRichiestaStatus$: Observable<boolean>;
-    @Select(ViewComponentState.mezziInServizio) mezziInServizioStatus$: Observable<boolean>;
+    @Select(ViewComponentState.mezziInServizioStatus) mezziInServizioStatus$: Observable<boolean>;
     @Select(ViewComponentState.filterBarCol) filterBarCol$: Observable<Grid>;
 
     @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
@@ -83,7 +83,7 @@ export class FilterbarComponent {
      * @param:: store
      */
     @Select(ViewComponentState.mapsIsActive) mapsStatus$: Observable<boolean>;
-    @Select(ViewComponentState.richiesteIsActive) richiesteStatus$: Observable<boolean>;
+    @Select(ViewComponentState.richiesteStatus) richiesteStatus$: Observable<boolean>;
 
     constructor(private store: Store) {
     }
@@ -112,7 +112,7 @@ export class FilterbarComponent {
 
     getRicercaPlaceholder(): string {
         let placeholder = 'Cosa vuoi cercare?';
-        const mezziInServizioActive = this.store.selectSnapshot(ViewComponentState.mezziInServizio);
+        const mezziInServizioActive = this.store.selectSnapshot(ViewComponentState.mezziInServizioStatus);
         if (mezziInServizioActive) {
             placeholder = 'Che targa vuoi cercare?';
         }

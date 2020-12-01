@@ -1,5 +1,9 @@
-<button type="button" class="btn font-weight-bolder mr-2" (click)="toggleSchedeContatto()" [ngClass]="coloreTasto()" [disabled]="disabled"
-        [ngbTooltip]="tipToggleSchedeContatto" placement="bottom-right">
+<button type="button" class="btn font-weight-bolder mr-2"
+        [ngClass]="coloreTasto()"
+        [ngbTooltip]="tipToggleSchedeContatto"
+        placement="bottom-right"
+        [disabled]="disabled"
+        (click)="toggleSchedeContatto()">
     <span class="d-inline-block mr-2">SCHEDE NUE</span>
     <span class="badge" [ngClass]="coloreBadgeContatore()">{{contatoreSchedeContattoTotale?.contatoreDaGestire}}</span>
 </button>

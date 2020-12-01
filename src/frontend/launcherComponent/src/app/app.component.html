@@ -3,7 +3,6 @@
     <div #contentElement>
         <app-navbar [user]="user"
                     [ruoliUtenteLoggato]="ruoliUtenteLoggato$ | async"
-                    [mezziInServizioActive]="viewState?.mezziInServizio.active"
                     [colorButtonView]="colorButton$ | async"
                     [disabledMezziInServizio]="permissionFeatures.MezziInServizio | checkPermission"></app-navbar>
         <router-outlet></router-outlet>

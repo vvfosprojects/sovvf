@@ -1,11 +1,8 @@
-import { Component, HostBinding, Input } from '@angular/core';
-import { ToggleMezziInServizio, ToggleSchedeContatto } from '../../../store/actions/view/view.actions';
+import { Component, EventEmitter, HostBinding, Input, Output } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import { SchedeContattoState } from '../../../store/states/schede-contatto/schede-contatto.state';
 import { Observable, Subscription } from 'rxjs';
 import { ContatoreSchedeContatto } from '../../../../../shared/interface/contatori-schede-contatto.interface';
-import { Navigate } from '@ngxs/router-plugin';
-import { RoutesPath } from '../../../../../shared/enum/routes-path.enum';
 
 @Component({
     selector: 'app-tasto-schede-contatto',
@@ -16,6 +13,8 @@ export class TastoSchedeContattoComponent {
 
     @Input() active: boolean;
     @Input() disabled: boolean;
+
+    @Output() toggle: EventEmitter<any> = new EventEmitter<any>();
 
     @HostBinding('class') classes = 'btn-group';
 
@@ -33,16 +32,13 @@ export class TastoSchedeContattoComponent {
     }
 
     toggleSchedeContatto(): void {
-        this.store.dispatch([
-            new Navigate([RoutesPath.Home]),
-            new ToggleSchedeContatto()
-        ]);
+        this.toggle.emit();
     }
 
     coloreTasto(): string {
         let returnClass = 'btn-outline-light';
         if (this.active) {
-            returnClass = 'btn-light';
+            returnClass = 'btn-light text-danger';
         }
         if (this.disabled) {
             returnClass = 'btn-outline-secondary cursor-not-allowed';
@@ -53,7 +49,7 @@ export class TastoSchedeContattoComponent {
     coloreBadgeContatore(): string {
         let returnClass = 'badge-danger';
         if (this.active) {
-            returnClass = 'badge-light';
+            returnClass = 'badge-dark';
         }
         return returnClass;
     }

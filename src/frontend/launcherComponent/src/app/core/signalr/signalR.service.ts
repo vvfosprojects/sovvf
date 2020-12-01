@@ -152,7 +152,7 @@ export class SignalRService {
         });
         this.hubNotification.on('NotifyUpdateMezzoInServizio', (data: MezzoInServizio) => {
             console.log('NotifyUpdateMezzoInServizio', data);
-            const mezziInServizioActive = this.store.selectSnapshot(ViewComponentState.mezziInServizio);
+            const mezziInServizioActive = this.store.selectSnapshot(ViewComponentState.mezziInServizioStatus);
             const composizionePartenzaActive = this.store.selectSnapshot(ViewComponentState.composizioneStatus);
             if (mezziInServizioActive) {
                 this.store.dispatch(new UpdateMezzoInServizio(data));
