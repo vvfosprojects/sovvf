@@ -5,10 +5,28 @@
         [disabled]="disabled"
         (click)="toggleSchedeContatto()">
     <span class="d-inline-block mr-2">SCHEDE NUE</span>
-    <span class="badge" [ngClass]="coloreBadgeContatore()">{{contatoreSchedeContattoTotale?.contatoreDaGestire}}</span>
+    <span class="badge"
+          [ngClass]="coloreBadgeContatore()">
+        {{ contatoreSchedeContatto?.totaleSchede.contatoreDaGestire }}
+    </span>
 </button>
 <ng-template #tipToggleSchedeContatto>
     <div><b>Schede NUE</b></div>
-    <div>Tutte: {{contatoreSchedeContattoTotale?.contatoreTutte}}</div>
-    <div>Da gestire: {{contatoreSchedeContattoTotale?.contatoreDaGestire}}</div>
+    <div>
+        Differibili: {{ contatoreSchedeContatto?.differibileSchede.contatoreDaGestire ? contatoreSchedeContatto?.differibileSchede.contatoreDaGestire : 0 }}
+    </div>
+    <div>
+        Competenza: {{ contatoreSchedeContatto?.competenzaSchede.contatoreDaGestire ? contatoreSchedeContatto?.competenzaSchede.contatoreDaGestire : 0 }}
+    </div>
+    <div>
+        Conoscenza: {{ contatoreSchedeContatto?.conoscenzaSchede.contatoreDaGestire ? contatoreSchedeContatto?.conoscenzaSchede.contatoreDaGestire : 0 }}
+    </div>
+    <div>
+        Da
+        gestire: {{ contatoreSchedeContatto?.totaleSchede.contatoreDaGestire ? contatoreSchedeContatto?.totaleSchede.contatoreDaGestire : 0 }}
+    </div>
+    <div>
+        Totale da gestire:
+        {{ contatoreSchedeContatto?.totaleSchede.contatoreTutte ? contatoreSchedeContatto?.totaleSchede.contatoreTutte : 0 }}
+    </div>
 </ng-template>

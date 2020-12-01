@@ -2,7 +2,7 @@ import { Component, EventEmitter, HostBinding, Input, Output } from '@angular/co
 import { Select, Store } from '@ngxs/store';
 import { SchedeContattoState } from '../../../store/states/schede-contatto/schede-contatto.state';
 import { Observable, Subscription } from 'rxjs';
-import { ContatoreSchedeContatto } from '../../../../../shared/interface/contatori-schede-contatto.interface';
+import { ContatoreSchedeContatto, ContatoriSchedeContatto } from '../../../../../shared/interface/contatori-schede-contatto.interface';
 
 @Component({
     selector: 'app-tasto-schede-contatto',
@@ -18,21 +18,21 @@ export class TastoSchedeContattoComponent {
 
     @HostBinding('class') classes = 'btn-group';
 
-    @Select(SchedeContattoState.contatoreSchedeContattoTotale) contatoreSchedeContattoTotale$: Observable<ContatoreSchedeContatto>;
-    contatoreSchedeContattoTotale: ContatoreSchedeContatto;
+    @Select(SchedeContattoState.contatoriSchedeContatto) contatoriSchedeContatto$: Observable<ContatoriSchedeContatto>;
+    contatoreSchedeContatto: ContatoriSchedeContatto;
 
     subscription: Subscription = new Subscription();
 
-    constructor(private store: Store) {
-        this.subscription.add(
-            this.contatoreSchedeContattoTotale$.subscribe((contatoreTotale: ContatoreSchedeContatto) => {
-                this.contatoreSchedeContattoTotale = contatoreTotale;
-            })
-        );
+    constructor() {
+        this.getContatoriSchedeContatto();
     }
 
-    toggleSchedeContatto(): void {
-        this.toggle.emit();
+    getContatoriSchedeContatto(): void {
+        this.subscription.add(
+            this.contatoriSchedeContatto$.subscribe((contatori: ContatoriSchedeContatto) => {
+                this.contatoreSchedeContatto = contatori;
+            })
+        );
     }
 
     coloreTasto(): string {
@@ -52,5 +52,9 @@ export class TastoSchedeContattoComponent {
             returnClass = 'badge-dark';
         }
         return returnClass;
+    }
+
+    toggleSchedeContatto(): void {
+        this.toggle.emit();
     }
 }
