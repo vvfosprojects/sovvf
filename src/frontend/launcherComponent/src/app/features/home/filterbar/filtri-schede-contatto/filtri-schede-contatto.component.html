@@ -1,8 +1,11 @@
 <div class="btn-group w-100">
-    <div ngbDropdown autoClose="outside" class="btn-group w-100">
+    <div ngbDropdown autoClose="outside" class="btn-group w-100" placement="bottom">
         <button ngbDropdownToggle class="btn btn-block app-shadow"
-                [ngClass]="{'btn-outline-secondary': filtriSelezionati.length <= 0, 'btn-secondary': filtriSelezionati.length > 0}"
-                type="button" id="dropdownMenuButton" data-toggle="dropdown">
+                [ngClass]="{'btn-outline-secondary': filtriSelezionati?.length <= 0, 'btn-secondary': filtriSelezionati?.length > 0}"
+                type="button"
+                id="dropdownMenuButton"
+                data-toggle="dropdown"
+                [disabled]="disableFilters">
             <i class="fa fa-filter"></i>
             {{ 'Filtri' | uppercase }}
             <span class="badge text-light"

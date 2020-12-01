@@ -31,7 +31,7 @@
         </div>
         <div class="mt-2"
              [ngClass]="columnState.destra || {'d-none' : !viewState.mappa.active}"
-             [class.mapFull]="doubleMonitor$ | async"
+             [class.map-translate]="doubleMonitor$ | async"
              [class.d-none]="((chiamataConMappa$ | async) === false) && viewState.chiamata.active">
             <app-maps [viewStateMappa]="(viewStateMappa$ | async)"
                       [boxAttivi]="boxAttivi"

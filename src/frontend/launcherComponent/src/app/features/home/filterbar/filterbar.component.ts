@@ -57,6 +57,9 @@ export class FilterbarComponent {
     // Loading Schede Contatto
     @Select(SchedeContattoState.loadingSchedeContatto) loadingSchedeContatto$: Observable<boolean>;
 
+    // Loading Mezzi in Servizio
+    @Select(MezziInServizioState.loadingMezziInServizio) loadingMezziInServizio$: Observable<boolean>;
+
     // Filtri Mezzi in Servizio
     @Select(MezziInServizioState.filtriMezziInServizio) filtriMezziInServizio$: Observable<VoceFiltro[]>;
     @Select(MezziInServizioState.filtriSelezionati) filtriSelezionatiMezziInServizio$: Observable<VoceFiltro[]>;

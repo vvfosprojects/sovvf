@@ -37,7 +37,7 @@ import { ClearRicercaFilterbar } from '../store/actions/filterbar/ricerca-richie
 import { RicercaFilterbarState } from '../store/states/filterbar/ricerca-filterbar.state';
 import { PaginationState } from '../../../shared/store/states/pagination/pagination.state';
 import { LoadingState } from '../../../shared/store/states/loading/loading.state';
-import {ViewportState} from '../../../shared/store/states/viewport/viewport.state';
+import { ViewportState } from '../../../shared/store/states/viewport/viewport.state';
 
 @Component({
     selector: 'app-schede-contatto',
@@ -108,7 +108,7 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-            console.log('Componente Schede Contatto creato');
+        console.log('Componente Schede Contatto creato');
     }
 
     ngOnDestroy(): void {
@@ -117,7 +117,7 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
             new ClearMergeSchedeContatto(),
             new ClearRicercaFilterbar()
         ]);
-            console.log('Componente Schede Contatto distrutto');
+        console.log('Componente Schede Contatto distrutto');
     }
 
     getRicerca(): void {
@@ -233,17 +233,17 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
     onUndoMergeSchedaContatto($event: string): void {
         let modalConfermaAnnulla;
         if (this.doubleMonitor) {
-          modalConfermaAnnulla = this.modal.open(ConfirmModalComponent, {
-            windowClass: 'modal-holder modal-left',
-            backdropClass: 'light-blue-backdrop',
-            centered: true
-          });
+            modalConfermaAnnulla = this.modal.open(ConfirmModalComponent, {
+                windowClass: 'modal-holder modal-left',
+                backdropClass: 'light-blue-backdrop',
+                centered: true
+            });
         } else {
-          modalConfermaAnnulla = this.modal.open(ConfirmModalComponent, {
-            windowClass: 'modal-holder',
-            backdropClass: 'light-blue-backdrop',
-            centered: true
-          });
+            modalConfermaAnnulla = this.modal.open(ConfirmModalComponent, {
+                windowClass: 'modal-holder',
+                backdropClass: 'light-blue-backdrop',
+                centered: true
+            });
         }
         modalConfermaAnnulla.componentInstance.icona = { descrizione: 'trash', colore: 'danger' };
         modalConfermaAnnulla.componentInstance.titolo = 'Annulla Raggruppamento';

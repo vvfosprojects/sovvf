@@ -99,7 +99,7 @@ export class RichiesteComponent implements OnInit, OnDestroy {
     doubleMonitor: boolean;
 
     loaderRichieste = true;
-    listHeightClass = 'm-h-695';
+    listHeightClass = 'm-h-690';
     permessiFeature = PermissionFeatures;
     statoRichiesta = StatoRichiesta;
 
@@ -157,17 +157,17 @@ export class RichiesteComponent implements OnInit, OnDestroy {
                 if (richiestaFissata) {
                     this.richiestaFissata = richiestaFissata;
                     if (this.boxAttivi) {
-                        this.listHeightClass = 'm-h-590';
+                        this.listHeightClass = 'm-h-572';
                     } else {
-                        this.listHeightClass = 'm-h-695';
+                        this.listHeightClass = 'm-h-677';
                     }
                 } else {
                     setTimeout(() => {
                         this.richiestaFissata = null;
                         if (this.boxAttivi) {
-                            this.listHeightClass = 'm-h-695';
+                            this.listHeightClass = 'm-h-690';
                         } else {
-                            this.listHeightClass = 'm-h-800';
+                            this.listHeightClass = 'm-h-795';
                         }
                     }, 300);
                 }

@@ -26,6 +26,7 @@
                 <app-filtri-mezzi-servizio *ngIf="mezziInServizioStatus$ | async"
                                            [filtri]="filtriMezziInServizio$ | async"
                                            [filtriSelezionati]="filtriSelezionatiMezziInServizio$ | async"
+                                           [disableFilters]="loadingMezziInServizio$ | async"
                                            (filtroSelezionato)="onSelezioneFiltroMezziInServizio($event)"
                                            (filtriReset)="eliminaFiltriAttiviMezziInServizio()">
                 </app-filtri-mezzi-servizio>
