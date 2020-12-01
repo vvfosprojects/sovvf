@@ -1,9 +1,11 @@
 import { Component, HostBinding, Input } from '@angular/core';
-import { ToggleSchedeContatto } from '../../../store/actions/view/view.actions';
+import { ToggleMezziInServizio, ToggleSchedeContatto } from '../../../store/actions/view/view.actions';
 import { Select, Store } from '@ngxs/store';
 import { SchedeContattoState } from '../../../store/states/schede-contatto/schede-contatto.state';
 import { Observable, Subscription } from 'rxjs';
 import { ContatoreSchedeContatto } from '../../../../../shared/interface/contatori-schede-contatto.interface';
+import { Navigate } from '@ngxs/router-plugin';
+import { RoutesPath } from '../../../../../shared/enum/routes-path.enum';
 
 @Component({
     selector: 'app-tasto-schede-contatto',
@@ -31,7 +33,10 @@ export class TastoSchedeContattoComponent {
     }
 
     toggleSchedeContatto(): void {
-        this.store.dispatch(new ToggleSchedeContatto());
+        this.store.dispatch([
+            new Navigate([RoutesPath.Home]),
+            new ToggleSchedeContatto()
+        ]);
     }
 
     coloreTasto(): string {

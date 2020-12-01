@@ -15,7 +15,7 @@ import { NewVersionState } from '../../shared/store/states/nuova-versione/nuova-
 import { GetNewVersion, OpenModalNewFeaturesInfo, OpenModalNewVersionSoon } from '../../shared/store/actions/nuova-versione/nuova-versione.actions';
 import { SetNotificheLette } from '../../shared/store/actions/notifiche/notifiche.actions';
 import { RoutesPath } from '../../shared/enum/routes-path.enum';
-import { RouterState } from '@ngxs/router-plugin';
+import { Navigate, RouterState } from '@ngxs/router-plugin';
 import { Logout } from '../auth/store/auth.actions';
 import { ViewComponentState } from '../home/store/states/view/view.state';
 import { PermissionFeatures } from '../../shared/enum/permission-features.enum';
@@ -198,7 +198,10 @@ export class NavbarComponent implements OnInit, OnDestroy {
     }
 
     onMezziInSerivizo(): void {
-        this.store.dispatch(new ToggleMezziInServizio());
+        this.store.dispatch([
+            new Navigate([RoutesPath.Home]),
+            new ToggleMezziInServizio()
+        ]);
     }
 
     getMezziInServizioBtnClasses(): string {
