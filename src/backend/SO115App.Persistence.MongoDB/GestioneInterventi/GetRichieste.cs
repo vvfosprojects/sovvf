@@ -208,6 +208,9 @@ namespace SO115App.Persistence.MongoDB
                 result = result.FindAll(o => o.Localita.Coordinate.Latitudine.Equals(filtro.IndirizzoIntervento.Coordinate.Latitudine) && o.Localita.Coordinate.Longitudine.Equals(filtro.IndirizzoIntervento.Coordinate.Longitudine));
             }
 
+            if (filtro.StatiRichiesta != null && filtro.StatiRichiesta.Count() > 0)
+                result = result.Where(r => filtro.StatiRichiesta.Contains(r.StatoRichiesta.GetType().Name)).ToList();
+
             var listaSistesiRichieste = new List<SintesiRichiesta>();
 
             foreach (RichiestaAssistenza richiesta in result)
@@ -231,9 +234,6 @@ namespace SO115App.Persistence.MongoDB
                     listaSistesiRichieste.Add(sintesi);
                 }
             }
-
-            if (filtro.StatiRichiesta != null && filtro.StatiRichiesta.Count() > 0)
-                result = result.Where(r => filtro.StatiRichiesta.Contains(r.StatoRichiesta.GetType().Name)).ToList();
 
             //ORDINAMENTO RICHIESTE
             return listaSistesiRichieste
