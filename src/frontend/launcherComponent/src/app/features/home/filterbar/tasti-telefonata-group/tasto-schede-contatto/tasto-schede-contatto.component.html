@@ -11,22 +11,19 @@
     </span>
 </button>
 <ng-template #tipToggleSchedeContatto>
-    <div><b>Schede NUE</b></div>
     <div>
-        Differibili: {{ contatoreSchedeContatto?.differibileSchede.contatoreDaGestire ? contatoreSchedeContatto?.differibileSchede.contatoreDaGestire : 0 }}
+        Differibili: {{ contatoreSchedeContatto?.differibileSchede.contatoreTutte ? contatoreSchedeContatto?.differibileSchede.contatoreTutte : 0 }}
     </div>
     <div>
-        Competenza: {{ contatoreSchedeContatto?.competenzaSchede.contatoreDaGestire ? contatoreSchedeContatto?.competenzaSchede.contatoreDaGestire : 0 }}
+        Competenza: {{ contatoreSchedeContatto?.competenzaSchede.contatoreTutte ? contatoreSchedeContatto?.competenzaSchede.contatoreTutte : 0 }}
     </div>
     <div>
-        Conoscenza: {{ contatoreSchedeContatto?.conoscenzaSchede.contatoreDaGestire ? contatoreSchedeContatto?.conoscenzaSchede.contatoreDaGestire : 0 }}
+        Conoscenza: {{ contatoreSchedeContatto?.conoscenzaSchede.contatoreTutte ? contatoreSchedeContatto?.conoscenzaSchede.contatoreTutte : 0 }}
     </div>
     <div>
-        Da
-        gestire: {{ contatoreSchedeContatto?.totaleSchede.contatoreDaGestire ? contatoreSchedeContatto?.totaleSchede.contatoreDaGestire : 0 }}
-    </div>
-    <div>
-        Totale da gestire:
-        {{ contatoreSchedeContatto?.totaleSchede.contatoreTutte ? contatoreSchedeContatto?.totaleSchede.contatoreTutte : 0 }}
+        <b>
+            TOTALE DA GESTIRE:
+            {{ contatoreSchedeContatto?.totaleSchede.contatoreTutte ? contatoreSchedeContatto?.totaleSchede.contatoreTutte : 0 }}
+        </b>
     </div>
 </ng-template>
