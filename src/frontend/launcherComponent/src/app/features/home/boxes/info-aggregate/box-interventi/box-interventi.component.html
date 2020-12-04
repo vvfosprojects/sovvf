@@ -1,7 +1,7 @@
 <div *ngIf="interventi && turno" class="row p-2">
     <div class="col-12">
-        <div class="row">
-            <div class="col-8 pr-0">
+        <div class="row" style="font-size: larger">
+            <div class="clearfix float-left ml-4 pr-0">
                 <i class="fa fa-medkit mb-2 mr-1"></i>
                 <span class="font-weight-bold cursor-pointer" ngbTooltip="Interventi aperti"
                       (click)="clickRichieste.emit('tutti')">Richieste: {{interventi?.totale}}</span>
@@ -17,7 +17,7 @@
           </span>
                 </small>
             </div>
-            <div class="col-4 ml-auto pl-0 text-right text-secondary">
+            <div class="clearfix float-right mr-4 ml-auto pl-0 text-right text-secondary">
                 <i class="fa fa-calendar-plus-o mb-2 mr-1"></i>
                 <small>
           <span ngbTooltip="Totale interventi chiusi dell'anno corrente">
@@ -37,7 +37,6 @@
                     <div class="col pr-0 text-secondary">
                         <ul class="list-unstyled m-0">
                             <li><span class="d-inline-block h6" ngbTooltip="Chiamate in corso">Chiamate</span></li>
-                            <li><span class="d-inline-block h6" ngbTooltip="Richieste assegnate">Assegnati</span></li>
                         </ul>
                     </div>
                     <div class="col px-0 text-secondary text-center">
@@ -51,17 +50,28 @@
                                                                                  class="blink-i-aggregate fa"
                                                                                  [ngClass]="realDiff('chiamate')"></i>{{interventi.chiamate}}</span>
                             </li>
-                            <li [ngClass]="checkDiff('assegnati')"><span
-                                    class="position-relative badge badge-warning h6 w-75 cursor-pointer"
-                                    ngbTooltip="Filtro per Assegnata"
-                                    [ngClass]="{'border-click-checked': boxClick?.richieste.assegnati, 'border-info-aggregate': !boxClick?.richieste.assegnati}"
-                                    (click)="clickRichieste.emit('assegnati')"><i *ngIf="interventiDiff"
-                                                                                  class="blink-i-aggregate fa"
-                                                                                  [ngClass]="realDiff('assegnati')"></i>{{interventi.assegnati}}</span>
-                            </li>
                         </ul>
                     </div>
                 </div>
+                <div class="row">
+                <div class="col pr-0 text-secondary">
+                  <ul class="list-unstyled m-0">
+                    <li><span class="d-inline-block h6" ngbTooltip="Richieste assegnate">Assegnati</span></li>
+                  </ul>
+                </div>
+                <div class="col px-0 text-secondary text-center">
+                  <ul class="list-unstyled m-0">
+                    <li [ngClass]="checkDiff('assegnati')"><span
+                      class="position-relative badge badge-warning h6 w-75 cursor-pointer"
+                      ngbTooltip="Filtro per Assegnata"
+                      [ngClass]="{'border-click-checked': boxClick?.richieste.assegnati, 'border-info-aggregate': !boxClick?.richieste.assegnati}"
+                      (click)="clickRichieste.emit('assegnati')"><i *ngIf="interventiDiff"
+                                                                    class="blink-i-aggregate fa"
+                                                                    [ngClass]="realDiff('assegnati')"></i>{{interventi.assegnati}}</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
             </div>
         </div>
     </div>
@@ -73,7 +83,6 @@
                     <div class="col pr-0 text-secondary">
                         <ul class="list-unstyled m-0">
                             <li><span class="d-inline-block h6" ngbTooltip="Richieste presidiate">Presidiati</span></li>
-                            <li><span class="d-inline-block h6" ngbTooltip="Richieste chiuse">Chiusi</span></li>
                         </ul>
                     </div>
                     <div class="col px-0 text-secondary text-center">
@@ -86,17 +95,28 @@
                                                                                    class="blink-i-aggregate fa"
                                                                                    [ngClass]="realDiff('presidiati')"></i>{{interventi.presidiati}}</span>
                             </li>
-                            <li [ngClass]="checkDiff('chiusi')"><span
-                                    class="position-relative badge bg-secondary text-light h6 w-75 cursor-pointer"
-                                    ngbTooltip="Filtro per Chiusa"
-                                    [ngClass]="{'border-click-checked': boxClick?.richieste.chiusi, 'border-info-aggregate': !boxClick?.richieste.chiusi}"
-                                    (click)="clickRichieste.emit('chiusi')"><i *ngIf="interventiDiff"
-                                                                               class="blink-i-aggregate fa"
-                                                                               [ngClass]="realDiff('chiusi')"></i>{{interventi.chiusi}}</span>
-                            </li>
                         </ul>
                     </div>
                 </div>
+                <div class="row">
+                <div class="col pr-0 text-secondary">
+                  <ul class="list-unstyled m-0">
+                    <li><span class="d-inline-block h6" ngbTooltip="Richieste chiuse">Chiusi</span></li>
+                  </ul>
+                </div>
+                <div class="col px-0 text-secondary text-center">
+                  <ul class="list-unstyled m-0">
+                    <li [ngClass]="checkDiff('chiusi')"><span
+                      class="position-relative badge bg-secondary text-light h6 w-75 cursor-pointer"
+                      ngbTooltip="Filtro per Chiusa"
+                      [ngClass]="{'border-click-checked': boxClick?.richieste.chiusi, 'border-info-aggregate': !boxClick?.richieste.chiusi}"
+                      (click)="clickRichieste.emit('chiusi')"><i *ngIf="interventiDiff"
+                                                                 class="blink-i-aggregate fa"
+                                                                 [ngClass]="realDiff('chiusi')"></i>{{interventi.chiusi}}</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
             </div>
         </div>
     </div>

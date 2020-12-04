@@ -29,7 +29,6 @@ import { ConfirmSostituzioni, SetListaPartenzeSostituzioneFineTurno } from '../.
 import { StatoMezzo } from '../../enum/stato-mezzo.enum';
 import {ViewportState} from '../../store/states/viewport/viewport.state';
 import {Observable, Subscription} from 'rxjs';
-import {ViewComponentStateModel} from '../../interface/view.interface';
 import {ViewComponentState} from '../../../features/home/store/states/view/view.state';
 
 @Component({
@@ -160,7 +159,7 @@ export class SintesiRichiestaComponent implements OnChanges {
         this.eventiRichiesta.emit(codice);
     }
 
-    invioPartenza(richiesta: SintesiRichiesta): void { // quuiiiii
+    invioPartenza(richiesta: SintesiRichiesta): void {
         if (richiesta) {
             this.nuovaPartenza.emit(richiesta);
         }

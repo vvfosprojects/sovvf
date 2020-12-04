@@ -242,7 +242,7 @@
                         <span class="list-inline list-unstyled m-0 ml-2 font-double-monitor">
                                       <app-competenza *ngFor="let c of richiesta?.competenze; let i = index"
                                                       [competenza]="c" [i]="i"></app-competenza>
-                                </span>
+                        </span>
                       </div>
                         <div *ngIf="!(mapsIsActive$ | async) || (doubleMonitor$ | async)" class="col-2">
                           <i class="guida fa fa-bolt fa-fw mr-1 font-double-monitor" ngbTooltip="Prima assegnazione"
@@ -251,7 +251,7 @@
                                       <span *ngIf="richiesta.istantePrimaAssegnazione">
                                           {{ richiesta?.istantePrimaAssegnazione | friendlyDateTooltip }}
                                       </span>
-                                  </span>
+                          </span>
 
                           <!-- presidiato / non presidiato (1) -->
                           <span *ngIf="richiesta?.stato === StatoRichiesta.Chiamata || !richiesta?.istantePrimaAssegnazione" class="font-double-monitor">
@@ -370,7 +370,7 @@
                         <span class="list-inline list-unstyled m-0 ml-2 font-double-monitor">
                                         <app-competenza *ngFor="let c of richiesta?.competenze; let i = index"
                                                         [competenza]="c" [i]="i"></app-competenza>
-                                  </span>
+                        </span>
                       </div>
                       <div class="col-2" [ngClass]="{'mb-1': isEspanso}" style="text-align: right">
                           <span class="h6 m-0 nowrap mt-1">

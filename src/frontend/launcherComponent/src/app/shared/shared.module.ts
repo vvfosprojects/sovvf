@@ -55,6 +55,7 @@ import { TimeagoFormatter, TimeagoIntl, TimeagoModule } from 'ngx-timeago';
 import { TimeagoVVFFormatter } from './helper/timago-custom-formatter';
 import { SintesiRichiestaComponent } from './components/sintesi-richiesta/sintesi-richiesta.component';
 import { SostituzionePartenzeFineTunoModalComponent } from './modal/sostituzione-partenze-fine-turno-modal/sostituzione-partenze-fine-tuno-modal.component';
+import {InterventiProssimitaModalComponent} from './modal/interventi-prossimita-modal/interventi-prossimita-modal.component';
 
 const COMPONENTS = [
     DebounceClickDirective,
@@ -102,7 +103,8 @@ const COMPONENTS = [
     NuoveFeaturesInfoModalComponent,
     SganciamentoMezzoModalComponent,
     SintesiRichiestaComponent,
-    SostituzionePartenzeFineTunoModalComponent
+    SostituzionePartenzeFineTunoModalComponent,
+    InterventiProssimitaModalComponent,
 ];
 
 @NgModule({

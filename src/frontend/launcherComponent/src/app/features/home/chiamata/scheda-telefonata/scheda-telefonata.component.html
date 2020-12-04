@@ -45,8 +45,8 @@
             </div>
           </div>
         </div>
-        <div class="col-4 d-inline-flex">
-          <div class="form-group mb-2" style="width:38%; margin-right: 2%">
+        <div class="clearfix ml-3 d-inline-flex">
+          <div class="form-group mb-2" style="width:25%; margin-right: 2%">
             <label class="d-none" for="latitudine">Latitudine</label>
             <input id="latitudine" type="tel" placeholder="Latitudine" formControlName="latitudine"
                    (keypress)="checkInputPattern($event, 'LAT_LON')"
@@ -57,7 +57,7 @@
               <div *ngIf="f.latitudine.errors.pattern">La latitudine non è corretta</div>
             </div>
           </div>
-          <div class="form-group mb-2" style="width:38%; margin-right: 2%">
+          <div class="form-group mb-2" style="width:25%; margin-right: 2%">
             <label class="d-none" for="longitudine">Longitudine</label>
             <input id="longitudine" type="tel" placeholder="Longitudine" formControlName="longitudine"
                    (keypress)="checkInputPattern($event, 'LAT_LON')"
@@ -68,7 +68,7 @@
               <div *ngIf="f.longitudine.errors.pattern">La longitudine non è corretta</div>
             </div>
           </div>
-          <div class="mb-2" style="width:20%">
+          <div class="mb-2" style="width:12%">
             <label class="d-none">Copia</label>
             <button type="button" class="btn btn-block btn-secondary btn-no-hover font-xlarge" [ngbTooltip]="coordsTooltip"
                     placement="bottom"
@@ -81,8 +81,36 @@
               - {{coordinate.longitudine}}
             </ng-template>
           </div>
+          <!-- COMPETENZE -->
+          <div class="list-inline list-unstyled ml-3" style="font-size: xx-large">
+                                        <app-competenza *ngFor="let c of richiestaFake?.competenze; let i = index"
+                                                        [competenza]="c" [i]="i"></app-competenza>
+          </div>
         </div>
       </div>
+      <div class="row">
+        <div class="col-6">
+          <label class="d-none" for="noteIndirizzo">Note Indirizzo</label>
+          <textarea id="noteIndirizzo" placeholder="Inserisci le Note Indirizzo"
+                    formControlName="noteIndirizzo"
+                    class="form-control font-xlarge my-2"
+                    style="max-height: 50px; min-height: 50px;"
+                    [ngClass]="{ 'is-invalid': submitted && f.noteIndirizzo.errors}"
+                    role="presentation"
+          ></textarea>
+        </div>
+        <!-- INTERVENTI IN PROSSIMITA' -->
+        <div class="clearfix ml-3">
+          <button type="button" class="btn btn-block btn-primary btn-no-hover font-xlarge my-2" [ngbTooltip]="listaInterventiPross"
+                  placement="bottom" (click)="onShowInterventiProssimita()"
+                  > INTERVENTI IN PROSSIMITA' <span class="badge badge-secondary ml-2" style="font-size: 1.15rem;">10</span>
+            <ng-template #listaInterventiPross>
+              Visualizza Interventi in Prossimità
+            </ng-template>
+          </button>
+        </div>
+      </div>
+      <!-- RICHIEDENTE  -->
       <div class="row">
         <div class="col-7">
           <!-- RICHIEDENTE  -->
@@ -176,71 +204,12 @@
           </div>
         </div>
         <div class="col-4">
-          <!-- ENTI INTERVENUTI  -->
-          <div class="row px-2 my-2 bg-secondary text-white font-xlarge font-weight-bold">ENTI INTERVENUTI</div>
-          <div class="row">
-            <div class="col-12">
-              <div class="w-75 pr-1">
-                <div class="form-group m-0">
-                  <label class="d-none" for="listaEnti">Enti Intervenuti</label>
-                  <ng-select
-                    class="font-xlarge"
-                    id="listaEnti"
-                    formControlName="listaEnti"
-                    [items]="enti"
-                    bindLabel="descrizione"
-                    bindValue="codice"
-                    clearAllText="Clear"
-                    [multiple]="true"
-                    placeholder="Enti Intervenuti"
-                    [closeOnSelect]="true"
-                    [hideSelected]="true"
-                    [notFoundText]="'Nessun ente trovato con i parametri di ricerca'"
-                    (add)="onAddEnti($event)"
-                    (remove)="onRemoveEnti($event)">
-                  </ng-select>
-                </div>
-              </div>
-              <div class="w-50 mt-2">
-                  <button class="btn btn-sm btn-block btn-primary btn-no-hover font-xlarge"
-                          (click)="onAggiungiNuovoEnte()">
-                    <i class="fa fa-plus mr-1"></i>
-                    Nuovo ente
-                  </button>
-              </div>
-            </div>
-          </div>
+          <div class="row my-2 bg-secondary" style="padding: 15px"></div>
         </div>
       </div>
       <!-- NOTE  -->
       <div class="row p-2 my-2 bg-secondary"></div>
       <div class="row">
-        <div class="col-3">
-          <div class="form-group mb-2">
-            <label class="d-none" for="descrizione">Motivazione</label>
-            <textarea id="descrizione" placeholder="Inserisci la Motivazione"
-                      formControlName="descrizione"
-                      class="form-control font-xlarge area-size"
-                      [ngClass]="{ 'is-invalid': submitted && f.descrizione.errors}"></textarea>
-            <!--                        <div *ngIf="submitted && f.descrizione.errors" class="invalid-feedback">-->
-            <!--                            <div *ngIf="f.descrizione.errors.required">La Motivazione è richiesta</div>-->
-            <!--                        </div>-->
-            <label class="d-none" for="noteIndirizzo">Note Indirizzo</label>
-            <textarea id="noteIndirizzo" placeholder="Inserisci le Note Indirizzo"
-                      formControlName="noteIndirizzo"
-                      class="form-control font-xlarge area-size my-3"
-                      [ngClass]="{ 'is-invalid': submitted && f.noteIndirizzo.errors}"
-                      role="presentation"
-            ></textarea>
-            <div class="form-group mb-2">
-              <label class="d-none" for="zoneEmergenza">Codice emergenza</label>
-              <input id="zoneEmergenza" type="text"
-                     placeholder="Inserisci il Codice Emergenza"
-                     formControlName="zoneEmergenza" class="form-control font-xlarge"
-                     [ngClass]="{ 'is-invalid': submitted && f.zoneEmergenza.errors}"/>
-            </div>
-          </div>
-        </div>
         <div class="col-3">
           <div class="form-group mb-2">
             <label class="d-none" for="notePubbliche">Note Pubbliche</label>
@@ -252,6 +221,25 @@
               <textarea id="notePrivate" type="text" placeholder="Inserisci le Note Private"
                         formControlName="notePrivate" class="form-control font-xlarge area-size"
                         [ngClass]="{ 'is-invalid': submitted && f.notePrivate.errors}"></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="col-3">
+          <div class="form-group mb-2">
+            <label class="d-none" for="descrizione">Motivazione</label>
+            <textarea id="descrizione" placeholder="Inserisci la Motivazione"
+                      formControlName="descrizione"
+                      class="form-control font-xlarge area-size"
+                      [ngClass]="{ 'is-invalid': submitted && f.descrizione.errors}"></textarea>
+            <!--                        <div *ngIf="submitted && f.descrizione.errors" class="invalid-feedback">-->
+            <!--                            <div *ngIf="f.descrizione.errors.required">La Motivazione è richiesta</div>-->
+            <!--                        </div>-->
+            <div class="form-group my-1">
+              <label class="d-none" for="zoneEmergenza">Codice emergenza</label>
+              <input id="zoneEmergenza" type="text"
+                     placeholder="Inserisci il Codice Emergenza"
+                     formControlName="zoneEmergenza" class="form-control font-xlarge"
+                     [ngClass]="{ 'is-invalid': submitted && f.zoneEmergenza.errors}"/>
             </div>
             <div class="form-group mb-2">
               <label class="d-none" for="etichette">Tag</label>
@@ -265,17 +253,17 @@
           <div class="wrapper-grid">
             <span class="mb-0 h5 font-xlarge">Priorità</span>
             <span class="pl-2" style="font-size: 18px;">
-              <ngb-rating [formControl]="f.prioritaRichiesta" [starTemplate]="t" [max]="4" style="width: max-content; display: inline-grid !important;"></ngb-rating>
+              <ngb-rating [formControl]="f.prioritaRichiesta" [starTemplate]="t" [max]="4"style="display: inline-grid !important; transform: rotate(180deg)"></ngb-rating>
               <ng-template #t let-fill="fill" let-index="index">
               <span class="circle" [class.filled]="fill === 100" [class.bad]="index > 2 && fill === 100">
                 <i class="fa fa-circle mr-1"></i>
               </span>
               </ng-template>
-              <span style="width: max-content; display: inline-grid; margin-left: 5px">
-                <span>Nessuna</span>
-                <span>Bassa</span>
-                <span>Media</span>
+              <span style="width: max-content; display: inline-grid; margin-left: 8px">
                 <span>Alta</span>
+                <span>Media</span>
+                <span>Bassa</span>
+                <span>Nessuna</span>
               </span>
             </span>
             <span *ngIf="submitted && f.prioritaRichiesta.errors" class="form-text small">
