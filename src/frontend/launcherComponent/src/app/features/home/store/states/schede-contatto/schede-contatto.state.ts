@@ -48,7 +48,7 @@ import { ShowToastr } from '../../../../../shared/store/actions/toastr/toastr.ac
 import { ToastrType } from '../../../../../shared/enum/toastr';
 import { ClearMergeSchedeContatto } from '../../actions/schede-contatto/merge-schede-contatto.actions';
 import { RefreshSchedeContattoMarkers, ToggleOpacitaSchedeContattoMarkers } from '../../actions/maps/schede-contatto-markers.actions';
-import { DettaglioSchedaModalComponent } from '../../../schede-contatto/dettaglio-scheda-modal/dettaglio-scheda-modal.component';
+import { DettaglioSchedaContattoModalComponent } from '../../../../../shared/modal/dettaglio-scheda-contatto-modal/dettaglio-scheda-contatto-modal.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Injectable, NgZone } from '@angular/core';
 import { ClearMarkerSCSelezionato } from '../../actions/maps/marker.actions';
@@ -516,7 +516,7 @@ export class SchedeContattoState {
         const innerWidth = window.innerWidth;
         if (innerWidth && innerWidth > 3700) {
           this.ngZone.run(() => {
-            const modal = this.modal.open(DettaglioSchedaModalComponent,
+            const modal = this.modal.open(DettaglioSchedaContattoModalComponent,
               { windowClass: 'xlModal modal-left', backdropClass: 'light-blue-backdrop', centered: true }
             );
             modal.componentInstance.schedaContatto = schedaContattoDetail;
@@ -528,7 +528,7 @@ export class SchedeContattoState {
           });
         } else {
           this.ngZone.run(() => {
-            const modal = this.modal.open(DettaglioSchedaModalComponent,
+            const modal = this.modal.open(DettaglioSchedaContattoModalComponent,
               { windowClass: 'xlModal', backdropClass: 'light-blue-backdrop', centered: true }
             );
             modal.componentInstance.schedaContatto = schedaContattoDetail;

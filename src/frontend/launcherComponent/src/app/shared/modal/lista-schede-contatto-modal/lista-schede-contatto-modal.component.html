@@ -1,0 +1,45 @@
+<div class="modal-header">
+    <h4 class="modal-title">{{ 'Schede Contatto' | uppercase }}</h4>
+    <button type="button" class="btn btn-light close" style="margin: 2px 2px 0 0; padding: 2px 4px 4px 4px"
+            (click)="closeModal('ko')">
+        <i class="fa fa-times text-danger"></i>
+    </button>
+</div>
+<div class="modal-body height py-4 px-5">
+    <app-partial-loader *ngIf="loadingSchedeContatto$ | async"></app-partial-loader>
+    <app-lista-schede-contatto [ricerca]="ricerca"
+                               [tabAttivo]="tabAttivo$ | async"
+                               [schedeContatto]="schedeContatto"
+                               [contatoriSchedeContatto]="contatoriSchedeContatto"
+                               [idSchedeCompetenza]="idSchedeCompetenza$ | async"
+                               [idSchedeConoscenza]="idSchedeConoscenza$ | async"
+                               [idSchedeDifferibili]="idSchedeDifferibili$ | async"
+                               [idVisualizzati]="idVisualizzati$ | async"
+                               [idCollapsed]="idCollapsed$ | async"
+                               [codiceSchedaContattoHover]="codiceSchedaContattoHover"
+                               [statoModalita]="statoModalita"
+                               [idSelezionatiMerge]="idSelezionatiMerge"
+                               [classificazioneMerge]="classificazioneMerge"
+                               [loading]="loading$ | async"
+                               [rangeVisualizzazione]="rangeVisualizzazione"
+                               [hideTornaIndietro]="true"
+                               (tabSelected)="onSelectTab($event)"
+                               (hoverIn)="onHoverIn($event)"
+                               (hoverOut)="onHoverOut()"
+                               (collapsed)="onCollapsed($event)"
+                               (editSchedaSelezionata)="onEditSchedaSelezionata($event)"
+                               (undoMergeSchedaContatto)="onUndoMergeSchedaContatto($event)"
+                               (dettaglioScheda)="onDettaglioScheda($event)"
+                               (checkboxError)="onCheckboxError()"
+                               (schedaContattoTelefonata)="setSchedaContattoTelefonata($event)"
+                               (schedaContattoGestita)="setSchedaContattoGestita($event.scheda, $event.value)"
+                               (indietro)="onTornaIndietro()"
+                               (toggleModalitaMerge)="onToggleModalitaMerge()"
+                               (saveMerge)="onSaveMerge()"
+                               (changeFiltroRange)="setFiltroRange($event)"
+                               (pageChange)="onPageChange($event)">
+    </app-lista-schede-contatto>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-lg btn-danger" (click)="closeModal('ko')">Chiudi</button>
+</div>

@@ -1,7 +1,9 @@
 <ng-container *ngIf="idVisualizzati.includes(scheda.codiceScheda)">
     <li class="cursor-pointer border-top border-bottom py-1"
-        (mouseenter)="hoverIn.emit(scheda.codiceScheda)" (mouseleave)="hoverOut.emit()"
-        (click)="dettaglioScheda.emit(scheda.codiceScheda)" [ngClass]="cardClasses(scheda.codiceScheda)">
+        [ngClass]="cardClasses(scheda.codiceScheda)"
+        (mouseenter)="hoverIn.emit(scheda.codiceScheda)"
+        (mouseleave)="hoverOut.emit()"
+        (click)="dettaglioScheda.emit(scheda.codiceScheda)">
         <div class="row position-relative">
             <span style="position: absolute; top: -4px; left: 20px; z-index: 99999"
                   (click)="onCollapse(); $event.stopPropagation()">
@@ -49,9 +51,9 @@
                                   (container)="onCheckBoxClick()"></app-checkbox>
                 </div>
                 <ng-container *ngIf="editSchedaContatto && !this.scheda.gestita && this.scheda.collegate?.length > 0">
-                    <button class="btn btn-danger float-right px-2 py-1" [disabled]="disableEliminaRaggruppamento"
-                            (click)="onUndoRaggruppamento(); $event.stopPropagation()"
-                            ngbTooltip="Elimina raggruppamento">
+                    <button class="btn btn-danger float-right px-2 py-1" ngbTooltip="Elimina raggruppamento"
+                            [disabled]="disableEliminaRaggruppamento"
+                            (click)="onUndoRaggruppamento(scheda?.codiceScheda); $event.stopPropagation()">
                         <i class="fa fa-remove"></i>
                     </button>
                 </ng-container>
@@ -60,7 +62,7 @@
         <ng-container *ngIf="idCollapsed.includes(scheda.codiceScheda)">
             <ul class="list-unstyled">
                 <ng-container *ngFor="let collegata of scheda.collegate">
-                    <app-scheda-collegata [scheda]="collegata"></app-scheda-collegata>
+                    <app-scheda-contatto-collegata [scheda]="collegata"></app-scheda-contatto-collegata>
                 </ng-container>
             </ul>
         </ng-container>

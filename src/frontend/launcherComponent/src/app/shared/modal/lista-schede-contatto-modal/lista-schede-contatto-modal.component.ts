@@ -1,5 +1,17 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
+import { RicercaFilterbarState } from '../../../features/home/store/states/filterbar/ricerca-filterbar.state';
+import { Observable, Subscription } from 'rxjs';
+import { PaginationState } from '../../store/states/pagination/pagination.state';
+import { SchedeContattoState } from '../../../features/home/store/states/schede-contatto/schede-contatto.state';
+import { SchedaContatto } from '../../interface/scheda-contatto.interface';
+import { ContatoriSchedeContatto } from '../../interface/contatori-schede-contatto.interface';
+import { RangeSchedeContattoEnum } from '../../enum/range-schede-contatto';
+import { ClassificazioneSchedaContatto } from '../../enum/classificazione-scheda-contatto.enum';
+import { MergeSchedeContattoState } from '../../../features/home/store/states/schede-contatto/merge-schede-contatto.state';
+import { LoadingState } from '../../store/states/loading/loading.state';
+import { ViewportState } from '../../store/states/viewport/viewport.state';
+import { PermissionFeatures } from '../../enum/permission-features.enum';
 import {
     ClearSchedaContattoHover,
     GetListaSchedeContatto,
@@ -11,42 +23,28 @@ import {
     SetTabAttivo,
     ToggleCollapsed,
     UndoMergeSchedeContatto
-} from '../store/actions/schede-contatto/schede-contatto.actions';
-import { SchedeContattoState } from '../store/states/schede-contatto/schede-contatto.state';
-import { Observable, Subscription } from 'rxjs';
-import { SchedaContatto } from 'src/app/shared/interface/scheda-contatto.interface';
-import { ToggleChiamata, ToggleSchedeContatto } from '../store/actions/view/view.actions';
-import { NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
-import { ContatoriSchedeContatto } from '../../../shared/interface/contatori-schede-contatto.interface';
-import { RangeSchedeContattoEnum } from '../../../shared/enum/range-schede-contatto';
-import { ClearSchedeContattoMarkers, GetSchedeContattoMarkers } from '../store/actions/maps/schede-contatto-markers.actions';
-import { MergeSchedeContattoState } from '../store/states/schede-contatto/merge-schede-contatto.state';
+} from '../../../features/home/store/actions/schede-contatto/schede-contatto.actions';
+import { ToggleChiamata, ToggleSchedeContatto } from '../../../features/home/store/actions/view/view.actions';
 import {
     CheckboxError,
     ClearMergeSchedeContatto,
     InitSaveMergeSchedeContatto,
     SetMergeSchedaId,
     ToggleModalitaMerge
-} from '../store/actions/schede-contatto/merge-schede-contatto.actions';
-import { CheckboxInterface } from '../../../shared/interface/checkbox.interface';
-import { ClassificazioneSchedaContatto } from '../../../shared/enum/classificazione-scheda-contatto.enum';
-import { AreaMappaState } from '../store/states/maps/area-mappa.state';
-import { PermissionFeatures } from '../../../shared/enum/permission-features.enum';
-import { ConfirmModalComponent } from '../../../shared/modal/confirm-modal/confirm-modal.component';
-import { ClearRicercaFilterbar } from '../store/actions/filterbar/ricerca-richieste.actions';
-import { RicercaFilterbarState } from '../store/states/filterbar/ricerca-filterbar.state';
-import { PaginationState } from '../../../shared/store/states/pagination/pagination.state';
-import { LoadingState } from '../../../shared/store/states/loading/loading.state';
-import { ViewportState } from '../../../shared/store/states/viewport/viewport.state';
+} from '../../../features/home/store/actions/schede-contatto/merge-schede-contatto.actions';
+import { CheckboxInterface } from '../../interface/checkbox.interface';
+import { NgbActiveModal, NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
+import { ConfirmModalComponent } from '../confirm-modal/confirm-modal.component';
+import { ClearSchedeContattoMarkers, GetSchedeContattoMarkers } from '../../../features/home/store/actions/maps/schede-contatto-markers.actions';
+import { ClearRicercaFilterbar } from '../../../features/home/store/actions/filterbar/ricerca-richieste.actions';
+import { AreaMappaState } from '../../../features/home/store/states/maps/area-mappa.state';
 
 @Component({
-    selector: 'app-schede-contatto',
-    templateUrl: './schede-contatto.component.html',
-    styleUrls: ['./schede-contatto.component.css']
+    selector: 'app-lista-schede-contatto-modal',
+    templateUrl: './lista-schede-contatto-modal.component.html',
+    styleUrls: ['./lista-schede-contatto-modal.component.scss']
 })
-export class SchedeContattoComponent implements OnInit, OnDestroy {
-
-    @Input() boxAttivi: boolean;
+export class ListaSchedeContattoModalComponent implements OnInit {
 
     @Select(RicercaFilterbarState.ricerca) ricerca$: Observable<string>;
     ricerca: string;
@@ -90,7 +88,8 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
     private subscriptions: Subscription = new Subscription();
 
     constructor(private store: Store,
-                private modal: NgbModal) {
+                private modal: NgbModal,
+                private activeModal: NgbActiveModal) {
         this.getRicerca();
         this.getSchedeContatto();
         this.getSchedeContattoMarkers();
@@ -172,7 +171,7 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
 
     setSchedaContattoTelefonata(schedaContatto: SchedaContatto): void {
         this.store.dispatch(new SetSchedaContattoTelefonata(schedaContatto));
-        this.store.dispatch(new ToggleChiamata());
+        this.closeModal('ok');
     }
 
     setFiltroRange(range: RangeSchedeContattoEnum): void {
@@ -267,4 +266,7 @@ export class SchedeContattoComponent implements OnInit, OnDestroy {
         );
     }
 
+    closeModal(res: string): void {
+        this.activeModal.dismiss(res);
+    }
 }
