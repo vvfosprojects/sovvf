@@ -9,7 +9,7 @@ import {
     InsertChiamataSuccess,
     MarkerChiamata,
     ReducerSchedaTelefonata,
-    ResetChiamata, SetCompetenze,
+    ResetChiamata, SetCompetenze, SetCountInterventiVicinanze, SetInterventiVicinanze,
     StartChiamata,
     StartLoadingNuovaChiamata,
     StopLoadingNuovaChiamata
@@ -63,6 +63,10 @@ export interface SchedaTelefonataStateModel {
     };
     coordinate: Coordinate;
     competenze: Sede[];
+    interventiVicinanze: {
+        totale: number,
+        richieste: SintesiRichiesta[]
+    };
     nuovaRichiesta: SintesiRichiesta;
     azioneChiamata: AzioneChiamataEnum;
     idChiamataMarker: string;
@@ -79,6 +83,10 @@ export const SchedaTelefonataStateDefaults: SchedaTelefonataStateModel = {
     },
     coordinate: null,
     competenze: null,
+    interventiVicinanze: {
+        totale: undefined,
+        richieste: null
+    },
     nuovaRichiesta: null,
     azioneChiamata: null,
     idChiamataMarker: null,
@@ -104,6 +112,16 @@ export class SchedaTelefonataState {
     @Selector()
     static competenze(state: SchedaTelefonataStateModel): Sede[] {
         return state.competenze;
+    }
+
+    @Selector()
+    static countInterventiVicinanze(state: SchedaTelefonataStateModel): number {
+        return state.interventiVicinanze.totale;
+    }
+
+    @Selector()
+    static interventiVicinanze(state: SchedaTelefonataStateModel): SintesiRichiesta[] {
+        return state.interventiVicinanze.richieste;
     }
 
     @Selector()
@@ -136,6 +154,8 @@ export class SchedaTelefonataState {
             case 'cerca':
                 dispatch(new MarkerChiamata(action.schedaTelefonata.markerChiamata));
                 dispatch(new SetCompetenze(action.schedaTelefonata.nuovaRichiesta.localita.coordinate));
+                dispatch(new SetCountInterventiVicinanze(action.schedaTelefonata.nuovaRichiesta.localita.coordinate));
+                dispatch(new SetCountInterventiVicinanze(action.schedaTelefonata.nuovaRichiesta.localita.coordinate));
                 break;
             case 'inserita':
                 dispatch(new InsertChiamata(action.schedaTelefonata.nuovaRichiesta, action.schedaTelefonata.azioneChiamata));
@@ -179,6 +199,34 @@ export class SchedaTelefonataState {
         this.chiamataService.getCompetenze(action.coordinate).subscribe((res: ResponseInterface) => {
             patchState({
                 competenze: res.dataArray
+            });
+        });
+    }
+
+    @Action(SetCountInterventiVicinanze)
+    setCountInterventiVicinanze({ getState, patchState, dispatch }: StateContext<SchedaTelefonataStateModel>, action: SetCountInterventiVicinanze): void {
+        const state = getState();
+        const interventiVicinanze = state.interventiVicinanze;
+        this.chiamataService.getCountInterventiVicinanze(action.coordinate).subscribe((count: number) => {
+            patchState({
+                interventiVicinanze: {
+                    richieste: interventiVicinanze.richieste,
+                    totale: count
+                }
+            });
+        });
+    }
+
+    @Action(SetInterventiVicinanze)
+    setInterventiVicinanze({ getState, patchState, dispatch }: StateContext<SchedaTelefonataStateModel>, action: SetInterventiVicinanze): void {
+        const state = getState();
+        const interventiVicinanze = state.interventiVicinanze;
+        this.chiamataService.getInterventiVicinanze(action.coordinate).subscribe((res: ResponseInterface) => {
+            patchState({
+                interventiVicinanze: {
+                    totale: interventiVicinanze.totale,
+                    richieste: res.dataArray
+                }
             });
         });
     }

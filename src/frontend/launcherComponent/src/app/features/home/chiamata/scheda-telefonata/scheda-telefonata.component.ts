@@ -44,6 +44,8 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy, OnChanges {
     @Input() tipologie: Tipologia[];
     @Input() operatore: Utente;
     @Input() competenze: Sede[];
+    @Input() countInterventiVicinanze: number;
+    @Input() interventiVicinanze: SintesiRichiesta[];
     @Input() enti: Ente[];
     @Input() codiceSchedaContatto: string;
     @Input() disabledInviaPartenza = false;
@@ -53,7 +55,6 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy, OnChanges {
     @Input() schedaContatto: SchedaContatto;
 
     @Output() aggiungiNuovoEnte: EventEmitter<boolean> = new EventEmitter<boolean>();
-
 
     ngxGooglePlacesOptions: Options;
 
@@ -79,7 +80,6 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy, OnChanges {
             bounds: this.store.selectSnapshot(HomeState.bounds) as unknown as LatLngBounds,
             componentRestrictions: GOOGLEPLACESOPTIONS.componentRestrictions as unknown as ComponentRestrictions
         });
-
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -535,6 +535,8 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy, OnChanges {
                 size: 'xl',
             });
         }
+        modalInterventiProssimita.componentInstance.interventiVicinanze = this.interventiVicinanze;
+        modalInterventiProssimita.componentInstance.countInterventiVicinanze = this.countInterventiVicinanze;
         modalInterventiProssimita.result.then(
             (val) => {
                 switch (val) {

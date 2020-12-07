@@ -105,18 +105,24 @@
                     ></textarea>
                 </div>
                 <!-- INTERVENTI IN PROSSIMITA' -->
-                <div class="clearfix ml-3">
-                    <button type="button" class="btn btn-block btn-primary btn-no-hover font-xlarge my-2"
-                            [ngbTooltip]="listaInterventiPross"
-                            placement="bottom" (click)="onShowInterventiProssimita()"
-                    > INTERVENTI IN PROSSIMITA' <span class="badge badge-secondary ml-2"
-                                                      style="font-size: 1.15rem;">10</span>
-                        <ng-template #listaInterventiPross>
-                            Visualizza Interventi in Prossimità
-                        </ng-template>
-                    </button>
-                </div>
-            </div><!-- RICHIEDENTE  -->
+                <ng-template [ngIf]="countInterventiVicinanze > 0 && interventiVicinanze?.length > 0">
+                    <div class="clearfix ml-3">
+                        <button type="button" class="btn btn-block btn-primary btn-no-hover font-xlarge my-2"
+                                [ngbTooltip]="listaInterventiPross"
+                                placement="bottom"
+                                (click)="onShowInterventiProssimita()">
+                            INTERVENTI IN PROSSIMITA'
+                            <span class="badge badge-secondary ml-2" style="font-size: 1.15rem;">
+                            {{ countInterventiVicinanze }}
+                        </span>
+                            <ng-template #listaInterventiPross>
+                                Visualizza Interventi in Prossimità
+                            </ng-template>
+                        </button>
+                    </div>
+                </ng-template>
+            </div>
+            <!-- RICHIEDENTE  -->
             <div class="row">
                 <div class="col-7">
                     <!-- RICHIEDENTE  -->

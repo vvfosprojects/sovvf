@@ -9,6 +9,7 @@ import { ResponseInterface } from '../../../shared/interface/response.interface'
 const BASE_URL = environment.baseUrl;
 const API_CHIAMATA = BASE_URL + environment.apiUrl.chiamata;
 const API_COMPETENZE = BASE_URL + environment.apiUrl.competenze;
+const API_GESTIONE_RICHIESTA = BASE_URL + environment.apiUrl.gestioneRichiesta;
 
 @Injectable()
 export class ChiamataService {
@@ -17,10 +18,15 @@ export class ChiamataService {
     }
 
     public getCompetenze(coordinate: Coordinate): Observable<ResponseInterface> {
-        const obj = {
-            coordinate
-        };
-        return this.http.post<ResponseInterface>(`${API_COMPETENZE}/GetCompetenze`, obj);
+        return this.http.post<ResponseInterface>(`${API_COMPETENZE}/GetCompetenze`, coordinate);
+    }
+
+    public getCountInterventiVicinanze(coordinate: Coordinate): Observable<number> {
+        return this.http.post<number>(`${API_GESTIONE_RICHIESTA}/GetCountInterventiVicinanze`, coordinate);
+    }
+
+    public getInterventiVicinanze(coordinate: Coordinate): Observable<ResponseInterface> {
+        return this.http.post<ResponseInterface>(`${API_GESTIONE_RICHIESTA}/GetInterventiVicinanze`, coordinate);
     }
 
     public insertChiamata(chiamata: SintesiRichiesta): Observable<SintesiRichiesta> {

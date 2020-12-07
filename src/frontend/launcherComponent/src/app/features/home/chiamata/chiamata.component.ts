@@ -16,6 +16,7 @@ import { ViewportState } from '../../../shared/store/states/viewport/viewport.st
 import { SchedeContattoState } from '../store/states/schede-contatto/schede-contatto.state';
 import { SchedaContatto } from '../../../shared/interface/scheda-contatto.interface';
 import { Sede } from '../../../shared/model/sede.model';
+import { SintesiRichiesta } from '../../../shared/model/sintesi-richiesta.model';
 
 @Component({
     selector: 'app-chiamata',
@@ -28,6 +29,8 @@ export class ChiamataComponent implements OnInit, OnDestroy {
 
     @Select(SchedaTelefonataState.loadingNuovaChiamata) loadingNuovaChiamata$: Observable<boolean>;
     @Select(SchedaTelefonataState.competenze) competenze$: Observable<Sede[]>;
+    @Select(SchedaTelefonataState.countInterventiVicinanze) countInterventiVicinanze$: Observable<number>;
+    @Select(SchedaTelefonataState.interventiVicinanze) interventiVicinanze$: Observable<SintesiRichiesta[]>;
     @Select(SchedaTelefonataState.resetChiamata) resetChiamata$: Observable<boolean>;
     @Select(SchedeContattoState.schedaContattoTelefonata) schedaContattoTelefonata$: Observable<SchedaContatto>;
     @Select(AuthState.currentUser) utente$: Observable<Utente>;
