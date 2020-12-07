@@ -15,6 +15,7 @@ import { ClearFormEnte, RequestAddEnte } from '../../../shared/store/actions/ent
 import { ViewportState } from '../../../shared/store/states/viewport/viewport.state';
 import { SchedeContattoState } from '../store/states/schede-contatto/schede-contatto.state';
 import { SchedaContatto } from '../../../shared/interface/scheda-contatto.interface';
+import { Sede } from '../../../shared/model/sede.model';
 
 @Component({
     selector: 'app-chiamata',
@@ -26,10 +27,12 @@ export class ChiamataComponent implements OnInit, OnDestroy {
     @Input() boxAttivi: boolean;
 
     @Select(SchedaTelefonataState.loadingNuovaChiamata) loadingNuovaChiamata$: Observable<boolean>;
+    @Select(SchedaTelefonataState.competenze) competenze$: Observable<Sede[]>;
+    @Select(SchedaTelefonataState.resetChiamata) resetChiamata$: Observable<boolean>;
+    @Select(SchedeContattoState.schedaContattoTelefonata) schedaContattoTelefonata$: Observable<SchedaContatto>;
     @Select(AuthState.currentUser) utente$: Observable<Utente>;
     @Select(HomeState.tipologie) tipologie$: Observable<Tipologia[]>;
     @Select(EntiState.enti) enti$: Observable<Ente[]>;
-    @Select(SchedeContattoState.schedaContattoTelefonata) schedaContattoTelefonata$: Observable<SchedaContatto>;
     @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
 
     doubleMonitor: boolean;

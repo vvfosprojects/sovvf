@@ -5,6 +5,9 @@
                            [codiceSchedaContatto]="(schedaContattoTelefonata$ | async)?.codiceScheda"
                            [disabledInviaPartenza]="permessiFeature.ComposizionePartenzaRichiesta | checkPermission"
                            [loading]="loadingNuovaChiamata$ | async"
+                           [doubleMonitor]="doubleMonitor"
+                           [competenze]="competenze$ | async"
+                           [schedaContatto]="schedaContattoTelefonata$ | async"
                            (aggiungiNuovoEnte)="aggiungiNuovoEnte()">
     </app-scheda-telefonata>
 </div>
