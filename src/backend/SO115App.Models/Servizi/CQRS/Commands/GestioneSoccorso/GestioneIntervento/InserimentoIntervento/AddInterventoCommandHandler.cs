@@ -27,8 +27,10 @@ using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
 using SO115App.Models.Classi.Condivise;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.Infrastruttura.GestioneSoccorso.GenerazioneCodiciRichiesta;
+using SO115App.Models.Servizi.Infrastruttura.GestioneUtenti;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Competenze;
 using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Distaccamenti;
+using SO115App.Models.Servizi.Infrastruttura.SistemiEsterni.Nue;
 using SO115App.Models.Servizi.Infrastruttura.Turni;
 using System;
 using System.Collections.Generic;
@@ -42,19 +44,25 @@ namespace DomainModel.CQRS.Commands.AddIntervento
         private readonly IGeneraCodiceRichiesta _generaCodiceRichiesta;
         private readonly IGetTurno _getTurno;
         private readonly IGetDistaccamentoByCodiceSedeUC _getDistaccamento;
+        private readonly ISetStatoGestioneSchedaContatto _setStatoGestioneSchedaContatto;
+        private readonly IGetUtenteById _getUtenteById;
         private readonly IGetCompetenzeByCoordinateIntervento _getCompetenze;
 
         public AddInterventoCommandHandler(ISaveRichiestaAssistenza saveRichiestaAssistenza,
                                            IGeneraCodiceRichiesta generaCodiceRichiesta,
                                            IGetTurno getTurno,
                                            IGetCompetenzeByCoordinateIntervento getCompetenze,
-                                           IGetDistaccamentoByCodiceSedeUC getDistaccamento)
+                                           IGetDistaccamentoByCodiceSedeUC getDistaccamento,
+                                           ISetStatoGestioneSchedaContatto setStatoGestioneSchedaContatto,
+                                           IGetUtenteById getUtenteById)
         {
             this._saveRichiestaAssistenza = saveRichiestaAssistenza;
             _generaCodiceRichiesta = generaCodiceRichiesta;
             _getTurno = getTurno;
             _getCompetenze = getCompetenze;
             _getDistaccamento = getDistaccamento;
+            _setStatoGestioneSchedaContatto = setStatoGestioneSchedaContatto;
+            _getUtenteById = getUtenteById;
         }
 
         public void Handle(AddInterventoCommand command)
@@ -62,9 +70,9 @@ namespace DomainModel.CQRS.Commands.AddIntervento
             var Competenze = _getCompetenze.GetCompetenzeByCoordinateIntervento(command.Chiamata.Localita.Coordinate).ToHashSet();
             var lstCompetenze = new List<Distaccamento>();
             Competenze.ToList().ForEach(c => lstCompetenze.Add(_getDistaccamento.Get(c).Result));
-            
+
             if (Competenze.ToList()[0] == null)
-            throw new Exception(Costanti.CoordinateErrate);
+                throw new Exception(Costanti.CoordinateErrate);
 
             var sedeRichiesta = command.CodiceSede;
             var prioritaRichiesta = (RichiestaAssistenza.Priorita)command.Chiamata.PrioritaRichiesta;
@@ -149,6 +157,12 @@ namespace DomainModel.CQRS.Commands.AddIntervento
             {
                 command.Chiamata.Stato = Costanti.RichiestaChiusa;
                 new ChiusuraRichiesta("", richiesta, DateTime.UtcNow.AddMilliseconds(1.0), command.CodUtente);
+            }
+
+            if (command.Chiamata.CodiceSchedaNue != null)
+            {
+                var codiceFiscaleOperatore = _getUtenteById.GetUtenteByCodice(command.CodUtente).CodiceFiscale;
+                _setStatoGestioneSchedaContatto.Gestita(command.Chiamata.CodiceSchedaNue, command.CodiceSede, codiceFiscaleOperatore, true);
             }
 
             _saveRichiestaAssistenza.Save(richiesta);
