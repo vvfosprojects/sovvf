@@ -100,7 +100,7 @@ namespace SO115App.API.Controllers
         {
             try
             {
-                var query = new GetInterventiVicinanzeQuery()
+                var query = new GetCountInterventiVicinanzeQuery()
                 {
                     CodiciSede = Request.Headers["codicesede"].ToString().Split(',', StringSplitOptions.RemoveEmptyEntries),
                     IdOperatore = Request.Headers["IdUtente"],
@@ -108,7 +108,7 @@ namespace SO115App.API.Controllers
                     Coordinate = coordinate
                 };
 
-                return Ok(_getInterventiVicinanze.Handle(query));
+                return Ok(_getCountInterventiVicinanze.Handle(query));
             }
             catch (Exception ex)
             {
