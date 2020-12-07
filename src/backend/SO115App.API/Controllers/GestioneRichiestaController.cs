@@ -23,10 +23,12 @@ using DomainModel.CQRS.Commands.AllertaAltreSedi;
 using DomainModel.CQRS.Commands.UpDateStatoRichiesta;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.SintesiRichiesteAssistenza;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRichiesteAssistenza;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GetCodiciRichiesteAssistenza;
+using SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GetCountInterventiVicinanze;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GetSintesiRichiestaAssistenza;
 using System;
 using System.Linq;
@@ -43,6 +45,7 @@ namespace SO115App.API.Controllers
         private readonly IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> _sintesiRichiesteQuery;
         private readonly IQueryHandler<GetSintesiRichiestaAssistenzaQuery, GetSintesiRichiestaAssistenzaResult> _getSingolaRichiesta;
         private readonly IQueryHandler<GetCodiciRichiesteAssistenzaQuery, GetCodiciRichiesteAssistenzaResult> _getCodiciRichiesta;
+        private readonly IQueryHandler<GetCountInterventiVicinanzeQuery, GetCountInterventiVicinanzeResult> _getCountInterventiVicinanze;
         private readonly ICommandHandler<AllertaAltreSediCommand> _allertaSediHandler;
 
         public GestioneRichiestaController(
@@ -50,6 +53,7 @@ namespace SO115App.API.Controllers
             IQueryHandler<SintesiRichiesteAssistenzaQuery, SintesiRichiesteAssistenzaResult> sintesiRichiesteQuery,
             IQueryHandler<GetSintesiRichiestaAssistenzaQuery, GetSintesiRichiestaAssistenzaResult> getSingolaRichiesta,
             IQueryHandler<GetCodiciRichiesteAssistenzaQuery, GetCodiciRichiesteAssistenzaResult> getCodiciRichiesta,
+            IQueryHandler<GetCountInterventiVicinanzeQuery, GetCountInterventiVicinanzeResult> getCountInterventiVicinanze,
             ICommandHandler<AllertaAltreSediCommand> allertaSediHandler
             )
         {
@@ -58,6 +62,33 @@ namespace SO115App.API.Controllers
             _getSingolaRichiesta = getSingolaRichiesta;
             _getCodiciRichiesta = getCodiciRichiesta;
             _allertaSediHandler = allertaSediHandler;
+            _getCountInterventiVicinanze = getCountInterventiVicinanze;
+        }
+
+        [HttpPost("GetCountInterventiVicinanze")]
+        public async Task<IActionResult> GetCountInterventiVicinanze([FromBody] Coordinate coordinate)
+        {
+            try
+            {
+                var query = new GetCountInterventiVicinanzeQuery()
+                {
+                    CodiciSede = Request.Headers["codicesede"].ToString().Split(',', StringSplitOptions.RemoveEmptyEntries),
+                    IdOperatore = Request.Headers["IdUtente"],
+
+                    Coordinate = coordinate
+                };
+
+                return Ok(_getCountInterventiVicinanze.Handle(query));
+            }
+            catch (Exception ex)
+            {
+                ex = ex.GetBaseException();
+
+                if (ex.Message.Contains(Costanti.UtenteNonAutorizzato))
+                    return StatusCode(403, new { message = Costanti.UtenteNonAutorizzato });
+                else
+                    return BadRequest(ex);
+            }
         }
 
         [HttpGet("GetRichiesta")]

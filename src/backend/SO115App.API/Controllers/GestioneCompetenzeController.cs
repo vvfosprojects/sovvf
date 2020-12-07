@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using SO115App.API.Models.Classi.Condivise;
 using SO115App.Models.Classi.Utility;
 using SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GetCompetenze;
+using SO115App.Models.Servizi.CQRS.Queries.GestioneSoccorso.GetCountInterventiVicinanze;
 using System;
 using System.Threading.Tasks;
 
@@ -14,8 +15,11 @@ namespace SO115App.API.Controllers
     [ApiController]
     public class GestioneCompetenzeController : ControllerBase
     {
-        private readonly IQueryHandler<GetCompetenzeQuery, GetCompetenzeResult> _handler;
-        public GestioneCompetenzeController(IQueryHandler<GetCompetenzeQuery, GetCompetenzeResult> handler) => _handler = handler;
+        private readonly IQueryHandler<GetCompetenzeQuery, GetCompetenzeResult> _getCompetenze;
+        public GestioneCompetenzeController(IQueryHandler<GetCompetenzeQuery, GetCompetenzeResult> getCompetenze)
+        {
+            _getCompetenze = getCompetenze;
+        }
 
         [HttpPost("GetCompetenze")]
         public async Task<IActionResult> GetCompetenze([FromBody] Coordinate coordinate)
@@ -30,7 +34,7 @@ namespace SO115App.API.Controllers
                     Coordinate = coordinate
                 };
 
-                return Ok(_handler.Handle(query));
+                return Ok(_getCompetenze.Handle(query));
             }
             catch (Exception ex)
             {
