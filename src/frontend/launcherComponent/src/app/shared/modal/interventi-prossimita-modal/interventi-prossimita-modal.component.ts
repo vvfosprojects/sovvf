@@ -1,8 +1,16 @@
 import {Component} from '@angular/core';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import {NgbActiveModal, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {HelperSintesiRichiesta} from '../../../features/home/richieste/helper/_helper-sintesi-richiesta';
 import {SintesiRichiesta} from '../../model/sintesi-richiesta.model';
 import {Tipologia} from '../../model/tipologia.model';
+import {DettaglioFonogrammaModalComponent} from '../dettaglio-fonogramma-modal/dettaglio-fonogramma-modal.component';
+import {Select} from '@ngxs/store';
+import {ViewportState} from '../../store/states/viewport/viewport.state';
+import {Observable} from 'rxjs';
+import {RichiestaActionInterface} from '../../interface/richiesta-action.interface';
+import {Partenza} from '../../model/partenza.model';
+import {StatoMezzo} from '../../enum/stato-mezzo.enum';
+import {MezzoActionInterface} from '../../interface/mezzo-action.interface';
 
 @Component({
   selector: 'app-interventi-prossimita-modal',
@@ -10,6 +18,9 @@ import {Tipologia} from '../../model/tipologia.model';
   styleUrls: ['./interventi-prossimita-modal.component.css']
 })
 export class InterventiProssimitaModalComponent {
+
+  @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
+  doubleMonitor: boolean;
 
   fissata = false;
   fissabile = true;
@@ -20,15 +31,17 @@ export class InterventiProssimitaModalComponent {
   inGestione: boolean;
   gestibile = true;
   disabledGestisciRichiesta: boolean;
-  disableFissaInAlto: boolean;
   modificabile = true;
   composizionePartenza = true;
   disabledModificaRichiesta: boolean;
   disabledComposizionePartenza: boolean;
+  loadingEliminaPartenza = false;
+  idDaSganciare = '';
 
   submitted: boolean;
   methods = new HelperSintesiRichiesta();
   live = true;
+  StatoFonogramma: any;
   richiesteFake = [ {}, {}, {}, {}, {}, {}, {}, {}, {}];
 
   public richiesta: any = {
@@ -56,7 +69,7 @@ export class InterventiProssimitaModalComponent {
     Chiusa: 'Chiusa'
   };
 
-  constructor(public modal: NgbActiveModal) {
+  constructor(public modal: NgbActiveModal, private modalService: NgbModal) {
   }
 
   /* Eventi */
@@ -150,12 +163,108 @@ export class InterventiProssimitaModalComponent {
     }
   }
 
+  getStatoFonogrammaStringByEnum(statoFonogramma: any): string {
+    return;
+    /*
+    switch (statoFonogramma) {
+      case StatoFonogramma.DaInviare:
+        return 'Da Inviare';
+      case StatoFonogramma.Inviato:
+        return 'Inviato';
+      case StatoFonogramma.NonNecessario:
+        return 'Non Necessario';
+    }
+    */
+  }
+
+  onModificaStatoFonogramma(): void {
+  }
+
+  onModificaEntiIntervenuti(): void {
+  }
+
+  onListaEnti(): void {
+  }
+
+  complessitaClass(richiesta: SintesiRichiesta): any {
+    return this.methods.complessitaClass(richiesta);
+  }
+
+  onAllertaSede(): void {
+  }
+
+  onAddTrasferimentoChiamata(codiceRichiesta: string): void {
+  }
+
+  onActionRichiesta(richiestaAction: RichiestaActionInterface): void {
+    /*
+    richiestaAction.idRichiesta = this.richiesta.id;
+    this.actionRichiesta.emit(richiestaAction);
+    */
+  }
+
+  getPresaInCaricoTooltip(utentiPresaInCaricoValue: any): any {
+    return {
+      nominativo: utentiPresaInCaricoValue.nominativo.length <= 15 ? '' : utentiPresaInCaricoValue.nominativo,
+      dataInizioAttivita: utentiPresaInCaricoValue.dataInizioAttivita
+    };
+  }
+
+  getInLavorazioneTooltip(utentiInLavorazioneValue: any): string {
+    return utentiInLavorazioneValue.nominativo;
+  }
+
+  _inLavorazioneTooltipDisabled(utentiInLavorazioneValue: any): boolean {
+    return utentiInLavorazioneValue.nominativo.length <= 15;
+  }
+
+  _isSostituzioneFineTurnoActive(partenze: Partenza[]): boolean {
+    if (partenze?.length > 0) {
+      return partenze.filter((p: Partenza) => !p.sganciata && !p.partenzaAnnullata && !p.terminata && p.mezzo.stato === StatoMezzo.SulPosto).length >= 2;
+    }
+  }
+
+  onActionMezzo(mezzoAction: MezzoActionInterface): void {
+    /*
+    mezzoAction.codRichiesta = this.richiesta.codice;
+    this.actionMezzo.emit(mezzoAction);
+    */
+  }
+
   getDescrizionePrimaTipologia(richiesta: SintesiRichiesta): string {
     if (richiesta.tipologie && richiesta.tipologie.length > 0) {
       return richiesta.tipologie[0].descrizione;
     } else {
       return '';
     }
+  }
+
+  onDettaglioStatoFonogramma(): void {
+    let modalDettaglioFonogramma;
+    if (this.doubleMonitor) {
+      modalDettaglioFonogramma = this.modalService.open(DettaglioFonogrammaModalComponent, {
+        windowClass: 'modal-holder modal-left',
+        backdropClass: 'light-blue-backdrop',
+        centered: true
+      });
+    } else {
+      modalDettaglioFonogramma = this.modalService.open(DettaglioFonogrammaModalComponent, {
+        windowClass: 'modal-holder',
+        backdropClass: 'light-blue-backdrop',
+        centered: true
+      });
+    }
+    modalDettaglioFonogramma.componentInstance.codiceRichiesta = this.richiesta.codiceRichiesta ? this.richiesta.codiceRichiesta : this.richiesta.codice;
+    modalDettaglioFonogramma.componentInstance.fonogramma = this.richiesta.fonogramma;
+  }
+
+  onEliminaPartenza(targaMezzo: string): void {
+  }
+
+  onModificaPartenza(index: string): void {
+  }
+
+  onSostituzioneFineTurno(partenze: Partenza[]): void {
   }
 
   onCancel(): void {
