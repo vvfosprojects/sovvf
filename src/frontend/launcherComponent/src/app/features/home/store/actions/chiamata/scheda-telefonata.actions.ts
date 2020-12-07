@@ -3,6 +3,7 @@ import { ChiamataMarker } from '../../../maps/maps-model/chiamata-marker.model';
 import { SintesiRichiesta } from '../../../../../shared/model/sintesi-richiesta.model';
 import { AzioneChiamataEnum } from '../../../../../shared/enum/azione-chiamata.enum';
 import { SchedaContatto } from 'src/app/shared/interface/scheda-contatto.interface';
+import { Coordinate } from '../../../../../shared/model/coordinate.model';
 
 export class ReducerSchedaTelefonata {
     static readonly type = '[SchedaTelefonata] Reduce completato';
@@ -15,6 +16,27 @@ export class MarkerChiamata {
     static readonly type = '[SchedaTelefonata] Set chiamata Marker';
 
     constructor(public marker: ChiamataMarker) {
+    }
+}
+
+export class SetCompetenze {
+    static readonly type = '[SchedaTelefonata] Set Competenze';
+
+    constructor(public coordinate: Coordinate) {
+    }
+}
+
+export class SetCountInterventiVicinanze {
+    static readonly type = '[SchedaTelefonata] Set Count Interventi Vicinanze';
+
+    constructor(public coordinate: Coordinate) {
+    }
+}
+
+export class SetInterventiVicinanze {
+    static readonly type = '[SchedaTelefonata] Set Interventi Vicinanze';
+
+    constructor(public coordinate: Coordinate) {
     }
 }
 

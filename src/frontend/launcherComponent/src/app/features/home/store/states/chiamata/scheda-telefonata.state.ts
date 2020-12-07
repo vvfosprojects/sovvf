@@ -9,7 +9,7 @@ import {
     InsertChiamataSuccess,
     MarkerChiamata,
     ReducerSchedaTelefonata,
-    ResetChiamata,
+    ResetChiamata, SetCompetenze, SetCountInterventiVicinanze, SetInterventiVicinanze,
     StartChiamata,
     StartLoadingNuovaChiamata,
     StopLoadingNuovaChiamata
@@ -34,6 +34,8 @@ import { Injectable, NgZone } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { RichiestaDuplicataModalComponent } from '../../../../../shared/modal/richiesta-duplicata-modal/richiesta-duplicata-modal.component';
 import { AuthState } from '../../../../auth/store/auth.state';
+import { Sede } from '../../../../../shared/model/sede.model';
+import { ResponseInterface } from '../../../../../shared/interface/response.interface';
 
 export interface SchedaTelefonataStateModel {
     nuovaRichiestaForm: {
@@ -60,6 +62,11 @@ export interface SchedaTelefonataStateModel {
         errors: any
     };
     coordinate: Coordinate;
+    competenze: Sede[];
+    interventiVicinanze: {
+        totale: number,
+        richieste: SintesiRichiesta[]
+    };
     nuovaRichiesta: SintesiRichiesta;
     azioneChiamata: AzioneChiamataEnum;
     idChiamataMarker: string;
@@ -75,6 +82,11 @@ export const SchedaTelefonataStateDefaults: SchedaTelefonataStateModel = {
         errors: {}
     },
     coordinate: null,
+    competenze: null,
+    interventiVicinanze: {
+        totale: undefined,
+        richieste: null
+    },
     nuovaRichiesta: null,
     azioneChiamata: null,
     idChiamataMarker: null,
@@ -95,6 +107,21 @@ export class SchedaTelefonataState {
                 private store: Store,
                 private ngZone: NgZone,
                 private modalService: NgbModal) {
+    }
+
+    @Selector()
+    static competenze(state: SchedaTelefonataStateModel): Sede[] {
+        return state.competenze;
+    }
+
+    @Selector()
+    static countInterventiVicinanze(state: SchedaTelefonataStateModel): number {
+        return state.interventiVicinanze.totale;
+    }
+
+    @Selector()
+    static interventiVicinanze(state: SchedaTelefonataStateModel): SintesiRichiesta[] {
+        return state.interventiVicinanze.richieste;
     }
 
     @Selector()
@@ -126,6 +153,9 @@ export class SchedaTelefonataState {
                 break;
             case 'cerca':
                 dispatch(new MarkerChiamata(action.schedaTelefonata.markerChiamata));
+                dispatch(new SetCompetenze(action.schedaTelefonata.nuovaRichiesta.localita.coordinate));
+                dispatch(new SetCountInterventiVicinanze(action.schedaTelefonata.nuovaRichiesta.localita.coordinate));
+                dispatch(new SetCountInterventiVicinanze(action.schedaTelefonata.nuovaRichiesta.localita.coordinate));
                 break;
             case 'inserita':
                 dispatch(new InsertChiamata(action.schedaTelefonata.nuovaRichiesta, action.schedaTelefonata.azioneChiamata));
@@ -133,6 +163,72 @@ export class SchedaTelefonataState {
             default:
                 return;
         }
+    }
+
+    @Action(MarkerChiamata)
+    markerChiamata({ getState, patchState, dispatch }: StateContext<SchedaTelefonataStateModel>, action: MarkerChiamata): void {
+        const state = getState();
+        if (state.idChiamataMarker) {
+            dispatch(new UpdateChiamataMarker(action.marker));
+        } else {
+            dispatch(new SetChiamataMarker(action.marker));
+        }
+        const coordinate: Coordinate = {
+            latitudine: action.marker.localita.coordinate.latitudine,
+            longitudine: action.marker.localita.coordinate.longitudine
+        };
+        dispatch(new GetMarkerDatiMeteo('chiamata-' + action.marker.id, coordinate));
+        dispatch(new SetCoordCentroMappa(coordinate));
+        dispatch(new SetZoomCentroMappa(18));
+        patchState({
+            coordinate,
+            idChiamataMarker: action.marker.id
+        });
+    }
+
+    @Action(ClearMarkerChiamata)
+    clearMarkerChiamata({ getState, dispatch }: StateContext<SchedaTelefonataStateModel>): void {
+        const state = getState();
+        if (state.idChiamataMarker) {
+            dispatch(new DelChiamataMarker(state.idChiamataMarker));
+        }
+    }
+
+    @Action(SetCompetenze)
+    setCompetenze({ patchState, dispatch }: StateContext<SchedaTelefonataStateModel>, action: SetCompetenze): void {
+        this.chiamataService.getCompetenze(action.coordinate).subscribe((res: ResponseInterface) => {
+            patchState({
+                competenze: res.dataArray
+            });
+        });
+    }
+
+    @Action(SetCountInterventiVicinanze)
+    setCountInterventiVicinanze({ getState, patchState, dispatch }: StateContext<SchedaTelefonataStateModel>, action: SetCountInterventiVicinanze): void {
+        const state = getState();
+        const interventiVicinanze = state.interventiVicinanze;
+        this.chiamataService.getCountInterventiVicinanze(action.coordinate).subscribe((count: number) => {
+            patchState({
+                interventiVicinanze: {
+                    richieste: interventiVicinanze.richieste,
+                    totale: count
+                }
+            });
+        });
+    }
+
+    @Action(SetInterventiVicinanze)
+    setInterventiVicinanze({ getState, patchState, dispatch }: StateContext<SchedaTelefonataStateModel>, action: SetInterventiVicinanze): void {
+        const state = getState();
+        const interventiVicinanze = state.interventiVicinanze;
+        this.chiamataService.getInterventiVicinanze(action.coordinate).subscribe((res: ResponseInterface) => {
+            patchState({
+                interventiVicinanze: {
+                    totale: interventiVicinanze.totale,
+                    richieste: res.dataArray
+                }
+            });
+        });
     }
 
     @Action(InsertChiamata)
@@ -211,35 +307,6 @@ export class SchedaTelefonataState {
         dispatch(new GetInitCentroMappa());
     }
 
-    @Action(MarkerChiamata)
-    markerChiamata({ getState, patchState, dispatch }: StateContext<SchedaTelefonataStateModel>, action: MarkerChiamata): void {
-        const state = getState();
-        if (state.idChiamataMarker) {
-            dispatch(new UpdateChiamataMarker(action.marker));
-        } else {
-            dispatch(new SetChiamataMarker(action.marker));
-        }
-        const coordinate: Coordinate = {
-            latitudine: action.marker.localita.coordinate.latitudine,
-            longitudine: action.marker.localita.coordinate.longitudine
-        };
-        dispatch(new GetMarkerDatiMeteo('chiamata-' + action.marker.id, coordinate));
-        dispatch(new SetCoordCentroMappa(coordinate));
-        dispatch(new SetZoomCentroMappa(18));
-        patchState({
-            coordinate,
-            idChiamataMarker: action.marker.id
-        });
-    }
-
-    @Action(ClearMarkerChiamata)
-    clearMarkerChiamata({ getState, dispatch }: StateContext<SchedaTelefonataStateModel>): void {
-        const state = getState();
-        if (state.idChiamataMarker) {
-            dispatch(new DelChiamataMarker(state.idChiamataMarker));
-        }
-    }
-
     @Action(ClearChiamata)
     clearChiamata({ patchState }: StateContext<SchedaTelefonataStateModel>): void {
         patchState(SchedaTelefonataStateDefaults);
@@ -268,25 +335,25 @@ export class SchedaTelefonataState {
     apriModaleRichiestaDuplicata({ dispatch }: StateContext<SchedaTelefonataStateModel>, action: ApriModaleRichiestaDuplicata): void {
         const innerWidth = window.innerWidth;
         if (innerWidth && innerWidth > 3700) {
-          this.ngZone.run(() => {
-            const richiestaDuplicataModal = this.modalService.open(RichiestaDuplicataModalComponent, {
-              windowClass: 'modal-holder modal-left',
-              size: 'lg',
-              centered: true,
-              backdrop: 'static'
+            this.ngZone.run(() => {
+                const richiestaDuplicataModal = this.modalService.open(RichiestaDuplicataModalComponent, {
+                    windowClass: 'modal-holder modal-left',
+                    size: 'lg',
+                    centered: true,
+                    backdrop: 'static'
+                });
+                richiestaDuplicataModal.componentInstance.messaggio = action.messaggio;
             });
-            richiestaDuplicataModal.componentInstance.messaggio = action.messaggio;
-          });
         } else {
-          this.ngZone.run(() => {
-            const richiestaDuplicataModal = this.modalService.open(RichiestaDuplicataModalComponent, {
-              windowClass: 'modal-holder',
-              size: 'lg',
-              centered: true,
-              backdrop: 'static'
+            this.ngZone.run(() => {
+                const richiestaDuplicataModal = this.modalService.open(RichiestaDuplicataModalComponent, {
+                    windowClass: 'modal-holder',
+                    size: 'lg',
+                    centered: true,
+                    backdrop: 'static'
+                });
+                richiestaDuplicataModal.componentInstance.messaggio = action.messaggio;
             });
-            richiestaDuplicataModal.componentInstance.messaggio = action.messaggio;
-          });
         }
     }
 

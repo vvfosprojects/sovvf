@@ -7,7 +7,7 @@ import { SchedaTelefonataInterface } from '../../../../shared/interface/scheda-t
 import { ChiamataMarker } from '../../maps/maps-model/chiamata-marker.model';
 import { makeID, roundToDecimal } from '../../../../shared/helper/function';
 import { AzioneChiamataEnum } from '../../../../shared/enum/azione-chiamata.enum';
-import { Select, Store } from '@ngxs/store';
+import { Store } from '@ngxs/store';
 import { ShowToastr } from '../../../../shared/store/actions/toastr/toastr.actions';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Utente } from '../../../../shared/model/utente.model';
@@ -18,11 +18,9 @@ import { StatoRichiesta } from '../../../../shared/enum/stato-richiesta.enum';
 import { OFFSET_SYNC_TIME } from '../../../../core/settings/referral-time';
 import { ToastrType } from '../../../../shared/enum/toastr';
 import { SintesiRichiesta } from '../../../../shared/model/sintesi-richiesta.model';
-import { Observable, Subscription } from 'rxjs';
-import { SchedaTelefonataState } from '../../store/states/chiamata/scheda-telefonata.state';
+import { Subscription } from 'rxjs';
 import { DelChiamataMarker } from '../../store/actions/maps/chiamate-markers.actions';
 import { Tipologia } from '../../../../shared/model/tipologia.model';
-import { SchedeContattoState } from '../../store/states/schede-contatto/schede-contatto.state';
 import { SchedaContatto } from 'src/app/shared/interface/scheda-contatto.interface';
 import { HomeState } from '../../store/states/home.state';
 import { Options } from 'ngx-google-places-autocomplete/objects/options/options';
@@ -31,9 +29,9 @@ import { ComponentRestrictions } from 'ngx-google-places-autocomplete/objects/op
 import { GOOGLEPLACESOPTIONS } from '../../../../core/settings/google-places-options';
 import { Ente } from 'src/app/shared/interface/ente.interface';
 import { ConfirmModalComponent } from '../../../../shared/modal/confirm-modal/confirm-modal.component';
-import { ViewportState } from '../../../../shared/store/states/viewport/viewport.state';
 import { ListaSchedeContattoModalComponent } from '../../../../shared/modal/lista-schede-contatto-modal/lista-schede-contatto-modal.component';
 import { InterventiProssimitaModalComponent } from '../../../../shared/modal/interventi-prossimita-modal/interventi-prossimita-modal.component';
+import { Sede } from '../../../../shared/model/sede.model';
 
 @Component({
     selector: 'app-scheda-telefonata',
@@ -42,56 +40,21 @@ import { InterventiProssimitaModalComponent } from '../../../../shared/modal/int
     encapsulation: ViewEncapsulation.None
 })
 export class SchedaTelefonataComponent implements OnInit, OnDestroy, OnChanges {
-    richiestaFake = {
-        competenze: [{
-            codice: 'RM.1501',
-            coordinate: { latitudine: 41.79044, longitudine: 12.24837 },
-            descrizione: 'FIUMICINO (AEROPORTUALE)',
-            icona: '',
-            indirizzo: null,
-            label: '',
-            provincia: '',
-            regione: '',
-            tipo: '',
-        },
-            {
-                codice: 'RM.1501',
-                coordinate: { latitudine: 41.79044, longitudine: 12.24837 },
-                descrizione: 'FIUMICINO (AEROPORTUALE)',
-                icona: '',
-                indirizzo: null,
-                label: '',
-                provincia: '',
-                regione: '',
-                tipo: '',
-            },
-            {
-                codice: 'RM.1501',
-                coordinate: { latitudine: 41.79044, longitudine: 12.24837 },
-                descrizione: 'FIUMICINO (AEROPORTUALE)',
-                icona: '',
-                indirizzo: null,
-                label: '',
-                provincia: '',
-                regione: '',
-                tipo: '',
-            },
-        ],
-    };
 
     @Input() tipologie: Tipologia[];
     @Input() operatore: Utente;
+    @Input() competenze: Sede[];
+    @Input() countInterventiVicinanze: number;
+    @Input() interventiVicinanze: SintesiRichiesta[];
     @Input() enti: Ente[];
     @Input() codiceSchedaContatto: string;
     @Input() disabledInviaPartenza = false;
     @Input() loading: boolean;
+    @Input() doubleMonitor: boolean;
+    @Input() resetChiamata: boolean;
+    @Input() schedaContatto: SchedaContatto;
 
     @Output() aggiungiNuovoEnte: EventEmitter<boolean> = new EventEmitter<boolean>();
-
-    @Select(SchedaTelefonataState.resetChiamata) resetChiamata$: Observable<boolean>;
-    @Select(SchedeContattoState.schedaContattoTelefonata) schedaContattoTelefonata$: Observable<SchedaContatto>;
-    @Select(ViewportState.doubleMonitor) doubleMonitor$: Observable<boolean>;
-    doubleMonitor: boolean;
 
     ngxGooglePlacesOptions: Options;
 
@@ -117,42 +80,40 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy, OnChanges {
             bounds: this.store.selectSnapshot(HomeState.bounds) as unknown as LatLngBounds,
             componentRestrictions: GOOGLEPLACESOPTIONS.componentRestrictions as unknown as ComponentRestrictions
         });
-
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        if (changes && changes.codiceSchedaContatto && changes.codiceSchedaContatto.currentValue) {
-            this.f.contatto.patchValue(changes.codiceSchedaContatto.currentValue);
+        if (changes) {
+            if (changes.codiceSchedaContatto && changes.codiceSchedaContatto.currentValue) {
+                this.f.contatto.patchValue(changes.codiceSchedaContatto.currentValue);
+            }
+            if (changes.resetChiamata && changes.resetChiamata.currentValue) {
+                const reset = changes.resetChiamata.currentValue;
+                if (reset) {
+                    this.chiamataForm.reset();
+                }
+            }
+            if (changes.schedaContatto && changes.schedaContatto.currentValue) {
+                const schedaContatto = changes.schedaContatto.currentValue;
+                if (schedaContatto && schedaContatto.codiceScheda) {
+                    if (!this.idSchedaContatto) {
+                        this.setSchedaContatto(schedaContatto);
+                        this.idSchedaContatto = schedaContatto.codiceScheda;
+                    }
+                }
+            }
         }
     }
 
     ngOnInit(): void {
         this.chiamataForm = this.createForm();
         this.initNuovaRichiesta();
-        this.idChiamata = this.makeIdChiamata();
-        this.nuovaRichiesta.istanteRicezioneRichiesta = new Date(new Date().getTime() + OFFSET_SYNC_TIME[0]);
-
-        this.subscription.add(this.resetChiamata$.subscribe((reset: boolean) => {
-            if (reset) {
-                this.chiamataForm.reset();
-            }
-        }));
-        this.subscription.add(this.schedaContattoTelefonata$.subscribe((schedaContattoTelefonata: SchedaContatto) => {
-            if (schedaContattoTelefonata && schedaContattoTelefonata.codiceScheda) {
-                if (!this.idSchedaContatto) {
-                    this.setSchedaContatto(schedaContattoTelefonata);
-                    this.idSchedaContatto = schedaContattoTelefonata.codiceScheda;
-                }
-            }
-        }));
-        this.subscription.add(this.doubleMonitor$.subscribe(r => this.doubleMonitor = r));
     }
 
     ngOnDestroy(): void {
         this.subscription.unsubscribe();
         this.clearFormDisconnection();
     }
-
 
     clearFormDisconnection(): void {
         this.submitted = false;
@@ -195,6 +156,7 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy, OnChanges {
     }
 
     initNuovaRichiesta(): void {
+        this.idChiamata = this.makeIdChiamata();
         this.nuovaRichiesta = new SintesiRichiesta(
             null,
             null,
@@ -219,6 +181,7 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy, OnChanges {
         );
         this.nuovaRichiesta.rilevanteStArCu = false;
         this.nuovaRichiesta.rilevanteGrave = false;
+        this.nuovaRichiesta.istanteRicezioneRichiesta = new Date(new Date().getTime() + OFFSET_SYNC_TIME[0]);
     }
 
     getChiamataForm(): void {
@@ -540,17 +503,14 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy, OnChanges {
     }
 
     _statoChiamata(tipo: string, azione?: AzioneChiamataEnum): void {
-
         const schedaTelefonata: SchedaTelefonataInterface = {
             tipo,
             nuovaRichiesta: this.nuovaRichiesta,
             markerChiamata: this.chiamataMarker
         };
-
         if (azione) {
             schedaTelefonata.azioneChiamata = azione;
         }
-
         this.store.dispatch(new ReducerSchedaTelefonata(schedaTelefonata));
     }
 
@@ -575,6 +535,8 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy, OnChanges {
                 size: 'xl',
             });
         }
+        modalInterventiProssimita.componentInstance.interventiVicinanze = this.interventiVicinanze;
+        modalInterventiProssimita.componentInstance.countInterventiVicinanze = this.countInterventiVicinanze;
         modalInterventiProssimita.result.then(
             (val) => {
                 switch (val) {

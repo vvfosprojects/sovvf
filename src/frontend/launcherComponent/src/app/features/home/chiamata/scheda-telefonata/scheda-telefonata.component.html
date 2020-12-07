@@ -84,35 +84,45 @@
                             - {{coordinate.longitudine}}
                         </ng-template>
                     </div>
-                <!-- COMPETENZE -->
-          <div class="list-inline list-unstyled ml-3" style="font-size: xx-large">
-                                        <app-competenza *ngFor="let c of richiestaFake?.competenze; let i = index"
-                                                        [competenza]="c" [i]="i"></app-competenza>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-6">
-          <label class="d-none" for="noteIndirizzo">Note Indirizzo</label>
-          <textarea id="noteIndirizzo" placeholder="Inserisci le Note Indirizzo"
-                    formControlName="noteIndirizzo"
-                    class="form-control font-xlarge my-2"
-                    style="max-height: 50px; min-height: 50px;"
-                    [ngClass]="{ 'is-invalid': submitted && f.noteIndirizzo.errors}"
-                    role="presentation"
-          ></textarea>
-        </div>
-        <!-- INTERVENTI IN PROSSIMITA' -->
-        <div class="clearfix ml-3">
-          <button type="button" class="btn btn-block btn-primary btn-no-hover font-xlarge my-2" [ngbTooltip]="listaInterventiPross"
-                  placement="bottom" (click)="onShowInterventiProssimita()"
-                  > INTERVENTI IN PROSSIMITA' <span class="badge badge-secondary ml-2" style="font-size: 1.15rem;">10</span>
-            <ng-template #listaInterventiPross>
-              Visualizza Interventi in Prossimità
-            </ng-template>
-          </button>
-        </div>
-            </div><!-- RICHIEDENTE  -->
+                    <!-- COMPETENZE -->
+                    <ng-template [ngIf]="competenze?.length > 0">
+                        <div class="list-inline list-unstyled ml-3" style="font-size: xx-large">
+                            <app-competenza *ngFor="let c of competenze; let i = index"
+                                            [competenza]="c" [i]="i"></app-competenza>
+                        </div>
+                    </ng-template>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <label class="d-none" for="noteIndirizzo">Note Indirizzo</label>
+                    <textarea id="noteIndirizzo" placeholder="Inserisci le Note Indirizzo"
+                              formControlName="noteIndirizzo"
+                              class="form-control font-xlarge my-2"
+                              style="max-height: 50px; min-height: 50px;"
+                              [ngClass]="{ 'is-invalid': submitted && f.noteIndirizzo.errors}"
+                              role="presentation"
+                    ></textarea>
+                </div>
+                <!-- INTERVENTI IN PROSSIMITA' -->
+                <ng-template [ngIf]="countInterventiVicinanze > 0 && interventiVicinanze?.length > 0">
+                    <div class="clearfix ml-3">
+                        <button type="button" class="btn btn-block btn-primary btn-no-hover font-xlarge my-2"
+                                [ngbTooltip]="listaInterventiPross"
+                                placement="bottom"
+                                (click)="onShowInterventiProssimita()">
+                            INTERVENTI IN PROSSIMITA'
+                            <span class="badge badge-secondary ml-2" style="font-size: 1.15rem;">
+                            {{ countInterventiVicinanze }}
+                        </span>
+                            <ng-template #listaInterventiPross>
+                                Visualizza Interventi in Prossimità
+                            </ng-template>
+                        </button>
+                    </div>
+                </ng-template>
+            </div>
+            <!-- RICHIEDENTE  -->
             <div class="row">
                 <div class="col-7">
                     <!-- RICHIEDENTE  -->
@@ -234,9 +244,9 @@
                         <div class="form-group my-3">
                             <label class="d-none" for="notePrivate">Note Private</label>
                             <textarea id="notePrivate" type="text"
-                                   placeholder="Inserisci le Note Private"
-                                   formControlName="notePrivate" class="form-control font-xlarge area-size"
-                                   [ngClass]="{ 'is-invalid': submitted && f.notePrivate.errors}"></textarea>
+                                      placeholder="Inserisci le Note Private"
+                                      formControlName="notePrivate" class="form-control font-xlarge area-size"
+                                      [ngClass]="{ 'is-invalid': submitted && f.notePrivate.errors}"></textarea>
                         </div>
                     </div>
                 </div>
@@ -246,15 +256,15 @@
                         <textarea id="descrizione" placeholder="Inserisci la Motivazione"
                                   formControlName="descrizione" class="form-control font-xlarge area-size"
                                   [ngClass]="{ 'is-invalid': submitted && f.descrizione.errors}"></textarea>
-            <!--                        <div *ngIf="submitted && f.descrizione.errors" class="invalid-feedback">-->
-            <!--                            <div *ngIf="f.descrizione.errors.required">La Motivazione è richiesta</div>-->
-            <!--                        </div>-->
+                        <!--                        <div *ngIf="submitted && f.descrizione.errors" class="invalid-feedback">-->
+                        <!--                            <div *ngIf="f.descrizione.errors.required">La Motivazione è richiesta</div>-->
+                        <!--                        </div>-->
                         <div class="form-group my-1">
                             <label class="d-none" for="zoneEmergenza">Codice emergenza</label>
                             <input id="zoneEmergenza" type="text"
-                     placeholder="Inserisci il Codice Emergenza"
-                                      formControlName="zoneEmergenza" class="form-control font-xlarge"
-                                      [ngClass]="{ 'is-invalid': submitted && f.zoneEmergenza.errors}"/>
+                                   placeholder="Inserisci il Codice Emergenza"
+                                   formControlName="zoneEmergenza" class="form-control font-xlarge"
+                                   [ngClass]="{ 'is-invalid': submitted && f.zoneEmergenza.errors}"/>
                         </div>
                         <div class="form-group mb-2">
                             <label class="d-none" for="etichette">Tag</label>
