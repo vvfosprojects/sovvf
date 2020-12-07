@@ -66,6 +66,7 @@ import { RichiestaAttivitaUtenteState } from '../store/states/richieste/richiest
     exports: [
         RichiesteComponent,
         ModificaRichiestaComponent,
+        ListaRichiesteComponent,
     ]
 })
 export class RichiesteModule {

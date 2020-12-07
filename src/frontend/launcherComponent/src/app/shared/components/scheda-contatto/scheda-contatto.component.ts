@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
-import { SchedaContatto } from '../../../../shared/interface/scheda-contatto.interface';
-import { ClassificazioneSchedaContatto } from '../../../../shared/enum/classificazione-scheda-contatto.enum';
-import { Priorita } from '../../../../shared/model/sintesi-richiesta.model';
-import { CheckboxInterface } from '../../../../shared/interface/checkbox.interface';
+import { SchedaContatto } from '../../interface/scheda-contatto.interface';
+import { ClassificazioneSchedaContatto } from '../../enum/classificazione-scheda-contatto.enum';
+import { Priorita } from '../../model/sintesi-richiesta.model';
+import { CheckboxInterface } from '../../interface/checkbox.interface';
 
 @Component({
     selector: 'app-scheda-contatto',
@@ -23,15 +23,15 @@ export class SchedaContattoComponent implements OnChanges {
     @Input() disableRaggruppamento: boolean;
     @Input() disableEliminaRaggruppamento: boolean;
 
-    @Output() hoverIn = new EventEmitter<string>();
-    @Output() hoverOut = new EventEmitter();
-    @Output() dettaglioScheda = new EventEmitter<string>();
-    @Output() setSchedaContattoTelefonata = new EventEmitter<SchedaContatto>();
-    @Output() setSchedaContattoGestita = new EventEmitter<boolean>();
-    @Output() editSelezionata = new EventEmitter<CheckboxInterface>();
-    @Output() checkBoxError = new EventEmitter();
-    @Output() collapsed = new EventEmitter<string>();
-    @Output() undoRaggruppamento = new EventEmitter<string>();
+    @Output() hoverIn: EventEmitter<string> = new EventEmitter<string>();
+    @Output() hoverOut: EventEmitter<any> = new EventEmitter<any>();
+    @Output() dettaglioScheda: EventEmitter<string> = new EventEmitter<string>();
+    @Output() setSchedaContattoTelefonata: EventEmitter<SchedaContatto> = new EventEmitter<SchedaContatto>();
+    @Output() setSchedaContattoGestita: EventEmitter<boolean> = new EventEmitter<boolean>();
+    @Output() editSelezionata: EventEmitter<CheckboxInterface> = new EventEmitter<CheckboxInterface>();
+    @Output() checkBoxError: EventEmitter<any> = new EventEmitter<any>();
+    @Output() collapsed: EventEmitter<string> = new EventEmitter<string>();
+    @Output() undoRaggruppamento: EventEmitter<string> = new EventEmitter<string>();
 
     btnLetta = { type: '', tooltip: '' };
     btnGestita = { type: '', tooltip: '' };
@@ -54,7 +54,7 @@ export class SchedaContattoComponent implements OnChanges {
         }
     }
 
-    cardClasses(id: string): string{
+    cardClasses(id: string): string {
         let cardClasses = '';
         if (this.idSchedaContattoHover === id && !this.scheda.gestita) {
             cardClasses = ' bg-light';
@@ -114,7 +114,7 @@ export class SchedaContattoComponent implements OnChanges {
         this.collapsed.emit(this.scheda.codiceScheda);
     }
 
-    onUndoRaggruppamento(): void {
-        this.undoRaggruppamento.emit(this.scheda.codiceScheda);
+    onUndoRaggruppamento(codiceScheda: string): void {
+        this.undoRaggruppamento.emit(codiceScheda);
     }
 }

@@ -1,9 +1,10 @@
 <div class="px-3" [ngClass]="{'m-h-750-chiamata': boxAttivi, 'm-h-930-chiamata': !boxAttivi}">
     <app-scheda-telefonata [tipologie]="(tipologie$ | async)"
                            [operatore]="(utente$ | async)"
+                           [enti]="enti$ | async"
+                           [codiceSchedaContatto]="(schedaContattoTelefonata$ | async)?.codiceScheda"
                            [disabledInviaPartenza]="permessiFeature.ComposizionePartenzaRichiesta | checkPermission"
                            [loading]="loadingNuovaChiamata$ | async"
-                           [enti]="enti$ | async"
                            (aggiungiNuovoEnte)="aggiungiNuovoEnte()">
     </app-scheda-telefonata>
 </div>
