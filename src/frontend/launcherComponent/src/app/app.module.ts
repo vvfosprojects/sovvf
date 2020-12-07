@@ -63,6 +63,8 @@ import { ImpostazioniState } from './shared/store/states/impostazioni/impostazio
 import { PaginationComposizionePartenzaState } from './shared/store/states/pagination-composizione-partenza/pagination-composizione-partenza.state';
 import { NgxUiLoaderModule } from 'ngx-ui-loader';
 import { SostituzionePartenzeFineTurnoModalState } from './shared/store/states/sostituzione-partenze-fine-turno-modal/sostituzione-partenze-fine-turno-modal.state';
+import { SchedeContattoState } from './features/home/store/states/schede-contatto/schede-contatto.state';
+import { MergeSchedeContattoState } from './features/home/store/states/schede-contatto/merge-schede-contatto.state';
 
 @NgModule({
     declarations: [
@@ -108,7 +110,9 @@ import { SostituzionePartenzeFineTurnoModalState } from './shared/store/states/s
                 AllertaSedeModalState,
                 ImpostazioniState,
                 PaginationComposizionePartenzaState,
-                SostituzionePartenzeFineTurnoModalState
+                SostituzionePartenzeFineTurnoModalState,
+                SchedeContattoState,
+                MergeSchedeContattoState
             ],
             { developmentMode: !environment.production }
         ),

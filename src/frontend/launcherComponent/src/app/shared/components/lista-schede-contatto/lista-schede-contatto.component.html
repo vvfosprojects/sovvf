@@ -1,0 +1,166 @@
+<div class="col-12 scroll-y" style="height: calc(100% - 50px)">
+    <ng-template [ngIf]="ricerca">
+        <app-risultati-ricerca [ricerca]="ricerca"></app-risultati-ricerca>
+    </ng-template>
+    <ngb-tabset [activeId]="tabAttivo" (tabChange)="onSelectTab($event)">
+        <ngb-tab id="Tutte">
+            <ng-template ngbTabTitle>
+                <div [ngbTooltip]="tipTutte">
+                    <b>Tutte ({{ contatoriSchedeContatto?.totaleSchede?.contatoreDaGestire }})</b>
+                </div>
+                <ng-template #tipTutte>
+                    <div>Tutte: {{ contatoriSchedeContatto?.totaleSchede?.contatoreTutte }}</div>
+                    <div><b>Da gestire: {{ contatoriSchedeContatto?.totaleSchede?.contatoreDaGestire }}</b></div>
+                </ng-template>
+            </ng-template>
+            <ng-template ngbTabContent>
+                <div class="row">
+                    <div *ngIf="schedeContatto.length === 0" class="col-12 mt-4">
+                        <h6 class="text-center">Non ci sono Schede Contatto</h6>
+                    </div>
+                </div>
+            </ng-template>
+        </ngb-tab>
+        <ngb-tab [id]="ClassificazioneEnum.Competenza">
+            <ng-template ngbTabTitle>
+                <div [ngbTooltip]="tipCompetenza">
+                    <i class="fa fa-square text-danger mr-2"></i>
+                    <b>Competenza ({{ contatoriSchedeContatto?.competenzaSchede?.contatoreDaGestire }})</b>
+                </div>
+                <ng-template #tipCompetenza>
+                    <div>Tutte: {{ contatoriSchedeContatto?.competenzaSchede?.contatoreTutte }}</div>
+                    <div><b>
+                        Da gestire: {{ contatoriSchedeContatto?.competenzaSchede?.contatoreDaGestire }}
+                    </b></div>
+                </ng-template>
+            </ng-template>
+            <ng-template ngbTabContent>
+                <div class="row">
+                    <div *ngIf="idSchedeCompetenza?.length === 0" class="col-12 mt-4">
+                        <h6 class="text-center">Non ci sono Schede Contatto per Competenza</h6>
+                    </div>
+                </div>
+            </ng-template>
+        </ngb-tab>
+        <ngb-tab [id]="ClassificazioneEnum.Differibile">
+            <ng-template ngbTabTitle>
+                <div [ngbTooltip]="tipDifferibile">
+                    <i class="fa fa-square text-secondary mr-2"></i>
+                    <b>Differibile ({{ contatoriSchedeContatto?.differibileSchede?.contatoreDaGestire }})</b>
+                </div>
+                <ng-template #tipDifferibile>
+                    <div>Tutte: {{ contatoriSchedeContatto?.differibileSchede?.contatoreTutte }}</div>
+                    <div><b>Da gestire: {{ contatoriSchedeContatto?.differibileSchede?.contatoreDaGestire }}</b>
+                    </div>
+                </ng-template>
+            </ng-template>
+            <ng-template ngbTabContent>
+                <div class="row">
+                    <div *ngIf="idSchedeDifferibili?.length === 0" class="col-12 mt-4">
+                        <h6 class="text-center">Non ci sono Schede Contatto Differibili</h6>
+                    </div>
+                </div>
+            </ng-template>
+        </ngb-tab>
+        <ngb-tab [id]="ClassificazioneEnum.Conoscenza">
+            <ng-template ngbTabTitle>
+                <div [ngbTooltip]="tipConoscenza">
+                    <i class="fa fa-square text-warning mr-2"></i>
+                    <b>Conoscenza ({{ contatoriSchedeContatto?.conoscenzaSchede?.contatoreDaGestire }})</b>
+                </div>
+                <ng-template #tipConoscenza>
+                    <div>Tutte: {{ contatoriSchedeContatto?.conoscenzaSchede?.contatoreTutte }}</div>
+                    <div><b>
+                        Da gestire: {{ contatoriSchedeContatto?.conoscenzaSchede?.contatoreDaGestire }}
+                    </b></div>
+                </ng-template>
+            </ng-template>
+            <ng-template ngbTabContent>
+                <div class="row">
+                    <div *ngIf="idSchedeConoscenza?.length === 0" class="col-12 mt-4">
+                        <h6 class="text-center">Non ci sono Schede Contatto per Conoscenza</h6>
+                    </div>
+                </div>
+            </ng-template>
+        </ngb-tab>
+    </ngb-tabset>
+    <ul class="my-2 list-unstyled">
+        <app-scheda-contatto *ngFor="let scheda of schedeContatto"
+                             [scheda]="scheda"
+                             [idVisualizzati]="idVisualizzati"
+                             [idCollapsed]="idCollapsed"
+                             [idSchedaContattoHover]="codiceSchedaContattoHover"
+                             [editSchedaContatto]="statoModalita"
+                             [schedeContattoSelezionate]="idSelezionatiMerge"
+                             [classificazione]="classificazioneMerge"
+                             [disableCreaRichiesta]="permessiFeature.CreaRichiestaSchedaContatto | checkPermissionSchedaContatto: scheda.codiceSede"
+                             [disableGestisci]="permessiFeature.GestisciSchedaContatto | checkPermissionSchedaContatto: scheda.codiceSede"
+                             [disableRaggruppamento]="permessiFeature.RaggruppamentoSchedeContatto | checkPermissionSchedaContatto: scheda.codiceSede"
+                             [disableEliminaRaggruppamento]="permessiFeature.EliminazioneRaggruppamentoSchedeContatto | checkPermissionSchedaContatto: scheda.codiceSede"
+                             (hoverIn)="onHoverIn($event)"
+                             (hoverOut)="onHoverOut()"
+                             (collapsed)="onCollapsed($event)"
+                             (undoRaggruppamento)="onUndoMergeSchedaContatto($event)"
+                             (dettaglioScheda)="onDettaglioScheda($event)"
+                             (editSelezionata)="onEditSchedaSelezionata($event)"
+                             (checkBoxError)="onCheckboxError()"
+                             (setSchedaContattoTelefonata)="onSetSchedaContattoTelefonata($event)"
+                             (setSchedaContattoGestita)="onSetSchedaContattoGestita(scheda, $event)">
+        </app-scheda-contatto>
+    </ul>
+</div>
+<div class="col-12">
+    <div class="clearfix">
+        <div class="float-left">
+            <ng-template [ngIf]="!hideTornaIndietro">
+                <button class="btn btn-primary mr-2" (click)="onTornaIndietro()">
+                    <i class="fa fa-arrow-left mr-2"></i>
+                    Torna Indietro
+                </button>
+            </ng-template>
+            <div class="d-inline-block" ngbDropdown #dropdownVisualizzazione="ngbDropdown" placement="top">
+                <button *ngIf="statoModalita" class="btn btn-outline-danger mr-3"
+                        [disabled]="loading"
+                        (click)="onToggleModalitaMerge()">
+                    <i class="fa fa-undo mr-1"></i>
+                    Annulla
+                </button>
+                <button *ngIf="statoModalita" class="btn btn-outline-success mr-3"
+                        [disabled]="idSelezionatiMerge.length <= 1 || loading"
+                        (click)="onSaveMerge()">
+                    <i class="fa fa-save mr-1"></i>
+                    Raggruppa selezionate
+                </button>
+                <button *ngIf="!statoModalita" class="btn btn-outline-primary mr-3"
+                        (click)="onToggleModalitaMerge()">
+                    <i class="fa fa-object-group mr-1"></i>
+                    Raggruppa
+                </button>
+                <button ngbDropdownAnchor class="btn mr-2"
+                        [class.btn-primary]="rangeVisualizzazione !== RangeVisualizzazione.DaSempre"
+                        [class.btn-outline-primary]="rangeVisualizzazione === RangeVisualizzazione.DaSempre"
+                        (focus)="dropdownVisualizzazione.open()">
+                    <i class="fa fa-clock-o mr-1"></i>
+                    {{ rangeVisualizzazione }}
+                </button>
+                <div ngbDropdownMenu>
+                    <button *ngFor="let r of rangeSchedeContattoEnumValues" ngbDropdownItem
+                            [ngClass]="{'bg-primary text-light': r === rangeVisualizzazione}"
+                            (click)="onSetFiltroRange(r)">
+                        {{ r }}
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="float-right">
+            <div *ngIf="schedeContatto?.length > 0" class="d-flex justify-content-between p-2">
+                <pagination-controls class="mt-1 mb-0"
+                                     [autoHide]="true"
+                                     [previousLabel]="'Precedente'"
+                                     [nextLabel]="'Successiva'"
+                                     (pageChange)="onPageChange($event)">
+                </pagination-controls>
+            </div>
+        </div>
+    </div>
+</div>

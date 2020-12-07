@@ -55,7 +55,14 @@ import { TimeagoFormatter, TimeagoIntl, TimeagoModule } from 'ngx-timeago';
 import { TimeagoVVFFormatter } from './helper/timago-custom-formatter';
 import { SintesiRichiestaComponent } from './components/sintesi-richiesta/sintesi-richiesta.component';
 import { SostituzionePartenzeFineTunoModalComponent } from './modal/sostituzione-partenze-fine-turno-modal/sostituzione-partenze-fine-tuno-modal.component';
-import {InterventiProssimitaModalComponent} from './modal/interventi-prossimita-modal/interventi-prossimita-modal.component';
+import { InterventiProssimitaModalComponent } from './modal/interventi-prossimita-modal/interventi-prossimita-modal.component';
+import { ListaSchedeContattoModalComponent } from './modal/lista-schede-contatto-modal/lista-schede-contatto-modal.component';
+import { DettaglioSchedaContattoModalComponent } from './modal/dettaglio-scheda-contatto-modal/dettaglio-scheda-contatto-modal.component';
+import { ListaSchedeContattoComponent } from './components/lista-schede-contatto/lista-schede-contatto.component';
+import { SchedeContattoComponent } from '../features/home/schede-contatto/schede-contatto.component';
+import { SchedaContattoComponent } from './components/scheda-contatto/scheda-contatto.component';
+import { SchedaContattoCollegataComponent } from './components/scheda-contatto-collegata/scheda-contatto-collegata.component';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 const COMPONENTS = [
     DebounceClickDirective,
@@ -104,6 +111,13 @@ const COMPONENTS = [
     SganciamentoMezzoModalComponent,
     SintesiRichiestaComponent,
     SostituzionePartenzeFineTunoModalComponent,
+    ListaSchedeContattoModalComponent,
+    DettaglioSchedaContattoModalComponent,
+    ListaSchedeContattoComponent,
+    SchedeContattoComponent,
+    SchedaContattoComponent,
+    SchedaContattoCollegataComponent,
+    SostituzionePartenzeFineTunoModalComponent,
     InterventiProssimitaModalComponent,
 ];
 
@@ -121,7 +135,8 @@ const COMPONENTS = [
         TimeagoModule.forRoot({
             intl: TimeagoIntl,
             formatter: { provide: TimeagoFormatter, useClass: TimeagoVVFFormatter }
-        })
+        }),
+        NgxPaginationModule
     ],
     declarations: [
         ...COMPONENTS

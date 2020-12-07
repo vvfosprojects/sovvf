@@ -19,6 +19,7 @@
 //-----------------------------------------------------------------------
 using AutoMapper;
 using Newtonsoft.Json;
+using SO115App.API.Models.Classi.Condivise;
 using SO115App.API.Models.Classi.Soccorso;
 using SO115App.API.Models.Servizi.CQRS.Queries.GestioneSoccorso.Shared.SintesiRichiestaAssistenza;
 using SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso;
@@ -85,6 +86,11 @@ namespace SO115App.FakePersistenceJSon.GestioneIntervento
             }
 
             return listaSintesiRichiesteVuota;
+        }
+
+        public List<SintesiRichiesta> GetListaSintesiVicinanze(Coordinate coordinate)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }
