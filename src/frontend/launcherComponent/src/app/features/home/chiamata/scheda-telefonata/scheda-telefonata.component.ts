@@ -32,6 +32,7 @@ import { GOOGLEPLACESOPTIONS } from '../../../../core/settings/google-places-opt
 import { Ente } from 'src/app/shared/interface/ente.interface';
 import { ConfirmModalComponent } from '../../../../shared/modal/confirm-modal/confirm-modal.component';
 import {ViewportState} from '../../../../shared/store/states/viewport/viewport.state';
+import {InterventiProssimitaModalComponent} from '../../../../shared/modal/interventi-prossimita-modal/interventi-prossimita-modal.component';
 
 @Component({
   selector: 'app-scheda-telefonata',
@@ -51,6 +52,42 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy {
   idChiamata: string;
 
   AzioneChiamataEnum = AzioneChiamataEnum;
+  richiestaFake = {
+    competenze: [{
+      codice: 'RM.1501',
+      coordinate: {latitudine: 41.79044, longitudine: 12.24837},
+      descrizione: 'FIUMICINO (AEROPORTUALE)',
+      icona: '',
+      indirizzo: null,
+      label: '',
+      provincia: '',
+      regione: '',
+      tipo: '',
+    },
+    {
+      codice: 'RM.1501',
+      coordinate: {latitudine: 41.79044, longitudine: 12.24837},
+      descrizione: 'FIUMICINO (AEROPORTUALE)',
+      icona: '',
+      indirizzo: null,
+      label: '',
+      provincia: '',
+      regione: '',
+      tipo: '',
+    },
+    {
+      codice: 'RM.1501',
+      coordinate: {latitudine: 41.79044, longitudine: 12.24837},
+      descrizione: 'FIUMICINO (AEROPORTUALE)',
+      icona: '',
+      indirizzo: null,
+      label: '',
+      provincia: '',
+      regione: '',
+      tipo: '',
+    },
+    ],
+  };
 
   @Input() tipologie: Tipologia[];
   @Input() operatore: Utente;
@@ -515,6 +552,39 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy {
 
   makeIdChiamata(): string {
     return `${this.operatore.sede.codice}-${this.operatore.id}-${makeID(8)}`;
+  }
+
+  onShowInterventiProssimita(): void {
+    let modalInterventiProssimita;
+    if (this.doubleMonitor) {
+      modalInterventiProssimita = this.modalService.open(InterventiProssimitaModalComponent, {
+        windowClass: 'modal-holder modal-left',
+        backdropClass: 'light-blue-backdrop',
+        centered: true,
+        size: 'xl',
+      });
+    } else {
+      modalInterventiProssimita = this.modalService.open(InterventiProssimitaModalComponent, {
+        windowClass: 'modal-holder',
+        backdropClass: 'light-blue-backdrop',
+        centered: true,
+        size: 'xl',
+      });
+    }
+    modalInterventiProssimita.result.then(
+      (val) => {
+        switch (val) {
+          case 'ok':
+            console.log('Test Ok');
+            break;
+          case 'ko':
+            console.log('Azione annullata');
+            break;
+        }
+        console.log('Modal chiusa con val ->', val);
+      },
+      (err) => console.error('Modal chiusa senza bottoni. Err ->', err)
+    );
   }
 
 }
