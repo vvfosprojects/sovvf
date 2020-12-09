@@ -69,6 +69,12 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy, OnChanges {
 
     nuovaRichiesta: SintesiRichiesta;
     idSchedaContatto: string;
+    prefix: {} = {
+      112: false,
+      113: false,
+      118: false,
+      'VV.UU.': false,
+    };
 
     private subscription = new Subscription();
 
@@ -473,6 +479,17 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy, OnChanges {
                 this.nuovaRichiesta.descrizione = nuovaDescrizione[0].descrizione;
             }
         }
+    }
+
+    onCheckScorciatoiaNumero(key: string): void {
+      const f = this.f;
+      if (this.prefix[key]) {
+        this.prefix[key] = false;
+        f.telefono.patchValue('');
+      } else {
+        Object.keys(this.prefix).forEach(x => this.prefix[x] = x === key);
+        f.telefono.patchValue(key);
+      }
     }
 
     setSchedaContatto(scheda: SchedaContatto): void {
