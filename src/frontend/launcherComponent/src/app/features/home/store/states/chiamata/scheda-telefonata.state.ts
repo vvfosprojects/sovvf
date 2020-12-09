@@ -203,9 +203,7 @@ export class SchedaTelefonataState {
     }
 
     @Action(SetCountInterventiVicinanze)
-    setCountInterventiVicinanze({ getState, patchState, dispatch }: StateContext<SchedaTelefonataStateModel>, action: SetCountInterventiVicinanze): void {
-        const state = getState();
-        const interventiVicinanze = state.interventiVicinanze;
+    setCountInterventiVicinanze({ patchState, dispatch }: StateContext<SchedaTelefonataStateModel>, action: SetCountInterventiVicinanze): void {
         this.chiamataService.getCountInterventiVicinanze(action.coordinate).subscribe((res: ResponseInterface) => {
             patchState({
                 countInterventiVicinanze: res.count
@@ -214,9 +212,7 @@ export class SchedaTelefonataState {
     }
 
     @Action(SetInterventiVicinanze)
-    setInterventiVicinanze({ getState, patchState, dispatch }: StateContext<SchedaTelefonataStateModel>, action: SetInterventiVicinanze): void {
-        const state = getState();
-        const interventiVicinanze = state.interventiVicinanze;
+    setInterventiVicinanze({ patchState, dispatch }: StateContext<SchedaTelefonataStateModel>, action: SetInterventiVicinanze): void {
         this.chiamataService.getInterventiVicinanze(action.coordinate).subscribe((res: ResponseInterface) => {
             patchState({
                 interventiVicinanze: res.dataArray
