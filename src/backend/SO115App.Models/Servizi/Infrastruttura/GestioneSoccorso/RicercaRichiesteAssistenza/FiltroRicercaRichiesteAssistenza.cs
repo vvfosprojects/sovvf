@@ -53,11 +53,13 @@ namespace SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRic
 
         /// <summary>
         ///   Indica se si vogliono includere le richieste aperte
+        ///   andrebbe eliminato questo filtro
         /// </summary>
         public bool IncludiRichiesteAperte { get; set; } = true;
 
         /// <summary>
         ///   Indica se si vogliono includere le richieste chiuse
+        ///   andrebbe eliminato questo filtro
         /// </summary>
         public bool IncludiRichiesteChiuse { get; set; } = false;
 
@@ -65,11 +67,6 @@ namespace SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRic
         ///   Contiene eventuali filtri delle tipologie
         /// </summary>
         public string[] FiltriTipologie { get; set; }
-
-        /// <summary>
-        ///   Indica quali richieste si vogliono includere nel risultato.
-        /// </summary>
-        //public StatoRichiesta StatoRichieste { get; set; }
 
         /// <summary>
         ///   Indica una chiave di ricerca full-text
@@ -87,5 +84,10 @@ namespace SO115App.API.Models.Servizi.Infrastruttura.GestioneSoccorso.RicercaRic
         public string idOperatore { get; set; }
 
         public Localita IndirizzoIntervento { get; set; }
+
+        /// <summary>
+        /// Indica se visualizzare solo le chiamate, o solo gli interventi, o entrambi
+        /// </summary>
+        public string[] TipologiaRichiesta { get; set; }
     }
 }

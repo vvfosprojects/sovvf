@@ -133,70 +133,7 @@ namespace SO115App.Persistence.MongoDB
 
             var filtriSediAllertate = Builders<RichiestaAssistenza>.Filter.AnyIn(x => x.CodSOAllertate, listaCodSedi);
 
-            //FilterDefinition <RichiestaAssistenza> orFiltroSediAllertate = Builders<RichiestaAssistenza>.Filter.Empty;
-            //foreach (var f in filtriSediAllertate)
-            //    orFiltroSediAllertate |= f;
-
             List<RichiestaAssistenza> result = new List<RichiestaAssistenza>();
-            //Iniziamo col restituire le richieste aperte.
-            //if (filtro.IncludiRichiesteAperte)
-            //{
-            //    var filtroRichiesteAperte = Builders<RichiestaAssistenza>.Filter.Ne(r => r.TestoStatoRichiesta, "X");
-            //    var filtroComplessivo = filtroRichiesteAperte & filtroSediCompetenti | filtriSediAllertate;
-
-            //    var richiesteAperte = _dbContext.RichiestaAssistenzaCollection
-            //                            .Find(filtroComplessivo)
-            //                            .ToList();
-
-            //    // qui l'ordinamento
-            //    var richiestePerStato = richiesteAperte.GroupBy(r => r.TestoStatoRichiesta == InAttesa.SelettoreDB)
-            //        .ToDictionary(g => g.Key, g => g);
-
-            //    /*
-            //     * true -> c1, c2, c3
-            //     * false -> r5, r8, r19, r34
-            //     */
-
-            //    if (richiestePerStato.ContainsKey(false))
-            //        result.AddRange(
-            //            richiestePerStato[false]
-            //            .OrderBy(r => r.PrioritaRichiesta)
-            //            .ThenBy(r => r.IstanteRicezioneRichiesta));
-
-            //    if (richiestePerStato.ContainsKey(true))
-            //        result.AddRange(
-            //            richiestePerStato[true]
-            //            .OrderBy(r => r.PrioritaRichiesta)
-            //            .ThenBy(r => r.IstanteRicezioneRichiesta));
-
-            //    // qui la paginazione var resultPaginato = result.Skip().Take();
-
-            //    // se abbiamo già raggiunto il numero di richieste desiderate, restituiamo e finisce
-            //    // qua return resultPaginato;
-
-            //    result.ToList();
-            //}
-
-            //if (filtro.IncludiRichiesteChiuse)
-            //{
-            //    var filtroRichiesteChiuse = Builders<RichiestaAssistenza>.Filter.Eq(r => r.TestoStatoRichiesta, "X");
-            //    var filtroComplessivo = filtroSediCompetenti & filtroRichiesteChiuse;
-
-            //    var numeroRichiesteDaRecuperare = 20; //filtro.PageSize - (result.Count - filtro.PageSize);
-
-            //    //if (numeroRichiesteDaRecuperare > 0)
-            //    //{
-            //    var closedToSkip = (filtro.Page - 1) * filtro.PageSize - result.Count;
-            //    if (closedToSkip < 0)
-            //        closedToSkip = 0;
-            //    var richiesteChiuse = _dbContext.RichiestaAssistenzaCollection.Find(filtroComplessivo)
-            //        .Skip(closedToSkip)
-            //        .Limit(numeroRichiesteDaRecuperare)
-            //        .ToList();
-
-            //    result.AddRange(richiesteChiuse);
-            //    //}
-            //}
 
             result = _dbContext.RichiestaAssistenzaCollection.Find(filtroSediCompetenti).ToList();
 
@@ -217,6 +154,18 @@ namespace SO115App.Persistence.MongoDB
             {
                 result = result.Where(o => filtro.FiltriTipologie.Any(s => o.Tipologie.Contains(s))).ToList();
             }
+
+            if (filtro.TipologiaRichiesta != null)
+                result = result.Where(r =>
+                {
+                    if (filtro.TipologiaRichiesta.Contains("Chiamata"))
+                        return r.TestoStatoRichiesta == "C";
+
+                    if (filtro.TipologiaRichiesta.Contains("Intervento"))
+                        return r.TestoStatoRichiesta != "C";
+
+                    return true;
+                }).ToList();
 
             if (filtro.IndirizzoIntervento != null)
             {
