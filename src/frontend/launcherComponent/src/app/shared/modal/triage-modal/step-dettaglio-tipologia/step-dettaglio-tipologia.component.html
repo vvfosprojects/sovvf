@@ -1,0 +1,8 @@
+<app-checkbox *ngFor="let dettaglioTipologia of dettagliTipologia"
+              [checkboxState]="{
+                  id: dettaglioTipologia.codice,
+                  status: dettaglioTipologia.codice === codDettaglioTipologiaSelezionato,
+                  label: dettaglioTipologia.descrizione
+              }"
+              (checkbox)="onCheckDettaglioTipologia(dettaglioTipologia.codice)">
+</app-checkbox>

@@ -21,8 +21,8 @@ export class ChiamataService {
         return this.http.post<ResponseInterface>(`${API_COMPETENZE}/GetCompetenze`, coordinate);
     }
 
-    public getCountInterventiVicinanze(coordinate: Coordinate): Observable<number> {
-        return this.http.post<number>(`${API_GESTIONE_RICHIESTA}/GetCountInterventiVicinanze`, coordinate);
+    public getCountInterventiVicinanze(coordinate: Coordinate): Observable<ResponseInterface> {
+        return this.http.post<ResponseInterface>(`${API_GESTIONE_RICHIESTA}/GetCountInterventiVicinanze`, coordinate);
     }
 
     public getInterventiVicinanze(coordinate: Coordinate): Observable<ResponseInterface> {

@@ -4,31 +4,41 @@
         <form [formGroup]="chiamataForm" ngxsForm="schedaTelefonata.nuovaRichiestaForm" autocomplete="off">
             <div class="form-group">
                 <!-- TIPOLOGIA  -->
-                <div class="row px-2 my-2 bg-secondary text-white font-xlarge font-weight-bold">TIPOLOGIA</div>
-                <label class="d-none">Tipologia intervento</label>
-                <div class="required-field">
-                    <ng-select class="border font-xlarge test-ng-select"
-                               [ngClass]="{'errore': submitted && checkTipologie()}"
-                               bindLabel="codiceDescrizione"
-                               bindValue="codice"
-                               clearAllText="Clear"
-                               placeholder="Seleziona Tipologia Intervento"
-                               formControlName="selectedTipologie"
-                               [notFoundText]="'Nessuna tipologia trovata con i parametri di ricerca'"
-                               [items]="tipologie"
-                               [multiple]="true"
-                               [closeOnSelect]="true"
-                               [hideSelected]="true"
-                               (add)="onAddTipologia($event)"
-                               (remove)="onRemoveTipologia($event)">
-                    </ng-select>
-                </div>
-                <div *ngIf="submitted && checkTipologie()" class="text-danger">
-                    <small>Almeno una tipologia è richiesta</small>
+                <div class="px-2 my-2 bg-secondary text-white font-xlarge font-weight-bold">TIPOLOGIA</div>
+                <div class="clearfix">
+                    <div class="float-left w-75">
+                        <label class="d-none">Tipologia intervento</label>
+                        <div class="required-field">
+                            <ng-select class="border font-xlarge test-ng-select"
+                                       [ngClass]="{'errore': submitted && checkTipologie()}"
+                                       bindLabel="codiceDescrizione"
+                                       bindValue="codice"
+                                       clearAllText="Clear"
+                                       placeholder="Seleziona Tipologia Intervento"
+                                       formControlName="tipologie"
+                                       [notFoundText]="'Nessuna tipologia trovata con i parametri di ricerca'"
+                                       [items]="tipologie"
+                                       [multiple]="false"
+                                       [closeOnSelect]="true"
+                                       [hideSelected]="true"
+                                       (ngModelChange)="onChangeTipologia($event)">
+                            </ng-select>
+                        </div>
+                        <div *ngIf="submitted && checkTipologie()" class="text-danger">
+                            <small>Almeno una tipologia è richiesta</small>
+                        </div>
+                    </div>
+                    <ng-template [ngIf]="f.tipologie.value">
+                        <div class="float-left w-25 px-2">
+                            <button class="btn btn-primary btn-block btn-no-hover" (click)="openTriage()">
+                                Dettaglio
+                            </button>
+                        </div>
+                    </ng-template>
                 </div>
             </div>
             <!-- INDIRIZZO  -->
-            <div class="row px-2 my-2 bg-secondary text-white font-xlarge font-weight-bold">INDIRIZZO</div>
+            <div class="px-2 my-2 bg-secondary text-white font-xlarge font-weight-bold">INDIRIZZO</div>
             <div class="row">
                 <div class="col-6">
                     <div class="form-group mb-2">
@@ -204,19 +214,23 @@
                             <span class="pl-2" style="font-size: 18px;">
               <span style="width: max-content; display: inline-grid; margin-left: 5px">
                 <span>
-                  <input (click)="onCheckScorciatoiaNumero('112')" type="checkbox" id="112" name="112" [checked]="prefix[112]">
+                  <input (click)="onCheckScorciatoiaNumero('112')" type="checkbox" id="112" name="112"
+                         [checked]="prefix[112]">
                   <label class="ml-1 mb-0" for="112" style="cursor: pointer">112</label>
                 </span>
                 <span>
-                  <input (click)="onCheckScorciatoiaNumero('113')" type="checkbox" id="113" name="113" [checked]="prefix[113]">
+                  <input (click)="onCheckScorciatoiaNumero('113')" type="checkbox" id="113" name="113"
+                         [checked]="prefix[113]">
                   <label class="ml-1 mb-0" for="113" style="cursor: pointer">113</label>
                 </span>
                 <span>
-                  <input (click)="onCheckScorciatoiaNumero('118')" type="checkbox" id="118" name="118" [checked]="prefix[118]">
+                  <input (click)="onCheckScorciatoiaNumero('118')" type="checkbox" id="118" name="118"
+                         [checked]="prefix[118]">
                   <label class="ml-1 mb-0" for="118" style="cursor: pointer">118</label>
                 </span>
                 <span>
-                  <input (click)="onCheckScorciatoiaNumero('VV.UU.')" type="checkbox" id="VV.UU." name="VV.UU." [checked]="prefix['VV.UU.']">
+                  <input (click)="onCheckScorciatoiaNumero('VV.UU.')" type="checkbox" id="VV.UU." name="VV.UU."
+                         [checked]="prefix['VV.UU.']">
                   <label class="ml-1 mb-0" for="VV.UU." style="cursor: pointer">VV.UU.</label>
                 </span>
               </span>
