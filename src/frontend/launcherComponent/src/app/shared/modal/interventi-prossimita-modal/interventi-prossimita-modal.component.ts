@@ -46,22 +46,6 @@ export class InterventiProssimitaModalComponent {
     interventiVicinanze: SintesiRichiesta[];
     countInterventiVicinanze: number;
 
-    public richiesta: any = {
-        priorita: 3,
-        istanteRicezioneRichiesta: 1,
-        codiceRichiesta: 'RM1122000002',
-        richiedente: {
-            nominativo: 'Richiedente Test',
-            telefono: '3333333333',
-        },
-        localita: {
-            indirizzo: 'Via del Corso, Roma RM, Italia'
-        },
-        tipologie: [{
-            descrizione: 'Esplosione da sostanza esplodente',
-        }],
-    };
-
     // Enum
     StatoRichiesta = {
         Chiamata: 'Chiamata',
@@ -241,7 +225,7 @@ export class InterventiProssimitaModalComponent {
         }
     }
 
-    onDettaglioStatoFonogramma(): void {
+    onDettaglioStatoFonogramma(r: SintesiRichiesta): void {
         let modalDettaglioFonogramma;
         if (this.doubleMonitor) {
             modalDettaglioFonogramma = this.modalService.open(DettaglioFonogrammaModalComponent, {
@@ -256,8 +240,8 @@ export class InterventiProssimitaModalComponent {
                 centered: true
             });
         }
-        modalDettaglioFonogramma.componentInstance.codiceRichiesta = this.richiesta.codiceRichiesta ? this.richiesta.codiceRichiesta : this.richiesta.codice;
-        modalDettaglioFonogramma.componentInstance.fonogramma = this.richiesta.fonogramma;
+        modalDettaglioFonogramma.componentInstance.codiceRichiesta = r.codiceRichiesta ? r.codiceRichiesta : r.codice;
+        modalDettaglioFonogramma.componentInstance.fonogramma = r.fonogramma;
     }
 
     onEliminaPartenza(targaMezzo: string): void {

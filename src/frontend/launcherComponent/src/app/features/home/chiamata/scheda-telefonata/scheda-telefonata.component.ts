@@ -70,10 +70,10 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy, OnChanges {
     nuovaRichiesta: SintesiRichiesta;
     idSchedaContatto: string;
     prefix: {} = {
-      112: false,
-      113: false,
-      118: false,
-      'VV.UU.': false,
+        112: false,
+        113: false,
+        118: false,
+        'VV.UU.': false,
     };
 
     private subscription = new Subscription();
@@ -86,10 +86,24 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy, OnChanges {
             bounds: this.store.selectSnapshot(HomeState.bounds) as unknown as LatLngBounds,
             componentRestrictions: GOOGLEPLACESOPTIONS.componentRestrictions as unknown as ComponentRestrictions
         });
+        this.chiamataForm = this.createForm();
+        this.initNuovaRichiesta();
     }
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes) {
+            if (changes.operatore && changes.operatore.currentValue) {
+                const operatore = changes.operatore.currentValue;
+                this.nuovaRichiesta.operatore = new Utente(
+                    operatore.id,
+                    operatore.nome,
+                    operatore.cognome,
+                    operatore.codiceFiscale,
+                    operatore.sede,
+                    operatore.username
+                );
+                this.idChiamata = this.makeIdChiamata();
+            }
             if (changes.codiceSchedaContatto && changes.codiceSchedaContatto.currentValue) {
                 this.f.contatto.patchValue(changes.codiceSchedaContatto.currentValue);
             }
@@ -112,8 +126,6 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy, OnChanges {
     }
 
     ngOnInit(): void {
-        this.chiamataForm = this.createForm();
-        this.initNuovaRichiesta();
     }
 
     ngOnDestroy(): void {
@@ -162,19 +174,11 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy, OnChanges {
     }
 
     initNuovaRichiesta(): void {
-        this.idChiamata = this.makeIdChiamata();
         this.nuovaRichiesta = new SintesiRichiesta(
             null,
             null,
             null,
-            new Utente(
-                this.operatore.id,
-                this.operatore.nome,
-                this.operatore.cognome,
-                this.operatore.codiceFiscale,
-                this.operatore.sede,
-                this.operatore.username
-            ),
+            null,
             null,
             StatoRichiesta.Chiamata,
             0,
@@ -482,14 +486,14 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy, OnChanges {
     }
 
     onCheckScorciatoiaNumero(key: string): void {
-      const f = this.f;
-      if (this.prefix[key]) {
-        this.prefix[key] = false;
-        f.telefono.patchValue('');
-      } else {
-        Object.keys(this.prefix).forEach(x => this.prefix[x] = x === key);
-        f.telefono.patchValue(key);
-      }
+        const f = this.f;
+        if (this.prefix[key]) {
+            this.prefix[key] = false;
+            f.telefono.patchValue('');
+        } else {
+            Object.keys(this.prefix).forEach(x => this.prefix[x] = x === key);
+            f.telefono.patchValue(key);
+        }
     }
 
     setSchedaContatto(scheda: SchedaContatto): void {

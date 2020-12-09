@@ -5,6 +5,7 @@ import { Sede } from '../model/sede.model';
 
 export interface ResponseInterface {
     dataArray?: any[];
+    count?: number;
     sintesiRichiesta?: SintesiRichiesta[];
     pagination?: PaginationInterface;
     listaSediPresenti?: Ruolo[];
