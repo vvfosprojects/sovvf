@@ -11,6 +11,13 @@ export class SetFiltroSelezionatoRichieste {
     }
 }
 
+export class SetZoneEmergenza {
+  static readonly type = '[FiltriRichieste] Set Filtro Richieste Selezionato';
+
+  constructor(public zoneEmergenza: string[]) {
+  }
+}
+
 export class ClearFiltroSelezionatoRichieste {
     static readonly type = '[FiltriRichieste] Clear Filtro Richieste Selezionato';
 

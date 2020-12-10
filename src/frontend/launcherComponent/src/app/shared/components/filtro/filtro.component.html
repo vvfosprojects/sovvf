@@ -4,8 +4,12 @@
     {{ filtro.descrizione | truncate:70 }}
 </button>
 
-<div *ngIf="useCheckbox">
+<div *ngIf="useCheckbox" class="d-inline-flex">
     <app-checkbox
             [checkboxState]="{id: filtro.descrizione, status: selezionato, label: filtro.descrizione | truncate:70, disabled: disabled}"
             [debounceTime]="1" appDebounceClick (debounceClick)="onSelezione(filtro)"></app-checkbox>
+  <button *ngIf="filtro.name === 'chiusi'" class="btn btn-sm btn-no-hover btn-block btn-secondary ml-3" ngbTooltip="Filtra in dettaglio" placement="right"
+          (click)="chiusiModal.emit(true)" [disabled]="!selezionato"><i class="fa fa-search"></i></button>
+  <button *ngIf="filtro.name === 'zonaEmergenza'" class="btn btn-sm btn-no-hover btn-block btn-secondary ml-3" style="inline-size: max-content; height: max-content" ngbTooltip="Filtra in dettaglio" placement="right"
+          (click)="zonaEmergenzaModal.emit(true)" [disabled]="!selezionato"><i class="fa fa-exclamation-triangle"></i></button>
 </div>

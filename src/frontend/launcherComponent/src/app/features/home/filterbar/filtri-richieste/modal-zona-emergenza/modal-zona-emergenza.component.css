@@ -1,0 +1,13 @@
+.box-zona-emergenza {
+  width: 75%;
+  font-size: 25px;
+  box-shadow: 0 0 6px -2px #C7C7C7;
+}
+
+.box-zona-emergenza:hover {
+  transform: scale(1.03);
+}
+
+.box-selected {
+  box-shadow: 0 0 2px 2px #28a745;
+}

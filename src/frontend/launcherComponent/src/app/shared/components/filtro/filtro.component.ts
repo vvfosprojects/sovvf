@@ -15,6 +15,8 @@ export class FiltroComponent {
 
     @Output() filtroSelezionato: EventEmitter<VoceFiltro> = new EventEmitter();
     @Output() filtroDeselezionato: EventEmitter<VoceFiltro> = new EventEmitter();
+    @Output() chiusiModal: EventEmitter<boolean> = new EventEmitter();
+    @Output() zonaEmergenzaModal: EventEmitter<boolean> = new EventEmitter();
 
     constructor() {
     }
@@ -22,6 +24,7 @@ export class FiltroComponent {
     onSelezione(filtro: VoceFiltro): void {
       if (!this.selezionato) {
             if (!this.disabled) {
+                this.zonaEmergenzaModal.emit(true);
                 this.filtroSelezionato.emit(filtro);
             }
         } else {
