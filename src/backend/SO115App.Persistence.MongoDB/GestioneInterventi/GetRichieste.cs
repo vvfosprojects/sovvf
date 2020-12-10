@@ -140,6 +140,7 @@ namespace SO115App.Persistence.MongoDB
 
             result = _dbContext.RichiestaAssistenzaCollection.Find(filtroSediCompetenti).ToList();
 
+            //FILTRO STATI RICHIESTA
             if (filtro.StatiRichiesta != null && filtro.StatiRichiesta.Count() != 0)
             {
                 if (filtro.StatiRichiesta.Contains("Chiamata"))
@@ -149,10 +150,13 @@ namespace SO115App.Persistence.MongoDB
                             return "InAttesa";
                         return f;
                     }).ToArray();
+                else
+                    filtro.StatiRichiesta.Concat(new string[] { "InAttesa" });
 
                 result = result.Where(r => filtro.StatiRichiesta.Contains(r.StatoRichiesta.GetType().Name)).ToList();
             }
 
+            //FILTRO PERIODO CHIAMATE CHIUSE
             if (filtro.PeriodoChiuse != null) result = result.Where(r =>
             {
                 if (filtro.PeriodoChiuse.Data != null)
@@ -177,12 +181,13 @@ namespace SO115App.Persistence.MongoDB
                 result = result.Where(o => filtro.FiltriTipologie.Any(s => o.Tipologie.Contains(s))).ToList();
             }
 
+            //FILTRO TIPOLOGIA RICHIESTA (CHIAMATE/INTERVENTI)
             if (filtro.TipologiaRichiesta != null) result = result.Where(r =>
             {
-                if (filtro.TipologiaRichiesta.Contains("Chiamata"))
+                if (filtro.TipologiaRichiesta.Contains("Chiamate"))
                     return r.TestoStatoRichiesta == "C";
 
-                if (filtro.TipologiaRichiesta.Contains("Intervento"))
+                if (filtro.TipologiaRichiesta.Contains("Interventi"))
                     return r.TestoStatoRichiesta != "C";
 
                 return true;
