@@ -2,7 +2,7 @@
     <app-partial-loader *ngIf="loading"></app-partial-loader>
     <div class="col-12 mx-auto border border-light shadow-lg">
         <form [formGroup]="chiamataForm" ngxsForm="schedaTelefonata.nuovaRichiestaForm" autocomplete="off">
-            <div class="form-group">
+            <div class="form-group mb-1">
                 <!-- TIPOLOGIA  -->
                 <div class="px-2 my-2 bg-secondary text-white font-xlarge font-weight-bold">TIPOLOGIA</div>
                 <div class="clearfix">
@@ -35,8 +35,9 @@
                             </button>
                         </div>
                     </ng-template>
-                    <div *ngIf="f.dettaglioTipologia.value" class="float-left w-100">
-                        Dettaglio Tipologia: <span class="font-weight-bold">{{ f.dettaglioTipologia.value.descrizione }}</span>
+                    <div *ngIf="f.dettaglioTipologia.value" class="float-left w-100 mt-1">
+                        Dettaglio Tipologia: <span
+                            class="font-weight-bold">{{ f.dettaglioTipologia.value.descrizione }}</span>
                     </div>
                 </div>
             </div>
@@ -51,8 +52,7 @@
                                [ngClass]="{ 'is-invalid': submitted && (f.indirizzo.errors || !coordinate) }"
                                placeholder="Ricerca indirizzo" [options]="ngxGooglePlacesOptions"
                                (onAddressChange)="onCercaIndirizzo($event)"
-                               role="presentation"
-                        >
+                               role="presentation">
                         <div *ngIf="submitted && (f.indirizzo.errors || !coordinate)" class="invalid-feedback">
                             <div *ngIf="onMsgIndirizzo() as messaggio">{{messaggio}}</div>
                         </div>

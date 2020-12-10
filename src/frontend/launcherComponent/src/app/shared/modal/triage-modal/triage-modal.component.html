@@ -10,11 +10,11 @@
                                   (changeDettaglioTipologia)="onChangeDettaglioTipologia($event)">
     </app-step-dettaglio-tipologia>
     <hr>
-    <div>
+    <div class="text-center">
         <h6 class="d-inline-block mr-2">Tipologia Selezionata:</h6>
         <h5 class="d-inline-block font-weight-bolder">{{ tipologiaSelezionata?.codiceDescrizione }}</h5>
     </div>
-    <div *ngIf="dettaglioTipologiaSelezionato">
+    <div *ngIf="dettaglioTipologiaSelezionato" class="text-center">
         <h6 class="d-inline-block mr-2">Dettaglio Tipologia Selezionata:</h6>
         <h5 class="d-inline-block font-weight-bolder">{{ dettaglioTipologiaSelezionato?.descrizione }}</h5>
     </div>

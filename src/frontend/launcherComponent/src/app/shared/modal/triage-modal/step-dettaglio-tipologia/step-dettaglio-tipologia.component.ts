@@ -20,8 +20,14 @@ export class StepDettaglioTipologiaComponent implements OnInit {
     }
 
     onCheckDettaglioTipologia(codice: string): void {
-        this.codDettaglioTipologiaSelezionato = codice;
-        this.changeDettaglioTipologia.emit(codice);
+        if (codice) {
+            this.codDettaglioTipologiaSelezionato = codice;
+            this.changeDettaglioTipologia.emit(codice);
+        } else {
+
+            this.codDettaglioTipologiaSelezionato = null;
+            this.changeDettaglioTipologia.emit(null);
+        }
     }
 
 }
