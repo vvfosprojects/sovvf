@@ -35,6 +35,9 @@
                             </button>
                         </div>
                     </ng-template>
+                    <div *ngIf="f.dettaglioTipologia.value" class="float-left w-100">
+                        Dettaglio Tipologia: <span class="font-weight-bold">{{ f.dettaglioTipologia.value.descrizione }}</span>
+                    </div>
                 </div>
             </div>
             <!-- INDIRIZZO  -->
