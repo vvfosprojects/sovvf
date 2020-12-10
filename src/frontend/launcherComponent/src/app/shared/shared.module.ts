@@ -63,6 +63,8 @@ import { SchedeContattoComponent } from '../features/home/schede-contatto/schede
 import { SchedaContattoComponent } from './components/scheda-contatto/scheda-contatto.component';
 import { SchedaContattoCollegataComponent } from './components/scheda-contatto-collegata/scheda-contatto-collegata.component';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { TriageModalComponent } from './modal/triage-modal/triage-modal.component';
+import { StepDettaglioTipologiaComponent } from './modal/triage-modal/step-dettaglio-tipologia/step-dettaglio-tipologia.component';
 
 const COMPONENTS = [
     DebounceClickDirective,
@@ -119,6 +121,8 @@ const COMPONENTS = [
     SchedaContattoCollegataComponent,
     SostituzionePartenzeFineTunoModalComponent,
     InterventiProssimitaModalComponent,
+    TriageModalComponent,
+    StepDettaglioTipologiaComponent
 ];
 
 @NgModule({

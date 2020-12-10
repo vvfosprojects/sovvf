@@ -5,21 +5,21 @@ import { HomeState } from '../home.state';
 import { _isStatico } from '../../../../../shared/helper/function-filtro';
 import { insertItem, patch, removeItem } from '@ngxs/store/operators';
 import { GetListaRichieste } from '../../actions/richieste/richieste.actions';
-import { VociFiltroDefault } from '../../../../../shared/enum/voci-filtro-default.enum';
 import {
-    ApplyFiltriTipologiaSelezionatiRichieste,
-    ClearFiltriTipologiaSelezionatiRichieste,
-    ClearFiltroSelezionatoRichieste,
-    ClearFiltroTipologiaSelezionatoRichieste,
-    GetFiltriRichieste,
-    ResetFiltriSelezionatiRichieste,
-    SetFiltroBoxRichieste,
-    SetFiltroSelezionatoRichieste,
-    SetFiltroTipologiaSelezionatoRichieste
+  ApplyFiltriTipologiaSelezionatiRichieste,
+  ClearFiltriTipologiaSelezionatiRichieste,
+  ClearFiltroSelezionatoRichieste,
+  ClearFiltroTipologiaSelezionatoRichieste,
+  GetFiltriRichieste,
+  ResetFiltriSelezionatiRichieste,
+  SetFiltroBoxRichieste,
+  SetFiltroSelezionatoRichieste,
+  SetFiltroTipologiaSelezionatoRichieste
 } from '../../actions/filterbar/filtri-richieste.actions';
 import { Injectable } from '@angular/core';
 import produce from 'immer';
 import { StatoRichiesta } from '../../../../../shared/enum/stato-richiesta.enum';
+import {TipologiaRichiesta} from '../../../../../shared/enum/tipologiaRichiesta.enum';
 
 export interface FiltriRichiesteStateModel {
     filtriStaticiRichieste: VoceFiltro[];
@@ -33,29 +33,37 @@ export interface FiltriRichiesteStateModel {
 export const filtriRichiesteStateDefaults: FiltriRichiesteStateModel = {
     filtriStaticiRichieste: [
         {
-            codice: VociFiltroDefault.Aperte,
-            categoria: 'Aperte',
-            descrizione: 'Aperte',
-            name: 'includiRichiesteAperte',
+            codice: TipologiaRichiesta.Chiamate,
+            categoria: 'Chiamate',
+            descrizione: 'Chiamate',
+            name: 'includiChiamate',
             star: true,
             statico: true
         },
         {
-            codice: VociFiltroDefault.Chiuse,
-            categoria: 'Chiuse',
-            descrizione: 'Chiuse',
-            name: 'includiRichiesteChiuse',
+            codice: TipologiaRichiesta.Interventi,
+            categoria: 'Interventi',
+            descrizione: 'Interventi',
+            name: 'includiInterventi',
             star: true,
             statico: true
+        },
+        {
+          codice: TipologiaRichiesta.InterventiChiamate,
+          categoria: 'InterventiChiamate',
+          descrizione: 'Interventi + Chiamate',
+          name: 'includiInterventiChiamate',
+          star: true,
+          statico: true
         }
     ],
     filtriRichieste: [],
     filtriRichiesteSelezionati: [
         {
-            codice: VociFiltroDefault.Aperte,
-            categoria: 'Aperte',
-            descrizione: 'Aperte',
-            name: 'includiRichiesteAperte',
+            codice: TipologiaRichiesta.InterventiChiamate,
+            categoria: 'InterventiChiamate',
+            descrizione: 'Interventi + Chiamate',
+            name: 'includiInterventiChiamate',
             star: true,
             statico: true
         }
@@ -147,10 +155,11 @@ export class FiltriRichiesteState {
             );
         } else {
             setState(
-                patch({
-                    filtriRichiesteSelezionati: insertItem<VoceFiltro>(action.filtro)
-                })
+              patch({
+                filtriRichiesteSelezionati: insertItem<VoceFiltro>(action.filtro)
+              })
             );
+            this.store.dispatch(new SetFiltroBoxRichieste(action.filtro.name)); // io
         }
         dispatch(new GetListaRichieste());
     }
@@ -159,7 +168,7 @@ export class FiltriRichiesteState {
     clearFiltroSelezionatoRichieste({ getState, setState, patchState, dispatch }: StateContext<FiltriRichiesteStateModel>, action: ClearFiltroSelezionatoRichieste): void {
         setState(
             patch({
-                filtriRichiesteSelezionati: removeItem<VoceFiltro>(filtro => filtro.codice === action.filtro.codice)
+                filtriRichiesteSelezionati: removeItem<VoceFiltro>(filtro => filtro.codice === action.filtro.codice),
             })
         );
         dispatch(new GetListaRichieste());
@@ -182,6 +191,9 @@ export class FiltriRichiesteState {
             case 'chiusi':
                 statoRichiestaEnum = StatoRichiesta.Chiusa;
                 break;
+          case 'sospesi':
+            statoRichiestaEnum = StatoRichiesta.Sospesa;
+            break;
         }
         const included = state.filtriStatoRichiesteSelezionati.includes(statoRichiestaEnum);
         if (!included) {
@@ -197,7 +209,7 @@ export class FiltriRichiesteState {
                 })
             );
         }
-        dispatch(new GetListaRichieste());
+        // dispatch(new GetListaRichieste());
     }
 
     @Action(SetFiltroTipologiaSelezionatoRichieste)

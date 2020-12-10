@@ -57,6 +57,10 @@ export class SintesiRichiesta {
          */
         public tipologie: Tipologia[],
         /**
+         * dettaglio della tipologia
+         */
+        public dettaglioTipologia: string,
+        /**
          * descrizione della richiesta
          */
         public descrizione: string,

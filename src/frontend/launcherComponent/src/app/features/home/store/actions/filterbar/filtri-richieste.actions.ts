@@ -1,5 +1,4 @@
 import { VoceFiltro } from '../../../filterbar/filtri-richieste/voce-filtro.model';
-import { StatoRichiesta } from '../../../../../shared/enum/stato-richiesta.enum';
 
 export class GetFiltriRichieste {
     static readonly type = '[FiltriRichieste] Get Filtri Richieste';

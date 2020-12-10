@@ -32,6 +32,7 @@ import { ConfirmModalComponent } from '../../../../shared/modal/confirm-modal/co
 import { ListaSchedeContattoModalComponent } from '../../../../shared/modal/lista-schede-contatto-modal/lista-schede-contatto-modal.component';
 import { InterventiProssimitaModalComponent } from '../../../../shared/modal/interventi-prossimita-modal/interventi-prossimita-modal.component';
 import { Sede } from '../../../../shared/model/sede.model';
+import { TriageModalComponent } from '../../../../shared/modal/triage-modal/triage-modal.component';
 
 @Component({
     selector: 'app-scheda-telefonata',
@@ -145,7 +146,8 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy, OnChanges {
 
     createForm(): FormGroup {
         return this.formBuilder.group({
-            selectedTipologie: [null, Validators.required],
+            tipologie: [null, Validators.required],
+            dettaglioTipologia: [null],
             nominativo: [null, Validators.required],
             telefono: [null, [Validators.required, Validators.pattern('^(\\+?)[0-9]+$')]],
             indirizzo: [null, Validators.required],
@@ -187,6 +189,7 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy, OnChanges {
             null,
             null,
             null,
+            null,
             null
         );
         this.nuovaRichiesta.rilevanteStArCu = false;
@@ -196,12 +199,14 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy, OnChanges {
 
     getChiamataForm(): void {
         const f = this.f;
+        this.nuovaRichiesta.tipologie = f.tipologie.value;
+        this.nuovaRichiesta.dettaglioTipologia = f.dettaglioTipologia.value;
         this.nuovaRichiesta.richiedente = new Richiedente(f.telefono.value, f.nominativo.value);
         this.nuovaRichiesta.localita.note = f.noteIndirizzo.value;
         this.nuovaRichiesta.localita.coordinate.longitudine = f.longitudine.value;
         this.nuovaRichiesta.localita.coordinate.latitudine = f.latitudine.value;
         this.nuovaRichiesta.tags = (f.etichette.value && f.etichette.value.length) ? f.etichette.value : null;
-        this.nuovaRichiesta.descrizione = f.descrizione.value;
+        this.nuovaRichiesta.descrizione = f.dettaglioTipologia.value ? f.dettaglioTipologia.value.descrizione : null;
         this.nuovaRichiesta.zoneEmergenza = f.zoneEmergenza.value ? f.zoneEmergenza.value.split(' ') : null;
         this.nuovaRichiesta.notePrivate = f.notePrivate.value;
         this.nuovaRichiesta.notePubbliche = f.notePubbliche.value;
@@ -213,11 +218,45 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy, OnChanges {
         this.nuovaRichiesta.localita.contatto = f.contatto.value;
         this.nuovaRichiesta.codiceSchedaNue = this.idSchedaContatto ? this.idSchedaContatto : null;
         this.nuovaRichiesta.listaEnti = (f.listaEnti.value && f.listaEnti.value.length) ? f.listaEnti.value : null;
-
-        this.setDescrizione();
         console.log('Nuova Richiesta', this.nuovaRichiesta);
     }
 
+    onChangeTipologia(codTipologia: string): void {
+        if (codTipologia) {
+            this.openTriage();
+        }
+    }
+
+    openTriage(): void {
+        const codTipologia = this.f.tipologie.value;
+        let modalOptions: any;
+        if (this.doubleMonitor) {
+            modalOptions = {
+                windowClass: 'modal-holder modal-left',
+                backdropClass: 'light-blue-backdrop',
+                centered: true,
+                size: 'xl'
+            };
+        } else {
+            modalOptions = {
+                windowClass: 'modal-holder',
+                backdropClass: 'light-blue-backdrop',
+                centered: true,
+                size: 'xl'
+            };
+        }
+        const triageModal = this.modalService.open(TriageModalComponent, modalOptions);
+        triageModal.componentInstance.tipologiaSelezionata = this.tipologie.filter((t: Tipologia) => t.codice === codTipologia)[0];
+        triageModal.result.then((res: any) => {
+            switch (res.type) {
+                case 'salvaDettaglio':
+                    this.f.dettaglioTipologia.patchValue(res.result);
+                    break;
+            }
+        });
+    }
+
+    // todo: rimuovere (inutilizzato)
     onAddTipologia(tipologia: any): void {
         if (!this.nuovaRichiesta.tipologie) {
             this.nuovaRichiesta.tipologie = [];
@@ -225,6 +264,11 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy, OnChanges {
         } else {
             this.nuovaRichiesta.tipologie.push(tipologia);
         }
+    }
+
+    // todo: rimuovere (inutilizzato)
+    onRemoveTipologia(tipologia: any): void {
+        this.nuovaRichiesta.tipologie.splice(this.nuovaRichiesta.tipologie.indexOf(tipologia.codice), 1);
     }
 
     onAddEnti(ente: any): void {
@@ -236,16 +280,12 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy, OnChanges {
         }
     }
 
-    onRemoveTipologia(tipologia: any): void {
-        this.nuovaRichiesta.tipologie.splice(this.nuovaRichiesta.tipologie.indexOf(tipologia.codice), 1);
-    }
-
     onRemoveEnti(ente: any): void {
         this.nuovaRichiesta.listaEnti.splice(this.nuovaRichiesta.listaEnti.indexOf(ente.codice), 1);
     }
 
     checkTipologie(): boolean {
-        return !!!(this.nuovaRichiesta.tipologie && (this.nuovaRichiesta.tipologie.length > 0));
+        return !!!(this.f.tipologie.value && (this.f.tipologie.value.length > 0));
     }
 
     checkEnti(): boolean {
@@ -253,8 +293,8 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy, OnChanges {
     }
 
     clearTipologieSelezionate(): void {
-        this.f.selectedTipologie.patchValue([]);
-        this.nuovaRichiesta.tipologie = [];
+        this.f.tipologie.patchValue(null);
+        this.nuovaRichiesta.tipologie = null;
     }
 
     onAggiungiNuovoEnte(): void {
@@ -325,7 +365,7 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy, OnChanges {
 
     checkNessunCampoModificato(): boolean {
         let campiModificati = false;
-        if (!this.f.selectedTipologie.value && !this.f.nominativo.value && !this.f.telefono.value
+        if (!this.f.tipologie.value && !this.f.nominativo.value && !this.f.telefono.value
             && !this.f.indirizzo.value && !this.f.latitudine.value && !this.f.longitudine.value
             && !this.f.piano.value && !this.f.etichette.value && !this.f.noteIndirizzo.value && !this.f.listaEnti.value
             && !this.f.notePrivate.value && !this.f.notePubbliche.value && !this.f.descrizione.value && !this.f.zoneEmergenza.value
@@ -430,7 +470,7 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy, OnChanges {
 
     countErrorForm(): string[] {
         let error = '';
-        error += this.f.selectedTipologie.errors ? 'Tipologia;' : '';
+        error += this.f.tipologie.errors ? 'Tipologia;' : '';
         error += this.f.nominativo.errors ? 'Nominativo;' : '';
         error += this.f.telefono.errors ? 'Telefono;' : '';
         error += this.f.indirizzo.errors ? 'Indirizzo;' : '';
@@ -471,17 +511,6 @@ export class SchedaTelefonataComponent implements OnInit, OnDestroy, OnChanges {
 
         if (!regexp.test(inputValue)) {
             event.preventDefault();
-        }
-    }
-
-    setDescrizione(): void {
-        const form = this.f;
-        if (!form.descrizione.value) {
-            // console.log(form.selectedTipologie.value);
-            const nuovaDescrizione = this.tipologie.filter(tipologia => tipologia.codice === form.selectedTipologie.value[0]);
-            if (nuovaDescrizione) {
-                this.nuovaRichiesta.descrizione = nuovaDescrizione[0].descrizione;
-            }
         }
     }
 
